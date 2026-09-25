@@ -1,45 +1,57 @@
-# F-PE-ZERO-WASTE01 H-DIR04 — consuming trajectory vector ownership
+# F-PE-ZERO-WASTE01 H-DIR04 — trajectory ownership transfer
 
 Date: 2026-09-25
 
-Status: `CANDIDATE_PENDING_QUALIFICATION`
+Status: `NEGATIVE_REJECTED_ROLLED_BACK`
 
-Authority parent: `f3c8e1642310f7303802e23f187d1f4981e39539`.
+Authority parent: `f3c8e1642310f7303802e23f187d1f4981e39539`
 
-## Measured waste
+Candidate: `e0b9a7ba0aa8dfece9e2e150d2d106e3c34907d9`
 
-For every available accepted directional step the current trajectory path materializes two outgoing N-vectors, copies them into pending vectors, copies pending vectors into current trajectory state, then immediately deallocates pending.
+## Hypothesis
 
-Shared-CI component measurements:
+The accepted directional trajectory copied two N-vectors from the step result into pending state and copied them again from pending into current trajectory state. Because pending vectors are cleared immediately after acceptance, ownership transfer with `move_alloc` appeared to be a pure data-movement optimization.
 
-| N | pending alloc+copy+dealloc | second two-vector copy | four move_alloc transfers |
+## Component evidence
+
+Shared-CI microbenchmark:
+
+| N | pending allocate+copy+deallocate | second two-vector copy | four move_alloc transfers |
 |---:|---:|---:|---:|
 | 60 | 31.40 ns | 13.39 ns | 1.93 ns |
 | 200 | 73.82 ns | 35.89 ns | 1.86 ns |
 | 1000 | 243.76 ns | 184.60 ns | 1.87 ns |
 
-## Candidate
+The component benchmark therefore confirmed real copy/allocation work.
 
-The existing copy-stage API is retained unchanged.
+## Candidate qualification
 
-A new consuming stage is used only by the serialized backend. It applies the same token, duration, availability, allocation, shape and finiteness checks. Only after all checks pass are the result h/theta arrays moved into pending ownership.
+The candidate retained the generic copy-stage API and added a serialized consuming stage. Validation occurred before ownership transfer, and accepted pending vectors were moved into current trajectory state.
 
-At accepted-step commit, pending h/theta ownership is moved into current trajectory state. Pending state is then cleared exactly as before.
+Direct contract evidence passed:
 
-Incoming request vectors and final trajectory publication are deliberately unchanged in this tranche.
+- `FPE_ZERO_WASTE01_HDIR04_COPY_API_PRESERVED=PASS`
+- `FPE_ZERO_WASTE01_HDIR04_CONSUMING_IDENTITY=PASS`
+- `FPE_ZERO_WASTE01_HDIR04_PREMOVE_FAIL_CLOSED=PASS`
+- `FPE_ZERO_WASTE01_HDIR04_O0_O2_IDENTITY=PASS`
 
-## Safety contract
+Broad preservation gates also passed.
 
-- malformed or stale results fail before ownership transfer;
-- generic copy-stage still leaves result arrays allocated;
-- consuming stage leaves result arrays unallocated only after successful validation and transfer;
-- rejected/discarded pending state remains fail-closed;
-- trajectory values, provenance, counters and accepted backsolve semantics remain identical;
-- no physics, mass, transaction acceptance or tangent equation changes.
+## Isolated runtime result
 
-## Qualification
+Exact parent-versus-candidate directional paired run:
 
-- direct O0/O2 contract test for copy and consuming APIs;
-- exact physical/provenance FKT22 gates through current CI;
-- isolated directional paired runtime against exact parent with baseline sensitivity/service/backend frozen;
-- broad paired runtime and HDIR03A preservation.
+- mean candidate/parent ratio: 1.002118524
+- median ratio: 1.000498243
+- mean speedup: -0.211852%
+- mean delta: +35.887320 ns/interval
+- N=10
+- paired harness verdict: PASS
+
+The effect is neutral-to-negative at application-host scale. The component savings do not resolve into end-to-end benefit and do not justify extra ownership complexity.
+
+## Decision
+
+Reject and roll back the production ownership-transfer candidate.
+
+Retain the copy-cost measurement and this negative result as evidence. Do not reopen H-DIR04 without a materially different ownership design or evidence from a workload where trajectory-vector movement is demonstrably dominant.

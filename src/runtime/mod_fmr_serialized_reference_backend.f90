@@ -29,8 +29,7 @@ module mod_fmr_serialized_reference_backend
        soil_water_accepted_step_direction_result_t, SW_STEP_DIRECTION_UNAVAILABLE
   use mod_accepted_trajectory_directional_sensitivity, only: accepted_trajectory_direction_t, trajectory_step_token_t, &
        configure_trajectory_direction, begin_or_continue_trajectory, build_trajectory_step_request, &
-       stage_trajectory_step_result, stage_trajectory_step_result_consuming, &
-       accept_trajectory_step, finalize_trajectory_direction
+       stage_trajectory_step_result, accept_trajectory_step, finalize_trajectory_direction
   use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t, &
        publish_accepted_trajectory_direction
   use mod_reference_richards_accepted_step_directional_service, only: solve_with_accepted_step_direction
@@ -2264,8 +2263,7 @@ contains
              solve_result, direction_result)
         trajectory_solver_used = .true.
       end if
-      call stage_trajectory_step_result_consuming(self%trajectory_direction, direction_token, direction_result, &
-           trajectory_stage_ok)
+      call stage_trajectory_step_result(self%trajectory_direction, direction_token, direction_result, trajectory_stage_ok)
     else
       call self%solver%solve(request, self%workspace, solve_result)
     end if
