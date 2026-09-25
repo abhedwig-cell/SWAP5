@@ -9,6 +9,8 @@ program test_ppa_irr_dcs1_scheduled
   implicit none
   type(scheduled_irrigation_parameters_t)::p,saved
   type(scheduled_irrigation_request_t)::r
+  type(irrigation_parameters_t)::fixed_parameters
+  type(irrigation_management_request_t)::fixed_request
   type(irrigation_state_t)::base,candidate,first
   type(irrigation_flux_result_t)::f
   type(irrigation_diagnostics_t)::d
@@ -249,6 +251,26 @@ program test_ppa_irr_dcs1_scheduled
          'malformed active continuation state rejects before unsafe arithmetic')
   end do
   write(*,'(a)') 'PPA_IRR_ACTIVE_STATE_NONFINITE_INDEX_GUARDS=PASS'
+  base=irrigation_state_t()
+  do i=1,6
+    r%t0=0.0_real64; r%t1=1.0_real64
+    select case(i)
+    case(1); r%t0=nan
+    case(2); r%t1=nan
+    case(3); r%t0=ieee_value(0.0_real64,ieee_negative_inf)
+    case(4); r%t1=ieee_value(0.0_real64,ieee_positive_inf)
+    case(5); r%t0=ieee_value(0.0_real64,ieee_positive_inf)
+    case(6); r%t1=ieee_value(0.0_real64,ieee_negative_inf)
+    end select
+    call evaluate_scheduled_irrigation_interval(p,base,r,h,candidate,f,d)
+    call require(d%status==IRRIGATION_INVALID_INTERVAL.and..not.f%applied.and..not.candidate%active_event, &
+         'scheduled nonfinite interval rejects before comparison')
+    fixed_request%t0=r%t0; fixed_request%t1=r%t1
+    call evaluate_fixed_irrigation_interval(fixed_parameters,base,fixed_request,candidate,f,d)
+    call require(d%status==IRRIGATION_INVALID_INTERVAL.and..not.f%applied.and..not.candidate%active_event, &
+         'fixed nonfinite interval rejects before comparison')
+  end do
+  write(*,'(a)') 'PPA_IRR_FIXED_SCHEDULED_NONFINITE_INTERVALS=PASS'
 contains
   subroutine require(ok,message)
     logical,intent(in)::ok

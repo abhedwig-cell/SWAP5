@@ -158,6 +158,10 @@ contains
     fluxes = irrigation_flux_result_t()
     diagnostics = irrigation_diagnostics_t()
 
+    if (.not. ieee_is_finite(request%t0) .or. .not. ieee_is_finite(request%t1)) then
+      diagnostics%status = IRRIGATION_INVALID_INTERVAL
+      return
+    end if
     if (request%t1 <= request%t0) then
       diagnostics%status = IRRIGATION_INVALID_INTERVAL
       return
@@ -287,6 +291,10 @@ contains
     fluxes = irrigation_flux_result_t()
     diagnostics = irrigation_diagnostics_t()
 
+    if (.not. ieee_is_finite(request%t0) .or. .not. ieee_is_finite(request%t1)) then
+      diagnostics%status = IRRIGATION_INVALID_INTERVAL
+      return
+    end if
     if (request%t1 <= request%t0) then
       diagnostics%status = IRRIGATION_INVALID_INTERVAL
       return
