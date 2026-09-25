@@ -7,7 +7,8 @@ program test_fpe_zero_waste01_parameter_preprocess
   type(b110_default_mvg_parameters_t) :: hydraulic, prepared, copied
   type(b110_default_mvg_parameters_t), allocatable :: prepared_registry(:)
   type(soil_water_parameter_set_t) :: soil
-  real(real64), allocatable :: cofgen(:,:), raw_registry(:,:,:), compact_cache(:,:), z(:), dz(:), disnod(:)
+  real(real64), allocatable :: cofgen(:,:), raw_registry(:,:,:), compact_cache(:,:), &
+       compact_dependency_registry(:,:,:), compact_derived_registry(:,:,:), z(:), dz(:), disnod(:)
   real(real64) :: checksum_hydraulic, checksum_geometry, checksum_copy
   integer(int64) :: c0, c1, rate
   integer :: n, reps, r, registry_count, registry_index, compat_count
@@ -64,7 +65,7 @@ program test_fpe_zero_waste01_parameter_preprocess
   checksum_copy = 0.0_real64
   call system_clock(c0,rate)
   do r=1,reps
-    call refresh_from_compact_cache(cofgen, compact_cache, copied)
+    call refresh_from_compact_cache(cofgen, compact_cache, .false., copied)
     checksum_copy = checksum_copy + copied%cofgen(25,1) + copied%cofgen(42,n)
   end do
   call system_clock(c1)
@@ -80,10 +81,13 @@ program test_fpe_zero_waste01_parameter_preprocess
   case default
     registry_count = 60
   end select
-  allocate(prepared_registry(registry_count), raw_registry(size(cofgen,1),n,registry_count))
+  allocate(prepared_registry(registry_count), raw_registry(size(cofgen,1),n,registry_count), &
+       compact_dependency_registry(6,n,registry_count), compact_derived_registry(4,n,registry_count))
   do r=1,registry_count
     raw_registry(:,:,r) = cofgen
     call initialize_b110_default_mvg_parameters(prepared_registry(r),raw_registry(:,:,r))
+    call capture_compact_cache(raw_registry(:,:,r), prepared_registry(r), &
+         compact_dependency_registry(:,:,r), compact_derived_registry(:,:,r))
   end do
 
   compat_count = 0
@@ -95,6 +99,22 @@ program test_fpe_zero_waste01_parameter_preprocess
   end do
   call system_clock(c1)
   call emit('prepared_registry_exact_scan',n,reps,c0,c1,rate,real(compat_count,real64))
+
+  compat_count = 0
+  checksum_copy = 0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    registry_index = 1 + mod(r-1,registry_count)
+    if (compact_dependencies_match(raw_registry(:,:,registry_index), compact_dependency_registry(:,:,registry_index))) then
+      compat_count = compat_count + 1
+      call refresh_from_compact_cache(raw_registry(:,:,registry_index), compact_derived_registry(:,:,registry_index), &
+           .false., copied)
+      checksum_copy = checksum_copy + copied%cofgen(25,1) + copied%cofgen(42,n)
+    end if
+  end do
+  call system_clock(c1)
+  if (compat_count /= reps) error stop 'compact registry compatibility unexpectedly failed'
+  call emit('compact_registry_scan_refresh',n,reps,c0,c1,rate,checksum_copy)
 
   if (allocated(copied%cofgen)) deallocate(copied%cofgen)
   checksum_copy = 0.0_real64
@@ -140,17 +160,20 @@ program test_fpe_zero_waste01_parameter_preprocess
   call system_clock(c1)
   call emit('geometry_copy',n,reps,c0,c1,rate,checksum_geometry)
 
+  call qualify_compact_variants(n)
+
 contains
 
-  subroutine refresh_from_compact_cache(raw,cache,target)
+  subroutine refresh_from_compact_cache(raw,cache,extension_enabled,target)
     real(real64), intent(in) :: raw(:,:), cache(:,:)
+    logical, intent(in) :: extension_enabled
     type(b110_default_mvg_parameters_t), intent(inout) :: target
     integer :: i, nn
 
     nn = size(raw,2)
     if (allocated(target%cofgen)) deallocate(target%cofgen)
     target%active_nodes = nn
-    target%ksatexm_extension_enabled = .false.
+    target%ksatexm_extension_enabled = extension_enabled
     allocate(target%cofgen(42,nn))
     target%cofgen = 0.0_real64
     target%cofgen(1:min(size(raw,1),42),:) = raw(1:min(size(raw,1),42),:)
@@ -180,6 +203,73 @@ contains
       target%cofgen(42,i)=cache(4,i)
     end do
   end subroutine refresh_from_compact_cache
+
+  subroutine capture_compact_cache(raw,full,dependencies,derived)
+    real(real64), intent(in) :: raw(:,:)
+    type(b110_default_mvg_parameters_t), intent(in) :: full
+    real(real64), intent(out) :: dependencies(:,:), derived(:,:)
+
+    if (size(dependencies,1) /= 6 .or. size(dependencies,2) /= size(raw,2)) &
+         error stop 'compact dependency cache shape mismatch'
+    if (size(derived,1) /= 4 .or. size(derived,2) /= size(raw,2)) &
+         error stop 'compact derived cache shape mismatch'
+    dependencies(1,:) = raw(1,:)
+    dependencies(2,:) = raw(2,:)
+    dependencies(3,:) = raw(4,:)
+    dependencies(4,:) = raw(6,:)
+    dependencies(5,:) = raw(7,:)
+    dependencies(6,:) = raw(9,:)
+    derived(1,:) = full%cofgen(26,:)
+    derived(2,:) = full%cofgen(28,:)
+    derived(3,:) = full%cofgen(41,:)
+    derived(4,:) = full%cofgen(42,:)
+  end subroutine capture_compact_cache
+
+  logical function compact_dependencies_match(raw,dependencies) result(matches)
+    real(real64), intent(in) :: raw(:,:), dependencies(:,:)
+    matches = .false.
+    if (size(dependencies,1) /= 6 .or. size(dependencies,2) /= size(raw,2)) return
+    matches = all(dependencies(1,:) == raw(1,:)) .and. &
+         all(dependencies(2,:) == raw(2,:)) .and. &
+         all(dependencies(3,:) == raw(4,:)) .and. &
+         all(dependencies(4,:) == raw(6,:)) .and. &
+         all(dependencies(5,:) == raw(7,:)) .and. &
+         all(dependencies(6,:) == raw(9,:))
+  end function compact_dependencies_match
+
+  subroutine qualify_compact_variants(nn)
+    integer, intent(in) :: nn
+    real(real64), allocatable :: raw(:,:), deps(:,:), derived(:,:), zv(:), dzv(:), dv(:)
+    type(b110_default_mvg_parameters_t) :: full, compact
+    logical :: extension
+    integer :: variant
+
+    allocate(raw(24,nn), deps(6,nn), derived(4,nn), zv(nn), dzv(nn), dv(nn))
+    do variant = 1, 4
+      call initialize_fixture(raw,zv,dzv,dv)
+      extension = variant >= 3
+      if (mod(variant,2) == 0) raw(9,:) = -100.0_real64
+      if (extension) then
+        raw(10,:) = 2.0_real64*raw(3,:)
+        raw(11,:) = 0.99_real64
+        raw(12,:) = 0.95_real64*raw(3,:)
+      end if
+      call initialize_b110_default_mvg_parameters(full,raw,enable_ksatexm_extension=extension)
+      call capture_compact_cache(raw,full,deps,derived)
+      if (.not. compact_dependencies_match(raw,deps)) error stop 'fresh compact dependency snapshot mismatch'
+      call refresh_from_compact_cache(raw,derived,extension,compact)
+      if (compact%active_nodes /= full%active_nodes) error stop 'compact active-node mismatch'
+      if (compact%ksatexm_extension_enabled .neqv. full%ksatexm_extension_enabled) &
+           error stop 'compact KSATEXM flag mismatch'
+      if (.not. allocated(compact%cofgen) .or. .not. allocated(full%cofgen)) &
+           error stop 'compact qualification allocation mismatch'
+      if (.not. all(compact%cofgen == full%cofgen)) error stop 'compact qualification matrix mismatch'
+
+      raw(1,1) = raw(1,1) + 1.0e-12_real64
+      if (compact_dependencies_match(raw,deps)) error stop 'compact dependency mutation not detected'
+    end do
+    write(*,'(A)') 'FPE_ZERO_WASTE01_COMPACT_CACHE_VARIANTS=PASS'
+  end subroutine qualify_compact_variants
 
   subroutine initialize_fixture(c,zv,dzv,dv)
     real(real64), intent(out) :: c(:,:),zv(:),dzv(:),dv(:)
