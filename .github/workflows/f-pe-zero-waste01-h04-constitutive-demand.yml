@@ -8,6 +8,7 @@ on:
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/legacy/b1_10_port/headcalc.f90'
       - 'tests/fpe/test_fpe_profile03_h03_application_host_timing.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
       - 'docs/performance/F-PE-ZERO-WASTE01_H04_CONSTITUTIVE_PHASE_DEMAND.md'
       - '.github/workflows/f-pe-zero-waste01-h04-constitutive-demand.yml'
   workflow_dispatch:

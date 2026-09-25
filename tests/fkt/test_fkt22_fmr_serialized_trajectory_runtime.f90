@@ -146,8 +146,24 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   write(*,'(A)') 'FKT22_FMR_WORKSPACE_RESET_OBSERVATION=PASS'
   call require(observation_off%solver_diagnostics%constitutive_evaluations == 2, &
        'H03 reuse removes one duplicate constitutive evaluation on one-iteration Reference solve')
+  call require(observation_off%solver_diagnostics%constitutive_initial_full_evaluations == 1, &
+       'H04 H03 initial constitutive full evaluation count')
+  call require(observation_off%solver_diagnostics%constitutive_candidate_full_evaluations == 1, &
+       'H04 H03 candidate constitutive full evaluation count')
+  call require(observation_off%solver_diagnostics%constitutive_candidate_terminal_evaluations == 1, &
+       'H04 H03 terminal candidate constitutive evaluation count')
+  call require(observation_off%solver_diagnostics%constitutive_candidate_capacity_reuses == 0, &
+       'H04 H03 terminal candidate capacity is not reused')
   write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_EVALUATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%constitutive_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_INITIAL_FULL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_initial_full_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_FULL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_full_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_TERMINAL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_terminal_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_CAPACITY_REUSES_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_capacity_reuses
   write(*,'(A,I0)') 'FKT22_FMR_NONLINEAR_ITERATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%nonlinear_iterations
   write(*,'(A)') 'FKT22_FMR_CONSTITUTIVE_COUNT_OBSERVATION=PASS'
