@@ -7,5 +7,6 @@
   "invariants": [3,7,13],
   "tests": "Five malformed-state vectors return IRRIGATION_INVALID_STATE with no applied flux under bounds/FPE checks. Full DCS1 scheduled/profile/standalone-root and depth suites PASS O0/O2 in swap-irr-dcs1-scheduled-420934b165cc4a6d8a408d2ee1b3bf77. DCS2 limits and five preservation suites PASS O0/O2 in swap-irr-dcs2-limit-fa15b19f1fbb4704a3234271cf5405ca.",
   "limits": "Process continuation validation only, not a new serialized event format or whole-owner mid-event restart. This fix does not establish acceptance of arbitrary restored payloads.",
-  "next": "Continue explicit event-state persistence design within existing physical optional-state and temporal-history contracts."
+  "interval_followup": "9dcf9a683 checks finite request t0/t1 before ordered comparison in both fixed and scheduled entry points. Six NaN/infinity endpoint combinations per route return IRRIGATION_INVALID_INTERVAL without flux or candidate event under bounds/FPE traps. Full DCS1/root-zone bundle PASS O0/O2 in swap-irr-dcs1-scheduled-98e8b7f14454440b88f389c1c9af0c5c; DCS2 limit and preservation bundle PASS O0/O2 in swap-irr-dcs2-limit-05f4ef87dc504409a34846f7ac99d492. Valid interval behavior unchanged.",
+  "next": "Continue explicit event-state persistence design within existing physical optional-state and temporal-history contracts. Finite but extreme arithmetic ranges are not exhaustively qualified by these nonfinite-input guards."
 }
