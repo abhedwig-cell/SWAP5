@@ -1,0 +1,31 @@
+{
+  "schema_version":1,
+  "workstream":"F-AHL",
+  "work_unit":"F-AHL27_STAGE2_TIMING",
+  "record":"TIMING_FIXTURE_RECONCILIATION",
+  "status":"BLOCKED_BY_INVALID_BASELINE_FIXTURE",
+  "latest_run":36078047458,
+  "latest_job":107893580831,
+  "analytical":{
+    "completed":false,
+    "accepted_substeps":0,
+    "retries":8,
+    "solver_rejections":0,
+    "temporal_rejections":9,
+    "mass_rejections":0
+  },
+  "adaptive":{
+    "completed":false,
+    "accepted_substeps":0,
+    "retries":8,
+    "solver_rejections":0,
+    "temporal_rejections":9,
+    "mass_rejections":0
+  },
+  "interpretation":"The preregistered application timing fixture is invalid as a timing oracle because the analytical baseline itself never completes under the frozen temporal policy. No adaptive speed conclusion may be drawn.",
+  "governance":[
+    "Do not loosen the frozen temporal tolerance post hoc to obtain a timing result.",
+    "Use an independently qualified serialized prescribed-head fixture if one exists; otherwise classify application timing as blocked.",
+    "Retain F-AHL09R/F-AHL20 paired Richards timing as lower-level performance evidence, not as an application-level substitute."
+  ]
+}
