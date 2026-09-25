@@ -1,9 +1,9 @@
 {
-  "schema_version": 13,
+  "schema_version": 14,
   "workstream": "F-AHL",
-  "status": "PRODUCTION_SHAPED_DEFAULT_OFF_QUALIFIED_EXTERNAL_TIMING_BLOCKER",
+  "status": "F_AHL27_CLOSED_TECHNICALLY_QUALIFIED_PERFORMANCE_NOT_ADMITTED",
   "branch": "work/f-ahl01-adaptive-hydraulic-lookup",
-  "completed_through": "F-AHL27B",
+  "completed_through": "F-AHL27",
   "selected_research_architecture": {
     "default_MvG_prescribed_head_like": "auto-generated derivative-consistent retention/capacity plus independently controlled K lookup",
     "bi_modal_MvG_model3_prescribed_head_like": "same derivative-consistent principle with family-specific tighter K support",
@@ -29,42 +29,61 @@
     "default_off_regression": "PASS",
     "qbot_analytical_fallback": "PASS",
     "accepted_trajectory_qbot_fallback": "PASS",
-    "dry_tail_production_alignment": "PASS"
+    "dry_tail_production_alignment": "PASS",
+    "post_dry_tail_extraction_replay": "PASS",
+    "post_dry_tail_prescribed_head_matrix": "12/12 PASS"
   },
   "performance_evidence": {
     "default_MvG": {
       "Richards_matrix": "12/12 PASS",
       "same_nonlinear_path": "12/12",
-      "complete_Richards_cpu_reduction_fraction_range": [0.205364,0.242290],
+      "complete_Richards_cpu_reduction_fraction_range": [
+        0.205364,
+        0.24229
+      ],
       "derivative_consistent_single_fixture_paired_reduction_fraction": 0.279186,
       "self_built_stage3_reduction_fraction": 0.200401
     },
     "bi_modal_MvG_model3": {
       "Richards_matrix": "9/9 PASS",
       "same_nonlinear_path": "9/9",
-      "complete_Richards_cpu_reduction_fraction_range": [0.352169,0.390877],
+      "complete_Richards_cpu_reduction_fraction_range": [
+        0.352169,
+        0.390877
+      ],
       "matrix_median_cpu_reduction_fraction": 0.380194
     },
     "PDI_NoVap_models_8_10": {
       "Richards_matrix": "6/6 PASS",
       "same_nonlinear_path": "6/6",
-      "complete_Richards_cpu_reduction_fraction_range": [0.533837,0.655556],
+      "complete_Richards_cpu_reduction_fraction_range": [
+        0.533837,
+        0.655556
+      ],
       "six_case_median_cpu_reduction_fraction": 0.6083635
+    },
+    "serialized_reference_floor": {
+      "fidelity": "PASS",
+      "median_adaptive_over_analytical_ratio": 0.984431,
+      "median_reduction_fraction": 0.015569,
+      "classification": "EQUIVOCAL under preregistered <0.98 application/provider speed gate",
+      "workflow_run": 36078431061
     }
   },
   "external_blocker": {
     "id": "F-AHL27B",
     "owner": "F-KT/FMR temporal-acceptance semantics",
-    "description": "No preregistered nontrivial prescribed-head serialized Reference fixture is canonically accepted under the current external-full-half temporal identity route. Analytical and adaptive executions fail identically through temporal rejection.",
-    "application_level_speed_claim": "BLOCKED"
+    "description": "Canonical prescribed-head transient timing is structurally unavailable under the current external-full-half identity estimator: all six preregistered nontrivial analytical fixtures were temporally rejected (9/9 rejections, no solver or mass rejection).",
+    "application_level_transient_speed_claim": "BLOCKED",
+    "reference_floor_provider_timing": "EQUIVOCAL, median ratio 0.984431"
   },
   "production_admission_still_requires": [
-    "resolution of the prescribed-head serialized temporal-acceptance blocker or an independently qualified compatible fixture",
-    "successful application-level paired timing on such a fixture",
+    "a canonically valid production workload or timing surface on which net application or whole-SWAP benefit can be measured without altering transaction semantics",
     "canonical governance admission",
-    "separate qualification for lower-boundary modes beyond the current envelope",
+    "separate qualification for lower-boundary modes beyond the current prescribed-head envelope",
     "SWKIMPL=1/dKdh qualification if included",
     "upstream reconciliation of vapor-enabled PDI temperature semantics before vapor-PDI acceleration"
   ],
-  "production_boundary": "EXPLICIT_OPT_IN_ONLY_DEFAULT_OFF_NO_CANONICAL_ADMISSION"
+  "production_boundary": "TECHNICALLY_QUALIFIED_EXPLICIT_OPT_IN_DEFAULT_OFF_NO_PERFORMANCE_ADMISSION",
+  "f_ahl27_closeout": "integration/f-ahl/F-AHL27_CLOSEOUT.json"
 }
