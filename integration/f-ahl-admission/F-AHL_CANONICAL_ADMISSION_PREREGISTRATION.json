@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL-ADMISSION",
+  "title": "Minimal canonical admission extraction",
+  "branch": "integration/f-ahl-canonical-admission",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "source_research_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "scope": {
+    "included": [
+      "default unimodal MvG adaptive hydraulic builder/cache/provider",
+      "explicit adaptive_hydraulics_active opt-in",
+      "prescribed-head bottom mode 5 adaptive routing",
+      "raw-C 1e-13 material-specific dry-domain relevance bound",
+      "analytical fallback above near-saturation bound and below dry relevance bound",
+      "provider-local exact same-key reuse",
+      "analytical fallback for prescribed-qbot and all unqualified lower-boundary modes"
+    ],
+    "excluded": [
+      "research/ahl prototypes and exploratory harnesses",
+      "adaptive prescribed-qbot hydraulics",
+      "SWKIMPL=1 or adaptive dK/dh",
+      "vapor-enabled PDI acceleration",
+      "whole-SWAP or national MultiSWAP performance claim",
+      "full research branch merge"
+    ]
+  },
+  "governance_gates": [
+    "production provider extraction PASS",
+    "O05 dry-tail production alignment PASS",
+    "12/12 prescribed-head Richards matrix PASS",
+    "qbot analytical fallback O0/O2 identity PASS",
+    "serialized FMR opt-in/default-off routing PASS",
+    "same-key provider memoization regression PASS"
+  ],
+  "admission_rule": "Only after all gates pass on this branch may a PR to integration/f-ci-canonical be opened. This branch does not itself constitute canonical admission."
+}
