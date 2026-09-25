@@ -6,7 +6,7 @@ module mod_b110_direct_retention_core
   implicit none
   private
 
-  integer, parameter, public :: B110_DIRECT_RETENTION_INTERVALS_PER_DECADE = 64
+  integer, parameter, public :: B110_DIRECT_RETENTION_INTERVALS_PER_DECADE = 128
 
   type :: direct_retention_representation_t
     integer(int64) :: authority_bits(42)=0_int64
@@ -196,7 +196,7 @@ contains
     end if
     builds=build_count
     hits=hit_count
-    payload_bytes=int(entries,int64)*6240_int64
+    payload_bytes=int(entries,int64)*int(2*6*(B110_DIRECT_RETENTION_INTERVALS_PER_DECADE+1)*8,int64)
     is_frozen=frozen
   end subroutine b110_direct_retention_pool_stats
 
