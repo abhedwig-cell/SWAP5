@@ -9,7 +9,7 @@ module mod_b110_adaptive_hydraulic_builder
   real(real64), parameter :: H_MIN=-1.0e6_real64, H_MAX=-1.0_real64
   real(real64), parameter :: C_RELEVANCE_FLOOR=1.0e-13_real64
   real(real64), parameter :: THETA_TOL=1.0e-5_real64, LOGC_TOL=1.0e-2_real64
-  real(real64), parameter :: K_TOL_GLOBAL=3.0e-4_real64, K_TOL_WET=3.0e-4_real64
+  real(real64), parameter :: K_TOL_GLOBAL=1.0e-4_real64, K_TOL_WET=1.0e-4_real64
   real(real64), parameter :: WET_H_MIN=-25.0_real64, WET_H_MAX=-1.0_real64
   real(real64), parameter :: K_FLOOR=1.0e-10_real64
   real(real64), parameter :: LN10=log(10.0_real64)
