@@ -45,6 +45,8 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b110_adaptive_mvg_provider, only: b110_adaptive_mvg_provider_t, bind_b110_adaptive_mvg_provider
+  use mod_b110_adaptive_runtime_policy, only: b110_adaptive_runtime_eligible
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
@@ -170,6 +172,13 @@ module mod_fmr_serialized_reference_backend
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: swsophy = 0
+    logical :: macropore_active = .false.
+    logical :: hysteresis_active = .false.
+    logical :: tabulated_hydraulics_active = .false.
+    logical :: ksatexm_extension_active = .false.
+    logical :: elasticity_active = .false.
+    logical :: frost_active = .false.
+    integer :: swsophy = 0
     integer :: max_iterations = 8
     integer :: max_backtracking = 4
     real(real64) :: min_step_duration = 1.0e-6_real64
@@ -250,6 +259,9 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_serialized_physical_observation_t
     logical :: solver_executed = .false.
     integer :: solver_status = 0
+    logical :: adaptive_hydraulics_used = .false.
+    logical :: adaptive_hydraulics_cache_hit = .false.
+    character(len=48) :: adaptive_hydraulics_route = 'analytical-not-evaluated'
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
@@ -336,6 +348,7 @@ module mod_fmr_serialized_reference_backend
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
+    type(b110_adaptive_mvg_provider_t), pointer :: adaptive_constitutive => null()
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
@@ -1431,9 +1444,11 @@ contains
       if (associated(self%soil_parameters)) deallocate(self%soil_parameters)
       if (associated(self%hydraulic_parameters)) deallocate(self%hydraulic_parameters)
       if (associated(self%constitutive)) deallocate(self%constitutive)
+      if (associated(self%adaptive_constitutive)) deallocate(self%adaptive_constitutive)
       if (associated(self%source_sink)) deallocate(self%source_sink)
       if (associated(self%root_sink)) deallocate(self%root_sink)
-      allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink, self%root_sink)
+      allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%adaptive_constitutive, &
+           self%source_sink, self%root_sink)
       self%soil_parameters%parameter_set_id = parameters%parameter_set_id
       self%soil_parameters%active_nodes = n
       allocate(self%soil_parameters%z(n), self%soil_parameters%dz(n), self%soil_parameters%node_distance(n))
@@ -1445,6 +1460,13 @@ contains
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
+      self%swsophy = parameters%swsophy
+      self%macropore_active = parameters%macropore_active
+      self%hysteresis_active = parameters%hysteresis_active
+      self%tabulated_hydraulics_active = parameters%tabulated_hydraulics_active
+      self%ksatexm_extension_active = parameters%ksatexm_extension_active
+      self%elasticity_active = parameters%elasticity_active
+      self%frost_active = parameters%frost_active
       self%max_iterations = parameters%max_iterations
       self%max_backtracking = parameters%max_backtracking
       self%min_step_duration = parameters%min_step_duration
@@ -1503,6 +1525,9 @@ contains
     self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
+    self%last_observation%adaptive_hydraulics_used = .false.
+    self%last_observation%adaptive_hydraulics_cache_hit = .false.
+    self%last_observation%adaptive_hydraulics_route = 'analytical-ineligible'
     self%trajectory_direction_requested = config%accepted_trajectory_direction%requested
     self%trajectory_control_coordinate = config%accepted_trajectory_direction%control_coordinate
     self%trajectory_requested_t0 = interval%t0
@@ -1824,6 +1849,7 @@ contains
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
+    logical :: adaptive_selected, adaptive_bind_ok, adaptive_cache_hit
     real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
     integer :: effective_bottom_mode, swbotb2_status
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
@@ -1891,6 +1917,28 @@ contains
       end select
     end if
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    adaptive_selected = b110_adaptive_runtime_eligible(effective_bottom_mode, self%swkimpl, self%swsophy, &
+         self%soil_water_selection%uses_reference(), self%macropore_active, self%hysteresis_active, &
+         self%tabulated_hydraulics_active, self%ksatexm_extension_active, self%elasticity_active, self%frost_active, &
+         self%root_extraction_active, self%snow_active, self%soil_temperature_active, self%black_evaporation_active, &
+         self%boesten_evaporation_active, self%drainage_response_active, self%fixed_weir_surface_water_active)
+    adaptive_bind_ok = .false.
+    adaptive_cache_hit = .false.
+    if (adaptive_selected .and. associated(self%adaptive_constitutive)) then
+      call bind_b110_adaptive_mvg_provider(self%adaptive_constitutive, self%hydraulic_parameters, step_duration, &
+           adaptive_bind_ok, adaptive_cache_hit)
+    end if
+    if (adaptive_selected .and. adaptive_bind_ok) then
+      self%last_observation%adaptive_hydraulics_used = .true.
+      self%last_observation%adaptive_hydraulics_cache_hit = adaptive_cache_hit
+      if (adaptive_cache_hit) then
+        self%last_observation%adaptive_hydraulics_route = 'adaptive-cache-hit'
+      else
+        self%last_observation%adaptive_hydraulics_route = 'adaptive-cache-build'
+      end if
+    else if (adaptive_selected) then
+      self%last_observation%adaptive_hydraulics_route = 'analytical-bind-fallback'
+    end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
     if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
@@ -2060,7 +2108,11 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    request%evaluation%constitutive => self%constitutive
+    if (self%last_observation%adaptive_hydraulics_used) then
+      request%evaluation%constitutive => self%adaptive_constitutive
+    else
+      request%evaluation%constitutive => self%constitutive
+    end if
     request%evaluation%source_sink => self%source_sink
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
