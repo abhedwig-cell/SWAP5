@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL-PROD",
+  "work_unit": "F-AHL-P01",
+  "record": "SOURCE_AND_BINDING_INVENTORY",
+  "branch": "work/f-ahl-production-admission",
+  "solver_provider_contract": "src/solver/mod_soil_water_solver_contract.f90::constitutive_hydraulics_provider_t",
+  "analytical_provider": "src/solver/mod_b110_default_mvg_provider.f90",
+  "runtime_binding": {
+    "file": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "current_behavior": "bind_b110_default_mvg_provider is called before Reference Richards request composition and request%evaluation%constitutive points to self%constitutive",
+    "admission_seam": "replace unconditional provider binding by a bounded selector/binder while preserving the existing constitutive provider ABI"
+  },
+  "initial_fail_closed_eligibility": {
+    "bottom_mode": 5,
+    "swkimpl": 0,
+    "ksatexm_extension_active": false,
+    "hydraulic_family": "default B1.10 MvG only"
+  },
+  "explicit_analytical_fallback": [
+    "bottom_mode == 2 prescribed qbot",
+    "all bottom modes other than 5",
+    "SWKIMPL != 0",
+    "KSATEXM extension active",
+    "unsupported hydraulic families",
+    "adaptive build/cache failure"
+  ],
+  "rationale": "Production eligibility is intentionally narrower than research evidence. Expansion must be prospective and independently admitted.",
+  "source_change_policy": "P01 starts with a pure selection-policy module and tests; no runtime behavior changes until selection semantics pass."
+}
