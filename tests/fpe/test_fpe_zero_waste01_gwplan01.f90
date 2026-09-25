@@ -28,6 +28,7 @@ program test_fpe_zero_waste01_gwplan01
   type(modflow6_api_slot_binding_t), allocatable :: copy_api(:)
   type(modflow6_linear_boundary_term_t), allocatable :: copy_terms(:)
   real(real64) :: seconds, ns_total, checksum, topology_seconds, topology_ns_total, copy_seconds
+  real(real64) :: copy_tiles_seconds, copy_revisions_seconds, copy_cells_seconds, copy_api_seconds, copy_terms_seconds
 
   call get_command_argument(1,arg)
   read(arg,*) n
@@ -70,21 +71,54 @@ program test_fpe_zero_waste01_gwplan01
   do rep=1,copy_reps
     call plan%copy_tiles(copy_tiles,status)
     if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy tiles failed'
+  end do
+  call system_clock(c1)
+  copy_tiles_seconds=real(c1-c0,real64)/real(rate,real64)
+
+  call system_clock(c0)
+  do rep=1,copy_reps
     call plan%copy_tile_swap_origin_revisions(copy_revisions,status)
     if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy revisions failed'
+  end do
+  call system_clock(c1)
+  copy_revisions_seconds=real(c1-c0,real64)/real(rate,real64)
+
+  call system_clock(c0)
+  do rep=1,copy_reps
     call plan%copy_cells(copy_cells,status)
     if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy cells failed'
+  end do
+  call system_clock(c1)
+  copy_cells_seconds=real(c1-c0,real64)/real(rate,real64)
+
+  call system_clock(c0)
+  do rep=1,copy_reps
     call plan%copy_api_bindings(copy_api,status)
     if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy api failed'
+  end do
+  call system_clock(c1)
+  copy_api_seconds=real(c1-c0,real64)/real(rate,real64)
+
+  call system_clock(c0)
+  do rep=1,copy_reps
     call plan%copy_linear_terms(copy_terms,status)
     if(status/=GW_APP_PLAN_OK) error stop 'GWCTX02 copy terms failed'
   end do
   call system_clock(c1)
-  copy_seconds=real(c1-c0,real64)/real(rate,real64)
+  copy_terms_seconds=real(c1-c0,real64)/real(rate,real64)
+
+  copy_seconds=copy_tiles_seconds+copy_revisions_seconds+copy_cells_seconds+copy_api_seconds+copy_terms_seconds
   checksum=real(size(copy_tiles)+size(copy_revisions)+size(copy_cells)+size(copy_api)+size(copy_terms),real64)
   write(*,'(A,I0,A,I0,A,ES24.16,A,ES24.16,A,ES24.16)') &
        'GWCTX02_COPY,n=',n,',reps=',copy_reps,',seconds=',copy_seconds, &
        ',seconds_per_bind=',copy_seconds/real(copy_reps,real64),',checksum=',checksum
+  write(*,'(A,I0,A,ES24.16,A,ES24.16,A,ES24.16,A,ES24.16,A,ES24.16)') &
+       'GWCTX02_COMPONENTS,n=',n, &
+       ',tiles_per_bind=',copy_tiles_seconds/real(copy_reps,real64), &
+       ',revisions_per_bind=',copy_revisions_seconds/real(copy_reps,real64), &
+       ',cells_per_bind=',copy_cells_seconds/real(copy_reps,real64), &
+       ',api_per_bind=',copy_api_seconds/real(copy_reps,real64), &
+       ',terms_per_bind=',copy_terms_seconds/real(copy_reps,real64)
 
 contains
 
