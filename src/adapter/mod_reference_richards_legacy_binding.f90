@@ -230,6 +230,10 @@ contains
             ws%legacy_worker%diagnostics%constitutive_initial_full_evaluations
        result%diagnostics%constitutive_candidate_full_evaluations = &
             ws%legacy_worker%diagnostics%constitutive_candidate_full_evaluations
+       result%diagnostics%constitutive_candidate_demand_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_demand_evaluations
+       result%diagnostics%constitutive_capacity_only_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_capacity_only_evaluations
        result%diagnostics%constitutive_candidate_terminal_evaluations = &
             ws%legacy_worker%diagnostics%constitutive_candidate_terminal_evaluations
        result%diagnostics%constitutive_candidate_capacity_reuses = &

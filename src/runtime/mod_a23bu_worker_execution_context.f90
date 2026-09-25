@@ -32,6 +32,8 @@ module mod_a23bu_worker_execution_context
     integer :: constitutive_evaluations = 0
     integer :: constitutive_initial_full_evaluations = 0
     integer :: constitutive_candidate_full_evaluations = 0
+    integer :: constitutive_candidate_demand_evaluations = 0
+    integer :: constitutive_capacity_only_evaluations = 0
     integer :: constitutive_candidate_terminal_evaluations = 0
     integer :: constitutive_candidate_capacity_reuses = 0
   end type a23bu_solver_diagnostics_t
