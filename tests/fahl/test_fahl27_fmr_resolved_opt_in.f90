@@ -20,7 +20,7 @@ program test_fahl27_fmr_resolved_opt_in
   ! conditions. Nonlinear head perturbations are qualified separately by the
   ! frozen 12-case Stage-2 matrix; this test isolates resolved FMR routing,
   ! commit semantics and default-off versus explicit-opt-in identity.
-  real(real64), parameter :: h0=-75.0_real64, hbot=-75.0_real64, dt=0.25_real64
+  real(real64), parameter :: h0=-75.0_real64, dt=0.25_real64
   real(real64), parameter :: mass_gate=1.0e-12_real64
   integer(int64), parameter :: column_id=527027_int64
 
@@ -85,13 +85,14 @@ contains
     type(fixed_flux_top_boundary_provider_t),target::top
     integer::active_calls
     logical::ok
-    real(real64)::k0
+    real(real64)::k0, hydro_bottom
 
     call initialize_parameters(parameters,adaptive)
     call determine_initial_conductivity(parameters,k0)
     call initialize_committed(committed,parameters,ok)
     call require(ok,'committed state initialized')
-    call initialize_forcing(forcing,-k0)
+    hydro_bottom=h0+sum(disnod(2:numnod))
+    call initialize_forcing(forcing,0.0_real64,hydro_bottom)
     call initialize_column(column,template)
     call initialize_config(config)
 
@@ -151,16 +152,20 @@ contains
     real(real64)::hh(numnod),ww(numnod),kk(numnod),cc(numnod),dd(numnod)
     call initialize_b110_default_mvg_parameters(hp,p%cofgen)
     call bind_b110_default_mvg_provider(provider,hp,dt)
-    hh=h0;call provider%evaluate(hh,ww,kk,cc,dd)
+    hh(1)=h0
+    do k=2,numnod
+      hh(k)=hh(k-1)+p%node_distance(k)
+    end do
+    call provider%evaluate(hh,ww,kk,cc,dd)
     state%active_nodes=numnod;allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head=hh;state%water_content=ww;state%ponding_depth=0.0_real64;state%groundwater_level=-2.0_real64
     call fmr_new_b110_committed_state(committed,column_id,state,0.0_real64,ok)
   end subroutine
 
-  subroutine initialize_forcing(f,qtop)
+  subroutine initialize_forcing(f,qtop,bottom_head)
     type(fmr_b110_physical_forcing_t),intent(out)::f
-    real(real64),intent(in)::qtop
-    f%top_flux=qtop;f%top_head=h0;f%bottom_flux=0.0_real64;f%bottom_head=hbot
+    real(real64),intent(in)::qtop,bottom_head
+    f%top_flux=qtop;f%top_head=h0;f%bottom_flux=0.0_real64;f%bottom_head=bottom_head
     allocate(f%drainage_flux_by_level(1,numnod),f%subsurface_irrigation_source(numnod),f%root_extraction_sink(numnod))
     f%drainage_flux_by_level=0.0_real64;f%subsurface_irrigation_source=0.0_real64;f%root_extraction_sink=0.0_real64
   end subroutine
