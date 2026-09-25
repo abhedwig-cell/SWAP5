@@ -17,6 +17,10 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
+      - name: Install Python test dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-numpy
       - name: Run production application opt-in gate
         run: |
           bash tests/fahl/run_fahl49_application_optin.sh | tee fahl49-application.txt
