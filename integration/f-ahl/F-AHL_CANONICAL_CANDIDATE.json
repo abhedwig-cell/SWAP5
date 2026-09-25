@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "CANONICAL_CANDIDATE_HANDOFF",
+  "candidate_branch": "integration/f-ahl-canonical-candidate",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "source_research_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "source_status": "CLOSED_TECHNICALLY_QUALIFIED_READY_FOR_CANONICAL_GOVERNANCE_REVIEW",
+  "scope": {
+    "hydraulic_family": "B110 default unimodal MvG only",
+    "solver": "Reference Richards",
+    "activation": "explicit adaptive_hydraulics_active opt-in",
+    "default_on": false,
+    "qualified_lower_boundary": "prescribed-head mode 5",
+    "prescribed_qbot": "authoritative analytical fallback",
+    "swkimpl": 0,
+    "runtime_refinement": false,
+    "external_user_tables": false
+  },
+  "included_production_files": [
+    "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "representation": {
+    "retention_capacity": "auto-generated derivative-consistent Hermite representation; C is obtained from the derivative of the same retention interpolant",
+    "conductivity": "independently controlled log(K) lookup",
+    "abs_logK_tolerance": 0.0003,
+    "near_saturation": "authoritative analytical fallback",
+    "dry_tail": "material-specific relevance bound using raw C=1e-13; authoritative analytical fallback outside represented range; no physical truncation",
+    "cache": "immutable exact-key run-lifetime registry with valid uncached build fallback if full"
+  },
+  "explicit_exclusions": [
+    "NO_MODEL3_ROUTING",
+    "NO_PDI_ROUTING",
+    "NO_VAPOR_PDI",
+    "NO_PRESCRIBED_QBOT_LOOKUP",
+    "NO_SWKIMPL1_DKDH",
+    "NO_DEFAULT_ON",
+    "NO_WHOLE_SWAP_OR_MULTISWAP_SPEED_CLAIM"
+  ],
+  "research_evidence_summary": {
+    "default_MvG_Richards_matrix": "12/12 PASS with same nonlinear path",
+    "strict_Richards_cpu_reduction_fraction_range": [0.205364, 0.24229],
+    "serialized_multi_authority_reference_floor_median_reduction_fraction": 0.045454,
+    "serialized_reference_floor_post_memoization_reduction_fraction": 0.066145,
+    "qbot_scope": "analytical fallback reconfirmed through F-AHL41A/B"
+  },
+  "candidate_qualification": {
+    "workflow": "F-AHL canonical candidate qualification",
+    "required_checks": [
+      "production-shaped provider extraction",
+      "O05 dry-tail relevance fallback",
+      "12-case prescribed-head matrix",
+      "prescribed-qbot analytical fallback",
+      "default-off serialized FMR regression"
+    ],
+    "status": "PENDING"
+  },
+  "admission_rule": "Do not merge the research branch wholesale. Admit only this bounded candidate after its clean-canonical qualification passes and governance review accepts the explicit scope."
+}
