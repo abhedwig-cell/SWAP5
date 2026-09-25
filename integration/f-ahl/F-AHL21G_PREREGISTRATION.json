@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21G",
+  "title": "O05-dry prescribed-qbot exact-retention fallback timing",
+  "parent": "F-AHL21F",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "For the sole remaining prescribed-qbot path-sensitive case, does authoritative theta/C plus the unchanged selected K lookup preserve the analytical nonlinear path with acceptable complete-Richards cost?",
+  "frozen_case": {
+    "material": "O05",
+    "regime": "dry",
+    "initial_head_cm": -500.0,
+    "step_duration_day": 0.0625,
+    "bottom_flux_factor": 0.99,
+    "bottom_mode": 2
+  },
+  "candidate": {
+    "retention_capacity": "authoritative analytical theta and C",
+    "conductivity": "unchanged selected F-AHL15/F-AHL16 K lookup",
+    "K_support_change": false
+  },
+  "fidelity_precondition": "F-AHL21E PASS with identical analytical nonlinear iteration and backtracking path",
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 32768,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->candidate and candidate->analytical by repetition",
+    "primary_statistic": "median paired candidate/analytical CPU ratio",
+    "table_generation_and_binding": "outside timed batches"
+  },
+  "decision_rule": {
+    "speed_positive": "median ratio < 0.98",
+    "timing_equivocal": "0.98 <= ratio <= 1.02",
+    "speed_negative": "ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_RETENTION_INTERPOLANT_RETUNING",
+    "NO_K_CHANGE",
+    "NO_TIMESTEP_CHANGE",
+    "NO_SOLVER_POLICY_CHANGE",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
