@@ -1,0 +1,25 @@
+name: F-AHL29 cache capacity characterization
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl29_cache_capacity.f90'
+      - 'research/ahl/run_ahl29_cache_capacity.sh'
+      - 'integration/f-ahl/F-AHL29_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl29-cache-capacity.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run cache capacity characterization
+        run: |
+          bash research/ahl/run_ahl29_cache_capacity.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl29-${{ github.run_id }}
+          path: /tmp/ahl29_stage1.txt
