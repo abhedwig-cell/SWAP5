@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42A",
+  "title": "Production conductivity policy repair and cache identity bump",
+  "parent": "F-AHL42",
+  "phase": "PREREGISTERED_REPAIR",
+  "trigger": {
+    "production_O09_dry_bottom_flux_delta_cm_per_day": 1.039457e-5,
+    "frozen_gate_cm_per_day": 1e-5,
+    "nonlinear_iteration_delta": 0,
+    "backtracking_delta": 0
+  },
+  "repair": {
+    "K_TOL_GLOBAL_before": 3e-4,
+    "K_TOL_GLOBAL_after": 1e-4,
+    "K_TOL_WET_before": 3e-4,
+    "K_TOL_WET_after": 1e-4,
+    "K_FLOOR_cm_per_day": "UNCHANGED 1e-10",
+    "C_RELEVANCE_FLOOR": "UNCHANGED 1e-13",
+    "near_saturation_policy": "UNCHANGED",
+    "POLICY_VERSION_before": 3,
+    "POLICY_VERSION_after": 4
+  },
+  "authority_basis": [
+    "F-AHL42 reproduces the O09-dry failure in the production-shaped provider.",
+    "F-AHL11D attributes the failure to K lookup.",
+    "F-AHL11E prospectively shows a global 1e-4 K tolerance closes the 36-material 108-case research matrix."
+  ],
+  "qualification_sequence": [
+    "O09-dry production replay must pass frozen gates",
+    "existing F-AHL27 four-material 12-case production matrix must remain 12/12",
+    "production-shaped 36-material wet/mid/dry matrix must pass 108/108",
+    "cache/policy identity regression must show new policy is distinct",
+    "default-off analytical route must remain unchanged"
+  ],
+  "hard_exclusions": [
+    "NO_K_FLOOR_CHANGE",
+    "NO_C_RELEVANCE_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_QBOT_SCOPE_CHANGE",
+    "NO_DEFAULT_ON_CHANGE"
+  ]
+}
