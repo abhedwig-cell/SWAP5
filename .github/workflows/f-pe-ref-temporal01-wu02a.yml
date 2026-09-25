@@ -1,0 +1,29 @@
+name: F-PE-REF-TEMPORAL01 WU02A stress matrix
+
+on:
+  pull_request:
+    paths:
+      - 'tests/performance/test_ref_temporal01_wu02a_stress.f90'
+      - 'tests/performance/run_ref_temporal01_wu02a.sh'
+      - 'tests/performance/collect_ref_temporal01_wu02a.py'
+      - 'docs/performance/F-PE-REF-TEMPORAL01_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-ref-temporal01-wu02a.yml'
+  workflow_dispatch:
+
+jobs:
+  stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run WU02A expanded Reference temporal stress matrix
+        run: |
+          bash tests/performance/run_ref_temporal01_wu02a.sh
+          python3 tests/performance/collect_ref_temporal01_wu02a.py ref-temporal01-wu02a.txt ref-temporal01-wu02a.json
+          cat ref-temporal01-wu02a.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ref-temporal01-wu02a
+          path: |
+            ref-temporal01-wu02a.txt
+            ref-temporal01-wu02a.json
