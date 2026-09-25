@@ -121,6 +121,37 @@ Classification: `MEASURABLE_BUT_LOW_PRIORITY`.
 
 Directional attempt context is not pure waste. Accepted trajectory state can mutate during advance and must be restored after outer rejection. The kernel already skips context capture when `attempt_context_required()` is false.
 
+## Large-N coupled orchestration reopen result
+
+The original H03 closeout reopen criterion for large-N coupled orchestration has been triggered and has produced a separate exact-P0 result.
+
+### GWPLAN01 application-plan materialization
+
+`GWPLAN01` is admitted as an exact canonical fast path.
+
+The admitted path is used only when predictors and cell areas are exactly pointwise aligned with the already-qualified canonical groundwater topology. Otherwise the historical generic validation and lookup path remains authoritative.
+
+Same-runner exact-parent/candidate qualification at N=10,000 reported:
+
+- parent mean plan-materialization time: 0.508457828667 s;
+- candidate mean: 0.006707316667 s;
+- paired ratio: 0.0131914906;
+- isolated shared-runner reduction: 98.680851%;
+- all F-GC49A semantic, fallback, fail-closed and O0/O2 gates PASS;
+- PPA-WU01 production bootstrap PASS.
+
+This is an isolated operation/workload result, not a portable whole-application speed claim.
+
+Classification: `GWPLAN01 = ADMITTED_EXACT_P0_LARGE_N_STRUCTURAL_FAST_PATH`.
+
+### GWTOPO01 topology materialization
+
+Topology materialization is the next measured large-N structural hotspot.
+
+Pre-candidate shared-runner observations at N=10,000 were of order 0.15–0.20 s. A canonical O(N) fast path has been implemented, with the generic validation/sort path retained as fallback.
+
+This candidate is not yet admitted in this document. The first candidate exposed an out-of-bounds cursor defect under F-GC48 bounds checking and was repaired. Failure-precedence regressions were added. The corrected production postimage remains under F-GC48, downstream F-GC49A, PPA-WU01 and exact-parent/candidate paired qualification.
+
 ## Remaining current P0 interpretation
 
 After the current tranche, no large, high-confidence pure-waste hotspot remains on the qualified H03 / production-bootstrap Reference route.
