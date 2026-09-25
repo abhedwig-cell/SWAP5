@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
+# rerun after qbot routing boundary
+# dependency-complete rerun
 set -euo pipefail
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fgc44-fmr-${GITHUB_RUN_ID:-local}-$$"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fahl-governance-hetero-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
-fail(){ echo "FGC44_REAL_FMR_FAIL $*" >&2; exit 1; }
+cd "$ROOT"
+
+fail(){ echo "FAHL_GOV_HETERO_FAIL $*" >&2; exit 1; }
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
@@ -24,6 +28,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/solver/mod_b110_smooth_freatic_projection.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
   src/process/mod_drainage_hooghoudt_equivalent_depth.f90
@@ -35,7 +40,6 @@ MODULE_SRC=(
   src/process/mod_drainage_multilevel_aggregation.f90
   src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
-  src/solver/mod_b110_smooth_freatic_projection.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/process/mod_soil_temperature_contract.f90
   src/process/mod_restricted_soil_temperature.f90
@@ -69,27 +73,40 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
-  src/runtime/mod_groundwater_coupling_contract.f90
-  src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90
-  src/runtime/mod_groundwater_swap_forcing_adapter.f90
-  src/runtime/mod_groundwater_swap_transaction_participant.f90
-  src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
-  src/runtime/mod_fmr_groundwater_swap_participant.f90
+  src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
+  src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+  src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+  src/process/mod_liquid_water_sensible_enthalpy.f90
+  src/runtime/mod_fmr_bottom_sensible_energy.f90
+  src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
+
 for opt in 0 2; do
-  OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
+  OUT="$BUILD/o$opt"
+  mkdir -p "$OUT"
+  objects=()
   for source in "${MODULE_SRC[@]}"; do
     obj="$OUT/$(basename "${source%.*}").o"
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fgc/test_fgc44_real_fmr_participant.f90 -o "$OUT/test.o" || fail "compile oracle O$opt"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt"; }
-  grep -Fq 'F-GC44 REAL FMR PARTICIPANT GATE PASS' "$OUT/output.txt" || fail "missing final marker O$opt"
-  grep '^FGC44_' "$OUT/output.txt" > "$OUT/stable.txt"
-  echo "FGC44_REAL_FMR_O${opt}=PASS"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
+    -c tests/fahl/test_fahl_governance_heterogeneous_fallback.f90 -o "$OUT/test.o" || fail "compile O$opt runtime oracle"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt runtime oracle"
+  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime oracle O$opt"; }
+  grep -Fq 'FAHL_HETEROGENEOUS_ANALYTICAL_FALLBACK=PASS' "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt opt-in marker"; }
+  cat "$OUT/output.txt"
+  echo "FAHL_GOV_HETERO_O${opt}=PASS"
 done
-diff -u "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt"
-cat "$BUILD/o0/stable.txt"
-echo 'FGC44_REAL_FMR_O0_O2_IDENTITY=PASS'
+
+cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
+  diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
+  fail 'O0/O2 semantic drift'
+}
+
+git diff --check -- tests/fahl/test_fahl_governance_heterogeneous_fallback.f90 \
+  tests/fahl/run_fahl_governance_heterogeneous_fallback.sh
+
+echo 'FAHL_GOV_HETERO_O0_O2_IDENTITY=PASS'
+echo 'FAHL_GOV_HETERO_RUNTIME_GATE=PASS'

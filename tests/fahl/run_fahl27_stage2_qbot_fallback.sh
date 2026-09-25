@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
+# rerun after qbot routing boundary
 set -euo pipefail
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fgc44-fmr-${GITHUB_RUN_ID:-local}-$$"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fahl27-s2-qbot-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
-fail(){ echo "FGC44_REAL_FMR_FAIL $*" >&2; exit 1; }
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
+cd "$ROOT"
+
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -48,12 +49,12 @@ MODULE_SRC=(
   src/solver/mod_b110_adaptive_hydraulic_provider.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/process/mod_restricted_surface_evaporation.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
@@ -69,27 +70,26 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
-  src/runtime/mod_groundwater_coupling_contract.f90
-  src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90
-  src/runtime/mod_groundwater_swap_forcing_adapter.f90
-  src/runtime/mod_groundwater_swap_transaction_participant.f90
-  src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
-  src/runtime/mod_fmr_groundwater_swap_participant.f90
+  src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
+  src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+  src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+  src/process/mod_liquid_water_sensible_enthalpy.f90
+  src/runtime/mod_fmr_bottom_sensible_energy.f90
+  src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
 for opt in 0 2; do
   OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
   for source in "${MODULE_SRC[@]}"; do
     obj="$OUT/$(basename "${source%.*}").o"
-    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fgc/test_fgc44_real_fmr_participant.f90 -o "$OUT/test.o" || fail "compile oracle O$opt"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt"; }
-  grep -Fq 'F-GC44 REAL FMR PARTICIPANT GATE PASS' "$OUT/output.txt" || fail "missing final marker O$opt"
-  grep '^FGC44_' "$OUT/output.txt" > "$OUT/stable.txt"
-  echo "FGC44_REAL_FMR_O${opt}=PASS"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fahl/test_fahl27_stage2_qbot_fallback.f90 -o "$OUT/test.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
+  "$OUT/test" | tee "$OUT/output.txt"
+  grep -Fq 'FAHL27_QBOT_EQUILIBRIUM_TRANSACTION=PASS' "$OUT/output.txt"
+  grep -Fq 'FAHL27_QBOT_CACHE BUILDS=0 HITS=0 MISSES=0 ENTRIES=0' "$OUT/output.txt"
+  grep -Fq 'FAHL27_QBOT_ANALYTICAL_FALLBACK=PASS' "$OUT/output.txt"
 done
-diff -u "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt"
-cat "$BUILD/o0/stable.txt"
-echo 'FGC44_REAL_FMR_O0_O2_IDENTITY=PASS'
+echo 'FAHL27_STAGE2_QBOT_FALLBACK=PASS'
