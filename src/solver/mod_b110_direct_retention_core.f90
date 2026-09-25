@@ -106,4 +106,75 @@ contains
     end do
   end subroutine build_representation
 
+  subroutine sample_b110_direct_retention(slot,head,theta,capacity,inside)
+    integer,intent(in)::slot
+    real(real64),intent(in)::head
+    real(real64),intent(out)::theta,capacity
+    logical,intent(out)::inside
+    real(real64)::x,lo,hi,q,u,dx,h00,h10,h01,h11,dh00,dh10,dh01,dh11,dthdx
+    integer::dec,j
+
+    theta=0.0_real64
+    capacity=0.0_real64
+    inside=.false.
+    if(.not.allocated(pool))return
+    if(slot<1 .or. slot>size(pool))return
+    if(head>-1.0_real64 .or. head< -1.0e6_real64)return
+
+    x=-head
+    if(x<10.0_real64)then;dec=0;lo=1.0_real64;hi=10.0_real64
+    else if(x<100.0_real64)then;dec=1;lo=10.0_real64;hi=100.0_real64
+    else if(x<1000.0_real64)then;dec=2;lo=100.0_real64;hi=1000.0_real64
+    else if(x<10000.0_real64)then;dec=3;lo=1000.0_real64;hi=10000.0_real64
+    else if(x<100000.0_real64)then;dec=4;lo=10000.0_real64;hi=100000.0_real64
+    else;dec=5;lo=100000.0_real64;hi=1000000.0_real64;end if
+
+    dx=(hi-lo)/real(B110_DIRECT_RETENTION_INTERVALS_PER_DECADE,real64)
+    q=(x-lo)/dx
+    j=min(B110_DIRECT_RETENTION_INTERVALS_PER_DECADE-1,max(0,int(q)))
+    u=q-real(j,real64)
+
+    h00=2*u**3-3*u**2+1
+    h10=u**3-2*u**2+u
+    h01=-2*u**3+3*u**2
+    h11=u**3-u**2
+    theta=h00*pool(slot)%theta(j,dec)+h10*dx*(-pool(slot)%capacity(j,dec))+ &
+          h01*pool(slot)%theta(j+1,dec)+h11*dx*(-pool(slot)%capacity(j+1,dec))
+
+    dh00=6*u*u-6*u
+    dh10=3*u*u-4*u+1
+    dh01=-6*u*u+6*u
+    dh11=3*u*u-2*u
+    dthdx=(dh00*pool(slot)%theta(j,dec)+dh10*dx*(-pool(slot)%capacity(j,dec))+ &
+           dh01*pool(slot)%theta(j+1,dec)+dh11*dx*(-pool(slot)%capacity(j+1,dec)))/dx
+    capacity=-dthdx
+    inside=.true.
+  end subroutine sample_b110_direct_retention
+
+  subroutine freeze_b110_direct_retention_pool()
+    frozen=.true.
+  end subroutine freeze_b110_direct_retention_pool
+
+  subroutine reset_b110_direct_retention_pool()
+    if(allocated(pool))deallocate(pool)
+    frozen=.false.
+    build_count=0
+    hit_count=0
+  end subroutine reset_b110_direct_retention_pool
+
+  subroutine b110_direct_retention_pool_stats(entries,builds,hits,payload_bytes,is_frozen)
+    integer,intent(out)::entries,builds,hits
+    integer(int64),intent(out)::payload_bytes
+    logical,intent(out)::is_frozen
+    if(allocated(pool))then
+      entries=size(pool)
+    else
+      entries=0
+    end if
+    builds=build_count
+    hits=hit_count
+    payload_bytes=int(entries,int64)*6240_int64
+    is_frozen=frozen
+  end subroutine b110_direct_retention_pool_stats
+
 end module mod_b110_direct_retention_core
