@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL32",
+  "title": "Run-lifetime exact-key adaptive representation registry",
+  "parent": "F-AHL31",
+  "phase": "PREREGISTERED_RESEARCH_REPAIR",
+  "motivation": {
+    "F_AHL30": "A fixed non-evicting 32-entry cache causes thousands of repeated table builds when direct reuse exceeds capacity.",
+    "F_AHL31": "Observed raw adaptive-table payload averages about 4.64 kB and projects to about 46-55 MB for 10000 unique representations; mean one-time build cost is about 1.25 ms.",
+    "F_AHL28C": "Provider-local same-key memoization is retained after passing the frozen paired timing gate."
+  },
+  "question": "Can the shared representation store become a bounded run-lifetime exact-key registry that avoids repeated over-capacity builds without introducing linear-scan lookup overhead or a correctness limit?",
+  "candidate_policy": {
+    "ownership": "run-lifetime immutable shared representation registry",
+    "lookup": "fingerprint-indexed open addressing with full exact-key equality on candidate slots",
+    "initial_slots": 64,
+    "growth": "double slot count when insertion would exceed 70 percent load",
+    "maximum_slots": 16384,
+    "maximum_raw_table_payload_basis": "approximately 90 MB using the F-AHL31 observed maximum payload projection",
+    "over_maximum_behavior": "build a valid caller-owned uncached representation and return success",
+    "eviction": "none in F-AHL32",
+    "correctness": "registry capacity is never a correctness limit"
+  },
+  "qualification": {
+    "collision_safety": "forced fingerprint-collision tests must return exact matching representations only",
+    "over_capacity_correctness": "requests above maximum registry capacity must succeed uncached",
+    "reuse": "64, 256 and 1024 unique cyclic workloads must build each unique exact key at most once while registry capacity is available",
+    "lookup_scaling": "warm exact-key lookup CPU must not grow linearly with registry entry count",
+    "hydraulic_semantics": "no representation, dry-tail, near-saturation or solver gate changes"
+  },
+  "hard_exclusions": [
+    "NO_UNBOUNDED_MEMORY_GROWTH",
+    "NO_FINGERPRINT_ONLY_IDENTITY",
+    "NO_LRU_OR_EVICTION_IN_F_AHL32",
+    "NO_HYDRAULIC_RETUNING",
+    "NO_MULTI_SWAP_SPEEDUP_CLAIM_FROM_REGISTRY_MICROBENCHMARK",
+    "NO_CORRECTNESS_FAILURE_ON_REGISTRY_CAPACITY"
+  ]
+}
