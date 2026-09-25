@@ -293,3 +293,63 @@ If either is missing, the patch remains provenance-pending.
 `B_EXACT_PATCH_RECOVERY = IN_PROGRESS`
 
 The next task is exact patch recovery for the admitted capabilities, beginning with the small structural groundwater fast paths and the original H01 duplicate-work removal. This is safer than copying the 24-file final ZERO-WASTE tree.
+
+
+## Tranche-B production authority split
+
+The ZERO-WASTE closeout itself provides a critical exact boundary:
+
+- production-behavior source head: `a03c964c3120d816774032a06a421fd1e85b1835`;
+- later H17A head: explicitly measurement-only.
+
+Therefore the core H03 / production-bootstrap P0 reconstruction must bind to `a03c964...`, not to the final ZERO-WASTE branch head.
+
+Direct compare PROFILE03 measurement parent -> `a03c964...` shows 241 commits and 20 production files. This is still too broad for blind admission, but it removes the later large-N groundwater-context tranche from the core P0 source authority.
+
+The later GWPLAN01/GWTOPO01/GWCTX01/GWCTX03/GWVIEW01 changes are separately admitted and must be reconstructed as a second ZERO-WASTE subtranche.
+
+### B1 — core production-bootstrap P0
+
+Authority: `a03c964...`.
+
+Qualified removals/reuse are exactly those enumerated in the closeout:
+- all full Reference workspace resets on the hot path;
+- overwrite-before-read scratch clears;
+- TRIDAG capture resize suppression;
+- accepted-direction zero-vector/copy suppression;
+- stable-owner registry validation suppression;
+- execution-order reuse;
+- planned-route template lookup reuse;
+- indexed receipt handling;
+- unused serialized diagnostics/concurrency bookkeeping suppression;
+- parameter allocation/preprocessing/compatibility/copy reuse under immutable authority;
+- demand-specialized constitutive evaluation;
+- inactive attempt-context skip;
+- workspace-owned state-binding capacity reuse.
+
+This is a composite exact-P0 postimage and must be replayed as such unless smaller independently qualified checkpoints can be recovered.
+
+### B2 — large-N groundwater context
+
+Authority: final ZERO-WASTE postimage after the separately admitted five-capability tranche:
+GWPLAN01, GWTOPO01, GWCTX01, GWCTX03, GWVIEW01.
+
+These source changes are structurally localized in:
+- `mod_groundwater_application_plan.f90`;
+- `mod_groundwater_topology_composition.f90`;
+- `mod_fmr_groundwater_application_context.f90`;
+- `mod_fmr_groundwater_application_c_api.f90`.
+
+Any additional final-tree changes outside those named capability patches require separate provenance and are not admitted merely by association.
+
+## Reconstruction strategy
+
+The safest canonical reconstruction is now:
+
+1. establish an A2 H03 postimage on the source-equivalent canonical production authority;
+2. recompose B1 as the qualified `a03c964...` P0 postimage, with exact physical/reference gates;
+3. layer B2 as five separately named large-N fast paths;
+4. then PLANVALID01;
+5. then F-AHL50.
+
+This avoids treating H17A measurement work or rejected ZERO-WASTE experiments as production authority.
