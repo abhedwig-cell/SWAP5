@@ -31,6 +31,7 @@ module mod_b110_adaptive_hydraulic_cache
     integer :: max_probes=0
   contains
     procedure :: lookup => b110_ahl_lookup
+    procedure :: find_slot => b110_ahl_find_slot
     procedure :: get_or_build => b110_ahl_get_or_build
     procedure :: stats => b110_ahl_stats
     procedure :: probe_stats => b110_ahl_probe_stats
@@ -85,6 +86,34 @@ contains
          trim(a%model_id)==trim(b%model_id) .and. &
          all(abit==bbit)
   end function b110_adaptive_hydraulic_keys_equal
+
+  subroutine b110_ahl_find_slot(self,key,slot,was_hit)
+    class(b110_adaptive_hydraulic_cache_t),intent(inout)::self
+    type(b110_adaptive_hydraulic_cache_key_t),intent(in)::key
+    integer,intent(out)::slot
+    logical,intent(out)::was_hit
+    integer::i,current
+
+    slot=0;was_hit=.false.
+    if(.not.allocated(self%entry)) return
+
+    current=b110_ahl_initial_slot(key%fingerprint)
+    do i=1,B110_AHL_MAX_CACHE
+      self%total_probes=self%total_probes+1_int64
+      self%max_probes=max(self%max_probes,i)
+      if(.not.self%entry(current)%occupied) return
+      if(self%entry(current)%key%fingerprint==key%fingerprint)then
+        if(b110_adaptive_hydraulic_keys_equal(self%entry(current)%key,key))then
+          self%hits=self%hits+1
+          slot=current
+          was_hit=.true.
+          return
+        end if
+      end if
+      current=current+1
+      if(current>B110_AHL_MAX_CACHE) current=1
+    end do
+  end subroutine b110_ahl_find_slot
 
   subroutine b110_ahl_lookup(self,key,table,was_hit)
     class(b110_adaptive_hydraulic_cache_t),intent(inout)::self
