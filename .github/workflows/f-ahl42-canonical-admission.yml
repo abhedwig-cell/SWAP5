@@ -27,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Existing default-off serialized FMR regression
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
       - name: Production provider extraction
         run: bash tests/fahl/run_fahl27_production_provider_extract.sh
       - name: Prescribed-head matrix
