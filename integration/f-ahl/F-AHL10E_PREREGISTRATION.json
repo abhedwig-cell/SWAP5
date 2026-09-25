@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10E",
+  "title": "Material-specific dry-tail fallback reconciliation",
+  "parent": "F-AHL10D",
+  "phase": "PREREGISTERED_REPAIR",
+  "finding_before_repair": "F-AHL10D preregistered analytical fallback outside the material-specific represented domain, but the current research provider only falls back outside the global [-1e6,-1] cm domain. For O05 this would clamp/extrapolate the final table interval below the qualified raw-C=1e-13 bound at approximately -2.642775e5 cm instead of using the authoritative analytical provider.",
+  "required_semantics": {
+    "represented_domain": "loaded table x-min to x-max",
+    "outside_loaded_domain": "authoritative analytical provider",
+    "no_constant_tail_extrapolation": true,
+    "no_zeroing_or_physics_cutoff": true
+  },
+  "test_cases": [
+    "O05 at h=-2e5 cm must use lookup domain",
+    "O05 at h=-5e5 cm must use analytical fallback",
+    "values returned in analytical-fallback tail must match authoritative theta,C,K exactly within floating-point tolerance"
+  ],
+  "hard_exclusions": [
+    "NO_CHANGE_TO_RAW_C_RELEVANCE_THRESHOLD",
+    "NO_PHYSICS_TRUNCATION",
+    "NO_RICHARDS_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
