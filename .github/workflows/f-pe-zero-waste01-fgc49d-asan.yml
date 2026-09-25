@@ -18,7 +18,7 @@ on:
 jobs:
   asan-diagnosis:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,5 +27,41 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-numpy
-      - name: Run FGC49D with ASan/UBSan
+      - name: Diagnose current head
+        id: current
+        continue-on-error: true
         run: bash tests/fpe/run_fpe_zero_waste01_fgc49d_asan.sh
+      - name: Diagnose exact pre-H22B parent
+        id: pre_h22b
+        continue-on-error: true
+        run: |
+          tmp="$(mktemp -d)"
+          trap 'git worktree remove --force "$tmp" >/dev/null 2>&1 || true; rm -rf "$tmp"' EXIT
+          git worktree add --detach "$tmp" 453726773f6bba2f5d49cf7b21cabccc0f870c5b
+          cp tests/fpe/run_fpe_zero_waste01_fgc49d_asan.sh "$tmp/tests/fpe/run_fpe_zero_waste01_fgc49d_asan.sh"
+          (
+            cd "$tmp"
+            bash tests/fpe/run_fpe_zero_waste01_fgc49d_asan.sh
+          )
+      - name: Classify sanitizer boundary
+        if: always()
+        env:
+          CURRENT_OUTCOME: ${{ steps.current.outcome }}
+          PRE_H22B_OUTCOME: ${{ steps.pre_h22b.outcome }}
+        run: |
+          echo "FGC49D_ASAN_CURRENT_OUTCOME=$CURRENT_OUTCOME"
+          echo "FGC49D_ASAN_PRE_H22B_OUTCOME=$PRE_H22B_OUTCOME"
+          if [[ "$CURRENT_OUTCOME" == "failure" && "$PRE_H22B_OUTCOME" == "success" ]]; then
+            echo "FGC49D_ASAN_BOUNDARY=H22B_OR_LATER"
+            exit 1
+          fi
+          if [[ "$CURRENT_OUTCOME" == "failure" && "$PRE_H22B_OUTCOME" == "failure" ]]; then
+            echo "FGC49D_ASAN_BOUNDARY=PRE_H22B_OR_HARNESS"
+            exit 1
+          fi
+          if [[ "$CURRENT_OUTCOME" == "success" ]]; then
+            echo "FGC49D_ASAN_CURRENT=PASS"
+            exit 0
+          fi
+          echo "FGC49D_ASAN_BOUNDARY=INCONCLUSIVE"
+          exit 1
