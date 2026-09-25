@@ -413,3 +413,34 @@ The initial paired failures were shallow-checkout harness failures because histo
 Tranche B is now technically reconstructed and qualified as B1 + B2.
 
 Next tranche: C, PLANVALID01. Recompose only its narrow admitted execution-plan delta on the B2 postimage and replay its qualification/preservation gates.
+
+
+## Tranche C qualification — PLANVALID01
+
+Execution PR: #624.
+
+Production delta relative to qualified B2 is exactly one file:
+`src/runtime/mod_fmr_runtime_core.f90`.
+
+Focused qualification on head `5a7e9737edd67f5fc3a60e3299df9e42c4aec26c` is fully green.
+
+Evidence:
+- PLANVALID01 semantics: PASS;
+- direct plan-build baseline/qualification: PASS;
+- inherited ZERO-WASTE execution-plan preservation: PASS;
+- application timing: PASS;
+- N=1,000 application initialization median ratio approximately `0.7551`;
+- N=10,000 application initialization median ratio approximately `0.3884`, about 61.2% lower setup time;
+- N=10,000 repeated runtime median ratio approximately `0.9908`, effectively unchanged;
+- direct canonical plan-build median ratio at N=10,000 approximately `0.00201`.
+
+Two initial red runs were missing inherited ZERO-WASTE test harness files only: first the execution-plan runner, then its Fortran fixture. No production change was required.
+
+### Tranche C status
+
+`C_PLANVALID01_RECOMPOSITION = QUALIFIED_ON_B2_POSTIMAGE`
+
+The reconstructed performance lineage is now qualified through:
+A2 H03 -> B1 core P0 -> B2 large-N -> C PLANVALID01.
+
+Next tranche D is F-AHL50. Recompose its six production files on the qualified C postimage, preserve default OFF and its bounded envelope, and replay the full F-AHL50 admission suite.
