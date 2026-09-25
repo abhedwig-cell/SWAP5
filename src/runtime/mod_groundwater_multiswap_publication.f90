@@ -49,14 +49,12 @@ contains
     type(groundwater_exchange_prepared_t) :: prepared_groundwater
     type(groundwater_interface_mass_prepared_t), allocatable :: prepared_ledgers(:)
     type(groundwater_coupling_origin_t), allocatable :: next_origins(:)
-    real(real64), allocatable :: initial_mass(:)
     real(real64) :: weighted_exchange_m, initial_total, final_total
     logical :: did_commit
     integer :: n, i, k, idx, status, cleanup_status, commit_status, committed_count
 
     n = size(bindings)
-    allocate(prepared_ledgers(n), next_origins(n), initial_mass(n))
-    initial_mass = 0.0_real64
+    allocate(prepared_ledgers(n), next_origins(n))
 
     do i = 1, n
       call ledgers(i)%snapshot(result%ledger_snapshots(i))
@@ -65,7 +63,6 @@ contains
         call fail_publication(result, GW_MULTI_LEDGER_STAGE_FAILED, 'ledger-snapshot')
         return
       end if
-      initial_mass(i) = result%ledger_snapshots(i)%committed_swap_outward_exchange_m
     end do
 
     do k = 1, n
@@ -197,7 +194,7 @@ contains
         error stop 'F-GC25 hard mass invariant: committed tile interface ledger is not exactly conservative'
       end if
     end do
-    initial_total = stable_ordered_sum(initial_mass, order)
+    initial_total = committed_ledger_total(result%ledger_snapshots, order)
     final_total = committed_ledger_total(result%ledger_snapshots, order)
     result%committed_ledger_increment_m = final_total - initial_total
     if (.not. same_multiswap_mass(result%committed_ledger_increment_m, result%accepted_cell_exchange_m)) then
