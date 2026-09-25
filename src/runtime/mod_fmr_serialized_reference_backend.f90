@@ -166,6 +166,8 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: dz(:)
     real(real64), allocatable :: node_distance(:)
     real(real64), allocatable :: cofgen(:,:)
+    logical :: prepared_default_mvg_available = .false.
+    type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
     integer :: swkimpl = 0
     integer :: swkmean = 1
@@ -459,6 +461,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: discard_trial_candidate => fmr_serialized_backend_discard_trial_candidate
   end type fmr_serialized_reference_backend_t
 
+  public :: prepare_fmr_b110_default_mvg
   public :: fmr_new_b110_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
@@ -466,6 +469,55 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_boesten_evaporation_committed_state
 
 contains
+
+  subroutine prepare_fmr_b110_default_mvg(parameters, prepared)
+    type(fmr_b110_physical_parameters_t), intent(inout) :: parameters
+    logical, intent(out) :: prepared
+    integer :: i
+
+    prepared = .false.
+    parameters%prepared_default_mvg_available = .false.
+    parameters%prepared_default_mvg = b110_default_mvg_parameters_t()
+
+    if (parameters%active_nodes <= 0) return
+    if (.not. allocated(parameters%cofgen)) return
+    if (size(parameters%cofgen,1) < 24 .or. size(parameters%cofgen,2) /= parameters%active_nodes) return
+
+    if (parameters%ksatexm_extension_active) then
+      do i = 1, parameters%active_nodes
+        if (parameters%cofgen(10,i) > parameters%cofgen(3,i)) then
+          if (.not. ieee_is_finite(parameters%cofgen(10,i)) .or. parameters%cofgen(10,i) <= 0.0_real64) return
+          if (.not. ieee_is_finite(parameters%cofgen(11,i)) .or. parameters%cofgen(11,i) < 0.0_real64 .or. &
+              parameters%cofgen(11,i) >= 1.0_real64) return
+          if (.not. ieee_is_finite(parameters%cofgen(12,i)) .or. parameters%cofgen(12,i) < 0.0_real64) return
+        end if
+      end do
+    end if
+
+    call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
+         enable_ksatexm_extension=parameters%ksatexm_extension_active)
+    parameters%prepared_default_mvg_available = .true.
+    prepared = .true.
+  end subroutine prepare_fmr_b110_default_mvg
+
+  logical function prepared_default_mvg_compatible(parameters) result(compatible)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    integer :: rows
+
+    compatible = .false.
+    if (.not. parameters%prepared_default_mvg_available) return
+    if (.not. allocated(parameters%cofgen)) return
+    if (.not. allocated(parameters%prepared_default_mvg%cofgen)) return
+    if (parameters%prepared_default_mvg%active_nodes /= parameters%active_nodes) return
+    if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_active) return
+    if (size(parameters%prepared_default_mvg%cofgen,1) /= 42) return
+    if (size(parameters%prepared_default_mvg%cofgen,2) /= parameters%active_nodes) return
+    if (size(parameters%cofgen,2) /= parameters%active_nodes) return
+    rows = min(size(parameters%cofgen,1), 42)
+    if (rows <= 0) return
+    if (.not. all(parameters%prepared_default_mvg%cofgen(1:rows,:) == parameters%cofgen(1:rows,:))) return
+    compatible = .true.
+  end function prepared_default_mvg_compatible
 
   subroutine copy_b110_physical_state(source, target)
     class(fmr_b110_physical_state_t), intent(in) :: source
@@ -1442,8 +1494,12 @@ contains
       self%soil_parameters%z = parameters%z
       self%soil_parameters%dz = parameters%dz
       self%soil_parameters%node_distance = parameters%node_distance
-      call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &
-           enable_ksatexm_extension=parameters%ksatexm_extension_active)
+      if (prepared_default_mvg_compatible(parameters)) then
+        self%hydraulic_parameters = parameters%prepared_default_mvg
+      else
+        call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &
+             enable_ksatexm_extension=parameters%ksatexm_extension_active)
+      end if
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean

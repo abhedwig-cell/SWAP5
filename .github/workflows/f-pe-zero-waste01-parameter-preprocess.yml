@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/solver/mod_b110_default_mvg_provider.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
       - 'tests/fpe/test_fpe_zero_waste01_parameter_preprocess.f90'
       - 'tests/fpe/run_fpe_zero_waste01_parameter_preprocess.sh'
       - '.github/workflows/f-pe-zero-waste01-parameter-preprocess.yml'

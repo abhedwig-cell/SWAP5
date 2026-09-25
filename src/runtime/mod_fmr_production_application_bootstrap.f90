@@ -11,7 +11,7 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
-       fmr_new_b110_boesten_evaporation_committed_state
+       fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
@@ -108,7 +108,7 @@ contains
     integer, intent(out) :: status
 
     integer :: i, local_status, n
-    logical :: ok, groundwater_profile, standalone_profile, prescribed_qbot_profile
+    logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile
     type(black_evaporation_state_t) :: initial_black_state
     type(boesten_evaporation_state_t) :: initial_boesten_state
 
@@ -182,6 +182,7 @@ contains
       self%columns(i)%execution_class = config%tiles(i)%execution_class
       self%columns(i)%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
       self%parameters(i) = config%tiles(i)%parameters
+      call prepare_fmr_b110_default_mvg(self%parameters(i), hydraulic_prepared)
       self%base_forcing(i) = config%tiles(i)%base_forcing
       if (groundwater_profile) call self%materializers(i)%initialize(self%base_forcing(i))
 

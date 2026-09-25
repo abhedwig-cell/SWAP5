@@ -16,3 +16,19 @@ gfortran -O2 "$BUILD/contract.o" "$BUILD/mvg.o" "$BUILD/test.o" -o "$BUILD/test"
 "$BUILD/test" 200 3000
 "$BUILD/test" 1000 500
 echo 'FPE_ZERO_WASTE01_PARAMETER_PREPROCESS=PASS'
+
+python3 - <<'PY'
+from pathlib import Path
+backend = Path("src/runtime/mod_fmr_serialized_reference_backend.f90").read_text(encoding="utf-8").lower()
+bootstrap = Path("src/runtime/mod_fmr_production_application_bootstrap.f90").read_text(encoding="utf-8").lower()
+for token in [
+    "prepared_default_mvg_available",
+    "prepare_fmr_b110_default_mvg",
+    "prepared_default_mvg_compatible",
+    "self%hydraulic_parameters = parameters%prepared_default_mvg",
+    "initialize_b110_default_mvg_parameters(self%hydraulic_parameters",
+]:
+    assert token in backend, token
+assert "call prepare_fmr_b110_default_mvg(self%parameters(i)" in bootstrap
+print("FPE_ZERO_WASTE01_PREPARED_HYDRAULIC_WIRING_STATIC=PASS")
+PY
