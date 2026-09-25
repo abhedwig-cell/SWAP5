@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL28C",
+  "title": "Same-key memoization paired timing reconciliation",
+  "parent": "F-AHL28B",
+  "phase": "PREREGISTERED_AFTER_CONFLICTING_VALID_MICROTIMINGS",
+  "motivation": "Two correctness-valid F-AHL28B CI executions straddled the frozen 75 percent warm-bind reduction threshold: 72.924 percent and 84.7847 percent. Selecting either run would be host-noise cherry-picking.",
+  "question": "Under an in-process paired benchmark, does provider-local same-key reuse reduce adaptive bind/acquisition cost by at least the original frozen 75 percent relative to repeated shared-cache acquisition?",
+  "baseline": "fresh provider acquisition against an already warm shared cache for the same exact hydraulic authority",
+  "candidate": "same long-lived provider, exact same-key local representation reuse with step-duration fallback rebinding",
+  "timing_policy": {
+    "compiler": "gfortran -O3",
+    "operations_per_batch": 200000,
+    "paired_repetitions": 9,
+    "order": "alternate baseline->memoized and memoized->baseline",
+    "primary_statistic": "median paired memoized/baseline CPU ratio",
+    "cache": "prewarmed before paired timing",
+    "table_build": "excluded from both paired paths"
+  },
+  "correctness_gates": [
+    "same-key local reuse does not increment shared-cache hit/miss/build/entry counts",
+    "changed step duration rebinds authoritative analytical fallback",
+    "changed hydraulic authority cannot take local fast path",
+    "restoring prior authority uses exact shared-cache key path"
+  ],
+  "frozen_decision_rule": {
+    "retain_F_AHL28B": "median paired ratio <= 0.25, equivalent to at least 75 percent reduction",
+    "reject_and_revert_F_AHL28B": "median paired ratio > 0.25"
+  },
+  "hard_exclusions": [
+    "NO_THRESHOLD_CHANGE",
+    "NO_SELECTION_OF_BEST_CI_RUN",
+    "NO_HYDRAULIC_CHANGE",
+    "NO_GENERAL_FMR_REFACTOR",
+    "NO_PRODUCTION_ADMISSION_FROM_THIS_TIMING"
+  ]
+}
