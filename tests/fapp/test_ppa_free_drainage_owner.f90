@@ -1153,7 +1153,7 @@ contains
     logical::ok
     integer::code
     finish=T0+1.0_real64/1024.0_real64
-    seed=source; seed%irrigation%active_event_end=finish
+    seed=source; seed%irrigation%active_event_end=finish+1.0_real64/1024.0_real64
     call seed%clone(initial)
     call committed%initialize(404199_int64,initial,ok,T0)
     if(.not.ok) error stop 'pending trial owner initialization'
@@ -1185,7 +1185,7 @@ contains
          T0,finish,checkpoint,rejected_result,rejected_candidate,rejected_diagnostics)
     if(rejected_result%completed.or.rejected_candidate%ready()) error stop 'pending opt-in leaked to ordinary trial'
     call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
-         profile%numerical,1,T0,finish+1.0_real64/1024.0_real64,checkpoint, &
+         profile%numerical,1,T0,finish+2.0_real64/1024.0_real64,checkpoint, &
          rejected_result,rejected_candidate,rejected_diagnostics)
     if(rejected_result%completed.or.rejected_candidate%ready()) error stop 'pending trial crossed event end'
     call committed%snapshot(snapshot,ok)
@@ -1205,13 +1205,108 @@ contains
     if(.not.ok) error stop 'pending irrigation committed snapshot'
     select type(snapshot)
     type is(ppa_irrigation_event_state_t)
-      if(snapshot%irrigation%active_event) error stop 'pending irrigation not cleared at end'
+      if(.not.snapshot%irrigation%active_event) error stop 'pending irrigation cleared before end'
       if(.not.snapshot%matches_candidate(template,finish)) error stop 'pending irrigation committed carrier invalid'
     class default
       error stop 'pending irrigation candidate sliced'
     end select
     write(*,'(a)') 'PPA_IRR_PENDING_HYDRAULIC_TRIAL_COMMIT=PASS'
+    call verify_pending_irrigation_restart(profile,committed,backend,column,template,forcing,finish)
   end subroutine verify_pending_irrigation_trial
+
+  subroutine verify_pending_irrigation_restart(profile,committed,backend,column,template,initial_forcing,midpoint)
+    use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
+    use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
+         kernel_result_t,kernel_diagnostics_t
+    use mod_fmr_runtime_core, only: fmr_logical_column_t
+    use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+    use mod_transaction_reference, only: transaction_state_t
+    use mod_fmr_committed_restart, only: fmr_export_committed_restart,fmr_restore_committed_restart,FMR_RESTART_OK
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(kernel_committed_state_t),intent(inout)::committed
+    type(fmr_serialized_reference_backend_t),intent(inout)::backend
+    type(fmr_logical_column_t),intent(in)::column
+    type(fmr_template_t),intent(in)::template
+    type(fmr_b110_physical_forcing_t),intent(in)::initial_forcing
+    real(real64),intent(in)::midpoint
+    type(fmr_serialized_reference_backend_t)::fresh
+    type(fixed_flux_top_boundary_provider_t),target::top
+    type(kernel_committed_state_t)::restored(1)
+    type(kernel_checkpoint_t)::checkpoint(2)
+    type(kernel_candidate_state_t)::candidate(2)
+    type(kernel_result_t)::result(2)
+    type(kernel_diagnostics_t)::diagnostics(2)
+    type(fmr_committed_restart_bundle_t)::bundle
+    type(fmr_b110_physical_forcing_t)::forcing
+    class(transaction_state_t),allocatable::left,right
+    real(real64),allocatable::left_history(:),right_history(:)
+    real(real64)::start,finish,left_time,right_time
+    logical::ok
+    integer::code,stage
+    call fmr_export_committed_restart([column],[template],[committed],92001_int64,bundle,ok,code)
+    if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'hydraulic midpoint export'
+    call fmr_restore_committed_restart(bundle,92001_int64,[column],[template],restored,ok,code)
+    if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'hydraulic midpoint restore'
+    call fresh%initialize(top)
+    call fresh%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
+    call fresh%set_storage_difference(evaluate_mvg_storage_difference_service)
+    forcing=initial_forcing
+    forcing%temporal_forcing_event=.false.
+    start=midpoint
+    do stage=1,2
+      finish=start+1.0_real64/1024.0_real64
+      if(stage==2) then
+        forcing%subsurface_irrigation_source=0.0_real64
+        forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=start
+      end if
+      call committed%capture_checkpoint(checkpoint(1),ok)
+      if(.not.ok) error stop 'original pending continuation checkpoint'
+      call restored(1)%capture_checkpoint(checkpoint(2),ok)
+      if(.not.ok) error stop 'restored pending continuation checkpoint'
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
+           profile%numerical,1,start,finish,checkpoint(1),result(1),candidate(1),diagnostics(1))
+      call fresh%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,restored(1),forcing, &
+           profile%numerical,1,start,finish,checkpoint(2),result(2),candidate(2),diagnostics(2))
+      if(.not.all(result%completed)) error stop 'pending hydraulic restart continuation failed'
+      if(any(abs(result%mass%residual)>1.0e-12_real64)) error stop 'pending hydraulic restart hard mass'
+      call backend%commit_trial_candidate(committed,candidate(1),diagnostics(1),ok,code)
+      if(.not.ok) error stop 'original pending continuation commit'
+      call fresh%commit_trial_candidate(restored(1),candidate(2),diagnostics(2),ok,code)
+      if(.not.ok) error stop 'restored pending continuation commit'
+      call committed%snapshot(left,ok)
+      if(.not.ok) error stop 'original pending snapshot'
+      call restored(1)%snapshot(right,ok)
+      if(.not.ok) error stop 'restored pending snapshot'
+      select type(left)
+      type is(ppa_irrigation_event_state_t)
+        select type(right)
+        type is(ppa_irrigation_event_state_t)
+          if(left%irrigation%active_event.or.right%irrigation%active_event) error stop 'pending event not cleared'
+          if(.not.left%matches_candidate(template,finish).or..not.right%matches_candidate(template,finish)) &
+               error stop 'pending restart final payload invalid'
+          if(any(left%pressure_head/=right%pressure_head).or.any(left%water_content/=right%water_content)) &
+               error stop 'pending hydraulic restart physical difference'
+          call left%temporal_history_snapshot(left_history,ok)
+          if(.not.ok) error stop 'original pending history missing'
+          call right%temporal_history_snapshot(right_history,ok)
+          if(.not.ok) error stop 'restored pending history missing'
+          if(any(left_history/=right_history)) error stop 'pending restart history differs'
+        class default
+          error stop 'restored pending carrier sliced'
+        end select
+      class default
+        error stop 'original pending carrier sliced'
+      end select
+      call committed%current_time(left_time,ok)
+      if(.not.ok.or.left_time/=finish) error stop 'original pending endpoint'
+      call restored(1)%current_time(right_time,ok)
+      if(.not.ok.or.right_time/=finish) error stop 'restored pending endpoint'
+      if(committed%current_revision()/=restored(1)%current_revision()) error stop 'pending restart revision differs'
+      if(result(1)%mass%residual/=result(2)%mass%residual) error stop 'pending restart mass differs'
+      start=finish
+    end do
+    write(*,'(a)') 'PPA_IRR_PENDING_HYDRAULIC_MIDPOINT_RESTART_STOP_IDENTITY=PASS'
+  end subroutine verify_pending_irrigation_restart
 
   subroutine verify_committed_profile_selection(source,boundary,template,owners)
     use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t
