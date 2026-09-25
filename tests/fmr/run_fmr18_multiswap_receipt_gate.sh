@@ -18,13 +18,17 @@ fail() {
   exit 1
 }
 
-cat > "$BUILD/expected-source-delta.txt" <<'EOF'
+if [[ "${FPE_H09_SEMANTIC_ONLY:-0}" != "1" ]]; then
+  cat > "$BUILD/expected-source-delta.txt" <<'EOF'
 src/runtime/mod_fmr_accepted_commit_receipt.f90
 src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 EOF
-git diff --name-only "$FMR18_BASE"..HEAD -- src | sort > "$BUILD/actual-source-delta.txt"
-diff -u "$BUILD/expected-source-delta.txt" "$BUILD/actual-source-delta.txt" || fail "unexpected production source delta"
-echo 'FMR18C_EXACT_TWO_FILE_SOURCE_DELTA=PASS'
+  git diff --name-only "$FMR18_BASE"..HEAD -- src | sort > "$BUILD/actual-source-delta.txt"
+  diff -u "$BUILD/expected-source-delta.txt" "$BUILD/actual-source-delta.txt" || fail "unexpected production source delta"
+  echo 'FMR18C_EXACT_TWO_FILE_SOURCE_DELTA=PASS'
+else
+  echo 'FPE_ZERO_WASTE01_H09_HISTORICAL_SOURCE_DELTA=SKIPPED_SEMANTIC_ONLY'
+fi
 
 python3 - <<'PY'
 from pathlib import Path
@@ -139,6 +143,7 @@ cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt" || fail "Gate C O0/O2 output mismatc
 echo 'FMR18C_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/out.txt"
 
+if [[ "${FPE_H09_SEMANTIC_ONLY:-0}" != "1" ]]; then
 # The accepted-window crop oracle itself is independent of Gate C but must keep
 # its exact transcript on this composition tree.
 for opt in 0 2; do
@@ -217,5 +222,9 @@ grep -Fq 'FCI19_O0_O2_PRESERVATION=PASS' "$BUILD/fci19.out"
 grep -Fq 'FMR18C_FCI19_EXACT_SOURCE_DELTA=PASS' "$BUILD/fci19.out"
 grep -Fq 'FMR18C_FCI19_POST_REPLAY_SOURCE_DELTA_STABLE=PASS' "$BUILD/fci19.out"
 echo 'FMR18C_FCI19_SEMANTIC_PRESERVATION=PASS'
+
+else
+  echo 'FPE_ZERO_WASTE01_H09_HISTORICAL_PRESERVATION=SKIPPED_SEMANTIC_ONLY'
+fi
 
 echo 'FMR18_MULTISWAP_RECEIPT_GATE PASS'

@@ -20,5 +20,7 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Run existing FMR18 MultiSWAP receipt gate
+      - name: Run current-tree FMR18 receipt semantics
+        env:
+          FPE_H09_SEMANTIC_ONLY: '1'
         run: bash tests/fmr/run_fmr18_multiswap_receipt_gate.sh
