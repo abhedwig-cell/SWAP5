@@ -1909,7 +1909,11 @@ contains
       end select
     end if
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
-    if (self%adaptive_hydraulics_active) then
+    ! F-AHL27 Stage 2 ownership boundary: adaptive hydraulics is qualified only
+    ! for prescribed-head mode 5. Prescribed-qbot and other lower-boundary
+    ! modes must remain fully analytical, including avoiding adaptive cache
+    ! construction or lookup side effects.
+    if (self%adaptive_hydraulics_active .and. effective_bottom_mode == 5) then
       if (.not. associated(self%adaptive_constitutive)) return
       call bind_b110_adaptive_hydraulic_provider(self%adaptive_constitutive, self%hydraulic_parameters, &
            step_duration, ahl_ok, ahl_cache_hit)
