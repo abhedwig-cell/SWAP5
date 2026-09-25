@@ -1,0 +1,27 @@
+name: F-AHL47 12-case paired timing
+
+on:
+  pull_request:
+    paths:
+      - 'research/ahl/mod_ahl47_direct_retention_provider.f90'
+      - 'research/ahl/test_fahl47_matrix_timing.f90'
+      - 'research/ahl/run_fahl47_matrix_timing.sh'
+      - '.github/workflows/f-ahl47-matrix-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run 12-case paired timing
+        run: |
+          bash research/ahl/run_fahl47_matrix_timing.sh | tee fahl47-matrix-timing.txt
+          grep -Fq 'FAHL47_MATRIX_TIMING_12_OF_12=PASS' fahl47-matrix-timing.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl47-matrix-timing
+          path: fahl47-matrix-timing.txt
