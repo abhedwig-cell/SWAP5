@@ -3,6 +3,7 @@ import math
 import os
 import sys
 import tempfile
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -99,8 +100,11 @@ def main()->None:
             bindings=[Binding(7001,1,2),Binding(7002,2,3)]
             current=[Term(7001,hcof1,rhs1),Term(7002,hcof2,rhs2)]
             converged=False; final=None
+            coupling_start=time.perf_counter()
+            outer_iterations=0
 
             for outer in range(1,min(40,session.max_solve_iterations)+1):
+                outer_iterations=outer
                 status,it=session.publish_and_solve_iteration(bindings,current)
                 require(status==PreparedSolveStatus.OK,session.last_error)
                 require(it is not None,f"missing MODFLOW iterate {outer}")
@@ -125,6 +129,7 @@ def main()->None:
                 ]
 
             require(converged,"mixed-topology coupling did not converge")
+            coupling_seconds=time.perf_counter()-coupling_start
             require(session.finalize_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
             require(kernel.prepare_solve_calls==1 and kernel.finalize_solve_calls==1,"prepared-solve lifecycle mismatch")
             require(swap.swap_preflight(),"all three SWAP preflights failed")
@@ -157,6 +162,9 @@ def main()->None:
             print(f"FGC47_FINAL_QCELL2_M_PER_S={qc2:.17g}")
             print(f"FGC47_FINAL_R1={r1:.17g}")
             print(f"FGC47_FINAL_R2={r2:.17g}")
+            print(f"FGC47_COUPLING_OUTER_ITERATIONS={outer_iterations}")
+            print(f"FGC47_MODFLOW_SOLVE_CALLS={kernel.solve_calls}")
+            print(f"FGC47_COUPLING_SECONDS={coupling_seconds:.17g}")
             print("FGC47_THREE_REAL_SWAP_LINEAGES=PASS")
             print("FGC47_CELL1_FGC40_N1_RESPONSE=PASS")
             print("FGC47_CELL2_ONE_TO_ONE_RESPONSE=PASS")
