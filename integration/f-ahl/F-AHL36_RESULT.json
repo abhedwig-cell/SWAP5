@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL36",
+  "phase": "POST_REPAIR_MULTI_KEY_SWITCHING_COMPLETE",
+  "status": "OWNERSHIP_CHARACTERIZATION_JUSTIFIED",
+  "workflow_run": 36103075937,
+  "workflow_job": 107969586884,
+  "seconds_per_bind": {
+    "same_key": 1.4546e-7,
+    "switch_16": 6.0032e-7,
+    "switch_64": 6.17605e-7
+  },
+  "ratio_to_same_key": {
+    "switch_16": 4.1270,
+    "switch_64": 4.2459
+  },
+  "comparison_to_F_AHL33": {
+    "switch_16_reduction_fraction": 0.1624,
+    "switch_64_reduction_fraction": 0.1862
+  },
+  "cache_accounting": {
+    "before": {"builds":64,"hits":0,"misses":64,"entries":64},
+    "after": {"builds":64,"hits":2000010,"misses":64,"entries":64},
+    "timed_rebuilds": 0,
+    "timed_misses": 0
+  },
+  "decision_rule": {
+    "stop_ownership_work_if_both_ratios_leq": 3.0
+  },
+  "decision": "ADVANCE_TO_OWNERSHIP_HANDLE_CHARACTERIZATION",
+  "finding": "Warm-hit sampler elimination materially reduced changed-authority bind cost, but switching among already-built authorities remains more than four times as expensive as same-key reuse. The remaining gap is large enough to justify a bounded immutable-table handle/ownership study.",
+  "nonclaims": [
+    "This is bind-level characterization only.",
+    "No pointer lifetime or ownership change is admitted by F-AHL36.",
+    "No application-level speedup is claimed."
+  ]
+}
