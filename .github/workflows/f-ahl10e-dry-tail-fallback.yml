@@ -1,0 +1,26 @@
+name: F-AHL10E dry-tail fallback
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/mod_ahl09_dc_provider.f90'
+      - 'research/ahl/test_ahl10e_dry_tail_fallback.f90'
+      - 'research/ahl/run_ahl10e_dry_tail_fallback.sh'
+      - 'integration/f-ahl/F-AHL10E_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl10e-dry-tail-fallback.yml'
+  workflow_dispatch:
+
+jobs:
+  dry-tail:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify material-specific analytical dry-tail fallback
+        run: |
+          bash research/ahl/run_ahl10e_dry_tail_fallback.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl10e-${{ github.run_id }}
+          path: /tmp/ahl10e_result.txt
