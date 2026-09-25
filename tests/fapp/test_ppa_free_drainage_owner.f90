@@ -1025,7 +1025,90 @@ contains
       end do
     end do
     write(*,'(a)') 'PPA_IRR_EVENT_KERNEL_CHECKPOINT_ISOLATION=PASS'
+    call verify_irrigation_restart_bundle(source,template)
   end subroutine verify_irrigation_kernel_checkpoint
+  subroutine verify_irrigation_restart_bundle(source,template)
+    use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
+    use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t
+    use mod_transaction_reference, only: transaction_state_t
+    use mod_kernel_transactions, only: kernel_committed_state_t
+    use mod_fmr_runtime_core, only: fmr_logical_column_t
+    use mod_fmr_committed_restart, only: fmr_export_committed_restart,fmr_restore_committed_restart, &
+         fmr_committed_restart_bundle_t,FMR_RESTART_OK,FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
+    type(ppa_irrigation_event_state_t),intent(in)::source
+    type(fmr_template_t),intent(in)::template
+    type(kernel_committed_state_t)::committed(2),restored(2)
+    type(fmr_logical_column_t)::columns(2)
+    type(fmr_committed_restart_bundle_t)::saved,invalid
+    class(transaction_state_t),allocatable::input,snapshot
+    real(real64),allocatable::expected_history(:),actual_history(:)
+    real(real64)::observed_time
+    logical::ok,available
+    integer::i,pass,code
+    do i=1,2
+      columns(i)%column_id=int(i,int64)
+      columns(i)%template_id=template%template_id
+      columns(i)%parameter_ref=1_int64
+      columns(i)%state_handle=int(i,int64)
+      columns(i)%backend_id=template%compatible_backend_id
+      call source%clone(input)
+      call committed(i)%initialize(int(404100+i,int64),input,ok,T0)
+      if(.not.ok) error stop 'irrigation restart fixture initialization'
+    end do
+    call fmr_export_committed_restart(columns,[template],committed,92001_int64,saved,ok,code)
+    if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'irrigation restart export failed'
+    ! Corrupt only the second record. The first reconstructed candidate must
+    ! never be published when a later record fails validation.
+    do pass=1,3
+      invalid=saved
+      select case(pass)
+      case(1)
+        invalid%records(2)%time_bound=.false.
+      case(2)
+        invalid%records(2)%committed_time=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(3)
+        select type(state=>invalid%records(2)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          state%irrigation%active_event_rate=-1.0_real64
+        class default
+          error stop 'irrigation export sliced state'
+        end select
+      end select
+      call fmr_restore_committed_restart(invalid,92001_int64,columns,[template],restored,ok,code)
+      if(ok.or.code/=FMR_RESTART_KERNEL_PERSISTENCE_REJECTED) error stop 'invalid irrigation restart accepted'
+      if(restored(1)%ready().or.restored(2)%ready()) error stop 'failed irrigation restart partially published'
+    end do
+    call fmr_restore_committed_restart(saved,92001_int64,columns,[template],restored,ok,code)
+    if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'irrigation restart restore failed'
+    call source%temporal_history_snapshot(expected_history,available)
+    if(.not.available) error stop 'irrigation restart expected history missing'
+    do i=1,2
+      if(restored(i)%current_lineage_id()/=committed(i)%current_lineage_id().or. &
+           restored(i)%current_revision()/=committed(i)%current_revision()) error stop 'irrigation restart provenance'
+      call restored(i)%current_time(observed_time,available)
+      if(.not.available.or.observed_time/=T0) error stop 'irrigation restart time'
+      call restored(i)%snapshot(snapshot,available)
+      if(.not.available) error stop 'irrigation restart snapshot missing'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(.not.snapshot%matches_candidate(template,T0)) error stop 'irrigation restored payload invalid'
+        if(snapshot%irrigation%active_event.neqv.source%irrigation%active_event) error stop 'irrigation restored activation'
+        if(snapshot%irrigation%active_event_start/=source%irrigation%active_event_start.or. &
+             snapshot%irrigation%active_event_end/=source%irrigation%active_event_end.or. &
+             snapshot%irrigation%active_event_rate/=source%irrigation%active_event_rate) &
+             error stop 'irrigation restored event values'
+        if(any(snapshot%pressure_head/=source%pressure_head).or.any(snapshot%water_content/=source%water_content)) &
+             error stop 'irrigation restored physical state'
+        call snapshot%temporal_history_snapshot(actual_history,available)
+        if(.not.available) error stop 'irrigation restored history missing'
+        if(size(actual_history)/=size(expected_history)) error stop 'irrigation restored history shape'
+        if(any(actual_history/=expected_history)) error stop 'irrigation restored history changed'
+      class default
+        error stop 'irrigation restored dynamic type lost'
+      end select
+    end do
+    write(*,'(a)') 'PPA_IRR_EVENT_COMMITTED_RESTART_ATOMIC_ROUNDTRIP=PASS'
+  end subroutine verify_irrigation_restart_bundle
   subroutine verify_atm02_owner(profile,events)
     type(fmr_production_application_config_t),intent(in)::profile
     logical,intent(in)::events
