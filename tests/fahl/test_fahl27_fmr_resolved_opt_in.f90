@@ -146,6 +146,7 @@ contains
     type(kernel_committed_state_t),intent(out)::committed
     type(fmr_b110_physical_parameters_t),intent(in)::p
     logical,intent(out)::ok
+    integer :: k
     type(fmr_b110_physical_state_t)::state
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::provider
