@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "phase": "STAGE2_QBOT_FALLBACK_COMPLETE",
+  "status": "PASS_QBOT_FALLBACK",
+  "workflow_run": 36077688464,
+  "markers": [
+    "FAHL27_QBOT_DEFAULT_OFF_IDENTITY=PASS",
+    "FAHL27_QBOT_ANALYTICAL_FALLBACK=PASS",
+    "FAHL27_QBOT_DIRECT_O0_O2_IDENTITY=PASS"
+  ],
+  "cache": {"builds":0,"hits":0,"misses":0,"entries":0},
+  "finding": "With adaptive_hydraulics_active explicitly enabled under prescribed bottom flux, the serialized Reference backend falls back to the analytical constitutive provider. Candidate physical state and mass accounting remain bit-identical to default-off, and the adaptive cache is untouched."
+}
