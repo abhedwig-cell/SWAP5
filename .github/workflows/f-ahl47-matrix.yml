@@ -1,0 +1,27 @@
+name: F-AHL47 12-case fidelity matrix
+
+on:
+  pull_request:
+    paths:
+      - 'research/ahl/mod_ahl47_direct_retention_provider.f90'
+      - 'research/ahl/test_fahl47_matrix.f90'
+      - 'research/ahl/run_fahl47_matrix.sh'
+      - '.github/workflows/f-ahl47-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run 12-case current-postimage matrix
+        run: |
+          bash research/ahl/run_fahl47_matrix.sh | tee fahl47-matrix.txt
+          grep -Fq 'FAHL47_MATRIX_12_OF_12=PASS' fahl47-matrix.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fahl47-matrix
+          path: fahl47-matrix.txt
