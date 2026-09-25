@@ -22,6 +22,7 @@ module mod_ppa_irrigation_source_binding
   public :: evaluate_ppa_committed_irrigation_source
   public :: evaluate_ppa_committed_profile_irrigation_source
   public :: run_ppa_pending_irrigation_source_trial
+  public :: run_ppa_profile_irrigation_source_trial
 contains
   subroutine run_ppa_pending_irrigation_source_trial(backend,column,template,physical_parameters,irrigation_parameters, &
        committed,previous,numerical,t0,t1,checkpoint,result,candidate,diagnostics,irrigation_diagnostics,selection_request)
@@ -67,6 +68,63 @@ contains
     call evaluate_ppa_committed_irrigation_source(irrigation_parameters,committed,template,request,previous, &
          proposed_event,flux,irrigation_diagnostics,forcing,ok)
     if(.not.ok) return
+    call run_prepared_irrigation_source_trial(backend,column,template,physical_parameters,irrigation_parameters, &
+         committed,forcing,numerical,t0,t1,checkpoint,proposed_event,flux,result,candidate,diagnostics)
+  end subroutine run_ppa_pending_irrigation_source_trial
+
+  subroutine run_ppa_profile_irrigation_source_trial(backend,column,template,physical_parameters,irrigation_parameters, &
+       committed,previous,numerical,request,noddrz,layer,dz,ztopcp,rd,wclos,wcmes,wchis, &
+       checkpoint,result,candidate,diagnostics,irrigation_diagnostics)
+    type(fmr_serialized_reference_backend_t),intent(inout)::backend
+    type(fmr_logical_column_t),intent(in)::column
+    type(fmr_template_t),intent(in)::template
+    type(fmr_b110_physical_parameters_t),intent(in)::physical_parameters
+    type(scheduled_irrigation_parameters_t),intent(in)::irrigation_parameters
+    type(kernel_committed_state_t),intent(in)::committed
+    type(fmr_b110_physical_forcing_t),intent(in)::previous
+    type(canonical_numerical_config_t),intent(in)::numerical
+    type(scheduled_irrigation_request_t),intent(in)::request
+    integer,intent(in)::noddrz,layer(:)
+    real(real64),intent(in)::dz(:),ztopcp(:),rd,wclos(:),wcmes(:),wchis(:)
+    type(kernel_checkpoint_t),intent(in)::checkpoint
+    type(kernel_result_t),intent(out)::result
+    type(kernel_candidate_state_t),intent(out)::candidate
+    type(kernel_diagnostics_t),intent(out)::diagnostics
+    type(irrigation_diagnostics_t),intent(out)::irrigation_diagnostics
+    type(irrigation_state_t)::proposed_event
+    type(irrigation_flux_result_t)::flux
+    type(fmr_b110_physical_forcing_t),allocatable::forcing
+    logical::ok
+    result=kernel_result_t(); result%status=KERNEL_STATUS_NOT_ADMITTED
+    candidate=kernel_candidate_state_t()
+    diagnostics=kernel_diagnostics_t(); diagnostics%admission_rejections=1
+    call evaluate_ppa_committed_profile_irrigation_source(irrigation_parameters,committed,template,request, &
+         noddrz,layer,dz,ztopcp,rd,wclos,wcmes,wchis,previous,proposed_event,flux,irrigation_diagnostics,forcing,ok)
+    if(.not.ok) return
+    call run_prepared_irrigation_source_trial(backend,column,template,physical_parameters,irrigation_parameters, &
+         committed,forcing,numerical,request%t0,request%t1,checkpoint,proposed_event,flux,result,candidate,diagnostics)
+  end subroutine run_ppa_profile_irrigation_source_trial
+
+  subroutine run_prepared_irrigation_source_trial(backend,column,template,physical_parameters,irrigation_parameters, &
+       committed,forcing,numerical,t0,t1,checkpoint,event,flux,result,candidate,diagnostics)
+    use mod_irrigation_process, only: IRRIGATION_EVENT_SCHEDULED
+    type(fmr_serialized_reference_backend_t),intent(inout)::backend
+    type(fmr_logical_column_t),intent(in)::column
+    type(fmr_template_t),intent(in)::template
+    type(fmr_b110_physical_parameters_t),intent(in)::physical_parameters
+    type(scheduled_irrigation_parameters_t),intent(in)::irrigation_parameters
+    type(kernel_committed_state_t),intent(in)::committed
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing
+    type(canonical_numerical_config_t),intent(in)::numerical
+    real(real64),intent(in)::t0,t1
+    type(kernel_checkpoint_t),intent(in)::checkpoint
+    type(irrigation_state_t),intent(in)::event
+    type(irrigation_flux_result_t),intent(in)::flux
+    type(kernel_result_t),intent(out)::result
+    type(kernel_candidate_state_t),intent(out)::candidate
+    type(kernel_diagnostics_t),intent(out)::diagnostics
+    type(irrigation_state_t)::proposed_event
+    proposed_event=event
     if(flux%event_started) then
       ! The process candidate may already be cleared at t1. Reconstruct the
       ! selected start event from its checked flux for trial-local injection.
@@ -82,7 +140,7 @@ contains
       call backend%run_pending_irrigation_trial(column,template,physical_parameters,committed,forcing,numerical, &
            irrigation_parameters%single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics)
     end if
-  end subroutine run_ppa_pending_irrigation_source_trial
+  end subroutine run_prepared_irrigation_source_trial
 
   subroutine evaluate_ppa_committed_irrigation_source(parameters,committed,template,request,previous, &
        candidate,flux,diagnostics,forcing,ok)

@@ -1225,10 +1225,11 @@ contains
     call verify_pending_irrigation_restart(profile,committed,backend,column,template,forcing,finish)
     call verify_pending_mixed_columns(profile,source,template,.false.)
     call verify_pending_mixed_columns(profile,source,template,.true.)
-    call verify_new_irrigation_selection_trial(profile,source,template)
+    call verify_new_irrigation_selection_trial(profile,source,template,.false.)
+    call verify_new_irrigation_selection_trial(profile,source,template,.true.)
   end subroutine verify_pending_irrigation_trial
 
-  subroutine verify_new_irrigation_selection_trial(profile,source,template)
+  subroutine verify_new_irrigation_selection_trial(profile,source,template,profile_selection)
     use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
     use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
@@ -1238,11 +1239,12 @@ contains
     use mod_transaction_reference, only: transaction_state_t
     use mod_canonical_contracts, only: canonical_numerical_config_t
     use mod_irrigation_process, only: scheduled_irrigation_parameters_t,scheduled_irrigation_request_t, &
-         irrigation_state_t,irrigation_diagnostics_t
-    use mod_ppa_irrigation_source_binding, only: run_ppa_pending_irrigation_source_trial
+         irrigation_state_t,irrigation_diagnostics_t,IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+    use mod_ppa_irrigation_source_binding, only: run_ppa_pending_irrigation_source_trial,run_ppa_profile_irrigation_source_trial
     type(fmr_production_application_config_t),intent(in)::profile
     type(ppa_irrigation_event_state_t),intent(in)::source
     type(fmr_template_t),intent(in)::template
+    logical,intent(in)::profile_selection
     type(fmr_serialized_reference_backend_t)::backend
     type(fixed_flux_top_boundary_provider_t),target::top
     type(kernel_committed_state_t)::owner
@@ -1258,7 +1260,7 @@ contains
     type(scheduled_irrigation_request_t)::request
     type(irrigation_diagnostics_t)::process_diagnostics
     class(transaction_state_t),allocatable::initial,snapshot
-    real(real64)::finish
+    real(real64)::finish,root_depth
     logical::ok
     integer::attempt,code
     finish=T0+1.0_real64/1024.0_real64
@@ -1278,6 +1280,11 @@ contains
     irrigation%tcs7_knot_count=2; irrigation%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
     irrigation%dcs2_knot_count=2; irrigation%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
     irrigation%dcs2_depth_cm=0.01_real64*2.0_real64/1024.0_real64
+    root_depth=(0.01_real64*2.0_real64/1024.0_real64)/(0.8_real64-source%water_content(1))
+    if(profile_selection) then
+      irrigation%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+      irrigation%dcs1_knot_count=2; irrigation%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+    end if
     request%t0=T0; request%t1=finish
     request%selection_opportunity=.true.; request%irrigation_enabled=.true.
     request%schedule_enabled=.true.; request%crop_emerged=.true.; request%irrigation_window_open=.true.
@@ -1288,11 +1295,23 @@ contains
          owner,forcing,profile%numerical,ieee_value(T0,ieee_quiet_nan),finish, &
          checkpoint,result,candidate,diagnostics,process_diagnostics,request)
     if(result%completed.or.candidate%ready()) error stop 'new selection accepted nonfinite outer start'
+    if(profile_selection) then
+      call run_ppa_profile_irrigation_source_trial(backend,column,template,profile%tiles(1)%parameters,irrigation, &
+           owner,forcing,profile%numerical,request,1,[1],[-1.0_real64],[0.0_real64],root_depth, &
+           [0.8_real64],[0.3_real64],[0.1_real64],checkpoint,result,candidate,diagnostics,process_diagnostics)
+      if(result%completed.or.candidate%ready()) error stop 'selected hydraulic profile accepted invalid geometry'
+    end if
     do attempt=1,2
       numerical=profile%numerical
       if(attempt==1) numerical%max_committed_substeps=1
-      call run_ppa_pending_irrigation_source_trial(backend,column,template,profile%tiles(1)%parameters,irrigation, &
-           owner,forcing,numerical,T0,finish,checkpoint,result,candidate,diagnostics,process_diagnostics,request)
+      if(profile_selection) then
+        call run_ppa_profile_irrigation_source_trial(backend,column,template,profile%tiles(1)%parameters,irrigation, &
+             owner,forcing,numerical,request,1,[1],[1.0_real64],[0.0_real64],root_depth, &
+             [0.8_real64],[0.3_real64],[0.1_real64],checkpoint,result,candidate,diagnostics,process_diagnostics)
+      else
+        call run_ppa_pending_irrigation_source_trial(backend,column,template,profile%tiles(1)%parameters,irrigation, &
+             owner,forcing,numerical,T0,finish,checkpoint,result,candidate,diagnostics,process_diagnostics,request)
+      end if
       if(.not.process_diagnostics%triggered) error stop 'new irrigation selection not triggered'
       call owner%snapshot(snapshot,ok)
       if(.not.ok) error stop 'new irrigation original snapshot'
@@ -1325,6 +1344,7 @@ contains
     forcing%subsurface_irrigation_source(1)=0.01_real64
     call verify_pending_irrigation_restart(profile,owner,backend,column,template,forcing,finish)
     write(*,'(a)') 'PPA_IRR_NEW_SELECTION_HYDRAULIC_COMMIT_RESTART=PASS'
+    if(profile_selection) write(*,'(a)') 'PPA_IRR_DCS1_PROFILE_HYDRAULIC_COMMIT_RESTART=PASS'
   end subroutine verify_new_irrigation_selection_trial
 
   subroutine verify_pending_mixed_columns(profile,source,template,reverse_order)
