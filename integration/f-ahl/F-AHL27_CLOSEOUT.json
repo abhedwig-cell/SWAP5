@@ -51,8 +51,12 @@
     },
     "canonical_prescribed_head_transient_timing": {
       "classification": "STRUCTURALLY_BLOCKED",
-      "reason": "fmr_serialized_temporal_identity returns zero only for bit-identical full-step and two-half-step base physical states; all six preregistered nontrivial prescribed-head perturbations were temporally rejected.",
-      "fixture_qualification_workflow_run": 36078305485
+      "reason": "The current serialized Reference external full-half temporal contract rejects all preregistered nontrivial prescribed-head timing fixtures before any accepted substep. This was independently confirmed in both the six-case dt=0.25 sweep and the five-case short-duration dt=0.01/0.05 sweep.",
+      "fixture_qualification_workflow_runs": [
+        36078305485,
+        36078756664
+      ],
+      "short_duration_preregistered_result": "integration/f-ahl/F-AHL27_STAGE2_FIXTURE_RESULT.json"
     },
     "invalid_temporal_none_attempt": {
       "workflow_run": 36078079645,
@@ -69,5 +73,5 @@
     "A future production admission must use a workload where material net application or whole-SWAP benefit can be measured without changing transaction semantics."
   ],
   "research_conclusion": "The scientific AHL hypothesis is supported: an automatically built derivative-consistent hydraulic representation can substantially reduce strict Richards cost while preserving physical and nonlinear-solver behavior. The production-shaped FMR wrapper adds enough overhead in the tested single-column reference-floor sample that its net application-layer gain is only equivocal.",
-  "closure": "NO_OPEN_TECHNICAL_REPAIR_WITHIN_F_AHL27; correctness and routing are closed for the qualified opt-in envelope. Remaining work is external performance/overhead evidence and broader admission scope."
+  "closure": "NO_OPEN_TECHNICAL_REPAIR_WITHIN_F_AHL27; correctness and routing are closed for the qualified opt-in envelope. Canonical nontrivial prescribed-head application timing is structurally blocked under the current external full-half contract, independently confirmed at dt=0.25 and dt=0.01/0.05. Remaining work is provider/FMR overhead attribution, external workload performance evidence and broader admission scope."
 }
