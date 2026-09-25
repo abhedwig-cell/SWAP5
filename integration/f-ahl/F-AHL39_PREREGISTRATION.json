@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL39",
+  "title": "Serialized FMR multi-authority application timing",
+  "parent": "F-AHL38",
+  "phase": "PREREGISTERED_APPLICATION_BENCHMARK",
+  "question": "Does the stable registry-slot repair preserve the adaptive hydraulic speed benefit when one long-lived serialized FMR backend switches repeatedly among multiple already-built hydraulic authorities?",
+  "workload": {
+    "backend": "single fmr_serialized_reference_backend_t per analytical/adaptive arm",
+    "unique_parameterizations": 16,
+    "sequence": "deterministic round robin",
+    "base_case": "FSI24-like B1.10 material with small prospective hydraulic perturbations",
+    "initial_head_cm": -75.0,
+    "bottom_head_cm": -50.0,
+    "step_duration_day": 0.25,
+    "bottom_mode": 5,
+    "adaptive_tables": "all 16 warmed before timed batches"
+  },
+  "fidelity_gate_per_parameterization": {
+    "sample_valid": true,
+    "same_solver_status": true,
+    "same_nonlinear_iterations": true,
+    "same_backtracking_attempts": true,
+    "max_abs_pressure_head_delta_cm": 0.05,
+    "max_abs_water_content_delta": 1e-4,
+    "max_abs_top_flux_delta_cm_per_day": 1e-5,
+    "max_abs_bottom_flux_delta_cm_per_day": 1e-5,
+    "mass_residual_abs_cm": 1e-12
+  },
+  "timing_policy": {
+    "compiler": "gfortran -O3",
+    "calls_per_batch": 16384,
+    "paired_repetitions": 7,
+    "order": "alternate analytical->adaptive and adaptive->analytical",
+    "primary_statistic": "median paired adaptive/analytical CPU ratio",
+    "setup_and_table_warmup": "outside timed batches"
+  },
+  "decision_rule": {
+    "application_speed_pass": "median ratio < 0.98",
+    "equivocal": "0.98 <= median ratio <= 1.02",
+    "application_speed_fail": "median ratio > 1.02"
+  },
+  "hard_exclusions": [
+    "NO_WHOLE_SWAP_OR_MULTISWAP_SPEEDUP_CLAIM",
+    "NO_PARALLEL_THREAD_SAFETY_CLAIM",
+    "NO_HYDRAULIC_GATE_RETUNING",
+    "NO_PRODUCTION_ADMISSION_FROM_THIS_SINGLE_APPLICATION_SHAPE"
+  ]
+}
