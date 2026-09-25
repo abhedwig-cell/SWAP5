@@ -4,7 +4,7 @@ Date: 2026-09-25
 
 Status: `PREREGISTERED_PRODUCTION_SHAPED_EXTRACTION`
 
-Parent authority: F-AHL48 closed shared immutable ownership, resolution 64 intervals per decade.
+Parent authority: F-AHL48 closed shared immutable ownership, resolution 128 intervals per decade.
 
 ## Question
 
@@ -14,7 +14,7 @@ Can the F-AHL48 shared direct-retention architecture be extracted into productio
 
 Representation:
 
-- 64 intervals per decade over |h| = 1..1e6 cm;
+- 128 intervals per decade over |h| = 1..1e6 cm;
 - direct decade selection and direct interval arithmetic;
 - cubic Hermite theta representation;
 - C is the exact derivative of the same interpolant;
