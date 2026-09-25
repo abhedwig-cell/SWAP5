@@ -570,7 +570,32 @@ contains
         if(diagnostics%status/=IRRIGATION_OK.or..not.flux%event_finished) error stop 'irrigation gift selection'
         selected_amount(tile)=flux%external_inflow_amount
         irrigation_forcing(tile)=bound_forcing
+        control_forcing(tile)=profile%tiles(tile)%base_forcing
+        control_forcing(tile)%top_flux=0.0_real64
+        irrigation%timing_criterion=IRRIGATION_TIMING_TCS8_WATER_CONTENT
+        irrigation%tcs8_knot_count=2
+        irrigation%tcs8_dvs(1:2)=[0.0_real64,2.0_real64]
+        irrigation%tcs8_water_content(1:2)=0.0_real64
+        call evaluate_ppa_profile_irrigation_source(irrigation,base,request,hydraulic,1,[1],[thickness], &
+             [0.0_real64],thickness*0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
+             control_forcing(tile),candidate,flux,diagnostics,bound_forcing,ok)
+        if(.not.ok.or.flux%applied) error stop 'TCS8 wet-profile selection'
+        if(any(bound_forcing%subsurface_irrigation_source/=0.0_real64)) error stop 'TCS8 wet-profile source'
+        ! The source timing criterion includes equality at the moisture threshold.
+        irrigation%tcs8_water_content(1:2)=hydraulic%water_content(1)
+        call evaluate_ppa_profile_irrigation_source(irrigation,base,request,hydraulic,1,[1],[thickness], &
+             [0.0_real64],thickness*0.5_real64,[0.8_real64],[0.3_real64],[0.1_real64], &
+             control_forcing(tile),candidate,flux,diagnostics,bound_forcing,ok)
+        if(.not.ok.or..not.flux%event_finished) error stop 'TCS8 threshold equality source'
+        if(flux%external_inflow_amount/=selected_amount(tile)) error stop 'TCS7 TCS8 DCS1 amount differs'
+        if(any(bound_forcing%subsurface_irrigation_source/=irrigation_forcing(tile)%subsurface_irrigation_source)) &
+             error stop 'TCS7 TCS8 source rates differ'
+        if(bound_forcing%temporal_forcing_event.neqv.irrigation_forcing(tile)%temporal_forcing_event) &
+             error stop 'TCS7 TCS8 source event differs'
+        irrigation_forcing(tile)=bound_forcing
+        irrigation%timing_criterion=IRRIGATION_TIMING_TCS7_PRESSURE_HEAD
       end do
+      write(*,'(a)') 'PPA_IRR_TCS8_PROFILE_SOURCE_THRESHOLD_IDENTITY=PASS'
       control_forcing=irrigation_forcing
       do tile=1,NTILE
         control_forcing(tile)%subsurface_irrigation_source=0.0_real64
