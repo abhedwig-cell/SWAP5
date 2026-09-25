@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "title": "Production-shaped default-MvG adaptive hydraulic provider extraction",
+  "parent": "F-AHL26",
+  "phase": "PREREGISTERED_IMPLEMENTATION_PREFLIGHT",
+  "objective": "Promote the already qualified default-MvG self-building derivative-consistent hydraulic representation from research-only modules into src/ modules behind the existing typed constitutive-provider contract, without changing runtime routing or default behavior.",
+  "bound_research_authority": [
+    "F-AHL20 self-built immutable cached provider",
+    "F-AHL24 prescribed-qbot fully analytical fallback",
+    "F-AHL10D dry-end relevance-bounded representation",
+    "F-AHL09 derivative-consistent theta/C invariant"
+  ],
+  "initial_production_envelope": {
+    "hydraulic_family": "B110 default unimodal MvG only",
+    "lower_boundary": "prescribed-head-like qualified routes only",
+    "swkimpl": 0,
+    "runtime_refinement": false,
+    "external_user_tables": false,
+    "prescribed_qbot": "analytical fallback",
+    "near_saturation": "authoritative analytical handling",
+    "dry_tail": "analytical fallback outside relevance-bounded represented domain"
+  },
+  "stage_1": {
+    "action": "extract builder, cache and provider into production-shaped src modules",
+    "runtime_routing_change": false,
+    "required_gate": "research oracle and production-shaped provider must agree on table identity, constitutive outputs, cache behavior and F-AHL20 Richards matrix"
+  },
+  "stage_2_after_stage_1_pass": {
+    "action": "add explicit opt-in FMR routing without changing default analytical behavior",
+    "required_gates": [
+      "default-off canonical regression identity",
+      "12-case prescribed-head AHL matrix",
+      "prescribed-qbot analytical fallback",
+      "accepted-trajectory transactional replay",
+      "application-level paired timing"
+    ]
+  },
+  "hard_exclusions": [
+    "NO_DEFAULT_ON",
+    "NO_PDI_OR_MODEL3_ROUTING_IN_F-AHL27",
+    "NO_SWKIMPL1",
+    "NO_PRESCRIBED_QBOT_LOOKUP",
+    "NO_RUNTIME_REFINEMENT",
+    "NO_CANONICAL_ADMISSION_BEFORE_STAGE2_CLOSEOUT"
+  ]
+}
