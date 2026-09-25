@@ -1,0 +1,25 @@
+name: F-AHL11E global 1e-4 full catalog matrix
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl11e_build_full_catalog_1e4.py'
+      - 'research/ahl/run_ahl11e_full_catalog_matrix.sh'
+      - 'integration/f-ahl/F-AHL11E_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl11e-global-1e4-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run global 1e-4 build and 108-case matrix
+        run: |
+          bash research/ahl/run_ahl11e_full_catalog_matrix.sh /tmp/ahl11e_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl11e-${{ github.run_id }}
+          path: /tmp/ahl11e_result.txt
