@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42",
+  "record": "CANONICAL_ADMISSION_READINESS",
+  "status": "PENDING_MINIMAL_BRANCH_CI",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "admission_branch": "work/f-ahl42-canonical-admission-prep",
+  "minimal_production_delta": {
+    "changed_existing_src_files": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "new_src_files": [
+      "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+      "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+      "src/solver/mod_b110_adaptive_hydraulic_provider.f90"
+    ],
+    "removed_src_files": []
+  },
+  "existing_canonical_test_dependency_delta": [
+    "tests/fkt/run_fkt22_fmr_runtime_gate.sh"
+  ],
+  "retained_new_regressions": [
+    "tests/fahl/run_fahl27_production_provider_extract.sh",
+    "tests/fahl/run_fahl27_stage2_matrix.sh",
+    "tests/fahl/run_fahl27_stage2_qbot_fallback.sh",
+    "tests/fahl/run_fahl27a_production_dry_tail.sh"
+  ],
+  "hard_boundaries": {
+    "default_adaptive": false,
+    "prescribed_head_mode5": "adaptive opt-in candidate",
+    "prescribed_qbot": "analytical fallback",
+    "accepted_trajectory_directional": "analytical fallback",
+    "swkimpl1": "excluded",
+    "PDI": "excluded",
+    "bi_modal_model3": "excluded from this admission patch",
+    "dry_tail": "raw C relevance floor 1e-13 bounds representation only; authoritative analytical fallback outside; no theta or K truncation"
+  },
+  "source_delta_audit": "PASS_MINIMAL_4_SRC_FILES",
+  "research_branch_merge_policy": "DO_NOT_MERGE_WHOLE_RESEARCH_BRANCH",
+  "current_blocker": "GitHub Actions run 36113817860 is queued; no admission verdict until retained-regression CI executes.",
+  "next_decision": "If the minimal branch CI passes, prepare canonical admission gate/PR from this branch. If it fails, classify only the concrete dependency/regression failure and repair without widening scope."
+}
