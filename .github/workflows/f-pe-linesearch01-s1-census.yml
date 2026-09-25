@@ -1,0 +1,28 @@
+name: F-PE-LINESEARCH01 S1 stagnation census
+
+on:
+  pull_request:
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/publication/test_pub_p2e04_reference_failure_census.f90'
+      - 'tests/fpe/run_fpe_linesearch01_s1_census.sh'
+      - 'docs/performance/F-PE-LINESEARCH01_S1_STAGNATION_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-linesearch01-s1-census.yml'
+  workflow_dispatch:
+
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Compare baseline and stagnation candidate census
+        run: |
+          bash tests/fpe/run_fpe_linesearch01_s1_census.sh | tee linesearch01-s1-census.txt
+          grep -Fq 'LINESEARCH01_S1_CENSUS=PASS' linesearch01-s1-census.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linesearch01-s1-census
+          path: linesearch01-s1-census.txt

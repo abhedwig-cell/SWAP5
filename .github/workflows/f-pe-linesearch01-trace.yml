@@ -1,0 +1,28 @@
+name: F-PE-LINESEARCH01 backtracking trace
+
+on:
+  pull_request:
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fpe/test_fpe_linesearch01_trace.f90'
+      - 'tests/fpe/run_fpe_linesearch01_trace.sh'
+      - 'docs/performance/F-PE-LINESEARCH01_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-linesearch01-trace.yml'
+  workflow_dispatch:
+
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Trace easy and hard backtracking candidates
+        run: |
+          bash tests/fpe/run_fpe_linesearch01_trace.sh | tee linesearch01-trace.txt
+          grep -Fq 'LINESEARCH01_TRACE=PASS' linesearch01-trace.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linesearch01-trace
+          path: linesearch01-trace.txt
