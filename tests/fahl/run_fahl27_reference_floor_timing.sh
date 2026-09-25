@@ -86,4 +86,5 @@ done
 gfortran "${COMMON[@]}" -O3 -J "$BUILD" -I "$BUILD" -c tests/fahl/test_fahl27_reference_floor_timing.f90 -o "$BUILD/test.o"
 gfortran -fopenmp -O3 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 "$BUILD/test" | tee /tmp/fahl27_reference_floor_timing.txt
-grep -Fq 'FAHL27_REFERENCE_FLOOR_FIDELITY=PASS' /tmp/fahl27_stage2_reference-floor_trial_timing.txt
+grep -Fq 'FAHL27_REFERENCE_FLOOR_FIDELITY=PASS' /tmp/fahl27_reference_floor_timing.txt
+grep -Eq 'FAHL27_REFERENCE_FLOOR_TIMING=(PASS|EQUIVOCAL|FAIL)' /tmp/fahl27_reference_floor_timing.txt
