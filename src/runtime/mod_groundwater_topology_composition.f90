@@ -119,7 +119,8 @@ contains
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
     type(groundwater_topology_cell_t), allocatable :: cells(:)
     real(real64) :: fraction_sum, compensation, y, t, scale
-    integer :: i, j, cell_index, tile_count
+    integer :: i, j, cell_index, tile_count, tile_cursor
+    logical :: canonical_input
 
     topology%materialized = .false.
     status = GW_TOPOLOGY_EMPTY
@@ -130,86 +131,152 @@ contains
     tiles = tile_contracts
     cells = cell_contracts
 
+    canonical_input = .true.
     do i = 1, size(tiles)
       status = GW_TOPOLOGY_INVALID_TILE
       if (.not. tiles(i)%valid()) return
-      do j = 1, i - 1
-        if (tiles(j)%tile_id == tiles(i)%tile_id) then
-          status = GW_TOPOLOGY_DUPLICATE_TILE_ID
-          return
-        end if
-        if (tiles(j)%swap_lineage_id == tiles(i)%swap_lineage_id) then
-          status = GW_TOPOLOGY_DUPLICATE_SWAP_LINEAGE
-          return
-        end if
-        if (tiles(j)%ledger_id == tiles(i)%ledger_id) then
-          status = GW_TOPOLOGY_DUPLICATE_LEDGER_ID
-          return
-        end if
-      end do
+      if (i > 1) then
+        if (tiles(i-1)%tile_id >= tiles(i)%tile_id) canonical_input = .false.
+        if (tiles(i-1)%swap_lineage_id >= tiles(i)%swap_lineage_id) canonical_input = .false.
+        if (tiles(i-1)%ledger_id >= tiles(i)%ledger_id) canonical_input = .false.
+        if (tiles(i-1)%groundwater_cell_id > tiles(i)%groundwater_cell_id) canonical_input = .false.
+      end if
     end do
 
     do i = 1, size(cells)
       status = GW_TOPOLOGY_INVALID_CELL
       if (.not. cells(i)%valid()) return
       if (cells(i)%package_slot > size(cells)) return
-      do j = 1, i - 1
-        if (cells(j)%groundwater_cell_id == cells(i)%groundwater_cell_id) then
-          status = GW_TOPOLOGY_DUPLICATE_CELL_ID
-          return
-        end if
-        if (cells(j)%coupling_id == cells(i)%coupling_id) then
-          status = GW_TOPOLOGY_DUPLICATE_COUPLING_ID
-          return
-        end if
-        if (cells(j)%groundwater_lineage_id == cells(i)%groundwater_lineage_id) then
-          status = GW_TOPOLOGY_DUPLICATE_GROUNDWATER_LINEAGE
-          return
-        end if
-        if (cells(j)%package_slot == cells(i)%package_slot) then
-          status = GW_TOPOLOGY_DUPLICATE_PACKAGE_SLOT
-          return
-        end if
-        if (cells(j)%modflow_node_id == cells(i)%modflow_node_id) then
-          status = GW_TOPOLOGY_DUPLICATE_MODFLOW_NODE
+      if (i > 1) then
+        if (cells(i-1)%groundwater_cell_id >= cells(i)%groundwater_cell_id) canonical_input = .false.
+        if (cells(i-1)%coupling_id >= cells(i)%coupling_id) canonical_input = .false.
+        if (cells(i-1)%groundwater_lineage_id >= cells(i)%groundwater_lineage_id) canonical_input = .false.
+        if (cells(i-1)%package_slot >= cells(i)%package_slot) canonical_input = .false.
+        if (cells(i-1)%modflow_node_id >= cells(i)%modflow_node_id) canonical_input = .false.
+      end if
+    end do
+
+    if (.not. canonical_input) then
+      do i = 1, size(tiles)
+        do j = 1, i - 1
+          if (tiles(j)%tile_id == tiles(i)%tile_id) then
+            status = GW_TOPOLOGY_DUPLICATE_TILE_ID
+            return
+          end if
+          if (tiles(j)%swap_lineage_id == tiles(i)%swap_lineage_id) then
+            status = GW_TOPOLOGY_DUPLICATE_SWAP_LINEAGE
+            return
+          end if
+          if (tiles(j)%ledger_id == tiles(i)%ledger_id) then
+            status = GW_TOPOLOGY_DUPLICATE_LEDGER_ID
+            return
+          end if
+        end do
+      end do
+
+      do i = 1, size(cells)
+        do j = 1, i - 1
+          if (cells(j)%groundwater_cell_id == cells(i)%groundwater_cell_id) then
+            status = GW_TOPOLOGY_DUPLICATE_CELL_ID
+            return
+          end if
+          if (cells(j)%coupling_id == cells(i)%coupling_id) then
+            status = GW_TOPOLOGY_DUPLICATE_COUPLING_ID
+            return
+          end if
+          if (cells(j)%groundwater_lineage_id == cells(i)%groundwater_lineage_id) then
+            status = GW_TOPOLOGY_DUPLICATE_GROUNDWATER_LINEAGE
+            return
+          end if
+          if (cells(j)%package_slot == cells(i)%package_slot) then
+            status = GW_TOPOLOGY_DUPLICATE_PACKAGE_SLOT
+            return
+          end if
+          if (cells(j)%modflow_node_id == cells(i)%modflow_node_id) then
+            status = GW_TOPOLOGY_DUPLICATE_MODFLOW_NODE
+            return
+          end if
+        end do
+      end do
+    end if
+
+    if (canonical_input) then
+      cell_index = 1
+      do i = 1, size(tiles)
+        do while (cell_index <= size(cells) .and. &
+             cells(cell_index)%groundwater_cell_id < tiles(i)%groundwater_cell_id)
+          cell_index = cell_index + 1
+        end do
+        if (cell_index > size(cells) .or. &
+            cells(cell_index)%groundwater_cell_id /= tiles(i)%groundwater_cell_id) then
+          status = GW_TOPOLOGY_TILE_CELL_MISSING
           return
         end if
       end do
-    end do
-
-    do i = 1, size(tiles)
-      cell_index = find_cell_index(cells, tiles(i)%groundwater_cell_id)
-      if (cell_index <= 0) then
-        status = GW_TOPOLOGY_TILE_CELL_MISSING
-        return
-      end if
-    end do
-
-    do i = 1, size(cells)
-      fraction_sum = 0.0_real64
-      compensation = 0.0_real64
-      tile_count = 0
-      do j = 1, size(tiles)
-        if (tiles(j)%groundwater_cell_id /= cells(i)%groundwater_cell_id) cycle
-        tile_count = tile_count + 1
-        y = tiles(j)%area_fraction - compensation
-        t = fraction_sum + y
-        compensation = (t - fraction_sum) - y
-        fraction_sum = t
+    else
+      do i = 1, size(tiles)
+        cell_index = find_cell_index(cells, tiles(i)%groundwater_cell_id)
+        if (cell_index <= 0) then
+          status = GW_TOPOLOGY_TILE_CELL_MISSING
+          return
+        end if
       end do
-      if (tile_count <= 0) then
-        status = GW_TOPOLOGY_CELL_WITHOUT_TILE
-        return
-      end if
-      scale = max(1.0_real64, abs(fraction_sum))
-      if (abs(fraction_sum - 1.0_real64) > 64.0_real64 * epsilon(1.0_real64) * scale) then
-        status = GW_TOPOLOGY_FRACTION_SUM
-        return
-      end if
-    end do
+    end if
 
-    call sort_cells_by_id(cells)
-    call sort_tiles_by_cell_then_tile(tiles)
+    if (canonical_input) then
+      tile_cursor = 1
+      do i = 1, size(cells)
+        fraction_sum = 0.0_real64
+        compensation = 0.0_real64
+        tile_count = 0
+        do while (tile_cursor <= size(tiles))
+          if (tiles(tile_cursor)%groundwater_cell_id /= cells(i)%groundwater_cell_id) exit
+          tile_count = tile_count + 1
+          y = tiles(tile_cursor)%area_fraction - compensation
+          t = fraction_sum + y
+          compensation = (t - fraction_sum) - y
+          fraction_sum = t
+          tile_cursor = tile_cursor + 1
+        end do
+        if (tile_count <= 0) then
+          status = GW_TOPOLOGY_CELL_WITHOUT_TILE
+          return
+        end if
+        scale = max(1.0_real64, abs(fraction_sum))
+        if (abs(fraction_sum - 1.0_real64) > 64.0_real64 * epsilon(1.0_real64) * scale) then
+          status = GW_TOPOLOGY_FRACTION_SUM
+          return
+        end if
+      end do
+    else
+      do i = 1, size(cells)
+        fraction_sum = 0.0_real64
+        compensation = 0.0_real64
+        tile_count = 0
+        do j = 1, size(tiles)
+          if (tiles(j)%groundwater_cell_id /= cells(i)%groundwater_cell_id) cycle
+          tile_count = tile_count + 1
+          y = tiles(j)%area_fraction - compensation
+          t = fraction_sum + y
+          compensation = (t - fraction_sum) - y
+          fraction_sum = t
+        end do
+        if (tile_count <= 0) then
+          status = GW_TOPOLOGY_CELL_WITHOUT_TILE
+          return
+        end if
+        scale = max(1.0_real64, abs(fraction_sum))
+        if (abs(fraction_sum - 1.0_real64) > 64.0_real64 * epsilon(1.0_real64) * scale) then
+          status = GW_TOPOLOGY_FRACTION_SUM
+          return
+        end if
+      end do
+    end if
+
+    if (.not. canonical_input) then
+      call sort_cells_by_id(cells)
+      call sort_tiles_by_cell_then_tile(tiles)
+    end if
 
     allocate(topology%tiles(size(tiles)))
     allocate(topology%cells(size(cells)))
