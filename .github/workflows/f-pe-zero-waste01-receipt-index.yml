@@ -16,6 +16,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
       - name: Run existing FMR18 MultiSWAP receipt gate
