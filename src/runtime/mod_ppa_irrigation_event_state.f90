@@ -10,6 +10,7 @@ module mod_ppa_irrigation_event_state
   implicit none
   private
   public :: ppa_irrigation_event_state_t
+  public :: build_irrigation_event_candidate
   ! Reserved candidate identity, intentionally absent from production's known-layout registry.
   integer(int64), parameter, public :: PPA_IRRIGATION_EVENT_LAYOUT=404101_int64
 
@@ -20,6 +21,24 @@ module mod_ppa_irrigation_event_state
     procedure :: matches_candidate => irrigation_event_matches_candidate
   end type
 contains
+  subroutine build_irrigation_event_candidate(physical,event,template,boundary_time,candidate,ok)
+    ! Combine trial outputs only. The caller must supply the hydraulic state
+    ! and event from the same boundary; this routine neither proves hydraulic
+    ! acceptance nor publishes committed state or changes the runtime registry.
+    type(fmr_b110_temporal_indicator_state_t), intent(in) :: physical
+    type(irrigation_state_t), intent(in) :: event
+    type(fmr_template_t), intent(in) :: template
+    real(real64), intent(in) :: boundary_time
+    type(ppa_irrigation_event_state_t), allocatable, intent(out) :: candidate
+    logical, intent(out) :: ok
+    type(ppa_irrigation_event_state_t) :: proposed
+    proposed%fmr_b110_temporal_indicator_state_t=physical
+    proposed%irrigation=event
+    ok=proposed%matches_candidate(template,boundary_time)
+    if(.not.ok) return
+    allocate(candidate,source=proposed)
+  end subroutine
+
   logical function irrigation_event_matches_candidate(self,template,committed_time) result(matches)
     class(ppa_irrigation_event_state_t), intent(in) :: self
     type(fmr_template_t), intent(in) :: template

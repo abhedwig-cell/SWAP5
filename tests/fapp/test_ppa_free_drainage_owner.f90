@@ -156,7 +156,8 @@ program test_ppa_free_drainage_owner
 contains
   subroutine verify_hydraulic_copy(profile)
     use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
-    use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t,PPA_IRRIGATION_EVENT_LAYOUT
+    use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t,PPA_IRRIGATION_EVENT_LAYOUT, &
+         build_irrigation_event_candidate
     use mod_fmr_serialized_reference_backend, only: fmr_b110_temporal_indicator_state_t
     use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
     use mod_transaction_reference, only: transaction_state_t
@@ -171,6 +172,7 @@ contains
     logical::ok
     logical::history_available,clone_history_available
     type(ppa_irrigation_event_state_t)::carrier,invalid_carrier
+    type(ppa_irrigation_event_state_t),allocatable::assembled
     type(fmr_template_t)::event_template
     class(transaction_state_t),allocatable::carrier_copy
     real(real64),allocatable::history(:),clone_history(:)
@@ -309,6 +311,49 @@ contains
     if(fmr_restart_state_matches_template(carrier,profile%tiles(1)%template)) &
          error stop 'unregistered carrier admitted as BASE'
     write(*,'(a)') 'PPA_IRR_EVENT_CARRIER_CLONE_BASE_REJECTION=PASS'
+    ! Exercise the actual process continuation with a detached physical snapshot.
+    ! Hydraulic evolution/acceptance is not asserted by this assembly-only test.
+    irrigation%scheduled_irrigation_enabled=.true.
+    irrigation%active_nodes=carrier%active_nodes
+    irrigation%sensor_node=1; irrigation%single_ssdi_node=1
+    irrigation%tcs7_knot_count=2
+    irrigation%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+    irrigation%dcs2_knot_count=2
+    irrigation%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+    hydraulic%active_nodes=carrier%active_nodes
+    hydraulic%pressure_head=carrier%pressure_head
+    hydraulic%water_content=carrier%water_content
+    base=carrier%irrigation
+    expected=0.0_real64
+    do pass=1,2
+      request%t0=T0+real(pass-1,real64)*0.25_real64
+      request%t1=T0+real(pass,real64)*0.25_real64
+      call evaluate_scheduled_irrigation_interval(irrigation,base,request,hydraulic,candidate,flux,diagnostics)
+      if(diagnostics%status/=IRRIGATION_OK) error stop 'carrier process continuation failed'
+      call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+           candidate,event_template,request%t1,assembled,ok)
+      if(.not.ok.or..not.allocated(assembled)) error stop 'carrier process assembly failed'
+      if(assembled%irrigation%active_event.neqv.(pass==1)) error stop 'carrier process endpoint state'
+      expected=expected+flux%external_inflow_amount
+      call assembled%temporal_history_snapshot(clone_history,clone_history_available)
+      if(.not.clone_history_available) error stop 'assembled history lost'
+      if(any(clone_history/=history)) error stop 'assembled history changed'
+      if(any(assembled%water_content/=carrier%water_content)) error stop 'assembled physical state changed'
+      base=assembled%irrigation
+    end do
+    if(abs(expected-0.005_real64)>1.0e-15_real64) error stop 'carrier split gift amount'
+    request%t0=T0+0.5_real64; request%t1=T0+0.75_real64
+    call evaluate_scheduled_irrigation_interval(irrigation,base,request,hydraulic,candidate,flux,diagnostics)
+    if(diagnostics%status/=IRRIGATION_OK.or.flux%applied) error stop 'carrier duplicate completed gift'
+    ! A failed assembly must not leave a stale previously valid output behind.
+    call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+         carrier%irrigation,event_template,T0+0.5_real64,assembled,ok)
+    if(ok.or.allocated(assembled)) error stop 'failed assembly retained stale candidate'
+    if(.not.carrier%irrigation%active_event) error stop 'assembly mutated source event'
+    base=irrigation_state_t()
+    irrigation=scheduled_irrigation_parameters_t()
+    request=scheduled_irrigation_request_t()
+    write(*,'(a)') 'PPA_IRR_EVENT_PROCESS_SPLIT_ASSEMBLY_NO_DUPLICATE=PASS'
     copied(1)%water_content=-99.0_real64
     copied(1)%pressure_head_cm=99.0_real64
     call owner%copy_committed_hydraulic_states(again,code)
