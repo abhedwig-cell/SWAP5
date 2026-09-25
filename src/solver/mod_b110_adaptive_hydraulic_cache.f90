@@ -27,9 +27,12 @@ module mod_b110_adaptive_hydraulic_cache
     private
     type(b110_adaptive_hydraulic_cache_entry_t), allocatable :: entry(:)
     integer :: builds=0, hits=0, misses=0
+    integer(int64) :: total_probes=0_int64
+    integer :: max_probes=0
   contains
     procedure :: get_or_build => b110_ahl_get_or_build
     procedure :: stats => b110_ahl_stats
+    procedure :: probe_stats => b110_ahl_probe_stats
   end type b110_adaptive_hydraulic_cache_t
 
   public :: make_b110_adaptive_hydraulic_key, b110_adaptive_hydraulic_keys_equal
@@ -94,18 +97,22 @@ contains
 
     was_hit=.false.;ok=.false.;slot=0
     if(.not.allocated(self%entry)) allocate(self%entry(B110_AHL_MAX_CACHE))
+
+    slot=1+int(modulo(key%fingerprint,int(B110_AHL_MAX_CACHE,int64)))
     do i=1,B110_AHL_MAX_CACHE
-      if(self%entry(i)%occupied)then
-        if(self%entry(i)%key%fingerprint==key%fingerprint)then
-          if(b110_adaptive_hydraulic_keys_equal(self%entry(i)%key,key))then
-            table=self%entry(i)%table
-            self%hits=self%hits+1
-            was_hit=.true.;ok=.true.;return
-          end if
+      self%total_probes=self%total_probes+1_int64
+      self%max_probes=max(self%max_probes,i)
+      if(.not.self%entry(slot)%occupied) exit
+      if(self%entry(slot)%key%fingerprint==key%fingerprint)then
+        if(b110_adaptive_hydraulic_keys_equal(self%entry(slot)%key,key))then
+          table=self%entry(slot)%table
+          self%hits=self%hits+1
+          was_hit=.true.;ok=.true.;return
         end if
-      else if(slot==0)then
-        slot=i
       end if
+      slot=slot+1
+      if(slot>B110_AHL_MAX_CACHE) slot=1
+      if(i==B110_AHL_MAX_CACHE) slot=0
     end do
 
     self%misses=self%misses+1
@@ -137,5 +144,13 @@ contains
       if(self%entry(i)%occupied)entries=entries+1
     end do
   end subroutine b110_ahl_stats
+
+  subroutine b110_ahl_probe_stats(self,total_probes,max_probes)
+    class(b110_adaptive_hydraulic_cache_t),intent(in)::self
+    integer(int64),intent(out)::total_probes
+    integer,intent(out)::max_probes
+    total_probes=self%total_probes
+    max_probes=self%max_probes
+  end subroutine b110_ahl_probe_stats
 
 end module mod_b110_adaptive_hydraulic_cache
