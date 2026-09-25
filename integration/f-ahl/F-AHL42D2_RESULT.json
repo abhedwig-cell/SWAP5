@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42D2",
+  "phase": "CATALOG_REPAIR_APPLICATION_TIMING_COMPLETE",
+  "status": "PASS_ON_EXPERIMENT_BRANCH",
+  "workflow_run": 36115566089,
+  "workflow_job": 108008728736,
+  "candidate": {
+    "global_abs_logK_tolerance": 1e-4,
+    "wet_abs_logK_tolerance": 3e-4
+  },
+  "fidelity": {
+    "max_abs_pressure_head_delta_cm": 1.038717e-6,
+    "max_abs_water_content_delta": 1.143307e-9,
+    "bottom_flux_delta_cm_per_day": 4.617402e-9,
+    "mass_residual_abs_cm": 0.0,
+    "nonlinear_iterations": 4,
+    "backtracking_attempts": 4,
+    "verdict": "PASS"
+  },
+  "paired_adaptive_over_analytical_ratios": [0.961354,0.970172,0.972263,0.975446,0.973563,0.983466,0.976618],
+  "median_ratio": 0.973563,
+  "median_cpu_reduction_fraction": 0.026437,
+  "decision_rule": {
+    "pass_below": 0.98,
+    "equivocal_interval": [0.98,1.02],
+    "fail_above": 1.02
+  },
+  "verdict": "PASS",
+  "governance_boundary": "This timing was measured on the isolated catalog-repair branch. Final admission requires a fresh replay after composing the K tolerance with all current canonical-scope safety repairs."
+}
