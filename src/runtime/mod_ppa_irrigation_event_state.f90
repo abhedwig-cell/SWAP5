@@ -32,6 +32,7 @@ contains
     if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
     if(.not.ieee_is_finite(committed_time)) return
     if(self%active_nodes<1) return
+    if(.not.ieee_is_finite(self%ponding_depth).or..not.ieee_is_finite(self%groundwater_level)) return
     if(allocated(self%snow).or.allocated(self%soil_temperature)) return
     if(.not.allocated(self%pressure_head).or..not.allocated(self%water_content)) return
     if(size(self%pressure_head)/=self%active_nodes.or.size(self%water_content)/=self%active_nodes) return

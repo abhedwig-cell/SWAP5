@@ -155,6 +155,7 @@ program test_ppa_free_drainage_owner
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
   subroutine verify_hydraulic_copy(profile)
+    use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
     use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t,PPA_IRRIGATION_EVENT_LAYOUT
     use mod_fmr_serialized_reference_backend, only: fmr_b110_temporal_indicator_state_t
     use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
@@ -169,7 +170,7 @@ contains
     integer::code,tile
     logical::ok
     logical::history_available,clone_history_available
-    type(ppa_irrigation_event_state_t)::carrier
+    type(ppa_irrigation_event_state_t)::carrier,invalid_carrier
     type(fmr_template_t)::event_template
     class(transaction_state_t),allocatable::carrier_copy
     real(real64),allocatable::history(:),clone_history(:)
@@ -226,6 +227,62 @@ contains
     event_template%optional_state_layout_id=PPA_IRRIGATION_EVENT_LAYOUT
     if(fmr_restart_state_matches_template(carrier,event_template)) error stop 'candidate production restart admitted'
     write(*,'(a)') 'PPA_IRR_EVENT_CANDIDATE_LAYOUT_TIME_GUARDS=PASS'
+    ! Restore the valid snapshot before every mutation: rejection must not rely
+    ! on a preceding invalid field or leak changes into the source carrier.
+    do pass=1,19
+      invalid_carrier=carrier
+      select case(pass)
+      case(1)
+        invalid_carrier%active_nodes=0
+      case(2)
+        deallocate(invalid_carrier%pressure_head)
+      case(3)
+        deallocate(invalid_carrier%water_content)
+      case(4)
+        invalid_carrier%water_content=[0.2_real64]
+        invalid_carrier%active_nodes=2
+      case(5)
+        invalid_carrier%pressure_head(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(6)
+        invalid_carrier%water_content(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(7)
+        invalid_carrier%ponding_depth=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(8)
+        invalid_carrier%groundwater_level=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(9)
+        invalid_carrier%irrigation%next_fixed_event_index=0
+      case(10)
+        invalid_carrier%irrigation%active_event_origin=IRRIGATION_EVENT_NONE
+      case(11)
+        invalid_carrier%irrigation%active_event_index=1
+      case(12)
+        invalid_carrier%irrigation%active_event_start=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(13)
+        invalid_carrier%irrigation%active_event_end=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(14)
+        invalid_carrier%irrigation%active_event_rate=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(15)
+        invalid_carrier%irrigation%active_event_rate=0.0_real64
+      case(16)
+        invalid_carrier%irrigation%active_event_end=T0
+      case(17)
+        invalid_carrier%irrigation%active_event_end=T0+2.0_real64
+      case(18)
+        invalid_carrier%irrigation%active_event=.false.
+      case(19)
+        invalid_carrier%irrigation%active_event=.false.
+        invalid_carrier%irrigation%active_event_origin=IRRIGATION_EVENT_NONE
+        invalid_carrier%irrigation%active_event_index=1
+      end select
+      if(invalid_carrier%matches_candidate(event_template,T0)) error stop 'invalid event carrier accepted'
+      if(.not.carrier%matches_candidate(event_template,T0)) error stop 'carrier validation mutated source'
+    end do
+    if(carrier%matches_candidate(event_template,ieee_value(0.0_real64,ieee_quiet_nan))) &
+         error stop 'nonfinite committed event time accepted'
+    invalid_carrier=carrier
+    invalid_carrier%irrigation=irrigation_state_t()
+    if(.not.invalid_carrier%matches_candidate(event_template,T0)) error stop 'inactive event carrier rejected'
+    write(*,'(a)') 'PPA_IRR_EVENT_CANDIDATE_INVALID_PAYLOAD_20=PASS'
     call carrier%clone(carrier_copy)
     select type(cloned=>carrier_copy)
     type is(ppa_irrigation_event_state_t)
