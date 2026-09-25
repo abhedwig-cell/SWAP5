@@ -5,7 +5,7 @@ on:
     paths:
       - 'src/transaction/mod_transaction_reference.f90'
       - 'tests/transaction/test_transaction_attempt_context.f90'
-      - 'tests/fci/run_fci08_gate.sh'
+      - 'tests/fpe/run_fpe_zero_waste01_hctx01.sh'
       - '.github/workflows/f-pe-zero-waste01-hctx01.yml'
   workflow_dispatch:
 
@@ -15,5 +15,5 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Qualify F-CI08 transaction context
-        run: bash tests/fci/run_fci08_gate.sh
+      - name: Qualify H-CTX01 transaction context
+        run: bash tests/fpe/run_fpe_zero_waste01_hctx01.sh
