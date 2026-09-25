@@ -4,7 +4,7 @@ program test_ahl29_postrepair_cache_semantics
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_adaptive_hydraulic_builder, only: b110_adaptive_hydraulic_table_t
   use mod_b110_adaptive_hydraulic_cache, only: b110_adaptive_hydraulic_cache_t, &
-       b110_adaptive_hydraulic_cache_key_t, make_b110_adaptive_hydraulic_key
+       b110_adaptive_hydraulic_cache_key_t, make_b110_adaptive_hydraulic_key, B110_AHL_MAX_CACHE
   implicit none
 
   call stage1_over_capacity()
@@ -37,7 +37,7 @@ contains
     write(*,'(A,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0,1X,A,I0)') &
          'AHL29_STAGE1_POSTREPAIR','FAILURES=',failures,'BUILDS=',builds,'HITS=',hits,'MISSES=',misses,'ENTRIES=',entries
     call require(failures==0,'over-capacity requests must remain correct')
-    call require(entries==32,'bounded cache must remain bounded at 32')
+    call require(entries==min(40,B110_AHL_MAX_CACHE),'bounded registry entry count')
   end subroutine stage1_over_capacity
 
   subroutine stage2_amortization()
