@@ -108,7 +108,7 @@ program test_fpe_zero_waste01_h04_characterization
 
   call solver%solve(request,workspace,result)
 
-  write(*,'(A,I0,A,F8.3,A,I0,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES18.9)') &
+  write(*,'(A,I0,A,F8.3,A,I0,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES18.9)') &
        'H04_CASE,bottom_mode=',bottom_mode,',flux_multiplier=',flux_multiplier,',status=',result%status, &
        ',converged=',result%status==SW_SOLVE_CONVERGED, &
        ',iterations=',result%diagnostics%nonlinear_iterations, &
