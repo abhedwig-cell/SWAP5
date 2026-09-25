@@ -5,11 +5,12 @@ program test_fpe_zero_waste01_parameter_preprocess
   implicit none
 
   type(b110_default_mvg_parameters_t) :: hydraulic, prepared, copied
+  type(b110_default_mvg_parameters_t), allocatable :: prepared_registry(:)
   type(soil_water_parameter_set_t) :: soil
   real(real64), allocatable :: cofgen(:,:), z(:), dz(:), disnod(:)
   real(real64) :: checksum_hydraulic, checksum_geometry, checksum_copy
   integer(int64) :: c0, c1, rate
-  integer :: n, reps, r
+  integer :: n, reps, r, registry_count, registry_index
   character(len=32) :: arg
 
   call get_command_argument(1,arg); read(arg,*) n
@@ -54,6 +55,48 @@ program test_fpe_zero_waste01_parameter_preprocess
   end do
   call system_clock(c1)
   call emit('prepared_copy_reuse',n,reps,c0,c1,rate,checksum_copy)
+
+  select case (n)
+  case (:4)
+    registry_count = 10000
+  case (:60)
+    registry_count = 1000
+  case (:200)
+    registry_count = 300
+  case default
+    registry_count = 60
+  end select
+  allocate(prepared_registry(registry_count))
+  do r=1,registry_count
+    call initialize_b110_default_mvg_parameters(prepared_registry(r),cofgen)
+  end do
+
+  if (allocated(copied%cofgen)) deallocate(copied%cofgen)
+  checksum_copy = 0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    registry_index = 1 + mod(r-1,registry_count)
+    copied = prepared_registry(registry_index)
+    checksum_copy = checksum_copy + copied%cofgen(25,1) + copied%cofgen(42,n)
+  end do
+  call system_clock(c1)
+  call emit('prepared_registry_copy_fresh',n,reps,c0,c1,rate,checksum_copy)
+
+  if (allocated(copied%cofgen)) deallocate(copied%cofgen)
+  copied%active_nodes = prepared_registry(1)%active_nodes
+  copied%ksatexm_extension_enabled = prepared_registry(1)%ksatexm_extension_enabled
+  allocate(copied%cofgen(size(prepared_registry(1)%cofgen,1),size(prepared_registry(1)%cofgen,2)))
+  checksum_copy = 0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    registry_index = 1 + mod(r-1,registry_count)
+    copied%active_nodes = prepared_registry(registry_index)%active_nodes
+    copied%ksatexm_extension_enabled = prepared_registry(registry_index)%ksatexm_extension_enabled
+    copied%cofgen = prepared_registry(registry_index)%cofgen
+    checksum_copy = checksum_copy + copied%cofgen(25,1) + copied%cofgen(42,n)
+  end do
+  call system_clock(c1)
+  call emit('prepared_registry_copy_reuse',n,reps,c0,c1,rate,checksum_copy)
 
   checksum_geometry = 0.0_real64
   call system_clock(c0,rate)
