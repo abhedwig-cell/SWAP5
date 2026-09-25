@@ -1,0 +1,37 @@
+name: F-AHL42 canonical admission prep
+
+on:
+  push:
+    branches:
+      - work/f-ahl42-canonical-admission-prep
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_builder.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fahl/**'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'integration/f-ahl/F-AHL42_ADMISSION_PREP.json'
+      - '.github/workflows/f-ahl42-canonical-admission-prep.yml'
+  workflow_dispatch:
+
+jobs:
+  retained-regressions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Production-shaped provider extraction
+        run: bash tests/fahl/run_fahl27_production_provider_extract.sh
+
+      - name: O05 dry-tail analytical fallback
+        run: bash tests/fahl/run_fahl27a_production_dry_tail.sh
+
+      - name: Prescribed-head 12-case matrix
+        run: bash tests/fahl/run_fahl27_stage2_matrix.sh /tmp/fahl42_matrix.txt
+
+      - name: Default-off serialized runtime identity
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+
+      - name: Prescribed-qbot analytical fallback
+        run: bash tests/fahl/run_fahl27_stage2_qbot_fallback.sh
