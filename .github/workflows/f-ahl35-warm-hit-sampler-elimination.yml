@@ -1,0 +1,30 @@
+name: F-AHL35 warm-hit sampler elimination
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'research/ahl/test_ahl35_warm_hit_sampler_elimination.f90'
+      - 'research/ahl/run_ahl35_warm_hit_sampler_elimination.sh'
+      - 'integration/f-ahl/F-AHL35_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl35-warm-hit-sampler-elimination.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run F-AHL35 repair gate
+        run: |
+          bash research/ahl/run_ahl35_warm_hit_sampler_elimination.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl35-${{ github.run_id }}
+          path: |
+            /tmp/ahl35_result.txt
+            /tmp/ahl35_ahl28b_regression.txt
+            /tmp/ahl35_ahl32_regression.txt
