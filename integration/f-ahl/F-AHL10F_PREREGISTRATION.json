@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10F",
+  "title": "Cross-material cross-regime paired Richards timing",
+  "parent": "F-AHL10B/F-AHL10E",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "Does the selected derivative-consistent representation with logK tolerance 3e-4 deliver robust complete-Richards speed benefit across the frozen 12-case material/regime matrix?",
+  "materials": ["B01","B12","O05","O14"],
+  "regimes": [
+    {"id":"wet","initial_head_cm":-10.0,"bottom_head_cm":-7.5},
+    {"id":"mid","initial_head_cm":-75.0,"bottom_head_cm":-50.0},
+    {"id":"dry","initial_head_cm":-500.0,"bottom_head_cm":-400.0}
+  ],
+  "representation": {
+    "retention_capacity": "F-AHL09 derivative-consistent Hermite",
+    "logK_tolerance": 3e-4,
+    "dry_tail_policy": "F-AHL10E material-specific analytical fallback"
+  },
+  "timing_policy": {
+    "compiler": "gfortran -O3 without runtime checks or floating-point traps",
+    "replays_per_batch": 8192,
+    "paired_repetitions_per_case": 5,
+    "order": "alternate analytical->candidate and candidate->analytical",
+    "primary_case_statistic": "median paired candidate/analytical CPU ratio",
+    "table_generation_and_binding": "outside timed batches"
+  },
+  "fidelity_policy": "All frozen F-AHL10 gates must pass before timing for a case is interpreted.",
+  "decision_rule": {
+    "case_speed_positive": "case median ratio < 0.98",
+    "case_equivocal": "0.98 <= ratio <= 1.02",
+    "case_speed_negative": "ratio > 1.02",
+    "advance_broad_speed_candidate": "median of 12 case medians < 0.98 AND no case median > 1.02",
+    "otherwise": "retain as regime-dependent research candidate and classify where benefit is lost"
+  },
+  "hard_exclusions": [
+    "NO_GATE_RETUNING",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
