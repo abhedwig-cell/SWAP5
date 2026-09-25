@@ -1,7 +1,10 @@
 {
   "work_unit": "PPA-IRR-EVENT-OWNER",
-  "tested_commit": "9995ee67f",
-  "status": "ISOLATED_CARRIER_CLONE_PASS_NOT_REGISTERED_OR_ADMITTED",
+  "tested_commit": "cb428602f1657ac11954add9441111d16520cc7b",
+  "status": "ISOLATED_CARRIER_LAYOUT_TIME_GUARDS_PASS_NOT_REGISTERED_OR_ADMITTED",
+  "previous_carrier_checkpoint": "9995ee67f",
+  "candidate_validation": "Reserved candidate identity 404101 is not registered in runtime core. matches_candidate requires serialized-reference Richards temporal history, finite correctly sized physical/history arrays, no snow or temperature payload, and a scheduled active event containing committed time in [start,end). BASE identity, wrong continuation layout, time before start and exact end are rejected. Production restart still rejects even the reserved candidate template.",
+  "validation_followup": "Against cb428602f, rebuilt carrier and owner test with cached unchanged production objects at O0 and O2. HydraulicCopy, guards and irrigation-source PASS with identical full transcripts for each scope. Irrigation-source reports IEEE_UNDERFLOW_FLAG and IEEE_DENORMAL notes at both optimizations; invalid, zero and overflow traps remain enabled. No general extreme-finite-input claim.",
   "preregistration": "PPA_IRR_EVENT_OWNER_PREREGISTRATION.json",
   "implementation": "src/runtime/mod_ppa_irrigation_event_state.f90 extends the existing temporal-indicator physical state with irrigation_state_t. Own clone uses sourced allocation to retain dynamic type, inherited private temporal history and deep physical arrays. No new authoritative owner is created.",
   "result": "HydraulicCopy PASS O0/O2 with identical full transcripts. Carrier initialized from real exported temporal state preserves event start/end/rate/origin, physical arrays and temporal derivative snapshot through clone. Mutating cloned water/event leaves original unchanged. Existing BASE restart template rejects unregistered carrier. Existing --guards and --irrigation-source suites also PASS O0/O2; source transcripts identical.",
