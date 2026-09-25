@@ -2,9 +2,14 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-ahl42a-${GITHUB_RUN_ID:-local}-$$"
-mkdir -p "$BUILD"
+mkdir -p "$BUILD/tables"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
+
+# Table files are used only as a compact, already-bound source of the 36 catalog
+# parameter tuples for this test fixture. The production adaptive provider
+# receives ordinary B1.10 parameters and builds its own representation.
+python3 research/ahl/ahl11e_build_full_catalog_1e4.py "$BUILD/tables" > "$BUILD/catalog_summary.json"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 SRC=(
@@ -43,9 +48,9 @@ count=0
 for prefix in B O; do
   for i in $(seq -w 1 18); do
     m="${prefix}${i}"
-    "$BUILD/test" "$m" wet -10 -7.5 | tee -a "$RESULT"
-    "$BUILD/test" "$m" mid -75 -50 | tee -a "$RESULT"
-    "$BUILD/test" "$m" dry -500 -400 | tee -a "$RESULT"
+    "$BUILD/test" "$BUILD/tables/${m}_dc.dat" "$m" wet -10 -7.5 | tee -a "$RESULT"
+    "$BUILD/test" "$BUILD/tables/${m}_dc.dat" "$m" mid -75 -50 | tee -a "$RESULT"
+    "$BUILD/test" "$BUILD/tables/${m}_dc.dat" "$m" dry -500 -400 | tee -a "$RESULT"
     count=$((count+3))
   done
 done
