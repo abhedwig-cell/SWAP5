@@ -1,6 +1,6 @@
 program test_appqual01_b1_rossfast_paired
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t
@@ -100,7 +100,7 @@ contains
       value%soil_water_asset_root='assets/rossfast/d3r'
       value%soil_water_material_id='B01'
     else
-      value%numerical%transaction%temporal_mode=1
+      value%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
       value%numerical%transaction%retry_scale=0.5_real64
       value%numerical%transaction%max_retries=8
     end if
