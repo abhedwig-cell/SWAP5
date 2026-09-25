@@ -1515,6 +1515,8 @@ contains
       if(active_calls/=0.or.runtime%max_simultaneous_real_physical_solves/=1) error stop 'resolved solve accounting'
       if(column_diagnostics(1)%accepted/=1.or.column_diagnostics(2)%rejected/=1) &
            error stop 'resolved acceptance accounting'
+      if(any(column_diagnostics%column_id/=columns%column_id).or.any(outputs%column_id/=columns%column_id)) &
+           error stop 'resolved source column identity'
       if(outputs(1)%final_committed_time/=finish.or.outputs(2)%final_committed_time/=T0) &
            error stop 'resolved endpoint provenance'
     else

@@ -1,4 +1,4 @@
-! Candidate scheduled SSDI composition; no commit or restart ownership.
+! Scheduled SSDI composition; publication delegates to the existing runtime.
 module mod_ppa_irrigation_source_binding
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
@@ -53,6 +53,10 @@ contains
     logical::ok
     output=fmr_serialized_column_result_t()
     diagnostic=fmr_column_diagnostics_t()
+    diagnostic%column_id=column%column_id
+    diagnostic%template_id=column%template_id
+    diagnostic%backend=column%backend_id
+    diagnostic%execution_class=column%execution_class
     output%column_id=column%column_id
     output%requested_t0=request%t0; output%requested_t1=request%t1
     output%initial_revision=committed%current_revision()
