@@ -147,5 +147,3 @@ for n in (1,100,1000,10000):
     print(f"FAHL49_SCALE|N={n}|INIT_MEDIAN_RATIO={statistics.median(init_rat):.9f}|RUN_MEDIAN_RATIO={statistics.median(run_rat):.9f}|PAIRS={len(run_rat)}")
 print("FAHL49_APPLICATION_SCALE=PASS")
 PY
-
-done
