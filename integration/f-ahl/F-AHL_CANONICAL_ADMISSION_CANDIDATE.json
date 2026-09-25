@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "CANONICAL_ADMISSION_CANDIDATE",
+  "status": "BOUNDED_GATES_PASS_READY_FOR_GOVERNANCE_REVIEW",
+  "base": "integration/f-ci-canonical@506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "branch": "admission/f-ahl-prescribed-head",
+  "source_research_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "scope": {
+    "adaptive_hydraulics": "explicit opt-in only",
+    "default": "analytical hydraulics",
+    "qualified_route": "default unimodal MvG prescribed-head-like Reference Richards",
+    "prescribed_qbot": "authoritative analytical fallback",
+    "dry_tail": "raw C=dtheta/dh relevance bound 1e-13 with authoritative analytical fallback outside represented domain",
+    "runtime_refinement": false,
+    "external_user_tables": false
+  },
+  "production_files": [
+    "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "admission_workflow": {
+    "run_id": 36109845905,
+    "conclusion": "success",
+    "gates": [
+      "production-shaped provider extraction PASS",
+      "prescribed-head 12-case fidelity matrix PASS",
+      "prescribed-qbot analytical fallback PASS",
+      "O05 dry-tail analytical fallback PASS",
+      "same-key provider memoization PASS"
+    ]
+  },
+  "scientific_constraints": [
+    "theta and C are represented by one derivative-consistent mathematical object",
+    "conductivity has independent error control",
+    "the 1e-13 dry rule is a representation relevance bound, not a physical theta/K cutoff",
+    "unsupported or unqualified modes fall back to authoritative analytical hydraulics"
+  ],
+  "nonclaims": [
+    "no whole-SWAP speedup claim",
+    "no national MultiSWAP speedup claim",
+    "no prescribed-qbot acceleration claim",
+    "no SWKIMPL=1/dKdh admission",
+    "no vapor-enabled PDI admission",
+    "no parallel/thread-safety claim"
+  ],
+  "governance_decision": "NOT_YET_ADMITTED"
+}
