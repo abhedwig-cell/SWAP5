@@ -20,6 +20,8 @@ module mod_fmr_groundwater_head_forcing_adapter
     procedure, public :: initialize => fmr_groundwater_forcing_initialize
     procedure, public :: profile_admitted => fmr_groundwater_profile_admitted
     procedure, public :: materialize => fmr_groundwater_forcing_materialize
+    procedure, public :: initialize_reusable => fmr_groundwater_forcing_initialize_reusable
+    procedure, public :: materialize_reused => fmr_groundwater_forcing_materialize_reused
   end type fmr_groundwater_head_forcing_materializer_t
 
 contains
@@ -45,6 +47,38 @@ contains
       admitted = .false.
     end select
   end function fmr_groundwater_profile_admitted
+
+  subroutine fmr_groundwater_forcing_initialize_reusable(self, forcing, status)
+    class(fmr_groundwater_head_forcing_materializer_t), intent(in) :: self
+    type(fmr_b110_physical_forcing_t), intent(out) :: forcing
+    integer, intent(out) :: status
+
+    status = GW_SWAP_FORCING_NOT_READY
+    if (.not. self%initialized) return
+    forcing = self%base_forcing
+    status = GW_SWAP_FORCING_OK
+  end subroutine fmr_groundwater_forcing_initialize_reusable
+
+  subroutine fmr_groundwater_forcing_materialize_reused(self, interface_head_m, datum, forcing, status)
+    class(fmr_groundwater_head_forcing_materializer_t), intent(in) :: self
+    real(real64), intent(in) :: interface_head_m
+    type(groundwater_head_datum_t), intent(in) :: datum
+    type(fmr_b110_physical_forcing_t), intent(inout) :: forcing
+    integer, intent(out) :: status
+    real(real64) :: pressure_head_cm
+    integer :: mapping_status
+
+    status = GW_SWAP_FORCING_NOT_READY
+    if (.not. self%initialized) return
+
+    status = GW_SWAP_FORCING_INVALID_HEAD
+    if (.not. ieee_is_finite(interface_head_m) .or. .not. datum%valid()) return
+    call interface_head_m_to_swap_bottom_pressure_head_cm(interface_head_m, datum, pressure_head_cm, mapping_status)
+    if (mapping_status /= GW_INTERFACE_OK .or. .not. ieee_is_finite(pressure_head_cm)) return
+
+    forcing%bottom_head = pressure_head_cm
+    status = GW_SWAP_FORCING_OK
+  end subroutine fmr_groundwater_forcing_materialize_reused
 
   subroutine fmr_groundwater_forcing_materialize(self, interface_head_m, datum, forcing, status)
     class(fmr_groundwater_head_forcing_materializer_t), intent(in) :: self
