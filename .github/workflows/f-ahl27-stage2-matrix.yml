@@ -1,0 +1,21 @@
+name: F-AHL27 Stage2 matrix
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'tests/fahl/test_fahl27_stage2_matrix.f90'
+      - 'tests/fahl/run_fahl27_stage2_matrix.sh'
+      - 'src/solver/mod_b110_adaptive_hydraulic_*.f90'
+      - '.github/workflows/f-ahl27-stage2-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run production-provider 12-case matrix
+        run: |
+          bash tests/fahl/run_fahl27_stage2_matrix.sh
