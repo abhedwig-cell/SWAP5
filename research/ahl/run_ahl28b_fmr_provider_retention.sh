@@ -86,4 +86,4 @@ done
 gfortran "${COMMON[@]}" -O3 -J "$BUILD" -I "$BUILD" -c research/ahl/test_ahl28b_fmr_provider_retention.f90 -o "$BUILD/test.o"
 gfortran -fopenmp -O3 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 "$BUILD/test" | tee /tmp/ahl28b_fmr_retention.txt
-grep -Fq 'AHL28B_FMR_PROVIDER_RETENTION=PASS' /tmp/ahl28_fmr_cache.txt
+grep -Fq 'AHL28B_FMR_PROVIDER_RETENTION=PASS' /tmp/ahl28b_fmr_retention.txt
