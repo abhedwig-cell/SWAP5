@@ -444,3 +444,57 @@ The reconstructed performance lineage is now qualified through:
 A2 H03 -> B1 core P0 -> B2 large-N -> C PLANVALID01.
 
 Next tranche D is F-AHL50. Recompose its six production files on the qualified C postimage, preserve default OFF and its bounded envelope, and replay the full F-AHL50 admission suite.
+
+
+## Tranche D qualification — F-AHL50
+
+Execution PR: #625.
+
+D recomposes the bounded six-file F-AHL50 opt-in capability on the fully reconstructed and qualified performance lineage through Tranche C.
+
+Focused qualification on head `dc08b4ca5f45ac0703a3bacefbdf05a0b8058c6b` is fully green.
+
+Evidence:
+- provider extraction: PASS;
+- production matrix: PASS 12/12;
+- matrix speed-positive: 12/12, speed-negative: 0;
+- median candidate/analytical solver ratio: `0.845554465`, approximately 15.44% reduction;
+- matrix range: `0.826509647 .. 0.881220826`;
+- default-off / PPA-WU01: PASS, including O0/O2 output identity;
+- fail-closed envelope: PASS;
+- multi-application ownership: PASS;
+- application scale: PASS;
+- F-GC49D application context O0/O2: PASS;
+- response tangent available;
+- two service iterations;
+- three real SWAP and ledger commits: PASS;
+- context reuse and stale-handle fail-closed: PASS;
+- F-GC49D O0/O2 output identity: PASS;
+- F-AHL49/F-AHL50 application opt-in gate: PASS.
+
+The final application rerun required only provisioning the Python `numpy` dependency used by the existing F-GC49D qualification test. No production or test-logic change was required.
+
+### Tranche D status
+
+`D_FAHL50_RECOMPOSITION = QUALIFIED_ON_C_POSTIMAGE`
+
+## End-to-end performance lineage result
+
+The post-canonical performance lineage has now been reconstructed and independently requalified in bounded tranches:
+
+- A0: no-op by source equivalence to F-CI81;
+- A1 PROFILE01: observation only;
+- A2 PROFILE02-H03: bounded HeadCalc repair;
+- A3 PROFILE03: measurement only;
+- B1 ZERO-WASTE core P0: qualified;
+- B2 ZERO-WASTE large-N groundwater fast paths: qualified;
+- C PLANVALID01: qualified;
+- D F-AHL50: qualified, opt-in and default OFF.
+
+This removes the original 425-commit ambiguity as a technical admission blocker. The production capabilities needed for F-AHL50 have been reconstructed from current canonical through explicit qualified postimages rather than by bulk-merging the historical branches.
+
+### Governance disposition
+
+`F_PERF_CANON01_RECONSTRUCTION = TECHNICALLY_QUALIFIED_END_TO_END`
+
+A final canonical admission action may now use the reconstructed D postimage as its candidate, subject to the repository's canonical merge/preservation governance. No further performance-lineage archaeology is required unless canonical preservation exposes a new concrete discrepancy.
