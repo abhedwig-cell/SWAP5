@@ -41,6 +41,15 @@ jobs:
           grep -Fq 'request%evaluation%constitutive => self%adaptive_constitutive' src/runtime/mod_fmr_serialized_reference_backend.f90
           grep -Fq 'request%evaluation%constitutive => self%constitutive' src/runtime/mod_fmr_serialized_reference_backend.f90
 
+      - name: Solve-time shared-cache isolation audit
+        run: |
+          if grep -Fq 'sample_slot' src/solver/mod_b110_adaptive_hydraulic_provider.f90; then
+            echo 'shared cache sampled during provider evaluation' >&2
+            exit 1
+          fi
+          grep -Fq '!$omp critical(b110_ahl_cache_bind)' src/solver/mod_b110_adaptive_hydraulic_provider.f90
+          grep -Fq 'type(b110_adaptive_hydraulic_table_t) :: table' src/solver/mod_b110_adaptive_hydraulic_provider.f90
+
       - name: Prescribed-qbot analytical fallback
         run: bash tests/fahl/run_fahl27_stage2_qbot_fallback_direct.sh
 
