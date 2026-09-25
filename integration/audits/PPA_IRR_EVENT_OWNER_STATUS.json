@@ -2,7 +2,29 @@
   "work_unit": "PPA-IRR-EVENT-OWNER",
   "profile_binding_implementation": "3997e90bd adds evaluate_ppa_profile_irrigation_source, combining the existing checked root-zone/profile DCS1 composition with water-only SSDI binding. Candidate/flux/forcing are actionable only when both stages succeed; failure preserves base and leaves no allocated forcing. Geometry and crop/profile inputs remain supplied, not derived by a new owner. The actual DCS1 source-acceptance owner test now uses this single adapter call. c485ad836 adds invalid negative thickness and unsupported-solute binding rejection before each valid tile call. Scheduling, accepted publication and pending-event restart remain unimplemented.",
   "source_binding_implementation": "3d16532f7 introduces src/adapter/mod_ppa_irrigation_source_binding.f90. It consumes previous physical forcing and successful SSDI process flux, copies unrelated forcing fields, replaces the SSDI rates and marks only a changed source or an existing event at the exact interval start. Expired marks are consumed; future/nonfinite marked times, invalid/split diagnostics, absent/mismatched/nonfinite/negative sources and contradictory inactive delivery are rejected without output. This helper binds water source rates only; it does not map solute, persist events, prove acceptance, or infer changes in other forcing fields. Caller supplies otherwise unchanged forcing and must manage other physical changes explicitly. The owner integration test uses this binding for source start/continuation/stop instead of hand-setting event flags.",
-  "tested_commit": "2809ab792efb8a7fc6db30a2c7449e9e7a9a8644",
+  "tested_commit": "d0b59a356",
+  "convergence_criterion_trace": {
+    "implementation_commit": "d0b59a356",
+    "command": "tests/fapp/run_ppa_free_drainage_owner.ps1 -Scope IrrigationSource -ConvergenceTrace",
+    "scope": "Generates a disposable HeadCalc copy with output only after nonlinear iteration exhaustion and before rollback. Production source, equations, thresholds, state ownership and default build are unchanged. Trace reports duration, node count, failed compartment/head counts, pond/total flags, residuals and current/previous-iteration/base heads.",
+    "clean_build": "swap-ppa-wu01-e40da551101047959a7475480276dc3f",
+    "validation": "Clean IrrigationSource runner/static checks PASS O0/O2 with full transcript identity. Removing only PPA_CONVERGENCE trace rows yields the original noninstrumented standard transcript at each optimization. Running the same clean binaries with --irrigation-half-source exits 1 at O0/O2; all convergence and IRRIGATION diagnostic rows match. In-place overwrite, absent-anchor and unsupported-scope guards reject as intended. Documentation source checks and strict build PASS.",
+    "first_failed_final_substep": {
+      "duration_days": 0.0000013860335457138717,
+      "node_count": 4,
+      "failed_compartment_balances": 3,
+      "failed_head_changes": 0,
+      "pond_balance_failed": false,
+      "total_balance_failed": true,
+      "maximum_absolute_residual": 2.5813240434047202e-12,
+      "signed_total_residual": -4.735156711177524e-12,
+      "compartment_and_total_tolerance": 1e-12,
+      "observation": "All four printed current heads equal their previous-iteration heads. The base heads differ. Iteration exhaustion is therefore a residual criterion failure with a stationary represented iterate, not excessive head change."
+    },
+    "last_retry": "At duration 9.094947017729282e-13 day, all four compartment balances fail; maximum absolute residual 7.122482367505345e-6 and signed total 6.213089170259423e-6. Head-change and pond flags remain false. Shrinking the retry has not restored convergence.",
+    "interpretation": "Consistent with finite-precision stagnation amplified by the storage-change/dt residual term, but not proof of the complete numerical cause. No tolerance relaxation, successful half-window, automatic scheduling or pending-event restart is claimed.",
+    "next": "Evaluate a bounded numerical remedy for the short endpoint tail (with unchanged hard mass/temporal criteria), or advance the independent event-carrier dependency integration. Avoid further blind iteration-budget increases."
+  },
   "first_solver_failure_followup": {
     "implementation_commit": "a42678e99",
     "scope": "Observational first solver failure retained only across retries sharing the exact substep start time; reset for a new start/window. Not authoritative state or acceptance policy.",
