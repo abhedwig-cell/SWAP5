@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL-ADMISSION",
+  "title": "Minimal canonical admission extraction result",
+  "status": "READY_FOR_CANONICAL_REVIEW",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "branch": "integration/f-ahl-canonical-admission",
+  "qualification_workflow": {
+    "run_id": 36119951041,
+    "job_id": 108022846465,
+    "conclusion": "success"
+  },
+  "gates": {
+    "production_provider_extraction": "PASS",
+    "O05_dry_tail_authority_alignment": "PASS",
+    "prescribed_head_Richards_matrix": "12/12 PASS",
+    "serialized_runtime_seam_structural_audit": "PASS",
+    "prescribed_qbot_analytical_fallback": "PASS O0/O2 identity; adaptive cache BUILDS=0 HITS=0 MISSES=0 ENTRIES=0",
+    "same_key_memoization_regression": "PASS"
+  },
+  "admitted_candidate_scope": {
+    "hydraulic_family": "default unimodal MvG",
+    "solver": "Reference Richards",
+    "lower_boundary": "prescribed-head mode 5 only for adaptive evaluation",
+    "activation": "explicit adaptive_hydraulics_active opt-in; default false",
+    "retention_capacity": "derivative-consistent auto-generated representation",
+    "conductivity": "independently controlled lookup",
+    "near_saturation": "authoritative analytical fallback",
+    "dry_tail": {
+      "relevance_quantity": "raw moisture capacity C=dtheta/dh",
+      "relevance_floor": 1e-13,
+      "O05_lookup_lower_bound_cm": -264277.52309014817,
+      "outside_domain": "authoritative analytical fallback",
+      "physics_truncated": false
+    },
+    "prescribed_qbot": "authoritative analytical fallback"
+  },
+  "explicit_non_admission": [
+    "adaptive prescribed-qbot",
+    "SWKIMPL=1 or adaptive dK/dh",
+    "vapor-enabled PDI acceleration",
+    "whole-SWAP or national MultiSWAP speed claims",
+    "full F-AHL research branch"
+  ],
+  "external_blocker": {
+    "id": "F-AHL27B",
+    "description": "Nontrivial serialized full-half prescribed-head execution on current canonical is rejected by external temporal-acceptance semantics before solver execution; this is not repaired or bypassed by the AHL admission patch."
+  },
+  "decision": "OPEN_CANONICAL_REVIEW_PR; DO_NOT_MERGE_AUTOMATICALLY"
+}
