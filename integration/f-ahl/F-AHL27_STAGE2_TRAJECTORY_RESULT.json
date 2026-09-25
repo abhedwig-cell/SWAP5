@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27",
+  "phase": "STAGE2_TRANSACTIONAL_TRAJECTORY_FALLBACK_COMPLETE",
+  "status": "PASS_TRANSACTIONAL_FALLBACK",
+  "workflow_run": 36077622995,
+  "markers": [
+    "FAHL27_TRAJECTORY_O0=PASS",
+    "FAHL27_TRAJECTORY_O2=PASS",
+    "FAHL27_TRAJECTORY_O0_O2_IDENTITY=PASS"
+  ],
+  "cache": {"builds":0,"hits":0,"misses":0,"entries":0},
+  "finding": "The qbot accepted-trajectory full-half transactional route retains its existing provenance and rejected-trial isolation semantics with adaptive hydraulics requested, while using analytical hydraulics and leaving the adaptive cache untouched."
+}
