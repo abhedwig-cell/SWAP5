@@ -47,6 +47,12 @@ assert "summary diagnostics require column diagnostics" in runtime_src
 assert "runtime diagnostics require column diagnostics" in runtime_src
 assert "materialize_column_diagnostics=.false." in src
 print("FPE_ZERO_WASTE01_COLUMN_DIAGNOSTICS_OPTOUT_STATIC=PASS")
+backend_src = Path("src/runtime/mod_fmr_serialized_reference_backend.f90").read_text().lower()
+assert "prepared_default_mvg_compatible" in backend_src
+assert "prepared_default_mvg%cofgen(1:24,:) == parameters%cofgen(1:24,:)" in backend_src
+assert "self%hydraulic_parameters = parameters%prepared_default_mvg" in backend_src
+assert "prepare_fmr_b110_default_mvg" in src
+print("FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS")
 assert "production_application_groundwater_ready" in src
 assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5" in src
 assert "standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7" in src

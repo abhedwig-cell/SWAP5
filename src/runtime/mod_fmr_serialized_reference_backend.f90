@@ -502,20 +502,17 @@ contains
 
   logical function prepared_default_mvg_compatible(parameters) result(compatible)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
-    integer :: rows
-
     compatible = .false.
     if (.not. parameters%prepared_default_mvg_available) return
     if (.not. allocated(parameters%cofgen)) return
     if (.not. allocated(parameters%prepared_default_mvg%cofgen)) return
+    if (parameters%active_nodes <= 0) return
+    if (size(parameters%cofgen,1) < 24 .or. size(parameters%cofgen,2) /= parameters%active_nodes) return
     if (parameters%prepared_default_mvg%active_nodes /= parameters%active_nodes) return
     if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_active) return
     if (size(parameters%prepared_default_mvg%cofgen,1) /= 42) return
     if (size(parameters%prepared_default_mvg%cofgen,2) /= parameters%active_nodes) return
-    if (size(parameters%cofgen,2) /= parameters%active_nodes) return
-    rows = min(size(parameters%cofgen,1), 42)
-    if (rows <= 0) return
-    if (.not. all(parameters%prepared_default_mvg%cofgen(1:rows,:) == parameters%cofgen(1:rows,:))) return
+    if (.not. all(parameters%prepared_default_mvg%cofgen(1:24,:) == parameters%cofgen(1:24,:))) return
     compatible = .true.
   end function prepared_default_mvg_compatible
 

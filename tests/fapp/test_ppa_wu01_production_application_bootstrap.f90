@@ -5,7 +5,7 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
+       fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, prepare_fmr_b110_default_mvg
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED, &
@@ -47,10 +47,30 @@ program test_ppa_wu01_production_application_bootstrap
   integer :: i, status, topology_status
   integer(c_int) :: ncell, ntile_count, c_status
   real(real64) :: reference_head_m
+  type(fmr_b110_physical_parameters_t) :: prepared_parameters
+  type(b110_default_mvg_parameters_t) :: direct_hydraulic
+  logical :: prepared_ok
 
   ! Standalone authority: use the already-qualified serialized Reference
   ! profile rather than inventing a new mode-5 standalone trajectory.
   call initialize_application_config(config)
+
+  prepared_parameters = config%tiles(1)%parameters
+  call prepare_fmr_b110_default_mvg(prepared_parameters, prepared_ok)
+  call require(prepared_ok .and. prepared_parameters%prepared_default_mvg_available, &
+       'prepared default MvG available')
+  call initialize_b110_default_mvg_parameters(direct_hydraulic, config%tiles(1)%parameters%cofgen, &
+       enable_ksatexm_extension=config%tiles(1)%parameters%ksatexm_extension_active)
+  call require(prepared_parameters%prepared_default_mvg%active_nodes == direct_hydraulic%active_nodes, &
+       'prepared default MvG node identity')
+  call require(prepared_parameters%prepared_default_mvg%ksatexm_extension_enabled .eqv. &
+       direct_hydraulic%ksatexm_extension_enabled, 'prepared default MvG KSATEXM identity')
+  call require(allocated(prepared_parameters%prepared_default_mvg%cofgen) .and. allocated(direct_hydraulic%cofgen), &
+       'prepared default MvG arrays allocated')
+  call require(all(prepared_parameters%prepared_default_mvg%cofgen == direct_hydraulic%cofgen), &
+       'prepared default MvG exact matrix identity')
+  print '(a)', 'FPE_ZERO_WASTE01_PREPARED_MVG_EXACT_IDENTITY=PASS'
+
   call app%initialize(config, status)
   call require(status == FMR_APP_BOOT_OK, 'standalone production bootstrap initialize')
   call require(app%ready(), 'standalone production bootstrap ready')

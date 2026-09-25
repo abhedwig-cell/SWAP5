@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fapp/test_ppa_wu01_production_application_bootstrap.f90'
       - 'tests/fapp/run_ppa_wu01_production_application_bootstrap.sh'
       - 'integration/audits/PPA_WU01_STATUS.json'
