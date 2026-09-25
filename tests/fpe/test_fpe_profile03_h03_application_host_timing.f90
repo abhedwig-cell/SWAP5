@@ -215,6 +215,14 @@ program test_fkt22_fmr_serialized_trajectory_runtime
   end if
   write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_EVALUATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%constitutive_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_INITIAL_FULL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_initial_full_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_FULL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_full_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_TERMINAL_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_terminal_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_CAPACITY_REUSES_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_capacity_reuses
   write(*,'(A,I0)') 'FKT22_FMR_NONLINEAR_ITERATIONS_PER_SOLVE=', &
        observation_off%solver_diagnostics%nonlinear_iterations
   write(*,'(A)') 'FKT22_FMR_CONSTITUTIVE_COUNT_OBSERVATION=PASS'
