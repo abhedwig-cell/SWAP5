@@ -155,6 +155,7 @@ program test_ppa_free_drainage_owner
   write(*,'(a)') 'PPA_FREE_DRAINAGE_OWNER_COMPOSITION=PASS'
 contains
   subroutine verify_hydraulic_copy(profile)
+    use mod_ppa_irrigation_source_binding, only: bind_ppa_irrigation_source
     use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
     use mod_ppa_irrigation_event_state, only: ppa_irrigation_event_state_t,PPA_IRRIGATION_EVENT_LAYOUT, &
          build_irrigation_event_candidate
@@ -187,9 +188,48 @@ contains
     integer::pass
     type(fmr_b110_physical_forcing_t)::irrigation_forcing(NTILE)
     type(fmr_b110_physical_forcing_t)::control_forcing(NTILE)
+    type(fmr_b110_physical_forcing_t),allocatable::bound_forcing
     type(fmr_serialized_column_result_t),allocatable::irrigation_result(:)
     type(fmr_serialized_column_result_t),allocatable::continued_result(:)
     real(real64),parameter::irrigation_dt=1.0_real64/1024.0_real64
+    control_forcing(1)=profile%tiles(1)%base_forcing
+    control_forcing(1)%subsurface_irrigation_source=0.0_real64
+    control_forcing(1)%temporal_forcing_event=.true.
+    control_forcing(1)%temporal_forcing_event_time=T0
+    call bind_ppa_irrigation_source(control_forcing(1),flux,diagnostics,T0,bound_forcing,ok)
+    if(.not.ok) error stop 'binding same-time event rejected'
+    if(.not.bound_forcing%temporal_forcing_event) error stop 'binding lost same-time unrelated event'
+    call bind_ppa_irrigation_source(control_forcing(1),flux,diagnostics,T0+1.0_real64,bound_forcing,ok)
+    if(.not.ok) error stop 'binding expired event rejected'
+    if(bound_forcing%temporal_forcing_event) error stop 'binding replayed expired event'
+    if(bound_forcing%top_flux/=control_forcing(1)%top_flux.or. &
+         any(bound_forcing%root_extraction_sink/=control_forcing(1)%root_extraction_sink).or. &
+         any(bound_forcing%drainage_flux_by_level/=control_forcing(1)%drainage_flux_by_level)) &
+         error stop 'binding changed unrelated forcing'
+    do pass=1,5
+      diagnostics=irrigation_diagnostics_t()
+      flux=irrigation_flux_result_t()
+      control_forcing(1)%temporal_forcing_event_time=T0
+      select case(pass)
+      case(1)
+        diagnostics%status=IRRIGATION_SPLIT_REQUIRED
+      case(2)
+        diagnostics%split_required=.true.
+      case(3)
+        control_forcing(1)%temporal_forcing_event_time=T0+1.0_real64
+      case(4)
+        flux%applied=.true.
+        flux%application_type=IRRIGATION_APPLICATION_SSDI
+      case(5)
+        flux%subsurface_source=control_forcing(1)%subsurface_irrigation_source
+        flux%subsurface_source(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+      end select
+      call bind_ppa_irrigation_source(control_forcing(1),flux,diagnostics,T0,bound_forcing,ok)
+      if(ok.or.allocated(bound_forcing)) error stop 'invalid binding retained output'
+    end do
+    diagnostics=irrigation_diagnostics_t()
+    flux=irrigation_flux_result_t()
+    write(*,'(a)') 'PPA_IRR_SOURCE_BINDING_EVENT_LIFECYCLE_GUARDS=PASS'
     call owner%copy_committed_hydraulic_states(copied,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(copied)) error stop 'uninitialized hydraulic copy'
     call owner%initialize(profile,code)
@@ -453,9 +493,9 @@ contains
         selected_amount(tile)=flux%external_inflow_amount
         irrigation_forcing(tile)=profile%tiles(tile)%base_forcing
         irrigation_forcing(tile)%top_flux=0.0_real64
-        irrigation_forcing(tile)%temporal_forcing_event=.true.
-        irrigation_forcing(tile)%temporal_forcing_event_time=request%t0
-        irrigation_forcing(tile)%subsurface_irrigation_source=flux%subsurface_source
+        call bind_ppa_irrigation_source(irrigation_forcing(tile),flux,diagnostics,request%t0,bound_forcing,ok)
+        if(.not.ok) error stop 'irrigation initial source binding'
+        irrigation_forcing(tile)=bound_forcing
       end do
       control_forcing=irrigation_forcing
       do tile=1,NTILE
@@ -513,7 +553,13 @@ contains
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint boundary copy'
       ! The rate does not change at restart; do not replay the old start event.
       control_forcing=irrigation_forcing
-      control_forcing%temporal_forcing_event=.false.
+      do tile=1,NTILE
+        flux%subsurface_source=irrigation_forcing(tile)%subsurface_irrigation_source
+        call bind_ppa_irrigation_source(irrigation_forcing(tile),flux,diagnostics,midpoint,bound_forcing,ok)
+        if(.not.ok) error stop 'irrigation continued source binding'
+        control_forcing(tile)=bound_forcing
+        if(control_forcing(tile)%temporal_forcing_event) error stop 'unchanged source falsely marked'
+      end do
       call owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,control_forcing,irrigation_result,code)
       original_status=code
       if(original_status/=FMR_APP_BOOT_OK) error stop 'unchanged active-source continuation failed'
@@ -568,10 +614,13 @@ contains
              error stop 'irrigation midpoint resumed profile'
       end do
       ! End the prolonged prescribed source at an explicit new forcing event.
+      flux=irrigation_flux_result_t()
       do tile=1,NTILE
-        control_forcing(tile)%subsurface_irrigation_source=0.0_real64
-        control_forcing(tile)%temporal_forcing_event=.true.
-        control_forcing(tile)%temporal_forcing_event_time=midpoint+irrigation_dt
+        call bind_ppa_irrigation_source(control_forcing(tile),flux,diagnostics, &
+             midpoint+irrigation_dt,bound_forcing,ok)
+        if(.not.ok) error stop 'irrigation stopped source binding'
+        control_forcing(tile)=bound_forcing
+        if(.not.control_forcing(tile)%temporal_forcing_event) error stop 'stopped source unmarked'
       end do
       call owner%run_standalone_with_forcing(midpoint+irrigation_dt,midpoint+2.0_real64*irrigation_dt, &
            control_forcing,irrigation_result,code)
