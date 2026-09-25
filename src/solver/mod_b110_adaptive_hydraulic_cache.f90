@@ -33,6 +33,7 @@ module mod_b110_adaptive_hydraulic_cache
     procedure :: lookup => b110_ahl_lookup
     procedure :: find_slot => b110_ahl_find_slot
     procedure :: sample_slot => b110_ahl_sample_slot
+    procedure :: slot_bounds => b110_ahl_slot_bounds
     procedure :: get_or_build => b110_ahl_get_or_build
     procedure :: stats => b110_ahl_stats
     procedure :: probe_stats => b110_ahl_probe_stats
@@ -119,6 +120,24 @@ contains
       if(current>B110_AHL_MAX_CACHE) current=1
     end do
   end subroutine b110_ahl_find_slot
+
+  subroutine b110_ahl_slot_bounds(self,slot,xmin,xmax,ok)
+    class(b110_adaptive_hydraulic_cache_t),intent(in)::self
+    integer,intent(in)::slot
+    real(real64),intent(out)::xmin,xmax
+    logical,intent(out)::ok
+    integer::n
+
+    xmin=0.0_real64;xmax=0.0_real64;ok=.false.
+    if(.not.allocated(self%entry))return
+    if(slot<1 .or. slot>size(self%entry))return
+    if(.not.self%entry(slot)%occupied)return
+    n=self%entry(slot)%table%n
+    if(n<2 .or. .not.allocated(self%entry(slot)%table%x))return
+    xmin=self%entry(slot)%table%x(1)
+    xmax=self%entry(slot)%table%x(n)
+    ok=.true.
+  end subroutine b110_ahl_slot_bounds
 
   subroutine b110_ahl_sample_slot(self,slot,xv,inside,x0,x1,z0,z1,m0,m1,k0,k1)
     class(b110_adaptive_hydraulic_cache_t),intent(in)::self
