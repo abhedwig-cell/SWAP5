@@ -1,0 +1,26 @@
+name: F-AHL28B FMR provider retention
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/solver/mod_b110_adaptive_hydraulic_provider.f90'
+      - 'research/ahl/test_ahl28b_fmr_provider_retention.f90'
+      - 'research/ahl/run_ahl28b_fmr_provider_retention.sh'
+      - '.github/workflows/f-ahl28b-fmr-provider-retention.yml'
+  workflow_dispatch:
+
+jobs:
+  retention:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run serialized FMR provider-retention gate
+        run: |
+          bash research/ahl/run_ahl28b_fmr_provider_retention.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl28b-fmr-${{ github.run_id }}
+          path: /tmp/ahl28b_fmr_retention.txt
