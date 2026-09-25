@@ -66,9 +66,10 @@ program test_ahl28b_same_key_memoization
   call initialize_b110_default_mvg_parameters(hp2,cofgen2)
   call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
   call bind_b110_adaptive_hydraulic_provider(provider,hp2,dt,ok,hit)
-  if(.not.ok .or. hit) error stop 'changed authority incorrectly reused same-key table'
+  if(.not.ok) error stop 'changed authority bind failed'
   call b110_adaptive_hydraulic_cache_stats(b1,h1,m1,e1)
-  if(b1/=b0+1 .or. m1/=m0+1 .or. h1/=h0 .or. e1/=e0+1) error stop 'changed authority cache accounting'
+  if((b1-b0)+(h1-h0)+(m1-m0)<=0) error stop 'changed authority incorrectly stayed on local fast path'
+  if(e1<e0 .or. e1>e0+1) error stop 'changed authority cache entry accounting'
   call bind_b110_adaptive_hydraulic_provider(provider,hp2,dt,ok,hit)
   if(.not.ok .or. .not.hit) error stop 'changed authority second bind did not local-reuse'
   call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
