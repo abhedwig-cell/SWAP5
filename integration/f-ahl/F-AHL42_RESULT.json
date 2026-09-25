@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-AHL",
   "work_unit": "F-AHL42",
-  "phase": "CANONICAL_MINIMAL_EXTRACTION_CURRENT_HEAD_REPLAY_COMPLETE",
-  "status": "PASS_READY_FOR_GOVERNANCE_REVIEW",
+  "phase": "CANONICAL_MINIMAL_EXTRACTION_REPAIR_PENDING_CURRENT_HEAD_REPLAY",
+  "status": "REPAIR_APPLIED_REPLAY_REQUIRED",
   "branch": "work/f-ahl42-canonical-admission",
   "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
   "workflow_run": 36112329593,
@@ -30,7 +30,7 @@
     "near_saturation": "authoritative analytical fallback outside represented core",
     "dry_tail": "material-specific C=1e-13 representation bound with authoritative analytical fallback; no physics truncation"
   },
-  "decision": "CURRENT_HEAD_TECHNICALLY_READY_FOR_GOVERNANCE_REVIEW",
+  "decision": "REPLAY_CURRENT_HEAD_BEFORE_GOVERNANCE_REVIEW",
   "nonclaims": [
     "This result is not canonical production admission.",
     "No whole-SWAP or MultiSWAP performance claim is made.",
@@ -67,5 +67,19 @@
     "O05_dry_tail_semantics": "PASS",
     "same_key_provider_memoization": "PASS",
     "artifact_id": 10853474006
+  },
+  "previous_pass": {
+    "tested_head": "aff0550204de4f889377a87a3c12c0353dbac9f9",
+    "workflow_run": 36112329593,
+    "workflow_job": 107998394188,
+    "status": "PASS_ON_PRE_F_AHL42A_HEAD"
+  },
+  "current_head": "c7725655d0ea2e42d0e3247952cc098311e82bd4",
+  "governance_blocker_reconciliation": {
+    "work_unit": "F-AHL42A",
+    "finding": "K_ERROR_FLOOR=1e-10 had also been used as stored log(K) floor, which could inflate represented very-dry O05 conductivity by many orders of magnitude.",
+    "repair": "Keep 1e-10 only in the K interpolation error metric; store log(max(authoritative_K,tiny(real64))).",
+    "added_regression": "O05 represented-side h=-2e5 cm must remain in the authoritative very-dry K magnitude range; h=-5e5 remains exact analytical fallback.",
+    "admission_status": "BLOCKED_UNTIL_CURRENT_HEAD_REPLAYS_PASS"
   }
 }
