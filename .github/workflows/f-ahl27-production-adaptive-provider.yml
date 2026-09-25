@@ -1,0 +1,27 @@
+name: F-AHL27 production adaptive provider
+
+on:
+  push:
+    branches:
+      - work/f-ahl27-production-admission
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_builder.f90'
+      - 'src/runtime/mod_b110_adaptive_hydraulic_cache.f90'
+      - 'src/solver/mod_b110_adaptive_mvg_provider.f90'
+      - 'tests/ahl/**'
+      - 'integration/f-ahl/F-AHL27_*.json'
+      - '.github/workflows/f-ahl27-production-adaptive-provider.yml'
+  workflow_dispatch:
+
+jobs:
+  port-equivalence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and run production port-equivalence gate
+        run: |
+          bash tests/ahl/run_fahl27_adaptive_provider.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl27-${{ github.run_id }}
+          path: /tmp/fahl27_stage1.txt
