@@ -1,0 +1,30 @@
+name: F-PE-NEWTON-CANDIDATE01 noinline attribution
+
+on:
+  pull_request:
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/**'
+      - 'tests/fpe/test_fpe_newton_candidate01_profile.f90'
+      - 'tests/fpe/run_fpe_newton_candidate01_noinline_profile.sh'
+      - '.github/workflows/f-pe-newton-candidate01-noinline.yml'
+  workflow_dispatch:
+
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tool identity
+        run: |
+          gfortran --version
+          gprof --version
+      - name: Profile noinline easy and hard cases
+        run: |
+          bash tests/fpe/run_fpe_newton_candidate01_noinline_profile.sh | tee newton-candidate01-noinline.txt
+          grep -Fq 'NEWTON_CANDIDATE01_NOINLINE_PROFILE=PASS' newton-candidate01-noinline.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: newton-candidate01-noinline
+          path: newton-candidate01-noinline.txt
