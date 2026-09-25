@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL31",
+  "title": "Adaptive representation memory and build-cost characterization",
+  "parent": "F-AHL30",
+  "phase": "PREREGISTERED_RESEARCH",
+  "question": "What memory and one-time construction cost would a run-lifetime registry of unique adaptive hydraulic representations impose at MultiSWAP scale?",
+  "workload": {
+    "unique_parameterizations": 256,
+    "construction": "deterministic small perturbations around B01, B12, O05 and O14 default-MvG authorities",
+    "purpose": "implementation-scale characterization, not a soil-population distribution claim"
+  },
+  "measurements": [
+    "support points per representation",
+    "payload bytes per representation for x,z,dzdx,logk arrays",
+    "total payload bytes for 256 representations",
+    "mean and median build CPU per unique representation",
+    "minimum and maximum support count",
+    "projected payload for 10000 unique representations using observed mean and maximum payload"
+  ],
+  "accounting_scope": {
+    "included_memory": "four real64 support arrays only",
+    "excluded_memory": "Fortran allocatable descriptors, cache keys and container metadata, which are small fixed overheads relative to array payload",
+    "included_time": "adaptive table construction from initialized authoritative provider",
+    "excluded_time": "input parsing and full application setup"
+  },
+  "decision": "Characterization only. F-AHL32 will preregister a registry/capacity policy after these measurements; no capacity or memory threshold is chosen post hoc inside F-AHL31.",
+  "hard_exclusions": [
+    "NO_UNBOUNDED_REGISTRY_IMPLEMENTATION_IN_F_AHL31",
+    "NO_SOIL_POPULATION_GENERALIZATION_FROM_SYNTHETIC_PERTURBATIONS",
+    "NO_WHOLE_SWAP_SPEEDUP_CLAIM"
+  ]
+}
