@@ -56,12 +56,21 @@ contains
     call system_clock(t0,freq)
     call app%initialize(config,status)
     call system_clock(t1)
+    write(*,'(A,A,A,I0)') 'APPQUAL01_B1_STAGE,route=',trim(route_name),',init_status=',status
     if(status/=FMR_APP_BOOT_OK) return
     init_seconds=real(t1-t0,real64)/real(freq,real64)
 
     call system_clock(t0)
     call app%run_standalone(0.0_real64,ROSSFAST_D3R_OUTER_HORIZON_DAY,results,status)
     call system_clock(t1)
+    write(*,'(A,A,A,I0)') 'APPQUAL01_B1_STAGE,route=',trim(route_name),',run_status=',status
+    if(allocated(results)) then
+      write(*,'(A,A,A,I0)') 'APPQUAL01_B1_STAGE,route=',trim(route_name),',result_count=',size(results)
+      if(size(results)>0) then
+        write(*,'(A,A,A,L1,A,L1,A,A)') 'APPQUAL01_B1_STAGE,route=',trim(route_name),',completed=',results(1)%completed, &
+             ',committed=',results(1)%committed,',admission=',trim(results(1)%admission_status)
+      end if
+    end if
     if(status/=FMR_APP_BOOT_OK) return
     run_seconds=real(t1-t0,real64)/real(freq,real64)
     if(.not.allocated(results) .or. size(results)/=count) error stop 'APPQUAL01 paired result shape'
