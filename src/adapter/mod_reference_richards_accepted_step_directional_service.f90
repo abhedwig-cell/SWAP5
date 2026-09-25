@@ -419,7 +419,6 @@ contains
     ! array is present, skip temporary vector allocation and omit exact zero terms.
     ! For the admitted dynamic surface-flux subset dqtop is a direct
     ! previous-ponding contribution; the capacity-limited branch is rejected.
-    ref_ws%richards%band_rhs(1:n) = 0.0_real64
     if (source_sink_direction_present) then
        bdir = -direction_request%incoming_water_content(1) * request%parameters%dz(1) / request%step_duration + &
               sink_direction(1) - source_direction(1) + &
