@@ -90,7 +90,7 @@ contains
     type(modflow6_linear_boundary_term_t), allocatable :: terms(:)
     type(groundwater_interface_mass_snapshot_t) :: snapshot
     integer(int64) :: tile_id, lineage_id, revision
-    logical :: has_origin, has_candidate, available
+    logical :: has_origin, has_candidate, available, handles_strictly_increasing
     integer :: i, j, local_status
 
     status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
@@ -138,17 +138,30 @@ contains
       return
     end if
 
+    handles_strictly_increasing = .true.
+    if (size(participant_handles) > 0) then
+      if (participant_handles(1) <= 0_int64) handles_strictly_increasing = .false.
+      do i = 2, size(participant_handles)
+        if (participant_handles(i) <= 0_int64 .or. participant_handles(i) <= participant_handles(i-1)) then
+          handles_strictly_increasing = .false.
+          exit
+        end if
+      end do
+    end if
+
     do i = 1, size(tiles)
       if (participant_handles(i) <= 0_int64) then
         status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
         return
       end if
-      do j = 1, i - 1
-        if (participant_handles(j) == participant_handles(i)) then
-          status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
-          return
-        end if
-      end do
+      if (.not. handles_strictly_increasing) then
+        do j = 1, i - 1
+          if (participant_handles(j) == participant_handles(i)) then
+            status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
+            return
+          end if
+        end do
+      end if
 
       call registry%identity(participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
