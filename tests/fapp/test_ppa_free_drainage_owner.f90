@@ -511,9 +511,12 @@ contains
       if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint fresh restore'
       call owner%copy_committed_hydraulic_states(midpoint_state,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint boundary copy'
-      call owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,irrigation_forcing,irrigation_result,code)
+      ! The rate does not change at restart; do not replay the old start event.
+      control_forcing=irrigation_forcing
+      control_forcing%temporal_forcing_event=.false.
+      call owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,control_forcing,irrigation_result,code)
       original_status=code
-      call fresh_owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,irrigation_forcing,continued_result,code)
+      call fresh_owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,control_forcing,continued_result,code)
       if(code/=original_status) error stop 'irrigation midpoint restart changed outcome'
       write(*,*) 'IRRIGATION_ACTIVE_SOURCE_OUTCOME',original_status,irrigation_result%kernel_status
       call owner%copy_committed_hydraulic_states(copied,code)
