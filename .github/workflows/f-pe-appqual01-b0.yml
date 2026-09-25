@@ -34,3 +34,23 @@ jobs:
             appqual01-b0.txt
             appqual01-b0.json
             appqual01-b1-s10000.json
+
+  b1-reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run S100 S1000 S10000 cleaned Reference baseline
+        run: |
+          bash tests/performance/run_appqual01_b1_reference.sh | tee appqual01-b1-reference.txt
+          test "$(grep -c '^APPQUAL01_B1_REFERENCE=PASS$' appqual01-b1-reference.txt)" -eq 3
+          python3 tests/performance/collect_appqual01_b1_reference.py appqual01-b1-reference.txt "$GITHUB_SHA" appqual01-b1-reference.json
+          cat appqual01-b1-reference.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: appqual01-b1-reference
+          path: |
+            appqual01-b1-reference.txt
+            appqual01-b1-reference.json
