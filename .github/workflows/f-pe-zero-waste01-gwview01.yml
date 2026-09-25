@@ -1,0 +1,17 @@
+name: F-PE-ZERO-WASTE01 GWVIEW01 export benchmark
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/test_fpe_zero_waste01_gwview01.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_gwview01.sh'
+      - '.github/workflows/f-pe-zero-waste01-gwview01.yml'
+  workflow_dispatch:
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_zero_waste01_gwview01.sh
