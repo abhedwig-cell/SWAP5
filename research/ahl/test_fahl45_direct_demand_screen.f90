@@ -74,8 +74,8 @@ contains
     end if
   end function
   subroutine build(t,nint,tr,ts,a,n,m)
-    real(real64),intent(out)::t(0:nint,0:5)
     integer,intent(in)::nint
+    real(real64),intent(out)::t(0:nint,0:5)
     real(real64),intent(in)::tr,ts,a,n,m
     integer::d,j
     real(real64)::lo,hi,x
@@ -88,8 +88,8 @@ contains
     end do
   end subroutine
   pure real(real64) function theta_direct(head,t,nint) result(theta)
-    real(real64),intent(in)::head,t(0:nint,0:5)
     integer,intent(in)::nint
+    real(real64),intent(in)::head,t(0:nint,0:5)
     real(real64)::x,lo,hi,u
     integer::d,j
     if(head>=-1.0_real64)then
@@ -118,8 +118,8 @@ contains
     theta=t(j,d)+u*(t(j+1,d)-t(j,d))
   end function
   subroutine validate(t,nint,tr,ts,a,n,m,maxerr)
-    real(real64),intent(in)::t(0:nint,0:5),tr,ts,a,n,m
     integer,intent(in)::nint
+    real(real64),intent(in)::t(0:nint,0:5),tr,ts,a,n,m
     real(real64),intent(out)::maxerr
     integer::q
     real(real64)::lx,h,ref,cand
