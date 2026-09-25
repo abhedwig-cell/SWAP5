@@ -1444,11 +1444,13 @@ contains
       if (associated(self%soil_parameters)) deallocate(self%soil_parameters)
       if (associated(self%hydraulic_parameters)) deallocate(self%hydraulic_parameters)
       if (associated(self%constitutive)) deallocate(self%constitutive)
-      if (associated(self%adaptive_constitutive)) deallocate(self%adaptive_constitutive)
+      ! Keep adaptive_constitutive allocated across column reconfiguration so
+      ! its provider-local exact-key cache can be reused by the serialized
+      ! MultiSWAP backend without any module-global mutable state.
+      if (.not. associated(self%adaptive_constitutive)) allocate(self%adaptive_constitutive)
       if (associated(self%source_sink)) deallocate(self%source_sink)
       if (associated(self%root_sink)) deallocate(self%root_sink)
-      allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%adaptive_constitutive, &
-           self%source_sink, self%root_sink)
+      allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink, self%root_sink)
       self%soil_parameters%parameter_set_id = parameters%parameter_set_id
       self%soil_parameters%active_nodes = n
       allocate(self%soil_parameters%z(n), self%soil_parameters%dz(n), self%soil_parameters%node_distance(n))
