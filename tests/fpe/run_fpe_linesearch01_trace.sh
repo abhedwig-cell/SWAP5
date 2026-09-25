@@ -9,20 +9,18 @@ trap 'rm -rf "$BUILD"' EXIT
 python3 - <<'PY' "$BUILD/headcalc_trace.f90"
 from pathlib import Path
 import sys
-src=Path("src/legacy/b1_10_port/headcalc.f90").read_text()
-needle="""          Fmax = maxval(dabs(fsi_ws%residual(1:NN)))
-
-!        test for iteration progress, if Newton-step is too large: reduce dh by multiplication factor
-"""
-insert="""          Fmax = maxval(dabs(fsi_ws%residual(1:NN)))
-          write(*,'(*(g0))') 'LINESEARCH01_CANDIDATE|ITER=',state%numbit,'|TRY=',itry,'|FACTOR=',factor, &
-               '|SUMOLD=',sumold,'|SUMP=',sump,'|FMAX=',Fmax,'|ACCEPT=',(sump < sumold .OR. Fmax < CritDevBalCp)
-
-!        test for iteration progress, if Newton-step is too large: reduce dh by multiplication factor
-"""
-if needle not in src:
+src=Path("src/legacy/b1_10_port/headcalc.f90").read_text().splitlines()
+out=[]
+inserted=False
+for line in src:
+    out.append(line)
+    if "Fmax = maxval(dabs(fsi_ws%residual(1:NN)))" in line and not inserted:
+        out.append("          write(*,'(*(g0))') 'LINESEARCH01_CANDIDATE|ITER=',state%numbit,'|TRY=',itry,'|FACTOR=',factor, &")
+        out.append("               '|SUMOLD=',sumold,'|SUMP=',sump,'|FMAX=',Fmax,'|ACCEPT=',(sump < sumold .OR. Fmax < CritDevBalCp)")
+        inserted=True
+if not inserted:
     raise SystemExit("trace insertion point not found")
-Path(sys.argv[1]).write_text(src.replace(needle,insert,1))
+Path(sys.argv[1]).write_text("\n".join(out)+"\n")
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -O2)
