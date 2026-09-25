@@ -5,7 +5,8 @@ program test_fpe_zero_waste01_parameter_preprocess
   implicit none
 
   type(b110_default_mvg_parameters_t) :: hydraulic, prepared, copied
-  type(b110_default_mvg_parameters_t), allocatable :: prepared_registry(:)
+  type(b110_default_mvg_parameters_t), allocatable, target :: prepared_registry(:)
+  type(b110_default_mvg_parameters_t), pointer :: borrowed_prepared => null()
   type(soil_water_parameter_set_t) :: soil
   real(real64), allocatable :: cofgen(:,:), raw_registry(:,:,:), compact_cache(:,:), &
        compact_dependency_registry(:,:,:), compact_derived_registry(:,:,:), z(:), dz(:), disnod(:)
@@ -142,6 +143,18 @@ program test_fpe_zero_waste01_parameter_preprocess
   end do
   call system_clock(c1)
   call emit('prepared_registry_copy_reuse',n,reps,c0,c1,rate,checksum_copy)
+
+  nullify(borrowed_prepared)
+  checksum_copy = 0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    registry_index = 1 + mod(r-1,registry_count)
+    borrowed_prepared => prepared_registry(registry_index)
+    checksum_copy = checksum_copy + borrowed_prepared%cofgen(25,1) + borrowed_prepared%cofgen(42,n)
+  end do
+  call system_clock(c1)
+  call emit('prepared_registry_borrow_rebind',n,reps,c0,c1,rate,checksum_copy)
+  nullify(borrowed_prepared)
 
   checksum_geometry = 0.0_real64
   call system_clock(c0,rate)
