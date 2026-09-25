@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "record": "F-AHL32_CONCURRENCY_BOUNDARY",
+  "status": "BOUND",
+  "current_authority": {
+    "adaptive_hydraulics_runtime_envelope": "F-AHL27 permits the adaptive constitutive provider only for prescribed-head bottom mode 5.",
+    "parallel_v1_admission": "mod_fmr_parallel_worker_pool currently admits physical multiworker execution only when bottom_mode == 7.",
+    "consequence": "The mutable module-level adaptive representation registry is not reachable from the currently admitted multiworker physical route."
+  },
+  "decision": "NO_LOCKING_REPAIR_IN_F_AHL32",
+  "future_gate": "Any future admission of adaptive prescribed-head hydraulics into a multiworker route must explicitly qualify synchronization/ownership of shared registry insertion and lookup before admission.",
+  "nonclaims": [
+    "This does not establish general thread safety of the registry.",
+    "It establishes only that current admitted route envelopes do not overlap."
+  ]
+}
