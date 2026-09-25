@@ -1,0 +1,25 @@
+name: F-AHL11D O09 dry attribution
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl11d_o09_attribution.f90'
+      - 'research/ahl/run_ahl11d_o09_attribution.sh'
+      - 'integration/f-ahl/F-AHL11D_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl11d-o09-attribution.yml'
+  workflow_dispatch:
+
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run O09 dry attribution
+        run: |
+          bash research/ahl/run_ahl11d_o09_attribution.sh /tmp/ahl11d_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl11d-${{ github.run_id }}
+          path: /tmp/ahl11d_result.txt
