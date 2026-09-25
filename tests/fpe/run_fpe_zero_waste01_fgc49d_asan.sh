@@ -53,6 +53,28 @@ trace_replacement = '''        try:
 if trace_anchor not in test_src:
     raise SystemExit("FGC49D ASAN runner: trace wrapper anchor not found")
 test_src = test_src.replace(trace_anchor, trace_replacement, 1)
+abi_anchor = '    runtime = FmrGroundwaterApplicationRuntime(library_path, handle.value)\n'
+abi_replacement = '''    runtime = FmrGroundwaterApplicationRuntime(library_path, handle.value)
+    _raw_trial = runtime._trial
+    _raw_trial_tangents = runtime._trial_tangents
+
+    def _trace_raw_trial(*args):
+        status = int(_raw_trial(*args))
+        print(f"FGC49D_TRACE raw_trial_status={status}", flush=True)
+        return status
+
+    def _trace_raw_trial_tangents(*args):
+        status = int(_raw_trial_tangents(*args))
+        print(f"FGC49D_TRACE raw_trial_tangent_status={status}", flush=True)
+        return status
+
+    runtime._trial = _trace_raw_trial
+    runtime._trial_tangents = _trace_raw_trial_tangents
+'''
+if abi_anchor not in test_src:
+    raise SystemExit("FGC49D ASAN runner: runtime ABI anchor not found")
+test_src = test_src.replace(abi_anchor, abi_replacement, 1)
+
 service_anchor = '    print("FGC49D_TRACE service_returned", flush=True)\n'
 service_replacement = (
     service_anchor
