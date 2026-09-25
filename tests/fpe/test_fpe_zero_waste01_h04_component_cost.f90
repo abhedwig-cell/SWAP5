@@ -9,17 +9,17 @@ program test_fpe_zero_waste01_h04_component_cost
   type(b110_default_mvg_parameters_t), target :: hydraulic
   type(b110_default_mvg_provider_t) :: provider
   real(real64), allocatable :: raw(:,:), head(:), theta(:), kval(:), cap(:), dkdh(:)
-  real(real64), allocatable :: theta_m(:), kval_m(:), cap_m(:)
+  real(real64), allocatable :: theta_m(:), kval_m(:), cap_m(:), theta_only(:)
   integer :: n, reps, r, i
   integer(int64) :: c0,c1,rate
-  real(real64) :: checksum
+  real(real64) :: checksum, bottom_k
   character(len=32) :: arg
 
   call get_command_argument(1,arg); read(arg,*) n
   call get_command_argument(2,arg); read(arg,*) reps
   if (n <= 0 .or. reps <= 0) error stop 'H04 component-cost invalid request'
 
-  allocate(raw(24,n),head(n),theta(n),kval(n),cap(n),dkdh(n),theta_m(n),kval_m(n),cap_m(n))
+  allocate(raw(24,n),head(n),theta(n),kval(n),cap(n),dkdh(n),theta_m(n),kval_m(n),cap_m(n),theta_only(n))
   call initialize_fixture(raw)
   call initialize_b110_default_mvg_parameters(hydraulic,raw)
   call bind_b110_default_mvg_provider(provider,hydraulic,DT)
@@ -44,6 +44,24 @@ program test_fpe_zero_waste01_h04_component_cost
   end do
   call system_clock(c1)
   call emit('full_provider',n,reps,c0,c1,rate,checksum)
+
+  checksum=0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    call mirror_theta(hydraulic%cofgen,head,theta_only)
+    checksum=checksum+theta_only(1)
+  end do
+  call system_clock(c1)
+  call emit('theta_only',n,reps,c0,c1,rate,checksum)
+
+  checksum=0.0_real64
+  call system_clock(c0,rate)
+  do r=1,reps
+    call mirror_bottom_k(hydraulic%cofgen,head,bottom_k)
+    checksum=checksum+bottom_k
+  end do
+  call system_clock(c1)
+  call emit('bottom_k_only',n,reps,c0,c1,rate,checksum)
 
   checksum=0.0_real64
   call system_clock(c0,rate)
@@ -86,6 +104,25 @@ contains
       c(23,j)=1.0e-12_real64
     end do
   end subroutine initialize_fixture
+
+  subroutine mirror_theta(c,h,t)
+    real(real64), intent(in) :: c(:,:),h(:)
+    real(real64), intent(out) :: t(:)
+    integer :: j
+    do j=1,size(h)
+      t(j)=watcon(c(:,j),h(j))
+    end do
+  end subroutine mirror_theta
+
+  subroutine mirror_bottom_k(c,h,kbottom)
+    real(real64), intent(in) :: c(:,:),h(:)
+    real(real64), intent(out) :: kbottom
+    real(real64) :: theta_bottom
+    integer :: j
+    j=size(h)
+    theta_bottom=watcon(c(:,j),h(j))
+    kbottom=hconduc(c(:,j),h(j),theta_bottom)
+  end subroutine mirror_bottom_k
 
   subroutine mirror_theta_k(c,h,t,k)
     real(real64), intent(in) :: c(:,:),h(:)
