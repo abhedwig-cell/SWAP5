@@ -1,7 +1,7 @@
 program test_fahl27_fmr_resolved_opt_in
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_NONE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_executor_t, kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
@@ -183,7 +183,7 @@ contains
 
   subroutine initialize_config(c)
     type(canonical_numerical_config_t),intent(out)::c
-    c%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF;c%transaction%temporal_tolerance=1.0e-6_real64
+    c%transaction%temporal_mode=TX_TEMPORAL_NONE;c%transaction%temporal_tolerance=0.0_real64
     c%transaction%mass_tolerance=mass_gate;c%transaction%retry_scale=0.5_real64;c%transaction%max_retries=8
     c%max_committed_substeps=32;c%progress_tolerance=0.0_real64
     c%model_temporal_indicator_budget_available=.false.;c%model_temporal_indicator_budget=0.0_real64
