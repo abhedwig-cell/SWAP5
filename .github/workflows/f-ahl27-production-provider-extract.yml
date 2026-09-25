@@ -1,0 +1,26 @@
+name: F-AHL27 production provider extraction
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_*.f90'
+      - 'tests/fahl/test_fahl27_production_provider_extract.f90'
+      - 'tests/fahl/run_fahl27_production_provider_extract.sh'
+      - 'integration/f-ahl/F-AHL27_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl27-production-provider-extract.yml'
+  workflow_dispatch:
+
+jobs:
+  stage1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run production-shaped extraction gate
+        run: |
+          bash tests/fahl/run_fahl27_production_provider_extract.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl27-stage1-${{ github.run_id }}
+          path: /tmp/fahl27_stage1.txt
