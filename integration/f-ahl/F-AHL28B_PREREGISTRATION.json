@@ -11,7 +11,9 @@
     "representation_identity": "store the exact adaptive representation cache key in the provider",
     "same_key_rebind": "rebind only the step-duration-dependent authoritative analytical fallback and current cofgen pointer; reuse the existing immutable provider-owned table without shared-cache acquisition",
     "different_key_rebind": "use the existing exact-key shared cache and replace the provider-owned table only after successful acquisition",
-    "adaptive_disabled": "deallocate retained adaptive provider and preserve analytical default route"
+    "adaptive_disabled": "deallocate retained adaptive provider and preserve analytical default route",
+    "table_ownership": "Preserve the current cache API and provider-owned immutable copy after first exact acquisition. F-AHL28A no-copy remains a failed standalone branch experiment and is not required for this repair.",
+    "branch_reconciliation": "Do not alter cache ownership/API while parallel F-AHL29 characterizes bounded-cache correctness; eliminate repeated acquisition by provider-local exact-authority reuse instead."
   },
   "frozen_semantics": [
     "exact cache key equality, not fingerprint-only equality",
