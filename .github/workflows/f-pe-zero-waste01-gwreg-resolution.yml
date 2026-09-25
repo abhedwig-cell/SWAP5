@@ -31,5 +31,7 @@ jobs:
           sudo apt-get install -y gfortran python3-numpy
       - name: F-GC49B registry lifecycle
         run: bash tests/fgc/run_fgc49b_fmr_participant_registry.sh
+      - name: F-VQ122 independent registry qualification
+        run: bash tests/fvq/run_fvq122_fgc49b_independent.sh
       - name: FGC49D production context
         run: bash tests/fgc/run_fgc49d_production_application_context.sh
