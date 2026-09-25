@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27_STAGE2_TIMING3",
+  "phase": "REFERENCE_FLOOR_PAIRED_TIMING_COMPLETE",
+  "status": "TIMING_EQUIVOCAL_FIDELITY_PASS",
+  "workflow_run": 36078431061,
+  "workflow_job": 107894758205,
+  "backend_route": "fmr_serialized_reference_backend.run_reference_floor_sample",
+  "fidelity": {
+    "default_off_sample_valid": true,
+    "adaptive_on_sample_valid": true,
+    "default_off_solver_executed": true,
+    "adaptive_on_solver_executed": true,
+    "max_abs_pressure_head_delta_cm": 1.038717e-6,
+    "max_abs_water_content_delta": 1.143307e-9,
+    "bottom_flux_delta_cm_per_day": 4.617402e-9,
+    "nonlinear_iterations": 4,
+    "backtracking_attempts": 4,
+    "same_nonlinear_path": true,
+    "verdict": "PASS"
+  },
+  "paired_adaptive_over_analytical_ratios": [
+    0.983857,
+    0.988440,
+    0.982894,
+    0.989523,
+    0.979857,
+    0.984431,
+    0.989330
+  ],
+  "median_paired_ratio": 0.984431,
+  "median_cpu_reduction_fraction": 0.015569,
+  "decision_rule": {
+    "application_speed_pass": "ratio < 0.98",
+    "equivocal": "0.98 <= ratio <= 1.02",
+    "application_speed_fail": "ratio > 1.02"
+  },
+  "decision": "TIMING_EQUIVOCAL_DO_NOT_RETUNE_GATE",
+  "finding": "All seven paired samples favor the adaptive route, but the median complete serialized-reference-floor benefit is only about 1.56%, insufficient for the preregistered 2% application-speed gate.",
+  "interpretation": "The production-shaped adaptive hydraulics preserve physical and nonlinear-solver behavior. The large isolated Richards speed benefit is mostly not reaching the serialized FMR floor route, so backend/provider binding overhead must be attributed before further optimization.",
+  "next_action": "Preregister and execute provider binding/cache-hit overhead attribution. In particular quantify repeated sampler construction, exact-key creation, cache scanning/table acquisition and analytical fallback rebinding on an already-warm cache.",
+  "nonclaims": [
+    "This is not a performance failure; it is preregistered timing-equivocal.",
+    "No whole-SWAP speedup is claimed.",
+    "No production admission follows from this result."
+  ]
+}
