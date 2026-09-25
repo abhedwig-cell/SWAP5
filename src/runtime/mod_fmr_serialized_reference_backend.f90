@@ -45,6 +45,8 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b110_direct_retention_core, only: acquire_b110_direct_retention_slot
+  use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t, bind_b110_direct_retention_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
@@ -185,6 +187,8 @@ module mod_fmr_serialized_reference_backend
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
     logical :: tabulated_hydraulics_active = .false.
+    logical :: direct_retention_active = .false.
+    integer :: prepared_direct_retention_slot = 0
     ! F-SI39: explicit opt-in to the exact B1.11 near-saturated KSATEXM
     ! conductivity extension. Default false preserves all pre-F-SI39 routes.
     logical :: ksatexm_extension_active = .false.
@@ -340,6 +344,9 @@ module mod_fmr_serialized_reference_backend
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
     type(fmr_b110_physical_parameters_t), pointer :: trusted_parameter_source => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
+    type(b110_direct_retention_provider_t), pointer :: direct_retention_constitutive => null()
+    logical :: direct_retention_active = .false.
+    integer :: direct_retention_slot = 0
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
@@ -478,10 +485,12 @@ contains
     type(fmr_b110_physical_parameters_t), intent(inout) :: parameters
     logical, intent(out) :: prepared
     integer :: i
+    logical :: direct_hit
 
     prepared = .false.
     parameters%prepared_default_mvg_available = .false.
     parameters%prepared_default_mvg = b110_default_mvg_parameters_t()
+    parameters%prepared_direct_retention_slot = 0
 
     if (parameters%active_nodes <= 0) return
     if (.not. allocated(parameters%cofgen)) return
@@ -501,6 +510,19 @@ contains
     call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
          enable_ksatexm_extension=parameters%ksatexm_extension_active)
     parameters%prepared_default_mvg_available = .true.
+
+    if (parameters%direct_retention_active) then
+      if (parameters%bottom_mode /= 5 .or. parameters%swkimpl /= 0 .or. &
+          parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active .or. &
+          parameters%ksatexm_extension_active) return
+      if (parameters%active_nodes > 1) then
+        if (any(parameters%prepared_default_mvg%cofgen(:,2:parameters%active_nodes) /= &
+             spread(parameters%prepared_default_mvg%cofgen(:,1),2,parameters%active_nodes-1))) return
+      end if
+      call acquire_b110_direct_retention_slot(parameters%prepared_default_mvg, &
+           parameters%prepared_direct_retention_slot, prepared, direct_hit)
+      if (.not. prepared) return
+    end if
     prepared = .true.
   end subroutine prepare_fmr_b110_default_mvg
 
@@ -1453,6 +1475,12 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
+      if (parameters%direct_retention_active) then
+        ok = ok .and. self%soil_water_selection%uses_reference() .and. &
+             parameters%bottom_mode == 5 .and. parameters%swkimpl == 0 .and. &
+             .not. parameters%ksatexm_extension_active .and. parameters%prepared_default_mvg_available .and. &
+             parameters%prepared_direct_retention_slot > 0
+      end if
       if (parameters%snow_active) then
         ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &
              .not. self%fixed_weir_surface_water_active
@@ -1518,6 +1546,7 @@ contains
       if (.not. associated(self%owned_hydraulic_parameters)) allocate(self%owned_hydraulic_parameters)
       nullify(self%hydraulic_parameters)
       if (.not. associated(self%constitutive)) allocate(self%constitutive)
+      if (.not. associated(self%direct_retention_constitutive)) allocate(self%direct_retention_constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
 
@@ -1550,6 +1579,8 @@ contains
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
+      self%direct_retention_active = parameters%direct_retention_active
+      self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
@@ -1967,6 +1998,7 @@ contains
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
+    logical :: direct_retention_ok
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
@@ -2036,7 +2068,13 @@ contains
         return
       end select
     end if
-    call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    if (self%direct_retention_active) then
+      call bind_b110_direct_retention_provider(self%direct_retention_constitutive, self%hydraulic_parameters, &
+           step_duration, self%direct_retention_slot, direct_retention_ok)
+      if (.not. direct_retention_ok) return
+    else
+      call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
     if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
@@ -2205,7 +2243,11 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    request%evaluation%constitutive => self%constitutive
+    if (self%direct_retention_active) then
+      request%evaluation%constitutive => self%direct_retention_constitutive
+    else
+      request%evaluation%constitutive => self%constitutive
+    end if
     request%evaluation%source_sink => self%source_sink
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
