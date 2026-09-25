@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL41A",
+  "phase": "FSI38_BOUND_PRESCRIBED_QBOT_EXECUTION",
+  "status": "FAIL_NONLINEAR_PATH_IDENTITY",
+  "workflow_run": 36104928564,
+  "workflow_job": 107975236168,
+  "first_failing_case": {
+    "material": "B01",
+    "regime": "wet",
+    "top_initial_head_cm": -10.0,
+    "qbot_cm_per_day": -1e-6,
+    "analytical_converged": true,
+    "adaptive_converged": true,
+    "max_abs_profile_pressure_head_delta_cm": 7.057462e-9,
+    "bottom_node_pressure_head_delta_cm": 6.897872e-9,
+    "max_abs_water_content_delta": 1.008499e-11,
+    "bottom_flux_delta_cm_per_day": 0.0,
+    "candidate_mass_residual_abs_cm": 2.775558e-17,
+    "analytical_bottom_node_pressure_head_cm": -7.0000000763,
+    "adaptive_bottom_node_pressure_head_cm": -7.0000000695,
+    "analytical_nonlinear_iterations": 2,
+    "adaptive_nonlinear_iterations": 3,
+    "analytical_backtracking_attempts": 2,
+    "adaptive_backtracking_attempts": 3
+  },
+  "frozen_gate_failure": "same nonlinear iteration count and same backtracking count",
+  "interpretation": [
+    "The first valid FSI38-bound flux case does not show a material bottom-head discrepancy; the bottom-node pressure-head difference is approximately 7e-9 cm.",
+    "The adaptive representation nevertheless changes the nonlinear convergence path by one iteration/backtracking attempt.",
+    "Therefore F-AHL41A does not broaden adaptive qualification to prescribed-qbot boundaries.",
+    "No gate is retuned after observation."
+  ],
+  "next_action": "F-AHL41B performs component attribution on the failing case to identify whether the nonlinear-path drift is controlled by retention/capacity approximation, conductivity approximation, or both."
+}
