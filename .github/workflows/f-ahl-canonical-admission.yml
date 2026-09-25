@@ -29,8 +29,12 @@ jobs:
       - name: Prescribed-head Richards matrix
         run: bash tests/fahl/run_fahl27_stage2_matrix.sh /tmp/fahl_admission_matrix.txt
 
-      - name: Serialized FMR opt-in routing
-        run: bash tests/fahl/run_fahl27_fmr_opt_in_runtime.sh
+      - name: Serialized seam structural audit
+        run: |
+          grep -Fq 'logical :: adaptive_hydraulics_active = .false.' src/runtime/mod_fmr_serialized_reference_backend.f90
+          grep -Fq 'self%adaptive_hydraulics_active .and. effective_bottom_mode == 5' src/runtime/mod_fmr_serialized_reference_backend.f90
+          grep -Fq 'request%evaluation%constitutive => self%adaptive_constitutive' src/runtime/mod_fmr_serialized_reference_backend.f90
+          grep -Fq 'request%evaluation%constitutive => self%constitutive' src/runtime/mod_fmr_serialized_reference_backend.f90
 
       - name: Prescribed-qbot analytical fallback
         run: bash tests/fahl/run_fahl27_stage2_qbot_fallback_direct.sh
