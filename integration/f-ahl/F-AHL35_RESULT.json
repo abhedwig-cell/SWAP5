@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL35",
+  "phase": "WARM_HIT_SAMPLER_ELIMINATION_QUALIFIED",
+  "status": "PASS",
+  "workflow_run": 36102846185,
+  "workflow_job": 107968884123,
+  "repair": "On changed authority, perform an exact-key registry lookup before constructing the one-node authoritative sampler; construct/bind the sampler only after a genuine registry miss.",
+  "paired_timing": {
+    "operations_per_batch": 200000,
+    "paired_repetitions": 9,
+    "ratios": [0.788971,0.805959,0.807385,0.809861,0.775289,0.814032,0.807523,0.807355,0.807880],
+    "median_candidate_over_baseline_ratio": 0.807385,
+    "median_reduction_fraction": 0.192615,
+    "frozen_gate_max_ratio": 0.90,
+    "verdict": "PASS"
+  },
+  "semantic_gates": {
+    "changed_key_warm_hit_no_build": true,
+    "changed_key_warm_hit_no_miss": true,
+    "step_duration_analytical_fallback_current": true,
+    "exact_key_registry_semantics": "PASS via F-AHL32 regression",
+    "same_key_provider_memoization": "PASS via F-AHL28B regression"
+  },
+  "regression_evidence": {
+    "F_AHL28B": {
+      "status": "PASS",
+      "same_key_bind_seconds": 1.0823e-7,
+      "reduction_from_original_baseline_fraction": 0.81833
+    },
+    "F_AHL32": {
+      "status": "PASS",
+      "stage1_unique": 10000,
+      "stage2_hits": 10000,
+      "stage3_capacity_plus_one": "PASS_UNCACHED_FALLBACK",
+      "collision_gate": "PASS"
+    }
+  },
+  "finding": "Sampler construction was a real avoidable component of warm changed-authority binding. Deferring it until a true registry miss removes about one fifth of the measured changed-authority warm-hit cost without changing table ownership, key authority, representation or fallback semantics.",
+  "decision": "RETAIN_REPAIR",
+  "next_action": "Re-characterize 16/64-key switching on the repaired path. Only pursue immutable-table ownership/handle changes if a material switching gap remains.",
+  "nonclaims": [
+    "This is a bind-level microbenchmark, not an application speed claim.",
+    "No table pointer or registry ownership semantics were changed."
+  ]
+}
