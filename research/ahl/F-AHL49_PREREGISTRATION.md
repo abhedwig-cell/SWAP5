@@ -66,13 +66,17 @@ Explicitly excluded pending separate qualification:
 9. Large-N table memory scales with unique authorities, not columns.
 10. No canonical admission until all production-shaped gates pass.
 
-## Concurrency boundary
+## Concurrency and application-owner boundary
 
 Supported candidate lifecycle:
 
-`serial setup/build -> freeze -> immutable reads`
+`single application owner -> serial setup/build -> freeze -> immutable reads -> owner close`
 
 F-AHL48 qualified concurrent frozen reads. F-AHL49 does not admit concurrent pool mutation.
+
+The first production-shaped extraction also admits at most **one active direct-retention production application owner at a time**. A second opt-in application initialization while the first owner is alive must fail closed. Closing the first owner releases and resets the representation pool so a later owner can initialize safely.
+
+This singleton-owner boundary is deliberate for the first extraction. Multi-application shared ownership is a separate future qualification and must not be inferred from the frozen-read result.
 
 ## Decision boundary
 
