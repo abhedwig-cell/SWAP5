@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL30",
+  "phase": "OVER_CAPACITY_REUSE_CHARACTERIZATION_COMPLETE",
+  "status": "ACTIONABLE_SCALABILITY_OVERHEAD",
+  "workflow_run": 36079722622,
+  "workflow_job": 107898778814,
+  "current_cache_capacity": 32,
+  "workloads": {
+    "round_robin_64": {
+      "requests": 10000,
+      "unique_parameterizations": 64,
+      "failures": 0,
+      "builds": 5024,
+      "hits": 4976,
+      "misses": 5024,
+      "entries": 32,
+      "seconds_per_request": 6.815611e-4
+    },
+    "grouped_64": {
+      "requests": 8192,
+      "unique_parameterizations": 64,
+      "requests_per_parameterization": 128,
+      "failures": 0,
+      "builds": 4128,
+      "hits": 4064,
+      "misses": 4128,
+      "entries": 32,
+      "seconds_per_request": 6.8221960449e-4
+    }
+  },
+  "finding": "The F-AHL29 fail-safe repair preserves correctness but the fixed 32-entry non-evicting cache causes thousands of repeated adaptive table builds once the unique working set exceeds capacity.",
+  "architecture_interpretation": [
+    "Simple LRU cannot solve a strict 64-key round-robin working set with capacity 32.",
+    "Grouped/local workloads also suffer because over-capacity keys are never retained.",
+    "For MultiSWAP-like repeated use, adaptive representations should be owned at run/parameter-registry lifetime rather than treated as a tiny transient cache."
+  ],
+  "next_action": "Measure representation memory footprint and build cost per unique parameterization, then qualify a dynamically sized run-lifetime exact-key registry or another explicit capacity policy.",
+  "nonclaims": [
+    "The synthetic 64-key workload is a stress characterization, not a measured national MultiSWAP distribution.",
+    "No production capacity policy is selected yet."
+  ]
+}
