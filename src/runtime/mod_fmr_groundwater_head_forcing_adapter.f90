@@ -66,6 +66,7 @@ contains
 
     status = GW_SWAP_FORCING_NOT_READY
     if (.not. self%initialized) return
+    forcing = self%base_forcing
     status = GW_SWAP_FORCING_INVALID_HEAD
     if (.not. ieee_is_finite(interface_head_m) .or. .not. datum%valid()) return
     call interface_head_m_to_swap_bottom_pressure_head_cm(interface_head_m, datum, pressure_head_cm, mapping_status)
