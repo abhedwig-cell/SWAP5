@@ -241,6 +241,11 @@ contains
     bad_cells=cells; bad_cells(1)%package_slot=0
     call expect_status(bad_tiles,bad_cells,GW_TOPOLOGY_DUPLICATE_TILE_ID,'duplicate tile precedes invalid cell')
 
+    bad_tiles=tiles
+    bad_tiles(2)%tile_id=bad_tiles(1)%tile_id
+    bad_tiles(3)%groundwater_cell_id=0_int64
+    call expect_status(bad_tiles,cells,GW_TOPOLOGY_DUPLICATE_TILE_ID,'duplicate tile precedes later invalid tile')
+
     bad_tiles=tiles; bad_tiles(2)%swap_lineage_id=bad_tiles(1)%swap_lineage_id
     call expect_status(bad_tiles,cells,GW_TOPOLOGY_DUPLICATE_SWAP_LINEAGE,'duplicate SWAP lineage')
 
@@ -255,6 +260,11 @@ contains
 
     bad_cells=cells; bad_cells(2)%groundwater_cell_id=bad_cells(1)%groundwater_cell_id
     call expect_status(tiles,bad_cells,GW_TOPOLOGY_DUPLICATE_CELL_ID,'duplicate cell')
+
+    bad_cells=cells
+    bad_cells(1)%groundwater_cell_id=cells(2)%groundwater_cell_id
+    bad_cells(2)%package_slot=0
+    call expect_status(tiles,bad_cells,GW_TOPOLOGY_DUPLICATE_CELL_ID,'duplicate cell precedes later invalid cell')
 
     bad_cells=cells; bad_cells(2)%coupling_id=bad_cells(1)%coupling_id
     call expect_status(tiles,bad_cells,GW_TOPOLOGY_DUPLICATE_COUPLING_ID,'duplicate coupling')
