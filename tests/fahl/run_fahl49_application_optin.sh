@@ -54,12 +54,13 @@ from pathlib import Path
 import sys
 runner=Path("tests/fgc/run_fgc49d_production_application_context.sh").read_text()
 runner=runner.replace("tests/fgc/support/mod_fgc49d_application_context_fixture.f90",sys.argv[2])
-needle="  src/solver/mod_b110_default_mvg_provider.f90\n"
-insert=needle+"  src/solver/mod_b110_direct_retention_core.f90\n  src/solver/mod_b110_direct_retention_provider.f90\n"
+provider_needle="  src/solver/mod_b110_default_mvg_provider.f90\n"
+directional_needle="  src/solver/mod_b110_default_mvg_directional_provider.f90\n"
 if "src/solver/mod_b110_direct_retention_core.f90" not in runner:
-    if needle not in runner:
+    if provider_needle not in runner or directional_needle not in runner:
         raise SystemExit("FGC49D compile seam missing")
-    runner=runner.replace(needle,insert,1)
+    runner=runner.replace(provider_needle,provider_needle+"  src/solver/mod_b110_direct_retention_core.f90\n",1)
+    runner=runner.replace(directional_needle,directional_needle+"  src/solver/mod_b110_direct_retention_provider.f90\n",1)
 Path(sys.argv[1]).write_text(runner)
 PY
 
