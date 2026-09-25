@@ -77,7 +77,7 @@ contains
   end subroutine fmr_swap_capture_origin
 
   subroutine fmr_swap_trial_from_origin(self, backend, column, template, parameters, committed, materializer, &
-       numerical, datum, window, prescribed_head_m, trial, status)
+       numerical, datum, window, prescribed_head_m, trial, status, trusted_prepared_parameters)
     class(fmr_groundwater_swap_participant_t), intent(inout) :: self
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(fmr_logical_column_t), intent(in) :: column
@@ -91,6 +91,7 @@ contains
     real(real64), intent(in) :: prescribed_head_m
     type(groundwater_swap_trial_t), intent(out) :: trial
     integer, intent(out) :: status
+    logical, intent(in), optional :: trusted_prepared_parameters
 
     class(canonical_forcing_t), allocatable :: forcing
     type(canonical_numerical_config_t) :: trial_numerical
@@ -134,7 +135,8 @@ contains
     select type (typed_forcing => forcing)
     type is (fmr_b110_physical_forcing_t)
       call backend%run_trial(column, template, parameters, committed, typed_forcing, trial_numerical, &
-           window%t0, window%t1, self%origin_checkpoint, self%trial_result, self%candidate, self%diagnostics)
+           window%t0, window%t1, self%origin_checkpoint, self%trial_result, self%candidate, self%diagnostics, &
+           trusted_prepared_parameters=trusted_prepared_parameters)
     class default
       status = GW_SWAP_PARTICIPANT_FORCING_FAILED
       return
