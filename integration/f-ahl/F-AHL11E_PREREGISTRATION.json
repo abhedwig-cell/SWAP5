@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL11E",
+  "title": "Global conductivity tolerance repair for full catalog",
+  "parent": "F-AHL11D",
+  "phase": "PREREGISTERED_RESEARCH",
+  "trigger": {
+    "F_AHL11B_first_failure": "O09:dry",
+    "base_abs_logK_tolerance": 3e-4,
+    "bottom_flux_delta_cm_per_day": 1.039457e-5,
+    "frozen_gate_cm_per_day": 1e-5,
+    "attribution": "K_LOOKUP_DOMINATED"
+  },
+  "repair": {
+    "new_global_abs_logK_tolerance": 1e-4,
+    "scope": "all 36 catalog materials, not O09-specific",
+    "theta_C_policy": "unchanged derivative-consistent F-AHL09 representation",
+    "dry_relevance_threshold_raw_C": 1e-13,
+    "outside_loaded_table": "authoritative analytical fallback"
+  },
+  "stage_A": {
+    "question": "Do all 36 materials build and pass constitutive gates at the globally tightened K tolerance?",
+    "required_pass_count": 36
+  },
+  "stage_B": {
+    "question": "Does the unchanged 108-case wet-mid-dry Richards matrix pass all frozen fidelity and nonlinear-path gates?",
+    "required_pass_count": 108
+  },
+  "decision_rule": "Advance only if Stage A is 36/36 and Stage B is 108/108. No per-material gate or tolerance tuning is allowed.",
+  "hard_exclusions": [
+    "NO_O09_SPECIFIC_TOLERANCE",
+    "NO_GATE_RETUNING",
+    "NO_SPEED_CLAIM_BEFORE_108_CASE_PASS",
+    "NO_PRODUCTION_ADMISSION"
+  ]
+}
