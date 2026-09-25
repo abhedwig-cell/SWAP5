@@ -2,7 +2,24 @@
   "work_unit": "PPA-IRR-EVENT-OWNER",
   "profile_binding_implementation": "3997e90bd adds evaluate_ppa_profile_irrigation_source, combining the existing checked root-zone/profile DCS1 composition with water-only SSDI binding. Candidate/flux/forcing are actionable only when both stages succeed; failure preserves base and leaves no allocated forcing. Geometry and crop/profile inputs remain supplied, not derived by a new owner. The actual DCS1 source-acceptance owner test now uses this single adapter call. c485ad836 adds invalid negative thickness and unsupported-solute binding rejection before each valid tile call. Scheduling, accepted publication and pending-event restart remain unimplemented.",
   "source_binding_implementation": "3d16532f7 introduces src/adapter/mod_ppa_irrigation_source_binding.f90. It consumes previous physical forcing and successful SSDI process flux, copies unrelated forcing fields, replaces the SSDI rates and marks only a changed source or an existing event at the exact interval start. Expired marks are consumed; future/nonfinite marked times, invalid/split diagnostics, absent/mismatched/nonfinite/negative sources and contradictory inactive delivery are rejected without output. This helper binds water source rates only; it does not map solute, persist events, prove acceptance, or infer changes in other forcing fields. Caller supplies otherwise unchanged forcing and must manage other physical changes explicitly. The owner integration test uses this binding for source start/continuation/stop instead of hand-setting event flags.",
-  "tested_commit": "2868981e1",
+  "tested_commit": "2809ab792efb8a7fc6db30a2c7449e9e7a9a8644",
+  "first_solver_failure_followup": {
+    "implementation_commit": "a42678e99",
+    "scope": "Observational first solver failure retained only across retries sharing the exact substep start time; reset for a new start/window. Not authoritative state or acceptance policy.",
+    "result": "Half-source fails at O0/O2. Tile 2 first failed attempt spans 4100.1879868952165 to 4100.18798828125 and exhausts 40 nonlinear iterations. The final one-clock-spacing retry is therefore not the first failed attempt.",
+    "validation": "Full clean standard IrrigationSource runner/static checks and complete O0/O2 transcript identity PASS at a42678e99, build swap-ppa-wu01-4bfdfc587fde46cabcad0f13d9052f47."
+  },
+  "iteration_budget_diagnostic": {
+    "test_commit": "2809ab792",
+    "command": "ppa_free_drainage_owner.exe --irrigation-half-source --double-iterations",
+    "scope": "Test-only maximum iterations raised from 40 to 80; no mass/temporal tolerances or production defaults changed.",
+    "result": "O0/O2 both exit 1 before restart, application status 10, tile statuses [0,2]. First tile-2 solver failure has the same endpoints as the 40-iteration run and uses 80 iterations. Doubling the budget does not fix the failure.",
+    "counter_order": ["accepted_substeps", "attempts", "retries", "solver_rejections", "temporal_rejections", "unavailable_certificate_rejections", "mass_rejections"],
+    "tile_1_O0_O2": [44,616,572,6,566,0,0],
+    "tile_2_O0_O2": [45,698,652,74,579,0,0],
+    "validation": "Changed test rebuilt against clean unchanged production objects in swap-ppa-wu01-4bfdfc587fde46cabcad0f13d9052f47. Standard hydraulic-copy, guards and irrigation-source all PASS O0/O2 with complete transcript identity at 2809ab792. Failed diagnostics compared by status, endpoints and counters, not full backtrace identity.",
+    "next": "Inspect which legacy convergence criterion remains unsatisfied on that first failed attempt; do not increase iteration budgets repeatedly or weaken acceptance criteria without evidence. Pending-event ownership integration remains a separate open capability."
+  },
   "local_origin_diagnostic": {
     "test_commit": "01c11e3a7",
     "runner_commit": "2868981e1",
