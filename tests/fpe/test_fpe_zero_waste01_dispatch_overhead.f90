@@ -62,6 +62,7 @@ program test_fpe_zero_waste01_dispatch_overhead
 
   call benchmark_diagnostics(columns, linear_reps)
   call benchmark_diagnostics_lean(columns, linear_reps)
+  call benchmark_diagnostics_bare(columns, linear_reps)
   call benchmark_aggregate_finalize(columns, templates, linear_reps)
   call benchmark_runtime_finalize(columns, templates, linear_reps)
   call benchmark_receipt_validation(columns, receipt_ids, quad_reps)
@@ -297,6 +298,25 @@ contains
     call emit('diagnostics_worker_init','no_worker_assignment_materialization',size(cols),reps, &
          c0,c1,rate,checksum,int(size(cols),int64))
   end subroutine benchmark_diagnostics_lean
+
+  subroutine benchmark_diagnostics_bare(cols, reps)
+    type(fmr_logical_column_t), intent(in) :: cols(:)
+    integer, intent(in) :: reps
+    type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
+    integer(int64) :: c0, c1, rate, checksum
+    integer :: r
+
+    checksum = 0_int64
+    call system_clock(c0, rate)
+    do r = 1, reps
+      allocate(diagnostics(size(cols)))
+      checksum = checksum + int(size(diagnostics), int64)
+      deallocate(diagnostics)
+    end do
+    call system_clock(c1)
+    call emit('diagnostics_worker_init','bare_diagnostics_array',size(cols),reps, &
+         c0,c1,rate,checksum,int(size(cols),int64))
+  end subroutine benchmark_diagnostics_bare
 
   subroutine benchmark_aggregate_finalize(cols, tmpls, reps)
     type(fmr_logical_column_t), intent(in) :: cols(:)
