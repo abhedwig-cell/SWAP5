@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-AHL",
   "title": "Adaptive hydraulic lookup post-F-AHL40 technical closeout",
   "status": "CLOSED_TECHNICALLY_QUALIFIED_READY_FOR_CANONICAL_GOVERNANCE_REVIEW",
@@ -24,12 +24,15 @@
     "default_unimodal_MvG_prescribed_head_like": "PASS; 12/12 Richards matrix, same nonlinear path",
     "bi_modal_MvG_model3_prescribed_head_like": "PASS; 9/9 Richards matrix, same nonlinear path",
     "PDI_NoVap_models_8_10_prescribed_head_like": "PASS; 6/6 Richards matrix, same nonlinear path",
-    "prescribed_qbot": "analytical fallback only",
+    "prescribed_qbot": "analytical fallback only; F-AHL41A/B reconfirmed that current adaptive retention/capacity changes nonlinear path under the FSI38 qbot construction even when endpoint differences are ~1e-9 cm",
     "near_saturation": "analytical fallback as qualified",
     "vapor_enabled_PDI": "NOT_ADMITTED; temperature-semantics reconciliation remains external"
   },
   "performance_evidence": {
-    "default_MvG_complete_Richards_cpu_reduction_fraction_range": [0.205364,0.24229],
+    "default_MvG_complete_Richards_cpu_reduction_fraction_range": [
+      0.205364,
+      0.24229
+    ],
     "default_MvG_12_case_matrix_median_cpu_reduction_fraction": 0.1512,
     "bi_modal_model3_matrix_median_cpu_reduction_fraction": 0.380194,
     "PDI_NoVap_six_case_median_cpu_reduction_fraction": 0.6083635,
@@ -61,7 +64,8 @@
     "SWKIMPL=1 or dK/dh adaptive extension",
     "vapor-enabled PDI acceleration",
     "parallel/thread-safety claims",
-    "whole-SWAP, national MultiSWAP or canonical transient speed claims"
+    "whole-SWAP, national MultiSWAP or canonical transient speed claims",
+    "any adaptive prescribed-qbot broadening; F-AHL41 closed this scope with analytical fallback retained"
   ],
   "external_blocker": {
     "id": "F-AHL27B",
@@ -69,10 +73,17 @@
     "effect": "Canonical nontrivial prescribed-head transient timing remains structurally blocked by the current external full-half temporal contract."
   },
   "canonical_governance_next_action": [
-    "Audit the production-shaped source/runtime delta separately from research-only evidence.",
+    "Audit the production-shaped prescribed-head source/runtime delta separately from research-only evidence.",
     "Define the minimal upstream patch set and retained regression evidence.",
+    "Preserve prescribed-qbot analytical fallback and all other explicit exclusions.",
     "Run canonical governance/admission gates on that minimal patch.",
     "Do not merge the full research branch wholesale."
   ],
-  "closure": "NO_OPEN_LOCAL_F_AHL_TECHNICAL_REPAIR_AFTER_F_AHL40R. Further work belongs to canonical admission/governance or separately scoped model-family/lower-boundary research."
+  "closure": "NO_OPEN_LOCAL_F_AHL_TECHNICAL_REPAIR_AFTER_F_AHL41. Further work belongs to canonical admission/governance or separately scoped model-family/lower-boundary research.",
+  "qbot_closeout": {
+    "F_AHL41A": "Current production-shaped adaptive provider failed same nonlinear-iteration/backtracking identity on the first valid FSI38 qbot case, while physical differences remained negligible.",
+    "F_AHL41B": "Exact retention+capacity with adaptive K restored the analytical path; exact K with adaptive retention+capacity did not.",
+    "conclusion": "Retention/capacity representation controls qbot path sensitivity. Global densification was previously falsified and K-only lookup has no robust speed authority. Keep prescribed-qbot analytical.",
+    "record": "integration/f-ahl/F-AHL41_CLOSEOUT.json"
+  }
 }
