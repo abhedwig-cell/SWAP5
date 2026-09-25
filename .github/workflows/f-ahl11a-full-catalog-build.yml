@@ -1,0 +1,39 @@
+name: F-AHL11A full catalog build
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/ahl11a_build_full_catalog.py'
+      - 'integration/f-ahl/F-AHL11A_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl11a-full-catalog-build.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and qualify all 36 materials
+        run: |
+          mkdir -p /tmp/ahl11a
+          python3 research/ahl/ahl11a_build_full_catalog.py /tmp/ahl11a | tee /tmp/ahl11a_result.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/ahl11a_result.json'))
+          if d['catalog_count'] != 36:
+              raise SystemExit(f"catalog count {d['catalog_count']} != 36")
+          bad=[k for k,v in d['materials'].items() if not v['pass']]
+          if bad:
+              raise SystemExit(f"F-AHL11A constitutive failures: {bad}")
+          if len(d['materials']) != 36:
+              raise SystemExit("material result count mismatch")
+          print("F-AHL11A_FULL_CATALOG=PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl11a-${{ github.run_id }}
+          path: |
+            /tmp/ahl11a_result.json
+            /tmp/ahl11a/*_dc.dat
