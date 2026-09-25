@@ -28,7 +28,7 @@ for token in [
     "prepared_default_mvg_compatible",
     "self%owned_hydraulic_parameters = parameters%prepared_default_mvg",
     "self%hydraulic_parameters => self%trusted_parameter_source%prepared_default_mvg",
-    "initialize_b110_default_mvg_parameters(self%hydraulic_parameters",
+    "initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters",
 ]:
     assert token in backend, token
 assert "call prepare_fmr_b110_default_mvg(self%parameters(i)" in bootstrap
