@@ -29,6 +29,7 @@ module mod_reference_richards_legacy_binding
   type, extends(soil_water_solver_workspace_base_t), public :: reference_richards_legacy_workspace_t
      type(reference_richards_workspace_t) :: richards
      type(a23bu_worker_context_t) :: legacy_worker
+     type(reference_richards_state_binding_t) :: state_binding
    end type reference_richards_legacy_workspace_t
 
   type, extends(soil_water_solver_t), public :: reference_richards_legacy_solver_t
@@ -113,7 +114,6 @@ contains
 
     logical :: ok, sensitivity_capture
     type(a23bu_solver_history_t) :: call_history
-    type(reference_richards_state_binding_t) :: state_binding
     integer :: n, tangent_ierror, interface_sensitivity_backsolves, reset_calls_before
     integer(int64) :: reset_bytes_before
 
