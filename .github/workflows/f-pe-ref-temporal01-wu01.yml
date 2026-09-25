@@ -1,0 +1,29 @@
+name: F-PE-REF-TEMPORAL01 WU01 indicator calibration
+
+on:
+  pull_request:
+    paths:
+      - 'tests/performance/test_ref_temporal01_indicator_vs_refined.f90'
+      - 'tests/performance/run_ref_temporal01_wu01.sh'
+      - 'tests/performance/collect_ref_temporal01.py'
+      - 'docs/performance/F-PE-REF-TEMPORAL01_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-ref-temporal01-wu01.yml'
+  workflow_dispatch:
+
+jobs:
+  calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run indicator versus refined Reference matrix
+        run: |
+          bash tests/performance/run_ref_temporal01_wu01.sh
+          python3 tests/performance/collect_ref_temporal01.py ref-temporal01.txt ref-temporal01.json
+          cat ref-temporal01.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ref-temporal01-wu01
+          path: |
+            ref-temporal01.txt
+            ref-temporal01.json
