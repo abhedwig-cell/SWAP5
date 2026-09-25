@@ -67,8 +67,10 @@ contains
     if(allocated(results)) then
       write(*,'(A,A,A,I0)') 'APPQUAL01_B1_STAGE,route=',trim(route_name),',result_count=',size(results)
       if(size(results)>0) then
-        write(*,'(A,A,A,L1,A,L1,A,A)') 'APPQUAL01_B1_STAGE,route=',trim(route_name),',completed=',results(1)%completed, &
-             ',committed=',results(1)%committed,',admission=',trim(results(1)%admission_status)
+        write(*,'(A,A,A,L1,A,L1,A,A,A,I0,A,I0,A,I0,A,A)') 'APPQUAL01_B1_STAGE,route=',trim(route_name), &
+             ',completed=',results(1)%completed,',committed=',results(1)%committed,',admission=',trim(results(1)%admission_status), &
+             ',kernel_status=',results(1)%kernel_status,',accepted_substeps=',results(1)%accepted_substeps, &
+             ',headcalc_calls=',results(1)%solver_headcalc_calls,',solver_route=',trim(results(1)%solver_route)
       end if
     end if
     if(status/=FMR_APP_BOOT_OK) return
