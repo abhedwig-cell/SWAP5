@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL31",
+  "phase": "MEMORY_AND_BUILD_COST_CHARACTERIZATION_COMPLETE",
+  "status": "PASS_CHARACTERIZATION",
+  "workflow_run": 36079907166,
+  "workflow_job": 107899383592,
+  "sample": {
+    "unique_parameterizations": 256,
+    "support_points": {
+      "min": 102,
+      "median": 145,
+      "mean": 144.992,
+      "max": 171
+    }
+  },
+  "representation_payload": {
+    "definition": "four real64 support arrays x,z,dzdx,logk; excludes descriptors, cache keys and container metadata",
+    "total_bytes_256": 1187776,
+    "mean_bytes_per_representation": 4640,
+    "projected_mean_payload_bytes_10000_unique": 46397500,
+    "projected_max_payload_bytes_10000_unique": 54720000
+  },
+  "build_cpu": {
+    "mean_seconds_per_unique": 0.0012455195312,
+    "median_seconds_per_unique": 0.001353,
+    "max_seconds_per_unique": 0.001773
+  },
+  "finding": "Adaptive representation payload is small enough that a run-lifetime exact-key registry at MultiSWAP scale is plausible. Rebuilding an over-capacity representation repeatedly is far more expensive than retaining several kilobytes of immutable support arrays.",
+  "design_implication": "Prefer a memory-budgeted exact-key run-lifetime registry with uncached fallback after the budget is exhausted over a tiny 32-entry no-eviction cache or workload-sensitive LRU.",
+  "nonclaims": [
+    "The 256 synthetic perturbations are not a soil-population distribution.",
+    "Projected 10000-entry memory excludes fixed metadata and allocatable descriptors.",
+    "No application-level speed claim is made."
+  ]
+}
