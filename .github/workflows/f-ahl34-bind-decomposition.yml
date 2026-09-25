@@ -1,0 +1,25 @@
+name: F-AHL34 bind overhead decomposition
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'research/ahl/test_ahl34_bind_decomposition.f90'
+      - 'research/ahl/run_ahl34_bind_decomposition.sh'
+      - 'integration/f-ahl/F-AHL34_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl34-bind-decomposition.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run changed-authority bind decomposition
+        run: |
+          bash research/ahl/run_ahl34_bind_decomposition.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl34-${{ github.run_id }}
+          path: /tmp/ahl34_result.txt
