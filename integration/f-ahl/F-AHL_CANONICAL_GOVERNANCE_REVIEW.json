@@ -67,5 +67,10 @@
     "fail_closed_authority": "Candidate workflow uses set -o pipefail for all piped gates; the new trajectory runner itself uses set -euo pipefail and explicit nonzero failure paths.",
     "rule": "Do not mark canonical admission complete, mark PR ready, or merge until run 36128865464 on exact head e043d61bbbb9f772560442fb8c21c8d876f5dd4b is completed successfully and its log confirms all bounded AHL gates, including prescribed-head trajectory fallback, execute and pass fail-closed."
   },
-  "decision": "NO_NEW_RESEARCH_BLOCKER; CURRENT EXACT-HEAD CANDIDATE IS SCOPE-BOUNDED; ADMISSION PENDING ONLY RUN 36128865464"
+  "decision": "NO_NEW_RESEARCH_BLOCKER; CURRENT EXACT-HEAD CANDIDATE IS SCOPE-BOUNDED; ADMISSION PENDING ONLY RUN 36128865464",
+  "parallelism_boundary": {
+    "current_serialized_multiswap_execution": "fmr_run_serialized_physical_multiswap executes columns serially in the current canonical architecture",
+    "shared_cache_thread_safety": "NOT_QUALIFIED_FOR_CONCURRENT_MUTATION",
+    "governance_rule": "Do not infer AHL cache thread safety from this admission. Any future OpenMP/parallel worker use that can bind/build AHL representations concurrently requires separate race/thread-safety qualification or synchronization/ownership redesign."
+  }
 }
