@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL27A",
+  "title": "Production dry-tail relevance alignment",
+  "parent": "F-AHL27",
+  "phase": "PREREGISTERED_REPAIR",
+  "authority": [
+    "F-AHL10D relevance-bounded build",
+    "F-AHL10E loaded-table dry-tail fallback"
+  ],
+  "problem": "The production-shaped builder/provider extracted in F-AHL27 Stage 1 still uses the global nominal lower bound -1e6 cm for both build and lookup membership. That does not yet implement the qualified material-specific dry-tail semantics.",
+  "required_semantics": {
+    "raw_capacity_relevance_floor": 1e-13,
+    "material_specific_lower_bound": true,
+    "lookup_membership": "actual loaded/built table x-range",
+    "outside_table": "authoritative analytical provider",
+    "physics_truncated": false,
+    "constant_tail_extrapolation": false
+  },
+  "prospective_checks": [
+    "B01, B12 and O14 remain at the nominal -1e6 cm lower bound when C remains above 1e-13 there",
+    "O05 lower bound is approximately -2.6428e5 cm",
+    "O05 h=-2e5 cm uses the represented lookup domain",
+    "O05 h=-5e5 cm uses authoritative analytical fallback",
+    "fallback theta, C and K match analytical values within floating-point tolerance",
+    "existing F-AHL27 Stage-1 and 12-case matrix gates remain green"
+  ],
+  "cache_policy": "Increment representation policy version so pre-repair and post-repair table identities cannot collide.",
+  "hard_exclusions": [
+    "NO_ZEROING_OF_C_OR_K",
+    "NO_RESIDUAL_PHYSICS_CHANGE",
+    "NO_GATE_RETUNING",
+    "NO_DEFAULT_ON_CHANGE",
+    "NO_PRODUCTION_ADMISSION_FROM_THIS_REPAIR_ALONE"
+  ]
+}
