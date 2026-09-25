@@ -1368,6 +1368,7 @@ contains
     use mod_ppa_irrigation_source_binding, only: run_ppa_pending_irrigation_source_trial, &
          evaluate_ppa_committed_irrigation_source
     use mod_fmr_serialized_multiswap_runtime, only: fmr_execute_serialized_irrigation_resolved_column, &
+         fmr_execute_serialized_resolved_physical_column, &
          fmr_serialized_column_result_t,fmr_serialized_batch_diagnostics_t
     use mod_fmr_runtime_core, only: fmr_column_diagnostics_t
     use mod_kernel_transactions, only: kernel_executor_t
@@ -1392,6 +1393,9 @@ contains
     type(fmr_serialized_column_result_t)::outputs(2)
     type(fmr_column_diagnostics_t)::column_diagnostics(2)
     type(fmr_serialized_batch_diagnostics_t)::runtime
+    type(fmr_serialized_column_result_t)::guard_output
+    type(fmr_column_diagnostics_t)::guard_diagnostic
+    type(fmr_logical_column_t)::guard_column
     type(irrigation_state_t)::proposed,selected
     type(irrigation_flux_result_t)::flux
     type(fmr_b110_physical_forcing_t),allocatable::prepared
@@ -1457,6 +1461,28 @@ contains
         call evaluate_ppa_committed_irrigation_source(irrigation,owners(i),template,request,forcing, &
              proposed,flux,process_diagnostics,prepared,ok)
         if(.not.ok) error stop 'resolved irrigation preparation failed'
+        ! Invalid capability/routing must not publish, even when the same
+        ! backend has just completed another column's successful trial.
+        guard_output=fmr_serialized_column_result_t(); guard_diagnostic=fmr_column_diagnostics_t()
+        call fmr_execute_serialized_irrigation_resolved_column(backend,control,columns(i),template, &
+             profile%tiles(1)%parameters,prepared,owners(i),numerical,0,T0,finish,guard_output, &
+             guard_diagnostic,runtime,active_calls)
+        if(guard_output%committed.or.guard_output%solver_executed.or.guard_output%admitted) &
+             error stop 'resolved invalid node admitted'
+        if(owners(i)%current_revision()/=0_int64.or.active_calls/=0) error stop 'invalid node changed owner'
+        guard_column=columns(i); guard_column%template_id=-1_int64
+        guard_output=fmr_serialized_column_result_t(); guard_diagnostic=fmr_column_diagnostics_t()
+        call fmr_execute_serialized_irrigation_resolved_column(backend,control,guard_column,template, &
+             profile%tiles(1)%parameters,prepared,owners(i),numerical,1,T0,finish,guard_output, &
+             guard_diagnostic,runtime,active_calls)
+        if(guard_output%admission_status/='ROUTING_REJECTED'.or.guard_output%committed) &
+             error stop 'resolved invalid routing admitted'
+        guard_output=fmr_serialized_column_result_t(); guard_diagnostic=fmr_column_diagnostics_t()
+        call fmr_execute_serialized_resolved_physical_column(backend,control,columns(i),template, &
+             profile%tiles(1)%parameters,prepared,owners(i),numerical,T0,finish,guard_output, &
+             guard_diagnostic,runtime,active_calls)
+        if(guard_output%committed.or.guard_output%solver_executed.or.guard_output%admitted) &
+             error stop 'ordinary resolved runtime admitted irrigation'
         if(select_gift) then
           selected=irrigation_state_t()
           selected%active_event=.true.; selected%active_event_origin=IRRIGATION_EVENT_SCHEDULED
