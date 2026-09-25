@@ -146,11 +146,25 @@ Classification: `GWPLAN01 = ADMITTED_EXACT_P0_LARGE_N_STRUCTURAL_FAST_PATH`.
 
 ### GWTOPO01 topology materialization
 
-Topology materialization is the next measured large-N structural hotspot.
+`GWTOPO01` is admitted as an exact canonical topology fast path.
 
-Pre-candidate shared-runner observations at N=10,000 were of order 0.15–0.20 s. A canonical O(N) fast path has been implemented, with the generic validation/sort path retained as fallback.
+The fast path is used only when strict monotonicity proves all relevant tile and cell identity fields unique and the input is already in canonical tile/cell order. Otherwise the historical generic pairwise validation, lookup and sort route remains authoritative.
 
-This candidate is not yet admitted in this document. The first candidate exposed an out-of-bounds cursor defect under F-GC48 bounds checking and was repaired. Failure-precedence regressions were added. The corrected production postimage remains under F-GC48, downstream F-GC49A, PPA-WU01 and exact-parent/candidate paired qualification.
+Exact-parent/candidate same-runner qualification at N=10,000 reported:
+
+- parent mean topology-materialization time: 0.175890985333 s;
+- candidate mean: 0.000727786 s;
+- paired ratio: 0.00413771063;
+- isolated shared-runner reduction: 99.586229%;
+- F-GC48 semantic, fallback, fail-closed and O0/O2 gates PASS;
+- downstream F-GC49A PASS;
+- PPA-WU01 O0/O2 production bootstrap PASS.
+
+The first fast-path candidate exposed an out-of-bounds membership-cursor defect under F-GC48 bounds checking. That technical failure was repaired before admission with explicit bounds-before-dereference logic. Historical first-failure precedence was also restored and regression-tested.
+
+This is an isolated operation/workload result, not a portable whole-application speed claim.
+
+Classification: `GWTOPO01 = ADMITTED_EXACT_P0_LARGE_N_STRUCTURAL_FAST_PATH`.
 
 ## Remaining current P0 interpretation
 
