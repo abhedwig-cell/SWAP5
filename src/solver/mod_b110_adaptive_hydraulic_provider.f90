@@ -11,7 +11,7 @@ module mod_b110_adaptive_hydraulic_provider
   real(real64), parameter :: LOOKUP_H_MAX=-1.0_real64
   real(real64), parameter :: LOOKUP_H_MIN=-1.0e6_real64
   real(real64), parameter :: LN10=log(10.0_real64)
-  integer, parameter :: POLICY_VERSION=2, BRANCH_POLICY_VERSION=1
+  integer, parameter :: POLICY_VERSION=3, BRANCH_POLICY_VERSION=1
   character(len=*), parameter :: MODEL_ID='B110_DEFAULT_MVG'
 
   type(b110_adaptive_hydraulic_cache_t), save :: shared_cache
