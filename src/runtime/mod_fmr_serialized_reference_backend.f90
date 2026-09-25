@@ -181,7 +181,6 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: head_rel_tolerance = 1.0e-12_real64
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     logical :: root_extraction_active = .false.
-    logical :: trusted_prepared_default_mvg = .false.
     logical :: macropore_active = .false.
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
@@ -378,6 +377,7 @@ module mod_fmr_serialized_reference_backend
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
+    logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
     logical :: temporal_indicator_budget_valid = .false.
