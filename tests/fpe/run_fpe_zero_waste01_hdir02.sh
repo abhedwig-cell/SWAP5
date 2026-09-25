@@ -24,6 +24,24 @@ test ! -e tests/fgc/test_fgc31_active_drainage_production_tangent.f90
 test ! -e tests/fgc/run_fgc31_active_drainage_production_tangent.sh
 git show "$OWNER_HEAD:tests/fgc/test_fgc31_active_drainage_production_tangent.f90" > tests/fgc/test_fgc31_active_drainage_production_tangent.f90
 git show "$OWNER_HEAD:tests/fgc/run_fgc31_active_drainage_production_tangent.sh" > tests/fgc/run_fgc31_active_drainage_production_tangent.sh
+
+# The historical FGC31 runner predates the current drainage-response dependency
+# on mod_drainage_extended_exchange. Patch only the disposable rehydrated
+# compile list; the historical test/oracle semantics remain unchanged.
+python3 - <<'PY'
+from pathlib import Path
+p=Path("tests/fgc/run_fgc31_active_drainage_production_tangent.sh")
+s=p.read_text(encoding="utf-8")
+needle="  src/process/mod_drainage_multilevel_aggregation.f90\n"
+addition=needle+"  src/process/mod_drainage_extended_exchange.f90\n"
+if "src/process/mod_drainage_extended_exchange.f90" not in s:
+    if needle not in s:
+        raise SystemExit("HDIR02 harness repair: drainage compile anchor missing")
+    s=s.replace(needle,addition,1)
+p.write_text(s,encoding="utf-8")
+print("FPE_ZERO_WASTE01_HDIR02_HISTORICAL_DEPENDENCY_REPAIRED=PASS")
+PY
+
 bash tests/fgc/run_fgc31_active_drainage_production_tangent.sh > "$BUILD/out.txt" 2>&1 || {
   cat "$BUILD/out.txt" >&2
   exit 1
