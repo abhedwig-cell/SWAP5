@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL28B",
+  "phase": "PROVIDER_RETENTION_SEMANTICS_COMPLETE",
+  "status": "PASS_SEMANTICS",
+  "valid_workflow_run": 36079626380,
+  "valid_workflow_job": 107898466712,
+  "prior_invalid_workflow_run": 36079491769,
+  "prior_invalid_run_classification": "HARNESS_FAILURE_ONLY",
+  "prior_invalid_run_detail": "Scientific executable emitted AHL28B_FMR_PROVIDER_RETENTION=PASS; workflow failed only because the runner grepped a stale output path.",
+  "serialized_fmr": {
+    "warmup_fidelity": "PASS",
+    "max_abs_pressure_head_delta_cm": 1.038717e-6,
+    "max_abs_water_content_delta": 1.143307e-9,
+    "bottom_flux_delta_cm_per_day": 4.617402e-9,
+    "nonlinear_iterations": 4,
+    "backtracking_attempts": 4,
+    "repeated_advances": 64,
+    "cache_before": {"builds":1,"hits":0,"misses":1,"entries":1},
+    "cache_after": {"builds":1,"hits":0,"misses":1,"entries":1},
+    "shared_cache_hit_delta": 0
+  },
+  "semantics": [
+    "Same-key provider reuse bypasses shared-cache acquisition.",
+    "The immutable adaptive representation is retained locally.",
+    "The authoritative analytical fallback is rebound for current step duration.",
+    "Hydraulic-authority changes cannot take the local same-key path.",
+    "Disabling adaptive hydraulics still releases the retained provider."
+  ],
+  "decision": "RETAIN_PROVIDER_LIFETIME_MEMOIZATION_SUBJECT_TO_FULL_SEMANTIC_REGRESSION",
+  "nonclaims": [
+    "Application-level speed improvement is not established by the retention gate alone.",
+    "No production admission is implied."
+  ]
+}
