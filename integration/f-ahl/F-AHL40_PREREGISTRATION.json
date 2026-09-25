@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL40",
+  "title": "Robust serialized multi-authority timing reconciliation",
+  "parent": "F-AHL39",
+  "phase": "PREREGISTERED_TIMING_RECONCILIATION",
+  "question": "What is the robust effect size of the stable registry-slot repair in the frozen 16-authority serialized FMR workload?",
+  "frozen_workload": "identical physics, parameterizations, forcing, solver policy and authority sequence as F-AHL39",
+  "timing_policy": {
+    "compiler": "gfortran -O3",
+    "calls_per_batch": 65536,
+    "paired_repetitions": 9,
+    "order": "alternate analytical->adaptive and adaptive->analytical",
+    "primary_statistic": "median paired adaptive/analytical CPU ratio",
+    "setup_and_registry_warmup": "outside timed batches"
+  },
+  "fidelity": "reuse and recheck the F-AHL39 16-of-16 gates before timing interpretation",
+  "decision_rule": {
+    "material_speed_benefit": "median ratio < 0.98",
+    "equivocal": "0.98 <= median ratio <= 1.02",
+    "negative": "median ratio > 1.02"
+  },
+  "closure_rule": "Close the binding-overhead optimization subphase after this run. Do not open further micro-optimization work from timing noise alone.",
+  "hard_exclusions": [
+    "NO_IMPLEMENTATION_CHANGE_IN_F_AHL40",
+    "NO_GATE_RETUNING",
+    "NO_WHOLE_SWAP_OR_NATIONAL_MULTISWAP_SPEEDUP_CLAIM"
+  ]
+}
