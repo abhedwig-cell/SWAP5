@@ -5,6 +5,9 @@ program test_fahl28b_same_key_semantics
        bind_b110_adaptive_hydraulic_provider, b110_adaptive_hydraulic_cache_stats
   implicit none
 
+  real(real64), target :: input(24,1)
+  type(b110_default_mvg_parameters_t), target :: parameters
+  type(b110_adaptive_hydraulic_provider_t) :: adaptive
   integer :: b0,h0,m0,e0,b1,h1,m1,e1
   logical :: ok,hit
 
@@ -17,10 +20,10 @@ program test_fahl28b_same_key_semantics
   call initialize_b110_default_mvg_parameters(parameters,input)
 
   call bind_b110_adaptive_hydraulic_provider(adaptive,parameters,0.25_real64,ok,hit)
-  call require(ok,'cold bind')
+  call require(ok .and. .not.hit,'cold bind builds representation')
   call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
+  call require(b0==1 .and. m0==1 .and. e0==1,'cold bind cache accounting')
 
-  call b110_adaptive_hydraulic_cache_stats(b0,h0,m0,e0)
   call bind_b110_adaptive_hydraulic_provider(adaptive,parameters,0.50_real64,ok,hit)
   call require(ok .and. hit,'changed-step same-key reuse')
   call b110_adaptive_hydraulic_cache_stats(b1,h1,m1,e1)
