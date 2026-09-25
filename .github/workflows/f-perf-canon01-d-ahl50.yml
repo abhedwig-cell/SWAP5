@@ -1,0 +1,47 @@
+name: F-PERF-CANON01 D AHL50
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/fahl/**'
+      - 'research/ahl/test_fahl47_matrix_timing.f90'
+      - '.github/workflows/f-perf-canon01-d-ahl50.yml'
+  workflow_dispatch:
+
+jobs:
+  provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fahl/run_fahl49_provider_extraction.sh
+  matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fahl/run_fahl49_production_matrix.sh
+  default-off:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fahl/run_fahl49_default_off_preservation.sh
+  failclosed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fahl/run_fahl49_failclosed.sh
+  ownership:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fahl/run_fahl49_multiapp_slot_stability.sh
+  scale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fahl/run_fahl49_application_scale.sh
+  application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fahl/run_fahl49_application_optin.sh
