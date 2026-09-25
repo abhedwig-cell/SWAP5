@@ -11,7 +11,7 @@ module mod_b110_adaptive_hydraulic_builder
   real(real64), parameter :: THETA_TOL=1.0e-5_real64, LOGC_TOL=1.0e-2_real64
   real(real64), parameter :: K_TOL_GLOBAL=3.0e-4_real64, K_TOL_WET=3.0e-4_real64
   real(real64), parameter :: WET_H_MIN=-25.0_real64, WET_H_MAX=-1.0_real64
-  real(real64), parameter :: K_FLOOR=1.0e-10_real64
+  real(real64), parameter :: K_ERROR_FLOOR=1.0e-10_real64
   real(real64), parameter :: LN10=log(10.0_real64)
 
   type, public :: b110_adaptive_hydraulic_table_t
@@ -126,7 +126,7 @@ contains
       ki=exp(k0+f*(k1-k0))
       et=abs(thi-th)/span
       ec=abs(log(max(ci,tiny(1.0_real64)))-log(max(c,tiny(1.0_real64))))
-      ek=abs(log(max(ki,K_FLOOR))-log(max(k,K_FLOOR)))
+      ek=abs(log(max(ki,K_ERROR_FLOOR))-log(max(k,K_ERROR_FLOOR)))
       mt=max(mt,et);mc=max(mc,ec);mk=max(mk,ek)
     end do
     if(max(h0,h1)>=WET_H_MIN .and. min(h0,h1)<=WET_H_MAX)then
@@ -153,7 +153,7 @@ contains
     end if
     z=log(se/(1.0_real64-se))
     dzdx=((c/span)/(se*(1.0_real64-se)))*h*LN10
-    logk=log(max(k,K_FLOOR))
+    logk=log(max(k,K_ERROR_FLOOR))
     ok=.true.
   end subroutine sample_authority
 
@@ -211,7 +211,7 @@ contains
       if(.not.q)then;ok=.false.;return;end if
       et=abs(thi-th)/span
       ec=abs(log(max(ci,tiny(1.0_real64)))-log(max(c,tiny(1.0_real64))))
-      ek=abs(log(max(ki,K_FLOOR))-log(max(k,K_FLOOR)))
+      ek=abs(log(max(ki,K_ERROR_FLOOR))-log(max(k,K_ERROR_FLOOR)))
       mt=max(mt,et);mc=max(mc,ec);mk=max(mk,ek)
       ktol=K_TOL_GLOBAL
       if(h>=WET_H_MIN .and. h<=WET_H_MAX)ktol=K_TOL_WET
