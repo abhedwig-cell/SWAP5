@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL43",
+  "status": "QUALIFYING",
+  "branch": "work/f-ahl43-production-admission",
+  "canonical_source": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "admission_head": "6281cb3403e82eda8c169feca79f6e4f361e603d",
+  "surgical_diff": {
+    "ahead_by": 18,
+    "behind_by": 0,
+    "research_ahl_files_in_diff": 0,
+    "production_solver_modules_added": 3,
+    "runtime_files_modified": 1,
+    "durable_test_and_contract_files_only": true
+  },
+  "github_actions": {
+    "run_id": 36129598296,
+    "state_at_checkpoint": "QUEUED",
+    "repository_queued_runs_observed": 302,
+    "required_jobs": [
+      "provider-selfbuild",
+      "full-catalog",
+      "serialized-opt-in",
+      "prescribed-qbot-fallback",
+      "accepted-trajectory-fallback"
+    ]
+  },
+  "canonical_admission": "NOT_YET_PERFORMED",
+  "reason": "All admission code and gates are staged on a clean canonical-derived branch, but the fail-closed GitHub execution gates have not run yet because the repository Actions queue is saturated.",
+  "next_transition": "READY_CANONICAL only after all five GitHub jobs pass without gate changes."
+}
