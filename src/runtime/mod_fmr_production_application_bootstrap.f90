@@ -16,6 +16,8 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_b110_direct_retention_core, only: begin_b110_direct_retention_application, end_b110_direct_retention_application, &
+       freeze_b110_direct_retention_pool
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, &
        FMR_GW_REGISTRY_OK
@@ -72,6 +74,7 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_production_application_bootstrap_t
     private
     logical :: initialized = .false.
+    logical :: direct_retention_owner_active = .false.
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
     type(fmr_template_t), allocatable :: templates(:)
@@ -109,6 +112,7 @@ contains
 
     integer :: i, local_status, n
     logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile
+    logical :: direct_retention_requested
     type(black_evaporation_state_t) :: initial_black_state
     type(boesten_evaporation_state_t) :: initial_boesten_state
 
@@ -122,6 +126,7 @@ contains
     groundwater_profile = .true.
     standalone_profile = .true.
     prescribed_qbot_profile = .true.
+    direct_retention_requested = .false.
     do i = 1, n
       if (.not. tile_config_valid(config%tiles(i), n, i)) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
@@ -130,6 +135,7 @@ contains
       groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5
       standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
       prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2
+      direct_retention_requested = direct_retention_requested .or. config%tiles(i)%parameters%direct_retention_active
       if (i > 1) then
         if (any(config%tiles(1:i-1)%tile_id == config%tiles(i)%tile_id)) return
       end if
@@ -152,6 +158,19 @@ contains
           if (any(config%tiles(1:i-1)%ledger_id == config%tiles(i)%ledger_id)) return
         end if
       end do
+    end if
+
+    if (direct_retention_requested .and. .not. groundwater_profile) then
+      status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+      return
+    end if
+    if (direct_retention_requested) then
+      call begin_b110_direct_retention_application(ok)
+      if (.not. ok) then
+        status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        return
+      end if
+      self%direct_retention_owner_active = .true.
     end if
 
     allocate(self%columns(n), self%templates(n))
@@ -183,6 +202,11 @@ contains
       self%columns(i)%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
       self%parameters(i) = config%tiles(i)%parameters
       call prepare_fmr_b110_default_mvg(self%parameters(i), hydraulic_prepared)
+      if (self%parameters(i)%direct_retention_active .and. .not. hydraulic_prepared) then
+        status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        call discard_owner_storage(self)
+        return
+      end if
       self%base_forcing(i) = config%tiles(i)%base_forcing
       if (groundwater_profile) call self%materializers(i)%initialize(self%base_forcing(i))
 
@@ -236,6 +260,8 @@ contains
         end if
       end if
     end do
+
+    if (direct_retention_requested) call freeze_b110_direct_retention_pool()
 
     call fmr_build_serialized_execution_plan(self%columns, self%templates, size(self%committed), &
          self%execution_plan, ok)
@@ -631,6 +657,10 @@ contains
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)
     if (allocated(self%columns)) deallocate(self%columns)
     if (allocated(self%templates)) deallocate(self%templates)
+    if (self%direct_retention_owner_active) then
+      call end_b110_direct_retention_application()
+      self%direct_retention_owner_active = .false.
+    end if
     self%initialized = .false.
   end subroutine discard_owner_storage
 
