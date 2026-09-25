@@ -20,7 +20,7 @@ SRC=(
   src/process/mod_drainage_hooghoudt_ipos23_response.f90
   src/process/mod_drainage_ernst_ipos45_preparation.f90
   src/process/mod_drainage_ernst_ipos45_response.f90
-  src/process/mod_drainage_empirical_interflow.f90
+  src/process/mod_drainage_empirical_interflow_response.f90
   src/process/mod_drainage_multilevel_aggregation.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/process/mod_soil_temperature_contract.f90
