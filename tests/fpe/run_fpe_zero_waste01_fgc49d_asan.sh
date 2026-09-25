@@ -33,7 +33,11 @@ runner_src = runner_src.replace(
 runner_src = runner_src.replace('for opt in 0 2; do', 'for opt in 2; do', 1)
 runner_src = runner_src.replace(
     'diff -u "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt"',
-    'true # ASAN single-build diagnostic',
+    'true # sanitizer single-build diagnostic',
+)
+runner_src = runner_src.replace(
+    'cat "$BUILD/o0/output.txt"',
+    'cat "$BUILD/o2/output.txt"',
 )
 runner_src = runner_src.replace(
     "echo 'FGC49D_CONTEXT_O0_O2_OUTPUT_IDENTITY=PASS'",
