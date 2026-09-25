@@ -48,6 +48,9 @@ contains
     if(.not.allocated(parameters%cofgen))return
     if(parameters%active_nodes<1 .or. size(parameters%cofgen,1)<42) return
     if(size(parameters%cofgen,2)<parameters%active_nodes) return
+    ! The current production qualification is for the default MvG authority.
+    ! B1.11 KSATEXM remains analytical until that combined route is separately qualified.
+    if(parameters%ksatexm_extension_enabled)return
 
     ! The admitted provider owns one immutable representation. Until layered
     ! AHL is separately qualified, use it only when every active node has the
