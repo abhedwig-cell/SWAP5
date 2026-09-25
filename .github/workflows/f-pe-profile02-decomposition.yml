@@ -1,0 +1,34 @@
+name: F-PE-PROFILE02 O2 runtime decomposition
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/**'
+      - 'src/solver/**'
+      - 'src/adapter/**'
+      - 'src/kernel/**'
+      - 'src/transaction/**'
+      - 'src/process/**'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fpe/test_fpe_profile02_scale_baseline.f90'
+      - 'tests/fpe/test_fpe_profile02_backend_interval_timing.f90'
+      - 'tests/fpe/run_fpe_profile02_decomposition.sh'
+      - '.github/workflows/f-pe-profile02-decomposition.yml'
+  workflow_dispatch:
+
+jobs:
+  decomposition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Compare backend interval with large-N production per-column cost
+        run: |
+          bash tests/fpe/run_fpe_profile02_decomposition.sh | tee profile02-decomposition.txt
+          grep -Fq 'PROFILE02_DECOMPOSITION=PASS' profile02-decomposition.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: profile02-decomposition
+          path: profile02-decomposition.txt

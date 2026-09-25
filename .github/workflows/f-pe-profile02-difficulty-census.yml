@@ -1,0 +1,30 @@
+name: F-PE-PROFILE02 numerical difficulty census
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/**'
+      - 'src/runtime/mod_rossfast_d3r_model_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fpe/test_fpe_profile02_difficulty_census.f90'
+      - 'tests/fpe/run_fpe_profile02_difficulty_census.sh'
+      - 'docs/publication/P2E04_REFERENCE_BALANCE_ADJUDICATION_PREREGISTRATION.json'
+      - '.github/workflows/f-pe-profile02-difficulty-census.yml'
+  workflow_dispatch:
+
+jobs:
+  difficulty-census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run repository-backed Reference difficulty census
+        run: |
+          bash tests/fpe/run_fpe_profile02_difficulty_census.sh | tee profile02-difficulty-census.txt
+          grep -Fq 'PROFILE02_DIFFICULTY_CENSUS_GATE=PASS' profile02-difficulty-census.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: profile02-difficulty-census
+          path: profile02-difficulty-census.txt

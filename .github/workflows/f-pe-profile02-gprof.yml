@@ -1,0 +1,29 @@
+name: F-PE-PROFILE02 function profile
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/fpe/test_fpe_profile02_scale_baseline.f90'
+      - 'tests/fpe/run_fpe_profile02_gprof.sh'
+      - '.github/workflows/f-pe-profile02-gprof.yml'
+  workflow_dispatch:
+
+jobs:
+  gprof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tool identity
+        run: |
+          gfortran --version
+          gprof --version
+      - name: Profile N=10000 current production baseline
+        run: |
+          bash tests/fpe/run_fpe_profile02_gprof.sh | tee profile02-gprof-run.txt
+          grep -Fq 'PROFILE02_GPROF=PASS' profile02-gprof-run.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: profile02-gprof
+          path: profile02-gprof-run.txt
