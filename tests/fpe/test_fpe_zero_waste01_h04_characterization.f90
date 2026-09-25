@@ -108,22 +108,27 @@ program test_fpe_zero_waste01_h04_characterization
 
   call solver%solve(request,workspace,result)
 
-  write(*,'(A,I0,A,F8.3,A,I0,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES18.9)') &
+  write(*,'(A,I0,A,F8.3,A,I0,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES18.9)') &
        'H04_CASE,bottom_mode=',bottom_mode,',flux_multiplier=',flux_multiplier,',status=',result%status, &
        ',converged=',result%status==SW_SOLVE_CONVERGED, &
        ',iterations=',result%diagnostics%nonlinear_iterations, &
        ',evals=',result%diagnostics%constitutive_evaluations, &
        ',initial=',result%diagnostics%constitutive_initial_full_evaluations, &
-       ',candidate=',result%diagnostics%constitutive_candidate_full_evaluations, &
+       ',candidate_full=',result%diagnostics%constitutive_candidate_full_evaluations, &
+       ',candidate_demand=',result%diagnostics%constitutive_candidate_demand_evaluations, &
+       ',capacity_only=',result%diagnostics%constitutive_capacity_only_evaluations, &
        ',terminal=',result%diagnostics%constitutive_candidate_terminal_evaluations, &
        ',capacity_reuse=',result%diagnostics%constitutive_candidate_capacity_reuses, &
        ',mass=',result%unrounded_mass_balance_residual
 
   if (result%diagnostics%constitutive_evaluations /= &
       result%diagnostics%constitutive_initial_full_evaluations + &
-      result%diagnostics%constitutive_candidate_full_evaluations) error stop 'H04 counter partition mismatch'
+      result%diagnostics%constitutive_candidate_full_evaluations + &
+      result%diagnostics%constitutive_candidate_demand_evaluations + &
+      result%diagnostics%constitutive_capacity_only_evaluations) error stop 'H04 counter partition mismatch'
   if (result%diagnostics%constitutive_candidate_terminal_evaluations > &
-      result%diagnostics%constitutive_candidate_full_evaluations) error stop 'H04 terminal count invalid'
+      result%diagnostics%constitutive_candidate_full_evaluations + &
+      result%diagnostics%constitutive_candidate_demand_evaluations) error stop 'H04 terminal count invalid'
   if (result%diagnostics%constitutive_candidate_capacity_reuses > &
       result%diagnostics%constitutive_candidate_full_evaluations) error stop 'H04 reuse count invalid'
 end program test_fpe_zero_waste01_h04_characterization

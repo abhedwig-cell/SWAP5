@@ -3,6 +3,7 @@ name: F-PE-ZERO-WASTE01 H04 component cost
 on:
   pull_request:
     paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
       - 'src/solver/mod_b110_default_mvg_provider.f90'
       - 'tests/fpe/test_fpe_zero_waste01_h04_component_cost.f90'
       - 'tests/fpe/run_fpe_zero_waste01_h04_component_cost.sh'

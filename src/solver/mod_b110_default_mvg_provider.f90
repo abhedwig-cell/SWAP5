@@ -1,7 +1,9 @@
 module mod_b110_default_mvg_provider
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
+  use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t, &
+       CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+       CONSTITUTIVE_DEMAND_CAPACITY, CONSTITUTIVE_DEMAND_DKDH
   implicit none
   private
 
@@ -20,6 +22,7 @@ module mod_b110_default_mvg_provider
      real(real64) :: step_duration = 0.0_real64
    contains
      procedure :: evaluate => b110_default_mvg_evaluate
+     procedure :: evaluate_demand => b110_default_mvg_evaluate_demand
   end type b110_default_mvg_provider_t
 
   public :: initialize_b110_default_mvg_parameters
@@ -139,6 +142,40 @@ contains
     end if
     ok = .true.
   end subroutine evaluate_b110_default_mvg_conductivity
+
+  subroutine b110_default_mvg_evaluate_demand(self, pressure_head, demand_mask, water_content, conductivity, &
+                                                capacity, dconductivity_dhead)
+    class(b110_default_mvg_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:)
+    integer, intent(in) :: demand_mask
+    real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:), dconductivity_dhead(:)
+    integer :: i, n
+    real(real64) :: theta_local
+    logical :: need_theta, need_k, need_capacity, need_dkdh
+
+    if (.not. associated(self%parameters)) error stop 'B1.10 default MvG provider: parameters not bound'
+    n = self%parameters%active_nodes
+    if (size(pressure_head) /= n .or. size(water_content) /= n .or. size(conductivity) /= n .or. &
+        size(capacity) /= n .or. size(dconductivity_dhead) /= n) &
+         error stop 'B1.10 default MvG provider: shape mismatch'
+    if (self%step_duration <= 0.0_real64) error stop 'B1.10 default MvG provider: invalid step_duration'
+
+    need_theta = iand(demand_mask, CONSTITUTIVE_DEMAND_WATER_CONTENT) /= 0
+    need_k = iand(demand_mask, CONSTITUTIVE_DEMAND_CONDUCTIVITY) /= 0
+    need_capacity = iand(demand_mask, CONSTITUTIVE_DEMAND_CAPACITY) /= 0
+    need_dkdh = iand(demand_mask, CONSTITUTIVE_DEMAND_DKDH) /= 0
+
+    do i = 1, n
+       if (need_theta .or. need_k) then
+          theta_local = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          if (need_theta) water_content(i) = theta_local
+          if (need_k) conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
+               self%parameters%ksatexm_extension_enabled)
+       end if
+       if (need_capacity) capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+    end do
+    if (need_dkdh) dconductivity_dhead = 0.0_real64
+  end subroutine b110_default_mvg_evaluate_demand
 
   subroutine b110_default_mvg_evaluate(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
     class(b110_default_mvg_provider_t), intent(in) :: self

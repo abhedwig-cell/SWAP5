@@ -23,7 +23,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
         soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t, &
         soil_water_top_boundary_result_t, SW_TOP_BOUNDARY_AVAILABLE, &
-        SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD
+        SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD, &
+        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY
    use MOD_arrays,         only: mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
@@ -353,10 +354,18 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (provider_constitutive_active) then
          if (.not. provider_tuple_valid) then
             ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-            call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
-                 fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-            provider_tuple_valid = .true.
-            provider_tuple_from_candidate = .false.
+            if (provider_tuple_from_candidate .and. SwKimpl == 0 .and. swbotb /= 7 .and. swbotb /= -2) then
+               ctx%diagnostics%constitutive_capacity_only_evaluations = &
+                    ctx%diagnostics%constitutive_capacity_only_evaluations + 1
+               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), CONSTITUTIVE_DEMAND_CAPACITY, &
+                    fsi_ws%provider_theta, fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               provider_tuple_valid = .true.
+            else
+               call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               provider_tuple_valid = .true.
+               provider_tuple_from_candidate = .false.
+            end if
          else if (provider_tuple_from_candidate) then
             ctx%diagnostics%constitutive_candidate_capacity_reuses = &
                  ctx%diagnostics%constitutive_candidate_capacity_reuses + 1
@@ -431,11 +440,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (provider_constitutive_active) then
             provider_tuple_valid = .false.
             ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-            ctx%diagnostics%constitutive_candidate_full_evaluations = &
-                 ctx%diagnostics%constitutive_candidate_full_evaluations + 1
-            call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
-                 fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-            provider_tuple_valid = .true.
+            if (SwKimpl == 0 .and. swbotb /= 7 .and. swbotb /= -2) then
+               ctx%diagnostics%constitutive_candidate_demand_evaluations = &
+                    ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
+               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
+                    CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
+                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+            else
+               ctx%diagnostics%constitutive_candidate_full_evaluations = &
+                    ctx%diagnostics%constitutive_candidate_full_evaluations + 1
+               call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               provider_tuple_valid = .true.
+            end if
             provider_tuple_from_candidate = .true.
             state%theta(1:NN) = fsi_ws%provider_theta(1:NN)
          else

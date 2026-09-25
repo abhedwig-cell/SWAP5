@@ -43,7 +43,7 @@ rows=Path(sys.argv[1]).read_text().splitlines()
 parsed=[]
 for row in rows:
     if not row.startswith("H04_CASE,"): continue
-    m=re.search(r"bottom_mode=(\d+),flux_multiplier=\s*([0-9.\-]+),status=(\d+),converged=([TF]),iterations=(\d+),evals=(\d+),initial=(\d+),candidate=(\d+),terminal=(\d+),capacity_reuse=(\d+)",row)
+    m=re.search(r"bottom_mode=(\d+),flux_multiplier=\s*([0-9.\-]+),status=(\d+),converged=([TF]),iterations=(\d+),evals=(\d+),initial=(\d+),candidate_full=(\d+),candidate_demand=(\d+),capacity_only=(\d+),terminal=(\d+),capacity_reuse=(\d+)",row)
     if not m: raise SystemExit(f"unparsed row: {row}")
     parsed.append(tuple(m.groups()))
 if not parsed: raise SystemExit("no H04 rows")

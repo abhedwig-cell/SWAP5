@@ -2,6 +2,7 @@ program test_fpe_zero_waste01_h04_component_cost
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+  use mod_soil_water_solver_contract, only: CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY
   implicit none
 
   real(real64), parameter :: H_CRIT=-1.0e-2_real64, HCON_VSMALL=1.0e-10_real64
@@ -29,6 +30,12 @@ program test_fpe_zero_waste01_h04_component_cost
   end do
 
   call provider%evaluate(head,theta,kval,cap,dkdh)
+  theta_only = -huge(0.0_real64)
+  cap_m = -huge(0.0_real64)
+  call provider%evaluate_demand(head,CONSTITUTIVE_DEMAND_WATER_CONTENT,theta_only,kval_m,cap_m,dkdh)
+  if (.not. same_vector_bits(theta,theta_only)) error stop 'H04 demand theta not bit-identical'
+  call provider%evaluate_demand(head,CONSTITUTIVE_DEMAND_CAPACITY,theta_only,kval_m,cap_m,dkdh)
+  if (.not. same_vector_bits(cap,cap_m)) error stop 'H04 demand capacity not bit-identical'
   call mirror_theta_k(hydraulic%cofgen,head,theta_m,kval_m)
   call mirror_capacity(hydraulic%cofgen,head,cap_m)
   if (.not. same_vector_bits(theta,theta_m)) error stop 'H04 theta mirror not bit-identical'
@@ -48,7 +55,7 @@ program test_fpe_zero_waste01_h04_component_cost
   checksum=0.0_real64
   call system_clock(c0,rate)
   do r=1,reps
-    call mirror_theta(hydraulic%cofgen,head,theta_only)
+    call provider%evaluate_demand(head,CONSTITUTIVE_DEMAND_WATER_CONTENT,theta_only,kval_m,cap_m,dkdh)
     checksum=checksum+theta_only(1)
   end do
   call system_clock(c1)
@@ -75,7 +82,7 @@ program test_fpe_zero_waste01_h04_component_cost
   checksum=0.0_real64
   call system_clock(c0,rate)
   do r=1,reps
-    call mirror_capacity(hydraulic%cofgen,head,cap_m)
+    call provider%evaluate_demand(head,CONSTITUTIVE_DEMAND_CAPACITY,theta_only,kval_m,cap_m,dkdh)
     checksum=checksum+cap_m(1)
   end do
   call system_clock(c1)

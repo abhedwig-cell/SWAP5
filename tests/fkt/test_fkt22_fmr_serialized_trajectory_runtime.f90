@@ -164,8 +164,12 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        'H03 reuse removes one duplicate constitutive evaluation on one-iteration Reference solve')
   call require(observation_off%solver_diagnostics%constitutive_initial_full_evaluations == 1, &
        'H04 H03 initial constitutive full evaluation count')
-  call require(observation_off%solver_diagnostics%constitutive_candidate_full_evaluations == 1, &
-       'H04 H03 candidate constitutive full evaluation count')
+  call require(observation_off%solver_diagnostics%constitutive_candidate_full_evaluations == 0, &
+       'H04A H03 candidate full evaluation removed on SWKIMPL=0')
+  call require(observation_off%solver_diagnostics%constitutive_candidate_demand_evaluations == 1, &
+       'H04A H03 candidate demand-aware theta evaluation count')
+  call require(observation_off%solver_diagnostics%constitutive_capacity_only_evaluations == 0, &
+       'H04A H03 terminal candidate requires no C-only materialization')
   call require(observation_off%solver_diagnostics%constitutive_candidate_terminal_evaluations == 1, &
        'H04 H03 terminal candidate constitutive evaluation count')
   call require(observation_off%solver_diagnostics%constitutive_candidate_capacity_reuses == 0, &
@@ -176,6 +180,10 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        observation_off%solver_diagnostics%constitutive_initial_full_evaluations
   write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_FULL_PER_SOLVE=', &
        observation_off%solver_diagnostics%constitutive_candidate_full_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_DEMAND_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_candidate_demand_evaluations
+  write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CAPACITY_ONLY_PER_SOLVE=', &
+       observation_off%solver_diagnostics%constitutive_capacity_only_evaluations
   write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_TERMINAL_PER_SOLVE=', &
        observation_off%solver_diagnostics%constitutive_candidate_terminal_evaluations
   write(*,'(A,I0)') 'FKT22_FMR_CONSTITUTIVE_CANDIDATE_CAPACITY_REUSES_PER_SOLVE=', &
