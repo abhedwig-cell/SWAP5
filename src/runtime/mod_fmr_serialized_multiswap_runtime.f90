@@ -319,7 +319,8 @@ contains
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
-                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint)
+                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint, &
+                   track_physical_concurrency)
             end if
           else
             if (do_column_diagnostics) then
@@ -330,7 +331,8 @@ contains
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
-                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt)
+                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt, &
+                   track_physical_concurrency=track_physical_concurrency)
             end if
           end if
         else
@@ -343,7 +345,8 @@ contains
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
-                   local_runtime, active_physical_calls, template_index_hint=template_index_hint)
+                   local_runtime, active_physical_calls, template_index_hint=template_index_hint, &
+                   track_physical_concurrency=track_physical_concurrency)
             end if
           else
             if (do_column_diagnostics) then
