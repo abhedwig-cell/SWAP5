@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL36",
+  "title": "Post-repair multi-key switching characterization",
+  "parent": "F-AHL35",
+  "phase": "PREREGISTERED_CHARACTERIZATION",
+  "question": "After eliminating unnecessary one-node sampler construction on warm changed-authority registry hits, how much multi-key switching overhead remains relative to same-key provider-local reuse?",
+  "frozen_comparison_authority": {
+    "source": "F-AHL33_RESULT",
+    "same_key_seconds_per_bind": 1.47495e-7,
+    "switch16_seconds_per_bind": 7.1674e-7,
+    "switch64_seconds_per_bind": 7.58895e-7,
+    "switch16_ratio_to_same": 4.8594189634,
+    "switch64_ratio_to_same": 5.1452252619
+  },
+  "workloads": [
+    {"id":"same_key","requests":200000,"unique_parameterizations":1},
+    {"id":"switch_16","requests":200000,"unique_parameterizations":16,"sequence":"round robin after untimed registry warmup"},
+    {"id":"switch_64","requests":200000,"unique_parameterizations":64,"sequence":"round robin after untimed registry warmup"}
+  ],
+  "measurements": [
+    "median seconds per bind over five repetitions",
+    "ratio switch16/same_key",
+    "ratio switch64/same_key",
+    "registry build hit miss entry deltas"
+  ],
+  "decision_rule": {
+    "stop_ownership_work": "both switch/same ratios <= 3.0",
+    "ownership_characterization_still_justified": "either switch/same ratio > 3.0"
+  },
+  "hard_exclusions": [
+    "NO_POINTER_OR_HANDLE_OWNERSHIP_CHANGE_IN_F_AHL36",
+    "NO_HYDRAULIC_REPRESENTATION_CHANGE",
+    "NO_KEY_WEAKENING",
+    "NO_APPLICATION_SPEED_CLAIM_FROM_BIND_MICROBENCHMARK"
+  ]
+}
