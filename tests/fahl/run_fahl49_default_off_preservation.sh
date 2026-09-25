@@ -10,8 +10,10 @@ import sys
 src=Path("tests/fapp/run_ppa_wu01_production_application_bootstrap.sh").read_text()
 needle="  src/solver/mod_b110_default_mvg_provider.f90\n"
 insert=needle+"  src/solver/mod_b110_direct_retention_core.f90\n  src/solver/mod_b110_direct_retention_provider.f90\n"
-if needle not in src: raise SystemExit("default provider compile seam missing")
-Path(sys.argv[1]).write_text(src.replace(needle,insert,1))
+if "src/solver/mod_b110_direct_retention_core.f90" not in src:
+    if needle not in src: raise SystemExit("default provider compile seam missing")
+    src=src.replace(needle,insert,1)
+Path(sys.argv[1]).write_text(src)
 PY
 chmod +x "$TMP"
 bash "$TMP"
