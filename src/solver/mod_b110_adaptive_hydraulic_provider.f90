@@ -20,7 +20,7 @@ module mod_b110_adaptive_hydraulic_provider
     private
     type(b110_default_mvg_provider_t) :: analytical
     real(real64), pointer :: cofgen(:,:) => null()
-    type(b110_adaptive_hydraulic_table_t) :: table
+    type(b110_adaptive_hydraulic_table_t), pointer :: table => null()
     logical :: ready=.false.
     logical :: acquired_from_cache=.false.
   contains
@@ -44,6 +44,7 @@ contains
     real(real64) :: one_node_input(42,1)
 
     ok=.false.;was_hit=.false.;provider%ready=.false.
+    nullify(provider%table)
     if(parameters%active_nodes<=0 .or. .not.allocated(parameters%cofgen))return
     if(size(parameters%cofgen,1)<42)return
 
@@ -75,7 +76,8 @@ contains
     real(real64) :: xv,f,dx,t,h00,h10,h01,h11,dh00,dh10,dh01,dh11,zz,dz_x,se,span
     integer :: i,idx
 
-    if(.not.self%ready .or. .not.associated(self%cofgen))error stop 'B110 adaptive hydraulic provider not ready'
+    if(.not.self%ready .or. .not.associated(self%cofgen) .or. .not.associated(self%table)) &
+         error stop 'B110 adaptive hydraulic provider not ready'
 
     if(any(pressure_head>LOOKUP_H_MAX) .or. &
          any(log10(max(-pressure_head, tiny(1.0_real64)))<self%table%x(1)) .or. &
