@@ -5,8 +5,19 @@ on:
     branches:
       - work/f-ahl01-adaptive-hydraulic-lookup
     paths:
-      - 'research/ahl/**'
-      - 'integration/f-ahl/**'
+      - 'research/ahl/ahl01_adaptive_lookup.py'
+      - 'research/ahl/ahl02_representation_transform.py'
+      - 'research/ahl/ahl03_generate_tables.py'
+      - 'research/ahl/ahl03_runtime_screen.f90'
+      - 'research/ahl/ahl04_generate_fsi24_tables.py'
+      - 'research/ahl/mod_ahl04_hybrid_lookup_provider.f90'
+      - 'research/ahl/test_ahl04a_richards_provider_replay.f90'
+      - 'research/ahl/run_ahl04a_richards_provider_replay.sh'
+      - 'integration/f-ahl/F-AHL01_PREREGISTRATION.json'
+      - 'integration/f-ahl/F-AHL02_PREREGISTRATION.json'
+      - 'integration/f-ahl/F-AHL03_PREREGISTRATION.json'
+      - 'integration/f-ahl/F-AHL04_PREREGISTRATION.json'
+      - 'integration/f-ahl/F-AHL04A_CONTRACT.json'
       - '.github/workflows/f-ahl01-adaptive-hydraulic-preflight.yml'
   workflow_dispatch:
 
