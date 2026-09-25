@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL32A",
+  "phase": "FINGERPRINT_BUCKET_MIXING_QUALIFIED",
+  "status": "PASS",
+  "workflow_run": 36080869065,
+  "workflow_job": 107902315199,
+  "frozen_workload": {
+    "first_pass_unique_keys": 10000,
+    "second_pass_exact_key_hits": 10000,
+    "entries": 10000,
+    "new_second_pass_builds": 0,
+    "new_second_pass_misses": 0
+  },
+  "probe_quality": {
+    "mean_first_pass_probes": 1.8303,
+    "mean_second_pass_probes": 1.8303,
+    "maximum_probes_before_full_registry": 42,
+    "mean_gate_max": 4.0,
+    "maximum_gate_max": 128,
+    "verdict": "PASS"
+  },
+  "repair": "Fold high fingerprint bits into the low bits used by the fixed power-of-two registry index. The stored fingerprint and full exact-key authority remain unchanged.",
+  "finding": "Bucket mixing removes the 413-probe clustering observed under direct power-of-two indexing without changing key identity, representation, capacity or collision resolution.",
+  "capacity_plus_one": {
+    "failures": 0,
+    "last_request_ok": true,
+    "last_request_hit": false,
+    "entries": 16384,
+    "full_miss_probes": 16384,
+    "note": "The preregistered 4/128 hash-quality gate applies to the 10000-entry working-set replay. A known-unknown full-registry miss necessarily scans the full no-eviction open-addressed registry before using the correctness-safe uncached fallback."
+  },
+  "decision": "RETAIN_BUCKET_MIXING_REPAIR"
+}
