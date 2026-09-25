@@ -16,15 +16,20 @@ src=src.replace(
 src=src.replace(
 "   do solver_numbit = 1, MaxIt1\n",
 "   newton_loop: do solver_numbit = 1, MaxIt1\n      candidate_stagnated = .false.\n",1)
-needle="          Fmax = maxval(dabs(fsi_ws%residual(1:NN)))"
-insert="""          Fmax = maxval(dabs(fsi_ws%residual(1:NN)))
-          if (all(state%h(1:NN) == fsi_ws%old_head(1:NN)) .and. sump >= sumold .and. Fmax >= CritDevBalCp) then
-             candidate_stagnated = .true.
-             exit
-          end if"""
-if needle not in src:
+lines=src.splitlines()
+out=[]
+inserted=False
+for line in lines:
+    out.append(line)
+    if "Fmax = maxval(dabs(fsi_ws%residual(1:NN)))" in line and not inserted:
+        out.append("          if (all(state%h(1:NN) == fsi_ws%old_head(1:NN)) .and. sump >= sumold .and. Fmax >= CritDevBalCp) then")
+        out.append("             candidate_stagnated = .true.")
+        out.append("             exit")
+        out.append("          end if")
+        inserted=True
+if not inserted:
     raise SystemExit("S1 residual insertion point missing")
-src=src.replace(needle,insert,1)
+src="\n".join(out)+"\n"
 src=src.replace(
 " 1    continue\n\n!     check on convergence of solution",
 " 1    continue\n      if (candidate_stagnated) exit newton_loop\n\n!     check on convergence of solution",1)
