@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL21G",
+  "phase": "O05_DRY_EXACT_RETENTION_QBOT_TIMING_COMPLETE",
+  "status": "PASS_FIDELITY_TIMING_EQUIVOCAL",
+  "workflow_run": 36105751871,
+  "workflow_job": 107977756999,
+  "frozen_case": {
+    "material": "O05",
+    "regime": "dry",
+    "initial_head_cm": -500.0,
+    "step_duration_day": 0.0625,
+    "bottom_flux_factor": 0.99,
+    "bottom_mode": 2
+  },
+  "candidate": "authoritative analytical theta/C plus unchanged selected K lookup",
+  "fidelity": {
+    "verdict": "PASS",
+    "nonlinear_path": "IDENTICAL_TO_ANALYTICAL"
+  },
+  "paired_candidate_over_analytical_ratios": [
+    1.003214,
+    1.002206,
+    0.991296,
+    0.993774,
+    0.999337,
+    1.007231,
+    0.980627
+  ],
+  "median_paired_ratio": 0.999337,
+  "median_reduction_fraction": 0.000663,
+  "decision_rule": {
+    "speed_positive": "ratio < 0.98",
+    "equivocal": "0.98 <= ratio <= 1.02",
+    "speed_negative": "ratio > 1.02"
+  },
+  "decision": "TIMING_EQUIVOCAL",
+  "finding": "The exact-retention fallback restores the prescribed-qbot nonlinear path with effectively neutral complete-Richards cost in the sole remaining O05-dry case.",
+  "design_implication": "A boundary-mode-specific analytical retention/capacity fallback is numerically viable without a meaningful speed penalty in this critical case. It should only be retained if broader prescribed-qbot tests show useful K-lookup benefit or if architectural simplicity favors a uniform qbot fallback.",
+  "next_action": "Evaluate the exact-theta/C plus selected-K-lookup candidate across the qualified 12-case prescribed-qbot matrix before deciding whether qbot should use partial acceleration or the fully analytical provider.",
+  "nonclaims": [
+    "No prescribed-qbot speedup claim is established.",
+    "No production admission is implied."
+  ]
+}
