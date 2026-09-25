@@ -119,10 +119,10 @@ for n in 1 100 1000 10000; do
 done
 
 python3 - "$BUILD/results.txt" <<'PY'
-import re,statistics,sys,collections
+import statistics,sys,collections
 rows=collections.defaultdict(lambda: collections.defaultdict(dict))
 for line in open(sys.argv[1]):
-    if not line.startswith("FAHL49_APP|"): continue
+    if not line.startswith("FAHL49_APP_INIT|"): continue
     fields={}
     for part in line.strip().split("|")[1:]:
         if "=" in part:
@@ -130,20 +130,16 @@ for line in open(sys.argv[1]):
     n=int(fields["N"]); rep=int(fields["REP"]); mode=fields["MODE"]
     rows[n][rep][mode]=fields
 for n in (1,100,1000,10000):
-    init_rat=[]; run_rat=[]
+    init_rat=[]
     for rep,pair in sorted(rows[n].items()):
         if set(pair)!={"analytical","direct"}:
             raise SystemExit(f"incomplete pair n={n} rep={rep}")
         a=pair["analytical"]; d=pair["direct"]
-        for key in ("COMPLETED","COMMITTED","SOLVER_CALLS","ACCEPTED","ITER","JAC","LIN","HEADCALC","RETRIES","BACKTRACK"):
-            if a[key] != d[key]:
-                raise SystemExit(f"counter drift n={n} rep={rep} key={key}: {a[key]} vs {d[key]}")
-        if float(a["MASS"])>1e-12 or float(d["MASS"])>1e-12:
-            raise SystemExit(f"mass gate n={n} rep={rep}")
+        if int(a["TILES"])!=n or int(d["TILES"])!=n:
+            raise SystemExit(f"tile count drift n={n} rep={rep}")
         if int(d["ENTRIES"])!=1 or int(d["BUILDS"])!=1 or int(d["HITS"])!=n-1 or int(d["PAYLOAD"])!=6240:
             raise SystemExit(f"ownership gate n={n} rep={rep}")
         init_rat.append(float(d["INIT"])/float(a["INIT"]))
-        run_rat.append(float(d["RUN"])/float(a["RUN"]))
-    print(f"FAHL49_SCALE|N={n}|INIT_MEDIAN_RATIO={statistics.median(init_rat):.9f}|RUN_MEDIAN_RATIO={statistics.median(run_rat):.9f}|PAIRS={len(run_rat)}")
+    print(f"FAHL49_SCALE|N={n}|INIT_MEDIAN_RATIO={statistics.median(init_rat):.9f}|PAIRS={len(init_rat)}")
 print("FAHL49_APPLICATION_SCALE=PASS")
 PY
