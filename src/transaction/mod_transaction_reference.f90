@@ -610,8 +610,16 @@ contains
     published%method = source%method
     published%origin_t0 = origin_t0
     published%origin_t1 = origin_t1
-    published%covers_requested_interval = origin_t0 == requested_t0 .and. origin_t1 == requested_t1
+    published%covers_requested_interval = ordered_real_equal(origin_t0, requested_t0) .and. &
+         ordered_real_equal(origin_t1, requested_t1)
   end subroutine publish_local_terminal_sensitivity
+
+  pure logical function ordered_real_equal(a, b) result(matches)
+    real(real64), intent(in) :: a, b
+    ! Exact ordered IEEE equality without REAL == so strict warning builds keep
+    ! the original no-tolerance coverage semantics.
+    matches = a <= b .and. b <= a
+  end function ordered_real_equal
 
   subroutine reject_and_retry(result, retry_index, policy, attempt_dt)
     type(transaction_result_t), intent(inout) :: result
