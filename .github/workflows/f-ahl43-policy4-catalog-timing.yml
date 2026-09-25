@@ -1,0 +1,25 @@
+name: F-AHL43 policy4 catalog timing
+
+on:
+  push:
+    branches:
+      - work/f-ahl01-adaptive-hydraulic-lookup
+    paths:
+      - 'integration/f-ahl/F-AHL43_PREREGISTRATION.json'
+      - 'research/ahl/test_ahl43_policy4_catalog_timing.f90'
+      - 'research/ahl/run_ahl43_policy4_catalog_timing.sh'
+      - '.github/workflows/f-ahl43-policy4-catalog-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run policy-4 full-catalog timing
+        run: |
+          bash research/ahl/run_ahl43_policy4_catalog_timing.sh /tmp/ahl43_result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl43-${{ github.run_id }}
+          path: /tmp/ahl43_result.txt
