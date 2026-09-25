@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL35A",
+  "title": "Post-repair multi-key switching characterization",
+  "parent": "F-AHL35",
+  "phase": "PREREGISTERED_CHARACTERIZATION",
+  "question": "After warm-hit sampler elimination, does changed-authority switching remain materially more expensive than provider-local same-key reuse?",
+  "workloads": [
+    {"id":"same_key","requests":200000,"unique_parameterizations":1},
+    {"id":"switch_16","requests":200000,"unique_parameterizations":16},
+    {"id":"switch_64","requests":200000,"unique_parameterizations":64}
+  ],
+  "compiler": "gfortran -O3",
+  "statistic": "median seconds per bind over five repetitions",
+  "decision_rule": {
+    "advance_ownership_transfer_study": "switch_64/same_key ratio >= 2.0",
+    "do_not_change_ownership": "switch_64/same_key ratio < 2.0"
+  },
+  "hard_exclusions": [
+    "NO_OWNERSHIP_CHANGE_IN_F_AHL35A",
+    "NO_HYDRAULIC_REPRESENTATION_CHANGE",
+    "NO_APPLICATION_SPEED_CLAIM"
+  ]
+}
