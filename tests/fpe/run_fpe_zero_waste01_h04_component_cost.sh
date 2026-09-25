@@ -12,6 +12,7 @@ gfortran "${COMMON[@]}" -J"$BUILD" -I"$BUILD" -c src/solver/mod_b110_default_mvg
 gfortran "${COMMON[@]}" -J"$BUILD" -I"$BUILD" -c tests/fpe/test_fpe_zero_waste01_h04_component_cost.f90 -o "$BUILD/test.o"
 gfortran -O2 "$BUILD/contract.o" "$BUILD/provider.o" "$BUILD/test.o" -o "$BUILD/test"
 
+"$BUILD/test" 4 100000
 "$BUILD/test" 60 10000
 "$BUILD/test" 200 3000
 "$BUILD/test" 1000 500
