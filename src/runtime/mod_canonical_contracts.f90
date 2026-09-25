@@ -83,6 +83,8 @@ module mod_canonical_contracts
     integer :: linear_solves = 0
     integer :: backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
+    integer :: workspace_full_resets = 0
+    integer(int64) :: workspace_zeroed_bytes = 0_int64
     real(real64) :: max_abs_step_mass_residual = 0.0_real64
     real(real64) :: max_temporal_indicator = 0.0_real64
     real(real64) :: min_accepted_substep_duration = huge(0.0_real64)
