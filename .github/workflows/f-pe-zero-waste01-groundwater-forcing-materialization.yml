@@ -1,0 +1,20 @@
+name: F-PE-ZERO-WASTE01 groundwater forcing materialization
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/test_fpe_zero_waste01_groundwater_forcing_materialization.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_groundwater_forcing_materialization.sh'
+      - '.github/workflows/f-pe-zero-waste01-groundwater-forcing-materialization.yml'
+  workflow_dispatch:
+
+jobs:
+  groundwater-forcing-materialization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Measure real typed groundwater forcing materialization
+        run: bash tests/fpe/run_fpe_zero_waste01_groundwater_forcing_materialization.sh
