@@ -166,9 +166,9 @@ contains
     use mod_process_hydraulic_view, only: process_hydraulic_view_t
     type(fmr_production_application_config_t),intent(in)::profile
     type(fmr_production_application_bootstrap_t)::owner,fresh_owner
-    type(fmr_committed_hydraulic_state_t),allocatable::copied(:),again(:)
+    type(fmr_committed_hydraulic_state_t),allocatable::copied(:),again(:),midpoint_state(:)
     type(fmr_committed_restart_bundle_t)::bundle,midpoint_bundle
-    integer::code,tile
+    integer::code,tile,original_status
     logical::ok
     logical::history_available,clone_history_available
     type(ppa_irrigation_event_state_t)::carrier,invalid_carrier
@@ -509,15 +509,34 @@ contains
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint fresh initialize'
       call fresh_owner%restore_committed_restart(midpoint_bundle,92001_int64,ok,code)
       if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint fresh restore'
+      call owner%copy_committed_hydraulic_states(midpoint_state,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint boundary copy'
       call owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,irrigation_forcing,irrigation_result,code)
-      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint continuation failed'
+      original_status=code
       call fresh_owner%run_standalone_with_forcing(midpoint,midpoint+irrigation_dt,irrigation_forcing,continued_result,code)
-      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint resumed continuation failed'
+      if(code/=original_status) error stop 'irrigation midpoint restart changed outcome'
+      write(*,*) 'IRRIGATION_ACTIVE_SOURCE_OUTCOME',original_status,irrigation_result%kernel_status
       call owner%copy_committed_hydraulic_states(copied,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint final copy'
       call fresh_owner%copy_committed_hydraulic_states(again,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint resumed copy'
       do tile=1,NTILE
+        if(continued_result(tile)%kernel_status/=irrigation_result(tile)%kernel_status) &
+             error stop 'irrigation midpoint restart changed tile outcome'
+        if(again(tile)%revision/=copied(tile)%revision.or. &
+             again(tile)%committed_time/=copied(tile)%committed_time) error stop 'irrigation midpoint revision time'
+        if(any(again(tile)%water_content/=copied(tile)%water_content).or. &
+             any(again(tile)%pressure_head_cm/=copied(tile)%pressure_head_cm)) &
+             error stop 'irrigation midpoint resumed profile'
+        if(irrigation_result(tile)%kernel_status/=0) then
+          if(copied(tile)%revision/=midpoint_state(tile)%revision.or. &
+               copied(tile)%committed_time/=midpoint_state(tile)%committed_time) &
+               error stop 'failed active source advanced committed clock'
+          if(any(copied(tile)%water_content/=midpoint_state(tile)%water_content).or. &
+               any(copied(tile)%pressure_head_cm/=midpoint_state(tile)%pressure_head_cm)) &
+               error stop 'failed active source published trial profile'
+          cycle
+        end if
         if(abs(irrigation_result(tile)%mass%residual)>HARD_MASS_GATE.or. &
              abs(continued_result(tile)%mass%residual)>HARD_MASS_GATE) error stop 'irrigation midpoint tail mass'
         expected=2.0_real64*(selected_amount(tile)+ &
@@ -537,7 +556,7 @@ contains
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint fresh close'
       call owner%restore_committed_restart(bundle,92001_int64,ok,code)
       if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation midpoint reset'
-      write(*,'(a)') 'PPA_IRRIGATION_ACTIVE_SOURCE_MIDPOINT_RESTART=PASS'
+      write(*,'(a)') 'PPA_IRRIGATION_ACTIVE_SOURCE_RESTART_OUTCOME_ROLLBACK_IDENTITY=PASS'
       call owner%run_standalone_with_forcing(request%t0,request%t1,irrigation_forcing,irrigation_result,code)
       write(*,*) 'IRRIGATION_SOURCE_STATUS',code,irrigation_result%kernel_status,irrigation_result%accepted_substeps
       if(code/=FMR_APP_BOOT_OK) error stop 'irrigation source interval failed'
