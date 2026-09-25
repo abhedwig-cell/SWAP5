@@ -2,31 +2,36 @@
   "schema_version": 1,
   "workstream": "F-AHL",
   "work_unit": "F-AHL28",
-  "phase": "BINDING_OVERHEAD_BASELINE_COMPLETE",
-  "status": "REPAIR_JUSTIFIED",
-  "workflow_run": 36078773108,
-  "workflow_job": 107895816642,
-  "measurements": {
-    "warm_bind_seconds": 5.6449e-7,
-    "provider_evaluate_16_heads_seconds": 1.816705e-6,
-    "warm_bind_over_eval16_ratio": 0.310722
+  "phase": "BINDING_OVERHEAD_ATTRIBUTION_COMPLETE",
+  "status": "ACTIONABLE_OVERHEAD_CONFIRMED",
+  "warm_binding_microbenchmark": {
+    "workflow_run": 36078712489,
+    "workflow_job": 107895627448,
+    "warm_bind_seconds": 5.82725e-7,
+    "already_bound_provider_evaluate_16_heads_seconds": 1.7302e-6,
+    "bind_over_eval16_ratio": 0.336796,
+    "cache_builds": 1,
+    "cache_hits": 1000001,
+    "cache_misses": 1,
+    "cache_entries": 1
   },
-  "cache_after_benchmark": {
-    "builds": 1,
-    "hits": 1000001,
-    "misses": 1,
-    "entries": 1
+  "serialized_fmr_cache_accounting": {
+    "workflow_run": 36078817011,
+    "workflow_job": 107895952105,
+    "scientific_test_marker": "AHL28_FMR_CACHE_ACCOUNTING=PASS",
+    "runner_conclusion_note": "The first workflow was marked failure only by a stale post-test grep path; the scientific executable completed and emitted PASS. A corrected rerun was triggered.",
+    "before": {"builds":1,"hits":0,"misses":1,"entries":1},
+    "after_64_adaptive_advances": {"builds":1,"hits":64,"misses":1,"entries":1},
+    "hit_delta": 64,
+    "advance_count": 64,
+    "one_cache_acquisition_per_advance": true
   },
-  "code_authority": {
-    "cache_hit_statement": "table=self%entry(i)%table",
-    "table_storage": "allocatable x,z,dzdx,logk components",
-    "interpretation": "Intrinsic assignment of the table value on every cache hit deep-copies allocatable support arrays into the provider-owned table."
-  },
-  "finding": "Warm adaptive-provider acquisition is material: one cache-hit bind costs about 31 percent of a 16-head adaptive constitutive evaluation in this microbenchmark.",
-  "decision": "ADVANCE_TO_NO_COPY_IMMUTABLE_REPRESENTATION_REPAIR",
-  "repair_boundary": "Separate immutable representation ownership in the shared cache from cheap step-duration-dependent analytical fallback binding. Do not change hydraulic representation, error gates, routing, dry-tail semantics or default-off behavior.",
+  "attribution": "Repeated warm table acquisition is material overhead. A warm bind costs about 0.58 microseconds, around 7.8% of the approximately 7.4 microsecond serialized reference-floor physical advance measured in F-AHL27 timing. FMR performs that acquisition once per adaptive physical advance.",
+  "decision": "ADVANCE_TO_SEMANTICS_PRESERVING_TABLE_ACQUISITION_MEMOIZATION",
+  "repair_constraint": "Memoize only immutable adaptive table acquisition. Continue to bind the authoritative analytical fallback with the current step duration so near-saturation timestep-dependent semantics remain correct.",
   "nonclaims": [
-    "This is a lifecycle microbenchmark, not an application-level speedup.",
-    "The 31 percent ratio does not imply the same fraction of total Richards or FMR runtime."
+    "The measured bind cost is host/compiler specific.",
+    "Removing it does not guarantee the full isolated Richards speedup will be recovered.",
+    "No production admission is implied."
   ]
 }
