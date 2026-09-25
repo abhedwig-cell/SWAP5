@@ -1476,7 +1476,8 @@ contains
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
       if (parameters%direct_retention_active) then
-        ok = ok .and. parameters%bottom_mode == 5 .and. parameters%swkimpl == 0 .and. &
+        ok = ok .and. self%soil_water_selection%uses_reference() .and. &
+             parameters%bottom_mode == 5 .and. parameters%swkimpl == 0 .and. &
              .not. parameters%ksatexm_extension_active .and. parameters%prepared_default_mvg_available .and. &
              parameters%prepared_direct_retention_slot > 0
       end if
