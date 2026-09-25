@@ -1,0 +1,55 @@
+name: F-AHL42 canonical admission extraction
+# admission-dispatch
+
+on:
+  push:
+    branches:
+      - work/f-ahl42-canonical-admission
+    paths:
+      - 'src/solver/mod_b110_adaptive_hydraulic_*.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - 'tests/fahl/run_fahl27_production_provider_extract.sh'
+      - 'tests/fahl/test_fahl27_production_provider_extract.f90'
+      - 'tests/fahl/run_fahl27_stage2_matrix.sh'
+      - 'tests/fahl/test_fahl27_stage2_matrix.f90'
+      - 'tests/fahl/run_fahl27_stage2_qbot_fallback.sh'
+      - 'tests/fahl/test_fahl27_stage2_qbot_fallback.f90'
+      - 'tests/fahl/run_fahl27a_production_dry_tail.sh'
+      - 'tests/fahl/test_fahl27a_production_dry_tail.f90'
+      - 'tests/fahl/run_fahl27_reference_floor_timing.sh'
+      - 'tests/fahl/test_fahl27_reference_floor_timing.f90'
+      - 'integration/f-ahl/F-AHL42_PREREGISTRATION.json'
+      - 'integration/f-ahl/F-AHL42_RESULT.json'
+      - '.github/workflows/f-ahl42-canonical-admission.yml'
+  workflow_dispatch:
+
+jobs:
+  admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Existing default-off serialized FMR regression
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+      - name: Production provider extraction
+        run: bash tests/fahl/run_fahl27_production_provider_extract.sh
+      - name: Prescribed-head matrix
+        run: bash tests/fahl/run_fahl27_stage2_matrix.sh /tmp/fahl42_matrix.txt
+      - name: Prescribed-qbot analytical fallback
+        run: bash tests/fahl/run_fahl27_stage2_qbot_fallback.sh
+      - name: O05 dry-tail semantics
+        run: bash tests/fahl/run_fahl27a_production_dry_tail.sh
+      - name: Production-shaped paired reference-floor timing
+        run: |
+          bash tests/fahl/run_fahl27_reference_floor_timing.sh
+          grep -Fq 'FAHL27_REFERENCE_FLOOR_TIMING=PASS' /tmp/fahl27_reference_floor_timing.txt
+      - name: Preserve compact evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ahl42-${{ github.run_id }}
+          path: |
+            /tmp/fahl27_stage1.txt
+            /tmp/fahl42_matrix.txt
+            /tmp/fahl27a_dry_tail.txt
+            /tmp/fahl27_reference_floor_timing.txt

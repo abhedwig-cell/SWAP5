@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42C",
+  "title": "Fail-closed exclusion of heterogeneous hydraulic profiles",
+  "parent": "F-AHL42",
+  "branch": "work/f-ahl42-canonical-admission",
+  "phase": "PREREGISTERED_SCOPE_CLOSURE",
+  "problem": "The production-shaped adaptive provider currently owns one immutable hydraulic representation per bound provider and keys/builds it from node 1. Legacy SWAP hydraulics are node-indexed and allow hydraulic coefficients to differ between nodes. Applying the node-1 representation to a layered profile would be scientifically invalid.",
+  "minimal_admission_repair": {
+    "scope": "hydraulically homogeneous profiles only",
+    "provider_bind": "reject when initialized 42-coefficient hydraulic authority differs between nodes",
+    "FMR_admission": "reject adaptive opt-in when raw 24-row hydraulic input differs between nodes",
+    "cache_side_effect_on_rejection": false
+  },
+  "future_extension": "Layered/multi-authority adaptive hydraulics requires a separately qualified provider that selects a representation per unique node/material authority. It is not admitted by F-AHL42.",
+  "prospective_checks": [
+    "direct adaptive provider rejects a two-authority profile before cache acquisition",
+    "serialized FMR rejects heterogeneous adaptive mode 5 before solver execution",
+    "rejected heterogeneous paths do not change adaptive cache statistics",
+    "homogeneous prescribed-head matrix remains green",
+    "default-off and qbot analytical fallbacks remain green"
+  ],
+  "hard_exclusions": [
+    "NO_SILENT_NODE1_TABLE_REUSE_ON_LAYERED_PROFILE",
+    "NO_LAYERED_ADAPTIVE_QUALIFICATION_IN_THIS_WORK_UNIT",
+    "NO_GATE_RETUNING",
+    "NO_DEFAULT_ON_CHANGE"
+  ]
+}

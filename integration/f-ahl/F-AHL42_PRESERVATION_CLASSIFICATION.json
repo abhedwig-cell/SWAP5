@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42",
+  "record": "CANONICAL_PRESERVATION_CLASSIFICATION",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "admission_pr": 604,
+  "policy": "Follow the same preservation classification used by prior canonical admission PR 593: repair new compile/runtime closure regressions; do not weaken historical frozen-postimage or exact-source-scope guards merely because a later bounded production successor exists.",
+  "new_integration_issues_found_and_repaired": [
+    {
+      "gate": "F-ROSS12 serialized production wiring",
+      "classification": "HAND_MAINTAINED_COMPILE_LIST_MISSING_NEW_BACKEND_DEPENDENCY",
+      "repair": "Compile adaptive hydraulic builder/cache/provider before mod_fmr_serialized_reference_backend.",
+      "semantic_change": false
+    },
+    {
+      "gate": "FKT22 default-off serialized FMR regression",
+      "classification": "HAND_MAINTAINED_COMPILE_LIST_BEHIND_CURRENT_BACKEND_DEPENDENCIES",
+      "repair": "Close adaptive-hydraulic, root-sink, smooth-freatic-projection and qbot-directional dependency order before backend compilation.",
+      "semantic_change": false
+    },
+    {
+      "gate": "F-GC44 real FMR participant",
+      "classification": "HAND_MAINTAINED_COMPILE_LIST_MISSING_NEW_BACKEND_DEPENDENCY",
+      "repair": "Compile adaptive hydraulic builder/cache/provider before mod_fmr_serialized_reference_backend.",
+      "semantic_change": false
+    },
+    {
+      "gate": "F-GC44 real SWAP MODFLOW6 end-to-end",
+      "classification": "HAND_MAINTAINED_COMPILE_LIST_MISSING_NEW_BACKEND_DEPENDENCY",
+      "repair": "Compile adaptive hydraulic builder/cache/provider before mod_fmr_serialized_reference_backend.",
+      "semantic_change": false
+    }
+  ],
+  "historical_guard_class": {
+    "examples": [
+      "F-CI72 EB-I23 moving preservation",
+      "F-CI74 EB-I24 moving preservation",
+      "F-CI79 EB-I25 moving preservation",
+      "F-CI96 F-ROSS12 postimage preservation",
+      "F-SI39 B1.11 KSATEXM preservation",
+      "F-CI109R1 F-APP09 current canonical admission",
+      "PPA-WU04-A Black evaporation admission",
+      "PPA-WU04-B Boesten evaporation admission"
+    ],
+    "classification": "FROZEN_POSTIMAGE_OR_EXACT_SOURCE_SCOPE_GUARDS",
+    "meaning": "These guards are designed to reject later production-source/postimage changes. A red result on an AHL42 source-changing PR is preservation classification evidence, not by itself evidence of an AHL physical regression.",
+    "rule": "Do not alter their scientific expectations or tolerances to make AHL42 green. Successor reconciliation, when needed after admission, must replay their owned authority on the successor backend."
+  },
+  "admission_blockers": [
+    "F-AHL42 bounded admission workflow must pass on the candidate extraction, including default-off FKT22 replay.",
+    "F-ROSS12 production wiring must compile and run on the candidate backend.",
+    "GC44 compile/runtime paths directly exercising the changed backend must close after dependency repair.",
+    "Any new runtime or physical mismatch after successful compilation remains a blocker."
+  ],
+  "nonclaims": [
+    "This classification does not convert historical red checks into green evidence.",
+    "This record does not authorize merge.",
+    "This record does not broaden the admitted adaptive-hydraulics envelope."
+  ]
+}

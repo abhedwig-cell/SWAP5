@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42",
+  "title": "Canonical minimal production-shaped admission extraction",
+  "branch": "work/f-ahl42-canonical-admission",
+  "canonical_base": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "research_source_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "phase": "PREREGISTERED_GOVERNANCE_EXTRACTION",
+  "scope": {
+    "source_files": [
+      "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+      "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+      "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "runtime_policy": "explicit opt-in, default OFF",
+    "adaptive_boundary_scope": "prescribed-head bottom mode 5 only",
+    "fallbacks": [
+      "prescribed-qbot remains authoritative analytical",
+      "near-saturation outside represented core remains authoritative analytical",
+      "dry-tail outside material relevance bound remains authoritative analytical"
+    ]
+  },
+  "retained_regressions": [
+    "production provider extraction",
+    "12-case prescribed-head matrix",
+    "prescribed-qbot analytical fallback with zero adaptive cache activity",
+    "O05 production dry-tail fallback",
+    "provider-local same-key memoization"
+  ],
+  "hard_exclusions": [
+    "NO_RESEARCH_BRANCH_WHOLESALE_MERGE",
+    "NO_DEFAULT_ON_CHANGE",
+    "NO_QBOT_ADAPTIVE_ROUTE",
+    "NO_SWKIMPL1_DKDH_EXTENSION",
+    "NO_VAPOR_PDI_ACCELERATION",
+    "NO_WHOLE_SWAP_PERFORMANCE_CLAIM"
+  ],
+  "decision_rule": "Open a canonical-governance draft PR only if every retained regression passes on the clean canonical-derived branch. Failure blocks handoff and must be reconciled without loosening gates."
+}

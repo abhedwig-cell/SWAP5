@@ -37,12 +37,17 @@ MODULE_SRC=(
   src/process/mod_drainage_multilevel_aggregation.f90
   src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
+  src/solver/mod_b110_smooth_freatic_projection.f90
+  src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/process/mod_soil_temperature_contract.f90
   src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
+  src/solver/mod_b110_adaptive_hydraulic_builder.f90
+  src/solver/mod_b110_adaptive_hydraulic_cache.f90
+  src/solver/mod_b110_adaptive_hydraulic_provider.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
@@ -50,13 +55,13 @@ MODULE_SRC=(
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
