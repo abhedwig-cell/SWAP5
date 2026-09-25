@@ -184,6 +184,54 @@ program test_fkt22_fmr_serialized_trajectory_runtime
        same_bits(result_off%mass%total_out, result_on%mass%total_out) .and. &
        same_bits(result_off%mass%residual, result_on%mass%residual), &
        'trajectory request leaves accepted mass accounting bit-identical')
+  call candidate_trusted%snapshot(snapshot_trusted, available_on)
+  call require(available_on, 'trusted prepared candidate snapshot available')
+  call require_physical_identity(snapshot_off, snapshot_trusted)
+  call require(same_bits(result_off%mass%storage_start, result_trusted%mass%storage_start) .and. &
+       same_bits(result_off%mass%storage_end, result_trusted%mass%storage_end) .and. &
+       same_bits(result_off%mass%total_in, result_trusted%mass%total_in) .and. &
+       same_bits(result_off%mass%total_out, result_trusted%mass%total_out) .and. &
+       same_bits(result_off%mass%residual, result_trusted%mass%residual), &
+       'trusted prepared route preserves mass bits')
+  call require(diagnostics_off%nonlinear_iterations == diagnostics_trusted%nonlinear_iterations .and. &
+       diagnostics_off%linear_solves == diagnostics_trusted%linear_solves, &
+       'trusted prepared route preserves solve counts')
+  write(*,'(A)') 'FPE_ZERO_WASTE01_H22A_TRUSTED_UNTRUSTED_IDENTITY=PASS'
+
+  mutated_stale = parameters
+  mutated_stale%cofgen(3,:) = 0.97_real64*mutated_stale%cofgen(3,:)
+  mutated_fresh = mutated_stale
+  call prepare_fmr_b110_default_mvg(mutated_fresh, ok)
+  call require(ok, 'H22A mutated fresh prepared hydraulics built')
+  call determine_initial_conductivity(mutated_fresh, mutated_k0)
+  mutated_qeq = -mutated_k0
+  call initialize_forcing(forcing, mutated_qeq)
+  call initialize_committed(committed_mutated_stale, mutated_fresh, ok)
+  call require(ok, 'H22A stale-cache committed initialized')
+  call initialize_committed(committed_mutated_fresh, mutated_fresh, ok)
+  call require(ok, 'H22A fresh-cache committed initialized')
+  call fmr_capture_checkpoint(committed_mutated_stale, checkpoint_mutated_stale, ok)
+  call require(ok, 'H22A stale-cache checkpoint captured')
+  call fmr_capture_checkpoint(committed_mutated_fresh, checkpoint_mutated_fresh, ok)
+  call require(ok, 'H22A fresh-cache checkpoint captured')
+  call backend_mutated_stale%initialize(top)
+  call backend_mutated_fresh%initialize(top)
+  call backend_mutated_stale%run_trial(column, template, mutated_stale, committed_mutated_stale, forcing, config_off, &
+       0.0_real64, duration, checkpoint_mutated_stale, result_mutated_stale, candidate_mutated_stale, &
+       diagnostics_mutated_stale)
+  call backend_mutated_fresh%run_trial(column, template, mutated_fresh, committed_mutated_fresh, forcing, config_off, &
+       0.0_real64, duration, checkpoint_mutated_fresh, result_mutated_fresh, candidate_mutated_fresh, &
+       diagnostics_mutated_fresh)
+  call require(result_mutated_stale%completed .and. result_mutated_fresh%completed, &
+       'H22A stale/fresh mutation trials complete')
+  call candidate_mutated_stale%snapshot(snapshot_mutated_stale, available_off)
+  call candidate_mutated_fresh%snapshot(snapshot_mutated_fresh, available_on)
+  call require(available_off .and. available_on, 'H22A stale/fresh mutation snapshots available')
+  call require_physical_identity(snapshot_mutated_stale, snapshot_mutated_fresh)
+  call require(same_bits(result_mutated_stale%mass%residual, result_mutated_fresh%mass%residual), &
+       'H22A untrusted stale cache falls back to current raw parameters')
+  write(*,'(A)') 'FPE_ZERO_WASTE01_H22A_UNTRUSTED_STALE_FALLBACK=PASS'
+
   write(*,'(A)') 'FKT22_FMR_TRAJECTORY_PHYSICAL_IDENTITY=PASS'
   write(*,'(A)') 'FKT22_FMR_SERIALIZED_RUNTIME_GATE=PASS'
 

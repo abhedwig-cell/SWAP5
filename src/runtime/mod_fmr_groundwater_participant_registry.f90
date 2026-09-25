@@ -37,6 +37,7 @@ module mod_fmr_groundwater_participant_registry
     type(fmr_template_t) :: template
     type(canonical_numerical_config_t) :: numerical
     type(groundwater_head_datum_t) :: datum
+    logical :: immutable_parameters = .false.
   end type fmr_groundwater_participant_slot_t
 
   type, public :: fmr_groundwater_participant_registry_t
@@ -84,7 +85,7 @@ contains
   end subroutine registry_initialize
 
   subroutine registry_bind(self, tile_id, backend, column, template, parameters, committed, materializer, &
-       numerical, datum, handle, status)
+       numerical, datum, handle, status, immutable_parameters)
     class(fmr_groundwater_participant_registry_t), intent(inout) :: self
     integer(int64), intent(in) :: tile_id
     type(fmr_serialized_reference_backend_t), target, intent(inout) :: backend
@@ -97,6 +98,7 @@ contains
     type(groundwater_head_datum_t), intent(in) :: datum
     integer(int64), intent(out) :: handle
     integer, intent(out) :: status
+    logical, intent(in), optional :: immutable_parameters
 
     integer :: i, slot
 
@@ -149,6 +151,8 @@ contains
     self%slots(slot)%template = template
     self%slots(slot)%numerical = numerical
     self%slots(slot)%datum = datum
+    self%slots(slot)%immutable_parameters = .false.
+    if (present(immutable_parameters)) self%slots(slot)%immutable_parameters = immutable_parameters
 
     handle = self%next_handle
     self%next_handle = self%next_handle + 1_int64
@@ -225,7 +229,8 @@ contains
     call self%slots(idx)%participant%trial_from_origin(self%slots(idx)%backend, self%slots(idx)%column, &
          self%slots(idx)%template, self%slots(idx)%parameters, self%slots(idx)%committed, &
          self%slots(idx)%materializer, self%slots(idx)%numerical, self%slots(idx)%datum, window, &
-         prescribed_head_m, trial, participant_status)
+         prescribed_head_m, trial, participant_status, &
+         trusted_prepared_parameters=self%slots(idx)%immutable_parameters)
     if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
       status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
       return

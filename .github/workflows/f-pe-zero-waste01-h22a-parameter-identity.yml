@@ -1,0 +1,31 @@
+name: F-PE-ZERO-WASTE01 H22A parameter identity
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+      - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fkt/test_fkt22_fmr_serialized_trajectory_runtime.f90'
+      - 'docs/performance/F-PE-ZERO-WASTE01_H22A_PARAMETER_BINDING_IDENTITY.md'
+      - '.github/workflows/f-pe-zero-waste01-h22a-parameter-identity.yml'
+  workflow_dispatch:
+
+jobs:
+  h22a-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: FKT22 backend identity and stale-cache fallback
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+      - name: Production bootstrap owner gate
+        run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+      - name: Groundwater production context gate
+        run: bash tests/fgc/run_fgc49d_production_application_context.sh

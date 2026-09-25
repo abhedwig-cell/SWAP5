@@ -221,7 +221,7 @@ contains
       if (groundwater_profile) then
         call self%registry%bind(config%tiles(i)%tile_id, self%backend, self%columns(i), self%templates(i), &
              self%parameters(i), self%committed(i), self%materializers(i), self%numerical, &
-             config%tiles(i)%groundwater_datum, self%participant_handles(i), local_status)
+             config%tiles(i)%groundwater_datum, self%participant_handles(i), local_status, immutable_parameters=.true.)
         if (local_status /= FMR_GW_REGISTRY_OK .or. self%participant_handles(i) <= 0_int64) then
           status = FMR_APP_BOOT_REGISTRY_FAILED
           call discard_owner_storage(self)
@@ -325,13 +325,13 @@ contains
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
            aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
            materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
-           materialize_column_diagnostics=.false.)
+           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
     else
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
            aggregate, dispatch_status, materialize_worker_assignments=.false., &
            materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
-           materialize_column_diagnostics=.false.)
+           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
     end if
 
     status = FMR_APP_BOOT_RUNTIME_FAILED

@@ -181,6 +181,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: head_rel_tolerance = 1.0e-12_real64
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     logical :: root_extraction_active = .false.
+    logical :: trusted_prepared_default_mvg = .false.
     logical :: macropore_active = .false.
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
@@ -500,7 +501,7 @@ contains
     prepared = .true.
   end subroutine prepare_fmr_b110_default_mvg
 
-  logical function prepared_default_mvg_compatible(parameters) result(compatible)
+  logical function prepared_default_mvg_structurally_compatible(parameters) result(compatible)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
     compatible = .false.
     if (.not. parameters%prepared_default_mvg_available) return
@@ -512,8 +513,14 @@ contains
     if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_active) return
     if (size(parameters%prepared_default_mvg%cofgen,1) /= 42) return
     if (size(parameters%prepared_default_mvg%cofgen,2) /= parameters%active_nodes) return
-    if (.not. all(parameters%prepared_default_mvg%cofgen(1:24,:) == parameters%cofgen(1:24,:))) return
     compatible = .true.
+  end function prepared_default_mvg_structurally_compatible
+
+  logical function prepared_default_mvg_compatible(parameters) result(compatible)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    compatible = prepared_default_mvg_structurally_compatible(parameters)
+    if (.not. compatible) return
+    if (.not. all(parameters%prepared_default_mvg%cofgen(1:24,:) == parameters%cofgen(1:24,:))) compatible = .false.
   end function prepared_default_mvg_compatible
 
   subroutine copy_b110_physical_state(source, target)
@@ -837,6 +844,7 @@ contains
     self%bottom_thermal_requested = .false.
     call configure_trajectory_direction(self%model%trajectory_direction, .false.)
     call self%model%bottom_thermal_carrier%clear()
+    self%model%trusted_prepared_default_mvg = .false.
     call self%bottom_thermal_candidate%clear()
     self%model%top_sensible_boundary_carrier_active = .false.
     self%model%top_sensible_boundary_carrier_valid = .true.
@@ -1163,7 +1171,8 @@ contains
   end subroutine fmr_serialized_backend_run_reference_floor_sample
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
-                                               t0, t1, checkpoint, result, candidate, diagnostics)
+                                               t0, t1, checkpoint, result, candidate, diagnostics, &
+                                               trusted_prepared_parameters)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
@@ -1176,6 +1185,7 @@ contains
     type(kernel_result_t), intent(out) :: result
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
+    logical, intent(in), optional :: trusted_prepared_parameters
     logical :: bottom_thermal_ok, top_sensible_ok
 
     call self%bottom_thermal_candidate%clear()
@@ -1303,8 +1313,10 @@ contains
       self%model%top_sensible_boundary_carrier_active = top_sensible_ok
       self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
     end if
+    if (present(trusted_prepared_parameters)) self%model%trusted_prepared_default_mvg = trusted_prepared_parameters
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
+    self%model%trusted_prepared_default_mvg = .false.
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
         result%completed) then
       if (candidate%ready()) then
@@ -1502,7 +1514,8 @@ contains
       self%soil_parameters%z = parameters%z
       self%soil_parameters%dz = parameters%dz
       self%soil_parameters%node_distance = parameters%node_distance
-      if (prepared_default_mvg_compatible(parameters)) then
+      if ((self%trusted_prepared_default_mvg .and. prepared_default_mvg_structurally_compatible(parameters)) .or. &
+          (.not. self%trusted_prepared_default_mvg .and. prepared_default_mvg_compatible(parameters))) then
         self%hydraulic_parameters = parameters%prepared_default_mvg
       else
         call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &

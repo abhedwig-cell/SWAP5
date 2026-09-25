@@ -168,7 +168,8 @@ contains
                                                     batch_size, results, diagnostics, aggregate, dispatch_status, &
                                                     runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan, &
                                                     materialize_worker_assignments, materialize_summary_diagnostics, &
-                                                    materialize_diagnostic_metadata, materialize_column_diagnostics)
+                                                    materialize_diagnostic_metadata, materialize_column_diagnostics, &
+                                                    trusted_prepared_parameters)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -190,6 +191,7 @@ contains
     logical, intent(in), optional :: materialize_summary_diagnostics
     logical, intent(in), optional :: materialize_diagnostic_metadata
     logical, intent(in), optional :: materialize_column_diagnostics
+    logical, intent(in), optional :: trusted_prepared_parameters
 
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
@@ -199,7 +201,7 @@ contains
     integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
     logical :: receipt_request_ok
     logical :: do_worker_assignments, do_summary_diagnostics, do_diagnostic_metadata, do_column_diagnostics
-    logical :: track_physical_concurrency
+    logical :: track_physical_concurrency, trust_prepared
 
     do_worker_assignments = .true.
     if (present(materialize_worker_assignments)) do_worker_assignments = materialize_worker_assignments
@@ -216,6 +218,8 @@ contains
       do_diagnostic_metadata = .false.
     end if
     track_physical_concurrency = do_summary_diagnostics .or. present(runtime_diagnostics)
+    trust_prepared = .false.
+    if (present(trusted_prepared_parameters)) trust_prepared = trusted_prepared_parameters
     call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, do_worker_assignments, &
          do_diagnostic_metadata, do_column_diagnostics)
     call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
@@ -317,7 +321,7 @@ contains
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
                    local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint, &
-                 track_physical_concurrency)
+                 track_physical_concurrency, trust_prepared)
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
@@ -329,12 +333,12 @@ contains
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
                    local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt, &
-                 track_physical_concurrency=track_physical_concurrency)
+                 track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
                    local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt, &
-                   track_physical_concurrency=track_physical_concurrency)
+                   track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
             end if
           end if
         else
@@ -343,22 +347,22 @@ contains
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
                    local_runtime, active_physical_calls, template_index_hint=template_index_hint, &
-                 track_physical_concurrency=track_physical_concurrency)
+                 track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
                    local_runtime, active_physical_calls, template_index_hint=template_index_hint, &
-                   track_physical_concurrency=track_physical_concurrency)
+                   track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
             end if
           else
             if (do_column_diagnostics) then
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency)
+                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
             else
               call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                    forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
-                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency)
+                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
             end if
           end if
         end if
@@ -627,7 +631,7 @@ contains
   ! shared transaction boundary.
   subroutine execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
                             state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
-                            commit_receipt, template_index_hint, track_physical_concurrency)
+                            commit_receipt, template_index_hint, track_physical_concurrency, trusted_prepared_parameters)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -644,6 +648,7 @@ contains
     type(fmr_accepted_commit_receipt_t), intent(inout), optional :: commit_receipt
     integer, intent(in), optional :: template_index_hint
     logical, intent(in), optional :: track_physical_concurrency
+    logical, intent(in), optional :: trusted_prepared_parameters
 
     integer :: state_index, parameter_index, forcing_index, template_index
     logical :: routable
@@ -676,12 +681,14 @@ contains
       call execute_resolved_column(backend, transaction_control, column, templates(template_index), &
            parameter_registry(parameter_index), forcing_registry(forcing_index), state_registry(state_index), &
            numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, commit_receipt, &
-           track_physical_concurrency=track_physical_concurrency)
+           track_physical_concurrency=track_physical_concurrency, &
+           trusted_prepared_parameters=trusted_prepared_parameters)
     else
       call execute_resolved_column(backend, transaction_control, column, templates(template_index), &
            parameter_registry(parameter_index), forcing_registry(forcing_index), state_registry(state_index), &
            numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
-           track_physical_concurrency=track_physical_concurrency)
+           track_physical_concurrency=track_physical_concurrency, &
+           trusted_prepared_parameters=trusted_prepared_parameters)
     end if
   end subroutine execute_column
 
@@ -690,7 +697,8 @@ contains
   subroutine execute_resolved_column(backend, transaction_control, column, template, parameters, effective_forcing, &
                                      committed_state, numerical_config, t0, t1, output, diagnostic, runtime, &
                                      active_physical_calls, commit_receipt, bottom_energy_parameters, &
-                                     bottom_thermal_provider, bottom_energy_publication, track_physical_concurrency)
+                                     bottom_thermal_provider, bottom_energy_publication, track_physical_concurrency, &
+                                     trusted_prepared_parameters)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -709,6 +717,7 @@ contains
     procedure(fmr_external_bottom_thermal_provider_i), optional :: bottom_thermal_provider
     type(fmr_serialized_bottom_energy_publication_t), intent(out), optional :: bottom_energy_publication
     logical, intent(in), optional :: track_physical_concurrency
+    logical, intent(in), optional :: trusted_prepared_parameters
 
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: kernel_result
@@ -759,7 +768,8 @@ contains
     end if
     if (energy_requested) call backend%set_bottom_thermal_carrier_enabled(.true.)
     call backend%run_trial(column, template, parameters, committed_state, effective_forcing, &
-         numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)
+         numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag, &
+         trusted_prepared_parameters=trusted_prepared_parameters)
     if (energy_requested) then
       thermal_candidate = backend%bottom_thermal_snapshot()
       ! The snapshot is now local to this transaction call. Clear backend
