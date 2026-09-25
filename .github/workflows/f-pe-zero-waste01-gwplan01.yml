@@ -1,0 +1,20 @@
+name: F-PE-ZERO-WASTE01 GWPLAN01 scale benchmark
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_groundwater_application_plan.f90'
+      - 'src/runtime/mod_groundwater_topology_composition.f90'
+      - 'tests/fpe/test_fpe_zero_waste01_gwplan01.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_gwplan01.sh'
+      - '.github/workflows/f-pe-zero-waste01-gwplan01.yml'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure canonical 1:1 plan materialization
+        run: bash tests/fpe/run_fpe_zero_waste01_gwplan01.sh
