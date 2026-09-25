@@ -1366,13 +1366,13 @@ contains
 
   subroutine verify_pending_mixed_columns(profile,source,template,reverse_order,select_gift,resolved_runtime)
     use mod_ppa_irrigation_source_binding, only: run_ppa_pending_irrigation_source_trial, &
-         evaluate_ppa_committed_irrigation_source
+         evaluate_ppa_committed_irrigation_source,execute_ppa_irrigation_source_column
     use mod_fmr_serialized_multiswap_runtime, only: fmr_execute_serialized_irrigation_resolved_column, &
          fmr_execute_serialized_resolved_physical_column, &
          fmr_serialized_column_result_t,fmr_serialized_batch_diagnostics_t
     use mod_fmr_runtime_core, only: fmr_column_diagnostics_t
     use mod_kernel_transactions, only: kernel_executor_t
-    use mod_irrigation_process, only: irrigation_flux_result_t,IRRIGATION_EVENT_SCHEDULED
+    use mod_irrigation_process, only: irrigation_flux_result_t
     use mod_irrigation_process, only: irrigation_state_t,scheduled_irrigation_parameters_t, &
          scheduled_irrigation_request_t,irrigation_diagnostics_t
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
@@ -1396,7 +1396,7 @@ contains
     type(fmr_serialized_column_result_t)::guard_output
     type(fmr_column_diagnostics_t)::guard_diagnostic
     type(fmr_logical_column_t)::guard_column
-    type(irrigation_state_t)::proposed,selected
+    type(irrigation_state_t)::proposed
     type(irrigation_flux_result_t)::flux
     type(fmr_b110_physical_forcing_t),allocatable::prepared
     integer::active_calls
@@ -1483,19 +1483,20 @@ contains
              guard_diagnostic,runtime,active_calls)
         if(guard_output%committed.or.guard_output%solver_executed.or.guard_output%admitted) &
              error stop 'ordinary resolved runtime admitted irrigation'
-        if(select_gift) then
-          selected=irrigation_state_t()
-          selected%active_event=.true.; selected%active_event_origin=IRRIGATION_EVENT_SCHEDULED
-          selected%active_event_start=T0; selected%active_event_end=T0+flux%event_duration
-          selected%active_event_rate=flux%subsurface_source(1)
-          call fmr_execute_serialized_irrigation_resolved_column(backend,control,columns(i),template, &
-               profile%tiles(1)%parameters,prepared,owners(i),numerical,1,T0,finish,outputs(i), &
-               column_diagnostics(i),runtime,active_calls,selected)
-        else
-          call fmr_execute_serialized_irrigation_resolved_column(backend,control,columns(i),template, &
-               profile%tiles(1)%parameters,prepared,owners(i),numerical,1,T0,finish,outputs(i), &
-               column_diagnostics(i),runtime,active_calls)
-        end if
+        request%t0=T0+0.5_real64/1024.0_real64
+        call execute_ppa_irrigation_source_column(backend,control,columns(i),template,profile%tiles(1)%parameters, &
+             irrigation,owners(i),forcing,numerical,request,guard_output,guard_diagnostic,runtime,active_calls, &
+             process_diagnostics)
+        if(guard_output%admission_status/='IRRIGATION_SOURCE_REJECTED'.or.guard_output%committed) &
+             error stop 'stale source boundary admitted'
+        if(guard_output%final_revision/=0_int64.or.guard_output%final_committed_time/=T0.or. &
+             .not.guard_output%final_committed_time_bound) error stop 'source rejection provenance'
+        if(guard_diagnostic%committed_time/=T0.or.guard_diagnostic%rejected/=1) &
+             error stop 'source rejection diagnostic'
+        request%t0=T0
+        call execute_ppa_irrigation_source_column(backend,control,columns(i),template,profile%tiles(1)%parameters, &
+             irrigation,owners(i),forcing,numerical,request,outputs(i),column_diagnostics(i),runtime,active_calls, &
+             process_diagnostics)
       else if(select_gift) then
         call run_ppa_pending_irrigation_source_trial(backend,columns(i),template,profile%tiles(1)%parameters,irrigation, &
              owners(i),forcing,numerical,T0,finish,checkpoint(i),result(i),candidate(i),diagnostics(i), &
