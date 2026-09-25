@@ -313,8 +313,6 @@ contains
       result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + half1_outcome%workspace_zeroed_bytes
 
       if (half1_outcome%solver_ok) then
-        call model%capture_attempt_context(half_context)
-        call model%restore_attempt_context(half_context)
         call model%advance(half_state, midpoint, attempt_t1, half2_outcome)
         result%half_trials = result%half_trials + 1
         result%nonlinear_iterations = result%nonlinear_iterations + half2_outcome%nonlinear_iterations

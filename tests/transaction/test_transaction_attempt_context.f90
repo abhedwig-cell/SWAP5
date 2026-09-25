@@ -16,6 +16,7 @@ module mod_contextual_transaction_test
 
   type, extends(transaction_model_t), public :: contextual_model_t
     integer :: legacy_counter = 0
+    integer :: capture_count = 0
     logical :: inject_mass_defect = .false.
   contains
     procedure :: advance => contextual_advance
@@ -40,6 +41,7 @@ contains
   subroutine contextual_capture(self, context)
     class(contextual_model_t), intent(inout) :: self
     class(transaction_attempt_context_t), allocatable, intent(out) :: context
+    self%capture_count = self%capture_count + 1
     allocate(counter_context_t :: context)
     select type (context)
     type is (counter_context_t)
@@ -145,6 +147,7 @@ program test_transaction_attempt_context
     error stop 'state type lost'
   end select
   if (model%legacy_counter /= 2) error stop 'accepted attempt context not committed'
+  if (model%capture_count /= 2) error stop 'accepted route performed redundant context capture'
 
   deallocate(state)
   allocate(context_state_t :: state)
@@ -153,6 +156,7 @@ program test_transaction_attempt_context
     state%water = 10.0_real64
   end select
   model%legacy_counter = 0
+  model%capture_count = 0
   model%inject_mass_defect = .true.
   call execute_reference_interval(model, state, 0.0_real64, 1.0_real64, policy, result)
   if (result%status /= TX_STATUS_RETRY_EXHAUSTED) error stop 'mass defect should reject'
@@ -161,6 +165,8 @@ program test_transaction_attempt_context
     if (abs(state%water-10.0_real64) > 1.0e-14_real64) error stop 'rejected physical state leaked'
   end select
   if (model%legacy_counter /= 0) error stop 'rejected attempt context leaked'
+  if (model%capture_count /= 2) error stop 'rejected route performed redundant context capture'
 
+  print *, 'FPE_ZERO_WASTE01_HCTX01_CAPTURE_COUNT PASS'
   print *, 'FCI08_TRANSACTION_ATTEMPT_CONTEXT PASS'
 end program test_transaction_attempt_context
