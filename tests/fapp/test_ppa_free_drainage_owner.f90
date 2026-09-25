@@ -175,6 +175,7 @@ contains
     type(fmr_b110_physical_forcing_t)::irrigation_forcing(NTILE)
     type(fmr_b110_physical_forcing_t)::control_forcing(NTILE)
     type(fmr_serialized_column_result_t),allocatable::irrigation_result(:)
+    type(fmr_serialized_column_result_t),allocatable::continued_result(:)
     real(real64),parameter::irrigation_dt=1.0_real64/1024.0_real64
     call owner%copy_committed_hydraulic_states(copied,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(copied)) error stop 'uninitialized hydraulic copy'
@@ -342,6 +343,38 @@ contains
         if(any(abs(again(tile)%pressure_head_cm-copied(tile)%pressure_head_cm)>0.0_real64)) &
              error stop 'accepted irrigation restart pressure'
       end do
+      ! The selected gift has finished: remove SSDI and mark that source change.
+      do tile=1,NTILE
+        irrigation_forcing(tile)%subsurface_irrigation_source=0.0_real64
+        irrigation_forcing(tile)%temporal_forcing_event=.true.
+        irrigation_forcing(tile)%temporal_forcing_event_time=request%t1
+      end do
+      call owner%run_standalone_with_forcing(request%t1,request%t1+irrigation_dt, &
+           irrigation_forcing,irrigation_result,code)
+      write(*,*) 'IRRIGATION_STOP_CONTINUATION',code,irrigation_result%kernel_status
+      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation stop continuation'
+      call fresh_owner%run_standalone_with_forcing(request%t1,request%t1+irrigation_dt, &
+           irrigation_forcing,continued_result,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation stop restart continuation'
+      call owner%copy_committed_hydraulic_states(copied,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation stop copy'
+      call fresh_owner%copy_committed_hydraulic_states(again,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'irrigation stop restart copy'
+      do tile=1,NTILE
+        if(abs(irrigation_result(tile)%mass%residual)>HARD_MASS_GATE.or. &
+             abs(continued_result(tile)%mass%residual)>HARD_MASS_GATE) error stop 'irrigation stop mass'
+        expected=sum(max(-irrigation_forcing(tile)%drainage_flux_by_level,0.0_real64))*irrigation_dt
+        if(abs(irrigation_result(tile)%mass%total_in-expected)>HARD_MASS_GATE) error stop 'finished gift repeated'
+        if(abs(continued_result(tile)%mass%total_in-irrigation_result(tile)%mass%total_in)>0.0_real64) &
+             error stop 'irrigation stop restart inflow'
+        if(again(tile)%revision/=copied(tile)%revision) error stop 'irrigation continuation revision'
+        if(abs(again(tile)%committed_time-copied(tile)%committed_time)>0.0_real64) &
+             error stop 'irrigation continuation time'
+        if(any(abs(again(tile)%water_content-copied(tile)%water_content)>0.0_real64).or. &
+             any(abs(again(tile)%pressure_head_cm-copied(tile)%pressure_head_cm)>0.0_real64)) &
+             error stop 'irrigation continuation profile'
+      end do
+      write(*,'(a)') 'PPA_IRRIGATION_FINISHED_GIFT_RESTART_CONTINUATION=PASS'
       call fresh_owner%close(code)
       write(*,'(a)') 'PPA_IRRIGATION_ACCEPTED_PROFILE_FRESH_RESTART=PASS'
     end if
