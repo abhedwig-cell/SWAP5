@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42",
+  "title": "Canonical admission preparation for bounded adaptive hydraulics",
+  "status": "ADMISSION_PREP",
+  "base_canonical": "506c36aab6f84b74dffdf5c37fe572c1e0b46610",
+  "research_source_branch": "work/f-ahl01-adaptive-hydraulic-lookup",
+  "research_source_head": "83894d8e43d037c08d7734a331f44d1e1f07186d",
+  "admission_branch": "work/f-ahl42-canonical-admission-prep",
+  "minimal_source_delta": [
+    "src/solver/mod_b110_adaptive_hydraulic_builder.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_cache.f90",
+    "src/solver/mod_b110_adaptive_hydraulic_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "admitted_scope_candidate": {
+    "hydraulic_family": "default unimodal B1.10 MvG only",
+    "solver": "Reference Richards",
+    "activation": "explicit opt-in only; default remains analytical",
+    "lower_boundary": "prescribed-head mode 5 only",
+    "prescribed_qbot": "authoritative analytical fallback",
+    "accepted_trajectory_directional": "authoritative analytical fallback",
+    "swkimpl": 0,
+    "near_saturation": "authoritative analytical fallback where required",
+    "dry_tail": "material-specific raw-C relevance bound 1e-13 with authoritative analytical fallback outside represented domain",
+    "runtime_refinement": false,
+    "external_user_tables": false
+  },
+  "retained_scientific_invariants": [
+    "theta and C are represented as one derivative-consistent mathematical object",
+    "conductivity is independently error-controlled",
+    "dry-tail relevance bound is not a physical theta or K cutoff",
+    "unsupported or unqualified modes fall back to authoritative analytical hydraulics"
+  ],
+  "retained_regression_evidence": [
+    "production-shaped provider extraction and self-build/cache replay",
+    "12-case prescribed-head matrix",
+    "O05 dry-tail analytical fallback",
+    "default-off FKT22 O0/O2 identity",
+    "prescribed-qbot analytical fallback with zero adaptive-cache activity"
+  ],
+  "explicit_exclusions": [
+    "NO_PDI_ROUTING",
+    "NO_BIMODAL_MODEL3_ROUTING",
+    "NO_SWKIMPL1_OR_DKDH_ADAPTIVE_EXTENSION",
+    "NO_PRESCRIBED_QBOT_ADAPTIVE_ROUTING",
+    "NO_ACCEPTED_TRAJECTORY_DIRECTIONAL_ADAPTIVE_ROUTING",
+    "NO_DEFAULT_ON_CHANGE",
+    "NO_WHOLE_SWAP_OR_NATIONAL_MULTISWAP_SPEED_CLAIM",
+    "NO_RESEARCH_BRANCH_WHOLESALE_MERGE"
+  ],
+  "admission_rule": "Only advance from F-AHL42 if the minimal canonical-based branch passes all retained semantic/fidelity regressions and source-dependency reconciliation. Any unrelated canonical CI failure must be classified and repaired without widening the AHL scope."
+}
