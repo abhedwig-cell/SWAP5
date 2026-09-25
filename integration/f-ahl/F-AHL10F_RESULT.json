@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL10F",
+  "phase": "CROSS_MATERIAL_PAIRED_TIMING_COMPLETE",
+  "status": "PASS_BROAD_SPEED_CANDIDATE",
+  "workflow_run": 36077675160,
+  "workflow_job": 107892448759,
+  "candidate": {
+    "retention_capacity": "F-AHL09 derivative-consistent cubic Hermite representation of z=logit(Se), with C obtained by differentiating the same interpolant",
+    "conductivity": "linear log(K) lookup",
+    "selected_logK_tolerance": 3e-4,
+    "dry_tail_policy": "F-AHL10E material-specific analytical fallback beyond the represented relevance-bounded domain",
+    "O05_dry_tail_bound_cm_approx": -264277.52309014817,
+    "physics_truncated": false
+  },
+  "case_median_candidate_over_analytical_ratios": {
+    "B01:wet": 0.873589,
+    "B01:mid": 0.855427,
+    "B01:dry": 0.864208,
+    "B12:wet": 0.850103,
+    "B12:mid": 0.833634,
+    "B12:dry": 0.842499,
+    "O05:wet": 0.843614,
+    "O05:mid": 0.847315,
+    "O05:dry": 0.846566,
+    "O14:wet": 0.874470,
+    "O14:mid": 0.849741,
+    "O14:dry": 0.847859
+  },
+  "matrix_median_ratio": 0.848800,
+  "matrix_median_cpu_reduction_fraction": 0.151200,
+  "speed_classification": {
+    "positive_cases": 12,
+    "equivocal_cases": 0,
+    "negative_cases": 0
+  },
+  "fidelity": "All 12 frozen F-AHL10 cases pass the preregistered Richards fidelity and nonlinear-path gates before timing interpretation.",
+  "finding": "The selected derivative-consistent adaptive hydraulic representation is faster than analytical hydraulics in every tested material/regime case, with a median complete-Richards CPU reduction of about 15.1% across the 12-case matrix.",
+  "scientific_interpretation": [
+    "The speed benefit is not obtained by independently tabulating theta, C and K.",
+    "Preserving the theta-C derivative relationship is required to preserve the nonlinear solution path in the tested cases.",
+    "K requires materially tighter error control than the initial 1e-2 screen for wet/dry endpoint fidelity; 3e-4 is the loosest prospectively tested tolerance that passes the frozen 12-case matrix.",
+    "The extreme O05 dry tail should not consume adaptive support below the previously reconciled negligible-storage relevance scale; outside the represented domain the authoritative analytical provider remains active."
+  ],
+  "next_action": "Broaden qualification beyond four unimodal materials and prescribed-head lower-boundary cases, then decide whether a production-oriented implementation/admission work unit is justified.",
+  "nonclaims": [
+    "This is not yet a whole-SWAP or MultiSWAP speedup claim.",
+    "The result does not cover all SWAP hydraulic model families or lower-boundary modes.",
+    "No production admission is implied."
+  ]
+}
