@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-AHL",
+  "work_unit": "F-AHL42E",
+  "title": "Fail-closed process-composition boundary for minimal canonical admission",
+  "parent": "F-AHL42",
+  "phase": "PREREGISTERED_SCOPE_CLOSURE",
+  "authority": "F-AHL qualification covers the constitutive/Reference-Richards route; no AHL evidence qualifies composition with active root extraction, drainage response, snow, soil temperature or optional surface-water/evaporation process states.",
+  "minimal_admission_repair": {
+    "adaptive_requires_inactive": [
+      "root_extraction_active",
+      "snow_active",
+      "soil_temperature_active",
+      "drainage_response_active",
+      "fixed_weir_surface_water_active",
+      "black_evaporation_active",
+      "boesten_evaporation_active"
+    ],
+    "analytical_routes": "unchanged",
+    "future_reopening": "each process composition requires separate qualification"
+  },
+  "prospective_runtime_check": "adaptive mode 5 plus active root extraction is rejected before solver execution and does not touch adaptive cache",
+  "hard_exclusions": [
+    "NO_IMPLICIT_PROCESS_COMPOSITION_ADMISSION",
+    "NO_CHANGE_TO_ANALYTICAL_PROCESS_ROUTES",
+    "NO_GATE_RETUNING",
+    "NO_DEFAULT_ON_CHANGE"
+  ]
+}

@@ -38,6 +38,8 @@ program test_fahl27_stage2_qbot_fallback
   call verify_no_adaptive_cache_use()
   call verify_adaptive_heterogeneous_scope_rejected(qeq)
   call verify_no_adaptive_cache_use()
+  call verify_adaptive_root_scope_rejected(qeq)
+  call verify_no_adaptive_cache_use()
   write(*,'(A,ES26.17E3)') 'FAHL27_QBOT_QEQ=', qeq
   write(*,'(A)') 'FAHL27_QBOT_ANALYTICAL_FALLBACK=PASS'
 
@@ -92,6 +94,18 @@ contains
     call require(.not. observation%solver_executed, 'heterogeneous adaptive profile rejected before solver')
     write(*,'(A)') 'FAHL42_HETEROGENEOUS_FMR_FAIL_CLOSED=PASS'
   end subroutine verify_adaptive_heterogeneous_scope_rejected
+
+  subroutine verify_adaptive_root_scope_rejected(q)
+    real(real64), intent(in) :: q
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_serialized_physical_observation_t) :: observation
+    call execute_case(5, q, 0.0_real64, -50.0_real64, equilibrium_dt, .false., .false., output, observation, &
+         root_extraction_process=.true.)
+    call require(.not. output%committed, 'adaptive plus root extraction must not commit')
+    call require(output%final_revision == 0_int64, 'adaptive plus root extraction revision unchanged')
+    call require(.not. observation%solver_executed, 'adaptive plus root extraction rejected before solver')
+    write(*,'(A)') 'FAHL42_ADAPTIVE_ROOT_FAIL_CLOSED=PASS'
+  end subroutine verify_adaptive_root_scope_rejected
 
   subroutine verify_positive_bottom_inflow(q)
     real(real64), intent(in) :: q
@@ -165,11 +179,11 @@ contains
   end subroutine verify_unowned_mode_rejected
 
   subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, use_certificate, hydrostatic, output, observation, &
-       enable_ksatexm, heterogeneous_hydraulics)
+       enable_ksatexm, heterogeneous_hydraulics, root_extraction_process)
     integer, intent(in) :: bottom_mode
     real(real64), intent(in) :: top_flux, bottom_flux, bottom_head, duration
     logical, intent(in) :: use_certificate, hydrostatic
-    logical, intent(in), optional :: enable_ksatexm, heterogeneous_hydraulics
+    logical, intent(in), optional :: enable_ksatexm, heterogeneous_hydraulics, root_extraction_process
     type(fmr_serialized_column_result_t), intent(out) :: output
     type(fmr_serialized_physical_observation_t), intent(out) :: observation
     type(fmr_serialized_reference_backend_t) :: backend
@@ -186,7 +200,7 @@ contains
     integer :: active_physical_calls
     logical :: ok
 
-    call initialize_parameters(parameters, bottom_mode, enable_ksatexm, heterogeneous_hydraulics)
+    call initialize_parameters(parameters, bottom_mode, enable_ksatexm, heterogeneous_hydraulics, root_extraction_process)
     if (use_certificate) then
       call initialize_temporal_committed(committed, parameters, hydrostatic, ok)
     else
@@ -248,10 +262,10 @@ contains
     observation = backend%observation()
   end subroutine execute_case
 
-  subroutine initialize_parameters(parameters, bottom_mode, enable_ksatexm, heterogeneous_hydraulics)
+  subroutine initialize_parameters(parameters, bottom_mode, enable_ksatexm, heterogeneous_hydraulics, root_extraction_process)
     type(fmr_b110_physical_parameters_t), intent(out) :: parameters
     integer, intent(in) :: bottom_mode
-    logical, intent(in), optional :: enable_ksatexm, heterogeneous_hydraulics
+    logical, intent(in), optional :: enable_ksatexm, heterogeneous_hydraulics, root_extraction_process
     integer :: k
     parameters%parameter_set_id = 440044_int64
     parameters%active_nodes = numnod
@@ -281,6 +295,7 @@ contains
     parameters%head_rel_tolerance = 1.0e-12_real64
     parameters%ponding_tolerance = 1.0e-12_real64
     parameters%root_extraction_active = .false.
+    if (present(root_extraction_process)) parameters%root_extraction_active = root_extraction_process
     parameters%macropore_active = .false.
     parameters%snow_active = .false.
     parameters%hysteresis_active = .false.

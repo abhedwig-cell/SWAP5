@@ -1,0 +1,24 @@
+name: F-AHL42E process composition scope
+on:
+  push:
+    branches:
+      - work/f-ahl42e-process-composition-scope
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fahl/test_fahl27_stage2_qbot_fallback.f90'
+      - 'integration/f-ahl/F-AHL42E_PREREGISTRATION.json'
+      - '.github/workflows/f-ahl42e-process-composition-scope.yml'
+  workflow_dispatch:
+jobs:
+  scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run fail-closed composition regression
+        run: |
+          bash tests/fahl/run_fahl27_stage2_qbot_fallback.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ahl42e-${{ github.run_id }}
+          path: /tmp/fahl27_stage2_qbot_fallback.txt

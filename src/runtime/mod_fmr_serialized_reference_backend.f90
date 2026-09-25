@@ -1396,6 +1396,13 @@ contains
         ok = ok .and. self%soil_water_selection%uses_reference() .and. &
              .not. self%temporal_indicator_history_enabled .and. &
              .not. parameters%ksatexm_extension_active .and. &
+             .not. parameters%root_extraction_active .and. &
+             .not. parameters%snow_active .and. &
+             .not. parameters%soil_temperature_active .and. &
+             .not. parameters%drainage_response_active .and. &
+             .not. self%fixed_weir_surface_water_active .and. &
+             .not. self%black_evaporation_active .and. &
+             .not. self%boesten_evaporation_active .and. &
              fmr_b110_hydraulic_profile_homogeneous(parameters)
       end if
       if (parameters%snow_active) then
