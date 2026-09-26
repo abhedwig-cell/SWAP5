@@ -59,7 +59,7 @@ insert="""contains
 
 """
 if needle not in src: raise SystemExit("contains seam missing")
-p.write_text(src.replace(needle,insert,1))
+src=src.replace(needle,insert,1)
 # Activate root extraction and prescribe a nonzero, deterministic sink.
 src=src.replace("p%head_rel_tolerance=TOL; p%ponding_tolerance=TOL; p%root_extraction_active=.false.",
                 "p%head_rel_tolerance=TOL; p%ponding_tolerance=TOL; p%root_extraction_active=.true.",1)
