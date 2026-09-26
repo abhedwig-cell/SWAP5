@@ -4,13 +4,14 @@ on:
   pull_request:
     paths:
       - 'tests/fpe/run_fpe_approx03_temporal_discovery.sh'
+      - 'tests/fpe/run_fpe_approx03_certificate_discovery.sh'
       - 'docs/performance/F-PE-APPROX03_*.md'
       - '.github/workflows/f-pe-approx03.yml'
   workflow_dispatch:
 
 jobs:
-  temporal-discovery:
+  certificate-discovery:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx03_temporal_discovery.sh
+      - run: bash tests/fpe/run_fpe_approx03_certificate_discovery.sh
