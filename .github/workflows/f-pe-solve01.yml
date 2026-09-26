@@ -1,5 +1,9 @@
 name: F-PE-SOLVE01 EF upper bound
 
+concurrency:
+  group: f-pe-solve01-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
