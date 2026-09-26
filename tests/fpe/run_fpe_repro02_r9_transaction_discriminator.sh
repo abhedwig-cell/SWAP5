@@ -57,9 +57,7 @@ src=src.replace(
 "  public :: fgc44_approx04_configure_case_c, fgc44_approx04_p1b_state_c, fgc44_approx04_predictor_q_c\n"
 "  public :: fgc44_repro02_observation_c, fgc44_repro02_floor_c\n",1)
 needle="""contains\n\n"""
-insert="""contains
-
-  integer(c_int) function fgc44_repro02_floor_c(head_m,floor_status,sample_valid,physical_advances,nonlinear, &
+insert="""\ncontains\n\n  integer(c_int) function fgc44_repro02_floor_c(head_m,floor_status,sample_valid,physical_advances,nonlinear, &
        internal_retries,headcalc,jacobian,linear,backtrack,mass_complete,mass_residual,bottom_exchange,terminal_flux) &
        bind(C,name="fgc44_repro02_floor_c")
     real(c_double), value, intent(in) :: head_m
