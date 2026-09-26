@@ -17,16 +17,58 @@ module mod_ppa_bootstrap_irrigation
   private
   public :: execute_ppa_bootstrap_irrigation
   public :: execute_next_ppa_bootstrap_irrigation
+  public :: execute_window_ppa_bootstrap_irrigation
+  type,public :: ppa_irrigation_prefix_result_t
+    real(real64) :: interval_end=0.0_real64
+    type(fmr_serialized_column_result_t),allocatable :: columns(:)
+  end type
   type,public :: ppa_irrigation_preparation_t
     logical :: process_evaluated=.false.
     logical :: source_prepared=.false.
     type(irrigation_diagnostics_t) :: process
   end type
 contains
+  ! Caller guarantees non-irrigation forcing and supplied configuration remain
+  ! constant over this window. Each prefix publishes independently.
+  subroutine execute_window_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
+       previous,max_prefixes,prefixes,prefix_count,status,profiles)
+    type(fmr_production_application_bootstrap_t),intent(inout)::application
+    integer(int64),intent(in)::column_ids(:),parameter_identity
+    type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
+    type(scheduled_irrigation_request_t),intent(in)::requests(:)
+    type(fmr_b110_physical_forcing_t),intent(in)::previous(:)
+    integer,intent(in)::max_prefixes
+    type(ppa_irrigation_prefix_result_t),allocatable,intent(out)::prefixes(:)
+    integer,intent(out)::prefix_count,status
+    type(ppa_irrigation_profile_t),intent(in),optional::profiles(:)
+    type(scheduled_irrigation_request_t),allocatable::remaining(:)
+    type(fmr_b110_physical_forcing_t),allocatable::last_forcing(:),effective(:)
+    real(real64)::endpoint,target
+    integer::k
+    status=FMR_APP_BOOT_INVALID_CONFIG; prefix_count=0
+    if(max_prefixes<1.or.size(requests)<1) return
+    remaining=requests; last_forcing=previous; target=requests(1)%t1
+    allocate(prefixes(max_prefixes))
+    do k=1,max_prefixes
+      call execute_next_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,remaining, &
+           last_forcing,prefixes(k)%columns,status,endpoint,profiles,effective)
+      prefixes(k)%interval_end=endpoint
+      prefix_count=k
+      if(status/=FMR_APP_BOOT_OK) return
+      if(endpoint==target) return
+      ! A successful prefix is durable even if a later prefix fails or budget
+      ! runs out. Do not repeat the original selection opportunity.
+      last_forcing=effective
+      remaining%t0=endpoint
+      remaining%selection_opportunity=.false.
+    end do
+    status=FMR_APP_BOOT_INVALID_CONFIG ! prefix budget exhausted, not complete
+  end subroutine
+
   ! Execute at most one accepted-for-preparation prefix, never a whole-window
   ! loop. A returned endpoint is an attempt boundary, not proof of commitment.
   subroutine execute_next_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,results,status,interval_end,profiles)
+       previous,results,status,interval_end,profiles,effective_forcing)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -36,6 +78,7 @@ contains
     integer,intent(out)::status
     real(real64),intent(out)::interval_end
     type(ppa_irrigation_profile_t),intent(in),optional::profiles(:)
+    type(fmr_b110_physical_forcing_t),allocatable,intent(out),optional::effective_forcing(:)
     type(scheduled_irrigation_request_t),allocatable::trial_requests(:)
     type(ppa_irrigation_preparation_t),allocatable::report(:)
     integer::attempt,i
@@ -48,7 +91,7 @@ contains
     trial_requests=requests
     do attempt=1,size(column_ids)+1
       call execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,trial_requests, &
-           previous,results,status,profiles,report)
+           previous,results,status,profiles,report,effective_forcing)
       ! Any hydraulic execution is terminal, including mixed publication.
       if(allocated(results).or.status/=FMR_APP_BOOT_INVALID_CONFIG) return
       if(.not.allocated(report)) return
@@ -69,7 +112,7 @@ contains
   end subroutine execute_next_ppa_bootstrap_irrigation
 
   subroutine execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,results,status,profiles,preparation)
+       previous,results,status,profiles,preparation,effective_forcing)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -79,6 +122,7 @@ contains
     integer,intent(out)::status
     type(ppa_irrigation_profile_t),intent(in),optional::profiles(:)
     type(ppa_irrigation_preparation_t),allocatable,intent(out),optional::preparation(:)
+    type(fmr_b110_physical_forcing_t),allocatable,intent(out),optional::effective_forcing(:)
     type(fmr_committed_restart_bundle_t)::snapshot
     type(fmr_b110_physical_forcing_t),allocatable::prepared(:),forcing
     type(irrigation_state_t),allocatable::events(:)
@@ -163,6 +207,7 @@ contains
         events(i)%active_event_rate=flux%subsurface_source(parameters(i)%single_ssdi_node)
       end if
     end do
+    if(present(effective_forcing)) effective_forcing=prepared
     call application%run_prepared_irrigation(t0,t1,prepared,results,status,events,selected)
   end subroutine execute_ppa_bootstrap_irrigation
 end module mod_ppa_bootstrap_irrigation

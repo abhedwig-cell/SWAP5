@@ -1246,7 +1246,7 @@ contains
 
   subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
     use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation,ppa_irrigation_preparation_t, &
-         execute_next_ppa_bootstrap_irrigation
+         execute_next_ppa_bootstrap_irrigation,execute_window_ppa_bootstrap_irrigation,ppa_irrigation_prefix_result_t
     use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
     use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t
     use mod_irrigation_process, only: irrigation_state_t,IRRIGATION_EVENT_SCHEDULED, &
@@ -1258,6 +1258,7 @@ contains
     logical,intent(in),optional::mixed_selection
     type(ppa_irrigation_profile_t),allocatable::root_profiles(:)
     type(ppa_irrigation_preparation_t),allocatable::preparation(:)
+    type(ppa_irrigation_prefix_result_t),allocatable::prefixes(:)
     type(fmr_production_application_config_t)::config
     type(fmr_production_application_bootstrap_t)::application,restored
     type(fmr_b110_physical_forcing_t)::forcing(2)
@@ -1270,7 +1271,7 @@ contains
     type(fmr_committed_restart_bundle_t)::saved
     real(real64),allocatable::history(:)
     real(real64)::midpoint,finish,interval_end
-    integer::i,code
+    integer::i,code,prefix_count
     logical::ok
     config=profile
     if(size(config%tiles)/=2) error stop 'irrigation bootstrap fixture requires two tiles'
@@ -1382,9 +1383,41 @@ contains
         error stop 'descending prefix lost event carrier'
       end select
     end do
+    ! Compare automatic whole-window execution with explicit two-prefix work.
+    requests%t0=midpoint; requests%t1=finish
+    requests%selection_opportunity=.false.
+    previous=forcing
+    call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,right,code,interval_end)
+    if(code/=FMR_APP_BOOT_OK) error stop 'manual second prefix failed'
+    requests%t0=T0; requests%selection_opportunity=.true.
+    previous%temporal_forcing_event=.true.; previous%temporal_forcing_event_time=T0
+    do i=1,2
+      previous(i)%subsurface_irrigation_source=0.0_real64
+    end do
+    call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,3,prefixes,prefix_count,code)
+    if(code/=FMR_APP_BOOT_OK.or.prefix_count/=2) error stop 'automatic window incomplete'
+    if(prefixes(1)%interval_end/=midpoint.or.prefixes(2)%interval_end/=finish) error stop 'window boundaries wrong'
+    do i=1,prefix_count
+      if(.not.all(prefixes(i)%columns%committed)) error stop 'window prefix not committed'
+      if(any(abs(prefixes(i)%columns%mass%residual)>1.0e-12_real64)) error stop 'window prefix mass'
+    end do
+    call application%copy_committed_hydraulic_states(lhs,code)
+    call restored%copy_committed_hydraulic_states(rhs,code)
+    do i=1,2
+      if(lhs(i)%committed_time/=finish.or.lhs(i)%revision/=rhs(i)%revision.or. &
+           any(lhs(i)%water_content/=rhs(i)%water_content).or. &
+           any(lhs(i)%pressure_head_cm/=rhs(i)%pressure_head_cm)) error stop 'window/manual identity'
+    end do
+    call application%close(code)
+    call application%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'window fixture reset failed'
+    requests%t0=T0; requests%t1=midpoint
     call restored%close(code)
     call restored%initialize(config,code)
     if(code/=FMR_APP_BOOT_OK) error stop 'descending fixture reset failed'
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_WINDOW_MANUAL_IDENTITY=PASS'
     management(2)%single_ssdi_node=2
     requests%t1=midpoint
     call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
