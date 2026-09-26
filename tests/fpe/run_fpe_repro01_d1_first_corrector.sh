@@ -15,6 +15,12 @@ from pathlib import Path
 import sys
 p=Path(sys.argv[1]); src=p.read_text()
 src=src.replace(
+"  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &\n"
+"       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state\n",
+"  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &\n"
+"       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &\n"
+"       fmr_new_b110_temporal_indicator_committed_state\n",1)
+src=src.replace(
 "  public :: fgc44_predictor_run_diagnostics_c\n",
 "  public :: fgc44_predictor_run_diagnostics_c\n"
 "  public :: fgc44_repro01_backend_diag_c\n",1)
