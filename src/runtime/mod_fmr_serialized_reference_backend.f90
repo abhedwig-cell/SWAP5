@@ -84,6 +84,7 @@ module mod_fmr_serialized_reference_backend
 
   integer, parameter, public :: B110_SWBOTB2_OK = 0
   real(real64), parameter :: FMR_PRACTICAL_RICHARDS_A2C_TOL = 1.0e-8_real64
+  real(real64), parameter :: FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM = 2.8e-16_real64
   integer, parameter, public :: B110_SWBOTB2_INVALID_CONTROL = 1
   integer, parameter, public :: B110_SWBOTB2_TIME_NOT_COVERED = 2
 
@@ -2117,8 +2118,10 @@ contains
     request%numerical%conductivity_implicit_mode = self%swkimpl
     request%numerical%conductivity_mean_method = self%swkmean
     request%numerical%min_step_duration = self%min_step_duration
-    request%numerical%compartment_balance_tolerance = self%compartment_balance_tolerance
-    request%numerical%total_balance_tolerance = self%total_balance_tolerance
+    request%numerical%compartment_balance_tolerance = max(self%compartment_balance_tolerance, &
+         FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM / step_duration)
+    request%numerical%total_balance_tolerance = max(self%total_balance_tolerance, &
+         FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM / step_duration)
     request%numerical%head_abs_tolerance = self%head_abs_tolerance
     request%numerical%head_rel_tolerance = self%head_rel_tolerance
     request%numerical%ponding_tolerance = self%ponding_tolerance
