@@ -92,6 +92,10 @@ src=src.replace(
 "  call get_command_argument(3,arg); read(arg,*) hbot\n  call get_command_argument(4,bind_mode)\n",1)
 needle="""  dreq%incoming_ponding_depth=0.0_real64; dreq%direct_control_derivative=1.0_real64
 
+  call solve_with_accepted_step_direction(solver,request,workspace,dreq,solve_result,dres)
+"""
+rep="""  dreq%incoming_ponding_depth=0.0_real64; dreq%direct_control_derivative=1.0_real64
+
   select case(trim(bind_mode))
   case('CLEAN')
     continue
@@ -120,26 +124,12 @@ needle="""  dreq%incoming_ponding_depth=0.0_real64; dreq%direct_control_derivati
   if(.not.context_ok) error stop 'corrector context bind failed'
   call solver%solve(request,workspace,solve_result)
 """
-rep="""  dreq%incoming_ponding_depth=0.0_real64; dreq%direct_control_derivative=1.0_real64
-
-  context_ok=.true.
-  call bind_b110_serialized_legacy_context(request,context_ok)
-  if(.not.context_ok) error stop 'serialized legacy context bind failed'
-  select case(trim(bind_mode))
-  case('PLAIN')
-    call solver%solve(request,workspace,solve_result)
-  case('DIRECTION')
-    call solve_with_accepted_step_direction(solver,request,workspace,dreq,solve_result,dres)
-  case default
-    error stop 'unknown R6 mode'
-  end select
-"""
 if needle not in src: raise SystemExit("solve seam missing")
 src=src.replace(needle,rep,1)
 src=src.replace(
 "       '|NONLINEAR=',solve_result%diagnostics%nonlinear_iterations,'|BACKTRACK=',solve_result%diagnostics%backtracking_attempts\n",
 "       '|NONLINEAR=',solve_result%diagnostics%nonlinear_iterations,'|BACKTRACK=',solve_result%diagnostics%backtracking_attempts, &\n"
-"       '|HISTORY_HISTORY_MODE=',trim(bind_mode)\n",1)
+"       '|HISTORY_MODE=',trim(bind_mode)\n",1)
 start=src.index("  if(solve_result%status/=SW_SOLVE_CONVERGED)")
 end=src.index("  print '(A)','FPE_APPROX01_TANGENT_MATRIX_POINT=PASS'",start)
 src=src[:start]+"  ! R8 records both converged and retry-advised corrector outcomes.\n"+src[end:]
