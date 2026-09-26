@@ -7,6 +7,7 @@ on:
       - 'src/runtime/mod_groundwater_swap_transaction_participant.f90'
       - 'tests/fpe/run_fpe_approx01_a1_participant_experiment.sh'
       - 'tests/fpe/run_fpe_approx01_a1_default_off_identity.sh'
+      - 'tests/fpe/run_fpe_approx01_a1_modflow_e2e.sh'
       - 'tests/fgc/run_fgc44_real_fmr_participant.sh'
       - 'docs/performance/F-PE-APPROX01_A1_*.md'
       - '.github/workflows/f-pe-approx01.yml'
@@ -36,3 +37,9 @@ jobs:
         with:
           fetch-depth: 0
       - run: bash tests/fpe/run_fpe_approx01_a1_default_off_identity.sh
+
+  a1-modflow-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx01_a1_modflow_e2e.sh
