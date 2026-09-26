@@ -17,3 +17,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: bash tests/fpe/run_fpe_repro01_d1_first_corrector.sh
+
+  d2-pretrial-reads:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d2_pretrial_reads.sh
