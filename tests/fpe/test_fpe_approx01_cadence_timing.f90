@@ -112,7 +112,7 @@ program test_fpe_approx01_cadence_timing
     else if(trim(mode)=='lag') then
       refresh=mod(j-1,cadence)==0
     else if(trim(mode)=='adaptive') then
-      refresh=(j==1) .or. age>=cadence .or. abs(current_head-last_refresh_head)>=head_threshold
+      refresh=(j==1) .or. age>=cadence .or. abs(current_head-last_refresh_head)>head_threshold
     else
       error stop 'unknown timing mode'
     end if
