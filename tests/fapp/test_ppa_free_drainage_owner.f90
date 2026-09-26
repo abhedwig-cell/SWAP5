@@ -1385,6 +1385,34 @@ contains
     call restored%close(code)
     call restored%initialize(config,code)
     if(code/=FMR_APP_BOOT_OK) error stop 'descending fixture reset failed'
+    management(2)%single_ssdi_node=2
+    requests%t1=midpoint
+    call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,right,code,interval_end)
+    if(code==FMR_APP_BOOT_OK.or..not.allocated(right)) error stop 'mixed prefix outcome hidden'
+    if(.not.right(1)%committed.or.right(2)%committed) error stop 'mixed prefix publication incorrect'
+    if(interval_end/=midpoint.or.right(1)%final_committed_time/=midpoint.or. &
+         right(2)%final_committed_time/=T0) error stop 'mixed prefix boundary incorrect'
+    if(.not.right(1)%mass%complete.or.abs(right(1)%mass%residual)>1.0e-12_real64) &
+         error stop 'mixed prefix accepted mass'
+    call restored%copy_committed_hydraulic_states(lhs,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'mixed prefix snapshot failed'
+    if(lhs(2)%revision/=0_int64.or.any(lhs(2)%water_content/=source%water_content).or. &
+         any(lhs(2)%pressure_head_cm/=source%pressure_head)) error stop 'mixed prefix rejected state changed'
+    call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,right,code,interval_end)
+    if(code==FMR_APP_BOOT_OK.or.allocated(right)) error stop 'mixed prefix obsolete request replayed'
+    call restored%copy_committed_hydraulic_states(rhs,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'mixed prefix replay snapshot failed'
+    do i=1,2
+      if(lhs(i)%revision/=rhs(i)%revision.or.lhs(i)%committed_time/=rhs(i)%committed_time.or. &
+           any(lhs(i)%water_content/=rhs(i)%water_content)) error stop 'mixed prefix replay published'
+    end do
+    call restored%close(code)
+    call restored%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'mixed prefix fixture reset failed'
+    management(2)%single_ssdi_node=1
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PREFIX_MIXED_PUBLICATION=PASS'
     management(1)%dcs2_depth_cm=0.01_real64/1024.0_real64
     management(2)%dcs2_depth_cm=0.02_real64/1024.0_real64
     requests%t1=midpoint
