@@ -637,6 +637,33 @@ src=src.replace('abs(after_swap_commit[1]-WINDOW_DAY)<=1e-14',
                 'abs(after_swap_commit[1]-2.0*WINDOW_DAY)<=1e-14')
 src=src.replace('abs(time_day-WINDOW_DAY)<=1e-14',
                 'abs(time_day-2.0*WINDOW_DAY)<=1e-14')
+old_bracket="""    lo=href-CLOSEOUT_ROOT_HALF_WIDTH_M
+    hi=href+CLOSEOUT_ROOT_HALF_WIDTH_M
+    rlo=residual(lo)
+    rhi=residual(hi)
+    require(rlo==0.0 or rhi==0.0 or rlo*rhi<0.0,
+            "independent physical endpoint is not bracketed")
+"""
+new_bracket="""    half_width=CLOSEOUT_ROOT_HALF_WIDTH_M
+    lo=href-half_width
+    hi=href+half_width
+    rlo=residual(lo)
+    rhi=residual(hi)
+    expansions=0
+    while not (rlo==0.0 or rhi==0.0 or rlo*rhi<0.0) and expansions<7:
+        half_width*=2.0
+        lo=href-half_width
+        hi=href+half_width
+        rlo=residual(lo)
+        rhi=residual(hi)
+        expansions+=1
+    print(f"TEMPORAL07_ENDPOINT_BRACKET_HALF_WIDTH_M={half_width:.17g}")
+    print(f"TEMPORAL07_ENDPOINT_BRACKET_EXPANSIONS={expansions}")
+    require(rlo==0.0 or rhi==0.0 or rlo*rhi<0.0,
+            "independent physical endpoint is not bracketed within frozen maximum width")
+"""
+if old_bracket not in src: raise SystemExit("TEMPORAL07 endpoint bracket seam missing")
+src=src.replace(old_bracket,new_bracket,1)
 src=src.replace('print("FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS")',
                 'print("FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS")\n            print("FPE_TEMPORAL07_P2=PASS")')
 p.write_text(src)
