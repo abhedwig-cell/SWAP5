@@ -53,6 +53,31 @@ Common cross-case frontier:
 
 Thus for five of six difficult origins, the exact transaction route rejects even the smallest tested nonzero displacement of 0.001 cm.
 
+## Failure diagnostics
+
+A follow-up test-only diagnostic accessor was added after the initial frontier result, without changing production source. The repeated P1B workflow remained green and reproduced the same admissibility frontier.
+
+For the failing nonzero points:
+
+- participant status is consistently `GW_SWAP_PARTICIPANT_TRIAL_FAILED = 6`;
+- kernel/canonical result status is consistently `CANONICAL_STATUS_TRANSACTION_FAILED = 2`;
+- the requested interval does not complete and no substep is accepted;
+- the transaction exhausts the configured eight retries;
+- failures are driven by solver rejections plus temporal-indicator rejections;
+- temporal-certificate-unavailable rejections are zero;
+- mass rejections are zero.
+
+At the smallest tested nonzero displacement, +/-0.001 cm, this pattern already holds for every failing case. For example:
+
+- B12 wet +/-0.001 cm: 8 solver rejections, 1 temporal rejection, 8 retries;
+- O05 wet -0.001 cm: 7 solver rejections, 2 temporal rejections, 8 retries;
+- O14 mid +/-0.001 cm: 7 solver rejections, 2 temporal rejections, 8 retries;
+- O14 wet +/-0.001 cm: 7 solver rejections, 2 temporal rejections, 8 retries.
+
+B01 mid +0.001 cm is the only nonzero point at the smallest tested magnitude that succeeds. It completes in two accepted substeps after two temporal rejections and no solver rejection.
+
+This narrows the controlling mechanism. The collapsed transaction envelope is not caused by the mass gate or missing temporal authority. It is a retry-exhaustion boundary involving physical solver convergence and temporal acceptance under the exact corrector configuration.
+
 ## Interpretation
 
 The offline response function is locally smooth and almost linear, but that fact does not create a usable surrogate domain under the current exact transaction contract.
