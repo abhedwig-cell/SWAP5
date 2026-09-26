@@ -73,3 +73,31 @@ No production change was required during final preservation. The only final repa
 
 Status:
 `F-CI110 = READY_CANONICAL_MERGE`
+
+
+## Canonical admission closeout
+
+Canonical head:
+`a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a`
+
+PR #626 is merged/closed and the canonical ref is identical to the admitted candidate.
+
+Post-admission preservation run `36220061031` on the canonical head completed successfully.
+
+All eleven final oracles are green:
+- PPA-WU01;
+- PLANVALID01;
+- FKT22;
+- B1 poison workspace;
+- F-AHL50 provider;
+- F-AHL50 production matrix;
+- F-AHL50 default-off;
+- F-AHL50 fail-closed;
+- F-AHL50 ownership;
+- F-AHL50 scale;
+- F-AHL50 F-GC49D application opt-in.
+
+Final status:
+`F-CI110 = CANONICAL_ADMITTED_PRESERVED`
+
+The reconstructed exact-performance lineage and bounded default-OFF F-AHL50 capability are now canonical production authority.
