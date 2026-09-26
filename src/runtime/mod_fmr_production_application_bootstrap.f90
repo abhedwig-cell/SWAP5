@@ -2,6 +2,7 @@ module mod_fmr_production_application_bootstrap
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_serialized_execution_plan, &
@@ -21,6 +22,7 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, &
        FMR_GW_REGISTRY_OK
+  use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_temporal_budget_policy_t
   use mod_groundwater_interface_mass_ledger, only: groundwater_interface_mass_ledger_t, GW_MASS_LEDGER_OK
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t
   use mod_groundwater_topology_composition, only: groundwater_topology_t, groundwater_topology_cell_t, &
@@ -46,6 +48,12 @@ module mod_fmr_production_application_bootstrap
   integer, parameter, public :: FMR_APP_BOOT_PLAN_FAILED = 8
   integer, parameter, public :: FMR_APP_BOOT_CONTEXT_FAILED = 9
   integer, parameter, public :: FMR_APP_BOOT_RUNTIME_FAILED = 10
+
+  ! F-PE-TEMPORAL08 bounded fixed-interface groundwater temporal policy.
+  ! This remains participant-local; generic canonical numerical configuration
+  ! and non-groundwater application profiles retain their existing semantics.
+  real(real64), parameter :: FMR_GW_HISTORY_TEMPORAL_COEFFICIENT = 0.65_real64
+  real(real64), parameter :: FMR_GW_HISTORY_TEMPORAL_FLOOR_CM = 1.0e-5_real64
 
   ! WU01 established serialized Reference mode 7 standalone and mode 5 groundwater profiles.
   ! PPA-WU02-A additionally admits homogeneous typed bottom_mode=2 prescribed-qbot applications.
@@ -115,6 +123,7 @@ contains
     logical :: direct_retention_requested
     type(black_evaporation_state_t) :: initial_black_state
     type(boesten_evaporation_state_t) :: initial_boesten_state
+    type(fmr_groundwater_temporal_budget_policy_t) :: temporal_budget_policy
 
     status = FMR_APP_BOOT_INVALID_CONFIG
     if (self%initialized) return
@@ -243,9 +252,17 @@ contains
       end if
 
       if (groundwater_profile) then
+        temporal_budget_policy = fmr_groundwater_temporal_budget_policy_t()
+        if (self%templates(i)%numerical_continuation_layout_id == FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY .and. &
+            self%numerical%transaction%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE) then
+          temporal_budget_policy%enabled = .true.
+          temporal_budget_policy%coefficient = FMR_GW_HISTORY_TEMPORAL_COEFFICIENT
+          temporal_budget_policy%floor_cm = FMR_GW_HISTORY_TEMPORAL_FLOOR_CM
+        end if
         call self%registry%bind(config%tiles(i)%tile_id, self%backend, self%columns(i), self%templates(i), &
              self%parameters(i), self%committed(i), self%materializers(i), self%numerical, &
-             config%tiles(i)%groundwater_datum, self%participant_handles(i), local_status, immutable_parameters=.true.)
+             config%tiles(i)%groundwater_datum, self%participant_handles(i), local_status, immutable_parameters=.true., &
+             temporal_budget_policy=temporal_budget_policy)
         if (local_status /= FMR_GW_REGISTRY_OK .or. self%participant_handles(i) <= 0_int64) then
           status = FMR_APP_BOOT_REGISTRY_FAILED
           call discard_owner_storage(self)
