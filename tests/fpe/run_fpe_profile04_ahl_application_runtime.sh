@@ -9,44 +9,48 @@ trap 'rm -rf "$BUILD"' EXIT
 python3 - "$BUILD/test.f90" <<'PY'
 from pathlib import Path
 import sys
-src=Path("tests/fahl/test_fahl49_application_scale.f90").read_text()
-needle="""  write(*,'(A)') 'FAHL49_APP_INIT=PASS'
-  call app%close(status)
-"""
-replacement="""  write(*,'(A)') 'FAHL49_APP_INIT=PASS'
-
-  call system_clock(c0)
-  call app%run_standalone(T0,T1,results,status)
-  call system_clock(c1)
-  if(status/=FMR_APP_BOOT_OK) error stop 'PROFILE04 AHL application run failed'
-  run_s=real(c1-c0,real64)/real(rate,real64)
-  if(.not.allocated(results) .or. size(results)/=n) error stop 'PROFILE04 AHL result shape'
-  if(.not.all(results%completed) .or. .not.all(results%committed)) error stop 'PROFILE04 AHL incomplete result'
-  completed_count=count(results%completed)
-  committed_count=count(results%committed)
-  solver_calls=count(results%solver_executed)
-  accepted_substeps=sum(results%accepted_substeps)
-  nonlinear_iterations=sum(results%solver_nonlinear_iterations)
-  jacobian_builds=sum(results%solver_jacobian_builds)
-  linear_solves=sum(results%solver_linear_solves)
-  headcalc_calls=sum(results%solver_headcalc_calls)
-  internal_retries=sum(results%solver_internal_retries)
-  backtracking_attempts=sum(results%solver_backtracking_attempts)
-  max_residual=maxval(abs(results%mass%residual))
-  if(max_residual>TOL) error stop 'PROFILE04 AHL hard mass gate'
-  write(*,'(*(g0))') 'PROFILE04_AHL_APP_RUN|MODE=',trim(mode),'|N=',n,'|REP=',rep, &
-       '|RUN=',run_s,'|NS_PER_COLUMN=',1.0e9_real64*run_s/real(n,real64), &
-       '|COMPLETED=',completed_count,'|COMMITTED=',committed_count,'|SOLVER_CALLS=',solver_calls, &
-       '|ACCEPTED_SUBSTEPS=',accepted_substeps,'|NONLINEAR=',nonlinear_iterations, &
-       '|JACOBIAN=',jacobian_builds,'|LINEAR=',linear_solves,'|HEADCALC=',headcalc_calls, &
-       '|INTERNAL_RETRIES=',internal_retries,'|BACKTRACK=',backtracking_attempts, &
-       '|MAX_MASS_RESIDUAL=',max_residual
-
-  call app%close(status)
-"""
-if needle not in src:
-    raise SystemExit("expected F-AHL49 close block not found")
-Path(sys.argv[1]).write_text(src.replace(needle,replacement))
+src=Path("tests/fpe/test_fpe_planvalid01_application_timing.f90").read_text()
+src=src.replace(
+    "  character(len=32) :: arg\n",
+    "  character(len=32) :: arg,mode\n  logical :: use_direct\n")
+src=src.replace(
+    "  call get_command_argument(1,arg); read(arg,*) n\n"
+    "  call get_command_argument(2,arg); read(arg,*) rep\n"
+    "  if(n<=0 .or. rep<=0) error stop 'PROFILE02 baseline requires N>0 and rep>0'\n\n"
+    "  call build_config(config,n)\n",
+    "  call get_command_argument(1,mode)\n"
+    "  call get_command_argument(2,arg); read(arg,*) n\n"
+    "  call get_command_argument(3,arg); read(arg,*) rep\n"
+    "  select case(trim(mode))\n"
+    "  case('analytical'); use_direct=.false.\n"
+    "  case('direct'); use_direct=.true.\n"
+    "  case default; error stop 'PROFILE04 AHL mode must be analytical or direct'\n"
+    "  end select\n"
+    "  if(n<=0 .or. rep<=0) error stop 'PROFILE04 AHL requires N>0 and rep>0'\n\n"
+    "  call build_config(config,n,use_direct)\n")
+src=src.replace(
+    "  subroutine build_config(value,count)\n"
+    "    type(fmr_production_application_config_t),intent(out) :: value\n"
+    "    integer,intent(in) :: count\n",
+    "  subroutine build_config(value,count,use_direct)\n"
+    "    type(fmr_production_application_config_t),intent(out) :: value\n"
+    "    integer,intent(in) :: count\n"
+    "    logical,intent(in) :: use_direct\n")
+src=src.replace(
+    "      call initialize_parameters(value%tiles(k)%parameters,4000000_int64+int(k,int64))\n",
+    "      call initialize_parameters(value%tiles(k)%parameters,4000000_int64+int(k,int64),use_direct)\n")
+src=src.replace(
+    "  subroutine initialize_parameters(p,id)\n"
+    "    type(fmr_b110_physical_parameters_t),intent(out) :: p\n"
+    "    integer(int64),intent(in) :: id\n",
+    "  subroutine initialize_parameters(p,id,use_direct)\n"
+    "    type(fmr_b110_physical_parameters_t),intent(out) :: p\n"
+    "    integer(int64),intent(in) :: id\n"
+    "    logical,intent(in) :: use_direct\n")
+src=src.replace(
+    "    p%bottom_mode=7\n",
+    "    p%bottom_mode=7\n    p%direct_retention_active=use_direct\n")
+Path(sys.argv[1]).write_text(src)
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -O2)
@@ -92,8 +96,8 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
-  src/solver/mod_b110_direct_retention_core.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
+  src/solver/mod_b110_direct_retention_core.f90
   src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_b110_root_sink_provider.f90
@@ -147,47 +151,55 @@ done
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$BUILD/test.f90" -o "$BUILD/test.o"
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 
-RESULT="$BUILD/results.txt"
-: > "$RESULT"
+RESULT="$BUILD/results.csv"
+echo 'pair,mode,n,ns,solver_calls,accepted_substeps,nonlinear,jacobian,linear,headcalc,retries,backtrack,residual' > "$RESULT"
+run_one() {
+  local pair="$1" mode="$2" n="$3" line
+  line="$("$BUILD/test" "$mode" "$n" "$pair" | grep '^PLANVALID01_APP,n=')"
+  python3 - "$pair" "$mode" "$n" "$line" "$RESULT" <<'PY'
+import csv,re,sys
+pair,mode,n,line,path=sys.argv[1:]
+def v(k):
+    m=re.search(rf'{k}=\s*([^,]+)',line)
+    if not m: raise SystemExit(f'missing {k}: {line}')
+    return m.group(1).strip()
+with open(path,'a',newline='') as f:
+    csv.writer(f).writerow([pair,mode,n,v('ns_per_column'),v('solver_calls'),v('accepted_substeps'),
+        v('nonlinear_iterations'),v('jacobian_builds'),v('linear_solves'),v('headcalc_calls'),
+        v('internal_retries'),v('backtracking_attempts'),v('max_mass_residual')])
+print(line)
+PY
+}
+
 for n in 1000 10000; do
-  for rep in 1 2 3 4 5; do
-    if (( rep % 2 == 1 )); then
-      "$BUILD/test" analytical "$n" "$rep" | tee -a "$RESULT"
-      "$BUILD/test" direct "$n" "$rep" | tee -a "$RESULT"
+  for pair in 1 2 3 4 5; do
+    if (( pair % 2 == 1 )); then
+      run_one "$pair" analytical "$n"
+      run_one "$pair" direct "$n"
     else
-      "$BUILD/test" direct "$n" "$rep" | tee -a "$RESULT"
-      "$BUILD/test" analytical "$n" "$rep" | tee -a "$RESULT"
+      run_one "$pair" direct "$n"
+      run_one "$pair" analytical "$n"
     fi
   done
 done
 
 python3 - "$RESULT" <<'PY'
-import collections,statistics,sys
-rows=collections.defaultdict(lambda: collections.defaultdict(dict))
-for line in open(sys.argv[1]):
-    if not line.startswith('PROFILE04_AHL_APP_RUN|'): continue
-    d={}
-    for part in line.strip().split('|')[1:]:
-        k,v=part.split('=',1); d[k]=v
-    rows[int(d['N'])][int(d['REP'])][d['MODE']]=d
-
-diag=('COMPLETED','COMMITTED','SOLVER_CALLS','ACCEPTED_SUBSTEPS','NONLINEAR','JACOBIAN',
-      'LINEAR','HEADCALC','INTERNAL_RETRIES','BACKTRACK')
+import csv,statistics,sys
+rows=list(csv.DictReader(open(sys.argv[1])))
+diag=('solver_calls','accepted_substeps','nonlinear','jacobian','linear','headcalc','retries','backtrack','residual')
 for n in (1000,10000):
-    ratios=[]
-    ans=[]; dirs=[]
-    for rep,pair in sorted(rows[n].items()):
-        if set(pair)!={'analytical','direct'}:
-            raise SystemExit(f'incomplete pair n={n} rep={rep}')
-        a,d=pair['analytical'],pair['direct']
-        for key in diag:
-            if a[key]!=d[key]:
-                raise SystemExit(f'diagnostic drift n={n} rep={rep} key={key}: {a[key]} != {d[key]}')
-        if a['MAX_MASS_RESIDUAL']!=d['MAX_MASS_RESIDUAL']:
-            raise SystemExit(f'mass residual drift n={n} rep={rep}')
-        av=float(a['NS_PER_COLUMN']); dv=float(d['NS_PER_COLUMN'])
-        ratios.append(dv/av); ans.append(av); dirs.append(dv)
-    print(f'PROFILE04_AHL_APP_N={n}|ANALYTICAL_MEDIAN_NS={statistics.median(ans):.6f}|DIRECT_MEDIAN_NS={statistics.median(dirs):.6f}|PAIRED_MEAN_RATIO={statistics.mean(ratios):.9f}|PAIRED_MEDIAN_RATIO={statistics.median(ratios):.9f}|PAIRS={len(ratios)}')
+    by={}
+    for r in rows:
+        if int(r['n'])==n: by.setdefault(int(r['pair']),{})[r['mode']]=r
+    ratios=[]; av=[]; dv=[]
+    for pair,p in sorted(by.items()):
+        if set(p)!={'analytical','direct'}: raise SystemExit(f'incomplete pair n={n} pair={pair}')
+        a,d=p['analytical'],p['direct']
+        for k in diag:
+            if a[k]!=d[k]: raise SystemExit(f'diagnostic drift n={n} pair={pair} key={k}: {a[k]} != {d[k]}')
+        aa=float(a['ns']); dd=float(d['ns'])
+        av.append(aa); dv.append(dd); ratios.append(dd/aa)
+    print(f'PROFILE04_AHL_APP_N={n}|ANALYTICAL_MEDIAN_NS={statistics.median(av):.6f}|DIRECT_MEDIAN_NS={statistics.median(dv):.6f}|PAIRED_MEAN_RATIO={statistics.mean(ratios):.9f}|PAIRED_MEDIAN_RATIO={statistics.median(ratios):.9f}|PAIRS={len(ratios)}')
     print(f'PROFILE04_AHL_APP_SPEEDUP_N={n}|MEAN_PERCENT={(1-statistics.mean(ratios))*100:.6f}|MEDIAN_PERCENT={(1-statistics.median(ratios))*100:.6f}')
 print('FPE_PROFILE04_AHL_APPLICATION_RUNTIME=PASS')
 PY
