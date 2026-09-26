@@ -41,6 +41,10 @@ jobs:
       - run: bash tests/fpe/run_fpe_approx01_amplitude_frontier.sh
 
   a1-participant:
+    strategy:
+      fail-fast: false
+      matrix:
+        replica: [1, 2, 3]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
