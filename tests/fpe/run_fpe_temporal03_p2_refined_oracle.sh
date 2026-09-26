@@ -12,6 +12,11 @@ python3 - "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90" <<'PY'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); src=p.read_text()
+src=src.replace("  use mod_canonical_contracts, only: canonical_numerical_config_t\n",
+                "  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t\n",1)
+src=src.replace("  use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t\n",
+                "  use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t\n"
+                "  use mod_groundwater_swap_forcing_adapter, only: GW_SWAP_FORCING_OK\n",1)
 src=src.replace(
 "  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &\n"
 "       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider\n",
