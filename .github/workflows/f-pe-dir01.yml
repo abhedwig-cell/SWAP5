@@ -6,6 +6,9 @@ on:
       - 'tests/fpe/run_fpe_dir01_repair05_experiment.sh'
       - 'tests/fpe/run_fpe_dir01_repair05_equivalence.sh'
       - 'docs/performance/F-PE-DIR01_REPAIR05_*.md'
+      - 'docs/performance/F-PE-DIR01_POST_REPAIR05_*.md'
+      - 'tests/fpe/run_fpe_profile04_head_directional.sh'
+      - 'tests/fpe/run_fpe_dir01_heap_attribution.sh'
       - 'src/solver/mod_b110_default_mvg_provider.f90'
       - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
       - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
@@ -42,3 +45,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_dir01_gprof_attribution.sh
+
+  post-repair05-directional:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile04_head_directional.sh
+
+  post-repair05-heap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_dir01_heap_attribution.sh
