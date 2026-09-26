@@ -37,7 +37,22 @@ jobs:
           sudo apt-get install -y gfortran
           python3 -m pip install --upgrade pip
           python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
-      - run: bash tests/fpe/run_fpe_temporal07_p2_live_modflow.sh
+      - name: Reproduce frozen P2 endpoint-authority blocker
+        shell: bash
+        run: |
+          set +e
+          out="$(bash tests/fpe/run_fpe_temporal07_p2_live_modflow.sh 2>&1)"
+          rc=$?
+          set -e
+          printf '%s\n' "$out"
+          test "$rc" -ne 0
+          grep -q 'FGC44_INDEPENDENT_HEAD_ENDPOINT=PASS' <<< "$out"
+          grep -q 'FGC44_INDEPENDENT_PHYSICAL_RESIDUAL_GATE=FAIL' <<< "$out"
+          grep -q 'FGC44_MODFLOW_MODEL_BALANCE_GATE=PASS' <<< "$out"
+          grep -q 'FGC44_MODFLOW_API_COMPONENT_GATE=PASS' <<< "$out"
+          grep -q 'FGC44_STOPPING_FLOW_GATE=PASS' <<< "$out"
+          grep -q 'FGC44_FINAL_FLUX_RESIDUAL=' <<< "$out"
+          echo 'FPE_TEMPORAL07_P2_EXPECTED_BLOCKER=PASS'
 
   p2-attribution-c050:
     runs-on: ubuntu-24.04
