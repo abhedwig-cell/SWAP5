@@ -1,0 +1,16 @@
+{
+  "work_unit": "PPA-IRR-TCS1-4-COMPOSITION",
+  "status": "BOUNDED_PROCESS_COMPOSITION_PASS_RUNTIME_NOT_BOUND",
+  "tested_commit": "7860bdbcc",
+  "preregistration": "PPA_IRR_TCS1_4_COMPOSITION_PREREGISTRATION.json",
+  "implementation": "The existing scheduled process gains an optional explicit timing-selection value. Only criteria 1-4 use it; ordinary TCS7/8 timing remains unchanged. Eligibility, pending continuation, depth/rate and event materialization share the original path. A separate typed bridge calls the existing source-tested timing evaluator and restricts composition to DCS2, without fake hydraulic thresholds or additional build dependencies in the core.",
+  "gates": "All four supplied selectors trigger/decline and reuse DCS2 gift amount and duration. Pending continuation ignores irrelevant selector tables, split reports preserve the original event and shortened retry finishes it. Invalid selection tables reject; fixed-event precedence skips selection. O0/O2 composition transcripts match. Existing timing oracle repeats 100000 vectors per selector with O0/O2 identity.",
+  "preservation": "Full clean existing IrrigationSource/static runner PASS O0/O2 with transcript identity for core postimage 8bc28e388; later 7860bdbcc only changes new bridge/tests/runner, outside that dependency surface. Same existing binaries pass HydraulicCopy and guards identically. No numerical thresholds changed. Documentation source and strict build PASS.",
+  "builds": {
+    "composition": "swap-tcs-composition-4e667bb147a64e4ab771651a06ce7a08",
+    "timing_oracle": "swap-tcs-oracle-81666d14e1a843448f0f8ee391e1e452",
+    "owner_preservation": "swap-ppa-wu01-df7322a94c1f4ea09a5d01b78262f02a"
+  },
+  "limits": "Process-only supplied observations. No automatic root-water or daily stress accumulator, DCS1 composition, calendar, source/runtime/bootstrap integration or canonical admission for TCS1-4. Initial compile probes used incomplete source dependency lists; corrected standalone runner includes solver contract and hydraulic view.",
+  "next": "Add negative/strict-boundary and ordinary-entry isolation composition guards, then bind this typed process result to the existing SSDI source adapter and accepted runtime route without adding a state owner."
+}
