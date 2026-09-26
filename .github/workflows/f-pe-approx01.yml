@@ -4,14 +4,14 @@ on:
   pull_request:
     paths:
       - 'tests/fpe/test_fpe_approx01_tangent_sequence.f90'
-      - 'tests/fpe/run_fpe_approx01_tangent_sequence.sh'
+      - 'tests/fpe/run_fpe_approx01_tangent_sweep.sh'
       - 'docs/performance/F-PE-APPROX01_*.md'
       - '.github/workflows/f-pe-approx01.yml'
   workflow_dispatch:
 
 jobs:
-  tangent-sequence:
+  tangent-sweep:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx01_tangent_sequence.sh
+      - run: bash tests/fpe/run_fpe_approx01_tangent_sweep.sh
