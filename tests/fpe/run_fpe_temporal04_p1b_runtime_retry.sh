@@ -8,20 +8,20 @@ trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "TEMPORAL04_P1B_FAIL $*" >&2; exit 1; }
 
 cp tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90 "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90"
-cp src/runtime/mod_groundwater_swap_transaction_participant.f90 "$BUILD/lib/mod_groundwater_swap_transaction_participant.f90"
-python3 - "$BUILD/lib/mod_groundwater_swap_transaction_participant.f90" <<'PY'
+cp src/runtime/mod_fmr_groundwater_swap_participant.f90 "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90"
+python3 - "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90" <<'PY'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); src=p.read_text()
 src=src.replace(
-"    procedure, public :: captured_time => swap_participant_time\n",
-"    procedure, public :: captured_time => swap_participant_time\n"
-"    procedure, public :: temporal04_diagnostics => swap_participant_temporal04_diagnostics\n",1)
-needle="end module mod_groundwater_swap_transaction_participant"
+"    procedure, public :: tangent_cache_counts => fmr_swap_tangent_cache_counts\n",
+"    procedure, public :: tangent_cache_counts => fmr_swap_tangent_cache_counts\n"
+"    procedure, public :: temporal04_diagnostics => fmr_swap_temporal04_diagnostics\n",1)
+needle="end module mod_fmr_groundwater_swap_participant"
 insert="""
-  subroutine swap_participant_temporal04_diagnostics(self,transaction_calls,accepted_substeps,attempts,retries, &
+  subroutine fmr_swap_temporal04_diagnostics(self,transaction_calls,accepted_substeps,attempts,retries, &
        solver_rejections,temporal_rejections,nonlinear_iterations,backtracking_attempts,max_temporal_indicator)
-    class(groundwater_swap_transaction_participant_t), intent(in) :: self
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
     integer, intent(out) :: transaction_calls,accepted_substeps,attempts,retries
     integer, intent(out) :: solver_rejections,temporal_rejections,nonlinear_iterations,backtracking_attempts
     real(real64), intent(out) :: max_temporal_indicator
@@ -34,7 +34,7 @@ insert="""
     nonlinear_iterations=self%diagnostics%nonlinear_iterations
     backtracking_attempts=self%diagnostics%backtracking_attempts
     max_temporal_indicator=self%diagnostics%max_temporal_indicator
-  end subroutine swap_participant_temporal04_diagnostics
+  end subroutine fmr_swap_temporal04_diagnostics
 
 """
 if needle not in src: raise SystemExit("participant end seam missing")
