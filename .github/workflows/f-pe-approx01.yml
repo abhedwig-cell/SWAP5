@@ -11,6 +11,8 @@ on:
       - 'tests/fpe/run_fpe_approx01_tangent_matrix.sh'
       - 'tests/fpe/run_fpe_approx01_amplitude_frontier.sh'
       - 'tests/fpe/run_fpe_approx01_a1_participant_experiment.sh'
+      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+      - 'src/runtime/mod_groundwater_swap_transaction_participant.f90'
       - 'docs/performance/F-PE-APPROX01_*.md'
       - '.github/workflows/f-pe-approx01.yml'
   workflow_dispatch:
@@ -49,3 +51,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx01_a1_participant_experiment.sh
+
+  fgc44-default-exact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fgc/run_fgc44_real_fmr_participant.sh
