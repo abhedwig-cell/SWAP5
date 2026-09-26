@@ -1,0 +1,50 @@
+name: F-PE-PROFILE05 practical-stack rebaseline
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_profile05_four_arm_modflow_e2e.sh'
+      - 'docs/performance/F-PE-PROFILE05_*.md'
+      - '.github/workflows/f-pe-profile05.yml'
+  workflow_dispatch:
+
+jobs:
+  four-arm-modflow-e2e:
+    strategy:
+      fail-fast: false
+      matrix:
+        replica: [1, 2, 3]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install flopy
+      - run: bash tests/fpe/run_fpe_profile05_four_arm_modflow_e2e.sh
+
+  repeated-decomposition:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile04_repeated_decomposition.sh
+
+  reference-repeated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: TIMING_MODE=reference bash tests/fpe/run_fpe_zero_waste01_paired_runtime.sh
+
+  directional-repeated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: TIMING_MODE=directional bash tests/fpe/run_fpe_zero_waste01_paired_runtime.sh
+
+  a2c-application-sequence:
+    runs-on: ubuntu-latest
+    env:
+      APPROX02_CANDIDATE_TOL: 1E-08
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx02_a2_application_sequence.sh
