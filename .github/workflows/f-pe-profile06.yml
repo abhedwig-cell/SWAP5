@@ -1,0 +1,18 @@
+name: F-PE-PROFILE06 difficult Richards characterization
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_profile06_*.sh'
+      - 'docs/performance/F-PE-PROFILE06_*.md'
+      - '.github/workflows/f-pe-profile06.yml'
+  workflow_dispatch:
+
+jobs:
+  p1-difficult-matrix:
+    runs-on: ubuntu-latest
+    env:
+      APPROX02_CANDIDATE_TOL: 1E-08
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile06_p1_difficult_matrix.sh
