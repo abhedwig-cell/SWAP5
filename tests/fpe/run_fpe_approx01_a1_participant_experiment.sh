@@ -25,6 +25,13 @@ replacement=r"""  call participant%configure_tangent_cache(.true.,0.005_real64,8
          origin_head_m,trial1,status)
     call require(status==GW_SWAP_PARTICIPANT_OK .and. trial1%valid,'A1 repeated trial')
     call require(trial1%response_tangent_available,'A1 tangent available')
+    if (iter==1) then
+      call require(.not. trial1%response_tangent_reused,'A1 first tangent fresh')
+      call require(trim(trial1%response_tangent_provenance)=='accepted-trajectory-fresh','A1 fresh provenance')
+    else if (mod(iter-1,9)/=0) then
+      call require(trial1%response_tangent_reused,'A1 bounded cache reuse')
+      call require(trim(trial1%response_tangent_provenance)=='same-origin-cache','A1 reuse provenance')
+    end if
     qsum=qsum+trial1%q_swap_m_per_s
     tsum=tsum+trial1%dq_swap_dh_per_s
     call participant%discard_candidate(backend)
@@ -47,6 +54,8 @@ replacement=r"""  call participant%configure_tangent_cache(.true.,0.005_real64,8
        origin_head_m,trial2,status)
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial2%valid,'A1 recaptured trial')
   call require(trial2%response_tangent_available,'A1 recaptured tangent available')
+  call require(.not. trial2%response_tangent_reused,'A1 recaptured origin tangent fresh')
+  call require(trim(trial2%response_tangent_provenance)=='accepted-trajectory-fresh','A1 recaptured provenance')
   call participant%tangent_cache_counts(fresh_count,reuse_count)
   call require(fresh_count==fresh_before+1,'A1 new origin forces fresh tangent')
   call require(reuse_count==reuse_before,'A1 new origin does not reuse stale tangent')
@@ -65,6 +74,8 @@ replacement=r"""  call participant%configure_tangent_cache(.true.,0.005_real64,8
          origin_head_m,trial2,status)
     call require(status==GW_SWAP_PARTICIPANT_OK .and. trial2%valid,'fresh repeated trial')
     call require(trial2%response_tangent_available,'fresh tangent available')
+    call require(.not. trial2%response_tangent_reused,'default-off tangent never reused')
+    call require(trim(trial2%response_tangent_provenance)=='accepted-trajectory-fresh','default-off fresh provenance')
     qsum_fresh=qsum_fresh+trial2%q_swap_m_per_s
     tsum_fresh=tsum_fresh+trial2%dq_swap_dh_per_s
     call participant%discard_candidate(backend)
@@ -87,7 +98,7 @@ src=src.replace(
 "  real(real64) :: qeq, committed_time, origin_head_m\n"
 "  real(real64) :: cached_seconds,fresh_seconds,qsum,qsum_fresh,tsum,tsum_fresh\n"
 "  integer(int64) :: c0,c1,rate\n"
-"  integer :: iter,fresh_count,reuse_count\n"
+"  integer :: iter,fresh_count,reuse_count,fresh_before,reuse_before,cached_fresh_count,cached_reuse_count\n"
 "  integer, parameter :: ntrial=20000\n"
 )
 Path(sys.argv[1]).write_text(src)
