@@ -50,3 +50,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_repro01_d5_memory.sh
+
+  d6-directional-poison:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d6_directional_poison.sh
