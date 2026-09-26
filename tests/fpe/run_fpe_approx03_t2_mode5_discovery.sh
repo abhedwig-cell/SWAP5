@@ -74,6 +74,8 @@ insert="""\n  subroutine materialize_t2_bottom_head(qbot_value,hbot_value)
          '|COMMITTED=',output%committed,'|KERNEL_STATUS=',output%kernel_status,'|SUBSTEPS=',output%accepted_substeps, &
          '|RETRIES=',output%solver_internal_retries,'|NONLINEAR=',output%solver_nonlinear_iterations, &
          '|HEADCALC=',output%solver_headcalc_calls,'|MASS_COMPLETE=',output%mass%complete,'|MASS_RESIDUAL=',output%mass%residual, &
+         '|STORAGE_START=',output%mass%storage_start,'|STORAGE_END=',output%mass%storage_end, &
+         '|STORAGE_CHANGE=',output%mass%storage_change,'|TOTAL_IN=',output%mass%total_in,'|TOTAL_OUT=',output%mass%total_out, &
          '|BOTTOM_FLUX=',observation%bottom_flux,'|CERT_AVAILABLE=',observation%temporal_certificate_available, &
          '|BINF=',observation%temporal_head_inf_bound,'|CH=',observation%temporal_normalized_indicator, &
          '|H1=',t2_heads(1),'|H2=',t2_heads(2),'|H3=',t2_heads(3),'|H4=',t2_heads(4), &
@@ -104,7 +106,7 @@ new_tail="""    call fmr_execute_serialized_resolved_physical_column(backend, tr
       call committed%snapshot(snapshot,snapshot_available)
       if(snapshot_available .and. allocated(snapshot)) then
         select type(state=>snapshot)
-        type is(fmr_b110_physical_state_t)
+        class is(fmr_b110_physical_state_t)
           if(allocated(state%pressure_head) .and. allocated(state%water_content)) then
             t2_heads=state%pressure_head
             t2_water=state%water_content
