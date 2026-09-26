@@ -109,32 +109,11 @@ gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 grep -Fq 'FPE_APPROX02_A2_APPLICATION_SEQUENCE=PASS' "$BUILD/output.txt" || fail "missing final marker"
 
 python3 - "$BUILD/output.txt" <<'PY'
-import re,sys
-txt=open(sys.argv[1]).read()
-m=re.search(r'^APPROX02_A2_APPLICATION\\|(.+)
-if not m: raise SystemExit('missing application result')
+import sys
+line=next((x.strip() for x in open(sys.argv[1]) if x.startswith('APPROX02_A2_APPLICATION|')),None)
+if line is None: raise SystemExit('missing application result')
 d={}
-for p in m.group(1).split('|'):
-    k,v=p.split('=',1); d[k]=v
-for key in ('EXACT_MAX_MASS_RESIDUAL','A2_MAX_MASS_RESIDUAL'):
-    if float(d[key])>1e-12: raise SystemExit(f'exact transaction mass gate exceeded: {key}={d[key]}')
-print(
-  f"APPROX02_A2_APPLICATION_SUMMARY|SPEEDUP_PERCENT={float(d['SPEEDUP_PERCENT']):.6f}"
-  f"|EXACT_NONLINEAR={d['EXACT_NONLINEAR']}|A2_NONLINEAR={d['A2_NONLINEAR']}"
-  f"|EXACT_SUBSTEPS={d['EXACT_SUBSTEPS']}|A2_SUBSTEPS={d['A2_SUBSTEPS']}"
-  f"|EXACT_RETRIES={d['EXACT_RETRIES']}|A2_RETRIES={d['A2_RETRIES']}"
-  f"|MAX_MASS_RESIDUAL={max(float(d['EXACT_MAX_MASS_RESIDUAL']),float(d['A2_MAX_MASS_RESIDUAL'])):.17e}"
-  f"|CUM_NET_REL={float(d['CUM_NET_REL']):.17e}"
-  f"|CUM_STORAGE_REL={float(d['CUM_STORAGE_REL']):.17e}"
-  f"|MAX_STORAGE_END_REL={float(d['MAX_STORAGE_END_REL']):.17e}"
-  f"|MAX_STEP_NET_REL={float(d['MAX_STEP_NET_REL']):.17e}"
-)
-print('FPE_APPROX02_A2_APPLICATION_GATE=PASS')
-PY
-,txt,re.M)
-if not m: raise SystemExit('missing application result')
-d={}
-for p in m.group(1).split('|'):
+for p in line.split('|')[1:]:
     k,v=p.split('=',1); d[k]=v
 for key in ('EXACT_MAX_MASS_RESIDUAL','A2_MAX_MASS_RESIDUAL'):
     if float(d[key])>1e-12: raise SystemExit(f'exact transaction mass gate exceeded: {key}={d[key]}')
