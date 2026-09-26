@@ -76,8 +76,8 @@ for material in B01 B12 O05 O14; do
     read -r regime h0 <<< "$spec"
     for rep in $(seq 1 "$reps"); do
       raw="$("$BUILD/test" "$material" "$h0" "$CANDIDATE_TOL" 2>&1)" || { printf '%s\n' "$raw" >&2; fail "$material $regime rep $rep"; }
-      line="$(printf '%s\n' "$raw" | grep '^PROFILE06_P1|')"
-      printf '%s|REGIME=%s|REP=%s\n' "$line" "$regime" "$rep" | tee -a "$OUT"
+      line="$(printf '%s\n' "$raw" | grep '^APPROX02_A2_MULTISTEP|')"
+      printf '%s|REGIME=%s|REP=%s\n' "${line/APPROX02_A2_MULTISTEP/PROFILE06_P1}" "$regime" "$rep" | tee -a "$OUT"
     done
   done
 done
