@@ -3,7 +3,7 @@ name: F-PE-PROFILE05 practical-stack rebaseline
 on:
   pull_request:
     paths:
-      - 'tests/fpe/run_fpe_profile05_a2c_failure_attribution.sh'
+      - 'tests/fpe/run_fpe_profile05_fixed_build_repeatability.sh'
       - 'docs/performance/F-PE-PROFILE05_*.md'
       - '.github/workflows/f-pe-profile05.yml'
   workflow_dispatch:
@@ -51,11 +51,7 @@ jobs:
           python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
       - run: bash tests/fpe/run_fpe_approx01_a1_modflow_e2e.sh
 
-  a2c-failure-attribution:
-    strategy:
-      fail-fast: false
-      matrix:
-        replica: [1, 2, 3, 4, 5, 6]
+  fixed-build-repeatability:
     runs-on: ubuntu-latest
     env:
       APPROX02_CANDIDATE_TOL: 1E-08
@@ -67,4 +63,4 @@ jobs:
       - run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
-      - run: bash tests/fpe/run_fpe_profile05_a2c_failure_attribution.sh
+      - run: bash tests/fpe/run_fpe_profile05_fixed_build_repeatability.sh
