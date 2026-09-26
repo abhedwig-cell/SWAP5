@@ -19,6 +19,10 @@ jobs:
 
   ahl-repeated:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        replicate: [1, 2, 3, 4, 5]
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_profile04_ahl_repeated.sh
