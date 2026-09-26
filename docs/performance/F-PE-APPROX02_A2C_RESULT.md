@@ -23,8 +23,8 @@ A2C moved two orders of magnitude back toward the exact reference.
 Across B01/B12/O05/O14 wet/mid/dry:
 
 - all 12 cases converged;
-- median speedup approximately `27.9%`;
-- minimum case speedup approximately `9.6%`;
+- median speedup approximately `29.34%`;
+- minimum case speedup approximately `9.68%`;
 - maximum relative pressure-head deviation approximately `3.54e-10`;
 - maximum final-head relative deviation approximately `2.36e-10`;
 - maximum relative water-content deviation approximately `2.99e-11`;
@@ -41,7 +41,7 @@ Hard-case nonlinear work was still materially reduced. Examples:
 
 A 20-step production application sequence passed with:
 
-- speedup approximately `15.7%`;
+- speedup approximately `19.87%`;
 - exact and A2C accepted substeps identical;
 - zero retries in both arms;
 - zero canonical mass residual in both arms;
@@ -79,7 +79,7 @@ Mean:
 
 approximately `9.69%`.
 
-The coupling loop is sub-millisecond in this fixture, so the spread is treated as timing variance. The robust coupled claim is 3/3 successful, speed-positive runs with exact endpoint identity.
+The coupling loop is sub-millisecond in this fixture, so the spread is treated as timing variance. The robust coupled claim is 3/3 successful, speed-positive runs with exact endpoint identity. These values are from the pre-binding qualification; the final production-postimage rerun below is the timing authority for the final head.
 
 ## Decision
 
@@ -130,17 +130,17 @@ The real production opt-in postimage passes:
 
 The current production-head coupled replicas all passed with exact endpoint identity and measured speedups of approximately:
 
-- 18.86%;
-- 17.32%;
-- 7.83%.
+- 12.39%;
+- 11.80%;
+- 15.48%.
 
 Median:
 
-approximately 17.32%.
+approximately 12.39%.
 
 Mean:
 
-approximately 14.67%.
+approximately 13.22%.
 
 The coupled loop is short, so the spread is treated as timing variance. The robust claim is that all three runs were speed-positive and no new SWAP trial failure occurred.
 
