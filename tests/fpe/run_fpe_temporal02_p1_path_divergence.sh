@@ -242,6 +242,8 @@ insert="""contains
 """
 if needle not in src: raise SystemExit("contains seam missing")
 src=src.replace(needle,insert,1)
+src=src.replace("    type is(fmr_b110_physical_state_t)\n      if(.not.allocated(state%pressure_head)", &
+                "    class is(fmr_b110_physical_state_t)\n      if(.not.allocated(state%pressure_head)",1)
 p.write_text(src)
 PY
 
