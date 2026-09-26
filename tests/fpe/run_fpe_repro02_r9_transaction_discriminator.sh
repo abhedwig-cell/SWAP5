@@ -25,6 +25,25 @@ src=src.replace(
 "       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &\n"
 "       fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_committed_state\n",1)
 
+src=src.replace(
+"  use mod_canonical_contracts, only: canonical_numerical_config_t\n",
+"  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t\n",1)
+src=src.replace(
+"  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &\n"
+"       kernel_candidate_state_t, kernel_diagnostics_t\n",
+"  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &\n"
+"       kernel_candidate_state_t, kernel_diagnostics_t, kernel_reference_floor_result_t, &\n"
+"       kernel_reference_floor_candidate_t\n",1)
+src=src.replace(
+"  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &\n"
+"       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY\n",
+"  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &\n"
+"       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, FMR_NUMERICAL_CONTINUATION_NONE, &\n"
+"       FMR_OPTIONAL_STATE_LAYOUT_BASE\n",1)
+src=src.replace(
+"    p%max_iterations=16; p%max_backtracking=8; p%min_step_duration=1.0e-8_real64\n",
+"    p%max_iterations=48; p%max_backtracking=16; p%min_step_duration=1.0e-10_real64\n",1)
+
 # Make case hydraulics configurable before initialize.
 src=src.replace("H0_CM","REPRO_H0_CM")
 # Align the participant committed/origin profile with PROFILE06/P0: uniform h0,
@@ -219,7 +238,7 @@ MATERIALS={
 "O05":(0.01,0.336701,0.030304,2.887502,17.418504,0.0736),
 "O14":(0.01,0.393878,0.003288,1.616573,2.495984,0.514012),
 }
-material,h0_s,offset_s=sys.argv[1:]
+material,h0_s,offset_s,mode=sys.argv[1:]
 h0=float(h0_s); offset_cm=float(offset_s)
 swap=Fgc44RealSwap(Path(os.environ["FGC44_SWAP_LIB"]))
 cfg=swap.lib.fgc44_approx04_configure_case_c
