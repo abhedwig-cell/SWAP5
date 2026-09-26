@@ -1,0 +1,17 @@
+name: F-PE-APPROX02 Richards effort research
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/test_fpe_approx02_richards_effort.f90'
+      - 'tests/fpe/run_fpe_approx02_workload_discovery.sh'
+      - 'docs/performance/F-PE-APPROX02_*.md'
+      - '.github/workflows/f-pe-approx02.yml'
+  workflow_dispatch:
+
+jobs:
+  workload-discovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx02_workload_discovery.sh
