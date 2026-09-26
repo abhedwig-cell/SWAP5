@@ -1,4 +1,4 @@
-name: F-PE-APPROX02 A2B production qualification
+name: F-PE-APPROX02 A2C production qualification
 
 on:
   pull_request:
@@ -11,34 +11,35 @@ on:
       - 'tests/fpe/test_fpe_approx02_r1_transaction.f90'
       - 'docs/performance/F-PE-APPROX02_A2_*.md'
       - 'docs/performance/F-PE-APPROX02_A2B_*.md'
+      - 'docs/performance/F-PE-APPROX02_A2C_*.md'
       - '.github/workflows/f-pe-approx02.yml'
   workflow_dispatch:
 
 jobs:
-  a2b-multistep:
+  a2c-multistep:
     runs-on: ubuntu-latest
     env:
-      APPROX02_CANDIDATE_TOL: 1e-6
+      APPROX02_CANDIDATE_TOL: 1e-8
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx02_a2_multistep.sh
 
-  a2b-application-sequence:
+  a2c-application-sequence:
     runs-on: ubuntu-latest
     env:
-      APPROX02_CANDIDATE_TOL: 1e-6
+      APPROX02_CANDIDATE_TOL: 1e-8
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx02_a2_application_sequence.sh
 
-  a2b-modflow-e2e:
+  a2c-modflow-e2e:
     strategy:
       fail-fast: false
       matrix:
         replica: [1, 2, 3]
     runs-on: ubuntu-24.04
     env:
-      APPROX02_CANDIDATE_TOL: 1e-6
+      APPROX02_CANDIDATE_TOL: 1e-8
     steps:
       - uses: actions/checkout@v4
       - name: Install compiler and pinned MODFLOW Python dependencies
