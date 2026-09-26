@@ -12,7 +12,7 @@ program test_fpe_approx02_a2_application_sequence
   implicit none
 
   real(real64),parameter :: exact_tol=1.0e-12_real64,a2_tol=1.0e-4_real64
-  real(real64),parameter :: dt=1.0e-3_real64,h0=-10.0_real64
+  real(real64),parameter :: dt=1.0e-4_real64,h0=-10.0_real64
   integer,parameter :: nsteps=20
   type(fmr_production_application_config_t) :: exact_cfg,a2_cfg
   type(fmr_production_application_bootstrap_t) :: exact_app,a2_app
