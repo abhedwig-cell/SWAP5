@@ -86,3 +86,30 @@ T2C is rejected if:
 T2C may proceed to application-shaped and coupled qualification only if the broad matrix demonstrates a coherent practical envelope.
 
 No production opt-in is admitted by this preregistration.
+
+
+## Reference-domain calibration amendment
+
+The first fixed-window T2C attempt failed in the exact/reference B01-wet-minus arm. This does not classify the 1.25x candidate.
+
+A single requested interval is therefore not used as authority across all material/regime combinations.
+
+Before any further candidate comparison, T2C performs a reference-only calibration with:
+
+- forcing magnitude fixed at `5e-5` of local conductivity;
+- both plus and minus orientations;
+- candidate budget never evaluated during selection;
+- interval grid: `2e-5`, `5e-5`, `1e-4`, `2e-4`, `5e-4`, `1e-3 day`.
+
+For each material/regime/orientation, select the largest interval that under the exact `1e-5 cm` budget:
+
+1. commits;
+2. has complete mass accounting;
+3. has zero retries;
+4. requires at least two accepted substeps.
+
+If no such interval exists, classify that case as `NO_TEMPORAL_WORKLOAD_IN_GRID` and do not use it to claim candidate benefit.
+
+The 1.25x candidate is then evaluated only on the frozen per-case intervals selected by this reference-only rule.
+
+This amendment prevents candidate behavior from influencing workload selection.
