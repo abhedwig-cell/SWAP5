@@ -11,146 +11,11 @@ cp src/solver/mod_b110_default_mvg_provider.f90 "$BUILD/src/provider_base.f90"
 cp src/solver/mod_b110_default_mvg_directional_provider.f90 "$BUILD/src/directional_base.f90"
 cp src/adapter/mod_reference_richards_accepted_step_directional_service.f90 "$BUILD/src/service_base.f90"
 
-python3 - "$BUILD/src/provider_candidate.f90" <<'PY'
-from pathlib import Path
-import sys
-src=Path("src/solver/mod_b110_default_mvg_provider.f90").read_text()
-needle="  public :: bind_b110_default_mvg_provider\n"
-if needle not in src:
-    raise SystemExit("Repair05 provider public seam missing")
-src=src.replace(needle,needle+"  public :: b110_hconduc\n",1)
-Path(sys.argv[1]).write_text(src)
-PY
-
-python3 - "$BUILD/src/directional_candidate.f90" <<'PY'
-from pathlib import Path
-import sys
-src=Path("src/solver/mod_b110_default_mvg_directional_provider.f90").read_text()
-src=src.replace(
-"  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t",
-"  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t, b110_hconduc",1)
-src=src.replace(
-"""  subroutine evaluate_b110_default_mvg_state_direction(provider, pressure_head, pressure_head_direction, &
-                                                        water_content_direction, conductivity_direction, &
-                                                        available, route)""",
-"""  subroutine evaluate_b110_default_mvg_state_direction(provider, pressure_head, pressure_head_direction, &
-                                                        water_content_direction, conductivity_direction, &
-                                                        available, route, base_conductivity)""",1)
-src=src.replace(
-"    real(real64), intent(out) :: water_content_direction(:), conductivity_direction(:)\n",
-"    real(real64), intent(out) :: water_content_direction(:), conductivity_direction(:)\n    real(real64), intent(out), optional :: base_conductivity(:)\n",1)
-src=src.replace(
-"    real(real64) :: dthetadh, dkdh\n",
-"    real(real64) :: theta, dthetadh, dkdh\n",1)
-src=src.replace(
-"    conductivity_direction = 0.0_real64\n",
-"    conductivity_direction = 0.0_real64\n    if (present(base_conductivity)) base_conductivity = 0.0_real64\n",1)
-src=src.replace(
-"""        size(water_content_direction) /= n .or. size(conductivity_direction) /= n) then""",
-"""        size(water_content_direction) /= n .or. size(conductivity_direction) /= n) then""",1)
-src=src.replace(
-"       call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), dthetadh, dkdh, node_ok)\n",
-"       call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), theta, dthetadh, dkdh, node_ok)\n",1)
-src=src.replace(
-"""       water_content_direction(i) = dthetadh * pressure_head_direction(i)
-       conductivity_direction(i) = dkdh * pressure_head_direction(i)
-""",
-"""       base_conductivity(i) = b110_hconduc(provider%parameters%cofgen(:,i), pressure_head(i), theta, &
-            provider%parameters%ksatexm_extension_enabled)
-       water_content_direction(i) = dthetadh * pressure_head_direction(i)
-       conductivity_direction(i) = dkdh * pressure_head_direction(i)
-""",1)
-src=src.replace(
-"""    if (any(.not. ieee_is_finite(water_content_direction)) .or. &
-        any(.not. ieee_is_finite(conductivity_direction))) then""",
-"""    if (any(.not. ieee_is_finite(water_content_direction)) .or. &
-        any(.not. ieee_is_finite(conductivity_direction))) then""",1)
-src=src.replace(
-"""  subroutine b110_smooth_derivatives(c, head, dthetadh, dkdh, ok)
-    real(real64), intent(in) :: c(:), head
-    real(real64), intent(out) :: dthetadh, dkdh""",
-"""  subroutine b110_smooth_derivatives(c, head, theta, dthetadh, dkdh, ok)
-    real(real64), intent(in) :: c(:), head
-    real(real64), intent(out) :: theta, dthetadh, dkdh""",1)
-# theta was previously a local
-src=src.replace(
-"    real(real64) :: theta, relsat, invm, one_minus_term, term1\n",
-"    real(real64) :: relsat, invm, one_minus_term, term1\n",1)
-src=src.replace(
-"    dthetadh = 0.0_real64\n    dkdh = 0.0_real64\n",
-"    theta = 0.0_real64\n    dthetadh = 0.0_real64\n    dkdh = 0.0_real64\n",1)
-Path(sys.argv[1]).write_text(src)
-PY
-
-python3 - "$BUILD/src/service_candidate.f90" <<'PY'
-from pathlib import Path
-import sys
-src=Path("src/adapter/mod_reference_richards_accepted_step_directional_service.f90").read_text()
-old="""    ! Re-evaluate the immutable constitutive value provider at the step base
-    ! state for the exact frozen K values used by swkimpl=0. Its historical
-    ! dconductivity_dhead output is deliberately reserved/zero, therefore the
-    ! derivative comes only from the explicit B1.10 sibling capability.
-    call request%evaluation%constitutive%evaluate_demand(request%base_state%pressure_head, &
-         CONSTITUTIVE_DEMAND_CONDUCTIVITY, ref_ws%richards%provider_theta, ref_ws%richards%provider_k, &
-         ref_ws%richards%provider_capacity, ref_ws%richards%provider_dkdh)
-    if (any(.not. ieee_is_finite(ref_ws%richards%provider_k(1:n)))) then
-       direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
-       direction_result%route = 'base-constitutive-value-nonfinite'
-       return
-    end if
-
-    select type (hyd => request%evaluation%constitutive)
-    type is (b110_default_mvg_provider_t)
-       call evaluate_b110_default_mvg_state_direction(hyd, request%base_state%pressure_head, &
-            direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
-            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
-    type is (b110_direct_retention_provider_t)
-       call evaluate_b110_direct_retention_state_direction(hyd, request%base_state%pressure_head, &
-            direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
-            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
-"""
-new="""    select type (hyd => request%evaluation%constitutive)
-    type is (b110_default_mvg_provider_t)
-       ! Fused exact default-MvG base value + directional derivative pass.
-       call evaluate_b110_default_mvg_state_direction(hyd, request%base_state%pressure_head, &
-            direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
-            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route, &
-            base_conductivity=ref_ws%richards%provider_k)
-    type is (b110_direct_retention_provider_t)
-       ! Direct-retention keeps the existing value-provider path unchanged.
-       call request%evaluation%constitutive%evaluate_demand(request%base_state%pressure_head, &
-            CONSTITUTIVE_DEMAND_CONDUCTIVITY, ref_ws%richards%provider_theta, ref_ws%richards%provider_k, &
-            ref_ws%richards%provider_capacity, ref_ws%richards%provider_dkdh)
-       if (any(.not. ieee_is_finite(ref_ws%richards%provider_k(1:n)))) then
-          direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
-          direction_result%route = 'base-constitutive-value-nonfinite'
-          return
-       end if
-       call evaluate_b110_direct_retention_state_direction(hyd, request%base_state%pressure_head, &
-            direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
-            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
-"""
-if old not in src:
-    raise SystemExit("Repair05 service fusion seam missing")
-src=src.replace(old,new,1)
-# For default route, validate fused K after select.
-needle="""    if (.not. constitutive_direction_ok) then
-       direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
-       direction_result%route = constitutive_direction_route
-       return
-    end if
-"""
-replacement=needle+"""    if (any(.not. ieee_is_finite(ref_ws%richards%provider_k(1:n)))) then
-       direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
-       direction_result%route = 'base-constitutive-value-nonfinite'
-       return
-    end if
-"""
-if needle not in src:
-    raise SystemExit("Repair05 post-direction seam missing")
-src=src.replace(needle,replacement,1)
-Path(sys.argv[1]).write_text(src)
-PY
+BASE=7a353bd11dca834b1d5ead0671c9054fe2045c25
+git fetch --no-tags --depth=1 origin "$BASE"
+git show "$BASE:src/solver/mod_b110_default_mvg_provider.f90" > "$BUILD/src/provider_base.f90"
+git show "$BASE:src/solver/mod_b110_default_mvg_directional_provider.f90" > "$BUILD/src/directional_base.f90"
+git show "$BASE:src/adapter/mod_reference_richards_accepted_step_directional_service.f90" > "$BUILD/src/service_base.f90"
 
 python3 - "$BUILD/test.f90" <<'PY'
 from pathlib import Path
@@ -232,11 +97,11 @@ compile_variant(){
   for source in "${SRC[@]}"; do
     case "$source" in
       PROVIDER_PLACEHOLDER)
-        [[ "$name" == base ]] && source="$BUILD/src/provider_base.f90" || source="$BUILD/src/provider_candidate.f90" ;;
+        [[ "$name" == base ]] && source="$BUILD/src/provider_base.f90" || source="src/solver/mod_b110_default_mvg_provider.f90" ;;
       DIRECTIONAL_PROVIDER_PLACEHOLDER)
-        [[ "$name" == base ]] && source="$BUILD/src/directional_base.f90" || source="$BUILD/src/directional_candidate.f90" ;;
+        [[ "$name" == base ]] && source="$BUILD/src/directional_base.f90" || source="src/solver/mod_b110_default_mvg_directional_provider.f90" ;;
       SERVICE_PLACEHOLDER)
-        [[ "$name" == base ]] && source="$BUILD/src/service_base.f90" || source="$BUILD/src/service_candidate.f90" ;;
+        [[ "$name" == base ]] && source="$BUILD/src/service_base.f90" || source="src/adapter/mod_reference_richards_accepted_step_directional_service.f90" ;;
     esac
     local obj="$out/$(basename "${source%.*}").o"
     gfortran "${COMMON[@]}" -J "$out" -I "$out" -c "$source" -o "$obj"
