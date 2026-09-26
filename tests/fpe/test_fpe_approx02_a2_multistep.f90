@@ -14,7 +14,7 @@ program test_fpe_approx02_a2_multistep
   implicit none
 
   real(real64), parameter :: exact_tol=1.0e-12_real64
-  real(real64), parameter :: a2_tol=1.0e-4_real64
+  real(real64) :: candidate_tol
   real(real64), parameter :: duration=1.0e-3_real64
   integer, parameter :: nsteps=20
 
@@ -41,9 +41,14 @@ program test_fpe_approx02_a2_multistep
   character(len=8) :: material
   character(len=64) :: arg
 
-  if(command_argument_count()/=2) error stop 'usage: MATERIAL H0_CM'
+  if(command_argument_count()/=2 .and. command_argument_count()/=3) error stop 'usage: MATERIAL H0_CM [CANDIDATE_TOL]'
   call get_command_argument(1,material)
   call get_command_argument(2,arg); read(arg,*) h0
+  candidate_tol=1.0e-4_real64
+  if(command_argument_count()==3)then
+    call get_command_argument(3,arg); read(arg,*) candidate_tol
+  end if
+  if(candidate_tol<=0.0_real64) error stop 'invalid candidate tolerance'
   call material_parameters(trim(material),tr,ts,alpha,nvg,ksat,lambda)
 
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
@@ -68,7 +73,7 @@ program test_fpe_approx02_a2_multistep
   call bind_b110_source_sink_provider(ss,drainage,irrigation,roots)
 
   call initialize_request(req_exact,params,hyd,ss,top,heads,water,h0,exact_tol)
-  call initialize_request(req_a2,params,hyd,ss,top,heads,water,h0,a2_tol)
+  call initialize_request(req_a2,params,hyd,ss,top,heads,water,h0,candidate_tol)
 
   exact_nonlinear=0; exact_backtrack=0
   exact_cum_exchange=0.0_real64
@@ -133,7 +138,7 @@ program test_fpe_approx02_a2_multistep
   if(.not.ieee_is_finite(max_head_rel) .or. .not.ieee_is_finite(cum_rel)) error stop 'nonfinite A2 error metric'
 
   write(*,'(*(g0))') 'APPROX02_A2_MULTISTEP|MATERIAL=',trim(material),'|H0=',h0,'|STEPS=',nsteps, &
-       '|DURATION=',duration,'|EXACT_SECONDS=',exact_seconds,'|A2_SECONDS=',a2_seconds, &
+       '|DURATION=',duration,'|CANDIDATE_TOL=',candidate_tol,'|EXACT_SECONDS=',exact_seconds,'|A2_SECONDS=',a2_seconds, &
        '|RUNTIME_RATIO=',a2_seconds/exact_seconds,'|SPEEDUP_PERCENT=',100.0_real64*(1.0_real64-a2_seconds/exact_seconds), &
        '|EXACT_NONLINEAR=',exact_nonlinear,'|A2_NONLINEAR=',a2_nonlinear, &
        '|EXACT_BACKTRACK=',exact_backtrack,'|A2_BACKTRACK=',a2_backtrack, &
