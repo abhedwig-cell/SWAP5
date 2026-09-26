@@ -8,6 +8,7 @@ on:
       - 'tests/fpe/run_fpe_approx02_tolerance_sweep.sh'
       - 'tests/fpe/run_fpe_approx02_balance_sweep.sh'
       - 'tests/fpe/run_fpe_approx02_combined_convergence_sweep.sh'
+      - 'tests/fpe/run_fpe_approx02_candidate_matrix.sh'
       - 'docs/performance/F-PE-APPROX02_*.md'
       - '.github/workflows/f-pe-approx02.yml'
   workflow_dispatch:
@@ -36,3 +37,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx02_combined_convergence_sweep.sh
+
+  candidate-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx02_candidate_matrix.sh
