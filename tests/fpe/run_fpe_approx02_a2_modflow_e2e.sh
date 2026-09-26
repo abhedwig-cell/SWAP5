@@ -139,7 +139,9 @@ MODULE_SRC=(
 )
 
 compile_variant(){
-  local name="$1" out="$BUILD/$name" objects=()
+  local name="$1"
+  local out="$BUILD/$name"
+  local objects=()
   for source in "${MODULE_SRC[@]}"; do
     if [[ "$source" == BRIDGE_PLACEHOLDER ]]; then source="$BUILD/$name/mod_fgc44_real_swap_c_bridge.f90"; fi
     obj="$out/$(basename "${source%.*}").o"
