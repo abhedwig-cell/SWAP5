@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
       - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
       - 'tests/fpe/run_fpe_temporal08_*.sh'
       - 'tests/fpe/test_fpe_temporal08_*.f90'
       - 'docs/performance/F-PE-TEMPORAL08_*.md'
@@ -23,3 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_temporal08_p1_registry.sh
+
+  p2-bootstrap-binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_temporal08_p2_bootstrap.sh
