@@ -1551,6 +1551,45 @@ contains
       end if
     end if
     ! A crossing window must expose the process boundary without executing any tile.
+    if(allocated(root_profiles)) then
+      requests%t1=finish
+      call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,3,prefixes,prefix_count,code,root_profiles)
+      if(code/=FMR_APP_BOOT_OK.or.prefix_count/=2) error stop 'profile window failed'
+      do i=1,prefix_count
+        if(.not.all(prefixes(i)%columns%committed).or..not.all(prefixes(i)%columns%mass%complete)) &
+             error stop 'profile window publication incomplete'
+        if(any(abs(prefixes(i)%columns%mass%residual)>1.0e-12_real64)) error stop 'profile window mass'
+      end do
+      call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,right,code,interval_end,root_profiles)
+      if(code/=FMR_APP_BOOT_OK.or.interval_end/=midpoint) error stop 'profile manual first prefix'
+      requests%t0=interval_end; requests%selection_opportunity=.false.
+      previous=forcing
+      call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,right,code,interval_end,root_profiles)
+      if(code/=FMR_APP_BOOT_OK.or.interval_end/=finish) error stop 'profile manual second prefix'
+      call application%copy_committed_hydraulic_states(lhs,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'profile window state copy'
+      call restored%copy_committed_hydraulic_states(rhs,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'profile manual state copy'
+      do i=1,2
+        if(lhs(i)%committed_time/=finish.or.lhs(i)%revision/=rhs(i)%revision.or. &
+             any(lhs(i)%water_content/=rhs(i)%water_content).or. &
+             any(lhs(i)%pressure_head_cm/=rhs(i)%pressure_head_cm)) error stop 'profile window manual identity'
+      end do
+      call application%close(code)
+      call restored%close(code)
+      call application%initialize(config,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'profile window reset'
+      call restored%initialize(config,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'profile manual reset'
+      requests%t0=T0; requests%selection_opportunity=.true.
+      do i=1,2
+        previous(i)%subsurface_irrigation_source=0.0_real64
+      end do
+      write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PROFILE_WINDOW_MANUAL_IDENTITY=PASS'
+    end if
     requests%t1=finish+1.0_real64/1024.0_real64
     call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
          management,requests,previous,left,code,root_profiles,preparation)
