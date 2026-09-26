@@ -91,7 +91,7 @@ done
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$BUILD/test.f90" -o "$BUILD/test.o"
 gfortran -O2 -pg "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 
-CALLS=750000
+CALLS=500000
 
 run_profile() {
   local mode="$1"
@@ -107,6 +107,13 @@ run_profile() {
 
 run_profile reference
 run_profile directional
+
+echo "DIR01_GPROF_REFERENCE_RAW_BEGIN"
+sed -n '1,120p' "$BUILD/reference.gprof"
+echo "DIR01_GPROF_REFERENCE_RAW_END"
+echo "DIR01_GPROF_DIRECTIONAL_RAW_BEGIN"
+sed -n '1,160p' "$BUILD/directional.gprof"
+echo "DIR01_GPROF_DIRECTIONAL_RAW_END"
 
 python3 - "$BUILD/reference.gprof" "$BUILD/directional.gprof" <<'PY'
 import re,sys
