@@ -99,8 +99,16 @@ This is a semantic coupling issue, not a new Richards solver failure.
 
 ## Decision
 
-TEMPORAL06 stops at P0.
+The preregistered production-shaped admission path stops at P0.
 
-Do not proceed to MODFLOW-facing P1 with c=0.65 as currently defined.
+Do not proceed to MODFLOW-facing P1 with c=0.65 on the basis of policy-overlap evidence alone.
+
+A subsequent, separately preregistered fresh-only tangent-authority discriminator was executed to diagnose the failed gate. That discriminator did not reopen P1; it established that neither c=0.50 nor c=0.65 published tangent is independently authority-consistent for the O14-mid failure region.
+
+See:
+
+- `F-PE-TEMPORAL06_TANGENT_AUTHORITY_PREREGISTRATION.md`;
+- `F-PE-TEMPORAL06_TANGENT_AUTHORITY_RESULT.md`;
+- `F-PE-TEMPORAL06_CLOSEOUT.md`.
 
 No production temporal-policy change is authorized.
