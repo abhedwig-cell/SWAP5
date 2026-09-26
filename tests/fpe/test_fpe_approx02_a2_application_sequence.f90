@@ -11,8 +11,8 @@ program test_fpe_approx02_a2_application_sequence
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
 
-  real(real64),parameter :: exact_tol=1.0e-12_real64,a2_tol=1.0e-4_real64,h0=-10.0_real64
-  real(real64) :: dt,top_factor
+  real(real64),parameter :: exact_tol=1.0e-12_real64,h0=-10.0_real64
+  real(real64) :: dt,top_factor,candidate_tol
   integer,parameter :: nsteps=20
   type(fmr_production_application_config_t) :: exact_cfg,a2_cfg
   type(fmr_production_application_bootstrap_t) :: exact_app,a2_app
@@ -26,17 +26,20 @@ program test_fpe_approx02_a2_application_sequence
   character(len=64) :: arg
   integer(int64) :: c0,c1,rate
 
-  dt=1.0e-4_real64; top_factor=-1.0_real64
+  dt=1.0e-4_real64; top_factor=-1.0_real64; candidate_tol=1.0e-4_real64
   if(command_argument_count()>=1)then
     call get_command_argument(1,arg); read(arg,*) dt
   end if
   if(command_argument_count()>=2)then
     call get_command_argument(2,arg); read(arg,*) top_factor
   end if
-  if(dt<=0.0_real64) error stop 'invalid dt'
+  if(command_argument_count()>=3)then
+    call get_command_argument(3,arg); read(arg,*) candidate_tol
+  end if
+  if(dt<=0.0_real64 .or. candidate_tol<=0.0_real64) error stop 'invalid trajectory controls'
 
   call build_config(exact_cfg,exact_tol)
-  call build_config(a2_cfg,a2_tol)
+  call build_config(a2_cfg,candidate_tol)
   call exact_app%initialize(exact_cfg,status)
   if(status/=FMR_APP_BOOT_OK .or. .not.exact_app%ready()) error stop 'exact app bootstrap'
   call a2_app%initialize(a2_cfg,status)
@@ -86,7 +89,7 @@ program test_fpe_approx02_a2_application_sequence
   call system_clock(c1)
   a2_seconds=real(c1-c0,real64)/real(rate,real64)
 
-  write(*,'(*(g0))') 'APPROX02_A2_APPLICATION|STEPS=',nsteps,'|DT=',dt,'|TOP_FACTOR=',top_factor, &
+  write(*,'(*(g0))') 'APPROX02_A2_APPLICATION|STEPS=',nsteps,'|DT=',dt,'|TOP_FACTOR=',top_factor,'|CANDIDATE_TOL=',candidate_tol, &
        '|EXACT_SECONDS=',exact_seconds,'|A2_SECONDS=',a2_seconds, &
        '|RUNTIME_RATIO=',a2_seconds/exact_seconds, &
        '|SPEEDUP_PERCENT=',100.0_real64*(1.0_real64-a2_seconds/exact_seconds), &
