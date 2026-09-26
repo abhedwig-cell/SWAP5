@@ -35,6 +35,21 @@ replacement=needle+"""  h0 = -75.0_real64
 if needle not in src: raise SystemExit("argument seam missing")
 src=src.replace(needle,replacement,1)
 src=src.replace("    forcing%bottom_head = -999999.0_real64","    forcing%bottom_head = bottom_head_value",1)
+early="""  call system_clock(clock_end)
+  elapsed_seconds = real(clock_end-clock_start,real64)/real(clock_rate,real64)
+"""
+earlyrep=early+"""  if (timing_directional) then
+    write(*,'(A,ES26.17E3)') 'FKT22_FMR_BOTTOM_EXCHANGE_DERIVATIVE=', &
+         result_on%accepted_trajectory_direction%accepted_bottom_exchange_derivative
+    write(*,'(A,ES26.17E3)') 'APPROX01_BOTTOM_HEAD_CM=', bottom_head_value
+    write(*,'(A,ES26.17E3)') 'APPROX01_BOTTOM_EXCHANGE_CM=', result_on%bottom_outward_exchange_native
+    if (result_on%status /= CANONICAL_STATUS_COMPLETED .or. .not. result_on%completed) error stop 'directional trial incomplete'
+    if (.not. result_on%accepted_trajectory_direction%available) error stop 'directional tangent unavailable'
+    stop 0
+  end if
+"""
+if early not in src: raise SystemExit("early exit seam missing")
+src=src.replace(early,earlyrep,1)
 outneedle="""  write(*,'(A,ES26.17E3)') 'FKT22_FMR_BOTTOM_EXCHANGE_DERIVATIVE=', &
        result_on%accepted_trajectory_direction%accepted_bottom_exchange_derivative
 """
