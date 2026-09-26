@@ -56,7 +56,9 @@ For each material/regime, define local hydrostatic initial conductivity at the t
 
 Requested interval:
 
-`0.01 day`
+`0.001 day`
+
+The initial matrix attempt used `0.01 day`. Its exact/reference B01-wet-plus arm did not commit, so that window is outside the stable reference envelope for the cross-material qualification matrix. The forcing definition is unchanged. Only the requested qualification window is reduced by one order of magnitude. Earlier production-consistent discovery showed that `0.001 day` still contains genuine temporal refinement for the selected forcing scale, so this is not a trivial one-step fallback.
 
 The prescribed bottom-face head is materialized from the predictor qbot with the same B1.10 Darcy mapping used by the production FGC44 route.
 
