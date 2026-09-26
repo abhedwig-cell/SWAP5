@@ -138,12 +138,14 @@ contains
       return
     end if
     if (.not. materializer%profile_admitted(parameters)) then
+      call invalidate_tangent_cache(self)
       status = GW_SWAP_PARTICIPANT_FORCING_FAILED
       return
     end if
 
     call materializer%materialize(prescribed_head_m, datum, forcing, forcing_status)
     if (forcing_status /= GW_SWAP_FORCING_OK .or. .not. allocated(forcing)) then
+      call invalidate_tangent_cache(self)
       status = GW_SWAP_PARTICIPANT_FORCING_FAILED
       return
     end if
@@ -169,6 +171,7 @@ contains
            window%t0, window%t1, self%origin_checkpoint, self%trial_result, self%candidate, self%diagnostics, &
            trusted_prepared_parameters=trusted_prepared_parameters)
     class default
+      call invalidate_tangent_cache(self)
       status = GW_SWAP_PARTICIPANT_FORCING_FAILED
       return
     end select
