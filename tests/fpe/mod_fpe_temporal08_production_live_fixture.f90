@@ -8,7 +8,7 @@ module mod_fpe_temporal08_production_live_fixture
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
-       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK
+       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
        groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
@@ -35,14 +35,31 @@ module mod_fpe_temporal08_production_live_fixture
   real(real64), parameter :: PREDICTOR_QBOT=1.0e-6_real64
   real(real64), parameter :: HISTORY_RATE=400.0_real64
 
-  type(fmr_production_application_bootstrap_t), save :: app
+  type(fmr_production_application_bootstrap_t), save :: app, missing_seed_app
   logical, save :: initialized=.false.
 
   public :: fpe_temporal08_fixture_initialize_c
   public :: fpe_temporal08_fixture_state_c
   public :: fpe_temporal08_fixture_close_c
+  public :: fpe_temporal08_missing_seed_rejected_c
 
 contains
+
+  integer(c_int) function fpe_temporal08_missing_seed_rejected_c() &
+       bind(C,name="fpe_temporal08_missing_seed_rejected_c") result(c_status)
+    type(fmr_production_application_config_t) :: config
+    integer :: i, status
+
+    c_status=1_c_int
+    call initialize_config(config)
+    do i=1,size(config%tiles)
+      if(allocated(config%tiles(i)%initial_right_derivative)) deallocate(config%tiles(i)%initial_right_derivative)
+    end do
+    call missing_seed_app%initialize(config,status)
+    if(status/=FMR_APP_BOOT_PROFILE_NOT_ADMITTED)return
+    if(missing_seed_app%ready())return
+    c_status=0_c_int
+  end function fpe_temporal08_missing_seed_rejected_c
 
   integer(c_int) function fpe_temporal08_fixture_initialize_c(context_handle,href1,href2) &
        bind(C,name="fpe_temporal08_fixture_initialize_c") result(c_status)
