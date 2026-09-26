@@ -1243,14 +1243,19 @@ contains
   end subroutine verify_pending_irrigation_trial
 
   subroutine verify_irrigation_bootstrap(profile,source,template)
+    use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation
     use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t
-    use mod_irrigation_process, only: irrigation_state_t,IRRIGATION_EVENT_SCHEDULED
+    use mod_irrigation_process, only: irrigation_state_t,IRRIGATION_EVENT_SCHEDULED, &
+         scheduled_irrigation_parameters_t,scheduled_irrigation_request_t
     type(fmr_production_application_config_t),intent(in)::profile
     type(ppa_irrigation_event_state_t),intent(in)::source
     type(fmr_template_t),intent(in)::template
     type(fmr_production_application_config_t)::config
     type(fmr_production_application_bootstrap_t)::application,restored
     type(fmr_b110_physical_forcing_t)::forcing(2)
+    type(fmr_b110_physical_forcing_t)::previous(2)
+    type(scheduled_irrigation_parameters_t)::management(2)
+    type(scheduled_irrigation_request_t)::requests(2)
     type(irrigation_state_t)::events(2)
     type(fmr_serialized_column_result_t),allocatable::left(:),right(:)
     type(fmr_committed_hydraulic_state_t),allocatable::lhs(:),rhs(:)
@@ -1335,7 +1340,26 @@ contains
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'selection mask accepted without events'
     call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events,[.true.])
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'selection mask accepted wrong length'
-    call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events,[.true.,.true.])
+    do i=1,2
+      management(i)%scheduled_irrigation_enabled=.true.; management(i)%active_nodes=source%active_nodes
+      management(i)%sensor_node=1; management(i)%single_ssdi_node=1
+      management(i)%irr_rate_cm_per_day=0.01_real64
+      management(i)%tcs7_knot_count=2; management(i)%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+      management(i)%dcs2_knot_count=2; management(i)%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+      management(i)%dcs2_depth_cm=0.01_real64*real(i,real64)/1024.0_real64
+      requests(i)%t0=T0; requests(i)%t1=midpoint
+      requests(i)%selection_opportunity=.true.; requests(i)%irrigation_enabled=.true.
+      requests(i)%schedule_enabled=.true.; requests(i)%crop_emerged=.true.
+      requests(i)%irrigation_window_open=.true.
+      previous(i)=forcing(i); previous(i)%subsurface_irrigation_source=0.0_real64
+    end do
+    call execute_ppa_bootstrap_irrigation(application,[2_int64,1_int64],92001_int64,management,requests,previous,left,code)
+    if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'management column identity mismatch admitted'
+    requests(2)%t0=midpoint
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
+    if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'management inconsistent boundaries admitted'
+    requests(2)%t0=T0
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
     if(code/=FMR_APP_BOOT_OK) then
       write(*,*) 'MIXED_LIFECYCLE_STATUS',code,left%kernel_status,left%accepted_substeps
       write(*,*) 'MIXED_LIFECYCLE_ADMISSION',left%admission_status
@@ -1348,9 +1372,11 @@ contains
     events(1)%active_event_start=midpoint; events(1)%active_event_end=finish
     forcing(1)%temporal_forcing_event=.true.; forcing(1)%temporal_forcing_event_time=midpoint
     forcing(2)%temporal_forcing_event=.false.
-    call application%run_prepared_irrigation(midpoint,finish,forcing,left,code,events,[.true.,.false.])
+    previous=forcing
+    requests%t0=midpoint; requests%t1=finish
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
     if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'pending beside new bootstrap failed'
-    call restored%run_prepared_irrigation(midpoint,finish,forcing,right,code,events,[.true.,.false.])
+    call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64,management,requests,previous,right,code)
     if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'restored pending beside new failed'
     do i=1,2
       if(.not.left(i)%mass%complete.or.abs(left(i)%mass%residual)>1.0e-12_real64) &
@@ -1359,9 +1385,11 @@ contains
       forcing(i)%subsurface_irrigation_source=0.0_real64
     end do
     forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=finish
-    call application%run_prepared_irrigation(finish,finish+1.0_real64/1024.0_real64,forcing,left,code)
+    requests%t0=finish; requests%t1=finish+1.0_real64/1024.0_real64
+    requests%selection_opportunity=.false.
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
     if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'bootstrap source stop failed'
-    call restored%run_prepared_irrigation(finish,finish+1.0_real64/1024.0_real64,forcing,right,code)
+    call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64,management,requests,previous,right,code)
     if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'restored bootstrap source stop failed'
     call application%copy_committed_hydraulic_states(lhs,code)
     if(code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle copy'
@@ -1376,6 +1404,7 @@ contains
     call application%close(code)
     call restored%close(code)
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_MIXED_SELECTION_SOURCE_STOP_RESTART=PASS'
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_AUTOMATIC_TYPED_SOURCE=PASS'
     ! An outer failure after accepted internal steps must not publish either
     ! the newly selected event or physical progress through the real owner.
     config%numerical%max_committed_substeps=1
