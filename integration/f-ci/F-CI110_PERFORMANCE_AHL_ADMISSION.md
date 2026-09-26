@@ -49,3 +49,27 @@ Before canonical ref mutation:
 - verify F-AHL50 remains default OFF and envelope-bounded.
 
 No new optimization or physics work belongs in F-CI110.
+
+
+## Final preservation result
+
+Final candidate head:
+`5000086bf3ba6f1cd5f620f6be02880390380692`
+
+The F-CI110 preservation suite is fully green:
+- FKT22: PASS;
+- PPA-WU01: PASS;
+- B1 poison workspace: PASS;
+- PLANVALID01: PASS;
+- F-AHL50 provider: PASS;
+- F-AHL50 12-case matrix: PASS;
+- default-off: PASS;
+- fail-closed: PASS;
+- ownership: PASS;
+- scale: PASS;
+- F-GC49D application opt-in: PASS.
+
+No production change was required during final preservation. The only final repair was inherited poison-runner compile ordering for the admitted direct-retention modules.
+
+Status:
+`F-CI110 = READY_CANONICAL_MERGE`
