@@ -184,11 +184,12 @@ contains
     p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%max_iterations=48; p%max_backtracking=16
     p%min_step_duration=1.0e-12_real64
-    p%compartment_balance_tolerance=tol
-    p%total_balance_tolerance=tol
-    p%head_abs_tolerance=tol
-    p%head_rel_tolerance=tol
+    p%compartment_balance_tolerance=exact_tol
+    p%total_balance_tolerance=exact_tol
+    p%head_abs_tolerance=exact_tol
+    p%head_rel_tolerance=exact_tol
     p%ponding_tolerance=exact_tol
+    p%practical_richards_a2c_active = abs(tol-1.0e-8_real64) <= 64.0_real64*epsilon(1.0_real64)*1.0e-8_real64
     p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.
     p%frost_active=.false.; p%soil_temperature_active=.false.; p%drainage_response_active=.false.
