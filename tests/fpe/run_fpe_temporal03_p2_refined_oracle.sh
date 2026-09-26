@@ -199,7 +199,10 @@ insert="""contains
     floor_template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BASE
     floor_template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     call materializer%materialize(real(prescribed_head_m,real64),datum,generic_forcing,status)
-    if(status/=GW_SWAP_FORCING_OK .or. .not.allocated(generic_forcing))return
+    if(status/=GW_SWAP_FORCING_OK .or. .not.allocated(generic_forcing))then
+      write(*,'(*(g0))') 'TEMPORAL03_P2_FAILPOINT|STAGE=MATERIALIZE|STATUS=',status
+      return
+    end if
     select type(f=>generic_forcing)
     type is(fmr_b110_physical_forcing_t)
       oracle_forcing=f
@@ -215,14 +218,24 @@ insert="""contains
       t1=window%t0+real(i,real64)*dt
       call oracle_backend%run_reference_floor_sample(column,floor_template,corrector_parameters,plain,oracle_forcing, &
            t0,t1,1.0e-12_real64,r,c,d)
-      if(.not.r%sample_valid .or. .not.r%mass%complete .or. .not.c%ready())return
-      if(.not.r%bottom_interface_exchange_available)return
+      if(.not.r%sample_valid .or. .not.r%mass%complete .or. .not.c%ready())then
+        write(*,'(*(g0))') 'TEMPORAL03_P2_FAILPOINT|STAGE=FLOOR|I=',i,'|STATUS=',r%status, &
+             '|VALID=',r%sample_valid,'|MASS=',r%mass%complete,'|READY=',c%ready()
+        return
+      end if
+      if(.not.r%bottom_interface_exchange_available)then
+        write(*,'(*(g0))') 'TEMPORAL03_P2_FAILPOINT|STAGE=EXCHANGE|I=',i
+        return
+      end if
       exchange_sum=exchange_sum+r%bottom_outward_exchange_native
       residual_sum=residual_sum+r%mass%residual
       max_step_resid=max(max_step_resid,abs(r%mass%residual))
       terminal_flux=r%terminal_bottom_outward_flux_native
       call oracle_backend%commit_reference_floor_candidate(plain,c,d,did_commit,status)
-      if(.not.did_commit .or. status/=0)return
+      if(.not.did_commit .or. status/=0)then
+        write(*,'(*(g0))') 'TEMPORAL03_P2_FAILPOINT|STAGE=COMMIT|I=',i,'|DID=',did_commit,'|STATUS=',status
+        return
+      end if
     end do
 
     call plain%snapshot(final_snap,available)
