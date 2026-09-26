@@ -71,6 +71,12 @@ from pathlib import Path
 import sys
 src=Path("tests/fpe/test_fpe_approx01_tangent_matrix.f90").read_text()
 src=src.replace(
+"  use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &\n"
+"       soil_water_accepted_step_direction_result_t, SW_STEP_DIRECTION_AVAILABLE, SW_STEP_CONTROL_BOTTOM_HEAD\n",
+"  use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &\n"
+"       soil_water_accepted_step_direction_result_t, SW_STEP_DIRECTION_AVAILABLE, SW_STEP_CONTROL_BOTTOM_HEAD, &\n"
+"       SW_STEP_CONTROL_BOTTOM_FLUX\n",1)
+src=src.replace(
 "  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX\n",
 "  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX\n"
 "  use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context\n",1)
