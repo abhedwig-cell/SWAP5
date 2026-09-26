@@ -45,15 +45,19 @@ jobs:
           path: solve01-p0b.txt
 
   p1-live-corrector:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install live coupling dependencies
-        run: pip install numpy flopy xmipy
+      - name: Install compiler and pinned live coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
       - name: Run live MODFLOW6 bounded-response corrector robustness
         run: |
           bash tests/fpe/run_fpe_solve01_p1_live_corrector.sh | tee solve01-p1.txt
