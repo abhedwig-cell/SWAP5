@@ -269,6 +269,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: practical_richards_head_rel_tolerance = 0.0_real64
     real(real64) :: practical_richards_compartment_balance_tolerance = 0.0_real64
     real(real64) :: practical_richards_total_balance_tolerance = 0.0_real64
+    real(real64) :: effective_reference_compartment_balance_tolerance = 0.0_real64
+    real(real64) :: effective_reference_total_balance_tolerance = 0.0_real64
     logical :: temporal_indicator_enabled = .false.
     logical :: temporal_previous_derivative_available = .false.
     logical :: temporal_current_derivative_available = .false.
@@ -2122,6 +2124,10 @@ contains
          FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM / step_duration)
     request%numerical%total_balance_tolerance = max(self%total_balance_tolerance, &
          FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM / step_duration)
+    self%last_observation%effective_reference_compartment_balance_tolerance = &
+         request%numerical%compartment_balance_tolerance
+    self%last_observation%effective_reference_total_balance_tolerance = &
+         request%numerical%total_balance_tolerance
     request%numerical%head_abs_tolerance = self%head_abs_tolerance
     request%numerical%head_rel_tolerance = self%head_rel_tolerance
     request%numerical%ponding_tolerance = self%ponding_tolerance
