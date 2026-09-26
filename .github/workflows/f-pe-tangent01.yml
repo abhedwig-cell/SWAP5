@@ -1,0 +1,19 @@
+name: F-PE-TANGENT01 accepted-trajectory tangent authority
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_tangent01_*.sh'
+      - 'docs/performance/F-PE-TANGENT01_*.md'
+      - '.github/workflows/f-pe-tangent01.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-trajectory-authority:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_tangent01_p0.sh
