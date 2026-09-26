@@ -18,6 +18,7 @@ module mod_ppa_bootstrap_irrigation
   public :: execute_ppa_bootstrap_irrigation
   public :: execute_next_ppa_bootstrap_irrigation
   public :: execute_window_ppa_bootstrap_irrigation
+  integer,parameter,public :: PPA_IRR_WINDOW_BUDGET_EXHAUSTED=-1
   type,public :: ppa_irrigation_prefix_result_t
     real(real64) :: interval_end=0.0_real64
     type(fmr_serialized_column_result_t),allocatable :: columns(:)
@@ -62,7 +63,7 @@ contains
       remaining%t0=endpoint
       remaining%selection_opportunity=.false.
     end do
-    status=FMR_APP_BOOT_INVALID_CONFIG ! prefix budget exhausted, not complete
+    status=PPA_IRR_WINDOW_BUDGET_EXHAUSTED
   end subroutine
 
   ! Execute at most one accepted-for-preparation prefix, never a whole-window

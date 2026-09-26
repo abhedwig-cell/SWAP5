@@ -1246,7 +1246,8 @@ contains
 
   subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
     use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation,ppa_irrigation_preparation_t, &
-         execute_next_ppa_bootstrap_irrigation,execute_window_ppa_bootstrap_irrigation,ppa_irrigation_prefix_result_t
+         execute_next_ppa_bootstrap_irrigation,execute_window_ppa_bootstrap_irrigation,ppa_irrigation_prefix_result_t, &
+         PPA_IRR_WINDOW_BUDGET_EXHAUSTED
     use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
     use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t
     use mod_irrigation_process, only: irrigation_state_t,IRRIGATION_EVENT_SCHEDULED, &
@@ -1418,7 +1419,7 @@ contains
     if(code==FMR_APP_BOOT_OK.or.prefix_count/=0.or.allocated(prefixes)) error stop 'zero window budget accepted'
     call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
          management,requests,previous,1,prefixes,prefix_count,code)
-    if(code==FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'budget exhaustion reported complete'
+    if(code/=PPA_IRR_WINDOW_BUDGET_EXHAUSTED.or.prefix_count/=1) error stop 'budget exhaustion status incorrect'
     if(prefixes(1)%interval_end/=midpoint.or..not.all(prefixes(1)%columns%committed)) &
          error stop 'budget exhaustion lost committed prefix'
     call application%export_committed_restart(92001_int64,saved,ok,code)
@@ -1459,9 +1460,15 @@ contains
     if(code/=FMR_APP_BOOT_OK) error stop 'descending fixture reset failed'
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_WINDOW_MANUAL_IDENTITY=PASS'
     management(2)%single_ssdi_node=2
+    requests%t1=finish
+    call execute_window_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,3,prefixes,prefix_count,code)
+    if(prefix_count/=1) error stop 'mixed window continued after failure'
+    if(allocated(prefixes(2)%columns).or.allocated(prefixes(3)%columns)) error stop 'mixed window published later prefix'
+    if(code==PPA_IRR_WINDOW_BUDGET_EXHAUSTED) error stop 'mixed failure mislabeled as budget exhaustion'
+    right=prefixes(1)%columns
+    interval_end=prefixes(1)%interval_end
     requests%t1=midpoint
-    call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
-         management,requests,previous,right,code,interval_end)
     if(code==FMR_APP_BOOT_OK.or..not.allocated(right)) error stop 'mixed prefix outcome hidden'
     if(.not.right(1)%committed.or.right(2)%committed) error stop 'mixed prefix publication incorrect'
     if(interval_end/=midpoint.or.right(1)%final_committed_time/=midpoint.or. &
@@ -1486,6 +1493,7 @@ contains
     if(code/=FMR_APP_BOOT_OK) error stop 'mixed prefix fixture reset failed'
     management(2)%single_ssdi_node=1
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PREFIX_MIXED_PUBLICATION=PASS'
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_WINDOW_MIXED_TERMINAL=PASS'
     management(1)%dcs2_depth_cm=0.01_real64/1024.0_real64
     management(2)%dcs2_depth_cm=0.02_real64/1024.0_real64
     requests%t1=midpoint
