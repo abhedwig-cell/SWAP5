@@ -56,7 +56,8 @@ src=src.replace(
 "  public :: fgc44_predictor_run_diagnostics_c\n"
 "  public :: fgc44_approx04_configure_case_c, fgc44_approx04_p1b_state_c, fgc44_approx04_predictor_q_c\n"
 "  public :: fgc44_repro02_observation_c, fgc44_repro02_floor_c\n",1)
-needle="contains
+needle="contains\\n\\n"
+insert="""contains
 
   integer(c_int) function fgc44_repro02_floor_c(head_m,floor_status,sample_valid,physical_advances,nonlinear, &
        internal_retries,headcalc,jacobian,linear,backtrack,mass_complete,mass_residual,bottom_exchange,terminal_flux) &
@@ -82,7 +83,6 @@ needle="contains
     internal_retries=0_c_int; headcalc=0_c_int; jacobian=0_c_int; linear=0_c_int; backtrack=0_c_int
     mass_complete=0_c_int; mass_residual=0.0_c_double; bottom_exchange=0.0_c_double; terminal_flux=0.0_c_double
     if(.not.initialized)return
-
     call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
     if(forcing_status/=0 .or. .not.allocated(forcing))return
     call committed%snapshot(snapshot,available)
@@ -98,7 +98,6 @@ needle="contains
     end select
     call fmr_new_b110_committed_state(floor_committed,COLUMN_ID,base,window%t0,ok)
     if(.not.ok)return
-
     floor_template=template
     floor_template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BASE
     floor_template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
@@ -110,12 +109,10 @@ needle="contains
     class default
       return
     end select
-
     floor_status=int(result%status,c_int)
     sample_valid=merge(1_c_int,0_c_int,result%sample_valid)
     physical_advances=int(result%physical_advances,c_int)
-    nonlinear=int(result%nonlinear_iterations,c_int)
-    internal_retries=int(result%internal_retries,c_int)
+    nonlinear=int(result%nonlinear_iterations,c_int); internal_retries=int(result%internal_retries,c_int)
     headcalc=int(result%headcalc_calls,c_int); jacobian=int(result%jacobian_builds,c_int)
     linear=int(result%linear_solves,c_int); backtrack=int(result%backtracking_attempts,c_int)
     mass_complete=merge(1_c_int,0_c_int,result%mass%complete)
@@ -124,9 +121,6 @@ needle="contains
     terminal_flux=real(result%terminal_bottom_outward_flux_native,c_double)
     fgc44_repro02_floor_c=0_c_int
   end function fgc44_repro02_floor_c
-
-"
-insert="""contains
 
   integer(c_int) function fgc44_repro02_observation_c(solver_executed,solver_status,nonlinear,jacobian,linear, &
        backtrack,retries,constitutive,eq_available,temporal_enabled,temporal_status,temporal_available,certificate_available, &
