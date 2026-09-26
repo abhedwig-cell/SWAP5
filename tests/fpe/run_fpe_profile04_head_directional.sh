@@ -71,6 +71,10 @@ SRC=(
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
   src/runtime/mod_rossfast_d3r_model_binding.f90
+  src/solver/mod_rossfast_d3r_table_kernel.f90
+  src/solver/mod_rossfast_d3r_table_provider.f90
+  src/solver/mod_rossfast_d3r_soil_water_solver.f90
+  src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
 )
