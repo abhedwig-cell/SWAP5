@@ -495,7 +495,7 @@ cases=(
 for spec in "${cases[@]}"; do
   IFS='|' read -r material regime h0 imbalance offset dt <<< "$spec"
   raw="$(FGC44_SWAP_LIB="$BUILD/lib/libswap.so" python3 "$BUILD/py/bench.py" "$material" "$h0" "$imbalance" "$offset" "$dt" 2>&1)" || { printf '%s\n' "$raw" >&2; fail "$spec"; }
-  printf '%s\n' "$raw" | grep '^SHORTSTEP01_P2_\(INIT\|NEWTON\|TRIAL\|END\)|' | while IFS= read -r line; do
+  printf '%s\n' "$raw" | grep '^SHORTSTEP01_P2_\(INIT\|NEWTON\|TRIAL\|GATE\|END\)|' | while IFS= read -r line; do
     printf '%s|MATERIAL=%s|REGIME=%s|IMBALANCE=%s|OFFSET_CM=%s|REQUEST_DT=%s\n' "$line" "$material" "$regime" "$imbalance" "$offset" "$dt" >> "$OUT"
   done
   final="$(printf '%s\n' "$raw" | grep '^SHORTSTEP01_P2_RAW|' | tail -1)"
