@@ -592,8 +592,8 @@ export PYTHONPATH="$ROOT/tests/fgc/support"
 OUT="$BUILD/tangent_authority.txt"; : > "$OUT"
 imbalances=(-0.10 0.10)
 offsets=(-0.01 -0.001 0.001 0.01)
-for imbalance in "\${imbalances[@]}"; do
-  for offset in "\${offsets[@]}"; do
+for imbalance in "${imbalances[@]}"; do
+  for offset in "${offsets[@]}"; do
     raw="$(FGC44_SWAP_LIB="$BUILD/lib/libswap.so" python3 "$BUILD/py/bench.py" O14 -75 "$imbalance" "$offset")" || { printf '%s\n' "$raw" >&2; fail "O14 mid $imbalance $offset"; }
     line="$(printf '%s\n' "$raw" | grep '^TEMPORAL06_TANGENT_AUTH_RAW|' | tail -1)"
     [[ -n "$line" ]] || fail "missing tangent authority record"
