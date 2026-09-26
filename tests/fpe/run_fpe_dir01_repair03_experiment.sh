@@ -11,6 +11,7 @@ python3 - "$BUILD/src/direction_candidate.f90" <<'PY'
 from pathlib import Path
 import sys
 src=Path("src/transaction/mod_accepted_trajectory_directional_sensitivity.f90").read_text()
+src=src.replace("       SW_STEP_DIRECTION_AVAILABLE", "       SW_STEP_DIRECTION_AVAILABLE, SW_STEP_CONTROL_NONE",1)
 old="""    request = soil_water_accepted_step_direction_request_t()
     token = trajectory_step_token_t()
     ok = .false.
@@ -53,8 +54,13 @@ python3 - "$BUILD/src/backend_candidate.f90" <<'PY'
 from pathlib import Path
 import sys
 src=Path("src/runtime/mod_fmr_serialized_reference_backend.f90").read_text()
-old="    type(accepted_trajectory_direction_t) :: trajectory_direction\n"
-new=old+"    type(soil_water_accepted_step_direction_request_t) :: trajectory_request_workspace\n"
+old="""    type(accepted_trajectory_direction_t) :: trajectory_direction
+    logical :: snow_active = .false.
+"""
+new="""    type(accepted_trajectory_direction_t) :: trajectory_direction
+    type(soil_water_accepted_step_direction_request_t) :: trajectory_request_workspace
+    logical :: snow_active = .false.
+"""
 if old not in src: raise SystemExit("REPAIR03 model field seam missing")
 src=src.replace(old,new,1)
 old="    type(soil_water_accepted_step_direction_request_t) :: direction_request\n"
