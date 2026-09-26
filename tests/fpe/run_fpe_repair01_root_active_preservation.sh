@@ -35,6 +35,7 @@ MODULE_SRC=(
   src/process/mod_drainage_ernst_ipos45_response.f90
   src/process/mod_drainage_empirical_interflow_response.f90
   src/process/mod_drainage_multilevel_aggregation.f90
+  src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/process/mod_soil_temperature_contract.f90
