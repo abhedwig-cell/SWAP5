@@ -1231,6 +1231,8 @@ contains
     call verify_pending_mixed_columns(profile,source,template,.true.,.false.,.true.)
     call verify_pending_mixed_columns(profile,source,template,.false.,.true.,.true.)
     call verify_pending_mixed_columns(profile,source,template,.true.,.true.,.true.)
+    call verify_pending_mixed_columns(profile,source,template,.false.,.true.,.true.,.true.)
+    call verify_pending_mixed_columns(profile,source,template,.true.,.true.,.true.,.true.)
     do timing=7,8
       call verify_new_irrigation_selection_trial(profile,source,template,.false.,.false.,timing)
       call verify_new_irrigation_selection_trial(profile,source,template,.true.,.false.,timing)
@@ -1364,15 +1366,16 @@ contains
     if(timing==8) write(*,'(a)') 'PPA_IRR_TCS8_HYDRAULIC_SELECTION_RESTART=PASS'
   end subroutine verify_new_irrigation_selection_trial
 
-  subroutine verify_pending_mixed_columns(profile,source,template,reverse_order,select_gift,resolved_runtime)
+  subroutine verify_pending_mixed_columns(profile,source,template,reverse_order,select_gift,resolved_runtime,profile_selection)
     use mod_ppa_irrigation_source_binding, only: run_ppa_pending_irrigation_source_trial, &
-         evaluate_ppa_committed_irrigation_source,execute_ppa_irrigation_source_column
+         evaluate_ppa_committed_irrigation_source,execute_ppa_irrigation_source_column, &
+         ppa_irrigation_profile_t,evaluate_ppa_committed_profile_irrigation_source
     use mod_fmr_serialized_multiswap_runtime, only: fmr_execute_serialized_irrigation_resolved_column, &
          fmr_execute_serialized_resolved_physical_column, &
          fmr_serialized_column_result_t,fmr_serialized_batch_diagnostics_t
     use mod_fmr_runtime_core, only: fmr_column_diagnostics_t
     use mod_kernel_transactions, only: kernel_executor_t
-    use mod_irrigation_process, only: irrigation_flux_result_t
+    use mod_irrigation_process, only: irrigation_flux_result_t,IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
     use mod_irrigation_process, only: irrigation_state_t,scheduled_irrigation_parameters_t, &
          scheduled_irrigation_request_t,irrigation_diagnostics_t
     use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
@@ -1388,6 +1391,9 @@ contains
     type(fmr_template_t),intent(in)::template
     logical,intent(in)::reverse_order,select_gift
     logical,intent(in),optional::resolved_runtime
+    logical,intent(in),optional::profile_selection
+    type(ppa_irrigation_profile_t),allocatable::root_profile
+    type(ppa_irrigation_profile_t)::bad_profile
     logical::use_runtime
     type(kernel_executor_t)::control
     type(fmr_serialized_column_result_t)::outputs(2)
@@ -1444,6 +1450,17 @@ contains
     irrigation%tcs7_knot_count=2; irrigation%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
     irrigation%dcs2_knot_count=2; irrigation%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
     irrigation%dcs2_depth_cm=0.01_real64/1024.0_real64
+    if(present(profile_selection)) then
+      if(profile_selection) then
+        allocate(root_profile)
+        root_profile%noddrz=1; root_profile%layer=[1]; root_profile%dz=[1.0_real64]
+        root_profile%ztopcp=[0.0_real64]; root_profile%wclos=[0.8_real64]
+        root_profile%wcmes=[0.3_real64]; root_profile%wchis=[0.1_real64]
+        root_profile%rd=irrigation%dcs2_depth_cm(1)/(0.8_real64-source%water_content(1))
+        irrigation%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+        irrigation%dcs1_knot_count=2; irrigation%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+      end if
+    end if
     request%t0=T0; request%t1=finish
     request%selection_opportunity=.true.; request%irrigation_enabled=.true.
     request%schedule_enabled=.true.; request%crop_emerged=.true.; request%irrigation_window_open=.true.
@@ -1458,8 +1475,14 @@ contains
       if(i==2) numerical%max_committed_substeps=1
       if(use_runtime) then
         request%selection_opportunity=select_gift
-        call evaluate_ppa_committed_irrigation_source(irrigation,owners(i),template,request,forcing, &
-             proposed,flux,process_diagnostics,prepared,ok)
+        if(allocated(root_profile)) then
+          call evaluate_ppa_committed_profile_irrigation_source(irrigation,owners(i),template,request, &
+               1,[1],[1.0_real64],[0.0_real64],root_profile%rd,[0.8_real64],[0.3_real64],[0.1_real64], &
+               forcing,proposed,flux,process_diagnostics,prepared,ok)
+        else
+          call evaluate_ppa_committed_irrigation_source(irrigation,owners(i),template,request,forcing, &
+               proposed,flux,process_diagnostics,prepared,ok)
+        end if
         if(.not.ok) error stop 'resolved irrigation preparation failed'
         ! Invalid capability/routing must not publish, even when the same
         ! backend has just completed another column's successful trial.
@@ -1494,9 +1517,24 @@ contains
         if(guard_diagnostic%committed_time/=T0.or.guard_diagnostic%rejected/=1) &
              error stop 'source rejection diagnostic'
         request%t0=T0
+        if(allocated(root_profile)) then
+          do index=1,2
+            bad_profile=ppa_irrigation_profile_t()
+            if(index==2) then
+              bad_profile=root_profile
+              bad_profile%dz=-1.0_real64
+            end if
+            call execute_ppa_irrigation_source_column(backend,control,columns(i),template,profile%tiles(1)%parameters, &
+                 irrigation,owners(i),forcing,numerical,request,guard_output,guard_diagnostic,runtime,active_calls, &
+                 process_diagnostics,bad_profile)
+            if(guard_output%committed.or.guard_output%admission_status/='IRRIGATION_SOURCE_REJECTED') &
+                 error stop 'invalid runtime profile admitted'
+            if(owners(i)%current_revision()/=0_int64.or.active_calls/=0) error stop 'invalid profile changed owner'
+          end do
+        end if
         call execute_ppa_irrigation_source_column(backend,control,columns(i),template,profile%tiles(1)%parameters, &
              irrigation,owners(i),forcing,numerical,request,outputs(i),column_diagnostics(i),runtime,active_calls, &
-             process_diagnostics)
+             process_diagnostics,root_profile)
       else if(select_gift) then
         call run_ppa_pending_irrigation_source_trial(backend,columns(i),template,profile%tiles(1)%parameters,irrigation, &
              owners(i),forcing,numerical,T0,finish,checkpoint(i),result(i),candidate(i),diagnostics(i), &
@@ -1567,6 +1605,7 @@ contains
     write(*,'(a,l1)') 'PPA_IRR_PENDING_MIXED_PUBLICATION_RESTART_PASS_REVERSED=',reverse_order
     if(select_gift) write(*,'(a)') 'PPA_IRR_NEW_SELECTION_MIXED_PUBLICATION_RESTART=PASS'
     if(use_runtime) write(*,'(a)') 'PPA_IRR_RESOLVED_RUNTIME_MIXED_PUBLICATION_RESTART=PASS'
+    if(allocated(root_profile)) write(*,'(a)') 'PPA_IRR_DCS1_RUNTIME_MIXED_PUBLICATION_RESTART=PASS'
   end subroutine verify_pending_mixed_columns
 
   subroutine verify_pending_irrigation_restart(profile,committed,backend,column,template,initial_forcing,midpoint)

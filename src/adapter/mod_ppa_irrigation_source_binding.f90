@@ -24,10 +24,18 @@ module mod_ppa_irrigation_source_binding
   public :: run_ppa_pending_irrigation_source_trial
   public :: run_ppa_profile_irrigation_source_trial
   public :: execute_ppa_irrigation_source_column
+  ! Supplied immutable geometry/retention configuration, not continuation state.
+  type, public :: ppa_irrigation_profile_t
+    integer :: noddrz=0
+    integer, allocatable :: layer(:)
+    real(real64), allocatable :: dz(:),ztopcp(:),wclos(:),wcmes(:),wchis(:)
+    real(real64) :: rd=0.0_real64
+  end type ppa_irrigation_profile_t
 contains
   subroutine execute_ppa_irrigation_source_column(backend,control,column,template,physical_parameters, &
        irrigation_parameters,committed,previous,numerical,request,output,diagnostic,runtime,active_calls, &
-       irrigation_diagnostics)
+       irrigation_diagnostics,profile)
+    use mod_irrigation_process, only: IRRIGATION_INVALID_PARAMETERS
     use mod_kernel_transactions, only: kernel_executor_t
     use mod_fmr_runtime_core, only: fmr_column_diagnostics_t
     use mod_fmr_serialized_multiswap_runtime, only: fmr_execute_serialized_irrigation_resolved_column, &
@@ -47,6 +55,7 @@ contains
     type(fmr_serialized_batch_diagnostics_t),intent(inout)::runtime
     integer,intent(inout)::active_calls
     type(irrigation_diagnostics_t),intent(out)::irrigation_diagnostics
+    type(ppa_irrigation_profile_t),intent(in),optional::profile
     type(irrigation_state_t)::event
     type(irrigation_flux_result_t)::flux
     type(fmr_b110_physical_forcing_t),allocatable::forcing
@@ -60,8 +69,20 @@ contains
     output%column_id=column%column_id
     output%requested_t0=request%t0; output%requested_t1=request%t1
     output%initial_revision=committed%current_revision()
-    call evaluate_ppa_committed_irrigation_source(irrigation_parameters,committed,template,request,previous, &
-         event,flux,irrigation_diagnostics,forcing,ok)
+    if(present(profile)) then
+      ok=.false.
+      irrigation_diagnostics=irrigation_diagnostics_t()
+      irrigation_diagnostics%status=IRRIGATION_INVALID_PARAMETERS
+      if(allocated(profile%layer).and.allocated(profile%dz).and.allocated(profile%ztopcp).and. &
+           allocated(profile%wclos).and.allocated(profile%wcmes).and.allocated(profile%wchis)) then
+        call evaluate_ppa_committed_profile_irrigation_source(irrigation_parameters,committed,template,request, &
+             profile%noddrz,profile%layer,profile%dz,profile%ztopcp,profile%rd, &
+             profile%wclos,profile%wcmes,profile%wchis,previous,event,flux,irrigation_diagnostics,forcing,ok)
+      end if
+    else
+      call evaluate_ppa_committed_irrigation_source(irrigation_parameters,committed,template,request,previous, &
+           event,flux,irrigation_diagnostics,forcing,ok)
+    end if
     if(.not.ok) then
       output%kernel_status=KERNEL_STATUS_NOT_ADMITTED
       output%admission_assessed=.true.; output%admission_status='IRRIGATION_SOURCE_REJECTED'
