@@ -43,7 +43,7 @@ insert="""    if (abs(step_duration-1.0e-4_real64) <= 64.0_real64*epsilon(1.0_re
            '|MACRO=',request%physical%macropore_active,'|TOP_EVAL_FLUX=',repro_top_flux, &
            '|TOP_EVAL_HEAD=',repro_surface_head,'|TOP_EVAL_RUNOFF=',repro_runoff
       do repro_i=1,request%base_state%active_nodes
-        write(*,'(*(g0))') 'REPRO02_R7_SERIAL_NODE|I=',repro_i,'|Z=',request%parameters%z(repro_i), &
+        write(*,'(*(g0))') 'REPRO02_R7_SERIAL_NODE|I=',repro_i,'|BOTTOM_MODE=',request%boundary%bottom_mode,'|Z=',request%parameters%z(repro_i), &
              '|DZ=',request%parameters%dz(repro_i),'|DIST=',request%parameters%node_distance(repro_i), &
              '|HEAD=',request%base_state%pressure_head(repro_i),'|WATER=',request%base_state%water_content(repro_i), &
              '|THETA_EVAL=',repro_theta(repro_i),'|K=',repro_k(repro_i),'|C=',repro_c(repro_i), &
@@ -383,7 +383,7 @@ insert="""  context_ok=.true.
        '|MACRO=',request%physical%macropore_active,'|TOP_EVAL_FLUX=',ptop_flux, &
        '|TOP_EVAL_HEAD=',psurface_head,'|TOP_EVAL_RUNOFF=',prunoff
   do i=1,numnod
-    write(*,'(*(g0))') 'REPRO02_R7_DIRECT_NODE|I=',i,'|Z=',request%parameters%z(i), &
+    write(*,'(*(g0))') 'REPRO02_R7_DIRECT_NODE|I=',i,'|BOTTOM_MODE=',request%boundary%bottom_mode,'|Z=',request%parameters%z(i), &
          '|DZ=',request%parameters%dz(i),'|DIST=',request%parameters%node_distance(i), &
          '|HEAD=',request%base_state%pressure_head(i),'|WATER=',request%base_state%water_content(i), &
          '|THETA_EVAL=',ptheta(i),'|K=',pk(i),'|C=',pc(i),'|DKDH=',pdkdh(i),'|SOURCE=',psource(i),'|SINK=',psink(i)
@@ -432,8 +432,8 @@ for line in open(sys.argv[1]):
     for p in line.strip().split("|")[1:]:
         k,v=p.split("=",1); d[k]=v
     rows.append(d)
-meta=[r for r in rows if r["kind"]=="META"]
-node=[r for r in rows if r["kind"]=="NODE"]
+meta=[r for r in rows if r["kind"]=="META" and (r["ARM"]=="DIRECT" or r.get("BOTTOM_MODE")=="5")]
+node=[r for r in rows if r["kind"]=="NODE" and (r["ARM"]=="DIRECT" or r.get("BOTTOM_MODE")=="5")]
 if len(meta)!=108: raise SystemExit(f"expected 108 meta rows, got {len(meta)}")
 if len(node)!=432: raise SystemExit(f"expected 432 node rows, got {len(node)}")
 
