@@ -1843,6 +1843,26 @@ contains
          any(left%accepted_substeps/=right%accepted_substeps).or. &
          any(left%transaction_attempts/=right%transaction_attempts)) error stop 'prefix rejection outcome mismatch'
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PREFIX_TERMINAL_HYDRAULIC_REJECTION=PASS'
+    do timing=1,4
+      management%timing_criterion=timing
+      call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,2,prefixes,prefix_count,code,observations=observations(1:1))
+      if(code==FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'TCS malformed observations accepted'
+      if(allocated(prefixes(1)%columns)) error stop 'TCS malformed observation execution'
+      call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,2,prefixes,prefix_count,code,observations=observations)
+      if(code==FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'TCS window hid hydraulic rejection'
+      if(.not.allocated(prefixes(1)%columns)) error stop 'TCS rejected result missing'
+      if(allocated(prefixes(2)%columns)) error stop 'TCS rejected window continued'
+      right=prefixes(1)%columns
+      if(any(right%committed).or.any(right%completed).or.any(right%accepted_substeps<1)) &
+           error stop 'TCS internal rejection publication'
+      if(any(left%kernel_status/=right%kernel_status).or. &
+           any(left%accepted_substeps/=right%accepted_substeps).or. &
+           any(left%transaction_attempts/=right%transaction_attempts)) error stop 'TCS rejection outcome mismatch'
+    end do
+    management%timing_criterion=7
+    write(*,'(a)') 'PPA_IRR_TCS1_4_WINDOW_INTERNAL_ROLLBACK=PASS'
     call application%copy_committed_hydraulic_states(lhs,code)
     if(code/=FMR_APP_BOOT_OK) error stop 'limited bootstrap snapshot'
     do i=1,2
