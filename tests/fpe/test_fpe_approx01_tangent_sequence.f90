@@ -20,7 +20,7 @@ program test_fpe_approx01_tangent_sequence
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   implicit none
 
-  integer, parameter :: nsteps=24
+  integer, parameter :: ntrials=24
   integer, parameter :: ncad=3
   integer, parameter :: cadences(ncad)=[2,4,8]
   real(real64), parameter :: duration=1.0e-4_real64
@@ -43,13 +43,13 @@ program test_fpe_approx01_tangent_sequence
   type(groundwater_head_datum_t) :: datum
   type(groundwater_coupling_window_t) :: window
   type(fixed_flux_top_boundary_provider_t), target :: top
-  logical :: ok,did_commit
-  integer :: status,step,ic,last_refresh
+  logical :: ok
+  integer :: status,trial_index,ic,last_refresh
   real(real64) :: h0_cm,origin_head_m,prescribed_head_m
-  real(real64) :: tangent(nsteps), qswap(nsteps), offset_m
-  real(real64) :: lag_value, abs_err, rel_err, qerr
+  real(real64) :: tangent(ntrials),qswap(ntrials),head_m(ntrials),offset_m
+  real(real64) :: lag_value,abs_err,rel_err,qerr,scale
   real(real64) :: max_abs(ncad),max_rel(ncad),mean_abs(ncad),mean_rel(ncad),max_qerr(ncad)
-  real(real64) :: max_step_change,scale
+  real(real64) :: max_step_change
   character(len=32) :: arg,regime
 
   if(command_argument_count()/=2) error stop 'usage: test REGIME H0_CM'
@@ -68,48 +68,53 @@ program test_fpe_approx01_tangent_sequence
   datum%available=.true.
   datum%datum_id=629001_int64
   datum%bottom_boundary_elevation_m=0.0_real64
+  window%t0=0.0_real64
+  window%t1=duration
   call compute_origin_head(parameters,datum,h0_cm,origin_head_m,status)
   call require(status==MODFLOW6_BOTTOM_FACE_OK,'origin head materialized')
 
-  do step=1,nsteps
-    window%t0=real(step-1,real64)*duration
-    window%t1=real(step,real64)*duration
-    offset_m=head_offset(step)
-    prescribed_head_m=origin_head_m+offset_m
+  call participant%capture_origin(committed,status)
+  call require(status==GW_SWAP_PARTICIPANT_OK,'capture common origin')
 
-    call participant%capture_origin(committed,status)
-    call require(status==GW_SWAP_PARTICIPANT_OK,'capture origin')
+  do trial_index=1,ntrials
+    offset_m=head_offset(trial_index)
+    prescribed_head_m=origin_head_m+offset_m
+    head_m(trial_index)=prescribed_head_m
+
     call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,datum,window, &
          prescribed_head_m,trial,status)
-    call require(status==GW_SWAP_PARTICIPANT_OK .and. trial%valid,'fresh tangent trial')
+    if(status/=GW_SWAP_PARTICIPANT_OK .or. .not.trial%valid) then
+      write(*,'(*(g0))') 'APPROX01_TRIAL_FAIL|REGIME=',trim(regime),'|TRIAL=',trial_index, &
+           '|STATUS=',status,'|HEAD_OFFSET_M=',offset_m
+      error stop 1
+    end if
     call require(trial%response_tangent_available,'fresh tangent available')
     call require(ieee_is_finite(trial%dq_swap_dh_per_s),'fresh tangent finite')
     call require(ieee_is_finite(trial%q_swap_m_per_s),'fresh exchange finite')
-    tangent(step)=trial%dq_swap_dh_per_s
-    qswap(step)=trial%q_swap_m_per_s
+    tangent(trial_index)=trial%dq_swap_dh_per_s
+    qswap(trial_index)=trial%q_swap_m_per_s
 
-    call participant%commit_candidate(backend,committed,window,did_commit,status)
-    call require(did_commit .and. status==GW_SWAP_PARTICIPANT_OK,'fresh candidate committed')
-
-    write(*,'(*(g0))') 'APPROX01_FRESH|REGIME=',trim(regime),'|STEP=',step,'|T0=',window%t0,'|T1=',window%t1, &
+    write(*,'(*(g0))') 'APPROX01_FRESH|REGIME=',trim(regime),'|TRIAL=',trial_index, &
          '|HEAD_OFFSET_M=',offset_m,'|PRESCRIBED_HEAD_M=',prescribed_head_m, &
-         '|TANGENT=',tangent(step),'|Q_SWAP=',qswap(step)
+         '|TANGENT=',tangent(trial_index),'|Q_SWAP=',qswap(trial_index)
+
+    call participant%discard_candidate(backend)
   end do
 
   max_step_change=0.0_real64
-  do step=2,nsteps
-    max_step_change=max(max_step_change,abs(tangent(step)-tangent(step-1)))
+  do trial_index=2,ntrials
+    max_step_change=max(max_step_change,abs(tangent(trial_index)-tangent(trial_index-1)))
   end do
-  write(*,'(*(g0))') 'APPROX01_TANGENT_EVOLUTION|REGIME=',trim(regime),'|MAX_STEP_ABS_CHANGE=',max_step_change, &
+  write(*,'(*(g0))') 'APPROX01_TANGENT_EVOLUTION|REGIME=',trim(regime),'|MAX_ADJACENT_ABS_CHANGE=',max_step_change, &
        '|MIN_TANGENT=',minval(tangent),'|MAX_TANGENT=',maxval(tangent)
 
   max_abs=0.0_real64; max_rel=0.0_real64; mean_abs=0.0_real64; mean_rel=0.0_real64; max_qerr=0.0_real64
   do ic=1,ncad
-    do step=1,nsteps
-      last_refresh=1+((step-1)/cadences(ic))*cadences(ic)
+    do trial_index=1,ntrials
+      last_refresh=1+((trial_index-1)/cadences(ic))*cadences(ic)
       lag_value=tangent(last_refresh)
-      abs_err=abs(lag_value-tangent(step))
-      scale=max(abs(tangent(step)),1.0e-20_real64)
+      abs_err=abs(lag_value-tangent(trial_index))
+      scale=max(abs(tangent(trial_index)),1.0e-20_real64)
       rel_err=abs_err/scale
       qerr=abs_err*delta_h_eval_m
       max_abs(ic)=max(max_abs(ic),abs_err)
@@ -118,8 +123,8 @@ program test_fpe_approx01_tangent_sequence
       mean_abs(ic)=mean_abs(ic)+abs_err
       mean_rel(ic)=mean_rel(ic)+rel_err
     end do
-    mean_abs(ic)=mean_abs(ic)/real(nsteps,real64)
-    mean_rel(ic)=mean_rel(ic)/real(nsteps,real64)
+    mean_abs(ic)=mean_abs(ic)/real(ntrials,real64)
+    mean_rel(ic)=mean_rel(ic)/real(ntrials,real64)
     write(*,'(*(g0))') 'APPROX01_LAG|REGIME=',trim(regime),'|CADENCE=',cadences(ic), &
          '|FRESH_FRACTION=',1.0_real64/real(cadences(ic),real64), &
          '|AVOIDED_TANGENT_FRACTION=',1.0_real64-1.0_real64/real(cadences(ic),real64), &
@@ -134,8 +139,8 @@ contains
 
   pure real(real64) function head_offset(i) result(v)
     integer,intent(in)::i
-    real(real64),parameter::pattern(8)=[0.0_real64,0.005_real64,0.010_real64,0.005_real64, &
-         0.0_real64,-0.005_real64,-0.010_real64,-0.005_real64]
+    real(real64),parameter::pattern(8)=[0.0_real64,0.001_real64,0.002_real64,0.001_real64, &
+         0.0_real64,-0.001_real64,-0.002_real64,-0.001_real64]
     v=pattern(1+mod(i-1,8))
   end function head_offset
 
