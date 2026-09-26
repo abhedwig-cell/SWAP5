@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'tests/fpe/run_fpe_approx02_a2_application_sequence.sh'
+      - 'tests/fpe/run_fpe_approx02_a2_modflow_e2e.sh'
       - 'tests/fpe/test_fpe_approx02_a2_application_sequence.f90'
       - 'tests/fpe/run_fpe_approx02_a2_multistep.sh'
       - 'tests/fpe/test_fpe_approx02_a2_multistep.f90'
@@ -24,3 +25,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx02_a2_application_sequence.sh
+
+  a2-modflow-e2e:
+    strategy:
+      fail-fast: false
+      matrix:
+        replica: [1, 2, 3]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - run: bash tests/fpe/run_fpe_approx02_a2_modflow_e2e.sh
