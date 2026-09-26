@@ -276,7 +276,7 @@ for material in "${materials[@]}"; do
         : > "$times"
         last=""
         for ((rep=1; rep<=reps; rep++)); do
-          raw="$("$BUILD/test" "$material" "$h0" "$top_factor" "$qbot_factor" 1e-2 "$budget" 2>&1)" || {
+          raw="$("$BUILD/test" "$material" "$h0" "$top_factor" "$qbot_factor" 1e-3 "$budget" 2>&1)" || {
             printf '%s\n' "$raw" >&2
             fail "$material $regime $orientation $arm execution"
           }
