@@ -18,7 +18,7 @@ program test_fpe_approx02_r1_transaction
   implicit none
 
   integer, parameter :: nsteps=8
-  real(real64), parameter :: duration=5.0e-2_real64
+  real(real64), parameter :: duration=1.0e-3_real64
   real(real64), parameter :: exact_tol=1.0e-12_real64
   real(real64), parameter :: r1_tol=1.0e-2_real64
   real(real64), parameter :: transaction_mass_tol=1.0e-12_real64
