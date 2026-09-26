@@ -10,6 +10,7 @@ on:
       - 'tests/fpe/run_fpe_approx02_combined_convergence_sweep.sh'
       - 'tests/fpe/run_fpe_approx02_candidate_matrix.sh'
       - 'tests/fpe/run_fpe_approx02_a2_multistep.sh'
+      - 'tests/fpe/run_fpe_approx02_a2_transaction.sh'
       - 'tests/fpe/test_fpe_approx02_a2_multistep.f90'
       - 'docs/performance/F-PE-APPROX02_*.md'
       - '.github/workflows/f-pe-approx02.yml'
@@ -51,3 +52,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx02_a2_multistep.sh
+
+  a2-transaction:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx02_a2_transaction.sh
