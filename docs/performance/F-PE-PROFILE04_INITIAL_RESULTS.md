@@ -68,3 +68,17 @@ Range:
 This is the clean current-postimage AHL increment and supersedes using older 12-15% figures for planning.
 
 It still must not be multiplied or naively added to the historical ZERO-WASTE speedup to claim total application runtime. A full same-workload end-to-end baseline comparison remains required for that claim.
+
+
+## Timing repeat / variance note
+
+A second independent AHL repeated job on the subsequent documentation head produced:
+- median ratio `0.787900653`;
+- range `0.759683287 .. 0.819395095`;
+- 12/12 speed-positive.
+
+This is materially faster than the immediately preceding median `0.827472736` despite no production change between the measurements.
+
+Therefore single-run CI timing variance is non-negligible. The robust planning statement is currently that F-AHL50 gives roughly **17-21%** repeated-solver reduction on this workload, not a falsely precise 17.25%.
+
+PROFILE04 should add multi-run aggregation before freezing a final AHL timing estimate.
