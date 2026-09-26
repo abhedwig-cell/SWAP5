@@ -128,9 +128,16 @@ run_point(){
 print(float("$h0")+float("$offset"))
 PY
 )"
-  raw="$("$BUILD/test" 1 directional zero-waste-paired "$h0" "$hbot")"
-  der="$(printf '%s\n' "$raw" | grep '^FKT22_FMR_BOTTOM_EXCHANGE_DERIVATIVE=' | cut -d= -f2-)"
-  exch="$(printf '%s\n' "$raw" | grep '^APPROX01_BOTTOM_EXCHANGE_CM=' | cut -d= -f2-)"
+  set +e
+  raw="$("$BUILD/test" 1 directional zero-waste-paired "$h0" "$hbot" 2>&1)"
+  status=$?
+  set -e
+  der="$(printf '%s\n' "$raw" | grep '^FKT22_FMR_BOTTOM_EXCHANGE_DERIVATIVE=' | tail -1 | cut -d= -f2- || true)"
+  exch="$(printf '%s\n' "$raw" | grep '^APPROX01_BOTTOM_EXCHANGE_CM=' | tail -1 | cut -d= -f2- || true)"
+  if [[ -z "$der" || -z "$exch" ]]; then
+    printf '%s\n' "$raw" >&2
+    fail "point regime=$regime point=$point offset=$offset status=$status did not reach valid tangent publication"
+  fi
   printf '%s,%s,%s,%s,%s,%s\n' "$regime" "$point" "$offset" "$hbot" "$der" "$exch" >> "$RESULT"
   printf 'APPROX01_POINT|REGIME=%s|POINT=%s|OFFSET_CM=%s|BOTTOM_HEAD_CM=%s|TANGENT=%s|BOTTOM_EXCHANGE_CM=%s\n'     "$regime" "$point" "$offset" "$hbot" "$der" "$exch"
 }
