@@ -8,6 +8,43 @@ trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "APPROX04_P1B_FAIL $*" >&2; exit 1; }
 
 cp tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90 "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90"
+cp src/runtime/mod_fmr_groundwater_swap_participant.f90 "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90"
+python3 - "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); src=p.read_text()
+src=src.replace(
+"    procedure, public :: tangent_cache_counts => fmr_swap_tangent_cache_counts\n",
+"    procedure, public :: tangent_cache_counts => fmr_swap_tangent_cache_counts\n"
+"    procedure, public :: approx04_last_run_diagnostics => fmr_swap_approx04_last_run_diagnostics\n",1)
+needle="  subroutine invalidate_tangent_cache(self)\n"
+insert="""  subroutine fmr_swap_approx04_last_run_diagnostics(self,result_status,completed,transaction_calls,accepted_substeps, &
+       attempts,retries,solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections, &
+       internal_retries,max_temporal_indicator)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    integer, intent(out) :: result_status,transaction_calls,accepted_substeps,attempts,retries,solver_rejections
+    integer, intent(out) :: temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries
+    logical, intent(out) :: completed
+    real(real64), intent(out) :: max_temporal_indicator
+    result_status=self%trial_result%status
+    completed=self%trial_result%completed
+    transaction_calls=self%diagnostics%transaction_calls
+    accepted_substeps=self%diagnostics%accepted_substeps
+    attempts=self%diagnostics%attempts
+    retries=self%diagnostics%retries
+    solver_rejections=self%diagnostics%solver_rejections
+    temporal_rejections=self%diagnostics%temporal_rejections
+    temporal_unavailable_rejections=self%diagnostics%temporal_certificate_unavailable_rejections
+    mass_rejections=self%diagnostics%mass_rejections
+    internal_retries=self%diagnostics%internal_retries
+    max_temporal_indicator=self%diagnostics%max_temporal_indicator
+  end subroutine fmr_swap_approx04_last_run_diagnostics
+
+"""
+if needle not in src: raise SystemExit("participant diagnostic seam missing")
+src=src.replace(needle,insert+needle,1)
+p.write_text(src)
+PY
 python3 - "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90" <<'PY'
 from pathlib import Path
 import sys
@@ -79,6 +116,24 @@ insert="""contains
     fgc44_approx04_predictor_q_c=0_c_int
   end function fgc44_approx04_predictor_q_c
 
+  integer(c_int) function fgc44_approx04_trial_run_diagnostics_c(result_status,completed,transaction_calls,accepted_substeps, &
+       attempts,retries,solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections, &
+       internal_retries,max_temporal_indicator) bind(C,name="fgc44_approx04_trial_run_diagnostics_c")
+    integer(c_int), intent(out) :: result_status,completed,transaction_calls,accepted_substeps,attempts,retries
+    integer(c_int), intent(out) :: solver_rejections,temporal_rejections,temporal_unavailable_rejections
+    integer(c_int), intent(out) :: mass_rejections,internal_retries
+    real(c_double), intent(out) :: max_temporal_indicator
+    integer :: rs,tc,asub,att,ret,sr,tr,tur,mr,ir
+    logical :: done
+    real(real64) :: mti
+    call participant%approx04_last_run_diagnostics(rs,done,tc,asub,att,ret,sr,tr,tur,mr,ir,mti)
+    result_status=int(rs,c_int); completed=merge(1_c_int,0_c_int,done)
+    transaction_calls=int(tc,c_int); accepted_substeps=int(asub,c_int); attempts=int(att,c_int); retries=int(ret,c_int)
+    solver_rejections=int(sr,c_int); temporal_rejections=int(tr,c_int); temporal_unavailable_rejections=int(tur,c_int)
+    mass_rejections=int(mr,c_int); internal_retries=int(ir,c_int); max_temporal_indicator=real(mti,c_double)
+    fgc44_approx04_trial_run_diagnostics_c=0_c_int
+  end function fgc44_approx04_trial_run_diagnostics_c
+
   integer(c_int) function fgc44_approx04_p1b_state_c(heads,theta) bind(C,name="fgc44_approx04_p1b_state_c")
     real(c_double), intent(out) :: heads(numnod),theta(numnod)
     class(transaction_state_t), allocatable :: snapshot
@@ -131,6 +186,13 @@ if predfn(ctypes.byref(predictor_q)): raise RuntimeError("predictor q failed")
 _,_,href=swap.initialize_configured(1.0e-4,predictor_q.value)
 q=ctypes.c_double()
 status=int(swap.lib.fgc44_swap_trial_c(float(href+offset_cm/100.0),ctypes.byref(q)))
+diagfn=swap.lib.fgc44_approx04_trial_run_diagnostics_c
+diagfn.restype=ctypes.c_int
+diagfn.argtypes=[ctypes.POINTER(ctypes.c_int)]*11+[ctypes.POINTER(ctypes.c_double)]
+di=[ctypes.c_int() for _ in range(11)]; mti=ctypes.c_double()
+if diagfn(*[ctypes.byref(x) for x in di],ctypes.byref(mti)): raise RuntimeError("trial diagnostics failed")
+diag_names=["result_status","completed","transaction_calls","accepted_substeps","attempts","retries","solver_rejections","temporal_rejections","temporal_unavailable_rejections","mass_rejections","internal_retries"]
+diag={k:v.value for k,v in zip(diag_names,di)}; diag["max_temporal_indicator"]=mti.value
 available=False; tangent=0.0; qdiag=0.0
 if status==0:
     qdiag,_,tangent,available=swap.last_trial_response()
@@ -139,7 +201,7 @@ diag_status=-1; nonlinear=-1; retries=-1
 print("APPROX04_P1B_RAW|"+json.dumps({
  "material":material,"h0":h0,"offset_cm":offset_cm,"href":href,
  "predictor_q":predictor_q.value,"status":status,"q":q.value,
- "qdiag":qdiag,"tangent":tangent,"tangent_available":available,
+ "qdiag":qdiag,"tangent":tangent,"tangent_available":available,"diag":diag,
 },separators=(",",":")))
 PY
 
@@ -209,7 +271,7 @@ MODULE_SRC=(
   src/runtime/mod_groundwater_swap_forcing_adapter.f90
   src/runtime/mod_groundwater_swap_transaction_participant.f90
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
-  src/runtime/mod_fmr_groundwater_swap_participant.f90
+  "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90"
   src/runtime/mod_groundwater_interface_mass_ledger.f90
   src/runtime/mod_groundwater_tile_aggregation.f90
   src/runtime/mod_groundwater_multiswap_types.f90
@@ -271,7 +333,12 @@ for key,rs in sorted(groups.items()):
         print(
           f"APPROX04_P1B_POINT|MATERIAL={key[0]}|REGIME={key[1]}|OFFSET_CM={r['offset_cm']:.6f}"
           f"|STATUS={r['status']}|Q={r['q']:.17e}|TANGENT_AVAILABLE={str(r['tangent_available']).upper()}"
-          f"|TANGENT={r['tangent']:.17e}"
+          f"|TANGENT={r['tangent']:.17e}|RESULT_STATUS={r['diag']['result_status']}|COMPLETED={r['diag']['completed']}"
+          f"|TX_CALLS={r['diag']['transaction_calls']}|ACCEPTED_SUBSTEPS={r['diag']['accepted_substeps']}"
+          f"|ATTEMPTS={r['diag']['attempts']}|RETRIES={r['diag']['retries']}|SOLVER_REJECTIONS={r['diag']['solver_rejections']}"
+          f"|TEMPORAL_REJECTIONS={r['diag']['temporal_rejections']}|TEMPORAL_UNAVAILABLE={r['diag']['temporal_unavailable_rejections']}"
+          f"|MASS_REJECTIONS={r['diag']['mass_rejections']}|INTERNAL_RETRIES={r['diag']['internal_retries']}"
+          f"|MAX_TEMPORAL_INDICATOR={r['diag']['max_temporal_indicator']:.17e}"
         )
 cn=min(common_neg); cp=min(common_pos)
 print(f"APPROX04_P1B_SUMMARY|CASES=6|COMMON_NEG_FRONTIER_CM={cn:.6f}|COMMON_POS_FRONTIER_CM={cp:.6f}|COMMON_SYMMETRIC_FRONTIER_CM={min(cn,cp):.6f}")
