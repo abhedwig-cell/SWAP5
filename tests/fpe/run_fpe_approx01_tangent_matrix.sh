@@ -109,16 +109,25 @@ for material in ('B01','B12','O05','O14'):
     tang=[float(r['tangent']) for r in rr]
     print(f"APPROX01_MATRIX_EVOLUTION|MATERIAL={material}|REGIME={regime}|MIN={min(tang):.17e}|MAX={max(tang):.17e}|SPAN={max(tang)-min(tang):.17e}")
     for cadence in (2,4,8):
-      ae=[]; re=[]
+      ae=[]; re=[]; qae=[]; qre=[]
+      offsets=[float(r['offset_cm']) for r in rr]
+      flux=[float(r['bottom_flux']) for r in rr]
       for i,t in enumerate(tang):
-        lag=tang[(i//cadence)*cadence]
+        refresh=(i//cadence)*cadence
+        lag=tang[refresh]
         e=abs(lag-t)
         ae.append(e)
         re.append(e/max(abs(t),1e-30))
+        qpred=flux[refresh]+lag*(offsets[i]-offsets[refresh])
+        qe=abs(qpred-flux[i])
+        qae.append(qe)
+        excursion=abs(flux[i]-flux[refresh])
+        if excursion>1e-12:
+          qre.append(qe/excursion)
       mx=max(re)
       if mx>global_worst[cadence][0]:
         global_worst[cadence]=(mx,f"{material}:{regime}")
-      print(f"APPROX01_MATRIX_LAG|MATERIAL={material}|REGIME={regime}|CADENCE={cadence}|MAX_ABS={max(ae):.17e}|MEAN_ABS={statistics.mean(ae):.17e}|MAX_REL={mx:.17e}|MEAN_REL={statistics.mean(re):.17e}")
+      print(f"APPROX01_MATRIX_LAG|MATERIAL={material}|REGIME={regime}|CADENCE={cadence}|MAX_ABS={max(ae):.17e}|MEAN_ABS={statistics.mean(ae):.17e}|MAX_REL={mx:.17e}|MEAN_REL={statistics.mean(re):.17e}|MAX_Q_PRED_ABS_ERROR={max(qae):.17e}|MEAN_Q_PRED_ABS_ERROR={statistics.mean(qae):.17e}|MAX_Q_PRED_REL_TO_EXCURSION={(max(qre) if qre else 0.0):.17e}")
 for cadence,(err,where) in global_worst.items():
   print(f"APPROX01_MATRIX_WORST|CADENCE={cadence}|MAX_REL={err:.17e}|CASE={where}")
 print("FPE_APPROX01_TANGENT_MATRIX=PASS")
