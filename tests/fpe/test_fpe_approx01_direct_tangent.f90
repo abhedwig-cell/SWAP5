@@ -32,13 +32,22 @@ program test_fpe_approx01_direct_tangent
   real(real64), target :: drainage(1,numnod), irrigation(numnod), roots(numnod)
   real(real64), allocatable :: cofgen(:,:)
   real(real64) :: h0,hbot,k0,water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
-  real(real64) :: heads(numnod)
+  real(real64) :: heads(numnod),cached_tangent,checksum,elapsed
+  integer(int64) :: c0,c1,rate
   character(len=64) :: arg
-  integer :: i
+  integer :: i,calls,cadence,warmups,fresh_count
+  logical :: refresh
 
-  if(command_argument_count()/=2) error stop 'usage: test H0_CM HBOT_CM'
+  if(command_argument_count()/=2 .and. command_argument_count()/=4) &
+       error stop 'usage: test H0_CM HBOT_CM [CALLS CADENCE]'
   call get_command_argument(1,arg); read(arg,*) h0
   call get_command_argument(2,arg); read(arg,*) hbot
+  calls=0; cadence=1
+  if(command_argument_count()==4)then
+    call get_command_argument(3,arg); read(arg,*) calls
+    call get_command_argument(4,arg); read(arg,*) cadence
+    if(calls<=0 .or. cadence<=0) error stop 'invalid timing arguments'
+  end if
 
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
   params%parameter_set_id=629101_int64
@@ -108,17 +117,70 @@ program test_fpe_approx01_direct_tangent
   dreq%incoming_ponding_depth=0.0_real64
   dreq%direct_control_derivative=1.0_real64
 
-  call solve_with_accepted_step_direction(solver,request,workspace,dreq,solve_result,dres)
+  if(calls==0)then
+    call solve_with_accepted_step_direction(solver,request,workspace,dreq,solve_result,dres)
+    call verify_directional(solve_result,dres)
+    write(*,'(*(g0))') 'APPROX01_DIRECT|H0_CM=',h0,'|HBOT_CM=',hbot, &
+         '|SOLVE_STATUS=',solve_result%status,'|DIRECTION_STATUS=',dres%status, &
+         '|ROUTE=',trim(dres%route),'|TANGENT=',dres%bottom_flux_derivative, &
+         '|BOTTOM_FLUX=',solve_result%bottom_flux,'|NONLINEAR=',solve_result%diagnostics%nonlinear_iterations, &
+         '|BACKTRACK=',solve_result%diagnostics%backtracking_attempts
+    print '(A)','FPE_APPROX01_DIRECT_TANGENT=PASS'
+    stop
+  end if
 
-  write(*,'(*(g0))') 'APPROX01_DIRECT|H0_CM=',h0,'|HBOT_CM=',hbot, &
-       '|SOLVE_STATUS=',solve_result%status,'|DIRECTION_STATUS=',dres%status, &
-       '|ROUTE=',trim(dres%route),'|TANGENT=',dres%bottom_flux_derivative, &
-       '|BOTTOM_FLUX=',solve_result%bottom_flux,'|NONLINEAR=',solve_result%diagnostics%nonlinear_iterations, &
-       '|BACKTRACK=',solve_result%diagnostics%backtracking_attempts
+  warmups=min(100,max(10,calls/100))
+  cached_tangent=0.0_real64
+  do i=1,warmups
+    refresh=mod(i-1,cadence)==0
+    if(refresh)then
+      call solve_with_accepted_step_direction(solver,request,workspace,dreq,solve_result,dres)
+      call verify_directional(solve_result,dres)
+      cached_tangent=dres%bottom_flux_derivative
+    else
+      call solver%solve(request,workspace,solve_result)
+      call verify_physical(solve_result)
+    end if
+  end do
 
-  if(solve_result%status/=SW_SOLVE_CONVERGED) error stop 'direct physical solve did not converge'
-  if(dres%status/=SW_STEP_DIRECTION_AVAILABLE .or. .not.dres%available) error stop 'direct tangent unavailable'
-  if(.not.ieee_is_finite(dres%bottom_flux_derivative)) error stop 'direct tangent nonfinite'
-  if(.not.ieee_is_finite(solve_result%bottom_flux)) error stop 'direct bottom flux nonfinite'
-  print '(A)','FPE_APPROX01_DIRECT_TANGENT=PASS'
+  checksum=0.0_real64
+  fresh_count=0
+  call system_clock(c0,rate)
+  do i=1,calls
+    refresh=mod(i-1,cadence)==0
+    if(refresh)then
+      call solve_with_accepted_step_direction(solver,request,workspace,dreq,solve_result,dres)
+      call verify_directional(solve_result,dres)
+      cached_tangent=dres%bottom_flux_derivative
+      fresh_count=fresh_count+1
+    else
+      call solver%solve(request,workspace,solve_result)
+      call verify_physical(solve_result)
+    end if
+    checksum=checksum+solve_result%candidate_state%pressure_head(1)+solve_result%bottom_flux+cached_tangent
+  end do
+  call system_clock(c1)
+  elapsed=real(c1-c0,real64)/real(rate,real64)
+  write(*,'(*(g0))') 'APPROX01_TIMING|CALLS=',calls,'|CADENCE=',cadence,'|FRESH_COUNT=',fresh_count, &
+       '|FRESH_FRACTION=',real(fresh_count,real64)/real(calls,real64), &
+       '|SECONDS=',elapsed,'|NS_PER_CALL=',1.0e9_real64*elapsed/real(calls,real64),'|CHECKSUM=',checksum
+  print '(A)','FPE_APPROX01_DIRECT_TIMING=PASS'
+
+contains
+
+  subroutine verify_physical(result)
+    type(soil_water_solve_result_t),intent(in)::result
+    if(result%status/=SW_SOLVE_CONVERGED) error stop 'direct physical solve did not converge'
+    if(.not.ieee_is_finite(result%bottom_flux)) error stop 'direct bottom flux nonfinite'
+  end subroutine verify_physical
+
+  subroutine verify_directional(result,direction)
+    type(soil_water_solve_result_t),intent(in)::result
+    type(soil_water_accepted_step_direction_result_t),intent(in)::direction
+    call verify_physical(result)
+    if(direction%status/=SW_STEP_DIRECTION_AVAILABLE .or. .not.direction%available) &
+         error stop 'direct tangent unavailable'
+    if(.not.ieee_is_finite(direction%bottom_flux_derivative)) error stop 'direct tangent nonfinite'
+  end subroutine verify_directional
+
 end program test_fpe_approx01_direct_tangent
