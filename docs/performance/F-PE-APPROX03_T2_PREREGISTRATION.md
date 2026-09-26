@@ -66,7 +66,7 @@ Search dimensions:
 
 - requested interval: `1e-4`, `5e-4`, `1e-3`, `5e-3`, `1e-2 day`;
 - top flux: zero and modest infiltration/evaporation contrasts already inside the Reference solver's stable range;
-- prescribed bottom pressure heads close to the hydrostatic lower-node initial head (`-72 cm` in this four-node fixture), using small finite perturbations rather than large artificial jumps.
+- prescribed bottom-face pressure heads close to the Darcy-equilibrium face head. In this four-node fixture the lower-node initial pressure head is `-72 cm` and the half-cell distance is `0.5 cm`, so the zero-flux face head is about `-71.5 cm`; discovery must be centred on that face value, not on the lower-node head itself.
 
 Do not force refinement with physically extreme boundary jumps.
 
