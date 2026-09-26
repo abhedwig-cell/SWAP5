@@ -6,7 +6,7 @@ cd "$ROOT"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx03-t1-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
-fail(){ echo "APPROX03_T1_FAIL $*" >&2; exit 1; }
+fail(){ echo "APPROX03_T2_FAIL $*" >&2; exit 1; }
 
 python3 - "$BUILD/test.f90" <<'PY'
 from pathlib import Path
@@ -24,30 +24,52 @@ src=src.replace(
     "  real(real64) :: qualification_head_budget = 2.5e-11_real64",1)
 src=src.replace(
     "  real(real64) :: k0, qeq\n",
-    "  real(real64) :: k0, qeq, t2_top_flux, t2_bottom_head\n"
+    "  real(real64) :: k0, qeq, t2_top_flux, t2_predictor_qbot, t2_bottom_head\n"
     "  real(real64) :: t2_heads(numnod)=0.0_real64, t2_water(numnod)=0.0_real64\n"
     "  character(len=64) :: arg\n",1)
 
 start=src.index("  call determine_initial_conductivity(k0)")
 end=src.index("\ncontains\n",start)
-main="""  if(command_argument_count()/=4) error stop 'usage: TOP_FLUX BOTTOM_HEAD DT_DAY BUDGET_CM'
+main="""  if(command_argument_count()/=4) error stop 'usage: TOP_FLUX PREDICTOR_QBOT DT_DAY BUDGET_CM'
   call get_command_argument(1,arg); read(arg,*) t2_top_flux
-  call get_command_argument(2,arg); read(arg,*) t2_bottom_head
+  call get_command_argument(2,arg); read(arg,*) t2_predictor_qbot
   call get_command_argument(3,arg); read(arg,*) upward_dt
   call get_command_argument(4,arg); read(arg,*) qualification_head_budget
   if(upward_dt<=0.0_real64 .or. qualification_head_budget<=0.0_real64) error stop 'invalid controls'
+  call materialize_t2_bottom_head(t2_predictor_qbot,t2_bottom_head)
   call run_t2_point()
 """
 src=src[:start]+main+src[end:]
 
-insert="""\n  subroutine run_t2_point()
+insert="""\n  subroutine materialize_t2_bottom_head(qbot_value,hbot_value)
+    real(real64),intent(in)::qbot_value
+    real(real64),intent(out)::hbot_value
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(b110_default_mvg_parameters_t),target :: hp
+    type(b110_default_mvg_provider_t) :: provider
+    real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
+    integer::i
+    call initialize_parameters(parameters,5)
+    heads(1)=h0
+    do i=2,numnod
+      heads(i)=heads(i-1)+parameters%node_distance(i)
+    end do
+    call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
+    call bind_b110_default_mvg_provider(provider,hp,upward_dt)
+    call provider%evaluate(heads,water,conductivity,capacity,dkdh)
+    if(conductivity(numnod)<=0.0_real64) error stop 'invalid bottom conductivity'
+    hbot_value=heads(numnod)+0.5_real64*parameters%dz(numnod)* &
+         (1.0_real64+qbot_value/conductivity(numnod))
+  end subroutine materialize_t2_bottom_head
+
+  subroutine run_t2_point()
     type(fmr_serialized_column_result_t) :: output
     type(fmr_serialized_physical_observation_t) :: observation
     real(real64) :: clock0,clock1
     call cpu_time(clock0)
     call execute_case(5,t2_top_flux,0.0_real64,t2_bottom_head,upward_dt,.true.,.true.,output,observation)
     call cpu_time(clock1)
-    write(*,'(*(g0))') 'APPROX03_T2_DISCOVERY|TOP=',t2_top_flux,'|HBOT=',t2_bottom_head,'|DT=',upward_dt, &
+    write(*,'(*(g0))') 'APPROX03_T2_DISCOVERY|TOP=',t2_top_flux,'|PRED_QBOT=',t2_predictor_qbot,'|HBOT=',t2_bottom_head,'|DT=',upward_dt, &
          '|BUDGET=',qualification_head_budget,'|SECONDS=',clock1-clock0,'|COMPLETED=',output%completed, &
          '|COMMITTED=',output%committed,'|KERNEL_STATUS=',output%kernel_status,'|SUBSTEPS=',output%accepted_substeps, &
          '|RETRIES=',output%solver_internal_retries,'|NONLINEAR=',output%solver_nonlinear_iterations, &
@@ -177,17 +199,17 @@ done
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$BUILD/test.f90" -o "$BUILD/test.o" || fail "compile fixture"
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 
-tops=(0.0 1e-6 -1e-6)
-bottoms=(-72.01 -72.1 -72.5 -73.0)
-dts=(1e-4 5e-4 1e-3 5e-3 1e-2)
+tops=(0.0 1e-4 -1e-4 1e-3 -1e-3)
+qbots=(0.0 1e-6 -1e-6 1e-4 -1e-4)
+dts=(1e-4 5e-4 1e-3 5e-3 1e-2 5e-2)
 budget=1e-5
 rows=0
 refined=0
 for top in "${tops[@]}"; do
-  for hbot in "${bottoms[@]}"; do
+  for qbot in "${qbots[@]}"; do
     for dt in "${dts[@]}"; do
       set +e
-      raw="$("$BUILD/test" "$top" "$hbot" "$dt" "$budget" 2>&1)"
+      raw="$("$BUILD/test" "$top" "$qbot" "$dt" "$budget" 2>&1)"
       rc=$?
       set -e
       printf '%s\n' "$raw"
