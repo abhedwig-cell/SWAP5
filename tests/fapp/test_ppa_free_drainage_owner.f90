@@ -1361,6 +1361,34 @@ contains
       requests(i)%irrigation_window_open=.true.
       previous(i)=forcing(i); previous(i)%subsurface_irrigation_source=0.0_real64
     end do
+    ! First split hint is not necessarily the earliest event in the batch.
+    management(1)%dcs2_depth_cm=0.02_real64/1024.0_real64
+    management(2)%dcs2_depth_cm=0.01_real64/1024.0_real64
+    requests%t1=finish+1.0_real64/1024.0_real64
+    call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,right,code,interval_end)
+    if(code/=FMR_APP_BOOT_OK.or..not.allocated(right)) error stop 'descending prefix failed'
+    if(.not.all(right%committed).or.interval_end/=midpoint) error stop 'descending prefix skipped earlier event'
+    call restored%export_committed_restart(92001_int64,saved,ok,code)
+    if(.not.ok) error stop 'descending prefix export failed'
+    do i=1,2
+      if(saved%records(i)%committed_time/=midpoint) error stop 'descending prefix advanced too far'
+      if(.not.right(i)%mass%complete.or.abs(right(i)%mass%residual)>1.0e-12_real64) &
+           error stop 'descending prefix mass'
+      select type(state=>saved%records(i)%physical_state)
+      type is(ppa_irrigation_event_state_t)
+        if(state%irrigation%active_event.neqv.(i==1)) error stop 'descending prefix event continuation wrong'
+      class default
+        error stop 'descending prefix lost event carrier'
+      end select
+    end do
+    call restored%close(code)
+    call restored%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'descending fixture reset failed'
+    management(1)%dcs2_depth_cm=0.01_real64/1024.0_real64
+    management(2)%dcs2_depth_cm=0.02_real64/1024.0_real64
+    requests%t1=midpoint
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_DESCENDING_SPLIT_PREFIX=PASS'
     call execute_ppa_bootstrap_irrigation(application,[2_int64,1_int64],92001_int64,management,requests,previous,left,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'management column identity mismatch admitted'
     requests(2)%t0=midpoint
