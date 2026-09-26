@@ -108,42 +108,78 @@ import csv,statistics,sys
 rows=list(csv.DictReader(open(sys.argv[1])))
 mats=('B01','B12','O05','O14')
 regs=('wet','mid','dry')
+
+def prediction_errors(offs,tang,flux,refresh_index):
+    abs_err=[]; rel_exc=[]
+    last=None
+    for i,(h,t,q) in enumerate(zip(offs,tang,flux)):
+        r=refresh_index(i)
+        qr=flux[r]; tr=tang[r]; hr=offs[r]
+        pred=qr+tr*(h-hr)
+        e=abs(pred-q)
+        abs_err.append(e)
+        excursion=abs(q-qr)
+        scale=max(abs(q),abs(qr),1.0)
+        floor=256.0*2.220446049250313e-16*scale
+        if excursion>floor:
+            rel_exc.append(e/excursion)
+    return abs_err,rel_exc
+
 for amp in (0.5,1.0,2.0):
   for cadence in (2,4,8):
-    worst=(0,None); vals=[]
+    worst=(0,None); vals=[]; pred_worst=(0,None); pred_abs_worst=(0,None)
     for mat in mats:
       for reg in regs:
         rr=[r for r in rows if abs(float(r['amplitude'])-amp)<1e-12 and r['material']==mat and r['regime']==reg]
+        offs=[float(r['offset_cm']) for r in rr]
         tang=[float(r['tangent']) for r in rr]
+        flux=[float(r['bottom_flux']) for r in rr]
         re=[]
         for i,t in enumerate(tang):
           lag=tang[(i//cadence)*cadence]
           re.append(abs(lag-t)/max(abs(t),1e-30))
         mx=max(re); vals.extend(re)
         if mx>worst[0]: worst=(mx,f'{mat}:{reg}')
-    print(f"APPROX01_AMPLITUDE|AMPLITUDE_CM={amp}|CADENCE={cadence}|WORST_MAX_REL={worst[0]:.17e}|WORST_CASE={worst[1]}|MEAN_REL_ALL={statistics.mean(vals):.17e}")
+        ae,pe=prediction_errors(offs,tang,flux,lambda i,c=cadence:(i//c)*c)
+        if max(ae)>pred_abs_worst[0]: pred_abs_worst=(max(ae),f'{mat}:{reg}')
+        if pe and max(pe)>pred_worst[0]: pred_worst=(max(pe),f'{mat}:{reg}')
+    print(f"APPROX01_AMPLITUDE|AMPLITUDE_CM={amp}|CADENCE={cadence}|WORST_MAX_REL={worst[0]:.17e}|WORST_CASE={worst[1]}|MEAN_REL_ALL={statistics.mean(vals):.17e}|WORST_FLUX_PRED_ABS={pred_abs_worst[0]:.17e}|WORST_FLUX_PRED_ABS_CASE={pred_abs_worst[1]}|WORST_FLUX_PRED_REL_EXCURSION={pred_worst[0]:.17e}|WORST_FLUX_PRED_REL_CASE={pred_worst[1]}")
 
 for amp in (0.5,1.0,2.0):
   for threshold in (0.25,0.5,1.0):
     worst=(0,None); all_rel=[]; refreshes=0; total=0
+    pred_worst=(0,None); pred_abs_worst=(0,None)
     for mat in mats:
       for reg in regs:
         rr=[r for r in rows if abs(float(r['amplitude'])-amp)<1e-12 and r['material']==mat and r['regime']==reg]
         offs=[float(r['offset_cm']) for r in rr]
         tang=[float(r['tangent']) for r in rr]
-        last=0; age=0
-        rel=[]
+        flux=[float(r['bottom_flux']) for r in rr]
+        last=0; age=0; rel=[]; refresh_idx=[]
         for i,t in enumerate(tang):
           must = i==0 or abs(offs[i]-offs[last])>threshold or age>=8
           if must:
             last=i; age=0; refreshes+=1
+          refresh_idx.append(last)
           lag=tang[last]
           e=abs(lag-t)/max(abs(t),1e-30)
           rel.append(e); all_rel.append(e); total+=1
           age+=1
         mx=max(rel)
         if mx>worst[0]: worst=(mx,f'{mat}:{reg}')
+        ae=[]; pe=[]
+        for i,(h,q) in enumerate(zip(offs,flux)):
+          r=refresh_idx[i]
+          pred=flux[r]+tang[r]*(h-offs[r])
+          e=abs(pred-q)
+          ae.append(e)
+          excursion=abs(q-flux[r])
+          scale=max(abs(q),abs(flux[r]),1.0)
+          floor=256.0*2.220446049250313e-16*scale
+          if excursion>floor: pe.append(e/excursion)
+        if max(ae)>pred_abs_worst[0]: pred_abs_worst=(max(ae),f'{mat}:{reg}')
+        if pe and max(pe)>pred_worst[0]: pred_worst=(max(pe),f'{mat}:{reg}')
     frac=refreshes/total
-    print(f"APPROX01_ADAPTIVE|AMPLITUDE_CM={amp}|HEAD_THRESHOLD_CM={threshold}|MAX_AGE=8|REFRESH_FRACTION={frac:.9f}|AVOIDED_FRACTION={1-frac:.9f}|WORST_MAX_REL={worst[0]:.17e}|WORST_CASE={worst[1]}|MEAN_REL_ALL={statistics.mean(all_rel):.17e}")
+    print(f"APPROX01_ADAPTIVE|AMPLITUDE_CM={amp}|HEAD_THRESHOLD_CM={threshold}|MAX_AGE=8|REFRESH_FRACTION={frac:.9f}|AVOIDED_FRACTION={1-frac:.9f}|WORST_MAX_REL={worst[0]:.17e}|WORST_CASE={worst[1]}|MEAN_REL_ALL={statistics.mean(all_rel):.17e}|WORST_FLUX_PRED_ABS={pred_abs_worst[0]:.17e}|WORST_FLUX_PRED_ABS_CASE={pred_abs_worst[1]}|WORST_FLUX_PRED_REL_EXCURSION={pred_worst[0]:.17e}|WORST_FLUX_PRED_REL_CASE={pred_worst[1]}")
 print('FPE_APPROX01_AMPLITUDE_FRONTIER=PASS')
 PY
