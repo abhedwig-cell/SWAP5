@@ -1530,6 +1530,29 @@ contains
     if(code==FMR_APP_BOOT_OK.or..not.allocated(left)) error stop 'limited bootstrap accepted'
     if(any(left%committed).or.any(left%completed).or.any(left%accepted_substeps<1)) &
          error stop 'limited bootstrap did not reject internal progress'
+    management%depth_criterion=2
+    management%timing_criterion=7
+    do i=1,2
+      management(i)%dcs2_depth_cm=0.01_real64/1024.0_real64
+      requests(i)%t0=T0; requests(i)%t1=midpoint
+      requests(i)%selection_opportunity=.true.
+      previous(i)=forcing(i)
+      previous(i)%subsurface_irrigation_source=0.0_real64
+    end do
+    requests(2)%t0=midpoint
+    call execute_next_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,right,code,interval_end)
+    if(code==FMR_APP_BOOT_OK.or.allocated(right)) error stop 'prefix accepted invalid boundaries'
+    requests(2)%t0=T0
+    call execute_next_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,right,code,interval_end)
+    if(code==FMR_APP_BOOT_OK.or..not.allocated(right)) error stop 'prefix hid hydraulic rejection'
+    if(interval_end/=midpoint) error stop 'prefix retried hydraulic interval'
+    if(any(right%committed).or.any(right%completed)) error stop 'prefix published rejected hydraulics'
+    if(any(left%kernel_status/=right%kernel_status).or. &
+         any(left%accepted_substeps/=right%accepted_substeps).or. &
+         any(left%transaction_attempts/=right%transaction_attempts)) error stop 'prefix rejection outcome mismatch'
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PREFIX_TERMINAL_HYDRAULIC_REJECTION=PASS'
     call application%copy_committed_hydraulic_states(lhs,code)
     if(code/=FMR_APP_BOOT_OK) error stop 'limited bootstrap snapshot'
     do i=1,2
