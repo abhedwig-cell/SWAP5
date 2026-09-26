@@ -1,0 +1,55 @@
+name: F-PE-APPROX01 A1 production qualification
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+      - 'src/runtime/mod_groundwater_swap_transaction_participant.f90'
+      - 'tests/fpe/run_fpe_approx01_a1_participant_experiment.sh'
+      - 'tests/fpe/run_fpe_approx01_a1_default_off_identity.sh'
+      - 'tests/fpe/run_fpe_approx01_a1_modflow_e2e.sh'
+      - 'tests/fgc/run_fgc44_real_fmr_participant.sh'
+      - 'docs/performance/F-PE-APPROX01_A1_*.md'
+      - '.github/workflows/f-pe-approx01.yml'
+  workflow_dispatch:
+
+jobs:
+  a1-participant:
+    strategy:
+      fail-fast: false
+      matrix:
+        replica: [1, 2, 3]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx01_a1_participant_experiment.sh
+
+  fgc44-default-exact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fgc/run_fgc44_real_fmr_participant.sh
+
+  a1-default-off-identity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash tests/fpe/run_fpe_approx01_a1_default_off_identity.sh
+
+  a1-modflow-e2e:
+    strategy:
+      fail-fast: false
+      matrix:
+        replica: [1, 2, 3]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - run: bash tests/fpe/run_fpe_approx01_a1_modflow_e2e.sh

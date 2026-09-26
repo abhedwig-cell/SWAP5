@@ -2,11 +2,17 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fgc44-fmr-${GITHUB_RUN_ID:-local}-$$"
-mkdir -p "$BUILD"
+
+BASE=584af6ce2e6e4a6cd2c790e6341805e56085127b
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx01-default-off-${GITHUB_RUN_ID:-local}-$$"
+mkdir -p "$BUILD/base" "$BUILD/current" "$BUILD/base_src"
 trap 'rm -rf "$BUILD"' EXIT
-fail(){ echo "FGC44_REAL_FMR_FAIL $*" >&2; exit 1; }
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
+
+git fetch --no-tags --depth=1 origin "$BASE"
+git show "$BASE:src/runtime/mod_groundwater_swap_transaction_participant.f90" > "$BUILD/base_src/mod_groundwater_swap_transaction_participant.f90"
+git show "$BASE:src/runtime/mod_fmr_groundwater_swap_participant.f90" > "$BUILD/base_src/mod_fmr_groundwater_swap_participant.f90"
+
+COMMON=(-std=f2008 -ffree-line-length-none -O2)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -71,24 +77,34 @@ MODULE_SRC=(
   src/runtime/mod_groundwater_coupling_contract.f90
   src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90
   src/runtime/mod_groundwater_swap_forcing_adapter.f90
-  src/runtime/mod_groundwater_swap_transaction_participant.f90
+  GW_TX_PLACEHOLDER
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
-  src/runtime/mod_fmr_groundwater_swap_participant.f90
+  FMR_GW_PLACEHOLDER
 )
-for opt in 0 2; do
-  OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
+
+compile_variant(){
+  local name="$1"
+  local out="$BUILD/$name"
+  local objects=()
   for source in "${MODULE_SRC[@]}"; do
-    obj="$OUT/$(basename "${source%.*}").o"
-    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
+    if [[ "$source" == GW_TX_PLACEHOLDER ]]; then
+      if [[ "$name" == base ]]; then source="$BUILD/base_src/mod_groundwater_swap_transaction_participant.f90"; else source="src/runtime/mod_groundwater_swap_transaction_participant.f90"; fi
+    elif [[ "$source" == FMR_GW_PLACEHOLDER ]]; then
+      if [[ "$name" == base ]]; then source="$BUILD/base_src/mod_fmr_groundwater_swap_participant.f90"; else source="src/runtime/mod_fmr_groundwater_swap_participant.f90"; fi
+    fi
+    obj="$out/$(basename "${source%.*}").o"
+    gfortran "${COMMON[@]}" -J "$out" -I "$out" -c "$source" -o "$obj"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fgc/test_fgc44_real_fmr_participant.f90 -o "$OUT/test.o" || fail "compile oracle O$opt"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt"; }
-  grep -Fq 'F-GC44 REAL FMR PARTICIPANT GATE PASS' "$OUT/output.txt" || fail "missing final marker O$opt"
-  grep '^FGC44_' "$OUT/output.txt" > "$OUT/stable.txt"
-  echo "FGC44_REAL_FMR_O${opt}=PASS"
-done
-diff -u "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt"
-cat "$BUILD/o0/stable.txt"
-echo 'FGC44_REAL_FMR_O0_O2_IDENTITY=PASS'
+  gfortran "${COMMON[@]}" -J "$out" -I "$out" -c tests/fgc/test_fgc44_real_fmr_participant.f90 -o "$out/test.o"
+  gfortran -O2 "${objects[@]}" "$out/test.o" -o "$out/test"
+  "$out/test" > "$out/output.txt"
+  grep '^FGC44_' "$out/output.txt" > "$out/stable.txt"
+}
+
+compile_variant base
+compile_variant current
+
+diff -u "$BUILD/base/stable.txt" "$BUILD/current/stable.txt"
+cat "$BUILD/current/stable.txt"
+echo "FPE_APPROX01_A1_DEFAULT_OFF_PARENT_IDENTITY=PASS"

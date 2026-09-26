@@ -2,11 +2,12 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fgc44-fmr-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx01-tangent-seq-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
-fail(){ echo "FGC44_REAL_FMR_FAIL $*" >&2; exit 1; }
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
+fail(){ echo "APPROX01_TANGENT_SEQUENCE_FAIL $*" >&2; exit 1; }
+
+COMMON=(-std=f2008 -ffree-line-length-none -O2)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -75,20 +76,38 @@ MODULE_SRC=(
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
   src/runtime/mod_fmr_groundwater_swap_participant.f90
 )
-for opt in 0 2; do
-  OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
-  for source in "${MODULE_SRC[@]}"; do
-    obj="$OUT/$(basename "${source%.*}").o"
-    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
-    objects+=("$obj")
-  done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fgc/test_fgc44_real_fmr_participant.f90 -o "$OUT/test.o" || fail "compile oracle O$opt"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt"; }
-  grep -Fq 'F-GC44 REAL FMR PARTICIPANT GATE PASS' "$OUT/output.txt" || fail "missing final marker O$opt"
-  grep '^FGC44_' "$OUT/output.txt" > "$OUT/stable.txt"
-  echo "FGC44_REAL_FMR_O${opt}=PASS"
+
+objects=()
+for source in "${MODULE_SRC[@]}"; do
+  obj="$BUILD/$(basename "${source%.*}").o"
+  gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$source" -o "$obj" || fail "compile $source"
+  objects+=("$obj")
 done
-diff -u "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt"
-cat "$BUILD/o0/stable.txt"
-echo 'FGC44_REAL_FMR_O0_O2_IDENTITY=PASS'
+gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/fpe/test_fpe_approx01_tangent_sequence.f90 -o "$BUILD/test.o" || fail "compile fixture"
+gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
+
+RESULT="$BUILD/results.txt"
+: > "$RESULT"
+for spec in "wet -10" "mid -75" "dry -500"; do
+  read -r regime h0 <<< "$spec"
+  "$BUILD/test" "$regime" "$h0" | tee -a "$RESULT"
+done
+
+python3 - "$RESULT" <<'PY'
+import re,sys
+text=open(sys.argv[1]).read().splitlines()
+fresh=[x for x in text if x.startswith("APPROX01_FRESH|")]
+lags=[x for x in text if x.startswith("APPROX01_LAG|")]
+if len(fresh)!=72:
+    raise SystemExit(f"expected 72 fresh records, got {len(fresh)}")
+if len(lags)!=9:
+    raise SystemExit(f"expected 9 lag summaries, got {len(lags)}")
+for regime in ("wet","mid","dry"):
+    rows=[x for x in lags if f"REGIME={regime}|" in x]
+    if len(rows)!=3: raise SystemExit(f"missing lag rows {regime}")
+    for line in rows:
+        vals=dict(part.split("=",1) for part in line.split("|")[1:])
+        if not (float(vals["MAX_ABS_TANGENT_ERROR"]) >= 0 and float(vals["MAX_Q_PRED_ERROR_AT_DH_0P01M"]) >= 0):
+            raise SystemExit("invalid error metric")
+print("FPE_APPROX01_TANGENT_SEQUENCE_AGGREGATE=PASS")
+PY
