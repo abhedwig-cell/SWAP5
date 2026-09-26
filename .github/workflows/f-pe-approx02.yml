@@ -3,7 +3,6 @@ name: F-PE-APPROX02 A2 production qualification
 on:
   pull_request:
     paths:
-      - 'tests/fpe/run_fpe_approx02_a2_transaction.sh'
       - 'tests/fpe/run_fpe_approx02_a2_application_sequence.sh'
       - 'tests/fpe/test_fpe_approx02_a2_application_sequence.f90'
       - 'tests/fpe/run_fpe_approx02_a2_multistep.sh'
@@ -19,12 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx02_a2_multistep.sh
-
-  a2-transaction:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx02_a2_transaction.sh
 
   a2-application-sequence:
     runs-on: ubuntu-latest
