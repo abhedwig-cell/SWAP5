@@ -7,179 +7,6 @@ BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx01-a1-${GITHUB_RUN_ID:-local}
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 
-python3 - "$BUILD/mod_fmr_groundwater_swap_participant.f90" <<'PY'
-from pathlib import Path
-import sys
-src=Path("src/runtime/mod_fmr_groundwater_swap_participant.f90").read_text()
-
-src=src.replace(
-"""    logical :: origin_captured = .false.
-    logical :: live_candidate = .false.
-  contains
-""",
-"""    logical :: origin_captured = .false.
-    logical :: live_candidate = .false.
-    logical :: approx_tangent_cache_enabled = .false.
-    logical :: cached_tangent_available = .false.
-    real(real64) :: cached_tangent = 0.0_real64
-    real(real64) :: cached_head_m = 0.0_real64
-    real(real64) :: cache_head_limit_m = 0.005_real64
-    integer :: cache_max_age = 8
-    integer :: cache_age = 0
-    integer :: cache_fresh_count = 0
-    integer :: cache_reuse_count = 0
-    integer(int64) :: cached_lineage_id = 0_int64
-    integer(int64) :: cached_revision = -1_int64
-    real(real64) :: cached_t0 = 0.0_real64
-    real(real64) :: cached_t1 = 0.0_real64
-  contains
-""",1)
-
-src=src.replace(
-"""    procedure, public :: captured_revision => fmr_swap_revision
-  end type fmr_groundwater_swap_participant_t
-""",
-"""    procedure, public :: captured_revision => fmr_swap_revision
-    procedure, public :: configure_tangent_cache => fmr_swap_configure_tangent_cache
-    procedure, public :: tangent_cache_counts => fmr_swap_tangent_cache_counts
-  end type fmr_groundwater_swap_participant_t
-""",1)
-
-capture="""    self%origin_captured = .true.
-    status = GW_SWAP_PARTICIPANT_OK
-"""
-capture_rep="""    self%origin_captured = .true.
-    self%cached_tangent_available = .false.
-    self%cache_age = 0
-    status = GW_SWAP_PARTICIPANT_OK
-"""
-if capture not in src: raise SystemExit("capture seam missing")
-src=src.replace(capture,capture_rep,1)
-
-src=src.replace(
-"""    real(real64) :: duration_day, qbot_mean_cm_per_day, dq_swap_dh_per_s
-    integer :: forcing_status, interface_status
-""",
-"""    real(real64) :: duration_day, qbot_mean_cm_per_day, dq_swap_dh_per_s
-    integer :: forcing_status, interface_status
-    logical :: refresh_tangent
-""",1)
-
-old="""    trial_numerical = numerical
-    trial_numerical%accepted_trajectory_direction%requested = .true.
-    trial_numerical%accepted_trajectory_direction%control_coordinate = SW_STEP_CONTROL_BOTTOM_HEAD
-"""
-new="""    refresh_tangent = .true.
-    if (self%approx_tangent_cache_enabled .and. self%cached_tangent_available) then
-      refresh_tangent = self%cached_lineage_id /= self%origin_lineage_id .or. &
-           self%cached_revision /= self%origin_revision .or. &
-           .not. same_time(self%cached_t0, window%t0) .or. .not. same_time(self%cached_t1, window%t1) .or. &
-           self%cache_age >= self%cache_max_age .or. &
-           abs(prescribed_head_m-self%cached_head_m) > self%cache_head_limit_m .or. &
-           .not. ieee_is_finite(self%cached_tangent)
-    end if
-
-    trial_numerical = numerical
-    trial_numerical%accepted_trajectory_direction%requested = refresh_tangent
-    trial_numerical%accepted_trajectory_direction%control_coordinate = SW_STEP_CONTROL_BOTTOM_HEAD
-"""
-if old not in src: raise SystemExit("numerical seam missing")
-src=src.replace(old,new,1)
-
-old="""    if (accepted_head_response_tangent(self%trial_result, window)) then
-      dq_swap_dh_per_s = -self%trial_result%accepted_trajectory_direction%accepted_bottom_exchange_derivative / &
-           (duration_day * DAY_TO_S)
-      if (ieee_is_finite(dq_swap_dh_per_s)) then
-        trial%response_tangent_available = .true.
-        trial%dq_swap_dh_per_s = dq_swap_dh_per_s
-      end if
-    end if
-"""
-new="""    if (refresh_tangent) then
-      if (accepted_head_response_tangent(self%trial_result, window)) then
-        dq_swap_dh_per_s = -self%trial_result%accepted_trajectory_direction%accepted_bottom_exchange_derivative / &
-             (duration_day * DAY_TO_S)
-        if (ieee_is_finite(dq_swap_dh_per_s)) then
-          trial%response_tangent_available = .true.
-          trial%dq_swap_dh_per_s = dq_swap_dh_per_s
-          if (self%approx_tangent_cache_enabled) then
-            self%cached_tangent_available = .true.
-            self%cached_tangent = dq_swap_dh_per_s
-            self%cached_head_m = prescribed_head_m
-            self%cached_lineage_id = self%origin_lineage_id
-            self%cached_revision = self%origin_revision
-            self%cached_t0 = window%t0
-            self%cached_t1 = window%t1
-            self%cache_age = 0
-            self%cache_fresh_count = self%cache_fresh_count + 1
-          end if
-        else
-          self%cached_tangent_available = .false.
-        end if
-      else
-        self%cached_tangent_available = .false.
-      end if
-    else if (self%cached_tangent_available) then
-      trial%response_tangent_available = .true.
-      trial%dq_swap_dh_per_s = self%cached_tangent
-      self%cache_age = self%cache_age + 1
-      self%cache_reuse_count = self%cache_reuse_count + 1
-    end if
-"""
-if old not in src: raise SystemExit("tangent publication seam missing")
-src=src.replace(old,new,1)
-
-# Invalidate cache at accepted timestep boundaries / abandoned origins.
-src=src.replace(
-"""    self%origin_captured = .false.
-    self%origin_lineage_id = 0_int64
-""",
-"""    self%origin_captured = .false.
-    self%cached_tangent_available = .false.
-    self%cache_age = 0
-    self%origin_lineage_id = 0_int64
-""",1)
-src=src.replace(
-"""    self%live_candidate = .false.
-    self%origin_captured = .false.
-    status = GW_SWAP_PARTICIPANT_OK
-""",
-"""    self%live_candidate = .false.
-    self%origin_captured = .false.
-    self%cached_tangent_available = .false.
-    self%cache_age = 0
-    status = GW_SWAP_PARTICIPANT_OK
-""",1)
-
-insert="""
-  subroutine fmr_swap_configure_tangent_cache(self, enabled, head_limit_m, max_age)
-    class(fmr_groundwater_swap_participant_t), intent(inout) :: self
-    logical, intent(in) :: enabled
-    real(real64), intent(in), optional :: head_limit_m
-    integer, intent(in), optional :: max_age
-    self%approx_tangent_cache_enabled = enabled
-    if (present(head_limit_m)) self%cache_head_limit_m = max(0.0_real64, head_limit_m)
-    if (present(max_age)) self%cache_max_age = max(1, max_age)
-    self%cached_tangent_available = .false.
-    self%cache_age = 0
-    self%cache_fresh_count = 0
-    self%cache_reuse_count = 0
-  end subroutine fmr_swap_configure_tangent_cache
-
-  subroutine fmr_swap_tangent_cache_counts(self, fresh_count, reuse_count)
-    class(fmr_groundwater_swap_participant_t), intent(in) :: self
-    integer, intent(out) :: fresh_count, reuse_count
-    fresh_count = self%cache_fresh_count
-    reuse_count = self%cache_reuse_count
-  end subroutine fmr_swap_tangent_cache_counts
-
-"""
-idx=src.rfind("end module mod_fmr_groundwater_swap_participant")
-if idx<0: raise SystemExit("module end missing")
-src=src[:idx]+insert+src[idx:]
-Path(sys.argv[1]).write_text(src)
-PY
-
 python3 - "$BUILD/test.f90" <<'PY'
 from pathlib import Path
 import sys
@@ -208,6 +35,8 @@ replacement=r"""  call participant%configure_tangent_cache(.true.,0.005_real64,8
   call require(fresh_count>0 .and. reuse_count>0,'A1 cache exercised')
   call require(fresh_count+reuse_count==ntrial,'A1 cache accounting')
 
+  cached_fresh_count=fresh_count
+  cached_reuse_count=reuse_count
   fresh_before=fresh_count
   reuse_before=reuse_count
   call participant%abandon_origin(status)
@@ -245,7 +74,7 @@ replacement=r"""  call participant%configure_tangent_cache(.true.,0.005_real64,8
 
   call require(qsum==qsum_fresh,'A1 physical exchange identity')
   call require(tsum==tsum_fresh,'A1 same-head tangent identity')
-  write(*,'(*(g0))') 'APPROX01_A1|TRIALS=',ntrial,'|FRESH_COUNT=',fresh_count,'|REUSE_COUNT=',reuse_count, &
+  write(*,'(*(g0))') 'APPROX01_A1|TRIALS=',ntrial,'|FRESH_COUNT=',cached_fresh_count,'|REUSE_COUNT=',cached_reuse_count, &
        '|CACHED_NS_PER_TRIAL=',1.0e9_real64*cached_seconds/real(ntrial,real64), &
        '|FRESH_NS_PER_TRIAL=',1.0e9_real64*fresh_seconds/real(ntrial,real64), &
        '|RATIO=',cached_seconds/fresh_seconds,'|SPEEDUP_PERCENT=',100.0_real64*(1.0_real64-cached_seconds/fresh_seconds), &
@@ -331,7 +160,7 @@ MODULE_SRC=(
   src/runtime/mod_groundwater_swap_forcing_adapter.f90
   src/runtime/mod_groundwater_swap_transaction_participant.f90
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
-  "$BUILD/mod_fmr_groundwater_swap_participant.f90"
+  src/runtime/mod_fmr_groundwater_swap_participant.f90
 )
 objects=()
 for source in "${MODULE_SRC[@]}"; do
