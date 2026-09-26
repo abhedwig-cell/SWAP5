@@ -579,7 +579,7 @@ for source in "${MODULE_SRC[@]}"; do
 done
 gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/lib/libswap.so" || fail "link"
 
-export PYTHONPATH="$ROOT/tests/fgc/support"
+export PYTHONPATH="$ROOT/src/adapter:$ROOT/tests/fgc/support"
 cp tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py "$BUILD/py/e2e.py"
 python3 - "$BUILD/py/e2e.py" <<'PY'
 from pathlib import Path
@@ -642,7 +642,7 @@ src=src.replace('print("FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS")',
 p.write_text(src)
 PY
 
-CLOSEOUT_ONECELL=1 CLOSEOUT_COMPATIBLE_SOLVER=1 \
+CLOSEOUT_ONECELL=1 CLOSEOUT_COMPATIBLE_SOLVER=1 TEMPORAL07_REPO_ROOT="$ROOT" \
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/lib/libswap.so" \
 python3 "$BUILD/py/e2e.py" | tee "$BUILD/p2.txt"
 
