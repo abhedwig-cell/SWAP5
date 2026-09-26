@@ -91,9 +91,9 @@ PY
 REPS=12
 for rep in $(seq 1 "$REPS"); do
   if (( rep % 2 == 1 )); then
-    order=(1 10 100 1000)
+    order=(1 10 100 1000 10000 1000000 100000000 10000000000)
   else
-    order=(1000 100 10 1)
+    order=(10000000000 100000000 1000000 10000 1000 100 10 1)
   fi
   for tol in "${order[@]}"; do run_one "$tol" "$rep"; done
 done
@@ -101,7 +101,8 @@ done
 python3 - "$CSV" <<'PY'
 import csv,statistics,sys,math
 rows=list(csv.DictReader(open(sys.argv[1])))
-by={int(t):[r for r in rows if int(float(r['tol_mult']))==t] for t in (1,10,100,1000)}
+levels=(1,10,100,1000,10000,1000000,100000000,10000000000)
+by={int(t):[r for r in rows if int(float(r['tol_mult']))==t] for t in levels}
 for t,rr in by.items():
     if len(rr)!=12: raise SystemExit(f'missing reps tol={t}: {len(rr)}')
     if any(int(r['status'])!=1 for r in rr): raise SystemExit(f'nonconverged tol={t}')
@@ -111,7 +112,7 @@ ref_theta=[float(ref[f'th{i}']) for i in range(1,5)]
 ref_flux=float(ref['bottom_flux'])
 ref_mass=float(ref['mass_residual'])
 ref_sec=statistics.median(float(r['seconds']) for r in by[1])
-for t in (1,10,100,1000):
+for t in levels:
     rr=by[t]
     secs=[float(r['seconds']) for r in rr]
     nls=sorted({int(r['nonlinear']) for r in rr})
