@@ -1234,6 +1234,7 @@ contains
     call verify_pending_mixed_columns(profile,source,template,.false.,.true.,.true.,.true.)
     call verify_pending_mixed_columns(profile,source,template,.true.,.true.,.true.,.true.)
     call verify_irrigation_bootstrap(profile,source,template)
+    call verify_irrigation_bootstrap(profile,source,template,.true.)
     do timing=7,8
       call verify_new_irrigation_selection_trial(profile,source,template,.false.,.false.,timing)
       call verify_new_irrigation_selection_trial(profile,source,template,.true.,.false.,timing)
@@ -1242,14 +1243,17 @@ contains
     end do
   end subroutine verify_pending_irrigation_trial
 
-  subroutine verify_irrigation_bootstrap(profile,source,template)
+  subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection)
     use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation
+    use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
     use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t
     use mod_irrigation_process, only: irrigation_state_t,IRRIGATION_EVENT_SCHEDULED, &
          scheduled_irrigation_parameters_t,scheduled_irrigation_request_t
     type(fmr_production_application_config_t),intent(in)::profile
     type(ppa_irrigation_event_state_t),intent(in)::source
     type(fmr_template_t),intent(in)::template
+    logical,intent(in),optional::profile_selection
+    type(ppa_irrigation_profile_t),allocatable::root_profiles(:)
     type(fmr_production_application_config_t)::config
     type(fmr_production_application_bootstrap_t)::application,restored
     type(fmr_b110_physical_forcing_t)::forcing(2)
@@ -1363,11 +1367,38 @@ contains
     call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'invalid second source partially executed'
     management(2)%irr_rate_cm_per_day=0.01_real64
-    management(2)%depth_criterion=1
+    management(2)%depth_criterion=99
     call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'unsupported bootstrap management depth admitted'
     management(2)%depth_criterion=2
-    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
+    if(present(profile_selection)) then
+      if(profile_selection) then
+        allocate(root_profiles(2))
+        do i=1,2
+          management(i)%depth_criterion=1
+          management(i)%dcs1_knot_count=2; management(i)%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+          management(i)%timing_criterion=8
+          management(i)%tcs8_knot_count=2; management(i)%tcs8_dvs(1:2)=[0.0_real64,2.0_real64]
+          management(i)%tcs8_water_content=0.8_real64
+        end do
+        call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+             management,requests,previous,left,code,root_profiles)
+        if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'missing bootstrap profile admitted'
+        do i=1,2
+          root_profiles(i)%noddrz=1; root_profiles(i)%layer=[1]; root_profiles(i)%dz=[1.0_real64]
+          root_profiles(i)%ztopcp=[0.0_real64]; root_profiles(i)%wclos=[0.8_real64]
+          root_profiles(i)%wcmes=[0.3_real64]; root_profiles(i)%wchis=[0.1_real64]
+          root_profiles(i)%rd=management(i)%dcs2_depth_cm(1)/(0.8_real64-source%water_content(1))
+        end do
+        root_profiles(2)%dz=-1.0_real64
+        call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+             management,requests,previous,left,code,root_profiles)
+        if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'negative bootstrap profile admitted'
+        root_profiles(2)%dz=1.0_real64
+      end if
+    end if
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,left,code,root_profiles)
     if(code/=FMR_APP_BOOT_OK) then
       write(*,*) 'MIXED_LIFECYCLE_STATUS',code,left%kernel_status,left%accepted_substeps
       write(*,*) 'MIXED_LIFECYCLE_ADMISSION',left%admission_status
@@ -1382,9 +1413,18 @@ contains
     forcing(2)%temporal_forcing_event=.false.
     previous=forcing
     requests%t0=midpoint; requests%t1=finish
-    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
+    if(allocated(root_profiles)) then
+      ! Supplied crop geometry for this fixture selects the same bounded gift
+      ! from the current profile; selection physics remains in the process.
+      call application%copy_committed_hydraulic_states(lhs,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'profile lifecycle hydraulic input'
+      root_profiles(1)%rd=management(1)%dcs2_depth_cm(1)/(0.8_real64-lhs(1)%water_content(1))
+    end if
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,left,code,root_profiles)
     if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'pending beside new bootstrap failed'
-    call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64,management,requests,previous,right,code)
+    call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,right,code,root_profiles)
     if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'restored pending beside new failed'
     do i=1,2
       if(.not.left(i)%mass%complete.or.abs(left(i)%mass%residual)>1.0e-12_real64) &
@@ -1395,9 +1435,11 @@ contains
     forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=finish
     requests%t0=finish; requests%t1=finish+1.0_real64/1024.0_real64
     requests%selection_opportunity=.false.
-    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,left,code,root_profiles)
     if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'bootstrap source stop failed'
-    call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64,management,requests,previous,right,code)
+    call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,right,code,root_profiles)
     if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'restored bootstrap source stop failed'
     call application%copy_committed_hydraulic_states(lhs,code)
     if(code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle copy'
@@ -1413,6 +1455,7 @@ contains
     call restored%close(code)
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_MIXED_SELECTION_SOURCE_STOP_RESTART=PASS'
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_AUTOMATIC_TYPED_SOURCE=PASS'
+    if(allocated(root_profiles)) write(*,'(a)') 'PPA_IRR_BOOTSTRAP_TCS8_DCS1_PROFILE_LIFECYCLE=PASS'
     ! An outer failure after accepted internal steps must not publish either
     ! the newly selected event or physical progress through the real owner.
     config%numerical%max_committed_substeps=1
