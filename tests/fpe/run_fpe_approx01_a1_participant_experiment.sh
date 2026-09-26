@@ -208,6 +208,21 @@ replacement=r"""  call participant%configure_tangent_cache(.true.,0.005_real64,8
   call require(fresh_count>0 .and. reuse_count>0,'A1 cache exercised')
   call require(fresh_count+reuse_count==ntrial,'A1 cache accounting')
 
+  fresh_before=fresh_count
+  reuse_before=reuse_count
+  call participant%abandon_origin(status)
+  call require(status==GW_SWAP_PARTICIPANT_OK,'A1 abandon cached origin for invalidation')
+  call participant%capture_origin(committed,status)
+  call require(status==GW_SWAP_PARTICIPANT_OK,'A1 recapture origin')
+  call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,datum,window, &
+       origin_head_m,trial2,status)
+  call require(status==GW_SWAP_PARTICIPANT_OK .and. trial2%valid,'A1 recaptured trial')
+  call require(trial2%response_tangent_available,'A1 recaptured tangent available')
+  call participant%tangent_cache_counts(fresh_count,reuse_count)
+  call require(fresh_count==fresh_before+1,'A1 new origin forces fresh tangent')
+  call require(reuse_count==reuse_before,'A1 new origin does not reuse stale tangent')
+  call participant%discard_candidate(backend)
+
   call participant%configure_tangent_cache(.false.)
   call participant%abandon_origin(status)
   call require(status==GW_SWAP_PARTICIPANT_OK,'A1 abandon cached origin')
