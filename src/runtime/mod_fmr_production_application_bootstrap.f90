@@ -163,6 +163,18 @@ contains
           status = FMR_APP_BOOT_INVALID_CONFIG
           return
         end if
+        if (config%tiles(i)%template%numerical_continuation_layout_id == &
+            FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY .and. &
+            config%numerical%transaction%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE) then
+          if (.not. allocated(config%tiles(i)%initial_right_derivative)) then
+            status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+            return
+          end if
+          if (any(.not. ieee_is_finite(config%tiles(i)%initial_right_derivative))) then
+            status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+            return
+          end if
+        end if
         if (i > 1) then
           if (any(config%tiles(1:i-1)%ledger_id == config%tiles(i)%ledger_id)) return
         end if
