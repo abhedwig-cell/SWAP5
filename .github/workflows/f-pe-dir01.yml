@@ -3,36 +3,22 @@ name: F-PE-DIR01 active repair qualification
 on:
   pull_request:
     paths:
-      - 'tests/fpe/run_fpe_dir01_repair03_experiment.sh'
-      - 'tests/fpe/run_fpe_dir01_repair03_heap.sh'
-      - 'docs/performance/F-PE-DIR01_REPAIR03_*.md'
-      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'tests/fpe/run_fpe_dir01_repair04_experiment.sh'
+      - 'tests/fpe/run_fpe_dir01_repair04_heap.sh'
+      - 'docs/performance/F-PE-DIR01_REPAIR04_*.md'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - '.github/workflows/f-pe-dir01.yml'
   workflow_dispatch:
 
 jobs:
-  repair03-experiment:
-    strategy:
-      fail-fast: false
-      matrix:
-        replica: [1, 2, 3]
+  repair04-experiment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_dir01_repair03_experiment.sh
+      - run: bash tests/fpe/run_fpe_dir01_repair04_experiment.sh
 
-  repair03-heap:
+  repair04-heap:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_dir01_repair03_heap.sh
-
-  postimage-rebaseline:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: current bottom-head directional ratio
-        run: bash tests/fpe/run_fpe_profile04_head_directional.sh
-      - name: current directional heap attribution
-        run: bash tests/fpe/run_fpe_dir01_heap_attribution.sh
+      - run: bash tests/fpe/run_fpe_dir01_repair04_heap.sh
