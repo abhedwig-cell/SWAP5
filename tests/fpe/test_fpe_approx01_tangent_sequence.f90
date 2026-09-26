@@ -139,8 +139,8 @@ contains
 
   pure real(real64) function head_offset(i) result(v)
     integer,intent(in)::i
-    real(real64),parameter::pattern(8)=[0.0_real64,0.001_real64,0.002_real64,0.001_real64, &
-         0.0_real64,-0.001_real64,-0.002_real64,-0.001_real64]
+    real(real64),parameter::pattern(8)=[0.0_real64,0.0001_real64,0.0002_real64,0.0001_real64, &
+         0.0_real64,-0.0001_real64,-0.0002_real64,-0.0001_real64]
     v=pattern(1+mod(i-1,8))
   end function head_offset
 
