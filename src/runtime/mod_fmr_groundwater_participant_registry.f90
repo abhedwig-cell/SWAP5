@@ -5,7 +5,8 @@ module mod_fmr_groundwater_participant_registry
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_serialized_reference_backend_t
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
-  use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
+  use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t, &
+       fmr_groundwater_temporal_budget_policy_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, &
        GW_SWAP_PARTICIPANT_OK, GW_SWAP_PARTICIPANT_INVALID_REQUEST
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
@@ -36,6 +37,7 @@ module mod_fmr_groundwater_participant_registry
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
     type(canonical_numerical_config_t) :: numerical
+    type(fmr_groundwater_temporal_budget_policy_t) :: temporal_budget_policy
     type(groundwater_head_datum_t) :: datum
     logical :: immutable_parameters = .false.
   end type fmr_groundwater_participant_slot_t
@@ -85,7 +87,7 @@ contains
   end subroutine registry_initialize
 
   subroutine registry_bind(self, tile_id, backend, column, template, parameters, committed, materializer, &
-       numerical, datum, handle, status, immutable_parameters)
+       numerical, datum, handle, status, immutable_parameters, temporal_budget_policy)
     class(fmr_groundwater_participant_registry_t), intent(inout) :: self
     integer(int64), intent(in) :: tile_id
     type(fmr_serialized_reference_backend_t), target, intent(inout) :: backend
@@ -99,6 +101,7 @@ contains
     integer(int64), intent(out) :: handle
     integer, intent(out) :: status
     logical, intent(in), optional :: immutable_parameters
+    type(fmr_groundwater_temporal_budget_policy_t), intent(in), optional :: temporal_budget_policy
 
     integer :: i, slot
 
@@ -113,6 +116,9 @@ contains
     if (.not. committed%ready()) return
     if (.not. datum%valid()) return
     if (.not. materializer%profile_admitted(parameters)) return
+    if (present(temporal_budget_policy)) then
+      if (.not. temporal_budget_policy%valid()) return
+    end if
 
     do i = 1, size(self%slots)
       if (.not. self%slots(i)%active) cycle
@@ -150,6 +156,8 @@ contains
     self%slots(slot)%column = column
     self%slots(slot)%template = template
     self%slots(slot)%numerical = numerical
+    self%slots(slot)%temporal_budget_policy = fmr_groundwater_temporal_budget_policy_t()
+    if (present(temporal_budget_policy)) self%slots(slot)%temporal_budget_policy = temporal_budget_policy
     self%slots(slot)%datum = datum
     self%slots(slot)%immutable_parameters = .false.
     if (present(immutable_parameters)) self%slots(slot)%immutable_parameters = immutable_parameters
@@ -230,7 +238,8 @@ contains
          self%slots(idx)%template, self%slots(idx)%parameters, self%slots(idx)%committed, &
          self%slots(idx)%materializer, self%slots(idx)%numerical, self%slots(idx)%datum, window, &
          prescribed_head_m, trial, participant_status, &
-         trusted_prepared_parameters=self%slots(idx)%immutable_parameters)
+         trusted_prepared_parameters=self%slots(idx)%immutable_parameters, &
+         temporal_budget_policy=self%slots(idx)%temporal_budget_policy)
     if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
       status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
       return
