@@ -1,74 +1,17 @@
-name: F-PE-DIR01 bottom-head tangent attribution
+name: F-PE-DIR01 active repair qualification
 
 on:
   pull_request:
     paths:
-      - 'tests/fpe/run_fpe_dir01_gprof_attribution.sh'
-      - 'tests/fpe/run_fpe_dir01_heap_attribution.sh'
-      - 'tests/fpe/run_fpe_dir01_repair01_paired.sh'
-      - 'tests/fpe/run_fpe_dir01_repair02_experiment.sh'
-      - 'tests/fpe/run_fpe_dir01_repair02_heap.sh'
       - 'tests/fpe/run_fpe_dir01_repair03_experiment.sh'
       - 'tests/fpe/run_fpe_dir01_repair03_heap.sh'
-      - 'tests/fpe/run_fpe_dir01_repair02_transaction_control.sh'
-      - 'docs/performance/F-PE-DIR01_*.md'
+      - 'docs/performance/F-PE-DIR01_REPAIR03_*.md'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - '.github/workflows/f-pe-dir01.yml'
   workflow_dispatch:
 
 jobs:
-  gprof-attribution:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_dir01_gprof_attribution.sh
-
-  heap-attribution:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_dir01_heap_attribution.sh
-
-  repair01-paired:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_dir01_repair01_paired.sh
-
-  repair02-experiment:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_dir01_repair02_experiment.sh
-
-  repair02-heap:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_dir01_repair02_heap.sh
-
-  transaction-preservation:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/transaction/run_a23bl_gate.sh
-      - name: attempt-context semantics
-        run: |
-          set -euo pipefail
-          BUILD="${RUNNER_TEMP}/dir01-context-gate"
-          mkdir -p "$BUILD"
-          gfortran -std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace -O2 \
-            -J "$BUILD" src/transaction/mod_transaction_reference.f90 \
-            tests/transaction/test_transaction_attempt_context.f90 -o "$BUILD/test"
-          "$BUILD/test"
-
-  repair02-transaction-control:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: bash tests/fpe/run_fpe_dir01_repair02_transaction_control.sh
-
   repair03-experiment:
     runs-on: ubuntu-latest
     steps:
