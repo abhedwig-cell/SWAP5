@@ -87,6 +87,21 @@ T2C may proceed to application-shaped and coupled qualification only if the broa
 
 No production opt-in is admitted by this preregistration.
 
+## Near-zero flux interpretation
+
+Bottom-flux sensitivity must not be judged from a raw relative error alone when the reference flux is close to zero.
+
+For every paired case report all of:
+
+- absolute terminal bottom-flux error [cm/day];
+- relative terminal bottom-flux error against the exact reference;
+- predictor-scaled terminal flux error using `max(abs(reference bottom flux), abs(predictor qbot))` as the physical scale;
+- absolute interval bottom-exchange error, `abs(delta qbot) * dt` [cm].
+
+The raw relative error remains reported for transparency, but it is not by itself a rejection criterion in near-zero-flux cases. The predictor-scaled and absolute exchange measures are the interpretation authority there.
+
+This rule is fixed before T2C matrix results are inspected.
+
 
 ## Reference-domain calibration amendment
 
