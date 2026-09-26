@@ -55,6 +55,8 @@ The response-surrogate idea is not blocked by local q(h) smoothness.
 
 It is blocked by the current exact transaction admissibility envelope on difficult origins.
 
+Follow-up P1B diagnostics identify the immediate failure mechanism more specifically: failing nonzero trials return `GW_SWAP_PARTICIPANT_TRIAL_FAILED` / `CANONICAL_STATUS_TRANSACTION_FAILED`, accept no substep, and exhaust all eight configured retries. The retry stream contains solver rejections and temporal-indicator rejections, while mass rejections and temporal-certificate-unavailable rejections remain zero. B01-mid +0.001 cm is the lone smallest-offset nonzero success and completes through two accepted substeps after temporal retrying.
+
 Under current semantics, a surrogate that served nonzero displacements would answer requests for which the exact physical participant itself rejects the trial.
 
 That would change coupling/transaction meaning rather than accelerate an accepted computation.
@@ -79,7 +81,9 @@ If pursued further, the next workunit should diagnose the difficult-origin exact
 
 - why zero displacement succeeds;
 - why O(1e-3 cm) displacement frequently fails;
-- whether the failure is caused by temporal acceptance, nonlinear convergence, mass acceptance, or another transaction gate;
+- why the exact corrector repeatedly reaches retry exhaustion from a mix of solver and temporal-indicator rejections under tiny head perturbations;
+- whether the strict HEAD_BUDGET / transaction retry policy is intentionally defining this near-zero admissibility envelope or exposing a numerical pathology;
+- why B01-mid +0.001 cm can recover through temporal substepping while the other difficult origins cannot;
 - and whether that behavior is intended physical/numerical policy.
 
 Only after that question is resolved should response-surrogate performance work be reconsidered.
