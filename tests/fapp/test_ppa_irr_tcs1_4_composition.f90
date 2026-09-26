@@ -1,6 +1,8 @@
 program test_composition
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
   use mod_irrigation_process
+  use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_tcs1_4_composition
   implicit none
   type(scheduled_irrigation_parameters_t)::p
@@ -8,7 +10,10 @@ program test_composition
   type(irrigation_state_t)::base,candidate,pending
   type(irrigation_flux_result_t)::flux
   type(irrigation_diagnostics_t)::d
+  type(process_hydraulic_view_t)::hydraulic
+  type(irrigation_timing_selection_t)::selection
   real(real64)::knots(7),values(7)
+  real(real64)::actual,nan
   integer::i
   p%scheduled_irrigation_enabled=.true.; p%active_nodes=1; p%sensor_node=1; p%single_ssdi_node=1
   p%irr_rate_cm_per_day=1.0_real64; p%dcs2_knot_count=2
@@ -17,6 +22,7 @@ program test_composition
   r%selection_opportunity=.true.; r%irrigation_enabled=.true.; r%schedule_enabled=.true.
   r%crop_emerged=.true.; r%irrigation_window_open=.true.
   knots=0.0_real64; knots(2)=2.0_real64; values=0.5_real64
+  nan=ieee_value(0.0_real64,ieee_quiet_nan)
   do i=1,4
     p%timing_criterion=i
     call evaluate_tcs1_4_scheduled(p,base,r,knots,values,2,1.0_real64,0.75_real64,0.0_real64, &
@@ -44,6 +50,27 @@ program test_composition
          1.0_real64,0.5_real64,0.1_real64,candidate,flux,d)
     if(d%status/=IRRIGATION_OK.or.flux%event_started) error stop 'fixed precedence'
     r%fixed_event_already_selected=.false.
+    ! Ordinary entry must not implicitly admit supplied-observation selectors.
+    call evaluate_scheduled_irrigation_interval(p,base,r,hydraulic,candidate,flux,d)
+    if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.candidate%active_event) error stop 'ordinary admission'
+    selection%valid=.true.; selection%triggered=.true.; selection%criterion=i+1
+    call evaluate_scheduled_irrigation_interval(p,base,r,hydraulic,candidate,flux,d,selection)
+    if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.candidate%active_event) error stop 'mismatched timing'
+    call evaluate_tcs1_4_scheduled(p,base,r,knots,values,2,nan,nan,nan,nan,nan,nan,candidate,flux,d)
+    if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.candidate%active_event) error stop 'nonfinite observations'
+    actual=0.5_real64
+    if(i==2) actual=0.75_real64
+    if(i==4) values=5.0_real64 ! exactly representable 0.5 cm threshold
+    call evaluate_tcs1_4_scheduled(p,base,r,knots,values,2,1.0_real64,0.5_real64,0.0_real64, &
+         1.0_real64,0.5_real64,actual,candidate,flux,d)
+    if(d%status/=IRRIGATION_OK.or.flux%event_started) error stop 'strict equality triggered'
+    values=0.5_real64
+    p%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+    call evaluate_tcs1_4_scheduled(p,base,r,knots,values,2,1.0_real64,0.75_real64,0.0_real64, &
+         1.0_real64,0.5_real64,0.1_real64,candidate,flux,d)
+    if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.candidate%active_event) error stop 'unqualified depth accepted'
+    p%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
   end do
   write(*,'(a)') 'PPA_IRR_TCS1_4_DCS2_COMPOSITION=PASS'
+  write(*,'(a)') 'PPA_IRR_TCS1_4_COMPOSITION_STRICT_GUARDS=PASS'
 end program
