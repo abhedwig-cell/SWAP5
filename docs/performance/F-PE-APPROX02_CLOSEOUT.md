@@ -77,7 +77,7 @@ all 12 cases converged.
 
 Current-head matrix summary:
 
-- median speedup approximately `28.46%`;
+- median speedup approximately `29.34%`;
 - worst relative pressure-head deviation approximately `3.54e-10`;
 - worst final-head relative deviation approximately `2.36e-10`;
 - worst relative water-content deviation approximately `2.99e-11`;
@@ -96,7 +96,7 @@ The 20-step production application sequence passed on the production A2C postima
 
 Observed:
 
-- speedup approximately `15.5%`;
+- speedup approximately `19.87%`;
 - accepted substeps identical;
 - zero retries in both exact and A2C arms;
 - zero canonical mass residual in both arms;
@@ -120,17 +120,17 @@ Every replica preserved exactly:
 
 Measured coupled-loop speedups:
 
-- approximately `18.86%`;
-- approximately `17.32%`;
-- approximately `7.83%`.
+- approximately `12.39%`;
+- approximately `11.80%`;
+- approximately `15.48%`.
 
 Median:
 
-approximately `17.32%`.
+approximately `12.39%`.
 
 Mean:
 
-approximately `14.67%`.
+approximately `13.22%`.
 
 The coupling loop is short, so the spread is treated as timing variance. The robust statement is that all three replicas were speed-positive and endpoint-identical.
 
@@ -228,8 +228,8 @@ F-PE-APPROX02 is closed with A2C retained as the second qualified production-sha
 Planning interpretation:
 
 - hard-case multistep solver gain: often 20-40%;
-- production application-sequence gain: about 15%;
-- replicated coupled-loop gain: all runs positive, median about 17%, with an observed 8-19% band;
+- production application-sequence gain on the final current-head qualification run: about 20%;
+- replicated coupled-loop gain on the final current-head qualification run: all runs positive, median about 12.4%, with an observed 11.8-15.5% band;
 - qualified hydrological trajectory errors extremely small on the tested 4x3 matrix;
 - coupled endpoint exact in all three qualified replicas;
 - exact default route preserved.
