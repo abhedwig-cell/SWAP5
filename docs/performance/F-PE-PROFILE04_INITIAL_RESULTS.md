@@ -107,3 +107,27 @@ Observed job-median range corresponds to approximately **14.4-17.8%** reduction.
 
 Planning value:
 **~15.5% F-AHL50 repeated-solver speedup**, with a conservative observed multi-run band of roughly **14-18%**.
+
+
+## Replicated canonical rebaseline confirmation
+
+PROFILE04 run `36221086108` completed fully green.
+
+Five independent AHL job medians:
+`0.822293737, 0.845257498, 0.845811822, 0.847454164, 0.850688605`.
+
+Median of job medians:
+`0.845811822` (~15.42% reduction).
+
+Mean:
+`0.842301165` (~15.77% reduction).
+
+This independently reproduces the prior five-job aggregate (`0.846090123` median), so **~15.5%** is now a stable planning estimate for F-AHL50 repeated solver gain.
+
+The same run also reproduces:
+- ZERO-WASTE Reference mean speedup: ~27.76%, median ratio `0.724142953`;
+- ZERO-WASTE directional mean speedup: ~24.26%, median ratio `0.758911185`;
+- PLANVALID N=10,000 init median ratio `0.380769720` (~61.9% reduction) with repeated runtime ratio `1.003020428`;
+- F-AHL50 N=10,000 setup median ratio `1.036369680` (~3.6% overhead).
+
+These repeated measurements strengthen the conclusion that setup has been largely amortized at large N and that remaining performance attention should focus on repeated execution.
