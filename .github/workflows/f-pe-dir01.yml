@@ -36,3 +36,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+
+  repair05-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_dir01_gprof_attribution.sh
