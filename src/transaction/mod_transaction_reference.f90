@@ -227,6 +227,7 @@ contains
     class(transaction_state_t), allocatable :: full_state
     class(transaction_state_t), allocatable :: half_state
     class(transaction_attempt_context_t), allocatable :: checkpoint_context
+    class(transaction_attempt_context_t), allocatable :: half_context
     type(trial_outcome_t) :: full_outcome, half1_outcome, half2_outcome
     real(real64) :: attempt_dt, attempt_t1, midpoint
     real(real64) :: storage0, storage_full, storage_half
@@ -331,6 +332,7 @@ contains
         result%alternative_solver_calls = result%alternative_solver_calls + half2_outcome%alternative_solver_calls
         result%workspace_full_resets = result%workspace_full_resets + half2_outcome%workspace_full_resets
         result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + half2_outcome%workspace_zeroed_bytes
+        if (context_required) call model%capture_attempt_context(half_context)
       else
         half2_outcome = trial_outcome_t()
       end if
@@ -425,6 +427,7 @@ contains
            half1_outcome%mass_accounting_complete .and. half2_outcome%mass_accounting_complete .and. &
            accepted_missing_mask == TX_MASS_MISSING_NONE
 
+      if (context_required) call model%restore_attempt_context(half_context)
       call move_alloc(half_state, committed)
       result%status = TX_STATUS_ACCEPTED
       result%accepted_route = TX_ROUTE_TWO_HALF
