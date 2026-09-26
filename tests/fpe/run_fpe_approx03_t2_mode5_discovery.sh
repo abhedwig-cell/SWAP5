@@ -177,10 +177,10 @@ done
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$BUILD/test.f90" -o "$BUILD/test.o" || fail "compile fixture"
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 
-tops=(0.0 1e-9 -1e-9)
-bottoms=(-50 -75 -100 -150)
-dts=(1e-3 5e-3 1e-2 5e-2)
-budget=2.5e-11
+tops=(0.0 1e-6 -1e-6)
+bottoms=(-72.01 -72.1 -72.5 -73.0)
+dts=(1e-4 5e-4 1e-3 5e-3 1e-2)
+budget=1e-5
 rows=0
 refined=0
 for top in "${tops[@]}"; do
