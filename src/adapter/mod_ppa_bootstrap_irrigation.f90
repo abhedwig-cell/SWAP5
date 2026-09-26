@@ -11,6 +11,7 @@ module mod_ppa_bootstrap_irrigation
        irrigation_state_t,irrigation_flux_result_t,irrigation_diagnostics_t,IRRIGATION_EVENT_SCHEDULED, &
        IRRIGATION_DEPTH_DCS2_FIXED,IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_source,ppa_tcs1_4_observations_t
   use mod_ppa_irrigation_source_binding, only: evaluate_ppa_irrigation_source, &
        evaluate_ppa_profile_irrigation_source,ppa_irrigation_profile_t
   implicit none
@@ -113,7 +114,7 @@ contains
   end subroutine execute_next_ppa_bootstrap_irrigation
 
   subroutine execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,results,status,profiles,preparation,effective_forcing)
+       previous,results,status,profiles,preparation,effective_forcing,observations)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -123,6 +124,7 @@ contains
     integer,intent(out)::status
     type(ppa_irrigation_profile_t),intent(in),optional::profiles(:)
     type(ppa_irrigation_preparation_t),allocatable,intent(out),optional::preparation(:)
+    type(ppa_tcs1_4_observations_t),intent(in),optional::observations(:)
     type(fmr_b110_physical_forcing_t),allocatable,intent(out),optional::effective_forcing(:)
     type(fmr_committed_restart_bundle_t)::snapshot
     type(fmr_b110_physical_forcing_t),allocatable::prepared(:),forcing
@@ -138,6 +140,9 @@ contains
     status=FMR_APP_BOOT_INVALID_CONFIG
     n=size(column_ids)
     if(n<1.or.size(parameters)/=n.or.size(requests)/=n.or.size(previous)/=n) return
+    if(present(observations)) then
+      if(size(observations)/=n) return
+    end if
     if(present(profiles)) then
       if(size(profiles)/=n) return
     end if
@@ -145,6 +150,10 @@ contains
     if(.not.all(ieee_is_finite([t0,t1]))) return
     if(t1<=t0) return
     do i=1,n
+      if(parameters(i)%timing_criterion>=1.and.parameters(i)%timing_criterion<=4) then
+        if(.not.present(observations)) return
+        if(parameters(i)%depth_criterion/=IRRIGATION_DEPTH_DCS2_FIXED) return
+      end if
       select case(parameters(i)%depth_criterion)
       case(IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY)
         if(.not.present(profiles)) return
@@ -177,7 +186,10 @@ contains
         hydraulic%active_nodes=state%active_nodes
         hydraulic%pressure_head=state%pressure_head
         hydraulic%water_content=state%water_content
-        if(parameters(i)%depth_criterion==IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY) then
+        if(parameters(i)%timing_criterion>=1.and.parameters(i)%timing_criterion<=4) then
+          call evaluate_tcs1_4_source(parameters(i),state%irrigation,requests(i),observations(i),previous(i), &
+               event,flux,diagnostics,forcing,ok)
+        else if(parameters(i)%depth_criterion==IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY) then
           call evaluate_ppa_profile_irrigation_source(parameters(i),state%irrigation,requests(i),hydraulic, &
                profiles(i)%noddrz,profiles(i)%layer,profiles(i)%dz,profiles(i)%ztopcp,profiles(i)%rd, &
                profiles(i)%wclos,profiles(i)%wcmes,profiles(i)%wchis,previous(i),event,flux,diagnostics,forcing,ok)

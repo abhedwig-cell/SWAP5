@@ -1290,6 +1290,7 @@ contains
   end subroutine
 
   subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
+    use mod_ppa_irr_tcs1_4_source, only: ppa_tcs1_4_observations_t
     use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation,ppa_irrigation_preparation_t, &
          execute_next_ppa_bootstrap_irrigation,execute_window_ppa_bootstrap_irrigation,ppa_irrigation_prefix_result_t, &
          PPA_IRR_WINDOW_BUDGET_EXHAUSTED
@@ -1305,6 +1306,7 @@ contains
     type(ppa_irrigation_profile_t),allocatable::root_profiles(:)
     type(ppa_irrigation_preparation_t),allocatable::preparation(:)
     type(ppa_irrigation_prefix_result_t),allocatable::prefixes(:)
+    type(ppa_tcs1_4_observations_t)::observations(2)
     type(fmr_production_application_config_t)::config
     type(fmr_production_application_bootstrap_t)::application,restored
     type(fmr_b110_physical_forcing_t)::forcing(2)
@@ -1317,7 +1319,7 @@ contains
     type(fmr_committed_restart_bundle_t)::saved
     real(real64),allocatable::history(:)
     real(real64)::midpoint,finish,interval_end
-    integer::i,code,prefix_count
+    integer::i,code,prefix_count,timing
     logical::ok
     config=profile
     if(size(config%tiles)/=2) error stop 'irrigation bootstrap fixture requires two tiles'
@@ -1409,6 +1411,40 @@ contains
       previous(i)=forcing(i); previous(i)%subsurface_irrigation_source=0.0_real64
     end do
     ! First split hint is not necessarily the earliest event in the batch.
+    observations%knot_count=2
+    do i=1,2
+      observations(i)%dvs_knots(2)=2.0_real64
+      observations(i)%threshold_values=0.5_real64
+      observations(i)%iptra_day=1.0_real64; observations(i)%iqreddry_day=0.75_real64
+      observations(i)%awlh=1.0_real64; observations(i)%awmh=0.5_real64; observations(i)%awah=0.1_real64
+    end do
+    do timing=1,4
+      management%timing_criterion=timing
+      call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,right,code)
+      if(code==FMR_APP_BOOT_OK.or.allocated(right)) error stop 'missing observations admitted'
+      call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,right,code,observations=observations)
+      if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'TCS hydraulic selection failed'
+      do i=1,2
+        if(.not.right(i)%mass%complete.or.abs(right(i)%mass%residual)>1.0e-12_real64) error stop 'TCS hydraulic mass'
+      end do
+      call restored%export_committed_restart(92001_int64,saved,ok,code)
+      if(.not.ok) error stop 'TCS hydraulic export failed'
+      do i=1,2
+        select type(state=>saved%records(i)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%irrigation%active_event.neqv.(i==2)) error stop 'TCS accepted event persistence'
+        class default
+          error stop 'TCS accepted event carrier missing'
+        end select
+      end do
+      call restored%close(code)
+      call restored%initialize(config,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'TCS fixture reset failed'
+    end do
+    management%timing_criterion=7
+    write(*,'(a)') 'PPA_IRR_TCS1_4_BOOTSTRAP_HYDRAULIC_SELECTION=PASS'
     management(1)%dcs2_depth_cm=0.02_real64/1024.0_real64
     management(2)%dcs2_depth_cm=0.01_real64/1024.0_real64
     requests%t1=finish+1.0_real64/1024.0_real64
