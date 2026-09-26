@@ -601,8 +601,8 @@ export PYTHONPATH="$ROOT/tests/fgc/support"
 OUT="$BUILD/tangent01_p0.txt"; : > "$OUT"
 imbalances=(-0.10 0.10)
 offsets=(-0.01 -0.001 0.001 0.01)
-for imbalance in "\${imbalances[@]}"; do
-  for offset in "\${offsets[@]}"; do
+for imbalance in "${imbalances[@]}"; do
+  for offset in "${offsets[@]}"; do
     raw="$(FGC44_SWAP_LIB="$BUILD/lib/libswap.so" python3 "$BUILD/py/bench.py" O14 -75 "$imbalance" "$offset")" || { printf '%s\n' "$raw" >&2; fail "O14 mid $imbalance $offset"; }
     line="$(printf '%s\n' "$raw" | grep '^TANGENT01_P0_RAW|' | tail -1)"
     [[ -n "$line" ]] || fail "missing P0 record"
