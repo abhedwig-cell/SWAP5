@@ -55,7 +55,7 @@ PY
 
 python3 - "$BUILD/src/backend_candidate.f90" <<'PY'
 from pathlib import Path
-import sys
+import re,sys
 src=Path("src/runtime/mod_fmr_serialized_reference_backend.f90").read_text()
 old="""    type(accepted_trajectory_direction_t) :: trajectory_direction
     logical :: snow_active = .false.
@@ -72,7 +72,7 @@ src=src.replace(old,"",1)
 start=src.index("  subroutine fmr_serialized_advance(")
 end=src.index("  end subroutine fmr_serialized_advance",start)
 chunk=src[start:end]
-chunk=chunk.replace("direction_request","self%trajectory_request_workspace")
+chunk=re.sub(r"(?<![A-Za-z0-9_%])direction_request(?![A-Za-z0-9_])","self%trajectory_request_workspace",chunk)
 src=src[:start]+chunk+src[end:]
 Path(sys.argv[1]).write_text(src)
 PY
