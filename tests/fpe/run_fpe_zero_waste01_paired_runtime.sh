@@ -47,6 +47,8 @@ MODULE_SRC=(
   LINEAR_PLACEHOLDER
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
+  src/solver/mod_b110_direct_retention_core.f90
+  src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/process/mod_restricted_surface_evaporation.f90

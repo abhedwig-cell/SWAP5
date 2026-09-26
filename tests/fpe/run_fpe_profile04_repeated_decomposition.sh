@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-planvalid01-app-${GITHUB_RUN_ID:-local}-$$"
-mkdir -p "$BUILD/base" "$BUILD/candidate" "$BUILD/src"
+
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-profile04-decomp-${GITHUB_RUN_ID:-local}-$$"
+mkdir -p "$BUILD/mod"
 trap 'rm -rf "$BUILD"' EXIT
-BASE=f5ba657695156a936cb3dc8e14669f92d333753b
-git fetch --no-tags --depth=1 origin "$BASE"
-git show "$BASE:src/runtime/mod_fmr_runtime_core.f90" > "$BUILD/src/runtime_base.f90"
 
 COMMON=(-std=f2008 -ffree-line-length-none -O2)
 MODULE_SRC=(
@@ -23,7 +22,7 @@ MODULE_SRC=(
   src/kernel/mod_kernel_transactions.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_owned_commit_receipt.f90
-  RUNTIME_CORE_PLACEHOLDER
+  src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/process/mod_liquid_water_sensible_enthalpy.f90
   src/runtime/mod_fmr_bottom_external_thermal_binding.f90
@@ -99,64 +98,112 @@ MODULE_SRC=(
   src/runtime/mod_fmr_production_application_bootstrap.f90
 )
 
-compile_variant() {
-  local name="$1"
-  local runtime_core="$2"
-  local out="$BUILD/$name"
-  local objects=()
-  for source in "${MODULE_SRC[@]}"; do
-    if [[ "$source" == "RUNTIME_CORE_PLACEHOLDER" ]]; then source="$runtime_core"; fi
-    obj="$out/$(basename "${source%.*}").o"
-    gfortran "${COMMON[@]}" -J "$out" -I "$out" -c "$source" -o "$obj"
-    objects+=("$obj")
-  done
-  gfortran "${COMMON[@]}" -J "$out" -I "$out" -c tests/fpe/test_fpe_planvalid01_application_timing.f90 -o "$out/test.o"
-  gfortran -O2 "${objects[@]}" "$out/test.o" -o "$out/test"
-}
-compile_variant base "$BUILD/src/runtime_base.f90"
-compile_variant candidate src/runtime/mod_fmr_runtime_core.f90
+objects=()
+for source in "${MODULE_SRC[@]}"; do
+  obj="$BUILD/mod/$(basename "${source%.*}").o"
+  gfortran "${COMMON[@]}" -J "$BUILD/mod" -I "$BUILD/mod" -c "$source" -o "$obj"
+  objects+=("$obj")
+done
 
-: > "$BUILD/results.csv"
-echo 'pair,variant,n,init_seconds,run_seconds,ns_per_column' >> "$BUILD/results.csv"
-run_one() {
-  local pair="$1" variant="$2" n="$3"
-  local line
-  line="$("$BUILD/$variant/test" "$n" "$pair" | grep '^PLANVALID01_APP,n=')"
-  python3 - "$pair" "$variant" "$n" "$line" "$BUILD/results.csv" <<'PY'
+gfortran "${COMMON[@]}" -J "$BUILD/mod" -I "$BUILD/mod" \
+  -c tests/fpe/test_fpe_planvalid01_application_timing.f90 -o "$BUILD/app.o"
+gfortran -O2 "${objects[@]}" "$BUILD/app.o" -o "$BUILD/app"
+
+gfortran "${COMMON[@]}" -J "$BUILD/mod" -I "$BUILD/mod" \
+  -c tests/fpe/test_fpe_profile03_h03_application_host_timing.f90 -o "$BUILD/backend.o"
+gfortran -O2 "${objects[@]}" "$BUILD/backend.o" -o "$BUILD/backend"
+
+APP="$BUILD/app.csv"
+BACK="$BUILD/backend.csv"
+echo 'rep,n,ns_per_column,solver_calls_per_column,nonlinear_iterations_per_column,jacobian_builds_per_column,linear_solves_per_column,headcalc_calls_per_column,backtracking_attempts_per_column' > "$APP"
+echo 'rep,mode,ns_per_interval,nonlinear_iterations_per_solve,constitutive_evaluations_per_solve' > "$BACK"
+
+parse_app() {
+  local rep="$1" n="$2" line
+  line="$("$BUILD/app" "$n" "$rep" | grep '^PLANVALID01_APP,n=')"
+  python3 - "$rep" "$n" "$line" "$APP" <<'PY'
 import csv,re,sys
-pair,variant,n,line,path=sys.argv[1:]
+rep,n,line,path=sys.argv[1:]
+n_i=int(n)
 def v(k):
     m=re.search(rf'{k}=\s*([^,]+)',line)
     if not m: raise SystemExit(f'missing {k}: {line}')
     return m.group(1).strip()
 with open(path,'a',newline='') as f:
-    csv.writer(f).writerow([pair,variant,n,v('init_seconds'),v('run_seconds'),v('ns_per_column')])
+    csv.writer(f).writerow([
+        rep,n,v('ns_per_column'),
+        float(v('solver_calls'))/n_i,
+        float(v('nonlinear_iterations'))/n_i,
+        float(v('jacobian_builds'))/n_i,
+        float(v('linear_solves'))/n_i,
+        float(v('headcalc_calls'))/n_i,
+        float(v('backtracking_attempts'))/n_i,
+    ])
 print(line)
 PY
 }
-for n in 1000 10000; do
-  for pair in 1 2 3 4 5; do
-    if (( pair % 2 == 1 )); then
-      run_one "$pair" base "$n"
-      run_one "$pair" candidate "$n"
-    else
-      run_one "$pair" candidate "$n"
-      run_one "$pair" base "$n"
-    fi
-  done
+
+parse_backend() {
+  local rep="$1" mode="$2" line
+  line="$("$BUILD/backend" 5000 "$mode" zero-waste-paired | grep '^PROFILE03_E1_TIMING')"
+  python3 - "$rep" "$mode" "$line" "$BACK" <<'PY'
+import csv,re,sys
+rep,mode,line,path=sys.argv[1:]
+def v(k):
+    m=re.search(rf'{k}=\s*([^,]+)',line)
+    if not m: raise SystemExit(f'missing {k}: {line}')
+    return m.group(1).strip()
+with open(path,'a',newline='') as f:
+    csv.writer(f).writerow([rep,mode,v('ns_per_interval'),v('nonlinear_iterations_per_solve'),v('constitutive_evaluations_per_solve')])
+print(line)
+PY
+}
+
+for rep in 1 2 3 4 5; do
+  parse_app "$rep" 1000
+  parse_app "$rep" 10000
+  if (( rep % 2 == 1 )); then
+    parse_backend "$rep" reference
+    parse_backend "$rep" directional
+  else
+    parse_backend "$rep" directional
+    parse_backend "$rep" reference
+  fi
 done
 
-python3 - "$BUILD/results.csv" <<'PY'
+python3 - "$APP" "$BACK" <<'PY'
 import csv,statistics,sys
-rows=list(csv.DictReader(open(sys.argv[1])))
+app=list(csv.DictReader(open(sys.argv[1])))
+back=list(csv.DictReader(open(sys.argv[2])))
+
+def med(xs): return statistics.median(xs)
+
 for n in (1000,10000):
-    by={}
-    for r in rows:
-        if int(r['n'])==n: by.setdefault(int(r['pair']),{})[r['variant']]=r
-    init_rat=[]; run_rat=[]
-    for pair,v in sorted(by.items()):
-        init_rat.append(float(v['candidate']['init_seconds'])/float(v['base']['init_seconds']))
-        run_rat.append(float(v['candidate']['run_seconds'])/float(v['base']['run_seconds']))
-    print(f'PLANVALID01_APP_PAIRED_N={n},INIT_MEAN_RATIO={statistics.mean(init_rat):.9f},INIT_MEDIAN_RATIO={statistics.median(init_rat):.9f},RUN_MEAN_RATIO={statistics.mean(run_rat):.9f},RUN_MEDIAN_RATIO={statistics.median(run_rat):.9f}')
-print('PLANVALID01_APP_PAIRED=PASS')
+    rows=[r for r in app if int(r['n'])==n]
+    vals=[float(r['ns_per_column']) for r in rows]
+    print(f'PROFILE04_DECOMP_APP_N={n}|MEDIAN_NS_PER_COLUMN={med(vals):.6f}|MIN={min(vals):.6f}|MAX={max(vals):.6f}')
+    for key in ('solver_calls_per_column','nonlinear_iterations_per_column','jacobian_builds_per_column',
+                'linear_solves_per_column','headcalc_calls_per_column','backtracking_attempts_per_column'):
+        uniq=sorted({round(float(r[key]),12) for r in rows})
+        print(f'PROFILE04_DECOMP_APP_DIAG_N={n}|{key.upper()}={uniq}')
+
+ref=[float(r['ns_per_interval']) for r in back if r['mode']=='reference']
+dire=[float(r['ns_per_interval']) for r in back if r['mode']=='directional']
+ref_med=med(ref); dir_med=med(dire)
+print(f'PROFILE04_DECOMP_BACKEND_REFERENCE_MEDIAN_NS={ref_med:.6f}|MIN={min(ref):.6f}|MAX={max(ref):.6f}')
+print(f'PROFILE04_DECOMP_BACKEND_DIRECTIONAL_MEDIAN_NS={dir_med:.6f}|MIN={min(dire):.6f}|MAX={max(dire):.6f}')
+print(f'PROFILE04_DECOMP_DIRECTIONAL_OVER_REFERENCE_RATIO={dir_med/ref_med:.9f}')
+print(f'PROFILE04_DECOMP_DIRECTIONAL_INCREMENT_PERCENT={(dir_med/ref_med-1.0)*100.0:.6f}')
+
+app10=med([float(r['ns_per_column']) for r in app if int(r['n'])==10000])
+print(f'PROFILE04_DECOMP_REFERENCE_BACKEND_SHARE_N10000={ref_med/app10:.9f}')
+print(f'PROFILE04_DECOMP_REFERENCE_BACKEND_PERCENT_N10000={100.0*ref_med/app10:.6f}')
+print(f'PROFILE04_DECOMP_RESIDUAL_APP_WRAPPER_PERCENT_N10000={100.0*(1.0-ref_med/app10):.6f}')
+
+ref_iters=sorted({r['nonlinear_iterations_per_solve'] for r in back if r['mode']=='reference'})
+ref_const=sorted({r['constitutive_evaluations_per_solve'] for r in back if r['mode']=='reference'})
+dir_iters=sorted({r['nonlinear_iterations_per_solve'] for r in back if r['mode']=='directional'})
+dir_const=sorted({r['constitutive_evaluations_per_solve'] for r in back if r['mode']=='directional'})
+print(f'PROFILE04_DECOMP_BACKEND_DIAG|REFERENCE_NONLINEAR={ref_iters}|REFERENCE_CONSTITUTIVE={ref_const}|DIRECTIONAL_NONLINEAR={dir_iters}|DIRECTIONAL_CONSTITUTIVE={dir_const}')
+print('FPE_PROFILE04_REPEATED_DECOMPOSITION=PASS')
 PY
