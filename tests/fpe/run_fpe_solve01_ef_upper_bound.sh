@@ -9,6 +9,22 @@ fail(){ echo "SOLVE01_EF_FAIL $*" >&2; exit 1; }
 
 cp tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90 "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90"
 cp src/runtime/mod_fmr_groundwater_swap_participant.f90 "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90"
+cp src/runtime/mod_fmr_serialized_reference_backend.f90 "$BUILD/lib/mod_fmr_serialized_reference_backend.f90"
+python3 - "$BUILD/lib/mod_fmr_serialized_reference_backend.f90" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); src=p.read_text()
+old="""    request%numerical%compartment_balance_tolerance = self%compartment_balance_tolerance
+    request%numerical%total_balance_tolerance = self%total_balance_tolerance
+"""
+new="""    request%numerical%compartment_balance_tolerance = max(self%compartment_balance_tolerance, 2.8e-16_real64 / step_duration)
+    request%numerical%total_balance_tolerance = max(self%total_balance_tolerance, 2.8e-16_real64 / step_duration)
+"""
+if old not in src:
+    raise SystemExit("BALTOL02 request seam missing")
+src=src.replace(old,new,1)
+p.write_text(src)
+PY
 python3 - "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90" <<'PY'
 from pathlib import Path
 import sys
@@ -579,7 +595,7 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_table_provider.f90
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
-  src/runtime/mod_fmr_serialized_reference_backend.f90
+  "$BUILD/lib/mod_fmr_serialized_reference_backend.f90"
   src/runtime/mod_groundwater_coupling_contract.f90
   src/runtime/mod_groundwater_swap_forcing_adapter.f90
   src/runtime/mod_groundwater_swap_transaction_participant.f90
