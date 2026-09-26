@@ -1233,6 +1233,7 @@ contains
     call verify_pending_mixed_columns(profile,source,template,.true.,.true.,.true.)
     call verify_pending_mixed_columns(profile,source,template,.false.,.true.,.true.,.true.)
     call verify_pending_mixed_columns(profile,source,template,.true.,.true.,.true.,.true.)
+    call verify_irrigation_bootstrap(profile,source,template)
     do timing=7,8
       call verify_new_irrigation_selection_trial(profile,source,template,.false.,.false.,timing)
       call verify_new_irrigation_selection_trial(profile,source,template,.true.,.false.,timing)
@@ -1240,6 +1241,88 @@ contains
       call verify_new_irrigation_selection_trial(profile,source,template,.true.,.true.,timing)
     end do
   end subroutine verify_pending_irrigation_trial
+
+  subroutine verify_irrigation_bootstrap(profile,source,template)
+    use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t
+    use mod_irrigation_process, only: irrigation_state_t,IRRIGATION_EVENT_SCHEDULED
+    type(fmr_production_application_config_t),intent(in)::profile
+    type(ppa_irrigation_event_state_t),intent(in)::source
+    type(fmr_template_t),intent(in)::template
+    type(fmr_production_application_config_t)::config
+    type(fmr_production_application_bootstrap_t)::application,restored
+    type(fmr_b110_physical_forcing_t)::forcing(2)
+    type(irrigation_state_t)::events(2)
+    type(fmr_serialized_column_result_t),allocatable::left(:),right(:)
+    type(fmr_committed_hydraulic_state_t),allocatable::lhs(:),rhs(:)
+    type(fmr_committed_restart_bundle_t)::saved
+    real(real64),allocatable::history(:)
+    real(real64)::midpoint,finish
+    integer::i,code
+    logical::ok
+    config=profile
+    if(size(config%tiles)/=2) error stop 'irrigation bootstrap fixture requires two tiles'
+    call source%temporal_history_snapshot(history,ok)
+    if(.not.ok) error stop 'bootstrap irrigation history missing'
+    do i=1,2
+      config%tiles(i)=profile%tiles(1)
+      config%tiles(i)%tile_id=int(i,int64)
+      config%tiles(i)%template=template
+      config%tiles(i)%irrigation_ssdi_node=1
+      config%tiles(i)%initial_state=source%fmr_b110_temporal_indicator_state_t%fmr_b110_physical_state_t
+      config%tiles(i)%initial_right_derivative=history
+      forcing(i)=config%tiles(i)%base_forcing
+      forcing(i)%subsurface_irrigation_source=0.0_real64
+      forcing(i)%subsurface_irrigation_source(1)=0.01_real64
+      forcing(i)%temporal_forcing_event=.true.; forcing(i)%temporal_forcing_event_time=T0
+    end do
+    config%tiles(1)%irrigation_ssdi_node=0
+    call application%initialize(config,code)
+    if(code==FMR_APP_BOOT_OK.or.application%ready()) error stop 'bootstrap missing irrigation opt-in admitted'
+    config%tiles(1)%irrigation_ssdi_node=1
+    call application%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'irrigation bootstrap initialization failed'
+    call restored%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'fresh irrigation bootstrap initialization failed'
+    midpoint=T0+1.0_real64/1024.0_real64; finish=midpoint+1.0_real64/1024.0_real64
+    call application%run_standalone_with_forcing(T0,midpoint,forcing,left,code)
+    if(code==FMR_APP_BOOT_OK) error stop 'ordinary bootstrap admitted irrigation'
+    do i=1,2
+      events(i)%active_event=.true.; events(i)%active_event_origin=IRRIGATION_EVENT_SCHEDULED
+      events(i)%active_event_start=T0; events(i)%active_event_end=finish
+      events(i)%active_event_rate=0.01_real64
+    end do
+    events(2)%active_event_rate=0.02_real64 ! contradicts its supplied source
+    call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events)
+    if(code==FMR_APP_BOOT_OK.or..not.allocated(left)) error stop 'mixed bootstrap status'
+    if(.not.left(1)%committed.or.left(2)%committed) error stop 'mixed bootstrap publication'
+    if(left(1)%final_committed_time/=midpoint.or.left(2)%final_committed_time/=T0) &
+         error stop 'mixed bootstrap endpoint'
+    call application%export_committed_restart(92001_int64,saved,ok,code)
+    if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation bootstrap export'
+    call restored%restore_committed_restart(saved,92001_int64,ok,code)
+    if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'irrigation bootstrap restore'
+    forcing%temporal_forcing_event=.false.
+    call application%run_prepared_irrigation(midpoint,finish,forcing,left,code)
+    call restored%run_prepared_irrigation(midpoint,finish,forcing,right,code)
+    if(.not.left(1)%committed.or..not.right(1)%committed.or.left(2)%committed.or.right(2)%committed) &
+         error stop 'irrigation bootstrap continued publication'
+    if(.not.left(1)%mass%complete.or.abs(left(1)%mass%residual)>1.0e-12_real64) &
+         error stop 'irrigation bootstrap hard mass'
+    if(left(1)%mass%residual/=right(1)%mass%residual) error stop 'irrigation bootstrap restart mass'
+    call application%copy_committed_hydraulic_states(lhs,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'irrigation bootstrap hydraulic copy'
+    call restored%copy_committed_hydraulic_states(rhs,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'restored irrigation bootstrap hydraulic copy'
+    do i=1,2
+      if(any(lhs(i)%pressure_head_cm/=rhs(i)%pressure_head_cm).or. &
+           any(lhs(i)%water_content/=rhs(i)%water_content)) error stop 'bootstrap restart physical identity'
+    end do
+    if(lhs(2)%revision/=0_int64.or.any(lhs(2)%water_content/=source%water_content)) &
+         error stop 'bootstrap rejected column changed'
+    call application%close(code)
+    call restored%close(code)
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PREPARED_MIXED_RESTART=PASS'
+  end subroutine verify_irrigation_bootstrap
 
   subroutine verify_new_irrigation_selection_trial(profile,source,template,profile_selection,finish_in_window,timing)
     use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan

@@ -4,7 +4,8 @@ module mod_fmr_production_application_bootstrap
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_result_t
   use mod_canonical_result_text_adapter, only: serialize_canonical_result_text
-  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_kernel_transactions, only: kernel_committed_state_t,kernel_executor_t
+  use mod_irrigation_process, only: irrigation_state_t
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
@@ -13,11 +14,13 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
-       fmr_new_b110_boesten_evaporation_committed_state, free_drainage_indicator_service
+       fmr_new_b110_boesten_evaporation_committed_state, free_drainage_indicator_service, &
+       fmr_new_b110_irrigation_committed_state,PPA_IRRIGATION_EVENT_LAYOUT
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_serialized_commit_receipt_record_t, &
-       fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
+       fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK, &
+       fmr_execute_serialized_irrigation_resolved_column
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
        fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -58,6 +61,7 @@ module mod_fmr_production_application_bootstrap
     integer(int64) :: tile_id = 0_int64
     integer(int64) :: ledger_id = 0_int64
     integer :: execution_class = FMR_EXECUTION_EASY
+    integer :: irrigation_ssdi_node = 0 ! zero disables the explicit prepared route
     type(fmr_template_t) :: template
     type(fmr_b110_physical_parameters_t) :: parameters
     type(fmr_b110_physical_forcing_t) :: base_forcing
@@ -101,6 +105,7 @@ module mod_fmr_production_application_bootstrap
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
     type(fmr_template_t), allocatable :: templates(:)
+    integer, allocatable :: irrigation_nodes(:)
     type(fmr_b110_physical_parameters_t), pointer :: parameters(:) => null()
     type(fmr_b110_physical_forcing_t), pointer :: base_forcing(:) => null()
     type(kernel_committed_state_t), pointer :: committed(:) => null()
@@ -118,6 +123,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: ready => production_application_ready
     procedure, public :: tile_count => production_application_tile_count
     procedure, public :: run_standalone => production_application_run_standalone
+    procedure, public :: run_prepared_irrigation => production_application_run_prepared_irrigation
     procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
     procedure, public :: run_standalone_with_forcing_receipts => production_application_run_standalone_with_forcing_receipts
     procedure, public :: materialize_groundwater_context => production_application_materialize_groundwater_context
@@ -214,6 +220,7 @@ contains
     end if
 
     allocate(self%columns(n), self%templates(n))
+    allocate(self%irrigation_nodes(n))
     allocate(self%parameters(n), self%base_forcing(n), self%committed(n))
     allocate(self%backend, self%top_boundary)
     self%numerical = config%numerical
@@ -247,6 +254,7 @@ contains
       self%columns(i)%execution_class = config%tiles(i)%execution_class
       self%columns(i)%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
       self%parameters(i) = config%tiles(i)%parameters
+      self%irrigation_nodes(i) = config%tiles(i)%irrigation_ssdi_node
       self%base_forcing(i) = config%tiles(i)%base_forcing
       if (groundwater_profile) call self%materializers(i)%initialize(self%base_forcing(i))
 
@@ -266,7 +274,11 @@ contains
                config%tiles(i)%initial_state, config%initial_time, ok)
         end if
       case (FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
-        if (allocated(config%tiles(i)%initial_right_derivative)) then
+        if (self%irrigation_nodes(i)>0) then
+          call fmr_new_b110_irrigation_committed_state(self%committed(i),config%tiles(i)%tile_id, &
+               config%tiles(i)%initial_state,self%templates(i),config%initial_time, &
+               config%tiles(i)%initial_right_derivative,ok)
+        else if (allocated(config%tiles(i)%initial_right_derivative)) then
           call fmr_new_b110_temporal_indicator_committed_state(self%committed(i), config%tiles(i)%tile_id, &
                config%tiles(i)%initial_state, config%initial_time, ok, config%tiles(i)%initial_right_derivative)
         else
@@ -340,6 +352,52 @@ contains
     count = 0
     if (self%ready()) count = size(self%columns)
   end function production_application_tile_count
+
+  subroutine production_application_run_prepared_irrigation(self,t0,t1,effective_forcing,results,status,selected_events)
+    class(fmr_production_application_bootstrap_t),intent(inout)::self
+    real(real64),intent(in)::t0,t1
+    type(fmr_b110_physical_forcing_t),intent(in)::effective_forcing(:)
+    type(fmr_serialized_column_result_t),allocatable,intent(out)::results(:)
+    integer,intent(out)::status
+    type(irrigation_state_t),intent(in),optional::selected_events(:)
+    type(kernel_executor_t)::control
+    type(fmr_column_diagnostics_t)::diagnostic
+    type(fmr_serialized_batch_diagnostics_t)::runtime
+    integer::i,n,active_calls
+    status=FMR_APP_BOOT_NOT_READY
+    if(.not.self%ready()) return
+    status=FMR_APP_BOOT_CONTEXT_BUSY
+    if(associated(self%active_context)) return
+    status=FMR_APP_BOOT_INVALID_CONFIG
+    if(.not.all(ieee_is_finite([t0,t1]))) return
+    if(t1<=t0) return
+    n=size(self%columns)
+    if(size(effective_forcing)/=n) return
+    if(present(selected_events)) then
+      if(size(selected_events)/=n) return
+    end if
+    status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if(any(self%irrigation_nodes<=0)) return
+    allocate(results(n))
+    active_calls=0
+    do i=1,n
+      results(i)%column_id=self%columns(i)%column_id
+      results(i)%dispatch_ordinal=i
+      results(i)%requested_t0=t0; results(i)%requested_t1=t1
+      diagnostic=fmr_column_diagnostics_t()
+      if(present(selected_events)) then
+        call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
+             self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
+             t0,t1,results(i),diagnostic,runtime,active_calls,selected_events(i))
+      else
+        call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
+             self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
+             t0,t1,results(i),diagnostic,runtime,active_calls)
+      end if
+    end do
+    status=FMR_APP_BOOT_RUNTIME_FAILED
+    if(all(results%completed).and.all(results%committed)) status=FMR_APP_BOOT_OK
+  end subroutine production_application_run_prepared_irrigation
 
   subroutine production_application_run_standalone(self, t0, t1, results, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
@@ -750,12 +808,22 @@ contains
     if (tile%template%template_id <= 0_int64) return
     if (tile%template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
     if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .and. &
+        tile%template%optional_state_layout_id /= PPA_IRRIGATION_EVENT_LAYOUT .and. &
         tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .and. &
         tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
     if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
         tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
     if (tile%parameters%parameter_set_id <= 0_int64) return
     if (tile%parameters%active_nodes <= 0) return
+    if(tile%irrigation_ssdi_node<0.or.tile%irrigation_ssdi_node>tile%parameters%active_nodes) return
+    if(tile%irrigation_ssdi_node>0) then
+      if(tile%template%optional_state_layout_id/=PPA_IRRIGATION_EVENT_LAYOUT) return
+      if(tile%parameters%bottom_mode/=7) return
+      if(tile%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
+      if(.not.allocated(tile%initial_right_derivative)) return
+    else
+      if(tile%template%optional_state_layout_id==PPA_IRRIGATION_EVENT_LAYOUT) return
+    end if
     if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and. &
         tile%parameters%bottom_mode /= 2) return
 
@@ -797,7 +865,7 @@ contains
       if (tile%initial_black_ldwet /= 0.0_real64) return
       if (tile%parameters%bottom_mode == 5) return
     else
-      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE.and.tile%irrigation_ssdi_node==0) return
       if (allocated(tile%parameters%black_evaporation) .or. allocated(tile%parameters%boesten_evaporation)) return
       if (tile%initial_black_ldwet /= 0.0_real64 .or. tile%initial_boesten_spev /= 0.0_real64 .or. &
           tile%initial_boesten_saev /= 0.0_real64) return
@@ -854,6 +922,7 @@ contains
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)
     if (allocated(self%columns)) deallocate(self%columns)
     if (allocated(self%templates)) deallocate(self%templates)
+    if (allocated(self%irrigation_nodes)) deallocate(self%irrigation_nodes)
     self%initialized = .false.
   end subroutine discard_owner_storage
 
