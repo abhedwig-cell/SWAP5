@@ -11,6 +11,7 @@ python3 - "$BUILD/src/direction_candidate.f90" <<'PY'
 from pathlib import Path
 import sys
 src=Path("src/transaction/mod_accepted_trajectory_directional_sensitivity.f90").read_text()
+src=src.replace("    type(soil_water_accepted_step_direction_request_t), intent(out) :: request", "    type(soil_water_accepted_step_direction_request_t), intent(inout) :: request",1)
 src=src.replace(
 "    type(soil_water_accepted_step_direction_request_t), intent(out) :: request\\n",
 "    type(soil_water_accepted_step_direction_request_t), intent(inout) :: request\\n",1)
