@@ -13,6 +13,7 @@ on:
       - 'tests/fpe/run_fpe_approx03_t2b_screen.sh'
       - 'tests/fpe/run_fpe_approx03_t2c_matrix.sh'
       - 'tests/fpe/run_fpe_approx03_t2c_minus_discovery.sh'
+      - 'tests/fpe/run_fpe_approx03_t2c_reference_calibration.sh'
       - 'docs/performance/F-PE-APPROX03_*.md'
       - '.github/workflows/f-pe-approx03.yml'
   workflow_dispatch:
@@ -71,3 +72,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx03_t2c_minus_discovery.sh
+
+  t2c-reference-calibration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx03_t2c_reference_calibration.sh
