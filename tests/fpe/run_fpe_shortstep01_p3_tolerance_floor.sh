@@ -155,7 +155,7 @@ insert="""contains
   end function fgc44_temporal03_dynamic_origin_c
 
   integer(c_int) function fgc44_shortstep01_single_c(prescribed_head_m,step_duration,balance_tolerance,floor_status,sample_valid, &
-       nonlinear,jacobian,linear,backtrack,internal_retries,mass_complete,mass_residual,terminal_flux) &
+       nonlinear,jacobian,linear,backtrack,internal_retries,mass_complete,mass_residual,terminal_flux,heads,theta) &
        bind(C,name="fgc44_shortstep01_single_c")
     real(c_double), value, intent(in) :: prescribed_head_m,step_duration,balance_tolerance
     integer(c_int), intent(out) :: floor_status,sample_valid,nonlinear,jacobian,linear,backtrack,internal_retries,mass_complete
