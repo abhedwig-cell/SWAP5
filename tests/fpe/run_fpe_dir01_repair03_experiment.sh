@@ -7,76 +7,10 @@ BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-dir01-repair03-${GITHUB_RUN_ID:-loc
 mkdir -p "$BUILD/base" "$BUILD/candidate" "$BUILD/src"
 trap 'rm -rf "$BUILD"' EXIT
 
-python3 - "$BUILD/src/direction_candidate.f90" <<'PY'
-from pathlib import Path
-import sys
-src=Path("src/transaction/mod_accepted_trajectory_directional_sensitivity.f90").read_text()
-src=src.replace("    type(soil_water_accepted_step_direction_request_t), intent(out) :: request", "    type(soil_water_accepted_step_direction_request_t), intent(inout) :: request",1)
-src=src.replace(
-"    type(soil_water_accepted_step_direction_request_t), intent(out) :: request\\n",
-"    type(soil_water_accepted_step_direction_request_t), intent(inout) :: request\\n",1)
-src=src.replace("       SW_STEP_DIRECTION_AVAILABLE", "       SW_STEP_DIRECTION_AVAILABLE, SW_STEP_CONTROL_NONE",1)
-old="""    request = soil_water_accepted_step_direction_request_t()
-    token = trajectory_step_token_t()
-    ok = .false.
-"""
-new="""    request%requested = .false.
-    request%control_coordinate = SW_STEP_CONTROL_NONE
-    request%incoming_ponding_depth = 0.0_real64
-    request%direct_control_derivative = 0.0_real64
-    if (allocated(request%incoming_source_direction)) deallocate(request%incoming_source_direction)
-    if (allocated(request%incoming_sink_direction)) deallocate(request%incoming_sink_direction)
-    token = trajectory_step_token_t()
-    ok = .false.
-"""
-if old not in src: raise SystemExit("REPAIR03 request reset seam missing")
-src=src.replace(old,new,1)
-old="""    allocate(request%incoming_pressure_head(size(state%pressure_head_direction)))
-    allocate(request%incoming_water_content(size(state%water_content_direction)))
-    request%incoming_pressure_head = state%pressure_head_direction
-    request%incoming_water_content = state%water_content_direction
-"""
-new="""    if (allocated(request%incoming_pressure_head)) then
-      if (size(request%incoming_pressure_head) /= size(state%pressure_head_direction)) &
-           deallocate(request%incoming_pressure_head)
-    end if
-    if (allocated(request%incoming_water_content)) then
-      if (size(request%incoming_water_content) /= size(state%water_content_direction)) &
-           deallocate(request%incoming_water_content)
-    end if
-    if (.not. allocated(request%incoming_pressure_head)) allocate(request%incoming_pressure_head(size(state%pressure_head_direction)))
-    if (.not. allocated(request%incoming_water_content)) allocate(request%incoming_water_content(size(state%water_content_direction)))
-    request%incoming_pressure_head = state%pressure_head_direction
-    request%incoming_water_content = state%water_content_direction
-"""
-if old not in src: raise SystemExit("REPAIR03 request allocation seam missing")
-src=src.replace(old,new,1)
-Path(sys.argv[1]).write_text(src)
-PY
-
-python3 - "$BUILD/src/backend_candidate.f90" <<'PY'
-from pathlib import Path
-import re,sys
-src=Path("src/runtime/mod_fmr_serialized_reference_backend.f90").read_text()
-old="""    type(accepted_trajectory_direction_t) :: trajectory_direction
-    logical :: snow_active = .false.
-"""
-new="""    type(accepted_trajectory_direction_t) :: trajectory_direction
-    type(soil_water_accepted_step_direction_request_t) :: trajectory_request_workspace
-    logical :: snow_active = .false.
-"""
-if old not in src: raise SystemExit("REPAIR03 model field seam missing")
-src=src.replace(old,new,1)
-old="    type(soil_water_accepted_step_direction_request_t) :: direction_request\n"
-if old not in src: raise SystemExit("REPAIR03 local request seam missing")
-src=src.replace(old,"",1)
-start=src.index("  subroutine fmr_serialized_advance(")
-end=src.index("  end subroutine fmr_serialized_advance",start)
-chunk=src[start:end]
-chunk=re.sub(r"(?<![A-Za-z0-9_%])direction_request(?![A-Za-z0-9_])","self%trajectory_request_workspace",chunk)
-src=src[:start]+chunk+src[end:]
-Path(sys.argv[1]).write_text(src)
-PY
+BASE=807c19f543acc1eb24de8ac17015ba76497a5ee5
+git fetch --no-tags --depth=1 origin "$BASE"
+git show "$BASE:src/transaction/mod_accepted_trajectory_directional_sensitivity.f90" > "$BUILD/src/direction_base.f90"
+git show "$BASE:src/runtime/mod_fmr_serialized_reference_backend.f90" > "$BUILD/src/backend_base.f90"
 
 python3 - "$BUILD/test.f90" <<'PY'
 from pathlib import Path
@@ -157,9 +91,9 @@ compile_variant(){
   local objects=()
   for source in "${SRC[@]}"; do
     if [[ "$source" == DIRECTION_PLACEHOLDER ]]; then
-      [[ "$name" == base ]] && source="src/transaction/mod_accepted_trajectory_directional_sensitivity.f90" || source="$BUILD/src/direction_candidate.f90"
+      [[ "$name" == base ]] && source="$BUILD/src/direction_base.f90" || source="src/transaction/mod_accepted_trajectory_directional_sensitivity.f90"
     elif [[ "$source" == BACKEND_PLACEHOLDER ]]; then
-      [[ "$name" == base ]] && source="src/runtime/mod_fmr_serialized_reference_backend.f90" || source="$BUILD/src/backend_candidate.f90"
+      [[ "$name" == base ]] && source="$BUILD/src/backend_base.f90" || source="src/runtime/mod_fmr_serialized_reference_backend.f90"
     fi
     local obj="$out/$(basename "${source%.*}").o"
     gfortran "${COMMON[@]}" -J "$out" -I "$out" -c "$source" -o "$obj"
