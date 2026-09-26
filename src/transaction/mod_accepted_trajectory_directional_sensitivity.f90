@@ -209,7 +209,7 @@ contains
   subroutine stage_trajectory_step_result(state, token, result, ok)
     type(accepted_trajectory_direction_t), intent(inout) :: state
     type(trajectory_step_token_t), intent(in) :: token
-    type(soil_water_accepted_step_direction_result_t), intent(in) :: result
+    type(soil_water_accepted_step_direction_result_t), intent(inout) :: result
     logical, intent(out) :: ok
     real(real64) :: dt
 
@@ -258,8 +258,8 @@ contains
         call fail_closed(state, 'available-step-result-nonfinite')
         return
       end if
-      state%pending_pressure_head_direction = result%outgoing_pressure_head
-      state%pending_water_content_direction = result%outgoing_water_content
+      call move_alloc(result%outgoing_pressure_head, state%pending_pressure_head_direction)
+      call move_alloc(result%outgoing_water_content, state%pending_water_content_direction)
       state%pending_ponding_direction = result%outgoing_ponding_depth
       state%pending_bottom_exchange_derivative = dt*result%bottom_flux_derivative
     end if
@@ -283,8 +283,8 @@ contains
 
     if (state%pending_available .and. state%status /= TRAJECTORY_DIRECTION_UNAVAILABLE .and. &
         state%status /= TRAJECTORY_DIRECTION_FAILED) then
-      state%pressure_head_direction = state%pending_pressure_head_direction
-      state%water_content_direction = state%pending_water_content_direction
+      call move_alloc(state%pending_pressure_head_direction, state%pressure_head_direction)
+      call move_alloc(state%pending_water_content_direction, state%water_content_direction)
       state%ponding_direction = state%pending_ponding_direction
       state%integrated_bottom_exchange_derivative = state%integrated_bottom_exchange_derivative + &
            state%pending_bottom_exchange_derivative
