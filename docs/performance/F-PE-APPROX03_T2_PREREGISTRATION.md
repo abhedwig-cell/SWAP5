@@ -32,7 +32,9 @@ T2 varies only:
 
 Reference budget:
 
-`B = 2.5e-11 cm`
+`B = 1e-5 cm`
+
+This is the current production mode-5 FGC44 model-certificate budget authority. The earlier `2.5e-11 cm` value was specific to the prescribed-qbot qualification fixture and is not transferred to mode 5.
 
 Research multipliers:
 
@@ -62,9 +64,9 @@ First find a small, physically interpretable set of converged mode-5 cases with 
 
 Search dimensions:
 
-- requested interval: `1e-3`, `5e-3`, `1e-2`, `5e-2 day`;
+- requested interval: `1e-4`, `5e-4`, `1e-3`, `5e-3`, `1e-2 day`;
 - top flux: zero and modest infiltration/evaporation contrasts already inside the Reference solver's stable range;
-- prescribed bottom pressure head offsets around the initial lower-node state.
+- prescribed bottom pressure heads close to the hydrostatic lower-node initial head (`-72 cm` in this four-node fixture), using small finite perturbations rather than large artificial jumps.
 
 Do not force refinement with physically extreme boundary jumps.
 
