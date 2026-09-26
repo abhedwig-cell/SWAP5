@@ -23,7 +23,7 @@ src=src.replace(
 "       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state\n",
 "  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &\n"
 "       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &\n"
-"       fmr_new_b110_temporal_indicator_committed_state\n",1)
+"       fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_committed_state\n",1)
 
 # Make case hydraulics configurable before initialize.
 src=src.replace("H0_CM","REPRO_H0_CM")
