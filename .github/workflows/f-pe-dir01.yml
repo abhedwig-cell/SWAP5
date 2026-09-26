@@ -8,6 +8,7 @@ on:
       - 'tests/fpe/run_fpe_dir01_repair01_paired.sh'
       - 'tests/fpe/run_fpe_dir01_repair02_experiment.sh'
       - 'tests/fpe/run_fpe_dir01_repair02_heap.sh'
+      - 'tests/fpe/run_fpe_dir01_repair03_experiment.sh'
       - 'tests/fpe/run_fpe_dir01_repair02_transaction_control.sh'
       - 'docs/performance/F-PE-DIR01_*.md'
       - '.github/workflows/f-pe-dir01.yml'
@@ -66,3 +67,9 @@ jobs:
         with:
           fetch-depth: 0
       - run: bash tests/fpe/run_fpe_dir01_repair02_transaction_control.sh
+
+  repair03-experiment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_dir01_repair03_experiment.sh
