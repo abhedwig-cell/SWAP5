@@ -1,7 +1,7 @@
 module mod_b110_default_mvg_directional_provider
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t, b110_hconduc
   implicit none
   private
 
@@ -16,21 +16,23 @@ contains
 
   subroutine evaluate_b110_default_mvg_state_direction(provider, pressure_head, pressure_head_direction, &
                                                         water_content_direction, conductivity_direction, &
-                                                        available, route)
+                                                        available, route, base_conductivity)
     type(b110_default_mvg_provider_t), intent(in) :: provider
     real(real64), intent(in) :: pressure_head(:), pressure_head_direction(:)
     real(real64), intent(out) :: water_content_direction(:), conductivity_direction(:)
+    real(real64), intent(out), optional :: base_conductivity(:)
     logical, intent(out) :: available
     character(len=*), intent(out) :: route
 
     integer :: i, n
     logical :: node_ok
-    real(real64) :: dthetadh, dkdh
+    real(real64) :: theta, dthetadh, dkdh
 
     available = .false.
     route = 'b110-mvg-direction-unavailable'
     water_content_direction = 0.0_real64
     conductivity_direction = 0.0_real64
+    if (present(base_conductivity)) base_conductivity = 0.0_real64
     if (.not. associated(provider%parameters)) then
        route = 'b110-mvg-parameters-unbound'
        return
@@ -51,12 +53,16 @@ contains
     end if
 
     do i = 1, n
-       call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), dthetadh, dkdh, node_ok)
+       call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), theta, dthetadh, dkdh, node_ok)
        if (.not. node_ok) then
           route = 'b110-mvg-nonsmooth-constitutive-branch'
           water_content_direction = 0.0_real64
           conductivity_direction = 0.0_real64
           return
+       end if
+       if (present(base_conductivity)) then
+          base_conductivity(i) = b110_hconduc(provider%parameters%cofgen(:,i), pressure_head(i), theta, &
+               provider%parameters%ksatexm_extension_enabled)
        end if
        water_content_direction(i) = dthetadh * pressure_head_direction(i)
        conductivity_direction(i) = dkdh * pressure_head_direction(i)
@@ -229,17 +235,18 @@ contains
     end if
   end subroutine b110_smooth_theta_derivative
 
-  subroutine b110_smooth_derivatives(c, head, dthetadh, dkdh, ok)
+  subroutine b110_smooth_derivatives(c, head, theta, dthetadh, dkdh, ok)
     real(real64), intent(in) :: c(:), head
-    real(real64), intent(out) :: dthetadh, dkdh
+    real(real64), intent(out) :: theta, dthetadh, dkdh
     logical, intent(out) :: ok
 
-    real(real64) :: theta, relsat, invm, one_minus_term, term1
+    real(real64) :: relsat, invm, one_minus_term, term1
     real(real64) :: a, dterm_gain, dK_drelsat
     real(real64) :: alpha, u, x, dx_dh, se, dse_dh, r, denom, g, dg_dh, term2
     real(real64) :: raw_theta, h105
 
     ok = .false.
+    theta = 0.0_real64
     dthetadh = 0.0_real64
     dkdh = 0.0_real64
     if (size(c) < 42 .or. .not. ieee_is_finite(head)) return
