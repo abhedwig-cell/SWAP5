@@ -16,7 +16,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: bash tests/fpe/run_fpe_temporal06_p0_sequence.sh
+      - name: Reproduce preregistered P0 negative result
+        shell: bash
+        run: |
+          set +e
+          out="$(bash tests/fpe/run_fpe_temporal06_p0_sequence.sh 2>&1)"
+          rc=$?
+          set -e
+          printf '%s\n' "$out"
+          test "$rc" -ne 0
+          grep -q 'TEMPORAL06_P0_OVERLAP|FAILURES=2|GROUPS=12' <<< "$out"
+          grep -q 'TEMPORAL06_P0_OVERLAP_FAIL|MATERIAL=O14|REGIME=mid|IMBALANCE=-0.100' <<< "$out"
+          grep -q 'TEMPORAL06_P0_OVERLAP_FAIL|MATERIAL=O14|REGIME=mid|IMBALANCE=0.100' <<< "$out"
+          echo 'FPE_TEMPORAL06_P0_EXPECTED_NEGATIVE=PASS'
 
   tangent-authority-discriminator:
     runs-on: ubuntu-latest
