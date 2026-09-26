@@ -18,7 +18,9 @@ src=src.replace(
 "   character(len=10)                :: cval\n"
 "   character(len=8)                 :: shortstep_trace\n"
 "   integer                          :: shortstep_env_status\n"
-"   logical                          :: shortstep_trace_enabled\n",1)
+"   logical                          :: shortstep_trace_enabled\n"
+"   integer                          :: shortstep_bal_fail, shortstep_head_fail\n"
+"   real(8)                          :: shortstep_max_head_metric, shortstep_head_metric\n",1)
 src=src.replace(
 "   canonical_trial = present(worker)\n",
 "   canonical_trial = present(worker)\n"
@@ -46,6 +48,25 @@ src=src.replace(
 "         if(shortstep_trace_enabled) write(*,'(*(g0))') 'SHORTSTEP01_P2_END|DT=',dt,'|STATUS=CONVERGED', &\n"
 "              '|ITER=',solver_numbit,'|SUM=',sump,'|FMAX=',Fmax\n"
 "         if (legacy_state_binding) call publish_legacy_state(state)\n         return\n",1)
+src=src.replace(
+"      if (dabs(sum1) > CritDevBalTot) flnonconv = .TRUE.\n\n!     save sump voor next iteration\n",
+"      if (dabs(sum1) > CritDevBalTot) flnonconv = .TRUE.\n"
+"      shortstep_bal_fail=0; shortstep_head_fail=0; shortstep_max_head_metric=0.0d0\n"
+"      do i=1,NN\n"
+"         if(dabs(fsi_ws%residual(i)) > CritDevBalCp) shortstep_bal_fail=shortstep_bal_fail+1\n"
+"         if(dabs(fsi_ws%old_head(i)) < 1.0d0) then\n"
+"            shortstep_head_metric=dabs(state%h(i)-fsi_ws%old_head(i))/CritDevh2Cp\n"
+"         else\n"
+"            shortstep_head_metric=dabs(state%h(i)-fsi_ws%old_head(i))/dabs(fsi_ws%old_head(i))/CritDevh1Cp\n"
+"         end if\n"
+"         shortstep_max_head_metric=max(shortstep_max_head_metric,shortstep_head_metric)\n"
+"         if(shortstep_head_metric > 1.0d0) shortstep_head_fail=shortstep_head_fail+1\n"
+"      end do\n"
+"      if(shortstep_trace_enabled) write(*,'(*(g0))') 'SHORTSTEP01_P2_GATE|ITER=',solver_numbit,'|DT=',dt, &\n"
+"           '|BAL_FAIL=',shortstep_bal_fail,'|HEAD_FAIL=',shortstep_head_fail,'|MAX_HEAD_METRIC=',shortstep_max_head_metric, &\n"
+"           '|SUM1=',sum1,'|TOTAL_FAIL=',(dabs(sum1) > CritDevBalTot),'|FLNONCONV=',flnonconv\n\n"
+"!     save sump voor next iteration\n",1)
+
 src=src.replace(
 "!  Convergence could not been reached\n   if (.NOT.fldtmin) then\n",
 "!  Convergence could not been reached\n"
