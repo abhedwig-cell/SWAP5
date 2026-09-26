@@ -62,3 +62,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: bash tests/fpe/run_fpe_repro02_r7_request_identity.sh
+
+  r8-predictor-history:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_repro02_r8_predictor_history.sh
