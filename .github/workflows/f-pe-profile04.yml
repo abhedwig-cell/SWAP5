@@ -16,3 +16,9 @@ jobs:
         with:
           fetch-depth: 0
       - run: bash tests/fpe/run_fpe_profile04_end_to_end_rebaseline.sh
+
+  ahl-repeated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile04_ahl_repeated.sh
