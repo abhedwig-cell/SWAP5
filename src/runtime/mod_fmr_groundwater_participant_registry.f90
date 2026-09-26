@@ -206,7 +206,8 @@ contains
       return
     end if
 
-    call self%slots(idx)%participant%capture_origin(self%slots(idx)%committed, participant_status)
+    call self%slots(idx)%participant%capture_origin(self%slots(idx)%committed, participant_status, &
+         temporal_budget_policy=self%slots(idx)%temporal_budget_policy)
     if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
       status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
       return
