@@ -32,6 +32,10 @@ module mod_groundwater_swap_transaction_participant
     ! This is accepted-trajectory authority only; predictor u/dt is not stored here.
     logical :: response_tangent_available = .false.
     real(real64) :: dq_swap_dh_per_s = 0.0_real64
+    logical :: response_tangent_reused = .false.
+    integer :: response_tangent_age = 0
+    real(real64) :: response_tangent_refresh_head_m = 0.0_real64
+    character(len=32) :: response_tangent_provenance = 'not-available'
   end type groundwater_swap_trial_t
 
   type, public :: groundwater_swap_transaction_participant_t
