@@ -8,7 +8,8 @@ module mod_ppa_bootstrap_irrigation
   use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t,fmr_b110_physical_forcing_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_irrigation_process, only: scheduled_irrigation_parameters_t,scheduled_irrigation_request_t, &
-       irrigation_state_t,irrigation_flux_result_t,irrigation_diagnostics_t,IRRIGATION_EVENT_SCHEDULED
+       irrigation_state_t,irrigation_flux_result_t,irrigation_diagnostics_t,IRRIGATION_EVENT_SCHEDULED, &
+       IRRIGATION_DEPTH_DCS2_FIXED
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irrigation_source_binding, only: evaluate_ppa_irrigation_source
   implicit none
@@ -42,6 +43,7 @@ contains
     if(.not.all(ieee_is_finite([t0,t1]))) return
     if(t1<=t0) return
     do i=1,n
+      if(parameters(i)%depth_criterion/=IRRIGATION_DEPTH_DCS2_FIXED) return
       if(.not.all(ieee_is_finite([requests(i)%t0,requests(i)%t1]))) return
       if(requests(i)%t0/=t0.or.requests(i)%t1/=t1) return
     end do
