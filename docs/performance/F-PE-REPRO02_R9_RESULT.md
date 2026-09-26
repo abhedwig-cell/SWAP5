@@ -2,7 +2,7 @@
 
 Date: 2026-09-26
 
-Status: `LOCALIZED_TO_CANONICAL_TRANSACTION_LIFECYCLE`
+Status: `DIVERGENCE_ABOVE_BARE_SERIALIZED_PHYSICAL_ADVANCE`
 
 ## Protocol
 
@@ -64,12 +64,12 @@ The difficult-origin failure is not intrinsic to the serialized physical Referen
 
 The same serialized backend, state and forcing converge cheaply when executed as one reference-floor physical advance.
 
-The divergence is introduced by the normal canonical transaction lifecycle surrounding that physical advance.
+R9 therefore localizes the divergence above the bare serialized physical advance, but it does not yet identify the generic transaction lifecycle as the unique cause. The reference-floor contract also removes the Richards temporal-continuation carrier and disables model temporal-history handling. That axis remains confounded with canonical transaction execution.
 
-This narrows the remaining causal surface to transaction/checkpoint/attempt-context behavior before or between physical attempts, including state restoration and retry preparation. Temporal acceptance is not the first failure mechanism because the failing transaction physical solve itself already diverges to retry-advised before temporal certification.
+The next discriminator must preserve canonical transaction execution while switching only the numerical-continuation/state topology between base physical state and Richards temporal-history state. Temporal acceptance is not the first observed rejection mechanism, but temporal-history-enabled model preparation may still alter the physical attempt before certification.
 
 ## Next discriminator
 
-R10 should isolate transaction attempt-context capture/restore and checkpoint-derived state reconstruction from the physical solve.
+R10 should isolate Richards temporal-history continuation from the remaining canonical transaction machinery. Only if a no-history canonical transaction still fails should checkpoint/attempt-context lifecycle become the next primary suspect.
 
 No production defect repair is authorized by R9 alone.
