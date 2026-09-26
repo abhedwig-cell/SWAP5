@@ -2,6 +2,7 @@ module mod_fmr_groundwater_swap_participant
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_numerical_config_t
+  use mod_transaction_reference, only: transaction_state_t
   use mod_soil_water_accepted_step_direction_contract, only: SW_STEP_CONTROL_BOTTOM_HEAD
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_result_t, kernel_diagnostics_t, KERNEL_COMMIT_STATUS_COMMITTED
@@ -15,7 +16,7 @@ module mod_fmr_groundwater_swap_participant
        GW_SWAP_PARTICIPANT_PREFLIGHT_FAILED, GW_SWAP_PARTICIPANT_COMMIT_FAILED
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_serialized_reference_backend_t
+       fmr_b110_temporal_indicator_state_t, fmr_serialized_reference_backend_t
   implicit none
   private
 
@@ -23,6 +24,16 @@ module mod_fmr_groundwater_swap_participant
 
   integer, parameter, public :: FMR_TANGENT_CACHE_OK = 0
   integer, parameter, public :: FMR_TANGENT_CACHE_INVALID_CONFIG = 1
+
+  type, public :: fmr_groundwater_temporal_budget_policy_t
+    logical :: enabled = .false.
+    real(real64) :: coefficient = 0.0_real64
+    real(real64) :: floor_cm = 0.0_real64
+  contains
+    procedure :: valid => fmr_groundwater_temporal_budget_policy_valid
+  end type fmr_groundwater_temporal_budget_policy_t
+
+  public :: resolve_fmr_groundwater_temporal_budget
 
   ! F-GC44 concrete binding of the admitted F-GC43 participant contract to the
   ! encapsulated FMR backend. The FMR backend keeps its kernel executor private;
@@ -69,6 +80,58 @@ module mod_fmr_groundwater_swap_participant
 
 contains
 
+  pure logical function fmr_groundwater_temporal_budget_policy_valid(self) result(valid)
+    class(fmr_groundwater_temporal_budget_policy_t), intent(in) :: self
+
+    valid = .true.
+    if (.not. self%enabled) return
+    valid = ieee_is_finite(self%coefficient) .and. self%coefficient > 0.0_real64 .and. &
+         ieee_is_finite(self%floor_cm) .and. self%floor_cm > 0.0_real64
+  end function fmr_groundwater_temporal_budget_policy_valid
+
+  subroutine resolve_fmr_groundwater_temporal_budget(committed, window, policy, budget_cm, available)
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(groundwater_coupling_window_t), intent(in) :: window
+    type(fmr_groundwater_temporal_budget_policy_t), intent(in) :: policy
+    real(real64), intent(out) :: budget_cm
+    logical, intent(out) :: available
+
+    class(transaction_state_t), allocatable :: snapshot
+    real(real64), allocatable :: previous_derivative(:)
+    real(real64) :: duration_day, history_scale
+    logical :: snapshot_available, history_available
+
+    budget_cm = 0.0_real64
+    available = .false.
+    if (.not. policy%enabled .or. .not. policy%valid()) return
+    if (.not. committed%ready() .or. .not. window%valid()) return
+
+    duration_day = window%t1 - window%t0
+    if (.not. ieee_is_finite(duration_day) .or. duration_day <= 0.0_real64) return
+
+    call committed%snapshot(snapshot, snapshot_available)
+    if (.not. snapshot_available .or. .not. allocated(snapshot)) return
+
+    select type (state => snapshot)
+    class is (fmr_b110_temporal_indicator_state_t)
+      call state%temporal_history_snapshot(previous_derivative, history_available)
+    class default
+      return
+    end select
+
+    if (.not. history_available .or. .not. allocated(previous_derivative)) return
+    if (size(previous_derivative) <= 0 .or. any(.not. ieee_is_finite(previous_derivative))) return
+
+    history_scale = maxval(abs(previous_derivative))
+    if (.not. ieee_is_finite(history_scale)) return
+    budget_cm = max(policy%floor_cm, policy%coefficient * duration_day * history_scale)
+    if (.not. ieee_is_finite(budget_cm) .or. budget_cm <= 0.0_real64) then
+      budget_cm = 0.0_real64
+      return
+    end if
+    available = .true.
+  end subroutine resolve_fmr_groundwater_temporal_budget
+
   subroutine fmr_swap_capture_origin(self, committed, status)
     class(fmr_groundwater_swap_participant_t), intent(inout) :: self
     type(kernel_committed_state_t), intent(in) :: committed
@@ -96,7 +159,7 @@ contains
   end subroutine fmr_swap_capture_origin
 
   subroutine fmr_swap_trial_from_origin(self, backend, column, template, parameters, committed, materializer, &
-       numerical, datum, window, prescribed_head_m, trial, status, trusted_prepared_parameters)
+       numerical, datum, window, prescribed_head_m, trial, status, trusted_prepared_parameters, temporal_budget_policy)
     class(fmr_groundwater_swap_participant_t), intent(inout) :: self
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(fmr_logical_column_t), intent(in) :: column
@@ -111,12 +174,13 @@ contains
     type(groundwater_swap_trial_t), intent(out) :: trial
     integer, intent(out) :: status
     logical, intent(in), optional :: trusted_prepared_parameters
+    type(fmr_groundwater_temporal_budget_policy_t), intent(in), optional :: temporal_budget_policy
 
     class(canonical_forcing_t), allocatable :: forcing
     type(canonical_numerical_config_t) :: trial_numerical
-    real(real64) :: duration_day, qbot_mean_cm_per_day, dq_swap_dh_per_s
+    real(real64) :: duration_day, qbot_mean_cm_per_day, dq_swap_dh_per_s, effective_temporal_budget
     integer :: forcing_status, interface_status
-    logical :: refresh_tangent
+    logical :: refresh_tangent, temporal_budget_available
 
     trial = groundwater_swap_trial_t()
     status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
@@ -162,6 +226,19 @@ contains
     end if
 
     trial_numerical = numerical
+    if (present(temporal_budget_policy)) then
+      if (temporal_budget_policy%enabled) then
+        call resolve_fmr_groundwater_temporal_budget(committed, window, temporal_budget_policy, &
+             effective_temporal_budget, temporal_budget_available)
+        if (.not. temporal_budget_available) then
+          call invalidate_tangent_cache(self)
+          status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
+          return
+        end if
+        trial_numerical%model_temporal_indicator_budget_available = .true.
+        trial_numerical%model_temporal_indicator_budget = effective_temporal_budget
+      end if
+    end if
     trial_numerical%accepted_trajectory_direction%requested = refresh_tangent
     trial_numerical%accepted_trajectory_direction%control_coordinate = SW_STEP_CONTROL_BOTTOM_HEAD
 
