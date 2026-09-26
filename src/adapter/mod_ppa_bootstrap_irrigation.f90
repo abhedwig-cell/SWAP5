@@ -16,12 +16,58 @@ module mod_ppa_bootstrap_irrigation
   implicit none
   private
   public :: execute_ppa_bootstrap_irrigation
+  public :: execute_next_ppa_bootstrap_irrigation
   type,public :: ppa_irrigation_preparation_t
     logical :: process_evaluated=.false.
     logical :: source_prepared=.false.
     type(irrigation_diagnostics_t) :: process
   end type
 contains
+  ! Execute at most one accepted-for-preparation prefix, never a whole-window
+  ! loop. A returned endpoint is an attempt boundary, not proof of commitment.
+  subroutine execute_next_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
+       previous,results,status,interval_end,profiles)
+    type(fmr_production_application_bootstrap_t),intent(inout)::application
+    integer(int64),intent(in)::column_ids(:),parameter_identity
+    type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
+    type(scheduled_irrigation_request_t),intent(in)::requests(:)
+    type(fmr_b110_physical_forcing_t),intent(in)::previous(:)
+    type(fmr_serialized_column_result_t),allocatable,intent(out)::results(:)
+    integer,intent(out)::status
+    real(real64),intent(out)::interval_end
+    type(ppa_irrigation_profile_t),intent(in),optional::profiles(:)
+    type(scheduled_irrigation_request_t),allocatable::trial_requests(:)
+    type(ppa_irrigation_preparation_t),allocatable::report(:)
+    integer::attempt,i
+    real(real64)::split
+    logical::found
+    status=FMR_APP_BOOT_INVALID_CONFIG
+    interval_end=0.0_real64
+    if(size(requests)<1) return
+    interval_end=requests(1)%t1
+    trial_requests=requests
+    do attempt=1,size(column_ids)+1
+      call execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,trial_requests, &
+           previous,results,status,profiles,report)
+      ! Any hydraulic execution is terminal, including mixed publication.
+      if(allocated(results).or.status/=FMR_APP_BOOT_INVALID_CONFIG) return
+      if(.not.allocated(report)) return
+      found=.false.
+      do i=1,size(report)
+        if(.not.report(i)%process_evaluated.or.report(i)%source_prepared) cycle
+        if(.not.report(i)%process%split_required) return
+        split=report(i)%process%split_time
+        if(.not.ieee_is_finite(split)) return
+        if(split<=requests(1)%t0.or.split>=interval_end) return
+        found=.true.
+        exit
+      end do
+      if(.not.found.or.attempt==size(column_ids)+1) return
+      interval_end=split
+      trial_requests%t1=split
+    end do
+  end subroutine execute_next_ppa_bootstrap_irrigation
+
   subroutine execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
        previous,results,status,profiles,preparation)
     type(fmr_production_application_bootstrap_t),intent(inout)::application

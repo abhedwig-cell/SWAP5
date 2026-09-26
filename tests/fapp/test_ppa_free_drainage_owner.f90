@@ -1245,7 +1245,8 @@ contains
   end subroutine verify_pending_irrigation_trial
 
   subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
-    use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation,ppa_irrigation_preparation_t
+    use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation,ppa_irrigation_preparation_t, &
+         execute_next_ppa_bootstrap_irrigation
     use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
     use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t
     use mod_irrigation_process, only: irrigation_state_t,IRRIGATION_EVENT_SCHEDULED, &
@@ -1268,7 +1269,7 @@ contains
     type(fmr_committed_hydraulic_state_t),allocatable::lhs(:),rhs(:)
     type(fmr_committed_restart_bundle_t)::saved
     real(real64),allocatable::history(:)
-    real(real64)::midpoint,finish
+    real(real64)::midpoint,finish,interval_end
     integer::i,code
     logical::ok
     config=profile
@@ -1424,11 +1425,11 @@ contains
     if(abs(preparation(1)%process%split_time-midpoint)>1.0e-14_real64) error stop 'wrong split boundary'
     if(preparation(2)%process_evaluated.or.preparation(2)%source_prepared) &
          error stop 'unvisited preparation reported evaluated'
-    requests%t1=preparation(1)%process%split_time
-    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
-         management,requests,previous,left,code,root_profiles,preparation)
-    if(.not.all(preparation%process_evaluated).or..not.all(preparation%source_prepared)) &
-         error stop 'shortened preparation not ready'
+    call execute_next_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,left,code,interval_end,root_profiles)
+    if(abs(interval_end-midpoint)>1.0e-14_real64) error stop 'automatic prefix endpoint wrong'
+    if(any(requests%t1/=finish+1.0_real64/1024.0_real64)) error stop 'prefix mutated caller requests'
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_AUTOMATIC_PREFIX=PASS'
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_SPLIT_DIAGNOSTIC_RETRY=PASS'
     if(code/=FMR_APP_BOOT_OK) then
       write(*,*) 'MIXED_LIFECYCLE_STATUS',code,left%kernel_status,left%accepted_substeps
