@@ -258,53 +258,116 @@ gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 materials=(B01 B12 O05 O14)
 regimes=("wet|-10" "mid|-75" "dry|-500")
 orientations=("plus|5e-5|5e-5" "minus|-5e-5|-5e-5")
-budgets=(1e-5 1.25e-5)
-labels=(REF T2C)
+dt_grid=(2e-5 5e-5 1e-4 2e-4 5e-4 1e-3)
+ref_budget=1e-5
+cand_budget=1.25e-5
 reps=5
+selected="$BUILD/selected.txt"
 summary="$BUILD/matrix.txt"
+: > "$selected"
 : > "$summary"
 
+# Phase 1: reference-only workload calibration. Candidate is never evaluated here.
 for material in "${materials[@]}"; do
   for regime_spec in "${regimes[@]}"; do
     IFS='|' read -r regime h0 <<< "$regime_spec"
     for orient_spec in "${orientations[@]}"; do
       IFS='|' read -r orientation top_factor qbot_factor <<< "$orient_spec"
-      for i in "${!budgets[@]}"; do
-        budget="${budgets[$i]}"
-        arm="${labels[$i]}"
-        times="$BUILD/times-${material}-${regime}-${orientation}-${arm}.txt"
-        : > "$times"
-        last=""
-        for ((rep=1; rep<=reps; rep++)); do
-          raw="$("$BUILD/test" "$material" "$h0" "$top_factor" "$qbot_factor" 1e-4 "$budget" 2>&1)" || {
-            printf '%s\n' "$raw" >&2
-            fail "$material $regime $orientation $arm execution"
-          }
-          line="$(printf '%s\n' "$raw" | grep '^APPROX03_T2C_MATRIX_RAW|' | tail -1 || true)"
-          [[ -n "$line" ]] || fail "$material $regime $orientation $arm missing result"
-          committed="$(printf '%s\n' "$line" | sed -n 's/.*|COMMITTED=\([^|]*\).*/\1/p')"
-          mass_complete="$(printf '%s\n' "$line" | sed -n 's/.*|MASS_COMPLETE=\([^|]*\).*/\1/p')"
-          [[ "$committed" == "T" && "$mass_complete" == "T" ]] || fail "$material $regime $orientation $arm not committed/mass-complete"
-          seconds="$(printf '%s\n' "$line" | sed -n 's/.*|SECONDS=\([^|]*\).*/\1/p')"
-          printf '%s\n' "$seconds" >> "$times"
-          last="$line"
-        done
-        median="$(python3 - "$times" <<'PY'
+      chosen=""
+      for dt in "${dt_grid[@]}"; do
+        set +e
+        raw="$("$BUILD/test" "$material" "$h0" "$top_factor" "$qbot_factor" "$dt" "$ref_budget" 2>&1)"
+        rc=$?
+        set -e
+        if [[ $rc -ne 0 ]]; then
+          continue
+        fi
+        line="$(printf '%s\n' "$raw" | grep '^APPROX03_T2C_MATRIX_RAW|' | tail -1 || true)"
+        [[ -n "$line" ]] || continue
+        committed="$(printf '%s\n' "$line" | sed -n 's/.*|COMMITTED=\([^|]*\).*/\1/p')"
+        mass_complete="$(printf '%s\n' "$line" | sed -n 's/.*|MASS_COMPLETE=\([^|]*\).*/\1/p')"
+        retries="$(printf '%s\n' "$line" | sed -n 's/.*|RETRIES=\([^|]*\).*/\1/p')"
+        substeps="$(printf '%s\n' "$line" | sed -n 's/.*|SUBSTEPS=\([^|]*\).*/\1/p')"
+        if [[ "$committed" == "T" && "$mass_complete" == "T" && "$retries" == "0" && "$substeps" =~ ^[0-9]+$ && "$substeps" -ge 2 ]]; then
+          chosen="$dt"
+        fi
+      done
+      if [[ -n "$chosen" ]]; then
+        printf 'MATERIAL=%s|REGIME=%s|H0=%s|ORIENTATION=%s|TOP_FACTOR=%s|QBOT_FACTOR=%s|DT=%s\n' \
+          "$material" "$regime" "$h0" "$orientation" "$top_factor" "$qbot_factor" "$chosen" >> "$selected"
+        echo "APPROX03_T2C_SELECTED|MATERIAL=$material|REGIME=$regime|ORIENTATION=$orientation|DT=$chosen"
+      else
+        printf 'MATERIAL=%s|REGIME=%s|H0=%s|ORIENTATION=%s|TOP_FACTOR=%s|QBOT_FACTOR=%s|DT=NONE\n' \
+          "$material" "$regime" "$h0" "$orientation" "$top_factor" "$qbot_factor" >> "$selected"
+        echo "APPROX03_T2C_NO_TEMPORAL_WORKLOAD|MATERIAL=$material|REGIME=$regime|ORIENTATION=$orientation"
+      fi
+    done
+  done
+done
+
+# Phase 2: paired timing/error measurements only on the frozen reference-selected intervals.
+while IFS='|' read -r p1 p2 p3 p4 p5 p6 p7; do
+  material="${p1#MATERIAL=}"
+  regime="${p2#REGIME=}"
+  h0="${p3#H0=}"
+  orientation="${p4#ORIENTATION=}"
+  top_factor="${p5#TOP_FACTOR=}"
+  qbot_factor="${p6#QBOT_FACTOR=}"
+  dt="${p7#DT=}"
+  [[ "$dt" != "NONE" ]] || continue
+  for arm in REF T2C; do
+    if [[ "$arm" == "REF" ]]; then budget="$ref_budget"; else budget="$cand_budget"; fi
+    times="$BUILD/times-${material}-${regime}-${orientation}-${arm}.txt"
+    : > "$times"
+    last=""
+    failures=0
+    for ((rep=1; rep<=reps; rep++)); do
+      set +e
+      raw="$("$BUILD/test" "$material" "$h0" "$top_factor" "$qbot_factor" "$dt" "$budget" 2>&1)"
+      rc=$?
+      set -e
+      line="$(printf '%s\n' "$raw" | grep '^APPROX03_T2C_MATRIX_RAW|' | tail -1 || true)"
+      if [[ $rc -ne 0 || -z "$line" ]]; then
+        failures=$((failures+1))
+        continue
+      fi
+      committed="$(printf '%s\n' "$line" | sed -n 's/.*|COMMITTED=\([^|]*\).*/\1/p')"
+      mass_complete="$(printf '%s\n' "$line" | sed -n 's/.*|MASS_COMPLETE=\([^|]*\).*/\1/p')"
+      if [[ "$committed" != "T" || "$mass_complete" != "T" ]]; then
+        failures=$((failures+1))
+        continue
+      fi
+      seconds="$(printf '%s\n' "$line" | sed -n 's/.*|SECONDS=\([^|]*\).*/\1/p')"
+      printf '%s\n' "$seconds" >> "$times"
+      last="$line"
+    done
+    success=$((reps-failures))
+    if [[ $success -gt 0 ]]; then
+      median="$(python3 - "$times" <<'PY'
 import statistics,sys
 v=[float(x) for x in open(sys.argv[1]) if x.strip()]
 print(f"{statistics.median(v):.17e}")
 PY
 )"
-        printf 'MATERIAL=%s|REGIME=%s|ORIENTATION=%s|ARM=%s|MEDIAN_SECONDS=%s|%s\n'           "$material" "$regime" "$orientation" "$arm" "$median" "${last#APPROX03_T2C_MATRIX_RAW|}" >> "$summary"
-      done
-    done
+      printf 'MATERIAL=%s|REGIME=%s|ORIENTATION=%s|DT=%s|ARM=%s|SUCCESS=%s|FAILURES=%s|MEDIAN_SECONDS=%s|%s\n' \
+        "$material" "$regime" "$orientation" "$dt" "$arm" "$success" "$failures" "$median" "${last#APPROX03_T2C_MATRIX_RAW|}" >> "$summary"
+    else
+      printf 'MATERIAL=%s|REGIME=%s|ORIENTATION=%s|DT=%s|ARM=%s|SUCCESS=0|FAILURES=%s\n' \
+        "$material" "$regime" "$orientation" "$dt" "$arm" "$failures" >> "$summary"
+    fi
   done
-done
+done < "$selected"
 
-python3 - "$summary" <<'PY'
+python3 - "$selected" "$summary" <<'PY'
 import math,statistics,sys
-rows={}
+selected=[]
 for line in open(sys.argv[1]):
+    d={}
+    for p in line.strip().split("|"):
+        k,v=p.split("=",1); d[k]=v
+    selected.append(d)
+rows={}
+for line in open(sys.argv[2]):
     d={}
     for p in line.strip().split("|"):
         if "=" in p:
@@ -315,54 +378,65 @@ def f(d,k): return float(d[k])
 def ii(d,k): return int(d[k])
 def rel(a,b): return abs(a-b)/max(abs(a),1e-30)
 
+eligible=[d for d in selected if d["DT"]!="NONE"]
+no_work=[d for d in selected if d["DT"]=="NONE"]
+candidate_failures=0
 speedups=[]; work_reduced=0; signed_flux_errors=[]
 metrics={"head":0.0,"theta":0.0,"flux":0.0,"storage_change":0.0,"storage_end":0.0}
-for material in ("B01","B12","O05","O14"):
-  for regime in ("wet","mid","dry"):
-    for orientation in ("plus","minus"):
-      ref=rows[(material,regime,orientation,"REF")]
-      cand=rows[(material,regime,orientation,"T2C")]
-      rh=[f(ref,f"H{i}") for i in range(1,5)]
-      ch=[f(cand,f"H{i}") for i in range(1,5)]
-      rt=[f(ref,f"TH{i}") for i in range(1,5)]
-      ct=[f(cand,f"TH{i}") for i in range(1,5)]
-      head_rel=max(rel(a,b) for a,b in zip(rh,ch))
-      theta_rel=max(rel(a,b) for a,b in zip(rt,ct))
-      flux_rel=rel(f(ref,"BOTTOM_FLUX"),f(cand,"BOTTOM_FLUX"))
-      sch_rel=rel(f(ref,"STORAGE_CHANGE"),f(cand,"STORAGE_CHANGE"))
-      send_rel=rel(f(ref,"STORAGE_END"),f(cand,"STORAGE_END"))
-      speed=100.0*(1.0-f(cand,"MEDIAN_SECONDS")/f(ref,"MEDIAN_SECONDS"))
-      speedups.append(speed)
-      if ii(cand,"SUBSTEPS") < ii(ref,"SUBSTEPS") or ii(cand,"NONLINEAR") < ii(ref,"NONLINEAR"):
-          work_reduced += 1
-      signed_flux_errors.append(f(cand,"BOTTOM_FLUX")-f(ref,"BOTTOM_FLUX"))
-      metrics["head"]=max(metrics["head"],head_rel)
-      metrics["theta"]=max(metrics["theta"],theta_rel)
-      metrics["flux"]=max(metrics["flux"],flux_rel)
-      metrics["storage_change"]=max(metrics["storage_change"],sch_rel)
-      metrics["storage_end"]=max(metrics["storage_end"],send_rel)
-      if abs(f(cand,"MASS_RESIDUAL")) > 1e-12:
-          raise SystemExit("candidate mass residual gate")
-      print(
-        f"APPROX03_T2C_CASE|MATERIAL={material}|REGIME={regime}|ORIENTATION={orientation}"
-        f"|SPEEDUP_PERCENT={speed:.6f}|REF_SUBSTEPS={ii(ref,'SUBSTEPS')}|T2C_SUBSTEPS={ii(cand,'SUBSTEPS')}"
-        f"|REF_NONLINEAR={ii(ref,'NONLINEAR')}|T2C_NONLINEAR={ii(cand,'NONLINEAR')}"
-        f"|REF_HEADCALC={ii(ref,'HEADCALC')}|T2C_HEADCALC={ii(cand,'HEADCALC')}"
-        f"|HEAD_REL={head_rel:.17e}|THETA_REL={theta_rel:.17e}|BOTTOM_FLUX_REL={flux_rel:.17e}"
-        f"|BOTTOM_FLUX_SIGNED_ERROR={signed_flux_errors[-1]:.17e}|STORAGE_CHANGE_REL={sch_rel:.17e}"
-        f"|STORAGE_END_REL={send_rel:.17e}|MASS_RESIDUAL={f(cand,'MASS_RESIDUAL'):.17e}"
-      )
 
-pos=sum(x>0 for x in speedups)
-neg=sum(x<0 for x in speedups)
-print(
-  f"APPROX03_T2C_SUMMARY|CASES={len(speedups)}|WORK_REDUCED={work_reduced}"
-  f"|SPEED_POSITIVE={pos}|SPEED_NEGATIVE={neg}"
-  f"|MEDIAN_SPEEDUP_PERCENT={statistics.median(speedups):.6f}|MIN_SPEEDUP_PERCENT={min(speedups):.6f}"
-  f"|MAX_HEAD_REL={metrics['head']:.17e}|MAX_THETA_REL={metrics['theta']:.17e}"
-  f"|MAX_BOTTOM_FLUX_REL={metrics['flux']:.17e}|MAX_STORAGE_CHANGE_REL={metrics['storage_change']:.17e}"
-  f"|MAX_STORAGE_END_REL={metrics['storage_end']:.17e}"
-  f"|MEAN_SIGNED_BOTTOM_FLUX_ERROR={statistics.mean(signed_flux_errors):.17e}"
-)
+for sel in eligible:
+    key=(sel["MATERIAL"],sel["REGIME"],sel["ORIENTATION"])
+    ref=rows.get(key+("REF",))
+    cand=rows.get(key+("T2C",))
+    if ref is None or int(ref.get("SUCCESS","0")) != 5:
+        raise SystemExit(f"reference lost stability after calibration {key}")
+    if cand is None or int(cand.get("SUCCESS","0")) != 5:
+        candidate_failures += 1
+        print(f"APPROX03_T2C_CANDIDATE_FAILURE|MATERIAL={key[0]}|REGIME={key[1]}|ORIENTATION={key[2]}|DT={sel['DT']}|SUCCESS={0 if cand is None else cand.get('SUCCESS','0')}")
+        continue
+    rh=[f(ref,f"H{i}") for i in range(1,5)]
+    ch=[f(cand,f"H{i}") for i in range(1,5)]
+    rt=[f(ref,f"TH{i}") for i in range(1,5)]
+    ct=[f(cand,f"TH{i}") for i in range(1,5)]
+    head_rel=max(rel(a,b) for a,b in zip(rh,ch))
+    theta_rel=max(rel(a,b) for a,b in zip(rt,ct))
+    flux_rel=rel(f(ref,"BOTTOM_FLUX"),f(cand,"BOTTOM_FLUX"))
+    sch_rel=rel(f(ref,"STORAGE_CHANGE"),f(cand,"STORAGE_CHANGE"))
+    send_rel=rel(f(ref,"STORAGE_END"),f(cand,"STORAGE_END"))
+    speed=100.0*(1.0-f(cand,"MEDIAN_SECONDS")/f(ref,"MEDIAN_SECONDS"))
+    speedups.append(speed)
+    if ii(cand,"SUBSTEPS") < ii(ref,"SUBSTEPS") or ii(cand,"NONLINEAR") < ii(ref,"NONLINEAR"):
+        work_reduced += 1
+    signed_flux_errors.append(f(cand,"BOTTOM_FLUX")-f(ref,"BOTTOM_FLUX"))
+    metrics["head"]=max(metrics["head"],head_rel)
+    metrics["theta"]=max(metrics["theta"],theta_rel)
+    metrics["flux"]=max(metrics["flux"],flux_rel)
+    metrics["storage_change"]=max(metrics["storage_change"],sch_rel)
+    metrics["storage_end"]=max(metrics["storage_end"],send_rel)
+    if abs(f(cand,"MASS_RESIDUAL")) > 1e-12:
+        raise SystemExit("candidate mass residual gate")
+    print(
+      f"APPROX03_T2C_CASE|MATERIAL={key[0]}|REGIME={key[1]}|ORIENTATION={key[2]}|DT={sel['DT']}"
+      f"|SPEEDUP_PERCENT={speed:.6f}|REF_SUBSTEPS={ii(ref,'SUBSTEPS')}|T2C_SUBSTEPS={ii(cand,'SUBSTEPS')}"
+      f"|REF_NONLINEAR={ii(ref,'NONLINEAR')}|T2C_NONLINEAR={ii(cand,'NONLINEAR')}"
+      f"|REF_HEADCALC={ii(ref,'HEADCALC')}|T2C_HEADCALC={ii(cand,'HEADCALC')}"
+      f"|HEAD_REL={head_rel:.17e}|THETA_REL={theta_rel:.17e}|BOTTOM_FLUX_REL={flux_rel:.17e}"
+      f"|BOTTOM_FLUX_SIGNED_ERROR={signed_flux_errors[-1]:.17e}|STORAGE_CHANGE_REL={sch_rel:.17e}"
+      f"|STORAGE_END_REL={send_rel:.17e}|MASS_RESIDUAL={f(cand,'MASS_RESIDUAL'):.17e}"
+    )
+
+print(f"APPROX03_T2C_REFERENCE_DOMAIN|TOTAL=24|ELIGIBLE={len(eligible)}|NO_TEMPORAL_WORKLOAD={len(no_work)}")
+if speedups:
+    pos=sum(x>0 for x in speedups); neg=sum(x<0 for x in speedups)
+    mean_signed=statistics.mean(signed_flux_errors)
+    print(
+      f"APPROX03_T2C_SUMMARY|PAIRED_SUCCESS={len(speedups)}|CANDIDATE_FAILURES={candidate_failures}|WORK_REDUCED={work_reduced}"
+      f"|SPEED_POSITIVE={pos}|SPEED_NEGATIVE={neg}|MEDIAN_SPEEDUP_PERCENT={statistics.median(speedups):.6f}"
+      f"|MIN_SPEEDUP_PERCENT={min(speedups):.6f}|MAX_HEAD_REL={metrics['head']:.17e}|MAX_THETA_REL={metrics['theta']:.17e}"
+      f"|MAX_BOTTOM_FLUX_REL={metrics['flux']:.17e}|MAX_STORAGE_CHANGE_REL={metrics['storage_change']:.17e}"
+      f"|MAX_STORAGE_END_REL={metrics['storage_end']:.17e}|MEAN_SIGNED_BOTTOM_FLUX_ERROR={mean_signed:.17e}"
+    )
+else:
+    print(f"APPROX03_T2C_SUMMARY|PAIRED_SUCCESS=0|CANDIDATE_FAILURES={candidate_failures}|WORK_REDUCED=0")
 print("FPE_APPROX03_T2C_MATRIX=PASS")
 PY
