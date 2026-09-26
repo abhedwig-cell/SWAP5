@@ -1,0 +1,19 @@
+name: F-PE-TEMPORAL02 corrector temporal frontier
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_temporal02_*.sh'
+      - 'docs/performance/F-PE-TEMPORAL02_*.md'
+      - '.github/workflows/f-pe-temporal02.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-budget-frontier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal02_p0_budget_frontier.sh
