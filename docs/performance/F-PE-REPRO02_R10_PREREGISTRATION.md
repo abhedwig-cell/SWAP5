@@ -11,7 +11,7 @@ R9 established a deterministic split:
 - serialized reference-floor physical advance: 18/18 PASS;
 - normal canonical transaction route: 7/18 PASS.
 
-The same physical backend, origin, forcing and generous 48/16/1e-10 solver controls therefore diverge only when the canonical transaction lifecycle is active.
+The same physical backend, origin and forcing diverge between the bare reference-floor advance and the normal FGC44 transaction route. That comparison still confounds canonical transaction lifecycle with Richards temporal-continuation state, so R9 does not uniquely attribute the failure to transaction lifecycle.
 
 For the simple difficult-origin fixture there are no active drainage, thermal or surface-water attempt-context carriers. The remaining reason the serialized model requests attempt context is the accepted-trajectory direction request used by the FGC44 corrector.
 
@@ -65,8 +65,8 @@ Record:
 
 If NO_CONTEXT restores convergence for the nonzero failures while BASE reproduces R9, attempt-context handling is causally implicated. A following discriminator must then separate capture from restore and identify the mutated hidden state.
 
-If both arms fail identically, attempt-context handling is excluded and the next target is checkpoint/state cloning or another canonical pre-advance lifecycle operation.
+If both arms fail identically, accepted-direction attempt-context handling is excluded as the cause of this split. The next required discriminator is Richards temporal-history continuation versus a base-state canonical transaction; checkpoint/state cloning should only become the primary target after that axis is resolved.
 
 If BASE no longer reproduces R9, stop and reconcile the harness before interpretation.
 
-No production `src/**` modification is allowed in R10.
+R10 is one orthogonal discriminator, not a complete causal localization of R9. No production `src/**` modification is allowed in R10.
