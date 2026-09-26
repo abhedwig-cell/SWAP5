@@ -9,6 +9,7 @@ on:
       - 'tests/fpe/run_fpe_approx03_t2_mode5_discovery.sh'
       - 'tests/fpe/run_fpe_approx03_t2_budget_frontier.sh'
       - 'tests/fpe/run_fpe_approx03_t2a_matrix.sh'
+      - 'tests/fpe/run_fpe_approx03_t2a_workload_discovery.sh'
       - 'docs/performance/F-PE-APPROX03_*.md'
       - '.github/workflows/f-pe-approx03.yml'
   workflow_dispatch:
@@ -43,3 +44,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx03_t2a_matrix.sh
+
+  t2a-workload-discovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx03_t2a_workload_discovery.sh
