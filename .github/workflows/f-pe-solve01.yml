@@ -5,6 +5,8 @@ on:
     paths:
       - 'tests/fpe/run_fpe_solve01_ef_upper_bound.sh'
       - 'tests/fpe/run_fpe_solve01_p0b_refresh_frontier.sh'
+      - 'tests/fpe/run_fpe_solve01_p1_live_corrector.sh'
+      - 'tests/fpe/test_fpe_solve01_p1_live_corrector.py'
       - 'docs/performance/F-PE-SOLVE01_*.md'
       - '.github/workflows/f-pe-solve01.yml'
   workflow_dispatch:
@@ -41,3 +43,22 @@ jobs:
         with:
           name: f-pe-solve01-p0b
           path: solve01-p0b.txt
+
+  p1-live-corrector:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install live coupling dependencies
+        run: pip install numpy flopy xmipy
+      - name: Run live MODFLOW6 bounded-response corrector robustness
+        run: |
+          bash tests/fpe/run_fpe_solve01_p1_live_corrector.sh | tee solve01-p1.txt
+          grep -Fq 'FPE_SOLVE01_P1=PASS' solve01-p1.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-solve01-p1
+          path: solve01-p1.txt
