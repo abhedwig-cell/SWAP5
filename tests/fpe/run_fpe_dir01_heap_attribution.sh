@@ -10,6 +10,7 @@ trap 'rm -rf "$BUILD"' EXIT
 cat > "$BUILD/heap_wrap.c" <<'C'
 #include <stddef.h>
 #include <stdio.h>
+#include <stdint.h>
 
 void *__real_malloc(size_t);
 void *__real_calloc(size_t,size_t);
@@ -19,16 +20,36 @@ void __real_free(void*);
 static unsigned long long n_malloc=0, n_calloc=0, n_realloc=0, n_free=0;
 static unsigned long long b_malloc=0, b_calloc=0, b_realloc=0;
 
+#define NSITE 2048
+struct site_rec { uintptr_t addr; unsigned long long count; unsigned long long bytes; };
+static struct site_rec sites[NSITE];
+
+static void record_site(uintptr_t addr, size_t bytes) {
+  unsigned long long idx=((unsigned long long)(addr>>4)) & (NSITE-1);
+  unsigned long long start=idx;
+  while (sites[idx].addr && sites[idx].addr!=addr) {
+    idx=(idx+1)&(NSITE-1);
+    if (idx==start) return;
+  }
+  if (!sites[idx].addr) sites[idx].addr=addr;
+  sites[idx].count++;
+  sites[idx].bytes+=(unsigned long long)bytes;
+}
+
 void *__wrap_malloc(size_t n) {
   n_malloc++; b_malloc += (unsigned long long)n;
+  record_site((uintptr_t)__builtin_return_address(0),n);
   return __real_malloc(n);
 }
 void *__wrap_calloc(size_t n, size_t s) {
-  n_calloc++; b_calloc += (unsigned long long)n*(unsigned long long)s;
+  size_t b=n*s;
+  n_calloc++; b_calloc += (unsigned long long)b;
+  record_site((uintptr_t)__builtin_return_address(0),b);
   return __real_calloc(n,s);
 }
 void *__wrap_realloc(void *p, size_t n) {
   n_realloc++; b_realloc += (unsigned long long)n;
+  record_site((uintptr_t)__builtin_return_address(0),n);
   return __real_realloc(p,n);
 }
 void __wrap_free(void *p) {
@@ -36,12 +57,18 @@ void __wrap_free(void *p) {
   __real_free(p);
 }
 void dir01_heap_reset(void) {
+  int i;
   n_malloc=n_calloc=n_realloc=n_free=0;
   b_malloc=b_calloc=b_realloc=0;
+  for (i=0;i<NSITE;i++) { sites[i].addr=0; sites[i].count=0; sites[i].bytes=0; }
 }
 void dir01_heap_report(void) {
+  int i;
   printf("DIR01_HEAP|MALLOC=%llu|CALLOC=%llu|REALLOC=%llu|FREE=%llu|MALLOC_BYTES=%llu|CALLOC_BYTES=%llu|REALLOC_BYTES=%llu\n",
     n_malloc,n_calloc,n_realloc,n_free,b_malloc,b_calloc,b_realloc);
+  for (i=0;i<NSITE;i++) if (sites[i].addr)
+    printf("DIR01_HEAP_SITE|ADDR=0x%llx|COUNT=%llu|BYTES=%llu\n",
+      (unsigned long long)sites[i].addr,sites[i].count,sites[i].bytes);
 }
 C
 
@@ -71,7 +98,7 @@ src=src.replace(
 Path(sys.argv[1]).write_text(src)
 PY
 
-COMMON=(-std=f2008 -ffree-line-length-none -O2)
+COMMON=(-std=f2008 -ffree-line-length-none -O2 -fno-pie)
 SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/transaction/mod_transaction_reference.f90
@@ -141,9 +168,9 @@ for source in "${SRC[@]}"; do
   gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$source" -o "$obj"
   objects+=("$obj")
 done
-gcc -O2 -c "$BUILD/heap_wrap.c" -o "$BUILD/heap_wrap.o"
+gcc -O2 -fno-pie -c "$BUILD/heap_wrap.c" -o "$BUILD/heap_wrap.o"
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$BUILD/test.f90" -o "$BUILD/test.o"
-gfortran -O2 "${objects[@]}" "$BUILD/test.o" "$BUILD/heap_wrap.o" \
+gfortran -O2 -no-pie "${objects[@]}" "$BUILD/test.o" "$BUILD/heap_wrap.o" \
   -Wl,--wrap=malloc -Wl,--wrap=calloc -Wl,--wrap=realloc -Wl,--wrap=free -o "$BUILD/test"
 
 CALLS=200000
@@ -153,7 +180,7 @@ for mode in reference directional; do
   grep '^PROFILE03_E1_TIMING' "$BUILD/$mode.out"
 done
 
-python3 - "$BUILD/reference.out" "$BUILD/directional.out" "$CALLS" <<'PY'
+python3 - "$BUILD/reference.out" "$BUILD/directional.out" "$CALLS" "$BUILD/test" <<'PY'
 import re,sys
 calls=int(sys.argv[3])
 def read(path):
@@ -169,5 +196,20 @@ print("DIR01_HEAP_DELTA")
 for k in ('MALLOC','CALLOC','REALLOC','FREE','MALLOC_BYTES','CALLOC_BYTES','REALLOC_BYTES'):
     delta=d[k]-r[k]
     print(f"DIR01_HEAP_DELTA|FIELD={k}|TOTAL={delta}|PER_INTERVAL={delta/calls:.6f}")
+import subprocess
+alladdrs=set(rs)|set(ds)
+rows=[]
+for a in alladdrs:
+    rc,rb=rs.get(a,(0,0)); dc,db=ds.get(a,(0,0))
+    dc0=dc-rc; db0=db-rb
+    if dc0<=0 and db0<=0: continue
+    resolved=subprocess.check_output(['addr2line','-f','-C','-e',exe,a],text=True).strip().splitlines()
+    fn=resolved[0] if resolved else '?'
+    loc=resolved[1] if len(resolved)>1 else '?'
+    rows.append((dc0,db0,a,fn,loc,dc,rc))
+rows.sort(reverse=True)
+print("DIR01_HEAP_SITE_DELTA_TOP")
+for dc0,db0,a,fn,loc,dc,rc in rows[:40]:
+    print(f"DIR01_HEAP_SITE_DELTA|COUNT_DELTA={dc0}|BYTES_DELTA={db0}|PER_INTERVAL={dc0/calls:.6f}|ADDR={a}|FUNCTION={fn}|LOCATION={loc}|DIR_COUNT={dc}|REF_COUNT={rc}")
 print('FPE_DIR01_HEAP_ATTRIBUTION=PASS')
 PY
