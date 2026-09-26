@@ -71,8 +71,8 @@ contains
     do i=1,NPART
       call set_tile(tiles(i),TILE_ID(i),LEDGER_ID(i),CELL_ID(i),FRACTION(i))
     end do
-    call set_cell(cells(1),7001_int64,COUPLING_ID(1),GW_LINEAGE_ID(1),1,2,1,2)
-    call set_cell(cells(2),7002_int64,COUPLING_ID(2),GW_LINEAGE_ID(2),2,3,3,1)
+    call set_cell(cells(1),7001_int64,COUPLING_ID(1),GW_LINEAGE_ID(1),1,2)
+    call set_cell(cells(2),7002_int64,COUPLING_ID(2),GW_LINEAGE_ID(2),2,3)
     call materialize_groundwater_topology(tiles,cells,topology,status)
     if(status/=GW_TOPOLOGY_OK .or. .not.topology%ready())return
 
@@ -221,16 +221,15 @@ contains
     tile%groundwater_cell_id=cell; tile%area_fraction=fraction
   end subroutine set_tile
 
-  subroutine set_cell(cell,id,coupling,lineage,slot,node,tile_begin,tile_count)
+  subroutine set_cell(cell,id,coupling,lineage,slot,node)
     type(groundwater_topology_cell_t),intent(out)::cell
     integer(int64),intent(in)::id,coupling,lineage
-    integer,intent(in)::slot,node,tile_begin,tile_count
+    integer,intent(in)::slot,node
     cell%groundwater_cell_id=id; cell%coupling_id=coupling
     cell%groundwater_service_id=GW_SERVICE_ID; cell%groundwater_lineage_id=lineage
     cell%package_slot=slot; cell%modflow_node_id=node
     cell%storage_state_role=GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE
     cell%drainage_owner=GW_DRAINAGE_OWNER_NONE
-    cell%tile_begin=tile_begin; cell%tile_count=tile_count
   end subroutine set_cell
 
   subroutine make_predictor(input,tile,cell,href,slot)
