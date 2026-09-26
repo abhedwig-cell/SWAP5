@@ -39,6 +39,10 @@ jobs:
       - run: bash tests/fpe/run_fpe_approx01_a1_default_off_identity.sh
 
   a1-modflow-e2e:
+    strategy:
+      fail-fast: false
+      matrix:
+        replica: [1, 2, 3]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
