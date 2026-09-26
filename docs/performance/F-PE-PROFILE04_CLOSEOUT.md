@@ -133,12 +133,11 @@ PROFILE04 attempted to turn this into a standalone production-application AHL ti
 
 PROFILE04 added an observation-only same-postimage decomposition using the production application fixture and the serialized Reference backend.
 
-At N=10,000:
+At N=10,000, two independent current-postimage runs gave:
 
-- application median: `9326.7994 ns/column`;
-- Reference / transaction backend median: `8667.1928 ns/interval`;
-- Reference backend share: `92.927835%`;
-- residual application-wrapper share: `7.072165%`.
+- first run: application median `9326.7994 ns/column`, Reference backend `8667.1928 ns/interval`, backend share `92.927835%`;
+- replicated run: application median `9294.5256 ns/column`, Reference backend `8682.7922 ns/interval`, backend share `93.418347%`;
+- residual application-wrapper share therefore lies around `6.6-7.1%`.
 
 At N=1,000:
 
@@ -158,7 +157,7 @@ For the application fixture, each column reports:
 - three headcalc calls;
 - zero internal retries.
 
-Thus the Reference-backend comparison is aligned with the actual internal transaction path. The old PROFILE02 observation that about 92.3% of per-column application cost sat in the Reference / transaction interval remains valid on the new canonical stack, now freshly measured at about 92.93%.
+Thus the Reference-backend comparison is aligned with the actual internal transaction path. The old PROFILE02 observation that about 92.3% of per-column application cost sat in the Reference / transaction interval remains valid on the new canonical stack, now independently re-measured at approximately 92.93% and 93.42%.
 
 This number was re-measured. It was not inherited from PROFILE02.
 
@@ -166,13 +165,13 @@ This number was re-measured. It was not inherited from PROFILE02.
 
 ### 1. Reference / Richards / transaction route
 
-Approximately 93% of repeated application runtime is still inside the Reference / transaction backend.
+Approximately 93% of repeated application runtime is still inside the Reference / transaction backend; independent current-postimage runs place the share at about 92.9-93.4%.
 
 This is the dominant default repeated-execution block.
 
 ### 2. Application, groundwater-context and outer orchestration
 
-Only about 7% remains outside the Reference backend in the N=10,000 application fixture.
+Only about 6.6-7.1% remains outside the Reference backend in the N=10,000 application fixture.
 
 PROFILE04 therefore finds no evidence that general application/context orchestration is currently the principal repeated-runtime target.
 
@@ -191,24 +190,20 @@ The diagnostic field reports one accepted backtracking attempt per nonlinear ste
 
 ### 4. Constitutive hydraulics
 
-Isolated four-node analytical MvG kernel medians:
+Isolated four-node analytical MvG kernel timings were runner-sensitive. Across two independent CI runs, medians were:
 
-- full constitutive evaluation: approximately `590 ns`;
-- demand-routed constitutive evaluation: approximately `701 ns`.
+- full constitutive evaluation: approximately `348-590 ns`;
+- demand-routed constitutive evaluation: approximately `428-701 ns`.
 
 The Reference fixture reports two constitutive evaluations per internal solve. With three internal solves per application interval, constitutive evaluation is clearly a material part of the Reference backend.
 
-A rough microkernel scale of six evaluations is of order 3.5-4.2 us against an approximately 8.7 us Reference interval. This is localization evidence only. It is not an inclusive percentage claim because the real solve uses in-context dispatch, demand routing and surrounding solver work.
+Even at the lower replicated kernel timings, constitutive evaluation remains materially larger than the isolated linear algebra kernels. This is localization evidence only. PROFILE04 deliberately does not turn these runner-sensitive microkernel timings into an inclusive application percentage.
 
 F-AHL50 already attacks part of this cost and gives about 15.5% same-postimage repeated solver gain within its qualified envelope.
 
 ### 5. Linear / tridiagonal solve
 
-Isolated tridiagonal solve median:
-
-`54.996 ns`
-
-Three such solves are only about `0.165 us`, roughly 2% of the measured Reference interval.
+Isolated tridiagonal solve medians were approximately `23-55 ns` across independent CI runs. Three such solves remain well below `0.2 us`, only a small fraction of the approximately `8.6-8.7 us` Reference interval.
 
 The linear solve is therefore not a credible next dominant exact optimization target.
 
@@ -223,12 +218,10 @@ The production groundwater participant explicitly requests:
 
 PROFILE04 therefore measured the actual bottom-head directional route, not only the earlier bottom-flux timing fixture.
 
-Bottom-head result:
+Bottom-head results were independently reproduced:
 
-- Reference median: `8674.9500 ns/interval`;
-- directional median: `16208.2952 ns/interval`;
-- ratio: `1.868402146`;
-- incremental cost: approximately `+86.84%`.
+- first run: Reference `8674.9500 ns/interval`, directional `16208.2952 ns/interval`, ratio `1.868402146`, increment `+86.84%`;
+- replicated run: Reference `8541.6358 ns/interval`, directional `16067.4590 ns/interval`, ratio `1.881075168`, increment `+88.11%`.
 
 A separate bottom-flux measurement gave a very similar result:
 
@@ -243,11 +236,7 @@ The physical solve diagnostics remain unchanged:
 - constitutive evaluations per solve: `2`;
 - no extra full nonlinear solve is introduced by the directional request.
 
-The isolated tridiagonal backsolve median is only:
-
-`46.820 ns`
-
-Three extra backsolves are therefore about `0.140 us`, less than 2% of the measured approximately `7.53 us` bottom-head directional increment.
+The isolated tridiagonal backsolve median varied from about `15.5 ns` to `46.8 ns` across independent runners. Even using the slower value, three extra backsolves are only about `0.14 us`, less than 2% of the measured roughly `7.5 us` bottom-head directional increment.
 
 Conclusion: the dominant directional overhead is not the raw tridiagonal backsolve. It lies higher in the accepted-trajectory tangent path, potentially among constitutive directional evaluation, factorization-capture lifecycle, RHS/data preparation, accepted-step accumulation, allocation/publication or other orchestration. PROFILE04 deliberately does not select one of these without a dedicated measurement.
 
@@ -272,7 +261,7 @@ For that reason:
 - kernel timings are used only for localization;
 - no historical microbenchmark percentages are added together.
 
-The 92.93% backend share and approximately 87-89% directional increment were obtained from current-postimage measurements and are sufficiently large that ordinary CI timing noise does not change the qualitative hotspot ordering.
+The approximately 92.9-93.4% backend share and approximately 86-88% bottom-head directional increment were independently reproduced on the current postimage and are sufficiently large that ordinary CI timing noise does not change the qualitative hotspot ordering.
 
 ## How much faster is the new canonical production stack?
 
@@ -324,10 +313,17 @@ F-PE-PROFILE04 is closed.
 The post-admission hotspot map is sufficiently strong to carry the next performance decision:
 
 - large-N setup is largely solved;
-- approximately 93% of default repeated application runtime remains in Reference / transaction execution;
+- approximately 92.9-93.4% of default repeated application runtime remains in Reference / transaction execution;
 - the raw linear solve is small;
 - constitutive work is material and already partially accelerated by F-AHL50;
 - application/context wrapper overhead is small;
-- production-required bottom-head directional tangent is the clearest remaining exact hotspot, adding approximately 87% to the Reference interval without adding a full nonlinear solve.
+- production-required bottom-head directional tangent is the clearest remaining exact hotspot, adding approximately 86-88% to the Reference interval without adding a full nonlinear solve.
 
 The only next exact performance workunit recommended by PROFILE04 is F-PE-DIR01.
+
+
+## Final CI qualification note
+
+The final cleaned PROFILE04 workflow run `36222401094` passed all PROFILE04 jobs: rebaseline, repeated decomposition, kernel costs, bottom-head directional timing and all five AHL repeated replicas.
+
+The repository-wide `F-CI canonical qualification` workflow failed only in `current-restricted-canonical-preservation`, reporting an admitted F-KT18 postimage drift in `src/transaction/mod_transaction_reference.f90`. PR #627 modifies no `src/**` file, so PROFILE04 cannot repair or absorb that failure without violating its observation-only scope. All historical frozen F-CI jobs in that workflow passed. This is recorded as an external canonical-preservation blocker for merge/admission, not as a PROFILE04 measurement failure.
