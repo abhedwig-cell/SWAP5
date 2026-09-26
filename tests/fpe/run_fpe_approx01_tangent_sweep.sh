@@ -131,3 +131,41 @@ for regime in ("wet","mid","dry"):
         )
 print("FPE_APPROX01_DIRECT_TANGENT_SWEEP=PASS")
 PY
+
+
+TIMING="$BUILD/timing.csv"
+echo 'rep,cadence,ns_per_call,fresh_fraction,checksum' > "$TIMING"
+CALLS=20000
+for rep in 1 2 3 4 5; do
+  for cadence in 1 2 4 8; do
+    raw="$("$BUILD/test" -75 -75 "$CALLS" "$cadence")"
+    line="$(printf '%s\n' "$raw" | grep '^APPROX01_TIMING|')"
+    python3 - "$rep" "$cadence" "$line" "$TIMING" <<'PY'
+import csv,sys
+rep,cad,line,path=sys.argv[1:]
+d={}
+for p in line.strip().split('|')[1:]:
+    k,v=p.split('=',1); d[k]=v
+with open(path,'a',newline='') as f:
+    csv.writer(f).writerow([rep,cad,d['NS_PER_CALL'],d['FRESH_FRACTION'],d['CHECKSUM']])
+print(line)
+PY
+  done
+done
+
+python3 - "$TIMING" <<'PY'
+import csv,statistics,sys
+rows=list(csv.DictReader(open(sys.argv[1])))
+base=[float(r['ns_per_call']) for r in rows if int(r['cadence'])==1]
+base_med=statistics.median(base)
+print(f"APPROX01_TIMING_BASE_MEDIAN_NS={base_med:.6f}")
+for cadence in (2,4,8):
+    vals=[float(r['ns_per_call']) for r in rows if int(r['cadence'])==cadence]
+    ratios=[]
+    for rep in sorted({int(r['rep']) for r in rows}):
+        b=float(next(r['ns_per_call'] for r in rows if int(r['rep'])==rep and int(r['cadence'])==1))
+        c=float(next(r['ns_per_call'] for r in rows if int(r['rep'])==rep and int(r['cadence'])==cadence))
+        ratios.append(c/b)
+    print(f"APPROX01_TIMING_AGGREGATE|CADENCE={cadence}|MEDIAN_NS={statistics.median(vals):.6f}|MEAN_PAIRED_RATIO={statistics.mean(ratios):.9f}|MEDIAN_PAIRED_RATIO={statistics.median(ratios):.9f}|MEAN_SPEEDUP_PERCENT={(1-statistics.mean(ratios))*100:.6f}|MEDIAN_SPEEDUP_PERCENT={(1-statistics.median(ratios))*100:.6f}|MIN_RATIO={min(ratios):.9f}|MAX_RATIO={max(ratios):.9f}")
+print("FPE_APPROX01_DIRECT_TIMING_AGGREGATE=PASS")
+PY
