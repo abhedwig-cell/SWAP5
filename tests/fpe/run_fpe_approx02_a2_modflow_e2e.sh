@@ -26,9 +26,9 @@ tol=sys.argv[2]
 old="""    p%compartment_balance_tolerance=TOL; p%total_balance_tolerance=TOL; p%head_abs_tolerance=TOL
     p%head_rel_tolerance=TOL; p%ponding_tolerance=TOL; p%root_extraction_active=.false.
 """
-new=f"""    p%compartment_balance_tolerance={tol}_real64; p%total_balance_tolerance={tol}_real64
-    p%head_abs_tolerance={tol}_real64; p%head_rel_tolerance={tol}_real64
-    p%ponding_tolerance=TOL; p%root_extraction_active=.false.
+new=f"""    p%compartment_balance_tolerance=TOL; p%total_balance_tolerance=TOL
+    p%head_abs_tolerance=TOL; p%head_rel_tolerance=TOL
+    p%ponding_tolerance=TOL; p%practical_richards_a2c_active=.true.; p%root_extraction_active=.false.
 """
 if old not in src: raise SystemExit("A2 tolerance seam missing")
 Path(sys.argv[1]).write_text(src.replace(old,new,1))
