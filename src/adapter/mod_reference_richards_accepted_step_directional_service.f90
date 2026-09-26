@@ -327,25 +327,24 @@ contains
        end select
     end if
 
-    ! Re-evaluate the immutable constitutive value provider at the step base
-    ! state for the exact frozen K values used by swkimpl=0. Its historical
-    ! dconductivity_dhead output is deliberately reserved/zero, therefore the
-    ! derivative comes only from the explicit B1.10 sibling capability.
-    call request%evaluation%constitutive%evaluate_demand(request%base_state%pressure_head, &
-         CONSTITUTIVE_DEMAND_CONDUCTIVITY, ref_ws%richards%provider_theta, ref_ws%richards%provider_k, &
-         ref_ws%richards%provider_capacity, ref_ws%richards%provider_dkdh)
-    if (any(.not. ieee_is_finite(ref_ws%richards%provider_k(1:n)))) then
-       direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
-       direction_result%route = 'base-constitutive-value-nonfinite'
-       return
-    end if
-
     select type (hyd => request%evaluation%constitutive)
     type is (b110_default_mvg_provider_t)
+       ! Compute the exact frozen base conductivity and directional
+       ! constitutive response in one smooth-branch pass.
        call evaluate_b110_default_mvg_state_direction(hyd, request%base_state%pressure_head, &
             direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
-            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
+            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route, &
+            base_conductivity=ref_ws%richards%provider_k)
     type is (b110_direct_retention_provider_t)
+       ! The direct-retention route retains its existing value-provider path.
+       call request%evaluation%constitutive%evaluate_demand(request%base_state%pressure_head, &
+            CONSTITUTIVE_DEMAND_CONDUCTIVITY, ref_ws%richards%provider_theta, ref_ws%richards%provider_k, &
+            ref_ws%richards%provider_capacity, ref_ws%richards%provider_dkdh)
+       if (any(.not. ieee_is_finite(ref_ws%richards%provider_k(1:n)))) then
+          direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
+          direction_result%route = 'base-constitutive-value-nonfinite'
+          return
+       end if
        call evaluate_b110_direct_retention_state_direction(hyd, request%base_state%pressure_head, &
             direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
             ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route)
@@ -356,6 +355,11 @@ contains
     if (.not. constitutive_direction_ok) then
        direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
        direction_result%route = constitutive_direction_route
+       return
+    end if
+    if (any(.not. ieee_is_finite(ref_ws%richards%provider_k(1:n)))) then
+       direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
+       direction_result%route = 'base-constitutive-value-nonfinite'
        return
     end if
 
