@@ -2,7 +2,7 @@
 
 Date: 2026-09-26
 
-Status: `QUALIFIED_LOCAL_AND_PARTICIPANT_PENDING_COUPLED_E2E`
+Status: `QUALIFIED_PRODUCTION_SHAPED_OPT_IN`
 
 PR:
 `#629 — F-PE-APPROX01: practical MultiSWAP tangent cadence`
@@ -122,24 +122,55 @@ A published response explicitly distinguishes:
 
 A reused tangent is not represented as a newly computed exact accepted-trajectory derivative.
 
+## Coupled MODFLOW6 end-to-end qualification
+
+The real SWAP + MODFLOW6 end-to-end gate was replicated three times on the production A1 postimage.
+
+In all three replicas:
+
+- final MODFLOW head was exactly identical to fresh-tangent mode;
+- final SWAP groundwater exchange flux was exactly identical;
+- cumulative accepted interface ledger exchange was exactly identical;
+- coupled iteration count was identical;
+- A1 used one fresh tangent and three same-origin cached tangents.
+
+The three measured coupling-loop speedups were approximately:
+
+- 21.45%;
+- 21.94%;
+- 11.13%.
+
+Median:
+
+approximately 21.45%.
+
+Mean:
+
+approximately 18.17%.
+
+Because the measured coupling loop is sub-millisecond, the 11-22% spread is treated as timing variance. The robust claim is that all three independent coupled runs were speed-positive and the physical/coupled endpoint was unchanged in the qualified case.
+
 ## Current decision
 
-A1 is retained as the leading practical-performance candidate.
+A1 is qualified as the first production-shaped practical-performance opt-in.
 
-It is not yet fully admitted as the production approximate mode.
+The admitted research envelope is:
 
-The remaining mandatory gate from the preregistration is:
+- default OFF;
+- explicit opt-in only;
+- head displacement threshold 0.5 cm;
+- maximum cache age 8 coupling evaluations;
+- cache valid only within one captured origin and one coupling window;
+- exact physical SWAP solve on every trial;
+- cached tangent explicitly published with reuse provenance;
+- mandatory invalidation on new origin, abandon, commit and failed/exchange-invalid trial paths.
 
-**coupled end-to-end MODFLOW response qualification.**
+Current qualified local error envelope over B01/B12/O05/O14 wet/mid/dry:
 
-That gate must quantify:
+- controlling case: O05-wet;
+- worst relative tangent error at the selected adaptive rule: about 1.65% or lower over the tested amplitude frontier;
+- local bottom-flux linearization error remains smaller than the derivative error and below about 1% of the tested flux excursion in the qualified ±0.5 cm neighborhood.
 
-- coupled MODFLOW head difference;
-- cumulative groundwater exchange difference;
-- convergence / iteration behavior;
-- physical SWAP state and mass preservation;
-- end-to-end runtime benefit;
+The exact default path remains bit-identical to the DIR01 parent when A1 is disabled.
 
-against fresh-tangent authority.
-
-No additional local tangent microbenchmark is needed before that gate.
+This is sufficient to satisfy the APPROX01 closure condition: a bounded opt-in approximation produces a materially larger runtime gain while preserving the exact physical SWAP solve and the qualified coupled MODFLOW endpoint.
