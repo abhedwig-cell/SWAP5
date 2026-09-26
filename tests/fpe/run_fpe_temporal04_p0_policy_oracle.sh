@@ -537,11 +537,15 @@ for arm in arms:
         vals=[r[k] for r in ok if r[k] is not None]
         return max(vals) if vals else float("nan")
     budgets=[r["budget_cm"] for r in rs]
+    rel_flux=[r["abs_terminal_flux_diff_cm_per_day"]/max(abs(r["oracle_terminal_flux_cm_per_day"]),1e-30) for r in ok]
+    rel_ex=[r["abs_bottom_exchange_diff_cm"]/max(abs(r["oracle_bottom_exchange_cm"]),1e-30) for r in ok]
     print(f"TEMPORAL04_P0_ARM|ARM={arm}|PASS={len(ok)}|TOTAL={len(rs)}"
           f"|BUDGET_MIN={min(budgets):.17e}|BUDGET_MEDIAN={statistics.median(budgets):.17e}|BUDGET_MAX={max(budgets):.17e}"
           f"|MAX_DH_CM={mx('max_dh_cm'):.17e}|MAX_DTHETA={mx('max_dtheta'):.17e}"
           f"|MAX_DFLUX_CM_PER_DAY={mx('abs_terminal_flux_diff_cm_per_day'):.17e}"
-          f"|MAX_DEXCHANGE_CM={mx('abs_bottom_exchange_diff_cm'):.17e}")
+          f"|MAX_DEXCHANGE_CM={mx('abs_bottom_exchange_diff_cm'):.17e}"
+          f"|MAX_REL_FLUX={max(rel_flux) if rel_flux else float('nan'):.17e}"
+          f"|MAX_REL_EXCHANGE={max(rel_ex) if rel_ex else float('nan'):.17e}")
 # Per magnitude completion.
 for mag in (0.001,0.01):
     for arm in arms:
