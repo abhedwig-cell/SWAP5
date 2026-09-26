@@ -17,3 +17,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: bash tests/fpe/run_fpe_temporal04_p0_policy_oracle.sh
+
+  p1a-oracle-replication:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal04_p1a_oracle_replication.sh
