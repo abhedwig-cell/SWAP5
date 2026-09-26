@@ -2,7 +2,7 @@
 
 Date: 2026-09-26
 
-Status: `QUALIFIED_ENVELOPE_PENDING_EXPLICIT_OPT_IN`
+Status: `QUALIFIED_PRODUCTION_SHAPED_OPT_IN`
 
 Candidate:
 joint head + compartment/total balance tolerances of `1e-8`, with all other solver controls unchanged.
@@ -89,16 +89,63 @@ Unlike A2 and A2B, A2C passed the replicated coupled robustness gate.
 
 The exact default remains authority.
 
-## Remaining admission work
+## Production opt-in binding
 
-The solver already exposes the four tolerance values as production parameters.
+The qualified envelope is now bound to an explicit production flag:
 
-Before A2C can be called a production practical mode, the repository still needs:
+`practical_richards_a2c_active`
 
-1. an explicit default-OFF opt-in marker;
-2. deterministic binding of that marker to the qualified `1e-8` tolerance quartet;
-3. explicit provenance in production diagnostics/observation;
-4. parent-vs-current default-off identity;
-5. re-run of the A2C qualification gates against the real opt-in implementation rather than a test-local parameter override.
+Default:
 
-No new solver equation or separate numerical algorithm is required.
+`false`
+
+When enabled, the serialized Reference backend sets exactly:
+
+- head absolute tolerance = `1e-8`;
+- head relative tolerance = `1e-8`;
+- compartment balance tolerance = `1e-8`;
+- total balance tolerance = `1e-8`.
+
+Ponding tolerance, transaction mass tolerance, timestep policy, retry policy, iteration limits, backtracking limits and constitutive physics remain unchanged.
+
+The production observation explicitly publishes:
+
+- whether A2C was active;
+- effective head absolute tolerance;
+- effective head relative tolerance;
+- effective compartment balance tolerance;
+- effective total balance tolerance.
+
+The binding gate confirms the active quartet exactly equals the qualified envelope.
+
+## Final production qualification
+
+The real production opt-in postimage passes:
+
+- A2C 20-step multistep material/regime matrix;
+- A2C canonical application sequence;
+- three independent live SWAP + MODFLOW6 replicas;
+- explicit production binding/provenance gate;
+- exact/default FGC44 production gate.
+
+The current production-head coupled replicas all passed with exact endpoint identity and measured speedups of approximately:
+
+- 18.86%;
+- 17.32%;
+- 7.83%.
+
+Median:
+
+approximately 17.32%.
+
+Mean:
+
+approximately 14.67%.
+
+The coupled loop is short, so the spread is treated as timing variance. The robust claim is that all three runs were speed-positive and no new SWAP trial failure occurred.
+
+## Final decision
+
+A2C is qualified as the APPROX02 production-shaped practical opt-in.
+
+The exact default remains authority and unchanged when the flag is false.
