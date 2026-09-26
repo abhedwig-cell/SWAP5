@@ -136,6 +136,14 @@ module mod_irrigation_process
     logical :: external_inflow_is_reconciliation_only = .true.
   end type irrigation_diagnostics_t
 
+  ! Explicit process-composition input, not committed state or runtime admission.
+  type, public :: irrigation_timing_selection_t
+    integer :: criterion=0
+    logical :: valid=.false.
+    logical :: triggered=.false.
+    real(real64) :: threshold=0.0_real64
+  end type
+
   public :: evaluate_fixed_irrigation_interval
   public :: evaluate_scheduled_irrigation_interval
 
@@ -275,7 +283,7 @@ contains
   end subroutine evaluate_fixed_irrigation_interval
 
   pure subroutine evaluate_scheduled_irrigation_interval(parameters, committed_state, request, hydraulic_view, &
-                                                           candidate_state, fluxes, diagnostics)
+                                                           candidate_state, fluxes, diagnostics, timing_selection)
     type(scheduled_irrigation_parameters_t), intent(in) :: parameters
     type(irrigation_state_t), intent(in) :: committed_state
     type(scheduled_irrigation_request_t), intent(in) :: request
@@ -283,6 +291,7 @@ contains
     type(irrigation_state_t), intent(out) :: candidate_state
     type(irrigation_flux_result_t), intent(out) :: fluxes
     type(irrigation_diagnostics_t), intent(out) :: diagnostics
+    type(irrigation_timing_selection_t),intent(in),optional :: timing_selection
     real(real64) :: threshold, observed_value, depth, duration, event_end, event_rate, effective_t0, effective_t1
     real(real64) :: correction_mm, rainfall_reduction
     logical :: ok, finishes_at_event_end
@@ -309,7 +318,7 @@ contains
         diagnostics%status = IRRIGATION_INVALID_STATE
         return
       end if
-      if (.not. valid_scheduled_parameters(parameters)) then
+      if (.not. valid_scheduled_parameters(parameters,present(timing_selection))) then
         diagnostics%status = IRRIGATION_INVALID_PARAMETERS
         return
       end if
@@ -371,7 +380,7 @@ contains
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return
     end if
-    if (.not. valid_scheduled_parameters(parameters)) then
+    if (.not. valid_scheduled_parameters(parameters,present(timing_selection))) then
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return
     end if
@@ -381,6 +390,19 @@ contains
         return
       end if
     end if
+    if (parameters%timing_criterion>=1.and.parameters%timing_criterion<=4) then
+      if(.not.present(timing_selection)) then
+        diagnostics%status=IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      if(.not.timing_selection%valid.or.timing_selection%criterion/=parameters%timing_criterion.or. &
+           .not.ieee_is_finite(timing_selection%threshold)) then
+        diagnostics%status=IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      diagnostics%interpolated_threshold=timing_selection%threshold
+      if(.not.timing_selection%triggered) return
+    else
     if (.not. valid_scheduled_hydraulic_view(parameters, hydraulic_view)) then
       diagnostics%status = IRRIGATION_INVALID_HYDRAULIC_VIEW
       return
@@ -405,6 +427,7 @@ contains
     end if
     diagnostics%interpolated_threshold = threshold
     if (observed_value > threshold) return
+    end if
     diagnostics%triggered = .true.
 
     select case (parameters%depth_criterion)
@@ -548,8 +571,9 @@ contains
     valid_event = .true.
   end function valid_event
 
-  pure logical function valid_scheduled_parameters(parameters)
+  pure logical function valid_scheduled_parameters(parameters, supplied_timing)
     type(scheduled_irrigation_parameters_t), intent(in) :: parameters
+    logical,intent(in) :: supplied_timing
     integer :: knot
     real(real64) :: width, delta
 
@@ -578,6 +602,8 @@ contains
           parameters%solute_overirrigation_percent > 100.0_real64) return
     end if
     select case (parameters%timing_criterion)
+    case (1:4)
+      if(.not.supplied_timing) return
     case (IRRIGATION_TIMING_TCS7_PRESSURE_HEAD)
       if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return
     case (IRRIGATION_TIMING_TCS8_WATER_CONTENT)
