@@ -3,22 +3,14 @@ name: F-PE-DIR01 active repair qualification
 on:
   pull_request:
     paths:
-      - 'tests/fpe/run_fpe_dir01_repair04_experiment.sh'
-      - 'tests/fpe/run_fpe_dir01_repair04_heap.sh'
-      - 'docs/performance/F-PE-DIR01_REPAIR04_*.md'
-      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpe/run_fpe_dir01_repair05_experiment.sh'
+      - 'docs/performance/F-PE-DIR01_REPAIR05_*.md'
       - '.github/workflows/f-pe-dir01.yml'
   workflow_dispatch:
 
 jobs:
-  repair04-experiment:
+  repair05-experiment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_dir01_repair04_experiment.sh
-
-  repair04-heap:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_dir01_repair04_heap.sh
+      - run: bash tests/fpe/run_fpe_dir01_repair05_experiment.sh
