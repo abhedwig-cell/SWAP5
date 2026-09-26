@@ -39,6 +39,14 @@ for token in [
 print("FPE_TEMPORAL08_BOOTSTRAP_BINDING_STATIC=PASS")
 print("FPE_TEMPORAL08_BOUNDED_GROUNDWATER_SCOPE_STATIC=PASS")
 print("FPE_TEMPORAL08_SEEDED_HISTORY_REQUIRED_STATIC=PASS")
+
+participant=Path("src/runtime/mod_fmr_groundwater_swap_participant.f90").read_text().lower()
+trial=participant.split("subroutine fmr_swap_trial_from_origin",1)[1].split("end subroutine fmr_swap_trial_from_origin",1)[0]
+capture=participant.split("subroutine fmr_swap_capture_origin",1)[1].split("end subroutine fmr_swap_capture_origin",1)[0]
+assert "resolve_fmr_groundwater_temporal_history_scale" in capture
+assert "temporal_budget_history_scale" in trial
+assert "resolve_fmr_groundwater_temporal_budget(committed" not in trial
+print("FPE_TEMPORAL08_ORIGIN_CACHED_POLICY_HOT_PATH=PASS")
 PY
 
 bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh | tee /tmp/temporal08-ppa-wu01.txt
