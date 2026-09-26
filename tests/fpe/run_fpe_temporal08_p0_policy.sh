@@ -96,14 +96,22 @@ for opt in 0 2; do
   "$OUT/registry" > "$OUT/registry.txt" 2>&1 || { cat "$OUT/registry.txt" >&2; fail "registry runtime O$opt"; }
   grep -Fq 'F-GC49B FMR PARTICIPANT REGISTRY GATE PASS' "$OUT/registry.txt" || fail "registry marker O$opt"
 
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpe/test_fpe_temporal08_registry_equivalence.f90 -o "$OUT/equivalence.o" || fail "compile equivalence O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/equivalence.o" -o "$OUT/equivalence" || fail "link equivalence O$opt"
+  "$OUT/equivalence" > "$OUT/equivalence.txt" 2>&1 || { cat "$OUT/equivalence.txt" >&2; fail "equivalence runtime O$opt"; }
+  grep -Fq 'FPE_TEMPORAL08_P1_REGISTRY=PASS' "$OUT/equivalence.txt" || fail "equivalence marker O$opt"
+
   grep '^TEMPORAL08_' "$OUT/policy.txt" > "$OUT/policy-stable.txt"
+  grep '^TEMPORAL08_' "$OUT/equivalence.txt" > "$OUT/equivalence-stable.txt"
   grep '^FGC49B_' "$OUT/registry.txt" > "$OUT/registry-stable.txt"
   echo "FPE_TEMPORAL08_P0_O${opt}=PASS"
 done
 
 diff -u "$BUILD/o0/policy-stable.txt" "$BUILD/o2/policy-stable.txt"
+diff -u "$BUILD/o0/equivalence-stable.txt" "$BUILD/o2/equivalence-stable.txt"
 diff -u "$BUILD/o0/registry-stable.txt" "$BUILD/o2/registry-stable.txt"
 cat "$BUILD/o0/policy-stable.txt"
+cat "$BUILD/o0/equivalence-stable.txt"
 cat "$BUILD/o0/registry-stable.txt"
 echo 'FPE_TEMPORAL08_DEFAULT_OFF_REGISTRY=PASS'
 echo 'FPE_TEMPORAL08_P0=PASS'
