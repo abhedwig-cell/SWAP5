@@ -35,12 +35,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: TIMING_MODE=reference bash tests/fpe/run_fpe_zero_waste01_paired_runtime.sh
 
   directional-repeated:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: TIMING_MODE=directional bash tests/fpe/run_fpe_zero_waste01_paired_runtime.sh
 
   a2c-application-sequence:
