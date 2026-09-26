@@ -14,12 +14,12 @@ import sys
 p=Path(sys.argv[1]); src=p.read_text()
 
 # Make case hydraulics configurable before initialize.
+src=src.replace("H0_CM","REPRO_H0_CM")
 src=src.replace(
-"  real(real64), parameter :: H0_CM=-75.0_real64\n",
+"  real(real64), parameter :: REPRO_H0_CM=-75.0_real64\n",
 "  real(real64), save :: REPRO_H0_CM=-75.0_real64\n"
 "  real(real64), save :: REPRO_TR=0.032_real64, REPRO_TS=0.423_real64, REPRO_KSAT=4.75_real64\n"
 "  real(real64), save :: REPRO_ALPHA=0.0135_real64, REPRO_LAMBDA=0.365_real64, REPRO_NVG=1.455_real64\n",1)
-src=src.replace("H0_CM","REPRO_H0_CM")
 old="""      p%cofgen(1,k)=0.032_real64; p%cofgen(2,k)=0.423_real64; p%cofgen(3,k)=4.75_real64
       p%cofgen(4,k)=0.0135_real64; p%cofgen(5,k)=0.365_real64; p%cofgen(6,k)=1.455_real64
 """
