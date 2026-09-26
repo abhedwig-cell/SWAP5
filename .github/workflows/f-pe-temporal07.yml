@@ -40,18 +40,19 @@ jobs:
       - name: Reproduce frozen P2 endpoint-authority blocker
         shell: bash
         run: |
+          log="$RUNNER_TEMP/temporal07-p2-expected-blocker.log"
           set +e
-          out="$(bash tests/fpe/run_fpe_temporal07_p2_live_modflow.sh 2>&1)"
+          bash tests/fpe/run_fpe_temporal07_p2_live_modflow.sh >"$log" 2>&1
           rc=$?
           set -e
-          printf '%s\n' "$out"
+          cat "$log"
           test "$rc" -ne 0
-          grep -q 'FGC44_INDEPENDENT_HEAD_ENDPOINT=PASS' <<< "$out"
-          grep -q 'FGC44_INDEPENDENT_PHYSICAL_RESIDUAL_GATE=FAIL' <<< "$out"
-          grep -q 'FGC44_MODFLOW_MODEL_BALANCE_GATE=PASS' <<< "$out"
-          grep -q 'FGC44_MODFLOW_API_COMPONENT_GATE=PASS' <<< "$out"
-          grep -q 'FGC44_STOPPING_FLOW_GATE=PASS' <<< "$out"
-          grep -q 'FGC44_FINAL_FLUX_RESIDUAL=' <<< "$out"
+          grep -Fq 'FGC44_INDEPENDENT_HEAD_ENDPOINT=PASS' "$log"
+          grep -Fq 'FGC44_INDEPENDENT_PHYSICAL_RESIDUAL_GATE=FAIL' "$log"
+          grep -Fq 'FGC44_MODFLOW_MODEL_BALANCE_GATE=PASS' "$log"
+          grep -Fq 'FGC44_MODFLOW_API_COMPONENT_GATE=PASS' "$log"
+          grep -Fq 'FGC44_STOPPING_FLOW_GATE=PASS' "$log"
+          grep -Fq 'FGC44_FINAL_FLUX_RESIDUAL=' "$log"
           echo 'FPE_TEMPORAL07_P2_EXPECTED_BLOCKER=PASS'
 
   p2-attribution-c050:
