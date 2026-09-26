@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APPROX02_CANDIDATE_TOL: 1E-08
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -53,6 +54,8 @@ jobs:
 
   a1-live-control:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -71,6 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APPROX02_CANDIDATE_TOL: 1E-08
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
