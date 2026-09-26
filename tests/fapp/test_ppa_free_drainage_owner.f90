@@ -1235,6 +1235,7 @@ contains
     call verify_pending_mixed_columns(profile,source,template,.true.,.true.,.true.,.true.)
     call verify_irrigation_bootstrap(profile,source,template)
     call verify_irrigation_bootstrap(profile,source,template,.true.)
+    call verify_irrigation_bootstrap(profile,source,template,.true.,.true.)
     do timing=7,8
       call verify_new_irrigation_selection_trial(profile,source,template,.false.,.false.,timing)
       call verify_new_irrigation_selection_trial(profile,source,template,.true.,.false.,timing)
@@ -1243,7 +1244,7 @@ contains
     end do
   end subroutine verify_pending_irrigation_trial
 
-  subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection)
+  subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
     use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation
     use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
     use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t
@@ -1253,6 +1254,7 @@ contains
     type(ppa_irrigation_event_state_t),intent(in)::source
     type(fmr_template_t),intent(in)::template
     logical,intent(in),optional::profile_selection
+    logical,intent(in),optional::mixed_selection
     type(ppa_irrigation_profile_t),allocatable::root_profiles(:)
     type(fmr_production_application_config_t)::config
     type(fmr_production_application_bootstrap_t)::application,restored
@@ -1395,6 +1397,18 @@ contains
              management,requests,previous,left,code,root_profiles)
         if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'negative bootstrap profile admitted'
         root_profiles(2)%dz=1.0_real64
+        call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+             management,requests,previous,left,code,root_profiles(1:1))
+        if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'wrong bootstrap profile bundle length admitted'
+        if(present(mixed_selection)) then
+          if(mixed_selection) then
+            management(2)%depth_criterion=2
+            management(2)%timing_criterion=7
+            ! Direct DCS2 must not depend on another column's profile option.
+            deallocate(root_profiles(2)%layer,root_profiles(2)%dz,root_profiles(2)%ztopcp, &
+                 root_profiles(2)%wclos,root_profiles(2)%wcmes,root_profiles(2)%wchis)
+          end if
+        end if
       end if
     end if
     call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
@@ -1456,6 +1470,9 @@ contains
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_MIXED_SELECTION_SOURCE_STOP_RESTART=PASS'
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_AUTOMATIC_TYPED_SOURCE=PASS'
     if(allocated(root_profiles)) write(*,'(a)') 'PPA_IRR_BOOTSTRAP_TCS8_DCS1_PROFILE_LIFECYCLE=PASS'
+    if(present(mixed_selection)) then
+      if(mixed_selection) write(*,'(a)') 'PPA_IRR_BOOTSTRAP_MIXED_DCS1_DCS2_LIFECYCLE=PASS'
+    end if
     ! An outer failure after accepted internal steps must not publish either
     ! the newly selected event or physical progress through the real owner.
     config%numerical%max_committed_substeps=1
