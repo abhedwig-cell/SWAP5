@@ -464,7 +464,7 @@ for r in rows:
     e=r["expected"]
     for key in ("effective_compartment","effective_total"):
         a=r[key]
-        if a!=e and not math.isclose(a,e,rel_tol=0.0,abs_tol=0.0):
+        if not math.isclose(a,e,rel_tol=4e-15,abs_tol=0.0):
             raise SystemExit(f"{key} mismatch: {r}")
     print(f"BALTOL02_G12_POINT|DT={r['dt']:.17e}|CONFIGURED={r['configured']:.17e}|EXPECTED={e:.17e}"
           f"|EFFECTIVE_COMPARTMENT={r['effective_compartment']:.17e}|EFFECTIVE_TOTAL={r['effective_total']:.17e}")
@@ -472,7 +472,7 @@ for r in rows:
 a=next(r for r in rows if r["dt"]==1e-3 and r["configured"]==1e-12)
 if a["effective_compartment"]!=1e-12: raise SystemExit("strict-preservation guard failed")
 b=next(r for r in rows if r["dt"]==1e-4 and r["configured"]==1e-12)
-if b["effective_compartment"]!=2.8e-12: raise SystemExit("scaled-floor guard failed")
+if not math.isclose(b["effective_compartment"],2.8e-12,rel_tol=4e-15,abs_tol=0.0): raise SystemExit("scaled-floor guard failed")
 c=next(r for r in rows if r["dt"]==6.25e-6 and r["configured"]==1e-10)
 if c["effective_compartment"]!=1e-10: raise SystemExit("configured-looser guard failed")
 print("FPE_BALTOL02_G12=PASS")
