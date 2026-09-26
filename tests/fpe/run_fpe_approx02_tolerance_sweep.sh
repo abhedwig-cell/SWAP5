@@ -68,11 +68,11 @@ gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/fpe/test_fpe_approx02_r
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 
 CSV="$BUILD/results.csv"
-echo 'tol_mult,rep,seconds,status,nonlinear,jacobian,linear,backtrack,bottom_flux,mass_residual,h1,h2,h3,h4,th1,th2,th3,th4' > "$CSV"
+echo 'tol_mult,rep,ns,status,nonlinear,jacobian,linear,backtrack,bottom_flux,mass_residual,h1,h2,h3,h4,th1,th2,th3,th4' > "$CSV"
 
 run_one(){
   local tol="$1" rep="$2" raw line
-  raw="$("$BUILD/test" O14 -10 -10 0 5e-2 "$tol")"
+  raw="$("$BUILD/test" O14 -10 -10 0 5e-2 "$tol" 400)"
   line="$(printf '%s\n' "$raw" | grep '^APPROX02_SOLVE|')"
   python3 - "$tol" "$rep" "$line" "$CSV" <<'PY'
 import csv,sys
@@ -80,7 +80,7 @@ tol,rep,line,path=sys.argv[1:]
 d={}
 for part in line.strip().split('|')[1:]:
     k,v=part.split('=',1); d[k]=v
-keys=['SECONDS','STATUS','NONLINEAR','JACOBIAN','LINEAR','BACKTRACK','BOTTOM_FLUX','MASS_RESIDUAL',
+keys=['NS_PER_SOLVE','STATUS','NONLINEAR','JACOBIAN','LINEAR','BACKTRACK','BOTTOM_FLUX','MASS_RESIDUAL',
       'H1','H2','H3','H4','TH1','TH2','TH3','TH4']
 with open(path,'a',newline='') as f:
     csv.writer(f).writerow([tol,rep]+[d[k] for k in keys])
@@ -111,10 +111,10 @@ ref_heads=[float(ref[f'h{i}']) for i in range(1,5)]
 ref_theta=[float(ref[f'th{i}']) for i in range(1,5)]
 ref_flux=float(ref['bottom_flux'])
 ref_mass=float(ref['mass_residual'])
-ref_sec=statistics.median(float(r['seconds']) for r in by[1])
+ref_ns=statistics.median(float(r['ns']) for r in by[1])
 for t in levels:
     rr=by[t]
-    secs=[float(r['seconds']) for r in rr]
+    secs=[float(r['ns']) for r in rr]
     nls=sorted({int(r['nonlinear']) for r in rr})
     bts=sorted({int(r['backtrack']) for r in rr})
     r0=rr[0]
@@ -129,9 +129,9 @@ for t in levels:
     flux_abs=abs(flux-ref_flux)
     flux_rel=flux_abs/max(abs(ref_flux),1e-30)
     med=statistics.median(secs)
-    ratio=med/ref_sec
+    ratio=med/ref_ns
     print(
-      f"APPROX02_TOLERANCE_RESULT|TOL_MULT={t}|MEDIAN_SECONDS={med:.17e}"
+      f"APPROX02_TOLERANCE_RESULT|TOL_MULT={t}|MEDIAN_NS={med:.17e}"
       f"|RUNTIME_RATIO={ratio:.9f}|SPEEDUP_PERCENT={(1-ratio)*100:.6f}"
       f"|NONLINEAR={nls}|BACKTRACK={bts}"
       f"|MAX_HEAD_ABS_CM={h_abs:.17e}|MAX_HEAD_REL={h_rel:.17e}"
