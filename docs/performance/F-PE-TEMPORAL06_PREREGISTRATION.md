@@ -67,7 +67,7 @@ Enable the existing exact same-origin tangent cache with its admitted head-limit
 - total and per-corrector runtime;
 - deterministic repetition.
 
-Where both c=0.50 and c=0.65 complete, q/tangent checksums must match to the exact/reference tolerance already used by the coupling stack.
+Where both c=0.50 and c=0.65 complete, the repeated-sequence responses must remain within a preregistered bounded overlap envelope: relative q difference <= 1% and relative tangent difference <= 1%. Bit identity is not required because the policies may accept different exact substep trajectories.
 
 CURRENT_FIXED is allowed to fail; failures are part of the current-policy baseline.
 
