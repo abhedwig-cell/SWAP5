@@ -12,6 +12,24 @@ git fetch --no-tags --depth=1 origin "$BASE"
 git show "$BASE:src/transaction/mod_accepted_trajectory_directional_sensitivity.f90" > "$BUILD/src/direction_base.f90"
 git show "$BASE:src/runtime/mod_fmr_serialized_reference_backend.f90" > "$BUILD/src/backend_base.f90"
 
+cat > "$BUILD/heap_wrap.c" <<'C'
+#include <stddef.h>
+#include <stdio.h>
+void *__real_malloc(size_t);
+void *__real_calloc(size_t,size_t);
+void *__real_realloc(void*,size_t);
+void __real_free(void*);
+static unsigned long long nm=0,nc=0,nr=0,nf=0,bm=0,bc=0,br=0;
+void *__wrap_malloc(size_t n){nm++;bm+=n;return __real_malloc(n);}
+void *__wrap_calloc(size_t n,size_t s){nc++;bc+=(unsigned long long)n*s;return __real_calloc(n,s);}
+void *__wrap_realloc(void*p,size_t n){nr++;br+=n;return __real_realloc(p,n);}
+void __wrap_free(void*p){nf++;__real_free(p);}
+void dir01_heap_reset(void){nm=nc=nr=nf=bm=bc=br=0;}
+void dir01_heap_report(void){
+ printf("DIR01_R3_HEAP|MALLOC=%llu|CALLOC=%llu|REALLOC=%llu|FREE=%llu|MALLOC_BYTES=%llu|CALLOC_BYTES=%llu|REALLOC_BYTES=%llu\n",nm,nc,nr,nf,bm,bc,br);
+}
+C
+
 python3 - "$BUILD/test.f90" <<'PY'
 from pathlib import Path
 import sys
