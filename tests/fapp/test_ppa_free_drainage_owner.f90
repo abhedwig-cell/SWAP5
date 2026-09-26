@@ -1329,6 +1329,7 @@ contains
     if(code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle fresh initialize'
     forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=T0
     forcing(2)%subsurface_irrigation_source=0.0_real64
+    forcing(2)%temporal_forcing_event=.false.
     events(2)=irrigation_state_t()
     call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,selection_mask=[.true.,.false.])
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'selection mask accepted without events'
@@ -1347,6 +1348,7 @@ contains
     events(2)=events(1); events(2)%active_event_start=midpoint
     forcing(1)%temporal_forcing_event=.false.
     forcing(2)%subsurface_irrigation_source(1)=0.01_real64
+    forcing(2)%temporal_forcing_event=.true.
     forcing(2)%temporal_forcing_event_time=midpoint
     call application%run_prepared_irrigation(midpoint,finish,forcing,left,code,events,[.false.,.true.])
     if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'pending beside new bootstrap failed'
