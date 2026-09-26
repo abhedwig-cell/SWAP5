@@ -1236,6 +1236,7 @@ contains
     call verify_irrigation_bootstrap(profile,source,template)
     call verify_irrigation_bootstrap(profile,source,template,.true.)
     call verify_irrigation_bootstrap(profile,source,template,.true.,.true.)
+    call verify_tcs1_4_source_binding(profile%tiles(1)%base_forcing,source%active_nodes)
     do timing=7,8
       call verify_new_irrigation_selection_trial(profile,source,template,.false.,.false.,timing)
       call verify_new_irrigation_selection_trial(profile,source,template,.true.,.false.,timing)
@@ -1243,6 +1244,50 @@ contains
       call verify_new_irrigation_selection_trial(profile,source,template,.true.,.true.,timing)
     end do
   end subroutine verify_pending_irrigation_trial
+
+  subroutine verify_tcs1_4_source_binding(original,n)
+    use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_source,ppa_tcs1_4_observations_t
+    use mod_irrigation_process
+    type(fmr_b110_physical_forcing_t),intent(in)::original
+    integer,intent(in)::n
+    type(fmr_b110_physical_forcing_t)::previous
+    type(fmr_b110_physical_forcing_t),allocatable::effective
+    type(ppa_tcs1_4_observations_t)::observations
+    type(scheduled_irrigation_parameters_t)::p
+    type(scheduled_irrigation_request_t)::r
+    type(irrigation_state_t)::base,candidate
+    type(irrigation_flux_result_t)::flux
+    type(irrigation_diagnostics_t)::d
+    integer::i
+    logical::ok
+    previous=original; previous%subsurface_irrigation_source=0.0_real64
+    previous%temporal_forcing_event=.false.
+    p%scheduled_irrigation_enabled=.true.; p%active_nodes=n; p%sensor_node=1; p%single_ssdi_node=1
+    p%irr_rate_cm_per_day=0.01_real64; p%dcs2_knot_count=2
+    p%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]; p%dcs2_depth_cm=0.01_real64/1024.0_real64
+    r%t0=T0; r%t1=T0+1.0_real64/1024.0_real64
+    r%selection_opportunity=.true.; r%irrigation_enabled=.true.; r%schedule_enabled=.true.
+    r%crop_emerged=.true.; r%irrigation_window_open=.true.
+    observations%knot_count=2; observations%dvs_knots(2)=2.0_real64
+    observations%threshold_values=0.5_real64; observations%iptra_day=1.0_real64
+    observations%iqreddry_day=0.75_real64; observations%awlh=1.0_real64
+    observations%awmh=0.5_real64; observations%awah=0.1_real64
+    do i=1,4
+      p%timing_criterion=i
+      call evaluate_tcs1_4_source(p,base,r,observations,previous,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.allocated(effective)) error stop 'TCS source binding failed'
+      if(effective%subsurface_irrigation_source(1)/=0.01_real64.or. &
+           any(effective%subsurface_irrigation_source(2:)/=0.0_real64)) error stop 'TCS source rate'
+      if(.not.effective%temporal_forcing_event.or.effective%temporal_forcing_event_time/=T0) &
+           error stop 'TCS source start marker'
+      if(.not.flux%event_finished.or.candidate%active_event) error stop 'TCS exact gift completion'
+      observations%knot_count=0
+      call evaluate_tcs1_4_source(p,base,r,observations,previous,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.candidate%active_event) error stop 'TCS invalid source leaked'
+      observations%knot_count=2
+    end do
+    write(*,'(a)') 'PPA_IRR_TCS1_4_TYPED_SOURCE_BINDING=PASS'
+  end subroutine
 
   subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
     use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation,ppa_irrigation_preparation_t, &
