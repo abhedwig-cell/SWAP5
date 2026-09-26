@@ -121,5 +121,40 @@ for amp in (0.5,1.0,2.0):
         mx=max(re); vals.extend(re)
         if mx>worst[0]: worst=(mx,f'{mat}:{reg}')
     print(f"APPROX01_AMPLITUDE|AMPLITUDE_CM={amp}|CADENCE={cadence}|WORST_MAX_REL={worst[0]:.17e}|WORST_CASE={worst[1]}|MEAN_REL_ALL={statistics.mean(vals):.17e}")
+# Adaptive policy: refresh on age OR bottom-head displacement.
+for amp in (0.5,1.0,2.0):
+  for max_age in (4,8):
+    for head_limit in (0.25,0.5,1.0):
+      worst_rel=(0,None); worst_q=(0,None); reuse=[]
+      for mat in ('B01','B12','O05','O14'):
+        for reg in ('wet','mid','dry'):
+          rr=[r for r in rows if abs(float(r['amplitude'])-amp)<1e-12 and r['material']==mat and r['regime']==reg]
+          tang=[float(r['tangent']) for r in rr]
+          offs=[float(r['offset_cm']) for r in rr]
+          cache=0; age=0; fresh=1
+          local_rel=[]; local_q=[]
+          for i in range(len(rr)):
+            if i==0:
+              cache=0; age=0
+            elif age>=max_age or abs(offs[i]-offs[cache])>head_limit:
+              cache=i; age=0; fresh+=1
+            else:
+              age+=1
+            lag=tang[cache]
+            er=abs(lag-tang[i])/max(abs(tang[i]),1e-30)
+            local_rel.append(er)
+            qpred=float(rr[cache]['tangent'])*(offs[i]-offs[cache])+float(rr[cache]['bottom_flux'])
+            qe=abs(qpred-float(rr[i]['bottom_flux']))
+            local_q.append(qe)
+          reuse.append(1.0-fresh/len(rr))
+          mr=max(local_rel); mq=max(local_q)
+          if mr>worst_rel[0]: worst_rel=(mr,f'{mat}:{reg}')
+          if mq>worst_q[0]: worst_q=(mq,f'{mat}:{reg}')
+      print(
+        f"APPROX01_ADAPTIVE|AMPLITUDE_CM={amp}|MAX_AGE={max_age}|HEAD_LIMIT_CM={head_limit}"
+        f"|MEAN_AVOIDED_FRACTION={statistics.mean(reuse):.6f}"
+        f"|WORST_MAX_REL_TANGENT_ERROR={worst_rel[0]:.17e}|WORST_REL_CASE={worst_rel[1]}"
+        f"|WORST_MAX_Q_PRED_ABS_ERROR={worst_q[0]:.17e}|WORST_Q_CASE={worst_q[1]}"
+      )
 print('FPE_APPROX01_AMPLITUDE_FRONTIER=PASS')
 PY
