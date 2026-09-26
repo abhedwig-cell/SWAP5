@@ -1323,6 +1323,55 @@ contains
     call application%close(code)
     call restored%close(code)
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PREPARED_MIXED_RESTART=PASS'
+    call application%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle initialize'
+    call restored%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle fresh initialize'
+    forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=T0
+    forcing(2)%subsurface_irrigation_source=0.0_real64
+    events(2)=irrigation_state_t()
+    call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,selection_mask=[.true.,.false.])
+    if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'selection mask accepted without events'
+    call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events,[.true.])
+    if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'selection mask accepted wrong length'
+    call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events,[.true.,.false.])
+    if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'new beside inactive bootstrap failed'
+    call application%export_committed_restart(92001_int64,saved,ok,code)
+    if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle export'
+    call restored%restore_committed_restart(saved,92001_int64,ok,code)
+    if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle restore'
+    events(2)=events(1); events(2)%active_event_start=midpoint
+    forcing(1)%temporal_forcing_event=.false.
+    forcing(2)%subsurface_irrigation_source(1)=0.01_real64
+    forcing(2)%temporal_forcing_event_time=midpoint
+    call application%run_prepared_irrigation(midpoint,finish,forcing,left,code,events,[.false.,.true.])
+    if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'pending beside new bootstrap failed'
+    call restored%run_prepared_irrigation(midpoint,finish,forcing,right,code,events,[.false.,.true.])
+    if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'restored pending beside new failed'
+    do i=1,2
+      if(.not.left(i)%mass%complete.or.abs(left(i)%mass%residual)>1.0e-12_real64) &
+           error stop 'mixed lifecycle mass'
+      if(left(i)%mass%residual/=right(i)%mass%residual) error stop 'mixed lifecycle restart mass'
+      forcing(i)%subsurface_irrigation_source=0.0_real64
+    end do
+    forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=finish
+    call application%run_prepared_irrigation(finish,finish+1.0_real64/1024.0_real64,forcing,left,code)
+    if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'bootstrap source stop failed'
+    call restored%run_prepared_irrigation(finish,finish+1.0_real64/1024.0_real64,forcing,right,code)
+    if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'restored bootstrap source stop failed'
+    call application%copy_committed_hydraulic_states(lhs,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle copy'
+    call restored%copy_committed_hydraulic_states(rhs,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle restored copy'
+    do i=1,2
+      if(any(lhs(i)%pressure_head_cm/=rhs(i)%pressure_head_cm).or. &
+           any(lhs(i)%water_content/=rhs(i)%water_content)) error stop 'mixed lifecycle restart physical identity'
+      if(.not.left(i)%mass%complete.or.abs(left(i)%mass%residual)>1.0e-12_real64) &
+           error stop 'bootstrap stopped source mass'
+    end do
+    call application%close(code)
+    call restored%close(code)
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_MIXED_SELECTION_SOURCE_STOP_RESTART=PASS'
   end subroutine verify_irrigation_bootstrap
 
   subroutine verify_new_irrigation_selection_trial(profile,source,template,profile_selection,finish_in_window,timing)

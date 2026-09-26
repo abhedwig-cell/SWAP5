@@ -353,17 +353,20 @@ contains
     if (self%ready()) count = size(self%columns)
   end function production_application_tile_count
 
-  subroutine production_application_run_prepared_irrigation(self,t0,t1,effective_forcing,results,status,selected_events)
+  subroutine production_application_run_prepared_irrigation(self,t0,t1,effective_forcing,results,status, &
+       selected_events,selection_mask)
     class(fmr_production_application_bootstrap_t),intent(inout)::self
     real(real64),intent(in)::t0,t1
     type(fmr_b110_physical_forcing_t),intent(in)::effective_forcing(:)
     type(fmr_serialized_column_result_t),allocatable,intent(out)::results(:)
     integer,intent(out)::status
     type(irrigation_state_t),intent(in),optional::selected_events(:)
+    logical,intent(in),optional::selection_mask(:)
     type(kernel_executor_t)::control
     type(fmr_column_diagnostics_t)::diagnostic
     type(fmr_serialized_batch_diagnostics_t)::runtime
     integer::i,n,active_calls
+    logical::select_new
     status=FMR_APP_BOOT_NOT_READY
     if(.not.self%ready()) return
     status=FMR_APP_BOOT_CONTEXT_BUSY
@@ -376,6 +379,10 @@ contains
     if(present(selected_events)) then
       if(size(selected_events)/=n) return
     end if
+    if(present(selection_mask)) then
+      if(.not.present(selected_events)) return
+      if(size(selection_mask)/=n) return
+    end if
     status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
     if(any(self%irrigation_nodes<=0)) return
     allocate(results(n))
@@ -385,7 +392,9 @@ contains
       results(i)%dispatch_ordinal=i
       results(i)%requested_t0=t0; results(i)%requested_t1=t1
       diagnostic=fmr_column_diagnostics_t()
-      if(present(selected_events)) then
+      select_new=present(selected_events)
+      if(present(selection_mask)) select_new=selection_mask(i)
+      if(select_new) then
         call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
              self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
              t0,t1,results(i),diagnostic,runtime,active_calls,selected_events(i))
