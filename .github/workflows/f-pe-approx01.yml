@@ -10,6 +10,7 @@ on:
       - 'tests/fpe/test_fpe_approx01_tangent_matrix.f90'
       - 'tests/fpe/run_fpe_approx01_tangent_matrix.sh'
       - 'tests/fpe/run_fpe_approx01_amplitude_frontier.sh'
+      - 'tests/fpe/run_fpe_approx01_a1_participant_experiment.sh'
       - 'docs/performance/F-PE-APPROX01_*.md'
       - '.github/workflows/f-pe-approx01.yml'
   workflow_dispatch:
@@ -38,3 +39,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_approx01_amplitude_frontier.sh
+
+  a1-participant:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx01_a1_participant_experiment.sh
