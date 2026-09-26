@@ -107,7 +107,7 @@ program test_fpe_approx02_richards_effort
        '|LINEAR=',result%diagnostics%linear_solves, &
        '|BACKTRACK=',result%diagnostics%backtracking_attempts, &
        '|BOTTOM_FLUX=',result%bottom_flux, &
-       '|MASS_RESIDUAL=',result%mass%residual, &
+       '|MASS_RESIDUAL=',result%integrated_mass_balance_residual_cm, &
        '|H1=',result%candidate_state%pressure_head(1), &
        '|H2=',result%candidate_state%pressure_head(2), &
        '|H3=',result%candidate_state%pressure_head(3), &
