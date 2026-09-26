@@ -142,7 +142,7 @@ PY
   printf 'APPROX01_POINT|REGIME=%s|POINT=%s|OFFSET_CM=%s|BOTTOM_HEAD_CM=%s|TANGENT=%s|BOTTOM_EXCHANGE_CM=%s\n'     "$regime" "$point" "$offset" "$hbot" "$der" "$exch"
 }
 
-offsets=(0 0.1 0.25 0.5 0.25 0.1 0 -0.1 -0.25 -0.5 -0.25 -0.1)
+offsets=(0 0.01 0.025 0.05 0.025 0.01 0 -0.01 -0.025 -0.05 -0.025 -0.01)
 for spec in "wet -10" "mid -75" "dry -500"; do
   read -r regime h0 <<< "$spec"
   point=0
