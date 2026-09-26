@@ -72,3 +72,42 @@ New code in PROFILE04 must remain under tests/research/docs/workflows only.
 ## Closure
 
 PROFILE04 closes with a hotspot map and a recommendation for exactly one next performance work unit or for opening the approximate/practical phase.
+
+
+## First canonical rebaseline — run 36220439795
+
+Measurement harness: PASS.
+
+Setup / PLANVALID:
+- N=1,000 init median ratio: `0.794129647` (about 20.6% lower initialization time);
+- N=10,000 init median ratio: `0.331913495` (about 66.8% lower initialization time);
+- repeated runtime median ratio N=1,000: `0.997181068`;
+- repeated runtime median ratio N=10,000: `1.009564701`.
+
+Interpretation: PLANVALID remains a setup optimization. At large N it removes about two thirds of initialization time in this paired measurement, while repeated runtime is effectively unchanged.
+
+F-AHL50 setup overhead relative to analytical/default:
+- N=1: `5.782847486`;
+- N=100: `1.522545495`;
+- N=1,000: `1.115894884`;
+- N=10,000: `1.029505412`.
+
+Interpretation: representation construction is expensive for a single column but amortizes strongly under shared immutable ownership. At N=10,000 the measured setup premium is about 2.95%.
+
+Repeated Reference exact-P0 stack:
+- mean ratio: `0.726864148`;
+- median ratio: `0.726495766`;
+- mean speedup: about 27.31%.
+
+Repeated directional exact-P0 stack:
+- mean ratio: `0.759275664`;
+- median ratio: `0.761371085`;
+- mean speedup: about 24.07%.
+
+These repeated-runtime ratios compare the current exact-P0 postimage against the historical pre-ZERO-WASTE baseline used by the qualified paired harness. They are not yet a full MultiSWAP+MODFLOW end-to-end wall-clock ratio.
+
+## Immediate finding
+
+The admitted exact performance stack has preserved substantial repeated-runtime gains while large-N setup overhead has been sharply reduced.
+
+The next PROFILE04 measurement must add a true aggregate application/coupling wall-clock comparison with F-AHL50 OFF versus ON on the same current canonical postimage. That is required before claiming a total end-to-end speedup percentage.
