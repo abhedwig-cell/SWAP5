@@ -2,82 +2,68 @@
 
 Date: 2026-09-26
 
-Status: `REPRODUCIBILITY_FAILED`
+Status: `MIXED_REPRODUCIBILITY_FAILURE_ATTRIBUTION_PENDING`
 
 ## Protocol
 
-Six independent replicas of the existing live SWAP + MODFLOW6 A2C gate were run with:
+Six independent replicas of the inherited live SWAP + MODFLOW6 exact-vs-A2C runner were executed with:
 
 - unchanged production source;
 - `APPROX02_CANDIDATE_TOL=1E-08`;
 - the same pinned xmipy/flopy dependencies as the successful APPROX02 production qualification.
 
-The preregistered rule required 6/6 success.
+The run-level outcomes were:
 
-## Result
+- 4 jobs completed;
+- 2 jobs terminated with `SWAP corrector trial failed: 6`.
 
-Replica outcomes:
+## Critical attribution limitation
 
-- replica 1: PASS;
-- replica 2: FAIL, `SWAP corrector trial failed: 6`;
-- replica 3: PASS;
-- replica 4: FAIL, `SWAP corrector trial failed: 6`;
-- replica 5: PASS;
-- replica 6: PASS.
+The inherited APPROX02 runner executes the exact arm first and A2C second, but exits on the first Python failure.
 
-Therefore:
+Therefore the two failed jobs do **not** by themselves prove that A2C was the failing arm.
 
-- success: 4/6;
-- candidate-only trial failures: 2/6;
-- reproducibility gate: FAIL.
+The mixed 4/6 result establishes a reproducibility problem in the exact-vs-A2C live coupled comparison, but its ownership is not yet known.
 
-Successful replicas retained exact coupled endpoint identity:
+## Successful-job evidence
+
+The four completed jobs showed exact coupled endpoint identity between exact and A2C:
 
 - final MODFLOW head;
 - final SWAP groundwater exchange;
 - cumulative accepted interface ledger exchange;
 - coupled iteration count.
 
-Observed successful coupled-loop speedups were variable, including approximately:
-
-- +2.95%;
-- +10.59%;
-- -2.95%;
-- +11.43%.
-
-These timings are secondary because the robustness gate failed.
+Successful-job timing was variable, including speed-positive and one slightly speed-negative result. Timing is secondary until failure ownership is resolved.
 
 ## Source reconciliation
 
-There are no `src/**` changes between the successful APPROX02 qualification source head
+There are no `src/**` changes between the successful APPROX02 qualification source head:
 
 `5525971b20c07fad87e536aa45fa245eff1c84ff`
 
 and the PROFILE05 source postimage under test.
 
-Therefore the new failures cannot be attributed to intervening production-code changes.
+The mixed result therefore cannot be explained by intervening production-source changes.
 
-## Interpretation
+## Next required evidence
 
-A2C at `1e-8` is not reproducibly coupled-robust under the existing live FGC44 gate.
+Use the preregistered failure-arm attribution runner:
 
-The earlier 3/3 success was insufficient to establish a stable production envelope.
+`tests/fpe/run_fpe_profile05_a2c_failure_attribution.sh`
 
-The failure mode is discontinuous:
+It executes exact and A2C independently within each replica and reports:
 
-- some nominally identical runs complete with exact endpoint identity;
-- others fail at the SWAP corrector trial with participant status 6.
+- `EXACT=PASS/FAIL`;
+- `A2C=PASS/FAIL`;
+- status-6 provenance when present.
 
-This must be understood before A2C can be treated as part of a combined practical production stack.
+Do not classify A2C as qualification-unresolved until this attribution exists.
 
-## Decision
+## Interim decision
 
-PROFILE05 must not make an A1+A2C production-stack speedup claim.
+PROFILE05 must not make an A1+A2C combined production-stack claim while the coupled reproducibility issue is unresolved.
 
-For current practical-stack rebaseline purposes:
+A1 remains independently qualified.
 
-- A1 remains admissible for measurement;
-- A2C is treated as `QUALIFICATION_UNRESOLVED`;
-- exact behavior remains authority.
-
-A separate workunit is required to explain the nondeterministic A2C trial-failure boundary.
+Exact production behavior remains authority.
