@@ -6,6 +6,7 @@ on:
       - 'tests/fpe/run_fpe_dir01_gprof_attribution.sh'
       - 'tests/fpe/run_fpe_dir01_heap_attribution.sh'
       - 'tests/fpe/run_fpe_dir01_repair01_paired.sh'
+      - 'tests/fpe/run_fpe_dir01_repair02_experiment.sh'
       - 'docs/performance/F-PE-DIR01_*.md'
       - '.github/workflows/f-pe-dir01.yml'
   workflow_dispatch:
@@ -28,3 +29,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_dir01_repair01_paired.sh
+
+  repair02-experiment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_dir01_repair02_experiment.sh
