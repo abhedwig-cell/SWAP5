@@ -1423,8 +1423,10 @@ contains
       call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
            management,requests,previous,right,code)
       if(code==FMR_APP_BOOT_OK.or.allocated(right)) error stop 'missing observations admitted'
-      call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
-           management,requests,previous,right,code,observations=observations)
+      requests%t1=finish
+      call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,right,code,interval_end,observations=observations)
+      if(interval_end/=midpoint) error stop 'TCS prefix split failed'
       if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'TCS hydraulic selection failed'
       do i=1,2
         if(.not.right(i)%mass%complete.or.abs(right(i)%mass%residual)>1.0e-12_real64) error stop 'TCS hydraulic mass'
@@ -1439,12 +1441,43 @@ contains
           error stop 'TCS accepted event carrier missing'
         end select
       end do
+      call application%restore_committed_restart(saved,92001_int64,ok,code)
+      if(.not.ok) error stop 'TCS fresh owner restore failed'
+      requests%t0=midpoint; requests%t1=finish; requests%selection_opportunity=.false.
+      previous=forcing
+      observations%knot_count=0 ! Pending gift must not select again.
+      call execute_window_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,2,prefixes,prefix_count,code,observations=observations)
+      if(code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'TCS original pending continuation'
+      right=prefixes(1)%columns
+      call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+           management,requests,previous,2,prefixes,prefix_count,code,observations=observations)
+      if(code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'TCS restored pending continuation'
+      call application%copy_committed_hydraulic_states(lhs,code)
+      call restored%copy_committed_hydraulic_states(rhs,code)
+      do i=1,2
+        if(lhs(i)%committed_time/=finish.or.lhs(i)%revision/=rhs(i)%revision.or. &
+             any(lhs(i)%water_content/=rhs(i)%water_content).or. &
+             any(lhs(i)%pressure_head_cm/=rhs(i)%pressure_head_cm)) error stop 'TCS restart identity'
+        if(.not.prefixes(1)%columns(i)%mass%complete.or. &
+             abs(prefixes(1)%columns(i)%mass%residual)>1.0e-12_real64.or. &
+             prefixes(1)%columns(i)%mass%residual/=right(i)%mass%residual) error stop 'TCS restart mass'
+      end do
+      call application%close(code)
+      call application%initialize(config,code)
+      if(code/=FMR_APP_BOOT_OK) error stop 'TCS restart reset failed'
+      observations%knot_count=2
+      requests%t0=T0; requests%t1=midpoint; requests%selection_opportunity=.true.
+      do i=1,2
+        previous(i)%subsurface_irrigation_source=0.0_real64
+      end do
       call restored%close(code)
       call restored%initialize(config,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'TCS fixture reset failed'
     end do
     management%timing_criterion=7
     write(*,'(a)') 'PPA_IRR_TCS1_4_BOOTSTRAP_HYDRAULIC_SELECTION=PASS'
+    write(*,'(a)') 'PPA_IRR_TCS1_4_PREFIX_WINDOW_RESTART=PASS'
     management(1)%dcs2_depth_cm=0.02_real64/1024.0_real64
     management(2)%dcs2_depth_cm=0.01_real64/1024.0_real64
     requests%t1=finish+1.0_real64/1024.0_real64
