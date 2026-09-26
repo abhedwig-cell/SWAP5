@@ -35,3 +35,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: bash tests/fpe/run_fpe_temporal03_p1b_dynamic_frontier.sh
+
+  p1c-frontier-replication:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal03_p1c_frontier_replication.sh
