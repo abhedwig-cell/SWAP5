@@ -51,16 +51,26 @@ The forcing magnitude is scaled to the local hydraulic conductivity rather than 
 
 For each material/regime, define local hydrostatic initial conductivity at the top and bottom nodes, then use:
 
-- orientation `plus`: top flux = `+5e-4 * K_top`, predictor qbot = `+5e-4 * K_bottom`;
-- orientation `minus`: top flux = `-5e-4 * K_top`, predictor qbot = `-5e-4 * K_bottom`.
+- orientation `plus`: top flux = `+5e-5 * K_top`, predictor qbot = `+5e-5 * K_bottom`;
+- orientation `minus`: top flux = `-5e-5 * K_top`, predictor qbot = `-5e-5 * K_bottom`.
 
 Requested interval:
 
-`0.001 day`
+`0.0001 day`
 
-The initial matrix attempt used `0.01 day`. Its exact/reference B01-wet-plus arm did not commit, so that window is outside the stable reference envelope for the cross-material qualification matrix. The forcing definition is unchanged. Only the requested qualification window is reduced by one order of magnitude. Earlier production-consistent discovery showed that `0.001 day` still contains genuine temporal refinement for the selected forcing scale, so this is not a trivial one-step fallback.
+The first cross-material attempt at `0.01 day`, and then at `0.001 day`, failed already in the exact/reference B01-wet-plus arm. A dedicated reference-only workload discovery therefore varied forcing fraction and window length before any further candidate comparison.
 
-The prescribed bottom-face head is materialized from the predictor qbot with the same B1.10 Darcy mapping used by the production FGC44 route.
+That discovery found the first stable multi-substep B01-wet-plus point at:
+
+- forcing fraction `5e-5`;
+- requested interval `1e-4 day`;
+- 3 accepted substeps;
+- zero retries;
+- complete mass accounting.
+
+A second stable point existed at the same forcing fraction and `2e-4 day` with 4 accepted substeps. Larger forcing fractions in the searched space did not provide a comparably stable reference route.
+
+The matrix therefore uses the more conservative `5e-5`, `1e-4 day` workload. This is selected from reference stability only, before looking at candidate error.
 
 This gives 24 paired reference/candidate cases.
 
