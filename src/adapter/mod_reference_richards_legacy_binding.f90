@@ -299,7 +299,11 @@ contains
     n = state%active_nodes
     volm1 = sum(state%thetm1(1:n) * request%parameters%dz(1:n))
     volact = sum(state%theta(1:n) * request%parameters%dz(1:n))
-    qrosum = sum(richards%provider_root_sink(1:n))
+    if (associated(request%evaluation%root_sink)) then
+       qrosum = sum(richards%provider_root_sink(1:n))
+    else
+       qrosum = 0.0_real64
+    end if
     qdrtot = sum(richards%sink(1:n))
     qssdisum = sum(richards%source(1:n))
     state%qbot = state%qtop + qrosum + qdrtot + &
