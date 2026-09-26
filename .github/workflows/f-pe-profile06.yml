@@ -1,0 +1,24 @@
+name: F-PE-PROFILE06 nonlinear-difficulty stack
+
+on:
+  pull_request:
+    paths:
+      - 'docs/performance/F-PE-PROFILE06_*.md'
+      - 'tests/fpe/run_fpe_profile06_*.sh'
+      - '.github/workflows/f-pe-profile06.yml'
+  workflow_dispatch:
+
+jobs:
+  d1-exact-discovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx02_workload_discovery.sh
+
+  d2-a2c-multistep:
+    runs-on: ubuntu-latest
+    env:
+      APPROX02_CANDIDATE_TOL: 1E-08
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx02_a2_multistep.sh
