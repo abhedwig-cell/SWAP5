@@ -1413,6 +1413,46 @@ contains
     call application%close(code)
     call application%initialize(config,code)
     if(code/=FMR_APP_BOOT_OK) error stop 'window fixture reset failed'
+    call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,0,prefixes,prefix_count,code)
+    if(code==FMR_APP_BOOT_OK.or.prefix_count/=0.or.allocated(prefixes)) error stop 'zero window budget accepted'
+    call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,1,prefixes,prefix_count,code)
+    if(code==FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'budget exhaustion reported complete'
+    if(prefixes(1)%interval_end/=midpoint.or..not.all(prefixes(1)%columns%committed)) &
+         error stop 'budget exhaustion lost committed prefix'
+    call application%export_committed_restart(92001_int64,saved,ok,code)
+    if(.not.ok) error stop 'budget boundary export failed'
+    do i=1,2
+      if(saved%records(i)%committed_time/=midpoint) error stop 'budget boundary advanced too far'
+    end do
+    call restored%close(code)
+    call restored%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'budget restart initialize failed'
+    call restored%restore_committed_restart(saved,92001_int64,ok,code)
+    if(.not.ok) error stop 'budget boundary restore failed'
+    requests%t0=midpoint; requests%selection_opportunity=.false.
+    previous=forcing
+    call execute_window_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,1,prefixes,prefix_count,code)
+    if(code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'budget resume failed'
+    if(prefixes(1)%interval_end/=finish) error stop 'budget resume endpoint wrong'
+    call restored%copy_committed_hydraulic_states(lhs,code)
+    do i=1,2
+      if(lhs(i)%revision/=rhs(i)%revision.or.lhs(i)%committed_time/=rhs(i)%committed_time.or. &
+           any(lhs(i)%water_content/=rhs(i)%water_content).or. &
+           any(lhs(i)%pressure_head_cm/=rhs(i)%pressure_head_cm)) error stop 'budget restart identity'
+      if(.not.prefixes(1)%columns(i)%mass%complete.or. &
+           abs(prefixes(1)%columns(i)%mass%residual)>1.0e-12_real64) error stop 'budget resume mass'
+    end do
+    call application%close(code)
+    call application%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'budget fixture reset failed'
+    requests%selection_opportunity=.true.
+    do i=1,2
+      previous(i)%subsurface_irrigation_source=0.0_real64
+    end do
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_WINDOW_BUDGET_RESTART=PASS'
     requests%t0=T0; requests%t1=midpoint
     call restored%close(code)
     call restored%initialize(config,code)
