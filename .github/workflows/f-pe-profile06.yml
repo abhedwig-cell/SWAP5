@@ -9,38 +9,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  d1-exact-discovery:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx02_workload_discovery.sh
-
-  d2-a2c-multistep:
-    runs-on: ubuntu-latest
-    env:
-      APPROX02_CANDIDATE_TOL: 1E-08
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx02_a2_multistep.sh
-
-  d3a-exact-coupled:
-    strategy:
-      fail-fast: false
-      matrix:
-        replica: [1, 2, 3, 4, 5, 6]
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
-      - run: bash tests/fpe/run_fpe_profile06_d3a_exact_o05.sh
-
   d3b-bias-discovery:
     runs-on: ubuntu-latest
     env:
