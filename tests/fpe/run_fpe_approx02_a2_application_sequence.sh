@@ -2,7 +2,8 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx02-a2-app-seq-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx02-a2-app-seq-${GITHUB_RUN_ID:-local}-$"
+CANDIDATE_TOL="${APPROX02_CANDIDATE_TOL:-1e-4}"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "APPROX02_A2_APPLICATION_FAIL $*" >&2; exit 1; }
@@ -105,7 +106,7 @@ done
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/fpe/test_fpe_approx02_a2_application_sequence.f90 -o "$BUILD/test.o" || fail "compile fixture"
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 
-"$BUILD/test" | tee "$BUILD/output.txt"
+"$BUILD/test" 1e-4 -1 "$CANDIDATE_TOL" | tee "$BUILD/output.txt"
 grep -Fq 'FPE_APPROX02_A2_APPLICATION_SEQUENCE=PASS' "$BUILD/output.txt" || fail "missing final marker"
 
 python3 - "$BUILD/output.txt" <<'PY'
