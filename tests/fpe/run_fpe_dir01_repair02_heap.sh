@@ -126,7 +126,9 @@ SRC=(
 )
 
 compile_variant(){
-  local name="$1" transaction="$2" out="$BUILD/$name"
+  local name="$1"
+  local transaction="$2"
+  local out="$BUILD/$name"
   local objects=()
   for source in "${SRC[@]}"; do
     [[ "$source" == TRANSACTION_PLACEHOLDER ]] && source="$transaction"
