@@ -1243,7 +1243,8 @@ contains
 
   subroutine verify_new_irrigation_selection_trial(profile,source,template,profile_selection,finish_in_window,timing)
     use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
-    use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t
+    use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t,ppa_irrigation_event_state_t, &
+         fmr_new_b110_irrigation_committed_state
     use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t, &
          kernel_result_t,kernel_diagnostics_t
     use mod_fmr_runtime_core, only: fmr_logical_column_t
@@ -1269,6 +1270,8 @@ contains
     type(canonical_numerical_config_t)::numerical
     type(fmr_b110_physical_forcing_t)::forcing
     type(ppa_irrigation_event_state_t)::seed
+    type(fmr_template_t)::bad_template
+    real(real64),allocatable::seed_history(:),actual_history(:),bad_history(:)
     type(scheduled_irrigation_parameters_t)::irrigation
     type(scheduled_irrigation_request_t)::request
     type(irrigation_diagnostics_t)::process_diagnostics
@@ -1278,9 +1281,38 @@ contains
     integer::attempt,code
     finish=T0+1.0_real64/1024.0_real64
     seed=source; seed%irrigation=irrigation_state_t()
-    call seed%clone(initial)
-    call owner%initialize(404299_int64,initial,ok,T0)
+    call source%temporal_history_snapshot(seed_history,ok)
+    if(.not.ok) error stop 'initial irrigation derivative unavailable'
+    bad_template=template; bad_template%optional_state_layout_id=0_int64
+    call fmr_new_b110_irrigation_committed_state(owner,404299_int64, &
+         seed%fmr_b110_temporal_indicator_state_t%fmr_b110_physical_state_t,bad_template,T0,seed_history,ok)
+    if(ok.or.owner%ready()) error stop 'irrigation seed accepted wrong layout'
+    call fmr_new_b110_irrigation_committed_state(owner,404299_int64, &
+         seed%fmr_b110_temporal_indicator_state_t%fmr_b110_physical_state_t,template, &
+         ieee_value(T0,ieee_quiet_nan),seed_history,ok)
+    if(ok.or.owner%ready()) error stop 'irrigation seed accepted nonfinite time'
+    call fmr_new_b110_irrigation_committed_state(owner,404299_int64, &
+         seed%fmr_b110_temporal_indicator_state_t%fmr_b110_physical_state_t,template,T0,seed_history(:0),ok)
+    if(ok.or.owner%ready()) error stop 'irrigation seed accepted missing history'
+    bad_history=seed_history; bad_history(1)=ieee_value(T0,ieee_quiet_nan)
+    call fmr_new_b110_irrigation_committed_state(owner,404299_int64, &
+         seed%fmr_b110_temporal_indicator_state_t%fmr_b110_physical_state_t,template,T0,bad_history,ok)
+    if(ok.or.owner%ready()) error stop 'irrigation seed accepted nonfinite history'
+    call fmr_new_b110_irrigation_committed_state(owner,404299_int64, &
+         seed%fmr_b110_temporal_indicator_state_t%fmr_b110_physical_state_t,template,T0,seed_history,ok)
     if(.not.ok) error stop 'new irrigation owner initialization'
+    call owner%snapshot(snapshot,ok)
+    if(.not.ok) error stop 'irrigation seed snapshot'
+    select type(snapshot)
+    type is(ppa_irrigation_event_state_t)
+      call snapshot%temporal_history_snapshot(actual_history,ok)
+      if(.not.ok) error stop 'irrigation seed lost history'
+      if(any(actual_history/=seed_history)) error stop 'irrigation seed changed history'
+      if(snapshot%irrigation%active_event.or.any(snapshot%water_content/=source%water_content)) &
+           error stop 'irrigation seed changed physical state'
+    class default
+      error stop 'irrigation seed lost exact type'
+    end select
     call owner%capture_checkpoint(checkpoint,ok)
     if(.not.ok) error stop 'new irrigation checkpoint'
     column%column_id=1_int64; column%template_id=template%template_id

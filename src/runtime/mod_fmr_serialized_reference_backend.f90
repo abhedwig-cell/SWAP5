@@ -509,6 +509,7 @@ module mod_fmr_serialized_reference_backend
 
   public :: fmr_new_b110_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
+  public :: fmr_new_b110_irrigation_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
   public :: fmr_new_b110_black_evaporation_committed_state
   public :: fmr_new_b110_boesten_evaporation_committed_state
@@ -789,6 +790,29 @@ contains
     end select
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_temporal_indicator_committed_state
+
+  subroutine fmr_new_b110_irrigation_committed_state(committed,lineage_id,state,template,initial_time, &
+       initial_right_derivative,ok)
+    type(kernel_committed_state_t),intent(out)::committed
+    integer(int64),intent(in)::lineage_id
+    type(fmr_b110_physical_state_t),intent(in)::state
+    type(fmr_template_t),intent(in)::template
+    real(real64),intent(in)::initial_time,initial_right_derivative(:)
+    logical,intent(out)::ok
+    type(fmr_b110_temporal_indicator_state_t)::physical
+    type(ppa_irrigation_event_state_t),allocatable::candidate
+    class(transaction_state_t),allocatable::carrier
+    ! Initial inactive event only; pending continuation belongs to restart.
+    ! Require real supplied history, rather than guessing a zero derivative.
+    ok=.false.
+    if(state%active_nodes<=0.or.size(initial_right_derivative)/=state%active_nodes) return
+    call copy_b110_physical_state(state,physical)
+    call build_irrigation_event_candidate(physical,irrigation_state_t(),template,initial_time,candidate,ok, &
+         initial_right_derivative)
+    if(.not.ok) return
+    call candidate%clone(carrier)
+    call committed%initialize(lineage_id,carrier,ok,initial_time)
+  end subroutine fmr_new_b110_irrigation_committed_state
 
   subroutine fmr_new_b110_fixed_weir_surface_water_committed_state(committed, lineage_id, state, initial_time, ok)
     type(kernel_committed_state_t), intent(out) :: committed
