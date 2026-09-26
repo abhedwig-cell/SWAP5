@@ -30,9 +30,3 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_temporal08_p2_bootstrap.sh
-
-  p2-bounded-bootstrap:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_temporal08_p2_bootstrap.sh
