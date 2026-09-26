@@ -57,13 +57,11 @@ src=src.replace(old,"    if(.not.output%completed .or. .not.output%committed) re
 src=src.replace("    call require(output%accepted_substeps == 1, 'positive qbot accepted without retry subdivision')\n","",1)
 src=src.replace("    call require(output%solver_headcalc_calls == 1, 'positive qbot one principal HeadCalc trajectory')\n","",1)
 
-pattern=re.compile(
-r"""    scale = max(1.0_real64,abs(expected_upward_binf),abs(observation%temporal_head_inf_bound))
-    call require(abs(observation%temporal_head_inf_bound-expected_upward_binf) <= &
-         65536.0_real64*epsilon(1.0_real64)*scale, 'serialized Binf matches F-SI38 production oracle')
-""")
-src,n=pattern.subn("",src,count=1)
-if n!=1: raise SystemExit("expected Binf oracle seam missing")
+start_oracle=src.find("    scale = max(1.0_real64,abs(expected_upward_binf),abs(observation%temporal_head_inf_bound))")
+end_oracle=src.find("    call require(ieee_is_finite(observation%temporal_normalized_indicator)",start_oracle)
+if start_oracle<0 or end_oracle<0:
+    raise SystemExit("expected Binf oracle seam missing")
+src=src[:start_oracle]+src[end_oracle:]
 
 Path(sys.argv[1]).write_text(src)
 PY
