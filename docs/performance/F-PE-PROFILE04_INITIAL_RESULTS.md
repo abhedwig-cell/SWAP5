@@ -82,3 +82,28 @@ This is materially faster than the immediately preceding median `0.827472736` de
 Therefore single-run CI timing variance is non-negligible. The robust planning statement is currently that F-AHL50 gives roughly **17-21%** repeated-solver reduction on this workload, not a falsely precise 17.25%.
 
 PROFILE04 should add multi-run aggregation before freezing a final AHL timing estimate.
+
+
+## Five-run AHL timing aggregate
+
+PROFILE04 run `36221015052` launched five independent AHL timing jobs. All five passed.
+
+Per-job 12-case median ratios:
+- `0.855926346`;
+- `0.839215952`;
+- `0.821577135`;
+- `0.846090123`;
+- `0.851187264`.
+
+Median of job medians:
+`0.846090123`.
+
+Mean of job medians:
+`0.842799364`.
+
+The robust central estimate is therefore approximately **15.4-15.7% repeated-solver reduction** from F-AHL50 on the current production-shaped 12-case workload.
+
+Observed job-median range corresponds to approximately **14.4-17.8%** reduction. Earlier isolated 20%+ CI measurements are therefore treated as timing variance rather than the planning central estimate.
+
+Planning value:
+**~15.5% F-AHL50 repeated-solver speedup**, with a conservative observed multi-run band of roughly **14-18%**.
