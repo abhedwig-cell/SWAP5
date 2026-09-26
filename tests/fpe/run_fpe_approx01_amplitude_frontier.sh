@@ -69,7 +69,7 @@ gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/fpe/test_fpe_approx01_t
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 
 CSV="$BUILD/results.csv"
-echo 'amplitude,material,regime,point,offset_cm,tangent' > "$CSV"
+echo 'amplitude,material,regime,point,offset_cm,tangent,bottom_flux' > "$CSV"
 
 for amplitude in 0.5 1.0 2.0; do
   for material in B01 B12 O05 O14; do
@@ -96,7 +96,7 @@ d={}
 for p in line.split('|')[1:]:
     k,v=p.split('=',1); d[k]=v
 with open(path,'a',newline='') as f:
-    csv.writer(f).writerow([amp,mat,reg,point,off,d['TANGENT']])
+    csv.writer(f).writerow([amp,mat,reg,point,off,d['TANGENT'],d['BOTTOM_FLUX']])
 PY
       done
     done
