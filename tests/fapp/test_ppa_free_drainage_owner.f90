@@ -1335,6 +1335,10 @@ contains
     call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events,[.true.])
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'selection mask accepted wrong length'
     call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events,[.true.,.false.])
+    if(code/=FMR_APP_BOOT_OK) then
+      write(*,*) 'MIXED_LIFECYCLE_STATUS',code,left%kernel_status,left%accepted_substeps
+      write(*,*) 'MIXED_LIFECYCLE_ADMISSION',left%admission_status
+    end if
     if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'new beside inactive bootstrap failed'
     call application%export_committed_restart(92001_int64,saved,ok,code)
     if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle export'
