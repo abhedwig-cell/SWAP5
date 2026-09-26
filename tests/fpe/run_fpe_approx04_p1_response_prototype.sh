@@ -12,6 +12,11 @@ python3 - "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90" <<'PY'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); src=p.read_text()
+src=src.replace(
+"  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &\n"
+"       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider\n",
+"  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &\n"
+"       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity\n",1)
 
 # Make case hydraulics configurable before initialize.
 src=src.replace("H0_CM","REPRO_H0_CM")
@@ -42,7 +47,7 @@ src=src.replace(old,new,1)
 src=src.replace(
 "  public :: fgc44_predictor_run_diagnostics_c\n",
 "  public :: fgc44_predictor_run_diagnostics_c\n"
-"  public :: fgc44_approx04_configure_case_c, fgc44_approx04_physical_state_c\n",1)
+"  public :: fgc44_approx04_configure_case_c, fgc44_approx04_physical_state_c, fgc44_approx04_predictor_q_c\n",1)
 needle="contains\n\n"
 insert="""contains
 
@@ -56,6 +61,23 @@ insert="""contains
     REPRO_KSAT=real(ksat,real64); REPRO_LAMBDA=real(lambda,real64)
     fgc44_approx04_configure_case_c=0_c_int
   end function fgc44_approx04_configure_case_c
+
+  integer(c_int) function fgc44_approx04_predictor_q_c(q) bind(C,name="fgc44_approx04_predictor_q_c")
+    real(c_double), intent(out) :: q
+    type(fmr_b110_physical_parameters_t) :: p
+    type(b110_default_mvg_parameters_t) :: hp
+    real(real64) :: kval
+    logical :: ok
+    q=0.0_c_double
+    fgc44_approx04_predictor_q_c=1_c_int
+    if(initialized)return
+    call initialize_parameters(p,2)
+    call initialize_b110_default_mvg_parameters(hp,p%cofgen)
+    call evaluate_b110_default_mvg_conductivity(hp,1,REPRO_H0_CM,kval,ok)
+    if(.not.ok)return
+    q=-real(kval,c_double)
+    fgc44_approx04_predictor_q_c=0_c_int
+  end function fgc44_approx04_predictor_q_c
 
   integer(c_int) function fgc44_approx04_physical_state_c(heads,theta) bind(C,name="fgc44_approx04_physical_state_c")
     real(c_double), intent(out) :: heads(numnod),theta(numnod)
@@ -111,10 +133,16 @@ cfg.argtypes=[ctypes.c_double]*7
 tr,ts,alpha,nvg,ksat,lamb=MATERIALS[material]
 st=cfg(h0,tr,ts,alpha,nvg,ksat,lamb)
 if st: raise RuntimeError(f"configure failed {st}")
+predfn=swap.lib.fgc44_approx04_predictor_q_c
+predfn.restype=ctypes.c_int
+predfn.argtypes=[ctypes.POINTER(ctypes.c_double)]
+predictor_q=ctypes.c_double()
+st=predfn(ctypes.byref(predictor_q))
+if st: raise RuntimeError(f"predictor q materialization failed {st}")
 statefn=swap.lib.fgc44_approx04_physical_state_c
 statefn.restype=ctypes.c_int
 statefn.argtypes=[ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
-_,_,href=swap.initialize()
+_,_,href=swap.initialize_configured(1.0e-4,predictor_q.value)
 offsets=PATTERNS[pattern]
 heads=[href+x/100.0 for x in offsets]
 
