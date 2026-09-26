@@ -1,52 +1,17 @@
-name: F-PE-APPROX02 Richards effort research
+name: F-PE-APPROX02 A2 production qualification
 
 on:
   pull_request:
     paths:
-      - 'tests/fpe/test_fpe_approx02_richards_effort.f90'
-      - 'tests/fpe/run_fpe_approx02_workload_discovery.sh'
-      - 'tests/fpe/run_fpe_approx02_tolerance_sweep.sh'
-      - 'tests/fpe/run_fpe_approx02_balance_sweep.sh'
-      - 'tests/fpe/run_fpe_approx02_combined_convergence_sweep.sh'
-      - 'tests/fpe/run_fpe_approx02_candidate_matrix.sh'
-      - 'tests/fpe/run_fpe_approx02_a2_multistep.sh'
       - 'tests/fpe/run_fpe_approx02_a2_transaction.sh'
+      - 'tests/fpe/run_fpe_approx02_a2_multistep.sh'
       - 'tests/fpe/test_fpe_approx02_a2_multistep.f90'
-      - 'docs/performance/F-PE-APPROX02_*.md'
+      - 'tests/fpe/test_fpe_approx02_r1_transaction.f90'
+      - 'docs/performance/F-PE-APPROX02_A2_*.md'
       - '.github/workflows/f-pe-approx02.yml'
   workflow_dispatch:
 
 jobs:
-  workload-discovery:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx02_workload_discovery.sh
-
-  tolerance-sweep:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx02_tolerance_sweep.sh
-
-  balance-sweep:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx02_balance_sweep.sh
-
-  combined-sweep:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx02_combined_convergence_sweep.sh
-
-  candidate-matrix:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx02_candidate_matrix.sh
-
   a2-multistep:
     runs-on: ubuntu-latest
     steps:
