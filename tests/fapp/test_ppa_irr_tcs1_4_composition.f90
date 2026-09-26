@@ -36,6 +36,14 @@ program test_composition
     call evaluate_tcs1_4_scheduled(p,base,r,knots,values,2,1.0_real64,0.0_real64,0.0_real64, &
          1.0_real64,0.5_real64,1.0_real64,candidate,flux,d)
     if(d%status/=IRRIGATION_OK.or.flux%event_started.or.candidate%active_event) error stop 'false trigger'
+    call evaluate_tcs1_4_scheduled(p,base,r,knots,values,0,1.0_real64,0.75_real64,0.0_real64, &
+         1.0_real64,0.5_real64,0.1_real64,candidate,flux,d)
+    if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.candidate%active_event) error stop 'invalid table'
+    r%fixed_event_already_selected=.true.
+    call evaluate_tcs1_4_scheduled(p,base,r,knots,values,0,1.0_real64,0.75_real64,0.0_real64, &
+         1.0_real64,0.5_real64,0.1_real64,candidate,flux,d)
+    if(d%status/=IRRIGATION_OK.or.flux%event_started) error stop 'fixed precedence'
+    r%fixed_event_already_selected=.false.
   end do
   write(*,'(a)') 'PPA_IRR_TCS1_4_DCS2_COMPOSITION=PASS'
 end program

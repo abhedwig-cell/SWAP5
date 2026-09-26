@@ -22,6 +22,12 @@ contains
     type(process_hydraulic_view_t)::unused
     real(real64)::ratio,depletion
     integer::code
+    candidate=base; flux=irrigation_flux_result_t(); diagnostics=irrigation_diagnostics_t()
+    if(parameters%timing_criterion<1.or.parameters%timing_criterion>4.or. &
+         parameters%depth_criterion/=IRRIGATION_DEPTH_DCS2_FIXED) then
+      diagnostics%status=IRRIGATION_INVALID_PARAMETERS
+      return
+    end if
     timing%criterion=parameters%timing_criterion
     if(.not.base%active_event.and.parameters%scheduled_irrigation_enabled.and. &
          request%selection_opportunity.and.request%irrigation_enabled.and.request%schedule_enabled.and. &
