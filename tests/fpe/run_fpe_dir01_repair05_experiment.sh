@@ -35,20 +35,19 @@ src=src.replace(
                                                         available, route)""",
 """  subroutine evaluate_b110_default_mvg_state_direction(provider, pressure_head, pressure_head_direction, &
                                                         water_content_direction, conductivity_direction, &
-                                                        base_conductivity, available, route)""",1)
+                                                        available, route, base_conductivity)""",1)
 src=src.replace(
 "    real(real64), intent(out) :: water_content_direction(:), conductivity_direction(:)\n",
-"    real(real64), intent(out) :: water_content_direction(:), conductivity_direction(:), base_conductivity(:)\n",1)
+"    real(real64), intent(out) :: water_content_direction(:), conductivity_direction(:)\n    real(real64), intent(out), optional :: base_conductivity(:)\n",1)
 src=src.replace(
 "    real(real64) :: dthetadh, dkdh\n",
 "    real(real64) :: theta, dthetadh, dkdh\n",1)
 src=src.replace(
 "    conductivity_direction = 0.0_real64\n",
-"    conductivity_direction = 0.0_real64\n    base_conductivity = 0.0_real64\n",1)
+"    conductivity_direction = 0.0_real64\n    if (present(base_conductivity)) base_conductivity = 0.0_real64\n",1)
 src=src.replace(
 """        size(water_content_direction) /= n .or. size(conductivity_direction) /= n) then""",
-"""        size(water_content_direction) /= n .or. size(conductivity_direction) /= n .or. &
-        size(base_conductivity) /= n) then""",1)
+"""        size(water_content_direction) /= n .or. size(conductivity_direction) /= n) then""",1)
 src=src.replace(
 "       call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), dthetadh, dkdh, node_ok)\n",
 "       call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), theta, dthetadh, dkdh, node_ok)\n",1)
@@ -65,8 +64,7 @@ src=src.replace(
 """    if (any(.not. ieee_is_finite(water_content_direction)) .or. &
         any(.not. ieee_is_finite(conductivity_direction))) then""",
 """    if (any(.not. ieee_is_finite(water_content_direction)) .or. &
-        any(.not. ieee_is_finite(conductivity_direction)) .or. &
-        any(.not. ieee_is_finite(base_conductivity))) then""",1)
+        any(.not. ieee_is_finite(conductivity_direction))) then""",1)
 src=src.replace(
 """  subroutine b110_smooth_derivatives(c, head, dthetadh, dkdh, ok)
     real(real64), intent(in) :: c(:), head
@@ -116,8 +114,8 @@ new="""    select type (hyd => request%evaluation%constitutive)
        ! Fused exact default-MvG base value + directional derivative pass.
        call evaluate_b110_default_mvg_state_direction(hyd, request%base_state%pressure_head, &
             direction_request%incoming_pressure_head, ref_ws%richards%provider_theta, &
-            ref_ws%richards%band_aux(:,1), ref_ws%richards%provider_k, &
-            constitutive_direction_ok, constitutive_direction_route)
+            ref_ws%richards%band_aux(:,1), constitutive_direction_ok, constitutive_direction_route, &
+            base_conductivity=ref_ws%richards%provider_k)
     type is (b110_direct_retention_provider_t)
        ! Direct-retention keeps the existing value-provider path unchanged.
        call request%evaluation%constitutive%evaluate_demand(request%base_state%pressure_head, &
