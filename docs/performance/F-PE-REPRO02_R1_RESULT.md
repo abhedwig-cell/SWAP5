@@ -2,7 +2,7 @@
 
 Date: 2026-09-26
 
-Status: `LOCALIZED_TO_NONLINEAR_SOLVER_BEFORE_TEMPORAL_GATE`
+Status: `SUPERSEDED_BY_R13_ORDERED_TRACE`
 
 ## Protocol
 
@@ -51,9 +51,9 @@ B01-mid +0.001 cm passed with:
 
 ## Conclusion
 
-The near-zero exact participant frontier is not caused by temporal acceptance.
+**Superseded by R13.** This result describes the final physical attempt after transaction retry exhaustion, not the first rejection in the ordered retry chain.
 
-The rejected correctors fail in the nonlinear Richards solve before temporal certification is reached.
+R13 demonstrates that every tested nonzero point first completes a physical solve and is rejected by the temporal certificate. The later nonlinear failure is a downstream retry-path consequence.
 
 ## Next discriminator
 
