@@ -23,7 +23,17 @@ program test_fpe_approx02_a2_application_sequence
   real(real64) :: exact_max_mass,a2_max_mass,max_storage_abs,max_storage_rel,max_net_abs,max_net_rel
   integer :: exact_nonlinear,a2_nonlinear,exact_substeps,a2_substeps,exact_retries,a2_retries
   integer :: exact_backtrack,a2_backtrack,step,status
+  character(len=64) :: arg
   integer(int64) :: c0,c1,rate
+
+  dt=1.0e-4_real64; top_factor=-1.0_real64
+  if(command_argument_count()>=1)then
+    call get_command_argument(1,arg); read(arg,*) dt
+  end if
+  if(command_argument_count()>=2)then
+    call get_command_argument(2,arg); read(arg,*) top_factor
+  end if
+  if(dt<=0.0_real64) error stop 'invalid dt'
 
   call build_config(exact_cfg,exact_tol)
   call build_config(a2_cfg,a2_tol)
@@ -76,7 +86,7 @@ program test_fpe_approx02_a2_application_sequence
   call system_clock(c1)
   a2_seconds=real(c1-c0,real64)/real(rate,real64)
 
-  write(*,'(*(g0))') 'APPROX02_A2_APPLICATION|STEPS=',nsteps, &
+  write(*,'(*(g0))') 'APPROX02_A2_APPLICATION|STEPS=',nsteps,'|DT=',dt,'|TOP_FACTOR=',top_factor, &
        '|EXACT_SECONDS=',exact_seconds,'|A2_SECONDS=',a2_seconds, &
        '|RUNTIME_RATIO=',a2_seconds/exact_seconds, &
        '|SPEEDUP_PERCENT=',100.0_real64*(1.0_real64-a2_seconds/exact_seconds), &
@@ -200,7 +210,7 @@ contains
     state%water_content=water
     state%ponding_depth=0.0_real64
     state%groundwater_level=-2.0_real64
-    forcing%top_flux=0.0_real64
+    forcing%top_flux=top_factor*k0
     forcing%top_head=h0
     forcing%bottom_flux=0.0_real64
     forcing%bottom_head=h0
