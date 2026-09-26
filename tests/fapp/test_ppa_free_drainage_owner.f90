@@ -1444,6 +1444,27 @@ contains
     forcing(2)%temporal_forcing_event=.false.
     previous=forcing
     requests%t0=midpoint; requests%t1=finish
+    ! Column one can prepare, but a later pending-event split must prevent
+    ! execution of every column. Reports describe preparation, not commits.
+    requests(1)%selection_opportunity=.false.
+    requests%t1=finish+1.0_real64/1024.0_real64
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,left,code,root_profiles,preparation)
+    if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'pending crossing batch executed'
+    if(.not.allocated(preparation)) error stop 'pending split report missing'
+    if(.not.all(preparation%process_evaluated)) error stop 'pending report evaluation missing'
+    if(.not.preparation(1)%source_prepared.or.preparation(2)%source_prepared) &
+         error stop 'pending report readiness incorrect'
+    if(.not.preparation(2)%process%split_required) error stop 'pending split missing'
+    if(abs(preparation(2)%process%split_time-finish)>1.0e-14_real64) error stop 'pending split boundary wrong'
+    requests%t1=preparation(2)%process%split_time
+    requests(2)%t0=finish
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,left,code,root_profiles,preparation)
+    if(code==FMR_APP_BOOT_OK.or.allocated(left).or.allocated(preparation)) &
+         error stop 'early rejection retained stale report'
+    requests(2)%t0=midpoint
+    requests(1)%selection_opportunity=.true.
     if(allocated(root_profiles)) then
       ! Supplied crop geometry for this fixture selects the same bounded gift
       ! from the current profile; selection physics remains in the process.
@@ -1457,6 +1478,7 @@ contains
     call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
          management,requests,previous,right,code,root_profiles)
     if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'restored pending beside new failed'
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PENDING_SPLIT_REPORT_ROLLBACK=PASS'
     do i=1,2
       if(.not.left(i)%mass%complete.or.abs(left(i)%mass%residual)>1.0e-12_real64) &
            error stop 'mixed lifecycle mass'
