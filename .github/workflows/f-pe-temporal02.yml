@@ -53,3 +53,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: bash tests/fpe/run_fpe_temporal02_p3a_surface.sh
+
+  p3b-frontier-replication:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal02_p3b_frontier_replication.sh
