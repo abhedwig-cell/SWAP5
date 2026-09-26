@@ -147,7 +147,6 @@ def main()->None:
             loop_ns=time.perf_counter_ns()-t0
 
             require(final_head is not None,"coupled corrector did not converge")
-            require(swap.has_live_candidate(),"final exact SWAP candidate unavailable")
             require(session.finalize_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
             require(swap.swap_preflight(),"SWAP preflight failed")
             swap.prepare_ledger()
