@@ -1267,6 +1267,7 @@ contains
       config%tiles(i)=profile%tiles(1)
       config%tiles(i)%tile_id=int(i,int64)
       config%tiles(i)%template=template
+      config%tiles(i)%template%template_id=template%template_id+int(i,int64)
       config%tiles(i)%irrigation_ssdi_node=1
       config%tiles(i)%initial_state=source%fmr_b110_temporal_indicator_state_t%fmr_b110_physical_state_t
       config%tiles(i)%initial_right_derivative=history
