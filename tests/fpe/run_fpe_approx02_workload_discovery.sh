@@ -89,7 +89,7 @@ d={}
 for part in line.strip().split('|')[1:]:
     k,v=part.split('=',1); d[k]=v
 with open(path,'a',newline='') as f:
-    csv.writer(f).writerow([material,regime,h0,factor,duration,d['STATUS'],d['SECONDS'],d['NONLINEAR'],d['JACOBIAN'],d['LINEAR'],d['BACKTRACK'],d['BOTTOM_FLUX'],d['MASS_RESIDUAL']])
+    csv.writer(f).writerow([material,regime,h0,factor,duration,d['STATUS'],d['SECONDS_PER_SOLVE'],d['NONLINEAR'],d['JACOBIAN'],d['LINEAR'],d['BACKTRACK'],d['BOTTOM_FLUX'],d['MASS_RESIDUAL']])
 print(f"APPROX02_DISCOVERY|MATERIAL={material}|REGIME={regime}|FACTOR={factor}|DURATION={duration}|STATUS={d['STATUS']}|NONLINEAR={d['NONLINEAR']}|BACKTRACK={d['BACKTRACK']}|BOTTOM_FLUX={d['BOTTOM_FLUX']}|MASS_RESIDUAL={d['MASS_RESIDUAL']}")
 PY
 }
