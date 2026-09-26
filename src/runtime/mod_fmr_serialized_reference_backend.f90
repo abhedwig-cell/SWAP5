@@ -83,6 +83,7 @@ module mod_fmr_serialized_reference_backend
   private
 
   integer, parameter, public :: B110_SWBOTB2_OK = 0
+  real(real64), parameter :: FMR_PRACTICAL_RICHARDS_A2C_TOL = 1.0e-8_real64
   integer, parameter, public :: B110_SWBOTB2_INVALID_CONTROL = 1
   integer, parameter, public :: B110_SWBOTB2_TIME_NOT_COVERED = 2
 
@@ -182,6 +183,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: head_abs_tolerance = 1.0e-12_real64
     real(real64) :: head_rel_tolerance = 1.0e-12_real64
     real(real64) :: ponding_tolerance = 1.0e-12_real64
+    logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
     logical :: macropore_active = .false.
     logical :: snow_active = .false.
@@ -261,6 +263,11 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
+    logical :: practical_richards_a2c_active = .false.
+    real(real64) :: practical_richards_head_abs_tolerance = 0.0_real64
+    real(real64) :: practical_richards_head_rel_tolerance = 0.0_real64
+    real(real64) :: practical_richards_compartment_balance_tolerance = 0.0_real64
+    real(real64) :: practical_richards_total_balance_tolerance = 0.0_real64
     logical :: temporal_indicator_enabled = .false.
     logical :: temporal_previous_derivative_available = .false.
     logical :: temporal_current_derivative_available = .false.
@@ -377,6 +384,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: head_abs_tolerance = 1.0e-12_real64
     real(real64) :: head_rel_tolerance = 1.0e-12_real64
     real(real64) :: ponding_tolerance = 1.0e-12_real64
+    logical :: practical_richards_a2c_active = .false.
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: base_top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
@@ -1588,10 +1596,17 @@ contains
       self%max_iterations = parameters%max_iterations
       self%max_backtracking = parameters%max_backtracking
       self%min_step_duration = parameters%min_step_duration
+      self%practical_richards_a2c_active = parameters%practical_richards_a2c_active
       self%compartment_balance_tolerance = parameters%compartment_balance_tolerance
       self%total_balance_tolerance = parameters%total_balance_tolerance
       self%head_abs_tolerance = parameters%head_abs_tolerance
       self%head_rel_tolerance = parameters%head_rel_tolerance
+      if (self%practical_richards_a2c_active) then
+        self%compartment_balance_tolerance = FMR_PRACTICAL_RICHARDS_A2C_TOL
+        self%total_balance_tolerance = FMR_PRACTICAL_RICHARDS_A2C_TOL
+        self%head_abs_tolerance = FMR_PRACTICAL_RICHARDS_A2C_TOL
+        self%head_rel_tolerance = FMR_PRACTICAL_RICHARDS_A2C_TOL
+      end if
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
       self%snow_active = parameters%snow_active
@@ -1637,6 +1652,11 @@ contains
     self%drainage_response_window_signed_exchange_native = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%drainage_response_active = self%drainage_response_active
+    self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
+    self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
+    self%last_observation%practical_richards_head_rel_tolerance = self%head_rel_tolerance
+    self%last_observation%practical_richards_compartment_balance_tolerance = self%compartment_balance_tolerance
+    self%last_observation%practical_richards_total_balance_tolerance = self%total_balance_tolerance
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
