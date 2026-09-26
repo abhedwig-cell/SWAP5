@@ -47,3 +47,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_repro02_r5_boundary_carriers.sh
+
+  r6-direction-invariance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_repro02_r6_direction_invariance.sh
