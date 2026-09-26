@@ -95,7 +95,7 @@ new_call="""    call backend%initialize(top)
       t1_headcalc = output%solver_headcalc_calls
       if (output%mass%complete) then
         t1_storage_end = output%mass%storage_end
-        t1_bottom_exchange = output%bottom_outward_exchange_native
+        t1_bottom_exchange = -observation%bottom_flux*duration
       end if
       if (output%committed) then
         call committed%snapshot(snapshot,snapshot_available)
