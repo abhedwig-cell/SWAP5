@@ -181,35 +181,40 @@ for mode in reference directional; do
 done
 
 python3 - "$BUILD/reference.out" "$BUILD/directional.out" "$CALLS" "$BUILD/test" <<'PY'
-import re,sys
-calls=int(sys.argv[3])
+import re,sys,subprocess
+calls=int(sys.argv[3]); exe=sys.argv[4]
+
 def read(path):
     txt=open(path).read()
     m=re.search(r'^DIR01_HEAP\|(.+)$',txt,re.M)
     if not m: raise SystemExit(f'missing heap record {path}')
-    d={}
+    totals={}
     for p in m.group(1).split('|'):
-        k,v=p.split('=',1); d[k]=int(v)
-    return d
-r=read(sys.argv[1]); d=read(sys.argv[2])
+        k,v=p.split('=',1); totals[k]=int(v)
+    sites={}
+    for sm in re.finditer(r'^DIR01_HEAP_SITE\|ADDR=(0x[0-9a-fA-F]+)\|COUNT=(\d+)\|BYTES=(\d+)$',txt,re.M):
+        sites[sm.group(1)]=(int(sm.group(2)),int(sm.group(3)))
+    return totals,sites
+
+r,rs=read(sys.argv[1]); d,ds=read(sys.argv[2])
 print("DIR01_HEAP_DELTA")
 for k in ('MALLOC','CALLOC','REALLOC','FREE','MALLOC_BYTES','CALLOC_BYTES','REALLOC_BYTES'):
     delta=d[k]-r[k]
     print(f"DIR01_HEAP_DELTA|FIELD={k}|TOTAL={delta}|PER_INTERVAL={delta/calls:.6f}")
-import subprocess
-alladdrs=set(rs)|set(ds)
+
 rows=[]
-for a in alladdrs:
+for a in set(rs)|set(ds):
     rc,rb=rs.get(a,(0,0)); dc,db=ds.get(a,(0,0))
-    dc0=dc-rc; db0=db-rb
-    if dc0<=0 and db0<=0: continue
+    count_delta=dc-rc; byte_delta=db-rb
+    if count_delta<=0 and byte_delta<=0:
+        continue
     resolved=subprocess.check_output(['addr2line','-f','-C','-e',exe,a],text=True).strip().splitlines()
     fn=resolved[0] if resolved else '?'
     loc=resolved[1] if len(resolved)>1 else '?'
-    rows.append((dc0,db0,a,fn,loc,dc,rc))
+    rows.append((count_delta,byte_delta,a,fn,loc,dc,rc))
 rows.sort(reverse=True)
 print("DIR01_HEAP_SITE_DELTA_TOP")
-for dc0,db0,a,fn,loc,dc,rc in rows[:40]:
-    print(f"DIR01_HEAP_SITE_DELTA|COUNT_DELTA={dc0}|BYTES_DELTA={db0}|PER_INTERVAL={dc0/calls:.6f}|ADDR={a}|FUNCTION={fn}|LOCATION={loc}|DIR_COUNT={dc}|REF_COUNT={rc}")
+for count_delta,byte_delta,a,fn,loc,dc,rc in rows[:40]:
+    print(f"DIR01_HEAP_SITE_DELTA|COUNT_DELTA={count_delta}|BYTES_DELTA={byte_delta}|PER_INTERVAL={count_delta/calls:.6f}|ADDR={a}|FUNCTION={fn}|LOCATION={loc}|DIR_COUNT={dc}|REF_COUNT={rc}")
 print('FPE_DIR01_HEAP_ATTRIBUTION=PASS')
 PY
