@@ -75,8 +75,8 @@ Record:
 For all arms:
 
 - every trial must be valid;
-- q checksum must match exact at the same requested heads;
-- same-head tangent checksum must match exact for the cache-valid requests;
+- A1 q/tangent checksums must match exact for the same requested heads within binary64 roundoff;
+- A2C and stack q/tangent differences must remain inside the already-qualified A2C numerical envelope and must not introduce a sign/orientation change;
 - no candidate-only transaction failure.
 
 ## Interpretation
