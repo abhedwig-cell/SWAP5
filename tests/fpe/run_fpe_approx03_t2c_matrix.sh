@@ -400,7 +400,11 @@ for sel in eligible:
     ct=[f(cand,f"TH{i}") for i in range(1,5)]
     head_rel=max(rel(a,b) for a,b in zip(rh,ch))
     theta_rel=max(rel(a,b) for a,b in zip(rt,ct))
+    flux_abs=abs(f(cand,"BOTTOM_FLUX")-f(ref,"BOTTOM_FLUX"))
     flux_rel=rel(f(ref,"BOTTOM_FLUX"),f(cand,"BOTTOM_FLUX"))
+    predictor_scale=max(abs(f(ref,"PRED_QBOT")),abs(f(ref,"BOTTOM_FLUX")),1e-30)
+    flux_predictor_scaled=flux_abs/predictor_scale
+    exchange_abs=flux_abs*float(sel["DT"])
     sch_rel=rel(f(ref,"STORAGE_CHANGE"),f(cand,"STORAGE_CHANGE"))
     send_rel=rel(f(ref,"STORAGE_END"),f(cand,"STORAGE_END"))
     speed=100.0*(1.0-f(cand,"MEDIAN_SECONDS")/f(ref,"MEDIAN_SECONDS"))
@@ -420,7 +424,8 @@ for sel in eligible:
       f"|SPEEDUP_PERCENT={speed:.6f}|REF_SUBSTEPS={ii(ref,'SUBSTEPS')}|T2C_SUBSTEPS={ii(cand,'SUBSTEPS')}"
       f"|REF_NONLINEAR={ii(ref,'NONLINEAR')}|T2C_NONLINEAR={ii(cand,'NONLINEAR')}"
       f"|REF_HEADCALC={ii(ref,'HEADCALC')}|T2C_HEADCALC={ii(cand,'HEADCALC')}"
-      f"|HEAD_REL={head_rel:.17e}|THETA_REL={theta_rel:.17e}|BOTTOM_FLUX_REL={flux_rel:.17e}"
+      f"|HEAD_REL={head_rel:.17e}|THETA_REL={theta_rel:.17e}|BOTTOM_FLUX_ABS={flux_abs:.17e}|BOTTOM_FLUX_REL={flux_rel:.17e}"
+      f"|BOTTOM_FLUX_PREDICTOR_SCALED={flux_predictor_scaled:.17e}|INTERVAL_BOTTOM_EXCHANGE_ABS={exchange_abs:.17e}"
       f"|BOTTOM_FLUX_SIGNED_ERROR={signed_flux_errors[-1]:.17e}|STORAGE_CHANGE_REL={sch_rel:.17e}"
       f"|STORAGE_END_REL={send_rel:.17e}|MASS_RESIDUAL={f(cand,'MASS_RESIDUAL'):.17e}"
     )
