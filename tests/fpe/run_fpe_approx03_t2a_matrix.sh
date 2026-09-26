@@ -257,7 +257,7 @@ gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 
 materials=(B01 B12 O05 O14)
 regimes=("wet|-10" "mid|-75" "dry|-500")
-orientations=("plus|5e-4|5e-4" "minus|-5e-4|-5e-4")
+orientations=("plus|5e-5|5e-5" "minus|-5e-5|-5e-5")
 budgets=(1e-5 2e-5)
 labels=(REF T2A)
 reps=5
@@ -276,7 +276,7 @@ for material in "${materials[@]}"; do
         : > "$times"
         last=""
         for ((rep=1; rep<=reps; rep++)); do
-          raw="$("$BUILD/test" "$material" "$h0" "$top_factor" "$qbot_factor" 1e-3 "$budget" 2>&1)" || {
+          raw="$("$BUILD/test" "$material" "$h0" "$top_factor" "$qbot_factor" 1e-4 "$budget" 2>&1)" || {
             printf '%s\n' "$raw" >&2
             fail "$material $regime $orientation $arm execution"
           }
