@@ -1,0 +1,16 @@
+name: F-PE-DIR01 bottom-head tangent attribution
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_dir01_gprof_attribution.sh'
+      - 'docs/performance/F-PE-DIR01_*.md'
+      - '.github/workflows/f-pe-dir01.yml'
+  workflow_dispatch:
+
+jobs:
+  gprof-attribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_dir01_gprof_attribution.sh
