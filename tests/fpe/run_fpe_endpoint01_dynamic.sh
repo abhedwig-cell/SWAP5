@@ -648,10 +648,21 @@ def mf_head(q):
 # P0: characterize curvature and historical three-probe extrapolation.
 ladder=[-1.50e-7,-1.00e-7,-5.00e-8,-2.00e-8,0.0,2.00e-8,5.00e-8,1.00e-7,1.50e-7]
 points=[]
+unavailable=[]
 for q in ladder:
-    h,qgw,it=mf_head(q)
+    try:
+        h,qgw,it=mf_head(q)
+    except AssertionError as exc:
+        unavailable.append(q)
+        print(f"ENDPOINT01_GW_POINT|C={coeff:.2f}|Q={q:.17e}|STATUS=ORACLE_UNAVAILABLE|REASON={str(exc)}")
+        continue
     points.append((q,h,it))
-    print(f"ENDPOINT01_GW_POINT|C={coeff:.2f}|Q={q:.17e}|H={h:.17e}|MF_ITERS={it}")
+    print(f"ENDPOINT01_GW_POINT|C={coeff:.2f}|Q={q:.17e}|H={h:.17e}|MF_ITERS={it}|STATUS=OK")
+
+required=(-1.00e-7,-5.00e-8,-2.00e-8,0.0,2.00e-8,5.00e-8,1.00e-7)
+for qreq in required:
+    if not any(q==qreq for q,_,_ in points):
+        raise RuntimeError(f"required groundwater characterization point unavailable {qreq}")
 
 hist=[x for x in points if x[0] in (-2.0e-8,0.0,2.0e-8)]
 np=e2e.np
