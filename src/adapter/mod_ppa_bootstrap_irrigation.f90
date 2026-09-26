@@ -16,9 +16,14 @@ module mod_ppa_bootstrap_irrigation
   implicit none
   private
   public :: execute_ppa_bootstrap_irrigation
+  type,public :: ppa_irrigation_preparation_t
+    logical :: process_evaluated=.false.
+    logical :: source_prepared=.false.
+    type(irrigation_diagnostics_t) :: process
+  end type
 contains
   subroutine execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,results,status,profiles)
+       previous,results,status,profiles,preparation)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -27,6 +32,7 @@ contains
     type(fmr_serialized_column_result_t),allocatable,intent(out)::results(:)
     integer,intent(out)::status
     type(ppa_irrigation_profile_t),intent(in),optional::profiles(:)
+    type(ppa_irrigation_preparation_t),allocatable,intent(out),optional::preparation(:)
     type(fmr_committed_restart_bundle_t)::snapshot
     type(fmr_b110_physical_forcing_t),allocatable::prepared(:),forcing
     type(irrigation_state_t),allocatable::events(:)
@@ -67,6 +73,7 @@ contains
     if(.not.allocated(snapshot%records)) return
     if(size(snapshot%records)/=n) return
     allocate(prepared(n),events(n),selected(n))
+    if(present(preparation)) allocate(preparation(n))
     do i=1,n
       if(snapshot%records(i)%column_id/=column_ids(i)) return
       if(.not.snapshot%records(i)%time_bound) return
@@ -90,6 +97,11 @@ contains
       class default
         return
       end select
+      if(present(preparation)) then
+        preparation(i)%process_evaluated=.true.
+        preparation(i)%source_prepared=ok
+        preparation(i)%process=diagnostics
+      end if
       if(.not.ok) return
       prepared(i)=forcing
       events(i)=event

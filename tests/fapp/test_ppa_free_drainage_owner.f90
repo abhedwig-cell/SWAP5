@@ -1245,7 +1245,7 @@ contains
   end subroutine verify_pending_irrigation_trial
 
   subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
-    use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation
+    use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation,ppa_irrigation_preparation_t
     use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
     use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t
     use mod_irrigation_process, only: irrigation_state_t,IRRIGATION_EVENT_SCHEDULED, &
@@ -1256,6 +1256,7 @@ contains
     logical,intent(in),optional::profile_selection
     logical,intent(in),optional::mixed_selection
     type(ppa_irrigation_profile_t),allocatable::root_profiles(:)
+    type(ppa_irrigation_preparation_t),allocatable::preparation(:)
     type(fmr_production_application_config_t)::config
     type(fmr_production_application_bootstrap_t)::application,restored
     type(fmr_b110_physical_forcing_t)::forcing(2)
@@ -1411,8 +1412,24 @@ contains
         end if
       end if
     end if
+    ! A crossing window must expose the process boundary without executing any tile.
+    requests%t1=finish+1.0_real64/1024.0_real64
     call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
-         management,requests,previous,left,code,root_profiles)
+         management,requests,previous,left,code,root_profiles,preparation)
+    if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'crossing irrigation interval executed'
+    if(.not.allocated(preparation)) error stop 'crossing preparation report missing'
+    if(.not.preparation(1)%process_evaluated.or.preparation(1)%source_prepared) &
+         error stop 'split preparation flags invalid'
+    if(.not.preparation(1)%process%split_required) error stop 'split diagnostic missing'
+    if(abs(preparation(1)%process%split_time-midpoint)>1.0e-14_real64) error stop 'wrong split boundary'
+    if(preparation(2)%process_evaluated.or.preparation(2)%source_prepared) &
+         error stop 'unvisited preparation reported evaluated'
+    requests%t1=preparation(1)%process%split_time
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
+         management,requests,previous,left,code,root_profiles,preparation)
+    if(.not.all(preparation%process_evaluated).or..not.all(preparation%source_prepared)) &
+         error stop 'shortened preparation not ready'
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_SPLIT_DIAGNOSTIC_RETRY=PASS'
     if(code/=FMR_APP_BOOT_OK) then
       write(*,*) 'MIXED_LIFECYCLE_STATUS',code,left%kernel_status,left%accepted_substeps
       write(*,*) 'MIXED_LIFECYCLE_ADMISSION',left%admission_status
