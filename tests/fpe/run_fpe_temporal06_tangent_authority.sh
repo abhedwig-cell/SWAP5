@@ -476,7 +476,7 @@ def oracle_q(head_m,nsub):
     ex=ctypes.c_double(); flux=ctypes.c_double(); mass=ctypes.c_double(); maxmass=ctypes.c_double()
     st=ofn(head_m,nsub,oh,ot,ctypes.byref(ex),ctypes.byref(flux),ctypes.byref(mass),ctypes.byref(maxmass))
     if st: raise RuntimeError(f"oracle failed nsub={nsub} status={st}")
-    q=(-ex.value/duration)/100.0/86400.0
+    q=(ex.value/duration)/100.0/86400.0
     return {"q_m_per_s":q,"exchange_cm":ex.value,"terminal_flux_cm_per_day":flux.value,
             "mass_residual":mass.value,"max_step_mass_residual":maxmass.value}
 
