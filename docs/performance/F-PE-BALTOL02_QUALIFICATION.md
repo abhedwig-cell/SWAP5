@@ -2,7 +2,7 @@
 
 Date: 2026-09-26
 
-Status: `G1_G3_PASS_G4_PENDING`
+Status: `ADMISSION_GATES_PASS_WITH_INHERITED_FROZEN_GUARD_FAILURES`
 
 ## Production implementation
 
@@ -76,3 +76,26 @@ Current-lineage status on this head:
 - zero-waste poison/runtime and current performance recomposition jobs completed so far: PASS.
 
 At this point the remaining admission dependency is completion of the last current canonical jobs, not reinterpretation of frozen exact-source preservation guards.
+
+
+## Final G4 disposition
+
+The current-lineage behavioral authorities relevant to the BALTOL02 delta are green:
+
+- F-CI110 reconstructed performance admission: all jobs PASS;
+- F-PE-APPROX02 exact/default, multistep, application-sequence and MODFLOW end-to-end jobs: PASS;
+- zero-waste poison/runtime and performance recomposition jobs: PASS;
+- F-CI canonical replay jobs through root uptake: PASS;
+- BALTOL02 effective-request, broad-matrix and oracle-recovery gates: PASS.
+
+The remaining `current-restricted-canonical-preservation` failure is inherited from the parent stack and is not caused by BALTOL02. It reports drift in:
+
+`src/transaction/mod_transaction_reference.f90`
+
+That file is bit-identical between the BALTOL02 base `cb7d3c56...` and the BALTOL02 head, with blob SHA:
+
+`97d8ef1fae91e174ab6daefb42ffa6a85da9380e`.
+
+Therefore this failure is not attributed to the BALTOL02 production delta.
+
+The older frozen preservation failures are likewise exact-source/postimage guards that intentionally reject authorized backend source evolution and are not behavioral regressions.
