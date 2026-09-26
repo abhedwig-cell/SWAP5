@@ -253,9 +253,17 @@ for mode in exact a1 a2c stack; do
     a2c)   lib="$BUILD/a2/libfgc44_swap.so"; cache=0 ;;
     stack) lib="$BUILD/a2/libfgc44_swap.so"; cache=1 ;;
   esac
+  echo "PROFILE05_RUNNING_MODE=$mode"
+  set +e
   PROFILE05_A1_CACHE="$cache" LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$lib" \
-    python3 "$BUILD/py/test_a2_e2e.py" > "$BUILD/$mode.txt"
-  grep -Fq 'FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS' "$BUILD/$mode.txt" || { cat "$BUILD/$mode.txt"; fail "$mode E2E"; }
+    python3 "$BUILD/py/test_a2_e2e.py" > "$BUILD/$mode.txt" 2>&1
+  rc=$?
+  set -e
+  if [[ $rc -ne 0 ]]; then
+    cat "$BUILD/$mode.txt"
+    fail "$mode E2E execution"
+  fi
+  grep -Fq 'FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS' "$BUILD/$mode.txt" || { cat "$BUILD/$mode.txt"; fail "$mode E2E marker"; }
 done
 
 python3 - "$BUILD/exact.txt" "$BUILD/a1.txt" "$BUILD/a2c.txt" "$BUILD/stack.txt" <<'PY'
