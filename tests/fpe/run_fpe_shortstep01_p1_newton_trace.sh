@@ -512,10 +512,21 @@ for key,d in sorted(finals.items()):
     end_status=ends[-1]["STATUS"] if ends else ("CONVERGED" if d["floor_status"]==0 else "EXHAUSTED")
     end_sum=float(ends[-1]["SUM"]) if ends else float("nan")
     end_fmax=float(ends[-1]["FMAX"]) if ends else float("nan")
+    last_newton=float(newtons[-1]["MAX_DELTA"]) if newtons else float("nan")
+    last_trial=trials[-1] if trials else None
+    accepted_trials=[r for r in trials if r["ACCEPT_PROGRESS"].upper() in ("T",".TRUE.","TRUE")]
+    last_acc=accepted_trials[-1] if accepted_trials else None
     print(f"SHORTSTEP01_P1_SUMMARY|MATERIAL={key[0]}|REGIME={key[1]}|IMBALANCE={key[2]:.3f}|OFFSET_CM={key[3]:.6f}|DT={key[4]:.8e}"
           f"|FLOOR_STATUS={d['floor_status']}|NONLINEAR={d['nonlinear']}|NEWTON_RECORDS={len(newtons)}"
           f"|TRIAL_RECORDS={len(trials)}|PROGRESS_ACCEPTS={accepted}|PROGRESS_REJECTS={rejected}"
           f"|INITIAL_SUMOLD={float(inits[0]['SUMOLD']):.17e}|INITIAL_FMAX={float(inits[0]['FMAX']):.17e}"
+          f"|LAST_MAX_DELTA={last_newton:.17e}"
+          f"|LAST_TRIAL_FACTOR={float(last_trial['FACTOR']) if last_trial else float('nan'):.17e}"
+          f"|LAST_TRIAL_SUMP={float(last_trial['SUMP']) if last_trial else float('nan'):.17e}"
+          f"|LAST_TRIAL_FMAX={float(last_trial['FMAX']) if last_trial else float('nan'):.17e}"
+          f"|LAST_ACCEPT_FACTOR={float(last_acc['FACTOR']) if last_acc else float('nan'):.17e}"
+          f"|LAST_ACCEPT_SUMP={float(last_acc['SUMP']) if last_acc else float('nan'):.17e}"
+          f"|LAST_ACCEPT_FMAX={float(last_acc['FMAX']) if last_acc else float('nan'):.17e}"
           f"|END_STATUS={end_status}|END_SUM={end_sum:.17e}|END_FMAX={end_fmax:.17e}")
 print("FPE_SHORTSTEP01_P1=PASS")
 PY
