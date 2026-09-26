@@ -1,0 +1,16 @@
+name: F-PE-APPROX04 response surrogate research
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_approx04_*.sh'
+      - 'docs/performance/F-PE-APPROX04_*.md'
+      - '.github/workflows/f-pe-approx04.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-response-error:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx04_p0_response_error.sh
