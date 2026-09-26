@@ -617,7 +617,7 @@ for line in open(sys.argv[1]):
     groups[(d["material"],reg,d["imbalance"])][d["policy"]].append(d)
 if len(groups)!=12: raise SystemExit(f"expected 12 origin-history groups, got {len(groups)}")
 
-ratios=[]; qrels=[]; trels=[]
+ratios=[]; qrels=[]; trels=[]; overlap_failures=[]
 agg={p:{"completed":0,"failures":0,"retries":0,"temporal":0,"solver":0,"fresh":0,"reuse":0} for p in ("CURRENT_FIXED","HIST_HALF","SELECTED")}
 for key,by in sorted(groups.items()):
     if set(by)!={"CURRENT_FIXED","HIST_HALF","SELECTED"}: raise SystemExit(f"missing policy {key}")
@@ -635,10 +635,15 @@ for key,by in sorted(groups.items()):
     qrel=abs(h["qsum"]-q["qsum"])/max(abs(h["qsum"]),1e-30)
     trel=abs(h["tsum"]-q["tsum"])/max(abs(h["tsum"]),1e-30)
     qrels.append(qrel); trels.append(trel)
-    if qrel>1e-2 or trel>1e-2: raise SystemExit(f"response overlap envelope failed {key}: q={qrel} t={trel}")
+    failed=(qrel>1e-2 or trel>1e-2)
+    if failed: overlap_failures.append((key,qrel,trel))
     hr=statistics.median(r["ns_per_request"] for r in by["HIST_HALF"])
     qr=statistics.median(r["ns_per_request"] for r in by["SELECTED"])
-    ratios.append(qr/hr)
+    ratio=qr/hr
+    ratios.append(ratio)
+    print(f"TEMPORAL06_P0_GROUP|MATERIAL={key[0]}|REGIME={key[1]}|IMBALANCE={key[2]:.3f}"
+          f"|Q_REL={qrel:.17e}|TANGENT_REL={trel:.17e}|RUNTIME_RATIO={ratio:.9f}"
+          f"|HALF_RETRIES={h['retries']}|SELECTED_RETRIES={q['retries']}|OVERLAP_PASS={str(not failed).upper()}")
 
 for p,a in agg.items():
     print(f"TEMPORAL06_P0_POLICY|POLICY={p}|COMPLETED={a['completed']}|REQUESTS={12*64}"
@@ -647,6 +652,11 @@ for p,a in agg.items():
 print(f"TEMPORAL06_P0_SELECTED_VS_HALF|GROUPS=12|MEDIAN_RUNTIME_RATIO={statistics.median(ratios):.9f}"
       f"|MIN_RATIO={min(ratios):.9f}|MAX_RATIO={max(ratios):.9f}"
       f"|MAX_Q_REL={max(qrels):.17e}|MAX_TANGENT_REL={max(trels):.17e}")
+print(f"TEMPORAL06_P0_OVERLAP|FAILURES={len(overlap_failures)}|GROUPS=12")
+if overlap_failures:
+    for key,qrel,trel in overlap_failures:
+        print(f"TEMPORAL06_P0_OVERLAP_FAIL|MATERIAL={key[0]}|REGIME={key[1]}|IMBALANCE={key[2]:.3f}|Q_REL={qrel:.17e}|TANGENT_REL={trel:.17e}")
+    raise SystemExit("response overlap envelope failed")
 if statistics.median(ratios)>=1.0: raise SystemExit("selected repeated-sequence runtime gain disappeared")
 print("FPE_TEMPORAL06_P0=PASS")
 PY
