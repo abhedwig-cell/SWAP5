@@ -32,22 +32,29 @@ program test_fpe_approx01_direct_tangent
   real(real64), target :: drainage(1,numnod), irrigation(numnod), roots(numnod)
   real(real64), allocatable :: cofgen(:,:)
   real(real64) :: h0,hbot,k0,water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
+  real(real64) :: tr,ts,alpha,nvg,ksat,lambda
   real(real64) :: heads(numnod),cached_tangent,checksum,elapsed
   integer(int64) :: c0,c1,rate
   character(len=64) :: arg
+  character(len=8) :: material
   integer :: i,calls,cadence,warmups,fresh_count
   logical :: refresh
 
-  if(command_argument_count()/=2 .and. command_argument_count()/=4) &
-       error stop 'usage: test H0_CM HBOT_CM [CALLS CADENCE]'
+  if(command_argument_count()/=2 .and. command_argument_count()/=3 .and. &
+       command_argument_count()/=4 .and. command_argument_count()/=5) &
+       error stop 'usage: test H0_CM HBOT_CM [MATERIAL] or [CALLS CADENCE [MATERIAL]]'
   call get_command_argument(1,arg); read(arg,*) h0
   call get_command_argument(2,arg); read(arg,*) hbot
-  calls=0; cadence=1
-  if(command_argument_count()==4)then
+  calls=0; cadence=1; material='B01'
+  if(command_argument_count()==3)then
+    call get_command_argument(3,material)
+  else if(command_argument_count()>=4)then
     call get_command_argument(3,arg); read(arg,*) calls
     call get_command_argument(4,arg); read(arg,*) cadence
+    if(command_argument_count()==5) call get_command_argument(5,material)
     if(calls<=0 .or. cadence<=0) error stop 'invalid timing arguments'
   end if
+  call material_parameters(trim(material),tr,ts,alpha,nvg,ksat,lambda)
 
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
   params%parameter_set_id=629101_int64
@@ -56,18 +63,18 @@ program test_fpe_approx01_direct_tangent
 
   cofgen=0.0_real64
   do i=1,numnod
-    cofgen(1,i)=0.032_real64
-    cofgen(2,i)=0.423_real64
-    cofgen(3,i)=4.75_real64
-    cofgen(4,i)=0.0135_real64
-    cofgen(5,i)=0.365_real64
-    cofgen(6,i)=1.455_real64
-    cofgen(7,i)=1.0_real64-1.0_real64/cofgen(6,i)
-    cofgen(8,i)=cofgen(4,i)
+    cofgen(1,i)=tr
+    cofgen(2,i)=ts
+    cofgen(3,i)=ksat
+    cofgen(4,i)=alpha
+    cofgen(5,i)=lambda
+    cofgen(6,i)=nvg
+    cofgen(7,i)=1.0_real64-1.0_real64/nvg
+    cofgen(8,i)=alpha
     cofgen(9,i)=0.0_real64
-    cofgen(10,i)=cofgen(3,i)
+    cofgen(10,i)=ksat
     cofgen(11,i)=0.999_real64
-    cofgen(12,i)=0.99_real64*cofgen(3,i)
+    cofgen(12,i)=0.99_real64*ksat
     cofgen(22,i)=-1.0e6_real64
     cofgen(23,i)=1.0e-12_real64
   end do
@@ -120,7 +127,7 @@ program test_fpe_approx01_direct_tangent
   if(calls==0)then
     call solve_with_accepted_step_direction(solver,request,workspace,dreq,solve_result,dres)
     call verify_directional(solve_result,dres)
-    write(*,'(*(g0))') 'APPROX01_DIRECT|H0_CM=',h0,'|HBOT_CM=',hbot, &
+    write(*,'(*(g0))') 'APPROX01_DIRECT|MATERIAL=',trim(material),'|H0_CM=',h0,'|HBOT_CM=',hbot, &
          '|SOLVE_STATUS=',solve_result%status,'|DIRECTION_STATUS=',dres%status, &
          '|ROUTE=',trim(dres%route),'|TANGENT=',dres%bottom_flux_derivative, &
          '|BOTTOM_FLUX=',solve_result%bottom_flux,'|NONLINEAR=',solve_result%diagnostics%nonlinear_iterations, &
@@ -167,6 +174,27 @@ program test_fpe_approx01_direct_tangent
   print '(A)','FPE_APPROX01_DIRECT_TIMING=PASS'
 
 contains
+
+  subroutine material_parameters(name,tr,ts,alpha,nvg,ksat,lambda)
+    character(len=*),intent(in)::name
+    real(real64),intent(out)::tr,ts,alpha,nvg,ksat,lambda
+    select case(trim(name))
+    case('B01')
+      tr=0.02_real64; ts=0.427494_real64; alpha=0.021659_real64; nvg=1.734737_real64
+      ksat=31.225016_real64; lambda=0.98087_real64
+    case('B12')
+      tr=0.01_real64; ts=0.529749_real64; alpha=0.016562_real64; nvg=1.090671_real64
+      ksat=2.245895_real64; lambda=-4.493581_real64
+    case('O05')
+      tr=0.01_real64; ts=0.336701_real64; alpha=0.030304_real64; nvg=2.887502_real64
+      ksat=17.418504_real64; lambda=0.0736_real64
+    case('O14')
+      tr=0.01_real64; ts=0.393878_real64; alpha=0.003288_real64; nvg=1.616573_real64
+      ksat=2.495984_real64; lambda=0.514012_real64
+    case default
+      error stop 'unknown material'
+    end select
+  end subroutine material_parameters
 
   subroutine verify_physical(result)
     type(soil_water_solve_result_t),intent(in)::result
