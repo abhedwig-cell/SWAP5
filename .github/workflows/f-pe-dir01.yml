@@ -13,6 +13,10 @@ on:
 
 jobs:
   repair03-experiment:
+    strategy:
+      fail-fast: false
+      matrix:
+        replica: [1, 2, 3]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
