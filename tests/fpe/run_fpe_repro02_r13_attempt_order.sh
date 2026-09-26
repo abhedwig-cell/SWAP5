@@ -401,10 +401,10 @@ for d in attempts:
 if len(groups)!=54: raise SystemExit(f"expected 54 point-repetition traces, got {len(groups)}")
 point_sigs=collections.defaultdict(list)
 for key,rows in sorted(groups.items()):
-    rows=sorted(rows,key=lambda r:int(r["RETRY_INDEX"]))
-    indices=[int(r["RETRY_INDEX"]) for r in rows]
-    if indices!=list(range(len(rows))): raise SystemExit(f"noncontiguous retries {key}: {indices}")
-    sig=tuple((r["REASON"],round(float(r["DT"]),16),int(r["SOLVER_OK"])) for r in rows)
+    # Preserve emission order. A successful canonical interval may contain
+    # multiple accepted subtransactions; each transaction resets retry_index
+    # to zero, so global monotonic retry indices are not a valid invariant.
+    sig=tuple((r["RETRY_INDEX"],r["REASON"],round(float(r["DT"]),16),int(r["SOLVER_OK"])) for r in rows)
     point_sigs[key[:3]].append(sig)
     for r in rows:
         print(f"REPRO02_R13_POINT|MATERIAL={key[0]}|REGIME={key[1]}|OFFSET_CM={float(key[2]):.6f}|REP={key[3]}"
@@ -413,7 +413,7 @@ for key,rows in sorted(groups.items()):
               f"|CERT_AVAILABLE={r['CERT_AVAILABLE']}|INDICATOR={float(r['INDICATOR']):.17e}")
 for p,sigs in sorted(point_sigs.items()):
     if len(sigs)!=3 or len(set(sigs))!=1: raise SystemExit(f"nondeterministic ordered signature {p}: {sigs}")
-    reasons=[x[0] for x in sigs[0]]
+    reasons=[x[1] for x in sigs[0]]
     print(f"REPRO02_R13_SEQUENCE|MATERIAL={p[0]}|REGIME={p[1]}|OFFSET_CM={float(p[2]):.6f}|REASONS={','.join(reasons)}")
 print("FPE_REPRO02_R13=PASS")
 PY
