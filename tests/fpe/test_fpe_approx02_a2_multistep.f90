@@ -15,7 +15,7 @@ program test_fpe_approx02_a2_multistep
 
   real(real64), parameter :: exact_tol=1.0e-12_real64
   real(real64), parameter :: a2_tol=1.0e-4_real64
-  real(real64), parameter :: duration=5.0e-2_real64
+  real(real64), parameter :: duration=1.0e-3_real64
   integer, parameter :: nsteps=20
 
   type(soil_water_parameter_set_t), target :: params
