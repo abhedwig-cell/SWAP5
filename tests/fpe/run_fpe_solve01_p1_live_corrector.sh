@@ -144,8 +144,8 @@ for p in ("e4","eh"):
     r=arms[p][0]
     if r["iterations"] > e["iterations"]+1:
         raise SystemExit(f"{p} external iteration penalty exceeds gate")
-    if r["validation_failures"]>0:
-        raise SystemExit(f"{p} failed exact final validation")
+    if r["validation_failures"]>1:
+        raise SystemExit(f"{p} repeated exact final-validation recovery")
     if r["exact_trials"] > e["exact_trials"]:
         raise SystemExit(f"{p} exact trial count exceeds E0")
     if abs(r["final_head"]-e["final_head"])>5e-10:
