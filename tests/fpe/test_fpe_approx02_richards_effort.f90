@@ -31,16 +31,21 @@ program test_fpe_approx02_richards_effort
   real(real64) :: t0,t1,elapsed
   character(len=64) :: arg
   character(len=8) :: material
-  integer :: i
+  integer :: i,j,calls,warmups
 
-  if(command_argument_count()/=6) error stop 'usage: MATERIAL H0_CM HBOT_CM TOP_FACTOR DURATION_DAY TOL_MULT'
+  if(command_argument_count()/=6 .and. command_argument_count()/=7) &
+       error stop 'usage: MATERIAL H0_CM HBOT_CM TOP_FACTOR DURATION_DAY TOL_MULT [CALLS]'
   call get_command_argument(1,material)
   call get_command_argument(2,arg); read(arg,*) h0
   call get_command_argument(3,arg); read(arg,*) hbot
   call get_command_argument(4,arg); read(arg,*) top_factor
   call get_command_argument(5,arg); read(arg,*) duration
   call get_command_argument(6,arg); read(arg,*) tol_mult
-  if(duration<=0.0_real64 .or. tol_mult<=0.0_real64) error stop 'invalid duration/tolerance multiplier'
+  calls=1
+  if(command_argument_count()==7)then
+    call get_command_argument(7,arg); read(arg,*) calls
+  end if
+  if(duration<=0.0_real64 .or. tol_mult<=0.0_real64 .or. calls<=0) error stop 'invalid duration/tolerance/calls'
 
   call material_parameters(trim(material),tr,ts,alpha,nvg,ksat,lambda)
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
@@ -94,14 +99,22 @@ program test_fpe_approx02_richards_effort
   request%step_duration=duration
   request%request_interface_sensitivity=.false.
 
+  warmups=0
+  if(calls>1) warmups=min(20,max(2,calls/100))
+  do j=1,warmups
+    call solver%solve(request,workspace,result)
+  end do
+
   call cpu_time(t0)
-  call solver%solve(request,workspace,result)
+  do j=1,calls
+    call solver%solve(request,workspace,result)
+  end do
   call cpu_time(t1)
-  elapsed=t1-t0
+  elapsed=(t1-t0)/real(calls,real64)
 
   write(*,'(*(g0))') 'APPROX02_SOLVE|MATERIAL=',trim(material),'|H0=',h0,'|HBOT=',hbot, &
        '|TOP_FACTOR=',top_factor,'|DURATION=',duration,'|TOL_MULT=',tol_mult, &
-       '|STATUS=',result%status,'|SECONDS=',elapsed, &
+       '|STATUS=',result%status,'|CALLS=',calls,'|SECONDS_PER_SOLVE=',elapsed,'|NS_PER_SOLVE=',1.0e9_real64*elapsed, &
        '|NONLINEAR=',result%diagnostics%nonlinear_iterations, &
        '|JACOBIAN=',result%diagnostics%jacobian_builds, &
        '|LINEAR=',result%diagnostics%linear_solves, &
