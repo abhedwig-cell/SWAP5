@@ -9,48 +9,44 @@ trap 'rm -rf "$BUILD"' EXIT
 python3 - "$BUILD/test.f90" <<'PY'
 from pathlib import Path
 import sys
-src=Path("tests/fpe/test_fpe_planvalid01_application_timing.f90").read_text()
-src=src.replace(
-    "  character(len=32) :: arg\n",
-    "  character(len=32) :: arg,mode\n  logical :: use_direct\n")
-src=src.replace(
-    "  call get_command_argument(1,arg); read(arg,*) n\n"
-    "  call get_command_argument(2,arg); read(arg,*) rep\n"
-    "  if(n<=0 .or. rep<=0) error stop 'PROFILE02 baseline requires N>0 and rep>0'\n\n"
-    "  call build_config(config,n)\n",
-    "  call get_command_argument(1,mode)\n"
-    "  call get_command_argument(2,arg); read(arg,*) n\n"
-    "  call get_command_argument(3,arg); read(arg,*) rep\n"
-    "  select case(trim(mode))\n"
-    "  case('analytical'); use_direct=.false.\n"
-    "  case('direct'); use_direct=.true.\n"
-    "  case default; error stop 'PROFILE04 AHL mode must be analytical or direct'\n"
-    "  end select\n"
-    "  if(n<=0 .or. rep<=0) error stop 'PROFILE04 AHL requires N>0 and rep>0'\n\n"
-    "  call build_config(config,n,use_direct)\n")
-src=src.replace(
-    "  subroutine build_config(value,count)\n"
-    "    type(fmr_production_application_config_t),intent(out) :: value\n"
-    "    integer,intent(in) :: count\n",
-    "  subroutine build_config(value,count,use_direct)\n"
-    "    type(fmr_production_application_config_t),intent(out) :: value\n"
-    "    integer,intent(in) :: count\n"
-    "    logical,intent(in) :: use_direct\n")
-src=src.replace(
-    "      call initialize_parameters(value%tiles(k)%parameters,4000000_int64+int(k,int64))\n",
-    "      call initialize_parameters(value%tiles(k)%parameters,4000000_int64+int(k,int64),use_direct)\n")
-src=src.replace(
-    "  subroutine initialize_parameters(p,id)\n"
-    "    type(fmr_b110_physical_parameters_t),intent(out) :: p\n"
-    "    integer(int64),intent(in) :: id\n",
-    "  subroutine initialize_parameters(p,id,use_direct)\n"
-    "    type(fmr_b110_physical_parameters_t),intent(out) :: p\n"
-    "    integer(int64),intent(in) :: id\n"
-    "    logical,intent(in) :: use_direct\n")
-src=src.replace(
-    "    p%bottom_mode=7\n",
-    "    p%bottom_mode=7\n    p%direct_retention_active=use_direct\n")
-Path(sys.argv[1]).write_text(src)
+src=Path("tests/fahl/test_fahl49_application_scale.f90").read_text()
+src=src.replace("    forcing%bottom_head=-50.0_real64", "    forcing%bottom_head=H0")
+needle="""  write(*,'(A)') 'FAHL49_APP_INIT=PASS'
+  call app%close(status)
+"""
+replacement="""  write(*,'(A)') 'FAHL49_APP_INIT=PASS'
+
+  call system_clock(c0)
+  call app%run_standalone(T0,T1,results,status)
+  call system_clock(c1)
+  if(status/=FMR_APP_BOOT_OK) error stop 'PROFILE04 AHL application run failed'
+  run_s=real(c1-c0,real64)/real(rate,real64)
+  if(.not.allocated(results) .or. size(results)/=n) error stop 'PROFILE04 AHL result shape'
+  if(.not.all(results%completed) .or. .not.all(results%committed)) error stop 'PROFILE04 AHL incomplete result'
+  completed_count=count(results%completed)
+  committed_count=count(results%committed)
+  solver_calls=count(results%solver_executed)
+  accepted_substeps=sum(results%accepted_substeps)
+  nonlinear_iterations=sum(results%solver_nonlinear_iterations)
+  jacobian_builds=sum(results%solver_jacobian_builds)
+  linear_solves=sum(results%solver_linear_solves)
+  headcalc_calls=sum(results%solver_headcalc_calls)
+  internal_retries=sum(results%solver_internal_retries)
+  backtracking_attempts=sum(results%solver_backtracking_attempts)
+  max_residual=maxval(abs(results%mass%residual))
+  if(max_residual>TOL) error stop 'PROFILE04 AHL hard mass gate'
+  write(*,'(*(g0))') 'PROFILE04_AHL_APP_RUN,n=',n,',rep=',rep,',mode=',trim(mode), &
+       ',ns_per_column=',1.0e9_real64*run_s/real(n,real64),',solver_calls=',solver_calls, &
+       ',accepted_substeps=',accepted_substeps,',nonlinear_iterations=',nonlinear_iterations, &
+       ',jacobian_builds=',jacobian_builds,',linear_solves=',linear_solves,',headcalc_calls=',headcalc_calls, &
+       ',internal_retries=',internal_retries,',backtracking_attempts=',backtracking_attempts, &
+       ',max_mass_residual=',max_residual
+
+  call app%close(status)
+"""
+if needle not in src:
+    raise SystemExit("expected F-AHL49 close block not found")
+Path(sys.argv[1]).write_text(src.replace(needle,replacement))
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -O2)
@@ -155,7 +151,7 @@ RESULT="$BUILD/results.csv"
 echo 'pair,mode,n,ns,solver_calls,accepted_substeps,nonlinear,jacobian,linear,headcalc,retries,backtrack,residual' > "$RESULT"
 run_one() {
   local pair="$1" mode="$2" n="$3" line
-  line="$("$BUILD/test" "$mode" "$n" "$pair" | grep '^PLANVALID01_APP,n=')"
+  line="$("$BUILD/test" "$mode" "$n" "$pair" | grep '^PROFILE04_AHL_APP_RUN,n=')"
   python3 - "$pair" "$mode" "$n" "$line" "$RESULT" <<'PY'
 import csv,re,sys
 pair,mode,n,line,path=sys.argv[1:]
