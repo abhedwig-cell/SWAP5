@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'tests/fpe/run_fpe_profile04_end_to_end_rebaseline.sh'
+      - 'tests/fpe/run_fpe_profile04_repeated_decomposition.sh'
       - 'docs/performance/F-PE-PROFILE04_PREREGISTRATION.md'
       - '.github/workflows/f-pe-profile04.yml'
   workflow_dispatch:
@@ -16,6 +17,12 @@ jobs:
         with:
           fetch-depth: 0
       - run: bash tests/fpe/run_fpe_profile04_end_to_end_rebaseline.sh
+
+  repeated-decomposition:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile04_repeated_decomposition.sh
 
   ahl-repeated:
     runs-on: ubuntu-latest
