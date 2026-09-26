@@ -134,6 +134,10 @@ if old not in src: raise SystemExit("material seam missing")
 src=src.replace(old,new,1)
 
 src=src.replace(
+"    p%max_iterations=16; p%max_backtracking=8; p%min_step_duration=1.0e-8_real64\n",
+"    p%max_iterations=48; p%max_backtracking=16; p%min_step_duration=1.0e-10_real64\n",1)
+
+src=src.replace(
 "  public :: fgc44_predictor_run_diagnostics_c\n",
 "  public :: fgc44_predictor_run_diagnostics_c\n"
 "  public :: fgc44_approx04_configure_case_c, fgc44_approx04_p1b_state_c, fgc44_approx04_predictor_q_c\n"
