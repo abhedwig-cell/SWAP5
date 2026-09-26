@@ -2,7 +2,8 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx02-a2-multistep-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx02-a2-multistep-${GITHUB_RUN_ID:-local}-$"
+CANDIDATE_TOL="${APPROX02_CANDIDATE_TOL:-1e-4}"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "APPROX02_A2_MULTISTEP_FAIL $*" >&2; exit 1; }
@@ -72,7 +73,7 @@ OUT="$BUILD/results.txt"
 for material in B01 B12 O05 O14; do
   for spec in "wet -10" "mid -75" "dry -500"; do
     read -r regime h0 <<< "$spec"
-    raw="$("$BUILD/test" "$material" "$h0" 2>&1)" || { printf '%s\n' "$raw" >&2; fail "$material $regime"; }
+    raw="$("$BUILD/test" "$material" "$h0" "$CANDIDATE_TOL" 2>&1)" || { printf '%s\n' "$raw" >&2; fail "$material $regime"; }
     line="$(printf '%s\n' "$raw" | grep '^APPROX02_A2_MULTISTEP|')"
     printf '%s|REGIME=%s\n' "$line" "$regime" | tee -a "$OUT"
   done
