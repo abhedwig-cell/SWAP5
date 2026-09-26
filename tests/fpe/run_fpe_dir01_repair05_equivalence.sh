@@ -7,20 +7,14 @@ BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-dir01-r05-matrix-${GITHUB_RUN_ID:-l
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 
-python3 - "$BUILD/provider_candidate.f90" <<'PY'
-from pathlib import Path
-import sys
-src=Path("src/solver/mod_b110_default_mvg_provider.f90").read_text()
-needle="  public :: bind_b110_default_mvg_provider\n"
-if needle not in src: raise SystemExit("provider public seam missing")
-src=src.replace(needle,needle+"  public :: b110_hconduc\n",1)
-Path(sys.argv[1]).write_text(src)
-PY
+BASE=7a353bd11dca834b1d5ead0671c9054fe2045c25
+git fetch --no-tags --depth=1 origin "$BASE"
+git show "$BASE:src/solver/mod_b110_default_mvg_directional_provider.f90" > "$BUILD/directional_base_raw.f90"
 
-python3 - "$BUILD/directional_base.f90" <<'PY'
+python3 - "$BUILD/directional_base_raw.f90" "$BUILD/directional_base.f90" <<'PY'
 from pathlib import Path
 import sys
-src=Path("src/solver/mod_b110_default_mvg_directional_provider.f90").read_text()
+src=Path(sys.argv[1]).read_text()
 src=src.replace("module mod_b110_default_mvg_directional_provider",
                 "module mod_b110_default_mvg_directional_provider_base",1)
 src=src.replace("end module mod_b110_default_mvg_directional_provider",
@@ -29,62 +23,7 @@ src=src.replace("evaluate_b110_default_mvg_state_direction",
                 "evaluate_b110_default_mvg_state_direction_base")
 src=src.replace("evaluate_b110_default_mvg_water_content_direction",
                 "evaluate_b110_default_mvg_water_content_direction_base")
-Path(sys.argv[1]).write_text(src)
-PY
-
-python3 - "$BUILD/directional_candidate.f90" <<'PY'
-from pathlib import Path
-import sys
-src=Path("src/solver/mod_b110_default_mvg_directional_provider.f90").read_text()
-src=src.replace(
-"  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t",
-"  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t, b110_hconduc",1)
-src=src.replace(
-"""  subroutine evaluate_b110_default_mvg_state_direction(provider, pressure_head, pressure_head_direction, &
-                                                        water_content_direction, conductivity_direction, &
-                                                        available, route)""",
-"""  subroutine evaluate_b110_default_mvg_state_direction(provider, pressure_head, pressure_head_direction, &
-                                                        water_content_direction, conductivity_direction, &
-                                                        available, route, base_conductivity)""",1)
-src=src.replace(
-"    real(real64), intent(out) :: water_content_direction(:), conductivity_direction(:)\n",
-"    real(real64), intent(out) :: water_content_direction(:), conductivity_direction(:)\n"
-"    real(real64), intent(out), optional :: base_conductivity(:)\n",1)
-src=src.replace(
-"    real(real64) :: dthetadh, dkdh\n",
-"    real(real64) :: theta, dthetadh, dkdh\n",1)
-src=src.replace(
-"    conductivity_direction = 0.0_real64\n",
-"    conductivity_direction = 0.0_real64\n"
-"    if (present(base_conductivity)) base_conductivity = 0.0_real64\n",1)
-src=src.replace(
-"       call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), dthetadh, dkdh, node_ok)\n",
-"       call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), theta, dthetadh, dkdh, node_ok)\n",1)
-src=src.replace(
-"""       water_content_direction(i) = dthetadh * pressure_head_direction(i)
-       conductivity_direction(i) = dkdh * pressure_head_direction(i)
-""",
-"""       if (present(base_conductivity)) then
-          base_conductivity(i) = b110_hconduc(provider%parameters%cofgen(:,i), pressure_head(i), theta, &
-               provider%parameters%ksatexm_extension_enabled)
-       end if
-       water_content_direction(i) = dthetadh * pressure_head_direction(i)
-       conductivity_direction(i) = dkdh * pressure_head_direction(i)
-""",1)
-src=src.replace(
-"""  subroutine b110_smooth_derivatives(c, head, dthetadh, dkdh, ok)
-    real(real64), intent(in) :: c(:), head
-    real(real64), intent(out) :: dthetadh, dkdh""",
-"""  subroutine b110_smooth_derivatives(c, head, theta, dthetadh, dkdh, ok)
-    real(real64), intent(in) :: c(:), head
-    real(real64), intent(out) :: theta, dthetadh, dkdh""",1)
-src=src.replace(
-"    real(real64) :: theta, relsat, invm, one_minus_term, term1\n",
-"    real(real64) :: relsat, invm, one_minus_term, term1\n",1)
-src=src.replace(
-"    dthetadh = 0.0_real64\n    dkdh = 0.0_real64\n",
-"    theta = 0.0_real64\n    dthetadh = 0.0_real64\n    dkdh = 0.0_real64\n",1)
-Path(sys.argv[1]).write_text(src)
+Path(sys.argv[2]).write_text(src)
 PY
 
 cat > "$BUILD/test.f90" <<'F90'
@@ -192,9 +131,9 @@ end program test_dir01_repair05_equivalence
 F90
 
 gfortran -std=f2008 -ffree-line-length-none -O2 -J "$BUILD" -I "$BUILD"   -c src/solver/mod_soil_water_solver_contract.f90 -o "$BUILD/contract.o"
-gfortran -std=f2008 -ffree-line-length-none -O2 -J "$BUILD" -I "$BUILD"   -c "$BUILD/provider_candidate.f90" -o "$BUILD/provider.o"
+gfortran -std=f2008 -ffree-line-length-none -O2 -J "$BUILD" -I "$BUILD"   -c src/solver/mod_b110_default_mvg_provider.f90 -o "$BUILD/provider.o"
 gfortran -std=f2008 -ffree-line-length-none -O2 -J "$BUILD" -I "$BUILD"   -c "$BUILD/directional_base.f90" -o "$BUILD/directional_base.o"
-gfortran -std=f2008 -ffree-line-length-none -O2 -J "$BUILD" -I "$BUILD"   -c "$BUILD/directional_candidate.f90" -o "$BUILD/directional_candidate.o"
+gfortran -std=f2008 -ffree-line-length-none -O2 -J "$BUILD" -I "$BUILD"   -c src/solver/mod_b110_default_mvg_directional_provider.f90 -o "$BUILD/directional_candidate.o"
 gfortran -std=f2008 -ffree-line-length-none -O2 -J "$BUILD" -I "$BUILD"   -c "$BUILD/test.f90" -o "$BUILD/test.o"
 gfortran -O2 "$BUILD/contract.o" "$BUILD/provider.o" "$BUILD/directional_base.o"   "$BUILD/directional_candidate.o" "$BUILD/test.o" -o "$BUILD/test"
 "$BUILD/test"
