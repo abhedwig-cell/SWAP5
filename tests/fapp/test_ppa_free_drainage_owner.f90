@@ -1359,6 +1359,14 @@ contains
     call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'management inconsistent boundaries admitted'
     requests(2)%t0=T0
+    management(2)%irr_rate_cm_per_day=-0.01_real64
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
+    if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'invalid second source partially executed'
+    management(2)%irr_rate_cm_per_day=0.01_real64
+    management(2)%depth_criterion=1
+    call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
+    if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'unsupported bootstrap management depth admitted'
+    management(2)%depth_criterion=2
     call execute_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64,management,requests,previous,left,code)
     if(code/=FMR_APP_BOOT_OK) then
       write(*,*) 'MIXED_LIFECYCLE_STATUS',code,left%kernel_status,left%accepted_substeps
