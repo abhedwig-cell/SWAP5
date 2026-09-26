@@ -44,3 +44,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: bash tests/fpe/run_fpe_repro01_d4_runtime_controls.sh
+
+  d5-memory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_repro01_d5_memory.sh
