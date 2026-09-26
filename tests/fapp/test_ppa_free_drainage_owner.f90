@@ -1376,6 +1376,47 @@ contains
     call application%close(code)
     call restored%close(code)
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_MIXED_SELECTION_SOURCE_STOP_RESTART=PASS'
+    ! An outer failure after accepted internal steps must not publish either
+    ! the newly selected event or physical progress through the real owner.
+    config%numerical%max_committed_substeps=1
+    call application%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'limited bootstrap initialize'
+    do i=1,2
+      forcing(i)%subsurface_irrigation_source(1)=0.01_real64
+      events(i)=irrigation_state_t()
+      events(i)%active_event=.true.; events(i)%active_event_origin=IRRIGATION_EVENT_SCHEDULED
+      events(i)%active_event_start=T0; events(i)%active_event_end=midpoint
+      events(i)%active_event_rate=0.01_real64
+    end do
+    forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=T0
+    call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events)
+    if(code==FMR_APP_BOOT_OK.or..not.allocated(left)) error stop 'limited bootstrap accepted'
+    if(any(left%committed).or.any(left%completed).or.any(left%accepted_substeps<1)) &
+         error stop 'limited bootstrap did not reject internal progress'
+    call application%copy_committed_hydraulic_states(lhs,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'limited bootstrap snapshot'
+    do i=1,2
+      if(lhs(i)%revision/=0_int64.or.lhs(i)%committed_time/=T0) error stop 'limited bootstrap advanced owner'
+      if(any(lhs(i)%water_content/=source%water_content).or. &
+           any(lhs(i)%pressure_head_cm/=source%pressure_head)) error stop 'limited bootstrap changed hydraulics'
+    end do
+    call application%export_committed_restart(92001_int64,saved,ok,code)
+    if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'limited bootstrap export'
+    config%numerical=profile%numerical
+    call restored%initialize(config,code)
+    if(code/=FMR_APP_BOOT_OK) error stop 'retry bootstrap initialize'
+    call restored%restore_committed_restart(saved,92001_int64,ok,code)
+    if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'limited bootstrap restore'
+    ! Successful re-selection proves the failed trial did not persist its event.
+    call restored%run_prepared_irrigation(T0,midpoint,forcing,right,code,events)
+    if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'bootstrap rejected selection was persisted'
+    do i=1,2
+      if(.not.right(i)%mass%complete.or.abs(right(i)%mass%residual)>1.0e-12_real64) &
+           error stop 'bootstrap retry mass'
+    end do
+    call application%close(code)
+    call restored%close(code)
+    write(*,'(a)') 'PPA_IRR_BOOTSTRAP_INTERNAL_PROGRESS_ROLLBACK_RESTART_RETRY=PASS'
   end subroutine verify_irrigation_bootstrap
 
   subroutine verify_new_irrigation_selection_trial(profile,source,template,profile_selection,finish_in_window,timing)
