@@ -3,7 +3,7 @@ module mod_accepted_trajectory_directional_sensitivity
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_accepted_step_direction_contract, only: &
        soil_water_accepted_step_direction_request_t, soil_water_accepted_step_direction_result_t, &
-       SW_STEP_DIRECTION_AVAILABLE
+       SW_STEP_DIRECTION_AVAILABLE, SW_STEP_CONTROL_NONE
   implicit none
   private
 
@@ -162,11 +162,16 @@ contains
   subroutine build_trajectory_step_request(state, step_t0, step_t1, request, token, ok)
     type(accepted_trajectory_direction_t), intent(inout) :: state
     real(real64), intent(in) :: step_t0, step_t1
-    type(soil_water_accepted_step_direction_request_t), intent(out) :: request
+    type(soil_water_accepted_step_direction_request_t), intent(inout) :: request
     type(trajectory_step_token_t), intent(out) :: token
     logical, intent(out) :: ok
 
-    request = soil_water_accepted_step_direction_request_t()
+    request%requested = .false.
+    request%control_coordinate = SW_STEP_CONTROL_NONE
+    request%incoming_ponding_depth = 0.0_real64
+    request%direct_control_derivative = 0.0_real64
+    if (allocated(request%incoming_source_direction)) deallocate(request%incoming_source_direction)
+    if (allocated(request%incoming_sink_direction)) deallocate(request%incoming_sink_direction)
     token = trajectory_step_token_t()
     ok = .false.
     if (.not. state%requested .or. .not. allocated(state%pressure_head_direction)) return
@@ -198,8 +203,18 @@ contains
                          state%status /= TRAJECTORY_DIRECTION_FAILED)
     request%control_coordinate = state%control_coordinate
     request%direct_control_derivative = 1.0_real64
-    allocate(request%incoming_pressure_head(size(state%pressure_head_direction)))
-    allocate(request%incoming_water_content(size(state%water_content_direction)))
+    if (allocated(request%incoming_pressure_head)) then
+      if (size(request%incoming_pressure_head) /= size(state%pressure_head_direction)) &
+           deallocate(request%incoming_pressure_head)
+    end if
+    if (allocated(request%incoming_water_content)) then
+      if (size(request%incoming_water_content) /= size(state%water_content_direction)) &
+           deallocate(request%incoming_water_content)
+    end if
+    if (.not. allocated(request%incoming_pressure_head)) &
+         allocate(request%incoming_pressure_head(size(state%pressure_head_direction)))
+    if (.not. allocated(request%incoming_water_content)) &
+         allocate(request%incoming_water_content(size(state%water_content_direction)))
     request%incoming_pressure_head = state%pressure_head_direction
     request%incoming_water_content = state%water_content_direction
     request%incoming_ponding_depth = state%ponding_direction
