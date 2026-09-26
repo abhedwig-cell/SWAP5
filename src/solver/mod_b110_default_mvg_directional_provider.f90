@@ -47,6 +47,12 @@ contains
        route = 'b110-mvg-direction-shape-invalid'
        return
     end if
+    if (present(base_conductivity)) then
+       if (size(base_conductivity) /= n) then
+          route = 'b110-mvg-base-conductivity-shape-invalid'
+          return
+       end if
+    end if
     if (any(.not. ieee_is_finite(pressure_head)) .or. any(.not. ieee_is_finite(pressure_head_direction))) then
        route = 'b110-mvg-direction-nonfinite'
        return
