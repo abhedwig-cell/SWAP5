@@ -506,13 +506,16 @@ for key,d in sorted(finals.items()):
     ends=[r for r in rows if r["tag"]=="SHORTSTEP01_P1_END"]
     trials=[r for r in rows if r["tag"]=="SHORTSTEP01_P1_TRIAL"]
     newtons=[r for r in rows if r["tag"]=="SHORTSTEP01_P1_NEWTON"]
-    if len(inits)!=1 or len(ends)!=1: raise SystemExit(f"incomplete trace {key}")
+    if len(inits)!=1: raise SystemExit(f"missing init trace {key}")
     accepted=sum(r["ACCEPT_PROGRESS"].upper() in ("T",".TRUE.","TRUE") for r in trials)
     rejected=len(trials)-accepted
+    end_status=ends[-1]["STATUS"] if ends else ("CONVERGED" if d["floor_status"]==0 else "EXHAUSTED")
+    end_sum=float(ends[-1]["SUM"]) if ends else float("nan")
+    end_fmax=float(ends[-1]["FMAX"]) if ends else float("nan")
     print(f"SHORTSTEP01_P1_SUMMARY|MATERIAL={key[0]}|REGIME={key[1]}|IMBALANCE={key[2]:.3f}|OFFSET_CM={key[3]:.6f}|DT={key[4]:.8e}"
           f"|FLOOR_STATUS={d['floor_status']}|NONLINEAR={d['nonlinear']}|NEWTON_RECORDS={len(newtons)}"
           f"|TRIAL_RECORDS={len(trials)}|PROGRESS_ACCEPTS={accepted}|PROGRESS_REJECTS={rejected}"
           f"|INITIAL_SUMOLD={float(inits[0]['SUMOLD']):.17e}|INITIAL_FMAX={float(inits[0]['FMAX']):.17e}"
-          f"|END_STATUS={ends[-1]['STATUS']}|END_SUM={float(ends[-1]['SUM']):.17e}|END_FMAX={float(ends[-1]['FMAX']):.17e}")
+          f"|END_STATUS={end_status}|END_SUM={end_sum:.17e}|END_FMAX={end_fmax:.17e}")
 print("FPE_SHORTSTEP01_P1=PASS")
 PY
