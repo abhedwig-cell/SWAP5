@@ -27,3 +27,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_dir01_repair03_heap.sh
+
+  postimage-rebaseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: current bottom-head directional ratio
+        run: bash tests/fpe/run_fpe_profile04_head_directional.sh
+      - name: current directional heap attribution
+        run: bash tests/fpe/run_fpe_dir01_heap_attribution.sh
