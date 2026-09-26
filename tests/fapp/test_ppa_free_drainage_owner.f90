@@ -1328,31 +1328,29 @@ contains
     call restored%initialize(config,code)
     if(code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle fresh initialize'
     forcing%temporal_forcing_event=.true.; forcing%temporal_forcing_event_time=T0
-    forcing(2)%subsurface_irrigation_source=0.0_real64
-    forcing(2)%temporal_forcing_event=.false.
-    events(2)=irrigation_state_t()
+    forcing(2)%subsurface_irrigation_source(1)=0.01_real64
+    events(2)=events(1)
+    events(1)%active_event_end=midpoint
     call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,selection_mask=[.true.,.false.])
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'selection mask accepted without events'
     call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events,[.true.])
     if(code==FMR_APP_BOOT_OK.or.allocated(left)) error stop 'selection mask accepted wrong length'
-    call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events,[.true.,.false.])
+    call application%run_prepared_irrigation(T0,midpoint,forcing,left,code,events,[.true.,.true.])
     if(code/=FMR_APP_BOOT_OK) then
       write(*,*) 'MIXED_LIFECYCLE_STATUS',code,left%kernel_status,left%accepted_substeps
       write(*,*) 'MIXED_LIFECYCLE_ADMISSION',left%admission_status
     end if
-    if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'new beside inactive bootstrap failed'
+    if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'initial staggered gifts failed'
     call application%export_committed_restart(92001_int64,saved,ok,code)
     if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle export'
     call restored%restore_committed_restart(saved,92001_int64,ok,code)
     if(.not.ok.or.code/=FMR_APP_BOOT_OK) error stop 'mixed lifecycle restore'
-    events(2)=events(1); events(2)%active_event_start=midpoint
-    forcing(1)%temporal_forcing_event=.false.
-    forcing(2)%subsurface_irrigation_source(1)=0.01_real64
-    forcing(2)%temporal_forcing_event=.true.
-    forcing(2)%temporal_forcing_event_time=midpoint
-    call application%run_prepared_irrigation(midpoint,finish,forcing,left,code,events,[.false.,.true.])
+    events(1)%active_event_start=midpoint; events(1)%active_event_end=finish
+    forcing(1)%temporal_forcing_event=.true.; forcing(1)%temporal_forcing_event_time=midpoint
+    forcing(2)%temporal_forcing_event=.false.
+    call application%run_prepared_irrigation(midpoint,finish,forcing,left,code,events,[.true.,.false.])
     if(code/=FMR_APP_BOOT_OK.or..not.all(left%committed)) error stop 'pending beside new bootstrap failed'
-    call restored%run_prepared_irrigation(midpoint,finish,forcing,right,code,events,[.false.,.true.])
+    call restored%run_prepared_irrigation(midpoint,finish,forcing,right,code,events,[.true.,.false.])
     if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'restored pending beside new failed'
     do i=1,2
       if(.not.left(i)%mass%complete.or.abs(left(i)%mass%residual)>1.0e-12_real64) &
