@@ -425,7 +425,7 @@ for key,d in sorted(finals.items()):
     mat,reg,off,budget=key
     seq=attempts[key]; reasons=[x["REASON"] for x in seq]
     success=d["participant_status"]==0
-    if success: frontier[(mat,reg,abs(off))].append(budget)
+    if success: frontier[(mat,reg,off)].append(budget)
     print(f"TEMPORAL02_P3A_POINT|MATERIAL={mat}|REGIME={reg}|OFFSET_CM={off:.6f}|BUDGET_CM={budget:.1e}"
           f"|PASS={str(success).upper()}|FIRST_REASON={reasons[0]}|TEMPORAL_REJECTIONS={sum(r=='TEMPORAL' for r in reasons)}"
           f"|SOLVER_REJECTIONS={sum(r=='SOLVER' for r in reasons)}|EVENTS={len(reasons)}")
@@ -434,7 +434,7 @@ for mag in mags:
     vals=[]
     for mat,reg in [("B01","wet"),("B01","mid"),("B12","wet"),("O05","wet"),("O14","wet"),("O14","mid")]:
         for sign in (-1,1):
-            key=(mat,reg,mag)
+            key=(mat,reg,sign*mag)
             candidates=frontier.get(key,[])
             vals.append(min(candidates) if candidates else float("inf"))
     common=max(vals)
