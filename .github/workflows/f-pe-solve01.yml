@@ -1,0 +1,26 @@
+name: F-PE-SOLVE01 EF upper bound
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_solve01_ef_upper_bound.sh'
+      - 'docs/performance/F-PE-SOLVE01_*.md'
+      - '.github/workflows/f-pe-solve01.yml'
+  workflow_dispatch:
+
+jobs:
+  ef-upper-bound:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run aggressive discarded-trial solve-elimination upper bound
+        run: |
+          bash tests/fpe/run_fpe_solve01_ef_upper_bound.sh | tee solve01-ef.txt
+          grep -Fq 'FPE_SOLVE01_EF=PASS' solve01-ef.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-solve01-ef
+          path: solve01-ef.txt
