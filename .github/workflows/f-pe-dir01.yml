@@ -42,3 +42,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_dir01_repair02_heap.sh
+
+  transaction-preservation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/transaction/run_a23bl_gate.sh
+      - name: attempt-context semantics
+        run: |
+          set -euo pipefail
+          BUILD="${RUNNER_TEMP}/dir01-context-gate"
+          mkdir -p "$BUILD"
+          gfortran -std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace -O2 \
+            -J "$BUILD" src/transaction/mod_transaction_reference.f90 \
+            tests/transaction/test_transaction_attempt_context.f90 -o "$BUILD/test"
+          "$BUILD/test"
