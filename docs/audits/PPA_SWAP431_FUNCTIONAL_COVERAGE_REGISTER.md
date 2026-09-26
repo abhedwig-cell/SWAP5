@@ -45,6 +45,19 @@ confirmed B0 defects are not migration targets.
 
 ## Candidate ordering and current block
 
+Current branch-local checkpoint `e2ebb40f2` (tested postimage `52189a2af`)
+supersedes the historical irrigation implementation limits below. Restricted
+TCS7/TCS8 and DCS1/DCS2 single-node SSDI now includes committed pending events,
+accepted-only publication, decoded restart and opted-in bootstrap execution.
+Exact-interval, event-aligned prefix and bounded multi-prefix window APIs are
+qualified in the recorded fixtures, including mixed outcomes and durable budget
+boundaries. See `integration/audits/PPA_IRR_APPLICATION_CONTRACT.md` and
+`integration/audits/PPA_IRR_EVENT_OWNER_STATUS.json`. This remains branch-local,
+not general management/calendar admission or whole-migration closure. Initial
+zero-source numerical failures remain open.
+
+### Historical progression (not current implementation limits)
+
 At 1e1cb89a0 the prescribed-source runtime gate covers three windows: start,
 unchanged active source after a fresh-owner hydraulic restart, and explicit
 source stop. O0/O2 transcripts agree; pressure, water content, time, revision

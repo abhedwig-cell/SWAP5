@@ -9,9 +9,10 @@
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
   "latest_irrigation_checkpoint": {
-    "tested_commit": "1e1cb89a0",
+    "tested_commit": "52189a2af",
+    "application_contract": "integration/audits/PPA_IRR_APPLICATION_CONTRACT.md",
     "record": "integration/audits/PPA_IRR_EVENT_OWNER_STATUS.json",
-    "scope": "Previous DCS1 selected-source acceptance and rollback gates retained. Three prescribed-source windows now cover start, unchanged active-source continuation after fresh-owner hydraulic restart, and explicit stop with no repeated SSDI; exact profile/time/revision/inflow identity and hard mass pass O0/O2. An expired start-event marker in the former continuation probe was corrected without changing acceptance limits. Isolated event carrier, validation, clone and assembly exist but remain unregistered. Pending event-state persistence, automatic accepted-only event publication and canonical admission remain open; this is not automatic mid-event restart.",
+    "scope": "Branch-local restricted TCS7/TCS8, DCS1/DCS2 single-node water-only SSDI now composes committed event state, accepted-only publication, decoded restart and explicitly opted-in bootstrap execution. Exact, event-aligned prefix and bounded multi-prefix window APIs pass recorded O0/O2 mass, rollback, restart, source-stop, mixed-outcome and manual-identity fixtures. Supplied profile/configuration remains fixed over a window. Canonical/general registry, calendar/parser, dynamic crop inputs and disk persistence are not admitted; recorded initial zero-source numerics remain unresolved.",
     "next_work_unit": "integration/audits/PPA_IRR_EVENT_OWNER_PREREGISTRATION.json"
   },
   "latest_atm02_owner_checkpoint": {
