@@ -2028,6 +2028,11 @@ contains
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
+    self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
+    self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
+    self%last_observation%practical_richards_head_rel_tolerance = self%head_rel_tolerance
+    self%last_observation%practical_richards_compartment_balance_tolerance = self%compartment_balance_tolerance
+    self%last_observation%practical_richards_total_balance_tolerance = self%total_balance_tolerance
     self%last_observation%soil_temperature_active = self%soil_temperature_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
