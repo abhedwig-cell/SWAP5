@@ -2,7 +2,8 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx02-a2-e2e-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-approx02-a2-e2e-${GITHUB_RUN_ID:-local}-$"
+CANDIDATE_TOL="${APPROX02_CANDIDATE_TOL:-1e-4}"
 mkdir -p "$BUILD/modflow-bin" "$BUILD/downloads" "$BUILD/exact" "$BUILD/a2" "$BUILD/py"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "APPROX02_A2_E2E_FAIL $*" >&2; exit 1; }
@@ -17,15 +18,16 @@ ARCHIVE="$BUILD/downloads/modflow6-6.8.0-linux.zip"
 echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  $ARCHIVE" | sha256sum -c - || fail "MODFLOW asset hash"
 test -f "$BUILD/modflow-bin/libmf6.so" || fail "missing libmf6.so"
 
-python3 - "$BUILD/a2/mod_fgc44_real_swap_c_bridge.f90" <<'PY'
+python3 - "$BUILD/a2/mod_fgc44_real_swap_c_bridge.f90" "$CANDIDATE_TOL" <<'PY'
 from pathlib import Path
 import sys
 src=Path("tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90").read_text()
+tol=sys.argv[2]
 old="""    p%compartment_balance_tolerance=TOL; p%total_balance_tolerance=TOL; p%head_abs_tolerance=TOL
     p%head_rel_tolerance=TOL; p%ponding_tolerance=TOL; p%root_extraction_active=.false.
 """
-new="""    p%compartment_balance_tolerance=1.0e-4_real64; p%total_balance_tolerance=1.0e-4_real64
-    p%head_abs_tolerance=1.0e-4_real64; p%head_rel_tolerance=1.0e-4_real64
+new=f"""    p%compartment_balance_tolerance={tol}_real64; p%total_balance_tolerance={tol}_real64
+    p%head_abs_tolerance={tol}_real64; p%head_rel_tolerance={tol}_real64
     p%ponding_tolerance=TOL; p%root_extraction_active=.false.
 """
 if old not in src: raise SystemExit("A2 tolerance seam missing")
