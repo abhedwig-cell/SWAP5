@@ -46,3 +46,25 @@ The initial canonical rebaseline confirms:
 4. the next PROFILE04 measurement must directly compare default analytical versus F-AHL50 opt-in repeated solver/application runtime on the same canonical postimage, because the current ZERO-WASTE paired runner does not measure AHL's incremental runtime benefit.
 
 Do not claim a total 20-35% end-to-end application speedup from this run alone.
+
+
+## Same-postimage F-AHL50 repeated solver timing
+
+Measurement job: PROFILE04 `ahl-repeated`, run `36220768074`.
+
+Analytical/default and direct-retention were measured on the same current postimage across B01/B12/O05/O14 × wet/mid/dry.
+
+All 12 cases passed fidelity/path gates and all 12 were speed-positive.
+
+Median candidate/analytical ratio:
+`0.827472736`
+
+Thus the median incremental repeated-solver reduction from F-AHL50 on the current postimage is approximately **17.25%**.
+
+Range:
+- fastest ratio: `0.791522277` (~20.85% reduction);
+- slowest ratio: `0.871253584` (~12.87% reduction).
+
+This is the clean current-postimage AHL increment and supersedes using older 12-15% figures for planning.
+
+It still must not be multiplied or naively added to the historical ZERO-WASTE speedup to claim total application runtime. A full same-workload end-to-end baseline comparison remains required for that claim.
