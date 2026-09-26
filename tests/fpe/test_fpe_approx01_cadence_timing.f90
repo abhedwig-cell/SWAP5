@@ -36,6 +36,7 @@ program test_fpe_approx01_cadence_timing
   real(real64) :: checksum,cached_tangent,elapsed,physical_checksum,amplitude,head_threshold,current_head,last_refresh_head
   integer :: i,j,calls,cadence,clock_start,clock_end,clock_rate,refreshes,point,age
   character(len=64) :: arg,mode
+  logical :: refresh
 
   if(command_argument_count()/=4 .and. command_argument_count()/=6) &
        error stop 'usage: test MODE CADENCE CALLS H0_CM [AMPLITUDE_CM HEAD_THRESHOLD_CM]'
