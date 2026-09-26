@@ -125,7 +125,7 @@ for source in "${MODULE_SRC[@]}"; do
 done
 gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/bridge/libtemporal08_production.so" || fail "link shared library"
 
-for symbol in fpe_temporal08_fixture_initialize_c fpe_temporal08_fixture_state_c fpe_temporal08_fixture_close_c   fgc49d_context_counts_c fgc49d_trial_cell_heads_c fgc49d_trial_response_tangents_c fgc49d_relinearize_terms_c   fgc49d_commit_swaps_c fgc49d_commit_ledgers_c fgc34_publish_c; do
+for symbol in fpe_temporal08_fixture_initialize_c fpe_temporal08_fixture_state_c fpe_temporal08_fixture_close_c fpe_temporal08_missing_seed_rejected_c   fgc49d_context_counts_c fgc49d_trial_cell_heads_c fgc49d_trial_response_tangents_c fgc49d_relinearize_terms_c   fgc49d_commit_swaps_c fgc49d_commit_ledgers_c fgc34_publish_c; do
   nm -D "$BUILD/bridge/libtemporal08_production.so" | grep -q "$symbol" || fail "missing symbol $symbol"
 done
 
@@ -135,6 +135,18 @@ from pathlib import Path
 import sys
 p=Path(sys.argv[1]); src=p.read_text()
 src=src.replace("fgc49d_fixture_initialize_c","fpe_temporal08_fixture_initialize_c")
+src=src.replace(
+'''    bridge = ctypes.CDLL(str(application_lib))
+    handle, href1, href2 = fixture_initialize(bridge)
+''',
+'''    bridge = ctypes.CDLL(str(application_lib))
+    missing_seed=bridge.fpe_temporal08_missing_seed_rejected_c
+    missing_seed.restype=ctypes.c_int
+    missing_seed.argtypes=[]
+    require(int(missing_seed()) == 0, "missing temporal-history seed was not rejected")
+    print("FPE_TEMPORAL08_MISSING_HISTORY_SEED_FAIL_CLOSED=PASS")
+    handle, href1, href2 = fixture_initialize(bridge)
+''',1)
 old='''def fixture_state(lib: ctypes.CDLL) -> tuple[int, int, int, int, int, int]:
     fn = lib.fgc49d_fixture_state_c
     fn.restype = ctypes.c_int
@@ -197,7 +209,7 @@ PY
 
 PYTHONPATH="$ROOT/src/adapter:$ROOT/tests/fgc/support" LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC49D_APPLICATION_LIB="$BUILD/bridge/libtemporal08_production.so" python3 "$BUILD/py/live.py" | tee "$BUILD/p3.txt"
 
-for marker in   'FGC49D_LIVE_MODFLOW6_6_8_0=PASS'   'FGC49D_LIVE_PER_CELL_CONJUNCTIVE_CONVERGENCE=PASS'   'FGC49D_LIVE_MODFLOW_SWAP_LEDGER_PUBLICATION=PASS'   'FPE_TEMPORAL08_LIVE_PRODUCTION_BOOTSTRAP=PASS'   'FPE_TEMPORAL08_EXACTLY_ONCE_PUBLICATION=PASS'; do
+for marker in   'FGC49D_LIVE_MODFLOW6_6_8_0=PASS'   'FGC49D_LIVE_PER_CELL_CONJUNCTIVE_CONVERGENCE=PASS'   'FGC49D_LIVE_MODFLOW_SWAP_LEDGER_PUBLICATION=PASS'   'FPE_TEMPORAL08_LIVE_PRODUCTION_BOOTSTRAP=PASS'   'FPE_TEMPORAL08_EXACTLY_ONCE_PUBLICATION=PASS'   'FPE_TEMPORAL08_MISSING_HISTORY_SEED_FAIL_CLOSED=PASS'; do
   grep -Fq "$marker" "$BUILD/p3.txt" || fail "missing marker $marker"
 done
 echo 'FPE_TEMPORAL08_P3=PASS'
