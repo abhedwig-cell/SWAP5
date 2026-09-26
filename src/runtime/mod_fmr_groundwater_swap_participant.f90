@@ -21,6 +21,9 @@ module mod_fmr_groundwater_swap_participant
 
   real(real64), parameter :: DAY_TO_S = 86400.0_real64
 
+  integer, parameter, public :: FMR_TANGENT_CACHE_OK = 0
+  integer, parameter, public :: FMR_TANGENT_CACHE_INVALID_CONFIG = 1
+
   ! F-GC44 concrete binding of the admitted F-GC43 participant contract to the
   ! encapsulated FMR backend. The FMR backend keeps its kernel executor private;
   ! this adapter therefore holds only checkpoint/candidate provenance and calls
@@ -36,6 +39,19 @@ module mod_fmr_groundwater_swap_participant
     real(real64) :: origin_time = 0.0_real64
     logical :: origin_captured = .false.
     logical :: live_candidate = .false.
+    logical :: tangent_cache_enabled = .false.
+    logical :: tangent_cache_valid = .false.
+    real(real64) :: tangent_cache_value = 0.0_real64
+    real(real64) :: tangent_cache_refresh_head_m = 0.0_real64
+    real(real64) :: tangent_cache_head_limit_m = 0.005_real64
+    integer :: tangent_cache_max_age = 8
+    integer :: tangent_cache_age = 0
+    integer :: tangent_cache_fresh_count = 0
+    integer :: tangent_cache_reuse_count = 0
+    integer(int64) :: tangent_cache_lineage_id = 0_int64
+    integer(int64) :: tangent_cache_revision = -1_int64
+    real(real64) :: tangent_cache_t0 = 0.0_real64
+    real(real64) :: tangent_cache_t1 = 0.0_real64
   contains
     procedure, public :: capture_origin => fmr_swap_capture_origin
     procedure, public :: trial_from_origin => fmr_swap_trial_from_origin
@@ -47,6 +63,8 @@ module mod_fmr_groundwater_swap_participant
     procedure, public :: has_live_candidate => fmr_swap_has_live_candidate
     procedure, public :: captured_lineage_id => fmr_swap_lineage_id
     procedure, public :: captured_revision => fmr_swap_revision
+    procedure, public :: configure_tangent_cache => fmr_swap_configure_tangent_cache
+    procedure, public :: tangent_cache_counts => fmr_swap_tangent_cache_counts
   end type fmr_groundwater_swap_participant_t
 
 contains
@@ -73,6 +91,7 @@ contains
     self%origin_revision = self%origin_checkpoint%origin_revision()
     if (self%origin_lineage_id <= 0_int64 .or. self%origin_revision < 0_int64) return
     self%origin_captured = .true.
+    call invalidate_tangent_cache(self)
     status = GW_SWAP_PARTICIPANT_OK
   end subroutine fmr_swap_capture_origin
 
@@ -97,6 +116,7 @@ contains
     type(canonical_numerical_config_t) :: trial_numerical
     real(real64) :: duration_day, qbot_mean_cm_per_day, dq_swap_dh_per_s
     integer :: forcing_status, interface_status
+    logical :: refresh_tangent
 
     trial = groundwater_swap_trial_t()
     status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
@@ -128,8 +148,19 @@ contains
       return
     end if
 
+    refresh_tangent = .true.
+    if (self%tangent_cache_enabled .and. self%tangent_cache_valid) then
+      refresh_tangent = self%tangent_cache_lineage_id /= self%origin_lineage_id .or. &
+           self%tangent_cache_revision /= self%origin_revision .or. &
+           .not. same_time(self%tangent_cache_t0, window%t0) .or. &
+           .not. same_time(self%tangent_cache_t1, window%t1) .or. &
+           self%tangent_cache_age >= self%tangent_cache_max_age .or. &
+           abs(prescribed_head_m-self%tangent_cache_refresh_head_m) > self%tangent_cache_head_limit_m .or. &
+           .not. ieee_is_finite(self%tangent_cache_value)
+    end if
+
     trial_numerical = numerical
-    trial_numerical%accepted_trajectory_direction%requested = .true.
+    trial_numerical%accepted_trajectory_direction%requested = refresh_tangent
     trial_numerical%accepted_trajectory_direction%control_coordinate = SW_STEP_CONTROL_BOTTOM_HEAD
 
     select type (typed_forcing => forcing)
@@ -144,6 +175,7 @@ contains
 
     if (.not. accepted_whole_window(self%trial_result, self%candidate, window)) then
       if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
+      call invalidate_tangent_cache(self)
       status = GW_SWAP_PARTICIPANT_TRIAL_FAILED
       return
     end if
@@ -154,16 +186,51 @@ contains
          trial%q_swap_m_per_s, interface_status)
     if (interface_status /= GW_INTERFACE_OK .or. .not. ieee_is_finite(trial%q_swap_m_per_s)) then
       call backend%discard_trial_candidate(self%candidate, self%diagnostics)
+      call invalidate_tangent_cache(self)
       status = GW_SWAP_PARTICIPANT_EXCHANGE_FAILED
       return
     end if
 
-    if (accepted_head_response_tangent(self%trial_result, window)) then
-      dq_swap_dh_per_s = -self%trial_result%accepted_trajectory_direction%accepted_bottom_exchange_derivative / &
-           (duration_day * DAY_TO_S)
-      if (ieee_is_finite(dq_swap_dh_per_s)) then
+    if (refresh_tangent) then
+      if (accepted_head_response_tangent(self%trial_result, window)) then
+        dq_swap_dh_per_s = -self%trial_result%accepted_trajectory_direction%accepted_bottom_exchange_derivative / &
+             (duration_day * DAY_TO_S)
+        if (ieee_is_finite(dq_swap_dh_per_s)) then
+          trial%response_tangent_available = .true.
+          trial%dq_swap_dh_per_s = dq_swap_dh_per_s
+          trial%response_tangent_reused = .false.
+          trial%response_tangent_age = 0
+          trial%response_tangent_refresh_head_m = prescribed_head_m
+          trial%response_tangent_provenance = 'accepted-trajectory-fresh'
+          if (self%tangent_cache_enabled) then
+            self%tangent_cache_valid = .true.
+            self%tangent_cache_value = dq_swap_dh_per_s
+            self%tangent_cache_refresh_head_m = prescribed_head_m
+            self%tangent_cache_age = 0
+            self%tangent_cache_lineage_id = self%origin_lineage_id
+            self%tangent_cache_revision = self%origin_revision
+            self%tangent_cache_t0 = window%t0
+            self%tangent_cache_t1 = window%t1
+            self%tangent_cache_fresh_count = self%tangent_cache_fresh_count + 1
+          end if
+        else
+          call invalidate_tangent_cache(self)
+        end if
+      else
+        call invalidate_tangent_cache(self)
+      end if
+    else
+      if (self%tangent_cache_valid .and. ieee_is_finite(self%tangent_cache_value)) then
+        self%tangent_cache_age = self%tangent_cache_age + 1
+        self%tangent_cache_reuse_count = self%tangent_cache_reuse_count + 1
         trial%response_tangent_available = .true.
-        trial%dq_swap_dh_per_s = dq_swap_dh_per_s
+        trial%dq_swap_dh_per_s = self%tangent_cache_value
+        trial%response_tangent_reused = .true.
+        trial%response_tangent_age = self%tangent_cache_age
+        trial%response_tangent_refresh_head_m = self%tangent_cache_refresh_head_m
+        trial%response_tangent_provenance = 'same-origin-cache'
+      else
+        call invalidate_tangent_cache(self)
       end if
     end if
 
@@ -188,6 +255,7 @@ contains
     status = GW_SWAP_PARTICIPANT_CANDIDATE_BUSY
     if (self%live_candidate .or. self%candidate%ready()) return
     self%origin_captured = .false.
+    call invalidate_tangent_cache(self)
     self%origin_lineage_id = 0_int64
     self%origin_revision = -1_int64
     self%origin_time = 0.0_real64
@@ -244,6 +312,7 @@ contains
     end if
     self%live_candidate = .false.
     self%origin_captured = .false.
+    call invalidate_tangent_cache(self)
     status = GW_SWAP_PARTICIPANT_OK
   end subroutine fmr_swap_commit_candidate
 
@@ -321,6 +390,55 @@ contains
     class(fmr_groundwater_swap_participant_t), intent(in) :: self
     value = self%origin_revision
   end function fmr_swap_revision
+
+  subroutine fmr_swap_configure_tangent_cache(self, enabled, head_limit_m, max_age, status)
+    class(fmr_groundwater_swap_participant_t), intent(inout) :: self
+    logical, intent(in) :: enabled
+    real(real64), intent(in), optional :: head_limit_m
+    integer, intent(in), optional :: max_age
+    integer, intent(out), optional :: status
+    integer :: local_status
+
+    local_status = FMR_TANGENT_CACHE_OK
+    if (present(head_limit_m)) then
+      if (.not. ieee_is_finite(head_limit_m) .or. head_limit_m < 0.0_real64) &
+           local_status = FMR_TANGENT_CACHE_INVALID_CONFIG
+    end if
+    if (present(max_age)) then
+      if (max_age < 1) local_status = FMR_TANGENT_CACHE_INVALID_CONFIG
+    end if
+    if (local_status /= FMR_TANGENT_CACHE_OK) then
+      if (present(status)) status = local_status
+      return
+    end if
+
+    self%tangent_cache_enabled = enabled
+    if (present(head_limit_m)) self%tangent_cache_head_limit_m = head_limit_m
+    if (present(max_age)) self%tangent_cache_max_age = max_age
+    call invalidate_tangent_cache(self)
+    self%tangent_cache_fresh_count = 0
+    self%tangent_cache_reuse_count = 0
+    if (present(status)) status = local_status
+  end subroutine fmr_swap_configure_tangent_cache
+
+  subroutine fmr_swap_tangent_cache_counts(self, fresh_count, reuse_count)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    integer, intent(out) :: fresh_count, reuse_count
+    fresh_count = self%tangent_cache_fresh_count
+    reuse_count = self%tangent_cache_reuse_count
+  end subroutine fmr_swap_tangent_cache_counts
+
+  subroutine invalidate_tangent_cache(self)
+    class(fmr_groundwater_swap_participant_t), intent(inout) :: self
+    self%tangent_cache_valid = .false.
+    self%tangent_cache_value = 0.0_real64
+    self%tangent_cache_refresh_head_m = 0.0_real64
+    self%tangent_cache_age = 0
+    self%tangent_cache_lineage_id = 0_int64
+    self%tangent_cache_revision = -1_int64
+    self%tangent_cache_t0 = 0.0_real64
+    self%tangent_cache_t1 = 0.0_real64
+  end subroutine invalidate_tangent_cache
 
   pure logical function same_time(a, b) result(matches)
     real(real64), intent(in) :: a, b
