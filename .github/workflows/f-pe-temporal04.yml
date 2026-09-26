@@ -26,3 +26,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: bash tests/fpe/run_fpe_temporal04_p1a_oracle_replication.sh
+
+  p1b-runtime-retry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal04_p1b_runtime_retry.sh
