@@ -25,7 +25,7 @@ program test_fpe_approx02_richards_effort
   type(soil_water_solve_result_t) :: result
   real(real64), target :: drainage(1,numnod), irrigation(numnod), roots(numnod)
   real(real64), allocatable :: cofgen(:,:)
-  real(real64) :: h0,hbot,top_factor,duration,tol_mult
+  real(real64) :: h0,hbot,top_factor,duration,tol_mult,balance_mult
   real(real64) :: tr,ts,alpha,nvg,ksat,lambda,k0
   real(real64) :: water(numnod),cond(numnod),cap(numnod),dkdh(numnod),heads(numnod)
   real(real64) :: t0,t1,elapsed
@@ -33,8 +33,8 @@ program test_fpe_approx02_richards_effort
   character(len=8) :: material
   integer :: i,j,calls,warmups
 
-  if(command_argument_count()/=6 .and. command_argument_count()/=7) &
-       error stop 'usage: MATERIAL H0_CM HBOT_CM TOP_FACTOR DURATION_DAY TOL_MULT [CALLS]'
+  if(command_argument_count()/=6 .and. command_argument_count()/=7 .and. command_argument_count()/=8) &
+       error stop 'usage: MATERIAL H0_CM HBOT_CM TOP_FACTOR DURATION_DAY TOL_MULT [CALLS [BALANCE_MULT]]'
   call get_command_argument(1,material)
   call get_command_argument(2,arg); read(arg,*) h0
   call get_command_argument(3,arg); read(arg,*) hbot
@@ -42,10 +42,15 @@ program test_fpe_approx02_richards_effort
   call get_command_argument(5,arg); read(arg,*) duration
   call get_command_argument(6,arg); read(arg,*) tol_mult
   calls=1
-  if(command_argument_count()==7)then
+  balance_mult=1.0_real64
+  if(command_argument_count()>=7)then
     call get_command_argument(7,arg); read(arg,*) calls
   end if
-  if(duration<=0.0_real64 .or. tol_mult<=0.0_real64 .or. calls<=0) error stop 'invalid duration/tolerance/calls'
+  if(command_argument_count()==8)then
+    call get_command_argument(8,arg); read(arg,*) balance_mult
+  end if
+  if(duration<=0.0_real64 .or. tol_mult<=0.0_real64 .or. balance_mult<=0.0_real64 .or. calls<=0) &
+       error stop 'invalid duration/tolerance/balance/calls'
 
   call material_parameters(trim(material),tr,ts,alpha,nvg,ksat,lambda)
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
@@ -88,8 +93,8 @@ program test_fpe_approx02_richards_effort
   request%numerical%conductivity_implicit_mode=0
   request%numerical%conductivity_mean_method=1
   request%numerical%min_step_duration=1.0e-12_real64
-  request%numerical%compartment_balance_tolerance=base_tol
-  request%numerical%total_balance_tolerance=base_tol
+  request%numerical%compartment_balance_tolerance=base_tol*balance_mult
+  request%numerical%total_balance_tolerance=base_tol*balance_mult
   request%numerical%head_abs_tolerance=base_tol*tol_mult
   request%numerical%head_rel_tolerance=base_tol*tol_mult
   request%numerical%ponding_tolerance=base_tol
@@ -113,7 +118,7 @@ program test_fpe_approx02_richards_effort
   elapsed=(t1-t0)/real(calls,real64)
 
   write(*,'(*(g0))') 'APPROX02_SOLVE|MATERIAL=',trim(material),'|H0=',h0,'|HBOT=',hbot, &
-       '|TOP_FACTOR=',top_factor,'|DURATION=',duration,'|TOL_MULT=',tol_mult, &
+       '|TOP_FACTOR=',top_factor,'|DURATION=',duration,'|TOL_MULT=',tol_mult,'|BALANCE_MULT=',balance_mult, &
        '|STATUS=',result%status,'|CALLS=',calls,'|SECONDS_PER_SOLVE=',elapsed,'|NS_PER_SOLVE=',1.0e9_real64*elapsed, &
        '|NONLINEAR=',result%diagnostics%nonlinear_iterations, &
        '|JACOBIAN=',result%diagnostics%jacobian_builds, &
