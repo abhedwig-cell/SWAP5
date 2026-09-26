@@ -17,8 +17,8 @@ program test_fpe_approx01_cadence_timing
   implicit none
 
   real(real64), parameter :: duration=1.0e-4_real64, tol=1.0e-12_real64
-  real(real64), parameter :: offsets(12)=[0.0_real64,0.05_real64,0.1_real64,0.25_real64,0.5_real64,0.25_real64, &
-       0.1_real64,0.0_real64,-0.05_real64,-0.1_real64,-0.25_real64,-0.5_real64]
+  real(real64), parameter :: pattern(12)=[0.0_real64,0.1_real64,0.2_real64,0.5_real64,1.0_real64,0.5_real64, &
+       0.2_real64,0.0_real64,-0.1_real64,-0.2_real64,-0.5_real64,-1.0_real64]
   type(soil_water_parameter_set_t), target :: params
   type(b110_default_mvg_parameters_t), target :: hp
   type(b110_default_mvg_provider_t), target :: hyd
@@ -33,16 +33,24 @@ program test_fpe_approx01_cadence_timing
   real(real64), target :: drainage(1,numnod), irrigation(numnod), roots(numnod)
   real(real64), allocatable :: cofgen(:,:)
   real(real64) :: h0,k0,water(numnod),cond(numnod),cap(numnod),dkdh(numnod),heads(numnod)
-  real(real64) :: checksum,cached_tangent,elapsed,physical_checksum
-  integer :: i,j,calls,cadence,clock_start,clock_end,clock_rate,refreshes,point
+  real(real64) :: checksum,cached_tangent,elapsed,physical_checksum,amplitude,head_threshold,current_head,last_refresh_head
+  integer :: i,j,calls,cadence,clock_start,clock_end,clock_rate,refreshes,point,age
   character(len=64) :: arg,mode
 
-  if(command_argument_count()/=4) error stop 'usage: test MODE CADENCE CALLS H0_CM'
+  if(command_argument_count()/=4 .and. command_argument_count()/=6) &
+       error stop 'usage: test MODE CADENCE CALLS H0_CM [AMPLITUDE_CM HEAD_THRESHOLD_CM]'
   call get_command_argument(1,mode)
   call get_command_argument(2,arg); read(arg,*) cadence
   call get_command_argument(3,arg); read(arg,*) calls
   call get_command_argument(4,arg); read(arg,*) h0
-  if(calls<=0 .or. cadence<=0) error stop 'positive calls/cadence required'
+  amplitude=0.5_real64
+  head_threshold=0.25_real64
+  if(command_argument_count()==6) then
+    call get_command_argument(5,arg); read(arg,*) amplitude
+    call get_command_argument(6,arg); read(arg,*) head_threshold
+  end if
+  if(calls<=0 .or. cadence<=0 .or. amplitude<0.0_real64 .or. head_threshold<0.0_real64) &
+       error stop 'invalid timing arguments'
 
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
   params%parameter_set_id=629201_int64; params%active_nodes=numnod
@@ -91,19 +99,34 @@ program test_fpe_approx01_cadence_timing
   if(solve_result%status/=SW_SOLVE_CONVERGED .or. dres%status/=SW_STEP_DIRECTION_AVAILABLE) error stop 'warmup failed'
 
   checksum=0.0_real64; physical_checksum=0.0_real64; cached_tangent=0.0_real64; refreshes=0
+  age=cadence
+  last_refresh_head=huge(1.0_real64)
   call system_clock(clock_start,clock_rate)
   do j=1,calls
     point=1+mod(j-1,12)
-    request%boundary%bottom_head=h0+offsets(point)
-    if(trim(mode)=='fresh' .or. mod(j-1,cadence)==0) then
+    current_head=h0+amplitude*pattern(point)
+    request%boundary%bottom_head=current_head
+    if(trim(mode)=='fresh') then
+      refresh=.true.
+    else if(trim(mode)=='lag') then
+      refresh=mod(j-1,cadence)==0
+    else if(trim(mode)=='adaptive') then
+      refresh=(j==1) .or. age>=cadence .or. abs(current_head-last_refresh_head)>=head_threshold
+    else
+      error stop 'unknown timing mode'
+    end if
+    if(refresh) then
       call solve_with_accepted_step_direction(solver,request,workspace,dreq,solve_result,dres)
       if(solve_result%status/=SW_SOLVE_CONVERGED .or. dres%status/=SW_STEP_DIRECTION_AVAILABLE) error stop 'fresh solve failed'
       cached_tangent=dres%bottom_flux_derivative
       refreshes=refreshes+1
+      last_refresh_head=current_head
+      age=0
     else
       call solver%solve(request,workspace,solve_result)
       if(solve_result%status/=SW_SOLVE_CONVERGED) error stop 'reference solve failed'
     end if
+    age=age+1
     if(.not.ieee_is_finite(cached_tangent)) error stop 'cached tangent nonfinite'
     physical_checksum=physical_checksum+solve_result%bottom_flux+sum(solve_result%candidate_state%pressure_head)+ &
          sum(solve_result%candidate_state%water_content)
@@ -114,7 +137,7 @@ program test_fpe_approx01_cadence_timing
 
   write(*,'(*(g0))') 'APPROX01_CADENCE_TIMING|MODE=',trim(mode),'|CADENCE=',cadence,'|CALLS=',calls, &
        '|NS_PER_EVAL=',1.0e9_real64*elapsed/real(calls,real64),'|REFRESHES=',refreshes, &
-       '|REFRESH_FRACTION=',real(refreshes,real64)/real(calls,real64),'|TANGENT_CHECKSUM=',checksum, &
-       '|PHYSICAL_CHECKSUM=',physical_checksum
+       '|REFRESH_FRACTION=',real(refreshes,real64)/real(calls,real64),'|AMPLITUDE_CM=',amplitude, &
+       '|HEAD_THRESHOLD_CM=',head_threshold,'|TANGENT_CHECKSUM=',checksum,'|PHYSICAL_CHECKSUM=',physical_checksum
   print '(A)','FPE_APPROX01_CADENCE_TIMING=PASS'
 end program test_fpe_approx01_cadence_timing
