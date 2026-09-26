@@ -16,3 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_profile06_p1_difficult_matrix.sh
+
+  p2-directional-stack:
+    runs-on: ubuntu-latest
+    env:
+      APPROX02_CANDIDATE_TOL: 1E-08
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile06_p2_directional_stack.sh
