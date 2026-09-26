@@ -175,6 +175,7 @@ insert="""contains
     type(kernel_reference_floor_result_t) :: r
     type(kernel_reference_floor_candidate_t) :: c
     type(kernel_diagnostics_t) :: d
+    type(fmr_serialized_physical_observation_t) :: obs
     logical :: available,ok
     integer :: status
 
