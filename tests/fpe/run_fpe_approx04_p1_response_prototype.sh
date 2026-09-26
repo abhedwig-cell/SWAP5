@@ -15,6 +15,16 @@ p=Path(sys.argv[1]); src=p.read_text()
 
 # Make case hydraulics configurable before initialize.
 src=src.replace("H0_CM","REPRO_H0_CM")
+# Align the participant committed/origin profile with PROFILE06/P0: uniform h0,
+# not the default FGC44 hydrostatic profile construction.
+hydro="""    heads(1)=REPRO_H0_CM
+    do i=2,numnod
+      heads(i)=heads(i-1)+p%node_distance(i)
+    end do
+"""
+if src.count(hydro)<2:
+    raise SystemExit(f"expected two hydrostatic profile seams, got {src.count(hydro)}")
+src=src.replace(hydro,"    heads=REPRO_H0_CM\n")
 src=src.replace(
 "  real(real64), parameter :: REPRO_H0_CM=-75.0_real64\n",
 "  real(real64), save :: REPRO_H0_CM=-75.0_real64\n"
