@@ -18,6 +18,8 @@ required=[
     "temporal_budget_policy%coefficient = fmr_gw_history_temporal_coefficient",
     "temporal_budget_policy%floor_cm = fmr_gw_history_temporal_floor_cm",
     "temporal_budget_policy=temporal_budget_policy",
+    "if (.not. allocated(config%tiles(i)%initial_right_derivative)) then",
+    "any(.not. ieee_is_finite(config%tiles(i)%initial_right_derivative))",
 ]
 for token in required:
     assert token in src, token
@@ -36,6 +38,7 @@ for token in [
 
 print("FPE_TEMPORAL08_BOOTSTRAP_BINDING_STATIC=PASS")
 print("FPE_TEMPORAL08_BOUNDED_GROUNDWATER_SCOPE_STATIC=PASS")
+print("FPE_TEMPORAL08_SEEDED_HISTORY_REQUIRED_STATIC=PASS")
 PY
 
 bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh | tee /tmp/temporal08-ppa-wu01.txt
