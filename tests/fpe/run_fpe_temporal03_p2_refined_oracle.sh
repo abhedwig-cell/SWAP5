@@ -451,6 +451,7 @@ for case_spec in "${cases[@]}"; do
     for offset in "${offsets[@]}"; do
       for nsub in "${levels[@]}"; do
         raw="$(FGC44_SWAP_LIB="$BUILD/lib/libswap.so" python3 "$BUILD/py/bench.py" "$material" "$h0" "$imbalance" "$offset" "$nsub")" || { printf '%s\n' "$raw" >&2; fail "$material $regime $imbalance $offset N=$nsub"; }
+        printf '%s\n' "$raw" | grep '^TEMPORAL03_P2_FAILPOINT|' || true
         line="$(printf '%s\n' "$raw" | grep '^TEMPORAL03_P2_RAW|' | tail -1)"
         [[ -n "$line" ]] || fail "missing P2 record"
         printf '%s|REGIME=%s\n' "$line" "$regime" | tee -a "$OUT"
