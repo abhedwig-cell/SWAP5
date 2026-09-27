@@ -1949,7 +1949,11 @@ contains
     r%selection_opportunity=.true.; r%irrigation_enabled=.true.; r%schedule_enabled=.true.
     r%crop_emerged=.true.; r%irrigation_window_open=.true.
     block
-      use mod_ppa_irr_tcs6_source, only: evaluate_tcs6_source,ppa_tcs6_daily_input_t
+      use mod_ppa_irr_tcs6_source, only: evaluate_tcs6_source,evaluate_tcs6_profile_source,ppa_tcs6_daily_input_t
+      use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
+      use mod_process_hydraulic_view, only: process_hydraulic_view_t
+      type(ppa_irrigation_profile_t)::weekly_profile
+      type(process_hydraulic_view_t)::weekly_hydraulic
       type(ppa_tcs6_daily_input_t)::daily_input
       type(ppa_weekly_identity_t)::weekly,proposed_weekly
       p%timing_criterion=6
@@ -2023,6 +2027,27 @@ contains
       p%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
       r%t1=T0+1.0_real64/1024.0_real64
       write(*,'(a)') 'PPA_IRR_TCS6_DCS1_SOURCE_ATOMIC_BINDING=PASS'
+      weekly_hydraulic%active_nodes=p%active_nodes
+      allocate(weekly_hydraulic%water_content(p%active_nodes)); weekly_hydraulic%water_content=0.3_real64
+      weekly_profile%noddrz=1; weekly_profile%layer=[1]; weekly_profile%dz=[1.0_real64]
+      weekly_profile%ztopcp=[0.0_real64]; weekly_profile%rd=1.0_real64
+      weekly_profile%wclos=[0.8_real64]; weekly_profile%wcmes=[0.5_real64]; weekly_profile%wchis=[0.1_real64]
+      daily_input%deficit_cm=-99.0_real64; daily_input%threshold_mm=4.0_real64
+      p%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+      call evaluate_tcs6_profile_source(p,base,r,weekly,daily_input,weekly_hydraulic,weekly_profile,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.allocated(effective).or..not.flux%event_started) error stop 'weekly profile selection'
+      ! Independent deficit: (0.8 - 0.3)*1 cm; slow rate stretches it over one day.
+      if(candidate%active_event_end/=T0+1.0_real64.or. &
+           abs(effective%subsurface_irrigation_source(1)-0.5_real64)>1.0e-14_real64) &
+           error stop 'weekly profile shared deficit amount'
+      deallocate(weekly_profile%layer)
+      call evaluate_tcs6_profile_source(p,base,r,weekly,daily_input,weekly_hydraulic,weekly_profile,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.proposed_weekly%day_bound.or.proposed_weekly%dayfix/=366) &
+           error stop 'weekly invalid profile leaked proposal'
+      p%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
+      write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_DERIVED_SOURCE=PASS'
     end block
     observations%knot_count=2; observations%dvs_knots(2)=2.0_real64
     observations%threshold_values=0.5_real64; observations%iptra_day=1.0_real64
