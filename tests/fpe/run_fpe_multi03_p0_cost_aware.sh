@@ -11,7 +11,7 @@ BASE="tests/fpe/run_fpe_multi02_p0_worker_local.sh"
 OUTRUN="$BUILD/run.sh"
 cp "$BASE" "$OUTRUN"
 
-python3 - "$OUTRUN" <<'PY'
+python3 - "$OUTRUN" <<'PYTRANSFORM'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text()
@@ -287,6 +287,6 @@ print("FPE_MULTI03_P0=PASS")
 PY
 '''
 p.write_text(s)
-PY
+PYTRANSFORM
 
 bash "$OUTRUN"
