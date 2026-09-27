@@ -111,7 +111,7 @@ program test_ppa_free_drainage_owner
       write(*,'(a)') 'PPA_IRR_LOCAL_ORIGIN_DIAGNOSTIC'
     case('--double-iterations')
       write(*,'(a)') 'PPA_IRR_80_ITERATIONS_DIAGNOSTIC'
-    case('--weekly-full-day')
+    case('--weekly-full-day','--weekly-full-day-coarse')
       if(trim(test_scope)/='--irrigation-source') error stop 'weekly full-day scope'
       write(*,'(a)') 'PPA_IRR_WEEKLY_FULL_DAY_EXPERIMENT'
     case default
@@ -1298,7 +1298,7 @@ contains
       if(.not.ok) error stop 'weekly no-gift checkpoint'
       no_gift_forcing=forcing; no_gift_forcing%subsurface_irrigation_source=0.0_real64
       weekly_seed%weekly%last_day=101_int64; weekly_seed%weekly%dayfix=4
-      if(trim(origin_scope)=='--weekly-full-day') then
+      if(index(trim(origin_scope),'--weekly-full-day')==1) then
         block
           use mod_fmr_serialized_reference_backend, only: fmr_serialized_physical_observation_t
           use mod_fmr_committed_restart, only: fmr_export_committed_restart,fmr_restore_committed_restart,FMR_RESTART_OK
@@ -1320,7 +1320,7 @@ contains
           call system_clock(started,clock_rate)
           call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner, &
                no_gift_forcing,day_config,1,T0,T0+1.0_real64,weekly_checkpoint,result,candidate,diagnostics, &
-               weekly_proposal=weekly_seed%weekly,target_selector=weekly_bounded_target)
+               weekly_proposal=weekly_seed%weekly,target_selector=weekly_day_target)
           call system_clock(ended)
           write(*,'(a,l1,a,i0)') 'PPA_IRR_FULL_DAY_COMPLETED=',result%completed,';STATUS=',result%status
           write(*,'(a,4(i0,1x))') 'PPA_IRR_FULL_DAY_COUNTS=',diagnostics%accepted_substeps,diagnostics%attempts, &
@@ -1396,7 +1396,7 @@ contains
             call day_backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters, &
                  day_replay(day_index),day_forcing,day_config,1,T0+1.0_real64,T0+2.0_real64, &
                  day_checkpoint,result,candidate,diagnostics,weekly_proposal=weekly_seed%weekly, &
-                 target_selector=weekly_bounded_target)
+                 target_selector=weekly_day_target)
             write(*,'(a,i0,a,l1,a,i0)') 'PPA_IRR_FULL_DAY_REPLAY=',day_index, &
                  ';COMPLETED=',result%completed,';STATUS=',result%status
             if(.not.result%completed) then
@@ -4269,6 +4269,18 @@ contains
     call owner%close(code)
     call require(code==FMR_APP_BOOT_OK,'default owner closes after opt-in')
   end subroutine
+  subroutine weekly_day_target(cursor,requested_t1,target_t1,max_retries_cap,valid)
+    real(real64),intent(in)::cursor,requested_t1
+    real(real64),intent(out)::target_t1
+    integer,intent(out)::max_retries_cap
+    logical,intent(out)::valid
+    call weekly_bounded_target(cursor,requested_t1,target_t1,max_retries_cap,valid)
+    ! Isolated numerical experiment: larger initial targets, unchanged acceptance.
+    if(trim(origin_scope)=='--weekly-full-day-coarse') then
+      target_t1=min(requested_t1,cursor+1.0_real64/32768.0_real64)
+      valid=target_t1>cursor
+    end if
+  end subroutine weekly_day_target
   subroutine weekly_bounded_target(cursor,requested_t1,target_t1,max_retries_cap,valid)
     real(real64),intent(in)::cursor,requested_t1
     real(real64),intent(out)::target_t1
