@@ -1,0 +1,27 @@
+name: F-PE-AGG01 reusable aggregation buffer
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_agg01_*.sh'
+      - 'docs/performance/F-PE-AGG01_*.md'
+      - '.github/workflows/f-pe-agg01.yml'
+  workflow_dispatch:
+
+jobs:
+  paired:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run paired aggregation-buffer benchmark
+        env:
+          AGG01_N: '${{ matrix.n }}'
+          AGG01_REPS: '5'
+        run: bash tests/fpe/run_fpe_agg01_reusable_buffer.sh
