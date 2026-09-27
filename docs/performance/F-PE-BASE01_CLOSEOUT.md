@@ -10,23 +10,31 @@ PR:
 Parent authority:
 `integration/f-ci-canonical@c79ea4d7efb580eeb55b61a4e93b4bc6f01bfc96`
 
+Current qualification authority:
+- exercised branch head: `c5f1881d3d95695993ab6420e232adb32c9df60b`;
+- workflow run: `36306634228`;
+- P0: PASS;
+- P1: PASS;
+- P1B: PASS;
+- P2: PASS as an executed comparison, with the candidate rejected by its frozen advancement rule.
+
 ## Purpose
 
-BASE01 followed LIVE01 after the current production-admitted c=0.65 path showed that unavoidable exact live corrector trials, rather than discarded-trial count, are the remaining SWAP-side performance problem.
+BASE01 followed LIVE01 after the production-admitted c=0.65 path showed that unavoidable exact live corrector trials, rather than discarded-trial count, are the remaining SWAP-side performance problem.
 
-BASE01 was observation/research only. No production `src/**` modification is admitted.
+BASE01 is observation/research only. No production `src/**` modification is admitted.
 
 ## P0 — participant/backend boundary
 
 PASS.
 
-Current-canonical exact trial decomposition:
+Current-head aggregate:
 
-- forcing materialization: about 1.7%;
-- serialized Reference backend: about 83.3%;
-- participant postprocessing: about 14.8%.
+- forcing materialization: `1.58%`;
+- serialized Reference backend: `80.81%`;
+- participant postprocessing: `17.27%`.
 
-The backend therefore passed the preregistered 60% gate for deeper decomposition.
+The backend therefore remains far above the preregistered 60% gate for deeper decomposition.
 
 ## P1 — q/state HeadCalc decomposition
 
@@ -41,37 +49,37 @@ PASS with preserved discrete trajectory:
 - nonlinear iterations: 236;
 - backtracking attempts: 236.
 
-Representative current P1 authority:
+Current-head aggregate:
 
-- HeadCalc: about 43.8% of backend;
-- constitutive work: about 17.9% of backend when mapped from the nested HeadCalc timing;
-- backtracking loop: about 13.4%;
-- residual/vector: about 3.2%;
-- linear solve: about 2.7%;
-- Jacobian: about 1.5%.
+- HeadCalc: `40.99%` of backend;
+- constitutive work: about `16.53%` of backend when mapped from nested HeadCalc timing;
+- backtracking loop: about `11.90%`;
+- residual/vector: about `3.04%`;
+- linear solve: about `2.31%`;
+- Jacobian: about `1.58%`.
 
-No isolated inner-HeadCalc family cleared the 20% aggregate-backend selection gate.
+No isolated inner-HeadCalc family clears the 20% aggregate-backend selection gate.
 
 ## P1B — non-HeadCalc backend decomposition
 
 PASS.
 
-Current-head authority run `36306105717`:
+Current-head aggregate:
 
-- backend: `503,943 ns`;
-- HeadCalc: 41.81%;
-- temporal-indicator/certificate evaluation: 22.36%;
-- model-other: 11.40%;
-- kernel-other: 7.63%;
-- transaction-other: 4.94%;
-- transaction clone: 2.69%;
-- canonical preparation: 2.46%;
-- canonical-other: 1.80%;
-- transaction context: 1.37%;
-- kernel clone: 0.67%;
-- kernel post: 0.47%.
+- backend: `831,307 ns`;
+- HeadCalc: `39.69%`;
+- temporal-indicator/certificate evaluation: `22.16%`;
+- model-other: `12.47%`;
+- kernel-other: `8.22%`;
+- transaction-other: `4.71%`;
+- transaction clone: `2.66%`;
+- canonical preparation: `2.65%`;
+- canonical-other: `1.77%`;
+- transaction context: `1.01%`;
+- kernel clone: `0.84%`;
+- kernel post: `0.41%`.
 
-Temporal indicator was the only isolated measured family clearing the 20% gate and had a concrete exact-preserving candidate, so exactly that candidate advanced to P2.
+Temporal indicator is the only isolated measured family clearing the 20% gate and it has a concrete exact-preserving candidate, so exactly that candidate advanced to P2.
 
 ## P2 — temporal-indicator demand specialization
 
@@ -79,26 +87,21 @@ Semantic identity: PASS.
 
 Performance advancement: FAIL.
 
-Observed in the first authority run:
+Current-head paired result:
 
-- temporal-indicator gain: `12.31%`, below required 15%;
-- backend gain: `0.60%`, below required 3%;
-- total q/state trial: about `0.61%` slower;
-- max absolute q difference: 0;
-- retry/nonlinear path unchanged.
-
-Independent current-head replay `36306634228`:
-
-- temporal-indicator gain: `10.52%`, again below required 15%;
-- backend gain: `3.88%`;
+- temporal-indicator gain: `10.52%`, below required 15%;
+- serialized-backend gain: `3.88%`, above required 3%;
 - total q/state trial gain: `2.60%`;
-- max absolute q difference: 0;
+- max absolute q difference: `0`;
 - retry/nonlinear path unchanged.
 
-The composed timing varies, but the selected component itself fails its frozen 15% local gain gate in both independent measurements.
+The P2 rule requires both the temporal-component and backend gates to pass.
 
-Decision:
+Therefore:
+
 `REJECT_NO_COMPOSED_RUNTIME_GAIN`.
+
+The positive backend and total-trial timing is retained as evidence. It does not justify post-hoc relaxation of the preregistered temporal gate.
 
 ## Final interpretation
 
@@ -107,11 +110,11 @@ The remaining current exact q/state cost is distributed.
 There is no measured exact-preserving BASE01 candidate that simultaneously:
 
 1. owns a sufficiently large fraction of current live backend runtime; and
-2. demonstrates a composed runtime benefit large enough to justify a production change.
+2. satisfies its preregistered composed-runtime qualification rule.
 
-The obvious smaller families are either below the preregistered gate or have already been shown historically to have weak composition value.
+The obvious smaller families are below the selection gate. The one family that cleared the cost gate produced a semantically clean candidate, but that candidate missed its frozen temporal-speed threshold.
 
-Therefore BASE01 does not manufacture another optimization by relaxing thresholds or combining unrelated small changes.
+BASE01 therefore does not manufacture another optimization by relaxing thresholds after measurement.
 
 ## Deferred evidence, not selected successors
 
@@ -119,7 +122,8 @@ Therefore BASE01 does not manufacture another optimization by relaxing threshold
 - constitutive work is material but below the BASE01 full-backend gate;
 - discarded-trial solve elimination remains useful only for future reuse-rich coupling workloads;
 - AHL/direct-retention remains a separate bounded representation line and is not admitted here by inference;
-- approximate/practical modes remain separate from this exact-preserving workunit.
+- approximate/practical modes remain separate from this exact-preserving workunit;
+- the P2 demand-specialization candidate may be revisited only under a new preregistered question, not by changing BASE01 gates.
 
 ## Final decision
 
