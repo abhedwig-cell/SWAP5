@@ -160,6 +160,12 @@ src=src.replace(
 "  logical, save :: ledger_prepared=.false.\n"
 "  type(fmr_groundwater_temporal_budget_policy_t), save :: LIVE01_POLICY\n",1)
 src=src.replace(
+"    call participant%trial_from_origin(corrector_backend,column,template,corrector_parameters,committed,materializer, &\n"
+"         corrector_config,datum,window,real(head_m,real64),last_trial,status)\n",
+"    call participant%trial_from_origin(corrector_backend,column,template,corrector_parameters,committed,materializer, &\n"
+"         corrector_config,datum,window,real(head_m,real64),last_trial,status,temporal_budget_policy=LIVE01_POLICY)\n",1)
+
+src=src.replace(
 "  real(real64), parameter :: REPRO_H0_CM=-75.0_real64\n",
 "  real(real64), save :: REPRO_H0_CM=-75.0_real64\n"
 "  real(real64), save :: REPRO_TR=0.032_real64, REPRO_TS=0.423_real64, REPRO_KSAT=4.75_real64\n"
