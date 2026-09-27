@@ -2000,6 +2000,29 @@ contains
       if(.not.ok.or.proposed_weekly%dayfix/=0.or.proposed_weekly%last_day/=100_int64) &
            error stop 'weekly source split retry'
       write(*,'(a)') 'PPA_IRR_TCS6_SOURCE_BINDING_FAILURE_SPLIT_RETRY=PASS'
+      p%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+      p%dcs1_knot_count=2; p%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+      p%dcs1_correction_mm=0.0_real64; r%rainfall_cm=0.0_real64
+      r%deficit_cm=99.0_real64
+      daily_input%deficit_cm=p%irr_rate_cm_per_day/1024.0_real64
+      daily_input%threshold_mm=0.0_real64; r%t1=T0+1.0_real64/2048.0_real64
+      call evaluate_tcs6_source(p,base,r,weekly,daily_input,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.allocated(effective)) error stop 'weekly DCS1 source'
+      if(.not.flux%event_started.or.proposed_weekly%dayfix/=0.or.proposed_weekly%last_day/=100_int64) &
+           error stop 'weekly DCS1 source metadata'
+      if(candidate%active_event_end/=T0+1.0_real64/1024.0_real64.or. &
+           effective%subsurface_irrigation_source(1)/=p%irr_rate_cm_per_day.or. &
+           .not.effective%temporal_forcing_event) error stop 'weekly DCS1 source depth rate'
+      previous%temporal_forcing_event=.true.; previous%temporal_forcing_event_time=r%t1
+      call evaluate_tcs6_source(p,base,r,weekly,daily_input,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.proposed_weekly%day_bound.or.proposed_weekly%dayfix/=366.or. &
+           candidate%active_event.or.flux%applied) error stop 'weekly DCS1 binding failure atomicity'
+      previous%temporal_forcing_event=.false.; previous%temporal_forcing_event_time=0.0_real64
+      p%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
+      r%t1=T0+1.0_real64/1024.0_real64
+      write(*,'(a)') 'PPA_IRR_TCS6_DCS1_SOURCE_ATOMIC_BINDING=PASS'
     end block
     observations%knot_count=2; observations%dvs_knots(2)=2.0_real64
     observations%threshold_values=0.5_real64; observations%iptra_day=1.0_real64
