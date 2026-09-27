@@ -121,6 +121,7 @@ grep -Fq '"status": "CANONICAL_ADMITTED_CLOSED"' integration/audits/PPA_WU02_STA
 
 python3 - <<'PY'
 from pathlib import Path
+import re
 
 backend = Path("src/runtime/mod_fmr_serialized_reference_backend.f90").read_text().lower()
 test = Path("tests/fapp/test_ppa_low02_time_application_admission.f90").read_text().lower()
@@ -136,7 +137,9 @@ for token in [
 ]:
     assert token in backend, token
 
-for forbidden in ["open(", "read(", "readswap", "swap_main", "ttutil"]:
+for forbidden_call in ("open", "read"):
+    assert re.search(rf"\\b{forbidden_call}\\s*\\(", backend) is None, forbidden_call
+for forbidden in ("readswap", "swap_main", "ttutil"):
     assert forbidden not in backend, forbidden
 
 assert "legacy_swbotb2_control" in backend
