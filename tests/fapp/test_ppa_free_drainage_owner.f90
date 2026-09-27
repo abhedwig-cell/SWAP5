@@ -1399,7 +1399,47 @@ contains
                  target_selector=weekly_bounded_target)
             write(*,'(a,i0,a,l1,a,i0)') 'PPA_IRR_FULL_DAY_REPLAY=',day_index, &
                  ';COMPLETED=',result%completed,';STATUS=',result%status
-            if(.not.result%completed.or..not.candidate%ready()) error stop 'full-day replay incomplete'
+            if(.not.result%completed) then
+              day_observation=day_backend%observation()
+              write(*,'(a,4(i0,1x))') 'PPA_IRR_DAY2_FAILURE_COUNTS=',diagnostics%accepted_substeps, &
+                   diagnostics%attempts,diagnostics%solver_rejections,diagnostics%temporal_rejections
+              write(*,'(a,2(es24.16,1x))') 'PPA_IRR_DAY2_FAILURE_INTERVAL=', &
+                   day_observation%trial_t0,day_observation%trial_t1
+              write(*,'(a,2(i0,1x),2(es24.16,1x))') 'PPA_IRR_DAY2_FAILURE_CONVERGENCE=', &
+                   day_observation%solver_diagnostics%final_balance_failure_count, &
+                   day_observation%solver_diagnostics%final_head_failure_count, &
+                   day_observation%solver_diagnostics%final_max_balance_rate, &
+                   day_observation%solver_diagnostics%final_total_balance_rate
+              if(candidate%ready()) error stop 'day2 failed candidate ready'
+              call day_replay(day_index)%current_time(time,ok)
+              if(.not.ok.or.time/=T0+1.0_real64.or.day_replay(day_index)%current_revision()/=1_int64) &
+                   error stop 'day2 failure published'
+              call day_replay(day_index)%snapshot(day_restored_snapshot,ok)
+              if(.not.ok) error stop 'day2 rollback snapshot'
+              select type(day_snapshot)
+              type is(ppa_irrigation_event_state_t)
+                select type(day_restored_snapshot)
+                type is(ppa_irrigation_event_state_t)
+                  if(any(day_snapshot%pressure_head/=day_restored_snapshot%pressure_head).or. &
+                       any(day_snapshot%water_content/=day_restored_snapshot%water_content)) &
+                       error stop 'day2 rollback physics'
+                  if(day_restored_snapshot%weekly%dayfix/=4.or. &
+                       day_restored_snapshot%weekly%last_day/=101_int64.or. &
+                       day_restored_snapshot%irrigation%active_event) error stop 'day2 rollback metadata'
+                  call day_restored_snapshot%temporal_history_snapshot(day_restored_history,ok)
+                  if(.not.ok) error stop 'day2 rollback history absent'
+                  if(size(day_history)/=size(day_restored_history)) error stop 'day2 rollback history size'
+                  if(any(day_history/=day_restored_history)) error stop 'day2 rollback history'
+                class default
+                  error stop 'day2 rollback carrier'
+                end select
+              class default
+                error stop 'day2 baseline carrier'
+              end select
+              write(*,'(a)') 'PPA_IRR_DAY2_FAILURE_ROLLBACK=PASS'
+              error stop 'full-day replay incomplete'
+            end if
+            if(.not.candidate%ready()) error stop 'full-day replay candidate missing'
             day_mass(day_index)=result%mass%residual
             day_steps(day_index)=diagnostics%accepted_substeps
             if(abs(day_mass(day_index))>1.0e-12_real64) error stop 'full-day replay mass'
