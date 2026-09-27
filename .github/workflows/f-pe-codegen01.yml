@@ -1,0 +1,28 @@
+name: F-PE-CODEGEN01 compiler frontier
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_codegen01_*.sh'
+      - 'docs/performance/F-PE-CODEGEN01_*.md'
+      - '.github/workflows/f-pe-codegen01.yml'
+  workflow_dispatch:
+
+jobs:
+  compiler-frontier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record host
+        run: |
+          uname -a
+          lscpu
+          gfortran --version
+      - name: Run compiler/codegen frontier
+        env:
+          CODEGEN01_N: '10000'
+          CODEGEN01_REPS: '5'
+        run: bash tests/fpe/run_fpe_codegen01_frontier.sh
