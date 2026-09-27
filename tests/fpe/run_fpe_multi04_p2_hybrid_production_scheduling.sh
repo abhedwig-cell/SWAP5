@@ -104,9 +104,9 @@ s=s.replace("      value%tiles(i)%tile_id=TILE_ID(i); value%tiles(i)%ledger_id=L
             "      value%tiles(i)%tile_id=880200_int64+int(i,int64); value%tiles(i)%ledger_id=980200_int64+int(i,int64)\n",1)
 s=s.replace("      value%tiles(i)%initial_right_derivative=HISTORY_RATE\n",
 """      if(ordering==0)then
-        klass=mod(i-1,4)+1
-      else
         klass=min(3,4*(i-1)/max(1,NPART))+1
+      else
+        klass=mod(i-1,4)+1
       end if
       value%tiles(i)%initial_right_derivative=rates(klass)
 """,1)
