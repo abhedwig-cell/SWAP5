@@ -97,7 +97,7 @@ repl=anchor+"""  serial_tc=0; serial_asub=0; serial_att=0; serial_ret=0; serial_
 if anchor not in s: raise SystemExit("test init seam")
 s=s.replace(anchor,repl,1)
 
-old="""      call registry%trial_from_origin(handles(i),window,href,serial_trials(i),participant_status,status)
+old="""      call registry%trial_from_origin(handles(i),window,target_head(i),serial_trials(i),participant_status,status)
       if(status/=FMR_GW_REGISTRY_OK .or. participant_status/=GW_SWAP_PARTICIPANT_OK .or. .not.serial_trials(i)%valid) &
            error stop 'serial trial'
 """
