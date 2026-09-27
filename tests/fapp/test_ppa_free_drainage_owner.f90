@@ -2166,6 +2166,25 @@ contains
       observations%knot_count=2
     end do
     write(*,'(a)') 'PPA_IRR_TCS1_4_TYPED_SOURCE_BINDING=PASS'
+    block
+      use mod_ppa_irr_tcsfix_source, only: evaluate_tcsfix_source
+      integer::next_counter
+      call evaluate_tcsfix_source(p,base,r,observations,.true.,3,3,previous, &
+           next_counter,candidate,flux,d,effective,ok)
+      if(.not.ok.or.next_counter/=1.or..not.flux%event_started) error stop 'TCSFIX source selection'
+      if(effective%subsurface_irrigation_source(1)/=p%irr_rate_cm_per_day) error stop 'TCSFIX source rate'
+      previous%temporal_forcing_event=.true.; previous%temporal_forcing_event_time=r%t1
+      call evaluate_tcsfix_source(p,base,r,observations,.true.,3,3,previous, &
+           next_counter,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.next_counter/=3.or.candidate%active_event.or.flux%applied) &
+           error stop 'TCSFIX late binding rejection'
+      previous%temporal_forcing_event=.false.; previous%temporal_forcing_event_time=0.0_real64
+      call evaluate_tcsfix_source(p,base,r,observations,.true.,2,3,previous, &
+           next_counter,candidate,flux,d,effective,ok)
+      if(.not.ok.or.next_counter/=3.or.flux%event_started) error stop 'TCSFIX suppressed source'
+      if(any(effective%subsurface_irrigation_source/=0.0_real64)) error stop 'TCSFIX no-gift source'
+      write(*,'(a)') 'PPA_IRR_TCSFIX_DETACHED_SOURCE_ATOMICITY=PASS'
+    end block
     hydraulic%active_nodes=n
     allocate(hydraulic%water_content(n)); hydraulic%water_content=0.2_real64
     root_profile%noddrz=1; root_profile%layer=[1]; root_profile%dz=[1.0_real64]

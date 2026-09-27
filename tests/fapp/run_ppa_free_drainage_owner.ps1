@@ -40,7 +40,9 @@ $sourcePaths += @('src/process/mod_ppa_irr_water_deficit.f90',
     'src/process/mod_ppa_irr_tcs6_weekly_timing.f90','src/process/mod_ppa_irr_tcs6_composition.f90',
     'src/process/mod_ppa_irr_weekly_identity.f90','src/process/mod_ppa_irr_tcs6_daily.f90',
     'src/adapter/mod_ppa_irr_tcs6_source.f90',
-    'src/adapter/mod_ppa_irr_tcs1_4_source.f90','src/adapter/mod_ppa_bootstrap_irrigation.f90')
+    'src/adapter/mod_ppa_irr_tcs1_4_source.f90',
+    'src/process/mod_ppa_irr_tcsfix_filter.f90','src/process/mod_ppa_irr_tcsfix_composition.f90',
+    'src/adapter/mod_ppa_irr_tcsfix_source.f90','src/adapter/mod_ppa_bootstrap_irrigation.f90')
 if (@($common | Where-Object { $_ -notmatch '^-[A-Za-z0-9_=,-]+$' }).Count) { throw 'Unsupported compiler option' }
 $build = Join-Path ([IO.Path]::GetTempPath()) ('swap-ppa-wu01-' + [guid]::NewGuid().ToString('N'))
 $stable = @{}
