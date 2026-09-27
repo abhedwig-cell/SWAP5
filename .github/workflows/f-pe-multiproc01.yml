@@ -1,0 +1,31 @@
+name: F-PE-MULTIPROC01 process versus thread
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multiproc01_*.sh'
+      - 'docs/performance/F-PE-MULTIPROC01_*.md'
+      - '.github/workflows/f-pe-multiproc01.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-process-vs-thread:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record host
+        run: |
+          uname -a
+          lscpu || true
+          python3 - <<'PY'
+          import os
+          print("python_logical_cpus", os.cpu_count())
+          PY
+      - name: Run process versus thread benchmark
+        env:
+          MULTIPROC01_N: '10000'
+          MULTIPROC01_ROUNDS: '5'
+        run: bash tests/fpe/run_fpe_multiproc01_process_vs_thread.sh
