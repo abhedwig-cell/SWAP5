@@ -1,0 +1,27 @@
+name: F-PE-MULTIPROC04 persistent process
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multiproc04_*.sh'
+      - 'docs/performance/F-PE-MULTIPROC04_*.md'
+      - '.github/workflows/f-pe-multiproc04.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-persistent:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run persistent process/thread benchmark
+        env:
+          MULTIPROC04_N: '${{ matrix.n }}'
+          MULTIPROC04_ROUNDS: '5'
+        run: bash tests/fpe/run_fpe_multiproc04_persistent_process.sh
