@@ -1,0 +1,21 @@
+name: F-PE-MULTI02 worker-local groundwater research
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multi02_*.sh'
+      - 'tests/fpe/mod_multi02_*.f90'
+      - 'docs/performance/F-PE-MULTI02_*.md'
+      - '.github/workflows/f-pe-multi02.yml'
+  workflow_dispatch:
+
+jobs:
+  p0a-worker-local:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run worker-local production groundwater architecture screen
+        run: bash tests/fpe/run_fpe_multi02_p0a_worker_local.sh
