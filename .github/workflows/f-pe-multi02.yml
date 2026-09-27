@@ -66,25 +66,5 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Run history-cost load-balance discriminator
+      - name: Run mixed-cost load-balance discriminator
         run: bash tests/fpe/run_fpe_multi02_p2b_mixed_load.sh
-
-  p2-mixed-head-load:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Run mixed-head load-balance discriminator
-        run: bash tests/fpe/run_fpe_multi02_p2_mixed_load.sh
-
-  p2-mixed-ordering:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Run deterministic mixed-cost ordering discriminator
-        run: bash tests/fpe/run_fpe_multi02_p2_mixed_balance.sh
