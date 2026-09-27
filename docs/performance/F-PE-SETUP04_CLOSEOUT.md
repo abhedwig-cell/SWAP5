@@ -2,10 +2,13 @@
 
 Date: 2026-09-27
 
-Status: `CLOSED_PRODUCTION_ADMISSION_QUALIFIED_PENDING_FINAL_CANONICAL_HEAD`
+Status: `CLOSED_PRODUCTION_ADMISSION_QUALIFIED`
 
 PR:
 `#681 — F-PE-SETUP04: production admit scalable bootstrap identity binding`
+
+Canonical admission:
+`integration/f-ci-canonical@71813645a5acbacd7cd900aee6f619dc1039e8e1`
 
 ## Outcome
 
@@ -22,7 +25,7 @@ The admission preserves:
 
 ## Performance
 
-Current-head paired speedups:
+Final qualification-head paired speedups:
 - N=1,000: 1.45x;
 - N=10,000: 6.42x;
 - N=40,000: 32.01x.
@@ -35,11 +38,20 @@ The dedicated prevalidated registry path is legal only for the freshly initializ
 
 The generic registry bind path remains the authority for ordinary callers.
 
-## Remaining merge condition
+## Final qualification
 
-Merge only from a freshly fetched branch head after the final documentation-head current-canonical qualification completes successfully.
+On the admitted qualification head:
+- SETUP04 production admission: PASS;
+- PPA-WU01 production bootstrap: PASS;
+- generic participant registry: PASS;
+- TEMPORAL08 production admission: PASS;
+- MULTI04 production application-context identity/scaling: PASS;
+- ZERO-WASTE01: PASS;
+- F-CI110 reconstructed performance admission: PASS;
+- current F-CI canonical qualification: PASS;
+- documentation: PASS.
 
-Historical unrelated workflow failures remain historical failures; SETUP04 does not waive them.
+Historical unrelated workflow failures remain historical failures; SETUP04 does not waive or reinterpret them.
 
 ## No change
 
@@ -54,3 +66,7 @@ No change to:
 - worker scheduler;
 - MODFLOW equations;
 - mass/transaction/publication semantics.
+
+## Closure
+
+`CLOSED_PRODUCTION_ADMISSION_QUALIFIED`
