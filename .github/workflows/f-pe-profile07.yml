@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: bash tests/fpe/run_fpe_approx02_a2_application_sequence.sh
+      - run: APPROX02_CANDIDATE_TOL=1e-8 bash tests/fpe/run_fpe_approx02_a2_application_sequence.sh
 
   a2c-production-binding:
     runs-on: ubuntu-latest
