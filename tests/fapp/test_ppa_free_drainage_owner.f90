@@ -111,6 +111,9 @@ program test_ppa_free_drainage_owner
       write(*,'(a)') 'PPA_IRR_LOCAL_ORIGIN_DIAGNOSTIC'
     case('--double-iterations')
       write(*,'(a)') 'PPA_IRR_80_ITERATIONS_DIAGNOSTIC'
+    case('--weekly-full-day')
+      if(trim(test_scope)/='--irrigation-source') error stop 'weekly full-day scope'
+      write(*,'(a)') 'PPA_IRR_WEEKLY_FULL_DAY_EXPERIMENT'
     case default
       error stop 'unsupported diagnostic option'
     end select
@@ -1295,6 +1298,37 @@ contains
       if(.not.ok) error stop 'weekly no-gift checkpoint'
       no_gift_forcing=forcing; no_gift_forcing%subsurface_irrigation_source=0.0_real64
       weekly_seed%weekly%last_day=101_int64; weekly_seed%weekly%dayfix=4
+      if(trim(origin_scope)=='--weekly-full-day') then
+        block
+          use mod_fmr_serialized_reference_backend, only: fmr_serialized_physical_observation_t
+          type(fmr_serialized_physical_observation_t)::day_observation
+          type(canonical_numerical_config_t)::day_config
+          integer(int64)::started,ended,clock_rate
+          day_config=profile%numerical
+          day_config%max_committed_substeps=131072
+          call system_clock(started,clock_rate)
+          call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner, &
+               no_gift_forcing,day_config,1,T0,T0+1.0_real64,weekly_checkpoint,result,candidate,diagnostics, &
+               weekly_proposal=weekly_seed%weekly,target_selector=weekly_bounded_target)
+          call system_clock(ended)
+          write(*,'(a,l1,a,i0)') 'PPA_IRR_FULL_DAY_COMPLETED=',result%completed,';STATUS=',result%status
+          write(*,'(a,4(i0,1x))') 'PPA_IRR_FULL_DAY_COUNTS=',diagnostics%accepted_substeps,diagnostics%attempts, &
+               diagnostics%solver_rejections,diagnostics%temporal_rejections
+          day_observation=backend%observation()
+          write(*,'(a,es24.16)') 'PPA_IRR_FULL_DAY_LAST_TRIAL_END=',day_observation%trial_t1
+          write(*,'(a,f12.3)') 'PPA_IRR_FULL_DAY_WALL_SECONDS=',real(ended-started,real64)/real(clock_rate,real64)
+          if(result%completed) then
+            if(.not.candidate%ready().or.abs(result%mass%residual)>1.0e-12_real64) error stop 'full-day mass candidate'
+            write(*,'(a,es24.16)') 'PPA_IRR_FULL_DAY_MASS_RESIDUAL=',result%mass%residual
+          else
+            if(candidate%ready()) error stop 'failed full-day candidate'
+          end if
+          call weekly_owner%current_time(time,ok)
+          if(.not.ok.or.time/=T0.or.weekly_owner%current_revision()/=0_int64) error stop 'full-day premature publication'
+          write(*,'(a)') 'PPA_IRR_FULL_DAY_EXPERIMENT_NO_PUBLICATION=PASS'
+          stop
+        end block
+      end if
       ! Keep the longer failing fixture as explicit rollback evidence. Short
       ! success below must not hide its numerical completion failure.
       call backend%set_free_drainage_indicator(weekly_diagnostic_indicator)
