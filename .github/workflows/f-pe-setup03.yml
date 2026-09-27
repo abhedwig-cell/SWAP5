@@ -1,0 +1,27 @@
+name: F-PE-SETUP03 prevalidated registry bind
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_setup03_*.sh'
+      - 'docs/performance/F-PE-SETUP03_*.md'
+      - '.github/workflows/f-pe-setup03.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-prevalidated-registry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run paired prevalidated-registry benchmark
+        env:
+          SETUP03_N: '${{ matrix.n }}'
+          SETUP03_REPS: '3'
+        run: bash tests/fpe/run_fpe_setup03_prevalidated_registry.sh
