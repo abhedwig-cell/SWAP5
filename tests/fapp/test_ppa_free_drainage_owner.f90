@@ -2495,6 +2495,14 @@ contains
         daily_inputs(j)%daily_invocation=.true.; daily_inputs(j)%ordinal=100_int64
         daily_inputs(j)%deficit_cm=1.0_real64; daily_inputs(j)%threshold_mm=5.0_real64
       end do
+      ! Mixed DCS1/DCS2 weekly gifts have equal depth but distinct amount routes.
+      daily_parameters(1)%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+      daily_parameters(1)%dcs1_knot_count=2
+      daily_parameters(1)%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+      daily_parameters(1)%dcs1_correction_mm=0.0_real64
+      daily_requests(1)%rainfall_cm=0.0_real64; daily_requests(1)%deficit_cm=99.0_real64
+      daily_inputs(1)%deficit_cm=0.01_real64*2.0_real64/1024.0_real64
+      daily_inputs(1)%threshold_mm=0.0_real64
       call weekly_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
       if(.not.weekly_ok) error stop 'weekly gift seed restore'
       block

@@ -168,18 +168,21 @@ contains
     do i=1,n
       if(parameters(i)%timing_criterion==6) then
         if(.not.present(weekly_inputs)) return
-        if(parameters(i)%depth_criterion/=IRRIGATION_DEPTH_DCS2_FIXED) return
       end if
       if(parameters(i)%timing_criterion>=1.and.parameters(i)%timing_criterion<=4) then
         if(.not.present(observations)) return
       end if
       select case(parameters(i)%depth_criterion)
       case(IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY)
+        ! Weekly input explicitly supplies the shared timing/depth deficit.
+        ! Other DCS1 routes still require their committed-profile derivation.
+        if(parameters(i)%timing_criterion/=6) then
         if(.not.present(profiles)) return
         if(parameters(i)%timing_criterion<1.or.parameters(i)%timing_criterion>4) then
         if(.not.allocated(profiles(i)%layer).or..not.allocated(profiles(i)%dz).or. &
              .not.allocated(profiles(i)%ztopcp).or..not.allocated(profiles(i)%wclos).or. &
              .not.allocated(profiles(i)%wcmes).or..not.allocated(profiles(i)%wchis)) return
+        end if
         end if
       case(IRRIGATION_DEPTH_DCS2_FIXED)
         continue

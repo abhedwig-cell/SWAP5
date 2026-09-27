@@ -16,3 +16,13 @@ existing depth calculation, limits, event splitting and pending-event handling.
 No state owner, publication, tolerance or default policy changes. Failed/split
 proposals retain the original counter. Qualification first covers independent
 amount arithmetic; profile derivation and daily runtime admission remain separate.
+
+## Explicit bootstrap extension
+
+The weekly route may now accept DCS1 without a root-profile argument because
+`weekly_inputs` explicitly supplies the common deficit for timing and depth.
+This is not inferred deficit derivation. Other DCS1 routes retain their profile
+requirements. Existing shape, ordinal, committed-snapshot and publication checks
+remain unchanged. The two-column weekly gift fixture uses DCS1 in column 1 and
+DCS2 in column 2 with equal independently specified depth, exercising existing
+split, prefix, budget, pending and restart paths without a second owner.
