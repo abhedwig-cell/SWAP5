@@ -1339,6 +1339,15 @@ contains
         write(*,'(a,a,a,i0)') 'PPA_IRR_WEEKLY_TERMINAL_SOLVER=',trim(terminal%solver_diagnostics%route), &
              ';ITERATIONS=',terminal%solver_diagnostics%nonlinear_iterations
         if(.not.terminal%solver_diagnostics%final_convergence_available) error stop 'missing convergence observation'
+        if(.not.terminal%first_solver_failure_available) error stop 'missing first failure observation'
+        write(*,'(a,3(es24.16,1x))') 'PPA_IRR_WEEKLY_FIRST_FAILURE_INTERVAL=', &
+             terminal%first_solver_failure_t0,terminal%first_solver_failure_t1, &
+             terminal%first_solver_failure_t1-terminal%first_solver_failure_t0
+        write(*,'(a,2(i0,1x),2(es24.16,1x))') 'PPA_IRR_WEEKLY_FIRST_FAILURE_CONVERGENCE=', &
+             terminal%first_solver_failure_diagnostics%final_balance_failure_count, &
+             terminal%first_solver_failure_diagnostics%final_head_failure_count, &
+             terminal%first_solver_failure_diagnostics%final_max_balance_rate, &
+             terminal%first_solver_failure_diagnostics%final_total_balance_rate
         write(*,'(a,2(i0,1x),2(es24.16,1x))') 'PPA_IRR_WEEKLY_TERMINAL_CONVERGENCE=', &
              terminal%solver_diagnostics%final_balance_failure_count,terminal%solver_diagnostics%final_head_failure_count, &
              terminal%solver_diagnostics%final_max_balance_rate,terminal%solver_diagnostics%final_total_balance_rate

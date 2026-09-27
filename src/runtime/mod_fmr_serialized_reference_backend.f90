@@ -272,6 +272,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: first_solver_failure_t0 = 0.0_real64
     real(real64) :: first_solver_failure_t1 = 0.0_real64
     integer :: first_solver_failure_iterations = 0
+    type(soil_water_solver_diagnostics_t) :: first_solver_failure_diagnostics
     logical :: solver_executed = .false.
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
@@ -2175,6 +2176,7 @@ contains
     logical :: prior_failure_available
     real(real64) :: prior_failure_t0,prior_failure_t1
     integer :: prior_failure_iterations
+    type(soil_water_solver_diagnostics_t) :: prior_failure_diagnostics
     outcome = trial_outcome_t()
     ! Disposable observation only: retain the first solver failure while retries
     ! share the same start time. A new substep or backend window resets it.
@@ -2182,12 +2184,14 @@ contains
     prior_failure_t0=self%last_observation%first_solver_failure_t0
     prior_failure_t1=self%last_observation%first_solver_failure_t1
     prior_failure_iterations=self%last_observation%first_solver_failure_iterations
+    prior_failure_diagnostics=self%last_observation%first_solver_failure_diagnostics
     self%last_observation = fmr_serialized_physical_observation_t()
     if(prior_failure_available.and.same_real_bits(prior_failure_t0,t0)) then
       self%last_observation%first_solver_failure_available=.true.
       self%last_observation%first_solver_failure_t0=prior_failure_t0
       self%last_observation%first_solver_failure_t1=prior_failure_t1
       self%last_observation%first_solver_failure_iterations=prior_failure_iterations
+      self%last_observation%first_solver_failure_diagnostics=prior_failure_diagnostics
     end if
     self%last_observation%soil_temperature_active = self%soil_temperature_active
     self%last_observation%trial_t0 = t0
@@ -2513,6 +2517,7 @@ contains
       self%last_observation%first_solver_failure_t0=t0
       self%last_observation%first_solver_failure_t1=t1
       self%last_observation%first_solver_failure_iterations=solve_result%diagnostics%nonlinear_iterations
+      self%last_observation%first_solver_failure_diagnostics=solve_result%diagnostics
     end if
     self%last_observation%top_flux = solve_result%top_flux
     self%last_observation%bottom_flux = solve_result%bottom_flux

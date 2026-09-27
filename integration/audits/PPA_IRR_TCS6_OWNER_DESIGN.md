@@ -131,3 +131,9 @@ the restored candidate or a mass ledger, and confer no acceptance authority.
 No solver equations, tolerances, restart payload or publication path changes.
 Qualification is branch-local IrrigationSource O0/O2 plus hydraulic-copy/guards;
 canonical admission and broader solver-route qualification are not claimed.
+
+The backend also retains a value copy of these diagnostics alongside its
+existing first-solver-failure timestamp, only across retries with the same
+start time. A new substep/backend window resets this observation. This permits
+distinguishing the initial failed attempt from the final tiny-step failure;
+it is disposable observation, not checkpoint or restart state.
