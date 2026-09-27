@@ -93,6 +93,8 @@ program test_ppa_free_drainage_owner
   character(len=32) :: test_scope
   character(len=32) :: origin_scope
   integer :: observed_event_calls=0
+  integer(int64) :: day_storage_calls=0_int64,day_storage_unavailable=0_int64
+  logical :: day_storage_last_available=.false.
   logical :: is_gash=.false.
   logical :: capture_low_rain=.false.
   type(soil_water_solve_request_t) :: low_rain_request
@@ -1390,7 +1392,8 @@ contains
           do day_index=1,2
             call day_backend%initialize(top)
             call day_backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
-            call day_backend%set_storage_difference(evaluate_mvg_storage_difference_service)
+            day_storage_calls=0_int64; day_storage_unavailable=0_int64
+            call day_backend%set_storage_difference(day_storage_observer)
             call day_replay(day_index)%capture_checkpoint(day_checkpoint,ok)
             if(.not.ok) error stop 'full-day replay checkpoint'
             call day_backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters, &
@@ -1401,6 +1404,8 @@ contains
                  ';COMPLETED=',result%completed,';STATUS=',result%status
             if(.not.result%completed) then
               day_observation=day_backend%observation()
+              write(*,'(a,2(i0,1x),l1)') 'PPA_IRR_DAY2_STORAGE_SERVICE=', &
+                   day_storage_calls,day_storage_unavailable,day_storage_last_available
               write(*,'(a,4(i0,1x))') 'PPA_IRR_DAY2_FAILURE_COUNTS=',diagnostics%accepted_substeps, &
                    diagnostics%attempts,diagnostics%solver_rejections,diagnostics%temporal_rejections
               write(*,'(a,2(es24.16,1x))') 'PPA_IRR_DAY2_FAILURE_INTERVAL=', &
@@ -4269,6 +4274,17 @@ contains
     call owner%close(code)
     call require(code==FMR_APP_BOOT_OK,'default owner closes after opt-in')
   end subroutine
+  subroutine day_storage_observer(provider,before,water_before,after,difference,available)
+    use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
+    class(constitutive_hydraulics_provider_t),intent(in)::provider
+    real(real64),intent(in)::before(:),water_before(:),after(:)
+    real(real64),intent(out)::difference(:)
+    logical,intent(out)::available
+    call evaluate_mvg_storage_difference_service(provider,before,water_before,after,difference,available)
+    day_storage_calls=day_storage_calls+1_int64
+    if(.not.available) day_storage_unavailable=day_storage_unavailable+1_int64
+    day_storage_last_available=available
+  end subroutine day_storage_observer
   subroutine weekly_day_target(cursor,requested_t1,target_t1,max_retries_cap,valid)
     real(real64),intent(in)::cursor,requested_t1
     real(real64),intent(out)::target_t1
