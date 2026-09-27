@@ -431,6 +431,7 @@ contains
          invalid_carrier%irrigation,event_template,T0,assembled,ok,weekly=invalid_carrier%weekly)
     if(.not.ok) error stop 'weekly carrier factory rejected'
     if(.not.fmr_restart_state_matches_template(assembled,event_template,T0)) error stop 'weekly restart rejected'
+    call verify_irrigation_restart_bundle(assembled,event_template)
     call assembled%clone(carrier_copy)
     select type(cloned=>carrier_copy)
     type is(ppa_irrigation_event_state_t)
@@ -1098,7 +1099,7 @@ contains
     if(allocated(invalid%records)) error stop 'failed irrigation export retained old bundle'
     ! Corrupt only the second record. The first reconstructed candidate must
     ! never be published when a later record fails validation.
-    do pass=1,3
+    do pass=1,4
       invalid=saved
       select case(pass)
       case(1)
@@ -1111,6 +1112,13 @@ contains
           state%irrigation%active_event_rate=-1.0_real64
         class default
           error stop 'irrigation export sliced state'
+        end select
+      case(4)
+        select type(state=>invalid%records(2)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          state%weekly%dayfix=367
+        class default
+          error stop 'weekly export sliced state'
         end select
       end select
       call fmr_restore_committed_restart(invalid,92001_int64,columns,[template],restored,ok,code)
@@ -1131,6 +1139,10 @@ contains
       select type(snapshot)
       type is(ppa_irrigation_event_state_t)
         if(.not.snapshot%matches_candidate(template,checkpoint_time)) error stop 'irrigation restored payload invalid'
+        if((snapshot%weekly%enabled.neqv.source%weekly%enabled).or. &
+             (snapshot%weekly%day_bound.neqv.source%weekly%day_bound).or. &
+             snapshot%weekly%dayfix/=source%weekly%dayfix.or.snapshot%weekly%last_day/=source%weekly%last_day) &
+             error stop 'weekly decoded restart metadata changed'
         if(snapshot%irrigation%active_event.neqv.source%irrigation%active_event) error stop 'irrigation restored activation'
         if(snapshot%irrigation%active_event_start/=source%irrigation%active_event_start.or. &
              snapshot%irrigation%active_event_end/=source%irrigation%active_event_end.or. &
@@ -1144,13 +1156,15 @@ contains
         if(any(actual_history/=expected_history)) error stop 'irrigation restored history changed'
         if(source%irrigation%active_event) call verify_restored_irrigation_delivery(source,snapshot,checkpoint_time, &
              template,[committed(i),restored(i)])
-        if(.not.source%irrigation%active_event) call verify_committed_profile_selection(source,checkpoint_time, &
+        if(.not.source%irrigation%active_event.and..not.source%weekly%enabled) &
+             call verify_committed_profile_selection(source,checkpoint_time, &
              template,[committed(i),restored(i)])
       class default
         error stop 'irrigation restored dynamic type lost'
       end select
     end do
     write(*,'(a)') 'PPA_IRR_EVENT_COMMITTED_RESTART_ATOMIC_ROUNDTRIP=PASS'
+    if(source%weekly%enabled) write(*,'(a)') 'PPA_IRR_WEEKLY_DECODED_RESTART_ATOMIC_ROUNDTRIP=PASS'
   end subroutine verify_irrigation_restart_bundle
   subroutine verify_pending_irrigation_trial(profile,source,template)
     use mod_canonical_contracts, only: canonical_numerical_config_t
