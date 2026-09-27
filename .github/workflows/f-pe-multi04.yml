@@ -52,3 +52,13 @@ jobs:
       - name: Qualify frozen mixed-cost production hybrid scheduling
         run: bash tests/fpe/run_fpe_multi04_p2_hybrid_production_scheduling.sh
 
+  p3p4-live-worker4:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify live MODFLOW6 worker4 publication and coupling identity
+        run: bash tests/fpe/run_fpe_multi04_p3p4_live_worker4.sh
+
