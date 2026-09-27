@@ -1368,8 +1368,13 @@ contains
            error stop 'weekly bounded target premature publication'
       call backend%discard_trial_candidate(candidate,diagnostics)
       block
+        use mod_fmr_committed_restart, only: fmr_export_committed_restart,fmr_restore_committed_restart,FMR_RESTART_OK
         type(kernel_committed_state_t)::bounded_owner
+        type(kernel_committed_state_t)::restored_owner(1)
         type(kernel_checkpoint_t)::bounded_checkpoint
+        type(fmr_committed_restart_bundle_t)::bounded_restart
+        class(transaction_state_t),allocatable::restored_snapshot
+        real(real64),allocatable::bounded_history(:),restored_history(:)
         call bounded_owner%initialize(404190_int64,initial,ok,T0)
         if(.not.ok) error stop 'weekly bounded owner'
         call bounded_owner%capture_checkpoint(bounded_checkpoint,ok)
@@ -1402,6 +1407,40 @@ contains
           error stop 'weekly bounded carrier sliced'
         end select
         write(*,'(a)') 'PPA_IRR_WEEKLY_INVALID_TARGET_RETRY_LONG_COMMIT=PASS'
+        call fmr_export_committed_restart([column],[template],[bounded_owner],92002_int64,bounded_restart,ok,code)
+        if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'weekly long restart export'
+        call fmr_restore_committed_restart(bounded_restart,92002_int64,[column],[template],restored_owner,ok,code)
+        if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'weekly long restart restore'
+        call restored_owner(1)%current_time(time,ok)
+        if(.not.ok.or.time/=finish) error stop 'weekly long restart time'
+        if(restored_owner(1)%current_revision()/=bounded_owner%current_revision().or. &
+             restored_owner(1)%current_lineage_id()/=bounded_owner%current_lineage_id()) &
+             error stop 'weekly long restart provenance'
+        call restored_owner(1)%snapshot(restored_snapshot,ok)
+        if(.not.ok) error stop 'weekly long restart snapshot'
+        select type(snapshot)
+        type is(ppa_irrigation_event_state_t)
+          select type(restored_snapshot)
+          type is(ppa_irrigation_event_state_t)
+            if(.not.restored_snapshot%matches_candidate(template,finish)) error stop 'weekly long restart validity'
+            if(any(restored_snapshot%pressure_head/=snapshot%pressure_head).or. &
+                 any(restored_snapshot%water_content/=snapshot%water_content)) error stop 'weekly long restart physics'
+            if(restored_snapshot%weekly%dayfix/=4.or.restored_snapshot%weekly%last_day/=101_int64.or. &
+                 .not.restored_snapshot%weekly%enabled.or..not.restored_snapshot%weekly%day_bound.or. &
+                 restored_snapshot%irrigation%active_event) error stop 'weekly long restart metadata'
+            call snapshot%temporal_history_snapshot(bounded_history,ok)
+            if(.not.ok) error stop 'weekly long history missing'
+            call restored_snapshot%temporal_history_snapshot(restored_history,ok)
+            if(.not.ok) error stop 'weekly long restored history missing'
+            if(size(restored_history)/=size(bounded_history)) error stop 'weekly long restart history shape'
+            if(any(restored_history/=bounded_history)) error stop 'weekly long restart history'
+          class default
+            error stop 'weekly long restart carrier sliced'
+          end select
+        class default
+          error stop 'weekly long original carrier sliced'
+        end select
+        write(*,'(a)') 'PPA_IRR_WEEKLY_LONG_COMMITTED_RESTART_IDENTITY=PASS'
       end block
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
