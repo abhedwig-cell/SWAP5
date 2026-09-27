@@ -2,7 +2,11 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-solve01-p2b-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-solve01-p2b-${GITHUB_RUN_ID:-local}-$"
+HEADCALC_SOURCE="${BASE01_HEADCALC_SOURCE:-src/legacy/b1_10_port/headcalc.f90}"
+LEGACY_BINDING_SOURCE="${BASE01_LEGACY_BINDING_SOURCE:-src/adapter/mod_reference_richards_legacy_binding.f90}"
+TEST_SCRIPT="${BASE01_TEST_SCRIPT:-tests/fpe/test_fpe_base01_p0_participant_boundary.py}"
+EXTRA_SOURCE="${BASE01_EXTRA_SOURCE:-}"
 mkdir -p "$BUILD/lib" "$BUILD/py"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "SOLVE01_P2B_FAIL $*" >&2; exit 1; }
@@ -745,8 +749,11 @@ MODULE_SRC=(
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
   src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
-  src/legacy/b1_10_port/headcalc.f90
-  src/adapter/mod_reference_richards_legacy_binding.f90
+)
+if [[ -n "$EXTRA_SOURCE" ]]; then MODULE_SRC+=("$EXTRA_SOURCE"); fi
+MODULE_SRC+=(
+  "$HEADCALC_SOURCE"
+  "$LEGACY_BINDING_SOURCE"
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
@@ -798,7 +805,7 @@ for case_spec in "${cases[@]}"; do
   for imbalance in "${imbalances[@]}"; do
     for rep in $(seq 1 "$reps"); do
       raw="$(LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/lib/libswap.so" \
-        python3 tests/fpe/test_fpe_base01_p0_participant_boundary.py "$material" "$h0" "$imbalance")" || {
+        python3 "$TEST_SCRIPT" "$material" "$h0" "$imbalance")" || {
           printf '%s\n' "$raw" >&2
           fail "$material $regime $imbalance rep=$rep"
         }
