@@ -32,6 +32,19 @@ Owning evidence: `PPA_IRR_TCS6_COMPOSITION_STATUS.json` and
 
 ## Evidence and limitations
 
+Optional numerical failures can be replayed with
+`tests/fapp/replay_ppa_weekly_day_diagnostics.ps1 -BuildDirectory <clean-owner-build>`.
+The supplied build must contain O0/O2 executables from the owner gate. The script
+checks expected nonzero exits, explicit rollback/first-day/oracle markers and
+ordered numerical output identity, excluding wall time and backtrace addresses.
+An unexpected crash or newly successful run fails this negative-fixture replay
+and requires requalification. Its PASS labels establish failure reproduction,
+never second-day completion; the final marker states `NOT_QUALIFIED`.
+Replay script `e5318961a` was exercised against the clean `69bff12c0` build
+`swap-ppa-wu01-b4f594540acb4de39b4982dbdbe417f9`: all three policies reproduce
+their documented negative outcomes at O0/O2. Logs remain under each build's
+optimization directory as `weekly-*-diagnostic.txt`.
+
 The current full IrrigationSource gate passes clean O0/O2 exact transcripts at
 `11baf3343`, including three bootstrap fixture variants. Same binaries pass
 hydraulic-copy and guards with exact identity. Documentation source and strict
