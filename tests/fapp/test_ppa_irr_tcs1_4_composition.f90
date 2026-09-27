@@ -14,8 +14,8 @@ program test_composition
   type(process_hydraulic_view_t)::hydraulic
   type(irrigation_timing_selection_t)::selection
   real(real64)::knots(7),values(7)
-  real(real64)::actual,nan
-  integer::i
+  real(real64)::actual,nan,correction,depth,rate,duration
+  integer::i,j
   p%scheduled_irrigation_enabled=.true.; p%active_nodes=1; p%sensor_node=1; p%single_ssdi_node=1
   p%irr_rate_cm_per_day=1.0_real64; p%dcs2_knot_count=2
   p%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]; p%dcs2_depth_cm=0.5_real64
@@ -94,8 +94,55 @@ program test_composition
     r%t0=0.0_real64; r%t1=0.25_real64
     call profile_call(base,-1.0_real64,2)
     if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.candidate%active_event) error stop 'DCS1 bad profile'
+    call profile_call(base,1.0_real64,0)
+    if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.candidate%active_event) error stop 'DCS1 invalid timing'
+    r%fixed_event_already_selected=.true.
+    call profile_call(base,-1.0_real64,0)
+    if(d%status/=IRRIGATION_OK.or.flux%event_started) error stop 'DCS1 fixed precedence'
+    r%fixed_event_already_selected=.false.
+    values=0.0_real64
+    if(i==4) values=10.0_real64
+    call profile_call(base,1.0_real64,2)
+    if(d%status/=IRRIGATION_OK.or.flux%event_started) error stop 'DCS1 false timing'
+    values=0.5_real64
+    r%t0=0.25_real64; r%t1=0.75_real64
+    call profile_call(pending,-1.0_real64,0)
+    if(d%status/=IRRIGATION_SPLIT_REQUIRED.or.d%split_time/=0.5_real64) error stop 'DCS1 pending split'
+    if(.not.pending%active_event.or.pending%active_event_end/=0.5_real64) error stop 'DCS1 input mutated'
+    r%t0=0.0_real64; r%t1=1.0_real64/4096.0_real64
+    p%rain_threshold_cm=0.25_real64
+    do j=1,1000
+      r%dvs=real(modulo(j,9),real64)/4.0_real64
+      r%rainfall_cm=real(modulo(j,5),real64)/4.0_real64
+      p%dcs1_correction_mm(1)=real(modulo(j,21)-10,real64)
+      p%dcs1_correction_mm(2)=real(modulo(3*j,21)-10,real64)
+      correction=p%dcs1_correction_mm(1)+r%dvs* &
+           ((p%dcs1_correction_mm(2)-p%dcs1_correction_mm(1))/2.0_real64)
+      depth=0.5_real64+correction*0.1_real64
+      if(r%rainfall_cm>0.25_real64) depth=depth-r%rainfall_cm
+      depth=max(0.0_real64,depth)
+      p%depth_limit_enabled=modulo(j,2)==0
+      p%minimum_depth_mm=2.0_real64; p%maximum_depth_mm=8.0_real64
+      if(p%depth_limit_enabled) depth=min(max(depth,0.2_real64),0.8_real64)
+      rate=1.0_real64; duration=depth
+      if(depth>rate) then
+        rate=depth; duration=1.0_real64
+      end if
+      call profile_call(base,1.0_real64,2)
+      if(depth<=0.0_real64) then
+        if(d%status/=IRRIGATION_INVALID_EVENT.or.candidate%active_event) error stop 'DCS1 zero gift'
+      else
+        if(d%status/=IRRIGATION_OK.or..not.candidate%active_event) error stop 'DCS1 grid selection'
+        if(candidate%active_event_end/=duration.or.flux%external_inflow_amount/=rate*r%t1) &
+             error stop 'DCS1 independent correction rainfall clip grid'
+      end if
+    end do
+    p%depth_limit_enabled=.false.; p%dcs1_correction_mm=0.0_real64
+    r%dvs=0.0_real64; r%rainfall_cm=0.0_real64
   end do
   write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_PROFILE_INITIAL=PASS'
+  write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_DEPTH_GRID_4000=PASS'
+  write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_SELECTION_PENDING_GUARDS=PASS'
 contains
   subroutine profile_call(state,thickness,count)
     type(irrigation_state_t),intent(in)::state
