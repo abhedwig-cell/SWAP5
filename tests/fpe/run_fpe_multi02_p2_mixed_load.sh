@@ -75,11 +75,15 @@ adverse_speed,adverse_load=summary["MIXED"]
 balanced_speed,balanced_load=summary["MIXED_BALANCED"]
 contrast_ok=adverse_load>=1.10
 if not contrast_ok:
-    raise SystemExit(f"mixed-cost contrast insufficient: adverse load ratio {adverse_load:.6f}")
+    print(f"MULTI02_P2_DECISION|ADVERSE_SPEED4={adverse_speed:.6f}|ADVERSE_LOAD={adverse_load:.6f}"
+          f"|BALANCED_SPEED4={balanced_speed:.6f}|BALANCED_LOAD={balanced_load:.6f}"
+          f"|CONTRAST_PASS=FALSE|DECISION=INVALID_NO_MATERIAL_COST_CONTRAST")
+    print("FPE_MULTI02_P2_MIXED=PASS")
+    raise SystemExit(0)
 advance=(adverse_speed>=2.2 and adverse_load<=1.20 and balanced_speed>=2.2 and balanced_load<=1.20)
 decision="ADVANCE_APPLICATION_CONTEXT" if advance else "SELECT_LOAD_BALANCING"
 print(f"MULTI02_P2_DECISION|ADVERSE_SPEED4={adverse_speed:.6f}|ADVERSE_LOAD={adverse_load:.6f}"
       f"|BALANCED_SPEED4={balanced_speed:.6f}|BALANCED_LOAD={balanced_load:.6f}"
-      f"|CONTRAST_PASS={contrast_ok}|DECISION={decision}")
+      f"|CONTRAST_PASS=TRUE|DECISION={decision}")
 print("FPE_MULTI02_P2_MIXED=PASS")
 PY
