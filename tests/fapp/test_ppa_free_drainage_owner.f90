@@ -97,6 +97,8 @@ program test_ppa_free_drainage_owner
   logical :: capture_low_rain=.false.
   type(soil_water_solve_request_t) :: low_rain_request
   type(soil_water_temporal_indicator_request_t) :: low_rain_history
+  type(soil_water_temporal_indicator_result_t) :: weekly_last_certificate
+  real(real64) :: weekly_last_certificate_dt=0.0_real64
 
   call get_command_argument(1,test_scope)
   call get_command_argument(2,origin_scope)
@@ -1295,6 +1297,7 @@ contains
       weekly_seed%weekly%last_day=101_int64; weekly_seed%weekly%dayfix=4
       ! Keep the longer failing fixture as explicit rollback evidence. Short
       ! success below must not hide its numerical completion failure.
+      call backend%set_free_drainage_indicator(weekly_diagnostic_indicator)
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,finish,weekly_checkpoint,result,candidate,diagnostics, &
            weekly_proposal=weekly_seed%weekly)
@@ -1333,7 +1336,13 @@ contains
              terminal%temporal_head_inf_bound,terminal%temporal_head_budget,terminal%temporal_normalized_indicator
         write(*,'(a,a,a,a)') 'PPA_IRR_WEEKLY_TERMINAL_ROUTE=',trim(terminal%temporal_indicator_route), &
              ';REASON=',trim(terminal%temporal_certificate_unavailable_reason)
+        write(*,'(a,a,a,i0)') 'PPA_IRR_WEEKLY_TERMINAL_SOLVER=',trim(terminal%solver_diagnostics%route), &
+             ';ITERATIONS=',terminal%solver_diagnostics%nonlinear_iterations
+        write(*,'(a,a)') 'PPA_IRR_WEEKLY_LAST_CERTIFICATE_ROUTE=',trim(weekly_last_certificate%route)
+        write(*,'(a,2(es24.16,1x))') 'PPA_IRR_WEEKLY_LAST_CERTIFICATE_BOUNDS=', &
+             weekly_last_certificate_dt,weekly_last_certificate%head_inf_bound
       end block
+      call backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
            weekly_proposal=weekly_seed%weekly)
@@ -3698,6 +3707,15 @@ contains
     call owner%close(code)
     call require(code==FMR_APP_BOOT_OK,'default owner closes after opt-in')
   end subroutine
+  subroutine weekly_diagnostic_indicator(request,solution,history,certificate)
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solution
+    type(soil_water_temporal_indicator_request_t), intent(in) :: history
+    type(soil_water_temporal_indicator_result_t), intent(out) :: certificate
+    call evaluate_free_drainage_temporal_indicator(request,solution,history,certificate)
+    weekly_last_certificate=certificate
+    weekly_last_certificate_dt=request%step_duration
+  end subroutine weekly_diagnostic_indicator
   subroutine traced_indicator(request,solution,history,certificate)
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: solution
