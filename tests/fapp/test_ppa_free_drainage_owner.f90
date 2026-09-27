@@ -1857,7 +1857,8 @@ contains
       block
         type(fmr_production_application_bootstrap_t)::split_app
         type(scheduled_irrigation_request_t)::split_requests(2)
-        type(fmr_committed_restart_bundle_t)::split_bundle
+        type(fmr_committed_restart_bundle_t)::split_bundle,budget_bundle,replay_bundle
+        type(fmr_b110_physical_forcing_t)::resume_forcing(2)
         type(fmr_serialized_column_result_t),allocatable::split_results(:)
         real(real64)::split_endpoint
         call split_app%initialize(weekly_config,weekly_code)
@@ -1899,6 +1900,7 @@ contains
              error stop 'weekly budget lost accepted prefix'
         call split_app%export_committed_restart(92001_int64,split_bundle,weekly_ok,weekly_code)
         if(.not.weekly_ok) error stop 'weekly budget export'
+        budget_bundle=split_bundle
         do j=1,2
           if(split_bundle%records(j)%committed_time/=split_endpoint) error stop 'weekly budget advanced beyond prefix'
           select type(state=>split_bundle%records(j)%physical_state)
@@ -1933,6 +1935,37 @@ contains
         end do
         call split_app%close(weekly_code)
         write(*,'(a)') 'PPA_IRR_WEEKLY_TWO_PREFIX_COMPLETION=PASS'
+        call split_app%initialize(weekly_config,weekly_code)
+        if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly budget resume initialize'
+        call split_app%restore_committed_restart(budget_bundle,92001_int64,weekly_ok,weekly_code)
+        if(.not.weekly_ok) error stop 'weekly budget resume restore'
+        split_requests%t0=split_endpoint
+        resume_forcing=weekly_forcing
+        do j=1,2
+          resume_forcing(j)%subsurface_irrigation_source(1)=daily_parameters(j)%irr_rate_cm_per_day
+        end do
+        call execute_window_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+             daily_parameters,split_requests,resume_forcing,1,prefixes,prefix_count,weekly_code,weekly_inputs=daily_inputs)
+        if(weekly_code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'weekly budget resumed remainder'
+        call split_app%export_committed_restart(92001_int64,replay_bundle,weekly_ok,weekly_code)
+        if(.not.weekly_ok) error stop 'weekly budget resumed export'
+        do j=1,2
+          select type(state=>split_bundle%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            select type(replay=>replay_bundle%records(j)%physical_state)
+            type is(ppa_irrigation_event_state_t)
+              if(replay%weekly%dayfix/=state%weekly%dayfix.or.replay%weekly%last_day/=state%weekly%last_day.or. &
+                   replay%irrigation%active_event.or.any(replay%water_content/=state%water_content).or. &
+                   any(replay%pressure_head/=state%pressure_head)) error stop 'weekly two-prefix restart differs'
+            class default
+              error stop 'weekly two-prefix restart carrier lost'
+            end select
+          end select
+          if(replay_bundle%records(j)%committed_time/=split_bundle%records(j)%committed_time) &
+               error stop 'weekly two-prefix restart endpoint differs'
+        end do
+        call split_app%close(weekly_code)
+        write(*,'(a)') 'PPA_IRR_WEEKLY_BUDGET_RESTART_REMAINDER_IDENTITY=PASS'
       end block
       call execute_ppa_bootstrap_irrigation(weekly_app,[1_int64,2_int64],92001_int64, &
            daily_parameters,daily_requests,weekly_forcing,weekly_results,weekly_code, &
