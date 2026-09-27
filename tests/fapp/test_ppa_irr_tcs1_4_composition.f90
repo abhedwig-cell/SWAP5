@@ -289,6 +289,37 @@ program test_composition
     end do
   end do
   write(*,'(a)') 'PPA_IRR_TCS6_DCS1_SHARED_DEFICIT_GRID=PASS'
+  p%dcs1_correction_mm=0.0_real64; r%rainfall_cm=0.0_real64
+  r%t1=0.75_real64
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_SPLIT_REQUIRED.or.next_day/=6.or.candidate%active_event) &
+       error stop 'weekly DCS1 split atomicity'
+  if(d%split_time/=0.5_real64) error stop 'weekly DCS1 split boundary'
+  r%t1=0.25_real64
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=0.or..not.candidate%active_event) error stop 'weekly DCS1 retry'
+  pending=candidate; r%t0=0.25_real64; r%t1=0.5_real64; r%rainfall_cm=nan
+  call evaluate_tcs6_scheduled(p,pending,r,0,.true.,nan,nan,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=0.or.candidate%active_event.or..not.flux%event_finished) &
+       error stop 'weekly DCS1 pending reevaluation'
+  if(.not.pending%active_event) error stop 'weekly DCS1 pending input mutation'
+  r%t0=0.0_real64; r%t1=0.01_real64
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.next_day/=6.or.candidate%active_event) &
+       error stop 'weekly DCS1 invalid rainfall atomicity'
+  r%rainfall_cm=2.0_real64
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_INVALID_EVENT.or.next_day/=6.or.candidate%active_event) &
+       error stop 'weekly DCS1 zero depth atomicity'
+  p%depth_limit_enabled=.true.; p%minimum_depth_mm=2.0_real64; p%maximum_depth_mm=4.0_real64
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=0.or.abs(candidate%active_event_end-0.1_real64)>1.0e-14_real64) &
+       error stop 'weekly DCS1 minimum limit'
+  r%rainfall_cm=0.0_real64
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=0.or.abs(candidate%active_event_end-0.2_real64)>1.0e-14_real64) &
+       error stop 'weekly DCS1 maximum limit'
+  write(*,'(a)') 'PPA_IRR_TCS6_DCS1_SPLIT_PENDING_LIMIT_GUARDS=PASS'
 contains
   subroutine verify_weekly_transitions()
     type(ppa_weekly_identity_t)::before,after
