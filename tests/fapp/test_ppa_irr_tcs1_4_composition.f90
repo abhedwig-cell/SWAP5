@@ -5,6 +5,7 @@ program test_composition
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_tcs1_4_composition
   use mod_ppa_irr_tcs1_4_dcs1
+  use mod_ppa_irr_tcs6_composition
   implicit none
   type(scheduled_irrigation_parameters_t)::p
   type(scheduled_irrigation_request_t)::r
@@ -15,7 +16,7 @@ program test_composition
   type(irrigation_timing_selection_t)::selection
   real(real64)::knots(7),values(7)
   real(real64)::actual,nan,correction,depth,rate,duration
-  integer::i,j
+  integer::i,j,next_day
   p%scheduled_irrigation_enabled=.true.; p%active_nodes=1; p%sensor_node=1; p%single_ssdi_node=1
   p%irr_rate_cm_per_day=1.0_real64; p%dcs2_knot_count=2
   p%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]; p%dcs2_depth_cm=0.5_real64
@@ -145,6 +146,33 @@ program test_composition
   write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_PROFILE_INITIAL=PASS'
   write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_DEPTH_GRID_4000=PASS'
   write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_SELECTION_PENDING_GUARDS=PASS'
+  p%timing_criterion=6; p%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
+  r%t0=0.0_real64; r%t1=0.25_real64
+  do i=0,366
+    call evaluate_tcs6_scheduled(p,base,r,i,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+    if(d%status/=IRRIGATION_OK) error stop 'weekly composition status'
+    if(i>=6) then
+      if(next_day/=0.or..not.candidate%active_event) error stop 'weekly due day'
+      if(candidate%active_event_end/=0.5_real64) error stop 'weekly gift duration'
+    else
+      if(next_day/=i+1.or.candidate%active_event) error stop 'weekly counter advance'
+    end if
+  end do
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,0.5_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=0.or.candidate%active_event) error stop 'weekly no-gift reset'
+  call evaluate_tcs6_scheduled(p,base,r,366,.false.,nan,nan,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=366.or.candidate%active_event) error stop 'weekly nondaily'
+  r%t1=0.75_real64
+  call evaluate_tcs6_scheduled(p,base,r,366,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_SPLIT_REQUIRED.or.next_day/=366) error stop 'weekly split advanced counter'
+  r%t1=d%split_time
+  call evaluate_tcs6_scheduled(p,base,r,366,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=0.or..not.flux%event_finished) error stop 'weekly retry'
+  call evaluate_tcs6_scheduled(p,base,r,-1,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.next_day/=-1) error stop 'weekly invalid counter'
+  call evaluate_scheduled_irrigation_interval(p,base,r,hydraulic,candidate,flux,d)
+  if(d%status/=IRRIGATION_INVALID_PARAMETERS) error stop 'weekly ordinary entry admitted'
+  write(*,'(a)') 'PPA_IRR_TCS6_EXPLICIT_COUNTER_PROPOSAL=PASS'
 contains
   subroutine profile_call(state,thickness,count)
     type(irrigation_state_t),intent(in)::state

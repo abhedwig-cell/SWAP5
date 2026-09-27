@@ -390,7 +390,7 @@ contains
         return
       end if
     end if
-    if (parameters%timing_criterion>=1.and.parameters%timing_criterion<=4) then
+    if ((parameters%timing_criterion>=1.and.parameters%timing_criterion<=4).or.parameters%timing_criterion==6) then
       if(.not.present(timing_selection)) then
         diagnostics%status=IRRIGATION_INVALID_PARAMETERS
         return
@@ -602,7 +602,7 @@ contains
           parameters%solute_overirrigation_percent > 100.0_real64) return
     end if
     select case (parameters%timing_criterion)
-    case (1:4)
+    case (1:4,6)
       if(.not.supplied_timing) return
     case (IRRIGATION_TIMING_TCS7_PRESSURE_HEAD)
       if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return
