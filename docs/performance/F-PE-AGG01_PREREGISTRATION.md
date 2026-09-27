@@ -72,3 +72,18 @@ If it helps less than these bounds, close the allocation route as low return.
 Research-only compiled source copy.
 No production `src/**` change before qualification.
 No physics, aggregation mathematics, tolerances, temporal policy, tangent mathematics, scheduling, transaction or publication semantics change.
+
+
+## Preregistration amendment before measurement
+
+This amendment is made before any AGG01 performance result is observed.
+
+Instead of a special fixed array only for `tile_count == 1`, use one reusable temporary `exchanges` buffer per `trial_cell_heads` call:
+
+- allocate once to the maximum tile_count across the active cells;
+- populate only `exchanges(1:tile_count)` for the current cell;
+- call the existing `aggregate_groundwater_cell_tiles` on that slice;
+- do not allocate/deallocate inside the per-cell loop;
+- keep the aggregator itself and all validation semantics unchanged.
+
+This is strictly more general than the original candidate and targets the same preregistered cost mechanism: repeated per-cell heap allocation/deallocation. The performance gates remain unchanged.
