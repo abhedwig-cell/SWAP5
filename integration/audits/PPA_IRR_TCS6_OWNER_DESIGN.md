@@ -1,6 +1,6 @@
 # Weekly irrigation counter ownership
 
-Status: proposed implementation contract, not implemented or runtime-qualified.
+Status: branch-local implementation contract; staged evidence is recorded in the status JSON.
 Baseline: `f8e22d1fd`; process evidence is in `PPA_IRR_TCS6_COMPOSITION_STATUS.json`.
 
 ## State and invocation
@@ -64,8 +64,18 @@ day) or exactly one source counter increment/reset. Backward/gapped ordinals,
 implicit activation, disabling and crop resets reject. Ordered subtraction
 avoids integer overflow at the maximum ordinal. This guard checks structural
 publication validity, not scientific eligibility or deficit selection; those
-remain the daily process producer's responsibility. The helper alone does not
-open the currently guarded runtime route.
+remain the daily process producer's responsibility. The backend now accepts
+the explicit optional `weekly_proposal` only for an enabled weekly carrier;
+omission still rejects enabled carriers. Pending events cannot change dayfix.
+The model copies the proposal at the initial trial boundary into its candidate,
+including fresh retry clones, and clears its call-local proposal flag afterward.
+Only the existing candidate commit publishes it. Bootstrap wiring remains pending.
+
+The first no-gift hydraulic fixture at duration 1/1024 day failed completion;
+this numerical case remains open and is not evidence against no-gift transaction
+semantics. A separate bounded 1/65536-day fixture is used to investigate accepted
+metadata publication without changing any numerical acceptance criteria. Its
+result must not be generalized to the longer interval or full-day execution.
 
 - Seven accepted no-gift days reset the counter, including decoded midweek restart.
 - Duplicate daily invocation does not increment twice; backward/gapped input
