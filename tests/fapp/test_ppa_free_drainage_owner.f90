@@ -2517,6 +2517,45 @@ contains
         if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly split initialize'
         call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
         if(.not.weekly_ok) error stop 'weekly split restore'
+        block
+          type(ppa_tcs6_daily_input_t)::bad_weekly(2)
+          type(fmr_committed_restart_bundle_t)::unchanged
+          integer::bad_case,k
+          do bad_case=1,3
+            bad_weekly=daily_inputs
+            if(bad_case==2) bad_weekly(1)%deficit_cm=ieee_value(0.0_real64,ieee_quiet_nan)
+            if(bad_case==3) bad_weekly(2)%ordinal=-1_int64
+            if(bad_case==1) then
+              call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+                   daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code)
+            else
+              call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+                   daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code,weekly_inputs=bad_weekly)
+            end if
+            if(weekly_code==FMR_APP_BOOT_OK.or.allocated(split_results)) error stop 'weekly DCS1 preflight accepted'
+            call split_app%export_committed_restart(92001_int64,unchanged,weekly_ok,weekly_code)
+            if(.not.weekly_ok) error stop 'weekly DCS1 rejected export'
+            do k=1,2
+              if(unchanged%records(k)%committed_time/=weekly_bundle%records(k)%committed_time.or. &
+                   unchanged%records(k)%revision/=weekly_bundle%records(k)%revision) &
+                   error stop 'weekly DCS1 preflight publication'
+              select type(lhs=>unchanged%records(k)%physical_state)
+              type is(ppa_irrigation_event_state_t)
+                select type(rhs=>weekly_bundle%records(k)%physical_state)
+                type is(ppa_irrigation_event_state_t)
+                  if(any(lhs%pressure_head/=rhs%pressure_head).or.any(lhs%water_content/=rhs%water_content).or. &
+                       lhs%weekly%dayfix/=366.or.lhs%weekly%day_bound.or.lhs%irrigation%active_event) &
+                       error stop 'weekly DCS1 preflight state mutation'
+                class default
+                  error stop 'weekly DCS1 expected carrier'
+                end select
+              class default
+                error stop 'weekly DCS1 preflight carrier'
+              end select
+            end do
+          end do
+          write(*,'(a)') 'PPA_IRR_TCS6_DCS1_PREFLIGHT_NO_PUBLICATION=PASS'
+        end block
         split_requests=daily_requests; split_requests%t1=T0+3.0_real64/1024.0_real64
         call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
              daily_parameters,split_requests,weekly_forcing,split_results,weekly_code,weekly_inputs=daily_inputs)
