@@ -1,35 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fgc49d-live-${GITHUB_RUN_ID:-local}-$$"
-mkdir -p "$BUILD/modflow-bin" "$BUILD/downloads" "$BUILD/bridge"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-temporal08-p0-${GITHUB_RUN_ID:-local}-$$"
+mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
+fail(){ echo "TEMPORAL08_P0_FAIL $*" >&2; exit 1; }
 
-fail(){ echo "FGC49D_LIVE_FAIL $*" >&2; exit 1; }
-
-python3 - <<PY
-from pathlib import Path
-from flopy.utils.get_modflow import run_main
-run_main(
-    Path("$BUILD/modflow-bin"),
-    owner="MODFLOW-ORG",
-    repo="modflow6",
-    release_id="6.8.0",
-    subset={"mf6", "libmf6.so"},
-    downloads_dir=Path("$BUILD/downloads"),
-    force=True,
-    quiet=False,
-)
-PY
-
-ARCHIVE="$BUILD/downloads/modflow6-6.8.0-linux.zip"
-echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  $ARCHIVE" | sha256sum -c - || fail "MODFLOW asset hash"
-test -f "$BUILD/modflow-bin/libmf6.so" || fail "missing libmf6.so"
-
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fPIC -fopenmp)
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -98,38 +76,42 @@ MODULE_SRC=(
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
   src/runtime/mod_fmr_groundwater_swap_participant.f90
   src/runtime/mod_fmr_groundwater_participant_registry.f90
-  src/runtime/mod_groundwater_interface_mass_ledger.f90
-  src/runtime/mod_groundwater_tile_aggregation.f90
-  src/runtime/mod_groundwater_multiswap_types.f90
-  src/runtime/mod_modflow6_swap_predictor_response.f90
-  src/runtime/mod_modflow6_multiswap_cell_response.f90
-  src/runtime/mod_modflow6_linear_response_backend.f90
-  src/runtime/mod_modflow6_api_binding.f90
-  src/runtime/mod_groundwater_topology_composition.f90
-  src/runtime/mod_groundwater_application_plan.f90
-  src/runtime/mod_fmr_groundwater_application_context.f90
-  src/adapter/mod_fmr_groundwater_application_c_api.f90
-  src/adapter/mod_modflow6_fgc34_c_bridge.f90
-  tests/fgc/support/mod_fgc49d_application_context_fixture.f90
 )
 
-objects=()
-for source in "${MODULE_SRC[@]}"; do
-  obj="$BUILD/bridge/$(basename "${source%.*}").o"
-  gfortran "${COMMON[@]}" -O2 -J "$BUILD/bridge" -I "$BUILD/bridge" -c "$source" -o "$obj" || fail "compile $source"
-  objects+=("$obj")
+for opt in 0 2; do
+  OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
+  for source in "${MODULE_SRC[@]}"; do
+    obj="$OUT/$(basename "${source%.*}").o"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
+    objects+=("$obj")
+  done
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT"     -c tests/fpe/test_fpe_temporal08_policy.f90 -o "$OUT/policy.o" || fail "compile policy O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/policy.o" -o "$OUT/policy" || fail "link policy O$opt"
+  "$OUT/policy" > "$OUT/policy.txt" 2>&1 || { cat "$OUT/policy.txt" >&2; fail "policy runtime O$opt"; }
+  grep -Fq 'FPE_TEMPORAL08_POLICY_UNIT=PASS' "$OUT/policy.txt" || fail "policy marker O$opt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT"     -c tests/fgc/test_fgc49b_fmr_participant_registry.f90 -o "$OUT/registry.o" || fail "compile registry O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/registry.o" -o "$OUT/registry" || fail "link registry O$opt"
+  "$OUT/registry" > "$OUT/registry.txt" 2>&1 || { cat "$OUT/registry.txt" >&2; fail "registry runtime O$opt"; }
+  grep -Fq 'F-GC49B FMR PARTICIPANT REGISTRY GATE PASS' "$OUT/registry.txt" || fail "registry marker O$opt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpe/test_fpe_temporal08_registry_equivalence.f90 -o "$OUT/equivalence.o" || fail "compile equivalence O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/equivalence.o" -o "$OUT/equivalence" || fail "link equivalence O$opt"
+  "$OUT/equivalence" > "$OUT/equivalence.txt" 2>&1 || { cat "$OUT/equivalence.txt" >&2; fail "equivalence runtime O$opt"; }
+  grep -Fq 'FPE_TEMPORAL08_P1_REGISTRY=PASS' "$OUT/equivalence.txt" || fail "equivalence marker O$opt"
+
+  grep '^TEMPORAL08_' "$OUT/policy.txt" > "$OUT/policy-stable.txt"
+  grep '^TEMPORAL08_' "$OUT/equivalence.txt" > "$OUT/equivalence-stable.txt"
+  grep '^FGC49B_' "$OUT/registry.txt" > "$OUT/registry-stable.txt"
+  echo "FPE_TEMPORAL08_P0_O${opt}=PASS"
 done
 
-gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/bridge/libfgc49d_application.so" || fail "link shared library"
-
-for symbol in   fgc49d_fixture_initialize_c   fgc49d_context_counts_c   fgc49d_trial_cell_heads_c   fgc49d_reanchor_terms_c   fgc49d_commit_swaps_c   fgc49d_commit_ledgers_c   fgc34_publish_c; do
-  nm -D "$BUILD/bridge/libfgc49d_application.so" | grep -q "$symbol" || fail "missing symbol $symbol"
-done
-
-LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC49D_APPLICATION_LIB="$BUILD/bridge/libfgc49d_application.so" python3 tests/fgc/test_fgc49d_live_production_application_context.py | tee "$BUILD/e2e.txt"
-
-for marker in   'FGC49D_LIVE_MODFLOW6_6_8_0=PASS'   'FGC49D_LIVE_PRODUCTION_FMR_ABI=PASS'   'FGC49D_LIVE_MIXED_N1_AND_11_TOPOLOGY=PASS'   'FGC49D_LIVE_ONE_PREPARED_SOLVE=PASS'   'FGC49D_LIVE_PER_CELL_CONJUNCTIVE_CONVERGENCE=PASS'   'FGC49D_LIVE_MODFLOW_SWAP_LEDGER_PUBLICATION=PASS'   'FGC49D_LIVE_THREE_REAL_SWAP_AND_LEDGER_COMMITS=PASS'; do
-  grep -Fq "$marker" "$BUILD/e2e.txt" || fail "missing marker $marker"
-done
-
-echo 'F-GC49D LIVE PRODUCTION APPLICATION CONTEXT ABI GATE PASS'
+diff -u "$BUILD/o0/policy-stable.txt" "$BUILD/o2/policy-stable.txt"
+diff -u "$BUILD/o0/equivalence-stable.txt" "$BUILD/o2/equivalence-stable.txt"
+diff -u "$BUILD/o0/registry-stable.txt" "$BUILD/o2/registry-stable.txt"
+cat "$BUILD/o0/policy-stable.txt"
+cat "$BUILD/o0/equivalence-stable.txt"
+cat "$BUILD/o0/registry-stable.txt"
+echo 'FPE_TEMPORAL08_DEFAULT_OFF_REGISTRY=PASS'
+echo 'FPE_TEMPORAL08_P0=PASS'
