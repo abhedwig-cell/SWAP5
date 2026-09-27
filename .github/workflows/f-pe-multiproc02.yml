@@ -1,0 +1,32 @@
+name: F-PE-MULTIPROC02 gain attribution
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multiproc01_*.sh'
+      - 'docs/performance/F-PE-MULTIPROC02_*.md'
+      - '.github/workflows/f-pe-multiproc02.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-size-discriminator:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record host topology
+        run: |
+          uname -a
+          lscpu
+          lscpu -e=CPU,CORE,SOCKET,NODE || true
+      - name: Run frozen process/thread comparison
+        env:
+          MULTIPROC01_N: '${{ matrix.n }}'
+          MULTIPROC01_ROUNDS: '5'
+        run: bash tests/fpe/run_fpe_multiproc01_process_vs_thread.sh
