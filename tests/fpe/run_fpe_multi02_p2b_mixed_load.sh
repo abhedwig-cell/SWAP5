@@ -14,6 +14,7 @@ python3 - "$BASE" <<'PYPATCH'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text()
+s=s.replace('ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"','ROOT="$(pwd)"',1)
 needle='bash "$RUN"\n'
 if needle not in s:
     raise SystemExit("P2B insertion seam missing")
