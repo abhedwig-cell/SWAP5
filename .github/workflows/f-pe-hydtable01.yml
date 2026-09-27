@@ -14,3 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_hydtable01_p0.sh
+
+  p0-holdout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_hydtable01_holdout.sh
