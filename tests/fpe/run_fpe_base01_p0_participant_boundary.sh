@@ -843,11 +843,9 @@ print(f"BASE01_P0_AGG|CALLS={calls}|SWAP_TRIAL_NS={total:.3f}"
       f"|FORCING_NS={tot['participant_forcing_ns']:.3f}|BACKEND_NS={tot['participant_backend_ns']:.3f}"
       f"|POST_NS={tot['participant_post_ns']:.3f}|FORCING_SHARE={tot['participant_forcing_ns']/total:.9f}"
       f"|BACKEND_SHARE={tot['participant_backend_ns']/total:.9f}|POST_SHARE={tot['participant_post_ns']/total:.9f}")
-# P0 aggregate exact SWAP-trial time was 2,115,290 ns across group medians.
-p0=2115290.0
-print(f"BASE01_P0_INSTRUMENTATION|P0_SWAP_TRIAL_NS={p0:.3f}|P1_SWAP_TRIAL_NS={total:.3f}"
-      f"|RATIO={total/p0:.9f}|PERTURB_PERCENT={(total/p0-1)*100:.6f}")
-if tot["participant_backend_ns"]/total < 0.05:
-    raise SystemExit("backend unexpectedly below material threshold")
+backend_share=tot["participant_backend_ns"]/total
+print(f"BASE01_P0_GATE|BACKEND_SHARE={backend_share:.9f}|REQUIRED_MIN=0.600000000")
+if backend_share < 0.60:
+    raise SystemExit(f"BASE01 P0 backend share below preregistered 60% gate: {backend_share:.9f}")
 print("FPE_BASE01_P0=PASS")
 PY
