@@ -1854,6 +1854,41 @@ contains
       end do
       call weekly_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
       if(.not.weekly_ok) error stop 'weekly gift seed restore'
+      block
+        type(fmr_production_application_bootstrap_t)::split_app
+        type(scheduled_irrigation_request_t)::split_requests(2)
+        type(fmr_committed_restart_bundle_t)::split_bundle
+        type(fmr_serialized_column_result_t),allocatable::split_results(:)
+        real(real64)::split_endpoint
+        call split_app%initialize(weekly_config,weekly_code)
+        if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly split initialize'
+        call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+        if(.not.weekly_ok) error stop 'weekly split restore'
+        split_requests=daily_requests; split_requests%t1=T0+3.0_real64/1024.0_real64
+        call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+             daily_parameters,split_requests,weekly_forcing,split_results,weekly_code,weekly_inputs=daily_inputs)
+        if(weekly_code==FMR_APP_BOOT_OK.or.allocated(split_results)) error stop 'weekly oversized exact trial admitted'
+        call execute_next_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+             daily_parameters,split_requests,weekly_forcing,split_results,weekly_code,split_endpoint, &
+             weekly_inputs=daily_inputs)
+        if(weekly_code/=FMR_APP_BOOT_OK.or.split_endpoint/=T0+2.0_real64/1024.0_real64) &
+             error stop 'weekly automatic split retry'
+        call split_app%export_committed_restart(92001_int64,split_bundle,weekly_ok,weekly_code)
+        if(.not.weekly_ok) error stop 'weekly split export'
+        do j=1,2
+          if(.not.split_results(j)%committed.or.abs(split_results(j)%mass%residual)>1.0e-12_real64) &
+               error stop 'weekly split mass publication'
+          select type(state=>split_bundle%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(state%weekly%dayfix/=0.or.state%weekly%last_day/=100_int64.or.state%irrigation%active_event) &
+                 error stop 'weekly split counted twice or incomplete gift'
+          class default
+            error stop 'weekly split carrier lost'
+          end select
+        end do
+        call split_app%close(weekly_code)
+        write(*,'(a)') 'PPA_IRR_WEEKLY_AUTOMATIC_SPLIT_RETRY_PUBLICATION=PASS'
+      end block
       call execute_ppa_bootstrap_irrigation(weekly_app,[1_int64,2_int64],92001_int64, &
            daily_parameters,daily_requests,weekly_forcing,weekly_results,weekly_code, &
            effective_forcing=weekly_effective,weekly_inputs=daily_inputs)
