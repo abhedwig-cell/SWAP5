@@ -2173,6 +2173,56 @@ contains
       write(*,'(a)') 'PPA_IRR_WEEKLY_SEVEN_SUCCESSOR_ORDINALS_ROLLOVER_RESTART=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_GAP_BACKWARD_NO_PUBLICATION_RETRY=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_DAILY_TARGET_WINDOW_CONTINUATION=PASS'
+      call target_app%initialize(weekly_config,weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly rollover gift initialize'
+      call target_app%restore_committed_restart(target_bundle,92001_int64,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly rollover gift restore'
+      daily_inputs(1)%deficit_cm=1.0_real64
+      daily_parameters(1)%dcs2_depth_cm=0.01_real64*2.0_real64/65536.0_real64
+      do weekly_day=109,111
+        daily_requests%t0=target_bundle%records(1)%committed_time
+        daily_requests%t1=daily_requests(1)%t0+1.0_real64/65536.0_real64
+        daily_inputs(1)%ordinal=int(weekly_day,int64)
+        call execute_ppa_bootstrap_irrigation(target_app,[1_int64,2_int64],92001_int64, &
+             daily_parameters,daily_requests,weekly_forcing,weekly_results,weekly_code, &
+             effective_forcing=weekly_effective,weekly_inputs=daily_inputs,target_selector=weekly_bounded_target)
+        if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly rollover gift execution'
+        if(.not.all(weekly_results%committed)) error stop 'weekly rollover gift publication'
+        call target_app%export_committed_restart(92001_int64,target_bundle,weekly_ok,weekly_code)
+        if(.not.weekly_ok) error stop 'weekly rollover gift export'
+        select type(state=>target_bundle%records(1)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%weekly%dayfix/=mod(4+weekly_day-108,7).or.state%weekly%last_day/=int(weekly_day,int64)) &
+               error stop 'weekly rollover gift count'
+          if(state%irrigation%active_event.neqv.(weekly_day==111)) error stop 'weekly rollover gift timing'
+        class default
+          error stop 'weekly rollover gift carrier'
+        end select
+      end do
+      call target_app%close(weekly_code)
+      call target_app%initialize(weekly_config,weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly rollover pending initialize'
+      call target_app%restore_committed_restart(target_bundle,92001_int64,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly rollover pending restore'
+      daily_requests%t0=daily_requests(1)%t1
+      daily_requests%t1=daily_requests(1)%t0+1.0_real64/65536.0_real64
+      call execute_window_ppa_bootstrap_irrigation(target_app,[1_int64,2_int64],92001_int64, &
+           daily_parameters,daily_requests,weekly_effective,1,prefixes,prefix_count,weekly_code, &
+           weekly_inputs=daily_inputs,target_selector=weekly_bounded_target)
+      if(weekly_code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'weekly rollover pending completion'
+      if(.not.all(prefixes(1)%columns%committed)) error stop 'weekly rollover pending publication'
+      call target_app%export_committed_restart(92001_int64,target_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly rollover pending export'
+      select type(state=>target_bundle%records(1)%physical_state)
+      type is(ppa_irrigation_event_state_t)
+        if(state%weekly%dayfix/=0.or.state%weekly%last_day/=111_int64.or.state%irrigation%active_event) &
+             error stop 'weekly rollover pending duplicate'
+      class default
+        error stop 'weekly rollover pending carrier'
+      end select
+      call target_app%close(weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly rollover pending close'
+      write(*,'(a)') 'PPA_IRR_WEEKLY_SUCCESSOR_GIFT_ROLLOVER_PENDING_RESTART=PASS'
       ! A separate fresh, two-weekly-column fixture exercises actual gift
       ! selection followed by a same-ordinal pending continuation.
       call weekly_app%initialize(weekly_config,weekly_code)
