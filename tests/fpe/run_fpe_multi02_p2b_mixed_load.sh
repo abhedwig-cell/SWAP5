@@ -10,7 +10,7 @@ trap 'rm -rf "$BUILD"' EXIT
 BASE="$BUILD/p1.sh"
 cp tests/fpe/run_fpe_multi02_p1_trajectory_identity.sh "$BASE"
 
-python3 - "$BASE" <<'PY'
+python3 - "$BASE" <<'PYPATCH'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text()
@@ -75,9 +75,9 @@ needle2,
 needle2+
 "      if(rep==1)then\n"
 "        w=1+mod(i-1,workers)\n"
-"        worker_att(w)=worker_att(w)+(p_after(i)%attempts-p_before(i)%attempts)\n"
-"        worker_nlit(w)=worker_nlit(w)+(p_after(i)%nonlinear_iterations-p_before(i)%nonlinear_iterations)\n"
-"        worker_bt(w)=worker_bt(w)+(p_after(i)%backtracking_attempts-p_before(i)%backtracking_attempts)\n"
+"        worker_att(w)=worker_att(w)+p_after(i)%attempts\n"
+"        worker_nlit(w)=worker_nlit(w)+p_after(i)%nonlinear_iterations\n"
+"        worker_bt(w)=worker_bt(w)+p_after(i)%backtracking_attempts\n"
 "      end if\n",1)
 
 needle3="  subroutine sort5(v)\n"
@@ -176,6 +176,6 @@ bash "$RUN"
 """
 s=s.replace(needle,patch,1)
 p.write_text(s)
-PY
+PYPATCH
 
 bash "$BASE"
