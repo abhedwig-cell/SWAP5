@@ -51,6 +51,19 @@ or canonical admission.
 
 ### Full-day trial result (2026-09-27)
 
+Failure diagnostic postimage `81a08bee7` gives identical O0/O2 evidence:
+31882 accepted internal steps, 31909 attempts, 27 solver rejections and zero
+temporal rejections. Terminal trial is 4101.6739501953143 to
+4101.6739506248114; four balance failures, no head failures, maximum balance
+rate 1.6855274120874952e-11 and total -7.9446362682977778e-12.
+Rollback checks pass for candidate unavailability, committed time/revision,
+pressure, water, temporal history and weekly metadata. This is not exhaustion
+of the 131072-step cap. It does not yet establish the cause of the first solver
+rejection. Next: examine that first rejection and retry-cap interaction without
+relaxing acceptance. Ordinary IrrigationSource and hydraulic-copy/guards retain
+exact O0/O2 identity. Build `swap-ppa-wu01-6e5769c3bf2c4f24ad1452878f15bb05`,
+`O0/O2/full-day.txt`; negative experiment intentionally exits nonzero.
+
 Continuation attempt `498da7ce5`: requesting another full day from the original
 committed owner fails with transaction status 2 in both O0/O2. The optional
 experiment exits nonzero before restored-owner replay, so it does not establish
