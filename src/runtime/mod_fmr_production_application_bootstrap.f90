@@ -76,6 +76,7 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_production_application_config_t
     real(real64) :: initial_time = 0.0_real64
     type(canonical_numerical_config_t) :: numerical
+    integer :: groundwater_parallel_workers = 1
     type(fmr_production_application_tile_config_t), allocatable :: tiles(:)
   end type fmr_production_application_config_t
 
@@ -94,7 +95,9 @@ module mod_fmr_production_application_bootstrap
     type(groundwater_interface_mass_ledger_t), pointer :: ledgers(:) => null()
     type(fmr_groundwater_participant_registry_t), pointer :: registry => null()
     type(fmr_serialized_reference_backend_t), pointer :: backend => null()
+    type(fmr_serialized_reference_backend_t), pointer :: groundwater_worker_backends(:) => null()
     type(fixed_flux_top_boundary_provider_t), pointer :: top_boundary => null()
+    integer :: groundwater_parallel_workers = 1
     integer(int64), allocatable :: participant_handles(:)
     type(groundwater_application_plan_t), pointer :: active_plan => null()
     type(fmr_groundwater_application_context_t), pointer :: active_context => null()
@@ -103,6 +106,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: initialize => production_application_initialize
     procedure, public :: ready => production_application_ready
     procedure, public :: tile_count => production_application_tile_count
+    procedure, public :: groundwater_worker_count => production_application_groundwater_worker_count
     procedure, public :: run_standalone => production_application_run_standalone
     procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
     procedure, public :: materialize_groundwater_context => production_application_materialize_groundwater_context
@@ -131,6 +135,8 @@ contains
     n = size(config%tiles)
     if (n <= 0) return
     if (.not. ieee_is_finite(config%initial_time)) return
+    if (config%groundwater_parallel_workers /= 1 .and. config%groundwater_parallel_workers /= 2 .and. &
+        config%groundwater_parallel_workers /= 4) return
 
     groundwater_profile = .true.
     standalone_profile = .true.
@@ -150,6 +156,10 @@ contains
       end if
     end do
     if (.not. groundwater_profile .and. .not. standalone_profile .and. .not. prescribed_qbot_profile) then
+      status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+      return
+    end if
+    if (.not. groundwater_profile .and. config%groundwater_parallel_workers /= 1) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
@@ -200,6 +210,14 @@ contains
     self%numerical = config%numerical
 
     call self%backend%initialize(self%top_boundary)
+    self%groundwater_parallel_workers = config%groundwater_parallel_workers
+
+    if (groundwater_profile .and. self%groundwater_parallel_workers > 1) then
+      allocate(self%groundwater_worker_backends(self%groundwater_parallel_workers))
+      do i = 1, self%groundwater_parallel_workers
+        call self%groundwater_worker_backends(i)%initialize(self%top_boundary)
+      end do
+    end if
 
     if (groundwater_profile) then
       allocate(self%participant_handles(n), self%materializers(n), self%ledgers(n), self%registry)
@@ -327,6 +345,14 @@ contains
     if (.not. ready) return
     ready = self%registry%active_count() == size(self%columns) .and. all(self%participant_handles > 0_int64) .and. &
          all(self%parameters%bottom_mode == 5)
+    if (.not. ready) return
+    if (self%groundwater_parallel_workers > 1) then
+      ready = associated(self%groundwater_worker_backends)
+      if (.not. ready) return
+      ready = size(self%groundwater_worker_backends) == self%groundwater_parallel_workers
+    else
+      ready = .not. associated(self%groundwater_worker_backends)
+    end if
   end function production_application_groundwater_ready
 
   integer function production_application_tile_count(self) result(count)
@@ -334,6 +360,13 @@ contains
     count = 0
     if (self%ready()) count = size(self%columns)
   end function production_application_tile_count
+
+  integer function production_application_groundwater_worker_count(self) result(count)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+    count = 0
+    if (.not. self%ready()) return
+    count = self%groundwater_parallel_workers
+  end function production_application_groundwater_worker_count
 
   subroutine production_application_run_standalone(self, t0, t1, results, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
@@ -671,6 +704,7 @@ contains
     if (associated(self%committed)) deallocate(self%committed)
     if (associated(self%base_forcing)) deallocate(self%base_forcing)
     if (associated(self%parameters)) deallocate(self%parameters)
+    if (associated(self%groundwater_worker_backends)) deallocate(self%groundwater_worker_backends)
     if (associated(self%backend)) deallocate(self%backend)
     if (associated(self%top_boundary)) deallocate(self%top_boundary)
     nullify(self%registry)
@@ -679,8 +713,10 @@ contains
     nullify(self%committed)
     nullify(self%base_forcing)
     nullify(self%parameters)
+    nullify(self%groundwater_worker_backends)
     nullify(self%backend)
     nullify(self%top_boundary)
+    self%groundwater_parallel_workers = 1
 
     call self%execution_plan%clear()
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)
