@@ -7,9 +7,9 @@ Status: `PASS_NO_SINGLE_INNER_HEADCALC_TARGET`
 PR:
 `#660 — F-PE-BASE01: base q/state Richards solve decomposition`
 
-Authority:
-- branch head exercised: `0672462b4d6858bab7d1a62097ee08d7412cf2a6`;
-- workflow run: `36305570617`;
+Current-head authority:
+- branch head exercised: `c5f1881d3d95695993ab6420e232adb32c9df60b`;
+- workflow run: `36306634228`;
 - job: `p1-backend-internal`;
 - frozen q-only live-head population from LIVE01 authority run `36303861366`.
 
@@ -40,21 +40,21 @@ The preservation gate passes.
 
 Across the 12 group medians:
 
-- serialized backend: `461628 ns`;
-- HeadCalc: `202372 ns`;
-- HeadCalc / backend share: `43.8388%`.
+- serialized backend: `814,706 ns`;
+- HeadCalc: `333,956 ns`;
+- HeadCalc / backend share: `40.9910%`.
 
 Within HeadCalc, nested timing families are:
 
-- constitutive evaluation: `82818 ns`, `40.9236%` of HeadCalc;
-- residual/vector work: `14813 ns`, `7.3197%`;
-- Jacobian assembly: `6992 ns`, `3.4550%`;
-- tridiagonal linear solve: `12379 ns`, `6.1170%`;
-- complete backtracking candidate loop: `61677 ns`, `30.4770%`.
+- constitutive evaluation: `134,701 ns`, `40.3350%` of HeadCalc;
+- residual/vector work: `24,764 ns`, `7.4153%`;
+- Jacobian assembly: `12,903 ns`, `3.8637%`;
+- tridiagonal linear solve: `18,855 ns`, `5.6460%`;
+- complete backtracking candidate loop: `96,912 ns`, `29.0194%`.
 
 These families are nested. In particular, backtracking contains constitutive and vector work. Their percentages must not be summed as disjoint costs.
 
-Call counts across the frozen population:
+Call counts remain:
 
 - HeadCalc calls: 72;
 - constitutive calls: 472;
@@ -67,35 +67,33 @@ Call counts across the frozen population:
 
 The preregistered target gate is based on the full q/state backend, not on HeadCalc alone.
 
-Approximate aggregate backend shares are therefore:
+Approximate aggregate backend shares are:
 
-- HeadCalc total: `43.84%`;
-- constitutive nested work: `17.94%`;
-- residual/vector nested work: `3.21%`;
-- Jacobian nested work: `1.51%`;
-- linear solve nested work: `2.68%`;
-- backtracking loop nested work: `13.36%`.
+- HeadCalc total: `40.99%`;
+- constitutive nested work: `16.53%`;
+- residual/vector nested work: `3.04%`;
+- Jacobian nested work: `1.58%`;
+- linear solve nested work: `2.31%`;
+- backtracking loop nested work: `11.90%`.
 
 No isolated inner-HeadCalc family reaches the `20%` aggregate-backend gate.
 
-The constitutive family is material but remains below that gate. HYDTABLE01 independently showed that accelerating an isolated conductivity microkernel does not survive to solver wall-clock benefit, which reinforces the decision not to select constitutive arithmetic by microbenchmark alone.
+The constitutive family is material but remains below that gate.
 
 ## Main finding
 
 The largest unresolved block is outside HeadCalc:
 
-`backend - HeadCalc ~= 56.16%`.
+`backend - HeadCalc ~= 59.01%`.
 
-That residual includes transaction/substep orchestration, temporal-indicator/certificate work, accepted candidate/state materialization and other backend control work that P1 has not yet separated.
-
-Selecting an inner HeadCalc optimization now would therefore be premature.
+That residual includes transaction/substep orchestration, temporal-indicator/certificate work, accepted candidate/state materialization and other backend control work that P1 does not yet separate.
 
 ## Decision
 
 Do not advance constitutive, Jacobian, linear-solve or generic backtracking work directly to P2.
 
-Advance one narrower attribution phase:
+Advance the narrower attribution phase:
 
 `F-PE-BASE01 P1B — non-HeadCalc backend decomposition`.
 
-P1B must split the approximately 56% residual backend block before BASE01 selects its one exact-preserving successor target.
+P1B splits the outer backend block before BASE01 selects its one exact-preserving successor target.
