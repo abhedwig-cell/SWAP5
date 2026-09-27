@@ -1518,6 +1518,32 @@ contains
       if(ok.or.allocated(effective).or.proposed_weekly%day_bound.or.proposed_weekly%dayfix/=366) &
            error stop 'weekly invalid source leaked proposal'
       write(*,'(a)') 'PPA_IRR_TCS6_DAILY_SOURCE_PROPOSAL=PASS'
+      daily_input%ordinal=100_int64; daily_input%deficit_cm=1.0_real64
+      ! Process selection can succeed while the forcing boundary rejects.
+      ! Neither detached metadata nor an old successful forcing may escape.
+      do i=1,2
+        previous%temporal_forcing_event=i==1
+        previous%temporal_forcing_event_time=r%t1
+        if(i==2) previous%subsurface_irrigation_source(1)=-1.0_real64
+        call evaluate_tcs6_source(p,base,r,weekly,daily_input,previous, &
+             proposed_weekly,candidate,flux,d,effective,ok)
+        if(d%status/=IRRIGATION_OK.or.ok.or.allocated(effective)) error stop 'weekly forcing rejection fixture'
+        if(proposed_weekly%day_bound.or.proposed_weekly%dayfix/=366.or.candidate%active_event.or.flux%applied) &
+             error stop 'weekly forcing rejection leaked selection'
+        previous%subsurface_irrigation_source=0.0_real64
+      end do
+      previous%temporal_forcing_event=.false.; previous%temporal_forcing_event_time=0.0_real64
+      r%t1=T0+2.0_real64/1024.0_real64
+      call evaluate_tcs6_source(p,base,r,weekly,daily_input,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(d%status/=IRRIGATION_SPLIT_REQUIRED.or.ok.or.allocated(effective)) error stop 'weekly source split fixture'
+      if(proposed_weekly%day_bound.or.proposed_weekly%dayfix/=366) error stop 'weekly source split counted'
+      r%t1=d%split_time
+      call evaluate_tcs6_source(p,base,r,weekly,daily_input,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(.not.ok.or.proposed_weekly%dayfix/=0.or.proposed_weekly%last_day/=100_int64) &
+           error stop 'weekly source split retry'
+      write(*,'(a)') 'PPA_IRR_TCS6_SOURCE_BINDING_FAILURE_SPLIT_RETRY=PASS'
     end block
     observations%knot_count=2; observations%dvs_knots(2)=2.0_real64
     observations%threshold_values=0.5_real64; observations%iptra_day=1.0_real64
