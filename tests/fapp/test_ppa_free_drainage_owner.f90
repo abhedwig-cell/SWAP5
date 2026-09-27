@@ -1342,6 +1342,50 @@ contains
         error stop 'weekly no-gift carrier sliced'
       end select
       write(*,'(a)') 'PPA_IRR_WEEKLY_NO_GIFT_HYDRAULIC_PUBLICATION=PASS'
+      block
+        use mod_kernel_transactions, only: kernel_executor_t
+        use mod_fmr_runtime_core, only: fmr_column_diagnostics_t
+        use mod_fmr_serialized_multiswap_runtime, only: fmr_execute_serialized_irrigation_resolved_column, &
+             fmr_serialized_batch_diagnostics_t
+        type(kernel_executor_t)::control
+        type(kernel_committed_state_t)::runtime_owner
+        type(fmr_serialized_column_result_t)::output
+        type(fmr_column_diagnostics_t)::column_diagnostics
+        type(fmr_serialized_batch_diagnostics_t)::runtime_diagnostics
+        class(transaction_state_t),allocatable::runtime_snapshot
+        integer::active_calls
+        ! Replay the same initial carrier through the authoritative resolved
+        ! transaction body, rather than manually committing the backend result.
+        call runtime_owner%initialize(404196_int64,initial,ok,T0)
+        if(.not.ok) error stop 'weekly resolved runtime owner'
+        active_calls=0
+        call fmr_execute_serialized_irrigation_resolved_column(backend,control,column,template, &
+             profile%tiles(1)%parameters,no_gift_forcing,runtime_owner,profile%numerical,1,T0,finish, &
+             output,column_diagnostics,runtime_diagnostics,active_calls,weekly_proposal=weekly_seed%weekly)
+        if(output%completed.or.output%committed.or.active_calls/=0) error stop 'weekly resolved failed publication'
+        call runtime_owner%current_time(time,ok)
+        if(.not.ok.or.time/=T0.or.runtime_owner%current_revision()/=0_int64) error stop 'weekly resolved failed provenance'
+        output=fmr_serialized_column_result_t(); column_diagnostics=fmr_column_diagnostics_t()
+        call fmr_execute_serialized_irrigation_resolved_column(backend,control,column,template, &
+             profile%tiles(1)%parameters,no_gift_forcing,runtime_owner,profile%numerical,1,T0,no_gift_finish, &
+             output,column_diagnostics,runtime_diagnostics,active_calls,weekly_proposal=weekly_seed%weekly)
+        if(.not.output%completed.or..not.output%committed.or.active_calls/=0) error stop 'weekly resolved commit'
+        call runtime_owner%snapshot(runtime_snapshot,ok)
+        if(.not.ok) error stop 'weekly resolved snapshot'
+        select type(runtime_snapshot)
+        type is(ppa_irrigation_event_state_t)
+          select type(snapshot)
+          type is(ppa_irrigation_event_state_t)
+            if(runtime_snapshot%weekly%dayfix/=snapshot%weekly%dayfix.or. &
+                 runtime_snapshot%weekly%last_day/=snapshot%weekly%last_day.or. &
+                 any(runtime_snapshot%water_content/=snapshot%water_content).or. &
+                 any(runtime_snapshot%pressure_head/=snapshot%pressure_head)) error stop 'weekly resolved backend mismatch'
+          end select
+        class default
+          error stop 'weekly resolved carrier sliced'
+        end select
+        write(*,'(a)') 'PPA_IRR_WEEKLY_RESOLVED_RUNTIME_ROLLBACK_COMMIT=PASS'
+      end block
     end block
     call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
          limited,1,T0,finish,checkpoint,result,candidate,diagnostics)

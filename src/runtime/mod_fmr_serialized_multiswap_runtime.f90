@@ -3,7 +3,7 @@ module mod_fmr_serialized_multiswap_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED
-  use mod_irrigation_process, only: irrigation_state_t
+  use mod_irrigation_process, only: irrigation_state_t,ppa_weekly_identity_t
   use mod_canonical_contracts, only: canonical_mass_accounting_t, canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_result_t, kernel_diagnostics_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
@@ -400,7 +400,7 @@ contains
   ! remains in the ordinary resolved executor; backend validates the context.
   subroutine fmr_execute_serialized_irrigation_resolved_column(backend, transaction_control, column, template, &
        parameters, effective_forcing, committed_state, numerical_config, single_ssdi_node, t0, t1, &
-       output, diagnostic, runtime, active_physical_calls, selected_event)
+       output, diagnostic, runtime, active_physical_calls, selected_event,weekly_proposal)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -416,6 +416,7 @@ contains
     type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
     integer, intent(inout) :: active_physical_calls
     type(irrigation_state_t), intent(in), optional :: selected_event
+    type(ppa_weekly_identity_t), intent(in), optional :: weekly_proposal
 
     if (.not. resolved_column_is_routable(column, template)) then
       output%admission_status = 'ROUTING_REJECTED'
@@ -426,7 +427,7 @@ contains
     end if
     call execute_resolved_column(backend, transaction_control, column, template, parameters, effective_forcing, &
          committed_state, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
-         irrigation_node=single_ssdi_node, selected_irrigation_event=selected_event)
+         irrigation_node=single_ssdi_node, selected_irrigation_event=selected_event,weekly_proposal=weekly_proposal)
   end subroutine fmr_execute_serialized_irrigation_resolved_column
 
   subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
@@ -591,7 +592,7 @@ contains
                                      committed_state, numerical_config, t0, t1, output, diagnostic, runtime, &
                                      active_physical_calls, commit_receipt, bottom_energy_parameters, &
                                      bottom_thermal_provider, bottom_energy_publication, irrigation_node, &
-                                     selected_irrigation_event)
+                                     selected_irrigation_event,weekly_proposal)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -611,6 +612,7 @@ contains
     type(fmr_serialized_bottom_energy_publication_t), intent(out), optional :: bottom_energy_publication
     integer, intent(in), optional :: irrigation_node
     type(irrigation_state_t), intent(in), optional :: selected_irrigation_event
+    type(ppa_weekly_identity_t), intent(in), optional :: weekly_proposal
 
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: kernel_result
@@ -655,7 +657,7 @@ contains
     if (present(irrigation_node)) then
       call backend%run_pending_irrigation_trial(column, template, parameters, committed_state, effective_forcing, &
            numerical_config, irrigation_node, t0, t1, checkpoint, kernel_result, candidate, kernel_diag, &
-           selected_irrigation_event)
+           selected_irrigation_event,weekly_proposal)
     else
       call backend%run_trial(column, template, parameters, committed_state, effective_forcing, &
            numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)

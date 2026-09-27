@@ -73,6 +73,14 @@ The model copies the proposal at the initial trial boundary into its candidate,
 including fresh retry clones, and clears its call-local proposal flag afterward.
 Only the existing candidate commit publishes it. Bootstrap wiring remains pending.
 
+The resolved irrigation-column runtime adds an optional trailing
+`weekly_proposal`, forwarded unchanged through `execute_resolved_column` to the
+backend. Absence remains absence for existing callers. The shared checkpoint,
+commit/discard and accounting body remains authoritative; no parallel commit
+path is introduced. Qualification compares explicit backend commit against this
+runtime path and repeats the longer failed trial before a shorter successful
+retry. Bootstrap array forwarding is a subsequent stage.
+
 The first no-gift hydraulic fixture at duration 1/1024 day failed completion;
 this numerical case remains open and is not evidence against no-gift transaction
 semantics. A separate bounded 1/65536-day fixture is used to investigate accepted
