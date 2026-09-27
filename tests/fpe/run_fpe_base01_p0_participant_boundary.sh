@@ -7,6 +7,10 @@ HEADCALC_SOURCE="${BASE01_HEADCALC_SOURCE:-src/legacy/b1_10_port/headcalc.f90}"
 LEGACY_BINDING_SOURCE="${BASE01_LEGACY_BINDING_SOURCE:-src/adapter/mod_reference_richards_legacy_binding.f90}"
 TEST_SCRIPT="${BASE01_TEST_SCRIPT:-tests/fpe/test_fpe_base01_p0_participant_boundary.py}"
 EXTRA_SOURCE="${BASE01_EXTRA_SOURCE:-}"
+PARTICIPANT_SOURCE="${BASE01_PARTICIPANT_SOURCE:-src/runtime/mod_fmr_groundwater_swap_participant.f90}"
+BRIDGE_SOURCE="${BASE01_BRIDGE_SOURCE:-tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90}"
+RAW_PREFIX="${BASE01_RAW_PREFIX:-BASE01_P0_RAW}"
+export RAW_PREFIX
 mkdir -p "$BUILD/lib" "$BUILD/py"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "SOLVE01_P2B_FAIL $*" >&2; exit 1; }
@@ -25,8 +29,8 @@ ARCHIVE="$BUILD/downloads/modflow6-6.8.0-linux.zip"
 echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  $ARCHIVE" | sha256sum -c - || fail "MODFLOW asset hash"
 test -f "$BUILD/modflow-bin/libmf6.so" || fail "missing libmf6.so"
 
-cp tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90 "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90"
-cp src/runtime/mod_fmr_groundwater_swap_participant.f90 "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90"
+cp "$BRIDGE_SOURCE" "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90"
+cp "$PARTICIPANT_SOURCE" "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90"
 cp src/runtime/mod_fmr_serialized_reference_backend.f90 "$BUILD/lib/mod_fmr_serialized_reference_backend.f90"
 python3 - "$BUILD/lib/mod_fmr_serialized_reference_backend.f90" <<'PY'
 from pathlib import Path
@@ -809,7 +813,7 @@ for case_spec in "${cases[@]}"; do
           printf '%s\n' "$raw" >&2
           fail "$material $regime $imbalance rep=$rep"
         }
-      line="$(printf '%s\n' "$raw" | grep '^BASE01_P0_RAW|' | tail -1)"
+      line="$(printf '%s\n' "$raw" | grep "^${RAW_PREFIX}|" | tail -1)"
       [[ -n "$line" ]] || fail "missing BASE01 P1 record"
       printf '%s|REGIME=%s|REP=%s\n' "$line" "$regime" "$rep" | tee -a "$OUT"
     done
@@ -817,10 +821,11 @@ for case_spec in "${cases[@]}"; do
 done
 
 if [[ "${BASE01_SKIP_AGGREGATE:-0}" == "1" ]]; then\n  exit 0\nfi\n\npython3 - "$OUT" <<'PY'
-import collections,json,statistics,sys
+import collections,json,statistics,sys,os
 groups=collections.defaultdict(list)
 for line in open(sys.argv[1]):
-    if not line.startswith("BASE01_P0_RAW|"): continue
+    prefix=os.environ.get("RAW_PREFIX","BASE01_P0_RAW")+"|"
+    if not line.startswith(prefix): continue
     payload,tail=line.strip().split("|REGIME=",1)
     regime,rep=tail.split("|REP=",1)
     d=json.loads(payload.split("|",1)[1]); d["regime"]=regime; d["rep"]=int(rep)
