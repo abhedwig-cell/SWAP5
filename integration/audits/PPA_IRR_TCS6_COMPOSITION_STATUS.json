@@ -1,15 +1,16 @@
 {
   "work_unit": "PPA-IRR-TCS6-COMPOSITION",
   "status": "INITIAL_EXPLICIT_PROCESS_COUNTER_PROPOSAL_PASS_OWNER_PENDING",
-  "tested_commit": "f8e22d1fd",
+  "tested_commit": "d421ac4af",
   "preregistration": "PPA_IRR_TCS6_COMPOSITION_PREREGISTRATION.json",
   "implementation": "src/process/mod_ppa_irr_tcs6_composition.f90",
   "scope": "Explicit pure daily invocation and supplied dayfix/deficit/threshold; reuses source weekly transition and common scheduled DCS2 gift equations. Proposed counter advances only on successful process result, including no-gift reset; failed/split results retain input. Ordinary scheduled entry still rejects TCS6 without explicit typed timing.",
   "process_gates": "PASS O0/O2 exact transcript identity: dayfix 0..366, startup and seventh-day selection, strict equality no-gift reset, nondaily unused nonfinite inputs, split/retry counter preservation, invalid counter and ordinary-entry rejection. Existing TCS1-4 DCS1/DCS2 process gates pass.",
   "extended_gates": "PASS O0/O2 exact identity: 14 consecutive no-gift process invocations, pending gift completion ignoring unused NaN selector inputs, fixed precedence, ineligible selection, nonfinite deficit/threshold and upper-bound counter/threshold guards. Test-only counter assignment is not runtime ownership.",
-  "process_build": "swap-tcs-composition-9787d157b6314cb3a6e51e6f8163cde1",
+  "identity_proposal": "mod_ppa_irr_weekly_identity adds a detached metadata type and pure validation/proposal helper, not an owner. O0/O2 tests cover disabled/default metadata, first/consecutive/duplicate ordinals, gaps/backward rejection, nondaily bypass, int64 upper-bound behavior and invalid dayfix. All existing composition tests remain passing with exact transcript identity.",
+  "process_build": "swap-tcs-composition-162760b0cc6a492f8169993834888be0",
   "preservation": "Scheduled TCS7/8 DCS1 plus independent depth/root-deficit oracles PASS O0/O2 in swap-irr-dcs1-scheduled-ac37e05f32c44e18a363701972d88eab. Clean owner IrrigationSource O0/O2 transcript identity and hydraulic-copy/guards identity PASS in swap-ppa-wu01-88392c35b34240e4a90b4ad926f221d3. Documentation source and strict MkDocs PASS.",
   "qualification_boundary": "Initial process composition only; no persisted daily counter, daily identity, source binding, TCS6 runtime execution or canonical admission. Owner preservation tests exercise previously supported routes, not weekly runtime.",
   "daily_source_review": "PPA_IRR_TCS6_DAILY_SOURCE_REVIEW.md verifies exact irrigation member hash and daily/crop/fixed-event gating. Dayfix counts eligible invocations; TCSFIX and legacy multi-SWAP day-end semantics are excluded from the proposed first route.",
-  "next_safe_step": "Follow PPA_IRR_TCS6_OWNER_DESIGN.md: extend existing carrier with weekly counter plus consumed daily ordinal, and isolated factory/clone/decoded-restart validation before runtime proposal plumbing."
+  "next_safe_step": "Embed the tested weekly metadata in the existing carrier only with explicit preservation/rejection rules for current runtime paths: factory/clone/decoded restart must retain it, and unplumbed runtime paths must not silently reset enabled metadata. Then qualify management proposal plumbing."
 }
