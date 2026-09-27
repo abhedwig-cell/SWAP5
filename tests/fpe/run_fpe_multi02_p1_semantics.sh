@@ -151,10 +151,11 @@ if anchor not in s: raise SystemExit("trajectory compare seam")
 s=s.replace(anchor,repl,1)
 
 old="""       '|MAX_SIMULTANEOUS=',maxsim,'|OMP_TEAM=',team_seen,'|MAX_Q_DIFF=',qdiff,'|MAX_T_DIFF=',tdiff, &
-       '|QSUM=',qsum,'|TSUM=',tsum
+       '|QSUM=',qsum,'|TSUM=',tsum,'|MIXED=',mixed,'|MIXED_BALANCED=',mixed_balanced
 """
 new="""       '|MAX_SIMULTANEOUS=',maxsim,'|OMP_TEAM=',team_seen,'|MAX_Q_DIFF=',qdiff,'|MAX_T_DIFF=',tdiff, &
-       '|QSUM=',qsum,'|TSUM=',tsum,'|ATTEMPTS=',parallel_att,'|ACCEPTED_SUBSTEPS=',parallel_asub, &
+       '|QSUM=',qsum,'|TSUM=',tsum,'|MIXED=',mixed,'|MIXED_BALANCED=',mixed_balanced, &
+       '|ATTEMPTS=',parallel_att,'|ACCEPTED_SUBSTEPS=',parallel_asub, &
        '|RETRIES=',parallel_ret,'|TEMPORAL_REJECTIONS=',parallel_trej,'|SOLVER_REJECTIONS=',parallel_srej, &
        '|NONLINEAR=',parallel_nlit,'|BACKTRACK=',parallel_bt,'|WORK_RATIO=',worker_ratio, &
        '|W1_ATT=',worker_att(1),'|W2_ATT=',worker_att(2),'|W3_ATT=',worker_att(3),'|W4_ATT=',worker_att(4), &
