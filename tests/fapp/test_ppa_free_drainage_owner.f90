@@ -1320,7 +1320,35 @@ contains
       call evaluate_tcs2_4_profile_source(p,base,r,observations,hydraulic,root_profile, &
            previous,candidate,flux,d,effective,ok)
       if(ok.or.allocated(effective).or.candidate%active_event) error stop 'invalid profile source leaked'
+      r%selection_opportunity=.false.
+      observations%knot_count=0
+      call evaluate_tcs2_4_profile_source(p,base,r,observations,hydraulic,root_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(.not.ok.or.candidate%active_event) error stop 'nonselection consumed invalid profile'
+      if(any(effective%subsurface_irrigation_source/=0.0_real64)) error stop 'nonselection source leaked'
+      r%selection_opportunity=.true.
+      observations%knot_count=2
       root_profile%dz=1.0_real64
+      r%t1=T0+1.0_real64/2048.0_real64
+      call evaluate_tcs2_4_profile_source(p,base,r,observations,hydraulic,root_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.candidate%active_event) error stop 'profile pending setup failed'
+      base=candidate
+      previous=effective
+      root_profile%dz=-1.0_real64
+      observations%knot_count=0
+      r%t0=r%t1; r%t1=T0+1.0_real64/1024.0_real64
+      call evaluate_tcs2_4_profile_source(p,base,r,observations,hydraulic,root_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.flux%event_finished.or.candidate%active_event) &
+           error stop 'pending consumed invalid profile or timing table'
+      if(.not.base%active_event) error stop 'pending mutated committed event'
+      if(any(effective%subsurface_irrigation_source/=expected%subsurface_irrigation_source)) &
+           error stop 'pending profile source differs'
+      base=irrigation_state_t()
+      previous=original; previous%subsurface_irrigation_source=0.0_real64
+      previous%temporal_forcing_event=.false.
+      root_profile%dz=1.0_real64; observations%knot_count=2; r%t0=T0
     end do
     write(*,'(a)') 'PPA_IRR_TCS2_4_CHECKED_PROFILE_SOURCE=PASS'
   end subroutine
