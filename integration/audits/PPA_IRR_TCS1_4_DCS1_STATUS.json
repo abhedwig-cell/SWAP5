@@ -1,7 +1,8 @@
 {
   "work_unit": "PPA-IRR-TCS1-4-DCS1",
-  "status": "BOUNDED_PROCESS_DEPTH_GRID_AND_GUARDS_PASS_RUNTIME_PENDING",
-  "tested_commit": "a643b8ec0",
+  "status": "BOUNDED_PROCESS_AND_SOURCE_BINDING_PASS_RUNTIME_PENDING",
+  "tested_commit": "044339fa7",
+  "process_tested_commit": "a643b8ec0",
   "preregistration": "PPA_IRR_TCS1_4_DCS1_PREREGISTRATION.json",
   "implementation": "src/process/mod_ppa_irr_tcs1_4_dcs1.f90",
   "scope": "Explicit process-only checked-profile entry; one aggregation produces water observations and local request deficit. Existing typed timing and common scheduled depth/event equations are reused. Original profile-free entry still rejects DCS1.",
@@ -10,6 +11,9 @@
   "extended_result": "PASS 4000 combined cases (1000 per criterion) checking independent correction interpolation, strict rainfall threshold, zero floor, optional min/max clipping, one-day rate fallback, duration and interval amount. False timing with wet profile, malformed timing, fixed precedence and pending split with immutable input pass. O0/O2 complete transcripts identical. An initial false-timing fixture incorrectly used a dry profile with zero TCS2 depletion threshold; corrected to a wet profile, without changing implementation.",
   "preservation": "run_ppa_irr_dcs1_scheduled.ps1 PASS O0/O2 for scheduled TCS7/8, independent DCS1 depth and checked water-deficit oracles; build swap-irr-dcs1-scheduled-2887970d03e44ca096b2f046b8463854. Documentation source and strict MkDocs gates pass.",
   "retained_build": "swap-tcs-composition-2e6a37ecaf8a490caf0659a455118021",
-  "qualification_boundary": "Initial process fixtures only, not broad source-equivalence qualification or runtime integration. No source binding, bootstrap admission or new state owner added.",
-  "next_safe_step": "Add explicit profile-aware DCS1 source binding using this process entry and existing forcing binder; preserve the profile-free rejection contract. Qualify source materialization before bootstrap runtime integration."
+  "source_result": "Explicit evaluate_tcs1_4_dcs1_source reuses the process and existing forcing binder. All four criteria produce exact node rate and start marker, complete the independently prescribed gift, and fail closed on invalid geometry. Clean IrrigationSource O0/O2 transcripts identical; hydraulic-copy and guards pass identically; documentation source and strict MkDocs pass.",
+  "source_build": "swap-ppa-wu01-d1be4dcec3e94094bbc87b0041b3a1e7",
+  "source_log": "TEMP/swap-dcs1-source.log",
+  "qualification_boundary": "Bounded process and source binding only. Bootstrap still rejects TCS1-4/DCS1. No runtime admission, new state owner or canonical claim.",
+  "next_safe_step": "Qualify source pending/nonselection with absent profile fields, then wire explicit supplied-profile DCS1 to bootstrap and test hydraulic acceptance, restart and rollback without changing profile-free rejection."
 }
