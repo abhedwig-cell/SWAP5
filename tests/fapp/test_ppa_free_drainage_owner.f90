@@ -1834,6 +1834,10 @@ contains
       if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly gift selected hydraulics'
       call weekly_app%export_committed_restart(92001_int64,weekly_bundle,weekly_ok,weekly_code)
       if(.not.weekly_ok) error stop 'weekly gift midpoint export'
+      call weekly_resumed%initialize(weekly_config,weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly mid-gift fresh initialize'
+      call weekly_resumed%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly mid-gift restore'
       do j=1,2
         if(abs(weekly_results(j)%mass%residual)>1.0e-12_real64) error stop 'weekly gift mass'
         select type(state=>weekly_bundle%records(j)%physical_state)
@@ -1850,16 +1854,35 @@ contains
       if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly gift pending hydraulics'
       call weekly_app%export_committed_restart(92001_int64,weekly_bundle,weekly_ok,weekly_code)
       if(.not.weekly_ok) error stop 'weekly gift final export'
+      call execute_window_ppa_bootstrap_irrigation(weekly_resumed,[1_int64,2_int64],92001_int64, &
+           daily_parameters,daily_requests,weekly_forcing,1,prefixes,prefix_count,weekly_code,weekly_inputs=daily_inputs)
+      if(weekly_code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'weekly restarted pending window'
+      if(.not.all(prefixes(1)%columns%committed)) error stop 'weekly restarted window publication'
+      call weekly_resumed%export_committed_restart(92001_int64,resumed_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly restarted pending export'
       do j=1,2
         if(abs(weekly_results(j)%mass%residual)>1.0e-12_real64) error stop 'weekly pending mass'
         select type(state=>weekly_bundle%records(j)%physical_state)
         type is(ppa_irrigation_event_state_t)
           if(state%weekly%dayfix/=0.or.state%weekly%last_day/=100_int64.or.state%irrigation%active_event) &
                error stop 'weekly duplicate ordinal counted or event not completed'
+          select type(replay=>resumed_bundle%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(replay%irrigation%active_event.or.replay%weekly%dayfix/=state%weekly%dayfix.or. &
+                 replay%weekly%last_day/=state%weekly%last_day.or. &
+                 any(replay%water_content/=state%water_content).or.any(replay%pressure_head/=state%pressure_head)) &
+                 error stop 'weekly mid-gift restart window differs'
+          class default
+            error stop 'weekly mid-gift restart lost carrier'
+          end select
         end select
+        if(prefixes(1)%columns(j)%mass%residual/=weekly_results(j)%mass%residual) &
+             error stop 'weekly mid-gift restart mass differs'
       end do
+      call weekly_resumed%close(weekly_code)
       call weekly_app%close(weekly_code)
       write(*,'(a)') 'PPA_IRR_WEEKLY_GIFT_PENDING_DUPLICATE_PUBLICATION=PASS'
+      write(*,'(a)') 'PPA_IRR_WEEKLY_MID_GIFT_RESTART_WINDOW_IDENTITY=PASS'
     end block
     call application%initialize(config,code)
     if(code==FMR_APP_BOOT_OK.or.application%ready()) error stop 'bootstrap missing irrigation opt-in admitted'
