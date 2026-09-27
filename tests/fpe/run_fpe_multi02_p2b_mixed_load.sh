@@ -29,26 +29,24 @@ s=s.replace(
 "  integer :: worker_att(4),worker_nlit(4),worker_bt(4)\n"
 "  real(real64) :: mean_work,work_ratio\n",1)
 
-old_args="""  if(command_argument_count()<2 .or. command_argument_count()>3) error stop 'usage N WORKERS [MIXED|MIXED_BALANCED]'
-  call get_command_argument(1,arg); read(arg,*) n
-  call get_command_argument(2,arg); read(arg,*) workers
-  mixed=.false.; mixed_balanced=.false.; mode=''
-  if(command_argument_count()==3)then
-    call get_command_argument(3,mode)
-    mixed=trim(mode)=='MIXED' .or. trim(mode)=='MIXED_BALANCED'
-    mixed_balanced=trim(mode)=='MIXED_BALANCED'
-    if(.not.mixed) error stop 'bad mode'
-  end if
-  if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'
-"""
-new_args="""  if(command_argument_count()/=3) error stop 'usage N WORKERS ORDER'
-  call get_command_argument(1,arg); read(arg,*) n
-  call get_command_argument(2,arg); read(arg,*) workers
-  call get_command_argument(3,arg); read(arg,*) order_code
-  mixed=.false.; mixed_balanced=.false.; mode=''
-  if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'
-  if(order_code/=0 .and. order_code/=1) error stop 'bad order'
-"""
+old_args=("  if(command_argument_count()<2 .or. command_argument_count()>3) error stop 'usage N WORKERS [MIXED|MIXED_BALANCED]'\n"
+          "  call get_command_argument(1,arg); read(arg,*) n\n"
+          "  call get_command_argument(2,arg); read(arg,*) workers\n"
+          "  mixed=.false.; mixed_balanced=.false.; mode=''\n"
+          "  if(command_argument_count()==3)then\n"
+          "    call get_command_argument(3,mode)\n"
+          "    mixed=trim(mode)=='MIXED' .or. trim(mode)=='MIXED_BALANCED'\n"
+          "    mixed_balanced=trim(mode)=='MIXED_BALANCED'\n"
+          "    if(.not.mixed) error stop 'bad mode'\n"
+          "  end if\n"
+          "  if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'\n")
+new_args=("  if(command_argument_count()/=3) error stop 'usage N WORKERS ORDER'\n"
+          "  call get_command_argument(1,arg); read(arg,*) n\n"
+          "  call get_command_argument(2,arg); read(arg,*) workers\n"
+          "  call get_command_argument(3,arg); read(arg,*) order_code\n"
+          "  mixed=.false.; mixed_balanced=.false.; mode=''\n"
+          "  if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'\n"
+          "  if(order_code/=0 .and. order_code/=1) error stop 'bad order'\n")
 if old_args not in s: raise SystemExit("P2B argument parser seam missing")
 s=s.replace(old_args,new_args,1)
 
