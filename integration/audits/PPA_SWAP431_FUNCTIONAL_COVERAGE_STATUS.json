@@ -8,13 +8,13 @@
   "migration_closure_ledger": "integration/audits/SWAP4_TO_SWAP5_MIGRATION_CLOSURE_LEDGER.json",
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
-  "next_local_capability": "integration/audits/PPA_IRR_TCS6_COMPOSITION_PREREGISTRATION.json",
+  "next_local_capability": "integration/audits/PPA_IRR_TCSFIX_COMPOSITION_DESIGN.md",
   "latest_tcs6_dcs1_checkpoint": {
-    "tested_commit": "a99c037d9",
+    "tested_commit": "223859929",
     "record": "integration/audits/PPA_IRR_TCS6_COMPOSITION_STATUS.json",
     "design": "integration/audits/PPA_IRR_TCS6_DCS1_DESIGN.md",
     "scope": "Explicit supplied-deficit and opt-in committed-profile weekly DCS1/DCS2 routes pass bounded O0/O2 runtime gates: independent profile/threshold arithmetic, mixed-column exact/window identity, pending decoded-bundle restore, next-prefix completion, fresh two-prefix gift/remainder and preflight nonmutation. Root/profile input is caller supplied and fixed per window. Full-day execution and canonical admission remain open; the decoded bundle contract does not imply a byte-level codec requirement.",
-    "next_bounded_check": "Successor daily invocation with changed explicit profile inputs: verify fresh derivation from newly committed water while duplicate/pending invocations retain their bypass contract. No automatic crop/root evolution inferred."
+    "next_bounded_check": "Successor explicit invocation from actual committed snapshot now passes with changed profiles and ordinal101/counter1. Bounded profile slice evidence is recorded; move to separately designed TCSFIX process composition while retaining full-day numerical limitation. No automatic crop/root evolution inferred."
   },
   "latest_tcs6_checkpoint": {
     "tested_commit": "0f28531f8",
