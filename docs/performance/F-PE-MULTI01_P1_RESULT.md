@@ -7,11 +7,10 @@ Status: `PASS_PARALLEL_SUCCESSOR_JUSTIFIED`
 PR:
 `#661 — F-PE-MULTI01: current-canonical MultiSWAP scaling rebaseline`
 
-Authority run:
-`36307477079`
-
-Job:
-`p1-groundwater-scaling`
+Current-head authority:
+- branch head exercised: `0cb0811fc4118c4acafe36bc182c65051cc1943b`;
+- workflow run: `36307581257`;
+- job: `p1-groundwater-scaling`.
 
 ## Production-shaped scope
 
@@ -33,19 +32,19 @@ No production source is modified.
 
 Median repeated trial cost:
 
-- N=10: 0.260696 ms, 26.070 us/tile;
-- N=100: 2.637147 ms, 26.371 us/tile;
-- N=1,000: 27.110081 ms, 27.110 us/tile.
+- N=10: `0.159822 ms`, `15.982 us/tile`;
+- N=100: `1.630083 ms`, `16.301 us/tile`;
+- N=1,000: `16.618811 ms`, `16.619 us/tile`.
 
 The per-tile cost is nearly constant over two orders of magnitude in N.
 
-Other repeated phases are small relative to trial execution.
+Other repeated phases are tiny relative to trial execution.
 
 At N=1,000:
 
-- tangent query: about 0.040 ms;
-- discard: about 0.160 ms;
-- trial_cell_heads: about 27.11 ms.
+- tangent query: about `0.0124 ms`;
+- discard: about `0.0778 ms`;
+- `trial_cell_heads`: about `16.62 ms`.
 
 Thus repeated runtime is dominated by independent per-tile participant/physical work, not tangent aggregation or discard.
 
@@ -55,7 +54,7 @@ Q and tangent checksums scale consistently with N.
 
 The current serial behavior is an ownership constraint, not evidence that physical tile work is inherently serial.
 
-The generic worker-pool P0 demonstrates that the current codebase can execute independent physical columns concurrently when each worker owns independent mutable backend/workspace state.
+The generic worker-pool P0 demonstrates that the codebase can execute independent physical columns concurrently when each worker owns independent mutable backend/workspace state.
 
 The production groundwater route instead binds many participants to one shared mutable Reference backend.
 
@@ -76,7 +75,7 @@ The successor must retain:
 - identical retry/acceptance decisions;
 - no candidate/state/ledger leakage.
 
-Frozen P2 performance gates from MULTI01:
+Frozen performance gates from MULTI01:
 
 - sufficiently large-N 2-worker speedup >= 1.5x;
 - sufficiently large-N 4-worker speedup >= 2.2x.
