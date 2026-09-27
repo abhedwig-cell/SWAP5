@@ -64,3 +64,16 @@ the materializer returns success. Validate counter and interval at the explicit
 API boundary even for bypass calls; bypass applies to observations and new event
 selection, not malformed configuration. No invocation identity is persisted by
 this pure API. A caller that retries or publishes must own that later lifecycle.
+
+## Next detached source binding
+
+Process implemented at `7b38d9e21`, with expanded guards tested at `82884ace6`.
+Add a separately named adapter that calls this process into local proposals,
+then the existing water-only source binder. Initialize outward event/counter to
+inputs and outward flux empty; publish all three together only when binding
+succeeds. An allocatable forcing output must not retain a prior successful value
+on failure. Test positive rate, no-gift source, split/retry and a late forcing
+boundary rejection after successful process selection. Do not connect this
+adapter to bootstrap or persist its counter until a distinct ownership and daily
+identity contract is recorded. Reuse existing observation types where possible;
+do not change the provider ABI or existing production compile dependencies.
