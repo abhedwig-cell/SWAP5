@@ -73,7 +73,7 @@ sub=r"""
       if(max_abs_residual(results)>hard_mass_gate) error stop 'MULTI01 mass'
       if(runtime%number_requested/=n .or. runtime%number_executed/=n .or. runtime%number_committed/=n) &
         error stop 'MULTI01 runtime counts'
-      if(workers>1 .and. runtime%max_simultaneous_real_physical_solves<2) &
+      if(workers>1 .and. batch_size>=2 .and. runtime%max_simultaneous_real_physical_solves<2) &
         error stop 'MULTI01 no real overlap'
       seconds(rep)=real(c1-c0,real64)/real(rate,real64)
     end do
