@@ -42,3 +42,13 @@ jobs:
       - name: Qualify production TEMPORAL08 application-context scaling
         run: bash tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh
 
+  p2-hybrid-production-scheduling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify frozen mixed-cost production hybrid scheduling
+        run: bash tests/fpe/run_fpe_multi04_p2_hybrid_production_scheduling.sh
+
