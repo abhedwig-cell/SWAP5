@@ -114,7 +114,7 @@ program test_ppa_free_drainage_owner
       write(*,'(a)') 'PPA_IRR_LOCAL_ORIGIN_DIAGNOSTIC'
     case('--double-iterations')
       write(*,'(a)') 'PPA_IRR_80_ITERATIONS_DIAGNOSTIC'
-    case('--weekly-full-day','--weekly-full-day-coarse')
+    case('--weekly-full-day','--weekly-full-day-coarse','--weekly-full-day-dense')
       if(trim(test_scope)/='--irrigation-source') error stop 'weekly full-day scope'
       write(*,'(a)') 'PPA_IRR_WEEKLY_FULL_DAY_EXPERIMENT'
     case default
@@ -1320,6 +1320,10 @@ contains
           integer(int64)::started,ended,clock_rate
           day_config=profile%numerical
           day_config%max_committed_substeps=131072
+          if(trim(origin_scope)=='--weekly-full-day-dense') then
+            day_config%transaction%retry_scale=0.8_real64
+            day_config%transaction%max_retries=64
+          end if
           call system_clock(started,clock_rate)
           call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner, &
                no_gift_forcing,day_config,1,T0,T0+1.0_real64,weekly_checkpoint,result,candidate,diagnostics, &
@@ -4321,6 +4325,7 @@ contains
     integer,intent(out)::max_retries_cap
     logical,intent(out)::valid
     call weekly_bounded_target(cursor,requested_t1,target_t1,max_retries_cap,valid)
+    if(trim(origin_scope)=='--weekly-full-day-dense') max_retries_cap=64
     ! Isolated numerical experiment: larger initial targets, unchanged acceptance.
     if(trim(origin_scope)=='--weekly-full-day-coarse') then
       target_t1=min(requested_t1,cursor+1.0_real64/32768.0_real64)
