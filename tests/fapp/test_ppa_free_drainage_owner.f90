@@ -1950,9 +1950,9 @@ contains
     block
       use mod_irrigation_process, only: ppa_weekly_identity_t
       use mod_ppa_irr_tcs6_source, only: ppa_tcs6_daily_input_t
-      type(fmr_production_application_bootstrap_t)::weekly_app,weekly_resumed
+      type(fmr_production_application_bootstrap_t)::weekly_app,weekly_resumed,target_app
       type(fmr_production_application_config_t)::weekly_config
-      type(fmr_committed_restart_bundle_t)::weekly_bundle,resumed_bundle
+      type(fmr_committed_restart_bundle_t)::weekly_bundle,resumed_bundle,target_bundle
       type(ppa_weekly_identity_t)::proposals(2)
       type(ppa_tcs6_daily_input_t)::daily_inputs(2)
       type(scheduled_irrigation_parameters_t)::daily_parameters(2)
@@ -1995,6 +1995,33 @@ contains
            weekly_results,weekly_code,weekly_proposals=proposals)
       if(weekly_code==FMR_APP_BOOT_OK.or.allocated(weekly_results)) error stop 'weekly bootstrap metadata preflight'
       proposals(2)=ppa_weekly_identity_t()
+      call target_app%initialize(weekly_config,weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly target bootstrap initialize'
+      call target_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly target bootstrap restore'
+      call target_app%run_prepared_irrigation(T0,T0+1.0_real64/1024.0_real64,weekly_forcing, &
+           weekly_results,weekly_code,no_events,[.false.,.false.],proposals,weekly_invalid_target)
+      if(weekly_code==FMR_APP_BOOT_OK.or..not.allocated(weekly_results)) error stop 'weekly target bootstrap guard'
+      if(any(weekly_results%committed)) error stop 'weekly target bootstrap invalid publication'
+      call target_app%export_committed_restart(92001_int64,target_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly target rejected export'
+      if(any(target_bundle%records%committed_time/=T0)) error stop 'weekly target rejected time'
+      call target_app%run_prepared_irrigation(T0,T0+1.0_real64/1024.0_real64,weekly_forcing, &
+           weekly_results,weekly_code,no_events,[.false.,.false.],proposals,weekly_bounded_target)
+      if(weekly_code/=FMR_APP_BOOT_OK.or..not.allocated(weekly_results)) error stop 'weekly target bootstrap retry'
+      if(.not.all(weekly_results%committed)) error stop 'weekly target bootstrap commit'
+      call target_app%export_committed_restart(92001_int64,target_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly target committed export'
+      if(any(target_bundle%records%committed_time/=T0+1.0_real64/1024.0_real64)) error stop 'weekly target finish'
+      select type(state=>target_bundle%records(1)%physical_state)
+      type is(ppa_irrigation_event_state_t)
+        if(state%weekly%dayfix/=4.or.state%weekly%last_day/=101_int64) error stop 'weekly target management'
+      class default
+        error stop 'weekly target bootstrap carrier'
+      end select
+      call target_app%close(weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly target bootstrap close'
+      write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_TARGET_ROLLBACK_COMMIT=PASS'
       call weekly_app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,weekly_forcing, &
            weekly_results,weekly_code,no_events,[.false.,.false.],proposals)
       if(weekly_code/=FMR_APP_BOOT_OK.or..not.allocated(weekly_results)) error stop 'weekly bootstrap no-gift run'

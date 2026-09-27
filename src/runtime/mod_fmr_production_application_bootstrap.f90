@@ -1,4 +1,5 @@
 module mod_fmr_production_application_bootstrap
+  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
   use mod_soil_water_solver_contract, only: constitutive_storage_difference_ifc
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
@@ -354,7 +355,7 @@ contains
   end function production_application_tile_count
 
   subroutine production_application_run_prepared_irrigation(self,t0,t1,effective_forcing,results,status, &
-       selected_events,selection_mask,weekly_proposals)
+       selected_events,selection_mask,weekly_proposals,target_selector)
     class(fmr_production_application_bootstrap_t),intent(inout)::self
     real(real64),intent(in)::t0,t1
     type(fmr_b110_physical_forcing_t),intent(in)::effective_forcing(:)
@@ -363,6 +364,7 @@ contains
     type(irrigation_state_t),intent(in),optional::selected_events(:)
     logical,intent(in),optional::selection_mask(:)
     type(ppa_weekly_identity_t),intent(in),optional::weekly_proposals(:)
+    procedure(canonical_subinterval_target_selector),optional::target_selector
     type(ppa_weekly_identity_t),allocatable::weekly_proposal
     type(kernel_executor_t)::control
     type(fmr_column_diagnostics_t)::diagnostic
@@ -409,11 +411,12 @@ contains
       if(select_new) then
         call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
              self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
-             t0,t1,results(i),diagnostic,runtime,active_calls,selected_events(i),weekly_proposal)
+             t0,t1,results(i),diagnostic,runtime,active_calls,selected_events(i),weekly_proposal,target_selector)
       else
         call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
              self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
-             t0,t1,results(i),diagnostic,runtime,active_calls,weekly_proposal=weekly_proposal)
+             t0,t1,results(i),diagnostic,runtime,active_calls,weekly_proposal=weekly_proposal, &
+             target_selector=target_selector)
       end if
     end do
     status=FMR_APP_BOOT_RUNTIME_FAILED

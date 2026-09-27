@@ -152,3 +152,10 @@ The irrigation resolved-column entry forwards the same optional selector
 through its existing shared executor into the pending backend. Checkpoint,
 commit/discard and active-call accounting remain in that executor; no extra
 publication path is added. Existing absent-selector calls retain their route.
+
+Prepared-irrigation bootstrap accepts the same optional trailing selector as
+a call-scoped numerical policy shared by its serialized columns, regardless of
+gift-selection mask or weekly enablement. Canonical per-trial validation and
+existing per-column commit semantics remain authoritative; no atomic batch
+rollback is promised for a stateful callback. No selector is stored or activated
+by default. Daily-input adapters are a separate forwarding/qualification step.
