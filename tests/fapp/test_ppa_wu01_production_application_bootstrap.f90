@@ -171,7 +171,7 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_OK, 'release stale-origin context')
   do i = 1, NTILE
     predictors(i)%response%lineage%swap_origin_revision = 0_int64
-    trial_heads(i) = real(reference_head_m + 0.001_real64 * real(i, real64), c_double)
+    trial_heads(i) = real(reference_head_m, c_double)
   end do
 
   call run_groundwater_trial_probe(gw_app, topology, predictors, areas, trial_heads, serial_flux, serial_tangent)
