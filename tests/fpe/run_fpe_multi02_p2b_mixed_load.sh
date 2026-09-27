@@ -17,7 +17,7 @@ p=Path(sys.argv[1]); s=p.read_text()
 needle='bash "$RUN"\n'
 if needle not in s:
     raise SystemExit("P2B insertion seam missing")
-patch=r'''python3 - "$RUN" <<'PY2'
+patch=r"""python3 - "$RUN" <<'PY2'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text()
@@ -173,7 +173,7 @@ PY
 p.write_text(s)
 PY2
 bash "$RUN"
-'''
+"""
 s=s.replace(needle,patch,1)
 p.write_text(s)
 PY
