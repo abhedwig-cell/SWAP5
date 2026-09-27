@@ -52,3 +52,24 @@ Invalid profiles must expose neither forcing nor advanced weekly metadata.
 First qualify source-level arithmetic and bypass/rollback behavior, then add
 explicit bootstrap routing with mixed-column preflight and restart tests.
 This paragraph is a work plan, not implementation or qualification evidence.
+
+## Bootstrap routing contract for the next implementation
+
+Branch-local design decision at recovery `91020b04e`: use a trailing optional
+logical per-column `weekly_profile_mode` array on the exact, next-prefix and
+window adapter entry points. Absence or false retains the supplied-deficit route,
+even when a profile array happens to be supplied for other columns. Do not add
+a selector to the daily identity/value carrier or infer routing from allocation.
+
+Validate mask shape before snapshot export; a true entry requires timing 6 and
+the profile container with matching column count. Missing containers reject
+before runtime publication. Leave profile payload validation to the named source
+route so pending events and duplicate ordinals still bypass fresh derivation.
+Derive only from the exported committed hydraulic snapshot and forward the
+existing detached event/weekly proposals to the existing publisher. No new
+state owner, restart field, tolerance change or calendar inference is permitted.
+
+Qualification must cover mixed supplied/profile columns, omitted versus false
+mask preservation, missing/wrong-sized containers, nonweekly true entries,
+invalid second-column payload with no publication, split retry and pending
+decoded restart. This contract is not evidence of implemented bootstrap routing.
