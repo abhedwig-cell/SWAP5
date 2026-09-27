@@ -1,0 +1,27 @@
+name: F-PE-SETUP05 post-admission setup reprofile
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_setup05_*.sh'
+      - 'docs/performance/F-PE-SETUP05_*.md'
+      - '.github/workflows/f-pe-setup05.yml'
+  workflow_dispatch:
+
+jobs:
+  setup-reprofile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run post-admission staged setup reprofile
+        env:
+          SETUP05_N: '${{ matrix.n }}'
+          SETUP05_REPS: '5'
+        run: bash tests/fpe/run_fpe_setup05_reprofile.sh
