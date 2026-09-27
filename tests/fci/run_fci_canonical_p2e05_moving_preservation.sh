@@ -6,6 +6,9 @@ cd "$ROOT"
 
 AUTH=50346642bd565f79134ea17d5462e544b354998c
 FCI110_ADMISSION=a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a
+DIR01_ADMISSION=b95ce4b9a27144eb400fae25de69dd5d927667a8
+REPAIR01_ADMISSION=c64737c89953888c311e005a2a0077964f358498
+BALTOL02_ADMISSION=0ac76e68a35dda95c753d255927f1dc432f7b42e
 FPERF_B1_ADMISSION=ffb08380054ddec9e940fc0e4056758d30a1d7da
 FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
 FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
@@ -44,12 +47,17 @@ FROSS17_CACHE_KERNEL=2ad2a680e62744451d6763de48585f1bd45d3067
 FROSS22_TIERED_KERNEL=438ee46e012e9eb183b8f2532437e2fe56aa18ed
 FROSS22_TIERED_SOLVER=2b134c36097aed2a44a56bfe8e2194b15aa063aa
 SW_P2E05=40a1ddc05fb8e2c1822763de645fd07a094568a3
+FCI110_SW=45cb74e00ae5fe09a220e630d84507cde543070b
 REF_ADAPTER_P2E05=4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
+FCI110_REF_ADAPTER=6d1ca6edfd2f71a4b2d7c3c54efa448986f4b09b
+REPAIR01_REF_ADAPTER=dab224d42792a71525960895d26b419c9589ce33
 ROSS_ADAPTER_P2E05=dbb441f3529be179d64fb57f9c44336d3d20c540
 BACKEND_FROSS12=19d07cac9285142d14a6e9c53706fb73d016d5ad
 BACKEND_FGC31=4e5491c997ed0752a4db9abd09b5ad3daf394db2
 BACKEND_FGC44=4597c833e7f45beaef04ffcc592ca6a4fcbd0395
 FSI39_PROVIDER=90183cbe0f3f0b349e40fa6b0c65b2223ca8a739
+FCI110_PROVIDER=b9042b4a41ddbf940888821aea4b258e37ed290e
+DIR01_PROVIDER=7af945e2f596d7c93ce0ea21a211d76a69213283
 FSI39_BACKEND=556ed83dee4d5b159f1de7ae797af7106a0abe2e
 F_ROM1A_KERNEL=c28cb8246aaf087da92538e58b1aa2da5d1b5b11
 FCI110_KERNEL_TRANSACTIONS=9cb522c1486ba015a3c4fe86d6706e884806c4cf
@@ -64,6 +72,9 @@ FCI110_RUNTIME_CORE=0783af04474752a47f7b3a0304a84dd379cff7d6
 PPA_WU04B_RESTART_STATE=ddcb880dbdbf1d6b41c8721f931df9a2c8bc121a
 PPA_WU04B_SURFACE_EVAP=1f795f0baaa3ed86272a1feabc3f1a6463b3ce77
 PPA_WU04B_BACKEND=9bd344a83afd5e10b96178933362dbb7eeea4f30
+FCI110_BACKEND=27df1d7ef2cec91501af3a0f0b3fb45e869c30f3
+DIR01_BACKEND=37a2381a6f124648969ca9c1bf7e5ee1f4072c72
+BALTOL02_BACKEND=a5d472636f50a715cf64016ad9d500b401b0ebb1
 SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
@@ -227,9 +238,24 @@ else
   test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" =     "$(git rev-parse "$AUTH:src/kernel/mod_kernel_transactions.f90")" ||     fail 'pre-F-ROM1A kernel transaction drift'
 fi
 
-# P2E05 typed-diagnostic successors are exact, not wildcard exceptions.
-test "$(git rev-parse HEAD:$SW)" = "$SW_P2E05" || fail 'typed solver contract is not the qualified P2E05 blob'
-test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'Reference adapter is not the qualified P2E05 blob'
+# P2E05 typed-diagnostic successors remain exact. Later admitted successors
+# are selected only when their admission is in the current lineage.
+sw_authority="$SW_P2E05"
+if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+  sw_authority="$FCI110_SW"
+  echo 'FCI_CANONICAL_FCI110_SOLVER_CONTRACT_SUCCESSOR=ACTIVE'
+fi
+test "$(git rev-parse HEAD:$SW)" = "$sw_authority" || fail 'typed solver contract successor drift'
+
+ref_adapter_authority="$REF_ADAPTER_P2E05"
+if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+  ref_adapter_authority="$FCI110_REF_ADAPTER"
+fi
+if git merge-base --is-ancestor "$REPAIR01_ADMISSION" HEAD; then
+  ref_adapter_authority="$REPAIR01_REF_ADAPTER"
+  echo 'FCI_CANONICAL_REPAIR01_REFERENCE_ADAPTER_SUCCESSOR=ACTIVE'
+fi
+test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$ref_adapter_authority" || fail 'Reference adapter successor drift'
 
 # Preserve the F-ROSS12 selection authority. The default-MvG provider and
 # serialized Reference backend have one later exact semantic successor from
@@ -240,10 +266,26 @@ test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'admitted
 if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
   git merge-base --is-ancestor "$PPA_WU04B_QUALIFIED" "$PPA_WU04B_ADMISSION" || \
     fail 'PPA-WU04-B qualified head is not contained by canonical admission'
-  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$FSI39_PROVIDER" || \
-    fail 'PPA-WU04-B successor lost admitted F-SI39 default-MvG provider'
-  test "$(git rev-parse HEAD:$BACKEND)" = "$PPA_WU04B_BACKEND" || \
-    fail 'admitted PPA-WU04-B serialized-backend successor drift'
+  provider_authority="$FSI39_PROVIDER"
+  backend_authority="$PPA_WU04B_BACKEND"
+  if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+    provider_authority="$FCI110_PROVIDER"
+    backend_authority="$FCI110_BACKEND"
+    echo 'FCI_CANONICAL_FCI110_REFERENCE_BACKEND_BASELINE=ACTIVE'
+  fi
+  if git merge-base --is-ancestor "$DIR01_ADMISSION" HEAD; then
+    provider_authority="$DIR01_PROVIDER"
+    backend_authority="$DIR01_BACKEND"
+    echo 'FCI_CANONICAL_DIR01_REFERENCE_SUCCESSOR=ACTIVE'
+  fi
+  if git merge-base --is-ancestor "$BALTOL02_ADMISSION" HEAD; then
+    backend_authority="$BALTOL02_BACKEND"
+    echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
+  fi
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$provider_authority" || \
+    fail 'admitted default-MvG provider successor drift'
+  test "$(git rev-parse HEAD:$BACKEND)" = "$backend_authority" || \
+    fail 'admitted serialized-backend successor drift'
   echo 'FCI_CANONICAL_PPA_WU04B_BACKEND_SUCCESSOR=PASS'
 elif git merge-base --is-ancestor "$PPA_WU04A_ADMISSION" HEAD; then
   git merge-base --is-ancestor "$PPA_WU04A_QUALIFIED" "$PPA_WU04A_ADMISSION" || \
