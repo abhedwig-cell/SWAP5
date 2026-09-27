@@ -78,6 +78,7 @@ module mod_fmr_groundwater_swap_participant
     procedure, public :: captured_revision => fmr_swap_revision
     procedure, public :: configure_tangent_cache => fmr_swap_configure_tangent_cache
     procedure, public :: tangent_cache_counts => fmr_swap_tangent_cache_counts
+    procedure, public :: pretrial_cost_proxy => fmr_swap_pretrial_cost_proxy
   end type fmr_groundwater_swap_participant_t
 
 contains
@@ -552,6 +553,21 @@ contains
     fresh_count = self%tangent_cache_fresh_count
     reuse_count = self%tangent_cache_reuse_count
   end subroutine fmr_swap_tangent_cache_counts
+
+  subroutine fmr_swap_pretrial_cost_proxy(self, cost, available)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    real(real64), intent(out) :: cost
+    logical, intent(out) :: available
+
+    cost = 0.0_real64
+    available = .false.
+    if (.not. self%origin_captured) return
+    if (.not. self%temporal_budget_origin_ready) return
+    if (.not. ieee_is_finite(self%temporal_budget_history_scale)) return
+    if (self%temporal_budget_history_scale <= 0.0_real64) return
+    cost = self%temporal_budget_history_scale
+    available = .true.
+  end subroutine fmr_swap_pretrial_cost_proxy
 
   subroutine invalidate_tangent_cache(self)
     class(fmr_groundwater_swap_participant_t), intent(inout) :: self
