@@ -1377,6 +1377,8 @@ contains
         real(real64),allocatable::bounded_history(:),restored_history(:)
         type(kernel_committed_state_t)::replay_owner(2)
         type(fmr_serialized_reference_backend_t)::replay_backend
+        type(fmr_b110_physical_forcing_t)::replay_forcing
+        real(real64)::replay_mass(2)
         real(real64)::replay_finish
         integer::replay_index,replay_status(2),replay_steps(2)
         call bounded_owner%initialize(404190_int64,initial,ok,T0)
@@ -1447,6 +1449,9 @@ contains
         write(*,'(a)') 'PPA_IRR_WEEKLY_LONG_COMMITTED_RESTART_IDENTITY=PASS'
         replay_owner=[bounded_owner,restored_owner(1)]
         replay_finish=finish+1.0_real64/1024.0_real64
+        replay_forcing=no_gift_forcing
+        replay_forcing%temporal_forcing_event=.false.
+        replay_forcing%temporal_forcing_event_time=0.0_real64
         do replay_index=1,2
           call replay_backend%initialize(top)
           call replay_backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
@@ -1457,15 +1462,28 @@ contains
                replay_owner(replay_index),no_gift_forcing,profile%numerical,1,finish,replay_finish, &
                bounded_checkpoint,result,candidate,diagnostics,weekly_proposal=weekly_seed%weekly, &
                target_selector=weekly_bounded_target)
-          ! This second long interval currently fails; preserve its restart
-          ! equivalence and rollback evidence without claiming completion.
+          ! The old event marker belongs to T0, not this continuation start.
+          ! Preserve fail-closed input rejection before retrying clean forcing.
           if(result%completed.or.candidate%ready()) error stop 'weekly failed replay fixture changed'
           replay_status(replay_index)=result%status
           replay_steps(replay_index)=diagnostics%accepted_substeps
           call replay_owner(replay_index)%current_time(time,ok)
           if(.not.ok.or.time/=finish.or.replay_owner(replay_index)%current_revision()/=1_int64) &
                error stop 'weekly replay time revision'
+          call replay_backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters, &
+               replay_owner(replay_index),replay_forcing,profile%numerical,1,finish,replay_finish, &
+               bounded_checkpoint,result,candidate,diagnostics,weekly_proposal=weekly_seed%weekly, &
+               target_selector=weekly_bounded_target)
+          if(.not.result%completed.or..not.candidate%ready()) error stop 'weekly clean replay completion'
+          replay_mass(replay_index)=result%mass%residual
+          if(abs(replay_mass(replay_index))>1.0e-12_real64) error stop 'weekly clean replay mass'
+          call replay_backend%commit_trial_candidate(replay_owner(replay_index),candidate,diagnostics,ok,code)
+          if(.not.ok) error stop 'weekly clean replay commit'
+          call replay_owner(replay_index)%current_time(time,ok)
+          if(.not.ok.or.time/=replay_finish.or.replay_owner(replay_index)%current_revision()/=2_int64) &
+               error stop 'weekly clean replay time revision'
         end do
+        if(replay_mass(1)/=replay_mass(2)) error stop 'weekly clean replay mass identity'
         if(replay_status(1)/=replay_status(2).or.replay_steps(1)/=replay_steps(2)) error stop 'weekly replay outcome'
         write(*,'(a,i0,a,i0)') 'PPA_IRR_WEEKLY_LONG_REPLAY_FAILURE_STATUS=',replay_status(1), &
              ';INTERNAL_ACCEPTED=',replay_steps(1)
@@ -1495,7 +1513,7 @@ contains
         class default
           error stop 'weekly replay original carrier'
         end select
-        write(*,'(a)') 'PPA_IRR_WEEKLY_LONG_RESTART_FAILED_REPLAY_IDENTITY=PASS'
+        write(*,'(a)') 'PPA_IRR_WEEKLY_LONG_RESTART_CLEAN_REPLAY_IDENTITY=PASS'
       end block
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
