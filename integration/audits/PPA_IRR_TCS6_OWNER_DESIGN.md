@@ -89,7 +89,8 @@ the explicit optional `weekly_proposal` only for an enabled weekly carrier;
 omission still rejects enabled carriers. Pending events cannot change dayfix.
 The model copies the proposal at the initial trial boundary into its candidate,
 including fresh retry clones, and clears its call-local proposal flag afterward.
-Only the existing candidate commit publishes it. Daily producer binding remains pending.
+Only the existing candidate commit publishes it. The daily producer is connected
+through the adapter contract above; broad sequence qualification remains pending.
 
 The resolved irrigation-column runtime adds an optional trailing
 `weekly_proposal`, forwarded unchanged through `execute_resolved_column` to the
