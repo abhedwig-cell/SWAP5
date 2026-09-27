@@ -7,9 +7,9 @@ Status: `PASS_BACKEND_INTERNAL_DECOMPOSITION_JUSTIFIED`
 PR:
 `#660 — F-PE-BASE01: base q/state Richards solve decomposition`
 
-Authority:
-- branch head exercised: `1bf8f50786fbf73b09726f2163e80c095d5b732a`;
-- workflow run: `36304378483`;
+Current-head authority:
+- branch head exercised: `c5f1881d3d95695993ab6420e232adb32c9df60b`;
+- workflow run: `36306634228`;
 - job: `p0-participant-boundary`.
 
 ## Scope
@@ -28,27 +28,18 @@ No production source is modified.
 
 Across 32 exact participant trials represented by the 12 group medians:
 
-- total exact SWAP trial time: `1,894,357 ns`;
-- forcing materialization: `32,100 ns`;
-- serialized Reference backend: `1,578,403 ns`;
-- participant postprocessing/response construction: `279,557 ns`.
+- total exact SWAP trial time: `1,881,594 ns`;
+- forcing materialization: `29,693 ns`;
+- serialized Reference backend: `1,520,452 ns`;
+- participant postprocessing/response construction: `324,858 ns`.
 
 Shares:
 
-- forcing: `1.6945%`;
-- serialized backend: `83.3213%`;
-- participant postprocessing: `14.7574%`.
+- forcing: `1.5781%`;
+- serialized backend: `80.8066%`;
+- participant postprocessing: `17.2650%`.
 
-The small nonclosure of the three timing buckets against total trial time is timer/instrumentation boundary overhead and is not interpreted as a separate physical cost family.
-
-## Group range
-
-Backend share is material in every frozen live group:
-
-- minimum observed: approximately `77.7%`;
-- maximum observed: approximately `86.7%`.
-
-Wet B01/O05 groups are near the upper end because the admitted live trajectory contains temporal retry/substep work.
+The small nonclosure of the timing buckets against total trial time is instrumentation/timer boundary overhead and is not interpreted as a separate physical cost family.
 
 ## Gate disposition
 
@@ -58,7 +49,7 @@ Preregistered P0 advancement gate:
 
 Observed aggregate:
 
-`83.3213%`.
+`80.8066%`.
 
 Decision:
 
@@ -73,21 +64,14 @@ Participant postprocessing remains measurable but is secondary to the backend an
 LIVE01 selected the base q/state Reference Richards solve after:
 
 - directional work missed its 20% primary-successor gate;
-- widening the temporal floor removed no live retry and yielded no speed benefit.
+- widening the temporal floor removed no live retry and yielded no runtime benefit.
 
-P0 now localizes that base q/state target further: the dominant cost is inside the serialized Reference backend, not in forcing materialization or outer participant handling.
+P0 localizes that base q/state target further: the dominant cost remains inside the serialized Reference backend, not in forcing materialization or outer participant handling.
+
+The exact timing percentages vary across CI runs, but the P0 decision is stable and remains far above the frozen 60% gate.
 
 ## Next phase
 
-P1 must decompose the current backend path into:
-
-- transaction/substep control;
-- nonlinear iteration/control;
-- constitutive evaluation;
-- residual/Jacobian work;
-- tridiagonal factorization/solve;
-- backtracking candidate evaluation;
-- accepted-state/candidate materialization;
-- residual backend overhead.
+P1 decomposes the current backend path into nonlinear/HeadCalc work and the remaining outer backend control path.
 
 No optimization is admitted by P0.
