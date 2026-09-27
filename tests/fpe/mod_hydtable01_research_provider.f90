@@ -1,7 +1,8 @@
 module mod_hydtable01_research_provider
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t, &
-       CONSTITUTIVE_DEMAND_CONDUCTIVITY, CONSTITUTIVE_DEMAND_DKDH
+       CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+       CONSTITUTIVE_DEMAND_CAPACITY, CONSTITUTIVE_DEMAND_DKDH
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
   implicit none
@@ -65,7 +66,10 @@ contains
     real(real64) :: k
 
     if (.not. self%ready) error stop 'HYDTABLE01 provider not ready'
-    call self%analytical%evaluate(pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
+    water_content=0.0_real64; conductivity=0.0_real64; capacity=0.0_real64; dconductivity_dhead=0.0_real64
+    call self%analytical%evaluate_demand(pressure_head, &
+         CONSTITUTIVE_DEMAND_WATER_CONTENT + CONSTITUTIVE_DEMAND_CAPACITY, &
+         water_content, conductivity, capacity, dconductivity_dhead)
     do i=1,size(pressure_head)
       call table_k(self, i, pressure_head(i), k, inside)
       if (inside) conductivity(i)=k
