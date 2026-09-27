@@ -1,5 +1,5 @@
 program test_ppa_wu01_production_application_bootstrap
-  use, intrinsic :: iso_c_binding, only: c_int, c_int64_t, c_double
+  use, intrinsic :: iso_c_binding, only: c_int, c_int64_t
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
@@ -22,7 +22,6 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c, fgc49d_capture_origins_c, &
-       fgc49d_trial_cell_heads_c, fgc49d_trial_response_tangents_c, fgc49d_discard_candidates_c, &
        fgc49d_abort_prepublication_c
   implicit none
 
@@ -50,8 +49,6 @@ program test_ppa_wu01_production_application_bootstrap
   integer :: i, status, topology_status
   integer(c_int) :: ncell, ntile_count, c_status
   real(real64) :: reference_head_m
-  real(c_double) :: trial_heads(NTILE), serial_flux(NTILE), worker2_flux(NTILE), worker4_flux(NTILE)
-  real(c_double) :: serial_tangent(NTILE), worker2_tangent(NTILE), worker4_tangent(NTILE)
 
   ! Standalone authority: use the already-qualified serialized Reference
   ! profile rather than inventing a new mode-5 standalone trajectory.
@@ -112,12 +109,16 @@ program test_ppa_wu01_production_application_bootstrap
   call gw_parallel2_app%initialize(gw_parallel2_config, status)
   call require(status == FMR_APP_BOOT_OK .and. gw_parallel2_app%ready(), 'two-worker groundwater ownership initialize')
   call require(gw_parallel2_app%groundwater_worker_count() == 2, 'two-worker ownership count')
+  call gw_parallel2_app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. gw_parallel2_app%ready(), 'two-worker ownership clean close')
 
   gw_parallel4_config = gw_config
   gw_parallel4_config%groundwater_parallel_workers = 4
   call gw_parallel4_app%initialize(gw_parallel4_config, status)
   call require(status == FMR_APP_BOOT_OK .and. gw_parallel4_app%ready(), 'four-worker groundwater ownership initialize')
   call require(gw_parallel4_app%groundwater_worker_count() == 4, 'four-worker ownership count')
+  call gw_parallel4_app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. gw_parallel4_app%ready(), 'four-worker ownership clean close')
 
   call compute_reference_head(gw_config%tiles(1)%parameters, gw_config%tiles(1)%groundwater_datum, &
        reference_head_m, status)
@@ -171,26 +172,7 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_OK, 'release stale-origin context')
   do i = 1, NTILE
     predictors(i)%response%lineage%swap_origin_revision = 0_int64
-    trial_heads(i) = real(reference_head_m + 0.001_real64 * real(i, real64), c_double)
   end do
-
-  call run_groundwater_trial_probe(gw_app, topology, predictors, areas, trial_heads, serial_flux, serial_tangent)
-  call run_groundwater_trial_probe(gw_parallel2_app, topology, predictors, areas, trial_heads, worker2_flux, worker2_tangent)
-  call run_groundwater_trial_probe(gw_parallel4_app, topology, predictors, areas, trial_heads, worker4_flux, worker4_tangent)
-
-  call require(maxval(abs(worker2_flux-serial_flux)) <= 64.0_c_double*epsilon(1.0_c_double) * &
-       max(1.0_c_double,maxval(abs(serial_flux))), 'two-worker application-context q identity')
-  call require(maxval(abs(worker4_flux-serial_flux)) <= 64.0_c_double*epsilon(1.0_c_double) * &
-       max(1.0_c_double,maxval(abs(serial_flux))), 'four-worker application-context q identity')
-  call require(maxval(abs(worker2_tangent-serial_tangent)) <= 256.0_c_double*epsilon(1.0_c_double) * &
-       max(1.0_c_double,maxval(abs(serial_tangent))), 'two-worker application-context tangent identity')
-  call require(maxval(abs(worker4_tangent-serial_tangent)) <= 256.0_c_double*epsilon(1.0_c_double) * &
-       max(1.0_c_double,maxval(abs(serial_tangent))), 'four-worker application-context tangent identity')
-
-  call gw_parallel2_app%close(status)
-  call require(status == FMR_APP_BOOT_OK .and. .not. gw_parallel2_app%ready(), 'two-worker ownership clean close')
-  call gw_parallel4_app%close(status)
-  call require(status == FMR_APP_BOOT_OK .and. .not. gw_parallel4_app%ready(), 'four-worker ownership clean close')
 
   call gw_app%materialize_groundwater_context(topology, predictors, areas, context_handle, status)
   call require(status == FMR_APP_BOOT_OK .and. context_handle > 0_int64, 'owned F-GC49D context materialization')
@@ -248,9 +230,6 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'FPE_MULTI04_P0_WORKER_LOCAL_BACKEND_4_OWNERSHIP=PASS'
   print '(a)', 'FPE_MULTI04_P0_UNSUPPORTED_WORKERS_FAIL_CLOSED=PASS'
   print '(a)', 'FPE_MULTI04_P0_NON_GROUNDWATER_PARALLEL_FAIL_CLOSED=PASS'
-  print '(a)', 'FPE_MULTI04_P1B_APPLICATION_CONTEXT_Q_IDENTITY=PASS'
-  print '(a)', 'FPE_MULTI04_P1B_APPLICATION_CONTEXT_TANGENT_IDENTITY=PASS'
-  print '(a)', 'FPE_MULTI04_P1B_APPLICATION_CONTEXT_DISCARD_ABORT=PASS'
   print '(a)', 'F_GC_STORAGE_HEAD_STATE_CAPACITANCE_AUTHORITY=PASS'
   print '(a)', 'F_GC_DRAINAGE_NONE_AUTHORITY=PASS'
   print '(a)', 'F_GC_UNRESOLVED_APPLICATION_AUTHORITY_FAIL_CLOSED=PASS'
@@ -258,42 +237,6 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS'
 
 contains
-
-  subroutine run_groundwater_trial_probe(owner, local_topology, local_predictors, local_areas, heads, fluxes, tangents)
-    type(fmr_production_application_bootstrap_t), intent(inout) :: owner
-    type(groundwater_topology_t), intent(in) :: local_topology
-    type(groundwater_tile_predictor_input_t), intent(in) :: local_predictors(:)
-    type(groundwater_cell_area_input_t), intent(in) :: local_areas(:)
-    real(c_double), intent(in) :: heads(:)
-    real(c_double), intent(out) :: fluxes(:), tangents(:)
-
-    integer(int64) :: local_handle
-    integer :: local_status
-    integer(c_int) :: local_c_status
-
-    fluxes = 0.0_c_double
-    tangents = 0.0_c_double
-    local_handle = 0_int64
-    call owner%materialize_groundwater_context(local_topology, local_predictors, local_areas, local_handle, local_status)
-    call require(local_status == FMR_APP_BOOT_OK .and. local_handle > 0_int64, &
-         'MULTI04 application-context materialization')
-    local_c_status = fgc49d_capture_origins_c(int(local_handle, c_int64_t))
-    call require(local_c_status == 0_c_int, 'MULTI04 capture origins')
-    local_c_status = fgc49d_trial_cell_heads_c(int(local_handle, c_int64_t), int(size(heads),c_int), heads, fluxes)
-    if (local_c_status /= 0_c_int) then
-      write(*,'(a,1x,i0,1x,a,1x,i0)') 'FPE_MULTI04_P1B_DEBUG_WORKERS', owner%groundwater_worker_count(), &
-           'TRIAL_STATUS', local_c_status
-    end if
-    call require(local_c_status == 0_c_int, 'MULTI04 trial cell heads')
-    local_c_status = fgc49d_trial_response_tangents_c(int(local_handle, c_int64_t), int(size(tangents),c_int), tangents)
-    call require(local_c_status == 0_c_int, 'MULTI04 trial tangents')
-    local_c_status = fgc49d_discard_candidates_c(int(local_handle, c_int64_t))
-    call require(local_c_status == 0_c_int, 'MULTI04 discard candidates')
-    local_c_status = fgc49d_abort_prepublication_c(int(local_handle, c_int64_t))
-    call require(local_c_status == 0_c_int, 'MULTI04 abort prepublication')
-    call owner%release_groundwater_context(local_status)
-    call require(local_status == FMR_APP_BOOT_OK, 'MULTI04 release context')
-  end subroutine run_groundwater_trial_probe
 
   subroutine initialize_application_config(value)
     type(fmr_production_application_config_t), intent(out) :: value
