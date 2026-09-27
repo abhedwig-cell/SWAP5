@@ -5,6 +5,8 @@ on:
     paths:
       - 'tests/fpe/run_fpe_profile07_live_exact_cost.sh'
       - 'tests/fpe/test_fpe_profile07_live_exact_cost.py'
+      - 'tests/fpe/run_fpe_profile07_p1_participant_cost.sh'
+      - 'tests/fpe/test_fpe_profile07_participant_cost.py'
       - 'docs/performance/F-PE-PROFILE07_*.md'
       - '.github/workflows/f-pe-profile07.yml'
   workflow_dispatch:
@@ -36,3 +38,26 @@ jobs:
         with:
           name: f-pe-profile07-p0
           path: profile07-p0.txt
+
+  p1-participant-cost:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler and pinned live coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run exact participant internal-cost decomposition
+        run: |
+          bash tests/fpe/run_fpe_profile07_p1_participant_cost.sh | tee profile07-p1.txt
+          grep -Fq 'FPE_PROFILE07_P1=PASS' profile07-p1.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-profile07-p1
+          path: profile07-p1.txt
