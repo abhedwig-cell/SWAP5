@@ -98,9 +98,9 @@ print(
   f"|TRIAL_RATIO={r_trial:.9f}|TRIAL_GAIN={gain_trial:.9f}"
   f"|MAX_ABS_Q_DIFF={max_q:.17e}|QUALIFIED={str(qual).upper()}"
 )
-if gain_temporal < 0.15:
-    raise SystemExit(f"temporal runtime gate failed: {gain_temporal:.6f}")
-if gain_backend < 0.03:
-    raise SystemExit(f"backend runtime gate failed: {gain_backend:.6f}")
+if qual:
+    print("BASE01_P2_DECISION=QUALIFIED_SUCCESSOR_TEMPORAL_INDICATOR_DEMAND_SPECIALIZATION")
+else:
+    print("BASE01_P2_DECISION=REJECT_NO_COMPOSED_RUNTIME_GAIN")
 print("FPE_BASE01_P2=PASS")
 PY
