@@ -70,6 +70,13 @@ p=Path(sys.argv[1]); fixture=Path(sys.argv[2]).resolve(); probe=Path(sys.argv[3]
 s=p.read_text()
 s=s.replace('ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"','ROOT="$(pwd)"',1)
 s=s.replace('tests/fgc/support/mod_fgc49d_application_context_fixture.f90',str(fixture))
+# Current canonical temporal-indicator imports the independently admitted
+# direct-retention provider. The historical F-GC49D compile list predates
+# that module dependency, so repair only this research harness copy.
+compile_needle='  src/solver/mod_b110_default_mvg_directional_provider.f90\n'
+compile_repl=compile_needle+'  src/solver/mod_b110_direct_retention_provider.f90\n'
+if compile_needle not in s: raise SystemExit("direct-retention compile seam missing")
+s=s.replace(compile_needle,compile_repl,1)
 s=s.replace('python3 tests/fgc/test_fgc49d_production_application_context.py',f'python3 "{probe}"')
 p.write_text(s)
 PY
