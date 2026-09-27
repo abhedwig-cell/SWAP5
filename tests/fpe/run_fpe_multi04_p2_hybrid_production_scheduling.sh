@@ -11,18 +11,16 @@ trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "FPE_MULTI04_P2_FAIL $*" >&2; exit 1; }
 
 FIXTURE="$BUILD/mod_fpe_multi04_p2_fixture.f90"
-BOOT="$BUILD/mod_fmr_production_application_bootstrap.f90"
 CTX_HYB="src/runtime/mod_fmr_groundwater_application_context.f90"
 CTX_STATIC="$BUILD/mod_fmr_groundwater_application_context_static.f90"
 
 cp tests/fpe/mod_fpe_temporal08_production_live_fixture.f90 "$FIXTURE"
-cp src/runtime/mod_fmr_production_application_bootstrap.f90 "$BOOT"
 cp src/runtime/mod_fmr_groundwater_application_context.f90 "$CTX_STATIC"
 
-python3 - "$FIXTURE" "$BOOT" "$CTX_STATIC" "$N" <<'PY'
+python3 - "$FIXTURE" "$CTX_STATIC" "$N" <<'PY'
 from pathlib import Path
 import sys
-fixture=Path(sys.argv[1]); boot=Path(sys.argv[2]); static=Path(sys.argv[3]); n=int(sys.argv[4])
+fixture=Path(sys.argv[1]); static=Path(sys.argv[2]); n=int(sys.argv[3])
 
 s=fixture.read_text()
 old="""  integer, parameter :: NPART=3
@@ -123,7 +121,7 @@ diag=r'''
     real(real64) :: sr,rr
     logical :: available
     c_status=1_c_int; schedule_code=-1_c_int; static_ratio=0.0_c_double; selected_ratio=0.0_c_double
-    call app%multi04_parallel_schedule_diagnostics(schedule,sr,rr,available,status)
+    call app%groundwater_parallel_schedule_diagnostics(schedule,sr,rr,available,status)
     if(status/=FMR_APP_BOOT_OK .or. .not.available)return
     schedule_code=int(schedule,c_int); static_ratio=real(sr,c_double); selected_ratio=real(rr,c_double)
     c_status=0_c_int
@@ -133,32 +131,6 @@ diag=r'''
 if end not in s: raise SystemExit("fixture end seam missing")
 s=s.replace(end,diag+end,1)
 fixture.write_text(s)
-
-s=boot.read_text()
-needle="    procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions\n"
-if needle not in s: raise SystemExit("bootstrap method seam missing")
-s=s.replace(needle,needle+"    procedure, public :: multi04_parallel_schedule_diagnostics => production_application_multi04_schedule_diagnostics\n",1)
-end="end module mod_fmr_production_application_bootstrap"
-helper=r'''
-  subroutine production_application_multi04_schedule_diagnostics(self,schedule_code,static_ratio,selected_ratio,available,status)
-    class(fmr_production_application_bootstrap_t),intent(in) :: self
-    integer,intent(out)::schedule_code
-    real(real64),intent(out)::static_ratio,selected_ratio
-    logical,intent(out)::available
-    integer,intent(out)::status
-    schedule_code=0; static_ratio=1.0_real64; selected_ratio=1.0_real64; available=.false.
-    status=FMR_APP_BOOT_NOT_READY
-    if(.not.self%ready())return
-    if(.not.associated(self%active_context))return
-    call self%active_context%parallel_schedule_diagnostics(schedule_code,static_ratio,selected_ratio,available)
-    if(.not.available)return
-    status=FMR_APP_BOOT_OK
-  end subroutine production_application_multi04_schedule_diagnostics
-
-'''
-if end not in s: raise SystemExit("bootstrap end seam missing")
-s=s.replace(end,helper+end,1)
-boot.write_text(s)
 
 s=static.read_text()
 needle="  real(real64), parameter :: FMR_GW_PARALLEL_LOAD_RATIO_THRESHOLD = 1.20_real64\n"
@@ -238,7 +210,6 @@ compile_variant(){
   for source in "${BASE_MODULES[@]}"; do
     case "$source" in
       src/runtime/mod_fmr_groundwater_application_context.f90) source="$ctx" ;;
-      src/runtime/mod_fmr_production_application_bootstrap.f90) source="$BOOT" ;;
       tests/fpe/mod_fpe_temporal08_production_live_fixture.f90) source="$FIXTURE" ;;
     esac
     local obj="$out/$(basename "${source%.*}").o"
