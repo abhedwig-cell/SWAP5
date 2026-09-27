@@ -1,0 +1,55 @@
+name: F-PE-TEMPORAL03 dynamic-history oracle qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_temporal03_*.sh'
+      - 'docs/performance/F-PE-TEMPORAL03_*.md'
+      - '.github/workflows/f-pe-temporal03.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-dynamic-origin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal03_p0_dynamic_origin.sh
+
+  p1a-dynamic-budget:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal03_p1a_dynamic_budget.sh
+
+  p1b-dynamic-frontier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal03_p1b_dynamic_frontier.sh
+
+  p1c-frontier-replication:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal03_p1c_frontier_replication.sh
+
+  p2-refined-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal03_p2_refined_oracle.sh
