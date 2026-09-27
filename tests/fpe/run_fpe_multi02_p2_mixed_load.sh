@@ -35,6 +35,7 @@ def parse(mode):
     if set(rows)!={1,2,4}: raise SystemExit(f"{mode}: missing N=1000 rows {rows.keys()}")
     return rows,workers
 
+summary={}
 for mode in ("MIXED","MIXED_BALANCED"):
     rows,wrk=parse(mode)
     base=float(rows[1]["PARALLEL_SECONDS"])
@@ -63,8 +64,22 @@ for mode in ("MIXED","MIXED_BALANCED"):
     if float(r4["MAX_Q_DIFF"]) != 0.0 or float(r4["MAX_T_DIFF"]) != 0.0:
         raise SystemExit(f"{mode}: semantic drift")
     # P2 preregistration decision is not forced here; report both gates explicitly.
+    summary[mode]=(speed4,load)
     print(f"MULTI02_P2_DECISION_INPUT|MODE={mode}|SPEED4={speed4:.6f}|LOAD_RATIO={load:.6f}"
           f"|SPEED_GATE={speed4>=2.2}|LOAD_GATE={load<=1.20}")
 
+# A load-balance discriminator is only meaningful when the deliberately adverse
+# ordering produces a material work imbalance. Otherwise the workload is not
+# actually mixed-cost and cannot justify an application-context scheduling decision.
+adverse_speed,adverse_load=summary["MIXED"]
+balanced_speed,balanced_load=summary["MIXED_BALANCED"]
+contrast_ok=adverse_load>=1.10
+if not contrast_ok:
+    raise SystemExit(f"mixed-cost contrast insufficient: adverse load ratio {adverse_load:.6f}")
+advance=(adverse_speed>=2.2 and adverse_load<=1.20 and balanced_speed>=2.2 and balanced_load<=1.20)
+decision="ADVANCE_APPLICATION_CONTEXT" if advance else "SELECT_LOAD_BALANCING"
+print(f"MULTI02_P2_DECISION|ADVERSE_SPEED4={adverse_speed:.6f}|ADVERSE_LOAD={adverse_load:.6f}"
+      f"|BALANCED_SPEED4={balanced_speed:.6f}|BALANCED_LOAD={balanced_load:.6f}"
+      f"|CONTRAST_PASS={contrast_ok}|DECISION={decision}")
 print("FPE_MULTI02_P2_MIXED=PASS")
 PY
