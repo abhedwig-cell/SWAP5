@@ -1,0 +1,54 @@
+name: F-PE-PROFILE07 post-TEMPORAL08 rebaseline
+
+on:
+  pull_request:
+    paths:
+      - 'docs/performance/F-PE-PROFILE07_*.md'
+      - '.github/workflows/f-pe-profile07.yml'
+  workflow_dispatch:
+
+jobs:
+  repeated-decomposition:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile04_repeated_decomposition.sh
+
+  kernel-localization:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile04_kernel_costs.sh
+
+  directional-cost:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile04_head_directional.sh
+
+  temporal-selected-sequence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Re-run selected c0.65 repeated-sequence timing
+        shell: bash
+        run: |
+          set -o pipefail
+          set +e
+          bash tests/fpe/run_fpe_temporal06_p0_sequence.sh 2>&1 | tee /tmp/temporal06.txt
+          status=${PIPESTATUS[0]}
+          set -e
+          grep 'TEMPORAL06_P0_SELECTED_VS_HALF' /tmp/temporal06.txt
+          grep 'POLICY=SELECTED' /tmp/temporal06.txt
+          if [ "$status" -ne 0 ]; then
+            grep -q 'TEMPORAL06_P0_OVERLAP|FAILURES=' /tmp/temporal06.txt
+            echo 'PROFILE07_TEMPORAL06_EXPECTED_HISTORICAL_OVERLAP_NEGATIVE=PASS'
+          fi
+
+  temporal08-production-preservation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_temporal08_p0_policy.sh
+      - run: bash tests/fpe/run_fpe_temporal08_p1_registry.sh
+      - run: bash tests/fpe/run_fpe_temporal08_p2_bootstrap.sh
