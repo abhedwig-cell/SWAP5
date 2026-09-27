@@ -5,6 +5,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
 AUTH=50346642bd565f79134ea17d5462e544b354998c
+FPERF_B1_ADMISSION=ffb08380054ddec9e940fc0e4056758d30a1d7da
 FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
 FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
 FGC31_RECONCILED=49a4685474a2d8df53c77c45e87a6c243316a97c
@@ -23,6 +24,7 @@ TEMPORAL_INDICATOR=src/solver/mod_reference_richards_temporal_indicator.f90
 PPA_ROOT_HYD01_TEMPORAL_INDICATOR=2068215a57edb1d2a59c36d6b32f519ebdc09ebd
 TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
+FPERF_B1_TX_BLOB=97d8ef1fae91e174ab6daefb42ffa6a85da9380e
 SW=src/solver/mod_soil_water_solver_contract.f90
 REF_ADAPTER=src/adapter/mod_reference_richards_legacy_binding.f90
 ROSS_ADAPTER=src/solver/mod_rossfast_d3r_soil_water_solver.f90
@@ -64,8 +66,15 @@ fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 
 git merge-base --is-ancestor "$AUTH" HEAD || fail 'Status-A authority not ancestor'
 git merge-base --is-ancestor "$FROSS12_AUTH" HEAD || fail 'F-ROSS12 authority not ancestor'
-test "$(git rev-parse "HEAD:$TX")" = "$TX_BLOB" || fail "admitted F-KT18 transaction postimage drift: $TX"
-echo 'FCI57P_MOVING_TRANSACTION_REFERENCE_POSTIMAGE=PASS'
+if git merge-base --is-ancestor "$FPERF_B1_ADMISSION" HEAD; then
+  test "$(git rev-parse "HEAD:$TX")" = "$FPERF_B1_TX_BLOB" || \
+    fail "admitted F-PERF-CANON01-B1 transaction successor drift: $TX"
+  echo 'FCI_CANONICAL_FPERF_B1_TRANSACTION_SUCCESSOR=PASS'
+else
+  test "$(git rev-parse "HEAD:$TX")" = "$TX_BLOB" || \
+    fail "admitted F-KT18 transaction postimage drift: $TX"
+  echo 'FCI57P_MOVING_TRANSACTION_REFERENCE_POSTIMAGE=PASS'
+fi
 
 # All pre-P2E05 dependencies remain byte-identical to the Status-A authority.
 # The two common Reference-side P2E05 blobs are checked separately below.
