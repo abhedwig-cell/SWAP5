@@ -1277,6 +1277,8 @@ contains
       type(kernel_checkpoint_t)::weekly_checkpoint
       type(ppa_irrigation_event_state_t)::weekly_seed
       type(fmr_b110_physical_forcing_t)::no_gift_forcing
+      real(real64)::no_gift_finish
+      no_gift_finish=T0+1.0_real64/65536.0_real64
       weekly_seed=seed
       weekly_seed%irrigation%active_event=.false.
       weekly_seed%irrigation%active_event_origin=0
@@ -1292,7 +1294,7 @@ contains
       no_gift_forcing=forcing; no_gift_forcing%subsurface_irrigation_source=0.0_real64
       weekly_seed%weekly%last_day=101_int64; weekly_seed%weekly%dayfix=4
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
-           profile%numerical,1,T0,finish,weekly_checkpoint,result,candidate,diagnostics, &
+           profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
            weekly_proposal=weekly_seed%weekly)
       if(.not.result%completed.or..not.candidate%ready()) error stop 'weekly no-gift hydraulic trial'
       if(abs(result%mass%residual)>1.0e-12_real64) error stop 'weekly no-gift mass'
@@ -1305,7 +1307,8 @@ contains
       call backend%commit_trial_candidate(weekly_owner,candidate,diagnostics,ok,code)
       if(.not.ok) error stop 'weekly no-gift commit'
       call weekly_owner%current_time(time,ok)
-      if(.not.ok.or.time/=finish.or.weekly_owner%current_revision()/=1_int64) error stop 'weekly no-gift time revision'
+      if(.not.ok.or.time/=no_gift_finish.or.weekly_owner%current_revision()/=1_int64) &
+           error stop 'weekly no-gift time revision'
       call weekly_owner%snapshot(snapshot,ok)
       if(.not.ok) error stop 'weekly no-gift committed snapshot'
       select type(snapshot)
