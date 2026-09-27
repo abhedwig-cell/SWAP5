@@ -1367,7 +1367,7 @@ contains
     type(fmr_template_t),intent(in)::template
     logical,intent(in),optional::profile_selection
     logical,intent(in),optional::mixed_selection
-    type(ppa_irrigation_profile_t),allocatable::root_profiles(:)
+    type(ppa_irrigation_profile_t),allocatable::root_profiles(:),timing_profiles(:)
     type(ppa_irrigation_preparation_t),allocatable::preparation(:)
     type(ppa_irrigation_prefix_result_t),allocatable::prefixes(:)
     type(ppa_tcs1_4_observations_t)::observations(2)
@@ -1482,14 +1482,26 @@ contains
       observations(i)%iptra_day=1.0_real64; observations(i)%iqreddry_day=0.75_real64
       observations(i)%awlh=1.0_real64; observations(i)%awmh=0.5_real64; observations(i)%awah=0.1_real64
     end do
-    do timing=1,4
+    do timing=1,7
       management%timing_criterion=timing
+      if(timing>=5) then
+        management%timing_criterion=timing-3
+        allocate(timing_profiles(2))
+        do i=1,2
+          timing_profiles(i)%noddrz=1; timing_profiles(i)%layer=[1]; timing_profiles(i)%dz=[1.0_real64]
+          timing_profiles(i)%ztopcp=[0.0_real64]; timing_profiles(i)%rd=1.0_real64
+          timing_profiles(i)%wclos=[0.99_real64]; timing_profiles(i)%wcmes=[0.9_real64]
+          timing_profiles(i)%wchis=[0.0_real64]
+        end do
+        ! These supplied values cannot trigger: the checked profile must be used.
+        observations%awlh=1.0_real64; observations%awmh=0.5_real64; observations%awah=1.0_real64
+      end if
       call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
            management,requests,previous,right,code)
       if(code==FMR_APP_BOOT_OK.or.allocated(right)) error stop 'missing observations admitted'
       requests%t1=finish
       call execute_next_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
-           management,requests,previous,right,code,interval_end,observations=observations)
+           management,requests,previous,right,code,interval_end,profiles=timing_profiles,observations=observations)
       if(interval_end/=midpoint) error stop 'TCS prefix split failed'
       if(code/=FMR_APP_BOOT_OK.or..not.all(right%committed)) error stop 'TCS hydraulic selection failed'
       do i=1,2
@@ -1510,12 +1522,17 @@ contains
       requests%t0=midpoint; requests%t1=finish; requests%selection_opportunity=.false.
       previous=forcing
       observations%knot_count=0 ! Pending gift must not select again.
+      if(allocated(timing_profiles)) then
+        do i=1,2
+          timing_profiles(i)%dz=-1.0_real64
+        end do
+      end if
       call execute_window_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
-           management,requests,previous,2,prefixes,prefix_count,code,observations=observations)
+           management,requests,previous,2,prefixes,prefix_count,code,profiles=timing_profiles,observations=observations)
       if(code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'TCS original pending continuation'
       right=prefixes(1)%columns
       call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
-           management,requests,previous,2,prefixes,prefix_count,code,observations=observations)
+           management,requests,previous,2,prefixes,prefix_count,code,profiles=timing_profiles,observations=observations)
       if(code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'TCS restored pending continuation'
       call application%copy_committed_hydraulic_states(lhs,code)
       call restored%copy_committed_hydraulic_states(rhs,code)
@@ -1538,7 +1555,10 @@ contains
       call restored%close(code)
       call restored%initialize(config,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'TCS fixture reset failed'
+      if(allocated(timing_profiles)) deallocate(timing_profiles)
     end do
+    observations%awlh=1.0_real64; observations%awmh=0.5_real64; observations%awah=0.1_real64
+    write(*,'(a)') 'PPA_IRR_TCS2_4_PROFILE_PREFIX_RESTART=PASS'
     management%timing_criterion=7
     write(*,'(a)') 'PPA_IRR_TCS1_4_BOOTSTRAP_HYDRAULIC_SELECTION=PASS'
     write(*,'(a)') 'PPA_IRR_TCS1_4_PREFIX_WINDOW_RESTART=PASS'

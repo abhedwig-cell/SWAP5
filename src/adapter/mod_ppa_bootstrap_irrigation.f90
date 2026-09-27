@@ -11,7 +11,7 @@ module mod_ppa_bootstrap_irrigation
        irrigation_state_t,irrigation_flux_result_t,irrigation_diagnostics_t,IRRIGATION_EVENT_SCHEDULED, &
        IRRIGATION_DEPTH_DCS2_FIXED,IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
-  use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_source,ppa_tcs1_4_observations_t
+  use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_source,ppa_tcs1_4_observations_t,evaluate_tcs2_4_profile_source
   use mod_ppa_irrigation_source_binding, only: evaluate_ppa_irrigation_source, &
        evaluate_ppa_profile_irrigation_source,ppa_irrigation_profile_t
   implicit none
@@ -189,8 +189,13 @@ contains
         hydraulic%pressure_head=state%pressure_head
         hydraulic%water_content=state%water_content
         if(parameters(i)%timing_criterion>=1.and.parameters(i)%timing_criterion<=4) then
-          call evaluate_tcs1_4_source(parameters(i),state%irrigation,requests(i),observations(i),previous(i), &
-               event,flux,diagnostics,forcing,ok)
+          if(present(profiles).and.parameters(i)%timing_criterion>=2) then
+            call evaluate_tcs2_4_profile_source(parameters(i),state%irrigation,requests(i),observations(i), &
+                 hydraulic,profiles(i),previous(i),event,flux,diagnostics,forcing,ok)
+          else
+            call evaluate_tcs1_4_source(parameters(i),state%irrigation,requests(i),observations(i),previous(i), &
+                 event,flux,diagnostics,forcing,ok)
+          end if
         else if(parameters(i)%depth_criterion==IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY) then
           call evaluate_ppa_profile_irrigation_source(parameters(i),state%irrigation,requests(i),hydraulic, &
                profiles(i)%noddrz,profiles(i)%layer,profiles(i)%dz,profiles(i)%ztopcp,profiles(i)%rd, &
