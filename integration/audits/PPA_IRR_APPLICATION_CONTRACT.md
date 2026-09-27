@@ -2,7 +2,10 @@
 
 Status: branch-local implemented and qualified in bounded fixtures; not canonical
 admission or complete SWAP4 management coverage. Consolidated at `e2ebb40f2`.
-Latest executable postimage: `52189a2af`. Detailed gates and earlier postimages:
+Latest TCS7/8 window executable postimage: `52189a2af`. Later supplied-observation
+TCS1-4/DCS2 execution is tested at `1ff7c8153`; see
+[TCS1-4 composition status](PPA_IRR_TCS1_4_COMPOSITION_STATUS.json).
+Detailed gates and earlier postimages:
 [owner status](PPA_IRR_EVENT_OWNER_STATUS.json).
 
 ## Scope and authority
@@ -11,6 +14,12 @@ Latest executable postimage: `52189a2af`. Detailed gates and earlier postimages:
 TCS7/TCS8, direct DCS2 or supplied-profile DCS1, water-only single-node SSDI and
 the explicitly opted-in mode-7 bootstrap. Profile geometry, crop requests and
 management tables are supplied inputs, not internally generated crop state.
+The exact, prefix and window entry points additionally accept optional typed
+per-column TCS1-4 observation bundles for DCS2. Required bundle presence/shape
+is checked before execution. TCS1 daily transpiration/stress observations and
+TCS2-4 available-water quantities are caller supplied, not derived internally.
+Pending gifts continue from saved event state without re-evaluating unused
+selection tables. TCS1-4/DCS1 remains outside this bridge's admitted input scope.
 The committed irrigation carrier retains pending rate/start/end alongside
 hydraulic state and temporal history. The kernel/runtime alone publishes state.
 Preparation snapshots, returned forcing and diagnostics are not state owners.

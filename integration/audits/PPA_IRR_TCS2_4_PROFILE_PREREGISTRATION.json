@@ -1,0 +1,11 @@
+{
+  "work_unit": "PPA-IRR-TCS2-4-PROFILE",
+  "baseline": "60077454a",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "objective": "Replace supplied TCS2-4 available-water observations with checked derivation from committed water content and immutable supplied root geometry/retention tables, while retaining the same timing equations and DCS2 event lifecycle.",
+  "authority": ["PPA_IRR_TCS1_4_COMPOSITION_STATUS.json", "PPA_IRR_DEFICIT_CHECKED_STATUS.json"],
+  "design": "Add an explicit profile-aware source composition that calls evaluate_root_zone_water_deficit_checked for AWLH/AWMH/AWAH, overwrites only a local copy of those three observation fields, then calls the existing TCS1-4 source bridge. Bootstrap supplies the hydraulic view from the same committed snapshot as the event. Do not create a second water-state owner or duplicate aggregation equations. Pending gifts and non-selection intervals must not require new root-water calculation.",
+  "invariants": [3, 7, 13, 21, 22, 28],
+  "gates": ["Derived versus explicitly supplied reference aggregates produce identical source/event outputs for TCS2-4.", "Invalid geometry fails closed without mutation or forcing.", "Pending continuation does not consume new selector observations.", "Bounded hydraulic/restart/rollback integration follows only after source-composition checks pass at O0/O2."],
+  "non_goals": "Automatic crop/root growth, TCS1 daily stress accumulation, TCS5/6, DCS1 gift depth, calendar/parser, solute transport or canonical admission."
+}
