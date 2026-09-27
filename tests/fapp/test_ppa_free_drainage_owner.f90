@@ -1322,6 +1322,18 @@ contains
       write(*,'(a,4(es24.16,1x))') 'PPA_IRR_WEEKLY_LONG_FAILURE_BOUNDS=', &
            diagnostics%min_accepted_substep_duration,diagnostics%max_accepted_substep_duration, &
            diagnostics%max_abs_step_mass_residual,diagnostics%max_temporal_indicator
+      block
+        use mod_fmr_serialized_reference_backend, only: fmr_serialized_physical_observation_t
+        type(fmr_serialized_physical_observation_t) :: terminal
+        terminal=backend%observation()
+        write(*,'(a,2(i0,1x),3(l1,1x))') 'PPA_IRR_WEEKLY_TERMINAL_STATUS=', &
+             terminal%solver_status,terminal%temporal_indicator_status,terminal%solver_executed, &
+             terminal%temporal_indicator_available,terminal%temporal_certificate_available
+        write(*,'(a,5(es24.16,1x))') 'PPA_IRR_WEEKLY_TERMINAL_BOUNDS=',terminal%trial_t0,terminal%trial_t1, &
+             terminal%temporal_head_inf_bound,terminal%temporal_head_budget,terminal%temporal_normalized_indicator
+        write(*,'(a,a,a,a)') 'PPA_IRR_WEEKLY_TERMINAL_ROUTE=',trim(terminal%temporal_indicator_route), &
+             ';REASON=',trim(terminal%temporal_certificate_unavailable_reason)
+      end block
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
            weekly_proposal=weekly_seed%weekly)
