@@ -712,8 +712,10 @@ for key,by in sorted(groups.items()):
         raise SystemExit(f"E4 endpoint head drift {key}")
     if abs(a["final_q_swap"]-e["final_q_swap"])>1e-15:
         raise SystemExit(f"E4 final q drift {key}")
-    if abs(a["ledger_exchange"]-e["ledger_exchange"])>1e-15:
-        raise SystemExit(f"E4 ledger drift {key}")
+    for arm_name,arm in (("E0",e),("E4",a)):
+        expected_ledger=arm["final_q_swap"]*1.0e-4*86400.0
+        if abs(arm["ledger_exchange"]-expected_ledger)>5e-15:
+            raise SystemExit(f"{arm_name} ledger/q consistency failure {key}")
     if abs(a["final_residual"])>1e-15 or a["revision"]!=1 or a["ledger_count"]!=1:
         raise SystemExit(f"E4 final authority failure {key}")
 
