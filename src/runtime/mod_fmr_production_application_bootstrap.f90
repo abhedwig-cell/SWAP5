@@ -480,7 +480,20 @@ contains
     end if
 
     allocate(self%active_context)
-    call self%active_context%bind(self%active_plan, self%registry, self%participant_handles, self%ledgers, local_status)
+    if (self%groundwater_parallel_workers > 1) then
+      if (.not. associated(self%groundwater_worker_backends)) then
+        status = FMR_APP_BOOT_CONTEXT_FAILED
+        deallocate(self%active_context)
+        deallocate(self%active_plan)
+        nullify(self%active_context)
+        nullify(self%active_plan)
+        return
+      end if
+      call self%active_context%bind(self%active_plan, self%registry, self%participant_handles, self%ledgers, local_status, &
+           worker_backends=self%groundwater_worker_backends, worker_count=self%groundwater_parallel_workers)
+    else
+      call self%active_context%bind(self%active_plan, self%registry, self%participant_handles, self%ledgers, local_status)
+    end if
     if (local_status /= FMR_GW_APP_CONTEXT_OK .or. .not. self%active_context%ready()) then
       status = FMR_APP_BOOT_CONTEXT_FAILED
       deallocate(self%active_context)
