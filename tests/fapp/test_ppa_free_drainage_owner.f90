@@ -2123,6 +2123,29 @@ contains
         end if
       end do
       write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_DCS2_STRICT_THRESHOLD=PASS'
+      ! Explicit successor fixture at the weekly rollover. Changed water and
+      ! root geometry must be read anew rather than reusing the prior deficit.
+      weekly_selected=weekly
+      weekly_selected%day_bound=.true.; weekly_selected%last_day=100_int64; weekly_selected%dayfix=6
+      daily_input%ordinal=101_int64; daily_input%threshold_mm=7.5_real64
+      daily_input%deficit_cm=ieee_value(0.0_real64,ieee_quiet_nan)
+      weekly_hydraulic%water_content=0.5_real64
+      do i=1,2
+        weekly_profile%dz=[2.0_real64*real(i,real64)]; weekly_profile%rd=weekly_profile%dz(1)
+        call evaluate_tcs6_profile_source(p,base,r,weekly_selected,daily_input,weekly_hydraulic,weekly_profile,previous, &
+             proposed_weekly,candidate,flux,d,effective,ok)
+        if(.not.ok.or..not.allocated(effective)) error stop 'weekly successor changed profile'
+        if(flux%event_started.neqv.(i==2)) error stop 'weekly successor stale deficit'
+        if(proposed_weekly%last_day/=101_int64.or.proposed_weekly%dayfix/=0) &
+             error stop 'weekly successor profile rollover'
+        if(i==1) then
+          if(any(effective%subsurface_irrigation_source/=0.0_real64)) error stop 'weekly successor no-gift'
+        else
+          if(effective%subsurface_irrigation_source(1)/=p%irr_rate_cm_per_day) &
+               error stop 'weekly successor changed-root gift'
+        end if
+      end do
+      write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_SUCCESSOR_FRESH_INPUTS=PASS'
     end block
     observations%knot_count=2; observations%dvs_knots(2)=2.0_real64
     observations%threshold_values=0.5_real64; observations%iptra_day=1.0_real64
