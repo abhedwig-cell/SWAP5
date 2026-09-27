@@ -49,6 +49,27 @@ or canonical admission.
 
 ## Next numerical experiment
 
+### Full-day trial result (2026-09-27)
+
+Test postimage `274b463a6` adds the isolated `--irrigation-source
+--weekly-full-day` experiment without changing the ordinary regression or
+production defaults. Clean O0/O2 IrrigationSource baseline and same-binary
+hydraulic-copy/guards pass with exact identity. The separate full-day experiment
+also completes in both builds, with identical output excluding measured wall time:
+
+- Requested endpoint reached: 4101.1875 (one full day from 4100.1875).
+- Accepted substeps 65571; attempts 65750; solver rejections 86; temporal rejections 93.
+- Mass residual -5.3429483060085659e-15; status 0, completed true.
+- Wall time approximately 2.008 seconds O0 / 0.990 seconds O2 on this host.
+- Candidate ready, committed owner remains at original time and revision 0.
+
+Build `swap-ppa-wu01-d0ef4820ea604e2784d1845d044c22b4`; TEMP logs
+`swap-weekly-full-day-baseline.log`, `swap-weekly-full-day-O0.log` and
+`swap-weekly-full-day-O2.log`. This establishes a full-day **trial**, not
+publication, restart replay, daily adapter execution or seven-day coverage.
+Next: full-day commit and decoded restart continuation with this explicit policy.
+The experiment budget/design below is retained as its preregistration.
+
 The test selector caps every internal target at 1/65536 day. Therefore a full
 day needs **at least 65536 accepted substeps**, even before adaptive reductions.
 The current fixture cap of 16384 cannot complete a full day under that policy;
