@@ -144,6 +144,12 @@ module mod_soil_water_solver_contract
      integer :: internal_retries = 0
      integer :: interface_sensitivity_backsolves = 0
      character(len=32) :: route = 'not-run'
+     ! Optional final-iteration observations, not acceptance or mass accounting.
+     logical :: final_convergence_available = .false.
+     integer :: final_balance_failure_count = 0
+     integer :: final_head_failure_count = 0
+     real(real64) :: final_max_balance_rate = 0.0_real64
+     real(real64) :: final_total_balance_rate = 0.0_real64
   end type soil_water_solver_diagnostics_t
 
   type, public :: soil_water_interface_sensitivity_t

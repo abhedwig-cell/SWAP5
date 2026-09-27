@@ -118,3 +118,16 @@ result must not be generalized to the longer interval or full-day execution.
 Before expanding the carrier, qualify its factory/clone/matches-candidate and
 decoded restart validation in isolation. Then wire backend proposals, then
 bootstrap daily input. Each stage requires persisted evidence and O0/O2 gates.
+
+### Branch-local convergence observation extension
+
+To distinguish nonlinear failure criteria without changing acceptance, append
+optional final-iteration observations to `soil_water_solver_diagnostics_t`:
+availability, counts of compartment balance/head failures, maximum absolute
+compartment residual and signed total residual (cm/day). Populate only after
+an iterated legacy free-drainage solve from existing worker scratch. Other
+routes retain unavailable defaults. These describe the last iteration, not
+the restored candidate or a mass ledger, and confer no acceptance authority.
+No solver equations, tolerances, restart payload or publication path changes.
+Qualification is branch-local IrrigationSource O0/O2 plus hydraulic-copy/guards;
+canonical admission and broader solver-route qualification are not claimed.

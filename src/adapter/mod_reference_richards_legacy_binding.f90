@@ -237,6 +237,13 @@ contains
        result%diagnostics%alternative_solver_calls = ws%legacy_worker%diagnostics%alternative_solver_calls
        result%diagnostics%internal_retries = ws%legacy_worker%diagnostics%internal_retries
        result%diagnostics%interface_sensitivity_backsolves = interface_sensitivity_backsolves
+       if (request%boundary%bottom_mode == 7 .and. result%diagnostics%nonlinear_iterations > 0) then
+          result%diagnostics%final_convergence_available = .true.
+          result%diagnostics%final_balance_failure_count = count(ws%richards%nonconverged_balance(1:n))
+          result%diagnostics%final_head_failure_count = count(ws%richards%nonconverged_head(1:n))
+          result%diagnostics%final_max_balance_rate = maxval(abs(ws%richards%residual(1:n)))
+          result%diagnostics%final_total_balance_rate = sum(ws%richards%residual(1:n))
+       end if
 
        if (sensitivity_capture) call release_reference_tridag_factorization_capture(ws%richards)
 

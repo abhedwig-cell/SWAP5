@@ -1338,6 +1338,10 @@ contains
              ';REASON=',trim(terminal%temporal_certificate_unavailable_reason)
         write(*,'(a,a,a,i0)') 'PPA_IRR_WEEKLY_TERMINAL_SOLVER=',trim(terminal%solver_diagnostics%route), &
              ';ITERATIONS=',terminal%solver_diagnostics%nonlinear_iterations
+        if(.not.terminal%solver_diagnostics%final_convergence_available) error stop 'missing convergence observation'
+        write(*,'(a,2(i0,1x),2(es24.16,1x))') 'PPA_IRR_WEEKLY_TERMINAL_CONVERGENCE=', &
+             terminal%solver_diagnostics%final_balance_failure_count,terminal%solver_diagnostics%final_head_failure_count, &
+             terminal%solver_diagnostics%final_max_balance_rate,terminal%solver_diagnostics%final_total_balance_rate
         write(*,'(a,a)') 'PPA_IRR_WEEKLY_LAST_CERTIFICATE_ROUTE=',trim(weekly_last_certificate%route)
         write(*,'(a,2(es24.16,1x))') 'PPA_IRR_WEEKLY_LAST_CERTIFICATE_BOUNDS=', &
              weekly_last_certificate_dt,weekly_last_certificate%head_inf_bound
