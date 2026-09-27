@@ -5,6 +5,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
 AUTH=50346642bd565f79134ea17d5462e544b354998c
+FCI110_ADMISSION=a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a
 FPERF_B1_ADMISSION=ffb08380054ddec9e940fc0e4056758d30a1d7da
 FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
 FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
@@ -138,8 +139,14 @@ dependency_surface=(
   src/runtime/mod_groundwater_interface_mass_ledger.f90
   src/runtime/mod_groundwater_coupled_restart.f90
 )
+dependency_authority="$AUTH"
+if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+  dependency_authority="$FCI110_ADMISSION"
+  echo 'FCI_CANONICAL_FCI110_DEPENDENCY_BASELINE=ACTIVE'
+fi
 for path in "${dependency_surface[@]}"; do
-  test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || fail "admitted dependency drift: $path"
+  test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$dependency_authority:$path")" || \
+    fail "admitted dependency drift from $dependency_authority: $path"
 done
 
 # PPA-WU04-A/B are later, independently qualified exact successors for
