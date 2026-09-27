@@ -24,3 +24,19 @@ jobs:
           MULTI04_P1C_N: '${{ matrix.n }}'
           MULTI04_P1C_REPS: '5'
         run: bash tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh
+
+  throughput-100k-unlimited-stack:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run 100k stack discriminator
+        env:
+          MULTI04_P1C_N: '100000'
+          MULTI04_P1C_REPS: '5'
+        run: |
+          ulimit -s unlimited
+          ulimit -a
+          bash tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh
