@@ -1,5 +1,6 @@
 ! Serialized application composition. Snapshots are read-only inputs, never owners.
 module mod_ppa_bootstrap_irrigation
+  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
   use, intrinsic :: iso_fortran_env, only: int64,real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_bootstrap_t, &
@@ -36,7 +37,7 @@ contains
   ! Caller guarantees non-irrigation forcing and supplied configuration remain
   ! constant over this window. Each prefix publishes independently.
   subroutine execute_window_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,max_prefixes,prefixes,prefix_count,status,profiles,observations,weekly_inputs)
+       previous,max_prefixes,prefixes,prefix_count,status,profiles,observations,weekly_inputs,target_selector)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -49,6 +50,7 @@ contains
     type(ppa_tcs1_4_observations_t),intent(in),optional::observations(:)
     type(scheduled_irrigation_request_t),allocatable::remaining(:)
     type(ppa_tcs6_daily_input_t),intent(in),optional::weekly_inputs(:)
+    procedure(canonical_subinterval_target_selector),optional::target_selector
     type(fmr_b110_physical_forcing_t),allocatable::last_forcing(:),effective(:)
     real(real64)::endpoint,target
     integer::k
@@ -58,7 +60,7 @@ contains
     allocate(prefixes(max_prefixes))
     do k=1,max_prefixes
       call execute_next_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,remaining, &
-           last_forcing,prefixes(k)%columns,status,endpoint,profiles,effective,observations,weekly_inputs)
+           last_forcing,prefixes(k)%columns,status,endpoint,profiles,effective,observations,weekly_inputs,target_selector)
       prefixes(k)%interval_end=endpoint
       prefix_count=k
       if(status/=FMR_APP_BOOT_OK) return
@@ -75,7 +77,7 @@ contains
   ! Execute at most one accepted-for-preparation prefix, never a whole-window
   ! loop. A returned endpoint is an attempt boundary, not proof of commitment.
   subroutine execute_next_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,results,status,interval_end,profiles,effective_forcing,observations,weekly_inputs)
+       previous,results,status,interval_end,profiles,effective_forcing,observations,weekly_inputs,target_selector)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -89,6 +91,7 @@ contains
     type(fmr_b110_physical_forcing_t),allocatable,intent(out),optional::effective_forcing(:)
     type(scheduled_irrigation_request_t),allocatable::trial_requests(:)
     type(ppa_tcs6_daily_input_t),intent(in),optional::weekly_inputs(:)
+    procedure(canonical_subinterval_target_selector),optional::target_selector
     type(ppa_irrigation_preparation_t),allocatable::report(:)
     integer::attempt,i
     real(real64)::split
@@ -100,7 +103,7 @@ contains
     trial_requests=requests
     do attempt=1,size(column_ids)+1
       call execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,trial_requests, &
-           previous,results,status,profiles,report,effective_forcing,observations,weekly_inputs)
+           previous,results,status,profiles,report,effective_forcing,observations,weekly_inputs,target_selector)
       ! Any hydraulic execution is terminal, including mixed publication.
       if(allocated(results).or.status/=FMR_APP_BOOT_INVALID_CONFIG) return
       if(.not.allocated(report)) return
@@ -121,7 +124,7 @@ contains
   end subroutine execute_next_ppa_bootstrap_irrigation
 
   subroutine execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,results,status,profiles,preparation,effective_forcing,observations,weekly_inputs)
+       previous,results,status,profiles,preparation,effective_forcing,observations,weekly_inputs,target_selector)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -135,6 +138,7 @@ contains
     type(fmr_b110_physical_forcing_t),allocatable,intent(out),optional::effective_forcing(:)
     type(fmr_committed_restart_bundle_t)::snapshot
     type(ppa_tcs6_daily_input_t),intent(in),optional::weekly_inputs(:)
+    procedure(canonical_subinterval_target_selector),optional::target_selector
     type(ppa_weekly_identity_t),allocatable::weekly_proposals(:)
     type(fmr_b110_physical_forcing_t),allocatable::prepared(:),forcing
     type(irrigation_state_t),allocatable::events(:)
@@ -249,6 +253,6 @@ contains
       end if
     end do
     if(present(effective_forcing)) effective_forcing=prepared
-    call application%run_prepared_irrigation(t0,t1,prepared,results,status,events,selected,weekly_proposals)
+    call application%run_prepared_irrigation(t0,t1,prepared,results,status,events,selected,weekly_proposals,target_selector)
   end subroutine execute_ppa_bootstrap_irrigation
 end module mod_ppa_bootstrap_irrigation

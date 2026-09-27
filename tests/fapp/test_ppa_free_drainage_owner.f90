@@ -2086,6 +2086,32 @@ contains
       write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_DECODED_REPLAY_IDENTITY=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_DAILY_BOOTSTRAP_SOURCE_PUBLICATION=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_NO_GIFT_MIXED_METADATA=PASS'
+      ! Continue the actual longer prepared-bootstrap checkpoint through all
+      ! three daily adapter wrappers with the same already-consumed ordinal.
+      call target_app%initialize(weekly_config,weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly daily target initialize'
+      call target_app%restore_committed_restart(target_bundle,92001_int64,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly daily target restore'
+      daily_requests%t0=T0+1.0_real64/1024.0_real64
+      daily_requests%t1=T0+2.0_real64/1024.0_real64
+      call execute_window_ppa_bootstrap_irrigation(target_app,[1_int64,2_int64],92001_int64, &
+           daily_parameters,daily_requests,weekly_forcing,1,prefixes,prefix_count,weekly_code, &
+           weekly_inputs=daily_inputs,target_selector=weekly_bounded_target)
+      if(weekly_code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'weekly daily target window'
+      if(.not.all(prefixes(1)%columns%committed)) error stop 'weekly daily target publication'
+      call target_app%export_committed_restart(92001_int64,target_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly daily target export'
+      if(any(target_bundle%records%committed_time/=T0+2.0_real64/1024.0_real64)) error stop 'weekly daily target time'
+      select type(state=>target_bundle%records(1)%physical_state)
+      type is(ppa_irrigation_event_state_t)
+        if(state%weekly%dayfix/=4.or.state%weekly%last_day/=101_int64.or.state%irrigation%active_event) &
+             error stop 'weekly daily target duplicate'
+      class default
+        error stop 'weekly daily target carrier'
+      end select
+      call target_app%close(weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly daily target close'
+      write(*,'(a)') 'PPA_IRR_WEEKLY_DAILY_TARGET_WINDOW_CONTINUATION=PASS'
       ! A separate fresh, two-weekly-column fixture exercises actual gift
       ! selection followed by a same-ordinal pending continuation.
       call weekly_app%initialize(weekly_config,weekly_code)

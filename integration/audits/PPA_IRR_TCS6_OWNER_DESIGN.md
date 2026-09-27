@@ -159,3 +159,9 @@ gift-selection mask or weekly enablement. Canonical per-trial validation and
 existing per-column commit semantics remain authoritative; no atomic batch
 rollback is promised for a stateful callback. No selector is stored or activated
 by default. Daily-input adapters are a separate forwarding/qualification step.
+
+Exact, next-prefix and window daily adapters forward this optional call-scoped
+selector unchanged. It affects hydraulic internal targets only, not daily
+ordinal consumption, process split selection or prefix publication semantics.
+Absence remains absence through all wrappers. The caller owns callback lifetime
+for the synchronous call; no callback pointer is retained after return.
