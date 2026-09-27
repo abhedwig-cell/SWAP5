@@ -2673,7 +2673,7 @@ contains
         block
           type(ppa_irrigation_profile_t)::profiles(2)
           type(ppa_tcs6_daily_input_t)::profile_inputs(2)
-          type(fmr_committed_restart_bundle_t)::supplied_result,profile_result
+          type(fmr_committed_restart_bundle_t)::supplied_result,profile_result,pending_result,window_result
           integer::k
           ! Column 1 keeps supplied DCS1; column 2 explicitly derives timing
           ! from the same committed snapshot while retaining fixed DCS2 depth.
@@ -2719,6 +2719,7 @@ contains
           end do
           ! Restore the actual committed pending gift, then invalidate the
           ! fresh profile. Continuation must use the persisted event instead.
+          pending_result=profile_result
           call split_app%restore_committed_restart(profile_result,92001_int64,weekly_ok,weekly_code)
           if(.not.weekly_ok) error stop 'weekly profile pending restore'
           profiles(2)=ppa_irrigation_profile_t()
@@ -2744,8 +2745,34 @@ contains
                    error stop 'weekly profile pending reselected'
             end select
           end do
+          call split_app%restore_committed_restart(pending_result,92001_int64,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly profile window restore'
+          split_requests%t1=split_endpoint
+          call execute_window_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+               daily_parameters,split_requests,resume_forcing,1,prefixes,prefix_count,weekly_code, &
+               profiles=profiles,weekly_inputs=profile_inputs,weekly_profile_mode=[.false.,.true.])
+          if(weekly_code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'weekly profile window completion'
+          if(.not.all(prefixes(1)%columns%committed)) error stop 'weekly profile window publication'
+          call split_app%export_committed_restart(92001_int64,window_result,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly profile window export'
+          do k=1,2
+            if(window_result%records(k)%committed_time/=profile_result%records(k)%committed_time.or. &
+                 window_result%records(k)%revision/=profile_result%records(k)%revision) &
+                 error stop 'weekly profile window endpoint identity'
+            select type(lhs=>window_result%records(k)%physical_state)
+            type is(ppa_irrigation_event_state_t)
+              select type(rhs=>profile_result%records(k)%physical_state)
+              type is(ppa_irrigation_event_state_t)
+                if(any(lhs%water_content/=rhs%water_content).or.any(lhs%pressure_head/=rhs%pressure_head).or. &
+                     lhs%weekly%dayfix/=rhs%weekly%dayfix.or.lhs%weekly%last_day/=rhs%weekly%last_day.or. &
+                     lhs%irrigation%active_event) error stop 'weekly profile window replay identity'
+              end select
+            end select
+          end do
           call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
           if(.not.weekly_ok) error stop 'weekly profile fixture reset'
+          split_requests%t1=T0+3.0_real64/1024.0_real64
+          write(*,'(a)') 'PPA_IRR_WEEKLY_PROFILE_WINDOW_REPLAY_IDENTITY=PASS'
           split_requests%t0=T0
           write(*,'(a)') 'PPA_IRR_WEEKLY_PROFILE_PENDING_RESTORE_SPLIT=PASS'
           write(*,'(a)') 'PPA_IRR_WEEKLY_MIXED_PROFILE_COMMITTED_IDENTITY=PASS'
