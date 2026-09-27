@@ -23,6 +23,7 @@ PPA_WU04B_ADMISSION=4d40b8d4b6a1df06ff97fab55497542778431290
 PPA_WU04B_QUALIFIED=eb0e635975b77ec92084e1416038b1bc1f8232bc
 TEMPORAL_INDICATOR=src/solver/mod_reference_richards_temporal_indicator.f90
 PPA_ROOT_HYD01_TEMPORAL_INDICATOR=2068215a57edb1d2a59c36d6b32f519ebdc09ebd
+FCI110_TEMPORAL_INDICATOR=81a0305958e108e92224a48862358d79c765cd0a
 TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
 FPERF_B1_TX_BLOB=97d8ef1fae91e174ab6daefb42ffa6a85da9380e
@@ -194,8 +195,13 @@ fi
 if git merge-base --is-ancestor "$PPA_ROOT_HYD01_ADMISSION" HEAD; then
   git merge-base --is-ancestor "$PPA_ROOT_HYD01_QUALIFIED" "$PPA_ROOT_HYD01_ADMISSION" || \
     fail 'PPA-ROOT-HYD01 qualified head is not contained by canonical admission'
-  test "$(git rev-parse "HEAD:$TEMPORAL_INDICATOR")" = "$PPA_ROOT_HYD01_TEMPORAL_INDICATOR" || \
-    fail 'admitted PPA-ROOT-HYD01 temporal-indicator successor drift'
+  temporal_indicator_authority="$PPA_ROOT_HYD01_TEMPORAL_INDICATOR"
+  if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+    temporal_indicator_authority="$FCI110_TEMPORAL_INDICATOR"
+    echo 'FCI_CANONICAL_FCI110_TEMPORAL_INDICATOR_SUCCESSOR=ACTIVE'
+  fi
+  test "$(git rev-parse "HEAD:$TEMPORAL_INDICATOR")" = "$temporal_indicator_authority" || \
+    fail 'admitted temporal-indicator successor drift'
   echo 'FCI_CANONICAL_PPA_ROOT_HYD01_TEMPORAL_INDICATOR_SUCCESSOR=PASS'
 else
   test "$(git rev-parse "HEAD:$TEMPORAL_INDICATOR")" = "$(git rev-parse "$AUTH:$TEMPORAL_INDICATOR")" || \
