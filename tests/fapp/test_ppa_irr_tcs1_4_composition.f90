@@ -320,6 +320,30 @@ program test_composition
   if(d%status/=IRRIGATION_OK.or.next_day/=0.or.abs(candidate%active_event_end-0.2_real64)>1.0e-14_real64) &
        error stop 'weekly DCS1 maximum limit'
   write(*,'(a)') 'PPA_IRR_TCS6_DCS1_SPLIT_PENDING_LIMIT_GUARDS=PASS'
+  p%depth_limit_enabled=.false.; r%t0=0.0_real64; r%t1=0.75_real64
+  weekly=ppa_weekly_identity_t(); weekly%enabled=.true.
+  call daily_call(100_int64,1.0_real64)
+  if(d%status/=IRRIGATION_SPLIT_REQUIRED.or.proposal%day_bound.or.proposal%dayfix/=366) &
+       error stop 'weekly DCS1 daily split consumed ordinal'
+  r%t1=0.25_real64
+  call daily_call(100_int64,1.0_real64)
+  if(d%status/=IRRIGATION_OK.or.proposal%last_day/=100_int64.or.proposal%dayfix/=0.or. &
+       .not.proposal%day_bound.or..not.candidate%active_event) error stop 'weekly DCS1 daily retry'
+  weekly=proposal; base=candidate; r%t0=0.25_real64; r%t1=0.5_real64
+  call daily_call(100_int64,nan)
+  if(d%status/=IRRIGATION_OK.or.proposal%last_day/=100_int64.or.proposal%dayfix/=0.or. &
+       candidate%active_event.or..not.flux%event_finished) error stop 'weekly DCS1 daily pending duplicate'
+  base=candidate; r%t0=0.5_real64; r%t1=0.51_real64
+  call daily_call(100_int64,1.0_real64)
+  if(d%status/=IRRIGATION_OK.or.candidate%active_event.or.proposal%dayfix/=0) &
+       error stop 'weekly DCS1 duplicate gift'
+  call daily_call(102_int64,1.0_real64)
+  if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.proposal%last_day/=100_int64.or.proposal%dayfix/=0) &
+       error stop 'weekly DCS1 daily gap'
+  call daily_call(101_int64,1.0_real64)
+  if(d%status/=IRRIGATION_OK.or.proposal%last_day/=101_int64.or.proposal%dayfix/=1.or.candidate%active_event) &
+       error stop 'weekly DCS1 daily successor'
+  write(*,'(a)') 'PPA_IRR_TCS6_DCS1_DAILY_PROPOSAL_SEQUENCE=PASS'
 contains
   subroutine verify_weekly_transitions()
     type(ppa_weekly_identity_t)::before,after
