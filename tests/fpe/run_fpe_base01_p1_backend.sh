@@ -161,12 +161,10 @@ BASE01_HEADCALC_SOURCE="$PATCH/headcalc.f90" \
 BASE01_LEGACY_BINDING_SOURCE="$PATCH/mod_reference_richards_legacy_binding.f90" \
 BASE01_EXTRA_SOURCE="tests/fpe/mod_base01_headcalc_timing.f90" \
 BASE01_PARTICIPANT_SOURCE="$PATCH/mod_fmr_groundwater_swap_participant.f90" \
+BASE01_BRIDGE_SOURCE="$PATCH/mod_fgc44_real_swap_c_bridge.f90" \
 BASE01_TEST_SCRIPT="tests/fpe/test_fpe_base01_p1_backend.py" \
 BASE01_RAW_PREFIX="BASE01_P1_RAW" \
-BASE01_PARTICIPANT_SOURCE="$PATCH/mod_fmr_groundwater_swap_participant.f90" \
-BASE01_BRIDGE_SOURCE="$PATCH/mod_fgc44_real_swap_c_bridge.f90" \
-BASE01_RAW_PREFIX="BASE01_P1_RAW" \
-BASE01_REPS=3 \
+BASE01_REPS=5 \
 BASE01_SKIP_AGGREGATE=1 \
 bash tests/fpe/run_fpe_base01_p0_participant_boundary.sh | tee "$PATCH/raw.txt"
 
@@ -179,7 +177,7 @@ for line in open(sys.argv[1]):
 if len(rows)!=60:
     raise SystemExit(f"expected 60 replicate rows, got {len(rows)}")
 
-# Reproduce the P0 aggregation convention: median of three process replicates per live group,
+# Use five process replicates per frozen live group and aggregate group medians,
 # then aggregate those medians over the 12 frozen groups.
 groups={}
 for r in rows:
