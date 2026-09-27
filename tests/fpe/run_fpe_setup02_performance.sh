@@ -126,11 +126,17 @@ s=s.replace(marker,helper+marker,1)
 Path(sys.argv[1]).write_text(s)
 PY
 
-python3 - "$BUILD/candidate_runner.sh" "$BUILD/candidate_bootstrap.f90" <<'PY'
+python3 - "$BUILD/candidate_runner.sh" "$BUILD/candidate_bootstrap.f90" "$ROOT" <<'PY'
 from pathlib import Path
 import sys
 runner=Path("tests/fpe/run_fpe_setup01_decomposition.sh").read_text()
 bootstrap=Path(sys.argv[2]).resolve()
+root=Path(sys.argv[3]).resolve()
+old_root='ROOT="$(cd "$(dirname "\${BASH_SOURCE[0]}")/../.." && pwd)"\ncd "$ROOT"'
+new_root=f'ROOT="{root}"\ncd "$ROOT"'
+if old_root not in runner:
+    raise SystemExit("runner root seam missing")
+runner=runner.replace(old_root,new_root,1)
 
 old='mapfile -t MODULE_SRC < <(python3 - "$BUILD/fixture.f90" <<\'PY\'\nfrom pathlib import Path\nimport sys,re\nfixture=Path(sys.argv[1]).resolve()'
 new='mapfile -t MODULE_SRC < <(python3 - "$BUILD/fixture.f90" "$SETUP02_BOOTSTRAP_SOURCE" <<\'PY\'\nfrom pathlib import Path\nimport sys,re\nfixture=Path(sys.argv[1]).resolve()\nbootstrap=Path(sys.argv[2]).resolve()'
