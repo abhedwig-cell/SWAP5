@@ -51,6 +51,15 @@ or canonical admission.
 
 ### Full-day trial result (2026-09-27)
 
+Continuation attempt `498da7ce5`: requesting another full day from the original
+committed owner fails with transaction status 2 in both O0/O2. The optional
+experiment exits nonzero before restored-owner replay, so it does not establish
+restart divergence or continuation equivalence. First-day qualification remains
+green. Ordinary IrrigationSource and hydraulic-copy/guards retain exact O0/O2
+identity. Build `swap-ppa-wu01-87fb0b79dab642819a7a06e118cd63bc`,
+`O0/O2/full-day.txt`. Next diagnostic: failure endpoint/counters and rollback;
+the numerical gap is not a campaign-wide blocker. No acceptance rule changed.
+
 Follow-up postimage `26f3214ad` additionally commits the full-day candidate through
 the existing publisher and checks time T0+1/revision 1. Decoded export/restore
 preserves exact pressure, water, temporal history, time, revision, lineage and
