@@ -81,7 +81,7 @@ body=r'''  real(c_double) :: cell_heads(NTILE), cell_fluxes(NTILE), cell_tangent
     gw_config%tiles(i)%parameters%bottom_mode = 5
     gw_config%tiles(i)%template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     allocate(gw_config%tiles(i)%initial_right_derivative(numnod))
-    gw_config%tiles(i)%initial_right_derivative = 1.0_real64
+    gw_config%tiles(i)%initial_right_derivative = 400.0_real64
   end do
   call gw_app%initialize(gw_config,status)
   call require(status == FMR_APP_BOOT_OK .and. gw_app%ready(), 'MULTI01 groundwater bootstrap')
