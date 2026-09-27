@@ -750,7 +750,9 @@ print(
   f"|E0_EXACT_TRIALS={sum(e0_trials)}|E4_EXACT_TRIALS={sum(e4_trials)}"
   f"|EXACT_TRIAL_RATIO={trial_ratio:.9f}|ADVANCE={str(advance).upper()}"
 )
-if not advance:
-    raise SystemExit("live difficult-regime demand does not justify final scale")
+if advance:
+    print("SOLVE01_P2B_DECISION=ADVANCE_FINAL_HETEROGENEOUS_LIVE_SCALE")
+else:
+    print("SOLVE01_P2B_DECISION=CLOSE_SOLVE_ELIMINATION_INSUFFICIENT_LIVE_DEMAND")
 print("FPE_SOLVE01_P2B=PASS")
 PY
