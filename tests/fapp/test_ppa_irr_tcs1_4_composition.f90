@@ -16,7 +16,7 @@ program test_composition
   type(irrigation_timing_selection_t)::selection
   real(real64)::knots(7),values(7)
   real(real64)::actual,nan,correction,depth,rate,duration
-  integer::i,j,next_day
+  integer::i,j,next_day,day_counter
   p%scheduled_irrigation_enabled=.true.; p%active_nodes=1; p%sensor_node=1; p%single_ssdi_node=1
   p%irr_rate_cm_per_day=1.0_real64; p%dcs2_knot_count=2
   p%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]; p%dcs2_depth_cm=0.5_real64
@@ -173,6 +173,43 @@ program test_composition
   call evaluate_scheduled_irrigation_interval(p,base,r,hydraulic,candidate,flux,d)
   if(d%status/=IRRIGATION_INVALID_PARAMETERS) error stop 'weekly ordinary entry admitted'
   write(*,'(a)') 'PPA_IRR_TCS6_EXPLICIT_COUNTER_PROPOSAL=PASS'
+  day_counter=0
+  do i=1,14
+    r%t0=real(i-1,real64); r%t1=r%t0+0.25_real64
+    call evaluate_tcs6_scheduled(p,base,r,day_counter,.true.,0.0_real64,5.0_real64, &
+         next_day,candidate,flux,d)
+    if(d%status/=IRRIGATION_OK.or.candidate%active_event.or.next_day/=modulo(i,7)) &
+         error stop 'weekly consecutive no-gift days'
+    day_counter=next_day ! Test-only acceptance simulation, not a runtime owner.
+  end do
+  r%t0=0.0_real64; r%t1=0.25_real64
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or..not.candidate%active_event) error stop 'weekly pending setup'
+  pending=candidate
+  r%t0=0.25_real64; r%t1=0.5_real64
+  call evaluate_tcs6_scheduled(p,pending,r,0,.true.,nan,nan,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=0.or.candidate%active_event.or..not.flux%event_finished) &
+       error stop 'weekly pending selector evaluated'
+  if(.not.pending%active_event) error stop 'weekly pending input mutated'
+  r%t0=0.0_real64; r%t1=0.25_real64
+  r%fixed_event_already_selected=.true.
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,nan,nan,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=6.or.candidate%active_event) error stop 'weekly fixed precedence'
+  r%fixed_event_already_selected=.false.; r%selection_opportunity=.false.
+  call evaluate_tcs6_scheduled(p,base,r,6,.true.,nan,nan,next_day,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.next_day/=6.or.candidate%active_event) error stop 'weekly ineligible'
+  r%selection_opportunity=.true.
+  do i=1,4
+    actual=5.0_real64; depth=1.0_real64; day_counter=6
+    if(i==1) actual=nan
+    if(i==2) depth=nan
+    if(i==3) actual=21.0_real64
+    if(i==4) day_counter=367
+    call evaluate_tcs6_scheduled(p,base,r,day_counter,.true.,depth,actual,next_day,candidate,flux,d)
+    if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.next_day/=day_counter.or.candidate%active_event) &
+         error stop 'weekly malformed selector input'
+  end do
+  write(*,'(a)') 'PPA_IRR_TCS6_SEQUENCE_PENDING_ELIGIBILITY_GUARDS=PASS'
 contains
   subroutine profile_call(state,thickness,count)
     type(irrigation_state_t),intent(in)::state
