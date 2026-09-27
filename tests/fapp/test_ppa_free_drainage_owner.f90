@@ -2150,6 +2150,7 @@ contains
   end subroutine
 
   subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
+    use mod_irrigation_process, only: IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
     use mod_ppa_irr_tcs1_4_source, only: ppa_tcs1_4_observations_t
     use mod_ppa_bootstrap_irrigation, only: execute_ppa_bootstrap_irrigation,ppa_irrigation_preparation_t, &
          execute_next_ppa_bootstrap_irrigation,execute_window_ppa_bootstrap_irrigation,ppa_irrigation_prefix_result_t, &
