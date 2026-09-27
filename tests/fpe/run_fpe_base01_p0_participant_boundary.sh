@@ -7,6 +7,11 @@ HEADCALC_SOURCE="${BASE01_HEADCALC_SOURCE:-src/legacy/b1_10_port/headcalc.f90}"
 LEGACY_BINDING_SOURCE="${BASE01_LEGACY_BINDING_SOURCE:-src/adapter/mod_reference_richards_legacy_binding.f90}"
 TEST_SCRIPT="${BASE01_TEST_SCRIPT:-tests/fpe/test_fpe_base01_p0_participant_boundary.py}"
 EXTRA_SOURCE="${BASE01_EXTRA_SOURCE:-}"
+PRE_SOURCE="${BASE01_PRE_SOURCE:-}"
+TRANSACTION_SOURCE="${BASE01_TRANSACTION_SOURCE:-src/transaction/mod_transaction_reference.f90}"
+CANONICAL_RUNTIME_SOURCE="${BASE01_CANONICAL_RUNTIME_SOURCE:-src/runtime/mod_canonical_interval_runtime.f90}"
+KERNEL_SOURCE="${BASE01_KERNEL_SOURCE:-src/kernel/mod_kernel_transactions.f90}"
+BACKEND_SOURCE="${BASE01_BACKEND_SOURCE:-src/runtime/mod_fmr_serialized_reference_backend.f90}"
 PARTICIPANT_SOURCE="${BASE01_PARTICIPANT_SOURCE:-src/runtime/mod_fmr_groundwater_swap_participant.f90}"
 BRIDGE_SOURCE="${BASE01_BRIDGE_SOURCE:-tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90}"
 RAW_PREFIX="${BASE01_RAW_PREFIX:-BASE01_P0_RAW}"
@@ -31,7 +36,7 @@ test -f "$BUILD/modflow-bin/libmf6.so" || fail "missing libmf6.so"
 
 cp "$BRIDGE_SOURCE" "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90"
 cp "$PARTICIPANT_SOURCE" "$BUILD/lib/mod_fmr_groundwater_swap_participant.f90"
-cp src/runtime/mod_fmr_serialized_reference_backend.f90 "$BUILD/lib/mod_fmr_serialized_reference_backend.f90"
+cp "$BACKEND_SOURCE" "$BUILD/lib/mod_fmr_serialized_reference_backend.f90"
 python3 - "$BUILD/lib/mod_fmr_serialized_reference_backend.f90" <<'PY'
 from pathlib import Path
 import sys
@@ -708,15 +713,18 @@ PY
 COMMON=(-std=f2008 -ffree-line-length-none -O2 -fPIC -fopenmp)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
+)
+if [[ -n "$PRE_SOURCE" ]]; then MODULE_SRC+=("$PRE_SOURCE"); fi
+MODULE_SRC+=(
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/transaction/mod_accepted_trajectory_directional_publication.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
-  src/transaction/mod_transaction_reference.f90
+  "$TRANSACTION_SOURCE"
   src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
-  src/runtime/mod_canonical_interval_runtime.f90
-  src/kernel/mod_kernel_transactions.f90
+  "$CANONICAL_RUNTIME_SOURCE"
+  "$KERNEL_SOURCE"
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
