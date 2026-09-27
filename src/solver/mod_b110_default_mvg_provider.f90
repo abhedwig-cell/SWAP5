@@ -29,6 +29,7 @@ module mod_b110_default_mvg_provider
 
   public :: initialize_b110_default_mvg_parameters
   public :: bind_b110_default_mvg_provider
+  public :: b110_hconduc
   public :: evaluate_b110_default_mvg_conductivity
 
 contains

@@ -399,6 +399,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: trajectory_requested_t0 = 0.0_real64
     real(real64) :: trajectory_requested_t1 = 0.0_real64
     type(accepted_trajectory_direction_t) :: trajectory_direction
+    type(soil_water_accepted_step_direction_request_t) :: trajectory_request_workspace
     logical :: snow_active = .false.
     logical :: snow_event_prepared = .false.
     real(real64) :: snow_outer_t0 = 0.0_real64
@@ -1978,7 +1979,6 @@ contains
     type(trial_outcome_t), intent(out) :: outcome
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
-    type(soil_water_accepted_step_direction_request_t) :: direction_request
     type(soil_water_accepted_step_direction_result_t) :: direction_result
     type(trajectory_step_token_t) :: direction_token
     type(process_hydraulic_view_t) :: hydraulic_start, hydraulic_end
@@ -2275,19 +2275,19 @@ contains
              self%trajectory_control_coordinate, self%soil_parameters%active_nodes, trajectory_begin_ok)
       end if
       if (trajectory_begin_ok) then
-        call build_trajectory_step_request(self%trajectory_direction, t0, t1, direction_request, direction_token, &
+        call build_trajectory_step_request(self%trajectory_direction, t0, t1, self%trajectory_request_workspace, direction_token, &
              trajectory_request_ok)
       end if
     end if
 
-    if (trajectory_request_ok .and. direction_request%requested .and. &
+    if (trajectory_request_ok .and. self%trajectory_request_workspace%requested .and. &
         self%drainage_qbot_smooth_freatic_projection) then
       call compose_fmr_qbot_drainage_sink_direction(self%soil_parameters, request%base_state, &
-           direction_request%incoming_pressure_head, self%drainage_response_diagnostics, drainage_sink_direction, &
+           self%trajectory_request_workspace%incoming_pressure_head, self%drainage_response_diagnostics, drainage_sink_direction, &
            drainage_groundwater_direction, drainage_direction_status, drainage_direction_route)
       drainage_direction_available = drainage_direction_status == FMR_QBOT_DRAIN_DIRECTION_OK
       if (drainage_direction_available) then
-        call move_alloc(drainage_sink_direction, direction_request%incoming_sink_direction)
+        call move_alloc(drainage_sink_direction, self%trajectory_request_workspace%incoming_sink_direction)
       end if
     end if
 
@@ -2298,10 +2298,10 @@ contains
         call self%solver%solve(request, self%workspace, solve_result)
         direction_result = soil_water_accepted_step_direction_result_t()
         direction_result%status = SW_STEP_DIRECTION_UNAVAILABLE
-        direction_result%control_coordinate = direction_request%control_coordinate
+        direction_result%control_coordinate = self%trajectory_request_workspace%control_coordinate
         direction_result%route = drainage_direction_route
       else
-        call solve_with_accepted_step_direction(self%solver, request, self%workspace, direction_request, &
+        call solve_with_accepted_step_direction(self%solver, request, self%workspace, self%trajectory_request_workspace, &
              solve_result, direction_result)
         trajectory_solver_used = .true.
       end if
