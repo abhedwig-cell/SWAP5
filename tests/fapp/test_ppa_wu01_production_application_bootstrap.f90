@@ -171,7 +171,7 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_OK, 'release stale-origin context')
   do i = 1, NTILE
     predictors(i)%response%lineage%swap_origin_revision = 0_int64
-    trial_heads(i) = real(reference_head_m, c_double)
+    trial_heads(i) = real(reference_head_m + 0.001_real64 * real(i, real64), c_double)
   end do
 
   call run_groundwater_trial_probe(gw_app, topology, predictors, areas, trial_heads, serial_flux, serial_tangent)
@@ -280,6 +280,10 @@ contains
     local_c_status = fgc49d_capture_origins_c(int(local_handle, c_int64_t))
     call require(local_c_status == 0_c_int, 'MULTI04 capture origins')
     local_c_status = fgc49d_trial_cell_heads_c(int(local_handle, c_int64_t), int(size(heads),c_int), heads, fluxes)
+    if (local_c_status /= 0_c_int) then
+      write(*,'(a,1x,i0,1x,a,1x,i0)') 'FPE_MULTI04_P1B_DEBUG_WORKERS', owner%groundwater_worker_count(), &
+           'TRIAL_STATUS', local_c_status
+    end if
     call require(local_c_status == 0_c_int, 'MULTI04 trial cell heads')
     local_c_status = fgc49d_trial_response_tangents_c(int(local_handle, c_int64_t), int(size(tangents),c_int), tangents)
     call require(local_c_status == 0_c_int, 'MULTI04 trial tangents')
