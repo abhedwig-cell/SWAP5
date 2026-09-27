@@ -1706,6 +1706,7 @@ contains
       type(scheduled_irrigation_request_t)::daily_requests(2)
       type(irrigation_state_t)::no_events(2)
       type(fmr_b110_physical_forcing_t)::weekly_forcing(2)
+      type(fmr_b110_physical_forcing_t),allocatable::weekly_effective(:)
       type(fmr_serialized_column_result_t),allocatable::weekly_results(:)
       integer::weekly_code,j
       logical::weekly_ok
@@ -1805,6 +1806,60 @@ contains
       write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_DECODED_REPLAY_IDENTITY=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_DAILY_BOOTSTRAP_SOURCE_PUBLICATION=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_NO_GIFT_MIXED_METADATA=PASS'
+      ! A separate fresh, two-weekly-column fixture exercises actual gift
+      ! selection followed by a same-ordinal pending continuation.
+      call weekly_app%initialize(weekly_config,weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly gift initialize'
+      call weekly_app%export_committed_restart(92001_int64,weekly_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly gift seed export'
+      do j=1,2
+        select type(state=>weekly_bundle%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          state%weekly=ppa_weekly_identity_t(); state%weekly%enabled=.true.
+        class default
+          error stop 'weekly gift seed carrier'
+        end select
+        daily_parameters(j)%timing_criterion=6
+        daily_parameters(j)%dcs2_depth_cm=0.01_real64*2.0_real64/1024.0_real64
+        daily_requests(j)%selection_opportunity=.true.
+        daily_requests(j)%t0=T0; daily_requests(j)%t1=T0+1.0_real64/1024.0_real64
+        daily_inputs(j)%daily_invocation=.true.; daily_inputs(j)%ordinal=100_int64
+        daily_inputs(j)%deficit_cm=1.0_real64; daily_inputs(j)%threshold_mm=5.0_real64
+      end do
+      call weekly_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly gift seed restore'
+      call execute_ppa_bootstrap_irrigation(weekly_app,[1_int64,2_int64],92001_int64, &
+           daily_parameters,daily_requests,weekly_forcing,weekly_results,weekly_code, &
+           effective_forcing=weekly_effective,weekly_inputs=daily_inputs)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly gift selected hydraulics'
+      call weekly_app%export_committed_restart(92001_int64,weekly_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly gift midpoint export'
+      do j=1,2
+        if(abs(weekly_results(j)%mass%residual)>1.0e-12_real64) error stop 'weekly gift mass'
+        select type(state=>weekly_bundle%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%weekly%dayfix/=0.or.state%weekly%last_day/=100_int64.or..not.state%irrigation%active_event) &
+               error stop 'weekly gift midpoint publication'
+        end select
+      end do
+      weekly_forcing=weekly_effective
+      daily_requests%t0=T0+1.0_real64/1024.0_real64
+      daily_requests%t1=T0+2.0_real64/1024.0_real64
+      call execute_ppa_bootstrap_irrigation(weekly_app,[1_int64,2_int64],92001_int64, &
+           daily_parameters,daily_requests,weekly_forcing,weekly_results,weekly_code,weekly_inputs=daily_inputs)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly gift pending hydraulics'
+      call weekly_app%export_committed_restart(92001_int64,weekly_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly gift final export'
+      do j=1,2
+        if(abs(weekly_results(j)%mass%residual)>1.0e-12_real64) error stop 'weekly pending mass'
+        select type(state=>weekly_bundle%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%weekly%dayfix/=0.or.state%weekly%last_day/=100_int64.or.state%irrigation%active_event) &
+               error stop 'weekly duplicate ordinal counted or event not completed'
+        end select
+      end do
+      call weekly_app%close(weekly_code)
+      write(*,'(a)') 'PPA_IRR_WEEKLY_GIFT_PENDING_DUPLICATE_PUBLICATION=PASS'
     end block
     call application%initialize(config,code)
     if(code==FMR_APP_BOOT_OK.or.application%ready()) error stop 'bootstrap missing irrigation opt-in admitted'
