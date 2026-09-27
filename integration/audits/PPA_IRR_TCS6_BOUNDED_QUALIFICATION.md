@@ -49,6 +49,19 @@ or canonical admission.
 
 ## Next numerical experiment
 
+### Effective retry policy reconciliation
+
+The IrrigationSource fixture already selects retry scale 0.8 and caller budget
+64 before building the profile. The ordinary bounded selector tightens this to
+16; `--weekly-full-day-dense` raises only the effective cap to 64. It does not
+introduce denser shrink sampling relative to the ordinary full-day experiment.
+`mod_canonical_interval_runtime` copies the caller policy and takes the minimum
+of retry caps; `reject_and_retry` in `mod_transaction_reference` directly
+multiplies the attempt duration by the configured scale. There is no
+solver-suggested duration override on that rejection path. Both experiments
+therefore share the first 16 retry durations. More retries reach much smaller
+steps but do not resolve the second-day failure. No acceptance criterion changed.
+
 ### Full-day trial result (2026-09-27)
 
 Failure diagnostic postimage `81a08bee7` gives identical O0/O2 evidence:

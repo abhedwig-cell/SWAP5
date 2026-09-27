@@ -9,6 +9,11 @@
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
   "next_local_capability": "integration/audits/PPA_IRR_TCS6_COMPOSITION_PREREGISTRATION.json",
+  "latest_tcs6_checkpoint": {
+    "tested_commit": "0f28531f8",
+    "record": "integration/audits/PPA_IRR_TCS6_COMPOSITION_STATUS.json",
+    "scope": "Branch-local explicit ordinal/counter, bounded seven-successor and rollover-gift sequences, existing-owner publication and decoded restart are covered. Explicit 1/65536-day numerical targets complete one full hydraulic day with commit and exact decoded restoration. Second full-day continuation fails on the original owner before restored replay; rollback is verified. Coarser targets and extended retries do not resolve the numerical gap. Stable-storage availability and independent quad-precision checks pass. Full-day daily-adapter sequences, seven elapsed days, disk codec, crop reset, TCSFIX and canonical admission remain unqualified. Owning record supersedes historical preregistration progress labels."
+  },
   "latest_tcs1_4_dcs1_checkpoint": {
     "tested_commit": "77d9e1032",
     "record": "integration/audits/PPA_IRR_TCS1_4_DCS1_STATUS.json",
