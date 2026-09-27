@@ -77,3 +77,21 @@ boundary rejection after successful process selection. Do not connect this
 adapter to bootstrap or persist its counter until a distinct ownership and daily
 identity contract is recorded. Reuse existing observation types where possible;
 do not change the provider ABI or existing production compile dependencies.
+
+## Daily identity staging contract
+
+Use a distinct TCSFIX metadata type, never the weekly type: enabled, day-bound,
+nonnegative explicit ordinal, counter initially366, and interval_days1..366.
+Disabled state has strict defaults; an unbound enabled state retains initial
+counter366/ordinal0. A first invocation binds its supplied ordinal; duplicate
+ordinals suppress evaluation, backward/gapped ordinals reject, and nondaily
+continuation retains identity. Check ordered nonnegative subtraction to avoid
+overflow. Interval is immutable across this initial lifecycle; reset/reconfiguration
+requires a separate future operation. The detached identity helper owns nothing.
+
+The later daily process adapter must publish counter and identity together only
+on process success, then the source adapter only on binding success. Persistent
+integration must place metadata in the existing irrigation carrier, prohibit
+simultaneous weekly/TCSFIX activation, validate clone/restart/commit transitions,
+and keep default-disabled paths unchanged. No bootstrap activation is authorized
+by merely implementing the detached helper; its owner integration requires gates.

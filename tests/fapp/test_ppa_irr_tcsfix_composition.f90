@@ -1,5 +1,6 @@
 program test_tcsfix
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64,int64
+  use mod_ppa_irr_tcsfix_identity
   use mod_irrigation_process
   use mod_ppa_irr_tcsfix_composition
   implicit none
@@ -10,6 +11,8 @@ program test_tcsfix
   type(irrigation_diagnostics_t)::d
   real(real64)::knots(7),values(7)
   integer::i,j,next_day,guard
+  type(ppa_tcsfix_identity_t)::identity,proposal
+  logical::daily,ok
   p%scheduled_irrigation_enabled=.true.; p%active_nodes=1; p%sensor_node=1; p%single_ssdi_node=1
   p%irr_rate_cm_per_day=1.0_real64; p%dcs2_knot_count=2
   p%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]; p%dcs2_depth_cm=0.5_real64
@@ -99,4 +102,22 @@ program test_tcsfix
   print '(a)', 'PPA_IRR_TCSFIX_PENDING_ELIGIBILITY_INPUT_GUARDS=PASS'
   print '(a)', 'PPA_IRR_TCSFIX_NO_CANDIDATE_COUNTER=PASS'
   print '(a)', 'PPA_IRR_TCSFIX_ELIGIBILITY_COUNTER_TIMING_GRID=PASS'
+  if(.not.valid_tcsfix_identity(identity)) error stop 'identity default'
+  call prepare_tcsfix_day(identity,.true.,100_int64,proposal,daily,ok)
+  if(ok) error stop 'disabled identity'
+  identity%enabled=.true.; identity%interval_days=3
+  call prepare_tcsfix_day(identity,.true.,100_int64,proposal,daily,ok)
+  if(.not.ok.or..not.daily.or..not.proposal%day_bound) error stop 'first identity'
+  identity=proposal
+  do i=99,102
+    call prepare_tcsfix_day(identity,.true.,int(i,int64),proposal,daily,ok)
+    if(ok.neqv.(i==100.or.i==101)) error stop 'ordinal guard'
+    if(daily.neqv.(i==101)) error stop 'duplicate evaluation'
+  end do
+  identity%last_day=huge(0_int64)
+  call prepare_tcsfix_day(identity,.true.,0_int64,proposal,daily,ok)
+  if(ok) error stop 'ordinal overflow guard'
+  identity%interval_days=0
+  if(valid_tcsfix_identity(identity)) error stop 'identity interval'
+  print '(a)', 'PPA_IRR_TCSFIX_DETACHED_DAILY_IDENTITY=PASS'
 end program
