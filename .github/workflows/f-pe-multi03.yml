@@ -1,0 +1,20 @@
+name: F-PE-MULTI03 deterministic load-balanced groundwater scheduling
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multi03_*.sh'
+      - 'docs/performance/F-PE-MULTI03_*.md'
+      - '.github/workflows/f-pe-multi03.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-cost-aware-scheduling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run deterministic cost-aware scheduling probe
+        run: bash tests/fpe/run_fpe_multi03_p0_cost_aware.sh
