@@ -18,12 +18,18 @@ run_variant() {
   local out="$BUILD/$tag.txt"
   local runner="$BUILD/$tag.sh"
 
-  python3 - "$BASE_SCRIPT" "$runner" "$flags" <<'PY'
+  python3 - "$BASE_SCRIPT" "$runner" "$flags" "$ROOT" <<'PY'
 from pathlib import Path
 import sys
 src=Path(sys.argv[1]).read_text()
 out=Path(sys.argv[2])
 flags=sys.argv[3]
+root=Path(sys.argv[4]).resolve()
+old_root='ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"\ncd "$ROOT"'
+new_root=f'ROOT="{root}"\ncd "$ROOT"'
+if old_root not in src:
+    raise SystemExit("runner root seam missing")
+src=src.replace(old_root,new_root,1)
 
 src=src.replace("swap5-multi04-p1c-","swap5-codegen01-"+out.stem+"-",1)
 src=src.replace(
