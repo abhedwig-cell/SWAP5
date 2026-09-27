@@ -330,9 +330,13 @@ export OMP_PROC_BIND=spread
 export OMP_PLACES=cores
 
 OUT="$BUILD/out.txt"; : > "$OUT"
+extra_args=()
+if [[ "${MULTI02_MIXED:-0}" == "1" ]]; then
+  extra_args=(MIXED)
+fi
 for n in 100 1000; do
   for w in 1 2 4; do
-    "$BUILD/test" "$n" "$w" | tee -a "$OUT"
+    "$BUILD/test" "$n" "$w" "${extra_args[@]}" | tee -a "$OUT"
   done
 done
 
