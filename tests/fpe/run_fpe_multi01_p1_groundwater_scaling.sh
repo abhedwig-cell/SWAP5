@@ -47,6 +47,10 @@ src=src.replace("end program test_ppa_wu01_production_application_bootstrap",
 src=src.replace("integer, parameter :: NTILE = 2",f"integer, parameter :: NTILE = {n}",1)
 src=src.replace("real(real64), parameter :: T1 = 4100.6875_real64",
                 "real(real64), parameter :: T1 = 4100.1876_real64",1)
+src=src.replace("1.0_real64 + 0.013_real64 * real(k, real64)", "1.0_real64")
+src=src.replace("value%tiles(k)%initial_state%groundwater_level = -2.0_real64 - 0.007_real64 * real(k, real64)",
+                "value%tiles(k)%initial_state%groundwater_level = -2.0_real64")
+src=src.replace("href + real(slot, real64) * 0.001_real64", "href + 0.001_real64")
 src=src.replace(
 "       FMR_NUMERICAL_CONTINUATION_NONE",
 "       FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY",1)
