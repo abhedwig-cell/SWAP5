@@ -2670,6 +2670,57 @@ contains
           write(*,'(a)') 'PPA_IRR_TCS6_DCS1_PREFLIGHT_NO_PUBLICATION=PASS'
         end block
         split_requests=daily_requests; split_requests%t1=T0+3.0_real64/1024.0_real64
+        block
+          type(ppa_irrigation_profile_t)::profiles(2)
+          type(ppa_tcs6_daily_input_t)::profile_inputs(2)
+          type(fmr_committed_restart_bundle_t)::supplied_result,profile_result
+          integer::k
+          ! Column 1 keeps supplied DCS1; column 2 explicitly derives timing
+          ! from the same committed snapshot while retaining fixed DCS2 depth.
+          profiles(2)%noddrz=1; profiles(2)%layer=[1]
+          profiles(2)%dz=[4.0_real64]; profiles(2)%ztopcp=[0.0_real64]; profiles(2)%rd=4.0_real64
+          select type(state=>weekly_bundle%records(2)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            profiles(2)%wclos=[state%water_content(1)+0.25_real64]
+          end select
+          profiles(2)%wcmes=[0.25_real64]; profiles(2)%wchis=[0.1_real64]
+          call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+               daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code,weekly_inputs=daily_inputs)
+          if(weekly_code/=FMR_APP_BOOT_OK.or..not.all(split_results%committed)) &
+               error stop 'weekly profile comparison baseline'
+          call split_app%export_committed_restart(92001_int64,supplied_result,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly supplied comparison export'
+          call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly profile comparison restore'
+          profile_inputs=daily_inputs; profile_inputs(2)%deficit_cm=-99.0_real64
+          call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+               daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code,profiles=profiles, &
+               weekly_inputs=profile_inputs,weekly_profile_mode=[.false.,.true.])
+          if(weekly_code/=FMR_APP_BOOT_OK.or..not.all(split_results%committed)) &
+               error stop 'weekly mixed profile publication'
+          call split_app%export_committed_restart(92001_int64,profile_result,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly profile comparison export'
+          do k=1,2
+            if(abs(split_results(k)%mass%residual)>1.0e-12_real64) error stop 'weekly profile mass'
+            if(profile_result%records(k)%committed_time/=supplied_result%records(k)%committed_time.or. &
+                 profile_result%records(k)%revision/=supplied_result%records(k)%revision) &
+                 error stop 'weekly profile publication identity'
+            select type(lhs=>profile_result%records(k)%physical_state)
+            type is(ppa_irrigation_event_state_t)
+              select type(rhs=>supplied_result%records(k)%physical_state)
+              type is(ppa_irrigation_event_state_t)
+                if(any(lhs%water_content/=rhs%water_content).or.any(lhs%pressure_head/=rhs%pressure_head).or. &
+                     lhs%weekly%dayfix/=0.or.lhs%weekly%last_day/=100_int64.or. &
+                     .not.lhs%irrigation%active_event.or. &
+                     lhs%irrigation%active_event_end/=rhs%irrigation%active_event_end) &
+                     error stop 'weekly mixed profile committed identity'
+              end select
+            end select
+          end do
+          call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly profile fixture reset'
+          write(*,'(a)') 'PPA_IRR_WEEKLY_MIXED_PROFILE_COMMITTED_IDENTITY=PASS'
+        end block
         call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
              daily_parameters,split_requests,weekly_forcing,split_results,weekly_code,weekly_inputs=daily_inputs)
         if(weekly_code==FMR_APP_BOOT_OK.or.allocated(split_results)) error stop 'weekly oversized exact trial admitted'
