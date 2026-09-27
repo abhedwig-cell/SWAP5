@@ -1492,6 +1492,33 @@ contains
     r%t0=T0; r%t1=T0+1.0_real64/1024.0_real64
     r%selection_opportunity=.true.; r%irrigation_enabled=.true.; r%schedule_enabled=.true.
     r%crop_emerged=.true.; r%irrigation_window_open=.true.
+    block
+      use mod_ppa_irr_tcs6_source, only: evaluate_tcs6_source,ppa_tcs6_daily_input_t
+      type(ppa_tcs6_daily_input_t)::daily_input
+      type(ppa_weekly_identity_t)::weekly,proposed_weekly
+      p%timing_criterion=6
+      weekly%enabled=.true.
+      daily_input%daily_invocation=.true.; daily_input%ordinal=100_int64
+      daily_input%deficit_cm=1.0_real64; daily_input%threshold_mm=5.0_real64
+      call evaluate_tcs6_source(p,base,r,weekly,daily_input,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.allocated(effective)) error stop 'weekly daily source failed'
+      if(.not.flux%event_started.or.proposed_weekly%dayfix/=0.or.proposed_weekly%last_day/=100_int64) &
+           error stop 'weekly daily source proposal'
+      if(effective%subsurface_irrigation_source(1)/=p%irr_rate_cm_per_day.or. &
+           .not.effective%temporal_forcing_event) error stop 'weekly source rate marker'
+      daily_input%deficit_cm=0.0_real64
+      call evaluate_tcs6_source(p,base,r,weekly,daily_input,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(.not.ok.or.flux%event_started.or.proposed_weekly%dayfix/=0.or. &
+           any(effective%subsurface_irrigation_source/=0.0_real64)) error stop 'weekly no-gift source proposal'
+      daily_input%ordinal=-1_int64
+      call evaluate_tcs6_source(p,base,r,weekly,daily_input,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.proposed_weekly%day_bound.or.proposed_weekly%dayfix/=366) &
+           error stop 'weekly invalid source leaked proposal'
+      write(*,'(a)') 'PPA_IRR_TCS6_DAILY_SOURCE_PROPOSAL=PASS'
+    end block
     observations%knot_count=2; observations%dvs_knots(2)=2.0_real64
     observations%threshold_values=0.5_real64; observations%iptra_day=1.0_real64
     observations%iqreddry_day=0.75_real64; observations%awlh=1.0_real64
