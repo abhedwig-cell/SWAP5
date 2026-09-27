@@ -1246,12 +1246,21 @@ contains
   end subroutine verify_pending_irrigation_trial
 
   subroutine verify_tcs1_4_source_binding(original,n)
-    use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_source,ppa_tcs1_4_observations_t
+    use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_source,ppa_tcs1_4_observations_t,evaluate_tcs2_4_profile_source
+    use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
+    use mod_ppa_irr_water_deficit, only: evaluate_root_zone_water_deficit_checked,IRR_DEFICIT_OK
+    use mod_process_hydraulic_view, only: process_hydraulic_view_t
     use mod_irrigation_process
     type(fmr_b110_physical_forcing_t),intent(in)::original
     integer,intent(in)::n
     type(fmr_b110_physical_forcing_t)::previous
     type(fmr_b110_physical_forcing_t),allocatable::effective
+    type(fmr_b110_physical_forcing_t),allocatable::expected
+    type(process_hydraulic_view_t)::hydraulic
+    type(ppa_irrigation_profile_t)::root_profile
+    type(ppa_tcs1_4_observations_t)::reference_observations
+    real(real64)::deficit
+    integer::code
     type(ppa_tcs1_4_observations_t)::observations
     type(scheduled_irrigation_parameters_t)::p
     type(scheduled_irrigation_request_t)::r
@@ -1287,6 +1296,33 @@ contains
       observations%knot_count=2
     end do
     write(*,'(a)') 'PPA_IRR_TCS1_4_TYPED_SOURCE_BINDING=PASS'
+    hydraulic%active_nodes=n
+    allocate(hydraulic%water_content(n)); hydraulic%water_content=0.2_real64
+    root_profile%noddrz=1; root_profile%layer=[1]; root_profile%dz=[1.0_real64]
+    root_profile%ztopcp=[0.0_real64]; root_profile%rd=1.0_real64
+    root_profile%wclos=[0.8_real64]; root_profile%wcmes=[0.3_real64]; root_profile%wchis=[0.1_real64]
+    reference_observations=observations
+    call evaluate_root_zone_water_deficit_checked(1,root_profile%layer,root_profile%dz,root_profile%ztopcp, &
+         root_profile%rd,root_profile%wclos,root_profile%wcmes,root_profile%wchis,hydraulic%water_content, &
+         reference_observations%awlh,reference_observations%awmh,reference_observations%awah,deficit,code)
+    if(code/=IRR_DEFICIT_OK) error stop 'profile reference aggregation failed'
+    do i=2,4
+      p%timing_criterion=i
+      call evaluate_tcs1_4_source(p,base,r,reference_observations,previous,candidate,flux,d,expected,ok)
+      if(.not.ok) error stop 'profile timing reference failed'
+      call evaluate_tcs2_4_profile_source(p,base,r,observations,hydraulic,root_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.flux%event_finished) error stop 'derived profile timing failed'
+      if(any(effective%subsurface_irrigation_source/=expected%subsurface_irrigation_source)) &
+           error stop 'derived profile source differs'
+      if(observations%awlh/=1.0_real64) error stop 'profile mutated observations'
+      root_profile%dz=-1.0_real64
+      call evaluate_tcs2_4_profile_source(p,base,r,observations,hydraulic,root_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.candidate%active_event) error stop 'invalid profile source leaked'
+      root_profile%dz=1.0_real64
+    end do
+    write(*,'(a)') 'PPA_IRR_TCS2_4_CHECKED_PROFILE_SOURCE=PASS'
   end subroutine
 
   subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
