@@ -8,7 +8,12 @@
   "migration_closure_ledger": "integration/audits/SWAP4_TO_SWAP5_MIGRATION_CLOSURE_LEDGER.json",
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
-  "next_local_capability": "integration/audits/PPA_IRR_TCS1_4_COMPOSITION_PREREGISTRATION.json",
+  "next_local_capability": "integration/audits/PPA_IRR_TCS1_4_DCS1_PREREGISTRATION.json",
+  "latest_tcs2_4_profile_checkpoint": {
+    "tested_commit": "0d6389024",
+    "record": "integration/audits/PPA_IRR_TCS2_4_PROFILE_STATUS.json",
+    "scope": "Explicit supplied-profile TCS2-4/DCS2 derives water aggregates from the same committed snapshot as the irrigation event. Prefix, decoded restart, pending invalid-input bypass, preflight nonmutation and internally progressed hydraulic rollback pass O0/O2 with exact transcript identity and unchanged hard mass criteria. TCS1 daily stress, dynamic geometry, DCS1 timing composition and canonical admission remain open."
+  },
   "latest_tcs1_4_checkpoint": {
     "tested_commit": "1ff7c8153",
     "record": "integration/audits/PPA_IRR_TCS1_4_COMPOSITION_STATUS.json",

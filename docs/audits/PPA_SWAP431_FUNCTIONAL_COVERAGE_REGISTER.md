@@ -2,6 +2,16 @@
 
 ## Scope and authority
 
+Branch-local update: tested postimage `0d6389024` closes the restricted
+TCS2-4/DCS2 supplied-profile runtime gates: water aggregates use the committed
+hydraulic snapshot, prefix execution and fresh-owner restart agree exactly,
+and invalid selection or internally progressed hydraulic rejection preserves
+committed state. O0/O2 transcripts and preservation scopes pass. This is not
+canonical admission or whole-migration closure. Detailed authority is
+`integration/audits/PPA_IRR_TCS2_4_PROFILE_STATUS.json`. The next selected work
+unit is the explicit TCS1-4/DCS1 composition preregistration; automatic daily
+stress and changing crop/root geometry remain separate.
+
 This is the recoverable campaign index for SWAP 4.3.1 corrected-reference
 coverage. It is anchored to `integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5`.
 It reuses, rather than replaces, the source-bound detail in
