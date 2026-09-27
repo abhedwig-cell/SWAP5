@@ -1,0 +1,27 @@
+name: F-PE-SCRATCH01 persistent trial workspace
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_scratch01_*.sh'
+      - 'docs/performance/F-PE-SCRATCH01_*.md'
+      - '.github/workflows/f-pe-scratch01.yml'
+  workflow_dispatch:
+
+jobs:
+  paired:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run paired persistent-workspace benchmark
+        env:
+          SCRATCH01_N: '${{ matrix.n }}'
+          SCRATCH01_REPS: '5'
+        run: bash tests/fpe/run_fpe_scratch01_persistent_workspace.sh
