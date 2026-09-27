@@ -208,7 +208,7 @@ src=src.replace(needle,use,1)
 
 for call in ("call checkpoint%physical_state%clone(working)","call committed_state%physical_state%clone(working)"):
     if call not in src: raise SystemExit(f"P1B kernel clone seam missing: {call}")
-    src=src.replace(call,f"call base01_outer_tic(BASE01_OUTER_KERNEL_CLONE)\\n      {call}\\n      call base01_outer_toc(BASE01_OUTER_KERNEL_CLONE)",1)
+    src=src.replace(call,f"call base01_outer_tic(BASE01_OUTER_KERNEL_CLONE)\n      {call}\n      call base01_outer_toc(BASE01_OUTER_KERNEL_CLONE)",1)
 
 lines=src.splitlines(); out=[]; i=0; n=0
 while i<len(lines):
