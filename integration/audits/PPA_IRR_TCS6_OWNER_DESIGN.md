@@ -41,10 +41,10 @@ optional weekly metadata explicitly or receive disabled defaults. The backend
 trial transfer implemented at `ac947c243` retains metadata in candidate clones
 and requires an explicit proposal for enabled weekly carriers.
 
-Current bootstrap `run_prepared_irrigation` accepts selected event proposals
-and an optional selection mask, but has no weekly management proposal channel.
-Add an explicit typed proposal channel only after validating the source daily
-gate. It must carry both proposed counter and invocation identity, including on
+Bootstrap `run_prepared_irrigation` accepts selected event proposals,
+an optional selection mask and a staged weekly management proposal channel.
+The explicit typed proposal channel follows the reviewed source daily
+gate. It carries both proposed counter and invocation identity, including on
 days where no gift is selected. A false selection mask must not discard a valid
 no-gift counter transition. Do not encode counter changes as artificial gifts.
 
@@ -80,7 +80,7 @@ the explicit optional `weekly_proposal` only for an enabled weekly carrier;
 omission still rejects enabled carriers. Pending events cannot change dayfix.
 The model copies the proposal at the initial trial boundary into its candidate,
 including fresh retry clones, and clears its call-local proposal flag afterward.
-Only the existing candidate commit publishes it. Bootstrap wiring remains pending.
+Only the existing candidate commit publishes it. Daily producer binding remains pending.
 
 The resolved irrigation-column runtime adds an optional trailing
 `weekly_proposal`, forwarded unchanged through `execute_resolved_column` to the
@@ -88,7 +88,7 @@ backend. Absence remains absence for existing callers. The shared checkpoint,
 commit/discard and accounting body remains authoritative; no parallel commit
 path is introduced. Qualification compares explicit backend commit against this
 runtime path and repeats the longer failed trial before a shorter successful
-retry. Bootstrap array forwarding is a subsequent stage.
+retry. Bootstrap array forwarding follows the contract below.
 
 The first no-gift hydraulic fixture at duration 1/1024 day failed completion;
 this numerical case remains open and is not evidence against no-gift transaction
