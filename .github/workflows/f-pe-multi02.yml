@@ -59,7 +59,7 @@ jobs:
       - name: Replicate frozen large-N speed gates
         run: bash tests/fpe/run_fpe_multi02_p2_performance.sh
 
-  p2b-mixed-load:
+  p2-mixed-load:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -67,4 +67,4 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run mixed-cost load-balance discriminator
-        run: bash tests/fpe/run_fpe_multi02_p2b_mixed_load.sh
+        run: bash tests/fpe/run_fpe_multi02_p2_mixed_load.sh
