@@ -1,6 +1,7 @@
 program test_tcsfix
   use, intrinsic :: iso_fortran_env, only: real64,int64
   use mod_ppa_irr_tcsfix_identity
+  use mod_ppa_irr_tcsfix_daily
   use mod_irrigation_process
   use mod_ppa_irr_tcsfix_composition
   implicit none
@@ -120,4 +121,24 @@ program test_tcsfix
   identity%interval_days=0
   if(valid_tcsfix_identity(identity)) error stop 'identity interval'
   print '(a)', 'PPA_IRR_TCSFIX_DETACHED_DAILY_IDENTITY=PASS'
+  identity=ppa_tcsfix_identity_t(); identity%enabled=.true.; identity%interval_days=3
+  p%timing_criterion=1; r%t1=0.75_real64
+  call evaluate_tcsfix_daily_proposal(p,base,r,identity,.true.,100_int64,knots,values,2, &
+       1.0_real64,0.75_real64,0.0_real64,1.0_real64,0.5_real64,0.1_real64,proposal,candidate,flux,d)
+  if(d%status/=IRRIGATION_SPLIT_REQUIRED.or.proposal%day_bound.or.proposal%dayfix/=366) &
+       error stop 'daily split consumed identity'
+  r%t1=d%split_time
+  call evaluate_tcsfix_daily_proposal(p,base,r,identity,.true.,100_int64,knots,values,2, &
+       1.0_real64,0.75_real64,0.0_real64,1.0_real64,0.5_real64,0.1_real64,proposal,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.proposal%dayfix/=1.or.proposal%last_day/=100_int64) &
+       error stop 'daily retry identity'
+  identity=proposal
+  call evaluate_tcsfix_daily_proposal(p,base,r,identity,.true.,100_int64,knots,values,0, &
+       0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,proposal,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.flux%event_started.or.proposal%dayfix/=1) error stop 'daily duplicate'
+  call evaluate_tcsfix_daily_proposal(p,base,r,identity,.true.,101_int64,knots,values,2, &
+       1.0_real64,0.75_real64,0.0_real64,1.0_real64,0.5_real64,0.1_real64,proposal,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or.flux%event_started.or.proposal%dayfix/=2.or.proposal%last_day/=101_int64) &
+       error stop 'daily successor filter'
+  print '(a)', 'PPA_IRR_TCSFIX_DAILY_ATOMIC_PROPOSAL=PASS'
 end program

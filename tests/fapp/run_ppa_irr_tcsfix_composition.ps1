@@ -6,6 +6,7 @@ $sources = @('src/solver/mod_soil_water_solver_contract.f90', 'src/solver/mod_pr
  'src/process/mod_irrigation_process.f90', 'src/process/mod_ppa_irr_tcs1_4_timing.f90',
  'src/process/mod_ppa_irr_tcsfix_filter.f90', 'src/process/mod_ppa_irr_tcsfix_composition.f90',
  'src/process/mod_ppa_irr_tcsfix_identity.f90',
+ 'src/process/mod_ppa_irr_tcsfix_daily.f90',
  'tests/fapp/test_ppa_irr_tcsfix_composition.f90') | ForEach-Object { Join-Path $repo $_ }
 foreach ($opt in @('O0','O2')) {
  & gfortran -std=f2008 -ffree-line-length-none -fcheck=all '-ffpe-trap=invalid,zero,overflow' "-$opt" -J $build -I $build @sources -o "$build/$opt.exe"
