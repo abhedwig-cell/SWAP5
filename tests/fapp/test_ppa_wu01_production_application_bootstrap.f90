@@ -33,7 +33,11 @@ program test_ppa_wu01_production_application_bootstrap
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
 
   type(fmr_production_application_config_t) :: config, gw_config, bad_config, root_bad_config, drainage_bad_config
+  type(fmr_production_application_config_t) :: gw_parallel2_config, gw_parallel4_config, invalid_workers_config
+  type(fmr_production_application_config_t) :: standalone_parallel_config
   type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, root_bad_app, drainage_bad_app
+  type(fmr_production_application_bootstrap_t) :: gw_parallel2_app, gw_parallel4_app, invalid_workers_app
+  type(fmr_production_application_bootstrap_t) :: standalone_parallel_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
@@ -53,6 +57,19 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_OK, 'standalone production bootstrap initialize')
   call require(app%ready(), 'standalone production bootstrap ready')
   call require(app%tile_count() == NTILE, 'standalone production bootstrap tile count')
+  call require(app%groundwater_worker_count() == 1, 'default production worker count remains serial')
+
+  standalone_parallel_config = config
+  standalone_parallel_config%groundwater_parallel_workers = 2
+  call standalone_parallel_app%initialize(standalone_parallel_config, status)
+  call require(status == FMR_APP_BOOT_PROFILE_NOT_ADMITTED .and. .not. standalone_parallel_app%ready(), &
+       'parallel worker request fails closed outside groundwater profile')
+
+  invalid_workers_config = config
+  invalid_workers_config%groundwater_parallel_workers = 3
+  call invalid_workers_app%initialize(invalid_workers_config, status)
+  call require(status /= FMR_APP_BOOT_OK .and. .not. invalid_workers_app%ready(), &
+       'unsupported worker count fails closed')
 
   call app%copy_committed_revisions(revisions, status)
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 0_int64), 'initial committed revisions')
@@ -85,6 +102,23 @@ program test_ppa_wu01_production_application_bootstrap
   end do
   call gw_app%initialize(gw_config, status)
   call require(status == FMR_APP_BOOT_OK .and. gw_app%ready(), 'groundwater production bootstrap initialize')
+  call require(gw_app%groundwater_worker_count() == 1, 'groundwater default worker count remains serial')
+
+  gw_parallel2_config = gw_config
+  gw_parallel2_config%groundwater_parallel_workers = 2
+  call gw_parallel2_app%initialize(gw_parallel2_config, status)
+  call require(status == FMR_APP_BOOT_OK .and. gw_parallel2_app%ready(), 'two-worker groundwater ownership initialize')
+  call require(gw_parallel2_app%groundwater_worker_count() == 2, 'two-worker ownership count')
+  call gw_parallel2_app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. gw_parallel2_app%ready(), 'two-worker ownership clean close')
+
+  gw_parallel4_config = gw_config
+  gw_parallel4_config%groundwater_parallel_workers = 4
+  call gw_parallel4_app%initialize(gw_parallel4_config, status)
+  call require(status == FMR_APP_BOOT_OK .and. gw_parallel4_app%ready(), 'four-worker groundwater ownership initialize')
+  call require(gw_parallel4_app%groundwater_worker_count() == 4, 'four-worker ownership count')
+  call gw_parallel4_app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. gw_parallel4_app%ready(), 'four-worker ownership clean close')
 
   call compute_reference_head(gw_config%tiles(1)%parameters, gw_config%tiles(1)%groundwater_datum, &
        reference_head_m, status)
@@ -191,6 +225,11 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU01_GROUNDWATER_ROOT_EXTRACTION_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU01_GROUNDWATER_DRAINAGE_RESPONSE_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU01_GROUNDWATER_ACTIVE_PROCESS_COMPOSITION_FAIL_CLOSED=PASS'
+  print '(a)', 'FPE_MULTI04_P0_DEFAULT_SERIAL_WORKER_COUNT=PASS'
+  print '(a)', 'FPE_MULTI04_P0_WORKER_LOCAL_BACKEND_2_OWNERSHIP=PASS'
+  print '(a)', 'FPE_MULTI04_P0_WORKER_LOCAL_BACKEND_4_OWNERSHIP=PASS'
+  print '(a)', 'FPE_MULTI04_P0_UNSUPPORTED_WORKERS_FAIL_CLOSED=PASS'
+  print '(a)', 'FPE_MULTI04_P0_NON_GROUNDWATER_PARALLEL_FAIL_CLOSED=PASS'
   print '(a)', 'F_GC_STORAGE_HEAD_STATE_CAPACITANCE_AUTHORITY=PASS'
   print '(a)', 'F_GC_DRAINAGE_NONE_AUTHORITY=PASS'
   print '(a)', 'F_GC_UNRESOLVED_APPLICATION_AUTHORITY_FAIL_CLOSED=PASS'
