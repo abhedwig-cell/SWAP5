@@ -169,7 +169,7 @@ new="""    if(team_seen/=workers) error stop 'omp team mismatch'
     do i=1,n
       call registry%multi02_diagnostics(handles(i),p_after(i),status)
       if(status/=FMR_GW_REGISTRY_OK) error stop 'parallel diagnostic after'
-      call require_diag_delta_equal(s_before(i),s_after(i),p_before(i),p_after(i))
+      call require_diag_equal(s_after(i),p_after(i))
       qdiff=max(qdiff,abs(parallel_trials(i)%q_swap_m_per_s-serial_trials(i)%q_swap_m_per_s))
 """
 if old not in s: raise SystemExit("parallel compare seam missing")
@@ -196,21 +196,22 @@ s=s.replace(old,new,1)
 
 # Add exact comparison helper.
 needle="  subroutine sort5(v)\n"
-helper=r'''  subroutine require_diag_delta_equal(s0,s1,p0,p1)
-    type(kernel_diagnostics_t),intent(in)::s0,s1,p0,p1
-    if((s1%transaction_calls-s0%transaction_calls)/=(p1%transaction_calls-p0%transaction_calls)) error stop 'diag transaction'
-    if((s1%accepted_substeps-s0%accepted_substeps)/=(p1%accepted_substeps-p0%accepted_substeps)) error stop 'diag substeps'
-    if((s1%attempts-s0%attempts)/=(p1%attempts-p0%attempts)) error stop 'diag attempts'
-    if((s1%retries-s0%retries)/=(p1%retries-p0%retries)) error stop 'diag retries'
-    if((s1%solver_rejections-s0%solver_rejections)/=(p1%solver_rejections-p0%solver_rejections)) error stop 'diag solver rejection'
-    if((s1%temporal_rejections-s0%temporal_rejections)/=(p1%temporal_rejections-p0%temporal_rejections)) error stop 'diag temporal rejection'
-    if((s1%nonlinear_iterations-s0%nonlinear_iterations)/=(p1%nonlinear_iterations-p0%nonlinear_iterations)) error stop 'diag nonlinear'
-    if((s1%internal_retries-s0%internal_retries)/=(p1%internal_retries-p0%internal_retries)) error stop 'diag internal retry'
-    if((s1%headcalc_calls-s0%headcalc_calls)/=(p1%headcalc_calls-p0%headcalc_calls)) error stop 'diag headcalc'
-    if((s1%jacobian_builds-s0%jacobian_builds)/=(p1%jacobian_builds-p0%jacobian_builds)) error stop 'diag jacobian'
-    if((s1%linear_solves-s0%linear_solves)/=(p1%linear_solves-p0%linear_solves)) error stop 'diag linear'
-    if((s1%backtracking_attempts-s0%backtracking_attempts)/=(p1%backtracking_attempts-p0%backtracking_attempts)) error stop 'diag backtrack'
-  end subroutine require_diag_delta_equal
+helper=r'''  subroutine require_diag_equal(s,p)
+    type(kernel_diagnostics_t),intent(in)::s,p
+    if(s%transaction_calls/=p%transaction_calls) error stop 'diag transaction'
+    if(s%accepted_substeps/=p%accepted_substeps) error stop 'diag substeps'
+    if(s%attempts/=p%attempts) error stop 'diag attempts'
+    if(s%retries/=p%retries) error stop 'diag retries'
+    if(s%solver_rejections/=p%solver_rejections) error stop 'diag solver rejection'
+    if(s%temporal_rejections/=p%temporal_rejections) error stop 'diag temporal rejection'
+    if(s%temporal_acceptance_source/=p%temporal_acceptance_source) error stop 'diag temporal source'
+    if(s%nonlinear_iterations/=p%nonlinear_iterations) error stop 'diag nonlinear'
+    if(s%internal_retries/=p%internal_retries) error stop 'diag internal retry'
+    if(s%headcalc_calls/=p%headcalc_calls) error stop 'diag headcalc'
+    if(s%jacobian_builds/=p%jacobian_builds) error stop 'diag jacobian'
+    if(s%linear_solves/=p%linear_solves) error stop 'diag linear'
+    if(s%backtracking_attempts/=p%backtracking_attempts) error stop 'diag backtrack'
+  end subroutine require_diag_equal
 
 '''
 if needle not in s: raise SystemExit("helper seam missing")
