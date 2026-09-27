@@ -10,10 +10,11 @@
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
   "next_local_capability": "integration/audits/PPA_IRR_TCS6_COMPOSITION_PREREGISTRATION.json",
   "latest_tcs6_dcs1_checkpoint": {
-    "tested_commit": "41178cb8e",
+    "tested_commit": "a99c037d9",
     "record": "integration/audits/PPA_IRR_TCS6_COMPOSITION_STATUS.json",
     "design": "integration/audits/PPA_IRR_TCS6_DCS1_DESIGN.md",
-    "scope": "Explicit supplied-deficit weekly DCS1 process, source and bounded bootstrap execution qualified on mixed DCS1/DCS2 columns, including split/prefix/budget, decoded restart and preflight nonmutation. Profile-derived weekly deficit is the next separate capability; full-day execution, disk persistence and canonical admission remain open."
+    "scope": "Explicit supplied-deficit and opt-in committed-profile weekly DCS1/DCS2 routes pass bounded O0/O2 runtime gates: independent profile/threshold arithmetic, mixed-column exact/window identity, pending decoded-bundle restore, next-prefix completion, fresh two-prefix gift/remainder and preflight nonmutation. Root/profile input is caller supplied and fixed per window. Full-day execution and canonical admission remain open; the decoded bundle contract does not imply a byte-level codec requirement.",
+    "next_bounded_check": "Successor daily invocation with changed explicit profile inputs: verify fresh derivation from newly committed water while duplicate/pending invocations retain their bypass contract. No automatic crop/root evolution inferred."
   },
   "latest_tcs6_checkpoint": {
     "tested_commit": "0f28531f8",

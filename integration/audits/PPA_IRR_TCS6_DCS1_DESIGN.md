@@ -90,7 +90,10 @@ record contract. Earlier next-step references to a required external codec do
 not establish an additional migration requirement for this bounded route.
 No disk serialization or production restart registration is claimed here.
 
-Remaining extensions include profile-derived DCS1 runtime amounts (source-level
-arithmetic is already tested), fresh-selection multi-prefix windows, and broader
-daily execution. Full-day numerical completion remains separately unresolved.
-These additions must not weaken existing publication or mass checks.
+Tested postimage `a99c037d9` additionally covers profile-derived DCS1 runtime
+amounts and fresh-selection two-prefix windows through gift completion and a
+zero-source remainder. Both columns commit with unchanged mass tolerances and
+without duplicate counting. Remaining work includes successor invocation with
+changed explicit profiles and broader daily execution. Full-day numerical
+completion remains separately unresolved. These additions must not weaken
+existing publication or mass checks.

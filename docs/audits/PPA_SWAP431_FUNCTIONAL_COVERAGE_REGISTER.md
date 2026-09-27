@@ -2,13 +2,16 @@
 
 ## Scope and authority
 
-Latest bounded irrigation extension: tested postimage `77d9e1032` adds
-TCS1-4/DCS1 supplied-profile runtime composition with independent depth-grid,
-source, prefix, mass, decoded restart and internally progressed rollback gates.
-See `integration/audits/PPA_IRR_TCS1_4_DCS1_STATUS.json`. The next selected
-capability is explicit weekly TCS6 composition, with accepted-only daily-counter
-ownership required before runtime qualification. These branch-local results do
-not change canonical admission or the frozen Status-A denominator.
+Latest bounded irrigation extension: tested postimage `a99c037d9` covers
+weekly TCS6 supplied-deficit and opt-in committed-profile DCS1/DCS2 execution.
+Source arithmetic, explicit mask validation, mixed-column exact/window identity,
+pending decoded-bundle restore and fresh two-prefix gift/remainder execution
+pass recorded O0/O2 gates with unchanged mass checks. See
+`integration/audits/PPA_IRR_TCS6_COMPOSITION_STATUS.json`. Profiles remain
+caller supplied; neither automatic root evolution nor full-day completion is
+established. These branch-local results do not change canonical admission or
+the frozen Status-A denominator. Next check: successor invocation with changed
+explicit profile inputs and freshly committed water, preserving duplicate bypass.
 
 Branch-local update: tested postimage `0d6389024` closes the restricted
 TCS2-4/DCS2 supplied-profile runtime gates: water aggregates use the committed
