@@ -9,7 +9,7 @@ module mod_irrigation_process
     integer :: dayfix=366
     integer(int64) :: last_day=0_int64
   end type
-  public :: valid_weekly_identity
+  public :: valid_weekly_identity,valid_weekly_transition
 
   integer, parameter, public :: IRRIGATION_OK = 0
   integer, parameter, public :: IRRIGATION_INVALID_INTERVAL = 1
@@ -165,6 +165,31 @@ contains
       if(state%last_day<0_int64) return
     end if
     ok=.true.
+  end function
+
+  ! Structural publication guard; the daily process still owns scientific selection.
+  ! Activation/crop reset is deliberately not a permitted runtime transition.
+  pure logical function valid_weekly_transition(base,proposed) result(ok)
+    type(ppa_weekly_identity_t),intent(in)::base,proposed
+    integer::advanced_counter
+    ok=.false.
+    if(.not.valid_weekly_identity(base).or..not.valid_weekly_identity(proposed)) return
+    if(.not.base%enabled.or..not.proposed%enabled) return
+    if(base%day_bound.eqv.proposed%day_bound) then
+      if(base%last_day==proposed%last_day) then
+        ok=base%dayfix==proposed%dayfix
+        return
+      end if
+    end if
+    if(.not.proposed%day_bound) return
+    if(base%day_bound) then
+      if(proposed%last_day<=base%last_day) return
+      if(proposed%last_day-base%last_day/=1_int64) return
+    end if
+    advanced_counter=base%dayfix+1
+    if(advanced_counter>=7) advanced_counter=0
+    ! An ineligible day consumes its ordinal but not an eligible invocation.
+    ok=proposed%dayfix==base%dayfix.or.proposed%dayfix==advanced_counter
   end function
 
   pure subroutine evaluate_fixed_irrigation_interval(parameters, committed_state, request, &

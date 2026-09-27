@@ -54,6 +54,19 @@ mixed publication remains explicit; a batch-level counter is forbidden.
 
 ## Required gates
 
+### Backend proposal validation contract
+
+The optional backend management proposal must pass `valid_weekly_transition`
+against the committed weekly metadata before hydraulic execution. Both states
+must be valid and enabled. An unchanged identity permits only an unchanged
+counter. A first or consecutive ordinal permits the unchanged counter (ineligible
+day) or exactly one source counter increment/reset. Backward/gapped ordinals,
+implicit activation, disabling and crop resets reject. Ordered subtraction
+avoids integer overflow at the maximum ordinal. This guard checks structural
+publication validity, not scientific eligibility or deficit selection; those
+remain the daily process producer's responsibility. The helper alone does not
+open the currently guarded runtime route.
+
 - Seven accepted no-gift days reset the counter, including decoded midweek restart.
 - Duplicate daily invocation does not increment twice; backward/gapped input
   is rejected under the final explicit contract.

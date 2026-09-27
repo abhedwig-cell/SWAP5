@@ -1244,7 +1244,78 @@ contains
       class default
         error stop 'weekly rejection lost carrier'
       end select
-      write(*,'(a)') 'PPA_IRR_WEEKLY_UNWIRED_RUNTIME_REJECTION=PASS'
+      write(*,'(a)') 'PPA_IRR_WEEKLY_EXPLICIT_PROPOSAL_REQUIRED=PASS'
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,forcing, &
+           limited,1,T0,finish,weekly_checkpoint,result,candidate,diagnostics,weekly_proposal=seed%weekly)
+      if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps<1) &
+           error stop 'weekly pending rollback did not exercise progress'
+      call weekly_owner%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'weekly pending rollback snapshot'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%weekly%dayfix/=3.or.snapshot%weekly%last_day/=100_int64.or. &
+             any(snapshot%water_content/=seed%water_content)) error stop 'weekly pending rollback mutation'
+      end select
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,forcing, &
+           profile%numerical,1,T0,finish,weekly_checkpoint,result,candidate,diagnostics,weekly_proposal=seed%weekly)
+      if(.not.result%completed.or..not.candidate%ready()) error stop 'weekly pending explicit trial'
+      if(abs(result%mass%residual)>1.0e-12_real64) error stop 'weekly pending mass'
+      call backend%commit_trial_candidate(weekly_owner,candidate,diagnostics,ok,code)
+      if(.not.ok) error stop 'weekly pending commit'
+      call weekly_owner%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'weekly pending committed snapshot'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%weekly%dayfix/=3.or.snapshot%weekly%last_day/=100_int64) error stop 'weekly pending metadata lost'
+      class default
+        error stop 'weekly pending carrier sliced'
+      end select
+      write(*,'(a)') 'PPA_IRR_WEEKLY_PENDING_TRANSFER_ROLLBACK=PASS'
+    end block
+    block
+      type(kernel_committed_state_t)::weekly_owner
+      type(kernel_checkpoint_t)::weekly_checkpoint
+      type(ppa_irrigation_event_state_t)::weekly_seed
+      type(fmr_b110_physical_forcing_t)::no_gift_forcing
+      weekly_seed=seed
+      weekly_seed%irrigation%active_event=.false.
+      weekly_seed%irrigation%active_event_origin=0
+      weekly_seed%irrigation%active_event_index=0
+      weekly_seed%irrigation%active_event_start=0.0_real64
+      weekly_seed%irrigation%active_event_end=0.0_real64
+      weekly_seed%irrigation%active_event_rate=0.0_real64
+      call weekly_seed%clone(initial)
+      call weekly_owner%initialize(404197_int64,initial,ok,T0)
+      if(.not.ok) error stop 'weekly no-gift owner'
+      call weekly_owner%capture_checkpoint(weekly_checkpoint,ok)
+      if(.not.ok) error stop 'weekly no-gift checkpoint'
+      no_gift_forcing=forcing; no_gift_forcing%subsurface_irrigation_source=0.0_real64
+      weekly_seed%weekly%last_day=101_int64; weekly_seed%weekly%dayfix=4
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
+           profile%numerical,1,T0,finish,weekly_checkpoint,result,candidate,diagnostics, &
+           weekly_proposal=weekly_seed%weekly)
+      if(.not.result%completed.or..not.candidate%ready()) error stop 'weekly no-gift hydraulic trial'
+      if(abs(result%mass%residual)>1.0e-12_real64) error stop 'weekly no-gift mass'
+      call weekly_owner%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'weekly no-gift precommit snapshot'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%weekly%dayfix/=3.or.snapshot%weekly%last_day/=100_int64) error stop 'weekly premature publication'
+      end select
+      call backend%commit_trial_candidate(weekly_owner,candidate,diagnostics,ok,code)
+      if(.not.ok) error stop 'weekly no-gift commit'
+      call weekly_owner%current_time(time,ok)
+      if(.not.ok.or.time/=finish.or.weekly_owner%current_revision()/=1_int64) error stop 'weekly no-gift time revision'
+      call weekly_owner%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'weekly no-gift committed snapshot'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%weekly%dayfix/=4.or.snapshot%weekly%last_day/=101_int64.or.snapshot%irrigation%active_event) &
+             error stop 'weekly no-gift metadata publication'
+      class default
+        error stop 'weekly no-gift carrier sliced'
+      end select
+      write(*,'(a)') 'PPA_IRR_WEEKLY_NO_GIFT_HYDRAULIC_PUBLICATION=PASS'
     end block
     call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
          limited,1,T0,finish,checkpoint,result,candidate,diagnostics)

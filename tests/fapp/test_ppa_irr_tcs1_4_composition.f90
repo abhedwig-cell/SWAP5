@@ -268,7 +268,46 @@ program test_composition
   if(d%status/=IRRIGATION_OK.or.proposal%last_day/=102_int64.or.proposal%dayfix/=1) &
        error stop 'daily no-gift proposal'
   write(*,'(a)') 'PPA_IRR_TCS6_DAILY_ATOMIC_PROCESS_PROPOSAL=PASS'
+  call verify_weekly_transitions()
 contains
+  subroutine verify_weekly_transitions()
+    type(ppa_weekly_identity_t)::before,after
+    integer::counter,next_counter,expected_counter
+    before%enabled=.true.; before%day_bound=.true.; before%last_day=100_int64
+    do counter=0,366
+      before%dayfix=counter
+      expected_counter=counter+1
+      if(expected_counter>=7) expected_counter=0
+      do next_counter=0,366
+        after=before; after%last_day=101_int64; after%dayfix=next_counter
+        if(valid_weekly_transition(before,after).neqv. &
+             (next_counter==counter.or.next_counter==expected_counter)) error stop 'weekly transition grid'
+        after%last_day=100_int64
+        if(valid_weekly_transition(before,after).neqv.(next_counter==counter)) &
+             error stop 'weekly duplicate transition grid'
+      end do
+    end do
+    after=before; after%last_day=102_int64
+    if(valid_weekly_transition(before,after)) error stop 'weekly transition gap'
+    after%last_day=99_int64
+    if(valid_weekly_transition(before,after)) error stop 'weekly transition backwards'
+    after=ppa_weekly_identity_t(); after%enabled=.true.
+    if(valid_weekly_transition(before,after)) error stop 'weekly implicit crop reset'
+    before=after
+    after%day_bound=.true.; after%last_day=huge(0_int64); after%dayfix=0
+    if(.not.valid_weekly_transition(before,after)) error stop 'weekly first terminal ordinal'
+    before=after
+    if(.not.valid_weekly_transition(before,after)) error stop 'weekly terminal duplicate transition'
+    before%last_day=huge(0_int64)-1_int64; before%dayfix=6
+    if(.not.valid_weekly_transition(before,after)) error stop 'weekly terminal successor transition'
+    after%dayfix=367
+    if(valid_weekly_transition(before,after)) error stop 'weekly malformed transition'
+    after=before; after%enabled=.false.
+    if(valid_weekly_transition(before,after)) error stop 'weekly disable transition'
+    before=ppa_weekly_identity_t(); after=before; after%enabled=.true.
+    if(valid_weekly_transition(before,after)) error stop 'weekly implicit activation'
+    write(*,'(a)') 'PPA_IRR_TCS6_PUBLICATION_TRANSITION_GRID=PASS'
+  end subroutine
   subroutine daily_call(ordinal,deficit)
     integer(int64),intent(in)::ordinal
     real(real64),intent(in)::deficit
