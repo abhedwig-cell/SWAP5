@@ -111,7 +111,7 @@ s=s.replace(old,new,1)
 # Snapshot diagnostics immediately before serial trials.
 old="""    call system_clock(c0,count_rate=rate)
     do i=1,n
-      call registry%trial_from_origin(handles(i),window,href,serial_trials(i),participant_status,status)
+      call registry%trial_from_origin(handles(i),window,target_head(i),serial_trials(i),participant_status,status)
 """
 new="""    do i=1,n
       call registry%multi02_diagnostics(handles(i),s_before(i),status)
@@ -119,7 +119,7 @@ new="""    do i=1,n
     end do
     call system_clock(c0,count_rate=rate)
     do i=1,n
-      call registry%trial_from_origin(handles(i),window,href,serial_trials(i),participant_status,status)
+      call registry%trial_from_origin(handles(i),window,target_head(i),serial_trials(i),participant_status,status)
 """
 if old not in s: raise SystemExit("serial before seam missing")
 s=s.replace(old,new,1)
