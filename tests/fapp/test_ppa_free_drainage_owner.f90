@@ -1495,6 +1495,30 @@ contains
         end do
         ! These supplied values cannot trigger: the checked profile must be used.
         observations%awlh=1.0_real64; observations%awmh=0.5_real64; observations%awah=1.0_real64
+        call restored%copy_committed_hydraulic_states(lhs,code)
+        if(code/=FMR_APP_BOOT_OK) error stop 'profile preflight snapshot failed'
+        timing_profiles(2)%dz=-1.0_real64
+        call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+             management,requests,previous,right,code,profiles=timing_profiles,observations=observations)
+        if(code==FMR_APP_BOOT_OK.or.allocated(right)) error stop 'invalid timing profile executed'
+        call restored%copy_committed_hydraulic_states(rhs,code)
+        if(code/=FMR_APP_BOOT_OK) error stop 'profile rejected snapshot failed'
+        do i=1,2
+          if(lhs(i)%revision/=rhs(i)%revision.or.lhs(i)%committed_time/=rhs(i)%committed_time.or. &
+               any(lhs(i)%water_content/=rhs(i)%water_content).or. &
+               any(lhs(i)%pressure_head_cm/=rhs(i)%pressure_head_cm)) error stop 'profile preflight mutated owner'
+        end do
+        call restored%export_committed_restart(92001_int64,saved,ok,code)
+        if(.not.ok) error stop 'profile preflight event export failed'
+        do i=1,2
+          select type(state=>saved%records(i)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(state%irrigation%active_event) error stop 'profile preflight published event'
+          class default
+            error stop 'profile preflight carrier missing'
+          end select
+        end do
+        timing_profiles(2)%dz=1.0_real64
       end if
       call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
            management,requests,previous,right,code)
@@ -1927,14 +1951,25 @@ contains
          any(left%accepted_substeps/=right%accepted_substeps).or. &
          any(left%transaction_attempts/=right%transaction_attempts)) error stop 'prefix rejection outcome mismatch'
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PREFIX_TERMINAL_HYDRAULIC_REJECTION=PASS'
-    do timing=1,4
+    do timing=1,7
       management%timing_criterion=timing
+      if(timing>=5) then
+        management%timing_criterion=timing-3
+        allocate(timing_profiles(2))
+        do i=1,2
+          timing_profiles(i)%noddrz=1; timing_profiles(i)%layer=[1]; timing_profiles(i)%dz=[1.0_real64]
+          timing_profiles(i)%ztopcp=[0.0_real64]; timing_profiles(i)%rd=1.0_real64
+          timing_profiles(i)%wclos=[0.99_real64]; timing_profiles(i)%wcmes=[0.9_real64]
+          timing_profiles(i)%wchis=[0.0_real64]
+        end do
+        observations%awah=1.0_real64
+      end if
       call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
            management,requests,previous,2,prefixes,prefix_count,code,observations=observations(1:1))
       if(code==FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'TCS malformed observations accepted'
       if(allocated(prefixes(1)%columns)) error stop 'TCS malformed observation execution'
       call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
-           management,requests,previous,2,prefixes,prefix_count,code,observations=observations)
+           management,requests,previous,2,prefixes,prefix_count,code,profiles=timing_profiles,observations=observations)
       if(code==FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'TCS window hid hydraulic rejection'
       if(.not.allocated(prefixes(1)%columns)) error stop 'TCS rejected result missing'
       if(allocated(prefixes(2)%columns)) error stop 'TCS rejected window continued'
@@ -1944,7 +1979,22 @@ contains
       if(any(left%kernel_status/=right%kernel_status).or. &
            any(left%accepted_substeps/=right%accepted_substeps).or. &
            any(left%transaction_attempts/=right%transaction_attempts)) error stop 'TCS rejection outcome mismatch'
+      call application%export_committed_restart(92001_int64,saved,ok,code)
+      if(.not.ok) error stop 'TCS rejection export failed'
+      do i=1,2
+        select type(state=>saved%records(i)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%irrigation%active_event) error stop 'TCS rejected event persisted'
+          if(saved%records(i)%committed_time/=T0) error stop 'TCS rejected time persisted'
+          if(any(state%water_content/=source%water_content).or. &
+               any(state%pressure_head/=source%pressure_head)) error stop 'TCS rejected water persisted'
+        class default
+          error stop 'TCS rejected carrier missing'
+        end select
+      end do
+      if(allocated(timing_profiles)) deallocate(timing_profiles)
     end do
+    write(*,'(a)') 'PPA_IRR_TCS2_4_PROFILE_PREFLIGHT_ROLLBACK=PASS'
     management%timing_criterion=7
     write(*,'(a)') 'PPA_IRR_TCS1_4_WINDOW_INTERNAL_ROLLBACK=PASS'
     call application%copy_committed_hydraulic_states(lhs,code)
