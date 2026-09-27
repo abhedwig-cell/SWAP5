@@ -1961,7 +1961,7 @@ contains
       type(fmr_b110_physical_forcing_t)::weekly_forcing(2)
       type(fmr_b110_physical_forcing_t),allocatable::weekly_effective(:)
       type(fmr_serialized_column_result_t),allocatable::weekly_results(:)
-      integer::weekly_code,j
+      integer::weekly_code,j,weekly_day
       logical::weekly_ok
       weekly_config=config; weekly_config%tiles(1)%irrigation_ssdi_node=1
       call weekly_app%initialize(weekly_config,weekly_code)
@@ -2109,8 +2109,40 @@ contains
       class default
         error stop 'weekly daily target carrier'
       end select
+      ! Explicit management ordinals are not elapsed full hydraulic days.
+      ! Exercise seven successor invocations, including rollover and restore.
+      do weekly_day=102,108
+        daily_requests%t0=target_bundle%records(1)%committed_time
+        daily_requests%t1=daily_requests(1)%t0+1.0_real64/65536.0_real64
+        daily_inputs(1)%ordinal=int(weekly_day,int64)
+        call execute_window_ppa_bootstrap_irrigation(target_app,[1_int64,2_int64],92001_int64, &
+             daily_parameters,daily_requests,weekly_forcing,1,prefixes,prefix_count,weekly_code, &
+             weekly_inputs=daily_inputs,target_selector=weekly_bounded_target)
+        if(weekly_code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'weekly successor window'
+        if(.not.all(prefixes(1)%columns%committed)) error stop 'weekly successor publication'
+        call target_app%export_committed_restart(92001_int64,target_bundle,weekly_ok,weekly_code)
+        if(.not.weekly_ok) error stop 'weekly successor export'
+        if(any(target_bundle%records%committed_time/=daily_requests(1)%t1)) error stop 'weekly successor time'
+        select type(state=>target_bundle%records(1)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%weekly%dayfix/=mod(4+weekly_day-101,7).or. &
+               state%weekly%last_day/=int(weekly_day,int64).or.state%irrigation%active_event) &
+               error stop 'weekly successor count rollover'
+        class default
+          error stop 'weekly successor carrier'
+        end select
+        if(weekly_day==104) then
+          call target_app%close(weekly_code)
+          if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly rollover close'
+          call target_app%initialize(weekly_config,weekly_code)
+          if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly rollover initialize'
+          call target_app%restore_committed_restart(target_bundle,92001_int64,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly rollover restore'
+        end if
+      end do
       call target_app%close(weekly_code)
       if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly daily target close'
+      write(*,'(a)') 'PPA_IRR_WEEKLY_SEVEN_SUCCESSOR_ORDINALS_ROLLOVER_RESTART=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_DAILY_TARGET_WINDOW_CONTINUATION=PASS'
       ! A separate fresh, two-weekly-column fixture exercises actual gift
       ! selection followed by a same-ordinal pending continuation.
