@@ -59,6 +59,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
       - name: Qualify live MODFLOW6 worker4 publication and coupling identity
         run: bash tests/fpe/run_fpe_multi04_p3p4_live_worker4.sh
 
