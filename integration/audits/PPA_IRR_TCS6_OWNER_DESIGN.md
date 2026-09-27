@@ -19,10 +19,13 @@ the caller must submit consecutive daily invocations; do not invent skipped-day
 deficits or silently advance multiple days. Crop-rotation reset is a separate
 explicit input/contract, not inferred from DVS.
 
-Pending gifts and ineligible selection skip the source selector under the
-current process contract. Re-read the original daily invocation/crop gate before
-finalizing how such days affect the accepted ordinal; pure process tests alone
-do not establish the legacy calendar semantics.
+Source daily ordering is reviewed in `PPA_IRR_TCS6_DAILY_SOURCE_REVIEW.md`.
+The first route is standalone day-start, TCSFIX disabled. An accepted explicit
+daily invocation consumes its ordinal even when ineligible, but only eligible
+selector invocation changes dayfix. Pending continuation does not reselect.
+Duplicate ordinal suppresses a second selector/counter transition; backward or
+skipped ordinals reject. These ordinal rules are explicit restricted SWAP5
+ingestion semantics, not a legacy stored field.
 
 ## Transaction boundary
 

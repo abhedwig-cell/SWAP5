@@ -10,5 +10,6 @@
   "process_build": "swap-tcs-composition-9787d157b6314cb3a6e51e6f8163cde1",
   "preservation": "Scheduled TCS7/8 DCS1 plus independent depth/root-deficit oracles PASS O0/O2 in swap-irr-dcs1-scheduled-ac37e05f32c44e18a363701972d88eab. Clean owner IrrigationSource O0/O2 transcript identity and hydraulic-copy/guards identity PASS in swap-ppa-wu01-88392c35b34240e4a90b4ad926f221d3. Documentation source and strict MkDocs PASS.",
   "qualification_boundary": "Initial process composition only; no persisted daily counter, daily identity, source binding, TCS6 runtime execution or canonical admission. Owner preservation tests exercise previously supported routes, not weekly runtime.",
-  "next_safe_step": "Follow PPA_IRR_TCS6_OWNER_DESIGN.md: verify original daily/crop invocation semantics, finalize ordinal/gap behavior, then extend existing carrier with isolated factory/clone/decoded-restart tests before runtime proposal plumbing."
+  "daily_source_review": "PPA_IRR_TCS6_DAILY_SOURCE_REVIEW.md verifies exact irrigation member hash and daily/crop/fixed-event gating. Dayfix counts eligible invocations; TCSFIX and legacy multi-SWAP day-end semantics are excluded from the proposed first route.",
+  "next_safe_step": "Follow PPA_IRR_TCS6_OWNER_DESIGN.md: extend existing carrier with weekly counter plus consumed daily ordinal, and isolated factory/clone/decoded-restart validation before runtime proposal plumbing."
 }
