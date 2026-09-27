@@ -7,6 +7,7 @@ program test_composition
   use mod_ppa_irr_tcs1_4_dcs1
   use mod_ppa_irr_tcs6_composition
   use mod_ppa_irr_weekly_identity
+  use mod_ppa_irr_tcs6_daily
   implicit none
   type(scheduled_irrigation_parameters_t)::p
   type(scheduled_irrigation_request_t)::r
@@ -241,7 +242,39 @@ program test_composition
   weekly%dayfix=367
   if(valid_weekly_identity(weekly)) error stop 'weekly malformed metadata'
   write(*,'(a)') 'PPA_IRR_TCS6_DAILY_IDENTITY_PROPOSAL=PASS'
+  weekly=ppa_weekly_identity_t(); weekly%enabled=.true.
+  r%t0=0.0_real64; r%t1=0.75_real64
+  call daily_call(100_int64,1.0_real64)
+  if(d%status/=IRRIGATION_SPLIT_REQUIRED.or.proposal%day_bound.or.proposal%dayfix/=366) &
+       error stop 'daily split consumed identity'
+  r%t1=d%split_time
+  call daily_call(100_int64,1.0_real64)
+  if(d%status/=IRRIGATION_OK.or.proposal%last_day/=100_int64.or.proposal%dayfix/=0) &
+       error stop 'daily retried proposal'
+  if(weekly%day_bound.or.weekly%dayfix/=366) error stop 'daily proposal mutated base'
+  weekly=proposal
+  r%t0=0.5_real64; r%t1=0.75_real64
+  call daily_call(100_int64,nan)
+  if(d%status/=IRRIGATION_OK.or.flux%event_started.or.proposal%dayfix/=0) error stop 'daily duplicate selected'
+  r%selection_opportunity=.false.
+  call daily_call(101_int64,nan)
+  if(d%status/=IRRIGATION_OK.or.proposal%last_day/=101_int64.or.proposal%dayfix/=0) &
+       error stop 'daily ineligible ordinal'
+  weekly=proposal; r%selection_opportunity=.true.
+  call daily_call(102_int64,nan)
+  if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.proposal%last_day/=101_int64.or.proposal%dayfix/=0) &
+       error stop 'daily invalid selector consumed identity'
+  call daily_call(102_int64,0.0_real64)
+  if(d%status/=IRRIGATION_OK.or.proposal%last_day/=102_int64.or.proposal%dayfix/=1) &
+       error stop 'daily no-gift proposal'
+  write(*,'(a)') 'PPA_IRR_TCS6_DAILY_ATOMIC_PROCESS_PROPOSAL=PASS'
 contains
+  subroutine daily_call(ordinal,deficit)
+    integer(int64),intent(in)::ordinal
+    real(real64),intent(in)::deficit
+    call evaluate_tcs6_daily_proposal(p,base,r,weekly,.true.,ordinal,deficit,5.0_real64, &
+         proposal,candidate,flux,d)
+  end subroutine
   subroutine profile_call(state,thickness,count)
     type(irrigation_state_t),intent(in)::state
     real(real64),intent(in)::thickness
