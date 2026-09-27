@@ -37,15 +37,18 @@ def main()->None:
     tr,ts,alpha,nvg,ksat,lamb=MATERIALS[material]
     if cfg(h0,tr,ts,alpha,nvg,ksat,lamb): raise RuntimeError("configure failed")
 
+    # The research bridge intentionally freezes policy configuration at
+    # initialization. Set the requested floor before initialize_configured(),
+    # matching the production bootstrap/configuration ownership boundary.
+    pfn=swap.lib.fgc44_live01_policy_floor_c
+    pfn.restype=ctypes.c_int; pfn.argtypes=[ctypes.c_double]
+    if pfn(floor_cm): raise RuntimeError("policy floor configure failed")
+
     predfn=swap.lib.fgc44_approx04_predictor_q_c
     predfn.restype=ctypes.c_int; predfn.argtypes=[ctypes.POINTER(ctypes.c_double)]
     predictor_q=ctypes.c_double()
     if predfn(ctypes.byref(predictor_q)): raise RuntimeError("predictor q failed")
     swap.initialize_configured(DT,predictor_q.value)
-
-    pfn=swap.lib.fgc44_live01_policy_floor_c
-    pfn.restype=ctypes.c_int; pfn.argtypes=[ctypes.c_double]
-    if pfn(floor_cm): raise RuntimeError("policy floor configure failed")
 
     dyn=swap.lib.fgc44_temporal03_dynamic_origin_c
     dyn.restype=ctypes.c_int
