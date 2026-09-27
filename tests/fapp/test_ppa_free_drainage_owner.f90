@@ -1293,6 +1293,29 @@ contains
       if(.not.ok) error stop 'weekly no-gift checkpoint'
       no_gift_forcing=forcing; no_gift_forcing%subsurface_irrigation_source=0.0_real64
       weekly_seed%weekly%last_day=101_int64; weekly_seed%weekly%dayfix=4
+      ! Keep the longer failing fixture as explicit rollback evidence. Short
+      ! success below must not hide its numerical completion failure.
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
+           profile%numerical,1,T0,finish,weekly_checkpoint,result,candidate,diagnostics, &
+           weekly_proposal=weekly_seed%weekly)
+      if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps<1) &
+           error stop 'weekly no-gift long rollback fixture changed'
+      call weekly_owner%current_time(time,ok)
+      if(.not.ok.or.time/=T0.or.weekly_owner%current_revision()/=0_int64) &
+           error stop 'weekly failed no-gift advanced owner'
+      call weekly_owner%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'weekly failed no-gift snapshot'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%weekly%dayfix/=3.or.snapshot%weekly%last_day/=100_int64.or. &
+             snapshot%irrigation%active_event.or.any(snapshot%water_content/=seed%water_content).or. &
+             any(snapshot%pressure_head/=seed%pressure_head)) error stop 'weekly failed no-gift published proposal'
+      class default
+        error stop 'weekly failed no-gift lost carrier'
+      end select
+      write(*,'(a,i0,a,i0)') 'PPA_IRR_WEEKLY_NO_GIFT_LONG_REJECTION_STATUS=',result%status, &
+           ';INTERNAL_ACCEPTED=',diagnostics%accepted_substeps
+      write(*,'(a)') 'PPA_IRR_WEEKLY_CHANGED_PROPOSAL_ROLLBACK=PASS'
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
            weekly_proposal=weekly_seed%weekly)
