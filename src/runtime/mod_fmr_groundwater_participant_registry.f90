@@ -31,6 +31,7 @@ module mod_fmr_groundwater_participant_registry
     integer(int64) :: tile_id = 0_int64
     type(fmr_groundwater_swap_participant_t) :: participant
     type(fmr_serialized_reference_backend_t), pointer :: backend => null()
+    type(fmr_serialized_reference_backend_t), pointer :: candidate_backend => null()
     type(fmr_b110_physical_parameters_t), pointer :: parameters => null()
     type(kernel_committed_state_t), pointer :: committed => null()
     type(fmr_groundwater_head_forcing_materializer_t), pointer :: materializer => null()
@@ -53,6 +54,7 @@ module mod_fmr_groundwater_participant_registry
     procedure, public :: release => registry_release
     procedure, public :: capture_origin => registry_capture_origin
     procedure, public :: trial_from_origin => registry_trial_from_origin
+    procedure, public :: trial_from_origin_on_backend => registry_trial_from_origin_on_backend
     procedure, public :: discard_candidate => registry_discard_candidate
     procedure, public :: abandon_origin => registry_abandon_origin
     procedure, public :: publication_ready => registry_publication_ready
@@ -150,6 +152,7 @@ contains
     self%slots(slot)%handle_id = self%next_handle
     self%slots(slot)%tile_id = tile_id
     self%slots(slot)%backend => backend
+    nullify(self%slots(slot)%candidate_backend)
     self%slots(slot)%parameters => parameters
     self%slots(slot)%committed => committed
     self%slots(slot)%materializer => materializer
@@ -184,6 +187,7 @@ contains
 
     self%slots(idx)%active = .false.
     nullify(self%slots(idx)%backend)
+    nullify(self%slots(idx)%candidate_backend)
     nullify(self%slots(idx)%parameters)
     nullify(self%slots(idx)%committed)
     nullify(self%slots(idx)%materializer)
@@ -235,18 +239,56 @@ contains
       return
     end if
 
-    call self%slots(idx)%participant%trial_from_origin(self%slots(idx)%backend, self%slots(idx)%column, &
-         self%slots(idx)%template, self%slots(idx)%parameters, self%slots(idx)%committed, &
-         self%slots(idx)%materializer, self%slots(idx)%numerical, self%slots(idx)%datum, window, &
-         prescribed_head_m, trial, participant_status, &
-         trusted_prepared_parameters=self%slots(idx)%immutable_parameters, &
-         temporal_budget_policy=self%slots(idx)%temporal_budget_policy)
+    call registry_trial_with_backend(self%slots(idx), self%slots(idx)%backend, window, prescribed_head_m, &
+         trial, participant_status, status)
+  end subroutine registry_trial_from_origin
+
+  subroutine registry_trial_from_origin_on_backend(self, handle, backend, window, prescribed_head_m, trial, &
+       participant_status, status)
+    class(fmr_groundwater_participant_registry_t), intent(inout) :: self
+    integer(int64), intent(in) :: handle
+    type(fmr_serialized_reference_backend_t), target, intent(inout) :: backend
+    type(groundwater_coupling_window_t), intent(in) :: window
+    real(real64), intent(in) :: prescribed_head_m
+    type(groundwater_swap_trial_t), intent(out) :: trial
+    integer, intent(out) :: participant_status
+    integer, intent(out) :: status
+
+    integer :: idx
+
+    trial = groundwater_swap_trial_t()
+    participant_status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
+    call resolve_handle(self, handle, idx, status)
+    if (status /= FMR_GW_REGISTRY_OK) return
+    if (.not. slot_associations_ready(self%slots(idx))) then
+      status = FMR_GW_REGISTRY_INVALID_REQUEST
+      return
+    end if
+
+    call registry_trial_with_backend(self%slots(idx), backend, window, prescribed_head_m, trial, &
+         participant_status, status)
+  end subroutine registry_trial_from_origin_on_backend
+
+  subroutine registry_trial_with_backend(slot, backend, window, prescribed_head_m, trial, participant_status, status)
+    type(fmr_groundwater_participant_slot_t), intent(inout) :: slot
+    type(fmr_serialized_reference_backend_t), target, intent(inout) :: backend
+    type(groundwater_coupling_window_t), intent(in) :: window
+    real(real64), intent(in) :: prescribed_head_m
+    type(groundwater_swap_trial_t), intent(out) :: trial
+    integer, intent(out) :: participant_status
+    integer, intent(out) :: status
+
+    nullify(slot%candidate_backend)
+    call slot%participant%trial_from_origin(backend, slot%column, slot%template, slot%parameters, slot%committed, &
+         slot%materializer, slot%numerical, slot%datum, window, prescribed_head_m, trial, participant_status, &
+         trusted_prepared_parameters=slot%immutable_parameters, temporal_budget_policy=slot%temporal_budget_policy)
     if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
       status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
       return
     end if
+    slot%candidate_backend => backend
     status = FMR_GW_REGISTRY_OK
-  end subroutine registry_trial_from_origin
+  end subroutine registry_trial_with_backend
 
   subroutine registry_discard_candidate(self, handle, status)
     class(fmr_groundwater_participant_registry_t), intent(inout) :: self
@@ -257,12 +299,13 @@ contains
 
     call resolve_handle(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
-    if (.not. associated(self%slots(idx)%backend)) then
+    if (.not. associated(self%slots(idx)%candidate_backend)) then
       status = FMR_GW_REGISTRY_INVALID_REQUEST
       return
     end if
 
-    call self%slots(idx)%participant%discard_candidate(self%slots(idx)%backend)
+    call self%slots(idx)%participant%discard_candidate(self%slots(idx)%candidate_backend)
+    nullify(self%slots(idx)%candidate_backend)
     status = FMR_GW_REGISTRY_OK
   end subroutine registry_discard_candidate
 
@@ -318,18 +361,19 @@ contains
     participant_status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
     call resolve_handle(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
-    if (.not. associated(self%slots(idx)%backend) .or. .not. associated(self%slots(idx)%committed)) then
+    if (.not. associated(self%slots(idx)%candidate_backend) .or. .not. associated(self%slots(idx)%committed)) then
       status = FMR_GW_REGISTRY_INVALID_REQUEST
       return
     end if
 
-    call self%slots(idx)%participant%commit_candidate(self%slots(idx)%backend, self%slots(idx)%committed, &
+    call self%slots(idx)%participant%commit_candidate(self%slots(idx)%candidate_backend, self%slots(idx)%committed, &
          window, did_commit, participant_status)
     if (.not. did_commit .or. participant_status /= GW_SWAP_PARTICIPANT_OK) then
       did_commit = .false.
       status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
       return
     end if
+    nullify(self%slots(idx)%candidate_backend)
     status = FMR_GW_REGISTRY_OK
   end subroutine registry_commit_candidate
 
