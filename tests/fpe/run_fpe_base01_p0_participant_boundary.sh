@@ -798,7 +798,7 @@ for case_spec in "${cases[@]}"; do
   for imbalance in "${imbalances[@]}"; do
     for rep in $(seq 1 "$reps"); do
       raw="$(LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/lib/libswap.so" \
-        python3 tests/fpe/test_fpe_base01_participant_boundary.py "$material" "$h0" "$imbalance")" || {
+        python3 tests/fpe/test_fpe_base01_p0_participant_boundary.py "$material" "$h0" "$imbalance")" || {
           printf '%s\n' "$raw" >&2
           fail "$material $regime $imbalance rep=$rep"
         }
