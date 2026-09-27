@@ -88,7 +88,9 @@ def main()->None:
     require(abs(qdiag-q0)<=64*np.finfo(float).eps*max(1.0,abs(q0)),"anchor q mismatch")
     swap.discard()
     origin_state=swap.state()
-    require(origin_state==(0,0.0,0,0.0),"anchor trial changed accepted authority")
+    require(origin_state[0]==0 and origin_state[2]==0 and origin_state[3]==0.0,
+            "anchor trial changed revision/ledger authority")
+    require(abs(origin_state[1]-DT)<=1.0e-14,"dynamic origin committed-time mismatch")
 
     current_hcof=t0*AREA_M2*DAY_TO_S
     current_rhs=current_hcof*origin_head.value-q0*AREA_M2*DAY_TO_S
