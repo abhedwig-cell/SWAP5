@@ -2169,6 +2169,8 @@ contains
     block
       use mod_ppa_irr_tcsfix_source, only: evaluate_tcsfix_source
       integer::next_counter
+      type(irrigation_state_t)::fixed_pending
+      real(real64)::original_end,gift_end
       call evaluate_tcsfix_source(p,base,r,observations,.true.,3,3,previous, &
            next_counter,candidate,flux,d,effective,ok)
       if(.not.ok.or.next_counter/=1.or..not.flux%event_started) error stop 'TCSFIX source selection'
@@ -2183,6 +2185,28 @@ contains
            next_counter,candidate,flux,d,effective,ok)
       if(.not.ok.or.next_counter/=3.or.flux%event_started) error stop 'TCSFIX suppressed source'
       if(any(effective%subsurface_irrigation_source/=0.0_real64)) error stop 'TCSFIX no-gift source'
+      original_end=r%t1
+      r%t1=T0+2.0_real64/1024.0_real64
+      call evaluate_tcsfix_source(p,base,r,observations,.true.,3,3,previous, &
+           next_counter,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.d%status/=IRRIGATION_SPLIT_REQUIRED.or.next_counter/=3) &
+           error stop 'TCSFIX source split rollback'
+      gift_end=d%split_time; r%t1=gift_end
+      call evaluate_tcsfix_source(p,base,r,observations,.true.,3,3,previous, &
+           next_counter,candidate,flux,d,effective,ok)
+      if(.not.ok.or.next_counter/=1.or..not.flux%event_finished) error stop 'TCSFIX source split retry'
+      r%t1=T0+0.5_real64*(gift_end-T0)
+      call evaluate_tcsfix_source(p,base,r,observations,.true.,3,3,previous, &
+           next_counter,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.candidate%active_event) error stop 'TCSFIX pending setup'
+      fixed_pending=candidate; r%t0=r%t1; r%t1=gift_end
+      observations%knot_count=0
+      call evaluate_tcsfix_source(p,fixed_pending,r,observations,.true.,1,3,previous, &
+           next_counter,candidate,flux,d,effective,ok)
+      if(.not.ok.or.next_counter/=1.or.candidate%active_event.or..not.flux%event_finished) &
+           error stop 'TCSFIX pending source continuation'
+      observations%knot_count=2; r%t0=T0; r%t1=original_end
+      write(*,'(a)') 'PPA_IRR_TCSFIX_SOURCE_SPLIT_RETRY_PENDING=PASS'
       write(*,'(a)') 'PPA_IRR_TCSFIX_DETACHED_SOURCE_ATOMICITY=PASS'
     end block
     hydraulic%active_nodes=n
