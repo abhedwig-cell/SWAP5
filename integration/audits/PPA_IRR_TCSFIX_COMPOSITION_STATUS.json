@@ -1,0 +1,9 @@
+{
+  "work_unit": "PPA-IRR-TCSFIX-COMPOSITION",
+  "design": "PPA_IRR_TCSFIX_COMPOSITION_DESIGN.md",
+  "tested_commit": "7b38d9e21",
+  "status": "INITIAL_PURE_PROCESS_COMPOSITION_TESTED",
+  "scope": "Separately named TCS1-4/DCS2 pure API evaluates timing then TCSFIX then event materialization. Explicit daily flag and detached counter proposal; no owner or calendar admission.",
+  "evidence": "Dedicated O0/O2 gate PASS exact transcripts with bounds and invalid/zero/overflow traps. Covers all four timing criteria, interval-minus-one/equality/above, suppressed split, startup366 selected split preserving counter and successful retry resetting to1. Build swap-tcsfix-composition-063b543d39bc4cd7a3c4bf8ce8e9f906.",
+  "next": "Complete pending, ineligible/non-daily, no-candidate and invalid-input regressions before source/runtime binding. Existing APIs and compile lists unchanged. Runtime ownership, invocation deduplication, restart and canonical admission remain unimplemented for TCSFIX."
+}
