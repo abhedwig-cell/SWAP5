@@ -152,10 +152,8 @@ contains
       standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
       prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2
       direct_retention_requested = direct_retention_requested .or. config%tiles(i)%parameters%direct_retention_active
-      if (i > 1) then
-        if (any(config%tiles(1:i-1)%tile_id == config%tiles(i)%tile_id)) return
-      end if
     end do
+    if (.not. int64_values_unique(config%tiles%tile_id)) return
     if (.not. groundwater_profile .and. .not. standalone_profile .and. .not. prescribed_qbot_profile) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
@@ -186,10 +184,8 @@ contains
             return
           end if
         end if
-        if (i > 1) then
-          if (any(config%tiles(1:i-1)%ledger_id == config%tiles(i)%ledger_id)) return
-        end if
       end do
+      if (.not. int64_values_unique(config%tiles%ledger_id)) return
     end if
 
     if (direct_retention_requested .and. .not. groundwater_profile) then
@@ -290,8 +286,8 @@ contains
           temporal_budget_policy%coefficient = FMR_GW_HISTORY_TEMPORAL_COEFFICIENT
           temporal_budget_policy%floor_cm = FMR_GW_HISTORY_TEMPORAL_FLOOR_CM
         end if
-        call self%registry%bind(config%tiles(i)%tile_id, self%backend, self%columns(i), self%templates(i), &
-             self%parameters(i), self%committed(i), self%materializers(i), self%numerical, &
+        call self%registry%bind_prevalidated_fresh(config%tiles(i)%tile_id, self%backend, self%columns(i), &
+             self%templates(i), self%parameters(i), self%committed(i), self%materializers(i), self%numerical, &
              config%tiles(i)%groundwater_datum, self%participant_handles(i), local_status, immutable_parameters=.true., &
              temporal_budget_policy=temporal_budget_policy)
         if (local_status /= FMR_GW_REGISTRY_OK .or. self%participant_handles(i) <= 0_int64) then
@@ -652,6 +648,61 @@ contains
     end if
     self%active_context_handle = 0_int64
   end subroutine retire_active_context
+
+
+  logical function int64_values_unique(values) result(unique)
+    integer(int64), intent(in) :: values(:)
+    integer(int64), allocatable :: sorted(:), workspace(:)
+    integer :: n, width, left, middle, right, i, j, k
+
+    unique = .true.
+    n = size(values)
+    if (n <= 1) return
+
+    allocate(sorted(n), workspace(n))
+    sorted = values
+    width = 1
+    do while (width < n)
+      left = 1
+      do while (left <= n)
+        middle = min(left + width - 1, n)
+        right = min(left + 2*width - 1, n)
+        i = left
+        j = middle + 1
+        k = left
+        do while (i <= middle .and. j <= right)
+          if (sorted(i) <= sorted(j)) then
+            workspace(k) = sorted(i)
+            i = i + 1
+          else
+            workspace(k) = sorted(j)
+            j = j + 1
+          end if
+          k = k + 1
+        end do
+        do while (i <= middle)
+          workspace(k) = sorted(i)
+          i = i + 1
+          k = k + 1
+        end do
+        do while (j <= right)
+          workspace(k) = sorted(j)
+          j = j + 1
+          k = k + 1
+        end do
+        left = left + 2*width
+      end do
+      sorted = workspace
+      width = 2*width
+    end do
+
+    do i = 2, n
+      if (sorted(i) == sorted(i-1)) then
+        unique = .false.
+        return
+      end if
+    end do
+  end function int64_values_unique
 
   logical function tile_config_valid(tile, ntiles, slot) result(valid)
     type(fmr_production_application_tile_config_t), intent(in) :: tile
