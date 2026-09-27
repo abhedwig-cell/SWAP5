@@ -4,6 +4,7 @@ program test_composition
   use mod_irrigation_process
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_tcs1_4_composition
+  use mod_ppa_irr_tcs1_4_dcs1
   implicit none
   type(scheduled_irrigation_parameters_t)::p
   type(scheduled_irrigation_request_t)::r
@@ -73,4 +74,35 @@ program test_composition
   end do
   write(*,'(a)') 'PPA_IRR_TCS1_4_DCS2_COMPOSITION=PASS'
   write(*,'(a)') 'PPA_IRR_TCS1_4_COMPOSITION_STRICT_GUARDS=PASS'
+  p%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+  p%dcs1_knot_count=2; p%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%dcs1_correction_mm=0.0_real64
+  hydraulic%active_nodes=1; allocate(hydraulic%water_content(1)); hydraulic%water_content=0.25_real64
+  do i=1,4
+    p%timing_criterion=i
+    r%t0=0.0_real64; r%t1=0.25_real64
+    call profile_call(base,1.0_real64,2)
+    if(d%status/=IRRIGATION_OK.or..not.candidate%active_event) error stop 'DCS1 profile selection'
+    ! Independent one-cell deficit: 0.75 - 0.25 = 0.5 cm; rate is 1 cm/day.
+    if(candidate%active_event_end/=0.5_real64.or.flux%external_inflow_amount/=0.25_real64) &
+         error stop 'DCS1 profile depth duration'
+    pending=candidate
+    r%t0=0.25_real64; r%t1=0.5_real64
+    call profile_call(pending,-1.0_real64,0)
+    if(d%status/=IRRIGATION_OK.or.candidate%active_event.or..not.flux%event_finished) &
+         error stop 'DCS1 pending consumed unused invalid input'
+    r%t0=0.0_real64; r%t1=0.25_real64
+    call profile_call(base,-1.0_real64,2)
+    if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.candidate%active_event) error stop 'DCS1 bad profile'
+  end do
+  write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_PROFILE_INITIAL=PASS'
+contains
+  subroutine profile_call(state,thickness,count)
+    type(irrigation_state_t),intent(in)::state
+    real(real64),intent(in)::thickness
+    integer,intent(in)::count
+    call evaluate_tcs1_4_dcs1_profile(p,state,r,hydraulic,1,[1],[thickness],[0.0_real64],1.0_real64, &
+         [0.75_real64],[0.5_real64],[0.0_real64],knots,values,count,1.0_real64,0.75_real64,0.0_real64, &
+         candidate,flux,d)
+  end subroutine
 end program

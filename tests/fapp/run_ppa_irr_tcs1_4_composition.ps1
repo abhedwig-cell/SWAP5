@@ -4,6 +4,7 @@ $build = Join-Path ([IO.Path]::GetTempPath()) ('swap-tcs-composition-' + [guid]:
 New-Item -ItemType Directory -Path $build | Out-Null
 $sources = @('src/solver/mod_soil_water_solver_contract.f90', 'src/solver/mod_process_hydraulic_view.f90',
  'src/process/mod_irrigation_process.f90', 'src/process/mod_ppa_irr_tcs1_4_timing.f90',
+ 'src/process/mod_ppa_irr_water_deficit.f90', 'src/process/mod_ppa_irr_tcs1_4_dcs1.f90',
  'src/process/mod_ppa_irr_tcs1_4_composition.f90', 'tests/fapp/test_ppa_irr_tcs1_4_composition.f90') |
  ForEach-Object { Join-Path $repo $_ }
 foreach ($opt in @('O0','O2')) {
