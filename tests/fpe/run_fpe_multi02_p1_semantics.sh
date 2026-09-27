@@ -88,7 +88,6 @@ new="""  integer :: n,workers,i,w,rep,status,participant_status,active,maxsim,te
   integer :: parallel_tc,parallel_asub,parallel_att,parallel_ret,parallel_srej,parallel_trej,parallel_nlit,parallel_bt
   integer :: wi, worker_att(4), worker_nlit(4), worker_bt(4)
   real(real64) :: worker_ratio
-  integer :: worker_att(4),worker_nlit(4),worker_bt(4),wi
 """
 if old not in s: raise SystemExit("test declaration seam")
 s=s.replace(old,new,1)
@@ -97,7 +96,6 @@ anchor="  qdiff=0.0_real64; tdiff=0.0_real64\n"
 repl=anchor+"""  serial_tc=0; serial_asub=0; serial_att=0; serial_ret=0; serial_srej=0; serial_trej=0; serial_nlit=0; serial_bt=0
   parallel_tc=0; parallel_asub=0; parallel_att=0; parallel_ret=0; parallel_srej=0; parallel_trej=0; parallel_nlit=0; parallel_bt=0
   worker_att=0; worker_nlit=0; worker_bt=0; worker_ratio=1.0_real64
-  worker_att=0; worker_nlit=0; worker_bt=0
 """
 if anchor not in s: raise SystemExit("test init seam")
 s=s.replace(anchor,repl,1)
@@ -128,10 +126,6 @@ repl=anchor+"""    if(rep==1)then
         parallel_tc=parallel_tc+tc; parallel_asub=parallel_asub+asub; parallel_att=parallel_att+att
         parallel_ret=parallel_ret+ret; parallel_srej=parallel_srej+srej; parallel_trej=parallel_trej+trej
         parallel_nlit=parallel_nlit+nlit; parallel_bt=parallel_bt+bt
-        wi=1+mod(i-1,workers)
-        worker_att(wi)=worker_att(wi)+att
-        worker_nlit(wi)=worker_nlit(wi)+nlit
-        worker_bt(wi)=worker_bt(wi)+bt
         wi=1+mod(i-1,workers)
         worker_att(wi)=worker_att(wi)+att
         worker_nlit(wi)=worker_nlit(wi)+nlit
