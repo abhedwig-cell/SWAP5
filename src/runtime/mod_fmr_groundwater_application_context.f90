@@ -32,6 +32,10 @@ module mod_fmr_groundwater_application_context
   integer, parameter, public :: FMR_GW_APP_CONTEXT_LINEAR_RESPONSE_FAILED = 7
   integer, parameter, public :: FMR_GW_APP_CONTEXT_PREPARED_BUSY = 8
   integer, parameter, public :: FMR_GW_APP_CONTEXT_PUBLICATION_FAILED = 9
+  integer, parameter, public :: FMR_GW_PARALLEL_SCHEDULE_SERIAL = 0
+  integer, parameter, public :: FMR_GW_PARALLEL_SCHEDULE_STATIC = 1
+  integer, parameter, public :: FMR_GW_PARALLEL_SCHEDULE_COST_AWARE = 2
+  real(real64), parameter :: FMR_GW_PARALLEL_LOAD_RATIO_THRESHOLD = 1.20_real64
 
   type :: fmr_groundwater_context_cell_t
     type(groundwater_topology_cell_t) :: topology
@@ -45,6 +49,9 @@ module mod_fmr_groundwater_application_context
     type(fmr_groundwater_participant_registry_t), pointer :: registry => null()
     type(fmr_serialized_reference_backend_t), pointer :: worker_backends(:) => null()
     integer :: worker_count = 1
+    integer :: last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_SERIAL
+    real(real64) :: last_static_load_ratio = 1.0_real64
+    real(real64) :: last_selected_load_ratio = 1.0_real64
     type(groundwater_interface_mass_ledger_t), pointer :: ledgers(:) => null()
     integer(int64), allocatable :: participant_handles(:)
     integer(int64), allocatable :: expected_swap_origin_revisions(:)
@@ -72,6 +79,7 @@ module mod_fmr_groundwater_application_context
     procedure, public :: evaluate_groundwater_fluxes => application_context_evaluate_groundwater_fluxes
     procedure, public :: trial_cell_heads => application_context_trial_cell_heads
     procedure, public :: trial_response_tangents => application_context_trial_response_tangents
+    procedure, public :: parallel_schedule_diagnostics => application_context_parallel_schedule_diagnostics
     procedure, public :: discard_candidates => application_context_discard_candidates
     procedure, public :: reanchor_terms => application_context_reanchor_terms
     procedure, public :: relinearize_terms => application_context_relinearize_terms
@@ -108,6 +116,9 @@ contains
     status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
     if (self%bound) return
     self%worker_count = 1
+    self%last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_SERIAL
+    self%last_static_load_ratio = 1.0_real64
+    self%last_selected_load_ratio = 1.0_real64
     nullify(self%worker_backends)
     if (present(worker_count)) self%worker_count = worker_count
     if (self%worker_count /= 1 .and. self%worker_count /= 2 .and. self%worker_count /= 4) return
@@ -450,9 +461,11 @@ contains
 
     type(groundwater_tile_exchange_t), allocatable :: exchanges(:)
     type(groundwater_cell_exchange_t) :: aggregate
-    real(real64), allocatable :: tile_heads_m(:)
-    integer, allocatable :: registry_status(:), participant_statuses(:)
-    integer :: i, k, idx, first, last, participant_status, local_status, w
+    real(real64), allocatable :: tile_heads_m(:), predicted_cost(:), worker_load(:)
+    integer, allocatable :: registry_status(:), owner(:), order(:), merge_workspace(:)
+    logical :: cost_available
+    real(real64) :: mean_load, best_load
+    integer :: i, j, k, idx, first, last, participant_status, local_status, w, best_worker
 
     cell_q_swap_m_per_s = 0.0_real64
     status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
@@ -466,6 +479,10 @@ contains
       status = FMR_GW_APP_CONTEXT_PREPARED_BUSY
       return
     end if
+
+    self%last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_SERIAL
+    self%last_static_load_ratio = 1.0_real64
+    self%last_selected_load_ratio = 1.0_real64
 
     if (self%worker_count == 1) then
       do i = 1, size(self%cells)
@@ -507,10 +524,10 @@ contains
         cell_q_swap_m_per_s(i) = aggregate%q_swap_area_weighted_m_per_s
       end do
     else
-      allocate(tile_heads_m(size(self%tiles)), registry_status(size(self%tiles)), &
-           participant_statuses(size(self%tiles)))
+      allocate(tile_heads_m(size(self%tiles)), registry_status(size(self%tiles)), owner(size(self%tiles)), &
+           predicted_cost(size(self%tiles)), worker_load(self%worker_count), order(size(self%tiles)), &
+           merge_workspace(size(self%tiles)))
       registry_status = FMR_GW_REGISTRY_OK
-      participant_statuses = 0
       self%trial_valid = .false.
 
       do i = 1, size(self%cells)
@@ -524,12 +541,57 @@ contains
         tile_heads_m(first:last) = cell_heads_m(i)
       end do
 
+      worker_load = 0.0_real64
+      do idx = 1, size(self%tiles)
+        call self%registry%pretrial_cost_proxy(self%participant_handles(idx), predicted_cost(idx), &
+             cost_available, local_status)
+        if (local_status /= FMR_GW_REGISTRY_OK) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        if (.not. cost_available) predicted_cost(idx) = 1.0_real64
+        if (.not. ieee_is_finite(predicted_cost(idx)) .or. predicted_cost(idx) <= 0.0_real64) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        owner(idx) = 1 + mod(idx-1, self%worker_count)
+        worker_load(owner(idx)) = worker_load(owner(idx)) + predicted_cost(idx)
+        order(idx) = idx
+      end do
+
+      mean_load = sum(worker_load) / real(self%worker_count, real64)
+      if (mean_load > 0.0_real64) self%last_static_load_ratio = maxval(worker_load) / mean_load
+      self%last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_STATIC
+      self%last_selected_load_ratio = self%last_static_load_ratio
+
+      if (self%last_static_load_ratio > FMR_GW_PARALLEL_LOAD_RATIO_THRESHOLD) then
+        call sort_indices_by_descending_cost(predicted_cost, order, merge_workspace)
+        worker_load = 0.0_real64
+        do j = 1, size(order)
+          idx = order(j)
+          best_worker = 1
+          best_load = worker_load(1)
+          do w = 2, self%worker_count
+            if (worker_load(w) < best_load) then
+              best_worker = w
+              best_load = worker_load(w)
+            end if
+          end do
+          owner(idx) = best_worker
+          worker_load(best_worker) = worker_load(best_worker) + predicted_cost(idx)
+        end do
+        mean_load = sum(worker_load) / real(self%worker_count, real64)
+        self%last_selected_load_ratio = 1.0_real64
+        if (mean_load > 0.0_real64) self%last_selected_load_ratio = maxval(worker_load) / mean_load
+        self%last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_COST_AWARE
+      end if
+
 !$omp parallel do default(shared) private(w,idx,participant_status,local_status) schedule(static,1) num_threads(self%worker_count)
       do w = 1, self%worker_count
-        do idx = w, size(self%tiles), self%worker_count
+        do idx = 1, size(self%tiles)
+          if (owner(idx) /= w) cycle
           call self%registry%trial_from_origin_on_backend(self%participant_handles(idx), self%worker_backends(w), &
                self%window, tile_heads_m(idx), self%trials(idx), participant_status, local_status)
-          participant_statuses(idx) = participant_status
           registry_status(idx) = local_status
           if (local_status == FMR_GW_REGISTRY_OK .and. self%trials(idx)%valid) self%trial_valid(idx) = .true.
         end do
@@ -576,6 +638,18 @@ contains
     end if
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_trial_cell_heads
+
+  subroutine application_context_parallel_schedule_diagnostics(self, schedule_code, static_ratio, selected_ratio, available)
+    class(fmr_groundwater_application_context_t), intent(in) :: self
+    integer, intent(out) :: schedule_code
+    real(real64), intent(out) :: static_ratio, selected_ratio
+    logical, intent(out) :: available
+
+    schedule_code = self%last_parallel_schedule
+    static_ratio = self%last_static_load_ratio
+    selected_ratio = self%last_selected_load_ratio
+    available = self%ready()
+  end subroutine application_context_parallel_schedule_diagnostics
 
   subroutine application_context_trial_response_tangents(self, cell_dq_swap_dh_per_s, status)
     class(fmr_groundwater_application_context_t), intent(in) :: self
@@ -1001,5 +1075,65 @@ contains
       end if
     end if
   end subroutine abort_ledgers_internal
+
+  subroutine sort_indices_by_descending_cost(cost, order, workspace)
+    real(real64), intent(in) :: cost(:)
+    integer, intent(inout) :: order(:)
+    integer, intent(inout) :: workspace(:)
+
+    integer :: width, left, middle, right, i, j, k, n
+
+    n = size(order)
+    if (n <= 1) return
+    if (size(cost) /= n .or. size(workspace) /= n) return
+
+    width = 1
+    do while (width < n)
+      left = 1
+      do while (left <= n)
+        middle = min(left + width - 1, n)
+        right = min(left + 2*width - 1, n)
+        i = left
+        j = middle + 1
+        k = left
+        do while (i <= middle .and. j <= right)
+          if (cost_index_precedes(order(i), order(j), cost)) then
+            workspace(k) = order(i)
+            i = i + 1
+          else
+            workspace(k) = order(j)
+            j = j + 1
+          end if
+          k = k + 1
+        end do
+        do while (i <= middle)
+          workspace(k) = order(i)
+          i = i + 1
+          k = k + 1
+        end do
+        do while (j <= right)
+          workspace(k) = order(j)
+          j = j + 1
+          k = k + 1
+        end do
+        left = left + 2*width
+      end do
+      order = workspace
+      width = 2*width
+    end do
+  end subroutine sort_indices_by_descending_cost
+
+  pure logical function cost_index_precedes(left_index, right_index, cost) result(precedes)
+    integer, intent(in) :: left_index, right_index
+    real(real64), intent(in) :: cost(:)
+
+    if (cost(left_index) > cost(right_index)) then
+      precedes = .true.
+    else if (cost(left_index) < cost(right_index)) then
+      precedes = .false.
+    else
+      precedes = left_index < right_index
+    end if
+  end function cost_index_precedes
 
 end module mod_fmr_groundwater_application_context
