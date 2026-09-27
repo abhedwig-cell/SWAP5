@@ -1,0 +1,114 @@
+name: F-PE-SOLVE01 EF upper bound
+
+concurrency:
+  group: f-pe-solve01-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_solve01_ef_upper_bound.sh'
+      - 'tests/fpe/run_fpe_solve01_p0b_refresh_frontier.sh'
+      - 'tests/fpe/run_fpe_solve01_p1_live_corrector.sh'
+      - 'tests/fpe/test_fpe_solve01_p1_live_corrector.py'
+      - 'tests/fpe/run_fpe_solve01_p2a_n1_scale.sh'
+      - 'tests/fpe/run_fpe_solve01_p2b_live_matrix.sh'
+      - 'tests/fpe/test_fpe_solve01_p2b_live_matrix.py'
+      - 'docs/performance/F-PE-SOLVE01_*.md'
+      - '.github/workflows/f-pe-solve01.yml'
+  workflow_dispatch:
+
+jobs:
+  ef-upper-bound:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run aggressive discarded-trial solve-elimination upper bound
+        run: |
+          bash tests/fpe/run_fpe_solve01_ef_upper_bound.sh | tee solve01-ef.txt
+          grep -Fq 'FPE_SOLVE01_EF=PASS' solve01-ef.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-solve01-ef
+          path: solve01-ef.txt
+
+  p0b-refresh-frontier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run bounded discarded-trial refresh frontier
+        run: |
+          bash tests/fpe/run_fpe_solve01_p0b_refresh_frontier.sh | tee solve01-p0b.txt
+          grep -Fq 'FPE_SOLVE01_P0B=PASS' solve01-p0b.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-solve01-p0b
+          path: solve01-p0b.txt
+
+  p1-live-corrector:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler and pinned live coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run live MODFLOW6 bounded-response corrector robustness
+        run: |
+          bash tests/fpe/run_fpe_solve01_p1_live_corrector.sh | tee solve01-p1.txt
+          grep -Fq 'FPE_SOLVE01_P1=PASS' solve01-p1.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-solve01-p1
+          path: solve01-p1.txt
+
+  p2a-n1-scale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run N-to-one SWAP scale mechanics
+        run: |
+          bash tests/fpe/run_fpe_solve01_p2a_n1_scale.sh | tee solve01-p2a.txt
+          grep -Fq 'FPE_SOLVE01_P2A=PASS' solve01-p2a.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-solve01-p2a
+          path: solve01-p2a.txt
+
+  p2b-live-difficult-matrix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler and pinned live coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run live difficult-regime corrector demand matrix
+        run: |
+          bash tests/fpe/run_fpe_solve01_p2b_live_matrix.sh | tee solve01-p2b.txt
+          grep -Fq 'FPE_SOLVE01_P2B=PASS' solve01-p2b.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-solve01-p2b
+          path: solve01-p2b.txt
