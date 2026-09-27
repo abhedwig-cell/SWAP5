@@ -12,6 +12,8 @@ on:
       - 'tests/fpe/run_fpe_solve01_p1_live_corrector.sh'
       - 'tests/fpe/test_fpe_solve01_p1_live_corrector.py'
       - 'tests/fpe/run_fpe_solve01_p2a_n1_scale.sh'
+      - 'tests/fpe/run_fpe_solve01_p2b_live_matrix.sh'
+      - 'tests/fpe/test_fpe_solve01_p2b_live_matrix.py'
       - 'docs/performance/F-PE-SOLVE01_*.md'
       - '.github/workflows/f-pe-solve01.yml'
   workflow_dispatch:
@@ -87,3 +89,26 @@ jobs:
         with:
           name: f-pe-solve01-p2a
           path: solve01-p2a.txt
+
+  p2b-live-difficult-matrix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler and pinned live coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run live difficult-regime corrector demand matrix
+        run: |
+          bash tests/fpe/run_fpe_solve01_p2b_live_matrix.sh | tee solve01-p2b.txt
+          grep -Fq 'FPE_SOLVE01_P2B=PASS' solve01-p2b.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-solve01-p2b
+          path: solve01-p2b.txt
