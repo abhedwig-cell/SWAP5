@@ -1258,7 +1258,7 @@ contains
     type(fmr_b110_physical_forcing_t),allocatable::effective
     type(fmr_b110_physical_forcing_t),allocatable::expected
     type(process_hydraulic_view_t)::hydraulic
-    type(ppa_irrigation_profile_t)::root_profile
+    type(ppa_irrigation_profile_t)::root_profile,empty_profile
     type(ppa_tcs1_4_observations_t)::reference_observations
     real(real64)::deficit
     integer::code
@@ -1375,6 +1375,30 @@ contains
            previous,candidate,flux,d,effective,ok)
       if(ok.or.allocated(effective).or.candidate%active_event) error stop 'DCS1 invalid source leaked'
       root_profile%dz=1.0_real64
+      call evaluate_tcs1_4_dcs1_source(p,base,r,observations,hydraulic,empty_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.candidate%active_event) error stop 'DCS1 missing profile selected'
+      r%selection_opportunity=.false.; observations%knot_count=0
+      call evaluate_tcs1_4_dcs1_source(p,base,r,observations,hydraulic,empty_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(.not.ok.or.candidate%active_event) error stop 'DCS1 idle consumed missing profile'
+      if(any(effective%subsurface_irrigation_source/=0.0_real64)) error stop 'DCS1 idle source leaked'
+      r%selection_opportunity=.true.; observations%knot_count=2
+      r%t1=T0+1.0_real64/2048.0_real64
+      call evaluate_tcs1_4_dcs1_source(p,base,r,observations,hydraulic,root_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.candidate%active_event) error stop 'DCS1 pending source setup'
+      base=candidate; previous=effective
+      r%t0=r%t1; r%t1=T0+1.0_real64/1024.0_real64
+      observations%knot_count=0
+      call evaluate_tcs1_4_dcs1_source(p,base,r,observations,hydraulic,empty_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(.not.ok.or.candidate%active_event.or..not.flux%event_finished) error stop 'DCS1 missing pending profile'
+      if(.not.base%active_event.or.effective%subsurface_irrigation_source(1)/=0.5_real64) &
+           error stop 'DCS1 pending event or forcing changed'
+      base=irrigation_state_t(); r%t0=T0; observations%knot_count=2
+      previous=original; previous%subsurface_irrigation_source=0.0_real64
+      previous%temporal_forcing_event=.false.
     end do
     write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_SOURCE_BINDING=PASS'
   end subroutine
