@@ -95,6 +95,7 @@ program test_ppa_free_drainage_owner
   integer :: observed_event_calls=0
   integer(int64) :: day_storage_calls=0_int64,day_storage_unavailable=0_int64
   logical :: day_storage_last_available=.false.
+  real(real64),allocatable :: day_storage_before(:),day_storage_after(:),day_storage_difference(:),day_storage_cof(:,:)
   logical :: is_gash=.false.
   logical :: capture_low_rain=.false.
   type(soil_water_solve_request_t) :: low_rain_request
@@ -1406,6 +1407,7 @@ contains
               day_observation=day_backend%observation()
               write(*,'(a,2(i0,1x),l1)') 'PPA_IRR_DAY2_STORAGE_SERVICE=', &
                    day_storage_calls,day_storage_unavailable,day_storage_last_available
+              call verify_day_storage_sample()
               write(*,'(a,4(i0,1x))') 'PPA_IRR_DAY2_FAILURE_COUNTS=',diagnostics%accepted_substeps, &
                    diagnostics%attempts,diagnostics%solver_rejections,diagnostics%temporal_rejections
               write(*,'(a,2(es24.16,1x))') 'PPA_IRR_DAY2_FAILURE_INTERVAL=', &
@@ -4284,7 +4286,35 @@ contains
     day_storage_calls=day_storage_calls+1_int64
     if(.not.available) day_storage_unavailable=day_storage_unavailable+1_int64
     day_storage_last_available=available
+    if(available) then
+      select type(provider)
+      type is(b110_default_mvg_provider_t)
+        day_storage_before=before; day_storage_after=after; day_storage_difference=difference
+        day_storage_cof=provider%parameters%cofgen
+      end select
+    end if
   end subroutine day_storage_observer
+  subroutine verify_day_storage_sample()
+    use, intrinsic :: iso_fortran_env, only: real128
+    real(real128)::qa,qn,qm,qr,qbefore,qafter,qdiff
+    real(real64)::expected,relative_error,max_error
+    integer::node
+    if(.not.day_storage_last_available.or..not.allocated(day_storage_cof)) error stop 'missing storage sample'
+    max_error=0.0_real64
+    do node=1,size(day_storage_before)
+      qa=real(day_storage_cof(4,node),real128); qn=real(day_storage_cof(6,node),real128)
+      qm=real(day_storage_cof(7,node),real128); qr=real(day_storage_cof(25,node),real128)
+      qbefore=qr/(1+abs(qa*real(day_storage_before(node),real128))**qn)**qm
+      qafter=qr/(1+abs(qa*real(day_storage_after(node),real128))**qn)**qm
+      qdiff=qafter-qbefore
+      expected=real(qdiff,real64)
+      relative_error=abs(day_storage_difference(node)-expected)/max(abs(expected),tiny(expected))
+      max_error=max(max_error,relative_error)
+      if(relative_error>2.0e-13_real64) error stop 'terminal storage quad oracle'
+    end do
+    write(*,'(a,es24.16)') 'PPA_IRR_DAY2_STORAGE_QUAD_MAX_RELATIVE_ERROR=',max_error
+    write(*,'(a)') 'PPA_IRR_DAY2_TERMINAL_STORAGE_QUAD_ORACLE=PASS'
+  end subroutine verify_day_storage_sample
   subroutine weekly_day_target(cursor,requested_t1,target_t1,max_retries_cap,valid)
     real(real64),intent(in)::cursor,requested_t1
     real(real64),intent(out)::target_t1
