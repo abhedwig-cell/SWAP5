@@ -56,6 +56,15 @@ mixed publication remains explicit; a batch-level counter is forbidden.
 
 ## Required gates
 
+The bootstrap prepared-irrigation entry now takes an optional trailing
+`weekly_proposals(:)` array. Shape and metadata validity are checked before any
+column executes. Enabled entries forward their proposal regardless of the gift
+selection mask. Valid disabled defaults mean absence for that column, permitting
+mixed weekly/nonweekly batches; they cannot disable an already enabled owner,
+because the backend requires a proposal for that owner. Transition validity is
+still checked against each committed column, with existing mixed publication
+semantics. This channel does not yet construct proposals from daily input.
+
 ### Backend proposal validation contract
 
 The optional backend management proposal must pass `valid_weekly_transition`

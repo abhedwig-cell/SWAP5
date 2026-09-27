@@ -1667,6 +1667,68 @@ contains
       forcing(i)%temporal_forcing_event=.true.; forcing(i)%temporal_forcing_event_time=T0
     end do
     config%tiles(1)%irrigation_ssdi_node=0
+    block
+      use mod_irrigation_process, only: ppa_weekly_identity_t
+      type(fmr_production_application_bootstrap_t)::weekly_app
+      type(fmr_production_application_config_t)::weekly_config
+      type(fmr_committed_restart_bundle_t)::weekly_bundle
+      type(ppa_weekly_identity_t)::proposals(2)
+      type(irrigation_state_t)::no_events(2)
+      type(fmr_b110_physical_forcing_t)::weekly_forcing(2)
+      type(fmr_serialized_column_result_t),allocatable::weekly_results(:)
+      integer::weekly_code,j
+      logical::weekly_ok
+      weekly_config=config; weekly_config%tiles(1)%irrigation_ssdi_node=1
+      call weekly_app%initialize(weekly_config,weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly bootstrap initialization'
+      call weekly_app%export_committed_restart(92001_int64,weekly_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly bootstrap seed export'
+      select type(state=>weekly_bundle%records(1)%physical_state)
+      type is(ppa_irrigation_event_state_t)
+        state%weekly%enabled=.true.; state%weekly%day_bound=.true.
+        state%weekly%last_day=100_int64; state%weekly%dayfix=3
+        proposals(1)=state%weekly
+      class default
+        error stop 'weekly bootstrap seed carrier'
+      end select
+      call weekly_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly bootstrap seed restore'
+      weekly_forcing=forcing
+      do j=1,2
+        weekly_forcing(j)%subsurface_irrigation_source=0.0_real64
+      end do
+      proposals(1)%last_day=101_int64; proposals(1)%dayfix=4
+      call weekly_app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,weekly_forcing, &
+           weekly_results,weekly_code,weekly_proposals=proposals(:1))
+      if(weekly_code==FMR_APP_BOOT_OK.or.allocated(weekly_results)) error stop 'weekly bootstrap shape guard'
+      proposals(2)%dayfix=367
+      call weekly_app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,weekly_forcing, &
+           weekly_results,weekly_code,weekly_proposals=proposals)
+      if(weekly_code==FMR_APP_BOOT_OK.or.allocated(weekly_results)) error stop 'weekly bootstrap metadata preflight'
+      proposals(2)=ppa_weekly_identity_t()
+      call weekly_app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,weekly_forcing, &
+           weekly_results,weekly_code,no_events,[.false.,.false.],proposals)
+      if(weekly_code/=FMR_APP_BOOT_OK.or..not.allocated(weekly_results)) error stop 'weekly bootstrap no-gift run'
+      if(.not.all(weekly_results%committed)) error stop 'weekly bootstrap no-gift publication'
+      call weekly_app%export_committed_restart(92001_int64,weekly_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly bootstrap result export'
+      do j=1,2
+        select type(state=>weekly_bundle%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%irrigation%active_event) error stop 'weekly bootstrap invented event'
+          if(j==1) then
+            if(state%weekly%dayfix/=4.or.state%weekly%last_day/=101_int64) &
+                 error stop 'weekly bootstrap mask discarded management'
+          else
+            if(state%weekly%enabled) error stop 'weekly bootstrap activated nonweekly column'
+          end if
+        class default
+          error stop 'weekly bootstrap output carrier'
+        end select
+      end do
+      call weekly_app%close(weekly_code)
+      write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_NO_GIFT_MIXED_METADATA=PASS'
+    end block
     call application%initialize(config,code)
     if(code==FMR_APP_BOOT_OK.or.application%ready()) error stop 'bootstrap missing irrigation opt-in admitted'
     config%tiles(1)%irrigation_ssdi_node=1

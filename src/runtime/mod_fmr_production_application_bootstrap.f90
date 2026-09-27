@@ -5,7 +5,7 @@ module mod_fmr_production_application_bootstrap
   use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_result_t
   use mod_canonical_result_text_adapter, only: serialize_canonical_result_text
   use mod_kernel_transactions, only: kernel_committed_state_t,kernel_executor_t
-  use mod_irrigation_process, only: irrigation_state_t
+  use mod_irrigation_process, only: irrigation_state_t,ppa_weekly_identity_t,valid_weekly_identity
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
@@ -354,7 +354,7 @@ contains
   end function production_application_tile_count
 
   subroutine production_application_run_prepared_irrigation(self,t0,t1,effective_forcing,results,status, &
-       selected_events,selection_mask)
+       selected_events,selection_mask,weekly_proposals)
     class(fmr_production_application_bootstrap_t),intent(inout)::self
     real(real64),intent(in)::t0,t1
     type(fmr_b110_physical_forcing_t),intent(in)::effective_forcing(:)
@@ -362,6 +362,8 @@ contains
     integer,intent(out)::status
     type(irrigation_state_t),intent(in),optional::selected_events(:)
     logical,intent(in),optional::selection_mask(:)
+    type(ppa_weekly_identity_t),intent(in),optional::weekly_proposals(:)
+    type(ppa_weekly_identity_t),allocatable::weekly_proposal
     type(kernel_executor_t)::control
     type(fmr_column_diagnostics_t)::diagnostic
     type(fmr_serialized_batch_diagnostics_t)::runtime
@@ -376,6 +378,12 @@ contains
     if(t1<=t0) return
     n=size(self%columns)
     if(size(effective_forcing)/=n) return
+    if(present(weekly_proposals)) then
+      if(size(weekly_proposals)/=n) return
+      do i=1,n
+        if(.not.valid_weekly_identity(weekly_proposals(i))) return
+      end do
+    end if
     if(present(selected_events)) then
       if(size(selected_events)/=n) return
     end if
@@ -392,16 +400,20 @@ contains
       results(i)%dispatch_ordinal=i
       results(i)%requested_t0=t0; results(i)%requested_t1=t1
       diagnostic=fmr_column_diagnostics_t()
+      if(allocated(weekly_proposal)) deallocate(weekly_proposal)
+      if(present(weekly_proposals)) then
+        if(weekly_proposals(i)%enabled) allocate(weekly_proposal,source=weekly_proposals(i))
+      end if
       select_new=present(selected_events)
       if(present(selection_mask)) select_new=selection_mask(i)
       if(select_new) then
         call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
              self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
-             t0,t1,results(i),diagnostic,runtime,active_calls,selected_events(i))
+             t0,t1,results(i),diagnostic,runtime,active_calls,selected_events(i),weekly_proposal)
       else
         call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
              self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
-             t0,t1,results(i),diagnostic,runtime,active_calls)
+             t0,t1,results(i),diagnostic,runtime,active_calls,weekly_proposal=weekly_proposal)
       end if
     end do
     status=FMR_APP_BOOT_RUNTIME_FAILED
