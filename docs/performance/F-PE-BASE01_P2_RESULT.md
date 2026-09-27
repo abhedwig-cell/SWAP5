@@ -56,6 +56,27 @@ Total q/state trial:
 - ratio: `1.006072042`;
 - change: approximately `0.607%` slower.
 
+## Independent current-head replay
+
+The same candidate was repeated on later current head `c5f1881d3d95695993ab6420e232adb32c9df60b`.
+
+Workflow run:
+`36306634228`.
+
+Observed:
+
+- temporal-indicator current: `185075 ns`;
+- specialized: `165611 ns`;
+- temporal gain: `10.5168175%`;
+- backend gain: `3.8810832%`;
+- total q/state trial gain: `2.6035740%`;
+- maximum absolute q difference: `0`;
+- discrete retry/nonlinear trajectory unchanged.
+
+This second measurement changes the small composed timing estimate but not the preregistered decision: the temporal-indicator gain again remains below the required 15%.
+
+The two independent observations therefore give temporal-service gains of about 10.5% and 12.3%. Neither reaches the frozen local gate.
+
 ## Gate disposition
 
 Preregistered advancement gates:
@@ -68,9 +89,9 @@ Observed:
 - temporal gain: 12.31%;
 - backend gain: 0.60%.
 
-Both performance gates fail.
+In the first authority run both performance gates fail. In the independent replay the backend gate passes, but the temporal-indicator gate still fails.
 
-The total q/state trial is also slightly slower on the paired aggregate.
+The composed timing is small and variable across runs, ranging from about 0.6% slower to about 2.6% faster at total q/state trial level. That variability is itself evidence against promoting this local specialization as a robust production performance mechanism.
 
 ## Decision
 
@@ -80,7 +101,7 @@ Do not:
 
 - lower the frozen gates;
 - production-admit this specialization;
-- claim the 12.3% temporal micro-gain as a solver/application speedup;
+- claim the roughly 10.5-12.3% temporal micro-gain as a solver/application speedup;
 - continue tuning the same demand split inside BASE01.
 
 The semantic identity result is retained as evidence, but this candidate is not a worthwhile performance mechanism on the measured live workload.
