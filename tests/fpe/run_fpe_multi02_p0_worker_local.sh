@@ -41,7 +41,7 @@ program test_fpe_multi02_p0
   real(real64) :: href, serial_t(NREP), parallel_t(NREP), qdiff,tdiff
   real(real64), allocatable :: target_head(:)
   real(real64) :: qsum,tsum
-  logical :: ok,prepared,mixed
+  logical :: ok,prepared,mixed,mixed_balanced
 
   type(fmr_b110_physical_parameters_t), target :: parameters
   type(fmr_b110_physical_forcing_t), target, allocatable :: forcings(:)
@@ -61,13 +61,14 @@ program test_fpe_multi02_p0
   type(groundwater_swap_trial_t), allocatable :: serial_trials(:), parallel_trials(:)
   integer, allocatable :: pstatus(:), rstatus(:)
 
-  if(command_argument_count()<2 .or. command_argument_count()>3) error stop 'usage N WORKERS [MIXED]'
+  if(command_argument_count()<2 .or. command_argument_count()>3) error stop 'usage N WORKERS [MIXED|MIXED_BALANCED]'
   call get_command_argument(1,arg); read(arg,*) n
   call get_command_argument(2,arg); read(arg,*) workers
-  mixed=.false.; mode=''
+  mixed=.false.; mixed_balanced=.false.; mode=''
   if(command_argument_count()==3)then
     call get_command_argument(3,mode)
-    mixed=trim(mode)=='MIXED'
+    mixed=trim(mode)=='MIXED' .or. trim(mode)=='MIXED_BALANCED'
+    mixed_balanced=trim(mode)=='MIXED_BALANCED'
     if(.not.mixed) error stop 'bad mode'
   end if
   if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'
@@ -90,7 +91,11 @@ program test_fpe_multi02_p0
   target_head=href
   if(mixed)then
     do i=1,n
-      if(mod(i-1,4)==0) target_head(i)=href+1.0e-3_real64
+      if(mixed_balanced)then
+        if(mod((i-1)/4,4)==mod(i-1,4)) target_head(i)=href+1.0e-3_real64
+      else
+        if(mod(i-1,4)==0) target_head(i)=href+1.0e-3_real64
+      end if
     end do
   end if
   allocate(serial_trials(n),parallel_trials(n),pstatus(n),rstatus(n))
@@ -195,7 +200,7 @@ program test_fpe_multi02_p0
        '|SERIAL_SECONDS=',serial_t(3),'|PARALLEL_SECONDS=',parallel_t(3), &
        '|SPEEDUP=',serial_t(3)/parallel_t(3),'|NS_PER_TILE=',1.0e9_real64*parallel_t(3)/real(n,real64), &
        '|MAX_SIMULTANEOUS=',maxsim,'|OMP_TEAM=',team_seen,'|MAX_Q_DIFF=',qdiff,'|MAX_T_DIFF=',tdiff, &
-       '|QSUM=',qsum,'|TSUM=',tsum,'|MIXED=',mixed
+       '|QSUM=',qsum,'|TSUM=',tsum,'|MIXED=',mixed,'|MIXED_BALANCED=',mixed_balanced
   write(*,'(A)') 'FPE_MULTI02_P0=PASS'
 
 contains
@@ -331,7 +336,9 @@ export OMP_PLACES=cores
 
 OUT="$BUILD/out.txt"; : > "$OUT"
 extra_args=()
-if [[ "${MULTI02_MIXED:-0}" == "1" ]]; then
+if [[ -n "${MULTI02_MIXED_MODE:-}" ]]; then
+  extra_args=("${MULTI02_MIXED_MODE}")
+elif [[ "${MULTI02_MIXED:-0}" == "1" ]]; then
   extra_args=(MIXED)
 fi
 for n in 100 1000; do
