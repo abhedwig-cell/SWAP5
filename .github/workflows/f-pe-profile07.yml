@@ -26,6 +26,28 @@ jobs:
       - uses: actions/checkout@v4
       - run: bash tests/fpe/run_fpe_profile04_head_directional.sh
 
+  ahl-repeated:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        replicate: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_profile04_ahl_repeated.sh
+
+  a2c-application-sequence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx02_a2_application_sequence.sh
+
+  a2c-production-binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_approx02_a2c_production_binding.sh
+
   temporal-selected-sequence:
     runs-on: ubuntu-latest
     steps:
