@@ -1,0 +1,97 @@
+name: F-PE-SETUP04 scalable bootstrap production admission
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fpe/run_fpe_setup04_*.sh'
+      - 'docs/performance/F-PE-SETUP04_*.md'
+      - '.github/workflows/f-pe-setup04.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-source-boundary:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check bounded production source
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          reg=Path("src/runtime/mod_fmr_groundwater_participant_registry.f90").read_text()
+          boot=Path("src/runtime/mod_fmr_production_application_bootstrap.f90").read_text()
+          assert "procedure, public :: bind_prevalidated_fresh" in reg
+          assert "call self%registry%bind_prevalidated_fresh" in boot
+          assert "if (.not. int64_values_unique(config%tiles%tile_id)) return" in boot
+          assert "if (.not. int64_values_unique(config%tiles%ledger_id)) return" in boot
+          callers=[]
+          for p in Path("src").rglob("*.f90"):
+              if p.name=="mod_fmr_groundwater_participant_registry.f90":
+                  continue
+              txt=p.read_text()
+              if "bind_prevalidated_fresh" in txt:
+                  callers.append(str(p))
+          assert callers==["src/runtime/mod_fmr_production_application_bootstrap.f90"], callers
+          print("FPE_SETUP04_SOURCE_BOUNDARY=PASS")
+          PY
+
+  p1-generic-registry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve generic participant registry
+        run: bash tests/fgc/run_fgc49b_fmr_participant_registry.sh
+
+  p1-production-bootstrap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve PPA-WU01 production bootstrap
+        run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+
+  p2-performance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run paired canonical/candidate admission benchmark
+        env:
+          SETUP04_N: '${{ matrix.n }}'
+          SETUP04_REPS: '3'
+        run: bash tests/fpe/run_fpe_setup04_production_admission.sh
+
+  p3-multi04-identity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve MULTI04 application-context identity
+        run: bash tests/fpe/run_fpe_multi04_p1b_application_context_identity.sh
+
+  p3-multi04-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve MULTI04 production scaling
+        run: bash tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh
