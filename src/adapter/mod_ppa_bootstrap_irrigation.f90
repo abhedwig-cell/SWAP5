@@ -13,6 +13,8 @@ module mod_ppa_bootstrap_irrigation
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_source,ppa_tcs1_4_observations_t,evaluate_tcs2_4_profile_source
   use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_dcs1_source
+  use mod_ppa_irr_tcs6_source, only: ppa_tcs6_daily_input_t,evaluate_tcs6_source
+  use mod_irrigation_process, only: ppa_weekly_identity_t
   use mod_ppa_irrigation_source_binding, only: evaluate_ppa_irrigation_source, &
        evaluate_ppa_profile_irrigation_source,ppa_irrigation_profile_t
   implicit none
@@ -34,7 +36,7 @@ contains
   ! Caller guarantees non-irrigation forcing and supplied configuration remain
   ! constant over this window. Each prefix publishes independently.
   subroutine execute_window_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,max_prefixes,prefixes,prefix_count,status,profiles,observations)
+       previous,max_prefixes,prefixes,prefix_count,status,profiles,observations,weekly_inputs)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -46,6 +48,7 @@ contains
     type(ppa_irrigation_profile_t),intent(in),optional::profiles(:)
     type(ppa_tcs1_4_observations_t),intent(in),optional::observations(:)
     type(scheduled_irrigation_request_t),allocatable::remaining(:)
+    type(ppa_tcs6_daily_input_t),intent(in),optional::weekly_inputs(:)
     type(fmr_b110_physical_forcing_t),allocatable::last_forcing(:),effective(:)
     real(real64)::endpoint,target
     integer::k
@@ -55,7 +58,7 @@ contains
     allocate(prefixes(max_prefixes))
     do k=1,max_prefixes
       call execute_next_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,remaining, &
-           last_forcing,prefixes(k)%columns,status,endpoint,profiles,effective,observations)
+           last_forcing,prefixes(k)%columns,status,endpoint,profiles,effective,observations,weekly_inputs)
       prefixes(k)%interval_end=endpoint
       prefix_count=k
       if(status/=FMR_APP_BOOT_OK) return
@@ -72,7 +75,7 @@ contains
   ! Execute at most one accepted-for-preparation prefix, never a whole-window
   ! loop. A returned endpoint is an attempt boundary, not proof of commitment.
   subroutine execute_next_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,results,status,interval_end,profiles,effective_forcing,observations)
+       previous,results,status,interval_end,profiles,effective_forcing,observations,weekly_inputs)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -85,6 +88,7 @@ contains
     type(ppa_tcs1_4_observations_t),intent(in),optional::observations(:)
     type(fmr_b110_physical_forcing_t),allocatable,intent(out),optional::effective_forcing(:)
     type(scheduled_irrigation_request_t),allocatable::trial_requests(:)
+    type(ppa_tcs6_daily_input_t),intent(in),optional::weekly_inputs(:)
     type(ppa_irrigation_preparation_t),allocatable::report(:)
     integer::attempt,i
     real(real64)::split
@@ -96,7 +100,7 @@ contains
     trial_requests=requests
     do attempt=1,size(column_ids)+1
       call execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,trial_requests, &
-           previous,results,status,profiles,report,effective_forcing,observations)
+           previous,results,status,profiles,report,effective_forcing,observations,weekly_inputs)
       ! Any hydraulic execution is terminal, including mixed publication.
       if(allocated(results).or.status/=FMR_APP_BOOT_INVALID_CONFIG) return
       if(.not.allocated(report)) return
@@ -117,7 +121,7 @@ contains
   end subroutine execute_next_ppa_bootstrap_irrigation
 
   subroutine execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
-       previous,results,status,profiles,preparation,effective_forcing,observations)
+       previous,results,status,profiles,preparation,effective_forcing,observations,weekly_inputs)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -130,6 +134,8 @@ contains
     type(ppa_tcs1_4_observations_t),intent(in),optional::observations(:)
     type(fmr_b110_physical_forcing_t),allocatable,intent(out),optional::effective_forcing(:)
     type(fmr_committed_restart_bundle_t)::snapshot
+    type(ppa_tcs6_daily_input_t),intent(in),optional::weekly_inputs(:)
+    type(ppa_weekly_identity_t),allocatable::weekly_proposals(:)
     type(fmr_b110_physical_forcing_t),allocatable::prepared(:),forcing
     type(irrigation_state_t),allocatable::events(:)
     logical,allocatable::selected(:)
@@ -143,6 +149,9 @@ contains
     status=FMR_APP_BOOT_INVALID_CONFIG
     n=size(column_ids)
     if(n<1.or.size(parameters)/=n.or.size(requests)/=n.or.size(previous)/=n) return
+    if(present(weekly_inputs)) then
+      if(size(weekly_inputs)/=n) return
+    end if
     if(present(observations)) then
       if(size(observations)/=n) return
     end if
@@ -153,6 +162,10 @@ contains
     if(.not.all(ieee_is_finite([t0,t1]))) return
     if(t1<=t0) return
     do i=1,n
+      if(parameters(i)%timing_criterion==6) then
+        if(.not.present(weekly_inputs)) return
+        if(parameters(i)%depth_criterion/=IRRIGATION_DEPTH_DCS2_FIXED) return
+      end if
       if(parameters(i)%timing_criterion>=1.and.parameters(i)%timing_criterion<=4) then
         if(.not.present(observations)) return
       end if
@@ -176,7 +189,7 @@ contains
     if(.not.ok.or.export_status/=FMR_APP_BOOT_OK) return
     if(.not.allocated(snapshot%records)) return
     if(size(snapshot%records)/=n) return
-    allocate(prepared(n),events(n),selected(n))
+    allocate(prepared(n),events(n),selected(n),weekly_proposals(n))
     if(present(preparation)) allocate(preparation(n))
     do i=1,n
       if(snapshot%records(i)%column_id/=column_ids(i)) return
@@ -190,7 +203,10 @@ contains
         hydraulic%active_nodes=state%active_nodes
         hydraulic%pressure_head=state%pressure_head
         hydraulic%water_content=state%water_content
-        if(parameters(i)%timing_criterion>=1.and.parameters(i)%timing_criterion<=4) then
+        if(parameters(i)%timing_criterion==6) then
+          call evaluate_tcs6_source(parameters(i),state%irrigation,requests(i),state%weekly,weekly_inputs(i), &
+               previous(i),weekly_proposals(i),event,flux,diagnostics,forcing,ok)
+        else if(parameters(i)%timing_criterion>=1.and.parameters(i)%timing_criterion<=4) then
           if(parameters(i)%depth_criterion==IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY) then
             call evaluate_tcs1_4_dcs1_source(parameters(i),state%irrigation,requests(i),observations(i), &
                  hydraulic,profiles(i),previous(i),event,flux,diagnostics,forcing,ok)
@@ -233,6 +249,6 @@ contains
       end if
     end do
     if(present(effective_forcing)) effective_forcing=prepared
-    call application%run_prepared_irrigation(t0,t1,prepared,results,status,events,selected)
+    call application%run_prepared_irrigation(t0,t1,prepared,results,status,events,selected,weekly_proposals)
   end subroutine execute_ppa_bootstrap_irrigation
 end module mod_ppa_bootstrap_irrigation

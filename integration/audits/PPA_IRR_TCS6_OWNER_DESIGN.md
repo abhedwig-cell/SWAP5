@@ -56,6 +56,15 @@ mixed publication remains explicit; a batch-level counter is forbidden.
 
 ## Required gates
 
+Daily source inputs are optional trailing arrays on the exact, next-prefix and
+window adapters. Timing 6 requires an array entry and DCS2. The adapter reads
+weekly metadata from the same committed snapshot as the event/physical state,
+then obtains metadata and forcing together from `evaluate_tcs6_source`. All
+columns prepare before runtime publication. Retries reuse the input ordinal;
+after acceptance the committed identity suppresses repeat counting in remaining
+prefixes. No ordinal is inferred from solver time and no state is mutated during
+preparation. Full multi-prefix weekly qualification remains a separate gate.
+
 The bootstrap prepared-irrigation entry now takes an optional trailing
 `weekly_proposals(:)` array. Shape and metadata validity are checked before any
 column executes. Enabled entries forward their proposal regardless of the gift

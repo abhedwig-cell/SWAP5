@@ -1696,10 +1696,14 @@ contains
     config%tiles(1)%irrigation_ssdi_node=0
     block
       use mod_irrigation_process, only: ppa_weekly_identity_t
+      use mod_ppa_irr_tcs6_source, only: ppa_tcs6_daily_input_t
       type(fmr_production_application_bootstrap_t)::weekly_app,weekly_resumed
       type(fmr_production_application_config_t)::weekly_config
       type(fmr_committed_restart_bundle_t)::weekly_bundle,resumed_bundle
       type(ppa_weekly_identity_t)::proposals(2)
+      type(ppa_tcs6_daily_input_t)::daily_inputs(2)
+      type(scheduled_irrigation_parameters_t)::daily_parameters(2)
+      type(scheduled_irrigation_request_t)::daily_requests(2)
       type(irrigation_state_t)::no_events(2)
       type(fmr_b110_physical_forcing_t)::weekly_forcing(2)
       type(fmr_serialized_column_result_t),allocatable::weekly_results(:)
@@ -1757,8 +1761,27 @@ contains
           error stop 'weekly bootstrap output carrier'
         end select
       end do
-      call weekly_resumed%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,weekly_forcing, &
-           weekly_results,weekly_code,no_events,[.false.,.false.],proposals)
+      do j=1,2
+        daily_parameters(j)%active_nodes=source%active_nodes
+        daily_parameters(j)%sensor_node=1; daily_parameters(j)%single_ssdi_node=1
+        daily_parameters(j)%scheduled_irrigation_enabled=.true.
+        daily_parameters(j)%dcs2_knot_count=2; daily_parameters(j)%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+        daily_parameters(j)%dcs2_depth_cm=0.01_real64
+        daily_parameters(j)%irr_rate_cm_per_day=0.01_real64
+        daily_requests(j)%t0=T0; daily_requests(j)%t1=T0+1.0_real64/65536.0_real64
+        daily_requests(j)%irrigation_enabled=.true.; daily_requests(j)%schedule_enabled=.true.
+        daily_requests(j)%crop_emerged=.true.; daily_requests(j)%irrigation_window_open=.true.
+      end do
+      daily_parameters(1)%timing_criterion=6; daily_requests(1)%selection_opportunity=.true.
+      daily_parameters(2)%timing_criterion=7; daily_requests(2)%selection_opportunity=.false.
+      daily_parameters(2)%tcs7_knot_count=2; daily_parameters(2)%tcs7_dvs(1:2)=[0.0_real64,2.0_real64]
+      daily_inputs(1)%daily_invocation=.true.; daily_inputs(1)%ordinal=101_int64
+      daily_inputs(1)%deficit_cm=0.0_real64; daily_inputs(1)%threshold_mm=5.0_real64
+      call execute_ppa_bootstrap_irrigation(weekly_resumed,[1_int64,2_int64],92001_int64, &
+           daily_parameters,daily_requests,weekly_forcing,weekly_results,weekly_code)
+      if(weekly_code==FMR_APP_BOOT_OK.or.allocated(weekly_results)) error stop 'weekly missing daily input admitted'
+      call execute_ppa_bootstrap_irrigation(weekly_resumed,[1_int64,2_int64],92001_int64, &
+           daily_parameters,daily_requests,weekly_forcing,weekly_results,weekly_code,weekly_inputs=daily_inputs)
       if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly decoded restart replay'
       call weekly_resumed%export_committed_restart(92001_int64,resumed_bundle,weekly_ok,weekly_code)
       if(.not.weekly_ok) error stop 'weekly replay export'
@@ -1780,6 +1803,7 @@ contains
       call weekly_resumed%close(weekly_code)
       call weekly_app%close(weekly_code)
       write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_DECODED_REPLAY_IDENTITY=PASS'
+      write(*,'(a)') 'PPA_IRR_WEEKLY_DAILY_BOOTSTRAP_SOURCE_PUBLICATION=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_NO_GIFT_MIXED_METADATA=PASS'
     end block
     call application%initialize(config,code)
