@@ -2816,6 +2816,40 @@ contains
           end do
           call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
           if(.not.weekly_ok) error stop 'weekly profile fixture reset'
+          profiles(2)%noddrz=1; profiles(2)%layer=[1]
+          profiles(2)%dz=[4.0_real64]; profiles(2)%ztopcp=[0.0_real64]; profiles(2)%rd=4.0_real64
+          select type(state=>weekly_bundle%records(2)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            profiles(2)%wclos=[state%water_content(1)+0.25_real64]
+          end select
+          profiles(2)%wcmes=[0.25_real64]; profiles(2)%wchis=[0.1_real64]
+          profile_inputs(1)%deficit_cm=ieee_value(0.0_real64,ieee_quiet_nan)
+          split_requests%t0=T0; split_requests%t1=split_endpoint+1.0_real64/65536.0_real64
+          call execute_window_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+               daily_parameters,split_requests,weekly_forcing,2,prefixes,prefix_count,weekly_code, &
+               profiles=profiles,weekly_inputs=profile_inputs,weekly_profile_mode=[.true.,.true.])
+          if(weekly_code/=FMR_APP_BOOT_OK.or.prefix_count/=2) error stop 'weekly profile two-prefix window'
+          do route=1,2
+            if(.not.all(prefixes(route)%columns%committed)) error stop 'weekly profile two-prefix commit'
+            do k=1,2
+              if(abs(prefixes(route)%columns(k)%mass%residual)>1.0e-12_real64) &
+                   error stop 'weekly profile two-prefix mass'
+            end do
+          end do
+          call split_app%export_committed_restart(92001_int64,window_result,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly profile two-prefix export'
+          do k=1,2
+            if(window_result%records(k)%committed_time/=split_requests(k)%t1) &
+                 error stop 'weekly profile two-prefix finish'
+            select type(state=>window_result%records(k)%physical_state)
+            type is(ppa_irrigation_event_state_t)
+              if(state%weekly%dayfix/=0.or.state%weekly%last_day/=100_int64.or.state%irrigation%active_event) &
+                   error stop 'weekly profile two-prefix reselection'
+            end select
+          end do
+          call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly profile two-prefix reset'
+          write(*,'(a)') 'PPA_IRR_WEEKLY_PROFILE_FRESH_TWO_PREFIX=PASS'
           split_requests%t1=T0+3.0_real64/1024.0_real64
           write(*,'(a)') 'PPA_IRR_WEEKLY_PROFILE_WINDOW_REPLAY_IDENTITY=PASS'
           split_requests%t0=T0
