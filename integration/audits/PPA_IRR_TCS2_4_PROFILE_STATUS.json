@@ -1,11 +1,13 @@
 {
   "work_unit": "PPA-IRR-TCS2-4-PROFILE",
-  "status": "CHECKED_PROFILE_PREFIX_RESTART_PASS_REJECTION_GATES_PENDING",
-  "tested_commit": "44666db9fcb22b503e50ca1c597f6181eed93a45",
+  "status": "RESTRICTED_CHECKED_PROFILE_RUNTIME_RESTART_ROLLBACK_PASS",
+  "tested_commit": "0d63890244f7969ba44c84c55559a983a99f100f",
   "preregistration": "PPA_IRR_TCS2_4_PROFILE_PREREGISTRATION.json",
   "scope": "Explicit TCS2-4/DCS2 source composition derives AWLH/AWMH/AWAH through the existing checked aggregation from supplied hydraulic water content and root profile. Only local observation copies change; the existing event and forcing bridge is reused.",
   "gates": {
     "IrrigationSource_clean_O0_O2": "PASS, complete transcripts identical",
+    "profile_preflight_nonmutation": "PASS for TCS2-4: second-column invalid geometry rejects before execution; both columns retain hydraulic values, revision, time and inactive event",
+    "profile_internal_hydraulic_rejection": "PASS for TCS2-4: at least one accepted internal substep, terminal failed window without publication or next prefix; outcomes match prepared-source reference; committed event, time and hydraulic values unchanged",
     "profile_runtime_prefix_restart": "PASS for TCS2-4/DCS2: contradictory supplied aggregates, prefix split, committed gift persistence, decoded fresh-owner restart, pending continuation with invalid profile/table and exact hydraulic identity; hard mass residual <=1e-12",
     "derived_reference_aggregate_equivalence": "PASS for all three timing criteria",
     "invalid_root_geometry": "PASS, no event or forcing publication",
@@ -16,9 +18,9 @@
     "documentation_source": "PASS",
     "mkdocs_strict": "PASS"
   },
-  "retained_build": "swap-ppa-wu01-7a0884ab232e4b9d933f2b3b259e1367",
-  "logs_in_temp": ["swap-profile-runtime.log", "swap-profile-runtime-hydraulic-copy-O0.log", "swap-profile-runtime-hydraulic-copy-O2.log", "swap-profile-runtime-guards-O0.log", "swap-profile-runtime-guards-O2.log", "swap-profile-runtime-docs.log"],
-  "qualification_boundary": "Branch-local TCS2-4 profile-derived prefix/restart fixtures only. Profile-specific invalid-selection and internally progressed hydraulic rejection integration gates remain pending. Canonical admission unchanged.",
-  "next_safe_step": "Complete profile-specific preflight nonmutation and internally progressed hydraulic rejection tests in PPA_IRR_TCS2_4_RUNTIME_PROFILE_PLAN.md; reuse existing event owner and acceptance criteria.",
-  "remaining_scope": ["Profile-derived runtime rejection gates", "TCS1 daily stress ownership", "Dynamic root/crop geometry", "DCS1 composition", "General parser/calendar and canonical admission"]
+  "retained_build": "swap-ppa-wu01-e042fa3b11fb4aa1afedcf5192dfef6b",
+  "logs_in_temp": ["swap-profile-rejection.log", "swap-profile-rejection-hydraulic-copy-O0.log", "swap-profile-rejection-hydraulic-copy-O2.log", "swap-profile-rejection-guards-O0.log", "swap-profile-rejection-guards-O2.log", "swap-profile-rejection-docs.log"],
+  "qualification_boundary": "Branch-local TCS2-4/DCS2 supplied-profile runtime fixtures, including prefix, restart and rejection. No automatic crop geometry, daily stress accumulation or canonical admission is implied.",
+  "next_safe_step": "Reconcile bounded profile runtime coverage with campaign ledger, then select the next missing source-backed capability; preserve the existing single owner and numerical acceptance criteria.",
+  "remaining_scope": ["TCS1 daily stress ownership", "Dynamic root/crop geometry", "DCS1 composition", "General parser/calendar and canonical admission"]
 }

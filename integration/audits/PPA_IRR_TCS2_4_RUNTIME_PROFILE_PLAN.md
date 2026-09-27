@@ -1,6 +1,7 @@
 # TCS2-4 profile runtime composition
 
-Status: proposed next implementation phase; not runtime qualification.
+Status: implemented and tested in bounded branch-local fixtures at `0d6389024`.
+See the owning status record for gates and limits; not canonical admission.
 
 Owning preregistration: `PPA_IRR_TCS2_4_PROFILE_PREREGISTRATION.json`.
 Source evidence: `PPA_IRR_TCS2_4_PROFILE_STATUS.json`.
