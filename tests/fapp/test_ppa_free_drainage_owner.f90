@@ -2872,6 +2872,43 @@ contains
           end do
           call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
           if(.not.weekly_ok) error stop 'weekly profile two-prefix reset'
+          ! Continue the actual final snapshot with a new explicit invocation;
+          ! this is a short hydraulic fixture, not an elapsed calendar day.
+          call split_app%restore_committed_restart(window_result,92001_int64,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly successor runtime restore'
+          split_requests%t0=window_result%records(1)%committed_time
+          split_requests%t1=split_requests(1)%t0+1.0_real64/65536.0_real64
+          profile_inputs%ordinal=101_int64
+          do k=1,2
+            profiles(k)%dz=[2.0_real64]; profiles(k)%rd=2.0_real64
+            select type(state=>window_result%records(k)%physical_state)
+            type is(ppa_irrigation_event_state_t)
+              profiles(k)%wclos=[state%water_content(1)+0.125_real64]
+            end select
+          end do
+          resume_forcing=weekly_forcing
+          resume_forcing(1)%subsurface_irrigation_source=0.0_real64
+          resume_forcing(2)%subsurface_irrigation_source=0.0_real64
+          call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+               daily_parameters,split_requests,resume_forcing,split_results,weekly_code, &
+               profiles=profiles,weekly_inputs=profile_inputs,weekly_profile_mode=[.true.,.true.])
+          if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly successor runtime execution'
+          if(.not.all(split_results%committed)) error stop 'weekly successor runtime publication'
+          call split_app%export_committed_restart(92001_int64,profile_result,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly successor runtime export'
+          do k=1,2
+            if(abs(split_results(k)%mass%residual)>1.0e-12_real64) error stop 'weekly successor runtime mass'
+            if(profile_result%records(k)%committed_time/=split_requests(k)%t1) &
+                 error stop 'weekly successor runtime finish'
+            select type(state=>profile_result%records(k)%physical_state)
+            type is(ppa_irrigation_event_state_t)
+              if(state%weekly%dayfix/=1.or.state%weekly%last_day/=101_int64.or.state%irrigation%active_event) &
+                   error stop 'weekly successor runtime metadata'
+            end select
+          end do
+          call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly successor runtime reset'
+          write(*,'(a)') 'PPA_IRR_WEEKLY_PROFILE_RUNTIME_SUCCESSOR=PASS'
           write(*,'(a)') 'PPA_IRR_WEEKLY_PROFILE_FRESH_TWO_PREFIX=PASS'
           split_requests%t1=T0+3.0_real64/1024.0_real64
           write(*,'(a)') 'PPA_IRR_WEEKLY_PROFILE_WINDOW_REPLAY_IDENTITY=PASS'
