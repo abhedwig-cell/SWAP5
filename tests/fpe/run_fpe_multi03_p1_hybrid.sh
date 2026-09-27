@@ -47,10 +47,11 @@ new="""  if(command_argument_count()/=4) error stop 'usage N WORKERS ORDER SCHED
   call get_command_argument(2,arg); read(arg,*) workers
   call get_command_argument(3,arg); read(arg,*) order_code
   call get_command_argument(4,arg); read(arg,*) schedule_code
+  requested_schedule=schedule_code
   mixed=.false.; mixed_balanced=.false.; mode=''
   if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'
   if(order_code/=0 .and. order_code/=1) error stop 'bad order'
-  if(schedule_code/=0 .and. schedule_code/=1) error stop 'bad schedule'
+  if(requested_schedule/=0 .and. requested_schedule/=2) error stop 'bad schedule'
 """
 if old not in s: raise SystemExit("MULTI03 args seam missing")
 s=s.replace(old,new,1)
@@ -187,7 +188,8 @@ old="""  write(*,'(*(g0))') 'MULTI02_P0|N=',n,'|WORKERS=',workers, &
        '|MAX_SIMULTANEOUS=',maxsim,'|OMP_TEAM=',team_seen,'|MAX_Q_DIFF=',qdiff,'|MAX_T_DIFF=',tdiff, &
        '|QSUM=',qsum,'|TSUM=',tsum,'|MIXED=',mixed,'|MIXED_BALANCED=',mixed_balanced
 """
-new="""  write(*,'(*(g0))') 'MULTI03_P1|N=',n,'|WORKERS=',workers,'|ORDER=',order_code,'|SCHEDULE=',schedule_code, &
+new="""  write(*,'(*(g0))') 'MULTI03_P1|N=',n,'|WORKERS=',workers,'|ORDER=',order_code, &
+       '|REQUESTED_SCHEDULE=',requested_schedule,'|SCHEDULE=',schedule_code,'|STATIC_RATIO=',static_ratio, &
        '|SERIAL_SECONDS=',serial_t(3),'|PARALLEL_SECONDS=',parallel_t(3), &
        '|SPEEDUP=',serial_t(3)/parallel_t(3),'|NS_PER_TILE=',1.0e9_real64*parallel_t(3)/real(n,real64), &
        '|MAX_SIMULTANEOUS=',maxsim,'|OMP_TEAM=',team_seen,'|MAX_Q_DIFF=',qdiff,'|MAX_T_DIFF=',tdiff, &
