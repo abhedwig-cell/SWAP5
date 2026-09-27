@@ -423,6 +423,28 @@ contains
     if(.not.ok.or..not.allocated(assembled)) error stop 'valid inactive assembly after rejection failed'
     if(assembled%irrigation%active_event) error stop 'inactive assembly reactivated event'
     write(*,'(a)') 'PPA_IRR_EVENT_INACTIVE_CANONICAL_PAYLOAD=PASS'
+    invalid_carrier%weekly%enabled=.true.
+    invalid_carrier%weekly%day_bound=.true.
+    invalid_carrier%weekly%dayfix=3
+    invalid_carrier%weekly%last_day=100_int64
+    call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+         invalid_carrier%irrigation,event_template,T0,assembled,ok,weekly=invalid_carrier%weekly)
+    if(.not.ok) error stop 'weekly carrier factory rejected'
+    if(.not.fmr_restart_state_matches_template(assembled,event_template,T0)) error stop 'weekly restart rejected'
+    call assembled%clone(carrier_copy)
+    select type(cloned=>carrier_copy)
+    type is(ppa_irrigation_event_state_t)
+      if(.not.cloned%weekly%enabled.or..not.cloned%weekly%day_bound.or.cloned%weekly%dayfix/=3.or. &
+           cloned%weekly%last_day/=100_int64) error stop 'weekly clone lost metadata'
+    class default
+      error stop 'weekly clone lost carrier'
+    end select
+    invalid_carrier%weekly%dayfix=367
+    if(invalid_carrier%matches_candidate(event_template,T0)) error stop 'weekly invalid counter accepted'
+    call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+         invalid_carrier%irrigation,event_template,T0,assembled,ok,weekly=invalid_carrier%weekly)
+    if(ok.or.allocated(assembled)) error stop 'weekly invalid factory leaked'
+    write(*,'(a)') 'PPA_IRR_WEEKLY_CARRIER_FACTORY_CLONE_RESTART=PASS'
     write(*,'(a)') 'PPA_IRR_EVENT_INACTIVE_REJECTION_NO_STALE_CANDIDATE=PASS'
     write(*,'(a)') 'PPA_IRR_EVENT_CANDIDATE_INVALID_PAYLOAD_20=PASS'
     call carrier%clone(carrier_copy)

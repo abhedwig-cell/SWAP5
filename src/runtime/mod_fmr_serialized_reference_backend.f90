@@ -1,5 +1,6 @@
 module mod_fmr_serialized_reference_backend
   use mod_irrigation_process, only: irrigation_state_t, IRRIGATION_EVENT_SCHEDULED, IRRIGATION_EVENT_NONE
+  use mod_irrigation_process, only: ppa_weekly_identity_t,valid_weekly_identity
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t, &
@@ -143,6 +144,7 @@ module mod_fmr_serialized_reference_backend
 
   type, extends(fmr_b110_temporal_indicator_state_t), public :: ppa_irrigation_event_state_t
     type(irrigation_state_t) :: irrigation
+    type(ppa_weekly_identity_t) :: weekly
   contains
     procedure :: clone => clone_irrigation_event_state
     procedure :: matches_candidate => irrigation_event_matches_candidate
@@ -516,7 +518,7 @@ module mod_fmr_serialized_reference_backend
 
 contains
 
-  subroutine build_irrigation_event_candidate(physical,event,template,boundary_time,candidate,ok,right_derivative)
+  subroutine build_irrigation_event_candidate(physical,event,template,boundary_time,candidate,ok,right_derivative,weekly)
     ! Combine trial outputs only. The caller must supply the hydraulic state
     ! and event from the same boundary; this routine neither proves hydraulic
     ! acceptance nor publishes committed state or changes the runtime registry.
@@ -529,6 +531,7 @@ contains
     ! Optional derivative must come from the same trial boundary as physical.
     ! Replacement is confined to the detached candidate, never its source.
     real(real64), intent(in), optional :: right_derivative(:)
+    type(ppa_weekly_identity_t),intent(in),optional::weekly
     type(ppa_irrigation_event_state_t) :: proposed
     logical :: replaced
     ok=.false.
@@ -541,6 +544,7 @@ contains
       return
     end select
     proposed%irrigation=event
+    if(present(weekly)) proposed%weekly=weekly
     if(present(right_derivative)) then
       call replace_supported_temporal_history(proposed,right_derivative,replaced)
       if(.not.replaced) return
@@ -574,6 +578,7 @@ contains
     if(size(history)/=self%active_nodes) return
     if(.not.all(ieee_is_finite(history))) return
     if(self%irrigation%next_fixed_event_index<1) return
+    if(.not.valid_weekly_identity(self%weekly)) return
     if(self%irrigation%active_event) then
       if(self%irrigation%active_event_origin/=IRRIGATION_EVENT_SCHEDULED) return
       if(self%irrigation%active_event_index/=0) return
@@ -1375,6 +1380,8 @@ contains
     select type(snapshot)
     type is(ppa_irrigation_event_state_t)
       if(.not.snapshot%matches_candidate(template,t0)) return
+      ! Weekly transfer/publication is not yet wired through hydraulic trials.
+      if(snapshot%weekly%enabled) return
       if(snapshot%active_nodes/=parameters%active_nodes) return
       if(present(selected_event)) then
         if(snapshot%irrigation%active_event.or..not.selected_event%active_event) return

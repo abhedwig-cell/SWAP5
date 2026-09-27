@@ -1,9 +1,15 @@
 module mod_irrigation_process
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64,int64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   implicit none
   private
+  type,public :: ppa_weekly_identity_t
+    logical :: enabled=.false.,day_bound=.false.
+    integer :: dayfix=366
+    integer(int64) :: last_day=0_int64
+  end type
+  public :: valid_weekly_identity
 
   integer, parameter, public :: IRRIGATION_OK = 0
   integer, parameter, public :: IRRIGATION_INVALID_INTERVAL = 1
@@ -148,6 +154,18 @@ module mod_irrigation_process
   public :: evaluate_scheduled_irrigation_interval
 
 contains
+  pure logical function valid_weekly_identity(state) result(ok)
+    type(ppa_weekly_identity_t),intent(in)::state
+    ok=.false.
+    if(state%dayfix<0.or.state%dayfix>366) return
+    if(.not.state%enabled.or..not.state%day_bound) then
+      if(state%dayfix/=366.or.state%last_day/=0_int64) return
+      if(.not.state%enabled.and.state%day_bound) return
+    else
+      if(state%last_day<0_int64) return
+    end if
+    ok=.true.
+  end function
 
   pure subroutine evaluate_fixed_irrigation_interval(parameters, committed_state, request, &
                                                        candidate_state, fluxes, diagnostics)
