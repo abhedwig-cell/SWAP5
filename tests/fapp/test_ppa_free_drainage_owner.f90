@@ -1961,7 +1961,7 @@ contains
       type(fmr_b110_physical_forcing_t)::weekly_forcing(2)
       type(fmr_b110_physical_forcing_t),allocatable::weekly_effective(:)
       type(fmr_serialized_column_result_t),allocatable::weekly_results(:)
-      integer::weekly_code,j,weekly_day
+      integer::weekly_code,j,weekly_day,ordinal_case
       logical::weekly_ok
       weekly_config=config; weekly_config%tiles(1)%irrigation_ssdi_node=1
       call weekly_app%initialize(weekly_config,weekly_code)
@@ -2114,6 +2114,34 @@ contains
       do weekly_day=102,108
         daily_requests%t0=target_bundle%records(1)%committed_time
         daily_requests%t1=daily_requests(1)%t0+1.0_real64/65536.0_real64
+        do ordinal_case=1,2
+          daily_inputs(1)%ordinal=int(weekly_day+1,int64)
+          if(ordinal_case==2) daily_inputs(1)%ordinal=int(weekly_day-2,int64)
+          call execute_ppa_bootstrap_irrigation(target_app,[1_int64,2_int64],92001_int64, &
+               daily_parameters,daily_requests,weekly_forcing,weekly_results,weekly_code, &
+               weekly_inputs=daily_inputs,target_selector=weekly_bounded_target)
+          if(weekly_code==FMR_APP_BOOT_OK.or.allocated(weekly_results)) error stop 'weekly invalid ordinal executed'
+          call target_app%export_committed_restart(92001_int64,resumed_bundle,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly invalid ordinal export'
+          if(any(resumed_bundle%records%committed_time/=target_bundle%records%committed_time)) &
+               error stop 'weekly invalid ordinal time'
+          do j=1,2
+            select type(before=>target_bundle%records(j)%physical_state)
+            type is(ppa_irrigation_event_state_t)
+              select type(after=>resumed_bundle%records(j)%physical_state)
+              type is(ppa_irrigation_event_state_t)
+                if(any(before%pressure_head/=after%pressure_head).or.any(before%water_content/=after%water_content).or. &
+                     before%weekly%dayfix/=after%weekly%dayfix.or.before%weekly%last_day/=after%weekly%last_day.or. &
+                     (before%irrigation%active_event.neqv.after%irrigation%active_event)) &
+                     error stop 'weekly invalid ordinal state publication'
+              class default
+                error stop 'weekly invalid ordinal output carrier'
+              end select
+            class default
+              error stop 'weekly invalid ordinal input carrier'
+            end select
+          end do
+        end do
         daily_inputs(1)%ordinal=int(weekly_day,int64)
         call execute_window_ppa_bootstrap_irrigation(target_app,[1_int64,2_int64],92001_int64, &
              daily_parameters,daily_requests,weekly_forcing,1,prefixes,prefix_count,weekly_code, &
@@ -2143,6 +2171,7 @@ contains
       call target_app%close(weekly_code)
       if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly daily target close'
       write(*,'(a)') 'PPA_IRR_WEEKLY_SEVEN_SUCCESSOR_ORDINALS_ROLLOVER_RESTART=PASS'
+      write(*,'(a)') 'PPA_IRR_WEEKLY_GAP_BACKWARD_NO_PUBLICATION_RETRY=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_DAILY_TARGET_WINDOW_CONTINUATION=PASS'
       ! A separate fresh, two-weekly-column fixture exercises actual gift
       ! selection followed by a same-ordinal pending continuation.
