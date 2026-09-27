@@ -51,6 +51,7 @@ module mod_fmr_groundwater_participant_registry
   contains
     procedure, public :: initialize => registry_initialize
     procedure, public :: bind => registry_bind
+    procedure, public :: bind_prevalidated_fresh => registry_bind_prevalidated_fresh
     procedure, public :: release => registry_release
     procedure, public :: capture_origin => registry_capture_origin
     procedure, public :: trial_from_origin => registry_trial_from_origin
@@ -106,6 +107,50 @@ contains
     logical, intent(in), optional :: immutable_parameters
     type(fmr_groundwater_temporal_budget_policy_t), intent(in), optional :: temporal_budget_policy
 
+    call registry_bind_impl(self, tile_id, backend, column, template, parameters, committed, materializer, &
+         numerical, datum, handle, status, immutable_parameters, temporal_budget_policy, .false., .false.)
+  end subroutine registry_bind
+
+  subroutine registry_bind_prevalidated_fresh(self, tile_id, backend, column, template, parameters, committed, materializer, &
+       numerical, datum, handle, status, immutable_parameters, temporal_budget_policy)
+    class(fmr_groundwater_participant_registry_t), intent(inout) :: self
+    integer(int64), intent(in) :: tile_id
+    type(fmr_serialized_reference_backend_t), target, intent(inout) :: backend
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), target, intent(in) :: parameters
+    type(kernel_committed_state_t), target, intent(inout) :: committed
+    type(fmr_groundwater_head_forcing_materializer_t), target, intent(in) :: materializer
+    type(canonical_numerical_config_t), intent(in) :: numerical
+    type(groundwater_head_datum_t), intent(in) :: datum
+    integer(int64), intent(out) :: handle
+    integer, intent(out) :: status
+    logical, intent(in), optional :: immutable_parameters
+    type(fmr_groundwater_temporal_budget_policy_t), intent(in), optional :: temporal_budget_policy
+
+    call registry_bind_impl(self, tile_id, backend, column, template, parameters, committed, materializer, &
+         numerical, datum, handle, status, immutable_parameters, temporal_budget_policy, .true., .true.)
+  end subroutine registry_bind_prevalidated_fresh
+
+  subroutine registry_bind_impl(self, tile_id, backend, column, template, parameters, committed, materializer, &
+       numerical, datum, handle, status, immutable_parameters, temporal_budget_policy, &
+       prevalidated_unique_tile, sequential_fresh_slot)
+    class(fmr_groundwater_participant_registry_t), intent(inout) :: self
+    integer(int64), intent(in) :: tile_id
+    type(fmr_serialized_reference_backend_t), target, intent(inout) :: backend
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), target, intent(in) :: parameters
+    type(kernel_committed_state_t), target, intent(inout) :: committed
+    type(fmr_groundwater_head_forcing_materializer_t), target, intent(in) :: materializer
+    type(canonical_numerical_config_t), intent(in) :: numerical
+    type(groundwater_head_datum_t), intent(in) :: datum
+    integer(int64), intent(out) :: handle
+    integer, intent(out) :: status
+    logical, intent(in), optional :: immutable_parameters
+    type(fmr_groundwater_temporal_budget_policy_t), intent(in), optional :: temporal_budget_policy
+    logical, intent(in) :: prevalidated_unique_tile, sequential_fresh_slot
+
     integer :: i, slot
 
     handle = 0_int64
@@ -123,21 +168,34 @@ contains
       if (.not. temporal_budget_policy%valid()) return
     end if
 
-    do i = 1, size(self%slots)
-      if (.not. self%slots(i)%active) cycle
-      if (self%slots(i)%tile_id == tile_id) then
-        status = FMR_GW_REGISTRY_DUPLICATE_TILE
-        return
-      end if
-    end do
+    if (.not. prevalidated_unique_tile) then
+      do i = 1, size(self%slots)
+        if (.not. self%slots(i)%active) cycle
+        if (self%slots(i)%tile_id == tile_id) then
+          status = FMR_GW_REGISTRY_DUPLICATE_TILE
+          return
+        end if
+      end do
+    end if
 
     slot = 0
-    do i = 1, size(self%slots)
-      if (.not. self%slots(i)%used) then
-        slot = i
-        exit
+    if (sequential_fresh_slot) then
+      if (self%next_handle > 0_int64 .and. self%next_handle <= int(size(self%slots), int64)) then
+        i = int(self%next_handle)
+        if (.not. self%slots(i)%used) slot = i
       end if
-    end do
+      if (slot <= 0) then
+        status = FMR_GW_REGISTRY_INVALID_REQUEST
+        return
+      end if
+    else
+      do i = 1, size(self%slots)
+        if (.not. self%slots(i)%used) then
+          slot = i
+          exit
+        end if
+      end do
+    end if
     if (slot <= 0) then
       status = FMR_GW_REGISTRY_CAPACITY_EXHAUSTED
       return
@@ -169,7 +227,7 @@ contains
     handle = self%next_handle
     self%next_handle = self%next_handle + 1_int64
     status = FMR_GW_REGISTRY_OK
-  end subroutine registry_bind
+  end subroutine registry_bind_impl
 
   subroutine registry_release(self, handle, status)
     class(fmr_groundwater_participant_registry_t), intent(inout) :: self
