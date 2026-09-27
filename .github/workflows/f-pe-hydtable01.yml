@@ -1,0 +1,16 @@
+name: F-PE-HYDTABLE01 conductivity table research
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_hydtable01_*.sh'
+      - 'docs/performance/F-PE-HYDTABLE01_*.md'
+      - '.github/workflows/f-pe-hydtable01.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-frontier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_hydtable01_p0.sh
