@@ -40,7 +40,7 @@ p=Path(sys.argv[1]); s=p.read_text()
 s=s.replace(
 "  use mod_kernel_transactions, only: kernel_committed_state_t\n",
 "  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_diagnostics_t\n",1)
-needle="     procedure, public :: identity => registry_identity\n"
+needle="    procedure, public :: identity => registry_identity\n"
 if needle not in s: raise SystemExit("registry procedure seam missing")
 s=s.replace(needle,needle+"     procedure, public :: multi02_diagnostics => registry_multi02_diagnostics\n",1)
 end="end module mod_fmr_groundwater_participant_registry"
