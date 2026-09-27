@@ -10,6 +10,7 @@ trap 'rm -rf "$BUILD"' EXIT
 COMMON=(-std=f2008 -ffree-line-length-none -O3 -fopenmp)
 
 BOOTSTRAP_SOURCE="${MULTI02_BOOTSTRAP_SOURCE:-src/runtime/mod_fmr_production_application_bootstrap.f90}"
+CONTEXT_SOURCE="${MULTI02_CONTEXT_SOURCE:-src/runtime/mod_fmr_groundwater_application_context.f90}"
 
 mapfile -t MODULE_SRC < <(python3 - <<'PY'
 from pathlib import Path
@@ -25,6 +26,8 @@ PY
 for i in "${!MODULE_SRC[@]}"; do
   if [[ "${MODULE_SRC[$i]}" == "src/runtime/mod_fmr_production_application_bootstrap.f90" ]]; then
     MODULE_SRC[$i]="$BOOTSTRAP_SOURCE"
+  elif [[ "${MODULE_SRC[$i]}" == "src/runtime/mod_fmr_groundwater_application_context.f90" ]]; then
+    MODULE_SRC[$i]="$CONTEXT_SOURCE"
   fi
 done
 
