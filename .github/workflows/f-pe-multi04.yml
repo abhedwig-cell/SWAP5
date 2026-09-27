@@ -1,0 +1,23 @@
+name: F-PE-MULTI04 production groundwater parallel admission
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
+      - 'src/runtime/mod_fmr_groundwater_application_context.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fpe/run_fpe_multi04_*.sh'
+      - 'docs/performance/F-PE-MULTI04_*.md'
+      - '.github/workflows/f-pe-multi04.yml'
+  workflow_dispatch:
+
+jobs:
+  p1-candidate-backend-ownership:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify worker-owned candidate lifecycle
+        run: bash tests/fpe/run_fpe_multi04_p1_backend_ownership.sh
