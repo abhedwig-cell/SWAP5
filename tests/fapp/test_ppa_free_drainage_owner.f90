@@ -2692,7 +2692,8 @@ contains
           if(.not.weekly_ok) error stop 'weekly supplied comparison export'
           call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
           if(.not.weekly_ok) error stop 'weekly profile comparison restore'
-          profile_inputs=daily_inputs; profile_inputs(2)%deficit_cm=-99.0_real64
+          profile_inputs=daily_inputs
+          profile_inputs(2)%deficit_cm=ieee_value(0.0_real64,ieee_quiet_nan)
           ! A present profile must not silently select profile mode.
           call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
                daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code,profiles=profiles, &
