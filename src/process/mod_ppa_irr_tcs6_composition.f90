@@ -20,11 +20,16 @@ contains
     type(irrigation_flux_result_t),intent(out)::flux
     type(irrigation_diagnostics_t),intent(out)::diagnostics
     type(irrigation_timing_selection_t)::timing
+    type(scheduled_irrigation_request_t)::prepared
     type(process_hydraulic_view_t)::unused
     integer::next_day,code
     candidate=base; flux=irrigation_flux_result_t(); diagnostics=irrigation_diagnostics_t()
     diagnostics%status=IRRIGATION_INVALID_PARAMETERS; proposed_dayfix=dayfix; next_day=dayfix
-    if(p%timing_criterion/=6.or.p%depth_criterion/=IRRIGATION_DEPTH_DCS2_FIXED) return
+    if(p%timing_criterion/=6) return
+    if(p%depth_criterion/=IRRIGATION_DEPTH_DCS2_FIXED.and. &
+         p%depth_criterion/=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY) return
+    prepared=request
+    if(p%depth_criterion==IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY) prepared%deficit_cm=deficit
     timing%criterion=6; timing%valid=.true.; timing%triggered=.false.; timing%threshold=0.0_real64
     if(.not.base%active_event.and.p%scheduled_irrigation_enabled.and.request%selection_opportunity.and. &
          request%irrigation_enabled.and.request%schedule_enabled.and.request%crop_emerged.and. &
@@ -33,7 +38,7 @@ contains
       if(code/=IRR_TCS6_OK) return
       timing%threshold=threshold
     end if
-    call evaluate_scheduled_irrigation_interval(p,base,request,unused,candidate,flux,diagnostics,timing)
+    call evaluate_scheduled_irrigation_interval(p,base,prepared,unused,candidate,flux,diagnostics,timing)
     ! Output is a proposal, never committed calendar state. Failed/split trials
     ! retain the input counter so callers cannot accidentally count retries.
     if(diagnostics%status==IRRIGATION_OK) proposed_dayfix=next_day

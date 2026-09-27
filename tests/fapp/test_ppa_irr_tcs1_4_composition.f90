@@ -269,6 +269,26 @@ program test_composition
        error stop 'daily no-gift proposal'
   write(*,'(a)') 'PPA_IRR_TCS6_DAILY_ATOMIC_PROCESS_PROPOSAL=PASS'
   call verify_weekly_transitions()
+  p=scheduled_irrigation_parameters_t(); r=scheduled_irrigation_request_t(); base=irrigation_state_t()
+  p%scheduled_irrigation_enabled=.true.; p%active_nodes=1; p%sensor_node=1; p%single_ssdi_node=1
+  p%timing_criterion=6; p%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+  p%irr_rate_cm_per_day=2.0_real64; p%dcs1_knot_count=2
+  p%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]; p%rain_threshold_cm=0.2_real64
+  r%selection_opportunity=.true.; r%irrigation_enabled=.true.; r%schedule_enabled=.true.
+  r%crop_emerged=.true.; r%irrigation_window_open=.true.; r%t1=0.01_real64
+  r%deficit_cm=99.0_real64 ! Must not override the deficit used by weekly timing.
+  do i=-1,1
+    correction=real(i,real64)*2.0_real64; p%dcs1_correction_mm=correction
+    do j=0,2
+      r%rainfall_cm=real(j,real64)*0.2_real64
+      depth=1.0_real64+correction*0.1_real64
+      if(r%rainfall_cm>0.2_real64) depth=depth-r%rainfall_cm
+      call evaluate_tcs6_scheduled(p,base,r,6,.true.,1.0_real64,5.0_real64,next_day,candidate,flux,d)
+      if(d%status/=IRRIGATION_OK.or.next_day/=0.or..not.flux%event_started) error stop 'weekly DCS1 selection'
+      if(abs(candidate%active_event_end-depth/2.0_real64)>1.0e-14_real64) error stop 'weekly DCS1 amount'
+    end do
+  end do
+  write(*,'(a)') 'PPA_IRR_TCS6_DCS1_SHARED_DEFICIT_GRID=PASS'
 contains
   subroutine verify_weekly_transitions()
     type(ppa_weekly_identity_t)::before,after
