@@ -820,7 +820,11 @@ for case_spec in "${cases[@]}"; do
   done
 done
 
-if [[ "${BASE01_SKIP_AGGREGATE:-0}" == "1" ]]; then\n  exit 0\nfi\n\npython3 - "$OUT" <<'PY'
+if [[ "${BASE01_SKIP_AGGREGATE:-0}" == "1" ]]; then
+  exit 0
+fi
+
+python3 - "$OUT" <<'PY'
 import collections,json,statistics,sys,os
 groups=collections.defaultdict(list)
 for line in open(sys.argv[1]):
