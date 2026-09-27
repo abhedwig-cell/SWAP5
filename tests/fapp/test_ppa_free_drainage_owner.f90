@@ -445,6 +445,11 @@ contains
          invalid_carrier%irrigation,event_template,T0,assembled,ok,weekly=invalid_carrier%weekly)
     if(ok.or.allocated(assembled)) error stop 'weekly invalid factory leaked'
     write(*,'(a)') 'PPA_IRR_WEEKLY_CARRIER_FACTORY_CLONE_RESTART=PASS'
+    invalid_carrier=carrier
+    invalid_carrier%irrigation=irrigation_state_t()
+    call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+         invalid_carrier%irrigation,event_template,T0,assembled,ok)
+    if(.not.ok) error stop 'weekly fixture reset failed'
     write(*,'(a)') 'PPA_IRR_EVENT_INACTIVE_REJECTION_NO_STALE_CANDIDATE=PASS'
     write(*,'(a)') 'PPA_IRR_EVENT_CANDIDATE_INVALID_PAYLOAD_20=PASS'
     call carrier%clone(carrier_copy)
