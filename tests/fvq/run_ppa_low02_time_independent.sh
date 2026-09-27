@@ -19,6 +19,7 @@ grep -Fq 'sinusoid or time table' "$AUDIT" || fail 'time-law authority missing'
 
 python3 - <<'PY'
 from pathlib import Path
+import re
 import json
 
 pre = json.loads(Path("integration/audits/PPA_LOW02_TIME_PREREGISTRATION.json").read_text())
@@ -44,7 +45,9 @@ for token in [
 
 advance = backend[backend.index("subroutine fmr_serialized_advance"):backend.index("end subroutine fmr_serialized_advance")]
 assert "self%bottom_mode =" not in advance
-for forbidden in ["open(", "read(", "readswap", "swap_main", "ttutil"]:
+for forbidden_call in ("open", "read"):
+    assert re.search(rf"\b{forbidden_call}\s*\(", backend) is None, forbidden_call
+for forbidden in ("readswap", "swap_main", "ttutil"):
     assert forbidden not in backend, forbidden
 
 print("PPA_LOW02_INDEPENDENT_B111_AUTHORITY_LOCK=PASS")
@@ -85,6 +88,7 @@ MODULE_SRC=(
   src/process/mod_drainage_ernst_ipos45_response.f90
   src/process/mod_drainage_empirical_interflow_response.f90
   src/process/mod_drainage_multilevel_aggregation.f90
+  src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/solver/mod_b110_smooth_freatic_projection.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
@@ -102,6 +106,8 @@ MODULE_SRC=(
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
   src/solver/mod_b110_root_sink_provider.f90
+  src/solver/mod_b110_direct_retention_core.f90
+  src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90

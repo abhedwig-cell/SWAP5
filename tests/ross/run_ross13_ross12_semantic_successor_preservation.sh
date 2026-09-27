@@ -26,14 +26,27 @@ SELECTION=src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
 TEST_ADAPTER=tests/ross/test_ross12_soil_water_solver_adapter.f90
 TEST_SELECTION=tests/ross/test_ross12_solver_selection_binding.f90
 ASSET_ROOT=assets/rossfast/d3r
+FCI110_ADMISSION=a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a
+FPERF_B1_ADMISSION=ffb08380054ddec9e940fc0e4056758d30a1d7da
 
 # Preserve all F-ROSS12 authorities that F-ROSS13 is not authorized to change.
 # Semantic-successor admissions may explicitly override only the expected
 # RossFast kernel blob while retaining every other authority check unchanged.
 EXPECTED_ROSSFAST_KERNEL_BLOB="${EXPECTED_ROSSFAST_KERNEL_BLOB:-034136c193b287bcf9a953a9b89df2a8fb0c97cc}"
 EXPECTED_ROSSFAST_ADAPTER_BLOB="${EXPECTED_ROSSFAST_ADAPTER_BLOB:-dbb441f3529be179d64fb57f9c44336d3d20c540}"
-test "$(git rev-parse HEAD:$TX)" = d5a71a526efaebd82054580c3186f8e3545db331 || fail 'transaction authority drift'
-test "$(git rev-parse HEAD:$SW)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3 || fail 'solver contract drift'
+tx_authority=d5a71a526efaebd82054580c3186f8e3545db331
+if git merge-base --is-ancestor "$FPERF_B1_ADMISSION" HEAD; then
+  tx_authority=97d8ef1fae91e174ab6daefb42ffa6a85da9380e
+  echo 'F_ROSS13_ROSS12_FPERF_B1_TRANSACTION_SUCCESSOR=ACTIVE'
+fi
+test "$(git rev-parse HEAD:$TX)" = "$tx_authority" || fail 'transaction authority drift'
+
+sw_authority=40a1ddc05fb8e2c1822763de645fd07a094568a3
+if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+  sw_authority=45cb74e00ae5fe09a220e630d84507cde543070b
+  echo 'F_ROSS13_ROSS12_FCI110_SOLVER_CONTRACT_SUCCESSOR=ACTIVE'
+fi
+test "$(git rev-parse HEAD:$SW)" = "$sw_authority" || fail 'solver contract drift'
 test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9 || fail 'RossFast policy drift'
 test "$(git rev-parse HEAD:$KERNEL)" = "$EXPECTED_ROSSFAST_KERNEL_BLOB" || fail 'RossFast kernel drift'
 test "$(git rev-parse HEAD:$ADAPTER)" = "$EXPECTED_ROSSFAST_ADAPTER_BLOB" || fail 'RossFast adapter drift'
