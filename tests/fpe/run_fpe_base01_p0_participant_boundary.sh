@@ -6,6 +6,7 @@ BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-solve01-p2b-${GITHUB_RUN_ID:-local}
 HEADCALC_SOURCE="${BASE01_HEADCALC_SOURCE:-src/legacy/b1_10_port/headcalc.f90}"
 LEGACY_BINDING_SOURCE="${BASE01_LEGACY_BINDING_SOURCE:-src/adapter/mod_reference_richards_legacy_binding.f90}"
 TEST_SCRIPT="${BASE01_TEST_SCRIPT:-tests/fpe/test_fpe_base01_p0_participant_boundary.py}"
+TEMPORAL_INDICATOR_SOURCE="${BASE01_TEMPORAL_INDICATOR_SOURCE:-src/solver/mod_reference_richards_temporal_indicator.f90}"
 EXTRA_SOURCE="${BASE01_EXTRA_SOURCE:-}"
 PRE_SOURCE="${BASE01_PRE_SOURCE:-}"
 TRANSACTION_SOURCE="${BASE01_TRANSACTION_SOURCE:-src/transaction/mod_transaction_reference.f90}"
@@ -760,7 +761,7 @@ MODULE_SRC+=(
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
   src/solver/mod_b110_root_sink_provider.f90
-  src/solver/mod_reference_richards_temporal_indicator.f90
+  "$TEMPORAL_INDICATOR_SOURCE"
 )
 if [[ -n "$EXTRA_SOURCE" ]]; then MODULE_SRC+=("$EXTRA_SOURCE"); fi
 MODULE_SRC+=(
