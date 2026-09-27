@@ -32,3 +32,13 @@ jobs:
       - name: Qualify production application-context 1/2/4-worker identity
         run: bash tests/fpe/run_fpe_multi04_p1b_application_context_identity.sh
 
+  p1c-application-context-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify production TEMPORAL08 application-context scaling
+        run: bash tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh
+
