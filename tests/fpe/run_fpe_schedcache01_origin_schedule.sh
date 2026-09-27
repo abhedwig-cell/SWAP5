@@ -107,11 +107,6 @@ wrapped="""      if (.not. allocated(self%cached_owner) .or. size(self%cached_ow
         owner = self%cached_owner
       end if
 """
-# Remove the two extra leading spaces introduced only on the first line of original.
-wrapped=wrapped.replace("      if (.not. self%parallel_schedule_cached) then
-        worker_load", 
-                        "      if (.not. self%parallel_schedule_cached) then
-        worker_load",1)
 s=s[:a]+wrapped+s[b+len("""        self%last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_COST_AWARE
       end if
 """):]
