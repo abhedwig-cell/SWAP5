@@ -18,3 +18,14 @@ jobs:
           fetch-depth: 0
       - name: Run deterministic cost-aware scheduling probe
         run: bash tests/fpe/run_fpe_multi03_p0_cost_aware.sh
+
+
+  p1-hybrid-scheduling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run bounded hybrid scheduling qualification
+        run: bash tests/fpe/run_fpe_multi03_p1_hybrid.sh
