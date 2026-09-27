@@ -174,7 +174,8 @@ import json,statistics,sys
 rows=[]
 for line in open(sys.argv[1]):
     if line.startswith("BASE01_P1_RAW|"):
-        rows.append(json.loads(line.split("|",1)[1]))
+        payload=line.strip().split("|REGIME=",1)[0]
+        rows.append(json.loads(payload.split("|",1)[1]))
 if len(rows)!=60:
     raise SystemExit(f"expected 60 replicate rows, got {len(rows)}")
 
