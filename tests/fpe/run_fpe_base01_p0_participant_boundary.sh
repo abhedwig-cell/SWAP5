@@ -604,8 +604,8 @@ rate=ctypes.c_double(); origin_mass=ctypes.c_double(); origin_head=ctypes.c_doub
 if dyn(imbalance,ctypes.byref(rate),ctypes.byref(origin_mass),ctypes.byref(origin_head)):
     raise RuntimeError("dynamic origin failed")
 
-# Research-only enabler: frozen conservative TEMPORAL06 comparator.
-budget=max(1e-5,0.50*dt*rate.value)
+# Current TEMPORAL08 effective history-aware budget on the captured origin.
+budget=max(1e-5,0.65*dt*rate.value)
 bfn=swap.lib.fgc44_temporal04_budget_c
 bfn.restype=ctypes.c_int; bfn.argtypes=[ctypes.c_double]
 if bfn(budget): raise RuntimeError("budget set failed")
