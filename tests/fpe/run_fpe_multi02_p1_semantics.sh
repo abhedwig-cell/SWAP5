@@ -86,6 +86,8 @@ new="""  integer :: n,workers,i,w,rep,status,participant_status,active,maxsim,te
   integer :: tc,asub,att,ret,srej,trej,nlit,bt
   integer :: serial_tc,serial_asub,serial_att,serial_ret,serial_srej,serial_trej,serial_nlit,serial_bt
   integer :: parallel_tc,parallel_asub,parallel_att,parallel_ret,parallel_srej,parallel_trej,parallel_nlit,parallel_bt
+  integer :: wi, worker_att(4), worker_nlit(4), worker_bt(4)
+  real(real64) :: worker_ratio
   integer :: worker_att(4),worker_nlit(4),worker_bt(4),wi
 """
 if old not in s: raise SystemExit("test declaration seam")
@@ -94,6 +96,7 @@ s=s.replace(old,new,1)
 anchor="  qdiff=0.0_real64; tdiff=0.0_real64\n"
 repl=anchor+"""  serial_tc=0; serial_asub=0; serial_att=0; serial_ret=0; serial_srej=0; serial_trej=0; serial_nlit=0; serial_bt=0
   parallel_tc=0; parallel_asub=0; parallel_att=0; parallel_ret=0; parallel_srej=0; parallel_trej=0; parallel_nlit=0; parallel_bt=0
+  worker_att=0; worker_nlit=0; worker_bt=0; worker_ratio=1.0_real64
   worker_att=0; worker_nlit=0; worker_bt=0
 """
 if anchor not in s: raise SystemExit("test init seam")
@@ -129,6 +132,10 @@ repl=anchor+"""    if(rep==1)then
         worker_att(wi)=worker_att(wi)+att
         worker_nlit(wi)=worker_nlit(wi)+nlit
         worker_bt(wi)=worker_bt(wi)+bt
+        wi=1+mod(i-1,workers)
+        worker_att(wi)=worker_att(wi)+att
+        worker_nlit(wi)=worker_nlit(wi)+nlit
+        worker_bt(wi)=worker_bt(wi)+bt
       end do
     end if
 """
@@ -139,7 +146,9 @@ anchor="""  if(tdiff>256.0_real64*epsilon(1.0_real64)*max(1.0_real64,maxval(abs(
        error stop 'tangent semantic drift'
 
 """
-repl=anchor+"""  if(serial_tc/=parallel_tc .or. serial_asub/=parallel_asub .or. serial_att/=parallel_att .or. &
+repl=anchor+"""  if(workers>0 .and. sum(worker_nlit(1:workers))>0) worker_ratio= &
+       real(maxval(worker_nlit(1:workers)),real64)/(real(sum(worker_nlit(1:workers)),real64)/real(workers,real64))
+  if(serial_tc/=parallel_tc .or. serial_asub/=parallel_asub .or. serial_att/=parallel_att .or. &
      serial_ret/=parallel_ret .or. serial_srej/=parallel_srej .or. serial_trej/=parallel_trej .or. &
      serial_nlit/=parallel_nlit .or. serial_bt/=parallel_bt) error stop 'discrete trajectory drift'
 
@@ -153,7 +162,10 @@ old="""       '|MAX_SIMULTANEOUS=',maxsim,'|OMP_TEAM=',team_seen,'|MAX_Q_DIFF=',
 new="""       '|MAX_SIMULTANEOUS=',maxsim,'|OMP_TEAM=',team_seen,'|MAX_Q_DIFF=',qdiff,'|MAX_T_DIFF=',tdiff, &
        '|QSUM=',qsum,'|TSUM=',tsum,'|ATTEMPTS=',parallel_att,'|ACCEPTED_SUBSTEPS=',parallel_asub, &
        '|RETRIES=',parallel_ret,'|TEMPORAL_REJECTIONS=',parallel_trej,'|SOLVER_REJECTIONS=',parallel_srej, &
-       '|NONLINEAR=',parallel_nlit,'|BACKTRACK=',parallel_bt
+       '|NONLINEAR=',parallel_nlit,'|BACKTRACK=',parallel_bt,'|WORK_RATIO=',worker_ratio, &
+       '|W1_ATT=',worker_att(1),'|W2_ATT=',worker_att(2),'|W3_ATT=',worker_att(3),'|W4_ATT=',worker_att(4), &
+       '|W1_NL=',worker_nlit(1),'|W2_NL=',worker_nlit(2),'|W3_NL=',worker_nlit(3),'|W4_NL=',worker_nlit(4), &
+       '|W1_BT=',worker_bt(1),'|W2_BT=',worker_bt(2),'|W3_BT=',worker_bt(3),'|W4_BT=',worker_bt(4)
   do wi=1,workers
     write(*,'(*(g0))') 'MULTI02_WORKER|N=',n,'|WORKERS=',workers,'|WORKER=',wi, &
          '|ATTEMPTS=',worker_att(wi),'|NONLINEAR=',worker_nlit(wi),'|BACKTRACK=',worker_bt(wi)
@@ -224,6 +236,7 @@ for n in (10,100,1000):
     for k in keys:
       if r[k]!=b[k]: raise SystemExit(f"trajectory drift N={n} W={w} {k} {b[k]} {r[k]}")
     print("MULTI02_P1|N=%d|WORKERS=%d|"% (n,w) + "|".join(f"{k}={r[k]}" for k in keys)
-          +f"|MAX_Q_DIFF={r['MAX_Q_DIFF']}|MAX_T_DIFF={r['MAX_T_DIFF']}")
+          +f"|MAX_Q_DIFF={r['MAX_Q_DIFF']}|MAX_T_DIFF={r['MAX_T_DIFF']}|WORK_RATIO={r['WORK_RATIO']}"
+          +f"|W1_NL={r['W1_NL']}|W2_NL={r['W2_NL']}|W3_NL={r['W3_NL']}|W4_NL={r['W4_NL']}")
 print("FPE_MULTI02_P1=PASS")
 PY
