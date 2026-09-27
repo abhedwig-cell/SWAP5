@@ -23,7 +23,10 @@ checked TCS2-4 aggregation from the same committed snapshot as the event. This
 new route's qualification is tracked separately in
 `PPA_IRR_TCS2_4_PROFILE_STATUS.json`; implementation alone is not qualification.
 Pending gifts continue from saved event state without re-evaluating unused
-selection tables. TCS1-4/DCS1 remains outside this bridge's admitted input scope.
+selection tables. Branch-local TCS1-4/DCS1 now accepts explicit profiles;
+checkpoint `5399ea813` tests prefix execution, mass and decoded restart.
+Its separate status record `PPA_IRR_TCS1_4_DCS1_STATUS.json` tracks the still
+pending profile-specific hydraulic rejection gate. Profile-free DCS1 rejects.
 The committed irrigation carrier retains pending rate/start/end alongside
 hydraulic state and temporal history. The kernel/runtime alone publishes state.
 Preparation snapshots, returned forcing and diagnostics are not state owners.

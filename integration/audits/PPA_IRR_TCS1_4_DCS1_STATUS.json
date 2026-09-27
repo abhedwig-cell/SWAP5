@@ -1,7 +1,7 @@
 {
   "work_unit": "PPA-IRR-TCS1-4-DCS1",
-  "status": "BOUNDED_PROCESS_AND_SOURCE_BINDING_PASS_RUNTIME_PENDING",
-  "tested_commit": "9aae06e3b",
+  "status": "BOUNDED_DCS1_RUNTIME_PREFIX_RESTART_PASS_ROLLBACK_GATE_PENDING",
+  "tested_commit": "5399ea813",
   "process_tested_commit": "a643b8ec0",
   "preregistration": "PPA_IRR_TCS1_4_DCS1_PREREGISTRATION.json",
   "implementation": "src/process/mod_ppa_irr_tcs1_4_dcs1.f90",
@@ -15,6 +15,9 @@
   "source_bypass_result": "PASS all four criteria: absent profile fields reject eligible selection; empty profiles and invalid unused timing tables permit idle no-source intervals and pending gift completion. Base event remains active/unchanged while the returned completed candidate is inactive. Clean O0/O2 IrrigationSource, hydraulic-copy and guards transcripts identical; documentation source and strict MkDocs pass.",
   "source_build": "swap-ppa-wu01-5d935ee40f3d4c198acbc74c42dda815",
   "source_log": "TEMP/swap-dcs1-bypass.log",
-  "qualification_boundary": "Bounded process and source binding only. Bootstrap still rejects TCS1-4/DCS1. No runtime admission, new state owner or canonical claim.",
-  "next_safe_step": "Implement PPA_IRR_TCS1_4_DCS1_RUNTIME_PLAN.md: wire explicit supplied-profile DCS1 to bootstrap and test hydraulic acceptance, restart and rollback without changing profile-free rejection."
+  "runtime_result": "PASS all four TCS1-4/DCS1 criteria with explicitly supplied profile: contradictory request deficit replaced by checked committed-profile deficit, missing/invalid selection profile rejects before execution with unchanged owner, accepted staggered prefix mass <=1e-12, saved event persistence, decoded fresh-owner restart, pending continuation with empty profile fields and invalid unused timing table, exact original/restored hydraulic and mass identity. Existing DCS2 routes remain in the same gate.",
+  "runtime_build": "swap-ppa-wu01-fda318e0c65848b0b2ad425aab80eba4",
+  "runtime_gates": "Clean IrrigationSource O0/O2 complete transcripts identical; hydraulic-copy and guards same-binary scopes identical; documentation source and strict MkDocs PASS. TEMP/swap-dcs1-runtime.log.",
+  "qualification_boundary": "Branch-local supplied-profile water-only SSDI fixtures. DCS1-specific internally progressed hydraulic rejection gate remains pending. No automatic crop/stress ownership or canonical admission.",
+  "next_safe_step": "Extend the internally progressed window rejection fixture to all four DCS1/profile cases; verify owner water, time, revision and event rollback with unchanged numerical acceptance. Then reconcile campaign status."
 }
