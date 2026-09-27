@@ -8,7 +8,7 @@ program test_ppa_mvg_storage_difference
   real(real64) :: h,hnew,dtheta,back,expected,naive,alpha,n,m,amplitude
   real(real128) :: qbefore,qafter,qa,qn,qm,qr
   real(real64), parameter :: heads(4)=[-1.0_real64,-75.0_real64,-500.0_real64,-2000.0_real64]
-  integer :: i,j,signum,cases,improved
+  integer :: i,j,signum,cases,improved,ulp_cases
   logical :: ok
   alpha=.0135_real64; n=1.455_real64; m=1-1/n; amplitude=.423_real64-.032_real64
   qa=real(alpha,real128); qn=real(n,real128); qm=real(m,real128); qr=real(amplitude,real128)
@@ -37,6 +37,29 @@ program test_ppa_mvg_storage_difference
     call require(ok.and.dtheta==0,'identity')
   end do
   call require(improved>0,'demonstrated cancellation improvement')
+  ! Resolve storage changes at adjacent representable heads independently of
+  ! the Richards iteration. This does not qualify solver convergence.
+  ulp_cases=0
+  do i=1,size(heads)
+    h=heads(i)
+    do signum=-1,1,2
+      hnew=h
+      do j=1,16
+        hnew=nearest(hnew,real(signum,real64))
+        call local_mvg_storage_difference(amplitude,alpha,n,m,h,hnew,dtheta,ok)
+        call require(ok,'ulp difference available')
+        qbefore=qr/(1+abs(qa*real(h,real128))**qn)**qm
+        qafter=qr/(1+abs(qa*real(hnew,real128))**qn)**qm
+        expected=real(qafter-qbefore,real64)
+        call require(abs(dtheta-expected)<=2.0e-13_real64*abs(expected),'ulp quad oracle')
+        call require(dtheta*real(signum,real64)>0,'ulp storage direction')
+        call local_mvg_storage_difference(amplitude,alpha,n,m,hnew,h,back,ok)
+        call require(ok,'ulp reverse available')
+        call require(abs(dtheta+back)<=2.0e-13_real64*abs(expected),'ulp antisymmetry')
+        ulp_cases=ulp_cases+1
+      end do
+    end do
+  end do
   call local_mvg_storage_difference(amplitude,alpha,n,m,-75.0_real64,-70.0_real64,dtheta,ok)
   call require(.not.ok.and.dtheta==0,'nonlocal difference rejected')
   call local_mvg_storage_difference(amplitude,alpha,n,m,-.02_real64,0.0_real64,dtheta,ok)
@@ -46,6 +69,7 @@ program test_ppa_mvg_storage_difference
   call check_binding()
   write(*,'(a,i0)') 'MVG_STORAGE_CASES=',cases
   write(*,'(a,i0)') 'MVG_STORAGE_IMPROVED=',improved
+  write(*,'(a,i0)') 'MVG_STORAGE_ULP_CASES=',ulp_cases
   write(*,'(a)') 'MVG_STORAGE_QUAD_ORACLE=PASS'
 contains
   subroutine check_binding()
