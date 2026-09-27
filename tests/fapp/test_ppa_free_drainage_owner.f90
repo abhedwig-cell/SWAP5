@@ -2717,8 +2717,37 @@ contains
               end select
             end select
           end do
+          ! Restore the actual committed pending gift, then invalidate the
+          ! fresh profile. Continuation must use the persisted event instead.
+          call split_app%restore_committed_restart(profile_result,92001_int64,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly profile pending restore'
+          profiles(2)=ppa_irrigation_profile_t()
+          profile_inputs(2)%deficit_cm=ieee_value(0.0_real64,ieee_quiet_nan)
+          split_requests%t0=T0+1.0_real64/1024.0_real64
+          resume_forcing=weekly_forcing
+          do k=1,2
+            resume_forcing(k)%subsurface_irrigation_source(1)=daily_parameters(k)%irr_rate_cm_per_day
+          end do
+          call execute_next_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+               daily_parameters,split_requests,resume_forcing,split_results,weekly_code,split_endpoint, &
+               profiles=profiles,weekly_inputs=profile_inputs,weekly_profile_mode=[.false.,.true.])
+          if(weekly_code/=FMR_APP_BOOT_OK.or.split_endpoint/=T0+2.0_real64/1024.0_real64) &
+               error stop 'weekly profile pending split completion'
+          if(.not.all(split_results%committed)) error stop 'weekly profile pending publication'
+          call split_app%export_committed_restart(92001_int64,profile_result,weekly_ok,weekly_code)
+          if(.not.weekly_ok) error stop 'weekly profile pending export'
+          do k=1,2
+            if(abs(split_results(k)%mass%residual)>1.0e-12_real64) error stop 'weekly profile pending mass'
+            select type(state=>profile_result%records(k)%physical_state)
+            type is(ppa_irrigation_event_state_t)
+              if(state%irrigation%active_event.or.state%weekly%dayfix/=0.or.state%weekly%last_day/=100_int64) &
+                   error stop 'weekly profile pending reselected'
+            end select
+          end do
           call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
           if(.not.weekly_ok) error stop 'weekly profile fixture reset'
+          split_requests%t0=T0
+          write(*,'(a)') 'PPA_IRR_WEEKLY_PROFILE_PENDING_RESTORE_SPLIT=PASS'
           write(*,'(a)') 'PPA_IRR_WEEKLY_MIXED_PROFILE_COMMITTED_IDENTITY=PASS'
         end block
         call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
