@@ -1,6 +1,7 @@
 # TCS1-4/DCS1 bootstrap integration
 
-Status: next implementation phase; no runtime qualification yet.
+Status: bounded runtime gates passed at `77d9e1032`; see the owning status
+record for precise fixture scope. Not canonical admission.
 Owning preregistration and evidence: `PPA_IRR_TCS1_4_DCS1_PREREGISTRATION.json`
 and `PPA_IRR_TCS1_4_DCS1_STATUS.json`.
 

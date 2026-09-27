@@ -1,7 +1,7 @@
 {
   "work_unit": "PPA-IRR-TCS1-4-DCS1",
-  "status": "BOUNDED_DCS1_RUNTIME_PREFIX_RESTART_PASS_ROLLBACK_GATE_PENDING",
-  "tested_commit": "5399ea813",
+  "status": "BOUNDED_DCS1_RUNTIME_PREFIX_RESTART_ROLLBACK_PASS",
+  "tested_commit": "77d9e1032",
   "process_tested_commit": "a643b8ec0",
   "preregistration": "PPA_IRR_TCS1_4_DCS1_PREREGISTRATION.json",
   "implementation": "src/process/mod_ppa_irr_tcs1_4_dcs1.f90",
@@ -16,8 +16,9 @@
   "source_build": "swap-ppa-wu01-5d935ee40f3d4c198acbc74c42dda815",
   "source_log": "TEMP/swap-dcs1-bypass.log",
   "runtime_result": "PASS all four TCS1-4/DCS1 criteria with explicitly supplied profile: contradictory request deficit replaced by checked committed-profile deficit, missing/invalid selection profile rejects before execution with unchanged owner, accepted staggered prefix mass <=1e-12, saved event persistence, decoded fresh-owner restart, pending continuation with empty profile fields and invalid unused timing table, exact original/restored hydraulic and mass identity. Existing DCS2 routes remain in the same gate.",
-  "runtime_build": "swap-ppa-wu01-fda318e0c65848b0b2ad425aab80eba4",
-  "runtime_gates": "Clean IrrigationSource O0/O2 complete transcripts identical; hydraulic-copy and guards same-binary scopes identical; documentation source and strict MkDocs PASS. TEMP/swap-dcs1-runtime.log.",
-  "qualification_boundary": "Branch-local supplied-profile water-only SSDI fixtures. DCS1-specific internally progressed hydraulic rejection gate remains pending. No automatic crop/stress ownership or canonical admission.",
-  "next_safe_step": "Extend the internally progressed window rejection fixture to all four DCS1/profile cases; verify owner water, time, revision and event rollback with unchanged numerical acceptance. Then reconcile campaign status."
+  "rollback_result": "PASS all four DCS1/profile cases: at least one accepted internal hydraulic substep before terminal failure, no completed/committed result or next window prefix, exact status/attempt/substep identity with prepared-source reference, unchanged committed event/water/time and final revision zero. No numerical criteria altered.",
+  "runtime_build": "swap-ppa-wu01-ab570c6877bf4540961d94dbd7c696bb",
+  "runtime_gates": "Clean IrrigationSource O0/O2 complete transcripts identical; hydraulic-copy and guards same-binary scopes identical; documentation source and strict MkDocs PASS. TEMP/swap-dcs1-rollback.log.",
+  "qualification_boundary": "Branch-local supplied-profile water-only SSDI fixtures. No automatic crop/stress ownership, general ingestion or canonical admission.",
+  "next_safe_step": "Reconcile campaign coverage and select the next source-backed capability without reopening the qualified event owner or relaxing numerical acceptance."
 }
