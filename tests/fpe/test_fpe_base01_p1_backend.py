@@ -83,11 +83,6 @@ def main()->None:
     if cachefn(0):
         raise RuntimeError("tangent cache configure failed")
 
-    direction=swap.lib.fgc44_base01_direction_c
-    direction.restype=ctypes.c_int; direction.argtypes=[ctypes.c_int]
-    if direction(0):
-        raise RuntimeError("direction disable failed")
-
     reset=swap.lib.fgc44_base01_timing_reset_c
     reset.restype=ctypes.c_int; reset.argtypes=[]
     if reset(): raise RuntimeError("participant timing reset failed")
