@@ -52,6 +52,7 @@ BACKEND_FGC44=4597c833e7f45beaef04ffcc592ca6a4fcbd0395
 FSI39_PROVIDER=90183cbe0f3f0b349e40fa6b0c65b2223ca8a739
 FSI39_BACKEND=556ed83dee4d5b159f1de7ae797af7106a0abe2e
 F_ROM1A_KERNEL=c28cb8246aaf087da92538e58b1aa2da5d1b5b11
+FCI110_KERNEL_TRANSACTIONS=9cb522c1486ba015a3c4fe86d6706e884806c4cf
 F_ROM1A_BACKEND=5d63f91b37443952b4a96292925f645aae0b22d1
 PPA_LOW02_BACKEND=80c7ca618ea228e31ac43ae493f16dd6eccc5991
 PPA_WU04A_RUNTIME_CORE=29cff34a37c13143ce069486251bc0b858cadf48
@@ -214,7 +215,13 @@ fi
 # the lineage. Before that admission, kernel_transactions remains byte-equal
 # to the Status-A authority.
 if git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
-  test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = "$F_ROM1A_KERNEL" ||     fail 'admitted F-ROM1A kernel transaction successor drift'
+  kernel_transaction_authority="$F_ROM1A_KERNEL"
+  if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+    kernel_transaction_authority="$FCI110_KERNEL_TRANSACTIONS"
+    echo 'FCI_CANONICAL_FCI110_KERNEL_TRANSACTION_SUCCESSOR=ACTIVE'
+  fi
+  test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = "$kernel_transaction_authority" || \
+    fail 'admitted kernel transaction successor drift'
   echo 'FCI_CANONICAL_F_ROM1A_KERNEL_SUCCESSOR=PASS'
 else
   test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" =     "$(git rev-parse "$AUTH:src/kernel/mod_kernel_transactions.f90")" ||     fail 'pre-F-ROM1A kernel transaction drift'
