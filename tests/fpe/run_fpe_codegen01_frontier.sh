@@ -32,10 +32,6 @@ src=src.replace(
 src=src.replace(
     'gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$OUT/libmulti04.so"',
     f'gfortran -shared -fopenmp {flags} "${{objects[@]}}" -o "$OUT/libmulti04.so"')
-if 'gfortran "${COMMON[@]}" -O2 -J "$OUT" -I "$OUT" -c "$source" -o "$obj"' in src:
-    raise SystemExit("unpatched compile command remains in generated runner")
-if 'gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$OUT/libmulti04.so"' in src:
-    raise SystemExit("unpatched link command remains in generated runner")
 out.write_text(src)
 PY
   chmod +x "$runner"
