@@ -2619,13 +2619,26 @@ contains
         if(.not.weekly_ok) error stop 'weekly split restore'
         block
           type(ppa_tcs6_daily_input_t)::bad_weekly(2)
+          type(ppa_irrigation_profile_t)::weekly_profiles(2)
           type(fmr_committed_restart_bundle_t)::unchanged
           integer::bad_case,k
-          do bad_case=1,3
+          do bad_case=1,6
             bad_weekly=daily_inputs
             if(bad_case==2) bad_weekly(1)%deficit_cm=ieee_value(0.0_real64,ieee_quiet_nan)
             if(bad_case==3) bad_weekly(2)%ordinal=-1_int64
-            if(bad_case==1) then
+            if(bad_case==4) then
+              call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+                   daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code, &
+                   weekly_inputs=bad_weekly,weekly_profile_mode=[.false.,.true.])
+            else if(bad_case==5) then
+              call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+                   daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code, &
+                   weekly_inputs=bad_weekly,weekly_profile_mode=[.false.])
+            else if(bad_case==6) then
+              call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+                   daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code, &
+                   profiles=weekly_profiles,weekly_inputs=bad_weekly,weekly_profile_mode=[.false.,.true.])
+            else if(bad_case==1) then
               call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
                    daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code)
             else
