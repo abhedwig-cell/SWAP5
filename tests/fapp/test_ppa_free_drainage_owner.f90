@@ -1361,13 +1361,48 @@ contains
            weekly_proposal=weekly_seed%weekly,target_selector=weekly_bounded_target)
       write(*,'(a,l1,a,i0,a,i0)') 'PPA_IRR_WEEKLY_BOUNDED_TARGET_COMPLETED=',result%completed, &
            ';STATUS=',result%status,';ACCEPTED=',diagnostics%accepted_substeps
-      if(result%completed) then
-        if(.not.candidate%ready().or.abs(result%mass%residual)>1.0e-12_real64) &
-             error stop 'weekly bounded target mass candidate'
-      end if
+      if(.not.result%completed.or..not.candidate%ready()) error stop 'weekly bounded target completion'
+      if(abs(result%mass%residual)>1.0e-12_real64) error stop 'weekly bounded target mass candidate'
       call weekly_owner%current_time(time,ok)
       if(.not.ok.or.time/=T0.or.weekly_owner%current_revision()/=0_int64) &
            error stop 'weekly bounded target premature publication'
+      call backend%discard_trial_candidate(candidate,diagnostics)
+      block
+        type(kernel_committed_state_t)::bounded_owner
+        type(kernel_checkpoint_t)::bounded_checkpoint
+        call bounded_owner%initialize(404190_int64,initial,ok,T0)
+        if(.not.ok) error stop 'weekly bounded owner'
+        call bounded_owner%capture_checkpoint(bounded_checkpoint,ok)
+        if(.not.ok) error stop 'weekly bounded checkpoint'
+        call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,bounded_owner, &
+             no_gift_forcing,profile%numerical,1,T0,finish,bounded_checkpoint,result,candidate,diagnostics, &
+             weekly_proposal=weekly_seed%weekly,target_selector=weekly_invalid_target)
+        if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps/=0) &
+             error stop 'weekly invalid target accepted'
+        call bounded_owner%current_time(time,ok)
+        if(.not.ok.or.time/=T0.or.bounded_owner%current_revision()/=0_int64) &
+             error stop 'weekly invalid target publication'
+        call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,bounded_owner, &
+             no_gift_forcing,profile%numerical,1,T0,finish,bounded_checkpoint,result,candidate,diagnostics, &
+             weekly_proposal=weekly_seed%weekly,target_selector=weekly_bounded_target)
+        if(.not.result%completed.or..not.candidate%ready()) error stop 'weekly bounded retry'
+        if(abs(result%mass%residual)>1.0e-12_real64) error stop 'weekly bounded retry mass'
+        call backend%commit_trial_candidate(bounded_owner,candidate,diagnostics,ok,code)
+        if(.not.ok) error stop 'weekly bounded commit'
+        call bounded_owner%current_time(time,ok)
+        if(.not.ok.or.time/=finish.or.bounded_owner%current_revision()/=1_int64) &
+             error stop 'weekly bounded commit time revision'
+        call bounded_owner%snapshot(snapshot,ok)
+        if(.not.ok) error stop 'weekly bounded snapshot'
+        select type(snapshot)
+        type is(ppa_irrigation_event_state_t)
+          if(snapshot%weekly%dayfix/=4.or.snapshot%weekly%last_day/=101_int64.or.snapshot%irrigation%active_event) &
+               error stop 'weekly bounded metadata commit'
+        class default
+          error stop 'weekly bounded carrier sliced'
+        end select
+        write(*,'(a)') 'PPA_IRR_WEEKLY_INVALID_TARGET_RETRY_LONG_COMMIT=PASS'
+      end block
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
            weekly_proposal=weekly_seed%weekly)
@@ -3741,6 +3776,15 @@ contains
     max_retries_cap=16
     valid=target_t1>cursor
   end subroutine weekly_bounded_target
+  subroutine weekly_invalid_target(cursor,requested_t1,target_t1,max_retries_cap,valid)
+    real(real64),intent(in)::cursor,requested_t1
+    real(real64),intent(out)::target_t1
+    integer,intent(out)::max_retries_cap
+    logical,intent(out)::valid
+    target_t1=cursor
+    max_retries_cap=16
+    valid=requested_t1>cursor ! Deliberately invalid target despite true validity flag.
+  end subroutine weekly_invalid_target
   subroutine weekly_diagnostic_indicator(request,solution,history,certificate)
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: solution
