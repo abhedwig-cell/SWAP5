@@ -37,3 +37,30 @@ invalid inputs. Replay O0/O2 with exact transcripts and preserve the existing
 composition gate. Preregister any shared compile-list change. Owner, daily
 identity, restart, profile-derived DCS1, solute and general calendar ingestion
 remain separate follow-ups. No mass or solver tolerance may be relaxed.
+
+## Source ordering review completed
+
+At checkpoint `ee7ffb3de`, reread `SWAP/irrigation.f90` directly from the supplied
+nested release archive (outer `SWAP_4.3.1.zip`, inner
+`SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP`). Lines 451-562 put both timing and
+TCSFIX inside scheduled eligibility: irrigation enabled, schedule enabled,
+no prior event, emerged crop and open irrigation window. Lines 551-562 apply
+the counter filter after timing; depth/rate begins at lines 564-565 only for
+the surviving event. Therefore an ineligible request must not increment the
+counter. An eligible daily request with no timing candidate does increment it
+only while below the configured interval. Pending continuation must not enter
+this selection branch.
+
+Implementation decision: add a separate `mod_ppa_irr_tcsfix_composition` module
+with a named TCS1-4/DCS2 routine, explicit `daily_invocation`, `dayfix` and
+`interval_days` inputs, and `proposed_dayfix` output. Reuse the timing helper,
+filter helper and scheduled materializer. Do not add dependencies to the existing
+TCS1-4 composition module or modify its widely shared compile lists. Add a
+dedicated small runner compiling the new module after its existing dependencies;
+replay the existing composition runner independently for preservation.
+
+Initialize proposed counter to input and publish a filtered proposal only after
+the materializer returns success. Validate counter and interval at the explicit
+API boundary even for bypass calls; bypass applies to observations and new event
+selection, not malformed configuration. No invocation identity is persisted by
+this pure API. A caller that retries or publishes must own that later lifecycle.
