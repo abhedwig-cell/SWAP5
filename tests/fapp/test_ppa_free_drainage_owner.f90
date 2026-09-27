@@ -1547,7 +1547,7 @@ contains
         use mod_fmr_serialized_multiswap_runtime, only: fmr_execute_serialized_irrigation_resolved_column, &
              fmr_serialized_batch_diagnostics_t
         type(kernel_executor_t)::control
-        type(kernel_committed_state_t)::runtime_owner
+        type(kernel_committed_state_t)::runtime_owner,target_owner
         type(fmr_serialized_column_result_t)::output
         type(fmr_column_diagnostics_t)::column_diagnostics
         type(fmr_serialized_batch_diagnostics_t)::runtime_diagnostics
@@ -1584,6 +1584,34 @@ contains
           error stop 'weekly resolved carrier sliced'
         end select
         write(*,'(a)') 'PPA_IRR_WEEKLY_RESOLVED_RUNTIME_ROLLBACK_COMMIT=PASS'
+        call target_owner%initialize(404189_int64,initial,ok,T0)
+        if(.not.ok) error stop 'weekly target runtime owner'
+        output=fmr_serialized_column_result_t(); column_diagnostics=fmr_column_diagnostics_t()
+        call fmr_execute_serialized_irrigation_resolved_column(backend,control,column,template, &
+             profile%tiles(1)%parameters,no_gift_forcing,target_owner,profile%numerical,1,T0,finish, &
+             output,column_diagnostics,runtime_diagnostics,active_calls,weekly_proposal=weekly_seed%weekly, &
+             target_selector=weekly_invalid_target)
+        if(output%completed.or.output%committed.or.active_calls/=0) error stop 'weekly resolved invalid target'
+        call target_owner%current_time(time,ok)
+        if(.not.ok.or.time/=T0.or.target_owner%current_revision()/=0_int64) error stop 'weekly target rollback'
+        output=fmr_serialized_column_result_t(); column_diagnostics=fmr_column_diagnostics_t()
+        call fmr_execute_serialized_irrigation_resolved_column(backend,control,column,template, &
+             profile%tiles(1)%parameters,no_gift_forcing,target_owner,profile%numerical,1,T0,finish, &
+             output,column_diagnostics,runtime_diagnostics,active_calls,weekly_proposal=weekly_seed%weekly, &
+             target_selector=weekly_bounded_target)
+        if(.not.output%completed.or..not.output%committed.or.active_calls/=0) error stop 'weekly resolved target commit'
+        call target_owner%current_time(time,ok)
+        if(.not.ok.or.time/=finish.or.target_owner%current_revision()/=1_int64) error stop 'weekly target provenance'
+        call target_owner%snapshot(runtime_snapshot,ok)
+        if(.not.ok) error stop 'weekly target snapshot'
+        select type(runtime_snapshot)
+        type is(ppa_irrigation_event_state_t)
+          if(runtime_snapshot%weekly%dayfix/=4.or.runtime_snapshot%weekly%last_day/=101_int64.or. &
+               runtime_snapshot%irrigation%active_event) error stop 'weekly target metadata'
+        class default
+          error stop 'weekly target carrier'
+        end select
+        write(*,'(a)') 'PPA_IRR_WEEKLY_RESOLVED_TARGET_ROLLBACK_COMMIT=PASS'
       end block
     end block
     call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &

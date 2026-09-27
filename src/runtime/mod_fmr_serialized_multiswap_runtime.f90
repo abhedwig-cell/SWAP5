@@ -1,4 +1,5 @@
 module mod_fmr_serialized_multiswap_runtime
+  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
   use mod_fmr_serialized_reference_backend, only: free_drainage_indicator_service
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
@@ -400,7 +401,7 @@ contains
   ! remains in the ordinary resolved executor; backend validates the context.
   subroutine fmr_execute_serialized_irrigation_resolved_column(backend, transaction_control, column, template, &
        parameters, effective_forcing, committed_state, numerical_config, single_ssdi_node, t0, t1, &
-       output, diagnostic, runtime, active_physical_calls, selected_event,weekly_proposal)
+       output, diagnostic, runtime, active_physical_calls, selected_event,weekly_proposal,target_selector)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -417,6 +418,7 @@ contains
     integer, intent(inout) :: active_physical_calls
     type(irrigation_state_t), intent(in), optional :: selected_event
     type(ppa_weekly_identity_t), intent(in), optional :: weekly_proposal
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
 
     if (.not. resolved_column_is_routable(column, template)) then
       output%admission_status = 'ROUTING_REJECTED'
@@ -427,7 +429,8 @@ contains
     end if
     call execute_resolved_column(backend, transaction_control, column, template, parameters, effective_forcing, &
          committed_state, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
-         irrigation_node=single_ssdi_node, selected_irrigation_event=selected_event,weekly_proposal=weekly_proposal)
+         irrigation_node=single_ssdi_node, selected_irrigation_event=selected_event,weekly_proposal=weekly_proposal, &
+         target_selector=target_selector)
   end subroutine fmr_execute_serialized_irrigation_resolved_column
 
   subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
@@ -592,7 +595,7 @@ contains
                                      committed_state, numerical_config, t0, t1, output, diagnostic, runtime, &
                                      active_physical_calls, commit_receipt, bottom_energy_parameters, &
                                      bottom_thermal_provider, bottom_energy_publication, irrigation_node, &
-                                     selected_irrigation_event,weekly_proposal)
+                                     selected_irrigation_event,weekly_proposal,target_selector)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -613,6 +616,7 @@ contains
     integer, intent(in), optional :: irrigation_node
     type(irrigation_state_t), intent(in), optional :: selected_irrigation_event
     type(ppa_weekly_identity_t), intent(in), optional :: weekly_proposal
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
 
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: kernel_result
@@ -657,7 +661,7 @@ contains
     if (present(irrigation_node)) then
       call backend%run_pending_irrigation_trial(column, template, parameters, committed_state, effective_forcing, &
            numerical_config, irrigation_node, t0, t1, checkpoint, kernel_result, candidate, kernel_diag, &
-           selected_irrigation_event,weekly_proposal)
+           selected_irrigation_event,weekly_proposal,target_selector)
     else
       call backend%run_trial(column, template, parameters, committed_state, effective_forcing, &
            numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)

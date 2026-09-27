@@ -147,3 +147,8 @@ runtime retains target validation, retry-cap tightening and all acceptance
 checks. The test-only selector caps targets at 1/65536 day to investigate
 endpoint-remainder failure. It does not publish intermediate states or alter
 physical forcing. No default activation or bootstrap exposure is introduced.
+
+The irrigation resolved-column entry forwards the same optional selector
+through its existing shared executor into the pending backend. Checkpoint,
+commit/discard and active-call accounting remain in that executor; no extra
+publication path is added. Existing absent-selector calls retain their route.
