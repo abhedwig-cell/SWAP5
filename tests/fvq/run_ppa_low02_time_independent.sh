@@ -19,6 +19,7 @@ grep -Fq 'sinusoid or time table' "$AUDIT" || fail 'time-law authority missing'
 
 python3 - <<'PY'
 from pathlib import Path
+import re
 import json
 
 pre = json.loads(Path("integration/audits/PPA_LOW02_TIME_PREREGISTRATION.json").read_text())
@@ -44,7 +45,9 @@ for token in [
 
 advance = backend[backend.index("subroutine fmr_serialized_advance"):backend.index("end subroutine fmr_serialized_advance")]
 assert "self%bottom_mode =" not in advance
-for forbidden in ["open(", "read(", "readswap", "swap_main", "ttutil"]:
+for forbidden_call in ("open", "read"):
+    assert re.search(rf"\b{forbidden_call}\s*\(", backend) is None, forbidden_call
+for forbidden in ("readswap", "swap_main", "ttutil"):
     assert forbidden not in backend, forbidden
 
 print("PPA_LOW02_INDEPENDENT_B111_AUTHORITY_LOCK=PASS")
