@@ -103,14 +103,14 @@ program test_ppa_free_drainage_owner
   call get_command_argument(1,test_scope)
   call get_command_argument(2,origin_scope)
   if(len_trim(origin_scope)>0) then
-    if(trim(test_scope)/='--irrigation-half-source') &
+    if(trim(test_scope)/='--irrigation-half-source'.and.trim(test_scope)/='--irrigation-source') &
          error stop 'unsupported diagnostic origin option'
     select case(trim(origin_scope))
     case('--local-origin')
       T0=0.1875_real64; T1=0.6875_real64
-      write(*,'(a)') 'PPA_IRR_HALF_LOCAL_ORIGIN_DIAGNOSTIC'
+      write(*,'(a)') 'PPA_IRR_LOCAL_ORIGIN_DIAGNOSTIC'
     case('--double-iterations')
-      write(*,'(a)') 'PPA_IRR_HALF_80_ITERATIONS_DIAGNOSTIC'
+      write(*,'(a)') 'PPA_IRR_80_ITERATIONS_DIAGNOSTIC'
     case default
       error stop 'unsupported diagnostic option'
     end select
