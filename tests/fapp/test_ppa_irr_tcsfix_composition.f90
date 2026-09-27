@@ -55,6 +55,12 @@ program test_tcsfix
          0.0_real64,0.0_real64,0.0_real64,.true.,2,3,next_day,candidate,flux,d)
     if(d%status/=IRRIGATION_OK.or.next_day/=2.or.flux%event_started) error stop 'ineligible counter'
     r%crop_emerged=.true.
+    do j=2,4
+      call evaluate_tcsfix_scheduled(p,base,r,knots,values,2,1.0_real64,0.0_real64,0.0_real64, &
+           1.0_real64,0.5_real64,1.0_real64,.true.,j,3,next_day,candidate,flux,d)
+      if(d%status/=IRRIGATION_OK.or.flux%event_started.or.next_day/=max(j,3)) &
+           error stop 'no candidate increment or hold'
+    end do
     call evaluate_tcsfix_scheduled(p,base,r,knots,values,0,0.0_real64,0.0_real64,0.0_real64, &
          0.0_real64,0.0_real64,0.0_real64,.true.,2,3,next_day,candidate,flux,d)
     if(d%status==IRRIGATION_OK.or.next_day/=2.or.flux%event_started) error stop 'invalid observations'
@@ -66,4 +72,5 @@ program test_tcsfix
   end do
   print '(a)', 'PPA_IRR_TCSFIX_COMPOSITION_INITIAL=PASS'
   print '(a)', 'PPA_IRR_TCSFIX_PENDING_ELIGIBILITY_INPUT_GUARDS=PASS'
+  print '(a)', 'PPA_IRR_TCSFIX_NO_CANDIDATE_COUNTER=PASS'
 end program
