@@ -110,7 +110,7 @@ body=r'''  real(c_double) :: cell_heads(NTILE), cell_fluxes(NTILE), cell_tangent
     call make_predictor(predictors(i),topology_tiles(i),topology_cells(i),reference_head_m,i)
     areas(i)%groundwater_cell_id = topology_cells(i)%groundwater_cell_id
     areas(i)%cell_area_m2 = 1.0_real64
-    cell_heads(i)=real(reference_head_m + 1.0e-6_real64*real(mod(i,7)-3,real64),c_double)
+    cell_heads(i)=real(reference_head_m,c_double)
   end do
 
   call system_clock(c0)
