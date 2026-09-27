@@ -58,6 +58,7 @@ PPA_WU04A_RESTART_STATE=665d90cb82485dec485be68694f77e0fcd03145c
 PPA_WU04A_SURFACE_EVAP=a7b9f5271ac0582420e883a62c6e13672dc190e9
 PPA_WU04A_BACKEND=b1ba0549ef9149c4261b8a595c8782be01726c43
 PPA_WU04B_RUNTIME_CORE=dc1dbffab96542ee09be5f923cea65628864d87b
+FCI110_RUNTIME_CORE=0783af04474752a47f7b3a0304a84dd379cff7d6
 PPA_WU04B_RESTART_STATE=ddcb880dbdbf1d6b41c8721f931df9a2c8bc121a
 PPA_WU04B_SURFACE_EVAP=1f795f0baaa3ed86272a1feabc3f1a6463b3ce77
 PPA_WU04B_BACKEND=9bd344a83afd5e10b96178933362dbb7eeea4f30
@@ -155,8 +156,13 @@ done
 if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
   git merge-base --is-ancestor "$PPA_WU04B_QUALIFIED" "$PPA_WU04B_ADMISSION" || \
     fail 'PPA-WU04-B qualified head is not contained by canonical admission'
-  test "$(git rev-parse "HEAD:$RUNTIME_CORE")" = "$PPA_WU04B_RUNTIME_CORE" || \
-    fail 'admitted PPA-WU04-B runtime-core successor drift'
+  runtime_core_authority="$PPA_WU04B_RUNTIME_CORE"
+  if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+    runtime_core_authority="$FCI110_RUNTIME_CORE"
+    echo 'FCI_CANONICAL_FCI110_RUNTIME_CORE_SUCCESSOR=ACTIVE'
+  fi
+  test "$(git rev-parse "HEAD:$RUNTIME_CORE")" = "$runtime_core_authority" || \
+    fail 'admitted runtime-core successor drift'
   test "$(git rev-parse "HEAD:$RESTART_STATE")" = "$PPA_WU04B_RESTART_STATE" || \
     fail 'admitted PPA-WU04-B restart-state successor drift'
   test "$(git rev-parse "HEAD:$SURFACE_EVAP")" = "$PPA_WU04B_SURFACE_EVAP" || \
