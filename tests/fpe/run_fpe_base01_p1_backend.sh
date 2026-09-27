@@ -100,7 +100,7 @@ python3 - "$PATCH/raw.txt" <<'PY'
 import json,statistics,sys
 rows=[]
 for line in open(sys.argv[1]):
-    if line.startswith("BASE01_P1_RAW|"):
+    if line.startswith("BASE01_P0_RAW|"):
         rows.append(json.loads(line.split("|",1)[1]))
 if len(rows)!=36:
     raise SystemExit(f"expected 36 replicate rows, got {len(rows)}")
