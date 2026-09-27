@@ -55,9 +55,10 @@ for needle,cat in [
 # Time the entire backtracking loop as a nested family.
 start=next(i for i,s in enumerate(lines) if "do itry = 1, MaxBackTr" in s)
 lines.insert(start,"      call base01_tic(BASE01_CAT_BACKTRACK)")
-# Find the exact loop terminator immediately before label 1.
+# Stop at label 1 so both the normal loop exit and the historical goto 1 path are timed.
 end=next(i for i in range(start+1,len(lines)-1) if lines[i].strip()=="end do" and lines[i+1].strip().startswith("1"))
-lines.insert(end+1,"      call base01_toc(BASE01_CAT_BACKTRACK)")
+label=end+1
+lines.insert(label+1,"      call base01_toc(BASE01_CAT_BACKTRACK)")
 
 p.write_text("\n".join(lines)+"\n")
 PY
