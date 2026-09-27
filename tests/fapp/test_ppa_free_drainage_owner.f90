@@ -1305,6 +1305,12 @@ contains
           type(fmr_serialized_physical_observation_t)::day_observation
           type(fmr_committed_restart_bundle_t)::day_restart
           type(kernel_committed_state_t)::day_restored(1)
+          type(kernel_committed_state_t)::day_replay(2)
+          type(fmr_serialized_reference_backend_t)::day_backend
+          type(fmr_b110_physical_forcing_t)::day_forcing
+          type(kernel_checkpoint_t)::day_checkpoint
+          real(real64)::day_mass(2)
+          integer::day_index,day_steps(2)
           class(transaction_state_t),allocatable::day_snapshot,day_restored_snapshot
           real(real64),allocatable::day_history(:),day_restored_history(:)
           type(canonical_numerical_config_t)::day_config
@@ -1377,6 +1383,65 @@ contains
             error stop 'full-day committed carrier'
           end select
           write(*,'(a)') 'PPA_IRR_FULL_DAY_COMMIT_DECODED_RESTART_IDENTITY=PASS'
+          day_replay=[weekly_owner,day_restored(1)]
+          day_forcing=no_gift_forcing
+          day_forcing%temporal_forcing_event=.false.
+          day_forcing%temporal_forcing_event_time=0.0_real64
+          do day_index=1,2
+            call day_backend%initialize(top)
+            call day_backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
+            call day_backend%set_storage_difference(evaluate_mvg_storage_difference_service)
+            call day_replay(day_index)%capture_checkpoint(day_checkpoint,ok)
+            if(.not.ok) error stop 'full-day replay checkpoint'
+            call day_backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters, &
+                 day_replay(day_index),day_forcing,day_config,1,T0+1.0_real64,T0+2.0_real64, &
+                 day_checkpoint,result,candidate,diagnostics,weekly_proposal=weekly_seed%weekly, &
+                 target_selector=weekly_bounded_target)
+            write(*,'(a,i0,a,l1,a,i0)') 'PPA_IRR_FULL_DAY_REPLAY=',day_index, &
+                 ';COMPLETED=',result%completed,';STATUS=',result%status
+            if(.not.result%completed.or..not.candidate%ready()) error stop 'full-day replay incomplete'
+            day_mass(day_index)=result%mass%residual
+            day_steps(day_index)=diagnostics%accepted_substeps
+            if(abs(day_mass(day_index))>1.0e-12_real64) error stop 'full-day replay mass'
+            call day_replay(day_index)%current_time(time,ok)
+            if(.not.ok.or.time/=T0+1.0_real64.or.day_replay(day_index)%current_revision()/=1_int64) &
+                 error stop 'full-day replay premature publication'
+            call day_backend%commit_trial_candidate(day_replay(day_index),candidate,diagnostics,ok,code)
+            if(.not.ok) error stop 'full-day replay commit'
+            call day_replay(day_index)%current_time(time,ok)
+            if(.not.ok.or.time/=T0+2.0_real64.or.day_replay(day_index)%current_revision()/=2_int64) &
+                 error stop 'full-day replay endpoint'
+          end do
+          if(day_mass(1)/=day_mass(2).or.day_steps(1)/=day_steps(2)) error stop 'full-day replay outcome identity'
+          call day_replay(1)%snapshot(day_snapshot,ok)
+          if(.not.ok) error stop 'full-day replay original snapshot'
+          call day_replay(2)%snapshot(day_restored_snapshot,ok)
+          if(.not.ok) error stop 'full-day replay restored snapshot'
+          select type(day_snapshot)
+          type is(ppa_irrigation_event_state_t)
+            select type(day_restored_snapshot)
+            type is(ppa_irrigation_event_state_t)
+              if(any(day_snapshot%pressure_head/=day_restored_snapshot%pressure_head).or. &
+                   any(day_snapshot%water_content/=day_restored_snapshot%water_content)) &
+                   error stop 'full-day replay physics identity'
+              if(day_snapshot%weekly%dayfix/=4.or.day_snapshot%weekly%last_day/=101_int64.or. &
+                   day_restored_snapshot%weekly%dayfix/=4.or.day_restored_snapshot%weekly%last_day/=101_int64.or. &
+                   day_snapshot%irrigation%active_event.or.day_restored_snapshot%irrigation%active_event) &
+                   error stop 'full-day replay management identity'
+              call day_snapshot%temporal_history_snapshot(day_history,ok)
+              if(.not.ok) error stop 'full-day replay history'
+              call day_restored_snapshot%temporal_history_snapshot(day_restored_history,ok)
+              if(.not.ok) error stop 'full-day replay restored history'
+              if(size(day_history)/=size(day_restored_history)) error stop 'full-day replay history size'
+              if(any(day_history/=day_restored_history)) error stop 'full-day replay history identity'
+            class default
+              error stop 'full-day replay restored carrier'
+            end select
+          class default
+            error stop 'full-day replay original carrier'
+          end select
+          write(*,'(a,i0,a,es24.16)') 'PPA_IRR_FULL_DAY_REPLAY_STEPS=',day_steps(1),';MASS=',day_mass(1)
+          write(*,'(a)') 'PPA_IRR_FULL_DAY_RESTART_CONTINUATION_IDENTITY=PASS'
           stop
         end block
       end if
