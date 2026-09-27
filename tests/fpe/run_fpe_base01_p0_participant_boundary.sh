@@ -807,6 +807,12 @@ for source in "${MODULE_SRC[@]}"; do
 done
 gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/lib/libswap.so" || fail "link"
 
+if [[ "${BASE01_BUILD_ONLY:-0}" == "1" ]]; then
+  [[ -n "${BASE01_BUILD_OUTPUT_LIB:-}" ]] || fail "BASE01_BUILD_OUTPUT_LIB required for build-only"
+  cp "$BUILD/lib/libswap.so" "$BASE01_BUILD_OUTPUT_LIB"
+  exit 0
+fi
+
 export PYTHONPATH="$ROOT/src/adapter:$ROOT/tests/fgc:$ROOT/tests/fgc/support"
 OUT="$BUILD/base01-p0.txt"
 : > "$OUT"
