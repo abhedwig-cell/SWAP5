@@ -29,6 +29,16 @@ ingestion semantics, not a legacy stored field.
 
 ## Transaction boundary
 
+Detached daily composition is now tested at `f911acba3` in
+`mod_ppa_irr_tcs6_daily`; this is a proposal producer, not runtime publication.
+Dependency inspection found 80 runner/tool references to the shared irrigation
+process source. Adding a new backend module dependency requires a deliberate
+compile-list update/preservation pass; do not silently leave existing runners
+unable to compile. Current backend `build_irrigation_event_candidate` constructs
+a fresh event carrier from a temporal physical state, so future metadata must
+be passed explicitly there or it would reset to defaults. Until that transfer
+is implemented, enabled weekly state must not be admitted to that runtime path.
+
 Current bootstrap `run_prepared_irrigation` accepts selected event proposals
 and an optional selection mask, but has no weekly management proposal channel.
 Add an explicit typed proposal channel only after validating the source daily
