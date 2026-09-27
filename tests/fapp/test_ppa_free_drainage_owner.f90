@@ -1301,7 +1301,12 @@ contains
       if(trim(origin_scope)=='--weekly-full-day') then
         block
           use mod_fmr_serialized_reference_backend, only: fmr_serialized_physical_observation_t
+          use mod_fmr_committed_restart, only: fmr_export_committed_restart,fmr_restore_committed_restart,FMR_RESTART_OK
           type(fmr_serialized_physical_observation_t)::day_observation
+          type(fmr_committed_restart_bundle_t)::day_restart
+          type(kernel_committed_state_t)::day_restored(1)
+          class(transaction_state_t),allocatable::day_snapshot,day_restored_snapshot
+          real(real64),allocatable::day_history(:),day_restored_history(:)
           type(canonical_numerical_config_t)::day_config
           integer(int64)::started,ended,clock_rate
           day_config=profile%numerical
@@ -1326,6 +1331,52 @@ contains
           call weekly_owner%current_time(time,ok)
           if(.not.ok.or.time/=T0.or.weekly_owner%current_revision()/=0_int64) error stop 'full-day premature publication'
           write(*,'(a)') 'PPA_IRR_FULL_DAY_EXPERIMENT_NO_PUBLICATION=PASS'
+          if(.not.result%completed) error stop 'full-day qualification incomplete'
+          call backend%commit_trial_candidate(weekly_owner,candidate,diagnostics,ok,code)
+          if(.not.ok) error stop 'full-day commit'
+          call weekly_owner%current_time(time,ok)
+          if(.not.ok.or.time/=T0+1.0_real64.or.weekly_owner%current_revision()/=1_int64) &
+               error stop 'full-day commit time revision'
+          call fmr_export_committed_restart([column],[template],[weekly_owner],92003_int64,day_restart,ok,code)
+          if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'full-day restart export'
+          call fmr_restore_committed_restart(day_restart,92003_int64,[column],[template],day_restored,ok,code)
+          if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'full-day restart restore'
+          call day_restored(1)%current_time(time,ok)
+          if(.not.ok.or.time/=T0+1.0_real64) error stop 'full-day restored time'
+          if(day_restored(1)%current_revision()/=weekly_owner%current_revision().or. &
+               day_restored(1)%current_lineage_id()/=weekly_owner%current_lineage_id()) &
+               error stop 'full-day restored provenance'
+          call weekly_owner%snapshot(day_snapshot,ok)
+          if(.not.ok) error stop 'full-day snapshot'
+          call day_restored(1)%snapshot(day_restored_snapshot,ok)
+          if(.not.ok) error stop 'full-day restored snapshot'
+          select type(day_snapshot)
+          type is(ppa_irrigation_event_state_t)
+            select type(day_restored_snapshot)
+            type is(ppa_irrigation_event_state_t)
+              if(.not.day_restored_snapshot%matches_candidate(template,T0+1.0_real64)) &
+                   error stop 'full-day restored validity'
+              if(any(day_snapshot%pressure_head/=day_restored_snapshot%pressure_head).or. &
+                   any(day_snapshot%water_content/=day_restored_snapshot%water_content)) &
+                   error stop 'full-day restored physics'
+              if(day_snapshot%weekly%dayfix/=4.or.day_snapshot%weekly%last_day/=101_int64.or. &
+                   day_restored_snapshot%weekly%dayfix/=4.or.day_restored_snapshot%weekly%last_day/=101_int64.or. &
+                   .not.day_restored_snapshot%weekly%enabled.or..not.day_restored_snapshot%weekly%day_bound.or. &
+                   day_snapshot%irrigation%active_event.or.day_restored_snapshot%irrigation%active_event) &
+                   error stop 'full-day restored management'
+              call day_snapshot%temporal_history_snapshot(day_history,ok)
+              if(.not.ok) error stop 'full-day history'
+              call day_restored_snapshot%temporal_history_snapshot(day_restored_history,ok)
+              if(.not.ok) error stop 'full-day restored history'
+              if(size(day_history)/=size(day_restored_history)) error stop 'full-day history size'
+              if(any(day_history/=day_restored_history)) error stop 'full-day history identity'
+            class default
+              error stop 'full-day restored carrier'
+            end select
+          class default
+            error stop 'full-day committed carrier'
+          end select
+          write(*,'(a)') 'PPA_IRR_FULL_DAY_COMMIT_DECODED_RESTART_IDENTITY=PASS'
           stop
         end block
       end if
