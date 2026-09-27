@@ -10,7 +10,15 @@ mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 
 CAND="$BUILD/mod_reference_richards_temporal_indicator_candidate.f90"
+BASE_IND="$BUILD/mod_reference_richards_temporal_indicator_baseline.f90"
+PRODUCTION_PATCHED=0
+if grep -Fq 'CONSTITUTIVE_DEMAND_CONDUCTIVITY' src/solver/mod_reference_richards_temporal_indicator.f90; then
+  PRODUCTION_PATCHED=1
+  git show origin/integration/f-ci-canonical:src/solver/mod_reference_richards_temporal_indicator.f90 > "$BASE_IND"
+  cp src/solver/mod_reference_richards_temporal_indicator.f90 "$CAND"
+fi
 
+if [[ "$PRODUCTION_PATCHED" -eq 0 ]]; then
 python3 - "$CAND" <<'PY'
 from pathlib import Path
 import sys
@@ -92,6 +100,7 @@ if old not in s:
 s=s.replace(old,new,1)
 Path(sys.argv[1]).write_text(s)
 PY
+fi
 
 python3 - "$BUILD/candidate_runner.sh" "$CAND" "$ROOT" <<'PY'
 from pathlib import Path
@@ -130,9 +139,16 @@ Path(sys.argv[1]).write_text(runner)
 PY
 chmod +x "$BUILD/candidate_runner.sh"
 
-MULTI04_P1C_N="$N" MULTI04_P1C_REPS="$REPS"   bash tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh | tee "$BUILD/base.txt"
+if [[ "$PRODUCTION_PATCHED" -eq 1 ]]; then
+  TEMPORAL10_IND_SOURCE="$BASE_IND" MULTI04_P1C_N="$N" MULTI04_P1C_REPS="$REPS" \
+    bash "$BUILD/candidate_runner.sh" | tee "$BUILD/base.txt"
+else
+  MULTI04_P1C_N="$N" MULTI04_P1C_REPS="$REPS" \
+    bash tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh | tee "$BUILD/base.txt"
+fi
 
-TEMPORAL10_IND_SOURCE="$CAND" MULTI04_P1C_N="$N" MULTI04_P1C_REPS="$REPS"   bash "$BUILD/candidate_runner.sh" | tee "$BUILD/cand.txt"
+TEMPORAL10_IND_SOURCE="$CAND" MULTI04_P1C_N="$N" MULTI04_P1C_REPS="$REPS" \
+  bash "$BUILD/candidate_runner.sh" | tee "$BUILD/cand.txt"
 
 python3 - "$N" "$BUILD/base.txt" "$BUILD/cand.txt" <<'PY'
 import re,sys
@@ -160,3 +176,12 @@ if n==40000 and s4<1.05:
     raise SystemExit(f"N=40000 advancement gate failed {s4}")
 print("FPE_TEMPORAL10_DEMAND_DIRECTED=PASS")
 PY
+
+if [[ "$PRODUCTION_PATCHED" -eq 1 && "$N" -eq 1000 ]]; then
+  grep -Fq 'type is (b110_direct_retention_provider_t)' src/solver/mod_reference_richards_temporal_indicator.f90
+  grep -Fq 'call constitutive%evaluate(request%base_state%pressure_head, water_base, conductivity_base, capacity_base, dkdh_base)' \
+    src/solver/mod_reference_richards_temporal_indicator.f90
+  echo 'TEMPORAL10_DIRECT_RETENTION_FULL_EVALUATE_PRESERVED=PASS'
+  bash tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh
+  echo 'TEMPORAL10_FSI38_CERTIFICATE_ORACLE=PASS'
+fi
