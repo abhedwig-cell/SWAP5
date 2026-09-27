@@ -138,7 +138,7 @@ for token in [
     assert token in backend, token
 
 for forbidden_call in ("open", "read"):
-    assert re.search(rf"\\b{forbidden_call}\\s*\\(", backend) is None, forbidden_call
+    assert re.search(rf"\b{forbidden_call}\s*\(", backend) is None, forbidden_call
 for forbidden in ("readswap", "swap_main", "ttutil"):
     assert forbidden not in backend, forbidden
 
