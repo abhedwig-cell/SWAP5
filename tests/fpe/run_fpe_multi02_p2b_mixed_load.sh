@@ -118,12 +118,6 @@ s=s.replace(
 "       '|W1_NL=',worker_nlit(1),'|W2_NL=',worker_nlit(2),'|W3_NL=',worker_nlit(3),'|W4_NL=',worker_nlit(4), &\n"
 "       '|W1_BT=',worker_bt(1),'|W2_BT=',worker_bt(2),'|W3_BT=',worker_bt(3),'|W4_BT=',worker_bt(4)\n",1)
 
-old='''for n in 100 1000; do
-  for w in 1 2 4; do
-    "$BUILD/test" "$n" "$w" | tee -a "$OUT"
-  done
-done
-'''
 new='''n=1000
 for order in 0 1; do
   for w in 1 2 4; do
@@ -131,9 +125,12 @@ for order in 0 1; do
   done
 done
 '''
-if old not in s:
-    raise SystemExit("P2B run-matrix seam missing")
-s=s.replace(old,new,1)
+out_anchor='OUT="$BUILD/out.txt"; : > "$OUT"\n'
+parser_anchor='\npython3 - "$OUT" <<\'PY\''
+out_pos=s.index(out_anchor)
+start=s.index("for n in ",out_pos)
+end=s.index(parser_anchor,start)
+s=s[:start]+new+s[end:]
 
 start=s.rfind('python3 - "$OUT" <<\'PY\'')
 if start<0:
