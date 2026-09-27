@@ -9,13 +9,88 @@ trap 'rm -rf "$BUILD"' EXIT
 
 BASE="tests/fpe/run_fpe_multi02_p0_worker_local.sh"
 OUTRUN="$BUILD/run.sh"
+PART="$BUILD/mod_fmr_groundwater_swap_participant.f90"
+REG="$BUILD/mod_fmr_groundwater_participant_registry.f90"
 cp "$BASE" "$OUTRUN"
+cp src/runtime/mod_fmr_groundwater_swap_participant.f90 "$PART"
+cp src/runtime/mod_fmr_groundwater_participant_registry.f90 "$REG"
 
-python3 - "$OUTRUN" <<'PYTRANSFORM'
+python3 - "$PART" <<'PYDIAGPART'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text()
+needle="    procedure, public :: tangent_cache_counts => fmr_swap_tangent_cache_counts\n"
+if needle not in s: raise SystemExit("participant diagnostics seam missing")
+s=s.replace(needle,needle+"    procedure, public :: multi03_diagnostics => fmr_swap_multi03_diagnostics\n",1)
+end="end module mod_fmr_groundwater_swap_participant"
+insert=r'''
+  subroutine fmr_swap_multi03_diagnostics(self, diagnostics)
+    class(fmr_groundwater_swap_participant_t), intent(in) :: self
+    type(kernel_diagnostics_t), intent(out) :: diagnostics
+    diagnostics = self%diagnostics
+  end subroutine fmr_swap_multi03_diagnostics
+
+'''
+if end not in s: raise SystemExit("participant end seam missing")
+s=s.replace(end,insert+end,1)
+p.write_text(s)
+PYDIAGPART
+
+python3 - "$REG" <<'PYDIAGREG'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); s=p.read_text()
+s=s.replace(
+"  use mod_kernel_transactions, only: kernel_committed_state_t\n",
+"  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_diagnostics_t\n",1)
+needle="    procedure, public :: identity => registry_identity\n"
+if needle not in s: raise SystemExit("registry diagnostics seam missing")
+s=s.replace(needle,needle+"     procedure, public :: multi03_diagnostics => registry_multi03_diagnostics\n",1)
+end="end module mod_fmr_groundwater_participant_registry"
+insert=r'''
+  subroutine registry_multi03_diagnostics(self, handle, diagnostics, status)
+    class(fmr_groundwater_participant_registry_t), intent(in) :: self
+    integer(int64), intent(in) :: handle
+    type(kernel_diagnostics_t), intent(out) :: diagnostics
+    integer, intent(out) :: status
+    integer :: idx
+    diagnostics = kernel_diagnostics_t()
+    call resolve_handle_const(self, handle, idx, status)
+    if (status /= FMR_GW_REGISTRY_OK) return
+    call self%slots(idx)%participant%multi03_diagnostics(diagnostics)
+    status = FMR_GW_REGISTRY_OK
+  end subroutine registry_multi03_diagnostics
+
+'''
+if end not in s: raise SystemExit("registry end seam missing")
+s=s.replace(end,insert+end,1)
+p.write_text(s)
+PYDIAGREG
+
+python3 - "$OUTRUN" "$PART" "$REG" <<'PYTRANSFORM'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); part=Path(sys.argv[2]); reg=Path(sys.argv[3]); s=p.read_text()
 s=s.replace('ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"','ROOT="$(pwd)"',1)
+
+marker='PY\n)\n\nobjects=()'
+repl=f'''PY
+)
+for i in "${!MODULE_SRC[@]}"; do
+  if [[ "${MODULE_SRC[$i]}" == "src/runtime/mod_fmr_groundwater_swap_participant.f90" ]]; then
+    MODULE_SRC[$i]="{part}"
+  elif [[ "${MODULE_SRC[$i]}" == "src/runtime/mod_fmr_groundwater_participant_registry.f90" ]]; then
+    MODULE_SRC[$i]="{reg}"
+  fi
+done
+
+objects=()'''
+if marker not in s: raise SystemExit("module source marker missing")
+s=s.replace(marker,repl,1)
+
+s=s.replace(
+"  use mod_kernel_transactions, only: kernel_committed_state_t\n",
+"  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_diagnostics_t\n",1)
 
 # The MULTI03 candidate is generated only in this research copy.
 s=s.replace(
@@ -26,7 +101,10 @@ old="  integer :: n,workers,i,w,rep,status,participant_status,active,maxsim,team
 new=("  integer :: n,workers,i,w,rep,status,participant_status,active,maxsim,team_seen,order_code,schedule_code,requested_schedule,wi,j,best,tmpi\n"
      "  integer, allocatable :: owner(:),sort_index(:),assigned_count(:)\n"
      "  real(real64), allocatable :: history_rate(:),predicted_load(:)\n"
-     "  real(real64) :: best_load,tmpc,mean_load,predicted_ratio,static_ratio\n")
+     "  real(real64) :: best_load,tmpc,mean_load,predicted_ratio,static_ratio\n"
+     "  type(kernel_diagnostics_t), allocatable :: serial_diag(:),parallel_diag(:)\n"
+     "  integer(int64) :: ident_tile,ident_lineage,ident_revision\n"
+     "  logical :: ident_origin,ident_candidate\n")
 if old not in s: raise SystemExit("MULTI03 declaration seam missing")
 s=s.replace(old,new,1)
 
@@ -59,6 +137,7 @@ s=s.replace(old,new,1)
 old="  allocate(columns(n),committed(n),forcings(n),materializers(n),handles(n),target_head(n))\n"
 new=(old+
 "  allocate(owner(n),sort_index(n),assigned_count(workers),history_rate(n),predicted_load(workers))\n"
+"  allocate(serial_diag(n),parallel_diag(n))\n"
 "  do i=1,n\n"
 "    history_rate(i)=history_rate_for_tile(i,n,order_code)\n"
 "    sort_index(i)=i\n"
@@ -224,7 +303,25 @@ if old not in s: raise SystemExit("MULTI03 committed seam missing")
 s=s.replace(old,new,1)
 
 needle="  subroutine sort5(v)\n"
-helper="""  pure real(real64) function history_rate_for_tile(index,count,ordering) result(v)
+diag_helper=r'''  subroutine require_diag_equal(s,p)
+    type(kernel_diagnostics_t),intent(in)::s,p
+    if(s%transaction_calls/=p%transaction_calls) error stop 'diag transaction'
+    if(s%accepted_substeps/=p%accepted_substeps) error stop 'diag substeps'
+    if(s%attempts/=p%attempts) error stop 'diag attempts'
+    if(s%retries/=p%retries) error stop 'diag retries'
+    if(s%solver_rejections/=p%solver_rejections) error stop 'diag solver rejection'
+    if(s%temporal_rejections/=p%temporal_rejections) error stop 'diag temporal rejection'
+    if(s%temporal_acceptance_source/=p%temporal_acceptance_source) error stop 'diag temporal source'
+    if(s%nonlinear_iterations/=p%nonlinear_iterations) error stop 'diag nonlinear'
+    if(s%internal_retries/=p%internal_retries) error stop 'diag internal retry'
+    if(s%headcalc_calls/=p%headcalc_calls) error stop 'diag headcalc'
+    if(s%jacobian_builds/=p%jacobian_builds) error stop 'diag jacobian'
+    if(s%linear_solves/=p%linear_solves) error stop 'diag linear'
+    if(s%backtracking_attempts/=p%backtracking_attempts) error stop 'diag backtrack'
+  end subroutine require_diag_equal
+
+'''
+helper=diag_helper+"""  pure real(real64) function history_rate_for_tile(index,count,ordering) result(v)
     integer,intent(in)::index,count,ordering
     real(real64),parameter::rates(4)=[100.0_real64,400.0_real64,1600.0_real64,6400.0_real64]
     integer::klass
