@@ -1,11 +1,12 @@
 program test_composition
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64,int64
   use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
   use mod_irrigation_process
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_tcs1_4_composition
   use mod_ppa_irr_tcs1_4_dcs1
   use mod_ppa_irr_tcs6_composition
+  use mod_ppa_irr_weekly_identity
   implicit none
   type(scheduled_irrigation_parameters_t)::p
   type(scheduled_irrigation_request_t)::r
@@ -17,6 +18,8 @@ program test_composition
   real(real64)::knots(7),values(7)
   real(real64)::actual,nan,correction,depth,rate,duration
   integer::i,j,next_day,day_counter
+  type(ppa_weekly_identity_t)::weekly,proposal
+  logical::daily,valid
   p%scheduled_irrigation_enabled=.true.; p%active_nodes=1; p%sensor_node=1; p%single_ssdi_node=1
   p%irr_rate_cm_per_day=1.0_real64; p%dcs2_knot_count=2
   p%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]; p%dcs2_depth_cm=0.5_real64
@@ -210,6 +213,34 @@ program test_composition
          error stop 'weekly malformed selector input'
   end do
   write(*,'(a)') 'PPA_IRR_TCS6_SEQUENCE_PENDING_ELIGIBILITY_GUARDS=PASS'
+  if(.not.valid_weekly_identity(weekly)) error stop 'weekly default metadata'
+  call prepare_weekly_day(weekly,.true.,10_int64,proposal,daily,valid)
+  if(valid.or.daily) error stop 'weekly disabled invocation'
+  weekly%enabled=.true.
+  call prepare_weekly_day(weekly,.true.,10_int64,proposal,daily,valid)
+  if(.not.valid.or..not.daily.or.proposal%last_day/=10_int64.or.weekly%day_bound) &
+       error stop 'weekly first detached proposal'
+  weekly=proposal
+  call prepare_weekly_day(weekly,.true.,10_int64,proposal,daily,valid)
+  if(.not.valid.or.daily.or.proposal%dayfix/=366) error stop 'weekly duplicate identity'
+  call prepare_weekly_day(weekly,.true.,11_int64,proposal,daily,valid)
+  if(.not.valid.or..not.daily.or.proposal%last_day/=11_int64) error stop 'weekly consecutive identity'
+  do i=8,13
+    if(i==10.or.i==11) cycle
+    call prepare_weekly_day(weekly,.true.,int(i,int64),proposal,daily,valid)
+    if(valid.or.daily.or.proposal%last_day/=10_int64) error stop 'weekly gap/backward identity'
+  end do
+  call prepare_weekly_day(weekly,.false.,-1_int64,proposal,daily,valid)
+  if(.not.valid.or.daily.or.proposal%last_day/=10_int64) error stop 'weekly non-daily identity'
+  weekly%last_day=huge(0_int64)-1_int64
+  call prepare_weekly_day(weekly,.true.,huge(0_int64),proposal,daily,valid)
+  if(.not.valid.or..not.daily) error stop 'weekly ordinal upper bound'
+  weekly=proposal
+  call prepare_weekly_day(weekly,.true.,huge(0_int64),proposal,daily,valid)
+  if(.not.valid.or.daily) error stop 'weekly ordinal terminal duplicate'
+  weekly%dayfix=367
+  if(valid_weekly_identity(weekly)) error stop 'weekly malformed metadata'
+  write(*,'(a)') 'PPA_IRR_TCS6_DAILY_IDENTITY_PROPOSAL=PASS'
 contains
   subroutine profile_call(state,thickness,count)
     type(irrigation_state_t),intent(in)::state

@@ -6,6 +6,7 @@ $sources = @('src/solver/mod_soil_water_solver_contract.f90', 'src/solver/mod_pr
  'src/process/mod_irrigation_process.f90', 'src/process/mod_ppa_irr_tcs1_4_timing.f90',
  'src/process/mod_ppa_irr_water_deficit.f90', 'src/process/mod_ppa_irr_tcs1_4_dcs1.f90',
  'src/process/mod_ppa_irr_tcs6_weekly_timing.f90', 'src/process/mod_ppa_irr_tcs6_composition.f90',
+ 'src/process/mod_ppa_irr_weekly_identity.f90',
  'src/process/mod_ppa_irr_tcs1_4_composition.f90', 'tests/fapp/test_ppa_irr_tcs1_4_composition.f90') |
  ForEach-Object { Join-Path $repo $_ }
 foreach ($opt in @('O0','O2')) {
