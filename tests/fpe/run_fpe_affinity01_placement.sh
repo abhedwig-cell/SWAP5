@@ -10,10 +10,16 @@ mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "FPE_AFFINITY01_FAIL $*" >&2; exit 1; }
 
-python3 - "$BUILD/multi04_nogate.sh" <<'PY'
+python3 - "$BUILD/multi04_nogate.sh" "$ROOT" <<'PY'
 from pathlib import Path
 import sys
 s=Path("tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh").read_text()
+root=Path(sys.argv[2]).resolve()
+old_root='ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"\ncd "$ROOT"'
+new_root=f'ROOT="{root}"\ncd "$ROOT"'
+if old_root not in s:
+    raise SystemExit("AFFINITY01 root seam missing")
+s=s.replace(old_root,new_root,1)
 s=s.replace('if s2 < 1.5: raise SystemExit(f"2-worker frozen speed gate failed: {s2}")\n','')
 s=s.replace('if s4 < 2.2: raise SystemExit(f"4-worker frozen speed gate failed: {s4}")\n','')
 Path(sys.argv[1]).write_text(s)
