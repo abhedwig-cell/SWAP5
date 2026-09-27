@@ -37,10 +37,11 @@ program test_fpe_multi02_p0
 
   integer :: n,workers,i,w,rep,status,participant_status,active,maxsim,team_seen
   integer(int64) :: c0,c1,rate
-  character(len=64) :: arg
+  character(len=64) :: arg, mode
   real(real64) :: href, serial_t(NREP), parallel_t(NREP), qdiff,tdiff
+  real(real64), allocatable :: target_head(:)
   real(real64) :: qsum,tsum
-  logical :: ok,prepared
+  logical :: ok,prepared,mixed
 
   type(fmr_b110_physical_parameters_t), target :: parameters
   type(fmr_b110_physical_forcing_t), target, allocatable :: forcings(:)
@@ -60,9 +61,15 @@ program test_fpe_multi02_p0
   type(groundwater_swap_trial_t), allocatable :: serial_trials(:), parallel_trials(:)
   integer, allocatable :: pstatus(:), rstatus(:)
 
-  if(command_argument_count()/=2) error stop 'usage N WORKERS'
+  if(command_argument_count()<2 .or. command_argument_count()>3) error stop 'usage N WORKERS [MIXED]'
   call get_command_argument(1,arg); read(arg,*) n
   call get_command_argument(2,arg); read(arg,*) workers
+  mixed=.false.; mode=''
+  if(command_argument_count()==3)then
+    call get_command_argument(3,mode)
+    mixed=trim(mode)=='MIXED'
+    if(.not.mixed) error stop 'bad mode'
+  end if
   if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'
 
   call initialize_parameters(parameters)
@@ -79,7 +86,13 @@ program test_fpe_multi02_p0
   policy%floor_cm=1.0e-5_real64
   window%t0=0.0_real64; window%t1=DT
 
-  allocate(columns(n),committed(n),forcings(n),materializers(n),handles(n))
+  allocate(columns(n),committed(n),forcings(n),materializers(n),handles(n),target_head(n))
+  target_head=href
+  if(mixed)then
+    do i=1,n
+      if(mod(i-1,4)==0) target_head(i)=href+1.0e-3_real64
+    end do
+  end if
   allocate(serial_trials(n),parallel_trials(n),pstatus(n),rstatus(n))
   allocate(backends(workers))
   do w=1,workers
@@ -111,7 +124,7 @@ program test_fpe_multi02_p0
   do rep=1,NREP
     call system_clock(c0,count_rate=rate)
     do i=1,n
-      call registry%trial_from_origin(handles(i),window,href,serial_trials(i),participant_status,status)
+      call registry%trial_from_origin(handles(i),window,target_head(i),serial_trials(i),participant_status,status)
       if(status/=FMR_GW_REGISTRY_OK .or. participant_status/=GW_SWAP_PARTICIPANT_OK .or. .not.serial_trials(i)%valid) &
            error stop 'serial trial'
     end do
@@ -137,7 +150,7 @@ program test_fpe_multi02_p0
       active=active+1
       maxsim=max(maxsim,active)
 !$omp end critical(multi02_active)
-      call registry%trial_from_origin(handles(i),window,href,parallel_trials(i),participant_status,status)
+      call registry%trial_from_origin(handles(i),window,target_head(i),parallel_trials(i),participant_status,status)
       pstatus(i)=participant_status
       rstatus(i)=status
 !$omp critical(multi02_active)
@@ -182,7 +195,7 @@ program test_fpe_multi02_p0
        '|SERIAL_SECONDS=',serial_t(3),'|PARALLEL_SECONDS=',parallel_t(3), &
        '|SPEEDUP=',serial_t(3)/parallel_t(3),'|NS_PER_TILE=',1.0e9_real64*parallel_t(3)/real(n,real64), &
        '|MAX_SIMULTANEOUS=',maxsim,'|OMP_TEAM=',team_seen,'|MAX_Q_DIFF=',qdiff,'|MAX_T_DIFF=',tdiff, &
-       '|QSUM=',qsum,'|TSUM=',tsum
+       '|QSUM=',qsum,'|TSUM=',tsum,'|MIXED=',mixed
   write(*,'(A)') 'FPE_MULTI02_P0=PASS'
 
 contains
