@@ -1214,6 +1214,38 @@ contains
     call backend%set_storage_difference(evaluate_mvg_storage_difference_service)
     limited=profile%numerical
     limited%max_committed_substeps=1
+    block
+      type(kernel_committed_state_t)::weekly_owner
+      type(kernel_checkpoint_t)::weekly_checkpoint
+      seed%weekly%enabled=.true.; seed%weekly%day_bound=.true.
+      seed%weekly%last_day=100_int64; seed%weekly%dayfix=3
+      call seed%clone(initial)
+      call weekly_owner%initialize(404198_int64,initial,ok,T0)
+      if(.not.ok) error stop 'weekly rejection owner initialization'
+      call weekly_owner%capture_checkpoint(weekly_checkpoint,ok)
+      if(.not.ok) error stop 'weekly rejection checkpoint'
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,forcing, &
+           profile%numerical,1,T0,finish,weekly_checkpoint,result,candidate,diagnostics)
+      if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps/=0) &
+           error stop 'unwired weekly runtime admitted'
+      call weekly_owner%current_time(time,ok)
+      if(.not.ok.or.time/=T0.or.weekly_owner%current_revision()/=0_int64) error stop 'weekly rejection advanced owner'
+      call weekly_owner%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'weekly rejection snapshot missing'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(.not.snapshot%weekly%enabled.or.snapshot%weekly%dayfix/=3.or. &
+             snapshot%weekly%last_day/=100_int64.or..not.snapshot%weekly%day_bound) &
+             error stop 'weekly rejection lost metadata'
+        if(any(snapshot%water_content/=seed%water_content).or. &
+             any(snapshot%pressure_head/=seed%pressure_head).or. &
+             snapshot%irrigation%active_event_end/=seed%irrigation%active_event_end) &
+             error stop 'weekly rejection changed physical event state'
+      class default
+        error stop 'weekly rejection lost carrier'
+      end select
+      write(*,'(a)') 'PPA_IRR_WEEKLY_UNWIRED_RUNTIME_REJECTION=PASS'
+    end block
     call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,committed,forcing, &
          limited,1,T0,finish,checkpoint,result,candidate,diagnostics)
     if(result%completed.or.candidate%ready()) error stop 'limited pending trial unexpectedly completed'
