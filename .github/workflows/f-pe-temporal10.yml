@@ -1,0 +1,27 @@
+name: F-PE-TEMPORAL10 demand-directed temporal constitutive evaluation
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_temporal10_*.sh'
+      - 'docs/performance/F-PE-TEMPORAL10_*.md'
+      - '.github/workflows/f-pe-temporal10.yml'
+  workflow_dispatch:
+
+jobs:
+  paired:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run paired demand-directed benchmark
+        env:
+          TEMPORAL10_N: '${{ matrix.n }}'
+          TEMPORAL10_REPS: '5'
+        run: bash tests/fpe/run_fpe_temporal10_demand_directed.sh
