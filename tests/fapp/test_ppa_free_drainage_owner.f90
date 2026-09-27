@@ -1316,6 +1316,12 @@ contains
       write(*,'(a,i0,a,i0)') 'PPA_IRR_WEEKLY_NO_GIFT_LONG_REJECTION_STATUS=',result%status, &
            ';INTERNAL_ACCEPTED=',diagnostics%accepted_substeps
       write(*,'(a)') 'PPA_IRR_WEEKLY_CHANGED_PROPOSAL_ROLLBACK=PASS'
+      write(*,'(a,6(i0,1x))') 'PPA_IRR_WEEKLY_LONG_FAILURE_COUNTS=',diagnostics%attempts,diagnostics%retries, &
+           diagnostics%solver_rejections,diagnostics%temporal_rejections,diagnostics%mass_rejections, &
+           diagnostics%temporal_certificate_unavailable_rejections
+      write(*,'(a,4(es24.16,1x))') 'PPA_IRR_WEEKLY_LONG_FAILURE_BOUNDS=', &
+           diagnostics%min_accepted_substep_duration,diagnostics%max_accepted_substep_duration, &
+           diagnostics%max_abs_step_mass_residual,diagnostics%max_temporal_indicator
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
            weekly_proposal=weekly_seed%weekly)
