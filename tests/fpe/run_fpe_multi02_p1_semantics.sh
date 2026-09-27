@@ -86,6 +86,7 @@ new="""  integer :: n,workers,i,w,rep,status,participant_status,active,maxsim,te
   integer :: tc,asub,att,ret,srej,trej,nlit,bt
   integer :: serial_tc,serial_asub,serial_att,serial_ret,serial_srej,serial_trej,serial_nlit,serial_bt
   integer :: parallel_tc,parallel_asub,parallel_att,parallel_ret,parallel_srej,parallel_trej,parallel_nlit,parallel_bt
+  integer :: worker_att(4),worker_nlit(4),worker_bt(4),wi
 """
 if old not in s: raise SystemExit("test declaration seam")
 s=s.replace(old,new,1)
@@ -93,6 +94,7 @@ s=s.replace(old,new,1)
 anchor="  qdiff=0.0_real64; tdiff=0.0_real64\n"
 repl=anchor+"""  serial_tc=0; serial_asub=0; serial_att=0; serial_ret=0; serial_srej=0; serial_trej=0; serial_nlit=0; serial_bt=0
   parallel_tc=0; parallel_asub=0; parallel_att=0; parallel_ret=0; parallel_srej=0; parallel_trej=0; parallel_nlit=0; parallel_bt=0
+  worker_att=0; worker_nlit=0; worker_bt=0
 """
 if anchor not in s: raise SystemExit("test init seam")
 s=s.replace(anchor,repl,1)
@@ -123,6 +125,10 @@ repl=anchor+"""    if(rep==1)then
         parallel_tc=parallel_tc+tc; parallel_asub=parallel_asub+asub; parallel_att=parallel_att+att
         parallel_ret=parallel_ret+ret; parallel_srej=parallel_srej+srej; parallel_trej=parallel_trej+trej
         parallel_nlit=parallel_nlit+nlit; parallel_bt=parallel_bt+bt
+        wi=1+mod(i-1,workers)
+        worker_att(wi)=worker_att(wi)+att
+        worker_nlit(wi)=worker_nlit(wi)+nlit
+        worker_bt(wi)=worker_bt(wi)+bt
       end do
     end if
 """
@@ -148,6 +154,10 @@ new="""       '|MAX_SIMULTANEOUS=',maxsim,'|OMP_TEAM=',team_seen,'|MAX_Q_DIFF=',
        '|QSUM=',qsum,'|TSUM=',tsum,'|ATTEMPTS=',parallel_att,'|ACCEPTED_SUBSTEPS=',parallel_asub, &
        '|RETRIES=',parallel_ret,'|TEMPORAL_REJECTIONS=',parallel_trej,'|SOLVER_REJECTIONS=',parallel_srej, &
        '|NONLINEAR=',parallel_nlit,'|BACKTRACK=',parallel_bt
+  do wi=1,workers
+    write(*,'(*(g0))') 'MULTI02_WORKER|N=',n,'|WORKERS=',workers,'|WORKER=',wi, &
+         '|ATTEMPTS=',worker_att(wi),'|NONLINEAR=',worker_nlit(wi),'|BACKTRACK=',worker_bt(wi)
+  end do
 """
 if old not in s: raise SystemExit("output seam")
 s=s.replace(old,new,1)
@@ -185,9 +195,13 @@ export OMP_PROC_BIND=spread
 export OMP_PLACES=cores
 
 OUT="$BUILD/out.txt"; : > "$OUT"
+extra_args=()
+if [[ "${MULTI02_MIXED:-0}" == "1" ]]; then
+  extra_args=(MIXED)
+fi
 for n in 10 100 1000; do
   for w in 1 2 4; do
-    "$BUILD/test" "$n" "$w" | tee -a "$OUT"
+    "$BUILD/test" "$n" "$w" "${extra_args[@]}" | tee -a "$OUT"
   done
 done
 
