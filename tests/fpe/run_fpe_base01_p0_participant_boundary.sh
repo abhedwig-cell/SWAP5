@@ -798,7 +798,7 @@ OUT="$BUILD/base01-p0.txt"
 : > "$OUT"
 cases=("B01|wet|-10" "B01|mid|-75" "B12|wet|-10" "O05|wet|-10" "O14|wet|-10" "O14|mid|-75")
 imbalances=(-0.10 0.10)
-reps=5
+reps="${BASE01_REPS:-5}"
 
 for case_spec in "${cases[@]}"; do
   IFS='|' read -r material regime h0 <<< "$case_spec"
@@ -816,7 +816,7 @@ for case_spec in "${cases[@]}"; do
   done
 done
 
-python3 - "$OUT" <<'PY'
+if [[ "${BASE01_SKIP_AGGREGATE:-0}" == "1" ]]; then\n  exit 0\nfi\n\npython3 - "$OUT" <<'PY'
 import collections,json,statistics,sys
 groups=collections.defaultdict(list)
 for line in open(sys.argv[1]):
