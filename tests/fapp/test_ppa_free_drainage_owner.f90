@@ -1532,7 +1532,7 @@ contains
       observations(i)%iptra_day=1.0_real64; observations(i)%iqreddry_day=0.75_real64
       observations(i)%awlh=1.0_real64; observations(i)%awmh=0.5_real64; observations(i)%awah=0.1_real64
     end do
-    do timing=1,7
+    do timing=1,11
       management%timing_criterion=timing
       if(timing>=5) then
         management%timing_criterion=timing-3
@@ -1545,6 +1545,22 @@ contains
         end do
         ! These supplied values cannot trigger: the checked profile must be used.
         observations%awlh=1.0_real64; observations%awmh=0.5_real64; observations%awah=1.0_real64
+        if(timing>=8) then
+          management%timing_criterion=timing-7
+          management%depth_criterion=1
+          management%dcs1_knot_count=2
+          do i=1,2
+            management(i)%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+            management(i)%dcs1_correction_mm=0.0_real64
+            timing_profiles(i)%rd=management(i)%dcs2_depth_cm(1)/(0.99_real64-source%water_content(1))
+            observations(i)%threshold_values=0.000001_real64
+            if(timing==8) observations(i)%threshold_values=0.5_real64
+          end do
+          requests%deficit_cm=-100.0_real64 ! Must be replaced by checked profile deficit.
+          call execute_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
+               management,requests,previous,right,code,observations=observations)
+          if(code==FMR_APP_BOOT_OK.or.allocated(right)) error stop 'DCS1 missing runtime profile admitted'
+        end if
         call restored%copy_committed_hydraulic_states(lhs,code)
         if(code/=FMR_APP_BOOT_OK) error stop 'profile preflight snapshot failed'
         timing_profiles(2)%dz=-1.0_real64
@@ -1599,6 +1615,7 @@ contains
       if(allocated(timing_profiles)) then
         do i=1,2
           timing_profiles(i)%dz=-1.0_real64
+          if(timing>=8) timing_profiles(i)=ppa_irrigation_profile_t()
         end do
       end if
       call execute_window_ppa_bootstrap_irrigation(restored,[1_int64,2_int64],92001_int64, &
@@ -1630,9 +1647,12 @@ contains
       call restored%initialize(config,code)
       if(code/=FMR_APP_BOOT_OK) error stop 'TCS fixture reset failed'
       if(allocated(timing_profiles)) deallocate(timing_profiles)
+      management%depth_criterion=2
+      observations(1)%threshold_values=0.5_real64; observations(2)%threshold_values=0.5_real64
     end do
     observations%awlh=1.0_real64; observations%awmh=0.5_real64; observations%awah=0.1_real64
     write(*,'(a)') 'PPA_IRR_TCS2_4_PROFILE_PREFIX_RESTART=PASS'
+    write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_PREFIX_RESTART=PASS'
     management%timing_criterion=7
     write(*,'(a)') 'PPA_IRR_TCS1_4_BOOTSTRAP_HYDRAULIC_SELECTION=PASS'
     write(*,'(a)') 'PPA_IRR_TCS1_4_PREFIX_WINDOW_RESTART=PASS'

@@ -12,6 +12,7 @@ module mod_ppa_bootstrap_irrigation
        IRRIGATION_DEPTH_DCS2_FIXED,IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_source,ppa_tcs1_4_observations_t,evaluate_tcs2_4_profile_source
+  use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_dcs1_source
   use mod_ppa_irrigation_source_binding, only: evaluate_ppa_irrigation_source, &
        evaluate_ppa_profile_irrigation_source,ppa_irrigation_profile_t
   implicit none
@@ -154,14 +155,15 @@ contains
     do i=1,n
       if(parameters(i)%timing_criterion>=1.and.parameters(i)%timing_criterion<=4) then
         if(.not.present(observations)) return
-        if(parameters(i)%depth_criterion/=IRRIGATION_DEPTH_DCS2_FIXED) return
       end if
       select case(parameters(i)%depth_criterion)
       case(IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY)
         if(.not.present(profiles)) return
+        if(parameters(i)%timing_criterion<1.or.parameters(i)%timing_criterion>4) then
         if(.not.allocated(profiles(i)%layer).or..not.allocated(profiles(i)%dz).or. &
              .not.allocated(profiles(i)%ztopcp).or..not.allocated(profiles(i)%wclos).or. &
              .not.allocated(profiles(i)%wcmes).or..not.allocated(profiles(i)%wchis)) return
+        end if
       case(IRRIGATION_DEPTH_DCS2_FIXED)
         continue
       case default
@@ -189,7 +191,10 @@ contains
         hydraulic%pressure_head=state%pressure_head
         hydraulic%water_content=state%water_content
         if(parameters(i)%timing_criterion>=1.and.parameters(i)%timing_criterion<=4) then
-          if(present(profiles).and.parameters(i)%timing_criterion>=2) then
+          if(parameters(i)%depth_criterion==IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY) then
+            call evaluate_tcs1_4_dcs1_source(parameters(i),state%irrigation,requests(i),observations(i), &
+                 hydraulic,profiles(i),previous(i),event,flux,diagnostics,forcing,ok)
+          else if(present(profiles).and.parameters(i)%timing_criterion>=2) then
             call evaluate_tcs2_4_profile_source(parameters(i),state%irrigation,requests(i),observations(i), &
                  hydraulic,profiles(i),previous(i),event,flux,diagnostics,forcing,ok)
           else
