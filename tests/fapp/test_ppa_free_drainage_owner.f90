@@ -1405,6 +1405,14 @@ contains
                    diagnostics%attempts,diagnostics%solver_rejections,diagnostics%temporal_rejections
               write(*,'(a,2(es24.16,1x))') 'PPA_IRR_DAY2_FAILURE_INTERVAL=', &
                    day_observation%trial_t0,day_observation%trial_t1
+              if(.not.day_observation%first_solver_failure_available) error stop 'day2 missing first failure'
+              write(*,'(a,2(es24.16,1x))') 'PPA_IRR_DAY2_FIRST_FAILURE_INTERVAL=', &
+                   day_observation%first_solver_failure_t0,day_observation%first_solver_failure_t1
+              write(*,'(a,2(i0,1x),2(es24.16,1x))') 'PPA_IRR_DAY2_FIRST_FAILURE_CONVERGENCE=', &
+                   day_observation%first_solver_failure_diagnostics%final_balance_failure_count, &
+                   day_observation%first_solver_failure_diagnostics%final_head_failure_count, &
+                   day_observation%first_solver_failure_diagnostics%final_max_balance_rate, &
+                   day_observation%first_solver_failure_diagnostics%final_total_balance_rate
               write(*,'(a,2(i0,1x),2(es24.16,1x))') 'PPA_IRR_DAY2_FAILURE_CONVERGENCE=', &
                    day_observation%solver_diagnostics%final_balance_failure_count, &
                    day_observation%solver_diagnostics%final_head_failure_count, &
