@@ -1,0 +1,32 @@
+name: F-PE-MULTIPROC04 persistent steady-state
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multiproc04_*.sh'
+      - 'docs/performance/F-PE-MULTIPROC04_*.md'
+      - '.github/workflows/f-pe-multiproc04.yml'
+  workflow_dispatch:
+
+jobs:
+  persistent-steady-state:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record host topology
+        run: |
+          uname -a
+          lscpu
+          lscpu -e=CPU,CORE,SOCKET,NODE || true
+      - name: Run persistent process/thread comparison
+        env:
+          MULTIPROC04_N: '${{ matrix.n }}'
+          MULTIPROC04_ROUNDS: '7'
+        run: bash tests/fpe/run_fpe_multiproc04_persistent.sh
