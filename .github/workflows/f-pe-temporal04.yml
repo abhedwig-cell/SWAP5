@@ -1,0 +1,37 @@
+name: F-PE-TEMPORAL04 oracle-based temporal policy qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_temporal04_*.sh'
+      - 'docs/performance/F-PE-TEMPORAL04_*.md'
+      - '.github/workflows/f-pe-temporal04.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-policy-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal04_p0_policy_oracle.sh
+
+  p1a-oracle-replication:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal04_p1a_oracle_replication.sh
+
+  p1b-runtime-retry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal04_p1b_runtime_retry.sh
