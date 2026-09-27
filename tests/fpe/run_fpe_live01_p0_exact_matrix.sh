@@ -28,10 +28,6 @@ python3 - "$BUILD/lib/mod_fmr_serialized_reference_backend.f90" <<'PY'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); src=p.read_text()
-src=src.replace(
-"  use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t\n",
-"  use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t, &\n"
-"       fmr_groundwater_temporal_budget_policy_t\n",1)
 old="""    request%numerical%compartment_balance_tolerance = self%compartment_balance_tolerance
     request%numerical%total_balance_tolerance = self%total_balance_tolerance
 """
@@ -113,6 +109,10 @@ python3 - "$BUILD/lib/mod_fgc44_real_swap_c_bridge.f90" <<'PY'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); src=p.read_text()
+src=src.replace(
+"  use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t\n",
+"  use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t, &\n"
+"       fmr_groundwater_temporal_budget_policy_t\n",1)
 src=src.replace("  use mod_canonical_contracts, only: canonical_numerical_config_t\n",
                 "  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t\n",1)
 src=src.replace("  use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t\n",
