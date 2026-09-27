@@ -84,3 +84,27 @@ jobs:
         with:
           name: f-pe-base01-p1b
           path: base01-p1b.txt
+
+
+  p2-temporal-specialization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler and pinned live coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run temporal-indicator demand specialization comparison
+        run: |
+          bash tests/fpe/run_fpe_base01_p2_temporal_specialization.sh | tee base01-p2.txt
+          grep -Fq 'FPE_BASE01_P2=PASS' base01-p2.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-base01-p2
+          path: base01-p2.txt
