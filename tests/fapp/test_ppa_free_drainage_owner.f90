@@ -1107,7 +1107,7 @@ contains
     if(allocated(invalid%records)) error stop 'failed irrigation export retained old bundle'
     ! Corrupt only the second record. The first reconstructed candidate must
     ! never be published when a later record fails validation.
-    do pass=1,4
+    do pass=1,8
       invalid=saved
       select case(pass)
       case(1)
@@ -1128,11 +1128,31 @@ contains
         class default
           error stop 'weekly export sliced state'
         end select
+      case(5:8)
+        select type(state=>invalid%records(2)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          select case(pass)
+          case(5)
+            state%weekly%dayfix=-1
+          case(6)
+            state%weekly%enabled=.true.; state%weekly%day_bound=.true.
+            state%weekly%last_day=-1_int64
+          case(7)
+            state%weekly%enabled=.false.; state%weekly%day_bound=.true.
+            state%weekly%dayfix=366; state%weekly%last_day=0_int64
+          case(8)
+            state%weekly%enabled=.true.; state%weekly%day_bound=.false.
+            state%weekly%dayfix=366; state%weekly%last_day=1_int64
+          end select
+        class default
+          error stop 'weekly corrupt payload carrier'
+        end select
       end select
       call fmr_restore_committed_restart(invalid,92001_int64,columns,[template],restored,ok,code)
       if(ok.or.code/=FMR_RESTART_KERNEL_PERSISTENCE_REJECTED) error stop 'invalid irrigation restart accepted'
       if(restored(1)%ready().or.restored(2)%ready()) error stop 'failed irrigation restart partially published'
     end do
+    write(*,'(a)') 'PPA_IRR_WEEKLY_RESTART_MALFORMED_IDENTITY_ATOMIC=PASS'
     call fmr_restore_committed_restart(saved,92001_int64,columns,[template],restored,ok,code)
     if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'irrigation restart restore failed'
     call source%temporal_history_snapshot(expected_history,available)
