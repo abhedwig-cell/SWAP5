@@ -1,7 +1,9 @@
 {
   "work_unit": "PPA-IRR-TCS6-COMPOSITION",
   "status": "INITIAL_EXPLICIT_PROCESS_COUNTER_PROPOSAL_PASS_OWNER_PENDING",
-  "tested_commit": "f911acba3",
+  "tested_commit": "d7af86bc7",
+  "carrier_result": "Weekly metadata now resides inside ppa_irrigation_event_state_t. Factory accepts optional validated metadata; clone retains it; timed restart validation accepts valid inactive weekly carrier and rejects invalid dayfix. Type/validator moved to already-shared irrigation process module and re-exported by identity helper, avoiding new backend compilation dependencies. Enabled weekly states explicitly reject current pending hydraulic execution until transfer is implemented. Initial fixture contamination after invalid metadata test was corrected by restoring baseline fixture; no production acceptance relaxed.",
+  "carrier_gates": "Clean IrrigationSource O0/O2 transcripts identical at d7af86bc7; hydraulic-copy and guards same-binary scopes identical. Build swap-ppa-wu01-2ff6bebbc96a4af0beef32b7d3f33537; TEMP/swap-weekly-carrier-replay.log. Process/identity suite passed after type relocation at 4fc6c7d96. Documentation source and strict MkDocs pass.",
   "preregistration": "PPA_IRR_TCS6_COMPOSITION_PREREGISTRATION.json",
   "implementation": "src/process/mod_ppa_irr_tcs6_composition.f90",
   "scope": "Explicit pure daily invocation and supplied dayfix/deficit/threshold; reuses source weekly transition and common scheduled DCS2 gift equations. Proposed counter advances only on successful process result, including no-gift reset; failed/split results retain input. Ordinary scheduled entry still rejects TCS6 without explicit typed timing.",
@@ -11,7 +13,7 @@
   "atomic_daily_proposal": "mod_ppa_irr_tcs6_daily combines identity and weekly selection proposals. PASS O0/O2: split retains ordinal/counter, retried selection proposes both, duplicate day cannot reselect even with unused NaN deficit, ineligible accepted process day consumes ordinal without incrementing dayfix, invalid eligible selector consumes neither, no-gift success proposes both. No runtime publication is performed.",
   "process_build": "swap-tcs-composition-e5c3a62e07a142f58e18d7341fd48798",
   "preservation": "Scheduled TCS7/8 DCS1 plus independent depth/root-deficit oracles PASS O0/O2 in swap-irr-dcs1-scheduled-ac37e05f32c44e18a363701972d88eab. Clean owner IrrigationSource O0/O2 transcript identity and hydraulic-copy/guards identity PASS in swap-ppa-wu01-88392c35b34240e4a90b4ad926f221d3. Documentation source and strict MkDocs PASS.",
-  "qualification_boundary": "Initial process composition only; no persisted daily counter, daily identity, source binding, TCS6 runtime execution or canonical admission. Owner preservation tests exercise previously supported routes, not weekly runtime.",
+  "qualification_boundary": "Process proposals and carrier factory/clone/timed restart validation only. Full decoded bundle roundtrip and enabled-weekly runtime rejection tests remain to be added; weekly hydraulic execution and accepted management publication are not implemented. No canonical admission.",
   "daily_source_review": "PPA_IRR_TCS6_DAILY_SOURCE_REVIEW.md verifies exact irrigation member hash and daily/crop/fixed-event gating. Dayfix counts eligible invocations; TCSFIX and legacy multi-SWAP day-end semantics are excluded from the proposed first route.",
-  "next_safe_step": "Embed the tested weekly metadata in the existing carrier only with explicit preservation/rejection rules for current runtime paths: factory/clone/decoded restart must retain it, and unplumbed runtime paths must not silently reset enabled metadata. Then qualify management proposal plumbing."
+  "next_safe_step": "Test full decoded weekly bundle roundtrip, malformed metadata atomic restore rejection and enabled-weekly hydraulic rejection, then implement explicit candidate transfer/publication of weekly metadata through the existing backend and bootstrap."
 }
