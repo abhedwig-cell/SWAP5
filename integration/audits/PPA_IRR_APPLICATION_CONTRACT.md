@@ -17,7 +17,11 @@ management tables are supplied inputs, not internally generated crop state.
 The exact, prefix and window entry points additionally accept optional typed
 per-column TCS1-4 observation bundles for DCS2. Required bundle presence/shape
 is checked before execution. TCS1 daily transpiration/stress observations and
-TCS2-4 available-water quantities are caller supplied, not derived internally.
+TCS2-4 available-water quantities are caller supplied when profiles are omitted.
+At implementation checkpoint `44666db9f`, supplying profiles explicitly selects
+checked TCS2-4 aggregation from the same committed snapshot as the event. This
+new route's qualification is tracked separately in
+`PPA_IRR_TCS2_4_PROFILE_STATUS.json`; implementation alone is not qualification.
 Pending gifts continue from saved event state without re-evaluating unused
 selection tables. TCS1-4/DCS1 remains outside this bridge's admitted input scope.
 The committed irrigation carrier retains pending rate/start/end alongside

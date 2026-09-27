@@ -1,11 +1,12 @@
 {
   "work_unit": "PPA-IRR-TCS2-4-PROFILE",
-  "status": "CHECKED_PROFILE_SOURCE_COMPOSITION_PASS_RUNTIME_PENDING",
-  "tested_commit": "6bc1d2aac76f8c7463bab8ce4331313744f4f927",
+  "status": "CHECKED_PROFILE_PREFIX_RESTART_PASS_REJECTION_GATES_PENDING",
+  "tested_commit": "44666db9fcb22b503e50ca1c597f6181eed93a45",
   "preregistration": "PPA_IRR_TCS2_4_PROFILE_PREREGISTRATION.json",
   "scope": "Explicit TCS2-4/DCS2 source composition derives AWLH/AWMH/AWAH through the existing checked aggregation from supplied hydraulic water content and root profile. Only local observation copies change; the existing event and forcing bridge is reused.",
   "gates": {
     "IrrigationSource_clean_O0_O2": "PASS, complete transcripts identical",
+    "profile_runtime_prefix_restart": "PASS for TCS2-4/DCS2: contradictory supplied aggregates, prefix split, committed gift persistence, decoded fresh-owner restart, pending continuation with invalid profile/table and exact hydraulic identity; hard mass residual <=1e-12",
     "derived_reference_aggregate_equivalence": "PASS for all three timing criteria",
     "invalid_root_geometry": "PASS, no event or forcing publication",
     "pending_invalid_geometry_and_table": "PASS for TCS2-4, retained gift completes and committed input event unchanged",
@@ -15,9 +16,9 @@
     "documentation_source": "PASS",
     "mkdocs_strict": "PASS"
   },
-  "retained_build": "swap-ppa-wu01-92669ae6565e470aaf362038fa3677ae",
-  "logs_in_temp": ["swap-profile-bypass.log", "swap-bypass-hydraulic-copy-O0.log", "swap-bypass-hydraulic-copy-O2.log", "swap-bypass-guards-O0.log", "swap-bypass-guards-O2.log", "swap-profile-bypass-docs.log"],
-  "qualification_boundary": "Local source composition only. Bootstrap still uses supplied aggregate observations for TCS2-4; these tests do not qualify automatic committed-snapshot derivation in production runtime. Canonical admission unchanged.",
-  "next_safe_step": "Implement PPA_IRR_TCS2_4_RUNTIME_PROFILE_PLAN.md: explicit profile-aware bootstrap route from the existing committed snapshot hydraulic view, with real hydraulic, restart and rollback tests. Retain the same event owner.",
-  "remaining_scope": ["Bootstrap profile route", "Profile-derived runtime restart and rejection", "TCS1 daily stress ownership", "Dynamic root/crop geometry", "DCS1 composition", "General parser/calendar and canonical admission"]
+  "retained_build": "swap-ppa-wu01-7a0884ab232e4b9d933f2b3b259e1367",
+  "logs_in_temp": ["swap-profile-runtime.log", "swap-profile-runtime-hydraulic-copy-O0.log", "swap-profile-runtime-hydraulic-copy-O2.log", "swap-profile-runtime-guards-O0.log", "swap-profile-runtime-guards-O2.log", "swap-profile-runtime-docs.log"],
+  "qualification_boundary": "Branch-local TCS2-4 profile-derived prefix/restart fixtures only. Profile-specific invalid-selection and internally progressed hydraulic rejection integration gates remain pending. Canonical admission unchanged.",
+  "next_safe_step": "Complete profile-specific preflight nonmutation and internally progressed hydraulic rejection tests in PPA_IRR_TCS2_4_RUNTIME_PROFILE_PLAN.md; reuse existing event owner and acceptance criteria.",
+  "remaining_scope": ["Profile-derived runtime rejection gates", "TCS1 daily stress ownership", "Dynamic root/crop geometry", "DCS1 composition", "General parser/calendar and canonical admission"]
 }
