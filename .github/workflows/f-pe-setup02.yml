@@ -1,0 +1,27 @@
+name: F-PE-SETUP02 scalable uniqueness validation
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_setup02_*.sh'
+      - 'docs/performance/F-PE-SETUP02_*.md'
+      - '.github/workflows/f-pe-setup02.yml'
+  workflow_dispatch:
+
+jobs:
+  p1-performance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run paired scalable uniqueness benchmark
+        env:
+          SETUP02_N: '${{ matrix.n }}'
+          SETUP02_REPS: '3'
+        run: bash tests/fpe/run_fpe_setup02_performance.sh
