@@ -60,6 +60,7 @@ module mod_fmr_groundwater_participant_registry
     procedure, public :: publication_ready => registry_publication_ready
     procedure, public :: commit_candidate => registry_commit_candidate
     procedure, public :: identity => registry_identity
+    procedure, public :: pretrial_cost_proxy => registry_pretrial_cost_proxy
     procedure, public :: active_count => registry_active_count
     procedure, public :: capacity => registry_capacity
     procedure, public :: quiescent => registry_quiescent
@@ -376,6 +377,23 @@ contains
     nullify(self%slots(idx)%candidate_backend)
     status = FMR_GW_REGISTRY_OK
   end subroutine registry_commit_candidate
+
+  subroutine registry_pretrial_cost_proxy(self, handle, cost, available, status)
+    class(fmr_groundwater_participant_registry_t), intent(in) :: self
+    integer(int64), intent(in) :: handle
+    real(real64), intent(out) :: cost
+    logical, intent(out) :: available
+    integer, intent(out) :: status
+
+    integer :: idx
+
+    cost = 0.0_real64
+    available = .false.
+    call resolve_handle_const(self, handle, idx, status)
+    if (status /= FMR_GW_REGISTRY_OK) return
+    call self%slots(idx)%participant%pretrial_cost_proxy(cost, available)
+    status = FMR_GW_REGISTRY_OK
+  end subroutine registry_pretrial_cost_proxy
 
   subroutine registry_identity(self, handle, tile_id, lineage_id, revision, has_origin, has_candidate, status)
     class(fmr_groundwater_participant_registry_t), intent(in) :: self
