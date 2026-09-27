@@ -15,6 +15,7 @@ python3 - "$OUTRUN" <<'PYTRANSFORM'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text()
+s=s.replace('ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"','ROOT="$(pwd)"',1)
 
 # The MULTI03 candidate is generated only in this research copy.
 s=s.replace(
