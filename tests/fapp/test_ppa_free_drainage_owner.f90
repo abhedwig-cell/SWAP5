@@ -2096,6 +2096,33 @@ contains
       end if
       p%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
       write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_DERIVED_SOURCE=PASS'
+      ! Exact binary fractions make equality at the strict weekly threshold
+      ! independent of decimal representation or the production deficit helper.
+      weekly_profile%noddrz=1; weekly_profile%layer=[1]
+      weekly_profile%dz=[2.0_real64]; weekly_profile%ztopcp=[0.0_real64]
+      weekly_profile%rd=2.0_real64; weekly_profile%wclos=[0.75_real64]
+      weekly_profile%wcmes=[0.5_real64]; weekly_profile%wchis=[0.125_real64]
+      weekly_hydraulic%water_content=0.25_real64
+      daily_input%deficit_cm=99.0_real64
+      do i=1,3
+        daily_input%threshold_mm=10.0_real64
+        if(i==1) daily_input%threshold_mm=nearest(10.0_real64,-1.0_real64)
+        if(i==3) daily_input%threshold_mm=nearest(10.0_real64,1.0_real64)
+        call evaluate_tcs6_profile_source(p,base,r,weekly,daily_input,weekly_hydraulic,weekly_profile,previous, &
+             proposed_weekly,candidate,flux,d,effective,ok)
+        if(.not.ok.or..not.allocated(effective)) error stop 'weekly profile DCS2 threshold evaluation'
+        if(flux%event_started.neqv.(i==1)) error stop 'weekly profile strict threshold'
+        if(proposed_weekly%dayfix/=0.or.proposed_weekly%last_day/=100_int64.or. &
+             .not.proposed_weekly%day_bound) error stop 'weekly profile threshold metadata'
+        if(i==1) then
+          if(effective%subsurface_irrigation_source(1)/=p%irr_rate_cm_per_day) &
+               error stop 'weekly profile DCS2 fixed rate'
+        else
+          if(any(effective%subsurface_irrigation_source/=0.0_real64).or.candidate%active_event) &
+               error stop 'weekly profile threshold no-gift forcing'
+        end if
+      end do
+      write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_DCS2_STRICT_THRESHOLD=PASS'
     end block
     observations%knot_count=2; observations%dvs_knots(2)=2.0_real64
     observations%threshold_values=0.5_real64; observations%iptra_day=1.0_real64
