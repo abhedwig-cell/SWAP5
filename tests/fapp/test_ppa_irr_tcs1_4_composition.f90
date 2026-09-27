@@ -101,10 +101,12 @@ program test_composition
     if(d%status/=IRRIGATION_OK.or.flux%event_started) error stop 'DCS1 fixed precedence'
     r%fixed_event_already_selected=.false.
     values=0.0_real64
+    hydraulic%water_content=0.75_real64
     if(i==4) values=10.0_real64
     call profile_call(base,1.0_real64,2)
     if(d%status/=IRRIGATION_OK.or.flux%event_started) error stop 'DCS1 false timing'
     values=0.5_real64
+    hydraulic%water_content=0.25_real64
     r%t0=0.25_real64; r%t1=0.75_real64
     call profile_call(pending,-1.0_real64,0)
     if(d%status/=IRRIGATION_SPLIT_REQUIRED.or.d%split_time/=0.5_real64) error stop 'DCS1 pending split'
