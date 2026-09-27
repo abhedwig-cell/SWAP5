@@ -152,12 +152,45 @@ lib=ctypes.CDLL(str(Path(os.environ["SETUP04_LIB"]).resolve()))
 init=lib.fpe_temporal08_fixture_initialize_c
 init.restype=ctypes.c_int
 init.argtypes=[ctypes.POINTER(ctypes.c_int64),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
+counts=lib.fgc49d_context_counts_c
+counts.restype=ctypes.c_int
+counts.argtypes=[ctypes.c_int64,ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int)]
+capture=lib.fgc49d_capture_origins_c
+capture.restype=ctypes.c_int
+capture.argtypes=[ctypes.c_int64]
+trial=lib.fgc49d_trial_cell_heads_c
+trial.restype=ctypes.c_int
+trial.argtypes=[ctypes.c_int64,ctypes.c_int,ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
+tangent=lib.fgc49d_trial_response_tangents_c
+tangent.restype=ctypes.c_int
+tangent.argtypes=[ctypes.c_int64,ctypes.c_int,ctypes.POINTER(ctypes.c_double)]
+discard=lib.fgc49d_discard_candidates_c
+discard.restype=ctypes.c_int
+discard.argtypes=[ctypes.c_int64]
+abort=lib.fgc49d_abort_prepublication_c
+abort.restype=ctypes.c_int
+abort.argtypes=[ctypes.c_int64]
 close=lib.fpe_temporal08_fixture_close_c
 close.restype=ctypes.c_int
 close.argtypes=[]
+
 h=ctypes.c_int64(); a=ctypes.c_double(); b=ctypes.c_double()
 if init(ctypes.byref(h),ctypes.byref(a),ctypes.byref(b))!=0: raise SystemExit("init")
+nc=ctypes.c_int(); nt=ctypes.c_int()
+if counts(h.value,ctypes.byref(nc),ctypes.byref(nt))!=0: raise SystemExit("counts")
+n=nc.value
+heads=(ctypes.c_double*n)(*([a.value]*n))
+flux=(ctypes.c_double*n)()
+tan=(ctypes.c_double*n)()
+if capture(h.value)!=0: raise SystemExit("capture")
+if trial(h.value,n,heads,flux)!=0: raise SystemExit("trial")
+if tangent(h.value,n,tan)!=0: raise SystemExit("tangent")
+q=sum(float(flux[i]) for i in range(n))
+t=sum(float(tan[i]) for i in range(n))
+if discard(h.value)!=0: raise SystemExit("discard")
+if abort(h.value)!=0: raise SystemExit("abort")
 if close()!=0: raise SystemExit("close")
+print(f"SETUP04_CHECK|N={n}|QSUM={q:.17e}|TSUM={t:.17e}")
 print("SETUP04_PROBE=PASS")
 PY
 
@@ -238,7 +271,21 @@ def vals(path):
 b=vals(sys.argv[2]); c=vals(sys.argv[3])
 bm=statistics.median(x[2] for x in b); cm=statistics.median(x[2] for x in c)
 ratio=cm/bm; speed=bm/cm
-print(f"SETUP04_SUMMARY|N={n}|BASE_APP_INIT_S={bm:.12f}|CAND_APP_INIT_S={cm:.12f}|CAND_BASE_RATIO={ratio:.6f}|SPEEDUP={speed:.6f}")
+
+def checks(path):
+    rows=[]
+    txt=open(path).read()
+    for m in re.finditer(r'SETUP04_CHECK\|N=(\d+)\|QSUM=([^|]+)\|TSUM=(.+)',txt):
+        rows.append((int(m.group(1)),float(m.group(2)),float(m.group(3))))
+    if not rows: raise SystemExit(f"missing q/tangent rows {path}")
+    return rows
+bc=checks(sys.argv[2]); cc=checks(sys.argv[3])
+bq=statistics.median(x[1] for x in bc); cq=statistics.median(x[1] for x in cc)
+bt=statistics.median(x[2] for x in bc); ct=statistics.median(x[2] for x in cc)
+if bq!=cq or bt!=ct:
+    raise SystemExit(f"q/tangent identity mismatch dq={cq-bq} dt={ct-bt}")
+
+print(f"SETUP04_SUMMARY|N={n}|BASE_APP_INIT_S={bm:.12f}|CAND_APP_INIT_S={cm:.12f}|CAND_BASE_RATIO={ratio:.6f}|SPEEDUP={speed:.6f}|QSUM={bq:.17e}|TSUM={bt:.17e}")
 if n==1000 and ratio>1.10: raise SystemExit(f"N=1000 no-regression gate failed {ratio}")
 if n==10000 and speed<3.0: raise SystemExit(f"N=10000 speed gate failed {speed}")
 if n==40000 and speed<8.0: raise SystemExit(f"N=40000 speed gate failed {speed}")
