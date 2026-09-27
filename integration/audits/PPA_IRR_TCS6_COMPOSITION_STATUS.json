@@ -1,13 +1,14 @@
 {
   "work_unit": "PPA-IRR-TCS6-COMPOSITION",
   "status": "INITIAL_EXPLICIT_PROCESS_COUNTER_PROPOSAL_PASS_OWNER_PENDING",
-  "tested_commit": "e4761e688",
+  "tested_commit": "f8e22d1fd",
   "preregistration": "PPA_IRR_TCS6_COMPOSITION_PREREGISTRATION.json",
   "implementation": "src/process/mod_ppa_irr_tcs6_composition.f90",
   "scope": "Explicit pure daily invocation and supplied dayfix/deficit/threshold; reuses source weekly transition and common scheduled DCS2 gift equations. Proposed counter advances only on successful process result, including no-gift reset; failed/split results retain input. Ordinary scheduled entry still rejects TCS6 without explicit typed timing.",
   "process_gates": "PASS O0/O2 exact transcript identity: dayfix 0..366, startup and seventh-day selection, strict equality no-gift reset, nondaily unused nonfinite inputs, split/retry counter preservation, invalid counter and ordinary-entry rejection. Existing TCS1-4 DCS1/DCS2 process gates pass.",
-  "process_build": "swap-tcs-composition-9d58d97939bd453d928425bb51dd3253",
+  "extended_gates": "PASS O0/O2 exact identity: 14 consecutive no-gift process invocations, pending gift completion ignoring unused NaN selector inputs, fixed precedence, ineligible selection, nonfinite deficit/threshold and upper-bound counter/threshold guards. Test-only counter assignment is not runtime ownership.",
+  "process_build": "swap-tcs-composition-9787d157b6314cb3a6e51e6f8163cde1",
   "preservation": "Scheduled TCS7/8 DCS1 plus independent depth/root-deficit oracles PASS O0/O2 in swap-irr-dcs1-scheduled-ac37e05f32c44e18a363701972d88eab. Clean owner IrrigationSource O0/O2 transcript identity and hydraulic-copy/guards identity PASS in swap-ppa-wu01-88392c35b34240e4a90b4ad926f221d3. Documentation source and strict MkDocs PASS.",
   "qualification_boundary": "Initial process composition only; no persisted daily counter, daily identity, source binding, TCS6 runtime execution or canonical admission. Owner preservation tests exercise previously supported routes, not weekly runtime.",
-  "next_safe_step": "Expand pending, ineligible, malformed input and no-gift sequence tests; then specify daily invocation identity and accepted-only counter persistence inside the existing irrigation carrier, including no-gift days and decoded restart. Do not publish the proposed counter outside that owner."
+  "next_safe_step": "Follow PPA_IRR_TCS6_OWNER_DESIGN.md: verify original daily/crop invocation semantics, finalize ordinal/gap behavior, then extend existing carrier with isolated factory/clone/decoded-restart tests before runtime proposal plumbing."
 }
