@@ -1669,9 +1669,9 @@ contains
     config%tiles(1)%irrigation_ssdi_node=0
     block
       use mod_irrigation_process, only: ppa_weekly_identity_t
-      type(fmr_production_application_bootstrap_t)::weekly_app
+      type(fmr_production_application_bootstrap_t)::weekly_app,weekly_resumed
       type(fmr_production_application_config_t)::weekly_config
-      type(fmr_committed_restart_bundle_t)::weekly_bundle
+      type(fmr_committed_restart_bundle_t)::weekly_bundle,resumed_bundle
       type(ppa_weekly_identity_t)::proposals(2)
       type(irrigation_state_t)::no_events(2)
       type(fmr_b110_physical_forcing_t)::weekly_forcing(2)
@@ -1693,6 +1693,10 @@ contains
       end select
       call weekly_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
       if(.not.weekly_ok) error stop 'weekly bootstrap seed restore'
+      call weekly_resumed%initialize(weekly_config,weekly_code)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly fresh application initialize'
+      call weekly_resumed%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly fresh application restart'
       weekly_forcing=forcing
       do j=1,2
         weekly_forcing(j)%subsurface_irrigation_source=0.0_real64
@@ -1726,7 +1730,29 @@ contains
           error stop 'weekly bootstrap output carrier'
         end select
       end do
+      call weekly_resumed%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,weekly_forcing, &
+           weekly_results,weekly_code,no_events,[.false.,.false.],proposals)
+      if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly decoded restart replay'
+      call weekly_resumed%export_committed_restart(92001_int64,resumed_bundle,weekly_ok,weekly_code)
+      if(.not.weekly_ok) error stop 'weekly replay export'
+      do j=1,2
+        select type(state=>weekly_bundle%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          select type(replay=>resumed_bundle%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if((state%weekly%enabled.neqv.replay%weekly%enabled).or. &
+                 (state%weekly%day_bound.neqv.replay%weekly%day_bound).or. &
+                 state%weekly%last_day/=replay%weekly%last_day.or.state%weekly%dayfix/=replay%weekly%dayfix.or. &
+                 any(state%water_content/=replay%water_content).or.any(state%pressure_head/=replay%pressure_head)) &
+                 error stop 'weekly decoded replay differs'
+          class default
+            error stop 'weekly decoded replay carrier lost'
+          end select
+        end select
+      end do
+      call weekly_resumed%close(weekly_code)
       call weekly_app%close(weekly_code)
+      write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_DECODED_REPLAY_IDENTITY=PASS'
       write(*,'(a)') 'PPA_IRR_WEEKLY_BOOTSTRAP_NO_GIFT_MIXED_METADATA=PASS'
     end block
     call application%initialize(config,code)
