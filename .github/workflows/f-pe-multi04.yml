@@ -21,3 +21,14 @@ jobs:
           fetch-depth: 0
       - name: Qualify worker-owned candidate lifecycle
         run: bash tests/fpe/run_fpe_multi04_p1_backend_ownership.sh
+
+  p1b-application-context-identity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify production application-context 1/2/4-worker identity
+        run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+
