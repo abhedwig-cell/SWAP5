@@ -239,7 +239,7 @@ def main()->None:
 
     measured_components_ns=modflow_ns+swap_trial_ns+response_ns+discard_ns
     residual_loop_ns=coupled_loop_ns-measured_components_ns
-    print("BASE01_P1_RAW|"+json.dumps({
+    print("BASE01_P0_RAW|"+json.dumps({
         "material":material,"h0":h0,"imbalance":imbalance,"budget_cm":budget,
         "iterations":iterations,"exact_trials":exact_trials,
         "coupled_loop_ns":coupled_loop_ns,"modflow_ns":modflow_ns,
