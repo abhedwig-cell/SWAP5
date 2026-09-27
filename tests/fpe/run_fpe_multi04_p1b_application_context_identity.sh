@@ -69,7 +69,7 @@ import sys
 p=Path(sys.argv[1]); fixture=Path(sys.argv[2]).resolve(); probe=Path(sys.argv[3]).resolve()
 s=p.read_text()
 s=s.replace('ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"','ROOT="$(pwd)"',1)
-s=s.replace('tests/fgc/support/mod_fgc49d_application_context_fixture.f90',str(fixture))
+s=s.replace('tests/fgc/support/mod_fgc49d_application_context_fixture.f90',str(fixture),1)
 # Current canonical temporal-indicator imports the independently admitted
 # direct-retention provider. The historical F-GC49D compile list predates
 # that module dependency, so repair only this research harness copy.
