@@ -62,6 +62,7 @@ src=src.replace(
 "       fgc49d_abort_prepublication_c\n",1)
 src=src.replace(
 "  implicit none\n",
+"  use, intrinsic :: iso_c_binding, only: c_double\n"
 "  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE\n"
 "  implicit none\n",1)
 
