@@ -1357,6 +1357,18 @@ contains
       end block
       call backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
+           profile%numerical,1,T0,finish,weekly_checkpoint,result,candidate,diagnostics, &
+           weekly_proposal=weekly_seed%weekly,target_selector=weekly_bounded_target)
+      write(*,'(a,l1,a,i0,a,i0)') 'PPA_IRR_WEEKLY_BOUNDED_TARGET_COMPLETED=',result%completed, &
+           ';STATUS=',result%status,';ACCEPTED=',diagnostics%accepted_substeps
+      if(result%completed) then
+        if(.not.candidate%ready().or.abs(result%mass%residual)>1.0e-12_real64) &
+             error stop 'weekly bounded target mass candidate'
+      end if
+      call weekly_owner%current_time(time,ok)
+      if(.not.ok.or.time/=T0.or.weekly_owner%current_revision()/=0_int64) &
+           error stop 'weekly bounded target premature publication'
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
            weekly_proposal=weekly_seed%weekly)
       if(.not.result%completed.or..not.candidate%ready()) error stop 'weekly no-gift hydraulic trial'
@@ -3720,6 +3732,15 @@ contains
     call owner%close(code)
     call require(code==FMR_APP_BOOT_OK,'default owner closes after opt-in')
   end subroutine
+  subroutine weekly_bounded_target(cursor,requested_t1,target_t1,max_retries_cap,valid)
+    real(real64),intent(in)::cursor,requested_t1
+    real(real64),intent(out)::target_t1
+    integer,intent(out)::max_retries_cap
+    logical,intent(out)::valid
+    target_t1=min(requested_t1,cursor+1.0_real64/65536.0_real64)
+    max_retries_cap=16
+    valid=target_t1>cursor
+  end subroutine weekly_bounded_target
   subroutine weekly_diagnostic_indicator(request,solution,history,certificate)
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: solution

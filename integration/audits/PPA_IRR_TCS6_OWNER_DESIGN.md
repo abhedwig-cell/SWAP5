@@ -137,3 +137,13 @@ existing first-solver-failure timestamp, only across retries with the same
 start time. A new substep/backend window resets this observation. This permits
 distinguishing the initial failed attempt from the final tiny-step failure;
 it is disposable observation, not checkpoint or restart state.
+
+### Explicit numerical target-selector experiment
+
+Forward an optional trailing `canonical_subinterval_target_selector` through
+the reference backend trial and pending-irrigation entry to the existing
+checkpoint orchestrator. Absence preserves default stepping. The canonical
+runtime retains target validation, retry-cap tightening and all acceptance
+checks. The test-only selector caps targets at 1/65536 day to investigate
+endpoint-remainder failure. It does not publish intermediate states or alter
+physical forcing. No default activation or bootstrap exposure is introduced.

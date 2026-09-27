@@ -1,4 +1,5 @@
 module mod_fmr_serialized_reference_backend
+  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
   use mod_irrigation_process, only: irrigation_state_t, IRRIGATION_EVENT_SCHEDULED, IRRIGATION_EVENT_NONE
   use mod_irrigation_process, only: ppa_weekly_identity_t,valid_weekly_identity,valid_weekly_transition
   use, intrinsic :: iso_fortran_env, only: int64, real64
@@ -1343,7 +1344,7 @@ contains
   end subroutine fmr_serialized_backend_run_reference_floor_sample
 
   subroutine run_pending_irrigation_trial(self,column,template,parameters,committed,forcing,config, &
-       single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics,selected_event,weekly_proposal)
+       single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics,selected_event,weekly_proposal,target_selector)
     class(fmr_serialized_reference_backend_t),intent(inout)::self
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -1359,6 +1360,7 @@ contains
     type(kernel_diagnostics_t),intent(out)::diagnostics
     type(irrigation_state_t),intent(in),optional::selected_event
     type(ppa_weekly_identity_t),intent(in),optional::weekly_proposal
+    procedure(canonical_subinterval_target_selector),optional::target_selector
     class(transaction_state_t),allocatable::snapshot
     real(real64)::boundary,expected
     logical::available
@@ -1424,7 +1426,8 @@ contains
       self%model%irrigation_selection_prepared=.true.
       self%model%selected_irrigation_event=selected_event
     end if
-    call self%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result,candidate,diagnostics)
+    call self%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result,candidate, &
+         diagnostics,target_selector)
     self%model%pending_irrigation_trial=.false.
     self%model%weekly_proposal_prepared=.false.
     self%model%selected_weekly=ppa_weekly_identity_t()
@@ -1433,7 +1436,7 @@ contains
   end subroutine run_pending_irrigation_trial
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
-                                               t0, t1, checkpoint, result, candidate, diagnostics)
+                                               t0, t1, checkpoint, result, candidate, diagnostics, target_selector)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
@@ -1447,6 +1450,7 @@ contains
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     logical :: bottom_thermal_ok, top_sensible_ok
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
 
     self%model%snow_event_evaluation_calls = 0
     self%model%black_evaporation_evaluation_calls = 0
@@ -1581,7 +1585,7 @@ contains
       self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
     end if
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
-         result, candidate, diagnostics)
+         result, candidate, diagnostics, target_selector)
     self%model%last_observation%snow_event_evaluation_calls = self%model%snow_event_evaluation_calls
     self%model%last_observation%black_evaporation_evaluation_calls = &
          self%model%black_evaporation_evaluation_calls
