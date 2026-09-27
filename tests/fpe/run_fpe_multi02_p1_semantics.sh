@@ -208,7 +208,9 @@ export OMP_PLACES=cores
 
 OUT="$BUILD/out.txt"; : > "$OUT"
 extra_args=()
-if [[ "${MULTI02_MIXED:-0}" == "1" ]]; then
+if [[ -n "${MULTI02_MIXED_MODE:-}" ]]; then
+  extra_args=("${MULTI02_MIXED_MODE}")
+elif [[ "${MULTI02_MIXED:-0}" == "1" ]]; then
   extra_args=(MIXED)
 fi
 for n in 10 100 1000; do
