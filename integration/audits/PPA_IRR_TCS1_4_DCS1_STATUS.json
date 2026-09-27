@@ -1,13 +1,15 @@
 {
   "work_unit": "PPA-IRR-TCS1-4-DCS1",
-  "status": "INITIAL_PROCESS_COMPOSITION_PASS_BROADER_GATES_PENDING",
-  "tested_commit": "7e6c2756d",
+  "status": "BOUNDED_PROCESS_DEPTH_GRID_AND_GUARDS_PASS_RUNTIME_PENDING",
+  "tested_commit": "a643b8ec0",
   "preregistration": "PPA_IRR_TCS1_4_DCS1_PREREGISTRATION.json",
   "implementation": "src/process/mod_ppa_irr_tcs1_4_dcs1.f90",
   "scope": "Explicit process-only checked-profile entry; one aggregation produces water observations and local request deficit. Existing typed timing and common scheduled depth/event equations are reused. Original profile-free entry still rejects DCS1.",
   "test": "tests/fapp/run_ppa_irr_tcs1_4_composition.ps1",
   "result": "PASS O0/O2 bounds/FPE and exact transcript identity. All four criteria produce the independent one-cell 0.5 cm deficit gift at 1 cm/day, continue a pending gift despite unused invalid profile/table, and reject negative geometry on selection. Existing DCS2 and strict guard fixtures pass.",
-  "retained_build": "swap-tcs-composition-6874deab446743d8822f57d35e03497c",
+  "extended_result": "PASS 4000 combined cases (1000 per criterion) checking independent correction interpolation, strict rainfall threshold, zero floor, optional min/max clipping, one-day rate fallback, duration and interval amount. False timing with wet profile, malformed timing, fixed precedence and pending split with immutable input pass. O0/O2 complete transcripts identical. An initial false-timing fixture incorrectly used a dry profile with zero TCS2 depletion threshold; corrected to a wet profile, without changing implementation.",
+  "preservation": "run_ppa_irr_dcs1_scheduled.ps1 PASS O0/O2 for scheduled TCS7/8, independent DCS1 depth and checked water-deficit oracles; build swap-irr-dcs1-scheduled-2887970d03e44ca096b2f046b8463854. Documentation source and strict MkDocs gates pass.",
+  "retained_build": "swap-tcs-composition-2e6a37ecaf8a490caf0659a455118021",
   "qualification_boundary": "Initial process fixtures only, not broad source-equivalence qualification or runtime integration. No source binding, bootstrap admission or new state owner added.",
-  "next_safe_step": "Extend independent combined depth tests to correction interpolation, strict rainfall reduction, depth clipping, false timing, fixed precedence, malformed tables and pending split/retry; run source-oracle preservation before adding source/runtime binding."
+  "next_safe_step": "Add explicit profile-aware DCS1 source binding using this process entry and existing forcing binder; preserve the profile-free rejection contract. Qualify source materialization before bootstrap runtime integration."
 }
