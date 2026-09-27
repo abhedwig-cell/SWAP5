@@ -49,3 +49,14 @@ jobs:
           fetch-depth: 0
       - name: Run exact per-trial trajectory identity gate
         run: bash tests/fpe/run_fpe_multi02_p1_trajectory_identity.sh
+
+
+  p2-performance-replication:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Replicate frozen large-N speed gates
+        run: bash tests/fpe/run_fpe_multi02_p2_performance.sh
