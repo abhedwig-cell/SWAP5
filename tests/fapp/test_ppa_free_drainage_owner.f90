@@ -2674,7 +2674,7 @@ contains
           type(ppa_irrigation_profile_t)::profiles(2)
           type(ppa_tcs6_daily_input_t)::profile_inputs(2)
           type(fmr_committed_restart_bundle_t)::supplied_result,profile_result,pending_result,window_result
-          integer::k
+          integer::k,route
           ! Column 1 keeps supplied DCS1; column 2 explicitly derives timing
           ! from the same committed snapshot while retaining fixed DCS2 depth.
           profiles(2)%noddrz=1; profiles(2)%layer=[1]
@@ -2693,9 +2693,25 @@ contains
           call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
           if(.not.weekly_ok) error stop 'weekly profile comparison restore'
           profile_inputs=daily_inputs; profile_inputs(2)%deficit_cm=-99.0_real64
+          ! A present profile must not silently select profile mode.
+          call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+               daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code,profiles=profiles, &
+               weekly_inputs=profile_inputs,weekly_profile_mode=[.false.,.false.])
+          if(weekly_code==FMR_APP_BOOT_OK.or.allocated(split_results)) error stop 'weekly false mask inferred profile'
+          do route=1,2
+          if(route==2) then
+            call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+            if(.not.weekly_ok) error stop 'weekly selection window restore'
+            call execute_window_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+                 daily_parameters,daily_requests,weekly_forcing,1,prefixes,prefix_count,weekly_code, &
+                 profiles=profiles,weekly_inputs=profile_inputs,weekly_profile_mode=[.false.,.true.])
+            if(weekly_code/=FMR_APP_BOOT_OK.or.prefix_count/=1) error stop 'weekly selection window route'
+            split_results=prefixes(1)%columns
+          else
           call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
                daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code,profiles=profiles, &
                weekly_inputs=profile_inputs,weekly_profile_mode=[.false.,.true.])
+          end if
           if(weekly_code/=FMR_APP_BOOT_OK.or..not.all(split_results%committed)) &
                error stop 'weekly mixed profile publication'
           call split_app%export_committed_restart(92001_int64,profile_result,weekly_ok,weekly_code)
@@ -2717,6 +2733,8 @@ contains
               end select
             end select
           end do
+          end do
+          write(*,'(a)') 'PPA_IRR_WEEKLY_PROFILE_SELECTION_WINDOW_MASK=PASS'
           ! Restore the actual committed pending gift, then invalidate the
           ! fresh profile. Continuation must use the persisted event instead.
           pending_result=profile_result
