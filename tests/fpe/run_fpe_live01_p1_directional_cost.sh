@@ -806,6 +806,9 @@ if len(groups)!=12 or len(live)!=12:
 diag_keys=["transaction_calls","accepted_substeps","attempts","retries","solver_rejections",
            "temporal_rejections","nonlinear_iterations","internal_retries","headcalc_calls",
            "jacobian_builds","linear_solves","backtracking_attempts"]
+physical_path_keys=["transaction_calls","accepted_substeps","attempts","retries","solver_rejections",
+                    "temporal_rejections","nonlinear_iterations","internal_retries","headcalc_calls",
+                    "jacobian_builds","backtracking_attempts"]
 full_sum=0.0; qonly_sum=0.0; fractions=[]
 for key,by in sorted(groups.items()):
     if set(by)!={"full","qonly"}: raise SystemExit(f"missing arm {key}")
@@ -818,7 +821,7 @@ for key,by in sorted(groups.items()):
         if len(sig)!=1: raise SystemExit(f"nondeterministic replay {key} {mode}")
 
     f=by["full"][0]; q=by["qonly"][0]
-    if tuple(f[k] for k in diag_keys)!=tuple(q[k] for k in diag_keys):
+    if tuple(f[k] for k in physical_path_keys)!=tuple(q[k] for k in physical_path_keys):
         raise SystemExit(f"physical diagnostic path changed {key}")
     if len(f["q"])!=len(q["q"]): raise SystemExit(f"q size mismatch {key}")
     max_q_diff=0.0
@@ -835,7 +838,9 @@ for key,by in sorted(groups.items()):
       f"LIVE01_P1_GROUP|MATERIAL={key[0]}|REGIME={key[1]}|IMBALANCE={key[2]:.3f}"
       f"|HEADS={len(lf['heads'])}|FULL_NS={ft:.3f}|QONLY_NS={qt:.3f}"
       f"|R_DIR={ratio:.9f}|DIRECTION_FRACTION={frac:.9f}|MAX_Q_DIFF={max_q_diff:.17e}"
-      f"|RETRIES={f['retries']}|NONLINEAR={f['nonlinear_iterations']}|LINEAR={f['linear_solves']}"
+      f"|RETRIES={f['retries']}|NONLINEAR={f['nonlinear_iterations']}"
+      f"|FULL_LINEAR={f['linear_solves']}|QONLY_LINEAR={q['linear_solves']}"
+      f"|DIRECTION_LINEAR_DELTA={f['linear_solves']-q['linear_solves']}"
     )
 agg_ratio=full_sum/qonly_sum
 agg_fraction=(full_sum-qonly_sum)/full_sum
