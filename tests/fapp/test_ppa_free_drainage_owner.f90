@@ -2021,7 +2021,7 @@ contains
          any(left%accepted_substeps/=right%accepted_substeps).or. &
          any(left%transaction_attempts/=right%transaction_attempts)) error stop 'prefix rejection outcome mismatch'
     write(*,'(a)') 'PPA_IRR_BOOTSTRAP_PREFIX_TERMINAL_HYDRAULIC_REJECTION=PASS'
-    do timing=1,7
+    do timing=1,11
       management%timing_criterion=timing
       if(timing>=5) then
         management%timing_criterion=timing-3
@@ -2033,6 +2033,18 @@ contains
           timing_profiles(i)%wchis=[0.0_real64]
         end do
         observations%awah=1.0_real64
+        if(timing>=8) then
+          management%timing_criterion=timing-7
+          management%depth_criterion=1; management%dcs1_knot_count=2
+          do i=1,2
+            management(i)%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+            management(i)%dcs1_correction_mm=0.0_real64
+            timing_profiles(i)%rd=management(i)%dcs2_depth_cm(1)/(0.99_real64-source%water_content(1))
+            observations(i)%threshold_values=0.000001_real64
+            if(timing==8) observations(i)%threshold_values=0.5_real64
+          end do
+          requests%deficit_cm=-100.0_real64
+        end if
       end if
       call execute_window_ppa_bootstrap_irrigation(application,[1_int64,2_int64],92001_int64, &
            management,requests,previous,2,prefixes,prefix_count,code,observations=observations(1:1))
@@ -2065,6 +2077,8 @@ contains
       if(allocated(timing_profiles)) deallocate(timing_profiles)
     end do
     write(*,'(a)') 'PPA_IRR_TCS2_4_PROFILE_PREFLIGHT_ROLLBACK=PASS'
+    write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_INTERNAL_ROLLBACK=PASS'
+    management%depth_criterion=2
     management%timing_criterion=7
     write(*,'(a)') 'PPA_IRR_TCS1_4_WINDOW_INTERNAL_ROLLBACK=PASS'
     call application%copy_committed_hydraulic_states(lhs,code)
