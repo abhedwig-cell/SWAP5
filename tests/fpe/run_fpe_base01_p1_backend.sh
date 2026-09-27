@@ -9,6 +9,7 @@ trap 'rm -rf "$PATCH"' EXIT
 cp src/legacy/b1_10_port/headcalc.f90 "$PATCH/headcalc.f90"
 cp src/adapter/mod_reference_richards_legacy_binding.f90 "$PATCH/mod_reference_richards_legacy_binding.f90"
 cp src/runtime/mod_fmr_groundwater_swap_participant.f90 "$PATCH/mod_fmr_groundwater_swap_participant.f90"
+cp src/runtime/mod_fmr_groundwater_swap_participant.f90 "$PATCH/mod_fmr_groundwater_swap_participant.f90"
 cp tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90 "$PATCH/mod_fgc44_real_swap_c_bridge.f90"
 
 python3 - "$PATCH/headcalc.f90" <<'PY'
@@ -145,10 +146,23 @@ src=src.replace(needle,insert,1)
 p.write_text(src)
 PY
 
+python3 - "$PATCH/mod_fmr_groundwater_swap_participant.f90" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); src=p.read_text()
+needle="    trial_numerical = numerical\n"
+if needle not in src:
+    raise SystemExit("BASE01 P1 participant tangent seam missing")
+src=src.replace(needle,"    refresh_tangent = .false.\n    trial_numerical = numerical\n",1)
+p.write_text(src)
+PY
+
 BASE01_HEADCALC_SOURCE="$PATCH/headcalc.f90" \
 BASE01_LEGACY_BINDING_SOURCE="$PATCH/mod_reference_richards_legacy_binding.f90" \
 BASE01_EXTRA_SOURCE="tests/fpe/mod_base01_headcalc_timing.f90" \
+BASE01_PARTICIPANT_SOURCE="$PATCH/mod_fmr_groundwater_swap_participant.f90" \
 BASE01_TEST_SCRIPT="tests/fpe/test_fpe_base01_p1_backend.py" \
+BASE01_RAW_PREFIX="BASE01_P1_RAW" \
 BASE01_PARTICIPANT_SOURCE="$PATCH/mod_fmr_groundwater_swap_participant.f90" \
 BASE01_BRIDGE_SOURCE="$PATCH/mod_fgc44_real_swap_c_bridge.f90" \
 BASE01_RAW_PREFIX="BASE01_P1_RAW" \
@@ -160,7 +174,7 @@ python3 - "$PATCH/raw.txt" <<'PY'
 import json,statistics,sys
 rows=[]
 for line in open(sys.argv[1]):
-    if line.startswith("BASE01_P0_RAW|"):
+    if line.startswith("BASE01_P1_RAW|"):
         rows.append(json.loads(line.split("|",1)[1]))
 if len(rows)!=60:
     raise SystemExit(f"expected 60 replicate rows, got {len(rows)}")
