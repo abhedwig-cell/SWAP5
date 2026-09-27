@@ -15,6 +15,7 @@ cp src/transaction/mod_transaction_reference.f90 "$PATCH/mod_transaction_referen
 cp src/runtime/mod_canonical_interval_runtime.f90 "$PATCH/mod_canonical_interval_runtime.f90"
 cp src/kernel/mod_kernel_transactions.f90 "$PATCH/mod_kernel_transactions.f90"
 cp src/runtime/mod_fmr_serialized_reference_backend.f90 "$PATCH/mod_fmr_serialized_reference_backend.f90"
+cp src/solver/mod_reference_richards_temporal_indicator.f90 "$PATCH/mod_reference_richards_temporal_indicator.f90"
 
 python3 - "$PATCH/headcalc.f90" <<'PY'
 from pathlib import Path
@@ -162,6 +163,36 @@ src=src.replace(needle,"    refresh_tangent = .false.\n    trial_numerical = num
 p.write_text(src)
 PY
 
+if [[ "${BASE01_P2_SPECIALIZED:-0}" == "1" ]]; then
+python3 - "$PATCH/mod_reference_richards_temporal_indicator.f90" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); src=p.read_text()
+
+old="       SW_TEMPORAL_INDICATOR_FAILED\n"
+new="       SW_TEMPORAL_INDICATOR_FAILED, CONSTITUTIVE_DEMAND_WATER_CONTENT, &\n" \
+    "       CONSTITUTIVE_DEMAND_CONDUCTIVITY, CONSTITUTIVE_DEMAND_CAPACITY\n"
+if old not in src:
+    raise SystemExit("BASE01 P2 demand-constant import seam missing")
+src=src.replace(old,new,1)
+
+old_pair="""       call constitutive%evaluate(request%base_state%pressure_head, water_base, conductivity_base, capacity_base, dkdh_base)
+       call constitutive%evaluate(solve_result%candidate_state%pressure_head, water_candidate, conductivity_candidate, &
+            capacity_candidate, dkdh_candidate)
+"""
+new_pair="""       call constitutive%evaluate_demand(request%base_state%pressure_head, CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+            water_base, conductivity_base, capacity_base, dkdh_base)
+       call constitutive%evaluate_demand(solve_result%candidate_state%pressure_head, &
+            CONSTITUTIVE_DEMAND_WATER_CONTENT + CONSTITUTIVE_DEMAND_CAPACITY, &
+            water_candidate, conductivity_candidate, capacity_candidate, dkdh_candidate)
+"""
+if src.count(old_pair) != 2:
+    raise SystemExit(f"BASE01 P2 expected two constitutive full-evaluation pairs, got {src.count(old_pair)}")
+src=src.replace(old_pair,new_pair,2)
+p.write_text(src)
+PY
+fi
+
 python3 - "$PATCH/mod_fmr_serialized_reference_backend.f90" <<'PY'
 from pathlib import Path
 import sys
@@ -295,6 +326,7 @@ BASE01_TRANSACTION_SOURCE="$PATCH/mod_transaction_reference.f90" \
 BASE01_CANONICAL_RUNTIME_SOURCE="$PATCH/mod_canonical_interval_runtime.f90" \
 BASE01_KERNEL_SOURCE="$PATCH/mod_kernel_transactions.f90" \
 BASE01_BACKEND_SOURCE="$PATCH/mod_fmr_serialized_reference_backend.f90" \
+BASE01_TEMPORAL_INDICATOR_SOURCE="$PATCH/mod_reference_richards_temporal_indicator.f90" \
 BASE01_PARTICIPANT_SOURCE="$PATCH/mod_fmr_groundwater_swap_participant.f90" \
 BASE01_BRIDGE_SOURCE="$PATCH/mod_fgc44_real_swap_c_bridge.f90" \
 BASE01_TEST_SCRIPT="tests/fpe/test_fpe_base01_p1b_outer.py" \
