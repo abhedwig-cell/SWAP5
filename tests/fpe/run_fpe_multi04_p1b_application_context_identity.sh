@@ -73,6 +73,10 @@ s=s.replace('tests/fgc/support/mod_fgc49d_application_context_fixture.f90',str(f
 # Current canonical temporal-indicator imports the independently admitted
 # direct-retention provider. The historical F-GC49D compile list predates
 # that module dependency, so repair only this research harness copy.
+compile_needle='  src/solver/mod_b110_default_mvg_provider.f90\n'
+compile_repl=compile_needle+'  src/solver/mod_b110_direct_retention_core.f90\n'
+if compile_needle not in s: raise SystemExit("direct-retention core compile seam missing")
+s=s.replace(compile_needle,compile_repl,1)
 compile_needle='  src/solver/mod_b110_default_mvg_directional_provider.f90\n'
 compile_repl=compile_needle+'  src/solver/mod_b110_direct_retention_provider.f90\n'
 if compile_needle not in s: raise SystemExit("direct-retention compile seam missing")
