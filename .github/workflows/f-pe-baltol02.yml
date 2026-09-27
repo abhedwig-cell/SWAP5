@@ -1,0 +1,40 @@
+name: F-PE-BALTOL02 scaled Reference balance-floor admission
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpe/run_fpe_baltol02_*.sh'
+      - 'tests/fpe/run_fpe_baltol01_*.sh'
+      - 'docs/performance/F-PE-BALTOL02_*.md'
+      - '.github/workflows/f-pe-baltol02.yml'
+  workflow_dispatch:
+
+jobs:
+  g12-effective-request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_baltol02_effective_request.sh
+
+  g3-broad-replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_baltol01_p0_matrix.sh
+
+  g3-oracle-replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_baltol01_p2_oracle_recovery.sh
+      - run: bash tests/fpe/run_fpe_baltol01_p2r_flux_refinement.sh
