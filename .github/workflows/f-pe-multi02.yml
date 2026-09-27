@@ -18,3 +18,13 @@ jobs:
           fetch-depth: 0
       - name: Run serial worker-local ownership equivalence
         run: bash tests/fpe/run_fpe_multi02_p0_worker_local_ownership.sh
+
+  p0-worker-local-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run worker-local 1/2/4-worker scaling proof
+        run: bash tests/fpe/run_fpe_multi02_p0_worker_local.sh
