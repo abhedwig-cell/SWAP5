@@ -76,10 +76,10 @@ s=s.replace('ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"','ROOT="
 marker='PY\n)\n\nobjects=()'
 repl=f'''PY
 )
-for i in "${!MODULE_SRC[@]}"; do
-  if [[ "${MODULE_SRC[$i]}" == "src/runtime/mod_fmr_groundwater_swap_participant.f90" ]]; then
+for i in "${{!MODULE_SRC[@]}}"; do
+  if [[ "${{MODULE_SRC[$i]}}" == "src/runtime/mod_fmr_groundwater_swap_participant.f90" ]]; then
     MODULE_SRC[$i]="{part}"
-  elif [[ "${MODULE_SRC[$i]}" == "src/runtime/mod_fmr_groundwater_participant_registry.f90" ]]; then
+  elif [[ "${{MODULE_SRC[$i]}}" == "src/runtime/mod_fmr_groundwater_participant_registry.f90" ]]; then
     MODULE_SRC[$i]="{reg}"
   fi
 done
