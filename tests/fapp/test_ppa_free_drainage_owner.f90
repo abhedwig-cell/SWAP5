@@ -1375,6 +1375,10 @@ contains
         type(fmr_committed_restart_bundle_t)::bounded_restart
         class(transaction_state_t),allocatable::restored_snapshot
         real(real64),allocatable::bounded_history(:),restored_history(:)
+        type(kernel_committed_state_t)::replay_owner(2)
+        type(fmr_serialized_reference_backend_t)::replay_backend
+        real(real64)::replay_mass(2),replay_finish
+        integer::replay_index
         call bounded_owner%initialize(404190_int64,initial,ok,T0)
         if(.not.ok) error stop 'weekly bounded owner'
         call bounded_owner%capture_checkpoint(bounded_checkpoint,ok)
@@ -1441,6 +1445,55 @@ contains
           error stop 'weekly long original carrier sliced'
         end select
         write(*,'(a)') 'PPA_IRR_WEEKLY_LONG_COMMITTED_RESTART_IDENTITY=PASS'
+        replay_owner=[bounded_owner,restored_owner(1)]
+        replay_finish=finish+1.0_real64/1024.0_real64
+        do replay_index=1,2
+          call replay_backend%initialize(top)
+          call replay_backend%set_free_drainage_indicator(evaluate_free_drainage_temporal_indicator)
+          call replay_backend%set_storage_difference(evaluate_mvg_storage_difference_service)
+          call replay_owner(replay_index)%capture_checkpoint(bounded_checkpoint,ok)
+          if(.not.ok) error stop 'weekly replay checkpoint'
+          call replay_backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters, &
+               replay_owner(replay_index),no_gift_forcing,profile%numerical,1,finish,replay_finish, &
+               bounded_checkpoint,result,candidate,diagnostics,weekly_proposal=weekly_seed%weekly, &
+               target_selector=weekly_bounded_target)
+          if(.not.result%completed.or..not.candidate%ready()) error stop 'weekly long restart continuation'
+          replay_mass(replay_index)=result%mass%residual
+          if(abs(replay_mass(replay_index))>1.0e-12_real64) error stop 'weekly replay mass'
+          call replay_backend%commit_trial_candidate(replay_owner(replay_index),candidate,diagnostics,ok,code)
+          if(.not.ok) error stop 'weekly replay commit'
+          call replay_owner(replay_index)%current_time(time,ok)
+          if(.not.ok.or.time/=replay_finish.or.replay_owner(replay_index)%current_revision()/=2_int64) &
+               error stop 'weekly replay time revision'
+        end do
+        if(replay_mass(1)/=replay_mass(2)) error stop 'weekly replay mass identity'
+        call replay_owner(1)%snapshot(snapshot,ok)
+        if(.not.ok) error stop 'weekly replay original snapshot'
+        call replay_owner(2)%snapshot(restored_snapshot,ok)
+        if(.not.ok) error stop 'weekly replay restored snapshot'
+        select type(snapshot)
+        type is(ppa_irrigation_event_state_t)
+          select type(restored_snapshot)
+          type is(ppa_irrigation_event_state_t)
+            if(any(snapshot%pressure_head/=restored_snapshot%pressure_head).or. &
+                 any(snapshot%water_content/=restored_snapshot%water_content)) error stop 'weekly replay physics'
+            if(snapshot%weekly%dayfix/=4.or.snapshot%weekly%last_day/=101_int64.or. &
+                 restored_snapshot%weekly%dayfix/=4.or.restored_snapshot%weekly%last_day/=101_int64.or. &
+                 snapshot%irrigation%active_event.or.restored_snapshot%irrigation%active_event) &
+                 error stop 'weekly replay duplicate metadata'
+            call snapshot%temporal_history_snapshot(bounded_history,ok)
+            if(.not.ok) error stop 'weekly replay history'
+            call restored_snapshot%temporal_history_snapshot(restored_history,ok)
+            if(.not.ok) error stop 'weekly replay restored history'
+            if(size(bounded_history)/=size(restored_history)) error stop 'weekly replay history shape'
+            if(any(bounded_history/=restored_history)) error stop 'weekly replay history identity'
+          class default
+            error stop 'weekly replay restored carrier'
+          end select
+        class default
+          error stop 'weekly replay original carrier'
+        end select
+        write(*,'(a)') 'PPA_IRR_WEEKLY_LONG_RESTART_CONTINUATION_IDENTITY=PASS'
       end block
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,weekly_owner,no_gift_forcing, &
            profile%numerical,1,T0,no_gift_finish,weekly_checkpoint,result,candidate,diagnostics, &
