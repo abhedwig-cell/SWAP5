@@ -12,7 +12,7 @@ fail(){ echo "FPE_SCRATCH01_FAIL $*" >&2; exit 1; }
 
 python3 - "$BUILD/candidate_context.f90" <<'PY'
 from pathlib import Path
-import sys
+import sys,re
 
 p=Path("src/runtime/mod_fmr_groundwater_application_context.f90")
 s=p.read_text()
@@ -96,7 +96,7 @@ repls={
     "merge_workspace":"self%scratch_merge_workspace",
 }
 for old,new in repls.items():
-    sub=sub.replace(old,new)
+    sub=re.sub(rf"\b{old}\b",new,sub)
 
 s=s[:start]+sub+s[end:]
 Path(sys.argv[1]).write_text(s)
