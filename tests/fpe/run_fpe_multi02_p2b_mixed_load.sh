@@ -67,7 +67,7 @@ s=s.replace(
 "  qdiff=0.0_real64; tdiff=0.0_real64\n"
 "  worker_att=0; worker_nlit=0; worker_bt=0\n",1)
 
-needle2="      call require_diag_delta_equal(s_before(i),s_after(i),p_before(i),p_after(i))\n"
+needle2="      call require_diag_equal(s_after(i),p_after(i))\n"
 if needle2 not in s:
     raise SystemExit("P2B diagnostic delta seam missing")
 s=s.replace(
