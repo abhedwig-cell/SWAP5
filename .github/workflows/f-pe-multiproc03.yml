@@ -1,0 +1,27 @@
+name: F-PE-MULTIPROC03 compact worker dispatch
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multiproc03_*.sh'
+      - 'docs/performance/F-PE-MULTIPROC03_*.md'
+      - '.github/workflows/f-pe-multiproc03.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-compact-dispatch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run paired baseline/compact dispatch benchmark
+        env:
+          MULTIPROC03_N: '${{ matrix.n }}'
+          MULTIPROC03_REPS: '5'
+        run: bash tests/fpe/run_fpe_multiproc03_compact_dispatch.sh
