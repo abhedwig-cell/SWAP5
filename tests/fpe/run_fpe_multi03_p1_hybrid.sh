@@ -295,3 +295,8 @@ for order in (0,1):
         raise SystemExit(f"hybrid predicted ratio failed order={order}")
 print("FPE_MULTI03_P1=PASS")
 PY
+'''
+p.write_text(s)
+PYTRANSFORM
+
+bash "$OUTRUN"
