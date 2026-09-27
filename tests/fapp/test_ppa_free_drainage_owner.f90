@@ -1953,6 +1953,8 @@ contains
       use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
       use mod_process_hydraulic_view, only: process_hydraulic_view_t
       type(ppa_irrigation_profile_t)::weekly_profile
+      type(irrigation_state_t)::weekly_pending
+      type(ppa_weekly_identity_t)::weekly_selected
       type(process_hydraulic_view_t)::weekly_hydraulic
       type(ppa_tcs6_daily_input_t)::daily_input
       type(ppa_weekly_identity_t)::weekly,proposed_weekly
@@ -2041,11 +2043,34 @@ contains
       if(candidate%active_event_end/=T0+1.0_real64.or. &
            abs(effective%subsurface_irrigation_source(1)-0.5_real64)>1.0e-14_real64) &
            error stop 'weekly profile shared deficit amount'
+      weekly_pending=candidate; weekly_selected=proposed_weekly
       deallocate(weekly_profile%layer)
       call evaluate_tcs6_profile_source(p,base,r,weekly,daily_input,weekly_hydraulic,weekly_profile,previous, &
            proposed_weekly,candidate,flux,d,effective,ok)
       if(ok.or.allocated(effective).or.proposed_weekly%day_bound.or.proposed_weekly%dayfix/=366) &
            error stop 'weekly invalid profile leaked proposal'
+      ! Accepted pending events and duplicate ordinals must not rederive a gift
+      ! from absent profile data or newly supplied selection observations.
+      r%t0=r%t1; r%t1=T0+2.0_real64/1024.0_real64
+      daily_input%deficit_cm=ieee_value(0.0_real64,ieee_quiet_nan)
+      call evaluate_tcs6_profile_source(p,weekly_pending,r,weekly_selected,daily_input,weekly_hydraulic, &
+           weekly_profile,previous,proposed_weekly,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.allocated(effective).or..not.candidate%active_event.or.flux%event_started) &
+           error stop 'weekly profile pending bypass'
+      if(proposed_weekly%last_day/=100_int64.or.proposed_weekly%dayfix/=0.or. &
+           candidate%active_event_end/=weekly_pending%active_event_end) error stop 'weekly profile pending identity'
+      call evaluate_tcs6_profile_source(p,base,r,weekly_selected,daily_input,weekly_hydraulic,weekly_profile,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.allocated(effective).or.candidate%active_event.or.flux%event_started.or. &
+           proposed_weekly%dayfix/=0.or.any(effective%subsurface_irrigation_source/=0.0_real64)) &
+           error stop 'weekly profile duplicate bypass'
+      daily_input%ordinal=101_int64
+      call evaluate_tcs6_profile_source(p,base,r,weekly_selected,daily_input,weekly_hydraulic,weekly_profile,previous, &
+           proposed_weekly,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.proposed_weekly%last_day/=100_int64.or.proposed_weekly%dayfix/=0) &
+           error stop 'weekly profile successor skipped validation'
+      r%t0=T0; r%t1=T0+1.0_real64/1024.0_real64
+      write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_PENDING_DUPLICATE_BYPASS=PASS'
       p%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
       write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_DERIVED_SOURCE=PASS'
     end block
