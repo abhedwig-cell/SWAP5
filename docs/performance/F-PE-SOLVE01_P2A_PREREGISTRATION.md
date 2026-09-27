@@ -58,6 +58,8 @@ Repeat the block enough times for stable timing.
 
 P2A may use one homogeneous difficult hydraulic profile because its purpose is N-scaling mechanics.
 
+To isolate scale mechanics from the already-characterized temporal-policy frontier, the research harness freezes a direct-accept temporal head budget of `0.02 cm` for both E0 and E4. The qualified BALTOL02 dt-scaled Reference balance floor is replayed inside the harness. Neither choice constitutes production admission.
+
 The final P2 phase, if P2A succeeds, must restore the preregistered heterogeneous difficult material/regime composition.
 
 ## Policies
