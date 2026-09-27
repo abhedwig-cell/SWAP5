@@ -4,6 +4,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
 CACHE_AUTH=0e68a716f655f9bba3a0962cf35ccb724b5184c3
+FCI110_ADMISSION=a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a
 FROSS22_HEAD=533de8c40ac243d26681f5c529b4ce3308a22ad3
 FROSS22_RESULT_AUTH=9ba02ce1e525ede27f3913f664ff02ac6b5e0f3c
 FROSS22_RESULT=integration/f-ross/F-ROSS22_PRODUCTION_TIERED_CERTIFICATE_RESULT.json
@@ -24,6 +25,7 @@ MODEL_BLOB=5442fd7e7a2f392c9b796cd17c76b17977259f22
 PROVIDER_BLOB=ac997bf06c56a37080d1c8db69b6d4208f4b75ca
 POLICY_BLOB=a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
 CONTRACT_BLOB=40a1ddc05fb8e2c1822763de645fd07a094568a3
+FCI110_CONTRACT=45cb74e00ae5fe09a220e630d84507cde543070b
 SELECTION_BLOB=cca61af52bde3eed12b756547277cc2776589648
 APP_HOST_BLOB=daca18b77673608436425e81ecd397ef3e35e4b2
 RESULT_BLOB=2f83ae1fd15e6242f54942b5b8487798d18b6764
@@ -45,17 +47,27 @@ test "$(git rev-parse "HEAD:$SOLVER")" = "$TIERED_SOLVER" || fail 'tiered solver
 mapfile -t ROSSFAST_OWNER_DIFF < <(git diff --name-only "$CACHE_AUTH" HEAD -- \
   "$KERNEL" "$SOLVER" "$MODEL" "$PROVIDER" "$POLICY" "$CONTRACT" "$SELECTION" "$APP_HOST" assets/rossfast/d3r)
 printf '%s\n' "${ROSSFAST_OWNER_DIFF[@]}" | sort > "$BUILD/actual.txt"
-printf '%s\n' "$KERNEL" "$SOLVER" | sort > "$BUILD/expected.txt"
+if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+  printf '%s\n' "$KERNEL" "$SOLVER" "$CONTRACT" | sort > "$BUILD/expected.txt"
+  echo 'FROSS22_ADMISSION_FCI110_CONTRACT_SUCCESSOR=ACTIVE'
+else
+  printf '%s\n' "$KERNEL" "$SOLVER" | sort > "$BUILD/expected.txt"
+fi
 cmp -s "$BUILD/actual.txt" "$BUILD/expected.txt" || {
   diff -u "$BUILD/expected.txt" "$BUILD/actual.txt" >&2 || true
-  fail 'RossFast owner surface is not the exact admitted two-file F-ROSS22 successor'
+  fail 'RossFast owner surface is not the exact admitted F-ROSS22 plus recognized successor surface'
 }
-echo 'FROSS22_ADMISSION_EXACT_TWO_FILE_ROSSFAST_OWNER_DELTA=PASS'
+echo 'FROSS22_ADMISSION_EXACT_ROSSFAST_OWNER_DELTA=PASS'
 
-for spec in "$MODEL:$MODEL_BLOB" "$PROVIDER:$PROVIDER_BLOB" "$POLICY:$POLICY_BLOB" "$CONTRACT:$CONTRACT_BLOB" "$SELECTION:$SELECTION_BLOB" "$APP_HOST:$APP_HOST_BLOB"; do
+contract_authority="$CONTRACT_BLOB"
+if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+  contract_authority="$FCI110_CONTRACT"
+fi
+for spec in "$MODEL:$MODEL_BLOB" "$PROVIDER:$PROVIDER_BLOB" "$POLICY:$POLICY_BLOB" "$SELECTION:$SELECTION_BLOB" "$APP_HOST:$APP_HOST_BLOB"; do
   path="${spec%%:*}"; blob="${spec##*:}"
   test "$(git rev-parse "HEAD:$path")" = "$blob" || fail "qualified dependency drift: $path"
 done
+test "$(git rev-parse "HEAD:$CONTRACT")" = "$contract_authority" || fail "qualified dependency drift: $CONTRACT"
 echo 'FROSS22_ADMISSION_DEPENDENCY_CLOSURE=PASS'
 
 if ! git cat-file -e "$FROSS22_HEAD^{commit}" 2>/dev/null; then git fetch --no-tags origin "$FROSS22_HEAD"; fi
