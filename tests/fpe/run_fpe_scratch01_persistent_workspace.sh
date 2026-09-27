@@ -116,11 +116,8 @@ if old_root not in runner:
 runner=runner.replace(old_root,new_root,1)
 
 runner=runner.replace(
-    "python3 - \"$fixture\" \"$N\" \"$workers\" <<'PY'",
-    "python3 - \"$fixture\" \"$N\" \"$workers\" \"$SCRATCH01_CONTEXT_SOURCE\" <<'PY'",1)
-runner=runner.replace(
-    "out=Path(sys.argv[1]); n=int(sys.argv[2]); workers=int(sys.argv[3])",
-    "out=Path(sys.argv[1]); n=int(sys.argv[2]); workers=int(sys.argv[3]); context=Path(sys.argv[4]).resolve()",1)
+    "mapfile -t MODULE_SRC < <(python3 - \"$fixture\" <<'PY'\nfrom pathlib import Path\nimport sys,re\nfixture=Path(sys.argv[1]).resolve()",
+    "mapfile -t MODULE_SRC < <(python3 - \"$fixture\" \"$SCRATCH01_CONTEXT_SOURCE\" <<'PY'\nfrom pathlib import Path\nimport sys,re\nfixture=Path(sys.argv[1]).resolve()\ncontext=Path(sys.argv[2]).resolve()",1)
 
 old="""    if p=="tests/fpe/mod_fpe_temporal08_production_live_fixture.f90":
         print(fixture)
