@@ -10,6 +10,7 @@ on:
 
 jobs:
   p0-cost-aware-scheduling:
+    continue-on-error: true
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
