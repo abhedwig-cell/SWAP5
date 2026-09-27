@@ -34,10 +34,12 @@ Detached daily composition is now tested at `f911acba3` in
 Dependency inspection found 80 runner/tool references to the shared irrigation
 process source. Adding a new backend module dependency requires a deliberate
 compile-list update/preservation pass; do not silently leave existing runners
-unable to compile. Current backend `build_irrigation_event_candidate` constructs
-a fresh event carrier from a temporal physical state, so future metadata must
-be passed explicitly there or it would reset to defaults. Until that transfer
-is implemented, enabled weekly state must not be admitted to that runtime path.
+unable to compile. The metadata type and validators now live in the already
+shared irrigation process module. `build_irrigation_event_candidate` constructs
+a fresh event carrier from a temporal physical state; callers must pass its
+optional weekly metadata explicitly or receive disabled defaults. The backend
+trial transfer implemented at `ac947c243` retains metadata in candidate clones
+and requires an explicit proposal for enabled weekly carriers.
 
 Current bootstrap `run_prepared_irrigation` accepts selected event proposals
 and an optional selection mask, but has no weekly management proposal channel.
