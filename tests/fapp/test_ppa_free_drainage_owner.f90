@@ -1909,6 +1909,30 @@ contains
         end do
         call split_app%close(weekly_code)
         write(*,'(a)') 'PPA_IRR_WEEKLY_WINDOW_BUDGET_DURABLE_PREFIX=PASS'
+        call split_app%initialize(weekly_config,weekly_code)
+        if(weekly_code/=FMR_APP_BOOT_OK) error stop 'weekly full window initialize'
+        call split_app%restore_committed_restart(weekly_bundle,92001_int64,weekly_ok,weekly_code)
+        if(.not.weekly_ok) error stop 'weekly full window restore'
+        ! Gift-end splitting must carry the same ordinal into a zero-source
+        ! remainder, without selecting a second gift or incrementing dayfix.
+        split_requests%t1=split_endpoint+1.0_real64/65536.0_real64
+        call execute_window_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+             daily_parameters,split_requests,weekly_forcing,2,prefixes,prefix_count,weekly_code,weekly_inputs=daily_inputs)
+        if(weekly_code/=FMR_APP_BOOT_OK.or.prefix_count/=2) error stop 'weekly two-prefix completion'
+        if(.not.all(prefixes(1)%columns%committed).or..not.all(prefixes(2)%columns%committed)) &
+             error stop 'weekly two-prefix publication'
+        call split_app%export_committed_restart(92001_int64,split_bundle,weekly_ok,weekly_code)
+        if(.not.weekly_ok) error stop 'weekly two-prefix export'
+        do j=1,2
+          if(split_bundle%records(j)%committed_time/=split_requests(j)%t1) error stop 'weekly two-prefix endpoint'
+          select type(state=>split_bundle%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(state%weekly%dayfix/=0.or.state%weekly%last_day/=100_int64.or.state%irrigation%active_event) &
+                 error stop 'weekly two-prefix counted twice'
+          end select
+        end do
+        call split_app%close(weekly_code)
+        write(*,'(a)') 'PPA_IRR_WEEKLY_TWO_PREFIX_COMPLETION=PASS'
       end block
       call execute_ppa_bootstrap_irrigation(weekly_app,[1_int64,2_int64],92001_int64, &
            daily_parameters,daily_requests,weekly_forcing,weekly_results,weekly_code, &
