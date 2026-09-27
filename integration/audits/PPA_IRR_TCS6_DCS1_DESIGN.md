@@ -73,3 +73,24 @@ Qualification must cover mixed supplied/profile columns, omitted versus false
 mask preservation, missing/wrong-sized containers, nonweekly true entries,
 invalid second-column payload with no publication, split retry and pending
 decoded restart. This contract is not evidence of implemented bootstrap routing.
+
+## Implemented branch-local routing and restart boundary
+
+The routing contract above was implemented at `034870dd7`. Later evidence in
+the status JSON qualifies mixed supplied-DCS1/profile-DCS2 exact execution,
+new-selection window execution, pending next-prefix split completion and
+pending window replay. The profile-selected input can contain a nonfinite
+supplied deficit because the named route replaces it with the checked derived
+value; a false mask does not perform that replacement.
+
+Persistence scope review: `src/runtime/mod_fmr_committed_restart.f90` explicitly
+defines an adapter-facing, serialization-neutral decoded continuation record,
+not a byte-level file format. The tested bundle export/restore uses that decoded
+record contract. Earlier next-step references to a required external codec do
+not establish an additional migration requirement for this bounded route.
+No disk serialization or production restart registration is claimed here.
+
+Remaining extensions include profile-derived DCS1 runtime amounts (source-level
+arithmetic is already tested), fresh-selection multi-prefix windows, and broader
+daily execution. Full-day numerical completion remains separately unresolved.
+These additions must not weaken existing publication or mass checks.
