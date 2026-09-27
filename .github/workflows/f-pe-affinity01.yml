@@ -1,0 +1,28 @@
+name: F-PE-AFFINITY01 OpenMP placement
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_affinity01_*.sh'
+      - 'docs/performance/F-PE-AFFINITY01_*.md'
+      - '.github/workflows/f-pe-affinity01.yml'
+  workflow_dispatch:
+
+jobs:
+  placement:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record host
+        run: |
+          uname -a
+          lscpu
+          lscpu -e=CPU,CORE,SOCKET,NODE || true
+      - name: Run OpenMP placement frontier
+        env:
+          AFFINITY01_N: '10000'
+          AFFINITY01_REPS: '5'
+        run: bash tests/fpe/run_fpe_affinity01_placement.sh
