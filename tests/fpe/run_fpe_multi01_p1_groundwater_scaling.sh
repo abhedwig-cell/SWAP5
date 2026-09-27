@@ -77,6 +77,8 @@ body=r'''  real(c_double) :: cell_heads(NTILE), cell_fluxes(NTILE), cell_tangent
   call system_clock(c0,count_rate=rate)
   call initialize_application_config(gw_config)
   gw_config%numerical%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+  gw_config%numerical%transaction%max_retries = 8
+  gw_config%numerical%max_committed_substeps = 32
   do i = 1, NTILE
     gw_config%tiles(i)%parameters%bottom_mode = 5
     gw_config%tiles(i)%template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
