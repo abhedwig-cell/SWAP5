@@ -33,7 +33,7 @@ MATERIALS={
 DT=1.0e-4
 
 def main()->None:
-    if len(sys.argv)!=5:
+    if len(sys.argv)!=4:
         raise SystemExit("usage: MATERIAL H0 IMBALANCE")
     material=sys.argv[1]
     h0=float(sys.argv[2])
@@ -73,7 +73,7 @@ def main()->None:
     if cachefn(0):
         raise RuntimeError("tangent cache configure failed")
 
-    # Common exact local anchor for E0 and E4. This is setup, outside timed coupling.
+    # Exact local anchor used to initialize the live corrector. This is setup, outside timed coupling.
     q0=swap.trial(origin_head.value)
     qdiag,_,t0,available=swap.last_trial_response()
     require(available and math.isfinite(t0),"initial exact tangent unavailable")
@@ -114,7 +114,7 @@ def main()->None:
     final_q_gw=None
     final_residual=None
 
-    with tempfile.TemporaryDirectory(prefix=f"solve01-p2b-{material}-{policy}-") as tmp:
+    with tempfile.TemporaryDirectory(prefix=f"live01-p0-{material}-") as tmp:
         workdir=Path(tmp)
         build_model(workdir,origin_head.value)
         raw=XmiWrapper(lib_path=libmf6,working_directory=workdir)
