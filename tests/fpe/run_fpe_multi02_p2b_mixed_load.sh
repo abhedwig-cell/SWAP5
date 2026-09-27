@@ -29,17 +29,28 @@ s=s.replace(
 "  integer :: worker_att(4),worker_nlit(4),worker_bt(4)\n"
 "  real(real64) :: mean_work,work_ratio\n",1)
 
-s=s.replace(
-"  if(command_argument_count()/=2) error stop 'usage N WORKERS'\n"
-"  call get_command_argument(1,arg); read(arg,*) n\n"
-"  call get_command_argument(2,arg); read(arg,*) workers\n"
-"  if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'\n",
-"  if(command_argument_count()/=3) error stop 'usage N WORKERS ORDER'\n"
-"  call get_command_argument(1,arg); read(arg,*) n\n"
-"  call get_command_argument(2,arg); read(arg,*) workers\n"
-"  call get_command_argument(3,arg); read(arg,*) order_code\n"
-"  if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'\n"
-"  if(order_code/=0 .and. order_code/=1) error stop 'bad order'\n",1)
+old_args="""  if(command_argument_count()<2 .or. command_argument_count()>3) error stop 'usage N WORKERS [MIXED|MIXED_BALANCED]'
+  call get_command_argument(1,arg); read(arg,*) n
+  call get_command_argument(2,arg); read(arg,*) workers
+  mixed=.false.; mixed_balanced=.false.; mode=''
+  if(command_argument_count()==3)then
+    call get_command_argument(3,mode)
+    mixed=trim(mode)=='MIXED' .or. trim(mode)=='MIXED_BALANCED'
+    mixed_balanced=trim(mode)=='MIXED_BALANCED'
+    if(.not.mixed) error stop 'bad mode'
+  end if
+  if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'
+"""
+new_args="""  if(command_argument_count()/=3) error stop 'usage N WORKERS ORDER'
+  call get_command_argument(1,arg); read(arg,*) n
+  call get_command_argument(2,arg); read(arg,*) workers
+  call get_command_argument(3,arg); read(arg,*) order_code
+  mixed=.false.; mixed_balanced=.false.; mode=''
+  if(n<=0 .or. .not.(workers==1 .or. workers==2 .or. workers==4)) error stop 'bad args'
+  if(order_code/=0 .and. order_code/=1) error stop 'bad order'
+"""
+if old_args not in s: raise SystemExit("P2B argument parser seam missing")
+s=s.replace(old_args,new_args,1)
 
 s=s.replace(
 "    call initialize_committed(committed(i),initial_state,columns(i)%column_id,ok)\n",
@@ -111,12 +122,16 @@ s=s.replace(
 "  end if\n"
 "  write(*,'(*(g0))') 'MULTI02_P2B|N=',n,'|WORKERS=',workers,'|ORDER=',order_code, &\n",1)
 
-s=s.replace(
-"       '|QSUM=',qsum,'|TSUM=',tsum\n",
-"       '|QSUM=',qsum,'|TSUM=',tsum,'|WORK_RATIO=',work_ratio, &\n"
-"       '|W1_ATT=',worker_att(1),'|W2_ATT=',worker_att(2),'|W3_ATT=',worker_att(3),'|W4_ATT=',worker_att(4), &\n"
-"       '|W1_NL=',worker_nlit(1),'|W2_NL=',worker_nlit(2),'|W3_NL=',worker_nlit(3),'|W4_NL=',worker_nlit(4), &\n"
-"       '|W1_BT=',worker_bt(1),'|W2_BT=',worker_bt(2),'|W3_BT=',worker_bt(3),'|W4_BT=',worker_bt(4)\n",1)
+old_output="""       '|QSUM=',qsum,'|TSUM=',tsum,'|MIXED=',mixed,'|MIXED_BALANCED=',mixed_balanced
+"""
+new_output="""       '|QSUM=',qsum,'|TSUM=',tsum,'|MIXED=',mixed,'|MIXED_BALANCED=',mixed_balanced, &
+       '|WORK_RATIO=',work_ratio, &
+       '|W1_ATT=',worker_att(1),'|W2_ATT=',worker_att(2),'|W3_ATT=',worker_att(3),'|W4_ATT=',worker_att(4), &
+       '|W1_NL=',worker_nlit(1),'|W2_NL=',worker_nlit(2),'|W3_NL=',worker_nlit(3),'|W4_NL=',worker_nlit(4), &
+       '|W1_BT=',worker_bt(1),'|W2_BT=',worker_bt(2),'|W3_BT=',worker_bt(3),'|W4_BT=',worker_bt(4)
+"""
+if old_output not in s: raise SystemExit("P2B output field seam missing")
+s=s.replace(old_output,new_output,1)
 
 new='''n=1000
 for order in 0 1; do
