@@ -100,9 +100,7 @@ wrapped="""      if (.not. allocated(self%cached_owner) .or. size(self%cached_ow
       end if
 
       if (.not. self%parallel_schedule_cached) then
-""" + original.replace("
-","
-  ",1) + """
+""" + original + """
         self%cached_owner = owner
         self%parallel_schedule_cached = .true.
       else
