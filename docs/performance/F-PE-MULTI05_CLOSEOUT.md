@@ -43,9 +43,27 @@ Production remains:
 
 The next experiment is not another code optimization. It is execution of the frozen MULTI05 harness on a known high-core host, preferably the intended 24-thread machine.
 
+## Prepared high-core execution path
+
+The repository side is prepared in:
+
+`.github/workflows/f-pe-multi05-self-hosted.yml`
+
+This workflow:
+- is manual `workflow_dispatch` only;
+- requires a trusted self-hosted Linux x64 runner carrying label `swap5-highcore`;
+- records the actual host CPU topology before measurement;
+- executes the unchanged frozen MULTI05 harness;
+- defaults to N=10,000, 3 repetitions and workers 1/2/4/8/12/16/24;
+- accepts N/repetition/worker inputs for the later N=100,000 follow-up without changing the harness.
+
+It is deliberately not triggered by pull requests because SWAP5 is public and untrusted PR code must not be allowed to execute automatically on a privately controlled high-core machine.
+
+The remaining blocker is runner registration/access outside repository code. No registered high-core runner is currently visible through the available repository execution path.
+
 ## Re-entry condition
 
-Reopen as soon as a host with at least 8 visible logical CPUs is available.
+Reopen as soon as a trusted host with at least 8 visible logical CPUs is registered as a GitHub self-hosted runner with label `swap5-highcore`.
 
 Use the existing frozen harness without retuning:
 - N=10,000;
