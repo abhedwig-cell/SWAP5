@@ -2620,10 +2620,12 @@ contains
         block
           type(ppa_tcs6_daily_input_t)::bad_weekly(2)
           type(ppa_irrigation_profile_t)::weekly_profiles(2)
+          type(scheduled_irrigation_parameters_t)::bad_parameters(2)
           type(fmr_committed_restart_bundle_t)::unchanged
           integer::bad_case,k
-          do bad_case=1,6
+          do bad_case=1,8
             bad_weekly=daily_inputs
+            bad_parameters=daily_parameters
             if(bad_case==2) bad_weekly(1)%deficit_cm=ieee_value(0.0_real64,ieee_quiet_nan)
             if(bad_case==3) bad_weekly(2)%ordinal=-1_int64
             if(bad_case==4) then
@@ -2637,6 +2639,15 @@ contains
             else if(bad_case==6) then
               call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
                    daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code, &
+                   profiles=weekly_profiles,weekly_inputs=bad_weekly,weekly_profile_mode=[.false.,.true.])
+            else if(bad_case==7) then
+              call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+                   daily_parameters,daily_requests,weekly_forcing,split_results,weekly_code, &
+                   profiles=weekly_profiles(:1),weekly_inputs=bad_weekly,weekly_profile_mode=[.false.,.true.])
+            else if(bad_case==8) then
+              bad_parameters(2)%timing_criterion=7
+              call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
+                   bad_parameters,daily_requests,weekly_forcing,split_results,weekly_code, &
                    profiles=weekly_profiles,weekly_inputs=bad_weekly,weekly_profile_mode=[.false.,.true.])
             else if(bad_case==1) then
               call execute_ppa_bootstrap_irrigation(split_app,[1_int64,2_int64],92001_int64, &
