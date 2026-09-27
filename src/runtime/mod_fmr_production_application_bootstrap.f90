@@ -112,7 +112,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: materialize_groundwater_context => production_application_materialize_groundwater_context
     procedure, public :: release_groundwater_context => production_application_release_groundwater_context
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
-    procedure, public :: groundwater_parallel_schedule_diagnostics => production_application_groundwater_parallel_schedule_diagnostics
+    procedure, public :: groundwater_parallel_schedule_diagnostics => production_application_parallel_schedule_diagnostics
     procedure, public :: close => production_application_close
   end type fmr_production_application_bootstrap_t
 
@@ -550,7 +550,7 @@ contains
     status = FMR_APP_BOOT_OK
   end subroutine production_application_copy_committed_revisions
 
-  subroutine production_application_groundwater_parallel_schedule_diagnostics(self, schedule_code, &
+  subroutine production_application_parallel_schedule_diagnostics(self, schedule_code, &
        static_ratio, selected_ratio, available, status)
     class(fmr_production_application_bootstrap_t), intent(in) :: self
     integer, intent(out) :: schedule_code
@@ -574,7 +574,7 @@ contains
       return
     end if
     status = FMR_APP_BOOT_OK
-  end subroutine production_application_groundwater_parallel_schedule_diagnostics
+  end subroutine production_application_parallel_schedule_diagnostics
 
   subroutine production_application_close(self, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
