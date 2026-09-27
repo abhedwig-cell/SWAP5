@@ -1,0 +1,27 @@
+name: F-PE-SETUP01 large-N setup decomposition
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_setup01_*.sh'
+      - 'docs/performance/F-PE-SETUP01_*.md'
+      - '.github/workflows/f-pe-setup01.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-setup-decomposition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run setup decomposition
+        env:
+          SETUP01_N: '${{ matrix.n }}'
+          SETUP01_REPS: '3'
+        run: bash tests/fpe/run_fpe_setup01_decomposition.sh
