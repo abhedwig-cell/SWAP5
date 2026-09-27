@@ -13,6 +13,7 @@ TRANSACTION_SOURCE="${BASE01_TRANSACTION_SOURCE:-src/transaction/mod_transaction
 CANONICAL_RUNTIME_SOURCE="${BASE01_CANONICAL_RUNTIME_SOURCE:-src/runtime/mod_canonical_interval_runtime.f90}"
 KERNEL_SOURCE="${BASE01_KERNEL_SOURCE:-src/kernel/mod_kernel_transactions.f90}"
 BACKEND_SOURCE="${BASE01_BACKEND_SOURCE:-src/runtime/mod_fmr_serialized_reference_backend.f90}"
+TEMPORAL_INDICATOR_SOURCE="${BASE01_TEMPORAL_INDICATOR_SOURCE:-src/solver/mod_reference_richards_temporal_indicator.f90}"
 PARTICIPANT_SOURCE="${BASE01_PARTICIPANT_SOURCE:-src/runtime/mod_fmr_groundwater_swap_participant.f90}"
 BRIDGE_SOURCE="${BASE01_BRIDGE_SOURCE:-tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90}"
 RAW_PREFIX="${BASE01_RAW_PREFIX:-BASE01_P0_RAW}"
