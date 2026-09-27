@@ -1,0 +1,27 @@
+name: F-PE-SCHEDCACHE01 origin schedule cache
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_schedcache01_*.sh'
+      - 'docs/performance/F-PE-SCHEDCACHE01_*.md'
+      - '.github/workflows/f-pe-schedcache01.yml'
+  workflow_dispatch:
+
+jobs:
+  paired:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run paired origin-schedule cache benchmark
+        env:
+          SCHEDCACHE01_N: '${{ matrix.n }}'
+          SCHEDCACHE01_REPS: '5'
+        run: bash tests/fpe/run_fpe_schedcache01_origin_schedule.sh
