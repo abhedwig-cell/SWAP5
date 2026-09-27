@@ -1,0 +1,26 @@
+name: F-PE-SCALE02 production-scale throughput
+
+on:
+  pull_request:
+    paths:
+      - 'docs/performance/F-PE-SCALE02_*.md'
+      - '.github/workflows/f-pe-scale02.yml'
+  workflow_dispatch:
+
+jobs:
+  throughput:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [10000, 40000, 100000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run production-shaped scaling fixture
+        env:
+          MULTI04_P1C_N: '${{ matrix.n }}'
+          MULTI04_P1C_REPS: '5'
+        run: bash tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh
