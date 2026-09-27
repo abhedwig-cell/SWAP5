@@ -2071,6 +2071,29 @@ contains
            error stop 'weekly profile successor skipped validation'
       r%t0=T0; r%t1=T0+1.0_real64/1024.0_real64
       write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_PENDING_DUPLICATE_BYPASS=PASS'
+      if(n>=2) then
+        weekly_profile%noddrz=2; weekly_profile%layer=[1,2]
+        weekly_profile%dz=[2.0_real64,4.0_real64]; weekly_profile%ztopcp=[0.0_real64,-2.0_real64]
+        weekly_profile%wclos=[0.8_real64,0.6_real64]
+        weekly_profile%wcmes=[0.5_real64,0.4_real64]; weekly_profile%wchis=[0.1_real64,0.1_real64]
+        weekly_hydraulic%water_content(1:2)=[0.3_real64,0.2_real64]
+        daily_input%ordinal=100_int64; daily_input%threshold_mm=0.0_real64
+        do i=0,4
+          weekly_profile%rd=2.0_real64+real(i,real64)
+          call evaluate_tcs6_profile_source(p,base,r,weekly,daily_input,weekly_hydraulic,weekly_profile,previous, &
+               proposed_weekly,candidate,flux,d,effective,ok)
+          if(.not.ok.or..not.allocated(effective)) error stop 'weekly multilayer profile'
+          ! Full first layer plus 0..4 cm of the second, independent amount oracle.
+          deficit=1.0_real64+0.4_real64*real(i,real64)
+          if(abs(effective%subsurface_irrigation_source(1)-deficit)>1.0e-14_real64.or. &
+               candidate%active_event_end/=T0+1.0_real64) error stop 'weekly partial-root deficit'
+        end do
+        weekly_profile%rd=6.1_real64
+        call evaluate_tcs6_profile_source(p,base,r,weekly,daily_input,weekly_hydraulic,weekly_profile,previous, &
+             proposed_weekly,candidate,flux,d,effective,ok)
+        if(ok.or.allocated(effective).or.proposed_weekly%day_bound) error stop 'weekly invalid root geometry'
+        write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_MULTILAYER_PARTIAL_ROOT_GRID=PASS'
+      end if
       p%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
       write(*,'(a)') 'PPA_IRR_TCS6_PROFILE_DERIVED_SOURCE=PASS'
     end block
