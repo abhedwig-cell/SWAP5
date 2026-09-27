@@ -51,6 +51,18 @@ or canonical admission.
 
 ### Full-day trial result (2026-09-27)
 
+Follow-up postimage `26f3214ad` additionally commits the full-day candidate through
+the existing publisher and checks time T0+1/revision 1. Decoded export/restore
+preserves exact pressure, water, temporal history, time, revision, lineage and
+weekly counter 4/ordinal 101, with no active gift. Ordinary IrrigationSource and
+same-binary hydraulic-copy/guards pass clean O0/O2 identity; separate full-day
+output matches excluding wall time. Build
+`swap-ppa-wu01-b78d232e50ac445c9496577e9b81170c`, `O0/O2/full-day.txt`;
+TEMP `swap-full-day-restart-baseline.log`. This supersedes the trial-only boundary
+below for publication and decoded restoration, but not continuation replay,
+disk codec, full-day daily adapters or seven-day execution. Next: compare
+original/restored continuation from this committed full-day checkpoint.
+
 Test postimage `274b463a6` adds the isolated `--irrigation-source
 --weekly-full-day` experiment without changing the ordinary regression or
 production defaults. Clean O0/O2 IrrigationSource baseline and same-binary
