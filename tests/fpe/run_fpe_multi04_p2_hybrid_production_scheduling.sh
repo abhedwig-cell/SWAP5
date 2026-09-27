@@ -91,6 +91,8 @@ new_top="""    do i=1,NPART
 if old_top not in s: raise SystemExit("fixture topology seam missing")
 s=s.replace(old_top,new_top,1)
 
+s=s.replace("    call initialize_config(config)\n    do i=1,size(config%tiles)\n",
+            "    call initialize_config(config,1,0)\n    do i=1,size(config%tiles)\n",1)
 s=s.replace("  subroutine initialize_config(value)\n    type(fmr_production_application_config_t),intent(out)::value\n    integer :: i\n",
 """  subroutine initialize_config(value,workers,ordering)
     type(fmr_production_application_config_t),intent(out)::value
