@@ -1246,6 +1246,7 @@ contains
   end subroutine verify_pending_irrigation_trial
 
   subroutine verify_tcs1_4_source_binding(original,n)
+    use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_dcs1_source
     use mod_ppa_irr_tcs1_4_source, only: evaluate_tcs1_4_source,ppa_tcs1_4_observations_t,evaluate_tcs2_4_profile_source
     use mod_ppa_irrigation_source_binding, only: ppa_irrigation_profile_t
     use mod_ppa_irr_water_deficit, only: evaluate_root_zone_water_deficit_checked,IRR_DEFICIT_OK
@@ -1351,6 +1352,31 @@ contains
       root_profile%dz=1.0_real64; observations%knot_count=2; r%t0=T0
     end do
     write(*,'(a)') 'PPA_IRR_TCS2_4_CHECKED_PROFILE_SOURCE=PASS'
+    p%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+    p%dcs1_knot_count=2; p%dcs1_dvs(1:2)=[0.0_real64,2.0_real64]
+    p%dcs1_correction_mm=0.0_real64
+    root_profile%wclos=0.75_real64; hydraulic%water_content=0.25_real64
+    root_profile%rd=1.0_real64/1024.0_real64
+    p%irr_rate_cm_per_day=0.5_real64
+    do i=1,4
+      p%timing_criterion=i
+      observations%threshold_values=0.5_real64
+      if(i==4) observations%threshold_values=0.001_real64
+      call evaluate_tcs1_4_dcs1_source(p,base,r,observations,hydraulic,root_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(.not.ok.or..not.allocated(effective)) error stop 'DCS1 source binding failed'
+      if(.not.flux%event_finished.or.candidate%active_event) error stop 'DCS1 source completion'
+      if(effective%subsurface_irrigation_source(1)/=0.5_real64.or. &
+           any(effective%subsurface_irrigation_source(2:)/=0.0_real64)) error stop 'DCS1 source node rate'
+      if(.not.effective%temporal_forcing_event.or.effective%temporal_forcing_event_time/=T0) &
+           error stop 'DCS1 source start marker'
+      root_profile%dz=-1.0_real64
+      call evaluate_tcs1_4_dcs1_source(p,base,r,observations,hydraulic,root_profile, &
+           previous,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.candidate%active_event) error stop 'DCS1 invalid source leaked'
+      root_profile%dz=1.0_real64
+    end do
+    write(*,'(a)') 'PPA_IRR_TCS1_4_DCS1_SOURCE_BINDING=PASS'
   end subroutine
 
   subroutine verify_irrigation_bootstrap(profile,source,template,profile_selection,mixed_selection)
