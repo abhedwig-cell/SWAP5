@@ -79,13 +79,23 @@ Semantic identity: PASS.
 
 Performance advancement: FAIL.
 
-Observed:
+Observed in the first authority run:
 
 - temporal-indicator gain: `12.31%`, below required 15%;
 - backend gain: `0.60%`, below required 3%;
 - total q/state trial: about `0.61%` slower;
 - max absolute q difference: 0;
 - retry/nonlinear path unchanged.
+
+Independent current-head replay `36306634228`:
+
+- temporal-indicator gain: `10.52%`, again below required 15%;
+- backend gain: `3.88%`;
+- total q/state trial gain: `2.60%`;
+- max absolute q difference: 0;
+- retry/nonlinear path unchanged.
+
+The composed timing varies, but the selected component itself fails its frozen 15% local gain gate in both independent measurements.
 
 Decision:
 `REJECT_NO_COMPOSED_RUNTIME_GAIN`.
