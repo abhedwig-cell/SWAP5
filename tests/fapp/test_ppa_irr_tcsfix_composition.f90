@@ -9,7 +9,7 @@ program test_tcsfix
   type(irrigation_flux_result_t)::flux
   type(irrigation_diagnostics_t)::d
   real(real64)::knots(7),values(7)
-  integer::i,j,next_day
+  integer::i,j,next_day,guard
   p%scheduled_irrigation_enabled=.true.; p%active_nodes=1; p%sensor_node=1; p%single_ssdi_node=1
   p%irr_rate_cm_per_day=1.0_real64; p%dcs2_knot_count=2
   p%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]; p%dcs2_depth_cm=0.5_real64
@@ -69,8 +69,34 @@ program test_tcsfix
            1.0_real64,0.5_real64,0.1_real64,.true.,2,j,next_day,candidate,flux,d)
       if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.next_day/=2) error stop 'invalid interval'
     end do
+    do guard=1,7
+      p%scheduled_irrigation_enabled=guard/=1
+      r%selection_opportunity=guard/=2; r%irrigation_enabled=guard/=3
+      r%schedule_enabled=guard/=4; r%crop_emerged=guard/=5
+      r%irrigation_window_open=guard/=6; r%fixed_event_already_selected=guard==7
+      call evaluate_tcsfix_scheduled(p,base,r,knots,values,0,0.0_real64,0.0_real64,0.0_real64, &
+           0.0_real64,0.0_real64,0.0_real64,.true.,2,3,next_day,candidate,flux,d)
+      if(d%status/=IRRIGATION_OK.or.next_day/=2.or.flux%event_started) error stop 'eligibility grid'
+    end do
+    p%scheduled_irrigation_enabled=.true.; r%selection_opportunity=.true.; r%irrigation_enabled=.true.
+    r%schedule_enabled=.true.; r%crop_emerged=.true.; r%irrigation_window_open=.true.
+    r%fixed_event_already_selected=.false.
+    do j=-1,367,368
+      call evaluate_tcsfix_scheduled(p,base,r,knots,values,2,1.0_real64,0.75_real64,0.0_real64, &
+           1.0_real64,0.5_real64,0.1_real64,.true.,j,3,next_day,candidate,flux,d)
+      if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.next_day/=j.or.flux%event_started) &
+           error stop 'invalid counter'
+    end do
+  end do
+  do i=5,8
+    p%timing_criterion=i
+    call evaluate_tcsfix_scheduled(p,base,r,knots,values,2,1.0_real64,0.75_real64,0.0_real64, &
+         1.0_real64,0.5_real64,0.1_real64,.true.,3,3,next_day,candidate,flux,d)
+    if(d%status/=IRRIGATION_INVALID_PARAMETERS.or.next_day/=3.or.flux%event_started) &
+         error stop 'unsupported timing including weekly'
   end do
   print '(a)', 'PPA_IRR_TCSFIX_COMPOSITION_INITIAL=PASS'
   print '(a)', 'PPA_IRR_TCSFIX_PENDING_ELIGIBILITY_INPUT_GUARDS=PASS'
   print '(a)', 'PPA_IRR_TCSFIX_NO_CANDIDATE_COUNTER=PASS'
+  print '(a)', 'PPA_IRR_TCSFIX_ELIGIBILITY_COUNTER_TIMING_GRID=PASS'
 end program
