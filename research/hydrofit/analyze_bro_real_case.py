@@ -48,7 +48,7 @@ for ik,key in enumerate(keys):
  raw=residual_vector(x[:5],obs,cfgx)
  pairs=list(zip(obs,raw))
  for fam in ("theta","K"):
-  q=sorted(((abs(v),o.h_cm,v) for o,v in pairs if o.family==fam),reverse=True)[:3]
+  q=sorted(((abs(v),o.head_cm,v) for o,v in pairs if o.family==fam),reverse=True)[:3]
   print(f"BRO_RESIDUAL_TOP|I={ik}|FAMILY={fam}|VALUES="+json.dumps(q))
  # deterministic profile: fix one parameter, reoptimize other five.
  for pi,name,grid in [
