@@ -384,6 +384,7 @@ jobs:
             --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-fallbacks.txt"
       - name: Audit conditional lambda-prior descriptors
         run: |
+          set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/audit_lambda_prior_descriptors.py \
             --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
             --out "$RUNNER_TEMP/bro/lambda-prior-descriptor-audit.json" | tee "$RUNNER_TEMP/bro/lambda-prior-descriptor-audit.txt"
