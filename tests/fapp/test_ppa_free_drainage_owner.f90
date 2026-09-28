@@ -2707,6 +2707,7 @@ contains
       write(*,'(a)') 'PPA_IRR_TCSFIX_DAILY_SOURCE_INELIGIBLE_AND_ATOMIC_GAP=PASS'
       do j=1,2
         fixed_parameters(j)%scheduled_irrigation_enabled=.true.
+        fixed_parameters(j)%sensor_node=1
         fixed_parameters(j)%irr_rate_cm_per_day=0.01_real64
         fixed_parameters(j)%dcs2_knot_count=2
         fixed_parameters(j)%dcs2_dvs(:2)=[0.0_real64,2.0_real64]
