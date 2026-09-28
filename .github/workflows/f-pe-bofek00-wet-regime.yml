@@ -8,6 +8,8 @@ on:
       - 'docs/verification/F-PE-BOFEK00_PREREGISTRATION.md'
       - 'tests/verification/test_bofek00_dynamic_top_correction.f90'
       - 'tests/verification/run_bofek00_correction_gate.sh'
+      - 'tests/verification/test_bofek00_frozen_wet_trajectory.f90'
+      - 'tests/verification/run_bofek00_frozen_comparison.sh'
       - '.github/workflows/f-pe-bofek00-wet-regime.yml'
       - 'src/solver/mod_soil_water_solver_contract.f90'
       - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
@@ -30,3 +32,5 @@ jobs:
         run: gfortran --version
       - name: Execute corrected wet-regime gate
         run: bash tests/verification/run_bofek00_correction_gate.sh
+      - name: Compare frozen baseline and corrected Reference
+        run: bash tests/verification/run_bofek00_frozen_comparison.sh
