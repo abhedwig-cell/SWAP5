@@ -24,9 +24,9 @@ def run(cid,dt):
     if d.get("OK")!="1":
         return {"case":cid,"dt":dt,"ok":False,"stage":d.get("STAGE"),"raw":d}
     out={"case":cid,"dt":dt,"ok":True}
-    for k in ("IND","ACTUAL_H","RUNOFF_D","STORAGE_D","MAX_LEDGER","DERIV"):
+    for k in ("IND","ACTUAL_H","RUNOFF_D","STORAGE_D","MAX_LEDGER","DERIV","TOP_FULL","TOP_H1","TOP_H2","POND_FULL","POND_H1","POND_H2"):
         out[k.lower()]=float(d[k])
-    for k in ("IND_STATUS","REGIME","WORK_FULL","WORK_HALVES"):
+    for k in ("IND_STATUS","REGIME","REGIME_FULL","REGIME_H1","REGIME_H2","WORK_FULL","WORK_HALVES"):
         out[k.lower()]=int(d[k])
     return out
 
