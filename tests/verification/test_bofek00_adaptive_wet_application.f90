@@ -13,7 +13,7 @@ program test_bofek00_adaptive_wet_application
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
 
-  real(real64), parameter :: T0=0.0_real64, T1=0.02_real64
+  real(real64), parameter :: T0=0.0_real64, T1=0.002_real64
   real(real64), parameter :: H0=-3.5900902059398048_real64
   real(real64), parameter :: TR=0.02_real64, TS=0.427494_real64
   real(real64), parameter :: ALPHA=0.021659_real64, NPAR=1.734737_real64
@@ -47,6 +47,15 @@ program test_bofek00_adaptive_wet_application
   call app%initialize(cfg,status)
   call require(status==FMR_APP_BOOT_OK .and. app%ready(),'application initialized')
   call app%run_standalone_with_forcing(T0,T1,forcing,results,status)
+  write(*,'(A,I0)') 'BOFEK00_ADAPTIVE_STATUS=',status
+  if (allocated(results)) then
+    if (size(results)==1) then
+      write(*,'(*(g0))') 'BOFEK00_ADAPTIVE_PRECHECK|COMPLETED=',results(1)%completed, &
+           '|COMMITTED=',results(1)%committed,'|KERNEL_STATUS=',results(1)%kernel_status, &
+           '|ACCEPTED_SUBSTEPS=',results(1)%accepted_substeps,'|NONLINEAR=',results(1)%solver_nonlinear_iterations, &
+           '|INTERNAL_RETRIES=',results(1)%solver_internal_retries,'|BACKTRACK=',results(1)%solver_backtracking_attempts
+    end if
+  end if
   call require(status==FMR_APP_BOOT_OK,'application run')
   call require(allocated(results) .and. size(results)==1,'single result')
   call require(results(1)%completed .and. results(1)%committed,'interval committed')
