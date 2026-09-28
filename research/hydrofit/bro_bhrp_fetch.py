@@ -10,10 +10,12 @@ from urllib.request import Request, urlopen
 USER_AGENT="SWAP5-F-HYDROFIT02/0.1 research reproducibility"
 DEFAULT_BASE="https://publiek.broservices.nl/sr/bhrp/v2"
 
-def fetch(url: str, timeout: float=20.0, attempts: int=3) -> tuple[int,str,bytes]:
+def fetch(url: str, timeout: float=20.0, attempts: int=3, method: str='GET', body: bytes|None=None) -> tuple[int,str,bytes]:
     last=None
     for i in range(attempts):
-        req=Request(url,headers={"User-Agent":USER_AGENT,"Accept":"application/xml, application/json;q=0.9, */*;q=0.1"})
+        headers={"User-Agent":USER_AGENT,"Accept":"application/xml, application/json;q=0.9, */*;q=0.1"}
+        if body is not None: headers["Content-Type"]="application/json"
+        req=Request(url,data=body,headers=headers,method=method)
         try:
             with urlopen(req,timeout=timeout) as r:
                 return int(r.status), r.headers.get("Content-Type",""), r.read()
@@ -39,9 +41,12 @@ def main():
     ap.add_argument("--output")
     ap.add_argument("--manifest")
     ap.add_argument("--require-success",action="store_true")
+    ap.add_argument("--method",default="GET",choices=["GET","POST"])
+    ap.add_argument("--json-body")
     a=ap.parse_args()
     url=a.base.rstrip("/") + (("/"+a.path.lstrip("/")) if a.path else "")
-    status,ctype,data=fetch(url)
+    body=Path(a.json_body).read_bytes() if a.json_body else None
+    status,ctype,data=fetch(url,method=a.method,body=body)
     m=manifest(url,status,ctype,data)
     print("BRO_PROBE|"+ "|".join(f"{k}={v}" for k,v in m.items()))
     if a.output: Path(a.output).write_bytes(data)
