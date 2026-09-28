@@ -1,0 +1,30 @@
+name: F-PE-TIMEINT04 nonlinear path trace
+
+on:
+  push:
+    branches:
+      - work/f-pe-timeint04-nonlinear-path
+    paths:
+      - 'docs/performance/F-PE-TIMEINT04_PREREGISTRATION.md'
+      - 'tests/fpe/materialize_fpe_timeint04_trace.py'
+      - 'tests/fpe/test_fpe_timeint04_trace.f90'
+      - 'tests/fpe/run_fpe_timeint04_trace.py'
+      - 'tests/fpe/run_fpe_timeint04_trace.sh'
+      - '.github/workflows/f-pe-timeint04.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trace:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered nonlinear trace
+        run: bash tests/fpe/run_fpe_timeint04_trace.sh
