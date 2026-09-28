@@ -268,6 +268,20 @@ jobs:
               if any(q in k.lower() for q in keywords):
                   print(f"BRO_HYDRO_FIELD|{k}={(e.text or '').strip()}|ATTR={dict(e.attrib)}")
           PY
+      - name: Inspect SWE DataArray definitions
+        run: |
+          python - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/BHR000000378560.xml"; root=ET.fromstring(p.read_bytes())
+          def local(t): return t.rsplit('}',1)[-1]
+          for i,da in enumerate(e for e in root.iter() if local(e.tag)=="DataArray"):
+              print(f"BRO_DATAARRAY_BEGIN|I={i}")
+              for e in da.iter():
+                  txt=(e.text or '').strip()
+                  attrs={local(k):v for k,v in e.attrib.items()}
+                  if txt or attrs:
+                    print(f"BRO_DATAARRAY_FIELD|TAG={local(e.tag)}|TEXT={txt}|ATTR={attrs}")
+              print(f"BRO_DATAARRAY_END|I={i}")
       - name: Parse first bodemfysisch object
         run: |
           python research/hydrofit/bro_bhrp_parse.py "$RUNNER_TEMP/bro/BHR000000378560.xml" \
