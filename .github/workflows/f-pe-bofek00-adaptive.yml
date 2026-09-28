@@ -1,0 +1,25 @@
+name: F-PE-BOFEK00 adaptive wet qualification
+
+on:
+  push:
+    branches:
+      - work/f-pe-bofek00-correction-candidate
+    paths:
+      - 'tests/verification/test_bofek00_adaptive_wet_application.f90'
+      - 'tests/verification/run_bofek00_adaptive_gate.sh'
+      - '.github/workflows/f-pe-bofek00-adaptive.yml'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+  workflow_dispatch:
+
+jobs:
+  adaptive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run unchanged-policy old-vs-corrected adaptive wet qualification
+        run: bash tests/verification/run_bofek00_adaptive_gate.sh
