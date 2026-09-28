@@ -1,0 +1,32 @@
+name: F-PE-BOFEK01 numerical-policy screening
+
+on:
+  push:
+    branches:
+      - work/f-pe-bofek01-numerical-policy-screening
+    paths:
+      - 'docs/performance/F-PE-BOFEK01_02_PREREGISTRATION.md'
+      - 'tests/fpe/run_fpe_bofek01_wet_policy_screen.sh'
+      - '.github/workflows/f-pe-bofek01.yml'
+      - 'tests/verification/test_bofek00_adaptive_wet_trajectory.f90'
+      - 'src/legacy/b1_10_fci11_port/timecontrol_part04.inc'
+      - 'src/legacy/b1_10_fci11_port/timecontrol_part05.inc'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  wet-policy-screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered wet policy screen
+        run: bash tests/fpe/run_fpe_bofek01_wet_policy_screen.sh
