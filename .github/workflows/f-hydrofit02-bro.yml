@@ -374,6 +374,10 @@ jobs:
         run: |
           PYTHONPATH=research/hydrofit python research/hydrofit/profile_lambda_corpus.py \
             --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-profiles.txt"
+      - name: Attribute conditional profile bounds
+        run: |
+          PYTHONPATH=research/hydrofit python research/hydrofit/attribute_profile_bounds.py \
+            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/bound-attribution.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
