@@ -167,4 +167,27 @@ program test_tcsfix
          .not.flux%event_finished.or.flux%event_started) error stop 'daily pending counter'
   end do
   print '(a)', 'PPA_IRR_TCSFIX_DAILY_SEQUENCE_FAILURE_PENDING=PASS'
+  identity%day_bound=.true.; identity%last_day=100_int64
+  do guard=1,366
+    identity%interval_days=guard
+    do i=0,366
+      identity%dayfix=i
+      do j=0,366
+        proposal=identity; proposal%last_day=101_int64; proposal%dayfix=j
+        ok=j==i
+        if(i<guard) ok=ok.or.j==i+1
+        if(i>=guard) ok=ok.or.j==1
+        if(valid_tcsfix_transition(identity,proposal).neqv.ok) error stop 'transition grid'
+        proposal%last_day=100_int64
+        if(valid_tcsfix_transition(identity,proposal).neqv.(j==i)) error stop 'same-day transition'
+      end do
+    end do
+  end do
+  proposal=identity; proposal%interval_days=365
+  if(valid_tcsfix_transition(identity,proposal)) error stop 'interval mutation'
+  proposal=identity; proposal%last_day=102_int64
+  if(valid_tcsfix_transition(identity,proposal)) error stop 'transition gap'
+  proposal=identity; proposal%enabled=.false.
+  if(valid_tcsfix_transition(identity,proposal)) error stop 'transition disable'
+  print '(a)', 'PPA_IRR_TCSFIX_TRANSITION_GRID=PASS'
 end program

@@ -95,3 +95,11 @@ integration must place metadata in the existing irrigation carrier, prohibit
 simultaneous weekly/TCSFIX activation, validate clone/restart/commit transitions,
 and keep default-disabled paths unchanged. No bootstrap activation is authorized
 by merely implementing the detached helper; its owner integration requires gates.
+
+Structural transition guard: require valid enabled endpoints and unchanged
+interval. Same ordinal/binding permits only unchanged counter. First binding or
+exact successor permits retaining the counter (ineligible/pending), incrementing
+by one only below interval, or resetting to1 only at/above interval. Reject
+activation, disablement, unbinding, gaps, backwards movement and interval edits.
+This is necessary structural validation, not proof that a scientific event was
+selected; the process remains responsible for that decision.
