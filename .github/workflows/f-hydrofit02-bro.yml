@@ -417,6 +417,11 @@ jobs:
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/compare_conditional_lambda_priors.py \
             --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-prior-low-capacity.txt"
+      - name: Reclassify frozen conditional-prior identifiability
+        run: |
+          set -o pipefail
+          python research/hydrofit/reclassify_identifiability.py \
+            "$RUNNER_TEMP/bro/lambda-prior-low-capacity.txt" | tee "$RUNNER_TEMP/bro/lambda-prior-identifiability.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
