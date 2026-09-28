@@ -362,6 +362,10 @@ jobs:
               print("BRO_KSHAPE_UOM|CODE="+e.attrib.get("code",""))
           print("BRO_KSHAPE_SCHEMA_PREFIX="+repr(b[:5000]))
           PY
+      - name: Characterize bounded BRO lambda corpus
+        run: |
+          PYTHONPATH=research/hydrofit python research/hydrofit/bro_lambda_corpus.py \
+            --party 27378529 --limit 100 --out "$RUNNER_TEMP/bro/lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-corpus.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
