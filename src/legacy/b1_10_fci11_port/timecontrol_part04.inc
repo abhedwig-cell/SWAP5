@@ -11,6 +11,16 @@
       if (swsolve == 1) then
          timestepDecision = b1_10_legacy_accepted_step_decision(dt, dtmin, dtmax, numbit, numbit_crit, &
               MaxIt, fact_dt_increase, fact_dt_decrease)
+         if (present(timestep_trace)) then
+            timestep_trace%available = .TRUE.
+            timestep_trace%sequence = timestep_trace%sequence + 1
+            timestep_trace%input_dt = timestepDecision%input_dt
+            timestep_trace%preferred_dt = timestepDecision%preferred_dt
+            timestep_trace%executed_dt = timestepDecision%preferred_dt
+            timestep_trace%reason = timestepDecision%reason
+            timestep_trace%event_clipped = .FALSE.
+            timestep_trace%floor_reached = timestepDecision%floor_reached
+         end if
          dt = timestepDecision%preferred_dt
          if (timestepDecision%floor_reached) fldtmin = .TRUE.
       else
@@ -21,7 +31,17 @@
       dtEvent = get_dtevent()
       if (dt > dtevent) then
          dt = dtevent
+         if (present(timestep_trace)) then
+            if (timestep_trace%available) then
+               timestep_trace%executed_dt = dt
+               timestep_trace%event_clipped = .TRUE.
+            end if
+         end if
          if (swsolve == 2 .AND. dabs(dtevent - 1.0d0) > dtCrit ) call swap_error('timecontrol(3)', 'swsolve = 2: unexpected: dtevent < 1.0d0')
+      else
+         if (present(timestep_trace)) then
+            if (timestep_trace%available) timestep_trace%executed_dt = dt
+         end if
       end if
 
 ! 2.11 set flags and variables
