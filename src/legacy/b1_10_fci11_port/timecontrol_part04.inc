@@ -8,6 +8,11 @@
       end if
 
 ! 2.9 determine next time step, based on numerical performance
+      timestepPreviousEventClamped = .FALSE.
+      if (present(worker)) then
+         if (worker%timestep_shadow%available) &
+            timestepPreviousEventClamped = worker%timestep_shadow%previous_event_clamped
+      end if
       if (swsolve == 1) then
          timestepDecisionInput = dt
          timestepDecision = b1_10_legacy_accepted_step_decision(dt, dtmin, dtmax, numbit, numbit_crit, &
@@ -29,6 +34,23 @@
          if (swsolve == 2 .AND. dabs(dtevent - 1.0d0) > dtCrit ) call swap_error('timecontrol(3)', 'swsolve = 2: unexpected: dtevent < 1.0d0')
       end if
       if (present(worker) .AND. swsolve == 1) then
+         if (.NOT.worker%timestep_shadow%available) then
+            timestepShadowRetain = timestepDecision%preferred_dt
+            timestepShadowEvidence = timestepDecision%preferred_dt
+         else if (timestepPreviousEventClamped) then
+            timestepShadowRetain = worker%timestep_shadow%retain_preferred_dt
+            timestepShadowDecision = b1_10_legacy_accepted_step_decision( &
+                 worker%timestep_shadow%evidence_preferred_dt, dtmin, dtmax, numbit, numbit_crit, &
+                 MaxIt, fact_dt_increase, fact_dt_decrease)
+            timestepShadowEvidence = timestepShadowDecision%preferred_dt
+         else
+            timestepShadowRetain = timestepDecision%preferred_dt
+            timestepShadowEvidence = timestepDecision%preferred_dt
+         end if
+         worker%timestep_shadow%available = .TRUE.
+         worker%timestep_shadow%retain_preferred_dt = timestepShadowRetain
+         worker%timestep_shadow%evidence_preferred_dt = timestepShadowEvidence
+         worker%timestep_shadow%previous_event_clamped = timestepEventClamped
          call a23bu_record_timestep_trace(worker, timestepDecisionInput, timestepDecision%preferred_dt, dt, &
               timestepDecision%reason, timestepLimitReason, timestepEventClamped)
       end if
