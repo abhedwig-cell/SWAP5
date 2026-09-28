@@ -136,6 +136,16 @@ jobs:
           print(f"BRO_EXAMPLE_SEARCH|SIZE={len(b)}|IDS={len(ids)}|FIRST={ids[:10]}")
           print("BRO_EXAMPLE_PREFIX="+repr(b[:1500]))
           PY
+      - name: Inspect response characteristic field names
+        run: |
+          python - <<'PY'
+          import json, os, pathlib
+          d=json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/openapi.json.response").read_text())
+          for name,schema in sorted(d.get("components",{}).get("schemas",{}).items()):
+              props=set((schema or {}).get("properties",{}))
+              if {"broId","deliveryAccountableParty"} & props or "broId" in name.lower():
+                  print("BRO_COMPONENT|NAME="+name+"|SCHEMA="+json.dumps(schema,sort_keys=True))
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
