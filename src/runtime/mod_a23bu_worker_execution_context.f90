@@ -66,6 +66,13 @@ module mod_a23bu_worker_execution_context
     logical :: event_clamped = .false.
   end type a23bu_timestep_decision_trace_t
 
+  type, public :: a23bu_timestep_shadow_memory_t
+    logical :: available = .false.
+    real(real64) :: retain_preferred_dt = 0.0_real64
+    real(real64) :: evidence_preferred_dt = 0.0_real64
+    logical :: previous_event_clamped = .false.
+  end type a23bu_timestep_shadow_memory_t
+
   type, public :: a23bu_numerical_control_t
     integer :: last_numbit = 0
     logical :: request_dt_reduction = .false.
@@ -105,6 +112,7 @@ module mod_a23bu_worker_execution_context
     type(a23bu_soil_water_trial_result_t) :: soil_water_trial
     type(a23bu_numerical_control_t) :: control
     type(a23bu_timestep_decision_trace_t) :: timestep_trace
+    type(a23bu_timestep_shadow_memory_t) :: timestep_shadow
     type(a23bu_execution_time_t) :: time
     type(a23bu_reporting_progress_t) :: reporting
     ! F-KT21 trajectory directions are optional worker/job-local numerical
@@ -161,6 +169,7 @@ contains
     worker%soil_water_trial = a23bu_soil_water_trial_result_t()
     worker%control = a23bu_numerical_control_t()
     worker%timestep_trace = a23bu_timestep_decision_trace_t()
+    worker%timestep_shadow = a23bu_timestep_shadow_memory_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
     worker%trajectory_direction = accepted_trajectory_direction_t()
@@ -187,6 +196,7 @@ contains
     worker%soil_water_trial = a23bu_soil_water_trial_result_t()
     worker%control = a23bu_numerical_control_t()
     worker%timestep_trace = a23bu_timestep_decision_trace_t()
+    worker%timestep_shadow = a23bu_timestep_shadow_memory_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
     worker%trajectory_direction = accepted_trajectory_direction_t()
