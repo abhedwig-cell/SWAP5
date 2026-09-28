@@ -247,6 +247,27 @@ jobs:
           print(f"BRO_MODELLED|IDS={len(ids)}|FIRST={ids[:10]}")
           for k,v in vals[:120]: print(f"BRO_MODELLED_FIELD|{k}={v}")
           PY
+      - name: Fetch first bodemfysisch object
+        run: |
+          BRO_ID=BHR000000378560
+          python research/hydrofit/bro_bhrp_fetch.py --path "objects/$BRO_ID" \
+            --output "$RUNNER_TEMP/bro/$BRO_ID.xml" \
+            --manifest "$RUNNER_TEMP/bro/$BRO_ID.manifest.json" --require-success
+          python - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET,collections
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/BHR000000378560.xml"
+          raw=p.read_bytes(); root=ET.fromstring(raw)
+          def local(t): return t.rsplit('}',1)[-1]
+          counts=collections.Counter(local(e.tag) for e in root.iter())
+          print(f"BRO_OBJECT|ID=BHR000000378560|SIZE={len(raw)}|ELEMENTS={sum(counts.values())}")
+          for k,n in counts.most_common(120):
+              print(f"BRO_OBJECT_TAG|{k}={n}")
+          keywords=("water","hydraulic","conduct","retention","potential","moist","vocht","doorlat","character","model","suction","pressure")
+          for e in root.iter():
+              k=local(e.tag)
+              if any(q in k.lower() for q in keywords):
+                  print(f"BRO_HYDRO_FIELD|{k}={(e.text or '').strip()}|ATTR={dict(e.attrib)}")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
