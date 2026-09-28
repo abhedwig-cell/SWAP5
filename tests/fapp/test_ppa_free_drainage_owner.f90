@@ -1421,32 +1421,35 @@ contains
         type(fmr_serialized_batch_diagnostics_t)::runtime_diagnostics
         type(fmr_serialized_column_result_t)::output
         type(ppa_tcsfix_identity_t)::proposal
+        type(kernel_committed_state_t)::runtime_owner
         integer::active_calls
         active_calls=0
+        call runtime_owner%initialize(404196_int64,initial,ok,T0)
+        if(.not.ok) error stop 'TCSFIX runtime fixture initialization'
         proposal%enabled=.true.; proposal%day_bound=.true.
         proposal%dayfix=2; proposal%interval_days=3; proposal%last_day=103_int64
         call fmr_execute_serialized_irrigation_resolved_column(backend,control,column,template, &
-             profile%tiles(1)%parameters,forcing,tcsfix_owner,profile%numerical,1,finish, &
-             seed%irrigation%active_event_end,output,column_diagnostics,runtime_diagnostics,active_calls, &
+             profile%tiles(1)%parameters,forcing,runtime_owner,profile%numerical,1,T0, &
+             finish,output,column_diagnostics,runtime_diagnostics,active_calls, &
              tcsfix_proposal=proposal)
-        if(output%completed.or.output%committed.or.tcsfix_owner%current_revision()/=1_int64) &
+        if(output%completed.or.output%committed.or.runtime_owner%current_revision()/=0_int64) &
              error stop 'TCSFIX runtime invalid proposal publication'
         proposal%last_day=101_int64
         output=fmr_serialized_column_result_t(); column_diagnostics=fmr_column_diagnostics_t()
         call fmr_execute_serialized_irrigation_resolved_column(backend,control,column,template, &
-             profile%tiles(1)%parameters,forcing,tcsfix_owner,profile%numerical,1,finish, &
-             seed%irrigation%active_event_end,output,column_diagnostics,runtime_diagnostics,active_calls, &
+             profile%tiles(1)%parameters,forcing,runtime_owner,profile%numerical,1,T0, &
+             finish,output,column_diagnostics,runtime_diagnostics,active_calls, &
              tcsfix_proposal=proposal)
         if(.not.output%completed.or..not.output%committed.or.active_calls/=0) then
           write(*,*) 'TCSFIX runtime status ',output%admission_status,column_diagnostics%failure_classification
           error stop 'TCSFIX runtime continuation failed'
         end if
-        call tcsfix_owner%snapshot(snapshot,ok)
+        call runtime_owner%snapshot(snapshot,ok)
         if(.not.ok) error stop 'TCSFIX runtime snapshot'
         select type(snapshot)
         type is(ppa_irrigation_event_state_t)
           if(snapshot%tcsfix%last_day/=101_int64.or.snapshot%tcsfix%dayfix/=2.or. &
-               snapshot%tcsfix%interval_days/=3.or.snapshot%irrigation%active_event) &
+               snapshot%tcsfix%interval_days/=3.or..not.snapshot%irrigation%active_event) &
                error stop 'TCSFIX runtime metadata or completion lost'
         class default
           error stop 'TCSFIX runtime carrier sliced'
