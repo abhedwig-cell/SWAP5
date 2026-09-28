@@ -54,7 +54,7 @@ if old_root not in s:
     raise SystemExit("TEMPORAL11 FSI38 root anchor missing")
 s=s.replace(old_root,f'ROOT="{root}"',1)
 anchor="  src/solver/mod_b110_default_mvg_provider.f90\n"
-insert=anchor+"  src/solver/mod_b110_default_mvg_directional_provider.f90\n  src/solver/mod_b110_direct_retention_core.f90\n  src/solver/mod_b110_direct_retention_provider.f90\n"
+insert=anchor+"  src/solver/mod_b110_default_mvg_directional_provider.f90\n  src/solver/mod_b110_direct_retention_core.f90\n  src/solver/mod_b110_direct_retention_provider.f90\n  src/solver/mod_b110_root_sink_provider.f90\n"
 if anchor not in s:
     raise SystemExit("TEMPORAL11 FSI38 constitutive module anchor missing")
 s=s.replace(anchor,insert,1)
