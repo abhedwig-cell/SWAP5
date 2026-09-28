@@ -105,10 +105,18 @@ contains
 
    subroutine call_timecontrol(task)
       integer, intent(in) :: task
-      if (present(interval)) then
-         call TimeControl(task, interval)
+      if (present(worker)) then
+         if (present(interval)) then
+            call TimeControl(task, interval, worker%timestep_trace)
+         else
+            call TimeControl(task, timestep_trace=worker%timestep_trace)
+         end if
       else
-         call TimeControl(task)
+         if (present(interval)) then
+            call TimeControl(task, interval)
+         else
+            call TimeControl(task)
+         end if
       end if
    end subroutine call_timecontrol
 
