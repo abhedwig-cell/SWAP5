@@ -4,8 +4,11 @@ Date: 2026-09-27
 
 Status: `CLOSED_CURRENT_HOST_PERFORMANCE_FRONTIER`
 
-Canonical base:
+Initial closeout base:
 `integration/f-ci-canonical@3632b652a8e493b85b895336d3d9bfbddfa06410`
+
+Reconciliation note, 2026-09-28:
+TEMPORAL10 had already qualified one >=5% current-host mechanism when this closeout was merged. F-PE-TEMPORAL11 subsequently completed its production admission evidence and must be included in the final frontier state. The broad search remains closed after that bounded successor is admitted.
 
 ## Purpose
 
@@ -30,6 +33,8 @@ The remaining measured exact per-column candidates had crossed into low expected
 ### Temporal / coupling trial efficiency
 
 Current production includes the qualified history-aware temporal budget and associated exact coupling improvements.
+
+F-PE-TEMPORAL11 production-admits demand-directed constitutive evaluation inside the exact temporal certificate. TEMPORAL10 measured approximately 5.0% worker=4 end-to-end gain at N=10,000 and N=40,000, with exact q/tangent preservation. TEMPORAL11 adds direct-retention certificate equivalence and FSI38 independent-oracle preservation before admission.
 
 ### Worker-local MultiSWAP parallel execution
 
@@ -158,6 +163,7 @@ On the currently available host:
 - the major bootstrap pathology has been removed;
 - the admitted worker-local runtime remains the main throughput mechanism;
 - additional compiler, allocation, schedule-cache and affinity changes are below material thresholds;
+- the one remaining qualified >=5% temporal constitutive mechanism has been carried through production admission by F-PE-TEMPORAL11;
 - single-column exact optimization is already closed as low-return.
 
 The current 4-logical-CPU performance frontier is therefore mature enough to close.
