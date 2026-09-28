@@ -1,0 +1,38 @@
+name: F-HYDROFIT02 BRO acquisition probe
+
+on:
+  push:
+    branches:
+      - research/f-hydrofit02-bro-acquisition
+    paths:
+      - 'research/hydrofit/bro_bhrp_fetch.py'
+      - '.github/workflows/f-hydrofit02-bro.yml'
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Probe official BHR-P base
+        run: |
+          mkdir -p "$RUNNER_TEMP/bro"
+          python research/hydrofit/bro_bhrp_fetch.py \
+            --output "$RUNNER_TEMP/bro/base.response" \
+            --manifest "$RUNNER_TEMP/bro/base.manifest.json"
+      - name: Show bounded response prefix
+        run: |
+          python - <<'PY'
+          import os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/base.response"
+          b=p.read_bytes()
+          print("BRO_BASE_PREFIX="+repr(b[:2000]))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-hydrofit02-bro-probe
+          path: ${{ runner.temp }}/bro
+          if-no-files-found: error
