@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE-BOFEK00",
+  "status": "CANONICAL_ADMITTED",
+  "canonical_head": "4e93b1ee82db3521e4e967b8b08a493efad9140a",
+  "correctness_admission": {
+    "pull_request": 701,
+    "merge_commit": "f670e012ab028cc1e74bb9b7aa1b8655b545619c",
+    "classification": "DEFECT_CONFIRMED_CURRENT_REFERENCE",
+    "scope": "FIXED_K_DYNAMIC_TOP_SWKIMPL0",
+    "admitted": true
+  },
+  "post_admission_preservation_reconciliation": {
+    "pull_request": 702,
+    "merge_commit": "4e93b1ee82db3521e4e967b8b08a493efad9140a",
+    "production_source_changed": false,
+    "purpose": "Reconcile exact admitted BOFEK00, TEMPORAL11 and later successor postimages in preservation gates."
+  },
+  "confirmed_defects": [
+    "INCOMPLETE_DYNAMIC_TOP_HEAD_JACOBIAN",
+    "CANDIDATE_AND_DT_DEPENDENT_LINEAR_RUNOFF_BRANCH_SELECTION"
+  ],
+  "qualified_results": {
+    "frozen_timestep": {
+      "steps": 24,
+      "dt_day": 0.005,
+      "baseline_nonlinear_iterations": 117,
+      "corrected_nonlinear_iterations": 98,
+      "baseline_cumulative_runoff_cm": 0.4493205111812004,
+      "corrected_cumulative_runoff_cm": 0.4493205111812251,
+      "physical_difference": "ROUND_OFF_SCALE"
+    },
+    "legacy_timecontrol_interaction": {
+      "baseline_accepted_steps": 14,
+      "corrected_accepted_steps": 8,
+      "baseline_nonlinear_iterations": 71,
+      "corrected_nonlinear_iterations": 38,
+      "baseline_cumulative_runoff_cm": 0.4614801661367161,
+      "corrected_cumulative_runoff_cm": 0.4843261930227983,
+      "classification": "UNCHANGED_TIMESTEP_POLICY_INTERACTION"
+    }
+  },
+  "policy_changed": false,
+  "runtime_speed_admission_claim": false,
+  "excluded_scope": [
+    "SWKIMPL1_DYNAMIC_HEAD_JACOBIAN",
+    "NEW_TIMESTEP_POLICY",
+    "BOFEK_DTMIN_DTMAX_RECOMMENDATIONS",
+    "TOLERANCE_BROADENING"
+  ],
+  "bofek01_02": {
+    "gate": "OPEN_FOR_QUALIFIED_FIXED_K_SWKIMPL0_REFERENCE_SURFACE",
+    "note": "Soil-dependent timestep/convergence optimization may start only on the admitted BOFEK00 fixed-K SWKIMPL=0 surface. SWKIMPL=1 remains separately gated."
+  }
+}
