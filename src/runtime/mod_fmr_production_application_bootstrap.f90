@@ -7,6 +7,8 @@ module mod_fmr_production_application_bootstrap
   use mod_canonical_result_text_adapter, only: serialize_canonical_result_text
   use mod_kernel_transactions, only: kernel_committed_state_t,kernel_executor_t
   use mod_irrigation_process, only: irrigation_state_t,ppa_weekly_identity_t,valid_weekly_identity
+  use mod_irrigation_process, only: ppa_tcsfix_identity_t,valid_tcsfix_identity,valid_tcsfix_transition
+  use mod_fmr_serialized_reference_backend, only: ppa_irrigation_event_state_t
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
@@ -355,7 +357,7 @@ contains
   end function production_application_tile_count
 
   subroutine production_application_run_prepared_irrigation(self,t0,t1,effective_forcing,results,status, &
-       selected_events,selection_mask,weekly_proposals,target_selector)
+       selected_events,selection_mask,weekly_proposals,target_selector,tcsfix_proposals)
     class(fmr_production_application_bootstrap_t),intent(inout)::self
     real(real64),intent(in)::t0,t1
     type(fmr_b110_physical_forcing_t),intent(in)::effective_forcing(:)
@@ -366,6 +368,10 @@ contains
     type(ppa_weekly_identity_t),intent(in),optional::weekly_proposals(:)
     procedure(canonical_subinterval_target_selector),optional::target_selector
     type(ppa_weekly_identity_t),allocatable::weekly_proposal
+    type(ppa_tcsfix_identity_t),intent(in),optional::tcsfix_proposals(:)
+    type(ppa_tcsfix_identity_t),allocatable::tcsfix_proposal
+    class(transaction_state_t),allocatable::snapshot
+    logical::available,enabled
     type(kernel_executor_t)::control
     type(fmr_column_diagnostics_t)::diagnostic
     type(fmr_serialized_batch_diagnostics_t)::runtime
@@ -380,6 +386,12 @@ contains
     if(t1<=t0) return
     n=size(self%columns)
     if(size(effective_forcing)/=n) return
+    if(present(tcsfix_proposals)) then
+      if(size(tcsfix_proposals)/=n) return
+      do i=1,n
+        if(.not.valid_tcsfix_identity(tcsfix_proposals(i))) return
+      end do
+    end if
     if(present(weekly_proposals)) then
       if(size(weekly_proposals)/=n) return
       do i=1,n
@@ -395,6 +407,28 @@ contains
     end if
     status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
     if(any(self%irrigation_nodes<=0)) return
+    ! Validate every TCSFIX transition before any column can publish.
+    do i=1,n
+      call self%committed(i)%snapshot(snapshot,available)
+      if(.not.available) return
+      enabled=.false.
+      if(present(tcsfix_proposals)) enabled=tcsfix_proposals(i)%enabled
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%tcsfix%enabled.neqv.enabled) return
+        if(enabled) then
+          if(.not.valid_tcsfix_transition(snapshot%tcsfix,tcsfix_proposals(i))) return
+          if(snapshot%weekly%enabled) return
+          if(present(weekly_proposals)) then
+            if(weekly_proposals(i)%enabled) return
+          end if
+          if(snapshot%irrigation%active_event.and. &
+               snapshot%tcsfix%dayfix/=tcsfix_proposals(i)%dayfix) return
+        end if
+      class default
+        if(enabled) return
+      end select
+    end do
     allocate(results(n))
     active_calls=0
     do i=1,n
@@ -402,6 +436,10 @@ contains
       results(i)%dispatch_ordinal=i
       results(i)%requested_t0=t0; results(i)%requested_t1=t1
       diagnostic=fmr_column_diagnostics_t()
+      if(allocated(tcsfix_proposal)) deallocate(tcsfix_proposal)
+      if(present(tcsfix_proposals)) then
+        if(tcsfix_proposals(i)%enabled) allocate(tcsfix_proposal,source=tcsfix_proposals(i))
+      end if
       if(allocated(weekly_proposal)) deallocate(weekly_proposal)
       if(present(weekly_proposals)) then
         if(weekly_proposals(i)%enabled) allocate(weekly_proposal,source=weekly_proposals(i))
@@ -411,12 +449,13 @@ contains
       if(select_new) then
         call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
              self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
-             t0,t1,results(i),diagnostic,runtime,active_calls,selected_events(i),weekly_proposal,target_selector)
+             t0,t1,results(i),diagnostic,runtime,active_calls,selected_events(i),weekly_proposal,target_selector, &
+             tcsfix_proposal)
       else
         call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
              self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
              t0,t1,results(i),diagnostic,runtime,active_calls,weekly_proposal=weekly_proposal, &
-             target_selector=target_selector)
+             target_selector=target_selector,tcsfix_proposal=tcsfix_proposal)
       end if
     end do
     status=FMR_APP_BOOT_RUNTIME_FAILED

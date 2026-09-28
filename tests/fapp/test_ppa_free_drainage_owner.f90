@@ -2596,6 +2596,64 @@ contains
     end do
     config%tiles(1)%irrigation_ssdi_node=0
     block
+      use mod_irrigation_process, only: ppa_tcsfix_identity_t
+      type(fmr_production_application_bootstrap_t)::app
+      type(fmr_production_application_config_t)::fixed_config
+      type(fmr_committed_restart_bundle_t)::saved,observed
+      type(ppa_tcsfix_identity_t)::proposals(2)
+      type(fmr_b110_physical_forcing_t)::zero_forcing(2)
+      type(fmr_serialized_column_result_t),allocatable::fixed_results(:)
+      integer::fixed_code,j
+      logical::fixed_ok
+      fixed_config=config; fixed_config%tiles(1)%irrigation_ssdi_node=1
+      call app%initialize(fixed_config,fixed_code)
+      if(fixed_code/=FMR_APP_BOOT_OK) error stop 'TCSFIX bootstrap initialize'
+      call app%export_committed_restart(92001_int64,saved,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX bootstrap export'
+      zero_forcing=forcing
+      do j=1,2
+        zero_forcing(j)%subsurface_irrigation_source=0.0_real64
+        select type(state=>saved%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          state%tcsfix%enabled=.true.; state%tcsfix%day_bound=.true.
+          state%tcsfix%dayfix=2; state%tcsfix%interval_days=3; state%tcsfix%last_day=100_int64
+          proposals(j)=state%tcsfix
+          proposals(j)%last_day=101_int64; proposals(j)%dayfix=3
+        class default
+          error stop 'TCSFIX bootstrap carrier'
+        end select
+      end do
+      call app%restore_committed_restart(saved,92001_int64,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX bootstrap restore'
+      proposals(2)%last_day=102_int64
+      call app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,zero_forcing, &
+           fixed_results,fixed_code,tcsfix_proposals=proposals)
+      if(fixed_code==FMR_APP_BOOT_OK.or.allocated(fixed_results)) error stop 'TCSFIX preflight gap accepted'
+      call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+      if(.not.fixed_ok.or.any(observed%records%committed_time/=T0)) error stop 'TCSFIX preflight changed time'
+      do j=1,2
+        select type(state=>observed%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%tcsfix%dayfix/=2.or.state%tcsfix%last_day/=100_int64) &
+               error stop 'TCSFIX preflight published earlier column'
+        end select
+      end do
+      proposals(2)%last_day=101_int64
+      call app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,zero_forcing, &
+           fixed_results,fixed_code,tcsfix_proposals=proposals)
+      if(fixed_code/=FMR_APP_BOOT_OK) error stop 'TCSFIX bootstrap forwarding failed'
+      if(.not.all(fixed_results%committed)) error stop 'TCSFIX bootstrap missing commits'
+      call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX bootstrap committed export'
+      do j=1,2
+        select type(state=>observed%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%tcsfix%dayfix/=3.or.state%tcsfix%last_day/=101_int64) error stop 'TCSFIX forwarding lost'
+        end select
+      end do
+      write(*,'(a)') 'PPA_IRR_TCSFIX_BOOTSTRAP_PREFLIGHT_FORWARDING=PASS'
+    end block
+    block
       use mod_irrigation_process, only: ppa_weekly_identity_t
       use mod_ppa_irr_tcs6_source, only: ppa_tcs6_daily_input_t
       type(fmr_production_application_bootstrap_t)::weekly_app,weekly_resumed,target_app
