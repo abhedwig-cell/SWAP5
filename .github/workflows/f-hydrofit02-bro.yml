@@ -309,6 +309,12 @@ jobs:
           print("BRO_TUPLE_SCHEMA_URL="+url)
           print("BRO_TUPLE_SCHEMA_PREFIX="+repr(b[:6000]))
           PY
+      - name: Fit first real BRO interval
+        run: |
+          python -m pip install numpy scipy
+          python research/hydrofit/fit_bro_real_case.py \
+            "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.csv" \
+            "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.meta.json" | tee "$RUNNER_TEMP/bro/real-fit.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
