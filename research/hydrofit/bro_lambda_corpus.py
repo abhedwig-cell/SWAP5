@@ -10,7 +10,7 @@ def local(t): return t.rsplit('}',1)[-1]
 def texts(root,name): return [(e.text or '').strip() for e in root.iter() if local(e.tag)==name and (e.text or '').strip()]
 def main():
  ap=argparse.ArgumentParser(); ap.add_argument("--party",default="27378529"); ap.add_argument("--limit",type=int,default=100); ap.add_argument("--out",required=True); a=ap.parse_args()
- url=DEFAULT_BASE+"/bro-ids?"+urlencode({"deliveryAccountableParty":a.party})
+ url=DEFAULT_BASE+"/bro-ids?"+urlencode({"kvkAccountableParty":a.party})
  status,ctype,b=fetch(url); 
  if status//100!=2: raise SystemExit(f"bro-ids status {status}: {b[:500]!r}")
  root=ET.fromstring(b); ids=sorted(set(texts(root,"broId")))
