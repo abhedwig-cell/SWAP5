@@ -37,7 +37,7 @@ run_one old "$OLD"
 run_one corrected "$ROOT"
 
 python3 - "$BUILD/old/result.txt" "$BUILD/corrected/result.txt" "$BUILD/summary.json" <<'PY'
-import json,re,sys
+import json,re,sys,math
 from pathlib import Path
 
 def parse(path):
@@ -72,7 +72,7 @@ out={
    "newton_iterations":total("NEWTON",old),
    "backtracks":total("BACKTRACK",old),
    "internal_retries":total("RETRIES",old),
-   "max_abs_native_mass":max(abs(x["MASS_NATIVE"]) for x in old["steps"]),
+   "native_mass_diagnostic_finite":all(math.isfinite(x["MASS_NATIVE"]) for x in old["steps"]),\n   "max_abs_native_mass_if_finite":max([abs(x["MASS_NATIVE"]) for x in old["steps"] if math.isfinite(x["MASS_NATIVE"])] or [0.0]),
    "max_abs_ledger":max(abs(x["LEDGER"]) for x in old["steps"])
  },
  "corrected":{
@@ -81,7 +81,7 @@ out={
    "newton_iterations":total("NEWTON",new),
    "backtracks":total("BACKTRACK",new),
    "internal_retries":total("RETRIES",new),
-   "max_abs_native_mass":max(abs(x["MASS_NATIVE"]) for x in new["steps"]),
+   "native_mass_diagnostic_finite":all(math.isfinite(x["MASS_NATIVE"]) for x in new["steps"]),\n   "max_abs_native_mass_if_finite":max([abs(x["MASS_NATIVE"]) for x in new["steps"] if math.isfinite(x["MASS_NATIVE"])] or [0.0]),
    "max_abs_ledger":max(abs(x["LEDGER"]) for x in new["steps"])
  },
  "trajectory":{
