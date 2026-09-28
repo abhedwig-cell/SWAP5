@@ -7,11 +7,15 @@ on:
     paths:
       - 'docs/performance/F-PE-BOFEK-PRACTICAL01_PREREGISTRATION.md'
       - 'docs/performance/F-PE-BOFEK-PRACTICAL02_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-BOFEK-PRACTICAL03_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-BOFEK-PRACTICAL03_VALIDATION_BANK.json'
       - 'docs/performance/F-PE-BOFEK-PRACTICAL02_VALIDATION_BANK.json'
       - 'tests/fpe/run_fpe_bofek_practical01_screen.py'
       - 'tests/fpe/run_fpe_bofek_practical01_screen.sh'
       - 'tests/fpe/run_fpe_bofek_practical02_validate.py'
       - 'tests/fpe/run_fpe_bofek_practical02_validate.sh'
+      - 'tests/fpe/run_fpe_bofek_practical03_validate.py'
+      - 'tests/fpe/run_fpe_bofek_practical03_validate.sh'
       - 'tests/fpe/test_fpe_bofek01_policy_case.f90'
       - 'docs/performance/F-PE-BOFEK01_TESTBANK.json'
       - '.github/workflows/f-pe-bofek-practical01.yml'
@@ -44,3 +48,15 @@ jobs:
         run: gfortran --version
       - name: Run preregistered regime validation
         run: bash tests/fpe/run_fpe_bofek_practical02_validate.sh
+
+  archetype-regime-validation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered archetype regime validation
+        run: bash tests/fpe/run_fpe_bofek_practical03_validate.sh
