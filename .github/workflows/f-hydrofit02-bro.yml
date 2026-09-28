@@ -205,6 +205,25 @@ jobs:
             if len(set(found))>=3: break
           print("BRO_GRID_FOUND="+json.dumps(sorted(set(found))[:20]))
           PY
+      - name: Control search without analysis filter
+        run: |
+          cat > "$RUNNER_TEMP/bro/control-search.json" <<'JSON'
+          {"area":{"enclosingCircle":{"center":{"lat":51.97,"lon":5.67},"radius":10.0}}}
+          JSON
+          python research/hydrofit/bro_bhrp_fetch.py --path characteristics/searches --method POST \
+            --json-body "$RUNNER_TEMP/bro/control-search.json" \
+            --output "$RUNNER_TEMP/bro/control-search.xml" \
+            --manifest "$RUNNER_TEMP/bro/control-search.manifest.json" --require-success
+          python - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/control-search.xml"
+          root=ET.fromstring(p.read_bytes())
+          def local(t): return t.rsplit('}',1)[-1]
+          vals=[(local(e.tag),e.text.strip()) for e in root.iter() if e.text and e.text.strip()]
+          print("BRO_CONTROL_FIELDS_BEGIN")
+          for k,v in vals[:250]: print(f"BRO_CONTROL_FIELD|{k}={v}")
+          print("BRO_CONTROL_FIELDS_END")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
