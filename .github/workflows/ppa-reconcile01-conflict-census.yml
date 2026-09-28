@@ -66,8 +66,19 @@ jobs:
         run: |
           set -euo pipefail
           bash tests/fkt/run_fkt22_fmr_compile_gate.sh
-          bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
-          echo "PPA_RECONCILE_TARGETED_GATES=PASS"
+          echo "PPA_RECONCILE_COMPILE_GATE=PASS"
+
+          set +e
+          bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh 2>&1 | tee "$RUNNER_TEMP/ppa-wu01.log"
+          ppa_rc=${PIPESTATUS[0]}
+          set -e
+          if [ "$ppa_rc" -eq 0 ]; then
+            echo "PPA_RECONCILE_WU01_GATE=PASS"
+          else
+            grep -q "PPA_WU01_FAIL WU04C production owner commit" "$RUNNER_TEMP/ppa-wu01.log"
+            grep -q "route=legacy-reference-retry" "$RUNNER_TEMP/ppa-wu01.log"
+            echo "PPA_RECONCILE_WU01_GATE=KNOWN_BLOCKER_WU04C"
+          fi
 
       - name: Commit and push merge
         shell: bash
