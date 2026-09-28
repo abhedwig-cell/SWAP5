@@ -224,6 +224,29 @@ jobs:
           for k,v in vals[:250]: print(f"BRO_CONTROL_FIELD|{k}={v}")
           print("BRO_CONTROL_FIELDS_END")
           PY
+      - name: Discover modelled characteristics near Wageningen
+        run: |
+          cat > "$RUNNER_TEMP/bro/modelled-search.json" <<'JSON'
+          {
+            "area":{"enclosingCircle":{"center":{"lat":51.97,"lon":5.67},"radius":10.0}},
+            "characteristicModelled":"JA"
+          }
+          JSON
+          python research/hydrofit/bro_bhrp_fetch.py --path characteristics/searches --method POST \
+            --json-body "$RUNNER_TEMP/bro/modelled-search.json" \
+            --output "$RUNNER_TEMP/bro/modelled-search.xml" \
+            --manifest "$RUNNER_TEMP/bro/modelled-search.manifest.json"
+          python - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/modelled-search.xml"; raw=p.read_bytes()
+          print("BRO_MODELLED_PREFIX="+repr(raw[:1200]))
+          x=ET.fromstring(raw)
+          def local(t): return t.rsplit('}',1)[-1]
+          vals=[(local(e.tag),e.text.strip()) for e in x.iter() if e.text and e.text.strip()]
+          ids=[v for k,v in vals if k.lower()=="broid" or v.startswith("BHRP")]
+          print(f"BRO_MODELLED|IDS={len(ids)}|FIRST={ids[:10]}")
+          for k,v in vals[:120]: print(f"BRO_MODELLED_FIELD|{k}={v}")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
