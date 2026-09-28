@@ -1437,8 +1437,10 @@ contains
              profile%tiles(1)%parameters,forcing,tcsfix_owner,profile%numerical,1,finish, &
              seed%irrigation%active_event_end,output,column_diagnostics,runtime_diagnostics,active_calls, &
              tcsfix_proposal=proposal)
-        if(.not.output%completed.or..not.output%committed.or.active_calls/=0) &
-             error stop 'TCSFIX runtime continuation failed'
+        if(.not.output%completed.or..not.output%committed.or.active_calls/=0) then
+          write(*,*) 'TCSFIX runtime status ',output%admission_status,column_diagnostics%failure_classification
+          error stop 'TCSFIX runtime continuation failed'
+        end if
         call tcsfix_owner%snapshot(snapshot,ok)
         if(.not.ok) error stop 'TCSFIX runtime snapshot'
         select type(snapshot)
