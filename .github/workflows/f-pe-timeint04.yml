@@ -7,6 +7,7 @@ on:
     paths:
       - 'docs/performance/F-PE-TIMEINT04_PREREGISTRATION.md'
       - 'docs/performance/F-PE-TIMEINT04A_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT04B_PREREGISTRATION.md'
       - 'tests/fpe/materialize_fpe_timeint04_trace.py'
       - 'tests/fpe/test_fpe_timeint04_trace.f90'
       - 'tests/fpe/run_fpe_timeint04_trace.py'
@@ -14,6 +15,10 @@ on:
       - 'tests/fpe/materialize_fpe_timeint04a_floor.py'
       - 'tests/fpe/run_fpe_timeint04a_floor.py'
       - 'tests/fpe/run_fpe_timeint04a_floor.sh'
+      - 'tests/fpe/materialize_fpe_timeint04b_floor.py'
+      - 'tests/fpe/test_fpe_timeint04b_floor.f90'
+      - 'tests/fpe/run_fpe_timeint04b_floor.py'
+      - 'tests/fpe/run_fpe_timeint04b_floor.sh'
       - '.github/workflows/f-pe-timeint04.yml'
   workflow_dispatch:
 
@@ -44,3 +49,15 @@ jobs:
         run: gfortran --version
       - name: Run preregistered BDF2 balance-floor diagnostic
         run: bash tests/fpe/run_fpe_timeint04a_floor.sh
+
+  bdf2-floor-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered BDF2 floor qualification
+        run: bash tests/fpe/run_fpe_timeint04b_floor.sh
