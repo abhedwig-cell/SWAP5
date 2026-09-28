@@ -32,6 +32,13 @@ BALTOL02_ADMISSION="0ac76e68a35dda95c753d255927f1dc432f7b42e"
 BALTOL02_BACKEND_BLOB="a5d472636f50a715cf64016ad9d500b401b0ebb1"
 TEMPORAL08_ADMISSION="0d50aa1b362928d58d97e23ef39da9fef90287ed"
 TEMPORAL08_BOOTSTRAP_BLOB="5816ed76774f71fff3fb669d58402a2b10ae00b5"
+SETUP04_ADMISSION="860e72284ca75182fd4182b6097883f92cac9e93"
+SETUP04_BOOTSTRAP_BLOB="8baac4f004b49aacf6638b81af9da6faffa87c4d"
+BOFEK00_ADMISSION="f670e012ab028cc1e74bb9b7aa1b8655b545619c"
+BOFEK00_SW_BLOB="f67cbe5b4612e8f4230f58f81cbffd3d44336c0d"
+BOFEK00_HEADCALC_BLOB="3310e5f89109592134e715edd73154479e2ae157"
+TEMPORAL11_ADMISSION="0928019bf826d6377d5f9324144496334bf4b0d6"
+TEMPORAL11_TEMPORAL_BLOB="7239ec1b8572e97a624515fe7dd2ff25de648baa"
 FCI110_TEMPORAL_BLOB="81a0305958e108e92224a48862358d79c765cd0a"
 
 backend_blob="$LOW02_BACKEND_BLOB"
@@ -73,6 +80,10 @@ if git merge-base --is-ancestor "$TEMPORAL08_ADMISSION" HEAD; then
   bootstrap_blob="$TEMPORAL08_BOOTSTRAP_BLOB"
   echo 'PPA_LOW02_TEMPORAL08_BOOTSTRAP_SUCCESSOR=ACTIVE'
 fi
+if git merge-base --is-ancestor "$SETUP04_ADMISSION" HEAD; then
+  bootstrap_blob="$SETUP04_BOOTSTRAP_BLOB"
+  echo 'PPA_LOW02_SETUP04_BOOTSTRAP_SUCCESSOR=ACTIVE'
+fi
 
 [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" == "$backend_blob" ]] || \
   fail 'admitted backend successor drift'
@@ -88,11 +99,20 @@ if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
 fi
 for locked in \
   src/adapter/mod_b110_serialized_context_binding.f90 \
-  src/solver/mod_soil_water_solver_contract.f90 \
-  src/legacy/b1_10_port/headcalc.f90 \
   src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90; do
   [[ "$(git rev-parse "HEAD:$locked")" == "$(git rev-parse "$inherited_authority:$locked")" ]] || fail "inherited authority drift: $locked"
 done
+sw_blob="$(git rev-parse "$inherited_authority:src/solver/mod_soil_water_solver_contract.f90")"
+headcalc_blob="$(git rev-parse "$inherited_authority:src/legacy/b1_10_port/headcalc.f90")"
+if git merge-base --is-ancestor "$BOFEK00_ADMISSION" HEAD; then
+  sw_blob="$BOFEK00_SW_BLOB"
+  headcalc_blob="$BOFEK00_HEADCALC_BLOB"
+  echo 'PPA_LOW02_BOFEK00_REFERENCE_SUCCESSOR=ACTIVE'
+fi
+[[ "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" == "$sw_blob" ]] || \
+  fail 'admitted solver-contract successor drift'
+[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == "$headcalc_blob" ]] || \
+  fail 'admitted HeadCalc successor drift'
 
 if ! git merge-base --is-ancestor "$PPA_WU04A_ADMISSION" HEAD; then
   [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == \
@@ -105,6 +125,10 @@ if git merge-base --is-ancestor "$ROOT_HYD01_ADMISSION" HEAD; then
   if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
     temporal_blob="$FCI110_TEMPORAL_BLOB"
     echo 'PPA_LOW02_FCI110_TEMPORAL_SUCCESSOR=ACTIVE'
+  fi
+  if git merge-base --is-ancestor "$TEMPORAL11_ADMISSION" HEAD; then
+    temporal_blob="$TEMPORAL11_TEMPORAL_BLOB"
+    echo 'PPA_LOW02_TEMPORAL11_TEMPORAL_SUCCESSOR=ACTIVE'
   fi
   [[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)" == "$temporal_blob" ]] || \
     fail 'admitted temporal-indicator successor drift'
