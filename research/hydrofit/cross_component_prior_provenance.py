@@ -15,8 +15,9 @@ def interval(node):
  vals={}
  for e in node.iter():
   k=local(e.tag)
-  if k in ("beginDepth","endDepth") and text(e) and k not in vals: vals[k]=num(text(e))
+  if k in ("beginDepth","endDepth","upperBoundary","lowerBoundary") and text(e) and k not in vals: vals[k]=num(text(e))
  if vals.get("beginDepth") is not None and vals.get("endDepth") is not None:return vals["beginDepth"],vals["endDepth"]
+ if vals.get("upperBoundary") is not None and vals.get("lowerBoundary") is not None:return vals["upperBoundary"],vals["lowerBoundary"]
  return None
 def relation(a,b,c,d,tol=1e-9):
  ov=max(0.0,min(b,d)-max(a,c))
