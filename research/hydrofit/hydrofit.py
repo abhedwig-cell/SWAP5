@@ -312,6 +312,18 @@ def near_equivalent_ensemble(
     broad_local = xstar + rng.normal(size=(broad_draws - broad_draws // 2, len(xstar))) * (0.05 * span)
     broad_local = np.clip(broad_local, lo, hi)
     candidates = np.vstack([xstar[None, :], local, broad_uniform, broad_local])
+    # Independent box bounds do not encode coupled physical constraints.
+    # Reject invalid theta ordering before objective evaluation.
+    physical = (
+        np.isfinite(candidates).all(axis=1)
+        & (candidates[:, 0] >= 0.0)
+        & (candidates[:, 0] < candidates[:, 1])
+        & (candidates[:, 1] <= 1.0)
+        & (candidates[:, 2] > 0.0)
+        & (candidates[:, 3] > 1.0)
+        & (candidates[:, 4] > 0.0)
+    )
+    candidates = candidates[physical]
 
     objectives = np.asarray([objective_value(x, observations, cfg) for x in candidates])
     jstar = best.objective
