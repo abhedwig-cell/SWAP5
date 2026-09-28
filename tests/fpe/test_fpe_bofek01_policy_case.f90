@@ -121,7 +121,7 @@ contains
       rejected=rejected+1;new_dt=dt
       if(new_dt>fact_fail*dtmin)then;new_dt=new_dt/fact_fail;else;new_dt=dtmin;end if
       if(new_dt<dt-EPS_TIME)reductions=reductions+1
-      call require(new_dt<dt-EPS_TIME .or. dt<=dtmin+EPS_TIME,'nonconvergence at dtmin')
+      call require(new_dt<dt-EPS_TIME,'nonconvergence at dtmin')
       dt=new_dt;return
     end if
     bc=soil_water_boundary_conditions_t()
