@@ -1,0 +1,28 @@
+name: F-PE-BOFEK00 adaptive interaction
+
+on:
+  push:
+    branches:
+      - work/f-pe-bofek00-adaptive-interaction
+    paths:
+      - 'docs/verification/evidence/F-PE-BOFEK00_ADAPTIVE_PREREGISTRATION.json'
+      - 'tests/verification/test_bofek00_adaptive_wet_trajectory.f90'
+      - 'tests/verification/run_bofek00_adaptive_comparison.sh'
+      - '.github/workflows/f-pe-bofek00-adaptive.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adaptive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Compare baseline and corrected under unchanged adaptive policy
+        run: bash tests/verification/run_bofek00_adaptive_comparison.sh
