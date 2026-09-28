@@ -60,7 +60,7 @@ program test_fpe_timeint03_mixed_lte
   end if
 
   if(.not.(ok_full.and.ok_h1.and.ok_h2))then
-    write(*,'(*(g0))')'F_PE_TIMEINT02|CASE=',trim(case_id),'|DT=',step_dt,'|OK=0|STAGE=PHYSICAL', &
+    write(*,'(*(g0))')'F_PE_TIMEINT03|CASE=',trim(case_id),'|DT=',step_dt,'|OK=0|STAGE=PHYSICAL', &
       '|FULL=',merge(1,0,ok_full),'|H1=',merge(1,0,ok_h1),'|H2=',merge(1,0,ok_h2)
     stop
   end if
@@ -82,7 +82,7 @@ program test_fpe_timeint03_mixed_lte
   storage_delta=abs(storage(full)-storage(half2))
   max_ledger=max(abs(l_full),abs(l_h1),abs(l_h2))
 
-  write(*,'(*(g0))')'F_PE_TIMEINT02|CASE=',trim(case_id),'|DT=',step_dt,'|OK=1', &
+  write(*,'(*(g0))')'F_PE_TIMEINT03|CASE=',trim(case_id),'|DT=',step_dt,'|OK=1', &
     '|LTE_INF=',lte_inf,'|LTE_THETA_INF=',lte_theta_inf,'|LTE_WATER_L1=',lte_water_l1, &
     '|LTE_WATER_NET=',lte_water_net,'|ACTUAL_H=',actual_h,'|ACTUAL_THETA=',actual_theta, &
     '|ACTUAL_WATER_L1=',actual_water_l1,'|RUNOFF_D=',runoff_delta,'|POND_D=',pond_delta, &
