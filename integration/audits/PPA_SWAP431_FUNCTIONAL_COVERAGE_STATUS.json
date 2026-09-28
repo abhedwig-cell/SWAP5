@@ -9,6 +9,12 @@
   "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
   "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
   "next_local_capability": "integration/audits/PPA_IRR_TCSFIX_COMPOSITION_DESIGN.md",
+  "latest_tcsfix_checkpoint": {
+    "tested_commit": "3dc023a16",
+    "record": "integration/audits/PPA_IRR_TCSFIX_COMPOSITION_STATUS.json",
+    "scope": "Branch-local explicit daily TCS1-4/DCS2 supplied-observation route composes interval filtering, existing carrier ownership, all-column preflight, exact/prefix/window execution and decoded restart. O0/O2 gates cover selection, suppression, duplicate identity, late-column rejection, internally progressed rollback, mixed identities and short two-prefix window equivalence.",
+    "limits": "No canonical admission, automatic calendar/root inputs, profile-derived TCSFIX or DCS1. Larger 1/1024-day pending-event continuation remains rejected with cause unestablished; passing short post-gift continuation does not resolve that separate fixture."
+  },
   "latest_tcs6_dcs1_checkpoint": {
     "tested_commit": "223859929",
     "record": "integration/audits/PPA_IRR_TCS6_COMPOSITION_STATUS.json",

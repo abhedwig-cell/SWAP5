@@ -2,7 +2,18 @@
 
 ## Scope and authority
 
-Latest bounded irrigation extension: tested postimage `a99c037d9` covers
+Latest branch-local extension: tested postimage `3dc023a16` covers explicit
+daily TCSFIX with supplied-observation TCS1-4/DCS2. Timing, interval filtering
+and source binding now feed the existing committed owner through exact,
+prefix and window routes. Recorded O0/O2 gates cover selected/suppressed gifts,
+duplicate ordinals, all-column preflight, rollback, mixed timing identities,
+decoded restart and a short two-prefix window matching manual restart replay.
+Authority: `integration/audits/PPA_IRR_TCSFIX_COMPOSITION_STATUS.json`.
+The larger pending-event continuation rejection remains unresolved. These
+results do not admit full-day execution, profile-derived TCSFIX, DCS1,
+automatic calendars/root inputs or canonical production scope.
+
+Earlier bounded irrigation extension: tested postimage `a99c037d9` covers
 weekly TCS6 supplied-deficit and opt-in committed-profile DCS1/DCS2 execution.
 Source arithmetic, explicit mask validation, mixed-column exact/window identity,
 pending decoded-bundle restore and fresh two-prefix gift/remainder execution
@@ -10,8 +21,8 @@ pass recorded O0/O2 gates with unchanged mass checks. See
 `integration/audits/PPA_IRR_TCS6_COMPOSITION_STATUS.json`. Profiles remain
 caller supplied; neither automatic root evolution nor full-day completion is
 established. These branch-local results do not change canonical admission or
-the frozen Status-A denominator. Next check: successor invocation with changed
-explicit profile inputs and freshly committed water, preserving duplicate bypass.
+the frozen Status-A denominator. The successor invocation with changed explicit
+profiles was subsequently tested at `223859929`; see the owning status record.
 
 Branch-local update: tested postimage `0d6389024` closes the restricted
 TCS2-4/DCS2 supplied-profile runtime gates: water aggregates use the committed
