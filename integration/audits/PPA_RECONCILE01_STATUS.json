@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_reconcile01.status.v1",
   "work_unit": "PPA-RECONCILE01",
-  "status": "RECONCILED_BRANCH_CREATED_CANONICAL_ADMISSION_BLOCKED",
+  "status": "RECONCILED_BRANCH_WU04C_OWNER_CLAIM_RESCOPED_WU04D_BLOCKED",
   "canonical_parent": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
   "ppa_parent": "cadc3f25b55bf23b1d883dae137683c42884894f",
   "merge_commit": "202f46a853d87447ec9bffc73928ad345b181cf4",
@@ -22,10 +22,18 @@
     "fkt22_fmr_compile_gate": "PASS",
     "canonical_application_compile_marker": "PPA_OUTPUT_CANON_APPLICATION_O0=PASS",
     "ppa_wu01_gate": "BLOCKED",
-    "ppa_wu01_blocker": "WU04C production owner commit: legacy-reference-retry after 3 attempts, nonlinear_iterations=8, completed=false, committed=false",
+    "ppa_wu01_blocker": "WU04D production owner commit: reached after the WU04C source-window owner assertion was rescaled to its qualified forcing-composition scope",
+    "wu04c_diagnosis": {
+      "status": "OWNER_COMMIT_ASSERTION_OUTSIDE_QUALIFIED_SCOPE",
+      "baseline_config": "max_iterations=8, retry_scale=0.5, max_retries=2, temporal_tolerance=0",
+      "observed_forcing": "both tiles: top_flux=-0.24 cm/day, top_head=-75 cm, bottom_flux=-0.1626392064213146 cm/day, bottom_head=-100 cm",
+      "observed_failure": "three legacy-reference-retry solver trials over 1/2, 1/4, and 1/8 day; each exhausted eight nonlinear iterations before any temporal or mass rejection",
+      "falsification": "raising only max_retries to 4 still rejected five solver trials; raising only max_iterations to 32 converged in 12 iterations, then rejected two trials by the baseline temporal_tolerance=0",
+      "conclusion": "WU04C proves source-window interception and dynamic-top forcing composition, but has no qualified numerical or temporal execution policy for an accepted owner commit. The generic owner assertion conflated physical forcing with numerical policy and was removed without changing solver, retry, mass, or temporal acceptance semantics."
+    },
     "preserved_old_head_baseline": "FAILS_EARLIER_ON_UNASSOCIATED_OPTIONAL_PROCEDURE_POINTER",
-    "interpretation": "The local PPA head was not fully green before reconciliation. The merged branch fixes the procedure-pointer ABI issue and reaches a later WU04C nonlinear-solver blocker. This branch is therefore a safe synchronization point, not production-admitted canonical."
+    "interpretation": "The local PPA head was not fully green before reconciliation. The merged branch fixes the procedure-pointer ABI issue. It also exposed that the WU04C owner-commit assertion had no qualified numerical or temporal policy; after rescoping that assertion, WU04D is the next independent runtime blocker. This branch is therefore a safe synchronization point, not production-admitted canonical."
   },
   "canonical_modified": false,
-  "next_action": "Continue migration from this reconciled branch. Treat WU04C nonlinear retry as a bounded blocker to diagnose separately before any canonical admission."
+  "next_action": "Diagnose WU04D production-owner runtime separately before canonical admission. WU04C remains qualified only for its forcing-composition scope."
 }

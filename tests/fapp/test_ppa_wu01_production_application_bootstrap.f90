@@ -550,53 +550,6 @@ contains
       request%water_content_top = value%tiles(tile)%initial_state%water_content(1)
       request%step_duration_day = T1 - T0; request%ponding_max_cm = 2.0_real64
       request%runoff_resistance_day = 1.0_real64; request%runoff_exponent = 1.0_real64
-      call materialize_ppa_wu04c_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, source, &
-           0.12_real64, 0.20_real64, 0.10_real64, forcing_vector(tile), interception, diagnostics)
-      call require(diagnostics%status == PPA_WU04C_PRODUCTION_FORCING_OK, 'WU04C tile forcing composition')
-      deallocate(geometry%z, geometry%dz, geometry%node_distance)
-    end do
-    call production_app%initialize(value, local_status)
-    call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner initialize')
-    call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
-    write(*,'(A,I0)') 'PPA_RECONCILE_WU04C_STATUS=', local_status
-    if (allocated(production_results)) then
-      do tile = 1, size(production_results)
-        write(*,'(A,I0,A,A,A,I0,A,L1,A,L1,A,L1,A,I0,A,ES24.16E3)') &
-             'PPA_RECONCILE_WU04C_RESULT tile=',tile,':admission=',trim(production_results(tile)%admission_status), &
-             ':kernel=',production_results(tile)%kernel_status,':admitted=',production_results(tile)%admitted, &
-             ':completed=',production_results(tile)%completed,':committed=',production_results(tile)%committed, &
-             ':substeps=',production_results(tile)%accepted_substeps,':mass=',production_results(tile)%mass%residual
-        write(*,'(A,I0,A,L1,A,A,A,I0,A,I0,A,I0,A,I0,A,I0)') &
-             'PPA_RECONCILE_WU04C_DIAG tile=',tile,':solver_executed=',production_results(tile)%solver_executed, &
-             ':route=',trim(production_results(tile)%solver_route), &
-             ':iterations=',production_results(tile)%solver_iterations, &
-             ':attempts=',production_results(tile)%transaction_attempts, &
-             ':solver_rej=',production_results(tile)%solver_rejections, &
-             ':temporal_rej=',production_results(tile)%temporal_rejections, &
-             ':mass_rej=',production_results(tile)%mass_rejections
-      end do
-    end if
-    call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
-         'WU04C production owner commit')
-    call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04C production hard mass')
-    call production_app%close(local_status)
-    call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner close')
-    deallocate(forcing_vector)
-
-    allocate(forcing_vector(NTILE))
-    do tile = 1, NTILE
-      geometry%parameter_set_id = value%tiles(tile)%parameters%parameter_set_id
-      geometry%active_nodes = value%tiles(tile)%parameters%active_nodes
-      allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
-      geometry%z = value%tiles(tile)%parameters%z; geometry%dz = value%tiles(tile)%parameters%dz
-      geometry%node_distance = value%tiles(tile)%parameters%node_distance
-      call initialize_b110_default_mvg_parameters(hydraulics, value%tiles(tile)%parameters%cofgen)
-      request = b110_dynamic_top_boundary_request_t()
-      request%conductivity_mean_method = value%tiles(tile)%parameters%swkmean
-      request%pressure_head_top_cm = value%tiles(tile)%initial_state%pressure_head(1)
-      request%water_content_top = value%tiles(tile)%initial_state%water_content(1)
-      request%step_duration_day = T1 - T0; request%ponding_max_cm = 2.0_real64
-      request%runoff_resistance_day = 1.0_real64; request%runoff_exponent = 1.0_real64
       call materialize_ppa_wu04d_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, gash, source, &
            0.20_real64, 0.10_real64, forcing_vector(tile), interception, gash_diagnostics)
       call require(gash_diagnostics%status == PPA_WU04D_PRODUCTION_FORCING_OK, 'WU04D tile forcing composition')
