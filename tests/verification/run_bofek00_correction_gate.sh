@@ -33,7 +33,7 @@ print("F_PE_BOFEK00_CORRECTION_SOURCE_SHAPE=PASS")
 PY
 
 stub="$BUILD/stubs_n16.f90"
-python3 "$MATERIALIZER" --source tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 16
+python3 "$MATERIALIZER" --source tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes 16 --dz-cm 10
 
 for opt in 0 2; do
   out="$BUILD/o$opt"
