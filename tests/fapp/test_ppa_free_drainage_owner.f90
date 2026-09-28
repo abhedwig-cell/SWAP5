@@ -2611,6 +2611,9 @@ contains
       type(fmr_b110_physical_forcing_t)::zero_forcing(2)
       type(fmr_serialized_column_result_t),allocatable::fixed_results(:)
       integer::fixed_code,j,guard_case,mixed_case
+      integer::fixed_prefix_count
+      real(real64)::fixed_endpoint
+      type(ppa_irrigation_prefix_result_t),allocatable::fixed_prefixes(:)
       logical::fixed_ok
       fixed_config=config; fixed_config%tiles(1)%irrigation_ssdi_node=1
       call app%initialize(fixed_config,fixed_code)
@@ -2762,6 +2765,43 @@ contains
         end do
       end do
       ! Restore the mixed-mode baseline expected by the following fixtures.
+      do j=1,2
+        select type(state=>saved%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          state%tcsfix%dayfix=3; state%tcsfix%last_day=100_int64
+        end select
+        fixed_parameters(j)%dcs2_depth_cm(:2)=0.01_real64/65536.0_real64
+        fixed_requests(j)%t1=T0+2.0_real64/65536.0_real64
+      end do
+      do guard_case=1,2
+        call app%restore_committed_restart(saved,92001_int64,fixed_ok,fixed_code)
+        if(.not.fixed_ok) error stop 'TCSFIX prefix fixture restore'
+        if(guard_case==1) then
+          call execute_next_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64, &
+               fixed_parameters,fixed_requests,zero_forcing,fixed_results,fixed_code,fixed_endpoint, &
+               observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+          if(fixed_code/=FMR_APP_BOOT_OK.or.fixed_endpoint/=T0+1.0_real64/65536.0_real64) &
+               error stop 'TCSFIX next prefix split'
+        else
+          call execute_window_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64, &
+               fixed_parameters,fixed_requests,zero_forcing,1,fixed_prefixes,fixed_prefix_count,fixed_code, &
+               observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+          if(fixed_code/=PPA_IRR_WINDOW_BUDGET_EXHAUSTED.or.fixed_prefix_count/=1) &
+               error stop 'TCSFIX window bounded prefix'
+        end if
+        call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+        if(.not.fixed_ok) error stop 'TCSFIX prefix export'
+        if(any(observed%records%committed_time/=T0+1.0_real64/65536.0_real64)) &
+             error stop 'TCSFIX prefix boundary'
+        do j=1,2
+          select type(state=>observed%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(state%tcsfix%dayfix/=1.or.state%tcsfix%last_day/=101_int64.or.state%irrigation%active_event) &
+                 error stop 'TCSFIX prefix identity or completion'
+          end select
+        end do
+      end do
+      write(*,'(a)') 'PPA_IRR_TCSFIX_PREFIX_SPLIT_RETRY_WINDOW_BUDGET=PASS'
       do j=1,2
         select type(state=>saved%records(j)%physical_state)
         type is(ppa_irrigation_event_state_t)
