@@ -59,15 +59,24 @@ contains
   subroutine eq(a,b,n)
     real(real64),intent(in)::a,b
     integer,intent(in)::n
-    if(abs(a-b)>tol*max(1.0_real64,abs(a),abs(b))) error stop n
+    if(abs(a-b)>tol*max(1.0_real64,abs(a),abs(b))) then
+      write(*,'(A,I0)') 'F_PE_TIMEARCH02_FAIL_REAL_',n
+      error stop 1
+    end if
   end subroutine
   subroutine ieq(a,b,n)
     integer,intent(in)::a,b,n
-    if(a/=b) error stop n
+    if(a/=b) then
+      write(*,'(A,I0)') 'F_PE_TIMEARCH02_FAIL_INT_',n
+      error stop 1
+    end if
   end subroutine
   subroutine require(x,n)
     logical,intent(in)::x
     integer,intent(in)::n
-    if(.not.x) error stop n
+    if(.not.x) then
+      write(*,'(A,I0)') 'F_PE_TIMEARCH02_FAIL_LOGICAL_',n
+      error stop 1
+    end if
   end subroutine
 end program test_fpe_timearch02_contract
