@@ -1,4 +1,6 @@
 module mod_ppa_irr_tcsfix_source
+  use, intrinsic :: iso_fortran_env, only: int64
+  use mod_ppa_irr_tcsfix_identity, only: ppa_tcsfix_identity_t,prepare_tcsfix_day
   use mod_irrigation_process
   use mod_ppa_irr_tcsfix_composition, only: evaluate_tcsfix_scheduled
   use mod_ppa_irr_tcs1_4_source, only: ppa_tcs1_4_observations_t
@@ -7,7 +9,36 @@ module mod_ppa_irr_tcsfix_source
   implicit none
   private
   public :: evaluate_tcsfix_source
+  public :: evaluate_tcsfix_daily_source
 contains
+  subroutine evaluate_tcsfix_daily_source(p,base,r,observations,identity,daily,ordinal,previous, &
+       proposed_identity,candidate,flux,diagnostics,forcing,ok)
+    type(scheduled_irrigation_parameters_t),intent(in)::p
+    type(irrigation_state_t),intent(in)::base
+    type(scheduled_irrigation_request_t),intent(in)::r
+    type(ppa_tcs1_4_observations_t),intent(in)::observations
+    type(ppa_tcsfix_identity_t),intent(in)::identity
+    logical,intent(in)::daily
+    integer(int64),intent(in)::ordinal
+    type(fmr_b110_physical_forcing_t),intent(in)::previous
+    type(ppa_tcsfix_identity_t),intent(out)::proposed_identity
+    type(irrigation_state_t),intent(out)::candidate
+    type(irrigation_flux_result_t),intent(out)::flux
+    type(irrigation_diagnostics_t),intent(out)::diagnostics
+    type(fmr_b110_physical_forcing_t),allocatable,intent(out)::forcing
+    logical,intent(out)::ok
+    type(ppa_tcsfix_identity_t)::proposed
+    logical::evaluate_daily,valid
+    integer::next_day
+    proposed_identity=identity; candidate=base; flux=irrigation_flux_result_t(); ok=.false.
+    diagnostics=irrigation_diagnostics_t(); diagnostics%status=IRRIGATION_INVALID_PARAMETERS
+    call prepare_tcsfix_day(identity,daily,ordinal,proposed,evaluate_daily,valid)
+    if(.not.valid) return
+    call evaluate_tcsfix_source(p,base,r,observations,evaluate_daily,identity%dayfix,identity%interval_days, &
+         previous,next_day,candidate,flux,diagnostics,forcing,ok)
+    if(.not.ok) return
+    proposed%dayfix=next_day; proposed_identity=proposed
+  end subroutine
   subroutine evaluate_tcsfix_source(p,base,r,observations,daily,dayfix,interval_days,previous, &
        proposed_dayfix,candidate,flux,diagnostics,forcing,ok)
     type(scheduled_irrigation_parameters_t),intent(in)::p

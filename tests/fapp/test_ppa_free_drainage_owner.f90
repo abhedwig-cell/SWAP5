@@ -2167,7 +2167,9 @@ contains
     end do
     write(*,'(a)') 'PPA_IRR_TCS1_4_TYPED_SOURCE_BINDING=PASS'
     block
-      use mod_ppa_irr_tcsfix_source, only: evaluate_tcsfix_source
+      use mod_ppa_irr_tcsfix_source, only: evaluate_tcsfix_source,evaluate_tcsfix_daily_source
+      use mod_ppa_irr_tcsfix_identity, only: ppa_tcsfix_identity_t
+      type(ppa_tcsfix_identity_t)::fixed_identity,fixed_proposal
       integer::next_counter
       type(irrigation_state_t)::fixed_pending
       real(real64)::original_end,gift_end
@@ -2206,6 +2208,18 @@ contains
       if(.not.ok.or.next_counter/=1.or.candidate%active_event.or..not.flux%event_finished) &
            error stop 'TCSFIX pending source continuation'
       observations%knot_count=2; r%t0=T0; r%t1=original_end
+      fixed_identity%enabled=.true.; fixed_identity%interval_days=3
+      call evaluate_tcsfix_daily_source(p,base,r,observations,fixed_identity,.true.,100_int64,previous, &
+           fixed_proposal,candidate,flux,d,effective,ok)
+      if(.not.ok.or.fixed_proposal%dayfix/=1.or.fixed_proposal%last_day/=100_int64) &
+           error stop 'TCSFIX daily source identity'
+      previous%temporal_forcing_event=.true.; previous%temporal_forcing_event_time=r%t1
+      call evaluate_tcsfix_daily_source(p,base,r,observations,fixed_identity,.true.,100_int64,previous, &
+           fixed_proposal,candidate,flux,d,effective,ok)
+      if(ok.or.allocated(effective).or.fixed_proposal%day_bound.or.fixed_proposal%dayfix/=366) &
+           error stop 'TCSFIX daily source late failure'
+      previous%temporal_forcing_event=.false.; previous%temporal_forcing_event_time=0.0_real64
+      write(*,'(a)') 'PPA_IRR_TCSFIX_DAILY_SOURCE_ATOMIC_IDENTITY=PASS'
       write(*,'(a)') 'PPA_IRR_TCSFIX_SOURCE_SPLIT_RETRY_PENDING=PASS'
       write(*,'(a)') 'PPA_IRR_TCSFIX_DETACHED_SOURCE_ATOMICITY=PASS'
     end block
