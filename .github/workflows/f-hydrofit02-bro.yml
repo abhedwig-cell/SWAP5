@@ -55,6 +55,29 @@ jobs:
           for path,item in d.get("paths",{}).items():
               print("BRO_OPENAPI_PATH|PATH="+path+"|METHODS="+",".join(sorted(item)))
           PY
+      - name: Enumerate official BHR-P ids
+        run: |
+          python research/hydrofit/bro_bhrp_fetch.py --path bro-ids \
+            --output "$RUNNER_TEMP/bro/bro-ids.response" \
+            --manifest "$RUNNER_TEMP/bro/bro-ids.manifest.json" --require-success
+          python - <<'PY'
+          import json, os, pathlib, re
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/bro-ids.response"
+          b=p.read_bytes()
+          print("BRO_IDS_PREFIX="+repr(b[:1000]))
+          try:
+              d=json.loads(b)
+              if isinstance(d,list):
+                  ids=d
+              elif isinstance(d,dict):
+                  ids=next((v for k,v in d.items() if isinstance(v,list)),[])
+              else: ids=[]
+              print(f"BRO_IDS_JSON|COUNT={len(ids)}|FIRST={ids[:5]}")
+          except Exception as e:
+              txt=b.decode("utf-8","replace")
+              ids=re.findall(r'BHRP[0-9A-Za-z_-]+',txt)
+              print(f"BRO_IDS_TEXT|MATCHES={len(ids)}|FIRST={ids[:5]}|PARSE={type(e).__name__}")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
