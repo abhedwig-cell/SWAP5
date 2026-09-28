@@ -162,11 +162,11 @@ jobs:
           python research/hydrofit/bro_bhrp_fetch.py \
             --path characteristics/searches --method POST --json-body "$RUNNER_TEMP/bro/broad-search.json" \
             --output "$RUNNER_TEMP/bro/broad-search.response" \
-            --manifest "$RUNNER_TEMP/bro/broad-search.manifest.json" --require-success
+            --manifest "$RUNNER_TEMP/bro/broad-search.manifest.json"
           python - <<'PY'
           import os,pathlib,re,xml.etree.ElementTree as ET
           p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/broad-search.response"
-          b=p.read_bytes(); root=ET.fromstring(b)
+          b=p.read_bytes(); print("BRO_BROAD_PREFIX="+repr(b[:2000])); root=ET.fromstring(b)
           def local(tag): return tag.rsplit('}',1)[-1]
           vals=[]
           for e in root.iter():
