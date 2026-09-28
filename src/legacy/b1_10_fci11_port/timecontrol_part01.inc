@@ -6,7 +6,7 @@ end module MOD_timer
 ! File VersionID:
 !   $Id: timecontrol.f90 374 2018-03-21 13:12:23Z heine003 $
 ! ----------------------------------------------------------------------
-   subroutine TimeControl(task, interval)
+   subroutine TimeControl(task, interval, timestep_trace)
 ! ----------------------------------------------------------------------
 !     Date               : Aug 2004   
 !     Purpose            : Handles time variables, switches and flags
@@ -20,7 +20,7 @@ end module MOD_timer
    use plant_interface, only: sw_inter, dt_interc_event
    use MOD_irrigation,  only: irrigation, flheadirg, flirrigate, nirri, dt_irr_event
    use mod_b1_10_interval_seam, only: b1_10_interval_seam_t, B1_10_INTERVAL_TIME_TOL
-   use mod_b1_10_timestep_decision_service, only: b1_10_timestep_decision_t, &
+   use mod_b1_10_timestep_decision_service, only: b1_10_timestep_decision_t, b1_10_timestep_trace_t, &
         b1_10_legacy_accepted_step_decision, b1_10_legacy_solver_retry_decision
    
    use variables,       only: fldecdt, flrunend, fldaystart, fldtmin, flzerointr, flzerocumu, floutput, flheader,                            &
@@ -52,6 +52,7 @@ end module MOD_timer
 !  global
    integer, intent(in) :: task
    type(b1_10_interval_seam_t), intent(inout), optional :: interval
+   type(b1_10_timestep_trace_t), intent(inout), optional :: timestep_trace
 
 !  local, need to save
 
