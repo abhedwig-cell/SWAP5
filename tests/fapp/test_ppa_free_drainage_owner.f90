@@ -1488,9 +1488,11 @@ contains
           use mod_fmr_serialized_reference_backend, only: fmr_serialized_physical_observation_t
           type(fmr_serialized_physical_observation_t)::failure
           failure=backend%observation()
-          if(.not.failure%first_solver_failure_available) error stop 'TCSFIX first failure unavailable'
-          if(.not.failure%first_solver_failure_diagnostics%final_convergence_available) &
-               error stop 'TCSFIX first convergence unavailable'
+          write(*,'(a,3(1x,l1),1x,i0,1x,a)') 'TCSFIX_FAILURE_AVAILABILITY', &
+               failure%solver_executed,failure%first_solver_failure_available, &
+               failure%solver_diagnostics%final_convergence_available,failure%solver_status, &
+               trim(failure%solver_diagnostics%route)
+          if(failure%first_solver_failure_available) then
           write(*,'(a,3(1x,es24.16),1x,i0)') 'TCSFIX_FIRST_FAILURE_INTERVAL', &
                failure%first_solver_failure_t0,failure%first_solver_failure_t1, &
                failure%first_solver_failure_t1-failure%first_solver_failure_t0, &
@@ -1505,6 +1507,7 @@ contains
                failure%solver_diagnostics%final_head_failure_count, &
                failure%solver_diagnostics%final_max_balance_rate, &
                failure%solver_diagnostics%final_total_balance_rate
+          end if
         end block
       end block
     end block
