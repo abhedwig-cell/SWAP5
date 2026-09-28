@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE-BOFEK00F",
+  "phase": "ADAPTIVE_TIMESTEP_INTERACTION",
+  "canonical_head": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
+  "old_authority": "0b67e2af993f16e9d1678b70cacfe9b164954140",
+  "correction_candidate_head": "ccf605ef2c0981084ed8935137833e51c8bedaea",
+  "workflow_run": 36405729839,
+  "qualification_ladder_seconds": [10, 20, 40, 80, 160, 320],
+  "policy": {
+    "temporal_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance": 1e-6,
+    "mass_tolerance": 1e-10,
+    "retry_scale": 0.5,
+    "max_retries": 8,
+    "max_committed_substeps": 256,
+    "identical_old_corrected": true
+  },
+  "results": [
+    {"duration_s":10,"old_completed":false,"corrected_completed":false,"old_nonlinear":221,"corrected_nonlinear":223,"old_backtracks":1631,"corrected_backtracks":1367,"old_internal_retries":5,"corrected_internal_retries":5},
+    {"duration_s":20,"old_completed":false,"corrected_completed":false,"old_nonlinear":202,"corrected_nonlinear":204,"old_backtracks":1330,"corrected_backtracks":1066,"old_internal_retries":4,"corrected_internal_retries":4},
+    {"duration_s":40,"old_completed":false,"corrected_completed":false,"old_nonlinear":185,"corrected_nonlinear":187,"old_backtracks":1032,"corrected_backtracks":754,"old_internal_retries":3,"corrected_internal_retries":3},
+    {"duration_s":80,"old_completed":false,"corrected_completed":false,"old_nonlinear":170,"corrected_nonlinear":172,"old_backtracks":735,"corrected_backtracks":449,"old_internal_retries":2,"corrected_internal_retries":2},
+    {"duration_s":160,"old_completed":false,"corrected_completed":false,"old_nonlinear":157,"corrected_nonlinear":159,"old_backtracks":446,"corrected_backtracks":306,"old_internal_retries":1,"corrected_internal_retries":1},
+    {"duration_s":320,"old_completed":false,"corrected_completed":false,"old_nonlinear":141,"corrected_nonlinear":143,"old_backtracks":149,"corrected_backtracks":155,"old_internal_retries":0,"corrected_internal_retries":0}
+  ],
+  "accepted_substeps_old_all": 0,
+  "accepted_substeps_corrected_all": 0,
+  "accepted_mass_or_runoff_available": false,
+  "exact_dt_distribution_available": false,
+  "policy_authority": {
+    "implementation": "src/runtime/mod_fmr_serialized_reference_backend.f90::fmr_serialized_temporal_identity",
+    "behavior": "returns 0 only when full-step and two-half-step physical states are exactly equal; returns huge otherwise",
+    "consequence": "the configured temporal_tolerance does not provide a graded acceptance criterion for non-identical Reference physical states on this route"
+  },
+  "classification": "NUMERICAL_POLICY_BLOCKER_INDEPENDENT_OF_CORRECTNESS_PATCH",
+  "interpretation": "Adaptive-timestep comparison cannot adjudicate the wet-boundary correction because the current full/half temporal acceptance surface rejects the entire preregistered wet ladder for both source variants. This blocker is separate from BUG/CORRECTNESS and must not be repaired inside the Jacobian patch."
+}
