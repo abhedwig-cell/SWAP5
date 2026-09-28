@@ -4,8 +4,11 @@ Date: 2026-09-27
 
 Status: `CLOSED_CURRENT_HOST_PERFORMANCE_FRONTIER`
 
-Canonical base:
+Initial closeout base:
 `integration/f-ci-canonical@3632b652a8e493b85b895336d3d9bfbddfa06410`
+
+Reconciliation note, 2026-09-28:
+TEMPORAL10 had already qualified one >=5% current-host mechanism when this closeout was merged. F-PE-TEMPORAL11 subsequently completed its production admission evidence and must be included in the final frontier state. The broad search remains closed after that bounded successor is admitted.
 
 ## Purpose
 
@@ -30,6 +33,21 @@ The remaining measured exact per-column candidates had crossed into low expected
 ### Temporal / coupling trial efficiency
 
 Current production includes the qualified history-aware temporal budget and associated exact coupling improvements.
+
+Post-closeout reconciliation:
+F-PE-TEMPORAL10 had already qualified one additional approximately 5% end-to-end candidate when the original SYSTEM-CLOSE01 text was written, but that candidate had not yet been production-admitted.
+
+F-PE-TEMPORAL11 / PR #699 subsequently admitted that exact bounded repair:
+- base-state temporal certificate requests conductivity only;
+- candidate-state certificate requests water content only;
+- candidate-state certificate requests capacity only;
+- direct-retention certificate authority is preserved through separate specialized demand calls;
+- TEMPORAL10 paired qualification measured about 1.05x worker=4 speedup at N=10,000 and N=40,000;
+- TEMPORAL11 added direct-retention O0/O2 certificate identity plus patched-source FSI38 mode-2 and mode-5 preservation evidence.
+
+SYSTEM-CLOSE01 should therefore be interpreted as closing the current-host frontier after TEMPORAL11 admission, not as rejecting or omitting that already-qualified repair.
+
+F-PE-TEMPORAL11 production-admits demand-directed constitutive evaluation inside the exact temporal certificate. TEMPORAL10 measured approximately 5.0% worker=4 end-to-end gain at N=10,000 and N=40,000, with exact q/tangent preservation. TEMPORAL11 adds direct-retention certificate equivalence and FSI38 independent-oracle preservation before admission.
 
 ### Worker-local MultiSWAP parallel execution
 
@@ -157,7 +175,9 @@ No runtime placement policy is selected.
 On the currently available host:
 - the major bootstrap pathology has been removed;
 - the admitted worker-local runtime remains the main throughput mechanism;
+- the TEMPORAL11 demand-directed temporal certificate repair captures the final already-qualified approximately 5% current-host gain;
 - additional compiler, allocation, schedule-cache and affinity changes are below material thresholds;
+- the one remaining qualified >=5% temporal constitutive mechanism has been carried through production admission by F-PE-TEMPORAL11;
 - single-column exact optimization is already closed as low-return.
 
 The current 4-logical-CPU performance frontier is therefore mature enough to close.
