@@ -1,0 +1,26 @@
+name: F-PE-BOFEK00 adaptive qualification ladder
+
+on:
+  push:
+    branches:
+      - work/f-pe-bofek00-correction-candidate
+    paths:
+      - 'docs/verification/F-PE-BOFEK00F_ADAPTIVE_PREREGISTRATION.md'
+      - 'tests/verification/test_bofek00_adaptive_wet_application.f90'
+      - 'tests/verification/run_bofek00_adaptive_ladder_gate.sh'
+      - '.github/workflows/f-pe-bofek00-adaptive-ladder.yml'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+  workflow_dispatch:
+
+jobs:
+  adaptive-ladder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run preregistered unchanged-policy adaptive ladder
+        run: bash tests/verification/run_bofek00_adaptive_ladder_gate.sh
