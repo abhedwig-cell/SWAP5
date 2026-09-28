@@ -262,3 +262,67 @@ def fit(observations: Sequence[Observation], initial: MvGParameters, cfg: FitCon
         message=str(result.message),
         nfev=int(result.nfev),
     )
+
+
+@dataclass
+class EnsembleResult:
+    optimum: FitResult
+    candidates: np.ndarray
+    objectives: np.ndarray
+    tight_mask: np.ndarray
+    primary_mask: np.ndarray
+    wide_mask: np.ndarray
+
+
+def parameter_vector(p: MvGParameters) -> np.ndarray:
+    return np.asarray([p.theta_r, p.theta_s, p.alpha, p.n, p.Ks], dtype=float)
+
+
+def objective_value(x: Sequence[float], observations: Sequence[Observation], cfg: FitConfig) -> float:
+    r = residual_vector(x, observations, cfg)
+    return float(np.dot(r, r))
+
+
+def near_equivalent_ensemble(
+    observations: Sequence[Observation],
+    initials: Iterable[MvGParameters],
+    cfg: FitConfig,
+    seed: int = 20260928,
+    local_draws: int = 4000,
+    broad_draws: int = 4000,
+) -> EnsembleResult:
+    best, _ = multistart_fit(observations, initials, cfg)
+    xstar = parameter_vector(best.parameters)
+    lo = np.asarray(cfg.lower, dtype=float)
+    hi = np.asarray(cfg.upper, dtype=float)
+    span = hi - lo
+    rng = np.random.default_rng(seed)
+
+    # Use right singular vectors as local directions. Scale weak directions more strongly.
+    _, s, vt = np.linalg.svd(best.jacobian, full_matrices=False)
+    sref = max(float(s[0]) if len(s) else 1.0, 1e-12)
+    weakness = np.clip(sref / np.maximum(s, sref * 1e-8), 1.0, 100.0)
+    z = rng.normal(size=(local_draws, len(xstar)))
+    coeff = z * (0.0025 * weakness)
+    local = xstar + (coeff @ vt) * span
+    local = np.clip(local, lo, hi)
+
+    # Broad bounded coverage centered partly on the optimum.
+    broad_uniform = rng.uniform(lo, hi, size=(broad_draws // 2, len(xstar)))
+    broad_local = xstar + rng.normal(size=(broad_draws - broad_draws // 2, len(xstar))) * (0.05 * span)
+    broad_local = np.clip(broad_local, lo, hi)
+    candidates = np.vstack([xstar[None, :], local, broad_uniform, broad_local])
+
+    objectives = np.asarray([objective_value(x, observations, cfg) for x in candidates])
+    jstar = best.objective
+    tight = jstar + max(0.01 * jstar, 0.05)
+    primary = jstar + max(0.05 * jstar, 0.25)
+    wide = jstar + max(0.20 * jstar, 1.00)
+    return EnsembleResult(
+        optimum=best,
+        candidates=candidates,
+        objectives=objectives,
+        tight_mask=objectives <= tight,
+        primary_mask=objectives <= primary,
+        wide_mask=objectives <= wide,
+    )
