@@ -1,0 +1,22 @@
+name: F-PE-BOFEK00 adaptive wet interval ladder
+
+on:
+  push:
+    branches:
+      - work/f-pe-bofek00-adaptive-ladder
+    paths:
+      - 'docs/verification/F-PE-BOFEK00_ADAPTIVE_LADDER_PREREGISTRATION.md'
+      - 'tests/verification/test_bofek00_adaptive_wet_application.f90'
+      - 'tests/verification/run_bofek00_adaptive_ladder.sh'
+      - '.github/workflows/f-pe-bofek00-adaptive-ladder.yml'
+  workflow_dispatch:
+
+jobs:
+  ladder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run preregistered unchanged-policy wet interval ladder
+        run: bash tests/verification/run_bofek00_adaptive_ladder.sh
