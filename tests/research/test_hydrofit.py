@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / "research" / "hydrofit"))
-from hydrofit import FitConfig, MvGParameters, Observation, evaluate, fit, multistart_fit, near_equivalent_ensemble, swap_theta, textbook_theta
+from hydrofit import FitConfig, MvGParameters, Observation, evaluate, fit, function_envelope, multistart_fit, near_equivalent_ensemble, swap_theta, textbook_theta
 
 
 def synthetic_observations(p, semantics="swap_default_mvg"):
@@ -188,3 +188,30 @@ def test_ensemble_seed_is_deterministic():
     assert np.array_equal(a.candidates, b.candidates)
     assert np.array_equal(a.objectives, b.objectives)
     assert np.array_equal(a.primary_mask, b.primary_mask)
+
+
+def test_function_envelope_and_representatives_are_deterministic():
+    _, obs = _limited_perturbed_case()
+    cfg = FitConfig(semantics="swap_default_mvg", fixed_l=0.5, fixed_h_entry=0.0, weighting_mode="family_mean")
+    starts = [
+        MvGParameters(0.03, 0.38, 0.005, 1.25, 8.0),
+        MvGParameters(0.12, 0.52, 0.05, 2.3, 120.0),
+        MvGParameters(0.08, 0.46, 0.012, 1.5, 25.0),
+    ]
+    ens = near_equivalent_ensemble(obs, starts, cfg, local_draws=1500, broad_draws=1500)
+    a = function_envelope(ens, cfg)
+    b = function_envelope(ens, cfg)
+    assert np.array_equal(a.representative_candidate_indices, b.representative_candidate_indices)
+    assert a.representative_candidate_indices[0] == 0
+    assert len(a.representative_candidate_indices) <= 8
+    assert np.all(ens.primary_mask[a.representative_candidate_indices])
+    pstar = ens.optimum.parameters
+    theta_star, k_star = evaluate(a.heads_cm, pstar, cfg.semantics)
+    logk_star = np.log10(k_star)
+    assert np.all(theta_star >= a.theta_min - 1e-14)
+    assert np.all(theta_star <= a.theta_max + 1e-14)
+    assert np.all(logk_star >= a.log10_k_min - 1e-14)
+    assert np.all(logk_star <= a.log10_k_max + 1e-14)
+    # The information-limited case should require at least one non-optimum
+    # representative when coverage is defined in function space.
+    assert len(a.representative_candidate_indices) > 1
