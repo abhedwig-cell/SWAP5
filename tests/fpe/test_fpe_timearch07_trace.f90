@@ -4,6 +4,8 @@ program test_fpe_timearch07_trace
        B110_TS_REASON_GROW_LOW_ITER, B110_TS_REASON_SOLVER_RETRY
   use variables
   use MOD_swap_base
+  use plant_interface, only: sw_inter
+  use MOD_irrigation, only: dt_irr_event
   implicit none
 
   interface
