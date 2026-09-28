@@ -51,13 +51,7 @@ jobs:
           test -z "$(git diff --name-only --diff-filter=U)"
           ! grep -R -n -E '^(<<<<<<<|=======|>>>>>>>)'               src/adapter/mod_reference_richards_legacy_binding.f90               src/runtime/mod_fmr_production_application_bootstrap.f90               src/runtime/mod_fmr_serialized_multiswap_runtime.f90               src/runtime/mod_fmr_serialized_reference_backend.f90               tests/fapp/test_ppa_wu01_production_application_bootstrap.f90
 
-          python3 - <<'PY'
-from pathlib import Path
-p=Path("src/adapter/mod_reference_richards_legacy_binding.f90")
-s=p.read_text()
-s=s.replace("state_binding%", "ws%state_binding%")
-p.write_text(s)
-PY
+          python3 -c 'from pathlib import Path; p=Path("src/adapter/mod_reference_richards_legacy_binding.f90"); s=p.read_text(); p.write_text(s.replace("state_binding%","ws%state_binding%"))'
           git add src/adapter/mod_reference_richards_legacy_binding.f90
           echo "PPA_RECONCILE_ADAPTER_RENAME=PASS"
 
