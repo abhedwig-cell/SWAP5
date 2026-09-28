@@ -9,6 +9,7 @@
 
 ! 2.9 determine next time step, based on numerical performance
       if (swsolve == 1) then
+         timestepDecisionInput = dt
          timestepDecision = b1_10_legacy_accepted_step_decision(dt, dtmin, dtmax, numbit, numbit_crit, &
               MaxIt, fact_dt_increase, fact_dt_decrease)
          dt = timestepDecision%preferred_dt
@@ -19,9 +20,17 @@
 
 ! 2.7  maximum size of time interval (dtEvent)
       dtEvent = get_dtevent()
+      timestepEventClamped = .FALSE.
+      timestepLimitReason = A23BU_TS_LIMIT_NONE
       if (dt > dtevent) then
          dt = dtevent
+         timestepEventClamped = .TRUE.
+         timestepLimitReason = A23BU_TS_LIMIT_HARD_EVENT
          if (swsolve == 2 .AND. dabs(dtevent - 1.0d0) > dtCrit ) call swap_error('timecontrol(3)', 'swsolve = 2: unexpected: dtevent < 1.0d0')
+      end if
+      if (present(worker) .AND. swsolve == 1) then
+         call a23bu_record_timestep_trace(worker, timestepDecisionInput, timestepDecision%preferred_dt, dt, &
+              timestepDecision%reason, timestepLimitReason, timestepEventClamped)
       end if
 
 ! 2.11 set flags and variables
