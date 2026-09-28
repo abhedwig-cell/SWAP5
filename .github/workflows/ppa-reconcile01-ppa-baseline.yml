@@ -1,0 +1,26 @@
+name: PPA reconcile old-head baseline
+
+on:
+  push:
+    branches:
+      - work/ppa-reconcile01
+
+permissions:
+  contents: read
+
+jobs:
+  old-head-baseline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run preserved PPA WU01 gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin backup/ppa-before-reconcile-20260928
+          git checkout --detach origin/backup/ppa-before-reconcile-20260928
+          bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+          echo "PPA_RECONCILE_OLD_HEAD_BASELINE=PASS"
