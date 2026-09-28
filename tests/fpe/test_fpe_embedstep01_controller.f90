@@ -195,12 +195,12 @@ contains
     real(real64)::try_dt,run_full,run_h1,run_h2,led_full,led_h1,led_h2
     real(real64)::eh,epond,erun,rh,factor,new_dt
     integer::nl,back,jac,lin
-    logical::ok_full,ok_h1,ok_h2,use_guard,guard_pass
+    logical::ok_full,ok_h1,ok_h2,guard_needed,guard_pass
 
     origin=state
     try_dt=min(dt,horizon-t)
     attempts=attempts+1
-    use_guard=trim(mode)/='REFERENCE' .and. try_dt>REF_DTMAX+EPS_TIME
+    guard_needed=trim(mode)/='REFERENCE' .and. try_dt>REF_DTMAX+EPS_TIME
 
     call solve_one(origin,try_dt,full_state,run_full,led_full,nl,back,jac,lin,ok_full)
     call add_work(nl,back,jac,lin)
@@ -230,7 +230,7 @@ contains
       return
     end if
 
-    if(.not.use_guard)then
+    if(.not.guard_needed)then
       if(.not.ok_full)then
         rejected=rejected+1
         new_dt=max(dtmin,dt/fact_fail)
