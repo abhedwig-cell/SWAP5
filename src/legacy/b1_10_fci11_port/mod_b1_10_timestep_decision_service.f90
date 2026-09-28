@@ -17,6 +17,17 @@ module mod_b1_10_timestep_decision_service
     logical :: floor_reached = .false.
   end type b1_10_timestep_decision_t
 
+  type, public :: b1_10_timestep_trace_t
+    logical :: available = .false.
+    integer :: sequence = 0
+    real(real64) :: input_dt = 0.0_real64
+    real(real64) :: preferred_dt = 0.0_real64
+    real(real64) :: executed_dt = 0.0_real64
+    integer :: reason = B110_TS_REASON_KEEP
+    logical :: event_clipped = .false.
+    logical :: floor_reached = .false.
+  end type b1_10_timestep_trace_t
+
   public :: b1_10_legacy_accepted_step_decision
   public :: b1_10_legacy_solver_retry_decision
 
