@@ -419,6 +419,37 @@ s = replace_once(
     re.S,
 )
 
+combined_standalone = extract_subroutine(canon_boot, "production_application_run_standalone_with_forcing")
+combined_standalone = combined_standalone.replace(
+    "materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)",
+    "materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &\n"
+    "           free_drainage_indicator=self%free_drainage_indicator, storage_difference=self%storage_difference)",
+)
+s = replace_once(
+    s,
+    r"  subroutine production_application_run_standalone_with_forcing\(.*?end subroutine production_application_run_standalone_with_forcing",
+    combined_standalone,
+    "bootstrap standalone forcing",
+    re.S,
+)
+
+ppa_receipts = extract_subroutine(ppa_boot, "production_application_run_standalone_with_forcing_receipts")
+ppa_receipts = ppa_receipts.replace(
+    """         aggregate, dispatch_status, runtime, receipt_column_ids, receipts, self%free_drainage_indicator, &
+         self%storage_difference)""",
+    """         aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
+         commit_receipts=receipts, free_drainage_indicator=self%free_drainage_indicator, &
+         storage_difference=self%storage_difference)""",
+)
+if "subroutine production_application_run_standalone_with_forcing_receipts" in s:
+    s = replace_once(
+        s,
+        r"  subroutine production_application_run_standalone_with_forcing_receipts\(.*?end subroutine production_application_run_standalone_with_forcing_receipts",
+        ppa_receipts,
+        "bootstrap standalone forcing receipts",
+        re.S,
+    )
+
 combined_discard = extract_subroutine(canon_boot, "discard_owner_storage")
 combined_discard = combined_discard.replace(
     "    nullify(self%backend)\n    nullify(self%top_boundary)",
