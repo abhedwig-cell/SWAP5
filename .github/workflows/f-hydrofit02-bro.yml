@@ -213,11 +213,11 @@ jobs:
           python research/hydrofit/bro_bhrp_fetch.py --path characteristics/searches --method POST \
             --json-body "$RUNNER_TEMP/bro/control-search.json" \
             --output "$RUNNER_TEMP/bro/control-search.xml" \
-            --manifest "$RUNNER_TEMP/bro/control-search.manifest.json" --require-success
+            --manifest "$RUNNER_TEMP/bro/control-search.manifest.json"
           python - <<'PY'
           import os,pathlib,xml.etree.ElementTree as ET
           p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/control-search.xml"
-          root=ET.fromstring(p.read_bytes())
+          raw=p.read_bytes(); print("BRO_CONTROL_PREFIX="+repr(raw[:2000])); root=ET.fromstring(raw)
           def local(t): return t.rsplit('}',1)[-1]
           vals=[(local(e.tag),e.text.strip()) for e in root.iter() if e.text and e.text.strip()]
           print("BRO_CONTROL_FIELDS_BEGIN")
