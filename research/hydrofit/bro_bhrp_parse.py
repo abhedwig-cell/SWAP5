@@ -24,10 +24,18 @@ def main():
         for da in iv.iter():
             if local(da.tag)!="DataArray": continue
             names=[]
+            element_type=None
+            element_href=None
+            encoding={}
             for e in da.iter():
                 if local(e.tag) in ("field","component") and "name" in e.attrib: names.append(e.attrib["name"])
+                if local(e.tag)=="elementType":
+                    element_type=e.attrib.get("name")
+                    element_href=next((v for k,v in e.attrib.items() if local(k)=="href"),None)
+                if local(e.tag)=="TextEncoding":
+                    encoding={local(k):v for k,v in e.attrib.items()}
             values=next(((e.text or '').strip() for e in da.iter() if local(e.tag)=="values"),"")
-            arrays.append({"names":names,"values":values})
+            arrays.append({"names":names,"element_type":element_type,"element_href":element_href,"encoding":encoding,"values":values})
         intervals.append({"begin_depth":begin,"end_depth":end,"characteristic_modelled":modelled,"arrays":arrays,"fields":fields})
     out={"bro_id":broid,"intervals":intervals}
     if a.json_out: Path(a.json_out).write_text(json.dumps(out,indent=2)+"\n")
@@ -36,12 +44,13 @@ def main():
     for j,iv in enumerate(intervals):
         for ar in iv["arrays"]:
             names=ar["names"]
-            low=[n.lower() for n in names]
-            if not any("water" in n or "hydraulic" in n or "conduct" in n or "potential" in n for n in low): continue
-            rows.append({"interval":j,"begin_depth":iv["begin_depth"],"end_depth":iv["end_depth"],"names":"|".join(names),"values":ar["values"]})
+            et=(ar.get("element_type") or "")
+            low=[n.lower() for n in names]+[et.lower()]
+            if not any("water" in n or "hydraulic" in n or "conduct" in n or "potential" in n or "retention" in n for n in low): continue
+            rows.append({"interval":j,"begin_depth":iv["begin_depth"],"end_depth":iv["end_depth"],"names":"|".join(names),"element_type":et,"values":ar["values"]})
     if a.csv_out:
         with open(a.csv_out,"w",newline="") as f:
-            w=csv.DictWriter(f,fieldnames=["interval","begin_depth","end_depth","names","values"]); w.writeheader(); w.writerows(rows)
+            w=csv.DictWriter(f,fieldnames=["interval","begin_depth","end_depth","names","element_type","values"]); w.writeheader(); w.writerows(rows)
     print(f"BRO_PARSE|BRO_ID={broid}|INTERVALS={len(intervals)}|HYDRAULIC_ARRAYS={len(rows)}")
     for r in rows: print("BRO_PARSE_ARRAY|"+json.dumps(r,sort_keys=True))
 if __name__=="__main__": main()
