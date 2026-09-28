@@ -20,6 +20,8 @@ end module MOD_timer
    use plant_interface, only: sw_inter, dt_interc_event
    use MOD_irrigation,  only: irrigation, flheadirg, flirrigate, nirri, dt_irr_event
    use mod_b1_10_interval_seam, only: b1_10_interval_seam_t, B1_10_INTERVAL_TIME_TOL
+   use mod_b1_10_timestep_decision_service, only: b1_10_timestep_decision_t, &
+        b1_10_legacy_accepted_step_decision, b1_10_legacy_solver_retry_decision
    
    use variables,       only: fldecdt, flrunend, fldaystart, fldtmin, flzerointr, flzerocumu, floutput, flheader,                            &
                               flbaloutput, nprintday, flprintdt, flprintshort, period, isteps, ioutdat,                                      &
@@ -65,4 +67,5 @@ end module MOD_timer
    real(8)              :: dtEvent
    real(8)              :: intervalRemaining
    logical              :: intervalActive
+   type(b1_10_timestep_decision_t) :: timestepDecision
 !  critical time-interval 
