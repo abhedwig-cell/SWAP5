@@ -1410,6 +1410,47 @@ contains
       seed%tcsfix=source%tcsfix
       write(*,'(a)') 'PPA_IRR_TCSFIX_BACKEND_PROPOSAL_ROLLBACK_COMMIT=PASS'
       write(*,'(a)') 'PPA_IRR_TCSFIX_BACKEND_TRANSITION_AND_CALL_ISOLATION=PASS'
+      block
+        use mod_kernel_transactions, only: kernel_executor_t
+        use mod_fmr_runtime_core, only: fmr_column_diagnostics_t
+        use mod_fmr_serialized_multiswap_runtime, only: fmr_execute_serialized_irrigation_resolved_column, &
+             fmr_serialized_batch_diagnostics_t
+        use mod_irrigation_process, only: ppa_tcsfix_identity_t
+        type(kernel_executor_t)::control
+        type(fmr_column_diagnostics_t)::column_diagnostics
+        type(fmr_serialized_batch_diagnostics_t)::runtime_diagnostics
+        type(fmr_serialized_column_result_t)::output
+        type(ppa_tcsfix_identity_t)::proposal
+        integer::active_calls
+        active_calls=0
+        proposal%enabled=.true.; proposal%day_bound=.true.
+        proposal%dayfix=2; proposal%interval_days=3; proposal%last_day=103_int64
+        call fmr_execute_serialized_irrigation_resolved_column(backend,control,column,template, &
+             profile%tiles(1)%parameters,forcing,tcsfix_owner,profile%numerical,1,finish, &
+             seed%irrigation%active_event_end,output,column_diagnostics,runtime_diagnostics,active_calls, &
+             tcsfix_proposal=proposal)
+        if(output%completed.or.output%committed.or.tcsfix_owner%current_revision()/=1_int64) &
+             error stop 'TCSFIX runtime invalid proposal publication'
+        proposal%last_day=101_int64
+        output=fmr_serialized_column_result_t(); column_diagnostics=fmr_column_diagnostics_t()
+        call fmr_execute_serialized_irrigation_resolved_column(backend,control,column,template, &
+             profile%tiles(1)%parameters,forcing,tcsfix_owner,profile%numerical,1,finish, &
+             seed%irrigation%active_event_end,output,column_diagnostics,runtime_diagnostics,active_calls, &
+             tcsfix_proposal=proposal)
+        if(.not.output%completed.or..not.output%committed.or.active_calls/=0) &
+             error stop 'TCSFIX runtime continuation failed'
+        call tcsfix_owner%snapshot(snapshot,ok)
+        if(.not.ok) error stop 'TCSFIX runtime snapshot'
+        select type(snapshot)
+        type is(ppa_irrigation_event_state_t)
+          if(snapshot%tcsfix%last_day/=101_int64.or.snapshot%tcsfix%dayfix/=2.or. &
+               snapshot%tcsfix%interval_days/=3.or.snapshot%irrigation%active_event) &
+               error stop 'TCSFIX runtime metadata or completion lost'
+        class default
+          error stop 'TCSFIX runtime carrier sliced'
+        end select
+        write(*,'(a)') 'PPA_IRR_TCSFIX_SERIALIZED_PROPOSAL_FORWARDING=PASS'
+      end block
     end block
     block
       type(kernel_committed_state_t)::weekly_owner
