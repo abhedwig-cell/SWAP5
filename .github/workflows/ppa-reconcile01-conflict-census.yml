@@ -23,6 +23,8 @@ jobs:
           git config user.name "PPA Reconcile Bot"
           git config user.email "ppa-reconcile@users.noreply.github.com"
           git fetch origin backup/ppa-before-reconcile-20260928 integration/f-ci-canonical
+          cp tools/reconcile_ppa_union.py "$RUNNER_TEMP/reconcile_ppa_union.py"
+          git checkout --detach origin/integration/f-ci-canonical
 
           if git merge-base --is-ancestor origin/backup/ppa-before-reconcile-20260928 HEAD; then
             echo "PPA_RECONCILE_ALREADY_MERGED=1"
@@ -51,7 +53,7 @@ jobs:
           test -z "$(git diff --name-only --diff-filter=U)"
           ! grep -R -n -E '^(<<<<<<<|=======|>>>>>>>)'               src/adapter/mod_reference_richards_legacy_binding.f90               src/runtime/mod_fmr_production_application_bootstrap.f90               src/runtime/mod_fmr_serialized_multiswap_runtime.f90               src/runtime/mod_fmr_serialized_reference_backend.f90               tests/fapp/test_ppa_wu01_production_application_bootstrap.f90
 
-          python3 tools/reconcile_ppa_union.py
+          python3 "$RUNNER_TEMP/reconcile_ppa_union.py"
           git add src/adapter/mod_reference_richards_legacy_binding.f90
           git add src/runtime/mod_fmr_serialized_reference_backend.f90
           git add src/runtime/mod_fmr_serialized_multiswap_runtime.f90
@@ -89,5 +91,5 @@ jobs:
             exit 0
           fi
           git commit -m "PPA-SWAP431 reconcile local migration with current canonical"
-          git push origin HEAD:work/ppa-reconcile01
+          git push origin HEAD:work/ppa-reconcile01-merged
           echo "PPA_RECONCILE_MERGE_PUSH=PASS"
