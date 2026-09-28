@@ -100,8 +100,20 @@ Against refined BE endpoint:
 - L1 water-depth error;
 - storage error;
 - bottom/top flux where applicable;
-- water ledger;
+- discrete mass residual appropriate to each scheme;
 - nonlinear iterations/backtracks/Jacobian builds/linear solves.
+
+For backward Euler the familiar per-step integrated ledger is:
+
+`storage_{n+1} - storage_n - net_boundary_inflow * dt`.
+
+For BDF2 the mass gate is instead evaluated on the discrete BDF2 balance:
+
+`sum(dz * (1.5 theta_{n+1} - 2 theta_n + 0.5 theta_{n-1})) - net_boundary_inflow * dt`.
+
+Because TIMEINT05 is restricted to a smooth prescribed atmospheric-flux regime with zero ponding/runoff and zero bottom flux, the net boundary inflow is known directly from the prescribed top forcing.
+
+Do not judge BDF2 with the backward-Euler endpoint-storage ledger. Higher-order BDF methods are mass-conservative in their multistep discrete balance, while simple accumulation of endpoint boundary flux times dt is not the same one-step storage identity as backward Euler.
 
 Report error per deterministic work.
 
@@ -110,7 +122,7 @@ Report error per deterministic work.
 BDF2 mechanism advances only if:
 
 1. at least 24 complete smooth-domain comparison points exist;
-2. BDF2 ledger <=5e-8 cm on every complete point;
+2. BDF2 discrete multistep mass residual <=5e-8 cm on every complete point;
 3. median BDF2 max-theta error <=0.60 * median BE max-theta error;
 4. median BDF2 L1 water-depth error <=0.60 * median BE L1 water-depth error;
 5. BDF2 deterministic work per tested step <=1.25 * BE work on median;
