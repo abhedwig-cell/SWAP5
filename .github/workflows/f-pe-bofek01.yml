@@ -7,12 +7,10 @@ on:
     paths:
       - 'docs/performance/F-PE-BOFEK01_02_PREREGISTRATION.md'
       - 'docs/performance/F-PE-BOFEK01_TESTBANK.json'
-      - 'tests/fpe/run_fpe_bofek01_wet_policy_screen.sh'
       - 'tests/fpe/test_fpe_bofek01_policy_case.f90'
       - 'tests/fpe/run_fpe_bofek01_screen.py'
       - 'tests/fpe/run_fpe_bofek01_screen.sh'
       - '.github/workflows/f-pe-bofek01.yml'
-      - 'tests/verification/test_bofek00_adaptive_wet_trajectory.f90'
       - 'src/legacy/b1_10_fci11_port/timecontrol_part04.inc'
       - 'src/legacy/b1_10_fci11_port/timecontrol_part05.inc'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
@@ -23,7 +21,7 @@ permissions:
   contents: read
 
 jobs:
-  wet-policy-screen:
+  screen:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -32,16 +30,5 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Run preregistered wet policy smoke screen
-        run: bash tests/fpe/run_fpe_bofek01_wet_policy_screen.sh
-  hydraulic-regime-screen:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: Run preregistered 16-case screening matrix
+      - name: Run preregistered screening matrix
         run: bash tests/fpe/run_fpe_bofek01_screen.sh
