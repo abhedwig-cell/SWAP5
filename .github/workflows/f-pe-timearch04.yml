@@ -1,0 +1,27 @@
+name: F-PE-TIMEARCH04 event scheduler characterization
+
+on:
+  push:
+    branches:
+      - work/f-pe-timearch04-event-scheduler
+    paths:
+      - 'docs/performance/F-PE-TIMEARCH04_PREREGISTRATION.md'
+      - 'tests/fpe/guard_fpe_timearch04_source.py'
+      - 'tests/fpe/run_fpe_timearch04_scheduler.py'
+      - 'tests/fpe/run_fpe_timearch04.sh'
+      - '.github/workflows/f-pe-timearch04.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scheduler:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run scheduler characterization
+        run: bash tests/fpe/run_fpe_timearch04.sh
