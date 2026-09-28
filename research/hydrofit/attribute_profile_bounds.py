@@ -54,16 +54,22 @@ def main():
    fits.append((float(z.fun@z.fun),z))
   k=min(range(len(fits)),key=lambda i:fits[i][0]); j,z=fits[k]; p=decode(z.x)
   blocks=[]
-  for pi,name in ((2,"ALPHA"),(3,"N"),(4,"KS")):
-   d=min((z.x[pi]-lo[pi])/(hi[pi]-lo[pi]),(hi[pi]-z.x[pi])/(hi[pi]-lo[pi]))
+  # alpha and Ks are positive scale parameters: assess proximity in log domain.
+  for pi,name in ((2,"ALPHA"),(4,"KS")):
+   lv=np.log(z.x[pi]); llo=np.log(lo[pi]); lhi=np.log(hi[pi])
+   d=min((lv-llo)/(lhi-llo),(lhi-lv)/(lhi-llo))
    if d<=.001: blocks.append(name)
-  cls=(blocks[0]+"_BOUND") if len(blocks)==1 else "MULTIPLE_BOUNDS"
+  pi=3; d=min((z.x[pi]-lo[pi])/(hi[pi]-lo[pi]),(hi[pi]-z.x[pi])/(hi[pi]-lo[pi]))
+  if d<=.001: blocks.append("N")
+  cls="QUALIFIED_SCALE_AWARE" if not blocks else ((blocks[0]+"_BOUND") if len(blocks)==1 else "MULTIPLE_BOUNDS")
   counts[cls]=counts.get(cls,0)+1
   sv=np.linalg.svd(z.jac,compute_uv=False); cond=float("inf") if sv[-1]==0 else float(sv[0]/sv[-1])
   src_near=[]
-  for pi,name,lbi,hii in ((2,"ALPHA",1e-8,10),(3,"N",1.000001,20),(4,"KS",1e-12,1e8)):
-   d=min((src[pi]-lbi)/(hii-lbi),(hii-src[pi])/(hii-lbi))
+  for pi,name,lbi,hii in ((2,"ALPHA",1e-8,10),(4,"KS",1e-12,1e8)):
+   lv=np.log(src[pi]); llo=np.log(lbi); lhi=np.log(hii); d=min((lv-llo)/(lhi-llo),(lhi-lv)/(lhi-llo))
    if d<=.001: src_near.append(name)
+  d=min((src[3]-1.000001)/(20-1.000001),(20-src[3])/(20-1.000001))
+  if d<=.001: src_near.append("N")
   print(f"BRO_BOUND|BRO={bid}|DEPTH={begin}:{end}|CLASS={cls}|BLOCKS={','.join(blocks)}|LAMBDA={grid[k]:.9g}|J={j:.9g}|FIT="+",".join(f"{x:.9g}" for x in p)+f"|SOURCE="+",".join(f"{x:.9g}" for x in src[:5])+f"|ALPHA_RATIO={p[2]/src[2]:.9g}|N_DELTA={p[3]-src[3]:.9g}|KS_RATIO={p[4]/src[4]:.9g}|SOURCE_NEAR={','.join(src_near) or 'NONE'}|COND={cond:.9g}|SINGULAR="+",".join(f"{x:.6g}" for x in sv))
  print("BRO_BOUND_SUMMARY="+json.dumps(counts,sort_keys=True))
 if __name__=="__main__": main()
