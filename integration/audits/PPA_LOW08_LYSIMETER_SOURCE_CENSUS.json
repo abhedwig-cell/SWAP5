@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.ppa_low08.lysimeter.source-census.v1",
+  "work_unit": "PPA-LOW08-LYSIMETER",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "readswap.f90": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "boundbottom.f90": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e"
+  },
+  "source_law": {
+    "configuration": "HPLATE defaults to 0; optional input range [-1000,0]",
+    "active_task_1": "SWBOTB=8 and h(NN) > Critdz-disnod(NN+1)+HPLATE (strict)",
+    "task_2": "Reuse task-1 FLBOTH; if active, recompute hgrad=(h(NN)-HPLATE)/disnod+1",
+    "active_head": "HBOT=HPLATE; F(NN) += KMEAN(NN+1)*hgrad; diagonal += KMEAN(NN+1)/disnod(NN+1)",
+    "inactive_head": "QBOT=0",
+    "swkimpl_derivative": "when SWKIMPL=1 and active, diagonal also += 0.5*DKDH(NN)*hgrad"
+  },
+  "interpretation": "Pure active-set and bottom-row algebra only; local FLBOTH sequencing, solver transaction, storage and mass acceptance are not integrated."
+}

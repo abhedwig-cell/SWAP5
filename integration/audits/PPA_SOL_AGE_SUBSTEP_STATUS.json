@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.ppa_sol_age_substep_status.v1",
+  "work_unit": "PPA-SOL-AGE-SUBSTEP",
+  "status": "LOCAL_SOURCE_ORACLE_QUALIFIED_O0_O2_NOT_PRODUCTION_ADMITTED",
+  "preregistration": "integration/audits/PPA_SOL_AGE_SUBSTEP_PREREGISTRATION.json",
+  "implementation_commit": "7e9fbfaea5fea119b8132a7c52739dbcf81c5bb7",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "solute_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "equation": "AgeTracer task-2 sequential internal-face and compartment sweep"
+  },
+  "implementation": {
+    "source": "src/process/mod_ppa_sol_age_substep.f90",
+    "test": "tests/fapp/test_ppa_sol_age_substep_source_oracle.f90",
+    "gate": "tests/fapp/run_ppa_sol_age_substep_source_oracle.sh",
+    "scope": "One positive explicit interval: internal age flux is recalculated after each previous upper-cell concentration update; root, lateral and zero-order age production are applied; bottom sign branch is reproduced."
+  },
+  "qualification": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64 explicit path",
+    "optimization_levels": ["O0", "O2"],
+    "deterministic_profiles_per_build": 100000,
+    "compartments_per_profile": 5,
+    "lateral_levels_per_compartment": 3,
+    "bitwise_o0_o2_transcript_identity": true,
+    "markers": [
+      "PPA_SOL_AGE_SUBSTEP_B1_11_SOURCE_ORACLE_100000x5=PASS",
+      "PPA_SOL_AGE_SUBSTEP_UPDATED_UPPER_FACE_ORDER=PASS",
+      "PPA_SOL_AGE_SUBSTEP_BOTTOM_ROOT_AND_LATERAL_BRANCHES=PASS",
+      "PPA_SOL_AGE_SUBSTEP_INVALID_INPUT_FAIL_CLOSED=PASS"
+    ]
+  },
+  "scope_boundary": {
+    "top_surface_pond_precipitation_boundary": "AGEFLUXT IS AN ALREADY-DERIVED INPUT",
+    "face_water_interpolation_dispersion_and_stable_step_selection": "ALREADY-DERIVED INPUTS",
+    "daily_substep_loop_cumulative_outputs_and_state_owner": "NOT_IMPLEMENTED",
+    "restart_accepted_mass_or_production_route": "NONE"
+  },
+  "next_action": "Source-test AgeTracer's independent stable substep candidate equation and strict remaining-interval/minimum-step schedule; keep the outer state owner absent."
+}

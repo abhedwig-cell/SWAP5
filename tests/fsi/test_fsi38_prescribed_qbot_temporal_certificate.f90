@@ -142,6 +142,11 @@ contains
     allocate(indicator_request%previous_right_derivative(numnod))
     indicator_request%previous_right_derivative = 0.0_real64
     call solver%evaluate_temporal_indicator(request, result, indicator_request, workspace, indicator)
+    indicator_request%forcing_event_at_start = .true.
+    call solver%evaluate_temporal_indicator(request, result, indicator_request, workspace, unsupported)
+    call require(.not.unsupported%available.and.trim(unsupported%route)=='forcing-event-unsupported', &
+         'reference indicator rejects unsupported event explicitly')
+    indicator_request%forcing_event_at_start = .false.
 
     call require(indicator%status == SW_TEMPORAL_INDICATOR_AVAILABLE .and. indicator%available, &
          'mode2 temporal indicator available')

@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ppa_low05_hbot.source_census.v1",
+  "work_unit": "PPA-LOW05-HBOT",
+  "snapshot": "B1.11",
+  "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "members": {
+    "SWAP/functions.f90": {
+      "sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+      "bytes": 10557,
+      "evidence": [
+        "AFGEN lines 66-108 clamps queries at or below the first x to its y, linearly interpolates at the first upper knot, detects an unused table suffix by a descending sentinel and returns the last populated y, and clamps a full table above its last x."
+      ]
+    },
+    "SWAP/readswap.f90": {
+      "sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+      "bytes": 61300,
+      "evidence": [
+        "SWBOTB=5 reads DATE5 and HBOT5, checks that at least one input date is within the simulation period, and packs date/head pairs into hbotab (lines 965-973)."
+      ]
+    },
+    "SWAP/boundbottom.f90": {
+      "sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+      "bytes": 6054,
+      "evidence": [
+        "For SWBOTB=5, each bottom-boundary evaluation samples hbot=AFGEN(hbotab,t1900+dt), computes bottom water content and conductivity from that head, and applies the macropore matrix-flow conductivity fraction if enabled (lines 120-128)."
+      ]
+    },
+    "SWAP/headcalc.f90": {
+      "sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "bytes": 26096,
+      "evidence": [
+        "SWBOTB=5 enters the fixed-head lower-boundary algebra in the Richards solve; this table-law slice does not change solver or flux/mass ownership."
+      ]
+    }
+  },
+  "ownership_verdict": "The input is an immutable DATE5/HBOT5 time table sampled at each boundary evaluation. The table law alone does not distinguish application-level normal prescribed head from a groundwater-owned bottom_mode=5 provider, nor does it qualify transaction/restart/mass publication.",
+  "production_admission": "NONE"
+}

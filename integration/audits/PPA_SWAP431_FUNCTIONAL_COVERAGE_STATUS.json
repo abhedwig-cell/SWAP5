@@ -1,0 +1,521 @@
+{
+  "schema": "swap5.functional_coverage_campaign.v1",
+  "workstream": "PPA production physics and application envelope",
+  "work_unit": "PPA-SWAP431-FUNCTIONAL-COVERAGE-01",
+  "baseline": "origin/integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "last_reconciled_canonical": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "last_reconciled_head": "c9afd7b678547cbf4de4b6101e8ded80c7cfcca4",
+  "migration_closure_ledger": "integration/audits/SWAP4_TO_SWAP5_MIGRATION_CLOSURE_LEDGER.json",
+  "reconciliation_note": "Fetched canonical a2d99ddd149ffaa422d9c422f96bd66e92c8555d; reviewed its 60-commit delta and current Status-A, PPA, and fixed-interface authorities. Shared runtime/coupling changes are reflected in the closure ledger; no automatic merge/rebase was performed. Branch-local source oracles remain unadmitted.",
+  "status_record": "integration/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_STATUS.json",
+  "next_local_capability": "integration/audits/PPA_IRR_TCSFIX_COMPOSITION_DESIGN.md",
+  "latest_tcsfix_checkpoint": {
+    "tested_commit": "3dc023a16",
+    "record": "integration/audits/PPA_IRR_TCSFIX_COMPOSITION_STATUS.json",
+    "scope": "Branch-local explicit daily TCS1-4/DCS2 supplied-observation route composes interval filtering, existing carrier ownership, all-column preflight, exact/prefix/window execution and decoded restart. O0/O2 gates cover selection, suppression, duplicate identity, late-column rejection, internally progressed rollback, mixed identities and short two-prefix window equivalence.",
+    "limits": "No canonical admission, automatic calendar/root inputs, profile-derived TCSFIX or DCS1. Larger 1/1024-day pending-event continuation remains rejected with cause unestablished; passing short post-gift continuation does not resolve that separate fixture."
+  },
+  "latest_tcs6_dcs1_checkpoint": {
+    "tested_commit": "223859929",
+    "record": "integration/audits/PPA_IRR_TCS6_COMPOSITION_STATUS.json",
+    "design": "integration/audits/PPA_IRR_TCS6_DCS1_DESIGN.md",
+    "scope": "Explicit supplied-deficit and opt-in committed-profile weekly DCS1/DCS2 routes pass bounded O0/O2 runtime gates: independent profile/threshold arithmetic, mixed-column exact/window identity, pending decoded-bundle restore, next-prefix completion, fresh two-prefix gift/remainder and preflight nonmutation. Root/profile input is caller supplied and fixed per window. Full-day execution and canonical admission remain open; the decoded bundle contract does not imply a byte-level codec requirement.",
+    "next_bounded_check": "Successor explicit invocation from actual committed snapshot now passes with changed profiles and ordinal101/counter1. Bounded profile slice evidence is recorded; move to separately designed TCSFIX process composition while retaining full-day numerical limitation. No automatic crop/root evolution inferred."
+  },
+  "latest_tcs6_checkpoint": {
+    "tested_commit": "0f28531f8",
+    "record": "integration/audits/PPA_IRR_TCS6_COMPOSITION_STATUS.json",
+    "scope": "Branch-local explicit ordinal/counter, bounded seven-successor and rollover-gift sequences, existing-owner publication and decoded restart are covered. Explicit 1/65536-day numerical targets complete one full hydraulic day with commit and exact decoded restoration. Second full-day continuation fails on the original owner before restored replay; rollback is verified. Coarser targets and extended retries do not resolve the numerical gap. Stable-storage availability and independent quad-precision checks pass. Full-day daily-adapter sequences, seven elapsed days, disk codec, crop reset, TCSFIX and canonical admission remain unqualified. Owning record supersedes historical preregistration progress labels."
+  },
+  "latest_tcs1_4_dcs1_checkpoint": {
+    "tested_commit": "77d9e1032",
+    "record": "integration/audits/PPA_IRR_TCS1_4_DCS1_STATUS.json",
+    "scope": "Explicit supplied-profile TCS1-4/DCS1 shares checked deficit/timing, source binding and existing committed bootstrap owner. Independent depth grid, preflight nonmutation, mass, prefix, decoded restart and internally progressed rollback pass recorded O0/O2 gates. No automatic daily stress/root geometry, calendar or canonical admission."
+  },
+  "latest_tcs2_4_profile_checkpoint": {
+    "tested_commit": "0d6389024",
+    "record": "integration/audits/PPA_IRR_TCS2_4_PROFILE_STATUS.json",
+    "scope": "Explicit supplied-profile TCS2-4/DCS2 derives water aggregates from the same committed snapshot as the irrigation event. Prefix, decoded restart, pending invalid-input bypass, preflight nonmutation and internally progressed hydraulic rollback pass O0/O2 with exact transcript identity and unchanged hard mass criteria. TCS1 daily stress, dynamic geometry, DCS1 timing composition and canonical admission remain open."
+  },
+  "latest_tcs1_4_checkpoint": {
+    "tested_commit": "1ff7c8153",
+    "record": "integration/audits/PPA_IRR_TCS1_4_COMPOSITION_STATUS.json",
+    "scope": "Supplied-observation TCS1-4/DCS2 now composes source binding and exact/prefix/window bootstrap execution. Recorded gates cover hydraulic acceptance, event persistence, fresh-owner restart and internally progressed rejection at O0/O2 with hard mass unchanged. Root-water and daily stress observation derivation, DCS1, calendar and canonical admission remain separate."
+  },
+  "latest_irrigation_checkpoint": {
+    "tested_commit": "52189a2af",
+    "application_contract": "integration/audits/PPA_IRR_APPLICATION_CONTRACT.md",
+    "record": "integration/audits/PPA_IRR_EVENT_OWNER_STATUS.json",
+    "scope": "Branch-local restricted TCS7/TCS8, DCS1/DCS2 single-node water-only SSDI now composes committed event state, accepted-only publication, decoded restart and explicitly opted-in bootstrap execution. Exact, event-aligned prefix and bounded multi-prefix window APIs pass recorded O0/O2 mass, rollback, restart, source-stop, mixed-outcome and manual-identity fixtures. Supplied profile/configuration remains fixed over a window. Canonical/general registry, calendar/parser, dynamic crop inputs and disk persistence are not admitted; recorded initial zero-source numerics remain unresolved.",
+    "next_work_unit": "integration/audits/PPA_IRR_EVENT_OWNER_PREREGISTRATION.json"
+  },
+  "latest_atm02_owner_checkpoint": {
+    "tested_commit": "d234a4524",
+    "record": "integration/audits/PPA_ATM02_PRODUCTION_COMPOSITION_PREREGISTRATION.json",
+    "scope": "Explicit storage/temporal/dense-retry profile completes original then changed-weather PMdirect intervals with active prescribed roots and marked event, exact fresh hydraulic/history restart, accepted root amount and hard mass. Failed/partial attempts publish nothing; restored replay is exact. O0/O2 full transcripts match, direct oracle/guards and root-inactive/default preservation pass. Third unmarked interval still fails after 7351 internal accepts and is qualified only for exact rollback. Not general weather decoding, dynamic root stress or canonical admission."
+  },
+  "latest_storage_owner_checkpoint": {
+    "tested_commit": "206dbf73e",
+    "record": "integration/audits/PPA_MVG_STORAGE_DIFFERENCE_STATUS.json",
+    "scope": "Adds unmarked low-rain continuation, marked return to higher rain and unmarked higher-rain continuation under explicit retry profile 0.8/64. O0/O2 full transcript identical; exact fresh owner restart/full hydraulic-history-provenance equality and source closure at each window. Prior binary-halving failure, intermediate-duration diagnostics and low-rain completion remain in the gate. Root-inactive fixed-flux mode-7 only, production/default/tolerances unchanged. Next reconcile the distinct ATM02 typed meteorology/root-demand scenario without bypassing compatibility guards; broader regimes and disk persistence remain open. Not canonical or whole migration closure."
+  },
+  "register": "docs/audits/PPA_SWAP431_FUNCTIONAL_COVERAGE_REGISTER.md",
+  "scope": "Evidence-based SWAP 4.3.1 corrected-reference capability coverage; this record does not widen frozen Status-A.",
+  "relevant_paths": [
+    "reference/swap-4.3.1",
+    "src",
+    "tests",
+    "integration/audits",
+    "docs/audits"
+  ],
+  "authority_paths": [
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "docs/verification/reference-baselines.md",
+    "docs/verification/principles.md",
+    "integration/audits/production_physics_application_envelope_gap_register.json"
+  ],
+  "test_paths": [
+    "tests/fapp",
+    "tests/qualification",
+    "testbank/runners"
+  ],
+  "evidence_paths": [
+    "integration/audits/PPA_WU01_STATUS.json",
+    "integration/audits/PPA_WU02_STATUS.json",
+    "integration/audits/PPA_WU03_STATUS.json",
+    "integration/audits/PPA_WU04_STATUS.json",
+    "integration/audits/PPA_WU05_STATUS.json"
+  ],
+  "dependency_surface": [
+    "corrected B1 reference identity",
+    "typed production application bootstrap",
+    "transaction/restart ownership",
+    "mass-accounting contract",
+    "Status-A and post-Status-A capability admission"
+  ],
+  "interfaces_allowed_to_change": [
+    "new PPA-owned typed adapters and option-discriminated state behind explicit contracts"
+  ],
+  "interfaces_held_fixed": [
+    "Reference Richards availability",
+    "committed/trial/scratch ownership",
+    "mass conservation",
+    "restart semantics",
+    "shared groundwater and iMOD Coupler contracts"
+  ],
+  "invariants_affected": [
+    2,
+    3,
+    7,
+    13,
+    21,
+    23,
+    25,
+    29
+  ],
+  "implementation_status": "PPA-ATM-02 provides immutable decoded-daily-meteorology provenance, generic-time coverage validation, PMdirect daily/SWINTER=0 composition, prescribed root-sink materialization and one all-tile production-owner forcing route. PPA-WU04-C/D process and restricted dynamic-top composition are implemented; their separate F-KT source-window progress ledger is receipt-gated and restartable. WU05 pure oracles cover salinity, macro-root frost, MICRO Campbell type-1 response and aggregate stress while production owners remain unchanged; macropore A1 has an exact source/state/mass census, A2 an isolated typed rollback/restart DTO, and A3 bitwise-tested VOLUNDR, RAPIDDRAIN complete equation/gate composition, SATFLOW task-1 interval/incoming composition, task-2 negative-flux partition/sum and task-4 derivative update, plus ABSORPTION sorptivity/diffusion candidates, sorptivity-vs-Darcy arbitration, defined Darcy candidate, task-2 derivative, SWABS=2 diffusivity, clay/peat SHRINK, SHRINKPAR clay tasks 1/2, and polygon-diameter geometry. Lower-boundary pure source-law oracles cover LOW01 DATE1/GWLEVEL, HeadCalc regime selection, in-profile flux/head recurrence and composed surface q0/qv/profile/qbot; LOW03 explicit/implicit Cauchy, profile C-value and aquifer sine/table forcing; LOW04 exponential q(GWL) and q(h) tables; LOW05 DATE5/HBOT5 AFGEN; and LOW08 lysimeter active-set/row equations. Irrigation source-equation checkpoints cover TCS1-4, TCS6-8, typed schedule eligibility/fixed-event precedence, fixed and scheduled event split/retry candidate identity, fixed-input depth/rate/SSDI normalization plus explicit-rate-to-application composition, root-zone water availability/deficit aggregation, TCS7/8 sensor-depth node selection, task-4 external-availability scaling, TCSFIX, fixed-event date selection/application, scheduled-window date predicates, DCS1 depth-to-surface/SSDI application composition, surface irrigation solute source amount after canopy apportioning, DCS1-DCS2 and rate/duration materialization; calendar and production runtime remain non-admitted. No new production application route was admitted.",
+  "test_status": "PASS: PPA-ATM-02 GNU Fortran O0/O2; WU04 F-KT retry/restart harness O0/O2; WU05-E1/F1/G1/G2 and LOW01-GWL/REGIME/FLUX/SURFACE-SEED/SURFACE-COMPOSITION, LOW03-Cauchy/CVAL/aquifer sine/table, LOW04-GWL/QH, LOW05-HBOT, LOW08 active-set, PPA-WU04D-GASH-SOURCE-ORACLE-100000/FAIL-CLOSED/PROCESS/PPA-IRR-INTERCEPTION-SOLUTE-MASS/PPA-IRR-TCS1-4-TIMING/PPA-IRR-TCS6-WEEKLY/PPA-IRR-TCS7-DCS2/PPA-IRR-TCS8-DCS2/PPA-IRR-DCS1-DEPTH/PPA-IRR-DCS1-APPLICATION-COMPOSITION/PPA-IRR-TCSFIX-FILTER/PPA-IRR-RATE-MATERIALIZATION/PPA-IRR-FIXED-DATE-MATCH/PPA-IRR-FIXED-APPLICATION/PPA-IRR-WINDOW/PPA-IRR-WATER-DEFICIT/PPA-IRR-SENSOR-NODE/PPA-IRR-AVAILABILITY-SCALE/PPA-IRR-ELIGIBILITY/PPA-IRR-FIXED-SPLIT/PPA-IRR-SCHEDULED-SPLIT/PPA-IRR-FIXED-INPUT-NORMALIZATION/PPA-IRR-FIXED-INPUT-APPLICATION and PPA-WU05-A2/A3-VOLUNDR/A3-RAPIDDRAIN-KD/A3-DRAINABLE-STORAGE/A3-RAPIDDRAIN-FLUX/A3-RAPIDDRAIN-DISTRIBUTION/A3-RAPIDDRAIN-COMPOSED/A3-SATFLOW-EXCHANGE/A3-SATFLOW-OUTFLOW/A3-SATFLOW-DERIVATIVE/A3-SATFLOW-TASK1/A3-SORPTIVITY/A3-ABSORPTION-ARBITRATION/A3-ABSORPTION-DARCY/A3-ABSORPTION-DIFFUSION/A3-ABSORPTION-DERIVATIVE/A3-ABSORPTION-DIFFUSIVITY/A3-SHRINKAGE/A3-SHRINKPAR-TASK1/A3-SHRINKPAR-TASK2/A3-POLYGON-DIAMETER tests pass at O0/O2 with transcript identity; each new A3 source term includes 100000-vector deterministic bitwise comparison. Direct PowerShell compiler execution works; declared Bash wrappers were not locally executable because Git Bash exits before script execution while creating its signal pipe.",
+  "qualification_status": "INCOMPLETE, with bounded branch-local successes: WU04-C/D combined mode-7 hydraulic/source-window receipt, failed/partial replay, in-memory restart and hard-mass gates pass under explicit storage/temporal/event options; see latest_storage_owner_checkpoint and its owning exact-ref records. Ordinary weather ingress, disk restart, unrestricted dynamic-top profiles and canonical admission remain open. The separate recorded ATM02 two-interval scenario fails its first transaction with status 10/kernel 2, zero accepts and 24 nonlinear iterations at O0/O2; later WU04 success does not automatically qualify that distinct scenario. WU05-A2 qualifies only an isolated DTO harness; WU05/lower-boundary/irrigation equation oracles do not establish full owner composition, event calendars, macropore flow, accepted booking, restart or mass closure.",
+  "owner_runtime_reconciliation": {
+    "committed_owner_apis": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90:fmr_production_application_bootstrap_t%copy_committed_top_states",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90:fmr_production_application_bootstrap_t%export_committed_restart",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90:fmr_production_application_bootstrap_t%restore_committed_restart"
+    ],
+    "test_scenario": "Isolated invocation of run_atm02_pmdirect_owner_profile from tests/fapp/test_ppa_wu01_production_application_bootstrap.f90; executed from a temporary driver copy so the earlier WU04-C scenario could not mask the ATM02 result.",
+    "optimization_levels": ["O0", "O2"],
+    "observed_bootstrap_status": 10,
+    "observed_tile_kernel_status": 2,
+    "observed_tile_completed_or_committed": false,
+    "observed_tile_accepted_substeps": 0,
+    "observed_solver_nonlinear_iterations": 24,
+    "interpretation": "The owner boundary exists; this configured first hydraulic interval does not commit. This is not evidence against restart API ownership and not a restart-qualification pass."
+  },
+  "reference_reconstruction": {
+    "status": "PASS",
+    "input_distribution": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/SWAP_4.3.1.zip",
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "member_count": 63,
+    "source_bytes": 1886519,
+    "method": "raw canonical Git blobs plus tools/vq/b1_11_reconstruct.py; required because local core.autocrlf changes patch bytes"
+  },
+  "toolchain": {
+    "fortran_compiler": "C:/msys64/ucrt64/bin/gfortran.exe",
+    "version": "GNU Fortran 16.2.0",
+    "status": "AVAILABLE_BY_EXPLICIT_PATH; Codex PATH refresh pending"
+  },
+  "blockers": [
+    "PPA-ATM-02 historical non-opt-in scenario fails its first transaction, but the separate explicit storage/temporal/0.8-retry prescribed-root profile now passes both intervals and fresh restart at 0dc7b93a3. Changed-weather events with active roots still require a bounded derivative/guard extension; general file/calendar input and admission remain open.",
+    "B2 integrated reference-mode comparison remains fail-closed",
+    "macropore production migration requires a single Richards interval owner plus restart/rollback and internal/external mass-transfer qualification",
+    "B1.11 ABSORPTION reads local SorpFac outside its assignment branch, so Darcy-disabled/out-of-interval production arbitration is stale or undefined; isolated oracles cover only defined source branches until owner semantics are resolved",
+    "WU05 salinity/frost/MICRO/root-stress production composition and accepted root-sink booking remain unqualified despite pure source oracles",
+    "WU04-C/D bounded fixed-flux mode-7 owner hard-mass, accepted receipts, failed/partial replay and in-memory restart are qualified branch-locally through explicit numerical options; ordinary weather ingress, disk restart, broader dynamic-top regimes and canonical admission remain open",
+    "LOW01 pure numerical chain now composes, but pondrunoff/top ingestion, low-GWL transactions and single-owner accepted-state/mass publication remain open; LOW03/04/05/08 owner-bound bottom-boundary routes, retries, restart and accepted-mass publication also remain open despite their numerical oracles",
+    "PPA-LOW05-APP: legacy DATE5/HBOT5 ordinary prescribed-head semantics are not identical to the groundwater-owned bottom_mode=5 route; a normal adapter requires a separate ownership/mass-publication contract",
+    "Local Git Bash wrappers cannot start because bash.exe fails creating its signal pipe (Win32 error 5); direct PowerShell GNU Fortran runs provide local O0/O2 evidence pending CI"
+  ],
+  "candidate_queue": [
+    "PPA-WU04-C/D: extend qualified bounded source sequences, then ordinary weather ingress, disk restart and broader dynamic-top regimes; do not repeat already qualified opt-in hydraulic receipt/restart/mass gates without a relevant dependency change",
+    "PPA-LOW01: find an existing sole owner for pond/top-source closure, GWL transition and accepted-state publication; no second state owner",
+    "PPA-LOW08: active-set trial/accept/reject/restart lifecycle",
+    "PPA-LOW03/04/05: source oracles complete for listed equations; continue through ingestion/state-owner and ordinary-adapter composition without aliasing groundwater ownership",
+    "PPA-WU05-A3: continue remaining independent exact-source macropore equations; keep undefined SorpFac cases and production/mass route held",
+    "PPA-IRR-OTHER: continue remaining source-bound solute and scheduling/interception equations; the new surface nird*cirr*dt candidate does not establish SSDI solute transport, event parser/calendar ownership, solver-accepted source-mass booking or production route",
+    "PPA-SOL-AGE-TRANSPORT: B1.11 AgeTracer task-1 afgen_2 profile initialization, cell/face/vertical equations, one-explicit-substep sweep, stable timestep/remaining-interval, surface pond boundary, effluent-increment, bounded 1-m groundwater-plane and task-3 numeric report source oracles pass exact-source O0/O2 checks; parser, full daily loop, grid/task state owner, file lifecycle and production binding remain absent"
+  ],
+  "ready_queue": [],
+  "next_safe_step": "Follow PPA_WU05A4_TRIAL_EXCHANGE_STATUS.json: bind source-derived nonlinear exchange evaluation and explicit geometry/surface trial inputs to the Richards owner. Candidate used-vector capture now composes with isolated interval mass accounting; actual HeadCalc wiring, backtracking lifecycle and whole-column acceptance remain open. Preserve frozen provider ABI and inactive production behavior.",
+  "recovery_point": "85c21c235e3702643b9815aeecdf3a2b03c552c9: trial exchange capture, candidate-mass and interval composition gates PASS O0/O2 against persisted source; no production HeadCalc binding or whole-column runtime admission.",
+  "recent_checkpoint_tests": [
+    "PPA-SOL-AGE-CELL: 100000 exact B1.11 AgeTracer compartment updates at O0/O2, including zero-order production, face amounts, root/lateral sink terms and fail-closed invalid inputs.",
+    "PPA-SOL-AGE-FACE: 100000 exact B1.11 AgeTracer internal-face advection-dispersion amounts at O0/O2; nonfinite and invalid geometry cases rejected.",
+    "PPA-SOL-AGE-VERTICAL: 100000 six-compartment source-ordered candidate profiles at O0/O2; face-vector dimension, NaN and nonpositive geometry rejection verified.",
+    "PPA-SOL-AGE-SUBSTEP: 100000 five-compartment, three-drain-level source-ordered explicit substeps at O0/O2; updated-upper face, bottom sign, root/lateral and age-production branches bitwise match B1.11.",
+    "PPA-SOL-AGE-DT: 100000 four-compartment exact B1.11 AgeTracer stable-step candidates at O0/O2; strict 1e-8 remainder and dtmin clipping order verified, including source-preserving interval overrun.",
+    "PPA-SOL-AGE-SURFACE: 100000 exact B1.11 AgeTracer active pond boundary candidates at O0/O2; top flux threshold/inactive branches and invalid input rejection verified.",
+    "PPA-SOL-AGE-OUTPUT: 100000 five-compartment, three-drain-level exact B1.11 effluent increment profiles at O0/O2; top/root/lateral/bottom branches bitwise match direct formula order.",
+    "PPA-SOL-AGE-GWL1M: 100000 eight-segment exact B1.11 clipped one-metre groundwater-plane weighted means at O0/O2; sentinel and invalid geometry covered.",
+    "PPA-SOL-AGE-REPORT: 100000 seven-node/four-level task-3 numeric report candidates at O0/O2; profile copy, interval normalization and positive drainage sum verified.",
+    "PPA-SOL-AGE-INIT: 100000 cursor-aware seven-node B1.11 afgen_2 table initializations at O0/O2; clamp, interpolation, partial-table terminator and invalid inputs checked.",
+    "PPA-SOL-AGE-INITIAL-STORAGE: 100000 nine-compartment B1.11 task-1 storage/samini initializations at O0/O2; storage and ascending-index total are bitwise verified.",
+    "PPA-WU05-A3-MPVOLUME-DOMAINS: minimum-width-filtered compartment volume, deepest active bottom and potential-bottom limits, per-domain cell/total volume in source loop order, dynamic nonnegative candidate clamp, inactive-above-top isolation and invalid/short-output fail-closed at O0/O2.",
+    "PPA-WU05-A3-MPVOLUME-HYSTERESIS: task-2 storage-excess shrinkage relief, SWMBF domain gating, bottom-limited prior-volume recovery scan, source-order proportional redistribution, no-relief preservation, domain-total and dynamic-volume candidate aggregation at O0/O2.",
+    "PPA-WU05-A3-MACROSTATE-STORAGE: section C water inventory candidates from top/matrix/drainage fluxes and SWMBF=2 domain-1 profile, including saturation-top selection, empty-domain, and zero-volume fail-closed checks at O0/O2.",
+    "PPA-WU05-A3-MACROSTATE-WETTING: section D compartment wet-wall fractions, route-dependent stored-water candidates, top wet node and water-level recurrence, including the 1e-8 small-volume branch at O0/O2.",
+    "PPA-WU05-A3-MACROSTATE-FLUX: section D source-ordered unsaturated/saturated internal flux recurrences, bottom shallowing correction and SWMBF route gate at O0/O2.",
+    "PPA-WU05-A3-MACROSTATE-AGGREGATE: section E main-bypass aliases and ordered domain-2+ volume/storage/profile aggregates, including the single-domain empty range at O0/O2.",
+    "PPA-WU05-A3-MACROSTATE-CDE-COMPOSED: isolated two-domain storage-to-wetting-to-flux-to-interface handoff with O0/O2 identity; this is equation composition only, not production/runtime qualification.",
+    "PPA-WU05-A3-SHRINKAGE: 100000 O0/O2 bitwise clay, continuous peat, and piecewise peat vectors; undefined rigid mode rejected.",
+    "PPA-WU05-A3-SHRINKPAR-TASK1: 100000 O0/O2 bitwise clay reference-moisture vectors; invalid logarithm and source upper-bound error checked.",
+    "PPA-WU05-A3-SHRINKPAR-TASK2: 100000 O0/O2 bitwise bounded Newton calibration vectors; invalid and source-error domains checked.",
+    "PPA-WU05-A3-SHRINKPAR-TASK4: 100000 O0/O2 bitwise peat typical-point root iterations; guarded invalid domains checked.",
+    "PPA-WU05-A3-POLYGON-DIAMETER: 100000 O0/O2 bitwise geometry vectors across all density paths and fixed-diameter fallback.",
+    "PPA-WU05-A3-DEFINECOMPART: exact-source-ordered deterministic cases for interior breakpoint split/node mapping, near-depth merge, existing-grid alignment and undersized-input fail-closed at O0/O2; compiler warnings-as-errors, bounds/FPE traps, identical transcripts.",
+    "PPA-WU05-A3-MACROGEOM-VOLUME-SEGMENT: hand-computable main-bypass, static cutoff, IC surface and both SPoint power-branch segment contributions plus invalid exponent; O0/O2 output identity with bounds/FPE traps.",
+    "PPA-WU05-A3-MACROGEOM-AGGREGATE: exact-source per-cell PpIcCp zero/positive branches, static-volume scaling and unclamped FrArMtrx expression; invalid domains fail closed; O0/O2 transcript identity.",
+    "PPA-WU05-A3-MACROGEOM-PARTITION: exact-source compartment domain-share allocation for full/partial subdivisions, residual, truncation/cap, strict thresholds, saturated and no-IC routes; sum-to-one and O0/O2 checks.",
+    "PPA-WU05-A3-MACROGEOM-LUMPING: exact-source ICpBtDmPot first-zero bottoms, chained same-bottom row shifts, strict Rzah branch and Ah > 2x neighbor gate; active domains checked at O0/O2.",
+    "PPA-WU05-A3-MACROGEOM-STATIC-DOMAINS: exact section-H main-bypass and summed IC static volume allocation for one/two/three domains; conservation, invalid extent and O0/O2 identity.",
+    "PPA-WU05-A3-MACROGEOM-TOP-SUPPRESSION: section-E zeroing for cells above IcTopMp, full matrix-area reset, untouched first active/deeper cells, top-active no-op and invalid bound; O0/O2 identity.",
+    "PPA-WU05-A3-MACROGEOM-POLYGON-HANDOFF: section F/G loop limits and argument mapping to qualified DiamPolyg equation checked on five-node profile; O0/O2 identity.",
+    "PPA-WU05-A3-MACROINIT-DARCY: exact ShapeFacMp*8*PpDmCp*DZ*Ksat/DiPoCp**2 coefficient, zero-share and inverse-square scaling, invalid diameter; O0/O2 identity.",
+    "PPA-WU05-A3-MACROINIT-CRACK-NODE: exact strict geometric threshold search and IcTopMp bypass; invalid geometry and out-of-grid cases fail closed; O0/O2 identity.",
+    "PPA-WU05-A3-MPVOLUME-SHRINKAGE-CANDIDATE: exact task-1 shrinkage/subsidy geometry, critical moisture branch, minimum clamp and negative-candidate correction; candidate-only, no state publication, O0/O2 identity.",
+    "PPA-WU05-A3-MPVOLUME-SURFACE-CANDIDATE: task-1 crack/static surface area, area/density gates, domain-area split and surface-capacity clamps; candidate-only, O0/O2 identity.",
+    "PPA-IRR-SURFACE-SOLUTE-STORE: 100000 O0/O2 source comparisons for previous surface amount plus precipitation and irrigation increments; overflow rejection checked.",
+    "PPA-IRR-SURFACE-SOLUTE-EXCHANGE: 100000 O0/O2 bitwise pond concentration, matrix top-flux, and residual-store comparisons; strict gate and overflow rejection checked.",
+    "PPA-IRR-BOTTOM-SOLUTE-FLUX: 100000 O0/O2 bitwise bottom water-flux sign and selected-concentration comparisons; invalid/overflow rejection checked.",
+    "PPA-IRR-BOTTOM-SOLUTE-CUMULATIVE: 100000 O0/O2 bitwise prior mass plus bottom flux and interval increment using the pre-update matrix concentration.",
+    "PPA-SOLUTE-INTERNAL-FACE-FLUX: 100000 O0/O2 bitwise advection plus concentration-gradient dispersion and interval amount; invalid/overflow rejection checked.",
+    "PPA-SOLUTE-CELL-BALANCE: 100000 O0/O2 bitwise cmsy update from net face amounts, thickness, and decomposition/root/lateral sink terms.",
+    "PPA-SOLUTE-LINEAR-INVERSION: 100000 O0/O2 bitwise Freundlich-exponent-near-one storage-to-concentration conversions plus source roundoff handling.",
+    "PPA-SOLUTE-ROOT-UPTAKE: 100000 O0/O2 bitwise layer uptake-rate and cumulative amount comparisons using B1.11 operation order.",
+    "PPA-SOLUTE-DECOMPOSITION: 100000 O0/O2 bitwise temperature, dryness, Freundlich adsorption and decomposition-rate comparisons.",
+    "PPA-SOLUTE-DISPERSION: 100000 O0/O2 bitwise moisture-dependent molecular diffusion, pore velocity, longitudinal dispersion and timestep correction comparisons.",
+    "PPA-SOLUTE-TIMESTEP: 100000 O0/O2 bitwise eight-layer stability minima, dispersion floors, remaining interval caps and dtmin floors.",
+    "PPA-SOLUTE-TRANSPORT-SUBSTEP: 100000 O0/O2 bitwise composed six-layer dispersion-to-stability-to-substep comparisons.",
+    "PPA-SOLUTE-SUBSTEP-ADVANCE: 100000 O0/O2 bitwise B1.11 substep-loop schedule comparisons, including strict remaining-time gate, minimum-step overshoot, and invalid/no-progress/overflow rejection.",
+    "PPA-SOLUTE-LATERAL-DRAINAGE: 100000 O0/O2 bitwise B1.11 signed-level concentration selection, ordered per-depth sink rate and substep mass; invalid domains rejected.",
+    "PPA-SOLUTE-AQUIFER-UPDATE: 100000 O0/O2 bitwise B1.11 swbr-gated aquifer concentration, seep concentration and surface-mass update across positive/zero/negative drainage branches."
+  ],
+  "latest_source_oracle": {
+    "work_unit": "PPA-SOLUTE-AQUIFER-UPDATE",
+    "source": "B1.11 solute.f90 task 2 swbr==1 aquifer concentration update and subsequent sqsur mass booking",
+    "test": "100000 bitwise positive/zero/negative drainage aquifer update and surface-mass comparisons at O0/O2",
+    "test_markers": [
+      "PPA_SOLUTE_AQUIFER_UPDATE_SOURCE_ORACLE_100000=PASS",
+      "PPA_SOLUTE_AQUIFER_UPDATE_POSITIVE_ZERO_NEGATIVE_DRAIN=PASS",
+      "PPA_SOLUTE_AQUIFER_UPDATE_SWBR_GATE_AND_UPDATED_SEEP_CONCENTRATION=PASS",
+      "PPA_SOLUTE_AQUIFER_SURFACE_MASS_USES_UPDATED_CONCENTRATION=PASS",
+      "PPA_SOLUTE_AQUIFER_UPDATE_INVALID_DOMAIN_FAIL_CLOSED=PASS",
+      "PPA_SOLUTE_AQUIFER_UPDATE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macro_geometry_oracle": {
+    "work_unit": "PPA-WU05-A3-DEFINECOMPART",
+    "source": "B1.11 macropore.f90 DEFINECOMPART breakpoint merge, grid alignment, interval insertion and IdNx mapping",
+    "test": "Deterministic interior split, near-depth merge, existing-grid alignment and invalid-dimension cases at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_DEFINECOMPART_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_DEFINECOMPART_BREAKPOINT_SPLIT_AND_IDENTITY=PASS",
+      "PPA_WU05A3_DEFINECOMPART_NEAR_BREAKPOINT_MERGE=PASS",
+      "PPA_WU05A3_DEFINECOMPART_EXISTING_GRID_ALIGNMENT=PASS",
+      "PPA_WU05A3_DEFINECOMPART_INVALID_DOMAIN_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_DEFINECOMPART_O0_O2_IDENTITY=PASS"
+    ],
+    "compiler_gates": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow"],
+    "production_admission": "NONE"
+  },
+  "latest_macro_volume_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-VOLUME-SEGMENT",
+    "source": "B1.11 macropore.f90 MACROGEOM section B relative-volume Alfa/Beta and static cutoff equations",
+    "test": "Analytic deterministic segment cases at O0/O2; not full MACROGEOM composition",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_VOLUME_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_MB_DOMAIN_STATIC_CUTOFF=PASS",
+      "PPA_WU05A3_MACROGEOM_IC_SURFACE_LINEAR_BRANCH=PASS",
+      "PPA_WU05A3_MACROGEOM_IC_SPOINT_POWER_BRANCHES=PASS",
+      "PPA_WU05A3_MACROGEOM_BELOW_STATIC_DEPTH_ZERO=PASS",
+      "PPA_WU05A3_MACROGEOM_INVALID_EXPONENT_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROGEOM_VOLUME_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macro_aggregate_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-AGGREGATE",
+    "source": "B1.11 macropore.f90 MACROGEOM section B per-cell PpIcCp, VlMpStCp and FrArMtrx equations",
+    "test": "Hand-computable zero/positive IC ratio and static storage cases, including source-preserving overfull remainder; O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_AGGREGATE_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_IC_ZERO_BRANCH=PASS",
+      "PPA_WU05A3_MACROGEOM_IC_POSITIVE_RATIO=PASS",
+      "PPA_WU05A3_MACROGEOM_STATIC_VOLUME_AND_MATRIX_FRACTION=PASS",
+      "PPA_WU05A3_MACROGEOM_STATIC_OVERFULL_SOURCE_RESULT_PRESERVED=PASS",
+      "PPA_WU05A3_MACROGEOM_AGGREGATE_INVALID_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROGEOM_AGGREGATE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macro_partition_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-PARTITION",
+    "source": "B1.11 macropore.f90 MACROGEOM section C per-compartment PpDmCp allocation",
+    "test": "Full and partial subdomain shares/residual, integer truncation/cap, strict thresholds, saturated/no-IC branches; O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_PARTITION_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_EQUAL_SUBDOMAINS_AND_RESIDUAL=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_FLOOR_AND_CAP=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_LOW_IC_THRESHOLD=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_RZAH_BRANCHES=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_INVALID_DIVISOR_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROGEOM_PARTITION_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macro_lumping_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-LUMPING",
+    "source": "B1.11 macropore.f90 MACROGEOM section D bottom detection and PpDmCp domain lumping",
+    "test": "Same-bottom IC chain collapse, distinct-bottom preservation and strict Ah merge ratio true/false; O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_LUMPING_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_DOMAIN_BOTTOM_DETECTION=PASS",
+      "PPA_WU05A3_MACROGEOM_SAME_BOTTOM_CHAIN_LUMPING=PASS",
+      "PPA_WU05A3_MACROGEOM_AH_RELATIVE_SIZE_LUMPING_GATE=PASS",
+      "PPA_WU05A3_MACROGEOM_DISTINCT_BOTTOMS_REMAIN_SEPARATE=PASS",
+      "PPA_WU05A3_MACROGEOM_LUMPING_INVALID_SHAPE_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROGEOM_LUMPING_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macro_static_domains_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-STATIC-DOMAINS",
+    "source": "B1.11 macropore.f90 MACROGEOM section H per-domain static volume allocation",
+    "test": "One-, two- and three-domain volume allocations plus invalid domain extent at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_STATIC_DOMAINS_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_STATIC_MB_IC_SUM=PASS",
+      "PPA_WU05A3_MACROGEOM_STATIC_SINGLE_DOMAIN=PASS",
+      "PPA_WU05A3_MACROGEOM_STATIC_DOMAIN_SCALE=PASS",
+      "PPA_WU05A3_MACROGEOM_STATIC_DOMAIN_INVALID_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROGEOM_STATIC_DOMAINS_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macro_top_suppression_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-TOP-SUPPRESSION",
+    "source": "B1.11 macropore.f90 MACROGEOM section E IcTopMp top-layer suppression",
+    "test": "Two-cell suppression, first active/deeper preservation, no-op and invalid-bound cases at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_TOP_SUPPRESSION_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_TOP_FREE_CELLS_ZEROED=PASS",
+      "PPA_WU05A3_MACROGEOM_TOP_FREE_MATRIX_AREA_ONE=PASS",
+      "PPA_WU05A3_MACROGEOM_IC_TOP_AND_DEEPER_CELLS_PRESERVED=PASS",
+      "PPA_WU05A3_MACROGEOM_TOP_SUPPRESSION_INVALID_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROGEOM_TOP_SUPPRESSION_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macro_polygon_handoff_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROGEOM-POLYGON-HANDOFF",
+    "source": "B1.11 macropore.f90 MACROGEOM sections F/G DiamPolyg handoffs",
+    "test": "Five-node profile with IcTopMp and ICpBtDmPot(2) boundaries; uses the already qualified polygon-diameter equation; O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROGEOM_POLYGON_HANDOFF_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROGEOM_POLYGON_FIRST_PASS_IC_TOP_TO_BOTTOM=PASS",
+      "PPA_WU05A3_MACROGEOM_POLYGON_FINAL_PASS_STARTS_AFTER_IC_BOTTOM=PASS",
+      "PPA_WU05A3_MACROGEOM_POLYGON_ABOVE_IC_TOP_PRESERVED=PASS",
+      "PPA_WU05A3_MACROGEOM_POLYGON_HANDOFF_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macroinit_darcy_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROINIT-DARCY",
+    "source": "B1.11 macropore.f90 MACROINIT section F CDarcy exchange coefficient",
+    "test": "Analytic coefficient, zero domain share, inverse-square diameter scaling and invalid diameter at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROINIT_DARCY_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROINIT_DARCY_DOMAIN_AND_HYDRAULIC_SCALING=PASS",
+      "PPA_WU05A3_MACROINIT_DARCY_INVERSE_DIAMETER_SQUARED=PASS",
+      "PPA_WU05A3_MACROINIT_DARCY_INVALID_DIAMETER_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROINIT_DARCY_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macroinit_crack_node_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROINIT-CRACK-NODE",
+    "source": "B1.11 macropore.f90 MACROINIT section B NnCrAr node selector",
+    "test": "Strict threshold selection, IcTopMp bypass, grid-overrun and invalid-thickness checks at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROINIT_CRACK_NODE_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROINIT_CRACK_NODE_STRICT_DEPTH_THRESHOLD=PASS",
+      "PPA_WU05A3_MACROINIT_CRACK_NODE_IC_TOP_BYPASS=PASS",
+      "PPA_WU05A3_MACROINIT_CRACK_NODE_OUTSIDE_GRID_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROINIT_CRACK_NODE_INVALID_GEOMETRY_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROINIT_CRACK_NODE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_mpvolume_candidate_oracle": {
+    "work_unit": "PPA-WU05-A3-MPVOLUME-SHRINKAGE-CANDIDATE",
+    "source": "B1.11 macropore.f90 MPVOLUME task-1 shrinkage candidate equations",
+    "test": "Active and inactive moisture routes, minimum-subsidy correction, saturation cutoff and invalid geometry at O0/O2; candidate not published",
+    "test_markers": [
+      "PPA_WU05A3_MPVOLUME_CANDIDATE_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MPVOLUME_SHRINKAGE_GEOMETRY=PASS",
+      "PPA_WU05A3_MPVOLUME_CRITICAL_MOISTURE_BRANCH=PASS",
+      "PPA_WU05A3_MPVOLUME_MINIMUM_SUBSIDENCE_NEGATIVE_CANDIDATE_CORRECTION=PASS",
+      "PPA_WU05A3_MPVOLUME_NEAR_SATURATION_CUTOFF=PASS",
+      "PPA_WU05A3_MPVOLUME_INVALID_GEOMETRY_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MPVOLUME_CANDIDATE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_mpvolume_surface_oracle": {
+    "work_unit": "PPA-WU05-A3-MPVOLUME-SURFACE-CANDIDATE",
+    "source": "B1.11 macropore.f90 MPVOLUME task-1 section C surface area/capacity equations",
+    "test": "Crack-node override, static/dynamic composition, cap/width threshold, domain shares and capacity clamps at O0/O2; candidate only",
+    "test_markers": [
+      "PPA_WU05A3_MPVOLUME_SURFACE_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MPVOLUME_SURFACE_CRACK_NODE_OVERRIDE=PASS",
+      "PPA_WU05A3_MPVOLUME_SURFACE_STATIC_AND_DYNAMIC_AREA=PASS",
+      "PPA_WU05A3_MPVOLUME_SURFACE_MIN_WIDTH_CUTOFF=PASS",
+      "PPA_WU05A3_MPVOLUME_SURFACE_AREA_CLAMP_AND_DOMAIN_PARTITION=PASS",
+      "PPA_WU05A3_MPVOLUME_SURFACE_CAPACITY_LIMITS=PASS",
+      "PPA_WU05A3_MPVOLUME_SURFACE_INVALID_GEOMETRY_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MPVOLUME_SURFACE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_mpvolume_domains_oracle": {
+    "work_unit": "PPA-WU05-A3-MPVOLUME-DOMAINS-CANDIDATE",
+    "source": "B1.11 macropore.f90 MPVOLUME task 1 section B compartment/domain volume and ICpBtDm equations",
+    "test": "Minimum-width cutoff, domain bottom floor/caps, ordered volume totals, negative dynamic candidate clamp, inactive upper node isolation and malformed extent fail-closed at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MPVOLUME_DOMAINS_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MPVOLUME_MINIMUM_PORE_WIDTH_CUTOFF=PASS",
+      "PPA_WU05A3_MPVOLUME_DEEPEST_ACTIVE_BOTTOM_AND_DOMAIN_LIMITS=PASS",
+      "PPA_WU05A3_MPVOLUME_DOMAIN_CELL_AND_TOTAL_VOLUME_SUM=PASS",
+      "PPA_WU05A3_MPVOLUME_NEGATIVE_DYNAMIC_CANDIDATE_CLAMP=PASS",
+      "PPA_WU05A3_MPVOLUME_INVALID_GEOMETRY_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MPVOLUME_INACTIVE_TOP_INPUT_IGNORED=PASS",
+      "PPA_WU05A3_MPVOLUME_SHORT_OUTPUT_EXTENT_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MPVOLUME_DOMAINS_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_mpvolume_hysteresis_oracle": {
+    "work_unit": "PPA-WU05-A3-MPVOLUME-HYSTERESIS-CANDIDATE",
+    "source": "B1.11 macropore.f90 MPVOLUME task 2 shrinkage relief and dynamic candidate aggregation",
+    "test": "Storage excess, SWMBF domain gate, bounded previous-minus-current relief scan, proportional redistribution, insufficient/no relief and O0/O2 output identity",
+    "test_markers": [
+      "PPA_WU05A3_MPVOLUME_HYSTERESIS_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MPVOLUME_HYSTERESIS_SHORTAGE_REDISTRIBUTION=PASS",
+      "PPA_WU05A3_MPVOLUME_HYSTERESIS_SWMBF_DOMAIN_GATE=PASS",
+      "PPA_WU05A3_MPVOLUME_HYSTERESIS_NO_SHRINK_RECOVERY=PASS",
+      "PPA_WU05A3_MPVOLUME_HYSTERESIS_INSUFFICIENT_SHRINKAGE_SOURCE_ORDER=PASS",
+      "PPA_WU05A3_MPVOLUME_HYSTERESIS_POTENTIAL_BOTTOM_SCAN_LIMIT=PASS",
+      "PPA_WU05A3_MPVOLUME_HYSTERESIS_INVALID_MODE_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MPVOLUME_HYSTERESIS_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macrostate_storage_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROSTATE-STORAGE-CANDIDATE",
+    "source": "B1.11 macropore.f90 MACROSTATE section C domain inventory and saturated-top scan",
+    "test": "Flux/storage equation, SWMBF=2 profile route, partial saturation scan, empty domain and zero-volume rejection at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROSTATE_STORAGE_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_FLUX_AND_DRAINAGE=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_SWMBF2_PROFILE=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_PARTIAL_SATURATION_SCAN=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_EMPTY_DOMAIN=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_ZERO_VOLUME_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROSTATE_STORAGE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macrostate_wetting_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROSTATE-WETTING-CANDIDATE",
+    "source": "B1.11 macropore.f90 MACROSTATE section D wet-wall fraction, stored profile and water-level equations",
+    "test": "Partial/full cell storage, SWMBF=2 preservation, empty domain, small-volume threshold and O0/O2 transcript identity",
+    "test_markers": [
+      "PPA_WU05A3_MACROSTATE_WETTING_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_PARTIAL_LEVEL=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_FULL_BOTTOM_CELL=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_SWMBF2_PROFILE_PRESERVATION=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_EMPTY_DOMAIN=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_SMALL_VOLUME_UPPER_INTERFACE=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_INVALID_BOTTOM_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROSTATE_WETTING_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macrostate_flux_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROSTATE-FLUX-CANDIDATE",
+    "source": "B1.11 macropore.f90 MACROSTATE section D unsaturated/saturated internal-flux recurrence",
+    "test": "Hand-calculated recurrence, shallower-current-bottom correction, SWMBF gate, empty domain and O0/O2 identity",
+    "test_markers": [
+      "PPA_WU05A3_MACROSTATE_FLUX_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROSTATE_FLUX_UNSATURATED_SATURATED=PASS",
+      "PPA_WU05A3_MACROSTATE_FLUX_SHALLOWER_BOTTOM=PASS",
+      "PPA_WU05A3_MACROSTATE_FLUX_SWMBF_DOMAIN_GATE=PASS",
+      "PPA_WU05A3_MACROSTATE_FLUX_EMPTY_DOMAIN_TOP=PASS",
+      "PPA_WU05A3_MACROSTATE_FLUX_INVALID_PREVIOUS_BOTTOM_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROSTATE_FLUX_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macrostate_aggregate_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROSTATE-AGGREGATE-CANDIDATE",
+    "source": "B1.11 macropore.f90 MACROSTATE section E SWAP/interface aliases",
+    "test": "Main-domain copies, multi-domain internal sum, single-domain empty range and O0/O2 transcript identity",
+    "test_markers": [
+      "PPA_WU05A3_MACROSTATE_AGGREGATE_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROSTATE_AGGREGATE_MAIN_DOMAIN_ALIAS=PASS",
+      "PPA_WU05A3_MACROSTATE_AGGREGATE_INTERNAL_DOMAIN_SUM=PASS",
+      "PPA_WU05A3_MACROSTATE_AGGREGATE_SINGLE_DOMAIN_EMPTY_RANGE=PASS",
+      "PPA_WU05A3_MACROSTATE_AGGREGATE_INVALID_INPUT_FAIL_CLOSED=PASS",
+      "PPA_WU05A3_MACROSTATE_AGGREGATE_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  },
+  "latest_macrostate_composed_oracle": {
+    "work_unit": "PPA-WU05-A3-MACROSTATE-CDE-COMPOSED-CANDIDATE",
+    "source": "B1.11 MACROSTATE sections C/D/E candidate composition",
+    "test": "Two-domain sequential storage, wetting/water level, internal flux and SWAP aggregate handoff at O0/O2",
+    "test_markers": [
+      "PPA_WU05A3_MACROSTATE_COMPOSED_CDE_SOURCE_ORACLE=PASS",
+      "PPA_WU05A3_MACROSTATE_COMPOSED_STORAGE_TO_WETTING=PASS",
+      "PPA_WU05A3_MACROSTATE_COMPOSED_WETTING_TO_FLUX=PASS",
+      "PPA_WU05A3_MACROSTATE_COMPOSED_INTERFACE_AGGREGATES=PASS",
+      "PPA_WU05A3_MACROSTATE_COMPOSED_O0_O2_IDENTITY=PASS"
+    ],
+    "production_admission": "NONE"
+  }
+}

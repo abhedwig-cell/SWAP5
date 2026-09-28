@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU04-C",
+  "title": "VonHHBraden source-window accepted-progress receipt and restart contract",
+  "status": "IMPLEMENTATION_AUTHORIZED",
+  "authority": {
+    "preregistration": "integration/audits/PPA_WU04C_PREREGISTRATION.json",
+    "scientific_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "accepted_commit_authority": "src/runtime/mod_fmr_accepted_commit_receipt.f90"
+  },
+  "ownership": {
+    "physical_state": "NONE",
+    "aggregate_owner": "PPA-WU04C forcing/runtime progress ledger",
+    "commit_authority": "Existing F-KT accepted receipt; WU04C may advance only after a ready receipt.",
+    "restart_owner": "Typed WU04C continuation record, separate from hydraulic physical state."
+  },
+  "identity": {
+    "source_window": ["source_window_id", "source_t0", "source_t1", "frozen_aggregate_aintc"],
+    "accepted_progress": ["accepted_through_time", "accepted_interception"],
+    "receipt_binding": ["lineage_id", "origin_revision", "committed_revision", "accepted_interval"]
+  },
+  "rules": [
+    "Frozen aggregate and accepted interception in the progress API are amounts in cm, not rates. Convert adapter output in cm/day using the corresponding interval duration in days before publishing progress.",
+    "The first accepted receipt starts at source_t0; each later receipt starts exactly at accepted_through_time.",
+    "A source-window progress record is bound to one positive F-KT lineage and the expected origin revision; each ready receipt must match both and advance the expected revision by exactly one.",
+    "A receipt must end within the source window and must advance time.",
+    "Accepted interception is monotonic, finite, nonnegative and cannot exceed frozen aintc except for representation-level tolerance.",
+    "Rejected or stale trials have no ready receipt and cannot advance WU04C progress.",
+    "Restart restores only a validated accepted boundary together with its receipt lineage and next expected origin revision; it does not reconstruct progress from hydraulic state or replay a rejected trial."
+  ],
+  "invariants_affected": [3, 7, 13, 29],
+  "nonclaims": [
+    "No production dynamic-top composition is admitted by this contract alone.",
+    "No WU03 SWINTER=0 interface is widened.",
+    "No canopy-loss mass ledger is added; hydraulic top-boundary mass ownership remains unchanged."
+  ]
+}

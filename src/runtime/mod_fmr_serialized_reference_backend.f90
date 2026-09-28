@@ -1,4 +1,8 @@
 module mod_fmr_serialized_reference_backend
+  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
+  use mod_irrigation_process, only: irrigation_state_t, IRRIGATION_EVENT_SCHEDULED, IRRIGATION_EVENT_NONE
+  use mod_irrigation_process, only: ppa_weekly_identity_t,valid_weekly_identity,valid_weekly_transition
+  use mod_irrigation_process, only: ppa_tcsfix_identity_t,valid_tcsfix_identity,valid_tcsfix_transition
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t, &
@@ -24,7 +28,7 @@ module mod_fmr_serialized_reference_backend
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
-       SW_TEMPORAL_INDICATOR_NOT_RUN
+       SW_TEMPORAL_INDICATOR_NOT_RUN, constitutive_storage_difference_ifc
   use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
        soil_water_accepted_step_direction_result_t, SW_STEP_DIRECTION_UNAVAILABLE
   use mod_accepted_trajectory_directional_sensitivity, only: accepted_trajectory_direction_t, trajectory_step_token_t, &
@@ -36,6 +40,8 @@ module mod_fmr_serialized_reference_backend
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
+  use mod_reference_richards_workspace, only: reference_workspace_payload_bytes
+  use mod_a23bu_worker_execution_context, only: a23bu_scratch_payload_bytes
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_fmr_rossfast_solver_selection_binding, only: fmr_rossfast_solver_selection_binding_t, &
        FMR_ROSSFAST_BIND_INTERNAL_ERROR
@@ -138,6 +144,19 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: temporal_history_available => fmr_b110_temporal_history_available
     procedure, public :: temporal_history_snapshot => fmr_b110_temporal_history_snapshot
   end type fmr_b110_temporal_indicator_state_t
+
+  ! Reserved candidate identity, intentionally absent from production's known-layout registry.
+  integer(int64), parameter, public :: PPA_IRRIGATION_EVENT_LAYOUT=404101_int64
+
+  type, extends(fmr_b110_temporal_indicator_state_t), public :: ppa_irrigation_event_state_t
+    type(irrigation_state_t) :: irrigation
+    type(ppa_weekly_identity_t) :: weekly
+    type(ppa_tcsfix_identity_t) :: tcsfix
+  contains
+    procedure :: clone => clone_irrigation_event_state
+    procedure :: matches_candidate => irrigation_event_matches_candidate
+  end type
+  public :: build_irrigation_event_candidate
 
   ! D7 physical optional-state family.  SWST exists only on feature-active
   ! columns; inactive B1.10 states retain their previous layout and footprint.
@@ -254,9 +273,18 @@ module mod_fmr_serialized_reference_backend
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
+    logical :: temporal_forcing_event = .false.
+    real(real64) :: temporal_forcing_event_time = 0.0_real64
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
+    real(real64) :: trial_t0 = 0.0_real64
+    real(real64) :: trial_t1 = 0.0_real64
+    logical :: first_solver_failure_available = .false.
+    real(real64) :: first_solver_failure_t0 = 0.0_real64
+    real(real64) :: first_solver_failure_t1 = 0.0_real64
+    integer :: first_solver_failure_iterations = 0
+    type(soil_water_solver_diagnostics_t) :: first_solver_failure_diagnostics
     logical :: solver_executed = .false.
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
@@ -315,6 +343,7 @@ module mod_fmr_serialized_reference_backend
     logical :: drainage_qbot_projection_available = .false.
     real(real64) :: drainage_projected_groundwater_level = 0.0_real64
     integer :: drainage_response_evaluations = 0
+    integer :: drainage_response_evaluation_calls = 0
     logical :: drainage_response_mass_accounted_in_trial = .false.
     real(real64) :: drainage_response_signed_exchange_native = 0.0_real64
     logical :: drainage_response_window_exchange_available = .false.
@@ -332,6 +361,12 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: boesten_empirical_demand = 0.0_real64
     real(real64) :: boesten_candidate_spev = 0.0_real64
     real(real64) :: boesten_candidate_saev = 0.0_real64
+    integer :: snow_event_evaluation_calls = 0
+    integer :: black_evaporation_evaluation_calls = 0
+    integer :: boesten_evaporation_evaluation_calls = 0
+    integer :: soil_temperature_evaluation_calls = 0
+    integer(int64) :: common_work_payload_bytes = 0_int64
+    integer(int64) :: soil_temperature_optional_payload_bytes = 0_int64
   end type fmr_serialized_physical_observation_t
 
   ! Worker-local transactional scratch for thermal transfer provenance. This is
@@ -348,7 +383,21 @@ module mod_fmr_serialized_reference_backend
     type(accepted_trajectory_direction_t) :: trajectory_direction
   end type fmr_serialized_attempt_context_t
 
+  abstract interface
+    subroutine free_drainage_indicator_service(request, solution, history, result)
+      import soil_water_solve_request_t, soil_water_solve_result_t
+      import soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t
+      type(soil_water_solve_request_t), intent(in) :: request
+      type(soil_water_solve_result_t), intent(in) :: solution
+      type(soil_water_temporal_indicator_request_t), intent(in) :: history
+      type(soil_water_temporal_indicator_result_t), intent(out) :: result
+    end subroutine
+  end interface
+  public :: free_drainage_indicator_service
+
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
+    procedure(constitutive_storage_difference_ifc), pointer, nopass :: storage_difference => null()
+    procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
@@ -372,6 +421,11 @@ module mod_fmr_serialized_reference_backend
     integer :: drainage_response_evaluations = 0
     logical :: drainage_response_window_exchange_available = .false.
     real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
+    integer :: snow_event_evaluation_calls = 0
+    integer :: black_evaporation_evaluation_calls = 0
+    integer :: boesten_evaporation_evaluation_calls = 0
+    integer :: soil_temperature_evaluation_calls = 0
+    integer :: drainage_response_evaluation_calls = 0
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
     real(real64), pointer :: qrot_zero(:) => null()
@@ -390,12 +444,23 @@ module mod_fmr_serialized_reference_backend
     logical :: practical_richards_a2c_active = .false.
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: base_top_flux = 0.0_real64
+    logical :: temporal_forcing_event = .false.
+    real(real64) :: temporal_forcing_event_time = 0.0_real64
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
+    logical :: pending_irrigation_trial = .false.
+    logical :: irrigation_selection_prepared = .false.
+    type(irrigation_state_t) :: selected_irrigation_event
+    logical :: weekly_proposal_prepared = .false.
+    real(real64) :: weekly_proposal_time = 0.0_real64
+    type(ppa_weekly_identity_t) :: selected_weekly
+    logical :: tcsfix_proposal_prepared = .false.
+    real(real64) :: tcsfix_proposal_time = 0.0_real64
+    type(ppa_tcsfix_identity_t) :: selected_tcsfix
     logical :: root_extraction_active = .false.
     logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
@@ -468,8 +533,11 @@ module mod_fmr_serialized_reference_backend
     type(fmr_top_sensible_boundary_candidate_t) :: top_sensible_boundary_candidate
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
+    procedure, public :: set_free_drainage_indicator => set_free_drainage_indicator
+    procedure, public :: set_storage_difference => set_storage_difference
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
+    procedure, public :: run_pending_irrigation_trial => run_pending_irrigation_trial
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
     procedure, public :: commit_reference_floor_candidate => fmr_serialized_backend_commit_reference_floor_candidate
     procedure, public :: discard_reference_floor_candidate => fmr_serialized_backend_discard_reference_floor_candidate
@@ -487,6 +555,7 @@ module mod_fmr_serialized_reference_backend
   public :: prepare_fmr_b110_default_mvg
   public :: fmr_new_b110_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
+  public :: fmr_new_b110_irrigation_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
   public :: fmr_new_b110_black_evaporation_committed_state
   public :: fmr_new_b110_boesten_evaporation_committed_state
@@ -559,6 +628,145 @@ contains
     if (.not. compatible) return
     if (.not. all(parameters%prepared_default_mvg%cofgen(1:24,:) == parameters%cofgen(1:24,:))) compatible = .false.
   end function prepared_default_mvg_compatible
+  subroutine build_irrigation_event_candidate(physical,event,template,boundary_time,candidate,ok, &
+       right_derivative,weekly,tcsfix)
+    ! Combine trial outputs only. The caller must supply the hydraulic state
+    ! and event from the same boundary; this routine neither proves hydraulic
+    ! acceptance nor publishes committed state or changes the runtime registry.
+    class(transaction_state_t), intent(in) :: physical
+    type(irrigation_state_t), intent(in) :: event
+    type(fmr_template_t), intent(in) :: template
+    real(real64), intent(in) :: boundary_time
+    type(ppa_irrigation_event_state_t), allocatable, intent(out) :: candidate
+    logical, intent(out) :: ok
+    ! Optional derivative must come from the same trial boundary as physical.
+    ! Replacement is confined to the detached candidate, never its source.
+    real(real64), intent(in), optional :: right_derivative(:)
+    type(ppa_weekly_identity_t),intent(in),optional::weekly
+    type(ppa_tcsfix_identity_t),intent(in),optional::tcsfix
+    type(ppa_irrigation_event_state_t) :: proposed
+    logical :: replaced
+    ok=.false.
+    ! Do not implicitly slice an extended physical option into its parent.
+    ! Only the explicitly supported temporal trial state can be assembled.
+    select type(physical)
+    type is(fmr_b110_temporal_indicator_state_t)
+      proposed%fmr_b110_temporal_indicator_state_t=physical
+    class default
+      return
+    end select
+    proposed%irrigation=event
+    if(present(weekly)) proposed%weekly=weekly
+    if(present(tcsfix)) proposed%tcsfix=tcsfix
+    if(present(right_derivative)) then
+      call replace_supported_temporal_history(proposed,right_derivative,replaced)
+      if(.not.replaced) return
+    end if
+    ok=proposed%matches_candidate(template,boundary_time)
+    if(.not.ok) return
+    allocate(candidate,source=proposed)
+  end subroutine
+
+  logical function irrigation_event_matches_candidate(self,template,committed_time) result(matches)
+    class(ppa_irrigation_event_state_t), intent(in) :: self
+    type(fmr_template_t), intent(in) :: template
+    real(real64), intent(in) :: committed_time
+    real(real64), allocatable :: history(:)
+    logical :: available,supported
+    matches=.false.
+    if(template%optional_state_layout_id/=PPA_IRRIGATION_EVENT_LAYOUT) return
+    if(template%compatible_backend_id/=FMR_BACKEND_SERIALIZED_REFERENCE) return
+    if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
+    if(.not.ieee_is_finite(committed_time)) return
+    if(self%active_nodes<1) return
+    if(.not.ieee_is_finite(self%ponding_depth).or..not.ieee_is_finite(self%groundwater_level)) return
+    if(allocated(self%snow).or.allocated(self%soil_temperature)) return
+    if(.not.allocated(self%pressure_head).or..not.allocated(self%water_content)) return
+    if(size(self%pressure_head)/=self%active_nodes.or.size(self%water_content)/=self%active_nodes) return
+    if(.not.all(ieee_is_finite(self%pressure_head)).or..not.all(ieee_is_finite(self%water_content))) return
+    call snapshot_supported_temporal_history(self,history,available,supported)
+    if(.not.supported) return
+    if(.not.available) return
+    if(.not.allocated(history)) return
+    if(size(history)/=self%active_nodes) return
+    if(.not.all(ieee_is_finite(history))) return
+    if(self%irrigation%next_fixed_event_index<1) return
+    if(.not.valid_weekly_identity(self%weekly)) return
+    if(.not.valid_tcsfix_identity(self%tcsfix)) return
+    if(self%weekly%enabled.and.self%tcsfix%enabled) return
+    if(self%irrigation%active_event) then
+      if(self%irrigation%active_event_origin/=IRRIGATION_EVENT_SCHEDULED) return
+      if(self%irrigation%active_event_index/=0) return
+      if(.not.ieee_is_finite(self%irrigation%active_event_start)) return
+      if(.not.ieee_is_finite(self%irrigation%active_event_end)) return
+      if(.not.ieee_is_finite(self%irrigation%active_event_rate)) return
+      if(self%irrigation%active_event_rate<=0.0_real64) return
+      if(self%irrigation%active_event_end<=self%irrigation%active_event_start) return
+      if(self%irrigation%active_event_end>self%irrigation%active_event_start+1.0_real64) return
+      if(committed_time<self%irrigation%active_event_start.or.committed_time>=self%irrigation%active_event_end) return
+    else
+      if(self%irrigation%active_event_origin/=IRRIGATION_EVENT_NONE.or.self%irrigation%active_event_index/=0) return
+      ! The process clears all event scalars when a gift ends. Require that
+      ! canonical inactive representation, including for restored candidates.
+      if(.not.all(ieee_is_finite([self%irrigation%active_event_start, &
+           self%irrigation%active_event_end,self%irrigation%active_event_rate]))) return
+      if(self%irrigation%active_event_start/=0.0_real64.or. &
+           self%irrigation%active_event_end/=0.0_real64.or.self%irrigation%active_event_rate/=0.0_real64) return
+    end if
+    matches=.true.
+  end function
+  subroutine clone_irrigation_event_state(self,copy)
+    class(ppa_irrigation_event_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    ! Intrinsic sourced allocation retains inherited private temporal history,
+    ! dynamic type and deep copies of allocatable physical arrays.
+    allocate(copy,source=self)
+  end subroutine
+
+  subroutine snapshot_supported_temporal_history(state,derivative,available,supported)
+    class(transaction_state_t), intent(in) :: state
+    real(real64), allocatable, intent(out) :: derivative(:)
+    logical, intent(out) :: available,supported
+    available=.false.
+    supported=.true.
+    select type(state)
+    type is(fmr_b110_temporal_indicator_state_t)
+      call state%temporal_history%snapshot(derivative,available)
+    type is(ppa_irrigation_event_state_t)
+      call state%temporal_history%snapshot(derivative,available)
+    class default
+      supported=.false.
+    end select
+  end subroutine
+
+  subroutine replace_supported_temporal_history(state,derivative,replaced)
+    class(transaction_state_t), intent(inout) :: state
+    real(real64), intent(in) :: derivative(:)
+    logical, intent(out) :: replaced
+    replaced=.false.
+    select type(state)
+    type is(fmr_b110_temporal_indicator_state_t)
+      if(size(derivative)/=state%active_nodes) return
+      call state%temporal_history%replace(derivative,replaced)
+    type is(ppa_irrigation_event_state_t)
+      if(size(derivative)/=state%active_nodes) return
+      call state%temporal_history%replace(derivative,replaced)
+    end select
+  end subroutine
+
+  subroutine set_storage_difference(self, service)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    procedure(constitutive_storage_difference_ifc), optional :: service
+    nullify(self%model%storage_difference)
+    if (present(service)) self%model%storage_difference => service
+  end subroutine
+
+  subroutine set_free_drainage_indicator(self, service)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    procedure(free_drainage_indicator_service), optional :: service
+    nullify(self%model%free_drainage_indicator)
+    if (present(service)) self%model%free_drainage_indicator => service
+  end subroutine
 
   subroutine copy_b110_physical_state(source, target)
     class(fmr_b110_physical_state_t), intent(in) :: source
@@ -703,6 +911,29 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_temporal_indicator_committed_state
 
+  subroutine fmr_new_b110_irrigation_committed_state(committed,lineage_id,state,template,initial_time, &
+       initial_right_derivative,ok)
+    type(kernel_committed_state_t),intent(out)::committed
+    integer(int64),intent(in)::lineage_id
+    type(fmr_b110_physical_state_t),intent(in)::state
+    type(fmr_template_t),intent(in)::template
+    real(real64),intent(in)::initial_time,initial_right_derivative(:)
+    logical,intent(out)::ok
+    type(fmr_b110_temporal_indicator_state_t)::physical
+    type(ppa_irrigation_event_state_t),allocatable::candidate
+    class(transaction_state_t),allocatable::carrier
+    ! Initial inactive event only; pending continuation belongs to restart.
+    ! Require real supplied history, rather than guessing a zero derivative.
+    ok=.false.
+    if(state%active_nodes<=0.or.size(initial_right_derivative)/=state%active_nodes) return
+    call copy_b110_physical_state(state,physical)
+    call build_irrigation_event_candidate(physical,irrigation_state_t(),template,initial_time,candidate,ok, &
+         initial_right_derivative)
+    if(.not.ok) return
+    call candidate%clone(carrier)
+    call committed%initialize(lineage_id,carrier,ok,initial_time)
+  end subroutine fmr_new_b110_irrigation_committed_state
+
   subroutine fmr_new_b110_fixed_weir_surface_water_committed_state(committed, lineage_id, state, initial_time, ok)
     type(kernel_committed_state_t), intent(out) :: committed
     integer(int64), intent(in) :: lineage_id
@@ -766,10 +997,20 @@ contains
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
-                                                               boesten_evaporation_active) result(matches)
+                                                               boesten_evaporation_active, pending_irrigation) result(matches)
     class(transaction_state_t), intent(in) :: state
     logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active
     logical, intent(in) :: black_evaporation_active, boesten_evaporation_active
+    logical, intent(in) :: pending_irrigation
+    if(pending_irrigation) then
+      matches=.false.
+      select type(state)
+      type is(ppa_irrigation_event_state_t)
+        matches=temporal_history_enabled.and..not.fixed_weir_surface_water_active.and. &
+             .not.black_evaporation_active.and..not.boesten_evaporation_active
+      end select
+      return
+    end if
     if (black_evaporation_active .and. boesten_evaporation_active) then
       matches = .false.
       return
@@ -832,12 +1073,13 @@ contains
     if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled, &
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
-                                                           model%boesten_evaporation_active)) return
+                                                           model%boesten_evaporation_active,model%pending_irrigation_trial)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
         if (.not. allocated(parameters%snow) .or. .not. allocated(forcing%snow) .or. &
             .not. allocated(physical%snow)) return
+        model%snow_event_evaluation_calls = model%snow_event_evaluation_calls + 1
         call evaluate_snow_reference_call(parameters%snow, physical%snow%process, forcing%snow, t0, t1, &
              model%snow_candidate, model%snow_fluxes, model%snow_diagnostics)
         if (model%snow_diagnostics%status /= SNOW_OK .or. .not. model%snow_diagnostics%mass%available) return
@@ -869,6 +1111,11 @@ contains
     logical :: selection_ok
     integer :: selection_status
     self%initialized = .false.
+    self%model%pending_irrigation_trial=.false.
+    nullify(self%model%free_drainage_indicator)
+    nullify(self%model%storage_difference)
+    self%model%temporal_forcing_event = .false.
+    self%model%temporal_forcing_event_time = 0.0_real64
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
     if (.not. selection_ok) return
     self%model%top_boundary => top_boundary
@@ -1209,9 +1456,120 @@ contains
          result, candidate, diagnostics)
   end subroutine fmr_serialized_backend_run_reference_floor_sample
 
+  subroutine run_pending_irrigation_trial(self,column,template,parameters,committed,forcing,config, &
+       single_ssdi_node,t0,t1,checkpoint,result,candidate,diagnostics,selected_event,weekly_proposal,target_selector, &
+       tcsfix_proposal,trusted_prepared_parameters)
+    class(fmr_serialized_reference_backend_t),intent(inout)::self
+    type(fmr_logical_column_t),intent(in)::column
+    type(fmr_template_t),intent(in)::template
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    type(kernel_committed_state_t),intent(in)::committed
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing
+    type(canonical_numerical_config_t),intent(in)::config
+    integer,intent(in)::single_ssdi_node
+    real(real64),intent(in)::t0,t1
+    type(kernel_checkpoint_t),intent(in)::checkpoint
+    type(kernel_result_t),intent(out)::result
+    type(kernel_candidate_state_t),intent(out)::candidate
+    type(kernel_diagnostics_t),intent(out)::diagnostics
+    type(irrigation_state_t),intent(in),optional::selected_event
+    type(ppa_weekly_identity_t),intent(in),optional::weekly_proposal
+    type(ppa_tcsfix_identity_t),intent(in),optional::tcsfix_proposal
+    procedure(canonical_subinterval_target_selector),optional::target_selector
+    logical,intent(in),optional::trusted_prepared_parameters
+    class(transaction_state_t),allocatable::snapshot
+    real(real64)::boundary,expected
+    logical::available
+    integer::node
+    self%model%pending_irrigation_trial=.false.
+    self%model%irrigation_selection_prepared=.false.
+    self%model%selected_irrigation_event=irrigation_state_t()
+    self%model%tcsfix_proposal_prepared=.false.
+    self%model%tcsfix_proposal_time=0.0_real64
+    self%model%selected_tcsfix=ppa_tcsfix_identity_t()
+    self%model%weekly_proposal_prepared=.false.
+    self%model%selected_weekly=ppa_weekly_identity_t()
+    call reject_backend_trial(result,candidate,diagnostics)
+    if(.not.all(ieee_is_finite([t0,t1]))) return
+    if(t1<=t0.or.parameters%bottom_mode/=7) return
+    if(config%transaction%temporal_mode/=TX_TEMPORAL_MODEL_CERTIFICATE) return
+    if(parameters%snow_active.or.parameters%soil_temperature_active.or.parameters%black_evaporation_active.or. &
+         parameters%boesten_evaporation_active.or.parameters%drainage_response_active.or. &
+         self%model%fixed_weir_surface_water_active) return
+    if(single_ssdi_node<1.or.single_ssdi_node>parameters%active_nodes) return
+    if(.not.allocated(forcing%subsurface_irrigation_source)) return
+    if(size(forcing%subsurface_irrigation_source)/=parameters%active_nodes) return
+    if(.not.all(ieee_is_finite(forcing%subsurface_irrigation_source))) return
+    call committed%current_time(boundary,available)
+    if(.not.available) return
+    if(boundary/=t0) return
+    call committed%snapshot(snapshot,available)
+    if(.not.available) return
+    select type(snapshot)
+    type is(ppa_irrigation_event_state_t)
+      if(.not.snapshot%matches_candidate(template,t0)) return
+      if(snapshot%weekly%enabled.neqv.present(weekly_proposal)) return
+      if(snapshot%tcsfix%enabled.neqv.present(tcsfix_proposal)) return
+      if(present(tcsfix_proposal)) then
+        if(.not.valid_tcsfix_transition(snapshot%tcsfix,tcsfix_proposal)) return
+        if(snapshot%irrigation%active_event.and.tcsfix_proposal%dayfix/=snapshot%tcsfix%dayfix) return
+      end if
+      if(present(weekly_proposal)) then
+        if(.not.valid_weekly_transition(snapshot%weekly,weekly_proposal)) return
+        if(snapshot%irrigation%active_event.and.weekly_proposal%dayfix/=snapshot%weekly%dayfix) return
+      end if
+      if(snapshot%active_nodes/=parameters%active_nodes) return
+      if(present(selected_event)) then
+        if(snapshot%irrigation%active_event.or..not.selected_event%active_event) return
+        if(.not.ieee_is_finite(selected_event%active_event_start)) return
+        if(selected_event%active_event_start/=t0) return
+        if(selected_event%next_fixed_event_index/=snapshot%irrigation%next_fixed_event_index) return
+        snapshot%irrigation=selected_event
+        if(.not.snapshot%matches_candidate(template,t0)) return
+      end if
+      if(snapshot%irrigation%active_event) then
+        if(t1>snapshot%irrigation%active_event_end) return
+      end if
+      do node=1,parameters%active_nodes
+        expected=0.0_real64
+        if(snapshot%irrigation%active_event.and.node==single_ssdi_node) expected=snapshot%irrigation%active_event_rate
+        if(forcing%subsurface_irrigation_source(node)/=expected) return
+      end do
+    class default
+      return
+    end select
+    ! Opt-in is call-local. Ordinary run_trial still rejects this reserved
+    ! layout, including after a failed or successful pending-event trial.
+    self%model%pending_irrigation_trial=.true.
+    if(present(tcsfix_proposal)) then
+      self%model%tcsfix_proposal_prepared=.true.
+      self%model%tcsfix_proposal_time=t0
+      self%model%selected_tcsfix=tcsfix_proposal
+    end if
+    if(present(weekly_proposal)) then
+      self%model%weekly_proposal_prepared=.true.
+      self%model%weekly_proposal_time=t0
+      self%model%selected_weekly=weekly_proposal
+    end if
+    if(present(selected_event)) then
+      self%model%irrigation_selection_prepared=.true.
+      self%model%selected_irrigation_event=selected_event
+    end if
+    call self%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result,candidate, &
+         diagnostics,trusted_prepared_parameters=trusted_prepared_parameters,target_selector=target_selector)
+    self%model%pending_irrigation_trial=.false.
+    self%model%tcsfix_proposal_prepared=.false.
+    self%model%tcsfix_proposal_time=0.0_real64
+    self%model%selected_tcsfix=ppa_tcsfix_identity_t()
+    self%model%weekly_proposal_prepared=.false.
+    self%model%selected_weekly=ppa_weekly_identity_t()
+    self%model%irrigation_selection_prepared=.false.
+    self%model%selected_irrigation_event=irrigation_state_t()
+  end subroutine run_pending_irrigation_trial
+
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics, &
-                                               trusted_prepared_parameters)
+                                               trusted_prepared_parameters, target_selector)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
@@ -1226,7 +1584,14 @@ contains
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     logical, intent(in), optional :: trusted_prepared_parameters
     logical :: bottom_thermal_ok, top_sensible_ok
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
 
+    self%model%snow_event_evaluation_calls = 0
+    self%model%black_evaporation_evaluation_calls = 0
+    self%model%boesten_evaporation_evaluation_calls = 0
+    self%model%soil_temperature_evaluation_calls = 0
+    self%model%drainage_response_evaluation_calls = 0
+    self%model%last_observation = fmr_serialized_physical_observation_t()
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.
@@ -1280,7 +1645,8 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end select
-    if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id)) then
+    if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id).and. &
+        .not.(self%model%pending_irrigation_trial.and.template%optional_state_layout_id==PPA_IRRIGATION_EVENT_LAYOUT)) then
       result = kernel_result_t()
       result%status = KERNEL_STATUS_NOT_ADMITTED
       candidate = kernel_candidate_state_t()
@@ -1360,8 +1726,26 @@ contains
         self%model%trusted_parameter_source => parameters
       end if
     end if
-    call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
-         result, candidate, diagnostics)
+    if (present(target_selector)) then
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics, target_selector)
+    else
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics)
+    end if
+    self%model%last_observation%snow_event_evaluation_calls = self%model%snow_event_evaluation_calls
+    self%model%last_observation%black_evaporation_evaluation_calls = &
+         self%model%black_evaporation_evaluation_calls
+    self%model%last_observation%boesten_evaporation_evaluation_calls = &
+         self%model%boesten_evaporation_evaluation_calls
+    self%model%last_observation%soil_temperature_evaluation_calls = &
+         self%model%soil_temperature_evaluation_calls
+    self%model%last_observation%drainage_response_evaluation_calls = &
+         self%model%drainage_response_evaluation_calls
+    self%model%last_observation%common_work_payload_bytes = &
+         serialized_common_work_payload_bytes(self%model)
+    self%model%last_observation%soil_temperature_optional_payload_bytes = &
+         serialized_optional_work_payload_bytes(self%model)
     if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
     nullify(self%model%hydraulic_parameters)
     nullify(self%model%trusted_parameter_source)
@@ -1649,6 +2033,8 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
+    self%temporal_forcing_event = .false.
+    self%temporal_forcing_event_time = 0.0_real64
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
@@ -1697,6 +2083,17 @@ contains
     n = self%soil_parameters%active_nodes
     select type (forcing)
     type is (fmr_b110_physical_forcing_t)
+      if (forcing%temporal_forcing_event) then
+        if (.not. ieee_is_finite(forcing%temporal_forcing_event_time)) return
+        if (.not. same_real_bits(forcing%temporal_forcing_event_time,interval%t0)) return
+        if (.not. self%temporal_indicator_history_enabled.or..not.associated(self%free_drainage_indicator)) return
+        if (.not.self%soil_water_selection%uses_reference().or.self%fixed_weir_surface_water_active) return
+        if (self%bottom_mode/=7.or.self%swkimpl/=0.or.self%swkmean/=1) return
+        ! Prescribed roots use the concrete read-only event derivative provider.
+        if (self%snow_active.or.self%soil_temperature_active.or. &
+            self%black_evaporation_active.or.self%boesten_evaporation_active.or.self%drainage_response_active) return
+        if (allocated(forcing%legacy_swbotb2_control)) return
+      end if
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
       if (self%drainage_response_active) then
@@ -1844,6 +2241,8 @@ contains
         deallocate(self%projection_zero_direction)
       end if
       self%base_top_flux = forcing%top_flux
+      self%temporal_forcing_event = forcing%temporal_forcing_event
+      self%temporal_forcing_event_time = forcing%temporal_forcing_event_time
       self%top_flux = forcing%top_flux
       if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate
       self%top_head = forcing%top_head
@@ -1914,35 +2313,38 @@ contains
     self%last_observation%fixed_weir_surface_water_route = self%fixed_weir_surface_water_result%route
   end subroutine populate_fixed_weir_surface_water_observation
 
-  subroutine evaluate_temporal_history_service(self, state, request, solve_result, outcome, ok)
+  subroutine evaluate_temporal_history_service(self, state, request, solve_result, outcome, ok, trial_t0)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(transaction_state_t), intent(inout) :: state
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: solve_result
     type(trial_outcome_t), intent(inout) :: outcome
     logical, intent(out) :: ok
+    real(real64), intent(in) :: trial_t0
     type(soil_water_temporal_indicator_request_t) :: indicator_request
     type(soil_water_temporal_indicator_result_t) :: indicator_result
     real(real64), allocatable :: previous_derivative(:)
     real(real64) :: normalized_indicator
-    logical :: previous_available, replaced
+    logical :: previous_available, replaced, history_supported
     integer :: n
     ok = .false.
     n = request%parameters%active_nodes
     previous_available = .false.
-    select type (physical => state)
-    type is (fmr_b110_temporal_indicator_state_t)
-      call physical%temporal_history%snapshot(previous_derivative, previous_available)
-      if (previous_available) previous_available = size(previous_derivative) == n .and. all(ieee_is_finite(previous_derivative))
-    class default
-      return
-    end select
+    call snapshot_supported_temporal_history(state,previous_derivative,previous_available,history_supported)
+    if (.not.history_supported) return
+    if (previous_available) previous_available = size(previous_derivative) == n .and. all(ieee_is_finite(previous_derivative))
     indicator_request%previous_right_derivative_available = previous_available
+    indicator_request%forcing_event_at_start = self%temporal_forcing_event.and. &
+         same_real_bits(trial_t0,self%temporal_forcing_event_time)
     if (previous_available) then
       allocate(indicator_request%previous_right_derivative(n))
       indicator_request%previous_right_derivative = previous_derivative
     end if
-    call self%solver%evaluate_temporal_indicator(request, solve_result, indicator_request, self%workspace, indicator_result)
+    if (request%boundary%bottom_mode == 7 .and. associated(self%free_drainage_indicator)) then
+      call self%free_drainage_indicator(request, solve_result, indicator_request, indicator_result)
+    else
+      call self%solver%evaluate_temporal_indicator(request, solve_result, indicator_request, self%workspace, indicator_result)
+    end if
     self%last_observation%temporal_indicator_enabled = .true.
     self%last_observation%temporal_previous_derivative_available = previous_available
     self%last_observation%temporal_indicator_status = indicator_result%status
@@ -1961,13 +2363,8 @@ contains
     if (.not. allocated(indicator_result%current_right_derivative)) return
     if (size(indicator_result%current_right_derivative) /= n) return
     if (any(.not. ieee_is_finite(indicator_result%current_right_derivative))) return
-    select type (physical => state)
-    type is (fmr_b110_temporal_indicator_state_t)
-      call physical%temporal_history%replace(indicator_result%current_right_derivative, replaced)
-      if (.not. replaced) return
-    class default
-      return
-    end select
+    call replace_supported_temporal_history(state,indicator_result%current_right_derivative,replaced)
+    if (.not.replaced) return
     self%last_observation%temporal_current_derivative_available = .true.
 
     if (.not. previous_available) then
@@ -2029,14 +2426,34 @@ contains
     integer :: effective_bottom_mode, swbotb2_status
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     character(len=64) :: drainage_direction_route
+    logical :: prior_failure_available
+    real(real64) :: prior_failure_t0,prior_failure_t1
+    integer :: prior_failure_iterations
+    type(soil_water_solver_diagnostics_t) :: prior_failure_diagnostics
     outcome = trial_outcome_t()
+    ! Disposable observation only: retain the first solver failure while retries
+    ! share the same start time. A new substep or backend window resets it.
+    prior_failure_available=self%last_observation%first_solver_failure_available
+    prior_failure_t0=self%last_observation%first_solver_failure_t0
+    prior_failure_t1=self%last_observation%first_solver_failure_t1
+    prior_failure_iterations=self%last_observation%first_solver_failure_iterations
+    prior_failure_diagnostics=self%last_observation%first_solver_failure_diagnostics
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
     self%last_observation%practical_richards_head_rel_tolerance = self%head_rel_tolerance
     self%last_observation%practical_richards_compartment_balance_tolerance = self%compartment_balance_tolerance
     self%last_observation%practical_richards_total_balance_tolerance = self%total_balance_tolerance
+    if(prior_failure_available.and.same_real_bits(prior_failure_t0,t0)) then
+      self%last_observation%first_solver_failure_available=.true.
+      self%last_observation%first_solver_failure_t0=prior_failure_t0
+      self%last_observation%first_solver_failure_t1=prior_failure_t1
+      self%last_observation%first_solver_failure_iterations=prior_failure_iterations
+      self%last_observation%first_solver_failure_diagnostics=prior_failure_diagnostics
+    end if
     self%last_observation%soil_temperature_active = self%soil_temperature_active
+    self%last_observation%trial_t0 = t0
+    self%last_observation%trial_t1 = t1
     self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
     self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
@@ -2078,9 +2495,28 @@ contains
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
                                                            self%fixed_weir_surface_water_active, &
                                                            self%black_evaporation_active, &
-                                                           self%boesten_evaporation_active)) return
+                                                           self%boesten_evaporation_active,self%pending_irrigation_trial)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
+    if(self%pending_irrigation_trial) then
+      select type(state)
+      type is(ppa_irrigation_event_state_t)
+        ! Every retry starts from a clone; never mutate the committed owner.
+        if(self%tcsfix_proposal_prepared.and.t0==self%tcsfix_proposal_time) &
+             state%tcsfix=self%selected_tcsfix
+        if(self%weekly_proposal_prepared.and.t0==self%weekly_proposal_time) &
+             state%weekly=self%selected_weekly
+        if(self%irrigation_selection_prepared) then
+          if(t0==self%selected_irrigation_event%active_event_start.and..not.state%irrigation%active_event) &
+               state%irrigation=self%selected_irrigation_event
+        end if
+        if(state%irrigation%active_event) then
+          if(t0<state%irrigation%active_event_start.or.t1>state%irrigation%active_event_end) return
+        end if
+      class default
+        return
+      end select
+    end if
     effective_bottom_mode = self%bottom_mode
     effective_bottom_flux = self%bottom_flux
     if (allocated(self%legacy_swbotb2_control)) then
@@ -2163,6 +2599,7 @@ contains
                black_physical%ponding_depth > BLACK_EVAP_PONDING_CLASSIFICATION_CM
           black_process_forcing%wetting_reset_event = self%black_evaporation_forcing%wetting_reset_event .and. &
                same_real_bits(t0, self%black_evaporation_forcing%wetting_event_time)
+          self%black_evaporation_evaluation_calls = self%black_evaporation_evaluation_calls + 1
           call evaluate_black_evaporation_reduction(self%black_evaporation_parameters, &
                black_physical%black_evaporation, black_process_forcing, step_duration, black_result)
           self%last_observation%black_evaporation_evaluated = black_result%status == BLACK_EVAP_AVAILABLE
@@ -2201,6 +2638,7 @@ contains
                self%boesten_evaporation_forcing%irrigation_rate_cm_per_day
           boesten_process_forcing%surface_is_ponded = &
                boesten_physical%ponding_depth > BOESTEN_EVAP_PONDING_CLASSIFICATION_CM
+          self%boesten_evaporation_evaluation_calls = self%boesten_evaporation_evaluation_calls + 1
           call evaluate_boesten_evaporation_reduction(self%boesten_evaporation_parameters, &
                boesten_physical%boesten_evaporation, boesten_process_forcing, step_duration, boesten_result)
           self%last_observation%boesten_evaporation_evaluated = boesten_result%status == BOESTEN_EVAP_AVAILABLE
@@ -2265,6 +2703,7 @@ contains
       call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels, self%drainage_response_controls, &
            hydraulic_start, self%qdra, self%drainage_response_diagnostics)
       self%drainage_response_evaluations = self%drainage_response_evaluations + 1
+      self%drainage_response_evaluation_calls = self%drainage_response_evaluation_calls + 1
       self%last_observation%drainage_response_evaluations = self%drainage_response_evaluations
       self%last_observation%drainage_response = self%drainage_response_diagnostics
       if (self%drainage_response_diagnostics%status /= FMR_DRAIN_BIND_OK) return
@@ -2282,6 +2721,8 @@ contains
     else
       request%evaluation%constitutive => self%constitutive
     end if
+    request%evaluation%constitutive => self%constitutive
+    request%evaluation%storage_difference => self%storage_difference
     request%evaluation%source_sink => self%source_sink
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
@@ -2346,6 +2787,13 @@ contains
 
     self%last_observation%solver_executed = .true.
     self%last_observation%solver_status = solve_result%status
+    if(solve_result%status/=SW_SOLVE_CONVERGED.and..not.self%last_observation%first_solver_failure_available) then
+      self%last_observation%first_solver_failure_available=.true.
+      self%last_observation%first_solver_failure_t0=t0
+      self%last_observation%first_solver_failure_t1=t1
+      self%last_observation%first_solver_failure_iterations=solve_result%diagnostics%nonlinear_iterations
+      self%last_observation%first_solver_failure_diagnostics=solve_result%diagnostics
+    end if
     self%last_observation%top_flux = solve_result%top_flux
     self%last_observation%bottom_flux = solve_result%bottom_flux
     self%last_observation%solver_diagnostics = solve_result%diagnostics
@@ -2388,7 +2836,7 @@ contains
       self%last_observation%temporal_indicator_route = 'rossfast-model-certificate'
       self%last_observation%temporal_certificate_unavailable_reason = 'available'
     else if (self%temporal_indicator_history_enabled) then
-      call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok)
+      call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok,t0)
       if (.not. temporal_history_ok) return
     end if
 
@@ -2429,6 +2877,7 @@ contains
       if (self%soil_temperature_active) then
         call build_process_hydraulic_view(solve_result%candidate_state, hydraulic_end, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
+        self%soil_temperature_evaluation_calls = self%soil_temperature_evaluation_calls + 1
         call trial_restricted_soil_temperature(self%soil_temperature_parameters, self%soil_temperature_numerical, &
              self%soil_temperature_forcing, hydraulic_start, hydraulic_end, physical%soil_temperature, t0, t1, &
              self%soil_temperature_workspace, soil_temperature_trial, soil_temperature_result, soil_temperature_diagnostics)
@@ -2506,6 +2955,13 @@ contains
     end if
     if (trajectory_stage_ok) then
       call accept_trajectory_step(self%trajectory_direction, trajectory_accept_ok)
+    end if
+    if(self%pending_irrigation_trial) then
+      select type(state)
+      type is(ppa_irrigation_event_state_t)
+        if(state%irrigation%active_event.and.t1==state%irrigation%active_event_end) &
+             state%irrigation=irrigation_state_t(next_fixed_event_index=state%irrigation%next_fixed_event_index)
+      end select
     end if
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
@@ -2974,5 +3430,69 @@ contains
     end do
     value = y_table(size(y_table))
   end function afgen_pairs
+
+  function serialized_common_work_payload_bytes(model) result(nbytes)
+    type(fmr_serialized_reference_model_t), intent(in) :: model
+    integer(int64) :: nbytes, nreal
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+
+    nreal = 0_int64
+    if (associated(model%qdra)) nreal = nreal + size(model%qdra, kind=int64)
+    if (associated(model%qssdi)) nreal = nreal + size(model%qssdi, kind=int64)
+    if (associated(model%qrot)) nreal = nreal + size(model%qrot, kind=int64)
+    nbytes = nreal * REAL_BYTES + reference_workspace_payload_bytes(model%workspace%richards) + &
+             int(a23bu_scratch_payload_bytes(model%workspace%legacy_worker), int64)
+  end function serialized_common_work_payload_bytes
+
+  function serialized_optional_work_payload_bytes(model) result(nbytes)
+    type(fmr_serialized_reference_model_t), intent(in) :: model
+    integer(int64) :: nbytes, nreal
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+
+    nreal = 0_int64
+    if (allocated(model%soil_temperature_parameters)) then
+      if (allocated(model%soil_temperature_parameters%dz_cm)) &
+        nreal = nreal + size(model%soil_temperature_parameters%dz_cm, kind=int64)
+      if (allocated(model%soil_temperature_parameters%distance_above_cm)) &
+        nreal = nreal + size(model%soil_temperature_parameters%distance_above_cm, kind=int64)
+      if (allocated(model%soil_temperature_parameters%theta_sat)) &
+        nreal = nreal + size(model%soil_temperature_parameters%theta_sat, kind=int64)
+      if (allocated(model%soil_temperature_parameters%f_quartz)) &
+        nreal = nreal + size(model%soil_temperature_parameters%f_quartz, kind=int64)
+      if (allocated(model%soil_temperature_parameters%f_clay)) &
+        nreal = nreal + size(model%soil_temperature_parameters%f_clay, kind=int64)
+      if (allocated(model%soil_temperature_parameters%f_organic)) &
+        nreal = nreal + size(model%soil_temperature_parameters%f_organic, kind=int64)
+      if (allocated(model%soil_temperature_parameters%fkk_qco_dry)) &
+        nreal = nreal + size(model%soil_temperature_parameters%fkk_qco_dry, kind=int64)
+      if (allocated(model%soil_temperature_parameters%fk_qco_dry)) &
+        nreal = nreal + size(model%soil_temperature_parameters%fk_qco_dry, kind=int64)
+      if (allocated(model%soil_temperature_parameters%fkk_qco_wet)) &
+        nreal = nreal + size(model%soil_temperature_parameters%fkk_qco_wet, kind=int64)
+      if (allocated(model%soil_temperature_parameters%fk_qco_wet)) &
+        nreal = nreal + size(model%soil_temperature_parameters%fk_qco_wet, kind=int64)
+    end if
+    if (allocated(model%soil_temperature_workspace%old_temperature_c)) &
+      nreal = nreal + size(model%soil_temperature_workspace%old_temperature_c, kind=int64)
+    if (allocated(model%soil_temperature_workspace%average_water_content)) &
+      nreal = nreal + size(model%soil_temperature_workspace%average_water_content, kind=int64)
+    if (allocated(model%soil_temperature_workspace%heat_capacity_j_cm3_k)) &
+      nreal = nreal + size(model%soil_temperature_workspace%heat_capacity_j_cm3_k, kind=int64)
+    if (allocated(model%soil_temperature_workspace%node_conductivity_j_cm_k_day)) &
+      nreal = nreal + size(model%soil_temperature_workspace%node_conductivity_j_cm_k_day, kind=int64)
+    if (allocated(model%soil_temperature_workspace%face_conductivity_j_cm_k_day)) &
+      nreal = nreal + size(model%soil_temperature_workspace%face_conductivity_j_cm_k_day, kind=int64)
+    if (allocated(model%soil_temperature_workspace%lower)) &
+      nreal = nreal + size(model%soil_temperature_workspace%lower, kind=int64)
+    if (allocated(model%soil_temperature_workspace%diagonal)) &
+      nreal = nreal + size(model%soil_temperature_workspace%diagonal, kind=int64)
+    if (allocated(model%soil_temperature_workspace%upper)) &
+      nreal = nreal + size(model%soil_temperature_workspace%upper, kind=int64)
+    if (allocated(model%soil_temperature_workspace%rhs)) &
+      nreal = nreal + size(model%soil_temperature_workspace%rhs, kind=int64)
+    if (allocated(model%soil_temperature_workspace%solution)) &
+      nreal = nreal + size(model%soil_temperature_workspace%solution, kind=int64)
+    nbytes = nreal * REAL_BYTES
+  end function serialized_optional_work_payload_bytes
 
 end module mod_fmr_serialized_reference_backend

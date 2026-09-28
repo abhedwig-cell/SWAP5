@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05c2.status.v1",
+  "work_unit": "PPA-WU05-C2",
+  "parent_work_unit": "PPA-WU05-C",
+  "status": "PURE_FEDDES_FACTOR_IMPLEMENTED_AND_TESTED_RUNTIME_HELD",
+  "baseline": "1111b1313",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no macro/micro runtime, root owner, coupling, parallel, or restart route changed",
+  "source_census": "integration/audits/PPA_WU05C2_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_WU05C2_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_wu05c2_feddes_wetness.f90",
+  "test": "tests/fapp/test_ppa_wu05c2_feddes_wetness.f90",
+  "gate": "tests/fapp/run_ppa_wu05c2_feddes_wetness.sh",
+  "test_result": {
+    "direct_compiler": "gfortran 13.3.0 on Windows UCRT64; equivalent commands executed directly because Git Bash cannot create its signal pipe in this host",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05C2_EXACT_SOURCE_BRANCH_ORACLE_100000=PASS",
+      "PPA_WU05C2_THRESHOLD_EQUALITY_ORDER_AND_ENDPOINTS=PASS",
+      "PPA_WU05C2_STATELESS_A_B_A_REPLAY=PASS",
+      "PPA_WU05C2_NONFINITE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "evidence_claim": "Pure SWOXYGEN=1 scalar Feddes wetness factor exactly follows the B1.11 source branch order with hlim2 already selected by the caller. No production caller, stress composition, root mass or runtime qualification claim.",
+  "next_action": "Proceed with an independent exact-source census of SWOXYGEN=2/SWOXYGENTYPE=1 Bartholomeus physical process and its saved/call-local state; do not infer restart or cache ownership from declarations alone.",
+  "recovery_point": "this status record and PPA-WU05C2_SOURCE_CENSUS.json"
+}

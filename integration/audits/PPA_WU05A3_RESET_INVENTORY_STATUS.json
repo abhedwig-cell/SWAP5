@@ -1,0 +1,21 @@
+{
+  "work_unit": "PPA-WU05-A3-RESET-INVENTORY",
+  "baseline": "a32795db8",
+  "phase": "PERSISTED_ISOLATED_SOURCE_AND_COMPOSITION_TESTS_PASSED",
+  "recovery_point": "e3bfc84cedf60850b30468302d31bc5d9c3f25da",
+  "test_result": "Persisted gate PASS O0/O2 with identical transcripts; warnings-as-errors, bounds checks and floating traps; task selection, repeated reset, single domain, isolation, invalid inputs, counter/inventory composition",
+  "source_test_result": "143fa32ea70a7e76a2ce1ce802d253ac5bfb8a20 PASS O0/O2, identical transcripts with bounds checks and floating traps",
+  "composition_scope": "Pair counter resets and inventory updates under each source task; verify the intermediate and cumulative groups select matching periods",
+  "gate": "tests/fapp/run_ppa_wu05a3_reset_inventory.ps1",
+  "source": "B1.11 macropore.f90 MACRORESET lines 1620-1626 and 1645-1646",
+  "source_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+  "scope": "Candidate beginning-period storage and profile snapshots, task 0/1/2",
+  "source_caveat": "Internal-domain beginning profile is incremented without zeroing; repeated resets therefore accumulate. Preserve this exact isolated source behavior and do not treat it as an approved production balance contract.",
+  "invariants": [3, 7, 13, 21, 25],
+  "implementation": "src/process/mod_ppa_wu05a3_reset_inventory.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_reset_inventory.f90",
+  "tests_planned": ["All task branches", "Repeated reset additive source behavior", "Single-domain unchanged internal profile", "Input isolation", "Invalid shape/task", "O0/O2 runtime-checked identity"],
+  "qualified": false,
+  "production_admission": "NONE",
+  "next_action": "Reconcile corrected-reference defect workflow for the observed MACROSTATE icgwl and MACRORESET accumulated beginning-profile behavior before whole-routine production binding; continue unaffected A3 composition"
+}

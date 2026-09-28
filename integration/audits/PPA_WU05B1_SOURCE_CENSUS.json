@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.ppa_wu05b1.source_census.v1",
+  "work_unit": "PPA-WU05-B1",
+  "parent_work_unit": "PPA-WU05-B",
+  "status": "B1_11_SOURCE_MATERIALIZED_AND_HYDRAULIC_TRACE_COMPLETE_REVIEW_ONLY",
+  "production_source_mutation": false,
+  "reference_mutation": false,
+  "source_authority": {
+    "snapshot": "B1.11",
+    "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "materialized_location": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/Documents/ChatGPT/SWAP5-finaliseren/wu05b-b111/full_source (flat extracted B1.11 source tree; selected files independently SHA-256 verified)",
+    "files": {
+      "SWAP/frozencond.f90": {
+        "sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+        "bytes": 7810,
+        "b0_b1_11_identity": "UNCHANGED"
+      },
+      "SWAP/temperature.f90": {
+        "sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+        "bytes": 32708,
+        "b0_b1_11_identity": "UNCHANGED"
+      },
+      "SWAP/rootextraction.f90": {
+        "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+        "relevance": "Read-only root-temperature frost modifier exists separately; outside B1 hydraulic-boundary implementation scope"
+      },
+      "SWAP/MOD_MvG_functions.f90": {
+        "relevance": "Frost K/dKdh constitutive scaling; B1.11 must retain SWAP-011 derivative consistency"
+      }
+    }
+  },
+  "activation_and_call_order": {
+    "input": "readswap.f90 reads SWFROST and, when active, TFROSTSTA/TFROSTEND",
+    "incompatibility": "readswap rejects SWFROST=1 with SWMACRO=1",
+    "per_step_order": [
+      "SWAP calls Snow(2) when active",
+      "SWAP calls FrozenCond(tsoil,tetop) before root extraction and the Richards/boundary work",
+      "FrozenCond reads the current temperature profile owned by the temperature process and computes RFCP and frost-depth projections",
+      "BoundBottom and drainage consume RFCP/frozen-depth-derived hydraulic inputs",
+      "FrozenBounds runs after Drain(2) and before SoilWater(2), modifying trial boundary/drainage fluxes",
+      "SoilTemperature(2) runs after the hydraulic solve at the end of the interval; the next interval recomputes frost effects from its resulting accepted profile"
+    ]
+  },
+  "state_and_effect_census": {
+    "configuration": ["swfrost", "tfroststa", "tfrostend"],
+    "recomputed_from_temperature_and_grid_each_active_interval": [
+      "rfcp(1:numnod)",
+      "nodfrostbot",
+      "zfrostbot",
+      "zfrosttop"
+    ],
+    "mutable_hydraulic_candidate_outputs_in_frozenbounds": [
+      "qbot",
+      "qdra(level,node)",
+      "qdrain(level)",
+      "qdrtot"
+    ],
+    "local_scratch": ["flthaw", "volair", "ksatcp", "qdratot", "zdeepest", "ztop", "frozencomp"],
+    "thermal_state_owner": "existing soil-temperature profile/state; frost reads it and does not own or advance temperature",
+    "physical_frost_storage": "No explicit ice-content or frost water/energy storage is present in these source routines.",
+    "restart_candidate": "Thresholds remain run configuration. RFCP and frost-depth projections are recomputable from the restored accepted temperature profile, grid and thresholds at the next interval; this is source-topology evidence, not a qualified SWAP5 restart claim.",
+    "rollback_candidate": "FrozenBounds changes hydraulic trial boundary/drainage quantities, not an independent frost state or receipt. Full retry rollback remains owned by the hydraulic interval and requires runtime qualification."
+  },
+  "hydraulic_transfer_trace": {
+    "conductivity": "hconduc applies K_eff = K_base*rfcp + hconode_vsmall*(1-rfcp) when frost is active",
+    "conductivity_derivative": "dhconduc applies dK_eff/dh = dK_base/dh*rfcp when frost is active; the base derivative must retain corrected B1.11 SWAP-011 semantics",
+    "callers": ["soilwater.f90", "headcalc.f90", "boundtop.f90", "boundbottom.f90"],
+    "drainage_boundary": "FrozenBounds uses frost depth, available air volume, drainage topology and RFCP; it may close qbot, remove frozen-layer drainage, redistribute drainage, or call divdra",
+    "mass_owner": "the existing Richards/drainage boundary ledger; frost has no independent water-mass receipt",
+    "snow_order": "Snow is called before FrozenCond in the SWAP interval loop; coupled snow/frost behavior remains outside the pure B2 factor slice"
+  },
+  "scope_guards": {
+    "production_admission": "NONE_REVIEW_ONLY",
+    "new_phase_change_physics": false,
+    "latent_heat_or_ice_storage_claim": false,
+    "root_frost_stress_admitted": false,
+    "frost_macropore_combination_admitted": false,
+    "SWAP011_derivative_guard_preserved": true
+  },
+  "next_preregistered_slice": "PPA-WU05-B2 typed pure frost factor and hydraulic K/dKdh algebra oracle; no runtime composition"
+}

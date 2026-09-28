@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.ppa_irr_tcs1_4_timing.status.v1",
+  "work_unit": "PPA-IRR-TCS1-4-TIMING",
+  "parent_work_unit": "PPA-IRR-TCS7-DCS2",
+  "status": "TCS1_4_SOURCE_ORACLE_PASS_CROP_CALENDAR_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@996d36983",
+  "preregistration": "integration/audits/PPA_IRR_TCS1_4_TIMING_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; four isolated timing equations only; crop-water and plant-stress derivation, daily event selection, management calendar, irrigation amount, source booking, transaction, restart and production binding remain absent",
+  "implementation": "src/process/mod_ppa_irr_tcs1_4_timing.f90",
+  "test": "tests/fapp/test_ppa_irr_tcs1_4_timing_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_tcs1_4_timing_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "afgen_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "source_lines": "201-228 and 472-514",
+    "equations": [
+      "TCS1 transpiration reduction ratio and strict lower-than threshold, with 1.0 fallback when potential transpiration is not above 1e-10",
+      "TCS2 readily-available depletion amount, source cap when depletion exceeds AWLH, and strict actual-water trigger",
+      "TCS3 total-available depletion amount and strict actual-water trigger",
+      "TCS4 strict AWLH-AWAH depletion comparison against 0.1*AFGEN(DWA-mm)"
+    ]
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_selector_per_build": 100000,
+    "markers": [
+      "PPA_IRR_TCS1_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_TCS2_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_TCS3_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_TCS4_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_TCS1_4_STRICT_THRESHOLDS_AND_SOURCE_ORACLE=PASS",
+      "PPA_IRR_TCS1_4_TIMING_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "441c0f23b672fc800865c7936363686400dafa73b93d923025cf19e822f89d48"
+  },
+  "qualification_status": "NOT_QUALIFIED; source equations only; no crop, plant-stress, irrigation scheduling, calendar, accepted-mass or production qualification",
+  "next_action": "Continue remaining independent TCS/DCS and source-bound irrigation selector equations; retain production admission NONE.",
+  "recovery_point": "this status record, preregistration, module and test",
+  "blockers": ["AWLH, AWMH, AWAH, transpiration and dry/saline reductions are supplied as equation inputs; their crop/root and plant-stress owner composition remains outside this slice."]
+}

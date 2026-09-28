@@ -1,0 +1,27 @@
+name: PPA-LOW01 B1.11 groundwater flux profile oracle
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low01-gwl-flux-profile.yml'
+      - 'src/adapter/mod_ppa_low01_gwl_flux_profile.f90'
+      - 'tests/fapp/test_ppa_low01_gwl_flux_profile.f90'
+      - 'tests/fapp/run_ppa_low01_gwl_flux_profile.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low01-gwl-flux-profile.yml'
+      - 'src/adapter/mod_ppa_low01_gwl_flux_profile.f90'
+      - 'tests/fapp/test_ppa_low01_gwl_flux_profile.f90'
+      - 'tests/fapp/run_ppa_low01_gwl_flux_profile.sh'
+
+jobs:
+  gwl-flux-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay SWBOTB=1 profile recurrence
+        run: bash tests/fapp/run_ppa_low01_gwl_flux_profile.sh

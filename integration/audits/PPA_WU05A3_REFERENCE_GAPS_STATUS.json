@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.ppa_wu05a3_reference_gaps.v1",
+  "baseline": "1d8279776",
+  "phase": "SOURCE_REPRODUCTION_AND_PROPOSED_RESET_FIX_TESTED",
+  "consumer_trace": {
+    "reference_manifest": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "full_source_reconstruction": "PASS, 63 members and 1886519 bytes using tools/vq/b1_11_reconstruct_git.py",
+    "consumer_file": "MOD_out_PEARL_ANIMO.f90",
+    "consumer_sha256": "af12bf3b727b3c0a2e85a45e7cc6beb28a37ce3eb6472e64831b1f30c0857785",
+    "observations": "Internal beginning profile is copied at 701 and aggregated at 821-826, with no later read of that aggregate found. Domain mass balance at 1038-1041 uses scalar IWaSrDm2Beg. Compartment mass balance at 1057-1062 uses main-domain IWaUnDm1CpBegNew only.",
+    "classification_refinement": "The repeated internal profile snapshot is wrong relative to snapshot semantics, but this trace does not establish an effect on the implemented water-balance residual or physical solution.",
+    "proposed_correction_test": "PASS O0/O2: zero-before-sum in generated source fixture leaves first reset at 2 and changes second from 4 to 2; no reference patch admitted",
+    "reconstruction_portability": "Stored patch CRLF bytes fail original verifier hashes. The new wrapper extracts Git tooling and restores scratch patch LF bytes only when the exact immutable B1.11 patch hash matches; all existing reconstruction gates then pass. Repository patches remain unchanged."
+  },
+  "source_authority": "reference/swap-4.3.1/snapshots/B1.11.yml",
+  "source_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+  "policy": "docs/verification/reference-baselines.md admission rule: reproduce, intended rule, classify, minimal patch, focused qualification, exact provenance, expected-difference ledger, immutable snapshot",
+  "policy_reconciliation": "The overview still names B1.10; the later immutable B1.11 snapshot pins this work's exact source. Neither the snapshot nor existing source-gap records admit corrections for these findings.",
+  "gate": "tests/fapp/reproduce_ppa_wu05a3_reference_gaps.py",
+  "invocation": "python tests/fapp/reproduce_ppa_wu05a3_reference_gaps.py <materialized-B1.11-macropore.f90>",
+  "test_result": "PASS: exact source hash; source fragments compiled at O0/O2 under bounds and floating-point checks; two integer initialization sentinels; matching observations",
+  "findings": [
+    {
+      "id": "WU05-MACROSTATE-ICGWL",
+      "source_lines": "1319-1352; later consumption at 1401-1416",
+      "observation": "SWMBF=1 leaves icgwl equal to either compiler sentinel (-777 or -991); SWMBF=2 assigns 3 for the partially saturated fixture",
+      "classification": "Unassigned local index on SWMBF=1 path, independently reproduced using source storage block",
+      "limitation": "Compiler sentinel initialization is diagnostic instrumentation, not a claimed physical reference value. Full MACROSTATE and downstream flux execution are not reproduced by this fixture.",
+      "next_action": "Derive and qualify intended domain-specific transition index against physical flux and storage contracts before proposing a reference patch"
+    },
+    {
+      "id": "WU05-MACRORESET-BEGIN-PROFILE",
+      "source_lines": "1620-1626",
+      "observation": "With unchanged internal water profile 2, successive beginning-period captures produce 2 then 4",
+      "classification": "Accumulation rather than replacement of a beginning-period profile snapshot",
+      "candidate_correction": "Initialize IWaUnDm2CpBeg(1:NumNod)=0.d0 immediately before summing domains 2..NumDm",
+      "next_action": "Trace downstream balance consumers and qualify first/repeated-period differences before reference-patch admission"
+    }
+  ],
+  "source_changed": false,
+  "production_admission": "NONE",
+  "next_action": "Prioritize intended icgwl/flux-transition semantics for whole-MACROSTATE qualification; snapshot correction remains proposed and is not a demonstrated physical mass-balance blocker"
+}

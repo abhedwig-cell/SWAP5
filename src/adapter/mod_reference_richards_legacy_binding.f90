@@ -186,6 +186,20 @@ contains
                request%step_duration * result%unrounded_mass_balance_residual
        end if
 
+       ! Free drainage retains its candidate-dependent qbot. Publish only the
+       ! final equation residual; never reconstruct qbot from a closure identity.
+       ! This bounded diagnostic extension does not enable a temporal certificate.
+       if (request%boundary%bottom_mode == 7 .and. &
+           request%boundary%top_mode == FSI_TOP_MODE_EXPLICIT_FLUX .and. &
+           .not. ws%state_binding%fldecdt .and. .not. ws%legacy_worker%control%request_dt_reduction) then
+          result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
+          result%native_balance_rate_residual_available = .true.
+          result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
+          result%integrated_mass_balance_residual_available = .true.
+          result%integrated_mass_balance_residual_cm = &
+               request%step_duration * result%unrounded_mass_balance_residual
+       end if
+
        ! Native SWAP prescribed-qbot enters the implemented bottom residual as
        ! F_N(...,qbot)=...-qbot. Therefore dF/dqbot=-e_N and implicit
        ! differentiation gives J * dh/dqbot = +e_N. Reuse the final normal
@@ -240,6 +254,13 @@ contains
             ws%legacy_worker%diagnostics%constitutive_candidate_capacity_reuses
        result%diagnostics%workspace_full_resets = ws%richards%profile_full_reset_calls - reset_calls_before
        result%diagnostics%workspace_zeroed_bytes = ws%richards%profile_zeroed_bytes - reset_bytes_before
+       if (request%boundary%bottom_mode == 7 .and. result%diagnostics%nonlinear_iterations > 0) then
+          result%diagnostics%final_convergence_available = .true.
+          result%diagnostics%final_balance_failure_count = count(ws%richards%nonconverged_balance(1:n))
+          result%diagnostics%final_head_failure_count = count(ws%richards%nonconverged_head(1:n))
+          result%diagnostics%final_max_balance_rate = maxval(abs(ws%richards%residual(1:n)))
+          result%diagnostics%final_total_balance_rate = sum(ws%richards%residual(1:n))
+       end if
 
        if (sensitivity_capture) call release_reference_tridag_factorization_capture(ws%richards)
 

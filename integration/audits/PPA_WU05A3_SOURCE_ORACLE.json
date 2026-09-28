@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.ppa_wu05a3.source_oracle.v1",
+  "work_unit": "PPA-WU05-A3-ORACLE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "EXACT_B1_11_BUILD_AND_SINGLE_COLUMN_RUNS_REPRODUCED",
+  "source_authority": {
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_swap_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "macropore_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "oxygenstress_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+    "oxygenstress_correction": "Canonical SWAP-007 applied byte-exactly and verified against the B0 preimage and B1.11 postimage hashes",
+    "macropore_patch": "SWAP-001 applied once and verified against B1.11 postimage"
+  },
+  "build": {
+    "ttutil_archive_members": 168,
+    "ttutil_sources_compiled": 153,
+    "swap_source_members": 62,
+    "dec_directive_preparation": "Copied source only; DEC$ conditional directives selected the standard single-SWAP, non-SSS, non-Animo branch, matching the established FCI07 full-build preparation",
+    "result": "All prepared TTUTIL and SWAP sources compiled and linked into one single-column SWAP executable"
+  },
+  "runtime_oracles": {
+    "full_bundled_macroporeflow_case": {
+      "input_source": "SWAP_4.3.1/cases/3.macroporeflow",
+      "macropore_switch": 1,
+      "macropore_balance_output": "disabled by original case (SWBMA=0)",
+      "runtime_seconds_reported_by_swap": 390.828125,
+      "completion": "swap.log reports 'Swap simulation okay!' and swap.ok says simulation successfully terminated",
+      "warning": "Simulation with additional Ksat value (Ksatexm)",
+      "result_output_csv": {
+        "bytes": 16132,
+        "sha256": "a0bcc0be57d7bb1b1802c44b1dcf557468f34db3a546e989989b5cc18e17dad1"
+      }
+    },
+    "short_macropore_balance_case": {
+      "input_source": "same bundled case; end date shortened to 1998-01-08 and SWBMA enabled; no other input edits",
+      "runtime_seconds_reported_by_swap": 4.40625,
+      "completion": "swap.log reports 'Swap simulation okay!' and swap.ok confirms normal termination; Windows process exit status 100 is SWAP's normal-completion convention on this build",
+      "result_bma": {
+        "bytes": 1845,
+        "sha256": "def3d089c8c647837c0633c12918eeb502a53a7c0cfca9dd26f2fc0112d06095",
+        "initial_storage_cm": 1.63,
+        "final_storage_cm": 2.01,
+        "inputs_cm": 8.53,
+        "outputs_cm": 8.53,
+        "storage_change_cm": 0.38,
+        "balance_deviation_cm": 0.0
+      },
+      "result_output_csv": {
+        "bytes": 546,
+        "sha256": "036fe9add7fdfae33f8bad062a1b9ddb2d09a3999a127490617130370a9a8964"
+      }
+    }
+  },
+  "claim_boundary": {
+    "source_oracle": "reconstructed and executable for the tested standard single-column B1.11 path, with both macropore and SWAP-007 oxygen source hashes verified",
+    "production_migration": "NONE",
+    "source_committed_to_repository": false,
+    "restart_or_retry_equivalence": "NOT_TESTED",
+    "parallel_or_multi_swap": "NOT_TESTED",
+    "full_case_macropore_mass_balance": "NOT_EMITTED_BY_BUNDLED_INPUT",
+    "next_step": "Use the short SWBMA case and exact B1.11 source trace as future A3 equation-level oracle; separately authorize any new production state-owner integration before runtime admission."
+  }
+}

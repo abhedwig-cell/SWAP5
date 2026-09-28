@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-DRAINABLE-STORAGE",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure macropore drainable-storage calculation",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> COMPOSE_VOLUNDR_WITH_STORAGE_LIMIT -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:RAPIDDRAIN drainable-storage calculation",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1905-1906",
+    "behavior": "When macropore bottom is below the drain base, calculate volume under the drain using VOLUNDR from a half-compartment-offset bottom; subtract it from domain storage and clamp at zero. Otherwise the under-drain volume is zero."
+  },
+  "scope": [
+    "explicit geometry and domain-storage inputs",
+    "composition of the separately source-tested VOLUNDR equation",
+    "drain-base condition and zero lower bound",
+    "100,000 deterministic bitwise comparisons at O0 and O2"
+  ],
+  "non_goals": [
+    "rapid-drainage conductivity, head response or event amount",
+    "whole-column mass receipt, transaction/restart owner or production admission",
+    "parallel/MultiSWAP admission"
+  ],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

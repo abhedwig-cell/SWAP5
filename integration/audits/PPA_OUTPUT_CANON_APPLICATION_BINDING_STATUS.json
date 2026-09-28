@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.ppa_output_canon_application_binding_status.v1",
+  "work_unit": "PPA-OUTPUT-CANON-APP",
+  "status": "LOCAL_BOOTSTRAP_BINDING_QUALIFIED_O0_O2_NOT_CANONICALLY_ADMITTED",
+  "baseline": {
+    "preregistration": "integration/audits/PPA_OUTPUT_CANON_APPLICATION_BINDING_PREREGISTRATION.json",
+    "local_implementation_base": "e617ac0fe",
+    "canonical_head_checked": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "serializer_blob_unchanged": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+    "canonical_contracts_blob_unchanged": "3962c270a7579b7403764674302445fe15ef5f72"
+  },
+  "implementation": {
+    "commit": "dc296063143eb77535a219c7949435276db73461",
+    "source": "src/runtime/mod_fmr_production_application_bootstrap.f90:production_application_serialize_canonical_result_text",
+    "test": "tests/fapp/test_ppa_output_canon_application_binding.f90",
+    "existing_gate_extended": "tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+    "behavior": "Public stateless bootstrap-module entry delegates an INTENT(IN) canonical_result_t to the unchanged M1-C4 serializer and returns text in memory."
+  },
+  "qualification": {
+    "compiler": "GNU Fortran at the locally configured Windows UCRT64 toolchain",
+    "complete_wu01_module_inventory_compiled_per_optimization": 104,
+    "optimization_levels": ["O0", "O2"],
+    "markers": [
+      "PPA_OUTPUT_CANON_APPLICATION_BYTE_IDENTITY=PASS",
+      "PPA_OUTPUT_CANON_APPLICATION_READ_ONLY_SNAPSHOT=PASS",
+      "PPA_OUTPUT_CANON_APPLICATION_FILE_FREE=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "existing_ppa_wu01_static_gate": "PASS",
+    "M1_C4_serializer_and_contract_pins": "PASS"
+  },
+  "scope_boundary": {
+    "physical_or_transaction_source_changed": false,
+    "accepted_mass_semantics_changed": false,
+    "output_file_or_legacy_format_added": false,
+    "fmr_serialized_column_result_mapping_added": false,
+    "canonical_admission_for_wrapper": "NONE; this remains a local branch candidate",
+    "full_ppa_wu01_physical_runtime_preservation": "NOT_RUN_BY_THIS_FOCUSED_BINDING_GATE"
+  },
+  "remaining_gap": "The bootstrap receives fmr_serialized_column_result_t from its current production run route; this binding only exposes the separately admitted canonical_result_t serializer. It does not implement the legacy BAL/BLC/CSV output family or map production run results into canonical_result_t.",
+  "next_action": "Keep PPA-OUTPUT-LEGACY and general application output composition open. Continue the next non-blocked migration slice; do not infer canonical admission for this local wrapper from the passing focused binding test."
+}

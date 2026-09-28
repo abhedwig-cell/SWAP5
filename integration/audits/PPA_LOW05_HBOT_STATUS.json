@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_low05_hbot.status.v1",
+  "work_unit": "PPA-LOW05-HBOT",
+  "parent_work_unit": "PPA-LOW05-APP",
+  "status": "PURE_HBOT5_TABLE_LAW_IMPLEMENTED_AND_TESTED_RUNTIME_HELD",
+  "baseline": "5b56fa874",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no bottom_mode=5 route, Richards solver, groundwater adapter, mass accounting, restart or transaction behavior changed",
+  "source_census": "integration/audits/PPA_LOW05_HBOT_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW05_HBOT_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low05_hbot_table.f90",
+  "test": "tests/fapp/test_ppa_low05_hbot_table.f90",
+  "gate": "tests/fapp/run_ppa_low05_hbot_table.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW05_HBOT_DATE5_AFGEN_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW05_HBOT_ENDPOINT_KNOT_AND_LINEAR=PASS",
+      "PPA_LOW05_HBOT_STATELESS_A_B_A=PASS",
+      "PPA_LOW05_HBOT_INVALID_TABLE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Continue independent lower-boundary/source capabilities; retain ordinary prescribed-head application/ownership admission as open.",
+  "recovery_point": "this status and PPA_LOW05_HBOT_SOURCE_CENSUS.json"
+}

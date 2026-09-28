@@ -1,0 +1,15 @@
+{
+  "work_unit": "PPA-IRR-OWNER-PROFILE",
+  "tested_implementation_commit": "280dafc0d",
+  "status": "READ_ONLY_PRODUCTION_OWNER_INTERFACE_PASS",
+  "contract": "PPA_IRR_OWNER_PROFILE_PREREGISTRATION.json",
+  "interface": "fmr_production_application_bootstrap_t::copy_committed_hydraulic_states",
+  "result": "HydraulicCopy gate PASS O0/O2: exact initialized active pressure/water arrays for all tiles; caller mutation does not alias owner; restart round trip preserves arrays, time and revision; uninitialized and closed owners return no allocated result. Existing --guards scope also PASS O0/O2 using the same persisted-postimage binaries.",
+  "build": "swap-ppa-wu01-f2ede0cdda56448abc06c61dfb6a0f04",
+  "transcript_sha256_both_optimizations": "79962099DC2B39DE7E9C2324DF0C0AA0855488A0EEDB96C916806519792D6602",
+  "runner_followup": "HydraulicCopy now explicitly compares full output and rejects unrelated stable-storage flags; the recorded run used the preceding runner, with complete transcript hashes checked independently afterwards.",
+  "ownership": "Deep detached snapshots only; no new retained physical state, acceptance rule, flux or restart format. Existing committed kernel slots remain authoritative.",
+  "limits": "Initialized-state and restart-copy qualification only; evolving accepted profiles and scheduled-event acceptance not yet qualified. No canonical admission claimed.",
+  "dcs1_followup": "7f0fb8431 PASS HydraulicCopy O0/O2 with full transcript identity in swap-ppa-wu01-c857db03738841e7b56a97d344b99983. Each initialized tile's copied hydraulic arrays and actual top-layer thickness feed the callable DCS1 composition before and after committed restart. Explicit test rooting is half the first layer; supplied retention contents are 0.8/0.3/0.1. Selected gift matches the independent source amount and is exactly repeated after restart. This is read-only application test composition, not accepted irrigation or derived crop parameters.",
+  "next": "Implement event-state acceptance and restart in the existing owner, with accepted-only source booking and independently supplied crop/retention parameters, before claiming production irrigation coverage."
+}

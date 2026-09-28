@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low03.implicit-row.status.v1",
+  "work_unit": "PPA-LOW03-IMPLICIT-ROW",
+  "parent_work_unit": "PPA-LOW03",
+  "status": "IMPLICIT_CAUCHY_ROW_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "31c01208c",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no HeadCalc/Newton, iteration, accepted flux mass, restart or runtime route changed",
+  "source_census": "integration/audits/PPA_LOW03_IMPLICIT_ROW_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW03_IMPLICIT_ROW_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low03_implicit_row.f90",
+  "test": "tests/fapp/test_ppa_low03_implicit_row.f90",
+  "gate": "tests/fapp/run_ppa_low03_implicit_row.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW03_IMPLICIT_CAUCHY_QBOT_F_JACOBIAN_ORACLE_100000=PASS",
+      "PPA_LOW03_IMPLICIT_CAUCHY_RESVERT_AND_SW4=PASS",
+      "PPA_LOW03_IMPLICIT_CAUCHY_STATELESS_A_B_A=PASS",
+      "PPA_LOW03_IMPLICIT_CAUCHY_INVALID_RESISTANCE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "1f101e2b1e6bed669f8c6dff6971b1ef120a72e16c6e079521dc9fac0e4fd6aa",
+    "o2_executable_sha256": "7c0aff17daa97492169bd9029f60cf8752c19d222c1d85b85aaf99978850b2a6",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Proceed to another functional gap; defer solver production integration until state, retry and accepted-mass owners can accept these terms transactionally.",
+  "recovery_point": "this status and PPA_LOW03_IMPLICIT_ROW_SOURCE_CENSUS.json"
+}

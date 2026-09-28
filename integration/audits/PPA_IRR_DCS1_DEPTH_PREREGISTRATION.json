@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-DCS1-DEPTH",
+  "parent_workunit": "PPA-IRR-TCS7-DCS2",
+  "title": "Source-bound irrigation DCS1 depth composition",
+  "protocol": "PIN_B1_11_SOURCE -> ISOLATE_DCS1_DEPTH_EQUATION -> BITWISE_AFGEN_ORACLE -> O0_O2_REPLAY -> HOLD_EVENT_AND_PRODUCTION_ADMISSION",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "files": {
+      "SWAP/irrigation.f90": "sha256:65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+      "SWAP/functions.f90": "sha256:b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527"
+    },
+    "lineage": "SWAP-011 does not target these source files.",
+    "equations": [
+      "dps1 = AFGEN(ditab,14,dvs), where the seven DVS correction values are input in mm.",
+      "grai_red is zero unless grai > raithreshold; if greater, grai_red = grai.",
+      "DCS1 depth = max(0, cdef + 0.1*dps1 - grai_red).",
+      "When dcslim is enabled, depth = min(max(depth,0.1*irgdepmin),0.1*irgdepmax).",
+      "When both solute-threshold switches are enabled and cml > cirrthres, depth += 0.01*perirrsurp*depth."
+    ],
+    "source_lines": [317, 318, 321, 323, 326, 567, 574, 585, 586, 590, 592],
+    "AFGEN_source": "SWAP/functions.f90:AFGEN"
+  },
+  "scope": [
+    "pure DCS1 amount calculation with AFGEN correction, strict rainfall gate, zero floor, optional min/max limit and optional solute over-irrigation",
+    "partial seven-knot table sentinel, endpoint clamp, interpolation and exact source arithmetic",
+    "100000 deterministic source comparisons at O0/O2, plus named branch-boundary tests"
+  ],
+  "non_goals": [
+    "crop-deficit derivation or timing criterion selection",
+    "event calendar, rate/duration split or surface/SSDI source booking",
+    "solute transport or accepted-mass publication",
+    "transaction/retry/restart or production admission"
+  ],
+  "pass_conditions": [
+    "AFGEN correction matches B1.11 table semantics at and outside all populated endpoints",
+    "rainfall suppression uses strict grai > raithreshold and subtracts the full source rainfall term only on that branch",
+    "zero floor, optional limit ordering and strict solute threshold match source statement order",
+    "100000 deterministic O0/O2 source comparisons pass with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

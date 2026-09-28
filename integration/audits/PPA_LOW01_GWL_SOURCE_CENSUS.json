@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.ppa_low01.gwl.source-census.v1",
+  "work_unit": "PPA-LOW01-GWL",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "readswap.f90": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "boundbottom.f90": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e"
+  },
+  "input_contract": {
+    "date1": "numeric times; at least one date overlaps [TSTART,TEND]",
+    "gwlevel": [-10000.0, 1000.0],
+    "saturation_guard": "reject any gwlevel(i) > zbotcp(5)",
+    "runtime_input": "gwlinp = AFGEN(GWLTAB, t1900+dt)"
+  },
+  "interpretation": "Pure tabular input validation/interpolation only; HeadCalc low-GWL predictor/corrector and transition state are excluded."
+}

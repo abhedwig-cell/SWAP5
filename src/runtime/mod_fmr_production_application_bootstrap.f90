@@ -1,27 +1,38 @@
 module mod_fmr_production_application_bootstrap
+  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
+  use mod_soil_water_solver_contract, only: constitutive_storage_difference_ifc
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_canonical_contracts, only: canonical_numerical_config_t
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_result_t
+  use mod_canonical_result_text_adapter, only: serialize_canonical_result_text
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, transaction_state_t
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
+  use mod_irrigation_process, only: irrigation_state_t, ppa_weekly_identity_t, valid_weekly_identity, &
+       ppa_tcsfix_identity_t, valid_tcsfix_identity, valid_tcsfix_transition
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_serialized_execution_plan, &
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
-       FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+       FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, &
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
-       fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg
+       fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg, &
+       free_drainage_indicator_service, fmr_new_b110_irrigation_committed_state, &
+       ppa_irrigation_event_state_t, PPA_IRRIGATION_EVENT_LAYOUT
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
-       fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
+       fmr_serialized_batch_diagnostics_t, fmr_serialized_commit_receipt_record_t, &
+       fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK, &
+       fmr_execute_serialized_irrigation_resolved_column
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
-  use mod_b110_direct_retention_core, only: begin_b110_direct_retention_application, end_b110_direct_retention_application, &
-       freeze_b110_direct_retention_pool
+  use mod_b110_direct_retention_core, only: begin_b110_direct_retention_application, &
+       end_b110_direct_retention_application, freeze_b110_direct_retention_pool
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
-  use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, &
-       FMR_GW_REGISTRY_OK
+  use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, FMR_GW_REGISTRY_OK
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_temporal_budget_policy_t
   use mod_groundwater_interface_mass_ledger, only: groundwater_interface_mass_ledger_t, GW_MASS_LEDGER_OK
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t
@@ -29,8 +40,7 @@ module mod_fmr_production_application_bootstrap
        GW_TOPOLOGY_OK, GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE, GW_DRAINAGE_OWNER_NONE
   use mod_groundwater_application_plan, only: groundwater_application_plan_t, groundwater_tile_predictor_input_t, &
        groundwater_cell_area_input_t, materialize_groundwater_application_plan, GW_APP_PLAN_OK
-  use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, &
-       FMR_GW_APP_CONTEXT_OK
+  use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, FMR_GW_APP_CONTEXT_OK
   use mod_fmr_groundwater_application_c_api, only: register_fmr_groundwater_application_context, &
        release_fmr_groundwater_application_context, FMR_GW_APP_C_API_OK, FMR_GW_APP_C_API_INVALID_CONTEXT, &
        FMR_GW_APP_C_API_CONTEXT_BUSY
@@ -54,6 +64,7 @@ module mod_fmr_production_application_bootstrap
   ! and non-groundwater application profiles retain their existing semantics.
   real(real64), parameter :: FMR_GW_HISTORY_TEMPORAL_COEFFICIENT = 0.65_real64
   real(real64), parameter :: FMR_GW_HISTORY_TEMPORAL_FLOOR_CM = 1.0e-5_real64
+  public :: production_application_serialize_canonical_result_text
 
   ! WU01 established serialized Reference mode 7 standalone and mode 5 groundwater profiles.
   ! PPA-WU02-A additionally admits homogeneous typed bottom_mode=2 prescribed-qbot applications.
@@ -62,6 +73,7 @@ module mod_fmr_production_application_bootstrap
     integer(int64) :: tile_id = 0_int64
     integer(int64) :: ledger_id = 0_int64
     integer :: execution_class = FMR_EXECUTION_EASY
+    integer :: irrigation_ssdi_node = 0 ! zero disables the explicit prepared route
     type(fmr_template_t) :: template
     type(fmr_b110_physical_parameters_t) :: parameters
     type(fmr_b110_physical_forcing_t) :: base_forcing
@@ -74,20 +86,41 @@ module mod_fmr_production_application_bootstrap
   end type fmr_production_application_tile_config_t
 
   type, public :: fmr_production_application_config_t
+    procedure(constitutive_storage_difference_ifc), pointer, nopass :: storage_difference => null()
+    procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
     real(real64) :: initial_time = 0.0_real64
     type(canonical_numerical_config_t) :: numerical
     integer :: groundwater_parallel_workers = 1
     type(fmr_production_application_tile_config_t), allocatable :: tiles(:)
   end type fmr_production_application_config_t
 
+  type, public :: fmr_committed_top_state_t
+    logical :: available = .false.
+    integer(int64) :: revision = 0_int64
+    real(real64) :: committed_time = 0.0_real64
+    real(real64) :: pressure_head_top_cm = 0.0_real64
+    real(real64) :: water_content_top = 0.0_real64
+    real(real64) :: ponding_depth_cm = 0.0_real64
+  end type fmr_committed_top_state_t
+
+  type, public :: fmr_committed_hydraulic_state_t
+    logical :: available = .false.
+    integer(int64) :: revision = 0_int64
+    real(real64) :: committed_time = 0.0_real64
+    real(real64), allocatable :: pressure_head_cm(:), water_content(:)
+  end type fmr_committed_hydraulic_state_t
+
   type, public :: fmr_production_application_bootstrap_t
     private
+    procedure(free_drainage_indicator_service), pointer, nopass :: free_drainage_indicator => null()
+    procedure(constitutive_storage_difference_ifc), pointer, nopass :: storage_difference => null()
     logical :: initialized = .false.
     logical :: direct_retention_owner_active = .false.
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
     type(fmr_template_t), allocatable :: templates(:)
     type(fmr_serialized_execution_plan_t) :: execution_plan
+    integer, allocatable :: irrigation_nodes(:)
     type(fmr_b110_physical_parameters_t), pointer :: parameters(:) => null()
     type(fmr_b110_physical_forcing_t), pointer :: base_forcing(:) => null()
     type(kernel_committed_state_t), pointer :: committed(:) => null()
@@ -108,15 +141,31 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: tile_count => production_application_tile_count
     procedure, public :: groundwater_worker_count => production_application_groundwater_worker_count
     procedure, public :: run_standalone => production_application_run_standalone
+    procedure, public :: run_prepared_irrigation => production_application_run_prepared_irrigation
     procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
+    procedure, public :: run_standalone_with_forcing_receipts => production_application_run_standalone_with_forcing_receipts
     procedure, public :: materialize_groundwater_context => production_application_materialize_groundwater_context
     procedure, public :: release_groundwater_context => production_application_release_groundwater_context
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
     procedure, public :: groundwater_parallel_schedule_diagnostics => production_application_parallel_schedule_diagnostics
+    procedure, public :: copy_committed_top_states => production_application_copy_committed_top_states
+    procedure, public :: copy_committed_hydraulic_states => production_application_copy_committed_hydraulic_states
+    procedure, public :: export_committed_restart => production_application_export_committed_restart
+    procedure, public :: restore_committed_restart => production_application_restore_committed_restart
     procedure, public :: close => production_application_close
   end type fmr_production_application_bootstrap_t
 
 contains
+
+  ! Application-facing view of the admitted M1-C4 serializer.  This consumes
+  ! only an already-published result and returns in-memory text; it owns no
+  ! application, physical state, output file, or mass-booking semantics.
+  subroutine production_application_serialize_canonical_result_text(result, text)
+    type(canonical_result_t), intent(in) :: result
+    character(len=:), allocatable, intent(out) :: text
+
+    call serialize_canonical_result_text(result, text)
+  end subroutine production_application_serialize_canonical_result_text
 
   subroutine production_application_initialize(self, config, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
@@ -162,6 +211,25 @@ contains
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
+    if (associated(config%free_drainage_indicator)) then
+      if (.not. standalone_profile) then
+        status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        return
+      end if
+      do i = 1, n
+        if (config%tiles(i)%template%numerical_continuation_layout_id /= &
+             FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      end do
+    end if
+    if (associated(config%storage_difference)) then
+      if (.not. standalone_profile) then
+        status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        return
+      end if
+    end if
     if (groundwater_profile) then
       do i = 1, n
         if (config%tiles(i)%ledger_id <= 0_int64) then
@@ -202,11 +270,18 @@ contains
     end if
 
     allocate(self%columns(n), self%templates(n))
+    allocate(self%irrigation_nodes(n))
     allocate(self%parameters(n), self%base_forcing(n), self%committed(n))
     allocate(self%backend, self%top_boundary)
     self%numerical = config%numerical
+    self%free_drainage_indicator => config%free_drainage_indicator
+    self%storage_difference => config%storage_difference
 
     call self%backend%initialize(self%top_boundary)
+    if (associated(config%free_drainage_indicator)) &
+         call self%backend%set_free_drainage_indicator(config%free_drainage_indicator)
+    if (associated(config%storage_difference)) &
+         call self%backend%set_storage_difference(config%storage_difference)
     self%groundwater_parallel_workers = config%groundwater_parallel_workers
 
     if (groundwater_profile .and. self%groundwater_parallel_workers > 1) then
@@ -237,6 +312,7 @@ contains
       self%columns(i)%execution_class = config%tiles(i)%execution_class
       self%columns(i)%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
       self%parameters(i) = config%tiles(i)%parameters
+      self%irrigation_nodes(i) = config%tiles(i)%irrigation_ssdi_node
       call prepare_fmr_b110_default_mvg(self%parameters(i), hydraulic_prepared)
       if (self%parameters(i)%direct_retention_active .and. .not. hydraulic_prepared) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
@@ -262,7 +338,11 @@ contains
                config%tiles(i)%initial_state, config%initial_time, ok)
         end if
       case (FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
-        if (allocated(config%tiles(i)%initial_right_derivative)) then
+        if (self%irrigation_nodes(i) > 0) then
+          call fmr_new_b110_irrigation_committed_state(self%committed(i), config%tiles(i)%tile_id, &
+               config%tiles(i)%initial_state, self%templates(i), config%initial_time, &
+               config%tiles(i)%initial_right_derivative, ok)
+        else if (allocated(config%tiles(i)%initial_right_derivative)) then
           call fmr_new_b110_temporal_indicator_committed_state(self%committed(i), config%tiles(i)%tile_id, &
                config%tiles(i)%initial_state, config%initial_time, ok, config%tiles(i)%initial_right_derivative)
         else
@@ -364,6 +444,111 @@ contains
     if (.not. self%ready()) return
     count = self%groundwater_parallel_workers
   end function production_application_groundwater_worker_count
+  subroutine production_application_run_prepared_irrigation(self,t0,t1,effective_forcing,results,status, &
+       selected_events,selection_mask,weekly_proposals,target_selector,tcsfix_proposals)
+    class(fmr_production_application_bootstrap_t),intent(inout)::self
+    real(real64),intent(in)::t0,t1
+    type(fmr_b110_physical_forcing_t),intent(in)::effective_forcing(:)
+    type(fmr_serialized_column_result_t),allocatable,intent(out)::results(:)
+    integer,intent(out)::status
+    type(irrigation_state_t),intent(in),optional::selected_events(:)
+    logical,intent(in),optional::selection_mask(:)
+    type(ppa_weekly_identity_t),intent(in),optional::weekly_proposals(:)
+    procedure(canonical_subinterval_target_selector),optional::target_selector
+    type(ppa_weekly_identity_t),allocatable::weekly_proposal
+    type(ppa_tcsfix_identity_t),intent(in),optional::tcsfix_proposals(:)
+    type(ppa_tcsfix_identity_t),allocatable::tcsfix_proposal
+    class(transaction_state_t),allocatable::snapshot
+    logical::available,enabled
+    type(kernel_executor_t)::control
+    type(fmr_column_diagnostics_t)::diagnostic
+    type(fmr_serialized_batch_diagnostics_t)::runtime
+    integer::i,n,active_calls
+    logical::select_new
+    status=FMR_APP_BOOT_NOT_READY
+    if(.not.self%ready()) return
+    status=FMR_APP_BOOT_CONTEXT_BUSY
+    if(associated(self%active_context)) return
+    status=FMR_APP_BOOT_INVALID_CONFIG
+    if(.not.all(ieee_is_finite([t0,t1]))) return
+    if(t1<=t0) return
+    n=size(self%columns)
+    if(size(effective_forcing)/=n) return
+    if(present(tcsfix_proposals)) then
+      if(size(tcsfix_proposals)/=n) return
+      do i=1,n
+        if(.not.valid_tcsfix_identity(tcsfix_proposals(i))) return
+      end do
+    end if
+    if(present(weekly_proposals)) then
+      if(size(weekly_proposals)/=n) return
+      do i=1,n
+        if(.not.valid_weekly_identity(weekly_proposals(i))) return
+      end do
+    end if
+    if(present(selected_events)) then
+      if(size(selected_events)/=n) return
+    end if
+    if(present(selection_mask)) then
+      if(.not.present(selected_events)) return
+      if(size(selection_mask)/=n) return
+    end if
+    status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if(any(self%irrigation_nodes<=0)) return
+    ! Validate every TCSFIX transition before any column can publish.
+    do i=1,n
+      call self%committed(i)%snapshot(snapshot,available)
+      if(.not.available) return
+      enabled=.false.
+      if(present(tcsfix_proposals)) enabled=tcsfix_proposals(i)%enabled
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%tcsfix%enabled.neqv.enabled) return
+        if(enabled) then
+          if(.not.valid_tcsfix_transition(snapshot%tcsfix,tcsfix_proposals(i))) return
+          if(snapshot%weekly%enabled) return
+          if(present(weekly_proposals)) then
+            if(weekly_proposals(i)%enabled) return
+          end if
+          if(snapshot%irrigation%active_event.and. &
+               snapshot%tcsfix%dayfix/=tcsfix_proposals(i)%dayfix) return
+        end if
+      class default
+        if(enabled) return
+      end select
+    end do
+    allocate(results(n))
+    active_calls=0
+    do i=1,n
+      results(i)%column_id=self%columns(i)%column_id
+      results(i)%dispatch_ordinal=i
+      results(i)%requested_t0=t0; results(i)%requested_t1=t1
+      diagnostic=fmr_column_diagnostics_t()
+      if(allocated(tcsfix_proposal)) deallocate(tcsfix_proposal)
+      if(present(tcsfix_proposals)) then
+        if(tcsfix_proposals(i)%enabled) allocate(tcsfix_proposal,source=tcsfix_proposals(i))
+      end if
+      if(allocated(weekly_proposal)) deallocate(weekly_proposal)
+      if(present(weekly_proposals)) then
+        if(weekly_proposals(i)%enabled) allocate(weekly_proposal,source=weekly_proposals(i))
+      end if
+      select_new=present(selected_events)
+      if(present(selection_mask)) select_new=selection_mask(i)
+      if(select_new) then
+        call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
+             self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
+             t0,t1,results(i),diagnostic,runtime,active_calls,selected_events(i),weekly_proposal,target_selector, &
+             tcsfix_proposal)
+      else
+        call fmr_execute_serialized_irrigation_resolved_column(self%backend,control,self%columns(i),self%templates(i), &
+             self%parameters(i),effective_forcing(i),self%committed(i),self%numerical,self%irrigation_nodes(i), &
+             t0,t1,results(i),diagnostic,runtime,active_calls,weekly_proposal=weekly_proposal, &
+             target_selector=target_selector,tcsfix_proposal=tcsfix_proposal)
+      end if
+    end do
+    status=FMR_APP_BOOT_RUNTIME_FAILED
+    if(all(results%completed).and.all(results%committed)) status=FMR_APP_BOOT_OK
+  end subroutine production_application_run_prepared_irrigation
 
   subroutine production_application_run_standalone(self, t0, t1, results, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
@@ -406,17 +591,67 @@ contains
     end if
 
     if (self%execution_plan%ready()) then
-      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
-           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-           aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
-           materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
-           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+      if (associated(self%free_drainage_indicator)) then
+        if (associated(self%storage_difference)) then
+          call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+               self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+               aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+               materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+               materialize_column_diagnostics=.false., trusted_prepared_parameters=.false., &
+               free_drainage_indicator=self%free_drainage_indicator, storage_difference=self%storage_difference)
+        else
+          call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+               self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+               aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+               materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+               materialize_column_diagnostics=.false., trusted_prepared_parameters=.false., &
+               free_drainage_indicator=self%free_drainage_indicator)
+        end if
+      else if (associated(self%storage_difference)) then
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+             materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+             materialize_column_diagnostics=.false., trusted_prepared_parameters=.false., &
+             storage_difference=self%storage_difference)
+      else
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+             materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+             materialize_column_diagnostics=.false., trusted_prepared_parameters=.false.)
+      end if
     else
-      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
-           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
-           aggregate, dispatch_status, materialize_worker_assignments=.false., &
-           materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
-           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+      if (associated(self%free_drainage_indicator)) then
+        if (associated(self%storage_difference)) then
+          call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+               self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+               aggregate, dispatch_status, materialize_worker_assignments=.false., &
+               materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+               materialize_column_diagnostics=.false., trusted_prepared_parameters=.false., &
+               free_drainage_indicator=self%free_drainage_indicator, storage_difference=self%storage_difference)
+        else
+          call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+               self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+               aggregate, dispatch_status, materialize_worker_assignments=.false., &
+               materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+               materialize_column_diagnostics=.false., trusted_prepared_parameters=.false., &
+               free_drainage_indicator=self%free_drainage_indicator)
+        end if
+      else if (associated(self%storage_difference)) then
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, materialize_worker_assignments=.false., &
+             materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+             materialize_column_diagnostics=.false., trusted_prepared_parameters=.false., &
+             storage_difference=self%storage_difference)
+      else
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, materialize_worker_assignments=.false., &
+             materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+             materialize_column_diagnostics=.false., trusted_prepared_parameters=.false.)
+      end if
     end if
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
@@ -427,6 +662,70 @@ contains
     if (.not. all(results%committed)) return
     status = FMR_APP_BOOT_OK
   end subroutine production_application_run_standalone_with_forcing
+
+  subroutine production_application_run_standalone_with_forcing_receipts(self, t0, t1, effective_forcing, results, receipts, status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    real(real64), intent(in) :: t0, t1
+    type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing(:)
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    type(fmr_serialized_commit_receipt_record_t), allocatable, intent(out) :: receipts(:)
+    integer, intent(out) :: status
+    type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
+    type(fmr_aggregate_diagnostics_t) :: aggregate
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    integer(int64), allocatable :: receipt_column_ids(:)
+    integer :: dispatch_status, i
+
+    if (allocated(results)) deallocate(results)
+    if (allocated(receipts)) deallocate(receipts)
+    status = FMR_APP_BOOT_NOT_READY
+    if (.not. self%ready() .or. associated(self%active_context)) return
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) then
+      status = FMR_APP_BOOT_INVALID_CONFIG
+      return
+    end if
+    if (size(effective_forcing) /= size(self%columns)) then
+      status = FMR_APP_BOOT_INVALID_CONFIG
+      return
+    end if
+    allocate(receipt_column_ids(size(self%columns)))
+    do i = 1, size(self%columns)
+      receipt_column_ids(i) = self%columns(i)%column_id
+    end do
+    if (associated(self%free_drainage_indicator)) then
+      if (associated(self%storage_difference)) then
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
+             commit_receipts=receipts, free_drainage_indicator=self%free_drainage_indicator, &
+             storage_difference=self%storage_difference)
+      else
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
+             commit_receipts=receipts, free_drainage_indicator=self%free_drainage_indicator)
+      end if
+    else if (associated(self%storage_difference)) then
+      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+           aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
+           commit_receipts=receipts, storage_difference=self%storage_difference)
+    else
+      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+           aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
+           commit_receipts=receipts)
+    end if
+
+    status = FMR_APP_BOOT_RUNTIME_FAILED
+    if (dispatch_status /= FMR_SERIAL_DISPATCH_OK .or. .not. allocated(results) .or. .not. allocated(receipts)) return
+    if (size(results) /= size(self%columns) .or. size(receipts) /= size(self%columns)) return
+    if (.not. all(results%completed) .or. .not. all(results%committed)) return
+    do i = 1, size(receipts)
+      if (.not. receipts(i)%receipt%ready()) return
+    end do
+    status = FMR_APP_BOOT_OK
+  end subroutine production_application_run_standalone_with_forcing_receipts
 
   subroutine production_application_materialize_groundwater_context(self, topology, predictors, cell_areas, &
        context_handle, status)
@@ -571,6 +870,137 @@ contains
     end if
     status = FMR_APP_BOOT_OK
   end subroutine production_application_parallel_schedule_diagnostics
+  subroutine production_application_copy_committed_top_states(self, states, status)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+    type(fmr_committed_top_state_t), allocatable, intent(out) :: states(:)
+    integer, intent(out) :: status
+    class(transaction_state_t), allocatable :: snapshot
+    logical :: available, time_available
+    integer :: i
+
+    if (allocated(states)) deallocate(states)
+    status = FMR_APP_BOOT_NOT_READY
+    if (.not. self%ready()) return
+    allocate(states(size(self%committed)))
+    do i = 1, size(self%committed)
+      call self%committed(i)%snapshot(snapshot, available)
+      if (.not. available) then
+        deallocate(states)
+        return
+      end if
+      select type (physical => snapshot)
+      class is (fmr_b110_physical_state_t)
+        if (physical%active_nodes <= 0 .or. .not. allocated(physical%pressure_head) .or. &
+            .not. allocated(physical%water_content)) then
+          deallocate(states)
+          return
+        end if
+        if (size(physical%pressure_head) < physical%active_nodes .or. size(physical%water_content) < physical%active_nodes) then
+          deallocate(states)
+          return
+        end if
+        states(i)%pressure_head_top_cm = physical%pressure_head(1)
+        states(i)%water_content_top = physical%water_content(1)
+        states(i)%ponding_depth_cm = physical%ponding_depth
+      class default
+        deallocate(states)
+        return
+      end select
+      call self%committed(i)%current_time(states(i)%committed_time, time_available)
+      if (.not. time_available .or. .not. ieee_is_finite(states(i)%committed_time) .or. &
+          .not. ieee_is_finite(states(i)%pressure_head_top_cm) .or. &
+          .not. ieee_is_finite(states(i)%water_content_top) .or. &
+          .not. ieee_is_finite(states(i)%ponding_depth_cm)) then
+        deallocate(states)
+        return
+      end if
+      states(i)%revision = self%committed(i)%current_revision()
+      states(i)%available = .true.
+    end do
+    status = FMR_APP_BOOT_OK
+  end subroutine production_application_copy_committed_top_states
+
+  subroutine production_application_copy_committed_hydraulic_states(self, states, status)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+    type(fmr_committed_hydraulic_state_t), allocatable, intent(out) :: states(:)
+    integer, intent(out) :: status
+    class(transaction_state_t), allocatable :: snapshot
+    logical :: available, time_available
+    integer :: i,n
+
+    status=FMR_APP_BOOT_NOT_READY
+    if (.not.self%ready()) return
+    allocate(states(size(self%committed)))
+    do i=1,size(self%committed)
+      call self%committed(i)%snapshot(snapshot,available)
+      if (.not.available) exit
+      select type (physical=>snapshot)
+      class is (fmr_b110_physical_state_t)
+        n=physical%active_nodes
+        if(n<=0) exit
+        if(.not.allocated(physical%pressure_head).or..not.allocated(physical%water_content)) exit
+        if(size(physical%pressure_head)<n.or.size(physical%water_content)<n) exit
+        if(.not.all(ieee_is_finite(physical%pressure_head(1:n)))) exit
+        if(.not.all(ieee_is_finite(physical%water_content(1:n)))) exit
+        states(i)%pressure_head_cm=physical%pressure_head(1:n)
+        states(i)%water_content=physical%water_content(1:n)
+      class default
+        exit
+      end select
+      call self%committed(i)%current_time(states(i)%committed_time,time_available)
+      if(.not.time_available) exit
+      if(.not.ieee_is_finite(states(i)%committed_time)) exit
+      states(i)%revision=self%committed(i)%current_revision()
+      states(i)%available=.true.
+    end do
+    if(.not.all(states%available)) then
+      deallocate(states)
+      return
+    end if
+    status=FMR_APP_BOOT_OK
+  end subroutine production_application_copy_committed_hydraulic_states
+
+  subroutine production_application_export_committed_restart(self, parameter_set_identity, bundle, exported, status)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+    integer(int64), intent(in) :: parameter_set_identity
+    type(fmr_committed_restart_bundle_t), intent(out) :: bundle
+    logical, intent(out) :: exported
+    integer, intent(out) :: status
+    integer :: restart_status
+
+    bundle = fmr_committed_restart_bundle_t()
+    exported = .false.
+    status = FMR_APP_BOOT_NOT_READY
+    if (.not. self%ready() .or. associated(self%active_context)) return
+    call fmr_export_committed_restart(self%columns, self%templates, self%committed, parameter_set_identity, bundle, exported, restart_status)
+    if (restart_status == FMR_RESTART_OK .and. exported) status = FMR_APP_BOOT_OK
+  end subroutine production_application_export_committed_restart
+
+  subroutine production_application_restore_committed_restart(self, bundle, parameter_set_identity, restored, status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    type(fmr_committed_restart_bundle_t), intent(in) :: bundle
+    integer(int64), intent(in) :: parameter_set_identity
+    logical, intent(out) :: restored
+    integer, intent(out) :: status
+    integer :: restart_status
+    type(kernel_committed_state_t), allocatable :: reconstructed(:)
+
+    restored = .false.
+    status = FMR_APP_BOOT_NOT_READY
+    if (.not. self%ready() .or. associated(self%active_context)) return
+    if (all(self%parameters%bottom_mode == 7)) then
+      ! The low-level restore requires fresh slots. Publish only after all records
+      ! validate, preserving the existing owner registry and any failed restore.
+      allocate(reconstructed(size(self%committed)))
+      call fmr_restore_committed_restart(bundle, parameter_set_identity, self%columns, self%templates, &
+           reconstructed, restored, restart_status)
+      if (restart_status == FMR_RESTART_OK .and. restored) self%committed = reconstructed
+    else
+      call fmr_restore_committed_restart(bundle, parameter_set_identity, self%columns, self%templates, &
+           self%committed, restored, restart_status)
+    end if
+    if (restart_status == FMR_RESTART_OK .and. restored) status = FMR_APP_BOOT_OK
+  end subroutine production_application_restore_committed_restart
 
   subroutine production_application_close(self, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
@@ -714,12 +1144,22 @@ contains
     if (tile%template%template_id <= 0_int64) return
     if (tile%template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
     if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .and. &
+        tile%template%optional_state_layout_id /= PPA_IRRIGATION_EVENT_LAYOUT .and. &
         tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .and. &
         tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
     if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
         tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
     if (tile%parameters%parameter_set_id <= 0_int64) return
     if (tile%parameters%active_nodes <= 0) return
+    if(tile%irrigation_ssdi_node<0.or.tile%irrigation_ssdi_node>tile%parameters%active_nodes) return
+    if(tile%irrigation_ssdi_node>0) then
+      if(tile%template%optional_state_layout_id/=PPA_IRRIGATION_EVENT_LAYOUT) return
+      if(tile%parameters%bottom_mode/=7) return
+      if(tile%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
+      if(.not.allocated(tile%initial_right_derivative)) return
+    else
+      if(tile%template%optional_state_layout_id==PPA_IRRIGATION_EVENT_LAYOUT) return
+    end if
     if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and. &
         tile%parameters%bottom_mode /= 2) return
 
@@ -729,10 +1169,16 @@ contains
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
         tile%parameters%hysteresis_active .or. tile%parameters%elasticity_active .or. &
         tile%parameters%frost_active .or. tile%parameters%soil_temperature_active .or. &
-        tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active .or. &
+        tile%parameters%drainage_response_active .or. &
         tile%parameters%tabulated_hydraulics_active) return
 
+    ! PPA-WU01-ROOT-PROFILE: the already-qualified concrete prescribed root
+    ! sink route is a standalone mode-7-only extension. It is never a
+    ! groundwater, prescribed-qbot, or evaporation-state composition route.
+    if (tile%parameters%root_extraction_active .and. tile%parameters%bottom_mode /= 7) return
+
     if (tile%parameters%black_evaporation_active) then
+      if (tile%parameters%root_extraction_active) return
       if (tile%parameters%boesten_evaporation_active) return
       if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION) return
       if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
@@ -743,6 +1189,7 @@ contains
       if (tile%initial_boesten_spev /= 0.0_real64 .or. tile%initial_boesten_saev /= 0.0_real64) return
       if (tile%parameters%bottom_mode == 5) return
     else if (tile%parameters%boesten_evaporation_active) then
+      if (tile%parameters%root_extraction_active) return
       if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
       if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
       if (allocated(tile%parameters%black_evaporation) .or. .not. allocated(tile%parameters%boesten_evaporation)) return
@@ -754,7 +1201,7 @@ contains
       if (tile%initial_black_ldwet /= 0.0_real64) return
       if (tile%parameters%bottom_mode == 5) return
     else
-      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE.and.tile%irrigation_ssdi_node==0) return
       if (allocated(tile%parameters%black_evaporation) .or. allocated(tile%parameters%boesten_evaporation)) return
       if (tile%initial_black_ldwet /= 0.0_real64 .or. tile%initial_boesten_spev /= 0.0_real64 .or. &
           tile%initial_boesten_saev /= 0.0_real64) return
@@ -806,6 +1253,8 @@ contains
     nullify(self%parameters)
     nullify(self%groundwater_worker_backends)
     nullify(self%backend)
+    nullify(self%free_drainage_indicator)
+    nullify(self%storage_difference)
     nullify(self%top_boundary)
     self%groundwater_parallel_workers = 1
 
@@ -813,6 +1262,7 @@ contains
     if (allocated(self%participant_handles)) deallocate(self%participant_handles)
     if (allocated(self%columns)) deallocate(self%columns)
     if (allocated(self%templates)) deallocate(self%templates)
+    if (allocated(self%irrigation_nodes)) deallocate(self%irrigation_nodes)
     if (self%direct_retention_owner_active) then
       call end_b110_direct_retention_application()
       self%direct_retention_owner_active = .false.

@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW03-CAUCHY",
+  "title": "Pure B1.11 explicit SWBOTB=3 Cauchy flux law",
+  "protocol": "PIN_SOURCE_AND_DISTINGUISH_IMPLICIT -> IMPLEMENT_TYPED_EXPLICIT_SCALAR -> 100000_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_PROFILE_AND_SOLVER_OWNERS",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW03_CAUCHY_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "integration/audits/PPA_WU02_STATUS.json"
+  ],
+  "scope": [
+    "Explicit SWBOTB=3 effective groundwater level and Cauchy exchange flux",
+    "C-value and layer resistance as explicit profile-owned inputs; zero C models SWBOTB3RESVERT=1",
+    "Optional SW4 time-series flux contribution"
+  ],
+  "non_goals": [
+    "Implicit SWBOTB3IMPL headcalc/Jacobian behavior",
+    "Groundwater and aquifer state advancement or AFGEN table ingestion",
+    "Profile C-value computation and Richards bottom-row integration",
+    "Accepted bottom-flux mass ledger, restart or production admission"
+  ],
+  "pass_conditions": [
+    "100000 deterministic valid input vectors bitwise match B1.11 explicit equation",
+    "shape, resistance, optional flux, A/B/A and invalid-domain checks pass",
+    "O0/O2 transcripts match",
+    "no runtime, solver, state-owner or mass-route changes"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05a3_mpvolume_surface.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MPVOLUME-SURFACE-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@5daab24da296b7c092f936871c91a376e28d9948",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MPVOLUME task 1",
+    "source_region": "section C dynamic/static surface-area composition, crack width threshold, domain share and surface capacity clamp (lines 1816-1837)"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_mpvolume_surface.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_mpvolume_surface_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_surface_source_oracle.sh",
+  "in_scope": [
+    "NnCrAr dynamic area and IcTopMp override",
+    "IcTopMp static area and 0.6 total-area upper cap",
+    "0.001 cm minimum crack-width area cutoff",
+    "domain-share areas, surface-area initialization convention and KsMpSs clamp"
+  ],
+  "out_of_scope": [
+    "retaining preexisting ArMpSs when IcTopMp > 1; oracle reports the initialized-zero candidate convention",
+    "stateful MPVOLUME task dispatch, storage publication, accepted mass, retries/restart and A4 admission"
+  ],
+  "expected_tests": [
+    "crack-node override, dynamic/static area and domain partition",
+    "area cap, minimum-width zeroing and both capacity clamps",
+    "invalid denominator fail-closed and O0/O2 output identity with warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; area/capacity candidates only; no state published"
+}

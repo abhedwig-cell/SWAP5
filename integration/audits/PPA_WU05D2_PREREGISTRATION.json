@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-D2",
+  "title": "Pure Jarvis compensated root-uptake compositor",
+  "protocol": "PIN_D1 -> PURE_PRECOMPENSATION_TRANSFORM -> EXACT_EQUATION_ORACLE -> A_B_A_AND_EDGE_CASES -> O0_O2_REPLAY -> HOLD_RUNTIME",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05D1_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU05D1_STATUS.json",
+    "origin/audit/ppa-wu05d-compensation-authority:integration/audits/PPA_WU05D_COMPENSATION_AUTHORITY_CONTRACT.json"
+  ],
+  "source": {
+    "snapshot": "B1.11",
+    "path": "SWAP/rootextraction.f90:RootExtraction_MACRO compensation block",
+    "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "scope": "SWCOMPENSATE=1 Jarvis only, exact post-stress transformation of an explicit pre-compensation root result"
+  },
+  "scope": [
+    "source-ordered compensation gate and inferred stress factors from pre-compensation qrosum and four stress-attribution sums",
+    "SWSTRESSOR=1..5 source branches and qrot rescaling",
+    "recomputed qrosum and stress-attribution output sums"
+  ],
+  "non_goals": [
+    "Walsum SWCOMPENSATE=2/D3 and root-depth ALPHACRIT computation",
+    "multi-stressor production admission (oxygen/salinity/frost remain held independently)",
+    "MICRO/Jong-van-Lier compensation, which B1.11 rejects during input processing",
+    "root owner/runtime/retry/restart/accepted-mass receipt binding",
+    "groundwater tangent, parallel route or F-GC30 admission"
+  ],
+  "pass_conditions": [
+    "100,000 deterministic valid pre-compensation vectors bitwise match a source-ordered B1.11 equation oracle",
+    "all five SWSTRESSOR branches are covered",
+    "no-op gates preserve original candidate and totals bitwise",
+    "A/B/A does not compound or retain a prior result",
+    "malformed input fails closed without mutating input arrays",
+    "O0/O2 output transcripts are identical and no production caller changes"
+  ]
+}

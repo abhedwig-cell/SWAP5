@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-AVAILABILITY-SCALE",
+  "parent_workunit": "PPA-IRR-WATER-DEFICIT",
+  "title": "Source-bound external availability scaling for surface irrigation",
+  "protocol": "PIN_B1_11_SOURCE -> REPLAY_TASK4_ASSIGNMENT_ORDER -> TEST_POSITIVE_AND_NONPOSITIVE_RATE_BRANCHES -> 100000_DETERMINISTIC_VECTORS -> O0_O2_REPLAY -> HOLD_EXTERNAL_AVAILABILITY_AND_ACCEPTED_MASS",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "632-637",
+    "equations": [
+      "gird=gird*f_irr_avail",
+      "if irr_rate>0 then dt_irr_event=dt_irr_event*f_irr_avail; otherwise event duration is unchanged"
+    ]
+  },
+  "scope": [
+    "isolated scalar task-4 materialization for the legacy surface rate and event duration",
+    "100000 deterministic source comparisons across positive and nonpositive irr_rate branches"
+  ],
+  "non_goals": [
+    "deriving external availability fraction or time-of-day coupling",
+    "SSDI qssdi/qssdisum behavior, accepted water amount or mass closure",
+    "event calendar, restart, transaction or production admission"
+  ],
+  "pass_conditions": [
+    "surface rate always scales by f_irr_avail",
+    "event duration scales only when irr_rate>0, preserving source branch strictness",
+    "100000 deterministic comparisons pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

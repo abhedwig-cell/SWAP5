@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.ppa_irr_fixed_application.status.v1",
+  "work_unit": "PPA-IRR-FIXED-APPLICATION",
+  "parent_work_unit": "PPA-IRR-FIXED-DATE-MATCH",
+  "status": "FIXED_IRRIGATION_APPLICATION_SOURCE_ORACLE_PASS_OWNER_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@ef3e1c958",
+  "preregistration": "integration/audits/PPA_IRR_FIXED_APPLICATION_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; checks the existing typed fixed-event application materializer; no calendar, accepted soil-source owner, global mass, transaction, restart or production admission",
+  "implementation": "src/process/mod_irrigation_process.f90::evaluate_fixed_irrigation_interval and apply_event",
+  "test": "tests/fapp/test_ppa_irr_fixed_application_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_fixed_application_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "419-434",
+    "equations": [
+      "application type<2 assigns surface rate and irrigation concentration",
+      "application type=2 assigns rate to each SSDI node in the configured range and accumulates its rate sum",
+      "event duration equals depth/rate; the tested duration domain is <=1 day, as enforced by B1 fixed-event input validation"
+    ]
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_FIXED_APPLICATION_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_FIXED_SURFACE_RATE_CONCENTRATION_AND_AMOUNT=PASS",
+      "PPA_IRR_FIXED_SSDI_NODE_RANGE_AND_SUM=PASS",
+      "PPA_IRR_FIXED_APPLICATION_SOURCE_ORACLE=PASS",
+      "PPA_IRR_FIXED_APPLICATION_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "27519eb8d33fa7f844369e4e8a30640b7da5b81095ebfe9688e0acf03e321195"
+  },
+  "qualification_status": "NOT_QUALIFIED; event materialization only; no event calendar, rate-input parser, accepted mass/source receipt, solute, transaction, restart or production qualification",
+  "next_action": "Continue remaining irrigation source-bound application and solute equations; keep accepted-mass/runtime claims held.",
+  "recovery_point": "this status record, preregistration, evaluator and test",
+  "blockers": ["The SSDI source rate-sum is not tied to an owner-bound whole-column mass receipt; fixed-event table ingestion and candidate event cursor ownership remain separate contracts."]
+}

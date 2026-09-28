@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.ppa_sol_age_cell_status.v1",
+  "work_unit": "PPA-SOL-AGE-CELL",
+  "status": "LOCAL_SOURCE_ORACLE_QUALIFIED_O0_O2_NOT_PRODUCTION_ADMITTED",
+  "preregistration": "integration/audits/PPA_SOL_AGE_CELL_PREREGISTRATION.json",
+  "implementation_commit": "37d9e3b4ddc28ec4e3f163b06cb639e1862f2497",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "solute_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "equation_location": "SWAP/solute.f90 AgeTracer task 2, age production and compartment update"
+  },
+  "implementation": {
+    "source": "src/process/mod_ppa_sol_age_cell_balance.f90",
+    "test": "tests/fapp/test_ppa_sol_age_cell_balance_source_oracle.f90",
+    "gate": "tests/fapp/run_ppa_sol_age_cell_balance_source_oracle.sh",
+    "scope": "One-compartment candidate storage/concentration update with already-derived face amounts and root/lateral rates; includes the B1.11 zero-order age production term."
+  },
+  "qualification": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64 explicit path",
+    "optimization_levels": ["O0", "O2"],
+    "deterministic_vectors_per_build": 100000,
+    "bitwise_o0_o2_transcript_identity": true,
+    "markers": [
+      "PPA_SOL_AGE_CELL_B1_11_SOURCE_ORACLE_100000=PASS",
+      "PPA_SOL_AGE_CELL_ZERO_ORDER_PRODUCTION_AND_FACE_SINK_BALANCE=PASS",
+      "PPA_SOL_AGE_CELL_INVALID_INPUT_FAIL_CLOSED=PASS"
+    ],
+    "runner_shell": "Manual PowerShell compiler execution; repository Bash wrapper not run because local Git Bash cannot create its signal pipe."
+  },
+  "scope_boundary": {
+    "production_process_or_runtime_binding": "NONE",
+    "age_tracer_configuration_or_file_ingestion": "NOT_IMPLEMENTED",
+    "trial_commit_rollback_restart_or_mass_ledger": "NOT_IMPLEMENTED",
+    "complete_SWAP4_age_tracer_migration": "NOT_CLAIMED"
+  },
+  "next_action": "PPA-SOL-AGE-VERTICAL composes an already supplied ordered face vector with the cell update. Next trace the sequential AgeTracer sweep that recalculates each internal face after the preceding upper-cell concentration update; keep production state unadmitted."
+}

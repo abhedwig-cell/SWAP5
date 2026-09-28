@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-FIXED-SPLIT",
+  "parent_workunit": "PPA-IRR-ELIGIBILITY",
+  "title": "Fixed irrigation split/retry candidate-state identity",
+  "protocol": "PIN_EXISTING_TYPED_EVALUATOR_CONTRACT -> COMPARE_OVERSIZED_REQUEST_AND_EXACT_RETRY_TO_DIRECT_INTERVAL -> 100000_DETERMINISTIC_EVENTS -> O0_O2_REPLAY -> HOLD_SOLVER_TRANSACTION_AND_ACCEPTED_MASS",
+  "source": {
+    "snapshot": "SWAP5 existing typed candidate evaluator, source-bound by prior PPA-IRR-FIXED-APPLICATION",
+    "implementation": "src/process/mod_irrigation_process.f90::evaluate_fixed_irrigation_interval",
+    "branches": "active-event event-end split_required and exact event-end completion"
+  },
+  "scope": [
+    "oversized interval returns SPLIT_REQUIRED with unchanged candidate state and no materialized flux",
+    "exact retry to requested split endpoint matches a direct event-sized interval in candidate state and flux result",
+    "100000 deterministic valid fixed events with duration no greater than one day"
+  ],
+  "non_goals": [
+    "solver transaction acceptance/rejection, external top-boundary binding or rollback beyond candidate immutability",
+    "scheduled irrigation, event-calendar ingestion, accepted mass, restart or production admission"
+  ],
+  "pass_conditions": [
+    "oversized interval is fail-closed and does not advance the candidate event index",
+    "exact retry and direct interval produce bitwise-identical materialized event and candidate state",
+    "100000 deterministic cases pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

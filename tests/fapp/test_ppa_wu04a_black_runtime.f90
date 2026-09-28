@@ -13,7 +13,7 @@ program test_ppa_wu04a_black_runtime
        BLACK_EVAP_AVAILABLE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_b110_black_evaporation_state_t, fmr_serialized_reference_backend_t, &
-       fmr_new_b110_black_evaporation_committed_state
+       fmr_serialized_physical_observation_t, fmr_new_b110_black_evaporation_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK
@@ -144,6 +144,7 @@ contains
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template, bad_template
     type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_serialized_physical_observation_t) :: observation
     type(kernel_committed_state_t) :: committed, direct_committed
     type(kernel_committed_state_t), allocatable :: states(:), restored_states(:), mismatch_states(:)
     type(kernel_checkpoint_t) :: checkpoint, direct_checkpoint
@@ -158,6 +159,7 @@ contains
     logical :: ok, did_commit, exported, restored
     integer :: commit_status, restart_status
     real(real64) :: ldwet0, ldwet_full, ldwet_retry, ldwet_direct, ldwet_committed, ldwet_restored
+    integer(int64) :: common_forcing_bytes, common_parameter_bytes, common_state_bytes, black_input_bytes
 
     column%column_id = 404101_int64
     column%template_id = config_source%tiles(1)%template%template_id
@@ -182,6 +184,29 @@ contains
     call backend%run_trial(column, template, parameters, committed, forcing, numerical, T0, T1, checkpoint, &
          full_result, full_candidate, full_diag)
     call require(full_result%completed .and. full_candidate%ready(), 'full Black trial candidate')
+    observation = backend%observation()
+    call require(observation%black_evaporation_evaluation_calls == 3, &
+         'three Black runtime evaluation calls counted in one full/half trial')
+    call require(observation%boesten_evaporation_evaluation_calls == 0 .and. &
+         observation%snow_event_evaluation_calls == 0 .and. observation%soil_temperature_evaluation_calls == 0 .and. &
+         observation%drainage_response_evaluation_calls == 0, 'inactive optional process calls absent')
+    call require(observation%common_work_payload_bytes > 0_int64, 'Black common workspace payload measured')
+    call require(observation%soil_temperature_optional_payload_bytes == 0_int64, &
+         'Black has no soil-temperature workspace payload')
+    common_forcing_bytes = common_forcing_payload_bytes(forcing)
+    common_parameter_bytes = common_parameter_payload_bytes(parameters)
+    common_state_bytes = common_state_payload_bytes(config_source%tiles(1)%initial_state)
+    black_input_bytes = int(storage_size(parameters%black_evaporation)/8, int64) + &
+         int(storage_size(forcing%black_evaporation)/8, int64) + &
+         int(storage_size(initial_black)/8, int64)
+    call require(common_forcing_bytes > 0_int64 .and. common_parameter_bytes > 0_int64 .and. &
+         common_state_bytes > 0_int64 .and. black_input_bytes > 0_int64, 'Black allocation payload measured')
+    write(*,'(a,1x,i0,1x,a,1x,i0,1x,a,1x,i0,1x,a,1x,i0,1x,a,1x,i0)') &
+         'M7_RESOURCE_BLACK', observation%black_evaporation_evaluation_calls, &
+         'COMMON_WORK_BYTES', observation%common_work_payload_bytes, &
+         'COMMON_FORCING_BYTES', common_forcing_bytes, 'COMMON_PARAMETER_BYTES', common_parameter_bytes, &
+         'COMMON_STATE_ARRAY_BYTES', common_state_bytes
+    write(*,'(a,1x,i0)') 'M7_RESOURCE_BLACK_OPTION_INPUT_BYTES', black_input_bytes
     call snapshot_ldwet_candidate(full_candidate, ldwet_full)
     call require(ldwet_full > ldwet0, 'full candidate advanced LDWET')
 
@@ -437,6 +462,36 @@ contains
       call require(.false., 'candidate snapshot Black family')
     end select
   end subroutine snapshot_ldwet_candidate
+
+  integer(int64) function common_forcing_payload_bytes(forcing) result(nbytes)
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+    nbytes = 0_int64
+    if (allocated(forcing%drainage_flux_by_level)) &
+      nbytes = nbytes + size(forcing%drainage_flux_by_level, kind=int64) * REAL_BYTES
+    if (allocated(forcing%subsurface_irrigation_source)) &
+      nbytes = nbytes + size(forcing%subsurface_irrigation_source, kind=int64) * REAL_BYTES
+    if (allocated(forcing%root_extraction_sink)) &
+      nbytes = nbytes + size(forcing%root_extraction_sink, kind=int64) * REAL_BYTES
+  end function common_forcing_payload_bytes
+
+  integer(int64) function common_parameter_payload_bytes(parameters) result(nbytes)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+    nbytes = 0_int64
+    if (allocated(parameters%z)) nbytes = nbytes + size(parameters%z, kind=int64) * REAL_BYTES
+    if (allocated(parameters%dz)) nbytes = nbytes + size(parameters%dz, kind=int64) * REAL_BYTES
+    if (allocated(parameters%node_distance)) nbytes = nbytes + size(parameters%node_distance, kind=int64) * REAL_BYTES
+    if (allocated(parameters%cofgen)) nbytes = nbytes + size(parameters%cofgen, kind=int64) * REAL_BYTES
+  end function common_parameter_payload_bytes
+
+  integer(int64) function common_state_payload_bytes(state) result(nbytes)
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    integer(int64), parameter :: REAL_BYTES = int(storage_size(0.0_real64)/8, int64)
+    nbytes = 0_int64
+    if (allocated(state%pressure_head)) nbytes = nbytes + size(state%pressure_head, kind=int64) * REAL_BYTES
+    if (allocated(state%water_content)) nbytes = nbytes + size(state%water_content, kind=int64) * REAL_BYTES
+  end function common_state_payload_bytes
 
   logical function same_bits(a,b) result(equal)
     real(real64), intent(in) :: a,b

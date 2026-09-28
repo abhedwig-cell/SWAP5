@@ -1,0 +1,27 @@
+name: PPA-LOW01 B1.11 prescribed groundwater table law
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low01-gwl-table.yml'
+      - 'src/adapter/mod_ppa_low01_gwl_table.f90'
+      - 'tests/fapp/test_ppa_low01_gwl_table.f90'
+      - 'tests/fapp/run_ppa_low01_gwl_table.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low01-gwl-table.yml'
+      - 'src/adapter/mod_ppa_low01_gwl_table.f90'
+      - 'tests/fapp/test_ppa_low01_gwl_table.f90'
+      - 'tests/fapp/run_ppa_low01_gwl_table.sh'
+
+jobs:
+  prescribed-gwl-table:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay DATE1/GWLEVEL source law
+        run: bash tests/fapp/run_ppa_low01_gwl_table.sh

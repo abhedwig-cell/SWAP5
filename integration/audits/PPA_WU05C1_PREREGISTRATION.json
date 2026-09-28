@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-C1",
+  "title": "Pure oxygen-reproduction factor migration",
+  "protocol": "PIN_SOURCE -> IMPLEMENT_PURE_FACTOR -> EXACT_ORACLE -> OPTIMIZATION_REPLAY -> HOLD_RUNTIME_BINDING",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05C_STATUS.json",
+    "integration/audits/PPA_WU05C_OXYGEN_AUTHORITY_CONTRACT.json"
+  ],
+  "source": {
+    "snapshot": "B1.11",
+    "path": "SWAP/oxygenstress.f90:OxygenReproFunction",
+    "sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+    "correction": "SWAP-007 does not touch the pure reproduction function; it remains mandatory in the separate Bartholomeus Newton path."
+  },
+  "scope": [
+    "typed stateless SWOXYGEN=2/SWOXYGENTYPE=2 scalar reproduction factor",
+    "current theta/theta_s/temperature and geometry supplied as read-only arguments",
+    "source-ordered prefix porosity reduction and exact clipping behavior",
+    "deterministic exact-source equation oracle at O0 and O2"
+  ],
+  "non_goals": [
+    "root sink owner or production runtime binding",
+    "macro or micro call-path admission",
+    "parallel root uptake admission",
+    "groundwater-coupling tangent admission",
+    "Feddes wetness, Bartholomeus physical oxygen model or MICRO composition",
+    "oxygen state, restart payload or independent mass receipt"
+  ],
+  "pass_conditions": [
+    "100,000 deterministic valid inputs compare bitwise to the B1.11 OxygenReproFunction equation oracle",
+    "A/B/A replay is bitwise deterministic",
+    "saturated local gas branch returns zero as in B1.11",
+    "malformed shape, node, non-finite input and invalid bottom geometry fail closed",
+    "O0/O2 output transcripts are identical",
+    "production root-sink owner and current fail-closed integration remain unchanged"
+  ]
+}

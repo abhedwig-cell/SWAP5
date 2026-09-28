@@ -7,8 +7,9 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
+  use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_commit_receipt_record_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
-       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+       fmr_production_application_bootstrap_t, fmr_committed_top_state_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
        groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
@@ -23,6 +24,30 @@ program test_ppa_wu01_production_application_bootstrap
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c, fgc49d_capture_origins_c, &
        fgc49d_abort_prepublication_c
+  use mod_fmr_groundwater_application_c_api, only: fgc49d_context_counts_c
+  use mod_ppa_atm02_typed_meteo_ingestion, only: ppa_atm02_decoded_daily_meteo_t, ppa_atm02_generic_interval_t, &
+       ppa_atm02_meteo_provenance_t
+  use mod_pmdirect_swetr0_process, only: pmdirect_swetr0_site_t, pmdirect_swetr0_canopy_t
+  use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
+  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t
+  use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
+  use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_result_t, B110_DYN_TOP_AVAILABLE, &
+       B110_DYN_TOP_REGIME_FLUX
+  use mod_ppa_wu04c_dynamic_top_forcing_adapter, only: bind_ppa_wu04c_dynamic_top_to_effective_forcing, &
+       PPA_WU04C_TOP_FORCING_OK, PPA_WU04C_TOP_FORCING_REJECTED
+  use mod_vonhhbraden_interception, only: vonhhbraden_source_window_t
+  use mod_ppa_wu04c_production_forcing_adapter, only: ppa_wu04c_production_forcing_diagnostics_t, &
+       materialize_ppa_wu04c_production_forcing, PPA_WU04C_PRODUCTION_FORCING_OK
+  use mod_gash_interception, only: gash_parameters_t
+  use mod_ppa_wu04d_production_forcing_adapter, only: ppa_wu04d_production_forcing_diagnostics_t, &
+       materialize_ppa_wu04d_production_forcing, PPA_WU04D_PRODUCTION_FORCING_OK
+  use mod_ppa_atm02_pmdirect_production_forcing_adapter, only: ppa_atm02_production_forcing_diagnostics_t, &
+       materialize_ppa_atm02_pmdirect_production_forcing, PPA_ATM02_PRODUCTION_FORCING_OK
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t
+  use mod_fmr_vonhhbraden_source_window_progress, only: fmr_vonhhbraden_source_window_progress_t, &
+       fmr_vonhhbraden_source_window_restart_t, fmr_initialize_vonhhbraden_source_window_progress, &
+       fmr_restore_vonhhbraden_source_window_progress, FMR_VONHHBRADEN_PROGRESS_OK
+  use mod_ppa_wu04c_runtime_publication, only: publish_ppa_wu04c_accepted_progress, PPA_WU04C_PUBLICATION_OK
   implicit none
 
   integer, parameter :: NTILE = 2
@@ -32,13 +57,17 @@ program test_ppa_wu01_production_application_bootstrap
   real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
 
-  type(fmr_production_application_config_t) :: config, gw_config, bad_config, root_bad_config, drainage_bad_config
-  type(fmr_production_application_config_t) :: gw_parallel2_config, gw_parallel4_config, invalid_workers_config
-  type(fmr_production_application_config_t) :: standalone_parallel_config
-  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, root_bad_app, drainage_bad_app
-  type(fmr_production_application_bootstrap_t) :: gw_parallel2_app, gw_parallel4_app, invalid_workers_app
-  type(fmr_production_application_bootstrap_t) :: standalone_parallel_app
+  type(fmr_production_application_config_t) :: config, root_config, gw_config, bad_config, &
+       root_bad_config, drainage_bad_config
+  type(fmr_production_application_config_t) :: gw_parallel2_config, gw_parallel4_config, invalid_workers_config, &
+       standalone_parallel_config
+  type(fmr_production_application_bootstrap_t) :: app, root_app, gw_app, bad_app, root_bad_app, drainage_bad_app
+  type(fmr_production_application_bootstrap_t) :: gw_parallel2_app, gw_parallel4_app, invalid_workers_app, &
+       standalone_parallel_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
+  type(fmr_b110_physical_forcing_t), allocatable :: atm02_forcing(:)
+  type(fmr_b110_physical_forcing_t) :: wu04c_forcing
+  type(b110_dynamic_top_boundary_result_t) :: wu04c_top
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
   type(groundwater_topology_t) :: topology, unresolved_topology
@@ -53,6 +82,16 @@ program test_ppa_wu01_production_application_bootstrap
   ! Standalone authority: use the already-qualified serialized Reference
   ! profile rather than inventing a new mode-5 standalone trajectory.
   call initialize_application_config(config)
+  call verify_wu04c_production_composition(config)
+  wu04c_top%status = B110_DYN_TOP_AVAILABLE
+  wu04c_top%regime = B110_DYN_TOP_REGIME_FLUX
+  wu04c_top%actual_top_flux_cm_per_day = -0.0125_real64
+  call bind_ppa_wu04c_dynamic_top_to_effective_forcing(config%tiles(1)%base_forcing, wu04c_top, wu04c_forcing, status)
+  call require(status == PPA_WU04C_TOP_FORCING_OK .and. wu04c_forcing%top_flux == wu04c_top%actual_top_flux_cm_per_day, &
+       'WU04C dynamic top forcing handoff')
+  wu04c_top%runoff_potential = .true.
+  call bind_ppa_wu04c_dynamic_top_to_effective_forcing(config%tiles(1)%base_forcing, wu04c_top, wu04c_forcing, status)
+  call require(status == PPA_WU04C_TOP_FORCING_REJECTED, 'WU04C runoff forcing fails closed')
   call app%initialize(config, status)
   call require(status == FMR_APP_BOOT_OK, 'standalone production bootstrap initialize')
   call require(app%ready(), 'standalone production bootstrap ready')
@@ -93,6 +132,28 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'standalone owner committed revisions')
   call app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. app%ready(), 'clean standalone owner close')
+
+  ! PPA-WU01-ROOT-PROFILE: retain the existing owner, transaction and mass
+  ! ledger. Only the already-qualified concrete prescribed root sink becomes
+  ! active on the standalone mode-7 base route.
+  root_config = config
+  do i = 1, NTILE
+    root_config%tiles(i)%parameters%root_extraction_active = .true.
+    root_config%tiles(i)%base_forcing%root_extraction_sink = 0.0_real64
+    root_config%tiles(i)%base_forcing%root_extraction_sink(1:min(4, numnod)) = 0.005_real64
+  end do
+  call root_app%initialize(root_config, status)
+  call require(status == FMR_APP_BOOT_OK .and. root_app%ready(), 'root-enabled standalone initialize')
+  call root_app%run_standalone(T0, T1, results, status)
+  call require(status == FMR_APP_BOOT_OK, 'root-enabled standalone run status')
+  call require(all(results%completed) .and. all(results%committed), 'root-enabled accepted commits')
+  call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'root-enabled hard mass')
+  call root_app%copy_committed_revisions(revisions, status)
+  call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'root-enabled committed revisions')
+  call root_app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. root_app%ready(), 'clean root-enabled owner close')
+
+  call run_atm02_pmdirect_owner_profile(config)
 
   ! Groundwater authority: the same production bootstrap type owns an admitted
   ! bottom_mode=5 participant registry and creates F-GC49D from typed inputs.
@@ -216,6 +277,21 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU01_TYPED_CONFIG_TO_FMR_OWNER=PASS'
   print '(a)', 'PPA_WU01_STANDALONE_REFERENCE_RICHARDS_RUNTIME=PASS'
   print '(a)', 'PPA_WU01_STANDALONE_HARD_MASS=PASS'
+  print '(a)', 'PPA_WU01_ROOT_PROFILE_STANDALONE_RUNTIME=PASS'
+  print '(a)', 'PPA_WU01_ROOT_PROFILE_HARD_MASS=PASS'
+  print '(a)', 'PPA_WU01_ROOT_PROFILE_COMMITTED_OWNER=PASS'
+  print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_COMPOSITION=PASS'
+  print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_HARD_MASS=PASS'
+  print '(a)', 'PPA_ATM02_OWNER_COMMITTED_TOP_SNAPSHOT=PASS'
+  print '(a)', 'PPA_ATM02_TWO_INTERVAL_OWNER_CONTINUATION=PASS'
+  print '(a)', 'PPA_ATM02_TWO_INTERVAL_HARD_MASS=PASS'
+  print '(a)', 'PPA_ATM02_OWNER_RESTART_CONTINUATION=PASS'
+  print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_RECEIPTS=PASS'
+  print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_PROGRESS=PASS'
+  print '(a)', 'PPA_WU04C_OWNER_PROGRESS_RESTART_CONTINUATION=PASS'
+  print '(a)', 'PPA_WU04C_DYNAMIC_TOP_FORCING_HANDOFF=PASS'
+  print '(a)', 'PPA_WU04C_FULL_DYNAMIC_TOP_COMPOSITION=PASS'
+  print '(a)', 'PPA_WU04D_FULL_DYNAMIC_TOP_COMPOSITION=PASS'
   print '(a)', 'PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS'
   print '(a)', 'PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS'
@@ -410,6 +486,270 @@ contains
       head_m = 0.0_real64
     end if
   end subroutine compute_reference_head
+
+  subroutine verify_wu04c_production_composition(value)
+    type(fmr_production_application_config_t), intent(in) :: value
+    type(soil_water_parameter_set_t) :: geometry
+    type(b110_default_mvg_parameters_t) :: hydraulics
+    type(b110_dynamic_top_boundary_request_t) :: request
+    type(vonhhbraden_source_window_t) :: source
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(fmr_b110_physical_forcing_t), allocatable :: forcing_vector(:)
+    type(fmr_production_application_bootstrap_t) :: production_app
+    type(fmr_serialized_column_result_t), allocatable :: production_results(:)
+    type(ppa_wu04c_production_forcing_diagnostics_t) :: diagnostics
+    type(ppa_wu04d_production_forcing_diagnostics_t) :: gash_diagnostics
+    type(gash_parameters_t) :: gash
+    real(real64) :: interception
+    integer :: tile, local_status
+
+    geometry%parameter_set_id = value%tiles(1)%parameters%parameter_set_id
+    geometry%active_nodes = value%tiles(1)%parameters%active_nodes
+    allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
+    geometry%z = value%tiles(1)%parameters%z
+    geometry%dz = value%tiles(1)%parameters%dz
+    geometry%node_distance = value%tiles(1)%parameters%node_distance
+    call initialize_b110_default_mvg_parameters(hydraulics, value%tiles(1)%parameters%cofgen)
+    request%conductivity_mean_method = value%tiles(1)%parameters%swkmean
+    request%pressure_head_top_cm = value%tiles(1)%initial_state%pressure_head(1)
+    request%water_content_top = value%tiles(1)%initial_state%water_content(1)
+    request%step_duration_day = T1 - T0
+    request%ponding_max_cm = 2.0_real64
+    request%runoff_resistance_day = 1.0_real64
+    request%runoff_exponent = 1.0_real64
+    source%gross_rain_cm_per_day = 0.40_real64
+    source%sprinkling_irrigation_cm_per_day = 0.20_real64
+    source%leaf_area_index = 2.0_real64
+    source%vegetation_cover_fraction = 0.5_real64
+    call materialize_ppa_wu04c_production_forcing(value%tiles(1)%base_forcing, request, geometry, hydraulics, source, &
+         0.12_real64, 0.20_real64, 0.10_real64, forcing, interception, diagnostics)
+    call require(diagnostics%status == PPA_WU04C_PRODUCTION_FORCING_OK .and. diagnostics%result_produced, &
+         'WU04C full forcing composition')
+    call require(abs(interception - 0.06_real64) <= 1.e-14_real64 .and. forcing%top_flux == diagnostics%top_result%actual_top_flux_cm_per_day, &
+         'WU04C full forcing values')
+    gash%free_throughfall = 0.10_real64; gash%stemflow = 0.05_real64
+    gash%canopy_storage_cm = 0.10_real64; gash%average_evaporation = 0.05_real64
+    gash%average_precipitation = 0.40_real64
+    call materialize_ppa_wu04d_production_forcing(value%tiles(1)%base_forcing, request, geometry, hydraulics, gash, source, &
+         0.20_real64, 0.10_real64, forcing, interception, gash_diagnostics)
+    call require(gash_diagnostics%status == PPA_WU04D_PRODUCTION_FORCING_OK .and. gash_diagnostics%result_produced, &
+         'WU04D full forcing composition')
+    deallocate(geometry%z, geometry%dz, geometry%node_distance)
+
+    allocate(forcing_vector(NTILE))
+    do tile = 1, NTILE
+      geometry%parameter_set_id = value%tiles(tile)%parameters%parameter_set_id
+      geometry%active_nodes = value%tiles(tile)%parameters%active_nodes
+      allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
+      geometry%z = value%tiles(tile)%parameters%z; geometry%dz = value%tiles(tile)%parameters%dz
+      geometry%node_distance = value%tiles(tile)%parameters%node_distance
+      call initialize_b110_default_mvg_parameters(hydraulics, value%tiles(tile)%parameters%cofgen)
+      request = b110_dynamic_top_boundary_request_t()
+      request%conductivity_mean_method = value%tiles(tile)%parameters%swkmean
+      request%pressure_head_top_cm = value%tiles(tile)%initial_state%pressure_head(1)
+      request%water_content_top = value%tiles(tile)%initial_state%water_content(1)
+      request%step_duration_day = T1 - T0; request%ponding_max_cm = 2.0_real64
+      request%runoff_resistance_day = 1.0_real64; request%runoff_exponent = 1.0_real64
+      call materialize_ppa_wu04c_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, source, &
+           0.12_real64, 0.20_real64, 0.10_real64, forcing_vector(tile), interception, diagnostics)
+      call require(diagnostics%status == PPA_WU04C_PRODUCTION_FORCING_OK, 'WU04C tile forcing composition')
+      deallocate(geometry%z, geometry%dz, geometry%node_distance)
+    end do
+    call production_app%initialize(value, local_status)
+    call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner initialize')
+    call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
+    write(*,'(A,I0)') 'PPA_RECONCILE_WU04C_STATUS=', local_status
+    if (allocated(production_results)) then
+      do tile = 1, size(production_results)
+        write(*,'(A,I0,A,A,A,I0,A,L1,A,L1,A,L1,A,I0,A,ES24.16E3)') &
+             'PPA_RECONCILE_WU04C_RESULT tile=',tile,':admission=',trim(production_results(tile)%admission_status), &
+             ':kernel=',production_results(tile)%kernel_status,':admitted=',production_results(tile)%admitted, &
+             ':completed=',production_results(tile)%completed,':committed=',production_results(tile)%committed, &
+             ':substeps=',production_results(tile)%accepted_substeps,':mass=',production_results(tile)%mass%residual
+        write(*,'(A,I0,A,L1,A,A,A,I0,A,I0,A,I0,A,I0,A,I0)') &
+             'PPA_RECONCILE_WU04C_DIAG tile=',tile,':solver_executed=',production_results(tile)%solver_executed, &
+             ':route=',trim(production_results(tile)%solver_route), &
+             ':iterations=',production_results(tile)%solver_iterations, &
+             ':attempts=',production_results(tile)%transaction_attempts, &
+             ':solver_rej=',production_results(tile)%solver_rejections, &
+             ':temporal_rej=',production_results(tile)%temporal_rejections, &
+             ':mass_rej=',production_results(tile)%mass_rejections
+      end do
+    end if
+    call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
+         'WU04C production owner commit')
+    call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04C production hard mass')
+    call production_app%close(local_status)
+    call require(local_status == FMR_APP_BOOT_OK, 'WU04C production owner close')
+    deallocate(forcing_vector)
+
+    allocate(forcing_vector(NTILE))
+    do tile = 1, NTILE
+      geometry%parameter_set_id = value%tiles(tile)%parameters%parameter_set_id
+      geometry%active_nodes = value%tiles(tile)%parameters%active_nodes
+      allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
+      geometry%z = value%tiles(tile)%parameters%z; geometry%dz = value%tiles(tile)%parameters%dz
+      geometry%node_distance = value%tiles(tile)%parameters%node_distance
+      call initialize_b110_default_mvg_parameters(hydraulics, value%tiles(tile)%parameters%cofgen)
+      request = b110_dynamic_top_boundary_request_t()
+      request%conductivity_mean_method = value%tiles(tile)%parameters%swkmean
+      request%pressure_head_top_cm = value%tiles(tile)%initial_state%pressure_head(1)
+      request%water_content_top = value%tiles(tile)%initial_state%water_content(1)
+      request%step_duration_day = T1 - T0; request%ponding_max_cm = 2.0_real64
+      request%runoff_resistance_day = 1.0_real64; request%runoff_exponent = 1.0_real64
+      call materialize_ppa_wu04d_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, gash, source, &
+           0.20_real64, 0.10_real64, forcing_vector(tile), interception, gash_diagnostics)
+      call require(gash_diagnostics%status == PPA_WU04D_PRODUCTION_FORCING_OK, 'WU04D tile forcing composition')
+      deallocate(geometry%z, geometry%dz, geometry%node_distance)
+    end do
+    call production_app%initialize(value, local_status)
+    call require(local_status == FMR_APP_BOOT_OK, 'WU04D production owner initialize')
+    call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
+         'WU04D production owner commit')
+    call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04D production hard mass')
+    call production_app%close(local_status)
+    call require(local_status == FMR_APP_BOOT_OK, 'WU04D production owner close')
+    deallocate(forcing_vector)
+  end subroutine verify_wu04c_production_composition
+
+  subroutine run_atm02_pmdirect_owner_profile(base_config)
+    type(fmr_production_application_config_t), intent(in) :: base_config
+    type(fmr_production_application_config_t) :: atm_config
+    type(fmr_production_application_bootstrap_t) :: atm_app
+    type(ppa_atm02_decoded_daily_meteo_t) :: decoded
+    type(ppa_atm02_generic_interval_t) :: forcing_interval
+    type(pmdirect_swetr0_site_t) :: site
+    type(pmdirect_swetr0_canopy_t) :: canopy
+    type(crop_root_uptake_input_t) :: root_input
+    type(soil_water_parameter_set_t) :: geometry
+    type(b110_default_mvg_parameters_t) :: hydraulics
+    type(b110_dynamic_top_boundary_request_t) :: top_request
+    type(ppa_atm02_meteo_provenance_t) :: provenance
+    type(ppa_atm02_production_forcing_diagnostics_t) :: atm_diagnostics
+    type(fmr_committed_top_state_t), allocatable :: committed_top(:)
+    type(fmr_serialized_commit_receipt_record_t), allocatable :: receipts(:)
+    type(fmr_vonhhbraden_source_window_progress_t) :: progress(NTILE)
+    type(fmr_vonhhbraden_source_window_progress_t) :: restored_progress(NTILE)
+    type(fmr_vonhhbraden_source_window_restart_t) :: progress_restart(NTILE)
+    type(fmr_committed_restart_bundle_t) :: restart_bundle
+    logical :: restart_exported, restart_restored, progress_exported, progress_restored
+    integer :: tile, local_status, node
+    real(real64) :: t2
+
+    atm_config = base_config
+    t2 = T1 + (T1 - T0)
+    do tile = 1, NTILE
+      atm_config%tiles(tile)%parameters%root_extraction_active = .true.
+    end do
+    allocate(atm02_forcing(NTILE))
+    forcing_interval%t0 = T0; forcing_interval%t1 = T1
+    decoded%source_id = 9201_int64; decoded%source_record_index = 44
+    decoded%day_of_year = 180; decoded%t0 = T0 - 0.25_real64; decoded%t1 = T1 + 0.25_real64
+    decoded%radiation_j_m2_d = 18.0e6_real64; decoded%minimum_air_temperature_c = 12.0_real64
+    decoded%maximum_air_temperature_c = 24.0_real64; decoded%vapour_pressure_kpa = 1.3_real64
+    decoded%wind_speed_m_s = 2.0_real64; decoded%gross_rain_cm_d = 0.0_real64
+    site%latitude_degrees = 52.0_real64; site%altitude_m = 10.0_real64
+    site%wind_measurement_height_m = 2.0_real64; site%humidity_measurement_height_m = 2.0_real64
+    site%angstrom_a = 0.25_real64; site%angstrom_b = 0.50_real64; site%soil_surface_resistance_s_m = 100.0_real64
+    canopy%crop_emerged = .true.; canopy%lai = 3.0_real64; canopy%vegetation_cover_fraction = 0.7_real64
+    canopy%cofab_cm = 0.5_real64; canopy%albedo = 0.23_real64
+    canopy%dry_canopy_resistance_s_m = 70.0_real64; canopy%wet_canopy_resistance_s_m = 30.0_real64
+    do tile = 1, NTILE
+      geometry%parameter_set_id = atm_config%tiles(tile)%parameters%parameter_set_id
+      geometry%active_nodes = atm_config%tiles(tile)%parameters%active_nodes
+      allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
+      geometry%z = atm_config%tiles(tile)%parameters%z; geometry%dz = atm_config%tiles(tile)%parameters%dz
+      geometry%node_distance = atm_config%tiles(tile)%parameters%node_distance
+      call initialize_b110_default_mvg_parameters(hydraulics, atm_config%tiles(tile)%parameters%cofgen)
+      root_input%crop_emerged = .true.; root_input%rooted_nodes = min(4, geometry%active_nodes)
+      allocate(root_input%cumulative_root_fraction(root_input%rooted_nodes + 1))
+      do node = 1, root_input%rooted_nodes + 1
+        root_input%cumulative_root_fraction(node) = real(node - 1, real64) / real(root_input%rooted_nodes, real64)
+      end do
+      top_request = b110_dynamic_top_boundary_request_t()
+      top_request%conductivity_mean_method = atm_config%tiles(tile)%parameters%swkmean
+      top_request%pressure_head_top_cm = atm_config%tiles(tile)%initial_state%pressure_head(1)
+      top_request%water_content_top = atm_config%tiles(tile)%initial_state%water_content(1)
+      top_request%ponding_max_cm = 2.0_real64; top_request%runoff_resistance_day = 1.0_real64; top_request%runoff_exponent = 1.0_real64
+      call materialize_ppa_atm02_pmdirect_production_forcing(decoded, forcing_interval, site, canopy, 0.0_real64, root_input, &
+           geometry, hydraulics, top_request, atm_config%tiles(tile)%base_forcing, atm02_forcing(tile), provenance, atm_diagnostics)
+      call require(atm_diagnostics%status == PPA_ATM02_PRODUCTION_FORCING_OK .and. atm_diagnostics%result_produced, 'ATM02 forcing composition')
+      deallocate(geometry%z, geometry%dz, geometry%node_distance, root_input%cumulative_root_fraction)
+    end do
+    call atm_app%initialize(atm_config, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. atm_app%ready(), 'ATM02 owner initialize')
+    call atm_app%run_standalone_with_forcing_receipts(T0, T1, atm02_forcing, results, receipts, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. all(results%completed) .and. all(results%committed), 'ATM02 owner commit')
+    call require(size(receipts) == NTILE .and. receipts(1)%receipt%ready() .and. receipts(2)%receipt%ready(), &
+         'ATM02 owner accepted receipts')
+    do tile = 1, NTILE
+      call fmr_initialize_vonhhbraden_source_window_progress(9700_int64 + int(tile, int64), T0, t2, 0.05_real64, &
+           progress(tile), local_status, atm_config%tiles(tile)%tile_id, 0_int64)
+      call require(local_status == FMR_VONHHBRADEN_PROGRESS_OK, 'WU04C progress initialize')
+      call publish_ppa_wu04c_accepted_progress(progress(tile), receipts(tile)%receipt, 0.01_real64, local_status)
+      call require(local_status == PPA_WU04C_PUBLICATION_OK .and. &
+           abs(progress(tile)%remaining_interception() - 0.04_real64) <= 1.e-14_real64, 'WU04C accepted progress')
+      call progress(tile)%export_restart(progress_restart(tile), progress_exported)
+      call require(progress_exported, 'WU04C progress restart export')
+    end do
+    call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'ATM02 owner hard mass')
+    call atm_app%copy_committed_top_states(committed_top, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. size(committed_top) == NTILE .and. all(committed_top%available), &
+         'ATM02 committed top snapshot')
+    call require(all(committed_top%revision == 1_int64) .and. all(committed_top%committed_time == T1), &
+         'ATM02 committed top provenance')
+    call atm_app%export_committed_restart(9901_int64, restart_bundle, restart_exported, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. restart_exported, 'ATM02 owner restart export')
+    call atm_app%restore_committed_restart(restart_bundle, 9901_int64, restart_restored, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. restart_restored, 'ATM02 owner restart restore')
+    do tile = 1, NTILE
+      call fmr_restore_vonhhbraden_source_window_progress(progress_restart(tile), restored_progress(tile), progress_restored, local_status)
+      call require(progress_restored .and. local_status == FMR_VONHHBRADEN_PROGRESS_OK, 'WU04C progress restart restore')
+    end do
+    forcing_interval%t0 = T1; forcing_interval%t1 = t2
+    decoded%source_record_index = 45
+    decoded%t0 = T1 - 0.25_real64; decoded%t1 = t2 + 0.25_real64
+    do tile = 1, NTILE
+      geometry%parameter_set_id = atm_config%tiles(tile)%parameters%parameter_set_id
+      geometry%active_nodes = atm_config%tiles(tile)%parameters%active_nodes
+      allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
+      geometry%z = atm_config%tiles(tile)%parameters%z; geometry%dz = atm_config%tiles(tile)%parameters%dz
+      geometry%node_distance = atm_config%tiles(tile)%parameters%node_distance
+      call initialize_b110_default_mvg_parameters(hydraulics, atm_config%tiles(tile)%parameters%cofgen)
+      root_input%crop_emerged = .true.; root_input%rooted_nodes = min(4, geometry%active_nodes)
+      allocate(root_input%cumulative_root_fraction(root_input%rooted_nodes + 1))
+      do node = 1, root_input%rooted_nodes + 1
+        root_input%cumulative_root_fraction(node) = real(node - 1, real64) / real(root_input%rooted_nodes, real64)
+      end do
+      top_request = b110_dynamic_top_boundary_request_t()
+      top_request%conductivity_mean_method = atm_config%tiles(tile)%parameters%swkmean
+      top_request%pressure_head_top_cm = committed_top(tile)%pressure_head_top_cm
+      top_request%water_content_top = committed_top(tile)%water_content_top
+      top_request%previous_ponding_depth_cm = committed_top(tile)%ponding_depth_cm
+      top_request%ponding_max_cm = 2.0_real64; top_request%runoff_resistance_day = 1.0_real64; top_request%runoff_exponent = 1.0_real64
+      call materialize_ppa_atm02_pmdirect_production_forcing(decoded, forcing_interval, site, canopy, 0.0_real64, root_input, &
+           geometry, hydraulics, top_request, atm_config%tiles(tile)%base_forcing, atm02_forcing(tile), provenance, atm_diagnostics)
+      call require(atm_diagnostics%status == PPA_ATM02_PRODUCTION_FORCING_OK .and. atm_diagnostics%result_produced, &
+           'ATM02 continuation forcing composition')
+      deallocate(geometry%z, geometry%dz, geometry%node_distance, root_input%cumulative_root_fraction)
+    end do
+    call atm_app%run_standalone_with_forcing_receipts(T1, t2, atm02_forcing, results, receipts, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. all(results%completed) .and. all(results%committed), &
+         'ATM02 continuation owner commit')
+    call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'ATM02 continuation hard mass')
+    do tile = 1, NTILE
+      call publish_ppa_wu04c_accepted_progress(restored_progress(tile), receipts(tile)%receipt, 0.01_real64, local_status)
+      call require(local_status == PPA_WU04C_PUBLICATION_OK .and. &
+           abs(restored_progress(tile)%remaining_interception() - 0.03_real64) <= 1.e-14_real64, &
+           'WU04C progress restart continuation')
+    end do
+    call atm_app%copy_committed_revisions(revisions, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. all(revisions == 2_int64), 'ATM02 owner revisions')
+    call atm_app%close(local_status)
+    call require(local_status == FMR_APP_BOOT_OK, 'ATM02 owner close')
+    deallocate(atm02_forcing)
+  end subroutine run_atm02_pmdirect_owner_profile
 
   subroutine require(condition, message)
     logical, intent(in) :: condition

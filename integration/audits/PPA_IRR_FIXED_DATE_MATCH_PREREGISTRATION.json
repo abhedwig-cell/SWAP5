@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-FIXED-DATE-MATCH",
+  "parent_workunit": "PPA-IRR-RATE-MATERIALIZATION",
+  "title": "Source-bound fixed irrigation date matching and event-index transition",
+  "protocol": "PIN_B1_11_SOURCE -> EXERCISE_TYPED_FIXED_EVENT_MATCH -> SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_CALENDAR_AND_PRODUCTION_ADMISSION",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "419-434",
+    "equation": "A fixed event matches iff abs(irdate(nirri)-t1900) < 1e-3 day; only a matched event assigns its application, advances nirri, and marks irrigevent=1."
+  },
+  "scope": [
+    "existing typed fixed-event interval evaluator at the exact B1.11 strict date tolerance",
+    "100000 deterministic date-offset comparisons around the inclusive/exclusive boundary",
+    "event application and next-event index advance iff source date match succeeds"
+  ],
+  "non_goals": [
+    "calendar ingestion/order validation, simulation-date conversion or crop-window scheduling",
+    "rate-adaptation, state owner, accepted mass, restart, solute or production admission"
+  ],
+  "pass_conditions": [
+    "match behavior follows abs(date-time)<1e-3 and not <=",
+    "a matched event applies once and advances the candidate index; misses preserve it",
+    "100000 deterministic source comparisons pass at O0/O2 with transcript identity",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

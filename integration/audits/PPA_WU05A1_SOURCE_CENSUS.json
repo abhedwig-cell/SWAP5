@@ -1,0 +1,121 @@
+{
+  "schema": "swap5.ppa_wu05a1.source_census.v1",
+  "work_unit": "PPA-WU05-A1",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "SOURCE_MATERIALIZED_CENSUS_COMPLETE_ARCHITECTURE_SLICE_REQUIRED",
+  "scope": "Byte-exact B1.11 macropore/macrorate source materialization and mutable-field/mass-transfer census",
+  "production_source_mutation": false,
+  "reference_source_mutation": false,
+  "source_authority": {
+    "snapshot": "B1.11",
+    "outer_archive": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/SWAP_4.3.1.zip",
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_archive_member": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "members": {
+      "SWAP/macropore.f90": {
+        "sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+        "materialized_bytes": 88174,
+        "patch": "B0 -> B1.11 SWAP-001 replacement applied exactly once"
+      },
+      "SWAP/macrorate.f90": {
+        "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+        "materialized_bytes": 111863,
+        "patch": "No post-B0 content change"
+      }
+    },
+    "materialized_location": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/Documents/ChatGPT/SWAP5-finaliseren/wu05b-b111/source",
+    "source_bytes_committed_to_repository": false
+  },
+  "transaction_trace": {
+    "trial_entry": "src/legacy/b1_10_port/soilwater.f90:151-153 calls SoilWaterStateVar(1) and MacroStateVar(1) immediately before the Richards task-2 service; src/legacy/b1_10_port/headcalc.f90 calls MACROPORE(2) from vector_F, which dispatches MACRORATE(1).",
+    "existing_macropore_snapshot_restore": {
+      "source": "B1.11 SWAP/macropore.f90:1654-1683, MACROSTATEVAR",
+      "snapshot_task_1": ["ICpBtDm -> ICpBtDmM1", "VlMpDmCp -> VlMpDmCpM1", "WaUnMpDmCp -> WaUnMpDmCpM1"],
+      "restore_task_2": ["ICpBtDm <- ICpBtDmM1", "VlMpDmCp <- VlMpDmCpM1", "WaUnMpDmCp <- WaUnMpDmCpM1"]
+    },
+    "trial_mutated_continuation_not_covered_by_macrostatevar_restore": [
+      {
+        "field": "ThtSrpRefDmCp",
+        "evidence": "B1.11 SWAP/macrorate.f90:1728 and SWAP/macropore.f90:1435-1437 write; subsequent ABSORPTION and MACROSTATE calls read it"
+      },
+      {
+        "field": "SorpDmCp",
+        "evidence": "B1.11 SWAP/macrorate.f90:1729-1731 and SWAP/macropore.f90:1435-1437 write; subsequent absorption reads it"
+      },
+      {
+        "field": "FlEndSrpEvt",
+        "evidence": "B1.11 SWAP/macrorate.f90:1676,1804 writes; SWAP/macropore.f90:1432-1440 reads and writes"
+      },
+      {
+        "field": "TimAbsCumDmCp",
+        "evidence": "B1.11 SWAP/macropore.f90:1432-1439 writes and reads; controls the next absorption event"
+      }
+    ],
+    "additional_accepted_history": [
+      {
+        "field": "WaSrMpDm",
+        "classification": "committed physical storage/history",
+        "evidence": "MACROSTATE incrementally updates from top inflows, matrix exchange, and rapid drainage at SWAP/macropore.f90:1325-1328; not recomputed from compartment storage in the swmbf==1 branch"
+      },
+      {
+        "field": "ICpBtDmM1",
+        "classification": "previous-step geometry history",
+        "evidence": "Read by MACRORATE and MACROSTATE to account for geometry/storage changes; established by MACROSTATEVAR task 1"
+      },
+      {
+        "field": "VlMpDmCpM1",
+        "classification": "previous-step geometry history",
+        "evidence": "Read by MACRORATE/MACROSTATE as the previous volume for storage-change accounting; established by MACROSTATEVAR task 1"
+      },
+      {
+        "field": "WaUnMpDmCpM1",
+        "classification": "previous-step physical storage history",
+        "evidence": "Read by MACRORATE/MACROSTATE for storage change and saturated/unsaturated transition accounting; established by MACROSTATEVAR task 1"
+      }
+    ],
+    "rollback_finding": "MacroStateVar task 2 restores exactly three arrays and does not restore the four sorptivity continuation fields written by the MACROPORE(2)/MACRORATE(1) trial call. The legacy task-2 call path also takes MacroStateVar task 1 before entering the solver, so repeated task-2 entries can snapshot already-mutated continuation state. Exact rejection/retry behavior must be owned by a typed transaction layer; the three-array legacy routine is not a complete transaction boundary.",
+    "derived_or_trial_output_examples": [
+      "rate arrays QExcMtxDmCp, QInIntSatDmCp, QInMtxSatDmCp, QInTopLatDm, QInTopVrtDm, QOutDrRapCp, QOutMtxSatDmCp, QOutMtxUnsDmCp and QTopMpDmCp are initialized/recomputed by MACRORATE/MACROSTATE and should be candidate receipts or scratch, not independent restart authority",
+      "AwlCorFac and FrMpWalWet are recomputed by MACROSTATE from current geometry/storage; source-use order must be respected within a trial"
+    ]
+  },
+  "mass_transfer_trace": {
+    "internal_cancelling_transfers": [
+      "QExcMtxDmCp: macropore-to-matrix exchange; pair with the matrix source/sink contribution, not a second whole-column external flux",
+      "QOutMtxSatDmCp and QOutMtxUnsDmCp: macropore-to-matrix transfers",
+      "QInMtxSatDmCp and QInIntSatDmCp: matrix/perched-zone-to-macropore transfers"
+    ],
+    "external_macropore_transfers": [
+      "QInTopVrtDm: vertical surface/top-boundary input",
+      "QInTopLatDm: lateral surface/overland input",
+      "QOutDrRapCp: rapid drainage external outflow"
+    ],
+    "storage_and_boundary": {
+      "storage": "WaUnMpDmCp per-compartment storage and WaSrMpDm domain storage; geometry changes use VlMpDmCp versus VlMpDmCpM1",
+      "bottom_boundary": "MACRORATE documents the macropore bottom as impermeable and sets no seepage-face outflow; no macropore bottom external flux is present in this path",
+      "accepted_owner": "Whole-column mass receipt must be atomically accepted by the Richards interval owner; no separate macropore receipt may double-book internal exchange"
+    },
+    "mass_tolerance_change": "FORBIDDEN",
+    "accepted_runtime_receipt": "NONE; existing SWAP5 F-CI11 explicitly invalidates trial mass when swmacro is active"
+  },
+  "classification": {
+    "committed_or_restart_continuation": ["ICpBtDm", "WaUnMpDmCp", "VlMpDmCp", "WaSrMpDm", "ThtSrpRefDmCp", "SorpDmCp", "TimAbsCumDmCp", "FlEndSrpEvt"],
+    "previous_step_history_required_for_numerics": ["ICpBtDmM1", "VlMpDmCpM1", "WaUnMpDmCpM1"],
+    "candidate_rates_or_recomputable_workspace": ["QExcMtxDmCp", "QInIntSatDmCp", "QInMtxSatDmCp", "QInTopLatDm", "QInTopVrtDm", "QOutDrRapCp", "QOutMtxSatDmCp", "QOutMtxUnsDmCp", "QTopMpDmCp", "MACRORATE/SATFLOW/ABSORPTION local saved workspace"],
+    "output_or_balance_period_state_not_solver_checkpoint": [
+      "MOD_swap_mp cumulative cQMp* fields and incremental iQ* fields are reporting/balance accumulators reset by MACRORESET; retain only under their reporting-window owner, not as Richards retry state",
+      "IWaSrDm1Beg, IWaSrDm2Beg, IWaUnDm1CpBeg, IWaUnDm2CpBeg are integration-window reference snapshots",
+      "WaSrDm1, WaSrDm2, WaUnMpDm1Cp, WaUnMpDm2Cp, VlMpDm1, VlMpDm2, VlMpDm1Cp, VlMpDm2Cp, VlMpDyCp, WaLevDm1, and ArMpSs are aggregate/interface/output projections of domain storage, geometry and fluxes; exclude from serialized solver authority only with projection tests",
+      "IDecMpRat, FlDecMpRat, fldecMPmbf are convergence/reduction control flags/counters; source-driven transactional classification remains a dedicated A2 test obligation"
+    ],
+    "configuration": "MOD_macropore input fields are switches SwBma/swabs/swsep/SwDarcy/SwPowM/SwShrInp/SwSoilShr/SwSorp, NumSbDm, and the geometry, shrinkage, sorptivity and drainage parameters declared in the exact hashed source. MOD_swap_mp SwMBF/SwDrRap and hydraulic/grid/soil configuration are part of the run identity."
+  },
+  "architecture_exit": {
+    "a1_source_materialization": "PASS",
+    "a1_cross_call_mutation_and_mass_census": "PASS",
+    "production_admission": "NONE",
+    "next_preregistered_slice": "PPA-WU05-A2: typed committed/candidate/restart state DTOs and rollback harness, no flow equations",
+    "implementation_guard": "Do not migrate equations or admit runtime/macropore mass until A2 rollback tests prove byte/value-exact restoration for every committed/history field and A4 proves one-owner mass reconciliation."
+  }
+}

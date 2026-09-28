@@ -1,0 +1,21 @@
+name: PPA-WU05-C3A pure oxygen cache algebra
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05c3a-oxygen-cache-algebra.yml'
+      - 'src/process/mod_ppa_wu05c3a_oxygen_cache_algebra.f90'
+      - 'tests/fapp/test_ppa_wu05c3a_oxygen_cache_algebra.f90'
+      - 'tests/fapp/run_ppa_wu05c3a_oxygen_cache_algebra.sh'
+      - 'integration/audits/PPA_WU05C3A_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05C3A_STATUS.json'
+      - 'integration/audits/PPA_WU05C3_SOURCE_CENSUS.json'
+  workflow_dispatch:
+
+jobs:
+  exact-source-cache-algebra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 cache formulas at O0/O2
+        run: bash tests/fapp/run_ppa_wu05c3a_oxygen_cache_algebra.sh

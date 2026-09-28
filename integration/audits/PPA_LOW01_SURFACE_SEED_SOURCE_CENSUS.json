@@ -1,0 +1,15 @@
+{
+  "schema": "swap5.ppa_low01.surface-seed.source-census.v1",
+  "work_unit": "PPA-LOW01-SURFACE-SEED",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+  },
+  "equations": {
+    "surface_flux": "q0=(nraidt+nird+melt)*(1-ArMpSs)+runon-reva-epd",
+    "boundary_seed": "qv(1)=-q0+(pond-pondm1)/dt+runots/dt"
+  },
+  "ordering": "The source calls pondrunoff before it evaluates qv(1); pond is a post-pondrunoff input to this pure oracle.",
+  "interpretation": "Scalar source-law oracle only; top flux and pond state remain inputs from their owners."
+}

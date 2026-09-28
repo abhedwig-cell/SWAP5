@@ -1,0 +1,31 @@
+name: PPA-LOW01 B1.11 surface-GWL numeric composition
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low01-surface-gwl-composition.yml'
+      - 'src/adapter/mod_ppa_low01_surface_flux_seed.f90'
+      - 'src/adapter/mod_ppa_low01_gwl_surface_profile.f90'
+      - 'src/adapter/mod_ppa_low01_surface_gwl_composition.f90'
+      - 'tests/fapp/test_ppa_low01_surface_gwl_composition.f90'
+      - 'tests/fapp/run_ppa_low01_surface_gwl_composition.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low01-surface-gwl-composition.yml'
+      - 'src/adapter/mod_ppa_low01_surface_flux_seed.f90'
+      - 'src/adapter/mod_ppa_low01_gwl_surface_profile.f90'
+      - 'src/adapter/mod_ppa_low01_surface_gwl_composition.f90'
+      - 'tests/fapp/test_ppa_low01_surface_gwl_composition.f90'
+      - 'tests/fapp/run_ppa_low01_surface_gwl_composition.sh'
+
+jobs:
+  surface-gwl-composition:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay composed scalar/profile path
+        run: bash tests/fapp/run_ppa_low01_surface_gwl_composition.sh

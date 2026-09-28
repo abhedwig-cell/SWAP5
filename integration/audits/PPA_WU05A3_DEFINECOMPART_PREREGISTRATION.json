@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.ppa_wu05a3_definecompart.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-DEFINECOMPART",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@55bd9bf4c640ebd6b928a33fa4631eab7e93d7b2",
+  "authority": "PPA-WU05-A1 exact B1.11 census; PPA-WU05-A2 isolated typed DTO rollback/restart harness",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "DEFINECOMPART",
+    "routine_lines_in_materialized_source": "522-659"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_definecompart.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_definecompart_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_definecompart_source_oracle.sh",
+  "in_scope": [
+    "B1.11 source-ordered AH/IC/Spoint/St breakpoint merge thresholds",
+    "alignment of breakpoints to existing grid bottoms",
+    "temporary interval insertion and original-node identity mapping",
+    "Spoint recomputation and invalid-input fail-closed behavior"
+  ],
+  "out_of_scope": [
+    "MACROGEOM relative-volume integration",
+    "mutable production macropore state ownership",
+    "accepted Richards transaction, retry, restart, and whole-column mass admission"
+  ],
+  "expected_tests": [
+    "three deterministic three-node geometric cases: interior split, near-depth merge, and existing-grid alignment",
+    "dimension-invalid case fails closed",
+    "O0/O2 output identity under bounds and floating-point traps"
+  ],
+  "admission": "NONE; isolated source-equation oracle only"
+}

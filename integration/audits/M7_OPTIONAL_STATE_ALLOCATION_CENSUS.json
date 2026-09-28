@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.m7.optional_state_allocation_census.v1",
+  "criterion": "M7-03",
+  "baseline": "e3ec06543",
+  "method": "read-only source census; no runtime instrumentation or production changes",
+  "scope": "serialized Reference backend optional persistent state, per-interval optional forcing/work allocations, and request-gated thermal carrier sample buffers",
+  "findings": [
+    {
+      "feature": "snow",
+      "persistent_state": "fmr_b110_physical_state_t%snow is allocatable; clone allocates it only when source state has it. Outer-event preparation requires parameter, forcing, and state allocation when active and rejects those allocations when inactive.",
+      "per_interval_compute": "Snow evaluation is entered only in the snow_active branch.",
+      "source": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:119-124",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:466-489",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:737-746",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1678-1684"
+      ]
+    },
+    {
+      "feature": "restricted soil temperature",
+      "persistent_state": "The physical-state component is allocatable; active admission requires its matching parameter and forcing controls. Parameter and interval-forcing buffers are allocated only in their active branches and deallocated before reconfiguration/preparation.",
+      "per_interval_compute": "Soil-temperature preparation/evaluation is guarded by soil_temperature_active.",
+      "source": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:119-124",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:748-760",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1364-1371",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1464-1468",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1557-1564",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1999-2007"
+      ]
+    },
+    {
+      "feature": "Black / Boesten evaporation",
+      "persistent_state": "Distinct derived committed-state carriers represent the mutually exclusive active options. Their parameter and forcing components are allocatable; inactive admission requires both parameter allocations absent and runtime preparation rejects an attached inactive forcing component.",
+      "per_interval_compute": "Each process body is guarded by its active flag.",
+      "source": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:128-159",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:191-196",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:243-247",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1372-1393",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1567-1605",
+        "tests/fapp/test_ppa_wu04a_black_runtime.f90",
+        "tests/fapp/test_ppa_wu04b_boesten_runtime.f90"
+      ]
+    },
+    {
+      "feature": "drainage response",
+      "persistent_state": "Response-level parameters and response controls are allocatable and are copied only for an active response configuration. The qdra interval workspace is allocated for both the response and legacy drainage-flux routes, so it is not evidence of zero per-interval allocation for this option.",
+      "per_interval_compute": "Response preflight/evaluation requires drainage_response_active; inactive input uses the separate legacy drainage-flux matrix path.",
+      "source": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:203-205",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:241-247",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1394-1401",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1459-1463",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1527-1542",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1615-1629"
+      ]
+    },
+    {
+      "feature": "bottom thermal and top sensible carriers",
+      "persistent_state": "Small carrier descriptors are embedded in the backend model and attempt context, but their sample payloads are allocatable. Transaction setup enables/initializes them only when the corresponding donor request is present; the bottom carrier is snapshotted and disabled immediately after the trial.",
+      "per_interval_compute": "Carrier append/materialization is request-gated; descriptor presence alone is not an allocated sample buffer.",
+      "source": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:315-330",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:398-411",
+        "src/runtime/mod_fmr_bottom_thermal_carrier.f90:20-53",
+        "src/runtime/mod_fmr_top_sensible_boundary_carrier.f90:28-49",
+        "src/runtime/mod_fmr_serialized_multiswap_runtime.f90:540-585",
+        "src/runtime/mod_fmr_serialized_multiswap_runtime.f90:587-594",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:821-845",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1108-1120",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1238-1248"
+      ]
+    },
+    {
+      "feature": "root sink and drainage flux compatibility inputs",
+      "persistent_state": "These are forcing/work arrays, not committed optional process state. The serialized route validates and materializes per-interval arrays even when root extraction is inactive (inactive values must be zero); drainage qdra is allocated on both response and legacy-flux paths.",
+      "per_interval_compute": "The root sink is consumed by the admitted solver contract; inactive values are constrained to zero, but this census does not claim allocation-free handling.",
+      "source": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:240-243",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1524-1550",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1615-1630"
+      ]
+    },
+    {
+      "feature": "macropore, hysteresis, tabulated hydraulics, elasticity, frost and other unadmitted physics",
+      "persistent_state": "Not represented by this admitted optional-state census; the current Reference production admission predicate rejects these active routes.",
+      "per_interval_compute": "No production runtime claim is made for rejected profiles.",
+      "source": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1348-1357"
+      ]
+    }
+  ],
+  "result": {
+    "static_evidence": "For admitted snow, restricted soil temperature, Black/Boesten and drainage-response options, variable-size persistent optional payloads are represented by allocatable components and guarded active paths; inactive incompatible optional payloads fail closed. Request-gated thermal carrier payload buffers are allocatable.",
+    "bounded_state_clone_test": {
+      "state": "PASS_DIRECT_O0_O2",
+      "compiler": "gfortran 13.3.0 Windows UCRT64",
+      "flags": "-std=f2008 -ffree-line-length-none -Wall -Wextra -fopenmp -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "runner": "tests/fmr/run_m7_optional_state_allocation_census.py",
+      "test": "tests/fmr/test_m7_optional_state_allocation_census.f90",
+      "markers": [
+        "M7_OPTIONAL_STATE_INACTIVE_BASE_PAYLOADS_ABSENT=PASS",
+        "M7_OPTIONAL_STATE_ACTIVE_PAYLOAD_CLONE_IDENTITY=PASS",
+        "M7_OPTIONAL_STATE_ALLOCATION_CENSUS_TEST PASS"
+      ],
+      "o0_o2_transcript_identity": true,
+      "scope_note": "Confirms base-state snapshots omit inactive snow/soil-temperature payloads and preserve explicitly present payloads when cloned; it does not execute the processes or measure bytes/CPU."
+    },
+    "limitations": [
+      "This is source inspection, not an executable active/inactive batch allocation or CPU census.",
+      "Per-interval root-sink, drainage-flux/qbot and related workspace arrays still allocate on the common route; no allocation-free inactive claim is made.",
+      "Some fixed-size descriptors and embedded process records exist in the backend regardless of active option; their exact per-column byte cost was not measured.",
+      "Unadmitted optional physics are excluded, not counted as zero-cost support."
+    ],
+    "criterion_status": "PARTIAL",
+    "next_action": "Instrument representative active/inactive serialized batches for allocated payload bytes and option-specific calls, including common forcing/work arrays; retain the serial execution and physics policies."
+  }
+}

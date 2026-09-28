@@ -1,0 +1,27 @@
+{
+  "work_unit": "PPA-IRR-TCS1-4-COMPOSITION",
+  "baseline": "d01e1f991",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "source_authority": "PPA_IRR_TCS1_4_TIMING_STATUS.json",
+  "source_preregistration": "PPA_IRR_TCS1_4_TIMING_PREREGISTRATION.json",
+  "objective": "Compose existing source-tested TCS1-4 selectors with scheduled DCS2 gift materialization and the established event lifecycle, using explicitly supplied root-water and daily stress observations.",
+  "dependency_review": "The current scheduled process supports only TCS7/8 and directly performs timing followed by common depth/rate/event materialization. Approximately 80 runner/tool references compile mod_irrigation_process; importing the standalone TCS1-4 module into that core would introduce broad compile-order churn. Prefer an explicit process composition entry with a factored common post-timing path, plus a separate bridge depending on both modules. Do not fabricate hydraulic sensor values or thresholds to force TCS7 to impersonate another selector.",
+  "design_constraints": [
+    "Retain the existing ordinary scheduled entry and TCS7/8 behavior unchanged.",
+    "Share eligibility, pending-event continuation, DCS2 amount/rate and event materialization rather than duplicate those equations.",
+    "The bridge must call evaluate_tcs1_4_timing; preserve strict comparison and existing source AFGEN arithmetic.",
+    "Externally supplied observations are explicit immutable inputs, not claimed to be internally derived crop/root or daily accumulator state.",
+    "Do not consult a new selector for a pending gift or consume selection opportunity on rejected trials.",
+    "Keep initial composition process-only; extend source/runtime/application binding only after executable process gates pass."
+  ],
+  "first_gates": [
+    "All four selectors trigger and decline at source-defined strict boundaries.",
+    "False timing leaves no selected gift; true timing reuses DCS2 depth, source rate and duration.",
+    "Existing eligibility and fixed-event precedence remain effective.",
+    "Pending continuation, split-required and retry preserve input state.",
+    "Malformed selector observations/tables fail closed on selection; TCS7/8 preservation and source oracle remain passing at O0/O2."
+  ],
+  "invariants": [3, 7, 13, 21, 23, 29],
+  "non_goals": "No automatic daily stress accumulator, root-water derivation, calendar/parser, solute transport, general registry or canonical admission. Existing initial zero-source numerical issue is independent and remains open.",
+  "next": "Factor the scheduled post-timing path without changing its legacy entry, implement the typed selector bridge and bounded independent process tests, then qualify before runtime integration."
+}

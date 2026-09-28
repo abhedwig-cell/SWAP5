@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.ppa_wu05g2.source_census.v1",
+  "work_unit": "PPA-WU05-G2",
+  "snapshot": "B1.11",
+  "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "member": {
+    "SWAP/rootextraction.f90": {
+      "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "bytes": 22013,
+      "path": "RootExtraction_MICRO(iTask=2), immediately after nodewise oxygen/salinity/frost factors",
+      "equations": {
+        "swAlpTot=1": "alptot(node)=alpwet(node)*alpsol(node)*alpfrs(node)",
+        "swAlpTot=2": "alptot(node)=min(alpwet(node),alpsol(node),alpfrs(node))",
+        "swAlpTot=3": "dum=1; multiply, in ascending node order, each strictly positive node product; assign dum to every rooted node"
+      },
+      "order_and_edge_semantics": "All three source factors are reset to identity before application; selector 3 excludes zero node-products rather than making the profile-wide aggregate zero."
+    }
+  },
+  "scope_verdict": "The MICRO factor-composition algebra and exact selector order are oracle eligible. It does not admit the factor owners, microscopic solver, stress diagnostics, root-water allocation or mass booking.",
+  "production_admission": "NONE"
+}

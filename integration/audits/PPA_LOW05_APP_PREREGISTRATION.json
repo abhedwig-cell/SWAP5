@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW05-APP",
+  "title": "Ordinary standalone SWBOTB=5 DATE5/HBOT5 application adapter",
+  "protocol": "PIN_B1_11_AUTHORITY -> SEPARATE_GROUNDWATER_AND_STANDALONE_OWNERSHIP -> ADAPT_IMMUTABLE_TYPED_HBOT_TABLE -> REUSE_EXISTING_REFERENCE_MODE5_SOLVER_AND_MASS_OWNER -> O0_O2_TRANSACTION_QUALIFICATION",
+  "parent_authorities": [
+    "integration/audits/PPA_WU02_STATUS.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "integration/audits/PPA_LOW05_HBOT_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW05_HBOT_PREREGISTRATION.json",
+    "integration/audits/PPA_LOW05_HBOT_STATUS.json",
+    "docs/architecture/migration-slices.md#M3",
+    "docs/architecture/migration-slices.md#M4"
+  ],
+  "baseline": "SWAP 4.3.1 B1.11; manifest SHA-256 24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "scope": [
+    "homogeneous serialized Reference production application, bottom_mode=5, outside groundwater participant/ledger ownership",
+    "typed immutable numeric DATE5-equivalent T1900/HBOT5 table control, with substep-end source interpolation and explicit qualification scope",
+    "reuse the already existing mode-5 Richards lower-face head condition and solver-owned qbot/mass accounting",
+    "preserve the existing groundwater-owned mode-5 profile and reject mixed ownership or attached control on another mode"
+  ],
+  "non_goals": [
+    "SWP/BBC parsing, DATE5 calendar-string conversion, or changes to the legacy reference path",
+    "new groundwater semantics, participant registration, interface mass ledger, or a second physical-state owner",
+    "macropore composition, mode mixing, other solver/backend admission, or new physics/numerical policy",
+    "canonical admission or a claim that broader M0-M8 migration is closed"
+  ],
+  "pass_conditions": [
+    "standalone mode-5 profile initializes without groundwater datum, participant registry, or interface mass ledger",
+    "groundwater mode-5 profile remains registered and qualified; mixed/ambiguous ownership fails closed",
+    "typed table matches B1.11 AFGEN on 100000 deterministic vectors including a non-flat substep-end query; invalid/nonfinite/unsorted controls fail closed",
+    "the standalone mode-5 flat-table production route matches independently bootstrapped direct-head mode 5 and closes its hard mass balance",
+    "existing groundwater-owned mode-5 bootstrap, participant and restricted route qualification remain green",
+    "a table control attached to a non-mode-5 application fails closed; no new parser, participant or state owner is introduced",
+    "focused direct compiler O0/O2 tests pass with transcript identity and no changes to solver science",
+    "non-flat application-level time variation, retry/restart equivalence and canonical admission remain explicitly unqualified and are not closure claims"
+  ],
+  "implementation_boundary": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "typed forcing and focused tests under tests/fapp/"
+  ],
+  "evidence_boundary": [
+    "tests/fapp/",
+    "integration/audits/PPA_LOW05_APP_STATUS.json",
+    "integration/audits/PPA_LOW05_APP_SOURCE_CENSUS.json"
+  ],
+  "held_work": [
+    "Non-flat HBOT5 source interpolation passes its pure exact-source oracle, but the attempted standalone transaction completed without commit (kernel_status=2). The preserved WU01/WU04C reproduction reaches HeadCalc, exhausts its configured nonlinear/backtracking attempt, and requests timestep reduction on each allowed retry; the exact convergence cause is not isolated. Keep full PPA-LOW05-APP OPEN until variable-head transaction behavior, accepted mass, retry and restart are qualified."
+  ]
+}

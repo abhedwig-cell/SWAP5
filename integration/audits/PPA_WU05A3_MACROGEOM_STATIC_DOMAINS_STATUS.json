@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_static_domains.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-STATIC-DOMAINS",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@f5b3b85eac4a63d70dbc7b194c66a0d172865231",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROGEOM_STATIC_DOMAINS_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_static_domains.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_static_domains_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_static_domains_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["three-domain MB/IC distribution", "single MB domain", "two-domain scaling", "invalid domain extent fail-closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; static volume partition equation only; full MACROGEOM and production ownership/mass/retry/restart/A4 remain open",
+  "next_action": "Reconcile the remaining MACROGEOM section E top-layer suppression and section F/G polygon handoff against the existing polygon-diameter oracle.",
+  "blockers": []
+}

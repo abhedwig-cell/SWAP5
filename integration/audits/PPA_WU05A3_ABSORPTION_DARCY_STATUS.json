@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a3.absorption_darcy.status.v1",
+  "work_unit": "PPA-WU05-A3-ABSORPTION-DARCY",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED_DEFINED_BRANCH",
+  "baseline": "codex/ppa-swap431-functional-gap-register@588e4a81c",
+  "preregistration": "integration/audits/PPA_WU05A3_ABSORPTION_DARCY_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; defined ABSORPTION Darcy candidate branch only; stale/undefined SorpFac path and production binding excluded",
+  "implementation": "src/process/mod_ppa_wu05a3_absorption_darcy.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_absorption_darcy_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_absorption_darcy_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_ABSORPTION_DARCY_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_ABSORPTION_DARCY_ENTRY_HEAD_AND_MACRO_HEAD_GATES=PASS",
+      "PPA_WU05A3_ABSORPTION_DARCY_RESISTANCE_AND_SORPTIVITY_FACTOR=PASS",
+      "PPA_WU05A3_ABSORPTION_DARCY_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "570292f4ca0034e64c3db0b8c8eba6151b117e29228d6d6779af2a3b77b15615"
+  },
+  "next_action": "The separate diffusion candidate is covered; continue with a further independent ABSORPTION source term, keeping undefined SorpFac paths excluded.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": ["B1.11 ABSORPTION reads local SorpFac beyond the branch where it is assigned; production behavior for Darcy-disabled/out-of-interval compartments is undefined or stale-state-dependent."]
+}

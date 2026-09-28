@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-E1",
+  "title": "Pure B1.11 Maas-Hoffman salinity root-stress factor",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_SCALAR_FACTOR -> 100000_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05E1_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json",
+    "integration/audits/PPA_WU05C3_SOURCE_CENSUS.json"
+  ],
+  "source_equation": "if sw_salinity=1 and cml>saltmax: alpsol=max(0,1-(cml-saltmax)*saltslope); otherwise the existing initialized value 1 is retained",
+  "source_input_ranges": {
+    "sw_salinity": "0..1",
+    "saltmax": "0..100 mg/cm3",
+    "saltslope": "0..1 cm3/mg"
+  },
+  "scope": [
+    "typed scalar salinity factor only",
+    "strict threshold equality, linear response, lower clamp, disabled-switch identity",
+    "deterministic source-formula oracle and stateless replay"
+  ],
+  "non_goals": [
+    "production RootExtraction or MOD_solute_global runtime integration",
+    "same-substep solute/root coupling changes or a second salinity mass sink",
+    "MICRO osmotic-head route, multi-stressor ordering, compensation, or crop feedback",
+    "accepted root-sink receipt, retry/rollback, restart, or parallel qualification"
+  ],
+  "pass_conditions": [
+    "100000 deterministic finite vectors match the exact B1.11 factor equation",
+    "strict threshold equality, switch-off identity, zero-slope and lower-clamp cases pass",
+    "A/B/A replay is stateless and O0/O2 transcripts are identical",
+    "nonfinite and out-of-source-range settings fail closed with identity output"
+  ]
+}

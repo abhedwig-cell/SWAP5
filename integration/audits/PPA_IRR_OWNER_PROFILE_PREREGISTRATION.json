@@ -1,0 +1,8 @@
+{
+  "baseline": "dba75590c",
+  "work_unit": "PPA-IRR-OWNER-PROFILE",
+  "contract": "Add read-only copy_committed_hydraulic_states to the existing production owner. Return per-tile deep copies of active pressure-head/water-content arrays, time and revision. Return no partial array on unavailable or invalid state. No mutable aliases, new state owner or acceptance change.",
+  "invariants": [3,7,13,29],
+  "gate": "Owner initialize/copy, exact configured profile, mutation isolation, restart round-trip copy, closed-owner rejection at O0/O2. Existing owner guard scope preservation.",
+  "non_claims": "No scheduled irrigation acceptance, flux injection or changed restart format."
+}

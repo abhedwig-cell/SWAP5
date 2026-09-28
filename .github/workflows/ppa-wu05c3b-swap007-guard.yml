@@ -1,0 +1,20 @@
+name: PPA-WU05-C3B pure SWAP-007 guard
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05c3b-swap007-guard.yml'
+      - 'src/process/mod_ppa_wu05c3b_swap007_guard.f90'
+      - 'tests/fapp/test_ppa_wu05c3b_swap007_guard.f90'
+      - 'tests/fapp/run_ppa_wu05c3b_swap007_guard.sh'
+      - 'integration/audits/PPA_WU05C3B_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05C3B_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  swap007-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 representability/restart guard at O0/O2
+        run: bash tests/fapp/run_ppa_wu05c3b_swap007_guard.sh

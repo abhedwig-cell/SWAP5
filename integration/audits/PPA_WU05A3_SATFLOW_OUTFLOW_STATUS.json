@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a3.satflow_outflow.status.v1",
+  "work_unit": "PPA-WU05-A3-SATFLOW-OUTFLOW",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@f7566c674",
+  "preregistration": "integration/audits/PPA_WU05A3_SATFLOW_OUTFLOW_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated signed-potential-flow partition only; no accepted mass receipt or runtime binding",
+  "implementation": "src/process/mod_ppa_wu05a3_satflow_outflow.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_satflow_outflow_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_satflow_outflow_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_SATFLOW_OUTFLOW_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_NEGATIVE_ONLY_SIGN_PARTITION_AND_ORDERED_SUM=PASS",
+      "PPA_WU05A3_SATFLOW_BOTTOM_RANGE_INACTIVE_GATE=PASS",
+      "PPA_WU05A3_SATFLOW_OUTFLOW_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "7f95d3cefecb9123bbde5327d5350b5620f98206e72e7f1b81dc953be1c7f735"
+  },
+  "next_action": "Continue with the next separate source-bound SATFLOW behavior; no runtime admission.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": []
+}

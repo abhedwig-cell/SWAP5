@@ -1,0 +1,14 @@
+{
+  "work_unit": "PPA-WU05-A4-STORAGE-BOUNDS",
+  "baseline": "da4fbc9ac",
+  "recovery_point": "987d3ed63",
+  "persisted_test_result": "PASS at 987d3ed63, O0/O2 identical transcripts, runtime checks and floating-point traps; all prior composition cases retained",
+  "source": "B1.11 MACRORATE standard-domain groundwater/drainage storage bounds, lines 217-222 and 246-254; existing VOLUNDR source helper",
+  "implementation": "src/process/mod_ppa_wu05a4_storage_bounds.f90",
+  "contract": "Compute groundwater volume only below sentinel 900 and above domain bottom, cap by supplied total domain volume. Minimum storage is min(groundwater volume,current store), reduced to drainage volume only for main domain when source strict 1e-6 and minimum predicates hold. Immutable geometry/state inputs; no accepted state mutation.",
+  "gate": "tests/fapp/run_ppa_wu05a4_rate_composition.ps1",
+  "tests": "Two-layer partial groundwater/drainage volumes; groundwater-derived incoming ceiling and drainage-derived outgoing minimum passed through actual rate limiters; internal-domain branch; groundwater sentinel; invalid geometry even on inactive branches. Existing generated SATFLOW and multi-domain composition retained.",
+  "limits": "Analytic bounded geometry fixture only; no geometry evolution, full MACRORATE replay, Richards solution or restart admission. Supplied total volume and storage must belong to the same source geometry. Inherits VOLUNDR source behavior outside tested physical levels; extreme finite overflow is unqualified.",
+  "production_admitted": false,
+  "next_action": "Compose geometry-bound storage and generated exchange in one consistent multi-cell trial, including domain-rate aggregation and derivative provenance, before runtime owner wiring."
+}

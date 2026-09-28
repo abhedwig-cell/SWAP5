@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a3.absorption_derivative.status.v1",
+  "work_unit": "PPA-WU05-A3-ABSORPTION-DERIVATIVE",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@553880d4d",
+  "preregistration": "integration/audits/PPA_WU05A3_ABSORPTION_DERIVATIVE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated local derivative term only; no solver-Jacobian or runtime binding",
+  "implementation": "src/process/mod_ppa_wu05a3_absorption_derivative.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_absorption_derivative_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_absorption_derivative_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_ABSORPTION_DERIVATIVE_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_ABSORPTION_DERIVATIVE_SORPTIVITY_AND_DIFFUSION_BRANCHES=PASS",
+      "PPA_WU05A3_ABSORPTION_DERIVATIVE_STRICT_FLUX_AND_HEAD_THRESHOLDS=PASS",
+      "PPA_WU05A3_ABSORPTION_DERIVATIVE_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "1d628aed8eea6debf2467e0bd66242f8a31225418382642aa68166c3165d8951"
+  },
+  "next_action": "The adjacent SWABS=2 diffusivity setup is covered in a separate oracle; continue remaining exact-source ABSORPTION behaviors without solver/runtime admission.",
+  "recovery_point": "this preregistration, source module, and test",
+  "blockers": []
+}

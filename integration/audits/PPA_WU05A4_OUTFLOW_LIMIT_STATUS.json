@@ -1,0 +1,15 @@
+{
+  "work_unit": "PPA-WU05-A4-OUTFLOW-LIMIT",
+  "baseline": "9bca67315",
+  "recovery_point": "09fcfaf08",
+  "persisted_test_result": "PASS O0/O2 at 09fcfaf08, identical transcripts, 100000 bitwise formula comparisons and threshold/invalid tests. Inflow-limit regression also PASS O0/O2.",
+  "scope": "Isolated final standard-domain outgoing potential-to-rate conversion after interdomain redistribution, not a complete MACRORATE implementation",
+  "source": "B1.11 macrorate.f90 lines 1377-1391; SHA256 537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+  "implementation": "src/process/mod_ppa_wu05a4_outflow_limit.f90",
+  "contract": "Inputs are integrated potentials, total outgoing potential and remaining excess AFTER redistribution. The strict excess/dt > 1e-7 predicate determines reduction. Saturated, unsaturated and rapid-drainage rates use the same fraction in source arithmetic order. Caller supplies zero rapid potential for internal domains and correct source-loop total; no upstream provenance validation or state commit is performed.",
+  "gate": "tests/fapp/run_ppa_wu05a4_outflow_limit.ps1",
+  "coverage": "100000 deterministic bitwise comparisons with independently transcribed source formulas, exact threshold and next representable value, zero-total branch, invalid timestep and negative potential. Not execution of the complete original MACRORATE.",
+  "limitations": "No interdomain redistribution calculation, SWMBF2 main-domain kinematic iteration, geometry, whole-column mass gate or production HeadCalc binding. Extreme finite overflow is unqualified. This helper is only applicable to the standard-domain source branch.",
+  "qualified_production": false,
+  "next_action": "Implement upstream interdomain redistribution and compose the standard-domain final rates with SATFLOW/ABSORPTION derivatives and the trial exchange capture."
+}

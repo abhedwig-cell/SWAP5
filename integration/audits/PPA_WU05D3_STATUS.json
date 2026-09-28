@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05d3.status.v1",
+  "work_unit": "PPA-WU05-D3",
+  "parent_work_unit": "PPA-WU05-D",
+  "status": "PURE_WALSUM_COMPOSITOR_IMPLEMENTED_AND_TESTED_RUNTIME_HELD",
+  "baseline": "c19c17f4d",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no root runtime, acceptance receipt, MICRO, multi-stressor physics, coupling or parallel route changed",
+  "source_census": "integration/audits/PPA_WU05D1_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_WU05D3_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_wu05d3_walsum_compensation.f90",
+  "test": "tests/fapp/test_ppa_wu05d3_walsum_compensation.f90",
+  "gate": "tests/fapp/run_ppa_wu05d3_walsum_compensation.sh",
+  "test_result": {
+    "direct_compiler": "gfortran 13.3.0 on Windows UCRT64; equivalent commands executed directly because Git Bash cannot create its signal pipe in this host",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05D3_WALSUM_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05D3_ALPHA_BELOW_020_AND_ALL_STRESSORS=PASS",
+      "PPA_WU05D3_NOOP_AND_A_B_A_NONCOMPOUNDING=PASS",
+      "PPA_WU05D3_INVALID_GEOMETRY_NONFINITE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "evidence_claim": "Pure Walsum ALPHACRIT from current root-depth geometry plus exact post-stress compositor oracle. No production route or accepted-mass qualification claim.",
+  "next_action": "Continue with an independent source-bound salinity authority slice; retain D4 multi-stressor composition, MICRO and transaction routes as held.",
+  "recovery_point": "this status and PPA_WU05D1_SOURCE_CENSUS.json"
+}

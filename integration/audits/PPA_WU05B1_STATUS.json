@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.ppa_wu05b1.status.v1",
+  "work_unit": "PPA-WU05-B1",
+  "parent_work_unit": "PPA-WU05-B",
+  "status": "SOURCE_MATERIALIZED_TRACE_COMPLETE_REVIEW_ONLY",
+  "baseline": "50019b8108cc6d2fb6a9bcca86b216cdb4237a2d",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "source_census": "integration/audits/PPA_WU05B1_SOURCE_CENSUS.json",
+  "source_materialization": "Exact source files verified against the canonical archive and B1.11 SHA-256 identities in the user-scoped reconstruction directory; source bytes are not committed into this repository.",
+  "review_result": "Frozen hydraulic effect fields and call ordering are source-traced. Runtime rollback/restart, drainage mass closure and coupled snow/frost remain unqualified.",
+  "production_admission": "NONE",
+  "next_action": "PPA-WU05-B2 pure factor and K/dKdh oracle is implemented and directly tested at O0/O2. Continue to a separate non-runtime frost capability; keep runtime integration fail-closed.",
+  "recovery_point": "this status record plus the PPA-WU05B1 source census",
+  "blockers": ["B2/B3/B4 production composition and runtime mass/restart qualification remain outside this review slice"]
+}

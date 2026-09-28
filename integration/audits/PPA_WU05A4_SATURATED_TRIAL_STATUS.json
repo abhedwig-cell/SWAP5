@@ -1,0 +1,90 @@
+{
+  "work_unit": "PPA-WU05-A4-SATURATED-TRIAL",
+  "baseline": "eff707da5",
+  "recovery_point": "96b195962",
+  "persisted_test_result": "Restricted evaluator and complete rate-composition harness PASS O0/O2 at 96b195962 with identical transcripts, runtime checks and floating-point traps",
+  "implementation": "src/adapter/mod_ppa_wu05a4_saturated_trial.f90",
+  "scope": "First restricted executable evaluator composing VOLUNDR geometry bounds, SATFLOW task 1, standard-domain incoming/outgoing limits, SATFLOW derivative and typed exchange evaluation. No production HeadCalc modification.",
+  "contract": "One standard domain with no external top input, covering layer, absorption, rapid drainage or interdomain redistribution. Only wet-pore Darcy branch; dry-pore seepage is rejected rather than filled with assumed physical parameters. Input remains immutable, failed preparation returns no evaluation arrays. Geometry and matrix-zone metadata are supplied by caller; no committed state or receipt is published.",
+  "gate": "tests/fapp/run_ppa_wu05a4_saturated_trial.ps1",
+  "fixture": "Two one-cm cells with 0.25 cm pore volume each. Pore level -0.5 cm implies initial store 0.375 cm, matrix level -1 cm implies minimum store 0.25 cm. Matrix heads [-0.5,0.5] at nodes [-0.5,-1.5] generate bottom-cell outgoing rate 0.125 cm/day. At dt=2 days, storage cap reduces rate to 0.0625 and source tangent to -0.125.",
+  "checks": "Generated rate/tangent feeds trial residual/diagonal; matrix amount cancels macro storage change. Changed-dt preparation retains initial store. Unsupported dry-pore branch returns no usable evaluation. O0/O2 checked with runtime checks and floating-point traps.",
+  "limitations": "No nonlinear Richards solve, matrix candidate storage, complete multi-domain physics, absorption, nonlinear backtracking or runtime/restart owner binding. Caller consistency beyond the test fixture and extreme finite arithmetic are not qualified. Derived scalar storage is diagnostic, not a full A2 continuation payload.",
+  "production_admitted": false,
+  "reduction_composition_verification": {
+    "baseline": "230384a71",
+    "scope": "Retry proposals feed the bounded evaluator at levels 0 through 3 from an unchanged beginning store. dt=100 forces storage limiting at levels 0,1,2 and releases it at level 3.",
+    "oracle": "For heads [-0.5,0.25], outgoing rate=min(0.1875*0.1**level,(0.375-5/24)/100), source tangent=-rate/0.75. Check final storage and immutable beginning inputs. Increased-dt recovery proposes level 2 without mutating level-3 history or the already evaluated vector.",
+    "limits": "Component composition only, not autonomous production retry selection or physical acceptance.",
+    "recovery_point": "0f657a464",
+    "test_result": "Persisted 0f657a464 Richards scratch gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
+  },
+  "reduction_policy_component": {
+    "baseline": "6796a272c",
+    "source": "B1.11 headcalc.f90 convergence recovery at lines 384-390 and retry increment at 444; production port retains the three-level retry ceiling.",
+    "implementation": "src/solver/mod_ppa_wu05a4_reduction_policy.f90",
+    "contract": "Pure proposal routines preserve input history. Retry increments reduction up to three and remembers dt without resetting the source step counter. Recovery clears retry flag and reduces one decade after ten converged steps or increased dt. Caller owns timestep-vs-exchange retry selection and physical acceptance.",
+    "scope": "Numerical-history component only; not connected to production owner or restart. Validity requires nonnegative bounded counters and finite positive current dt.",
+    "recovery_point": "9e3a11ff2",
+    "test_result": "Persisted 9e3a11ff2 Richards scratch and saturated trial gates PASS O0/O2 with identical transcripts and runtime/FPE checks. Three retries, ceiling, nine/ten-step recovery, larger-dt recovery, input immutability and invalid input rejection tested."
+  },
+  "trial_reduction_contract": {
+    "baseline": "e10464322",
+    "source": "B1.11 MACRORATE line 131: FrReduQ = 0.1d0**dble(IDecMpRat)",
+    "interface": "PPA-local saturated_domain_inputs gains nonnegative reduction_decades, default zero. Evaluator computes the source real-exponent factor and passes it to SATFLOW before storage limiting and paired derivative assembly. Caller owns recovery policy; evaluator never increments or commits this field.",
+    "scope": "Numerical trial control only, no production recovery-history/restart admission or source change.",
+    "recovery_point": "e390b77f2",
+    "test_result": "Persisted e390b77f2 complete nine-gate A4/A3 regression bundle PASS O0/O2 with bounds/FPE checks and identical transcripts. Reduction levels 0,1,2 and negative-input atomic rejection tested."
+  },
+  "incoming_assembly_verification": {
+    "baseline": "f8633edd8",
+    "scope": "Verification of the existing bounded evaluator in the matrix-to-pore direction; no production code or admitted scope change.",
+    "oracle": "Pore level -0.75 gives beginning storage 0.3125. Heads [-0.5,2] give matrix level -0.7 and groundwater capacity 0.325. Darcy incoming potential rate is 0.3125; actual rate is min(0.3125,0.0125/dt), with source tangent -rate/1.25. Tested dt 0.01, 0.1 and 1.",
+    "checks": "Positive matrix residual contribution, paired diagonal, negative matrix transfer, storage increase and internal cancellation. Incoming gradient at bottom head 1 with capacity below initial storage suppresses all inflow and leaves stored water unchanged. Original storage remains unchanged across retries.",
+    "recovery_point": "9c799ba72",
+    "test_result": "Persisted 9c799ba72 saturated trial and Richards scratch gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
+  },
+  "pore_metadata_validation": {
+    "baseline": "94b884c91",
+    "contract": "Restricted wet-pore adapter requires pore_saturated_top in 1:n, finite saturation fraction in [0,1], and nonnegative reciprocal resistance in every cell, including cells skipped by saturated exchange. This is adapter input validation, not a reference formula correction or a general empty-domain contract.",
+    "tests": "Reject top 0 and n+1 and negative resistance in the skipped unsaturated cell; restoring valid inputs succeeds. Saturated trial and nonlinear scratch gates pass O0/O2 in working tree.",
+    "limits": "Does not derive wet-wall fraction from continuation state or prove supplied pore metadata consistent with complete source history. Production remains unbound."
+  },
+  "derived_matrix_extension": {
+    "baseline": "693ae02fa",
+    "interface": "prepare_saturated_from_heads copies input and derives matrix_level/matrix_top from current heads and pond at each call before preparation. Caller matrix metadata is ignored by this entry point, but never overwritten.",
+    "branch_reconciliation": "At an exact layer boundary CALCGWL chooses the upper containing cell even if its center is unsaturated. Wet-pore guard now skips negative-head centers, matching SATFLOW's zero difference there; nonnegative-head dry-pore branches remain rejected.",
+    "tests": "Stale caller metadata is replaced in trial copy. Head change moves water level from -1 to -7/6 cm, changes minimum inventory to 5/24 cm, final rate to 1/6 cm/day and source tangent to -2/9 per day. Original metadata unchanged. Fully unsaturated/perched cases return no evaluation.",
+    "limits": "Residual/system/reference scratch routes now accept optional pond to select derived metadata. No HeadCalc call site, full nonlinear solve or complete mixed-physics admission.",
+    "scratch_recovery_point": "bc642cb75",
+    "scratch_test_result": "Persisted bc642cb75 saturated trial and Richards scratch gates PASS O0/O2 with identical transcripts, runtime checks and floating-point traps. Head-derived residual/diagonal, transfer balance, immutable input metadata, failed-evaluation vector preservation and transfer invalidation checked.",
+    "test_result": "Persisted d6347044c saturated trial and Richards scratch gates PASS O0/O2",
+    "scratch_binding_contract": "Optional trailing pond argument on residual/system/reference scratch routes selects head-derived matrix metadata at every evaluation; absent pond preserves explicit-metadata component behavior. Atomic scratch publication and failed-transfer invalidation remain unchanged. This is opt-in assembly, not a production HeadCalc call site."
+  },
+  "system_wrapper_extension": {
+    "baseline": "46919a73e",
+    "interface": "evaluate_saturated_system applies residual and source diagonal contributions to local scratch copies and exposes both caller vectors, used transfer and scalar candidate storage only after both operations succeed.",
+    "tests": "Valid paired assembly, short-diagonal failure after successful residual preparation with both caller vectors unchanged and old transfer unavailable, plus derivative-disabled branch preserving the diagonal while applying the residual.",
+    "ownership": "Atomic numerical scratch assembly only, not a physical state commit or canonical transaction. Additional allocations are unbenchmarked; production callbacks remain unwired.",
+    "recovery_point": "1865d592f",
+    "test_result": "Persisted 1865d592f evaluator and rate-composition gates PASS O0/O2 with identical transcripts, runtime checks and floating-point traps"
+  },
+  "geometry_consistency_extension": {
+    "baseline": "f3e43aa74",
+    "contract": "Restricted fixed contiguous midpoint grid: positive finite dz, pore volume between zero and dz, domain bottom equals bottom face, adjacent cell faces match, pore level inside domain, and supplied initial storage equals source VOLUNDR at that level. Reject before rate evaluation when inconsistent.",
+    "tolerance": "32 machine epsilons times the relevant representation scale for coordinate/storage consistency only. No mass acceptance tolerance or solver convergence gate is changed.",
+    "tests": "Mismatched initial store, disconnected cell geometry, mismatched bottom and excessive pore volume return no usable evaluation. Restoring valid data reproduces original storage/rates. Existing head/retry and invalidation tests retained.",
+    "limits": "This adds a restricted adapter precondition, not a general B1 reference behavior change. It does not establish consistency of all supplied saturation-zone metadata with arbitrary nonlinear heads or enable moving geometry.",
+    "recovery_point": "9da66b54d",
+    "test_result": "Persisted 9da66b54d evaluator and rate-composition gates PASS O0/O2 with identical transcripts, runtime checks and floating-point traps"
+  },
+  "residual_wrapper_extension": {
+    "baseline": "02efba42f",
+    "interface": "evaluate_saturated_residual composes preparation and residual application, invalidates previous used-vector scratch before any preparation, and exposes candidate scalar storage only after successful application.",
+    "tests": "Head 0.5 -> 0.75 -> rejected geometry -> 0.5 gives expected rates 0.125 -> 0.0625 -> unavailable -> 0.125 from unchanged input storage. Old evaluation identity is rejected. Short residual rejects after preparation without modifying residual or retaining old used transfer.",
+    "limitation": "Matrix-zone metadata is fixed during this prescribed head sequence; it tests callback lifecycle, not dynamically derived groundwater state or a nonlinear solve. No production HeadCalc wiring or committed owner change.",
+    "recovery_point": "22ae68c14",
+    "test_result": "Persisted 22ae68c14 restricted evaluator and rate-composition gates PASS O0/O2 with identical transcripts and runtime checks"
+  },
+  "next_action": "Design and implement opt-in Richards callback wiring for the restricted trial contract, including geometry/state consistency and final-used evaluation identity, without enabling unsupported physics or introducing a separate commit owner."
+}

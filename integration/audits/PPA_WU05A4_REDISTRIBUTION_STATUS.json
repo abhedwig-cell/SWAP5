@@ -1,0 +1,14 @@
+{
+  "work_unit": "PPA-WU05-A4-REDISTRIBUTION",
+  "baseline": "d8cf105b6",
+  "recovery_point": "5c6cccb1f",
+  "persisted_test_result": "PASS at persisted 5c6cccb1f, O0/O2 identical transcripts with bounds checks and floating-point traps. Analytic candidate tests only.",
+  "source": "B1.11 macrorate.f90 lines 1339-1373; SHA256 537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+  "implementation": "src/process/mod_ppa_wu05a4_redistribution.f90",
+  "contract": "Candidate-only standard-domain top-excess redistribution. Preserve source pairwise sorting, strict thresholds, sequential remaining proportion and excess updates, and overwrite top rates from potentials. Immutable inputs; invalid denominator/shape/input returns no candidate arrays. Caller owns the source-loop total and relative deficits; these are not recomputed.",
+  "gate": "tests/fapp/run_ppa_wu05a4_redistribution.ps1",
+  "tests": "Analytic dyadic full redistribution, capped allocation after reordered relative deficits, transferred-plus-remaining amount identity, exact no-action threshold, source overwrite rather than rate addition, invalid remaining proportion without partial publication.",
+  "limits": "Not a 100000-vector source oracle; no full MACRORATE execution. Extreme finite arithmetic, near-roundoff domain proportions, SWMBF2 kinematic main domain and production owner integration remain unqualified. Candidate arrays are temporary process output, not committed state. The additional invalid-proportion guard is fail-closed, not a reference correction.",
+  "production_admitted": false,
+  "next_action": "Compose inflow limiter, redistribution and outflow limiter for a multi-domain standard-flow interval, then compare complete source-ordered rates and storage before Richards integration."
+}

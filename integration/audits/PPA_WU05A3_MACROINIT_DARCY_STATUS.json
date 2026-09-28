@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macroinit_darcy.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROINIT-DARCY",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@f227d27012eaf97196f41e94251eec6be02e80d0",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROINIT_DARCY_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macroinit_darcy.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macroinit_darcy_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macroinit_darcy_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["coefficient reference value", "zero domain fraction", "inverse-square diameter scaling", "invalid diameter fail-closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; coefficient source equation only; MACROINIT state composition, accepted mass, retry, restart and A4 remain open",
+  "next_action": "Continue A3 by selecting the next deterministic MACROINIT source equation that does not require replacing its state owner.",
+  "blockers": []
+}

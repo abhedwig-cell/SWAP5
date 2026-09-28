@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.ppa_low01.gwl-surface.source-census.v1",
+  "work_unit": "PPA-LOW01-GWL-SURFACE",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+  },
+  "source_equations": {
+    "qv1": "-q0+(pond-pondm1)/dt+runots/dt after top water-balance and runoff processing",
+    "first_head": "h(1)=gwlinp+disnod(1)*(qv(1)/kmean(1)+1)",
+    "vertical_flux": "qv(i+1)=qv(i)+dz(i)*FrArMtrx(i)*(theta(i)-thetm1(i))/dt+sink(i)-source(i)+qrot(i)",
+    "remaining_heads": "h(i)=h(i-1)+disnod(i)*(qv(i)/kmean(i)+1), i=2..numnod",
+    "bottom_flux": "qbot=qv(numnod+1)"
+  },
+  "mapping": "qv1, gwlinp and profile vectors are explicit values from the source owner; q0/pondrunoff/source construction is intentionally outside this isolated profile calculation.",
+  "interpretation": "Pure surface-reaching GWL profile oracle; no pond, atmosphere, conductivity or HeadCalc state is owned."
+}

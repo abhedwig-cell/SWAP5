@@ -1,0 +1,27 @@
+name: PPA-LOW01 B1.11 surface-GWL profile oracle
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low01-gwl-surface-profile.yml'
+      - 'src/adapter/mod_ppa_low01_gwl_surface_profile.f90'
+      - 'tests/fapp/test_ppa_low01_gwl_surface_profile.f90'
+      - 'tests/fapp/run_ppa_low01_gwl_surface_profile.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low01-gwl-surface-profile.yml'
+      - 'src/adapter/mod_ppa_low01_gwl_surface_profile.f90'
+      - 'tests/fapp/test_ppa_low01_gwl_surface_profile.f90'
+      - 'tests/fapp/run_ppa_low01_gwl_surface_profile.sh'
+
+jobs:
+  surface-gwl-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay surface GWL source equations
+        run: bash tests/fapp/run_ppa_low01_gwl_surface_profile.sh

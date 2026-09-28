@@ -1,0 +1,20 @@
+name: PPA-WU05-C1 oxygen reproduction factor
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05c1-oxygen-reproduction.yml'
+      - 'src/process/mod_ppa_wu05c1_oxygen_reproduction.f90'
+      - 'tests/fapp/test_ppa_wu05c1_oxygen_reproduction.f90'
+      - 'tests/fapp/run_ppa_wu05c1_oxygen_reproduction.sh'
+      - 'integration/audits/PPA_WU05C1_STATUS.json'
+      - 'integration/audits/PPA_WU05C1_PREREGISTRATION.json'
+  workflow_dispatch:
+
+jobs:
+  exact-source-factor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compare 100,000 deterministic inputs to B1.11 oracle at O0/O2
+        run: bash tests/fapp/run_ppa_wu05c1_oxygen_reproduction.sh

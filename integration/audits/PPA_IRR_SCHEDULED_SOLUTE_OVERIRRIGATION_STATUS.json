@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.ppa_irr_scheduled_solute_overirrigation.status.v1",
+  "work_unit": "PPA-IRR-SCHEDULED-SOLUTE-OVERIRRIGATION",
+  "parent_work_unit": "PPA-IRR-SCHEDULED-SOLUTE-CARRIER",
+  "status": "SCHEDULED_DCS2_SOLUTE_OVERIRRIGATION_SOURCE_COMPOSITION_PASS_OWNER_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@a7cdd8457",
+  "preregistration": "integration/audits/PPA_IRR_SCHEDULED_SOLUTE_OVERIRRIGATION_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; scheduled DCS2 depth composition only; no DCS1 integration, parser/calendar, solute mass booking, accepted soil flux, restart or production admission",
+  "implementation": [
+    "src/process/mod_irrigation_process.f90::scheduled_irrigation_parameters_t solute switches/threshold/percentage",
+    "src/process/mod_irrigation_process.f90::scheduled_irrigation_request_t sensor_solute_concentration",
+    "src/process/mod_irrigation_process.f90::evaluate_scheduled_irrigation_interval"
+  ],
+  "test": "tests/fapp/test_ppa_irr_scheduled_solute_overirrigation.f90",
+  "gate": "tests/fapp/run_ppa_irr_scheduled_solute_overirrigation.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "296-299, 585-599",
+    "equations": [
+      "strict cml(nodsen)>cirrthres comparison when both solute switches are enabled",
+      "depth increment is 0.01*perirrsurp*depth after depth limits and before rate/duration selection"
+    ]
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_SCHEDULED_SOLUTE_OVERIRRIGATION_100000=PASS",
+      "PPA_IRR_SCHEDULED_SOLUTE_SWITCH_AND_STRICT_THRESHOLD=PASS",
+      "PPA_IRR_SCHEDULED_SOLUTE_BUMP_BEFORE_RATE_DURATION=PASS",
+      "PPA_IRR_SCHEDULED_SOLUTE_OVERIRRIGATION_BOUNDS=PASS",
+      "PPA_IRR_SCHEDULED_SOLUTE_OVERIRRIGATION_SOURCE_ORACLE=PASS",
+      "PPA_IRR_SCHEDULED_SOLUTE_OVERIRRIGATION_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "e86710dd91be6966b9cc260f187ae4080b66b3715bb923a79aade42806e26472"
+  },
+  "qualification_status": "NOT_QUALIFIED; B1 depth adjustment composed with a typed DCS2 source only; parser, soil concentration owner, full DCS1 path, solute mass publication and accepted water/solute balance remain unqualified",
+  "next_action": "Continue independent irrigation input, depth/rate and source equations; retain the existing one-day event contract and mass-ownership boundary.",
+  "recovery_point": "completed scheduled solute-carrier checkpoint a7cdd8457",
+  "blockers": ["Sensor concentration and solute switches are decoded/request inputs; no qualified B1 parser or solute transport/mass-booking owner is connected."]
+}

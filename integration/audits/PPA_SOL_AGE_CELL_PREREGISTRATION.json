@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.ppa_sol_age_cell_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-CELL",
+  "title": "B1.11 age-tracer compartment storage update",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "0cf96b51e796c033236a20f3e846a46f14ad812a",
+    "reference_snapshot": "B1.11",
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_member": "SWAP/solute.f90",
+    "source_member_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "source_equation": "B1.11 SWAP/solute.f90:979-982 in AgeTracer task 2"
+  },
+  "scope": {
+    "equation": "AgeProd = 1.0d0 * 0.5d0 * (theta + thetm1); Agemsy = Agemsy + (Agefluxb-Agefluxt)/dz + (-Agerot-Agedrtot+AgeProd)*dtsolu; Ageml = Agemsy/theta",
+    "inputs_are_already_derived": ["Agefluxb", "Agefluxt", "Agerot", "Agedrtot"],
+    "state_owner": "None; isolated scalar source-equation oracle only",
+    "output": "candidate age-tracer storage and liquid concentration for one compartment",
+    "io_parser_runtime_restart_mass_publication": "OUT OF SCOPE"
+  },
+  "qualification": [
+    "100000 deterministic vectors match the direct B1.11 operation sequence bitwise at O0 and O2",
+    "finite-value, positive-thickness, positive-water-content and positive-substep preconditions reject invalid input",
+    "O0 and O2 transcripts are identical",
+    "no age-tracer production/runtime/state/restart admission is claimed"
+  ],
+  "decision_rule": "Do not bind this candidate equation to the physical production path. Preserve the full solute/age-tracer owner, accepted-mass and restart gap as open."
+}

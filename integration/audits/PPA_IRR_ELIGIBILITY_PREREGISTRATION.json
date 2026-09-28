@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-ELIGIBILITY",
+  "parent_workunit": "PPA-IRR-WINDOW",
+  "title": "Source-bound scheduled-irrigation eligibility gate composition",
+  "protocol": "PIN_B1_11_SOURCE -> EXERCISE_ALL_SEVEN_GATES_THROUGH_EXISTING_EVALUATOR -> 100000_DETERMINISTIC_GATE_VECTORS -> O0_O2_REPLAY -> HOLD_EVENT_CALENDAR_AND_ACCEPTED_MASS",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "451-453",
+    "condition": "B1.11 proceeds only when sw_irrig=1, schedule=1, irrigevent=0, crop emergence is true and flIrriTime is true"
+  },
+  "scope": [
+    "test the existing typed scheduler's full gate conjunction, including its additional selection-opportunity and explicit parameter/request enable checks",
+    "100000 deterministic combinations of typed selection opportunity, irrigation enable, schedule enable, emergence, window and fixed-event precedence",
+    "verify selection diagnostics and scheduled event creation agree with the typed conjunction; do not claim a one-to-one B1 interface mapping"
+  ],
+  "non_goals": [
+    "derivation of crop emergence, date window, schedule configuration or fixed-event state",
+    "event-calendar parsing, accepted water/solute mass, restart or production admission"
+  ],
+  "pass_conditions": [
+    "selection is evaluated and an event starts iff all seven typed gates permit the scheduled path",
+    "100000 deterministic gate vectors pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

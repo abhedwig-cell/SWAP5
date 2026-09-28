@@ -129,6 +129,8 @@ module mod_soil_water_solver_contract
      class(top_boundary_provider_t), pointer :: top_boundary => null()
      class(dynamic_top_boundary_provider_t), pointer :: dynamic_top_boundary => null()
      class(macropore_exchange_provider_t), pointer :: macropore => null()
+     ! Explicit numerical service; null preserves reference rounded subtraction.
+     procedure(constitutive_storage_difference_ifc), pointer, nopass :: storage_difference => null()
   end type hydraulic_evaluation_context_t
 
   type, public :: soil_water_solve_request_t
@@ -160,6 +162,12 @@ module mod_soil_water_solver_contract
      integer :: workspace_full_resets = 0
      integer(int64) :: workspace_zeroed_bytes = 0_int64
      character(len=32) :: route = 'not-run'
+     ! Optional final-iteration observations, not acceptance or mass accounting.
+     logical :: final_convergence_available = .false.
+     integer :: final_balance_failure_count = 0
+     integer :: final_head_failure_count = 0
+     real(real64) :: final_max_balance_rate = 0.0_real64
+     real(real64) :: final_total_balance_rate = 0.0_real64
   end type soil_water_solver_diagnostics_t
 
   type, public :: soil_water_interface_sensitivity_t
@@ -194,6 +202,7 @@ module mod_soil_water_solver_contract
   type, public :: soil_water_temporal_indicator_request_t
      logical :: previous_right_derivative_available = .false.
      real(real64), allocatable :: previous_right_derivative(:)
+     logical :: forcing_event_at_start = .false.
   end type soil_water_temporal_indicator_request_t
 
   type, public :: soil_water_temporal_indicator_result_t
@@ -220,8 +229,17 @@ module mod_soil_water_solver_contract
   end type soil_water_solver_t
 
   public :: validate_soil_water_request
+  public :: constitutive_storage_difference_ifc
 
   abstract interface
+     subroutine constitutive_storage_difference_ifc(provider, before, water_before, after, difference, available)
+       import :: constitutive_hydraulics_provider_t, real64
+       class(constitutive_hydraulics_provider_t), intent(in) :: provider
+       real(real64), intent(in) :: before(:), water_before(:), after(:)
+       real(real64), intent(out) :: difference(:)
+       logical, intent(out) :: available
+     end subroutine constitutive_storage_difference_ifc
+
      subroutine constitutive_evaluate_ifc(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
        import :: constitutive_hydraulics_provider_t, real64
        class(constitutive_hydraulics_provider_t), intent(in) :: self

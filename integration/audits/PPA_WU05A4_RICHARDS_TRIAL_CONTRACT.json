@@ -1,0 +1,75 @@
+{
+  "work_unit": "PPA-WU05-A4-RICHARDS-TRIAL",
+  "status": "PROPOSED_IMPLEMENTATION_CONTRACT_NOT_ADMITTED",
+  "inspected_head": "9d9215a85",
+  "scope": "Design checkpoint for integrating macropore candidates into the existing Richards interval owner; no production capability is claimed.",
+  "invariants": [3, 5, 7, 13, 21, 22, 23, 25, 29, 30],
+  "existing_seams": [
+    {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "symbol": "macropore_exchange_provider_t / macropore_evaluate_ifc",
+      "finding": "The abstract interface exposes pressure head, exchange flux and active flag only. It does not expose exchange derivative, matrix volume fraction, trial provenance or candidate continuation state. Interface presence is not evidence of an executed Richards macropore path."
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "symbol": "HeadCalc source/sink initialization; vector_F; jacobian_F",
+      "finding": "Ordinary source/sink evaluation occurs before the nonlinear iterations. Legacy macropore task 2 executes inside vector_F, which subtracts QExcMpMtx from the residual. Task 3 executes in jacobian_F and subtracts dFdhMp from the diagonal under the source branch conditions. Explicit physical macropores currently fail closed."
+    },
+    {
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "symbol": "source / sink / provider_root_sink",
+      "finding": "Existing vectors distinguish ordinary source, drainage sink and root sink, but carry no independently tagged macropore transfer vector. Treating source*dt as matrix/macropore exchange would misclassify SSDI."
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "symbol": "validate_legacy_request / materialize_prescribed_head_bottom_flux",
+      "finding": "Active explicit macropores are rejected. Bottom-flux materialization uses inactive-macropore storage and ordinary source/sink totals. This file has pre-existing uncommitted work; no edit is part of this checkpoint."
+    },
+    {
+      "path": "src/adapter/mod_b1_10_mass_seam.f90",
+      "symbol": "b1_10_qualified_profile_storage / b1_10_build_mass_accounting",
+      "finding": "Macropore storage is explicitly incomplete. A successful isolated DTO commit cannot make canonical accounting complete."
+    }
+  ],
+  "rejected_shortcuts": [
+    "Do not add head-dependent exchange to the once-per-step ordinary source provider and label it source-equivalent nonlinear macropore flow.",
+    "Do not infer an internal transfer receipt from the aggregate ordinary source vector.",
+    "Do not enable macropore_active merely by removing guards; matrix fraction, derivative, surface partition, state and accounting dependencies remain.",
+    "Do not invoke the isolated macropore commit before canonical whole-column acceptance.",
+    "Do not reevaluate exchange after convergence for accounting if that changes the vector used in the final accepted residual."
+  ],
+  "proposed_trial_contract": {
+    "owner": "Existing Richards/canonical interval transaction; no independent committed macropore owner in production.",
+    "checkpoint": "Capture matrix, surface and full macropore continuation state under the same interval attempt identity. A2 DTO is reusable payload, not a separate production commit authority.",
+    "evaluation": "Create an opt-in candidate evaluation contract for macro exchange and derivative, matrix fractions and surface partition. Preserve the current provider ABI. Evaluate against the current nonlinear trial heads and the immutable beginning-of-attempt history; do not advance sorptivity history repeatedly during Newton or backtracking.",
+    "scratch": "Keep evaluated transfer vectors and derivatives in worker scratch. Preserve the exact final residual transfer vector together with its attempt identity for candidate accounting.",
+    "sign_and_units": "Positive QExcMpMtx is a matrix input and macropore output, in cm/day per compartment. Integrate the final used rate by the accepted substep duration in days. Pair the same amounts with opposite signs, compartment by compartment.",
+    "storage": "Account actual matrix storage with the applicable matrix volume fractions, plus macropore, pond and other active accepted stores. Geometry changes require old and new storage definitions derived from source order, not an assumed theta*dz substitute.",
+    "external_mass": "Book top inputs, rapid drainage and other external terms once only. Internal matrix/macropore transfers do not enter external total_in or total_out.",
+    "acceptance": "Check solver convergence, local transfer identity, domain budgets and canonical whole-column mass before a single owner commits all state and emits any receipt.",
+    "retry": "Rejected nonlinear or mass trials discard all candidate histories and accounting. Recompute rates and integrated amounts for changed dt from the committed checkpoint.",
+    "restart": "Persist the complete admitted macropore continuation payload through the existing committed restart owner. Never persist tentative exchange scratch as accepted authority."
+  },
+  "implementation_order": [
+    "Inventory matrix_fraction, macropore_surface_fraction, MACROPORE task 2/3 and backtracking branches; derive the bounded opt-in evaluation payload without modifying the frozen provider ABI.",
+    "Implement the opt-in evaluation and final-used-transfer capture in the Richards owner with inactive-path preservation tests.",
+    "Wire trial payload into the existing checkpoint/rollback and canonical accounting; only then expose whole-column commit.",
+    "Qualify nonlinear reject/retry, changed-dt replay, per-cell cancellation, rapid drainage, geometry/storage, restart continuation and inactive-path preservation at O0/O2."
+  ],
+  "follow_on_inventory": {
+    "geometry": "HeadCalc matrix_fraction(node) reads legacy_frarmtrx for legacy binding or swmacro=1; macropore_surface_fraction reads legacy_armpss. Both require explicit candidate inputs before an active typed route can avoid legacy-global ownership.",
+    "surface": "For IcTopMp=1, the pond convergence equation adds the macropore rain/irrigation/melt surface fraction and QMpLatSs. The typed surface result must carry this partition consistently; exchange alone is insufficient.",
+    "backtracking": "vector_F task 2 saves QMpLatSs; when unsaturated_flags(3) is set, it reuses the saved value instead of recomputing MACROPORE task 2. jacobian_F also skips the macropore derivative in that branch. Final-used-transfer capture must respect this source ordering.",
+    "continuation": "At convergence, IDecMpRat, FlDecMpRat, hist%nstep and state%dtold participate in exchange-reduction recovery. Their ownership must be reconciled with the full A1 census, not assumed to be disposable scratch.",
+    "reference_dispatch": "Hash-pinned B1.11 macropore.f90 dispatches task 2 to MACRORATE(1), task 3 to MACRORATE(2), and task 4 to MACROSTATE. The interval candidate must not advance accepted history at each residual evaluation."
+  },
+  "regression_replay": {
+    "source_head": "9d9215a85",
+    "gates": ["tests/fapp/run_ppa_wu05a3_candidate_mass.ps1", "tests/fapp/run_ppa_wu05a3_interval_candidate.ps1"],
+    "result": "PASS at O0/O2, identical transcripts, runtime bounds checks and floating-point traps enabled; no production source changed",
+    "qualification_scope": "Existing isolated candidate gates only, not the proposed Richards contract"
+  },
+  "reference_policy": "A3 conservative flux is a proposed correction and undefined source branches remain separately tracked. Neither is admitted by this design record.",
+  "qualified": false,
+  "user_action_required": false
+}

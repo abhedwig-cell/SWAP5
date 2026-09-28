@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU04-C",
+  "title": "SWINTER=1 Von Hoyningen-Huene/Braden source-window interception",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "status": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED",
+  "authority": {
+    "scientific_transaction_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "reference_snapshot": "B1.11",
+    "reference_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "legacy_source_routine": "MOD_meteo.f90:intercept(SWINTER=1)"
+  },
+  "frozen_science": {
+    "option": "SWINTER=1",
+    "persistent_physical_state": [],
+    "source_window_aggregate": "aintc",
+    "formula": "aintc=0.1/(1/(cofab*lai)+1/(10*intercepted_rate*vegetation_cover))",
+    "gates": ["lai < 1e-3", "intercepted_rate < 1e-5 cm/day", "snow present"],
+    "partition": "Each accepted subspan receives its proportional source-window aggregate; intercepted sprinkling is partitioned with rainfall, otherwise only rainfall is reduced.",
+    "retry_rule": "A smaller hydraulic retry must not re-evaluate the nonlinear source-window aggregate as a new source window."
+  },
+  "architecture_binding": {
+    "existing_wu03_constraint": "PPA-WU03 is admitted only for SWINTER=0 and must not be widened implicitly.",
+    "required_runtime_authority": "A dedicated source-window identity, accepted aggregate-progress receipt and restart representation are required before production admission.",
+    "mass_owner": "The existing dynamic hydraulic top boundary remains the only accepted surface-water mass owner.",
+    "forbidden_shortcut": "No pre-resolved full-window net flux may be reused as a retry-sized source window."
+  },
+  "allowed_process_delta": [
+    "src/process/mod_vonhhbraden_interception.f90",
+    "tests/fapp/test_ppa_wu04c_vonhhbraden_process.f90"
+  ],
+  "qualification_gates": [
+    "exact B1.11 formula oracle",
+    "partition conservation",
+    "snow and small-rate gates",
+    "invalid-input fail-closed behavior",
+    "GNU Fortran O0/O2 observable identity"
+  ],
+  "qualified_production_evidence": [
+    "owner-issued accepted receipts feed the separate source-window progress ledger only after physical commit",
+    "source-window partition, dynamic top evaluation and safe top-flux forcing handoff are composed statelessly",
+    "two-tile production owner run commits the WU04-C forcing vector with hard mass closure"
+  ],
+  "qualified_continuation_evidence": ["owner-managed hydraulic restart and the separate source-window progress record restore between two real accepted receipts without aggregate drift"],
+  "contract_harness_evidence": [
+    "A real F-KT interval exhausting its retry budget produces no candidate or commit receipt and cannot advance WU04C source-window progress.",
+    "A changed-dt interval is rejected and retried from the same committed checkpoint; only its accepted F-KT receipt advances source-window progress.",
+    "The progress record is exported and restored mid-window with lineage/revision binding, then a later accepted receipt closes the aggregate exactly once.",
+    "O0/O2 observable transcripts are identical in tests/fmr/run_ppa_wu04c_retry_restart_replay.sh."
+  ],
+  "remaining_qualification": [
+    "full SWAP Richards/dynamic-top production replay combining rejected trials, changed-dt retry and source-window restart"
+  ],
+  "decision": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED; GENERIC_FKT_RETRY_RESTART_CONTRACT_TESTED; FULL_SWAP_CONTINUATION_REPLAY_OPEN"
+}
