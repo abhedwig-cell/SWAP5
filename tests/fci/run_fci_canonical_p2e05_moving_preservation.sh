@@ -15,6 +15,11 @@ FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
 FGC31_RECONCILED=49a4685474a2d8df53c77c45e87a6c243316a97c
 FGC44_PRODUCTION=04e5db63356e48256997fad9daea9e77040c29e6
 FSI39_PRODUCTION=20d34024cfe4b981b6c00d5042bdf366f8aae830
+BOFEK00_ADMISSION=f670e012ab028cc1e74bb9b7aa1b8655b545619c
+BOFEK00_HEADCALC=3310e5f89109592134e715edd73154479e2ae157
+BOFEK00_SW=f67cbe5b4612e8f4230f58f81cbffd3d44336c0d
+BOFEK00_DYNAMIC_TOP=7586cc2db6aafba053fff31ccecb178335fb37aa
+BOFEK00_DYNAMIC_TOP_ADAPTER=1bd89321dc19e3438ec71a7581bab14948886ab7
 F_ROM1A_PRODUCTION=5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b
 PPA_LOW02_ADMISSION=6c63b8d0e340669d9722bc5e3d947d42d2b467a5
 PPA_LOW02_QUALIFIED=8d238bb46c9d4d77e38802e75458d99f59794d11
@@ -108,7 +113,6 @@ dependency_surface=(
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_surface_evaporation_capacity_contract.f90
   src/solver/mod_b110_surface_evaporation_capacity_provider.f90
-  src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_b110_serialized_context_binding.f90
   src/process/mod_snow_process.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
@@ -162,6 +166,24 @@ for path in "${dependency_surface[@]}"; do
   test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$dependency_authority:$path")" || \
     fail "admitted dependency drift from $dependency_authority: $path"
 done
+
+# BOFEK00 is a later independently qualified exact successor for the wet
+# dynamic-top correctness surface. Keep the historical HeadCalc postimage
+# before admission and accept only the exact four-file BOFEK00 postimage once
+# that admission is in the current lineage.
+if git merge-base --is-ancestor "$BOFEK00_ADMISSION" HEAD; then
+  test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = "$BOFEK00_HEADCALC" || \
+    fail 'admitted BOFEK00 HeadCalc successor drift'
+  test "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" = "$BOFEK00_DYNAMIC_TOP" || \
+    fail 'admitted BOFEK00 dynamic-top provider successor drift'
+  test "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" = "$BOFEK00_DYNAMIC_TOP_ADAPTER" || \
+    fail 'admitted BOFEK00 dynamic-top adapter successor drift'
+  echo 'FCI_CANONICAL_BOFEK00_DYNAMIC_TOP_SUCCESSOR=PASS'
+else
+  test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = \
+       "$(git rev-parse "$dependency_authority:src/legacy/b1_10_port/headcalc.f90")" || \
+    fail 'pre-BOFEK00 HeadCalc drift'
+fi
 
 # PPA-WU04-A/B are later, independently qualified exact successors for
 # stateful evaporation continuation. Keep them lineage-aware and exact rather
@@ -244,6 +266,10 @@ sw_authority="$SW_P2E05"
 if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
   sw_authority="$FCI110_SW"
   echo 'FCI_CANONICAL_FCI110_SOLVER_CONTRACT_SUCCESSOR=ACTIVE'
+fi
+if git merge-base --is-ancestor "$BOFEK00_ADMISSION" HEAD; then
+  sw_authority="$BOFEK00_SW"
+  echo 'FCI_CANONICAL_BOFEK00_SOLVER_CONTRACT_SUCCESSOR=ACTIVE'
 fi
 test "$(git rev-parse HEAD:$SW)" = "$sw_authority" || fail 'typed solver contract successor drift'
 
