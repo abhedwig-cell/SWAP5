@@ -14,11 +14,15 @@ def main():
   theta_s=next(((e.text or '').strip() for e in iv.iter() if local(e.tag)=="volumetricWaterContentAtSaturation"),None)
   theta_r=next(((e.text or '').strip() for e in iv.iter() if local(e.tag)=="residualVolumetricWaterContent"),None)
   ksat=next(((e.text or '').strip() for e in iv.iter() if local(e.tag)=="modelledSaturatedHydraulicConductivity"),None)
+  model=None
+  conductivity_shape=None
+  arrays=[]
   for da in (e for e in iv.iter() if local(e.tag)=="DataArray"):
    et=None; vals=""
    for e in da.iter():
     if local(e.tag)=="elementType": et=e.attrib.get("name")
     if local(e.tag)=="values": vals=(e.text or '').strip()
+   arrays.append((et,vals))
    if et=="WaterContentAndConductivityAtSpecificSoilWaterPotential":
     for block in vals.split():
      p=block.split(",")
@@ -27,7 +31,13 @@ def main():
      rows.append({"bro_id":broid,"begin_depth_m":begin,"end_depth_m":end,"soil_water_potential":h,"volumetric_water_content":theta,"hydraulic_conductivity_cm_d":k})
    elif et=="ShapeRetentionCurve":
     p=[float(x) for x in vals.split(",")]
-    models.append({"begin_depth_m":begin,"end_depth_m":end,"theta_s":theta_s,"theta_r":theta_r,"modelled_ksat_cm_d":ksat,"shape_retention":p})
+    model={"begin_depth_m":begin,"end_depth_m":end,"theta_s":theta_s,"theta_r":theta_r,"modelled_ksat_cm_d":ksat,"shape_retention":p}
+   elif et=="ShapeHydraulicConductivityCurve":
+    conductivity_shape=[float(x) for x in vals.split(",")]
+  if model is not None:
+   model["shape_conductivity"]=conductivity_shape
+   model["l"]=conductivity_shape[3] if conductivity_shape and len(conductivity_shape)>=4 else None
+   models.append(model)
  with open(a.csv,"w",newline="") as f:
   names=list(rows[0]) if rows else ["bro_id","begin_depth_m","end_depth_m","soil_water_potential","volumetric_water_content","hydraulic_conductivity_cm_d"]
   w=csv.DictWriter(f,fieldnames=names); w.writeheader(); w.writerows(rows)
