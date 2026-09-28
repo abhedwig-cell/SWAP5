@@ -53,13 +53,17 @@ def cfg(pid):
     elif mode=="halfmax": dt0=0.5*dtmax
     elif mode=="max": dt0=dtmax
     else: dt0=math.sqrt(dtmin*dtmax)
-    return (dtmin,dtmax,dt0,p.get("numbit",base["numbit_crit"]),p.get("inc",base["fact_inc"]),\n            p.get("dec",base["fact_dec"]),p.get("fail",base["fact_fail_divisor"]),\n            p.get("maxit",base["maxit"]),p.get("maxback",base["max_backtracking"]),\n            base["head_abs_tol"]*p.get("headmult",1.0))
+    return (dtmin,dtmax,dt0,p.get("numbit",base["numbit_crit"]),p.get("inc",base["fact_inc"]),
+p.get("dec",base["fact_dec"]),p.get("fail",base["fact_fail_divisor"]),
+p.get("maxit",base["maxit"]),p.get("maxback",base["max_backtracking"]),
+base["head_abs_tol"]*p.get("headmult",1.0))
 def run(cid,pid):
     m,r=decode(cid)
     dtmin,dtmax,dt0,numbit,inc,dec,fail,maxit,maxback,headtol=cfg(pid)
     cmd=[str(exe),cid,pid,str(m["theta_r"]),str(m["theta_s"]),str(m["alpha"]),str(m["n"]),
          str(m["ksat"]),str(m["lambda"]),str(r["h0_cm"]),str(r["rain_cm_day"]),str(r["horizon_day"]),
-         str(dtmin),str(dtmax),str(dt0),str(numbit),str(maxit),str(maxback),\n         str(inc),str(dec),str(fail),str(headtol)]
+         str(dtmin),str(dtmax),str(dt0),str(numbit),str(maxit),str(maxback),
+str(inc),str(dec),str(fail),str(headtol)]
     t0=time.perf_counter()
     cp=subprocess.run(cmd,text=True,capture_output=True)
     sec=time.perf_counter()-t0
