@@ -53,6 +53,8 @@ module mod_b110_dynamic_top_boundary_provider
     real(real64) :: actual_top_flux_cm_per_day = 0.0_real64
     real(real64) :: surface_head_cm = 0.0_real64
     real(real64) :: surface_face_conductivity_cm_per_day = 0.0_real64
+    logical :: surface_head_dpressure_available = .false.
+    real(real64) :: surface_head_dpressure = 0.0_real64
     real(real64) :: candidate_ponding_depth_cm = 0.0_real64
     real(real64) :: bare_soil_evaporation_cm_per_day = 0.0_real64
     real(real64) :: ponded_water_evaporation_cm_per_day = 0.0_real64
@@ -161,6 +163,10 @@ contains
       result%regime = B110_DYN_TOP_REGIME_HEAD
       result%surface_head_cm = B110_DYN_TOP_ATMOSPHERIC_HEAD_CM
       result%surface_face_conductivity_cm_per_day = k1_atm
+      if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
+        result%surface_head_dpressure_available = .true.
+        result%surface_head_dpressure = 0.0_real64
+      end if
       result%candidate_ponding_depth_cm = 0.0_real64
       result%runoff_depth_cm = 0.0_real64
       result%runoff_potential = .false.
@@ -201,25 +207,37 @@ contains
     if (h0max <= request%ponding_max_cm) then
       result%candidate_ponding_depth_cm = max(0.0_real64, h0max)
       result%runoff_depth_cm = 0.0_real64
+      if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
+        result%surface_head_dpressure_available = .true.
+        result%surface_head_dpressure = p1*p2
+      end if
+    else if (request%runoff_resistance_day >= B110_DYN_TOP_MIN_LINEAR_RSRO_DAY .and. &
+             request%runoff_exponent == 1.0_real64) then
+      ! On the bounded linear-runoff profile the surface reservoir has an
+      ! analytical solution. Select it from h0max, not from Newton-candidate
+      ! runoff scratch, so route selection is independent of candidate history.
+      p2 = 1.0_real64/(p1 + 1.0_real64 + request%step_duration_day/request%runoff_resistance_day)
+      result%candidate_ponding_depth_cm = p2 * (request%previous_ponding_depth_cm + &
+           q0*request%step_duration_day - k1_max*request%step_duration_day + &
+           p1*request%pressure_head_top_cm + &
+           request%step_duration_day/request%runoff_resistance_day*request%ponding_max_cm)
+      result%candidate_ponding_depth_cm = max(0.0_real64, result%candidate_ponding_depth_cm)
+      result%runoff_depth_cm = restricted_linear_runoff_depth(result%candidate_ponding_depth_cm, request)
+      if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
+        result%surface_head_dpressure_available = .true.
+        result%surface_head_dpressure = p1*p2
+      end if
     else
+      ! Preserve non-linear/instantaneous legacy behavior outside the bounded
+      ! correction profile. Those routes require their own qualification.
       current_runoff = restricted_linear_runoff_depth(request%candidate_ponding_depth_cm, request)
       if (abs(current_runoff) < B110_DYN_TOP_RUNOFF_ZERO_CM) then
         result%candidate_ponding_depth_cm = max(0.0_real64, h0max)
         result%runoff_depth_cm = current_runoff
       else
-        if (request%runoff_resistance_day < B110_DYN_TOP_MIN_LINEAR_RSRO_DAY .or. &
-            request%runoff_exponent /= 1.0_real64) then
-          result%status = B110_DYN_TOP_UNSUPPORTED
-          result%route = 'active-runoff-outside-profile'
-          return
-        end if
-        p2 = 1.0_real64/(p1 + 1.0_real64 + request%step_duration_day/request%runoff_resistance_day)
-        result%candidate_ponding_depth_cm = p2 * (request%previous_ponding_depth_cm + &
-             q0*request%step_duration_day - k1_max*request%step_duration_day + &
-             p1*request%pressure_head_top_cm + &
-             request%step_duration_day/request%runoff_resistance_day*request%ponding_max_cm)
-        result%candidate_ponding_depth_cm = max(0.0_real64, result%candidate_ponding_depth_cm)
-        result%runoff_depth_cm = restricted_linear_runoff_depth(result%candidate_ponding_depth_cm, request)
+        result%status = B110_DYN_TOP_UNSUPPORTED
+        result%route = 'active-runoff-outside-profile'
+        return
       end if
     end if
 
