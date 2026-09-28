@@ -366,6 +366,10 @@ jobs:
         run: |
           PYTHONPATH=research/hydrofit python research/hydrofit/bro_lambda_corpus.py \
             --party 27378529 --limit 100 --out "$RUNNER_TEMP/bro/lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-corpus.txt"
+      - name: Discover spatial modelled lambda corpus
+        run: |
+          PYTHONPATH=research/hydrofit python research/hydrofit/bro_spatial_lambda_corpus.py \
+            --inspect-limit 200 --out "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/spatial-lambda-corpus.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
