@@ -91,5 +91,5 @@ jobs:
             exit 0
           fi
           git commit -m "PPA-SWAP431 reconcile local migration with current canonical"
-          git push origin HEAD:work/ppa-reconcile01-merged
+          git push origin HEAD:refs/heads/work/ppa-reconcile01-merged
           echo "PPA_RECONCILE_MERGE_PUSH=PASS"
