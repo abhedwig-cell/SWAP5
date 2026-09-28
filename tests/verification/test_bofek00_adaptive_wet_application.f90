@@ -81,6 +81,18 @@ program test_bofek00_adaptive_wet_application
 
 contains
 
+  subroutine read_duration(duration_day)
+    real(real64),intent(out)::duration_day
+    character(len=64) :: arg
+    real(real64) :: seconds
+    integer :: ios
+    if (command_argument_count() /= 1) error stop 'BOFEK00 adaptive test requires duration seconds'
+    call get_command_argument(1,arg)
+    read(arg,*,iostat=ios) seconds
+    if (ios /= 0 .or. seconds <= 0.0_real64) error stop 'invalid BOFEK00 duration seconds'
+    duration_day=seconds/86400.0_real64
+  end subroutine read_duration
+
   subroutine configure(value)
     type(fmr_production_application_config_t),intent(out)::value
     type(b110_default_mvg_parameters_t),target :: hp
