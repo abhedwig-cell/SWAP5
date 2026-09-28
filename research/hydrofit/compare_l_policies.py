@@ -14,19 +14,29 @@ def observations(rows,key):
   obs.append(Observation("theta",h,th,sigma=.01))
   if math.isfinite(k) and k>0: obs.append(Observation("K",h,k,sigma=.1))
  return obs
+def decode(y):
+ # optimizer coordinates: theta_r, logit fraction of remaining pore space, alpha, n, Ks, l
+ tr=y[0]; frac=1/(1+np.exp(-y[1])); ts=tr+(0.9-tr)*frac
+ return np.array([tr,ts,y[2],y[3],y[4],y[5]])
+def encode(x):
+ tr,ts=x[0],x[1]; frac=np.clip((ts-tr)/(0.9-tr),1e-9,1-1e-9)
+ return np.array([tr,np.log(frac/(1-frac)),x[2],x[3],x[4],x[5]])
 def rv6(x,obs):
  return residual_vector(x[:5],obs,FitConfig(semantics="textbook_mvg",fixed_l=float(x[5]),fixed_h_entry=0,weighting_mode="family_mean"))
 def solve(obs,stored,policy):
  if policy=="STORED_L":
-  l=stored[5]; free0=stored[:5]
-  def rr(y): return rv6(np.r_[y,l],obs)
-  z=least_squares(rr,free0,bounds=([0,.05,1e-8,1.000001,1e-12],[.8,.9,10,20,1e8]),method="trf",x_scale="jac")
-  return np.r_[z.x,l],float(z.fun@z.fun),False
+  l=stored[5]; y0=encode(stored); free0=y0[:5]
+  def rr(y):
+   q=np.r_[y,l]; return rv6(decode(q),obs)
+  z=least_squares(rr,free0,bounds=([0,-25,1e-8,1.000001,1e-12],[.8,25,10,20,1e8]),method="trf",x_scale="jac")
+  q=np.r_[z.x,l]; return decode(q),float(z.fun@z.fun),False
  lb_l,ub_l=(-4.,0.) if policy=="BOUNDED_L" else (-10.,10.)
- x0=stored.copy(); x0[5]=min(ub_l,max(lb_l,x0[5]))
- z=least_squares(lambda x:rv6(x,obs),x0,bounds=([0,.05,1e-8,1.000001,1e-12,lb_l],[.8,.9,10,20,1e8,ub_l]),method="trf",jac="3-point",x_scale="jac")
- x=z.x; lo=np.array([0,.05,1e-8,1.000001,1e-12,lb_l]); hi=np.array([.8,.9,10,20,1e8,ub_l])
- near=np.any(np.minimum((x-lo)/np.maximum(hi-lo,1e-30),(hi-x)/np.maximum(hi-lo,1e-30))<=.001)
+ x0=encode(stored); x0[5]=min(ub_l,max(lb_l,x0[5]))
+ lo=np.array([0,-25,1e-8,1.000001,1e-12,lb_l]); hi=np.array([.8,25,10,20,1e8,ub_l])
+ z=least_squares(lambda y:rv6(decode(y),obs),x0,bounds=(lo,hi),method="trf",jac="3-point",x_scale="jac")
+ x=decode(z.x)
+ # boundary gate on interpretable alpha,n,Ks,l plus theta_r; transformed theta gap is separately physical by construction.
+ near=np.any(np.minimum((z.x-lo)/np.maximum(hi-lo,1e-30),(hi-z.x)/np.maximum(hi-lo,1e-30))<=.001)
  return x,float(z.fun@z.fun),bool(near)
 
 for pair in sys.argv[1:]:
