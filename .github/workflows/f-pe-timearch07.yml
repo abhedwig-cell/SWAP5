@@ -16,6 +16,7 @@ on:
       - 'tests/fpe/test_fpe_timearch07_trace.f90'
       - 'tests/fpe/guard_fpe_timearch07_source.py'
       - 'tests/fpe/run_fpe_timearch07.sh'
+      - 'tests/fpe/timearch07_link_stubs.f90'
       - '.github/workflows/f-pe-timearch07.yml'
   workflow_dispatch:
 
