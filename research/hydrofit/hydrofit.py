@@ -298,13 +298,16 @@ def near_equivalent_ensemble(
     span = hi - lo
     rng = np.random.default_rng(seed)
 
-    # Use right singular vectors as local directions. Scale weak directions more strongly.
+    # Local proposals use the quadratic objective geometry J ~= J* + ||Jac dx||^2.
+    # Draw directions in SVD coordinates and scale each proposal to a target delta-J,
+    # so weak directions receive larger physical displacement without using global box span.
     _, s, vt = np.linalg.svd(best.jacobian, full_matrices=False)
-    sref = max(float(s[0]) if len(s) else 1.0, 1e-12)
-    weakness = np.clip(sref / np.maximum(s, sref * 1e-8), 1.0, 100.0)
+    sfloor = max(float(s[0]) * 1e-10 if len(s) else 1e-12, 1e-12)
     z = rng.normal(size=(local_draws, len(xstar)))
-    coeff = z * (0.0025 * weakness)
-    local = xstar + (coeff @ vt) * span
+    z /= np.maximum(np.linalg.norm(z, axis=1, keepdims=True), 1e-30)
+    target_dj = rng.uniform(1e-6, 0.20, size=(local_draws, 1))
+    coeff = z * np.sqrt(target_dj) / np.maximum(s[None, :], sfloor)
+    local = xstar + coeff @ vt
     local = np.clip(local, lo, hi)
 
     # Broad bounded coverage centered partly on the optimum.
