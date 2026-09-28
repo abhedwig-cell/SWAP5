@@ -35,7 +35,7 @@ def run(mid,reg,dt):
             out[k.lower()]=int(d[k])
     return out
 
-rows=[run(mid,reg,dt) for mid in bank["materials"] for reg in regimes for dt in dts]
+rows=[run(m["id"],reg,dt) for m in bank["materials"] for reg in regimes for dt in dts]
 complete=[r for r in rows if r["domain"] and r["ok"]]
 candidate_fail=[r for r in rows if r["domain"] and not r["ok"]]
 
