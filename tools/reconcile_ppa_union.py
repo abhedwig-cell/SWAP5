@@ -420,10 +420,76 @@ s = replace_once(
 )
 
 combined_standalone = extract_subroutine(canon_boot, "production_application_run_standalone_with_forcing")
-combined_standalone = combined_standalone.replace(
-    "materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)",
-    "materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &\n"
-    "           free_drainage_indicator=self%free_drainage_indicator, storage_difference=self%storage_difference)",
+standalone_dispatch = """    if (self%execution_plan%ready()) then
+      if (associated(self%free_drainage_indicator)) then
+        if (associated(self%storage_difference)) then
+          call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+               self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+               aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+               materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+               materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+               free_drainage_indicator=self%free_drainage_indicator, storage_difference=self%storage_difference)
+        else
+          call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+               self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+               aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+               materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+               materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+               free_drainage_indicator=self%free_drainage_indicator)
+        end if
+      else if (associated(self%storage_difference)) then
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+             materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+             materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+             storage_difference=self%storage_difference)
+      else
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
+             materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+             materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+      end if
+    else
+      if (associated(self%free_drainage_indicator)) then
+        if (associated(self%storage_difference)) then
+          call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+               self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+               aggregate, dispatch_status, materialize_worker_assignments=.false., &
+               materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+               materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+               free_drainage_indicator=self%free_drainage_indicator, storage_difference=self%storage_difference)
+        else
+          call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+               self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+               aggregate, dispatch_status, materialize_worker_assignments=.false., &
+               materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+               materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+               free_drainage_indicator=self%free_drainage_indicator)
+        end if
+      else if (associated(self%storage_difference)) then
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, materialize_worker_assignments=.false., &
+             materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+             materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+             storage_difference=self%storage_difference)
+      else
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, materialize_worker_assignments=.false., &
+             materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
+             materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+      end if
+    end if
+"""
+combined_standalone = replace_once(
+    combined_standalone,
+    r"    if \(self%execution_plan%ready\(\)\) then\n.*?    end if\n\n    status = FMR_APP_BOOT_RUNTIME_FAILED",
+    standalone_dispatch + "\n    status = FMR_APP_BOOT_RUNTIME_FAILED",
+    "bootstrap standalone optional-service dispatch",
+    re.S,
 )
 s = replace_once(
     s,
@@ -434,12 +500,37 @@ s = replace_once(
 )
 
 ppa_receipts = extract_subroutine(ppa_boot, "production_application_run_standalone_with_forcing_receipts")
-ppa_receipts = ppa_receipts.replace(
-    """         aggregate, dispatch_status, runtime, receipt_column_ids, receipts, self%free_drainage_indicator, &
-         self%storage_difference)""",
-    """         aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
-         commit_receipts=receipts, free_drainage_indicator=self%free_drainage_indicator, &
-         storage_difference=self%storage_difference)""",
+receipts_dispatch = """    if (associated(self%free_drainage_indicator)) then
+      if (associated(self%storage_difference)) then
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
+             commit_receipts=receipts, free_drainage_indicator=self%free_drainage_indicator, &
+             storage_difference=self%storage_difference)
+      else
+        call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+             self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+             aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
+             commit_receipts=receipts, free_drainage_indicator=self%free_drainage_indicator)
+      end if
+    else if (associated(self%storage_difference)) then
+      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+           aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
+           commit_receipts=receipts, storage_difference=self%storage_difference)
+    else
+      call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
+           self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
+           aggregate, dispatch_status, runtime_diagnostics=runtime, receipt_column_ids=receipt_column_ids, &
+           commit_receipts=receipts)
+    end if
+"""
+ppa_receipts = replace_once(
+    ppa_receipts,
+    r"    call fmr_run_serialized_physical_multiswap\(self%columns, self%templates, self%parameters, effective_forcing, &\n.*?         self%storage_difference\)",
+    receipts_dispatch,
+    "bootstrap receipt optional-service dispatch",
+    re.S,
 )
 if "subroutine production_application_run_standalone_with_forcing_receipts" in s:
     s = replace_once(
