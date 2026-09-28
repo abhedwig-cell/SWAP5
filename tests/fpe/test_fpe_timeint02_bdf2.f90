@@ -28,13 +28,13 @@ program test_fpe_timeint02_bdf2
   real(real64),allocatable :: cof(:,:),water(:),kk(:),cap(:),dk(:),theta_prevprev(:)
   character(len=32) :: material_id
   real(real64) :: tr,ts,alpha,nvg,ksat,lambda,rain,dt,horizon
-  integer :: requested_temporal_mode,kimpl,steps,step,total_nl,total_back,total_jac,total_lin
+  integer :: requested_temporal_mode,kimpl,maxit_input,steps,step,total_nl,total_back,total_jac,total_lin
   real(real64), parameter :: BALTOL_CONFIGURED=1.0e-12_real64,BALTOL_DEPTH=2.8e-16_real64
 
   call get_command_argument(1,material_id)
   call read_real(2,tr); call read_real(3,ts); call read_real(4,alpha); call read_real(5,nvg)
   call read_real(6,ksat); call read_real(7,lambda); call read_real(8,rain); call read_real(9,dt)
-  call read_int(10,requested_temporal_mode); call read_int(11,kimpl)
+  call read_int(10,requested_temporal_mode); call read_int(11,kimpl); call read_optional_int(12,maxit_input,8)
   horizon=0.04_real64
   steps=nint(horizon/dt)
   call require(abs(steps*dt-horizon)<=1.0e-12_real64,'dt does not divide horizon')
@@ -69,6 +69,18 @@ contains
     integer,intent(out)::x
     character(len=64)::s
     call get_command_argument(i,s); read(s,*)x
+  end subroutine
+
+  subroutine read_optional_int(i,x,default_value)
+    integer,intent(in)::i,default_value
+    integer,intent(out)::x
+    character(len=64)::s
+    call get_command_argument(i,s)
+    if(len_trim(s)==0)then
+      x=default_value
+    else
+      read(s,*)x
+    end if
   end subroutine
 
   subroutine setup()
@@ -128,7 +140,7 @@ contains
     req%boundary%top_flux=-rain
     req%boundary%bottom_mode=2
     req%boundary%bottom_flux=0.0_real64
-    req%numerical%max_iterations=8
+    req%numerical%max_iterations=maxit_input
     req%numerical%max_backtracking=8
     req%numerical%conductivity_implicit_mode=kimpl
     req%numerical%conductivity_mean_method=1
@@ -144,7 +156,13 @@ contains
     req%evaluation%top_boundary=>top
 
     call solver%solve(req,ws,res)
-    call require(res%status==SW_SOLVE_CONVERGED,'solver did not converge')
+    if(res%status/=SW_SOLVE_CONVERGED)then
+      write(*,'(*(g0))') 'F_PE_TIMEINT02_FAILURE|STEP=',step_index,'|STATUS=',res%status, &
+           '|RETRY=',merge(1,0,res%retry_advised),'|NL=',res%diagnostics%nonlinear_iterations, &
+           '|BACK=',res%diagnostics%backtracking_attempts,'|JAC=',res%diagnostics%jacobian_builds, &
+           '|LIN=',res%diagnostics%linear_solves,'|MAXIT=',maxit_input
+      call require(.false.,'solver did not converge')
+    end if
     call require(all(ieee_is_finite(res%candidate_state%pressure_head)),'nonfinite candidate')
     total_nl=total_nl+res%diagnostics%nonlinear_iterations
     total_back=total_back+res%diagnostics%backtracking_attempts
