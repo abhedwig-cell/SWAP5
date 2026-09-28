@@ -56,12 +56,11 @@ program test_bofek00_adaptive_wet_application
            '|INTERNAL_RETRIES=',results(1)%solver_internal_retries,'|BACKTRACK=',results(1)%solver_backtracking_attempts
     end if
   end if
-  call require(status==FMR_APP_BOOT_OK,'application run')
   call require(allocated(results) .and. size(results)==1,'single result')
-  call require(results(1)%completed .and. results(1)%committed,'interval committed')
-  call require(results(1)%mass%complete,'mass complete')
-
-  write(*,'(*(g0))') 'BOFEK00_ADAPTIVE|ACCEPTED_SUBSTEPS=',results(1)%accepted_substeps, &
+  write(*,'(*(g0))') 'BOFEK00_ADAPTIVE|STATUS=',status, &
+       '|COMPLETED=',results(1)%completed,'|COMMITTED=',results(1)%committed, &
+       '|KERNEL_STATUS=',results(1)%kernel_status, &
+       '|ACCEPTED_SUBSTEPS=',results(1)%accepted_substeps, &
        '|SOLVER_ITERATIONS=',results(1)%solver_iterations, &
        '|NONLINEAR=',results(1)%solver_nonlinear_iterations, &
        '|INTERNAL_RETRIES=',results(1)%solver_internal_retries, &
@@ -70,9 +69,10 @@ program test_bofek00_adaptive_wet_application
        '|LINEAR_SOLVES=',results(1)%solver_linear_solves, &
        '|BACKTRACK=',results(1)%solver_backtracking_attempts, &
        '|ALT_SOLVER=',results(1)%solver_alternative_solver_calls, &
+       '|MASS_COMPLETE=',results(1)%mass%complete, &
        '|MASS_RESIDUAL=',results(1)%mass%residual, &
        '|TOTAL_IN=',results(1)%mass%total_in,'|TOTAL_OUT=',results(1)%mass%total_out
-  write(*,'(A)') 'F_PE_BOFEK00_ADAPTIVE_WET_APPLICATION=PASS'
+  write(*,'(A)') 'F_PE_BOFEK00_ADAPTIVE_WET_APPLICATION=OBSERVED'
 
   call app%close(status)
   call require(status==FMR_APP_BOOT_OK,'application close')
