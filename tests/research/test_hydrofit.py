@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / "research" / "hydrofit"))
-from hydrofit import FitConfig, MvGParameters, Observation, evaluate, fit, multistart_fit, swap_theta, textbook_theta
+from hydrofit import FitConfig, MvGParameters, Observation, evaluate, fit, multistart_fit, near_equivalent_ensemble, swap_theta, textbook_theta
 
 
 def synthetic_observations(p, semantics="swap_default_mvg"):
@@ -144,3 +144,47 @@ def test_family_mean_preserves_exact_synthetic_recovery():
         [truth.theta_r, truth.theta_s, truth.alpha, truth.n, truth.Ks],
         rtol=2e-5, atol=2e-7,
     )
+
+
+def _limited_perturbed_case():
+    truth = MvGParameters(0.06, 0.43, 0.015, 1.7, 35.0)
+    theta_heads = np.array([-1.0, -10.0, -100.0, -1000.0])
+    k_heads = np.array([-10.0, -1000.0])
+    theta, _ = evaluate(theta_heads, truth, "swap_default_mvg")
+    _, kval = evaluate(k_heads, truth, "swap_default_mvg")
+    theta_delta = np.array([0.0015, -0.0020, 0.0010, -0.0015])
+    logk_delta = np.array([0.04, -0.05])
+    obs = [Observation("theta", float(h), float(v + d), sigma=0.01) for h, v, d in zip(theta_heads, theta, theta_delta)]
+    obs += [Observation("K", float(h), float(v * np.exp(d)), sigma=0.1) for h, v, d in zip(k_heads, kval, logk_delta)]
+    return truth, obs
+
+
+def test_near_equivalent_ensemble_is_nested_and_nontrivial():
+    truth, obs = _limited_perturbed_case()
+    cfg = FitConfig(semantics="swap_default_mvg", fixed_l=0.5, fixed_h_entry=0.0, weighting_mode="family_mean")
+    starts = [
+        MvGParameters(0.03, 0.38, 0.005, 1.25, 8.0),
+        MvGParameters(0.12, 0.52, 0.05, 2.3, 120.0),
+        MvGParameters(0.08, 0.46, 0.012, 1.5, 25.0),
+    ]
+    ens = near_equivalent_ensemble(obs, starts, cfg, local_draws=1500, broad_draws=1500)
+    assert np.all(~ens.tight_mask | ens.primary_mask)
+    assert np.all(~ens.primary_mask | ens.wide_mask)
+    assert ens.primary_mask.sum() > 1
+    kept = ens.candidates[ens.primary_mask]
+    spread = np.ptp(kept, axis=0)
+    assert np.any(spread > np.array([1e-4, 1e-4, 1e-5, 1e-3, 1e-2]))
+    for x, j in zip(ens.candidates[ens.primary_mask], ens.objectives[ens.primary_mask]):
+        assert np.isfinite(j)
+        assert j <= ens.optimum.objective + max(0.05 * ens.optimum.objective, 0.25) + 1e-12
+
+
+def test_ensemble_seed_is_deterministic():
+    _, obs = _limited_perturbed_case()
+    cfg = FitConfig(semantics="swap_default_mvg", fixed_l=0.5, fixed_h_entry=0.0, weighting_mode="family_mean")
+    starts = [MvGParameters(0.08, 0.46, 0.012, 1.5, 25.0)]
+    a = near_equivalent_ensemble(obs, starts, cfg, seed=123, local_draws=300, broad_draws=300)
+    b = near_equivalent_ensemble(obs, starts, cfg, seed=123, local_draws=300, broad_draws=300)
+    assert np.array_equal(a.candidates, b.candidates)
+    assert np.array_equal(a.objectives, b.objectives)
+    assert np.array_equal(a.primary_mask, b.primary_mask)
