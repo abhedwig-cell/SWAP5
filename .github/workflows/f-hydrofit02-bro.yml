@@ -412,6 +412,11 @@ jobs:
           PYTHONPATH=research/hydrofit python research/hydrofit/cross_component_prior_provenance.py \
             --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
             --out "$RUNNER_TEMP/bro/lambda-prior-cross-provenance.json" | tee "$RUNNER_TEMP/bro/lambda-prior-cross-provenance.txt"
+      - name: Compare low-capacity conditional lambda priors
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/compare_conditional_lambda_priors.py \
+            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-prior-low-capacity.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
