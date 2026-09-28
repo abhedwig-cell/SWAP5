@@ -1,7 +1,7 @@
 module MOD_swap_base
   implicit none
   character(len=256) :: project=''
-  integer :: swscre=0, swmacro=0, swsolve=1, swirfix=0, swinco=0, swrain=0, swmetdetail=0, swrunon=0
+  integer :: swscre=0, swmacro=0, swsolve=1, swirfix=0, swinco=0, swrain=0, swmetdetail=0, swrunon=0, unit_log=6
   logical :: fl_initialize=.false.
 end module
 
@@ -49,7 +49,7 @@ module variables
   logical :: floutputshort=.false.
   integer :: nprintday=1, period=1, isteps=0, ioutdat=1, ioutdatint=1, cntper=0, nprintcount=1
   integer :: iyear=2000, daynr=1, daycum=1, imonth=1, msteps=1000, swheader=0, swres=0
-  integer :: numbit=0, maxit=8, numbit_crit=4
+  integer :: numbit=0, maxit=8, numbit_crit=4, maxitertime=100000, itnumb(100,2)=0
   real(8) :: outper=0.0d0, t1900=0.0d0, tstart=0.0d0, t=0.0d0, tcum=0.0d0, tend=1.0d0
   real(8) :: dt=0.01d0, dtold=0.01d0, dtmin=0.001d0, dtmax=0.02d0
   real(8) :: fact_dt_increase=2.0d0, fact_dt_decrease=0.5d0, fact_dt_fldect=2.0d0, timjan1=0.0d0
