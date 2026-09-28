@@ -9,6 +9,7 @@ trap 'rm -rf "$BUILD"' EXIT
 python3 tests/fpe/guard_fpe_timearch06_source.py
 
 for opt in 0 2; do
+  mkdir -p "$BUILD/o$opt"
   gfortran -std=f2008 -Wall -Wextra -O"$opt" -J"$BUILD/o$opt" -I"$BUILD/o$opt" \
     src/legacy/b1_10_fci11_port/mod_b1_10_timestep_decision_service.f90 \
     tests/fpe/test_fpe_timearch06_service.f90 \
@@ -21,6 +22,7 @@ cmp "$BUILD/result_o0.txt" "$BUILD/result_o2.txt"
 echo "F_PE_TIMEARCH06_O0_O2_IDENTITY=PASS"
 
 # The already-qualified test-only compatibility matrix must remain green.
+mkdir -p "$BUILD/compat"
 gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/compat" -I"$BUILD/compat" \
   tests/fpe/mod_fpe_timearch02_contract.f90 \
   tests/fpe/test_fpe_timearch02_contract.f90 \
