@@ -36,14 +36,9 @@
 
       ! decrease in case of no convergence in headcalc
       if (fldecdt) then
-         if (dt > fact_dt_fldect*dtmin) then
-            dt = dt / fact_dt_fldect
-!           force dt to equal multiple dtmin to prevent very small dt-values at end of day 
-!            dt = dtmin * dble(max(1,int(dt/dtmin)))
-         else
-            dt = dtmin
-            fldtmin = .TRUE.
-         end if
+         timestepDecision = b1_10_legacy_solver_retry_decision(dt, dtmin, fact_dt_fldect)
+         dt = timestepDecision%preferred_dt
+         if (timestepDecision%floor_reached) fldtmin = .TRUE.
          fldecdt = .FALSE.
          return
       end if
