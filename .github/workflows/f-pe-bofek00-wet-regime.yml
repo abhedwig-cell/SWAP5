@@ -1,4 +1,4 @@
-name: F-PE-BOFEK00 wet-regime correctness gate
+name: F-PE-BOFEK00 wet-regime correction qualification
 
 on:
   push:
@@ -6,16 +6,27 @@ on:
       - work/f-pe-bofek00-wet-regime-authority
     paths:
       - 'docs/verification/F-PE-BOFEK00_PREREGISTRATION.md'
-      - 'tools/verification/bofek00_wet_regime_gate.py'
+      - 'tests/verification/test_bofek00_dynamic_top_correction.f90'
+      - 'tests/verification/run_bofek00_correction_gate.sh'
       - '.github/workflows/f-pe-bofek00-wet-regime.yml'
-      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
       - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  wet-regime-correctness:
-    runs-on: ubuntu-latest
+  corrected-wet-regime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Run BOFEK00 current-authority micro-gate
-        run: python tools/verification/bofek00_wet_regime_gate.py
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute corrected wet-regime gate
+        run: bash tests/verification/run_bofek00_correction_gate.sh
