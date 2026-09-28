@@ -84,6 +84,15 @@ jobs:
               schema=d.get("components",{}).get("schemas",{}).get(name)
               print("BRO_SEARCH_SCHEMA|NAME="+name+"|SCHEMA="+json.dumps(schema,sort_keys=True))
           PY
+      - name: Inspect area and official example
+        run: |
+          python - <<'PY'
+          import json, os, pathlib
+          d=json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/openapi.json.response").read_text())
+          for name in ["Area","BoundingBox","DatePeriod","YesNoEnumeration"]:
+              print("BRO_SCHEMA|NAME="+name+"|SCHEMA="+json.dumps(d.get("components",{}).get("schemas",{}).get(name),sort_keys=True))
+          print("BRO_EXAMPLE_SIMPLE="+json.dumps(d.get("components",{}).get("examples",{}).get("SIMPLE_CRITERIA"),sort_keys=True))
+          PY
       - name: Enumerate official BHR-P ids
         run: |
           python research/hydrofit/bro_bhrp_fetch.py --path bro-ids \
