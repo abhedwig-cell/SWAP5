@@ -54,7 +54,7 @@ confirmed B0 defects are not migration targets.
 | SWINTER=1 daily aggregate | PPA-INT-12; PPA-WU04-C | IMPLEMENTED_NOT_FULLY_QUALIFIED | B1.11 oracle plus branch-local explicit mode-7 storage/temporal/event owner gates: hard mass, failed/partial rollback, accepted-only receipts, mid-window restart and changing-source sequences; not canonical admission | Broaden ordinary ingress and dynamic-top regimes beyond the qualified fixed-flux profile |
 | SWINTER=2 daily aggregate | PPA-INT-12; PPA-WU04-D | IMPLEMENTED_NOT_FULLY_QUALIFIED | B1.11 Gash oracle plus branch-local owner hard-mass/receipt/mid-window restart gates; low-rain full-window replay passes with explicit numerical retry profile 0.8/64; not canonical admission | Extend bounded source transitions; ordinary ingress, disk restart and broader regimes remain open |
 | SWREDU=1 Black | PPA-WU04-A | CANONICALLY_ADMITTED | Transaction, restart, mass and preservation evidence | Preserve restricted envelope |
-| SWREDU=2 Boesten, `0 < COFRED <= 1` | PPA-WU04-B | IMPLEMENTED_NOT_FULLY_QUALIFIED | Qualified owner gate; admission evidence is required before canonical claim | Reconcile current canonical and route for admission |
+| SWREDU=2 Boesten, `0 < COFRED <= 1` | PPA-WU04-B | CANONICALLY_ADMITTED | Qualified owner gate and canonical merge PR #404 (`4d40b8d4b6a1df06ff97fab55497542778431290`); `COFRED=0` remains explicitly excluded | Preserve bounded envelope; do not broaden mode-5/root/drainage composition |
 | Boesten `COFRED=0` | B1 / PPA-WU04-B | CONFIRMED_LEGACY_DEFECT | Exact branch can form `0/0` | Classify and qualify a B1 correction before SWAP5 work |
 | Root uptake / basic Feddes route | Status-A; PPA root-hydraulic authorities | CANONICALLY_ADMITTED | Admitted bounded chain | Preserve |
 | Oxygen, salinity, frost, compensated and advanced root stress | PPA-WU05-C and PPA-WU05 | PARTIAL_ORACLES_PRODUCTION_HELD | Pure oxygen factors/cache guard, compensation, salinity and macro-frost factors plus micro Campbell response have exact-source tests; source/state, thermal/coupling and single root-sink composition dependencies remain | Continue independent source-bound oracles; do not claim runtime admission |
@@ -169,7 +169,9 @@ boundary does not prevent independent capability work.
 3. **PPA-LOW01 / PPA-LOW08** now have pure input/regime/profile/row-term oracles, but their stateful lower-boundary slices remain open; do not conflate them with production migration.
 4. **PPA-WU05 remaining root family** has exact-equation oracles but no qualified multi-stressor or MICRO stateful runtime owner.
 
-No production-admission candidate is currently `READY`. PPA-ATM-02 now has
+No additional production-admission candidate is currently `READY`. PPA-WU04-B
+is already canonical through PR #404; its bounded envelope remains limited to
+`0 < COFRED <= 1`. PPA-ATM-02 now has
 bounded branch-local owner/restart/accepted-uptake evidence at d234a4524, including
 a changed-weather event and failed/partial rollback. A later unmarked interval
 still fails and is qualified only for exact rollback, not completion. The
