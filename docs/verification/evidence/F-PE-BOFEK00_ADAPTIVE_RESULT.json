@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE-BOFEK00F",
+  "phase": "ADAPTIVE_INTERACTION_QUALIFIED",
+  "canonical_head": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
+  "correction_parent": "d269ca78758f36ef2bcc3719761134a8ae919881",
+  "preregistration_commit": "e35a843cf7e8b7c540ecca5cf149f5bcecf4eb33",
+  "execution": {
+    "workflow_run": 36404440496,
+    "executed_head": "c8abf8fb38795e3d9e8e879a0eb3ffb577a905ad",
+    "conclusion": "success",
+    "policy_changed": false
+  },
+  "fixture": {
+    "horizon_day": 0.12,
+    "initial_dt_day": 0.005,
+    "dtmin_day": 0.000625,
+    "dtmax_day": 0.02,
+    "numbit_crit": 4,
+    "maxit": 20,
+    "fact_dt_increase": 1.5,
+    "fact_dt_decrease": 0.5,
+    "fact_dt_fldect": 2.0,
+    "classification": "RESEARCH_FIXTURE_NOT_BOFEK_RECOMMENDATION"
+  },
+  "baseline": {
+    "accepted_steps": 17,
+    "rejected_attempts": 0,
+    "reductions": 0,
+    "growth_events": 1,
+    "nonlinear_iterations": 84,
+    "backtracks": 84,
+    "dt_sequence_day": [0.005,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0075,0.0024999999999999467],
+    "cumulative_runoff_cm": 0.45703288642947293,
+    "final_top_pressure_head_cm": 0.42436977808414333,
+    "final_ponding_cm": 0.36563834533628425,
+    "max_abs_combined_ledger_cm": 2.6145752229922437e-14,
+    "bottom_flux_cm_per_day": 0.0
+  },
+  "corrected": {
+    "accepted_steps": 9,
+    "rejected_attempts": 0,
+    "reductions": 0,
+    "growth_events": 3,
+    "nonlinear_iterations": 42,
+    "backtracks": 42,
+    "dt_sequence_day": [0.005,0.0075,0.01125,0.016875,0.016875,0.016875,0.016875,0.016875,0.011874999999999997],
+    "cumulative_runoff_cm": 0.4791258341796943,
+    "final_top_pressure_head_cm": 0.6130563943604358,
+    "final_ponding_cm": 0.36597611552174547,
+    "max_abs_combined_ledger_cm": 2.6145752229922437e-14,
+    "bottom_flux_cm_per_day": 0.0
+  },
+  "deltas_corrected_minus_baseline": {
+    "accepted_steps": -8,
+    "nonlinear_iterations": -42,
+    "backtracks": -42,
+    "cumulative_runoff_cm": 0.02209294775022136,
+    "final_top_pressure_head_cm": 0.18868661627629246,
+    "final_ponding_cm": 0.00033777018546121695
+  },
+  "runtime_observation": {
+    "classification": "NON_BENCHMARK_CI_PROCESS_WALL_TIME",
+    "baseline_median_ms": 1.327347,
+    "corrected_median_ms": 1.096414,
+    "samples_each": 9,
+    "use_for_performance_admission": false
+  },
+  "interpretation": {
+    "correctness": "Frozen-step qualification already showed essentially identical physical trajectory with fewer nonlinear iterations.",
+    "policy_interaction": "With unchanged adaptive controller rules, the corrected solver satisfies the growth criterion more often, therefore accepts larger dt values and follows a different temporal quadrature/trajectory.",
+    "runoff_difference_classification": "NUMERICAL_POLICY_INTERACTION_NOT_FROZEN_STEP_CORRECTNESS_DIFFERENCE",
+    "timestep_policy_change_admitted": false,
+    "performance_claim_admitted": false
+  },
+  "verdict": "UNCHANGED_TIMESTEP_POLICY_RESPONDS_DIFFERENTLY_TO_CORRECTED_SOLVER_AS_EXPECTED"
+}
