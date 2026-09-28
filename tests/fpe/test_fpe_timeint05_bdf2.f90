@@ -77,8 +77,12 @@ program test_fpe_timeint05_bdf2
   max_be_ledger=max(max_be_ledger,abs(ledger))
 
   call advance_step(hist2,step_dt,.true.,hist1%water_content,bdf,run,bdf_mass_resid,work_bdf,mode,ok)
-  if(.not.ok .or. mode/=SW_TOP_BOUNDARY_REGIME_FLUX .or. bdf%ponding_depth>1e-12_real64 .or. abs(run)>1e-12_real64)then
-    write(*,'(*(g0))')'F_PE_TIMEINT05|CASE=',trim(case_id),'|DT=',step_dt,'|DOMAIN=0|STAGE=BDF2'
+  if(.not.ok)then
+    write(*,'(*(g0))')'F_PE_TIMEINT05|CASE=',trim(case_id),'|DT=',step_dt,'|DOMAIN=1|OK=0|STAGE=BDF2_SOLVER_OR_MASS'
+    stop
+  end if
+  if(mode/=SW_TOP_BOUNDARY_REGIME_FLUX .or. bdf%ponding_depth>1e-12_real64 .or. abs(run)>1e-12_real64)then
+    write(*,'(*(g0))')'F_PE_TIMEINT05|CASE=',trim(case_id),'|DT=',step_dt,'|DOMAIN=0|STAGE=BDF2_BOUNDARY'
     stop
   end if
 
