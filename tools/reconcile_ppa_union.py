@@ -472,4 +472,30 @@ s = replace_once(
 )
 
 p.write_text(s)
+
+# 5. Bootstrap qualification test: both branches expanded the top-level test
+# matrix. The union merge duplicated the shared config/app declarations; keep
+# one declaration containing the union of both variable sets.
+test_path = "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90"
+p = Path(test_path)
+s = p.read_text()
+anchor = "  type(fmr_serialized_column_result_t), allocatable :: results(:)"
+apos = s.find(anchor)
+if apos < 0:
+    raise SystemExit("bootstrap test results declaration anchor missing")
+prefix = s[:apos]
+suffix = s[apos:]
+prefix = re.sub(r"^  type\(fmr_production_application_config_t\) :: .*\n", "", prefix, flags=re.M)
+prefix = re.sub(r"^  type\(fmr_production_application_bootstrap_t\) :: .*\n", "", prefix, flags=re.M)
+decls = """  type(fmr_production_application_config_t) :: config, root_config, gw_config, bad_config, &
+       root_bad_config, drainage_bad_config
+  type(fmr_production_application_config_t) :: gw_parallel2_config, gw_parallel4_config, invalid_workers_config, &
+       standalone_parallel_config
+  type(fmr_production_application_bootstrap_t) :: app, root_app, gw_app, bad_app, root_bad_app, drainage_bad_app
+  type(fmr_production_application_bootstrap_t) :: gw_parallel2_app, gw_parallel4_app, invalid_workers_app, &
+       standalone_parallel_app
+"""
+s = prefix + decls + suffix
+p.write_text(s)
+
 print("PPA_RECONCILE_RESOLVER=PASS")
