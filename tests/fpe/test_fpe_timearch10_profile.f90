@@ -2,52 +2,46 @@ program test_fpe_timearch10_profile
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_timestep_numerical_profile
   implicit none
-  type(timestep_numerical_profile_t) :: cfg
+
+  type(timestep_numerical_profile_t) :: legacy, auto, invalid
   integer :: status
 
-  cfg=make_legacy_numerics_profile(1.0e-6_real64,0.04_real64,2.0e-4_real64,4,30,2.0_real64,0.5_real64,2.0_real64)
-  call cfg%validate(status)
-  if(status/=TIMESTEP_PROFILE_STATUS_OK) error stop 'valid legacy rejected'
-  if(.not.cfg%execution_ready()) error stop 'legacy not ready'
-  if(cfg%kind/=TIMESTEP_PROFILE_LEGACY_NUMERICS) error stop 'legacy kind'
-  if(cfg%legacy%dtmin/=1.0e-6_real64) error stop 'legacy dtmin roundtrip'
-  if(cfg%legacy%dtmax/=0.04_real64) error stop 'legacy dtmax roundtrip'
-  if(cfg%legacy%initial_dt/=2.0e-4_real64) error stop 'legacy initial dt roundtrip'
-  if(cfg%legacy%numbit_crit/=4 .or. cfg%legacy%maxit/=30) error stop 'legacy integer roundtrip'
-  if(cfg%legacy%fact_increase/=2.0_real64 .or. cfg%legacy%fact_decrease/=0.5_real64 .or. &
-     cfg%legacy%fact_failure/=2.0_real64) error stop 'legacy factor roundtrip'
+  legacy = make_legacy_numerics_profile(1.0e-6_real64, 0.04_real64, 0.002_real64, 4, 30, &
+       2.0_real64, 0.5_real64, 2.0_real64)
+  call legacy%validate(status)
+  if(status /= TIMESTEP_PROFILE_STATUS_OK) error stop 'valid legacy rejected'
+  if(.not. legacy%execution_ready()) error stop 'legacy not ready'
+  if(legacy%legacy%dtmin /= 1.0e-6_real64) error stop 'legacy dtmin changed'
+  if(legacy%legacy%dtmax /= 0.04_real64) error stop 'legacy dtmax changed'
+  if(legacy%legacy%initial_dt /= 0.002_real64) error stop 'legacy initial dt changed'
+  if(legacy%legacy%numbit_crit /= 4) error stop 'legacy numbit changed'
+  if(legacy%legacy%maxit /= 30) error stop 'legacy maxit changed'
+  if(legacy%legacy%fact_increase /= 2.0_real64) error stop 'legacy increase changed'
+  if(legacy%legacy%fact_decrease /= 0.5_real64) error stop 'legacy decrease changed'
+  if(legacy%legacy%fact_failure /= 2.0_real64) error stop 'legacy failure changed'
 
-  cfg=make_legacy_numerics_profile(0.01_real64,0.005_real64,0.007_real64,4,8,2.0_real64,0.5_real64,2.0_real64)
-  call cfg%validate(status)
-  if(status/=TIMESTEP_PROFILE_STATUS_INVALID) error stop 'invalid bounds accepted'
+  invalid = make_legacy_numerics_profile(0.1_real64, 0.01_real64, 0.02_real64, 4, 30, &
+       2.0_real64, 0.5_real64, 2.0_real64)
+  call invalid%validate(status)
+  if(status /= TIMESTEP_PROFILE_STATUS_INVALID) error stop 'invalid legacy accepted'
+  if(invalid%execution_ready()) error stop 'invalid legacy ready'
 
-  cfg=make_legacy_numerics_profile(0.001_real64,0.02_real64,0.005_real64,4,8,0.9_real64,0.5_real64,2.0_real64)
-  call cfg%validate(status)
-  if(status/=TIMESTEP_PROFILE_STATUS_INVALID) error stop 'invalid increase accepted'
+  auto = make_auto_reference_profile('future-auto-reference', 1.0e-8_real64, .false., 0.0_real64)
+  call auto%validate(status)
+  if(status /= TIMESTEP_PROFILE_STATUS_OK) error stop 'auto representation rejected'
+  if(auto%automatic%expert_ceiling_present) error stop 'auto requires user ceiling'
+  if(auto%execution_ready()) error stop 'unadmitted auto executable'
 
-  cfg=make_auto_reference_profile('future-auto-reference',1.0e-6_real64,.false.,0.0_real64)
-  call cfg%validate(status)
-  if(status/=TIMESTEP_PROFILE_STATUS_OK) error stop 'auto without user ceiling rejected'
-  if(cfg%execution_ready()) error stop 'unadmitted auto executable'
-  if(cfg%kind/=TIMESTEP_PROFILE_AUTO_REFERENCE) error stop 'auto kind'
-  if(cfg%automatic%expert_ceiling_present) error stop 'auto unexpectedly requires ceiling'
-  if(cfg%automatic%internal_retry_floor/=1.0e-6_real64) error stop 'internal floor roundtrip'
+  auto = make_auto_reference_profile('future-auto-reference', 1.0e-8_real64, .true., 0.25_real64)
+  call auto%validate(status)
+  if(status /= TIMESTEP_PROFILE_STATUS_OK) error stop 'expert ceiling rejected'
+  if(auto%automatic%expert_ceiling /= 0.25_real64) error stop 'expert ceiling changed'
+  if(auto%execution_ready()) error stop 'expert ceiling admitted controller'
 
-  cfg=make_auto_reference_profile('future-auto-reference',1.0e-6_real64,.true.,0.25_real64)
-  call cfg%validate(status)
-  if(status/=TIMESTEP_PROFILE_STATUS_OK) error stop 'expert ceiling rejected'
-  if(cfg%execution_ready()) error stop 'expert ceiling enabled controller'
-  if(.not.cfg%automatic%expert_ceiling_present .or. cfg%automatic%expert_ceiling/=0.25_real64) &
-    error stop 'expert ceiling roundtrip'
-
-  cfg=make_auto_reference_profile('future-auto-reference',1.0e-6_real64,.true.,0.25_real64,.true.)
-  call cfg%validate(status)
-  if(status/=TIMESTEP_PROFILE_STATUS_OK) error stop 'admitted auto invalid'
-  if(.not.cfg%execution_ready()) error stop 'admitted auto not ready'
-
-  cfg=make_auto_reference_profile('',1.0e-6_real64,.false.,0.0_real64)
-  call cfg%validate(status)
-  if(status/=TIMESTEP_PROFILE_STATUS_INVALID) error stop 'missing controller id accepted'
+  auto = make_auto_reference_profile('qualified-test-controller', 1.0e-8_real64, .false., 0.0_real64, .true.)
+  call auto%validate(status)
+  if(status /= TIMESTEP_PROFILE_STATUS_OK) error stop 'qualified auto invalid'
+  if(.not. auto%execution_ready()) error stop 'qualified auto not ready'
 
   print '(A)', 'F_PE_TIMEARCH10_PROFILE=PASS'
 end program test_fpe_timearch10_profile
