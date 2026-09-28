@@ -41,8 +41,7 @@ for a,b in repls.items():
     counts[a]=src.count(a)
     src=src.replace(a,b)
 
-contains="contains
-"
+contains="contains\\n"
 helper="""contains
 
 real(8) function timeint02_storage_rate(node) result(rate)
