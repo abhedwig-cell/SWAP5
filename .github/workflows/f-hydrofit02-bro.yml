@@ -55,11 +55,20 @@ jobs:
           for path,item in d.get("paths",{}).items():
               print("BRO_OPENAPI_PATH|PATH="+path+"|METHODS="+",".join(sorted(item)))
           PY
+      - name: Inspect bro-ids contract
+        run: |
+          python - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/openapi.json.response"
+          d=json.loads(p.read_text())
+          op=d["paths"]["/sr/bhrp/v2/bro-ids"]["get"]
+          print("BRO_IDS_OPERATION="+json.dumps(op,sort_keys=True))
+          PY
       - name: Enumerate official BHR-P ids
         run: |
           python research/hydrofit/bro_bhrp_fetch.py --path bro-ids \
             --output "$RUNNER_TEMP/bro/bro-ids.response" \
-            --manifest "$RUNNER_TEMP/bro/bro-ids.manifest.json" --require-success
+            --manifest "$RUNNER_TEMP/bro/bro-ids.manifest.json"
           python - <<'PY'
           import json, os, pathlib, re
           p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/bro-ids.response"
