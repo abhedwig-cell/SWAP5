@@ -17,6 +17,8 @@ module mod_ppa_bootstrap_irrigation
   use mod_ppa_irr_tcs6_source, only: ppa_tcs6_daily_input_t,evaluate_tcs6_source
   use mod_ppa_irr_tcs6_source, only: evaluate_tcs6_profile_source
   use mod_irrigation_process, only: ppa_weekly_identity_t
+  use mod_irrigation_process, only: ppa_tcsfix_identity_t
+  use mod_ppa_irr_tcsfix_source, only: ppa_tcsfix_daily_input_t,evaluate_tcsfix_daily_source
   use mod_ppa_irrigation_source_binding, only: evaluate_ppa_irrigation_source, &
        evaluate_ppa_profile_irrigation_source,ppa_irrigation_profile_t
   implicit none
@@ -132,7 +134,7 @@ contains
 
   subroutine execute_ppa_bootstrap_irrigation(application,column_ids,parameter_identity,parameters,requests, &
        previous,results,status,profiles,preparation,effective_forcing,observations,weekly_inputs,target_selector, &
-       weekly_profile_mode)
+       weekly_profile_mode,tcsfix_inputs)
     type(fmr_production_application_bootstrap_t),intent(inout)::application
     integer(int64),intent(in)::column_ids(:),parameter_identity
     type(scheduled_irrigation_parameters_t),intent(in)::parameters(:)
@@ -149,6 +151,8 @@ contains
     type(ppa_tcs6_daily_input_t),intent(in),optional::weekly_inputs(:)
     procedure(canonical_subinterval_target_selector),optional::target_selector
     type(ppa_weekly_identity_t),allocatable::weekly_proposals(:)
+    type(ppa_tcsfix_daily_input_t),intent(in),optional::tcsfix_inputs(:)
+    type(ppa_tcsfix_identity_t),allocatable::tcsfix_proposals(:)
     type(fmr_b110_physical_forcing_t),allocatable::prepared(:),forcing
     type(irrigation_state_t),allocatable::events(:)
     logical,allocatable::selected(:)
@@ -158,10 +162,19 @@ contains
     type(process_hydraulic_view_t)::hydraulic
     integer::n,i,export_status
     real(real64)::t0,t1
-    logical::ok,derive_weekly
+    logical::ok,derive_weekly,use_tcsfix
     status=FMR_APP_BOOT_INVALID_CONFIG
     n=size(column_ids)
     if(n<1.or.size(parameters)/=n.or.size(requests)/=n.or.size(previous)/=n) return
+    if(present(tcsfix_inputs)) then
+      if(size(tcsfix_inputs)/=n) return
+      do i=1,n
+        if(.not.tcsfix_inputs(i)%enabled) cycle
+        if(parameters(i)%timing_criterion<1.or.parameters(i)%timing_criterion>4) return
+        if(parameters(i)%depth_criterion/=IRRIGATION_DEPTH_DCS2_FIXED) return
+        if(.not.present(observations).or.present(profiles)) return
+      end do
+    end if
     if(present(weekly_profile_mode)) then
       if(size(weekly_profile_mode)/=n) return
       do i=1,n
@@ -212,7 +225,7 @@ contains
     if(.not.ok.or.export_status/=FMR_APP_BOOT_OK) return
     if(.not.allocated(snapshot%records)) return
     if(size(snapshot%records)/=n) return
-    allocate(prepared(n),events(n),selected(n),weekly_proposals(n))
+    allocate(prepared(n),events(n),selected(n),weekly_proposals(n),tcsfix_proposals(n))
     if(present(preparation)) allocate(preparation(n))
     do i=1,n
       if(snapshot%records(i)%column_id/=column_ids(i)) return
@@ -223,10 +236,18 @@ contains
       type is(ppa_irrigation_event_state_t)
         if(.not.state%matches_candidate(snapshot%records(i)%template_identity,t0)) return
         if(parameters(i)%active_nodes/=state%active_nodes) return
+        use_tcsfix=.false.
+        if(present(tcsfix_inputs)) use_tcsfix=tcsfix_inputs(i)%enabled
+        if(use_tcsfix.neqv.state%tcsfix%enabled) return
         hydraulic%active_nodes=state%active_nodes
         hydraulic%pressure_head=state%pressure_head
         hydraulic%water_content=state%water_content
-        if(parameters(i)%timing_criterion==6) then
+        if(use_tcsfix) then
+          if(state%weekly%enabled) return
+          call evaluate_tcsfix_daily_source(parameters(i),state%irrigation,requests(i),observations(i), &
+               state%tcsfix,tcsfix_inputs(i)%daily,tcsfix_inputs(i)%ordinal,previous(i), &
+               tcsfix_proposals(i),event,flux,diagnostics,forcing,ok)
+        else if(parameters(i)%timing_criterion==6) then
           derive_weekly=.false.
           if(present(weekly_profile_mode)) derive_weekly=weekly_profile_mode(i)
           if(derive_weekly) then
@@ -279,6 +300,7 @@ contains
       end if
     end do
     if(present(effective_forcing)) effective_forcing=prepared
-    call application%run_prepared_irrigation(t0,t1,prepared,results,status,events,selected,weekly_proposals,target_selector)
+    call application%run_prepared_irrigation(t0,t1,prepared,results,status,events,selected,weekly_proposals, &
+         target_selector,tcsfix_proposals)
   end subroutine execute_ppa_bootstrap_irrigation
 end module mod_ppa_bootstrap_irrigation

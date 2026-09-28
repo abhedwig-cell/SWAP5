@@ -10,6 +10,11 @@ module mod_ppa_irr_tcsfix_source
   private
   public :: evaluate_tcsfix_source
   public :: evaluate_tcsfix_daily_source
+  type,public :: ppa_tcsfix_daily_input_t
+    logical :: enabled=.false.
+    logical :: daily=.false.
+    integer(int64) :: ordinal=0_int64
+  end type
 contains
   subroutine evaluate_tcsfix_daily_source(p,base,r,observations,identity,daily,ordinal,previous, &
        proposed_identity,candidate,flux,diagnostics,forcing,ok)

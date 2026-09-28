@@ -2597,11 +2597,17 @@ contains
     config%tiles(1)%irrigation_ssdi_node=0
     block
       use mod_irrigation_process, only: ppa_tcsfix_identity_t,ppa_weekly_identity_t
+      use mod_ppa_irr_tcsfix_source, only: ppa_tcsfix_daily_input_t
+      use mod_ppa_irr_tcs1_4_source, only: ppa_tcs1_4_observations_t
       type(fmr_production_application_bootstrap_t)::app
       type(fmr_production_application_config_t)::fixed_config
       type(fmr_committed_restart_bundle_t)::saved,observed
       type(ppa_tcsfix_identity_t)::proposals(2)
       type(ppa_weekly_identity_t)::weekly_proposals(2)
+      type(ppa_tcsfix_daily_input_t)::fixed_inputs(2)
+      type(ppa_tcs1_4_observations_t)::fixed_observations(2)
+      type(scheduled_irrigation_parameters_t)::fixed_parameters(2)
+      type(scheduled_irrigation_request_t)::fixed_requests(2)
       type(fmr_b110_physical_forcing_t)::zero_forcing(2)
       type(fmr_serialized_column_result_t),allocatable::fixed_results(:)
       integer::fixed_code,j,guard_case,mixed_case
@@ -2670,6 +2676,35 @@ contains
         end select
       end do
       write(*,'(a)') 'PPA_IRR_TCSFIX_BOOTSTRAP_PREFLIGHT_FORWARDING=PASS'
+      call app%restore_committed_restart(saved,92001_int64,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX daily fixture restore'
+      do j=1,2
+        fixed_inputs(j)%enabled=.true.; fixed_inputs(j)%daily=.true.; fixed_inputs(j)%ordinal=101_int64
+        fixed_parameters(j)%timing_criterion=1
+        fixed_parameters(j)%active_nodes=source%active_nodes
+        fixed_parameters(j)%single_ssdi_node=1
+        fixed_requests(j)%t0=T0; fixed_requests(j)%t1=T0+1.0_real64/65536.0_real64
+      end do
+      fixed_inputs(2)%ordinal=102_int64
+      call execute_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64,fixed_parameters,fixed_requests, &
+           zero_forcing,fixed_results,fixed_code,observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+      if(fixed_code==FMR_APP_BOOT_OK.or.allocated(fixed_results)) error stop 'TCSFIX daily late gap accepted'
+      call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+      if(.not.fixed_ok.or.any(observed%records%committed_time/=T0)) error stop 'TCSFIX daily gap publication'
+      fixed_inputs(2)%ordinal=101_int64
+      call execute_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64,fixed_parameters,fixed_requests, &
+           zero_forcing,fixed_results,fixed_code,observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+      if(fixed_code/=FMR_APP_BOOT_OK) error stop 'TCSFIX daily ineligible route failed'
+      call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX daily export'
+      do j=1,2
+        select type(state=>observed%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          if(state%tcsfix%last_day/=101_int64.or.state%tcsfix%dayfix/=2.or.state%irrigation%active_event) &
+               error stop 'TCSFIX daily ineligible metadata'
+        end select
+      end do
+      write(*,'(a)') 'PPA_IRR_TCSFIX_DAILY_SOURCE_INELIGIBLE_AND_ATOMIC_GAP=PASS'
       do mixed_case=1,2
         proposals(2)=ppa_tcsfix_identity_t()
         weekly_proposals=ppa_weekly_identity_t()
