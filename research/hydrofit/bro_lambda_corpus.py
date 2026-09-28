@@ -13,7 +13,15 @@ def main():
  url=DEFAULT_BASE+"/bro-ids?"+urlencode({"bronhouder":a.party})
  status,ctype,b=fetch(url); 
  if status//100!=2: raise SystemExit(f"bro-ids status {status}: {b[:500]!r}")
- root=ET.fromstring(b); ids=sorted(set(texts(root,"broId")))
+ try:
+  payload=json.loads(b)
+  if isinstance(payload,list): ids=sorted(set(str(x) for x in payload))
+  elif isinstance(payload,dict):
+   candidates=next((v for v in payload.values() if isinstance(v,list)),[])
+   ids=sorted(set(str(x) for x in candidates))
+  else: ids=[]
+ except Exception:
+  root=ET.fromstring(b); ids=sorted(set(texts(root,"broId")))
  print(f"BRO_CORPUS_IDS|PARTY={a.party}|COUNT={len(ids)}|FIRST={ids[:5]}")
  rec=[]; failures=0; bodem=0
  for i,bid in enumerate(ids[:a.limit]):
