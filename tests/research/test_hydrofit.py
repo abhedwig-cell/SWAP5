@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / "research" / "hydrofit"))
-from hydrofit import FitConfig, MvGParameters, Observation, evaluate, fit, swap_theta, textbook_theta
+from hydrofit import FitConfig, MvGParameters, Observation, evaluate, fit, multistart_fit, swap_theta, textbook_theta
 
 
 def synthetic_observations(p, semantics="swap_default_mvg"):
@@ -56,3 +56,35 @@ def test_information_removal_worsens_identifiability():
     b = fit(reduced, initial, cfg)
     assert np.isfinite(a.condition_number)
     assert b.condition_number > a.condition_number or not np.isfinite(b.condition_number)
+
+
+def test_multistart_converges_to_same_exact_solution():
+    truth = MvGParameters(0.06, 0.43, 0.015, 1.7, 35.0)
+    cfg = FitConfig(semantics="swap_default_mvg", fixed_l=0.5, fixed_h_entry=0.0)
+    starts = [
+        MvGParameters(0.02, 0.36, 0.003, 1.2, 5.0),
+        MvGParameters(0.12, 0.55, 0.08, 2.5, 150.0),
+        MvGParameters(0.08, 0.46, 0.012, 1.5, 25.0),
+    ]
+    best, results = multistart_fit(synthetic_observations(truth), starts, cfg)
+    assert best.success
+    assert len(results) == 3
+    for result in results:
+        assert result.success
+        p = result.parameters
+        assert np.allclose(
+            [p.theta_r, p.theta_s, p.alpha, p.n, p.Ks],
+            [truth.theta_r, truth.theta_s, truth.alpha, truth.n, truth.Ks],
+            rtol=5e-5, atol=5e-7,
+        )
+
+
+def test_theta_only_exposes_unidentifiable_ks_direction():
+    truth = MvGParameters(0.06, 0.43, 0.015, 1.7, 35.0)
+    cfg = FitConfig(semantics="swap_default_mvg", fixed_l=0.5, fixed_h_entry=0.0)
+    all_obs = synthetic_observations(truth)
+    theta_only = [o for o in all_obs if o.family == "theta"]
+    initial = MvGParameters(0.10, 0.48, 0.008, 1.4, 15.0)
+    result = fit(theta_only, initial, cfg)
+    assert result.success
+    assert result.singular_values[-1] < 1e-10 or not np.isfinite(result.condition_number) or result.condition_number > 1e12
