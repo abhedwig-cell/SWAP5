@@ -88,6 +88,14 @@ boundaries. See `integration/audits/PPA_IRR_APPLICATION_CONTRACT.md` and
 not general management/calendar admission or whole-migration closure. Initial
 zero-source numerical failures remain open.
 
+Branch-local source-bound update: PPA-WU05-D2 now provides a tested pure Jarvis
+compensation compositor over explicit pre-compensation root results. Its
+100,000-vector source oracle, all five stress selectors, stateless A/B/A replay,
+fail-closed guards and O0/O2 identity pass at `f224841c0`. This does not admit
+oxygen/salinity/frost composition, MICRO, root-sink ownership, accepted mass,
+retry, restart or production runtime binding; those remain separate open or
+held capabilities.
+
 ### Historical progression (not current implementation limits)
 
 At 1e1cb89a0 the prescribed-source runtime gate covers three windows: start,
