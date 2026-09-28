@@ -587,6 +587,24 @@ decls = """  type(fmr_production_application_config_t) :: config, root_config, g
        standalone_parallel_app
 """
 s = prefix + decls + suffix
+s = s.replace(
+    """    call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
+    call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
+         'WU04C production owner commit')""",
+    """    call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
+    write(*,'(A,I0)') 'PPA_RECONCILE_WU04C_STATUS=', local_status
+    if (allocated(production_results)) then
+      do tile = 1, size(production_results)
+        write(*,'(A,I0,A,A,A,I0,A,L1,A,L1,A,L1,A,I0,A,ES24.16E3)') &
+             'PPA_RECONCILE_WU04C_RESULT tile=',tile,':admission=',trim(production_results(tile)%admission_status), &
+             ':kernel=',production_results(tile)%kernel_status,':admitted=',production_results(tile)%admitted, &
+             ':completed=',production_results(tile)%completed,':committed=',production_results(tile)%committed, &
+             ':substeps=',production_results(tile)%accepted_substeps,':mass=',production_results(tile)%mass%residual
+      end do
+    end if
+    call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
+         'WU04C production owner commit')""",
+)
 p.write_text(s)
 
 print("PPA_RECONCILE_RESOLVER=PASS")
