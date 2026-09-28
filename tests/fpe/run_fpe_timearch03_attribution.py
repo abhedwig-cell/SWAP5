@@ -79,7 +79,7 @@ for cid in cases:
 
 accepted=[x for x in attempts if x["solve_ok"]==1]
 failed=[x for x in attempts if x["solve_ok"]==0]
-if len(accepted)!=sum(x["accepted"] for x in [parse_result(run(trace_exe,c)[1]) for c in cases]):
+if len(accepted)!=sum(x["accepted"] for x in pairs):
     raise SystemExit("accepted trace count mismatch")
 
 reason_names={0:"KEEP",1:"GROW_LOW_ITER",2:"SHRINK_MAX_ITER",3:"GROW_THEN_SHRINK"}
