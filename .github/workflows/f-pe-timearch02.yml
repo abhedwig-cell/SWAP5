@@ -1,0 +1,31 @@
+name: F-PE-TIMEARCH02 timestep decision contracts
+
+on:
+  push:
+    branches:
+      - work/f-pe-timearch01-timestep-architecture
+    paths:
+      - 'docs/performance/F-PE-TIMEARCH01_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEARCH01_CURRENT_ARCHITECTURE.md'
+      - 'docs/performance/F-PE-TIMEARCH01_TARGET_ARCHITECTURE.md'
+      - 'docs/performance/F-PE-TIMEARCH02_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timearch02_decision_contract.f90'
+      - 'tests/fpe/run_fpe_timearch02.sh'
+      - '.github/workflows/f-pe-timearch02.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  decision-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run executable decision proof
+        run: bash tests/fpe/run_fpe_timearch02.sh
