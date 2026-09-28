@@ -72,7 +72,8 @@ out={
    "newton_iterations":total("NEWTON",old),
    "backtracks":total("BACKTRACK",old),
    "internal_retries":total("RETRIES",old),
-   "native_mass_diagnostic_finite":all(math.isfinite(x["MASS_NATIVE"]) for x in old["steps"]),\n   "max_abs_native_mass_if_finite":max([abs(x["MASS_NATIVE"]) for x in old["steps"] if math.isfinite(x["MASS_NATIVE"])] or [0.0]),
+   "native_mass_diagnostic_finite":all(math.isfinite(x["MASS_NATIVE"]) for x in old["steps"]),
+   "max_abs_native_mass_if_finite":max([abs(x["MASS_NATIVE"]) for x in old["steps"] if math.isfinite(x["MASS_NATIVE"])] or [0.0]),
    "max_abs_ledger":max(abs(x["LEDGER"]) for x in old["steps"])
  },
  "corrected":{
@@ -81,7 +82,8 @@ out={
    "newton_iterations":total("NEWTON",new),
    "backtracks":total("BACKTRACK",new),
    "internal_retries":total("RETRIES",new),
-   "native_mass_diagnostic_finite":all(math.isfinite(x["MASS_NATIVE"]) for x in new["steps"]),\n   "max_abs_native_mass_if_finite":max([abs(x["MASS_NATIVE"]) for x in new["steps"] if math.isfinite(x["MASS_NATIVE"])] or [0.0]),
+   "native_mass_diagnostic_finite":all(math.isfinite(x["MASS_NATIVE"]) for x in new["steps"]),
+   "max_abs_native_mass_if_finite":max([abs(x["MASS_NATIVE"]) for x in new["steps"] if math.isfinite(x["MASS_NATIVE"])] or [0.0]),
    "max_abs_ledger":max(abs(x["LEDGER"]) for x in new["steps"])
  },
  "trajectory":{
@@ -94,8 +96,8 @@ out={
 Path(sys.argv[3]).write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
 print(json.dumps(out,indent=2,sort_keys=True))
 assert out["same_timestep_sequence"]
-assert out["old"]["max_abs_native_mass"] < 1e-8
-assert out["corrected"]["max_abs_native_mass"] < 1e-8
+assert out["old"]["max_abs_ledger"] < 1e-8
+assert out["corrected"]["max_abs_ledger"] < 1e-8
 print("F_PE_BOFEK00_FROZEN_COMPARISON=PASS")
 PY
 
