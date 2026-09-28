@@ -456,6 +456,34 @@ contains
     write(*,'(a)') 'PPA_IRR_WEEKLY_CARRIER_FACTORY_CLONE_RESTART=PASS'
     invalid_carrier=carrier
     invalid_carrier%irrigation=irrigation_state_t()
+    invalid_carrier%tcsfix%enabled=.true.
+    invalid_carrier%tcsfix%day_bound=.true.
+    invalid_carrier%tcsfix%dayfix=2
+    invalid_carrier%tcsfix%interval_days=3
+    invalid_carrier%tcsfix%last_day=100_int64
+    call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+         invalid_carrier%irrigation,event_template,T0,assembled,ok,tcsfix=invalid_carrier%tcsfix)
+    if(.not.ok) error stop 'TCSFIX carrier factory rejected'
+    call verify_irrigation_restart_bundle(assembled,event_template)
+    call assembled%clone(carrier_copy)
+    select type(cloned=>carrier_copy)
+    type is(ppa_irrigation_event_state_t)
+      if(.not.cloned%tcsfix%enabled.or..not.cloned%tcsfix%day_bound.or.cloned%tcsfix%dayfix/=2.or. &
+           cloned%tcsfix%interval_days/=3.or.cloned%tcsfix%last_day/=100_int64) &
+           error stop 'TCSFIX clone lost metadata'
+    class default
+      error stop 'TCSFIX clone lost carrier'
+    end select
+    invalid_carrier%weekly%enabled=.true.
+    if(invalid_carrier%matches_candidate(event_template,T0)) error stop 'mixed timing identities accepted'
+    invalid_carrier%weekly%enabled=.false.
+    invalid_carrier%tcsfix%interval_days=0
+    call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
+         invalid_carrier%irrigation,event_template,T0,assembled,ok,tcsfix=invalid_carrier%tcsfix)
+    if(ok.or.allocated(assembled)) error stop 'TCSFIX invalid factory leaked'
+    write(*,'(a)') 'PPA_IRR_TCSFIX_CARRIER_FACTORY_CLONE_RESTART=PASS'
+    invalid_carrier=carrier
+    invalid_carrier%irrigation=irrigation_state_t()
     call build_irrigation_event_candidate(carrier%fmr_b110_temporal_indicator_state_t, &
          invalid_carrier%irrigation,event_template,T0,assembled,ok)
     if(.not.ok) error stop 'weekly fixture reset failed'
@@ -1167,6 +1195,11 @@ contains
       select type(snapshot)
       type is(ppa_irrigation_event_state_t)
         if(.not.snapshot%matches_candidate(template,checkpoint_time)) error stop 'irrigation restored payload invalid'
+        if((snapshot%tcsfix%enabled.neqv.source%tcsfix%enabled).or. &
+             (snapshot%tcsfix%day_bound.neqv.source%tcsfix%day_bound).or. &
+             snapshot%tcsfix%dayfix/=source%tcsfix%dayfix.or. &
+             snapshot%tcsfix%interval_days/=source%tcsfix%interval_days.or. &
+             snapshot%tcsfix%last_day/=source%tcsfix%last_day) error stop 'TCSFIX restart metadata changed'
         if((snapshot%weekly%enabled.neqv.source%weekly%enabled).or. &
              (snapshot%weekly%day_bound.neqv.source%weekly%day_bound).or. &
              snapshot%weekly%dayfix/=source%weekly%dayfix.or.snapshot%weekly%last_day/=source%weekly%last_day) &
@@ -1184,7 +1217,7 @@ contains
         if(any(actual_history/=expected_history)) error stop 'irrigation restored history changed'
         if(source%irrigation%active_event) call verify_restored_irrigation_delivery(source,snapshot,checkpoint_time, &
              template,[committed(i),restored(i)])
-        if(.not.source%irrigation%active_event.and..not.source%weekly%enabled) &
+        if(.not.source%irrigation%active_event.and..not.source%weekly%enabled.and..not.source%tcsfix%enabled) &
              call verify_committed_profile_selection(source,checkpoint_time, &
              template,[committed(i),restored(i)])
       class default

@@ -2,6 +2,7 @@ module mod_fmr_serialized_reference_backend
   use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
   use mod_irrigation_process, only: irrigation_state_t, IRRIGATION_EVENT_SCHEDULED, IRRIGATION_EVENT_NONE
   use mod_irrigation_process, only: ppa_weekly_identity_t,valid_weekly_identity,valid_weekly_transition
+  use mod_irrigation_process, only: ppa_tcsfix_identity_t,valid_tcsfix_identity
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t, &
@@ -146,6 +147,7 @@ module mod_fmr_serialized_reference_backend
   type, extends(fmr_b110_temporal_indicator_state_t), public :: ppa_irrigation_event_state_t
     type(irrigation_state_t) :: irrigation
     type(ppa_weekly_identity_t) :: weekly
+    type(ppa_tcsfix_identity_t) :: tcsfix
   contains
     procedure :: clone => clone_irrigation_event_state
     procedure :: matches_candidate => irrigation_event_matches_candidate
@@ -523,7 +525,8 @@ module mod_fmr_serialized_reference_backend
 
 contains
 
-  subroutine build_irrigation_event_candidate(physical,event,template,boundary_time,candidate,ok,right_derivative,weekly)
+  subroutine build_irrigation_event_candidate(physical,event,template,boundary_time,candidate,ok, &
+       right_derivative,weekly,tcsfix)
     ! Combine trial outputs only. The caller must supply the hydraulic state
     ! and event from the same boundary; this routine neither proves hydraulic
     ! acceptance nor publishes committed state or changes the runtime registry.
@@ -537,6 +540,7 @@ contains
     ! Replacement is confined to the detached candidate, never its source.
     real(real64), intent(in), optional :: right_derivative(:)
     type(ppa_weekly_identity_t),intent(in),optional::weekly
+    type(ppa_tcsfix_identity_t),intent(in),optional::tcsfix
     type(ppa_irrigation_event_state_t) :: proposed
     logical :: replaced
     ok=.false.
@@ -550,6 +554,7 @@ contains
     end select
     proposed%irrigation=event
     if(present(weekly)) proposed%weekly=weekly
+    if(present(tcsfix)) proposed%tcsfix=tcsfix
     if(present(right_derivative)) then
       call replace_supported_temporal_history(proposed,right_derivative,replaced)
       if(.not.replaced) return
@@ -584,6 +589,8 @@ contains
     if(.not.all(ieee_is_finite(history))) return
     if(self%irrigation%next_fixed_event_index<1) return
     if(.not.valid_weekly_identity(self%weekly)) return
+    if(.not.valid_tcsfix_identity(self%tcsfix)) return
+    if(self%weekly%enabled.and.self%tcsfix%enabled) return
     if(self%irrigation%active_event) then
       if(self%irrigation%active_event_origin/=IRRIGATION_EVENT_SCHEDULED) return
       if(self%irrigation%active_event_index/=0) return
@@ -1390,6 +1397,8 @@ contains
     type is(ppa_irrigation_event_state_t)
       if(.not.snapshot%matches_candidate(template,t0)) return
       if(snapshot%weekly%enabled.neqv.present(weekly_proposal)) return
+      ! Storage is supported before execution: no typed TCSFIX proposal channel yet.
+      if(snapshot%tcsfix%enabled) return
       if(present(weekly_proposal)) then
         if(.not.valid_weekly_transition(snapshot%weekly,weekly_proposal)) return
         if(snapshot%irrigation%active_event.and.weekly_proposal%dayfix/=snapshot%weekly%dayfix) return
