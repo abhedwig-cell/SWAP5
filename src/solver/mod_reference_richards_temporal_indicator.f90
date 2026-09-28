@@ -4,7 +4,8 @@ module mod_reference_richards_temporal_indicator
   use mod_soil_water_solver_contract, only: soil_water_solve_request_t, soil_water_solve_result_t, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_SOLVE_CONVERGED, SW_TEMPORAL_INDICATOR_AVAILABLE, SW_TEMPORAL_INDICATOR_UNAVAILABLE, &
-       SW_TEMPORAL_INDICATOR_FAILED
+       SW_TEMPORAL_INDICATOR_FAILED, CONSTITUTIVE_DEMAND_WATER_CONTENT, &
+       CONSTITUTIVE_DEMAND_CONDUCTIVITY, CONSTITUTIVE_DEMAND_CAPACITY
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_reference_linear_solver, only: reference_tridag
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
@@ -187,9 +188,12 @@ contains
           indicator_result%route = 'constitutive-dt-mismatch'
           return
        end if
-       call constitutive%evaluate(request%base_state%pressure_head, water_base, conductivity_base, capacity_base, dkdh_base)
-       call constitutive%evaluate(solve_result%candidate_state%pressure_head, water_candidate, conductivity_candidate, &
-            capacity_candidate, dkdh_candidate)
+       call constitutive%evaluate_demand(request%base_state%pressure_head, CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+            water_base, conductivity_base, capacity_base, dkdh_base)
+       call constitutive%evaluate_demand(solve_result%candidate_state%pressure_head, CONSTITUTIVE_DEMAND_WATER_CONTENT, &
+            water_candidate, conductivity_candidate, capacity_candidate, dkdh_candidate)
+       call constitutive%evaluate_demand(solve_result%candidate_state%pressure_head, CONSTITUTIVE_DEMAND_CAPACITY, &
+            water_candidate, conductivity_candidate, capacity_candidate, dkdh_candidate)
     type is (b110_direct_retention_provider_t)
        scale = max(1.0_real64, abs(constitutive%analytical%step_duration), abs(dt))
        if (abs(constitutive%analytical%step_duration-dt) > 16.0_real64*epsilon(1.0_real64)*scale) then
@@ -197,9 +201,12 @@ contains
           indicator_result%route = 'constitutive-dt-mismatch'
           return
        end if
-       call constitutive%evaluate(request%base_state%pressure_head, water_base, conductivity_base, capacity_base, dkdh_base)
-       call constitutive%evaluate(solve_result%candidate_state%pressure_head, water_candidate, conductivity_candidate, &
-            capacity_candidate, dkdh_candidate)
+       call constitutive%evaluate_demand(request%base_state%pressure_head, CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+            water_base, conductivity_base, capacity_base, dkdh_base)
+       call constitutive%evaluate_demand(solve_result%candidate_state%pressure_head, CONSTITUTIVE_DEMAND_WATER_CONTENT, &
+            water_candidate, conductivity_candidate, capacity_candidate, dkdh_candidate)
+       call constitutive%evaluate_demand(solve_result%candidate_state%pressure_head, CONSTITUTIVE_DEMAND_CAPACITY, &
+            water_candidate, conductivity_candidate, capacity_candidate, dkdh_candidate)
     class default
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'constitutive-policy-deferred'
