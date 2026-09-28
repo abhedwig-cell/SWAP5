@@ -23,7 +23,7 @@ def solve(obs,src,lam):
  if min((p[3]-1.000001)/(20-1.000001),(20-p[3])/(20-1.000001))<=.001:blocks.append("N")
  return float(z.fun@z.fun),blocks,cond
 def parse_object(b):
- root=ET.fromstring(b); out=[]
+ root=ET.fromstring(b); out={}
  for iv in (e for e in root.iter() if local(e.tag)=="InvestigatedInterval"):
   bd=next(((e.text or "").strip() for e in iv.iter() if local(e.tag)=="beginDepth"),None);ed=next(((e.text or "").strip() for e in iv.iter() if local(e.tag)=="endDepth"),None)
   horizon=next(((e.text or "").strip() for e in iv.iter() if local(e.tag)=="horizonCode"),"")
