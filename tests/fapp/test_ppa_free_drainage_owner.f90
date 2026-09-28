@@ -2599,9 +2599,9 @@ contains
       use mod_irrigation_process, only: ppa_tcsfix_identity_t,ppa_weekly_identity_t
       use mod_ppa_irr_tcsfix_source, only: ppa_tcsfix_daily_input_t
       use mod_ppa_irr_tcs1_4_source, only: ppa_tcs1_4_observations_t
-      type(fmr_production_application_bootstrap_t)::app
+      type(fmr_production_application_bootstrap_t)::app,fixed_resumed
       type(fmr_production_application_config_t)::fixed_config
-      type(fmr_committed_restart_bundle_t)::saved,observed
+      type(fmr_committed_restart_bundle_t)::saved,observed,resumed_observed
       type(ppa_tcsfix_identity_t)::proposals(2)
       type(ppa_weekly_identity_t)::weekly_proposals(2)
       type(ppa_tcsfix_daily_input_t)::fixed_inputs(2)
@@ -2802,6 +2802,44 @@ contains
         end do
       end do
       write(*,'(a)') 'PPA_IRR_TCSFIX_PREFIX_SPLIT_RETRY_WINDOW_BUDGET=PASS'
+      call fixed_resumed%initialize(fixed_config,fixed_code)
+      if(fixed_code/=FMR_APP_BOOT_OK) error stop 'TCSFIX resumed initialize'
+      call fixed_resumed%restore_committed_restart(observed,92001_int64,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX committed prefix restore'
+      fixed_requests%t0=T0+1.0_real64/65536.0_real64
+      fixed_observations%knot_count=0
+      call execute_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64,fixed_parameters,fixed_requests, &
+           zero_forcing,fixed_results,fixed_code,observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+      if(fixed_code/=FMR_APP_BOOT_OK) error stop 'TCSFIX duplicate continuation'
+      call execute_ppa_bootstrap_irrigation(fixed_resumed,[1_int64,2_int64],92001_int64, &
+           fixed_parameters,fixed_requests,zero_forcing,fixed_results,fixed_code, &
+           observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+      if(fixed_code/=FMR_APP_BOOT_OK) error stop 'TCSFIX restored duplicate continuation'
+      call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX continued export'
+      call fixed_resumed%export_committed_restart(92001_int64,resumed_observed,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX resumed export'
+      if(any(observed%records%committed_time/=T0+2.0_real64/65536.0_real64).or. &
+           any(resumed_observed%records%committed_time/=observed%records%committed_time)) &
+           error stop 'TCSFIX continuation time'
+      do j=1,2
+        select type(state=>observed%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          select type(replayed=>resumed_observed%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(state%tcsfix%dayfix/=1.or.state%tcsfix%last_day/=101_int64.or.state%irrigation%active_event.or. &
+                 replayed%tcsfix%dayfix/=1.or.replayed%tcsfix%last_day/=101_int64.or.replayed%irrigation%active_event) &
+                 error stop 'TCSFIX duplicate counted twice'
+            if(any(state%water_content/=replayed%water_content).or. &
+                 any(state%pressure_head/=replayed%pressure_head)) error stop 'TCSFIX restart hydraulic mismatch'
+          class default
+            error stop 'TCSFIX resumed carrier lost'
+          end select
+        class default
+          error stop 'TCSFIX continued carrier lost'
+        end select
+      end do
+      write(*,'(a)') 'PPA_IRR_TCSFIX_COMMITTED_PREFIX_RESTART_DUPLICATE=PASS'
       do j=1,2
         select type(state=>saved%records(j)%physical_state)
         type is(ppa_irrigation_event_state_t)
