@@ -2808,6 +2808,10 @@ contains
       if(.not.fixed_ok) error stop 'TCSFIX committed prefix restore'
       fixed_requests%t0=T0+1.0_real64/65536.0_real64
       fixed_observations%knot_count=0
+      ! Previous forcing is the accepted gift rate, so binding can mark its stop.
+      do j=1,2
+        zero_forcing(j)%subsurface_irrigation_source(1)=0.01_real64
+      end do
       call execute_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64,fixed_parameters,fixed_requests, &
            zero_forcing,fixed_results,fixed_code,observations=fixed_observations,tcsfix_inputs=fixed_inputs)
       if(fixed_code/=FMR_APP_BOOT_OK) error stop 'TCSFIX duplicate continuation'
@@ -2840,6 +2844,9 @@ contains
         end select
       end do
       write(*,'(a)') 'PPA_IRR_TCSFIX_COMMITTED_PREFIX_RESTART_DUPLICATE=PASS'
+      do j=1,2
+        zero_forcing(j)%subsurface_irrigation_source=0.0_real64
+      end do
       do j=1,2
         select type(state=>saved%records(j)%physical_state)
         type is(ppa_irrigation_event_state_t)
