@@ -1,0 +1,31 @@
+name: F-PE-TIMEINT02 raw backward-Euler LTE mechanism
+
+on:
+  push:
+    branches:
+      - work/f-pe-timeint01-temporal-integrator-reconstruction
+    paths:
+      - 'docs/performance/F-PE-TIMEINT01_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT01_RECONSTRUCTION.md'
+      - 'docs/performance/F-PE-TIMEINT02_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timeint02_raw_lte.f90'
+      - 'tests/fpe/run_fpe_timeint02.py'
+      - 'tests/fpe/run_fpe_timeint02.sh'
+      - '.github/workflows/f-pe-timeint02.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  raw-lte:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered raw LTE mechanism
+        run: bash tests/fpe/run_fpe_timeint02.sh
