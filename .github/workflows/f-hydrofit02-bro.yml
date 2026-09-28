@@ -388,6 +388,12 @@ jobs:
           PYTHONPATH=research/hydrofit python research/hydrofit/audit_lambda_prior_descriptors.py \
             --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
             --out "$RUNNER_TEMP/bro/lambda-prior-descriptor-audit.json" | tee "$RUNNER_TEMP/bro/lambda-prior-descriptor-audit.txt"
+      - name: Audit interval-scoped lambda-prior provenance
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/audit_interval_prior_descriptors.py \
+            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
+            --out "$RUNNER_TEMP/bro/lambda-prior-interval-audit.json" | tee "$RUNNER_TEMP/bro/lambda-prior-interval-audit.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
