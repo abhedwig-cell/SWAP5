@@ -19,10 +19,12 @@ interface
    end subroutine swap_ok
 end interface
 interface
-   subroutine TimeControl(task, interval)
+   subroutine TimeControl(task, interval, timestep_trace)
       use mod_b1_10_interval_seam, only: b1_10_interval_seam_t
+      use mod_b1_10_timestep_decision_service, only: b1_10_timestep_trace_t
       integer, intent(in) :: task
       type(b1_10_interval_seam_t), intent(inout), optional :: interval
+      type(b1_10_timestep_trace_t), intent(inout), optional :: timestep_trace
    end subroutine TimeControl
 end interface
 
