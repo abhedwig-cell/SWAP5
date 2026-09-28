@@ -177,6 +177,34 @@ jobs:
           for k,v in vals[:80]:
               print(f"BRO_XML_FIELD|{k}={v}")
           PY
+      - name: Bounded analyzed-record discovery grid
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, subprocess, xml.etree.ElementTree as ET
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro"
+          centers=[
+            ("wageningen",51.97,5.67),("utrecht",52.09,5.12),("zwolle",52.52,6.09),
+            ("assen",52.99,6.56),("leeuwarden",53.20,5.80),("alkmaar",52.63,4.75),
+            ("rotterdam",51.92,4.48),("breda",51.59,4.78),("eindhoven",51.44,5.48),
+            ("venlo",51.37,6.17),("arnhem",51.98,5.91),("lelystad",52.52,5.47)
+          ]
+          found=[]
+          def local(t): return t.rsplit('}',1)[-1]
+          for name,lat,lon in centers:
+            body=root/f"grid-{name}.json"
+            body.write_text(json.dumps({"area":{"enclosingCircle":{"center":{"lat":lat,"lon":lon},"radius":10.0}},"boreholeSamplesAnalyzed":"JA"}))
+            out=root/f"grid-{name}.xml"
+            subprocess.run(["python","research/hydrofit/bro_bhrp_fetch.py","--path","characteristics/searches","--method","POST","--json-body",str(body),"--output",str(out)],check=True)
+            x=ET.fromstring(out.read_bytes())
+            pairs=[(local(e.tag),e.text.strip()) for e in x.iter() if e.text and e.text.strip()]
+            ids=[]
+            for k,v in pairs:
+              if k.lower()=="broid" or v.startswith("BHRP"): ids.append(v)
+            print(f"BRO_GRID|NAME={name}|IDS={len(ids)}|FIRST={ids[:3]}")
+            found.extend(ids)
+            if len(set(found))>=3: break
+          print("BRO_GRID_FOUND="+json.dumps(sorted(set(found))[:20]))
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
