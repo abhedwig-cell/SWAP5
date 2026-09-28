@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.ppa_reconcile01.status.v1",
+  "work_unit": "PPA-RECONCILE01",
+  "status": "RECONCILED_BRANCH_CREATED_CANONICAL_ADMISSION_BLOCKED",
+  "canonical_parent": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
+  "ppa_parent": "cadc3f25b55bf23b1d883dae137683c42884894f",
+  "merge_commit": "202f46a853d87447ec9bffc73928ad345b181cf4",
+  "branch": "work/ppa-reconcile01-merged",
+  "history_preserved": true,
+  "conflict_census": {
+    "overlap_files": 26,
+    "content_conflicts": 5,
+    "resolved_conflict_files": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90"
+    ]
+  },
+  "qualification": {
+    "fkt22_fmr_compile_gate": "PASS",
+    "canonical_application_compile_marker": "PPA_OUTPUT_CANON_APPLICATION_O0=PASS",
+    "ppa_wu01_gate": "BLOCKED",
+    "ppa_wu01_blocker": "WU04C production owner commit: legacy-reference-retry after 3 attempts, nonlinear_iterations=8, completed=false, committed=false",
+    "preserved_old_head_baseline": "FAILS_EARLIER_ON_UNASSOCIATED_OPTIONAL_PROCEDURE_POINTER",
+    "interpretation": "The local PPA head was not fully green before reconciliation. The merged branch fixes the procedure-pointer ABI issue and reaches a later WU04C nonlinear-solver blocker. This branch is therefore a safe synchronization point, not production-admitted canonical."
+  },
+  "canonical_modified": false,
+  "next_action": "Continue migration from this reconciled branch. Treat WU04C nonlinear retry as a bounded blocker to diagnose separately before any canonical admission."
+}
