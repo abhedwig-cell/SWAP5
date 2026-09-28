@@ -6,9 +6,13 @@ on:
       - work/f-pe-dyntop-predict01-boundary-classifier
     paths:
       - 'docs/performance/F-PE-DYNTOP-PREDICT01_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-DYNTOP-PREDICT02_PREREGISTRATION.md'
       - 'tests/fpe/test_fpe_dyntop_predict01.f90'
       - 'tests/fpe/run_fpe_dyntop_predict01.py'
       - 'tests/fpe/run_fpe_dyntop_predict01.sh'
+      - 'tests/fpe/test_fpe_dyntop_predict02.f90'
+      - 'tests/fpe/run_fpe_dyntop_predict02.py'
+      - 'tests/fpe/run_fpe_dyntop_predict02.sh'
       - '.github/workflows/f-pe-dyntop-predict01.yml'
   workflow_dispatch:
 
@@ -27,3 +31,15 @@ jobs:
         run: gfortran --version
       - name: Run preregistered origin-frozen classifier
         run: bash tests/fpe/run_fpe_dyntop_predict01.sh
+
+  history-classifier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered two-step history classifier
+        run: bash tests/fpe/run_fpe_dyntop_predict02.sh
