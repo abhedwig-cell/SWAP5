@@ -6,7 +6,7 @@ end module MOD_timer
 ! File VersionID:
 !   $Id: timecontrol.f90 374 2018-03-21 13:12:23Z heine003 $
 ! ----------------------------------------------------------------------
-   subroutine TimeControl(task, interval)
+   subroutine TimeControl(task, interval, worker)
 ! ----------------------------------------------------------------------
 !     Date               : Aug 2004   
 !     Purpose            : Handles time variables, switches and flags
@@ -22,6 +22,9 @@ end module MOD_timer
    use mod_b1_10_interval_seam, only: b1_10_interval_seam_t, B1_10_INTERVAL_TIME_TOL
    use mod_b1_10_timestep_decision_service, only: b1_10_timestep_decision_t, &
         b1_10_legacy_accepted_step_decision, b1_10_legacy_solver_retry_decision
+   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_record_timestep_trace, &
+        A23BU_TS_LIMIT_NONE, A23BU_TS_LIMIT_HARD_EVENT, A23BU_TS_LIMIT_SOLVER_RETRY, &
+        A23BU_TS_LIMIT_SOLVER_RETRY_FLOOR
    
    use variables,       only: fldecdt, flrunend, fldaystart, fldtmin, flzerointr, flzerocumu, floutput, flheader,                            &
                               flbaloutput, nprintday, flprintdt, flprintshort, period, isteps, ioutdat,                                      &
@@ -52,6 +55,7 @@ end module MOD_timer
 !  global
    integer, intent(in) :: task
    type(b1_10_interval_seam_t), intent(inout), optional :: interval
+   type(a23bu_worker_context_t), intent(inout), optional :: worker
 
 !  local, need to save
 
@@ -68,4 +72,7 @@ end module MOD_timer
    real(8)              :: intervalRemaining
    logical              :: intervalActive
    type(b1_10_timestep_decision_t) :: timestepDecision
+   real(8)              :: timestepDecisionInput
+   logical              :: timestepEventClamped
+   integer              :: timestepLimitReason
 !  critical time-interval 
