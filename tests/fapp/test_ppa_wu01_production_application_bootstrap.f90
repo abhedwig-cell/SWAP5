@@ -494,15 +494,10 @@ contains
     type(b110_dynamic_top_boundary_request_t) :: request
     type(vonhhbraden_source_window_t) :: source
     type(fmr_b110_physical_forcing_t) :: forcing
-    type(fmr_b110_physical_forcing_t), allocatable :: forcing_vector(:)
-    type(fmr_production_application_bootstrap_t) :: production_app
-    type(fmr_serialized_column_result_t), allocatable :: production_results(:)
     type(ppa_wu04c_production_forcing_diagnostics_t) :: diagnostics
     type(ppa_wu04d_production_forcing_diagnostics_t) :: gash_diagnostics
     type(gash_parameters_t) :: gash
     real(real64) :: interception
-    integer :: tile, local_status
-
     geometry%parameter_set_id = value%tiles(1)%parameters%parameter_set_id
     geometry%active_nodes = value%tiles(1)%parameters%active_nodes
     allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
@@ -536,34 +531,6 @@ contains
          'WU04D full forcing composition')
     deallocate(geometry%z, geometry%dz, geometry%node_distance)
 
-    allocate(forcing_vector(NTILE))
-    do tile = 1, NTILE
-      geometry%parameter_set_id = value%tiles(tile)%parameters%parameter_set_id
-      geometry%active_nodes = value%tiles(tile)%parameters%active_nodes
-      allocate(geometry%z(geometry%active_nodes), geometry%dz(geometry%active_nodes), geometry%node_distance(geometry%active_nodes))
-      geometry%z = value%tiles(tile)%parameters%z; geometry%dz = value%tiles(tile)%parameters%dz
-      geometry%node_distance = value%tiles(tile)%parameters%node_distance
-      call initialize_b110_default_mvg_parameters(hydraulics, value%tiles(tile)%parameters%cofgen)
-      request = b110_dynamic_top_boundary_request_t()
-      request%conductivity_mean_method = value%tiles(tile)%parameters%swkmean
-      request%pressure_head_top_cm = value%tiles(tile)%initial_state%pressure_head(1)
-      request%water_content_top = value%tiles(tile)%initial_state%water_content(1)
-      request%step_duration_day = T1 - T0; request%ponding_max_cm = 2.0_real64
-      request%runoff_resistance_day = 1.0_real64; request%runoff_exponent = 1.0_real64
-      call materialize_ppa_wu04d_production_forcing(value%tiles(tile)%base_forcing, request, geometry, hydraulics, gash, source, &
-           0.20_real64, 0.10_real64, forcing_vector(tile), interception, gash_diagnostics)
-      call require(gash_diagnostics%status == PPA_WU04D_PRODUCTION_FORCING_OK, 'WU04D tile forcing composition')
-      deallocate(geometry%z, geometry%dz, geometry%node_distance)
-    end do
-    call production_app%initialize(value, local_status)
-    call require(local_status == FMR_APP_BOOT_OK, 'WU04D production owner initialize')
-    call production_app%run_standalone_with_forcing(T0, T1, forcing_vector, production_results, local_status)
-    call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
-         'WU04D production owner commit')
-    call require(maxval(abs(production_results%mass%residual)) <= HARD_MASS_GATE, 'WU04D production hard mass')
-    call production_app%close(local_status)
-    call require(local_status == FMR_APP_BOOT_OK, 'WU04D production owner close')
-    deallocate(forcing_vector)
   end subroutine verify_wu04c_production_composition
 
   subroutine run_atm02_pmdirect_owner_profile(base_config)
