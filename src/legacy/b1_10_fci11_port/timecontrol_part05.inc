@@ -36,9 +36,16 @@
 
       ! decrease in case of no convergence in headcalc
       if (fldecdt) then
+         timestepDecisionInput = dt
          timestepDecision = b1_10_legacy_solver_retry_decision(dt, dtmin, fact_dt_fldect)
          dt = timestepDecision%preferred_dt
          if (timestepDecision%floor_reached) fldtmin = .TRUE.
+         if (present(worker)) then
+            timestepLimitReason = A23BU_TS_LIMIT_SOLVER_RETRY
+            if (timestepDecision%floor_reached) timestepLimitReason = A23BU_TS_LIMIT_SOLVER_RETRY_FLOOR
+            call a23bu_record_timestep_trace(worker, timestepDecisionInput, timestepDecision%preferred_dt, dt, &
+                 timestepDecision%reason, timestepLimitReason, .FALSE.)
+         end if
          fldecdt = .FALSE.
          return
       end if
