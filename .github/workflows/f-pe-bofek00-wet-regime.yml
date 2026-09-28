@@ -41,3 +41,5 @@ jobs:
         run: bash tests/verification/run_bofek00_frozen_comparison.sh
       - name: Compare adaptive TimeControl interaction
         run: bash tests/verification/run_bofek00_adaptive_comparison.sh
+      - name: Preserve TEMPORAL08 runtime chain
+        run: bash tests/fpe/run_fpe_temporal08_p0_policy.sh
