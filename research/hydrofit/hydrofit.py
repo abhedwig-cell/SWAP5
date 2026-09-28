@@ -16,6 +16,7 @@ except ImportError:  # pragma: no cover
 
 Semantics = Literal["textbook_mvg", "swap_default_mvg"]
 Family = Literal["theta", "K"]
+WeightingMode = Literal["sum", "family_mean"]
 
 
 @dataclass(frozen=True)
@@ -68,12 +69,15 @@ class FitConfig:
     k_scale: float = 1.0
     fixed_l: float = 0.5
     fixed_h_entry: float = 0.0
+    weighting_mode: WeightingMode = "sum"
     lower: tuple[float, ...] = (0.0, 0.05, 1e-8, 1.000001, 1e-12)
     upper: tuple[float, ...] = (0.8, 0.9, 10.0, 20.0, 1e8)
 
     def validate(self) -> None:
         if self.semantics not in ("textbook_mvg", "swap_default_mvg"):
             raise ValueError("unknown forward semantics")
+        if self.weighting_mode not in ("sum", "family_mean"):
+            raise ValueError("unknown weighting mode")
         if self.theta_scale <= 0.0 or self.k_scale <= 0.0:
             raise ValueError("family scales must be positive")
         if len(self.lower) != 5 or len(self.upper) != 5:
@@ -201,6 +205,9 @@ def residual_vector(x: Sequence[float], observations: Sequence[Observation], cfg
     heads = np.asarray([o.head_cm for o in observations], dtype=float)
     theta, kval = evaluate(heads, p, cfg.semantics)
     residuals = []
+    counts = {"theta": 0, "K": 0}
+    for obs in observations:
+        counts[obs.family] += 1
     for i, obs in enumerate(observations):
         obs.validate(cfg.log_k)
         sigma = obs.sigma if obs.sigma is not None else 1.0
@@ -213,6 +220,8 @@ def residual_vector(x: Sequence[float], observations: Sequence[Observation], cfg
                 r = (np.log(kval[i]) - np.log(obs.value)) / sigma / cfg.k_scale
             else:
                 r = (kval[i] - obs.value) / sigma / cfg.k_scale
+        if cfg.weighting_mode == "family_mean":
+            r /= np.sqrt(counts[obs.family])
         residuals.append(r)
     return np.asarray(residuals)
 
