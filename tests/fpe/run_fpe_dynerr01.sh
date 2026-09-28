@@ -9,3 +9,5 @@ python3 tests/rom/materialize_f_rom0_headcalc_stubs.py --source tests/fsi/fsi04_
 python3 tests/fpe/materialize_fpe_dynerr01_indicator.py src/solver/mod_reference_richards_temporal_indicator.f90 "$BUILD/mod_fpe_dynerr01_temporal_indicator.f90"
 python3 tests/rom/compile_f_rom0_fortran_closure.py --root "$ROOT" --stub "$BUILD/stub.f90"   --target tests/fpe/test_fpe_dynerr01_indicator.f90   --external-source "$BUILD/mod_fpe_dynerr01_temporal_indicator.f90"   --external-source src/legacy/b1_10_port/headcalc.f90   --build "$BUILD/compile" --opt 2
 python3 tests/fpe/run_fpe_dynerr01.py "$BUILD/compile/rom0_test" docs/performance/F-PE-BOFEK01_TESTBANK.json
+
+# DYNERR01 harness-repair rerun marker
