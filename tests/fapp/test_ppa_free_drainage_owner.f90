@@ -2847,6 +2847,40 @@ contains
       do j=1,2
         zero_forcing(j)%subsurface_irrigation_source=0.0_real64
       end do
+      call app%restore_committed_restart(saved,92001_int64,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX complete window restore'
+      fixed_requests%t0=T0
+      fixed_observations%knot_count=2
+      call execute_window_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64, &
+           fixed_parameters,fixed_requests,zero_forcing,2,fixed_prefixes,fixed_prefix_count,fixed_code, &
+           observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+      if(fixed_code/=FMR_APP_BOOT_OK.or.fixed_prefix_count/=2) error stop 'TCSFIX complete window failed'
+      if(fixed_prefixes(1)%interval_end/=T0+1.0_real64/65536.0_real64.or. &
+           fixed_prefixes(2)%interval_end/=T0+2.0_real64/65536.0_real64) error stop 'TCSFIX window boundaries'
+      do j=1,2
+        if(.not.all(fixed_prefixes(j)%columns%committed)) error stop 'TCSFIX window missing commits'
+      end do
+      call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX window export'
+      if(any(observed%records%committed_time/=resumed_observed%records%committed_time)) &
+           error stop 'TCSFIX window restart time mismatch'
+      do j=1,2
+        select type(state=>observed%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          select type(replayed=>resumed_observed%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(state%tcsfix%dayfix/=1.or.state%tcsfix%last_day/=101_int64.or.state%irrigation%active_event) &
+                 error stop 'TCSFIX window duplicate selection'
+            if(any(state%water_content/=replayed%water_content).or. &
+                 any(state%pressure_head/=replayed%pressure_head)) error stop 'TCSFIX window restart state mismatch'
+          class default
+            error stop 'TCSFIX window comparison carrier'
+          end select
+        class default
+          error stop 'TCSFIX window carrier'
+        end select
+      end do
+      write(*,'(a)') 'PPA_IRR_TCSFIX_TWO_PREFIX_WINDOW_RESTART_EQUIVALENCE=PASS'
       do j=1,2
         select type(state=>saved%records(j)%physical_state)
         type is(ppa_irrigation_event_state_t)
