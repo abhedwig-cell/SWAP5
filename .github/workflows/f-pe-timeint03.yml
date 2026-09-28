@@ -8,6 +8,7 @@ on:
       - 'docs/performance/F-PE-TIMEINT03_PREREGISTRATION.md'
       - 'docs/performance/F-PE-TIMEINT03_P1_PREREGISTRATION.md'
       - 'docs/performance/F-PE-TIMEINT03A_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT03B_PREREGISTRATION.md'
       - 'tests/fpe/materialize_fpe_timeint03_binding.py'
       - 'tests/fpe/compile_fpe_timeint03_closure.py'
       - 'tests/fpe/test_fpe_timeint03_be.f90'
@@ -17,6 +18,10 @@ on:
       - 'tests/fpe/run_fpe_timeint03_p1.sh'
       - 'tests/fpe/run_fpe_timeint03a.py'
       - 'tests/fpe/run_fpe_timeint03a.sh'
+      - 'tests/fpe/materialize_fpe_timeint03b_binding.py'
+      - 'tests/fpe/test_fpe_timeint03b_predictor.f90'
+      - 'tests/fpe/run_fpe_timeint03b.py'
+      - 'tests/fpe/run_fpe_timeint03b.sh'
       - 'tests/fpe/materialize_fpe_timeint02_headcalc.py'
       - '.github/workflows/f-pe-timeint03.yml'
   workflow_dispatch:
@@ -60,3 +65,15 @@ jobs:
         run: gfortran --version
       - name: Run preregistered BDF2 nonlinear attribution
         run: bash tests/fpe/run_fpe_timeint03a.sh
+
+  predictor-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered BDF2 predictor attribution
+        run: bash tests/fpe/run_fpe_timeint03b.sh
