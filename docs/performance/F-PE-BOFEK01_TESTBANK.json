@@ -20,7 +20,7 @@
   "cases": "Cartesian product materials x regimes = 20 cases",
   "screening_cases": ["B01/DRY","B01/TRANSITION","B01/MOIST","B01/WET","B01/POND","B12/DRY","B12/TRANSITION","B12/MOIST","B12/WET","O05/DRY","O05/TRANSITION","O05/MOIST","O05/WET","O05/POND","O14/DRY","O14/TRANSITION"],
   "holdout_cases": ["B12/POND","O14/MOIST","O14/WET","O14/POND"],
-  "baseline_policy": {"dtmin_day":0.001,"dtmax_day":0.02,"numbit_crit":4,"maxit":8,"max_backtracking":8,"fact_inc":2.0,"fact_dec":0.5,"fact_fail_divisor":2.0,"head_abs_tol":1e-9,"head_rel_tol":1e-9,"balance_tol":1e-10,"pond_tol":1e-10},
+  "baseline_policy": {"dtmin_day":0.001,"dtmax_day":0.02,"numbit_crit":4,"maxit":8,"max_backtracking":8,"fact_inc":2.0,"fact_dec":0.5,"fact_fail_divisor":2.0,"head_abs_tol":1e-9,"head_rel_tol":1e-9,"balance_tol_configured":1e-12,"balance_floor_depth_cm":2.8e-16,"pond_tol":1e-10},
   "phase_A_candidates": [
     {"id":"REF","dtmin":1.0,"dtmax":1.0,"dt0":"geometric","numbit_crit":4,"fact_inc":2.0},
     {"id":"DTMAX_X0P5","dtmax":0.5},
