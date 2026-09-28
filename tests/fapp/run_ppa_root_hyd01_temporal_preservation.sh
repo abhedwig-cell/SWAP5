@@ -17,6 +17,8 @@ PPA_ROOT_HYD02_ADMISSION=7ea315285904783225741b350be292974afeec92
 PPA_ROOT_HYD02_QUALIFIED=55451eec38a877412e3eef59c3c103a33156ceee
 FCI110_ADMISSION=a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a
 DIR01_ADMISSION=b95ce4b9a27144eb400fae25de69dd5d927667a8
+TEMPORAL11_ADMISSION=0928019bf826d6377d5f9324144496334bf4b0d6
+TEMPORAL11_TEMPORAL_INDICATOR=7239ec1b8572e97a624515fe7dd2ff25de648baa
 PPA_WU04A_ADMISSION=50e7d1dece5b75d0103459d5c118d03a2665eea3
 PPA_WU04A_QUALIFIED=f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938
 PPA_WU04B_ADMISSION=4d40b8d4b6a1df06ff97fab55497542778431290
@@ -50,6 +52,10 @@ if git merge-base --is-ancestor "$PPA_ROOT_HYD02_ADMISSION" HEAD; then
     directional_service_blob=6bb0ae737b5cbf26084b6de8250cebdce932fd19
     directional_sensitivity_blob=8cf848d0ac85602bcde434d76189990f30c11dcb
     echo 'PPA_ROOT_HYD01_PRESERVE_DIR01_SUCCESSORS=ACTIVE'
+  fi
+  if git merge-base --is-ancestor "$TEMPORAL11_ADMISSION" HEAD; then
+    temporal_indicator_blob="$TEMPORAL11_TEMPORAL_INDICATOR"
+    echo 'PPA_ROOT_HYD01_PRESERVE_TEMPORAL11_SUCCESSOR=ACTIVE'
   fi
   check_blob src/solver/mod_reference_richards_temporal_indicator.f90 "$temporal_indicator_blob"
   check_blob src/adapter/mod_reference_richards_accepted_step_directional_service.f90 "$directional_service_blob"
