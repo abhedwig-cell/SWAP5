@@ -341,6 +341,27 @@ jobs:
             args+=("$RUNNER_TEMP/bro/$id.rep.csv::$RUNNER_TEMP/bro/$id.rep.meta.json")
           done
           python research/hydrofit/compare_l_policies.py "${args[@]}" | tee "$RUNNER_TEMP/bro/l-policy.txt"
+      - name: Bind conductivity-shape schema semantics
+        run: |
+          python - <<'PY'
+          from urllib.request import Request,urlopen
+          import os,pathlib,xml.etree.ElementTree as ET
+          url="http://schema.broservices.nl/xsd/srcommon/1.0/ShapeHydraulicConductivityCurve.xml"
+          try:
+            with urlopen(Request(url,headers={"User-Agent":"SWAP5-F-HYDROFIT02/0.1"}),timeout=20) as r: b=r.read()
+          except Exception:
+            url=url.replace("http://","https://")
+            with urlopen(Request(url,headers={"User-Agent":"SWAP5-F-HYDROFIT02/0.1"}),timeout=20) as r: b=r.read()
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/conductivity-shape-schema.xml"; p.write_bytes(b)
+          root=ET.fromstring(b)
+          def local(t): return t.rsplit('}',1)[-1]
+          for e in root.iter():
+            if local(e.tag)=="field":
+              print("BRO_KSHAPE_FIELD|NAME="+e.attrib.get("name",""))
+            if local(e.tag)=="uom":
+              print("BRO_KSHAPE_UOM|CODE="+e.attrib.get("code",""))
+          print("BRO_KSHAPE_SCHEMA_PREFIX="+repr(b[:5000]))
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
