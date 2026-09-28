@@ -96,8 +96,8 @@ contains
       if (self%legacy%initial_dt < self%legacy%dtmin .or. self%legacy%initial_dt > self%legacy%dtmax) return
       if (self%legacy%numbit_crit < 0) return
       if (self%legacy%maxit <= 0 .or. self%legacy%numbit_crit > self%legacy%maxit) return
-      if (self%legacy%fact_increase <= 0.0_real64) return
-      if (self%legacy%fact_decrease <= 0.0_real64) return
+      if (self%legacy%fact_increase < 1.0_real64) return
+      if (self%legacy%fact_decrease <= 0.0_real64 .or. self%legacy%fact_decrease > 1.0_real64) return
       if (self%legacy%fact_failure <= 1.0_real64) return
       status = TIMESTEP_PROFILE_STATUS_OK
 
