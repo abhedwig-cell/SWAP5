@@ -2596,14 +2596,15 @@ contains
     end do
     config%tiles(1)%irrigation_ssdi_node=0
     block
-      use mod_irrigation_process, only: ppa_tcsfix_identity_t
+      use mod_irrigation_process, only: ppa_tcsfix_identity_t,ppa_weekly_identity_t
       type(fmr_production_application_bootstrap_t)::app
       type(fmr_production_application_config_t)::fixed_config
       type(fmr_committed_restart_bundle_t)::saved,observed
       type(ppa_tcsfix_identity_t)::proposals(2)
+      type(ppa_weekly_identity_t)::weekly_proposals(2)
       type(fmr_b110_physical_forcing_t)::zero_forcing(2)
       type(fmr_serialized_column_result_t),allocatable::fixed_results(:)
-      integer::fixed_code,j
+      integer::fixed_code,j,guard_case,mixed_case
       logical::fixed_ok
       fixed_config=config; fixed_config%tiles(1)%irrigation_ssdi_node=1
       call app%initialize(fixed_config,fixed_code)
@@ -2625,6 +2626,23 @@ contains
       end do
       call app%restore_committed_restart(saved,92001_int64,fixed_ok,fixed_code)
       if(.not.fixed_ok) error stop 'TCSFIX bootstrap restore'
+      do guard_case=1,4
+        select case(guard_case)
+        case(1)
+          call app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,zero_forcing, &
+               fixed_results,fixed_code)
+        case(2)
+          call app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,zero_forcing, &
+               fixed_results,fixed_code,tcsfix_proposals=proposals(:1))
+        case(3:4)
+          if(guard_case==3) proposals(2)=ppa_tcsfix_identity_t()
+          if(guard_case==4) proposals(2)%interval_days=4
+          call app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,zero_forcing, &
+               fixed_results,fixed_code,tcsfix_proposals=proposals)
+        end select
+        if(fixed_code==FMR_APP_BOOT_OK.or.allocated(fixed_results)) error stop 'TCSFIX bootstrap guard accepted'
+        proposals(2)=proposals(1)
+      end do
       proposals(2)%last_day=102_int64
       call app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,zero_forcing, &
            fixed_results,fixed_code,tcsfix_proposals=proposals)
@@ -2652,6 +2670,44 @@ contains
         end select
       end do
       write(*,'(a)') 'PPA_IRR_TCSFIX_BOOTSTRAP_PREFLIGHT_FORWARDING=PASS'
+      do mixed_case=1,2
+        proposals(2)=ppa_tcsfix_identity_t()
+        weekly_proposals=ppa_weekly_identity_t()
+        select type(state=>saved%records(2)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          state%tcsfix=ppa_tcsfix_identity_t()
+          if(mixed_case==2) then
+            state%weekly%enabled=.true.; state%weekly%day_bound=.true.
+            state%weekly%dayfix=2; state%weekly%last_day=100_int64
+            weekly_proposals(2)=state%weekly
+            weekly_proposals(2)%last_day=101_int64; weekly_proposals(2)%dayfix=3
+          end if
+        end select
+        call app%restore_committed_restart(saved,92001_int64,fixed_ok,fixed_code)
+        if(.not.fixed_ok) error stop 'TCSFIX mixed fixture restore'
+        call app%run_prepared_irrigation(T0,T0+1.0_real64/65536.0_real64,zero_forcing, &
+             fixed_results,fixed_code,weekly_proposals=weekly_proposals,tcsfix_proposals=proposals)
+        if(fixed_code/=FMR_APP_BOOT_OK) error stop 'TCSFIX mixed forwarding failed'
+        call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+        if(.not.fixed_ok) error stop 'TCSFIX mixed export'
+        do j=1,2
+          select type(state=>observed%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(j==1) then
+              if(.not.state%tcsfix%enabled.or.state%tcsfix%dayfix/=3.or. &
+                   state%tcsfix%last_day/=101_int64.or.state%weekly%enabled) error stop 'TCSFIX mixed first lost'
+            else
+              if(state%tcsfix%enabled.or.state%tcsfix%dayfix/=366) error stop 'TCSFIX mixed leaked'
+              if(mixed_case==1.and.state%weekly%enabled) error stop 'TCSFIX disabled column activated'
+              if(mixed_case==2) then
+                if(.not.state%weekly%enabled.or.state%weekly%dayfix/=3.or. &
+                     state%weekly%last_day/=101_int64) error stop 'TCSFIX mixed weekly lost'
+              end if
+            end if
+          end select
+        end do
+      end do
+      write(*,'(a)') 'PPA_IRR_TCSFIX_BOOTSTRAP_GUARDS_MIXED_IDENTITIES=PASS'
     end block
     block
       use mod_irrigation_process, only: ppa_weekly_identity_t
