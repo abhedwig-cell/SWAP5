@@ -37,6 +37,16 @@
       ! decrease in case of no convergence in headcalc
       if (fldecdt) then
          timestepDecision = b1_10_legacy_solver_retry_decision(dt, dtmin, fact_dt_fldect)
+         if (present(timestep_trace)) then
+            timestep_trace%available = .TRUE.
+            timestep_trace%sequence = timestep_trace%sequence + 1
+            timestep_trace%input_dt = timestepDecision%input_dt
+            timestep_trace%preferred_dt = timestepDecision%preferred_dt
+            timestep_trace%executed_dt = timestepDecision%preferred_dt
+            timestep_trace%reason = timestepDecision%reason
+            timestep_trace%event_clipped = .FALSE.
+            timestep_trace%floor_reached = timestepDecision%floor_reached
+         end if
          dt = timestepDecision%preferred_dt
          if (timestepDecision%floor_reached) fldtmin = .TRUE.
          fldecdt = .FALSE.
