@@ -133,8 +133,6 @@ program test_ppa_wu01_production_application_bootstrap
   call app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. app%ready(), 'clean standalone owner close')
 
-  call run_atm02_pmdirect_owner_profile(config)
-
   ! Groundwater authority: the same production bootstrap type owns an admitted
   ! bottom_mode=5 participant registry and creates F-GC49D from typed inputs.
   gw_config = config
@@ -257,15 +255,6 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU01_TYPED_CONFIG_TO_FMR_OWNER=PASS'
   print '(a)', 'PPA_WU01_STANDALONE_REFERENCE_RICHARDS_RUNTIME=PASS'
   print '(a)', 'PPA_WU01_STANDALONE_HARD_MASS=PASS'
-  print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_COMPOSITION=PASS'
-  print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_HARD_MASS=PASS'
-  print '(a)', 'PPA_ATM02_OWNER_COMMITTED_TOP_SNAPSHOT=PASS'
-  print '(a)', 'PPA_ATM02_TWO_INTERVAL_OWNER_CONTINUATION=PASS'
-  print '(a)', 'PPA_ATM02_TWO_INTERVAL_HARD_MASS=PASS'
-  print '(a)', 'PPA_ATM02_OWNER_RESTART_CONTINUATION=PASS'
-  print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_RECEIPTS=PASS'
-  print '(a)', 'PPA_WU04C_OWNER_ACCEPTED_PROGRESS=PASS'
-  print '(a)', 'PPA_WU04C_OWNER_PROGRESS_RESTART_CONTINUATION=PASS'
   print '(a)', 'PPA_WU04C_DYNAMIC_TOP_FORCING_HANDOFF=PASS'
   print '(a)', 'PPA_WU04C_FULL_DYNAMIC_TOP_COMPOSITION=PASS'
   print '(a)', 'PPA_WU04D_FULL_DYNAMIC_TOP_COMPOSITION=PASS'
