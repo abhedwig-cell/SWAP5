@@ -28,6 +28,8 @@ TEST_SELECTION=tests/ross/test_ross12_solver_selection_binding.f90
 ASSET_ROOT=assets/rossfast/d3r
 FCI110_ADMISSION=a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a
 FPERF_B1_ADMISSION=ffb08380054ddec9e940fc0e4056758d30a1d7da
+BOFEK00_ADMISSION=f670e012ab028cc1e74bb9b7aa1b8655b545619c
+BOFEK00_SW=f67cbe5b4612e8f4230f58f81cbffd3d44336c0d
 
 # Preserve all F-ROSS12 authorities that F-ROSS13 is not authorized to change.
 # Semantic-successor admissions may explicitly override only the expected
@@ -45,6 +47,10 @@ sw_authority=40a1ddc05fb8e2c1822763de645fd07a094568a3
 if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
   sw_authority=45cb74e00ae5fe09a220e630d84507cde543070b
   echo 'F_ROSS13_ROSS12_FCI110_SOLVER_CONTRACT_SUCCESSOR=ACTIVE'
+fi
+if git merge-base --is-ancestor "$BOFEK00_ADMISSION" HEAD; then
+  sw_authority="$BOFEK00_SW"
+  echo 'F_ROSS13_ROSS12_BOFEK00_SOLVER_CONTRACT_SUCCESSOR=ACTIVE'
 fi
 test "$(git rev-parse HEAD:$SW)" = "$sw_authority" || fail 'solver contract drift'
 test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9 || fail 'RossFast policy drift'
