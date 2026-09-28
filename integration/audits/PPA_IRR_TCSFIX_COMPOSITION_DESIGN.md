@@ -133,3 +133,44 @@ columns before execution. Test invalid second-column metadata without earlier
 publication and mixed disabled/weekly/TCSFIX preservation. Only then expose an
 explicit source-adapter bootstrap route. No separate state owner or default
 activation is introduced at any stage.
+
+## Explicit daily source route: next bounded implementation
+
+Dependency review at `ed3089a4c`: the exact/next/window adapter entry points
+live in `src/adapter/mod_ppa_bootstrap_irrigation.f90`. Only
+`tests/fapp/run_ppa_free_drainage_owner.ps1` references that source in the
+searched test/tool compile lists; it already compiles the TCSFIX source and
+identity dependencies before this adapter. No new backend dependency is needed.
+
+Extend the exact-interval entry point first, with a trailing optional array of
+typed TCSFIX daily inputs. Each input contains an explicit enabled selector,
+daily-invocation flag and ordinal. Do not infer activation from timing criterion
+1-4, presence of observations, or an interval value. Enabled selectors require
+an already enabled committed TCSFIX carrier, TCS1-4, DCS2 and supplied timing
+observations. Disabled selectors retain existing routes. Reject enabled weekly,
+DCS1 and profile-derived TCSFIX combinations in this first scope rather than
+silently ignoring an alternative source of timing/depth information.
+
+Read counter and interval only from the committed carrier snapshot. The input
+does not reset or reconfigure them. Compare selector/carrier activation for all
+columns before execution. Call `evaluate_tcsfix_daily_source` into detached
+forcing, event and identity proposals, reconstruct event-start metadata using
+the existing checked flux convention, and pass the completed proposal array
+through `run_prepared_irrigation`. Any late-column preparation failure must
+return without executing earlier columns. Existing preparation diagnostics may
+describe completed preparation; they must not imply publication.
+
+First gates: no-gift counter progression, first selected gift, duplicate ordinal
+without a second selection, invalid second-column observations/ordinal without
+publication, and mixed existing/TCSFIX routes. Compare exact O0/O2 transcripts
+and committed metadata, hydraulic state and mass. Use the already supported
+short initial intervals; do not count the separately recorded second-interval
+kernel rejection as resolved by this gate.
+
+Only after this exact route passes should next-prefix/window wrappers forward
+the new inputs. Every prefix must derive proposals anew from committed state;
+duplicate ordinal handling belongs to the identity helper, not an adapter-local
+counter or calendar. Automatic activation, elapsed-day qualification, DCS1,
+profile-derived TCSFIX timing and reset/reconfiguration remain separate work.
+Affected invariants: explicit data separation, one state owner, transactional
+publication, mass conservation and no hidden calendar dependencies.
