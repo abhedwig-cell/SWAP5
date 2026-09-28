@@ -1,0 +1,41 @@
+name: PPA reconcile conflict census
+
+on:
+  push:
+    branches:
+      - work/ppa-reconcile01
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  census:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reproduce merge conflicts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin backup/ppa-before-reconcile-20260928 integration/f-ci-canonical
+          git checkout --detach origin/integration/f-ci-canonical
+          set +e
+          git merge --no-commit --no-ff origin/backup/ppa-before-reconcile-20260928
+          rc=$?
+          set -e
+          echo "PPA_RECONCILE_MERGE_RC=$rc"
+          echo "PPA_RECONCILE_CONFLICTS_BEGIN"
+          git diff --name-only --diff-filter=U
+          echo "PPA_RECONCILE_CONFLICTS_END"
+          for f in $(git diff --name-only --diff-filter=U); do
+            echo "===== CONFLICT:$f ====="
+            git diff --cc -- "$f"
+            echo "===== END_CONFLICT:$f ====="
+          done
+          git merge --abort || true
+          test "$rc" -ne 0
+          echo "PPA_RECONCILE_CONFLICT_CENSUS=PASS"
