@@ -600,6 +600,14 @@ s = s.replace(
              ':kernel=',production_results(tile)%kernel_status,':admitted=',production_results(tile)%admitted, &
              ':completed=',production_results(tile)%completed,':committed=',production_results(tile)%committed, &
              ':substeps=',production_results(tile)%accepted_substeps,':mass=',production_results(tile)%mass%residual
+        write(*,'(A,I0,A,L1,A,A,A,I0,A,I0,A,I0,A,I0,A,I0)') &
+             'PPA_RECONCILE_WU04C_DIAG tile=',tile,':solver_executed=',production_results(tile)%solver_executed, &
+             ':route=',trim(production_results(tile)%solver_route), &
+             ':iterations=',production_results(tile)%solver_iterations, &
+             ':attempts=',production_results(tile)%transaction_attempts, &
+             ':solver_rej=',production_results(tile)%solver_rejections, &
+             ':temporal_rej=',production_results(tile)%temporal_rejections, &
+             ':mass_rej=',production_results(tile)%mass_rejections
       end do
     end if
     call require(local_status == FMR_APP_BOOT_OK .and. all(production_results%completed) .and. all(production_results%committed), &
