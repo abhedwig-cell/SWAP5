@@ -23,9 +23,12 @@ def summary(vals):
          "median":statistics.median(x) if x else None}
 def main():
  ap=argparse.ArgumentParser(); ap.add_argument("--corpus",required=True); ap.add_argument("--out",required=True); a=ap.parse_args()
- corpus=json.loads(Path(a.corpus).read_text()); targets={(r["bro_id"],str(r["begin_depth"]),str(r["end_depth"])) for r in corpus["intervals"]}
+ corpus=json.loads(Path(a.corpus).read_text()); target_counts={}
+ for r in corpus["intervals"]:
+  key=(r["bro_id"],str(r["begin_depth"]),str(r["end_depth"]))
+  target_counts[key]=target_counts.get(key,0)+1
  bybro={}
- for bid,_,_ in targets: bybro.setdefault(bid,[]).append(1)
+ for bid,_,_ in target_counts: bybro.setdefault(bid,[]).append(1)
  rows=[]; metadata={}
  for bid in sorted(bybro):
   st,ct,b=fetch(DEFAULT_BASE+"/objects/"+bid)
@@ -42,7 +45,7 @@ def main():
    begin=next(((e.text or "").strip() for e in iv.iter() if local(e.tag)=="beginDepth"),None)
    end=next(((e.text or "").strip() for e in iv.iter() if local(e.tag)=="endDepth"),None)
    key=(bid,str(begin),str(end))
-   if key not in targets: continue
+   if target_counts.get(key,0)<=0: continue
    hyd=None
    for da in (e for e in iv.iter() if local(e.tag)=="DataArray"):
     et=next((e.attrib.get("name") for e in da.iter() if local(e.tag)=="elementType"),None)
@@ -55,7 +58,9 @@ def main():
     "theta_min":min(th) if th else None,"theta_max":max(th) if th else None,"theta_span":max(th)-min(th) if th else None,
     "log10k_min":math.log10(min(k)) if k else None,"log10k_max":math.log10(max(k)) if k else None,
     "log10k_span":math.log10(max(k)/min(k)) if k else None})
- if len(rows)!=len(targets): raise SystemExit(f"target mismatch rows={len(rows)} targets={len(targets)}")
+   target_counts[key]-=1
+ remaining=sum(target_counts.values())
+ if remaining or len(rows)!=len(corpus["intervals"]): raise SystemExit(f"target mismatch rows={len(rows)} expected={len(corpus['intervals'])} remaining={remaining}")
  fields=[k for k in rows[0] if k!="bro_id"]
  coverage={k:sum(r.get(k) is not None for r in rows) for k in fields}
  # Object-level scalar metadata coverage. Exclude hydraulic source-fit fields by name.
