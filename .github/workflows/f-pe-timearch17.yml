@@ -1,0 +1,30 @@
+name: F-PE-TIMEARCH17 GUARD_M5 blind validation
+
+on:
+  push:
+    branches:
+      - work/f-pe-timearch17-guard-m5-blind-validation
+    paths:
+      - 'docs/performance/F-PE-TIMEARCH17_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEARCH17_VALIDATION_BANK.json'
+      - 'tests/fpe/run_fpe_timearch17.py'
+      - 'tests/fpe/run_fpe_timearch17.sh'
+      - 'tests/fpe/test_fpe_timearch16_wet_guard.f90'
+      - '.github/workflows/f-pe-timearch17.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blind-validation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run frozen GUARD_M5 blind validation
+        run: bash tests/fpe/run_fpe_timearch17.sh
