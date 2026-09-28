@@ -58,6 +58,8 @@ module mod_b110_dynamic_top_boundary_provider
     real(real64) :: ponded_water_evaporation_cm_per_day = 0.0_real64
     real(real64) :: runoff_depth_cm = 0.0_real64
     real(real64) :: net_potential_surface_flux_cm_per_day = 0.0_real64
+    logical :: surface_head_derivative_available = .false.
+    real(real64) :: surface_head_dpressure_head_top = 0.0_real64
     real(real64) :: evaporation_capacity_cm_per_day = 0.0_real64
     logical :: runoff_potential = .false.
     character(len=48) :: route = 'not-run'
@@ -77,7 +79,7 @@ contains
     type(surface_evaporation_hydraulic_input_t) :: evap_hydraulic
     type(surface_evaporation_result_t) :: evaporation
     real(real64) :: k_atm, k_top, k_sat, k1_atm, k1_max
-    real(real64) :: emax, q0, q1, h0, h0max, p1, p2, current_runoff
+    real(real64) :: emax, q0, q1, h0, h0max, p1, p2
     real(real64) :: top_dz, top_distance
     logical :: ok
 
@@ -161,6 +163,8 @@ contains
       result%regime = B110_DYN_TOP_REGIME_HEAD
       result%surface_head_cm = B110_DYN_TOP_ATMOSPHERIC_HEAD_CM
       result%surface_face_conductivity_cm_per_day = k1_atm
+      result%surface_head_derivative_available = .true.
+      result%surface_head_dpressure_head_top = 0.0_real64
       result%candidate_ponding_depth_cm = 0.0_real64
       result%runoff_depth_cm = 0.0_real64
       result%runoff_potential = .false.
@@ -201,26 +205,28 @@ contains
     if (h0max <= request%ponding_max_cm) then
       result%candidate_ponding_depth_cm = max(0.0_real64, h0max)
       result%runoff_depth_cm = 0.0_real64
+      result%surface_head_derivative_available = .true.
+      result%surface_head_dpressure_head_top = p1/(1.0_real64+p1)
     else
-      current_runoff = restricted_linear_runoff_depth(request%candidate_ponding_depth_cm, request)
-      if (abs(current_runoff) < B110_DYN_TOP_RUNOFF_ZERO_CM) then
-        result%candidate_ponding_depth_cm = max(0.0_real64, h0max)
-        result%runoff_depth_cm = current_runoff
-      else
-        if (request%runoff_resistance_day < B110_DYN_TOP_MIN_LINEAR_RSRO_DAY .or. &
-            request%runoff_exponent /= 1.0_real64) then
-          result%status = B110_DYN_TOP_UNSUPPORTED
-          result%route = 'active-runoff-outside-profile'
-          return
-        end if
-        p2 = 1.0_real64/(p1 + 1.0_real64 + request%step_duration_day/request%runoff_resistance_day)
-        result%candidate_ponding_depth_cm = p2 * (request%previous_ponding_depth_cm + &
-             q0*request%step_duration_day - k1_max*request%step_duration_day + &
-             p1*request%pressure_head_top_cm + &
-             request%step_duration_day/request%runoff_resistance_day*request%ponding_max_cm)
-        result%candidate_ponding_depth_cm = max(0.0_real64, result%candidate_ponding_depth_cm)
-        result%runoff_depth_cm = restricted_linear_runoff_depth(result%candidate_ponding_depth_cm, request)
+      ! Once the no-runoff analytical solution exceeds the ponding threshold,
+      ! branch selection must not depend on the current Newton candidate or dt
+      ! through an absolute runoff-depth gate. Enter the bounded analytical
+      ! linear-runoff solution directly.
+      if (request%runoff_resistance_day < B110_DYN_TOP_MIN_LINEAR_RSRO_DAY .or. &
+          request%runoff_exponent /= 1.0_real64) then
+        result%status = B110_DYN_TOP_UNSUPPORTED
+        result%route = 'active-runoff-outside-profile'
+        return
       end if
+      p2 = 1.0_real64/(p1 + 1.0_real64 + request%step_duration_day/request%runoff_resistance_day)
+      result%candidate_ponding_depth_cm = p2 * (request%previous_ponding_depth_cm + &
+           q0*request%step_duration_day - k1_max*request%step_duration_day + &
+           p1*request%pressure_head_top_cm + &
+           request%step_duration_day/request%runoff_resistance_day*request%ponding_max_cm)
+      result%candidate_ponding_depth_cm = max(0.0_real64, result%candidate_ponding_depth_cm)
+      result%runoff_depth_cm = restricted_linear_runoff_depth(result%candidate_ponding_depth_cm, request)
+      result%surface_head_derivative_available = .true.
+      result%surface_head_dpressure_head_top = p1*p2
     end if
 
     result%surface_head_cm = result%candidate_ponding_depth_cm
