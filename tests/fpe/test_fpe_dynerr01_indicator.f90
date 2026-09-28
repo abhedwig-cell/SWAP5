@@ -164,7 +164,7 @@ contains
     ok=.true.
   end subroutine
 
-  pure real(real64) function storage(s) result(v)
+  real(real64) function storage(s) result(v)
     type(soil_water_physical_state_t),intent(in)::s
     v=sum(s%water_content*p%dz)+s%ponding_depth
   end function
