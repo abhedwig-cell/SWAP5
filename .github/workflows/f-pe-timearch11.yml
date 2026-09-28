@@ -1,0 +1,30 @@
+name: F-PE-TIMEARCH11 AUTO_REFERENCE controller interface
+
+on:
+  push:
+    branches:
+      - work/f-pe-timearch11-auto-reference-interface
+    paths:
+      - 'docs/performance/F-PE-TIMEARCH11_PREREGISTRATION.md'
+      - 'src/runtime/mod_timestep_controller_contract.f90'
+      - 'tests/fpe/test_fpe_timearch11_controller_contract.f90'
+      - 'tests/fpe/guard_fpe_timearch11_source.py'
+      - 'tests/fpe/run_fpe_timearch11.sh'
+      - '.github/workflows/f-pe-timearch11.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  controller-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run AUTO_REFERENCE controller contract gate
+        run: bash tests/fpe/run_fpe_timearch11.sh
