@@ -72,7 +72,11 @@ end module MOD_timer
    real(8)              :: intervalRemaining
    logical              :: intervalActive
    type(b1_10_timestep_decision_t) :: timestepDecision
+   type(b1_10_timestep_decision_t) :: timestepShadowDecision
    real(8)              :: timestepDecisionInput
+   real(8)              :: timestepShadowRetain
+   real(8)              :: timestepShadowEvidence
    logical              :: timestepEventClamped
+   logical              :: timestepPreviousEventClamped
    integer              :: timestepLimitReason
 !  critical time-interval 
