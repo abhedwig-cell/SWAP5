@@ -106,9 +106,17 @@ contains
    subroutine call_timecontrol(task)
       integer, intent(in) :: task
       if (present(interval)) then
-         call TimeControl(task, interval)
+         if (present(worker)) then
+            call TimeControl(task, interval, worker)
+         else
+            call TimeControl(task, interval)
+         end if
       else
-         call TimeControl(task)
+         if (present(worker)) then
+            call TimeControl(task, worker=worker)
+         else
+            call TimeControl(task)
+         end if
       end if
    end subroutine call_timecontrol
 
