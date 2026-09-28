@@ -16,8 +16,10 @@ Primary evidence:
 - test bank: `docs/performance/F-PE-BOFEK01_TESTBANK.json`;
 - final screen: `docs/performance/F-PE-BOFEK01_02_RESULT.md`;
 - supplemental screen record: `docs/performance/F-PE-BOFEK01_SCREEN_RESULT.md`;
-- successful Actions run: `36413271282`;
-- evidence head: `60f68c0a5ecf9da0926a33c485c8cb832826e62a`.
+- screening Actions run: `36413271282`;
+- independent fixed-step oracle run: `36413551568`;
+- oracle-solvability run: `36413798107`;
+- P1/P1R result: `docs/performance/F-PE-BOFEK01_P1R_RESULT.md`.
 
 ## Decision
 
@@ -46,6 +48,8 @@ Accordingly:
 
 This is a negative result, not an incomplete run.
 
+A separately preregistered independent fixed-step oracle was also attempted because the current adaptive Reference trajectory is not itself temporal truth. That oracle resolved only 1/16 screening cases at dt=0.0005/0.00025 d. Increasing Reference MAXIT from 8 to 20 and 48 still resolved exactly 1/16. The oracle limitation therefore does not rescue any P0 candidate and does not justify post-hoc finer-step chasing.
+
 ## Main findings
 
 1. Larger `DTMAX` and larger initial dt can reduce exact solve work materially in isolated cases, but the resulting accepted-dt trajectory changes terminal head/runoff/ponding beyond the strict Reference gates in most cases.
@@ -54,6 +58,7 @@ This is a negative result, not an incomplete run.
 4. Backtracking-cap changes preserve all screening cases but do not reduce deterministic work.
 5. Head-convergence relaxation shows the only broad nonlinear-effort signal, but x10 gives about 3% median work reduction and x100 about 6%, both below the frozen 8% gate and with strict runoff failures.
 6. BALTOL02 remains fixed authority and is not reopened.
+7. The independent fixed-step oracle is not broadly usable under current Reference solver authority: 1/16 resolved at MAXIT 8, 20 and 48. This limits stronger claims about temporal truth, but does not create an advancing candidate.
 
 ## BOFEK interpretation boundary
 
@@ -81,7 +86,8 @@ These are useful but outside this strict workunit:
 1. `F-PE-BOFEK-PRACTICAL01`: preregister a bounded PRACTICAL / COUPLING mode that deliberately trades some trajectory accuracy for fewer/larger timesteps. The current screen shows this is where the actual speed/accuracy tradeoff exists.
 2. BOFEK catalogue authority: add or bind an authoritative BOFEK-ID to hydraulic-profile mapping before any BOFEK-class-specific production policy claim.
 3. If practical mode is opened, start from the observed levers `DTMAX/initial-dt` and head tolerance rather than re-screening MAXIT/backtracking/failure factors.
-4. `SWKIMPL=1` remains separately gated and is not inferred from this work.
+4. A future strict temporal-oracle line would need a different independently justified construction, not post-hoc smaller fixed dt values under this workunit.
+5. `SWKIMPL=1` remains separately gated and is not inferred from this work.
 
 ## Final classification
 
