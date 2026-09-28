@@ -2705,6 +2705,69 @@ contains
         end select
       end do
       write(*,'(a)') 'PPA_IRR_TCSFIX_DAILY_SOURCE_INELIGIBLE_AND_ATOMIC_GAP=PASS'
+      do j=1,2
+        fixed_parameters(j)%scheduled_irrigation_enabled=.true.
+        fixed_parameters(j)%irr_rate_cm_per_day=0.01_real64
+        fixed_parameters(j)%dcs2_knot_count=2
+        fixed_parameters(j)%dcs2_dvs(:2)=[0.0_real64,2.0_real64]
+        fixed_parameters(j)%dcs2_depth_cm(:2)=0.001_real64
+        fixed_requests(j)%selection_opportunity=.true.
+        fixed_requests(j)%irrigation_enabled=.true.; fixed_requests(j)%schedule_enabled=.true.
+        fixed_requests(j)%crop_emerged=.true.; fixed_requests(j)%irrigation_window_open=.true.
+        fixed_observations(j)%knot_count=2
+        fixed_observations(j)%dvs_knots(:2)=[0.0_real64,2.0_real64]
+        fixed_observations(j)%threshold_values(:2)=0.5_real64
+        fixed_observations(j)%iptra_day=1.0_real64
+        fixed_observations(j)%iqreddry_day=0.75_real64
+      end do
+      do guard_case=1,3
+        ! Independent initial-interval fixtures: below interval, selected, duplicate.
+        do j=1,2
+          select type(state=>saved%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            state%tcsfix%dayfix=2; state%tcsfix%last_day=100_int64
+            if(guard_case>=2) state%tcsfix%dayfix=3
+            if(guard_case==3) state%tcsfix%last_day=101_int64
+          end select
+        end do
+        call app%restore_committed_restart(saved,92001_int64,fixed_ok,fixed_code)
+        if(.not.fixed_ok) error stop 'TCSFIX daily eligible fixture restore'
+        if(guard_case==2) then
+          fixed_observations(2)%knot_count=1
+          call execute_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64,fixed_parameters,fixed_requests, &
+               zero_forcing,fixed_results,fixed_code,observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+          if(fixed_code==FMR_APP_BOOT_OK.or.allocated(fixed_results)) error stop 'TCSFIX late invalid observation'
+          call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+          if(.not.fixed_ok.or.any(observed%records%committed_time/=T0)) error stop 'TCSFIX late gift publication'
+          fixed_observations(2)%knot_count=2
+        end if
+        call execute_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64,fixed_parameters,fixed_requests, &
+             zero_forcing,fixed_results,fixed_code,observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+        if(fixed_code/=FMR_APP_BOOT_OK.or..not.allocated(fixed_results)) error stop 'TCSFIX eligible source route'
+        if(.not.all(fixed_results%committed)) error stop 'TCSFIX eligible missing commit'
+        call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+        if(.not.fixed_ok) error stop 'TCSFIX eligible export'
+        do j=1,2
+          select type(state=>observed%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(state%tcsfix%last_day/=101_int64) error stop 'TCSFIX eligible ordinal'
+            if(guard_case==2) then
+              if(state%tcsfix%dayfix/=1.or..not.state%irrigation%active_event) error stop 'TCSFIX selected gift'
+              if(state%irrigation%active_event_rate/=0.01_real64) error stop 'TCSFIX selected rate'
+            else
+              if(state%tcsfix%dayfix/=3.or.state%irrigation%active_event) error stop 'TCSFIX suppressed gift'
+            end if
+          end select
+        end do
+      end do
+      ! Restore the mixed-mode baseline expected by the following fixtures.
+      do j=1,2
+        select type(state=>saved%records(j)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          state%tcsfix%dayfix=2; state%tcsfix%last_day=100_int64
+        end select
+      end do
+      write(*,'(a)') 'PPA_IRR_TCSFIX_DAILY_SOURCE_SELECT_SUPPRESS_DUPLICATE=PASS'
       do mixed_case=1,2
         proposals(2)=ppa_tcsfix_identity_t()
         weekly_proposals=ppa_weekly_identity_t()
