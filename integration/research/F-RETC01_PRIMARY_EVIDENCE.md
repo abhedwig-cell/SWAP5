@@ -55,3 +55,29 @@ The 1991 report identifies RETC Version 1.0. A historical EPA page identifies RE
 ## Next gate
 
 Extract Appendix A and Appendix B into immutable checksum-pinned evidence. Select one retention-only case and one joint retention/conductivity case from the official examples. No fitter is called RETC-equivalent before source semantics and both example outputs are reproduced.
+
+
+## Source-level findings from the official Version 1.0 listing
+
+The official report's source listing resolves several previously open details:
+
+- the program is double precision by default through `IMPLICIT REAL*8`;
+- `STOPCR` is initialized to `0.00010`;
+- the finite-difference relative perturbation is `DERL = 0.002`;
+- the Marquardt-like damping variable starts at `GA = 0.05`;
+- at the start of each outer iteration the code reduces `GA` by a factor 20;
+- the scaled normal/moment matrix receives `GA` on its diagonal;
+- a proposed correction starts with `STEP = 1`;
+- sign-changing parameter proposals are rejected/redirected by the historical control flow rather than handled by a generic unconstrained optimizer;
+- if the trial objective/gradient geometry is unacceptable, `STEP` can be halved or `GA` increased by a factor 20;
+- convergence is tested parameter-by-parameter using the relative correction magnitude `abs(P(i)*STEP/E(i))/(1e-20+abs(TH(i)))` against `STOPCR`;
+- residuals are formed as `W(i) * (Y(i)-F(i))`, so the stored point weight is squared in the summed objective;
+- logarithmic K/D transformation is performed internally when selected by `METHOD`;
+- very small supplied observation weights are reset to unity;
+- the code contains special boundary handling for fitted residual water content and the conductivity exponent near zero.
+
+These details make a wrapper around a modern Levenberg-Marquardt implementation insufficient for an exact Version 1.0 reproduction. A literal compatibility kernel is warranted for the historical gate.
+
+## Correction to appendix naming
+
+The searchable official PDF identifies **Appendix B** as the RETC.FOR source listing. The earlier evidence note described the source as Appendix A. The report text and PDF extraction are not fully consistent in appendix lettering across rendered/searchable views, so reconstruction artifacts must be pinned by content and page/source identity rather than appendix letter alone.
