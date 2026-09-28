@@ -491,6 +491,7 @@ combined_standalone = replace_once(
     "bootstrap standalone optional-service dispatch",
     re.S,
 )
+combined_standalone = combined_standalone.replace("trusted_prepared_parameters=.true.", "trusted_prepared_parameters=.false.")
 s = replace_once(
     s,
     r"  subroutine production_application_run_standalone_with_forcing\(.*?end subroutine production_application_run_standalone_with_forcing",
