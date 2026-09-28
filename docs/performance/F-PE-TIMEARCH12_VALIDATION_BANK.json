@@ -1,0 +1,19 @@
+{
+  "work_unit":"F-PE-TIMEARCH12",
+  "status":"PREREGISTERED_UNEXPOSED_VALIDATION_BANK",
+  "horizon_day":0.12,
+  "materials":["B01","B12","O05","O14"],
+  "regimes":[
+    {"id":"DRY5","class":"DRY","h0_cm":-220.0,"rain_cm_day":1.2},
+    {"id":"TRANS5","class":"TRANSITION","h0_cm":-70.0,"rain_cm_day":5.5},
+    {"id":"WET5","class":"WET","h0_cm":-28.0,"rain_cm_day":10.5},
+    {"id":"POND5","class":"POND","h0_cm":-9.0,"rain_cm_day":19.0}
+  ],
+  "classifier":{
+    "rule":"H0",
+    "requires_two_step_history":true,
+    "requires_predictor_available":true,
+    "requires_runoff_potential_false":true,
+    "r_last_max":0.10
+  }
+}
