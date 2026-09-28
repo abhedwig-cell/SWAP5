@@ -13,7 +13,7 @@ program test_bofek00_adaptive_wet_application
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
 
-  real(real64), parameter :: T0=0.0_real64, T1=0.002_real64
+  real(real64), parameter :: T0=0.0_real64, T1=0.0001_real64
   real(real64), parameter :: H0=-3.5900902059398048_real64
   real(real64), parameter :: TR=0.02_real64, TS=0.427494_real64
   real(real64), parameter :: ALPHA=0.021659_real64, NPAR=1.734737_real64
