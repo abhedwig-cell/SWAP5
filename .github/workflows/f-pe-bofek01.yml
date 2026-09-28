@@ -8,11 +8,14 @@ on:
       - 'docs/performance/F-PE-BOFEK01_02_PREREGISTRATION.md'
       - 'docs/performance/F-PE-BOFEK01_TESTBANK.json'
       - 'docs/performance/F-PE-BOFEK01_P1_ORACLE_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-BOFEK01_P1R_ORACLE_SOLVABILITY_PREREGISTRATION.md'
       - 'tests/fpe/test_fpe_bofek01_policy_case.f90'
       - 'tests/fpe/run_fpe_bofek01_screen.py'
       - 'tests/fpe/run_fpe_bofek01_screen.sh'
       - 'tests/fpe/run_fpe_bofek01_p1_oracle.py'
       - 'tests/fpe/run_fpe_bofek01_p1_oracle.sh'
+      - 'tests/fpe/run_fpe_bofek01_p1r_oracle.py'
+      - 'tests/fpe/run_fpe_bofek01_p1r_oracle.sh'
       - '.github/workflows/f-pe-bofek01.yml'
       - 'src/legacy/b1_10_fci11_port/timecontrol_part04.inc'
       - 'src/legacy/b1_10_fci11_port/timecontrol_part05.inc'
@@ -47,3 +50,15 @@ jobs:
         run: gfortran --version
       - name: Run preregistered fixed-step temporal oracle
         run: bash tests/fpe/run_fpe_bofek01_p1_oracle.sh
+
+  oracle-solvability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered fixed-step oracle solvability diagnostic
+        run: bash tests/fpe/run_fpe_bofek01_p1r_oracle.sh
