@@ -3,6 +3,7 @@ module mod_a23bu_worker_execution_context
   use mod_accepted_trajectory_directional_sensitivity, only: accepted_trajectory_direction_t, &
        fkt21_accept_trajectory_step => accept_trajectory_step, &
        fkt21_discard_trajectory_step => discard_trajectory_step
+  use mod_b1_10_timestep_decision_service, only: b1_10_timestep_trace_t
   implicit none
   private
 
@@ -91,6 +92,7 @@ module mod_a23bu_worker_execution_context
     type(a23bu_numerical_control_t) :: control
     type(a23bu_execution_time_t) :: time
     type(a23bu_reporting_progress_t) :: reporting
+    type(b1_10_timestep_trace_t) :: timestep_trace
     ! F-KT21 trajectory directions are optional worker/job-local numerical
     ! scratch. They are checkpointed only in transaction attempt contexts and
     ! are never persistent physical column state.
@@ -145,6 +147,7 @@ contains
     worker%control = a23bu_numerical_control_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
+    worker%timestep_trace = b1_10_timestep_trace_t()
     worker%trajectory_direction = accepted_trajectory_direction_t()
   end subroutine a23bu_initialize_worker
 
@@ -170,6 +173,7 @@ contains
     worker%control = a23bu_numerical_control_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
+    worker%timestep_trace = b1_10_timestep_trace_t()
     worker%trajectory_direction = accepted_trajectory_direction_t()
   end subroutine a23bu_release_worker
 
