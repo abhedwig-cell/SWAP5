@@ -334,6 +334,13 @@ jobs:
             fi
           done
           python research/hydrofit/replicate_bro_objects.py "${args[@]}" | tee "$RUNNER_TEMP/bro/replication.txt"
+      - name: Compare l policies on frozen real set
+        run: |
+          args=()
+          for id in BHR000000346010 BHR000000346024 BHR000000378560; do
+            args+=("$RUNNER_TEMP/bro/$id.rep.csv::$RUNNER_TEMP/bro/$id.rep.meta.json")
+          done
+          python research/hydrofit/compare_l_policies.py "${args[@]}" | tee "$RUNNER_TEMP/bro/l-policy.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
