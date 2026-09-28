@@ -10,6 +10,11 @@ on:
       - 'tests/verification/run_bofek00_correction_gate.sh'
       - 'tests/verification/test_bofek00_frozen_wet_trajectory.f90'
       - 'tests/verification/run_bofek00_frozen_comparison.sh'
+      - 'docs/verification/F-PE-BOFEK00_ADAPTIVE_PREREGISTRATION.md'
+      - 'tests/verification/test_bofek00_adaptive_wet_trajectory.f90'
+      - 'tests/verification/run_bofek00_adaptive_comparison.sh'
+      - 'src/legacy/b1_10_fci11_port/timecontrol_part04.inc'
+      - 'src/legacy/b1_10_fci11_port/timecontrol_part05.inc'
       - '.github/workflows/f-pe-bofek00-wet-regime.yml'
       - 'src/solver/mod_soil_water_solver_contract.f90'
       - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
@@ -34,3 +39,5 @@ jobs:
         run: bash tests/verification/run_bofek00_correction_gate.sh
       - name: Compare frozen baseline and corrected Reference
         run: bash tests/verification/run_bofek00_frozen_comparison.sh
+      - name: Compare adaptive TimeControl interaction
+        run: bash tests/verification/run_bofek00_adaptive_comparison.sh
