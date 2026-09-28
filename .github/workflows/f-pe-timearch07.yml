@@ -1,0 +1,36 @@
+name: F-PE-TIMEARCH07 production timestep decision trace
+
+on:
+  push:
+    branches:
+      - work/f-pe-timearch07-decision-trace
+    paths:
+      - 'docs/performance/F-PE-TIMEARCH07_PREREGISTRATION.md'
+      - 'src/legacy/b1_10_fci11_port/mod_b1_10_timestep_decision_service.f90'
+      - 'src/legacy/b1_10_fci11_port/timecontrol_part01.inc'
+      - 'src/legacy/b1_10_fci11_port/timecontrol_part04.inc'
+      - 'src/legacy/b1_10_fci11_port/timecontrol_part05.inc'
+      - 'src/legacy/b1_10_fci11_port/swap_part03.inc'
+      - 'src/legacy/b1_10_fci11_port/swap_part06.inc'
+      - 'src/runtime/mod_a23bu_worker_execution_context.f90'
+      - 'tests/fpe/test_fpe_timearch07_trace.f90'
+      - 'tests/fpe/guard_fpe_timearch07_source.py'
+      - 'tests/fpe/run_fpe_timearch07.sh'
+      - '.github/workflows/f-pe-timearch07.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trace:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run TIMEARCH07 trace qualification
+        run: bash tests/fpe/run_fpe_timearch07.sh
