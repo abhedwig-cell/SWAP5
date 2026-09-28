@@ -1099,8 +1099,19 @@ subroutine jacobian_F()
 !  first layer
    fsi_ws%dfdh_main(1) = state%dimoca(1)*matrix_fraction(1)*grid_dz(1)/dt - fsi_ws%dfdh_lower(1)
  
-!  if the head boundary condition applies: add the k1/(0.5*dz1) term to the first element of the main diagonal 
-   if (state%ftoph) fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1)  
+!  if the head boundary condition applies, include the dependence of the
+!  dynamic surface head on the top-node pressure head. Legacy head boundaries
+!  retain their historical constant-surface-head derivative.
+   if (state%ftoph) then
+      if (provider_dynamic_top_active) then
+         if (.not. provider_dynamic_top_result%surface_head_derivative_available) &
+              error stop 'HeadCalc: dynamic head regime omitted surface-head derivative'
+         fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1) * &
+              (1.0d0-provider_dynamic_top_result%surface_head_dpressure_head_top)
+      else
+         fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1)
+      end if
+   end if
 
 !  layers 2 to (NN-1)
    do i = 2, NN-1
