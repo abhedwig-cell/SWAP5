@@ -103,3 +103,33 @@ by one only below interval, or resetting to1 only at/above interval. Reject
 activation, disablement, unbinding, gaps, backwards movement and interval edits.
 This is necessary structural validation, not proof that a scientific event was
 selected; the process remains responsible for that decision.
+
+## Carrier dependency inventory and implementation order
+
+Reviewed at `231e932a0`: existing weekly ownership spans
+`mod_fmr_serialized_reference_backend` (carrier, candidate constructor, validation,
+prepared proposal scratch, trial validation and candidate injection),
+`mod_fmr_serialized_multiswap_runtime` (proposal forwarding), and
+`mod_fmr_production_application_bootstrap` (array preflight/per-column forwarding).
+The backend imports weekly metadata from the already shared irrigation process
+module. Search finds 84 test/tool files mentioning that shared module or the new
+identity module; introducing another prerequisite into the backend would affect
+many independently maintained build lists.
+
+Stage 1: move only TCSFIX metadata type and pure identity/transition validators
+into `mod_irrigation_process`, and retain `mod_ppa_irr_tcsfix_identity` as a
+compatibility re-export plus daily preparation. No semantic or carrier change.
+Replay dedicated composition and existing owner gates against that ref.
+
+Stage 2: add default-disabled TCSFIX field and trailing constructor argument to
+the existing carrier; validate both identities and mutual exclusion. Clone and
+decoded restart must preserve the new field. Reject enabled TCSFIX execution
+until an explicit proposal channel exists; never silently drop its state.
+
+Stage 3: add a trailing typed proposal channel through backend/runtime/bootstrap,
+validate transitions and pending counter retention before trials, inject into
+the same hydraulic candidate and clear scratch on every exit. Preflight all
+columns before execution. Test invalid second-column metadata without earlier
+publication and mixed disabled/weekly/TCSFIX preservation. Only then expose an
+explicit source-adapter bootstrap route. No separate state owner or default
+activation is introduced at any stage.
