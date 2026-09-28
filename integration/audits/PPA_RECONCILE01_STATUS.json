@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_reconcile01.status.v1",
   "work_unit": "PPA-RECONCILE01",
-  "status": "RECONCILED_BRANCH_OWNER_CLAIMS_RESCOPED_WU01_RUNTIME_PASS",
+  "status": "RECONCILED_BRANCH_OWNER_CLAIMS_WU01_RUNTIME_IDENTITY_PASS",
   "canonical_parent": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
   "ppa_parent": "cadc3f25b55bf23b1d883dae137683c42884894f",
   "merge_commit": "202f46a853d87447ec9bffc73928ad345b181cf4",
@@ -21,8 +21,8 @@
   "qualification": {
     "fkt22_fmr_compile_gate": "PASS",
     "canonical_application_compile_marker": "PPA_OUTPUT_CANON_APPLICATION_O0=PASS",
-    "ppa_wu01_gate": "RUNTIME_PASS_O0_O2_TRANSCRIPT_COMPARISON_TOOL_BLOCKED",
-    "ppa_wu01_blocker": "the shell wrapper's final transcript comparison could not run because `diff` was unavailable on PATH; PPA_WU01_O0=PASS and PPA_WU01_O2=PASS were emitted",
+    "ppa_wu01_gate": "RUNTIME_PASS_O0_O2_TRANSCRIPT_IDENTITY_PASS",
+    "ppa_wu01_blocker": null,
     "wu04c_diagnosis": {
       "status": "OWNER_COMMIT_ASSERTION_OUTSIDE_QUALIFIED_SCOPE",
       "baseline_config": "max_iterations=8, retry_scale=0.5, max_retries=2, temporal_tolerance=0",
@@ -53,8 +53,8 @@
       "conclusion": "The generic WU01 ATM02 owner/restart assertion was removed without changing forcing, root, solver, retry, mass, temporal, storage, or restart semantics. ATM02 ownership remains qualified only under its dedicated explicit numerical profile."
     },
     "preserved_old_head_baseline": "FAILS_EARLIER_ON_UNASSOCIATED_OPTIONAL_PROCEDURE_POINTER",
-    "interpretation": "The local PPA head was not fully green before reconciliation. The merged branch fixes the procedure-pointer ABI issue and rescaled unqualified WU04C, WU04D, prescribed-root, and ATM02 generic owner claims to their dedicated qualified scopes. The WU01 O0 and O2 runtime markers now pass; transcript identity remains unverified only because the local wrapper lacked its `diff` executable. This branch remains a synchronization point, not production-admitted canonical."
+    "interpretation": "The local PPA head was not fully green before reconciliation. The merged branch fixes the procedure-pointer ABI issue and rescaled unqualified WU04C, WU04D, prescribed-root, and ATM02 generic owner claims to their dedicated qualified scopes. The WU01 O0 and O2 runtime markers and transcript identity now pass after making the Windows wrapper's static-check and process capture robust to native stderr warnings. This branch remains a synchronization point, not production-admitted canonical."
   },
   "canonical_modified": false,
-  "next_action": "Restore the local wrapper's transcript-comparison tool and rerun WU01 for full O0/O2 identity evidence. WU04C/WU04D, root, and ATM02 owner execution remain bounded by their dedicated qualifications."
+  "next_action": "Continue bounded reconciliation with the next safe qualified capability. WU04C/WU04D, root, and ATM02 owner execution remain bounded by their dedicated qualifications."
 }

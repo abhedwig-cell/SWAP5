@@ -2,6 +2,7 @@
 # single source of the static Python checks, compilation flags and source list.
 param([ValidateSet('All','CanonicalOutput')][string]$Scope = 'All')
 $ErrorActionPreference = 'Stop'
+$PSNativeCommandUseErrorActionPreference = $false
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $script = Get-Content (Join-Path $PSScriptRoot 'run_ppa_wu01_production_application_bootstrap.sh') -Raw
 $static = [regex]::Match($script, "(?ms)^python3 - <<'PY'\r?\n(.*?)^PY\r?$")
@@ -20,7 +21,10 @@ $tests = @('ppa_output_canon_application_binding')
 if ($Scope -eq 'All') { $tests += 'ppa_wu01_production_application_bootstrap' }
 Push-Location $repo
 try {
-    & python -c $static.Groups[1].Value
+    New-Item -ItemType Directory $build -Force | Out-Null
+    $staticPath = Join-Path $build 'static_checks.py'
+    Set-Content -Path $staticPath -Value $static.Groups[1].Value -NoNewline
+    & python $staticPath
     if ($LASTEXITCODE -ne 0) { throw 'Static owner checks failed' }
     foreach ($opt in @('O0','O2')) {
         $dir = Join-Path $build $opt
@@ -40,8 +44,11 @@ try {
             if ($LASTEXITCODE -ne 0) { throw "Test compile failed $opt $test" }
             & gfortran -fopenmp "-$opt" @objects $obj -o $exe
             if ($LASTEXITCODE -ne 0) { throw "Link failed $opt $test" }
-            $output = @(& $exe 2>&1)
-            if ($LASTEXITCODE -ne 0) { throw "Runtime failed $opt $test : $($output -join "`n")" }
+            $stdoutPath = Join-Path $dir "$test.stdout.txt"
+            $stderrPath = Join-Path $dir "$test.stderr.txt"
+            $process = Start-Process -FilePath $exe -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath -NoNewWindow -Wait -PassThru
+            $output = @(Get-Content $stdoutPath)
+            if ($process.ExitCode -ne 0) { throw "Runtime failed $opt $test : $((Get-Content $stderrPath) -join "`n")" }
             $textOutput = $output -join "`n"
             if ($test -eq 'ppa_output_canon_application_binding') {
                 foreach ($marker in @('PPA_OUTPUT_CANON_APPLICATION_BYTE_IDENTITY=PASS',
