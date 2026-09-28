@@ -2881,6 +2881,50 @@ contains
         end select
       end do
       write(*,'(a)') 'PPA_IRR_TCSFIX_TWO_PREFIX_WINDOW_RESTART_EQUIVALENCE=PASS'
+      do guard_case=2,4
+        call app%restore_committed_restart(saved,92001_int64,fixed_ok,fixed_code)
+        if(.not.fixed_ok) error stop 'TCSFIX TCS2-4 fixture restore'
+        fixed_parameters%timing_criterion=guard_case
+        fixed_observations%awlh=10.0_real64
+        fixed_observations%awmh=5.0_real64
+        fixed_observations%awah=0.0_real64
+        call execute_next_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64, &
+             fixed_parameters,fixed_requests,zero_forcing,fixed_results,fixed_code,fixed_endpoint, &
+             observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+        if(fixed_code/=FMR_APP_BOOT_OK.or.fixed_endpoint/=T0+1.0_real64/65536.0_real64) &
+             error stop 'TCSFIX TCS2-4 source selection'
+        call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+        if(.not.fixed_ok) error stop 'TCSFIX TCS2-4 export'
+        do j=1,2
+          select type(state=>observed%records(j)%physical_state)
+          type is(ppa_irrigation_event_state_t)
+            if(state%tcsfix%dayfix/=1.or.state%tcsfix%last_day/=101_int64.or.state%irrigation%active_event) &
+                 error stop 'TCSFIX TCS2-4 metadata'
+          class default
+            error stop 'TCSFIX TCS2-4 carrier'
+          end select
+        end do
+      end do
+      call app%restore_committed_restart(saved,92001_int64,fixed_ok,fixed_code)
+      if(.not.fixed_ok) error stop 'TCSFIX unsupported fixture restore'
+      do guard_case=1,3
+        fixed_parameters%timing_criterion=1
+        fixed_parameters%depth_criterion=IRRIGATION_DEPTH_DCS2_FIXED
+        select case(guard_case)
+        case(1)
+          fixed_parameters(2)%timing_criterion=5
+        case(2)
+          fixed_parameters(2)%timing_criterion=6
+        case(3)
+          fixed_parameters(2)%depth_criterion=IRRIGATION_DEPTH_DCS1_FIELD_CAPACITY
+        end select
+        call execute_ppa_bootstrap_irrigation(app,[1_int64,2_int64],92001_int64,fixed_parameters,fixed_requests, &
+             zero_forcing,fixed_results,fixed_code,observations=fixed_observations,tcsfix_inputs=fixed_inputs)
+        if(fixed_code==FMR_APP_BOOT_OK.or.allocated(fixed_results)) error stop 'TCSFIX unsupported route admitted'
+      end do
+      call app%export_committed_restart(92001_int64,observed,fixed_ok,fixed_code)
+      if(.not.fixed_ok.or.any(observed%records%committed_time/=T0)) error stop 'TCSFIX unsupported publication'
+      write(*,'(a)') 'PPA_IRR_TCSFIX_TCS2_4_SOURCE_AND_UNSUPPORTED_GUARDS=PASS'
       do j=1,2
         select type(state=>saved%records(j)%physical_state)
         type is(ppa_irrigation_event_state_t)
