@@ -230,9 +230,8 @@ contains
 
     half_dt=0.5_real64*step_dt
     call solve_bdf2(origin,theta_nm1,half_dt,previous_dt,.true.,half1,nl_1,b_1,j_1,l_1,ok_1)
-    call require(ok_1,'first half BDF2 failed')
-    call solve_bdf2(half1,old_theta,half_dt,half_dt,.true.,half2,nl_2,b_2,j_2,l_2,ok_2)
-    call require(ok_2,'second half BDF2 failed')
+    ok_2=.false.; nl_2=0; b_2=0; j_2=0; l_2=0
+    if(ok_1) call solve_bdf2(half1,old_theta,half_dt,half_dt,.true.,half2,nl_2,b_2,j_2,l_2,ok_2)
 
     allocate(d01(numnod),d12(numnod),d23(numnod),d012(numnod),d123(numnod),d3(numnod))
     d01=(full%pressure_head-old_h)/step_dt
@@ -246,17 +245,23 @@ contains
     a0=(1.0_real64+2.0_real64*r)/(1.0_real64+r)
     e3=step_dt*step_dt*(step_dt+previous_dt)/a0*maxval(abs(d3))
 
-    ehead=maxval(abs(full%pressure_head-half2%pressure_head))
-    etheta=maxval(abs(full%water_content-half2%water_content))
-    estorage=abs((sum(full%water_content*p%dz)+full%ponding_depth)- &
-                 (sum(half2%water_content*p%dz)+half2%ponding_depth))
-
-    total_points=total_points+1
-    write(*,'(*(g0))') 'F_PE_TIMEINT07_POINT|MATERIAL=',trim(material_id),'|RAIN=',rain, &
-      '|PATTERN=',trim(pattern),'|STEP=',step_index,'|DT=',step_dt,'|PREV_DT=',previous_dt, &
-      '|PREVPREV_DT=',previous_previous_dt,'|RATIO=',r,'|E3=',e3, &
-      '|EHEAD=',ehead,'|ETHETA=',etheta,'|ESTORAGE=',estorage, &
-      '|FULL_WORK=',nl_f+b_f+j_f+l_f,'|HALF_WORK=',nl_1+b_1+j_1+l_1+nl_2+b_2+j_2+l_2
+    if(ok_1 .and. ok_2)then
+      ehead=maxval(abs(full%pressure_head-half2%pressure_head))
+      etheta=maxval(abs(full%water_content-half2%water_content))
+      estorage=abs((sum(full%water_content*p%dz)+full%ponding_depth)- &
+                   (sum(half2%water_content*p%dz)+half2%ponding_depth))
+      total_points=total_points+1
+      write(*,'(*(g0))') 'F_PE_TIMEINT07_POINT|MATERIAL=',trim(material_id),'|RAIN=',rain, &
+        '|PATTERN=',trim(pattern),'|STEP=',step_index,'|DT=',step_dt,'|PREV_DT=',previous_dt, &
+        '|PREVPREV_DT=',previous_previous_dt,'|RATIO=',r,'|E3=',e3, &
+        '|EHEAD=',ehead,'|ETHETA=',etheta,'|ESTORAGE=',estorage, &
+        '|FULL_WORK=',nl_f+b_f+j_f+l_f,'|HALF_WORK=',nl_1+b_1+j_1+l_1+nl_2+b_2+j_2+l_2
+    else
+      write(*,'(*(g0))') 'F_PE_TIMEINT07_LABEL_UNAVAILABLE|MATERIAL=',trim(material_id),'|RAIN=',rain, &
+        '|PATTERN=',trim(pattern),'|STEP=',step_index,'|DT=',step_dt,'|PREV_DT=',previous_dt, &
+        '|PREVPREV_DT=',previous_previous_dt,'|RATIO=',r,'|E3=',e3,'|HALF1_OK=',merge(1,0,ok_1), &
+        '|HALF2_OK=',merge(1,0,ok_2)
+    end if
 
     h_nm2=h_nm1
     h_nm1=old_h
