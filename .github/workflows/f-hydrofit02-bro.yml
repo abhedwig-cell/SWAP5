@@ -422,6 +422,11 @@ jobs:
           set -o pipefail
           python research/hydrofit/reclassify_identifiability.py \
             "$RUNNER_TEMP/bro/lambda-prior-low-capacity.txt" | tee "$RUNNER_TEMP/bro/lambda-prior-identifiability.txt"
+      - name: Compare preregistered soft lambda shrinkage
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/compare_lambda_shrinkage.py \
+            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-shrinkage.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
