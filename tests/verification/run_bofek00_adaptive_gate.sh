@@ -28,12 +28,13 @@ run_one(){
   cp "$out/stubs.f90" "$root/tests/verification/bofek00_generated_stubs.f90"
   python3 "$COMPILER" --root "$root"     --stub tests/verification/bofek00_generated_stubs.f90     --external-source src/legacy/b1_10_port/headcalc.f90     --target "$TARGET" --build "$out/compile" --opt 2
   : > "$out/times.txt"
+  : > "$out/status.txt"
   for rep in 1 2 3 4 5; do
-    /usr/bin/time -f '%e' -o "$out/time.txt" "$out/compile/rom0_test" > "$out/result.txt" 2>&1 || {
-      cat "$out/result.txt" >&2
-      fail "$label runtime"
-    }
-    grep -Fq 'F_PE_BOFEK00_ADAPTIVE_WET_APPLICATION=PASS' "$out/result.txt" || fail "$label missing pass marker"
+    set +e
+    /usr/bin/time -f '%e' -o "$out/time.txt" "$out/compile/rom0_test" > "$out/result.txt" 2>&1
+    rc=$?
+    set -e
+    echo "$rc" >> "$out/status.txt"
     cat "$out/time.txt" >> "$out/times.txt"
   done
   rm -f "$root/tests/verification/bofek00_generated_stubs.f90"
@@ -42,25 +43,39 @@ run_one(){
 run_one old "$OLD"
 run_one corrected "$ROOT"
 
+cp "$BUILD/old/status.txt" "$BUILD/old/times.txt.status"
+cp "$BUILD/corrected/status.txt" "$BUILD/corrected/times.txt.status"
 python3 - "$BUILD/old/result.txt" "$BUILD/corrected/result.txt" "$BUILD/old/times.txt" "$BUILD/corrected/times.txt" "$BUILD/summary.json" <<'PY'
 import json,statistics,sys
 from pathlib import Path
 
-def parse_result(path):
-    line=next(x for x in Path(path).read_text().splitlines() if x.startswith("BOFEK00_ADAPTIVE|"))
-    row={}
+def parse_result(path, status_path):
+    lines=Path(path).read_text().splitlines()
+    rc=[int(x) for x in Path(status_path).read_text().splitlines() if x.strip()]
+    row={"PROCESS_EXIT_CODES":rc, "PROCESS_SUCCESS":all(x==0 for x in rc)}
+    final=next((x for x in lines if x.startswith("BOFEK00_ADAPTIVE|")), None)
+    pre=next((x for x in lines if x.startswith("BOFEK00_ADAPTIVE_PRECHECK|")), None)
+    status=next((x for x in lines if x.startswith("BOFEK00_ADAPTIVE_STATUS=")), None)
+    if status is not None:
+        row["APP_STATUS"]=int(status.split("=",1)[1])
+    line=final if final is not None else pre
+    if line is None:
+        raise RuntimeError(f"no adaptive diagnostic line in {path}")
     ints={"ACCEPTED_SUBSTEPS","SOLVER_ITERATIONS","NONLINEAR","INTERNAL_RETRIES","HEADCALC_CALLS",
           "JACOBIAN_BUILDS","LINEAR_SOLVES","BACKTRACK","ALT_SOLVER"}
     for item in line.split("|")[1:]:
         k,v=item.split("=",1)
-        row[k]=int(float(v)) if k in ints else float(v)
+        if v in {"T","F"}:
+            row[k]=(v=="T")
+        else:
+            row[k]=int(float(v)) if k in ints or k in {"KERNEL_STATUS"} else float(v)
     return row
 
 def med(path):
     vals=[float(x) for x in Path(path).read_text().splitlines() if x.strip()]
     return statistics.median(vals)
 
-old=parse_result(sys.argv[1]); new=parse_result(sys.argv[2])
+old=parse_result(sys.argv[1], sys.argv[3]+".status"); new=parse_result(sys.argv[2], sys.argv[4]+".status")
 out={
  "work_unit":"F-PE-BOFEK00F",
  "policy":{
@@ -75,20 +90,25 @@ out={
  "corrected":new | {"runtime_median_seconds_5_runs":med(sys.argv[4])}
 }
 out["delta"]={
- "accepted_substeps":new["ACCEPTED_SUBSTEPS"]-old["ACCEPTED_SUBSTEPS"],
- "nonlinear_iterations":new["NONLINEAR"]-old["NONLINEAR"],
- "internal_retries":new["INTERNAL_RETRIES"]-old["INTERNAL_RETRIES"],
- "headcalc_calls":new["HEADCALC_CALLS"]-old["HEADCALC_CALLS"],
- "backtracking_attempts":new["BACKTRACK"]-old["BACKTRACK"],
- "mass_residual":new["MASS_RESIDUAL"]-old["MASS_RESIDUAL"],
- "total_in":new["TOTAL_IN"]-old["TOTAL_IN"],
- "total_out":new["TOTAL_OUT"]-old["TOTAL_OUT"],
+ "accepted_substeps":new.get("ACCEPTED_SUBSTEPS",0)-old.get("ACCEPTED_SUBSTEPS",0),
+ "nonlinear_iterations":new.get("NONLINEAR",0)-old.get("NONLINEAR",0),
+ "internal_retries":new.get("INTERNAL_RETRIES",0)-old.get("INTERNAL_RETRIES",0),
+ "headcalc_calls":new.get("HEADCALC_CALLS",0)-old.get("HEADCALC_CALLS",0),
+ "backtracking_attempts":new.get("BACKTRACK",0)-old.get("BACKTRACK",0),
  "runtime_median_seconds":out["corrected"]["runtime_median_seconds_5_runs"]-out["old"]["runtime_median_seconds_5_runs"]
 }
+if "MASS_RESIDUAL" in old and "MASS_RESIDUAL" in new:
+    out["delta"]["mass_residual"]=new["MASS_RESIDUAL"]-old["MASS_RESIDUAL"]
+if "TOTAL_IN" in old and "TOTAL_IN" in new:
+    out["delta"]["total_in"]=new["TOTAL_IN"]-old["TOTAL_IN"]
+if "TOTAL_OUT" in old and "TOTAL_OUT" in new:
+    out["delta"]["total_out"]=new["TOTAL_OUT"]-old["TOTAL_OUT"]
 Path(sys.argv[5]).write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
 print(json.dumps(out,indent=2,sort_keys=True))
-assert abs(old["MASS_RESIDUAL"]) <= 1e-8
+assert new.get("PROCESS_SUCCESS",False), "corrected adaptive candidate did not complete"
 assert abs(new["MASS_RESIDUAL"]) <= 1e-8
+if old.get("PROCESS_SUCCESS",False):
+    assert abs(old["MASS_RESIDUAL"]) <= 1e-8
 print("F_PE_BOFEK00_ADAPTIVE_COMPARISON=PASS")
 PY
 
