@@ -64,6 +64,26 @@ jobs:
           op=d["paths"]["/sr/bhrp/v2/bro-ids"]["get"]
           print("BRO_IDS_OPERATION="+json.dumps(op,sort_keys=True))
           PY
+      - name: Inspect characteristics search contract
+        run: |
+          python - <<'PY'
+          import json, os, pathlib
+          d=json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/openapi.json.response").read_text())
+          op=d["paths"]["/sr/bhrp/v2/characteristics/searches"]["post"]
+          print("BRO_SEARCH_OPERATION="+json.dumps(op,sort_keys=True))
+          refs={}
+          def walk(x):
+              if isinstance(x,dict):
+                  if "$ref" in x: refs[x["$ref"]]=1
+                  for v in x.values(): walk(v)
+              elif isinstance(x,list):
+                  for v in x: walk(v)
+          walk(op)
+          for ref in refs:
+              name=ref.rsplit("/",1)[-1]
+              schema=d.get("components",{}).get("schemas",{}).get(name)
+              print("BRO_SEARCH_SCHEMA|NAME="+name+"|SCHEMA="+json.dumps(schema,sort_keys=True))
+          PY
       - name: Enumerate official BHR-P ids
         run: |
           python research/hydrofit/bro_bhrp_fetch.py --path bro-ids \
