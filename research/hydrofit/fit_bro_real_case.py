@@ -3,7 +3,7 @@ from __future__ import annotations
 import csv, json, math, sys
 import numpy as np
 sys.path.insert(0,"research/hydrofit")
-from hydrofit import FitConfig,MvGParameters,Observation,fit,multistart_fit,evaluate
+from hydrofit import FitConfig,MvGParameters,Observation,fit,multistart_fit,evaluate,residual_vector,parameter_vector
 
 # Uses the qualified F-HYDROFIT01 fitting kernel incorporated on this branch.
 csv_path,meta_path=sys.argv[1:3]
@@ -33,3 +33,21 @@ for i,z in enumerate(allr):
 # BRO model metadata, first interval. ShapeRetention is alpha,n,m? plus scale/constraint; compare direct stored values.
 m0=meta["models"][0]
 print("BRO_STORED_MODEL="+json.dumps(m0,sort_keys=True))
+
+# Apples-to-apples diagnostic using the conductivity exponent stored by BRO.
+stored_shape=m0["shape_retention"]
+stored_alpha,stored_n,stored_m,_=stored_shape
+stored_l=-2.44937
+stored=MvGParameters(float(m0["theta_r"]),float(m0["theta_s"]),stored_alpha,stored_n,float(m0["modelled_ksat_cm_d"]),stored_l,0.0)
+cfg_stored_l=FitConfig(semantics="textbook_mvg",fixed_l=stored_l,fixed_h_entry=0.0,weighting_mode="family_mean")
+rs=residual_vector(parameter_vector(stored),obs,cfg_stored_l)
+jstored=float(np.dot(rs,rs))
+starts_l=[
+ MvGParameters(0.001,0.67,stored_alpha,stored_n,13.69,stored_l),
+ MvGParameters(0.05,0.62,0.02,1.2,20.0,stored_l),
+ MvGParameters(0.0,0.72,0.06,1.5,10.0,stored_l),
+]
+best_l,_=multistart_fit(obs,starts_l,cfg_stored_l)
+q=best_l.parameters
+print(f"BRO_STORED_OBJECTIVE_UNDER_HYDROFIT|J={jstored:.9g}|L={stored_l:.9g}")
+print(f"BRO_REAL_REFIT_STORED_L|J={best_l.objective:.9g}|THR={q.theta_r:.9g}|THS={q.theta_s:.9g}|ALPHA={q.alpha:.9g}|N={q.n:.9g}|M={q.m:.9g}|KS={q.Ks:.9g}|L={q.l:.9g}")
