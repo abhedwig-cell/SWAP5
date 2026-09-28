@@ -13,7 +13,8 @@ program test_bofek00_adaptive_wet_application
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
 
-  real(real64), parameter :: T0=0.0_real64, T1=0.0001_real64
+  real(real64), parameter :: T0=0.0_real64
+  real(real64) :: T1
   real(real64), parameter :: H0=-3.5900902059398048_real64
   real(real64), parameter :: TR=0.02_real64, TS=0.427494_real64
   real(real64), parameter :: ALPHA=0.021659_real64, NPAR=1.734737_real64
@@ -27,6 +28,7 @@ program test_bofek00_adaptive_wet_application
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   integer :: status
 
+  call read_duration(T1)
   call configure(cfg)
   allocate(forcing(1))
   forcing(1)=cfg%tiles(1)%base_forcing
@@ -78,6 +80,21 @@ program test_bofek00_adaptive_wet_application
   call require(status==FMR_APP_BOOT_OK,'application close')
 
 contains
+
+  subroutine read_duration(value)
+    real(real64), intent(out) :: value
+    character(len=64) :: arg
+    integer :: stat
+    if (command_argument_count() == 0) then
+      value=0.0001_real64
+      return
+    end if
+    if (command_argument_count() /= 1) error stop 'expected duration seconds'
+    call get_command_argument(1,arg)
+    read(arg,*,iostat=stat) value
+    if (stat /= 0 .or. value <= 0.0_real64) error stop 'invalid duration seconds'
+    value=value/86400.0_real64
+  end subroutine read_duration
 
   subroutine configure(value)
     type(fmr_production_application_config_t),intent(out)::value
