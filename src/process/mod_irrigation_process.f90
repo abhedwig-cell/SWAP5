@@ -4,6 +4,12 @@ module mod_irrigation_process
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   implicit none
   private
+  type,public :: ppa_tcsfix_identity_t
+    logical :: enabled=.false.,day_bound=.false.
+    integer :: dayfix=366,interval_days=1
+    integer(int64) :: last_day=0_int64
+  end type
+  public :: valid_tcsfix_identity,valid_tcsfix_transition
   type,public :: ppa_weekly_identity_t
     logical :: enabled=.false.,day_bound=.false.
     integer :: dayfix=366
@@ -154,6 +160,42 @@ module mod_irrigation_process
   public :: evaluate_scheduled_irrigation_interval
 
 contains
+  pure logical function valid_tcsfix_transition(base,proposed) result(ok)
+    type(ppa_tcsfix_identity_t),intent(in)::base,proposed
+    ok=.false.
+    if(.not.valid_tcsfix_identity(base).or..not.valid_tcsfix_identity(proposed)) return
+    if(.not.base%enabled.or..not.proposed%enabled) return
+    if(base%interval_days/=proposed%interval_days) return
+    if(base%day_bound.eqv.proposed%day_bound) then
+      if(base%last_day==proposed%last_day) then
+        ok=base%dayfix==proposed%dayfix
+        return
+      end if
+    end if
+    if(.not.proposed%day_bound) return
+    if(base%day_bound) then
+      if(proposed%last_day<=base%last_day) return
+      if(proposed%last_day-base%last_day/=1_int64) return
+    end if
+    ok=proposed%dayfix==base%dayfix
+    if(base%dayfix<base%interval_days) then
+      ok=ok.or.proposed%dayfix==base%dayfix+1
+    else
+      ok=ok.or.proposed%dayfix==1
+    end if
+  end function
+  pure logical function valid_tcsfix_identity(state) result(ok)
+    type(ppa_tcsfix_identity_t),intent(in)::state
+    ok=.false.
+    if(state%dayfix<0.or.state%dayfix>366.or.state%interval_days<1.or.state%interval_days>366) return
+    if(.not.state%enabled) then
+      ok=.not.state%day_bound.and.state%dayfix==366.and.state%interval_days==1.and.state%last_day==0_int64
+    else if(.not.state%day_bound) then
+      ok=state%dayfix==366.and.state%last_day==0_int64
+    else
+      ok=state%last_day>=0_int64
+    end if
+  end function
   pure logical function valid_weekly_identity(state) result(ok)
     type(ppa_weekly_identity_t),intent(in)::state
     ok=.false.
