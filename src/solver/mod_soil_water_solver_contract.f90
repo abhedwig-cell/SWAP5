@@ -74,6 +74,8 @@ module mod_soil_water_solver_contract
      real(real64) :: ponded_water_evaporation = 0.0_real64
      real(real64) :: runoff_depth = 0.0_real64
      real(real64) :: net_potential_surface_flux = 0.0_real64
+     logical :: surface_head_derivative_available = .false.
+     real(real64) :: surface_head_dpressure_head_top = 0.0_real64
      logical :: carries_surface_mass_terms = .false.
      logical :: runoff_potential = .false.
      logical :: runoff_resolved = .false.
