@@ -56,6 +56,7 @@ jobs:
           git add src/runtime/mod_fmr_serialized_reference_backend.f90
           git add src/runtime/mod_fmr_serialized_multiswap_runtime.f90
           git add src/runtime/mod_fmr_production_application_bootstrap.f90
+          git add tests/fapp/test_ppa_wu01_production_application_bootstrap.f90
           echo "PPA_RECONCILE_DETERMINISTIC_RESOLVER=PASS"
 
           echo "PPA_RECONCILE_UNION_RESOLUTION=PASS"
