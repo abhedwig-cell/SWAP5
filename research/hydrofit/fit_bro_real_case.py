@@ -51,3 +51,23 @@ best_l,_=multistart_fit(obs,starts_l,cfg_stored_l)
 q=best_l.parameters
 print(f"BRO_STORED_OBJECTIVE_UNDER_HYDROFIT|J={jstored:.9g}|L={stored_l:.9g}")
 print(f"BRO_REAL_REFIT_STORED_L|J={best_l.objective:.9g}|THR={q.theta_r:.9g}|THS={q.theta_s:.9g}|ALPHA={q.alpha:.9g}|N={q.n:.9g}|M={q.m:.9g}|KS={q.Ks:.9g}|L={q.l:.9g}")
+
+from scipy.optimize import least_squares
+def residual6(x):
+ cfg6=FitConfig(semantics="textbook_mvg",fixed_l=float(x[5]),fixed_h_entry=0.0,weighting_mode="family_mean")
+ return residual_vector(x[:5],obs,cfg6)
+starts6=[
+ [0.0,0.66683,0.03515,1.15043,13.69,-2.44937],
+ [0.10,0.70,0.05,1.25,20.0,-1.0],
+ [0.01,0.65,0.02,1.10,30.0,0.5],
+]
+fits6=[]
+for x0 in starts6:
+ rr=least_squares(residual6,x0,bounds=([0,0.05,1e-8,1.000001,1e-12,-10],[0.8,0.9,10,20,1e8,10]),method="trf",jac="3-point",x_scale="jac")
+ fits6.append(rr)
+best6=min(fits6,key=lambda z:float(np.dot(z.fun,z.fun)))
+x=best6.x; j6=float(np.dot(best6.fun,best6.fun))
+s6=np.linalg.svd(best6.jac,compute_uv=False); cond6=float("inf") if s6[-1]==0 else float(s6[0]/s6[-1])
+print(f"BRO_REAL_FIT6|J={j6:.9g}|THR={x[0]:.9g}|THS={x[1]:.9g}|ALPHA={x[2]:.9g}|N={x[3]:.9g}|M={1-1/x[3]:.9g}|KS={x[4]:.9g}|L={x[5]:.9g}|COND={cond6:.9g}|NFEV={best6.nfev}")
+for i,z in enumerate(fits6):
+ print(f"BRO_REAL_FIT6_START|I={i}|J={float(np.dot(z.fun,z.fun)):.9g}|X="+",".join(f"{v:.9g}" for v in z.x))
