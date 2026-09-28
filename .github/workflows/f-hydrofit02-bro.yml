@@ -400,6 +400,12 @@ jobs:
           PYTHONPATH=research/hydrofit python research/hydrofit/audit_bro_descriptor_structure.py \
             --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
             --out "$RUNNER_TEMP/bro/lambda-prior-structure-audit.json" | tee "$RUNNER_TEMP/bro/lambda-prior-structure-audit.txt"
+      - name: Audit exact soilLayer depth semantics
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/audit_soillayer_depth_semantics.py \
+            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
+            --out "$RUNNER_TEMP/bro/soillayer-depth-semantics.json" | tee "$RUNNER_TEMP/bro/soillayer-depth-semantics.txt"
       - name: Apply cross-component depth provenance
         run: |
           set -o pipefail
