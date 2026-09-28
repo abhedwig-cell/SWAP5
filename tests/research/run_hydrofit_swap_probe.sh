@@ -194,3 +194,55 @@ print("HYDROFIT_P6B_RESULT"
 PY
 done
 echo "HYDROFIT_P6B=PASS"
+
+
+# P6C: fixed 18-workload replication matrix across all representatives.
+P6C="$BUILD/p6c.csv"
+echo 'rep,h0,factor,duration,status,nonlinear,jacobian,linear,backtrack,mass_residual' > "$P6C"
+tail -n +2 "$BUILD/reps.csv" | while IFS=, read -r rep candidate tr ts alpha nvg ksat lambda objective; do
+  for h0 in -10 -75 -500; do
+    for factor in -1 0 1; do
+      for duration in 1e-2 5e-2; do
+        raw="$("$BUILD/test" "$tr" "$ts" "$alpha" "$nvg" "$ksat" "$lambda" "$h0" "$h0" "$factor" "$duration" 1 2>&1)"
+        line="$(printf '%s\n' "$raw" | grep '^HYDROFIT_P6|' || true)"
+        [[ -n "$line" ]] || fail "P6C no record rep=$rep h0=$h0 factor=$factor duration=$duration"
+        python3 - "$rep" "$h0" "$factor" "$duration" "$line" "$P6C" <<'PY'
+import csv,sys
+rep,h0,factor,duration,line,path=sys.argv[1:]
+d={}
+for p in line.split('|')[1:]:
+ k,v=p.split('=',1); d[k]=v
+with open(path,'a',newline='') as f:
+ csv.writer(f).writerow([rep,h0,factor,duration,d['STATUS'],d['NONLINEAR'],d['JACOBIAN'],d['LINEAR'],d['BACKTRACK'],d['MASS_RESIDUAL']])
+PY
+      done
+    done
+  done
+done
+
+python3 - "$P6C" <<'PY'
+import csv,sys,statistics,collections
+rows=list(csv.DictReader(open(sys.argv[1])))
+by=collections.defaultdict(list)
+for r in rows: by[(r['h0'],r['factor'],r['duration'])].append(r)
+ident=spread=ge10=ge20=ge40=0
+anchor=None
+for key in sorted(by,key=lambda x:(float(x[0]),float(x[1]),float(x[2]))):
+ rs=sorted(by[key],key=lambda r:int(r['rep']))
+ vals=[int(r['nonlinear']) for r in rs if int(r['status'])==1]
+ if len(vals)!=8:
+  print(f"HYDROFIT_P6C_WORKLOAD|H0={key[0]}|FACTOR={key[1]}|DURATION={key[2]}|CONVERGED={len(vals)}|INCOMPLETE=1")
+  continue
+ mn,mx=min(vals),max(vals); ratio=mx/mn if mn else float('inf')
+ if mx==mn: ident+=1
+ else: spread+=1
+ ge10 += ratio>=1.10; ge20 += ratio>=1.20; ge40 += ratio>=1.40
+ minrep=vals.index(mn); maxrep=vals.index(mx)
+ print(f"HYDROFIT_P6C_WORKLOAD|H0={key[0]}|FACTOR={key[1]}|DURATION={key[2]}"
+       f"|MIN={mn}|MEDIAN={statistics.median(vals):g}|MAX={mx}|RATIO={ratio:.6f}|MINREP={minrep}|MAXREP={maxrep}")
+ if key==('-75','0','5e-2'): anchor=vals
+if anchor != [34,29,41,38,32,32,36,38]:
+ raise SystemExit(f"P6C anchor mismatch {anchor}")
+print(f"HYDROFIT_P6C_SUMMARY|WORKLOADS={len(by)}|IDENTICAL={ident}|SPREAD={spread}|GE10={ge10}|GE20={ge20}|GE40={ge40}")
+print("HYDROFIT_P6C=PASS")
+PY
