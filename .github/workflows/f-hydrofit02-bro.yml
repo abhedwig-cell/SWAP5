@@ -370,6 +370,10 @@ jobs:
         run: |
           PYTHONPATH=research/hydrofit python research/hydrofit/bro_spatial_lambda_corpus.py \
             --inspect-limit 200 --out "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/spatial-lambda-corpus.txt"
+      - name: Profile lambda on deterministic real subset
+        run: |
+          PYTHONPATH=research/hydrofit python research/hydrofit/profile_lambda_corpus.py \
+            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-profiles.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
