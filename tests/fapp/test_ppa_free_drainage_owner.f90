@@ -2597,6 +2597,7 @@ contains
     config%tiles(1)%irrigation_ssdi_node=0
     block
       use mod_irrigation_process, only: ppa_tcsfix_identity_t,ppa_weekly_identity_t
+      use mod_irrigation_process, only: IRRIGATION_DEPTH_DCS2_FIXED
       use mod_ppa_irr_tcsfix_source, only: ppa_tcsfix_daily_input_t
       use mod_ppa_irr_tcs1_4_source, only: ppa_tcs1_4_observations_t
       type(fmr_production_application_bootstrap_t)::app,fixed_resumed
