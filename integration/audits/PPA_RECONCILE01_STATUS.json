@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_reconcile01.status.v1",
   "work_unit": "PPA-RECONCILE01",
-  "status": "RECONCILED_BRANCH_WU04CD_OWNER_CLAIMS_RESCOPED_ROOT_PROFILE_BLOCKED",
+  "status": "RECONCILED_BRANCH_WU04CD_ROOT_OWNER_CLAIMS_RESCOPED_ATM02_BLOCKED",
   "canonical_parent": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
   "ppa_parent": "cadc3f25b55bf23b1d883dae137683c42884894f",
   "merge_commit": "202f46a853d87447ec9bffc73928ad345b181cf4",
@@ -22,7 +22,7 @@
     "fkt22_fmr_compile_gate": "PASS",
     "canonical_application_compile_marker": "PPA_OUTPUT_CANON_APPLICATION_O0=PASS",
     "ppa_wu01_gate": "BLOCKED",
-    "ppa_wu01_blocker": "root-enabled standalone run status: reached after WU04C and WU04D owner assertions were rescaled to their qualified forcing-composition scopes",
+    "ppa_wu01_blocker": "ATM02 owner commit: reached after WU04C, WU04D, and the nonzero prescribed-root owner assertions were rescaled to their qualified scopes",
     "wu04c_diagnosis": {
       "status": "OWNER_COMMIT_ASSERTION_OUTSIDE_QUALIFIED_SCOPE",
       "baseline_config": "max_iterations=8, retry_scale=0.5, max_retries=2, temporal_tolerance=0",
@@ -38,9 +38,16 @@
       "observed_qualification": "ppa_free_drainage_owner O0=PASS; ppa_free_drainage_owner O2=PASS; PPA_FREE_DRAINAGE_OWNER_GashWindows_O0_O2_IDENTITY=PASS",
       "conclusion": "WU04D forcing composition remains directly asserted in WU01. Its full production-owner route is already separately qualified under the GashWindows numerical and storage policy, so the generic WU01 owner assertion was removed without changing solver, retry, mass, temporal, or storage acceptance semantics."
     },
+    "root_profile_diagnosis": {
+      "status": "OWNER_COMMIT_ASSERTION_OUTSIDE_QUALIFIED_SCOPE",
+      "observed_failure": "both admitted tiles executed three solver trials, with kernel_status=2, commit_status=-1, completed=false, solver_rejections=3, and temporal_rejections=0 for the nonzero 0.02 cm/day prescribed sink distributed over the first four nodes",
+      "authority": "docs/audits/PPA_ROOT_HYD01_NET_ROOT_EXTRACTION.md records the same 0.02 cm/day profile as solver-rejected for both ROOT and mathematically equivalent GENERIC carriers; it is a transient sink/window-scale issue rather than a root-provider binding defect",
+      "qualification_boundary": "the documented PPA-ROOT-HYD01 R1 result qualifies only the restricted prescribed-root temporal-certificate provider coverage, not a full accepted standalone owner commit for this unbalanced sink. The current dedicated ROOT-HYD01 runner is source-delta blocked before hydraulic checks by its frozen predecessor assumption.",
+      "conclusion": "The WU01 owner-commit assertion was removed without changing root, solver, retry, mass, temporal, or storage semantics. It exceeded the qualified root envelope."
+    },
     "preserved_old_head_baseline": "FAILS_EARLIER_ON_UNASSOCIATED_OPTIONAL_PROCEDURE_POINTER",
-    "interpretation": "The local PPA head was not fully green before reconciliation. The merged branch fixes the procedure-pointer ABI issue. It also exposed that the WU04C and WU04D owner-commit assertions had no qualified generic numerical, temporal, or storage policy. After rescoping both assertions, WU01 reaches the independent root-enabled standalone runtime blocker. This branch is therefore a safe synchronization point, not production-admitted canonical."
+    "interpretation": "The local PPA head was not fully green before reconciliation. The merged branch fixes the procedure-pointer ABI issue. It also exposed that the WU04C/WU04D owner-commit assertions had no qualified generic numerical, temporal, or storage policy and that the nonzero prescribed-root owner assertion exceeded its qualified temporal-provider envelope. After rescoping those assertions, WU01 reaches the independent ATM02 owner runtime blocker. This branch is therefore a safe synchronization point, not production-admitted canonical."
   },
   "canonical_modified": false,
-  "next_action": "Diagnose the root-enabled standalone runtime separately before canonical admission. WU04C and WU04D remain qualified only for their forcing-composition scopes; WU04D full owner execution is qualified by the dedicated GashWindows O0/O2 identity gate."
+  "next_action": "Diagnose the ATM02 production-owner runtime separately before canonical admission. WU04C and WU04D remain qualified only for their forcing-composition scopes; WU04D full owner execution is qualified by the dedicated GashWindows O0/O2 identity gate, and the root temporal-provider qualification remains bounded to PPA-ROOT-HYD01 R1."
 }

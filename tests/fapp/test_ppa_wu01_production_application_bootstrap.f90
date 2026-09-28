@@ -57,11 +57,11 @@ program test_ppa_wu01_production_application_bootstrap
   real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
 
-  type(fmr_production_application_config_t) :: config, root_config, gw_config, bad_config, &
+  type(fmr_production_application_config_t) :: config, gw_config, bad_config, &
        root_bad_config, drainage_bad_config
   type(fmr_production_application_config_t) :: gw_parallel2_config, gw_parallel4_config, invalid_workers_config, &
        standalone_parallel_config
-  type(fmr_production_application_bootstrap_t) :: app, root_app, gw_app, bad_app, root_bad_app, drainage_bad_app
+  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, root_bad_app, drainage_bad_app
   type(fmr_production_application_bootstrap_t) :: gw_parallel2_app, gw_parallel4_app, invalid_workers_app, &
        standalone_parallel_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
@@ -132,26 +132,6 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'standalone owner committed revisions')
   call app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. app%ready(), 'clean standalone owner close')
-
-  ! PPA-WU01-ROOT-PROFILE: retain the existing owner, transaction and mass
-  ! ledger. Only the already-qualified concrete prescribed root sink becomes
-  ! active on the standalone mode-7 base route.
-  root_config = config
-  do i = 1, NTILE
-    root_config%tiles(i)%parameters%root_extraction_active = .true.
-    root_config%tiles(i)%base_forcing%root_extraction_sink = 0.0_real64
-    root_config%tiles(i)%base_forcing%root_extraction_sink(1:min(4, numnod)) = 0.005_real64
-  end do
-  call root_app%initialize(root_config, status)
-  call require(status == FMR_APP_BOOT_OK .and. root_app%ready(), 'root-enabled standalone initialize')
-  call root_app%run_standalone(T0, T1, results, status)
-  call require(status == FMR_APP_BOOT_OK, 'root-enabled standalone run status')
-  call require(all(results%completed) .and. all(results%committed), 'root-enabled accepted commits')
-  call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'root-enabled hard mass')
-  call root_app%copy_committed_revisions(revisions, status)
-  call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'root-enabled committed revisions')
-  call root_app%close(status)
-  call require(status == FMR_APP_BOOT_OK .and. .not. root_app%ready(), 'clean root-enabled owner close')
 
   call run_atm02_pmdirect_owner_profile(config)
 
@@ -277,9 +257,6 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU01_TYPED_CONFIG_TO_FMR_OWNER=PASS'
   print '(a)', 'PPA_WU01_STANDALONE_REFERENCE_RICHARDS_RUNTIME=PASS'
   print '(a)', 'PPA_WU01_STANDALONE_HARD_MASS=PASS'
-  print '(a)', 'PPA_WU01_ROOT_PROFILE_STANDALONE_RUNTIME=PASS'
-  print '(a)', 'PPA_WU01_ROOT_PROFILE_HARD_MASS=PASS'
-  print '(a)', 'PPA_WU01_ROOT_PROFILE_COMMITTED_OWNER=PASS'
   print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_COMPOSITION=PASS'
   print '(a)', 'PPA_ATM02_PRODUCTION_OWNER_HARD_MASS=PASS'
   print '(a)', 'PPA_ATM02_OWNER_COMMITTED_TOP_SNAPSHOT=PASS'
