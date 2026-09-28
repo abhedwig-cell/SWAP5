@@ -9,12 +9,10 @@
 
 ! 2.9 determine next time step, based on numerical performance
       if (swsolve == 1) then
-         if (numbit <= numbit_crit) dt = min(dt*fact_dt_increase,dtMax)
-         if (numbit >= MaxIt)       dt = max(dt*fact_dt_decrease,dtMin)
-         if (dt < dtmin) then
-            dt = dtmin
-            fldtmin = .TRUE.
-         end if
+         timestepDecision = b1_10_legacy_accepted_step_decision(dt, dtmin, dtmax, numbit, numbit_crit, &
+              MaxIt, fact_dt_increase, fact_dt_decrease)
+         dt = timestepDecision%preferred_dt
+         if (timestepDecision%floor_reached) fldtmin = .TRUE.
       else
          dt = 1.0d0
       end if
