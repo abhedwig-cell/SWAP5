@@ -25,6 +25,20 @@ policies={
 "INC_1P25":{"inc":1.25},
 "INC_1P5":{"inc":1.5},
 "INC_3":{"inc":3.0},
+"DEC_0P25":{"dec":0.25},
+"DEC_0P75":{"dec":0.75},
+"FAIL_1P5":{"fail":1.5},
+"FAIL_3":{"fail":3.0},
+"FAIL_4":{"fail":4.0},
+"MAXIT_5":{"maxit":5},
+"MAXIT_6":{"maxit":6},
+"MAXIT_10":{"maxit":10},
+"MAXIT_12":{"maxit":12},
+"BACK_2":{"maxback":2},
+"BACK_4":{"maxback":4},
+"BACK_6":{"maxback":6},
+"HEAD_X10":{"headmult":10.0},
+"HEAD_X100":{"headmult":100.0},
 }
 cases=[x for x in bank["screening_cases"]]
 def decode(cid):
@@ -39,14 +53,13 @@ def cfg(pid):
     elif mode=="halfmax": dt0=0.5*dtmax
     elif mode=="max": dt0=dtmax
     else: dt0=math.sqrt(dtmin*dtmax)
-    return dtmin,dtmax,dt0,p.get("numbit",base["numbit_crit"]),p.get("inc",base["fact_inc"])
+    return (dtmin,dtmax,dt0,p.get("numbit",base["numbit_crit"]),p.get("inc",base["fact_inc"]),\n            p.get("dec",base["fact_dec"]),p.get("fail",base["fact_fail_divisor"]),\n            p.get("maxit",base["maxit"]),p.get("maxback",base["max_backtracking"]),\n            base["head_abs_tol"]*p.get("headmult",1.0))
 def run(cid,pid):
     m,r=decode(cid)
-    dtmin,dtmax,dt0,numbit,inc=cfg(pid)
+    dtmin,dtmax,dt0,numbit,inc,dec,fail,maxit,maxback,headtol=cfg(pid)
     cmd=[str(exe),cid,pid,str(m["theta_r"]),str(m["theta_s"]),str(m["alpha"]),str(m["n"]),
          str(m["ksat"]),str(m["lambda"]),str(r["h0_cm"]),str(r["rain_cm_day"]),str(r["horizon_day"]),
-         str(dtmin),str(dtmax),str(dt0),str(numbit),str(base["maxit"]),str(base["max_backtracking"]),
-         str(inc),str(base["fact_dec"]),str(base["fact_fail_divisor"]),str(base["head_abs_tol"])]
+         str(dtmin),str(dtmax),str(dt0),str(numbit),str(maxit),str(maxback),\n         str(inc),str(dec),str(fail),str(headtol)]
     t0=time.perf_counter()
     cp=subprocess.run(cmd,text=True,capture_output=True)
     sec=time.perf_counter()-t0
