@@ -5,7 +5,7 @@ import numpy as np
 sys.path.insert(0,"research/hydrofit")
 from hydrofit import FitConfig,MvGParameters,Observation,fit,multistart_fit,evaluate
 
-csv_path,meta_path=sys.argv[1:3]
+# Uses the qualified F-HYDROFIT01 fitting kernel incorporated on this branch.\ncsv_path,meta_path=sys.argv[1:3]
 rows=list(csv.DictReader(open(csv_path)))
 meta=json.load(open(meta_path))
 # first exported interval only
