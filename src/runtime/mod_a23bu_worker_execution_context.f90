@@ -51,6 +51,21 @@ module mod_a23bu_worker_execution_context
     integer :: interface_sensitivity_backsolves = 0
   end type a23bu_soil_water_trial_result_t
 
+  integer, parameter, public :: A23BU_TS_LIMIT_NONE = 0
+  integer, parameter, public :: A23BU_TS_LIMIT_HARD_EVENT = 1
+  integer, parameter, public :: A23BU_TS_LIMIT_SOLVER_RETRY = 2
+  integer, parameter, public :: A23BU_TS_LIMIT_SOLVER_RETRY_FLOOR = 3
+
+  type, public :: a23bu_timestep_decision_trace_t
+    logical :: available = .false.
+    real(real64) :: input_dt = 0.0_real64
+    real(real64) :: preferred_dt = 0.0_real64
+    real(real64) :: executed_dt = 0.0_real64
+    integer :: proposal_reason = 0
+    integer :: limit_reason = A23BU_TS_LIMIT_NONE
+    logical :: event_clamped = .false.
+  end type a23bu_timestep_decision_trace_t
+
   type, public :: a23bu_numerical_control_t
     integer :: last_numbit = 0
     logical :: request_dt_reduction = .false.
@@ -89,6 +104,7 @@ module mod_a23bu_worker_execution_context
     type(a23bu_solver_diagnostics_t) :: diagnostics
     type(a23bu_soil_water_trial_result_t) :: soil_water_trial
     type(a23bu_numerical_control_t) :: control
+    type(a23bu_timestep_decision_trace_t) :: timestep_trace
     type(a23bu_execution_time_t) :: time
     type(a23bu_reporting_progress_t) :: reporting
     ! F-KT21 trajectory directions are optional worker/job-local numerical
@@ -104,6 +120,7 @@ module mod_a23bu_worker_execution_context
   public :: a23bu_seed_timestep_control, a23bu_request_dt_reduction
   public :: a23bu_seed_execution_window, a23bu_reset_calendar_events
   public :: a23bu_seed_reporting_progress
+  public :: a23bu_record_timestep_trace, a23bu_reset_timestep_trace
   public :: a23bu_discard_unaccepted_trajectory_step, a23bu_accept_pending_trajectory_step
   public :: a23bu_scratch_payload_bytes, a23bu_reporting_shim_payload_bytes
 
@@ -143,6 +160,7 @@ contains
     worker%diagnostics = a23bu_solver_diagnostics_t()
     worker%soil_water_trial = a23bu_soil_water_trial_result_t()
     worker%control = a23bu_numerical_control_t()
+    worker%timestep_trace = a23bu_timestep_decision_trace_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
     worker%trajectory_direction = accepted_trajectory_direction_t()
@@ -168,6 +186,7 @@ contains
     worker%diagnostics = a23bu_solver_diagnostics_t()
     worker%soil_water_trial = a23bu_soil_water_trial_result_t()
     worker%control = a23bu_numerical_control_t()
+    worker%timestep_trace = a23bu_timestep_decision_trace_t()
     worker%time = a23bu_execution_time_t()
     worker%reporting = a23bu_reporting_progress_t()
     worker%trajectory_direction = accepted_trajectory_direction_t()
@@ -222,6 +241,26 @@ contains
     worker%time%day_start_event = .false.
     worker%time%day_end_event = .false.
   end subroutine a23bu_reset_calendar_events
+
+  subroutine a23bu_reset_timestep_trace(worker)
+    type(a23bu_worker_context_t), intent(inout) :: worker
+    worker%timestep_trace = a23bu_timestep_decision_trace_t()
+  end subroutine a23bu_reset_timestep_trace
+
+  subroutine a23bu_record_timestep_trace(worker, input_dt, preferred_dt, executed_dt, proposal_reason, limit_reason, event_clamped)
+    type(a23bu_worker_context_t), intent(inout) :: worker
+    real(real64), intent(in) :: input_dt, preferred_dt, executed_dt
+    integer, intent(in) :: proposal_reason, limit_reason
+    logical, intent(in) :: event_clamped
+
+    worker%timestep_trace%available = .true.
+    worker%timestep_trace%input_dt = input_dt
+    worker%timestep_trace%preferred_dt = preferred_dt
+    worker%timestep_trace%executed_dt = executed_dt
+    worker%timestep_trace%proposal_reason = proposal_reason
+    worker%timestep_trace%limit_reason = limit_reason
+    worker%timestep_trace%event_clamped = event_clamped
+  end subroutine a23bu_record_timestep_trace
 
   subroutine a23bu_seed_reporting_progress(worker)
     type(a23bu_worker_context_t), intent(inout) :: worker

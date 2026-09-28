@@ -36,6 +36,15 @@ echo "F_PE_TIMEARCH06=PASS"
 # dependency stubs. This is syntax/integration evidence for the new service use.
 mkdir -p "$BUILD/timecontrol"
 gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/timecontrol" -I"$BUILD/timecontrol" \
+  -c src/solver/mod_soil_water_accepted_step_direction_contract.f90 \
+  -o "$BUILD/timecontrol/step_direction_contract.o"
+gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/timecontrol" -I"$BUILD/timecontrol" \
+  -c src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 \
+  -o "$BUILD/timecontrol/trajectory_direction.o"
+gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/timecontrol" -I"$BUILD/timecontrol" \
+  -c src/runtime/mod_a23bu_worker_execution_context.f90 \
+  -o "$BUILD/timecontrol/worker_context.o"
+gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/timecontrol" -I"$BUILD/timecontrol" \
   -c tests/fpe/timearch06_timecontrol_compile_stubs.f90 \
   -o "$BUILD/timecontrol/stubs.o"
 gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/timecontrol" -I"$BUILD/timecontrol" \
