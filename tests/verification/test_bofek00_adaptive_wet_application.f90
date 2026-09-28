@@ -13,7 +13,7 @@ program test_bofek00_adaptive_wet_application
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
 
-  real(real64), parameter :: T0=0.0_real64, T1=0.002_real64
+  real(real64), parameter :: T0=0.0_real64\n  real(real64) :: T1
   real(real64), parameter :: H0=-3.5900902059398048_real64
   real(real64), parameter :: TR=0.02_real64, TS=0.427494_real64
   real(real64), parameter :: ALPHA=0.021659_real64, NPAR=1.734737_real64
@@ -27,7 +27,7 @@ program test_bofek00_adaptive_wet_application
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   integer :: status
 
-  call configure(cfg)
+  call read_duration(T1)\n  call configure(cfg)
   allocate(forcing(1))
   forcing(1)=cfg%tiles(1)%base_forcing
   allocate(forcing(1)%black_evaporation)
@@ -57,7 +57,7 @@ program test_bofek00_adaptive_wet_application
     end if
   end if
   call require(allocated(results) .and. size(results)==1,'single result')
-  write(*,'(*(g0))') 'BOFEK00_ADAPTIVE|STATUS=',status, &
+  write(*,'(*(g0))') 'BOFEK00_ADAPTIVE|DURATION_SECONDS=',T1*86400.0_real64,'|STATUS=',status, &
        '|COMPLETED=',results(1)%completed,'|COMMITTED=',results(1)%committed, &
        '|KERNEL_STATUS=',results(1)%kernel_status, &
        '|ACCEPTED_SUBSTEPS=',results(1)%accepted_substeps, &
