@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE-BOFEK00F",
+  "phase": "PREREGISTERED_BEFORE_ADAPTIVE_INTERACTION_EXECUTION",
+  "repository": "abhedwig-cell/SWAP5",
+  "canonical_head": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
+  "correction_parent": "d269ca78758f36ef2bcc3719761134a8ae919881",
+  "purpose": "Characterize how the confirmed wet-regime correctness repair interacts with the existing SWAP TimeControl acceptance/growth/reduction rules without changing those rules.",
+  "correctness_is_frozen": {
+    "correction_candidate": "work/f-pe-bofek00-wet-regime-authority@d269ca78758f36ef2bcc3719761134a8ae919881",
+    "frozen_timestep_gate_run": 36403774985,
+    "frozen_timestep_physics_identity_required": true
+  },
+  "controller_semantics": {
+    "source_authority": [
+      "src/legacy/b1_10_fci11_port/timecontrol_part04.inc",
+      "src/legacy/b1_10_fci11_port/timecontrol_part05.inc"
+    ],
+    "accepted_step_rules": [
+      "if NUMBIT <= NUMBIT_CRIT then dt=min(dt*FACT_DT_INCREASE,DTMAX)",
+      "if NUMBIT >= MAXIT then dt=max(dt*FACT_DT_DECREASE,DTMIN)"
+    ],
+    "nonconvergence_rule": "if solver requests dt reduction, reduce by FACT_DT_FLDECT down to DTMIN",
+    "policy_code_changes_allowed": false
+  },
+  "interaction_fixture": {
+    "physics": "same 16-node homogeneous wet rainfall/runoff fixture as BOFEK00E",
+    "horizon_day": 0.12,
+    "initial_dt_day": 0.005,
+    "dtmin_day": 0.000625,
+    "dtmax_day": 0.02,
+    "numbit_crit": 4,
+    "maxit": 20,
+    "fact_dt_increase": 1.5,
+    "fact_dt_decrease": 0.5,
+    "fact_dt_fldect": 2.0,
+    "note": "These are fixed research-fixture values for a paired controller-interaction test, not proposed BOFEK settings and not claimed as universal defaults."
+  },
+  "paired_runs": [
+    "canonical baseline source at 1759caebb7ca3bd62bbee65d9319f5d71d3e73f5 + frozen controller fixture",
+    "corrected source + the exact same controller fixture"
+  ],
+  "required_observables": [
+    "accepted dt sequence",
+    "accepted step count",
+    "solver-rejected attempts",
+    "dt reductions",
+    "dt growth events",
+    "total nonlinear iterations",
+    "total backtracking attempts",
+    "top pressure-head trajectory",
+    "ponding trajectory",
+    "runoff trajectory and cumulative runoff",
+    "bottom flux",
+    "combined water ledger",
+    "runtime observation with explicit non-benchmark caveat"
+  ],
+  "interpretation_firewall": [
+    "Any baseline/corrected difference in accepted dt is an interaction with unchanged policy, not a timestep-policy fix.",
+    "Any integrated runoff difference under adaptive stepping must be reported separately from frozen-step correctness.",
+    "No claim that faster wall time alone establishes correctness.",
+    "No DTMIN, DTMAX, NUMBIT_CRIT or factor recommendation may be admitted from this work unit."
+  ],
+  "acceptance": {
+    "both paired runs_complete_horizon": true,
+    "all accepted states finite": true,
+    "combined_ledger_abs_cm_max": 5e-8,
+    "controller_parameters_bit_identical_between_pairs": true,
+    "negative_result_allowed": true
+  }
+}
