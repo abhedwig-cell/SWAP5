@@ -1,0 +1,39 @@
+{
+  "work_unit": "F-PE-BOFEK01",
+  "status": "PREREGISTERED_TESTBANK_BEFORE_RESULTS",
+  "authority": "integration/f-ci-canonical@50ee9dc2acbc9847807d3fd98d0553f9862d428b",
+  "scope": "fixed-K dynamic-top SWKIMPL=0 hydraulic/regime screening",
+  "qualification_boundary": "Repository contains no full BOFEK profile catalogue. These repository-backed hydraulic archetypes support numerical-policy screening but not BOFEK-ID-specific production claims.",
+  "materials": [
+    {"id":"B01","theta_r":0.02,"theta_s":0.427494,"alpha":0.021659,"n":1.734737,"ksat":31.225016,"lambda":0.98087,"role":"fast/high-K"},
+    {"id":"B12","theta_r":0.01,"theta_s":0.529749,"alpha":0.016562,"n":1.090671,"ksat":2.245895,"lambda":-4.493581,"role":"strong-capillary/gradual-retention"},
+    {"id":"O05","theta_r":0.01,"theta_s":0.336701,"alpha":0.030304,"n":2.887502,"ksat":17.418504,"lambda":0.0736,"role":"sharp-retention/high-K"},
+    {"id":"O14","theta_r":0.01,"theta_s":0.393878,"alpha":0.003288,"n":1.616573,"ksat":2.495984,"lambda":0.514012,"role":"fine/near-saturation-difficult"}
+  ],
+  "regimes": [
+    {"id":"DRY","h0_cm":-300.0,"rain_cm_day":0.5,"horizon_day":0.12,"role":"dry/deep-state"},
+    {"id":"TRANSITION","h0_cm":-100.0,"rain_cm_day":4.0,"horizon_day":0.12,"role":"dry-to-wet"},
+    {"id":"MOIST","h0_cm":-50.0,"rain_cm_day":8.0,"horizon_day":0.12,"role":"infiltration-dominated"},
+    {"id":"WET","h0_cm":-20.0,"rain_cm_day":12.0,"horizon_day":0.12,"role":"sustained-wet BOFEK00 route"},
+    {"id":"POND","h0_cm":-5.0,"rain_cm_day":25.0,"horizon_day":0.12,"role":"heavy-rain/ponding BOFEK00 route"}
+  ],
+  "cases": "Cartesian product materials x regimes = 20 cases",
+  "screening_cases": ["B01/DRY","B01/TRANSITION","B01/MOIST","B01/WET","B01/POND","B12/DRY","B12/TRANSITION","B12/MOIST","B12/WET","O05/DRY","O05/TRANSITION","O05/MOIST","O05/WET","O05/POND","O14/DRY","O14/TRANSITION"],
+  "holdout_cases": ["B12/POND","O14/MOIST","O14/WET","O14/POND"],
+  "baseline_policy": {"dtmin_day":0.001,"dtmax_day":0.02,"numbit_crit":4,"maxit":8,"max_backtracking":8,"fact_inc":2.0,"fact_dec":0.5,"fact_fail_divisor":2.0,"head_abs_tol":1e-9,"head_rel_tol":1e-9,"balance_tol":1e-10,"pond_tol":1e-10},
+  "phase_A_candidates": [
+    {"id":"REF","dtmin":1.0,"dtmax":1.0,"dt0":"geometric","numbit_crit":4,"fact_inc":2.0},
+    {"id":"DTMAX_X0P5","dtmax":0.5},
+    {"id":"DTMAX_X2","dtmax":2.0},
+    {"id":"DTMAX_X4","dtmax":4.0},
+    {"id":"DTMIN_X0P5","dtmin":0.5},
+    {"id":"DTMIN_X2","dtmin":2.0},
+    {"id":"DT0_MIN","dt0":"dtmin"},
+    {"id":"DT0_HALFMAX","dt0":"0.5*dtmax"},
+    {"id":"DT0_MAX","dt0":"dtmax"}
+  ],
+  "phase_B_candidates": [
+    {"id":"NUMBIT_2","numbit_crit":2},{"id":"NUMBIT_3","numbit_crit":3},{"id":"NUMBIT_5","numbit_crit":5},{"id":"NUMBIT_6","numbit_crit":6},
+    {"id":"INC_1P25","fact_inc":1.25},{"id":"INC_1P5","fact_inc":1.5},{"id":"INC_3","fact_inc":3.0}
+  ]
+}
