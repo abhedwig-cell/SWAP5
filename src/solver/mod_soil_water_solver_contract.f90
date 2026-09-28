@@ -69,6 +69,8 @@ module mod_soil_water_solver_contract
      real(real64) :: actual_top_flux = 0.0_real64
      real(real64) :: surface_head = 0.0_real64
      real(real64) :: surface_face_conductivity = 0.0_real64
+     logical :: surface_head_dpressure_available = .false.
+     real(real64) :: surface_head_dpressure = 0.0_real64
      real(real64) :: candidate_ponding_depth = 0.0_real64
      real(real64) :: bare_soil_evaporation = 0.0_real64
      real(real64) :: ponded_water_evaporation = 0.0_real64
