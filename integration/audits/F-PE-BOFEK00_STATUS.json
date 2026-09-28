@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE-BOFEK00",
+  "canonical_head": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
+  "branch_head": "f508fc00155b9d8b98ddaa4c8b1daf01bf1c8547",
+  "defect_status": "DEFECT_CONFIRMED_CURRENT_REFERENCE",
+  "correctness_status": "QUALIFIED_CORRECTION_CANDIDATE",
+  "adaptive_status": "BLOCKED_BY_INDEPENDENT_NUMERICAL_POLICY",
+  "admission_status": "NOT_YET_ADMISSION_READY",
+  "confirmed_defects": [
+    "INCOMPLETE_DYNAMIC_TOP_HEAD_JACOBIAN",
+    "CANDIDATE_AND_DT_DEPENDENT_LINEAR_RUNOFF_BRANCH_SELECTION"
+  ],
+  "production_files_changed": [
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "policy_changed": false,
+  "frozen_timestep": {
+    "qualified": true,
+    "steps": 24,
+    "dt_seconds": 10,
+    "old_cumulative_runoff_cm": 0.16438021581036055,
+    "corrected_cumulative_runoff_cm": 0.16438021581036075,
+    "max_abs_head_difference_cm": 4.68292071786891e-13,
+    "max_abs_pond_difference_cm": 2.914335439641036e-16,
+    "max_abs_runoff_step_difference_cm": 4.85722573273506e-17,
+    "old_newton_iterations": 96,
+    "corrected_newton_iterations": 96,
+    "old_backtracks": 96,
+    "corrected_backtracks": 96
+  },
+  "adaptive_ladder": {
+    "durations_seconds": [10,20,40,80,160,320],
+    "old_accepted_substeps": [0,0,0,0,0,0],
+    "corrected_accepted_substeps": [0,0,0,0,0,0],
+    "classification_all": "BOTH_FAIL",
+    "accepted_runoff_available": false,
+    "accepted_mass_balance_available": false
+  },
+  "policy_blocker": {
+    "surface": "src/runtime/mod_fmr_serialized_reference_backend.f90::fmr_serialized_temporal_identity",
+    "class": "NUMERICAL_POLICY",
+    "description": "full/two-half temporal error is 0 only for exact physical-state identity and huge otherwise on this route"
+  },
+  "bofek01_02": "GATED_PENDING_SEPARATE_ADAPTIVE_POLICY_AUTHORITY",
+  "closeout": "docs/verification/F-PE-BOFEK00_CLOSEOUT.md"
+}
