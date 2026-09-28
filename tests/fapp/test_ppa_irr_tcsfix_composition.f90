@@ -141,4 +141,30 @@ program test_tcsfix
   if(d%status/=IRRIGATION_OK.or.flux%event_started.or.proposal%dayfix/=2.or.proposal%last_day/=101_int64) &
        error stop 'daily successor filter'
   print '(a)', 'PPA_IRR_TCSFIX_DAILY_ATOMIC_PROPOSAL=PASS'
+  identity=proposal
+  call evaluate_tcsfix_daily_proposal(p,base,r,identity,.true.,102_int64,knots,values,0, &
+       0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,proposal,candidate,flux,d)
+  if(d%status==IRRIGATION_OK.or.proposal%last_day/=101_int64.or.proposal%dayfix/=2) &
+       error stop 'daily failure consumed ordinal'
+  do i=102,106
+    call evaluate_tcsfix_daily_proposal(p,base,r,identity,.true.,int(i,int64),knots,values,2, &
+         1.0_real64,0.75_real64,0.0_real64,1.0_real64,0.5_real64,0.1_real64,proposal,candidate,flux,d)
+    if(d%status/=IRRIGATION_OK.or.proposal%last_day/=int(i,int64)) error stop 'daily sequence'
+    if(flux%event_started.neqv.(i==103.or.i==106)) error stop 'daily interval sequence'
+    identity=proposal
+  end do
+  ! Fresh partial gift followed by duplicate and successor pending invocations.
+  identity=ppa_tcsfix_identity_t(); identity%enabled=.true.; identity%interval_days=3
+  r%t1=0.25_real64
+  call evaluate_tcsfix_daily_proposal(p,base,r,identity,.true.,100_int64,knots,values,2, &
+       1.0_real64,0.75_real64,0.0_real64,1.0_real64,0.5_real64,0.1_real64,proposal,candidate,flux,d)
+  if(d%status/=IRRIGATION_OK.or..not.candidate%active_event) error stop 'daily pending setup'
+  identity=proposal; pending=candidate; r%t0=0.25_real64; r%t1=0.5_real64
+  do i=100,101
+    call evaluate_tcsfix_daily_proposal(p,pending,r,identity,.true.,int(i,int64),knots,values,0, &
+         0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,proposal,candidate,flux,d)
+    if(d%status/=IRRIGATION_OK.or.proposal%dayfix/=1.or.proposal%last_day/=int(i,int64).or. &
+         .not.flux%event_finished.or.flux%event_started) error stop 'daily pending counter'
+  end do
+  print '(a)', 'PPA_IRR_TCSFIX_DAILY_SEQUENCE_FAILURE_PENDING=PASS'
 end program
