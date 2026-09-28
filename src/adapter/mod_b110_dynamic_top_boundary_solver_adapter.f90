@@ -122,6 +122,8 @@ contains
     result%actual_top_flux = b110_result%actual_top_flux_cm_per_day
     result%surface_head = b110_result%surface_head_cm
     result%surface_face_conductivity = b110_result%surface_face_conductivity_cm_per_day
+    result%surface_head_dpressure_available = b110_result%surface_head_dpressure_available
+    result%surface_head_dpressure = b110_result%surface_head_dpressure
     result%candidate_ponding_depth = b110_result%candidate_ponding_depth_cm
     result%bare_soil_evaporation = b110_result%bare_soil_evaporation_cm_per_day
     result%ponded_water_evaporation = b110_result%ponded_water_evaporation_cm_per_day
