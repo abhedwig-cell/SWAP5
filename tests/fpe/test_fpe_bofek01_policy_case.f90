@@ -50,7 +50,9 @@ program test_fpe_bofek01_policy_case
   write(*,'(*(g0))') 'F_PE_BOFEK01_RESULT|CASE=',trim(case_id),'|POLICY=',trim(policy_id), &
     '|ATTEMPTS=',attempts,'|ACCEPTED=',accepted,'|REJECTED=',rejected,'|GROWTHS=',growths,'|REDUCTIONS=',reductions, &
     '|NL=',total_nl,'|BACK=',total_back,'|JAC=',total_jac,'|LIN=',total_lin,'|CUM_RUNOFF=',cumrun, &
-    '|TOP_H=',state%pressure_head(1),'|POND=',state%ponding_depth,'|STORAGE=',storage1,'|MAX_LEDGER=',maxledger
+    '|TOP_H=',state%pressure_head(1),'|MID_H=',state%pressure_head((numnod+1)/2), &
+    '|BOTTOM_H=',state%pressure_head(numnod),'|POND=',state%ponding_depth, &
+    '|STORAGE=',storage1,'|MAX_LEDGER=',maxledger
   write(*,'(A)') 'F_PE_BOFEK01_CASE=PASS'
 contains
   subroutine read_real(i,x)
