@@ -71,7 +71,9 @@ program test_fpe_dynerr01_indicator
   write(*,'(*(g0))')'F_PE_DYNERR01|CASE=',trim(case_id),'|DT=',step_dt,'|OK=1', &
     '|IND_STATUS=',ind_status,'|IND=',indicator,'|ACTUAL_H=',actual_h,'|RUNOFF_D=',runoff_delta, &
     '|STORAGE_D=',storage_delta,'|MAX_LEDGER=',max_ledger,'|REGIME=',regime_full, &
-    '|REGIME_FULL=',regime_full,'|REGIME_H1=',regime_h1,'|REGIME_H2=',regime_h2,'|DERIV=',derivative, &
+    '|REGIME_FULL=',regime_full,'|REGIME_H1=',regime_h1,'|REGIME_H2=',regime_h2, &
+    '|TOP_FULL=',full%pressure_head(1),'|TOP_H1=',half1%pressure_head(1),'|TOP_H2=',half2%pressure_head(1), &
+    '|POND_FULL=',full%ponding_depth,'|POND_H1=',half1%ponding_depth,'|POND_H2=',half2%ponding_depth,'|DERIV=',derivative, &
     '|WORK_FULL=',w_full,'|WORK_HALVES=',w_h1+w_h2
 contains
   subroutine read_real(i,x)
