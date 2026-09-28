@@ -7,12 +7,16 @@ on:
     paths:
       - 'docs/performance/F-PE-STATESTEP01_PREREGISTRATION.md'
       - 'docs/performance/F-PE-STATESTEP02_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-STATESTEP03_PREREGISTRATION.md'
       - 'tests/fpe/test_fpe_statestep01_controller.f90'
       - 'tests/fpe/run_fpe_statestep01_screen.py'
       - 'tests/fpe/run_fpe_statestep01_screen.sh'
       - 'tests/fpe/test_fpe_statestep02_controller.f90'
       - 'tests/fpe/run_fpe_statestep02_screen.py'
       - 'tests/fpe/run_fpe_statestep02_screen.sh'
+      - 'tests/fpe/test_fpe_statestep03_controller.f90'
+      - 'tests/fpe/run_fpe_statestep03_screen.py'
+      - 'tests/fpe/run_fpe_statestep03_screen.sh'
       - '.github/workflows/f-pe-statestep01.yml'
   workflow_dispatch:
 
@@ -43,3 +47,15 @@ jobs:
         run: gfortran --version
       - name: Run normalized state-aware screen
         run: bash tests/fpe/run_fpe_statestep02_screen.sh
+
+  prep-pond-screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run pre-ponding safeguard screen
+        run: bash tests/fpe/run_fpe_statestep03_screen.sh
