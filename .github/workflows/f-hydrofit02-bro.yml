@@ -315,6 +315,11 @@ jobs:
           python research/hydrofit/fit_bro_real_case.py \
             "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.csv" \
             "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.meta.json" | tee "$RUNNER_TEMP/bro/real-fit.txt"
+      - name: Analyze all real BRO intervals
+        run: |
+          python research/hydrofit/analyze_bro_real_case.py \
+            "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.csv" \
+            "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.meta.json" | tee "$RUNNER_TEMP/bro/real-analysis.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
