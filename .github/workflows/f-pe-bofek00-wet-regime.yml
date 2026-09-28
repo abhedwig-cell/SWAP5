@@ -1,0 +1,21 @@
+name: F-PE-BOFEK00 wet-regime correctness gate
+
+on:
+  push:
+    branches:
+      - work/f-pe-bofek00-wet-regime-authority
+    paths:
+      - 'docs/verification/F-PE-BOFEK00_PREREGISTRATION.md'
+      - 'tools/verification/bofek00_wet_regime_gate.py'
+      - '.github/workflows/f-pe-bofek00-wet-regime.yml'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+  workflow_dispatch:
+
+jobs:
+  wet-regime-correctness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run BOFEK00 current-authority micro-gate
+        run: python tools/verification/bofek00_wet_regime_gate.py
