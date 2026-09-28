@@ -1455,6 +1455,35 @@ contains
           error stop 'TCSFIX runtime carrier sliced'
         end select
         write(*,'(a)') 'PPA_IRR_TCSFIX_SERIALIZED_PROPOSAL_FORWARDING=PASS'
+        output=fmr_serialized_column_result_t(); column_diagnostics=fmr_column_diagnostics_t()
+        call fmr_execute_serialized_irrigation_resolved_column(backend,control,column,template, &
+             profile%tiles(1)%parameters,forcing,runtime_owner,profile%numerical,1,finish, &
+             seed%irrigation%active_event_end,output,column_diagnostics,runtime_diagnostics,active_calls, &
+             tcsfix_proposal=proposal)
+        ! Reproduce the separately recorded larger pending-event limitation.
+        if(output%completed.or.output%committed) error stop 'TCSFIX continuation limitation changed: review evidence'
+        if(runtime_owner%current_revision()/=1_int64.or.active_calls/=0) error stop 'TCSFIX continuation publication'
+        call runtime_owner%current_time(time,ok)
+        if(.not.ok.or.time/=finish) error stop 'TCSFIX continuation changed time'
+        block
+          class(transaction_state_t),allocatable::after_rejection
+          call runtime_owner%snapshot(after_rejection,ok)
+          if(.not.ok) error stop 'TCSFIX continuation snapshot'
+          select type(before=>snapshot)
+          type is(ppa_irrigation_event_state_t)
+            select type(after=>after_rejection)
+            type is(ppa_irrigation_event_state_t)
+              if(any(before%water_content/=after%water_content).or.any(before%pressure_head/=after%pressure_head).or. &
+                   after%tcsfix%last_day/=101_int64.or.after%tcsfix%dayfix/=2.or. &
+                   after%irrigation%active_event_end/=before%irrigation%active_event_end) &
+                   error stop 'TCSFIX continuation rollback changed state'
+            end select
+          end select
+        end block
+        write(*,'(a,6(1x,i0))') 'TCSFIX_PENDING_CONTINUATION_DIAGNOSTICS',output%accepted_substeps, &
+             output%transaction_attempts,output%solver_rejections,output%temporal_rejections, &
+             output%temporal_unavailable_rejections,output%mass_rejections
+        write(*,'(a)') 'PPA_IRR_TCSFIX_LARGER_PENDING_REJECTION_ROLLBACK=PASS'
       end block
     end block
     block
