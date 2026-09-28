@@ -76,7 +76,7 @@ For each estimator point with current accepted origin:
    - `E_THETA = max |theta_full - theta_twohalf|`;
    - `E_STORAGE = |storage_full - storage_twohalf|`.
 
-The normal research trajectory then follows the two-half endpoint so the next estimator origin follows the refined route and does not inherit the full-step local error.
+The normal research trajectory follows the full-step BDF2 endpoint. The two-half route is an independent local error label only and is discarded after measurement. This preserves the exact variable-step BDF2 history that a future production estimator/controller would actually see.
 
 The two-half work is research authority only and is not part of candidate estimator cost.
 
