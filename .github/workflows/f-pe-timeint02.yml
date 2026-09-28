@@ -6,10 +6,13 @@ on:
       - work/f-pe-timeint02-bdf2-operator-consistency
     paths:
       - 'docs/performance/F-PE-TIMEINT02_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT02A_PREREGISTRATION.md'
       - 'tests/fpe/materialize_fpe_timeint02_headcalc.py'
       - 'tests/fpe/test_fpe_timeint02_bdf2.f90'
       - 'tests/fpe/run_fpe_timeint02.py'
       - 'tests/fpe/run_fpe_timeint02.sh'
+      - 'tests/fpe/run_fpe_timeint02a.py'
+      - 'tests/fpe/run_fpe_timeint02a.sh'
       - '.github/workflows/f-pe-timeint02.yml'
   workflow_dispatch:
 
@@ -28,3 +31,15 @@ jobs:
         run: gfortran --version
       - name: Run preregistered BDF2 operator study
         run: bash tests/fpe/run_fpe_timeint02.sh
+
+  implicit-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run SWKIMPL1 attribution matrix
+        run: bash tests/fpe/run_fpe_timeint02a.sh
