@@ -114,7 +114,7 @@ contains
 
     value%tiles(1)%base_forcing%top_flux=0.0_real64
     value%tiles(1)%base_forcing%top_head=H0
-    value%tiles(1)%base_forcing%bottom_flux=-conductivity(numnod)
+    value%tiles(1)%base_forcing%bottom_flux=0.0_real64
     value%tiles(1)%base_forcing%bottom_head=-999999.0_real64
     allocate(value%tiles(1)%base_forcing%drainage_flux_by_level(1,numnod), &
          value%tiles(1)%base_forcing%subsurface_irrigation_source(numnod), &
@@ -136,7 +136,7 @@ contains
       p%cofgen(7,k)=1.0_real64-1.0_real64/NPAR;p%cofgen(8,k)=ALPHA;p%cofgen(10,k)=KS
       p%cofgen(11,k)=0.999_real64;p%cofgen(12,k)=0.99_real64*KS;p%cofgen(22,k)=-1.0e6_real64;p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%bottom_mode=7
+    p%bottom_mode=2
     p%swkimpl=0
     p%swkmean=1
     p%swsophy=0
