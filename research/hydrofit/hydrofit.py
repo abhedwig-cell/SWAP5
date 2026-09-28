@@ -217,6 +217,16 @@ def residual_vector(x: Sequence[float], observations: Sequence[Observation], cfg
     return np.asarray(residuals)
 
 
+def multistart_fit(observations: Sequence[Observation], initials: Iterable[MvGParameters], cfg: FitConfig) -> tuple[FitResult, list[FitResult]]:
+    results = [fit(observations, initial, cfg) for initial in initials]
+    if not results:
+        raise ValueError("at least one initial parameter set required")
+    successful = [r for r in results if r.success and np.isfinite(r.objective)]
+    pool = successful if successful else results
+    best = min(pool, key=lambda r: r.objective)
+    return best, results
+
+
 def fit(observations: Sequence[Observation], initial: MvGParameters, cfg: FitConfig) -> FitResult:
     if least_squares is None:
         raise RuntimeError("scipy is required for fitting")
