@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE-BOFEK00F-LADDER",
+  "canonical_head": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
+  "old_authority": "0b67e2af993f16e9d1678b70cacfe9b164954140",
+  "correction_parent_head": "67c8cc1653587e8b528fa907bb5af68e87233985",
+  "ladder_head": "7153a9025b806c1c6f2fa88f443ce2f0a2ccecca",
+  "workflow_run": 36405701551,
+  "policy": {
+    "temporal_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance": 1e-6,
+    "retry_scale": 0.5,
+    "max_retries": 8,
+    "max_committed_substeps": 256,
+    "identical_old_corrected": true
+  },
+  "durations_seconds": [10, 20, 40, 80, 160, 320],
+  "old_max_accepted_seconds": null,
+  "corrected_max_accepted_seconds": null,
+  "pairs": [
+    {"duration_seconds":10,"classification":"BOTH_FAIL","old":{"nonlinear_iterations":221,"backtracks":1631,"internal_retries":5,"headcalc_calls":18,"accepted_substeps":0},"corrected":{"nonlinear_iterations":223,"backtracks":1367,"internal_retries":5,"headcalc_calls":18,"accepted_substeps":0}},
+    {"duration_seconds":20,"classification":"BOTH_FAIL","old":{"nonlinear_iterations":202,"backtracks":1330,"internal_retries":4,"headcalc_calls":20,"accepted_substeps":0},"corrected":{"nonlinear_iterations":204,"backtracks":1066,"internal_retries":4,"headcalc_calls":20,"accepted_substeps":0}},
+    {"duration_seconds":40,"classification":"BOTH_FAIL","old":{"nonlinear_iterations":185,"backtracks":1032,"internal_retries":3,"headcalc_calls":22,"accepted_substeps":0},"corrected":{"nonlinear_iterations":187,"backtracks":754,"internal_retries":3,"headcalc_calls":22,"accepted_substeps":0}},
+    {"duration_seconds":80,"classification":"BOTH_FAIL","old":{"nonlinear_iterations":170,"backtracks":735,"internal_retries":2,"headcalc_calls":24,"accepted_substeps":0},"corrected":{"nonlinear_iterations":172,"backtracks":449,"internal_retries":2,"headcalc_calls":24,"accepted_substeps":0}},
+    {"duration_seconds":160,"classification":"BOTH_FAIL","old":{"nonlinear_iterations":157,"backtracks":446,"internal_retries":1,"headcalc_calls":26,"accepted_substeps":0},"corrected":{"nonlinear_iterations":159,"backtracks":306,"internal_retries":1,"headcalc_calls":26,"accepted_substeps":0}},
+    {"duration_seconds":320,"classification":"BOTH_FAIL","old":{"nonlinear_iterations":141,"backtracks":149,"internal_retries":0,"headcalc_calls":27,"accepted_substeps":0},"corrected":{"nonlinear_iterations":143,"backtracks":155,"internal_retries":0,"headcalc_calls":27,"accepted_substeps":0}}
+  ],
+  "interpretation": {
+    "historical_convergence_benefit_reproduced": false,
+    "corrected_acceptance_boundary_improved": false,
+    "policy_retuned": false,
+    "note": "The correction reduces backtracking for 10-160 s but adds two nonlinear/Jacobian/linear iterations in every ladder case; at 320 s it also adds six backtracks. Neither source accepts any requested interval under the frozen current full/half policy."
+  },
+  "classification": "NEGATIVE_ADAPTIVE_QUALIFICATION",
+  "admission_ready": false
+}
