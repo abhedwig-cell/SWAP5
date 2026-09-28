@@ -1,0 +1,29 @@
+name: F-PE-EMBEDSTEP01 selective embedded control
+
+on:
+  push:
+    branches:
+      - work/f-pe-embedstep01-selective-error-control
+    paths:
+      - 'docs/performance/F-PE-EMBEDSTEP01_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_embedstep01_controller.f90'
+      - 'tests/fpe/run_fpe_embedstep01_screen.py'
+      - 'tests/fpe/run_fpe_embedstep01_screen.sh'
+      - '.github/workflows/f-pe-embedstep01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered selective embedded screen
+        run: bash tests/fpe/run_fpe_embedstep01_screen.sh
