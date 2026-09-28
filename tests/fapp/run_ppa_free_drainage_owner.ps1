@@ -2,6 +2,7 @@
 # single source of the static Python checks, compilation flags and source list.
 param([ValidateSet('IrrigationHalfSource','IrrigationSource','HydraulicCopy','Composition','Guards','Receipts','Windows','WindowRejection','GashWindows','GashBranchRejection','GashReceipts','Atm02','Atm02Events','Atm02Dense')][string]$Scope = 'Composition', [switch]$StableStorageExperiment, [switch]$StableStorage, [switch]$LocalOriginDiagnostic, [switch]$ConvergenceTrace)
 $ErrorActionPreference = 'Stop'
+$PSNativeCommandUseErrorActionPreference = $false
 if ($ConvergenceTrace -and $Scope -notin @('IrrigationSource','IrrigationHalfSource')) {
     throw 'ConvergenceTrace is restricted to irrigation source diagnostics'
 }
@@ -70,7 +71,10 @@ $tests = @('ppa_free_drainage_owner')
 if ($Scope -eq 'All') { $tests += 'ppa_wu01_production_application_bootstrap' }
 Push-Location $repo
 try {
-    & python -c $static.Groups[1].Value
+    New-Item -ItemType Directory $build -Force | Out-Null
+    $staticPath = Join-Path $build 'static_checks.py'
+    Set-Content -Path $staticPath -Value $static.Groups[1].Value -NoNewline
+    & python $staticPath
     if ($LASTEXITCODE -ne 0) { throw 'Static owner checks failed' }
     foreach ($opt in @('O0','O2')) {
         $dir = Join-Path $build $opt
@@ -113,10 +117,13 @@ try {
                 if ($Scope -eq 'GashWindows') { $testArguments = @('--gash-windows') }
                 if ($Scope -eq 'GashBranchRejection') { $testArguments = @('--gash-branch-rejection') }
             }
-            $output = @(& $exe @testArguments 2>&1)
-            if ($LASTEXITCODE -ne 0) {
+            $stdoutPath = Join-Path $dir "$test.stdout.txt"
+            $stderrPath = Join-Path $dir "$test.stderr.txt"
+            $process = Start-Process -FilePath $exe -ArgumentList $testArguments -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath -NoNewWindow -Wait -PassThru
+            $output = @(Get-Content $stdoutPath)
+            if ($process.ExitCode -ne 0) {
                 $output | Set-Content (Join-Path $dir "$test.failed.txt")
-                throw "Runtime failed $opt $test : $(($output | Select-Object -Last 20) -join "`n")"
+                throw "Runtime failed $opt $test : $((Get-Content $stderrPath | Select-Object -Last 20) -join "`n")"
             }
             $textOutput = $output -join "`n"
             $textOutput | Set-Content (Join-Path $dir "$test.txt")
