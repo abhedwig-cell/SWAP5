@@ -1303,6 +1303,7 @@ contains
     block
       type(kernel_committed_state_t)::tcsfix_owner
       type(kernel_checkpoint_t)::tcsfix_checkpoint
+      integer::invalid_case
       seed%tcsfix%enabled=.true.; seed%tcsfix%day_bound=.true.
       seed%tcsfix%last_day=100_int64; seed%tcsfix%dayfix=2
       seed%tcsfix%interval_days=3
@@ -1345,6 +1346,33 @@ contains
       if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps/=0) &
            error stop 'TCSFIX pending counter advance accepted'
       seed%tcsfix%dayfix=2
+      do invalid_case=1,6
+        seed%tcsfix%last_day=101_int64
+        seed%tcsfix%interval_days=3
+        seed%tcsfix%enabled=.true.; seed%tcsfix%day_bound=.true.
+        select case(invalid_case)
+        case(1)
+          seed%tcsfix%last_day=99_int64
+        case(2)
+          seed%tcsfix%last_day=102_int64
+        case(3)
+          seed%tcsfix%interval_days=4
+        case(4)
+          seed%tcsfix%enabled=.false.
+        case(5)
+          seed%tcsfix%day_bound=.false.
+        case(6)
+          seed%tcsfix%last_day=-1_int64
+        end select
+        call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,tcsfix_owner,forcing, &
+             profile%numerical,1,T0,finish,tcsfix_checkpoint,result,candidate,diagnostics,tcsfix_proposal=seed%tcsfix)
+        if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps/=0) &
+             error stop 'TCSFIX malformed backend transition accepted'
+        if(tcsfix_owner%current_revision()/=0_int64) error stop 'TCSFIX malformed transition publication'
+      end do
+      seed%tcsfix%last_day=101_int64
+      seed%tcsfix%interval_days=3
+      seed%tcsfix%enabled=.true.; seed%tcsfix%day_bound=.true.
       call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,tcsfix_owner,forcing, &
            limited,1,T0,finish,tcsfix_checkpoint,result,candidate,diagnostics,tcsfix_proposal=seed%tcsfix)
       if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps<1) &
@@ -1360,6 +1388,14 @@ contains
            profile%numerical,1,T0,finish,tcsfix_checkpoint,result,candidate,diagnostics,tcsfix_proposal=seed%tcsfix)
       if(.not.result%completed.or..not.candidate%ready()) error stop 'TCSFIX explicit trial failed'
       if(abs(result%mass%residual)>1.0e-12_real64) error stop 'TCSFIX pending mass'
+      ! A successful detached trial must not authorize the next call implicitly.
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,tcsfix_owner,forcing, &
+           profile%numerical,1,T0,finish,tcsfix_checkpoint,rejected_result,rejected_candidate,rejected_diagnostics)
+      if(rejected_result%completed.or.rejected_candidate%ready().or.rejected_diagnostics%accepted_substeps/=0) &
+           error stop 'TCSFIX proposal leaked to next call'
+      call backend%run_trial(column,template,profile%tiles(1)%parameters,tcsfix_owner,forcing, &
+           profile%numerical,T0,finish,tcsfix_checkpoint,rejected_result,rejected_candidate,rejected_diagnostics)
+      if(rejected_result%completed.or.rejected_candidate%ready()) error stop 'TCSFIX leaked ordinary trial opt-in'
       call backend%commit_trial_candidate(tcsfix_owner,candidate,diagnostics,ok,code)
       if(.not.ok) error stop 'TCSFIX pending commit'
       call tcsfix_owner%snapshot(snapshot,ok)
@@ -1373,6 +1409,7 @@ contains
       end select
       seed%tcsfix=source%tcsfix
       write(*,'(a)') 'PPA_IRR_TCSFIX_BACKEND_PROPOSAL_ROLLBACK_COMMIT=PASS'
+      write(*,'(a)') 'PPA_IRR_TCSFIX_BACKEND_TRANSITION_AND_CALL_ISOLATION=PASS'
     end block
     block
       type(kernel_committed_state_t)::weekly_owner
