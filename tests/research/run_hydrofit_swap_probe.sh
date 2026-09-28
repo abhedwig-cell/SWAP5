@@ -132,3 +132,65 @@ if any(int(r['status']) != 1 for r in rows):
  print("HYDROFIT_P6_NOTE=ONE_OR_MORE_NONCONVERGED")
 print("HYDROFIT_P6_ENSEMBLE=PASS")
 PY
+
+
+# P6B: discover a harder workload using representative 0 only.
+rep0="$(tail -n +2 "$BUILD/reps.csv" | head -n 1)"
+IFS=, read -r rep0_id rep0_candidate tr0 ts0 alpha0 nvg0 ksat0 lambda0 objective0 <<< "$rep0"
+DISC="$BUILD/p6b_discovery.csv"
+echo 'h0,factor,duration,status,nonlinear,backtrack,jacobian,linear,mass_residual' > "$DISC"
+for h0 in -10 -75 -500; do
+  for factor in -1 0 -2 1; do
+    for duration in 1e-4 1e-3 1e-2 5e-2; do
+      raw="$("$BUILD/test" "$tr0" "$ts0" "$alpha0" "$nvg0" "$ksat0" "$lambda0" "$h0" "$h0" "$factor" "$duration" 1 2>&1)"
+      line="$(printf '%s\n' "$raw" | grep '^HYDROFIT_P6|' || true)"
+      [[ -n "$line" ]] || continue
+      python3 - "$h0" "$factor" "$duration" "$line" "$DISC" <<'PY'
+import csv,sys
+h0,factor,duration,line,path=sys.argv[1:]
+d={}
+for p in line.split('|')[1:]:
+ k,v=p.split('=',1); d[k]=v
+with open(path,'a',newline='') as f:
+ csv.writer(f).writerow([h0,factor,duration,d['STATUS'],d['NONLINEAR'],d['BACKTRACK'],d['JACOBIAN'],d['LINEAR'],d['MASS_RESIDUAL']])
+PY
+    done
+  done
+done
+
+selected="$(python3 - "$DISC" <<'PY'
+import csv,sys
+rows=list(csv.DictReader(open(sys.argv[1])))
+conv=[r for r in rows if int(r['status'])==1 and int(r['nonlinear'])>=2]
+conv.sort(key=lambda r:(int(r['nonlinear']),int(r['backtrack'])),reverse=True)
+if not conv:
+ print("NONE")
+else:
+ r=conv[0]
+ print(",".join([r['h0'],r['factor'],r['duration'],r['nonlinear'],r['backtrack']]))
+PY
+)"
+if [[ "$selected" == "NONE" ]]; then
+  echo "HYDROFIT_P6B=BLOCKED_NO_MULTI_NEWTON_WORKLOAD"
+  exit 0
+fi
+IFS=, read -r sel_h0 sel_factor sel_duration sel_nl sel_bt <<< "$selected"
+echo "HYDROFIT_P6B_SELECTED|H0=$sel_h0|FACTOR=$sel_factor|DURATION=$sel_duration|REP0_NONLINEAR=$sel_nl|REP0_BACKTRACK=$sel_bt"
+
+tail -n +2 "$BUILD/reps.csv" | while IFS=, read -r rep candidate tr ts alpha nvg ksat lambda objective; do
+  raw="$("$BUILD/test" "$tr" "$ts" "$alpha" "$nvg" "$ksat" "$lambda" "$sel_h0" "$sel_h0" "$sel_factor" "$sel_duration" 1 2>&1)"
+  line="$(printf '%s\n' "$raw" | grep '^HYDROFIT_P6|' || true)"
+  [[ -n "$line" ]] || fail "P6B no record rep=$rep"
+  python3 - "$rep" "$candidate" "$objective" "$line" <<'PY'
+import sys
+rep,candidate,objective,line=sys.argv[1:]
+d={}
+for p in line.split('|')[1:]:
+ k,v=p.split('=',1); d[k]=v
+print("HYDROFIT_P6B_RESULT"
+      f"|REP={rep}|CANDIDATE={candidate}|OBJECTIVE={objective}|STATUS={d['STATUS']}"
+      f"|NONLINEAR={d['NONLINEAR']}|JACOBIAN={d['JACOBIAN']}|LINEAR={d['LINEAR']}|BACKTRACK={d['BACKTRACK']}"
+      f"|MASS_RESIDUAL={d['MASS_RESIDUAL']}|BOTTOM_FLUX={d['BOTTOM_FLUX']}")
+PY
+done
+echo "HYDROFIT_P6B=PASS"
