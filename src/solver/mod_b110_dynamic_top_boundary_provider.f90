@@ -205,8 +205,10 @@ contains
     if (h0max <= request%ponding_max_cm) then
       result%candidate_ponding_depth_cm = max(0.0_real64, h0max)
       result%runoff_depth_cm = 0.0_real64
-      result%surface_head_derivative_available = .true.
-      result%surface_head_dpressure_head_top = p1/(1.0_real64+p1)
+      if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
+        result%surface_head_derivative_available = .true.
+        result%surface_head_dpressure_head_top = p1/(1.0_real64+p1)
+      end if
     else
       ! Once the no-runoff analytical solution exceeds the ponding threshold,
       ! branch selection must not depend on the current Newton candidate or dt
@@ -225,8 +227,10 @@ contains
            request%step_duration_day/request%runoff_resistance_day*request%ponding_max_cm)
       result%candidate_ponding_depth_cm = max(0.0_real64, result%candidate_ponding_depth_cm)
       result%runoff_depth_cm = restricted_linear_runoff_depth(result%candidate_ponding_depth_cm, request)
-      result%surface_head_derivative_available = .true.
-      result%surface_head_dpressure_head_top = p1*p2
+      if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
+        result%surface_head_derivative_available = .true.
+        result%surface_head_dpressure_head_top = p1*p2
+      end if
     end if
 
     result%surface_head_cm = result%candidate_ponding_depth_cm
