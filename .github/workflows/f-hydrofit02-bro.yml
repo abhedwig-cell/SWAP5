@@ -116,6 +116,26 @@ jobs:
               ids=re.findall(r'BHRP[0-9A-Za-z_-]+',txt)
               print(f"BRO_IDS_TEXT|MATCHES={len(ids)}|FIRST={ids[:5]}|PARSE={type(e).__name__}")
           PY
+      - name: Execute official example characteristics search
+        run: |
+          cat > "$RUNNER_TEMP/bro/example-search.json" <<'JSON'
+          {
+            "registrationPeriod": {"beginDate":"2017-02-01","endDate":"2021-02-01"},
+            "area": {"enclosingCircle":{"center":{"lat":52.038297852,"lon":5.31447958948},"radius":0.5}}
+          }
+          JSON
+          python research/hydrofit/bro_bhrp_fetch.py \
+            --path characteristics/searches --method POST --json-body "$RUNNER_TEMP/bro/example-search.json" \
+            --output "$RUNNER_TEMP/bro/example-search.response" \
+            --manifest "$RUNNER_TEMP/bro/example-search.manifest.json" --require-success
+          python - <<'PY'
+          import os,pathlib,re
+          b=(pathlib.Path(os.environ["RUNNER_TEMP"])/"bro/example-search.response").read_bytes()
+          txt=b.decode("utf-8","replace")
+          ids=sorted(set(re.findall(r'BHRP[0-9A-Za-z_-]+',txt)))
+          print(f"BRO_EXAMPLE_SEARCH|SIZE={len(b)}|IDS={len(ids)}|FIRST={ids[:10]}")
+          print("BRO_EXAMPLE_PREFIX="+repr(b[:1500]))
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
