@@ -107,3 +107,40 @@ def test_current_sum_weighting_is_replication_sensitive():
     va = np.array([a.parameters.theta_r, a.parameters.theta_s, a.parameters.alpha, a.parameters.n, a.parameters.Ks])
     vb = np.array([b.parameters.theta_r, b.parameters.theta_s, b.parameters.alpha, b.parameters.n, b.parameters.Ks])
     assert np.max(np.abs((vb - va) / np.maximum(np.abs(va), 1e-12))) > 1e-3
+
+
+def _inconsistent_joint_case():
+    theta_truth = MvGParameters(0.06, 0.43, 0.015, 1.7, 35.0)
+    k_truth = MvGParameters(0.06, 0.43, 0.022, 1.55, 55.0)
+    heads = np.array([-0.1, -1.0, -10.0, -100.0, -1000.0])
+    theta, _ = evaluate(heads, theta_truth, "swap_default_mvg")
+    _, kval = evaluate(heads, k_truth, "swap_default_mvg")
+    obs = [Observation("theta", float(h), float(v), sigma=0.01) for h, v in zip(heads, theta)]
+    obs += [Observation("K", float(h), float(v), sigma=0.1) for h, v in zip(heads, kval)]
+    return obs
+
+
+def test_family_mean_is_invariant_to_exact_theta_replication():
+    obs = _inconsistent_joint_case()
+    replicated = [o for o in obs if o.family == "K"] + [o for o in obs if o.family == "theta"] * 20
+    cfg = FitConfig(semantics="swap_default_mvg", fixed_l=0.5, fixed_h_entry=0.0, weighting_mode="family_mean")
+    initial = MvGParameters(0.08, 0.46, 0.012, 1.5, 30.0)
+    a = fit(obs, initial, cfg)
+    b = fit(replicated, initial, cfg)
+    va = np.array([a.parameters.theta_r, a.parameters.theta_s, a.parameters.alpha, a.parameters.n, a.parameters.Ks])
+    vb = np.array([b.parameters.theta_r, b.parameters.theta_s, b.parameters.alpha, b.parameters.n, b.parameters.Ks])
+    assert np.allclose(va, vb, rtol=2e-5, atol=2e-7)
+
+
+def test_family_mean_preserves_exact_synthetic_recovery():
+    truth = MvGParameters(0.06, 0.43, 0.015, 1.7, 35.0)
+    cfg = FitConfig(semantics="swap_default_mvg", fixed_l=0.5, fixed_h_entry=0.0, weighting_mode="family_mean")
+    initial = MvGParameters(0.10, 0.48, 0.008, 1.4, 15.0)
+    result = fit(synthetic_observations(truth), initial, cfg)
+    got = result.parameters
+    assert result.success
+    assert np.allclose(
+        [got.theta_r, got.theta_s, got.alpha, got.n, got.Ks],
+        [truth.theta_r, truth.theta_s, truth.alpha, truth.n, truth.Ks],
+        rtol=2e-5, atol=2e-7,
+    )
