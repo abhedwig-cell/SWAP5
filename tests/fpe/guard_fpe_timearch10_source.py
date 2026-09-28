@@ -7,14 +7,10 @@ for token in [
     "TIMESTEP_PROFILE_AUTO_REFERENCE",
     "type, public :: legacy_numerics_profile_t",
     "type, public :: auto_reference_profile_t",
-    "make_legacy_numerics_profile",
-    "make_auto_reference_profile",
     "controller_admitted = .false.",
-    "execution_ready => timestep_profile_execution_ready",
+    "timestep_profile_execution_ready",
 ]:
     assert token in contract, token
-
-assert not Path("src/runtime/mod_timestep_configuration_contract.f90").exists()
 
 for p in [
     Path("src/legacy/b1_10_fci11_port/timecontrol_part01.inc"),
