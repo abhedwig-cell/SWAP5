@@ -1334,6 +1334,45 @@ contains
       end select
       seed%tcsfix=source%tcsfix
       write(*,'(a)') 'PPA_IRR_TCSFIX_UNWIRED_EXECUTION_REJECTED=PASS'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        seed%tcsfix=snapshot%tcsfix
+      end select
+      seed%tcsfix%last_day=101_int64
+      seed%tcsfix%dayfix=3
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,tcsfix_owner,forcing, &
+           profile%numerical,1,T0,finish,tcsfix_checkpoint,result,candidate,diagnostics,tcsfix_proposal=seed%tcsfix)
+      if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps/=0) &
+           error stop 'TCSFIX pending counter advance accepted'
+      seed%tcsfix%dayfix=2
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,tcsfix_owner,forcing, &
+           limited,1,T0,finish,tcsfix_checkpoint,result,candidate,diagnostics,tcsfix_proposal=seed%tcsfix)
+      if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps<1) &
+           error stop 'TCSFIX rollback did not exercise progress'
+      call tcsfix_owner%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'TCSFIX rollback snapshot'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%tcsfix%last_day/=100_int64.or.snapshot%tcsfix%dayfix/=2.or. &
+             any(snapshot%water_content/=seed%water_content)) error stop 'TCSFIX rollback mutation'
+      end select
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,tcsfix_owner,forcing, &
+           profile%numerical,1,T0,finish,tcsfix_checkpoint,result,candidate,diagnostics,tcsfix_proposal=seed%tcsfix)
+      if(.not.result%completed.or..not.candidate%ready()) error stop 'TCSFIX explicit trial failed'
+      if(abs(result%mass%residual)>1.0e-12_real64) error stop 'TCSFIX pending mass'
+      call backend%commit_trial_candidate(tcsfix_owner,candidate,diagnostics,ok,code)
+      if(.not.ok) error stop 'TCSFIX pending commit'
+      call tcsfix_owner%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'TCSFIX committed snapshot'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(snapshot%tcsfix%last_day/=101_int64.or.snapshot%tcsfix%dayfix/=2.or. &
+             snapshot%tcsfix%interval_days/=3) error stop 'TCSFIX committed proposal lost'
+      class default
+        error stop 'TCSFIX committed carrier sliced'
+      end select
+      seed%tcsfix=source%tcsfix
+      write(*,'(a)') 'PPA_IRR_TCSFIX_BACKEND_PROPOSAL_ROLLBACK_COMMIT=PASS'
     end block
     block
       type(kernel_committed_state_t)::weekly_owner
