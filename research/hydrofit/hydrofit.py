@@ -341,3 +341,76 @@ def near_equivalent_ensemble(
         primary_mask=objectives <= primary,
         wide_mask=objectives <= wide,
     )
+
+
+@dataclass
+class FunctionEnvelope:
+    heads_cm: np.ndarray
+    candidate_indices: np.ndarray
+    theta: np.ndarray
+    log10_k: np.ndarray
+    theta_min: np.ndarray
+    theta_max: np.ndarray
+    log10_k_min: np.ndarray
+    log10_k_max: np.ndarray
+    representative_candidate_indices: np.ndarray
+
+
+def function_head_grid() -> np.ndarray:
+    return np.concatenate([
+        np.array([0.0, -1.0e-3, -1.0e-2, -1.0e-1]),
+        -np.logspace(0.0, 6.0, 61),
+    ])
+
+
+def function_envelope(
+    ensemble: EnsembleResult,
+    cfg: FitConfig,
+    max_representatives: int = 8,
+    coverage_distance: float = 1.0,
+) -> FunctionEnvelope:
+    idx = np.flatnonzero(ensemble.primary_mask)
+    if len(idx) == 0:
+        raise ValueError("primary ensemble is empty")
+    heads = function_head_grid()
+    theta_rows = []
+    logk_rows = []
+    for i in idx:
+        p = _decode(ensemble.candidates[i], cfg)
+        theta, kval = evaluate(heads, p, cfg.semantics)
+        theta_rows.append(theta)
+        logk_rows.append(np.log10(np.maximum(kval, np.finfo(float).tiny)))
+    theta = np.asarray(theta_rows)
+    logk = np.asarray(logk_rows)
+
+    # Distances are based on physically interpretable function scales.
+    features = np.hstack([theta / 0.01, logk / 0.25])
+
+    # Candidate 0 in the ensemble is xstar and is always inside every envelope.
+    optimum_positions = np.flatnonzero(idx == 0)
+    if len(optimum_positions) != 1:
+        raise ValueError("optimum missing from primary envelope")
+    selected_pos = [int(optimum_positions[0])]
+    nearest = np.linalg.norm(features - features[selected_pos[0]], axis=1)
+    nearest[selected_pos[0]] = 0.0
+
+    while len(selected_pos) < max_representatives:
+        farthest = int(np.argmax(nearest))
+        if nearest[farthest] <= coverage_distance:
+            break
+        selected_pos.append(farthest)
+        d = np.linalg.norm(features - features[farthest], axis=1)
+        nearest = np.minimum(nearest, d)
+        nearest[selected_pos] = 0.0
+
+    return FunctionEnvelope(
+        heads_cm=heads,
+        candidate_indices=idx,
+        theta=theta,
+        log10_k=logk,
+        theta_min=np.min(theta, axis=0),
+        theta_max=np.max(theta, axis=0),
+        log10_k_min=np.min(logk, axis=0),
+        log10_k_max=np.max(logk, axis=0),
+        representative_candidate_indices=idx[np.asarray(selected_pos, dtype=int)],
+    )
