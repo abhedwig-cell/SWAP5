@@ -2,7 +2,8 @@ program test_bofek00_dynamic_top_correction
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t
-  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters, &
+       evaluate_b110_default_mvg_conductivity
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t, &
        b110_dynamic_top_boundary_result_t, evaluate_b110_dynamic_top_boundary, B110_DYN_TOP_AVAILABLE
   implicit none
@@ -16,10 +17,13 @@ program test_bofek00_dynamic_top_correction
 
   type(soil_water_parameter_set_t) :: geometry
   type(b110_default_mvg_parameters_t) :: hp
-  real(real64) :: cofgen(24,NN), theta_top, h_top
+  real(real64) :: cofgen(24,NN), theta_top, h_top, fixed_ktop
+  logical :: fixed_ktop_ok
 
   call initialize_geometry_and_hydraulics(geometry,hp,cofgen)
   call initial_top_state(theta_top,h_top)
+  call evaluate_b110_default_mvg_conductivity(hp,1,h_top,fixed_ktop,fixed_ktop_ok)
+  call require(fixed_ktop_ok,'fixed top conductivity')
 
   call check_route(2.0_real64*KS,'ponded-head',theta_top,h_top)
   call check_route(4.0_real64*KS,'ponded-head-linear-runoff',theta_top,h_top)
@@ -43,6 +47,7 @@ contains
     req%ponding_max_cm=KS*DT
     req%runoff_resistance_day=0.001_real64
     req%runoff_exponent=1.0_real64
+    req%fixed_top_node_conductivity_cm_per_day=fixed_ktop
   end subroutine make_request
 
   subroutine check_route(rain,expected_route,theta,h)
