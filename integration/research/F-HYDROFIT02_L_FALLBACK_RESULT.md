@@ -1,6 +1,6 @@
 # F-HYDROFIT02 P-LFALL01 fallback result
 
-Run: `36427748243`.
+Authority runs: `36427748243` (first valid result) and later confirming run `36427781533` at `90f23f1166c9455a43566b3e3147a75f1cf81edd`. The later run completed successfully and reproduced the aggregate fallback metrics below.
 
 ## Frozen corpus constant
 
