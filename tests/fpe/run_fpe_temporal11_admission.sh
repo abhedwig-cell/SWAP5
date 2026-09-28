@@ -41,6 +41,21 @@ cmp -s "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
 echo 'FPE_TEMPORAL11_DIRECT_RETENTION_O0_O2_IDENTITY=PASS'
 
 # Independent default-MvG certificate oracle and mode-5 preservation authority.
-bash tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh
+# The historical FSI38 runner predates the direct-retention module import now
+# present in the production indicator. Build a temporary complete-module copy
+# rather than mutating that historical authority.
+python3 - "$BUILD/fsi38-temporal11.sh" <<'PY'
+from pathlib import Path
+import sys
+s=Path("tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh").read_text()
+anchor="  src/solver/mod_b110_default_mvg_provider.f90\n"
+insert=anchor+"  src/solver/mod_b110_default_mvg_directional_provider.f90\n  src/solver/mod_b110_direct_retention_core.f90\n  src/solver/mod_b110_direct_retention_provider.f90\n"
+if anchor not in s:
+    raise SystemExit("TEMPORAL11 FSI38 module anchor missing")
+s=s.replace(anchor,insert,1)
+Path(sys.argv[1]).write_text(s)
+PY
+chmod +x "$BUILD/fsi38-temporal11.sh"
+bash "$BUILD/fsi38-temporal11.sh"
 
 echo 'FPE_TEMPORAL11_ADMISSION=PASS'
