@@ -287,6 +287,13 @@ jobs:
           python research/hydrofit/bro_bhrp_parse.py "$RUNNER_TEMP/bro/BHR000000378560.xml" \
             --json-out "$RUNNER_TEMP/bro/BHR000000378560.parsed.json" \
             --csv-out "$RUNNER_TEMP/bro/BHR000000378560.arrays.csv"
+      - name: Export real BRO data for HYDROFIT
+        run: |
+          python research/hydrofit/bro_to_hydrofit.py "$RUNNER_TEMP/bro/BHR000000378560.xml" \
+            --csv "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.csv" \
+            --meta "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.meta.json"
+          head -n 12 "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.csv"
+          cat "$RUNNER_TEMP/bro/BHR000000378560.hydrofit.meta.json"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
