@@ -103,11 +103,20 @@ if "TOTAL_IN" in old and "TOTAL_IN" in new:
     out["delta"]["total_in"]=new["TOTAL_IN"]-old["TOTAL_IN"]
 if "TOTAL_OUT" in old and "TOTAL_OUT" in new:
     out["delta"]["total_out"]=new["TOTAL_OUT"]-old["TOTAL_OUT"]
+out["classification"] = (
+    "CORRECTED_ACCEPTS_WHERE_OLD_FAILS" if (not old.get("COMPLETED",False) and new.get("COMPLETED",False)) else
+    "BOTH_ACCEPT" if (old.get("COMPLETED",False) and new.get("COMPLETED",False)) else
+    "BOTH_FAIL" if (not old.get("COMPLETED",False) and not new.get("COMPLETED",False)) else
+    "OLD_ACCEPTS_CORRECTED_FAILS"
+)
 Path(sys.argv[5]).write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
 print(json.dumps(out,indent=2,sort_keys=True))
-assert new.get("PROCESS_SUCCESS",False), "corrected adaptive candidate did not complete"
+assert new.get("PROCESS_SUCCESS",False), "corrected adaptive process failed"
+assert new.get("COMPLETED",False) and new.get("COMMITTED",False), "corrected adaptive candidate did not complete"
+assert new.get("MASS_COMPLETE",False), "corrected adaptive mass ledger incomplete"
 assert abs(new["MASS_RESIDUAL"]) <= 1e-8
-if old.get("PROCESS_SUCCESS",False):
+if old.get("COMPLETED",False):
+    assert old.get("MASS_COMPLETE",False)
     assert abs(old["MASS_RESIDUAL"]) <= 1e-8
 print("F_PE_BOFEK00_ADAPTIVE_COMPARISON=PASS")
 PY
