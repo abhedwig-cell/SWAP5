@@ -1135,7 +1135,7 @@ contains
     if(allocated(invalid%records)) error stop 'failed irrigation export retained old bundle'
     ! Corrupt only the second record. The first reconstructed candidate must
     ! never be published when a later record fails validation.
-    do pass=1,8
+    do pass=1,15
       invalid=saved
       select case(pass)
       case(1)
@@ -1155,6 +1155,30 @@ contains
           state%weekly%dayfix=367
         class default
           error stop 'weekly export sliced state'
+        end select
+      case(9:15)
+        select type(state=>invalid%records(2)%physical_state)
+        type is(ppa_irrigation_event_state_t)
+          select case(pass)
+          case(9)
+            state%tcsfix%dayfix=-1
+          case(10)
+            state%tcsfix%dayfix=367
+          case(11)
+            state%tcsfix%interval_days=0
+          case(12)
+            state%tcsfix%interval_days=367
+          case(13)
+            state%tcsfix%enabled=.true.; state%tcsfix%day_bound=.true.
+            state%tcsfix%last_day=-1_int64
+          case(14)
+            state%tcsfix%enabled=.false.; state%tcsfix%day_bound=.true.
+          case(15)
+            state%tcsfix%enabled=.true.; state%tcsfix%day_bound=.false.
+            state%tcsfix%last_day=1_int64
+          end select
+        class default
+          error stop 'TCSFIX corrupt payload carrier'
         end select
       case(5:8)
         select type(state=>invalid%records(2)%physical_state)
@@ -1181,6 +1205,7 @@ contains
       if(restored(1)%ready().or.restored(2)%ready()) error stop 'failed irrigation restart partially published'
     end do
     write(*,'(a)') 'PPA_IRR_WEEKLY_RESTART_MALFORMED_IDENTITY_ATOMIC=PASS'
+    write(*,'(a)') 'PPA_IRR_TCSFIX_RESTART_MALFORMED_IDENTITY_ATOMIC=PASS'
     call fmr_restore_committed_restart(saved,92001_int64,columns,[template],restored,ok,code)
     if(.not.ok.or.code/=FMR_RESTART_OK) error stop 'irrigation restart restore failed'
     call source%temporal_history_snapshot(expected_history,available)
@@ -1275,6 +1300,41 @@ contains
     call backend%set_storage_difference(evaluate_mvg_storage_difference_service)
     limited=profile%numerical
     limited%max_committed_substeps=1
+    block
+      type(kernel_committed_state_t)::tcsfix_owner
+      type(kernel_checkpoint_t)::tcsfix_checkpoint
+      seed%tcsfix%enabled=.true.; seed%tcsfix%day_bound=.true.
+      seed%tcsfix%last_day=100_int64; seed%tcsfix%dayfix=2
+      seed%tcsfix%interval_days=3
+      call seed%clone(initial)
+      call tcsfix_owner%initialize(404197_int64,initial,ok,T0)
+      if(.not.ok) error stop 'TCSFIX rejection owner initialization'
+      call tcsfix_owner%capture_checkpoint(tcsfix_checkpoint,ok)
+      if(.not.ok) error stop 'TCSFIX rejection checkpoint'
+      call backend%run_pending_irrigation_trial(column,template,profile%tiles(1)%parameters,tcsfix_owner,forcing, &
+           profile%numerical,1,T0,finish,tcsfix_checkpoint,result,candidate,diagnostics)
+      if(result%completed.or.candidate%ready().or.diagnostics%accepted_substeps/=0) &
+           error stop 'unwired TCSFIX runtime admitted'
+      call tcsfix_owner%current_time(time,ok)
+      if(.not.ok.or.time/=T0.or.tcsfix_owner%current_revision()/=0_int64) &
+           error stop 'TCSFIX rejection advanced owner'
+      call tcsfix_owner%snapshot(snapshot,ok)
+      if(.not.ok) error stop 'TCSFIX rejection snapshot missing'
+      select type(snapshot)
+      type is(ppa_irrigation_event_state_t)
+        if(.not.snapshot%tcsfix%enabled.or..not.snapshot%tcsfix%day_bound.or. &
+             snapshot%tcsfix%dayfix/=2.or.snapshot%tcsfix%interval_days/=3.or. &
+             snapshot%tcsfix%last_day/=100_int64) error stop 'TCSFIX rejection lost metadata'
+        if(any(snapshot%water_content/=seed%water_content).or. &
+             any(snapshot%pressure_head/=seed%pressure_head).or. &
+             snapshot%irrigation%active_event_end/=seed%irrigation%active_event_end) &
+             error stop 'TCSFIX rejection changed physical event state'
+      class default
+        error stop 'TCSFIX rejection lost carrier'
+      end select
+      seed%tcsfix=source%tcsfix
+      write(*,'(a)') 'PPA_IRR_TCSFIX_UNWIRED_EXECUTION_REJECTED=PASS'
+    end block
     block
       type(kernel_committed_state_t)::weekly_owner
       type(kernel_checkpoint_t)::weekly_checkpoint
