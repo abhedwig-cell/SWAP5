@@ -33,7 +33,7 @@ program test_fpe_dynerr01_indicator
   real(real64) :: tr,ts,alpha,nvg,ksat,lambda,h0,rain,step_dt
   real(real64) :: r_hist,l_hist,r_full,l_full,r_h1,l_h1,r_h2,l_h2
   real(real64) :: indicator,actual_h,runoff_delta,storage_delta,max_ledger,derivative
-  integer :: w_hist,w_full,w_h1,w_h2,ind_status,regime
+  integer :: w_hist,w_full,w_h1,w_h2,ind_status,regime_hist,regime_full,regime_h1,regime_h2
   logical :: ok_hist,ok_full,ok_h1,ok_h2
 
   call get_command_argument(1,case_id)
@@ -43,19 +43,19 @@ program test_fpe_dynerr01_indicator
   call initialize_state(h0,initial)
 
   allocate(previous_derivative(numnod))
-  call advance_step(initial,HIST_DT,previous_derivative,.false.,origin,r_hist,l_hist,w_hist,ind_status,indicator,regime,derivative,ok_hist)
+  call advance_step(initial,HIST_DT,previous_derivative,.false.,origin,r_hist,l_hist,w_hist,ind_status,indicator,regime_hist,derivative,ok_hist)
   if(.not.ok_hist)then
     write(*,'(*(g0))')'F_PE_DYNERR01|CASE=',trim(case_id),'|DT=',step_dt,'|OK=0|STAGE=HISTORY'
     stop
   end if
   previous_derivative=(origin%pressure_head-initial%pressure_head)/HIST_DT
 
-  call advance_step(origin,step_dt,previous_derivative,.true.,full,r_full,l_full,w_full,ind_status,indicator,regime,derivative,ok_full)
-  call advance_step(origin,0.5_real64*step_dt,previous_derivative,.false.,half1,r_h1,l_h1,w_h1,ind_status,actual_h,regime,derivative,ok_h1)
+  call advance_step(origin,step_dt,previous_derivative,.true.,full,r_full,l_full,w_full,ind_status,indicator,regime_full,derivative,ok_full)
+  call advance_step(origin,0.5_real64*step_dt,previous_derivative,.false.,half1,r_h1,l_h1,w_h1,ind_status,actual_h,regime_h1,derivative,ok_h1)
   if(ok_h1)then
-    call advance_step(half1,0.5_real64*step_dt,previous_derivative,.false.,half2,r_h2,l_h2,w_h2,ind_status,actual_h,regime,derivative,ok_h2)
+    call advance_step(half1,0.5_real64*step_dt,previous_derivative,.false.,half2,r_h2,l_h2,w_h2,ind_status,actual_h,regime_h2,derivative,ok_h2)
   else
-    ok_h2=.false.; r_h2=0.0_real64;l_h2=0.0_real64;w_h2=0
+    ok_h2=.false.; r_h2=0.0_real64;l_h2=0.0_real64;w_h2=0;regime_h2=0
   end if
 
   if(.not.(ok_full.and.ok_h1.and.ok_h2))then
@@ -70,7 +70,8 @@ program test_fpe_dynerr01_indicator
   max_ledger=max(abs(l_full),abs(l_h1),abs(l_h2))
   write(*,'(*(g0))')'F_PE_DYNERR01|CASE=',trim(case_id),'|DT=',step_dt,'|OK=1', &
     '|IND_STATUS=',ind_status,'|IND=',indicator,'|ACTUAL_H=',actual_h,'|RUNOFF_D=',runoff_delta, &
-    '|STORAGE_D=',storage_delta,'|MAX_LEDGER=',max_ledger,'|REGIME=',regime,'|DERIV=',derivative, &
+    '|STORAGE_D=',storage_delta,'|MAX_LEDGER=',max_ledger,'|REGIME=',regime_full, &
+    '|REGIME_FULL=',regime_full,'|REGIME_H1=',regime_h1,'|REGIME_H2=',regime_h2,'|DERIV=',derivative, &
     '|WORK_FULL=',w_full,'|WORK_HALVES=',w_h1+w_h2
 contains
   subroutine read_real(i,x)
