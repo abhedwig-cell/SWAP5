@@ -12,6 +12,7 @@ mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "F_PE_BOFEK00_CORRECTION_GATE_FAIL $*" >&2; exit 1; }
 
+git fetch --no-tags --depth=1 origin work/f-pe-bofek00-wet-regime-authority
 git merge-base --is-ancestor "$AUTH" HEAD || fail "correction candidate lost preregistered reproduction authority"
 
 python3 - <<'PY'
