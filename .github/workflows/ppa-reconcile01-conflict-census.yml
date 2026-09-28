@@ -1,43 +1,74 @@
-name: PPA reconcile conflict census
+name: PPA reconcile merge
 
 on:
   push:
     branches:
       - work/ppa-reconcile01
-  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  census:
+  reconcile:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Reproduce merge conflicts
+      - name: Merge PPA history with union conflict preservation
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "PPA Reconcile Bot"
           git config user.email "ppa-reconcile@users.noreply.github.com"
           git fetch origin backup/ppa-before-reconcile-20260928 integration/f-ci-canonical
-          git checkout --detach origin/integration/f-ci-canonical
+
+          if git merge-base --is-ancestor origin/backup/ppa-before-reconcile-20260928 HEAD; then
+            echo "PPA_RECONCILE_ALREADY_MERGED=1"
+            exit 0
+          fi
+
           set +e
           git merge --no-commit --no-ff origin/backup/ppa-before-reconcile-20260928
           rc=$?
           set -e
           echo "PPA_RECONCILE_MERGE_RC=$rc"
-          echo "PPA_RECONCILE_CONFLICTS_BEGIN"
-          git diff --name-only --diff-filter=U
-          echo "PPA_RECONCILE_CONFLICTS_END"
-          for f in $(git diff --name-only --diff-filter=U); do
-            echo "===== CONFLICT:$f ====="
-            git diff --cc -- "$f"
-            echo "===== END_CONFLICT:$f ====="
+
+          conflicts="$(git diff --name-only --diff-filter=U)"
+          printf 'PPA_RECONCILE_CONFLICTS=%s\n' "$conflicts"
+
+          for f in $conflicts; do
+            mkdir -p "$RUNNER_TEMP/ppa-merge/$(dirname "$f")"
+            git show ":1:$f" > "$RUNNER_TEMP/ppa-merge/base"
+            git show ":2:$f" > "$RUNNER_TEMP/ppa-merge/ours"
+            git show ":3:$f" > "$RUNNER_TEMP/ppa-merge/theirs"
+            git merge-file --union "$RUNNER_TEMP/ppa-merge/ours" "$RUNNER_TEMP/ppa-merge/base" "$RUNNER_TEMP/ppa-merge/theirs" || true
+            cp "$RUNNER_TEMP/ppa-merge/ours" "$f"
+            git add "$f"
           done
-          git merge --abort || true
-          test "$rc" -ne 0
-          echo "PPA_RECONCILE_CONFLICT_CENSUS=PASS"
+
+          test -z "$(git diff --name-only --diff-filter=U)"
+          ! grep -R -n -E '^(<<<<<<<|=======|>>>>>>>)'               src/adapter/mod_reference_richards_legacy_binding.f90               src/runtime/mod_fmr_production_application_bootstrap.f90               src/runtime/mod_fmr_serialized_multiswap_runtime.f90               src/runtime/mod_fmr_serialized_reference_backend.f90               tests/fapp/test_ppa_wu01_production_application_bootstrap.f90
+
+          echo "PPA_RECONCILE_UNION_RESOLUTION=PASS"
+
+      - name: Targeted compile and bootstrap qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fkt/run_fkt22_fmr_compile_gate.sh
+          bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+          echo "PPA_RECONCILE_TARGETED_GATES=PASS"
+
+      - name: Commit and push merge
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git merge-base --is-ancestor origin/backup/ppa-before-reconcile-20260928 HEAD; then
+            echo "PPA_RECONCILE_NO_PUSH_NEEDED=1"
+            exit 0
+          fi
+          git commit -m "PPA-SWAP431 reconcile local migration with current canonical"
+          git push origin HEAD:work/ppa-reconcile01
+          echo "PPA_RECONCILE_MERGE_PUSH=PASS"
