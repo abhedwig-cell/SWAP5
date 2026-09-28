@@ -31,3 +31,21 @@ gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/compat" -I"$BUILD/compat" \
 grep -Fq 'F_PE_TIMEARCH02_CONTRACT=PASS' "$BUILD/compat.txt"
 
 echo "F_PE_TIMEARCH06=PASS"
+
+# Compile the actual production TimeControl include closure against minimal
+# dependency stubs. This is syntax/integration evidence for the new service use.
+mkdir -p "$BUILD/timecontrol"
+gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/timecontrol" -I"$BUILD/timecontrol" \
+  -c tests/fpe/timearch06_timecontrol_compile_stubs.f90 \
+  -o "$BUILD/timecontrol/stubs.o"
+gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/timecontrol" -I"$BUILD/timecontrol" \
+  -c src/adapter/mod_b1_10_interval_seam.f90 \
+  -o "$BUILD/timecontrol/interval.o"
+gfortran -std=f2008 -Wall -Wextra -O2 -J"$BUILD/timecontrol" -I"$BUILD/timecontrol" \
+  -c src/legacy/b1_10_fci11_port/mod_b1_10_timestep_decision_service.f90 \
+  -o "$BUILD/timecontrol/decision.o"
+gfortran -std=f2008 -Wall -Wextra -ffree-line-length-none -O2 \
+  -J"$BUILD/timecontrol" -I"$BUILD/timecontrol" -Isrc/legacy/b1_10_fci11_port \
+  -c src/legacy/b1_10_fci11_port/timecontrol.f90 \
+  -o "$BUILD/timecontrol/timecontrol.o"
+echo "F_PE_TIMEARCH06_TIMECONTROL_COMPILE=PASS"
