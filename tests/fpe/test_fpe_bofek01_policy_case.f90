@@ -25,7 +25,8 @@ program test_fpe_bofek01_policy_case
   real(real64) :: tr,ts,alpha,nvg,ksat,lambda,h0,rain,horizon,dtmin,dtmax,dt0
   real(real64) :: fact_inc,fact_dec,fact_fail,headtol
   integer :: numbit_crit,maxit,maxback
-  real(real64), parameter :: PMAX=0.05_real64,RSRO=0.05_real64,BALTOL=1.0e-10_real64
+  real(real64), parameter :: PMAX=0.05_real64,RSRO=0.05_real64
+  real(real64), parameter :: BALTOL_CONFIGURED=1.0e-12_real64,BALTOL_DEPTH=2.8e-16_real64
   real(real64), parameter :: EPS_TIME=1.0e-13_real64
   integer :: attempts,accepted,rejected,growths,reductions,total_nl,total_back,total_jac,total_lin
   real(real64) :: t,dt,cumrun,maxledger,storage0,storage1
@@ -93,7 +94,7 @@ contains
     type(reference_richards_legacy_workspace_t)::ws
     type(soil_water_boundary_conditions_t)::bc
     type(soil_water_top_boundary_result_t)::final_top
-    real(real64)::fixed_k,try_dt,ledger,new_dt
+    real(real64)::fixed_k,try_dt,ledger,new_dt,effective_baltol
     logical::ok
     try_dt=min(dt,horizon-t);attempts=attempts+1
     call bind_b110_default_mvg_provider(constitutive,hp,try_dt)
@@ -105,9 +106,10 @@ contains
     req%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER;req%boundary%bottom_mode=2;req%boundary%bottom_flux=0.0_real64
     req%physical%macropore_active=.false.;req%numerical%max_iterations=maxit;req%numerical%max_backtracking=maxback
     req%numerical%conductivity_implicit_mode=0;req%numerical%conductivity_mean_method=1
-    req%numerical%min_step_duration=dtmin;req%numerical%compartment_balance_tolerance=BALTOL
-    req%numerical%total_balance_tolerance=BALTOL;req%numerical%head_abs_tolerance=headtol
-    req%numerical%head_rel_tolerance=headtol;req%numerical%ponding_tolerance=BALTOL
+    effective_baltol=max(BALTOL_CONFIGURED,BALTOL_DEPTH/try_dt)
+    req%numerical%min_step_duration=dtmin;req%numerical%compartment_balance_tolerance=effective_baltol
+    req%numerical%total_balance_tolerance=effective_baltol;req%numerical%head_abs_tolerance=headtol
+    req%numerical%head_rel_tolerance=headtol;req%numerical%ponding_tolerance=BALTOL_CONFIGURED
     req%evaluation%constitutive=>constitutive;req%evaluation%source_sink=>source_sink;req%evaluation%dynamic_top_boundary=>top
     storage0=sum(state%water_content*p%dz)+state%ponding_depth
     call solver%solve(req,ws,res)
