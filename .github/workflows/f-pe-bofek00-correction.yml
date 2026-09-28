@@ -1,0 +1,23 @@
+name: F-PE-BOFEK00 corrected wet-boundary qualification
+
+on:
+  push:
+    branches:
+      - work/f-pe-bofek00-correction-candidate
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/verification/test_bofek00_dynamic_top_correction.f90'
+      - 'tests/verification/run_bofek00_correction_gate.sh'
+      - '.github/workflows/f-pe-bofek00-correction.yml'
+  workflow_dispatch:
+
+jobs:
+  correction:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run corrected wet-boundary qualification
+        run: bash tests/verification/run_bofek00_correction_gate.sh
