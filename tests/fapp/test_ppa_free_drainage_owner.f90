@@ -1484,6 +1484,28 @@ contains
              output%transaction_attempts,output%solver_rejections,output%temporal_rejections, &
              output%temporal_unavailable_rejections,output%mass_rejections
         write(*,'(a)') 'PPA_IRR_TCSFIX_LARGER_PENDING_REJECTION_ROLLBACK=PASS'
+        block
+          use mod_fmr_serialized_reference_backend, only: fmr_serialized_physical_observation_t
+          type(fmr_serialized_physical_observation_t)::failure
+          failure=backend%observation()
+          if(.not.failure%first_solver_failure_available) error stop 'TCSFIX first failure unavailable'
+          if(.not.failure%first_solver_failure_diagnostics%final_convergence_available) &
+               error stop 'TCSFIX first convergence unavailable'
+          write(*,'(a,3(1x,es24.16),1x,i0)') 'TCSFIX_FIRST_FAILURE_INTERVAL', &
+               failure%first_solver_failure_t0,failure%first_solver_failure_t1, &
+               failure%first_solver_failure_t1-failure%first_solver_failure_t0, &
+               failure%first_solver_failure_iterations
+          write(*,'(a,2(1x,i0),2(1x,es24.16))') 'TCSFIX_FIRST_FAILURE_CONVERGENCE', &
+               failure%first_solver_failure_diagnostics%final_balance_failure_count, &
+               failure%first_solver_failure_diagnostics%final_head_failure_count, &
+               failure%first_solver_failure_diagnostics%final_max_balance_rate, &
+               failure%first_solver_failure_diagnostics%final_total_balance_rate
+          write(*,'(a,2(1x,i0),2(1x,es24.16))') 'TCSFIX_LAST_FAILURE_CONVERGENCE', &
+               failure%solver_diagnostics%final_balance_failure_count, &
+               failure%solver_diagnostics%final_head_failure_count, &
+               failure%solver_diagnostics%final_max_balance_rate, &
+               failure%solver_diagnostics%final_total_balance_rate
+        end block
       end block
     end block
     block
