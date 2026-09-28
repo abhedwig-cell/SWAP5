@@ -272,7 +272,7 @@ contains
     type(soil_water_physical_state_t)::origin,full_state,half1_state,half2_state,chosen
     real(real64)::try_dt,half_dt,run_full,run_h1,run_h2,led_full,led_h1,led_h2
     real(real64)::rh,factor,new_dt,ref_next,adaptive_proposal
-    integer::nl,back,jac,lin,nl_h2,full_mode,half2_mode,full_work,half_work
+    integer::nl,back,jac,lin,nl_h2,full_mode,half2_mode,full_work,half_work,refine_current
     logical::ok_full,ok_h1,ok_h2,mode_ok,half_mode_ok,transition
 
     origin=state
@@ -330,11 +330,13 @@ contains
     guard_checks=guard_checks+1
     discarded_work=discarded_work+full_work
     half_dt=0.5_real64*try_dt
+    refine_current=0
 
     call solve_one(origin,half_dt,half1_state,run_h1,led_h1,nl,back,jac,lin,ok_h1)
     half_work=nl+back+jac+lin
     call add_work(nl,back,jac,lin)
     refine_work=refine_work+half_work
+    refine_current=refine_current+half_work
 
     ok_h2=.false.;run_h2=0.0_real64;led_h2=0.0_real64;nl_h2=0
     if(ok_h1)then
@@ -343,11 +345,12 @@ contains
       half_work=nl+back+jac+lin
       call add_work(nl,back,jac,lin)
       refine_work=refine_work+half_work
+      refine_current=refine_current+half_work
     end if
 
     if(.not.ok_h1 .or. .not.ok_h2)then
       rejected=rejected+1
-      retry_work=retry_work+refine_work
+      retry_work=retry_work+full_work+refine_current
       new_dt=max(dtmin,dt/fact_fail)
       call require(new_dt<dt-EPS_TIME,'transition refinement nonconvergence at dtmin')
       reductions=reductions+1;dt=new_dt;return
