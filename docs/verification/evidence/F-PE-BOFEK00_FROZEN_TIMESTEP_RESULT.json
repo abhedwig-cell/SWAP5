@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE-BOFEK00E",
+  "phase": "FROZEN_TIMESTEP_QUALIFICATION",
+  "old_authority": "0b67e2af993f16e9d1678b70cacfe9b164954140",
+  "corrected_head": "5b6138046835387ffd51b9e0336e0c69c4f9e8a6",
+  "workflow_run": 36404281013,
+  "timestep_sequence": {
+    "count": 24,
+    "dt_day": 0.00011574074074074075,
+    "dt_seconds": 10.0,
+    "identical_old_corrected": true
+  },
+  "old": {
+    "cumulative_runoff_cm": 0.16438021581036055,
+    "newton_iterations": 96,
+    "backtracks": 96,
+    "internal_retries": 0,
+    "max_abs_independent_ledger_cm": 2.949116645334371e-14
+  },
+  "corrected": {
+    "cumulative_runoff_cm": 0.16438021581036075,
+    "newton_iterations": 96,
+    "backtracks": 96,
+    "internal_retries": 0,
+    "max_abs_independent_ledger_cm": 2.950764632636549e-14
+  },
+  "differences": {
+    "max_abs_pressure_head_cm": 4.68292071786891e-13,
+    "max_abs_ponding_cm": 2.914335439641036e-16,
+    "max_abs_runoff_per_step_cm": 4.85722573273506e-17,
+    "max_abs_bottom_flux_cm_per_day": 0.0
+  },
+  "native_mass_diagnostic": {
+    "finite": false,
+    "interpretation": "This explicit direct-solver route does not populate the legacy compatibility residual; qualification therefore uses the independently reconstructed water ledger."
+  },
+  "classification": "FROZEN_TIMESTEP_PHYSICAL_IDENTITY_WITHIN_ROUNDOFF",
+  "interpretation": "At the frozen 10 s sequence, the correctness candidate does not materially change the accepted physical trajectory. Any later differences under the unchanged adaptive controller are therefore not attributable to a changed imposed timestep sequence."
+}
