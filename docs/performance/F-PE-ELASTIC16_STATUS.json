@@ -1,0 +1,54 @@
+{
+  "work_unit": "F-PE-ELASTIC16",
+  "workstream": "VQ/application input composition",
+  "baseline": "dc12c52ea71e136cd9ea0573980915b8618ca7d6",
+  "checkpoint_commit": "5a25858d9aa3ec3f46a572ebacb5b4fe66167782",
+  "last_reconciled_head": "5a25858d9aa3ec3f46a572ebacb5b4fe66167782",
+  "last_reconciled_upstream": "dc12c52ea71e136cd9ea0573980915b8618ca7d6",
+  "scope": "Compose resolved per-node soil metadata into admitted ELASTIC14 priors and ELASTIC15 explicit binding without file parsing, external lookup, or runtime ownership changes.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC16_RESOLVED_INPUT_ADAPTER_PREREGISTRATION.md",
+    "src/adapter/mod_fmr_elastic_storage_resolved_input_adapter.f90",
+    "tests/fpe/test_fpe_elastic16_resolved_input.f90",
+    "tests/fpe/run_fpe_elastic16.sh",
+    ".github/workflows/f-pe-elastic16.yml",
+    "docs/performance/F-PE-ELASTIC15_CLOSURE.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/test_fpe_elastic16_resolved_input.f90",
+    "tests/fpe/run_fpe_elastic16.sh",
+    ".github/workflows/f-pe-elastic16.yml"
+  ],
+  "evidence_paths": [],
+  "dependency_surface": [
+    "ELASTIC14 admitted prior materializer",
+    "ELASTIC15 admitted explicit application binding",
+    "ELASTIC09 admitted application bootstrap",
+    "PPA-WU01 default-off authority"
+  ],
+  "interfaces_changed": [
+    "new stateless adapter module only; no existing production interface changed"
+  ],
+  "invariants_affected": [
+    "kernel independent of I/O",
+    "physical parameter source remains separate from numerical execution policy",
+    "default-off preserved",
+    "no hidden external data dependency",
+    "runtime/state ownership unchanged"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the ELASTIC16 workflow on checkpoint 5a25858d9aa3ec3f46a572ebacb5b4fe66167782 and apply preregistered A1-A10 gates exactly.",
+  "recovery_point": "work/f-pe-elastic16-resolved-input-adapter@5a25858d9aa3ec3f46a572ebacb5b4fe66167782"
+}
