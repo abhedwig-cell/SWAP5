@@ -60,6 +60,7 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
       eligible=.true.
       dt=0.25_real64*nominal_dt
 
+!     quarter 1: the only quarter eligible for h/8 rescue in NLGLOB13D
       quarter_state=state
       quarter_cumledger=cumledger
       quarter_cumrunoff=cumrunoff
@@ -78,6 +79,7 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
           state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
           dt=nominal_dt; eligible=.false.; terminal_reason='NEARSAT_EIGHTH_FAILED'; transition_step=step_index; return
         end if
+        write(*,'(*(g0))') 'F_PE_NLGLOB13D_H8_FIRST|STEP=',step_index,'|HALF=1|QUARTER=1|DT=',dt
         call advance_tg_core(step_index,dt,efail)
         if(efail .or. .not.eligible)then
           write(*,'(*(g0))') 'F_PE_NLGLOB13D_EFAIL|STEP=',step_index,'|HALF=1|QUARTER=1|EIGHTH=2|DOMAIN=',merge(1,0,efail),'|DT=',dt
@@ -90,35 +92,24 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
         dt=nominal_dt; terminal_reason='NEARSAT_QUARTER_OTHER_FAILED'; transition_step=step_index; return
       end if
 
+!     quarter 2: no h/8 rescue is authorized in this workunit
       quarter_state=state
       quarter_cumledger=cumledger
       quarter_cumrunoff=cumrunoff
       quarter_maxledger=maxledger
       dt=0.25_real64*nominal_dt
       call advance_tg_core(step_index,dt,qfail)
-      if(qfail)then
-        state=quarter_state
-        cumledger=quarter_cumledger
-        cumrunoff=quarter_cumrunoff
-        maxledger=quarter_maxledger
-        eligible=.true.
-        dt=0.125_real64*nominal_dt
-        call advance_tg_core(step_index,dt,efail)
-        if(efail .or. .not.eligible)then
-          write(*,'(*(g0))') 'F_PE_NLGLOB13D_EFAIL|STEP=',step_index,'|HALF=1|QUARTER=2|EIGHTH=1|DOMAIN=',merge(1,0,efail),'|DT=',dt
-          state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
-          dt=nominal_dt; eligible=.false.; terminal_reason='NEARSAT_EIGHTH_FAILED'; transition_step=step_index; return
-        end if
-        call advance_tg_core(step_index,dt,efail)
-        if(efail .or. .not.eligible)then
-          write(*,'(*(g0))') 'F_PE_NLGLOB13D_EFAIL|STEP=',step_index,'|HALF=1|QUARTER=2|EIGHTH=2|DOMAIN=',merge(1,0,efail),'|DT=',dt
-          state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
-          dt=nominal_dt; eligible=.false.; terminal_reason='NEARSAT_EIGHTH_FAILED'; transition_step=step_index; return
-        end if
-        write(*,'(*(g0))') 'F_PE_NLGLOB13D_SUBDIV8|STEP=',step_index,'|HALF=1|QUARTER=2|DT=',dt
-      else if(.not.eligible)then
+      if(qfail .or. .not.eligible)then
+        write(*,'(*(g0))') 'F_PE_NLGLOB13D_Q2FAIL|STEP=',step_index,'|HALF=1|DOMAIN=',merge(1,0,qfail),'|DT=',dt
         state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
-        dt=nominal_dt; terminal_reason='NEARSAT_QUARTER_OTHER_FAILED'; transition_step=step_index; return
+        dt=nominal_dt; eligible=.false.
+        if(qfail)then
+          terminal_reason='NEARSAT_QUARTER2_DOMAIN_FAILED'
+        else
+          terminal_reason='NEARSAT_QUARTER2_OTHER_FAILED'
+        end if
+        transition_step=step_index
+        return
       end if
     else if(.not.eligible)then
       state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
@@ -140,6 +131,7 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
       eligible=.true.
       dt=0.25_real64*nominal_dt
 
+!     quarter 1: the only quarter eligible for h/8 rescue in NLGLOB13D
       quarter_state=state
       quarter_cumledger=cumledger
       quarter_cumrunoff=cumrunoff
@@ -158,6 +150,7 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
           state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
           dt=nominal_dt; eligible=.false.; terminal_reason='NEARSAT_EIGHTH_FAILED'; transition_step=step_index; return
         end if
+        write(*,'(*(g0))') 'F_PE_NLGLOB13D_H8_FIRST|STEP=',step_index,'|HALF=2|QUARTER=1|DT=',dt
         call advance_tg_core(step_index,dt,efail)
         if(efail .or. .not.eligible)then
           write(*,'(*(g0))') 'F_PE_NLGLOB13D_EFAIL|STEP=',step_index,'|HALF=2|QUARTER=1|EIGHTH=2|DOMAIN=',merge(1,0,efail),'|DT=',dt
@@ -170,35 +163,24 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
         dt=nominal_dt; terminal_reason='NEARSAT_QUARTER_OTHER_FAILED'; transition_step=step_index; return
       end if
 
+!     quarter 2: no h/8 rescue is authorized in this workunit
       quarter_state=state
       quarter_cumledger=cumledger
       quarter_cumrunoff=cumrunoff
       quarter_maxledger=maxledger
       dt=0.25_real64*nominal_dt
       call advance_tg_core(step_index,dt,qfail)
-      if(qfail)then
-        state=quarter_state
-        cumledger=quarter_cumledger
-        cumrunoff=quarter_cumrunoff
-        maxledger=quarter_maxledger
-        eligible=.true.
-        dt=0.125_real64*nominal_dt
-        call advance_tg_core(step_index,dt,efail)
-        if(efail .or. .not.eligible)then
-          write(*,'(*(g0))') 'F_PE_NLGLOB13D_EFAIL|STEP=',step_index,'|HALF=2|QUARTER=2|EIGHTH=1|DOMAIN=',merge(1,0,efail),'|DT=',dt
-          state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
-          dt=nominal_dt; eligible=.false.; terminal_reason='NEARSAT_EIGHTH_FAILED'; transition_step=step_index; return
-        end if
-        call advance_tg_core(step_index,dt,efail)
-        if(efail .or. .not.eligible)then
-          write(*,'(*(g0))') 'F_PE_NLGLOB13D_EFAIL|STEP=',step_index,'|HALF=2|QUARTER=2|EIGHTH=2|DOMAIN=',merge(1,0,efail),'|DT=',dt
-          state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
-          dt=nominal_dt; eligible=.false.; terminal_reason='NEARSAT_EIGHTH_FAILED'; transition_step=step_index; return
-        end if
-        write(*,'(*(g0))') 'F_PE_NLGLOB13D_SUBDIV8|STEP=',step_index,'|HALF=2|QUARTER=2|DT=',dt
-      else if(.not.eligible)then
+      if(qfail .or. .not.eligible)then
+        write(*,'(*(g0))') 'F_PE_NLGLOB13D_Q2FAIL|STEP=',step_index,'|HALF=2|DOMAIN=',merge(1,0,qfail),'|DT=',dt
         state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
-        dt=nominal_dt; terminal_reason='NEARSAT_QUARTER_OTHER_FAILED'; transition_step=step_index; return
+        dt=nominal_dt; eligible=.false.
+        if(qfail)then
+          terminal_reason='NEARSAT_QUARTER2_DOMAIN_FAILED'
+        else
+          terminal_reason='NEARSAT_QUARTER2_OTHER_FAILED'
+        end if
+        transition_step=step_index
+        return
       end if
     else if(.not.eligible)then
       state=saved_state; cumledger=saved_cumledger; cumrunoff=saved_cumrunoff; maxledger=saved_maxledger
@@ -210,7 +192,7 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
   end subroutine advance_tg_subdiv"""
 
 src=src[:start]+wrapper+src[end:]
-for req in ("F_PE_NLGLOB13D_SUBDIV8","NEARSAT_EIGHTH_FAILED"):
+for req in ("F_PE_NLGLOB13D_H8_FIRST","F_PE_NLGLOB13D_SUBDIV8","NEARSAT_EIGHTH_FAILED","NEARSAT_QUARTER2_DOMAIN_FAILED"):
     if req not in src:
         raise SystemExit("NLGLOB13D materialization failed")
 Path(args.output).write_text(src)
