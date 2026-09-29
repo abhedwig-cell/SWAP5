@@ -2,9 +2,9 @@
   "work_unit": "F-PE-ELASTIC23",
   "workstream": "VQ/offline BRO profile preprocessing",
   "baseline": "9ca61a27aa979d5e87ffeffbd3e74fd0f1c5e406",
-  "checkpoint_commit": "9c93b5e0941f2a644a24438bab1489ba0b979c22",
-  "last_reconciled_head": "9c93b5e0941f2a644a24438bab1489ba0b979c22",
-  "last_reconciled_upstream": "6fe778ffb5a55f6fb3cc13b9c1a43b71a4641096",
+  "checkpoint_commit": "1a45c7116d93cbc031660067c9915d02888069df",
+  "last_reconciled_head": "1a45c7116d93cbc031660067c9915d02888069df",
+  "last_reconciled_upstream": "e803842a434d792ba5209f71e3681bd78be90560",
   "scope": "Retrieve one explicit BRO normalsoilprofile_id from the frozen local GeoPackage into exact ordered source-bound horizon records with explicit artifact provenance and no runtime/network/spatial-selection semantics.",
   "relevant_paths": [
     "docs/performance/F-PE-ELASTIC23_PROFILE_RETRIEVAL_PREREGISTRATION.md",
@@ -28,7 +28,8 @@
     ".github/workflows/f-pe-elastic23.yml"
   ],
   "evidence_paths": [
-    "GitHub Actions run 36550782840 / artifact 11024079961 / sha256 f96bea1e9efdd0326ae1ca0d72684cd7928c90fd23f0930b51c782dfc0ff5fe6"
+    "GitHub Actions source run 36550782840 / artifact 11024079961 / sha256 f96bea1e9efdd0326ae1ca0d72684cd7928c90fd23f0930b51c782dfc0ff5fe6",
+    "ELASTIC23 qualification run 36567392350 / job 109402603786 / SUCCESS"
   ],
   "dependency_surface": [
     "frozen PDOK BRO Bodemkaart GeoPackage artifact",
@@ -48,9 +49,9 @@
   ],
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blockers": [],
-  "next_action": "Run ELASTIC23 qualification on the frozen BRO artifact and apply A1-A10 exactly; then re-extract cleanly onto current canonical if green.",
-  "recovery_point": "work/f-pe-elastic23-profile-retrieval@9c93b5e0941f2a644a24438bab1489ba0b979c22"
+  "next_action": "Clean current-canonical extraction and qualification for admission.",
+  "recovery_point": "work/f-pe-elastic23-profile-retrieval@1a45c7116d93cbc031660067c9915d02888069df"
 }
