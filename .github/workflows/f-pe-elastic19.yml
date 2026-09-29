@@ -1,0 +1,23 @@
+name: F-PE-ELASTIC19 horizon descriptor builder
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic19-horizon-descriptor-builder
+    paths:
+      - 'src/adapter/mod_fmr_elastic_storage_horizon_descriptor_builder.f90'
+      - 'tests/fpe/test_fpe_elastic19_horizon_descriptor.f90'
+      - 'tests/fpe/run_fpe_elastic19.sh'
+      - 'docs/performance/F-PE-ELASTIC19_HORIZON_DESCRIPTOR_BUILDER_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic19.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch origin integration/f-ci-canonical
+      - run: bash tests/fpe/run_fpe_elastic19.sh
