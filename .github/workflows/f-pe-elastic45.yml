@@ -1,0 +1,39 @@
+name: F-PE-ELASTIC45 production characterization
+
+concurrency:
+  group: f-pe-elastic45-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic45-production-characterization
+    paths:
+      - 'tests/fpe/prepare_fpe_elastic45.py'
+      - 'tests/fpe/run_fpe_elastic45.sh'
+      - 'docs/performance/F-PE-ELASTIC45_PRODUCTION_CHARACTERIZATION_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic45.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic45-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Characterize production application
+        run: bash tests/fpe/run_fpe_elastic45.sh "$RUNNER_TEMP/elastic45-pdok"
