@@ -511,8 +511,8 @@ contains
     if (parameters%elasticity_active) then
       if (parameters%ksatexm_extension_active .or. parameters%direct_retention_active .or. &
           parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active) return
-      if (any(.not. ieee_is_finite(parameters%cofgen(24,:))) .or. &
-          any(parameters%cofgen(24,:) < 0.0_real64)) return
+      if (any(.not. ieee_is_finite(parameters%cofgen(24,:)))) return
+      if (any(parameters%cofgen(24,:) < 0.0_real64)) return
     end if
 
     if (parameters%ksatexm_extension_active) then
@@ -1517,9 +1517,9 @@ contains
               parameters%prepared_default_mvg_available .and. &
               parameters%prepared_default_mvg%elastic_storage_active .and. &
               allocated(parameters%prepared_default_mvg%specific_elastic_storage)
-         if (ok) ok = size(parameters%prepared_default_mvg%specific_elastic_storage) == parameters%active_nodes .and. &
-              all(ieee_is_finite(parameters%prepared_default_mvg%specific_elastic_storage)) .and. &
-              all(parameters%prepared_default_mvg%specific_elastic_storage >= 0.0_real64)
+         if (ok) ok = size(parameters%prepared_default_mvg%specific_elastic_storage) == parameters%active_nodes
+         if (ok) ok = all(ieee_is_finite(parameters%prepared_default_mvg%specific_elastic_storage))
+         if (ok) ok = all(parameters%prepared_default_mvg%specific_elastic_storage >= 0.0_real64)
        end if
       if (parameters%direct_retention_active) then
         ok = ok .and. self%soil_water_selection%uses_reference() .and. &
