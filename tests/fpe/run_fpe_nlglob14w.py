@@ -220,7 +220,7 @@ for route in routes:
                 reject_class="NLGLOB14U_INTERFACE_CHATTER"; rejected=True; break
             if k1>k:
                 retreats+=k1-k
-                transitions.append({"accepted_interval":accepted,"from_top":k,"to_top":k1,
+                transitions.append({"accepted_interval":accepted,"time":accepted_time,"from_top":k,"to_top":k1,
                                     "from_face":k,"to_face":k1})
             if len(seen_tops)>=1 and k1<max(seen_tops):
                 chatter+=1
