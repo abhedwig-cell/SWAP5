@@ -1,0 +1,50 @@
+{
+  "work_unit": "F-PE-ELASTIC12",
+  "workstream": "VQ/research physical parameter transfer",
+  "baseline": "9165727771998cec2d1fa09aee62637d9d78ce68",
+  "checkpoint_commit": "a5e61cf7fe337e415beaba6f19308987b9a62908",
+  "last_reconciled_head": "a5e61cf7fe337e415beaba6f19308987b9a62908",
+  "last_reconciled_upstream": "a82721f5ebece9376f83ab9b0fe5df26e42a36f2",
+  "scope": "Audit and, if source-supported, transfer the independently validated ELASTIC11 mechanical predictor to BOFEK2020/Staringreeks layers using explicit dry-to-field-moist state reconstruction.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC12_BOFEK_TRANSFER_PREREGISTRATION.md",
+    "research/elastic/bofek_transfer_source_audit.py",
+    ".github/workflows/f-pe-elastic12.yml",
+    "docs/performance/F-PE-ELASTIC11_CLOSEOUT.md",
+    "docs/performance/F-PE-ELASTIC02_SOURCE_RESULT.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "research/elastic/bofek_transfer_source_audit.py",
+    ".github/workflows/f-pe-elastic12.yml"
+  ],
+  "evidence_paths": [
+    "official NHI BOFEK2020 archive https://nhi.nu/documents/225/bofek_1.0.0.zip",
+    "official NHI Staringreeks archive https://nhi.nu/documents/224/staringreeks_1.0.0.zip"
+  ],
+  "dependency_surface": [
+    "ELASTIC11 frozen M1 equation and calibration normalization",
+    "BOFEK2020 derived-profile dry bulk density and Staringreeks layer code",
+    "Staringreeks 2018 retention parameters",
+    "explicit pressure-head state bridge"
+  ],
+  "interfaces_changed": [],
+  "invariants_affected": [
+    "physical parameterization remains separate from numerical execution policy",
+    "performance evidence is not physical parameter evidence"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the official-source ELASTIC12A workflow from checkpoint a5e61cf7fe337e415beaba6f19308987b9a62908. Bind the actual BOFEK profile/layer table before any transfer calculation.",
+  "recovery_point": "research/f-pe-elastic12-bofek-transfer@a5e61cf7fe337e415beaba6f19308987b9a62908"
+}
