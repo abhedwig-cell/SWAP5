@@ -5,6 +5,8 @@ program test_fpe_elastic05_provider
        CONSTITUTIVE_DEMAND_CAPACITY, CONSTITUTIVE_DEMAND_DKDH
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+  use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction, &
+       evaluate_b110_default_mvg_water_content_direction
   implicit none
 
   type(b110_default_mvg_parameters_t), target :: p_old,p_off,p_on,p_het
@@ -12,7 +14,9 @@ program test_fpe_elastic05_provider
   real(real64),allocatable :: c(:,:),ss(:),sshet(:),h(:)
   real(real64),allocatable :: to(:),ko(:),co(:),do(:),tf(:),kf(:),cf(:),df(:),tn(:),kn(:),cn(:),dn(:)
   real(real64) :: tr,ts,alpha,nvg,ksat,lambda,mm
-  character(len=32) :: mode
+  real(real64),allocatable :: dh_in(:),dtheta_old(:),dtheta_off(:),dtheta_on(:),dk_on(:),basek(:)
+  character(len=32) :: mode,route_old,route_off,route_on
+  logical :: available_old,available_off,available_on
   integer :: i,mask
 
   call get_command_argument(1,mode)
@@ -20,6 +24,7 @@ program test_fpe_elastic05_provider
   allocate(c(24,numnod),ss(numnod),sshet(numnod),h(numnod))
   allocate(to(numnod),ko(numnod),co(numnod),do(numnod),tf(numnod),kf(numnod),cf(numnod),df(numnod))
   allocate(tn(numnod),kn(numnod),cn(numnod),dn(numnod))
+  allocate(dh_in(numnod),dtheta_old(numnod),dtheta_off(numnod),dtheta_on(numnod),dk_on(numnod),basek(numnod))
   c=0.0_real64; mm=1.0_real64-1.0_real64/nvg
   do i=1,numnod
     c(1,i)=tr;c(2,i)=ts;c(3,i)=ksat;c(4,i)=alpha;c(5,i)=lambda;c(6,i)=nvg;c(7,i)=mm
@@ -39,6 +44,10 @@ program test_fpe_elastic05_provider
     ss(1)=-1.0e-6_real64
     call initialize_b110_default_mvg_parameters(p_on,c,enable_elastic_storage=.true.,specific_elastic_storage_input=ss)
     error stop 'ELASTIC05 expected negative-value failure'
+  case('invalid-ksatexm')
+    call initialize_b110_default_mvg_parameters(p_on,c,enable_ksatexm_extension=.true., &
+         enable_elastic_storage=.true.,specific_elastic_storage_input=ss)
+    error stop 'ELASTIC05 expected ELAS+KSATEXM failure'
   case('check')
     continue
   case default
@@ -113,6 +122,26 @@ program test_fpe_elastic05_provider
       if(iand(mask,CONSTITUTIVE_DEMAND_DKDH)/=0)call req(dn(i)==0.0_real64,'demand dkdh')
     end do
   end do
+
+  ! P0A: directional closure. Default/off remain identical. Active smooth
+  ! saturated heads use dtheta/dh=ELAS; h=0 remains an unavailable switch.
+  dh_in=1.25_real64
+  h=2.0_real64
+  call evaluate_b110_default_mvg_water_content_direction(old,h,dh_in,dtheta_old,available_old,route_old)
+  call evaluate_b110_default_mvg_water_content_direction(off,h,dh_in,dtheta_off,available_off,route_off)
+  call req(available_old.eqv.available_off,'directional default/off availability')
+  call req(trim(route_old)==trim(route_off),'directional default/off route')
+  call req(all(dtheta_old==dtheta_off),'directional default/off values')
+  call evaluate_b110_default_mvg_state_direction(on,h,dh_in,dtheta_on,dk_on,available_on,route_on,basek)
+  call req(available_on,'active saturated directional unavailable')
+  do i=1,numnod
+    call req(abs(dtheta_on(i)-ss(i)*dh_in(i))<=1.0e-15_real64,'active saturated dtheta')
+    call req(dk_on(i)==0.0_real64,'active saturated dK')
+    call req(abs(basek(i)-ksat)<=1.0e-14_real64*max(1.0_real64,abs(ksat)),'active saturated base K')
+  end do
+  h=0.0_real64
+  call evaluate_b110_default_mvg_water_content_direction(on,h,dh_in,dtheta_on,available_on,route_on)
+  call req(.not.available_on,'h=0 directional switch must remain unavailable')
 
   do i=1,numnod
     sshet(i)=1.0e-7_real64*real(i,real64)
