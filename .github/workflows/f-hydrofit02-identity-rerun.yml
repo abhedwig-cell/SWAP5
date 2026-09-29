@@ -6,6 +6,17 @@ on:
       - research/f-hydrofit02-bro-acquisition
     paths:
       - '.github/workflows/f-hydrofit02-identity-rerun.yml'
+      - 'research/hydrofit/hydro_record_binding.py'
+      - 'research/hydrofit/profile_lambda_corpus.py'
+      - 'research/hydrofit/attribute_profile_bounds.py'
+      - 'research/hydrofit/compare_lambda_fallbacks.py'
+      - 'research/hydrofit/audit_lambda_prior_descriptors.py'
+      - 'research/hydrofit/audit_interval_prior_descriptors.py'
+      - 'research/hydrofit/compare_conditional_lambda_priors.py'
+      - 'research/hydrofit/reclassify_identifiability.py'
+      - 'research/hydrofit/compare_lambda_shrinkage.py'
+      - 'research/hydrofit/replicate_lambda_shrinkage.py'
+      - 'integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json'
   workflow_dispatch:
 
 jobs:
