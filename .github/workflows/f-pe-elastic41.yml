@@ -1,0 +1,43 @@
+name: F-PE-ELASTIC41 request-gated RD application handoff
+
+concurrency:
+  group: f-pe-elastic41-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic41-rd-end-to-end
+    paths:
+      - 'tools/fpe_elastic41_rd_application_handoff.py'
+      - 'tests/fpe/prepare_fpe_elastic41.py'
+      - 'tests/fpe/run_fpe_elastic41.py'
+      - 'tests/fpe/run_fpe_elastic41.sh'
+      - 'docs/performance/F-PE-ELASTIC41_RD_APPLICATION_HANDOFF_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic41.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic41-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+
+      - name: Qualify request-gated RD handoff
+        run: bash tests/fpe/run_fpe_elastic41.sh "$RUNNER_TEMP/elastic41-pdok"
