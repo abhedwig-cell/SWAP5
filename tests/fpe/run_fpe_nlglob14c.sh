@@ -10,7 +10,8 @@ python3 tests/fpe/materialize_fpe_timeint03_binding.py --source src/adapter/mod_
 python3 tests/fpe/materialize_fpe_nlglob11a_headspace_predictor.py --source tests/fpe/test_fpe_timeint16c_kpred_stage.f90 --output "$BUILD/timeint16c_headspace.f90"
 python3 tests/fpe/materialize_fpe_nlglob11a_headspace_predictor.py --source tests/fpe/test_fpe_timeint17a_same_route.f90 --output "$BUILD/timeint17a_headspace.f90"
 python3 tests/fpe/materialize_fpe_nlglob13_subdivision.py --source "$BUILD/timeint17a_headspace.f90" --output "$BUILD/timeint17a_subdiv.f90"
-python3 tests/fpe/materialize_fpe_nlglob14b_event_split.py --source "$BUILD/timeint17a_subdiv.f90" --output "$BUILD/timeint17a_eventsplit.f90"
+python3 tests/fpe/materialize_fpe_nlglob14a_root.py --source "$BUILD/timeint17a_subdiv.f90" --output "$BUILD/timeint17a_root.f90"
+python3 tests/fpe/materialize_fpe_nlglob14b_event_split.py --source "$BUILD/timeint17a_root.f90" --output "$BUILD/timeint17a_eventsplit.f90"
 python3 tests/fpe/materialize_fpe_nlglob14c_klag_remainder.py --source "$BUILD/timeint17a_eventsplit.f90" --output "$BUILD/timeint17a_klagrem.f90"
 
 python3 tests/fpe/materialize_fpe_nlglob09_s0_replay.py --source src/legacy/b1_10_port/headcalc.f90 --output "$BUILD/headcalc_s0.f90"
