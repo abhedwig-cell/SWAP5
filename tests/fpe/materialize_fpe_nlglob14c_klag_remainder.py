@@ -52,6 +52,7 @@ new=r"""    target_route=event_route
 if old not in src:
     raise SystemExit("NLGLOB14C remainder marker missing")
 src=src.replace(old,new,1)
+src=src.replace("character(len=64)::saved_terminal","character(len=64)::saved_terminal,rem_reason",1)
 
 oldlog="""'|REMAINDER_ROUTE=',remainder_route,'|MAX_OVER=',maxval(state%water_content-ts),'|POND=',state%ponding_depth"""
 newlog="""'|REMAINDER_ROUTE=',remainder_route,'|REMAINDER_MODE=KLAG|MAX_OVER=',maxval(state%water_content-ts),'|POND=',state%ponding_depth"""
