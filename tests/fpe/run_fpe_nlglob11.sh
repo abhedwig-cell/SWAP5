@@ -23,12 +23,9 @@ python3 tests/fpe/compile_fpe_timeint03_closure.py --root "$ROOT" --stub "$BUILD
   --target tests/fpe/test_fpe_timeint03_be.f90 --external-source src/legacy/b1_10_port/headcalc.f90 \
   --external-module-source "$BUILD/mod_fpe_timeint03_reference_binding.f90" --build "$BUILD/smooth_baseline" --opt 2
 
-python3 tests/fpe/run_fpe_timeint16c.py "$BUILD/smooth_candidate/timeint03_test" "$BUILD/smooth_baseline/timeint03_test" \
-  docs/performance/F-PE-BOFEK01_TESTBANK.json
-
 python3 tests/fpe/compile_fpe_timeint03_closure.py --root "$ROOT" --stub "$BUILD/stub.f90" \
   --target "$BUILD/timeint17a_halfstep.f90" --external-source "$BUILD/headcalc_replay.f90" \
   --external-module-source "$BUILD/mod_fpe_timeint03_reference_binding.f90" \
   --external-module-source tests/fpe/mod_fpe_timeint13_predicted_k_provider.f90 --build "$BUILD/dynamic" --opt 2
 
-python3 tests/fpe/run_fpe_nlglob09.py "$BUILD/dynamic/timeint03_test" docs/performance/F-PE-BOFEK01_TESTBANK.json
+python3 tests/fpe/run_fpe_nlglob11.py "$BUILD/smooth_candidate/timeint03_test" "$BUILD/smooth_baseline/timeint03_test" "$BUILD/dynamic/timeint03_test" docs/performance/F-PE-BOFEK01_TESTBANK.json
