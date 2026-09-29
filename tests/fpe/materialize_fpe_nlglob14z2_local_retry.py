@@ -30,6 +30,8 @@ src=src.replace(init,init+"""  nl14z2_retry_advised=.false.
 # Capture retry advice from the persistent-KLAG endpoint failure.
 ks=src.find("  subroutine advance_klag")
 ke=src.find("  end subroutine advance_klag",ks)
+if ke<0 and ks>=0:
+    ke=src.find("  end subroutine",ks)
 if ks<0 or ke<0:
     raise SystemExit("NLGLOB14Z2 KLAG bounds missing")
 seg=src[ks:ke]
