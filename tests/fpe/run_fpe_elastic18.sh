@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
-BUILD="\${RUNNER_TEMP:-\${TMPDIR:-/tmp}}/swap5-elastic18-\${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-elastic18-${GITHUB_RUN_ID:-local}-$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 
