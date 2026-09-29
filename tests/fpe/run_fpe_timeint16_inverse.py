@@ -10,7 +10,9 @@ for mid in ("B01","O05"):
  if row["ok"]:
   line=next((x for x in cp.stdout.splitlines() if x.startswith("F_PE_TIMEINT16_INVERSE_RESULT|")),None)
   if line:
-   d={k:v for k,v in (f.split("=",1) for f in line.split("|")[1:])}; row["max_head_err"]=float(d["MAX_HEAD_ERR"])
+   d={k:v for k,v in (f.split("=",1) for f in line.split("|")[1:])}
+   row["max_head_err"]=float(d["MAX_HEAD_ERR"])
+   row["max_theta_err"]=float(d["MAX_THETA_ERR"])
  rows.append(row)
 print("F_PE_TIMEINT16_INVERSE_RESULTS="+json.dumps(rows,separators=(",",":"),sort_keys=True))
 print("F_PE_TIMEINT16_INVERSE="+("PASS" if all(x["ok"] for x in rows) else "FAIL"))
