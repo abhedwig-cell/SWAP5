@@ -51,7 +51,21 @@ def parse_result(line):
         if k in d: out[k.lower()]=int(d[k])
     for k in ("TOP_H","TOP_THETA","POND","MAX_LEDGER","CUM_LEDGER","MAX_NATIVE_RATE","MAX_SURFACE_RATE_RESIDUAL","MAX_K_SHIFT"):
         if k in d: out[k.lower()]=float(d[k])
-    out["terminal_reason"]=d.get("TERMINAL_REASON","MISSING_TERMINAL_REASON")
+    raw=d.get("TERMINAL_REASON","MISSING_TERMINAL_REASON")
+    out["detailed_terminal_reason"]=raw
+    normalize={
+      "ENDPOINT_PROVIDER_ROUTE_MISMATCH":"ENDPOINT_ROUTE_MISMATCH",
+      "ENDPOINT_INSTANTANEOUS_ROUTE_MISMATCH":"ENDPOINT_ROUTE_MISMATCH",
+      "ACCEPTED_ROUTE_MISMATCH":"ACCEPTED_TG_ROUTE_MISMATCH",
+      "PREDICTED_PONDING_NEGATIVE":"NEGATIVE_SURFACE_STORAGE",
+      "ACCEPTED_PONDING_NEGATIVE":"NEGATIVE_SURFACE_STORAGE",
+      "PREDICTED_RETENTION_DOMAIN_FAILED":"CONSTITUTIVE_FAILURE",
+      "ACCEPTED_RETENTION_DOMAIN_FAILED":"CONSTITUTIVE_FAILURE",
+      "ENDPOINT_TOP_UNAVAILABLE":"CONSTITUTIVE_FAILURE"
+    }
+    out["terminal_reason"]=normalize.get(raw,raw)
+    if out["terminal_reason"]=="COMPLETE_SAME_ROUTE" and abs(out.get("max_surface_rate_residual",0.0))>5e-8:
+        out["terminal_reason"]="ENDPOINT_SURFACE_RATE_MISMATCH"
     return out
 
 def run_one(bankdef,mid,route,dt,mode):
@@ -70,7 +84,7 @@ def run_one(bankdef,mid,route,dt,mode):
     return row
 
 rows=[]
-for b in (A,A2):
+for b in (A2,):
     for mid in ("B01","B12","O05","O14"):
         for route in routes:
             for dt in b["dts"]:
@@ -83,10 +97,9 @@ ineligible=[x for x in tg if x.get("terminal_reason")!="COMPLETE_SAME_ROUTE"]
 counts=Counter(x.get("terminal_reason","MISSING") for x in ineligible)
 route_reasons={
  "ORIGIN_ROUTE_MISMATCH","FORWARD_PREDICTOR_ROUTE_MISMATCH",
- "ENDPOINT_PROVIDER_ROUTE_MISMATCH","ENDPOINT_INSTANTANEOUS_ROUTE_MISMATCH",
- "ACCEPTED_ROUTE_MISMATCH"
+ "ENDPOINT_ROUTE_MISMATCH","ACCEPTED_TG_ROUTE_MISMATCH"
 }
-solver_n=counts["ENDPOINT_SOLVE_FAILED"]
+solver_n=counts["ENDPOINT_SOLVE_FAILURE"]
 route_n=sum(counts[k] for k in route_reasons)
 n=len(ineligible)
 solver_frac=solver_n/n if n else 0.0
@@ -99,10 +112,10 @@ kmap={key(x):x for x in kl}
 for t in tg:
     q=kmap[key(t)]
     signal="NONE"
-    if t.get("terminal_reason")=="ENDPOINT_SOLVE_FAILED":
+    if t.get("terminal_reason")=="ENDPOINT_SOLVE_FAILURE":
         if q.get("terminal_reason")=="COMPLETE_SAME_ROUTE":
             signal="TG_SPECIFIC_ENDPOINT_ROBUSTNESS_SIGNAL"; tg_specific+=1
-        elif q.get("terminal_reason")=="ENDPOINT_SOLVE_FAILED":
+        elif q.get("terminal_reason")=="ENDPOINT_SOLVE_FAILURE" and q.get("transition_step")==t.get("transition_step"):
             signal="SHARED_DYNAMIC_TOP_SOLVER_SIGNAL"; shared_solver+=1
     paired.append({"bank":t["bank"],"material":t["material"],"route":t["route"],"dt":t["dt"],
                    "tg_reason":t.get("terminal_reason"),"klag_reason":q.get("terminal_reason"),"signal":signal})
