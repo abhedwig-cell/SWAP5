@@ -32,7 +32,15 @@ def main():
  print(f"BRO_SPATIAL_DISCOVERY|CELLS={len(lats)*len(lons)}|UNIQUE={len(frozen)}|ERRORS={len(errors)}|CAPPED={len(capped)}")
  rec=[]; fail=0; bodem=0
  for bid in frozen[:a.inspect_limit]:
-  st,ct,b=fetch(DEFAULT_BASE+"/objects/"+bid)
+  last=None
+  for attempt in range(3):
+   try:
+    st,ct,b=fetch(DEFAULT_BASE+"/objects/"+bid); last=None; break
+   except Exception as e:
+    last=e
+    if attempt<2: time.sleep(1.0*(attempt+1))
+  if last is not None:
+   fail+=1; errors.append({"bro_id":bid,"stage":"object_fetch","error":repr(last)}); continue
   if st//100!=2: fail+=1; continue
   root=ET.fromstring(b)
   vals=lambda n:[(e.text or '').strip() for e in root.iter() if local(e.tag)==n and (e.text or '').strip()]
