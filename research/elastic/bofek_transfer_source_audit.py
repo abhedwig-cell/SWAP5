@@ -73,7 +73,7 @@ def main():
         if rows[0]!=EXPECTED_STARING_HEADER:
             raise SystemExit("F_PE_ELASTIC12A_FAIL Staringreeks header drift")
         data_rows=[r for r in rows[1:] if r]
-        units=[r[1] for r in data_rows]
+        units=[r[2] for r in data_rows]
         expected=[f"B{i:02d}" for i in range(1,19)]+[f"O{i:02d}" for i in range(1,19)]
         if len(data_rows)!=36 or units!=expected:
             raise SystemExit("F_PE_ELASTIC12A_FAIL Staringreeks material set drift")
