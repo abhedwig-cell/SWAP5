@@ -19,6 +19,7 @@ on:
       - 'docs/performance/F-PE-ELASTIC10A_BHR_GT_SEMANTICS_PREAUDIT.md'
       - 'docs/performance/F-PE-ELASTIC10B_PILOT_PREREGISTRATION.md'
       - 'docs/performance/F-PE-ELASTIC10C_TARGET_EXTRACTION_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-ELASTIC10D_CORPUS_PREREGISTRATION.md'
       - '.github/workflows/f-pe-elastic10-bhrgt.yml'
   workflow_dispatch:
 
@@ -134,8 +135,14 @@ jobs:
         run: |
           PYTHONPATH=research/elastic python research/elastic/bro_bhrgt_extract_targets.py --pilot-dir "$RUNNER_TEMP/bhrgt"
 
-      - name: Upload bounded schema, pilot and target evidence
+      - name: Run frozen BHR-GT calibration corpus
+        run: |
+          PYTHONPATH=research/elastic python research/elastic/bro_bhrgt_calibration_corpus.py --output-dir "$RUNNER_TEMP/bhrgt-corpus"
+
+      - name: Upload bounded schema, pilot, target and corpus evidence
         uses: actions/upload-artifact@v4
         with:
           name: f-pe-elastic10-bhrgt-schema
-          path: ${{ runner.temp }}/bhrgt
+          path: |
+            ${{ runner.temp }}/bhrgt
+            ${{ runner.temp }}/bhrgt-corpus
