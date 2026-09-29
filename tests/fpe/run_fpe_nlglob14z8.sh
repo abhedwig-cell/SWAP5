@@ -24,4 +24,4 @@ python3 tests/fpe/compile_fpe_timeint03_closure.py --root "$ROOT" --stub "$BUILD
   --external-module-source "$BUILD/mod_fpe_timeint03_reference_binding.f90" \
   --external-module-source tests/fpe/mod_fpe_timeint13_predicted_k_provider.f90 --build "$BUILD/dynamic" --opt 2
 
-python3 tests/fpe/run_fpe_nlglob14z8.py "$BUILD/dynamic/timeint03_test" docs/performance/F-PE-BOFEK01_TESTBANK.json
+python3 tests/fpe/run_fpe_nlglob14z8.py "$BUILD/dynamic/timeint03_test" docs/performance/F-PE-BOFEK01_TESTBANK.json "$@"
