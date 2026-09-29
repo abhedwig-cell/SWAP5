@@ -90,6 +90,18 @@ Secondary comparator:
 
 Terminal case diagnostics are computed separately from all audited iterations.
 
+## Frozen dominance and family rules
+
+For all classifications:
+
+- total balance is dominant when `r_tot_naive >= r_cp`;
+- compartment balance is dominant when `r_cp > r_tot_naive`;
+- a route-mode family shows the total-summation direction only if:
+  1. median `r_tot_fsum < r_tot_naive` within its total-dominant primary subset; and
+  2. at least 10% of that subset crosses from `r_tot_naive > 1` to `r_tot_fsum <= 1`.
+
+These definitions are frozen before result exposure.
+
 ## Frozen classifications
 
 ### TOTAL_BALANCE_SUMMATION_SIGNAL
