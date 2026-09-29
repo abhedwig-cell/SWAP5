@@ -39,17 +39,20 @@ src=src.replace(old_persist,new_persist,1)
 
 # In persistent saturated attribution the dynamic-top provider may legitimately
 # change route under drying. Preserve the original same-route guard before entry.
-src=src.replace(
-"""    if(r0/=target_route)then
+old_origin="""    if(r0/=target_route)then
       terminal_reason='ORIGIN_ROUTE_MISMATCH'
       eligible=.false.; transition_step=step_index; return
     end if
-""",
-"""    if((.not.nl14d_saturated_mode) .and. r0/=target_route)then
+"""
+idx=src.rfind(old_origin)
+if idx<0:
+    raise SystemExit("NLGLOB14G KLAG origin route marker missing")
+new_origin="""    if((.not.nl14d_saturated_mode) .and. r0/=target_route)then
       terminal_reason='ORIGIN_ROUTE_MISMATCH'
       eligible=.false.; transition_step=step_index; return
     end if
-""",1)
+"""
+src=src[:idx]+src[idx:].replace(old_origin,new_origin,1)
 
 # Replace only the KLAG endpoint route guard: this exact block appears last.
 old_guard="""    if(rp/=target_route)then
