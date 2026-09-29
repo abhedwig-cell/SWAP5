@@ -2,13 +2,13 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
-BUILD="\${RUNNER_TEMP:-\${TMPDIR:-/tmp}}/swap5-elastic20-\${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-elastic20-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD/run1" "$BUILD/run2"
 trap 'rm -rf "$BUILD"' EXIT
 
-: "\${ELASTIC20_SOURCE_ARTIFACT_DIR:?missing source artifact dir}"
-: "\${ELASTIC20_PDOK_ARTIFACT_DIR:?missing pdok artifact dir}"
-: "\${ELASTIC20_OUTPUT_DIR:?missing output dir}"
+: "${ELASTIC20_SOURCE_ARTIFACT_DIR:?missing source artifact dir}"
+: "${ELASTIC20_PDOK_ARTIFACT_DIR:?missing pdok artifact dir}"
+: "${ELASTIC20_OUTPUT_DIR:?missing output dir}"
 
 python3 tools/elastic20_materialize_bofek_horizon_catalog.py \
   --source-artifact-dir "$ELASTIC20_SOURCE_ARTIFACT_DIR" \
@@ -54,7 +54,7 @@ if prod:
 print("F_PE_ELASTIC20_A10_SOURCE_SCOPE=PASS")
 PY
 
-cp "$BUILD/run1/elastic20_bofek_horizon_catalog.csv" "\${ELASTIC20_OUTPUT_DIR}/"
-cp "$BUILD/run1/elastic20_bofek_horizon_catalog.meta.json" "\${ELASTIC20_OUTPUT_DIR}/"
+cp "$BUILD/run1/elastic20_bofek_horizon_catalog.csv" "${ELASTIC20_OUTPUT_DIR}/"
+cp "$BUILD/run1/elastic20_bofek_horizon_catalog.meta.json" "${ELASTIC20_OUTPUT_DIR}/"
 
 echo "F_PE_ELASTIC20=PASS"
