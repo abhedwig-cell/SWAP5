@@ -107,7 +107,8 @@ for route in routes:
     families[f"{route}|{mode}"]={"n":len(xs),"poor_n":len(pp),"poor_near_fraction":pnear,
                                  "poor_median_r_bal":pmed,"final_median_r_bal":fm}
 
-aggregate=(coverage and poor_near>=.5 and adequate_near>0 and poor_near>=1.5*adequate_near and
+separation=(poor_near>0) if adequate_near==0 else (poor_near>=1.5*adequate_near)
+aggregate=(coverage and poor_near>=.5 and separation and
            poor_med is not None and poor_med<=10 and final_family_pass>=4)
 route_specific=(coverage and not aggregate and
                 all(families[f"FLUX|{m}"]["poor_near_fraction"]>=.5 and
