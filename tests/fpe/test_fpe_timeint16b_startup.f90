@@ -31,7 +31,7 @@ program test_fpe_timeint16b_startup
   character(len=32) :: material_id
   real(real64) :: tr,ts,alpha,nvg,ksat,lambda,rain,dt,horizon
   integer :: steps,step,total_nl,total_back,total_jac,total_lin
-  real(real64) :: maxledger,cumledger,max_roundtrip,init_mass_rate
+  real(real64) :: maxledger,cumledger,max_roundtrip,init_mass_rate,max_origin_rate_err,max_predictor_rate_residual
 
   call get_command_argument(1,material_id)
   call read_real(2,tr); call read_real(3,ts); call read_real(4,alpha); call read_real(5,nvg)
@@ -48,6 +48,7 @@ program test_fpe_timeint16b_startup
   theta_dot_prev=0.0_real64
   total_nl=0; total_back=0; total_jac=0; total_lin=0
   maxledger=0.0_real64; cumledger=0.0_real64; max_roundtrip=0.0_real64
+  max_origin_rate_err=0.0_real64; max_predictor_rate_residual=0.0_real64
   init_mass_rate=huge(1.0_real64)
   timeint16_capture_origin=0
   timeint16_origin_ready=0
@@ -69,7 +70,8 @@ program test_fpe_timeint16b_startup
        '|STORAGE=',sum(state%water_content*p%dz)+state%ponding_depth, &
        '|NL=',total_nl,'|BACK=',total_back,'|JAC=',total_jac,'|LIN=',total_lin, &
        '|WORK=',total_nl+total_back+total_jac+total_lin,'|MAX_LEDGER=',maxledger, &
-       '|CUM_LEDGER=',cumledger,'|MAX_ROUNDTRIP=',max_roundtrip,'|INIT_MASS_RATE=',init_mass_rate
+       '|CUM_LEDGER=',cumledger,'|MAX_ROUNDTRIP=',max_roundtrip,'|INIT_MASS_RATE=',init_mass_rate, &
+       '|MAX_ORIGIN_RATE_ERR=',max_origin_rate_err,'|MAX_PREDICTOR_RATE_RESIDUAL=',max_predictor_rate_residual
   write(*,'(A)') 'F_PE_TIMEINT16B=PASS'
 
 contains
@@ -179,6 +181,9 @@ contains
     total_back=total_back+res%diagnostics%backtracking_attempts
     total_jac=total_jac+res%diagnostics%jacobian_builds
     total_lin=total_lin+res%diagnostics%linear_solves
+    if(res%native_balance_rate_residual_available) then
+      max_predictor_rate_residual=max(max_predictor_rate_residual,abs(res%native_balance_rate_residual_cm_per_day))
+    end if
 
     if(res%status/=SW_SOLVE_CONVERGED)then
       write(*,'(*(g0))') 'F_PE_TIMEINT16B_FAILURE|STEP=',step_index,'|DT=',step_dt,'|STATUS=',res%status, &
@@ -195,6 +200,7 @@ contains
       do i=1,numnod
         theta_dot_prev(i)=-timeint16_origin_nonstorage(i)/p%dz(i)
       end do
+      max_origin_rate_err=max(max_origin_rate_err,abs(sum(theta_dot_prev*p%dz)-rain))
       if(init_mass_rate>0.5_real64*huge(1.0_real64))then
         init_mass_rate=sum(theta_dot_prev*p%dz)
         call require(abs(init_mass_rate-rain)<=5.0e-8_real64,'initial governing derivative mass mismatch')
