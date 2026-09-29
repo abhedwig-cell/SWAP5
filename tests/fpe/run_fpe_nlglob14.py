@@ -40,7 +40,10 @@ for mid,mode,route,dt in targets:
         if rec["trial_ok"]:
             rec["dsat"]=float(e["DSAT"]); rec["max_over"]=float(e["MAX_OVER"]); rec["dz"]=float(e["DZ"])
             rec["event_distance_cm"]=abs(rec["dsat"])*abs(rec["dz"])
-            rec["pond"]=float(e["POND"]); rec["max_ledger"]=abs(float(e["MAX_LEDGER"]))
+            rec["pond"]=float(e["POND"]); rec["event_ledger"]=abs(float(e["LEDGER"]))
+            rec["finite"]=int(e.get("FINITE","0"))==1
+            rec["origin_route_code"]=int(e.get("ORIGIN_ROUTE_CODE","0"))
+            rec["event_route_code"]=int(e.get("EVENT_ROUTE_CODE","0"))
             rec["route_out"]=e.get("ROUTE","")
     if res:
         rec["terminal_reason"]=res["TERMINAL_REASON"]
@@ -50,8 +53,9 @@ valid=sum(x.get("valid",False) and math.isfinite(x.get("phi",math.nan)) and 0<x.
 trial_ok=sum(x.get("trial_ok",False) for x in rows)
 domain_fail=sum(x.get("domain_fail",False) for x in rows)
 admissible=[x for x in rows if x.get("trial_ok")]
-localized=[x for x in admissible if x.get("max_over",math.inf)<=0 and x.get("event_distance_cm",math.inf)<=5e-8 and x.get("max_ledger",math.inf)<=5e-8 and
-           math.isfinite(x.get("pond",math.nan)) and x.get("route_out")==x["route"]]
+localized=[x for x in admissible if x.get("max_over",math.inf)<=0 and x.get("event_distance_cm",math.inf)<=5e-8 and x.get("event_ledger",math.inf)<=5e-8 and
+           x.get("finite",False) and math.isfinite(x.get("pond",math.nan)) and x.get("route_out")==x["route"] and
+           x.get("origin_route_code",0)==x.get("event_route_code",-1)]
 
 coverage=(len(rows)==5 and proc==0 and all(x["event_present"] for x in rows))
 if not coverage:
@@ -69,7 +73,7 @@ summary={"classification":cls,"target_count":len(rows),"valid_event_fraction_cou
          "trial_ok_count":trial_ok,"domain_fail_count":domain_fail,"localized_count":len(localized),
          "max_event_distance_cm":max((x.get("event_distance_cm",0) for x in admissible),default=math.inf),
          "max_event_overshoot":max((x.get("max_over",0) for x in admissible),default=math.inf),
-         "max_event_ledger":max((x.get("max_ledger",0) for x in admissible),default=math.inf),
+         "max_event_ledger":max((x.get("event_ledger",0) for x in admissible),default=math.inf),
          "process_failures":proc}
 print("F_PE_NLGLOB14_RECORDS="+json.dumps(rows,separators=(",",":"),sort_keys=True))
 print("F_PE_NLGLOB14_SUMMARY="+json.dumps(summary,separators=(",",":"),sort_keys=True))
