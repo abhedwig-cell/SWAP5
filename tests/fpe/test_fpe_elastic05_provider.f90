@@ -1,5 +1,6 @@
 program test_fpe_elastic05_provider
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use MOD_grid, only: numnod
   use mod_soil_water_solver_contract, only: CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
        CONSTITUTIVE_DEMAND_CAPACITY, CONSTITUTIVE_DEMAND_DKDH
@@ -48,6 +49,18 @@ program test_fpe_elastic05_provider
     call initialize_b110_default_mvg_parameters(p_on,c,enable_ksatexm_extension=.true., &
          enable_elastic_storage=.true.,specific_elastic_storage_input=ss)
     error stop 'ELASTIC05 expected ELAS+KSATEXM failure'
+  case('invalid-nan')
+    ss(1)=ieee_value(ss(1),ieee_quiet_nan)
+    call initialize_b110_default_mvg_parameters(p_on,c,enable_elastic_storage=.true.,specific_elastic_storage_input=ss)
+    error stop 'ELASTIC05 expected NaN-value failure'
+  case('invalid-shape')
+    block
+      real(real64) :: short_ss(numnod-1)
+      short_ss=1.0e-6_real64
+      call initialize_b110_default_mvg_parameters(p_on,c,enable_elastic_storage=.true., &
+           specific_elastic_storage_input=short_ss)
+    end block
+    error stop 'ELASTIC05 expected shape failure'
   case('check')
     continue
   case default
