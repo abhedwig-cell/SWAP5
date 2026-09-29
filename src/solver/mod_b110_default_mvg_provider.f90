@@ -15,6 +15,8 @@ module mod_b110_default_mvg_provider
      integer :: active_nodes = 0
      real(real64), allocatable :: cofgen(:,:)
      logical :: ksatexm_extension_enabled = .false.
+     logical :: elastic_storage_active = .false.
+     real(real64), allocatable :: specific_elastic_storage(:)
   end type b110_default_mvg_parameters_t
 
   type, extends(constitutive_hydraulics_provider_t), public :: b110_default_mvg_provider_t
@@ -34,10 +36,13 @@ module mod_b110_default_mvg_provider
 
 contains
 
-  subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input, enable_ksatexm_extension)
+  subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input, enable_ksatexm_extension, &
+                                                      enable_elastic_storage, specific_elastic_storage_input)
     type(b110_default_mvg_parameters_t), intent(out) :: parameters
     real(real64), intent(in) :: cofgen_input(:,:)
     logical, intent(in), optional :: enable_ksatexm_extension
+    logical, intent(in), optional :: enable_elastic_storage
+    real(real64), intent(in), optional :: specific_elastic_storage_input(:)
     integer :: i, n
     real(real64) :: h105, t105, c105, a, b, alfa
 
@@ -47,6 +52,22 @@ contains
     parameters%active_nodes = n
     parameters%ksatexm_extension_enabled = .false.
     if (present(enable_ksatexm_extension)) parameters%ksatexm_extension_enabled = enable_ksatexm_extension
+    parameters%elastic_storage_active = .false.
+    if (present(enable_elastic_storage)) parameters%elastic_storage_active = enable_elastic_storage
+    if (parameters%elastic_storage_active) then
+       if (.not. present(specific_elastic_storage_input)) &
+            error stop 'B1.10 default MvG provider: elastic storage active without values'
+       if (size(specific_elastic_storage_input) /= n) &
+            error stop 'B1.10 default MvG provider: elastic storage shape mismatch'
+       if (any(.not. ieee_is_finite(specific_elastic_storage_input)) .or. &
+           any(specific_elastic_storage_input < 0.0_real64)) &
+            error stop 'B1.10 default MvG provider: invalid elastic storage'
+       allocate(parameters%specific_elastic_storage(n))
+       parameters%specific_elastic_storage = specific_elastic_storage_input
+    else
+       if (present(specific_elastic_storage_input)) &
+            error stop 'B1.10 default MvG provider: elastic storage values supplied while inactive'
+    end if
     allocate(parameters%cofgen(B110_MCOF_REQUIRED,n))
     parameters%cofgen = 0.0_real64
     parameters%cofgen(1:min(size(cofgen_input,1),B110_MCOF_REQUIRED),:) = &
@@ -194,16 +215,24 @@ contains
     case (CONSTITUTIVE_DEMAND_WATER_CONTENT)
        do i = 1, n
           water_content(i) = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               water_content(i) = self%parameters%cofgen(2,i) + &
+                    pressure_head(i)*self%parameters%specific_elastic_storage(i)
        end do
        return
     case (CONSTITUTIVE_DEMAND_CAPACITY)
        do i = 1, n
           capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               capacity(i) = self%parameters%specific_elastic_storage(i)
        end do
        return
     case (CONSTITUTIVE_DEMAND_WATER_CONTENT + CONSTITUTIVE_DEMAND_CONDUCTIVITY)
        do i = 1, n
           theta_local = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               theta_local = self%parameters%cofgen(2,i) + &
+                    pressure_head(i)*self%parameters%specific_elastic_storage(i)
           water_content(i) = theta_local
           conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
                self%parameters%ksatexm_extension_enabled)
@@ -212,9 +241,14 @@ contains
     case (CONSTITUTIVE_DEMAND_CONDUCTIVITY + CONSTITUTIVE_DEMAND_CAPACITY)
        do i = 1, n
           theta_local = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               theta_local = self%parameters%cofgen(2,i) + &
+                    pressure_head(i)*self%parameters%specific_elastic_storage(i)
           conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
                self%parameters%ksatexm_extension_enabled)
           capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               capacity(i) = self%parameters%specific_elastic_storage(i)
        end do
        return
     case default
@@ -229,11 +263,18 @@ contains
     do i = 1, n
        if (need_theta .or. need_k) then
           theta_local = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               theta_local = self%parameters%cofgen(2,i) + &
+                    pressure_head(i)*self%parameters%specific_elastic_storage(i)
           if (need_theta) water_content(i) = theta_local
           if (need_k) conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
                self%parameters%ksatexm_extension_enabled)
        end if
-       if (need_capacity) capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+       if (need_capacity) then
+          capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               capacity(i) = self%parameters%specific_elastic_storage(i)
+       end if
     end do
     if (need_dkdh) dconductivity_dhead = 0.0_real64
   end subroutine b110_default_mvg_evaluate_demand
@@ -254,6 +295,11 @@ contains
     do i = 1, n
        water_content(i) = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
        capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+       if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) then
+          water_content(i) = self%parameters%cofgen(2,i) + &
+               pressure_head(i)*self%parameters%specific_elastic_storage(i)
+          capacity(i) = self%parameters%specific_elastic_storage(i)
+       end if
        conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), water_content(i), &
             self%parameters%ksatexm_extension_enabled)
     end do
