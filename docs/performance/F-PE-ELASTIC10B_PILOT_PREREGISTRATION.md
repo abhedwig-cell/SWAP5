@@ -29,14 +29,21 @@ Fixed criteria:
 - search radii, in order:
   - 0.5 km;
   - 5 km;
-  - 25 km.
+  - 10 km.
 
 The center is the official OpenAPI example, not a user-derived location.
 
 Stop at the first radius returning at least one BRO-ID.
 
-If all three are empty, record a negative bounded pilot. Do not expand the
-radius in the same workunit.
+If all three valid radii are empty, record a negative bounded pilot. Do not
+expand the radius in the same workunit.
+
+The originally preregistered third radius was 25 km. A valid service response
+later established that the official BHR-GT endpoint rejects enclosing-circle
+radius values greater than 10 km. Before any valid third-radius population
+result, the third radius is therefore corrected to the largest API-admitted
+value, 10 km. This is a service-contract correction, not a data-driven expansion
+or changed success threshold.
 
 ## Frozen object sample
 
