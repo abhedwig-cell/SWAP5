@@ -1,0 +1,40 @@
+name: F-PE-NLGLOB14M retreat event bracket
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14M*.md'
+      - 'tests/fpe/run_fpe_nlglob14m*.py'
+      - 'tests/fpe/run_fpe_nlglob14m*.sh'
+      - '.github/workflows/f-pe-nlglob14m.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob14m-retreat-event-bracket
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14M*.md'
+      - 'tests/fpe/run_fpe_nlglob14m*.py'
+      - 'tests/fpe/run_fpe_nlglob14m*.sh'
+      - '.github/workflows/f-pe-nlglob14m.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob14m-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  retreat-event-bracket:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered retreat-event bracket attribution
+        run: bash tests/fpe/run_fpe_nlglob14m.sh
