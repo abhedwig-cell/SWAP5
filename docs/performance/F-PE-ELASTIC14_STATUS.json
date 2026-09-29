@@ -2,9 +2,9 @@
   "work_unit": "F-PE-ELASTIC14",
   "workstream": "VQ/production physical-prior materialization",
   "baseline": "65c2163324bcc112a8149e5aab786b1342e58b89",
-  "checkpoint_commit": "f486e7a369d03abb66027fead9afeaba374566a9",
-  "last_reconciled_head": "f486e7a369d03abb66027fead9afeaba374566a9",
-  "last_reconciled_upstream": "15e5fa2738a889700dc4b8ed792e823652b38dd3",
+  "checkpoint_commit": "502c81777c61ab362458e0a4c0d819ed6d277cc2",
+  "last_reconciled_head": "502c81777c61ab362458e0a4c0d819ed6d277cc2",
+  "last_reconciled_upstream": "ef08f11b5576bec92d66c445e0c577e680215487",
   "scope": "Add and qualify a bounded mineral ELAS physical-prior materializer that preserves explicit activation, default-off behavior and fail-closed non-mineral handling.",
   "relevant_paths": [
     "docs/performance/F-PE-ELASTIC14_MINERAL_PRIOR_MATERIALIZER_PREREGISTRATION.md",
@@ -28,7 +28,14 @@
     "tests/fpe/run_fpe_elastic14.sh",
     ".github/workflows/f-pe-elastic14.yml"
   ],
-  "evidence_paths": [],
+  "evidence_paths": [
+    "GitHub Actions run 36553701131 / job 109357681154",
+    "clean qualification run 36554278578 / job 109359574070",
+    "docs/performance/F-PE-ELASTIC14_RESULT.md",
+    "docs/performance/F-PE-ELASTIC14_CLOSURE.md",
+    "canonical admission PR #784",
+    "admitted production blob bbd90ed919a83d770494b4f17ea88db88648579b"
+  ],
   "dependency_surface": [
     "ELASTIC13 qualified mineral policy",
     "ELASTIC11 frozen M1 coefficients and uncertainty",
@@ -46,9 +53,9 @@
   ],
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blockers": [],
-  "next_action": "Inspect the ELASTIC14 workflow on checkpoint f486e7a369d03abb66027fead9afeaba374566a9. Apply the preregistered A1-A8 gates exactly and do not widen source scope.",
-  "recovery_point": "work/f-pe-elastic14-mineral-prior-materializer@f486e7a369d03abb66027fead9afeaba374566a9"
+  "next_action": "F-PE-ELASTIC14 is already canonically admitted through clean PR #784 and closed. PR #783 is superseded and closed. No further ELASTIC14 production write is authorized.",
+  "recovery_point": "integration/f-ci-canonical@ef08f11b5576bec92d66c445e0c577e680215487"
 }
