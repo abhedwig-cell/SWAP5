@@ -6,6 +6,15 @@ exe=Path(sys.argv[1]); bank=Path(sys.argv[2])
 data=json.loads(bank.read_text()); mats={x["id"]:x for x in data["materials"]}
 dts=[0.000125,0.0000625]
 routes=("HEAD","RUNOFF"); horizon=25.60; dtop=10.; pmax=.05; rsro=.05; dz=10.0
+route_filter=sys.argv[3] if len(sys.argv)>3 else None
+dt_filter=float(sys.argv[4]) if len(sys.argv)>4 else None
+if route_filter is not None:
+    if route_filter not in ("HEAD","RUNOFF"): raise SystemExit("invalid route filter")
+    routes=(route_filter,)
+if dt_filter is not None:
+    if not any(math.isclose(dt_filter,x,rel_tol=0,abs_tol=1e-15) for x in dts):
+        raise SystemExit("invalid dt filter")
+    dts=[dt_filter]
 hatm=-2.75e5
 
 def fields(line):
@@ -347,9 +356,12 @@ for route in routes:
         rows.append(rec)
 
 classes=[x["classification"] for x in rows]
-coverage=len(rows)==4 and proc==0 and all(x.get("control_ok") for x in rows)
+case_mode=len(rows)==1
+coverage=(len(rows)==1 if case_mode else len(rows)==4) and proc==0 and all(x.get("control_ok") for x in rows)
 valid=coverage and all(x=="SPLIT_FURTHER_LATE_RETREAT_TRANSITION_VALID" for x in classes)
-if valid:
+if case_mode:
+    agg=classes[0] if coverage else "NLGLOB14Z8_CASE_CONTROL_INVALID"
+elif valid:
     agg="QUALIFIED_SPLIT_FURTHER_LATE_RETREAT_OWNERSHIP_TRANSITION"
 elif any(x=="NLGLOB14Z8_FURTHER_LATE_TRANSACTION_INCONSISTENT" for x in classes):
     agg="NLGLOB14Z8_FURTHER_LATE_TRANSACTION_INCONSISTENT"
