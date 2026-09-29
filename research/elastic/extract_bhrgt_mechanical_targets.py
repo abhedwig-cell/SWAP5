@@ -290,6 +290,7 @@ def main():
     schemas=bind_schema(Path(a.schemas))
     authority=json.loads(Path(a.authority).read_text())
     determination_authority=None
+    determination_authority_summary=None
     if a.determination_authority:
         raw=json.loads(Path(a.determination_authority).read_text())
         if raw.get("historical_classifier_records") != 100 or raw.get("physical_determinations") != 50:
@@ -297,6 +298,11 @@ def main():
         if raw.get("route_counts") != {"R2":29,"R3":21}:
             raise RuntimeError("determination authority route-count mismatch")
         determination_authority={x["bro_id"]:x for x in raw["objects"]}
+        determination_authority_summary={
+            "historical_classifier_records":raw["historical_classifier_records"],
+            "physical_determinations":raw["physical_determinations"],
+            "route_counts":raw["route_counts"],
+        }
     targets=[]; rejected=[]; object_stats=[]
     for auth in authority["objects"]:
         t,r,s=process_object(Path(a.objects),auth,determination_authority)
@@ -311,11 +317,7 @@ def main():
     summary={
         "schema_binding":schemas,
         "object_count":len(authority["objects"]),
-        "determination_authority":{
-            "historical_classifier_records":determination_authority["historical_classifier_records"],
-            "physical_determinations":determination_authority["physical_determinations"],
-            "route_counts":determination_authority["route_counts"],
-        },
+        "determination_authority":determination_authority_summary,
         "targets":len(targets),
         "rejects":len(rejected),
         "route_counts":{"R2":sum(x["route"]=="R2" for x in targets),
