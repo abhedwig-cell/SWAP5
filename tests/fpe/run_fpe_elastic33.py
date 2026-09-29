@@ -170,11 +170,26 @@ def main():
     print("F_PE_ELASTIC33_A1_SOURCE_GATE=PASS")
     print("F_PE_ELASTIC33_A2_ROW_MAPPING=PASS")
     print("F_PE_ELASTIC33_A3_F64_IDENTITY=PASS")
-    if not (saw_null_om and saw_present_om):
-        raise SystemExit("F_PE_ELASTIC33_FAIL organic coverage")
+    synthetic=copy.deepcopy(e24.retrieve_profile(gpkg,16160))
+    synthetic["horizons"][0]["organic_matter_pct"]=None
+    _,_,srows=parse_interchange(e33.materialize_interchange(synthetic))
+    if srows[0]["organic_matter_available"]!="0" or float(srows[0]["organic_matter_pct"])!=0.0:
+        raise SystemExit("F_PE_ELASTIC33_FAIL synthetic null organic projection")
+    synthetic["horizons"][0]["organic_matter_pct"]=7.5
+    _,_,srows=parse_interchange(e33.materialize_interchange(synthetic))
+    if srows[0]["organic_matter_available"]!="1" or bits(float(srows[0]["organic_matter_pct"]))!=bits(7.5):
+        raise SystemExit("F_PE_ELASTIC33_FAIL synthetic present organic projection")
     print("F_PE_ELASTIC33_A4_ORGANIC_PROJECTION=PASS")
-    if not (saw_null_peat and saw_present_peat):
-        raise SystemExit("F_PE_ELASTIC33_FAIL peat coverage")
+
+    synthetic=copy.deepcopy(e24.retrieve_profile(gpkg,16160))
+    synthetic["horizons"][0]["peat_type"]=None
+    _,_,srows=parse_interchange(e33.materialize_interchange(synthetic))
+    if srows[0]["peat_type_present"]!="0":
+        raise SystemExit("F_PE_ELASTIC33_FAIL synthetic null peat projection")
+    synthetic["horizons"][0]["peat_type"]="PEAT_PRESENT_SENTINEL"
+    _,_,srows=parse_interchange(e33.materialize_interchange(synthetic))
+    if srows[0]["peat_type_present"]!="1":
+        raise SystemExit("F_PE_ELASTIC33_FAIL synthetic present peat projection")
     print("F_PE_ELASTIC33_A5_PEAT_PROJECTION=PASS")
     print("F_PE_ELASTIC33_A9_ALL_PROFILES=PASS")
     print("F_PE_ELASTIC33_A9_ALL_ROWS=PASS")
