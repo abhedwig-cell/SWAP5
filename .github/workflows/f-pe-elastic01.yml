@@ -29,3 +29,5 @@ jobs:
         run: bash tests/fpe/acquire_fpe_elastic02_staringreeks.sh
       - name: Run ELASTIC02A full36 characterization
         run: bash tests/fpe/run_fpe_elastic02a.sh
+      - name: Audit ELASTIC03 physical predictor sources
+        run: bash tests/fpe/audit_fpe_elastic03_sources.sh
