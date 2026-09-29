@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB13B bounded quarter-step TG subdivision
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB13B*.md'
+      - 'tests/fpe/materialize_fpe_nlglob13b*.py'
+      - 'tests/fpe/run_fpe_nlglob13b*.py'
+      - 'tests/fpe/run_fpe_nlglob13b*.sh'
+      - '.github/workflows/f-pe-nlglob13b.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob13b-quarterstep-subdivision
+    paths:
+      - 'docs/performance/F-PE-NLGLOB13B*.md'
+      - 'tests/fpe/materialize_fpe_nlglob13b*.py'
+      - 'tests/fpe/run_fpe_nlglob13b*.py'
+      - 'tests/fpe/run_fpe_nlglob13b*.sh'
+      - '.github/workflows/f-pe-nlglob13b.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob13b-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quarterstep-subdivision:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered bounded second-level subdivision
+        run: bash tests/fpe/run_fpe_nlglob13b.sh
