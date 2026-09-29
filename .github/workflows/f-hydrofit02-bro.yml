@@ -5,7 +5,8 @@ on:
     branches:
       - research/f-hydrofit02-bro-acquisition
     paths:
-      - 'research/hydrofit/bro_bhrp_fetch.py'
+      - 'research/hydrofit/**'
+      - 'integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json'
       - '.github/workflows/f-hydrofit02-bro.yml'
   workflow_dispatch:
 
@@ -379,50 +380,50 @@ jobs:
       - name: Profile lambda on deterministic real subset
         run: |
           PYTHONPATH=research/hydrofit python research/hydrofit/profile_lambda_corpus.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-profiles.txt"
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" | tee "$RUNNER_TEMP/bro/lambda-profiles.txt"
       - name: Attribute conditional profile bounds
         run: |
           PYTHONPATH=research/hydrofit python research/hydrofit/attribute_profile_bounds.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/bound-attribution.txt"
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" | tee "$RUNNER_TEMP/bro/bound-attribution.txt"
       - name: Compare lambda fallbacks
         run: |
           PYTHONPATH=research/hydrofit python research/hydrofit/compare_lambda_fallbacks.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-fallbacks.txt"
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" | tee "$RUNNER_TEMP/bro/lambda-fallbacks.txt"
       - name: Audit conditional lambda-prior descriptors
         run: |
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/audit_lambda_prior_descriptors.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" \
             --out "$RUNNER_TEMP/bro/lambda-prior-descriptor-audit.json" | tee "$RUNNER_TEMP/bro/lambda-prior-descriptor-audit.txt"
       - name: Audit interval-scoped lambda-prior provenance
         run: |
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/audit_interval_prior_descriptors.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" \
             --out "$RUNNER_TEMP/bro/lambda-prior-interval-audit.json" | tee "$RUNNER_TEMP/bro/lambda-prior-interval-audit.txt"
       - name: Audit BRO descriptor structural provenance
         run: |
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/audit_bro_descriptor_structure.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" \
             --out "$RUNNER_TEMP/bro/lambda-prior-structure-audit.json" | tee "$RUNNER_TEMP/bro/lambda-prior-structure-audit.txt"
       - name: Audit exact soilLayer depth semantics
         run: |
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/audit_soillayer_depth_semantics.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" \
             --out "$RUNNER_TEMP/bro/soillayer-depth-semantics.json" | tee "$RUNNER_TEMP/bro/soillayer-depth-semantics.txt"
       - name: Apply cross-component depth provenance
         run: |
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/cross_component_prior_provenance.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" \
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" \
             --out "$RUNNER_TEMP/bro/lambda-prior-cross-provenance.json" | tee "$RUNNER_TEMP/bro/lambda-prior-cross-provenance.txt"
       - name: Compare low-capacity conditional lambda priors
         run: |
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/compare_conditional_lambda_priors.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-prior-low-capacity.txt"
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" | tee "$RUNNER_TEMP/bro/lambda-prior-low-capacity.txt"
       - name: Reclassify frozen conditional-prior identifiability
         run: |
           set -o pipefail
@@ -432,19 +433,19 @@ jobs:
         run: |
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/compare_lambda_shrinkage.py \
-            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-shrinkage.txt"
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" | tee "$RUNNER_TEMP/bro/lambda-shrinkage.txt"
       - name: Replicate soft lambda shrinkage on independent complement
         if: always()
         run: |
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/replicate_lambda_shrinkage.py \
-            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS.json" | tee "$RUNNER_TEMP/bro/lambda-shrinkage-replication.txt"
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" | tee "$RUNNER_TEMP/bro/lambda-shrinkage-replication.txt"
       - name: Characterize LID02 severe source and duplicate identities
         if: always()
         run: |
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/characterize_lid02_provenance.py \
-            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS.json" \
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json" \
             --out "$RUNNER_TEMP/bro/lid02-provenance.json" | tee "$RUNNER_TEMP/bro/lid02-provenance.txt"
       - name: Characterize LID02 severe frozen profile
         if: always()
@@ -459,3 +460,5 @@ jobs:
 # F-HYDROFIT02 workflow touch: soilLayer boundary parser rerun
 # F-HYDROFIT02 workflow touch: rerun P-LPRIOR03 after map-init fix
 # F-HYDROFIT02 workflow touch: rerun P-LSHRINK02 after BRO retry hardening
+
+# F-HYDROFIT02 workflow touch: identity-correct hash-bound rerun
