@@ -1,0 +1,23 @@
+name: F-PE-NLGLOB14Z1 finest-dt attribution
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z1-late-retreat-refinement
+    paths:
+      - 'tests/fpe/run_fpe_nlglob14z1_fine_diag*.py'
+      - 'tests/fpe/run_fpe_nlglob14z1_fine_diag*.sh'
+      - '.github/workflows/f-pe-nlglob14z1-fine-diag.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  finest-dt-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z1_fine_diag.sh
