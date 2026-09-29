@@ -84,7 +84,7 @@ for route in routes:
                  "t_lo":lo["time"] if lo else None,"t_hi":hi["time"] if hi else None,
                  "h3_lo":lo["h3"] if lo else None,"h3_hi":hi["h3"] if hi else None,
                  "theta3_lo":lo["theta3"] if lo else None,"theta3_hi":hi["theta3"] if hi else None,
-                 "phi":phi,"event_time":tevent,"max_ledger":maxledger,"cum_ledger":cumledger})
+                 "phi":phi,"event_time":tevent,"terminal_reason":terminal_reason,"max_ledger":maxledger,"cum_ledger":cumledger})
 
 coverage=(len(rows)==12 and proc==0 and all(x["complete"] and x["mass_ok"] and x["state_finite"] and
           not x["indicator_inconsistent"] for x in rows))
