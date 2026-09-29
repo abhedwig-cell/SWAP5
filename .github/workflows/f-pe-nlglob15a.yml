@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB15A route-flex desaturation release
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB15A*.md'
+      - 'tests/fpe/materialize_fpe_nlglob15*.py'
+      - 'tests/fpe/run_fpe_nlglob15a*.py'
+      - 'tests/fpe/run_fpe_nlglob15a*.sh'
+      - '.github/workflows/f-pe-nlglob15a.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob15a-route-flex-release-r2
+    paths:
+      - 'docs/performance/F-PE-NLGLOB15A*.md'
+      - 'tests/fpe/materialize_fpe_nlglob15*.py'
+      - 'tests/fpe/run_fpe_nlglob15a*.py'
+      - 'tests/fpe/run_fpe_nlglob15a*.sh'
+      - '.github/workflows/f-pe-nlglob15a.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob15a-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  route-flex-release-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered route-flex release attribution
+        run: bash tests/fpe/run_fpe_nlglob15a.sh
