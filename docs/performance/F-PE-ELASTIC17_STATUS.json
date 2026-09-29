@@ -1,0 +1,53 @@
+{
+  "work_unit": "F-PE-ELASTIC17",
+  "workstream": "VQ/application soil-geometry preprocessing",
+  "baseline": "7ea6fc05ef589e3adb3e26ef1d436e514604197f",
+  "checkpoint_commit": "fcc0f9fe43d1ed88b63d508fb98fdfe8cc2e05e2",
+  "last_reconciled_head": "fcc0f9fe43d1ed88b63d508fb98fdfe8cc2e05e2",
+  "last_reconciled_upstream": "7ea6fc05ef589e3adb3e26ef1d436e514604197f",
+  "scope": "Map source-bound soil horizons to SWAP node-local ELAS descriptors only when each complete node compartment lies within one horizon; fail closed on straddling or invalid geometry.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC17_LAYER_NODE_MAPPING_PREREGISTRATION.md",
+    "src/adapter/mod_fmr_elastic_storage_horizon_node_mapper.f90",
+    "tests/fpe/test_fpe_elastic17_layer_node_mapping.f90",
+    "tests/fpe/run_fpe_elastic17.sh",
+    ".github/workflows/f-pe-elastic17.yml",
+    "docs/performance/F-PE-ELASTIC16_CLOSURE.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/test_fpe_elastic17_layer_node_mapping.f90",
+    "tests/fpe/run_fpe_elastic17.sh",
+    ".github/workflows/f-pe-elastic17.yml"
+  ],
+  "evidence_paths": [],
+  "dependency_surface": [
+    "ELASTIC16 admitted resolved-descriptor assembly",
+    "ELASTIC14 regime and descriptor semantics",
+    "normalized node geometry in metres below soil surface",
+    "source horizon geometry in metres below soil surface"
+  ],
+  "interfaces_changed": [
+    "new stateless adapter module only"
+  ],
+  "invariants_affected": [
+    "kernel independent of I/O",
+    "no silent material averaging across source-horizon boundaries",
+    "physical parameter mapping remains outside solver/runtime policy",
+    "peat/mineral regime identity preserved"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the ELASTIC17 workflow on checkpoint fcc0f9fe43d1ed88b63d508fb98fdfe8cc2e05e2 and apply A1-A11 exactly.",
+  "recovery_point": "work/f-pe-elastic17-layer-node-mapping@fcc0f9fe43d1ed88b63d508fb98fdfe8cc2e05e2"
+}
