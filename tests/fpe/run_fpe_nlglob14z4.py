@@ -24,7 +24,7 @@ def one(route,dt,horizon):
     lines=cp.stdout.splitlines()
     states=[fields(x) for x in lines if x.startswith("F_PE_NLGLOB14F_STATE|")]
     res=next((fields(x) for x in lines if x.startswith("F_PE_TIMEINT17A_RESULT|")),None)
-    events=[]; bad=False; reverse=False; skipped=False; prev_top=None
+    events=[]; bad=False; reverse=False; skipped=False; prev_top=None; late_phase=False
     for i in range(0,len(states),16):
         xs=states[i:i+16]
         if len(xs)!=16:
@@ -39,8 +39,11 @@ def one(route,dt,horizon):
         step=int(xs[0]["STEP"]); t=step*dt
         if prev_top is not None and top is not None and top!=prev_top:
             d=top-prev_top
-            if prev_top>=8 and d<0: reverse=True
-            if prev_top>=8 and d>1: skipped=True
+            if prev_top==7 and top==8:
+                late_phase=True
+            elif late_phase:
+                if d<0: reverse=True
+                if d>1: skipped=True
         events.append({"step":step,"time":t,"sat":sat,"top":top})
         prev_top=top
     target=None
