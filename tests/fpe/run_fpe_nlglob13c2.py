@@ -45,9 +45,10 @@ for mid,mode,route,dt in targets:
     identity_ok=False
     if idlogs:
         groups={}
-        for d in idlogs: groups.setdefault((int(d["STEP"]),int(d["HALF"])),[]).append(d)
-        for _,g in groups.items():
-            if len(g)!=16: continue
+        for d in idlogs:
+            groups.setdefault((int(d["STEP"]),int(d["HALF"]),int(d["QUARTER"])),[]).append(d)
+        for (gstep,ghalf,gquarter),g in groups.items():
+            if gquarter!=1 or len(g)!=16: continue
             ok=True
             for d in g:
                 vals=[float(d[k]) for k in ("PTHETA","CTHETA","PH","CH","PPOND","CPOND")]
