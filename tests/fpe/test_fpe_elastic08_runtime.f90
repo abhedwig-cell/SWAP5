@@ -17,7 +17,6 @@ program test_fpe_elastic08_runtime
   use MOD_grid, only: numnod, z, dz, disnod
   implicit none
 
-  real(real64), parameter :: h0=2.0_real64
   real(real64), parameter :: duration=0.02_real64
   real(real64), parameter :: mass_tolerance=1.0e-12_real64
   integer(int64), parameter :: column_id=880088_int64
@@ -35,8 +34,15 @@ program test_fpe_elastic08_runtime
   type(fmr_serialized_reference_backend_t) :: backend_a, backend_b
   type(fixed_flux_top_boundary_provider_t), target :: top
   class(transaction_state_t), allocatable :: snap_a, snap_b
-  real(real64) :: k0,qeq
+  real(real64) :: k0,qeq,h0,tr_input,ts_input,alpha_input,nvg_input,ksat_input,lambda_input
+  character(len=32) :: case_id
   logical :: ok,available_a,available_b
+
+  call get_command_argument(1,case_id)
+  call rr(2,tr_input);call rr(3,ts_input);call rr(4,alpha_input);call rr(5,nvg_input)
+  call rr(6,ksat_input);call rr(7,lambda_input);call rr(8,h0)
+  call require(len_trim(case_id)>0,'case id')
+  call require(nvg_input>1.0_real64.and.ksat_input>=0.0_real64,'material inputs')
 
   call initialize_parameters(materialized)
   direct=materialized
@@ -97,25 +103,33 @@ program test_fpe_elastic08_runtime
   call require_state_identity(snap_a,snap_b)
 
   write(*,'(A)')'F_PE_ELASTIC08_R3_RUNTIME_IDENTITY=PASS'
-  write(*,'(A,I0)')'F_PE_ELASTIC08_R3_NL=',diagnostics_a%nonlinear_iterations
-  write(*,'(A,I0)')'F_PE_ELASTIC08_R3_BACK=',diagnostics_a%backtracking_attempts
+  write(*,'(*(g0))')'F_PE_ELASTIC08_R3_RESULT|CASE=',trim(case_id), &
+       '|NL=',diagnostics_a%nonlinear_iterations,'|BACK=',diagnostics_a%backtracking_attempts, &
+       '|LINEAR=',diagnostics_a%linear_solves,'|RETRIES=',diagnostics_a%retries
 
 contains
+
+  subroutine rr(k,x)
+    integer,intent(in)::k
+    real(real64),intent(out)::x
+    character(len=64)::s
+    call get_command_argument(k,s)
+    if(len_trim(s)==0) error stop 'F-PE-ELASTIC08 missing numeric argument'
+    read(s,*)x
+  end subroutine
 
   subroutine initialize_parameters(p)
     type(fmr_b110_physical_parameters_t),intent(out)::p
     integer::k
-    real(real64),parameter :: tr=0.05_real64,ts=0.45_real64,alpha=0.02_real64,nvg=1.6_real64
-    real(real64),parameter :: ksat=10.0_real64,lambda=0.5_real64
     p%parameter_set_id=880088_int64
     p%active_nodes=numnod
     allocate(p%z(numnod),p%dz(numnod),p%node_distance(numnod),p%cofgen(24,numnod))
     p%z=z;p%dz=dz;p%node_distance=disnod(1:numnod);p%cofgen=0.0_real64
     do k=1,numnod
-      p%cofgen(1,k)=tr;p%cofgen(2,k)=ts;p%cofgen(3,k)=ksat;p%cofgen(4,k)=alpha
-      p%cofgen(5,k)=lambda;p%cofgen(6,k)=nvg;p%cofgen(7,k)=1.0_real64-1.0_real64/nvg
-      p%cofgen(8,k)=alpha;p%cofgen(9,k)=0.0_real64;p%cofgen(10,k)=ksat
-      p%cofgen(11,k)=0.999_real64;p%cofgen(12,k)=0.99_real64*ksat
+      p%cofgen(1,k)=tr_input;p%cofgen(2,k)=ts_input;p%cofgen(3,k)=ksat_input;p%cofgen(4,k)=alpha_input
+      p%cofgen(5,k)=lambda_input;p%cofgen(6,k)=nvg_input;p%cofgen(7,k)=1.0_real64-1.0_real64/nvg_input
+      p%cofgen(8,k)=alpha_input;p%cofgen(9,k)=0.0_real64;p%cofgen(10,k)=ksat_input
+      p%cofgen(11,k)=0.999_real64;p%cofgen(12,k)=0.99_real64*ksat_input
       p%cofgen(22,k)=-1.0e6_real64;p%cofgen(23,k)=1.0e-12_real64
       p%cofgen(24,k)=1.0e-6_real64
     end do
