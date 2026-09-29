@@ -2,7 +2,7 @@
 import json, math, subprocess, sys
 from pathlib import Path
 
-exe=Path(sys.argv[1]); bank=json.loads(Path(sys.argv[2]).read_text())
+exe=Path(sys.argv[1]); rowexe=Path(sys.argv[2]); bank=json.loads(Path(sys.argv[3]).read_text())
 mats={x["id"]:x for x in bank["materials"]}
 routes=("FLUX","HEAD","RUNOFF")
 dts=[0.00025,0.000125,0.0000625,0.00003125]
@@ -34,7 +34,7 @@ def parse(line):
     d={k:v for k,v in (x.split("=",1) for x in line.split("|")[1:])}
     return d
 
-rows=[]; observations=[]
+rows=[]; observations=[]; row_rows=[]
 for mid in ("B01","B12","O05","O14"):
     m=mats[mid]
     for route in routes:
@@ -56,6 +56,19 @@ for mid in ("B01","B12","O05","O14"):
                 row.update({"eligible":0,"deriv_available":0,"best_abs_err":math.inf,"best_rel_err":math.inf,"base_route":0,
                             "stdout":cp.stdout[-1000:],"stderr":cp.stderr[-1000:]})
             rows.append(row)
+            cp2=subprocess.run([str(rowexe),mid,route,str(m["theta_r"]),str(m["theta_s"]),str(m["alpha"]),str(m["n"]),
+                 str(m["ksat"]),str(m["lambda"]),str(h),str(pd),str(rain),str(dt),str(pmax),str(rsro),str(ktop)],
+                 text=True,capture_output=True)
+            rline=next((parse(x) for x in cp2.stdout.splitlines() if x.startswith("F_PE_TIMEINT17D_ROW_RESULT|")),None)
+            rr={"material":mid,"route":route,"dt":dt,"process_ok":cp2.returncode==0}
+            if rline:
+                rr.update({"eligible":int(rline["ELIGIBLE"]),"j_an":float(rline["J_AN"]),
+                           "best_abs_err":float(rline["BEST_ABS_ERR"]),"best_rel_err":float(rline["BEST_REL_ERR"]),
+                           "base_route":int(rline["BASE_ROUTE"])})
+            else:
+                rr.update({"eligible":0,"j_an":math.nan,"best_abs_err":math.inf,"best_rel_err":math.inf,
+                           "base_route":0,"stdout":cp2.stdout[-1000:],"stderr":cp2.stderr[-1000:]})
+            row_rows.append(rr)
             for o in obs:
                 observations.append({
                     "material":mid,"route":route,"dt":dt,
@@ -71,17 +84,30 @@ frac=mismatch/len(hr) if hr else 1.0
 materials=sorted({x["material"] for x in hr})
 route_set=sorted({x["route"] for x in rows if x["eligible"]>0})
 coverage=(sum(x["eligible"] for x in rows)>=100 and len(materials)>=3 and "HEAD" in route_set and "RUNOFF" in route_set and "FLUX" in route_set)
+eligible_row=[x for x in row_rows if x["eligible"]>0]
+row_bad=[x for x in eligible_row if not (x["best_abs_err"]<=1e-7 or x["best_rel_err"]<=1e-5)]
+row_frac=len(row_bad)/len(eligible_row) if eligible_row else 1.0
+row_routes=sorted({x["route"] for x in eligible_row})
+row_materials=sorted({x["material"] for x in eligible_row})
+coverage=coverage and row_routes==["FLUX","HEAD","RUNOFF"] and len(row_materials)>=3
 if not coverage:
     cls="BLOCKED_TIMEINT17D_FD_COVERAGE"
 elif frac>=0.25:
     cls="TIMEINT17D_PROVIDER_DERIVATIVE_MISMATCH"
+elif row_frac>=0.25:
+    cls="TIMEINT17D_TOP_JACOBIAN_MISMATCH"
+elif row_frac<=0.10:
+    cls="TIMEINT17D_JACOBIAN_CONSISTENT_NONCONTRACTIVE"
 else:
-    cls="TIMEINT17D_PROVIDER_DERIVATIVE_PASSES_P0"
+    cls="TIMEINT17D_MIXED_STATIC_ROUTE_DEFECT"
 summary={"classification":cls,"coverage_ok":coverage,"eligible_epsilon_observations":sum(x["eligible"] for x in rows),
          "eligible_head_runoff_fixtures":len(hr),"provider_mismatch_fixtures":mismatch,
-         "provider_mismatch_fraction":frac,"materials":materials,"routes":route_set,
-         "process_failures":sum(not x["process_ok"] for x in rows)}
+         "provider_mismatch_fraction":frac,"eligible_toprow_fixtures":len(eligible_row),
+         "toprow_mismatch_fixtures":len(row_bad),"toprow_mismatch_fraction":row_frac,
+         "materials":sorted(set(materials)|set(row_materials)),"routes":sorted(set(route_set)|set(row_routes)),
+         "process_failures":sum(not x["process_ok"] for x in rows)+sum(not x["process_ok"] for x in row_rows)}
 print("F_PE_TIMEINT17D_RESULTS="+json.dumps(rows,separators=(",",":"),sort_keys=True))
 print("F_PE_TIMEINT17D_OBSERVATIONS="+json.dumps(observations,separators=(",",":"),sort_keys=True))
+print("F_PE_TIMEINT17D_TOPROW="+json.dumps(row_rows,separators=(",",":"),sort_keys=True))
 print("F_PE_TIMEINT17D_SUMMARY="+json.dumps(summary,separators=(",",":"),sort_keys=True))
 print("F_PE_TIMEINT17D=PASS")
