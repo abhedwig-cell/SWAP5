@@ -142,7 +142,7 @@ contains
     end if
 
     nclamp=count(k_pred<1.0e-12_real64)
-    clamp_count=clamp_count+nclamp
+    if(nclamp>0) clamp_count=clamp_count+1
     k_pred=max(k_pred,1.0e-12_real64)
 
     call bind_b110_default_mvg_provider(base_constitutive,hp,dt)
