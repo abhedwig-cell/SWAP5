@@ -1,0 +1,24 @@
+name: F-PE-NLGLOB14Z5 split late retreat ownership
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z5-split-late-retreat
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z5*.md'
+      - 'tests/fpe/run_fpe_nlglob14z5*.py'
+      - 'tests/fpe/run_fpe_nlglob14z5*.sh'
+      - '.github/workflows/f-pe-nlglob14z5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  split-late-retreat:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z5.sh
