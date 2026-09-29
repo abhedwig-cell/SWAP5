@@ -185,6 +185,13 @@ contains
     call app%initialize(cfg,status)
     call req(status==FMR_APP_BOOT_OK.and.app%ready(),'bootstrap '//trim(label))
     call app%run_standalone(T0,T1,results,status)
+    write(*,'(A,A,A,I0,A,L1,A,I0)')'F_PE_ELASTIC45_RUN_STATUS|',trim(label),'|status=',status, &
+         '|allocated=',allocated(results),'|size=',merge(size(results),0,allocated(results))
+    if(allocated(results).and.size(results)==1)then
+      write(*,'(A,A,A,L1,A,L1,A,I0,A,I0)')'F_PE_ELASTIC45_RUN_RESULT|',trim(label), &
+           '|completed=',results(1)%completed,'|committed=',results(1)%committed, &
+           '|kernel_status=',results(1)%kernel_status,'|commit_status=',results(1)%commit_status
+    end if
     call req(status==FMR_APP_BOOT_OK.and.allocated(results).and.size(results)==1,'run '//trim(label))
     result=results(1)
     call emit_metrics(label,result,water)
