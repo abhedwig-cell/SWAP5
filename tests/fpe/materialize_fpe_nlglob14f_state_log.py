@@ -11,7 +11,7 @@ src=Path(args.source).read_text()
 decl="  logical :: nl14d_saturated_mode\n"
 if decl not in src:
     raise SystemExit("NLGLOB14F saturated-mode declaration marker missing")
-src=src.replace(decl,decl+"  integer :: nl14f_event_node,nl14f_i\n",1)
+src=src.replace(decl,decl+"  integer :: nl14f_event_node\n",1)
 
 init="  nl14d_saturated_mode=.false.\n"
 if init not in src:
