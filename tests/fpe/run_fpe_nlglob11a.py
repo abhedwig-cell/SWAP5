@@ -28,7 +28,8 @@ smooth_ok=bool(ss.get("advance") and ss.get("complete") and ss.get("median_refin
                ss.get("median_refined_top_theta_order",0)>=1.6 and ss.get("head_cases_order_ge_1p5",0)>=3 and
                ss.get("ledger_ok") and ss.get("roundtrip_ok") and ss.get("native_balance_ok") and
                ss.get("median_work_ratio_vs_klag_be",999)<=1.15)
-dynamic_ok=bool(ds.get("case_count")==96 and headspace_fail==0 and pred_domain_fail==0 and
+dynamic_ok=bool(ds.get("case_count")==96 and ds.get("process_failures",999)==0 and
+                headspace_fail==0 and pred_domain_fail==0 and
                 ds.get("recovery_fraction",0)>=.80 and set(ds.get("completed_modes",[]))=={"TG","KLAG"} and
                 set(ds.get("completed_routes",[]))=={"FLUX","HEAD","RUNOFF"} and len(ds.get("completed_materials",[]))>=3 and
                 ds.get("max_ledger",999)<=5e-8 and ds.get("max_cumulative_ledger",999)<=5e-8 and
@@ -50,11 +51,13 @@ summary={"classification":cls,"smooth_ok":smooth_ok,"dynamic_ok":dynamic_ok,
          "smooth_work_ratio":ss.get("median_work_ratio_vs_klag_be"),
          "dynamic_recovery_fraction":ds.get("recovery_fraction"),
          "dynamic_complete_cases":ds.get("complete_cases"),
+         "dynamic_process_failures":ds.get("process_failures"),
          "headspace_predictor_failures":headspace_fail,
          "legacy_predictor_domain_failures":pred_domain_fail,
          "dynamic_max_ledger":ds.get("max_ledger"),
          "dynamic_max_cumulative_ledger":ds.get("max_cumulative_ledger")}
 print("F_PE_NLGLOB11A_SMOOTH="+json.dumps(ss,separators=(",",":"),sort_keys=True))
+print("F_PE_NLGLOB11A_DYNAMIC_RECORDS="+json.dumps(dr,separators=(",",":"),sort_keys=True))
 print("F_PE_NLGLOB11A_DYNAMIC="+json.dumps(ds,separators=(",",":"),sort_keys=True))
 print("F_PE_NLGLOB11A_SUMMARY="+json.dumps(summary,separators=(",",":"),sort_keys=True))
 print("F_PE_NLGLOB11A=PASS")
