@@ -250,7 +250,7 @@ f"  call fmr_prepare_application_parameters_with_elastic_storage('{fstr(cfg)}','
 "    call init_config(cfgnum)",
 "    call fmr_run_serialized_physical_multiswap([column],[template],params,forcing,committed,cfgnum,top, &",
 "         0.0_real64,DURATION,1,results,diagnostics,aggregate,dispatch,materialize_worker_assignments=.false., &",
-"         materialize_summary_diagnostics=.false.,materialize_diagnostic_metadata=.false., &"
+"         materialize_summary_diagnostics=.false.,materialize_diagnostic_metadata=.false., &",
 "         materialize_column_diagnostics=.false.,trusted_prepared_parameters=.true.)",
 "    call req(dispatch==FMR_SERIAL_DISPATCH_OK,'dispatch')",
 "    call req(allocated(results).and.size(results)==1,'result shape')",
