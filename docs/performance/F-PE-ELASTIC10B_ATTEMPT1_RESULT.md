@@ -64,3 +64,29 @@ The corrected pilot must therefore proceed:
 - then 25 km if necessary.
 
 No scientific acceptance criterion changed after seeing the invalid result.
+
+
+## Pre-valid-run classifier scope refinement
+
+Before any valid BHR-GT object pilot completed, a second parser-review finding was
+recorded.
+
+The readiness classifier originally searched SWE `values`, stress and strain
+evidence over the complete BHR-GT object. One BHR-GT registration object can
+contain multiple analyses, so an unrelated analysis payload could otherwise
+contribute a nonempty SWE block to settlement readiness.
+
+The parser was therefore tightened before valid object evidence to:
+
+- collect mechanical readiness evidence separately inside each
+  `SettlementCharacteristicsDetermination` subtree;
+- classify each settlement determination independently;
+- derive object readiness only from those determination-level classes;
+- retain depth, density, moisture, quality and organic-matter fields as
+  object-level descriptive metadata.
+
+No discovery geometry, `analysisType`, radius sequence, stopping rule, selected
+object count, readiness definitions or success criterion changed.
+
+This is classified as a fail-closed evidence-binding correction, not a changed
+scientific hypothesis or post-result threshold adjustment.
