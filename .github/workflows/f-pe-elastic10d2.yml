@@ -1,0 +1,45 @@
+name: F-PE-ELASTIC10D2 descriptor audit
+
+concurrency:
+  group: f-pe-elastic10d2-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic10-bhrgt-targets
+    paths:
+      - 'research/elastic/bro_bhrgt_descriptor_audit.py'
+      - 'docs/performance/F-PE-ELASTIC10D2_DESCRIPTOR_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic10d2.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download frozen Phase-D artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10-bhrgt-schema
+          path: ${{ runner.temp }}/elastic10d
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36540905498
+
+      - name: Audit source-bound descriptors without network retrieval
+        run: |
+          python research/elastic/bro_bhrgt_descriptor_audit.py \
+            --artifact-dir "$RUNNER_TEMP/elastic10d" \
+            --output "$RUNNER_TEMP/elastic10d2/descriptor-audit.json"
+
+      - name: Upload bounded D2 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic10d2-descriptor-audit
+          path: ${{ runner.temp }}/elastic10d2/descriptor-audit.json
