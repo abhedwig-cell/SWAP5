@@ -1,0 +1,55 @@
+{
+  "work_unit": "F-PE-ELASTIC18",
+  "workstream": "VQ/application grid normalization",
+  "baseline": "ea6a0617ded0c2e6bee89640e090a0aed8a558c2",
+  "checkpoint_commit": "9839864e165dd555920df02d9a25b5090a402255",
+  "last_reconciled_head": "9839864e165dd555920df02d9a25b5090a402255",
+  "last_reconciled_upstream": "ea6a0617ded0c2e6bee89640e090a0aed8a558c2",
+  "scope": "Normalize explicitly typed SWAP centimetre grid geometry to ELASTIC17 metres-below-surface geometry, with strict centre/thickness consistency and no unit guessing.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC18_GRID_NORMALIZATION_PREREGISTRATION.md",
+    "src/adapter/mod_fmr_elastic_storage_swap_grid_normalization.f90",
+    "tests/fpe/test_fpe_elastic18_grid_normalization.f90",
+    "tests/fpe/run_fpe_elastic18.sh",
+    ".github/workflows/f-pe-elastic18.yml",
+    "docs/performance/F-PE-ELASTIC17_CLOSURE.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/test_fpe_elastic18_grid_normalization.f90",
+    "tests/fpe/run_fpe_elastic18.sh",
+    ".github/workflows/f-pe-elastic18.yml"
+  ],
+  "evidence_paths": [
+    "tests/rom/materialize_f_rom0_headcalc_stubs.py explicit --dz-cm grid materializer",
+    "docs/science/soil-water-flow.md z positive-up convention"
+  ],
+  "dependency_surface": [
+    "ELASTIC17 admitted normalized horizon-to-node mapper",
+    "explicit z_cm/dz_cm adapter contract",
+    "SWAP positive-up z convention"
+  ],
+  "interfaces_changed": [
+    "new stateless adapter module only"
+  ],
+  "invariants_affected": [
+    "kernel independent of I/O",
+    "no hidden unit inference",
+    "geometry conversion remains outside runtime/solver policy",
+    "material-boundary straddling semantics preserved"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the ELASTIC18 workflow on checkpoint 9839864e165dd555920df02d9a25b5090a402255 and apply A1-A8 exactly.",
+  "recovery_point": "work/f-pe-elastic18-grid-normalization@9839864e165dd555920df02d9a25b5090a402255"
+}
