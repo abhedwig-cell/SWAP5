@@ -1,4 +1,4 @@
-# F-PE-TIMEINT17C preregistration — shared dynamic-top endpoint nonlinear-path attribution and repair
+# F-PE-TIMEINT17C preregistration — in-Newton dynamic-top route-path attribution
 
 Date: 2026-09-29
 
@@ -6,188 +6,193 @@ Status: `PREREGISTERED_BEFORE_RESULTS`
 
 Parent authority:
 
-- TIMEINT17B: `TIMEINT17B_ENDPOINT_SOLVER_DOMINANT`;
-- secondary: `TIMEINT17B_SHARED_DYNAMIC_TOP_BLOCKER`.
+- TIMEINT17B primary: `TIMEINT17B_ENDPOINT_SOLVER_DOMINANT`;
+- TIMEINT17B secondary: `TIMEINT17B_SHARED_DYNAMIC_TOP_BLOCKER`.
 
 Canonical base:
 
 `integration/f-ci-canonical@e47f337c506551f865aee31288215a7fb91b4214`
 
-## Purpose
+## Question
 
-Identify why the dynamic-top endpoint solve shared by TG and KLAG exhausts the frozen nonlinear/backtracking envelope before route-event semantics can be assessed.
+Why does the shared dynamic-top endpoint solve fail before a converged route event can be classified?
 
-TIMEINT17C is a nonlinear-path attribution and research-repair work unit.
+TIMEINT17C distinguishes:
 
-It does not qualify event localization, temporal order, adaptive stepping or production admission.
+1. endpoint failure while the dynamic-top provider stays on one route; from
+2. endpoint failure accompanied by route switching/chatter inside Newton/backtracking evaluations.
 
-## Frozen bank
+## Frozen numerical mechanism
 
-Use only the frozen TIMEINT17A2 fixtures.
+No numerical behavior changes.
 
-- B01, B12, O05, O14;
-- FLUX, HEAD, RUNOFF;
-- H = 0.001 d;
-- dt = 0.00025, 0.000125, 0.0000625, 0.00003125 d;
-- A2 fixture derivation with dtop = 10 cm.
+Reuse the exact TIMEINT17A2 bank and endpoint solves:
 
-Primary endpoint attribution may use the first terminal interval only because TIMEINT17B established that all 48 TG fixtures terminate through endpoint solve failure.
+- identical states, rain and dt;
+- identical TIMEINT16C TG staging;
+- identical KLAG comparator;
+- identical dynamic-top provider;
+- identical MAXIT=8;
+- identical backtracking limit=8;
+- identical balance/head/ponding tolerances;
+- identical K handling;
+- identical physical ledger.
 
-## Frozen numerical envelope
+The only change is a test-only logging wrapper around the existing dynamic-top provider.
 
-Unchanged:
+The wrapper delegates every evaluation to the same provider and returns the result unchanged.
 
-- MAXIT = 8;
-- max backtracking = 8;
-- existing balance/head/ponding tolerances;
-- conductivity mean method 1;
-- zero bottom flux;
-- no sinks;
-- no macropores.
+## Logged sequence
 
-No tolerance or iteration-limit rescue.
+For every dynamic-top provider evaluation inside a requested trial record, in order:
 
-## Attribution arms
-
-All arms are test-only and may not alter accepted physical semantics.
-
-### C0 CURRENT_DYNAMIC
-
-Authority control.
-
-Use the current dynamic-top endpoint provider exactly as in TIMEINT17B.
-
-Expected reference: endpoint failure on the frozen A2 requests.
-
-### C1 ROUTE_FROZEN_DIAGNOSTIC
-
-Freeze only the boundary-route algebra to the accepted-origin physical route during the endpoint nonlinear trial.
-
-Requirements:
-
-- keep the same current-step predicted K used by the endpoint solve;
-- keep the same physical rain, previous ponding and surface parameters;
-- evaluate the route-local residual continuously without allowing route reclassification during Newton;
-- do not publish this trial as accepted physical behavior;
-- do not change MAXIT/tolerances.
-
-Purpose:
-
-test whether route switching/nonsmooth route reclassification inside Newton is the dominant path blocker.
-
-### C2 SURFACE_JACOBIAN_CONSISTENT
-
-Apply the current physical dynamic-top route, but make the test-only top residual and its Newton derivative algebraically consistent with the same route-local surface equation and fixed predicted-K authority.
-
-No finite-difference tuning and no altered physical flux law.
-
-Purpose:
-
-test residual/Jacobian consistency separately from route selection.
-
-### C3 PONDING_STATE_CONSISTENT
-
-Diagnostic only if C1/C2 do not explain the blocker.
-
-Ensure the Newton candidate ponding variable used by the provider is the same candidate surface state represented in the residual/Jacobian, while previous accepted ponding remains immutable transaction state.
-
-No mixing previous and candidate ponding in one derivative.
-
-Purpose:
-
-test surface-state ownership mismatch.
-
-## Required diagnostics
-
-For every arm and fixture record:
-
-- solve status;
-- NL/BACK/JAC/LIN;
-- residual norm or native balance residual by nonlinear iteration if available;
-- route observed by every provider evaluation;
-- candidate top head;
-- candidate ponding;
+- evaluation index;
+- candidate top pressure head;
+- candidate top water content;
+- candidate ponding depth;
+- returned status;
+- returned regime;
+- returned route string;
 - actual top flux;
-- surface-head derivative availability/value;
-- predicted K top;
-- accepted state remains unchanged for failed/diagnostic trials.
+- returned candidate ponding depth;
+- runoff depth;
+- surface-head derivative availability and value.
 
-At minimum record terminal solve result and total route-switch count during Newton.
+The log must not alter provider state or candidate state.
 
-## Frozen decision rules
+## Route code
 
-### ROUTE_SWITCHING_DOMINANT
+Map returned routes to:
+
+- FLUX: route contains `surface-flux`;
+- HEAD: route contains `ponded-head` and not `linear-runoff`;
+- RUNOFF: route contains `linear-runoff`;
+- ATMOSPHERIC: route contains `atmospheric-head`;
+- OTHER: any remaining route.
+
+## Per-terminal-trial diagnostics
+
+For the first non-complete terminal trial of every A2 run record:
+
+- terminal reason from TIMEINT17B;
+- total provider evaluations;
+- distinct route codes observed;
+- number of consecutive route-code transitions;
+- first route;
+- last route;
+- minimum/maximum candidate ponding;
+- minimum/maximum candidate top head;
+- minimum/maximum actual top flux;
+- count of provider-unavailable evaluations;
+- count of FLUX/HEAD/RUNOFF/ATMOSPHERIC evaluations.
+
+## Frozen attribution classes
+
+### STATIC_ROUTE_ENDPOINT_FAILURE
+
+The endpoint solve fails and all available provider evaluations remain on one route code.
+
+### INTERNAL_ROUTE_SWITCHING_ENDPOINT_FAILURE
+
+The endpoint solve fails and at least one consecutive provider evaluation changes physical route code.
+
+### PROVIDER_AVAILABILITY_FAILURE
+
+The endpoint solve fails and at least one provider evaluation is unavailable or OTHER due to unavailable/invalid provider state.
+
+### NON_ENDPOINT_TERMINAL
+
+TIMEINT17B terminal reason is not `ENDPOINT_SOLVE_FAILURE`.
+
+## Aggregate decisions
+
+Use all 48 A2 TG runs and all 48 matched KLAG runs.
+
+### ROUTE_SWITCH_DOMINANT
 
 Classify:
 
-`TIMEINT17C_ROUTE_SWITCHING_DOMINANT`
+`TIMEINT17C_IN_NEWTON_ROUTE_SWITCH_DOMINANT`
 
-if:
+if >=75% of TG endpoint-solve failures are `INTERNAL_ROUTE_SWITCHING_ENDPOINT_FAILURE`.
 
-1. C0 fails on >=75% of frozen requests;
-2. C1 converges on >=75% of the corresponding C0 failures;
-3. C1 accepted-mass diagnostic for its converged route-local trial is within 5e-8 cm;
-4. no tolerance/iteration change is used.
-
-This opens a later event-consistent route-local endpoint formulation, not immediate event localization.
-
-### JACOBIAN_CONSISTENCY_DOMINANT
+### STATIC_ROUTE_SOLVER_DOMINANT
 
 Classify:
 
-`TIMEINT17C_SURFACE_JACOBIAN_DOMINANT`
+`TIMEINT17C_STATIC_ROUTE_SOLVER_DOMINANT`
 
-if C1 does not meet its recovery threshold but C2 converges on >=75% of corresponding C0 failures under the unchanged envelope.
+if >=75% of TG endpoint-solve failures are `STATIC_ROUTE_ENDPOINT_FAILURE`.
 
-### PONDING_OWNERSHIP_DOMINANT
-
-Classify:
-
-`TIMEINT17C_PONDING_STATE_OWNERSHIP_DOMINANT`
-
-if C1/C2 do not recover >=75%, but C3 does.
-
-### MIXED_NONLINEAR_PATH_BLOCKER
+### PROVIDER_AVAILABILITY_DOMINANT
 
 Classify:
 
-`TIMEINT17C_MIXED_NONLINEAR_PATH_BLOCKER`
+`TIMEINT17C_PROVIDER_AVAILABILITY_DOMINANT`
 
-if no single frozen diagnostic arm recovers >=75% of C0 failures.
+if >=50% of TG endpoint-solve failures contain provider-unavailable evaluations.
 
-### INVALID_DIAGNOSTIC
+### MIXED_ROUTE_PATH_BLOCKER
 
-Any diagnostic arm that changes physical forcing, tolerance, MAXIT, accepted mass semantics or predicted-K authority is invalid and cannot support attribution.
+Otherwise:
 
-## Research repair boundary
+`TIMEINT17C_MIXED_ROUTE_PATH_BLOCKER`.
 
-A positive diagnostic attribution may justify a separate repair candidate in TIMEINT17C only if:
+## TG versus KLAG secondary attribution
 
-- it is algebraically derived from the existing physical boundary law;
-- it retains transaction semantics;
-- accepted physical mass remains exact;
-- it does not change route event definitions.
+For matched fixtures compare whether both methods show the same route-path class.
 
-Any production source change requires a later separately preregistered qualification/admission step.
+If >=75% of TG endpoint failures have the same route-path class in KLAG, add:
+
+`TIMEINT17C_SHARED_ROUTE_PATH_BLOCKER`.
+
+If TG route switching is materially more common than KLAG, preserve a TG-specific composition signal.
+
+No solver repair follows automatically from this comparison.
+
+## Scientific consequences
+
+If route-switch dominant:
+
+- event surfaces are being encountered *inside* the nonlinear endpoint solve;
+- do not increase MAXIT as first response;
+- next work must investigate event-aware nonlinear decomposition or route-frozen endpoint subsolves.
+
+If static-route solver dominant:
+
+- event semantics are not the immediate cause;
+- next work must attribute residual/Jacobian/convergence behavior inside one route before event localization.
+
+If provider availability dominant:
+
+- repair provider contract/test composition before temporal conclusions.
+
+## Mass and transaction invariants
+
+Failed endpoint trials publish no state and no mass.
+
+Only previously accepted intervals contribute to mass diagnostics.
+
+Logging must not mutate accepted or candidate state.
+
+No hidden commit during provider evaluations.
 
 ## Stop rules
 
-No:
+TIMEINT17C does not:
 
-- event bisection;
-- known-time event qualification;
-- variable-step TG;
-- LTE/AUTO work;
-- MAXIT change;
-- backtracking change;
-- balance/head/ponding tolerance change;
-- forcing or fixture change;
-- SWKIMPL=1 rescue.
+- change MAXIT;
+- change backtracking;
+- change tolerances;
+- change timestep;
+- change forcing;
+- change K staging;
+- freeze a route artificially;
+- localize or split events;
+- modify production `src/**`.
 
 ## Production boundary
 
 Research attribution only.
-
-No production default change.
 
 `LEGACY_NUMERICS` remains production default.
