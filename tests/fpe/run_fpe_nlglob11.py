@@ -34,6 +34,10 @@ for mid in ("B01","B12","O05","O14"):
         res=next((fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_TIMEINT17A_RESULT|")),None)
         reason=res["TERMINAL_REASON"] if res else "MISSING"
         rec={"material":mid,"route":route,"mode":mode,"dt":dt,"reason":reason}
+        if res is None:
+          rec["returncode"]=cp.returncode
+          rec["stderr_tail"]="\\n".join(cp.stderr.splitlines()[-6:])
+          rec["stdout_tail"]="\\n".join(cp.stdout.splitlines()[-6:])
         if res:
           rec.update({"eligible":int(res["ELIGIBLE"])==1,"max_ledger":abs(float(res["MAX_LEDGER"])),
                       "cum_ledger":abs(float(res["CUM_LEDGER"])),"top_theta":float(res["TOP_THETA"]),
