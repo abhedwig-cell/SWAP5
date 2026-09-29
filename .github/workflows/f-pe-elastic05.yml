@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
       - 'docs/performance/F-PE-ELASTIC05_PREREGISTRATION.md'
       - 'tests/fpe/data/fpe_elastic05_staringreeks_2018.csv'
       - 'tests/fpe/mod_fpe_elastic05_legacy_oracle.f90'
