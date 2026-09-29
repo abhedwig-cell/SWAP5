@@ -226,3 +226,6 @@ A work benefit is reported descriptively in Phase A. No production admission thr
 Candidate development uses only the 16 cases listed as `screening_cases` in `F-PE-BOFEK01_TESTBANK.json`.
 
 The four existing `holdout_cases` remain uninspected for soil-rule selection. They may be opened only after a candidate soil-dependent rule and its thresholds have been frozen.
+
+
+Draft research PR: `#740`.
