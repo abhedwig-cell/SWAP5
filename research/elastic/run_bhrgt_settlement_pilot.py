@@ -46,43 +46,33 @@ def bro_ids_from_xml(data:bytes)->list[str]:
 def norm(s:str)->str:
     return re.sub(r"[^a-z0-9]+","",s.lower())
 
-def audit_object(data:bytes, bro_id:str)->dict:
-    root=ET.fromstring(data)
-    elems=list(root.iter())
-    names=[local(e.tag) for e in elems]
-    lower=[x.lower() for x in names]
-    alltext="\n".join(txt(e) for e in elems if txt(e))
-    xmltext=data.decode("utf-8","ignore")
-    hrefs=[]
+def _elements_named(elems,*wanted):
+    w={norm(x) for x in wanted}
+    return [e for e in elems if norm(local(e.tag)) in w]
+
+def _hrefs(elems)->list[str]:
+    out=[]
     for e in elems:
       for key,value in e.attrib.items():
         if local(key).lower()=="href":
-          hrefs.append(value)
+          out.append(value)
+    return out
+
+def audit_settlement(det,index:int)->dict:
+    elems=list(det.iter())
+    xmltext=ET.tostring(det,encoding="unicode")
+    hrefs=_hrefs(elems)
     href_text="\n".join(hrefs)
 
-    def elements_named(*wanted):
-      w={norm(x) for x in wanted}
-      return [e for e in elems if norm(local(e.tag)) in w]
-
-    settlement=[e for e in elems if "settlementcharacteristicsdetermination" in norm(local(e.tag))]
-    step_types=[txt(e) for e in elements_named("stepType") if txt(e)]
-    vertical_stress=[txt(e) for e in elements_named("verticalStress") if txt(e)]
-    vertical_strain=[txt(e) for e in elements_named("verticalStrain") if txt(e)]
-    eff_stress=[txt(e) for e in elements_named("verticalEffectiveStress") if txt(e)]
-    pore=[txt(e) for e in elements_named("excessPoreWaterPressure","poreWaterPressureDifference") if txt(e)]
+    step_elems=_elements_named(elems,"stepType")
+    step_types=[txt(e) for e in step_elems if txt(e)]
+    vertical_stress=[txt(e) for e in _elements_named(elems,"verticalStress") if txt(e)]
+    vertical_strain=[txt(e) for e in _elements_named(elems,"verticalStrain") if txt(e)]
+    eff_stress=[txt(e) for e in _elements_named(elems,"verticalEffectiveStress","verticalGrainStress") if txt(e)]
+    pore=[txt(e) for e in _elements_named(elems,"excessPoreWaterPressure","poreWaterPressureDifference") if txt(e)]
     values=[txt(e) for e in elems if norm(local(e.tag))=="values" and txt(e)]
-    begin_depth=[txt(e) for e in elements_named("beginDepth","startDepth") if txt(e)]
-    end_depth=[txt(e) for e in elements_named("endDepth") if txt(e)]
-    moisture=[txt(e) for e in elements_named("sampleMoistness","waterContent") if txt(e)]
-    quality=[txt(e) for e in elements_named("sampleQuality") if txt(e)]
-    density=[txt(e) for e in elements_named("volumetricMassDensity") if txt(e)]
-    solids_density=[txt(e) for e in elements_named("volumetricMassDensitySolids") if txt(e)]
-    organic=[txt(e) for e in elements_named("organicMatterContent") if txt(e)]
-    methods=[txt(e) for e in elements_named("determinationMethod","determinationProcedure") if txt(e)]
+    methods=[txt(e) for e in _elements_named(elems,"determinationMethod","determinationProcedure") if txt(e)]
 
-    # SWE DataRecord field names can live in external definitions referenced
-    # through xlink:href rather than as literal field names in the object.
-    # Bind the catalogue-defined record identities before classifying payloads.
     raw_has_strain=("verticalStrain" in xmltext or
                     "HeightAtSpecificState.xml" in href_text or
                     "StressAtSpecificSettlement.xml" in href_text)
@@ -94,26 +84,19 @@ def audit_object(data:bytes, bro_id:str)->dict:
     height_record=any("HeightAtSpecificState.xml" in x for x in hrefs)
     stress_record=any("StressAtSpecificSettlement.xml" in x for x in hrefs)
 
-    # BRO codelist values may be supplied as text or as an xlink target.
     step_tokens=list(step_types)
-    for e in elements_named("stepType"):
+    for e in step_elems:
       for key,value in e.attrib.items():
         if local(key).lower()=="href":
           step_tokens.append(value.rsplit("/",1)[-1])
     unload=any(("ontlast" in x.lower() or "unload" in x.lower()) for x in step_tokens)
 
-    # For load-controlled settlement, verticalStress is a determination-step
-    # scalar and the HeightAtSpecificState series supplies elapsed time/strain.
-    # A recoverable unload/reload candidate therefore does not require a
-    # within-step stress-series DataArray.
     scalar_stress=len(vertical_stress)>0 or "verticalStress" in xmltext
     strain_series=raw_has_strain and (height_record or stress_record or len(vertical_strain)>0)
     effective_series=stress_record and raw_has_eff
     nonempty_series=len(values)>0
 
-    if not settlement:
-      readiness="R0"
-    elif unload and scalar_stress and strain_series and nonempty_series:
+    if unload and scalar_stress and strain_series and nonempty_series:
       readiness="R2"
     elif effective_series and strain_series and nonempty_series:
       readiness="R3"
@@ -123,14 +106,15 @@ def audit_object(data:bytes, bro_id:str)->dict:
       readiness="R0"
 
     return {
-      "bro_id":bro_id,
+      "index":index,
       "readiness":readiness,
-      "settlement_determination_count":len(settlement),
       "step_types":step_types,
-      "vertical_stress_value_count":len(vertical_stress),
-      "vertical_strain_value_count":len(vertical_strain),
-      "vertical_effective_stress_value_count":len(eff_stress),
-      "pore_pressure_value_count":len(pore),
+      "step_type_tokens":step_tokens,
+      "explicit_unload_step":unload,
+      "vertical_stress_values":vertical_stress,
+      "vertical_strain_values":vertical_strain,
+      "vertical_effective_stress_values":eff_stress,
+      "pore_pressure_values":pore,
       "swe_values_block_count":len(values),
       "swe_values_total_chars":sum(len(x) for x in values),
       "raw_has_vertical_strain_field":raw_has_strain,
@@ -139,8 +123,31 @@ def audit_object(data:bytes, bro_id:str)->dict:
       "height_at_specific_state_record":height_record,
       "stress_at_specific_settlement_record":stress_record,
       "swe_record_hrefs":hrefs,
-      "step_type_tokens":step_tokens,
-      "explicit_unload_step":unload,
+      "determination_method_values":methods,
+    }
+
+def audit_object(data:bytes, bro_id:str)->dict:
+    root=ET.fromstring(data)
+    elems=list(root.iter())
+    settlement=[e for e in elems if "settlementcharacteristicsdetermination" in norm(local(e.tag))]
+    determinations=[audit_settlement(det,i+1) for i,det in enumerate(settlement)]
+
+    rank={"R0":0,"R1":1,"R2":2,"R3":3}
+    readiness=max((d["readiness"] for d in determinations),key=lambda x:rank[x],default="R0")
+
+    begin_depth=[txt(e) for e in _elements_named(elems,"beginDepth","startDepth") if txt(e)]
+    end_depth=[txt(e) for e in _elements_named(elems,"endDepth") if txt(e)]
+    moisture=[txt(e) for e in _elements_named(elems,"sampleMoistness","waterContent") if txt(e)]
+    quality=[txt(e) for e in _elements_named(elems,"sampleQuality") if txt(e)]
+    density=[txt(e) for e in _elements_named(elems,"volumetricMassDensity") if txt(e)]
+    solids_density=[txt(e) for e in _elements_named(elems,"volumetricMassDensitySolids") if txt(e)]
+    organic=[txt(e) for e in _elements_named(elems,"organicMatterContent") if txt(e)]
+
+    return {
+      "bro_id":bro_id,
+      "readiness":readiness,
+      "settlement_determination_count":len(settlement),
+      "determinations":determinations,
       "begin_depth_values":begin_depth,
       "end_depth_values":end_depth,
       "sample_moisture_values":moisture,
@@ -148,7 +155,6 @@ def audit_object(data:bytes, bro_id:str)->dict:
       "volumetric_mass_density_values":density,
       "solids_density_values":solids_density,
       "organic_matter_values":organic,
-      "determination_method_values":methods,
     }
 
 def main():
