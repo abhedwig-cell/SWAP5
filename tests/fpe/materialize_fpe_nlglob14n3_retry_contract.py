@@ -65,7 +65,10 @@ new_trial="""      trial_dt=phi_mid*nominal_dt
         nl14n3_retry_contractions=nl14n3_retry_contractions+1
         write(*,'(*(g0))') 'F_PE_NLGLOB14N3_RETRY_CONTRACT|STEP=',step_index,'|ITER=',ibis, &
              '|PHI_LO=',phi_lo,'|PHI_HI=',phi_hi,'|PHI_MID=',phi_mid,'|TRIAL_DT=',trial_dt, &
-             '|COUNT=',nl14n3_retry_contractions
+             '|COUNT=',nl14n3_retry_contractions, &
+             '|RESTORE_H=',maxval(abs(state%pressure_head-saved_state%pressure_head)), &
+             '|RESTORE_THETA=',maxval(abs(state%water_content-saved_state%water_content)), &
+             '|RESTORE_POND=',abs(state%ponding_depth-saved_state%ponding_depth)
         cycle
       end if
 
