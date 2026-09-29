@@ -68,7 +68,7 @@ def one(route,dt):
     valid=(cp.returncode==0 and complete and finite and maxledger<=5e-8 and cumledger<=5e-8
            and not inconsistent and not noncontig and not skipped)
     return {"route":route,"dt":dt,"valid":valid,"complete":complete,"finite":finite,
-      "process_ok":cp.returncode==0,"terminal_reason":res["TERMINAL_REASON"] if res else None,
+      "process_ok":cp.returncode==0,"terminal_reason":res["TERMINAL_REASON"] if res else None,"transition_step":int(res["TRANSITION_STEP"]) if res else None,"failure_time":int(res["TRANSITION_STEP"])*dt if res and res["TERMINAL_REASON"]!="COMPLETE_SAME_ROUTE" else None,
       "max_ledger":maxledger,"cum_ledger":cumledger,"indicator_inconsistent":inconsistent,
       "noncontiguous":noncontig,"skipped":skipped,"reverse":reverse,
       "last7_time":pre[1] if pre else last7,"first8_time":post[1] if post else first8,"last_state_time":last_state_time,
@@ -85,10 +85,11 @@ for route in routes:
     t4=next(x["first8_time"] for x in rr if abs(x["dt"]-1.5625e-5)<1e-12)
     t2=next(x["first8_time"] for x in rr if abs(x["dt"]-6.25e-5)<1e-12)
     bracket_lo=t2-6.25e-5; bracket_hi=t2+6.25e-5
-    diff=abs(t3-t4)
+    diff=None if t3 is None or t4 is None else abs(t3-t4)
+    in_bracket=False if t4 is None else bracket_lo<=t4<=bracket_hi
     conv[route]={"dt3_time":t3,"dt4_time":t4,"difference":diff,
-                 "threshold":3.125e-5,"finest_in_coarse_bracket":bracket_lo<=t4<=bracket_hi,
-                 "pass":diff<=3.125e-5 and bracket_lo<=t4<=bracket_hi}
+                 "threshold":3.125e-5,"finest_in_coarse_bracket":in_bracket,
+                 "pass":diff is not None and diff<=3.125e-5 and in_bracket}
 
 if not coverage:
     agg="BLOCKED_NLGLOB14Z1_REFINEMENT"
