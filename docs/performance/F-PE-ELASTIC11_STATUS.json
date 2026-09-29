@@ -2,8 +2,8 @@
   "work_unit": "F-PE-ELASTIC11",
   "workstream": "VQ/research physical parameter evidence",
   "baseline": "54d0990915ad5e4243ec1edf96b832115254ab6b",
-  "checkpoint_commit": "ed2ec9a054867af36b8cd67c393f004d3b04d754",
-  "last_reconciled_head": "ed2ec9a054867af36b8cd67c393f004d3b04d754",
+  "checkpoint_commit": "7217f366ecb8bf52a5e4ceea4b6d35f35c75f15b",
+  "last_reconciled_head": "7217f366ecb8bf52a5e4ceea4b6d35f35c75f15b",
   "last_reconciled_upstream": "30e507fc8bdf7f7c37f327ab378e5c4a8ae39b94",
   "scope": "Calibration selection and one-shot independent holdout qualification of the frozen M1 physical ELAS predictor.",
   "relevant_paths": [
@@ -16,7 +16,9 @@
     "docs/performance/F-PE-ELASTIC11A_RESULT.md",
     "docs/performance/F-PE-ELASTIC11B_HOLDOUT_PREREGISTRATION.md",
     "research/elastic/bro_bhrgt_holdout_validate.py",
-    ".github/workflows/f-pe-elastic11b.yml"
+    ".github/workflows/f-pe-elastic11b.yml",
+    "docs/performance/F-PE-ELASTIC11B_RESULT.md",
+    "docs/performance/F-PE-ELASTIC11_CLOSEOUT.md"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -35,7 +37,10 @@
   "evidence_paths": [
     "GitHub Actions run 36540905498 / artifact 11021065518",
     "GitHub Actions run 36547712817 / artifact 11022978124",
-    "docs/performance/F-PE-ELASTIC11A_RESULT.md"
+    "docs/performance/F-PE-ELASTIC11A_RESULT.md",
+    "GitHub Actions run 36548107018 / artifact 11023436709",
+    "docs/performance/F-PE-ELASTIC11B_RESULT.md",
+    "docs/performance/F-PE-ELASTIC11_CLOSEOUT.md"
   ],
   "dependency_surface": [
     "frozen Phase-D calibration corpus and split hashes",
@@ -51,8 +56,8 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "blockers": [],
-  "next_action": "Inspect the one-shot ELASTIC11B holdout workflow from checkpoint ed2ec9a054867af36b8cd67c393f004d3b04d754. Apply the preregistered holdout gates exactly. Do not tune M1 after seeing holdout outcomes.",
-  "recovery_point": "research/f-pe-elastic11-predictor-model@ed2ec9a054867af36b8cd67c393f004d3b04d754"
+  "next_action": "F-PE-ELASTIC11 is closed. A successor transfer work unit may test how the independently validated BHR-GT predictor maps to field/BOFEK/Staringreeks/SWAP layer descriptors. Do not reuse the spent 18-object holdout for model tuning.",
+  "recovery_point": "research/f-pe-elastic11-predictor-model@7217f366ecb8bf52a5e4ceea4b6d35f35c75f15b"
 }
