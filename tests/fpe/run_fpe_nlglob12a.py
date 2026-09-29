@@ -37,10 +37,16 @@ def classify_stagnation(stdout):
     for a in aa:
         it=int(a["ITER"]); s=step.get(it)
         if not s: continue
-        rs.append((float(a["RBAL"]),float(s["ZH_INF"])))
-    if len(rs)<3: return False
-    bal=[x[0] for x in rs]; zh=[x[1] for x in rs]
-    return bal[-1]>10 and max(bal[-3:])/max(min(bal[-3:]),1e-300)<2 and all(x<=1e-8 for x in zh[-3:])
+        rs.append((float(a["RBAL"]),float(s["ZH_INF"]),a.get("ROUTE","")==a.get("R1","") if a.get("R1","") else True))
+    if not rs: return False
+    bal=[x[0] for x in rs]; zh=[x[1] for x in rs]; route_ok=[x[2] for x in rs]
+    trans=[bal[i]/bal[i-1] if bal[i-1]>0 else math.inf for i in range(1,len(bal))]
+    tail=trans[-7:]
+    reducing=sum(x<1 for x in tail)
+    gm=math.exp(sum(math.log(max(x,1e-300)) for x in tail)/len(tail)) if tail else math.inf
+    if bal[-1]>10 and len(tail)>=5 and reducing>=5 and gm<.8 and all(route_ok):
+        return False
+    return len(bal)>=3 and bal[-1]>10 and max(bal[-3:])/max(min(bal[-3:]),1e-300)<2 and all(x<=1e-8 for x in zh[-3:]) and all(route_ok[-3:])
 
 def terminal_terms(stdout):
     segs=segments(stdout,"F_PE_NLGLOB04_TERM|")
