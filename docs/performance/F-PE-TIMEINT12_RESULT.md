@@ -7,8 +7,8 @@ Status: `IMPLICIT_DYNAMIC_TOP_DERIVATIVE_QUALIFIED`
 Authority:
 
 - canonical base: `integration/f-ci-canonical@044e686d1899adf3a631716d09743aa4fce0818f`;
-- Actions run: `36517049787`;
-- derivative job: `109241572742`;
+- Actions run: `36517116729`;
+- derivative job: `109241778893`;
 - conclusion: SUCCESS.
 
 ## Candidate
@@ -31,6 +31,8 @@ Across B01, B12, O05 and O14 hydraulic archetypes:
   `4.85e-8`;
 - fixed-K limiting identity mismatch:
   `2.78e-17`.
+
+The final authority run uses the nontrivial fixed-K identity gate: it evaluates the provider again with fixed top conductivity and compares its published BOFEK00 surface derivative against the analytical `p1/D` limit.
 
 Frozen gates:
 
