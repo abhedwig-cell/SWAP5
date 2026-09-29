@@ -72,6 +72,18 @@ for route in routes:
         release_other_sat=any((int(q["SAT_H"])==1 or int(q["SAT_THETA"])==1) for q in xs if int(q["NODE"])!=event_node)
         release_route=ev["ROUTE"]; release_pond=float(ev["POND"])
         release_top=float(ev["TOP_FLUX"]); release_bottom=float(ev["BOTTOM_FLUX"])
+    event_series=[]
+    for step in sorted(bystep):
+      ev=next((x for x in bystep[step] if int(x["NODE"])==event_node),None)
+      if ev is not None:
+        event_series.append({"step":step,"h":float(ev["H"]),"theta":float(ev["THETA"]),
+                             "theta_s":float(ev["THETA_S"]),"deficit":float(ev["DEFICIT"])})
+    rec["event_first_h"]=event_series[0]["h"] if event_series else None
+    rec["event_last_h"]=event_series[-1]["h"] if event_series else None
+    rec["event_first_deficit"]=event_series[0]["deficit"] if event_series else None
+    rec["event_last_deficit"]=event_series[-1]["deficit"] if event_series else None
+    rec["event_min_h"]=min((x["h"] for x in event_series),default=None)
+    rec["event_max_deficit"]=max((x["deficit"] for x in event_series),default=None)
     rec["observed_persistent_steps"]=observed_steps
     rec["indicator_inconsistent"]=inconsistent
     rec["release_observed"]=release is not None
