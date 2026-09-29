@@ -508,6 +508,13 @@ contains
     if (.not. allocated(parameters%cofgen)) return
     if (size(parameters%cofgen,1) < 24 .or. size(parameters%cofgen,2) /= parameters%active_nodes) return
 
+    if (parameters%elasticity_active) then
+      if (parameters%ksatexm_extension_active .or. parameters%direct_retention_active .or. &
+          parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active) return
+      if (any(.not. ieee_is_finite(parameters%cofgen(24,:))) .or. &
+          any(parameters%cofgen(24,:) < 0.0_real64)) return
+    end if
+
     if (parameters%ksatexm_extension_active) then
       do i = 1, parameters%active_nodes
         if (parameters%cofgen(10,i) > parameters%cofgen(3,i)) then
@@ -519,14 +526,20 @@ contains
       end do
     end if
 
-    call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
-         enable_ksatexm_extension=parameters%ksatexm_extension_active)
+    if (parameters%elasticity_active) then
+      call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
+           enable_ksatexm_extension=parameters%ksatexm_extension_active, &
+           enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))
+    else
+      call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
+           enable_ksatexm_extension=parameters%ksatexm_extension_active)
+    end if
     parameters%prepared_default_mvg_available = .true.
 
     if (parameters%direct_retention_active) then
       if (parameters%bottom_mode /= 5 .or. parameters%swkimpl /= 0 .or. &
           parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active .or. &
-          parameters%ksatexm_extension_active) return
+          parameters%ksatexm_extension_active .or. parameters%elasticity_active) return
       if (parameters%active_nodes > 1) then
         if (any(parameters%prepared_default_mvg%cofgen(:,2:parameters%active_nodes) /= &
              spread(parameters%prepared_default_mvg%cofgen(:,1),2,parameters%active_nodes-1))) return
@@ -548,6 +561,13 @@ contains
     if (size(parameters%cofgen,1) < 24 .or. size(parameters%cofgen,2) /= parameters%active_nodes) return
     if (parameters%prepared_default_mvg%active_nodes /= parameters%active_nodes) return
     if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_active) return
+    if (parameters%prepared_default_mvg%elastic_storage_active .neqv. parameters%elasticity_active) return
+    if (parameters%elasticity_active) then
+      if (.not. allocated(parameters%prepared_default_mvg%specific_elastic_storage)) return
+      if (size(parameters%prepared_default_mvg%specific_elastic_storage) /= parameters%active_nodes) return
+    else
+      if (allocated(parameters%prepared_default_mvg%specific_elastic_storage)) return
+    end if
     if (size(parameters%prepared_default_mvg%cofgen,1) /= 42) return
     if (size(parameters%prepared_default_mvg%cofgen,2) /= parameters%active_nodes) return
     compatible = .true.
@@ -558,6 +578,10 @@ contains
     compatible = prepared_default_mvg_structurally_compatible(parameters)
     if (.not. compatible) return
     if (.not. all(parameters%prepared_default_mvg%cofgen(1:24,:) == parameters%cofgen(1:24,:))) compatible = .false.
+    if (compatible .and. parameters%elasticity_active) then
+      if (.not. all(parameters%prepared_default_mvg%specific_elastic_storage == parameters%cofgen(24,:))) &
+           compatible = .false.
+    end if
   end function prepared_default_mvg_compatible
 
   subroutine copy_b110_physical_state(source, target)
@@ -1586,8 +1610,14 @@ contains
         if (prepared_default_mvg_compatible(parameters)) then
           self%owned_hydraulic_parameters = parameters%prepared_default_mvg
         else
-          call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
-               enable_ksatexm_extension=parameters%ksatexm_extension_active)
+          if (parameters%elasticity_active) then
+            call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
+                 enable_ksatexm_extension=parameters%ksatexm_extension_active, &
+                 enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))
+          else
+            call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
+                 enable_ksatexm_extension=parameters%ksatexm_extension_active)
+          end if
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
