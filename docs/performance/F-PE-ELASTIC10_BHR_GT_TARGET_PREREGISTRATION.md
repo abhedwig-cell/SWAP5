@@ -166,3 +166,30 @@ Official base service:
 
 The first workflow run is schema-only. It must discover OpenAPI paths and
 compression/settlement schema terms before any object search is introduced.
+
+
+## Current official BRO documentation binding
+
+Current BRO Productomgeving authority confirms:
+
+- BHR-GT production public REST base:
+  `https://publiek.broservices.nl/sr/bhrgt/v2`;
+- current production data catalogue: BHR-GT 2.2;
+- settlement analysis entity:
+  `SettlementCharacteristicsDetermination`;
+- settlement progression XML element:
+  `heightChangeDuringSettlement`;
+- corresponding SWE DataRecord:
+  `HeightAtSpecificState.xml`;
+- determination-step fields include:
+  `stepType`, `verticalStress`, `strainPoint24Hours`,
+  `stressChangeDuringSettlement`, and `wetPerformed`.
+
+Official BHR-GT service/catalogue pages:
+- BRO Productomgeving, public REST services;
+- Geotechnisch booronderzoek BHR-GT current product page;
+- BHR-GT intake/dispatch message catalogues.
+
+These documentation names are supporting authority only. The machine-readable
+OpenAPI/XSD binding in the schema-audit workflow remains the execution authority
+for parser code.
