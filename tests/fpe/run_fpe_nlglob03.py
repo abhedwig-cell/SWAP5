@@ -51,10 +51,23 @@ def med(v):
     q=sorted(x for x in v if x is not None and math.isfinite(x))
     return statistics.median(q) if q else None
 
-def parse_vec(d):
-    nn=int(d["NN"])
-    vals=[float(x) for x in d["R"].split()]
-    return vals if len(vals)==nn else None
+def vector_segments(stdout):
+    out=[]; cur={}
+    for line in stdout.splitlines():
+        if not line.startswith("F_PE_NLGLOB03_RES|"): continue
+        d=fields(line); it=int(d["ITER"]); node=int(d["NODE"]); nn=int(d["NN"])
+        if it==1 and node==1 and cur:
+            out.append(cur); cur={}
+        rec=cur.setdefault(it,{"nn":nn,"nodes":{}})
+        rec["nodes"][node]=float(d["R"])
+    if cur: out.append(cur)
+    return out
+
+def parse_vec(rec):
+    if rec is None: return None
+    nn=rec["nn"]; nodes=rec["nodes"]
+    if sorted(nodes)!=list(range(1,nn+1)): return None
+    return [nodes[i] for i in range(1,nn+1)]
 
 audit=[]; cases=[]; vec_expected=0; vec_good=0
 for mid in ("B01","B12","O05","O14"):
@@ -69,11 +82,11 @@ for mid in ("B01","B12","O05","O14"):
         terminal=result["TERMINAL_REASON"] if result else "MISSING_RESULT"
         bts=segments(cp.stdout,"F_PE_TIMEINT17H_BT|")
         sts=segments(cp.stdout,"F_PE_NLGLOB01_STEP|")
-        vss=segments(cp.stdout,"F_PE_NLGLOB03_RES|")
+        vss=vector_segments(cp.stdout)
         bt=bts[-1] if terminal=="ENDPOINT_SOLVE_FAILURE" and bts else []
         st=sts[-1] if terminal=="ENDPOINT_SOLVE_FAILURE" and sts else []
-        vs=vss[-1] if terminal=="ENDPOINT_SOLVE_FAILURE" and vss else []
-        groups=split_bt(bt); step_by_iter={int(x["ITER"]):x for x in st}; vec_by_iter={int(x["ITER"]):x for x in vs}
+        vs=vss[-1] if terminal=="ENDPOINT_SOLVE_FAILURE" and vss else {}
+        groups=split_bt(bt); step_by_iter={int(x["ITER"]):x for x in st}; vec_by_iter=vs
         cases.append({"material":mid,"route":route,"mode":mode,"dt":dt,"terminal_reason":terminal,
                       "process_ok":cp.returncode==0,"iterations":len(groups)})
         for g in groups:
