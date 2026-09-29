@@ -1,0 +1,52 @@
+name: F-PE-NLGLOB14Z8 fine segmented recovery
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z8-split-beyond-9
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z8_EXECUTION_AMENDMENT.md'
+      - 'tests/fpe/run_fpe_nlglob14z8_segment.py'
+      - 'tests/fpe/run_fpe_nlglob14z8_segment.sh'
+      - '.github/workflows/f-pe-nlglob14z8-fine-segmented.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fine-segment-a:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [HEAD, RUNOFF]
+    name: fine segment A ${{ matrix.route }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z8_segment.sh "${{ matrix.route }}" "0.0000625" first "12.8" "z8-${{ matrix.route }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z8-${{ matrix.route }}-checkpoint
+          path: z8-${{ matrix.route }}.json
+          if-no-files-found: error
+
+  fine-segment-b:
+    needs: fine-segment-a
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [HEAD, RUNOFF]
+    name: fine segment B ${{ matrix.route }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z8-${{ matrix.route }}-checkpoint
+          path: .
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z8_segment.sh "${{ matrix.route }}" "0.0000625" resume "25.6" "z8-${{ matrix.route }}.json"
