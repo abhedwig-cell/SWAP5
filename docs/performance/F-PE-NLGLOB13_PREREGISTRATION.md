@@ -82,7 +82,7 @@ Require:
 
 ### Bank D — full 96-case dynamic-top replay
 
-Reuse the NLGLOB09 replay bank with unchanged S0 rule plus the NLGLOB13 temporal subdivision trigger.
+Reuse the current research replay bank with unchanged S0 and canonically qualified R0 representation-floor acceptance, plus the NLGLOB13 temporal subdivision trigger.
 
 Require:
 
@@ -127,7 +127,7 @@ Do not:
 - recursively subdivide beyond two half-steps;
 - tune the subdivision trigger after result exposure;
 - clip accepted theta;
-- change S0;
+- change S0 or R0;
 - change BALTOL02, MAXIT, backtracking or route physics.
 
 ## Architecture invariants
