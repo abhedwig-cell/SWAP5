@@ -1,0 +1,121 @@
+name: F-PE-ELASTIC10E-R1 determination identity reconciliation
+
+concurrency:
+  group: f-pe-elastic10e-r1-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/extract_bhrgt_mechanical_targets.py'
+      - 'docs/performance/F-PE-ELASTIC10E_R1_DETERMINATION_IDENTITY_PREREGISTRATION.md'
+      - 'docs/performance/evidence/F-PE-ELASTIC10E_DETERMINATION_AUTHORITY.json'
+      - '.github/workflows/f-pe-elastic10e-r1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download frozen object authority
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10d-bhrgt-grid
+          path: ${{ runner.temp }}/objects
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36529870974
+
+      - name: Download frozen target schema authority
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic11a-target-schemas
+          path: ${{ runner.temp }}/schemas
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36530434453
+
+      - name: Download pre-reconciliation green target corpus
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10e-mechanical-targets
+          path: ${{ runner.temp }}/prior
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36531232195
+
+      - name: Extract with frozen physical-determination authority
+        run: |
+          python research/elastic/extract_bhrgt_mechanical_targets.py             --objects "$RUNNER_TEMP/objects"             --schemas "$RUNNER_TEMP/schemas"             --authority docs/performance/evidence/F-PE-ELASTIC10E_OBJECT_AUTHORITY.json             --determination-authority docs/performance/evidence/F-PE-ELASTIC10E_DETERMINATION_AUTHORITY.json             --out "$RUNNER_TEMP/reconciled"
+
+      - name: Require authority and numerical postimage preservation
+        run: |
+          python - <<'PY'
+          import json, os, pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])
+          authority=json.loads(pathlib.Path(
+            "docs/performance/evidence/F-PE-ELASTIC10E_DETERMINATION_AUTHORITY.json"
+          ).read_text())
+          assert authority["historical_classifier_records"] == 100
+          assert authority["physical_determinations"] == 50
+          assert authority["route_counts"] == {"R2":29,"R3":21}
+          assert sum(x["physical_determination_count"] for x in authority["objects"]) == 50
+
+          old=json.loads((root/"prior/targets.json").read_text())
+          new=json.loads((root/"reconciled/targets.json").read_text())
+          old_rej=json.loads((root/"prior/rejections.json").read_text())
+          new_rej=json.loads((root/"reconciled/rejections.json").read_text())
+
+          fields=[
+            "bro_id","determination_index","route","step_index",
+            "stress_start_kpa","stress_end_kpa","strain_start_pct","strain_end_pct",
+            "delta_stress_pa_signed","delta_strain_signed","mv_pa_inv",
+            "ssk_m_inv","ssk_cm_inv"
+          ]
+          def tuples(rows):
+            return sorted(tuple(r.get(k) for k in fields) for r in rows)
+          if tuples(old) != tuples(new):
+            raise SystemExit("F_PE_ELASTIC10E_R1_FAIL numerical target tuple drift")
+
+          rej_fields=["bro_id","determination_index","route","step_index","reason"]
+          def rejtuples(rows):
+            return sorted(tuple(r.get(k) for k in rej_fields) for r in rows)
+          if rejtuples(old_rej) != rejtuples(new_rej):
+            raise SystemExit("F_PE_ELASTIC10E_R1_FAIL rejection tuple drift")
+
+          if len(new)!=47:
+            raise SystemExit(f"F_PE_ELASTIC10E_R1_FAIL targets={len(new)}")
+          if sum(r["route"]=="R2" for r in new)!=29 or sum(r["route"]=="R3" for r in new)!=18:
+            raise SystemExit("F_PE_ELASTIC10E_R1_FAIL valid route counts")
+          if len(new_rej)!=3:
+            raise SystemExit(f"F_PE_ELASTIC10E_R1_FAIL rejections={len(new_rej)}")
+
+          for r in new:
+            if r["authority_readiness"] != r["route"]:
+              raise SystemExit("F_PE_ELASTIC10E_R1_FAIL determination authority not bound")
+            if r["object_readiness"] not in ("R2","R3"):
+              raise SystemExit("F_PE_ELASTIC10E_R1_FAIL object readiness missing")
+
+          print("F_PE_ELASTIC10E_R1_HISTORICAL_RECORDS=100")
+          print("F_PE_ELASTIC10E_R1_PHYSICAL_DETERMINATIONS=50")
+          print("F_PE_ELASTIC10E_R1_AUTHORITY_ROUTES=R2:29,R3:21")
+          print("F_PE_ELASTIC10E_R1_VALID_TARGETS=47")
+          print("F_PE_ELASTIC10E_R1_VALID_ROUTES=R2:29,R3:18")
+          print("F_PE_ELASTIC10E_R1_REJECTIONS=3")
+          print("F_PE_ELASTIC10E_R1_NUMERICAL_POSTIMAGE=PASS")
+          print("F_PE_ELASTIC10E_R1=PASS")
+          PY
+
+      - name: Upload reconciled target evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic10e-r1-reconciled-targets
+          path: ${{ runner.temp }}/reconciled
