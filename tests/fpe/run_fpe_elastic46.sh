@@ -13,13 +13,15 @@ python3 tests/fpe/prepare_fpe_elastic46.py \
   --repo-root "$ROOT" \
   --artifact-dir "$ARTIFACT_DIR" \
   --work-dir "$BUILD/work" \
-  --fixture "$BUILD/test_fpe_elastic46.f90" | tee "$BUILD/prepare.txt"
+  --fixture "$BUILD/test_fpe_elastic46.f90" \
+  --geometry-json "$BUILD/geometry.json" | tee "$BUILD/prepare.txt"
 
 grep -Fq 'F_PE_ELASTIC46_PREP=' "$BUILD/prepare.txt" || fail "prepare marker"
 
-python3 tests/rom/materialize_f_rom0_headcalc_stubs.py \
+python3 tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py \
   --source tests/fsi/fsi04_real_headcalc_stubs.f90 \
-  --output "$BUILD/stub.f90" --nodes 16 --dz-cm 10
+  --geometry-json "$BUILD/geometry.json" \
+  --output "$BUILD/stub.f90"
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
