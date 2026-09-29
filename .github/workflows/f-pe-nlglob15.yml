@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB15 desaturation release signal
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB15*.md'
+      - 'tests/fpe/materialize_fpe_nlglob15*.py'
+      - 'tests/fpe/run_fpe_nlglob15*.py'
+      - 'tests/fpe/run_fpe_nlglob15*.sh'
+      - '.github/workflows/f-pe-nlglob15.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob15-desaturation-release-current
+    paths:
+      - 'docs/performance/F-PE-NLGLOB15*.md'
+      - 'tests/fpe/materialize_fpe_nlglob15*.py'
+      - 'tests/fpe/run_fpe_nlglob15*.py'
+      - 'tests/fpe/run_fpe_nlglob15*.sh'
+      - '.github/workflows/f-pe-nlglob15.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob15-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  release-signal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered desaturation release signal
+        run: bash tests/fpe/run_fpe_nlglob15.sh
