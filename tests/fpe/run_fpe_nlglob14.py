@@ -58,7 +58,7 @@ localized=[x for x in trial_ok if x.get("overshoot",1)==0 and
            x.get("event_water_depth_distance",math.inf)<=5e-8 and x.get("ledger",math.inf)<=5e-8 and
            x.get("finite",False) and x.get("accept_route_code",0) in (1,2,3)]
 
-coverage=(proc==0 and len(rows)==5 and len(valid)==5 and len(trial_ok)==5)
+coverage=(proc==0 and len(rows)==5 and len(valid)==5 and all(x.get("trial_found",False) for x in rows))
 if not coverage:
     cls="BLOCKED_NLGLOB14_EVENT_LOCALIZATION_COVERAGE"
 elif any((not x.get("finite",False)) or x.get("ledger",math.inf)>5e-8 or x.get("accept_route_code",0) not in (1,2,3) for x in trial_ok):
