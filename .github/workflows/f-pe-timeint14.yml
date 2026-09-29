@@ -4,6 +4,19 @@ on:
   pull_request:
     branches:
       - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-TIMEINT14_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT14A_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT14_RESULT.md'
+      - 'docs/performance/F-PE-TIMEINT14A_RESULT.md'
+      - 'docs/performance/F-PE-TIMEINT14_CLOSEOUT.md'
+      - 'tests/fpe/test_fpe_timeint14_conservation.f90'
+      - 'tests/fpe/run_fpe_timeint14.py'
+      - 'tests/fpe/run_fpe_timeint14.sh'
+      - 'tests/fpe/test_fpe_timeint14a_mass_identity.f90'
+      - 'tests/fpe/run_fpe_timeint14a.py'
+      - 'tests/fpe/run_fpe_timeint14a.sh'
+      - '.github/workflows/f-pe-timeint14.yml'
   push:
     branches:
       - work/f-pe-timeint14-conservative-bdf2
@@ -18,6 +31,10 @@ on:
       - 'tests/fpe/run_fpe_timeint14a.sh'
       - '.github/workflows/f-pe-timeint14.yml'
   workflow_dispatch:
+
+concurrency:
+  group: f-pe-timeint14-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
