@@ -1,0 +1,54 @@
+{
+  "work_unit": "F-PE-ELASTIC20",
+  "workstream": "VQ/application source catalog",
+  "baseline": "7b34fb5a980b647423d8c5062d0ec64f0568e0f7",
+  "checkpoint_commit": "1bdcc8e6021a32de475a97f27056c10f6a8eb187",
+  "last_reconciled_head": "1bdcc8e6021a32de475a97f27056c10f6a8eb187",
+  "last_reconciled_upstream": "7b34fb5a980b647423d8c5062d0ec64f0568e0f7",
+  "scope": "Immutable lookup of frozen Staringreeks 2018 B01..B18/O01..O18 retention parameters for ELASTIC19 descriptor construction, with no runtime file I/O.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC20_STARINGREEKS_CATALOG_PREREGISTRATION.md",
+    "src/adapter/mod_fmr_elastic_storage_staringreeks_catalog.f90",
+    "tests/fpe/test_fpe_elastic20_staringreeks_catalog.f90",
+    "tests/fpe/run_fpe_elastic20.sh",
+    ".github/workflows/f-pe-elastic20.yml",
+    "docs/performance/F-PE-ELASTIC19_CLOSURE.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/test_fpe_elastic20_staringreeks_catalog.f90",
+    "tests/fpe/run_fpe_elastic20.sh",
+    ".github/workflows/f-pe-elastic20.yml"
+  ],
+  "evidence_paths": [
+    "F-PE-ELASTIC02 official Staringreeks 2018 source member SHA-256 ed2e47bcacdbb6e5fe18eb4f712c3ead996f26f97d647fa550dafd8683d64494",
+    "repository mirror tests/fpe/data/fpe_elastic05_staringreeks_2018.csv"
+  ],
+  "dependency_surface": [
+    "ELASTIC19 admitted horizon descriptor builder",
+    "frozen 2018 Staringreeks 36-material source catalog"
+  ],
+  "interfaces_changed": [
+    "new immutable stateless catalog adapter only"
+  ],
+  "invariants_affected": [
+    "kernel independent of I/O",
+    "no hidden historical Staringreeks fallback",
+    "source provenance preserved",
+    "physical parameter mapping remains outside numerical execution policy"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the ELASTIC20 workflow on checkpoint 1bdcc8e6021a32de475a97f27056c10f6a8eb187 and apply A1-A8 exactly.",
+  "recovery_point": "work/f-pe-elastic20-staringreeks-catalog@1bdcc8e6021a32de475a97f27056c10f6a8eb187"
+}
