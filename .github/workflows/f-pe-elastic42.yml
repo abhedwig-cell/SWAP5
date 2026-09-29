@@ -1,0 +1,39 @@
+name: F-PE-ELASTIC42 RD end-to-end generated-prior qualification
+
+concurrency:
+  group: f-pe-elastic42-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic42-rd-end-to-end
+    paths:
+      - 'tests/fpe/prepare_fpe_elastic42.py'
+      - 'tests/fpe/run_fpe_elastic42.sh'
+      - 'docs/performance/F-PE-ELASTIC42_RD_END_TO_END_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic42.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic42-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Qualify RD-point end-to-end composition
+        run: bash tests/fpe/run_fpe_elastic42.sh "$RUNNER_TEMP/elastic42-pdok"
