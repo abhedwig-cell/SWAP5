@@ -81,10 +81,11 @@ if old_ledger not in src:
 src=src.replace(old_ledger,new_ledger,1)
 
 # The NLGLOB14F accepted-state logger should report the actual provider route.
-src=src.replace("'|ROUTE=',trim(route_id), &
-             '|TOP_FLUX=',res%top_flux",
-                "'|ROUTE=',trim(topres%route), &
-             '|TOP_FLUX=',res%top_flux",1)
+src=src.replace(
+"""'|ROUTE=',trim(route_id), &
+             '|TOP_FLUX=',res%top_flux""",
+"""'|ROUTE=',trim(topres%route), &
+             '|TOP_FLUX=',res%top_flux""",1)
 
 for req in ("F_PE_NLGLOB14G_FORCING","potential","nl14d_saturated_mode"):
     if req=="potential":
