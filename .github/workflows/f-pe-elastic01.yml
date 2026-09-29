@@ -17,5 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Audit corrected legacy ELAS semantics
+        run: bash tests/fpe/audit_fpe_elastic01_legacy.sh
       - name: Run paired ELASTIC01 screen
         run: bash tests/fpe/run_fpe_elastic01_screen.sh
