@@ -20,7 +20,8 @@ Final qualification/attribution authority includes:
 - TIMEINT17E: mixed contraction/stagnation blocker;
 - TIMEINT17F: dominant failures are usually interior, not top-boundary localized;
 - TIMEINT17G: full 16-node residual/Jacobian is finite-difference consistent;
-- TIMEINT17H: mixed merit signal, insufficient to authorize the preregistered scaled-merit H1 repair.
+- TIMEINT17H: mixed merit signal, insufficient to authorize the preregistered scaled-merit H1 repair;
+- TIMEINT17I: mixed Newton model-quality signal, with frequent poor/full-step model agreement but no systematic rescue by smaller tested factors.
 
 Final H authority:
 
@@ -28,6 +29,13 @@ Final H authority:
 - globalization-merit-attribution job `109297652276`;
 - conclusion: SUCCESS;
 - classification: `TIMEINT17H_MIXED_MERIT_SIGNAL`.
+
+Final I authority:
+
+- workflow run `36535798615`;
+- model-quality-attribution job `109299437889`;
+- conclusion: SUCCESS;
+- classification: `TIMEINT17I_MIXED_MODEL_QUALITY`.
 
 ## Executive conclusion
 
@@ -49,6 +57,8 @@ The attribution chain excludes the main local-algebra explanations:
 8. failed residual localization is mostly interior rather than concentrated at the dynamic top node.
 
 The remaining research layer is nonlinear globalization / model-quality / state scaling.
+
+TIMEINT17I shows that this is a real model-quality problem but does not yet identify a sufficient repair: 43.6% of selected steps have `rho < 0.25` and 49.7% of full Newton steps have negative `rho`, while none of the existing smaller tested factors improves selected rho by >=0.25 under the frozen criterion. FLUX is the strongest poor-model family and the signal is shared by TG and KLAG.
 
 ## Why event localization is not opened
 
@@ -130,13 +140,13 @@ Do not revisit the following inside TIMEINT17:
 
 Open a separate work unit:
 
-`F-PE-NLGLOB01 — Richards nonlinear model-quality and trust-region attribution`
+`F-PE-NLGLOB01 — route/mode state-scaling and globalization attribution`
 
 Purpose:
 
-determine whether endpoint failures arise because Newton's local linear model loses predictive quality outside the convergence basin, and whether scaling or trust-region diagnostics identify a principled globalization successor.
+decompose the mixed TIMEINT17I model-quality signal before selecting a trust-region, scaling or damping repair.
 
-The first phase must be observational only.
+The first phase must remain observational only.
 
 It should preserve:
 
@@ -148,17 +158,15 @@ It should preserve:
 - the same convergence thresholds;
 - the same transaction semantics.
 
-Initial diagnostics should compare, for each failing Newton iterate and tested step:
+Initial diagnostics should quantify, by route and mode:
 
-1. predicted residual reduction from the linear model;
-2. actual residual reduction;
-3. trust-region style agreement ratio;
-4. raw head-step norm;
-5. scaled head-step norm using physically/numerically defensible state scales;
-6. dominant convergence-contract component;
-7. route and residual localization.
+1. raw pressure-head step norm and node localization;
+2. pressure-head step relative to a physically defensible state scale;
+3. correlation of those step measures with `rho`, residual localization and convergence-contract dominance;
+4. whether FLUX failures form a distinct scaling regime from HEAD/RUNOFF;
+5. whether TG and KLAG share the same scaled failure structure.
 
-No trust-region radius, Levenberg parameter, scaling constant or variable transform is to be selected until those diagnostics are preregistered.
+No trust-region radius, Levenberg parameter, scaling constant, variable transform or new globalization algorithm is to be selected until that decomposition is preregistered and observed.
 
 ## Relation to TIMEINT18
 
