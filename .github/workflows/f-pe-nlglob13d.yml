@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB13D bounded h8 admissibility
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB13D*.md'
+      - 'tests/fpe/materialize_fpe_nlglob13d*.py'
+      - 'tests/fpe/run_fpe_nlglob13d*.py'
+      - 'tests/fpe/run_fpe_nlglob13d*.sh'
+      - '.github/workflows/f-pe-nlglob13d.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob13d-same-origin-eighth
+    paths:
+      - 'docs/performance/F-PE-NLGLOB13D*.md'
+      - 'tests/fpe/materialize_fpe_nlglob13d*.py'
+      - 'tests/fpe/run_fpe_nlglob13d*.py'
+      - 'tests/fpe/run_fpe_nlglob13d*.sh'
+      - '.github/workflows/f-pe-nlglob13d.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob13d-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-h8-admissibility:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered h8 admissibility falsification
+        run: bash tests/fpe/run_fpe_nlglob13d.sh
