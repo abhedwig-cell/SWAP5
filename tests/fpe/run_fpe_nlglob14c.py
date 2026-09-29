@@ -71,8 +71,10 @@ elif len(complete)==5 and safety and nominal_ok:
   cls="QUALIFIED_TG_SATURATION_EVENT_KLAG_REMAINDER_RESEARCH"
 elif endpoint_fail>=3:
   cls="CLOSED_TG_KLAG_REMAINDER_ENDPOINT_FAILED"
-else:
+elif not safety or not nominal_ok:
   cls="CLOSED_TG_KLAG_REMAINDER_PHYSICAL_ADMISSIBILITY_FAILED"
+else:
+  cls="NLGLOB14C_MIXED_REGIME_SWITCH_SIGNAL"
 
 summary={"classification":cls,"smooth_ok":smooth_ok,"target_count":len(rows),"completed_targets":len(complete),
          "klag_remainder_failures":endpoint_fail,"process_failures":proc,
