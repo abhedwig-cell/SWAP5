@@ -1,45 +1,35 @@
-# F-HYDROFIT02 P-LSHRINK02 hold-out replication result
+# F-HYDROFIT02 P-LSHRINK02 independent replication result
 
-Authority run: `36515672735`.
+Authority run: `36515672735`, head `94ab4b39f94a78916caedfd4a61e18bb20cffd0a`.
 
-The replication step used the repository-frozen 31-interval corpus and therefore did not depend on successful live BRO spatial discovery in this run.
+The preceding run `36515217337` failed before replication because live BRO acquisition timed out while rebuilding the spatial corpus. No shrinkage inference is retained from that failed run. The valid authority run reached and completed the preregistered independent-complement replication.
 
-## Preregistered hold-out result
+## Hold-out result
 
-The complement of the deterministic 12-case subset contains 19 frozen corpus records.
+The replication set is the 19 frozen-corpus intervals outside the original deterministic 12-case subset.
 
-| sigma_lambda | median J/Jbest | mean | max | boundary blocks | SEVERE hydraulic | SEVERE penalized |
-|---|---:|---:|---:|---:|---:|---:|
-| 0.5 | 1.063 | 1.062 | 1.275 | 0 | 1 | 1 |
-| 1.5 | 1.000 | 0.989 | 1.199 | 0 | 1 | 1 |
+| target | sigma_lambda | median J/Jbest | mean | max | boundary blocks | severe hydraulic | severe penalized |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| LOO median | 0.5 | 1.063 | 1.062 | 1.275 | 0 | 1 | 1 |
+| LOO median | 1.5 | 1.000 | 0.989 | 1.199 | 0 | 1 | 1 |
 
-Both candidates fail the preregistered replication rule because each has one SEVERE case.
+Both candidates satisfy the preregistered objective-tail and boundary criteria but fail the zero-SEVERE replication criterion.
 
-The common failure is BHR000000378532, 0.65-0.75 m:
-- sigma=0.5: hydraulic condition number about 2.20e17, penalized about 2.77e11;
-- sigma=1.5: hydraulic condition number about 1.73e17, penalized about 8.09e11.
+The same hold-out interval causes failure for both widths:
 
-Neither fit contacts the formal alpha/n/Ks boundary and both have acceptable hydraulic objective ratios. This is therefore another hidden identifiability failure rather than an objective-loss failure.
+`BHR000000378532 0.65-0.75 m`
 
-P-LSHRINK01 is **not independently replicated** under its preregistered zero-SEVERE criterion.
+- sigma=0.5: lambda target -1.4503, fitted lambda -3.1424, J/Jbest 1.2508, hydraulic cond 2.20e17, penalized cond 2.77e11;
+- sigma=1.5: fitted lambda -4.0392, J/Jbest 0.9541, hydraulic cond 1.73e17, penalized cond 8.09e11.
 
-## Frozen-corpus identity caveat
+No alpha/n/Ks formal boundary block is present.
 
-The frozen corpus contains repeated BRO/depth identities with different stored source lambda values:
-- BHR000000378543 1.40-1.50 m occurs twice, lambda -1.9999 and 0.0001;
-- BHR000000378544 0.35-0.45 m occurs twice, lambda 0.0001 and 0.
+## Decision
 
-The current downstream hydraulic lookup keys observations by BRO id plus begin/end depth. Thus these are distinct corpus records for lambda characterization but map to the same fetched hydraulic interval in the replication fitter.
+P-LSHRINK01 is **NOT_REPLICATED** under its preregistered identifiability criterion.
 
-This does not explain or remove the BHR000000378532 0.65-0.75 m SEVERE failure, which has a unique frozen BRO/depth identity. It does mean the 19-record exercise must not be described as 19 independent hydraulic intervals.
+The failure is not objective accuracy. It is structural/local identifiability: a very good hydraulic objective can coexist with an essentially singular parameter geometry.
 
-## Consequence
+Do not rescue the result by choosing a new sigma after seeing this case. Before further lambda-policy work, characterize why BHR000000378532 0.65-0.75 m is singular and determine whether the issue is lambda-specific, another parameter tradeoff, measurement design, or Jacobian scaling/parameterization.
 
-Do not tune sigma after this failure.
-
-Before further lambda-policy work:
-1. resolve the provenance/identity semantics of duplicate same-depth source-lambda records;
-2. characterize the newly exposed BHR000000378532 0.65-0.75 m identifiability failure;
-3. then decide whether the appropriate estimator is stronger regularization, a qualification-triggered hard fallback, or a model/measurement identifiability classification.
-
-The negative replication result is retained.
+The negative replication result is retained as authority.
