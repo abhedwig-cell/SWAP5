@@ -82,7 +82,7 @@ for route in routes:
                  "theta3_lo":lo["theta3"] if lo else None,"theta3_hi":hi["theta3"] if hi else None,
                  "phi":phi,"event_time":tevent,"max_ledger":maxledger,"cum_ledger":cumledger})
 
-coverage=(len(rows)==8 and proc==0 and all(x["complete"] and x["mass_ok"] and x["state_finite"] and
+coverage=(len(rows)==12 and proc==0 and all(x["complete"] and x["mass_ok"] and x["state_finite"] and
           not x["indicator_inconsistent"] for x in rows))
 all_brackets=all(x["bracket_ok"] for x in rows)
 family={}
@@ -105,12 +105,15 @@ for route in routes:
       family[route]={"event_times":[x["event_time"] for x in xs],"passes":False}
     conv_ok=conv_ok and family[route]["passes"]
 
+route_passes=sum(bool(family[r]["passes"]) for r in routes)
 if not coverage:
     cls="BLOCKED_NLGLOB14N_REFINED_RETREAT_CONVERGENCE"
 elif not all_brackets:
     cls="NLGLOB14N_RETREAT_EVENT_STATE_INCONSISTENT"
-elif conv_ok:
+elif route_passes==2:
     cls="QUALIFIED_REFINED_FIRST_RETREAT_EVENT_TIME_CONVERGENCE"
+elif route_passes==1:
+    cls="NLGLOB14N_MIXED_REFINED_RETREAT_CONVERGENCE"
 else:
     cls="NLGLOB14N_RETREAT_EVENT_TIME_STILL_NOT_CONVERGED"
 
