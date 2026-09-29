@@ -13,7 +13,7 @@ Parent authority:
 - TIMEINT16C: `QUALIFIED_PROVIDER_CONSISTENT_TG_KPRED_STAGE`;
 - NLGLOB11: fixed half-step coefficient staging loses second order and does not resolve the domain failure;
 - NLGLOB11A: head-space endpoint coefficient staging preserves second order but still leaves seven O05 TG near-saturation failures;
-- NLGLOB12B: four of the residual still-descending failures are also TG HEAD cases and overlap the near-saturation temporal-admissibility line.
+- NLGLOB12B: four of the residual still-descending failures are also TG HEAD cases and overlap the near-saturation temporal-admissibility line;\n- NLGLOB12A1: `QUALIFIED_REPRESENTATION_AWARE_ENDPOINT_CERTIFICATE_RESEARCH`, current canonical dynamic endpoint policy baseline.
 
 ## Purpose
 
@@ -96,7 +96,7 @@ Require:
 
 ## Amendment rationale
 
-This amendment is persisted before any NLGLOB13 result exposure. NLGLOB11A already established that the original moisture-space auxiliary predictor itself exits the retention domain before the accepted-state admissibility question can be evaluated, while the head-space endpoint stage preserves second-order smooth behavior and exposes the actual accepted-state near-saturation failure. Using the head-space stage is therefore required to test the preregistered temporal-subdivision hypothesis rather than re-test the already closed auxiliary-predictor defect.
+This amendment is persisted before any NLGLOB13 result exposure. NLGLOB11A already established that the original moisture-space auxiliary predictor itself exits the retention domain before the accepted-state admissibility question can be evaluated, while the head-space endpoint stage preserves second-order smooth behavior and exposes the actual accepted-state near-saturation failure. Using the head-space stage is therefore required to test the preregistered temporal-subdivision hypothesis rather than re-test the already closed auxiliary-predictor defect.\n\nThe current canonical baseline also contains positive NLGLOB12A1 representation-aware endpoint-certificate authority. The dynamic qualification harness therefore inherits R0 unchanged. This is baseline reconciliation, not a new NLGLOB13 degree of freedom: the subdivision candidate itself remains the only changed numerical mechanism.
 
 ## Frozen classifications
 
