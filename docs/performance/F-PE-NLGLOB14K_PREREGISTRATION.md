@@ -85,7 +85,7 @@ Define a clean constitutive split when:
 
 - every upper unsaturated node has finite `C>0`;
 - every lower saturated node has `h>=0`, `theta==theta_s`, and provider capacity equal to the existing `C_floor` within floating-point identity;
-- all accepted theta/head pairs are constitutively consistent.
+- all accepted theta/head pairs are constitutively consistent within the existing TIMEINT16 retention-roundtrip authority `|theta_provider(h)-theta| <= 1e-12`.
 
 ## Upper-region current-step TG admissibility
 
