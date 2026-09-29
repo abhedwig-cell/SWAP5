@@ -99,6 +99,21 @@ Before editing code or contracts:
 
 When several authorities appear relevant, use `docs/development/knowledge-map.md` and `docs/status-a/TRACEABILITY.md` to determine what each document can and cannot establish.
 
+## Local experiment default
+
+For exploratory numerical, performance, parameter-sweep, surrogate, solver-policy, and falsification work, keep GitHub Actions out of the inner iteration loop unless the owning acceptance authority explicitly requires remote execution.
+
+Default execution pattern:
+
+1. Pin an exact canonical or work-branch commit.
+2. Build once locally when the executable is unchanged across trials.
+3. Run the broad campaign locally or in an isolated scratch workspace.
+4. Persist enough campaign metadata to reproduce the search: pinned commit, command, parameter matrix, environment notes, exit status, timings, and selected scientific diagnostics.
+5. Treat scratch output as provisional evidence only. Promote relevant scripts, compact result summaries, negative results, and the exact qualification candidate into Git.
+6. Use GitHub Actions for independent qualification, regression, portability, or admission gates, not as a parameter-search engine.
+
+See `docs/development/local-experiment-protocol.md`. The generic campaign harness is `tools/experiments/run_campaign.py`.
+
 ## Validation
 
 Run the narrowest relevant checks first, then the declared broader gates.
