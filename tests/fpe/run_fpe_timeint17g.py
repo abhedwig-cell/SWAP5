@@ -30,6 +30,11 @@ def segments(stdout):
  if cur: segs.append(cur)
  return segs
 def loc(row): return "TOP" if row==1 else ("BOTTOM" if row==16 else "INTERIOR")
+def norm_route(r):
+ if r=="surface-flux": return "FLUX"
+ if r=="ponded-head": return "HEAD"
+ if r=="ponded-head-linear-runoff": return "RUNOFF"
+ return r
 
 rows=[]; audited=[]
 for mid in ("B01","B12","O05","O14"):
@@ -51,7 +56,7 @@ for mid in ("B01","B12","O05","O14"):
          "failing_entries":sum(x["fails"] for x in last)}
     rows.append(row)
     for x in last:
-      audited.append({"material":mid,"route":route,"dt":dt,"mode":mode,**x,"location":loc(x["worst_row"])})
+      audited.append({"material":mid,"route":norm_route(x["route"]),"dt":dt,"mode":mode,**x,"location":loc(x["worst_row"])})
 
 eligible=[x for x in audited if x["eligible"]>0]
 bad=[x for x in eligible if x["fails"]>0]
