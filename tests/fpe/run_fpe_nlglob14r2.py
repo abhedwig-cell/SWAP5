@@ -25,14 +25,15 @@ for route in routes:
     cp=subprocess.run([str(exe),"O05","TG",route,str(m["theta_r"]),str(m["theta_s"]),str(m["alpha"]),str(m["n"]),
       str(m["ksat"]),str(m["lambda"]),str(h0),str(p0),str(rain),str(dt),str(horizon)],text=True,capture_output=True)
     if cp.returncode!=0: proc+=1
-    nominal=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB14R1_FAIL|")]
+    nominal=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB14R2_NOMINAL_RETRY|")]
     rb=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB14R2_ROLLBACK|")]
     halves=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB14R2_HALF|")]
     hands=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB14R_HANDOFF|")]
     follows=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB14R_FOLLOW|")]
     res=next((fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_TIMEINT17A_RESULT|")),None)
 
-    nominal_retry=bool(len(nominal)==1 and int(nominal[0]["RETRY"])==1)
+    nominal_retry=bool(len(nominal)==1 and int(nominal[0]["RETRY"])==1 and
+                       math.isclose(float(nominal[0]["DT"]),dt,rel_tol=0,abs_tol=1e-15))
     rollback_ok=bool(len(rb)==1 and all(abs(float(rb[0][k]))<=1e-15 for k in ("H","THETA","POND","LEDGER","RUNOFF")) and
                      math.isclose(float(rb[0]["RETRY_SCALE"]),0.5,rel_tol=0,abs_tol=1e-15))
     halfs=sorted(halves,key=lambda x:int(x["HALF"]))
