@@ -180,3 +180,49 @@ F-PE-BOFEK-PRACTICAL01–03 found real soil/regime-dependent timestep structure 
 F-PE-ELASTIC01 asks a different question: whether elastic storage changes the stiffness/conditioning of the Richards solve in a way that is both bounded in hydrological effect and predictable from soil properties.
 
 The previous negative static-timestep result is therefore retained as evidence, not treated as a reason to skip this line.
+
+
+## Pre-result source audit: existing near-saturation regularization
+
+Source audit on 2026-09-29 found that the current B1.10 default MvG provider already contains a hard-coded near-saturation capacity floor:
+
+- for `h >= 0`: `capacity = step_duration * 1e-7`;
+- for `-1 < h < 0`: the analytical capacity is floored at `step_duration * 1e-7`.
+
+HeadCalc uses `capacity * dz / dt` in the Jacobian, so this contributes an effective coefficient of `1e-7` to the Newton derivative where the floor is active.
+
+However, the Richards residual still uses `(theta - theta_old) * dz / dt`; there is no matching elastic-storage state term in the residual. Therefore the existing `1e-7` mechanism is classified prospectively as **Jacobian/capacity regularization**, not as physically closed elastic storage.
+
+The initial experiment shall therefore separate:
+
+1. **Track A — current-semantics regularization:** parameterize only the existing near-saturation capacity floor and test `0, 1e-8, 1e-7, 1e-6, 1e-5`. This must be implemented test-only. Production `src/**` remains unchanged.
+2. **Track B — physically consistent elastic storage:** only after Track A is recorded, specify a residual-consistent storage formulation before implementing it. Track B must include the same storage contribution in state/residual accounting and its derivative in the Jacobian.
+
+The exact current Reference for Track A is `1e-7`, not zero. A parameterized `1e-7` run must first reproduce the unmodified provider before other candidates are interpreted.
+
+## Frozen Phase-A acceptance tolerances
+
+These gates are frozen before candidate outcomes are inspected.
+
+For each screening case, relative to the unmodified current Reference:
+
+- successful completion is mandatory;
+- absolute cumulative-runoff delta <= `min(1e-4 cm, 0.001 * abs(reference runoff))` when reference runoff exceeds `0.1 cm`, otherwise <= `1e-4 cm`;
+- absolute terminal ponding delta <= `1e-4 cm`;
+- absolute terminal top-, mid- and bottom-head deltas <= `1e-3 cm`;
+- absolute terminal matrix-water-storage delta <= `1e-5 cm`;
+- maximum water-ledger residual <= `5e-8 cm`;
+- rejected attempts may not exceed `max(2 * reference rejected attempts, ceil(0.25 * candidate attempts))`.
+
+For the `1e-7` parameterized reproduction control, a stronger gate applies:
+
+- integer work counters must equal Reference;
+- runoff, ponding, terminal heads, storage and maximum ledger must agree to <= `1e-12` in their reported units.
+
+A work benefit is reported descriptively in Phase A. No production admission threshold is inferred from this screening bank alone.
+
+## Phase-A population discipline
+
+Candidate development uses only the 16 cases listed as `screening_cases` in `F-PE-BOFEK01_TESTBANK.json`.
+
+The four existing `holdout_cases` remain uninspected for soil-rule selection. They may be opened only after a candidate soil-dependent rule and its thresholds have been frozen.
