@@ -2,8 +2,8 @@
   "work_unit": "F-PE-ELASTIC12",
   "workstream": "VQ/research physical parameter transfer",
   "baseline": "9165727771998cec2d1fa09aee62637d9d78ce68",
-  "checkpoint_commit": "d6feb3c56a5c35597a334248450ef05c358ab5dc",
-  "last_reconciled_head": "d6feb3c56a5c35597a334248450ef05c358ab5dc",
+  "checkpoint_commit": "aa682612bf64e0a8a2e4aeaf0c0cf0d78366928d",
+  "last_reconciled_head": "aa682612bf64e0a8a2e4aeaf0c0cf0d78366928d",
   "last_reconciled_upstream": "e59f1b2ffd97fb210c9d682332e740a1552a9f46",
   "scope": "Audit and, if source-supported, transfer the independently validated ELASTIC11 mechanical predictor to BOFEK2020/Staringreeks layers using explicit dry-to-field-moist state reconstruction.",
   "relevant_paths": [
@@ -20,7 +20,9 @@
     "research/elastic/bofek_elas_transfer.py",
     ".github/workflows/f-pe-elastic12a3.yml",
     ".github/workflows/f-pe-elastic12a4.yml",
-    ".github/workflows/f-pe-elastic12a5.yml"
+    ".github/workflows/f-pe-elastic12a5.yml",
+    "docs/performance/F-PE-ELASTIC12A5_RESULT.md",
+    "docs/performance/F-PE-ELASTIC12_CLOSEOUT.md"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -40,7 +42,10 @@
     "official NHI BOFEK2020 archive https://nhi.nu/documents/225/bofek_1.0.0.zip",
     "official NHI Staringreeks archive https://nhi.nu/documents/224/staringreeks_1.0.0.zip",
     "GitHub Actions run 36549493161 / artifact 11024057454",
-    "GitHub Actions run 36550782840 / artifact 11024079961"
+    "GitHub Actions run 36550782840 / artifact 11024079961",
+    "GitHub Actions run 36551561152 / artifact 11025251845",
+    "docs/performance/F-PE-ELASTIC12A5_RESULT.md",
+    "docs/performance/F-PE-ELASTIC12_CLOSEOUT.md"
   ],
   "dependency_surface": [
     "ELASTIC11 frozen M1 equation and calibration normalization",
@@ -55,9 +60,9 @@
   ],
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blockers": [],
-  "next_action": "Inspect the F-PE-ELASTIC12A5 exact BOFEK/BRO relational bridge and five-state transfer run from checkpoint d6feb3c56a5c35597a334248450ef05c358ab5dc. If green, record source identity, transfer-domain coverage, state sensitivity and classification without selecting a preferred pressure head.",
-  "recovery_point": "research/f-pe-elastic12-bofek-transfer@d6feb3c56a5c35597a334248450ef05c358ab5dc"
+  "next_action": "F-PE-ELASTIC12 is closed. Start a separate ELASTIC13 physical parameter-policy work unit only if operational BOFEK/Staringreeks ELAS assignment is to continue. Freeze the reference-state convention and uncertainty policy before any production code change.",
+  "recovery_point": "research/f-pe-elastic12-bofek-transfer@aa682612bf64e0a8a2e4aeaf0c0cf0d78366928d"
 }
