@@ -6,14 +6,18 @@ Status:
 
 `NLGLOB13D_H8_ADMISSIBILITY_NOT_CONFIRMED`
 
-Canonical base:
+Canonical experiment base:
 
 `integration/f-ci-canonical@dc12c52ea71e136cd9ea0573980915b8618ca7d6`
 
+Authority corrected after harness reconciliation against canonical through:
+
+`integration/f-ci-canonical@3b1488c0d2723f9ec02709693406b4ecb45377ea`
+
 Qualification authority:
 
-- workflow run: `36558488567`;
-- job: `109373336442`;
+- workflow run: `36558791581`;
+- job: `109374338130`;
 - conclusion: SUCCESS.
 
 ## Frozen question
@@ -44,17 +48,16 @@ Physical mass remains within authority on all trajectories.
 
 ## Result
 
-None of the five targets completes.
+No target completes the full requested horizon.
 
-Each target records exactly one h/8 failure:
+At the first same-origin h/8 child:
 
-- completed targets: `0/5`;
-- h/8 failure count: `5/5`;
-- successful completed h/8 subdivision events: `0`.
+- `1/5` becomes retention-admissible;
+- `4/5` remain retention-inadmissible;
+- completed full targets: `0/5`;
+- completed bounded h/8 subdivision pairs: `0/5`.
 
-All five terminate as:
-
-`NEARSAT_EIGHTH_FAILED`.
+The preregistered negative gate therefore still applies.
 
 No process failure, nonfinite-state failure or physical-mass failure is observed.
 
@@ -62,7 +65,7 @@ No process failure, nonfinite-state failure or physical-mass failure is observed
 
 `NLGLOB13D_H8_ADMISSIBILITY_NOT_CONFIRMED`.
 
-The preregistered negative gate applies because at least 3/5 first h/8 children remain inadmissible. In fact all 5/5 do.
+The preregistered negative gate applies because at least 3/5 first h/8 children remain inadmissible. The corrected final run observes 4/5.
 
 ## Interpretation
 
