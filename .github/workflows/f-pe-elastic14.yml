@@ -1,0 +1,29 @@
+name: F-PE-ELASTIC14 mineral prior materializer
+
+concurrency:
+  group: f-pe-elastic14-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic14-mineral-prior-materializer
+    paths:
+      - 'src/runtime/mod_fmr_elastic_storage_prior_policy.f90'
+      - 'tests/fpe/test_fpe_elastic14_prior.f90'
+      - 'tests/fpe/run_fpe_elastic14.sh'
+      - 'docs/performance/F-PE-ELASTIC14_MINERAL_PRIOR_MATERIALIZER_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic14.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Qualify materializer
+        run: bash tests/fpe/run_fpe_elastic14.sh
