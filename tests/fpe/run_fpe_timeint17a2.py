@@ -6,7 +6,7 @@ exe=Path(sys.argv[1]); bank=json.loads(Path(sys.argv[2]).read_text())
 mats={x["id"]:x for x in bank["materials"]}
 dts=[0.00025,0.000125,0.0000625,0.00003125]
 horizon=0.001
-dtop=5.0; pmax=0.05; rsro=0.05
+dtop=10.0; pmax=0.05; rsro=0.05
 
 def k_vg(m,h):
     tr=m["theta_r"]; ts=m["theta_s"]; alpha=m["alpha"]; n=m["n"]; l=m["lambda"]; ks=m["ksat"]
