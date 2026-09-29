@@ -1,0 +1,21 @@
+name: PPA-WU05-E1 pure salinity factor
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05e1-salinity-factor.yml'
+      - 'src/process/mod_ppa_wu05e1_salinity_factor.f90'
+      - 'tests/fapp/test_ppa_wu05e1_salinity_factor.f90'
+      - 'tests/fapp/run_ppa_wu05e1_salinity_factor.sh'
+      - 'integration/audits/PPA_WU05E1_SOURCE_CENSUS.json'
+      - 'integration/audits/PPA_WU05E1_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05E1_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  salinity-source-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 Maas-Hoffman salinity factor at O0/O2
+        run: bash tests/fapp/run_ppa_wu05e1_salinity_factor.sh

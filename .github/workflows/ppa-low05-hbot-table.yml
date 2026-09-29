@@ -1,0 +1,21 @@
+name: PPA-LOW05 B1.11 prescribed-head table law
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low05-hbot-table.yml'
+      - 'src/adapter/mod_ppa_low05_hbot_table.f90'
+      - 'tests/fapp/test_ppa_low05_hbot_table.f90'
+      - 'tests/fapp/run_ppa_low05_hbot_table.sh'
+      - 'integration/audits/PPA_LOW05_HBOT_SOURCE_CENSUS.json'
+      - 'integration/audits/PPA_LOW05_HBOT_PREREGISTRATION.json'
+      - 'integration/audits/PPA_LOW05_HBOT_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  hbot-table-law:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 DATE5/HBOT5 AFGEN law at O0/O2
+        run: bash tests/fapp/run_ppa_low05_hbot_table.sh

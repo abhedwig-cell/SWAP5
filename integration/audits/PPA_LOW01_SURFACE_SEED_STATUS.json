@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low01.surface-seed.status.v1",
+  "work_unit": "PPA-LOW01-SURFACE-SEED",
+  "parent_work_unit": "PPA-LOW01",
+  "status": "SURFACE_FLUX_SEED_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "b3e549dc8",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no meteorology, pondrunoff, surface/head solver, groundwater state, accepted flux mass or runtime route changed",
+  "source_census": "integration/audits/PPA_LOW01_SURFACE_SEED_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW01_SURFACE_SEED_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low01_surface_flux_seed.f90",
+  "test": "tests/fapp/test_ppa_low01_surface_flux_seed.f90",
+  "gate": "tests/fapp/run_ppa_low01_surface_flux_seed.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW01_SURFACE_Q0_QV1_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW01_SURFACE_AREA_STORE_AND_POND_DELTA=PASS",
+      "PPA_LOW01_SURFACE_SEED_STATELESS_A_B_A=PASS",
+      "PPA_LOW01_SURFACE_SEED_INVALID_INPUT_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "3a48ed70ffa033ac71e4c0affe03156bbac50dae4a616f1ab2958121800ba1a4",
+    "o2_executable_sha256": "2bfdcdf1e8f6ca08a2a5ecf07b38a552b117275cb5d86753c4b9b69afa03953e",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Continue toward a typed owner composition for q0, pond runoff and surface GWL; keep this scalar equation isolated.",
+  "recovery_point": "this status and PPA_LOW01_SURFACE_SEED_SOURCE_CENSUS.json"
+}

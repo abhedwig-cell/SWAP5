@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-D3",
+  "title": "Pure Walsum compensated root-uptake compositor",
+  "protocol": "PIN_D1 -> COMPUTE_WALSUM_ALPHACRIT -> EXACT_POSTSTRESS_COMPOSITION -> O0_O2_REPLAY -> HOLD_RUNTIME",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05D1_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU05D2_PREREGISTRATION.json",
+    "origin/audit/ppa-wu05d-compensation-authority:integration/audits/PPA_WU05D_COMPENSATION_AUTHORITY_CONTRACT.json"
+  ],
+  "source": {
+    "snapshot": "B1.11",
+    "path": "SWAP/rootextraction.f90:RootExtraction_MACRO; SWCOMPENSATE=2 branch",
+    "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "equation": "alphacrit=min((dcritrtz+rdm-rd_noddrz)/rdm,1); then use the exact shared post-stress compensation block"
+  },
+  "scope": [
+    "typed current root-depth inputs and B1.11 Walsum critical stress-index equation",
+    "source-ordered common post-stress factor inference, selector 1..5, nodewise qrot rescaling and attribution reallocation"
+  ],
+  "non_goals": [
+    "runtime binding, accepted root-sink receipt, restart/rollback or retry qualification",
+    "MICRO, multi-stressor production admission, or implicit oxygen/salinity/frost qualification",
+    "groundwater tangent, parallel route, root-growth policy or solver changes"
+  ],
+  "pass_conditions": [
+    "100,000 deterministic valid vectors bitwise match exact Walsum alpha and shared source compositor oracle",
+    "include Walsum critical values below 0.2; do not apply Jarvis-only ALPHACRIT lower bound",
+    "all five SWSTRESSOR branches and no-op gate pass",
+    "A/B/A replay is stateless and O0/O2 transcripts are identical",
+    "invalid geometry fails closed without mutating pre-compensation inputs"
+  ]
+}

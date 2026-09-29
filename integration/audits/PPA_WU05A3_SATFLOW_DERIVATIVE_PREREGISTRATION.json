@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-SATFLOW-DERIVATIVE",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure SATFLOW task-4 derivative update equation",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_EXPLICIT_STATE_TRANSFORM -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:SATFLOW task 4",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1600-1619",
+    "behavior": "Update macropore-flow derivative from outgoing-minus-incoming SATFLOW terms when absolute head difference exceeds 1e-14, then apply the covering-top-compartment incoming-flow correction when matrix head exceeds zero."
+  },
+  "scope": ["explicit input/output derivative and saved head-difference vectors", "100000 deterministic bitwise comparisons at O0/O2"],
+  "non_goals": ["SATFLOW saved trial workspace ownership", "solver Jacobian assembly, accepted mass receipt, retry/restart or runtime admission"],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

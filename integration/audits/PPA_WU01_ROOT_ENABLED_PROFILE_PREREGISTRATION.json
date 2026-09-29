@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "PPA-WU01-ROOT-PROFILE",
+  "state": "PREREGISTERED",
+  "baseline": "e1ddf3d16",
+  "purpose": "Extend the existing PPA-WU01 standalone production owner with one restricted root-enabled Reference-Richards profile so PPA-ATM-02 may later provide a prescribed PMdirect root demand.",
+  "authority": [
+    "PPA-WU01 production bootstrap owns committed state, transaction, mass and restart",
+    "PPA-ROOT-HYD02 qualified restricted prescribed-root tangent coverage",
+    "mod_fmr_serialized_reference_backend.f90 existing root_extraction_sink forcing route"
+  ],
+  "allowed_profile": {
+    "bottom_mode": 7,
+    "root_extraction_active": true,
+    "root_provider": "concrete prescribed b110_root_sink_provider_t only",
+    "forcing": "finite nonnegative root_extraction_sink vector matching active nodes",
+    "other_optional_physics": "all existing WU01 exclusions remain inactive"
+  },
+  "excluded": ["Feddes/dynamic stress", "root growth/state", "groundwater profile", "mixed mode 5/7", "macropores", "snow", "drainage response", "new solver/temporal/tolerance policy", "PMdirect production adapter"],
+  "invariants": [3, 7, 13, 23, 25],
+  "required_evidence": [
+    "root-enabled standalone initialization succeeds only for the restricted profile",
+    "nonzero prescribed sink completes through the existing owner with hard mass closure",
+    "committed revisions advance exactly once only after accepted execution",
+    "invalid/negative/wrong-size sink and all excluded optional physics fail closed",
+    "O0/O2 output identity",
+    "existing WU01 profile tests remain green"
+  ],
+  "permitted_production_mutation": ["src/runtime/mod_fmr_production_application_bootstrap.f90"],
+  "next_after_qualification": "Bind PMdirect potential transpiration into the restricted prescribed root-sink vector under a separate PPA-ATM-02 composition test."
+}

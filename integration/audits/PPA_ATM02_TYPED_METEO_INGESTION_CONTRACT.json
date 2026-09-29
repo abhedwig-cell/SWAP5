@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "PPA-ATM-02",
+  "title": "Typed decoded daily meteorology to generic-time PMdirect forcing",
+  "state": "IMPLEMENTATION_PREREGISTERED",
+  "baseline": "d1a7f8c6a",
+  "source_basis": {
+    "reference": "SWAP 4.3.1 B1.11 MOD_meteo.f90",
+    "decoded_daily_fields": ["rad", "tmn", "tmx", "hum", "win", "grai"],
+    "calendar_basis": "timecontrol.f90 supplies the calendar-relative day number outside process code"
+  },
+  "ownership": {
+    "decoder": "owns files, parser state, record ordering, date parsing and conversion to immutable records",
+    "atm02_adapter": "owns only validation, explicit generic-time coverage and field mapping",
+    "pmdirect_process": "owns PMdirect equations only",
+    "runtime": "continues to own trial, acceptance, restart and physical mass publication"
+  },
+  "input_contract": {
+    "identity": "positive source_id and nonnegative source_record_index",
+    "coverage": "finite source t0<t1 must cover the requested finite generic interval",
+    "calendar": "decoder supplies day_of_year in 1..366; ATM-02 performs no Gregorian or legacy-date parsing",
+    "units": {
+      "radiation_j_m2_d": "J m-2 d-1",
+      "minimum_air_temperature_c": "degrees C",
+      "maximum_air_temperature_c": "degrees C",
+      "vapour_pressure_kpa": "kPa",
+      "wind_speed_m_s": "m s-1",
+      "gross_rain_cm_d": "cm d-1"
+    }
+  },
+  "mapping": {
+    "rad": "radiation_j_m2_d",
+    "tmn": "minimum_air_temperature_c",
+    "tmx": "maximum_air_temperature_c",
+    "hum": "vapour_pressure_kpa",
+    "win": "wind_speed_m_s",
+    "grai": "gross_rain_cm_d"
+  },
+  "forbidden_surface": ["open", "read", "filename", "path", "file unit", "cursor", "line number", "date parser", "calendar loop", "committed state"],
+  "qualification": [
+    "direct decoded-record mapping is field-identical to PMdirect weather input",
+    "a covered non-integer subdaily generic interval is accepted without calendar logic",
+    "identity, calendar, coverage and nonfinite/negative-value violations fail closed",
+    "O0/O2 output markers are identical"
+  ],
+  "explicitly_not_claimed": [
+    "legacy file grammar implementation",
+    "Gregorian/date-string decoder",
+    "detailed subdaily meteorology semantics",
+    "production PMdirect dynamic-top/root composition",
+    "SWINTER=1/2 or Rutter ownership"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_sol_age_surface_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-SURFACE",
+  "parent_work_units": ["PPA-SOL-AGE-DT"],
+  "title": "B1.11 AgeTracer pond precipitation/irrigation boundary amount and top flux",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "5ebe8c1142dd295f9cc3aec07cfe9cb8c2295933",
+    "reference_snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_member": "SWAP/solute.f90",
+    "source_member_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "source_equation": "AgeTracer task-2 surface AgeSurf, qtop<-1e-6 branch, Ageflux top, isqtop and downward cumulative boundary term"
+  },
+  "scope": {
+    "inputs": "Already-materialized nird, cirr, nraidt, Agepre, dtsolu, Pondm1, qtop, pond, ArMpSs, Agepondm1 and runots",
+    "equations": "Agesurf=(nird*Ageirr+nraidt*Agepre)*dtsolu+Pondm1*Agepondm1; if qtop<-1e-6: Agepond=Agesurf/(pond-qtop*dtsolu), Agefluxt=qtop*(1-ArMpSs)*Agepond*dtsolu, Agesurf+=Agefluxt, isqtop=qtop*(1-ArMpSs)*Agepond, icAgetopdwn increment=qtop*(1-ArMpSs)*0.5*(Agepond+Agepondm1)*dtsolu; else Agepond=Agefluxt=isqtop=0. Surface cumulative increment=0.5*(Agepond+Agepondm1)*runots.",
+    "state_owner": "None; inputs explicit and outputs numeric candidates only",
+    "pond_water_owner_restart_daily_loop_other_cumulative_reporting_production": "OUT OF SCOPE"
+  },
+  "qualification": [
+    "Compare deterministic source-order vectors to direct B1.11 expressions at O0/O2",
+    "Exercise qtop threshold below/equal/above, ArMpSs, irrigation/precipitation contributions and positive pond denominator",
+    "Reject nonfinite inputs and nonpositive denominator on the active branch",
+    "No surface-water or age pond state owner, time loop or production claim"
+  ],
+  "decision_rule": "Preserve the qtop<-1e-6 branch and explicit formula operation order; do not silently include/infer state mutation or repair behavior outside the source expression."
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ppa_low05_app.source_census.v1",
+  "work_unit": "PPA-LOW05-APP",
+  "baseline_head": "0782503f630f038ab488de4983974ad68ee3aed3",
+  "b1_11": {
+    "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "readswap_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "boundbottom_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+    "functions_afgen_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+  },
+  "swap4_semantics": {
+    "input": "SWBOTB=5 reads DATE5/HBOT5 and packs numeric dates and prescribed lower-face heads into HBOTAB",
+    "evaluation": "HBOT=AFGEN(HBOTAB,T1900+dt) at each lower-boundary evaluation",
+    "boundary_owner": "HeadCalc solves prescribed bottom face pressure head; qbot is derived output",
+    "existing_swap5_solver_evidence": "src/adapter/mod_reference_richards_legacy_binding.f90 materializes qbot and mass residual for accepted bottom_mode=5 solves"
+  },
+  "current_swap5_postimage": {
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "7b92162ab556180124328591736dc6428c4f78bf",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
+    "src/adapter/mod_ppa_low05_hbot_table.f90": "b68e67890313d8a78b3818622944784b14ed8a36"
+  },
+  "ownership_findings": [
+    "The backend accepts bottom_mode=5 and explicit bottom_head; the shared Reference solver already applies the fixed-head boundary and computes accepted qbot/mass accounting.",
+    "The production bootstrap currently classifies every bottom_mode=5 application as groundwater-owned, requires a valid datum and positive ledger identity, and registers a groundwater participant.",
+    "The typed forcing currently has no SWBOTB=5 time table; SWBOTB=2 provides a same-owner precedent for immutable forcing control evaluated from the current substep interval.",
+    "A standalone prescribed-head mode therefore requires an explicit ownership discriminator; it must not be inferred by installing a second mutable water-table/state owner."
+  ],
+  "implementation_dependencies": [
+    "integration/audits/PPA_LOW05_HBOT_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW05_HBOT_PREREGISTRATION.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "integration/audits/PPA_LOW02_TIME_STATUS.json",
+    "tests/fapp/test_ppa_low02_time_application_admission.f90",
+    "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90"
+  ],
+  "production_admission": "NONE; this census/preregistration is local development authority only and does not supersede canonical admission"
+}

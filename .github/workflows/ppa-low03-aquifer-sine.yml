@@ -1,0 +1,27 @@
+name: PPA-LOW03 B1.11 deep-aquifer sine forcing
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low03-aquifer-sine.yml'
+      - 'src/adapter/mod_ppa_low03_aquifer_sine.f90'
+      - 'tests/fapp/test_ppa_low03_aquifer_sine.f90'
+      - 'tests/fapp/run_ppa_low03_aquifer_sine.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low03-aquifer-sine.yml'
+      - 'src/adapter/mod_ppa_low03_aquifer_sine.f90'
+      - 'tests/fapp/test_ppa_low03_aquifer_sine.f90'
+      - 'tests/fapp/run_ppa_low03_aquifer_sine.sh'
+
+jobs:
+  aquifer-sine-law:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay the SW3=1 source equation
+        run: bash tests/fapp/run_ppa_low03_aquifer_sine.sh

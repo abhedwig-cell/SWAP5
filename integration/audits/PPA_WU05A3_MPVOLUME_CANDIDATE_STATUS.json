@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_mpvolume_candidate.status.v1",
+  "work_unit": "PPA-WU05-A3-MPVOLUME-SHRINKAGE-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@ed8364c4c62637fc9f86cff62035ee894158b1e3",
+  "preregistration": "integration/audits/PPA_WU05A3_MPVOLUME_CANDIDATE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_mpvolume_candidate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_mpvolume_candidate_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_candidate_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["active shrinkage geometry", "critical moisture inactive route", "minimum subsidy negative-candidate correction", "near-saturation cutoff", "invalid geometry fail-closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; candidate equation only; no state publication, mass/retry/restart or A4 integration",
+  "next_action": "Continue with a separate MPVOLUME task-1 compartment/domain accounting equation only after tracing its current/previous volume and bottom-index ownership.",
+  "blockers": []
+}

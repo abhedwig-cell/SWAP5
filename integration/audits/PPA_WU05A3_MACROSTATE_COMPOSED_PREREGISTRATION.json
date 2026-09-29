@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrostate_composed.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROSTATE-CDE-COMPOSED-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@f5271bb93164bfddac7c59375010e783869314cc",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routines": ["MACROSTATE"],
+    "source_region": "bounded section-C inventory to section-D water/wetting/internal-flux to section-E interface aggregate candidate composition"
+  },
+  "implementation": [
+    "src/process/mod_ppa_wu05a3_macrostate_storage_candidate.f90",
+    "src/process/mod_ppa_wu05a3_macrostate_wetting_candidate.f90",
+    "src/process/mod_ppa_wu05a3_macrostate_flux_candidate.f90",
+    "src/process/mod_ppa_wu05a3_macrostate_aggregate_candidate.f90"
+  ],
+  "test": "tests/fapp/test_ppa_wu05a3_macrostate_composed_candidate_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrostate_composed_candidate_source_oracle.sh",
+  "in_scope": [
+    "section-C candidate domain storage feeds section-D water profile and wetting candidates",
+    "candidate profile/top-node results feed section-D internal flux recurrence",
+    "candidate storage and profile volumes feed section-E interface aliases",
+    "deterministic hand-calculated two-domain SWMBF=1 composed case"
+  ],
+  "out_of_scope": [
+    "production MacroState/MpVolume call, shared-owner state mutation or previous-step lifecycle",
+    "external water boundary, matrix/Richards transaction, accepted internal transfer or mass receipt",
+    "retries, rollback, restart, or A4 qualification/admission"
+  ],
+  "expected_tests": [
+    "storage-to-wetting handoff and per-domain water totals",
+    "wetting top/level to unsaturated/saturated internal flux handoff",
+    "section-E main/internal aliases and profile volume aggregates",
+    "O0/O2 transcript identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; composed equation candidates only; no production or transaction state is published"
+}

@@ -1,0 +1,38 @@
+name: PPA-WU04C F-KT retry and restart replay
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu04c-retry-restart-replay.yml'
+      - 'src/runtime/mod_fmr_accepted_commit_receipt.f90'
+      - 'src/runtime/mod_fmr_vonhhbraden_source_window_progress.f90'
+      - 'src/runtime/mod_ppa_wu04c_runtime_publication.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
+      - 'src/process/mod_vonhhbraden_interception.f90'
+      - 'src/process/mod_gash_interception.f90'
+      - 'tests/fmr/test_fmr18_accepted_commit_receipt.f90'
+      - 'tests/fmr/run_ppa_wu04c_retry_restart_replay.sh'
+      - 'integration/audits/PPA_WU04C_RETRY_REPLAY_STATUS.json'
+      - 'integration/audits/PPA_WU04C_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU04D_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU04D_RETRY_REPLAY_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  fkt-retry-restart:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Verify WU04C receipt progress across retry and restart
+        run: bash tests/fmr/run_ppa_wu04c_retry_restart_replay.sh

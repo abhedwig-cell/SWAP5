@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_sol_age_dt_status.v1",
+  "work_unit": "PPA-SOL-AGE-DT",
+  "status": "LOCAL_SOURCE_ORACLE_QUALIFIED_O0_O2_NOT_PRODUCTION_ADMITTED",
+  "preregistration": "integration/audits/PPA_SOL_AGE_DT_PREREGISTRATION.json",
+  "implementation_commit": "994bc282cbb1708eabb8a485c7e738359ea027ae",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "solute_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "equation": "AgeTracer task-2 maximum stable substep plus strict remaining-interval/dtmin schedule"
+  },
+  "implementation": {
+    "source": "src/process/mod_ppa_sol_age_timestep.f90",
+    "test": "tests/fapp/test_ppa_sol_age_timestep_source_oracle.f90",
+    "gate": "tests/fapp/run_ppa_sol_age_timestep_source_oracle.sh",
+    "scope": "Stable candidate from per-cell theta interpolation, AgeTracer diffusivity/dispersivity and theta*dz^2/(2*dispr), then one pure source-ordered remaining-interval/dtmin scheduling step."
+  },
+  "qualification": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64 explicit path",
+    "optimization_levels": ["O0", "O2"],
+    "deterministic_profiles_per_build": 100000,
+    "bitwise_o0_o2_transcript_identity": true,
+    "markers": [
+      "PPA_SOL_AGE_DT_B1_11_STABLE_CANDIDATE_100000=PASS",
+      "PPA_SOL_AGE_DT_STRICT_REMAINDER_AND_DTMIN=PASS",
+      "PPA_SOL_AGE_DT_INVALID_INPUT_FAIL_CLOSED=PASS"
+    ]
+  },
+  "scope_boundary": {
+    "substep_loop_state_and_surface_boundary": "NOT_IMPLEMENTED",
+    "restart_mass_reporting_or_production_route": "NONE",
+    "dtmin_interval_overrun": "PRESERVED_AS_B1_11_SOURCE_ORDER; NOT CORRECTED OR REINTERPRETED"
+  },
+  "next_action": "Source-test the AgeTracer surface pond precipitation/irrigation age concentration and top age amount branches independently."
+}

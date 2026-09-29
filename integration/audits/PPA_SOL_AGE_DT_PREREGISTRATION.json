@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_sol_age_dt_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-DT",
+  "parent_work_units": ["PPA-SOL-AGE-SUBSTEP"],
+  "title": "B1.11 AgeTracer stable substep and remaining-interval scheduler",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "61f87268c924eb7376da5f939a972d3e76fd2bd1",
+    "reference_snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_member": "SWAP/solute.f90",
+    "source_member_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "source_equation": "AgeTracer task 2 maximum timestep loop at lines 905-912; strict remaining interval loop and dtmin clipping at lines 915-921"
+  },
+  "scope": {
+    "stable_candidate": "dtsolu starts at dt. Per cell: thetav=inpola(i+1)*theta(i)+inpolb(i)*theta(i+1); diffus=ddif*thetav**2.33/thetsl(layer(i))**2; dispr=diffus+ldis(layer(i))*abs(q(i))/theta(i); floor dispr at 1e-8; candidate=dz(i)**2*theta(i)/(2*dispr); dtsolu=min(dtsolu,candidate).",
+    "remaining_interval": "Loop while dt-tcumsol > 1e-8; substep=min(stable_candidate,dt-tcumsol); then max(substep,dtmin); then tcumsol += substep, preserving source order.",
+    "state_owner": "None; pure numeric candidate only",
+    "boundary_transport_retry_restart_mass_reporting_production": "OUT OF SCOPE"
+  },
+  "qualification": [
+    "Compare deterministic stable candidate vectors against direct B1.11 source order at O0/O2",
+    "Exercise diffusivity, dispersivity floor, limiting cell, strict loop threshold and dtmin overrun behavior",
+    "Reject nonfinite values, invalid dimensions, nonpositive water content/thickness/layer porosity/dt/dtmin",
+    "No multistep AgeTracer state, boundary flux, physical owner or production claim"
+  ],
+  "decision_rule": "Implement only stateless numerical candidate functions and bounded source oracles; preserve B1.11 operation and branch order, including dtmin potentially advancing tcumsol past dt."
+}

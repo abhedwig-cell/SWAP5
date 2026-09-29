@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.ppa_low04_gwl.status.v1",
+  "work_unit": "PPA-LOW04-GWL",
+  "parent_work_unit": "PPA-LOW04",
+  "status": "PURE_EXPONENTIAL_Q_GWL_LAW_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "0488118ea",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no GWL/headcalc state, solver, accepted bottom flux, groundwater or restart route changed",
+  "source_census": "integration/audits/PPA_LOW04_GWL_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW04_GWL_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low04_gwl_exponential_flux.f90",
+  "test": "tests/fapp/test_ppa_low04_gwl_exponential_flux.f90",
+  "gate": "tests/fapp/run_ppa_low04_gwl_exponential_flux.sh",
+  "test_result": {
+    "state": "DIRECT_O0_O2_PASS",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "declared_bash_gate_executed": false,
+    "source_oracle_vectors_per_optimization": 100000,
+    "markers": [
+      "PPA_LOW04_GWL_EXPONENTIAL_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW04_GWL_ABSOLUTE_LEVEL_AND_OPTIONAL_OFFSET=PASS",
+      "PPA_LOW04_GWL_STATELESS_A_B_A=PASS",
+      "PPA_LOW04_GWL_NONFINITE_AND_OVERFLOW_FAIL_CLOSED=PASS"
+    ],
+    "o0_executable_sha256": "8daaf47007d9058461a22b296485db916e67da54c18f6e947a6dabf44d1e2d05",
+    "o2_executable_sha256": "276eab557e7b4be34757d4b051f5e67a973e009f135be38b6fa1ded3a5699b7a"
+  },
+  "next_action": "Continue with another independent lower-boundary law; keep stateful SWBOTB=4 production route held.",
+  "recovery_point": "this status and PPA_LOW04_GWL_SOURCE_CENSUS.json"
+}

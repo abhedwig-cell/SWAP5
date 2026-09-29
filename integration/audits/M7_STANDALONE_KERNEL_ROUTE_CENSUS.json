@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.m7.standalone_kernel_route_census.v1",
+  "criterion": "M7-07",
+  "baseline": "e7be7b560811fc962d1aaebbf85cf295ba8c7997",
+  "method": "deterministic source-structure check of the public production-application standalone entry points, common serialized transaction route, and current admission guards",
+  "scope": "current fmr_production_application_bootstrap standalone API and admitted tile profile predicate; no production source or profile widening",
+  "entry_points": [
+    {
+      "method": "run_standalone",
+      "implementation": "production_application_run_standalone",
+      "route": "delegates to run_standalone_with_forcing using the owner's base_forcing"
+    },
+    {
+      "method": "run_standalone_with_forcing",
+      "implementation": "production_application_run_standalone_with_forcing",
+      "route": "one call to fmr_run_serialized_physical_multiswap"
+    },
+    {
+      "method": "run_standalone_with_forcing_receipts",
+      "implementation": "production_application_run_standalone_with_forcing_receipts",
+      "route": "one call to fmr_run_serialized_physical_multiswap with the same column/state/kernel inputs and optional receipt request"
+    }
+  ],
+  "common_route": [
+    "serialized dispatcher builds deterministic execution order and routes each column through execute_column",
+    "execute_column resolves registered column/template/parameter/forcing/state inputs and calls execute_resolved_column",
+    "execute_resolved_column captures a kernel checkpoint, invokes backend%run_trial, and commits or discards the candidate using kernel transaction contracts",
+    "no standalone-specific direct physics entry was found in the three public application methods"
+  ],
+  "current_admission_bounds": {
+    "backend": "FMR_BACKEND_SERIALIZED_REFERENCE only",
+    "bottom_modes": [2, 5, 7],
+    "optional_state_layouts": ["BASE", "BLACK_EVAPORATION", "BOESTEN_EVAPORATION"],
+    "numerical_continuation_layouts": ["NONE", "RICHARDS_TEMPORAL_HISTORY"],
+    "rejected_active_physics": [
+      "macropore",
+      "snow",
+      "hysteresis",
+      "elasticity",
+      "frost",
+      "soil_temperature",
+      "drainage_response",
+      "tabulated_hydraulics"
+    ],
+    "additional_composition_guards": [
+      "root extraction is restricted to bottom mode 7",
+      "root extraction cannot be combined with Black or Boesten evaporation",
+      "Black and Boesten evaporation are mutually exclusive and require their matching optional-state layout"
+    ]
+  },
+  "verification": {
+    "test": "tests/fmr/test_m7_standalone_kernel_route_census.py",
+    "result": "PASS_SOURCE_STRUCTURE_AND_BOUNDED_PROFILE_RUNTIME_EXAMPLES",
+    "markers": [
+      "M7_STANDALONE_BASE_DELEGATES_TO_FORCING_ROUTE=PASS",
+      "M7_STANDALONE_FORCING_HAS_ONE_SERIALIZED_DISPATCH=PASS",
+      "M7_STANDALONE_RECEIPTS_HAS_ONE_SERIALIZED_DISPATCH=PASS",
+      "M7_SERIALIZED_DISPATCH_USES_COLUMN_ROUTER=PASS",
+      "M7_SERIALIZED_ROUTE_USES_TYPED_BACKEND_TRIAL=PASS",
+      "M7_SERIALIZED_ROUTE_USES_KERNEL_COMMIT_CONTRACT=PASS",
+      "M7_SERIALIZED_ROUTE_USES_KERNEL_REJECT_CONTRACT=PASS",
+      "M7_STANDALONE_KERNEL_ROUTE_CENSUS=PASS_SOURCE_STRUCTURE_ONLY"
+    ],
+    "runtime_test_runner": "tests/fmr/run_m7_standalone_profile_examples.py",
+    "runtime_profile_examples": {
+      "prescribed_qbot": {
+        "source_test": "tests/fapp/test_ppa_wu02_prescribed_qbot_application_admission.f90",
+        "result": "PASS_O0_O2_IDENTICAL",
+        "claims": ["standalone Reference Richards reached", "prescribed qbot reached", "hard mass", "committed state is Fortran-owned"]
+      },
+      "black_evaporation": {
+        "source_test": "tests/fapp/test_ppa_wu04a_black_runtime.f90",
+        "result": "PASS_O0_O2_IDENTICAL",
+        "claims": ["production application reachable", "hard mass", "rejected-trial immutability", "changed-dt retry", "restart roundtrip", "fail-closed option layout"]
+      },
+      "boesten_evaporation": {
+        "source_test": "tests/fapp/test_ppa_wu04b_boesten_runtime.f90",
+        "result": "PASS_O0_O2_IDENTICAL",
+        "claims": ["production application reachable", "hard mass", "rejected-trial immutability", "changed-dt retry", "restart roundtrip", "fail-closed option layout"]
+      }
+    },
+    "runtime_qualification_scope": "The named bounded application tests executed successfully on O0 and O2 with identical transcripts. This evidence, together with the source call graph, closes only M7-07's shared-kernel-route claim. It does not qualify every profile combination, the WU04C production-owner transaction, or any unrelated physics/production admission claim."
+  },
+  "criterion_status": "CLOSED",
+  "remaining_gap": null,
+  "next_action": "No action while the recorded dependency surface remains unchanged; preserve the named source-route census and bounded O0/O2 application evidence."
+}

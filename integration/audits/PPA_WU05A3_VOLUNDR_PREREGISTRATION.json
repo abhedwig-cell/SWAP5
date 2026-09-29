@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-VOLUNDR",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure macropore volume-under-level source equation",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_EXPLICIT_INPUT_EQUATION -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:VOLUNDR",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1955-1963",
+    "behavior": "Accumulate macropore compartment volumes upward from ICZbt+1 until Ztp is reached, then subtract the overshoot fraction in the last intersected compartment."
+  },
+  "scope": [
+    "one source equation with explicit geometry/thickness/compartment-volume arrays",
+    "preserve B1.11 loop order and floating-point expression order",
+    "fail closed on malformed shapes, nonfinite coordinates and nonpositive thickness",
+    "100,000 deterministic bitwise comparisons at O0 and O2"
+  ],
+  "non_goals": [
+    "MACRORATE flow coupling or global state migration",
+    "macropore root/top/bottom/exchange/drainage mass receipt",
+    "transaction/runtime binding or restart admission",
+    "parallel/MultiSWAP admission"
+  ],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

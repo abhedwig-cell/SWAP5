@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_aggregate.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-AGGREGATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@9642eeaeb7e866f5c6922966fd815cb5c57a1491",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROGEOM",
+    "source_region": "per-original-compartment PpIcCp, VlMpStCp and FrArMtrx aggregation"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_aggregate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_aggregate_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_aggregate_source_oracle.sh",
+  "in_scope": [
+    "RelVlIc positive versus zero PpIcCp branch",
+    "static macropore volume scaling",
+    "matrix-area remainder without clamping, matching source expression",
+    "invalid negative relative volumes and nonpositive cell thickness fail closed"
+  ],
+  "out_of_scope": [
+    "volume integration and domain partition/lumping",
+    "whole MACROGEOM or production state ownership",
+    "accepted mass, retries, restart and A4 integration admission"
+  ],
+  "expected_tests": [
+    "hand-computable zero and positive internal-catchment ratios",
+    "source-preserving negative matrix-area remainder when static volume overfills a cell",
+    "O0/O2 output identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; isolated per-cell aggregation only"
+}

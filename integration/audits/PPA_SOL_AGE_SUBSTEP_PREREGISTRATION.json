@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_sol_age_substep_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-SUBSTEP",
+  "parent_work_units": ["PPA-SOL-AGE-CELL", "PPA-SOL-AGE-FACE", "PPA-SOL-AGE-VERTICAL"],
+  "title": "B1.11 sequential age-tracer compartment sweep for one explicit substep",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "3d4a172c49fd025edd6a2f05cd2219ba89249a9d",
+    "reference_snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_member": "SWAP/solute.f90",
+    "source_member_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "source_equation": "AgeTracer task-2 top-to-bottom compartment loop, internal Agefluxb recalculation, root/lateral uptake, AgeProd and concentration update"
+  },
+  "scope": {
+    "substep": "one explicit already-selected positive dtsolu value; daily stable-step selection and outer loop are excluded",
+    "top_boundary": "already derived top Agefluxt amount is an input",
+    "internal_faces": "recalculated in source order; an upper concentration updated earlier in this sweep feeds the next face interpolation",
+    "bottom_boundary": "B1.11 sign branch uses agedrain concentration for qbottom>0 and the final compartment concentration for qbottom<=0",
+    "root_and_lateral": "materialized water-rate inputs are converted to age sinks in source operation order; lateral drainage selects local age for qdra>0 and agedrain otherwise",
+    "state_owner": "None; returns only candidate concentration/storage arrays",
+    "restart_mass_reporting_parser_runtime": "OUT OF SCOPE"
+  },
+  "qualification": [
+    "100000 deterministic multi-compartment sweeps bitwise-match direct B1.11 source order at O0 and O2",
+    "exercise bottom, internal-face, root and both lateral-drainage sign branches",
+    "invalid dimensions/nonfinite values/invalid geometry reject atomically",
+    "O0/O2 transcript identity",
+    "no multistep age transport, water-coupled state owner, accepted mass or production claim"
+  ],
+  "decision_rule": "Keep time-step selection, surface age pond boundary, output interval accumulators, trial ownership, restart and production migration separate; do not infer complete AgeTracer admission."
+}

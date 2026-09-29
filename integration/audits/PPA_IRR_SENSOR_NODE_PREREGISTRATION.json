@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-SENSOR-NODE",
+  "parent_workunit": "PPA-IRR-TCS7-DCS2",
+  "title": "Source-bound sensor-depth compartment selection for TCS7/TCS8",
+  "protocol": "PIN_B1_11_SOURCE -> REPLAY_FIRST_NODE_NOT_ABOVE_DEPTH_PLUS_TOLERANCE -> TEST_NODE_BOUNDARIES -> 100000_DETERMINISTIC_PROFILES -> O0_O2_REPLAY -> HOLD_GRID_AND_SENSOR_OWNERSHIP",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "287-293",
+    "equations": [
+      "initialize i=1",
+      "advance while zbotcp(i)>(dcrit+1e-5)",
+      "select nodsen=i at the first node whose bottom is not above the tolerated sensor depth"
+    ]
+  },
+  "scope": [
+    "pure bounded search over supplied monotonically ordered compartment bottoms",
+    "strict comparison and 1e-5 depth tolerance",
+    "100000 deterministic in-profile source comparisons"
+  ],
+  "non_goals": [
+    "soil-grid construction, coordinate conversion, sensor-depth parsing or profile validation",
+    "hydraulic state access, TCS7/TCS8 threshold evaluation or event selection",
+    "out-of-profile legacy behavior, accepted mass, restart or production admission"
+  ],
+  "pass_conditions": [
+    "all valid in-profile node indices match the B1.11 search exactly",
+    "100000 deterministic profiles pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

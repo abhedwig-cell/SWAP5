@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.ppa_sol_age_vertical_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-VERTICAL",
+  "parent_work_units": ["PPA-SOL-AGE-CELL", "PPA-SOL-AGE-FACE"],
+  "title": "Compose source-ordered age-tracer face amounts into compartment candidates",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "f3ccc4fc7c1f89e898e4b92c3d892a1c456c4764",
+    "reference_snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_member": "SWAP/solute.f90",
+    "source_member_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "source_equation": "B1.11 SWAP/solute.f90 AgeTracer task 2: sequential face transfer to compartment storage update"
+  },
+  "scope": {
+    "inputs": "one already ordered n+1 face-age-amount vector (top boundary then each descending face), old compartment storage, current/previous water content, thickness, and already materialized root/lateral age sink rates",
+    "operation": "for i=1..n in source traversal order, update each candidate compartment with its adjacent face-amount difference and AgeProd term by calling the exact cell candidate",
+    "ordering_limit": "does not calculate or re-evaluate internal faces; source AgeTracer computes those from the evolving upper compartment concentration during its sequential sweep",
+    "state_owner": "None; returns a new allocatable candidate vector only",
+    "file_restart_mass_publication_or_runtime": "OUT OF SCOPE"
+  },
+  "qualification": [
+    "100000 deterministic multi-compartment vectors match a direct B1.11 ordered update bitwise at O0 and O2",
+    "dimension, finite-value and positive geometry/time validation reject the entire request before publishing a candidate",
+    "O0/O2 transcript identity",
+    "test explicitly supplies face amounts; no claim that this composes the dynamic sequential advection-dispersion substep"
+  ],
+  "decision_rule": "Keep age-tracer time integration, source-order face evaluation, water-coupled owner state, accepted mass, restart and production admission unqualified."
+}

@@ -1,0 +1,21 @@
+name: PPA-LOW04 SWBOTB=4 exponential q(gwl) law
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low04-gwl-exponential-flux.yml'
+      - 'src/adapter/mod_ppa_low04_gwl_exponential_flux.f90'
+      - 'tests/fapp/test_ppa_low04_gwl_exponential_flux.f90'
+      - 'tests/fapp/run_ppa_low04_gwl_exponential_flux.sh'
+      - 'integration/audits/PPA_LOW04_GWL_SOURCE_CENSUS.json'
+      - 'integration/audits/PPA_LOW04_GWL_PREREGISTRATION.json'
+      - 'integration/audits/PPA_LOW04_GWL_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  exponential-q-gwl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 SWBOTB=4 exponential q(gwl) at O0/O2
+        run: bash tests/fapp/run_ppa_low04_gwl_exponential_flux.sh

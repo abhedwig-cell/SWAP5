@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.ppa_irr_fixed_input_normalization.status.v1",
+  "work_unit": "PPA-IRR-FIXED-INPUT-NORMALIZATION",
+  "parent_work_unit": "PPA-IRR-FIXED-APPLICATION",
+  "status": "FIXED_IRRIGATION_INPUT_UNIT_NORMALIZATION_SOURCE_ORACLE_PASS_PARSER_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@701e7e17c",
+  "preregistration": "integration/audits/PPA_IRR_FIXED_INPUT_NORMALIZATION_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated numeric normalization only; no file grammar, schedule/event table ingestion, calendar owner, accepted mass, restart or production admission",
+  "implementation": "src/process/mod_ppa_irr_fixed_input_normalization.f90::normalize_fixed_irrigation_input",
+  "test": "tests/fapp/test_ppa_irr_fixed_input_normalization_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_fixed_input_normalization_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "693, 725-740",
+    "equations": [
+      "legacy omitted rate is derived as irdepth/24 mm/h before SSDI depth division",
+      "SSDI irdepth is divided by the inclusive node count",
+      "irdepth converts mm to cm by 0.1; irrate converts mm/h to cm/day by 0.1*24",
+      "normalized event duration is checked by B1 to be no greater than one day"
+    ]
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_FIXED_INPUT_NORMALIZATION_100000=PASS",
+      "PPA_IRR_LEGACY_RATE_FALLBACK_BEFORE_SSDI_SPLIT=PASS",
+      "PPA_IRR_SSDI_PER_NODE_DEPTH_AND_CM_PER_DAY_UNITS=PASS",
+      "PPA_IRR_FIXED_INPUT_NORMALIZATION_SOURCE_ORACLE=PASS",
+      "PPA_IRR_FIXED_INPUT_NORMALIZATION_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "5407c238dd93bc92514f027f34eaa4e406c3625db6eb495ed102a3d7c34a5436"
+  },
+  "qualification_status": "NOT_QUALIFIED; numeric source-order oracle only; parser inputs, node-range derivation and event calendar remain outside the test",
+  "next_action": "Continue source-bound input/candidate work while preserving parser, calendar and whole-column mass ownership boundaries.",
+  "recovery_point": "completed scheduled split/retry checkpoint 701e7e17c",
+  "blockers": ["This test consumes already-decoded depth, optional rate, application type and SSDI node count; no qualified owner currently constructs these from the B1 input file."]
+}

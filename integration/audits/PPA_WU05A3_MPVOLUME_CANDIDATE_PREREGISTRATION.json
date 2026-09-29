@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_wu05a3_mpvolume_candidate.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MPVOLUME-SHRINKAGE-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@ed8364c4c62637fc9f86cff62035ee894158b1e3",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MPVOLUME task 1",
+    "source_region": "dynamic shrinkage candidate: subsidy geometry, critical-moisture branch, minimum subsidy clamp and negative-volume correction"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_mpvolume_candidate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_mpvolume_candidate_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_candidate_source_oracle.sh",
+  "in_scope": [
+    "(1-(1-VlShriRel)**(1/GeomFac))*DZ geometry",
+    "strict Theta<CritThet selection versus zero dynamic-volume route",
+    "minimum subsidy and negative candidate adjustment back into subsidy",
+    "strict near-saturation theta cutoff"
+  ],
+  "out_of_scope": [
+    "stateful CritThet choice from Theta/ThetaM1 and neighboring cracks",
+    "dynamic volume publication, domain totals and ICpBtDm updates",
+    "accepted Richards transaction, mass, retry, restart and A4 admission"
+  ],
+  "expected_tests": [
+    "hand-calculated dynamic volume and subsidy",
+    "critical-moisture inactive candidate and minimum-subsidy correction",
+    "near-saturation cutoff and invalid geometry fail-closed",
+    "O0/O2 output identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; local geometry candidate only; no state is published"
+}

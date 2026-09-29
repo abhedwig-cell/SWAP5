@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.ppa_wu05a3_mpvolume_hysteresis.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MPVOLUME-HYSTERESIS-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@17e36cdf3bfae52e7a2d5e4b90adffac823faa22",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MPVOLUME task 2",
+    "source_region": "hysteresis shrinkage relief: SWMBF domain gate, storage-exceeds-volume predicate, previous-minus-current shrinkage availability, potential-bottom-limited scan and source-ordered redistribution; reaggregate domain cells and clamp dynamic candidate"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_mpvolume_hysteresis.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_mpvolume_hysteresis_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_hysteresis_source_oracle.sh",
+  "in_scope": [
+    "task-2 SWMBF=1/2 domain enable predicate",
+    "storage excess strict threshold and no-shrink no-op",
+    "previous-domain-volume minus current-volume positive relief scan bounded by ICpBtDmPot",
+    "proportional source-ordered redistribution and domain total set to stored water when relief exists",
+    "per-domain dynamic candidate accumulation from negative static volume and final zero clamp"
+  ],
+  "out_of_scope": [
+    "MacroState water-balance calculation and task-2 call ownership",
+    "mutating macro state, fluxes, accepted interval, rollback or restart",
+    "A4 whole-column external/internal transfer and mass qualification"
+  ],
+  "expected_tests": [
+    "sufficient relief redistributed in source order",
+    "SWMBF mode gate, no-shrink no-op and less-than-needed relief behavior",
+    "potential bottom limits the relief scan",
+    "O0/O2 transcript identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; task-2 shrinkage-relief candidate only; no state is published"
+}

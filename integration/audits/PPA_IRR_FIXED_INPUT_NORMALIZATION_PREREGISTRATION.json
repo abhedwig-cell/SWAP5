@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-FIXED-INPUT-NORMALIZATION",
+  "parent_workunit": "PPA-IRR-FIXED-APPLICATION",
+  "title": "Source-bound fixed irrigation depth/rate unit and SSDI normalization",
+  "protocol": "PIN_B1_11_INPUT_EQUATIONS -> REPLAY_LEGACY_RATE_FALLBACK_AND_UNIT_CONVERSION_ORDER -> REPLAY_SSDI_PER_NODE_DEPTH_NORMALIZATION -> 100000_VALID_INPUTS -> O0_O2_REPLAY -> HOLD_PARSER_AND_RUNTIME_OWNERSHIP",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "693, 725-740",
+    "equations": [
+      "when the optional rate field is absent, derive input irrate(mm/h)=irdepth(mm)/24 before any SSDI per-node depth adjustment",
+      "for irtype=2, divide input depth by the inclusive selected SSDI node count",
+      "convert depth to cm by multiplying by 0.1 and rate to cm/day by multiplying by 0.1*24",
+      "fixed-event duration is normalized per-node depth/rate and B1 rejects duration greater than one day"
+    ]
+  },
+  "scope": [
+    "pure numeric normalization for fixed-event surface/sprinkler and SSDI applications",
+    "explicit versus legacy-omitted rate and SSDI per-node input depth",
+    "100000 deterministic valid inputs with duration <=1 day"
+  ],
+  "non_goals": [
+    "file grammar, unit readers, event date ordering, node-depth search or profile validation",
+    "accepted whole-column water/solute mass, event calendar, restart or production admission"
+  ],
+  "pass_conditions": [
+    "depth, rate and duration match B1.11 source-order arithmetic bitwise",
+    "100000 deterministic inputs pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

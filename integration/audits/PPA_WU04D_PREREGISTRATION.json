@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU04-D",
+  "title": "Gash source-window interception",
+  "status": "RESTRICTED_PRODUCTION_COMPOSITION_QUALIFIED",
+  "low_high_sequence_successor": {
+    "tested_commit": "206dbf73e",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashBranchRejection",
+    "result": "PASS O0/O2: 990120 identical lines SHA256 5917F1706A36A91E3275D8CDB72105202AB224BE74E434509DE74E250B6A093E, build swap-ppa-wu01-565e61da9e704341a32b0c92b8225cc4. After the qualified dense-retry low-rain window, three half-day windows cover unmarked 0.04/0.02 rain/sprinkling, marked return to 0.16/0.08 and unmarked 0.16/0.08 continuation. Accepted steps per tile are 776, 1622 and 750. Every window is independently materialized from continued/restored owner snapshots, replayed after fresh in-memory restore, and compared for exact full hydraulic/history/provenance identity. Both source receipts close once, duplicates reject, hard mass remains 1e-12. Event counts are zero in both unmarked windows and bounded to initial trials in the marked window.",
+    "scope": "Explicit storage/temporal/event options and retry profile 0.8/64 only; no production code, default numerical policy, tolerances, forcing amplitudes or state ownership changed. Original halving failure and low-rain intermediate-duration diagnostic gates remain in this run. Not canonical admission, disk persistence or general meteorology/dynamic-top qualification.",
+    "next": "Reconcile ordinary typed meteorology integration against the qualified bounded owner profile. The separate ATM02 root-extraction-active scenario must be investigated independently; do not infer its admission from root-inactive Gash success or bypass root/event compatibility guards. Broader top-regime and disk-restart work remain separate capabilities."
+  },
+  "low_rain_dense_retry_successor": {
+    "tested_commit": "67990fccf",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashBranchRejection",
+    "result": "PASS O0/O2, 604157 identical lines SHA256 0EDDE2DC16A6278D459043529371B99B2102F1C2E65C2AF732DCB8E57F6BC3F8, build swap-ppa-wu01-c23be204f63a427ebfd7e87ee1e63806. Gate retains the binary-halving seven-substep rejection and rollback proof, then requires successful full fourth-window continuation using explicit retry_scale=0.8/max_retries=64. Both tiles accept 1566 internal substeps. Two independently initialized owners restore the same pre-window bundle and end with exactly equal complete hydraulic/history/provenance bundles. Source amount is consumed once; duplicate receipts reject. Event callback counts remain limited to initial-boundary retries.",
+    "invariants": "Forcing 0.04/0.02 cm/day, presaturation aggregate 0.051 cm/day, original pre-window hydraulic state/history, 1e-12 hard mass, 1e-5 temporal budget, native solver criteria and max internal substeps unchanged. Only explicit existing numerical retry configuration differs. No repeated event reseeding, second state owner, production source change or default policy change.",
+    "scope": "Bounded branch-local low-rain Gash continuation and in-memory pre-window restart replay now qualified. Does not establish a universally suitable retry factor, default production admission, disk restart, low-rain-to-high-rain transition or arbitrary dynamic-top regimes.",
+    "next": "Extend the dense-policy owner to a subsequent unmarked low-rain window and then a marked return to post-saturation forcing, with owner snapshots, exact restart and accepted-only source closure. Keep numerical-policy selection explicit and separate from interception physics."
+  },
+  "low_rain_internal_boundary_diagnosis": {
+    "tested_commit": "5147b83a8",
+    "scope": "Test-only copied values from the final tile's last temporal callback in the fourth source window, after seven accepted internal substeps. Borrowed callback pointers do not escape. Isolated solver probes run after outer rollback with fresh provider bindings and workspace; no trial state is published or used to repair the owner.",
+    "evidence": "84463d86f full GashBranchRejection O0/O2 gate passes; original transcript exactly preserved when LOW_RAIN diagnostic lines are removed. At 5147b83a8 recompiled only the changed test against unchanged qualified module objects at both optimization levels: 396002 identical lines SHA256 A426008B210F8042EDB11A0805AF2B55A170F9D26CDC6BC71020B6015ABB2349. Build swap-ppa-wu01-83365cd8bc7a439a8e702dab54573a12, O0/O2/probe-fractional.txt.",
+    "finding": "At dt 1.525715924799442e-5 the native solver converges but temporal bound 1.127637951111360e-5 exceeds 1e-5. Halving gives nonconvergence (residual 6.110667527536862e-13); still smaller durations increase the residual. Intermediate fractions 0.925 through 0.75 all converge with available temporal bounds below 1e-5 and independent mass residual below 1e-12. This demonstrates a locally viable duration band skipped by binary halving, not successful full-window continuation or a general precision-floor proof.",
+    "successor": "The explicit 0.8/64 full-window experiment passes at 5859e09be; strengthened completion/restart gate at 67990fccf is recorded separately in low_rain_dense_retry_successor. Default policy remains unchanged."
+  },
+  "mid_source_window_hydraulic_restart": {
+    "tested_commit": "7da13c19e",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashReceipts",
+    "result": "PASS O0/O2 with identical full numerical transcripts. A one-day Gash source at rain/sprinkling 0.20/0.10 cm/day is frozen once, apportioned into two half-day accepted amounts in cm, and restarted after the first. Every source continuation field and exact remaining half aggregate survives restore. Continued/restored full hydraulic state, temporal history and provenance match; source aggregate closes once at revision 2. Unready/foreign/duplicate receipts reject. Real failed and one-internal-substep attempts preserve accepted state/progress and replay exactly. Invalid second hydraulic restart record publishes neither column. Hard mass gate remains 1e-12.",
+    "build": "swap-ppa-wu01-1c00f5b9a6f84c9c8c851b96faccb555",
+    "transcript": "110495 identical lines, SHA256 1EABC1081CD6AD29D63D6FDB34F6267B245C0236960F8CF21FDDCD241B4CFB59. Initial d71331004 gate and strengthened 7da13c19e gate have the same transcript; additional assertions do not alter execution.",
+    "shared_helper_preservation": "Same persisted 7da13c19e executables replayed --stable-receipts successfully at O0/O2, 240436 lines each, identical SHA256 D67D03E099103173761E9BD8C3B97059EA48D5FA85E4FA154359391EE89E1500. Logs O0/O2/replay-receipts.txt in the same build. Covers existing WU04C source restart and failed/partial replay with strengthened source-field/full-state assertions.",
+    "scope": "Branch-local explicit storage/temporal opt-ins, fixed-flux mode 7, constant source rates, in-memory typed restart. Not disk persistence, general weather ingestion, low-rain continuation, canonical admission or whole migration closure. No production code changed."
+  },
+  "bounded_source_window_successor": {
+    "tested_commit": "a299c01bf",
+    "preservation_replay": "After the initial full GashWindows gate at 1d67d2b87, reran both Windows and GashWindows arguments on the persisted a299c01bf O0/O2 executables from swap-ppa-wu01-cddac965f6a44e4187c34b10c5c06da8. All four replays pass and exactly match the prior full transcript hashes recorded below. Logs: O0/O2/replay-windows.txt and replay-gash.txt. No rebuild or production change needed between argument-selected scopes.",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope GashWindows",
+    "result": "PASS O0/O2: three Gash source windows at rain/irrigation rates 0.20/0.10, 0.16/0.08, 0.16/0.08 cm/day, from owner-issued committed-top snapshots. Explicit events on first two windows, none on third; callback counter proves no event derivative in unmarked continuation. Full physical/history/provenance equality after fresh in-memory restore at every boundary. Wrong/nonfinite event times and missing callback reject; failed and partially accepted marked attempts roll back and replay exactly; accepted source amounts consumed once in cm.",
+    "transcript": "395432 identical lines SHA256 C4E52C5804BD4F914AAA42959193523AC4305860112223EC3C549588760B3EC1, build swap-ppa-wu01-c3a2afb304c14e8db96b93d09149fa73. WU04C sequence also rerun unchanged: 328891 lines SHA256 28D88921496CB074CE77A202C35E570A997FA33B94BE27651AC0514217C7ABAA, build swap-ppa-wu01-b5046885b4cd4feeac8e163570b9ecbc.",
+    "scope": "Branch-local explicit storage/temporal/event opt-ins, fixed-flux mode-7 envelope, post-saturation Gash formula branch only. Starts from hydraulically evolved WU04C fixture boundary. Not canonical admission, general weather ingestion, disk restart or mid-source-window Gash restart qualification.",
+    "low_rain_probe": "d49504def adds a fourth source window with rain/irrigation 0.04/0.02 and independent presaturation interception-rate oracle 0.051 cm/day. It reaches seven internally accepted substeps per tile then fails: last available temporal bound 1.1276379511113596e-5 at dt 1.5257159247994423e-5 exceeds 1e-5 budget. No successful low-rain continuation claim. At a299c01bf separate GashBranchRejection gate PASS O0/O2: 395971 identical lines SHA256 934E0B537D1EF8F02467F0318991D31BEE742A0E566F6532563E6361A65D378C, build swap-ppa-wu01-cddac965f6a44e4187c34b10c5c06da8. Both original and restored owners reproduce rejection, with full physical/history/provenance unchanged and no accepted source publication. Do not reapply the event derivative on later accepted substeps to hide this failure."
+  },
+  "authority": {
+    "scientific_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "legacy_source": "SWAP 4.3.1 B1.11 MOD_meteo.f90:Gash",
+    "shared_progress_contract": "integration/audits/PPA_WU04C_RUNTIME_RECEIPT_RESTART_CONTRACT.json"
+  },
+  "implemented": [
+    "exact pre-saturation and post-saturation Gash aggregate equations",
+    "source-window rain/sprinkling partition through the shared apportionment routine",
+    "dynamic-top request adapter without a second mass owner"
+  ],
+  "qualified_production_evidence": [
+    "Gash aggregate, source-window partition, dynamic-top evaluation and safe top-flux forcing handoff compose statelessly",
+    "the two-tile production owner commits the Gash forcing vector with hard mass closure"
+  ],
+  "shared_fkt_contract_harness_evidence": [
+    "The B1.11 Gash aggregate is initialized as the immutable source-window total and advanced only by actual F-KT accepted receipts.",
+    "An exhausted retry and a stale/precommit-rejected receipt do not change the Gash source-window progress record.",
+    "A changed-dt accepted F-KT interval advances the shared progress record; a mid-window restart restores the exact remainder and receipt binding.",
+    "The source-window aggregate is closed exactly once after the restored continuation commits."
+  ],
+  "remaining_qualification": [
+    "ordinary meteorological ingress and root-demand composition beyond the root-inactive Gash profile",
+    "broader dynamic-top regimes and non-opt-in production admission"
+  ],
+  "nonclaims": ["general weather-table ingestion", "canopy-loss mass-ledger redesign", "WU04C admission"]
+}

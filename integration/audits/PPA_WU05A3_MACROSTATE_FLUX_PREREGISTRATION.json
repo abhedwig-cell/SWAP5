@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrostate_flux.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROSTATE-FLUX-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@d4d0472ac2de35207cadde8a729bbdeb571ce6be",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROSTATE",
+    "source_region": "section D unsaturated and saturated internal domain-flux recurrence, including previous-bottom shallowing adjustment and SWMBF domain gate"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_macrostate_flux_candidate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrostate_flux_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrostate_flux_source_oracle.sh",
+  "in_scope": [
+    "top boundary flux and unsaturated internal recurrence",
+    "saturated internal recurrence from bottom upward",
+    "special previous-bottom to shallower-current-bottom recurrence",
+    "SWMBF=2 domain-1 exclusion and internal-domain route"
+  ],
+  "out_of_scope": [
+    "matrix exchange and boundary flux computation owners",
+    "mutating MACROSTATE flux arrays, accepting external mass or retry/restart state",
+    "descending recurrence needing a flux at NumNod+1; the current isolated interface has no boundary slot and rejects this case, without claiming a legacy-source defect",
+    "production Richards integration and A4 mass admission"
+  ],
+  "expected_tests": [
+    "hand-calculated unsaturated and saturated flux recurrence",
+    "bottom-shallower special recurrence with previous stored water",
+    "SWMBF domain gate and empty-domain boundary",
+    "invalid prior-bottom boundary fail-closed",
+    "O0/O2 transcript identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; isolated internal-flux candidates only; no state or transfer is published"
+}

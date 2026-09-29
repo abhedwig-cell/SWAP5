@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-SATFLOW-EXCHANGE",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure saturated matrix/macropore exchange potential-flux equation",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_SINGLE_COMPARTMENT_EQUATION -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:SATFLOW task 1",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1516-1565",
+    "behavior": "Compute clamped macropore-minus-matrix head difference and signed potential exchange for infiltration Darcy, exfiltration Darcy, radial seepage resistance, or Youngs seepage potential, including top/saturated-compartment partial factors; PpDmCp is treated as the B1.11 macropore-domain volumetric proportion."
+  },
+  "scope": ["single-compartment pure potential equation", "100000 deterministic bitwise comparisons at O0/O2 across all routes"],
+  "non_goals": ["SATFLOW saved trial workspace and task-2 outgoing aggregation", "accepted matrix/macropore mass receipt, retry/restart or runtime admission"],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

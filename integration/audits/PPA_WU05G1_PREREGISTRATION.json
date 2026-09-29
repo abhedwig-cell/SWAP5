@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-G1",
+  "title": "Pure B1.11 micro Campbell leaf response",
+  "protocol": "PIN_RWU_MICRO_SOURCE -> EXPOSE_EXPLICIT_SCALAR_INPUTS -> EXACT_ORACLE -> O0_O2_REPLAY -> HOLD_MICRO_OWNER",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05G1_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json",
+    "integration/audits/PPA_WU05C3_SOURCE_CENSUS.json"
+  ],
+  "equation": "For swTypeTred=1: xTpot if xp+DPL<0; else xTpot/(1+((xp+DPL)*PLhalf)**CampA) for SWO2ECT<3 or xTpot/(1+((xp+DPL)*(PLhalf/alptotal))**CampA) for SWO2ECT=3.",
+  "scope": [
+    "micro solver type-1 Campbell response only",
+    "explicit xp, DPL, xTpot, PLhalf, CampA, SWO2ECT and ALPTOTAL inputs",
+    "negative-potential bypass, both denominator branches and deterministic source oracle"
+  ],
+  "non_goals": [
+    "swTypeTred=2, de Willigen/Jong-van-Lier full uptake equations, or solver iteration",
+    "M/K lookup-table lifecycle, saved work arrays, initialization/restart or parallel ownership",
+    "root-stress composition, MICRO salinity/frost admission, or root-sink mass booking",
+    "runtime or production admission"
+  ],
+  "pass_conditions": [
+    "100000 deterministic source-domain vectors bitwise match both exact source branches",
+    "negative xp+DPL, SWO2ECT branch split, A/B/A stateless replay and fail-closed inputs pass",
+    "O0/O2 transcripts are identical",
+    "full MICRO model remains explicitly unadmitted"
+  ]
+}

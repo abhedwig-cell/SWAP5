@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.ppa_wu05d1.source_census.v1",
+  "work_unit": "PPA-WU05-D1",
+  "parent_work_unit": "PPA-WU05-D",
+  "status": "EXACT_B1_11_SOURCE_MATERIALIZED_AND_COMPENSATION_TRACE_COMPLETE_REVIEW_ONLY",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "materialized_tree": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/Documents/ChatGPT/SWAP5-finaliseren/wu05b-b111/full_source (flat extracted source; exact members SHA-256 verified)",
+    "files": {
+      "SWAP/rootextraction.f90": {"sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5", "bytes": 22013, "b0_b1_11_identity": "UNCHANGED", "ranges": ["RootExtraction dispatch 17-60", "MICRO (compensation excluded) 66-282", "MACRO iTask=2 and compensation 290-572", "reset_rootextraction 604-625"]},
+      "SWAP/MOD_cropdevelopment.f90": {"sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf", "bytes": 81873, "ranges": ["compensation field declarations 60-65", "read_compensation 1450-1519"]}
+    }
+  },
+  "activation_and_option_contract": {
+    "execution": "Only RootExtraction_MACRO iTask=2 reaches the compensation block; RootExtraction_MICRO contains no compensation block.",
+    "micro_guard": "read_compensation resets SWCOMPENSATE to 0 and calls swap_error when SWCOMPENSATE>0 and SWDROUGHT>1; compensation with microscopic RWU is rejected.",
+    "switch": "SWCOMPENSATE defaults to 0; values 1 and 2 select Jarvis (1989) and Walsum (2020). Deprecated SWJARVIS>0 maps to SWCOMPENSATE=1 with warnings.",
+    "stress_selector": "SWSTRESSOR defaults to 1; input range 1..5 maps to all stressors, drought, oxygen, salinity and frost respectively.",
+    "jarvis_configuration": "ALPHACRIT is initialized to 1 and read with range/default arguments 0.2..1.0; source compensation runs only when abs(ALPHACRIT-1) >= vsmall.",
+    "walsum_configuration": "DCRITRTZ is read as the root-zone depth threshold; per-call ALPHACRIT=min((DCRITRTZ+RDM-RD_NODDRZ)/RDM,1)."
+  },
+  "exact_macro_order": [
+    "Initialize root-result/stress arrays and totals; return before calculation if no roots or transpiration below nihil.",
+    "Calculate potential nodewise uptake qrot from cumulative root density and ptra.",
+    "Per node compute wetness/oxygen, drought, salinity and frost factors; multiply them into qrot and apportion qred into four stress totals.",
+    "Complete the pre-compensation qrosum and root-zone stress attribution sums.",
+    "If compensation enabled, set Walsum ALPHACRIT if selected, then calculate alptot=qrosum/ptra and qred=ptra-qrosum.",
+    "Gate on abs(alphacrit-1)>=vsmall, qred>vsmall and alptot>=vsmall; infer per-stressor factors as alptot**(qred_stress_sum/qred).",
+    "For selector 1 compute alptotcom=min(alptot/alphacrit,1); for selectors 2..5 divide only the selected inferred factor by alphacrit, clip it at 1, and multiply the four factors.",
+    "Scale each node qrot by alptotcom/alptot; replace qrosum with ptra*alptotcom; recompute total reduction and stress-attribution totals, or zero them when qred<vsmall."
+  ],
+  "state_mass_and_transaction_census": {
+    "compensation_local_state": "The compensation block uses ordinary local temporaries; it declares no SAVEd compensation history or prior-step continuation scalar.",
+    "module_write": "The Walsum branch writes module ALPHACRIT from current DCRITRTZ, RDM and RD_NODDRZ; Jarvis ALPHACRIT is configuration. Root vectors/totals are existing root-extraction results, not a separate receipt.",
+    "reset": "reset_rootextraction clears qrot, qpotrot and stress-result arrays/totals; it has no additional compensation-specific state to reset in this member.",
+    "mass_owner": "Compensation rescales the existing candidate root extraction. It creates no second mass transfer/receipt; enclosing SWAP5 acceptance remains unqualified by this source census.",
+    "retry_rule": "The pure compositor must take the pre-compensation candidate and recompute from that input every call. Do not mutate caller input or compound a rejected prior compensated output.",
+    "micro_restart": "MICRO compensation is source-rejected at read time; no MICRO compensation authority is admitted.",
+    "multi_stressor": "The exact legacy branch names oxygen/salinity/frost stress selectors, but their SWAP5 production admission remains independently held. D2 will only admit the Jarvis algebra on supplied already-authorized result terms."
+  },
+  "scope_guards": {
+    "production_admission": "NONE_REVIEW_ONLY",
+    "production_source_mutation": false,
+    "reference_mutation": false,
+    "stress_order_changed": false,
+    "root_sink_owner_changed": false,
+    "micro_admitted": false,
+    "groundwater_tangent_admitted": false
+  },
+  "next_slice": "PPA-WU05-D2 pure typed Jarvis compositor over explicit pre-compensation candidate/diagnostic inputs; no runtime route"
+}

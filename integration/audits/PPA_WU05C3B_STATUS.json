@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05c3b.status.v1",
+  "work_unit": "PPA-WU05-C3B",
+  "parent_work_unit": "PPA-WU05-C3",
+  "status": "PURE_SWAP007_GUARD_IMPLEMENTED_AND_TESTED_RUNTIME_HELD",
+  "baseline": "dac5e16aa",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no MACRO/SOLVE or OxygenStress runtime binding changed",
+  "source_census": "integration/audits/PPA_WU05C3_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_WU05C3B_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_wu05c3b_swap007_guard.f90",
+  "test": "tests/fapp/test_ppa_wu05c3b_swap007_guard.f90",
+  "gate": "tests/fapp/run_ppa_wu05c3b_swap007_guard.sh",
+  "test_result": {
+    "direct_compiler": "gfortran 13.3.0 on Windows UCRT64; equivalent commands executed directly because Git Bash cannot create its signal pipe in this host",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05C3B_SOURCE_GUARD_ORACLE_100000=PASS",
+      "PPA_WU05C3B_UNREPRESENTABLE_AND_TINY_DERIVATIVE=PASS",
+      "PPA_WU05C3B_REPRESENTABLE_NEAR_LIMIT_AND_RESTART_BOUNDARIES=PASS",
+      "PPA_WU05C3B_NONFINITE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "evidence_claim": "Standalone exact SWAP-007 representability and existing restart-predicate oracle only; no oxygen solver or root-uptake runtime qualification.",
+  "next_action": "Keep C3 physical runtime held; select the next independent capability from the functional coverage register rather than inferring admission from its pure helper gates.",
+  "recovery_point": "this status record and PPA_WU05C3_SOURCE_CENSUS.json"
+}

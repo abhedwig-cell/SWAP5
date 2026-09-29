@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.ppa_low01.surface-composition.status.v1",
+  "work_unit": "PPA-LOW01-SURFACE-COMPOSITION",
+  "parent_work_unit": "PPA-LOW01",
+  "status": "SURFACE_GWL_COMPOSED_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "8f081b036",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; composition is pure, no top/pond/soil/GWL owner, HeadCalc, transaction, accepted mass or runtime route changed",
+  "source_census": "integration/audits/PPA_LOW01_SURFACE_COMPOSITION_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW01_SURFACE_COMPOSITION_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low01_surface_gwl_composition.f90",
+  "test": "tests/fapp/test_ppa_low01_surface_gwl_composition.f90",
+  "gate": "tests/fapp/run_ppa_low01_surface_gwl_composition.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW01_SURFACE_GWL_COMPOSITION_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW01_SURFACE_GWL_SEED_PROFILE_AND_QBOT=PASS",
+      "PPA_LOW01_SURFACE_GWL_COMPOSITION_STATELESS_A_B_A=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "3e8afd5f960e2d2eef02377af85641c77da2cdd84f368cdf390548d3006db92b",
+    "o2_executable_sha256": "559d3ff55c8f071c1499386258cd7bf97a7314076a60893b1c01e1aba66f9de8",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Explore an owner-safe runtime composition contract or move to another unresolved capability; do not add a second top/GWL state owner.",
+  "recovery_point": "this status and PPA_LOW01_SURFACE_COMPOSITION_SOURCE_CENSUS.json"
+}

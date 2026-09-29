@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-SCHEDULED-RATE-FALLBACK",
+  "parent_workunit": "PPA-IRR-SCHEDULED-SOLUTE-OVERIRRIGATION",
+  "title": "Scheduled irrigation zero/over-one-day rate fallback",
+  "protocol": "PIN_B1_11_RATE_BRANCH -> NORMALIZE_ZERO_OR_OVER_ONE_DAY_RATE -> STORE_EVENT_RATE_IN_EXISTING_CANDIDATE_STATE -> SPLIT_PARTIAL_RETRY -> 100000_DETERMINISTIC_EVENTS -> O0_O2_REPLAY -> HOLD_PRODUCTION_RESTART",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "161-165, 597-619",
+    "equations": [
+      "optional irrigation rate defaults to zero; the scheduled input rate is nonnegative and converted from mm/h to cm/day",
+      "if requested rate > 0 and depth/rate > 1 day, source rate is temporarily adapted to depth and event duration is one day",
+      "if requested rate <= 0, scheduled source rate is depth spread over one day",
+      "otherwise retain the requested rate and use depth/rate duration"
+    ]
+  },
+  "scope": [
+    "apply B1 zero-rate and over-one-day normalization to the existing typed scheduled DCS2 event",
+    "persist the normalized active-event source rate in the same candidate state used for interval retry",
+    "100000 deterministic events covering zero, too-low, equal-depth and faster rates",
+    "verify split request leaves candidate unpublished, partial/retry source rates agree, and interval offered amount reconstructs depth"
+  ],
+  "non_goals": [
+    "file parsing or optional-field decoding and external availability scaling",
+    "restart serialization, event calendar, accepted Richards flux, solute transport or production admission",
+    "multi-node scheduled SSDI distribution, full DCS1 path or intervals over the one-day source contract"
+  ],
+  "pass_conditions": [
+    "zero and too-low positive rates normalize to source rate=depth and one-day event duration",
+    "equal-depth and under-one-day requested rates are preserved",
+    "normalized event rate survives a partial interval and retry through the existing candidate state",
+    "100000 deterministic events pass at O0/O2 with identical transcripts and water-amount reconstruction",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

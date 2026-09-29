@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-RAPIDDRAIN-COMPOSED",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Composed pure RAPIDDRAIN source equations and eligibility gates",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> COMPOSE_TESTED_EQUATIONS -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:RAPIDDRAIN",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1876-1929",
+    "behavior": "Only domain 1 with rapid-drain switch enabled and (macropore bottom below drain base or drain type open) runs the transmissivity, drainable-storage, head/flux and compartment-distribution equations."
+  },
+  "scope": ["eligibility gate and ordered pure equation composition", "100000 deterministic bitwise comparisons at O0/O2"],
+  "non_goals": ["accepted mass receipt, Richards state mutation, retry/restart or runtime admission", "production macropore flow or MultiSWAP"],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

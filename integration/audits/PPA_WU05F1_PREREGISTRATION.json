@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-F1",
+  "title": "Pure B1.11 macro-method root frost gate",
+  "protocol": "PIN_MACRO_ONLY_SOURCE -> IMPLEMENT_TEMPERATURE_GATE -> SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05F1_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU05B1_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json"
+  ],
+  "equation": "alpfrs=0 if swfrost=1 and tsoil<0; otherwise the initialized factor remains 1",
+  "scope": [
+    "macro-method scalar frost factor only",
+    "strict zero-temperature threshold and switch-off identity",
+    "read-only temperature input, deterministic source-formula oracle"
+  ],
+  "non_goals": [
+    "RootExtraction_MICRO frost behavior (B1.11 explicitly errors when enabled)",
+    "FrozenCond hydraulic K/boundary integration or frost phase-change physics",
+    "drought/oxygen/salinity/frost composition order, compensation or crop feedback",
+    "runtime root-sink booking, retry/rollback, restart or parallel qualification"
+  ],
+  "pass_conditions": [
+    "100000 deterministic vectors match the exact macro branch condition",
+    "temperature below, at and above zero plus SWFROST-off cases pass",
+    "A/B/A replay is stateless and O0/O2 transcripts are identical",
+    "nonfinite temperature fails closed with identity output"
+  ]
+}

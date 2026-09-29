@@ -1,0 +1,226 @@
+{
+  "work_unit": "PPA-WU05-A4-RICHARDS-SCRATCH",
+  "baseline": "ad09ede4a",
+  "recovery_point": "0fcc042be",
+  "persisted_test_result": "Richards scratch and restricted evaluator gates PASS at 0fcc042be O0/O2 with identical transcripts, runtime checks and floating-point traps",
+  "implementation": "src/adapter/mod_ppa_wu05a4_richards_scratch_binding.f90",
+  "scope": "Opt-in adapter applies restricted saturated-domain trial contributions to actual reference_richards_workspace_t residual and dfdh_main arrays; existing workspace type and production HeadCalc are unchanged",
+  "contract": "Caller identifies expected positive workspace generation. Reject poisoned, released, generation-mismatched, wrong-node-count or malformed workspaces before candidate assembly; invalidate prior output transfer. Reuse atomic residual/diagonal assembly. Do not initialize, reset or resize a caller workspace implicitly.",
+  "gate": "tests/fapp/run_ppa_wu05a4_richards_scratch.ps1",
+  "tests": "Real workspace initialize, successful residual/diagonal contribution, unchanged ordinary source/sink and off-diagonals, internal transfer balance, reinitialization generation mismatch, poison rejection, reset recovery and release rejection.",
+  "compiler_note": "Wno-unused-dummy-argument accommodates intentionally unused arguments in existing abstract solver default; other warnings remain errors and bounds/FPE checks remain active.",
+  "limitations": "No HeadCalc invocation or nonlinear matrix solve. Ordinary reset does not advance existing workspace generation, so callers must explicitly discard records at trial boundaries. Workspace generations are not global identities: caller must retain the originating workspace association. No accepted state, runtime receipt, restart or production physics admission.",
+  "transfer_lifetime_extension": {
+    "baseline": "20b7d30eb",
+    "interface_change": "PPA-local apply_saturated_reference_scratch now returns private reference_trial_transfer instead of raw macro_used_exchange. Only its test caller existed and was updated; frozen solver ABI unchanged.",
+    "contract": "copy_reference_transfer checks current generation, active nodes, poison and allocated residual before extracting candidate amount. Workspace mismatch invalidates the record permanently; explicit discard is provided for same-generation reset boundaries.",
+    "tests": "Read valid transfer, reject it after reinitialize without first reevaluating, reject on poison, prevent revival after subsequent reset, explicit discard, and release rejection.",
+    "recovery_point": "0ee6d55f3",
+    "test_result": "Persisted 0ee6d55f3 scratch-binding and restricted-evaluator gates PASS O0/O2 with identical transcripts and runtime checks"
+  },
+  "production_admitted": false,
+  "production_preservation_windows_gate": {
+    "baseline": "9746298d2",
+    "runner": "tests/fapp/run_ppa_wu01_production_application_bootstrap.ps1",
+    "contract": "Replay existing owner gate from PowerShell, extracting unchanged static Python assertions, MODULE_SRC order and COMMON compiler options from its shell runner. Execute bootstrap and canonical-output tests at O0/O2; require original markers and stable-line identity. No production source changes.",
+    "reason": "Prepare executable local production preservation before introducing HeadCalc call-site changes; bash is not on this host PATH.",
+    "status": "RUNNER_PERSISTED_EXISTING_PRODUCTION_BASELINE_FAILS_O0",
+    "recovery_point": "d6b61fd0b",
+    "test_result": "Static ownership/profile checks PASS; complete O0 module build and canonical-output identity/read-only test PASS. Existing bootstrap fails at PPA_WU01_FAIL WU04C production owner commit. O2 not reached; no preservation PASS claimed.",
+    "diagnosis": "Read-only shadow instrumentation outside repository: owner status 10 (runtime failed), both tiles ADMITTED but kernel status 2 (transaction failed), zero accepted substeps. Each tile reports 3 solver rejections, 2 retries, 24 nonlinear iterations and 3 HeadCalc calls; mass and temporal rejections both zero. Production source was not changed. Existing tracked dirty files have no content diff under git diff --numstat.",
+    "scope": "Production application preservation harness only, not macropore admission. Existing uncommitted binding/bootstrap files remain unstaged; replay uses their current working-tree contents.",
+    "deeper_diagnosis": "Shadow-only experiments: original max_iterations=8 exhausted at dt 0.5/0.25/0.125 with residual maxima 4.0842e-2/9.7680e-5/3.0744e-7 versus unchanged 1e-12 tolerance. Increasing iteration budget to 40 permits smaller-step nonlinear convergence but reveals temporal rejection. fmr_serialized_temporal_identity returns huge for nonidentical full/half states; the fixture applies transient rain using the stationary identity profile. Existing model-certificate path explicitly rejects bottom_mode=7 (boundary-envelope-deferred); merely adding temporal history cannot enable that profile. No experimental parameter or solver changes copied into repository.",
+    "alternate_work": "Persisted bdcbd0642 CanonicalOutput replay PASS O0/O2, byte identity and read-only snapshot assertions, static checks and git diff --check. Complete module build with original bounds/FPE flags. No bootstrap PASS emitted in this scope; default All still fails closed.",
+    "next_action": "Qualify an explicit opt-in mode-7 temporal-certificate extension or a separately supported transient application profile before expecting the transient WU04C fixture to commit. Preserve current FSI38 boundary-envelope rejection by default; compare lagged free-drainage boundary operator with its fixed-qbot equivalent and qualify history/restart before runtime admission."
+  },
+  "reference_final_state_bridge": {
+    "baseline": "2379ef5ea",
+    "implementation": "src/adapter/mod_ppa_wu05a4_reference_finish.f90",
+    "contract": "Read final h/thetm1/theta/qtop/qbot/kmean from existing reference state binding and head gradients/source/sink/provider root rates from existing workspace. Internal faces are -kmean*head_gradient, matching vector_F; vertical_flux scratch is not authority. Delegate candidate extraction to the per-cell and global matrix/macropore guard; failures consume attempt.",
+    "scope": "Explicit flux boundaries with caller-materialized final qtop/qbot, full column n>=2, provider root path only. Reject prescribed-head top and special unsaturated flags. No shared ABI change or production call site yet; no pond or canonical commit.",
+    "invariants": [3, 5, 7, 13, 21],
+    "tests": "Three-dt nonlinear manufactured storage fixture populates actual state/workspace types. NaN in unrelated vertical_flux must not contaminate result. Reject prescribed top head, wrong internal Darcy sign, special branch flag, negative conductivity and stale final head.",
+    "status": "IMPLEMENTED_PERSISTED_BOUNDED_TESTS_PASS_NOT_PRODUCTION_ADMITTED",
+    "recovery_point": "91aea91eb",
+    "test_result": "Persisted 91aea91eb nine-gate bounded regression PASS O0/O2 with identical transcripts, runtime bounds checks and floating-point traps",
+    "next_action": "Add opt-in call-site integration with full inactive-path preservation; retain explicit boundary and branch restrictions and compose pond accounting before broader activation"
+  },
+  "matrix_flux_balance": {
+    "baseline": "2be21a72e",
+    "interface": "PPA-local finish_matrix_static_attempt accepts upward-positive face rates and separate nonnegative ordinary source, drainage sink and root sink rates. Matrix storage change equals captured macro amount plus dt*(lower face-upper face+source-sink-root). Global balance telescopes internal faces and cancels internal macro transfer. Closed guard delegates with zero rates.",
+    "source": "src/legacy/b1_10_port/headcalc.f90 vector_F lines 905, 932, 937, 988, 1032",
+    "scope": "Candidate matrix plus static macro accounting only; no pond/crop/snow storage or canonical commit; caller must supply actual final solver face and ordinary rates without including macro exchange twice",
+    "tests": "Three-dt nonlinear manufactured storage solve includes top input, bottom output, internal face flow, source, sink and root uptake. Reversed face signs, changed internal face with unchanged external total, duplicated source, negative sink and NaN face reject. Existing closed guards retained.",
+    "status": "IMPLEMENTED_PERSISTED_BOUNDED_TESTS_PASS_NOT_PRODUCTION_ADMITTED",
+    "recovery_point": "d06ba4afb",
+    "test_result": "Persisted d06ba4afb nine-gate bounded regression PASS O0/O2 with identical transcripts, bounds checks and floating-point traps",
+    "invariants": [3, 7, 13, 21],
+    "next_action": "Connect final Richards face fluxes and constitutive water content to the candidate guard, then compose pond accounting before production activation"
+  },
+  "closed_attempt_balance": {
+    "baseline": "c68917b98",
+    "scope": "Candidate-only closed matrix/macropore exchange guard; no vertical matrix flow, external inputs/sinks, pond changes or other stores. Not canonical whole-column accounting.",
+    "interface": "New PPA-local finish_closed_static_attempt checks independent before/after volumetric water content against last residual transfer, weighted by static matrix fraction and dz, per cell and jointly with macropore storage. Failure and success both consume the attempt; no commit or shared ABI change.",
+    "invariants": [3, 7, 13, 21],
+    "tests": "Manufactured theta(h)=h closed exchange nonlinear solve uses attempt callbacks at dt=0.5,1,2; valid closure, wrong total, same-total wrong layer allocation, NaN and negative water content, consumed context and unchanged checkpoint.",
+    "status": "IMPLEMENTED_PERSISTED_BOUNDED_TESTS_PASS_NOT_PRODUCTION_ADMITTED",
+    "recovery_point": "1a3fe086b",
+    "test_result": "Persisted 1a3fe086b nine-gate bounded regression PASS O0/O2 with identical transcripts, bounds checks and floating-point traps. New closed-attempt storage guard exercised inside nonlinear iteration at three dt values.",
+    "next_action": "Extend candidate accounting to explicit matrix face fluxes and ordinary sources/sinks before connecting an active Richards production route",
+    "limits": "Caller must supply independently computed theta; this guard cannot prove caller provenance or replace production constitutive physics. Existing macro-only finish remains explicitly candidate-only."
+  },
+  "attempt_lifecycle": {
+    "baseline": "abf37c531",
+    "status": "IMPLEMENTED_PERSISTED_BOUNDED_TESTS_PASS_NOT_PRODUCTION_ADMITTED",
+    "recovery_point": "e8cab67e5",
+    "implementation": "src/adapter/mod_ppa_wu05a4_attempt.f90",
+    "owned_surface": "PPA-local disposable attempt context; existing solver/provider ABI, HeadCalc and canonical state owners held fixed",
+    "invariants": [3, 5, 7, 13, 23],
+    "contract": "Capture a deep immutable checkpoint and validated static inputs at begin, fix dt and reduction policy for the attempt, generate monotonically increasing residual evaluation keys, and consume only the last captured residual for diagonal and candidate accounting. Reject/discard erases all context. Successful candidate extraction also consumes context; it is not a commit. Caller retains workspace association and rebuilds ordinary residual/diagonal before each callback.",
+    "limits": "Restricted single static domain with no external pore input. No production activation or canonical whole-column acceptance. Same-generation workspace reset still requires explicit attempt discard.",
+    "tests": "Persisted e8cab67e5 nine-gate bounded regression PASS O0/O2 with identical transcripts, bounds checks and FPE traps. Includes checkpoint mutation isolation, consumed candidate, explicit discard, changed-dt retry, stale-head finalization, diagonal before residual, changed workspace generation and mismatched diagonal heads.",
+    "next_action": "Connect the opt-in attempt lifecycle to the restricted nonlinear solve and joint matrix/storage accounting; production activation remains separate from local candidate preparation"
+  },
+  "checkpoint_derived_input": {
+    "baseline": "6e868d276f48f3fcebf7a3c953bba6dea9203351",
+    "implementation": "src/adapter/mod_ppa_wu05a4_checkpoint_input.f90",
+    "owned_surface": "PPA-local input preparation; frozen solver ABI and production owners unchanged",
+    "invariants": [3, 5, 7, 13, 21, 23],
+    "contract": "One static surface-connected domain. Derive pore water level, saturated top and wet fraction from checkpoint storage using existing B1.11 MACROSTATE section-D helper. Validate checkpoint profile against source reconstruction and volume against static geometry. Return geometry and evaluator inputs atomically; matrix metadata remains unset for per-head derivation; reduction policy remains caller-owned.",
+    "source": "B1.11 macropore.f90 lines 1358-1396; existing mod_ppa_wu05a3_macrostate_wetting_candidate",
+    "tests": "Checkpoint to source-derived input to real workspace residual to accounted interval candidate; half-full and exact cell boundary metadata; immutable checkpoint; reject same-total wrong vertical profile, invalid lineage, shortened domain, noncontiguous centers, NaN resistance, mismatched volume, invalid diameter, overcapacity storage and missing payload allocation.",
+    "recovery_point": "a02019303",
+    "test_status": "Persisted a02019303 nine-gate bounded regression plus MPVOLUME surface gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps",
+    "continuation_extension": "Persisted 4b9aa97ba replaces manual fixture water-level/fraction reconstruction on both continuous and restored DTO legs with checkpoint translation. Richards scratch gate PASS O0/O2 with identical transcripts, runtime bounds checks and FPE traps; continued and restored candidate profiles/storages identical.",
+    "next_action": "Integrate the bounded checkpoint-derived payload into the opt-in Richards trial lifecycle, preserving existing production guards until joint matrix/pond/macropore accounting is connected",
+    "limits": "No production HeadCalc invocation, top forcing, dynamic geometry or canonical commit. Interval candidate retains its separately documented proposed conservative-flux policy. No remote push requested."
+  },
+  "static_geometry_composition": {
+    "baseline": "9c57d3449",
+    "implementation": "src/adapter/mod_ppa_wu05a4_static_geometry.f90",
+    "contract": "One static domain starting at surface, no cracks/subsidence/covering layer. Compose source static matrix fraction with MPVOLUME surface area and capacity. Publish complete geometry only after both calculations succeed; no partial fraction array on failure.",
+    "tests": "Layer matrix fractions and surface fraction/capacity, source surface cap at 0.6 without changing matrix fraction, minimum-width area cutoff, invalid diameter clears previous output.",
+    "limits": "Not wired into production HeadCalc; does not introduce top flux, pond partition or owner state. Total dynamic volume must not be substituted for explicit static volume.",
+    "recovery_point": "b59bf1688",
+    "test_result": "Persisted b59bf1688 Richards scratch and MPVOLUME surface gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
+  },
+  "surface_dependency_guard": {
+    "baseline": "f34c97f3c",
+    "finding": "MPVOLUME surface helper checked domain proportions length but not the output area_domains extent before writing 1:num_domains. A short output could trigger a bounds violation.",
+    "fix": "Reject short output before branch arithmetic. Existing supplied output extent is zeroed and neighboring caller elements remain untouched. Valid source formulas are unchanged.",
+    "gate": "tests/fapp/run_ppa_wu05a3_mpvolume_surface.ps1",
+    "scope": "Dependency robustness for future surface integration; no production scope expansion.",
+    "recovery_point": "98d5e6997",
+    "test_result": "Persisted 98d5e6997 surface source-oracle gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps; short-output regression included"
+  },
+  "bounded_regression_bundle": {
+    "baseline": "945ae1585",
+    "runner": "tests/fapp/run_ppa_wu05a4_regression.ps1",
+    "scope": "Seven A4 gates (trial exchange, saturated trial, Richards scratch, redistribution, rate composition, outflow, inflow) plus A3 interval candidate and candidate mass. Each child runs O0/O2 with runtime/FPE checks and transcript identity. Failures stop the bundle before its success marker.",
+    "limits": "Cross-component regression only; no production HeadCalc call site, full Richards solve or new admission established.",
+    "recovery_point": "4cd30fae6",
+    "test_result": "Persisted 4cd30fae6 bundle completed with exit 0 and PPA_WU05A4_BOUNDED_REGRESSION_NINE_GATES=PASS. All nine child gates PASS O0/O2 with identical transcripts."
+  },
+  "linear_storage_composition": {
+    "baseline": "112c6637e",
+    "scope": "Manufactured closed-exchange matrix storage law dtheta/dh=1, weighted by explicit static matrix fraction and layer thickness. Real bounded macropore residual/derivative callbacks are iterated at dt=0.5,1,2. Not full Richards or production physics qualification.",
+    "checks": "Converged head independently determines matrix storage change; it matches captured transfer and cancels macropore storage change. Deliberately omitting matrix fraction gives a detectable balance error. No owner commit or source equation changes.",
+    "recovery_point": "d8001e92e",
+    "test_result": "Persisted d8001e92e Richards scratch gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
+  },
+  "static_matrix_fraction_component": {
+    "baseline": "a614afcf8",
+    "source": "Exact B1.11 macropore.f90 line 386: FrArMtrx = 1 - VlMpStCp / Dz",
+    "implementation": "src/process/mod_ppa_wu05a4_matrix_fraction.f90",
+    "contract": "Explicit static pore volume input; do not substitute total volume including dynamic cracks. Positive finite layer thickness, static volume in [0,dz], matching nonempty shapes. Failed evaluation returns no fraction array.",
+    "scope": "Source-equation component for future typed HeadCalc geometry input, not yet wired into HeadCalc or inferred from the restricted domain's total-volume field. No shared ABI change or physical admission.",
+    "tests": "Zero, partial and full static volume; excess/negative volume, zero thickness, shape mismatch and NaN rejection.",
+    "recovery_point": "6e6b61259",
+    "test_result": "Persisted 6e6b61259 Richards scratch gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
+  },
+  "candidate_rejection_verification": {
+    "baseline": "77aff4b39",
+    "checks": "Wrong lineage, changed beginning storage, changed pore volume, shortened domain bottom, missing water-profile allocation, negative tolerance and NaN tolerance all reject. Outputs are seeded with valid prior candidate/account to verify failure clears their validity. Existing successful bridge and restart continuation remain in the gate.",
+    "scope": "Verification of existing bounded adapter guards, not added physical capability or production admission.",
+    "recovery_point": "173c6f20e",
+    "test_result": "Persisted 173c6f20e Richards scratch gate PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
+  },
+  "isolated_restart_bridge_verification": {
+    "baseline": "4087e25db",
+    "scope": "Test-only A2 DTO commit/export/restore after an accounted captured-transfer candidate. The next interval is reevaluated independently for continuous and restored checkpoints, with old numerical capture discarded and workspace reset.",
+    "fixture": "One fixed-volume domain, two cells. First head pair [-0.5,0.25], next [-0.5,0.1]. After first interval the water surface is in the bottom cell; fixture derives its level and wet fraction from restored scalar storage. Both subsequent candidate profiles and scalar stores must match exactly.",
+    "limits": "Not production restart, joint matrix/macropore commit or full physical continuation qualification. Inherits A3 proposed conservative-flux limitation; no accepted owner interface changes.",
+    "recovery_point": "f0cc07cba",
+    "test_result": "Persisted f0cc07cba Richards scratch and A3 interval candidate gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
+  },
+  "exact_rate_extension": {
+    "baseline": "ec6ff0c86",
+    "contract": "Optional captured-rate output on transfer/budget extraction returns the original residual rate alongside its integrated amount after the same identity checks. Failed extraction returns neither array. Candidate preparation now uses this rate directly instead of amount/dt.",
+    "scope": "Avoids a numerical round trip; does not alter source equations, tolerances, acceptance ownership or production admission.",
+    "recovery_point": "ef1a5e7d0",
+    "test_result": "Persisted ef1a5e7d0 trial-exchange and Richards scratch gates PASS O0/O2 with identical transcripts and bounds/FPE checks. Exact rate copy, failed dual-output invalidation and preservation of a tiny rate when integrated amount underflows are tested."
+  },
+  "candidate_bridge_contract": {
+    "baseline": "972c20b50",
+    "design": "Capture immutable evaluator geometry with the used exchange. A new candidate preparation entry point checks checkpoint lineage/revision, single-domain extent, fixed volume and hydrostatic beginning profile before composing A3 interval preparation and accounting from the captured budget. Publish candidate and account only after all checks pass; never commit.",
+    "limits": "PPA-local proposed integration only. Inherits A3 conservative-flux reference-policy limitation; no complete continuation physics, production admission or restart qualification. Exact-rate extension removes amount/dt reconstruction from the A3 handoff.",
+    "recovery_point": "8ce32fec8",
+    "test_result": "Persisted 8ce32fec8 Richards scratch and A3 interval candidate gates PASS O0/O2 with identical transcripts and bounds/FPE checks. Valid bridge, stale revision rejection, same-total wrong-profile rejection, recovery and unchanged initial state tested."
+  },
+  "interval_handoff_verification": {
+    "baseline": "4ee31fe89",
+    "scope": "Integration test feeds the actual captured restricted residual transfer into existing A3 interval candidate preparation and candidate mass accounting; no production or physical commit route enabled.",
+    "fixture": "One domain, two cells, initial profile [0.125,0.25] cm, fixed pore volumes 0.25 cm per cell, heads [-0.5,0.25], dt=1. Generated transfer is consumed without reevaluating the flow law. Reconstructed scalar/profile storage must match the captured candidate storage.",
+    "checks": "Candidate preparation and per-cell/domain mass checks succeed; perturbing one matrix transfer by 0.01 cm rejects accounting. Candidate is discarded and initial owner revision/storage remain unchanged.",
+    "limits": "A3 conservative flux reconstruction remains a proposed reference correction, not canonically qualified. No complete continuation physics, joint matrix commit, HeadCalc call site or runtime restart. This test establishes component composition only.",
+    "recovery_point": "c9c566e56",
+    "test_result": "Persisted c9c566e56 Richards scratch and A3 interval candidate gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
+  },
+  "paired_storage_contract": {
+    "baseline": "0cd824efb",
+    "design": "Capture beginning and candidate scalar macropore storage in the private reference transfer record after successful residual/system assembly. Add copy_reference_budget requiring heads and duration, returning transfer and both captured stores together only on successful identity checks. Failure returns no amount and zero scalar outputs.",
+    "scope": "Restricted single-domain candidate budget only, not an A2 continuation payload or whole-column physical acceptance. No committed owner, frozen provider ABI or production HeadCalc changes.",
+    "recovery_point": "560380b2a",
+    "test_result": "Persisted 560380b2a Richards scratch and saturated trial gates PASS O0/O2 with identical transcripts and runtime/FPE checks. Both assembly paths capture storage; later mutable-input changes leave the paired budget unchanged; invalid capture returns no amount and zero storage outputs."
+  },
+  "backtracking_verification": {
+    "baseline": "3bc88886e",
+    "scope": "Manufactured nonlinear callback driver now starts with eightfold overrelaxation and halves the step until the residual norm drops by at least half. This deliberately exercises rejection and reevaluation; it is not the production HeadCalc line-search policy or legacy frozen-exchange branch.",
+    "checks": "Each dt must reject at least one step and converge within 100 iterations to its analytic root. Rejected transfer is explicitly discarded, cannot be extracted, and initial store stays unchanged. Distinct evaluation keys are assigned to every trial. Final transfer is checked against final heads and duration.",
+    "finding": "Accepting any residual decrease could stagnate beyond the bounded iteration count in this deliberately overrelaxed test. Requiring sufficient decrease resolves the test-driver issue without changing production or source derivatives.",
+    "recovery_point": "8ad20c8c1",
+    "test_result": "Persisted 8ad20c8c1 Richards scratch and trial exchange gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps"
+  },
+  "transfer_identity_contract": {
+    "baseline": "d3527f9ec",
+    "interface": "Optional expected head and dt on transfer extraction validate exact finite residual identity and duration before returning integrated amounts. Legacy key-only reads remain unchanged. A failed checked read invalidates the reference adapter capture; raw scratch extraction remains read-only.",
+    "purpose": "Prevent candidate mass accounting against changed heads or duration even if a caller reuses an evaluation key. These checks do not establish convergence, workspace identity across instances, or physical commit authority.",
+    "recovery_point": "67030f9e2",
+    "test_result": "Persisted 67030f9e2 trial-exchange, Richards scratch and saturated-trial gates PASS O0/O2 with identical transcripts and bounds/FPE checks. Matching, changed, short and nonfinite heads; changed/nonfinite duration; raw read-only behavior and adapter invalidation tested."
+  },
+  "head_identity_extension": {
+    "baseline": "59ef5f385",
+    "interface": "Optional trailing head vector on apply_macro_diagonal and apply_reference_trial_diagonal checks exact finite pressure-head identity against the captured residual before touching the diagonal. Existing callers without this argument retain key-only behavior; the nonlinear sequence supplies it.",
+    "invariants": "No convergence tolerance substitutes for evaluation identity. A mismatch leaves diagonal unchanged and the reference adapter invalidates captured transfer. No solver or workspace ABI change, physical commit or production admission.",
+    "tests": "Nonlinear iterations supply matching heads. After convergence, changed heads with the same key reject the tangent and invalidate transfer. Persisted fc15f6252 scratch and saturated trial gates PASS O0/O2 with identical transcripts and runtime/FPE checks.",
+    "recovery_point": "fc15f6252"
+  },
+  "reduced_nonlinear_gate": {
+    "baseline": "df78af0b3",
+    "scope": "Verification only: manufactured scalar matrix residual h-0.2 coupled to the real bounded head-derived macropore evaluator through separate residual and Jacobian callbacks. Not HeadCalc or a physical Richards column solve.",
+    "oracle": "For the two-cell fixture and positive bottom head below 0.5: q=min(0.25*(1-h),0.125/((h+0.5)*dt)). At dt=0.5, root h=0.36; at dt=1 and 2, root (-0.3+sqrt(0.49+0.5/dt))/2. The source quasi-Newton derivative is used, not replaced with the analytic derivative of the capped rate.",
+    "invariants": "Failed fully unsaturated trial followed by recovery; distinct evaluation keys during iterations; unchanged initial macropore store; final-used transfer captured without reevaluation; transfer/storage cancellation; old attempt rejected when extracting amounts; changed dt restarts from identical input history.",
+    "recovery_point": "b78d60526",
+    "test_result": "Persisted b78d60526 Richards scratch and saturated trial gates PASS O0/O2 with identical transcripts and runtime/FPE checks",
+    "limits": "No full matrix constitutive/storage law, line search, physical acceptance, committed restart or production admission. No shared interface changed."
+  },
+  "split_callback_contract": {
+    "baseline": "acf111d65",
+    "design": "Provide separate residual and diagonal scratch entry points matching vector_F then jacobian_F ordering. Residual captures evaluated transfer; diagonal consumes the paired derivative without reevaluating physical inputs. Caller must assign a distinct evaluation key whenever heads change and rebuild the base diagonal before each application.",
+    "failure": "Rejected residual invalidates old capture without changing residual. Failed diagonal leaves diagonal unchanged and invalidates capture; it does not roll back the already assembled residual. Interval owner must reject that numerical trial. Disabled derivative preserves diagonal and retains valid transfer.",
+    "scope": "PPA-local additive interface; production HeadCalc and frozen provider/workspace ABI unchanged. No special legacy frozen-exchange backtracking branch or physical commit admission.",
+    "recovery_point": "951c6ae1e",
+    "test_result": "Persisted 951c6ae1e scratch, saturated trial and rate-composition gates PASS O0/O2 with identical transcripts, bounds checks and floating-point traps. Split callback tests cover untouched diagonal during residual, captured derivative despite subsequently changed physical input, disabled derivative, transfer balance, stale key invalidation, generation mismatch, malformed diagonal and failed residual invalidation."
+  },
+  "next_action": "Specify residual/Jacobian callback ordering and candidate geometry ownership inside HeadCalc, including final-used evaluation capture and inactive-path preservation, before enabling any production route."
+}

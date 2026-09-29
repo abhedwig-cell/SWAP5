@@ -1,0 +1,15 @@
+{
+  "work_unit": "PPA-WU05-A3-CONSERVATIVE-COMPOSITION",
+  "baseline": "4b1fcc2d5",
+  "phase": "PERSISTED_ISOLATED_COMPOSITION_PASSED",
+  "recovery_point": "8991366206b6291c125bf60cfc24f3d99cb2574b",
+  "test_result": "Persisted O0/O2 gate PASS with identical transcripts, warnings-as-errors, bounds checks and floating traps; three intervals, prescribed pore-volume change, cell closure, inconsistent-history and clipped-overdraw detection",
+  "scope": "SWMBF=1 storage-to-wetting-to-proposed-flux composition with mutually consistent previous scalar/profile inventories",
+  "tests_planned": ["Three successive intervals with unequal time steps", "Explicit localized drainage", "Changed prescribed pore volumes", "Cellwise and lower-boundary closure", "Inconsistent prior profile detected", "Clipped overdraw detected"],
+  "invariants": [3, 7, 13],
+  "limitations": ["Geometry is supplied, not produced by MPVOLUME", "No Richards coupling or accepted state owner", "No source-correction admission", "No SWMBF=2 qualification"],
+  "test": "tests/fapp/test_ppa_wu05a3_conservative_composition.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_conservative_composition.ps1",
+  "qualified": false,
+  "next_action": "Bind the bounded composition to the existing isolated A2 candidate lifecycle; require rejection on flux-boundary mismatch and test rollback/retry/restart. Do not claim a Richards-owner runtime or corrected-reference admission."
+}

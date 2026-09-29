@@ -15,6 +15,7 @@ from pathlib import Path
 
 src = Path("src/runtime/mod_fmr_production_application_bootstrap.f90").read_text().lower()
 test = Path("tests/fapp/test_ppa_wu01_production_application_bootstrap.f90").read_text().lower()
+output_binding = Path("tests/fapp/test_ppa_output_canon_application_binding.f90").read_text().lower()
 
 required = [
     "fmr_production_application_bootstrap_t",
@@ -64,6 +65,16 @@ assert "macropore_active" in src
 assert "frost_active" in src
 assert "root_extraction_active" in src
 assert "ppa-wu01 production application bootstrap gate pass" in test
+assert "public :: production_application_serialize_canonical_result_text" in src
+binding_start = src.index("subroutine production_application_serialize_canonical_result_text")
+binding_end = src.index("end subroutine production_application_serialize_canonical_result_text", binding_start)
+binding = src[binding_start:binding_end]
+assert "type(canonical_result_t), intent(in) :: result" in binding
+assert "call serialize_canonical_result_text(result, text)" in binding
+for forbidden in ["open(", "read(", "write(", "close(", "newunit=", "file=", "get_command_argument", "get_environment_variable"]:
+    assert forbidden not in binding, forbidden
+assert "ppa_output_canon_application_byte_identity=pass" in output_binding
+assert "ppa_output_canon_application_read_only_snapshot=pass" in output_binding
 
 print("PPA_WU01_FORTRAN_FMR_OWNERSHIP_STATIC=PASS")
 print("PPA_WU01_NO_QUALIFICATION_FIXTURE_PROMOTION_STATIC=PASS")
@@ -83,6 +94,7 @@ MODULE_SRC=(
   src/transaction/mod_transaction_reference.f90
   src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
+  src/adapter/mod_canonical_result_text_adapter.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
@@ -140,6 +152,7 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_table_provider.f90
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
+  src/process/mod_irrigation_process.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
   src/runtime/mod_groundwater_coupling_contract.f90
@@ -160,7 +173,27 @@ MODULE_SRC=(
   src/runtime/mod_groundwater_application_plan.f90
   src/runtime/mod_fmr_groundwater_application_context.f90
   src/adapter/mod_fmr_groundwater_application_c_api.f90
+  src/kernel/mod_kernel_committed_persistence.f90
+  src/runtime/mod_fmr_restart_state_contract.f90
+  src/runtime/mod_fmr_committed_restart.f90
   src/runtime/mod_fmr_production_application_bootstrap.f90
+  src/process/mod_pmdirect_swetr0_process.f90
+  src/crop/mod_crop_root_uptake_input_contract.f90
+  src/adapter/mod_ppa_atm02_typed_meteo_ingestion.f90
+  src/adapter/mod_ppa_atm02_pmdirect_daily_binding.f90
+  src/adapter/mod_ppa_atm02_pmdirect_prescribed_root_sink.f90
+  src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90
+  src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90
+  src/adapter/mod_ppa_atm02_pmdirect_production_forcing_adapter.f90
+  src/process/mod_vonhhbraden_interception.f90
+  src/adapter/mod_ppa_wu04c_vonhhbraden_forcing_adapter.f90
+  src/adapter/mod_ppa_wu04c_dynamic_top_forcing_adapter.f90
+  src/adapter/mod_ppa_wu04c_production_forcing_adapter.f90
+  src/process/mod_gash_interception.f90
+  src/adapter/mod_ppa_wu04d_gash_forcing_adapter.f90
+  src/adapter/mod_ppa_wu04d_production_forcing_adapter.f90
+  src/runtime/mod_fmr_vonhhbraden_source_window_progress.f90
+  src/runtime/mod_ppa_wu04c_runtime_publication.f90
 )
 
 for opt in 0 2; do
@@ -172,6 +205,17 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
     objects+=("$obj")
   done
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fapp/test_ppa_output_canon_application_binding.f90 -o "$OUT/output_canon_test.o" || fail "compile output binding test O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/output_canon_test.o" -o "$OUT/test_output_canon" || fail "link output binding test O$opt"
+  "$OUT/test_output_canon" > "$OUT/output_canon.txt" 2>&1 || {
+    cat "$OUT/output_canon.txt" >&2
+    fail "output binding test O$opt"
+  }
+  grep '^PPA_OUTPUT_CANON_' "$OUT/output_canon.txt" > "$OUT/output_canon_stable.txt"
+  grep -Fq 'PPA_OUTPUT_CANON_APPLICATION_BYTE_IDENTITY=PASS' "$OUT/output_canon.txt" || fail "missing output identity marker O$opt"
+  grep -Fq 'PPA_OUTPUT_CANON_APPLICATION_READ_ONLY_SNAPSHOT=PASS' "$OUT/output_canon.txt" || fail "missing read-only marker O$opt"
+  echo "PPA_OUTPUT_CANON_APPLICATION_O${opt}=PASS"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fapp/test_ppa_wu01_production_application_bootstrap.f90 -o "$OUT/test.o" || fail "compile test O$opt"
   gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test_ppa_wu01" || fail "link O$opt"
 
@@ -184,6 +228,8 @@ for opt in 0 2; do
   echo "PPA_WU01_O${opt}=PASS"
 done
 
+diff -u "$BUILD/o0/output_canon_stable.txt" "$BUILD/o2/output_canon_stable.txt"
+echo 'PPA_OUTPUT_CANON_APPLICATION_O0_O2_IDENTITY=PASS'
 diff -u "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt"
 cat "$BUILD/o0/output.txt"
 

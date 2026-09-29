@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-ABSORPTION-DERIVATIVE",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure ABSORPTION task-2 local derivative contribution",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_EXPLICIT_DERIVATIVE_UPDATE -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:ABSORPTION task 2",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1811-1835",
+    "behavior": "When the compartment is in the derivative zone and outflow is strictly above 1e-7, add the active sorptivity derivative (sorptivity or diffusion form) or Darcy head derivative when absolute saved head difference is strictly above 1e-14."
+  },
+  "scope": ["explicit one-cell inputs and derivative state transform", "100000 deterministic bitwise comparisons at O0/O2 across source branches"],
+  "non_goals": ["complete solver Jacobian, trial-state owner or saved ABSORPTION workspace", "accepted mass receipt, rollback/restart or production runtime admission"],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW01-SURFACE-SEED",
+  "title": "Pure B1.11 HeadCalc surface q0/qv(1) seed",
+  "protocol": "PIN_POST_PONDRUNOFF_EQUATION_ORDER -> IMPLEMENT_TYPED_SCALAR -> 100000_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_METEO_AND_POND_OWNERS",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW01_SURFACE_SEED_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW01_GWL_SURFACE_SOURCE_CENSUS.json"
+  ],
+  "scope": [
+    "net top flux q0 from rain/irrigation/melt, macro storage fraction, runon, evaporation and demand",
+    "qv(1) from negative q0, post-pondrunoff pond delta and runots",
+    "explicit scalar inputs without meteorological or pond ownership"
+  ],
+  "non_goals": [
+    "Pondrunoff calculation or atmospheric input preparation",
+    "Surface saturated profile/HeadCalc integration, accepted flux or mass publication",
+    "Retry, restart or runtime admission"
+  ],
+  "pass_conditions": [
+    "100000 deterministic valid vectors bitwise match both B1.11 equations",
+    "area-storage factor, pond delta, runots, A/B/A and invalid timestep/nonfinite cases pass",
+    "O0/O2 transcripts match",
+    "no meteo/pond/head owner state is written"
+  ]
+}

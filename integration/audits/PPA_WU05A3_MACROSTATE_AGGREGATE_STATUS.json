@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrostate_aggregate.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROSTATE-AGGREGATE-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@6d333174945d5cc29d4e1ce8d00b27c7fb464ea5",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROSTATE_AGGREGATE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macrostate_aggregate_candidate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrostate_aggregate_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrostate_aggregate_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["domain-1 aliases", "multiple internal-domain ordered sums", "NumDm=1 empty aggregate", "negative cell volume fail-closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; isolated interface aggregate only; no state/output mutation, accepted mass, retry/restart or A4 integration",
+  "next_action": "Continue remaining exact-source MACROSTATE/MACROFLOW composition as candidate oracles; preserve the no-production-publication boundary.",
+  "blockers": []
+}

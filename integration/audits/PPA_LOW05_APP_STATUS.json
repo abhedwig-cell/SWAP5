@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.ppa_low05_app.status.v1",
+  "work_unit": "PPA-LOW05-APP",
+  "status": "PREREGISTERED_IMPLEMENTATION_NOT_PERSISTED_VARIABLE_HEAD_ATTEMPT_HELD",
+  "baseline": "0782503f630f038ab488de4983974ad68ee3aed3",
+  "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "preregistration": "integration/audits/PPA_LOW05_APP_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_LOW05_APP_SOURCE_CENSUS.json",
+  "implementation": [],
+  "tests": [],
+  "qualification": "NOT_RUN_FOR_PERSISTED_IMPLEMENTATION; an exploratory implementation and test harness were removed because the variable-head transaction did not commit and the existing WU01 preservation gate also fails in the present worktree.",
+  "production_admission": "NONE",
+  "ownership_boundary": "Normal standalone mode 5 must have no groundwater participant, datum requirement, or groundwater interface ledger; existing groundwater mode 5 remains on its current owner path.",
+  "known_blockers": [
+    "An exploratory non-flat HBOT5 application transaction returned FMR_APP_BOOT_RUNTIME_FAILED, admission_status=ADMITTED, kernel_status=2, completed=false and zero accepted substeps. The rejected internal gate is not exposed.",
+    "The existing WU01 preservation test reproduces the WU04C production transaction failure with the original production implementation restored. A direct gfortran O0 diagnostic observed, per tile, 3 attempts, 2 retries, 3 solver rejections, 0 temporal rejections, 0 mass rejections, 24 nonlinear iterations, 3 internal retries and 3 HeadCalc calls; no accepted substep. A temporary HeadCalc adapter diagnostic further showed that all three attempts (0.5, 0.25, 0.125 day) exhaust 8 nonlinear iterations and 8 backtracking attempts, then request dt reduction while not at min_dt. Canonical status 2 is transaction failure. The exact physical/nonlinear convergence cause remains unresolved. No persisted LOW05 implementation or passing preservation qualification is claimed."
+  ],
+  "next_action": "Keep the slice OPEN and implementation unpersisted. Continue another independent migration capability. Separately expose the underlying solver rejection code for WU04C and compare against a known-good baseline; do not relax retry, temporal, mass or restart gates.",
+  "recovery_point": "PPA_LOW05_APP_PREREGISTRATION.json and PPA_LOW05_APP_SOURCE_CENSUS.json at the local development baseline; no LOW05 production implementation is persisted. The failed exploratory transaction and WU01 O0 reproduction are recorded as unresolved evidence only."
+}

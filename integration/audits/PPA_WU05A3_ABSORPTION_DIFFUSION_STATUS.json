@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a3.absorption_diffusion.status.v1",
+  "work_unit": "PPA-WU05-A3-ABSORPTION-DIFFUSION",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@abc189978",
+  "preregistration": "integration/audits/PPA_WU05A3_ABSORPTION_DIFFUSION_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated ABSORPTION diffusion amount only; no mutable workspace, accepted mass, rollback/restart or runtime binding",
+  "implementation": "src/process/mod_ppa_wu05a3_absorption_diffusion.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_absorption_diffusion_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_absorption_diffusion_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_ABSORPTION_DIFFUSION_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_ABSORPTION_DIFFUSION_STRICT_DEFICIT_THRESHOLD=PASS",
+      "PPA_WU05A3_ABSORPTION_DIFFUSION_WALL_WETTING_FACTOR=PASS",
+      "PPA_WU05A3_ABSORPTION_DIFFUSION_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "42972917d80e759e5b1efd4007109b534babcac648d341ff9c8c946b20ac330f"
+  },
+  "next_action": "Continue with another independent ABSORPTION source term; keep state and mass ownership held.",
+  "recovery_point": "this preregistration, module, and test",
+  "blockers": []
+}

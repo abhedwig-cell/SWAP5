@@ -1,0 +1,21 @@
+name: PPA-WU05-C2 pure Feddes wetness factor
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05c2-feddes-wetness.yml'
+      - 'src/process/mod_ppa_wu05c2_feddes_wetness.f90'
+      - 'tests/fapp/test_ppa_wu05c2_feddes_wetness.f90'
+      - 'tests/fapp/run_ppa_wu05c2_feddes_wetness.sh'
+      - 'integration/audits/PPA_WU05C2_SOURCE_CENSUS.json'
+      - 'integration/audits/PPA_WU05C2_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05C2_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  exact-source-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 Feddes factor at O0/O2
+        run: bash tests/fapp/run_ppa_wu05c2_feddes_wetness.sh

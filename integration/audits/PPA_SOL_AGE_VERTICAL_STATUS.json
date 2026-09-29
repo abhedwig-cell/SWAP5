@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.ppa_sol_age_vertical_status.v1",
+  "work_unit": "PPA-SOL-AGE-VERTICAL",
+  "status": "LOCAL_SOURCE_COMPOSITION_QUALIFIED_O0_O2_NOT_PRODUCTION_ADMITTED",
+  "preregistration": "integration/audits/PPA_SOL_AGE_VERTICAL_PREREGISTRATION.json",
+  "implementation_commit": "a59c8a13a4a2435c4fad0733f471f156a9aef8d4",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "solute_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "equation": "AgeTracer task-2 source-ordered internal-face transfer to each compartment's storage"
+  },
+  "implementation": {
+    "source": "src/process/mod_ppa_sol_age_vertical_balance.f90",
+    "test": "tests/fapp/test_ppa_sol_age_vertical_balance_source_oracle.f90",
+    "gate": "tests/fapp/run_ppa_sol_age_vertical_balance_source_oracle.sh",
+    "scope": "Accepts a previously materialized n+1 top-to-bottom face amount vector and atomically returns n compartment storage/concentration candidates by source traversal order."
+  },
+  "qualification": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64 explicit path",
+    "optimization_levels": ["O0", "O2"],
+    "deterministic_profiles_per_build": 100000,
+    "compartments_per_profile": 6,
+    "bitwise_o0_o2_transcript_identity": true,
+    "markers": [
+      "PPA_SOL_AGE_VERTICAL_SOURCE_ORACLE_100000x6=PASS",
+      "PPA_SOL_AGE_VERTICAL_FACE_TO_CELL_CANDIDATE_ORDER=PASS",
+      "PPA_SOL_AGE_VERTICAL_INVALID_VECTOR_FAIL_CLOSED=PASS"
+    ]
+  },
+  "scope_boundary": {
+    "dynamic_sequential_internal_face_recalculation": "NOT_IMPLEMENTED; caller supplies face amounts",
+    "committed_state_trial_retry_restart_mass_owner": "NONE",
+    "age_tracer_production_runtime_admission": "NONE"
+  },
+  "next_action": "Implement only the source-order dependency where an updated upper-cell concentration feeds the next internal face, while keeping boundary and time-step ownership separately bounded."
+}

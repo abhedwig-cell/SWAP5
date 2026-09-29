@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-RAPIDDRAIN-KD",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure rapid-drainage compartment transmissivity source equation",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_EXPLICIT_INPUT_EQUATION -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:RAPIDDRAIN transmissivity loop",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1890-1896",
+    "behavior": "Compute compartment water thickness from pore diameter and occupied pore-volume fraction, apply the configured power, scale by compartment thickness, apply SatFr only to the top compartment, and accumulate in source order."
+  },
+  "scope": [
+    "explicit typed scalar and array inputs, no global SWAP state",
+    "one rapid-drainage transmissivity profile term and its ordered total",
+    "physical geometry guards for finite positive thickness/diameter and pore_volume <= dz",
+    "100,000 deterministic bitwise comparisons at O0 and O2"
+  ],
+  "non_goals": [
+    "water-table/drainage-head response or drain capacity limitation",
+    "VOLUNDR or WaSrDrainabl composition",
+    "whole-column mass receipt, transaction/restart owner or production admission",
+    "parallel/MultiSWAP admission"
+  ],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

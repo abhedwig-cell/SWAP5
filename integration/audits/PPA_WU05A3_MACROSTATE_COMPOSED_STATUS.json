@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrostate_composed.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROSTATE-CDE-COMPOSED-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_COMPOSED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@f5271bb93164bfddac7c59375010e783869314cc",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROSTATE_COMPOSED_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": [
+    "src/process/mod_ppa_wu05a3_macrostate_storage_candidate.f90",
+    "src/process/mod_ppa_wu05a3_macrostate_wetting_candidate.f90",
+    "src/process/mod_ppa_wu05a3_macrostate_flux_candidate.f90",
+    "src/process/mod_ppa_wu05a3_macrostate_aggregate_candidate.f90"
+  ],
+  "test": "tests/fapp/test_ppa_wu05a3_macrostate_composed_candidate_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrostate_composed_candidate_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["storage to wetting handoff", "wetting to flux handoff", "interface aggregate handoff"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "source_semantics_review": {
+    "reviewed_source": "B1.11 macropore.f90 lines 1314, 1334-1341, 1401-1416",
+    "finding": "Local icgwl is assigned only in the SWMBF=2 main-domain storage branch, then used for internal flux in all eligible domains. SWMBF=1 leaves it undefined; SWMBF=2 shares the main-domain value across internal domains.",
+    "test_limitation": "The composed test passes wetting water_top per domain into the flux helper. It verifies a candidate interface composition, not source-equivalent MACROSTATE control flow. MPVOLUME is not invoked.",
+    "follow_up": "Resolve corrected-reference policy for icgwl before whole-MACROSTATE qualification; proceed with independent determinate equations meanwhile",
+    "repair_regression": "aae943b7d49842f78adb0a1e513ca1ad79bcd5b0 O0/O2 candidate composition PASS"
+  },
+  "qualified": false,
+  "production_admission": "NONE; composed candidate equations only; no mutation, accepted mass, transaction, retry/restart or A4 integration",
+  "next_action": "Continue another independent B1.11 MACROSTATE/MACROFLOW source capability or extend only after identifying a safe, no-publication candidate boundary.",
+  "blockers": []
+}

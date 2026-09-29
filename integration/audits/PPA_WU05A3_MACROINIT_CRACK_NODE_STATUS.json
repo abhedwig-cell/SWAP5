@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macroinit_crack_node.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROINIT-CRACK-NODE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@627c40def6e7a20e0bfc9ce4001967c0d938bad8",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROINIT_CRACK_NODE_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macroinit_crack_node.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macroinit_crack_node_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macroinit_crack_node_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["strict depth threshold", "IcTopMp direct route", "beyond-grid threshold", "invalid thickness"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; node selector only; MACROINIT/global state owner, accepted mass, retry, restart and A4 integration remain open",
+  "next_action": "Inventory the MACROINIT stateful volume initialization and the separate MACROSTATE transition; choose another independently checkable source calculation if one is separable.",
+  "blockers": []
+}

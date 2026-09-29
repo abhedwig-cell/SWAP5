@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-TCS1-4-TIMING",
+  "parent_workunit": "PPA-IRR-TCS7-DCS2",
+  "title": "Source-bound scheduled irrigation timing selectors TCS1 through TCS4",
+  "protocol": "PIN_B1_11_SOURCE -> ISOLATE_TCS1_TCS4_EQUATIONS -> BITWISE_AFGEN_ORACLE -> O0_O2_REPLAY -> HOLD_CROP_AND_CALENDAR_ADMISSION",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "functions_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "lineage": "SWAP-011 targets neither irrigation.f90 nor its AFGEN implementation.",
+    "configuration_lines": "201-228",
+    "equation_lines": "472-514",
+    "equations": [
+      "TCS1: Tred = 1 - (iqreddry_day + iqredsol_day)/iptra_day for iptra_day > 1e-10, otherwise Tred=1; trigger iff Tred < AFGEN(treltab,14,dvs).",
+      "TCS2: depl=AFGEN(rawtab,14,dvs)*(awlh-awmh); cap only when depl>awlh; trigger iff awah < awlh-depl.",
+      "TCS3: depl=AFGEN(tawtab,14,dvs)*awlh; trigger iff awah < awlh-depl.",
+      "TCS4: trigger iff awlh-awah > 0.1*AFGEN(dwatab,14,dvs)."
+    ],
+    "table_domains": {"dvs": [0.0, 2.0], "tcs1_tcs2_tcs3_values": [0.0, 1.0], "tcs4_values_mm": [0.0, 500.0]}
+  },
+  "scope": [
+    "four pure TCS timing equations, with independent AFGEN table input and source-preserved strictness",
+    "partial seven-knot AFGEN sentinel and endpoint semantics",
+    "named TCS1 no-transpiration/equality tests and TCS2 depletion-cap/TCS3/TCS4 strict boundary tests",
+    "100000 deterministic source comparisons per selector at O0/O2 with identical transcripts"
+  ],
+  "non_goals": [
+    "AWL/AWM/AWA crop-root-zone derivation or plant stress ownership",
+    "calendar/selection opportunity, irrigation amount/rate or event lifecycle",
+    "generic management parsing, transaction/retry/restart or production admission"
+  ],
+  "pass_conditions": [
+    "each selector matches its exact B1.11 comparison and arithmetic",
+    "AFGEN interpolation and partial-table upper clamp match the fixed source routine",
+    "strict equality and threshold sides are explicitly tested",
+    "100000 deterministic vectors per selector pass at O0 and O2 with transcript identity",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

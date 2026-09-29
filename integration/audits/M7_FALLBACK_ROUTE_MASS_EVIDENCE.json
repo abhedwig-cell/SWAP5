@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.m7.fallback_route_mass_evidence.v1",
+  "criterion": "M7-06",
+  "method": "delta-first route inventory against current fetched canonical owner/admission evidence, current serialized batch result contract, and qualified fallback owner records; no production changes",
+  "canonical_head_reviewed": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+  "route_inventory": {
+    "reference": {
+      "selection": "default when no explicit alternative is selected",
+      "automatic_fallback_from_or_to_reference": false,
+      "mass_and_transaction_authorities": [
+        "integration/f-ci/F-CI23_STATUS.json",
+        "integration/f-ci/F-CI96_STATUS.json",
+        "tests/fmr/test_m7_serialized_worker_scratch_reuse.f90"
+      ]
+    },
+    "rossfast_d3r": {
+      "selection": "explicit ROSSFAST_D3R model selection; unsupported profile fails closed",
+      "automatic_model_fallback": false,
+      "bounded_internal_solver_ladder": "K2 first; K4 only after certificate rejection; K8 only after a second rejection; all tiers restart from the original request base state; no K16 tier",
+      "current_canonical_owner_authorities": [
+        "integration/f-ross/F-ROSS12_STATUS.json",
+        "integration/f-ross/F-ROSS22_STATUS.json",
+        "integration/f-ci/F-CI94_STATUS.json"
+      ],
+      "qualification": {
+        "f_ross22_admission_commit": "8875e46e12cf2462948ca1952ed283cb2c7483eb",
+        "workflow_run": 35344459815,
+        "result": "PASS",
+        "cases": 216,
+        "tier_distribution": {"K2": 212, "K4": 2, "K8": 2},
+        "route_valid": 216,
+        "temporal_accepted": 216,
+        "mass_work_retry_pass": 216,
+        "exact_research_production_identity": true,
+        "production_envelope": "F-ROSS12 restricted material/grid/forcing envelope; no mixed Reference/RossFast MultiSWAP admission"
+      }
+    },
+    "relaxed_execution": {
+      "status": "NOT_ADMITTED_ON_CURRENT_SERIALIZED_APPLICATION_ROUTE",
+      "basis": [
+        "integration/f-ci/F-CI19_COMPATIBILITY_MATRIX.json",
+        "integration/f-ci/F-CI94_STATUS.json"
+      ]
+    }
+  },
+  "serialized_batch_diagnostics": {
+    "visible_per_column": [
+      "solver_route",
+      "solver_linear_solves",
+      "solver_internal_retries",
+      "hard mass completeness and residual"
+    ],
+    "rossfast_tier_identity_in_batch_result": false,
+    "mixed_reference_rossfast_multiswap_admitted": false
+  },
+  "criterion_status": "PARTIAL",
+  "remaining_gap": "Current owner authorities bound and qualify the admitted RossFast internal K2/K4/K8 fallback ladder, and no automatic model fallback or relaxed route is admitted. The MultiSWAP per-column result reports solver route and aggregate solver work but not the selected RossFast fallback tier. A mixed Reference/RossFast MultiSWAP batch is explicitly excluded, and there is no current M7 multi-column production test publishing tier-specific fallback plus mass by column.",
+  "next_action": "Do not add mixed-model execution or widen the RossFast envelope. Reassess M7-06 only after a separately authorized and qualified uniform selected-RossFast serialized batch can publish tier identity and hard mass per column; otherwise preserve the current bounded fail-closed exclusions and continue M8."
+}

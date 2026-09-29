@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-SCHEDULED-SOLUTE-OVERIRRIGATION",
+  "parent_workunit": "PPA-IRR-SCHEDULED-SOLUTE-CARRIER",
+  "title": "Scheduled DCS2 solute-threshold overirrigation composition",
+  "protocol": "PIN_B1_11_POST_DCS_DEPTH_SOLUTE_BRANCH -> APPLY_STRICT_DUAL_SWITCH_THRESHOLD -> MATERIALIZE_RATE_DURATION_AND_SSDI_VECTOR -> 100000_DETERMINISTIC_EVENTS -> O0_O2_REPLAY -> HOLD_SOLUTE_MASS_BOOKING",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "296-299, 585-599",
+    "equations": [
+      "the concentration threshold and overirrigation percentage inputs are each bounded from 0 to 100",
+      "only when both solute switches are enabled, if cml(nodsen) > cirrthres then irr_depth += 0.01*perirrsurp*irr_depth",
+      "the strict concentration comparison follows the base-depth and optional min/max logic and precedes rate/duration materialization"
+    ]
+  },
+  "scope": [
+    "compose the B1 dual-switch strict concentration gate with the existing scheduled DCS2 AFGEN depth path",
+    "materialize the resulting event through the existing scheduled SSDI evaluator while preserving its one-node water-source vector",
+    "100000 deterministic event compositions covering above/equal/below threshold and one-switch-disabled cases",
+    "validate finite threshold/sensor input and the B1 threshold/percentage bounds"
+  ],
+  "non_goals": [
+    "DCS1 depth integration, rain correction, min/max limit integration or over-one-day legacy rate fallback",
+    "input parsing, calendar, solute transport/mass booking, accepted soil flux, restart or production admission",
+    "event-duration cases over the current typed evaluator one-day limit"
+  ],
+  "pass_conditions": [
+    "only both enabled switches plus strict sensor-concentration exceedance adjust depth",
+    "percentage adjustment occurs before rate/duration and offered source amount calculation",
+    "100000 deterministic events pass at O0/O2 with identical transcripts and unchanged SSDI node/rate vector",
+    "invalid thresholds, percentages and active sensor concentration fail closed",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

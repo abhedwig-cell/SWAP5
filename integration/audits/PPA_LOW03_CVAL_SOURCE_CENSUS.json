@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.ppa_low03.cval.source-census.v1",
+  "work_unit": "PPA-LOW03-CVAL",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "boundbottom.f90": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e"
+  },
+  "source_law": {
+    "node_search": "start at numnod; while gwlmean > ztopcp(node) and node > 1, decrement node",
+    "saturated_resistance": "(gwlmean - zbotcp(node)) / cofgen(3,node)",
+    "lower_profile_resistance": "sum(dz(i) / cofgen(3,i), i=node+1..numnod)",
+    "switch": "SWBOTB3RESVERT=1 sets C-value to zero; =0 evaluates profile law"
+  },
+  "mapping": "ztopcp/zbotcp/dz/cofgen(3,:) are explicit typed profile inputs, not owned or advanced by this oracle.",
+  "interpretation": "Numerical profile-resistance oracle only; does not admit Richards state or implicit Cauchy solve."
+}

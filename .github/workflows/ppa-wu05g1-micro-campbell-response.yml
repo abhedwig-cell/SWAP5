@@ -1,0 +1,21 @@
+name: PPA-WU05-G1 pure micro Campbell response
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05g1-micro-campbell-response.yml'
+      - 'src/process/mod_ppa_wu05g1_micro_campbell_response.f90'
+      - 'tests/fapp/test_ppa_wu05g1_micro_campbell_response.f90'
+      - 'tests/fapp/run_ppa_wu05g1_micro_campbell_response.sh'
+      - 'integration/audits/PPA_WU05G1_SOURCE_CENSUS.json'
+      - 'integration/audits/PPA_WU05G1_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05G1_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  micro-campbell-response:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 micro Campbell response at O0/O2
+        run: bash tests/fapp/run_ppa_wu05g1_micro_campbell_response.sh

@@ -1,11 +1,14 @@
 module mod_fmr_serialized_multiswap_runtime
+  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
+  use mod_fmr_serialized_reference_backend, only: free_drainage_indicator_service
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED
+  use mod_irrigation_process, only: irrigation_state_t,ppa_weekly_identity_t,ppa_tcsfix_identity_t
   use mod_canonical_contracts, only: canonical_mass_accounting_t, canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_result_t, kernel_diagnostics_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
-  use mod_soil_water_solver_contract, only: top_boundary_provider_t
+  use mod_soil_water_solver_contract, only: top_boundary_provider_t, constitutive_storage_difference_ifc
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint, fmr_commit_candidate, fmr_discard_candidate
   use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t, fmr_commit_candidate_with_receipt, &
        FMR_COMMIT_RECEIPT_OK, FMR_COMMIT_RECEIPT_COMMIT_REJECTED
@@ -49,9 +52,23 @@ module mod_fmr_serialized_multiswap_runtime
     logical :: completed = .false.
     logical :: committed = .false.
     logical :: solver_executed = .false.
+    integer :: last_solver_status = 0
+    real(real64) :: last_trial_t0 = 0.0_real64
+    real(real64) :: last_trial_t1 = 0.0_real64
+    logical :: first_solver_failure_available = .false.
+    real(real64) :: first_solver_failure_t0 = 0.0_real64
+    real(real64) :: first_solver_failure_t1 = 0.0_real64
+    integer :: first_solver_failure_iterations = 0
     character(len=32) :: solver_route = 'not-run'
     integer :: solver_iterations = 0
     integer :: accepted_substeps = 0
+    ! Observational counters only; these never participate in acceptance.
+    integer :: transaction_attempts = 0
+    integer :: transaction_retries = 0
+    integer :: solver_rejections = 0
+    integer :: temporal_rejections = 0
+    integer :: temporal_unavailable_rejections = 0
+    integer :: mass_rejections = 0
     integer :: solver_nonlinear_iterations = 0
     integer :: solver_internal_retries = 0
     integer :: solver_headcalc_calls = 0
@@ -153,12 +170,20 @@ module mod_fmr_serialized_multiswap_runtime
     real(real64) :: effective_t0 = 0.0_real64
     real(real64) :: effective_t1 = 0.0_real64
     real(real64) :: max_abs_column_mass_residual = 0.0_real64
+    integer :: snow_event_evaluation_calls = 0
+    integer :: black_evaporation_evaluation_calls = 0
+    integer :: boesten_evaporation_evaluation_calls = 0
+    integer :: soil_temperature_evaluation_calls = 0
+    integer :: drainage_response_evaluation_calls = 0
+    integer(int64) :: max_common_work_payload_bytes = 0_int64
+    integer(int64) :: max_soil_temperature_optional_payload_bytes = 0_int64
     type(canonical_mass_accounting_t) :: authoritative_aggregate_mass
   end type fmr_serialized_batch_diagnostics_t
 
   public :: fmr_run_serialized_physical_multiswap
   public :: fmr_execute_serialized_physical_column
   public :: fmr_execute_serialized_resolved_physical_column
+  public :: fmr_execute_serialized_irrigation_resolved_column
   public :: fmr_execute_serialized_column_with_bottom_energy
 
 contains
@@ -169,7 +194,9 @@ contains
                                                     runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan, &
                                                     materialize_worker_assignments, materialize_summary_diagnostics, &
                                                     materialize_diagnostic_metadata, materialize_column_diagnostics, &
-                                                    trusted_prepared_parameters)
+                                                    trusted_prepared_parameters, free_drainage_indicator, storage_difference)
+    procedure(constitutive_storage_difference_ifc), optional :: storage_difference
+    procedure(free_drainage_indicator_service), optional :: free_drainage_indicator
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -299,6 +326,11 @@ contains
     end if
 
     call backend%initialize(top_boundary)
+    if(present(free_drainage_indicator)) then
+      call backend%set_free_drainage_indicator(free_drainage_indicator)
+    end if
+    if(present(storage_difference)) call backend%set_storage_difference(storage_difference)
+    call fmr_build_execution_order(columns, order)
     batches = 0
     do batch_start = 1, size(columns), batch_size
       batches = batches + 1
@@ -476,6 +508,41 @@ contains
          bottom_energy_parameters=energy_parameters, bottom_thermal_provider=external_temperature_provider, &
          bottom_energy_publication=energy_publication)
   end subroutine fmr_execute_serialized_column_with_bottom_energy
+
+  subroutine fmr_execute_serialized_irrigation_resolved_column(backend, transaction_control, column, template, &
+       parameters, effective_forcing, committed_state, numerical_config, single_ssdi_node, t0, t1, &
+       output, diagnostic, runtime, active_physical_calls, selected_event,weekly_proposal,target_selector,tcsfix_proposal)
+    type(fmr_serialized_reference_backend_t), intent(inout) :: backend
+    type(kernel_executor_t), intent(inout) :: transaction_control
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing
+    type(kernel_committed_state_t), intent(inout) :: committed_state
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
+    integer, intent(in) :: single_ssdi_node
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
+    integer, intent(inout) :: active_physical_calls
+    type(irrigation_state_t), intent(in), optional :: selected_event
+    type(ppa_tcsfix_identity_t), intent(in), optional :: tcsfix_proposal
+    type(ppa_weekly_identity_t), intent(in), optional :: weekly_proposal
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
+
+    if (.not. resolved_column_is_routable(column, template)) then
+      output%admission_status = 'ROUTING_REJECTED'
+      diagnostic%rejected = 1
+      diagnostic%failure_classification = 'ROUTING_REJECTED'
+      call update_committed_provenance(committed_state, output, diagnostic)
+      return
+    end if
+    call execute_resolved_column(backend, transaction_control, column, template, parameters, effective_forcing, &
+         committed_state, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
+         irrigation_node=single_ssdi_node, selected_irrigation_event=selected_event,weekly_proposal=weekly_proposal, &
+         target_selector=target_selector,tcsfix_proposal=tcsfix_proposal)
+  end subroutine fmr_execute_serialized_irrigation_resolved_column
 
   subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, materialize_worker_assignments, &
        materialize_diagnostic_metadata, materialize_column_diagnostics)
@@ -698,7 +765,8 @@ contains
                                      committed_state, numerical_config, t0, t1, output, diagnostic, runtime, &
                                      active_physical_calls, commit_receipt, bottom_energy_parameters, &
                                      bottom_thermal_provider, bottom_energy_publication, track_physical_concurrency, &
-                                     trusted_prepared_parameters)
+                                     trusted_prepared_parameters, irrigation_node, &
+                                     selected_irrigation_event,weekly_proposal,target_selector,tcsfix_proposal)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -718,6 +786,11 @@ contains
     type(fmr_serialized_bottom_energy_publication_t), intent(out), optional :: bottom_energy_publication
     logical, intent(in), optional :: track_physical_concurrency
     logical, intent(in), optional :: trusted_prepared_parameters
+    integer, intent(in), optional :: irrigation_node
+    type(irrigation_state_t), intent(in), optional :: selected_irrigation_event
+    type(ppa_tcsfix_identity_t), intent(in), optional :: tcsfix_proposal
+    type(ppa_weekly_identity_t), intent(in), optional :: weekly_proposal
+    procedure(canonical_subinterval_target_selector), optional :: target_selector
 
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: kernel_result
@@ -767,9 +840,17 @@ contains
       simultaneous_physical_calls = 1
     end if
     if (energy_requested) call backend%set_bottom_thermal_carrier_enabled(.true.)
-    call backend%run_trial(column, template, parameters, committed_state, effective_forcing, &
-         numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag, &
-         trusted_prepared_parameters=trusted_prepared_parameters)
+    if (present(irrigation_node)) then
+      call backend%run_pending_irrigation_trial(column, template, parameters, committed_state, effective_forcing, &
+           numerical_config, irrigation_node, t0, t1, checkpoint, kernel_result, candidate, kernel_diag, &
+           selected_event=selected_irrigation_event, weekly_proposal=weekly_proposal, &
+           target_selector=target_selector, tcsfix_proposal=tcsfix_proposal, &
+           trusted_prepared_parameters=trusted_prepared_parameters)
+    else
+      call backend%run_trial(column, template, parameters, committed_state, effective_forcing, &
+           numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag, &
+           trusted_prepared_parameters=trusted_prepared_parameters)
+    end if
     if (energy_requested) then
       thermal_candidate = backend%bottom_thermal_snapshot()
       ! The snapshot is now local to this transaction call. Clear backend
@@ -782,6 +863,12 @@ contains
     diagnostic%attempts = kernel_diag%attempts
     diagnostic%retries = kernel_diag%retries
     output%accepted_substeps = kernel_diag%accepted_substeps
+    output%transaction_attempts = kernel_diag%attempts
+    output%transaction_retries = kernel_diag%retries
+    output%solver_rejections = kernel_diag%solver_rejections
+    output%temporal_rejections = kernel_diag%temporal_rejections
+    output%temporal_unavailable_rejections = kernel_diag%temporal_certificate_unavailable_rejections
+    output%mass_rejections = kernel_diag%mass_rejections
     output%solver_nonlinear_iterations = kernel_diag%nonlinear_iterations
     output%solver_internal_retries = kernel_diag%internal_retries
     output%solver_headcalc_calls = kernel_diag%headcalc_calls
@@ -806,8 +893,30 @@ contains
     if (kernel_diag%transaction_calls > 0) then
       observation = backend%observation()
       output%solver_executed = observation%solver_executed
+      output%last_solver_status = observation%solver_status
+      output%last_trial_t0 = observation%trial_t0
+      output%last_trial_t1 = observation%trial_t1
+      output%first_solver_failure_available=observation%first_solver_failure_available
+      output%first_solver_failure_t0=observation%first_solver_failure_t0
+      output%first_solver_failure_t1=observation%first_solver_failure_t1
+      output%first_solver_failure_iterations=observation%first_solver_failure_iterations
       output%solver_route = observation%solver_diagnostics%route
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
+      runtime%snow_event_evaluation_calls = runtime%snow_event_evaluation_calls + &
+           observation%snow_event_evaluation_calls
+      runtime%black_evaporation_evaluation_calls = runtime%black_evaporation_evaluation_calls + &
+           observation%black_evaporation_evaluation_calls
+      runtime%boesten_evaporation_evaluation_calls = runtime%boesten_evaporation_evaluation_calls + &
+           observation%boesten_evaporation_evaluation_calls
+      runtime%soil_temperature_evaluation_calls = runtime%soil_temperature_evaluation_calls + &
+           observation%soil_temperature_evaluation_calls
+      runtime%drainage_response_evaluation_calls = runtime%drainage_response_evaluation_calls + &
+           observation%drainage_response_evaluation_calls
+      runtime%max_common_work_payload_bytes = max(runtime%max_common_work_payload_bytes, &
+           observation%common_work_payload_bytes)
+      runtime%max_soil_temperature_optional_payload_bytes = max( &
+           runtime%max_soil_temperature_optional_payload_bytes, &
+           observation%soil_temperature_optional_payload_bytes)
       if (output%solver_executed .and. do_track_physical_concurrency) then
         runtime%max_simultaneous_real_physical_solves = max( &
              runtime%max_simultaneous_real_physical_solves, simultaneous_physical_calls)

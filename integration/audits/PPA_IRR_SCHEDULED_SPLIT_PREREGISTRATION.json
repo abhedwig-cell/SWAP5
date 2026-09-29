@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-SCHEDULED-SPLIT",
+  "parent_workunit": "PPA-IRR-FIXED-SPLIT",
+  "title": "Scheduled irrigation split/retry candidate-state identity",
+  "protocol": "PIN_EXISTING_TYPED_TCS7_DCS2_EVALUATOR -> COMPARE_OVERSIZED_SELECTION_REQUEST_AND_EXACT_RETRY_TO_DIRECT_INTERVAL -> 100000_DETERMINISTIC_CASES -> O0_O2_REPLAY -> HOLD_SOLVER_TRANSACTION_AND_ACCEPTED_MASS",
+  "source": {
+    "snapshot": "SWAP5 existing typed candidate evaluator; B1.11 TCS7/DCS2 equations are separately source-tested",
+    "implementation": "src/process/mod_irrigation_process.f90::evaluate_scheduled_irrigation_interval",
+    "branches": "schedule selection, duration-driven split_required and exact event-end completion"
+  },
+  "scope": [
+    "exercise TCS7 trigger and DCS2-derived duration on an oversized scheduled-event interval",
+    "verify SPLIT_REQUIRED leaves candidate event state and fluxes unchanged",
+    "compare exact retry and direct event-sized interval bitwise over 100000 deterministic inputs"
+  ],
+  "non_goals": [
+    "calendar derivation, management parsing, event ownership beyond this typed candidate process",
+    "solver transaction acceptance/rejection, accepted water/solute mass, restart or production admission"
+  ],
+  "pass_conditions": [
+    "all eligible scheduled events request the exact end-time split for an oversized interval",
+    "candidate remains unchanged until the retry, and retry equals direct event-sized evaluation bitwise",
+    "100000 deterministic cases pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

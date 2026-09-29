@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low04.qh.status.v1",
+  "work_unit": "PPA-LOW04-QH",
+  "parent_work_unit": "PPA-LOW04",
+  "status": "PURE_QH_TABLE_LAW_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "f217f2eff",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no qbot, GWL/headcalc state, groundwater or restart route changed",
+  "source_census": "integration/audits/PPA_LOW04_QH_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW04_QH_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low04_qh_table.f90",
+  "test": "tests/fapp/test_ppa_low04_qh_table.f90",
+  "gate": "tests/fapp/run_ppa_low04_qh_table.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW04_QH_ABS_HTAB_AFGEN_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW04_QH_ENDPOINT_KNOT_AND_LINEAR=PASS",
+      "PPA_LOW04_QH_STATELESS_A_B_A=PASS",
+      "PPA_LOW04_QH_INVALID_TABLE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "a232ae47b7b5c362bd3a8016720406220932e566fb3fd427c9748145bf5e8678",
+    "o2_executable_sha256": "e0764d23713f740b4c03acbe09a7559c37fb4d5c9e1d00feaeaa38a32421fb35",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Continue with another independent migration capability; keep SWQHBOT=2 runtime route held.",
+  "recovery_point": "this status and PPA_LOW04_QH_SOURCE_CENSUS.json"
+}

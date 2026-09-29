@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.ppa_irr_rate_materialization.status.v1",
+  "work_unit": "PPA-IRR-RATE-MATERIALIZATION",
+  "parent_work_unit": "PPA-IRR-TCSFIX-FILTER",
+  "status": "IRRIGATION_RATE_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@bb000c6e8",
+  "preregistration": "integration/audits/PPA_IRR_RATE_MATERIALIZATION_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; source-level rate/duration and surface/SSDI assignment only; no event calendar, source receipt, accepted mass, transaction, restart or production binding",
+  "implementation": "src/process/mod_ppa_irr_rate_materialization.f90",
+  "test": "tests/fapp/test_ppa_irr_rate_materialization_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_rate_materialization_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "596-624",
+    "equation": "Positive rate adapts to depth over one day only when depth/rate>1; otherwise it uses input rate and duration depth/rate. Nonpositive rate uses depth as rate over one day. SSDI copies the selected rate to each requested node; surface uses one scalar rate."
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_RATE_MATERIALIZATION_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_RATE_DURATION_STRICT_ONE_DAY_ADAPTATION=PASS",
+      "PPA_IRR_RATE_ZERO_RATE_AND_SSDI_NODE_ASSIGNMENT=PASS",
+      "PPA_IRR_RATE_MATERIALIZATION_SOURCE_ORACLE=PASS",
+      "PPA_IRR_RATE_MATERIALIZATION_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "6c58a279b12a4fd4b38fd3b3f919868fea0c4d78b4fc545a479f4265e8d0ed1c"
+  },
+  "qualification_status": "NOT_QUALIFIED; no event/calendar binding, soil-source materialization, global water balance, solute, transaction or restart qualification",
+  "next_action": "Continue source-bound fixed-event or remaining irrigation amount/application equations; preserve production admission NONE.",
+  "recovery_point": "this status record, preregistration, module and test",
+  "blockers": ["The isolated output does not bind interval source arrays to a soil-water owner or accepted whole-column mass receipt; SSDI node rate-sum is not asserted to equal a whole-column amount."]
+}

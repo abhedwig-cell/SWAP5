@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-TCSFIX-FILTER",
+  "parent_workunit": "PPA-IRR-TCS1-4-TIMING",
+  "title": "Source-bound fixed-interval irrigation counter filter",
+  "protocol": "PIN_B1_11_SOURCE -> ISOLATE_TCSFIX_COUNTER_TRANSITION -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_DAILY_CALENDAR_AND_RUNTIME_ADMISSION",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "249-255, 551-562",
+    "initial_state_lines": "395-400",
+    "equation": "For irgdayfix in 1..366: if irrigevent==2 and dayfix>=irgdayfix, preserve the event and set dayfix=1; otherwise cancel irrigevent and increment dayfix only when dayfix<irgdayfix.",
+    "configuration_guard": "The source rejects tcsfix=1 together with tcs=6; this slice isolates only the post-filter."
+  },
+  "scope": [
+    "pure TCSFIX post-filter of an already selected candidate and legacy dayfix counter update",
+    "interval equality, event candidate/no-candidate behavior and initial dayfix=366 sentinel",
+    "100000 deterministic source comparisons at O0/O2 with identical transcripts"
+  ],
+  "non_goals": [
+    "daily invocation/calendar proof, candidate timing criteria or irrigation event construction",
+    "state owner, persisted/restartable day counter, transaction or event/source booking",
+    "production irrigation admission"
+  ],
+  "pass_conditions": [
+    "candidate event is accepted iff candidate=true and dayfix>=irgdayfix",
+    "accepted event sets dayfix to one",
+    "rejected/no-candidate paths follow the source increment guard exactly, including holding counters already at/above threshold",
+    "100000 deterministic vectors pass at O0/O2 with transcript identity",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_definecompart.status.v1",
+  "work_unit": "PPA-WU05-A3-DEFINECOMPART",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@55bd9bf4c640ebd6b928a33fa4631eab7e93d7b2",
+  "preregistration": "integration/audits/PPA_WU05A3_DEFINECOMPART_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_definecompart.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_definecompart_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_definecompart_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["interior breakpoint split and source-node mapping", "near-depth breakpoint merge", "existing grid-bottom alignment", "undersized-array fail closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; isolated geometry equation only; MACROGEOM integration, Richards ownership, mass receipt, retry, restart and A4 whole-column reconciliation remain open",
+  "next_action": "Continue A3 with the next bounded exact-source macropore term; keep runtime admission held.",
+  "blockers": []
+}

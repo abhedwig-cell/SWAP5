@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a3.absorption_diffusivity.status.v1",
+  "work_unit": "PPA-WU05-A3-ABSORPTION-DIFFUSIVITY",
+  "parent_work_unit": "PPA-WU05-A3",
+  "status": "SOURCE_ORACLE_PASSED_PHYSICAL_DOMAIN",
+  "baseline": "codex/ppa-swap431-functional-gap-register@6e21f97f6",
+  "preregistration": "integration/audits/PPA_WU05A3_ABSORPTION_DIFFUSIVITY_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated diffusivity equation only; no saved workspace, mass receipt, retry/restart or runtime binding",
+  "implementation": "src/process/mod_ppa_wu05a3_absorption_diffusivity.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_absorption_diffusivity_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_absorption_diffusivity_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization": ["O0", "O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_WU05A3_ABSORPTION_DIFFUSIVITY_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05A3_ABSORPTION_DIFFUSIVITY_LAMBDA_FLOOR_AND_ENVELOPE_CLAMP=PASS",
+      "PPA_WU05A3_ABSORPTION_DIFFUSIVITY_MUALEM_TERM=PASS",
+      "PPA_WU05A3_ABSORPTION_DIFFUSIVITY_O0_O2_IDENTITY=PASS"
+    ],
+    "transcript_sha256": "fcc13147bd802ef9fe7f4d4082af7a2666e0b18fb0d44aefb9798ab681359754"
+  },
+  "next_action": "Continue with another independent ABSORPTION source behavior; no production admission.",
+  "recovery_point": "this preregistration, module, and test",
+  "blockers": []
+}

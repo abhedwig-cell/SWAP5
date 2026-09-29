@@ -1,0 +1,19 @@
+{
+  "schema": "swap5.ppa_low01.surface-composition.source-census.v1",
+  "work_unit": "PPA-LOW01-SURFACE-COMPOSITION",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+  },
+  "composition_order": [
+    "q0=(nraidt+nird+melt)*(1-ArMpSs)+runon-reva-epd",
+    "qv(1)=-q0+(postpondrunoff_pond-pondm1)/dt+runots/dt",
+    "h(1)=gwlinp+disnod(1)*(qv(1)/kmean(1)+1)",
+    "qv(i+1)=qv(i)+dz(i)*FrArMtrx(i)*(theta(i)-thetm1(i))/dt+sink(i)-source(i)+qrot(i)",
+    "h(i)=h(i-1)+disnod(i)*(qv(i)/kmean(i)+1), i=2..numnod",
+    "qbot=qv(numnod+1)"
+  ],
+  "mapping": "This state-free numeric composition consumes already-resolved top/pond/profile inputs and writes only its output values; it is not the HeadCalc application route.",
+  "interpretation": "Integrated equation oracle for the surface-GWL branch only; no source-state or accepted-flux owner is admitted."
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.ppa_output_canon_application_binding_preregistration.v1",
+  "work_unit": "PPA-OUTPUT-CANON-APP",
+  "title": "Expose the admitted canonical result text adapter at the production-application boundary",
+  "status": "IMPLEMENTATION_AUTHORIZED_BOUNDED_READ_ONLY_BINDING",
+  "baseline": {
+    "local_head": "478952183bb2f82bcd29ff89c22432fdba91f313",
+    "canonical_head": "a2d99ddd149ffaa422d9c422f96bd66e92c8555d",
+    "serializer_blob": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+    "contracts_blob": "3962c270a7579b7403764674302445fe15ef5f72"
+  },
+  "authority": {
+    "backlog": "integration/audits/production_physics_application_envelope_gap_register.json:PPA-OUTPUT-CANON",
+    "admission": "integration/m1/M1_C4_CANONICAL_ADMISSION.json",
+    "qualified_serializer": "src/adapter/mod_canonical_result_text_adapter.f90"
+  },
+  "scope": {
+    "implementation_delta": ["src/runtime/mod_fmr_production_application_bootstrap.f90"],
+    "test_delta": ["tests/fapp/test_ppa_output_canon_application_binding.f90"],
+    "contract": "Expose a stateless bootstrap-module entry that accepts an already-published canonical_result_t as INTENT(IN) and delegates byte-for-byte to the unchanged admitted canonical result text adapter.",
+    "physical_state_owner": "None; serialization observes an accepted result and does not capture or modify model state.",
+    "restart_or_rollback": "None; no continuation or trial state is created or mutated.",
+    "mass_owner": "Unchanged; serializer reports fields already present in canonical_result_t and does not add, infer, publish, or book fluxes.",
+    "io_boundary": "No file, path, unit, parser, or output-file management. Return text in memory only."
+  },
+  "qualification_gates": [
+    "Compile the changed application-bootstrap module and focused binding test with GNU Fortran at O0 and O2.",
+    "Binding output is exactly identical to direct invocation of the admitted M1-C4 serializer for a representative canonical result.",
+    "Input result remains unchanged and returned text remains independent after subsequent input mutation.",
+    "Source scan confirms no file/path/unit/parser calls in the binding routine.",
+    "Preserve exact M1-C4 serializer/contracts blobs and the existing PPA-WU01 bootstrap route."
+  ],
+  "nonclaims": [
+    "Does not map fmr_serialized_column_result_t to canonical_result_t or change production physics execution.",
+    "Does not admit legacy BAL/BLC/CSV equivalence, output files, a stable external format, or broad output composition.",
+    "Does not canonically admit a broader application or close PPA-OUTPUT-LEGACY, M1, or the migration."
+  ],
+  "decision_rule": "Keep the wrapper unadmitted if it cannot compile without changing serializer/contracts or if identity/read-only/file-free gates fail; do not broaden formats or result ownership to make the test pass."
+}

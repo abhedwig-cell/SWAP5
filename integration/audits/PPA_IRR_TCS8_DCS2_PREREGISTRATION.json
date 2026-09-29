@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-TCS8-DCS2",
+  "parent_workunit": "PPA-IRR-TCS7-DCS2",
+  "title": "Source-bound scheduled irrigation TCS8 water-content threshold with DCS2 depth",
+  "protocol": "PIN_B1_11_SOURCE -> EXTEND_TYPED_SELECTOR_WITH_TCS8 -> SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_PRODUCTION_ADMISSION",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "archive": "SWAP_4.3.1.zip!/SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "file": "SWAP/irrigation.f90",
+    "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "lineage": "SWAP-011 targets neither irrigation.f90 nor its AFGEN implementation; the B0 distribution source is unchanged in corrected B1.11.",
+    "equations": [
+      "tcritab is AFGEN(value_tc8, dvs_tc8), populated from the seven-knot input table.",
+      "At the selected opportunity, TCS8 triggers when theta(sensor) <= AFGEN(tcritab, 14, dvs).",
+      "DCS2 event depth remains 0.1 * AFGEN(fidtab, 14, dvs) cm."
+    ],
+    "source_lines": [271, 277, 543, 547]
+  },
+  "scope": [
+    "typed scheduled selector supports both existing TCS7 pressure-head and new TCS8 water-content comparisons",
+    "TCS8 and DCS2 partial AFGEN table sentinel, lower clamp, interpolation and upper clamp",
+    "strictly source-equivalent equality/non-equality trigger sides",
+    "100000 deterministic input comparisons at O0 and O2 with O0/O2 transcript identity"
+  ],
+  "non_goals": [
+    "generic management parser or event-calendar ingestion",
+    "other TCS or DCS modes",
+    "SSDI application, solute coupling or hydraulic source booking",
+    "changes to admitted F-APP07 TCS1/DCS2 application",
+    "new persistent state owner, restart schema, runtime or production admission"
+  ],
+  "pass_conditions": [
+    "existing TCS7/DCS2 source oracle remains unchanged and passes",
+    "TCS8 threshold and DCS2 depth match the B1.11 AFGEN source over 100000 deterministic inputs",
+    "TCS8 equality triggers and either side of equality follows the source comparison",
+    "a triggered scheduled event preserves the selected DCS2 amount and rate/duration identity",
+    "O0/O2 transcripts are byte-identical",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

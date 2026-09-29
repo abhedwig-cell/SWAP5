@@ -1,0 +1,12 @@
+{
+  "work_unit": "PPA-IRR-EVENT-OWNER",
+  "baseline": "e4b8eb968",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "objective": "Persist a pending scheduled irrigation event in the existing committed physical state and advance it only with accepted hydraulic progress, including fresh-owner mid-event restart.",
+  "dependency_surface": ["src/runtime/mod_fmr_runtime_core.f90", "src/runtime/mod_fmr_serialized_reference_backend.f90", "src/runtime/mod_fmr_restart_state_contract.f90", "src/runtime/mod_fmr_production_application_bootstrap.f90", "src/process/mod_irrigation_process.f90"],
+  "design_constraints": "Register a distinct optional-state layout without altering BASE. Combine event continuation with the existing Richards temporal history rather than replacing either. Preserve exact-type dispatch and clone behavior explicitly at every state match. No separate application-owned authoritative event ledger. No unconditional publication after batch return: acceptance is per tile, as demonstrated by the mixed zero-source control.",
+  "event_contract": "Selected rate, start/end and origin belong to the physical candidate. Parameter/crop/profile inputs remain supplied configuration. Rejected attempts cannot advance the pending event; final accepted boundary clears it exactly once. Interval splitting respects event end. Restart validates layout, parameter identity, event validity and boundary time before publication.",
+  "gates": "Existing BASE/temporal-profile preservation; disabled option unchanged; selection rejection and split/retry; one failed tile alongside one successful tile; partial internal progress rollback; accepted event advance; fresh-owner restart mid-event and at exact event end; resumed/uninterrupted physical state and mass identity; no duplicate irrigation after completion. Run O0/O2 with unchanged mass and temporal acceptance limits.",
+  "scope": "First restricted candidate: supplied typed DCS1/DCS2 and single-node SSDI in standalone mode 7 using the established explicit numerical profile. Parser/calendar, surface delivery, solute transport and other optional-state combinations remain separate.",
+  "first_implementation_step": "Add the registered optional-state carrier and clone/restart matching tests before enabling runtime selection. Then implement accepted trial publication and source mapping together; never claim the carrier alone provides production irrigation."
+}

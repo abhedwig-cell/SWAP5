@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.ppa_wu05a2.status.v1",
+  "work_unit": "PPA-WU05-A2",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "TYPED_STATE_ROLLBACK_RESTART_HARNESS_QUALIFIED_ISOLATED",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": {
+    "module": "src/adapter/mod_ppa_wu05a2_macropore_state.f90",
+    "types": [
+      "ppa_wu05a2_macropore_payload_t",
+      "ppa_wu05a2_macropore_committed_t",
+      "ppa_wu05a2_macropore_checkpoint_t",
+      "ppa_wu05a2_macropore_candidate_t",
+      "ppa_wu05a2_macropore_restart_t"
+    ],
+    "source_continuation_fields": [
+      "ICpBtDm",
+      "ICpBtDmM1",
+      "WaSrMpDm",
+      "VlMpDmCp",
+      "VlMpDmCpM1",
+      "WaUnMpDmCp",
+      "WaUnMpDmCpM1",
+      "ThtSrpRefDmCp",
+      "SorpDmCp",
+      "TimAbsCumDmCp",
+      "FlEndSrpEvt"
+    ],
+    "production_runtime_binding": "NONE; legacy SWAP/macropore modules remain fail-closed and unchanged",
+    "mass_receipt": "NONE; no process equations or external mass ownership implemented"
+  },
+  "qualification": {
+    "test": "tests/fapp/test_ppa_wu05a2_macropore_state.f90",
+    "gate": "tests/fapp/run_ppa_wu05a2_macropore_state.sh",
+    "compiler": "gfortran -std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "o0_o2_transcript_identity": true,
+    "markers": [
+      "PPA_WU05A2_TYPED_CONTINUATION_LAYOUT=PASS",
+      "PPA_WU05A2_ALL_FIELD_ROLLBACK_AND_RETRY=PASS",
+      "PPA_WU05A2_CANDIDATE_REVISION_GUARD=PASS",
+      "PPA_WU05A2_OPTIONAL_RESTART_FAIL_CLOSED=PASS",
+      "PPA_WU05A2_FOREIGN_LINEAGE_AND_NONFINITE_GUARDS=PASS"
+    ]
+  },
+  "scope_guards": {
+    "macropore_equations_changed": false,
+    "legacy_reference_source_changed": false,
+    "runtime_macropore_admitted": false,
+    "parallel_macropore_claim": false
+  },
+  "next_action": "PPA-WU05-A3 single-column process/rate migration against the exact B1.11 source oracle. Before runtime admission, bind this isolated DTO to the accepted Richards interval owner and qualify every source-traced state and external/internal mass transfer."
+}

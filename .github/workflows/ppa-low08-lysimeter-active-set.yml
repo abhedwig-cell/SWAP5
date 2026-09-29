@@ -1,0 +1,27 @@
+name: PPA-LOW08 B1.11 lysimeter active-set oracle
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low08-lysimeter-active-set.yml'
+      - 'src/adapter/mod_ppa_low08_lysimeter_active_set.f90'
+      - 'tests/fapp/test_ppa_low08_lysimeter_active_set.f90'
+      - 'tests/fapp/run_ppa_low08_lysimeter_active_set.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low08-lysimeter-active-set.yml'
+      - 'src/adapter/mod_ppa_low08_lysimeter_active_set.f90'
+      - 'tests/fapp/test_ppa_low08_lysimeter_active_set.f90'
+      - 'tests/fapp/run_ppa_low08_lysimeter_active_set.sh'
+
+jobs:
+  lysimeter-active-set:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay active-set and row-term law
+        run: bash tests/fapp/run_ppa_low08_lysimeter_active_set.sh

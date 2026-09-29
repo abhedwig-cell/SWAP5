@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.ppa_wu05e1.source_census.v1",
+  "work_unit": "PPA-WU05-E1",
+  "snapshot": "B1.11",
+  "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "members": {
+    "SWAP/rootextraction.f90": {
+      "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "bytes": 22013,
+      "evidence": [
+        "RootExtraction_MICRO lines 198-204: when sw_salinity=1, for each root-zone node with cml>saltmax, set alpsol=1-(cml-saltmax)*saltslope and clamp lower end to zero.",
+        "RootExtraction_MACRO lines 431-438: same strict threshold, equation, and zero lower clamp for the scalar node factor."
+      ]
+    },
+    "SWAP/MOD_cropdevelopment.f90": {
+      "sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+      "bytes": 81873,
+      "evidence": [
+        "sw_salinity is read as 0..1; when enabled saltmax is read as 0..100 mg/cm3 and saltslope as 0..1 cm3/mg (lines 1426-1433)."
+      ]
+    },
+    "SWAP/solute.f90": {
+      "sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+      "bytes": 51508,
+      "evidence": [
+        "Solute imports cml from MOD_solute_global; solute transport uses qrot for root-uptake solute removal, with no additional salinity sink introduced by this slice.",
+        "Solute(2) updates cml within the outer SWAP loop after RootExtraction(2), so the extracted concentration is the currently published solute-state view, not a same-substep post-update value."
+      ]
+    },
+    "SWAP/variables.f90": {
+      "sha256": "327a064ca74f6c4bebc327a38de367824c7fe535baa1a8611879f9a6a479c856",
+      "bytes": 39574,
+      "evidence": [
+        "MOD_solute_global declares cml as a saved macp-sized mobile-region concentration array (lines 84-90)."
+      ]
+    },
+    "SWAP/swap.f90": {
+      "sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "bytes": 28944,
+      "evidence": [
+        "RootExtraction(2) precedes SoilWater(2) and Solute(2) in each accepted-step sequence (lines 428-469)."
+      ]
+    }
+  },
+  "scope_verdict": "The scalar factor is exactly source-bounded and may be independently tested. This does not establish runtime integration, current-substep solute coupling, MICRO source ownership, root-sink booking, multi-stressor order, rollback/restart, or parallel qualification.",
+  "production_admission": "NONE"
+}

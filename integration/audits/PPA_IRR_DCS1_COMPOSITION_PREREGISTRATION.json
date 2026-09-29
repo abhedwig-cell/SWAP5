@@ -1,0 +1,9 @@
+{
+  "work_unit": "PPA-IRR-DCS1-COMPOSITION",
+  "baseline": "66f911e0d",
+  "contract": "Pure supplied-profile composition entry derives deficit from hydraulic_view water_content and checked root-zone accounting, then delegates selection to the existing scheduled evaluator. Existing irrigation_state_t is the only candidate state. Geometry is required eagerly for an eligible new DCS1 selection (even if timing later does not trigger); active events, DCS2 and ineligible selections delegate without consuming profile data. Caller retains calendar, parameter and committed-state authority.",
+  "validation": "Check allocated hydraulic water content and matching active-node count before profile access. Invalid profile returns zero flux and unchanged candidate with explicit invalid-parameters status. Preserve checked-profile availability bounds and source arithmetic.",
+  "invariants": [3,7,13,29],
+  "gate": "Extend existing 200000 checked-deficit composition vectors to compare the new entry with independently prepared requests at O0/O2; preserve existing scheduled and root-zone suites.",
+  "non_claims": "This adds callable process composition, not production driver wiring, accepted soil mass, solute transport, disk restart or canonical admission."
+}

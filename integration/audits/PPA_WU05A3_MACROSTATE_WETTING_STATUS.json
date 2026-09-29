@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrostate_wetting.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROSTATE-WETTING-CANDIDATE",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@8577a3ad6550045156da8a3ae62d378178cf898d",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROSTATE_WETTING_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macrostate_wetting_candidate.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrostate_wetting_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrostate_wetting_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": [
+      "partial water level with ordered compartment filling",
+      "full bottom-cell storage",
+      "SWMBF=2 domain-1 water profile preservation and internal-domain update",
+      "empty domain behavior",
+      "legacy small-volume threshold branch",
+      "invalid bottom extent fail-closed"
+    ],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; isolated MACROSTATE section-D candidates only; no mutation, accepted mass, retry/restart or A4 integration",
+  "next_action": "Continue MACROSTATE sections D/E remaining internal-flux and SWAP/interface aggregate source equations only as isolated candidates.",
+  "blockers": []
+}

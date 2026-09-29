@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low03.aquifer.status.v1",
+  "work_unit": "PPA-LOW03-AQUIFER",
+  "parent_work_unit": "PPA-LOW03",
+  "status": "SW3_SINE_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "b007f8909",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; aquifer state, SW3 selection, table branch, groundwater coupling, accepted flux mass, restart and runtime routes unchanged",
+  "source_census": "integration/audits/PPA_LOW03_AQUIFER_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW03_AQUIFER_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low03_aquifer_sine.f90",
+  "test": "tests/fapp/test_ppa_low03_aquifer_sine.f90",
+  "gate": "tests/fapp/run_ppa_low03_aquifer_sine.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW03_AQUIFER_SINE_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW03_AQUIFER_SINE_PHASE_AND_PERIOD=PASS",
+      "PPA_LOW03_AQUIFER_SINE_STATELESS_A_B_A=PASS",
+      "PPA_LOW03_AQUIFER_SINE_INVALID_PERIOD_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "f3fe0a60362faa7f76a352b4afccc5c58b25c0183b810554a62aa62100dc7e32",
+    "o2_executable_sha256": "d80e214be8e5e1685cccf0e6087f53275a7606dae1317b3dac684153b3b9a22d",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Continue with SW3=2 table law as a separate time-table branch; retain aquifer state ownership as open.",
+  "recovery_point": "this status and PPA_LOW03_AQUIFER_SOURCE_CENSUS.json"
+}

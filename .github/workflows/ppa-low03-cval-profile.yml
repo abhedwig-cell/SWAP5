@@ -1,0 +1,27 @@
+name: PPA-LOW03 B1.11 profile C-value oracle
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low03-cval-profile.yml'
+      - 'src/adapter/mod_ppa_low03_cval_profile.f90'
+      - 'tests/fapp/test_ppa_low03_cval_profile.f90'
+      - 'tests/fapp/run_ppa_low03_cval_profile.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low03-cval-profile.yml'
+      - 'src/adapter/mod_ppa_low03_cval_profile.f90'
+      - 'tests/fapp/test_ppa_low03_cval_profile.f90'
+      - 'tests/fapp/run_ppa_low03_cval_profile.sh'
+
+jobs:
+  cval-profile-law:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay profile resistance source law
+        run: bash tests/fapp/run_ppa_low03_cval_profile.sh

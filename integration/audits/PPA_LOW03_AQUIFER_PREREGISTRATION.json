@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW03-AQUIFER",
+  "title": "Pure B1.11 SWBOTB=3 SW3=1 deep-aquifer head forcing",
+  "protocol": "PIN_SINE_EQUATION_AND_INPUT_RANGES -> IMPLEMENT_TYPED_PURE_LAW -> 100000_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_AQUIFER_STATE_OWNER",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW03_AQUIFER_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW03_CAUCHY_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
+  ],
+  "scope": [
+    "SW3=1 periodic aquifer-head equation and parser bounds",
+    "Explicit time-day input and stateless scalar output",
+    "Fail-closed rejection of zero period permitted by the legacy numeric parser"
+  ],
+  "non_goals": [
+    "SW3=2 DATE3/HAQUIF table parsing or AFGEN evaluation",
+    "Aquifer state ownership, clocks, restart, groundwater coupling or Cauchy flux application",
+    "Accepted boundary flux mass and production admission"
+  ],
+  "pass_conditions": [
+    "100000 deterministic valid vectors bitwise match B1.11 SW3=1 equation",
+    "phase, period, zero-amplitude, A/B/A, nonfinite and zero-period cases pass",
+    "O0/O2 transcripts match",
+    "no aquifer, groundwater or solver state changes"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.ppa_irr_tcsfix_filter.status.v1",
+  "work_unit": "PPA-IRR-TCSFIX-FILTER",
+  "parent_work_unit": "PPA-IRR-TCS1-4-TIMING",
+  "status": "TCSFIX_FILTER_SOURCE_ORACLE_PASS_CALENDAR_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@490c149d3",
+  "preregistration": "integration/audits/PPA_IRR_TCSFIX_FILTER_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated TCSFIX post-filter/day-counter transition; no daily calendar, selector composition, persisted state owner, event/source booking, retry/restart or production binding",
+  "implementation": "src/process/mod_ppa_irr_tcsfix_filter.f90",
+  "test": "tests/fapp/test_ppa_irr_tcsfix_filter_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_tcsfix_filter_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "249-255 and 551-562",
+    "equation": "Candidate accepted iff candidate=true and dayfix>=irgdayfix; acceptance sets dayfix=1; otherwise event is cleared and dayfix increments only if it is below irgdayfix."
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_TCSFIX_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_TCSFIX_INTERVAL_EQUALITY_AND_EVENT_RESET=PASS",
+      "PPA_IRR_TCSFIX_NO_EVENT_COUNTER_HOLD_AND_INCREMENT=PASS",
+      "PPA_IRR_TCSFIX_SOURCE_ORACLE=PASS",
+      "PPA_IRR_TCSFIX_FILTER_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "8eec5ef538c319ddebcf3b996079d5a5fe61b37bd1b72afeb0b766702ed5be3e"
+  },
+  "qualification_status": "NOT_QUALIFIED; source-level post-filter only; no daily invocation, calendar lifecycle, event selection, accepted-mass, transaction or restart qualification",
+  "next_action": "Continue another independent fixed-event timing or amount/rate equation; do not claim calendar or runtime admission.",
+  "recovery_point": "this status record, preregistration, module and test",
+  "blockers": [
+    "The legacy dayfix counter is saved/calendar state and has no owner binding or Restart-v1 contract in this equation-only slice.",
+    "B1 rejects TCS=6 together with TCSFIX=1; this isolated post-filter does not implement configuration parsing or selector composition."
+  ]
+}

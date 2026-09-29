@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "PPA-ATM-02-PRODUCTION-COMPOSITION",
+  "state": "RESTRICTED_TWO_INTERVAL_RESTART_OWNER_QUALIFIED",
+  "prescribed_root_event_successor": {
+    "late_continuation_diagnostic": "56b57199a Atm02Events PASS O0/O2 with identical transcripts SHA256 C249CEA0F133DC710755B333E27AA21342705F03E70C54643902582AA9874541, build swap-ppa-wu01-bddb0eca64d947248a5c526abbdc6f21. Last native-converged callback in the failed third period is copied as owned values/history and rebound with concrete prescribed roots. At dt=9.493672223470639e-6 the raw head bound is 1.025315968510559e-5 (too large); direct dt*0.8 replay converges and yields 8.334308547293187e-6 with mass residual 2.195001179514794e-17. Across 30 trial durations, 21 meet native/temporal/hard-mass gates. These raw duration replays are NOT an exact reconstruction of absolute-clock-rounded runtime retries. No change to committed state, physics, history, tolerance or default policy. Whole third-period completion remains unproven.",
+    "dense_retry_candidate": "18275e28f Atm02Dense O0 FAIL: retry_scale=0.9/max_retries=128 reaches 10093 internal accepts per tile, then application/kernel status 10/2. Last reported head bound 1.0039156118027843e-5 at dt=6.3607431002310477e-6 still exceeds 1e-5. Build swap-ppa-wu01-0a388757cd6743b99fca4f193b649a01. No third-period completion or O2 qualification; candidate success gate intentionally remains unmet. Prior 0.8/64 rejection remains in the gate. Absolute-clock-grid diagnostic raises eligible samples to 39/60 at the copied earlier state, but is not an exact replay of the runtime raw retry sequence. Next capture exact backend trial times and attempt context before attributing the full failure to clock rounding or sampling. Continue independent coverage meanwhile; do not blindly relax criteria or vary retry scales.",
+    "tested_commit": "d234a4524",
+    "status": "BOUNDED_CHANGED_WEATHER_OWNER_RESTART_ROLLBACK_PASS_NOT_CANONICALLY_ADMITTED",
+    "result": "Atm02Events PASS O0/O2 with 3840522 identical transcript lines SHA256 8C9980AE4862BAC6957E302881EABB385FC911A17C0A8A0FD051AEE214BF4585, build swap-ppa-wu01-c40cf18f01d24452b169a76f97c8c3bd. Original and changed-weather half-day intervals complete on continued/restored owners with exact full physical/history/provenance equality, accepted root amounts and hard mass <=1e-12. Event callbacks occur only at the marked second boundary. Unbound-service, zero-retry and one-internal-accept cases publish no ready receipt or transpiration and preserve all committed state. Replay from the actual partially failed boundary exactly equals uninterrupted completion. Third unmarked half-day fails after 7351 internal accepts on both owners and rolls back exactly with zero published uptake; this is rejection preservation, NOT third-period completion.",
+    "component": "46982aee0 direct oracle/guard gate PASS O0/O2, all 45 cases, exact no-root delta and eight atomic rejection cases; mode-2/5 preservation PASS. Build swap-free-drainage-1bf65088-cde8-41c1-a946-87134e07ee7e. Exact concrete prescribed-root provider only; embedded root remains zero.",
+    "implementation": "c84152f2c removes only the root-active event rejection from the backend; all other event guards remain. Default-false marker, committed-state ownership and tolerances unchanged.",
+    "initial_experiment": "c84152f2c O0 completes original then changed-weather half-day intervals with 4052/8924 accepted substeps per tile on both continued and restored owners; radiation changes from 18e6 to 20e6 J/m2/day and both top flux/root vector must change. Third unchanged-weather half-day fails after 7351 internal accepts per tile (application status 10, kernel status 2). Build swap-ppa-wu01-d8a712c72d1741fd84d851349a1eb422. The failed whole gate is NOT an O0/O2 success claim; forcing and tolerances are not reduced.",
+    "required_gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Atm02Events: exact changed-weather owner/restart and root amounts; unbound-service, zero-retry and one-internal-accept failure cases; exact restored replay after partial failure; third-interval diagnosed rejection with full rollback and no root amount/ready receipt. Third interval is explicitly NOT qualified continuation success.",
+    "preservation": "c84152f2c CanonicalOutput PASS O0/O2, build swap-ppa-wu01-01b4f787426c44748801eba494708176. Root-inactive --stable-windows replay passes using c84152f2c O0 and d234a4524 O2 binaries (identical production dependencies), 328891 identical lines, native-redirection SHA256 4D735B72EF3A1A47697FAA6FA1E69BE2B2A73ABDDDFD417D8F6185141E10811D. Normalized line endings compare exactly with the earlier fe8a79528 qualified transcript in build swap-ppa-wu01-7f671a56a3464c6e8574ec4c1eef9127. Replay logs swap-root-inactive-o0.log and swap-root-inactive-o2.log. No additional production changes at d234a4524.",
+    "next": "Capture the first failing internal trial of the third unmarked interval and isolate the native-convergence/temporal admissible-step overlap; evaluate explicit alternative retry sampling only against the unchanged physical demand and tolerances. Continue independent capabilities if that investigation blocks. No dynamic root law, disk restart, general weather or canonical admission claim."
+  },
+  "explicit_numerical_owner_successor": {
+    "tested_commit": "0dc7b93a3",
+    "gate": "tests/fapp/run_ppa_free_drainage_owner.ps1 -StableStorage -Scope Atm02",
+    "result": "PASS O0/O2, 1684273 identical lines SHA256 1AA2CAC23663DA003BF24447FA73D8C4ACB9997025C45F72B14FFD1B0539CB4C, build swap-ppa-wu01-9a9886f8fc9643e99bef1e12e70f1a0b. Two half-day intervals under unchanged PMdirect weather/canopy values, source records 44/45, root_extraction_active with nonzero prescribed uptake. Both original and independently initialized/restored owners complete each interval, preserving full hydraulic state, temporal history and provenance exactly. Each accepted transpiration amount equals sum(prescribed root vector)*interval duration within 1e-12; accepted receipts are ready and hard mass is <=1e-12. Accepted steps per tile are 4052 then 7860; no efficiency claim.",
+    "profile": "Explicit stable-storage callback, concrete prescribed-root-compatible free-drainage temporal indicator, initial analytical derivative including root sink, model temporal budget 1e-5, retry_scale 0.8/max_retries 64, max_iterations 40, max accepted substeps 16384, mode 7 fixed-flux reference solver. Existing PMdirect fixture weather amplitudes and hard mass/native convergence criteria retained. No production implementation or default numerical policy changed.",
+    "scope": "SWINTER=0 only, no fictitious interception-progress amounts. Second interval uses owner-issued committed-top snapshot and asserts identical effective top/root forcing; event callback count remains zero. Does not qualify changed-weather events with roots, file/calendar decoding, stateful root stress, disk restart, general dynamic-top regimes or canonical admission. The historical non-opt-in first-transaction failure is not erased by this separate successful numerical profile.",
+    "next": "Design a bounded right-limit derivative extension for the exact concrete prescribed-root provider before testing changed-weather events. Subtract its finite nonnegative fixed root vector exactly once, preserve zero-root source-sink binding and fail-closed unsupported root policies, and keep default-false event behavior. Require direct derivative/guard oracles, failed/partial rollback, changed-weather restart and root-inactive preservation before any expanded qualification."
+  },
+  "baseline": "9e84afcb3",
+  "purpose": "Deliver one validated typed effective-forcing vector to the existing PPA-WU01 production owner from decoded PMdirect/SWINTER=0 records without creating a second state, transaction, mass or restart owner.",
+  "owner_boundary": {
+    "sole_production_owner": "mod_fmr_production_application_bootstrap:fmr_production_application_bootstrap_t%run_standalone_with_forcing",
+    "adapter_may_do": ["validate one decoded source record per tile", "require one source record to cover the requested generic interval", "materialize PMdirect/SWINTER=0 demand", "bind the already-qualified dynamic-top input", "produce a complete immutable effective-forcing vector only when every required process input has an admitted owner route before the owner call"],
+    "adapter_must_not_do": ["open/read files", "parse dates", "advance a cursor", "mutate committed state", "commit/retry/rollback", "publish mass", "serialize restart state", "partially invoke a production run"]
+  },
+  "atomicity": "Any tile validation or composition failure rejects the entire adapter request before run_standalone_with_forcing is called. A successful request calls that owner exactly once for the requested interval and all tiles.",
+  "forcing_semantics": {
+    "profile": "PPA-WU01 standalone Reference Richards bottom_mode=7 only",
+    "meteorology": "immutable decoded daily B1 MOD_meteo fields with explicit source provenance and coverage",
+    "et": "existing PMdirect SWETR=0 daily process",
+    "interception": "SWINTER=0 identity only",
+    "top": "existing dynamic-top owner receives PMdirect net rain and existing demand bindings",
+    "root": "restricted prescribed-root route: PPA-WU01 standalone bottom_mode=7 with root_extraction_active and concrete B1.10 root-sink provider only; PMdirect interval transpiration is distributed by the validated cumulative root fractions",
+    "excluded": ["SWINTER=1/2/3", "snow/runon", "irrigation scheduler", "groundwater profile", "mixed lower-boundary profile", "file/calendar decoder"]
+  },
+  "invariants": [2, 3, 7, 13, 29],
+  "qualified_owner_evidence": [
+    "all-tile PMdirect forcing composition completes before one run_standalone_with_forcing call",
+    "the existing owner commits every tile once and reports hard mass closure",
+    "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90 exercises the root-enabled standalone owner route",
+    "the extended WU01 gate completed locally with GNU Fortran 16.2.0"
+  ],
+  "qualified_builder_evidence": [
+    "src/adapter/mod_ppa_atm02_pmdirect_production_forcing_adapter.f90: all tile-local meteorology, PMdirect/SWINTER=0, surface demand, dynamic-top and prescribed-root routes fail closed before forcing is returned",
+    "tests/fapp/test_ppa_atm02_pmdirect_production_forcing_adapter.f90: O0 and O2 composition, root materialization and invalid-root rejection pass",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90: restricted standalone bottom_mode=7 root-enabled profile is admitted"
+  ],
+  "qualified_continuation": "The production bootstrap exposes a read-only owner-generated committed-top snapshot and owner-managed restart export/restore. Two covered PMdirect intervals are composed from the initial then committed top state, with export/restore between them and no second committed-state owner.",
+  "next_safe_step": "Preserve the restricted PMdirect/SWINTER=0 mode-7 prescribed-root envelope and continue with independently preregistered WU04-C/D interception ingress.",
+  "required_postimage": [
+    "PPA-WU01 production-owner integration test",
+    "no mutation of Reference Richards, transaction, restart or mass-ledger implementations"
+  ]
+}

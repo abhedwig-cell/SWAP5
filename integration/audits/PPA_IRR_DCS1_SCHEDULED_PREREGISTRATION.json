@@ -1,0 +1,12 @@
+{
+  "work_unit": "PPA-IRR-DCS1-SCHEDULED",
+  "baseline": "38ea6e1e9",
+  "source": "B1.11 irrigation.f90 SHA256 65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1, lines 317-326 and 567-624",
+  "contract": "Append an explicit depth criterion (default DCS2=2), DCS1 DI table in mm and rain threshold in source cm units to scheduled parameters; append deficit_cm and rainfall_cm to requests. DCS1=1 evaluates max(0,deficit+AFGEN(DI)*0.1-rain_reduction), where rain_reduction equals full rainfall only for rainfall>threshold. Reuse existing depth limits, solute bump, rate/duration, split and candidate-event owner in source order. interpolated_depth records the raw DCS1 amount before common limits, or the unchanged DCS2 table value.",
+  "guards": "DCS1 table follows source DVS [0,2], DI [-100,100] mm and threshold [0,1000]. Bounded supplied deficit in [-1e6,1e6] cm and rainfall in [0,1e6] cm, finite, are candidate availability bounds preventing arithmetic overflow, not new reference physics. Reject unrepresentable AFGEN slope before division. DCS1 request inputs are evaluated only after a timing trigger; active continuation uses stored selected rate. DCS2 default ignores DCS1 fields.",
+  "ownership": "Existing irrigation_state_t remains the sole candidate event state. No new committed owner, restart format, parser, soil flux publication or scheduler invocation. No changes to Full Richards, mass tolerances or canonical scope.",
+  "gates": "100000 source-order comparisons through selected rate/duration and single-node SSDI; independent existing DCS1 helper as second oracle; strict rain and solute boundaries, floor/limits, split/retry and copied-state continuation, no-trigger and active-event input irrelevance, invalid input and default preservation; existing DCS1 oracle, DCS2 bundle and frozen F-APP07 110-interval preservation at O0/O2.",
+  "scope_correction": "Post-test clarification: the existing scheduled route is single-node SSDI only. The original surface-or-SSDI wording was overbroad; no scheduled surface implementation or evidence is claimed.",
+  "invariants": [3,7,13,23,29],
+  "non_goals": "Derive crop deficit, invoke calendar, integrate DCS1 into public production driver, book accepted water/solute mass, disk restart or canonical admission."
+}

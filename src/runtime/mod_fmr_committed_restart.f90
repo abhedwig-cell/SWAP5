@@ -129,8 +129,7 @@ contains
         status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
         return
       end if
-      if (.not. fmr_restart_state_matches_template(candidate_records(i)%physical_state, &
-                                                    templates(template_index))) then
+      if (.not. restart_record_state_matches(candidate_records(i),templates(template_index))) then
         status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
         return
       end if
@@ -219,8 +218,7 @@ contains
         status = FMR_RESTART_STATE_NOT_COMMITTED
         return
       end if
-      if (.not. fmr_restart_state_matches_template(bundle%records(record_index)%physical_state, &
-                                                    templates(template_index))) then
+      if (.not. restart_record_state_matches(bundle%records(record_index),templates(template_index))) then
         status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
         return
       end if
@@ -252,6 +250,20 @@ contains
     restored = .true.
     status = FMR_RESTART_OK
   end subroutine fmr_restore_committed_restart
+
+  logical function restart_record_state_matches(record,template) result(matches)
+    type(fmr_committed_restart_record_t), intent(in) :: record
+    type(fmr_template_t), intent(in) :: template
+    matches=.false.
+    if(.not.allocated(record%physical_state)) return
+    ! Never substitute the zero-default timestamp for an unbound checkpoint.
+    ! Time-dependent optional states require a genuine committed boundary.
+    if(record%time_bound) then
+      matches=fmr_restart_state_matches_template(record%physical_state,template,record%committed_time)
+    else
+      matches=fmr_restart_state_matches_template(record%physical_state,template)
+    end if
+  end function restart_record_state_matches
 
   logical function fmr_restart_template_identity_matches(left, right) result(matches)
     type(fmr_template_t), intent(in) :: left, right

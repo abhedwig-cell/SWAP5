@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_static_domains.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-STATIC-DOMAINS",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@f5b3b85eac4a63d70dbc7b194c66a0d172865231",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROGEOM",
+    "source_region": "section H static macropore volume allocation to main-bypass and internal-catchment domains"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_static_domains.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_static_domains_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_static_domains_source_oracle.sh",
+  "in_scope": [
+    "VlMpStDm1 = PpDmCp(1,ic) * VlMpStCp(ic)",
+    "VlMpStDm2 = sum(PpDmCp(2:NumDm,ic)) * VlMpStCp(ic)",
+    "single-domain empty-slice behavior equivalent to zero IC volume"
+  ],
+  "out_of_scope": [
+    "construction or ownership of PpDmCp and VlMpStCp",
+    "whole MACROGEOM / MACROPORE state and production runtime",
+    "accepted mass, retry, restart and A4 admission"
+  ],
+  "expected_tests": [
+    "one-, two- and three-domain static-volume distribution with conservation check",
+    "invalid domain extent fails closed",
+    "O0/O2 transcript identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; isolated static-volume allocation only"
+}

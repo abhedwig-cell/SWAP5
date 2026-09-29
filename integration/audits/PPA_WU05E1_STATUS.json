@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.ppa_wu05e1.status.v1",
+  "work_unit": "PPA-WU05-E1",
+  "parent_work_unit": "PPA-WU05-E",
+  "status": "PURE_SALINITY_FACTOR_IMPLEMENTED_AND_TESTED_RUNTIME_HELD",
+  "baseline": "97e095755",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no RootExtraction runtime, solute state owner, root-sink acceptance, MICRO, multi-stressor, coupling or parallel route changed",
+  "source_census": "integration/audits/PPA_WU05E1_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_WU05E1_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_wu05e1_salinity_factor.f90",
+  "test": "tests/fapp/test_ppa_wu05e1_salinity_factor.f90",
+  "gate": "tests/fapp/run_ppa_wu05e1_salinity_factor.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05E1_MAAS_HOFFMAN_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05E1_THRESHOLD_DISABLED_AND_CLAMP=PASS",
+      "PPA_WU05E1_STATELESS_A_B_A=PASS",
+      "PPA_WU05E1_INVALID_NONFINITE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "evidence_claim": "Pure scalar Maas-Hoffman factor with exact strict-threshold equation and zero lower clamp; no production salinity/root sink claim.",
+  "known_boundaries": [
+    "RootExtraction(2) reads cml before Solute(2) updates it during that outer time step.",
+    "MICRO also computes a per-node factor, but its osmotic-head/MICRO coupling is not admitted here.",
+    "No source authority yet qualifies composition order with drought, oxygen, frost or compensation."
+  ],
+  "next_action": "Continue with another independent B1.11 capability; keep salinity production integration held pending the typed runtime solute/root-sink coupling authority.",
+  "recovery_point": "this status and PPA_WU05E1_SOURCE_CENSUS.json"
+}

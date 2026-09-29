@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.ppa_irr_water_deficit.status.v1",
+  "work_unit": "PPA-IRR-WATER-DEFICIT",
+  "parent_work_unit": "PPA-IRR-TCS1-4-TIMING",
+  "status": "SCHEDULED_IRRIGATION_ROOT_ZONE_ACCOUNTING_SOURCE_ORACLE_PASS_OWNER_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@25a66d9dc",
+  "preregistration": "integration/audits/PPA_IRR_WATER_DEFICIT_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; source-order root-zone accounting only; no water-content owner, crop-root derivation, event selection, accepted mass, restart or production admission",
+  "implementation": "src/process/mod_ppa_irr_water_deficit.f90::evaluate_root_zone_water_deficit",
+  "test": "tests/fapp/test_ppa_irr_water_deficit_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_water_deficit_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "462-473",
+    "equations": [
+      "frlow=(ztopcp(noddrz)+rd)/dz(noddrz)",
+      "last root-zone node scales each water-content amount by frlow after multiplying by its dz",
+      "in increasing node order: awlh+=wclo-wchi; awmh+=wcme-wchi; awah+=wcac-wchi; cdef+=wclo-wcac"
+    ]
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_ROOT_ZONE_WATER_ACCOUNTING_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_FRACTIONAL_LAST_NODE_SOURCE_ORACLE=PASS",
+      "PPA_IRR_WATER_DEFICIT_SOURCE_ORACLE=PASS",
+      "PPA_IRR_WATER_DEFICIT_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "ff8d3aca838598760606487c10464fc4be4cab0b97af5321b3d7ddda778f9b2c"
+  },
+  "qualification_status": "NOT_QUALIFIED; equation oracle only; derivation and ownership of root-zone geometry, retention values and actual water contents remain unproven",
+  "successor": "PPA_IRR_DEFICIT_CHECKED_STATUS.json adds a checked supplied-input entry at 163834dca without changing the original accounting body or production admission.",
+  "next_action": "Compose checked deficit with DCS1 while preserving existing water-content and source-mass ownership.",
+  "recovery_point": "completed scheduled-window checkpoint 25a66d9dc",
+  "blockers": ["B1.11 derives root-zone geometry and actual water content from crop, layer and hydraulic state that have no qualified irrigation-owned ingestion route; this oracle accepts those source values as inputs."]
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-FIXED-APPLICATION",
+  "parent_workunit": "PPA-IRR-FIXED-DATE-MATCH",
+  "title": "Source-bound fixed irrigation application-type materialization",
+  "protocol": "PIN_B1_11_SOURCE -> REPLAY_FIXED_APPLICATION_ASSIGNMENTS -> SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_ACCEPTED_MASS_AND_PRODUCTION_ADMISSION",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "419-434",
+    "equations": [
+      "For irrigation type<2, assign rate to the surface gross rate and concentration to surface irrigation concentration.",
+      "For type=2, assign the rate uniformly to the configured SSDI node range and sum those node rates.",
+      "Event duration is depth/rate and the selected event index advances on match."
+    ]
+  },
+  "scope": [
+    "existing typed fixed-event evaluator for sprinkler, surface and SSDI source assignments",
+    "100000 deterministic complete-interval source comparisons across all three application types",
+    "surface concentration/rate, SSDI selected-node layout, event duration and candidate event-index advance"
+  ],
+  "non_goals": [
+    "date/calendar matching beyond the separately tested fixed-date selector",
+    "legacy long-duration correction; B1 input parsing rejects fixed events longer than one day",
+    "solute transport, owner-bound accepted mass, transaction, restart or production admission"
+  ],
+  "pass_conditions": [
+    "application type<2 materializes surface rate and concentration only",
+    "application type=2 materializes equal rates only across the selected SSDI range",
+    "complete event amount and duration match the typed source result",
+    "100000 deterministic source comparisons pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

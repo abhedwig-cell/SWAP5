@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05g1.status.v1",
+  "work_unit": "PPA-WU05-G1",
+  "parent_work_unit": "PPA-WU05-G",
+  "status": "PURE_MICRO_CAMPBELL_RESPONSE_IMPLEMENTED_RUNTIME_HELD",
+  "baseline": "509f9589e",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no MOD_RWU_micro cache/solver, root process, stress composition, mass receipt or restart route changed",
+  "source_census": "integration/audits/PPA_WU05G1_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_WU05G1_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_wu05g1_micro_campbell_response.f90",
+  "test": "tests/fapp/test_ppa_wu05g1_micro_campbell_response.f90",
+  "gate": "tests/fapp/run_ppa_wu05g1_micro_campbell_response.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05G1_CAMPBELL_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05G1_NEGATIVE_POTENTIAL_AND_SW_O2ECT_BRANCHES=PASS",
+      "PPA_WU05G1_STATELESS_A_B_A=PASS",
+      "PPA_WU05G1_NONFINITE_AND_SINGULAR_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Continue independent source-bound coverage; preserve full MICRO stateful owner as unqualified.",
+  "recovery_point": "this status and PPA_WU05G1_SOURCE_CENSUS.json"
+}

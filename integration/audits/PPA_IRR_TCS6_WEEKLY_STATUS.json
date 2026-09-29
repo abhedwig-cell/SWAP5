@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.ppa_irr_tcs6_weekly.status.v1",
+  "work_unit": "PPA-IRR-TCS6-WEEKLY",
+  "parent_work_unit": "PPA-IRR-TCS7-DCS2",
+  "status": "TCS6_WEEKLY_SOURCE_ORACLE_PASS_CALENDAR_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@0319e3a72",
+  "preregistration": "integration/audits/PPA_IRR_TCS6_WEEKLY_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated weekly timing transition only; daily invocation, calendar, amount/rate, event selection, transaction, restart and production binding remain absent",
+  "implementation": "src/process/mod_ppa_irr_tcs6_weekly_timing.f90",
+  "test": "tests/fapp/test_ppa_irr_tcs6_weekly_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_tcs6_weekly_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "519-531",
+    "initial_state_lines": "395-400",
+    "equation": "Increment dayfix; if the new value is >=7, reset it to zero and trigger only for 10*cdef_cm > irgthreshold_mm. The source initializes the first crop-rotation value to 366."
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_build": 100000,
+    "markers": [
+      "PPA_IRR_TCS6_WEEKLY_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_TCS6_DAYFIX_366_STARTUP_AND_SEVENTH_DAY_RESET=PASS",
+      "PPA_IRR_TCS6_STRICT_DEFICIT_THRESHOLD=PASS",
+      "PPA_IRR_TCS6_WEEKLY_SOURCE_ORACLE=PASS",
+      "PPA_IRR_TCS6_WEEKLY_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "transcript_sha256": "48211a8b2978feb7a676ae9ad2195547b98e2bae560e1468ed4d974baee3d2ad"
+  },
+  "qualification_status": "NOT_QUALIFIED; isolated source equation only, no event-calendar or lifecycle qualification",
+  "next_action": "Continue an independent B1.11 irrigation timing/depth selector; preserve calendar and production admission NONE.",
+  "recovery_point": "this status record, preregistration, module and test",
+  "blockers": ["TCS6 day counter is legacy saved/calendar state. Its ownership and daily invocation/restart lifecycle are outside this isolated equation oracle and remain unqualified."]
+}

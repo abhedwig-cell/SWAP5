@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05d2.status.v1",
+  "work_unit": "PPA-WU05-D2",
+  "parent_work_unit": "PPA-WU05-D",
+  "status": "PURE_JARVIS_COMPOSITOR_IMPLEMENTED_AND_TESTED_RUNTIME_HELD",
+  "baseline": "d7a4381fb",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no root runtime, acceptance receipt, MICRO, Walsum, coupling or parallel route changed",
+  "source_census": "integration/audits/PPA_WU05D1_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_WU05D2_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_wu05d2_jarvis_compensation.f90",
+  "test": "tests/fapp/test_ppa_wu05d2_jarvis_compensation.f90",
+  "gate": "tests/fapp/run_ppa_wu05d2_jarvis_compensation.sh",
+  "test_result": {
+    "direct_compiler": "gfortran 13.3.0 on Windows UCRT64; equivalent commands executed directly because Git Bash cannot create its signal pipe in this host",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05D2_JARVIS_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05D2_ALL_STRESSOR_SELECTIONS_AND_ATTRIBUTION=PASS",
+      "PPA_WU05D2_NOOP_AND_A_B_A_NONCOMPOUNDING=PASS",
+      "PPA_WU05D2_NONFINITE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "evidence_claim": "Pure Jarvis source-order transformation of an explicit pre-compensation macroscopic root candidate and its stress-attribution totals. No production call-path or accepted-mass qualification claim.",
+  "next_action": "Select an independent source-bound capability. Walsum D3 remains a separate compositor; multi-stressor, MICRO, transactional runtime and tangent routes remain unadmitted.",
+  "recovery_point": "this status and PPA_WU05D1_SOURCE_CENSUS.json"
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_polygon_handoff.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-POLYGON-HANDOFF",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_HANDOFF_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@a73112a0622c07241ccc34993e99677f21a6557e",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROGEOM_POLYGON_HANDOFF_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "equation_authority": "integration/audits/PPA_WU05A3_POLYGON_DIAMETER source oracle",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_polygon_handoff_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_polygon_handoff_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["IcTopMp start/inclusive bottom", "ICpBtDmPot(2)+1 final pass", "above-IcTopMp preservation", "per-cell DiamPolyg argument handoff"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; isolated F/G loop driver only; full MACROGEOM and owner/mass/retry/restart/A4 remain open",
+  "next_action": "Inventory MACROINIT and MACROSTATE global state transitions; select a separable, deterministic source equation without substituting a second owner.",
+  "blockers": []
+}

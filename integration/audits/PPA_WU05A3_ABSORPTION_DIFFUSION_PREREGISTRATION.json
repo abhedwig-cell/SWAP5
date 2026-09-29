@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-ABSORPTION-DIFFUSION",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure ABSORPTION diffusion candidate amount",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_DIFFUSION_BRANCH -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:ABSORPTION diffusion branch",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1749-1762",
+    "behavior": "Below the strict saturation-deficit threshold set zero; otherwise average wall and matrix diffusivity, compute Campbell-style sorption rate using shape=8 and gamma=0.4, scale by domain proportion, layer thickness and dt, then apply optional macropore-wall wetting factor."
+  },
+  "scope": ["explicit pure diffusion amount inputs", "100000 deterministic bitwise comparisons at O0/O2, threshold and wall-factor cases"],
+  "non_goals": ["diffusivity generation, sorptivity route, arbitration or mutable ABSORPTION workspace", "accepted mass, rollback/restart or production runtime admission"],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

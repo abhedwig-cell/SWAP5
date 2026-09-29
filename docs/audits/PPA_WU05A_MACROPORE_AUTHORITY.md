@@ -193,4 +193,15 @@ Final admission-head qualification:
 
 The prerequisite governance repair was admitted separately through PR #345 at `48de5d6b6515fc77ffe639768eaaf56aec392ac3` with no production or reference mutation.
 
-This closeout does **not** change the blocker or production envelope. PPA-WU05-A1 remains mandatory before any typed macropore state DTO, equation migration, restart admission, runtime composition or parallel macropore claim. The exact B1.11 source bytes for `macropore.f90` and `macrorate.f90` are still required for the complete mutable-field and mass-transfer census.
+At the time of this canonical closeout, A1 had not yet been completed. The later source-census record below supersedes that prerequisite status, but does not broaden production admission.
+
+## A1 source-materialization reconciliation (2026-09-23)
+
+`integration/audits/PPA_WU05A1_SOURCE_CENSUS.json` was committed at `5b648a7e2d8534ded6536ef6f4afb4404da7946d`. The recorded workspace materialization was re-hashed during campaign continuation:
+
+- `macropore.f90`: `f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f`;
+- `macrorate.f90`: `537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7`.
+
+The census classifies continuation, history, candidate/scratch and reporting fields; traces rollback omissions; and identifies internal-cancelling versus external water transfers. Thus A1 source materialization and census are complete. Source bytes remain outside the repository reference tree and no production/reference source was modified.
+
+PPA-WU05-A2 is qualified only as an isolated typed DTO rollback/restart harness (`integration/audits/PPA_WU05A2_STATUS.json`). A3 source-oracle work may continue, but runtime binding remains held until the accepted Richards owner, atomic rollback/restart, and A4 exactly-once whole-column mass gates are independently qualified. No macropore production admission is claimed.

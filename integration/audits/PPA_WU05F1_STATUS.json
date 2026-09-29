@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.ppa_wu05f1.status.v1",
+  "work_unit": "PPA-WU05-F1",
+  "parent_work_unit": "PPA-WU05-F",
+  "status": "PURE_MACRO_FROST_FACTOR_IMPLEMENTED_AND_TESTED_RUNTIME_HELD",
+  "baseline": "cbf1af4a7",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no root runtime, thermal hydraulic boundary, MICRO, multi-stressor, accepted sink, restart or parallel route changed",
+  "source_census": "integration/audits/PPA_WU05F1_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_WU05F1_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_wu05f1_macro_frost_factor.f90",
+  "test": "tests/fapp/test_ppa_wu05f1_macro_frost_factor.f90",
+  "gate": "tests/fapp/run_ppa_wu05f1_macro_frost_factor.sh",
+  "test_result": {
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05F1_MACRO_FROST_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05F1_STRICT_ZERO_THRESHOLD_AND_DISABLED=PASS",
+      "PPA_WU05F1_STATELESS_A_B_A=PASS",
+      "PPA_WU05F1_NONFINITE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Continue independent SWAP4.3.1 functional-coverage candidates; keep root frost runtime held, especially the explicitly unsupported MICRO route.",
+  "recovery_point": "this status and PPA_WU05F1_SOURCE_CENSUS.json"
+}

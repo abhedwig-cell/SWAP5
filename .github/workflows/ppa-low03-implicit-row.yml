@@ -1,0 +1,27 @@
+name: PPA-LOW03 B1.11 implicit Cauchy row oracle
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low03-implicit-row.yml'
+      - 'src/adapter/mod_ppa_low03_implicit_row.f90'
+      - 'tests/fapp/test_ppa_low03_implicit_row.f90'
+      - 'tests/fapp/run_ppa_low03_implicit_row.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low03-implicit-row.yml'
+      - 'src/adapter/mod_ppa_low03_implicit_row.f90'
+      - 'tests/fapp/test_ppa_low03_implicit_row.f90'
+      - 'tests/fapp/run_ppa_low03_implicit_row.sh'
+
+jobs:
+  implicit-cauchy-row:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay implicit residual/Jacobian source law
+        run: bash tests/fapp/run_ppa_low03_implicit_row.sh

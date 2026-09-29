@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW01-GWL-SURFACE",
+  "title": "Pure B1.11 SWBOTB=1 surface-GWL flux/head profile",
+  "protocol": "PIN_SURFACE_HEAD_AND_PROFILE_EQUATIONS -> IMPLEMENT_TYPED_PROFILE_LAW -> 100000_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_POND_AND_HEAD_OWNERS",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW01_GWL_SURFACE_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW01_GWL_FLUX_SOURCE_CENSUS.json",
+    "integration/audits/PPA_LOW01_REGIME_SOURCE_CENSUS.json"
+  ],
+  "scope": [
+    "surface prescribed-head seed and hydrostatic head gradient",
+    "per-compartment flux, qbot and whole-profile heads",
+    "explicit typed post-pond top flux and conductivity/profile inputs"
+  ],
+  "non_goals": [
+    "Atmospheric top flux construction, pond/runoff closure and saturation source",
+    "WATCON/HCONDUC and SWKIMPL state recomputation",
+    "HeadCalc convergence, accepted flux, groundwater owner, retry or restart"
+  ],
+  "pass_conditions": [
+    "100000 deterministic valid profiles bitwise match B1.11 source-order equations",
+    "first and remaining heads, qbot, A/B/A and invalid timestep/conductivity inputs pass",
+    "O0/O2 transcripts match",
+    "no atmosphere, pond, soil or GWL owner state changes"
+  ]
+}

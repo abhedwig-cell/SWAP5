@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_polygon_handoff.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-POLYGON-HANDOFF",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@a73112a0622c07241ccc34993e99677f21a6557e",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; separate PPA-WU05-A3 polygon-diameter oracle",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROGEOM",
+    "source_region": "sections F/G per-compartment DiamPolyg loops from IcTopMp and ICpBtDmPot(2)+1"
+  },
+  "reused_equation": "src/process/mod_ppa_wu05a3_polygon_diameter.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_polygon_handoff_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_polygon_handoff_source_oracle.sh",
+  "in_scope": [
+    "first polygon pass begins at IcTopMp and includes NumNod",
+    "second/final pass begins strictly after ICpBtDmPot(2)",
+    "top cells above IcTopMp are not written by these loops",
+    "per-cell call argument mapping to the separately qualified DiamPolyg equation"
+  ],
+  "out_of_scope": [
+    "whole MACROGEOM function; section F/G loops are represented by an isolated driver using the qualified equation module",
+    "production state owner, accepted mass, retry/restart, parallel and A4 admission"
+  ],
+  "expected_tests": [
+    "fixed five-node profile with IcTopMp=2 and ICpBtDmPot(2)=3",
+    "O0/O2 identical handoff results under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; loop-handoff oracle only"
+}

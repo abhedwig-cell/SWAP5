@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-C2",
+  "title": "Pure SWOXYGEN=1 Feddes wetness-factor oracle",
+  "protocol": "PIN_B1_11 -> IMPLEMENT_PURE_SCALAR -> EXACT_BRANCH_ORACLE -> O0_O2_REPLAY -> HOLD_ROOT_RUNTIME",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05C_STATUS.json",
+    "integration/audits/PPA_WU05C_OXYGEN_AUTHORITY_CONTRACT.json",
+    "integration/audits/PPA_WU05C2_SOURCE_CENSUS.json"
+  ],
+  "source": {
+    "snapshot": "B1.11",
+    "path": "SWAP/rootextraction.f90:RootExtraction_MICRO and RootExtraction_MACRO SWOXYGEN=1 branch",
+    "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "note": "Feddes factor is in rootextraction.f90. OxygenStress in oxygenstress.f90 is SWOXYGEN=2 Bartholomeus and is not this workunit."
+  },
+  "scope": [
+    "typed stateless scalar alpwet from current h, hlim1 and already-selected hlim2",
+    "exact source branch order, equality semantics and arithmetic",
+    "finite-input fail-closed guard for the pure helper only"
+  ],
+  "non_goals": [
+    "macro/micro source call-site edits or production owner binding",
+    "hlim2u/hlim2l runtime selection by botcom and node",
+    "drought/salinity/frost/compensation composition or modifier-order changes",
+    "root-sink acceptance, mass ledger, restart/retry, parallel or coupling admission",
+    "SWOXYGEN=2 Bartholomeus, C1, C3 or C4",
+    "root development/SWWRTNONOX effects"
+  ],
+  "pass_conditions": [
+    "100,000 deterministic inputs bitwise match the source-ordered B1.11 branches",
+    "upper and lower threshold equalities, reversed/equal thresholds and both sides of each branch are tested",
+    "malformed non-finite inputs fail closed",
+    "A/B/A replay and O0/O2 transcript identity pass",
+    "production root-sink paths remain unchanged"
+  ]
+}

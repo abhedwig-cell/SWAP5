@@ -1,0 +1,27 @@
+name: PPA-LOW03 explicit Cauchy flux oracle
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low03-cauchy-flux.yml'
+      - 'src/adapter/mod_ppa_low03_cauchy_flux.f90'
+      - 'tests/fapp/test_ppa_low03_cauchy_flux.f90'
+      - 'tests/fapp/run_ppa_low03_cauchy_flux.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low03-cauchy-flux.yml'
+      - 'src/adapter/mod_ppa_low03_cauchy_flux.f90'
+      - 'tests/fapp/test_ppa_low03_cauchy_flux.f90'
+      - 'tests/fapp/run_ppa_low03_cauchy_flux.sh'
+
+jobs:
+  source-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay explicit Cauchy source oracle
+        run: bash tests/fapp/run_ppa_low03_cauchy_flux.sh

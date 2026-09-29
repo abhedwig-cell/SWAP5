@@ -1,6 +1,6 @@
 module mod_fwof34_test_model
-  use, intrinsic :: iso_fortran_env, only: real64
-  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t
@@ -30,6 +30,7 @@ module mod_fwof34_test_model
     procedure :: prepare_interval => fwof34_prepare_interval
     procedure :: advance => fwof34_advance
     procedure :: storage => fwof34_storage
+    procedure :: storage_accounting_status => fwof34_storage_accounting_status
     procedure :: temporal_error => fwof34_temporal_error
   end type fwof34_model_t
 
@@ -104,6 +105,8 @@ contains
     end select
     outcome%solver_ok = .true.
     outcome%mass_in = transfer_mass
+    outcome%mass_accounting_complete = .true.
+    outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
     outcome%nonlinear_iterations = 1
   end subroutine fwof34_advance
 
@@ -118,6 +121,22 @@ contains
       error stop 'FWOF34 unexpected state type'
     end select
   end function fwof34_storage
+
+  subroutine fwof34_storage_accounting_status(self, state, complete, missing_mask)
+    class(fwof34_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+    complete = .false.
+    missing_mask = TX_MASS_MISSING_NONE
+    if (.not. same_type_as(self, self)) error stop 'FWOF34 unreachable model type'
+    select type (state)
+    type is (fwof34_state_t)
+      complete = .true.
+    class default
+      error stop 'FWOF34 unexpected accounting state type'
+    end select
+  end subroutine fwof34_storage_accounting_status
 
   real(real64) function fwof34_temporal_error(self, full_state, half_state) result(value)
     class(fwof34_model_t), intent(in) :: self

@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_top_suppression.preregistration.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-TOP-SUPPRESSION",
+  "parent_work_unit": "PPA-WU05-A",
+  "baseline": "codex/ppa-swap431-functional-gap-register@dd2213fb346f792a229b4bd1840371ed82c7ab91",
+  "authority": "PPA-WU05-A1 exact B1.11 source/state/mass census; A2 isolated DTO rollback/restart only",
+  "source": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "file": "macropore.f90",
+    "file_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "routine": "MACROGEOM",
+    "source_region": "section E IcTopMp>1 suppression of macropore proportions/volumes above first active cell"
+  },
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_top_suppression.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_top_suppression_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_top_suppression_source_oracle.sh",
+  "in_scope": [
+    "clear PpIcCp, both static domain volumes, and total static volume above IcTopMp",
+    "clear active PpDmCp rows above IcTopMp",
+    "set FrArMtrx to 1 above IcTopMp",
+    "no-op when IcTopMp is 1 and fail closed outside the grid"
+  ],
+  "out_of_scope": [
+    "MACROGEOM section F/G DiamPolyg calculation and full routine composition",
+    "production state owner, accepted water mass, retry/restart and A4 admission"
+  ],
+  "expected_tests": [
+    "two suppressed upper cells, untouched IcTopMp and deeper cells",
+    "top-active no-op and invalid top bound",
+    "O0/O2 output identity under warnings-as-errors, bounds checks and floating-point traps"
+  ],
+  "admission": "NONE; isolated section-E output suppression only"
+}

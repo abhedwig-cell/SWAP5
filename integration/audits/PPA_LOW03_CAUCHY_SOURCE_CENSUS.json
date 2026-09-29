@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.ppa_low03.cauchy.source-census.v1",
+  "work_unit": "PPA-LOW03-CAUCHY",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "boundbottom.f90": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+    "readswap.f90": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+  },
+  "equations": {
+    "gwl_mean": "hdrain + shape_3 * (gwl - hdrain)",
+    "deepgw_time_series": "AFGEN(haqtab, t1900 + dt) when sw3=2",
+    "cval_profile": "satnodgwl / cofgen(3,node) + sum(dz(node+1:numnod) / cofgen(3,node+1:numnod)) when swbotb3resvert=0; zero when =1",
+    "explicit_base_qbot": "(deepgw - gwl_mean) / (rimlay + cval_profile)",
+    "optional_extra_flux": "AFGEN(qbotab, t1900 + dt) added when sw4=1",
+    "implicit_distinction": "HeadCalc recomputes qbot from bottom head and total resistance and modifies Jacobian; excluded from this explicit-law oracle"
+  },
+  "ownership": "C-value/profile, groundwater level, aquifer head and additional flux are explicit inputs; no state, solver, accepted mass route or restart owner is introduced.",
+  "interpretation": "This oracle pins the explicit scalar source law only; it does not claim migrated SWBOTB=3 application behavior."
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-RAPIDDRAIN-FLUX",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure rapid-drainage head/resistance/potential-flux equation",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_EXPLICIT_INPUT_EQUATION -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:RAPIDDRAIN head, resistance and potential-flux calculation",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "source_lines": "1914-1928",
+    "behavior": "Calculate drain head difference with the near-surface pond correction; clamp at zero; above the strict Kd threshold calculate capped resistance scaling and reduction-weighted flux; cap flux by drainable storage."
+  },
+  "scope": [
+    "scalar potential flux and resistance with all source inputs explicit",
+    "strict Kd > 1e-10 branch and pond-head threshold order",
+    "storage cap and deterministic source-order arithmetic",
+    "100,000 deterministic bitwise comparisons at O0 and O2"
+  ],
+  "non_goals": [
+    "compartment flux distribution and post-rate acceptance",
+    "mass receipt, retry/restart, Richards owner or production admission",
+    "parallel/MultiSWAP admission"
+  ],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

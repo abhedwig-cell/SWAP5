@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.ppa_wu05d1.status.v1",
+  "work_unit": "PPA-WU05-D1",
+  "parent_work_unit": "PPA-WU05-D",
+  "status": "EXACT_SOURCE_MATERIALIZED_AND_TRACE_COMPLETE_REVIEW_ONLY",
+  "baseline": "4eee00349",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_admission": "NONE; source census only",
+  "source_census": "integration/audits/PPA_WU05D1_SOURCE_CENSUS.json",
+  "key_findings": [
+    "Exact B1.11 rootextraction.f90 and MOD_cropdevelopment.f90 identities verified in the materialized source tree.",
+    "Compensation runs only in macroscopic root extraction; microscopic RWU plus compensation is rejected by input validation.",
+    "Exact order is root stress factors -> pre-compensation qrot/qrosum and stress attribution -> compensation factor inference/rescaling -> recomputed qrosum and diagnostics.",
+    "Walsum computes ALPHACRIT from current root-depth quantities; the local block has no saved compensation history. Enclosing root transaction acceptance remains separate and unqualified."
+  ],
+  "next_action": "Implement PPA-WU05-D2 pure Jarvis compositor and source equation oracle, leaving Walsum, multi-stressor production routing, MICRO, coupling and root runtime held.",
+  "recovery_point": "this status and PPA_WU05D1_SOURCE_CENSUS.json"
+}

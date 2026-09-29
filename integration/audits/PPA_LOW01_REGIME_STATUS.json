@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low01.regime.status.v1",
+  "work_unit": "PPA-LOW01-REGIME",
+  "parent_work_unit": "PPA-LOW01",
+  "status": "HEADCALC_GWL_REGIME_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "0a2d20efd",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no HeadCalc/CalcGWL state, fluxes, solver, restart, mass or application route changed",
+  "source_census": "integration/audits/PPA_LOW01_REGIME_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW01_REGIME_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low01_gwl_regime.f90",
+  "test": "tests/fapp/test_ppa_low01_gwl_regime.f90",
+  "gate": "tests/fapp/run_ppa_low01_gwl_regime.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW01_HEADCALC_GWL_REGIME_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW01_GWL_FIXED_TOP_PROFILE_AND_BELOW=PASS",
+      "PPA_LOW01_GWL_NEAR_NODE_SNAP_AND_HBOT=PASS",
+      "PPA_LOW01_GWL_STATELESS_A_B_A_AND_INVALID_GRID=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "3ce3dea98e4a39c30b97284ef2d816b96ababa3249e4ca2d7276411ce3a90e64",
+    "o2_executable_sha256": "0fdeb659393e491840c86c8aff095dd87b78384a98a61cec43997be469bf19d9",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Continue toward a typed hybrid GWL state/accepted-flux owner contract; do not publish a second GWL owner.",
+  "recovery_point": "this status and PPA_LOW01_REGIME_SOURCE_CENSUS.json"
+}

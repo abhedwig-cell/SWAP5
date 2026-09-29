@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A3-RAPIDDRAIN-DISTRIBUTION",
+  "parent_workunit": "PPA-WU05-A3",
+  "title": "Pure rapid-drainage compartment flux distribution",
+  "protocol": "PIN_EXACT_B1_11_SOURCE -> IMPLEMENT_EXPLICIT_INPUT_EQUATION -> BITWISE_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_ADMISSION",
+  "authority": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "path": "SWAP/macrorate.f90:RAPIDDRAIN compartment distribution loop",
+    "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "behavior": "If total Kd > 1e-15, distribute total potential rapid drainage proportionally to compartment Kd in loop order; otherwise zero compartment potential and total potential flux."
+  },
+  "scope": [
+    "explicit interval and Kd-profile input arrays",
+    "strict total-Kd threshold, proportional distribution and zero fallback",
+    "100,000 deterministic bitwise comparisons at O0 and O2"
+  ],
+  "non_goals": [
+    "accepted macropore mass receipt or Richards state mutation",
+    "retry/restart/runtime admission",
+    "parallel/MultiSWAP admission"
+  ],
+  "architecture_invariants": [3, 5, 7, 13, 21, 25]
+}

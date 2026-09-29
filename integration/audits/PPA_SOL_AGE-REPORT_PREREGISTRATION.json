@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_sol_age_report_preregistration.v1",
+  "work_unit": "PPA-SOL-AGE-REPORT",
+  "parent_work_units": ["PPA-SOL-AGE-OUTPUT", "PPA-SOL-AGE-GWL1M"],
+  "title": "B1.11 AgeTracer task-3 numeric report values",
+  "status": "SOURCE_ORACLE_IMPLEMENTATION_AUTHORIZED_BOUNDED",
+  "baseline": {
+    "local_head": "2e7b8dd917ae76b38797e2604b334aa09abc17d7",
+    "reference_snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_member": "SWAP/solute.f90",
+    "source_member_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "source_equation": "outage(task=2): write cml profile; icAgeBot/outper, icAgeRot/outper, icAgeSur/outper and icAgeDra(level)/outper; iqdrainout(level)=sum max(inqdra(level,node),0)"
+  },
+  "scope": {
+    "inputs": "Explicit profile and accumulator values, positive output interval, layer x node inqdra arrays",
+    "outputs": "Copy of current profile, normalized cumulative age fields, positive per-level drainage discharge",
+    "file_format_units_path_and_task_lifecycle": "OUT OF SCOPE",
+    "state_owner_restart_mass_or_production": "NONE"
+  },
+  "qualification": [
+    "100000 deterministic vectors compare bitwise with B1.11 report-value formulas at O0/O2",
+    "Exercise multiple output intervals and negative/zero/positive drainage rates",
+    "Reject nonfinite input and nonpositive output interval",
+    "No CSV/file output or owner admission"
+  ],
+  "decision_rule": "Implement only numeric values supplied to output; retain file creation, formatting, time/date ownership, accumulators and task transitions outside this unit."
+}

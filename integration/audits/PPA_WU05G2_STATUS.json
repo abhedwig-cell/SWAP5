@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05g2.status.v1",
+  "work_unit": "PPA-WU05-G2",
+  "parent_work_unit": "PPA-WU05-G",
+  "status": "PURE_MICRO_STRESS_AGGREGATE_IMPLEMENTED_AND_TESTED_RUNTIME_HELD",
+  "baseline": "6da66b885",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; source factors, micro solver, root process, accepted sink, restart and parallel routes unchanged",
+  "source_census": "integration/audits/PPA_WU05G2_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_WU05G2_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_wu05g2_micro_stress_aggregate.f90",
+  "test": "tests/fapp/test_ppa_wu05g2_micro_stress_aggregate.f90",
+  "gate": "tests/fapp/run_ppa_wu05g2_micro_stress_aggregate.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05G2_SWALPTOT_SOURCE_ORACLE_100000=PASS",
+      "PPA_WU05G2_PRODUCT_MIN_AND_POSITIVE_PRODUCT=PASS",
+      "PPA_WU05G2_ZERO_FACTOR_SOURCE_SEMANTICS=PASS",
+      "PPA_WU05G2_STATELESS_AND_INVALID_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Continue independent source-bound capabilities; retain MICRO production route as unadmitted.",
+  "recovery_point": "this status and PPA_WU05G2_SOURCE_CENSUS.json"
+}

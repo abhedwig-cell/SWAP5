@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-G2",
+  "title": "Pure B1.11 MICRO SWALPTOT factor aggregation",
+  "protocol": "PIN_ROOTEXTRACTION_MICRO_BRANCH -> IMPLEMENT_SELECTORS_1_TO_3 -> 100000_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05G2_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU05G1_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json"
+  ],
+  "scope": [
+    "three source factors: alpwet, alpsol and alpfrs",
+    "exact SWALPTOT selector 1 product, selector 2 minimum and selector 3 positive node-product fold",
+    "ascending-node source accumulation and identity/reset-independent pure replay"
+  ],
+  "non_goals": [
+    "SWALPTOT factor provenance/owner integration or MICRO solver admission",
+    "changing zero-factor behavior or moving selector 3 accumulation",
+    "oxygen/salinity/frost physics, output diagnostics, root sink booking or production runtime",
+    "saved cache lifecycle, restart, retry/rollback or parallel qualification"
+  ],
+  "pass_conditions": [
+    "100000 deterministic five-node vectors match source selector behavior bitwise",
+    "selectors 1..3, zero-factor selector-3 behavior, A/B/A and invalid input guards pass",
+    "O0/O2 transcripts are identical",
+    "no production root owner or stress composition route changes"
+  ]
+}

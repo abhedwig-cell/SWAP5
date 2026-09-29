@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-IRR-FIXED-INPUT-APPLICATION",
+  "parent_workunit": "PPA-IRR-FIXED-INPUT-NORMALIZATION",
+  "title": "Fixed irrigation input normalization to typed source application",
+  "protocol": "PIN_B1_11_NORMALIZATION_AND_TASK3_SOURCE -> NORMALIZE_EVENT -> APPLY_EXISTING_TYPED_FIXED_EVENT -> COMPARE_FULL_EVENT_SOURCE_AMOUNT -> 100000_DETERMINISTIC_EVENTS -> O0_O2_REPLAY -> HOLD_ACCEPTED_SOIL_MASS",
+  "source": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "normalization_lines": "693, 725-740",
+    "application_lines": "419-434",
+    "equations": [
+      "normalize input depth/rate, including omitted-rate fallback and SSDI per-node depth split",
+      "assign uniform source rate to surface or selected SSDI node range",
+      "over the complete event, the integrated source-vector amount equals the input gross depth (within floating-point roundoff)"
+    ]
+  },
+  "scope": [
+    "compose the isolated input normalizer with the existing typed fixed-event materializer using explicit rate input",
+    "sprinkler, surface and SSDI types, and 1-5 SSDI nodes",
+    "100000 deterministic complete-event source-amount comparisons"
+  ],
+  "non_goals": [
+    "input-file parsing, event calendars, timing ownership or grid-depth-to-node lookup",
+    "legacy omitted-rate fallback composition (covered by the standalone normalization oracle; the B1 duration guard can reject >1-day values after floating-point conversion)",
+    "accepted Richards flux, infiltration, solute transport, whole-column balance or restart",
+    "production admission"
+  ],
+  "pass_conditions": [
+    "normalized event completes and application source amount equals source gross input depth",
+    "100000 deterministic comparisons pass at O0/O2 with identical transcripts",
+    "production admission remains NONE"
+  ],
+  "architecture_invariants": [3, 7, 13, 23, 29]
+}

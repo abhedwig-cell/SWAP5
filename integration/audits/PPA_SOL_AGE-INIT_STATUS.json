@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.ppa_sol_age_init_status.v1",
+  "work_unit": "PPA-SOL-AGE-INIT",
+  "status": "LOCAL_SOURCE_ORACLE_QUALIFIED_O0_O2_NOT_PRODUCTION_ADMITTED",
+  "preregistration": "integration/audits/PPA_SOL_AGE-INIT_PREREGISTRATION.json",
+  "implementation_commit": "691768661a16727a5afcbfb97a366f8c0a7fab22",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "solute_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "interpolator_member": "SWAP/functions.f90",
+    "interpolator_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "equation": "B1.11 afgen_2 cursor-aware piecewise-linear profile interpolation and clamp/partial-table behavior"
+  },
+  "implementation": {
+    "source": "src/process/mod_ppa_sol_age_initial_profile.f90",
+    "test": "tests/fapp/test_ppa_sol_age_initial_profile_source_oracle.f90",
+    "gate": "tests/fapp/run_ppa_sol_age_initial_profile_source_oracle.sh",
+    "scope": "One explicit table-to-node profile initialization candidate using historical cursor semantics; file ingestion/config validation excluded."
+  },
+  "qualification": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64 explicit path",
+    "optimization_levels": ["O0", "O2"],
+    "deterministic_profiles_per_build": 100000,
+    "nodes_per_profile": 7,
+    "bitwise_o0_o2_transcript_identity": true,
+    "markers": [
+      "PPA_SOL_AGE_INIT_B1_11_AFGEN2_100000x7=PASS",
+      "PPA_SOL_AGE_INIT_CURSOR_AND_PARTIAL_TABLE_TERMINATOR=PASS",
+      "PPA_SOL_AGE_INIT_INVALID_INPUT_FAIL_CLOSED=PASS"
+    ]
+  },
+  "scope_boundary": {
+    "AGEMLTB_parser_validation_input_errors": "NONE",
+    "task_state_owner_restart_and_runtime_binding": "NONE",
+    "complete_AgeTracer_migration": "NOT CLAIMED"
+  },
+  "next_action": "Reconcile task-1 initialization order and derived storage/profile totals; map accumulator reset and output lifecycle ownership."
+}

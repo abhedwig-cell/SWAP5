@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-C3A",
+  "title": "Pure Bartholomeus per-node derived-cache algebra",
+  "protocol": "PIN_B1_11 -> EXPLICIT_SAMPLED_INPUTS -> PURE_CACHE_ALGEBRA -> SOURCE_FORMULA_ORACLE -> O0_O2_REPLAY -> HOLD_CACHE_LIFECYCLE",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05C_STATUS.json",
+    "integration/audits/PPA_WU05C_OXYGEN_AUTHORITY_CONTRACT.json",
+    "integration/audits/PPA_WU05C3_SOURCE_CENSUS.json"
+  ],
+  "source": {
+    "snapshot": "B1.11",
+    "path": "SWAP/oxygenstress.f90:OxygenStress/calc_ini_pars",
+    "sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+    "source_inputs": "Sampled watcon values at campbell_h100, campbell_h500 and gfp_h100, plus cofgen terms and Campbell thresholds; the pure algebra receives those sampled values explicitly"
+  },
+  "scope": [
+    "per-node pure algebra for Campbell b, gfp100, d_soil_term1, d_soil_term2, Capac_term, Nmin1 and Mplus1",
+    "preserve source expression and left-to-right arithmetic order",
+    "explicit arguments only; no hidden or retained cache"
+  ],
+  "non_goals": [
+    "calling or migrating watcon/hysteresis sampling",
+    "cache ownership, construction key, invalidation or multi-run lifecycle",
+    "O2_pars, c_top profile buffer, OxygenStress/MICRO/MACRO/SOLVE runtime binding",
+    "SWAP-007 solver integration or solver policy change",
+    "root-sink mass/restart/retry/parallel/coupling admission"
+  ],
+  "pass_conditions": [
+    "100,000 deterministic physically ordinary sampled-input vectors bitwise match the explicit B1.11 formula oracle",
+    "A/B/A replay is bitwise deterministic",
+    "malformed/non-finite and singular sampled inputs fail closed",
+    "O0/O2 output transcripts are identical",
+    "production runtime and state owners remain unchanged"
+  ]
+}

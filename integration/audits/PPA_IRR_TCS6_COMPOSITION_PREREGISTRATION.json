@@ -1,0 +1,18 @@
+{
+  "work_unit": "PPA-IRR-TCS6-COMPOSITION",
+  "baseline": "3b7e2da32",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "authority": ["PPA_IRR_TCS6_WEEKLY_STATUS.json", "PPA_IRR_TCS1_4_DCS1_STATUS.json", "PPA_IRR_EVENT_OWNER_STATUS.json"],
+  "objective": "Compose the checked weekly TCS6 selector with existing scheduled DCS2 event materialization, then establish accepted-only daily-counter ownership in the existing irrigation carrier.",
+  "first_phase": "Pure explicit daily-selection composition: input dayfix and explicit daily invocation, output proposed dayfix plus existing event/flux/diagnostics. Reuse evaluate_tcs6_weekly_timing without changing its strict deficit threshold or increment/reset order. Extend typed scheduled timing validation only for this explicit criterion, preserving ordinary entry rejection. Pending gifts do not invoke a new selector. Do not publish the proposed counter in the process layer.",
+  "gates": [
+    "Source startup dayfix=366 and seventh-day reset with both triggering and nontriggering deficit.",
+    "Counter reset occurs on the seventh daily invocation even if no gift is selected; a no-gift day is not a no-state-change day.",
+    "Retried and split-required trials always derive from the same committed counter and never increment it twice.",
+    "All source counter/deficit/threshold invalid-input guards; ordinary entry stays fail-closed; TCS1-4 and TCS7/8 preservation.",
+    "Before runtime integration, specify daily invocation identity and its persistence with the counter inside the sole existing committed carrier, including inactive/no-gift states, decoded restart, duplicate daily requests, all-column preflight and mixed hydraulic publication."
+  ],
+  "ownership_constraints": "No module SAVE counter, calendar singleton, second state owner, or caller-side mutable counter publication. Process outputs are proposals only. Runtime must publish counter and event/hydraulics atomically per accepted column; failed trials retain all committed fields. A source-only passing test cannot qualify daily runtime ownership.",
+  "invariants": [3, 7, 13, 21, 22, 28],
+  "non_goals": "File/date parsing, implicit day detection, automatic crop rotation, surface delivery, solute transport, changing numerical acceptance or canonical admission. DCS1 extension follows separately after DCS2 lifecycle qualification."
+}

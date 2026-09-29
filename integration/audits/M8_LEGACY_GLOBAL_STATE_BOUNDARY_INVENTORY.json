@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.m8.legacy_global_state_boundary_inventory.v1",
+  "criterion": "M8-01",
+  "inspection_head": "b980496834e536018ddace2958b01a30cb3c1e7d",
+  "method": "read-only git grep of committed HEAD across Fortran source/include fragments; exact legacy module USE names and direct HeadCalc call sites; no source mutation or retirement",
+  "source_surface": {
+    "legacy_global_module_import_lines": 136,
+    "legacy_global_module_import_files": 27,
+    "fortran_module_import_lines": 58,
+    "fortran_module_import_files": 10,
+    "direct_headcalc_call_sites": 2,
+    "direct_headcalc_call_files": [
+      "src/adapter/mod_b110_production_soil_water_task2.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90"
+    ],
+    "direct_imports_in_process_crop_kernel": 0,
+    "historical_qualification_ports": [
+      "src/legacy/b1_10_fci11_port/",
+      "src/legacy/b1_10_fci13_port/"
+    ]
+  },
+  "bounded_owner_crosswalk": [
+    {
+      "retained_behavior": "SWAP4.3.1 file/program orchestration and legacy run grammar",
+      "current_owner": "src/legacy/b1_10_port/swap_main.f90 and swap.f90",
+      "bounded_target_owner": "src/runtime/mod_fmr_production_application_bootstrap.f90 for the already typed/admitted application surface",
+      "unmapped_scope": "generic full SWAP4 parser, arbitrary option grammar and whole-Hupsel composition are not replaced by this bounded bootstrap"
+    },
+    {
+      "retained_behavior": "Reference Richards solve and legacy HeadCalc execution context",
+      "current_owner": "src/legacy/b1_10_port/headcalc.f90, called only at the two listed adapter call sites",
+      "bounded_target_owner": "src/adapter/mod_reference_richards_legacy_binding.f90 plus typed Reference solver/workspace contracts under src/solver/",
+      "unmapped_scope": "HeadCalc remains the admitted scientific Reference implementation; it is not obsolete merely because its global access is adapter-confined"
+    },
+    {
+      "retained_behavior": "serialized physical state, forcing/parameter materialization, trial, retry, commit and mass publication",
+      "current_owner": "src/runtime/mod_fmr_serialized_reference_backend.f90 and src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "bounded_target_owner": "typed FMR model/backend state plus kernel transaction and checkpoint contracts",
+      "unmapped_scope": "the legacy adapters still bridge portions of B1.10 state; not every SWAP4 process/state field has a completed owner crosswalk"
+    },
+    {
+      "retained_behavior": "legacy crop/solute/irrigation/thermal trial snapshot and rollback",
+      "current_owner": "src/adapter/mod_b1_10_legacy_trial_capsule.f90, mod_b1_10_process_checkpoint.f90, mod_b1_10_water_checkpoint.f90 and mod_b1_10_mass_seam.f90",
+      "bounded_target_owner": "Persistent water and configured optional process continuation use b1_10_water_state_t/b1_10_process_state_t behind transaction/checkpoint interfaces; worker-local rejected-trial restoration uses b1_10_legacy_trial_capsule_t held by the Reference adapter model/transaction binding.",
+      "qualified_owner_evidence": [
+        "integration/f-ci/F-CI07_STATUS.json: worker-local numerical/time/reporting/forcing/accounting/irrigation trial rollback and whole-day Hupsel replay",
+        "integration/f-ci/F-CI08_STATE_CLASSIFICATION.json: persistent-vs-worker-local classification",
+        "integration/f-ci/F-CI08_QUALIFICATION.md: O0/O2 process/capsule gates and four named whole-day offsets at each optimization level with zero process diff",
+        "integration/f-ci/F-CI08_STATUS.json: optional water/thermal/solute/irrigation/crop/WOFOST continuation admission, with generic physical sub-day continuation explicitly not qualified",
+        "integration/f-ci/F-CI09_STATUS.json: transaction-model binding substrate PASS while reference transaction execution remains fail-closed/not admitted"
+      ],
+      "unmapped_scope": "The capsule still bridges legacy module globals and remains required by the Reference path. Generic sub-day continuation, the full file/calendar/management input surface, canonical B1.10 transaction execution and complete unrounded interval mass publication are not established by these whole-day/ownership qualifications. Presence of typed owners for selected physical-state groups does not qualify capsule retirement."
+    },
+    {
+      "retained behavior": "F-CI11/F-CI13 call-order and terminal-status source evidence",
+      "current_owner": "src/legacy/b1_10_fci11_port/ and src/legacy/b1_10_fci13_port/",
+      "bounded_target_owner": "qualification/source-lineage evidence only; these are historical authority inputs, not an admitted second production runtime",
+      "unmapped_scope": "retirement requires replacing every dependent gate/authority reference, not deleting these directories opportunistically"
+    }
+  ],
+  "legacy_trial_capsule_field_group_crosswalk": [
+    {
+      "group": "persistent physical water continuation",
+      "capsule_role": "No capsule copy; the trial capsule is not a persistent/canonical state type.",
+      "typed_owner": "src/adapter/mod_b1_10_water_checkpoint.f90:b1_10_water_state_t",
+      "fields": ["h", "theta", "hm1", "thetm1", "pond", "pondm1", "gwl", "gwlm1", "volact", "ldwet", "spev", "saev"],
+      "qualification": "F-CI08 admitted water checkpoint for its named B1.10 profile; not generic sub-day proof."
+    },
+    {
+      "group": "optional persistent process continuation",
+      "capsule_role": "Physical values are checkpoint state, separately from their worker-local rollback copy where present.",
+      "typed_owner": "src/adapter/mod_b1_10_process_checkpoint.f90:b1_10_process_state_t",
+      "fields": {
+        "thermal": ["tsoil"],
+        "solute": ["cml", "cmsy", "ageml when active"],
+        "irrigation": ["dayfix", "nirri when configured"],
+        "crop": ["lifecycle/biomass/root continuation, including rdpot and dynamic root arrays"],
+        "wofost": ["state and management when the active crop type requires it"]
+      },
+      "qualification": "F-CI08 whole-day Hupsel continuation/replay scope; optional configuration mismatch is fail-closed. Macropore generic continuation and arbitrary sub-day checkpoints are not inferred."
+    },
+    {
+      "group": "numerical retry, calendar projection and reporting progress",
+      "capsule_role": "Worker-local rollback only; not persistent physical continuation.",
+      "capsule_fields": ["dt", "dtold", "fldecdt", "fldtmin", "fldtreduce", "t/t1900/tcum/timjan1/tstart/tend", "day/month/year/date", "step and output counters", "output/balance flags", "initial/balance baseline values"],
+      "bounded_target_owner": "attempt/worker execution context for retry bookkeeping; application/output ownership for reporting and run-calendar projection",
+      "remaining_gap": "The generic SWAP4 file/calendar/parser and reporting composition does not have a complete admitted SWAP5 owner in this crosswalk."
+    },
+    {
+      "group": "forcing and irrigation cursors/workspace",
+      "capsule_role": "Worker-local replay/rollback; forcing payloads are not persisted as physical state.",
+      "capsule_fields": ["meteo_rec", "rain_rec", "i_metdetail", "fl_update_meteo", "ipos_qtop/ipos_tetop/ipos_tebot", "schedule projection", "dayfix/nirri rollback copies", "irrigevent/isua/cirr/dt_irr_event/gird/nird/qssdi/qssdisum/flirrigate"],
+      "bounded_target_owner": "PPA-ATM-01/03 typed resolved forcing only within their restricted admitted envelopes; configured dayfix/nirri use optional process continuation state.",
+      "remaining_gap": "PPA-ATM-02 legacy file/calendar preprocessing and broad meteorological cursor ownership remain unmigrated; general irrigation schedule/event ingestion is not admitted by the cited bounded forcing paths."
+    },
+    {
+      "group": "daily process accumulators and water/solute accounting",
+      "capsule_role": "Rollback/reporting/accounting data only; not physical continuation state or an independent accepted mass owner.",
+      "capsule_fields": ["inqpotrot_day/inqredrot_day and daily root/ET accumulators", "MOD_integral intermediate/cumulative water integrals and drainage arrays", "snow/water balance integral terms", "MOD_Solute balance totals and imqsol"],
+      "bounded_target_owner": "src/adapter/mod_b1_10_mass_seam.f90 for its bounded mass-accounting construction plus transaction accepted-result/mass publication interfaces.",
+      "remaining_gap": "F-CI08 excludes accounting from persistent state; F-CI09 still holds canonical unrounded interval mass binding and complete active-physics storage accounting. This is not full legacy output/accounting migration."
+    }
+  ],
+  "verification": {
+    "direct_headcalc_call_sites_are_adapter_confined": true,
+    "process_crop_kernel_have_no_direct_legacy_global_use_statements": true,
+    "b1_10_legacy_trial_capsule_and_checkpoint_adapters_remain_global_state_bridges": true,
+    "legacy_file_entry_and_reference_solver_retained_for_reference_authority": true
+  },
+  "criterion_status": "PARTIAL",
+  "remaining_gap": "The capsule's major field groups now have a bounded owner/qualification crosswalk. This does not retire the global-state bridge or establish generic sub-day execution, canonical B1.10 transaction execution, complete unrounded interval mass publication, generic file/calendar/application parsing, or a complete retained-behaviour inventory; dependent qualifications still rely on Reference/legacy authority by design.",
+  "next_action": "Continue M8-01 by mapping the generic SWAP4 file/calendar/management and output/reporting behavior to accepted M0-M5/PPA owners. Preserve the Reference engine, capsule, and F-CI11/F-CI13 source ports until every dependent qualification has a replacement authority."
+}

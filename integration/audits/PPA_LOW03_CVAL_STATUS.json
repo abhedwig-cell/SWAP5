@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_low03.cval.status.v1",
+  "work_unit": "PPA-LOW03-CVAL",
+  "parent_work_unit": "PPA-LOW03",
+  "status": "PROFILE_CVAL_SOURCE_ORACLE_PASS_RUNTIME_HELD",
+  "baseline": "6a4fc0784",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; profile constitutive calculation, solver, groundwater state, accepted flux mass, restart and runtime routes unchanged",
+  "source_census": "integration/audits/PPA_LOW03_CVAL_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_LOW03_CVAL_PREREGISTRATION.json",
+  "implementation": "src/adapter/mod_ppa_low03_cval_profile.f90",
+  "test": "tests/fapp/test_ppa_low03_cval_profile.f90",
+  "gate": "tests/fapp/run_ppa_low03_cval_profile.sh",
+  "test_result": {
+    "state": "PASS_DIRECT_COMPILER_O0_O2",
+    "compiler": "gfortran 13.3.0 on Windows UCRT64",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_LOW03_CVAL_PROFILE_SOURCE_ORACLE_100000=PASS",
+      "PPA_LOW03_CVAL_NODE_AND_SATURATED_THICKNESS=PASS",
+      "PPA_LOW03_CVAL_RESVERT_SWITCH_AND_A_B_A=PASS",
+      "PPA_LOW03_CVAL_INVALID_PROFILE_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "o0_executable_sha256": "be2ee39a9731bded1d2a9c571a24777a9f2fddcc6b23f9b0883882f747f169fb",
+    "o2_executable_sha256": "d891402945048203fbd1aefad1eea7c4a2b4343f41ba60f0b86d910c09803cae",
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "next_action": "Keep implicit HeadCalc regime and profile constitutive owner as separate open slices; continue to another independent capability.",
+  "recovery_point": "this status and PPA_LOW03_CVAL_SOURCE_CENSUS.json"
+}

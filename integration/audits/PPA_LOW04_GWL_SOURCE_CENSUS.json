@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.ppa_low04_gwl.source_census.v1",
+  "work_unit": "PPA-LOW04-GWL",
+  "snapshot": "B1.11",
+  "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "members": {
+    "SWAP/readswap.f90": {
+      "sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+      "bytes": 61300,
+      "evidence": [
+        "SWBOTB=4 requires SWQHBOT=1 or 2. In SWQHBOT=1 mode, COFQHA is read in [-100,100], COFQHB in [-1,1], and optional COFQHC in [-10,10]; presence of COFQHC activates the additive term."
+      ]
+    },
+    "SWAP/boundbottom.f90": {
+      "sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+      "bytes": 6054,
+      "evidence": [
+        "For SWBOTB=4/SWQHBOT=1 the exact law is qbot=COFQHA*DEXP(COFQHB*DABS(GWL)), then add COFQHC only when SWCOFQHC=1 (lines 108-112)."
+      ]
+    },
+    "SWAP/headcalc.f90": {
+      "sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "bytes": 26096,
+      "evidence": [
+        "The groundwater level GWL is consumed as current solver/boundary state; this equation alone does not specify a normal application state owner or when that value is committed."
+      ]
+    }
+  },
+  "scope_verdict": "The exponential coefficient branch is a pure exact-source law. SWQHBOT=2 table input, headcalc/groundwater ownership, temporal evaluation, mass transfer and accepted-step publication remain outside this slice.",
+  "production_admission": "NONE"
+}

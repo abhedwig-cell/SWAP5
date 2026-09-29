@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.ppa_low03.aquifer-table.source-census.v1",
+  "work_unit": "PPA-LOW03-AQUIFER-TABLE",
+  "source_tree": "reconstructed B1.11 source",
+  "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+  "sources": {
+    "boundbottom.f90": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+    "readswap.f90": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "functions.f90": "b32dee3a368d4a425eb03506b5336753a12c87d01cf95c05a55fa6d5cc00527"
+  },
+  "source_law": {
+    "inputs": "DATE3 and HAQUIF, with HAQUIF in [-10000,1000]",
+    "packing": "HAQTAB(2*i-1)=DATE3(i); HAQTAB(2*i)=HAQUIF(i)",
+    "evaluation": "deepgw = AFGEN(HAQTAB, t1900+dt)"
+  },
+  "interpretation": "Pure SW3=2 time-table forcing; no raw date parser, clock owner or groundwater/aquifer runtime route is admitted."
+}

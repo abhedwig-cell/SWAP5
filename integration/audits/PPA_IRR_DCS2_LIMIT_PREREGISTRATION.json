@@ -1,0 +1,10 @@
+{
+  "work_unit": "PPA-IRR-DCS2-LIMIT",
+  "baseline": "556f331aa",
+  "source": "B1.11 irrigation.f90 SHA256 65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1, lines 340-346 and 584-596",
+  "contract": "Append default-disabled depth_limit_enabled, minimum_depth_mm and maximum_depth_mm to scheduled_irrigation_parameters_t. When enabled, require finite minimum in [0,100] mm and maximum in [minimum,1e7] mm, matching source input bounds. After DCS2 interpolation, apply max(depth,minimum*0.1), then min(depth,maximum*0.1), before solute overirrigation and rate/duration selection. Preserve interpolated_depth as the raw table diagnostic. Disabled fields are ignored and existing behavior is exact.",
+  "ownership": "Pure candidate process only. No new state, transaction, calendar, mass or restart owner. Existing active event keeps its stored rate; limits apply only at event selection. Appended fields preserve existing defaults; no production admission is implied.",
+  "gates": "100000 deterministic source-order comparisons at O0/O2; disabled preservation, min/max/equality, zero depth lifted by positive minimum, solute bump after upper limit, rate fallback, split/retry continuity, invalid finite/nonfinite bounds. Replay existing scheduled solute, rate fallback, split and TCS7/TCS8 gates.",
+  "invariants": [3,7,13,23,29],
+  "non_goals": "DCS1 scheduling integration, parser/calendar, soil/solute accepted booking, whole-column restart or canonical admission."
+}

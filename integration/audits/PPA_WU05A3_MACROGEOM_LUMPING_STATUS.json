@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_lumping.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-LUMPING",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@38ba95008e3207854e27ed352704af4a9313a93f",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROGEOM_LUMPING_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_lumping.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_lumping_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_lumping_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["same-bottom IC chain", "distinct bottoms", "Ah merge true/false threshold", "invalid shape fail-closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; ICpBtDmPot and domain lumping only; full MACROGEOM, production owner, accepted mass, retry, restart and A4 integration remain open",
+  "next_action": "Continue A3 by tracing the final MACROGEOM static-domain volume allocation and per-domain polygon geometry handoffs.",
+  "blockers": []
+}

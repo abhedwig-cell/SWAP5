@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.ppa_irr_window.status.v1",
+  "work_unit": "PPA-IRR-WINDOW",
+  "parent_work_unit": "PPA-IRR-FIXED-APPLICATION",
+  "status": "SCHEDULED_IRRIGATION_WINDOW_SOURCE_ORACLE_PASS_CALENDAR_HELD",
+  "baseline": "codex/ppa-swap431-functional-gap-register@b3f5b6ec1",
+  "preregistration": "integration/audits/PPA_IRR_WINDOW_PREREGISTRATION.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; isolated date-window predicate only; no date decoder, crop calendar owner, scheduled event selection, accepted mass, restart or production admission",
+  "implementation": "src/process/mod_ppa_irr_window.f90::scheduled_irrigation_window_open",
+  "test": "tests/fapp/test_ppa_irr_window_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_irr_window_source_oracle.sh",
+  "source_identity": {
+    "snapshot": "B1.11 corrected-reference",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "source_lines": "438-449",
+    "equations": [
+      "crop-relative window: (t1900-tstairryrx)>1e-3 AND (t1900-tendirryrx)<=1e-3",
+      "absolute-date window: (t-tstairrig)>=-1e-3 AND (t-tendirig)<=1e-3"
+    ]
+  },
+  "test_result": {
+    "state": "PASS_DIRECT_GFORTRAN_O0_O2",
+    "compiler": "GNU Fortran 16.2.0 Rev4 (UCRT64)",
+    "optimization_levels": ["-O0", "-O2"],
+    "vectors_per_branch_per_build": 100000,
+    "o2_transcript_sha256": "1502af253a5ea5ff69205f15f99efa08b34365ea25553fa1fd7a90330f604784",
+    "markers": [
+      "PPA_IRR_CROP_YEAR_WINDOW_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_ABSOLUTE_WINDOW_SOURCE_ORACLE_100000=PASS",
+      "PPA_IRR_WINDOW_TOLERANCE_OPERATOR_BOUNDARIES=PASS",
+      "PPA_IRR_WINDOW_SOURCE_ORACLE=PASS",
+      "PPA_IRR_WINDOW_O0_O2_IDENTITY=PASS"
+    ],
+    "o0_o2_transcript_identity": true
+  },
+  "qualification_status": "NOT_QUALIFIED; source equation only; crop-year date construction, calendar ingestion, selection gates and event/runtime ownership remain unproven",
+  "next_action": "Continue independent source-bound irrigation eligibility equations; keep calendar ownership and production admission held.",
+  "recovery_point": "completed fixed-application checkpoint b3f5b6ec1",
+  "blockers": ["B1.11 calendar date construction and crop-year boundaries have no qualified SWAP5 owner; this equation oracle intentionally consumes caller-supplied dates only."]
+}

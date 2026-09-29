@@ -1,0 +1,21 @@
+{
+  "work_unit": "PPA-WU05-A3-CONSERVATIVE-FLUX-PROPOSAL",
+  "baseline": "f22f45af8",
+  "phase": "PERSISTED_PROPOSAL_TESTS_PASSED",
+  "recovery_point": "002ee710576323dcab63490f502e33e1b59b9067",
+  "test_result": "Persisted gate PASS O0/O2, identical transcripts, warnings-as-errors, bounds/floating checks; all 512 manufactured cases match prescribed faces exactly; localized drainage, redistribution and boundary/input guards pass",
+  "focused_result": "351c21041fdba73fa737bf6a38b06a4c47488d6e O0/O2 PASS with identical transcripts, warnings-as-errors and runtime checks",
+  "extended_test": "512 manufactured face-flux cases with dyadic data, sign reversals, four time steps and exact zero-tolerance boundary/face comparisons; invalid time, tolerance and shape guards",
+  "gate": "tests/fapp/run_ppa_wu05a3_conservative_flux.ps1",
+  "authority": "Core invariant 13 and PPA_WU05A3_FLUX_TRANSITION_STATUS.json cell-continuity findings",
+  "equation": "q(i+1)=q(i)-matrix_exchange(i)-rapid_drainage(i)-(water_new(i)-water_old(i))/dt",
+  "scope": "Diagnostic candidate flux reconstruction from explicit complete profiles and rates; n+1 faces; prescribed lower flux checked independently",
+  "status_contract": "0 consistent; 1 invalid input; 2 lower-boundary mismatch. Mismatch retains diagnostic flux/residual but must not be accepted. No input or committed state is modified.",
+  "tolerance": "Caller-supplied nonnegative absolute flux tolerance; this is not a production acceptance policy",
+  "excluded": ["Computing water profiles or physical rates", "Changing B1.11", "SWMBF mode policy", "Production acceptance or A4 admission"],
+  "tests_planned": ["Distinct water fronts", "Localized rapid drainage", "Redistribution and net storage loss", "Inconsistent prescribed lower flux", "Invalid input", "O0/O2 equality and bounds/floating checks"],
+  "implementation": "src/process/mod_ppa_wu05a3_conservative_flux.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_conservative_flux.f90",
+  "qualified": false,
+  "next_action": "Compose the proposed diagnostic with storage/wetting candidates and verify expected lower-boundary consistency across changing profiles before any corrected-reference or runtime admission"
+}

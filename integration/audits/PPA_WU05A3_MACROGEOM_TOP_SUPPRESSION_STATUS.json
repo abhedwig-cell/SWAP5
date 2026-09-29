@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a3_macrogeom_top_suppression.status.v1",
+  "work_unit": "PPA-WU05-A3-MACROGEOM-TOP-SUPPRESSION",
+  "parent_work_unit": "PPA-WU05-A",
+  "status": "ISOLATED_SOURCE_ORACLE_PASSED",
+  "baseline": "codex/ppa-swap431-functional-gap-register@dd2213fb346f792a229b4bd1840371ed82c7ab91",
+  "preregistration": "integration/audits/PPA_WU05A3_MACROGEOM_TOP_SUPPRESSION_PREREGISTRATION.json",
+  "source_census": "integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+  "implementation": "src/process/mod_ppa_wu05a3_macrogeom_top_suppression.f90",
+  "test": "tests/fapp/test_ppa_wu05a3_macrogeom_top_suppression_source_oracle.f90",
+  "gate": "tests/fapp/run_ppa_wu05a3_macrogeom_top_suppression_source_oracle.sh",
+  "test_result": {
+    "compiler": "GNU Fortran 16.2.0 UCRT64",
+    "optimization": ["O0", "O2"],
+    "cases": ["IcTopMp=3 suppression", "first active/deeper cells preserved", "IcTopMp=1 no-op", "invalid upper bound fail-closed"],
+    "required_checks": ["-Wall -Wextra -Werror", "-fcheck=all", "-ffpe-trap=invalid,zero,overflow", "O0/O2 transcript identity"]
+  },
+  "qualified": false,
+  "production_admission": "NONE; section-E suppression only; full MACROGEOM, owner/runtime, mass, retry, restart and A4 remain open",
+  "next_action": "Compare MACROGEOM section F/G per-cell DiamPolyg handoffs with the separate polygon-diameter source oracle; then inventory MACROINIT/STATE routines without claiming production admission.",
+  "blockers": []
+}

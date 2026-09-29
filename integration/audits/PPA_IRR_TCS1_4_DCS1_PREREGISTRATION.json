@@ -1,0 +1,17 @@
+{
+  "work_unit": "PPA-IRR-TCS1-4-DCS1",
+  "baseline": "e2f15cce2",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "objective": "Compose the existing TCS1-4 timing laws with checked profile-derived DCS1 depth, using the same committed water view and event owner.",
+  "authority": ["PPA_IRR_TCS2_4_PROFILE_STATUS.json", "PPA_IRR_TCS1_4_COMPOSITION_STATUS.json", "PPA_IRR_DEFICIT_CHECKED_STATUS.json"],
+  "design": "Introduce an explicit profile-aware TCS1-4/DCS1 entry. Obtain deficit and AWLH/AWMH/AWAH in one checked aggregation. TCS1 retains supplied daily stress observations; TCS2-4 consume derived water aggregates. Pass derived deficit in a local request copy and typed timing selection to the shared scheduled process, retaining its DCS1 correction, rainfall reduction, clipping, rate and event equations. Do not allow the existing profile-free TCS1-4 entry to accept DCS1 accidentally. Pending and ineligible intervals bypass new aggregation and timing evaluation. Bootstrap wiring follows source gates and uses its existing snapshot only.",
+  "invariants": [3, 7, 13, 21, 22, 28],
+  "gates": [
+    "Re-read DCS1 and timing source-oracle contracts before implementation; compare combined gift depth and duration against independent source equations for all four criteria.",
+    "Positive and zero clipped depth, correction interpolation, rainfall switch, timing false, fixed precedence and invalid geometry/table cases.",
+    "Pending split, retry and completion ignore unused new profile/timing input without mutating the base event.",
+    "Keep existing profile-free DCS1 rejection and TCS1-4/DCS2 fixtures passing.",
+    "Then test real hydraulic mass, accepted-only publication, decoded restart, invalid-input preflight and internally progressed rollback at O0/O2 with exact transcript identity."
+  ],
+  "non_goals": "Automatic crop/root geometry, TCS1 daily-stress accumulation, alternate state owner, numerical acceptance changes, calendar/parser, surface delivery or canonical admission."
+}

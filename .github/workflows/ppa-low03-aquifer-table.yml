@@ -1,0 +1,27 @@
+name: PPA-LOW03 B1.11 deep-aquifer table forcing
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ppa-low03-aquifer-table.yml'
+      - 'src/adapter/mod_ppa_low03_aquifer_table.f90'
+      - 'tests/fapp/test_ppa_low03_aquifer_table.f90'
+      - 'tests/fapp/run_ppa_low03_aquifer_table.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-low03-aquifer-table.yml'
+      - 'src/adapter/mod_ppa_low03_aquifer_table.f90'
+      - 'tests/fapp/test_ppa_low03_aquifer_table.f90'
+      - 'tests/fapp/run_ppa_low03_aquifer_table.sh'
+
+jobs:
+  aquifer-table-law:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+      - name: Compile and replay the SW3=2 AFGEN source law
+        run: bash tests/fapp/run_ppa_low03_aquifer_table.sh

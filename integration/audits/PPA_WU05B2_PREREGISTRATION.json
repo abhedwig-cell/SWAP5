@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-B2",
+  "title": "Typed pure frost factor and hydraulic conductivity effect oracle",
+  "protocol": "PIN_B1_SOURCE -> IMPLEMENT_PURE_FACTORS -> EXACT_ORACLE -> O0_O2_REPLAY -> HOLD_RUNTIME_COMPOSITION",
+  "parent_authorities": [
+    "integration/audits/PPA_WU05B_STATUS.json on origin/audit/ppa-wu05b-frost-authority@3cc654247",
+    "integration/audits/PPA_WU05B1_SOURCE_CENSUS.json"
+  ],
+  "source": {
+    "snapshot": "B1.11",
+    "frozencond_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+    "MvG_source": "SWAP/MOD_MvG_functions.f90",
+    "temperature_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+    "derivative_authority": "SWAP-011 corrected B1.11 base dK/dh"
+  },
+  "scope": [
+    "stateless RFCP factor from SWFROST, TFROSTSTA, TFROSTEND and a read-only temperature profile",
+    "K_eff = K_base*RFCP + K_floor*(1-RFCP)",
+    "dK_eff/dh = dK_base/dh*RFCP with SWAP-011 governing the base derivative",
+    "source-order threshold semantics including equality and reversed/equal threshold cases"
+  ],
+  "non_goals": [
+    "production frost runtime or Richards binding",
+    "top/bottom/drainage boundary composition",
+    "restart/retry qualification or new committed frost state",
+    "snow/frost composition",
+    "root frost stress",
+    "macropore/frost combination",
+    "ice content, latent heat or new phase-change physics"
+  ],
+  "pass_conditions": [
+    "100,000 deterministic factor inputs bitwise match the exact B1.11 FrozenCond factor branch",
+    "K and dK/dh transformations match the B1.11 algebra without changing SWAP-011 base derivative ownership",
+    "SWFROST=0 remains an identity transformation",
+    "temperature threshold/equality behavior and malformed-input fail-closed cases pass",
+    "O0/O2 output transcripts are identical",
+    "production runtime remains unchanged and fail-closed"
+  ]
+}

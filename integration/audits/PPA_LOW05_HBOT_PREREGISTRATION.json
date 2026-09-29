@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-LOW05-HBOT",
+  "title": "Pure B1.11 SWBOTB=5 DATE5/HBOT5 table law",
+  "protocol": "PIN_AFGEN_AND_SWBOTB5_SOURCE -> NORMALIZE_TYPED_PAIRS -> 100000_SOURCE_ORACLE -> O0_O2_REPLAY -> HOLD_APPLICATION_ROUTE",
+  "parent_authorities": [
+    "integration/audits/PPA_LOW05_HBOT_SOURCE_CENSUS.json",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "integration/audits/PPA_WU02_STATUS.json"
+  ],
+  "scope": [
+    "typed date/head pair table and B1.11 AFGEN endpoint/interpolation law",
+    "exact lower/upper clamp, knot and linear-segment semantics",
+    "source-oracle comparison for normalized strictly increasing tables"
+  ],
+  "non_goals": [
+    "raw SWP DATE5/HBOT5 parsing or calendar conversion",
+    "prescribed-head solver binding, bottom conductivity/macropore composition or qbot derivation",
+    "groundwater mode-5 provider reuse or normal application ownership contract",
+    "accepted mass, transaction/retry, restart or production admission"
+  ],
+  "pass_conditions": [
+    "100000 deterministic packed-table queries bitwise match B1.11 AFGEN",
+    "lower/upper clamps, knots, interpolation, A/B/A and invalid table fail-closed pass",
+    "O0/O2 transcripts are identical",
+    "no solver, groundwater or mass owner changes"
+  ]
+}

@@ -1,0 +1,19 @@
+name: PPA-WU05-A2 macropore state architecture
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05a2-macropore-state.yml'
+      - 'src/adapter/mod_ppa_wu05a2_macropore_state.f90'
+      - 'tests/fapp/test_ppa_wu05a2_macropore_state.f90'
+      - 'tests/fapp/run_ppa_wu05a2_macropore_state.sh'
+      - 'integration/audits/PPA_WU05A2_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  typed-state-and-rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and verify exact rollback/restart contracts
+        run: bash tests/fapp/run_ppa_wu05a2_macropore_state.sh

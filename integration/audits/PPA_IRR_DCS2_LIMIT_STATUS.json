@@ -1,0 +1,13 @@
+{
+  "work_unit": "PPA-IRR-DCS2-LIMIT",
+  "status": "BOUNDED_TYPED_PROCESS_SOURCE_COMPOSITION_PASS_NOT_CANONICALLY_ADMITTED",
+  "tested_commit": "91e62d47b",
+  "preregistration": "integration/audits/PPA_IRR_DCS2_LIMIT_PREREGISTRATION.json",
+  "implementation": "src/process/mod_irrigation_process.f90: appended default-disabled depth bounds; source-ordered min/max clamp before solute bump and rate/duration; finite/source-range validation before event construction. No state owner or default change.",
+  "gate": "tests/fapp/run_ppa_irr_dcs2_limit.ps1",
+  "result": "PASS O0/O2 with bounds/FPE checks: 100000 deterministic source-order cases with bitwise gift comparisons; zero gift raised by positive minimum, equal bounds, post-cap solute bump, selected rate/duration, split/retry conservation, stored active-event rate preservation, six invalid bound cases, ignored disabled NaN fields. Output SHA256 D79A7ABF27E94B9F6620E6E22EA03038FB78CF0B64AFBDD06510F581D288799D. Build swap-irr-dcs2-limit-09baad8be17d479da8eeaec42349bbf8.",
+  "preservation": "Same runner replays existing scheduled-solute-overirrigation, scheduled-rate-fallback, scheduled-split-retry and TCS7/TCS8 DCS2 source-oracle gates; all five PASS O0/O2 with identical per-test transcripts. At 9c03022ee Windows replay of F-APP07 process plus exact 110 Hupsel irrigation intervals also PASS O0/O2 (18 SWINTER0, 92 SWINTER3); frozen compressed and expanded fixture hashes checked. Build swap-fapp07-e811459bd8a944068ae93fbcc92fa5e6, composition output SHA256 F8E5C65B67C933E9FA91AB4F8189667F7CE8AD3F89A2F9C3A9533AA9E72C22BE. Runner derives composition sources from the shell gate and retains the static process/binding checks.",
+  "scope": "Pure typed candidate process only. Raw interpolated_depth diagnostic retained. Bounds use source mm inputs, applied once at selection; active events retain their selected rate. Existing disabled profile unchanged.",
+  "limits": "No parser/calendar, DCS1 scheduling integration, new public application configuration, accepted soil/solute mass booking, whole-column restart or canonical admission. Passing F-APP07 preservation does not admit the new option into that frozen scope.",
+  "next": "Compose remaining source-bound scheduled inputs within the existing candidate-state owner; qualify accepted water/solute booking and restart before production admission. ATM02 late continuation remains separately open and must not block independent coverage."
+}
