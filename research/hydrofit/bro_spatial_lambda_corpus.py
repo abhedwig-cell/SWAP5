@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse,json,time,xml.etree.ElementTree as ET
+import argparse,hashlib,json,time,xml.etree.ElementTree as ET
 from pathlib import Path
 from bro_bhrp_fetch import fetch,DEFAULT_BASE
 def local(t): return t.rsplit('}',1)[-1]
@@ -47,7 +47,7 @@ def main():
   if "bodemfysischOnderzoek" not in vals("surveyPurpose"): continue
   bodem+=1
   proc=vals("modellingProcedure"); meth=vals("modellingMethod")
-  for iv in (e for e in root.iter() if local(e.tag)=="InvestigatedInterval"):
+  for iv_ordinal,iv in enumerate(e for e in root.iter() if local(e.tag)=="InvestigatedInterval"):
    begin=next(((e.text or '').strip() for e in iv.iter() if local(e.tag)=="beginDepth"),None); end=next(((e.text or '').strip() for e in iv.iter() if local(e.tag)=="endDepth"),None)
    hyd=shape=None
    for da in (e for e in iv.iter() if local(e.tag)=="DataArray"):
@@ -57,7 +57,7 @@ def main():
     elif et=="ShapeHydraulicConductivityCurve": shape=v
    if hyd and shape:
     shp=[float(x) for x in shape.split(",")]
-    rec.append({"bro_id":bid,"begin_depth":begin,"end_depth":end,"lambda":shp[3],"observations":len(hyd.split()),"procedure":proc[0] if proc else None,"method":meth[0] if meth else None})
+    rec.append({"bro_id":bid,"begin_depth":begin,"end_depth":end,"hyd_sha256":hashlib.sha256(hyd.encode()).hexdigest(),"interval_ordinal":iv_ordinal,"lambda":shp[3],"observations":len(hyd.split()),"procedure":proc[0] if proc else None,"method":meth[0] if meth else None})
  Path(a.out).write_text(json.dumps({"candidates":frozen,"errors":errors,"capped":capped,"inspected":min(a.inspect_limit,len(frozen)),"fetch_failures":fail,"bodemfysisch_objects":bodem,"intervals":rec},indent=2)+"\n")
  print(f"BRO_SPATIAL_CORPUS|INSPECTED={min(a.inspect_limit,len(frozen))}|FETCH_FAIL={fail}|BODEM={bodem}|INTERVALS={len(rec)}")
  if rec:
