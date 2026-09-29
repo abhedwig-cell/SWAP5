@@ -4,8 +4,8 @@ from pathlib import Path
 
 exe=Path(sys.argv[1]); bank=Path(sys.argv[2])
 data=json.loads(bank.read_text()); mats={x["id"]:x for x in data["materials"]}
-dts=[0.00025,0.000125,0.0000625,0.00003125,0.000015625,0.0000078125]
-routes=("HEAD","RUNOFF"); horizon=.05; dtop=10.; pmax=.05; rsro=.05; dz=10.0; max_accept=512
+dts=[0.00025,0.000125,0.0000625,0.00003125]
+routes=("HEAD","RUNOFF"); horizon=.12; dtop=10.; pmax=.05; rsro=.05; dz=10.0; max_accept=4096
 
 def fields(line):
     return {k:v for k,v in (x.split("=",1) for x in line.split("|")[1:])}
