@@ -96,16 +96,20 @@ recovery="""    if(nl14r_handoff_active .and. step==nl14r_handoff_step+1 .and. &
            '|RETRY_SCALE=',0.5_real64
 
       dt=0.5_real64*nl14r2_nominal_dt
+      nl14r2_retry_advised=.false.
       call advance_tg_subdiv(step)
       write(*,'(*(g0))') 'F_PE_NLGLOB14R2_HALF|STEP=',step,'|HALF=1', &
-           '|ELIGIBLE=',merge(1,0,eligible),'|SAT_MODE=',merge(1,0,nl14d_saturated_mode), &
+           '|ELIGIBLE=',merge(1,0,eligible),'|RETRY=',merge(1,0,nl14r2_retry_advised), &
+           '|SAT_MODE=',merge(1,0,nl14d_saturated_mode), &
            '|SAT_COUNT=',count(state%pressure_head>=0.0_real64 .and. state%water_content==ts), &
            '|TERMINAL=',trim(terminal_reason),'|CUM_LEDGER=',cumledger
 
       if(eligible)then
+        nl14r2_retry_advised=.false.
         call advance_tg_subdiv(step)
         write(*,'(*(g0))') 'F_PE_NLGLOB14R2_HALF|STEP=',step,'|HALF=2', &
-             '|ELIGIBLE=',merge(1,0,eligible),'|SAT_MODE=',merge(1,0,nl14d_saturated_mode), &
+             '|ELIGIBLE=',merge(1,0,eligible),'|RETRY=',merge(1,0,nl14r2_retry_advised), &
+             '|SAT_MODE=',merge(1,0,nl14d_saturated_mode), &
              '|SAT_COUNT=',count(state%pressure_head>=0.0_real64 .and. state%water_content==ts), &
              '|TERMINAL=',trim(terminal_reason),'|CUM_LEDGER=',cumledger
       end if
