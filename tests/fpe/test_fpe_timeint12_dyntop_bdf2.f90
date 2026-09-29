@@ -126,11 +126,11 @@ contains
     s%ponding_depth=0.0_real64; s%groundwater_level=-999.0_real64
   end subroutine
 
-  subroutine solve_one(s0,theta_prevprev,step_dt,previous_dt,use_bdf2,s1,regime,runoff_depth,eq_res, &
+  subroutine solve_one(s0,theta_prevprev,step_dt,previous_dt,apply_bdf2,s1,regime,runoff_depth,eq_res, &
                        nl,back,jac,lin,solve_ok)
     type(soil_water_physical_state_t),intent(in)::s0
     real(real64),intent(in)::theta_prevprev(:),step_dt,previous_dt
-    logical,intent(in)::use_bdf2
+    logical,intent(in)::apply_bdf2
     type(soil_water_physical_state_t),intent(out)::s1
     integer,intent(out)::regime,nl,back,jac,lin
     real(real64),intent(out)::runoff_depth,eq_res
@@ -146,7 +146,7 @@ contains
 
     timeint02_thetam2=0.0_real64
     timeint02_thetam2(1:numnod)=theta_prevprev
-    if(use_bdf2)then
+    if(apply_bdf2)then
       timeint02_mode=2
       r=step_dt/previous_dt
       timeint05_a0=(1.0_real64+2.0_real64*r)/(1.0_real64+r)
@@ -223,7 +223,7 @@ contains
     real(real64),allocatable::origin_theta(:)
     integer::reg,nl,back,jac,lin,be_reg,be_nl,be_back,be_jac,be_lin
     real(real64)::run,eres,be_run,be_eres
-    logical::use_bdf,transition,be_ok
+    logical::apply_bdf,transition,be_ok
 
     origin=state
     allocate(origin_theta(numnod)); origin_theta=origin%water_content
@@ -240,8 +240,8 @@ contains
       return
     end if
 
-    use_bdf=history_valid
-    if(.not.use_bdf)then
+    apply_bdf=history_valid
+    if(.not.apply_bdf)then
       call solve_one(origin,theta_hist,dt,prev_dt,.false.,candidate,reg,run,eres,nl,back,jac,lin,ok)
       call require(ok,'bootstrap BE solve failed')
       call add_work(nl,back,jac,lin)
