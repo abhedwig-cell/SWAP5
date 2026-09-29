@@ -162,7 +162,7 @@ contains
     real(real64),intent(out)::analytic,finite,fixed_id
     character(len=*),intent(out)::base_route
     logical,intent(out)::valid
-    type(b110_dynamic_top_boundary_result_t)::r0,rp,rm
+    type(b110_dynamic_top_boundary_result_t)::r0,rp,rm,rf
     real(real64)::theta0,thetap,thetam,k_sat,k_top,dk_top,kf,dkf,a,p1,p1p,denom,aprime,fixed_deriv
     logical::ok0,okp,okm,dir_ok,kok,fixed_ok
     character(len=64)::dir_route,fixed_route
