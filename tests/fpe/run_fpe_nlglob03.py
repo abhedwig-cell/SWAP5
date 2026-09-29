@@ -91,7 +91,7 @@ for mid in ("B01","B12","O05","O14"):
                       "process_ok":cp.returncode==0,"iterations":len(groups)})
         for g in groups:
           if not g: continue
-          it=int(g[0]["ITER"]); s=step_by_iter.get(it); rv=vec_by_iter.get(it)
+          it=int(g[0]["ITER"]); s=step_by_iter.get(it); rv=parse_vec(vec_by_iter.get(it))
           if s is None: continue
           vec_expected+=1
           if rv is None: continue
