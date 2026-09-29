@@ -12,6 +12,8 @@ on:
       - 'research/elastic/extract_bhrgt_mechanical_targets.py'
       - 'docs/performance/F-PE-ELASTIC10E_TARGET_EXTRACTION_PREREGISTRATION.md'
       - 'docs/performance/evidence/F-PE-ELASTIC10E_OBJECT_AUTHORITY.json'
+      - 'docs/performance/evidence/F-PE-ELASTIC10E_DETERMINATION_AUTHORITY.json'
+      - 'docs/performance/F-PE-ELASTIC10E_R1_DETERMINATION_IDENTITY_PREREGISTRATION.md'
       - 'docs/performance/F-PE-ELASTIC11A_TARGET_SCHEMA_RESULT.md'
       - '.github/workflows/f-pe-elastic10e-targets.yml'
   workflow_dispatch:
@@ -44,11 +46,20 @@ jobs:
           repository: abhedwig-cell/SWAP5
           run-id: 36530434453
 
+      - name: Download pre-reconciliation target corpus
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10e-mechanical-targets
+          path: ${{ runner.temp }}/elastic10e-prior
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36531232195
+
       - name: Extract targets twice independently
         run: |
           mkdir -p "$RUNNER_TEMP/elastic10e-a" "$RUNNER_TEMP/elastic10e-b"
           for out in "$RUNNER_TEMP/elastic10e-a" "$RUNNER_TEMP/elastic10e-b"; do
-            python research/elastic/extract_bhrgt_mechanical_targets.py               --objects "$RUNNER_TEMP/elastic10d"               --schemas "$RUNNER_TEMP/elastic11a"               --authority docs/performance/evidence/F-PE-ELASTIC10E_OBJECT_AUTHORITY.json               --out "$out"
+            python research/elastic/extract_bhrgt_mechanical_targets.py               --objects "$RUNNER_TEMP/elastic10d"               --schemas "$RUNNER_TEMP/elastic11a"               --authority docs/performance/evidence/F-PE-ELASTIC10E_OBJECT_AUTHORITY.json               --determination-authority docs/performance/evidence/F-PE-ELASTIC10E_DETERMINATION_AUTHORITY.json               --out "$out"
           done
 
       - name: Require deterministic extraction
@@ -56,6 +67,31 @@ jobs:
           diff -ru "$RUNNER_TEMP/elastic10e-a" "$RUNNER_TEMP/elastic10e-b"
           echo "F_PE_ELASTIC10E_T3_DETERMINISM=PASS"
           sha256sum "$RUNNER_TEMP/elastic10e-a/"*
+
+      - name: Require pre-reconciliation numerical postimage preservation
+        run: |
+          python - <<'PY'
+          import json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])
+          old=json.loads((root/"elastic10e-prior/targets.json").read_text())
+          new=json.loads((root/"elastic10e-a/targets.json").read_text())
+          keys=(
+            "bro_id","determination_index","route","step_index",
+            "stress_start_kpa","stress_end_kpa","strain_start_pct","strain_end_pct",
+            "delta_stress_pa_signed","delta_strain_signed","mv_pa_inv","ssk_m_inv","ssk_cm_inv",
+          )
+          def project(rows):
+              return sorted(tuple(r.get(k) for k in keys) for r in rows)
+          if project(old)!=project(new):
+              raise SystemExit("F_PE_ELASTIC10E_R1_NUMERICAL_POSTIMAGE=FAIL")
+          if len(new)!=47:
+              raise SystemExit(f"F_PE_ELASTIC10E_R1_TARGET_COUNT_FAIL={len(new)}")
+          routes={x:sum(r["route"]==x for r in new) for x in ("R2","R3")}
+          if routes!={"R2":29,"R3":18}:
+              raise SystemExit("F_PE_ELASTIC10E_R1_ROUTE_COUNTS_FAIL="+repr(routes))
+          print("F_PE_ELASTIC10E_R1_NUMERICAL_POSTIMAGE=PASS")
+          print("F_PE_ELASTIC10E_R1_TARGETS=47|R2=29|R3=18")
+          PY
 
       - name: Upload target corpus evidence
         uses: actions/upload-artifact@v4
