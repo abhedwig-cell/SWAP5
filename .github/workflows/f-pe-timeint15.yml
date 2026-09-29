@@ -1,0 +1,31 @@
+name: F-PE-TIMEINT15 conservative one-step integration
+
+on:
+  push:
+    branches:
+      - work/f-pe-timeint15-conservative-one-step
+    paths:
+      - 'docs/performance/F-PE-TIMEINT15_AUTHORITY_RECONCILIATION.md'
+      - 'docs/performance/F-PE-TIMEINT15_PREREGISTRATION.md'
+      - 'tests/fpe/materialize_fpe_timeint15_trap.py'
+      - 'tests/fpe/test_fpe_timeint15_trap_order.f90'
+      - 'tests/fpe/run_fpe_timeint15_p0.py'
+      - 'tests/fpe/run_fpe_timeint15_p0.sh'
+      - '.github/workflows/f-pe-timeint15.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smooth-order:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run conservative trapezoidal P0
+        run: bash tests/fpe/run_fpe_timeint15_p0.sh
