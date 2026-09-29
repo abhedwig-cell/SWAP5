@@ -1,6 +1,9 @@
 name: F-PE-TIMEINT14 conservative BDF2 attribution
 
 on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
   push:
     branches:
       - work/f-pe-timeint14-conservative-bdf2
