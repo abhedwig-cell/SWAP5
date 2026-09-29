@@ -1,0 +1,64 @@
+name: F-PE-ELASTIC10E BHR-GT mechanical target extraction
+
+concurrency:
+  group: f-pe-elastic10e-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/extract_bhrgt_mechanical_targets.py'
+      - 'docs/performance/F-PE-ELASTIC10E_TARGET_EXTRACTION_PREREGISTRATION.md'
+      - 'docs/performance/evidence/F-PE-ELASTIC10E_OBJECT_AUTHORITY.json'
+      - 'docs/performance/F-PE-ELASTIC11A_TARGET_SCHEMA_RESULT.md'
+      - '.github/workflows/f-pe-elastic10e-targets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download frozen ELASTIC10D object authority
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10d-bhrgt-grid
+          path: ${{ runner.temp }}/elastic10d
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36529870974
+
+      - name: Download frozen ELASTIC11A schema authority
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic11a-target-schemas
+          path: ${{ runner.temp }}/elastic11a
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36530434453
+
+      - name: Extract targets twice independently
+        run: |
+          mkdir -p "$RUNNER_TEMP/elastic10e-a" "$RUNNER_TEMP/elastic10e-b"
+          for out in "$RUNNER_TEMP/elastic10e-a" "$RUNNER_TEMP/elastic10e-b"; do
+            python research/elastic/extract_bhrgt_mechanical_targets.py               --objects "$RUNNER_TEMP/elastic10d"               --schemas "$RUNNER_TEMP/elastic11a"               --authority docs/performance/evidence/F-PE-ELASTIC10E_OBJECT_AUTHORITY.json               --out "$out"
+          done
+
+      - name: Require deterministic extraction
+        run: |
+          diff -ru "$RUNNER_TEMP/elastic10e-a" "$RUNNER_TEMP/elastic10e-b"
+          echo "F_PE_ELASTIC10E_T3_DETERMINISM=PASS"
+          sha256sum "$RUNNER_TEMP/elastic10e-a/"*
+
+      - name: Upload target corpus evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic10e-mechanical-targets
+          path: ${{ runner.temp }}/elastic10e-a
