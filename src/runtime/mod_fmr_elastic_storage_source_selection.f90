@@ -29,7 +29,8 @@ module mod_fmr_elastic_storage_source_selection
 
 contains
 
-  subroutine select_fmr_elastic_storage_source(user_supplied, user_value_cm_inv, generated_requested, generated_prior, selection, status)
+  subroutine select_fmr_elastic_storage_source(user_supplied, user_value_cm_inv, generated_requested, &
+       generated_prior, selection, status)
     logical, intent(in) :: user_supplied
     real(real64), intent(in) :: user_value_cm_inv
     logical, intent(in) :: generated_requested
