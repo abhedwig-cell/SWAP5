@@ -1,0 +1,40 @@
+name: F-PE-NLGLOB14S split ownership feasibility
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14S*.md'
+      - 'tests/fpe/run_fpe_nlglob14s*.py'
+      - 'tests/fpe/run_fpe_nlglob14s*.sh'
+      - '.github/workflows/f-pe-nlglob14s.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob14s-split-ownership-feasibility
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14S*.md'
+      - 'tests/fpe/run_fpe_nlglob14s*.py'
+      - 'tests/fpe/run_fpe_nlglob14s*.sh'
+      - '.github/workflows/f-pe-nlglob14s.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob14s-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  split-ownership-feasibility:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered split ownership feasibility
+        run: bash tests/fpe/run_fpe_nlglob14s.sh
