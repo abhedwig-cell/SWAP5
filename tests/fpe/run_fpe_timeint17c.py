@@ -32,34 +32,34 @@ def fixture(m,r):
     qhead=-kf*((p-h)/dtop+1.0)
     return h,p,-qhead+(p-pmax)/rsro
 
-def parse_pipe(line):
-    return {k:v for k,v in (f.split("=",1) for f in line.split("|")[1:])}
-
-def parse_trial(line):
-    d=parse_pipe(line); out={}
-    for k in ("STEP","EVALS","DISTINCT_ROUTES","ROUTE_TRANSITIONS","FIRST_ROUTE","LAST_ROUTE",
-              "UNAVAILABLE","FLUX_COUNT","HEAD_COUNT","RUNOFF_COUNT","ATMOS_COUNT","OTHER_COUNT"):
-        out[k.lower()]=int(d[k])
-    for k in ("MIN_HEAD","MAX_HEAD","MIN_POND","MAX_POND","MIN_FLUX","MAX_FLUX"):
-        out[k.lower()]=float(d[k])
-    out["terminal_reason"]=d["TERMINAL_REASON"]
-    return out
-
 def parse_result(line):
-    d=parse_pipe(line)
-    return {"terminal_reason":d.get("TERMINAL_REASON","MISSING"),
-            "eligible":int(d.get("ELIGIBLE","0")),
-            "transition_step":int(d.get("TRANSITION_STEP","0")),
-            "solver_status":int(d.get("SOLVER_STATUS","0"))}
+    d={k:v for k,v in (f.split("=",1) for f in line.split("|")[1:])}
+    row={}
+    for k in ("ELIGIBLE","TRANSITION_STEP","STEPS_DONE","SOLVER_STATUS",
+              "ORIGIN_ROUTE_CODE","PRED_ROUTE_CODE","ENDPOINT_ROUTE_CODE","ACCEPT_ROUTE_CODE",
+              "NL","BACK","JAC","LIN","WORK","LOG_EVALS","LOG_DISTINCT_ROUTES",
+              "LOG_ROUTE_TRANSITIONS","LOG_FIRST_ROUTE","LOG_LAST_ROUTE","LOG_FLUX_COUNT",
+              "LOG_HEAD_COUNT","LOG_RUNOFF_COUNT","LOG_ATMOS_COUNT","LOG_OTHER_COUNT",
+              "LOG_UNAVAILABLE","LOG_DERIVATIVE_MISSING"):
+        row[k.lower()]=int(d[k])
+    for k in ("TOP_H","TOP_THETA","MID_H","BOTTOM_H","POND","STORAGE","RUNOFF",
+              "MAX_LEDGER","CUM_LEDGER","MAX_ROUNDTRIP","MAX_NATIVE_RATE",
+              "MAX_SURFACE_RATE_RESIDUAL","MAX_K_SHIFT","LOG_MIN_HEAD","LOG_MAX_HEAD",
+              "LOG_MIN_THETA","LOG_MAX_THETA","LOG_MIN_POND","LOG_MAX_POND",
+              "LOG_MIN_RETURNED_POND","LOG_MAX_RETURNED_POND","LOG_MIN_FLUX","LOG_MAX_FLUX",
+              "LOG_MIN_RUNOFF","LOG_MAX_RUNOFF","LOG_MIN_DERIVATIVE","LOG_MAX_DERIVATIVE"):
+        row[k.lower()]=float(d[k])
+    row["terminal_reason"]=d["TERMINAL_REASON"]
+    return row
 
 def classify(row):
     if row["terminal_reason"]!="ENDPOINT_SOLVE_FAILURE":
         return "NON_ENDPOINT_TERMINAL"
-    if row.get("unavailable",0)>0:
+    if row["log_unavailable"]>0 or row["log_other_count"]>0:
         return "PROVIDER_AVAILABILITY_FAILURE"
-    if row.get("route_transitions",0)>0:
+    if row["log_route_transitions"]>0:
         return "INTERNAL_ROUTE_SWITCHING_ENDPOINT_FAILURE"
-    if row.get("evals",0)>0 and row.get("distinct_routes",0)==1:
+    if row["log_evals"]>0 and row["log_distinct_routes"]==1:
         return "STATIC_ROUTE_ENDPOINT_FAILURE"
     return "MIXED_OR_UNRESOLVED_ENDPOINT_FAILURE"
 
@@ -70,18 +70,15 @@ def run_one(mid,route,dt,mode):
     cp=subprocess.run(cmd,text=True,capture_output=True)
     row={"material":mid,"route":route,"dt":dt,"mode":mode,"h0":h0,"p0":p0,"rain":rain,
          "process_ok":cp.returncode==0}
-    result_line=next((x for x in cp.stdout.splitlines() if x.startswith("F_PE_TIMEINT17A_RESULT|")),None)
-    trial_line=next((x for x in cp.stdout.splitlines() if x.startswith("F_PE_TIMEINT17C_TRIAL|")),None)
-    if result_line: row.update(parse_result(result_line))
-    else: row.update(terminal_reason="PROCESS_OR_OUTPUT_FAILURE",eligible=0,transition_step=0,solver_status=-1)
-    if trial_line: row.update(parse_trial(trial_line))
+    line=next((x for x in cp.stdout.splitlines() if x.startswith("F_PE_TIMEINT17C_RESULT|")),None)
+    if line:
+        row.update(parse_result(line))
     else:
-        row.update(evals=0,distinct_routes=0,route_transitions=0,first_route=0,last_route=0,
-                   unavailable=0,flux_count=0,head_count=0,runoff_count=0,atmos_count=0,other_count=0,
-                   min_head=0.0,max_head=0.0,min_pond=0.0,max_pond=0.0,min_flux=0.0,max_flux=0.0)
+        row.update(terminal_reason="PROCESS_OR_OUTPUT_FAILURE",eligible=0,transition_step=0,solver_status=-1,
+                   log_evals=0,log_distinct_routes=0,log_route_transitions=0,log_first_route=0,log_last_route=0,
+                   log_unavailable=0,log_other_count=0)
+        row["stdout"]=cp.stdout[-1500:]; row["stderr"]=cp.stderr[-1200:]
     row["route_path_class"]=classify(row)
-    if not row["process_ok"]:
-        row["stdout"]=cp.stdout[-1200:]; row["stderr"]=cp.stderr[-1000:]
     return row
 
 rows=[]
@@ -98,7 +95,8 @@ counts=Counter(x["route_path_class"] for x in tg_ep)
 n=len(tg_ep)
 switch_frac=counts["INTERNAL_ROUTE_SWITCHING_ENDPOINT_FAILURE"]/n if n else 0.0
 static_frac=counts["STATIC_ROUTE_ENDPOINT_FAILURE"]/n if n else 0.0
-avail_frac=sum(x["unavailable"]>0 for x in tg_ep)/n if n else 0.0
+availability_n=sum(x["route_path_class"]=="PROVIDER_AVAILABILITY_FAILURE" for x in tg_ep)
+avail_frac=availability_n/n if n else 0.0
 
 if avail_frac>=0.50:
     classification="TIMEINT17C_PROVIDER_AVAILABILITY_DOMINANT"
@@ -111,7 +109,7 @@ else:
 
 key=lambda x:(x["material"],x["route"],x["dt"])
 kmap={key(x):x for x in kl}
-matched=0; same=0; pairs=[]
+pairs=[]; same=0; matched=0
 for t in tg_ep:
     q=kmap[key(t)]
     if q["terminal_reason"]=="ENDPOINT_SOLVE_FAILURE":
@@ -130,12 +128,14 @@ summary={
  "tg_route_path_counts":dict(sorted(counts.items())),
  "route_switch_fraction":switch_frac,
  "static_route_fraction":static_frac,
- "provider_unavailable_fraction":avail_frac,
+ "provider_availability_fraction":avail_frac,
  "matched_klag_endpoint_failures":matched,
  "same_route_path_class_pairs":same,
  "shared_route_path_fraction":shared_frac,
- "tg_total_evaluations":sum(x["evals"] for x in tg_ep),
- "tg_total_route_transitions":sum(x["route_transitions"] for x in tg_ep),
+ "tg_total_provider_evaluations":sum(x.get("log_evals",0) for x in tg_ep),
+ "tg_total_route_transitions":sum(x.get("log_route_transitions",0) for x in tg_ep),
+ "tg_total_unavailable":sum(x.get("log_unavailable",0) for x in tg_ep),
+ "tg_total_other":sum(x.get("log_other_count",0) for x in tg_ep),
  "process_failures":sum(not x["process_ok"] for x in rows)
 }
 print("F_PE_TIMEINT17C_RESULTS="+json.dumps(rows,separators=(",",":"),sort_keys=True))
