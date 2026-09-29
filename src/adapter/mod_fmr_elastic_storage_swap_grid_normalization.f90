@@ -45,7 +45,7 @@ contains
         call clear_outputs(node_depth_m, node_thickness_m)
         return
       end if
-      if (z_cm(i) > 1.0e-8_real64 .or. dz_cm(i) <= 0.0_real64) then
+      if (z_cm(i) > 1.0e-10_real64 .or. dz_cm(i) <= 0.0_real64) then
         diagnostics%status = FMR_ELAS_GRID_INVALID_VALUE
         diagnostics%failed_node = i
         call clear_outputs(node_depth_m, node_thickness_m)
