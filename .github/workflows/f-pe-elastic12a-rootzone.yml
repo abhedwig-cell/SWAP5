@@ -38,36 +38,21 @@ jobs:
 
       - name: Run target-free root-zone transfer twice
         run: |
-          python research/elastic/run_rootzone_elastic_transfer.py             --authority-root "$RUNNER_TEMP/authority"             --raw-dir "$RUNNER_TEMP/raw-a"             --out "$RUNNER_TEMP/transfer-a.json" | tee "$RUNNER_TEMP/transfer-a.txt"
+          python research/elastic/run_rootzone_elastic_transfer.py \
+            --authority-root "$RUNNER_TEMP/authority" \
+            --raw-dir "$RUNNER_TEMP/raw-a" \
+            --out "$RUNNER_TEMP/transfer-a.json" | tee "$RUNNER_TEMP/transfer-a.txt"
 
-          python research/elastic/run_rootzone_elastic_transfer.py             --authority-root "$RUNNER_TEMP/authority"             --raw-dir "$RUNNER_TEMP/raw-b"             --out "$RUNNER_TEMP/transfer-b.json" | tee "$RUNNER_TEMP/transfer-b.txt"
+          python research/elastic/run_rootzone_elastic_transfer.py \
+            --authority-root "$RUNNER_TEMP/authority" \
+            --raw-dir "$RUNNER_TEMP/raw-b" \
+            --out "$RUNNER_TEMP/transfer-b.json" | tee "$RUNNER_TEMP/transfer-b.txt"
 
           cmp "$RUNNER_TEMP/transfer-a.json" "$RUNNER_TEMP/transfer-b.json"
           cmp "$RUNNER_TEMP/transfer-a.txt" "$RUNNER_TEMP/transfer-b.txt"
-          grep -q '^F_PE_ELASTIC12A_HYDRO_IDENTITY=PASS
-
-      - name: Upload root-zone transfer evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: f-pe-elastic12a-rootzone-transfer
-          path: |
-            ${{ runner.temp }}/transfer-a.json
-            ${{ runner.temp }}/transfer-a.txt
-            ${{ runner.temp }}/raw-a
- "$RUNNER_TEMP/transfer-a.txt"
-          grep -q '^F_PE_ELASTIC12A=PASS
-
-      - name: Upload root-zone transfer evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: f-pe-elastic12a-rootzone-transfer
-          path: |
-            ${{ runner.temp }}/transfer-a.json
-            ${{ runner.temp }}/transfer-a.txt
-            ${{ runner.temp }}/raw-a
- "$RUNNER_TEMP/transfer-a.txt"
+          grep -q '^F_PE_ELASTIC12A_HYDRO_IDENTITY=PASS$' "$RUNNER_TEMP/transfer-a.txt"
+          grep -q '^F_PE_ELASTIC12A_RESPONSE_PROVENANCE_ARCHIVED=PASS$' "$RUNNER_TEMP/transfer-a.txt"
+          grep -q '^F_PE_ELASTIC12A=PASS$' "$RUNNER_TEMP/transfer-a.txt"
           echo F_PE_ELASTIC12A_SCIENTIFIC_POSTIMAGE_DETERMINISM=PASS
 
       - name: Upload root-zone transfer evidence
