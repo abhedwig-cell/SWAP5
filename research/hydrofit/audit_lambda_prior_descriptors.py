@@ -59,7 +59,7 @@ def main():
     "log10k_min":math.log10(min(k)) if k else None,"log10k_max":math.log10(max(k)) if k else None,
     "log10k_span":math.log10(max(k)/min(k)) if k else None})
  if len(rows)!=len(corpus["intervals"]) or len({(r["bro_id"],r["hyd_sha256"]) for r in rows})!=len(rows): raise SystemExit(f"target mismatch rows={len(rows)} expected={len(corpus['intervals'])}")
- fields=[k for k in rows[0] if k!="bro_id"]
+ fields=[k for k in rows[0] if k not in {"bro_id","hyd_sha256"}]
  coverage={k:sum(r.get(k) is not None for r in rows) for k in fields}
  # Object-level scalar metadata coverage. Exclude hydraulic source-fit fields by name.
  forbidden={"shapefactorAlpha","shapefactorN","shapefactorM","shapefactorLambda","weightfactor"}
