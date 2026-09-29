@@ -1,0 +1,35 @@
+name: F-PE-ELASTIC01 paired screen
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docs/performance/F-PE-ELASTIC01_PREREGISTRATION.md'
+      - 'tests/fpe/mod_fpe_elastic01_provider.f90'
+      - 'tests/fpe/test_fpe_elastic01_case.f90'
+      - 'tests/fpe/run_fpe_elastic01_screen.py'
+      - 'tests/fpe/run_fpe_elastic01_screen.sh'
+      - 'tests/rom/compile_f_rom0_fortran_closure.py'
+      - '.github/workflows/f-pe-elastic01.yml'
+
+jobs:
+  phase-a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit corrected legacy ELAS semantics
+        run: bash tests/fpe/audit_fpe_elastic01_legacy.sh
+      - name: Run paired ELASTIC01 screen
+        run: bash tests/fpe/run_fpe_elastic01_screen.sh
+      - name: Run ELASTIC01 bracket refinement
+        run: bash tests/fpe/run_fpe_elastic01_refine.sh
+      - name: Run ELASTIC01 holdout falsification
+        run: bash tests/fpe/run_fpe_elastic01_holdout.sh
+      - name: Acquire official Staringreeks source
+        run: bash tests/fpe/acquire_fpe_elastic02_staringreeks.sh
+      - name: Run ELASTIC02A full36 characterization
+        run: bash tests/fpe/run_fpe_elastic02a.sh
+      - name: Audit ELASTIC03 physical predictor sources
+        run: bash tests/fpe/audit_fpe_elastic03_sources.sh
+      - name: Run ELASTIC04 typed ownership qualification
+        run: bash tests/fpe/run_fpe_elastic04.sh
