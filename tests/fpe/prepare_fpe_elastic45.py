@@ -235,7 +235,7 @@ contains
     value%tiles(1)%initial_state%water_content=water
     value%tiles(1)%initial_state%ponding_depth=0.0_real64
     value%tiles(1)%initial_state%groundwater_level=-2.0_real64
-    value%tiles(1)%base_forcing%top_flux=0.95_real64*qeq
+    value%tiles(1)%base_forcing%top_flux=0.995_real64*qeq
     value%tiles(1)%base_forcing%top_head=H0
     value%tiles(1)%base_forcing%bottom_flux=qeq
     value%tiles(1)%base_forcing%bottom_head=-999999.0_real64
@@ -277,6 +277,7 @@ end program test_fpe_elastic45_production_characterization
     Path(a.fixture).write_text(src,encoding="utf-8")
     print("F_PE_ELASTIC45_A1_SOURCE_PROFILE=PASS")
     print(f"F_PE_ELASTIC45_HORIZONS={n}")
+    print("F_PE_ELASTIC45_FORCING_STABILIZATION=TOP_FLUX_0.995_QEQ")
     print("F_PE_ELASTIC45_PREP=PASS")
 
 if __name__=="__main__":
