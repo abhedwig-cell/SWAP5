@@ -101,3 +101,31 @@ A later physical-policy workunit must use independent soil-mechanical/pedologica
 ## Admission rule
 
 Production admission requires all P1-P5 gates on a current-canonical-derived branch. Default-off preservation is mandatory.
+
+
+## P0A adjacent directional audit
+
+Before admission, source audit found one required adjacent semantic repair.
+
+The admitted default-MvG directional capability currently returns `dtheta/dh = 0` for smooth `h > 0`, which is correct only for the elasticity-off constitutive relation. With typed ELAS active, the constitutive value relation is
+
+`theta = theta_s + h * ELAS`
+
+so the smooth saturated directional derivative must be
+
+`dtheta/dh = ELAS`.
+
+The `h = 0` surface remains a constitutive branch boundary and therefore remains unavailable to the fixed-smooth-route directional service.
+
+F-PE-ELASTIC05 is therefore expanded prospectively to the minimal adjacent file:
+
+- `src/solver/mod_b110_default_mvg_directional_provider.f90`.
+
+Required additional gate:
+
+- with elasticity active and `h > 0`, water-content direction equals `ELAS * dh`;
+- saturated default-MvG conductivity direction remains zero in the qualified no-KSATEXM composition;
+- `h = 0` remains unavailable;
+- elasticity-off directional behaviour remains exact current behaviour.
+
+Active ELAS combined with the KSATEXM extension is **not qualified in this workunit** and must fail closed until separately studied.
