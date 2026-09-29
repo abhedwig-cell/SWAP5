@@ -6,6 +6,7 @@ on:
       - work/f-pe-timeint09-exact-newton-response
     paths:
       - 'docs/performance/F-PE-TIMEINT09_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT09A_PREREGISTRATION.md'
       - 'docs/performance/F-PE-TIMEINT09_RESULT.md'
       - 'docs/performance/F-PE-TIMEINT09A_PREREGISTRATION.md'
       - 'tests/fpe/materialize_fpe_timeint09_binding.py'
@@ -30,6 +31,18 @@ jobs:
         run: gfortran --version
       - name: Run exact Newton response calibration
         run: bash tests/fpe/run_fpe_timeint09.sh p0
+
+  holdout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run exact Newton response blind holdout
+        run: bash tests/fpe/run_fpe_timeint09.sh holdout
 
   holdout:
     runs-on: ubuntu-24.04
