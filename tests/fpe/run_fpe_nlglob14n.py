@@ -75,6 +75,8 @@ for route in routes:
           bracket_ok=math.isfinite(phi) and 0.0<=phi<=1.0 and lo["time"]<=tevent<=hi["time"]
 
     rows.append({"material":"O05","route":route,"dt":dt,"complete":complete,"mass_ok":mass_ok,
+                 "terminal_reason":res["TERMINAL_REASON"] if res else "MISSING_RESULT",
+                 "steps_done":int(res["STEPS_DONE"]) if res else 0,
                  "state_finite":finite,"indicator_inconsistent":inconsistent,
                  "bracket_found":lo is not None and hi is not None,"bracket_ok":bracket_ok,
                  "t_lo":lo["time"] if lo else None,"t_hi":hi["time"] if hi else None,
