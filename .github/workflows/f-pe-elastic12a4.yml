@@ -1,0 +1,33 @@
+name: F-PE-ELASTIC12A4 PDOK ATOM schema audit
+
+concurrency:
+  group: f-pe-elastic12a4-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic12-bofek-transfer
+    paths:
+      - 'research/elastic/pdok_bodemkaart_atom_audit.py'
+      - 'docs/performance/F-PE-ELASTIC12A4_PDOK_ATOM_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic12a4.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit PDOK Bodemkaart ATOM package schema
+        run: |
+          python research/elastic/pdok_bodemkaart_atom_audit.py \
+            --output-dir "$RUNNER_TEMP/elastic12a4"
+      - name: Upload bounded ATOM evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic12a4
