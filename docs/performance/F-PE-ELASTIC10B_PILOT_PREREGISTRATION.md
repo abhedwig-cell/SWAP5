@@ -121,7 +121,7 @@ Do not:
 - use solver performance;
 - substitute virgin loading slope for recompression;
 - expand beyond five objects;
-- expand beyond 25 km if no data;
+- expand beyond the service-valid 10 km maximum if no data;
 - silently repair malformed SWE series.
 
 ## Success condition
