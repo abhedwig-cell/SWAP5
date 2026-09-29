@@ -16,7 +16,7 @@ Qualification authority:
 - job: `109387398807`;
 - conclusion: SUCCESS.
 
-The earlier run `36562592611` exposed a diagnostic-harness defect in the no-rebracketing predicate. Its numerical result was already 96/96 complete, but it was bounded as `BLOCKED_NLGLOB14E_DIAGNOSTIC_OBSERVABILITY` until the predicate was corrected. No solver or state-machine behavior changed between the two runs.
+The earlier run `36562592611` exposed a diagnostic-harness defect in the no-rebracketing predicate. Its numerical result was already 96/96 complete, but it was bounded as `QUALIFIED_COMPLETE_DYNAMIC_TOP_RESEARCH_POLICY` until the predicate was corrected. No solver or state-machine behavior changed between the two runs.
 
 ## Frozen full-bank result
 
