@@ -1,0 +1,25 @@
+name: F-PE-NLGLOB14Z4 later retreat control exposure
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z4-later-retreat-control
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z4*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14z4*.py'
+      - 'tests/fpe/run_fpe_nlglob14z4*.py'
+      - 'tests/fpe/run_fpe_nlglob14z4*.sh'
+      - '.github/workflows/f-pe-nlglob14z4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  later-retreat-control:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z4.sh
