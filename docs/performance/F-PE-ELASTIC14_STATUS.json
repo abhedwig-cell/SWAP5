@@ -1,0 +1,54 @@
+{
+  "work_unit": "F-PE-ELASTIC14",
+  "workstream": "VQ/production physical-prior materialization",
+  "baseline": "65c2163324bcc112a8149e5aab786b1342e58b89",
+  "checkpoint_commit": "f486e7a369d03abb66027fead9afeaba374566a9",
+  "last_reconciled_head": "f486e7a369d03abb66027fead9afeaba374566a9",
+  "last_reconciled_upstream": "15e5fa2738a889700dc4b8ed792e823652b38dd3",
+  "scope": "Add and qualify a bounded mineral ELAS physical-prior materializer that preserves explicit activation, default-off behavior and fail-closed non-mineral handling.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC14_MINERAL_PRIOR_MATERIALIZER_PREREGISTRATION.md",
+    "src/runtime/mod_fmr_elastic_storage_prior_policy.f90",
+    "tests/fpe/test_fpe_elastic14_prior.f90",
+    "tests/fpe/run_fpe_elastic14.sh",
+    ".github/workflows/f-pe-elastic14.yml",
+    "docs/performance/F-PE-ELASTIC13_CLOSEOUT.md",
+    "docs/performance/F-PE-ELASTIC09_CLOSURE.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/test_fpe_elastic14_prior.f90",
+    "tests/fpe/run_fpe_elastic14.sh",
+    ".github/workflows/f-pe-elastic14.yml"
+  ],
+  "evidence_paths": [],
+  "dependency_surface": [
+    "ELASTIC13 qualified mineral policy",
+    "ELASTIC11 frozen M1 coefficients and uncertainty",
+    "ELASTIC09 admitted application route",
+    "PPA-WU01 default-off application bootstrap authority"
+  ],
+  "interfaces_changed": [
+    "new standalone runtime helper module only; no existing production interface changed"
+  ],
+  "invariants_affected": [
+    "physical parameterization remains separate from numerical execution policy",
+    "default-off ELAS activation preserved",
+    "non-mineral automatic assignment fails closed",
+    "user-supplied explicit ELAS remains separate"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the ELASTIC14 workflow on checkpoint f486e7a369d03abb66027fead9afeaba374566a9. Apply the preregistered A1-A8 gates exactly and do not widen source scope.",
+  "recovery_point": "work/f-pe-elastic14-mineral-prior-materializer@f486e7a369d03abb66027fead9afeaba374566a9"
+}
