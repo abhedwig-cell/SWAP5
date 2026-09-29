@@ -9,14 +9,14 @@ program test_fpe_elastic05_legacy_case
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, &
        initialize_b110_default_mvg_parameters, evaluate_b110_default_mvg_conductivity
-  use mod_fpe_elastic05_legacy_provider, only: fpe_elastic05_legacy_provider_t, bind_fpe_elastic05_legacy_provider
+  use mod_fpe_elastic05_legacy_oracle, only: fpe_elastic05_legacy_oracle_t, bind_fpe_elastic05_legacy_oracle
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
   implicit none
   type(soil_water_parameter_set_t),target :: p
   type(b110_default_mvg_parameters_t),target :: hp
-  type(fpe_elastic05_legacy_provider_t),target :: constitutive
+  type(fpe_elastic05_legacy_oracle_t),target :: constitutive
   type(b110_source_sink_provider_t),target :: source_sink
   type(reference_richards_legacy_solver_t) :: solver
   type(soil_water_physical_state_t) :: state
@@ -85,7 +85,7 @@ contains
   end subroutine
   subroutine check_legacy_elas_semantics()
     real(real64)::heads(numnod),water(numnod),kk(numnod),cap(numnod),dk(numnod)
-    call bind_fpe_elastic05_legacy_provider(constitutive,hp,dt0)
+    call bind_fpe_elastic05_legacy_oracle(constitutive,hp,dt0)
     heads=2.0_real64
     call constitutive%evaluate(heads,water,kk,cap,dk)
     call require(abs(water(1)-(ts+2.0_real64*storage_coeff))<=1.0e-13_real64,'legacy ELAS theta semantics')
@@ -95,7 +95,7 @@ contains
     real(real64),intent(in)::h
     type(soil_water_physical_state_t),intent(out)::s
     real(real64)::heads(numnod),water(numnod),kk(numnod),cap(numnod),dk(numnod)
-    call bind_fpe_elastic05_legacy_provider(constitutive,hp,dt0)
+    call bind_fpe_elastic05_legacy_oracle(constitutive,hp,dt0)
     heads=h; call constitutive%evaluate(heads,water,kk,cap,dk)
     s%active_nodes=numnod;allocate(s%pressure_head(numnod),s%water_content(numnod))
     s%pressure_head=heads;s%water_content=water;s%ponding_depth=0.0_real64;s%groundwater_level=-999.0_real64
@@ -110,7 +110,7 @@ contains
     real(real64)::fixed_k,try_dt,ledger,new_dt,effective_baltol
     logical::ok
     try_dt=min(dt,horizon-t);attempts=attempts+1
-    call bind_fpe_elastic05_legacy_provider(constitutive,hp,try_dt)
+    call bind_fpe_elastic05_legacy_oracle(constitutive,hp,try_dt)
     call evaluate_b110_default_mvg_conductivity(hp,1,state%pressure_head(1),fixed_k,ok)
     call require(ok,'fixed conductivity')
     call bind_b110_dynamic_top_boundary_solver_provider(top,p,hp,1,state%ponding_depth,try_dt, &
