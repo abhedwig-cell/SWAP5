@@ -2,14 +2,17 @@
   "work_unit": "F-PE-ELASTIC10",
   "workstream": "VQ/research physical parameter evidence",
   "baseline": "ad1c4b9193238a46dff95bd30e251adfc0426302",
-  "checkpoint_commit": "87e684dadf2acf391b62bad8f343380348ed26b2",
-  "last_reconciled_head": "87e684dadf2acf391b62bad8f343380348ed26b2",
-  "last_reconciled_upstream": "ad1c4b9193238a46dff95bd30e251adfc0426302",
+  "checkpoint_commit": "1297d5f0323f98f906c570aa9703db616a49f811",
+  "last_reconciled_head": "1297d5f0323f98f906c570aa9703db616a49f811",
+  "last_reconciled_upstream": "a409df7572018969f0e73a05696c402edd2363c2",
   "scope": "Acquire and schema-bind BRO BHR-GT mechanical compression/settlement evidence suitable to constrain physical SWAP ELAS without using solver performance as target.",
   "relevant_paths": [
     "docs/performance/F-PE-ELASTIC10_BHR_GT_TARGET_PREREGISTRATION.md",
     "docs/performance/F-PE-ELASTIC10A_BHR_GT_SEMANTICS_PREAUDIT.md",
+    "docs/performance/F-PE-ELASTIC10_PHASE_A_RESULT.md",
+    "docs/performance/F-PE-ELASTIC10B_PILOT_PREREGISTRATION.md",
     "research/elastic/bro_bhrgt_fetch.py",
+    "research/elastic/bro_bhrgt_pilot.py",
     ".github/workflows/f-pe-elastic10-bhrgt.yml"
   ],
   "authority_paths": [
@@ -21,9 +24,13 @@
     "docs/verification/principles.md"
   ],
   "test_paths": [
-    ".github/workflows/f-pe-elastic10-bhrgt.yml"
+    ".github/workflows/f-pe-elastic10-bhrgt.yml",
+    "research/elastic/bro_bhrgt_pilot.py"
   ],
-  "evidence_paths": [],
+  "evidence_paths": [
+    "docs/performance/F-PE-ELASTIC10_PHASE_A_RESULT.md",
+    "GitHub Actions run 36538415609 / artifact 11019227909"
+  ],
   "dependency_surface": [
     "BRO public BHR-GT v2 service/OpenAPI contract",
     "BHR-GT settlement/compression schema semantics",
@@ -37,9 +44,9 @@
   ],
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "blockers": [],
-  "next_action": "Run the bounded BHR-GT schema audit on the persisted clean branch, inspect exact OpenAPI paths and settlement/compression schema terms, then preregister a bounded pilot only if the target path is source-bound.",
-  "recovery_point": "research/f-pe-elastic10-bhrgt-targets@87e684dadf2acf391b62bad8f343380348ed26b2"
+  "next_action": "Inspect the frozen BHR-GT settlement-object pilot on the current persisted head. Classify it exactly as TARGET_PATH_CONFIRMED, TARGET_PATH_PARTIAL, TARGET_PATH_NOT_POPULATED, LOW_COVERAGE, or NO_OBJECTS_FOR_FROZEN_QUERY; only confirmed authorizes target extraction.",
+  "recovery_point": "research/f-pe-elastic10-bhrgt-targets@1297d5f0323f98f906c570aa9703db616a49f811"
 }
