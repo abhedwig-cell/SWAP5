@@ -57,7 +57,7 @@ Real qualification case retains the already-qualified ELASTIC42 location/profile
 
 ## Qualification repair history
 
-Three earlier workflow attempts failed before establishing a negative production result:
+Four earlier workflow attempts failed before establishing a negative production result:
 
 1. run `36611562146`: Python fixture-generator quoting syntax;
 2. run `36611657663`: remaining fixture-generator quoting syntax;
