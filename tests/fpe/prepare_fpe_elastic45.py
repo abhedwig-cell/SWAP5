@@ -167,7 +167,6 @@ f"    write(cmd,'(A)') 'python3 {fstr(script)} --generated-prior-requested=true 
 "    character(len=*),intent(in)::source_path,row_path,prov_path",
 "    real(real64),intent(in)::x,y",
 "    integer,intent(out)::status",
-"    call execute_command_line('rm -f "'//trim(row_path)//'" "'//trim(prov_path)//'"')",
 "    status=0",
 "  end subroutine missing_row_preprocess",
 "  function real_text(x) result(text)",
