@@ -15,9 +15,7 @@ python3 tests/fpe/materialize_fpe_nlglob13_subdivision.py \
   --source "$BUILD/timeint17a_headspace.f90" --output "$BUILD/timeint17a_subdiv.f90"
 
 python3 tests/fpe/materialize_fpe_nlglob09_s0_replay.py \
-  --source src/legacy/b1_10_port/headcalc.f90 --output "$BUILD/headcalc_s0.f90"
-python3 tests/fpe/materialize_fpe_nlglob12a1_representation_accept.py \
-  --source "$BUILD/headcalc_s0.f90" --output "$BUILD/headcalc_replay.f90"
+  --source src/legacy/b1_10_port/headcalc.f90 --output "$BUILD/headcalc_replay.f90"
 
 python3 tests/fpe/compile_fpe_timeint03_closure.py --root "$ROOT" --stub "$BUILD/stub.f90" \
   --target "$BUILD/timeint16c_headspace.f90" --external-source src/legacy/b1_10_port/headcalc.f90 \
