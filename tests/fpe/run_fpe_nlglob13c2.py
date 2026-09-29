@@ -41,7 +41,7 @@ for mid,mode,route,dt in targets:
             events.append(("probe",fields(line)))
         elif line.startswith("F_PE_NLGLOB13C_DOMAIN|"):
             events.append(("domain",fields(line)))
-    idlogs=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB13C1_STATE|")]
+    idlogs=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB13C2_STATE|")]
     identity_ok=False
     if idlogs:
         groups={}
