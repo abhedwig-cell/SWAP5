@@ -1,0 +1,53 @@
+{
+  "work_unit": "F-PE-ELASTIC23",
+  "workstream": "VQ/application source association",
+  "baseline": "9ca61a27aa979d5e87ffeffbd3e74fd0f1c5e406",
+  "checkpoint_commit": "76f2cc6f60f4d2a94265194e452201e3cb4ae26f",
+  "last_reconciled_head": "76f2cc6f60f4d2a94265194e452201e3cb4ae26f",
+  "last_reconciled_upstream": "6fe778ffb5a55f6fb3cc13b9c1a43b71a4641096",
+  "scope": "Resolve an already selected BRO soilarea maparea_id to exactly one normalsoilprofile_id from already loaded relation rows, with exact identifier semantics and no spatial or I/O ownership.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC23_MAPAREA_PROFILE_ASSOCIATION_PREREGISTRATION.md",
+    "src/adapter/mod_fmr_elastic_storage_maparea_profile_association.f90",
+    "tests/fpe/test_fpe_elastic23_maparea_profile.f90",
+    "tests/fpe/run_fpe_elastic23.sh",
+    ".github/workflows/f-pe-elastic23.yml",
+    "docs/performance/F-PE-ELASTIC22_CLOSURE.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/test_fpe_elastic23_maparea_profile.f90",
+    "tests/fpe/run_fpe_elastic23.sh",
+    ".github/workflows/f-pe-elastic23.yml"
+  ],
+  "evidence_paths": [
+    "frozen ELASTIC12A4 PDOK BRO GeoPackage artifact 11024079961; soilarea_normalsoilprofile row count 48025; distinct maparea_id count 48025; distinct normalsoilprofile_id count 368"
+  ],
+  "dependency_surface": [
+    "ELASTIC22 admitted explicit in-memory profile source",
+    "frozen BRO soilarea_normalsoilprofile relation cardinality"
+  ],
+  "interfaces_changed": [
+    "new stateless maparea-to-profile adapter only"
+  ],
+  "invariants_affected": [
+    "profile choice remains explicit caller ownership",
+    "no spatial geometry ownership enters runtime",
+    "ambiguous or corrupt associations fail closed",
+    "opaque source identifiers are not normalized"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect ELASTIC23 workflow on checkpoint 76f2cc6f60f4d2a94265194e452201e3cb4ae26f and apply A1-A9 exactly.",
+  "recovery_point": "work/f-pe-elastic23-maparea-profile-association@76f2cc6f60f4d2a94265194e452201e3cb4ae26f"
+}
