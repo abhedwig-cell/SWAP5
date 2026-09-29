@@ -50,7 +50,7 @@ def run(route,dt,horizon):
 
     transitions=[]; reverse=False; skipped=False; tops=[]
     last_top=None; disappeared=None; disappear_bracket=None
-    seen_min=17
+    second_retreat_seen=False; max_retreat_top=5
     for idx,(step,t,sat) in enumerate(series):
         top=min(sat) if sat else None
         tops.append(top)
@@ -63,15 +63,20 @@ def run(route,dt,horizon):
                                    "last_saturated_set":prev[2] if prev else None,
                                    "empty_set":sat}
             continue
-        if top<seen_min:
-            if seen_min<17: reverse=True
-        seen_min=min(seen_min,top)
         if last_top is not None and top!=last_top:
             delta=top-last_top
-            if delta<0: reverse=True
-            if delta>1: skipped=True
             transitions.append({"from_top":last_top,"to_top":top,"time":t,"step":step,
                                 "from_set":list(range(last_top,17)),"to_set":sat})
+            if last_top==4 and top==5:
+                second_retreat_seen=True
+                max_retreat_top=5
+            elif second_retreat_seen:
+                if delta<0:
+                    reverse=True
+                if delta>1:
+                    skipped=True
+                if top>max_retreat_top:
+                    max_retreat_top=top
         last_top=top
 
     further=[x for x in transitions if x["from_top"]>=5 and x["to_top"]>x["from_top"]]
