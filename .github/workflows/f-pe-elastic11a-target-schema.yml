@@ -1,0 +1,33 @@
+name: F-PE-ELASTIC11A BHR-GT target schema binding
+
+concurrency:
+  group: f-pe-elastic11a-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/audit_bhrgt_target_schemas.py'
+      - 'docs/performance/F-PE-ELASTIC11A_TARGET_SCHEMA_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic11a-target-schema.yml'
+  workflow_dispatch:
+
+jobs:
+  bind-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Bind official BHR-GT SWE target schemas
+        run: |
+          mkdir -p "$RUNNER_TEMP/elastic11a"
+          python research/elastic/audit_bhrgt_target_schemas.py "$RUNNER_TEMP/elastic11a"
+      - name: Upload schema authority
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic11a-target-schemas
+          path: ${{ runner.temp }}/elastic11a
