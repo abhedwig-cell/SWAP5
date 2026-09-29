@@ -146,7 +146,7 @@ def main():
   res_half2=soil_water_solve_result_t()
   if(res_half1%status==SW_SOLVE_CONVERGED)then
     call make_request_from_state(req_half2,soil,constitutive_half,source_sink,top,res_half1%candidate_state, &
-         qeq+delta,qeq,0.5_real64*dt)
+         h0,qeq+delta,qeq,0.5_real64*dt)
     call solver_half%solve(req_half2,ws_half,res_half2)
   end if
 
@@ -230,17 +230,17 @@ contains
     call finish_request(r,c,src,tp,step)
   end subroutine
 
-  subroutine make_request_from_state(r,s,c,src,tp,state,qtop,qbot,step)
+  subroutine make_request_from_state(r,s,c,src,tp,state,forcing_top_head,qtop,qbot,step)
     type(soil_water_solve_request_t),intent(out)::r
     type(soil_water_parameter_set_t),target,intent(in)::s
     type(b110_default_mvg_provider_t),target,intent(in)::c
     type(b110_source_sink_provider_t),target,intent(in)::src
     type(fixed_flux_top_boundary_provider_t),target,intent(in)::tp
     type(soil_water_physical_state_t),intent(in)::state
-    real(real64),intent(in)::qtop,qbot,step
+    real(real64),intent(in)::forcing_top_head,qtop,qbot,step
     r%parameters=>s;r%base_state=state
     r%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX;r%boundary%bottom_mode=7
-    r%boundary%top_flux=qtop;r%boundary%top_head=state%pressure_head(1)
+    r%boundary%top_flux=qtop;r%boundary%top_head=forcing_top_head
     r%boundary%bottom_flux=qbot;r%boundary%bottom_head=-999999.0_real64
     call finish_request(r,c,src,tp,step)
   end subroutine
