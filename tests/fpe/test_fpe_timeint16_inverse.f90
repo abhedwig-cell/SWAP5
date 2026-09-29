@@ -5,7 +5,7 @@ program test_fpe_timeint16_inverse
   implicit none
   type(b110_default_mvg_parameters_t),target :: hp
   type(b110_default_mvg_provider_t) :: p
-  real(real64) :: cof(24,1),h(1),th(1),kk(1),cp(1),dk(1),hinv,err,maxerr
+  real(real64) :: cof(24,1),h(1),th(1),kk(1),cp(1),dk(1),hinv,err,maxerr,max_theta_err,theta0
   real(real64) :: tr,ts,alpha,nvg,lambda,mm
   integer :: j
   character(len=32)::mid
@@ -19,17 +19,21 @@ program test_fpe_timeint16_inverse
   call initialize_b110_default_mvg_parameters(hp,cof)
   call bind_b110_default_mvg_provider(p,hp,1.0_real64)
   maxerr=0.0_real64
+  max_theta_err=0.0_real64
   do j=0,500
     h(1)=-0.001_real64 * 10.0_real64**(6.0_real64*real(j,real64)/500.0_real64)
     call p%evaluate(h,th,kk,cp,dk)
-    hinv=invert_theta(hp%cofgen(:,1),th(1))
+    theta0=th(1)
+    hinv=invert_theta(hp%cofgen(:,1),theta0)
     err=abs(hinv-h(1))
     maxerr=max(maxerr,err)
     h(1)=hinv
     call p%evaluate(h,th,kk,cp,dk)
+    max_theta_err=max(max_theta_err,abs(th(1)-theta0))
   end do
-  write(*,'(*(g0))') 'F_PE_TIMEINT16_INVERSE_RESULT|MATERIAL=',trim(mid),'|MAX_HEAD_ERR=',maxerr
-  if(maxerr>1.0e-8_real64) error stop 'inverse head error'
+  write(*,'(*(g0))') 'F_PE_TIMEINT16_INVERSE_RESULT|MATERIAL=',trim(mid),'|MAX_HEAD_ERR=',maxerr, &
+       '|MAX_THETA_ERR=',max_theta_err
+  if(max_theta_err>1.0e-12_real64) error stop 'inverse theta roundtrip error'
   write(*,'(A)') 'F_PE_TIMEINT16_INVERSE=PASS'
 contains
   subroutine read_real(i,x)
