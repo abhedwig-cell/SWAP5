@@ -1,0 +1,59 @@
+name: F-PE-ELASTIC20 offline BOFEK horizon catalog
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic20-offline-catalog
+    paths:
+      - 'tools/elastic20_materialize_bofek_horizon_catalog.py'
+      - 'tests/fpe/test_fpe_elastic20_catalog_row.f90'
+      - 'tests/fpe/run_fpe_elastic20_catalog.py'
+      - 'tests/fpe/run_fpe_elastic20.sh'
+      - 'docs/performance/F-PE-ELASTIC20_OFFLINE_CATALOG_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic20.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch origin integration/f-ci-canonical
+
+      - name: Download frozen BOFEK/Staringreeks source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12-source-audit
+          path: ${{ runner.temp }}/elastic20-source
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36549054287
+
+      - name: Download frozen PDOK BRO source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic20-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+
+      - name: Qualify deterministic catalog
+        env:
+          ELASTIC20_SOURCE_ARTIFACT_DIR: ${{ runner.temp }}/elastic20-source
+          ELASTIC20_PDOK_ARTIFACT_DIR: ${{ runner.temp }}/elastic20-pdok
+          ELASTIC20_OUTPUT_DIR: ${{ runner.temp }}/elastic20-output
+        run: |
+          mkdir -p "$ELASTIC20_OUTPUT_DIR"
+          bash tests/fpe/run_fpe_elastic20.sh
+
+      - name: Upload frozen catalog
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic20-bofek-horizon-catalog
+          path: ${{ runner.temp }}/elastic20-output
