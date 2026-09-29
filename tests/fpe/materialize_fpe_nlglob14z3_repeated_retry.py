@@ -82,7 +82,7 @@ repl="""    if(nl14d_saturated_mode)then
 
       call advance_klag(step_index)
 
-      if((.not.eligible) .and. nl14z3_retry_advised)then
+      if((.not.eligible) .and. nl14z3_retry_advised .and. nl14z3_recovery_count<16)then
         write(*,'(*(g0))') 'F_PE_NLGLOB14Z3_NOMINAL_RETRY|STEP=',step_index, &
              '|RETRY=1|DT=',nominal_dt,'|SOLVER_STATUS=',last_solver_status,'|COUNT=',nl14z3_recovery_count+1, &
              '|SAT_COUNT=',count(nl14z3_saved_state%pressure_head>=0.0_real64 .and. &
@@ -128,8 +128,43 @@ repl="""    if(nl14d_saturated_mode)then
           write(*,'(*(g0))') 'F_PE_NLGLOB14Z3_RECOVERED|STEP=',step_index, &
                '|COUNT=',nl14z3_recovery_count,'|DT=',nominal_dt, &
                '|SAT_COUNT=',count(state%pressure_head>=0.0_real64 .and. state%water_content==ts)
+        else
+          write(*,'(*(g0))') 'F_PE_NLGLOB14Z3_RECOVERY_FAILED|STEP=',step_index, &
+               '|RETRY=',merge(1,0,nl14z3_retry_advised),'|SOLVER_STATUS=',last_solver_status, &
+               '|TERMINAL=',trim(terminal_reason)
+          state=nl14z3_saved_state
+          ws=nl14z3_saved_ws
+          cumledger=nl14z3_saved_cumledger
+          cumrunoff=nl14z3_saved_cumrunoff
+          maxledger=nl14z3_saved_maxledger
+          transition_step=step_index
+          if(nl14z3_retry_advised)then
+            terminal_reason='NLGLOB14Z3_HALF_RETRY'
+          else
+            terminal_reason='NLGLOB14Z3_HALF_HARD_FAILURE'
+          end if
+          eligible=.false.
+          write(*,'(*(g0))') 'F_PE_NLGLOB14Z3_RECOVERY_ROLLBACK|STEP=',step_index, &
+               '|H=',maxval(abs(state%pressure_head-nl14z3_saved_state%pressure_head)), &
+               '|THETA=',maxval(abs(state%water_content-nl14z3_saved_state%water_content)), &
+               '|POND=',abs(state%ponding_depth-nl14z3_saved_state%ponding_depth), &
+               '|LEDGER=',abs(cumledger-nl14z3_saved_cumledger), &
+               '|RUNOFF=',abs(cumrunoff-nl14z3_saved_cumrunoff)
         end if
         dt=nominal_dt
+      end if
+
+      if((.not.eligible) .and. nl14z3_retry_advised .and. nl14z3_recovery_count>=16)then
+        state=nl14z3_saved_state
+        ws=nl14z3_saved_ws
+        cumledger=nl14z3_saved_cumledger
+        cumrunoff=nl14z3_saved_cumrunoff
+        maxledger=nl14z3_saved_maxledger
+        eligible=.false.
+        transition_step=step_index
+        terminal_reason='NLGLOB14Z3_RECOVERY_BUDGET_EXHAUSTED'
+        write(*,'(*(g0))') 'F_PE_NLGLOB14Z3_BUDGET|STEP=',step_index,'|COUNT=',nl14z3_recovery_count, &
+             '|DT=',nominal_dt,'|RETRY=1'
       end if
 
       write(*,'(*(g0))') 'F_PE_NLGLOB14D_MODE|STEP=',step_index,'|MODE=SATURATED_KLAG|ENTRY=0', &
@@ -140,7 +175,7 @@ repl="""    if(nl14d_saturated_mode)then
 """
 src=src.replace(persist,repl,1)
 
-for marker in ("F_PE_NLGLOB14Z3_NOMINAL_RETRY","F_PE_NLGLOB14Z3_ROLLBACK","F_PE_NLGLOB14Z3_HALF","F_PE_NLGLOB14Z3_RECOVERED"):
+for marker in ("F_PE_NLGLOB14Z3_NOMINAL_RETRY","F_PE_NLGLOB14Z3_ROLLBACK","F_PE_NLGLOB14Z3_HALF","F_PE_NLGLOB14Z3_RECOVERED","F_PE_NLGLOB14Z3_RECOVERY_FAILED","F_PE_NLGLOB14Z3_RECOVERY_ROLLBACK","F_PE_NLGLOB14Z3_BUDGET"):
     if marker not in src:
         raise SystemExit("NLGLOB14Z3 injection failed: "+marker)
 
