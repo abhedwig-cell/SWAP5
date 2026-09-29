@@ -85,13 +85,30 @@ for opt in 0 2; do
   done
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT"     -c tests/fpe/test_fpe_elastic08_prepare.f90 -o "$OUT/test.o" || fail "compile O$opt ELASTIC08"
   gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "link O$opt ELASTIC08"
-  python3 tests/fpe/run_fpe_elastic08_prepare.py "$OUT/test" "$CSV" | tee "$OUT/output.txt"
+  python3 tests/fpe/run_fpe_elastic08_prepare.py "$OUT/test" "$CSV" | tee "$OUT/prepare-output.txt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT"     -c tests/fpe/test_fpe_elastic08_runtime.f90 -o "$OUT/runtime-test.o" || fail "compile O$opt ELASTIC08 runtime"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/runtime-test.o" -o "$OUT/runtime-test" || fail "link O$opt ELASTIC08 runtime"
+  "$OUT/runtime-test" > "$OUT/runtime-output.txt" 2>&1 || {
+    cat "$OUT/runtime-output.txt" >&2
+    fail "runtime identity O$opt"
+  }
+  grep -Fq 'F_PE_ELASTIC08_R3_RUNTIME_IDENTITY=PASS' "$OUT/runtime-output.txt" || {
+    cat "$OUT/runtime-output.txt" >&2
+    fail "missing R3 marker O$opt"
+  }
+  cat "$OUT/runtime-output.txt"
 done
 
-cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
-  diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
-  fail "O0/O2 output drift"
+cmp -s "$BUILD/o0/prepare-output.txt" "$BUILD/o2/prepare-output.txt" || {
+  diff -u "$BUILD/o0/prepare-output.txt" "$BUILD/o2/prepare-output.txt" >&2 || true
+  fail "O0/O2 preparation output drift"
+}
+cmp -s "$BUILD/o0/runtime-output.txt" "$BUILD/o2/runtime-output.txt" || {
+  diff -u "$BUILD/o0/runtime-output.txt" "$BUILD/o2/runtime-output.txt" >&2 || true
+  fail "O0/O2 runtime output drift"
 }
 
 echo "F_PE_ELASTIC08_O0_O2=PASS"
 echo "F_PE_ELASTIC08_PREPARATION_GATE=PASS"
+echo "F_PE_ELASTIC08_RUNTIME_GATE=PASS"
