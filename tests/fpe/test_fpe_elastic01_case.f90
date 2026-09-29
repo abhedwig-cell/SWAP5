@@ -76,17 +76,26 @@ contains
     do k=1,numnod
       c(1,k)=tr;c(2,k)=ts;c(3,k)=ksat;c(4,k)=alpha;c(5,k)=lambda;c(6,k)=nvg;c(7,k)=mm
       c(8,k)=alpha;c(9,k)=0.0_real64;c(10,k)=ksat;c(11,k)=0.999_real64;c(12,k)=0.99_real64*ksat
-      c(22,k)=-1.0e6_real64;c(23,k)=1.0e-12_real64
+      c(22,k)=-1.0e6_real64;c(23,k)=1.0e-12_real64;c(24,k)=storage_coeff
     end do
     call initialize_b110_default_mvg_parameters(hp,c)
+    call check_legacy_elas_semantics()
     allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod));qdra=0.0_real64;qssdi=0.0_real64;qrot=0.0_real64
     call bind_b110_source_sink_provider(source_sink,qdra,qssdi,qrot)
+  end subroutine
+  subroutine check_legacy_elas_semantics()
+    real(real64)::heads(numnod),water(numnod),kk(numnod),cap(numnod),dk(numnod)
+    call bind_fpe_elastic01_provider(constitutive,hp,dt0)
+    heads=2.0_real64
+    call constitutive%evaluate(heads,water,kk,cap,dk)
+    call require(abs(water(1)-(ts+2.0_real64*storage_coeff))<=1.0e-13_real64,'legacy ELAS theta semantics')
+    call require(abs(cap(1)-storage_coeff)<=1.0e-15_real64,'legacy ELAS capacity semantics')
   end subroutine
   subroutine initialize_state(h,s)
     real(real64),intent(in)::h
     type(soil_water_physical_state_t),intent(out)::s
     real(real64)::heads(numnod),water(numnod),kk(numnod),cap(numnod),dk(numnod)
-    call bind_fpe_elastic01_provider(constitutive,hp,dt0,storage_coeff)
+    call bind_fpe_elastic01_provider(constitutive,hp,dt0)
     heads=h; call constitutive%evaluate(heads,water,kk,cap,dk)
     s%active_nodes=numnod;allocate(s%pressure_head(numnod),s%water_content(numnod))
     s%pressure_head=heads;s%water_content=water;s%ponding_depth=0.0_real64;s%groundwater_level=-999.0_real64
@@ -101,7 +110,7 @@ contains
     real(real64)::fixed_k,try_dt,ledger,new_dt,effective_baltol
     logical::ok
     try_dt=min(dt,horizon-t);attempts=attempts+1
-    call bind_fpe_elastic01_provider(constitutive,hp,try_dt,storage_coeff)
+    call bind_fpe_elastic01_provider(constitutive,hp,try_dt)
     call evaluate_b110_default_mvg_conductivity(hp,1,state%pressure_head(1),fixed_k,ok)
     call require(ok,'fixed conductivity')
     call bind_b110_dynamic_top_boundary_solver_provider(top,p,hp,1,state%ponding_depth,try_dt, &
