@@ -5,7 +5,11 @@ from pathlib import Path
 exe=Path(sys.argv[1]); bank=Path(sys.argv[2])
 data=json.loads(bank.read_text()); mats={x["id"]:x for x in data["materials"]}
 dts=[0.000125,0.0000625]
-routes=("HEAD","RUNOFF"); horizon=25.60; dtop=10.; pmax=.05; rsro=.05; dz=10.0
+routes=("HEAD","RUNOFF")
+if len(sys.argv)>=5:
+    routes=(sys.argv[3],)
+    dts=[float(sys.argv[4])]
+horizon=25.60; dtop=10.; pmax=.05; rsro=.05; dz=10.0
 route_filter=sys.argv[3] if len(sys.argv)>3 else None
 dt_filter=float(sys.argv[4]) if len(sys.argv)>4 else None
 if route_filter is not None:
