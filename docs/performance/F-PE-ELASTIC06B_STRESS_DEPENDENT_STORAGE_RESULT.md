@@ -9,6 +9,31 @@ Status: PHYSICAL_INTERPRETATION_RESULT_NO_PRODUCTION_RULE
 Clarify whether a physically based SWAP ELAS can be a soil-only constant or whether
 the elastic storage implied by soil-mechanical data is also state/stress dependent.
 
+## Primary USGS consolidation-to-storage identity
+
+Jorgensen (1980), USGS Water-Supply Paper 2064, gives the direct relation
+between consolidation-test compressibility and skeleton specific storage:
+
+`Ssk = av * gamma_w / (1 + e0)`.
+
+For an `e-log10(sigma')` compression line, the same source gives:
+
+`Ssk = 0.434 * C * gamma_w / (sigma' * (1 + e0))`.
+
+In the USGS presentation `C` is the compression-line index of the branch being
+used. For an elastic/recompression interpretation in SWAP, the relevant branch
+must be the unload/reload or recompression branch, not the virgin compression
+branch.
+
+The USGS source explicitly notes that specific storage obtained this way is not
+constant because the compressibility varies with loading/effective stress.
+
+This provides the primary physics bridge for BHR-GT:
+
+`stress-strain or e-log(sigma') observations -> av or Cr -> Ssk -> SWAP ELAS scale`.
+
+Water compressibility can then be added separately.
+
 ## Recompression mechanics
 
 For an oedometer swelling/recompression line written in the conventional
