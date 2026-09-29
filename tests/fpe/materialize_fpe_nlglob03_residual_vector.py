@@ -19,8 +19,10 @@ needle="""              '|BOTTOM_DH=',dabs(fsi_ws%delta_head(NN)),'|ROUTE=',trim
       end if
 """
 repl="""              '|BOTTOM_DH=',dabs(fsi_ws%delta_head(NN)),'|ROUTE=',trim(provider_dynamic_top_result%route)
-         write(*,'(*(g0))') 'F_PE_NLGLOB03_RES|ITER=',state%numbit,'|NN=',NN,'|R=', &
-              (fsi_ws%residual(i),i=1,NN)
+         do i=1,NN
+            write(*,'(*(g0))') 'F_PE_NLGLOB03_RES|ITER=',state%numbit,'|NN=',NN, &
+                 '|NODE=',i,'|R=',fsi_ws%residual(i)
+         end do
       end if
 """
 if needle not in src:
