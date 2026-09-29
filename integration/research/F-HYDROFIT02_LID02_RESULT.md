@@ -34,3 +34,15 @@ Thus the P-LSHRINK02 severe failure for this depth is not explained by competing
 Extend frozen corpus identity with a stable XML hydrophysical interval identity, minimally document-order ordinal plus observation hash and relevant determination ids. Rebuild/rebind downstream profile, fallback, conditional-prior and shrinkage evaluation to exact records before treating record-level replication metrics as final.
 
 Do not change the scientific estimator during this identity correction.
+
+## Identity-corrected corpus confirmation
+
+Authority run `36518236021` rebuilt the spatial corpus with explicit raw-hydraulic SHA-256 identity: old=31 records, new=31 records, hashes present 31/31, unique hashes 31/31, duplicate hashes 0. The same three duplicate BRO/depth keys retain multiplicity two. The corpus therefore contains 31 genuine unique hydrophysical measurement records; the correction is identity/binding, not deduplication.
+
+## Frozen severe-case lambda profile
+
+Authority run `36517890213` shows that BHR000000378532 0.65-0.75 m has localized rather than broad ill-conditioning. On the preregistered lambda grid, only lambda=-5 (J=21.04, cond=6.88e11) and lambda=-3 (J=28.46, cond=8.65e11) are SEVERE. All other grid points from -25 through 10 are MODERATE, and no alpha/n/Ks boundary is contacted.
+
+The hydraulic objective itself prefers the same region in which conditioning collapses. This is therefore a genuine local identifiability valley, not general data failure and not a duplicate-record artefact.
+
+Before repeating policy qualification, enrich the frozen corpus with hyd_sha256/ordinal and convert every downstream observation lookup to exact hydraulic-record identity. Re-establish the deterministic 12/19 mappings and rerun affected record-level analyses; do not carry their earlier qualification status forward unchanged.
