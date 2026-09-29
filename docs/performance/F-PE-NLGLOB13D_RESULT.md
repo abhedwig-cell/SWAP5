@@ -12,8 +12,8 @@ Canonical base:
 
 Qualification authority:
 
-- workflow run: `36558488567`;
-- job: `109373336442`;
+- workflow run: `36558791581`;
+- job: `109374338130`;
 - conclusion: SUCCESS.
 
 ## Frozen question
@@ -26,13 +26,7 @@ No h/16 or recursive subdivision was permitted.
 
 PASS.
 
-All five frozen targets executed without process failure:
-
-- HEAD, dt 0.00025 d;
-- HEAD, dt 0.000125 d;
-- HEAD, dt 0.0000625 d;
-- RUNOFF, dt 0.00025 d;
-- RUNOFF, dt 0.000125 d.
+All five frozen targets executed without process failure.
 
 Smooth TIMEINT16C authority remains preserved:
 
@@ -40,57 +34,56 @@ Smooth TIMEINT16C authority remains preserved:
 - median refined top-theta order about `2.04787`;
 - smooth qualification gate PASS.
 
-Physical mass remains within authority on all trajectories.
+Physical mass remains within authority.
 
 ## Result
 
-None of the five targets completes.
+First same-origin h/8 child:
 
-Each target records exactly one h/8 failure:
+- 1/5 becomes retention-admissible;
+- 4/5 remain retention-inadmissible.
 
-- completed targets: `0/5`;
-- h/8 failure count: `5/5`;
-- successful completed h/8 subdivision events: `0`.
+Full bounded h/8 pair completion:
 
-All five terminate as:
+- 0/5 complete the target interval;
+- no target completes the requested horizon.
+
+The one first-child success occurs for:
+
+- O05 / TG / HEAD / nominal dt = 6.25e-5 d.
+
+All five targets ultimately terminate as:
 
 `NEARSAT_EIGHTH_FAILED`.
 
-No process failure, nonfinite-state failure or physical-mass failure is observed.
+Observed physical ledgers remain near roundoff:
+
+- max accepted-interval ledger about `2.24e-14 cm`;
+- max cumulative ledger about `1.25e-14 cm`.
+
+No process failure or nonfinite-state failure is observed.
 
 ## Frozen classification
 
 `NLGLOB13D_H8_ADMISSIBILITY_NOT_CONFIRMED`.
 
-The preregistered negative gate applies because at least 3/5 first h/8 children remain inadmissible. In fact all 5/5 do.
+The positive gate fails decisively.
 
 ## Interpretation
 
-The near-saturation TG accepted-state defect contracts under temporal refinement, as established by NLGLOB13C2, but simple bounded subdivision through h/8 is still insufficient to remove it.
+The near-saturation TG accepted-state defect continues to contract with temporal refinement, but a bounded h/8 rescue is still insufficient.
 
-This rules out subdivision depth alone as a practical repair for this line.
+The first h/8 child becoming admissible in one trajectory is useful mechanistic evidence, but it does not rescue the bounded subdivision strategy because no complete h/8 pair succeeds.
 
-The failure is not caused by:
+The failure is not due to mass imbalance, smooth-order regression, process failure or nonfinite state.
 
-- endpoint nonconvergence;
-- mass imbalance;
-- route mismatch;
-- nonfinite state;
-- loss of smooth second-order behavior.
-
-The remaining issue is the accepted TG temporal construction at the saturation boundary.
+The unresolved issue remains the accepted TG temporal construction at the saturation boundary.
 
 ## Consequence
 
 Do not open h/16 or adaptive recursive subdivision as a continuation of this workunit.
 
-A successor must use a different temporal construction tied explicitly to the saturation boundary, while preserving:
-
-- provider-consistent endpoint coefficient staging;
-- unchanged accepted-state mass accounting;
-- no accepted-theta clipping;
-- smooth second-order authority away from the event;
-- explicit route/event semantics.
+A successor must use a different temporal construction tied explicitly to the saturation boundary.
 
 ## Production boundary
 
