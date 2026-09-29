@@ -1,0 +1,38 @@
+name: F-PE-ELASTIC49 temporal identity policy audit
+
+concurrency:
+  group: f-pe-elastic49-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic49-temporal-identity-policy
+    paths:
+      - 'tests/fpe/run_fpe_elastic49.py'
+      - 'docs/performance/F-PE-ELASTIC49_TEMPORAL_IDENTITY_POLICY_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic49.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Audit temporal identity policy
+        run: python3 tests/fpe/run_fpe_elastic49.py
+      - name: Verify source scope
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base=subprocess.check_output(["git","merge-base","HEAD","origin/integration/f-ci-canonical"],text=True).strip()
+          names=subprocess.check_output(["git","diff","--name-only",base+"..HEAD"],text=True).splitlines()
+          prod=[p for p in names if p.startswith("src/")]
+          if prod:
+              raise SystemExit("F_PE_ELASTIC49_SOURCE_SCOPE_FAIL="+repr(prod))
+          print("F_PE_ELASTIC49_A6_SOURCE_SCOPE=PASS")
+          PY
