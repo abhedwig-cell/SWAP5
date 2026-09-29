@@ -23,6 +23,10 @@ on:
       - '.github/workflows/f-pe-timeint16.yml'
   workflow_dispatch:
 
+concurrency:
+  group: f-pe-timeint16-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
