@@ -1,0 +1,56 @@
+{
+  "work_unit": "F-PE-ELASTIC23",
+  "workstream": "VQ/offline BRO profile preprocessing",
+  "baseline": "9ca61a27aa979d5e87ffeffbd3e74fd0f1c5e406",
+  "checkpoint_commit": "9c93b5e0941f2a644a24438bab1489ba0b979c22",
+  "last_reconciled_head": "9c93b5e0941f2a644a24438bab1489ba0b979c22",
+  "last_reconciled_upstream": "6fe778ffb5a55f6fb3cc13b9c1a43b71a4641096",
+  "scope": "Retrieve one explicit BRO normalsoilprofile_id from the frozen local GeoPackage into exact ordered source-bound horizon records with explicit artifact provenance and no runtime/network/spatial-selection semantics.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC23_PROFILE_RETRIEVAL_PREREGISTRATION.md",
+    "tools/fpe_elastic23_profile_retrieval.py",
+    "tests/fpe/run_fpe_elastic23.py",
+    "tests/fpe/run_fpe_elastic23.sh",
+    ".github/workflows/f-pe-elastic23.yml",
+    "docs/performance/F-PE-ELASTIC22_CLOSURE.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/run_fpe_elastic23.py",
+    "tests/fpe/run_fpe_elastic23.sh",
+    ".github/workflows/f-pe-elastic23.yml"
+  ],
+  "evidence_paths": [
+    "GitHub Actions run 36550782840 / artifact 11024079961 / sha256 f96bea1e9efdd0326ae1ca0d72684cd7928c90fd23f0930b51c782dfc0ff5fe6"
+  ],
+  "dependency_surface": [
+    "frozen PDOK BRO Bodemkaart GeoPackage artifact",
+    "normalsoilprofiles table",
+    "soilhorizon table",
+    "ELASTIC22 typed explicit-profile source boundary"
+  ],
+  "interfaces_changed": [
+    "offline preprocessing tool only; no src/** change"
+  ],
+  "invariants_affected": [
+    "runtime remains network-free",
+    "profile identity remains explicit caller ownership",
+    "source values preserved without physical derivation",
+    "no hidden spatial selection",
+    "artifact provenance is explicit"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Run ELASTIC23 qualification on the frozen BRO artifact and apply A1-A10 exactly; then re-extract cleanly onto current canonical if green.",
+  "recovery_point": "work/f-pe-elastic23-profile-retrieval@9c93b5e0941f2a644a24438bab1489ba0b979c22"
+}
