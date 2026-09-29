@@ -2,7 +2,7 @@
 
 Date: 2026-09-29
 
-Status: `PREREGISTERED_BEFORE_RESULTS`
+Status: `AMENDED_BEFORE_RESULTS`
 
 Canonical authority:
 
@@ -46,7 +46,7 @@ It is not allowed for:
 - route mismatch;
 - nonfinite state;
 - head or ponding failure;
-- predictor-domain failure alone when the prospective accepted TG state remains admissible.
+- auxiliary coefficient-predictor failure alone. NLGLOB13 first uses the NLGLOB11A head-space stage so that the prospective accepted TG state can be evaluated without the already-falsified moisture-predictor domain exit.
 
 Thus NLGLOB13 does not absorb NLGLOB12A endpoint robustness.
 
@@ -54,9 +54,9 @@ Thus NLGLOB13 does not absorb NLGLOB12A endpoint robustness.
 
 ### Bank S — smooth TIMEINT16C preservation
 
-Use the original four smooth fixed-flux ladders.
+Use the original four smooth fixed-flux ladders with the NLGLOB11A head-space endpoint coefficient stage plus the NLGLOB13 subdivision wrapper.
 
-Subdivision should remain inactive.
+Subdivision must remain inactive. The head-space stage must reproduce its already observed second-order behavior.
 
 Require:
 
@@ -93,6 +93,10 @@ Require:
 5. no accepted-state retention-domain failure;
 6. physical ledgers <=5e-8 cm;
 7. all completed states finite and route-consistent.
+
+## Amendment rationale
+
+This amendment is persisted before any NLGLOB13 result exposure. NLGLOB11A already established that the original moisture-space auxiliary predictor itself exits the retention domain before the accepted-state admissibility question can be evaluated, while the head-space endpoint stage preserves second-order smooth behavior and exposes the actual accepted-state near-saturation failure. Using the head-space stage is therefore required to test the preregistered temporal-subdivision hypothesis rather than re-test the already closed auxiliary-predictor defect.
 
 ## Frozen classifications
 
