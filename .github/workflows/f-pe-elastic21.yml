@@ -1,0 +1,29 @@
+name: F-PE-ELASTIC21 BRO block association
+
+concurrency:
+  group: f-pe-elastic21-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic21-bro-block-association
+    paths:
+      - 'src/adapter/mod_fmr_elastic_storage_bro_block_association.f90'
+      - 'tests/fpe/test_fpe_elastic21_bro_block_association.f90'
+      - 'tests/fpe/run_fpe_elastic21.sh'
+      - 'docs/performance/F-PE-ELASTIC21_BRO_BLOCK_ASSOCIATION_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic21.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Qualify BRO block association
+        run: bash tests/fpe/run_fpe_elastic21.sh
