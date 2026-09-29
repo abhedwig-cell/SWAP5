@@ -47,6 +47,11 @@ contains
     pond_log=0.0_real64
     returned_pond_log=0.0_real64
     flux_log=0.0_real64
+    theta_log=0.0_real64
+    result_pond_log=0.0_real64
+    runoff_log=0.0_real64
+    derivative_log=0.0_real64
+    derivative_available_log=.false.
     runoff_log=0.0_real64
     derivative_log=0.0_real64
     status_log=0
@@ -75,6 +80,11 @@ contains
       pond_log(i)=candidate_ponding_depth
       returned_pond_log(i)=result%candidate_ponding_depth
       flux_log(i)=result%actual_top_flux
+      theta_log(i)=water_content_top
+      result_pond_log(i)=result%candidate_ponding_depth
+      runoff_log(i)=result%runoff_depth
+      derivative_available_log(i)=result%surface_head_derivative_available
+      derivative_log(i)=result%surface_head_dpressure_head_top
       runoff_log(i)=result%runoff_depth
       derivative_available_log(i)=result%surface_head_derivative_available
       derivative_log(i)=result%surface_head_dpressure_head_top
