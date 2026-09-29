@@ -93,6 +93,8 @@ for mid in ("B01","B12","O05","O14"):
                         "dh_node":int(step["NODE_RAW"]),"top_dh":float(step["TOP_DH"]),"bottom_dh":float(step["BOTTOM_DH"]),
                         "z_h_inf":zh,"z_h_node":int(step["NODE_ZH"]),
                         "dtheta_inf":dtheta,"dtheta_node":int(step["NODE_DTHETA"]),"z_theta_inf":ztheta,
+                        "residual_node":int(step["NODE_RES"]),
+                        "raw_residual_colocated":int(step["NODE_RAW"])==int(step["NODE_RES"]),
                         "dominant_contract":dom
                     })
 
@@ -136,11 +138,14 @@ for key in ("z_h","z_theta"):
     mono[key]=all(v is not None for v in vals) and vals[0]<=vals[1]<=vals[2]
 
 state_signal=any(agg[k] is not None and agg[k]>=2 and direction_counts[k]>=4 and mono[k] for k in ("z_h","z_theta"))
-best_family={k:max(v for v in (families[k]["z_h_ratio"],families[k]["z_theta_ratio"]) if v is not None) for k in families}
-agg_best=max(v for v in agg.values() if v is not None) if any(v is not None for v in agg.values()) else None
-route_specific=(not state_signal and agg_best is not None and agg_best<2 and
-                best_family.get("FLUX|TG",0)>=2 and best_family.get("FLUX|KLAG",0)>=2 and
-                any(best_family.get(f"{r}|{m}",999)<2 for r in ("HEAD","RUNOFF") for m in modes))
+route_specific=False
+if not state_signal:
+    for scale_key,field in (("z_h","z_h_ratio"),("z_theta","z_theta_ratio")):
+        ft=families["FLUX|TG"][field]; fk=families["FLUX|KLAG"][field]
+        if ft is not None and fk is not None and ft>=2 and fk>=2:
+            others=[families[f"{r}|{m}"][field] for r in ("HEAD","RUNOFF") for m in modes]
+            if any(v is not None and v<2 for v in others):
+                route_specific=True
 no_simple=(not state_signal and not route_specific and all(v is not None and v<1.5 for v in agg.values()))
 if not coverage: cls="BLOCKED_NLGLOB01_SCALING_COVERAGE"
 elif state_signal: cls="NLGLOB01_STATE_SCALING_SIGNAL"
@@ -154,6 +159,9 @@ summary={"classification":cls,"coverage_ok":coverage,"audited_iterations":n,"poo
  "dominant_contract_counts":{k:sum(x["dominant_contract"]==k for x in audit) for k in ("CP","TOT","HEAD")},
  "max_step_node_counts":{"TOP":sum(x["dh_node"]==1 for x in audit),"BOTTOM":sum(x["dh_node"]==16 for x in audit),
                          "INTERIOR":sum(x["dh_node"] not in (1,16) for x in audit)},
+ "residual_node_counts":{"TOP":sum(x["residual_node"]==1 for x in audit),"BOTTOM":sum(x["residual_node"]==16 for x in audit),
+                         "INTERIOR":sum(x["residual_node"] not in (1,16) for x in audit)},
+ "raw_residual_colocation_fraction":sum(x["raw_residual_colocated"] for x in audit)/n if n else 0.0,
  "routes":route_set,"materials":mat_set,"dt_levels":dt_set,"modes":mode_set,
  "process_failures":sum(not x["process_ok"] for x in cases)}
 print("F_PE_NLGLOB01_CASES="+json.dumps(cases,separators=(",",":"),sort_keys=True))
