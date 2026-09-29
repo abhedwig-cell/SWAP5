@@ -55,33 +55,26 @@ if old not in src:
     raise SystemExit("vector_F tail patch point missing")
 src=src.replace(old,new,1)
 
-old="""   if (swmacro == 1 .AND. .NOT.fsi_ws%unsaturated_flags(3)) then
-      call MACROPORE(3)
-      fsi_ws%dfdh_main(1:NN) = fsi_ws%dfdh_main(1:NN) - dFdhMp(1:NN)
-   end if
-
-end subroutine jacobian_F
-"""
-new="""   if (swmacro == 1 .AND. .NOT.fsi_ws%unsaturated_flags(3)) then
-      call MACROPORE(3)
-      fsi_ws%dfdh_main(1:NN) = fsi_ws%dfdh_main(1:NN) - dFdhMp(1:NN)
-   end if
-
-   ! TIMEINT15 test-only trapezoidal Jacobian. The origin operator is frozen;
-   ! only the endpoint flux operator contributes a half-weighted derivative.
-   if (timeint15_mode == 1) then
-      fsi_ws%dfdh_upper(1:NN) = 0.5d0*fsi_ws%dfdh_upper(1:NN)
-      fsi_ws%dfdh_lower(1:NN) = 0.5d0*fsi_ws%dfdh_lower(1:NN)
-      do i = 1, NN
-         fsi_ws%dfdh_main(i) = 0.5d0*fsi_ws%dfdh_main(i) + &
-              0.5d0*state%dimoca(i)*matrix_fraction(i)*grid_dz(i)/dt
+old="""   if (SwKimpl == 0) then
+      do i = 2, numnod
+         fsi_ws%dfdh_upper(i)   = - state%kmean(i)  /grid_disnod(i)
+         fsi_ws%dfdh_lower(i-1) = fsi_ws%dfdh_upper(i)
       end do
    end if
-
-end subroutine jacobian_F
+"""
+new="""   if (SwKimpl == 0) then
+      do i = 2, numnod
+         if (timeint15_mode == 1) then
+            fsi_ws%dfdh_upper(i) = -0.5d0*state%kmean(i)/grid_disnod(i)
+         else
+            fsi_ws%dfdh_upper(i) = -state%kmean(i)/grid_disnod(i)
+         end if
+         fsi_ws%dfdh_lower(i-1) = fsi_ws%dfdh_upper(i)
+      end do
+   end if
 """
 if old not in src:
-    raise SystemExit("jacobian tail patch point missing")
+    raise SystemExit("offdiagonal initialization patch point missing")
 src=src.replace(old,new,1)
 
 Path(args.output).write_text(src)
