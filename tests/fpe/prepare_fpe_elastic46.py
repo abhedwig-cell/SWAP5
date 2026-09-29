@@ -63,6 +63,7 @@ def main():
     ap.add_argument("--artifact-dir",required=True)
     ap.add_argument("--work-dir",required=True)
     ap.add_argument("--fixture",required=True)
+    ap.add_argument("--geometry-json",required=True)
     a=ap.parse_args()
 
     root=Path(a.repo_root).resolve()
@@ -93,6 +94,13 @@ def main():
         raise SystemExit("F_PE_ELASTIC46_FAIL selected profile")
     z,dz,counts=split_profile(profile["horizons"],NODE_COUNT)
 
+    node_distance=[abs(z[1]-z[0])]
+    node_distance.extend(abs(z[i]-z[i-1]) for i in range(1,len(z)))
+    Path(a.geometry_json).write_text(json.dumps({
+        "z_cm": z,
+        "dz_cm": dz,
+        "node_distance_cm": node_distance,
+    },sort_keys=True,separators=(",",":"))+"\n",encoding="utf-8")
     zarr="["+",".join(f64(v) for v in z)+"]"
     dzarr="["+",".join(f64(v) for v in dz)+"]"
 
