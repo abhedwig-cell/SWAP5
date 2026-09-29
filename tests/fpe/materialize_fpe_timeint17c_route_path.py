@@ -61,19 +61,25 @@ helper="""  subroutine emit_timeint17c_trial(mode_name,step_index,reason)
     character(len=*),intent(in)::mode_name,reason
     integer,intent(in)::step_index
     integer::eval_count,distinct_routes,route_transitions,first_route,last_route
-    integer::flux_count,head_count,runoff_count,atmos_count,other_count,unavailable
-    real(real64)::min_head,max_head,min_pond,max_pond,min_flux,max_flux
+    integer::flux_count,head_count,runoff_count,atmos_count,other_count,unavailable,derivative_missing
+    real(real64)::min_head,max_head,min_theta,max_theta,min_pond,max_pond
+    real(real64)::min_returned_pond,max_returned_pond,min_flux,max_flux,min_runoff,max_runoff
+    real(real64)::min_derivative,max_derivative
     call summarize_fpe_timeint17c_log(eval_count,distinct_routes,route_transitions,first_route,last_route, &
-         flux_count,head_count,runoff_count,atmos_count,other_count,unavailable, &
-         min_head,max_head,min_pond,max_pond,min_flux,max_flux)
+         flux_count,head_count,runoff_count,atmos_count,other_count,unavailable,derivative_missing, &
+         min_head,max_head,min_theta,max_theta,min_pond,max_pond,min_returned_pond,max_returned_pond, &
+         min_flux,max_flux,min_runoff,max_runoff,min_derivative,max_derivative)
     write(*,'(*(g0))') 'F_PE_TIMEINT17C_TRIAL|MATERIAL=',trim(material_id),'|MODE=',trim(mode_name), &
          '|ROUTE=',trim(route_id),'|DT=',dt,'|STEP=',step_index,'|TERMINAL_REASON=',trim(reason), &
          '|EVALS=',eval_count,'|DISTINCT_ROUTES=',distinct_routes,'|ROUTE_TRANSITIONS=',route_transitions, &
          '|FIRST_ROUTE=',first_route,'|LAST_ROUTE=',last_route,'|UNAVAILABLE=',unavailable, &
          '|FLUX_COUNT=',flux_count,'|HEAD_COUNT=',head_count,'|RUNOFF_COUNT=',runoff_count, &
-         '|ATMOS_COUNT=',atmos_count,'|OTHER_COUNT=',other_count, &
-         '|MIN_HEAD=',min_head,'|MAX_HEAD=',max_head,'|MIN_POND=',min_pond,'|MAX_POND=',max_pond, &
-         '|MIN_FLUX=',min_flux,'|MAX_FLUX=',max_flux
+         '|ATMOS_COUNT=',atmos_count,'|OTHER_COUNT=',other_count,'|DERIVATIVE_MISSING=',derivative_missing, &
+         '|MIN_HEAD=',min_head,'|MAX_HEAD=',max_head,'|MIN_THETA=',min_theta,'|MAX_THETA=',max_theta, &
+         '|MIN_POND=',min_pond,'|MAX_POND=',max_pond,'|MIN_RETURNED_POND=',min_returned_pond, &
+         '|MAX_RETURNED_POND=',max_returned_pond,'|MIN_FLUX=',min_flux,'|MAX_FLUX=',max_flux, &
+         '|MIN_RUNOFF=',min_runoff,'|MAX_RUNOFF=',max_runoff,'|MIN_DERIVATIVE=',min_derivative, &
+         '|MAX_DERIVATIVE=',max_derivative
   end subroutine
 
   subroutine read_real(i,x)
