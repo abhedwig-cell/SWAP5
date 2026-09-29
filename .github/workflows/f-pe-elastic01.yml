@@ -21,3 +21,5 @@ jobs:
         run: bash tests/fpe/audit_fpe_elastic01_legacy.sh
       - name: Run paired ELASTIC01 screen
         run: bash tests/fpe/run_fpe_elastic01_screen.sh
+      - name: Run ELASTIC01 bracket refinement
+        run: bash tests/fpe/run_fpe_elastic01_refine.sh
