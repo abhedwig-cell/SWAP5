@@ -11,13 +11,13 @@ Baseline:
 `integration/f-ci-canonical@667c4b76768f760403e0b58383c386686baa3784`
 
 Qualified clean postimage:
-`05396434f1e0a075cc036bc6856465ac66fdb1af`
+`f678c5cc5041c2329877c88d7251847db9baf059`
 
 Workflow run:
-`36567850138`
+`36567989992`
 
 Job:
-`109404121763`
+`109404588440`
 
 Conclusion:
 SUCCESS.
