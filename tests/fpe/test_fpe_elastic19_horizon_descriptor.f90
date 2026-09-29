@@ -8,7 +8,8 @@ program test_fpe_elastic19_horizon_descriptor
        fmr_elastic_storage_horizon_t, fmr_elastic_storage_mapping_diagnostics_t, &
        fmr_map_elastic_storage_horizons_to_nodes, FMR_ELAS_MAP_OK
   use mod_fmr_elastic_storage_descriptor_assembly, only: &
-       fmr_elastic_storage_assembly_diagnostics_t, fmr_assemble_generated_elastic_storage, FMR_ELAS_ASSEMBLY_OK, &
+       fmr_elastic_storage_descriptor_t, fmr_elastic_storage_assembly_diagnostics_t, &
+       fmr_assemble_generated_elastic_storage, FMR_ELAS_ASSEMBLY_OK, &
        FMR_ELAS_ASSEMBLY_PRIOR_REJECTED
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t
   use mod_fmr_elastic_storage_horizon_descriptor_builder, only: &
