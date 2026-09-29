@@ -182,23 +182,35 @@ F-PE-ELASTIC01 asks a different question: whether elastic storage changes the st
 The previous negative static-timestep result is therefore retained as evidence, not treated as a reason to skip this line.
 
 
-## Pre-result source audit: existing near-saturation regularization
+## Corrected pre-result source audit: legacy ELAS authority
 
-Source audit on 2026-09-29 found that the current B1.10 default MvG provider already contains a hard-coded near-saturation capacity floor:
+The initial source audit incorrectly equated the current near-saturation `dt * 1e-7` capacity fallback with legacy elastic storage. That interpretation is superseded by direct inspection of the byte-verified corrected B1.10 `MOD_MvG_functions.f90` authority.
 
-- for `h >= 0`: `capacity = step_duration * 1e-7`;
-- for `-1 < h < 0`: the analytical capacity is floored at `step_duration * 1e-7`.
+The corrected legacy semantics are:
 
-HeadCalc uses `capacity * dz / dt` in the Jacobian, so this contributes an effective coefficient of `1e-7` to the Newton derivative where the floor is active.
+- `sw_use_elas` explicitly selects whether the user-supplied elasticity value is active;
+- `cofgen(24,node)` is bound to `elas(node)`;
+- rows `22:24` are part of the common supplied parameter block for all parameterized hydraulic models;
+- for default MvG and `h >= 0`, elasticity ON gives
+  `theta = theta_s + h * ELAS`;
+- for default MvG and `h >= 0`, elasticity ON gives
+  `C = ELAS`;
+- with elasticity OFF, saturated capacity instead uses the historical numerical fallback
+  `C = dt * 1e-7`.
 
-However, the Richards residual still uses `(theta - theta_old) * dz / dt`; there is no matching elastic-storage state term in the residual. Therefore the existing `1e-7` mechanism is classified prospectively as **Jacobian/capacity regularization**, not as physically closed elastic storage.
+Therefore `ELAS` is a soil-hydraulic constitutive parameter in the corrected legacy authority. It changes saturated water storage as well as the Jacobian derivative. The `dt * 1e-7` term is a separate non-elastic fallback and must not be called elastic storage.
 
-The initial experiment shall therefore separate:
+The first capacity-floor-only screen on this branch is retained only as diagnostic development history and is classified `SUPERSEDED_WRONG_MECHANISM_FOR_ELAS`. It is not admissible evidence for Pim Dik's `1e-6` proposal.
 
-1. **Track A — current-semantics regularization:** parameterize only the existing near-saturation capacity floor and test `0, 1e-8, 1e-7, 1e-6, 1e-5`. This must be implemented test-only. Production `src/**` remains unchanged.
-2. **Track B — physically consistent elastic storage:** only after Track A is recorded, specify a residual-consistent storage formulation before implementing it. Track B must include the same storage contribution in state/residual accounting and its derivative in the Jacobian.
+Phase A is redefined before inspecting results from the corrected implementation:
 
-The exact current Reference for Track A is `1e-7`, not zero. A parameterized `1e-7` run must first reproduce the unmodified provider before other candidates are interpreted.
+1. the unmodified current SWAP5 provider is the `ELAS_OFF_REFERENCE`;
+2. the test-only legacy-ELAS provider carries the candidate through `cofgen(24)`;
+3. candidates are `1e-8, 1e-7, 1e-6, 1e-5`; `ELAS_ON_ZERO` is retained only as a diagnostic switch/fallback discriminator;
+4. positive-head water content and capacity must obey the exact B1.10 formulas above;
+5. production `src/**` remains unchanged.
+
+This source audit also changes the intended production architecture. If qualified, ELAS belongs with the per-layer/per-material soil-hydraulic parameter authority, not in the global numerical configuration.
 
 ## Frozen Phase-A acceptance tolerances
 
@@ -213,11 +225,6 @@ For each screening case, relative to the unmodified current Reference:
 - absolute terminal matrix-water-storage delta <= `1e-5 cm`;
 - maximum water-ledger residual <= `5e-8 cm`;
 - rejected attempts may not exceed `max(2 * reference rejected attempts, ceil(0.25 * candidate attempts))`.
-
-For the `1e-7` parameterized reproduction control, a stronger gate applies:
-
-- integer work counters must equal Reference;
-- runoff, ponding, terminal heads, storage and maximum ledger must agree to <= `1e-12` in their reported units.
 
 A work benefit is reported descriptively in Phase A. No production admission threshold is inferred from this screening bank alone.
 
