@@ -46,30 +46,32 @@ def one(route,dt):
     cumledger=abs(float(res["CUM_LEDGER"])) if res else math.inf
 
     first8=None; last7=None; reverse=False; skipped=False
-    seen8=False; prev_top=None
+    late_phase=False; prev_top=None; pre=None; post=None
+    last_state_time=series[-1][1] if series else None
     for i,(step,t,sat) in enumerate(series):
         top=min(sat) if sat else None
-        if top==7: last7=t
-        if top==8 and first8 is None:
-            first8=t; seen8=True
         if prev_top is not None and top is not None and top!=prev_top:
             d=top-prev_top
-            if seen8 and d<0: reverse=True
-            if prev_top>=7 and d>1: skipped=True
+            if prev_top==6 and top==7:
+                late_phase=True
+            elif late_phase:
+                if d<0: reverse=True
+                if d>1: skipped=True
+        if late_phase:
+            if sat==list(range(7,17)):
+                last7=t
+                pre=(step,t,sat)
+            if first8 is None and sat==list(range(8,17)):
+                first8=t
+                post=(step,t,sat)
         prev_top=top
-    pre=None; post=None
-    if first8 is not None:
-        for step,t,sat in series:
-            if t<=first8 and sat==list(range(7,17)): pre=(step,t,sat)
-            if t>=first8 and sat==list(range(8,17)):
-                post=(step,t,sat); break
     valid=(cp.returncode==0 and complete and finite and maxledger<=5e-8 and cumledger<=5e-8
            and not inconsistent and not noncontig and not skipped)
     return {"route":route,"dt":dt,"valid":valid,"complete":complete,"finite":finite,
       "process_ok":cp.returncode==0,"terminal_reason":res["TERMINAL_REASON"] if res else None,
       "max_ledger":maxledger,"cum_ledger":cumledger,"indicator_inconsistent":inconsistent,
       "noncontiguous":noncontig,"skipped":skipped,"reverse":reverse,
-      "last7_time":pre[1] if pre else last7,"first8_time":post[1] if post else first8,
+      "last7_time":pre[1] if pre else last7,"first8_time":post[1] if post else first8,"last_state_time":last_state_time,
       "pre_set":pre[2] if pre else None,"post_set":post[2] if post else None}
 
 rows=[one(r,dt) for r in routes for dt in dts]
