@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "baseline": "SWAP 4.3.1 B1.10 port",
+  "status": "INVENTORY_ESTABLISHED",
+  "generated_from_branch": "work/ppa-reconcile02-wu04c",
+  "entrypoints": [
+    {
+      "legacy": "src/legacy/b1_10_port/swap_main.f90",
+      "routines": ["program swap_main", "subroutine SWAP"],
+      "target_owner": "runtime/application composition",
+      "classification": "adapter_then_thin",
+      "first_extraction": "typed application session and result sink",
+      "retirement_gate": "standalone and coupling execute through the same typed runtime"
+    },
+    {
+      "legacy": "src/legacy/b1_10_port/swap.f90",
+      "routines": ["monolithic SWAP control flow"],
+      "target_owner": "kernel interval executor",
+      "classification": "split_and_retire",
+      "first_extraction": "interval lifecycle boundary around accepted committed state",
+      "retirement_gate": "no duplicate lifecycle, forcing or commit owner"
+    },
+    {
+      "legacy": "src/legacy/b1_10_fci11_port/timecontrol_part01.inc",
+      "routines": ["module MOD_timer", "subroutine TimeControl"],
+      "target_owner": "interval/event scheduler",
+      "classification": "split_and_retire",
+      "first_extraction": "typed interval/event request and scheduler result",
+      "retirement_gate": "generic [t0,t1] execution without hidden day assumptions"
+    },
+    {
+      "legacy": "src/legacy/b1_10_port/readswap.f90",
+      "routines": ["legacy input parsing and validation"],
+      "target_owner": "legacy input adapter",
+      "classification": "adapter",
+      "first_extraction": "typed configuration boundary",
+      "retirement_gate": "kernel runs from in-memory typed configuration"
+    },
+    {
+      "legacy": "src/legacy/b1_10_port/swapoutput.f90",
+      "routines": ["legacy output and report formatting"],
+      "target_owner": "typed result and diagnostics adapters",
+      "classification": "adapter",
+      "first_extraction": "result sink interface",
+      "retirement_gate": "kernel has no file-oriented output side effects"
+    }
+  ],
+  "direct_dependency_clusters": [
+    {"cluster": "scheduler", "files": ["timecontrol_part01.inc", "timecontrol_part05.inc", "timecontrol_part06.inc"], "target": "runtime/interval_scheduler"},
+    {"cluster": "application_bridge", "files": ["swap_main.f90", "swap_main_part01.inc", "swap_part06.inc"], "target": "runtime/application_session"},
+    {"cluster": "physics_owner", "files": ["headcalc.f90", "fmr_*"], "target": "solver/reference_richards_service"},
+    {"cluster": "io", "files": ["readswap.f90", "swapoutput.f90"], "target": "adapters/legacy_io"}
+  ],
+  "first_executable_workunit": "PPA-FULL-MIGRATION-01-TYPED-INTERVAL-SESSION",
+  "non_claims": [
+    "Inventory does not imply production cutover",
+    "Legacy physics and B1 reference remain authoritative until equivalent typed gates pass",
+    "No solver, retry, tolerance, mass, restart or ownership policy is changed by this inventory"
+  ]
+}
