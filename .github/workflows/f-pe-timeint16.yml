@@ -20,6 +20,10 @@ on:
       - 'tests/fpe/test_fpe_timeint16b_startup.f90'
       - 'tests/fpe/run_fpe_timeint16b.py'
       - 'tests/fpe/run_fpe_timeint16b.sh'
+      - 'docs/performance/F-PE-TIMEINT16C_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timeint16c_kpred_stage.f90'
+      - 'tests/fpe/run_fpe_timeint16c.py'
+      - 'tests/fpe/run_fpe_timeint16c.sh'
       - '.github/workflows/f-pe-timeint16.yml'
   workflow_dispatch:
 
@@ -66,3 +70,15 @@ jobs:
         run: gfortran --version
       - name: Run TG event-startup attribution
         run: bash tests/fpe/run_fpe_timeint16b.sh
+
+  provider-consistent-stage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run provider-consistent TG staging qualification
+        run: bash tests/fpe/run_fpe_timeint16c.sh
