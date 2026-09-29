@@ -76,7 +76,7 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
       terminal_reason='SATURATION_EVENT_TRIAL_FAILED'
       transition_step=step_index
       write(*,'(*(g0))') 'F_PE_NLGLOB14_EVENT|STEP=',step_index,'|VALID=1|NODE=',event_node,'|PHI=',phi_sat, &
-           '|EVENT_DT=',event_dt,'|TRIAL_OK=0'
+           '|EVENT_DT=',event_dt,'|TRIAL_OK=0|DOMAIN=',merge(1,0,event_fail)
       return
     end if
 
