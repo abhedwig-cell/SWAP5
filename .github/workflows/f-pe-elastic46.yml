@@ -10,6 +10,7 @@ on:
       - research/f-pe-elastic46-production-effect
     paths:
       - 'tests/fpe/prepare_fpe_elastic46.py'
+      - 'tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py'
       - 'tests/fpe/run_fpe_elastic46.sh'
       - 'docs/performance/F-PE-ELASTIC46_PRODUCTION_EFFECT_PREREGISTRATION.md'
       - '.github/workflows/f-pe-elastic46.yml'
