@@ -1,0 +1,59 @@
+name: F-PE-ELASTIC12A root-zone transfer audit
+
+concurrency:
+  group: f-pe-elastic12a-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/run_rootzone_elastic_transfer.py'
+      - 'docs/performance/F-PE-ELASTIC12A_ROOT_ZONE_TRANSFER_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic12a-rootzone.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download frozen HYDROFIT identity and descriptor authority
+        uses: actions/download-artifact@v4
+        with:
+          name: f-hydrofit02-bro-probe
+          path: ${{ runner.temp }}/authority
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36518236021
+
+      - name: Run target-free root-zone transfer twice
+        run: |
+          python research/elastic/run_rootzone_elastic_transfer.py             --authority-root "$RUNNER_TEMP/authority"             --raw-dir "$RUNNER_TEMP/raw-a"             --out "$RUNNER_TEMP/transfer-a.json" | tee "$RUNNER_TEMP/transfer-a.txt"
+
+          python research/elastic/run_rootzone_elastic_transfer.py             --authority-root "$RUNNER_TEMP/authority"             --raw-dir "$RUNNER_TEMP/raw-b"             --out "$RUNNER_TEMP/transfer-b.json" | tee "$RUNNER_TEMP/transfer-b.txt"
+
+          cmp "$RUNNER_TEMP/transfer-a.json" "$RUNNER_TEMP/transfer-b.json"
+          cmp "$RUNNER_TEMP/transfer-a.txt" "$RUNNER_TEMP/transfer-b.txt"
+          diff -rq "$RUNNER_TEMP/raw-a" "$RUNNER_TEMP/raw-b"
+          grep -q '^F_PE_ELASTIC12A=PASS$' "$RUNNER_TEMP/transfer-a.txt"
+          echo F_PE_ELASTIC12A_DETERMINISM=PASS
+
+      - name: Upload root-zone transfer evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic12a-rootzone-transfer
+          path: |
+            ${{ runner.temp }}/transfer-a.json
+            ${{ runner.temp }}/transfer-a.txt
+            ${{ runner.temp }}/raw-a
