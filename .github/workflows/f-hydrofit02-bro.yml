@@ -1,5 +1,9 @@
 name: F-HYDROFIT02 BRO lambda fallback comparison
 
+concurrency:
+  group: f-hydrofit02-bro-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
