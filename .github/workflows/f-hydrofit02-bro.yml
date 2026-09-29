@@ -427,6 +427,11 @@ jobs:
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/compare_lambda_shrinkage.py \
             --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-shrinkage.txt"
+      - name: Replicate soft lambda shrinkage on independent complement
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/replicate_lambda_shrinkage.py \
+            --corpus "$RUNNER_TEMP/bro/spatial-lambda-corpus.json" | tee "$RUNNER_TEMP/bro/lambda-shrinkage-replication.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
