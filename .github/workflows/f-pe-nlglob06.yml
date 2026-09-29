@@ -1,0 +1,40 @@
+name: F-PE-NLGLOB06 Newton trajectory exhaustion
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB06*.md'
+      - 'tests/fpe/run_fpe_nlglob06*.py'
+      - 'tests/fpe/run_fpe_nlglob06*.sh'
+      - '.github/workflows/f-pe-nlglob06.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob06-trajectory-exhaustion
+    paths:
+      - 'docs/performance/F-PE-NLGLOB06*.md'
+      - 'tests/fpe/run_fpe_nlglob06*.py'
+      - 'tests/fpe/run_fpe_nlglob06*.sh'
+      - '.github/workflows/f-pe-nlglob06.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob06-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  trajectory-exhaustion-discrimination:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered T0 trajectory discrimination
+        run: bash tests/fpe/run_fpe_nlglob06.sh
