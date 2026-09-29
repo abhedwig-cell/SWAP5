@@ -3,7 +3,7 @@ program test_fpe_elastic18_swap_grid
   use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_fmr_elastic_storage_swap_grid_normalization, only: &
        fmr_elastic_storage_grid_diagnostics_t, fmr_normalize_swap_grid_geometry, &
-       FMR_ELAS_GRID_OK, FMR_ELAS_GRID_INVALID_VALUE, FMR_ELAS_GRID_NONCONTIGUOUS
+       FMR_ELAS_GRID_OK, FMR_ELAS_GRID_INVALID_SHAPE, FMR_ELAS_GRID_INVALID_VALUE, FMR_ELAS_GRID_NONCONTIGUOUS
   use mod_fmr_elastic_storage_horizon_node_mapper, only: &
        fmr_elastic_storage_horizon_t, fmr_elastic_storage_mapping_diagnostics_t, &
        fmr_map_elastic_storage_horizons_to_nodes, FMR_ELAS_MAP_OK
