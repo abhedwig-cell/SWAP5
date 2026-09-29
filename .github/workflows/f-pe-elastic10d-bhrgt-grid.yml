@@ -1,0 +1,34 @@
+name: F-PE-ELASTIC10D Dutch BHR-GT grid pilot
+
+concurrency:
+  group: f-pe-elastic10d-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/run_bhrgt_national_grid_pilot.py'
+      - 'docs/performance/F-PE-ELASTIC10D_NATIONAL_GRID_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic10d-bhrgt-grid.yml'
+  workflow_dispatch:
+
+jobs:
+  national-grid:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run preregistered 12-cell BHR-GT grid pilot
+        run: |
+          mkdir -p "$RUNNER_TEMP/bhrgt-grid"
+          python research/elastic/run_bhrgt_national_grid_pilot.py "$RUNNER_TEMP/bhrgt-grid"
+      - name: Upload grid evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic10d-bhrgt-grid
+          path: ${{ runner.temp }}/bhrgt-grid
