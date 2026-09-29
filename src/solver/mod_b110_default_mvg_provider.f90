@@ -54,6 +54,8 @@ contains
     if (present(enable_ksatexm_extension)) parameters%ksatexm_extension_enabled = enable_ksatexm_extension
     parameters%elastic_storage_active = .false.
     if (present(enable_elastic_storage)) parameters%elastic_storage_active = enable_elastic_storage
+    if (parameters%elastic_storage_active .and. parameters%ksatexm_extension_enabled) &
+         error stop 'B1.10 default MvG provider: elastic storage with KSATEXM is not qualified'
     if (parameters%elastic_storage_active) then
        if (.not. present(specific_elastic_storage_input)) &
             error stop 'B1.10 default MvG provider: elastic storage active without values'
