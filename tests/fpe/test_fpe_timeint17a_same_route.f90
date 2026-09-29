@@ -291,7 +291,7 @@ contains
     total_lin=total_lin+res%diagnostics%linear_solves
     last_solver_status=res%status
     if(res%status/=SW_SOLVE_CONVERGED)then
-      terminal_reason='ENDPOINT_SOLVE_FAILED'
+      terminal_reason='ENDPOINT_SOLVE_FAILURE'
       eligible=.false.; transition_step=step_index; return
     end if
     if(res%native_balance_rate_residual_available) max_native_rate=max(max_native_rate,abs(res%native_balance_rate_residual_cm_per_day))
@@ -378,7 +378,7 @@ contains
     total_lin=total_lin+res%diagnostics%linear_solves
     last_solver_status=res%status
     if(res%status/=SW_SOLVE_CONVERGED)then
-      terminal_reason='ENDPOINT_SOLVE_FAILED'
+      terminal_reason='ENDPOINT_SOLVE_FAILURE'
       eligible=.false.; transition_step=step_index; return
     end if
     bc=soil_water_boundary_conditions_t()
