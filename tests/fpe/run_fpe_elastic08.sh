@@ -112,3 +112,15 @@ cmp -s "$BUILD/o0/runtime-output.txt" "$BUILD/o2/runtime-output.txt" || {
 echo "F_PE_ELASTIC08_O0_O2=PASS"
 echo "F_PE_ELASTIC08_PREPARATION_GATE=PASS"
 echo "F_PE_ELASTIC08_RUNTIME_GATE=PASS"
+
+python3 - <<'PY'
+import subprocess
+canonical="origin/integration/f-ci-canonical"
+base=subprocess.check_output(["git","merge-base","HEAD",canonical],text=True).strip()
+names=subprocess.check_output(["git","diff","--name-only",base+"..HEAD"],text=True).splitlines()
+prod=[p for p in names if p.startswith("src/")]
+allowed=["src/runtime/mod_fmr_serialized_reference_backend.f90"]
+if prod != allowed:
+    raise SystemExit("F_PE_ELASTIC08_SOURCE_SCOPE_FAIL="+repr(prod))
+print("F_PE_ELASTIC08_SOURCE_SCOPE=PASS")
+PY
