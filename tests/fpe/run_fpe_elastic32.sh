@@ -6,9 +6,11 @@ cd "$ROOT"
 ARTIFACT_DIR="${1:-${RUNNER_TEMP:-${TMPDIR:-/tmp}}/elastic32-pdok}"
 OUT="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/elastic32-spatial-source-audit.json"
 
+LOG="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/elastic32-spatial-source-audit.log"
 python3 tools/fpe_elastic32_spatial_source_audit.py \
   --artifact-dir "$ARTIFACT_DIR" \
-  --output "$OUT"
+  --output "$OUT" > "$LOG" 2>&1
+cat "$LOG"
 
 for marker in \
   'F_PE_ELASTIC32_A2_GPKG_CORE=PASS' \
@@ -20,7 +22,7 @@ for marker in \
   'F_PE_ELASTIC32_A8_ANOMALY_COUNTS=PASS' \
   'F_PE_ELASTIC32_A9_SPATIAL_METADATA=PASS' \
   'F_PE_ELASTIC32=PASS'; do
-  grep -Fq "$marker" <(python3 tools/fpe_elastic32_spatial_source_audit.py --artifact-dir "$ARTIFACT_DIR" --output "$OUT") || {
+  grep -Fq "$marker" "$LOG" || {
     echo "F_PE_ELASTIC32_FAIL missing marker $marker" >&2
     exit 1
   }
