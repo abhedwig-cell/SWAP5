@@ -25,8 +25,10 @@ program test_fpe_elastic19_horizon_descriptor
   type(fmr_b110_physical_parameters_t) :: base, out
   type(fmr_elastic_storage_descriptor_t), allocatable :: desc(:)
   integer, allocatable :: owner(:)
-  integer :: status
-  real(real64) :: nanv
+  integer :: status, u, ios, year, unit_id, count
+  real(real64) :: nanv, wcr, wcs, alpha, npar, lambda, ksfit, expected, mpar
+  character(len=256) :: line
+  character(len=8) :: name
   integer(int64) :: bits_a, bits_b
 
   nanv=ieee_value(0.0_real64,ieee_quiet_nan)
@@ -88,6 +90,31 @@ program test_fpe_elastic19_horizon_descriptor
   call fmr_assemble_generated_elastic_storage(base,.true.,desc,out,adiag)
   call req(adiag%status==FMR_ELAS_ASSEMBLY_PRIOR_REJECTED,'A9 peat reject')
   write(*,'(A)')'F_PE_ELASTIC19_A9_PEAT_DOWNSTREAM_REJECT=PASS'
+
+  open(newunit=u,file='tests/fpe/data/fpe_elastic05_staringreeks_2018.csv',status='old',action='read',iostat=ios)
+  call req(ios==0,'R2 open')
+  read(u,'(A)',iostat=ios) line
+  call req(ios==0,'R2 header')
+  count=0
+  do
+    read(u,'(A)',iostat=ios) line
+    if(ios<0) exit
+    call req(ios==0,'R2 line')
+    read(line,*,iostat=ios) year,unit_id,name,wcr,wcs,alpha,npar,lambda,ksfit
+    call req(ios==0,'R2 parse')
+    b01=fmr_elastic_storage_retention_t(wcr,wcs,alpha,npar)
+    call fmr_build_elastic_storage_horizon_descriptor(0.0_real64,0.5_real64,1.45_real64, &
+         .true.,5.0_real64,.false.,b01,h(1),status)
+    call req(status==FMR_ELAS_DESCRIPTOR_OK,'R2 build')
+    mpar=1.0_real64-1.0_real64/npar
+    expected=wcr+(wcs-wcr)/(1.0_real64+(alpha*100.0_real64)**npar)**mpar
+    call req(abs(h(1)%theta_ref_cm3_cm3-expected)<=2.0e-15_real64,'R2 theta')
+    call req(h(1)%theta_ref_cm3_cm3>=wcr.and.h(1)%theta_ref_cm3_cm3<=wcs,'R2 bounds')
+    count=count+1
+  end do
+  close(u)
+  call req(count==36,'R2 count')
+  write(*,'(A)')'F_PE_ELASTIC19R_ALL36=PASS'
   write(*,'(A)')'F_PE_ELASTIC19=PASS'
 contains
   subroutine init_base(p)
