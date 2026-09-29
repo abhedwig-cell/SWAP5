@@ -66,8 +66,8 @@ def main():
     src=f"""program test_fpe_elastic50_full_half_discrepancy
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, SW_SOLVE_CONVERGED
+  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_physical_state_t, &
+       soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
