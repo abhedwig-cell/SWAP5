@@ -1,0 +1,40 @@
+name: F-PE-TIMEINT17R reopened dynamic-top qualification
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-TIMEINT17R*.md'
+      - 'tests/fpe/run_fpe_timeint17r*.py'
+      - 'tests/fpe/run_fpe_timeint17r*.sh'
+      - '.github/workflows/f-pe-timeint17r.yml'
+  push:
+    branches:
+      - work/f-pe-timeint17-reopen-dynamic-policy
+    paths:
+      - 'docs/performance/F-PE-TIMEINT17R*.md'
+      - 'tests/fpe/run_fpe_timeint17r*.py'
+      - 'tests/fpe/run_fpe_timeint17r*.sh'
+      - '.github/workflows/f-pe-timeint17r.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-timeint17r-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  reopened-same-route-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run reopened same-route qualification
+        run: bash tests/fpe/run_fpe_timeint17r.sh
