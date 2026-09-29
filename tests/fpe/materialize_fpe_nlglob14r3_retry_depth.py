@@ -16,8 +16,9 @@ src=src.replace(decl,decl+"""  logical :: nl14r3_retry_advised,nl14r3_second_ori
   type(soil_water_physical_state_t) :: nl14r3_saved_state
   type(reference_richards_legacy_workspace_t) :: nl14r3_saved_ws
   real(real64) :: nl14r3_saved_cumledger,nl14r3_saved_cumrunoff,nl14r3_saved_maxledger
-  logical :: nl14r3_saved_eligible
-  integer :: nl14r3_saved_transition
+  logical :: nl14r3_saved_eligible,nl14r3_saved_sat_mode
+  integer :: nl14r3_saved_transition,nl14r3_saved_target
+  integer :: nl14r3_saved_origin,nl14r3_saved_pred,nl14r3_saved_endpoint,nl14r3_saved_accept,nl14r3_saved_status
   character(len=64) :: nl14r3_saved_terminal
 """,1)
 
@@ -60,8 +61,15 @@ save="""    if(nl14r_handoff_active .and. step==nl14r_handoff_step+1)then
       nl14r3_saved_cumrunoff=cumrunoff
       nl14r3_saved_maxledger=maxledger
       nl14r3_saved_eligible=eligible
+      nl14r3_saved_sat_mode=nl14d_saturated_mode
       nl14r3_saved_transition=transition_step
       nl14r3_saved_terminal=terminal_reason
+      nl14r3_saved_target=target_route
+      nl14r3_saved_origin=last_origin_route
+      nl14r3_saved_pred=last_pred_route
+      nl14r3_saved_endpoint=last_endpoint_route
+      nl14r3_saved_accept=last_accept_route
+      nl14r3_saved_status=last_solver_status
       nl14r3_retry_advised=.false.
       nl14r3_second_origin_saved=.true.
     end if
@@ -94,8 +102,15 @@ retry_block="""    if(nl14r_handoff_active .and. step==nl14r_handoff_step+1 .and
         cumrunoff=nl14r3_saved_cumrunoff
         maxledger=nl14r3_saved_maxledger
         eligible=nl14r3_saved_eligible
+        nl14d_saturated_mode=nl14r3_saved_sat_mode
         transition_step=nl14r3_saved_transition
         terminal_reason=nl14r3_saved_terminal
+        target_route=nl14r3_saved_target
+        last_origin_route=nl14r3_saved_origin
+        last_pred_route=nl14r3_saved_pred
+        last_endpoint_route=nl14r3_saved_endpoint
+        last_accept_route=nl14r3_saved_accept
+        last_solver_status=nl14r3_saved_status
         nl14r3_attempt_dt=nl14r3_nominal_dt*(0.5_real64**nl14r3_depth)
         dt=nl14r3_attempt_dt
         nl14r3_retry_advised=.false.
