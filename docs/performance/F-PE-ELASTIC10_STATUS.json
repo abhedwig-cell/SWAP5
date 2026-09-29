@@ -1,0 +1,45 @@
+{
+  "work_unit": "F-PE-ELASTIC10",
+  "workstream": "VQ/research physical parameter evidence",
+  "baseline": "ad1c4b9193238a46dff95bd30e251adfc0426302",
+  "checkpoint_commit": "87e684dadf2acf391b62bad8f343380348ed26b2",
+  "last_reconciled_head": "87e684dadf2acf391b62bad8f343380348ed26b2",
+  "last_reconciled_upstream": "ad1c4b9193238a46dff95bd30e251adfc0426302",
+  "scope": "Acquire and schema-bind BRO BHR-GT mechanical compression/settlement evidence suitable to constrain physical SWAP ELAS without using solver performance as target.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC10_BHR_GT_TARGET_PREREGISTRATION.md",
+    "docs/performance/F-PE-ELASTIC10A_BHR_GT_SEMANTICS_PREAUDIT.md",
+    "research/elastic/bro_bhrgt_fetch.py",
+    ".github/workflows/f-pe-elastic10-bhrgt.yml"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    ".github/workflows/f-pe-elastic10-bhrgt.yml"
+  ],
+  "evidence_paths": [],
+  "dependency_surface": [
+    "BRO public BHR-GT v2 service/OpenAPI contract",
+    "BHR-GT settlement/compression schema semantics",
+    "research/elastic/bro_bhrgt_fetch.py",
+    ".github/workflows/f-pe-elastic10-bhrgt.yml"
+  ],
+  "interfaces_changed": [],
+  "invariants_affected": [
+    "physical options remain separate from numerical execution policy",
+    "performance evidence is not physical parameter evidence"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Run the bounded BHR-GT schema audit on the persisted clean branch, inspect exact OpenAPI paths and settlement/compression schema terms, then preregister a bounded pilot only if the target path is source-bound.",
+  "recovery_point": "research/f-pe-elastic10-bhrgt-targets@87e684dadf2acf391b62bad8f343380348ed26b2"
+}
