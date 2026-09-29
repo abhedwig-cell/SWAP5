@@ -1510,7 +1510,17 @@ contains
            parameters%bottom_mode == 2) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
-           .not. parameters%elasticity_active .and. .not. parameters%frost_active
+            .not. parameters%frost_active
+       if (parameters%elasticity_active) then
+         ok = ok .and. self%soil_water_selection%uses_reference() .and. &
+              .not. parameters%ksatexm_extension_active .and. .not. parameters%direct_retention_active .and. &
+              parameters%prepared_default_mvg_available .and. &
+              parameters%prepared_default_mvg%elastic_storage_active .and. &
+              allocated(parameters%prepared_default_mvg%specific_elastic_storage)
+         if (ok) ok = size(parameters%prepared_default_mvg%specific_elastic_storage) == parameters%active_nodes .and. &
+              all(ieee_is_finite(parameters%prepared_default_mvg%specific_elastic_storage)) .and. &
+              all(parameters%prepared_default_mvg%specific_elastic_storage >= 0.0_real64)
+       end if
       if (parameters%direct_retention_active) then
         ok = ok .and. self%soil_water_selection%uses_reference() .and. &
              parameters%bottom_mode == 5 .and. parameters%swkimpl == 0 .and. &
