@@ -82,10 +82,13 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
 
     dsat=ts-state%water_content(event_node)
     max_over=maxval(state%water_content-ts)
+    event_ledger=cumledger-saved_cumledger
     write(*,'(*(g0))') 'F_PE_NLGLOB14_EVENT|STEP=',step_index,'|VALID=1|NODE=',event_node,'|PHI=',phi_sat, &
          '|EVENT_DT=',event_dt,'|TRIAL_OK=1|DSAT=',dsat,'|MAX_OVER=',max_over,'|DZ=',p%dz(event_node), &
          '|ROUTE=',trim(route_id),'|ORIGIN_ROUTE_CODE=',last_origin_route,'|EVENT_ROUTE_CODE=',last_accept_route, &
-         '|POND=',state%ponding_depth,'|MAX_LEDGER=',maxledger
+         '|POND=',state%ponding_depth,'|LEDGER=',event_ledger,'|FINITE=', &
+         merge(1,0,all(ieee_is_finite(state%water_content)) .and. all(ieee_is_finite(state%pressure_head)) .and. &
+         ieee_is_finite(state%ponding_depth))
 
     eligible=.false.
     terminal_reason='SATURATION_EVENT_PROBE_COMPLETE'
