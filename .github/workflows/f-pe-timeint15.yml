@@ -10,10 +10,15 @@ on:
     paths:
       - 'docs/performance/F-PE-TIMEINT15_PREREGISTRATION.md'
       - 'docs/performance/F-PE-TIMEINT15_LITERATURE.md'
+      - 'docs/performance/F-PE-TIMEINT15_P0_RESULT.md'
+      - 'docs/performance/F-PE-TIMEINT15A_PREREGISTRATION.md'
       - 'tests/fpe/materialize_fpe_timeint15_trapezoid.py'
       - 'tests/fpe/test_fpe_timeint15_trapezoid.f90'
       - 'tests/fpe/run_fpe_timeint15.py'
       - 'tests/fpe/run_fpe_timeint15.sh'
+      - 'tests/fpe/test_fpe_timeint15a_rannacher.f90'
+      - 'tests/fpe/run_fpe_timeint15a.py'
+      - 'tests/fpe/run_fpe_timeint15a.sh'
       - '.github/workflows/f-pe-timeint15.yml'
   workflow_dispatch:
 
@@ -32,3 +37,15 @@ jobs:
         run: gfortran --version
       - name: Run conservative trapezoidal qualification
         run: bash tests/fpe/run_fpe_timeint15.sh
+
+  rannacher-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run Rannacher startup attribution
+        run: bash tests/fpe/run_fpe_timeint15a.sh
