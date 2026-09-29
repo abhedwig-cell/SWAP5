@@ -125,15 +125,47 @@ contains
     valid=trim(res%route)=='ponded-head' .or. trim(res%route)=='ponded-head-linear-runoff'
   end subroutine
 
+  subroutine eval_fixed_derivative(hh,pond0,rr,dd,kfix,derivative,route,valid)
+    real(real64),intent(in)::hh,pond0,rr,dd,kfix
+    real(real64),intent(out)::derivative
+    character(len=*),intent(out)::route
+    logical,intent(out)::valid
+    type(b110_dynamic_top_boundary_request_t)::req
+    type(b110_dynamic_top_boundary_result_t)::res
+    real(real64)::theta_top
+
+    call bind_b110_default_mvg_provider(provider,hp,dd)
+    heads=hh
+    call provider%evaluate(heads,water,k,cap,dummy)
+    theta_top=water(1)
+
+    req=b110_dynamic_top_boundary_request_t()
+    req%conductivity_mean_method=1
+    req%pressure_head_top_cm=hh
+    req%water_content_top=theta_top
+    req%candidate_ponding_depth_cm=pond0
+    req%previous_ponding_depth_cm=pond0
+    req%step_duration_day=dd
+    req%precipitation_rate_cm_per_day=rr
+    req%ponding_max_cm=0.05_real64
+    req%runoff_resistance_day=0.05_real64
+    req%runoff_exponent=1.0_real64
+    req%fixed_top_node_conductivity_cm_per_day=kfix
+    call evaluate_b110_dynamic_top_boundary(p,hp,req,res)
+    valid=res%status==B110_DYN_TOP_AVAILABLE .and. res%surface_head_derivative_available
+    route=trim(res%route)
+    derivative=res%surface_head_dpressure_head_top
+  end subroutine
+
   subroutine evaluate_point(hh,pond0,rr,dd,analytic,finite,base_route,fixed_id,valid)
     real(real64),intent(in)::hh,pond0,rr,dd
     real(real64),intent(out)::analytic,finite,fixed_id
     character(len=*),intent(out)::base_route
     logical,intent(out)::valid
     type(b110_dynamic_top_boundary_result_t)::r0,rp,rm
-    real(real64)::theta0,thetap,thetam,k_sat,k_top,dk_top,kf,dkf,a,p1,p1p,denom,aprime
-    logical::ok0,okp,okm,dir_ok,kok
-    character(len=64)::dir_route
+    real(real64)::theta0,thetap,thetam,k_sat,k_top,dk_top,kf,dkf,a,p1,p1p,denom,aprime,fixed_deriv
+    logical::ok0,okp,okm,dir_ok,kok,fixed_ok
+    character(len=64)::dir_route,fixed_route
 
     valid=.false.; analytic=0.0_real64; finite=0.0_real64; fixed_id=0.0_real64
     eps=1.0e-5_real64*max(1.0_real64,abs(hh))
@@ -165,9 +197,12 @@ contains
     aprime=-dkf*dd+p1p*hh+p1
     analytic=(aprime-r0%surface_head_cm*p1p)/denom
     finite=(rp%surface_head_cm-rm%surface_head_cm)/(2.0_real64*eps)
-    fixed_id=abs(p1/denom-p1/denom)
+    call eval_fixed_derivative(hh,pond0,rr,dd,k_top,fixed_deriv,fixed_route,fixed_ok)
+    if(.not.fixed_ok)return
+    if(trim(fixed_route)/=trim(r0%route))return
+    fixed_id=abs(fixed_deriv-p1/denom)
     base_route=trim(r0%route)
-    valid=ieee_is_finite(analytic).and.ieee_is_finite(finite)
+    valid=ieee_is_finite(analytic).and.ieee_is_finite(finite).and.ieee_is_finite(fixed_id)
   end subroutine
 
 end program test_fpe_timeint12_dyntop_derivative
