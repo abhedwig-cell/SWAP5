@@ -11,7 +11,7 @@ Canonical authority:
 Parent research authority:
 
 - NLGLOB14Z6: `QUALIFIED_SPLIT_NEXT_LATE_RETREAT_OWNERSHIP_TRANSITION`, split accepted state reaches `9:16`;
-- NLGLOB14Z7: `QUALIFIED_FURTHER_LATE_RETREAT_CONTROL_EXPOSURE`, control exposes `9:16 -> 10:16` near 21.455 d.
+- NLGLOB14Z7: `QUALIFIED_CONFIRMATORY_RETREAT_9_TO_10_CONTROL`, control confirms `9:16 -> 10:16` near 21.455 d.
 
 ## Purpose
 
