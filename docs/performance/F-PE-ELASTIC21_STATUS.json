@@ -1,0 +1,54 @@
+{
+  "work_unit": "F-PE-ELASTIC21",
+  "workstream": "VQ/application source association",
+  "baseline": "7032a7498abdec7adf879ab9ad0c05dee8049239",
+  "checkpoint_commit": "b8d29dad07e6b8f03f4898e2c65040e195d72642",
+  "last_reconciled_head": "b8d29dad07e6b8f03f4898e2c65040e195d72642",
+  "last_reconciled_upstream": "e46985908b19f83cf2f17f86507aa3495df971a2",
+  "scope": "Resolve already-selected BRO staringseriesblock values 101..118/201..218 to exact Staringreeks 2018 material codes and catalog indices without profile retrieval or I/O.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC21_BRO_BLOCK_ASSOCIATION_PREREGISTRATION.md",
+    "src/adapter/mod_fmr_elastic_storage_bro_block_association.f90",
+    "tests/fpe/test_fpe_elastic21_bro_block_association.f90",
+    "tests/fpe/run_fpe_elastic21.sh",
+    ".github/workflows/f-pe-elastic21.yml",
+    "docs/performance/F-PE-ELASTIC20_CLOSURE.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/test_fpe_elastic21_bro_block_association.f90",
+    "tests/fpe/run_fpe_elastic21.sh",
+    ".github/workflows/f-pe-elastic21.yml"
+  ],
+  "evidence_paths": [
+    "ELASTIC12A5 run 36551561152 / job 109350703036: 368/368 profiles and 1568/1568 layers with identical BOFEK/BRO Staringreeks coding",
+    "ELASTIC20 admitted immutable Staringreeks 2018 catalog"
+  ],
+  "dependency_surface": [
+    "ELASTIC20 code-to-retention catalog",
+    "qualified ELASTIC12A5 BRO staringseriesblock encoding"
+  ],
+  "interfaces_changed": [
+    "new stateless BRO block association adapter only"
+  ],
+  "invariants_affected": [
+    "kernel independent of I/O",
+    "no hidden block fallback",
+    "topsoil/subsoil family identity preserved",
+    "physical preprocessing remains separate from numerical execution policy"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the ELASTIC21 workflow on checkpoint b8d29dad07e6b8f03f4898e2c65040e195d72642 and apply A1-A9 exactly.",
+  "recovery_point": "work/f-pe-elastic21-bro-block-association@b8d29dad07e6b8f03f4898e2c65040e195d72642"
+}
