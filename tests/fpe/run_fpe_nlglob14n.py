@@ -57,8 +57,11 @@ for route in routes:
         lo=a; hi=b; break
 
     complete=False; mass_ok=False; maxledger=math.inf; cumledger=math.inf
+    terminal_reason="MISSING_RESULT"; steps_done=None
     if res:
-      complete=res["TERMINAL_REASON"]=="COMPLETE_SAME_ROUTE" and int(res["ELIGIBLE"])==1
+      terminal_reason=res["TERMINAL_REASON"]
+      steps_done=int(res["STEPS_DONE"])
+      complete=terminal_reason=="COMPLETE_SAME_ROUTE" and int(res["ELIGIBLE"])==1
       maxledger=abs(float(res["MAX_LEDGER"])); cumledger=abs(float(res["CUM_LEDGER"]))
       mass_ok=maxledger<=5e-8 and cumledger<=5e-8
 
@@ -76,6 +79,7 @@ for route in routes:
 
     rows.append({"material":"O05","route":route,"dt":dt,"complete":complete,"mass_ok":mass_ok,
                  "state_finite":finite,"indicator_inconsistent":inconsistent,
+                 "terminal_reason":terminal_reason,"steps_done":steps_done,
                  "bracket_found":lo is not None and hi is not None,"bracket_ok":bracket_ok,
                  "t_lo":lo["time"] if lo else None,"t_hi":hi["time"] if hi else None,
                  "h3_lo":lo["h3"] if lo else None,"h3_hi":hi["h3"] if hi else None,
