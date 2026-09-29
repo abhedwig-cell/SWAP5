@@ -124,6 +124,13 @@ repl="""    if(nl14d_saturated_mode)then
         dt=nominal_dt
       end if
 
+      if((.not.eligible) .and. nl14z2_retry_advised .and. nl14z2_recovery_done)then
+        write(*,'(*(g0))') 'F_PE_NLGLOB14Z2_RECURRENT_RETRY|STEP=',step_index, &
+             '|RETRY=1|DT=',nominal_dt,'|SOLVER_STATUS=',last_solver_status, &
+             '|SAT_COUNT=',count(state%pressure_head>=0.0_real64 .and. state%water_content==ts), &
+             '|TERMINAL=',trim(terminal_reason)
+      end if
+
       write(*,'(*(g0))') 'F_PE_NLGLOB14D_MODE|STEP=',step_index,'|MODE=SATURATED_KLAG|ENTRY=0', &
            '|OK=',merge(1,0,eligible),'|DT=',nominal_dt,'|ROUTE=',trim(route_id), &
            '|TERMINAL=',trim(terminal_reason)
@@ -132,7 +139,7 @@ repl="""    if(nl14d_saturated_mode)then
 """
 src=src.replace(persist,repl,1)
 
-for marker in ("F_PE_NLGLOB14Z2_NOMINAL_RETRY","F_PE_NLGLOB14Z2_ROLLBACK","F_PE_NLGLOB14Z2_HALF"):
+for marker in ("F_PE_NLGLOB14Z2_NOMINAL_RETRY","F_PE_NLGLOB14Z2_ROLLBACK","F_PE_NLGLOB14Z2_HALF","F_PE_NLGLOB14Z2_RECURRENT_RETRY"):
     if marker not in src:
         raise SystemExit("NLGLOB14Z2 injection failed: "+marker)
 
