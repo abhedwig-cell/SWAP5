@@ -61,6 +61,16 @@ Relevant evidence includes:
 
 The literature does not supply a validated Dutch Staringreeks-class ELAS pedotransfer function.
 
+## Organic/peat soils are a separate regime
+
+Peat evidence strengthens the decision not to use one universal ELAS magnitude across all Dutch soils.
+
+Camporese et al. (2006), Water Resources Research, DOI 10.1029/2005WR004495, formulate an elastic storage coefficient explicitly for deformable peat and use a saturated value of about `5e-4 m^-1 = 5e-6 cm^-1` in their model.
+
+Schlotzhauer and Price (1999), Water Resources Research, DOI 10.1029/1999WR900126, report much larger effective specific-storage values in managed cutover peat, with strong drying/rewetting hysteresis. Those values include coupled peat deformation and therefore must not be copied directly into SWAP ELAS, but they demonstrate that organic-soil storage can be orders of magnitude more deformable and history dependent than stiff mineral material.
+
+For peat/organic soils, a constant linear saturated ELAS may itself be only a first-order approximation. Parameter policy should therefore at minimum separate mineral and organic/peat regimes, and later work may need deformation/state dependence rather than only a larger scalar coefficient.
+
 ## Dutch data bridge already present in SWAP5 research
 
 F-HYDROFIT02 established depth-scoped BRO descriptor provenance on a frozen 31-interval hydrophysical corpus:
