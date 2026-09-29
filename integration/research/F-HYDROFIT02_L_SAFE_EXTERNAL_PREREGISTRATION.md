@@ -49,7 +49,7 @@ Initial cells:
 - longitude: 3.5 through 7.1 degrees in 0.3 degree increments;
 - search radius: 10 km.
 
-If the BRO service reports that a cell exceeds its result limit, do not use a truncated cell result. Subdivide that cell deterministically into four child searches at half-radius and continue recursively until:
+If the BRO service reports that a cell exceeds its result limit, do not use a truncated cell result. Subdivide that cell deterministically into a 3×3 lattice of nine child searches at half-radius, with child centers offset by {-r/2, 0, +r/2} in north-south and east-west distance from the parent center, and continue recursively until:
 - the service returns an uncapped result; or
 - radius reaches 1.25 km.
 
@@ -118,3 +118,8 @@ A positive result would support external research replication of the gated estim
 It would still not by itself authorize production admission. Production admission would require a separate workunit defining operational failure semantics, software ownership, reproducibility requirements and an explicit production acceptance gate.
 
 A negative or evidence-insufficient result is a valid closure outcome for P-LSAFE02.
+
+
+## Pre-execution correction
+
+Before any P-LSAFE02 acquisition was executed, the originally written four-child half-radius subdivision was found not to geometrically cover the complete parent search circle. It was therefore replaced by the deterministic 3×3 nine-child half-radius lattice above. This correction was made before validation outcomes or independent-corpus membership were observed and changes only spatial completeness handling, not eligibility or estimator criteria.
