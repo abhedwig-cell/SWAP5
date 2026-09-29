@@ -40,7 +40,8 @@ cmp "$BUILD/dynamic-O0.out" "$BUILD/dynamic-O2.out"
 
 python3 - <<'PY'
 import subprocess
-base="a5f127e2f42329914826a835d760102be6fee71f"
+canonical="origin/integration/f-ci-canonical"
+base=subprocess.check_output(["git","merge-base","HEAD",canonical],text=True).strip()
 names=subprocess.check_output(["git","diff","--name-only",base+"..HEAD"],text=True).splitlines()
 prod=[p for p in names if p.startswith("src/")]
 allowed=["src/solver/mod_b110_default_mvg_directional_provider.f90","src/solver/mod_b110_default_mvg_provider.f90"]
