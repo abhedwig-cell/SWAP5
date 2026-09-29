@@ -34,35 +34,36 @@ for mid,mode,route,dt in targets:
       str(m["ksat"]),str(m["lambda"]),str(h0),str(p0),str(rain),str(dt),str(horizon)],text=True,capture_output=True)
     if cp.returncode!=0: proc+=1
     logs=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB13C1_STATE|")]
-    groups={}
-    for d in logs:
-        key=(int(d["STEP"]),int(d["HALF"]))
-        groups.setdefault(key,[]).append(d)
-    validgroups=[(k,v) for k,v in groups.items() if len(v)==16]
+    qfails=[fields(x) for x in cp.stdout.splitlines() if x.startswith("F_PE_NLGLOB13B_QFAIL|")]
     rec={"material":mid,"mode":mode,"route":route,"dt":dt,"process_ok":cp.returncode==0,
-         "log_rows":len(logs),"group_count":len(validgroups)}
-    if validgroups:
-        (step,half),g=validgroups[-1]
-        g=sorted(g,key=lambda x:int(x["NODE"]))
-        dtheta_abs=0.; dtheta_ulp=0.; dh_abs=0.; dh_ulp=0.; storage=0.; pond=0.; finite=True; route_ok=True
-        for d in g:
-            pt=float(d["PTHETA"]); ct=float(d["CTHETA"]); ph=float(d["PH"]); ch=float(d["CH"]); dz=abs(float(d["DZ"]))
-            vals=(pt,ct,ph,ch,float(d["PPOND"]),float(d["CPOND"]),dz)
-            finite=finite and all(math.isfinite(x) for x in vals)
-            route_ok=route_ok and d["ROUTE"]==route
-            dtabs=abs(pt-ct); dh=abs(ph-ch)
-            dtheta_abs=max(dtheta_abs,dtabs); dh_abs=max(dh_abs,dh)
-            dtheta_ulp=max(dtheta_ulp,dtabs/max(math.ulp(pt)+math.ulp(ct),sys.float_info.min))
-            dh_ulp=max(dh_ulp,dh/max(math.ulp(ph)+math.ulp(ch),sys.float_info.min))
-            storage+=dz*dtabs
-            pond=max(pond,abs(float(d["PPOND"])-float(d["CPOND"])))
-        identical=bool(finite and route_ok and dtheta_abs<=1e-14 and storage<=1e-12 and dh_abs<=1e-10 and pond<=1e-12)
-        rec.update({"step":step,"half":half,"dtheta_abs":dtheta_abs,"dtheta_ulp":dtheta_ulp,
-                    "dh_abs":dh_abs,"dh_ulp":dh_ulp,"storage_abs":storage,"pond_abs":pond,
-                    "finite":finite,"route_ok":route_ok,"nodewise_identical":identical})
+         "log_rows":len(logs),"qfail_count":len(qfails)}
+    if qfails:
+        qf=qfails[-1]
+        fstep=int(qf["STEP"]); fhalf=int(qf["HALF"]); fquarter=int(qf["QUARTER"])
+        g=[d for d in logs if int(d["STEP"])==fstep and int(d["HALF"])==fhalf and int(d["QUARTER"])==fquarter]
+        rec.update({"step":fstep,"half":fhalf,"quarter":fquarter,"group_rows":len(g)})
+        if len(g)==16:
+            g=sorted(g,key=lambda x:int(x["NODE"]))
+            dtheta_abs=0.; dtheta_ulp=0.; dh_abs=0.; dh_ulp=0.; storage=0.; pond=0.; finite=True; route_ok=True
+            for d in g:
+                pt=float(d["PTHETA"]); ct=float(d["CTHETA"]); ph=float(d["PH"]); ch=float(d["CH"]); dz=abs(float(d["DZ"]))
+                pp=float(d["PPOND"]); cpnd=float(d["CPOND"])
+                vals=(pt,ct,ph,ch,pp,cpnd,dz)
+                finite=finite and all(math.isfinite(x) for x in vals)
+                route_ok=route_ok and d["ROUTE"]==route
+                dtabs=abs(pt-ct); dh=abs(ph-ch)
+                dtheta_abs=max(dtheta_abs,dtabs); dh_abs=max(dh_abs,dh)
+                dtheta_ulp=max(dtheta_ulp,dtabs/max(math.ulp(pt)+math.ulp(ct),sys.float_info.min))
+                dh_ulp=max(dh_ulp,dh/max(math.ulp(ph)+math.ulp(ch),sys.float_info.min))
+                storage+=dz*dtabs
+                pond=max(pond,abs(pp-cpnd))
+            identical=bool(finite and route_ok and dtheta_abs<=1e-14 and storage<=1e-12 and dh_abs<=1e-10 and pond<=1e-12)
+            rec.update({"dtheta_abs":dtheta_abs,"dtheta_ulp":dtheta_ulp,
+                        "dh_abs":dh_abs,"dh_ulp":dh_ulp,"storage_abs":storage,"pond_abs":pond,
+                        "finite":finite,"route_ok":route_ok,"nodewise_identical":identical})
     rows.append(rec)
 
-covered=[x for x in rows if x.get("group_count",0)>=1 and "nodewise_identical" in x]
+covered=[x for x in rows if x.get("group_rows",0)==16 and "nodewise_identical" in x]
 identical=sum(x.get("nodewise_identical",False) for x in covered)
 defect=any((x.get("storage_abs",0)>5e-8 or x.get("dh_abs",0)>1e-6 or not x.get("route_ok",True) or not x.get("finite",True)) for x in covered)
 if len(covered)!=7 or proc:
