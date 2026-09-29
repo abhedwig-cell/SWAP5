@@ -10,6 +10,9 @@ on:
       - 'tests/fpe/test_fpe_timeint13_order.f90'
       - 'tests/fpe/run_fpe_timeint13_p0.py'
       - 'tests/fpe/run_fpe_timeint13_p0.sh'
+      - 'tests/fpe/test_fpe_timeint13_dyntop.f90'
+      - 'tests/fpe/run_fpe_timeint13.py'
+      - 'tests/fpe/run_fpe_timeint13.sh'
       - '.github/workflows/f-pe-timeint13.yml'
   workflow_dispatch:
 
@@ -28,3 +31,15 @@ jobs:
         run: gfortran --version
       - name: Run smooth extrapolated-K BDF2 order screen
         run: bash tests/fpe/run_fpe_timeint13_p0.sh
+
+  dynamic-top:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run extrapolated-K BDF2 dynamic-top qualification
+        run: bash tests/fpe/run_fpe_timeint13.sh
