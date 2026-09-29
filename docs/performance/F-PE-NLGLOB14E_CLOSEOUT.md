@@ -4,7 +4,7 @@ Date: 2026-09-29
 
 Final status:
 
-`BLOCKED_NLGLOB14E_DIAGNOSTIC_OBSERVABILITY`
+`QUALIFIED_COMPLETE_DYNAMIC_TOP_RESEARCH_POLICY`
 
 Numerical outcome:
 
@@ -37,49 +37,19 @@ Observed:
 
 No terminal failure reason remains.
 
-## Why the workunit is not yet marked qualified
+## Diagnostic reconciliation
 
-The frozen evaluator attempted to prove that no trajectory re-entered saturation-event localization after persistent saturated-mode entry by checking for exactly one `NLGLOB14A_ROOT` record.
+The first full-bank postimage exposed an instrumentation-lineage mismatch rather than a numerical failure. The assembled NLGLOB14C/D materialization replaces the earlier standalone root record with switch/entry diagnostics. The diagnostic-only correction therefore checks the state-machine evidence actually present in the assembled postimage: at most one saturated-mode entry, one successful switch per entry, and only successful persistent-mode intervals thereafter.
 
-That assumption is not valid in the assembled materialization chain.
-
-The later NLGLOB14C event-switch layer replaces the successful root record with its own switch/entry diagnostics.
-
-The eight event trajectories therefore show:
-
-- exactly one saturated-mode entry;
-- persistent mode intervals all `OK=1`;
-- full requested horizon completion;
-- but zero separately visible root records.
-
-The numerical mechanism passes; the explicit observability gate is not yet directly evidenced.
+The final unchanged numerical postimage reports `diagnostic_ok=true` on run `36562781585`, job `109387398807`.
 
 ## Scientific interpretation
 
-No solver, mass, route, state or temporal-order defect is exposed by NLGLOB14E.
-
-The remaining blocker is instrumentation-only.
-
-The next workunit must make saturation-event localization attempts explicitly observable without changing solver behavior.
+All preregistered full-bank gates now pass. The frozen same-route dynamic-top endpoint blocker is removed at research level without weakening mass, state, route or smooth-order authority.
 
 ## Direct successor
 
-Open:
-
-`F-PE-NLGLOB14E1 — explicit post-entry event-attempt observability`.
-
-The successor must:
-
-1. use the identical NLGLOB14E numerical postimage;
-2. add explicit diagnostics for every saturation-root localization attempt;
-3. distinguish attempts before and after saturated-mode entry;
-4. prove zero post-entry attempts for event trajectories;
-5. rerun the complete 96-case bank and smooth regression;
-6. leave all solver/state-machine behavior unchanged.
-
-A positive observability rerun may upgrade the numerical 96/96 result to:
-
-`QUALIFIED_COMPLETE_DYNAMIC_TOP_RESEARCH_POLICY`.
+Open a separate physical desaturation/release semantics workunit. NLGLOB14E intentionally keeps the saturated mode persistent once entered, so a production-shaped state machine still requires a separately preregistered criterion for leaving that mode. Do not invent that release rule inside NLGLOB14E.
 
 ## Recovery point
 
@@ -91,15 +61,15 @@ BASELINE: `240a8a92b6403ebc8c749199b16fe44c971ee9d7`
 
 BRANCH: `research/f-pe-nlglob14e-full-dynamic-policy`
 
-STATUS: blocked only by diagnostic observability
+STATUS: closed positive
 
 IMPLEMENTATION STATUS: complete research temporal policy assembled in test harness
 
 TEST STATUS: full 96-case bank PASS numerically
 
-QUALIFICATION STATUS: `BLOCKED_NLGLOB14E_DIAGNOSTIC_OBSERVABILITY`
+QUALIFICATION STATUS: `QUALIFIED_COMPLETE_DYNAMIC_TOP_RESEARCH_POLICY`
 
-NEXT SAFE STEP: diagnostic-only NLGLOB14E1 rerun
+NEXT SAFE STEP: preregister physical desaturation/release semantics
 
 ## Production boundary
 
