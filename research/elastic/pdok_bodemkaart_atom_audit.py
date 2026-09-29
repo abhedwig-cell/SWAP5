@@ -124,14 +124,15 @@ def atom_links(data:bytes,base_url:str):
     return out
 
 def download_candidates(links):
-    out=[]
+    eligible=[]
     for r in links:
         u=r["href"].lower()
         typ=(r.get("type") or "").lower()
         rel=(r.get("rel") or "").lower()
         if any(x in u for x in (".zip",".gpkg",".gml")) or "zip" in typ or rel=="enclosure":
-            out.append(r)
-    return out
+            eligible.append(r)
+    gpkg=[r for r in eligible if ".gpkg" in r["href"].lower() or "geopackage" in (r.get("type") or "").lower()]
+    return gpkg if gpkg else eligible
 
 def main():
     ap=argparse.ArgumentParser()
