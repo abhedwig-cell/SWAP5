@@ -1,0 +1,62 @@
+name: F-PE-ELASTIC12E root-zone reference prior
+
+concurrency:
+  group: f-pe-elastic12e-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/extract_rootzone_reference_prior.py'
+      - 'docs/performance/F-PE-ELASTIC12E_REFERENCE_PRIOR_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic12e-reference-prior.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download frozen ELASTIC12A transfer artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a-rootzone-transfer
+          path: ${{ runner.temp }}/elastic12a-source
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 36536601142
+
+      - name: Extract reference prior twice
+        run: |
+          for rep in 1 2; do
+            mkdir -p "$RUNNER_TEMP/elastic12e-$rep"
+            python research/elastic/extract_rootzone_reference_prior.py \
+              --transfer "$RUNNER_TEMP/elastic12a-source/transfer-a.json" \
+              --out "$RUNNER_TEMP/elastic12e-$rep"
+          done
+          cmp "$RUNNER_TEMP/elastic12e-1/reference_prior.json" \
+              "$RUNNER_TEMP/elastic12e-2/reference_prior.json"
+          cmp "$RUNNER_TEMP/elastic12e-1/summary.json" \
+              "$RUNNER_TEMP/elastic12e-2/summary.json"
+          echo "F_PE_ELASTIC12E_DETERMINISM=PASS"
+
+      - name: Show reference-prior postimage
+        run: |
+          cat "$RUNNER_TEMP/elastic12e-1/reference_prior.json"
+          cat "$RUNNER_TEMP/elastic12e-1/summary.json"
+
+      - name: Upload reference-prior evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic12e-reference-prior
+          path: ${{ runner.temp }}/elastic12e-1
