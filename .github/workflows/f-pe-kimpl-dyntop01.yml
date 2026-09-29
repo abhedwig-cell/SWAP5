@@ -1,0 +1,30 @@
+name: F-PE-KIMPL-DYNTOP01 nonlinear path trace
+
+on:
+  push:
+    branches:
+      - work/f-pe-kimpl-dyntop01-trace
+    paths:
+      - 'docs/performance/F-PE-KIMPL-DYNTOP01_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_kimpl_dyntop01_trace.f90'
+      - 'tests/fpe/materialize_fpe_kimpl_dyntop01_trace.py'
+      - 'tests/fpe/run_fpe_kimpl_dyntop01.py'
+      - 'tests/fpe/run_fpe_kimpl_dyntop01.sh'
+      - '.github/workflows/f-pe-kimpl-dyntop01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trace:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run nonlinear path attribution
+        run: bash tests/fpe/run_fpe_kimpl_dyntop01.sh
