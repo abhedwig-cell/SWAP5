@@ -120,7 +120,7 @@ contains
     real(real64)::heads(numnod)
     real(real64),allocatable::th(:),kk(:),cp(:),dk(:)
     allocate(th(numnod),kk(numnod),cp(numnod),dk(numnod))
-    call bind_b110_default_mvg_provider(constitutive,hp,step_dt)
+    call bind_b110_default_mvg_provider(constitutive,hp,dt)
     heads=h
     call constitutive%evaluate(heads,th,kk,cp,dk)
     s%active_nodes=numnod
