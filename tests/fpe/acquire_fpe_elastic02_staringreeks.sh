@@ -8,9 +8,11 @@ curl --fail --location --retry 3 --silent --show-error "$URL" -o "$ZIP"
 echo "F_PE_ELASTIC02_ZIP_SHA256=$(sha256sum "$ZIP" | awk '{print $1}')"
 echo "F_PE_ELASTIC02_ZIP_BYTES=$(wc -c < "$ZIP")"
 unzip -Z1 "$ZIP" | tee "$TMP/members.txt"
-mapfile -t CANDIDATES < <(grep -iE 'staring.*(pars|param).*2018.*\.csv$|staringreek.*\.csv$' "$TMP/members.txt" || true)
-if [ "${#CANDIDATES[@]}" -eq 0 ]; then
-  mapfile -t CANDIDATES < <(grep -iE '\.csv$' "$TMP/members.txt" || true)
+mapfile -t CANDIDATES < <(grep -iE '(^|/)staringreeks_2018\.csv$' "$TMP/members.txt" || true)
+if [ "${#CANDIDATES[@]}" -ne 1 ]; then
+  printf 'F_PE_ELASTIC02_CANDIDATE=%s\n' "${CANDIDATES[@]}"
+  echo "F_PE_ELASTIC02_FAIL=expected exactly one staringreeks_2018.csv" >&2
+  exit 1
 fi
 printf 'F_PE_ELASTIC02_CANDIDATE=%s\n' "${CANDIDATES[@]}"
 FOUND=""
@@ -25,16 +27,23 @@ if not text: raise SystemExit(1)
 dialect=csv.Sniffer().sniff("\n".join(text[:5]),delimiters=",;\t")
 rows=list(csv.DictReader(text,dialect=dialect))
 names=[]
+years=[]
 for r in rows:
-    for k,v in r.items():
-        if k and k.strip().lower() in {"name","naam","bouwsteen","soil","code"} and v:
-            names.append(v.strip().upper())
-            break
+    low={str(k).strip().lower():v for k,v in r.items() if k is not None}
+    name=(low.get("name") or low.get("naam") or low.get("bouwsteen") or low.get("soil") or low.get("code") or "").strip().upper()
+    if name: names.append(name)
+    if "year" in low and low["year"] is not None: years.append(str(low["year"]).strip())
 want=[f"B{i:02d}" for i in range(1,19)]+[f"O{i:02d}" for i in range(1,19)]
-if len(rows)==36 and sorted(names)==sorted(want) and len(set(names))==36:
-    print("F_PE_ELASTIC02_VALIDATED_CSV=YES")
-    raise SystemExit(0)
-raise SystemExit(1)
+if len(rows)!=36 or sorted(names)!=sorted(want) or len(set(names))!=36:
+    raise SystemExit(1)
+if years and set(years)!={"2018"}:
+    raise SystemExit(1)
+required={"wcr","wcs","alpha","npar","lambda","ksfit"}
+header={h.strip().lower() for h in (rows[0].keys() if rows else []) if h}
+if not required.issubset(header):
+    raise SystemExit(1)
+print("F_PE_ELASTIC02_VALIDATED_CSV=YES")
+raise SystemExit(0)
 PY
 done
 if [ -z "$FOUND" ]; then
