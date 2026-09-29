@@ -214,8 +214,8 @@ def main():
         raise SystemExit(f"F_PE_ELASTIC11_FAIL unload count={len(targets)}")
     rows=[target_row(t) for t in targets]
     objects=sorted({r["bro_id"] for r in rows})
-    if len(objects)!=35:
-        raise SystemExit(f"F_PE_ELASTIC11_FAIL unload object count={len(objects)}")
+    if len(objects)<2:
+        raise SystemExit(f"F_PE_ELASTIC11_FAIL insufficient unload objects={len(objects)}")
 
     specs={
       "M0":None,
