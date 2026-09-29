@@ -82,6 +82,9 @@ def run(route,dt,horizon):
     further=[x for x in transitions if x["from_top"]>=7 and x["to_top"]>x["from_top"]]
     valid=(cp.returncode==0 and complete and finite and mass_ok and not noncontig and not inconsistent and not skipped)
     rec={"route":route,"dt":dt,"horizon":horizon,"process_ok":cp.returncode==0,"complete":complete,
+         "terminal_reason":res["TERMINAL_REASON"] if res else None,
+         "steps_done":int(res["STEPS_DONE"]) if res and "STEPS_DONE" in res else None,
+         "solver_status":int(res["SOLVER_STATUS"]) if res and "SOLVER_STATUS" in res else None,
          "finite":finite,"mass_ok":mass_ok,"noncontiguous":noncontig,"indicator_inconsistent":inconsistent,
          "skipped_retreat":skipped,"reverse_after_retreat":reverse,"max_ledger":maxledger,"cum_ledger":cumledger,
          "transitions":transitions,"further_retreat_count":len(further),"disappearance_time":disappeared,
