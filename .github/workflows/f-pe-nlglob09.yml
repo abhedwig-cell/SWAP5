@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB09 S0 endpoint replay
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB09*.md'
+      - 'tests/fpe/materialize_fpe_nlglob09*.py'
+      - 'tests/fpe/run_fpe_nlglob09*.py'
+      - 'tests/fpe/run_fpe_nlglob09*.sh'
+      - '.github/workflows/f-pe-nlglob09.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob09-s0-replay
+    paths:
+      - 'docs/performance/F-PE-NLGLOB09*.md'
+      - 'tests/fpe/materialize_fpe_nlglob09*.py'
+      - 'tests/fpe/run_fpe_nlglob09*.py'
+      - 'tests/fpe/run_fpe_nlglob09*.sh'
+      - '.github/workflows/f-pe-nlglob09.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob09-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  s0-endpoint-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered S0 endpoint replay
+        run: bash tests/fpe/run_fpe_nlglob09.sh
