@@ -4,7 +4,7 @@ program test_fpe_timeint17a_same_route
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_physical_state_t, &
        soil_water_solve_request_t, soil_water_solve_result_t, soil_water_boundary_conditions_t, &
-       soil_water_top_boundary_result_t, SW_SOLVE_CONVERGED
+       soil_water_top_boundary_result_t, constitutive_hydraulics_provider_t, SW_SOLVE_CONVERGED
   use mod_fpe_timeint03_reference_binding, only: reference_richards_legacy_solver_t, reference_richards_legacy_workspace_t
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
@@ -206,7 +206,7 @@ contains
   subroutine build_request(req,provider,constitutive,stepdt,prevpond,fixedk)
     type(soil_water_solve_request_t),intent(out)::req
     type(b110_dynamic_top_boundary_solver_provider_t),target,intent(out)::provider
-    class(b110_default_mvg_provider_t),target,intent(inout)::constitutive
+    class(constitutive_hydraulics_provider_t),target,intent(inout)::constitutive
     real(real64),intent(in)::stepdt,prevpond,fixedk
     real(real64)::baltol
     call bind_b110_dynamic_top_boundary_solver_provider(provider,p,hp,1,prevpond,stepdt, &
