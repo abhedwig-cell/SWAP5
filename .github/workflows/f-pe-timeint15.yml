@@ -10,6 +10,9 @@ on:
       - 'tests/fpe/test_fpe_timeint15_be_equivalence.f90'
       - 'tests/fpe/run_fpe_timeint15_p0.py'
       - 'tests/fpe/run_fpe_timeint15_p0.sh'
+      - 'tests/fpe/test_fpe_timeint15_conservative_dyntop.f90'
+      - 'tests/fpe/run_fpe_timeint15_p1.py'
+      - 'tests/fpe/run_fpe_timeint15_p1.sh'
       - '.github/workflows/f-pe-timeint15.yml'
   workflow_dispatch:
 
@@ -28,3 +31,15 @@ jobs:
         run: gfortran --version
       - name: Run BE reduction equivalence
         run: bash tests/fpe/run_fpe_timeint15_p0.sh
+
+  conservative-dynamic-top:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run conservative dynamic-top BDF2
+        run: bash tests/fpe/run_fpe_timeint15_p1.sh
