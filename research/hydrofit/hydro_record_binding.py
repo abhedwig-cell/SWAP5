@@ -141,5 +141,10 @@ def bind_corpus_rows(intervals):
                 f"{bro_id} corpus={row['begin_depth']}:{row['end_depth']} "
                 f"xml={rec['begin_depth']}:{rec['end_depth']}"
             )
+        if "lambda" in row and abs(float(row["lambda"]) - float(rec["source_l"])) > 5e-7:
+            raise RuntimeError(
+                "hydraulic hash matched a record with different source lambda: "
+                f"{bro_id} {hyd_hash} corpus={row['lambda']} xml={rec['source_l']}"
+            )
         rows.append({**row, **rec})
     return rows
