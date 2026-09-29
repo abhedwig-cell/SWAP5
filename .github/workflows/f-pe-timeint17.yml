@@ -52,15 +52,3 @@ jobs:
         run: gfortran --version
       - name: Run route-margin same-route qualification
         run: bash tests/fpe/run_fpe_timeint17a2.sh
-
-  same-route-margin-bank:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: Run route-margin same-route TG qualification
-        run: bash tests/fpe/run_fpe_timeint17a2.sh
