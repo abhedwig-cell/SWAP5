@@ -47,7 +47,6 @@ contains
     matches = 0
     match_row = 0
     do i = 1, size(rows)
-      if (.not. valid_source_row(rows(i))) cycle
       if (trim(rows(i)%maparea_id) == trim(requested)) then
         matches = matches + 1
         match_row = i
