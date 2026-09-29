@@ -1,0 +1,40 @@
+name: F-PE-NLGLOB14I saturated-set migration attribution
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14I*.md'
+      - 'tests/fpe/run_fpe_nlglob14i*.py'
+      - 'tests/fpe/run_fpe_nlglob14i*.sh'
+      - '.github/workflows/f-pe-nlglob14i.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob14i-saturated-set-migration-r2
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14I*.md'
+      - 'tests/fpe/run_fpe_nlglob14i*.py'
+      - 'tests/fpe/run_fpe_nlglob14i*.sh'
+      - '.github/workflows/f-pe-nlglob14i.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob14i-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  saturated-set-migration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered saturated-set migration attribution
+        run: bash tests/fpe/run_fpe_nlglob14i.sh
