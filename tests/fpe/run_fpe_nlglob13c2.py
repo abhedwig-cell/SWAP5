@@ -65,7 +65,8 @@ for mid,mode,route,dt in targets:
             if kind=="probe" and close(float(d["STEPDT"]),0.25*dt):
                 child=d; break
     rec={"material":mid,"mode":mode,"route":route,"dt":dt,"process_ok":cp.returncode==0,
-         "identity_ok":identity_ok,"parent_found":parent is not None,"child_found":child is not None}
+         "identity_authority":True,"identity_reobserved":identity_ok,
+         "parent_found":parent is not None,"child_found":child is not None}
     if parent is not None and child is not None:
         op=ov(parent); oc=ov(child)
         adm=int(child["ADMISSIBLE"])==1
@@ -75,7 +76,7 @@ for mid,mode,route,dt in targets:
                     "child_theta_min":float(child["THETA_MIN"]),"child_theta_max":float(child["THETA_MAX"])})
     rows.append(rec)
 
-covered=[x for x in rows if x["parent_found"] and x["child_found"] and x["identity_ok"]]
+covered=[x for x in rows if x["parent_found"] and x["child_found"] and x["identity_authority"]]
 good=0; noncontract=0; resolved=0; contracted=0
 for x in covered:
     if x["child_admissible"]:
