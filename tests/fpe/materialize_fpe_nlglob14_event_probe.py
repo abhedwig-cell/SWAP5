@@ -19,7 +19,7 @@ wrapper=r"""  subroutine advance_tg_subdiv(step_index)
     type(soil_water_physical_state_t)::saved_state
     logical::domain_fail,event_fail
     real(real64)::saved_cumledger,saved_cumrunoff,saved_maxledger,nominal_dt
-    real(real64)::phi_sat,phi_i,event_dt,dsat,max_over
+    real(real64)::phi_sat,phi_i,event_dt,dsat,max_over,event_ledger
     character(len=64)::saved_terminal
     integer::saved_transition,event_node,i
 
