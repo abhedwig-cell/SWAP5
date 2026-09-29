@@ -10,8 +10,14 @@ module mod_fpe_timeint17c_logging_top_provider
   integer,save :: nlog=0
   integer,save :: route_code_log(MAX_LOG)=0
   real(real64),save :: head_log(MAX_LOG)=0.0_real64
+  real(real64),save :: theta_log(MAX_LOG)=0.0_real64
   real(real64),save :: pond_log(MAX_LOG)=0.0_real64
+  real(real64),save :: returned_pond_log(MAX_LOG)=0.0_real64
   real(real64),save :: flux_log(MAX_LOG)=0.0_real64
+  real(real64),save :: runoff_log(MAX_LOG)=0.0_real64
+  real(real64),save :: derivative_log(MAX_LOG)=0.0_real64
+  integer,save :: status_log(MAX_LOG)=0
+  logical,save :: derivative_available_log(MAX_LOG)=.false.
   integer,save :: unavailable_count=0
 
   type,extends(dynamic_top_boundary_provider_t),public :: fpe_timeint17c_logging_top_provider_t
@@ -37,8 +43,14 @@ contains
     unavailable_count=0
     route_code_log=0
     head_log=0.0_real64
+    theta_log=0.0_real64
     pond_log=0.0_real64
+    returned_pond_log=0.0_real64
     flux_log=0.0_real64
+    runoff_log=0.0_real64
+    derivative_log=0.0_real64
+    status_log=0
+    derivative_available_log=.false.
   end subroutine
 
   subroutine logging_evaluate(self,pressure_head_top,water_content_top,candidate_ponding_depth,requested,result)
@@ -57,9 +69,15 @@ contains
       nlog=nlog+1
       i=nlog
       route_code_log(i)=route_code(trim(result%route))
+      status_log(i)=result%status
       head_log(i)=pressure_head_top
+      theta_log(i)=water_content_top
       pond_log(i)=candidate_ponding_depth
+      returned_pond_log(i)=result%candidate_ponding_depth
       flux_log(i)=result%actual_top_flux
+      runoff_log(i)=result%runoff_depth
+      derivative_available_log(i)=result%surface_head_derivative_available
+      derivative_log(i)=result%surface_head_dpressure_head_top
     end if
     if(result%status/=SW_TOP_BOUNDARY_AVAILABLE) unavailable_count=unavailable_count+1
   end subroutine
@@ -80,11 +98,14 @@ contains
   end function
 
   subroutine summarize_fpe_timeint17c_log(eval_count,distinct_routes,route_transitions,first_route,last_route, &
-       flux_count,head_count,runoff_count,atmos_count,other_count,unavailable, &
-       min_head,max_head,min_pond,max_pond,min_flux,max_flux)
+       flux_count,head_count,runoff_count,atmos_count,other_count,unavailable,derivative_missing, &
+       min_head,max_head,min_theta,max_theta,min_pond,max_pond,min_returned_pond,max_returned_pond, &
+       min_flux,max_flux,min_runoff,max_runoff,min_derivative,max_derivative)
     integer,intent(out)::eval_count,distinct_routes,route_transitions,first_route,last_route
-    integer,intent(out)::flux_count,head_count,runoff_count,atmos_count,other_count,unavailable
-    real(real64),intent(out)::min_head,max_head,min_pond,max_pond,min_flux,max_flux
+    integer,intent(out)::flux_count,head_count,runoff_count,atmos_count,other_count,unavailable,derivative_missing
+    real(real64),intent(out)::min_head,max_head,min_theta,max_theta,min_pond,max_pond
+    real(real64),intent(out)::min_returned_pond,max_returned_pond,min_flux,max_flux,min_runoff,max_runoff
+    real(real64),intent(out)::min_derivative,max_derivative
     logical::seen(5)
     integer::i
     eval_count=nlog
@@ -92,18 +113,31 @@ contains
     route_transitions=0
     flux_count=0;head_count=0;runoff_count=0;atmos_count=0;other_count=0
     unavailable=unavailable_count
+    derivative_missing=0
     first_route=0;last_route=0
     min_head=0.0_real64;max_head=0.0_real64
+    min_theta=0.0_real64;max_theta=0.0_real64
     min_pond=0.0_real64;max_pond=0.0_real64
+    min_returned_pond=0.0_real64;max_returned_pond=0.0_real64
     min_flux=0.0_real64;max_flux=0.0_real64
+    min_runoff=0.0_real64;max_runoff=0.0_real64
+    min_derivative=0.0_real64;max_derivative=0.0_real64
     if(nlog<=0)then
       distinct_routes=0
       return
     end if
     first_route=route_code_log(1);last_route=route_code_log(nlog)
     min_head=minval(head_log(1:nlog));max_head=maxval(head_log(1:nlog))
+    min_theta=minval(theta_log(1:nlog));max_theta=maxval(theta_log(1:nlog))
     min_pond=minval(pond_log(1:nlog));max_pond=maxval(pond_log(1:nlog))
+    min_returned_pond=minval(returned_pond_log(1:nlog));max_returned_pond=maxval(returned_pond_log(1:nlog))
     min_flux=minval(flux_log(1:nlog));max_flux=maxval(flux_log(1:nlog))
+    min_runoff=minval(runoff_log(1:nlog));max_runoff=maxval(runoff_log(1:nlog))
+    derivative_missing=count(.not.derivative_available_log(1:nlog))
+    if(any(derivative_available_log(1:nlog)))then
+      min_derivative=minval(derivative_log(1:nlog),mask=derivative_available_log(1:nlog))
+      max_derivative=maxval(derivative_log(1:nlog),mask=derivative_available_log(1:nlog))
+    end if
     do i=1,nlog
       if(route_code_log(i)>=1 .and. route_code_log(i)<=5) seen(route_code_log(i))=.true.
       select case(route_code_log(i))
