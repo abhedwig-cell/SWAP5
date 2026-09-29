@@ -6,11 +6,12 @@ program test_fpe_elastic37_row_application_binding
        FMR_ELAS_ROW_APP_OK, FMR_ELAS_ROW_APP_INACTIVE, FMR_ELAS_ROW_APP_ROW_FILE_REJECTED, &
        FMR_ELAS_ROW_APP_GRID_REJECTED, FMR_ELAS_ROW_APP_MAP_REJECTED, FMR_ELAS_ROW_APP_ASSEMBLY_REJECTED
   use mod_fmr_elastic_storage_row_interchange_file_adapter, only: &
-       fmr_elastic_storage_bro_horizon_row_t, fmr_elastic_storage_row_file_diagnostics_t, &
+       fmr_elastic_storage_row_file_diagnostics_t, &
        fmr_read_elastic_storage_row_interchange_file, FMR_ELAS_ROWS_FILE_OK, &
        FMR_ELAS_ROWS_MAGIC, FMR_ELAS_ROWS_SOURCE_HASH, FMR_ELAS_ROWS_COLUMNS
   use mod_fmr_elastic_storage_explicit_profile_source, only: &
-       fmr_elastic_storage_profile_source_diagnostics_t, fmr_build_explicit_bro_profile_horizons, &
+       fmr_elastic_storage_bro_horizon_row_t, fmr_elastic_storage_profile_source_diagnostics_t, &
+       fmr_build_explicit_bro_profile_horizons, &
        FMR_ELAS_PROFILE_SOURCE_OK
   use mod_fmr_elastic_storage_horizon_node_mapper, only: &
        fmr_elastic_storage_horizon_t, fmr_elastic_storage_mapping_diagnostics_t, &
@@ -25,6 +26,7 @@ program test_fpe_elastic37_row_application_binding
   type(fmr_b110_physical_parameters_t) :: base, bound, manual, conflict, one_node
   type(fmr_elastic_storage_row_application_diagnostics_t) :: diag
   integer(int64) :: a,b
+  integer :: i
 
   call write_interchange('elastic37-valid.rows',.false.)
   call write_interchange('elastic37-peat.rows',.true.)
@@ -86,8 +88,6 @@ program test_fpe_elastic37_row_application_binding
   write(*,'(A)')'F_PE_ELASTIC37=PASS'
 
 contains
-
-  integer :: i
 
   subroutine init_base(p,n)
     type(fmr_b110_physical_parameters_t),intent(out)::p
