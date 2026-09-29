@@ -727,7 +727,7 @@ contains
     ! widens normal application reachability to the already admitted typed
     ! prescribed-qbot mode 2; process composition remains fail-closed here.
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
-        tile%parameters%hysteresis_active .or. tile%parameters%elasticity_active .or. &
+        tile%parameters%hysteresis_active .or. &
         tile%parameters%frost_active .or. tile%parameters%soil_temperature_active .or. &
         tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active .or. &
         tile%parameters%tabulated_hydraulics_active) return
@@ -766,6 +766,14 @@ contains
         size(tile%parameters%dz) /= tile%parameters%active_nodes .or. &
         size(tile%parameters%node_distance) /= tile%parameters%active_nodes .or. &
         size(tile%parameters%cofgen, 2) /= tile%parameters%active_nodes) return
+
+    if (tile%parameters%elasticity_active) then
+      if (size(tile%parameters%cofgen, 1) < 24) return
+      if (tile%parameters%ksatexm_extension_active .or. tile%parameters%direct_retention_active .or. &
+          tile%parameters%tabulated_hydraulics_active .or. tile%parameters%hysteresis_active) return
+      if (any(.not. ieee_is_finite(tile%parameters%cofgen(24,:)))) return
+      if (any(tile%parameters%cofgen(24,:) < 0.0_real64)) return
+    end if
 
     if (tile%initial_state%active_nodes /= tile%parameters%active_nodes) return
     if (.not. allocated(tile%initial_state%pressure_head) .or. .not. allocated(tile%initial_state%water_content)) return
