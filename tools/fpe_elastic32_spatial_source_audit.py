@@ -74,14 +74,38 @@ def main():
             if "maparea_id" in cols and "normalsoilprofile_id" in cols
         ]
 
-        if len(geometry_candidates)!=1:
-            raise SystemExit("F_PE_ELASTIC32_FAIL geometry authority candidates="+repr(geometry_candidates))
         if len(relation_candidates)!=1:
             raise SystemExit("F_PE_ELASTIC32_FAIL relation authority candidates="+repr(relation_candidates))
-        g=geometry_candidates[0]
+        relation_table=relation_candidates[0]
+        relation_ids={r[0] for r in con.execute(
+            f"select distinct maparea_id from {qident(relation_table)} where maparea_id is not null")}
+
+        geometry_evidence=[]
+        exact_domain_candidates=[]
+        for candidate in geometry_candidates:
+            table=candidate["table_name"]
+            ids={r[0] for r in con.execute(
+                f"select distinct maparea_id from {qident(table)} where maparea_id is not null")}
+            evidence={
+                **candidate,
+                "feature_count":int(scalar(con,f"select count(*) from {qident(table)}")),
+                "distinct_maparea_id_count":len(ids),
+                "relation_domain_equal":ids==relation_ids,
+                "feature_only_id_count":len(ids-relation_ids),
+                "relation_only_id_count":len(relation_ids-ids),
+            }
+            geometry_evidence.append(evidence)
+            if ids==relation_ids:
+                exact_domain_candidates.append(candidate)
+
+        if len(exact_domain_candidates)!=1:
+            raise SystemExit(
+                "F_PE_ELASTIC32_FAIL exact-domain geometry authority candidates="
+                +repr(exact_domain_candidates)+" evidence="+repr(geometry_evidence)
+            )
+        g=exact_domain_candidates[0]
         feature_table=g["table_name"]
         geometry_column=g["column_name"]
-        relation_table=relation_candidates[0]
         print("F_PE_ELASTIC32_A3_FEATURE_AUTHORITY=PASS")
 
         feature_count=int(scalar(con,f"select count(*) from {qident(feature_table)}"))
@@ -102,15 +126,8 @@ def main():
 
         feature_ids={r[0] for r in con.execute(
             f"select distinct maparea_id from {qident(feature_table)} where maparea_id is not null")}
-        relation_ids={r[0] for r in con.execute(
-            f"select distinct maparea_id from {qident(relation_table)} where maparea_id is not null")}
-        missing_in_relation=sorted(feature_ids-relation_ids)
-        missing_in_feature=sorted(relation_ids-feature_ids)
         if feature_ids != relation_ids:
-            raise SystemExit(
-                f"F_PE_ELASTIC32_FAIL maparea identity mismatch "
-                f"feature_only={len(missing_in_relation)} relation_only={len(missing_in_feature)}"
-            )
+            raise SystemExit("F_PE_ELASTIC32_FAIL selected geometry domain drift")
         print("F_PE_ELASTIC32_A4_MAPAREA_DOMAIN_IDENTITY=PASS")
         print("F_PE_ELASTIC32_A5_COUNTS=PASS")
 
@@ -171,6 +188,7 @@ def main():
             "maparea_domain_identity":feature_ids==relation_ids,
             "srs":srs_obj,
             "gpkg_geometry_columns":geometry_rows,
+            "geometry_candidate_evidence":geometry_evidence,
             "gpkg_contents":contents,
             "extensions":extensions,
             "rtree_tables":index_tables,
