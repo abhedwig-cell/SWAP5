@@ -1,0 +1,37 @@
+name: F-PE-ELASTIC11B independent holdout
+
+concurrency:
+  group: f-pe-elastic11b-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic11-predictor-model
+    paths:
+      - 'research/elastic/bro_bhrgt_holdout_validate.py'
+      - 'docs/performance/F-PE-ELASTIC11B_HOLDOUT_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic11b.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate frozen M1 on exact holdout
+        run: |
+          PYTHONPATH=research/elastic python research/elastic/bro_bhrgt_holdout_validate.py \
+            --output-dir "$RUNNER_TEMP/elastic11b"
+
+      - name: Upload holdout evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic11b-holdout
+          path: ${{ runner.temp }}/elastic11b
