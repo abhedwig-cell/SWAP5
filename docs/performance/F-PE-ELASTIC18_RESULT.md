@@ -8,13 +8,13 @@ Branch:
 `work/f-pe-elastic18-swap-grid-normalization`
 
 Qualified postimage:
-`6bab917011d4093e0762b3b1f2df8043c5f05ad0`
+`b3f7b5abafd6e588a12554b440c8d1481d69e40b`
 
 Workflow run:
-`36560599823`
+`36560950373`
 
 Job:
-`109380262213`
+`109381407735`
 
 Conclusion:
 SUCCESS.
@@ -69,13 +69,13 @@ PASS.
 
 ## A4 value fail closed
 
-Non-finite input and zero/non-positive compartment thickness are rejected.
+Non-finite input, zero/negative compartment thickness and z/dz shape mismatch are rejected.
 
 PASS.
 
 ## A5 contiguity fail closed
 
-Raw z/dz geometry that implies a gap or overlap between adjacent compartments is rejected.
+Raw z/dz geometry that implies either a gap or an overlap between adjacent compartments is rejected.
 
 PASS.
 
@@ -101,6 +101,12 @@ Production delta is exactly:
 No runtime/kernel/legacy production source changes.
 
 PASS.
+
+## Qualification correction trail
+
+An intermediate strengthened-test run `36560803732` failed before execution because the test source omitted the already existing `FMR_ELAS_GRID_INVALID_SHAPE` import. That was a test-harness compile defect, not a production semantic failure.
+
+The final qualified postimage also corrects the implementation's above-surface tolerance to the preregistered exact boundary `z_cm <= 1e-10 cm` and executes the added negative shape, negative-thickness and overlap cases successfully.
 
 ## Admission meaning
 
