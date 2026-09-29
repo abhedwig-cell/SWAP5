@@ -8,40 +8,26 @@ ap.add_argument("--output",required=True)
 args=ap.parse_args()
 src=Path(args.source).read_text()
 
-decl="  logical :: eligible
-"
-ins=decl+"  logical :: nl14b_remainder_active
-  integer :: nl14b_expected_route
-"
+decl="  logical :: eligible\n"
+ins=decl+"  logical :: nl14b_remainder_active\n  integer :: nl14b_expected_route\n"
 if decl not in src:
     raise SystemExit("NLGLOB14B declaration marker missing")
 src=src.replace(decl,ins,1)
 
-init="  terminal_reason='COMPLETE_SAME_ROUTE'
-"
+init="  terminal_reason='COMPLETE_SAME_ROUTE'\n"
 if init not in src:
     raise SystemExit("NLGLOB14B init marker missing")
-src=src.replace(init,init+"  nl14b_remainder_active=.false.; nl14b_expected_route=0
-",1)
+src=src.replace(init,init+"  nl14b_remainder_active=.false.; nl14b_expected_route=0\n",1)
 
 src=src.replace(
-"    if(r0/=target_route)then
-",
-"    if(nl14b_remainder_active) nl14b_expected_route=r0
-    if(r0/=target_route .and. .not.nl14b_remainder_active)then
-",
+"    if(r0/=target_route)then\n",
+"    if(nl14b_remainder_active) nl14b_expected_route=r0\n    if(r0/=target_route .and. .not.nl14b_remainder_active)then\n",
 1
 )
 for old,new in [
-("    if(rtilde/=target_route)then
-","    if(rtilde/=merge(nl14b_expected_route,target_route,nl14b_remainder_active))then
-"),
-("    if(rp/=target_route)then
-","    if(rp/=merge(nl14b_expected_route,target_route,nl14b_remainder_active))then
-"),
-("    if(ra/=target_route)then
-","    if(ra/=merge(nl14b_expected_route,target_route,nl14b_remainder_active))then
-"),
+("    if(rtilde/=target_route)then\n","    if(rtilde/=merge(nl14b_expected_route,target_route,nl14b_remainder_active))then\n"),
+("    if(rp/=target_route)then\n","    if(rp/=merge(nl14b_expected_route,target_route,nl14b_remainder_active))then\n"),
+("    if(ra/=target_route)then\n","    if(ra/=merge(nl14b_expected_route,target_route,nl14b_remainder_active))then\n"),
 ]:
     if old not in src:
         raise SystemExit("NLGLOB14B route marker missing")
@@ -92,7 +78,7 @@ new="""      if(event_depth<=5.0e-8_real64 .and. max_over<=0.0_real64)then
         end if
         write(*,'(*(g0))') 'F_PE_NLGLOB14B_SPLIT|STEP=',step_index,'|OK=1|NODE=',event_node, &
              '|PHI=',phi_lo,'|EVENT_DEPTH=',event_depth,'|EVENT_LEDGER=',event_ledger, &
-             '|NOMINAL_LEDGER=',dabs(cumledger-saved_cumledger),'|EVENT_ROUTE_CODE=',last_origin_route, &
+             '|NOMINAL_LEDGER=',dabs(cumledger-saved_cumledger),'|EVENT_ROUTE_CODE=',nl14b_expected_route, &
              '|FINAL_ROUTE_CODE=',last_accept_route,'|REMAINDER_DT=',(1.0_real64-phi_lo)*nominal_dt
         dt=nominal_dt
         return
