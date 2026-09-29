@@ -85,6 +85,9 @@ needle="""         write(*,'(*(g0))') 'F_PE_NLGLOB01_STEP|ITER=',state%numbit,'|
               '|DH_L2=',nlglob01_dh_l2,'|NODE_RAW=',nlglob01_node_raw,'|ZH_INF=',nlglob01_zh_inf, &
               '|NODE_ZH=',nlglob01_node_zh,'|DTHETA_INF=',nlglob01_dtheta_inf, &
               '|NODE_DTHETA=',nlglob01_node_dtheta,'|NODE_RES=',nlglob01_node_res, &
+              '|RES_INF=',maxval(dabs(fsi_ws%residual(1:NN))), &
+              '|RES_SUM=',dabs(sum(fsi_ws%residual(1:NN))), &
+              '|TOL_CP=',CritDevBalCp,'|TOL_TOT=',CritDevBalTot, &
               '|TOP_DH=',dabs(fsi_ws%delta_head(1)), &
               '|BOTTOM_DH=',dabs(fsi_ws%delta_head(NN)),'|ROUTE=',trim(provider_dynamic_top_result%route)
       end if
@@ -93,6 +96,9 @@ repl="""         write(*,'(*(g0))') 'F_PE_NLGLOB01_STEP|ITER=',state%numbit,'|DH
               '|DH_L2=',nlglob01_dh_l2,'|NODE_RAW=',nlglob01_node_raw,'|ZH_INF=',nlglob01_zh_inf, &
               '|NODE_ZH=',nlglob01_node_zh,'|DTHETA_INF=',nlglob01_dtheta_inf, &
               '|NODE_DTHETA=',nlglob01_node_dtheta,'|NODE_RES=',nlglob01_node_res, &
+              '|RES_INF=',maxval(dabs(fsi_ws%residual(1:NN))), &
+              '|RES_SUM=',dabs(sum(fsi_ws%residual(1:NN))), &
+              '|TOL_CP=',CritDevBalCp,'|TOL_TOT=',CritDevBalTot, &
               '|TOP_DH=',dabs(fsi_ws%delta_head(1)), &
               '|BOTTOM_DH=',dabs(fsi_ws%delta_head(NN)),'|ROUTE=',trim(provider_dynamic_top_result%route)
          do i=1,NN
