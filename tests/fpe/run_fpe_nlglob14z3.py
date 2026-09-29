@@ -37,25 +37,40 @@ for route in ("HEAD","RUNOFF"):
     states=[fields(x) for x in lines if x.startswith("F_PE_NLGLOB14F_STATE|")]
     res=next((fields(x) for x in lines if x.startswith("F_PE_TIMEINT17A_RESULT|")),None)
 
-    bystep={}
     inconsistent=False
-    for x in states:
-        bystep.setdefault(int(x["STEP"]),[]).append(x)
-        inconsistent |= (int(x["SAT_H"])==1)!=(int(x["SAT_THETA"])==1)
-
     series=[]; noncontig=False; finite=True
-    for step in sorted(bystep):
-        xs=sorted(bystep[step],key=lambda z:int(z["NODE"]))
-        if len(xs)!=16:
-            finite=False; continue
+    group=[]
+    def consume_group(xs):
+        nonlocal_dummy=None
+        step=int(xs[0]["STEP"])
+        ys=sorted(xs,key=lambda z:int(z["NODE"]))
         sat=[]; vals=[]
-        for x in xs:
+        for x in ys:
             vals += [float(x[k]) for k in ("H","THETA","THETA_S","POND","TOP_FLUX","BOTTOM_FLUX")]
             if int(x["SAT_H"])==1 and int(x["SAT_THETA"])==1:
                 sat.append(int(x["NODE"]))
-        finite &= all(math.isfinite(v) for v in vals)
-        noncontig |= bool(sat and sat!=list(range(min(sat),17)))
-        series.append((step,step*dt,sat))
+        return step,sat,vals
+
+    for x in states:
+        inconsistent |= (int(x["SAT_H"])==1)!=(int(x["SAT_THETA"])==1)
+        if group and (int(x["STEP"])!=int(group[0]["STEP"]) or len(group)==16):
+            if len(group)!=16:
+                finite=False
+            else:
+                step,sat,vals=consume_group(group)
+                finite &= all(math.isfinite(v) for v in vals)
+                noncontig |= bool(sat and sat!=list(range(min(sat),17)))
+                series.append((step,step*dt,sat))
+            group=[]
+        group.append(x)
+        if len(group)==16:
+            step,sat,vals=consume_group(group)
+            finite &= all(math.isfinite(v) for v in vals)
+            noncontig |= bool(sat and sat!=list(range(min(sat),17)))
+            series.append((step,step*dt,sat))
+            group=[]
+    if group:
+        finite=False
 
     reverse=False; skipped=False; late=False; first8=None; last7=None
     prev_top=None; pre=None; post=None
