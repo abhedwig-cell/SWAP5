@@ -17,9 +17,11 @@ python3 tests/fpe/prepare_fpe_elastic45.py \
 grep -Fq 'F_PE_ELASTIC45_A1_SOURCE_PROFILE=PASS' "$BUILD/prepare.txt" || fail "source profile"
 grep -Fq 'F_PE_ELASTIC45_PREP=PASS' "$BUILD/prepare.txt" || fail "prepare"
 
+NODES="$(sed -n 's/^F_PE_ELASTIC45_HORIZONS=//p' "$BUILD/prepare.txt")"
+[[ "$NODES" =~ ^[1-9][0-9]*$ ]] || fail "invalid horizon/node count: $NODES"
 python3 tests/rom/materialize_f_rom0_headcalc_stubs.py \
   --source tests/fsi/fsi04_real_headcalc_stubs.f90 \
-  --output "$BUILD/stub.f90" --nodes 16 --dz-cm 10
+  --output "$BUILD/stub.f90" --nodes "$NODES" --dz-cm 10
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
