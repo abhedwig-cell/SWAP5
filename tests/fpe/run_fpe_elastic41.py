@@ -57,8 +57,9 @@ def main():
     successes=0
     first_case=None
     original_compose=e41.elastic36.compose
-    def cached_compose(source,x,y):
-        return e36.compose(source,x,y,polygons=polygons)
+    def cached_compose(source,x,y,polygons=None):
+        return original_compose(source,x,y,polygons=preloaded_polygons)
+    preloaded_polygons=polygons
     e41.elastic36.compose=cached_compose
     with tempfile.TemporaryDirectory() as td:
         td=Path(td)
