@@ -1,0 +1,33 @@
+name: F-PE-ELASTIC05 production typed elastic storage
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/solver/mod_b110_default_mvg_directional_provider.f90'
+      - 'docs/performance/F-PE-ELASTIC05_PREREGISTRATION.md'
+      - 'tests/fpe/data/fpe_elastic05_staringreeks_2018.csv'
+      - 'tests/fpe/mod_fpe_elastic05_legacy_oracle.f90'
+      - 'tests/fpe/test_fpe_elastic05_provider.f90'
+      - 'tests/fpe/test_fpe_elastic05_case.f90'
+      - 'tests/fpe/test_fpe_elastic05_legacy_case.f90'
+      - 'tests/fpe/run_fpe_elastic05_provider.py'
+      - 'tests/fpe/run_fpe_elastic05_dynamic.py'
+      - 'tests/fpe/run_fpe_elastic05.sh'
+      - 'tests/rom/compile_f_rom0_fortran_closure.py'
+      - '.github/workflows/f-pe-elastic05.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify production typed ELAS
+        run: bash tests/fpe/run_fpe_elastic05.sh
+      - name: Default-off production compile preservation
+        run: bash tests/fkt/run_fkt22_fmr_compile_gate.sh
+      - name: Default-off serialized runtime preservation
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh

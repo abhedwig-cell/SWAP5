@@ -42,6 +42,13 @@ contains
        route = 'b110-mvg-parameters-invalid'
        return
     end if
+    if (provider%parameters%elastic_storage_active) then
+       if (.not. allocated(provider%parameters%specific_elastic_storage) .or. &
+           size(provider%parameters%specific_elastic_storage) /= n) then
+          route = 'b110-mvg-elastic-storage-invalid'
+          return
+       end if
+    end if
     if (size(pressure_head) /= n .or. size(pressure_head_direction) /= n .or. &
         size(water_content_direction) /= n .or. size(conductivity_direction) /= n) then
        route = 'b110-mvg-direction-shape-invalid'
@@ -59,7 +66,14 @@ contains
     end if
 
     do i = 1, n
-       call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), theta, dthetadh, dkdh, node_ok)
+       if (provider%parameters%elastic_storage_active .and. pressure_head(i) > 0.0_real64) then
+          theta = provider%parameters%cofgen(2,i) + pressure_head(i)*provider%parameters%specific_elastic_storage(i)
+          dthetadh = provider%parameters%specific_elastic_storage(i)
+          dkdh = 0.0_real64
+          node_ok = .true.
+       else
+          call b110_smooth_derivatives(provider%parameters%cofgen(:,i), pressure_head(i), theta, dthetadh, dkdh, node_ok)
+       end if
        if (.not. node_ok) then
           route = 'b110-mvg-nonsmooth-constitutive-branch'
           water_content_direction = 0.0_real64
@@ -109,6 +123,13 @@ contains
        route = 'b110-mvg-parameters-invalid'
        return
     end if
+    if (provider%parameters%elastic_storage_active) then
+       if (.not. allocated(provider%parameters%specific_elastic_storage) .or. &
+           size(provider%parameters%specific_elastic_storage) /= n) then
+          route = 'b110-mvg-elastic-storage-invalid'
+          return
+       end if
+    end if
     if (size(pressure_head) /= n .or. size(pressure_head_direction) /= n .or. &
         size(water_content_direction) /= n) then
        route = 'b110-mvg-direction-shape-invalid'
@@ -120,7 +141,12 @@ contains
     end if
 
     do i = 1, n
-       call b110_smooth_theta_derivative(provider%parameters%cofgen(:,i), pressure_head(i), dthetadh, node_ok)
+       if (provider%parameters%elastic_storage_active .and. pressure_head(i) > 0.0_real64) then
+          dthetadh = provider%parameters%specific_elastic_storage(i)
+          node_ok = .true.
+       else
+          call b110_smooth_theta_derivative(provider%parameters%cofgen(:,i), pressure_head(i), dthetadh, node_ok)
+       end if
        if (.not. node_ok) then
           route = 'b110-mvg-nonsmooth-constitutive-branch'
           water_content_direction = 0.0_real64
