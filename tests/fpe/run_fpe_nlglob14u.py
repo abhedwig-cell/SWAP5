@@ -209,7 +209,7 @@ for route in routes:
         top_routes=set(); disappearance=None; failure=None
         sat_nodes=sat0[:]; prev_upper=3
         final_step=start
-        for step in range(start+1,nint(horizon/dt)+1):
+        for step in range(start+1,int(round(horizon/dt))+1):
             origin_h=h[:]; origin_th=th[:]
             tail=sat_tail(m,h,th)
             if tail is None:
@@ -263,7 +263,7 @@ for route in routes:
             if newtail is not None and not newtail:
                 disappearance=step; break
         final_tail=sat_tail(m,h,th)
-        reached=(final_step>=nint(horizon/dt) or disappearance is not None)
+        reached=(final_step>=int(round(horizon/dt)) or disappearance is not None)
         if not control_ok or maxledger>5e-8 or maxrb>1e-15:
             cls="NLGLOB14U_ACCEPTED_STATE_TRANSACTION_INCONSISTENT"
         elif failure=="DYNAMIC_TOP":
