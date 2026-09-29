@@ -1,0 +1,54 @@
+{
+  "work_unit": "F-PE-ELASTIC15",
+  "workstream": "VQ/production ELAS source selection",
+  "baseline": "ef08f11b5576bec92d66c445e0c577e680215487",
+  "checkpoint_commit": "cd8fe2006781cf2614f6d012643ace6b5c9579b8",
+  "last_reconciled_head": "cd8fe2006781cf2614f6d012643ace6b5c9579b8",
+  "last_reconciled_upstream": "84aabef0f199fc8d1136f7ef66d90fba15033ffd",
+  "scope": "Resolve ELAS ownership explicitly between default OFF, explicit user ELAS and explicitly requested generated MINERAL prior, preserving user override and fail-closed behavior.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC15_SOURCE_SELECTION_PREREGISTRATION.md",
+    "src/runtime/mod_fmr_elastic_storage_source_selection.f90",
+    "tests/fpe/test_fpe_elastic15_source_selection.f90",
+    "tests/fpe/run_fpe_elastic15.sh",
+    ".github/workflows/f-pe-elastic15.yml",
+    "docs/performance/F-PE-ELASTIC14_CLOSURE.md",
+    "src/runtime/mod_fmr_elastic_storage_prior_policy.f90"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/test_fpe_elastic15_source_selection.f90",
+    "tests/fpe/run_fpe_elastic15.sh",
+    ".github/workflows/f-pe-elastic15.yml"
+  ],
+  "evidence_paths": [],
+  "dependency_surface": [
+    "ELASTIC14 admitted mineral prior materializer",
+    "ELASTIC09 admitted explicit application route",
+    "PPA-WU01 default-off bootstrap authority"
+  ],
+  "interfaces_changed": [
+    "new standalone source-selection helper only; no existing production interface changed"
+  ],
+  "invariants_affected": [
+    "physical parameter source remains separate from numerical execution policy",
+    "default-off preserved",
+    "explicit user ELAS overrides generated prior",
+    "invalid explicit user value never silently falls back",
+    "runtime activation remains explicit caller ownership"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the ELASTIC15 workflow on checkpoint cd8fe2006781cf2614f6d012643ace6b5c9579b8 and apply preregistered A1-A10 gates exactly.",
+  "recovery_point": "work/f-pe-elastic15-source-selection@cd8fe2006781cf2614f6d012643ace6b5c9579b8"
+}
