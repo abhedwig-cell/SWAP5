@@ -1,0 +1,48 @@
+name: F-PE-TIMEINT14 conservative BDF2 attribution
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+  push:
+    branches:
+      - work/f-pe-timeint14-conservative-bdf2
+    paths:
+      - 'docs/performance/F-PE-TIMEINT14_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT14A_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timeint14_conservation.f90'
+      - 'tests/fpe/run_fpe_timeint14.py'
+      - 'tests/fpe/run_fpe_timeint14.sh'
+      - 'tests/fpe/test_fpe_timeint14a_mass_identity.f90'
+      - 'tests/fpe/run_fpe_timeint14a.py'
+      - 'tests/fpe/run_fpe_timeint14a.sh'
+      - '.github/workflows/f-pe-timeint14.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run BDF2 conservation attribution
+        run: bash tests/fpe/run_fpe_timeint14.sh
+
+  interval-identity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run BDF2 interval-mass identity gate
+        run: bash tests/fpe/run_fpe_timeint14a.sh
