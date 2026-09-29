@@ -259,6 +259,7 @@ f"  call fmr_prepare_application_parameters_with_elastic_storage('{fstr(cfg)}','
 "    params(1)=p",
 "    call init_forcing(forcing(1),qeq+delta,qeq,h0)",
 "    call init_config(cfgnum)",
+"    head_checksum=0.0_real64; water_checksum=0.0_real64; checksum_available=.false.",
 "    call fmr_run_serialized_physical_multiswap([column],[template],params,forcing,committed,cfgnum,top, &",
 "         0.0_real64,DURATION,1,results,diagnostics,aggregate,dispatch,materialize_worker_assignments=.false., &",
 "         materialize_summary_diagnostics=.false.,materialize_diagnostic_metadata=.false., &",
