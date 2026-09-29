@@ -4,7 +4,8 @@ from __future__ import annotations
 import argparse, json, math, sqlite3
 from pathlib import Path
 
-SCHEMA="swap5.elastic23.bro-profile.v1"\nSOURCE_ARTIFACT_SHA256="f96bea1e9efdd0326ae1ca0d72684cd7928c90fd23f0930b51c782dfc0ff5fe6"
+SCHEMA="swap5.elastic23.bro-profile.v1"
+SOURCE_ARTIFACT_SHA256="f96bea1e9efdd0326ae1ca0d72684cd7928c90fd23f0930b51c782dfc0ff5fe6"
 TOL_M=1.0e-10
 PROFILE_TABLE="normalsoilprofiles"
 HORIZON_TABLE="soilhorizon"
