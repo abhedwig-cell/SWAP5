@@ -8,15 +8,33 @@ ap.add_argument("--output",required=True)
 args=ap.parse_args()
 src=Path(args.source).read_text()
 
+# Shadow TG must use the actual dry surface-flux forcing, not the wet-entry helper semantics.
+surf_old="""    kface=0.5_real64*(ksat+k_top)
+    qhead=-kface*((pond-head_top)/p%node_distance(1)+1.0_real64)
+"""
+surf_new="""    if(nl14q_shadow_dry)then
+      route=R_FLUX
+      runoff_rate=0.0_real64
+      qtop=rain
+      pdot=0.0_real64
+      return
+    end if
+    kface=0.5_real64*(ksat+k_top)
+    qhead=-kface*((pond-head_top)/p%node_distance(1)+1.0_real64)
+"""
+if surf_old not in src:
+    raise SystemExit("NLGLOB14Q surface operator marker missing")
+src=src.replace(surf_old,surf_new,1)
+
 decl="  integer :: nl14f_event_node\n"
 if decl not in src:
     raise SystemExit("NLGLOB14Q global declaration marker missing")
-src=src.replace(decl,decl+"  integer :: nl14q_prev_sat_count\n  logical :: nl14q_shadow_done\n",1)
+src=src.replace(decl,decl+"  integer :: nl14q_prev_sat_count\n  logical :: nl14q_shadow_done,nl14q_shadow_dry\n",1)
 
 init="  nl14f_event_node=0\n"
 if init not in src:
     raise SystemExit("NLGLOB14Q init marker missing")
-src=src.replace(init,init+"  nl14q_prev_sat_count=0\n  nl14q_shadow_done=.false.\n",1)
+src=src.replace(init,init+"  nl14q_prev_sat_count=0\n  nl14q_shadow_done=.false.\n  nl14q_shadow_dry=.false.\n",1)
 
 decl2="    integer::r0,rp,nl14f_i\n"
 if decl2 not in src:
@@ -26,6 +44,7 @@ src=src.replace(decl2,decl2+"""    integer::nl14q_sat_count,nl14q_saved_target,n
     logical::nl14q_shadow_domain,nl14q_shadow_finite
     logical::nl14q_saved_eligible
     real(real64)::nl14q_saved_cumledger,nl14q_saved_cumrunoff,nl14q_saved_maxledger,nl14q_shadow_ledger
+    real(real64)::nl14q_storage0,nl14q_storage1
     integer::nl14q_saved_transition
     character(len=64)::nl14q_saved_terminal
     type(soil_water_physical_state_t)::nl14q_saved_state
@@ -54,23 +73,32 @@ repl="""    state=res%candidate_state
         nl14q_saved_accept=last_accept_route
         nl14q_saved_status=last_solver_status
 
-        call origin_derivative(state,k_origin,theta_dot_n,pdot0,run0,nl14q_shadow_route,qtop0)
+        nl14q_shadow_route=rp
         target_route=nl14q_shadow_route
+        nl14q_storage0=sum(state%water_content*p%dz)+state%ponding_depth
+        nl14q_shadow_dry=.true.
         eligible=.true.
         terminal_reason='COMPLETE_SAME_ROUTE'
         transition_step=0
         call advance_tg_core(step_index,dt,nl14q_shadow_domain)
+        nl14q_shadow_dry=.false.
 
         nl14q_shadow_sat=count(state%pressure_head>=0.0_real64 .and. state%water_content==ts)
         nl14q_shadow_finite=all(ieee_is_finite(state%pressure_head)) .and. &
              all(ieee_is_finite(state%water_content)) .and. ieee_is_finite(state%ponding_depth)
-        nl14q_shadow_ledger=cumledger-nl14q_saved_cumledger
+        nl14q_storage1=sum(state%water_content*p%dz)+state%ponding_depth
+        if(eligible .and. .not.nl14q_shadow_domain .and. nl14q_shadow_route==R_FLUX)then
+          nl14q_shadow_ledger=nl14q_storage1-nl14q_storage0+rain*dt
+        else
+          nl14q_shadow_ledger=huge(1.0_real64)
+        end if
         write(*,'(*(g0))') 'F_PE_NLGLOB14Q_SHADOW|STEP=',step_index,'|ORIGIN_ROUTE=',nl14q_shadow_route, &
              '|DOMAIN=',merge(1,0,nl14q_shadow_domain),'|ELIGIBLE=',merge(1,0,eligible), &
              '|TERMINAL=',trim(terminal_reason),'|SOLVER_STATUS=',last_solver_status, &
              '|PRED_ROUTE=',last_pred_route,'|ENDPOINT_ROUTE=',last_endpoint_route, &
              '|ACCEPT_ROUTE=',last_accept_route,'|FINITE=',merge(1,0,nl14q_shadow_finite), &
-             '|SHADOW_SAT=',nl14q_shadow_sat,'|SHADOW_LEDGER=',nl14q_shadow_ledger
+             '|SHADOW_SAT=',nl14q_shadow_sat,'|SHADOW_LEDGER=',nl14q_shadow_ledger, &
+             '|STORAGE0=',nl14q_storage0,'|STORAGE1=',nl14q_storage1
 
         state=nl14q_saved_state
         ws=nl14q_saved_ws
