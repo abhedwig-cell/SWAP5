@@ -101,8 +101,7 @@ def main():
   real(real64)::heads(N),water(N),cond(N),cap(N),dk(N),h0,delta,qeq
   character(len=32)::regime
   character(len=64)::arg
-  integer::i
-  logical::ok
+    logical::ok
 
   if(command_argument_count()<3) error stop 'F_PE_ELASTIC48_FAIL args'
   call get_command_argument(1,regime)
@@ -143,7 +142,7 @@ def main():
        trusted_prepared_parameters=.true.)
   obs=backend%observation()
 
-  write(*,'(A,A,A,ES16.8,A,ES16.8,A,I0,A,L1,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,L1,A,A,A,L1,A,L1,A,ES16.8)') &
+  write(*,'(*(g0))') &
     'ELASTIC48_ATTR|regime=',trim(regime),'|h0=',h0,'|delta=',delta, &
     '|kernel_status=',result%status,'|completed=',result%completed,'|candidate_ready=',candidate%ready(), &
     '|transaction_calls=',diag%transaction_calls,'|attempts=',diag%attempts,'|retries=',diag%retries, &
