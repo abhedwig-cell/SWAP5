@@ -1,0 +1,50 @@
+{
+  "work_unit": "F-PE-ELASTIC11",
+  "workstream": "VQ/research physical parameter evidence",
+  "baseline": "54d0990915ad5e4243ec1edf96b832115254ab6b",
+  "checkpoint_commit": "a0eed4bfe3b0178d4d687f346a449d470a4d63a7",
+  "last_reconciled_head": "a0eed4bfe3b0178d4d687f346a449d470a4d63a7",
+  "last_reconciled_upstream": "2332a59d2ec33245f53593960e0c334525eda148",
+  "scope": "Calibration-only evaluation of preregistered physical ELAS predictor families on frozen BHR-GT unload targets, with holdout preserved until model and scoring are frozen.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC11_PREDICTOR_PREREGISTRATION.md",
+    "research/elastic/bro_bhrgt_predictor_model.py",
+    ".github/workflows/f-pe-elastic11.yml",
+    "docs/performance/F-PE-ELASTIC10_CLOSEOUT.md",
+    "docs/performance/F-PE-ELASTIC10D_CORPUS_RESULT.md",
+    "docs/performance/F-PE-ELASTIC10D2_DESCRIPTOR_RESULT.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "research/elastic/bro_bhrgt_predictor_model.py",
+    ".github/workflows/f-pe-elastic11.yml"
+  ],
+  "evidence_paths": [
+    "GitHub Actions run 36540905498 / artifact 11021065518"
+  ],
+  "dependency_surface": [
+    "frozen Phase-D calibration corpus and split hashes",
+    "F-PE-ELASTIC10 mechanical target semantics",
+    "F-PE-ELASTIC10D2 target-bound descriptor semantics",
+    "research/elastic/bro_bhrgt_predictor_model.py"
+  ],
+  "interfaces_changed": [],
+  "invariants_affected": [
+    "physical options remain separate from numerical execution policy",
+    "performance evidence is not physical parameter evidence"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the ELASTIC11 calibration-only workflow on checkpoint a0eed4bfe3b0178d4d687f346a449d470a4d63a7. Apply the preregistered gates without changing predictors or thresholds. Do not open holdout objects.",
+  "recovery_point": "research/f-pe-elastic11-predictor-model@a0eed4bfe3b0178d4d687f346a449d470a4d63a7"
+}
