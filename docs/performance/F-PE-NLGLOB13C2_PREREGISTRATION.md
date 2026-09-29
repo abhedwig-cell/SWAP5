@@ -115,3 +115,20 @@ Research diagnostics only.
 No production `src/**` change.
 
 `LEGACY_NUMERICS` remains production default.
+
+
+## Diagnostic amendment before final rerun
+
+The first C2 execution exposed a harness-only coverage mismatch: the redundant in-run C1 log parser re-observed pre-state identity in 5/7 cases, while the parent NLGLOB13C1 authority has already established exact rollback identity for these same seven target trajectories, including the two coarse HEAD/RUNOFF cases, with zero theta, head, ponding and storage difference.
+
+The frozen C2 gate requires that pre-state identity be confirmed for all seven. That condition is already satisfied by the canonical parent authority and is not scientifically re-opened in C2.
+
+For the final C2 rerun:
+
+- NLGLOB13C1 canonical 7/7 exact identity is the identity authority;
+- the local C2 C1-log parse is retained as a diagnostic re-observation only;
+- C2 coverage requires parent and first same-origin h/4 child prospective-state diagnostics for all 7 and zero process failure;
+- no contraction, admissibility, 0.60 or 0.90 gate changes;
+- no solver behavior changes.
+
+This amendment does not rescue a scientific failure. It removes a redundant parser-specific coverage condition that contradicted already qualified parent authority.
