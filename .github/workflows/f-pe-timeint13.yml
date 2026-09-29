@@ -6,10 +6,13 @@ on:
       - work/f-pe-timeint13-extrapolated-k-bdf2
     paths:
       - 'docs/performance/F-PE-TIMEINT13_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT13_P0R_PREREGISTRATION.md'
       - 'tests/fpe/materialize_fpe_timeint13_kpred.py'
       - 'tests/fpe/test_fpe_timeint13_kpred_bdf2.f90'
       - 'tests/fpe/run_fpe_timeint13.py'
       - 'tests/fpe/run_fpe_timeint13.sh'
+      - 'tests/fpe/run_fpe_timeint13_p0r.py'
+      - 'tests/fpe/run_fpe_timeint13_p0r.sh'
       - '.github/workflows/f-pe-timeint13.yml'
   workflow_dispatch:
 
@@ -28,3 +31,15 @@ jobs:
         run: gfortran --version
       - name: Run smooth predicted-K BDF2 order study
         run: bash tests/fpe/run_fpe_timeint13.sh
+
+  p0r-independent-ladder:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run independent P0R ladder
+        run: bash tests/fpe/run_fpe_timeint13_p0r.sh
