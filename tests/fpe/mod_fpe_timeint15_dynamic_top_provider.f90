@@ -12,6 +12,14 @@ module mod_fpe_timeint15_dynamic_top_provider
   real(real64), parameter :: HEAD_SWITCH=1.0e-6_real64
   real(real64), parameter :: MIN_RSRO=1.0e-3_real64
 
+  real(real64) :: timeint15_surface_a0 = 1.0_real64
+  real(real64) :: timeint15_surface_a1 = -1.0_real64
+  real(real64) :: timeint15_surface_a2 = 0.0_real64
+  real(real64) :: timeint15_surface_pond_nm1 = 0.0_real64
+  real(real64) :: timeint15_surface_runoff_rate = 0.0_real64
+  common /timeint15_surface_common/ timeint15_surface_a0, timeint15_surface_a1, timeint15_surface_a2, &
+       timeint15_surface_pond_nm1, timeint15_surface_runoff_rate
+
   type, extends(dynamic_top_boundary_provider_t), public :: fpe_timeint15_dynamic_top_provider_t
     type(soil_water_parameter_set_t), pointer :: geometry => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulics => null()
@@ -55,6 +63,11 @@ contains
     provider%a1 = a1
     provider%a2 = a2
     provider%previous_runoff_depth = previous_runoff_depth
+    timeint15_surface_a0 = a0
+    timeint15_surface_a1 = a1
+    timeint15_surface_a2 = a2
+    timeint15_surface_pond_nm1 = pond_nm1
+    timeint15_surface_runoff_rate = 0.0_real64
   end subroutine
 
   subroutine timeint15_evaluate(self, pressure_head_top, water_content_top, candidate_ponding_depth, requested, result)
@@ -112,6 +125,7 @@ contains
       result%surface_face_conductivity=k1_atm
       result%candidate_ponding_depth=0.0_real64
       runoff_rate=0.0_real64
+      timeint15_surface_runoff_rate=runoff_rate
       runoff_depth=(self%dt/self%a0)*runoff_rate+(self%a2/self%a0)*self%previous_runoff_depth
       result%runoff_depth=max(0.0_real64,runoff_depth)
       result%surface_head_derivative_available=.true.
@@ -132,6 +146,7 @@ contains
       result%surface_face_conductivity=0.0_real64
       result%candidate_ponding_depth=0.0_real64
       runoff_rate=0.0_real64
+      timeint15_surface_runoff_rate=runoff_rate
       runoff_depth=(self%a2/self%a0)*self%previous_runoff_depth
       result%runoff_depth=max(0.0_real64,runoff_depth)
       result%surface_head_derivative_available=.false.
@@ -157,6 +172,7 @@ contains
     if(p_no<=self%pmax)then
       result%candidate_ponding_depth=max(0.0_real64,p_no)
       runoff_rate=0.0_real64
+      timeint15_surface_runoff_rate=runoff_rate
       result%surface_head_dpressure_head_top=p1/denom
       result%route='timeint15-ponded-head'
     else
@@ -164,6 +180,7 @@ contains
       numer=numer+(self%dt/self%rsro)*self%pmax
       result%candidate_ponding_depth=max(0.0_real64,numer/denom)
       runoff_rate=max(0.0_real64,(result%candidate_ponding_depth-self%pmax)/self%rsro)
+      timeint15_surface_runoff_rate=runoff_rate
       result%surface_head_dpressure_head_top=p1/denom
       result%route='timeint15-ponded-head-linear-runoff'
     end if
