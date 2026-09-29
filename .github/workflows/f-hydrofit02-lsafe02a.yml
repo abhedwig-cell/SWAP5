@@ -1,0 +1,37 @@
+name: F-HYDROFIT02 external BRO availability audit
+
+on:
+  push:
+    branches:
+      - research/f-hydrofit02-bro-acquisition
+    paths:
+      - 'research/hydrofit/audit_lsafe02_external_availability.py'
+      - '.github/workflows/f-hydrofit02-lsafe02a.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-hydrofit02-lsafe02a-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare output
+        run: mkdir -p "$RUNNER_TEMP/lsafe02a"
+      - name: Audit frozen independent BRO objects
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/audit_lsafe02_external_availability.py \
+            --ids integration/research/data/F-HYDROFIT02_LSAFE02_INDEPENDENT_BRO_IDS.json \
+            --out "$RUNNER_TEMP/lsafe02a/availability.json" \
+            | tee "$RUNNER_TEMP/lsafe02a/availability.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-hydrofit02-lsafe02a
+          path: ${{ runner.temp }}/lsafe02a
+          if-no-files-found: error
