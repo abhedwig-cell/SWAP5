@@ -146,7 +146,7 @@ if p0_pass:
 
     med_ratio=statistics.median(ratios) if ratios else None
     max_ratio=max(ratios) if ratios else None
-    clamp_fraction=clamp_steps/(16*total_steps) if total_steps else None
+    clamp_fraction=clamp_steps/total_steps if total_steps else None
     advance=(sum(candidate_complete)==12 and pond_ok and alt_ok and ledger_ok and
              med_ratio is not None and med_ratio<=1.15 and max_ratio is not None and max_ratio<=1.30 and
              clamp_fraction is not None and clamp_fraction<=0.05)
