@@ -1,262 +1,221 @@
-# F-PE-TIMEINT15 preregistration — all-storage conservative BDF2 and physical interval flux quadrature
+# F-PE-TIMEINT15 preregistration — conservative second-order one-step Richards integration
 
 Date: 2026-09-29
 
-Status: `PREREGISTERED_BEFORE_RESULTS`
+Status: `PREREGISTERED_BEFORE_RESULTS_RECONCILED`
 
-Canonical authority:
+Current canonical authority:
 
-`integration/f-ci-canonical@295a13b83ac44efa7b2ff0e0d2fb7c86e6b31e70`
+`integration/f-ci-canonical@a5f127e2f42329914826a835d760102be6fee71f`
 
-Parent authority:
+Authority reconciliation:
 
-- TIMEINT13: extrapolated-conductivity BDF2 retains near-second-order behavior on smooth fixed-flux trajectories and has near-KLAG work on completed dynamic-top cases.
-- TIMEINT14/14A: the large ordinary physical interval ledger under BDF2 is exactly the BDF2 soil-storage history term. There is no hidden mass leak, but the standard multistep storage equation is incompatible with SWAP5's unchanged one-step physical transaction mass identity.
+`docs/performance/F-PE-TIMEINT15_AUTHORITY_RECONCILIATION.md`
 
-## Purpose
+## Parent authority
 
-Test whether the BDF2 modernization path can retain:
+TIMEINT14 established that ordinary BDF2 cannot retain SWAP5's exact consecutive-state physical interval mass contract without importing numerical history into current-interval mass publication.
 
-1. physical endpoint storage as the published storage;
-2. exact per-interval physical water balance;
-3. second-order temporal accuracy;
-4. predicted-conductivity cost advantages;
+TIMEINT13 established that history-predicted conductivity can retain near-second-order smooth accuracy while avoiding expensive endpoint-fully-implicit conductivity coupling.
 
-by applying the multistep time discretization consistently to every storage term in the controlled water system and by using a BDF2-consistent quadrature for external interval fluxes.
+The next valid question is therefore:
 
-Research-only. No production source changes.
+> Can a conservative second-order one-step method retain physical per-interval mass semantics and the weak-coupling performance advantage?
 
-## Constant-step conservative formulation
+Research-only. No production source change.
 
-For constant-step BDF2:
+## Candidate family
 
-`a0=3/2, a1=-2, a2=1/2`.
+Primary candidate:
 
-For any storage component `X`:
+`TRAP_KPRED`
 
-`a0 X_(n+1) + a1 X_n + a2 X_(n-1) = h G_(n+1)`.
+A conservative trapezoidal / Crank-Nicolson-style Richards discretization.
 
-Because `a0+a1+a2=0`:
+For each soil compartment:
 
-`Delta X_n = (h/a0) G_(n+1) + (a2/a0) Delta X_(n-1)`.
+`theta(h_(n+1)) - theta(h_n) = h/2 * [F_n + F_(n+1)]`
 
-For constant-step BDF2:
+where `F` denotes the net physical water-flux divergence plus source/sink rate with the same sign convention as current HeadCalc.
 
-`Delta X_n = (2/3) h G_(n+1) + (1/3) Delta X_(n-1)`.
+The storage increment is the exact consecutive physical theta difference.
 
-This recurrence defines the candidate interval quadrature for a physical flux component.
+Therefore summing compartments naturally produces the physical interval storage change rather than a modified multistep storage.
 
-It does not relabel numerical history as physical storage.
+## Conductivity treatment
 
-## Soil storage
+To avoid the expensive SWKIMPL=1 dynamic coupling, the endpoint flux operator uses a second-order accepted-history prediction:
 
-Use the already qualified TIMEINT13 mechanism:
+`K_pred_(n+1) = K_n + r (K_n-K_(n-1))`.
 
-- BE bootstrap;
-- BDF2 soil-water storage thereafter;
-- history-predicted nodal conductivity;
-- conductivity fixed during Newton;
+For constant-step P0/P1:
+
+`K_pred_(n+1) = 2 K_n-K_(n-1)`.
+
+The candidate endpoint conductivity is held fixed during Newton:
+
+- `dK/dh=0`;
 - exact candidate theta(h) and C(h);
-- corrected BOFEK00 fixed-K dynamic-top route.
+- existing conductivity mean method;
+- positivity floor `1e-12 cm/day` only as fail-safe;
+- clamp count recorded.
 
-## Surface ponding storage
+The origin flux `F_n` is evaluated from the accepted origin using exact accepted conductivity `K_n`.
 
-TIMEINT13 advanced ponding with the existing one-step surface balance while soil storage used BDF2.
+## Bootstrap
 
-TIMEINT15 instead applies the same temporal coefficients to ponded surface storage.
+The first accepted interval has insufficient conductivity history.
 
-For zero evaporation and controlled rainfall:
+It uses the current one-step BE/KLAG Reference operator.
 
-`a0 P_(n+1)+a1 P_n+a2 P_(n-1) = h (rain + q_top - q_runoff)`.
+TRAP_KPRED starts on the second accepted interval.
 
-The generalized dynamic-top algebra is derived from this equation.
+Any later event/restart semantics are outside TIMEINT15 and would require a first-order restart.
 
-### Flux route
+## Why this method is contract-compatible in principle
 
-Let `q0` be net atmospheric water input and `P_n,P_(n-1)` accepted ponding storage.
+For the candidate one-step equation:
 
-The top soil flux required for a candidate zero-ponding endpoint is:
+`Delta S_n = h/2 (F_n+F_(n+1))`.
 
-`q1 = (a1 P_n + a2 P_(n-1))/h - q0`.
+The right-hand side is a quadrature using physical rates belonging to the current interval endpoints.
 
-For BE bootstrap this reduces exactly to the current production formula:
+There is no previous-interval mass term.
 
-`q1 = -q0 - P_n/h`.
+If all internal face fluxes cancel and every storage component is discretized consistently, the accepted physical interval ledger remains a direct physical identity.
 
-### Ponded head route without runoff
+This must be demonstrated, not assumed.
 
-Let:
+## P0 — smooth fixed-flux mechanism
 
-`p1 = K_surface/d_surface * h`.
+First exclude dynamic-top and other discontinuities.
 
-Then:
+Use the established TIMEINT smooth bank:
 
-`P_(n+1) = [-a1 P_n - a2 P_(n-1) + q0 h - K_surface h + p1 h_top] / (a0+p1)`.
+- B01, infiltration 2 cm/day;
+- B01, infiltration 4 cm/day;
+- O05, infiltration 2 cm/day;
+- O05, infiltration 4 cm/day.
 
-### Linear runoff route
+Constant-step ladder:
 
-For `RSROEXP=1`:
+- 0.010 d;
+- 0.005 d;
+- 0.0025 d;
+- 0.00125 d.
 
-`P_(n+1) = [-a1 P_n - a2 P_(n-1) + q0 h - K_surface h + p1 h_top + (h/RSRO) PMAX] / (a0+p1+h/RSRO)`.
+Horizon:
 
-Runoff rate:
+- 0.04 d.
 
-`q_runoff = max(0, (P_(n+1)-PMAX)/RSRO)`.
+Comparators:
 
-Runoff interval mass is not assumed equal to `h*q_runoff` after bootstrap. It is published through the integrator-consistent recursive interval quadrature below.
-
-### Surface Jacobian derivative
-
-For fixed top-node conductivity:
-
-- no-runoff head route:
-  `dP_(n+1)/dh_top = p1/(a0+p1)`;
-- linear-runoff route:
-  `dP_(n+1)/dh_top = p1/(a0+p1+h/RSRO)`.
-
-For BE bootstrap these reduce exactly to the BOFEK00-qualified production derivatives.
-
-## Physical external interval flux quadrature
-
-For each external physical flux rate component `f_(n+1)`, define its physical interval integral recursively:
-
-`I_n = (h/a0) f_(n+1) + (a2/a0) I_(n-1)`.
-
-Components in the controlled bank:
-
-- rainfall input;
-- runoff output;
-- bottom exchange.
-
-The BE bootstrap uses:
-
-`a0=1, a2=0`
-
-so `I_1=h*f_1`, exactly matching current one-step semantics.
-
-The published physical interval mass ledger remains:
-
-`(Ssoil_(n+1)+P_(n+1)) - (Ssoil_n+P_n) - I_rain + I_runoff - I_bottom`.
-
-No BDF2 history storage term is added to physical storage.
-
-## Numerical history ownership
-
-The candidate requires numerical history:
-
-- previous accepted soil theta;
-- previous accepted conductivity;
-- previous accepted ponding depth;
-- previous accepted interval integral per external flux component;
-- previous accepted dt for later variable-step generalization.
-
-These are integrator-history variables, not physical storage and not independently publishable mass.
-
-A rejected trial may not modify them.
-
-## P0 — BE reduction / provider equivalence
-
-Before BDF2 exposure, prove the generalized test-only dynamic-top provider reduces to production BOFEK00 semantics when:
-
-- `a0=1`;
-- `a1=-1`;
-- `a2=0`.
-
-Use a deterministic grid spanning:
-
-- dry flux route;
-- near switch;
-- ponded no-runoff route;
-- linear-runoff route;
-- representative B01/B12/O05/O14 top hydraulic parameters.
+1. current BE/KLAG;
+2. TIMEINT13 extrapolated-K BDF2.
 
 Frozen P0 gates:
 
-1. same status and regime for every point;
-2. max absolute surface head difference <=1e-12 cm;
-3. max absolute top-flux difference <=1e-12 cm/day;
-4. max absolute candidate ponding difference <=1e-12 cm;
-5. max absolute runoff-depth difference <=1e-12 cm;
-6. max absolute surface-head derivative difference <=1e-12 where available.
+1. 4/4 candidate ladders complete;
+2. median refined top-head order >=1.6;
+3. at least 3/4 individual refined top-head orders >=1.5;
+4. physical per-step ledger <=5e-8 cm;
+5. cumulative physical ledger <=5e-8 cm;
+6. storage spread <=1e-10 cm across the refinement ladder;
+7. no conductivity clamp on the smooth bank;
+8. median deterministic work per step <=1.10 times TIMEINT13 extrapolated-K BDF2;
+9. no alternative-solver or retry pathology.
 
-If P0 fails, stop.
+If P0 fails, stop this candidate.
 
-## P1 — constant-step dynamic-top conservative mechanism
+## P1 — source/flux quadrature consistency
 
-Use the same 12 TIMEINT13 dynamic-top cases:
+Only if P0 passes.
 
-- B01/B12/O05/O14;
-- MOIST h0=-50 cm, rain=8 cm/day;
-- WET h0=-20 cm, rain=12 cm/day;
-- POND h0=-5 cm, rain=25 cm/day;
-- dt=0.005 d;
-- horizon=0.12 d;
-- MAXIT=8;
-- BALTOL02;
-- BE bootstrap then constant-step extrapolated-K BDF2.
+Use time-varying but smooth prescribed top flux forcing with an analytically integrable rate over the interval.
 
-All trajectories are reported, including incomplete cases.
+Candidate forcing family:
 
-Frozen P1 gates for mechanism qualification:
+`q(t)=q_bar + q_amp * sin(2*pi*t/T)`.
 
-1. at least 10/12 trajectories complete;
-2. all completed steps have max physical interval ledger <=5e-8 cm;
-3. every completed trajectory cumulative physical ledger <=5e-8 cm;
-4. BE bootstrap physical ledger <=5e-8 cm;
-5. no nonfinite state or flux integral;
-6. rainfall and runoff interval integrals are nonnegative;
-7. no numerical-history term is included in published physical storage;
-8. no alternative-solver pathology.
+Preregistered cases will use amplitudes small enough to remain within the fixed-flux boundary regime.
 
-Known O05/POND common-domain and O14/POND candidate robustness failures are not silently removed. Completion remains reported separately from conservation.
+Compare:
 
-## P2 — smooth second-order preservation
+- exact analytical cumulative boundary input;
+- trapezoidal interval quadrature;
+- candidate physical storage change.
 
-Only if P0 and P1 conservation gates pass.
+Frozen P1 gates:
 
-Use the TIMEINT13 smooth fixed-flux bank and dt ladder:
+1. cumulative physical ledger <=5e-8 cm;
+2. observed boundary-quadrature convergence order >=1.8;
+3. no route/process discontinuity.
 
-- B01 and O05;
-- infiltration 2 and 4 cm/day;
-- dt 0.010, 0.005, 0.0025, 0.00125 d;
-- horizon 0.04 d.
+This separates a genuinely second-order physical flux quadrature from merely obtaining a second-order state endpoint.
 
-Frozen gates:
+## P2 — dynamic-top prerequisite
 
-1. 4/4 ladders complete;
-2. median refined top-head temporal order >=1.6;
-3. at least 3/4 individual refined orders >=1.5;
-4. storage spread <=1e-10 cm;
-5. no conductivity clamps;
-6. candidate work per step <=1.05 times TIMEINT13 extrapolated-K BDF2.
+Dynamic-top is opened only after P0 and P1 pass.
 
-## Interpretation boundary
+Before a dynamic-top solve, derive a trapezoidal surface-storage residual using:
 
-P1 proves a conservative constant-step mechanism only.
+`P_(n+1)-P_n = h/2[(q0+qtop-qrun)_n + (q0+qtop-qrun)_(n+1)]`.
 
-It does not yet qualify:
+The BE production provider remains the bootstrap/reference authority.
 
-- variable-step recursive quadrature;
-- hard-event restart;
-- adaptive control;
-- production dynamic-top execution;
-- removal of user DTMIN/DTMAX.
+A test-only dynamic-top trapezoidal provider must first reproduce the production provider in the first-order bootstrap branch exactly.
+
+Dynamic-top P2 requires separate preregistered formulas/gates before exposure.
+
+## Jacobian rule
+
+For TRAP_KPRED the candidate endpoint flux contribution is weighted by 1/2.
+
+Accordingly the endpoint flux Jacobian contribution must be weighted by 1/2 relative to the corresponding BE endpoint operator.
+
+The exact storage derivative remains:
+
+`d theta(h_(n+1))/dh`.
+
+The origin-flux contribution is a frozen residual source and has no candidate-state Jacobian term.
+
+TIMEINT15 P0 must patch these semantics test-only and must not alter production HeadCalc.
+
+## Mass semantics
+
+Non-negotiable:
+
+- physical storage remains consecutive endpoint physical water;
+- physical flux publication is built only from current-interval physical rates/quadrature;
+- no numerical history debt enters physical mass;
+- mass tolerance is not widened;
+- transaction semantics are not changed.
+
+## Cost interpretation
+
+A trapezoidal one-step solve requires one nonlinear solve per accepted interval.
+
+No second nonlinear stage is allowed in the primary candidate.
+
+The target is therefore materially cheaper than TR-BDF2/SDIRK while providing a natural second-order conservative interval identity.
 
 ## Stop rule
 
-If the conservative formulation cannot close the unchanged physical interval ledger while retaining the TIMEINT13 endpoint/order mechanism, close the multistep route.
+Do not rescue TRAP_KPRED with empirical blending factors after results.
 
-Do not relax the physical mass gate.
+If the method fails temporal order, physical ledger, or nonlinear robustness gates, close the candidate and reconsider another conservative one-step scheme.
 
 ## Possible outcomes
 
-- `CONSERVATIVE_BDF2_PHYSICAL_INTERVAL_MECHANISM_QUALIFIED`;
-- `BLOCKED_DYNAMIC_TOP_SURFACE_MULTISTEP_ROBUSTNESS`;
-- `CLOSED_CONSERVATIVE_BDF2_LEDGER_FAIL`;
-- `CLOSED_CONSERVATIVE_BDF2_ORDER_FAIL`.
+- `CONSERVATIVE_TRAP_KPRED_MECHANISM_QUALIFIED`;
+- `CLOSED_TRAP_KPRED_ORDER_FAIL`;
+- `CLOSED_TRAP_KPRED_CONSERVATION_FAIL`;
+- `BLOCKED_TRAP_KPRED_NONLINEAR_ROBUSTNESS`.
 
 ## Production boundary
 
-No production `src/**` changes.
+No production `src/**` change.
 
 `LEGACY_NUMERICS` remains default.
+
+No user DTMIN/DTMAX change follows from TIMEINT15 alone.
