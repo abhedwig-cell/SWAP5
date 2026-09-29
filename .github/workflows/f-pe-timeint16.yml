@@ -16,6 +16,10 @@ on:
       - 'tests/fpe/test_fpe_timeint16_thomas_gladwell.f90'
       - 'tests/fpe/run_fpe_timeint16.py'
       - 'tests/fpe/run_fpe_timeint16.sh'
+      - 'docs/performance/F-PE-TIMEINT16B_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timeint16b_startup.f90'
+      - 'tests/fpe/run_fpe_timeint16b.py'
+      - 'tests/fpe/run_fpe_timeint16b.sh'
       - '.github/workflows/f-pe-timeint16.yml'
   workflow_dispatch:
 
@@ -46,3 +50,15 @@ jobs:
         run: gfortran --version
       - name: Run moisture Thomas-Gladwell qualification
         run: bash tests/fpe/run_fpe_timeint16.sh
+
+  startup-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run TG event-startup attribution
+        run: bash tests/fpe/run_fpe_timeint16b.sh
