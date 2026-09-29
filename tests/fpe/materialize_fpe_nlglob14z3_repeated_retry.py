@@ -82,7 +82,7 @@ repl="""    if(nl14d_saturated_mode)then
 
       call advance_klag(step_index)
 
-      if((.not.eligible) .and. nl14z3_retry_advised .and. nl14z3_recovery_count<16)then
+      if((.not.eligible) .and. nl14z3_retry_advised)then
         write(*,'(*(g0))') 'F_PE_NLGLOB14Z3_NOMINAL_RETRY|STEP=',step_index, &
              '|RETRY=1|DT=',nominal_dt,'|SOLVER_STATUS=',last_solver_status,'|COUNT=',nl14z3_recovery_count+1, &
              '|SAT_COUNT=',count(nl14z3_saved_state%pressure_head>=0.0_real64 .and. &
@@ -154,19 +154,6 @@ repl="""    if(nl14d_saturated_mode)then
         dt=nominal_dt
       end if
 
-      if((.not.eligible) .and. nl14z3_retry_advised .and. nl14z3_recovery_count>=16)then
-        state=nl14z3_saved_state
-        ws=nl14z3_saved_ws
-        cumledger=nl14z3_saved_cumledger
-        cumrunoff=nl14z3_saved_cumrunoff
-        maxledger=nl14z3_saved_maxledger
-        eligible=.false.
-        transition_step=step_index
-        terminal_reason='NLGLOB14Z3_RECOVERY_BUDGET_EXHAUSTED'
-        write(*,'(*(g0))') 'F_PE_NLGLOB14Z3_BUDGET|STEP=',step_index,'|COUNT=',nl14z3_recovery_count, &
-             '|DT=',nominal_dt,'|RETRY=1'
-      end if
-
       write(*,'(*(g0))') 'F_PE_NLGLOB14D_MODE|STEP=',step_index,'|MODE=SATURATED_KLAG|ENTRY=0', &
            '|OK=',merge(1,0,eligible),'|DT=',nominal_dt,'|ROUTE=',trim(route_id), &
            '|TERMINAL=',trim(terminal_reason)
@@ -175,7 +162,7 @@ repl="""    if(nl14d_saturated_mode)then
 """
 src=src.replace(persist,repl,1)
 
-for marker in ("F_PE_NLGLOB14Z3_NOMINAL_RETRY","F_PE_NLGLOB14Z3_ROLLBACK","F_PE_NLGLOB14Z3_HALF","F_PE_NLGLOB14Z3_RECOVERED","F_PE_NLGLOB14Z3_RECOVERY_FAILED","F_PE_NLGLOB14Z3_RECOVERY_ROLLBACK","F_PE_NLGLOB14Z3_BUDGET"):
+for marker in ("F_PE_NLGLOB14Z3_NOMINAL_RETRY","F_PE_NLGLOB14Z3_ROLLBACK","F_PE_NLGLOB14Z3_HALF","F_PE_NLGLOB14Z3_RECOVERED","F_PE_NLGLOB14Z3_RECOVERY_FAILED","F_PE_NLGLOB14Z3_RECOVERY_ROLLBACK"):
     if marker not in src:
         raise SystemExit("NLGLOB14Z3 injection failed: "+marker)
 
