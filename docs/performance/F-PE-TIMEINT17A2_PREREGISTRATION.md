@@ -28,7 +28,7 @@ The frozen test geometry remains:
 
 - 16 nodes;
 - 10 cm compartments;
-- surface-to-top-node distance 5 cm;
+- surface-to-top-node distance 10 cm;
 - conductivity mean method 1.
 
 Surface parameters remain:
