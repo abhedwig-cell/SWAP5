@@ -77,8 +77,9 @@ def main():
        fmr_prepare_application_parameters_with_elastic_storage, FMR_ELAS_HOST_BINDING_OK
   use mod_fmr_elastic_storage_staringseriesblock_map, only: &
        fmr_map_staringseriesblock_to_catalog, FMR_STARINGSERIESBLOCK_OK
+  use mod_fmr_elastic_storage_horizon_descriptor_builder, only: fmr_elastic_storage_retention_t
   use mod_fmr_elastic_storage_staringreeks_catalog, only: &
-       fmr_elastic_storage_retention_t, fmr_lookup_staringreeks_retention, FMR_STARINGREEKS_CATALOG_OK
+       fmr_lookup_staringreeks_retention, FMR_STARINGREEKS_CATALOG_OK
   implicit none
   integer, parameter :: N={n}
   real(real64), parameter :: T0=9200.0_real64,T1=9200.02_real64,H0=2.0_real64
