@@ -48,11 +48,13 @@ for mid,mode,route,dt in targets:
             mn=float(d["THETA_MIN"]); mx=float(d["THETA_MAX"])
             return max((tr-mn)/(ts-tr),(mx-ts)/(ts-tr),0.0)
         op=ov(p); oq=ov(q)
-        state_same=all(close(float(p[k]),float(q[k])) for k in ("PRE_SIG1","PRE_SIG2","PRE_STORAGE","PRE_TOP_H","PRE_POND"))
+        sigkeys=("PRE_SIG1","PRE_SIG2","PRE_STORAGE","PRE_TOP_H","PRE_POND")
+        sigdiff={k:abs(float(p[k])-float(q[k])) for k in sigkeys}
+        state_same=all(close(float(p[k]),float(q[k])) for k in sigkeys)
         ratio=oq/op if op>0 else math.inf
         expo=math.log(op/oq,2.0) if op>0 and oq>0 else math.inf
         rec.update({"parent_overshoot":op,"child_overshoot":oq,"ratio":ratio,"exponent":expo,
-                    "same_pre_state":state_same,
+                    "same_pre_state":state_same,"pre_state_abs_diffs":sigdiff,
                     "parent_theta_min":float(p["THETA_MIN"]),"parent_theta_max":float(p["THETA_MAX"]),
                     "child_theta_min":float(q["THETA_MIN"]),"child_theta_max":float(q["THETA_MAX"]),
                     "parent_node_min":int(p["NODE_MIN"]),"parent_node_max":int(p["NODE_MAX"]),
