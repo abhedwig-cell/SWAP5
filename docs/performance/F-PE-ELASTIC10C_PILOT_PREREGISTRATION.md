@@ -84,3 +84,40 @@ At least one fixed selected object is R2 or R3.
 
 A zero-object result is a valid local coverage negative and must not be
 generalized to national BHR-GT availability.
+
+
+## Operational R2/R3 evidence requirements
+
+These requirements operationalize the already frozen class definitions before
+the 10-km result is inspected.
+
+### R2
+
+An object may be classified R2 only when one
+`SettlementCharacteristicsDetermination` contains:
+
+- at least two `determinationStep` elements;
+- at least two step-local finite `verticalStress` values;
+- at least two distinct vertical-stress values;
+- a non-empty step-local `heightChangeDuringSettlement` SWE series for at
+  least two stress states;
+- at least one of those usable steps explicitly classified as unload/reload
+  through `stepType` text or xlink code.
+
+A global unload token plus an unrelated strain series is insufficient.
+
+### R3
+
+An object may be classified R3 only when one
+`SettlementCharacteristicsDetermination` contains a non-empty
+`stressChangeDuringSettlement` SWE series whose DataRecord is the
+catalogue-bound `StressAtSpecificSettlement.xml`.
+
+That DataRecord is the source authority for coupled vertical strain and
+effective/grain-stress settlement semantics.
+
+### Conservative fallback
+
+If the XML contains settlement mechanics but the step-local association is not
+recoverable without guessing, classify downward to R1 or R0 rather than
+promoting to R2/R3.
