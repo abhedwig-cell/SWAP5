@@ -151,3 +151,18 @@ If A succeeds, the next physical workunit will compare BHR-GT-derived mechanical
 targets with the already audited BHR-P descriptor classes.
 
 This is independent of ELASTIC05/08/09 software admission.
+
+
+## Execution authority
+
+Workflow authority:
+`.github/workflows/f-pe-elastic10-bhrgt.yml`
+
+Probe client:
+`research/elastic/bro_bhrgt_fetch.py`
+
+Official base service:
+`https://publiek.broservices.nl/sr/bhrgt/v2`
+
+The first workflow run is schema-only. It must discover OpenAPI paths and
+compression/settlement schema terms before any object search is introduced.
