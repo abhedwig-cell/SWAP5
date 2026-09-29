@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB13A halfstep failure attribution
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB13A*.md'
+      - 'tests/fpe/materialize_fpe_nlglob13a*.py'
+      - 'tests/fpe/run_fpe_nlglob13a*.py'
+      - 'tests/fpe/run_fpe_nlglob13a*.sh'
+      - '.github/workflows/f-pe-nlglob13a.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob13a-halfstep-attribution
+    paths:
+      - 'docs/performance/F-PE-NLGLOB13A*.md'
+      - 'tests/fpe/materialize_fpe_nlglob13a*.py'
+      - 'tests/fpe/run_fpe_nlglob13a*.py'
+      - 'tests/fpe/run_fpe_nlglob13a*.sh'
+      - '.github/workflows/f-pe-nlglob13a.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob13a-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  halfstep-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered halfstep attribution
+        run: bash tests/fpe/run_fpe_nlglob13a.sh
