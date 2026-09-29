@@ -34,6 +34,8 @@ program test_fpe_timeint17a_same_route
   real(real64),allocatable :: theta_dot_n(:),theta_dot_p(:),theta_tilde(:),head_tilde(:),k_origin(:),k_tilde(:)
   real(real64),allocatable :: theta_tg(:),head_tg(:),check_theta(:),k_accept(:)
   character(len=32) :: material_id,mode,route_id
+  character(len=64) :: terminal_reason
+  integer :: last_solver_status,last_origin_route,last_pred_route,last_endpoint_route,last_accept_route
   real(real64) :: tr,ts,alpha,nvg,ksat,lambda,h0,p0,rain,dt,horizon
   integer :: steps,step,target_route,total_nl,total_back,total_jac,total_lin
   integer :: transition_step
@@ -64,6 +66,8 @@ program test_fpe_timeint17a_same_route
   maxledger=0.0_real64; cumledger=0.0_real64; max_roundtrip=0.0_real64
   max_native_rate=0.0_real64; max_surface_rate_residual=0.0_real64; max_k_shift=0.0_real64
   cumrunoff=0.0_real64; eligible=.true.; transition_step=0
+  terminal_reason='COMPLETE_SAME_ROUTE'
+  last_solver_status=0; last_origin_route=0; last_pred_route=0; last_endpoint_route=0; last_accept_route=0
 
   do step=1,steps
     if(trim(mode)=='TG')then
@@ -76,7 +80,10 @@ program test_fpe_timeint17a_same_route
 
   write(*,'(*(g0))') 'F_PE_TIMEINT17A_RESULT|MATERIAL=',trim(material_id),'|MODE=',trim(mode), &
        '|ROUTE=',trim(route_id),'|DT=',dt,'|HORIZON=',horizon,'|ELIGIBLE=',merge(1,0,eligible), &
-       '|TRANSITION_STEP=',transition_step,'|STEPS_DONE=',min(step,steps), &
+       '|TRANSITION_STEP=',transition_step,'|STEPS_DONE=',min(step,steps),'|TERMINAL_REASON=',trim(terminal_reason), &
+       '|SOLVER_STATUS=',last_solver_status,'|ORIGIN_ROUTE_CODE=',last_origin_route, &
+       '|PRED_ROUTE_CODE=',last_pred_route,'|ENDPOINT_ROUTE_CODE=',last_endpoint_route, &
+       '|ACCEPT_ROUTE_CODE=',last_accept_route, &
        '|TOP_H=',state%pressure_head(1),'|TOP_THETA=',state%water_content(1), &
        '|MID_H=',state%pressure_head((numnod+1)/2),'|BOTTOM_H=',state%pressure_head(numnod), &
        '|POND=',state%ponding_depth,'|STORAGE=',sum(state%water_content*p%dz)+state%ponding_depth, &
@@ -241,12 +248,15 @@ contains
     type(soil_water_physical_state_t)::predstate,acceptstate
 
     call origin_derivative(state,k_origin,theta_dot_n,pdot_n,run_n,r0,qtop_n)
+    last_origin_route=r0
     if(r0/=target_route)then
+      terminal_reason='ORIGIN_ROUTE_MISMATCH'
       eligible=.false.; transition_step=step_index; return
     end if
 
     theta_tilde=state%water_content+dt*theta_dot_n
     if(any(theta_tilde<=tr) .or. any(theta_tilde>=ts))then
+      terminal_reason='PREDICTED_RETENTION_DOMAIN_FAILED'
       eligible=.false.; transition_step=step_index; return
     end if
     do i=1,numnod
@@ -257,12 +267,15 @@ contains
     predstate%pressure_head=head_tilde
     predstate%ponding_depth=state%ponding_depth+dt*pdot_n
     if(predstate%ponding_depth<0.0_real64)then
+      terminal_reason='PREDICTED_PONDING_NEGATIVE'
       eligible=.false.; transition_step=step_index; return
     end if
     call exact_state_k(predstate,k_tilde)
     max_k_shift=max(max_k_shift,maxval(abs(k_tilde-k_origin)))
     call surface_operator(predstate%pressure_head(1),predstate%ponding_depth,k_tilde(1),qtmp,pdtmp,runtmp,rtilde)
+    last_pred_route=rtilde
     if(rtilde/=target_route)then
+      terminal_reason='FORWARD_PREDICTOR_ROUTE_MISMATCH'
       eligible=.false.; transition_step=step_index; return
     end if
 
@@ -276,7 +289,9 @@ contains
     total_back=total_back+res%diagnostics%backtracking_attempts
     total_jac=total_jac+res%diagnostics%jacobian_builds
     total_lin=total_lin+res%diagnostics%linear_solves
+    last_solver_status=res%status
     if(res%status/=SW_SOLVE_CONVERGED)then
+      terminal_reason='ENDPOINT_SOLVE_FAILED'
       eligible=.false.; transition_step=step_index; return
     end if
     if(res%native_balance_rate_residual_available) max_native_rate=max(max_native_rate,abs(res%native_balance_rate_residual_cm_per_day))
@@ -284,9 +299,14 @@ contains
     bc=soil_water_boundary_conditions_t()
     call top%evaluate(res%candidate_state%pressure_head(1),res%candidate_state%water_content(1), &
          res%candidate_state%ponding_depth,bc,topres)
-    call require(topres%status>0,'endpoint top provider unavailable')
+    if(topres%status<=0)then
+      terminal_reason='ENDPOINT_TOP_UNAVAILABLE'
+      eligible=.false.; transition_step=step_index; return
+    end if
     rp=route_from_provider(trim(topres%route))
+    last_endpoint_route=rp
     if(rp/=target_route)then
+      terminal_reason='ENDPOINT_PROVIDER_ROUTE_MISMATCH'
       eligible=.false.; transition_step=step_index; return
     end if
 
@@ -296,6 +316,7 @@ contains
          qtop_p,qtmp,run_p,ra)
     max_surface_rate_residual=max(max_surface_rate_residual,abs(pdot_p-qtmp))
     if(ra/=target_route)then
+      terminal_reason='ENDPOINT_INSTANTANEOUS_ROUTE_MISMATCH'
       eligible=.false.; transition_step=step_index; return
     end if
 
@@ -308,12 +329,15 @@ contains
     acceptstate%pressure_head=head_tg
     acceptstate%ponding_depth=state%ponding_depth+0.5_real64*dt*(pdot_n+pdot_p)
     if(acceptstate%ponding_depth<0.0_real64)then
+      terminal_reason='ACCEPTED_PONDING_NEGATIVE'
       eligible=.false.; transition_step=step_index; return
     end if
 
     call exact_state_k(acceptstate,k_accept)
     call surface_operator(acceptstate%pressure_head(1),acceptstate%ponding_depth,k_accept(1),qtmp,pdtmp,runtmp,ra)
+    last_accept_route=ra
     if(ra/=target_route)then
+      terminal_reason='ACCEPTED_ROUTE_MISMATCH'
       eligible=.false.; transition_step=step_index; return
     end if
 
@@ -338,7 +362,9 @@ contains
     integer::r0,rp
     real(real64)::pdot0,run0,qtop0,storage0,storage1,ledger
     call origin_derivative(state,k_origin,theta_dot_n,pdot0,run0,r0,qtop0)
+    last_origin_route=r0
     if(r0/=target_route)then
+      terminal_reason='ORIGIN_ROUTE_MISMATCH'
       eligible=.false.; transition_step=step_index; return
     end if
     call bind_b110_default_mvg_provider(base_constitutive,hp,dt)
@@ -350,15 +376,22 @@ contains
     total_back=total_back+res%diagnostics%backtracking_attempts
     total_jac=total_jac+res%diagnostics%jacobian_builds
     total_lin=total_lin+res%diagnostics%linear_solves
+    last_solver_status=res%status
     if(res%status/=SW_SOLVE_CONVERGED)then
+      terminal_reason='ENDPOINT_SOLVE_FAILED'
       eligible=.false.; transition_step=step_index; return
     end if
     bc=soil_water_boundary_conditions_t()
     call top%evaluate(res%candidate_state%pressure_head(1),res%candidate_state%water_content(1), &
          res%candidate_state%ponding_depth,bc,topres)
-    call require(topres%status>0,'KLAG endpoint top unavailable')
+    if(topres%status<=0)then
+      terminal_reason='ENDPOINT_TOP_UNAVAILABLE'
+      eligible=.false.; transition_step=step_index; return
+    end if
     rp=route_from_provider(trim(topres%route))
+    last_endpoint_route=rp
     if(rp/=target_route)then
+      terminal_reason='ENDPOINT_PROVIDER_ROUTE_MISMATCH'
       eligible=.false.; transition_step=step_index; return
     end if
     storage1=sum(res%candidate_state%water_content*p%dz)+res%candidate_state%ponding_depth
