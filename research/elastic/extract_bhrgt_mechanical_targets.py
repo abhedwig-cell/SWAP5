@@ -225,7 +225,7 @@ def process_object(object_dir: Path,auth,determination_authority=None):
                     targets.append(target)
             continue
 
-        if has_stress_series:
+        if observed_route == "R3":
             raise RuntimeError(f"frozen R2 route conflicts with effective-stress series {bro_id}/{di}")
 
         endpoints=[]
