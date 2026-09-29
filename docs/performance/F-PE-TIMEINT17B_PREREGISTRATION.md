@@ -4,199 +4,258 @@ Date: 2026-09-29
 
 Status: `PREREGISTERED_BEFORE_RESULTS`
 
-Canonical authority:
+Parent authority:
+
+- TIMEINT17A: `BLOCKED_TIMEINT17A_BANK_NOT_SAME_ROUTE`;
+- TIMEINT17A2: `BLOCKED_TIMEINT17A2_ROUTE_MARGIN_INSUFFICIENT`.
+
+Canonical base:
 
 `integration/f-ci-canonical@e47f337c506551f865aee31288215a7fb91b4214`
 
-Parent authorities:
-
-- TIMEINT16: `QUALIFIED_PROVIDER_CONSISTENT_TG_KPRED_STAGE`.
-- TIMEINT17A: `BLOCKED_TIMEINT17A_BANK_NOT_SAME_ROUTE`.
-- TIMEINT17A2: `BLOCKED_TIMEINT17A2_ROUTE_MARGIN_INSUFFICIENT`.
-
 ## Purpose
 
-TIMEINT17A and A2 both fail the same-route bank denominator.
+Resolve the ambiguity left by TIMEINT17A/A2.
 
-The current harness does not uniquely distinguish:
+The current shared harness maps several distinct terminal mechanisms onto:
 
-- physical route transition;
-- endpoint nonlinear solve failure;
-- retention-domain failure;
-- negative predicted or accepted ponding;
-- unavailable endpoint dynamic-top result.
+- `ELIGIBLE=0`;
+- `TRANSITION_STEP=n`.
 
-TIMEINT17B is diagnostic only.
+TIMEINT17B determines whether the dominant blocker is:
 
-It determines whether the dominant obstacle occurs **before** route-event semantics can be meaningfully tested, or whether genuine route events dominate the frozen banks.
+1. a genuine dynamic-top route transition; or
+2. endpoint nonlinear-solve failure before route semantics can be assessed.
 
-It does not qualify event localization.
+TIMEINT17B is attribution only.
 
-## Numerical mechanism
+It does not qualify event localization, same-route order, or production behavior.
 
-Hold fixed exactly the TIMEINT17A/A2 TG mechanism and numerical settings.
+## Frozen numerical mechanism
 
-No changes to:
+No numerical mechanism changes.
 
-- current-step provider-consistent predicted K;
-- TG moisture update;
-- TG ponding update;
-- dynamic-top provider;
-- MAXIT=8;
-- backtracking envelope;
-- balance tolerances;
-- constitutive inverse;
-- mass ledger.
+Reuse exactly the TIMEINT17A/TIMEINT17A2 candidate:
 
-No rescue arm.
+- TIMEINT16C current-step provider-consistent TG staging;
+- exact benchmark theta/head projection;
+- predicted K fixed inside the endpoint solve;
+- current dynamic-top endpoint provider;
+- MAXIT = 8;
+- max backtracking = 8;
+- identical balance/head/ponding tolerances;
+- zero bottom flux;
+- no source/sink;
+- no macropores.
 
-## Banks
+No timestep or forcing tuning.
 
-Run both already frozen banks:
+## Primary bank
 
-### A bank
+Use the exact frozen TIMEINT17A2 route-margin bank.
 
-Original TIMEINT17A fixtures and dt ladder.
+Materials:
 
-### A2 bank
+- B01;
+- B12;
+- O05;
+- O14.
 
-Formula-derived TIMEINT17A2 fixtures and dt ladder.
+Routes:
 
-Do not add cases.
+- FLUX;
+- HEAD;
+- RUNOFF.
 
-## Explicit terminal-reason contract
+Horizon and dt ladder remain:
 
-Every requested TG run must terminate with exactly one of:
+- H = 0.001 d;
+- dt = 0.00025, 0.000125, 0.0000625, 0.00003125 d.
 
-- `COMPLETE_SAME_ROUTE`;
-- `ORIGIN_ROUTE_MISMATCH`;
-- `FORWARD_PREDICTOR_ROUTE_MISMATCH`;
-- `ENDPOINT_SOLVE_FAILED`;
-- `ENDPOINT_TOP_UNAVAILABLE`;
-- `ENDPOINT_PROVIDER_ROUTE_MISMATCH`;
-- `ENDPOINT_INSTANTANEOUS_ROUTE_MISMATCH`;
-- `ACCEPTED_ROUTE_MISMATCH`;
-- `PREDICTED_RETENTION_DOMAIN_FAILED`;
-- `PREDICTED_PONDING_NEGATIVE`;
-- `ACCEPTED_RETENTION_DOMAIN_FAILED`;
-- `ACCEPTED_PONDING_NEGATIVE`;
-- `OTHER_EXPLICIT_FAILURE`.
+Fixture derivation remains exactly TIMEINT17A2.
 
-A run may report earlier successful accepted steps, but the first terminal reason owns the run.
+No new bank is introduced.
 
-A nonlinear solve failure must never be reported as a route mismatch.
+## Required terminal classes
 
-## Failure-step diagnostics
+Every candidate trial must terminate into exactly one explicit attribution class.
 
-At the terminal requested interval record:
+### COMPLETE_SAME_ROUTE
 
-- step index;
-- solver status;
+All requested intervals complete and all origin/predictor/endpoint/accepted routes remain the frozen target route.
+
+### ORIGIN_ROUTE_MISMATCH
+
+The accepted origin is already not on the frozen target route.
+
+### FORWARD_PREDICTOR_ROUTE_MISMATCH
+
+The explicit current-step theta/P predictor lies on another physical route before the endpoint solve is attempted.
+
+### ENDPOINT_SOLVE_FAILURE
+
+The BE-like endpoint nonlinear solve does not converge under the frozen numerical envelope.
+
+Record:
+
+- solve status;
 - nonlinear iterations;
 - backtracking attempts;
+- Jacobian builds;
+- linear solves;
+- accepted-origin route;
+- forward-predictor route;
+- accepted physical state before the failed trial.
+
+No route transition may be inferred from a failed endpoint solve.
+
+### ENDPOINT_ROUTE_MISMATCH
+
+The endpoint solve converges, but the dynamic-top provider classifies the converged BE predictor endpoint on another route.
+
+### ENDPOINT_SURFACE_RATE_MISMATCH
+
+The endpoint route is the target route, but the instantaneous surface-rate reconstruction disagrees with the BE predictor ponding derivative beyond the existing 5e-8 cm/d authority.
+
+### ACCEPTED_TG_ROUTE_MISMATCH
+
+The endpoint predictor is same-route, but the final accepted TG theta/P state lies on another route.
+
+### NEGATIVE_SURFACE_STORAGE
+
+The predicted or accepted TG ponding storage becomes negative beyond the existing tolerance.
+
+### CONSTITUTIVE_FAILURE
+
+Theta/head projection or predicted K becomes invalid/nonfinite.
+
+No generic `ELIGIBLE=0` is sufficient authority in TIMEINT17B.
+
+## Comparator
+
+Run the identical TIMEINT17A2 fixtures with KLAG Backward Euler.
+
+Record the same explicit route and solve outcome classes where applicable.
+
+Comparator questions:
+
+1. Does KLAG complete where TG endpoint solve fails?
+2. Does KLAG exhibit the same route change at comparable accepted time?
+3. Is failure candidate-specific or a shared dynamic-top fixture/property?
+
+KLAG remains diagnostic only.
+
+## Metrics
+
+For every material/route/dt run record:
+
+- terminal class;
+- first terminal step;
 - origin route;
-- forward predictor route;
-- endpoint provider route, when available;
-- endpoint instantaneous route, when available;
-- accepted route, when available;
-- origin top head and ponding;
-- forward-predictor top head and ponding;
-- endpoint top head and ponding, when available;
-- accepted TG top head and ponding, when available;
-- predicted top-node K;
-- native balance residual when available.
+- forward-predictor route;
+- BE endpoint route if solved;
+- accepted TG route if formed;
+- endpoint solve status;
+- NL/BACK/JAC/LIN counts on terminal trial;
+- maximum accepted physical ledger before termination;
+- cumulative accepted physical ledger;
+- last accepted top head/theta/P;
+- predicted K min/max;
+- surface-rate residual where available.
 
-## KLAG comparator
+Aggregate:
 
-For the same frozen fixture, run KLAG BE with the identical requested dt.
+- class counts by route family;
+- class counts by material;
+- class counts by dt;
+- TG versus KLAG completion matrix;
+- TG-only endpoint failures;
+- shared endpoint failures;
+- genuine route-mismatch counts with converged endpoint;
+- accepted-TG-only route changes.
 
-Comparator classifications:
+## Frozen attribution decisions
 
-- KLAG completes same route;
-- KLAG route mismatch;
-- KLAG solve failure.
+### EVENT_DOMINANT
 
-This is attribution only.
+Classify:
 
-If TG endpoint solve fails while KLAG completes the identical route/fixture, record `TG_SPECIFIC_ENDPOINT_ROBUSTNESS_SIGNAL`.
+`TIMEINT17B_EVENT_DOMINANT`
 
-If both fail before a route transition is established, record `SHARED_DYNAMIC_TOP_SOLVER_SIGNAL`.
+only if:
 
-No comparator result changes the TG classification automatically.
+1. >=75% of non-complete candidate runs terminate through an explicit route-mismatch class with a converged endpoint or accepted TG state;
+2. endpoint-solve failure is <=25% of non-complete runs;
+3. at least one onset and one release/runoff route transition is represented by converged states.
 
-## Aggregate frozen classifications
+Consequence:
 
-Let ineligible TG runs be all runs not ending `COMPLETE_SAME_ROUTE`.
+event localization becomes scientifically reachable and may be preregistered separately.
 
-### Solver dominated
+### ENDPOINT_SOLVER_DOMINANT
 
-If >=50% of ineligible runs terminate `ENDPOINT_SOLVE_FAILED`:
+Classify:
 
-`TIMEINT17_BLOCKER_ENDPOINT_SOLVER_DOMINATED`
+`TIMEINT17B_ENDPOINT_SOLVER_DOMINANT`
 
-### Route-event dominated
+if endpoint-solve failure is >50% of non-complete candidate runs.
 
-If >=75% of ineligible runs terminate on one of:
+Consequence:
 
-- ORIGIN_ROUTE_MISMATCH;
-- FORWARD_PREDICTOR_ROUTE_MISMATCH;
-- ENDPOINT_PROVIDER_ROUTE_MISMATCH;
-- ENDPOINT_INSTANTANEOUS_ROUTE_MISMATCH;
-- ACCEPTED_ROUTE_MISMATCH;
+do not open event localization. Route the work to endpoint nonlinear-path attribution/repair first.
 
-then:
+### MIXED_BLOCKER
 
-`TIMEINT17_BLOCKER_ROUTE_EVENT_DOMINATED`
+Classify:
 
-### Mixed
+`TIMEINT17B_MIXED_ENDPOINT_AND_EVENT_BLOCKER`
 
-Otherwise:
+if neither mechanism meets the dominance thresholds.
 
-`TIMEINT17_BLOCKER_MIXED_ENDPOINT_AND_EVENT`
+Consequence:
 
-## Decision consequences
+preserve both blocker classes and do not claim event qualification.
 
-### Endpoint-solver dominated
+### SHARED_DYNAMIC_TOP_BLOCKER
 
-Do not open P1/P2 event localization.
+If TG and KLAG fail the same fixtures at comparable first terminal steps in >=75% of TG endpoint failures:
 
-Open a separate dynamic-top endpoint-robustness work unit. It may investigate composition/solver architecture but must not tune temporal error control or weaken physics.
+`TIMEINT17B_SHARED_DYNAMIC_TOP_BLOCKER`.
 
-### Route-event dominated
+This may be combined with endpoint-solver dominance as a secondary attribution label, not as a replacement for the primary classification.
 
-The parent P0 smooth-bank gate remains unqualified, but the evidence establishes that smooth-bank construction is structurally incompatible with these physically relevant dynamic trajectories.
+## Mass rule
 
-TIMEINT17 may then open an **event-semantics research work unit**, not an admission work unit, to test whether exact known-time or endogenous splitting can recover correct physical transactions.
+Only accepted physical intervals contribute to the mass diagnostics.
 
-Any later event qualification still requires a separately preregistered rule for how the parent P0 prerequisite is replaced.
+Failed/rejected terminal trials contribute zero published mass and must not mutate accepted state.
 
-### Mixed
+Maximum accepted ledger remains <=5e-8 cm.
 
-Stop TIMEINT17 admission.
+A mass failure is a separate blocker:
 
-Separate solver robustness from event semantics into distinct successors.
+`BLOCKED_TIMEINT17B_ACCEPTED_MASS`.
 
 ## Stop rules
 
 TIMEINT17B does not:
 
-- alter the A/A2 fixtures;
-- alter dt/horizon;
-- increase MAXIT;
-- loosen balance/head/ponding tolerances;
-- add retries beyond existing solver semantics;
+- alter MAXIT;
+- alter backtracking limits;
+- alter balance/head/ponding tolerances;
+- shorten horizon;
+- change rain or initial states;
 - localize events;
-- change production code;
+- split intervals;
+- change K predictor;
+- use SWKIMPL=1 rescue;
 - tune DTMIN/DTMAX;
-- introduce variable-step TG;
-- claim second-order dynamic-top qualification.
-
-## Production boundary
-
-Research diagnostics only.
+- introduce AUTO/LTE work.
 
 No production `src/**` change.
 
-No default change.
+## Production boundary
+
+Research attribution only.
 
 `LEGACY_NUMERICS` remains production default.
