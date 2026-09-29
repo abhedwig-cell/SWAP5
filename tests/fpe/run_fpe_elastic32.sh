@@ -7,9 +7,12 @@ ARTIFACT_DIR="${1:-${RUNNER_TEMP:-${TMPDIR:-/tmp}}/elastic32-pdok}"
 OUT="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/elastic32-spatial-source-audit.json"
 
 LOG="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/elastic32-spatial-source-audit.log"
-python3 tools/fpe_elastic32_spatial_source_audit.py \
+if ! python3 tools/fpe_elastic32_spatial_source_audit.py \
   --artifact-dir "$ARTIFACT_DIR" \
-  --output "$OUT" > "$LOG" 2>&1
+  --output "$OUT" > "$LOG" 2>&1; then
+  cat "$LOG" >&2
+  exit 1
+fi
 cat "$LOG"
 
 for marker in \
