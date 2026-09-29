@@ -158,12 +158,11 @@ contains
     req%evaluation%source_sink=>source_sink
     req%evaluation%top_boundary=>top
 
+    ! Capture the governing non-storage operator at every accepted origin.
+    ! This makes theta_dot_prev belong to the actual accepted TG state, not to
+    ! the previous BE predictor.
     timeint16_origin_ready=0
-    if(step_index==1)then
-      timeint16_capture_origin=1
-    else
-      timeint16_capture_origin=0
-    end if
+    timeint16_capture_origin=1
 
     storage0=sum(theta_n*p%dz)+state%ponding_depth
     call solver%solve(req,ws,res)
@@ -182,11 +181,11 @@ contains
 
     theta_dot_end=(res%candidate_state%water_content-theta_n)/dt
 
+    call require(timeint16_origin_ready==1,'origin operator was not captured')
+    do i=1,numnod
+      theta_dot_prev(i)=-timeint16_origin_nonstorage(i)/p%dz(i)
+    end do
     if(step_index==1)then
-      call require(timeint16_origin_ready==1,'origin operator was not captured')
-      do i=1,numnod
-        theta_dot_prev(i)=-timeint16_origin_nonstorage(i)/p%dz(i)
-      end do
       init_mass_rate=sum(theta_dot_prev*p%dz)
       call require(abs(init_mass_rate-rain)<=5.0e-8_real64,'initial governing derivative mass mismatch')
     end if
@@ -215,7 +214,9 @@ contains
     maxledger=max(maxledger,abs(ledger))
     cumledger=cumledger+ledger
 
-    theta_dot_prev=theta_dot_end
+    ! The derivative history for the next interval is deliberately not taken
+    ! from the BE predictor. It is re-evaluated from the accepted TG origin at
+    ! the beginning of the next trial.
   end subroutine
 
   real(real64) function inverse_default_mvg(node,theta) result(head)
