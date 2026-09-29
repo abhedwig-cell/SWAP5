@@ -11,6 +11,10 @@ on:
       - 'docs/performance/F-PE-TIMEINT12A_RESULT.md'
       - 'docs/performance/F-PE-TIMEINT12_CLOSEOUT.md'
       - 'tests/fpe/test_fpe_timeint12_dyntop_derivative.f90'
+      - 'tests/fpe/test_fpe_timeint12a_implicit_be.f90'
+      - 'tests/fpe/run_fpe_timeint12a.py'
+      - 'tests/fpe/run_fpe_timeint12a.sh'
+      - 'tests/fpe/mod_fpe_timeint12_dynamic_top_provider.f90'
       - 'tests/fpe/run_fpe_timeint12.py'
       - 'tests/fpe/run_fpe_timeint12.sh'
       - '.github/workflows/f-pe-timeint12.yml'
@@ -31,3 +35,15 @@ jobs:
         run: gfortran --version
       - name: Run implicit dynamic-top derivative qualification
         run: bash tests/fpe/run_fpe_timeint12.sh
+
+  implicit-be:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run fully implicit dynamic-top BE qualification
+        run: bash tests/fpe/run_fpe_timeint12a.sh
