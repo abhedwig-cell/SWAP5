@@ -58,18 +58,19 @@ wrapper="""  subroutine advance_tg_subdiv(step_index)
     integer,intent(in)::step_index
     type(soil_water_physical_state_t)::saved_state
     logical::domain_fail,half_fail
-    real(real64)::saved_cumledger,saved_cumrunoff,saved_maxledger
+    real(real64)::saved_cumledger,saved_cumrunoff,saved_maxledger,nominal_dt
     character(len=64)::saved_terminal
     integer::saved_transition
 
     saved_state=state
+    nominal_dt=dt
     saved_cumledger=cumledger
     saved_cumrunoff=cumrunoff
     saved_maxledger=maxledger
     saved_terminal=terminal_reason
     saved_transition=transition_step
 
-    call advance_tg_core(step_index,dt,domain_fail)
+    call advance_tg_core(step_index,nominal_dt,domain_fail)
     if(.not.domain_fail) return
 
     state=saved_state
@@ -80,31 +81,35 @@ wrapper="""  subroutine advance_tg_subdiv(step_index)
     transition_step=saved_transition
     eligible=.true.
 
-    call advance_tg_core(step_index,0.5_real64*dt,half_fail)
+    dt=0.5_real64*nominal_dt
+    call advance_tg_core(step_index,dt,half_fail)
     if(half_fail .or. .not.eligible)then
       state=saved_state
       cumledger=saved_cumledger
       cumrunoff=saved_cumrunoff
       maxledger=saved_maxledger
+      dt=nominal_dt
       eligible=.false.
       terminal_reason='NEARSAT_SUBDIVISION_FAILED'
       transition_step=step_index
       return
     end if
 
-    call advance_tg_core(step_index,0.5_real64*dt,half_fail)
+    call advance_tg_core(step_index,dt,half_fail)
     if(half_fail .or. .not.eligible)then
       state=saved_state
       cumledger=saved_cumledger
       cumrunoff=saved_cumrunoff
       maxledger=saved_maxledger
+      dt=nominal_dt
       eligible=.false.
       terminal_reason='NEARSAT_SUBDIVISION_FAILED'
       transition_step=step_index
       return
     end if
 
-    write(*,'(*(g0))') 'F_PE_NLGLOB13_SUBDIV|STEP=',step_index,'|HALF_DT=',0.5_real64*dt, &
+    dt=nominal_dt
+    write(*,'(*(g0))') 'F_PE_NLGLOB13_SUBDIV|STEP=',step_index,'|HALF_DT=',0.5_real64*nominal_dt, &
          '|ROUTE=',trim(route_id)
   end subroutine advance_tg_subdiv
 
