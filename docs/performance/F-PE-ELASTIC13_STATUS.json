@@ -1,0 +1,52 @@
+{
+  "work_unit": "F-PE-ELASTIC13",
+  "workstream": "VQ/research physical parameter policy",
+  "baseline": "41c173dbfb2b592552ff30ecce21d13abd8fe4cb",
+  "checkpoint_commit": "7101845025325186dc0b8ff09fb2e618a062b59f",
+  "last_reconciled_head": "7101845025325186dc0b8ff09fb2e618a062b59f",
+  "last_reconciled_upstream": "4e07091a5dec6e21ece2d7a57f62444a4c25834d",
+  "scope": "Define a source-bound static mineral ELAS prior convention, uncertainty envelope and organic/peat exclusion policy before any production code change.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC13_PARAMETER_POLICY_PREREGISTRATION.md",
+    "research/elastic/elas_parameter_policy.py",
+    ".github/workflows/f-pe-elastic13.yml",
+    "docs/performance/F-PE-ELASTIC12_CLOSEOUT.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "research/elastic/elas_parameter_policy.py",
+    ".github/workflows/f-pe-elastic13.yml"
+  ],
+  "evidence_paths": [
+    "GitHub Actions run 36549054287 / artifact 11023058542",
+    "GitHub Actions run 36550782840 / artifact 11024079961",
+    "F-PE-ELASTIC11 independent holdout uncertainty factor 2.123968031921196"
+  ],
+  "dependency_surface": [
+    "frozen ELASTIC11 M1 coefficients and uncertainty",
+    "frozen ELASTIC12 BOFEK/BRO relational bridge",
+    "BRO soilhorizon organicmattercontent and peattype",
+    "Staringreeks 2018 retention parameters",
+    "predeclared -100 cm reference and -200 cm sensitivity states"
+  ],
+  "interfaces_changed": [],
+  "invariants_affected": [
+    "physical parameterization remains separate from numerical execution policy",
+    "performance evidence is not physical parameter evidence",
+    "user-supplied explicit ELAS remains distinct from generated priors"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect the ELASTIC13 policy workflow on checkpoint 7101845025325186dc0b8ff09fb2e618a062b59f and apply the frozen mineral robustness gates without changing regime thresholds or reference states.",
+  "recovery_point": "research/f-pe-elastic13-parameter-policy@7101845025325186dc0b8ff09fb2e618a062b59f"
+}
