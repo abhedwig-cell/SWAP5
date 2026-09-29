@@ -172,6 +172,13 @@ If `COMPARTMENT_FLOOR_SIGNAL`:
 - do not change total-balance summation;
 - investigate attainable local residual precision and constitutive/storage cancellation at the dominant nodes.
 
+For the `MIXED_BALANCE_FLOOR_STRUCTURE` rule, a substantial but sub-threshold total-summation contribution means at least one of:
+
+- >=10% of total-dominant primary iterations change `r_tot` by >=25%; or
+- >=5% cross from `r_tot_naive > 1` to `r_tot_fsum <= 1`.
+
+These thresholds are frozen before result exposure.
+
 If mixed:
 
 - decompose by route/material/node before any convergence-contract candidate.
