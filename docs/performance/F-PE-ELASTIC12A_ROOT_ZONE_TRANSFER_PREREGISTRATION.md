@@ -199,3 +199,27 @@ A successful F-PE-ELASTIC12A may establish only:
 assumptions -> root-zone sensitivity/prior envelope`.
 
 It may not establish a production ELAS generator.
+
+
+## Determinism clarification after attempt 1
+
+Attempt 1 established that complete live BHR-P dispatch-response bytes are not a
+canonical scientific identity surface: repeated retrieval may change wrapper
+bytes while the exact hydrophysical DataArray values remain unchanged.
+
+This does not change the preregistered source authority.
+
+For F-PE-ELASTIC12A, deterministic scientific identity is frozen as:
+
+- exact 31 hydrophysical identity hashes;
+- exact 21 clean interval membership;
+- exact source-bound dry bulk density values and units;
+- exact selected source water states;
+- exact 525 transfer rows;
+- exact aggregate summaries.
+
+Complete live response bytes and their SHA-256 values remain provenance evidence
+and are archived, but are not required to be byte-identical across retrievals.
+
+This clarification changes no transfer equation, model coefficient, stress
+scenario, water-state scenario or interpretation rule.
