@@ -66,6 +66,36 @@ jobs:
           print("F_PE_ELASTIC10_SCHEMA_PATHS=PASS")
           PY
 
+      - name: Bind object/search endpoint contracts
+        run: |
+          python - <<'PY'
+          import json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"bhrgt"
+          candidates=[]
+          for p in sorted(root.glob("*.response")):
+              try:d=json.loads(p.read_text())
+              except Exception:continue
+              if isinstance(d,dict) and isinstance(d.get("paths"),dict):
+                  candidates.append((p,d))
+          if len(candidates)!=1:
+              raise SystemExit("F_PE_ELASTIC10_ENDPOINT_FAIL no unique OpenAPI")
+          _,d=candidates[0]
+          print("F_PE_ELASTIC10_ENDPOINTS_BEGIN")
+          selected=[]
+          for path,item in sorted(d["paths"].items()):
+              low=path.lower()
+              if any(k in low for k in ("bro-id","bro_ids","objects","object","search","characteristic")):
+                  selected.append(path)
+                  print("BHRGT_ENDPOINT|PATH="+path+"|METHODS="+",".join(sorted(item)))
+                  for method,op in sorted(item.items()):
+                      if not isinstance(op,dict): continue
+                      print("BHRGT_OPERATION|PATH="+path+"|METHOD="+method+"|OP="+json.dumps(op,sort_keys=True))
+          print("F_PE_ELASTIC10_ENDPOINTS_END")
+          if not selected:
+              raise SystemExit("F_PE_ELASTIC10_ENDPOINT_FAIL no object/search endpoints")
+          print("F_PE_ELASTIC10_ENDPOINT_CONTRACT=PASS")
+          PY
+
       - name: Inventory compression and settlement schema terms
         run: |
           python - <<'PY'
