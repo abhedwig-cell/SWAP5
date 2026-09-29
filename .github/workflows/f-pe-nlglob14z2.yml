@@ -1,0 +1,25 @@
+name: F-PE-NLGLOB14Z2 local persistent-KLAG retry
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z2-local-klag-retry
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z2*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14z2*.py'
+      - 'tests/fpe/run_fpe_nlglob14z2*.py'
+      - 'tests/fpe/run_fpe_nlglob14z2*.sh'
+      - '.github/workflows/f-pe-nlglob14z2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  local-klag-retry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z2.sh
