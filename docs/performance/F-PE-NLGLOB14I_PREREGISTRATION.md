@@ -56,6 +56,12 @@ For every accepted dry-phase interval derive:
 8. storage;
 9. top and bottom flux.
 
+For the `LOWER_BLOCK_PERSISTENT` classification, “profile storage decreases materially” is frozen before results as:
+
+`S_first - S_last > U_S`
+
+with `S = sum_i(theta_i dz_i) + pond` and `U_S` equal to the sum of the endpoint floating-point representation scales `(ulp(theta_first_i)+ulp(theta_last_i))*dz_i` plus `ulp(pond_first)+ulp(pond_last)`. No multiplicative factor above one is used.
+
 ## Frozen trajectory classifications
 
 ### LOWER_BLOCK_RETREAT
