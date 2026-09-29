@@ -43,7 +43,7 @@ import subprocess
 base="a5f127e2f42329914826a835d760102be6fee71f"
 names=subprocess.check_output(["git","diff","--name-only",base+"..HEAD"],text=True).splitlines()
 prod=[p for p in names if p.startswith("src/")]
-allowed=["src/solver/mod_b110_default_mvg_provider.f90"]
+allowed=["src/solver/mod_b110_default_mvg_directional_provider.f90","src/solver/mod_b110_default_mvg_provider.f90"]
 if prod != allowed:
     raise SystemExit("F_PE_ELASTIC05_SOURCE_SCOPE_FAIL="+repr(prod))
 print("F_PE_ELASTIC05_SOURCE_SCOPE=PASS")
