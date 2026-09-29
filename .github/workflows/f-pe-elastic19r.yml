@@ -1,0 +1,32 @@
+name: F-PE-ELASTIC19R all-36 preservation
+
+concurrency:
+  group: f-pe-elastic19r-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic19r-all36-verification
+    paths:
+      - 'tests/fpe/test_fpe_elastic19_horizon_descriptor.f90'
+      - 'tests/fpe/run_fpe_elastic19.sh'
+      - 'docs/performance/F-PE-ELASTIC19R_ALL36_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic19r.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Verify admitted production blob
+        run: |
+          test "$(git hash-object src/adapter/mod_fmr_elastic_storage_horizon_descriptor_builder.f90)" = "e098362e84f8dab2f063f875546d80efc1bb7e5c"
+          echo "F_PE_ELASTIC19R_PRODUCTION_BLOB=PASS"
+      - name: Run all-36 preservation
+        run: bash tests/fpe/run_fpe_elastic19.sh
