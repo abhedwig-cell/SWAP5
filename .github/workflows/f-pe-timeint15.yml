@@ -1,11 +1,15 @@
 name: F-PE-TIMEINT15 conservative trapezoidal one-step
 
 on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
   push:
     branches:
       - work/f-pe-timeint15-conservative-trapezoidal
     paths:
       - 'docs/performance/F-PE-TIMEINT15_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT15_LITERATURE.md'
       - 'tests/fpe/materialize_fpe_timeint15_trapezoid.py'
       - 'tests/fpe/test_fpe_timeint15_trapezoid.f90'
       - 'tests/fpe/run_fpe_timeint15.py'
