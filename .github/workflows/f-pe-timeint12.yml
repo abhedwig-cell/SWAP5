@@ -1,18 +1,18 @@
-name: F-PE-TIMEINT12 implicit dynamic-top derivative
+name: F-PE-TIMEINT12A fully implicit dynamic-top BE
 
 on:
   push:
     branches:
-      - work/f-pe-timeint12-dyntop-implicit-prereq
+      - work/f-pe-timeint12a-dyntop-implicit-be
     paths:
-      - 'docs/performance/F-PE-TIMEINT12_PREREGISTRATION.md'
-      - 'docs/performance/F-PE-TIMEINT12_RESULT.md'
       - 'docs/performance/F-PE-TIMEINT12A_PREREGISTRATION.md'
       - 'docs/performance/F-PE-TIMEINT12A_RESULT.md'
-      - 'docs/performance/F-PE-TIMEINT12_CLOSEOUT.md'
-      - 'tests/fpe/test_fpe_timeint12_dyntop_derivative.f90'
-      - 'tests/fpe/run_fpe_timeint12.py'
-      - 'tests/fpe/run_fpe_timeint12.sh'
+      - 'docs/performance/F-PE-TIMEINT12A_CLOSEOUT.md'
+      - 'tests/fpe/materialize_fpe_timeint12a_binding.py'
+      - 'tests/fpe/materialize_fpe_timeint12a_dynamic_adapter.py'
+      - 'tests/fpe/test_fpe_timeint12a_dynamic_be.f90'
+      - 'tests/fpe/run_fpe_timeint12a.py'
+      - 'tests/fpe/run_fpe_timeint12a.sh'
       - '.github/workflows/f-pe-timeint12.yml'
   workflow_dispatch:
 
@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 jobs:
-  derivative:
+  implicit-be:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -29,5 +29,5 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Run implicit dynamic-top derivative qualification
-        run: bash tests/fpe/run_fpe_timeint12.sh
+      - name: Run fully implicit dynamic-top BE qualification
+        run: bash tests/fpe/run_fpe_timeint12a.sh
