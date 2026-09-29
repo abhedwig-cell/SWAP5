@@ -1,0 +1,33 @@
+name: F-PE-ELASTIC10B BHR-GT settlement pilot
+
+concurrency:
+  group: f-pe-elastic10b-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/run_bhrgt_settlement_pilot.py'
+      - 'docs/performance/F-PE-ELASTIC10B_PILOT_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic10b-bhrgt-pilot.yml'
+  workflow_dispatch:
+
+jobs:
+  bounded-pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run preregistered bounded settlement-object pilot
+        run: |
+          mkdir -p "$RUNNER_TEMP/bhrgt-pilot"
+          python research/elastic/run_bhrgt_settlement_pilot.py "$RUNNER_TEMP/bhrgt-pilot"
+      - name: Upload bounded pilot evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic10b-bhrgt-pilot
+          path: ${{ runner.temp }}/bhrgt-pilot
