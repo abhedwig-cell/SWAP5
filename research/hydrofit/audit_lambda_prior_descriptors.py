@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Audit leakage-free candidate descriptors for the frozen BRO lambda corpus."""
 from __future__ import annotations
-import argparse,json,math,statistics,xml.etree.ElementTree as ET
+import argparse,hashlib,json,math,statistics,xml.etree.ElementTree as ET
 from pathlib import Path
 from bro_bhrp_fetch import fetch,DEFAULT_BASE
 
@@ -23,12 +23,10 @@ def summary(vals):
          "median":statistics.median(x) if x else None}
 def main():
  ap=argparse.ArgumentParser(); ap.add_argument("--corpus",required=True); ap.add_argument("--out",required=True); a=ap.parse_args()
- corpus=json.loads(Path(a.corpus).read_text()); target_counts={}
- for r in corpus["intervals"]:
-  key=(r["bro_id"],str(r["begin_depth"]),str(r["end_depth"]))
-  target_counts[key]=target_counts.get(key,0)+1
+ corpus=json.loads(Path(a.corpus).read_text()); targets={(r["bro_id"],r["hyd_sha256"]):r for r in corpus["intervals"]}
+ if len(targets)!=len(corpus["intervals"]): raise SystemExit("corpus hydraulic identity is not unique")
  bybro={}
- for bid,_,_ in target_counts: bybro.setdefault(bid,[]).append(1)
+ for bid,_ in targets: bybro.setdefault(bid,[]).append(1)
  rows=[]; metadata={}
  for bid in sorted(bybro):
   st,ct,b=fetch(DEFAULT_BASE+"/objects/"+bid)
@@ -44,23 +42,23 @@ def main():
   for iv in (e for e in root.iter() if local(e.tag)=="InvestigatedInterval"):
    begin=next(((e.text or "").strip() for e in iv.iter() if local(e.tag)=="beginDepth"),None)
    end=next(((e.text or "").strip() for e in iv.iter() if local(e.tag)=="endDepth"),None)
-   key=(bid,str(begin),str(end))
-   if target_counts.get(key,0)<=0: continue
    hyd=None
    for da in (e for e in iv.iter() if local(e.tag)=="DataArray"):
     et=next((e.attrib.get("name") for e in da.iter() if local(e.tag)=="elementType"),None)
     if et=="WaterContentAndConductivityAtSpecificSoilWaterPotential":
      hyd=next(((e.text or "").strip() for e in da.iter() if local(e.tag)=="values"),"")
+   if not hyd: continue
+   hyd_hash=hashlib.sha256(hyd.encode()).hexdigest(); target=targets.get((bid,hyd_hash))
+   if target is None: continue
+   if str(begin)!=str(target["begin_depth"]) or str(end)!=str(target["end_depth"]): raise SystemExit(f"hash/depth mismatch {bid} {hyd_hash}")
    obs=parse_hyd(hyd); h=[x[0] for x in obs]; th=[x[1] for x in obs]; k=[x[2] for x in obs if x[2]>0]
    bd=fnum(begin); ed=fnum(end)
-   rows.append({"bro_id":bid,"begin_depth":bd,"end_depth":ed,"thickness":ed-bd if bd is not None and ed is not None else None,
+   rows.append({"bro_id":bid,"hyd_sha256":hyd_hash,"begin_depth":bd,"end_depth":ed,"thickness":ed-bd if bd is not None and ed is not None else None,
     "n_obs":len(obs),"h_min":min(h) if h else None,"h_max":max(h) if h else None,"h_span":max(h)-min(h) if h else None,
     "theta_min":min(th) if th else None,"theta_max":max(th) if th else None,"theta_span":max(th)-min(th) if th else None,
     "log10k_min":math.log10(min(k)) if k else None,"log10k_max":math.log10(max(k)) if k else None,
     "log10k_span":math.log10(max(k)/min(k)) if k else None})
-   target_counts[key]-=1
- remaining=sum(target_counts.values())
- if remaining or len(rows)!=len(corpus["intervals"]): raise SystemExit(f"target mismatch rows={len(rows)} expected={len(corpus['intervals'])} remaining={remaining}")
+ if len(rows)!=len(corpus["intervals"]) or len({(r["bro_id"],r["hyd_sha256"]) for r in rows})!=len(rows): raise SystemExit(f"target mismatch rows={len(rows)} expected={len(corpus['intervals'])}")
  fields=[k for k in rows[0] if k!="bro_id"]
  coverage={k:sum(r.get(k) is not None for r in rows) for k in fields}
  # Object-level scalar metadata coverage. Exclude hydraulic source-fit fields by name.
