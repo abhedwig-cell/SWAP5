@@ -13,7 +13,6 @@ CENTER={"lat":52.038297852,"lon":5.31447958948}
 RADII_KM=(0.5,5.0,25.0)
 MAX_OBJECTS=5
 ANALYSIS_TYPE="zetting"
-BRO_RE=re.compile(r"\bBHR[A-Z0-9]{8,}\b",re.I)
 
 def local(tag:str)->str:
     return tag.rsplit("}",1)[-1]
@@ -42,8 +41,6 @@ def bro_ids_from_xml(data:bytes)->list[str]:
           ids.add(txt(e))
     except ET.ParseError:
       pass
-    for m in BRO_RE.findall(data.decode("utf-8","ignore")):
-      ids.add(m)
     return sorted(ids)
 
 def norm(s:str)->str:
