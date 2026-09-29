@@ -1,0 +1,80 @@
+name: F-PE-ELASTIC11B BHR-GT predictor corpus
+
+concurrency:
+  group: f-pe-elastic11b-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/extract_bhrgt_predictor_corpus.py'
+      - 'docs/performance/F-PE-ELASTIC11B_PREDICTOR_CORPUS_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic11b-predictors.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download frozen BHR-GT objects
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10d-bhrgt-grid
+          path: ${{ runner.temp }}/objects
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36529870974
+
+      - name: Download reconciled target identity authority
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10e-r1-reconciled-targets
+          path: ${{ runner.temp }}/targets
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36532519843
+
+      - name: Extract predictors twice independently
+        run: |
+          for out in "$RUNNER_TEMP/predictors-a" "$RUNNER_TEMP/predictors-b"; do
+            python research/elastic/extract_bhrgt_predictor_corpus.py               --objects "$RUNNER_TEMP/objects"               --object-authority docs/performance/evidence/F-PE-ELASTIC10E_OBJECT_AUTHORITY.json               --target-identities "$RUNNER_TEMP/targets/targets.json"               --out "$out"
+          done
+
+      - name: Require deterministic target-blind corpus
+        run: |
+          diff -ru "$RUNNER_TEMP/predictors-a" "$RUNNER_TEMP/predictors-b"
+          python - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"predictors-a"
+          rows=json.loads((p/"predictors.json").read_text())
+          cov=json.loads((p/"coverage.json").read_text())
+          assert len(rows)==47
+          assert len({r["bro_id"] for r in rows if r["group"]=="CALIBRATION"})==8
+          assert len({r["bro_id"] for r in rows if r["group"]=="HOLDOUT"})==8
+          assert all("ssk" not in k.lower() and "mv_pa" not in k.lower()
+                     for r in rows for k in r)
+          for field in ("begin_depth_m","end_depth_m","volumetric_mass_density_g_cm3",
+                        "water_content_pct","sample_quality","sample_moistness",
+                        "determination_method","determination_procedure"):
+              assert cov["ALL"]["fields"][field].get("ASSIGNED",0)==47, (field,cov["ALL"]["fields"][field])
+          print("F_PE_ELASTIC11B_T1_OBJECT_GROUPING=PASS")
+          print("F_PE_ELASTIC11B_T2_SOURCE_SCOPE=PASS")
+          print("F_PE_ELASTIC11B_T3_DETERMINISM=PASS")
+          print("F_PE_ELASTIC11B_T4_NO_TARGET_LEAKAGE=PASS")
+          print("F_PE_ELASTIC11B=PASS")
+          PY
+          sha256sum "$RUNNER_TEMP/predictors-a/"*
+
+      - name: Upload predictor corpus
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic11b-predictor-corpus
+          path: ${{ runner.temp }}/predictors-a
