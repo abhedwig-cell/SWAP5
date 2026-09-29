@@ -1,0 +1,45 @@
+name: F-PE-ELASTIC11 calibration predictor
+
+concurrency:
+  group: f-pe-elastic11-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic11-predictor-model
+    paths:
+      - 'research/elastic/bro_bhrgt_predictor_model.py'
+      - 'docs/performance/F-PE-ELASTIC11_PREDICTOR_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic11.yml'
+  workflow_dispatch:
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download frozen Phase-D artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10-bhrgt-schema
+          path: ${{ runner.temp }}/elastic10d
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36540905498
+
+      - name: Evaluate preregistered calibration models
+        run: |
+          python research/elastic/bro_bhrgt_predictor_model.py \
+            --artifact-dir "$RUNNER_TEMP/elastic10d" \
+            --output "$RUNNER_TEMP/elastic11/predictor-result.json"
+
+      - name: Upload calibration-only evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic11-calibration-predictor
+          path: ${{ runner.temp }}/elastic11/predictor-result.json
