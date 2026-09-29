@@ -114,7 +114,19 @@ def main():
     print("F_PE_ELASTIC12A4_ATOM="+json.dumps(feed_meta,separators=(",",":"),sort_keys=True))
 
     links=atom_links(data,final)
-    dl=download_candidates(links)
+    subfeeds=[r for r in links if (r.get("rel") or "").lower()=="alternate" and "atom+xml" in (r.get("type") or "").lower()]
+    followed_subfeeds=[]
+    all_links=list(links)
+    for j,r in enumerate(subfeeds):
+        st,ct,raw,fu=fetch(r["href"])
+        meta={"url":r["href"],"final_url":fu,"http_status":st,"content_type":ct,"bytes":len(raw),"sha256":sha(raw)}
+        (out/f"subfeed-{j}.xml").write_bytes(raw)
+        child=atom_links(raw,fu)
+        meta["links"]=child
+        followed_subfeeds.append(meta)
+        all_links.extend(child)
+    dl=download_candidates(all_links)
+    print("F_PE_ELASTIC12A4_SUBFEEDS="+json.dumps(followed_subfeeds,separators=(",",":"),sort_keys=True))
     print("F_PE_ELASTIC12A4_LINKS="+json.dumps(dl,separators=(",",":"),sort_keys=True))
     downloads=[]; all_candidates=[]
     for i,r in enumerate(dl):
@@ -144,7 +156,7 @@ def main():
     # known Rn47C value binding is deferred unless package is cheaply readable here.
     polygon_candidates=[c for c in all_candidates if c.get("polygon_like") and c.get("soil_fields")]
     classification="PDOK_SOILCODE_GEOMETRY_ROUTE_CONFIRMED" if polygon_candidates else "TRANSFER_SOURCE_INCOMPLETE"
-    result={"atom":feed_meta,"links":links,"download_candidates":dl,"downloads":downloads,
+    result={"atom":feed_meta,"links":links,"followed_subfeeds":followed_subfeeds,"all_links":all_links,"download_candidates":dl,"downloads":downloads,
             "polygon_soilcode_candidates":polygon_candidates,"known_rn47c_match_verified":known_match,
             "classification":classification}
     (out/"pdok-atom-audit.json").write_text(json.dumps(result,indent=2)+"\n")
