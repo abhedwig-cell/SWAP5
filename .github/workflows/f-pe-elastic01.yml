@@ -23,3 +23,5 @@ jobs:
         run: bash tests/fpe/run_fpe_elastic01_screen.sh
       - name: Run ELASTIC01 bracket refinement
         run: bash tests/fpe/run_fpe_elastic01_refine.sh
+      - name: Run ELASTIC01 holdout falsification
+        run: bash tests/fpe/run_fpe_elastic01_holdout.sh
