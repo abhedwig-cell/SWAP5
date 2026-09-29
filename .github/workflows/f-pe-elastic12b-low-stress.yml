@@ -1,0 +1,43 @@
+name: F-PE-ELASTIC12B low-stress BHR-GT coverage
+
+concurrency:
+  group: f-pe-elastic12b-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/audit_bhrgt_low_stress_coverage.py'
+      - 'docs/performance/evidence/F-PE-ELASTIC12B_FROZEN_OBJECTS.json'
+      - 'docs/performance/F-PE-ELASTIC12B_LOW_STRESS_COVERAGE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic12b-low-stress.yml'
+  workflow_dispatch:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit frozen 86-object low-stress elastic coverage
+        run: |
+          mkdir -p "$RUNNER_TEMP/elastic12b"
+          python research/elastic/audit_bhrgt_low_stress_coverage.py \
+            --population docs/performance/evidence/F-PE-ELASTIC12B_FROZEN_OBJECTS.json \
+            --out "$RUNNER_TEMP/elastic12b"
+      - name: Show scientific summary
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/elastic12b/summary.json" ]; then
+            cat "$RUNNER_TEMP/elastic12b/summary.json"
+          fi
+      - name: Upload complete coverage evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic12b-low-stress-coverage
+          path: ${{ runner.temp }}/elastic12b
