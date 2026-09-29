@@ -1,0 +1,29 @@
+name: F-PE-ELASTIC17 layer-node mapping
+
+concurrency:
+  group: f-pe-elastic17-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic17-layer-node-mapping
+    paths:
+      - 'src/adapter/mod_fmr_elastic_storage_horizon_node_mapper.f90'
+      - 'tests/fpe/test_fpe_elastic17_layer_node_mapping.f90'
+      - 'tests/fpe/run_fpe_elastic17.sh'
+      - 'docs/performance/F-PE-ELASTIC17_LAYER_NODE_MAPPING_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic17.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Qualify horizon-node mapping
+        run: bash tests/fpe/run_fpe_elastic17.sh
