@@ -2,17 +2,21 @@
   "work_unit": "F-PE-ELASTIC11",
   "workstream": "VQ/research physical parameter evidence",
   "baseline": "54d0990915ad5e4243ec1edf96b832115254ab6b",
-  "checkpoint_commit": "a0eed4bfe3b0178d4d687f346a449d470a4d63a7",
-  "last_reconciled_head": "a0eed4bfe3b0178d4d687f346a449d470a4d63a7",
-  "last_reconciled_upstream": "2332a59d2ec33245f53593960e0c334525eda148",
-  "scope": "Calibration-only evaluation of preregistered physical ELAS predictor families on frozen BHR-GT unload targets, with holdout preserved until model and scoring are frozen.",
+  "checkpoint_commit": "ed2ec9a054867af36b8cd67c393f004d3b04d754",
+  "last_reconciled_head": "ed2ec9a054867af36b8cd67c393f004d3b04d754",
+  "last_reconciled_upstream": "30e507fc8bdf7f7c37f327ab378e5c4a8ae39b94",
+  "scope": "Calibration selection and one-shot independent holdout qualification of the frozen M1 physical ELAS predictor.",
   "relevant_paths": [
     "docs/performance/F-PE-ELASTIC11_PREDICTOR_PREREGISTRATION.md",
     "research/elastic/bro_bhrgt_predictor_model.py",
     ".github/workflows/f-pe-elastic11.yml",
     "docs/performance/F-PE-ELASTIC10_CLOSEOUT.md",
     "docs/performance/F-PE-ELASTIC10D_CORPUS_RESULT.md",
-    "docs/performance/F-PE-ELASTIC10D2_DESCRIPTOR_RESULT.md"
+    "docs/performance/F-PE-ELASTIC10D2_DESCRIPTOR_RESULT.md",
+    "docs/performance/F-PE-ELASTIC11A_RESULT.md",
+    "docs/performance/F-PE-ELASTIC11B_HOLDOUT_PREREGISTRATION.md",
+    "research/elastic/bro_bhrgt_holdout_validate.py",
+    ".github/workflows/f-pe-elastic11b.yml"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -24,10 +28,14 @@
   ],
   "test_paths": [
     "research/elastic/bro_bhrgt_predictor_model.py",
-    ".github/workflows/f-pe-elastic11.yml"
+    ".github/workflows/f-pe-elastic11.yml",
+    "research/elastic/bro_bhrgt_holdout_validate.py",
+    ".github/workflows/f-pe-elastic11b.yml"
   ],
   "evidence_paths": [
-    "GitHub Actions run 36540905498 / artifact 11021065518"
+    "GitHub Actions run 36540905498 / artifact 11021065518",
+    "GitHub Actions run 36547712817 / artifact 11022978124",
+    "docs/performance/F-PE-ELASTIC11A_RESULT.md"
   ],
   "dependency_surface": [
     "frozen Phase-D calibration corpus and split hashes",
@@ -42,9 +50,9 @@
   ],
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "blockers": [],
-  "next_action": "Inspect the ELASTIC11 calibration-only workflow on checkpoint a0eed4bfe3b0178d4d687f346a449d470a4d63a7. Apply the preregistered gates without changing predictors or thresholds. Do not open holdout objects.",
-  "recovery_point": "research/f-pe-elastic11-predictor-model@a0eed4bfe3b0178d4d687f346a449d470a4d63a7"
+  "next_action": "Inspect the one-shot ELASTIC11B holdout workflow from checkpoint ed2ec9a054867af36b8cd67c393f004d3b04d754. Apply the preregistered holdout gates exactly. Do not tune M1 after seeing holdout outcomes.",
+  "recovery_point": "research/f-pe-elastic11-predictor-model@ed2ec9a054867af36b8cd67c393f004d3b04d754"
 }
