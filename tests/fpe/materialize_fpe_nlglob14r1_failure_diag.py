@@ -14,15 +14,8 @@ if tg_start<0 or tg_end<0:
     raise SystemExit("NLGLOB14R1 TG core bounds missing")
 seg=src[tg_start:tg_end]
 
-old="""    if(res%status/=SW_SOLVE_CONVERGED)then
-      if(nl14q_shadow_dry) nl14q_shadow_retry=res%retry_advised
-      terminal_reason='ENDPOINT_SOLVE_FAILURE'
-      eligible=.false.; transition_step=step_index; return
-    end if
-"""
-new="""    if(res%status/=SW_SOLVE_CONVERGED)then
-      if(nl14q_shadow_dry) nl14q_shadow_retry=res%retry_advised
-      if(nl14r_handoff_active .and. step_index==nl14r_handoff_step+1)then
+marker="      terminal_reason='ENDPOINT_SOLVE_FAILURE'\\n"
+inject="""      if(nl14r_handoff_active .and. step_index==nl14r_handoff_step+1)then
         write(*,'(*(g0))') 'F_PE_NLGLOB14R1_FAIL|STEP=',step_index, &
              '|STATUS=',res%status,'|RETRY=',merge(1,0,res%retry_advised), &
              '|ROUTE=',trim(res%diagnostics%route), &
@@ -34,13 +27,10 @@ new="""    if(res%status/=SW_SOLVE_CONVERGED)then
              '|ALT=',res%diagnostics%alternative_solver_calls, &
              '|ORIGIN_ROUTE=',last_origin_route,'|PRED_ROUTE=',last_pred_route
       end if
-      terminal_reason='ENDPOINT_SOLVE_FAILURE'
-      eligible=.false.; transition_step=step_index; return
-    end if
 """
-if old not in seg:
+if marker not in seg:
     raise SystemExit("NLGLOB14R1 endpoint failure marker missing")
-seg=seg.replace(old,new,1)
+seg=seg.replace(marker,inject+marker,1)
 src=src[:tg_start]+seg+src[tg_end:]
 
 if "F_PE_NLGLOB14R1_FAIL" not in src:
