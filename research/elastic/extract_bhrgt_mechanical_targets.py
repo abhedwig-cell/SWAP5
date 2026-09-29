@@ -225,6 +225,9 @@ def process_object(object_dir: Path,auth,determination_authority=None):
                     targets.append(target)
             continue
 
+        if has_stress_series:
+            raise RuntimeError(f"frozen R2 route conflicts with effective-stress series {bro_id}/{di}")
+
         endpoints=[]
         for si,step in enumerate(steps,1):
             stress=scalar(step,"verticalStress")
@@ -308,6 +311,11 @@ def main():
     summary={
         "schema_binding":schemas,
         "object_count":len(authority["objects"]),
+        "determination_authority":{
+            "historical_classifier_records":determination_authority["historical_classifier_records"],
+            "physical_determinations":determination_authority["physical_determinations"],
+            "route_counts":determination_authority["route_counts"],
+        },
         "targets":len(targets),
         "rejects":len(rejected),
         "route_counts":{"R2":sum(x["route"]=="R2" for x in targets),
@@ -323,6 +331,7 @@ def main():
     write_csv(out/"targets.csv",targets)
     write_csv(out/"rejections.csv",rejected)
     print(f"F_PE_ELASTIC10E_OBJECTS={len(authority['objects'])}")
+    print("F_PE_ELASTIC10E_DETERMINATIONS=50|R2=29|R3=21")
     print(f"F_PE_ELASTIC10E_TARGETS={len(targets)}|R2={summary['route_counts']['R2']}|R3={summary['route_counts']['R3']}")
     print(f"F_PE_ELASTIC10E_REJECTIONS={len(rejected)}")
     print("F_PE_ELASTIC10E_SSK_RANGE="+json.dumps({
