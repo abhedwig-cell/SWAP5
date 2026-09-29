@@ -89,15 +89,8 @@ for opt in 0 2; do
 
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT"     -c tests/fpe/test_fpe_elastic08_runtime.f90 -o "$OUT/runtime-test.o" || fail "compile O$opt ELASTIC08 runtime"
   gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/runtime-test.o" -o "$OUT/runtime-test" || fail "link O$opt ELASTIC08 runtime"
-  "$OUT/runtime-test" > "$OUT/runtime-output.txt" 2>&1 || {
-    cat "$OUT/runtime-output.txt" >&2
-    fail "runtime identity O$opt"
-  }
-  grep -Fq 'F_PE_ELASTIC08_R3_RUNTIME_IDENTITY=PASS' "$OUT/runtime-output.txt" || {
-    cat "$OUT/runtime-output.txt" >&2
-    fail "missing R3 marker O$opt"
-  }
-  cat "$OUT/runtime-output.txt"
+  python3 tests/fpe/run_fpe_elastic08_runtime_matrix.py "$OUT/runtime-test" "$CSV" \
+    | tee "$OUT/runtime-output.txt"
 done
 
 cmp -s "$BUILD/o0/prepare-output.txt" "$BUILD/o2/prepare-output.txt" || {
