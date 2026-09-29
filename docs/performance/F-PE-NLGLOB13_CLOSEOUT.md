@@ -12,8 +12,8 @@ Canonical base incorporated before closeout:
 
 Qualification authority:
 
-- run `36554465665`;
-- job `109360177737`;
+- run `36554573296`;
+- job `109360584755`;
 - conclusion: SUCCESS.
 
 ## Closure
@@ -24,9 +24,9 @@ Positive preserved evidence:
 
 - smooth order remains about 2.048;
 - physical mass remains near roundoff;
-- full dynamic replay completion is 88/96;
+- full dynamic replay completion is 79/96;
 - no process failures occur;
-- S0/R0 endpoint research authority remains intact.
+- S0 replay remains active and mass-clean; R0 was intentionally excluded from the isolated NLGLOB13 qualification.
 
 Negative target evidence:
 
