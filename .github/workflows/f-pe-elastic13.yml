@@ -1,0 +1,55 @@
+name: F-PE-ELASTIC13 parameter policy
+
+concurrency:
+  group: f-pe-elastic13-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic13-parameter-policy
+    paths:
+      - 'research/elastic/elas_parameter_policy.py'
+      - 'docs/performance/F-PE-ELASTIC13_PARAMETER_POLICY_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic13.yml'
+  workflow_dispatch:
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download frozen BOFEK/Staringreeks source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12-source-audit
+          path: ${{ runner.temp }}/elastic12-source
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36549054287
+
+      - name: Download frozen PDOK GeoPackage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic12-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+
+      - name: Evaluate preregistered physical parameter policy
+        run: |
+          python research/elastic/elas_parameter_policy.py \
+            --source-artifact-dir "$RUNNER_TEMP/elastic12-source" \
+            --pdok-artifact-dir "$RUNNER_TEMP/elastic12-pdok" \
+            --output "$RUNNER_TEMP/elastic13/policy-result.json"
+
+      - name: Upload parameter-policy evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic13-parameter-policy
+          path: ${{ runner.temp }}/elastic13/policy-result.json
