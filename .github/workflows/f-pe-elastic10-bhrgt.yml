@@ -17,6 +17,7 @@ on:
       - 'research/elastic/**'
       - 'docs/performance/F-PE-ELASTIC10_BHR_GT_TARGET_PREREGISTRATION.md'
       - 'docs/performance/F-PE-ELASTIC10A_BHR_GT_SEMANTICS_PREAUDIT.md'
+      - 'docs/performance/F-PE-ELASTIC10B_PILOT_PREREGISTRATION.md'
       - '.github/workflows/f-pe-elastic10-bhrgt.yml'
   workflow_dispatch:
 
@@ -124,7 +125,11 @@ jobs:
           print("F_PE_ELASTIC10_SCHEMA_AUDIT=PASS")
           PY
 
-      - name: Upload bounded schema evidence
+      - name: Run frozen BHR-GT settlement object pilot
+        run: |
+          python research/elastic/bro_bhrgt_pilot.py --output-dir "$RUNNER_TEMP/bhrgt"
+
+      - name: Upload bounded schema and pilot evidence
         uses: actions/upload-artifact@v4
         with:
           name: f-pe-elastic10-bhrgt-schema
