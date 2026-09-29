@@ -102,7 +102,7 @@ recovery="""    if(nl14r_handoff_active .and. step==nl14r_handoff_step+1 .and. &
            '|ELIGIBLE=',merge(1,0,eligible),'|RETRY=',merge(1,0,nl14r2_retry_advised), &
            '|SAT_MODE=',merge(1,0,nl14d_saturated_mode), &
            '|SAT_COUNT=',count(state%pressure_head>=0.0_real64 .and. state%water_content==ts), &
-           '|TERMINAL=',trim(terminal_reason),'|CUM_LEDGER=',cumledger
+           '|TERMINAL=',trim(terminal_reason),'|CUM_LEDGER=',cumledger,'|DT=',dt
 
       if(eligible)then
         nl14r2_retry_advised=.false.
