@@ -1,0 +1,53 @@
+{
+  "work_unit": "F-PE-ELASTIC22",
+  "workstream": "VQ/application explicit profile source",
+  "baseline": "e355dacf50fcc0cceb77e02f73b78eddebcbeced",
+  "checkpoint_commit": "d4ed35864331dc099b5b5ad8a6897b4657dab490",
+  "last_reconciled_head": "d4ed35864331dc099b5b5ad8a6897b4657dab490",
+  "last_reconciled_upstream": "c963cacfc86e3f0df5f318ac6a6ffce23bf92225",
+  "scope": "Select one explicit normalsoilprofile_id from already loaded BRO horizon rows and assemble ELASTIC19 horizons through admitted ELASTIC21+20+19 composition, with no I/O or spatial selection.",
+  "relevant_paths": [
+    "docs/performance/F-PE-ELASTIC22_EXPLICIT_PROFILE_SOURCE_PREREGISTRATION.md",
+    "src/adapter/mod_fmr_elastic_storage_explicit_profile_source.f90",
+    "tests/fpe/test_fpe_elastic22_explicit_profile_source.f90",
+    "tests/fpe/run_fpe_elastic22.sh",
+    ".github/workflows/f-pe-elastic22.yml",
+    "docs/performance/F-PE-ELASTIC21_CLOSURE.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md"
+  ],
+  "test_paths": [
+    "tests/fpe/test_fpe_elastic22_explicit_profile_source.f90",
+    "tests/fpe/run_fpe_elastic22.sh",
+    ".github/workflows/f-pe-elastic22.yml"
+  ],
+  "evidence_paths": [],
+  "dependency_surface": [
+    "ELASTIC21 admitted BRO block-code projection",
+    "ELASTIC20 immutable Staringreeks catalog",
+    "ELASTIC19 horizon descriptor builder",
+    "ELASTIC17/16 downstream mapping and assembly"
+  ],
+  "interfaces_changed": [
+    "new stateless in-memory source adapter only"
+  ],
+  "invariants_affected": [
+    "kernel independent of I/O",
+    "profile choice remains explicit caller ownership",
+    "selected source order is not silently repaired",
+    "partial source assembly fails closed"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blockers": [],
+  "next_action": "Inspect ELASTIC22 workflow on checkpoint d4ed35864331dc099b5b5ad8a6897b4657dab490 and apply A1-A11 exactly.",
+  "recovery_point": "work/f-pe-elastic22-explicit-profile-source@d4ed35864331dc099b5b5ad8a6897b4657dab490"
+}
