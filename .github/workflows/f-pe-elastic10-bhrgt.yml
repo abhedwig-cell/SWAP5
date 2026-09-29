@@ -18,6 +18,7 @@ on:
       - 'docs/performance/F-PE-ELASTIC10_BHR_GT_TARGET_PREREGISTRATION.md'
       - 'docs/performance/F-PE-ELASTIC10A_BHR_GT_SEMANTICS_PREAUDIT.md'
       - 'docs/performance/F-PE-ELASTIC10B_PILOT_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-ELASTIC10C_TARGET_EXTRACTION_PREREGISTRATION.md'
       - '.github/workflows/f-pe-elastic10-bhrgt.yml'
   workflow_dispatch:
 
@@ -129,7 +130,11 @@ jobs:
         run: |
           python research/elastic/bro_bhrgt_pilot.py --output-dir "$RUNNER_TEMP/bhrgt"
 
-      - name: Upload bounded schema and pilot evidence
+      - name: Extract preregistered mechanical targets
+        run: |
+          PYTHONPATH=research/elastic python research/elastic/bro_bhrgt_extract_targets.py --pilot-dir "$RUNNER_TEMP/bhrgt"
+
+      - name: Upload bounded schema, pilot and target evidence
         uses: actions/upload-artifact@v4
         with:
           name: f-pe-elastic10-bhrgt-schema
