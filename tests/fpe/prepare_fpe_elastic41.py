@@ -9,7 +9,11 @@ def load(name,path):
         raise SystemExit(f"F_PE_ELASTIC41_FAIL cannot load {path}")
     mod=importlib.util.module_from_spec(spec); sys.modules[spec.name]=mod; spec.loader.exec_module(mod); return mod
 
-def f64(x): return format(float(x),".17g")+"_real64"
+def f64(x):
+    text=format(float(x),".17g")
+    if "." not in text and "e" not in text.lower():
+        text += ".0"
+    return text+"_real64"
 
 def main():
     ap=argparse.ArgumentParser()
