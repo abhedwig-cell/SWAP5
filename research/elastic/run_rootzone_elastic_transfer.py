@@ -310,7 +310,7 @@ def main():
         "stress_scenarios_kpa": list(STRESSES),
         "summary_by_stress": by_stress,
         "summary_by_water_state": by_state,
-        "object_manifest": object_manifest,
+        "object_ids": bro_ids,
         "transfer_rows": transfer,
     }
     Path(args.out).write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
