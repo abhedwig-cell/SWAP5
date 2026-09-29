@@ -70,7 +70,8 @@ def main():
             actual_rows=row.read_text(encoding="utf-8")
             req(actual_rows==expected_rows,f"A2 row identity {slot}")
             manifest=json.loads(prov.read_text(encoding="utf-8"))
-            req(manifest["schema"]==e41.SCHEMA,f"A3 schema got={manifest.get('schema')!r} expected={e41.SCHEMA!r}")\n            req(manifest["generated_prior_requested"] is True,f"A3 request flag got={manifest.get('generated_prior_requested')!r}")
+            req(manifest["schema"]==e41.SCHEMA,f"A3 schema got={manifest.get('schema')!r} expected={e41.SCHEMA!r}")
+            req(manifest["generated_prior_requested"] is True,f"A3 request flag got={manifest.get('generated_prior_requested')!r}")
             req(manifest["row_file"]==str(row),"A3 row path")
             for key in ("source_artifact_sha256","srs_id","x_rd_m","y_rd_m","maparea_id","normalsoilprofile_id","horizon_count"):
                 req(manifest[key]==expected_prov[key],f"A3 provenance {key} {slot}")
