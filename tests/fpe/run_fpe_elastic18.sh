@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
-BUILD="\${RUNNER_TEMP:-\${TMPDIR:-/tmp}}/swap5-elastic18-\${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-elastic18-${GITHUB_RUN_ID:-local}-$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 
@@ -28,8 +28,8 @@ import subprocess
 base=subprocess.check_output(["git","merge-base","HEAD","origin/integration/f-ci-canonical"],text=True).strip()
 names=subprocess.check_output(["git","diff","--name-only",base+"..HEAD"],text=True).splitlines()
 prod=[p for p in names if p.startswith("src/")]
-allowed=["src/adapter/mod_fmr_elastic_storage_swap_grid_normalization.f90"]
-if prod != allowed:
-    raise SystemExit("F_PE_ELASTIC18_SOURCE_SCOPE_FAIL="+repr(prod))
+if prod:
+    raise SystemExit("F_PE_ELASTIC18R_SOURCE_SCOPE_FAIL="+repr(prod))
 print("F_PE_ELASTIC18_A8_SOURCE_SCOPE=PASS")
+print("F_PE_ELASTIC18R_PRODUCTION_DIFF_EMPTY=PASS")
 PY
