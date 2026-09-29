@@ -10,8 +10,7 @@ python3 tests/fpe/materialize_fpe_timeint03_binding.py --source src/adapter/mod_
 python3 tests/fpe/materialize_fpe_nlglob11a_headspace_predictor.py --source tests/fpe/test_fpe_timeint16c_kpred_stage.f90 --output "$BUILD/timeint16c_headspace.f90"
 python3 tests/fpe/materialize_fpe_nlglob11a_headspace_predictor.py --source tests/fpe/test_fpe_timeint17a_same_route.f90 --output "$BUILD/timeint17a_headspace.f90"
 python3 tests/fpe/materialize_fpe_nlglob13_subdivision.py --source "$BUILD/timeint17a_headspace.f90" --output "$BUILD/timeint17a_subdiv2.f90"
-python3 tests/fpe/materialize_fpe_nlglob13d_eighth_subdivision.py --source "$BUILD/timeint17a_subdiv2.f90" --output "$BUILD/timeint17a_subdiv8_raw.f90"
-python3 tests/fpe/materialize_fpe_nlglob13d_q2_failclosed.py --source "$BUILD/timeint17a_subdiv8_raw.f90" --output "$BUILD/timeint17a_subdiv8.f90"
+python3 tests/fpe/materialize_fpe_nlglob13d_eighth_subdivision.py --source "$BUILD/timeint17a_subdiv2.f90" --output "$BUILD/timeint17a_subdiv8.f90"
 
 python3 tests/fpe/materialize_fpe_nlglob09_s0_replay.py --source src/legacy/b1_10_port/headcalc.f90 --output "$BUILD/headcalc_s0.f90"
 python3 tests/fpe/materialize_fpe_nlglob12a1_representation_accept.py --source "$BUILD/headcalc_s0.f90" --output "$BUILD/headcalc_replay.f90"
