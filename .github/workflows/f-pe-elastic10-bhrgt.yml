@@ -1,0 +1,95 @@
+name: F-PE-ELASTIC10 BHR-GT mechanical target schema audit
+
+concurrency:
+  group: f-pe-elastic10-bhrgt-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/**'
+      - 'docs/performance/F-PE-ELASTIC10_BHR_GT_TARGET_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic10-bhrgt.yml'
+  workflow_dispatch:
+
+jobs:
+  schema-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Probe official BHR-GT base
+        run: |
+          mkdir -p "$RUNNER_TEMP/bhrgt"
+          python research/elastic/bro_bhrgt_fetch.py             --output "$RUNNER_TEMP/bhrgt/base.response"             --manifest "$RUNNER_TEMP/bhrgt/base.manifest.json"
+
+      - name: Probe API specification candidates
+        run: |
+          for p in openapi.json swagger.json v3/api-docs api-docs; do
+            safe="$(echo "$p" | tr '/' '_')"
+            python research/elastic/bro_bhrgt_fetch.py --path "$p"               --output "$RUNNER_TEMP/bhrgt/$safe.response"               --manifest "$RUNNER_TEMP/bhrgt/$safe.manifest.json" || true
+          done
+          python - <<'PY'
+          import json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"bhrgt"
+          for m in sorted(root.glob("*.manifest.json")):
+              d=json.loads(m.read_text())
+              print(f"BHRGT_SPEC_CANDIDATE|FILE={m.name}|STATUS={d['http_status']}|TYPE={d['content_type']}|SIZE={d['size_bytes']}|SHA256={d['sha256']}")
+          PY
+
+      - name: Bind OpenAPI paths without assuming endpoint names
+        run: |
+          python - <<'PY'
+          import json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"bhrgt"
+          candidates=[]
+          for p in sorted(root.glob("*.response")):
+              try:
+                  d=json.loads(p.read_text())
+              except Exception:
+                  continue
+              if isinstance(d,dict) and isinstance(d.get("paths"),dict):
+                  candidates.append((p,d))
+          if len(candidates)!=1:
+              raise SystemExit(f"F_PE_ELASTIC10_SCHEMA_FAIL openapi_candidates={[(p.name,len(d.get('paths',{}))) for p,d in candidates]}")
+          p,d=candidates[0]
+          print("F_PE_ELASTIC10_OPENAPI_FILE="+p.name)
+          print("F_PE_ELASTIC10_OPENAPI_PATHS_BEGIN")
+          for path,item in sorted(d["paths"].items()):
+              print("BHRGT_OPENAPI_PATH|PATH="+path+"|METHODS="+",".join(sorted(item)))
+          print("F_PE_ELASTIC10_OPENAPI_PATHS_END")
+          print("F_PE_ELASTIC10_SCHEMA_PATHS=PASS")
+          PY
+
+      - name: Inventory compression and settlement schema terms
+        run: |
+          python - <<'PY'
+          import json,os,pathlib,re
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"bhrgt"
+          found=[]
+          for p in sorted(root.glob("*.response")):
+              try:d=json.loads(p.read_text())
+              except Exception:continue
+              if isinstance(d,dict) and "paths" in d: found.append((p,d))
+          if len(found)!=1: raise SystemExit("F_PE_ELASTIC10_SCHEMA_FAIL no unique OpenAPI")
+          _,d=found[0]
+          terms=("compress","settlement","consolid","strain","stress","load","density","watercontent","deformation","oedom")
+          print("F_PE_ELASTIC10_SCHEMA_TERMS_BEGIN")
+          for name,schema in sorted(d.get("components",{}).get("schemas",{}).items()):
+              blob=(name+" "+json.dumps(schema,sort_keys=True)).lower()
+              if any(t in blob for t in terms):
+                  print("BHRGT_SCHEMA|NAME="+name+"|SCHEMA="+json.dumps(schema,sort_keys=True))
+          print("F_PE_ELASTIC10_SCHEMA_TERMS_END")
+          print("F_PE_ELASTIC10_SCHEMA_AUDIT=PASS")
+          PY
+
+      - name: Upload bounded schema evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic10-bhrgt-schema
+          path: ${{ runner.temp }}/bhrgt
