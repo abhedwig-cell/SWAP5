@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB14R1 second-interval failure attribution
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14R1*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14r1*.py'
+      - 'tests/fpe/run_fpe_nlglob14r1*.py'
+      - 'tests/fpe/run_fpe_nlglob14r1*.sh'
+      - '.github/workflows/f-pe-nlglob14r1.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob14r1-second-interval-failure-attribution
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14R1*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14r1*.py'
+      - 'tests/fpe/run_fpe_nlglob14r1*.py'
+      - 'tests/fpe/run_fpe_nlglob14r1*.sh'
+      - '.github/workflows/f-pe-nlglob14r1.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob14r1-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  second-interval-failure-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered second-interval failure attribution
+        run: bash tests/fpe/run_fpe_nlglob14r1.sh
