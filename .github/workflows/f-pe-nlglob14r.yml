@@ -40,3 +40,4 @@ jobs:
         run: gfortran --version
       - name: Run preregistered accepted handoff re-entry falsification
         run: bash tests/fpe/run_fpe_nlglob14r.sh
+# qualification trigger postimage
