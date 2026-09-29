@@ -120,3 +120,57 @@ It does not:
 
 This is the shortest architecture consistent with both legacy source provenance
 and current SWAP5 runtime structure.
+
+
+## R3 serialized seed-fixture freeze
+
+This addendum is frozen before inspecting any R3 seed-matrix result.
+
+The serialized FMR runtime uses a fixed-flux top-boundary carrier rather than the
+standalone BOFEK screen's dynamic atmospheric/ponding boundary. Therefore WET
+and POND are defined here as FMR-specific constitutive-state fixtures, not as a
+claim of byte-identical atmospheric forcing to F-PE-ELASTIC01.
+
+Materials:
+- B01
+- B12
+- O05
+- O14
+
+For each material:
+
+### WET
+
+- initial pressure head: `-20 cm` at every active node;
+- duration: `0.02 d`;
+- top and bottom flux are set to the equilibrium flux for the initial hydraulic
+  state, so the test isolates materialization/provider identity without forcing
+  an artificial constitutive crossing.
+
+### POND
+
+- initial pressure head: `+2 cm` at every active node;
+- duration: `0.02 d`;
+- top and bottom flux are set to the equilibrium saturated flux;
+- ELAS is therefore active from the initial state and contributes to both
+  saturated theta and capacity.
+
+For both fixtures, compare two executions through the same serialized FMR
+backend:
+
+1. runtime materialization from `elasticity_active + cofgen(24,:)`;
+2. direct, already-qualified ELASTIC05 typed provider preparation.
+
+Required identity:
+- completion/failure class;
+- retries;
+- nonlinear iterations;
+- internal retries;
+- linear solves;
+- backtracking attempts;
+- complete mass ledger values bitwise;
+- accepted candidate pressure head, water content, ponding and groundwater
+  level bitwise.
+
+This R3 matrix proves runtime transport identity. It is not a hydrological
+validation of ELAS=1e-6 and is not a performance benchmark.
