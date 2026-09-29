@@ -26,3 +26,7 @@ jobs:
           fetch-depth: 0
       - name: Qualify production typed ELAS
         run: bash tests/fpe/run_fpe_elastic05.sh
+      - name: Default-off production compile preservation
+        run: bash tests/fkt/run_fkt22_fmr_compile_gate.sh
+      - name: Default-off serialized runtime preservation
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
