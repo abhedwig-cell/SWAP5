@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB13 near-saturation TG subdivision
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB13*.md'
+      - 'tests/fpe/materialize_fpe_nlglob13*.py'
+      - 'tests/fpe/run_fpe_nlglob13*.py'
+      - 'tests/fpe/run_fpe_nlglob13*.sh'
+      - '.github/workflows/f-pe-nlglob13.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob13-nearsat-subdivision-current
+    paths:
+      - 'docs/performance/F-PE-NLGLOB13*.md'
+      - 'tests/fpe/materialize_fpe_nlglob13*.py'
+      - 'tests/fpe/run_fpe_nlglob13*.py'
+      - 'tests/fpe/run_fpe_nlglob13*.sh'
+      - '.github/workflows/f-pe-nlglob13.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob13-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  nearsat-subdivision:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered near-saturation subdivision qualification
+        run: bash tests/fpe/run_fpe_nlglob13.sh
