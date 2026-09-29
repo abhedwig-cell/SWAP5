@@ -43,10 +43,15 @@ program test_fpe_elastic31_request_discovery
     call execute_command_line('rm -f elastic31-env.cfg')
     write(*,'(A)')'F_PE_ELASTIC31_A4_ENV_ONLY=PASS'
 
-  case('pair')
+  case('pair_explicit')
     call fmr_discover_elastic_storage_application_request('explicit.cfg',request,diag)
-    call req(diag%status==FMR_ELAS_DISCOVERY_SOURCE_CONFLICT .and. .not.request%generated_prior_requested,'A5')
-    write(*,'(A)')'F_PE_ELASTIC31_A5_PAIR_CONFLICT=PASS'
+    call req(diag%status==FMR_ELAS_DISCOVERY_SOURCE_CONFLICT .and. .not.request%generated_prior_requested,'A5 explicit pair')
+    write(*,'(A)')'F_PE_ELASTIC31_A5_PAIR_EXPLICIT_CONFLICT=PASS'
+
+  case('pair_external')
+    call fmr_discover_elastic_storage_application_request('',request,diag)
+    call req(diag%status==FMR_ELAS_DISCOVERY_SOURCE_CONFLICT .and. .not.request%generated_prior_requested,'A5 external pair')
+    write(*,'(A)')'F_PE_ELASTIC31_A5_PAIR_EXTERNAL_CONFLICT=PASS'
 
   case('triple')
     call fmr_discover_elastic_storage_application_request('explicit.cfg',request,diag)
