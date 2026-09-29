@@ -20,17 +20,11 @@ if marker not in src:
     raise SystemExit("NLGLOB13C1 declaration marker missing")
 src=src.replace(marker,insert,1)
 
-def inject_before_nth(text,needle,n,repl):
-    start=0
-    for _ in range(n):
-        idx=text.find(needle,start)
-        if idx<0:
-            raise SystemExit(f"NLGLOB13C1 quarter call {n} missing")
-        start=idx+1
-    return text[:idx]+repl+text[idx+len(needle):]
-
 needle="""      call advance_tg_core(step_index,dt,qfail)
 """
+parts=src.split(needle)
+if len(parts)!=5:
+    raise SystemExit(f"NLGLOB13C1 expected exactly four quarter calls, found {len(parts)-1}")
 
 def logblock(half,quarter):
     return f"""      do nl13c1_i=1,numnod
@@ -43,13 +37,11 @@ def logblock(half,quarter):
       call advance_tg_core(step_index,dt,qfail)
 """
 
-# The NLGLOB13B wrapper contains exactly four quarter-step calls in order:
-# half1/q1, half1/q2, half2/q1, half2/q2.
-for half,quarter in ((1,1),(1,2),(2,1),(2,2)):
-    idx=src.find(needle)
-    if idx<0:
-        raise SystemExit("NLGLOB13C1 expected quarter call missing")
-    src=src[:idx]+logblock(half,quarter)+src[idx+len(needle):]
+labels=((1,1),(1,2),(2,1),(2,2))
+out=parts[0]
+for i,(half,quarter) in enumerate(labels):
+    out+=logblock(half,quarter)+parts[i+1]
+src=out
 
 if src.count("F_PE_NLGLOB13C1_STATE") != 4:
     raise SystemExit("NLGLOB13C1 expected four state log sites")
