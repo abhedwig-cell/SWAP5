@@ -4,6 +4,21 @@ on:
   pull_request:
     branches:
       - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-TIMEINT15_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT15_LITERATURE.md'
+      - 'docs/performance/F-PE-TIMEINT15_P0_RESULT.md'
+      - 'docs/performance/F-PE-TIMEINT15A_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT15A_RESULT.md'
+      - 'docs/performance/F-PE-TIMEINT15_CLOSEOUT.md'
+      - 'tests/fpe/materialize_fpe_timeint15_trapezoid.py'
+      - 'tests/fpe/test_fpe_timeint15_trapezoid.f90'
+      - 'tests/fpe/run_fpe_timeint15.py'
+      - 'tests/fpe/run_fpe_timeint15.sh'
+      - 'tests/fpe/test_fpe_timeint15a_rannacher.f90'
+      - 'tests/fpe/run_fpe_timeint15a.py'
+      - 'tests/fpe/run_fpe_timeint15a.sh'
+      - '.github/workflows/f-pe-timeint15.yml'
   push:
     branches:
       - work/f-pe-timeint15-conservative-trapezoidal
@@ -21,6 +36,10 @@ on:
       - 'tests/fpe/run_fpe_timeint15a.sh'
       - '.github/workflows/f-pe-timeint15.yml'
   workflow_dispatch:
+
+concurrency:
+  group: f-pe-timeint15-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
