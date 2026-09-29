@@ -79,6 +79,8 @@ follow="""    if(nl14r_handoff_active .and. step==nl14r_handoff_step)then
 """
 recovery="""    if(nl14r_handoff_active .and. step==nl14r_handoff_step+1 .and. &
          (.not.eligible) .and. nl14r2_retry_advised .and. nl14r2_second_origin_saved)then
+      write(*,'(*(g0))') 'F_PE_NLGLOB14R2_NOMINAL_RETRY|STEP=',step, &
+           '|RETRY=1|DT=',nl14r2_nominal_dt,'|TERMINAL=',trim(terminal_reason)
       state=nl14r2_saved_state
       ws=nl14r2_saved_ws
       cumledger=nl14r2_saved_cumledger
