@@ -1,0 +1,69 @@
+name: F-PE-ELASTIC11D frozen mechanical-model holdout
+
+concurrency:
+  group: f-pe-elastic11d-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/evaluate_bhrgt_ssk_holdout.py'
+      - 'docs/performance/F-PE-ELASTIC11D_HOLDOUT_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic11d-holdout.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  holdout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download frozen target-blind predictor corpus
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic11b-predictor-corpus
+          path: ${{ runner.temp }}/predictors
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36533233002
+
+      - name: Download reconciled mechanical target corpus
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10e-r1-reconciled-targets
+          path: ${{ runner.temp }}/targets
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36532519843
+
+      - name: Open frozen holdout once through preregistered evaluator
+        run: |
+          python research/elastic/evaluate_bhrgt_ssk_holdout.py             --predictors "$RUNNER_TEMP/predictors/predictors.json"             --targets "$RUNNER_TEMP/targets/targets.json"             --out "$RUNNER_TEMP/holdout-a.json" | tee "$RUNNER_TEMP/holdout-a.txt"
+
+          python research/elastic/evaluate_bhrgt_ssk_holdout.py             --predictors "$RUNNER_TEMP/predictors/predictors.json"             --targets "$RUNNER_TEMP/targets/targets.json"             --out "$RUNNER_TEMP/holdout-b.json" | tee "$RUNNER_TEMP/holdout-b.txt"
+
+          cmp "$RUNNER_TEMP/holdout-a.json" "$RUNNER_TEMP/holdout-b.json"
+          cmp "$RUNNER_TEMP/holdout-a.txt" "$RUNNER_TEMP/holdout-b.txt"
+          echo F_PE_ELASTIC11D_DETERMINISM=PASS
+
+      - name: Upload frozen holdout evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic11d-holdout
+          path: |
+            ${{ runner.temp }}/holdout-a.json
+            ${{ runner.temp }}/holdout-a.txt
+
+      - name: Enforce preregistered holdout gates
+        run: |
+          grep -q '^F_PE_ELASTIC11D=PASS$' "$RUNNER_TEMP/holdout-a.txt"
