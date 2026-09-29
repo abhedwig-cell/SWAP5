@@ -1,0 +1,33 @@
+name: F-PE-ELASTIC12 BOFEK transfer source audit
+
+concurrency:
+  group: f-pe-elastic12-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic12-bofek-transfer
+    paths:
+      - 'research/elastic/bofek_transfer_source_audit.py'
+      - 'docs/performance/F-PE-ELASTIC12_BOFEK_TRANSFER_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic12.yml'
+  workflow_dispatch:
+
+jobs:
+  source-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit official BOFEK and Staringreeks sources
+        run: |
+          python research/elastic/bofek_transfer_source_audit.py \
+            --output-dir "$RUNNER_TEMP/elastic12"
+      - name: Upload bounded source evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic12-source-audit
+          path: ${{ runner.temp }}/elastic12
