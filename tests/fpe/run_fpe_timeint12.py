@@ -50,3 +50,4 @@ print("F_PE_TIMEINT12_SUMMARY="+json.dumps(summary,separators=(",",":"),sort_key
 if not all(r["ok"] for r in runs):
     raise SystemExit("one or more derivative material runs failed")
 print("F_PE_TIMEINT12=PASS")
+
