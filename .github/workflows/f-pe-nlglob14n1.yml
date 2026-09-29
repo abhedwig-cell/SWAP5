@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB14N1 fine-dt root-trial attribution
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14N1*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14n1*.py'
+      - 'tests/fpe/run_fpe_nlglob14n1*.py'
+      - 'tests/fpe/run_fpe_nlglob14n1*.sh'
+      - '.github/workflows/f-pe-nlglob14n1.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob14n1-fine-dt-entry-root-attribution
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14N1*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14n1*.py'
+      - 'tests/fpe/run_fpe_nlglob14n1*.py'
+      - 'tests/fpe/run_fpe_nlglob14n1*.sh'
+      - '.github/workflows/f-pe-nlglob14n1.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob14n1-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  fine-dt-root-trial-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered root-trial attribution
+        run: bash tests/fpe/run_fpe_nlglob14n1.sh
