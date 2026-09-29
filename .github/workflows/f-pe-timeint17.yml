@@ -1,0 +1,138 @@
+name: F-PE-TIMEINT17 dynamic-top TG events
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-TIMEINT17*.md'
+      - 'tests/fpe/test_fpe_timeint17*.f90'
+      - 'tests/fpe/run_fpe_timeint17*.py'
+      - 'tests/fpe/run_fpe_timeint17*.sh'
+      - '.github/workflows/f-pe-timeint17.yml'
+  push:
+    branches:
+      - work/f-pe-timeint17-dynamic-top-events
+    paths:
+      - 'docs/performance/F-PE-TIMEINT17*.md'
+      - 'tests/fpe/test_fpe_timeint17*.f90'
+      - 'tests/fpe/run_fpe_timeint17*.py'
+      - 'tests/fpe/run_fpe_timeint17*.sh'
+      - '.github/workflows/f-pe-timeint17.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-timeint17-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  same-route:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run same-route dynamic-top TG qualification
+        run: bash tests/fpe/run_fpe_timeint17a.sh
+
+  same-route-a2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run route-margin same-route qualification
+        run: bash tests/fpe/run_fpe_timeint17a2.sh
+
+  endpoint-vs-event:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run endpoint-versus-event attribution census
+        run: bash tests/fpe/run_fpe_timeint17b.sh
+
+  route-path-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run in-Newton route-path attribution
+        run: bash tests/fpe/run_fpe_timeint17c.sh
+
+  static-route-jacobian-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run static-route provider derivative certificate
+        run: bash tests/fpe/run_fpe_timeint17d.sh
+
+  newton-backtracking-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run static-route Newton backtracking attribution
+        run: bash tests/fpe/run_fpe_timeint17e.sh
+
+  route-specific-localization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run route-specific nonlinear localization
+        run: bash tests/fpe/run_fpe_timeint17f.sh
+
+  full-column-jacobian-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run full-column residual Jacobian attribution
+        run: bash tests/fpe/run_fpe_timeint17g.sh
+
+  globalization-merit-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run globalization merit attribution
+        run: bash tests/fpe/run_fpe_timeint17h.sh
