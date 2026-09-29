@@ -2,8 +2,8 @@
   "work_unit": "F-PE-ELASTIC10",
   "workstream": "VQ/research physical parameter evidence",
   "baseline": "ad1c4b9193238a46dff95bd30e251adfc0426302",
-  "checkpoint_commit": "ed8af987205c61a133073b5c642ff6a95537f844",
-  "last_reconciled_head": "ed8af987205c61a133073b5c642ff6a95537f844",
+  "checkpoint_commit": "de5f63e285e4415360735f5e01709ca50155512f",
+  "last_reconciled_head": "de5f63e285e4415360735f5e01709ca50155512f",
   "last_reconciled_upstream": "2332a59d2ec33245f53593960e0c334525eda148",
   "scope": "Acquire and schema-bind BRO BHR-GT mechanical compression/settlement evidence suitable to constrain physical SWAP ELAS without using solver performance as target.",
   "relevant_paths": [
@@ -23,7 +23,9 @@
     "docs/performance/F-PE-ELASTIC10D_CORPUS_RESULT.md",
     "docs/performance/F-PE-ELASTIC10D2_DESCRIPTOR_PREREGISTRATION.md",
     "research/elastic/bro_bhrgt_descriptor_audit.py",
-    ".github/workflows/f-pe-elastic10d2.yml"
+    ".github/workflows/f-pe-elastic10d2.yml",
+    "docs/performance/F-PE-ELASTIC10D2_DESCRIPTOR_RESULT.md",
+    "docs/performance/F-PE-ELASTIC10_CLOSEOUT.md"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -49,7 +51,10 @@
     "docs/performance/F-PE-ELASTIC10C_TARGET_EXTRACTION_RESULT.md",
     "GitHub Actions run 36539688169",
     "docs/performance/F-PE-ELASTIC10D_CORPUS_RESULT.md",
-    "GitHub Actions run 36540905498 / artifact 11021065518"
+    "GitHub Actions run 36540905498 / artifact 11021065518",
+    "docs/performance/F-PE-ELASTIC10D2_DESCRIPTOR_RESULT.md",
+    "GitHub Actions run 36543951520 / artifact 11021327530",
+    "docs/performance/F-PE-ELASTIC10_CLOSEOUT.md"
   ],
   "dependency_surface": [
     "BRO public BHR-GT v2 service/OpenAPI contract",
@@ -65,8 +70,8 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "blockers": [],
-  "next_action": "Inspect the F-PE-ELASTIC10D2 descriptor-audit workflow on checkpoint ed8af987205c61a133073b5c642ff6a95537f844. If green, record source-bound coverage and preregister only eligible Phase-E predictors; if red, repair only the bounded offline D2 parser/workflow.",
-  "recovery_point": "research/f-pe-elastic10-bhrgt-targets@ed8af987205c61a133073b5c642ff6a95537f844"
+  "next_action": "F-PE-ELASTIC10 is closed. Start a separately preregistered Phase-E/F-PE-ELASTIC11 predictor-model work unit only if physical ELAS parameterization is to continue; keep the 18 holdout objects unopened until model family and scoring are frozen.",
+  "recovery_point": "research/f-pe-elastic10-bhrgt-targets@de5f63e285e4415360735f5e01709ca50155512f"
 }
