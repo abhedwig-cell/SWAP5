@@ -29,16 +29,21 @@ if entry not in src:
     raise SystemExit("NLGLOB14F entry marker missing")
 src=src.replace(entry,entry_repl,1)
 
+decl2="    integer::r0,rp\n"
+if decl2 not in src:
+    raise SystemExit("NLGLOB14F advance_klag declaration marker missing")
+src=src.replace(decl2,"    integer::r0,rp,nl14f_i\n",1)
+
 needle="""    state=res%candidate_state
   end subroutine
 """
 repl="""    state=res%candidate_state
     if(nl14d_saturated_mode)then
-      do i=1,numnod
-        write(*,'(*(g0))') 'F_PE_NLGLOB14F_STATE|STEP=',step_index,'|NODE=',i, &
-             '|EVENT_NODE=',nl14f_event_node,'|H=',state%pressure_head(i),'|THETA=',state%water_content(i), &
-             '|THETA_S=',ts,'|DEFICIT=',ts-state%water_content(i),'|SAT_H=',merge(1,0,state%pressure_head(i)>=0.0_real64), &
-             '|SAT_THETA=',merge(1,0,state%water_content(i)==ts),'|ROUTE=',trim(route_id), &
+      do nl14f_i=1,numnod
+        write(*,'(*(g0))') 'F_PE_NLGLOB14F_STATE|STEP=',step_index,'|NODE=',nl14f_i, &
+             '|EVENT_NODE=',nl14f_event_node,'|H=',state%pressure_head(nl14f_i),'|THETA=',state%water_content(nl14f_i), &
+             '|THETA_S=',ts,'|DEFICIT=',ts-state%water_content(nl14f_i),'|SAT_H=',merge(1,0,state%pressure_head(nl14f_i)>=0.0_real64), &
+             '|SAT_THETA=',merge(1,0,state%water_content(nl14f_i)==ts),'|ROUTE=',trim(route_id), &
              '|TOP_FLUX=',res%top_flux,'|BOTTOM_FLUX=',res%bottom_flux,'|POND=',state%ponding_depth
       end do
     end if
