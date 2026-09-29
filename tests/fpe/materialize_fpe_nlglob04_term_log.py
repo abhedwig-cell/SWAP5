@@ -16,8 +16,8 @@ if marker not in src:
 src=src.replace(marker,insert,1)
 
 needle="""         do i=1,NN
-            write(*,'(*(g0))') 'F_PE_NLGLOB03_RES|ITER=',state%numbit,'|NN=',NN,'|NODE=',i, &
-                 '|R=',fsi_ws%residual(i)
+            write(*,'(*(g0))') 'F_PE_NLGLOB03_RES|ITER=',state%numbit,'|NN=',NN, &
+                 '|NODE=',i,'|R=',fsi_ws%residual(i)
          end do
 """
 repl=needle+"""         do i=1,NN
