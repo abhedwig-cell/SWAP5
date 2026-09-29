@@ -149,6 +149,15 @@ def main():
         xml_by_id[broid]=hits[0]
 
     roots={b:ET.fromstring(p.read_bytes()) for b,p in xml_by_id.items()}
+    global_inventory={}
+    for name in FIELDS:
+        occurrences=0; objects=[]
+        for broid,root in roots.items():
+            vals=[e for e in root.iter() if local(e.tag)==name and text_value(e) is not None]
+            if vals:
+                occurrences+=len(vals); objects.append(broid)
+        global_inventory[name]={"occurrences":occurrences,"objects":len(objects),"object_ids":sorted(objects)}
+
     valid=[x for x in corpus.get("targets",[]) if x.get("classification")=="VALID"]
     unload=[x for x in valid if x.get("kind")=="unload"]
     reload=[x for x in valid if x.get("kind")=="reload"]
@@ -195,7 +204,6 @@ def main():
 
     coverage={}
     for name in FIELDS:
-        cu=covered_target(unload_records:=[],name=name) if False else None
         u=[r for r in target_records if r["kind"]=="unload" and r["fields"].get(name)]
         rr=[r for r in target_records if r["kind"]=="reload" and r["fields"].get(name)]
         objs=object_set(target_records,name)
@@ -232,6 +240,7 @@ def main():
       },
       "determinations_audited":len(det_records),
       "fields":list(FIELDS),
+      "object_global_inventory":global_inventory,
       "coverage":coverage,
       "gates":{
         "dry_density_predictor_eligible":dry_eligible,
@@ -248,7 +257,7 @@ def main():
     out.write_text(json.dumps(result,indent=2)+"\n")
 
     print("F_PE_ELASTIC10D2_SUMMARY="+json.dumps({
-      "determinations":len(det_records),"coverage":coverage,"gates":result["gates"]
+      "determinations":len(det_records),"object_global_inventory":global_inventory,"coverage":coverage,"gates":result["gates"]
     },separators=(",",":"),sort_keys=True))
     print("F_PE_ELASTIC10D2_HOLDOUT_FETCHED=0")
     print("F_PE_ELASTIC10D2=PASS")
