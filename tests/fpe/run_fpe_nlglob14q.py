@@ -50,8 +50,13 @@ for route in routes:
         cls="SHADOW_TG_STATE_OR_MASS_INCONSISTENT"
       elif domain:
         cls="SHADOW_TG_IMMEDIATE_SATURATION_REENTRY"
-      elif eligible and s["TERMINAL"]=="COMPLETE_SAME_ROUTE" and route_ok and shadow_mass:
-        cls="SHADOW_TG_INTERVAL_ADMISSIBLE"
+      elif eligible and s["TERMINAL"]=="COMPLETE_SAME_ROUTE":
+        if not shadow_mass:
+          cls="SHADOW_TG_STATE_OR_MASS_INCONSISTENT"
+        elif route_ok:
+          cls="SHADOW_TG_INTERVAL_ADMISSIBLE"
+        else:
+          cls="SHADOW_TG_SOLVER_OR_ROUTE_FAILURE"
       else:
         cls="SHADOW_TG_SOLVER_OR_ROUTE_FAILURE"
 
