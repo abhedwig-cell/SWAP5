@@ -1,0 +1,38 @@
+name: F-PE-TIMEINT17 TG dynamic-top events
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-TIMEINT17_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timeint17_unsplit.f90'
+      - 'tests/fpe/run_fpe_timeint17.py'
+      - 'tests/fpe/run_fpe_timeint17.sh'
+      - '.github/workflows/f-pe-timeint17.yml'
+  push:
+    branches:
+      - work/f-pe-timeint17-tg-dynamic-top
+    paths:
+      - 'docs/performance/F-PE-TIMEINT17_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timeint17_unsplit.f90'
+      - 'tests/fpe/run_fpe_timeint17.py'
+      - 'tests/fpe/run_fpe_timeint17.sh'
+      - '.github/workflows/f-pe-timeint17.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unsplit-diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run TG dynamic-top unsplit diagnostic
+        run: bash tests/fpe/run_fpe_timeint17.sh
