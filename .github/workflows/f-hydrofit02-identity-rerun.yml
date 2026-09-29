@@ -1,0 +1,83 @@
+name: F-HYDROFIT02 identity-corrected frozen rerun
+
+on:
+  push:
+    branches:
+      - research/f-hydrofit02-bro-acquisition
+    paths:
+      - '.github/workflows/f-hydrofit02-identity-rerun.yml'
+  workflow_dispatch:
+
+jobs:
+  rerun:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical dependencies
+        run: python -m pip install numpy scipy
+      - name: Prepare output
+        run: mkdir -p "$RUNNER_TEMP/hydrofit"
+      - name: Deterministic profile
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/profile_lambda_corpus.py \
+            --corpus integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json \
+            | tee "$RUNNER_TEMP/hydrofit/lambda-profiles.txt"
+      - name: Profile bound attribution
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/attribute_profile_bounds.py \
+            --corpus integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json \
+            | tee "$RUNNER_TEMP/hydrofit/bound-attribution.txt"
+      - name: Fallback comparison
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/compare_lambda_fallbacks.py \
+            --corpus integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json \
+            | tee "$RUNNER_TEMP/hydrofit/lambda-fallbacks.txt"
+      - name: Measurement descriptor audit
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/audit_lambda_prior_descriptors.py \
+            --corpus integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json \
+            --out "$RUNNER_TEMP/hydrofit/lambda-prior-descriptor-audit.json" \
+            | tee "$RUNNER_TEMP/hydrofit/lambda-prior-descriptor-audit.txt"
+      - name: Interval descriptor audit
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/audit_interval_prior_descriptors.py \
+            --corpus integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json \
+            --out "$RUNNER_TEMP/hydrofit/lambda-prior-interval-audit.json" \
+            | tee "$RUNNER_TEMP/hydrofit/lambda-prior-interval-audit.txt"
+      - name: Conditional prior comparison
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/compare_conditional_lambda_priors.py \
+            --corpus integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json \
+            | tee "$RUNNER_TEMP/hydrofit/lambda-prior-low-capacity.txt"
+      - name: Identifiability reclassification
+        run: |
+          set -o pipefail
+          python research/hydrofit/reclassify_identifiability.py \
+            "$RUNNER_TEMP/hydrofit/lambda-prior-low-capacity.txt" \
+            | tee "$RUNNER_TEMP/hydrofit/lambda-prior-identifiability.txt"
+      - name: Soft shrinkage deterministic set
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/compare_lambda_shrinkage.py \
+            --corpus integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json \
+            | tee "$RUNNER_TEMP/hydrofit/lambda-shrinkage.txt"
+      - name: Soft shrinkage independent complement
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/replicate_lambda_shrinkage.py \
+            --corpus integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json \
+            | tee "$RUNNER_TEMP/hydrofit/lambda-shrinkage-replication.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-hydrofit02-identity-rerun
+          path: ${{ runner.temp }}/hydrofit
+          if-no-files-found: error
