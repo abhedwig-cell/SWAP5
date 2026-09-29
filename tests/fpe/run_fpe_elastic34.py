@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """F-PE-ELASTIC34 qualification over synthetic and frozen BRO polygons."""
 from __future__ import annotations
-import argparse, importlib.util, json, math, sqlite3
+import argparse, importlib.util, json, math, sqlite3, sys
 from pathlib import Path
 
 def load_tool(root:Path):
@@ -10,6 +10,7 @@ def load_tool(root:Path):
     if spec is None or spec.loader is None:
         raise SystemExit("F_PE_ELASTIC34_FAIL cannot load tool")
     mod=importlib.util.module_from_spec(spec)
+    sys.modules[spec.name]=mod
     spec.loader.exec_module(mod)
     return mod
 
