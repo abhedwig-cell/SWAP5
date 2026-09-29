@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import argparse
+import argparse, re
 
 ap=argparse.ArgumentParser()
 ap.add_argument("--source",required=True)
@@ -14,8 +14,11 @@ if tg_start<0 or tg_end<0:
     raise SystemExit("NLGLOB14R1 TG core bounds missing")
 seg=src[tg_start:tg_end]
 
-marker="    if(res%status/=SW_SOLVE_CONVERGED)then\\n"
-inject="""    if(res%status/=SW_SOLVE_CONVERGED)then
+pat=re.compile(r"(\n\s*if\s*\(\s*res%status\s*/=\s*SW_SOLVE_CONVERGED\s*\)\s*then\s*\n)")
+m=pat.search(seg)
+if not m:
+    raise SystemExit("NLGLOB14R1 endpoint failure branch missing")
+inject="""\n    if(res%status/=SW_SOLVE_CONVERGED)then
       if(nl14r_handoff_active .and. step_index==nl14r_handoff_step+1)then
         write(*,'(*(g0))') 'F_PE_NLGLOB14R1_FAIL|STEP=',step_index, &
              '|STATUS=',res%status,'|RETRY=',merge(1,0,res%retry_advised), &
@@ -29,9 +32,7 @@ inject="""    if(res%status/=SW_SOLVE_CONVERGED)then
              '|ORIGIN_ROUTE=',last_origin_route,'|PRED_ROUTE=',last_pred_route
       end if
 """
-if marker not in seg:
-    raise SystemExit("NLGLOB14R1 endpoint failure branch missing")
-seg=seg.replace(marker,inject,1)
+seg=seg[:m.start()]+inject+seg[m.end():]
 src=src[:tg_start]+seg+src[tg_end:]
 
 if "F_PE_NLGLOB14R1_FAIL" not in src:
