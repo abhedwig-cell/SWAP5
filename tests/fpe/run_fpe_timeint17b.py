@@ -23,7 +23,7 @@ def k_vg(m,h):
     return m["ksat"]*(se**m["lambda"])*(term**2)
 
 def fixture_a2(m,r):
-    dtop=5.0; pmax=0.05; rsro=0.05
+    dtop=10.0; pmax=0.05; rsro=0.05
     if r=="FLUX":
         h=-50.0; p=0.0
         kt=k_vg(m,h); kf=0.5*(m["ksat"]+kt)
@@ -107,15 +107,30 @@ for t in tg:
     paired.append({"bank":t["bank"],"material":t["material"],"route":t["route"],"dt":t["dt"],
                    "tg_reason":t.get("terminal_reason"),"klag_reason":q.get("terminal_reason"),"signal":signal})
 
-if solver_frac>=0.50:
-    classification="TIMEINT17_BLOCKER_ENDPOINT_SOLVER_DOMINATED"
-elif route_frac>=0.75:
-    classification="TIMEINT17_BLOCKER_ROUTE_EVENT_DOMINATED"
+# Frozen dominance rules from TIMEINT17B preregistration.
+# Event dominance additionally requires converged evidence spanning onset and
+# release/runoff transition families; route-code mismatches alone are not enough.
+converged_route_rows=[x for x in ineligible if x.get("terminal_reason") in route_reasons]
+onset_evidence=any(x.get("route")=="FLUX" and x.get("terminal_reason") in route_reasons for x in converged_route_rows)
+release_or_runoff_evidence=any(x.get("route") in ("HEAD","RUNOFF") and x.get("terminal_reason") in route_reasons for x in converged_route_rows)
+event_span_ok=onset_evidence and release_or_runoff_evidence
+
+if solver_frac>0.50:
+    classification="TIMEINT17B_ENDPOINT_SOLVER_DOMINANT"
+elif route_frac>=0.75 and solver_frac<=0.25 and event_span_ok:
+    classification="TIMEINT17B_EVENT_DOMINANT"
 else:
-    classification="TIMEINT17_BLOCKER_MIXED_ENDPOINT_AND_EVENT"
+    classification="TIMEINT17B_MIXED_ENDPOINT_AND_EVENT_BLOCKER"
+
+shared_fraction=(shared_solver/solver_n) if solver_n else 0.0
+secondary=("TIMEINT17B_SHARED_DYNAMIC_TOP_BLOCKER" if solver_n>0 and shared_fraction>=0.75 else None)
+mass_ok=all(abs(x.get("max_ledger",0.0))<=5e-8 and abs(x.get("cum_ledger",0.0))<=5e-8 for x in tg)
+if not mass_ok:
+    classification="BLOCKED_TIMEINT17B_ACCEPTED_MASS"
 
 summary={
  "classification":classification,
+ "secondary_classification":secondary,
  "tg_runs":len(tg),
  "tg_complete_same_route":sum(x.get("terminal_reason")=="COMPLETE_SAME_ROUTE" for x in tg),
  "tg_ineligible":n,
@@ -124,6 +139,11 @@ summary={
  "route_event_fraction":route_frac,
  "tg_specific_endpoint_signals":tg_specific,
  "shared_dynamic_top_solver_signals":shared_solver,
+ "shared_endpoint_failure_fraction":shared_fraction,
+ "event_span_ok":event_span_ok,
+ "onset_evidence":onset_evidence,
+ "release_or_runoff_evidence":release_or_runoff_evidence,
+ "accepted_mass_ok":mass_ok,
  "process_failures":sum(not x["process_ok"] for x in rows)
 }
 print("F_PE_TIMEINT17B_RESULTS="+json.dumps(rows,separators=(",",":"),sort_keys=True))
