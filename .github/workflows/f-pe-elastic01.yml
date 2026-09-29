@@ -27,3 +27,5 @@ jobs:
         run: bash tests/fpe/run_fpe_elastic01_holdout.sh
       - name: Acquire official Staringreeks source
         run: bash tests/fpe/acquire_fpe_elastic02_staringreeks.sh
+      - name: Run ELASTIC02A full36 characterization
+        run: bash tests/fpe/run_fpe_elastic02a.sh
