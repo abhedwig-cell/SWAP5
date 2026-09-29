@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB14D persistent saturated mode
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14D*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14d*.py'
+      - 'tests/fpe/run_fpe_nlglob14d*.py'
+      - 'tests/fpe/run_fpe_nlglob14d*.sh'
+      - '.github/workflows/f-pe-nlglob14d.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob14d-persistent-saturated-mode
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14D*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14d*.py'
+      - 'tests/fpe/run_fpe_nlglob14d*.py'
+      - 'tests/fpe/run_fpe_nlglob14d*.sh'
+      - '.github/workflows/f-pe-nlglob14d.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob14d-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  persistent-saturated-mode:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered persistent saturated-mode qualification
+        run: bash tests/fpe/run_fpe_nlglob14d.sh
