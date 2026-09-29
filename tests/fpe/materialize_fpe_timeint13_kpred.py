@@ -19,12 +19,12 @@ if needle not in src:
     raise SystemExit("TIMEINT05 declaration block not found")
 src=src.replace(needle,insert,1)
 
-old="       state%k(1:numnod) = fsi_ws%provider_k(1:numnod)"
-new="""       if (timeint13_kpred_active == 1) then
-          state%k(1:numnod) = timeint13_kpred(1:numnod)
-       else
-          state%k(1:numnod) = fsi_ws%provider_k(1:numnod)
-       end if"""
+old="state%k(1:numnod) = fsi_ws%provider_k(1:numnod)"
+new="""if (timeint13_kpred_active == 1) then
+         state%k(1:numnod) = timeint13_kpred(1:numnod)
+      else
+         state%k(1:numnod) = fsi_ws%provider_k(1:numnod)
+      end if"""
 if src.count(old)!=1:
     raise SystemExit(f"expected one provider-k reset, found {src.count(old)}")
 src=src.replace(old,new,1)
