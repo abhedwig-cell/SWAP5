@@ -41,6 +41,8 @@ def main() -> None:
 
     root=Path(a.repo_root).resolve()
     tools=root/"tools"
+    if str(tools) not in sys.path:
+        sys.path.insert(0,str(tools))
     parent=load("fpe_elastic46_parent",root/"tests/fpe/prepare_fpe_elastic46.py")
     e24=load("fpe_elastic24_profile_retrieval",tools/"fpe_elastic24_profile_retrieval.py")
     e41=load("fpe_elastic41_rd_application_handoff",tools/"fpe_elastic41_rd_application_handoff.py")
