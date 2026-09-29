@@ -12,8 +12,8 @@ Canonical base:
 
 Qualification authority:
 
-- workflow run: `36554465665`;
-- job: `109360177737`;
+- workflow run: `36554573296`;
+- job: `109360584755`;
 - conclusion: SUCCESS.
 
 ## Frozen candidate
@@ -22,7 +22,7 @@ NLGLOB13 tested one-level event-local temporal subdivision for TG near-saturatio
 
 The full nominal TG probe used the order-preserving NLGLOB11A head-space endpoint coefficient stage. If the prospective accepted TG moisture state left the retention domain, the nominal trial was rejected and the interval was retried as two conservative TG halfsteps of `h/2`.
 
-The full dynamic bank also retained the already qualified S0 and R0 research replay rules unchanged.
+The full dynamic bank retained the preregistered S0 research replay rule unchanged. R0 was deliberately excluded from the qualification run so subdivision could be attributed independently.
 
 No accepted theta clipping, recursive subdivision, tolerance change or production source change was introduced.
 
@@ -42,7 +42,7 @@ Thus the temporal-order authority itself is preserved.
 
 Completed requested horizon:
 
-`88 / 96 = 0.91667`.
+`79 / 96 = 0.82292`.
 
 Physical mass remains near roundoff:
 
@@ -51,13 +51,11 @@ Physical mass remains near roundoff:
 
 No process failures occurred.
 
-R0 representation-floor acceptances:
-
-`1382`.
-
 S0 acceptances:
 
-`4`.
+`1255`.
+
+R0 representation-floor replay was not active in this isolated qualification run.
 
 ## Near-saturation target bank
 
@@ -67,9 +65,7 @@ The seven frozen O05/TG HEAD/RUNOFF target trajectories do not complete:
 - completed: 0/7;
 - successful completed subdivision events: 0.
 
-All seven terminate as:
-
-`NEARSAT_SUBDIVISION_FAILED`.
+All seven targeted trajectories fail the one-level subdivision attempt; the isolated classifier records 0/7 completed target cases and 0 successful completed subdivision events. The wrapper reports `NEARSAT_SUBDIVISION_FAILED` for the failed subdivision attempts.
 
 The physical state remains finite and prior accepted intervals remain mass-clean.
 
@@ -81,7 +77,7 @@ The one-level subdivision candidate does not qualify.
 
 ## Interpretation
 
-The failure is not due to loss of smooth temporal order, physical mass, or representation-floor endpoint handling.
+The failure is not due to loss of smooth temporal order or physical mass. Representation-floor R0 replay was not active in the isolated run and therefore is not part of this attribution.
 
 The near-saturation temporal problem survives one conservative subdivision level.
 
