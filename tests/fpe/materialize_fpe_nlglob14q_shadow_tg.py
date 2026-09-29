@@ -29,18 +29,20 @@ src=src.replace(surf_old,surf_new,1)
 decl="  integer :: nl14f_event_node\n"
 if decl not in src:
     raise SystemExit("NLGLOB14Q global declaration marker missing")
-src=src.replace(decl,decl+"  integer :: nl14q_prev_sat_count\n  logical :: nl14q_shadow_done,nl14q_shadow_dry\n",1)
+src=src.replace(decl,decl+"  integer :: nl14q_prev_sat_count\n  logical :: nl14q_shadow_done,nl14q_shadow_dry,nl14q_shadow_retry\n",1)
 
 init="  nl14f_event_node=0\n"
 if init not in src:
     raise SystemExit("NLGLOB14Q init marker missing")
-src=src.replace(init,init+"  nl14q_prev_sat_count=0\n  nl14q_shadow_done=.false.\n  nl14q_shadow_dry=.false.\n",1)
+src=src.replace(init,init+"  nl14q_prev_sat_count=0\n  nl14q_shadow_done=.false.\n  nl14q_shadow_dry=.false.\n  nl14q_shadow_retry=.false.\n",1)
 
 decl2="    integer::r0,rp,nl14f_i\n"
 if decl2 not in src:
     raise SystemExit("NLGLOB14Q advance_klag declaration marker missing")
 src=src.replace(decl2,decl2+"""    integer::nl14q_sat_count,nl14q_saved_target,nl14q_shadow_route,nl14q_shadow_sat
     integer::nl14q_saved_origin,nl14q_saved_pred,nl14q_saved_endpoint,nl14q_saved_accept,nl14q_saved_status
+    integer::nl14q_saved_nl,nl14q_saved_back,nl14q_saved_jac,nl14q_saved_lin
+    integer::nl14q_shadow_nl,nl14q_shadow_back,nl14q_shadow_jac,nl14q_shadow_lin
     logical::nl14q_shadow_domain,nl14q_shadow_finite
     logical::nl14q_saved_eligible
     real(real64)::nl14q_saved_cumledger,nl14q_saved_cumrunoff,nl14q_saved_maxledger,nl14q_shadow_ledger
@@ -72,16 +74,25 @@ repl="""    state=res%candidate_state
         nl14q_saved_endpoint=last_endpoint_route
         nl14q_saved_accept=last_accept_route
         nl14q_saved_status=last_solver_status
+        nl14q_saved_nl=total_nl
+        nl14q_saved_back=total_back
+        nl14q_saved_jac=total_jac
+        nl14q_saved_lin=total_lin
 
         nl14q_shadow_route=rp
         target_route=nl14q_shadow_route
         nl14q_storage0=sum(state%water_content*p%dz)+state%ponding_depth
         nl14q_shadow_dry=.true.
+        nl14q_shadow_retry=.false.
         eligible=.true.
         terminal_reason='COMPLETE_SAME_ROUTE'
         transition_step=0
         call advance_tg_core(step_index,dt,nl14q_shadow_domain)
         nl14q_shadow_dry=.false.
+        nl14q_shadow_nl=total_nl-nl14q_saved_nl
+        nl14q_shadow_back=total_back-nl14q_saved_back
+        nl14q_shadow_jac=total_jac-nl14q_saved_jac
+        nl14q_shadow_lin=total_lin-nl14q_saved_lin
 
         nl14q_shadow_sat=count(state%pressure_head>=0.0_real64 .and. state%water_content==ts)
         nl14q_shadow_finite=all(ieee_is_finite(state%pressure_head)) .and. &
@@ -98,7 +109,9 @@ repl="""    state=res%candidate_state
              '|PRED_ROUTE=',last_pred_route,'|ENDPOINT_ROUTE=',last_endpoint_route, &
              '|ACCEPT_ROUTE=',last_accept_route,'|FINITE=',merge(1,0,nl14q_shadow_finite), &
              '|SHADOW_SAT=',nl14q_shadow_sat,'|SHADOW_LEDGER=',nl14q_shadow_ledger, &
-             '|STORAGE0=',nl14q_storage0,'|STORAGE1=',nl14q_storage1
+             '|STORAGE0=',nl14q_storage0,'|STORAGE1=',nl14q_storage1, &
+             '|RETRY=',merge(1,0,nl14q_shadow_retry),'|NL=',nl14q_shadow_nl, &
+             '|BACK=',nl14q_shadow_back,'|JAC=',nl14q_shadow_jac,'|LIN=',nl14q_shadow_lin
 
         state=nl14q_saved_state
         ws=nl14q_saved_ws
@@ -114,6 +127,10 @@ repl="""    state=res%candidate_state
         last_endpoint_route=nl14q_saved_endpoint
         last_accept_route=nl14q_saved_accept
         last_solver_status=nl14q_saved_status
+        total_nl=nl14q_saved_nl
+        total_back=nl14q_saved_back
+        total_jac=nl14q_saved_jac
+        total_lin=nl14q_saved_lin
         write(*,'(*(g0))') 'F_PE_NLGLOB14Q_ROLLBACK|STEP=',step_index, &
              '|H=',maxval(abs(state%pressure_head-nl14q_saved_state%pressure_head)), &
              '|THETA=',maxval(abs(state%water_content-nl14q_saved_state%water_content)), &
@@ -126,6 +143,28 @@ repl="""    state=res%candidate_state
 if needle not in src:
     raise SystemExit("NLGLOB14Q accepted-state marker missing")
 src=src.replace(needle,repl,1)
+
+# Capture solver retry semantics during the shadow without changing ordinary solver handling.
+tg_start=src.find("  subroutine advance_tg_core")
+tg_end=src.find("  end subroutine advance_tg_core",tg_start)
+if tg_start<0 or tg_end<0:
+    raise SystemExit("NLGLOB14Q TG core bounds missing")
+tgseg=src[tg_start:tg_end]
+fail_old="""    if(res%status/=SW_SOLVE_CONVERGED)then
+      terminal_reason='ENDPOINT_SOLVE_FAILURE'
+      eligible=.false.; transition_step=step_index; return
+    end if
+"""
+fail_new="""    if(res%status/=SW_SOLVE_CONVERGED)then
+      if(nl14q_shadow_dry) nl14q_shadow_retry=res%retry_advised
+      terminal_reason='ENDPOINT_SOLVE_FAILURE'
+      eligible=.false.; transition_step=step_index; return
+    end if
+"""
+if fail_old not in tgseg:
+    raise SystemExit("NLGLOB14Q TG failure marker missing")
+tgseg=tgseg.replace(fail_old,fail_new,1)
+src=src[:tg_start]+tgseg+src[tg_end:]
 
 if "F_PE_NLGLOB14Q_SHADOW" not in src or "F_PE_NLGLOB14Q_ROLLBACK" not in src:
     raise SystemExit("NLGLOB14Q injection failed")
