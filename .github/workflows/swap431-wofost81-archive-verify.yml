@@ -1,0 +1,48 @@
+name: Verify SWAP431 WOFOST81 historical source archive
+
+on:
+  push:
+    branches:
+      - archive/swap431-wofost81-qualified-donor
+    paths:
+      - 'reference/historical/swap431-wofost81/**'
+      - '.github/workflows/swap431-wofost81-archive-verify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct exact historical source archive
+        run: python reference/historical/swap431-wofost81/reconstruct_source.py
+      - name: Verify source ZIP integrity
+        run: python -m zipfile -t reference/historical/swap431-wofost81/SWAP_WOFOST81_SOURCE.zip
+      - name: Verify pinned source identities
+        shell: python
+        run: |
+          import hashlib
+          import zipfile
+          from pathlib import Path
+
+          p = Path("reference/historical/swap431-wofost81/SWAP_WOFOST81_SOURCE.zip")
+          expected_zip = "965a4908d028ff6a509ddc3d4efcf2e6bce736a7f59a6fc052c8fa2fdd66459b"
+          expected_wofost = "84f0033b958132c44d650357e254cf97bc48f455ed9971c449e5582ca3258441"
+
+          actual_zip = hashlib.sha256(p.read_bytes()).hexdigest()
+          assert actual_zip == expected_zip, (actual_zip, expected_zip)
+
+          with zipfile.ZipFile(p) as z:
+              files = [n for n in z.namelist() if not n.endswith("/")]
+              assert len(files) == 127, len(files)
+              wofost = z.read("wofost.f90")
+
+          actual_wofost = hashlib.sha256(wofost).hexdigest()
+          assert actual_wofost == expected_wofost, (actual_wofost, expected_wofost)
+
+          print("source_zip_sha256", actual_zip)
+          print("wofost_f90_sha256", actual_wofost)
+          print("source_file_count", len(files))
