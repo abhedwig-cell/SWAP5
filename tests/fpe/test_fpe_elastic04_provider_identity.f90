@@ -24,7 +24,6 @@ program test_fpe_elastic04_provider_identity
     c(22,i)=-1.0e6_real64;c(23,i)=1.0e-12_real64;c(24,i)=elas
   end do
   call initialize_b110_default_mvg_parameters(hp,c)
-  h=[(-20.0_real64,-20.0_real64,i=1,numnod)]
   do i=1,numnod
     select case(mod(i-1,8))
     case(0);h(i)=-20.0_real64
