@@ -7,16 +7,20 @@ Status: QUALIFIED_ADMISSION_CANDIDATE
 Branch:
 `work/f-pe-elastic14-mineral-prior-materializer`
 
-Qualified production postimage:
-`f486e7a369d03abb66027fead9afeaba374566a9`
+Qualified clean production postimage:
+`02fc46ad51b804e1b1de9604d48c0e38963a8a72`
 
-Current branch head differs only by the persisted work-unit status checkpoint.
+Clean extraction base:
+`integration/f-ci-canonical@ab151e5dcc3054f8be2bc0d7a25f905e44395f96`.
+
+The clean extraction contains only the bounded ELASTIC13 authority documents,
+ELASTIC14 documentation/tests/workflow and the single new production module.
 
 Workflow run:
-`36553701131`
+`36554278578`
 
 Job:
-`109357681154`
+`109359574070`
 
 Conclusion:
 SUCCESS.
