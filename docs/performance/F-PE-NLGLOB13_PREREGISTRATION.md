@@ -28,7 +28,7 @@ For TG only, before publishing an accepted state:
 1. attempt the original nominal TG interval unchanged;
 2. if the trial fails **only** because the prospective accepted TG moisture state is outside the constitutive retention domain, reject that trial;
 3. cover the same nominal interval with two consecutive TG substeps of `h/2`;
-4. each half-step uses the original TIMEINT16C provider-consistent endpoint coefficient staging;
+4. the full probe and each half-step use the NLGLOB11A head-space endpoint coefficient staging, which preserved the TIMEINT16C second-order smooth authority;
 5. each half-step must produce a constitutively admissible accepted state;
 6. physical mass is accounted over each actual half-interval using the unchanged physical ledger;
 7. the nominal interval is accepted only after both half-steps succeed;
@@ -69,7 +69,7 @@ Require:
 
 ### Bank N — seven near-saturation TG failures
 
-Reuse exactly the seven O05 TG HEAD/RUNOFF trajectories identified by NLGLOB11A.
+Reuse exactly the seven O05 TG HEAD/RUNOFF trajectories identified by NLGLOB11A. The prospective accepted-state domain failure is detected on the NLGLOB11A head-space-staged full probe before any full-step state is committed.
 
 Require:
 
