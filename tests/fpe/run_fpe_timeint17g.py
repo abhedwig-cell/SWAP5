@@ -56,7 +56,7 @@ for mid in ("B01","B12","O05","O14"):
          "failing_entries":sum(x["fails"] for x in last)}
     rows.append(row)
     for x in last:
-      audited.append({"material":mid,"route":norm_route(x["route"]),"dt":dt,"mode":mode,**x,"location":loc(x["worst_row"])})
+      audited.append({"material":mid,"dt":dt,"mode":mode,**x,"route":norm_route(x["route"]),"location":loc(x["worst_row"])})
 
 eligible=[x for x in audited if x["eligible"]>0]
 bad=[x for x in eligible if x["fails"]>0]
