@@ -1,0 +1,48 @@
+name: F-PE-TIMEINT10 embedded BDF2-BE pair
+
+on:
+  push:
+    branches:
+      - work/f-pe-timeint10-embedded-bdf2-be
+    paths:
+      - 'docs/performance/F-PE-TIMEINT10_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT10_RESULT.md'
+      - 'docs/performance/F-PE-TIMEINT10A_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT10A_RESULT.md'
+      - 'docs/performance/F-PE-TIMEINT10_CLOSEOUT.md'
+      - 'docs/performance/F-PE-TIMEINT10A_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT10A_RESULT.md'
+      - 'docs/performance/F-PE-TIMEINT10_CLOSEOUT.md'
+      - 'tests/fpe/test_fpe_timeint10_embedded_be.f90'
+      - 'tests/fpe/run_fpe_timeint10.py'
+      - 'tests/fpe/run_fpe_timeint10.sh'
+      - '.github/workflows/f-pe-timeint10.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  p0:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run embedded BDF2-BE calibration
+        run: bash tests/fpe/run_fpe_timeint10.sh p0
+
+  holdout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run embedded BDF2-BE blind holdout
+        run: bash tests/fpe/run_fpe_timeint10.sh holdout
