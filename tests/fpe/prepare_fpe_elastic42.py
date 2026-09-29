@@ -13,7 +13,10 @@ def load(name,path):
     return mod
 
 def f64(x):
-    return format(float(x),".17g")+"_real64"
+    s=format(float(x),".17g")
+    if "e" not in s.lower() and "." not in s:
+        s += ".0"
+    return s+"_real64"
 
 def fstr(s):
     return str(s).replace("'","''")
