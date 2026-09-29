@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """F-PE-ELASTIC12A4: bounded PDOK BRO Bodemkaart ATOM schema audit."""
 from __future__ import annotations
-import argparse, hashlib, io, json, re, struct, urllib.parse, urllib.request, zipfile
+import argparse, hashlib, io, json, os, re, sqlite3, struct, tempfile, urllib.parse, urllib.request, zipfile
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -70,6 +70,37 @@ def inspect_zip(data:bytes):
         if matched:
             candidates.append({"base":base,"shape_type":st,"polygon_like":polygon,"fields":fields,"soil_fields":matched})
     return records,candidates
+
+def inspect_gpkg(data:bytes):
+    fd,path=tempfile.mkstemp(suffix=".gpkg")
+    os.close(fd)
+    try:
+        Path(path).write_bytes(data)
+        con=sqlite3.connect(path)
+        tables=[]
+        try:
+            contents={r[0]:r[1] for r in con.execute("select table_name,data_type from gpkg_contents")}
+            geoms={r[0]:{"column":r[1],"geometry_type":r[2],"srs_id":r[3]} for r in con.execute(
+                "select table_name,column_name,geometry_type_name,srs_id from gpkg_geometry_columns")}
+            for table,dtype in sorted(contents.items()):
+                cols=[{"name":r[1],"type":r[2]} for r in con.execute(f'pragma table_info("{table}")')]
+                names=[x["name"] for x in cols]
+                soil=[n for n in names if n.lower() in SOIL_TOKENS or "bodem" in n.lower() or "soil" in n.lower()]
+                known={}
+                for field in soil:
+                    try:
+                        n=con.execute(f'select count(*) from "{table}" where "{field}"=?',("Rn47C",)).fetchone()[0]
+                    except Exception:
+                        n=0
+                    known[field]=n
+                tables.append({"table":table,"data_type":dtype,"columns":cols,"soil_fields":soil,
+                               "geometry":geoms.get(table),"rn47c_counts":known})
+        finally:
+            con.close()
+        return tables
+    finally:
+        try: os.unlink(path)
+        except FileNotFoundError: pass
 
 def atom_links(data:bytes,base_url:str):
     root=ET.fromstring(data)
@@ -146,16 +177,29 @@ def main():
                 all_candidates.extend({"download_index":i,**c} for c in candidates)
             except Exception as e:
                 rec["zip_error"]=str(e)
+        elif raw[:16]==b"SQLite format 3\x00" or ".gpkg" in low or "geopackage" in ct.lower():
+            p=out/(name+".gpkg"); p.write_bytes(raw)
+            try:
+                tables=inspect_gpkg(raw)
+                rec["format"]="gpkg"; rec["tables"]=tables
+                for t in tables:
+                    g=t.get("geometry") or {}
+                    polygon=str(g.get("geometry_type","")).upper() in {"POLYGON","MULTIPOLYGON"}
+                    if t.get("soil_fields"):
+                        all_candidates.append({"download_index":i,"base":t["table"],
+                          "shape_type":g.get("geometry_type"),"polygon_like":polygon,
+                          "fields":[x["name"] for x in t["columns"]],"soil_fields":t["soil_fields"],
+                          "srs_id":g.get("srs_id"),"rn47c_counts":t.get("rn47c_counts",{})})
+            except Exception as e:
+                rec["gpkg_error"]=str(e)
         else:
             p=out/(name+".bin"); p.write_bytes(raw)
             rec["format"]="other"
         downloads.append(rec)
 
-    known_match=False
-    # schema-level evidence only: candidate soil field name indicates route;
-    # known Rn47C value binding is deferred unless package is cheaply readable here.
     polygon_candidates=[c for c in all_candidates if c.get("polygon_like") and c.get("soil_fields")]
-    classification="PDOK_SOILCODE_GEOMETRY_ROUTE_CONFIRMED" if polygon_candidates else "TRANSFER_SOURCE_INCOMPLETE"
+    known_match=any(any(v>0 for v in c.get("rn47c_counts",{}).values()) for c in polygon_candidates)
+    classification="PDOK_SOILCODE_GEOMETRY_ROUTE_CONFIRMED" if polygon_candidates and known_match else "TRANSFER_SOURCE_INCOMPLETE"
     result={"atom":feed_meta,"links":links,"followed_subfeeds":followed_subfeeds,"all_links":all_links,"download_candidates":dl,"downloads":downloads,
             "polygon_soilcode_candidates":polygon_candidates,"known_rn47c_match_verified":known_match,
             "classification":classification}
