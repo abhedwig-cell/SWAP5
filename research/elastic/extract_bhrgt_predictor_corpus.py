@@ -20,18 +20,18 @@ FORBIDDEN_TARGET_KEYS = {
 }
 
 FIELDS = {
-    "begin_depth_m": ("interval","beginDepth","m","numeric"),
-    "end_depth_m": ("interval","endDepth","m","numeric"),
-    "volumetric_mass_density_g_cm3": ("interval","volumetricMassDensity","g/cm3","numeric"),
-    "solids_density_g_cm3": ("interval","volumetricMassDensitySolids","g/cm3","numeric"),
-    "water_content_pct": ("interval","waterContent","%","numeric"),
-    "organic_matter_pct": ("interval","organicMatterContent","%","numeric"),
-    "sample_quality": ("interval","sampleQuality",None,"text"),
-    "sample_moistness": ("interval","sampleMoistness",None,"text"),
-    "geotechnical_soil_name": ("interval","geotechnicalSoilName",None,"text"),
-    "organic_matter_class": ("interval","organicMatterContentClass",None,"text"),
-    "determination_method": ("determination","determinationMethod",None,"text"),
-    "determination_procedure": ("determination","determinationProcedure",None,"text"),
+    "begin_depth_m": ("interval","beginDepth","m",None,"numeric"),
+    "end_depth_m": ("interval","endDepth","m",None,"numeric"),
+    "volumetric_mass_density_g_cm3": ("interval","volumetricMassDensity","g/cm3",None,"numeric"),
+    "solids_density_g_cm3": ("interval","volumetricMassDensitySolids","g/cm3",None,"numeric"),
+    "water_content_pct": ("interval","waterContent","%",None,"numeric"),
+    "organic_matter_pct": ("interval","organicMatterContent","%",None,"numeric"),
+    "sample_quality": ("interval","sampleQuality",None,"urn:bro:bhrgt:SampleQuality","text"),
+    "sample_moistness": ("interval","sampleMoistness",None,"urn:bro:bhrgt:SampleMoistness","text"),
+    "geotechnical_soil_name": ("interval","geotechnicalSoilName",None,"urn:bro:bhrgt:GeotechnicalSoilName","text"),
+    "organic_matter_class": ("interval","organicMatterContentClass",None,"urn:bro:bhrgt:OrganicMatterContentClass","text"),
+    "determination_method": ("determination","determinationMethod",None,"urn:bro:bhrgt:DeterminationMethod","text"),
+    "determination_procedure": ("determination","determinationProcedure",None,"urn:bro:bhrgt:DeterminationProcedure","text"),
 }
 
 def local(tag: str) -> str:
@@ -55,7 +55,7 @@ def unique_source_values(scope, name):
             values.append(item)
     return values
 
-def bind_value(scope,name,required_unit,kind):
+def bind_value(scope,name,required_unit,required_code_space,kind):
     values=unique_source_values(scope,name)
     if not values:
         return {"status":"MISSING","value":None,"raw_values":[],"unit":required_unit}
@@ -65,9 +65,9 @@ def bind_value(scope,name,required_unit,kind):
                 "unit":required_unit}
     raw,unit,code_space=values[0]
     if required_unit is not None and unit!=required_unit:
-        return {"status":"AMBIGUOUS","value":None,
-                "raw_values":[{"raw":raw,"unit":unit,"code_space":code_space}],
-                "unit":required_unit,"reason":"UNIT_MISMATCH"}
+        raise RuntimeError(f"invalid unit for {name}: {unit!r}, expected {required_unit!r}")
+    if required_code_space is not None and code_space!=required_code_space:
+        raise RuntimeError(f"invalid code space for {name}: {code_space!r}, expected {required_code_space!r}")
     if kind=="numeric":
         try:value=float(raw)
         except ValueError:value=float("nan")
@@ -151,8 +151,8 @@ def extract(objects: Path, authority: dict, target_ids):
         rec["stress_span_kpa"]=abs(rec["stress_end_kpa"]-rec["stress_start_kpa"])
 
         provenance={}
-        for out_name,(scope_kind,xml_name,unit,kind) in FIELDS.items():
-            bound=bind_value(det if scope_kind=="determination" else interval,xml_name,unit,kind)
+        for out_name,(scope_kind,xml_name,unit,code_space,kind) in FIELDS.items():
+            bound=bind_value(det if scope_kind=="determination" else interval,xml_name,unit,code_space,kind)
             rec[out_name]=bound["value"]
             rec[out_name+"_status"]=bound["status"]
             provenance[out_name]={
