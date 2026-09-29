@@ -511,8 +511,8 @@ contains
     if (parameters%elasticity_active) then
       if (parameters%ksatexm_extension_active .or. parameters%direct_retention_active .or. &
           parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active) return
-      if (any(.not. ieee_is_finite(parameters%cofgen(24,:))) .or. &
-          any(parameters%cofgen(24,:) < 0.0_real64)) return
+      if (any(.not. ieee_is_finite(parameters%cofgen(24,:)))) return
+      if (any(parameters%cofgen(24,:) < 0.0_real64)) return
     end if
 
     if (parameters%ksatexm_extension_active) then
