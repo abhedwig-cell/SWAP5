@@ -81,3 +81,5 @@ jobs:
           name: f-hydrofit02-identity-rerun
           path: ${{ runner.temp }}/hydrofit
           if-no-files-found: error
+
+# rerun after bound-transform restoration
