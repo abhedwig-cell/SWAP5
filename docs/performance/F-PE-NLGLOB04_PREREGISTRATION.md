@@ -144,6 +144,15 @@ if coverage passes and all hold:
    - median compensated local residual ratio is lower than median naive ratio; and
    - >=10% crossing fraction.
 
+### Storage-family direction rule
+
+For the storage-representation classification, a route-mode family shows the primary-near-storage-floor direction only if:
+
+1. >=50% of its primary dominant-node records have `r_storage_ulp <= 10`; and
+2. that fraction is at least 1.5 times the corresponding adequate-family fraction, with a zero adequate fraction treated as separated when the primary fraction is positive.
+
+This definition is frozen before result exposure.
+
 ### STORAGE_REPRESENTATION_FLOOR_SIGNAL
 
 `NLGLOB04_STORAGE_REPRESENTATION_FLOOR_SIGNAL`
