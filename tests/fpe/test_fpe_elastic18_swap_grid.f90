@@ -43,10 +43,16 @@ program test_fpe_elastic18_swap_grid
   call req(diag%status==FMR_ELAS_GRID_INVALID_VALUE,'A4 nan')
   call fmr_normalize_swap_grid_geometry([-5.0_real64],[0.0_real64],depth,thick,diag)
   call req(diag%status==FMR_ELAS_GRID_INVALID_VALUE,'A4 zero thickness')
+  call fmr_normalize_swap_grid_geometry([-5.0_real64],[-10.0_real64],depth,thick,diag)
+  call req(diag%status==FMR_ELAS_GRID_INVALID_VALUE,'A4 negative thickness')
+  call fmr_normalize_swap_grid_geometry([-5.0_real64,-15.0_real64],[10.0_real64],depth,thick,diag)
+  call req(diag%status==FMR_ELAS_GRID_INVALID_SHAPE,'A4 shape mismatch')
   write(*,'(A)')'F_PE_ELASTIC18_A4_VALUE_FAIL_CLOSED=PASS'
 
   call fmr_normalize_swap_grid_geometry([-5.0_real64,-20.0_real64],[10.0_real64,10.0_real64],depth,thick,diag)
   call req(diag%status==FMR_ELAS_GRID_NONCONTIGUOUS,'A5 gap')
+  call fmr_normalize_swap_grid_geometry([-5.0_real64,-14.0_real64],[10.0_real64,10.0_real64],depth,thick,diag)
+  call req(diag%status==FMR_ELAS_GRID_NONCONTIGUOUS,'A5 overlap')
   write(*,'(A)')'F_PE_ELASTIC18_A5_CONTIGUITY_FAIL_CLOSED=PASS'
 
   call fmr_normalize_swap_grid_geometry([-25.0_real64,-75.0_real64],[50.0_real64,50.0_real64],depth,thick,diag)
