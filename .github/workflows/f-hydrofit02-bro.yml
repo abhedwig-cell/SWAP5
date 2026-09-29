@@ -433,6 +433,13 @@ jobs:
           set -o pipefail
           PYTHONPATH=research/hydrofit python research/hydrofit/replicate_lambda_shrinkage.py \
             --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS.json" | tee "$RUNNER_TEMP/bro/lambda-shrinkage-replication.txt"
+      - name: Characterize LID02 severe source and duplicate identities
+        if: always()
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/characterize_lid02_provenance.py \
+            --corpus "integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS.json" \
+            --out "$RUNNER_TEMP/bro/lid02-provenance.json" | tee "$RUNNER_TEMP/bro/lid02-provenance.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: f-hydrofit02-bro-probe
