@@ -91,10 +91,9 @@ for mid in ("B01","B12","O05","O14"):
                       "process_ok":cp.returncode==0,"iterations":len(groups)})
         for g in groups:
           if not g: continue
-          it=int(g[0]["ITER"]); s=step_by_iter.get(it); vd=vec_by_iter.get(it)
+          it=int(g[0]["ITER"]); s=step_by_iter.get(it); rv=vec_by_iter.get(it)
           if s is None: continue
           vec_expected+=1
-          rv=parse_vec(vd) if vd else None
           if rv is None: continue
           vec_good+=1
           selected=next((x for x in g if int(x["CURRENT_ACCEPT"])==1),g[-1])
