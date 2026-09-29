@@ -4,11 +4,7 @@ Date: 2026-09-29
 
 Status:
 
-`BLOCKED_NLGLOB14E_DIAGNOSTIC_OBSERVABILITY`
-
-Numerical outcome:
-
-`96 / 96 COMPLETE`
+`QUALIFIED_COMPLETE_DYNAMIC_TOP_RESEARCH_POLICY`
 
 Canonical base:
 
@@ -16,78 +12,133 @@ Canonical base:
 
 Qualification authority:
 
-- workflow run: `36562592611`;
-- job: `109386754328`;
+- corrected final workflow run: `36562781585`;
+- job: `109387398807`;
 - conclusion: SUCCESS.
 
-## Frozen full-bank outcome
+The earlier run `36562592611` exposed a diagnostic-harness defect in the no-rebracketing predicate. Its numerical result was already 96/96 complete, but it was bounded as `BLOCKED_NLGLOB14E_DIAGNOSTIC_OBSERVABILITY` until the predicate was corrected. No solver or state-machine behavior changed between the two runs.
 
-All 96 frozen dynamic-top cases complete the requested horizon.
+## Frozen full-bank result
+
+All 96 frozen dynamic-top cases complete the requested horizon:
+
+`96 / 96 COMPLETE`.
 
 Observed:
 
-- complete cases: `96 / 96`;
 - process failures: `0`;
+- incomplete cases: `0`;
 - nonfinite completed states: `0`;
+- unsafe terminal reasons: `0`;
 - physical mass: PASS;
 - max accepted-interval ledger about `4.84e-14 cm`;
 - max cumulative ledger about `6.06e-14 cm`;
 - saturation-mode entries: `8`;
 - persistent saturated-mode intervals: `38`;
-- smooth no-event TG order: about `2.048`.
+- no event localization occurs after persistent saturated-mode entry.
 
-No terminal reason remains.
+Both TG and KLAG complete across all four materials, all three routes and all four dt levels.
 
-## Diagnostic-gate failure
+## Smooth no-event preservation
 
-The preregistered evaluator also required a diagnostic check intended to prove that no trajectory re-entered saturation-event localization after persistent saturated-mode entry.
+PASS.
 
-The implementation used:
+The original smooth TIMEINT16C bank remains strongly second order:
 
-`root_count == 1`
+- 4/4 ladders complete;
+- median refined top-head order about `2.04787`;
+- median refined top-theta order about `2.04787`;
+- 4/4 individual refined head ladders >=1.5;
+- physical/cumulative ledgers at roundoff;
+- median deterministic work ratio versus KLAG BE: `1.0`.
 
-for trajectories with one saturated-mode entry.
+Thus the assembled dynamic policy does not perturb the no-event TG mechanism.
 
-That assumption is incorrect for the assembled NLGLOB14C/D instrumentation.
+## Complete qualified research policy
 
-The successful NLGLOB14A root diagnostic is replaced by the NLGLOB14C switch/entry diagnostics during the later materialization chain.
+For TG trajectories:
 
-Therefore all eight event trajectories show:
+### Unsaturated branch
 
-- `entry_count = 1`;
-- `persistent_ok = true`;
-- full horizon completion;
-- but `root_count = 0`.
+Use provider-consistent endpoint-stage TG with the unchanged accepted-state formula.
 
-This makes the evaluator set:
+Use unchanged S0/R0 research endpoint certificates.
 
-`diagnostic_ok = false`
+### First saturation entry
 
-even though the state-machine diagnostics themselves show correct persistent-mode behavior.
+When prospective accepted TG moisture crosses the constitutive saturation boundary:
 
-## Classification
+1. localize the event using NLGLOB14A bracket-preserving bisection;
+2. require the event-distance, route, finite-state and event-mass guards;
+3. accept the event state internally;
+4. integrate the exact nominal-interval remainder with existing head/KLAG;
+5. enter persistent saturated temporal mode only after the event+remainder interval completes.
 
-The preregistered broad classifier returned:
+### Persistent saturated branch
 
-`CLOSED_NLGLOB14E_DYNAMIC_POLICY_PHYSICAL_ADMISSIBILITY_FAILED`.
+For each later nominal interval after entry:
 
-That label must not be interpreted as a physical failure.
+- use the existing head/KLAG formulation;
+- reevaluate the dynamic-top provider normally;
+- retain unchanged S0/R0 endpoint certificates;
+- do not re-enter TG event localization.
 
-No mass, finite-state, route, solver or horizon-completion gate failed.
+KLAG comparison trajectories remain otherwise unchanged.
 
-The actual blocker is diagnostic observability.
+## Work diagnostics
 
-Therefore the bounded result authority is:
+Median deterministic work over the frozen bank:
 
-`BLOCKED_NLGLOB14E_DIAGNOSTIC_OBSERVABILITY`.
+- TG: `202.0`;
+- KLAG: `180.5`.
+
+These values are descriptive only and were not qualification gates.
+
+Correctness was qualified before any work-policy optimization.
+
+## Frozen classification
+
+`QUALIFIED_COMPLETE_DYNAMIC_TOP_RESEARCH_POLICY`.
+
+All frozen gates pass.
+
+## Scientific interpretation
+
+The full same-route dynamic-top blocker is removed at research level on the frozen 96-case bank.
+
+The evidence chain now supports:
+
+1. second-order provider-consistent TG in the unsaturated regime;
+2. representation-aware endpoint exhaustion without tolerance relaxation;
+3. conservative saturation-event localization;
+4. head/KLAG integration after saturation entry;
+5. persistence of the saturated temporal regime across nominal steps.
+
+The earlier failures were not one defect. They were a combination of:
+
+- arithmetic representation-floor endpoint stagnation; and
+- missing temporal regime semantics at saturation.
+
+Both are now resolved in the assembled research policy.
+
+## Remaining boundary
+
+A physical release/desaturation criterion for leaving persistent saturated mode is not yet qualified.
+
+The frozen horizon did not require one.
+
+That release/event semantics question must be handled separately before production-shaped admission.
 
 ## Consequence
 
-Do not change any solver or state-machine behavior.
+TIMEINT17 same-route dynamic-top qualification may now be reopened using the complete assembled research policy.
 
-Open a diagnostic-only successor that instruments saturation-root attempt count explicitly and reruns the identical 96-case postimage.
+After positive TIMEINT17 closure, the sequence can proceed to:
 
-The corrected gate must be preregistered before rerun.
+1. explicit saturated-mode release/desaturation semantics;
+2. dynamic-top event localization as required;
+3. TIMEINT18 variable-step/LTE;
+4. production-shaped integration and admission.
 
 ## Production boundary
 
