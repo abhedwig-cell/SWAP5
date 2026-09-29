@@ -19,7 +19,7 @@ for r in rows:
 # Fail-closed API probes need only one valid material.
 r=rows[0]
 args=[r["wcr"],r["wcs"],r["alpha"],r["npar"],r["ksfit"],r["lambda"]]
-for mode in ("invalid-missing","invalid-inactive-values","invalid-negative"):
+for mode in ("invalid-missing","invalid-inactive-values","invalid-negative","invalid-ksatexm"):
     cp=subprocess.run([str(exe),mode,*args],text=True,capture_output=True)
     if cp.returncode==0:
         raise SystemExit("F_PE_ELASTIC05_FAIL expected nonzero for "+mode)
