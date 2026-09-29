@@ -1,0 +1,65 @@
+name: F-PE-ELASTIC11C calibration model selection
+
+concurrency:
+  group: f-pe-elastic11c-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic01-soil-storage
+    paths:
+      - 'research/elastic/select_bhrgt_ssk_model.py'
+      - 'docs/performance/F-PE-ELASTIC11C_MODEL_SELECTION_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic11c-model.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy
+
+      - name: Download target-blind predictor corpus
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic11b-predictor-corpus
+          path: ${{ runner.temp }}/predictors
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36533233002
+
+      - name: Download reconciled mechanical targets
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic10e-r1-reconciled-targets
+          path: ${{ runner.temp }}/targets
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36532519843
+
+      - name: Run calibration-only model selection twice
+        run: |
+          python research/elastic/select_bhrgt_ssk_model.py             --predictors "$RUNNER_TEMP/predictors/predictors.json"             --targets "$RUNNER_TEMP/targets/targets.json"             --out "$RUNNER_TEMP/model-a.json" | tee "$RUNNER_TEMP/model-a.txt"
+          python research/elastic/select_bhrgt_ssk_model.py             --predictors "$RUNNER_TEMP/predictors/predictors.json"             --targets "$RUNNER_TEMP/targets/targets.json"             --out "$RUNNER_TEMP/model-b.json" | tee "$RUNNER_TEMP/model-b.txt"
+          cmp "$RUNNER_TEMP/model-a.json" "$RUNNER_TEMP/model-b.json"
+          cmp "$RUNNER_TEMP/model-a.txt" "$RUNNER_TEMP/model-b.txt"
+          grep -q 'F_PE_ELASTIC11C_HOLDOUT_TARGETS_ACCESSED=0' "$RUNNER_TEMP/model-a.txt"
+          grep -q 'F_PE_ELASTIC11C=PASS' "$RUNNER_TEMP/model-a.txt"
+          echo F_PE_ELASTIC11C_DETERMINISM=PASS
+
+      - name: Upload calibration model result
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic11c-calibration-model
+          path: |
+            ${{ runner.temp }}/model-a.json
+            ${{ runner.temp }}/model-a.txt
