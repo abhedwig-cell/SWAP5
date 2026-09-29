@@ -60,33 +60,41 @@ TEST STATUS:
 - F-PE-ELASTIC10B attempt 2 run 36528193825: service-contract evidence only.
 - F-PE-ELASTIC10C run 36528898941: PASS; HTTP 200; zero BRO-IDs at 10 km.
   Result authority: F-PE-ELASTIC10C_RESULT.md.
+- F-PE-ELASTIC10D run 36529870974: PASS; 86 unique grid BRO-IDs; fixed 16-object
+  sample; 8 R3 + 8 R2 target-ready objects.
+  Result authority: F-PE-ELASTIC10D_RESULT.md.
 
 QUALIFICATION STATUS:
 - Phase A: qualified.
 - Fixed local mechanical-target coverage at the official example center through
   the service-valid maximum 10-km radius: qualified negative.
-- National mechanical-target availability: unresolved.
+- National fixed-grid mechanical-target availability: qualified positive.
+- F-PE-ELASTIC10D found 86 unique settlement registrations across the frozen
+  12-cell grid and selected 16/16 target-ready objects (8 R3, 8 R2).
 - No ELAS target value, prior mapping or pedotransfer relation admitted.
 
 DEPENDENCY SURFACE:
+- docs/performance/F-PE-ELASTIC10D_NATIONAL_GRID_PREREGISTRATION.md
+- docs/performance/F-PE-ELASTIC10D_RESULT.md
+- research/elastic/run_bhrgt_national_grid_pilot.py
 - research/elastic/run_bhrgt_settlement_pilot10.py
 - research/elastic/bro_bhrgt_fetch.py
-- docs/performance/F-PE-ELASTIC10C_PILOT_PREREGISTRATION.md
-- .github/workflows/f-pe-elastic10c-bhrgt-pilot.yml
+- .github/workflows/f-pe-elastic10d-bhrgt-grid.yml
 - official BHR-GT v2 public service contract
 
 BLOCKER:
-None for the completed local pilot. The local fixed cell contains no settlement
-registrations through 10 km, so it cannot supply a mechanical target.
+None for target availability. The fixed national grid contains multiple
+source-bound R2/R3 mechanical targets.
 
 NEXT SAFE STEP:
-Start a new, separately preregistered national-discovery workunit using the
-machine-bound BHR-GT boundingBox search contract. The first phase should census
-national settlement registrations without retrieving or hand-selecting objects.
+Preregister a separate mechanical-target extraction workunit on the frozen
+16-object ELASTIC10D sample. Before calculating any compressibility, bind the
+SWE record-column semantics and units for HeightAtSpecificState.xml and
+StressAtSpecificSettlement.xml. Then freeze conversion rules for R2
+unload/reload and R3 effective-stress targets.
 
-PROHIBITED UNTIL A NATIONAL DISCOVERY RESULT:
-- hand-selecting BHR-GT objects;
-- changing R0-R3 readiness thresholds;
-- calculating production ELAS;
+PROHIBITED UNTIL TARGET-EXTRACTION PREREGISTRATION:
+- calculating m_v, S_s or ELAS from the object series;
+- changing the frozen 16-object sample;
 - fitting a pedotransfer relation;
 - using solver performance as target evidence.
