@@ -1,0 +1,25 @@
+name: F-PE-NLGLOB14Z3 repaired finest late retreat
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z3-repaired-late-retreat
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z3*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14z3*.py'
+      - 'tests/fpe/run_fpe_nlglob14z3*.py'
+      - 'tests/fpe/run_fpe_nlglob14z3*.sh'
+      - '.github/workflows/f-pe-nlglob14z3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repaired-late-retreat:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z3.sh
