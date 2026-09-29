@@ -1,0 +1,32 @@
+name: F-HYDROFIT02 gated lambda estimator
+
+on:
+  push:
+    branches:
+      - research/f-hydrofit02-bro-acquisition
+    paths:
+      - 'research/hydrofit/compare_gated_lambda_estimator.py'
+      - '.github/workflows/f-hydrofit02-lsafe.yml'
+  workflow_dispatch:
+
+jobs:
+  lsafe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical dependencies
+        run: python -m pip install numpy scipy
+      - name: Run preregistered gated estimator
+        run: |
+          set -o pipefail
+          PYTHONPATH=research/hydrofit python research/hydrofit/compare_gated_lambda_estimator.py \
+            --corpus integration/research/data/F-HYDROFIT02_FROZEN_SPATIAL_LAMBDA_CORPUS_IDENTITY.json \
+            | tee "$RUNNER_TEMP/lsafe.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-hydrofit02-lsafe
+          path: ${{ runner.temp }}/lsafe.txt
+          if-no-files-found: error
