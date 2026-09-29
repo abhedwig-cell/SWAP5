@@ -123,6 +123,13 @@ contains
        route = 'b110-mvg-parameters-invalid'
        return
     end if
+    if (provider%parameters%elastic_storage_active) then
+       if (.not. allocated(provider%parameters%specific_elastic_storage) .or. &
+           size(provider%parameters%specific_elastic_storage) /= n) then
+          route = 'b110-mvg-elastic-storage-invalid'
+          return
+       end if
+    end if
     if (size(pressure_head) /= n .or. size(pressure_head_direction) /= n .or. &
         size(water_content_direction) /= n) then
        route = 'b110-mvg-direction-shape-invalid'
