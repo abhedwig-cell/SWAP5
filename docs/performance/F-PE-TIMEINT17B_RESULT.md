@@ -6,11 +6,11 @@ Status:
 
 `TIMEINT17B_ENDPOINT_SOLVER_DOMINANT`
 
-Secondary classification:
+Secondary attribution:
 
 `TIMEINT17B_SHARED_DYNAMIC_TOP_BLOCKER`
 
-Canonical base incorporated before result write:
+Canonical base:
 
 `integration/f-ci-canonical@e47f337c506551f865aee31288215a7fb91b4214`
 
@@ -20,121 +20,98 @@ Qualification authority:
 - job: `109282889959`;
 - conclusion: SUCCESS.
 
-## Frozen question
+## Frozen census
 
-TIMEINT17B asked whether the failed TIMEINT17A/A2 same-route qualification was dominated by:
+TIMEINT17B reused the frozen A2 bank and numerical settings and replaced the generic `ELIGIBLE=0` outcome with explicit terminal causes.
 
-1. genuine dynamic-top route transitions; or
-2. endpoint nonlinear solve failure before route semantics could be assessed.
+TG census:
 
-The frozen primary bank was TIMEINT17A2.
+- runs: 48;
+- complete same-route: 0;
+- non-complete: 48;
+- `ENDPOINT_SOLVE_FAILURE`: 48/48;
+- converged route-event outcomes: 0/48;
+- route-event fraction: 0.0;
+- endpoint-solver fraction: 1.0.
 
-No numerical settings, fixtures, tolerances or temporal formulas were changed.
+The frozen primary classification is therefore:
 
-## Result
+`TIMEINT17B_ENDPOINT_SOLVER_DOMINANT`.
 
-All 48 TG requests in the frozen A2 bank terminated as:
+## TG versus KLAG attribution
 
-`ENDPOINT_SOLVE_FAILURE`
+Of the 48 TG endpoint failures:
 
-Aggregate census:
-
-- TG runs: 48;
-- complete same-route TG runs: 0;
-- ineligible TG runs: 48;
-- endpoint-solver failures: 48/48 = 1.00;
-- explicit route-event mismatches with converged endpoint/accepted state: 0/48 = 0.00;
-- onset event evidence: false;
-- release/runoff event evidence: false;
-- accepted physical mass diagnostics: PASS;
-- process/output failures: 0.
-
-Frozen primary classification:
-
-`TIMEINT17B_ENDPOINT_SOLVER_DOMINANT`
-
-This exceeds the preregistered >50% endpoint-solver threshold by a large margin.
-
-## KLAG comparator
-
-The identical frozen A2 fixtures were also run with KLAG Backward Euler.
-
-All paired KLAG requests likewise terminate with endpoint-solve failure.
-
-Using the preregistered same-fixture / comparable-first-terminal-step criterion:
-
-- shared dynamic-top solver signals: 45;
-- TG endpoint failures: 48;
-- shared fraction: 0.9375;
+- 45 have the same endpoint-solve failure in KLAG;
+- shared endpoint-failure fraction: 0.9375;
 - TG-specific endpoint robustness signals: 0.
 
-Therefore the secondary attribution is:
+This satisfies the frozen secondary attribution:
 
-`TIMEINT17B_SHARED_DYNAMIC_TOP_BLOCKER`
+`TIMEINT17B_SHARED_DYNAMIC_TOP_BLOCKER`.
 
-The blocker is not specific to the Thomas-Gladwell correction.
+The blocker is therefore not specific to the Thomas-Gladwell current-step predicted-K staging.
 
-## Scientific interpretation
+It lies in the shared dynamic-top endpoint solve path or in the nonsmooth boundary composition seen by that solve.
 
-TIMEINT17A and A2 cannot be interpreted as evidence that dynamic-top physical route events destroy TG accuracy.
+## Event consequence
 
-TIMEINT17B shows that the endpoint solve fails before route-event semantics can be established throughout the frozen A2 bank.
+No converged endpoint route-event evidence exists in this census:
 
-The fact that KLAG fails essentially the same requests at the same first terminal step is decisive: the dominant obstruction belongs to the shared dynamic-top endpoint solve/composition, not to the second-order TG temporal correction.
+- onset evidence: false;
+- release/runoff evidence: false;
+- event-span gate: false.
 
-This also explains why repeated same-route bank redesign did not help.
+Therefore TIMEINT17 must not open physical event localization yet.
 
-The bank was not primarily too close to a physical route boundary. The solver could not robustly realize the requested dynamic-top endpoint state under the frozen numerical envelope.
+A failed endpoint solve cannot be re-labelled as a route event.
 
-## Mass and transaction interpretation
+## Mass consequence
 
-Accepted physical mass remains clean.
+Accepted-state physical mass remains valid:
 
-Failed terminal trials publish no accepted water and do not contribute synthetic mass.
+- accepted-mass gate: PASS;
+- failed/rejected endpoint trials publish no physical mass;
+- no history mass or storage-derived flux correction is introduced.
 
-No evidence of:
+## Interpretation
 
-- accepted-state mass leakage;
-- theta/head projection inconsistency;
-- history mass relabeling;
-- TG-specific transaction mutation.
+TIMEINT17A/A2 originally appeared route-unstable because all paths were exposed as generic ineligible trajectories.
 
-The blocker is endpoint numerical/path robustness under dynamic-top coupling.
+TIMEINT17B resolves that ambiguity.
 
-## Decision
+The immediate failure is endpoint nonlinear convergence before a converged new route can be classified.
 
-Do not open TIMEINT17 P1 known-time event localization.
+Because the failure is shared by TG and KLAG in 93.75% of TG endpoint failures, increasing or retuning the TG method itself is not justified.
 
-Do not open TIMEINT17 P2 endogenous route localization.
+The next attribution target is the dynamic-top route path **inside** endpoint Newton/backtracking evaluations.
 
-Do not increase MAXIT or loosen tolerances as a rescue inside TIMEINT17B.
+Specifically, determine whether the boundary provider:
 
-Open a separate work unit:
+1. remains on one physical route throughout a failed nonlinear solve;
+2. switches route one or more times inside Newton/backtracking;
+3. produces discontinuous residual/Jacobian behavior at those internal switches.
 
-`F-PE-TIMEINT17C — shared dynamic-top endpoint nonlinear-path attribution and repair`
+That attribution can distinguish a true shared solver defect from a boundary-event surface encountered inside the nonlinear trial.
 
-TIMEINT17C must investigate the endpoint solve path shared by TG and KLAG.
+## Required successor
 
-Primary questions:
+Open:
 
-1. Why does the current dynamic-top endpoint solve consume the frozen nonlinear/backtracking envelope even for small A2 intervals?
-2. Is the failure caused by inconsistent surface residual/Jacobian treatment, route candidate switching inside Newton, top K authority mismatch, or ponding-variable handling?
-3. Can the shared endpoint solve be repaired without changing physical semantics, tolerances or temporal acceptance rules?
+`F-PE-TIMEINT17C — in-Newton dynamic-top route-path attribution`.
 
-Only after shared endpoint robustness is independently qualified may TIMEINT17 return to event semantics.
+TIMEINT17C is diagnostic only.
+
+No MAXIT or tolerance changes are permitted.
 
 ## Production boundary
 
-No production `src/**` change in TIMEINT17B.
+No production `src/**` change.
 
-No tolerance change.
-
-No MAXIT change.
-
-No timestep-controller change.
+No mass-gate change.
 
 No event localization.
 
-No default change.
+No adaptive timestep work.
 
 `LEGACY_NUMERICS` remains production default.
