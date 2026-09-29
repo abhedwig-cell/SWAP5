@@ -31,3 +31,5 @@ jobs:
         run: bash tests/fpe/run_fpe_elastic02a.sh
       - name: Audit ELASTIC03 physical predictor sources
         run: bash tests/fpe/audit_fpe_elastic03_sources.sh
+      - name: Run ELASTIC04 typed ownership qualification
+        run: bash tests/fpe/run_fpe_elastic04.sh
