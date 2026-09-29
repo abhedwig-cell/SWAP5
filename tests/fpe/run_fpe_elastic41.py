@@ -56,6 +56,10 @@ def main():
     indices=sorted({round(i*(n-1)/63) for i in range(64)})
     successes=0
     first_case=None
+    original_compose=e41.elastic36.compose
+    def cached_compose(source,x,y):
+        return e36.compose(source,x,y,polygons=polygons)
+    e41.elastic36.compose=cached_compose
     with tempfile.TemporaryDirectory() as td:
         td=Path(td)
         for slot,idx in enumerate(indices):
@@ -90,6 +94,8 @@ def main():
         result=e41.prepare_handoff(True,gpkg,probe[0],probe[1],row,prov)
         req(row.read_text(encoding="utf-8")==first_rows and prov.read_bytes()==first_prov,"A7 repeat")
         print("F_PE_ELASTIC41_A7_REPEAT_IDENTITY=PASS")
+
+    e41.elastic36.compose=original_compose
 
     with tempfile.TemporaryDirectory() as td:
         td=Path(td)
