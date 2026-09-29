@@ -111,6 +111,7 @@ persist="""    if(nl14d_saturated_mode)then
 """
 handoff="""    if(nl14r_handoff_pending)then
       nominal_dt=dt
+      saved_cumledger=cumledger
       nl14r_dry_tg=.true.
       target_route=R_FLUX
       call advance_tg_core(step_index,nominal_dt,domain_fail)
@@ -131,7 +132,7 @@ handoff="""    if(nl14r_handoff_pending)then
            '|TERMINAL=',trim(terminal_reason),'|SOLVER_STATUS=',last_solver_status, &
            '|ORIGIN_ROUTE=',last_origin_route,'|PRED_ROUTE=',last_pred_route, &
            '|ENDPOINT_ROUTE=',last_endpoint_route,'|ACCEPT_ROUTE=',last_accept_route, &
-           '|SAT=',nl14r_prev_sat_count,'|LEDGER=',cumledger
+           '|SAT=',nl14r_prev_sat_count,'|LEDGER=',cumledger-saved_cumledger
       return
     end if
 
@@ -174,6 +175,18 @@ entry_repl="""        nl14d_saturated_mode=.true.
 if entry not in src:
     raise SystemExit("NLGLOB14R mode-entry marker missing")
 src=src.replace(entry,entry_repl,1)
+
+# Emit final mode/saturation state independently of the generic result line.
+result_marker="  write(*,'(A)') 'F_PE_TIMEINT17A=PASS'\n"
+if result_marker not in src:
+    raise SystemExit("NLGLOB14R final result marker missing")
+result_repl="""  write(*,'(*(g0))') 'F_PE_NLGLOB14R_FINAL|SAT=', &
+       count(state%pressure_head>=0.0_real64 .and. state%water_content==ts), &
+       '|RELEASED=',merge(1,0,nl14r_released),'|REENTRIES=',nl14r_reentries, &
+       '|HANDOFF_STEP=',nl14r_handoff_step,'|RETREAT_STEP=',nl14r_retreat_step
+  write(*,'(A)') 'F_PE_TIMEINT17A=PASS'
+"""
+src=src.replace(result_marker,result_repl,1)
 
 for req in ("F_PE_NLGLOB14R_RETREAT","F_PE_NLGLOB14R_HANDOFF","F_PE_NLGLOB14R_REENTRY","F_PE_NLGLOB14R_TG_OWNED"):
     if req not in src:
