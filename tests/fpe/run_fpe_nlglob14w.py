@@ -253,7 +253,10 @@ for route in routes:
             "noncontiguous_count":noncontig,"upper_events":upper_events,"max_abs_mass_ledger":maxledger,
             "cumulative_mass_ledger":cumledger,"max_residual":maxres,"max_rollback":max_rb,
             "nonlinear_iterations":total_nl,"backtracking":total_back,"saturated_block_disappeared":disappeared,
-            "max_control_head_diff":max_ctrl_h,"max_control_theta_diff":max_ctrl_th,\n            "control_second_retreat_time":(control_second[0]*dt if control_second else None),\n            "split_second_retreat_time":(split_second["time"] if split_second else None),\n            "second_retreat_time_difference":((split_second["time"]-control_second[0]*dt) if split_second and control_second else None)})
+            "max_control_head_diff":max_ctrl_h,"max_control_theta_diff":max_ctrl_th,
+            "control_second_retreat_time":(control_second[0]*dt if control_second else None),
+            "split_second_retreat_time":(split_second["time"] if split_second else None),
+            "second_retreat_time_difference":((split_second["time"]-control_second[0]*dt) if split_second and control_second else None)})
         rows.append(rec)
 
 classes=[x["classification"] for x in rows]
@@ -284,7 +287,10 @@ summary={"classification":agg,"coverage_ok":coverage,"case_count":len(rows),"pro
     "total_retreat_events":sum(x.get("retreat_events",0) for x in rows),
     "total_chatter":sum(x.get("chatter_count",0) for x in rows),
     "total_noncontiguous":sum(x.get("noncontiguous_count",0) for x in rows),
-    "disappearance_cases":sum(bool(x.get("saturated_block_disappeared")) for x in rows),\n    "split_second_retreat_cases":sum(x=="SPLIT_SECOND_RETREAT_OWNERSHIP_TRANSITION" for x in classes),\n    "split_second_retreat_times":[x.get("split_second_retreat_time") for x in rows],\n    "control_second_retreat_times":[x.get("control_second_retreat_time") for x in rows],
+    "disappearance_cases":sum(bool(x.get("saturated_block_disappeared")) for x in rows),
+    "split_second_retreat_cases":sum(x=="SPLIT_SECOND_RETREAT_OWNERSHIP_TRANSITION" for x in classes),
+    "split_second_retreat_times":[x.get("split_second_retreat_time") for x in rows],
+    "control_second_retreat_times":[x.get("control_second_retreat_time") for x in rows],
     "max_abs_mass_ledger":max((x.get("max_abs_mass_ledger",math.inf) for x in rows),default=math.inf),
     "max_abs_cumulative_mass_ledger":max((abs(x.get("cumulative_mass_ledger",math.inf)) for x in rows),default=math.inf),
     "max_residual":max((x.get("max_residual",math.inf) for x in rows),default=math.inf),
