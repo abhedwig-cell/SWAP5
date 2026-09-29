@@ -56,10 +56,10 @@ def prepare_handoff(
         raise Elastic41Error(str(exc)) from exc
 
     manifest = {
+        **provenance36,
         "schema": SCHEMA,
         "generated_prior_requested": True,
         "row_file": str(row_output),
-        **provenance36,
     }
 
     row_output.parent.mkdir(parents=True, exist_ok=True)
