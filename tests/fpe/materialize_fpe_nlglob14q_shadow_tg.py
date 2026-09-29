@@ -150,20 +150,10 @@ tg_end=src.find("  end subroutine advance_tg_core",tg_start)
 if tg_start<0 or tg_end<0:
     raise SystemExit("NLGLOB14Q TG core bounds missing")
 tgseg=src[tg_start:tg_end]
-fail_old="""    if(res%status/=SW_SOLVE_CONVERGED)then
-      terminal_reason='ENDPOINT_SOLVE_FAILURE'
-      eligible=.false.; transition_step=step_index; return
-    end if
-"""
-fail_new="""    if(res%status/=SW_SOLVE_CONVERGED)then
-      if(nl14q_shadow_dry) nl14q_shadow_retry=res%retry_advised
-      terminal_reason='ENDPOINT_SOLVE_FAILURE'
-      eligible=.false.; transition_step=step_index; return
-    end if
-"""
-if fail_old not in tgseg:
+fail_marker="      terminal_reason='ENDPOINT_SOLVE_FAILURE'\n"
+if fail_marker not in tgseg:
     raise SystemExit("NLGLOB14Q TG failure marker missing")
-tgseg=tgseg.replace(fail_old,fail_new,1)
+tgseg=tgseg.replace(fail_marker,"      if(nl14q_shadow_dry) nl14q_shadow_retry=res%retry_advised\n"+fail_marker,1)
 src=src[:tg_start]+tgseg+src[tg_end:]
 
 if "F_PE_NLGLOB14Q_SHADOW" not in src or "F_PE_NLGLOB14Q_ROLLBACK" not in src:
