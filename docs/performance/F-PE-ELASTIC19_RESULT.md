@@ -7,14 +7,14 @@ Status: QUALIFIED_ADMISSION_CANDIDATE
 Branch:
 `work/f-pe-elastic19-clean-admission`
 
-Qualification source postimage:
-`fbdbea0af224433816c8f8e9509e5141a0ab3476`
+Qualified clean postimage:
+`8b41e9b7cceaf75416e5f7169ca0aecdc657061c`
 
 Workflow run:
-`36561705709`
+`36562052776`
 
 Job:
-`109383870826`
+`109385005170`
 
 Conclusion:
 SUCCESS.
