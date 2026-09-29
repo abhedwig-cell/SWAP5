@@ -10,15 +10,17 @@ Canonical base:
 
 `integration/f-ci-canonical@dc12c52ea71e136cd9ea0573980915b8618ca7d6`
 
-Qualification authority:
+Final qualification authority:
 
-- workflow run: `36558488567`;
-- job: `109373336442`;
+- workflow run: `36558791581`;
+- job: `109374338130`;
 - conclusion: SUCCESS.
+
+Earlier run `36558488567` established the same negative direction, but the final authority is the later protocol-corrected postimage above.
 
 ## Frozen question
 
-Does one additional bounded same-origin subdivision level, from a failing h/4 child to two h/8 children, make the five remaining O05/TG near-saturation targets retention-admissible?
+Does one additional bounded same-origin subdivision level, from a failing h/4 child to h/8, make the five remaining O05/TG near-saturation targets retention-admissible?
 
 No h/16 or recursive subdivision was permitted.
 
@@ -34,27 +36,36 @@ All five frozen targets executed without process failure:
 - RUNOFF, dt 0.00025 d;
 - RUNOFF, dt 0.000125 d.
 
+Exact rollback/origin identity is inherited from NLGLOB13C1/C2.
+
 Smooth TIMEINT16C authority remains preserved:
 
 - median refined top-head order about `2.04787`;
 - median refined top-theta order about `2.04787`;
 - smooth qualification gate PASS.
 
-Physical mass remains within authority on all trajectories.
+Physical mass remains within unchanged authority:
+
+- max accepted-interval ledger about `2.24e-14 cm`;
+- max cumulative ledger about `1.25e-14 cm`.
 
 ## Result
 
-None of the five targets completes.
+The first same-origin h/8 child is retention-admissible in:
 
-Each target records exactly one h/8 failure:
+`1 / 5`
 
-- completed targets: `0/5`;
-- h/8 failure count: `5/5`;
-- successful completed h/8 subdivision events: `0`.
+targets.
 
-All five terminate as:
+It remains inadmissible in:
 
-`NEARSAT_EIGHTH_FAILED`.
+`4 / 5`
+
+targets.
+
+No target completes the full horizon under the bounded candidate:
+
+`0 / 5`.
 
 No process failure, nonfinite-state failure or physical-mass failure is observed.
 
@@ -62,13 +73,15 @@ No process failure, nonfinite-state failure or physical-mass failure is observed
 
 `NLGLOB13D_H8_ADMISSIBILITY_NOT_CONFIRMED`.
 
-The preregistered negative gate applies because at least 3/5 first h/8 children remain inadmissible. In fact all 5/5 do.
+The preregistered negative gate applies because at least 3/5 first h/8 children remain inadmissible. The observed count is 4/5.
 
 ## Interpretation
 
-The near-saturation TG accepted-state defect contracts under temporal refinement, as established by NLGLOB13C2, but simple bounded subdivision through h/8 is still insufficient to remove it.
+The near-saturation TG accepted-state defect contracts under temporal refinement, as established by NLGLOB13C2, and one of the five remaining targets crosses into admissibility at h/8.
 
-This rules out subdivision depth alone as a practical repair for this line.
+However, four of five same-origin targets remain inadmissible.
+
+Therefore simple subdivision depth through a bounded h/8 level is not a general repair for this line.
 
 The failure is not caused by:
 
