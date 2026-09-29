@@ -2,16 +2,25 @@
   "work_unit": "F-PE-ELASTIC12",
   "workstream": "VQ/research physical parameter transfer",
   "baseline": "9165727771998cec2d1fa09aee62637d9d78ce68",
-  "checkpoint_commit": "a5e61cf7fe337e415beaba6f19308987b9a62908",
-  "last_reconciled_head": "a5e61cf7fe337e415beaba6f19308987b9a62908",
-  "last_reconciled_upstream": "a82721f5ebece9376f83ab9b0fe5df26e42a36f2",
+  "checkpoint_commit": "d6feb3c56a5c35597a334248450ef05c358ab5dc",
+  "last_reconciled_head": "d6feb3c56a5c35597a334248450ef05c358ab5dc",
+  "last_reconciled_upstream": "e59f1b2ffd97fb210c9d682332e740a1552a9f46",
   "scope": "Audit and, if source-supported, transfer the independently validated ELASTIC11 mechanical predictor to BOFEK2020/Staringreeks layers using explicit dry-to-field-moist state reconstruction.",
   "relevant_paths": [
     "docs/performance/F-PE-ELASTIC12_BOFEK_TRANSFER_PREREGISTRATION.md",
     "research/elastic/bofek_transfer_source_audit.py",
     ".github/workflows/f-pe-elastic12.yml",
     "docs/performance/F-PE-ELASTIC11_CLOSEOUT.md",
-    "docs/performance/F-PE-ELASTIC02_SOURCE_RESULT.md"
+    "docs/performance/F-PE-ELASTIC02_SOURCE_RESULT.md",
+    "docs/performance/F-PE-ELASTIC12A3_SMU_ROUTE_PREREGISTRATION.md",
+    "docs/performance/F-PE-ELASTIC12A4_PDOK_ATOM_PREREGISTRATION.md",
+    "docs/performance/F-PE-ELASTIC12A5_RELATIONAL_BRIDGE_PREREGISTRATION.md",
+    "research/elastic/soilphysics_smu_probe.py",
+    "research/elastic/pdok_bodemkaart_atom_audit.py",
+    "research/elastic/bofek_elas_transfer.py",
+    ".github/workflows/f-pe-elastic12a3.yml",
+    ".github/workflows/f-pe-elastic12a4.yml",
+    ".github/workflows/f-pe-elastic12a5.yml"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -23,11 +32,15 @@
   ],
   "test_paths": [
     "research/elastic/bofek_transfer_source_audit.py",
-    ".github/workflows/f-pe-elastic12.yml"
+    ".github/workflows/f-pe-elastic12.yml",
+    "research/elastic/bofek_elas_transfer.py",
+    ".github/workflows/f-pe-elastic12a5.yml"
   ],
   "evidence_paths": [
     "official NHI BOFEK2020 archive https://nhi.nu/documents/225/bofek_1.0.0.zip",
-    "official NHI Staringreeks archive https://nhi.nu/documents/224/staringreeks_1.0.0.zip"
+    "official NHI Staringreeks archive https://nhi.nu/documents/224/staringreeks_1.0.0.zip",
+    "GitHub Actions run 36549493161 / artifact 11024057454",
+    "GitHub Actions run 36550782840 / artifact 11024079961"
   ],
   "dependency_surface": [
     "ELASTIC11 frozen M1 equation and calibration normalization",
@@ -45,6 +58,6 @@
   "tested": false,
   "qualified": false,
   "blockers": [],
-  "next_action": "Inspect the official-source ELASTIC12A workflow from checkpoint a5e61cf7fe337e415beaba6f19308987b9a62908. Bind the actual BOFEK profile/layer table before any transfer calculation.",
-  "recovery_point": "research/f-pe-elastic12-bofek-transfer@a5e61cf7fe337e415beaba6f19308987b9a62908"
+  "next_action": "Inspect the F-PE-ELASTIC12A5 exact BOFEK/BRO relational bridge and five-state transfer run from checkpoint d6feb3c56a5c35597a334248450ef05c358ab5dc. If green, record source identity, transfer-domain coverage, state sensitivity and classification without selecting a preferred pressure head.",
+  "recovery_point": "research/f-pe-elastic12-bofek-transfer@d6feb3c56a5c35597a334248450ef05c358ab5dc"
 }
