@@ -1,0 +1,29 @@
+name: F-PE-ELASTIC16 descriptor assembly
+
+concurrency:
+  group: f-pe-elastic16-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic16-descriptor-assembly
+    paths:
+      - 'src/runtime/mod_fmr_elastic_storage_descriptor_assembly.f90'
+      - 'tests/fpe/test_fpe_elastic16_descriptor_assembly.f90'
+      - 'tests/fpe/run_fpe_elastic16.sh'
+      - 'docs/performance/F-PE-ELASTIC16_DESCRIPTOR_ASSEMBLY_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic16.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Qualify descriptor assembly
+        run: bash tests/fpe/run_fpe_elastic16.sh
