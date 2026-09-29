@@ -75,10 +75,16 @@ For each saturated node in the lower block record:
 - pressure head >= 0;
 - constitutive capacity.
 
+The current B1.10 provider intentionally returns the existing numerical capacity floor
+
+`C_floor = dt * 1e-7`
+
+on the saturated branch. NLGLOB14K does not reinterpret that floor as physical storage.
+
 Define a clean constitutive split when:
 
 - every upper unsaturated node has finite `C>0`;
-- every lower saturated node has `C=0`;
+- every lower saturated node has `h>=0`, `theta==theta_s`, and provider capacity equal to the existing `C_floor` within floating-point identity;
 - all accepted theta/head pairs are constitutively consistent.
 
 ## Upper-region current-step TG admissibility
