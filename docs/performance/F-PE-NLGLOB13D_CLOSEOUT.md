@@ -10,35 +10,34 @@ Canonical base incorporated before closeout:
 
 `integration/f-ci-canonical@dc12c52ea71e136cd9ea0573980915b8618ca7d6`
 
-Qualification authority:
+Final qualification authority:
 
-- run `36558488567`;
-- job `109373336442`;
+- run `36558791581`;
+- job `109374338130`;
 - conclusion: SUCCESS.
 
 ## Closure
 
 NLGLOB13D closes bounded subdivision-depth rescue negatively.
 
-All five frozen same-origin O05/TG targets remain retention-inadmissible at h/8.
+Of the five frozen same-origin O05/TG targets:
+
+- 1/5 first h/8 children become retention-admissible;
+- 4/5 remain retention-inadmissible;
+- 0/5 complete the full horizon under the bounded candidate.
 
 Positive preserved authority:
 
 - smooth second-order behavior remains about 2.048;
-- physical mass remains within unchanged authority;
+- physical mass remains near roundoff;
+- exact rollback/origin identity remains valid;
 - no process, route or nonfinite failure occurs.
-
-Negative result:
-
-- completed targets: 0/5;
-- every target records an h/8 domain failure;
-- no successful completed h/8 subdivision event is observed.
 
 ## Scientific conclusion
 
-Temporal refinement reduces the near-saturation overshoot, but additional subdivision depth alone does not resolve the accepted-state admissibility defect at a practically bounded h/8 depth.
+Temporal refinement continues to reduce the near-saturation defect and can make an individual target admissible, but bounded subdivision depth alone does not solve the mechanism generally.
 
-The line therefore reaches a genuine stop rule.
+The line therefore reaches the preregistered stop rule.
 
 Do not continue with h/16 or recursive adaptive subdivision under the same construction.
 
@@ -76,7 +75,7 @@ STATUS: closed negative
 
 IMPLEMENTATION STATUS: bounded h/8 research candidate persisted
 
-TEST STATUS: focused run PASS
+TEST STATUS: focused final run PASS
 
 QUALIFICATION STATUS: `NLGLOB13D_H8_ADMISSIBILITY_NOT_CONFIRMED`
 
