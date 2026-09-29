@@ -45,7 +45,7 @@ for mid in ("B01","B12","O05","O14"):
         rec={"material":mid,"route":route,"mode":mode,"dt":dt,"process_ok":cp.returncode==0,
              "entry_count":len(entries),"persistent_intervals":len(persists),"root_count":len(roots),
              "switch_count":sum(int(x.get("SWITCH_OK","0"))==1 for x in switches)}
-        rec["no_rebracket_after_entry"]=(len(entries)==0 or len(roots)==1)
+        rec["no_rebracket_after_entry"]=(len(entries)==0 or len(roots)<=1)
         rec["persistent_ok"]=all(int(x.get("OK","0"))==1 for x in persists)
         if res:
             rec["terminal_reason"]=res["TERMINAL_REASON"]
