@@ -1,0 +1,22 @@
+name: F-PE-ELASTIC04 typed per-layer ownership
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docs/performance/F-PE-ELASTIC04_PREREGISTRATION.md'
+      - 'tests/fpe/mod_fpe_elastic04_typed_provider.f90'
+      - 'tests/fpe/test_fpe_elastic04_provider_identity.f90'
+      - 'tests/fpe/test_fpe_elastic04_case.f90'
+      - 'tests/fpe/run_fpe_elastic04_provider_identity.py'
+      - 'tests/fpe/run_fpe_elastic04_dynamic_identity.py'
+      - 'tests/fpe/run_fpe_elastic04.sh'
+      - '.github/workflows/f-pe-elastic04.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify typed per-layer ELAS ownership
+        run: bash tests/fpe/run_fpe_elastic04.sh
