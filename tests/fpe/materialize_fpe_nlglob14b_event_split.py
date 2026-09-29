@@ -78,7 +78,7 @@ new="""      if(event_depth<=5.0e-8_real64 .and. max_over<=0.0_real64)then
         end if
         write(*,'(*(g0))') 'F_PE_NLGLOB14B_SPLIT|STEP=',step_index,'|OK=1|NODE=',event_node, &
              '|PHI=',phi_lo,'|EVENT_DEPTH=',event_depth,'|EVENT_LEDGER=',event_ledger, &
-             '|NOMINAL_LEDGER=',dabs(cumledger-saved_cumledger),'|EVENT_ROUTE_CODE=',nl14b_expected_route, &
+             '|NOMINAL_LEDGER=',dabs(cumledger-saved_cumledger),'|EVENT_ROUTE_CODE=',last_origin_route, &
              '|FINAL_ROUTE_CODE=',last_accept_route,'|REMAINDER_DT=',(1.0_real64-phi_lo)*nominal_dt
         dt=nominal_dt
         return
