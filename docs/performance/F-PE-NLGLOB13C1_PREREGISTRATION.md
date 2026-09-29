@@ -2,7 +2,7 @@
 
 Date: 2026-09-29
 
-Status: `PREREGISTERED_BEFORE_RESULTS`
+Status: `AMENDED_BEFORE_RESULTS`
 
 Canonical authority:
 
@@ -28,16 +28,20 @@ No solver behavior, subdivision depth, acceptance rule or tolerance changes.
 
 Reuse exactly the seven NLGLOB13C target trajectories.
 
-For each target pair compare the exact accepted pre-state presented to:
+For each target trajectory compare the exact accepted pre-state presented to:
 
 - the failing h/2 parent trial;
-- the corresponding h/4 retry after rollback.
+- the **first h/4 child trial immediately after rollback of that failing h/2**.
+
+This is the only h/4 trial that is required to share the h/2 parent origin.
+
+If quarter 1 succeeds and quarter 2 later fails, the quarter-2 pre-state is expected to differ because it contains one legitimately accepted h/4 advance. Quarter-2 state difference is therefore a lineage diagnostic, not a rollback-identity failure.
 
 The comparison is nodewise.
 
 ## Frozen diagnostics
 
-For each paired state record:
+For each h/2-parent versus first-quarter retry pair record:
 
 ### Moisture
 
@@ -80,7 +84,7 @@ These absolute bounds are fixed before result exposure and are several orders be
 
 ## Frozen classifications
 
-If 7/7 pairs are NODEWISE_IDENTICAL:
+If 7/7 h/2-parent versus first-quarter retry pairs are NODEWISE_IDENTICAL:
 
 `NLGLOB13C1_PRESTATE_IDENTITY_CONFIRMED`.
 
@@ -105,13 +109,19 @@ If the exact nodewise paired states cannot be observed:
 
 ## Consequence
 
-If identity is confirmed for 7/7, NLGLOB13C may be re-evaluated under its original frozen contraction gates because the only coverage blocker is removed.
+If identity is confirmed for 7/7, the transaction/rollback concern is removed.
 
-No contraction threshold may be changed.
+For trajectories where the first h/4 child itself fails, the original NLGLOB13C same-origin contraction pair remains directly usable.
 
-A positive NLGLOB13C result would then authorize a separately preregistered bounded h/8 falsification.
+For trajectories where first-quarter h/4 succeeds and quarter 2 later fails, the original terminal-failure pair is not a same-origin scaling pair. Those cases require a separately preregistered C2 same-origin h/4 admissibility probe from the restored h/2 parent state.
+
+C1 therefore does not itself reclassify NLGLOB13C or authorize h/8. No contraction threshold may be changed.
 
 If a restoration defect is found, temporal subdivision escalation is blocked until transaction semantics are repaired.
+
+## Amendment rationale
+
+This amendment is persisted before any NLGLOB13C1 result exposure. The parent NLGLOB13B execution order shows that a terminal quarter-2 failure is preceded by a successfully accepted quarter-1 state. Comparing that quarter-2 origin with the original h/2 parent origin would incorrectly classify legitimate temporal evolution as rollback drift. The frozen identity target is therefore corrected to the first child trial after rollback, which is the actual transaction-semantics question.
 
 ## Stop rules
 
