@@ -9,12 +9,12 @@ on:
     branches:
       - research/f-pe-elastic10-bhrgt-targets
     paths:
-      - 'research/elastic/**'
+      - 'research/elastic/bro_bhrgt_fetch.py'\n      - 'research/elastic/bro_bhrgt_pilot.py'\n      - 'research/elastic/bro_bhrgt_extract_targets.py'\n      - 'research/elastic/bro_bhrgt_calibration_corpus.py'
       - 'docs/performance/F-PE-ELASTIC10_BHR_GT_TARGET_PREREGISTRATION.md'
       - '.github/workflows/f-pe-elastic10-bhrgt.yml'
   pull_request:
     paths:
-      - 'research/elastic/**'
+      - 'research/elastic/bro_bhrgt_fetch.py'\n      - 'research/elastic/bro_bhrgt_pilot.py'\n      - 'research/elastic/bro_bhrgt_extract_targets.py'\n      - 'research/elastic/bro_bhrgt_calibration_corpus.py'
       - 'docs/performance/F-PE-ELASTIC10_BHR_GT_TARGET_PREREGISTRATION.md'
       - 'docs/performance/F-PE-ELASTIC10A_BHR_GT_SEMANTICS_PREAUDIT.md'
       - 'docs/performance/F-PE-ELASTIC10B_PILOT_PREREGISTRATION.md'
