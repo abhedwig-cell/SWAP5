@@ -125,13 +125,14 @@ def values(scope,names):
     wanted=set(names)
     return [text(e) for e in scope.iter() if local(e.tag) in wanted and text(e)]
 
-def target_base(bro_id,auth,det,det_index,parent,obj_sha):
+def target_base(bro_id,auth,det,det_index,parent,obj_sha,determination_readiness=None):
     interval=nearest_ancestor(parent,det,"investigatedInterval")
     gml_id=next((v for k,v in det.attrib.items() if local(k)=="id"),None)
     return {
         "bro_id":bro_id,
         "owning_cell":auth["owning_cell"],
-        "authority_readiness":auth["readiness"],
+        "object_readiness":auth["readiness"],
+        "authority_readiness":determination_readiness if determination_readiness is not None else auth["readiness"],
         "object_sha256":obj_sha,
         "determination_index":det_index,
         "determination_gml_id":gml_id,
@@ -165,7 +166,7 @@ def make_target(base,route,step_index,tokens,s0,s1,e0,e1,schema):
         "ssk_cm_inv":ssk/100.0,
     }
 
-def process_object(object_dir: Path,auth):
+def process_object(object_dir: Path,auth,determination_authority=None):
     bro_id=auth["bro_id"]
     p=object_dir/f"object-{bro_id}.response"
     if not p.exists():
@@ -177,14 +178,31 @@ def process_object(object_dir: Path,auth):
     parent={child:par for par in root.iter() for child in par}
     dets=[e for e in root.iter() if local(e.tag)=="SettlementCharacteristicsDetermination"]
     targets=[]; rejected=[]
+    det_auth_by_index={}
+    if determination_authority is not None:
+        da=determination_authority.get(bro_id)
+        if da is None:
+            raise RuntimeError(f"missing determination authority {bro_id}")
+        if int(da["physical_determination_count"]) != len(dets):
+            raise RuntimeError(f"physical determination count mismatch {bro_id}: {len(dets)}")
+        det_auth_by_index={int(x["physical_index"]):x["readiness"] for x in da["determinations"]}
+        if sorted(det_auth_by_index) != list(range(1,len(dets)+1)):
+            raise RuntimeError(f"non-contiguous determination authority {bro_id}")
+
     for di,det in enumerate(dets,1):
-        base=target_base(bro_id,auth,det,di,parent,got)
+        frozen_route=det_auth_by_index.get(di) if determination_authority is not None else None
+        base=target_base(bro_id,auth,det,di,parent,got,frozen_route)
         steps=[e for e in det.iter() if local(e.tag)=="determinationStep"]
         stress_blocks=[
             parse_series(s,"stressChangeDuringSettlement","StressAtSpecificSettlement.xml",5)
             for s in steps
         ]
-        if any(b is not None for b in stress_blocks):
+        observed_route="R3" if any(b is not None for b in stress_blocks) else "R2"
+        if frozen_route is not None and observed_route != frozen_route:
+            raise RuntimeError(f"determination route mismatch {bro_id} physical_index={di}: observed={observed_route} frozen={frozen_route}")
+        route=frozen_route if frozen_route is not None else observed_route
+
+        if route=="R3":
             for si,(step,block) in enumerate(zip(steps,stress_blocks),1):
                 if not is_unload(step):
                     continue
@@ -262,14 +280,23 @@ def main():
     ap.add_argument("--objects",required=True)
     ap.add_argument("--schemas",required=True)
     ap.add_argument("--authority",required=True)
+    ap.add_argument("--determination-authority")
     ap.add_argument("--out",required=True)
     a=ap.parse_args()
     out=Path(a.out); out.mkdir(parents=True,exist_ok=True)
     schemas=bind_schema(Path(a.schemas))
     authority=json.loads(Path(a.authority).read_text())
+    determination_authority=None
+    if a.determination_authority:
+        raw=json.loads(Path(a.determination_authority).read_text())
+        if raw.get("historical_classifier_records") != 100 or raw.get("physical_determinations") != 50:
+            raise RuntimeError("determination authority count mismatch")
+        if raw.get("route_counts") != {"R2":29,"R3":21}:
+            raise RuntimeError("determination authority route-count mismatch")
+        determination_authority={x["bro_id"]:x for x in raw["objects"]}
     targets=[]; rejected=[]; object_stats=[]
     for auth in authority["objects"]:
-        t,r,s=process_object(Path(a.objects),auth)
+        t,r,s=process_object(Path(a.objects),auth,determination_authority)
         targets.extend(t); rejected.extend(r); object_stats.append(s)
     targets.sort(key=lambda r:(r["bro_id"],r["determination_index"],r["step_index"],r["route"]))
     rejected.sort(key=lambda r:(r["bro_id"],r["determination_index"],r.get("step_index",0),r["route"],r["reason"]))
