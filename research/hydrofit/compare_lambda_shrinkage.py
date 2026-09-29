@@ -6,7 +6,8 @@ import numpy as np
 from scipy.optimize import least_squares
 sys.path.insert(0,"research/hydrofit")
 from hydrofit import FitConfig,residual_vector
-from compare_conditional_lambda_priors import parse_object,predict,encode,decode,solve
+from compare_conditional_lambda_priors import predict,encode,decode,solve
+from hydro_record_binding import bind_corpus_rows
 from bro_bhrp_fetch import fetch,DEFAULT_BASE
 def cond(j):
  s=np.linalg.svd(j,compute_uv=False);return float("inf") if len(s)==0 or s[-1]==0 else float(s[0]/s[-1])
@@ -37,13 +38,9 @@ def shrink(obs,src,target,sigma):
  jhmat=np.column_stack(cols)
  return jh,float(z.x[5]),blocks(p),cond(jhmat),cond(z.jac)
 def main():
- ap=argparse.ArgumentParser();ap.add_argument("--corpus",required=True);a=ap.parse_args();corp=json.load(open(a.corpus));rows=[];cache={}
- for r in corp["intervals"]:
-  bid=r["bro_id"]
-  if bid not in cache:
-   st,ct,b=fetch(DEFAULT_BASE+"/objects/"+bid);cache[bid]=parse_object(b)
-  z=cache[bid][(str(r["begin_depth"]),str(r["end_depth"]))];bd=float(r["begin_depth"]);ed=float(r["end_depth"])
-  rows.append({**r,**z,"mid":.5*(bd+ed),"ln_n":math.log10(max(z["n_obs"],1)),"ln_h":math.log10(max(z["h_span"],1))})
+ ap=argparse.ArgumentParser();ap.add_argument("--corpus",required=True);a=ap.parse_args();corp=json.load(open(a.corpus));rows=bind_corpus_rows(corp["intervals"])
+ for r in rows:
+  bd=float(r["begin_depth"]);ed=float(r["end_depth"]);r["mid"]=.5*(bd+ed);r["ln_n"]=math.log10(max(r["n_obs"],1));r["ln_h"]=math.log10(max(r["h_span"],1))
  targets={"LOO":{},"KNN5K":{}}
  for i,t in enumerate(rows):
   tr=[r for r in rows if r["bro_id"]!=t["bro_id"]]
@@ -55,6 +52,6 @@ def main():
    ratios=[];sev_h=sev_p=blocked=0
    for i in idx:
     r=rows[i];j,l,b,ch,cp=shrink(r["obs"],r["src"],targets[tp][i],sig);ratio=j/best[i];ratios.append(ratio);sev_h+=cclass(ch)=="SEVERE";sev_p+=cclass(cp)=="SEVERE";blocked+=bool(b)
-    print(f"BRO_SHRINK|TARGET={tp}|SIGMA={sig:g}|BRO={r['bro_id']}|DEPTH={r['begin_depth']}:{r['end_depth']}|LTARGET={targets[tp][i]:.9g}|LFIT={l:.9g}|DELTA={l-targets[tp][i]:.9g}|RATIO={ratio:.9g}|BLOCKS={','.join(b) or 'NONE'}|COND_H={ch:.9g}|CLASS_H={cclass(ch)}|COND_P={cp:.9g}|CLASS_P={cclass(cp)}")
+    print(f"BRO_SHRINK|TARGET={tp}|SIGMA={sig:g}|BRO={r['bro_id']}|DEPTH={r['begin_depth']}:{r['end_depth']}|HASH={r['hyd_sha256']}|LTARGET={targets[tp][i]:.9g}|LFIT={l:.9g}|DELTA={l-targets[tp][i]:.9g}|RATIO={ratio:.9g}|BLOCKS={','.join(b) or 'NONE'}|COND_H={ch:.9g}|CLASS_H={cclass(ch)}|COND_P={cp:.9g}|CLASS_P={cclass(cp)}")
    x=np.array(ratios);print(f"BRO_SHRINK_SUMMARY|TARGET={tp}|SIGMA={sig:g}|MEDIAN_RATIO={np.median(x):.9g}|MEAN_RATIO={x.mean():.9g}|MAX_RATIO={x.max():.9g}|BOUND_BLOCKED={blocked}|SEVERE_H={sev_h}|SEVERE_P={sev_p}")
 if __name__=="__main__":main()
