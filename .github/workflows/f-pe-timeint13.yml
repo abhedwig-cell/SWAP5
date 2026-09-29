@@ -1,0 +1,45 @@
+name: F-PE-TIMEINT13 extrapolated-K BDF2
+
+on:
+  push:
+    branches:
+      - work/f-pe-timeint13-extrapolated-k-bdf2-current
+    paths:
+      - 'docs/performance/F-PE-TIMEINT13_PREREGISTRATION.md'
+      - 'tests/fpe/mod_fpe_timeint13_predicted_k_provider.f90'
+      - 'tests/fpe/test_fpe_timeint13_order.f90'
+      - 'tests/fpe/run_fpe_timeint13_p0.py'
+      - 'tests/fpe/run_fpe_timeint13_p0.sh'
+      - 'tests/fpe/test_fpe_timeint13_dyntop.f90'
+      - 'tests/fpe/run_fpe_timeint13.py'
+      - 'tests/fpe/run_fpe_timeint13.sh'
+      - '.github/workflows/f-pe-timeint13.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smooth-order:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run smooth extrapolated-K BDF2 order screen
+        run: bash tests/fpe/run_fpe_timeint13_p0.sh
+
+  dynamic-top:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run extrapolated-K BDF2 dynamic-top qualification
+        run: bash tests/fpe/run_fpe_timeint13.sh
