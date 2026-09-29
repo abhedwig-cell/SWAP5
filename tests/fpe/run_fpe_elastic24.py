@@ -8,7 +8,7 @@ def load_tool(root:Path):
     path=root/"tools/fpe_elastic24_profile_retrieval.py"
     spec=importlib.util.spec_from_file_location("elastic24_tool",path)
     if spec is None or spec.loader is None:
-        raise SystemExit("F_PE_ELASTIC23_FAIL cannot load tool")
+        raise SystemExit("F_PE_ELASTIC24_FAIL cannot load tool")
     mod=importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
@@ -16,7 +16,7 @@ def load_tool(root:Path):
 def find_one_gpkg(root:Path):
     hits=list(root.rglob("*.gpkg"))
     if len(hits)!=1:
-        raise SystemExit(f"F_PE_ELASTIC23_FAIL gpkg hits={len(hits)}")
+        raise SystemExit(f"F_PE_ELASTIC24_FAIL gpkg hits={len(hits)}")
     return hits[0]
 
 def direct_rows(con,pid:int):
@@ -89,36 +89,36 @@ def main():
         pcols=[r[1] for r in con.execute("pragma table_info(normalsoilprofiles)")]
         hcols=[r[1] for r in con.execute("pragma table_info(soilhorizon)")]
         if any(c not in pcols for c in tool.PROFILE_COLUMNS):
-            raise SystemExit("F_PE_ELASTIC23_FAIL profile schema")
+            raise SystemExit("F_PE_ELASTIC24_FAIL profile schema")
         if any(c not in hcols for c in tool.HORIZON_COLUMNS):
-            raise SystemExit("F_PE_ELASTIC23_FAIL horizon schema")
-        print("F_PE_ELASTIC23_A1_SCHEMA=PASS")
+            raise SystemExit("F_PE_ELASTIC24_FAIL horizon schema")
+        print("F_PE_ELASTIC24_A1_SCHEMA=PASS")
 
         ids=[int(r[0]) for r in con.execute(
             "select normalsoilprofile_id from normalsoilprofiles order by normalsoilprofile_id")]
         if len(ids)!=368 or len(set(ids))!=368:
-            raise SystemExit(f"F_PE_ELASTIC23_FAIL profile count={len(ids)}")
+            raise SystemExit(f"F_PE_ELASTIC24_FAIL profile count={len(ids)}")
 
         total=0
         for pid in ids:
             result=tool.retrieve_profile(gpkg,pid)
             prow,hrows=direct_rows(con,pid)
             if not compare_profile(result,prow,hrows,tool.SOURCE_ARTIFACT_SHA256):
-                raise SystemExit(f"F_PE_ELASTIC23_FAIL direct SQL mismatch profile={pid}")
+                raise SystemExit(f"F_PE_ELASTIC24_FAIL direct SQL mismatch profile={pid}")
             total+=len(hrows)
         if total!=1568:
-            raise SystemExit(f"F_PE_ELASTIC23_FAIL horizon total={total}")
-        print("F_PE_ELASTIC23_A2_ALL_PROFILES=PASS")
-        print("F_PE_ELASTIC23_A3_ALL_HORIZONS=PASS")
-        print("F_PE_ELASTIC23_A4_SQL_IDENTITY=PASS")
+            raise SystemExit(f"F_PE_ELASTIC24_FAIL horizon total={total}")
+        print("F_PE_ELASTIC24_A2_ALL_PROFILES=PASS")
+        print("F_PE_ELASTIC24_A3_ALL_HORIZONS=PASS")
+        print("F_PE_ELASTIC24_A4_SQL_IDENTITY=PASS")
 
         if 16160 not in ids:
-            raise SystemExit("F_PE_ELASTIC23_FAIL profile 16160 missing")
+            raise SystemExit("F_PE_ELASTIC24_FAIL profile 16160 missing")
         known=tool.retrieve_profile(gpkg,16160)
         prow,hrows=direct_rows(con,16160)
         if not compare_profile(known,prow,hrows,tool.SOURCE_ARTIFACT_SHA256):
-            raise SystemExit("F_PE_ELASTIC23_FAIL profile 16160 mismatch")
-        print("F_PE_ELASTIC23_A5_PROFILE_16160=PASS")
+            raise SystemExit("F_PE_ELASTIC24_FAIL profile 16160 mismatch")
+        print("F_PE_ELASTIC24_A5_PROFILE_16160=PASS")
 
         for bad_id in (999999999,-1,0):
             try:
@@ -126,8 +126,8 @@ def main():
             except tool.Elastic24Error:
                 pass
             else:
-                raise SystemExit(f"F_PE_ELASTIC23_FAIL invalid profile accepted={bad_id}")
-        print("F_PE_ELASTIC23_A6_PROFILE_FAIL_CLOSED=PASS")
+                raise SystemExit(f"F_PE_ELASTIC24_FAIL invalid profile accepted={bad_id}")
+        print("F_PE_ELASTIC24_A6_PROFILE_FAIL_CLOSED=PASS")
     finally:
         con.close()
 
@@ -145,7 +145,7 @@ def main():
         except tool.Elastic24Error:
             pass
         else:
-            raise SystemExit("F_PE_ELASTIC23_FAIL malformed schema did not fail")
+            raise SystemExit("F_PE_ELASTIC24_FAIL malformed schema did not fail")
 
         badgeo=Path(td)/"badgeo.gpkg"
         build_bad_geometry_db(badgeo)
@@ -154,26 +154,26 @@ def main():
         except tool.Elastic24Error:
             pass
         else:
-            raise SystemExit("F_PE_ELASTIC23_FAIL malformed geometry did not fail")
-    print("F_PE_ELASTIC23_A7_FAIL_CLOSED=PASS")
+            raise SystemExit("F_PE_ELASTIC24_FAIL malformed geometry did not fail")
+    print("F_PE_ELASTIC24_A7_FAIL_CLOSED=PASS")
 
     first=tool.retrieve_profile(gpkg,ids[0])
     second=tool.retrieve_profile(gpkg,ids[0])
     if json.dumps(first,sort_keys=True,separators=(",",":")) != json.dumps(second,sort_keys=True,separators=(",",":")):
-        raise SystemExit("F_PE_ELASTIC23_FAIL nondeterministic repeat")
-    print("F_PE_ELASTIC23_A8_REPEAT_IDENTITY=PASS")
+        raise SystemExit("F_PE_ELASTIC24_FAIL nondeterministic repeat")
+    print("F_PE_ELASTIC24_A8_REPEAT_IDENTITY=PASS")
 
     if first["source_artifact_sha256"] != "f96bea1e9efdd0326ae1ca0d72684cd7928c90fd23f0930b51c782dfc0ff5fe6":
-        raise SystemExit("F_PE_ELASTIC23_FAIL provenance hash")
-    print("F_PE_ELASTIC23_A9_PROVENANCE=PASS")
+        raise SystemExit("F_PE_ELASTIC24_FAIL provenance hash")
+    print("F_PE_ELASTIC24_A9_PROVENANCE=PASS")
 
     source=(root/"tools/fpe_elastic24_profile_retrieval.py").read_text(encoding="utf-8").lower()
     forbidden=("urllib","requests","http://","https://","latitude","longitude","socket","theta_ref","elas_prior")
     hits=[x for x in forbidden if x in source]
     if hits:
-        raise SystemExit("F_PE_ELASTIC23_FAIL forbidden semantics="+repr(hits))
-    print("F_PE_ELASTIC23_A10_BOUNDARY_HYGIENE=PASS")
-    print("F_PE_ELASTIC23=PASS")
+        raise SystemExit("F_PE_ELASTIC24_FAIL forbidden semantics="+repr(hits))
+    print("F_PE_ELASTIC24_A10_BOUNDARY_HYGIENE=PASS")
+    print("F_PE_ELASTIC24=PASS")
 
 if __name__=="__main__":
     main()
