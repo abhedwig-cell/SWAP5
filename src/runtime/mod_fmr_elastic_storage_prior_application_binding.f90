@@ -70,8 +70,13 @@ contains
     end if
 
     do i = 1, n
-      if (.not. ieee_is_finite(base_parameters%cofgen(24,i)) .or. &
-          base_parameters%cofgen(24,i) /= 0.0_real64) then
+      if (.not. ieee_is_finite(base_parameters%cofgen(24,i))) then
+        diagnostics%status = FMR_ELAS_PRIOR_BIND_EXPLICIT_ELAS_CONFLICT
+        diagnostics%explicit_elas_conflict = .true.
+        diagnostics%failed_node = i
+        return
+      end if
+      if (base_parameters%cofgen(24,i) /= 0.0_real64) then
         diagnostics%status = FMR_ELAS_PRIOR_BIND_EXPLICIT_ELAS_CONFLICT
         diagnostics%explicit_elas_conflict = .true.
         diagnostics%failed_node = i
@@ -103,9 +108,13 @@ contains
   pure logical function prior_eligible(prior) result(eligible)
     type(fmr_elastic_storage_prior_t), intent(in) :: prior
 
-    eligible = prior%available .and. prior%regime == FMR_ELAS_REGIME_MINERAL .and. &
-         (prior%domain_class == FMR_ELAS_DOMAIN_IN .or. prior%domain_class == FMR_ELAS_DOMAIN_EDGE) .and. &
-         ieee_is_finite(prior%value_cm_inv) .and. prior%value_cm_inv > 0.0_real64
+    eligible = .false.
+    if (.not. prior%available) return
+    if (prior%regime /= FMR_ELAS_REGIME_MINERAL) return
+    if (prior%domain_class /= FMR_ELAS_DOMAIN_IN .and. prior%domain_class /= FMR_ELAS_DOMAIN_EDGE) return
+    if (.not. ieee_is_finite(prior%value_cm_inv)) return
+    if (prior%value_cm_inv <= 0.0_real64) return
+    eligible = .true.
   end function prior_eligible
 
 end module mod_fmr_elastic_storage_prior_application_binding
