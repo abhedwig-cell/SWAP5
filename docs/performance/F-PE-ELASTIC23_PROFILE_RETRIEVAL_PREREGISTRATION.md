@@ -7,6 +7,12 @@ Status: PREREGISTERED_BEFORE_TOOL_CHANGE
 Baseline:
 `integration/f-ci-canonical@9ca61a27aa979d5e87ffeffbd3e74fd0f1c5e406`
 
+Current canonical reconciliation:
+`integration/f-ci-canonical@6fe778ffb5a55f6fb3cc13b9c1a43b71a4641096`
+
+The delta since the preregistered baseline is confined to unrelated NLGLOB
+docs/tests/workflows and does not intersect the ELASTIC23 dependency surface.
+
 Parent authority:
 - `F-PE-ELASTIC22_CLOSURE.md`;
 - `F-PE-ELASTIC21_CLOSURE.md`;
