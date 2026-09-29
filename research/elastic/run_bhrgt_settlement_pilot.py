@@ -10,7 +10,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from bro_bhrgt_fetch import fetch, DEFAULT_BASE
 
 CENTER={"lat":52.038297852,"lon":5.31447958948}
-RADII_KM=(0.5,5.0,25.0)
+RADII_KM=(0.5,5.0,10.0)
 MAX_OBJECTS=5
 ANALYSIS_TYPE="zetting"
 
