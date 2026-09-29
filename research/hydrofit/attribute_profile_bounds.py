@@ -6,6 +6,12 @@ from scipy.optimize import least_squares
 sys.path.insert(0,"research/hydrofit")
 from hydrofit import FitConfig,residual_vector
 from hydro_record_binding import bind_corpus_rows
+def decode(y):
+ tr=y[0]; f=1/(1+np.exp(-y[1])); ts=tr+(0.9-tr)*f
+ return np.array([tr,ts,y[2],y[3],y[4]])
+def encode(x):
+ tr,ts=x[0],x[1]; f=np.clip((ts-tr)/(0.9-tr),1e-9,1-1e-9)
+ return np.array([tr,np.log(f/(1-f)),x[2],x[3],x[4]])
 def main():
  ap=argparse.ArgumentParser(); ap.add_argument("--corpus",required=True); a=ap.parse_args()
  corp=json.load(open(a.corpus)); ints=sorted(corp["intervals"],key=lambda r:(r["bro_id"],float(r["begin_depth"] or 0),float(r["end_depth"] or 0)))
