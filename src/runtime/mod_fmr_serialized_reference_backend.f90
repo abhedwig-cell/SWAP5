@@ -1346,7 +1346,7 @@ contains
     end if
     if (parameters%macropore_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
-          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY .or. &
           parameters%snow_active .or. parameters%soil_temperature_active .or. &
           parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. &
           parameters%drainage_response_active .or. parameters%root_extraction_active .or. &
