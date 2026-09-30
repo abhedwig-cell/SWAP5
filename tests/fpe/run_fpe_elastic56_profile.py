@@ -88,6 +88,16 @@ def main():
                              cls=cls,mag=mag,p0=p0,p1=p1,hinf0=h0,hinf1=h1,
                              margin0=margin0,margin1=margin1,gaps=",".join(gaps) if gaps else "NONE"))
                 if increasing:
+                    for t in increasing:
+                        print("ELASTIC56_TRANSITION|"+("|".join([
+                            f"profile={t['profile']}",f"regime={t['regime']}",f"h0={t['h0']}",f"delta={t['delta']}",
+                            f"retry0={t['retry0']}",f"retry1={t['retry1']}",f"dt0={t['dt0']}",f"dt1={t['dt1']}",
+                            f"binf0={t['b0']:.17e}",f"binf1={t['b1']:.17e}",f"growth={t['growth']:.17e}",
+                            f"rel_increase={t['rel']:.17e}",f"class={t['cls']}",f"magnitude={t['mag']}",
+                            f"paired0={'T' if t['p0'] else 'F'}",f"paired1={'T' if t['p1'] else 'F'}",
+                            f"hinf0={t['hinf0']}",f"hinf1={t['hinf1']}",f"margin0={t['margin0']}",f"margin1={t['margin1']}",
+                            f"gaps={t['gaps']}"
+                        ])))
                     worst=max(increasing,key=lambda x:x["growth"])
                     worst["transition_count"]=len(increasing)
                     violations.append(worst)
