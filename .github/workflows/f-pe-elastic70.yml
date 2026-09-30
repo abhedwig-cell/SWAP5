@@ -1,0 +1,28 @@
+name: F-PE-ELASTIC70 production transaction performance
+
+concurrency:
+  group: f-pe-elastic70-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic70-production-transaction-performance
+    paths:
+      - 'tests/fpe/test_fpe_elastic70_production_transaction_performance.f90'
+      - 'tests/fpe/run_fpe_elastic70.sh'
+      - 'docs/performance/F-PE-ELASTIC70_PRODUCTION_TRANSACTION_PERFORMANCE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic70.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Run production transaction performance validation
+        run: bash tests/fpe/run_fpe_elastic70.sh
