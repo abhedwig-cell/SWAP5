@@ -1,6 +1,7 @@
 program test_fpe_elastic65_mode7_csafe_binding
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, &
@@ -18,7 +19,7 @@ program test_fpe_elastic65_mode7_csafe_binding
   use mod_fmr_mode7_temporal_head_envelope, only: FMR_MODE7_HEAD_ALPHA
   implicit none
 
-  integer, parameter :: N=16
+  integer, parameter :: N=numnod
   real(real64), parameter :: H0=-75.0_real64, DT=0.01_real64
   real(real64), parameter :: TOL=1.0e-10_real64, PERT=1.0e-6_real64
   integer(int64), parameter :: ID=650065_int64
@@ -137,10 +138,10 @@ contains
     q%parameter_set_id=ID
     q%active_nodes=N
     allocate(q%z(N),q%dz(N),q%node_distance(N),q%cofgen(24,N))
+    q%z=z
+    q%dz=dz
+    q%node_distance=disnod(1:N)
     do k=1,N
-      q%dz(k)=10.0_real64
-      q%z(k)=-(real(k,real64)-0.5_real64)*10.0_real64
-      q%node_distance(k)=10.0_real64
       q%cofgen(:,k)=0.0_real64
       q%cofgen(1,k)=0.032_real64;q%cofgen(2,k)=0.423_real64;q%cofgen(3,k)=4.75_real64
       q%cofgen(4,k)=0.0135_real64;q%cofgen(5,k)=0.365_real64;q%cofgen(6,k)=1.455_real64
