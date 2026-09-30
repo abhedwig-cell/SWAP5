@@ -24,5 +24,13 @@ jobs:
           fetch-depth: 0
       - name: Fetch canonical authority
         run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic70-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
       - name: Run production transaction performance validation
-        run: bash tests/fpe/run_fpe_elastic70.sh
+        run: bash tests/fpe/run_fpe_elastic70.sh "$RUNNER_TEMP/elastic70-pdok"
