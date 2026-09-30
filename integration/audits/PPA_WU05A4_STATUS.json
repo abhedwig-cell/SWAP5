@@ -4,9 +4,9 @@
   "title": "R2 coupled single-column prototype",
   "branch": "research/ppa-wu05-a4-r2-coupled-single-column",
   "baseline": "8a3e4f4fe47ca211629a1ac297f692bc9b699320",
-  "status": "QUALIFIED_R2_PRESCRIBED_STATE_SINGLE_COLUMN_READY_FOR_RICHARDS_COUPLING",
+  "status": "ACTIVE_REAL_RICHARDS_FIXED_EXCHANGE_PASS",
   "production_activation": false,
-  "richards_coupling": "AUTHORIZED_RESEARCH_ONLY",
+  "richards_coupling": "REAL_SOLVER_FIXED_EXCHANGE_PASS",
   "gates": {
     "mass": "PASS_LOCAL",
     "candidate_isolation": "PASS_LOCAL",
@@ -16,5 +16,11 @@
     "e7_interface": "PASS_LOCAL",
     "e9_extreme": "PASS_LOCAL"
   },
-  "next_action": "Open minimal real-Richards coupling slice: one-step E2/E3 cases, internal exchange applied transactionally, no timestep-policy changes."
+  "next_action": "Build R2 predictor/corrector single-step experiment: predictor Richards -> macropore exchange -> corrector Richards -> combined atomic candidate mass reconciliation.",
+  "richards_probe": {
+    "head": "0da844cfac7d0159f3ed7d72b142a7af37846d1c",
+    "run_id": 36764661597,
+    "conclusion": "SUCCESS",
+    "scope": "FIXED_PRECOMPUTED_INTERNAL_EXCHANGE"
+  }
 }
