@@ -4,9 +4,9 @@
   "title": "R2 coupled single-column prototype",
   "branch": "research/ppa-wu05-a4-r2-coupled-single-column",
   "baseline": "8a3e4f4fe47ca211629a1ac297f692bc9b699320",
-  "status": "ACTIVE_REAL_RICHARDS_FIXED_EXCHANGE_PASS",
+  "status": "ACTIVE_DYNAMIC_RICHARDS_PC_PASS",
   "production_activation": false,
-  "richards_coupling": "REAL_SOLVER_FIXED_EXCHANGE_PASS",
+  "richards_coupling": "DYNAMIC_PREDICTOR_CORRECTOR_RESEARCH_PASS",
   "gates": {
     "mass": "PASS_LOCAL",
     "candidate_isolation": "PASS_LOCAL",
@@ -16,11 +16,17 @@
     "e7_interface": "PASS_LOCAL",
     "e9_extreme": "PASS_LOCAL"
   },
-  "next_action": "Build R2 predictor/corrector single-step experiment: predictor Richards -> macropore exchange -> corrector Richards -> combined atomic candidate mass reconciliation.",
+  "next_action": "Characterize bounded multi-corrector Picard convergence before selecting strict vs practical R2 coupling policy.",
   "richards_probe": {
     "head": "0da844cfac7d0159f3ed7d72b142a7af37846d1c",
     "run_id": 36764661597,
     "conclusion": "SUCCESS",
     "scope": "FIXED_PRECOMPUTED_INTERNAL_EXCHANGE"
+  },
+  "dynamic_pc": {
+    "run_id": 36765169021,
+    "head": "d366ad26035fbe3f566092af35d7c86d3a7eef41",
+    "fresh_relative_exchange_change_after_first_corrector": 0.031138912963963632,
+    "aged_relative_exchange_change_after_first_corrector": 0.0006121582947547024
   }
 }
