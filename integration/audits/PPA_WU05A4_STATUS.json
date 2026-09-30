@@ -4,7 +4,7 @@
   "title": "R2 coupled single-column prototype",
   "branch": "research/ppa-wu05-a4-r2-coupled-single-column",
   "baseline": "8a3e4f4fe47ca211629a1ac297f692bc9b699320",
-  "status": "ACTIVE_OUTER_COUPLING_STABILIZATION_CHARACTERIZED",
+  "status": "QUALIFIED_RESEARCH_MAX_THREE_PRACTICAL_CANDIDATE",
   "production_activation": false,
   "richards_coupling": "DYNAMIC_PREDICTOR_CORRECTOR_RESEARCH_PASS",
   "gates": {
@@ -16,7 +16,7 @@
     "e7_interface": "PASS_LOCAL",
     "e9_extreme": "PASS_LOCAL"
   },
-  "next_action": "Define research coupling-controller contract with convergence, damping, retry propagation and atomic candidate semantics; then quantify strict-vs-practical corrector cutoffs.",
+  "next_action": "Implement typed research outer-coupling controller with strict and max-three policies, retry propagation, damping and atomic coupled candidate return; then qualify crack-history and rapid-drain trajectories.",
   "richards_probe": {
     "head": "0da844cfac7d0159f3ed7d72b142a7af37846d1c",
     "run_id": 36764661597,
@@ -65,5 +65,16 @@
     "dry_fresh_undamped": "PERIOD_TWO",
     "dry_fresh_omega_0_5": "CONVERGED",
     "conclusion": "OUTER_DAMPING_AND_TIMESTEP_RETRY_SUFFICIENT_IN_TESTED_ADVERSARIAL_CASES"
+  },
+  "strict_practical_trajectory": {
+    "run_id": 36767379536,
+    "head": "9e196c89acdb04c1cd68b4eec576b2f7c1bbff9f",
+    "steps": 6,
+    "cumulative_exchange_abs_cm": 0.002655894641651224,
+    "cumulative_exchange_rel": 0.01152482994314456,
+    "max_theta_abs": 0.0001998238055737067,
+    "max_head_abs_cm": 0.09865696566688342,
+    "cumulative_bottom_abs_cm": 0.0020622361455155946,
+    "conclusion": "MAX_THREE_CORRECTOR_PRACTICAL_ADMISSION_CANDIDATE_SUPPORTED"
   }
 }
