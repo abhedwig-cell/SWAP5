@@ -33,7 +33,7 @@ while read -r pid; do
   P="$BUILD/p$pid"
   mkdir -p "$P/work"
   python3 tests/fpe/prepare_fpe_elastic63.py     --repo-root "$ROOT"     --artifact-dir "$ARTIFACT_DIR"     --work-dir "$P/work"     --profile-id "$pid"     --fixture "$P/test.f90"     --geometry-json "$P/geometry.json" > "$P/prepare.txt"
-  grep -Fq 'F_PE_ELASTIC64_PREP=PASS' "$P/prepare.txt" || fail "profile prepare $pid"
+  grep -Fq 'F_PE_ELASTIC63_PREP=PASS' "$P/prepare.txt" || fail "profile prepare $pid"
 
   python3 tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py     --source tests/fsi/fsi04_real_headcalc_stubs.f90     --geometry-json "$P/geometry.json"     --output "$P/stub.f90"
 
@@ -52,15 +52,15 @@ while read -r pid; do
         done
       done
     done
-    test "$(grep -c '^ELASTIC64_SOLVE|' "$OUT/result.txt")" -eq 864 || fail "O$opt solve count profile $pid"
-    test "$(grep -c '^F_PE_ELASTIC64_EXEC=PASS' "$OUT/result.txt")" -eq 432 || fail "O$opt case count profile $pid"
+    test "$(grep -c '^ELASTIC63_SOLVE|' "$OUT/result.txt")" -eq 864 || fail "O$opt solve count profile $pid"
+    test "$(grep -c '^F_PE_ELASTIC63_EXEC=PASS' "$OUT/result.txt")" -eq 432 || fail "O$opt case count profile $pid"
   done
 
   cmp -s "$P/o0/result.txt" "$P/o2/result.txt" || {
     diff -u "$P/o0/result.txt" "$P/o2/result.txt" >&2 || true
     fail "O0/O2 drift profile $pid"
   }
-  grep '^ELASTIC64_SOLVE|' "$P/o2/result.txt" >> "$BUILD/all_diag.txt"
+  grep '^ELASTIC63_SOLVE|' "$P/o2/result.txt" >> "$BUILD/all_diag.txt"
 done < "$BUILD/profile_ids.txt"
 
 python3 - "$BUILD/all_diag.txt" <<'PY'
@@ -137,7 +137,7 @@ names=subprocess.check_output(["git","diff","--name-only",base+"..HEAD"],text=Tr
 prod=[p for p in names if p.startswith("src/")]
 if prod:
     raise SystemExit("F_PE_ELASTIC64_SOURCE_SCOPE_FAIL="+repr(prod))
-print("F_PE_ELASTIC64_A6_SOURCE_SCOPE=PASS")
+print("F_PE_ELASTIC64_A8_SOURCE_SCOPE=PASS")
 PY
 
 echo "F_PE_ELASTIC64_RUN=PASS"
