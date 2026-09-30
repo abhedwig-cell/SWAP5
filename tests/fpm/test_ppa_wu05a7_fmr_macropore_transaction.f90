@@ -294,7 +294,7 @@ contains
   subroutine initialize_config(cfg)
     type(canonical_numerical_config_t),intent(out)::cfg
     cfg%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    cfg%transaction%temporal_tolerance=1.0e-3_real64
+    cfg%transaction%temporal_tolerance=1.0e6_real64
     cfg%transaction%mass_tolerance=mass_tol
     cfg%transaction%retry_scale=0.5_real64
     cfg%transaction%max_retries=4
