@@ -1,0 +1,39 @@
+name: F-PE-SCHED01 worker-count threshold
+
+concurrency:
+  group: f-pe-sched01-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-sched01-worker-count-threshold
+    paths:
+      - 'tests/fpe/materialize_fpe_sched01_fixture.py'
+      - 'tests/fpe/run_fpe_sched01_worker_count_threshold.sh'
+      - 'docs/performance/F-PE-SCHED01_WORKER_COUNT_THRESHOLD_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-sched01.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/sched01-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Run worker-count threshold calibration
+        run: bash tests/fpe/run_fpe_sched01_worker_count_threshold.sh "$RUNNER_TEMP/sched01-pdok"
