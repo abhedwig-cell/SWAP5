@@ -4,7 +4,7 @@
   "title": "Typed macropore committed/candidate/restart state",
   "branch": "work/ppa-wu05-a2-typed-macropore-state",
   "baseline": "93d6c78c7ea5fac7060c61d51f992e75c02c65c4",
-  "status": "PREREGISTERED",
+  "status": "IMPLEMENTED_RECONCILED_QUALIFICATION_QUEUED",
   "production_source_mutation": "PERMITTED_STATE_INFRASTRUCTURE_ONLY",
   "active_macropore_physics_permitted": false,
   "continuation_fields": [
@@ -17,13 +17,34 @@
     "VlMpDyCp"
   ],
   "gates": {
-    "type_shape": "PENDING",
-    "candidate_isolation": "PENDING",
-    "reject": "PENDING",
-    "accept": "PENDING",
-    "retry": "PENDING",
-    "restart": "PENDING",
-    "inactive_preservation": "PENDING"
+    "type_shape": "IMPLEMENTED_PENDING_RUN12",
+    "candidate_isolation": "IMPLEMENTED_PENDING_RUN12",
+    "reject": "IMPLEMENTED_PENDING_RUN12",
+    "accept": "IMPLEMENTED_PENDING_RUN12",
+    "retry": "IMPLEMENTED_PENDING_RUN12",
+    "restart": "IMPLEMENTED_PENDING_RUN12",
+    "inactive_preservation": "RECONCILED_STATIC_REVIEW_PASS_CI_PENDING"
   },
-  "next_action": "Locate current optional-state and restart architecture seams, then implement the smallest typed macropore state DTO and isolated transaction harness."
+  "next_action": "Wait only for persisted run 36759833884; on PASS write A2 qualification/closeout, reopen draft PR #909, and proceed to A3 equation migration preregistration.",
+  "reconciled_canonical": "f9133b92cd7d128838029a162ee607bb8ba69689",
+  "current_head": "ac998d39f2be304b24fbfbdab871983a4fc142b4",
+  "pull_request": {
+    "number": 909,
+    "state": "TEMPORARILY_CLOSED_TO_DRAIN_IRRELEVANT_PR_WORKFLOWS",
+    "draft": true
+  },
+  "qualification_run": {
+    "workflow": "PPA-WU05-A2 typed macropore state",
+    "run_id": 36759833884,
+    "run_number": 12,
+    "status": "QUEUED",
+    "head_sha": "ac998d39f2be304b24fbfbdab871983a4fc142b4"
+  },
+  "compile_dependency_gate": {
+    "runner": "tests/fkt/run_fkt22_fmr_compile_gate.sh",
+    "updated_for_macropore_module": true,
+    "executed_by_a2_gate": true,
+    "status": "PENDING_RUN12"
+  },
+  "production_admission": "NONE"
 }
