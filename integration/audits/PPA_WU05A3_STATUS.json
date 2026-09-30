@@ -29,7 +29,7 @@
     "E8_REJECT_RETRY",
     "E9_EXTREME_RAIN"
   ],
-  "next_action": "Build research-only R1 MACROSTATE bookkeeping kernel with refined E7 interface rule; verify internal vertical-flux/storage identities across moving interfaces.",
+  "next_action": "Run R1-MSTATE02: compare historical corrected-interface QTop reconstruction to universal top-down local-conservation reconstruction and assess PEARL/ANIMO coupling implications.",
   "local_research": {
     "E0_E2": "PASS",
     "E3_event_memory": "PASS_H6_SUPPORTED",
@@ -37,6 +37,10 @@
     "E5_rapid_drain": "PASS_CONTINUOUS_ONSET_STORAGE_CAPPED",
     "E6_icgwl": "SUPERSEDED_BY_E7_REFINED_BOUNDARY_RULE",
     "E7_interface_sweep": "PASS_10001_STATES_ZERO_INDEX_MISMATCH",
-    "E8_reject_retry": "PASS_ALL_SEVEN_FIELDS_ATOMIC_RETRY_IDENTITY"
+    "E8_reject_retry": "PASS_ALL_SEVEN_FIELDS_ATOMIC_RETRY_IDENTITY",
+    "R1_macrostate_bookkeeping": "PASS_GLOBAL_MASS_LOCAL_INTERFACE_PAIR_IMBALANCE_IDENTIFIED"
+  },
+  "new_findings": {
+    "standard_route_qtop_interface_transition": "LOCAL_PAIRWISE_IMBALANCE_CANCELS_GLOBALLY; POSSIBLE PEARL_ANIMO_RELEVANCE"
   }
 }
