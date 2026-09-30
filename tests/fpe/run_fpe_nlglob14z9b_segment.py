@@ -192,8 +192,8 @@ segment_end=float(sys.argv[6])
 checkpoint_path=Path(sys.argv[7])
 if route not in ("HEAD","RUNOFF"):
     raise SystemExit("invalid route")
-if abs(dt-6.25e-5)>1e-15:
-    raise SystemExit("segmented Z8 is frozen to fine dt=6.25e-5")
+if not any(math.isclose(dt,x,rel_tol=0,abs_tol=1e-15) for x in (1.25e-4,6.25e-5)):
+    raise SystemExit("segmented Z9B dt is outside frozen fixture set")
 
 def control_target_time(route,dt):
     if route=="HEAD":
