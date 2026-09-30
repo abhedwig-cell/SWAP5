@@ -178,7 +178,6 @@ contains
       call solver%solve(r,workspace,res)
       outcome%nonlinear_iterations=res%diagnostics%nonlinear_iterations
       outcome%internal_retries=res%diagnostics%internal_retries
-      outcome%headcalc_calls=res%diagnostics%headcalc_calls
       outcome%jacobian_builds=res%diagnostics%jacobian_builds
       outcome%linear_solves=res%diagnostics%linear_solves
       outcome%backtracking_attempts=res%diagnostics%backtracking_attempts
