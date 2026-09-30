@@ -38,3 +38,9 @@ jobs:
         run: git fetch origin integration/f-ci-canonical
       - name: Run ELASTIC65 qualification
         run: bash tests/fpe/run_fpe_elastic65.sh
+      - name: Preserve F-KT22 serialized compile closure
+        run: bash tests/fkt/run_fkt22_fmr_compile_gate.sh
+      - name: Preserve F-KT22 serialized runtime closure
+        run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+      - name: Preserve F-KT22 EB-I25 closure
+        run: bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh
