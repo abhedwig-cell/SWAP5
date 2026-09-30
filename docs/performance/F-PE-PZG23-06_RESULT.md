@@ -8,23 +8,22 @@ Branch:
 `research/f-pe-pzg23-06-terminal-criterion-attribution`
 
 Qualified computational postimage:
-`c249db32bf4ef6de678b6983b915eca91404569e`
+`e4d4eba713dbd953671562aff80796212e6b240c`
 
 Canonical baseline:
 `integration/f-ci-canonical@c400b02d9956f35c9c20fac09f94b34d5e2ee09f`
 
 Workflow run:
-`36765065843`
+`36765105846`
 
 Job:
-`110057047768`
+`110057276676`
 
-Computation step:
+Conclusion:
 SUCCESS.
 
-The workflow was subsequently cancelled by branch movement/concurrency after the
-qualification step had completed. The complete criterion census was emitted by
-the successful computation step.
+The qualified run completed the full terminal-criterion census on the improved
+self-contained criterion materializer.
 
 ## Question
 
