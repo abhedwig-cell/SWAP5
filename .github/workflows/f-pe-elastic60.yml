@@ -39,3 +39,5 @@ jobs:
           run-id: 36550782840
       - name: Run transaction composition qualification
         run: bash tests/fpe/run_fpe_elastic60.sh "$RUNNER_TEMP/elastic60-pdok"
+
+# ELASTIC60 qualification trigger
