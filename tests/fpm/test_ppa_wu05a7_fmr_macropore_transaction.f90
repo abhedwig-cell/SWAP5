@@ -1,16 +1,16 @@
 program test_ppa_wu05a7_fmr_macropore_transaction
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t, CANONICAL_STATUS_COMPLETED
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
-       fmr_new_b110_committed_state
+       fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -50,7 +50,8 @@ program test_ppa_wu05a7_fmr_macropore_transaction
        'macropore config ready')
   call require(fmr_restart_state_matches_template(initial_state,template),'initial state matches macropore layout')
 
-  call fmr_new_b110_committed_state(committed,column_id,initial_state,0.0_real64,ok)
+  call fmr_new_b110_temporal_indicator_committed_state(committed,column_id,initial_state,0.0_real64,ok, &
+       initial_right_derivative=spread(0.0_real64,1,numnod))
   call require(ok,'committed initialized')
   call committed%snapshot(committed_before,available)
   call require(available,'initial snapshot')
@@ -287,7 +288,7 @@ contains
     tpl%template_id=505701_int64; tpl%physics_topology_id=505702_int64; tpl%vertical_layout_id=505703_int64
     tpl%state_layout_id=505704_int64; tpl%solver_interface_id=505705_int64
     tpl%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
-    tpl%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    tpl%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     tpl%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     col%column_id=column_id; col%template_id=tpl%template_id; col%parameter_ref=1_int64
     col%state_handle=1_int64; col%forcing_handle=1_int64; col%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
@@ -302,6 +303,8 @@ contains
     cfg%transaction%max_retries=4
     cfg%max_committed_substeps=16
     cfg%progress_tolerance=0.0_real64
+    cfg%model_temporal_indicator_budget_available=.true.
+    cfg%model_temporal_indicator_budget=10.0_real64
   end subroutine initialize_config
 
   subroutine require_candidate_changed(base,cand)
