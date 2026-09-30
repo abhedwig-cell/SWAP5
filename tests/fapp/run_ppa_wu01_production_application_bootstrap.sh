@@ -176,6 +176,7 @@ MODULE_SRC=(
   src/kernel/mod_kernel_committed_persistence.f90
   src/runtime/mod_fmr_restart_state_contract.f90
   src/runtime/mod_fmr_committed_restart.f90
+  src/runtime/mod_swap5_application_session.f90
   src/runtime/mod_fmr_production_application_bootstrap.f90
   src/process/mod_pmdirect_swetr0_process.f90
   src/crop/mod_crop_root_uptake_input_contract.f90

@@ -41,6 +41,7 @@ module mod_fmr_production_application_bootstrap
   use mod_groundwater_application_plan, only: groundwater_application_plan_t, groundwater_tile_predictor_input_t, &
        groundwater_cell_area_input_t, materialize_groundwater_application_plan, GW_APP_PLAN_OK
   use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, FMR_GW_APP_CONTEXT_OK
+  use mod_swap5_application_session, only: swap5_application_session_t, SWAP5_SESSION_OK
   use mod_fmr_groundwater_application_c_api, only: register_fmr_groundwater_application_context, &
        release_fmr_groundwater_application_context, FMR_GW_APP_C_API_OK, FMR_GW_APP_C_API_INVALID_CONTEXT, &
        FMR_GW_APP_C_API_CONTEXT_BUSY
@@ -134,6 +135,7 @@ module mod_fmr_production_application_bootstrap
     integer(int64), allocatable :: participant_handles(:)
     type(groundwater_application_plan_t), pointer :: active_plan => null()
     type(fmr_groundwater_application_context_t), pointer :: active_context => null()
+    type(swap5_application_session_t) :: session
     integer(int64) :: active_context_handle = 0_int64
   contains
     procedure, public :: initialize => production_application_initialize
@@ -146,6 +148,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: run_standalone_with_forcing_receipts => production_application_run_standalone_with_forcing_receipts
     procedure, public :: materialize_groundwater_context => production_application_materialize_groundwater_context
     procedure, public :: release_groundwater_context => production_application_release_groundwater_context
+    procedure, public :: session_ready => production_application_session_ready
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
     procedure, public :: groundwater_parallel_schedule_diagnostics => production_application_parallel_schedule_diagnostics
     procedure, public :: copy_committed_top_states => production_application_copy_committed_top_states
@@ -276,6 +279,11 @@ contains
     self%numerical = config%numerical
     self%free_drainage_indicator => config%free_drainage_indicator
     self%storage_difference => config%storage_difference
+    call self%session%initialize(1_int64, local_status)
+    if (local_status /= SWAP5_SESSION_OK) then
+      status = FMR_APP_BOOT_STATE_INIT_FAILED
+      return
+    end if
 
     call self%backend%initialize(self%top_boundary)
     if (associated(config%free_drainage_indicator)) &
@@ -408,6 +416,12 @@ contains
          size(self%parameters) == size(self%columns) .and. size(self%base_forcing) == size(self%columns) .and. &
          size(self%committed) == size(self%columns)
   end function production_application_ready
+
+  logical function production_application_session_ready(self) result(ready)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+
+    ready = self%initialized .and. self%session%initialized_ok()
+  end function production_application_session_ready
 
   logical function production_application_groundwater_ready(self) result(ready)
     class(fmr_production_application_bootstrap_t), intent(in) :: self
