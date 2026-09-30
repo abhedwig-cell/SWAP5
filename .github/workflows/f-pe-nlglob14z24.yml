@@ -1,0 +1,29 @@
+name: F-PE-NLGLOB14Z24 coupling-surface relevance audit
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z24-coupling-surface-relevance
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z24*.md'
+      - 'tests/fpe/run_fpe_nlglob14z24.py'
+      - '.github/workflows/f-pe-nlglob14z24.yml'
+      - 'src/adapter/mod_groundwater_external_gateway.f90'
+      - 'src/runtime/mod_groundwater_coupling_contract.f90'
+      - 'src/runtime/mod_groundwater_interface_mass_ledger.f90'
+      - 'docs/science/groundwater-coupling.md'
+      - 'docs/integration/F-GC41_WHOLE_WINDOW_ACCEPTANCE_RETRY.md'
+      - 'docs/integration/F-GC42_WHOLE_WINDOW_SERVICE_COMPOSITION.md'
+      - 'docs/integration/F-GC43_PRODUCTION_SWAP_PARTICIPANT.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/fpe/run_fpe_nlglob14z24.py
