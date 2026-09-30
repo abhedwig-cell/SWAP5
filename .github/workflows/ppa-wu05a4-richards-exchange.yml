@@ -7,6 +7,7 @@ on:
     paths:
       - 'research/macropore/mod_ppa_wu05a4_fixed_exchange_provider.f90'
       - 'tests/fpm/test_ppa_wu05a4_richards_exchange.f90'
+      - 'tests/fpm/test_ppa_wu05a4_richards_predictor_corrector.f90'
       - 'tests/fpm/run_ppa_wu05a4_richards_exchange.sh'
       - '.github/workflows/ppa-wu05a4-richards-exchange.yml'
   workflow_dispatch:
