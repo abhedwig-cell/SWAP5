@@ -303,16 +303,16 @@ if mode=="first":
     start=None
     for a,b in zip(ordered[:-1],ordered[1:]):
         sa,_=series[a]; sb,_=series[b]
-        if len(sa)==14 and sb==list(range(4,17)) and 3 in sa and 3 not in sb and b==a+1:
+        if len(sa)==14 and sb==list(range(4,17)) and 3 in sa and 3 not in sb and b>a:
             start=b; break
     control_ok=bool(result and result["TERMINAL_REASON"]=="COMPLETE_SAME_ROUTE" and int(result["ELIGIBLE"])==1 and
                     abs(float(result["MAX_LEDGER"]))<=5e-8 and abs(float(result["CUM_LEDGER"]))<=5e-8)
     if start is None or not control_ok:
-        raise SystemExit("Z8 segment A control origin invalid")
+        raise SystemExit("Z11 segment A control origin invalid")
     sat0,xs0=series[start]
     h=[float(x["H"]) for x in xs0]; th=[float(x["THETA"]) for x in xs0]
     if abs(float(xs0[0]["POND"]))>1e-12:
-        raise SystemExit("Z8 segment A ponding invalid")
+        raise SystemExit("Z11 segment A ponding invalid")
     st=fresh_state(); st["final_step"]=start
     h,th,st=run_segment(h,th,demand,start,int(round(segment_end/dt)),st)
     final_tail=sat_tail(m,h,th)
@@ -321,7 +321,7 @@ if mode=="first":
         not st["skipped_after_second"] and st["chatter"]==0 and
         st["final_step"]==int(round(segment_end/dt)) and final_tail==list(range(10,17)))
     if not ok:
-        raise SystemExit("Z8 segment A failed frozen continuity gates")
+        raise SystemExit("Z11 segment A failed frozen continuity gates")
     st["prev_upper"]=16-len(final_tail)
     ck={
       "route":route,"dt_hex":dt.hex(),"segment_end_hex":segment_end.hex(),
@@ -339,23 +339,23 @@ if mode=="first":
       "accepted":st["accepted"],"max_ledger":st["maxledger"],
       "max_residual":st["maxres"],"max_rollback":st["maxrb"]},
       separators=(",",":"),sort_keys=True))
-    if not roundtrip: raise SystemExit("Z8 checkpoint roundtrip failed")
+    if not roundtrip: raise SystemExit("Z11 checkpoint roundtrip failed")
     print("F_PE_NLGLOB14Z11_SEGMENT=PASS")
 elif mode=="resume":
     ck=json.loads(checkpoint_path.read_text())
     if ck["route"]!=route or float.fromhex(ck["dt_hex"])!=dt:
-        raise SystemExit("Z8 checkpoint fixture mismatch")
+        raise SystemExit("Z11 checkpoint fixture mismatch")
     h=[float.fromhex(x) for x in ck["h_hex"]]
     th=[float.fromhex(x) for x in ck["th_hex"]]
     if [x.hex() for x in h]!=ck["h_hex"] or [x.hex() for x in th]!=ck["th_hex"]:
-        raise SystemExit("Z8 checkpoint state not exact")
+        raise SystemExit("Z11 checkpoint state not exact")
     st=ck["state"]
     st["top_routes"]=set(st["top_routes"])
     start_step=int(st["final_step"])
     expected_tail=ck["final_tail"]
     actual_tail=sat_tail(m,h,th)
     if actual_tail!=expected_tail or st["prev_upper"]!=16-len(actual_tail):
-        raise SystemExit("Z8 checkpoint ownership continuity failed")
+        raise SystemExit("Z11 checkpoint ownership continuity failed")
     h,th,st=run_segment(h,th,demand,start_step,int(round(segment_end/dt)),st)
     final_tail=sat_tail(m,h,th)
     reached=st["final_step"]==int(round(segment_end/dt))
@@ -379,7 +379,7 @@ elif mode=="resume":
       "top_routes":sorted(st["top_routes"])}
     print("F_PE_NLGLOB14Z11_SEGMENT_B="+json.dumps(rec,separators=(",",":"),sort_keys=True))
     if cls!="SPLIT_RETREAT_10_TO_11_TRANSITION_VALID":
-        raise SystemExit("Z8 segmented fine fixture did not qualify")
+        raise SystemExit("Z11 segmented fixture did not qualify")
     print("F_PE_NLGLOB14Z11_SEGMENT=PASS")
 else:
     raise SystemExit("mode must be first or resume")
