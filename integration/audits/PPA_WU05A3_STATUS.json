@@ -29,13 +29,14 @@
     "E8_REJECT_RETRY",
     "E9_EXTREME_RAIN"
   ],
-  "next_action": "Run E8 reject/retry with all seven source-active continuation fields, then build research-only R1 MACROSTATE bookkeeping using the refined interface rule.",
+  "next_action": "Build research-only R1 MACROSTATE bookkeeping kernel with refined E7 interface rule; verify internal vertical-flux/storage identities across moving interfaces.",
   "local_research": {
     "E0_E2": "PASS",
     "E3_event_memory": "PASS_H6_SUPPORTED",
     "E4_crack_history": "PASS_HISTORY_ACTIVE",
     "E5_rapid_drain": "PASS_CONTINUOUS_ONSET_STORAGE_CAPPED",
     "E6_icgwl": "SUPERSEDED_BY_E7_REFINED_BOUNDARY_RULE",
-    "E7_interface_sweep": "PASS_10001_STATES_ZERO_INDEX_MISMATCH"
+    "E7_interface_sweep": "PASS_10001_STATES_ZERO_INDEX_MISMATCH",
+    "E8_reject_retry": "PASS_ALL_SEVEN_FIELDS_ATOMIC_RETRY_IDENTITY"
   }
 }
