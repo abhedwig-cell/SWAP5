@@ -1,0 +1,24 @@
+name: F-PE-NLGLOB14Z12 control beyond 11:16
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z12-control-beyond-11
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z12*.md'
+      - 'tests/fpe/run_fpe_nlglob14z12*.py'
+      - 'tests/fpe/run_fpe_nlglob14z12*.sh'
+      - '.github/workflows/f-pe-nlglob14z12.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  control-beyond-11:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z12.sh
