@@ -10,6 +10,7 @@ on:
       - 'src/process/macropore/**'
       - 'src/solver/mod_macropore_exchange_overlay_provider.f90'
       - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
+      - 'tests/fpm/test_ppa_wu05a7_fmr_macropore_transaction.f90'
       - '.github/workflows/ppa-wu05a7-fmr-integration.yml'
   workflow_dispatch:
 
