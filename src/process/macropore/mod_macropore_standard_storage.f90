@@ -84,6 +84,7 @@ contains
           view%wet_fraction(id,ic)=1.0_real64
           remaining=max(0.0_real64,remaining-vol)
           topw=ic
+          if(remaining<=1.0e-12_real64)exit
         else
           view%normalized_water_cm(id,ic)=remaining
           frac=remaining/vol
