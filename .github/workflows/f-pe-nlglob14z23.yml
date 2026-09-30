@@ -1,0 +1,23 @@
+name: F-PE-NLGLOB14Z23 anti-chatter strategy comparison
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z23-anti-chatter-comparison
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z23*.md'
+      - 'tests/fpe/data/f_pe_nlglob14z23_z22_event_evidence.json'
+      - 'tests/fpe/run_fpe_nlglob14z23.py'
+      - '.github/workflows/f-pe-nlglob14z23.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  strategy-comparison:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/fpe/run_fpe_nlglob14z23.py
