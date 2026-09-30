@@ -105,6 +105,15 @@ def main():
     end if
 """
     oracle=oracle.replace(old_stationary,new_stationary)
+    # The bounded Binf may be raw-bound, in which case a deliberately wrong
+    # Dirichlet stiffness can produce the same bounded value even though the
+    # independent defect operator differs. ELASTIC53 requires exact oracle
+    # reproduction, not this F-SI38-specific separation count.
+    oracle=oracle.replace(
+        """  call require(wrong_dirichlet_separations > 0, 'oracle distinguishes Neumann from Dirichlet bottom stiffness')
+""",
+        """  continue
+""")
     # Replace semantic labels only; preserve independent zero-stiffness oracle math.
     # Adapt the F-SI38 principal state to the mode-7 equilibrium geometry:
     # uniform saturated head, qtop around free-drainage q=-K.
