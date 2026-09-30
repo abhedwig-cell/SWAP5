@@ -310,9 +310,9 @@ contains
   subroutine require_candidate_changed(base,cand)
     class(transaction_state_t),intent(in)::base,cand
     select type(b=>base)
-    type is(fmr_b110_physical_state_t)
+    class is(fmr_b110_physical_state_t)
       select type(q=>cand)
-      type is(fmr_b110_physical_state_t)
+      class is(fmr_b110_physical_state_t)
         call require(allocated(b%macropore).and.allocated(q%macropore),'macro state allocated')
         call require(.not.q%macropore%same_values(b%macropore),'candidate macropore changed')
       class default; call require(.false.,'candidate type')
@@ -325,9 +325,9 @@ contains
     class(transaction_state_t),intent(in)::a,b
     character(len=*),intent(in)::label
     select type(x=>a)
-    type is(fmr_b110_physical_state_t)
+    class is(fmr_b110_physical_state_t)
       select type(y=>b)
-      type is(fmr_b110_physical_state_t)
+      class is(fmr_b110_physical_state_t)
         call require(x%active_nodes==y%active_nodes,label//' nodes')
         call require(all(transfer(x%pressure_head,[0_int64],size(x%pressure_head))== &
                          transfer(y%pressure_head,[0_int64],size(y%pressure_head))),label//' head')
