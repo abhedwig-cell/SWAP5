@@ -1,0 +1,485 @@
+{
+  "authority": {
+    "z22_run": 36710114782,
+    "z22_head_job": 109874968586,
+    "z22_runoff_job": 109874968567,
+    "z22_result_branch_commit": "16a3badc7af053520528280e8cfd9359aaba8fbe",
+    "dt_day": 0.0000625
+  },
+  "fixtures": [
+    {
+      "route": "HEAD",
+      "committed_reverse": {
+        "offset": 0,
+        "time": 260.9335625,
+        "from_tail": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "to_tail": [
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "direction": "reverse"
+      },
+      "changes": [
+        {
+          "offset": 1,
+          "time": 260.933625,
+          "from_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 2,
+          "time": 260.9336875,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 3,
+          "time": 260.93375,
+          "from_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4,
+          "time": 260.9338125,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 5,
+          "time": 260.933875,
+          "from_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4058840,
+          "time": 514.6110625,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4058841,
+          "time": 514.611125,
+          "from_tail": [
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 4058842,
+          "time": 514.6111875,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4058843,
+          "time": 514.61125,
+          "from_tail": [
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 4058844,
+          "time": 514.6113125,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4058845,
+          "time": 514.611375,
+          "from_tail": [
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 4058846,
+          "time": 514.6114375,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4058847,
+          "time": 514.6115,
+          "from_tail": [
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 4058848,
+          "time": 514.6115625,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        }
+      ],
+      "final_tail": [
+        14,
+        15,
+        16
+      ],
+      "final_time": 540,
+      "max_ledger_cm": 1.6197997084605237e-9,
+      "max_residual": 9.99999983748624e-11,
+      "max_rollback": 0,
+      "top_routes": [
+        "surface-flux"
+      ]
+    },
+    {
+      "route": "RUNOFF",
+      "committed_reverse": {
+        "offset": 0,
+        "time": 260.930375,
+        "from_tail": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "to_tail": [
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "direction": "reverse"
+      },
+      "changes": [
+        {
+          "offset": 1,
+          "time": 260.9304375,
+          "from_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 2,
+          "time": 260.9305,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 3,
+          "time": 260.9305625,
+          "from_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4,
+          "time": 260.930625,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 5,
+          "time": 260.9306875,
+          "from_tail": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4058845,
+          "time": 514.6081875,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4058846,
+          "time": 514.60825,
+          "from_tail": [
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 4058847,
+          "time": 514.6083125,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        },
+        {
+          "offset": 4058848,
+          "time": 514.608375,
+          "from_tail": [
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "direction": "reverse"
+        },
+        {
+          "offset": 4058849,
+          "time": 514.6084375,
+          "from_tail": [
+            13,
+            14,
+            15,
+            16
+          ],
+          "to_tail": [
+            14,
+            15,
+            16
+          ],
+          "direction": "retreat"
+        }
+      ],
+      "final_tail": [
+        14,
+        15,
+        16
+      ],
+      "final_time": 540,
+      "max_ledger_cm": 1.4938774857166743e-9,
+      "max_residual": 9.99999742623306e-11,
+      "max_rollback": 0,
+      "top_routes": [
+        "surface-flux"
+      ]
+    }
+  ]
+}
