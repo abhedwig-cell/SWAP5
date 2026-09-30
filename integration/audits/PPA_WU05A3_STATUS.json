@@ -5,7 +5,7 @@
   "branch": "research/ppa-wu05-a3-macropore-physical-decomposition",
   "baseline": "4d297b72e41089321572ce15ad078bf65cf398ee",
   "canonical_reconciled_through": "f9133b92cd7d128838029a162ee607bb8ba69689",
-  "status": "ACTIVE_RESEARCH_A2_QUALIFIED",
+  "status": "ACTIVE_RESEARCH_INTERIM_R1_MAP_READY",
   "production_source_mutation": false,
   "active_macropore_physics_permitted": false,
   "upstream": {
@@ -29,7 +29,7 @@
     "E8_REJECT_RETRY",
     "E9_EXTREME_RAIN"
   ],
-  "next_action": "Run E9 extreme-rainfall stress, then consolidate A3 interim R1 process map and decide whether physical decomposition is ready for coupled R2 work.",
+  "next_action": "Open coupled R2 single-column prototype: prescribed Richards-state adapter first, then one-step matrix/macropore exchange with A2 candidate state and E2/E3/E4/E7 regression oracles.",
   "local_research": {
     "E0_E2": "PASS",
     "E3_event_memory": "PASS_H6_SUPPORTED",
@@ -39,9 +39,11 @@
     "E7_interface_sweep": "PASS_10001_STATES_ZERO_INDEX_MISMATCH",
     "E8_reject_retry": "PASS_ALL_SEVEN_FIELDS_ATOMIC_RETRY_IDENTITY",
     "R1_macrostate_bookkeeping": "PASS_GLOBAL_MASS_LOCAL_INTERFACE_PAIR_IMBALANCE_IDENTIFIED",
-    "R1_MSTATE02": "PASS_UNIVERSAL_LOCAL_CONSERVATION_RECONSTRUCTION"
+    "R1_MSTATE02": "PASS_UNIVERSAL_LOCAL_CONSERVATION_RECONSTRUCTION",
+    "E9_extreme_rain": "PASS_REDUCED_EXTREME_LOAD_BOOKKEEPING"
   },
   "new_findings": {
     "standard_route_qtop_interface_transition": "LOCAL_STANDARD_ROUTE_DIAGNOSTIC_INCONSISTENCY; WHOLE_DOMAIN_MASS_PRESERVED; PEARL_ANIMO_NOT_DEMONSTRATED_AFFECTED"
-  }
+  },
+  "interim_decision": "A3_LOCAL_PHYSICAL_DECOMPOSITION_SUFFICIENT_FOR_COUPLED_R2_RESEARCH"
 }
