@@ -24,9 +24,10 @@ def main() -> None:
         src,
         "   logical                          :: flboth, flok\n",
         "   logical                          :: flboth, flok\n"
-        "   logical                          :: pzg23_bt_progress\n"
+        "   logical                          :: pzg23_bt_progress, pzg23_bt_iter_exhausted\n"
         "   integer                          :: pzg23_bt_exhaustions, pzg23_bt_progress_accepts, pzg23_bt_fmax_accepts\n"
-        "   real(8)                          :: pzg23_bt_best_ratio, pzg23_bt_min_factor, pzg23_bt_last_fmax\n",
+        "   real(8)                          :: pzg23_bt_best_ratio, pzg23_bt_min_factor, pzg23_bt_last_fmax\n"
+        "   real(8)                          :: pzg23_bt_iter_best_ratio, pzg23_bt_iter_min_factor\n",
         "declarations",
     )
 
@@ -39,7 +40,10 @@ def main() -> None:
         "   pzg23_bt_fmax_accepts = 0\n"
         "   pzg23_bt_best_ratio = huge(0.0d0)\n"
         "   pzg23_bt_min_factor = 1.0d0\n"
-        "   pzg23_bt_last_fmax = huge(0.0d0)\n",
+        "   pzg23_bt_last_fmax = huge(0.0d0)\n"
+        "   pzg23_bt_iter_best_ratio = huge(0.0d0)\n"
+        "   pzg23_bt_iter_min_factor = 1.0d0\n"
+        "   pzg23_bt_iter_exhausted = .FALSE.\n",
         "initialization",
     )
 
@@ -48,7 +52,10 @@ def main() -> None:
         "!     back tracking cycle\n      factor = 1.0d0\n",
         "!     back tracking cycle\n"
         "      factor = 1.0d0\n"
-        "      pzg23_bt_progress = .FALSE.\n",
+        "      pzg23_bt_progress = .FALSE.\n"
+        "      pzg23_bt_iter_exhausted = .FALSE.\n"
+        "      pzg23_bt_iter_best_ratio = huge(0.0d0)\n"
+        "      pzg23_bt_iter_min_factor = 1.0d0\n",
         "backtracking start",
     )
 
@@ -60,8 +67,12 @@ def main() -> None:
         "      end do\n"
         " 1    continue\n",
         "!        test for iteration progress, if Newton-step is too large: reduce dh by multiplication factor\n"
-        "         if (sumold > 0.0d0) pzg23_bt_best_ratio = min(pzg23_bt_best_ratio, sump / sumold)\n"
+        "         if (sumold > 0.0d0) then\n"
+        "            pzg23_bt_best_ratio = min(pzg23_bt_best_ratio, sump / sumold)\n"
+        "            pzg23_bt_iter_best_ratio = min(pzg23_bt_iter_best_ratio, sump / sumold)\n"
+        "         end if\n"
         "         pzg23_bt_min_factor = min(pzg23_bt_min_factor, factor)\n"
+        "         pzg23_bt_iter_min_factor = min(pzg23_bt_iter_min_factor, factor)\n"
         "         pzg23_bt_last_fmax = Fmax\n"
         "         if (sump < sumold) then\n"
         "            pzg23_bt_progress_accepts = pzg23_bt_progress_accepts + 1\n"
@@ -74,6 +85,7 @@ def main() -> None:
         "         factor = factor / 3.0d0\n\n"
         "      end do\n"
         "      pzg23_bt_exhaustions = pzg23_bt_exhaustions + 1\n"
+        "      pzg23_bt_iter_exhausted = .TRUE.\n"
         " 1    continue\n",
         "progress block",
     )
@@ -89,7 +101,9 @@ def main() -> None:
         "              ctx%diagnostics%headcalc_calls,'|dt=',dt,'|numbit=',state%numbit,'|backtracking=',iBackTr, &\n"
         "              '|exhaustions=',pzg23_bt_exhaustions,'|progress_accepts=',pzg23_bt_progress_accepts, &\n"
         "              '|fmax_accepts=',pzg23_bt_fmax_accepts,'|best_ratio=',pzg23_bt_best_ratio, &\n"
-        "              '|min_factor=',pzg23_bt_min_factor,'|last_fmax=',pzg23_bt_last_fmax\n"
+        "              '|min_factor=',pzg23_bt_min_factor,'|last_fmax=',pzg23_bt_last_fmax, &\n"
+        "              '|last_iter_exhausted=',pzg23_bt_iter_exhausted,'|last_iter_best_ratio=',pzg23_bt_iter_best_ratio, &\n"
+        "              '|last_iter_min_factor=',pzg23_bt_iter_min_factor\n"
         "         if (legacy_state_binding) call publish_legacy_state(state)\n"
         "         return\n"
     )
@@ -123,7 +137,9 @@ def main() -> None:
         "           ctx%diagnostics%headcalc_calls,'|dt=',dt,'|numbit=',state%numbit,'|backtracking=',iBackTr, &\n"
         "           '|exhaustions=',pzg23_bt_exhaustions,'|progress_accepts=',pzg23_bt_progress_accepts, &\n"
         "           '|fmax_accepts=',pzg23_bt_fmax_accepts,'|best_ratio=',pzg23_bt_best_ratio, &\n"
-        "           '|min_factor=',pzg23_bt_min_factor,'|last_fmax=',pzg23_bt_last_fmax\n"
+        "           '|min_factor=',pzg23_bt_min_factor,'|last_fmax=',pzg23_bt_last_fmax, &\n"
+        "           '|last_iter_exhausted=',pzg23_bt_iter_exhausted,'|last_iter_best_ratio=',pzg23_bt_iter_best_ratio, &\n"
+        "           '|last_iter_min_factor=',pzg23_bt_iter_min_factor\n"
         "      if (legacy_state_binding) call publish_legacy_state(state)\n"
         "      return\n"
     )
