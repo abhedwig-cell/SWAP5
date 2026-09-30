@@ -384,8 +384,8 @@ elif mode=="resume":
       "checkpoint_roundtrip_exact":True,"checkpoint_tail":expected_tail,
       "top_routes":sorted(st["top_routes"])}
     print("F_PE_NLGLOB14Z16_SEGMENT_B="+json.dumps(rec,separators=(",",":"),sort_keys=True))
-    if cls!="SPLIT_RETREAT_12_TO_13_TRANSITION_VALID":
-        raise SystemExit("Z15 segmented fixture did not qualify")
+    if cls!="EVENT_TERMINATED_SPLIT_RETREAT_12_TO_13_VALID":
+        raise SystemExit("Z16 event-terminated fixture did not qualify")
     print("F_PE_NLGLOB14Z16_SEGMENT=PASS")
 else:
     raise SystemExit("mode must be first or resume")
