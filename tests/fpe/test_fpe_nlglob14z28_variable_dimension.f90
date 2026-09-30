@@ -45,7 +45,9 @@ program test_fpe_nlglob14z28_variable_dimension
   end do
 
   if (.not. ok) error stop 'NLGLOB14Z28 qualification failed'
-  write(*,'(a)') 'F_PE_NLGLOB14Z28_RESULT={"classification":"VARIABLE_DIMENSION_PRIMITIVES_QUALIFIED","aggregate":"QUALIFIED_Z28_VARIABLE_DIMENSION_MANAGER_BOOTSTRAP"}'
+  write(*,'(a)') 'F_PE_NLGLOB14Z28_RESULT=' // &
+       '{"classification":"VARIABLE_DIMENSION_PRIMITIVES_QUALIFIED",' // &
+       '"aggregate":"QUALIFIED_Z28_VARIABLE_DIMENSION_MANAGER_BOOTSTRAP"}'
   write(*,'(a)') 'F_PE_NLGLOB14Z28=PASS'
 
 contains
