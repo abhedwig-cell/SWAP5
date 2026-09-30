@@ -1,0 +1,25 @@
+name: F-PE-ELASTIC65 EB-I25 baseline attribution
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic65-eb-i25-baseline-attribution
+    paths:
+      - 'tests/fkt/run_fkt22_eb_i25_preservation_gate.sh'
+      - '.github/workflows/f-pe-elastic65-eb-i25-baseline.yml'
+  workflow_dispatch:
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify production tree is canonical
+        run: |
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse HEAD:src)" = "$(git rev-parse origin/integration/f-ci-canonical:src)"
+          echo "F_PE_ELASTIC65_EBI25_BASELINE_PRODUCTION_IDENTITY=PASS"
+      - name: Run dependency-complete EB-I25 preservation
+        run: bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh
