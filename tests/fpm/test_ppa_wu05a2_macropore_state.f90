@@ -1,5 +1,5 @@
 program test_ppa_wu05a2_macropore_state
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_macropore_continuation_state, only: macropore_continuation_state_t, &
        copy_macropore_continuation_state
   implicit none
@@ -67,9 +67,9 @@ program test_ppa_wu05a2_macropore_state
 contains
   pure logical function same_bits(left, right) result(same)
     real(real64), intent(in) :: left, right
-    integer(kind=8) :: left_bits, right_bits
-    left_bits = transfer(left, left_bits)
-    right_bits = transfer(right, right_bits)
+    integer(int64) :: left_bits, right_bits
+    left_bits = transfer(left, 0_int64)
+    right_bits = transfer(right, 0_int64)
     same = left_bits == right_bits
   end function same_bits
 
