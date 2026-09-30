@@ -38,7 +38,7 @@ for opt in 0 2; do
     --external-source "$BUILD/mod_fpe_elastic53_reference_richards_temporal_indicator.f90" \
     --external-source src/legacy/b1_10_port/headcalc.f90 \
     --build "$OUT" --opt "$opt"
-  "$OUT/rom0_test" > "$OUT/result.txt"
+  "$OUT/rom0_test" > "$OUT/result.txt" 2>&1 || { cat "$OUT/result.txt" >&2; fail "mode7 oracle executable O$opt"; }
   grep -Fq 'ELASTIC53_MODE7_TEMPORAL_ORACLE=PASS' "$OUT/result.txt" || {
     cat "$OUT/result.txt" >&2; fail "mode7 oracle O$opt";
   }
