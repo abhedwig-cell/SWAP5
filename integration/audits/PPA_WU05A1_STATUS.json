@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-A1",
   "branch": "research/ppa-wu05-a1-source-census-recovery",
   "baseline": "68fcf6d384608c11ab5a34cf2eab9924f9788ecd",
-  "status": "SOURCE_RECOVERY_PASS_STATE_CENSUS_PARTIAL_COMPLETE",
+  "status": "QUALIFIED_EXACT_SOURCE_AND_CENSUS_COMPLETE_WITH_REFERENCE_DEFECT_IDENTIFIED",
   "production_source_mutation": false,
   "reference_source_mutation": false,
   "source_recovery": {
@@ -15,14 +15,37 @@
     "verdict": "PASS"
   },
   "exact_findings": {
-    "legacy_macrostatevar_backup_fields": ["ICpBtDm","VlMpDmCp","WaUnMpDmCp"],
-    "confirmed_minimum_continuation_fields": ["ICpBtDm","SorpDmCp","ThtSrpRefDmCp","TimAbsCumDmCp","VlMpDmCp","WaUnMpDmCp","VlMpDyCp"],
+    "legacy_macrostatevar_backup_fields": [
+      "ICpBtDm",
+      "VlMpDmCp",
+      "WaUnMpDmCp"
+    ],
+    "confirmed_minimum_continuation_fields": [
+      "ICpBtDm",
+      "SorpDmCp",
+      "ThtSrpRefDmCp",
+      "TimAbsCumDmCp",
+      "VlMpDmCp",
+      "WaUnMpDmCp",
+      "VlMpDyCp"
+    ],
     "legacy_rollback_complete": false,
     "vlmpdycp_classification": "PHYSICAL_HYSTERETIC_GEOMETRY_HISTORY",
     "sorptivity_history_trial_mutable": true,
-    "historical_index_zero_diagnostic": "SOURCE_AVAILABLE_CHARACTERIZATION_PENDING"
+    "historical_index_zero_diagnostic": "PASS_SOURCE_PROVEN_UNINITIALIZED_ICGWL"
   },
-  "mass_census": "IN_PROGRESS",
+  "mass_census": "PASS",
   "production_admission": "NONE",
-  "next_action": "Complete exact cross-call field and mass-transfer census, then characterize the source-bound index-0 path."
+  "next_action": "Open PPA-WU05-A2 typed committed/candidate/restart DTO and rollback harness. Do not migrate macropore equations in A2.",
+  "qualification": {
+    "state": "QUALIFIED_RESEARCH_RESULT",
+    "gates": {
+      "source_identity": "PASS",
+      "b1_11_derivation": "PASS",
+      "state_census": "PASS",
+      "transaction_census": "PASS",
+      "mass_census": "PASS",
+      "index_zero_characterization": "PASS"
+    }
+  }
 }
