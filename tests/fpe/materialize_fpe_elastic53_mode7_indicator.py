@@ -74,6 +74,16 @@ def main():
         """    call require(transfer(result%bottom_flux,0_int64) == transfer(q,0_int64), 'prescribed qbot exact identity')
 ""","")
     # Mass ledger already uses result%bottom_flux and remains valid.
+    # Mode 7 does not publish the solver-native residual diagnostic in this
+    # contract layer. Preserve the independent ledger gate and remove only the
+    # mode-2/5-specific solver diagnostic requirement.
+    oracle=oracle.replace(
+        """    solver_mass = result%unrounded_mass_balance_residual
+    call require(ieee_is_finite(solver_mass), 'finite solver mass residual')
+    call require(max(abs(ledger_residual),abs(solver_mass)) <= hard_mass_gate, 'hard mass gate before certificate')
+""",
+        """    call require(abs(ledger_residual) <= hard_mass_gate, 'hard ledger mass gate before certificate')
+""")
     # Remove the unsupported-mode-7 fail-closed check; production still owns that check elsewhere.
     start=oracle.find("    unsupported_request = request")
     end=oracle.find("    completed_cases = completed_cases + 1",start)
