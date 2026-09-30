@@ -249,8 +249,7 @@ program test_fpe_elastic60_transaction_composition
   use mod_transaction_reference, only: transaction_state_t, transaction_policy_t, transaction_result_t, &
        execute_reference_interval, TX_TEMPORAL_MODEL_CERTIFICATE, TX_STATUS_ACCEPTED, TX_STATUS_RETRY_EXHAUSTED, &
        TX_ROUTE_MODEL_CERTIFIED, TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, prepare_fmr_b110_default_mvg, &
-       fmr_elastic_storage_application_host_diagnostics_t => fmr_b110_physical_parameters_t
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, prepare_fmr_b110_default_mvg
   use mod_fmr_elastic_storage_application_host_binding, only: fmr_elastic_storage_application_host_diagnostics_t, &
        fmr_prepare_application_parameters_with_elastic_storage, FMR_ELAS_HOST_BINDING_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t, bind_b110_default_mvg_provider
@@ -424,8 +423,15 @@ end program
     # Add trial_outcome_t import to program.
     src=src.replace("use mod_transaction_reference, only: transaction_state_t, transaction_policy_t, transaction_result_t, &",
                     "use mod_transaction_reference, only: transaction_state_t, transaction_policy_t, transaction_result_t, trial_outcome_t, &")
-    Path(a.fixture).write_text(src,encoding="utf-8")
-    print("F_PE_ELASTIC60_PREP="+json.dumps({"profile_id":PROFILE_ID,"B_NATIVE":B_NATIVE,"counts":counts},sort_keys=True,separators=(",",":")))
+    fixture=Path(a.fixture)
+    marker="program test_fpe_elastic60_transaction_composition"
+    pos=src.index(marker)
+    module_text=src[:pos]
+    program_text=src[pos:]
+    module_path=fixture.with_name("mod_fpe_elastic60_transaction_model.f90")
+    module_path.write_text(module_text,encoding="utf-8")
+    fixture.write_text(program_text,encoding="utf-8")
+    print("F_PE_ELASTIC60_PREP="+json.dumps({"profile_id":PROFILE_ID,"B_NATIVE":B_NATIVE,"counts":counts,"module":str(module_path)},sort_keys=True,separators=(",",":")))
 
 if __name__=="__main__":
     main()
