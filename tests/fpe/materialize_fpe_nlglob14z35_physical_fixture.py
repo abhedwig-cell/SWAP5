@@ -47,7 +47,7 @@ def top_flux(h0):
 h0=[-120.0+10.0*i for i in range(16)]
 th0=[theta(x) for x in h0]
 q0=fluxes(h0)
-qtop0=top_flux(h0)
+qtop0=top_flux(h0[0])
 
 # The frozen smoke origin is hydrostatic. With the very short interval and
 # dry-top capacity at this state, the full and reduced Newton predictors are
