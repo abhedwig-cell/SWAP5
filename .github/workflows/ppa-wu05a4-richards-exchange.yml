@@ -6,6 +6,10 @@ on:
       - research/ppa-wu05-a4-r2-coupled-single-column
     paths:
       - 'research/macropore/mod_ppa_wu05a4_fixed_exchange_provider.f90'
+      - 'research/macropore/mod_ppa_wu05a4_r2_macropore_process.f90'
+      - 'research/macropore/mod_ppa_wu05a4_outer_coupling_controller.f90'
+      - 'src/runtime/mod_macropore_continuation_state.f90'
+      - 'tests/fpm/test_ppa_wu05a4_outer_controller.f90'
       - 'tests/fpm/test_ppa_wu05a4_richards_exchange.f90'
       - 'tests/fpm/test_ppa_wu05a4_richards_predictor_corrector.f90'
       - 'tests/fpm/test_ppa_wu05a4_richards_picard.f90'
