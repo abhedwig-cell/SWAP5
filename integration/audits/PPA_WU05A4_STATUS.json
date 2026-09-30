@@ -4,7 +4,7 @@
   "title": "R2 coupled single-column prototype",
   "branch": "research/ppa-wu05-a4-r2-coupled-single-column",
   "baseline": "8a3e4f4fe47ca211629a1ac297f692bc9b699320",
-  "status": "ACTIVE_ADVERSARIAL_COUPLING_LIMITS_IDENTIFIED",
+  "status": "ACTIVE_OUTER_COUPLING_STABILIZATION_CHARACTERIZED",
   "production_activation": false,
   "richards_coupling": "DYNAMIC_PREDICTOR_CORRECTOR_RESEARCH_PASS",
   "gates": {
@@ -16,7 +16,7 @@
     "e7_interface": "PASS_LOCAL",
     "e9_extreme": "PASS_LOCAL"
   },
-  "next_action": "Test timestep reduction for wet/fresh and bounded under-relaxation for dry/fresh before considering fully implicit Newton coupling.",
+  "next_action": "Define research coupling-controller contract with convergence, damping, retry propagation and atomic candidate semantics; then quantify strict-vs-practical corrector cutoffs.",
   "richards_probe": {
     "head": "0da844cfac7d0159f3ed7d72b142a7af37846d1c",
     "run_id": 36764661597,
@@ -56,5 +56,14 @@
     "mid_fresh": "STRONG_BUT_CONVERGENT",
     "dry_fresh": "PERIOD_TWO_OUTER_OSCILLATION",
     "wet_aged": "FAST_CONVERGENCE"
+  },
+  "stabilization": {
+    "run_id": 36766340685,
+    "head": "68edacae500359c2caf3b1db957cb300efd4a9e7",
+    "wet_fresh_dt_0_1": "RETRY_ADVISED",
+    "wet_fresh_dt_0_05": "CONVERGED",
+    "dry_fresh_undamped": "PERIOD_TWO",
+    "dry_fresh_omega_0_5": "CONVERGED",
+    "conclusion": "OUTER_DAMPING_AND_TIMESTEP_RETRY_SUFFICIENT_IN_TESTED_ADVERSARIAL_CASES"
   }
 }
