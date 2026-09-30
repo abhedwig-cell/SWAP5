@@ -13,7 +13,7 @@ python3 tests/rom/materialize_f_rom0_headcalc_stubs.py   --source tests/fsi/fsi0
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
   python3 tests/rom/compile_f_rom0_fortran_closure.py     --root "$ROOT" --stub "$BUILD/stub.f90"     --target tests/fpe/test_fpe_elastic70_production_transaction_performance.f90     --external-source src/legacy/b1_10_port/headcalc.f90     --build "$OUT" --opt "$opt"
-  (cd "$BUILD/profile" && env -u SWAP5_ELASTIC_STORAGE_CONFIG "$OUT/rom0_test" request.cfg profile_8016.rows) | tee "$OUT/result.txt"
+  (cd "$BUILD/profile" && env -u SWAP5_ELASTIC_STORAGE_CONFIG "$OUT/rom0_test") | tee "$OUT/result.txt"
   grep -Fq 'F_PE_ELASTIC70_A1_GENERATED=PASS' "$OUT/result.txt" || fail "generated O$opt"
   grep -Fq 'F_PE_ELASTIC70_A2_TRANSACTION_WORK=PASS' "$OUT/result.txt" || fail "work O$opt"
   grep -Fq 'F_PE_ELASTIC70=PASS' "$OUT/result.txt" || fail "result O$opt"
