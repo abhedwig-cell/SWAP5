@@ -25,5 +25,6 @@ jobs:
           path: ${{ runner.temp }}/elastic66-pdok
           repository: abhedwig-cell/SWAP5
           run-id: 36550782840
+          github-token: ${{ github.token }}
       - name: Run attribution
         run: bash tests/fpe/run_fpe_elastic66.sh "$RUNNER_TEMP/elastic66-pdok"
