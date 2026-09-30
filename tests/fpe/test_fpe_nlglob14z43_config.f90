@@ -30,7 +30,9 @@ program test_fpe_nlglob14z43_config
   call require(status == FMR_MI_CONFIG_UNSUPPORTED_VALUE, 'invalid value status')
   call require(.not. req%manager_enabled, 'invalid config must fail closed')
 
-  write(*,'(a)') 'F_PE_NLGLOB14Z43_CONFIG={"default_enabled":false,"explicit_disabled":true,"explicit_enabled":true,"invalid_fail_closed":true}'
+  write(*,'(a)') 'F_PE_NLGLOB14Z43_CONFIG=' // &
+       '{"default_enabled":false,"explicit_disabled":true,' // &
+       '"explicit_enabled":true,"invalid_fail_closed":true}'
   write(*,'(a)') 'F_PE_NLGLOB14Z43_CONFIG=PASS'
 
 contains
