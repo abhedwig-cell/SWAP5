@@ -29,12 +29,13 @@
     "E8_REJECT_RETRY",
     "E9_EXTREME_RAIN"
   ],
-  "next_action": "Run E7 groundwater/interface sweep with research-only corrected icgwl=ICpTpWaSrDm(id), focusing on mass continuity and interface transitions.",
+  "next_action": "Run E8 reject/retry with all seven source-active continuation fields, then build research-only R1 MACROSTATE bookkeeping using the refined interface rule.",
   "local_research": {
     "E0_E2": "PASS",
     "E3_event_memory": "PASS_H6_SUPPORTED",
     "E4_crack_history": "PASS_HISTORY_ACTIVE",
     "E5_rapid_drain": "PASS_CONTINUOUS_ONSET_STORAGE_CAPPED",
-    "E6_icgwl": "PASS_CANDIDATE_ICpTpWaSrDm_STRONGLY_SUPPORTED"
+    "E6_icgwl": "SUPERSEDED_BY_E7_REFINED_BOUNDARY_RULE",
+    "E7_interface_sweep": "PASS_10001_STATES_ZERO_INDEX_MISMATCH"
   }
 }
