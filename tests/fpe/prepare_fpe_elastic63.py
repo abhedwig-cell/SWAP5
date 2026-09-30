@@ -34,26 +34,26 @@ def main():
 
   call bind_b110_default_mvg_provider(constitutive_half,p%prepared_default_mvg,0.5_real64*dt)
 """
-    full="""  call solver_full%solve(req_full,ws_full,res_full)
+    full=f"""  call solver_full%solve(req_full,ws_full,res_full)
 
   call req(allocated(ws_full%richards%residual).and.allocated(ws_full%state_binding%theta),'full floor workspace')
   call req(all(ieee_is_finite(ws_full%richards%residual)).and.all(ieee_is_finite(ws_full%state_binding%theta)), &
        'finite full floor workspace')
-  write(*,'(*(g0))')'ELASTIC63_SOLVE|profile=%d|stage=FULL|regime=',trim(regime),'|h0=',h0,'|delta=',delta,'|dt=',dt, &
-       '|status=',res_full%%status, &
-       '|max_local_residual=',maxval(abs(ws_full%%richards%%residual)), &
-       '|max_local_residual_node=',maxloc(abs(ws_full%%richards%%residual),dim=1), &
-       '|abs_total_residual=',abs(sum(ws_full%%richards%%residual)), &
-       '|floor_max=',maxval(0.5_real64*(spacing(ws_full%%state_binding%%theta)+ &
-            spacing(req_full%%base_state%%water_content))*p%%dz/dt), &
-       '|floor_rss=',sqrt(sum((0.5_real64*(spacing(ws_full%%state_binding%%theta)+ &
-            spacing(req_full%%base_state%%water_content))*p%%dz/dt)**2)), &
-       '|floor_sum=',sum(0.5_real64*(spacing(ws_full%%state_binding%%theta)+ &
-            spacing(req_full%%base_state%%water_content))*p%%dz/dt), &
+  write(*,'(*(g0))')'ELASTIC63_SOLVE|profile={a.profile_id}|stage=FULL|regime=',trim(regime),'|h0=',h0,'|delta=',delta,'|dt=',dt, &
+       '|status=',res_full%status, &
+       '|max_local_residual=',maxval(abs(ws_full%richards%residual)), &
+       '|max_local_residual_node=',maxloc(abs(ws_full%richards%residual),dim=1), &
+       '|abs_total_residual=',abs(sum(ws_full%richards%residual)), &
+       '|floor_max=',maxval(0.5_real64*(spacing(ws_full%state_binding%theta)+ &
+            spacing(req_full%base_state%water_content))*p%dz/dt), &
+       '|floor_rss=',sqrt(sum((0.5_real64*(spacing(ws_full%state_binding%theta)+ &
+            spacing(req_full%base_state%water_content))*p%dz/dt)**2)), &
+       '|floor_sum=',sum(0.5_real64*(spacing(ws_full%state_binding%theta)+ &
+            spacing(req_full%base_state%water_content))*p%dz/dt), &
        '|baltol_rate=',max(1.0e-12_real64,2.8e-16_real64/dt)
 
   call bind_b110_default_mvg_provider(constitutive_half,p%prepared_default_mvg,0.5_real64*dt)
-""" % a.profile_id
+"""
     if anchor not in s: raise SystemExit("F_PE_ELASTIC63_FAIL full anchor")
     s=s.replace(anchor,full,1)
 
@@ -61,26 +61,26 @@ def main():
 
   res_half2=soil_water_solve_result_t()
 """
-    half="""  call solver_half%solve(req_half1,ws_half,res_half1)
+    half=f"""  call solver_half%solve(req_half1,ws_half,res_half1)
 
   call req(allocated(ws_half%richards%residual).and.allocated(ws_half%state_binding%theta),'half1 floor workspace')
   call req(all(ieee_is_finite(ws_half%richards%residual)).and.all(ieee_is_finite(ws_half%state_binding%theta)), &
        'finite half1 floor workspace')
-  write(*,'(*(g0))')'ELASTIC63_SOLVE|profile=%d|stage=HALF1|regime=',trim(regime),'|h0=',h0,'|delta=',delta, &
-       '|dt=',0.5_real64*dt,'|status=',res_half1%%status, &
-       '|max_local_residual=',maxval(abs(ws_half%%richards%%residual)), &
-       '|max_local_residual_node=',maxloc(abs(ws_half%%richards%%residual),dim=1), &
-       '|abs_total_residual=',abs(sum(ws_half%%richards%%residual)), &
-       '|floor_max=',maxval(0.5_real64*(spacing(ws_half%%state_binding%%theta)+ &
-            spacing(req_half1%%base_state%%water_content))*p%%dz/(0.5_real64*dt)), &
-       '|floor_rss=',sqrt(sum((0.5_real64*(spacing(ws_half%%state_binding%%theta)+ &
-            spacing(req_half1%%base_state%%water_content))*p%%dz/(0.5_real64*dt))**2)), &
-       '|floor_sum=',sum(0.5_real64*(spacing(ws_half%%state_binding%%theta)+ &
-            spacing(req_half1%%base_state%%water_content))*p%%dz/(0.5_real64*dt)), &
+  write(*,'(*(g0))')'ELASTIC63_SOLVE|profile={a.profile_id}|stage=HALF1|regime=',trim(regime),'|h0=',h0,'|delta=',delta, &
+       '|dt=',0.5_real64*dt,'|status=',res_half1%status, &
+       '|max_local_residual=',maxval(abs(ws_half%richards%residual)), &
+       '|max_local_residual_node=',maxloc(abs(ws_half%richards%residual),dim=1), &
+       '|abs_total_residual=',abs(sum(ws_half%richards%residual)), &
+       '|floor_max=',maxval(0.5_real64*(spacing(ws_half%state_binding%theta)+ &
+            spacing(req_half1%base_state%water_content))*p%dz/(0.5_real64*dt)), &
+       '|floor_rss=',sqrt(sum((0.5_real64*(spacing(ws_half%state_binding%theta)+ &
+            spacing(req_half1%base_state%water_content))*p%dz/(0.5_real64*dt))**2)), &
+       '|floor_sum=',sum(0.5_real64*(spacing(ws_half%state_binding%theta)+ &
+            spacing(req_half1%base_state%water_content))*p%dz/(0.5_real64*dt)), &
        '|baltol_rate=',max(1.0e-12_real64,2.8e-16_real64/(0.5_real64*dt))
 
   res_half2=soil_water_solve_result_t()
-""" % a.profile_id
+"""
     if anchor not in s: raise SystemExit("F_PE_ELASTIC63_FAIL half anchor")
     s=s.replace(anchor,half,1)
 
