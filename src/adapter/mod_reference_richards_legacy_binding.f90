@@ -186,6 +186,21 @@ contains
                request%step_duration * result%unrounded_mass_balance_residual
        end if
 
+       ! SWBOTB=7 free drainage owns qbot inside HeadCalc. For an accepted
+       ! solve, the final unrounded compartment residual vector is already the
+       ! exact vector used by HeadCalc's total-balance convergence criterion.
+       ! Publish the same typed native-rate and integrated equation-balance
+       ! residual contract used by the already-qualified bottom modes 2 and 5.
+       if (request%boundary%bottom_mode == 7 .and. .not. ws%state_binding%fldecdt .and. &
+           .not. ws%legacy_worker%control%request_dt_reduction) then
+          result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
+          result%native_balance_rate_residual_available = .true.
+          result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
+          result%integrated_mass_balance_residual_available = .true.
+          result%integrated_mass_balance_residual_cm = &
+               request%step_duration * result%unrounded_mass_balance_residual
+       end if
+
        ! Native SWAP prescribed-qbot enters the implemented bottom residual as
        ! F_N(...,qbot)=...-qbot. Therefore dF/dqbot=-e_N and implicit
        ! differentiation gives J * dh/dqbot = +e_N. Reuse the final normal
