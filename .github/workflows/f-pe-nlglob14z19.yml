@@ -1,0 +1,56 @@
+name: F-PE-NLGLOB14Z19 bidirectional reclassification
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z19-bidirectional-reclassification
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z19*.md'
+      - 'tests/fpe/run_fpe_nlglob14z19_segment.py'
+      - 'tests/fpe/run_fpe_nlglob14z19_segment.sh'
+      - '.github/workflows/f-pe-nlglob14z19.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  segment-a:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { route: HEAD, dt: "0.0000625", key: head-fine }
+          - { route: RUNOFF, dt: "0.0000625", key: runoff-fine }
+    name: segment A ${{ matrix.route }} fine
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z19_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" first "140.0" "z19-${{ matrix.key }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z19-${{ matrix.key }}-checkpoint
+          path: z19-${{ matrix.key }}.json
+          if-no-files-found: error
+
+  segment-b:
+    needs: segment-a
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { route: HEAD, dt: "0.0000625", key: head-fine }
+          - { route: RUNOFF, dt: "0.0000625", key: runoff-fine }
+    name: segment B ${{ matrix.route }} fine bidirectional
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z19-${{ matrix.key }}-checkpoint
+          path: .
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z19_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" resume "262.0" "z19-${{ matrix.key }}.json"
