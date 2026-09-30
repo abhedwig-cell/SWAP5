@@ -1,0 +1,28 @@
+name: F-PE-ELASTIC58 mode7 Reference budget
+
+concurrency:
+  group: f-pe-elastic58-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic58-mode7-reference-budget
+    paths:
+      - 'tests/fpe/materialize_fpe_elastic58_reference_budget.py'
+      - 'tests/fpe/run_fpe_elastic58.sh'
+      - 'docs/performance/F-PE-ELASTIC58_MODE7_REFERENCE_BUDGET_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic58.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Run Reference-only mode7 budget calibration
+        run: bash tests/fpe/run_fpe_elastic58.sh
