@@ -9,6 +9,7 @@ FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fba
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"; mkdir -p "$OUT"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/solver_contract.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90 -o "$OUT/sorp.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90 -o "$OUT/unsat.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_sorptivity_rate.f90 -o "$OUT/test_sorp.o"
@@ -28,6 +29,9 @@ for opt in 0 2; do
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/runtime/mod_ppa_wu05a5_macropore_restart.f90 -o "$OUT/restarta5.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90 -o "$OUT/history.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90 -o "$OUT/bundle.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/macropore/mod_macropore_dynamic_crack.f90 -o "$OUT/dynamic_crack.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_macropore_exchange_overlay_provider.f90 -o "$OUT/overlay.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/runtime/mod_macropore_single_column_runtime.f90 -o "$OUT/runtime.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_unsat_absorption_rate.f90 -o "$OUT/test_unsat.o"
   gfortran -O"$opt" "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/test_unsat.o" -o "$OUT/test_unsat"
   "$OUT/test_unsat" > "$OUT/unsat.txt"
@@ -83,6 +87,18 @@ for opt in 0 2; do
   "$OUT/test_replay" > "$OUT/replay.txt"
   cat "$OUT/replay.txt"
   grep -Fq 'PPA_WU05A6_SOURCE_RATE_REPLAY=PASS' "$OUT/replay.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a7_dynamic_crack.f90 -o "$OUT/test_dynamic_crack.o"
+  gfortran -O"$opt" "$OUT/dynamic_crack.o" "$OUT/test_dynamic_crack.o" -o "$OUT/test_dynamic_crack"
+  "$OUT/test_dynamic_crack" > "$OUT/dynamic_crack.txt"
+  cat "$OUT/dynamic_crack.txt"
+  grep -Fq 'PPA_WU05A7_DYNAMIC_CRACK=PASS' "$OUT/dynamic_crack.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a7_single_column_runtime.f90 -o "$OUT/test_runtime.o"
+  gfortran -O"$opt" "$OUT/solver_contract.o" "$OUT/state.o" "$OUT/topa5.o" "$OUT/multia5.o"     "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/sat.o" "$OUT/satsrc.o" "$OUT/rapid.o" "$OUT/toplimit.o"     "$OUT/vflux.o" "$OUT/history.o" "$OUT/bundle.o" "$OUT/overlay.o" "$OUT/runtime.o" "$OUT/test_runtime.o"     -o "$OUT/test_runtime"
+  "$OUT/test_runtime" > "$OUT/runtime.txt"
+  cat "$OUT/runtime.txt"
+  grep -Fq 'PPA_WU05A7_SINGLE_COLUMN_RUNTIME=PASS' "$OUT/runtime.txt"
 done
 cmp "$BUILD/o0/sorp.txt" "$BUILD/o2/sorp.txt"
 cmp "$BUILD/o0/unsat.txt" "$BUILD/o2/unsat.txt"
@@ -94,4 +110,6 @@ cmp "$BUILD/o0/vflux.txt" "$BUILD/o2/vflux.txt"
 cmp "$BUILD/o0/history.txt" "$BUILD/o2/history.txt"
 cmp "$BUILD/o0/bundle.txt" "$BUILD/o2/bundle.txt"
 cmp "$BUILD/o0/replay.txt" "$BUILD/o2/replay.txt"
+cmp "$BUILD/o0/dynamic_crack.txt" "$BUILD/o2/dynamic_crack.txt"
+cmp "$BUILD/o0/runtime.txt" "$BUILD/o2/runtime.txt"
 echo 'PPA_WU05A7_PROMOTION_GATE=PASS'
