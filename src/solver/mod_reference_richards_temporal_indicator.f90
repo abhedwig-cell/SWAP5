@@ -144,7 +144,7 @@ contains
        return
     end if
     if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX .or. &
-        (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2)) then
+        (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. request%boundary%bottom_mode /= 7)) then
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'boundary-envelope-deferred'
        return
