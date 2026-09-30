@@ -21,6 +21,13 @@ def main():
     s=s.replace("F_PE_MULTI06","F_PE_SCHED01")
     s=s.replace("MULTI06_COLUMN","SCHED01_COLUMN")
     s=s.replace("MULTI06_SUMMARY","SCHED01_SUMMARY")
+    start=s.find("    write(*,'(*(g0))')'SCHED01_COLUMN")
+    if start<0:
+        raise SystemExit("F_PE_SCHED01_FAIL column output seam")
+    end=s.find("\n  end do",start)
+    if end<0:
+        raise SystemExit("F_PE_SCHED01_FAIL column output end")
+    s=s[:start]+s[end:]
     decl="  integer :: workers,dispatch_status,pool_status,i,origin,ih,id,j,completed,committed,retries,mass_fail,solver\n"
     if decl not in s:
         raise SystemExit("F_PE_SCHED01_FAIL declaration seam")
