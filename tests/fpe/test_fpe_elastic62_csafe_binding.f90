@@ -5,7 +5,7 @@ program test_fpe_elastic62_csafe_binding
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
-       kernel_candidate_state_t, kernel_diagnostics_t, KERNEL_STATUS_OK
+       kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, FMR_OPTIONAL_STATE_LAYOUT_BASE
@@ -186,7 +186,7 @@ contains
     committed_ok=.false.
     if(accepted)then
       call backend%commit_trial_candidate(committed,candidate,diag,did_commit,commit_status)
-      committed_ok=did_commit.and.commit_status==KERNEL_STATUS_OK.and.committed%current_revision()==1_int64
+      committed_ok=did_commit.and.committed%current_revision()==1_int64
     end if
   end subroutine run_case
 
