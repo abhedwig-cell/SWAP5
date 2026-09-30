@@ -1,6 +1,7 @@
 program test_ppa_wu01_production_application_bootstrap
   use, intrinsic :: iso_c_binding, only: c_int, c_int64_t
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE
@@ -9,7 +10,8 @@ program test_ppa_wu01_production_application_bootstrap
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_commit_receipt_record_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
-       fmr_production_application_bootstrap_t, fmr_committed_top_state_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+       fmr_production_application_bootstrap_t, fmr_committed_top_state_t, FMR_APP_BOOT_OK, &
+       FMR_APP_BOOT_PROFILE_NOT_ADMITTED, FMR_APP_BOOT_INVALID_CONFIG
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
        groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
@@ -112,6 +114,13 @@ program test_ppa_wu01_production_application_bootstrap
 
   call app%copy_committed_revisions(revisions, status)
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 0_int64), 'initial committed revisions')
+
+  call app%run_standalone(T0, T0, results, status)
+  call require(status == FMR_APP_BOOT_INVALID_CONFIG .and. app%ready(), &
+       'session boundary rejects zero-length interval without mutating owner')
+  call app%run_standalone(ieee_value(T0, ieee_quiet_nan), T1, results, status)
+  call require(status == FMR_APP_BOOT_INVALID_CONFIG .and. app%ready(), &
+       'session boundary rejects nonfinite interval without mutating owner')
 
   call app%run_standalone(T0, T1, results, status)
   if (status /= FMR_APP_BOOT_OK) then
