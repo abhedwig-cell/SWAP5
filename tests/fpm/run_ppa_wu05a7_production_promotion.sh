@@ -9,7 +9,7 @@ FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fba
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"; mkdir -p "$OUT"
-  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/solver_contract.o"
+  gfortran "${FLAGS[@]}" -Wno-unused-dummy-argument -O"$opt" -J "$OUT" -I "$OUT" -c     src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/solver_contract.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90 -o "$OUT/sorp.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90 -o "$OUT/unsat.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_sorptivity_rate.f90 -o "$OUT/test_sorp.o"
