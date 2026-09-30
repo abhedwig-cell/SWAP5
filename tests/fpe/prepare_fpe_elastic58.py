@@ -206,6 +206,8 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
 
     do j=1,32
       call make_request_from_state(r,s,c,src,tp,current,forcing_top_head,qtop,qbot,subdt)
+      r%numerical%compartment_balance_tolerance=max(MASS_TOL,2.8e-16_real64/subdt)
+      r%numerical%total_balance_tolerance=max(MASS_TOL,2.8e-16_real64/subdt)
       call solver%solve(r,ws,step_result)
       if(step_result%status/=SW_SOLVE_CONVERGED)then
         result=step_result
