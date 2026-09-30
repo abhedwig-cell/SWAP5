@@ -95,6 +95,7 @@ for r in false_reject[:30]:
 
 if false_accept:
     print("F_PE_ELASTIC59_HOLDOUT=FALSIFIED")
+    raise SystemExit(f"F_PE_ELASTIC59_FAIL false_accept={len(false_accept)}")
 else:
     print("F_PE_ELASTIC59_HOLDOUT=PASS")
 print("F_PE_ELASTIC59_A4_ORACLE_SELF=PASS")
