@@ -4,7 +4,7 @@
   "title": "R2 coupled single-column prototype",
   "branch": "research/ppa-wu05-a4-r2-coupled-single-column",
   "baseline": "8a3e4f4fe47ca211629a1ac297f692bc9b699320",
-  "status": "QUALIFIED_RESEARCH_TYPED_OUTER_CONTROLLER",
+  "status": "QUALIFIED_RESEARCH_TYPED_CONTROLLER_CRACK_RAPID",
   "production_activation": false,
   "richards_coupling": "DYNAMIC_PREDICTOR_CORRECTOR_RESEARCH_PASS",
   "gates": {
@@ -16,7 +16,7 @@
     "e7_interface": "PASS_LOCAL",
     "e9_extreme": "PASS_LOCAL"
   },
-  "next_action": "Extend typed R2 process with crack-history and rapid-drain candidate semantics and qualify trajectories through the typed controller.",
+  "next_action": "Run short accepted-state crack/rapid trajectory through typed controller and verify cumulative state history and mass.",
   "richards_probe": {
     "head": "0da844cfac7d0159f3ed7d72b142a7af37846d1c",
     "run_id": 36764661597,
@@ -86,5 +86,14 @@
     "practical_outer_iterations": 3,
     "retry_propagation": "PASS",
     "combined_mass": "PASS"
+  },
+  "crack_rapid_controller": {
+    "run_id": 36769705960,
+    "head": "c3114c3d9cdc3122d61d15069367f7eb8d4b1c02",
+    "fresh_dynamic_crack_cm": 0,
+    "historic_dynamic_crack_cm": 0.3092807260097771,
+    "rapid_external_outflow_cm": 0.0125,
+    "combined_mass": "PASS",
+    "o0_o2_identity": "PASS"
   }
 }
