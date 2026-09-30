@@ -1574,16 +1574,18 @@ contains
              parameters%prepared_direct_retention_slot > 0
       end if
       if (parameters%macropore_active) then
-        ok = ok .and. allocated(parameters%macropore) .and. self%macropore_active .and. &
-             allocated(self%macropore) .and. self%soil_water_selection%uses_reference() .and. &
+        ! execution_admitted is called before configure_parameters.  Admission
+        ! therefore depends only on immutable request/parameter authority and
+        ! already-configured orthogonal runtime services, never on the copied
+        ! self%macropore fields populated by configure_parameters.
+        ok = ok .and. allocated(parameters%macropore) .and. self%soil_water_selection%uses_reference() .and. &
              .not. parameters%snow_active .and. .not. parameters%soil_temperature_active .and. &
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
              .not. parameters%drainage_response_active .and. .not. parameters%root_extraction_active .and. &
              .not. self%fixed_weir_surface_water_active
         if (ok) ok = parameters%macropore%ready(parameters%active_nodes,require_zero_top_receipt=.true.)
       else
-        ok = ok .and. .not. allocated(parameters%macropore) .and. .not. self%macropore_active .and. &
-             .not. allocated(self%macropore)
+        ok = ok .and. .not. allocated(parameters%macropore)
       end if
       if (parameters%snow_active) then
         ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &
