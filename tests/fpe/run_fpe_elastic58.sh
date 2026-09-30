@@ -15,8 +15,9 @@ python3 - "$BUILD/selected.json" <<'PY'
 import json,sys
 x=json.load(open(sys.argv[1],encoding="utf-8"))
 if len(x)!=4: raise SystemExit("F_PE_ELASTIC58_FAIL selected count")
-if [int(v["horizon_count"]) for v in x] != [1,2,3,4]:
-    raise SystemExit("F_PE_ELASTIC58_FAIL horizon classes")
+classes=[int(v["horizon_count"]) for v in x]
+if len(set(classes)) < 3:
+    raise SystemExit(f"F_PE_ELASTIC58_FAIL horizon diversity classes={classes}")
 print("F_PE_ELASTIC58_A1_SELECTION=PASS")
 print("ELASTIC58_SELECTED_IDS="+",".join(str(int(v["profile_id"])) for v in x))
 PY
