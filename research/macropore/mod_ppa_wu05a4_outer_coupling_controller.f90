@@ -38,6 +38,7 @@ module mod_ppa_wu05a4_outer_coupling_controller
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: combined_mass_residual_cm = huge(1.0_real64)
+    real(real64) :: macropore_external_outflow_cm = 0.0_real64
     real(real64), allocatable :: exchange_rate(:)
     type(soil_water_physical_state_t) :: matrix_candidate
     type(macropore_continuation_state_t) :: macropore_candidate
@@ -71,7 +72,7 @@ contains
     type(soil_water_solve_result_t) :: predictor, corrector
     type(ppa_wu05a4_fixed_exchange_provider_t), target :: exchange_provider
     real(real64), allocatable :: current_exchange(:), raw_next(:), next_exchange(:)
-    real(real64) :: numerator, denominator, matrix_delta, macro_delta, boundary_amount
+    real(real64) :: numerator, denominator, matrix_delta, macro_delta, boundary_amount, external_outflow
     logical :: ok
     integer :: n, iter
 
@@ -162,8 +163,8 @@ contains
       result%practical_cap_used = .true.
     end if
 
-    call process%build_candidate(corrector%candidate_state, accepted_macro, request%step_duration, &
-         current_exchange, result%macropore_candidate, ok)
+    call process%build_candidate(base_request%base_state, corrector%candidate_state, accepted_macro, &
+         request%step_duration, current_exchange, result%macropore_candidate, external_outflow, ok)
     if (.not. ok) then
       result%status = PPA_COUPLED_FAILED
       return
@@ -174,12 +175,13 @@ contains
     result%exchange_rate = current_exchange
     result%top_flux = corrector%top_flux
     result%bottom_flux = corrector%bottom_flux
+    result%macropore_external_outflow_cm = external_outflow
 
     matrix_delta = sum((result%matrix_candidate%water_content-base_request%base_state%water_content) * &
          base_request%parameters%dz)
     macro_delta = sum(result%macropore_candidate%water_domain_cp-accepted_macro%water_domain_cp)
     boundary_amount = (result%bottom_flux-result%top_flux)*request%step_duration
-    result%combined_mass_residual_cm = matrix_delta + macro_delta - boundary_amount
+    result%combined_mass_residual_cm = matrix_delta + macro_delta + external_outflow - boundary_amount
 
     if (abs(result%combined_mass_residual_cm) > policy%combined_mass_tolerance_cm) then
       result%status = PPA_COUPLED_FAILED
