@@ -1,0 +1,30 @@
+name: F-PE-ELASTIC58R mode7 Reference budget requalification
+
+concurrency:
+  group: f-pe-elastic58r-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic58r-mode7-reference-budget-requalification
+    paths:
+      - 'tests/fpe/materialize_fpe_elastic58_reference_budget.py'
+      - 'tests/fpe/run_fpe_elastic58.sh'
+      - 'docs/performance/F-PE-ELASTIC58R_MODE7_REFERENCE_BUDGET_REQUALIFICATION_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic58r.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Verify ELASTIC59 admission ancestor
+        run: git merge-base --is-ancestor 656ddea918c58267a08c2b626d498c998daccc60 HEAD
+      - name: Replay Reference-only mode7 budget calibration
+        run: bash tests/fpe/run_fpe_elastic58.sh
