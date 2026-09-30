@@ -17,5 +17,25 @@
     "active_reference_richards": "PASS",
     "o0_o2_identity": "PASS"
   },
-  "blocker": "FMR production adapter/config carrier for dynamic macropore hydraulic views and forcing ownership is not implemented."
+  "blocker": "FMR production adapter/config carrier for dynamic macropore hydraulic views and forcing ownership is not implemented.",
+  "provisional_scope": {
+    "bounded_fmr_route": "reference Richards only; FMR_OPTIONAL_STATE_LAYOUT_MACROPORE; zero macropore top receipt",
+    "excluded_combinations": [
+      "RossFast",
+      "snow",
+      "soil_temperature",
+      "black_evaporation",
+      "boesten_evaporation",
+      "drainage_response",
+      "root_extraction",
+      "fixed_weir_surface_water"
+    ],
+    "surface_connected_top_partition": "FOLLOW_ON_REQUIRED"
+  },
+  "fmr_integration": {
+    "compile_run_id": 36778973453,
+    "compile_status": "PASS",
+    "transaction_run_id": 36780009666,
+    "transaction_status": "IN_PROGRESS"
+  }
 }
