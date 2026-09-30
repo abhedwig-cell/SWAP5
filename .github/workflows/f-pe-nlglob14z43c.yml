@@ -1,0 +1,28 @@
+name: F-PE-NLGLOB14Z43C explicit-profile admission candidate
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z43c-explicit-profile-admission
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z43C*.md'
+      - 'src/runtime/mod_timestep_numerical_profile.f90'
+      - 'tests/fpe/test_fpe_nlglob14z43_profile.f90'
+      - 'tests/fpe/test_fpe_nlglob14z43_admission_holdout.f90'
+      - 'tests/fpe/test_fpe_nlglob14z43a_reference_solvability.f90'
+      - 'tests/fpe/run_fpe_nlglob14z43c.py'
+      - 'tests/fpe/run_fpe_nlglob14z43c.sh'
+      - '.github/workflows/f-pe-nlglob14z43c.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  explicit-profile-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z43c.sh
