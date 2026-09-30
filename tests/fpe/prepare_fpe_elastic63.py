@@ -30,10 +30,7 @@ def main():
     s=fixture.read_text(encoding="utf-8")
 
     # Full-solve diagnostics before half1 reuses any workspace.
-    anchor="""  call solver_full%solve(req_full,ws_full,res_full)
-
-  call bind_b110_default_mvg_provider(constitutive_half,p%prepared_default_mvg,0.5_real64*dt)
-"""
+    anchor="  call solver_full%solve(req_full,ws_full,res_full)\n"
     full=f"""  call solver_full%solve(req_full,ws_full,res_full)
 
   call req(allocated(ws_full%richards%residual).and.allocated(ws_full%state_binding%theta),'full floor workspace')
@@ -52,9 +49,8 @@ def main():
             spacing(req_full%base_state%water_content))*p%dz/dt), &
        '|baltol_rate=',max(1.0e-12_real64,2.8e-16_real64/dt)
 
-  call bind_b110_default_mvg_provider(constitutive_half,p%prepared_default_mvg,0.5_real64*dt)
 """
-    if anchor not in s: raise SystemExit("F_PE_ELASTIC63_FAIL full anchor")
+    if s.count(anchor)!=1: raise SystemExit(f"F_PE_ELASTIC63_FAIL full anchor count={s.count(anchor)}")
     s=s.replace(anchor,full,1)
 
     anchor="""  call solver_half%solve(req_half1,ws_half,res_half1)
