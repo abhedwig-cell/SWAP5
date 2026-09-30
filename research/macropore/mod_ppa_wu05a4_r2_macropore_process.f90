@@ -18,6 +18,19 @@ module mod_ppa_wu05a4_r2_macropore_process
     real(real64) :: characteristic_diameter_cm = 4.0_real64
     real(real64) :: theta_s = 0.427494_real64
     real(real64) :: theta_r = 0.02_real64
+    logical :: crack_history_enabled = .false.
+    real(real64) :: crack_theta_threshold = 0.30_real64
+    real(real64) :: crack_geometry_factor = 3.0_real64
+    real(real64) :: crack_shrinkage_relative = 0.05_real64
+    real(real64) :: crack_minimum_subsidence_cm = 0.0_real64
+    logical :: rapid_drainage_enabled = .false.
+    real(real64) :: rapid_domain_bottom_cm = -100.0_real64
+    real(real64) :: rapid_drain_level_cm = -95.0_real64
+    real(real64) :: rapid_resistance_day = 20.0_real64
+    real(real64) :: rapid_area_exponent = 3.0_real64
+    real(real64) :: rapid_saturated_fraction = 1.0_real64
+    real(real64) :: rapid_volume_under_drain_cm = 0.0_real64
+    real(real64) :: rapid_reduction_factor = 1.0_real64
   contains
     procedure, public :: ready => process_ready
     procedure, public :: evaluate_exchange => process_evaluate_exchange
@@ -43,6 +56,16 @@ contains
     ok = self%sorptivity_max >= 0.0_real64 .and. self%sorptivity_alpha > 0.0_real64 .and. &
          self%wall_fraction > 0.0_real64 .and. self%compartment_thickness_cm > 0.0_real64 .and. &
          self%characteristic_diameter_cm > 0.0_real64 .and. self%theta_s > self%theta_r
+    if (.not. ok) return
+    if (self%crack_history_enabled) then
+      ok = self%crack_geometry_factor > 0.0_real64 .and. self%matrix_fraction > 0.0_real64 .and. &
+           self%crack_shrinkage_relative >= 0.0_real64 .and. self%crack_shrinkage_relative < 1.0_real64
+      if (.not. ok) return
+    end if
+    if (self%rapid_drainage_enabled) then
+      ok = self%rapid_resistance_day > 0.0_real64 .and. self%rapid_area_exponent > 0.0_real64 .and. &
+           self%rapid_saturated_fraction >= 0.0_real64 .and. self%rapid_reduction_factor >= 0.0_real64
+    end if
   end function process_ready
 
   subroutine process_evaluate_exchange(self, matrix, accepted_macro, step_duration, exchange_rate, ok)
@@ -95,20 +118,27 @@ contains
     ok = .true.
   end subroutine process_evaluate_exchange
 
-  subroutine process_build_candidate(self, matrix, accepted_macro, step_duration, exchange_rate, candidate_macro, ok)
+  subroutine process_build_candidate(self, base_matrix, matrix, accepted_macro, step_duration, exchange_rate, &
+       candidate_macro, external_outflow_cm, ok)
     class(ppa_wu05a4_r2_process_t), intent(in) :: self
+    type(soil_water_physical_state_t), intent(in) :: base_matrix
     type(soil_water_physical_state_t), intent(in) :: matrix
     type(macropore_continuation_state_t), intent(in) :: accepted_macro
     real(real64), intent(in) :: step_duration
     real(real64), intent(in) :: exchange_rate(:)
     type(macropore_continuation_state_t), intent(inout) :: candidate_macro
+    real(real64), intent(out) :: external_outflow_cm
     logical, intent(out) :: ok
 
-    integer :: id, ic
-    real(real64) :: amount, theta, deficit, sorp, theta_ref, tabs, delta_root
+    integer :: id, ic, neighbour
+    real(real64) :: amount, theta, theta_m1, deficit, sorp, theta_ref, tabs, delta_root
+    real(real64) :: prior_crack, neighbour_crack, crit_theta, vl_shri_cp, subsidy, dynamic
+    real(real64) :: volume, water, wet_fraction, z_water, width, kd, dh, drainable, rapid_amount
 
     ok = .false.
+    external_outflow_cm = 0.0_real64
     if (.not. self%ready(matrix, accepted_macro)) return
+    if (base_matrix%active_nodes /= matrix%active_nodes .or. .not. allocated(base_matrix%water_content)) return
     if (step_duration <= 0.0_real64) return
     if (size(exchange_rate) /= matrix%active_nodes) return
 
@@ -154,6 +184,66 @@ contains
     candidate_macro%sorptivity(id,ic) = sorp
     candidate_macro%theta_sorption_ref(id,ic) = theta_ref
     candidate_macro%absorption_time(id,ic) = tabs + step_duration
+
+    if (self%crack_history_enabled) then
+      theta_m1 = base_matrix%water_content(ic)
+      prior_crack = accepted_macro%dynamic_volume_cp(ic)
+      neighbour_crack = 0.0_real64
+      if (ic > 1) neighbour_crack = max(neighbour_crack, accepted_macro%dynamic_volume_cp(ic-1))
+      if (ic < accepted_macro%num_nodes) neighbour_crack = max(neighbour_crack, accepted_macro%dynamic_volume_cp(ic+1))
+
+      dynamic = 0.0_real64
+      if (theta < self%theta_s - 1.0e-4_real64) then
+        if (theta > theta_m1 - 1.0e-8_real64 .and. (prior_crack > 0.0_real64 .or. neighbour_crack > 0.0_real64)) then
+          crit_theta = self%theta_s
+        else
+          crit_theta = self%crack_theta_threshold
+        end if
+        if (theta < crit_theta) then
+          vl_shri_cp = self%crack_shrinkage_relative*self%compartment_thickness_cm
+          subsidy = (1.0_real64-(1.0_real64-self%crack_shrinkage_relative)** &
+               (1.0_real64/self%crack_geometry_factor))*self%compartment_thickness_cm
+          subsidy = max(subsidy,self%crack_minimum_subsidence_cm)
+          if (self%compartment_thickness_cm-subsidy > 1.0e-12_real64) then
+            dynamic = self%matrix_fraction*(vl_shri_cp-subsidy)*self%compartment_thickness_cm / &
+                 (self%compartment_thickness_cm-subsidy)
+          end if
+        end if
+      end if
+      candidate_macro%dynamic_volume_cp(ic) = max(0.0_real64,dynamic)
+    end if
+
+    if (self%rapid_drainage_enabled) then
+      volume = max(0.0_real64,candidate_macro%volume_domain_cp(id,ic))
+      water = max(0.0_real64,candidate_macro%water_domain_cp(id,ic))
+      if (volume > 1.0e-12_real64) then
+        wet_fraction = min(1.0_real64,water/volume)
+      else
+        wet_fraction = 0.0_real64
+      end if
+      z_water = self%rapid_domain_bottom_cm + wet_fraction*self%compartment_thickness_cm
+
+      width = self%characteristic_diameter_cm * &
+           (1.0_real64-sqrt(max(0.0_real64,1.0_real64-volume/self%compartment_thickness_cm)))
+      if (self%characteristic_diameter_cm > 0.0_real64) then
+        kd = ((width**self%rapid_area_exponent)/self%characteristic_diameter_cm) * &
+             self%compartment_thickness_cm*self%rapid_saturated_fraction
+      else
+        kd = 0.0_real64
+      end if
+
+      dh = max(0.0_real64,z_water-max(self%rapid_drain_level_cm,self%rapid_domain_bottom_cm))
+      drainable = max(0.0_real64,water-self%rapid_volume_under_drain_cm)
+      if (kd > 1.0e-10_real64) then
+        rapid_amount = self%rapid_reduction_factor*(dh/self%rapid_resistance_day)*step_duration
+      else
+        rapid_amount = 0.0_real64
+      end if
+      rapid_amount = min(max(0.0_real64,rapid_amount),drainable)
+      candidate_macro%water_domain_cp(id,ic) = max(0.0_real64,water-rapid_amount)
+      external_outflow_cm = rapid_amount
+    end if
+
     ok = .true.
   end subroutine process_build_candidate
 
