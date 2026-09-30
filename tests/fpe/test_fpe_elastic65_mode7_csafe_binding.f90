@@ -80,7 +80,7 @@ program test_fpe_elastic65_mode7_csafe_binding
   expected=FMR_MODE7_HEAD_ALPHA*obs%temporal_head_inf_bound/budget_probe
   call require(same_real(obs%temporal_normalized_indicator,expected),'A1 exact ELASTIC61 normalization')
   call require(same_real(obs%temporal_head_budget,budget_probe),'A1 caller budget preserved')
-  call require(result%status==0,'probe accepted')
+  call require(result%completed,'probe accepted')
   write(*,'(A,ES24.16E3)')'ELASTIC65_PROBE_BINF=',obs%temporal_head_inf_bound
   write(*,'(A,ES24.16E3)')'ELASTIC65_PROBE_NORMALIZED=',obs%temporal_normalized_indicator
   write(*,'(A)')'F_PE_ELASTIC65_A1_MODE7_NORMALIZATION=PASS'
@@ -95,15 +95,15 @@ program test_fpe_elastic65_mode7_csafe_binding
   call backend%run_trial(column,template,p,committed,forcing,config,0.0_real64,DT,checkpoint, &
        result,candidate,diagnostics,trusted_prepared_parameters=.true.)
   obs=backend%observation()
-  call require(result%status==0,'retry path accepted')
+  call require(result%completed,'retry path accepted')
   call require(diagnostics%retries>=1,'at least one retry')
   call require(diagnostics%temporal_rejections>=1,'first temporal rejection')
-  call require(result%accepted_dt<DT,'accepted refined dt')
+  call require(diagnostics%min_accepted_substep_duration<DT,'accepted refined dt')
   call require(obs%temporal_certificate_available,'accepted certificate available')
   call require(obs%temporal_normalized_indicator<=1.0_real64,'accepted normalized certificate')
   call require(diagnostics%mass_rejections==0,'mass gate independently green')
   write(*,'(A,I0,A,ES24.16E3)')'ELASTIC65_RETRY_COUNT=',diagnostics%retries, &
-       ':ACCEPTED_DT=',result%accepted_dt
+       ':ACCEPTED_DT=',diagnostics%min_accepted_substep_duration
   write(*,'(A)')'F_PE_ELASTIC65_A2_REFINE_RECHECK=PASS'
   write(*,'(A)')'F_PE_ELASTIC65_A4_MASS_INDEPENDENT=PASS'
 
@@ -112,7 +112,7 @@ program test_fpe_elastic65_mode7_csafe_binding
   config%model_temporal_indicator_budget_available=.false.
   call backend%run_trial(column,template,p,committed,forcing,config,0.0_real64,DT,checkpoint, &
        result,candidate,diagnostics,trusted_prepared_parameters=.true.)
-  call require(result%status/=0,'missing budget rejected')
+  call require(.not.result%completed,'missing budget rejected')
   call require(diagnostics%temporal_certificate_unavailable_rejections>=1,'missing budget unavailable counter')
   write(*,'(A)')'F_PE_ELASTIC65_A3_MISSING_BUDGET_FAIL_CLOSED=PASS'
 
@@ -123,7 +123,7 @@ program test_fpe_elastic65_mode7_csafe_binding
   call init_config(config,budget_probe,1)
   call backend%run_trial(column,template,p,committed,forcing,config,0.0_real64,DT,checkpoint, &
        result,candidate,diagnostics,trusted_prepared_parameters=.true.)
-  call require(result%status/=0,'swkimpl1 rejected')
+  call require(.not.result%completed,'swkimpl1 rejected')
   call require(diagnostics%temporal_certificate_unavailable_rejections>=1 .or. diagnostics%solver_rejections>=1, &
        'swkimpl1 fail closed')
   write(*,'(A)')'F_PE_ELASTIC65_A7_SWKIMPL1_FAIL_CLOSED=PASS'
