@@ -22,8 +22,8 @@ program test_ppa_wu05a6_source_rate_replay
   type(macropore_geometry_config_t)::geometry_config
   type(macropore_geometry_result_t)::geometry,geometry_restored
   type(macropore_rate_bundle_request_t)::rate_request_a,rate_request_b
-  type(macropore_rate_bundle_result_t)::rates_a,rates_b,next_rates_a,next_rates_b
-  type(macropore_multi_domain_receipt_t)::receipt_a,receipt_b,next_receipt_a,next_receipt_b
+  type(macropore_rate_bundle_result_t)::rates_a,next_rates_a,next_rates_b
+  type(macropore_multi_domain_receipt_t)::receipt_a,next_receipt_a,next_receipt_b
   type(sorptivity_history_update_request_t)::history_request
   type(vertical_flux_reconstruction_request_t)::vertical_request
   type(vertical_flux_reconstruction_result_t)::vertical_result
