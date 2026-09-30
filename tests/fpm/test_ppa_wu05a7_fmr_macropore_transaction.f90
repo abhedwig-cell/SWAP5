@@ -216,7 +216,7 @@ contains
     bundle%unsaturated%sorptivity%top_water_node=1; bundle%unsaturated%sorptivity%theta=water
     bundle%unsaturated%sorptivity%theta_s=0.427494_real64; bundle%unsaturated%sorptivity%theta_r=0.02_real64
     bundle%unsaturated%sorptivity%dz=dz; bundle%unsaturated%sorptivity%diameter=4.0_real64
-    bundle%unsaturated%sorptivity%wall_correction=0.95_real64; bundle%unsaturated%sorptivity%sorptivity_max=0.001_real64
+    bundle%unsaturated%sorptivity%wall_correction=0.95_real64; bundle%unsaturated%sorptivity%sorptivity_max=0.0_real64
     bundle%unsaturated%sorptivity%sorptivity_alpha=0.5_real64; bundle%unsaturated%sorptivity%domain_fraction=1.0_real64
     bundle%unsaturated%sorptivity%wet_fraction=1.0_real64; bundle%unsaturated%sorptivity%history_sorptivity=state%sorptivity
     bundle%unsaturated%sorptivity%history_theta_ref=state%theta_sorption_ref
@@ -228,9 +228,9 @@ contains
     call setup_sat(bundle%interflow_sat,heads)
     call setup_sat(bundle%matrix_sat,heads)
     bundle%rapid%num_nodes=numnod; bundle%rapid%top_water_node=1; bundle%rapid%bottom_domain_node=numnod
-    bundle%rapid%drain_type=2; bundle%rapid%enabled=.false.; bundle%rapid%saturated_top_fraction=1.0_real64
-    bundle%rapid%water_level_cm=-200.0_real64; bundle%rapid%domain_bottom_cm=minval(z)-0.5_real64*dz(numnod)
-    bundle%rapid%drain_level_cm=-50.0_real64; bundle%rapid%ponding_cm=0.0_real64; bundle%rapid%step_duration=dt
+    bundle%rapid%drain_type=2; bundle%rapid%enabled=.true.; bundle%rapid%saturated_top_fraction=1.0_real64
+    bundle%rapid%water_level_cm=-60.0_real64; bundle%rapid%domain_bottom_cm=-100.0_real64
+    bundle%rapid%drain_level_cm=-80.0_real64; bundle%rapid%ponding_cm=0.0_real64; bundle%rapid%step_duration=dt
     bundle%rapid%area_exponent=3.0_real64; bundle%rapid%kd_reference=0.001_real64
     bundle%rapid%resistance_reference_day=20.0_real64; bundle%rapid%flow_reduction=1.0_real64
     bundle%rapid%water_storage_cm=sum(state%water_domain_cp); bundle%rapid%volume_under_drain_cm=0.0_real64
@@ -296,7 +296,7 @@ contains
   subroutine initialize_config(cfg)
     type(canonical_numerical_config_t),intent(out)::cfg
     cfg%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    cfg%transaction%temporal_tolerance=1.0e6_real64
+    cfg%transaction%temporal_tolerance=0.0_real64
     cfg%transaction%mass_tolerance=mass_tol
     cfg%transaction%retry_scale=0.5_real64
     cfg%transaction%max_retries=4
