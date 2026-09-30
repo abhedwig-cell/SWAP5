@@ -20,6 +20,7 @@ program test_ppa_wu05a5_restart_replay
   type(macropore_multi_domain_receipt_t) :: receipt_a,receipt_b
   real(real64) :: exchange(nd,n),rapid(n)
   logical :: ok
+  integer :: i
 
   call accepted%initialize(nd,n,ok)
   if(.not.ok) error stop 'A5 restart accepted init'
@@ -96,6 +97,4 @@ program test_ppa_wu05a5_restart_replay
 
   print '(a)', 'PPA_WU05A5_RESTART_REPLAY=PASS'
 
-contains
-  integer :: i
 end program test_ppa_wu05a5_restart_replay
