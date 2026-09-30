@@ -35,6 +35,15 @@ module mod_macropore_single_column_runtime
     procedure,public::valid=>runtime_policy_valid
   end type macropore_runtime_policy_t
 
+  type, public :: macropore_runtime_config_t
+    type(macropore_geometry_config_t) :: geometry
+    type(macropore_rate_bundle_request_t) :: rate_template
+    type(sorptivity_history_update_request_t) :: history
+    type(macropore_runtime_policy_t) :: policy
+  contains
+    procedure,public::ready=>runtime_config_ready
+  end type macropore_runtime_config_t
+
   type, public :: macropore_runtime_result_t
     integer :: status=MACRO_RUNTIME_NOT_RUN
     logical :: retry_advised=.false.
@@ -59,6 +68,32 @@ module mod_macropore_single_column_runtime
   end type macropore_single_column_runtime_t
 
 contains
+
+  logical function runtime_config_ready(self,active_nodes,require_zero_top_receipt) result(ok)
+    class(macropore_runtime_config_t),intent(in)::self
+    integer,intent(in)::active_nodes
+    logical,intent(in),optional::require_zero_top_receipt
+    logical::zero_top
+
+    zero_top=.false.
+    if(present(require_zero_top_receipt))zero_top=require_zero_top_receipt
+    ok=self%policy%valid() .and. self%geometry%valid() .and. self%history%valid()
+    if(.not.ok)return
+    ok=self%geometry%num_nodes==active_nodes .and. &
+         self%rate_template%unsaturated%sorptivity%num_nodes==active_nodes .and. &
+         self%rate_template%interflow_sat%num_nodes==active_nodes .and. &
+         self%rate_template%matrix_sat%num_nodes==active_nodes .and. &
+         self%rate_template%rapid%num_nodes==active_nodes
+    if(.not.ok)return
+    ok=self%rate_template%unsaturated%valid() .and. self%rate_template%interflow_sat%valid() .and. &
+         self%rate_template%matrix_sat%valid() .and. self%rate_template%rapid%valid() .and. &
+         self%rate_template%limiter%valid()
+    if(.not.ok)return
+    if(zero_top)then
+      ok=maxval(abs(self%rate_template%limiter%potential_top_vertical_cm))<=1.0e-15_real64 .and. &
+           maxval(abs(self%rate_template%limiter%potential_top_lateral_cm))<=1.0e-15_real64
+    end if
+  end function runtime_config_ready
 
   pure logical function runtime_policy_valid(self) result(ok)
     class(macropore_runtime_policy_t),intent(in)::self
