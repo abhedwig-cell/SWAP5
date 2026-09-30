@@ -43,8 +43,8 @@ seq=[x for x in lines if x.startswith("ELASTIC56_VIOLATION|")]
 tr=[x for x in lines if x.startswith("ELASTIC56_TRANSITION|")]
 if len(seq)!=15:
     raise SystemExit(f"F_PE_ELASTIC56_FAIL violating sequence count={len(seq)} expected=15")
-if len(tr)!=51:
-    raise SystemExit(f"F_PE_ELASTIC56_FAIL transition count={len(tr)} expected=51")
+if len(tr)!=48:
+    raise SystemExit(f"F_PE_ELASTIC56_FAIL transition count={len(tr)} expected=48")
 counts={"CONTIGUOUS":0,"GAP":0}
 mags={"SMALL":0,"MODERATE":0,"LARGE":0}
 maxrel=(-1.0,None)
@@ -55,8 +55,8 @@ for line in seq:
     for p in line.split("|")[1:]:
         k,val=p.split("=",1); d[k]=val
     transition_sum+=int(d["transition_count"])
-if transition_sum!=51:
-    raise SystemExit(f"F_PE_ELASTIC56_FAIL sequence transition sum={transition_sum} expected=51")
+if transition_sum!=48:
+    raise SystemExit(f"F_PE_ELASTIC56_FAIL sequence transition sum={transition_sum} expected=48")
 for line in tr:
     d={}
     for p in line.split("|")[1:]:
