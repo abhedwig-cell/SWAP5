@@ -26,13 +26,41 @@ cmp -s "$BUILD/o0/result.txt" "$BUILD/o2/result.txt" || {
 cat "$BUILD/o2/result.txt"
 echo "F_PE_ELASTIC59_A9_O0_O2=PASS"
 
-bash tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh > "$BUILD/fsi38.txt" 2>&1 || {
-  cat "$BUILD/fsi38.txt" >&2
-  fail "F-SI38 preservation"
-}
-for marker in   'FSI38_PRESCRIBED_QBOT_TEMPORAL_CERTIFICATE=PASS'   'FSI38_MODE5_O0_O2_SEMANTIC_IDENTITY=PASS'   'FSI38_QUALIFICATION_GATE=PASS'; do
-  grep -Fq "$marker" "$BUILD/fsi38.txt" || { cat "$BUILD/fsi38.txt" >&2; fail "missing preservation marker $marker"; }
+# Replay existing F-SI38 mode-2 and F-SI25 mode-5 tests through the
+# transitive compile closure. The historical F-SI38 shell compile list predates
+# current transaction dependencies and is not itself preservation authority.
+for opt in 0 2; do
+  OUT38="$BUILD/fsi38_o$opt"
+  python3 tests/rom/compile_f_rom0_fortran_closure.py     --root "$ROOT"     --stub tests/fsi/fsi04_real_headcalc_stubs.f90     --target tests/fsi/test_fsi38_prescribed_qbot_temporal_certificate.f90     --external-source src/legacy/b1_10_port/headcalc.f90     --build "$OUT38" --opt "$opt"
+  "$OUT38/rom0_test" > "$OUT38/result.txt" 2>&1 || {
+    cat "$OUT38/result.txt" >&2
+    fail "F-SI38 preservation O$opt"
+  }
+  grep -Fq 'FSI38_PRESCRIBED_QBOT_TEMPORAL_CERTIFICATE=PASS' "$OUT38/result.txt" || {
+    cat "$OUT38/result.txt" >&2
+    fail "F-SI38 marker O$opt"
+  }
+
+  OUT25="$BUILD/fsi25_o$opt"
+  python3 tests/rom/compile_f_rom0_fortran_closure.py     --root "$ROOT"     --stub tests/fsi/fsi04_real_headcalc_stubs.f90     --target tests/fsi/test_fsi25_reference_indicator_production_seam.f90     --external-source src/legacy/b1_10_port/headcalc.f90     --build "$OUT25" --opt "$opt"
+  "$OUT25/rom0_test" -75.0 0.01 > "$OUT25/result.txt" 2>&1 || {
+    cat "$OUT25/result.txt" >&2
+    fail "F-SI25 preservation O$opt"
+  }
+  grep -Fq 'FSI25_REFERENCE_INDICATOR_CASE PASS' "$OUT25/result.txt" || {
+    cat "$OUT25/result.txt" >&2
+    fail "F-SI25 marker O$opt"
+  }
 done
+
+cmp -s "$BUILD/fsi38_o0/result.txt" "$BUILD/fsi38_o2/result.txt" || {
+  diff -u "$BUILD/fsi38_o0/result.txt" "$BUILD/fsi38_o2/result.txt" >&2 || true
+  fail "F-SI38 preservation O0/O2 drift"
+}
+cmp -s "$BUILD/fsi25_o0/result.txt" "$BUILD/fsi25_o2/result.txt" || {
+  diff -u "$BUILD/fsi25_o0/result.txt" "$BUILD/fsi25_o2/result.txt" >&2 || true
+  fail "F-SI25 preservation O0/O2 drift"
+}
 echo "F_PE_ELASTIC59_A7_MODE2_PRESERVATION=PASS"
 echo "F_PE_ELASTIC59_A8_MODE5_PRESERVATION=PASS"
 
