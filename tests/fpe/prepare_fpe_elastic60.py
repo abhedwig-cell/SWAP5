@@ -29,11 +29,20 @@ def main():
     print(cp.stdout,end="")
     s=fixture.read_text(encoding="utf-8")
 
+    s=s.replace(
+        "  real(real64)::oracle_exchange,full_exchange,oracle_flux_final,ledger_residual,max_ledger_residual\n",
+        "  real(real64)::oracle_exchange,full_exchange,oracle_flux_final,ledger_residual,max_ledger_residual,full_ledger_residual\n",
+        1)
+    s=s.replace(
+        "  call solver_full%solve(req_full,ws_full,res_full)\n\n",
+        "  call solver_full%solve(req_full,ws_full,res_full)\n  full_ledger_residual=0.0_real64\n  if(res_full%status==SW_SOLVE_CONVERGED)call independent_mass_ledger(req_full,res_full,p%dz,dt,full_ledger_residual)\n\n",
+        1)
+
     old="""      '|oracle_exchange_rel=',oracle_exchange_rel,'|max_ledger_residual=',max_ledger_residual
 """
     new="""      '|oracle_exchange_rel=',oracle_exchange_rel,'|max_ledger_residual=',max_ledger_residual, &
       '|oracle_flux_final=',oracle_flux_final,'|oracle_exchange=',oracle_exchange, &
-      '|full_flux=',res_full%bottom_flux,'|full_exchange=',full_exchange
+      '|full_flux=',res_full%bottom_flux,'|full_exchange=',full_exchange,'|full_ledger_residual=',full_ledger_residual
 """
     if old not in s:
         raise SystemExit("F_PE_ELASTIC60_FAIL output anchor")
