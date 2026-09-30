@@ -1,0 +1,24 @@
+name: F-PE-NLGLOB14Z9A confirm retreat 10:16 to 11:16
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z9a-confirm-retreat-10-to-11
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z9A*.md'
+      - 'tests/fpe/run_fpe_nlglob14z9a*.py'
+      - 'tests/fpe/run_fpe_nlglob14z9a*.sh'
+      - '.github/workflows/f-pe-nlglob14z9a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  confirm-retreat:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z9a.sh
