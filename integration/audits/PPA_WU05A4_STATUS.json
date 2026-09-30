@@ -4,7 +4,7 @@
   "title": "R2 coupled single-column prototype",
   "branch": "research/ppa-wu05-a4-r2-coupled-single-column",
   "baseline": "8a3e4f4fe47ca211629a1ac297f692bc9b699320",
-  "status": "QUALIFIED_RESEARCH_TYPED_CONTROLLER_CRACK_RAPID",
+  "status": "QUALIFIED_RESEARCH_CONTROLLER_PHASE_COMPLETE",
   "production_activation": false,
   "richards_coupling": "DYNAMIC_PREDICTOR_CORRECTOR_RESEARCH_PASS",
   "gates": {
@@ -16,7 +16,7 @@
     "e7_interface": "PASS_LOCAL",
     "e9_extreme": "PASS_LOCAL"
   },
-  "next_action": "Run short accepted-state crack/rapid trajectory through typed controller and verify cumulative state history and mass.",
+  "next_action": "Open PPA-WU05-A5 process-composition research: top-input partition/excess redistribution, full multi-compartment/domain geometry and exchange, then full restart/replay preservation.",
   "richards_probe": {
     "head": "0da844cfac7d0159f3ed7d72b142a7af37846d1c",
     "run_id": 36764661597,
@@ -95,5 +95,16 @@
     "rapid_external_outflow_cm": 0.0125,
     "combined_mass": "PASS",
     "o0_o2_identity": "PASS"
-  }
+  },
+  "accepted_state_crack_rapid_trajectory": {
+    "run_id": 36770067804,
+    "head": "12378e86dd44b5a2cbdc4be1766e50b387303d48",
+    "steps": 4,
+    "cumulative_rapid_cm": 0.03547328683330065,
+    "final_dynamic_crack_cm": 0.3092807260097771,
+    "final_macropore_water_cm": 0.3879330279829929,
+    "cumulative_mass_residual_cm": 4.3798298321462426e-14,
+    "o0_o2_identity": "PASS"
+  },
+  "production_admission": "NONE"
 }
