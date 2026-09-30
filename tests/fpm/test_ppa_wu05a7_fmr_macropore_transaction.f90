@@ -233,7 +233,7 @@ contains
     bundle%rapid%water_level_cm=-60.0_real64; bundle%rapid%domain_bottom_cm=-100.0_real64
     bundle%rapid%drain_level_cm=-80.0_real64; bundle%rapid%ponding_cm=0.0_real64; bundle%rapid%step_duration=dt
     bundle%rapid%area_exponent=3.0_real64; bundle%rapid%kd_reference=0.001_real64
-    bundle%rapid%resistance_reference_day=20.0_real64; bundle%rapid%flow_reduction=1.0_real64
+    bundle%rapid%resistance_reference_day=1.0e6_real64; bundle%rapid%flow_reduction=1.0_real64
     bundle%rapid%water_storage_cm=sum(state%water_domain_cp); bundle%rapid%volume_under_drain_cm=0.0_real64
     allocate(bundle%rapid%diameter(numnod),bundle%rapid%dz(numnod),bundle%rapid%volume_main_domain_cp(numnod))
     bundle%rapid%diameter=4.0_real64; bundle%rapid%dz=dz; bundle%rapid%volume_main_domain_cp=geom%volume_domain_cp(1,:)
