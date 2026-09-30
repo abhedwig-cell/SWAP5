@@ -190,7 +190,7 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
 
     ok=.false.;exchange=0.0_real64;storage_end=0.0_real64
     fail_step=0;last_success=0;fail_status=0;fail_nonlinear=0;fail_backtracking=0;fail_jacobians=0
-    fail_linear=0;fail_headcalc=0;fail_internal_retries=0
+    fail_linear=0;fail_internal_retries=0
     last_hmin=minval(hinit);last_hmax=maxval(hinit)
     call init_soil(s,q)
     d=0.0_real64;si=0.0_real64;rt=0.0_real64
