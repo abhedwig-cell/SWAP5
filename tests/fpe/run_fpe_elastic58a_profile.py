@@ -31,7 +31,7 @@ def sel_sem(r):
 
 def oracle_sem(r):
     keys=("candidate_status","oracle_complete","fail_step","last_success","fail_status","fail_nonlinear",
-          "fail_backtracking","fail_jacobians","fail_linear","fail_headcalc","fail_internal_retries","last_hmin","last_hmax")
+          "fail_backtracking","fail_jacobians","fail_linear","fail_internal_retries","last_hmin","last_hmax")
     return tuple(r.get(k) for k in keys)
 
 def main():
@@ -98,7 +98,7 @@ def main():
                     f"ELASTIC58A_CASE|profile={a.profile_id}|regime={regime}|h0={h0}|delta={delta}|accepted_dt={dt}"
                     f"|oracle_complete={'T' if oc else 'F'}|class={cls}|fail_step={fs}|last_success={ls}|fail_status={st}"
                     f"|fail_nonlinear={o2['fail_nonlinear']}|fail_backtracking={o2['fail_backtracking']}"
-                    f"|fail_jacobians={o2['fail_jacobians']}|fail_linear={o2['fail_linear']}|fail_headcalc={o2['fail_headcalc']}"
+                    f"|fail_jacobians={o2['fail_jacobians']}|fail_linear={o2['fail_linear']}"
                     f"|fail_internal_retries={o2['fail_internal_retries']}|last_hmin={o2['last_hmin']}|last_hmax={o2['last_hmax']}"
                     f"|{'|'.join(disc)}"
                 )
