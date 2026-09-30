@@ -10,11 +10,19 @@ FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fba
 for opt in 0 2; do
   OUT="$BUILD/o$opt"; mkdir -p "$OUT"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_sorptivity_rate.f90 -o "$OUT/sorp.o"
-  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_sorptivity_rate.f90 -o "$OUT/test.o"
-  gfortran -O"$opt" "$OUT/sorp.o" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/out.txt"
-  cat "$OUT/out.txt"
-  grep -Fq 'PPA_WU05A6_SORPTIVITY_RATE=PASS' "$OUT/out.txt"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90 -o "$OUT/unsat.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_sorptivity_rate.f90 -o "$OUT/test_sorp.o"
+  gfortran -O"$opt" "$OUT/sorp.o" "$OUT/test_sorp.o" -o "$OUT/test_sorp"
+  "$OUT/test_sorp" > "$OUT/sorp.txt"
+  cat "$OUT/sorp.txt"
+  grep -Fq 'PPA_WU05A6_SORPTIVITY_RATE=PASS' "$OUT/sorp.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_unsat_absorption_rate.f90 -o "$OUT/test_unsat.o"
+  gfortran -O"$opt" "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/test_unsat.o" -o "$OUT/test_unsat"
+  "$OUT/test_unsat" > "$OUT/unsat.txt"
+  cat "$OUT/unsat.txt"
+  grep -Fq 'PPA_WU05A6_UNSAT_ABSORPTION=PASS' "$OUT/unsat.txt"
 done
-cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
+cmp "$BUILD/o0/sorp.txt" "$BUILD/o2/sorp.txt"
+cmp "$BUILD/o0/unsat.txt" "$BUILD/o2/unsat.txt"
 echo 'PPA_WU05A6_R1A_GATE=PASS'
