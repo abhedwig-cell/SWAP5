@@ -55,6 +55,7 @@ module mod_macropore_single_column_runtime
     real(real64) :: rapid_external_outflow_cm=0.0_real64
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
     real(real64) :: macro_balance_residual_cm=huge(1.0_real64)
+    character(len=48) :: failure_stage='not-run'
     type(soil_water_solve_result_t) :: matrix_result
     type(macropore_continuation_state_t) :: macropore_candidate
     type(vertical_flux_reconstruction_result_t) :: vertical_flux
@@ -133,10 +134,12 @@ contains
     result=macropore_runtime_result_t()
     if(.not.policy%valid())then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='policy-invalid'
       return
     end if
     if(.not.associated(base_request%parameters))then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='parameters-missing'
       return
     end if
 
@@ -166,22 +169,26 @@ contains
 
     if(.not.accepted_macro%ready())then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='accepted-macro-not-ready'
       return
     end if
     dt=base_request%step_duration
     if(dt<=0.0_real64)then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='step-duration-invalid'
       return
     end if
 
     call evaluate_macropore_geometry(geometry_config,accepted_macro%dynamic_volume_cp,geometry)
     if(.not.geometry%valid)then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='geometry-invalid'
       return
     end if
     if(maxval(abs(geometry%volume_domain_cp-accepted_macro%volume_domain_cp))>1.0e-10_real64 .or. &
        any(geometry%bottom_domain/=accepted_macro%icp_bottom_domain))then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='accepted-geometry-mismatch'
       return
     end if
 
@@ -206,6 +213,7 @@ contains
     call evaluate_macropore_rate_bundle(rate_request,current_rates)
     if(.not.current_rates%valid)then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='predictor-rate-bundle-invalid'
       return
     end if
     current_domain=current_rates%qexc_to_matrix_rate
@@ -232,6 +240,7 @@ contains
       call evaluate_macropore_rate_bundle(rate_request,raw_rates)
       if(.not.raw_rates%valid)then
         result%status=MACRO_RUNTIME_FAILED
+        result%failure_stage='corrector-rate-bundle-invalid'
         return
       end if
 
@@ -246,6 +255,7 @@ contains
 
     if(result%final_relative_exchange_change>policy%exchange_relative_tolerance)then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='outer-exchange-not-converged'
       return
     end if
 
@@ -257,6 +267,7 @@ contains
          raw_rates%rapid_outflow_cp_cm,dt,result%macropore_candidate,receipt,ok)
     if(.not.ok .or. .not.receipt%valid)then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='candidate-compose-invalid'
       return
     end if
 
@@ -267,6 +278,7 @@ contains
          result%macropore_candidate,ok)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='history-update-invalid'
       return
     end if
 
@@ -281,11 +293,13 @@ contains
     if(abs(result%internal_exchange_residual_cm)>policy%internal_exchange_tolerance_cm .or. &
        abs(result%macro_balance_residual_cm)>policy%internal_exchange_tolerance_cm)then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='macropore-mass-residual'
       return
     end if
     if(result%matrix_result%integrated_mass_balance_residual_available)then
       if(abs(result%matrix_result%integrated_mass_balance_residual_cm)>policy%solver_mass_tolerance_cm)then
         result%status=MACRO_RUNTIME_FAILED
+        result%failure_stage='matrix-solver-mass-residual'
         return
       end if
     end if
@@ -294,15 +308,18 @@ contains
          dt,vertical_request,ok)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='vertical-request-invalid'
       return
     end if
     call reconstruct_vertical_flux(vertical_request,result%vertical_flux)
     if(.not.result%vertical_flux%valid)then
       result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='vertical-reconstruction-invalid'
       return
     end if
 
     result%status=MACRO_RUNTIME_CONVERGED
+    result%failure_stage='none'
     if(.not.same_type_as(self,self))result%status=MACRO_RUNTIME_FAILED
   end subroutine runtime_execute
 
