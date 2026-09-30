@@ -40,7 +40,8 @@ program test_ppa_wu05a7_real_richards_runtime
   type(macropore_single_column_runtime_t)::runtime
   type(macropore_runtime_policy_t)::policy
   type(macropore_runtime_result_t)::result
-  real(real64),allocatable::cofgen(:,:),qdra(:),qssdi(:),qrot(:)
+  real(real64),allocatable,target::qdra(:,:),qssdi(:),qrot(:)
+  real(real64),allocatable::cofgen(:,:)
   real(real64)::heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
   integer::i
   logical::ok
@@ -64,7 +65,7 @@ program test_ppa_wu05a7_real_richards_runtime
   heads=-100.0_real64
   call hyd%evaluate(heads,water,cond,cap,dkdh)
 
-  allocate(qdra(numnod),qssdi(numnod),qrot(numnod))
+  allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod))
   qdra=0.0_real64; qssdi=0.0_real64; qrot=0.0_real64
   call bind_b110_source_sink_provider(base_source,qdra,qssdi,qrot)
 
