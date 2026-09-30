@@ -28,15 +28,17 @@ The full 16-node accepted state remains sole physical authority.
 
 For an accepted contiguous saturated lower tail beginning at node `s`:
 
-- nodes `1..s-2` are ordinary unsaturated/transition unknowns;
-- node `s-1` is retained as the active boundary/release guard;
-- nodes `s..16` form an algebraically reconstructed saturated lower tail.
+- nodes `1..s-1` are ordinary unsaturated/transition unknowns;
+- node `s` — the shallowest currently saturated node — is retained as the active boundary/release guard;
+- nodes `s+1..16` form an algebraically reconstructed saturated lower tail.
 
 Thus the reduced nonlinear dimension is:
 
-`n_active = s - 1`
+`n_active = s`
 
 for tails `s:16`.
+
+This keeps the currently shallowest saturated node inside the nonlinear solve so it may desaturate on a retreat, while node `s-1` remains active so it may saturate on a reverse/expansion event.
 
 This deliberately keeps one node above the reconstructed saturated tail active so retreat/release can occur without hysteresis or suppression.
 
@@ -53,7 +55,7 @@ The reconstructed lower tail must satisfy exactly:
 - the same face-flux sign convention as the full reference;
 - exact geometric head increments implied by Darcy flux and Ksat.
 
-The shallowest reconstructed saturated node is determined from the active guard-node state and the shared tail flux.
+The first reconstructed saturated node is node `s+1`; it is determined from the active guard-node state at node `s` and the shared tail flux.
 
 No fitted threshold, smoothing, dwell or mass redistribution is permitted.
 
