@@ -7,6 +7,10 @@ on:
     paths:
       - 'src/process/macropore/**'
       - 'src/runtime/mod_ppa_wu05a5_macropore_restart.f90'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'src/solver/mod_macropore_exchange_overlay_provider.f90'
+      - 'tests/fpm/test_ppa_wu05a7_dynamic_crack.f90'
+      - 'tests/fpm/test_ppa_wu05a7_single_column_runtime.f90'
       - 'tests/fpm/test_ppa_wu05a5_*.f90'
       - 'tests/fpm/test_ppa_wu05a6_*.f90'
       - 'tests/fpm/run_ppa_wu05a7_production_promotion.sh'
