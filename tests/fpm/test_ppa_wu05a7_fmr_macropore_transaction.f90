@@ -66,7 +66,8 @@ program test_ppa_wu05a7_fmr_macropore_transaction
        '|TEMP_REJ=',diag1%temporal_rejections,'|TEMP_MAX=',diag1%max_temporal_indicator, &
        '|MASS_REJ=',diag1%mass_rejections,'|STEP_MASS_MAX=',diag1%max_abs_step_mass_residual, &
        '|MASS_COMPLETE=',result1%mass%complete,'|MASS_RES=',result1%mass%residual, &
-       '|MACRO_EXEC=',obs%macropore_executed,'|MACRO_STATUS=',obs%macropore_status
+       '|MACRO_EXEC=',obs%macropore_executed,'|MACRO_STATUS=',obs%macropore_status, &
+       '|MACRO_STAGE=',trim(obs%macropore_failure_stage)
   call require(result1%status==CANONICAL_STATUS_COMPLETED .and. result1%completed,'first FMR trial completed')
   call require(candidate1%ready(),'first candidate ready')
   call require(result1%mass%complete .and. abs(result1%mass%residual)<=mass_tol,'first mass closed')
