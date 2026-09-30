@@ -15,6 +15,8 @@ program test_ppa_wu05a7_real_richards_runtime
        macropore_geometry_result_t, evaluate_macropore_geometry
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t
+  use mod_macropore_standard_storage, only: macropore_standard_storage_view_t, &
+       canonicalize_macropore_standard_storage
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
@@ -40,6 +42,7 @@ program test_ppa_wu05a7_real_richards_runtime
   type(macropore_single_column_runtime_t)::runtime
   type(macropore_runtime_policy_t)::policy
   type(macropore_runtime_result_t)::result
+  type(macropore_standard_storage_view_t)::initial_macro_view
   real(real64),allocatable,target::qdra(:,:),qssdi(:),qrot(:)
   real(real64),allocatable::cofgen(:,:)
   real(real64)::heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
@@ -106,6 +109,8 @@ program test_ppa_wu05a7_real_richards_runtime
   macro%icp_bottom_domain=geometry%bottom_domain
   macro%volume_domain_cp=geometry%volume_domain_cp
   macro%water_domain_cp=0.35_real64*geometry%volume_domain_cp
+  call canonicalize_macropore_standard_storage(macro,1,z,dz,initial_macro_view,ok)
+  if(.not.ok)error stop 'A8 real initial macro canonicalization'
   macro_snapshot=macro
 
   call setup_rate_template(macro,geometry,rate_template)
