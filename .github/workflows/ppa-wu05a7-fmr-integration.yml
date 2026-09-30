@@ -10,6 +10,8 @@ on:
       - 'src/process/macropore/**'
       - 'src/solver/mod_macropore_exchange_overlay_provider.f90'
       - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
+      - 'tests/fpm/run_ppa_wu05a7_fmr_transaction.sh'
+      - 'tests/fpm/test_ppa_wu05a7_fmr_macropore_transaction.f90'
       - 'tests/fpm/test_ppa_wu05a7_fmr_macropore_transaction.f90'
       - '.github/workflows/ppa-wu05a7-fmr-integration.yml'
   workflow_dispatch:
@@ -21,3 +23,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Compile FMR with production macropore runtime
         run: bash tests/fkt/run_fkt22_fmr_compile_gate.sh
+      - name: Run transactional FMR macropore gate
+        run: bash tests/fpm/run_ppa_wu05a7_fmr_transaction.sh
