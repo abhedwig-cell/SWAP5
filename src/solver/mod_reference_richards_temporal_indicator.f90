@@ -144,7 +144,8 @@ contains
        return
     end if
     if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX .or. &
-        (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2)) then
+        (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
+         request%boundary%bottom_mode /= 7)) then
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'boundary-envelope-deferred'
        return
@@ -274,7 +275,10 @@ contains
     ! Prescribed bottom head (mode 5) contributes a Dirichlet face stiffness
     ! d q_b / d h_N = K_b / distance. Prescribed qbot (mode 2) is a Neumann
     ! flux owned by the boundary request; its derivative with respect to state
-    ! is zero and therefore contributes no bottom-head stiffness to the defect
+    ! is zero. Free drainage (mode 7) is admitted only inside the already
+    ! required conductivity_implicit_mode=0 envelope; the production Richards
+    ! linearization likewise adds no dK/dh bottom stiffness there. Modes 2 and
+    ! 7 therefore contribute no extra bottom-head stiffness to this defect
     ! operator. The top boundary is likewise an explicit prescribed flux and
     ! already carries no top-face stiffness here.
     if (request%boundary%bottom_mode == 5) then
