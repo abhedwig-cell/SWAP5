@@ -37,6 +37,8 @@ module mod_fmr_serialized_reference_backend
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_fmr_mode7_temporal_head_envelope, only: fmr_mode7_head_envelope_assessment_t, &
+       assess_fmr_mode7_temporal_head_envelope
   use mod_fmr_rossfast_solver_selection_binding, only: fmr_rossfast_solver_selection_binding_t, &
        FMR_ROSSFAST_BIND_INTERNAL_ERROR
   use mod_rossfast_d3r_model_binding, only: rossfast_d3r_material_t, rossfast_d3r_material_from_id, &
@@ -1963,6 +1965,7 @@ contains
     logical, intent(out) :: ok
     type(soil_water_temporal_indicator_request_t) :: indicator_request
     type(soil_water_temporal_indicator_result_t) :: indicator_result
+    type(fmr_mode7_head_envelope_assessment_t) :: mode7_head_assessment
     real(real64), allocatable :: previous_derivative(:)
     real(real64) :: normalized_indicator
     logical :: previous_available, replaced
@@ -2021,7 +2024,18 @@ contains
     else if (.not. ieee_is_finite(indicator_result%head_inf_bound) .or. indicator_result%head_inf_bound < 0.0_real64) then
       self%last_observation%temporal_certificate_unavailable_reason = 'indicator-invalid'
     else
-      normalized_indicator = indicator_result%head_inf_bound / self%temporal_indicator_budget
+      if (self%bottom_mode == 7 .and. self%swkimpl == 0) then
+        call assess_fmr_mode7_temporal_head_envelope(indicator_result%head_inf_bound, &
+             self%temporal_indicator_budget, mode7_head_assessment)
+        if (.not. mode7_head_assessment%complete) then
+          self%last_observation%temporal_certificate_unavailable_reason = 'head-envelope-invalid'
+          ok = .true.
+          return
+        end if
+        normalized_indicator = mode7_head_assessment%normalized_error
+      else
+        normalized_indicator = indicator_result%head_inf_bound / self%temporal_indicator_budget
+      end if
       if (ieee_is_finite(normalized_indicator) .and. normalized_indicator >= 0.0_real64) then
         outcome%temporal_certificate_available = .true.
         outcome%temporal_indicator = normalized_indicator
