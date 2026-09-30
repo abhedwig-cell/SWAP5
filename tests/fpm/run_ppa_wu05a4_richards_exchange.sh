@@ -88,7 +88,7 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_adv.o" -o "$OUT/test_adv"
   "$OUT/test_adv" > "$OUT/adv.txt"
   cat "$OUT/adv.txt"
-  grep -Fq 'PPA_WU05A4_RICHARDS_ADVERSARIAL_PICARD=PASS' "$OUT/adv.txt"
+  grep -Fq 'PPA_WU05A4_RICHARDS_ADVERSARIAL_CHARACTERIZATION=PASS' "$OUT/adv.txt"
 done
 
 cmp "$BUILD/o0/fixed.txt" "$BUILD/o2/fixed.txt"
