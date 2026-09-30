@@ -1,0 +1,60 @@
+name: F-PE-NLGLOB14Z16 event-terminated split 12:16 to 13:16
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z16-event-terminated-12-13
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z16*.md'
+      - 'tests/fpe/run_fpe_nlglob14z16_segment.py'
+      - 'tests/fpe/run_fpe_nlglob14z16_segment.sh'
+      - '.github/workflows/f-pe-nlglob14z16.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  segment-a:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { route: HEAD, dt: "0.000125", key: head-coarse }
+          - { route: HEAD, dt: "0.0000625", key: head-fine }
+          - { route: RUNOFF, dt: "0.000125", key: runoff-coarse }
+          - { route: RUNOFF, dt: "0.0000625", key: runoff-fine }
+    name: segment A ${{ matrix.route }} dt=${{ matrix.dt }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z16_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" first "140.0" "z16-${{ matrix.key }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z16-${{ matrix.key }}-checkpoint
+          path: z16-${{ matrix.key }}.json
+          if-no-files-found: error
+
+  segment-b:
+    needs: segment-a
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { route: HEAD, dt: "0.000125", key: head-coarse }
+          - { route: HEAD, dt: "0.0000625", key: head-fine }
+          - { route: RUNOFF, dt: "0.000125", key: runoff-coarse }
+          - { route: RUNOFF, dt: "0.0000625", key: runoff-fine }
+    name: segment B ${{ matrix.route }} dt=${{ matrix.dt }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z16-${{ matrix.key }}-checkpoint
+          path: .
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z16_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" resume "262.0" "z16-${{ matrix.key }}.json"
