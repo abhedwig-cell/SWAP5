@@ -4,13 +4,19 @@
   "title": "Exact macropore source recovery and mutable-state/mass census",
   "branch": "research/ppa-wu05-a1-source-census-recovery",
   "baseline": "68fcf6d384608c11ab5a34cf2eab9924f9788ecd",
-  "status": "PREREGISTERED_SOURCE_RECOVERY_IN_PROGRESS",
+  "status": "EXACT_SOURCE_RECOVERED_CENSUS_IN_PROGRESS",
   "production_source_mutation": false,
   "reference_source_mutation": false,
   "predecessor": "PPA-WU05-A",
-  "known_b1_11_hashes": {
-    "macropore_f90": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
-    "macrorate_f90": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7"
+  "source_recovery": {
+    "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_macropore_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+    "b1_11_macropore_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "b0_and_b1_11_macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "swap001_target_count": 1,
+    "gate_g1": "PASS",
+    "gate_g2": "PASS"
   },
   "recovered_corrobation": {
     "f_pe16": "f5e2a12fca96559645feb8d8cd591b600f765d8c",
@@ -25,10 +31,19 @@
   "current_findings": {
     "seven_candidate_fields_corrobated": true,
     "final_state_census_complete": false,
+    "historical_rollback_surface_is_incomplete_for_trial_mutated_history": true,
+    "frmpwalwetold_requires_explicit_classification": true,
     "historical_index_zero_qexcmtxdmcp_observation": "CORROBORATED_HISTORICAL_ONLY",
-    "official_swap_4_3_1_release_located": true,
-    "byte_exact_source_materialized": false
+    "exact_b1_11_source_oracle_available": true
+  },
+  "gates": {
+    "A1_G1_source_identity": "PASS",
+    "A1_G2_b1_11_derivation": "PASS",
+    "A1_G3_state_census": "IN_PROGRESS",
+    "A1_G4_transaction_census": "IN_PROGRESS",
+    "A1_G5_mass_census": "IN_PROGRESS",
+    "A1_G6_index_zero_characterization": "NOT_YET_RUN_ON_EXACT_ORACLE"
   },
   "production_admission": "NONE",
-  "next_action": "Materialize and hash-verify exact B0 SWAP 4.3.1 macropore.f90/macrorate.f90, derive B1.11, then complete source-bound state and mass census."
+  "next_action": "Complete exact-source state/transaction/mass census, then characterize historical QExcMtxDmCp index-0 path on the exact B1.11 oracle."
 }
