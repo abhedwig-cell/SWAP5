@@ -51,7 +51,7 @@ program test_ppa_wu05a6_top_inflow_limiter
        error stop 'A6 R5 returned rejected top'
 
   ! Explicit outflow-excess case: storage+in-out falls below minimum.
-  request%accepted_storage_cm=[0.10_real64,0.05_real64,0.10_real64]
+  request%accepted_storage_cm=[0.10_real64,0.15_real64,0.10_real64]
   request%minimum_storage_cm=[0.08_real64,0.10_real64,0.08_real64]
   request%maximum_storage_cm=[0.30_real64,0.30_real64,0.30_real64]
   request%potential_top_vertical_cm=0.0_real64
