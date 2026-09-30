@@ -1,0 +1,44 @@
+name: F-PE-ELASTIC61 scaled defect blind holdout
+
+concurrency:
+  group: f-pe-elastic61-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic61-scaled-defect-holdout
+    paths:
+      - 'tests/fpe/prepare_fpe_elastic61.py'
+      - 'tests/fpe/run_fpe_elastic61_calibrate_profile.py'
+      - 'tests/fpe/run_fpe_elastic61_holdout_profile.py'
+      - 'tests/fpe/run_fpe_elastic61.sh'
+      - 'tests/fpe/materialize_fpe_elastic59_indicator.py'
+      - 'tests/fpe/prepare_fpe_elastic59.py'
+      - 'tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py'
+      - 'docs/performance/F-PE-ELASTIC61_SCALED_DEFECT_HOLDOUT_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic61.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic61-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Run development calibration then blind holdout
+        run: bash tests/fpe/run_fpe_elastic61.sh "$RUNNER_TEMP/elastic61-pdok"
