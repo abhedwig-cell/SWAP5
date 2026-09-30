@@ -4,7 +4,7 @@
   "title": "Typed macropore committed/candidate/restart state",
   "branch": "work/ppa-wu05-a2-typed-macropore-state",
   "baseline": "93d6c78c7ea5fac7060c61d51f992e75c02c65c4",
-  "status": "RECONCILED_WITH_CURRENT_CANONICAL_QUALIFICATION_QUEUED",
+  "status": "QUALIFIED_TYPED_MACROPORE_STATE_AND_ROLLBACK_RESTART_CONTRACT",
   "production_source_mutation": "PERMITTED_STATE_INFRASTRUCTURE_ONLY",
   "active_macropore_physics_permitted": false,
   "continuation_fields": [
@@ -17,15 +17,15 @@
     "VlMpDyCp"
   ],
   "gates": {
-    "type_shape": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
-    "candidate_isolation": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
-    "reject": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
-    "accept": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
-    "retry": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
-    "restart": "IMPLEMENTED_INTEGRATED_COMPILE_GATE_AWAITING_CI",
-    "inactive_preservation": "CURRENT_CANONICAL_DELTA_NONOVERLAPPING_CI_AWAITING"
+    "type_shape": "PASS",
+    "candidate_isolation": "PASS",
+    "reject": "PASS",
+    "accept": "PASS",
+    "retry": "PASS",
+    "restart": "PASS",
+    "inactive_preservation": "PASS_CURRENT_SCOPE"
   },
-  "next_action": "Wait for current-head A2 CI to execute; on PASS record qualified A2 result and prepare PR #909 for admission. On FAIL, repair only the concrete gate failure.",
+  "next_action": "A3 physical decomposition is authorized. A2 remains state/restart infrastructure only.",
   "reconciled_canonical": "f9133b92cd7d128838029a162ee607bb8ba69689",
   "current_head": "ac998d39f2be304b24fbfbdab871983a4fc142b4",
   "pull_request": {
@@ -56,8 +56,13 @@
   },
   "ci": {
     "workflow": "PPA-WU05-A2 typed macropore state",
-    "latest_run_id": 36760002861,
-    "latest_run_head": "f5b5237f92b613708484071d7d6b46608897480b",
-    "latest_run_status": "QUEUED"
+    "latest_run_id": 36760115527,
+    "latest_run_head": "b39f818d5e453a9436e7d221f9fc1261667fe444",
+    "latest_run_status": "SUCCESS"
+  },
+  "qualification": {
+    "state": "QUALIFIED_ARCHITECTURE_STATE_RESULT",
+    "production_macropore_physics_enabled": false,
+    "equation_migration": false
   }
 }
