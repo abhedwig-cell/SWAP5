@@ -6,6 +6,8 @@ on:
       - research/ppa-wu05-a5-process-composition
     paths:
       - 'research/macropore/mod_ppa_wu05a5_top_partition.f90'
+      - 'research/macropore/mod_ppa_wu05a5_multi_domain_process.f90'
+      - 'tests/fpm/test_ppa_wu05a5_multi_domain_process.f90'
       - 'tests/fpm/test_ppa_wu05a5_top_partition.f90'
       - 'tests/fpm/run_ppa_wu05a5_top_partition.sh'
       - '.github/workflows/ppa-wu05a5-top-partition.yml'
