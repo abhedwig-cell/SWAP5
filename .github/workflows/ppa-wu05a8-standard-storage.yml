@@ -1,0 +1,20 @@
+name: PPA-WU05-A8 standard storage
+
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a8-fmr-macropore-adapter
+    paths:
+      - 'src/process/macropore/mod_macropore_standard_storage.f90'
+      - 'tests/fpm/test_ppa_wu05a8_standard_storage.f90'
+      - 'tests/fpm/run_ppa_wu05a8_standard_storage.sh'
+      - '.github/workflows/ppa-wu05a8-standard-storage.yml'
+  workflow_dispatch:
+
+jobs:
+  standard-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run A8 standard storage gate
+        run: bash tests/fpm/run_ppa_wu05a8_standard_storage.sh
