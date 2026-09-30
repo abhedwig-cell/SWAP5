@@ -1,0 +1,25 @@
+name: F-PE-NLGLOB14Z41 HeadCalc scaling
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z41-headcalc-scaling
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z41*.md'
+      - 'tests/fpe/run_fpe_nlglob14z41.py'
+      - 'tests/fpe/run_fpe_nlglob14z41.sh'
+      - 'tests/fpe/test_fpe_nlglob14z40_real_reduced_richards.f90'
+      - '.github/workflows/f-pe-nlglob14z41.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  headcalc-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z41.sh
