@@ -50,7 +50,16 @@ ma=abs(float(res["MAX_LEDGER"])) if res else math.inf
 cu=abs(float(res["CUM_LEDGER"])) if res else math.inf
 mass_ok=ma<=5e-8 and cu<=5e-8
 finite=bool(res and all(math.isfinite(float(res[k])) for k in ("TOP_H","TOP_THETA","MID_H","BOTTOM_H","POND","STORAGE")))
-target_seen=any(x["sat"]==list(range(14,17)) for x in events)
+late13=False; target_seen=False
+prev_sat=None
+for ev in events:
+    sat=ev["sat"]
+    if prev_sat==list(range(12,17)) and sat==list(range(13,17)):
+        late13=True
+    elif late13 and prev_sat==list(range(13,17)) and sat==list(range(14,17)):
+        target_seen=True
+        break
+    prev_sat=sat
 
 if first_ok and rb_ok and half_ok and second_ok and not target_seen and last_tail==list(range(13,17)) and mass_ok and finite and not bad:
     cls="QUALIFIED_Z17D_SECOND_RETRY_ATTRIBUTION"
