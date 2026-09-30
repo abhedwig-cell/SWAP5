@@ -54,8 +54,7 @@ def run_arm(tasks,budget,workers,tmp):
     bins=[0]*10
     for r in rows:
         for k in agg: agg[k]+=int(r[k])
-        vals=[int(x) for x in r["dtbins"].split()]
-        if len(vals)!=10: raise SystemExit("F_PE_ELASTIC71_FAIL dtbins")
+        vals=[int(r[f"dt{i}"]) for i in range(1,11)]
         bins=[a+b for a,b in zip(bins,vals)]
     if agg["count"]!=1024: raise SystemExit("F_PE_ELASTIC71_FAIL aggregate count")
     return agg,bins,sec
