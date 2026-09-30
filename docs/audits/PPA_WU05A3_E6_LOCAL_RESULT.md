@@ -81,3 +81,14 @@ Not yet final because E6/E7 still need to test:
 ## Next step
 
 Use this candidate in a research-only corrected `MACROSTATE` reduction and run E7 groundwater/interface sweeps before freezing the R1 correction.
+
+
+## E7 correction
+
+E7 found one discrete edge case that narrows this result.
+
+At an exact compartment-fill boundary, `ICpTpWaSrDm(id)` still points to the fully filled top compartment of the stored-water body, while the kinematic `icgwl` construction points one compartment higher to the first compartment that is not fully saturated.
+
+Therefore the unconditional E6 statement `icgwl = ICpTpWaSrDm(id)` is superseded by the refined E7 rule documented in `PPA_WU05A3_E7_LOCAL_RESULT.md`.
+
+The broader E6 conclusion remains valid: `ICpTpWaSrDm` is the correct source quantity from which the missing interface index can be deterministically derived.
