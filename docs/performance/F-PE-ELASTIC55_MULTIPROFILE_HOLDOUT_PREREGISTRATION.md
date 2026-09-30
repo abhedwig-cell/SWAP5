@@ -41,7 +41,8 @@ Eligibility:
 - every Staringreeks block in 101..118 or 201..218;
 - no horizon has peat_type present;
 - every horizon has dry density > 0;
-- organic matter is either NULL or <= 20 pct.
+- organic matter is either NULL or <= 20 pct;
+- horizon_count <= 16 so the frozen 16-node representation can assign at least one node per horizon.
 
 Diversity key:
 `(soilunit, horizon_count, tuple(staringseriesblock by layer))`.
@@ -59,7 +60,10 @@ If fewer than four distinct eligible horizon-count classes exist, fail closed.
 The selected IDs are outputs of the preregistered algorithm, not hand-picked
 after numerical results.
 
-## Generated-prior path
+## Retention-material and generated-prior path
+
+For each selected profile, map every BRO `staringseriesblock` through the admitted ELASTIC21/20 authority and apply its frozen Staringreeks-2018 retention fields `wcr,wcs,alpha,npar` to the nodes belonging to that horizon. The parent fixture Ksat/lambda values remain frozen because this admitted ELASTIC source chain does not provide a qualified full Ksat/lambda catalog. No unqualified hydraulic values are invented.
+
 
 For each selected profile use the admitted chain:
 
