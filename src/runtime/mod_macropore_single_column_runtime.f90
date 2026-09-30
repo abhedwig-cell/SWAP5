@@ -263,6 +263,21 @@ contains
     current_node=sum(current_domain,dim=1)
     result%matrix_result=corrector
 
+    max_positive_exchange_overdraw_cm = maxval(max(0.0_real64, &
+         current_domain*dt-accepted_macro%water_domain_cp))
+    max_negative_exchange_overfill_cm = maxval(max(0.0_real64, &
+         (-current_domain)*dt-(geometry%volume_domain_cp-accepted_macro%water_domain_cp)))
+    if (max_positive_exchange_overdraw_cm > 1.0e-12_real64) then
+      result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='candidate-exchange-local-overdraw'
+      return
+    end if
+    if (max_negative_exchange_overfill_cm > 1.0e-12_real64) then
+      result%status=MACRO_RUNTIME_FAILED
+      result%failure_stage='candidate-exchange-local-overfill'
+      return
+    end if
+
     call compose_macropore_candidate(accepted_macro,geometry,raw_rates%top_partition,current_domain, &
          raw_rates%rapid_outflow_cp_cm,dt,result%macropore_candidate,receipt,ok)
     if(.not.ok .or. .not.receipt%valid)then
