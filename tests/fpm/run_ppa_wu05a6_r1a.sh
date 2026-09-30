@@ -73,7 +73,7 @@ for opt in 0 2; do
   grep -Fq 'PPA_WU05A6_SORPTIVITY_HISTORY=PASS' "$OUT/history.txt"
 
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_rate_bundle.f90 -o "$OUT/test_bundle.o"
-  gfortran -O"$opt" "$OUT/topa5.o" "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/sat.o" "$OUT/satsrc.o"     "$OUT/rapid.o" "$OUT/toplimit.o" "$OUT/bundle.o" "$OUT/test_bundle.o" -o "$OUT/test_bundle"
+  gfortran -O"$opt" "$OUT/state.o" "$OUT/topa5.o" "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/sat.o" "$OUT/satsrc.o"     "$OUT/rapid.o" "$OUT/toplimit.o" "$OUT/bundle.o" "$OUT/test_bundle.o" -o "$OUT/test_bundle"
   "$OUT/test_bundle" > "$OUT/bundle.txt"
   cat "$OUT/bundle.txt"
   grep -Fq 'PPA_WU05A6_RATE_BUNDLE=PASS' "$OUT/bundle.txt"
