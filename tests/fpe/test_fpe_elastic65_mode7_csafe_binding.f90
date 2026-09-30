@@ -124,7 +124,8 @@ program test_fpe_elastic65_mode7_csafe_binding
   call backend%run_trial(column,template,p,committed,forcing,config,0.0_real64,DT,checkpoint, &
        result,candidate,diagnostics,trusted_prepared_parameters=.true.)
   call require(.not.result%completed,'swkimpl1 rejected')
-  call require(diagnostics%temporal_certificate_unavailable_rejections>=1 .or. diagnostics%solver_rejections>=1, &
+  call require(diagnostics%admission_rejections>=1 .or. &
+       diagnostics%temporal_certificate_unavailable_rejections>=1 .or. diagnostics%solver_rejections>=1, &
        'swkimpl1 fail closed')
   write(*,'(A)')'F_PE_ELASTIC65_A7_SWKIMPL1_FAIL_CLOSED=PASS'
 
