@@ -73,14 +73,14 @@ for line in rows:
     A=agg.setdefault(b,{k:0 for k in (
         "cert_accept","cert_exhaust","identity_accept","identity_exhaust","cert_accept_ident_exhaust","both_exhaust",
         "paired_accept","unpaired_accept","cert_nonlinear","identity_nonlinear","cert_linear","identity_linear",
-        "cert_tridiag","cert_headcalc","identity_headcalc","cert_backtracking","identity_backtracking")})
+        "cert_tridiag","cert_jacobian","identity_jacobian","cert_backtracking","identity_backtracking")})
     for k in A: A[k]+=int(d[k])
 for b,A in sorted(agg.items(),key=lambda kv:float(kv[0])):
     nr=A["cert_nonlinear"]/A["identity_nonlinear"] if A["identity_nonlinear"] else 0.0
     lr=A["cert_linear"]/A["identity_linear"] if A["identity_linear"] else 0.0
-    hr=A["cert_headcalc"]/A["identity_headcalc"] if A["identity_headcalc"] else 0.0
+    hr=A["cert_jacobian"]/A["identity_jacobian"] if A["identity_jacobian"] else 0.0
     br=A["cert_backtracking"]/A["identity_backtracking"] if A["identity_backtracking"] else 0.0
-    print(f"ELASTIC58_TOTAL_BUDGET|budget={b}|cert_accept={A['cert_accept']}|cert_exhaust={A['cert_exhaust']}|identity_accept={A['identity_accept']}|identity_exhaust={A['identity_exhaust']}|cert_accept_ident_exhaust={A['cert_accept_ident_exhaust']}|both_exhaust={A['both_exhaust']}|paired_accept={A['paired_accept']}|unpaired_accept={A['unpaired_accept']}|cert_nonlinear={A['cert_nonlinear']}|identity_nonlinear={A['identity_nonlinear']}|nonlinear_ratio={nr:.17e}|cert_linear={A['cert_linear']}|identity_linear={A['identity_linear']}|linear_ratio={lr:.17e}|cert_tridiag={A['cert_tridiag']}|cert_headcalc={A['cert_headcalc']}|identity_headcalc={A['identity_headcalc']}|headcalc_ratio={hr:.17e}|cert_backtracking={A['cert_backtracking']}|identity_backtracking={A['identity_backtracking']}|backtracking_ratio={br:.17e}")
+    print(f"ELASTIC58_TOTAL_BUDGET|budget={b}|cert_accept={A['cert_accept']}|cert_exhaust={A['cert_exhaust']}|identity_accept={A['identity_accept']}|identity_exhaust={A['identity_exhaust']}|cert_accept_ident_exhaust={A['cert_accept_ident_exhaust']}|both_exhaust={A['both_exhaust']}|paired_accept={A['paired_accept']}|unpaired_accept={A['unpaired_accept']}|cert_nonlinear={A['cert_nonlinear']}|identity_nonlinear={A['identity_nonlinear']}|nonlinear_ratio={nr:.17e}|cert_linear={A['cert_linear']}|identity_linear={A['identity_linear']}|linear_ratio={lr:.17e}|cert_tridiag={A['cert_tridiag']}|cert_jacobian={A['cert_jacobian']}|identity_jacobian={A['identity_jacobian']}|jacobian_ratio={hr:.17e}|cert_backtracking={A['cert_backtracking']}|identity_backtracking={A['identity_backtracking']}|backtracking_ratio={br:.17e}")
 print("F_PE_ELASTIC58_B5_AGGREGATE=PASS")
 PY
 
