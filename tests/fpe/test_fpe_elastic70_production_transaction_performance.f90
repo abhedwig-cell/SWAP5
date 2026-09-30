@@ -185,21 +185,27 @@ contains
 
   subroutine init_parameters(q)
     type(fmr_b110_physical_parameters_t),intent(out)::q
-    integer::k
+    integer::k,unit,ios
+    real(real64)::rwcr,rwcs,ralpha,rnpar
     q%parameter_set_id=ID
     q%active_nodes=N
     allocate(q%z(N),q%dz(N),q%node_distance(N),q%cofgen(24,N))
     q%z=z
     q%dz=dz
     q%node_distance=disnod(1:N)
+    open(newunit=unit,file='retention.txt',status='old',action='read',form='formatted',iostat=ios)
+    call req(ios==0,'retention file open')
     do k=1,N
+      read(unit,*,iostat=ios)rwcr,rwcs,ralpha,rnpar
+      call req(ios==0,'retention row read')
       q%cofgen(:,k)=0.0_real64
-      q%cofgen(1,k)=0.032_real64;q%cofgen(2,k)=0.423_real64;q%cofgen(3,k)=4.75_real64
-      q%cofgen(4,k)=0.0135_real64;q%cofgen(5,k)=0.365_real64;q%cofgen(6,k)=1.455_real64
+      q%cofgen(1,k)=rwcr;q%cofgen(2,k)=rwcs;q%cofgen(3,k)=4.75_real64
+      q%cofgen(4,k)=ralpha;q%cofgen(5,k)=0.365_real64;q%cofgen(6,k)=rnpar
       q%cofgen(7,k)=1.0_real64-1.0_real64/q%cofgen(6,k);q%cofgen(8,k)=q%cofgen(4,k)
       q%cofgen(9,k)=0.0_real64;q%cofgen(10,k)=q%cofgen(3,k);q%cofgen(11,k)=0.999_real64
       q%cofgen(12,k)=0.99_real64*q%cofgen(3,k);q%cofgen(22,k)=-1.0e6_real64;q%cofgen(23,k)=1.0e-12_real64
     end do
+    close(unit)
     q%bottom_mode=7;q%swkimpl=0;q%swkmean=1;q%swsophy=0
     q%max_iterations=32;q%max_backtracking=12;q%min_step_duration=1.0e-10_real64
     q%compartment_balance_tolerance=TOL;q%total_balance_tolerance=TOL
