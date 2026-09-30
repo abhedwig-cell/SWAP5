@@ -120,7 +120,9 @@ def main() -> None:
         "           ctx%diagnostics%headcalc_calls,'|dt=',dt,'|numbit=',state%numbit,'|backtracking=',iBackTr, &\n"
         "           '|exhaustions=',pzg23_bt_exhaustions,'|progress_accepts=',pzg23_bt_progress_accepts, &\n"
         "           '|fmax_accepts=',pzg23_bt_fmax_accepts,'|best_ratio=',pzg23_bt_best_ratio, &\n"
-        "           '|min_factor=',pzg23_bt_min_factor,'|last_fmax=',pzg23_bt_last_fmax\n\n"
+        "           '|min_factor=',pzg23_bt_min_factor,'|last_fmax=',pzg23_bt_last_fmax, &\n"
+        "           '|last_iter_exhausted=',pzg23_bt_iter_exhausted,'|last_iter_best_ratio=',pzg23_bt_iter_best_ratio, &\n"
+        "           '|last_iter_min_factor=',pzg23_bt_iter_min_factor\n\n"
         "      if (legacy_state_binding) call publish_legacy_state(state)\n\n"
         "      return\n"
     )
