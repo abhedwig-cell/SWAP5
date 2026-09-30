@@ -1,0 +1,28 @@
+name: F-PE-NLGLOB14Z43 production admission candidate
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z43-production-admission-candidate
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z43*.md'
+      - 'src/runtime/mod_timestep_numerical_profile.f90'
+      - 'src/runtime/mod_moving_interface_manager.f90'
+      - 'tests/fpe/test_fpe_nlglob14z43_profile.f90'
+      - 'tests/fpe/test_fpe_nlglob14z43_admission_holdout.f90'
+      - 'tests/fpe/run_fpe_nlglob14z43.py'
+      - 'tests/fpe/run_fpe_nlglob14z43.sh'
+      - '.github/workflows/f-pe-nlglob14z43.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z43.sh
