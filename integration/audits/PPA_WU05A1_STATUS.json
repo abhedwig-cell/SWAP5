@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.ppa_wu05a1.status.v1",
+  "work_unit": "PPA-WU05-A1",
+  "branch": "research/ppa-wu05-a1-source-census-recovery",
+  "baseline": "68fcf6d384608c11ab5a34cf2eab9924f9788ecd",
+  "status": "QUALIFIED_EXACT_SOURCE_AND_CENSUS_COMPLETE_WITH_REFERENCE_DEFECT_IDENTIFIED",
+  "production_source_mutation": false,
+  "reference_source_mutation": false,
+  "source_recovery": {
+    "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_macropore_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+    "b1_11_macropore_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "b0_b1_11_macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "verdict": "PASS"
+  },
+  "exact_findings": {
+    "legacy_macrostatevar_backup_fields": [
+      "ICpBtDm",
+      "VlMpDmCp",
+      "WaUnMpDmCp"
+    ],
+    "confirmed_minimum_continuation_fields": [
+      "ICpBtDm",
+      "SorpDmCp",
+      "ThtSrpRefDmCp",
+      "TimAbsCumDmCp",
+      "VlMpDmCp",
+      "WaUnMpDmCp",
+      "VlMpDyCp"
+    ],
+    "legacy_rollback_complete": false,
+    "vlmpdycp_classification": "PHYSICAL_HYSTERETIC_GEOMETRY_HISTORY",
+    "sorptivity_history_trial_mutable": true,
+    "historical_index_zero_diagnostic": "PASS_SOURCE_PROVEN_UNINITIALIZED_ICGWL"
+  },
+  "mass_census": "PASS",
+  "production_admission": "NONE",
+  "next_action": "Open PPA-WU05-A2 typed committed/candidate/restart DTO and rollback harness. Do not migrate macropore equations in A2.",
+  "qualification": {
+    "state": "QUALIFIED_RESEARCH_RESULT",
+    "gates": {
+      "source_identity": "PASS",
+      "b1_11_derivation": "PASS",
+      "state_census": "PASS",
+      "transaction_census": "PASS",
+      "mass_census": "PASS",
+      "index_zero_characterization": "PASS"
+    }
+  }
+}

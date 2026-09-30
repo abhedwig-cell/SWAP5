@@ -81,6 +81,7 @@ module mod_fmr_serialized_reference_backend
        fixed_weir_surface_water_numerical_config_t, fixed_weir_surface_water_result_t, &
        evaluate_restricted_fixed_weir_surface_water, validate_fixed_weir_surface_water_parameters, &
        FIXED_WEIR_AVAILABLE
+  use mod_macropore_continuation_state, only: macropore_continuation_state_t
   implicit none
   private
 
@@ -128,6 +129,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: groundwater_level = 0.0_real64
     type(fmr_snow_runtime_state_t), allocatable :: snow
     type(soil_temperature_state_t), allocatable :: soil_temperature
+    type(macropore_continuation_state_t), allocatable :: macropore
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
@@ -611,6 +613,11 @@ contains
     if (allocated(source%soil_temperature)) then
       allocate(target%soil_temperature)
       target%soil_temperature = source%soil_temperature
+    end if
+    if (allocated(target%macropore)) deallocate(target%macropore)
+    if (allocated(source%macropore)) then
+      allocate(target%macropore)
+      target%macropore = source%macropore
     end if
   end subroutine copy_b110_physical_state
 

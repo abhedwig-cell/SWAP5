@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.ppa_wu05a2.status.v1",
+  "work_unit": "PPA-WU05-A2",
+  "title": "Typed macropore committed/candidate/restart state",
+  "branch": "work/ppa-wu05-a2-typed-macropore-state",
+  "baseline": "93d6c78c7ea5fac7060c61d51f992e75c02c65c4",
+  "status": "PREREGISTERED",
+  "production_source_mutation": "PERMITTED_STATE_INFRASTRUCTURE_ONLY",
+  "active_macropore_physics_permitted": false,
+  "continuation_fields": [
+    "ICpBtDm",
+    "SorpDmCp",
+    "ThtSrpRefDmCp",
+    "TimAbsCumDmCp",
+    "VlMpDmCp",
+    "WaUnMpDmCp",
+    "VlMpDyCp"
+  ],
+  "gates": {
+    "type_shape": "PENDING",
+    "candidate_isolation": "PENDING",
+    "reject": "PENDING",
+    "accept": "PENDING",
+    "retry": "PENDING",
+    "restart": "PENDING",
+    "inactive_preservation": "PENDING"
+  },
+  "next_action": "Locate current optional-state and restart architecture seams, then implement the smallest typed macropore state DTO and isolated transaction harness."
+}
