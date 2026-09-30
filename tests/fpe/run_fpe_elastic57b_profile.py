@@ -141,16 +141,22 @@ def main():
     monotone=set(seqs)-violating
 
     controls={}
+    regime_rank={"GENERATED":0,"FIXED_1E6":1,"OFF":2}
     for vk in sorted(violating):
         h,d,reg=vk
-        cand=[k for k in monotone if k[0]==h and k[2]==reg]
-        if not cand:
-            raise SystemExit(f"F_PE_ELASTIC57B_FAIL no control for {vk}")
-        same_abs_opp=[k for k in cand if abs(abs(k[1])-abs(d))<=1e-15 and k[1]*d<0.0]
-        if same_abs_opp:
-            ck=sorted(same_abs_opp,key=lambda k:k[1])[0]
+        same_state=[k for k in monotone if k[0]==h]
+        if not same_state:
+            raise SystemExit(f"F_PE_ELASTIC57B_FAIL no same-state control for {vk}")
+        same_forcing_alt_reg=[k for k in same_state if abs(k[1]-d)<=1e-15 and k[2]!=reg]
+        if same_forcing_alt_reg:
+            ck=sorted(same_forcing_alt_reg,key=lambda k:(regime_rank[k[2]],k[2]))[0]
         else:
-            ck=sorted(cand,key=lambda k:(abs(k[1]-d),k[1]))[0]
+            same_reg=[k for k in same_state if k[2]==reg]
+            same_abs_opp=[k for k in same_reg if abs(abs(k[1])-abs(d))<=1e-15 and k[1]*d<0.0]
+            if same_abs_opp:
+                ck=sorted(same_abs_opp,key=lambda k:k[1])[0]
+            else:
+                ck=sorted(same_state,key=lambda k:(0 if k[2]==reg else 1,abs(k[1]-d),k[1],regime_rank[k[2]]))[0]
         controls[vk]=ck
         print(f"ELASTIC57B_CONTROL|profile={a.profile_id}|vh0={h}|vdelta={d}|vregime={reg}|"+
               f"ch0={ck[0]}|cdelta={ck[1]}|cregime={ck[2]}")
