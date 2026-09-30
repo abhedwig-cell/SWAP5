@@ -909,7 +909,7 @@ contains
       end if
       if (parameters%macropore_active) then
         if (.not. allocated(parameters%macropore) .or. .not. allocated(physical%macropore)) return
-        if (.not. parameters%macropore%ready(parameters%active_nodes,require_zero_top_receipt=.true.)) return
+        if (.not. parameters%macropore%fmr_bounded_ready(parameters%active_nodes)) return
         if (.not. physical%macropore%ready() .or. physical%macropore%num_nodes /= parameters%active_nodes) return
       else
         if (allocated(parameters%macropore) .or. allocated(physical%macropore)) return
@@ -1584,7 +1584,7 @@ contains
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
              .not. parameters%drainage_response_active .and. .not. parameters%root_extraction_active .and. &
              .not. self%fixed_weir_surface_water_active
-        if (ok) ok = parameters%macropore%ready(parameters%active_nodes,require_zero_top_receipt=.true.)
+        if (ok) ok = parameters%macropore%fmr_bounded_ready(parameters%active_nodes)
       else
         ok = ok .and. .not. allocated(parameters%macropore)
       end if
