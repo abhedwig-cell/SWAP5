@@ -90,6 +90,21 @@ def main():
     end=oracle.find("    completed_cases = completed_cases + 1",start)
     if start<0 or end<0: raise SystemExit("F_PE_ELASTIC53_FAIL unsupported block")
     oracle=oracle[:start]+oracle[end:]
+    # F-SI38's q=0 stationary assertion is mode-2-specific. Under free
+    # drainage, qtop=0 is not stationary because qbot=-K remains active.
+    old_stationary="""    if (q == 0.0_real64) then
+      call require(indicator%head_inf_bound == 0.0_real64, 'stationary mode7 Binf exactly zero')
+    else if (abs(expected_binf-wrong_binf) > &
+             1024.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(expected_binf),abs(wrong_binf))) then
+      separated_cases = separated_cases + 1
+    end if
+"""
+    new_stationary="""    if (abs(expected_binf-wrong_binf) > &
+             1024.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(expected_binf),abs(wrong_binf))) then
+      separated_cases = separated_cases + 1
+    end if
+"""
+    oracle=oracle.replace(old_stationary,new_stationary)
     # Replace semantic labels only; preserve independent zero-stiffness oracle math.
     # Adapt the F-SI38 principal state to the mode-7 equilibrium geometry:
     # uniform saturated head, qtop around free-drainage q=-K.
