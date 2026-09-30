@@ -165,25 +165,23 @@ contains
       candidate_macro%sorptivity(id,ic) = 0.0_real64
       candidate_macro%theta_sorption_ref(id,ic) = 0.0_real64
       candidate_macro%absorption_time(id,ic) = 0.0_real64
-      ok = .true.
-      return
-    end if
-
-    if (tabs < 1.0e-8_real64) then
-      theta_ref = self%theta_s
-      sorp = self%sorptivity_max * (deficit / (self%theta_s - self%theta_r))**self%sorptivity_alpha
     else
-      theta_ref = accepted_macro%theta_sorption_ref(id,ic)
-      sorp = accepted_macro%sorptivity(id,ic)
+      if (tabs < 1.0e-8_real64) then
+        theta_ref = self%theta_s
+        sorp = self%sorptivity_max * (deficit / (self%theta_s - self%theta_r))**self%sorptivity_alpha
+      else
+        theta_ref = accepted_macro%theta_sorption_ref(id,ic)
+        sorp = accepted_macro%sorptivity(id,ic)
+      end if
+
+      delta_root = sqrt(tabs + step_duration) - sqrt(tabs)
+      theta_ref = theta_ref + self%wall_correction*self%wall_fraction * &
+           (4.0_real64/self%characteristic_diameter_cm)*sorp*delta_root
+
+      candidate_macro%sorptivity(id,ic) = sorp
+      candidate_macro%theta_sorption_ref(id,ic) = theta_ref
+      candidate_macro%absorption_time(id,ic) = tabs + step_duration
     end if
-
-    delta_root = sqrt(tabs + step_duration) - sqrt(tabs)
-    theta_ref = theta_ref + self%wall_correction*self%wall_fraction * &
-         (4.0_real64/self%characteristic_diameter_cm)*sorp*delta_root
-
-    candidate_macro%sorptivity(id,ic) = sorp
-    candidate_macro%theta_sorption_ref(id,ic) = theta_ref
-    candidate_macro%absorption_time(id,ic) = tabs + step_duration
 
     if (self%crack_history_enabled) then
       theta_m1 = base_matrix%water_content(ic)
