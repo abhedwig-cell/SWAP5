@@ -1,0 +1,25 @@
+name: F-PE-NLGLOB14Z44 reference fixture selection
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z44-reference-fixture-selection
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z44*.md'
+      - 'tests/fpe/test_fpe_nlglob14z44_reference_fixture.f90'
+      - 'tests/fpe/run_fpe_nlglob14z44.py'
+      - 'tests/fpe/run_fpe_nlglob14z44.sh'
+      - '.github/workflows/f-pe-nlglob14z44.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reference-fixture-selection:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z44.sh
