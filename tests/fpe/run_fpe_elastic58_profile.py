@@ -9,7 +9,7 @@ DELTAS=(-0.05,-0.035,0.035,0.05)
 DTS=(0.015625,0.0078125,0.00390625,0.001953125,0.0009765625,0.00048828125,0.000244140625,0.0001220703125,0.00006103515625)
 BUDGETS=(0.01,0.03,0.10,0.30)
 
-DIAG_FIELDS=("nonlinear","linear","headcalc","backtracking")
+DIAG_FIELDS=("nonlinear","linear","jacobian","backtracking")
 
 def parse(line):
     d={}
@@ -31,7 +31,7 @@ def execute(exe,reg,h,d,dt):
 def sem(r):
     keys=("full_status","half1_status","half2_status","all_converged","exact_identity","dh_inf",
           "indicator_available","indicator_binf","full_nonlinear","half1_nonlinear","half2_nonlinear",
-          "full_linear","half1_linear","half2_linear","full_headcalc","half1_headcalc","half2_headcalc",
+          "full_linear","half1_linear","half2_linear","full_jacobian","half1_jacobian","half2_jacobian",
           "full_backtracking","half1_backtracking","half2_backtracking")
     return tuple(r.get(k) for k in keys)
 
@@ -41,7 +41,7 @@ def zero_cost():
 def add_trial(cost,r,prefix):
     cost["nonlinear"]+=int(r[f"{prefix}_nonlinear"])
     cost["linear"]+=int(r[f"{prefix}_linear"])
-    cost["headcalc"]+=int(r[f"{prefix}_headcalc"])
+    cost["jacobian"]+=int(r[f"{prefix}_jacobian"])
     cost["backtracking"]+=int(r[f"{prefix}_backtracking"])
 
 def identity_route(seq):
@@ -119,7 +119,7 @@ def main():
                             if float(crow["dh_inf"])>budget*(1+1e-12): A["false_accept"]+=1
                         else:
                             A["unpaired_accept"]+=1
-                    print(f"ELASTIC58_DECISION|profile={a.profile_id}|regime={reg}|h0={h}|delta={d}|budget={budget}|cert={cstat}|identity={istat}|cert_attempts={ccost['attempts']}|identity_attempts={icost['attempts']}|cert_nonlinear={ccost['nonlinear']}|identity_nonlinear={icost['nonlinear']}|cert_linear={ccost['linear']}|identity_linear={icost['linear']}|cert_tridiag={ccost['cert_tridiag']}|cert_headcalc={ccost['headcalc']}|identity_headcalc={icost['headcalc']}|cert_backtracking={ccost['backtracking']}|identity_backtracking={icost['backtracking']}")
+                    print(f"ELASTIC58_DECISION|profile={a.profile_id}|regime={reg}|h0={h}|delta={d}|budget={budget}|cert={cstat}|identity={istat}|cert_attempts={ccost['attempts']}|identity_attempts={icost['attempts']}|cert_nonlinear={ccost['nonlinear']}|identity_nonlinear={icost['nonlinear']}|cert_linear={ccost['linear']}|identity_linear={icost['linear']}|cert_tridiag={ccost['cert_tridiag']}|cert_jacobian={ccost['jacobian']}|identity_jacobian={icost['jacobian']}|cert_backtracking={ccost['backtracking']}|identity_backtracking={icost['backtracking']}")
 
     for budget,A in agg.items():
         if A["false_accept"]: raise SystemExit("F_PE_ELASTIC58_FAIL false accept")
@@ -130,7 +130,7 @@ def main():
               f"paired_accept={A['paired_accept']}|unpaired_accept={A['unpaired_accept']}|"
               f"cert_nonlinear={A['cert']['nonlinear']}|identity_nonlinear={A['ident']['nonlinear']}|"
               f"cert_linear={A['cert']['linear']}|identity_linear={A['ident']['linear']}|cert_tridiag={A['cert']['cert_tridiag']}|"
-              f"cert_headcalc={A['cert']['headcalc']}|identity_headcalc={A['ident']['headcalc']}|"
+              f"cert_jacobian={A['cert']['jacobian']}|identity_jacobian={A['ident']['jacobian']}|"
               f"cert_backtracking={A['cert']['backtracking']}|identity_backtracking={A['ident']['backtracking']}")
     print("F_PE_ELASTIC58_B4_SAFETY=PASS")
     print("F_PE_ELASTIC58_PROFILE=PASS")
