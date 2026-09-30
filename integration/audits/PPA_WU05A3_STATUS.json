@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.ppa_wu05a3.status.v1",
+  "work_unit": "PPA-WU05-A3",
+  "title": "Macropore physical decomposition and corrected reference model",
+  "branch": "research/ppa-wu05-a3-macropore-physical-decomposition",
+  "baseline": "4d297b72e41089321572ce15ad078bf65cf398ee",
+  "canonical_reconciled_through": "f9133b92cd7d128838029a162ee607bb8ba69689",
+  "status": "PREREGISTERED_HELD_ON_A2_QUALIFICATION",
+  "production_source_mutation": false,
+  "active_macropore_physics_permitted": false,
+  "upstream": {
+    "A1": "QUALIFIED_EXACT_SOURCE_AND_CENSUS_COMPLETE_WITH_REFERENCE_DEFECT_IDENTIFIED",
+    "A2": "RECONCILED_WITH_CURRENT_CANONICAL_QUALIFICATION_QUEUED"
+  },
+  "reference_levels": ["R0_EXACT_B1_11_WHERE_DEFINED","R1_MINIMALLY_CORRECTED_B1_11","R2_DECOMPOSED_SWAP5_RESEARCH"],
+  "experiments": ["E0_DISABLED","E1_DIRECT_BYPASS","E2_MATRIX_ABSORPTION","E3_ANTECEDENT_HISTORY","E4_CRACK_HYSTERESIS","E5_RAPID_DRAINAGE","E6_NEAR_SATURATED_ICGWL","E7_GROUNDWATER_SWEEP","E8_REJECT_RETRY","E9_EXTREME_RAIN"],
+  "next_action": "On A2 PASS, build prescribed-matrix E0-E2 research harness and source-to-process map. Until then, documentation/research design only."
+}
