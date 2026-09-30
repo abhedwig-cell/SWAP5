@@ -1,0 +1,50 @@
+name: F-PE-NLGLOB14Z31R protocol-correct cumulative-drift attribution re-execution
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z31r-drift-attribution-reexec
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z31R*.md'
+      - 'tests/fpe/run_fpe_nlglob14z31r_drift.py'
+      - 'tests/fpe/run_fpe_nlglob14z31r_segment.sh'
+      - '.github/workflows/f-pe-nlglob14z31r.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  segment-a:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [HEAD, RUNOFF]
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z31r_segment.sh "${{ matrix.route }}" "0.0000625" first "140.0" "z31-${{ matrix.route }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z31-${{ matrix.route }}-checkpoint
+          path: z31-${{ matrix.route }}.json
+          if-no-files-found: error
+
+  segment-b:
+    needs: segment-a
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [HEAD, RUNOFF]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z31-${{ matrix.route }}-checkpoint
+          path: .
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z31r_segment.sh "${{ matrix.route }}" "0.0000625" resume "540.0" "z31-${{ matrix.route }}.json"
