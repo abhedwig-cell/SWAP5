@@ -17,6 +17,8 @@ on:
       - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
       - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
       - 'tests/fkt/run_fkt22_eb_i25_preservation_gate.sh'
+      - 'tests/fpe/run_fpe_elastic65_ebi25_differential.sh'
+      - 'docs/performance/F-PE-ELASTIC65_EBI25_ADMISSION_RECONCILIATION.md'
       - 'tests/ross/run_ross12_serialized_production_wiring.sh'
       - '.github/workflows/f-pe-elastic65.yml'
   pull_request:
@@ -50,5 +52,5 @@ jobs:
         run: bash tests/fkt/run_fkt22_fmr_compile_gate.sh
       - name: Preserve F-KT22 serialized runtime closure
         run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
-      - name: Preserve F-KT22 EB-I25 closure
-        run: bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh
+      - name: Reconcile EB-I25 current-canonical baseline
+        run: bash tests/fpe/run_fpe_elastic65_ebi25_differential.sh
