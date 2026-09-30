@@ -7,6 +7,7 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--root",required=True)
     ap.add_argument("--output",required=True)
+    ap.add_argument("--preservation-output",required=True)
     a=ap.parse_args()
     root=Path(a.root).resolve()
     s=(root/"tests/fsi/test_fsi38_prescribed_qbot_temporal_certificate.f90").read_text(encoding="utf-8")
@@ -77,6 +78,20 @@ def main():
     s=s.replace("PRESCRIBED_QBOT_TEMPORAL_CERTIFICATE","MODE7_INDICATOR_ADMISSION")
 
     Path(a.output).write_text(s,encoding="utf-8")
+
+    # Preservation variant: keep the historical mode-2 independent oracle and
+    # move only its "unsupported boundary" probe from newly admitted mode 7 to
+    # still-unowned mode 8. The mode-2 mathematics remain byte-derived from
+    # F-SI38.
+    p=(root/"tests/fsi/test_fsi38_prescribed_qbot_temporal_certificate.f90").read_text(encoding="utf-8")
+    p=p.replace("program test_fsi38_prescribed_qbot_temporal_certificate","program test_fpe_elastic60_fsi38_preservation")
+    p=p.replace("end program test_fsi38_prescribed_qbot_temporal_certificate","end program test_fpe_elastic60_fsi38_preservation")
+    p=p.replace("unsupported_request%boundary%bottom_mode = 7","unsupported_request%boundary%bottom_mode = 8")
+    p=p.replace("'unowned bottom mode remains unavailable'","'still-unowned bottom mode remains unavailable'")
+    p=p.replace("'unowned bottom mode fails closed at boundary envelope'","'still-unowned bottom mode fails closed at boundary envelope'")
+    p=p.replace("FSI38_","ELASTIC60_PRESERVE_")
+    Path(a.preservation_output).write_text(p,encoding="utf-8")
+
     print("F_PE_ELASTIC60_MATERIALIZE=PASS")
 
 if __name__=="__main__":
