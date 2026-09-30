@@ -89,6 +89,7 @@ contains
     type(macropore_rate_bundle_result_t)::current_rates,raw_rates
     type(macropore_multi_domain_receipt_t)::receipt
     type(vertical_flux_reconstruction_request_t)::vertical_request
+    type(sorptivity_history_update_request_t)::history_local
     real(real64),allocatable::current_domain(:,:),next_domain(:,:),current_node(:)
     real(real64)::numerator,denominator,dt
     logical::ok
@@ -162,7 +163,7 @@ contains
       return
     end if
 
-    call prepare_rate_request(rate_template,accepted_macro,geometry,predictor%candidate_state,rate_request,ok)
+    call prepare_rate_request(rate_template,accepted_macro,geometry,predictor%candidate_state,dt,rate_request,ok)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
       return
@@ -188,7 +189,7 @@ contains
         return
       end if
 
-      call prepare_rate_request(rate_template,accepted_macro,geometry,corrector%candidate_state,rate_request,ok)
+      call prepare_rate_request(rate_template,accepted_macro,geometry,corrector%candidate_state,dt,rate_request,ok)
       if(.not.ok)then
         result%status=MACRO_RUNTIME_FAILED
         return
@@ -224,7 +225,10 @@ contains
       return
     end if
 
-    call apply_sorptivity_history_update(history_request,accepted_macro,raw_rates%unsaturated, &
+    history_local=history_request
+    history_local%step_duration=dt
+    history_local%bottom_domain=geometry%bottom_domain
+    call apply_sorptivity_history_update(history_local,accepted_macro,raw_rates%unsaturated, &
          result%macropore_candidate,ok)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
@@ -267,11 +271,12 @@ contains
     if(.not.same_type_as(self,self))result%status=MACRO_RUNTIME_FAILED
   end subroutine runtime_execute
 
-  subroutine prepare_rate_request(template,accepted_macro,geometry,matrix_state,request,ok)
+  subroutine prepare_rate_request(template,accepted_macro,geometry,matrix_state,step_duration,request,ok)
     type(macropore_rate_bundle_request_t),intent(in)::template
     type(macropore_continuation_state_t),intent(in)::accepted_macro
     type(macropore_geometry_result_t),intent(in)::geometry
     type(soil_water_physical_state_t),intent(in)::matrix_state
+    real(real64),intent(in)::step_duration
     type(macropore_rate_bundle_request_t),intent(out)::request
     logical,intent(out)::ok
 
@@ -280,6 +285,10 @@ contains
     if(.not.accepted_macro%ready() .or. .not.geometry%valid)return
     if(matrix_state%active_nodes/=accepted_macro%num_nodes)return
 
+    request%unsaturated%sorptivity%step_duration=step_duration
+    request%interflow_sat%step_duration=step_duration
+    request%matrix_sat%step_duration=step_duration
+    request%rapid%step_duration=step_duration
     request%unsaturated%sorptivity%theta=matrix_state%water_content
     request%unsaturated%pressure_head=matrix_state%pressure_head
     request%unsaturated%sorptivity%history_sorptivity=accepted_macro%sorptivity
