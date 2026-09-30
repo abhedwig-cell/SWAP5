@@ -45,8 +45,11 @@ for i in range(0,len(states),16):
     step=int(xs[0]["STEP"]); t=step*dt
     if prev_top is not None and top is not None and top!=prev_top:
         d=top-prev_top
-        if prev_top>=11 and d<0: reverse=True
-        if prev_top>=11 and d>1: skipped=True
+        if prev_top==10 and top==11:
+            late_phase=True
+        elif late_phase:
+            if d<0: reverse=True
+            if d>1: skipped=True
     events.append({"step":step,"time":t,"sat":sat})
     prev_top=top
 
