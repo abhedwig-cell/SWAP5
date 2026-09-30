@@ -7,6 +7,7 @@ module mod_timestep_numerical_profile
   integer, parameter, public :: TIMESTEP_PROFILE_INVALID = 0
   integer, parameter, public :: TIMESTEP_PROFILE_LEGACY_NUMERICS = 1
   integer, parameter, public :: TIMESTEP_PROFILE_AUTO_REFERENCE = 2
+  integer, parameter, public :: TIMESTEP_PROFILE_MOVING_INTERFACE_MANAGER = 3
 
   integer, parameter, public :: TIMESTEP_PROFILE_STATUS_OK = 0
   integer, parameter, public :: TIMESTEP_PROFILE_STATUS_INVALID = 1
@@ -31,10 +32,16 @@ module mod_timestep_numerical_profile
     logical :: controller_admitted = .false.
   end type auto_reference_profile_t
 
+  type, public :: moving_interface_manager_profile_t
+    character(len=48) :: manager_id = ''
+    logical :: admission_ready = .false.
+  end type moving_interface_manager_profile_t
+
   type, public :: timestep_numerical_profile_t
     integer :: kind = TIMESTEP_PROFILE_INVALID
     type(legacy_numerics_profile_t) :: legacy
     type(auto_reference_profile_t) :: automatic
+    type(moving_interface_manager_profile_t) :: moving_interface
   contains
     procedure, public :: validate => timestep_profile_validate
     procedure, public :: execution_ready => timestep_profile_execution_ready
@@ -42,6 +49,7 @@ module mod_timestep_numerical_profile
 
   public :: make_legacy_numerics_profile
   public :: make_auto_reference_profile
+  public :: make_moving_interface_manager_profile
 
 contains
 
@@ -81,6 +89,18 @@ contains
     if (present(controller_admitted)) profile%automatic%controller_admitted = controller_admitted
   end function make_auto_reference_profile
 
+
+  pure function make_moving_interface_manager_profile(manager_id, admission_ready) result(profile)
+    character(len=*), intent(in) :: manager_id
+    logical, intent(in), optional :: admission_ready
+    type(timestep_numerical_profile_t) :: profile
+
+    profile%kind = TIMESTEP_PROFILE_MOVING_INTERFACE_MANAGER
+    profile%moving_interface%manager_id = manager_id
+    profile%moving_interface%admission_ready = .false.
+    if (present(admission_ready)) profile%moving_interface%admission_ready = admission_ready
+  end function make_moving_interface_manager_profile
+
   pure subroutine timestep_profile_validate(self, status)
     class(timestep_numerical_profile_t), intent(in) :: self
     integer, intent(out) :: status
@@ -111,6 +131,10 @@ contains
       end if
       status = TIMESTEP_PROFILE_STATUS_OK
 
+    case (TIMESTEP_PROFILE_MOVING_INTERFACE_MANAGER)
+      if (len_trim(self%moving_interface%manager_id) == 0) return
+      status = TIMESTEP_PROFILE_STATUS_OK
+
     case default
       return
     end select
@@ -129,6 +153,8 @@ contains
       ready = .true.
     case (TIMESTEP_PROFILE_AUTO_REFERENCE)
       ready = self%automatic%controller_admitted
+    case (TIMESTEP_PROFILE_MOVING_INTERFACE_MANAGER)
+      ready = self%moving_interface%admission_ready
     end select
   end function timestep_profile_execution_ready
 
