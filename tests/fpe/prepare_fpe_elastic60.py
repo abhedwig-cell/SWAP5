@@ -44,15 +44,14 @@ def select(gpkg):
         k=(p["soilunit"],p["horizon_count"],tuple(p["blocks"]))
         if k in seen: continue
         seen.add(k); uniq.append(p)
-    classes=sorted({p["horizon_count"] for p in uniq})[:4]
+    remaining=[p for p in uniq if p["profile_id"] not in EXCLUDE]
+    classes=sorted({p["horizon_count"] for p in remaining})[:4]
     if len(classes)!=4: raise SystemExit(f"F_PE_ELASTIC60_FAIL classes={classes}")
     out=[]
     for hc in classes:
-        cand=sorted([p for p in uniq if p["horizon_count"]==hc],key=lambda x:x["profile_id"])
-        if len(cand)<2: raise SystemExit(f"F_PE_ELASTIC60_FAIL class {hc} count={len(cand)}")
-        pick=cand[1]
-        if pick["profile_id"] in EXCLUDE: raise SystemExit(f"F_PE_ELASTIC60_FAIL overlap {pick['profile_id']}")
-        out.append(pick)
+        cand=sorted([p for p in remaining if p["horizon_count"]==hc],key=lambda x:x["profile_id"])
+        if not cand: raise SystemExit(f"F_PE_ELASTIC60_FAIL empty class {hc}")
+        out.append(cand[0])
     return out
 
 def main():
