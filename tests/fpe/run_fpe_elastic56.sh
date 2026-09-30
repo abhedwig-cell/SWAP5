@@ -37,34 +37,38 @@ while read -r pid; do
 done < "$BUILD/profile_ids.txt"
 
 python3 - "$BUILD/all.txt" <<'PY'
-import math,sys
+import sys
 lines=open(sys.argv[1],encoding="utf-8").read().splitlines()
-v=[x for x in lines if x.startswith("ELASTIC56_VIOLATION|")]
-if len(v)!=15:
-    raise SystemExit(f"F_PE_ELASTIC56_FAIL violating sequence count={len(v)} expected=15")
+seq=[x for x in lines if x.startswith("ELASTIC56_VIOLATION|")]
+tr=[x for x in lines if x.startswith("ELASTIC56_TRANSITION|")]
+if len(seq)!=15:
+    raise SystemExit(f"F_PE_ELASTIC56_FAIL violating sequence count={len(seq)} expected=15")
+if len(tr)!=51:
+    raise SystemExit(f"F_PE_ELASTIC56_FAIL transition count={len(tr)} expected=51")
 counts={"CONTIGUOUS":0,"GAP":0}
 mags={"SMALL":0,"MODERATE":0,"LARGE":0}
 maxrel=(-1.0,None)
 paired_both=0
-sequences=set()
-transition_total=0
-for line in v:
+transition_sum=0
+for line in seq:
+    d={}
+    for p in line.split("|")[1:]:
+        k,val=p.split("=",1); d[k]=val
+    transition_sum+=int(d["transition_count"])
+if transition_sum!=51:
+    raise SystemExit(f"F_PE_ELASTIC56_FAIL sequence transition sum={transition_sum} expected=51")
+for line in tr:
     d={}
     for p in line.split("|")[1:]:
         k,val=p.split("=",1); d[k]=val
     counts[d["class"]]+=1
     mags[d["magnitude"]]+=1
-    sequences.add((d["profile"],d["regime"],d["h0"],d["delta"]))
-    transition_total += int(d["transition_count"])
     rel=float(d["rel_increase"])
     if rel>maxrel[0]: maxrel=(rel,line)
     if d["paired0"]=="T" and d["paired1"]=="T": paired_both+=1
-if len(sequences)!=15:
-    raise SystemExit(f"F_PE_ELASTIC56_FAIL unique sequence count={len(sequences)} expected=15")
-if transition_total!=51:
-    raise SystemExit(f"F_PE_ELASTIC56_FAIL internal transition count={transition_total} expected=51")
-print(f"ELASTIC56_TOTAL|sequences={len(sequences)}|transitions={transition_total}|contiguous={counts['CONTIGUOUS']}|gap={counts['GAP']}|small={mags['SMALL']}|moderate={mags['MODERATE']}|large={mags['LARGE']}|paired_both={paired_both}|max_rel_increase={maxrel[0]:.17e}")
+print(f"ELASTIC56_TOTAL|sequences={len(seq)}|transitions={len(tr)}|contiguous={counts['CONTIGUOUS']}|gap={counts['GAP']}|small={mags['SMALL']}|moderate={mags['MODERATE']}|large={mags['LARGE']}|paired_both={paired_both}|max_rel_increase={maxrel[0]:.17e}")
 print("ELASTIC56_WORST="+maxrel[1])
+for line in seq: print("ELASTIC56_SEQUENCE_SUMMARY="+line)
 print("F_PE_ELASTIC56_A1_SELECTION_REPLAY=PASS")
 print("F_PE_ELASTIC56_A2_VIOLATION_COUNT=PASS")
 print("F_PE_ELASTIC56_A4_CLASSIFICATION=PASS")
