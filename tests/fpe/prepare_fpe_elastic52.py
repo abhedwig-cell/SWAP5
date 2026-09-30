@@ -37,6 +37,7 @@ def main():
   real(real64)::full_internal_flux1,half1_internal_flux1,half2_internal_flux1,twohalf_internal_flux1
   real(real64)::terminal_dh1,storage_rate_diff1,internal_flux_diff1
   real(real64)::ratio_full,ratio_half1,ratio_half2,ss_node1
+  real(real64)::full_h1_out,half1_h1_out,half2_h1_out,full_h2_out,half1_h2_out,half2_h2_out
   integer::ih,itheta,i
 """
     if old not in s: raise SystemExit("F_PE_ELASTIC52_FAIL decl anchor")
@@ -67,6 +68,20 @@ def main():
   full_internal_flux1=0.0_real64;half1_internal_flux1=0.0_real64;half2_internal_flux1=0.0_real64
   twohalf_internal_flux1=0.0_real64;terminal_dh1=0.0_real64;storage_rate_diff1=0.0_real64
   internal_flux_diff1=0.0_real64;ratio_full=0.0_real64;ratio_half1=0.0_real64;ratio_half2=0.0_real64
+  full_h1_out=0.0_real64;half1_h1_out=0.0_real64;half2_h1_out=0.0_real64
+  full_h2_out=0.0_real64;half1_h2_out=0.0_real64;half2_h2_out=0.0_real64
+  if(res_full%status==SW_SOLVE_CONVERGED)then
+    full_h1_out=res_full%candidate_state%pressure_head(1)
+    full_h2_out=res_full%candidate_state%pressure_head(2)
+  end if
+  if(res_half1%status==SW_SOLVE_CONVERGED)then
+    half1_h1_out=res_half1%candidate_state%pressure_head(1)
+    half1_h2_out=res_half1%candidate_state%pressure_head(2)
+  end if
+  if(res_half2%status==SW_SOLVE_CONVERGED)then
+    half2_h1_out=res_half2%candidate_state%pressure_head(1)
+    half2_h2_out=res_half2%candidate_state%pressure_head(2)
+  end if
 """
     if old not in s: raise SystemExit("F_PE_ELASTIC52_FAIL init anchor")
     s=s.replace(old,new,1)
@@ -125,12 +140,8 @@ def main():
     new="""  write(*,'(*(g0))')'ELASTIC52_MECH|regime=',trim(regime),'|h0=',h0,'|delta=',delta,'|dt=',dt, &
        '|full_status=',res_full%status,'|half1_status=',res_half1%status,'|half2_status=',res_half2%status, &
        '|all_converged=',all_converged,'|qtop=',qtop_fixed,'|ss1=',ss_node1, &
-       '|full_h1=',merge(res_full%candidate_state%pressure_head(1),0.0_real64,res_full%status==SW_SOLVE_CONVERGED), &
-       '|half1_h1=',merge(res_half1%candidate_state%pressure_head(1),0.0_real64,res_half1%status==SW_SOLVE_CONVERGED), &
-       '|half2_h1=',merge(res_half2%candidate_state%pressure_head(1),0.0_real64,res_half2%status==SW_SOLVE_CONVERGED), &
-       '|full_h2=',merge(res_full%candidate_state%pressure_head(2),0.0_real64,res_full%status==SW_SOLVE_CONVERGED), &
-       '|half1_h2=',merge(res_half1%candidate_state%pressure_head(2),0.0_real64,res_half1%status==SW_SOLVE_CONVERGED), &
-       '|half2_h2=',merge(res_half2%candidate_state%pressure_head(2),0.0_real64,res_half2%status==SW_SOLVE_CONVERGED), &
+       '|full_h1=',full_h1_out,'|half1_h1=',half1_h1_out,'|half2_h1=',half2_h1_out, &
+       '|full_h2=',full_h2_out,'|half1_h2=',half1_h2_out,'|half2_h2=',half2_h2_out, &
        '|full_dh1=',full_dh1,'|half1_dh1=',half1_dh1,'|half2_dh1=',half2_dh1, &
        '|full_dtheta1=',full_dtheta1,'|half1_dtheta1=',half1_dtheta1,'|half2_dtheta1=',half2_dtheta1, &
        '|full_storage_rate1=',full_storage_rate1,'|half1_storage_rate1=',half1_storage_rate1, &
