@@ -5,17 +5,17 @@
   "branch": "research/ppa-wu05-a6-source-rate-migration",
   "baseline": "8ff58acaf8049042b662aeb56708ddd9e0fc9321",
   "canonical_source_dependency_reconciled_through": "ddd218085afd363d22ce0b632d3ac893c7c9f40b",
-  "status": "ACTIVE_R2_SATURATED_EXCHANGE",
+  "status": "ACTIVE_R3_SATURATED_INTERFLOW_COMPOSITION",
   "production_activation": false,
   "phases": {
     "unsaturated_absorption": "PASS",
-    "saturated_exchange": "PENDING",
-    "inter_domain_exchange": "PENDING",
+    "saturated_exchange": "PASS",
+    "inter_domain_exchange": "RENAMED_SATURATED_INTERFLOW_REUSES_SATFLOW",
     "rapid_drainage": "PENDING",
     "top_limitation_redistribution": "PENDING",
     "accepted_vertical_flux": "PENDING"
   },
-  "next_action": "Qualify typed saturated exchange evaluator, then migrate inter-domain saturated exchange.",
+  "next_action": "Compose two qualified SATFLOW invocations into QInIntSat/QInMtxSat/QOutMtxSat source terms, then migrate multi-compartment rapid drainage generator.",
   "r1a": {
     "run_id": 36772703007,
     "head": "1a781e87edf3c0739ad6bca458e957d5a0612ace",
@@ -25,5 +25,13 @@
     "run_id": 36772977070,
     "head": "7da4b2bf2393799144ba188cd8d767c026068d35",
     "conclusion": "PASS"
+  },
+  "r2": {
+    "run_id": 36773266980,
+    "head": "f6df526f53149e49776ab96ba62cf7e9ee24dede",
+    "conclusion": "PASS"
+  },
+  "findings": {
+    "r3_terminology": "QInIntSat is perched/top saturated matrix interflow, not macropore domain-to-domain exchange"
   }
 }
