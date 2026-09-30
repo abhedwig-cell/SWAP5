@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05a1.status.v1",
+  "work_unit": "PPA-WU05-A1",
+  "title": "Exact macropore source recovery and mutable-state/mass census",
+  "branch": "research/ppa-wu05-a1-source-census-recovery",
+  "baseline": "68fcf6d384608c11ab5a34cf2eab9924f9788ecd",
+  "status": "PREREGISTERED_SOURCE_RECOVERY_IN_PROGRESS",
+  "production_source_mutation": false,
+  "reference_source_mutation": false,
+  "predecessor": "PPA-WU05-A",
+  "known_b1_11_hashes": {
+    "macropore_f90": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "macrorate_f90": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7"
+  },
+  "recovered_corrobation": {
+    "f_pe16": "f5e2a12fca96559645feb8d8cd591b600f765d8c",
+    "f_pe15": "f475e0e050abdc885c016929c2d528fe1f8f0545",
+    "f_si15": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
+    "library_artifacts": [
+      "S12o_macropore_column_state.patch",
+      "S11_cumulative_from_pristine.patch",
+      "A23AU_REPORT.md"
+    ]
+  },
+  "current_findings": {
+    "seven_candidate_fields_corrobated": true,
+    "final_state_census_complete": false,
+    "historical_index_zero_qexcmtxdmcp_observation": "CORROBORATED_HISTORICAL_ONLY",
+    "official_swap_4_3_1_release_located": true,
+    "byte_exact_source_materialized": false
+  },
+  "production_admission": "NONE",
+  "next_action": "Materialize and hash-verify exact B0 SWAP 4.3.1 macropore.f90/macrorate.f90, derive B1.11, then complete source-bound state and mass census."
+}
