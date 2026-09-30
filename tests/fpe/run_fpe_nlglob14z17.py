@@ -4,6 +4,10 @@ from pathlib import Path
 exe=Path(sys.argv[1]); bank=Path(sys.argv[2])
 data=json.loads(bank.read_text()); m={x["id"]:x for x in data["materials"]}["O05"]
 dts=[1.25e-4,6.25e-5]; routes=("HEAD","RUNOFF"); stages=(600.0,1200.0)
+if len(sys.argv)>=4:
+    routes=(sys.argv[3],)
+if len(sys.argv)>=5:
+    dts=[float(sys.argv[4])]
 dtop=10.; pmax=.05; rsro=.05
 def fields(line): return {k:v for k,v in (x.split("=",1) for x in line.split("|")[1:])}
 def kvg(h):
@@ -74,18 +78,18 @@ for horizon in stages:
     if not all(x["valid"] for x in stage_rows):
         break
 rows=[selected[(r,dt)] for r in routes for dt in dts]
-coverage=len(rows)==4 and all(x["valid"] for x in rows)
+coverage=len(rows)==len(routes)*len(dts) and all(x["valid"] for x in rows)
 event_cases=sum(x["target_time"] is not None for x in rows)
-event_all=coverage and event_cases==4
+event_all=coverage and event_cases==len(rows)
 if any(x["state_bad"] or x["reverse"] or x["skipped"] for x in rows):
     agg="NLGLOB14Z17_RETREAT_STATE_INCONSISTENT"
-elif not coverage and event_cases==4:
+elif not coverage and event_cases==len(rows):
     agg="BLOCKED_NLGLOB14Z17_POST_EVENT_COMPLETION"
 elif not coverage:
     agg="BLOCKED_NLGLOB14Z17_CONTROL_EXPOSURE"
 elif event_all:
     agg="QUALIFIED_RETREAT_13_TO_14_CONTROL_EXPOSURE"
-elif event_cases==0 and max(x["horizon"] for x in rows)>=600.0:
+elif event_cases==0 and max(x["horizon"] for x in rows)>=1200.0:
     agg="NLGLOB14Z17_NO_RETREAT_13_TO_14_WITHIN_1200D"
 else:
     agg="NLGLOB14Z17_MIXED_RETREAT_13_TO_14_EXPOSURE"
