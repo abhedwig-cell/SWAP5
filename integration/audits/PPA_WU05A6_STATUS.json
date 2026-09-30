@@ -1,0 +1,19 @@
+{
+  "schema": "swap5.ppa_wu05a6.status.v1",
+  "work_unit": "PPA-WU05-A6",
+  "title": "Source-rate migration",
+  "branch": "research/ppa-wu05-a6-source-rate-migration",
+  "baseline": "8ff58acaf8049042b662aeb56708ddd9e0fc9321",
+  "canonical_source_dependency_reconciled_through": "ddd218085afd363d22ce0b632d3ac893c7c9f40b",
+  "status": "PREREGISTERED_R1_UNSATURATED_ABSORPTION",
+  "production_activation": false,
+  "phases": {
+    "unsaturated_absorption": "PENDING",
+    "saturated_exchange": "PENDING",
+    "inter_domain_exchange": "PENDING",
+    "rapid_drainage": "PENDING",
+    "top_limitation_redistribution": "PENDING",
+    "accepted_vertical_flux": "PENDING"
+  },
+  "next_action": "Map exact B1.11 SWABS=1 unsaturated absorption source surface and implement typed multi-domain evaluator against local oracle."
+}
