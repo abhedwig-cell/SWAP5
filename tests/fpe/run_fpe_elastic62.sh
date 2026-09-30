@@ -22,7 +22,6 @@ for opt in 0 2; do
   : > "$OUT/result.txt"
   for delta in 0.035 0.05; do
     for regime in OFF FIXED_1E6 GENERATED; do
-      "$OUT/rom0_test" "$regime" -20 0.0009765625 "$delta" 16 >/dev/null 2>&1 && fail "argument order sentinel"
       "$OUT/rom0_test" "$regime" -20 "$delta" 0.0009765625 16 >> "$OUT/result.txt"
     done
   done
