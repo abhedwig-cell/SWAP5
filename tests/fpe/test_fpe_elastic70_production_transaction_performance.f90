@@ -55,13 +55,9 @@ program test_fpe_elastic70_production_transaction_performance
   integer :: strict_case_complete(NCASE),policy_case_complete(NCASE)
   real(real64) :: strict_case_dt(NCASE),policy_case_dt(NCASE)
   logical :: ok
-  character(len=1024) :: config_path,row_path
 
-  call req(command_argument_count()>=2,'config/row args')
-  call get_command_argument(1,config_path)
-  call get_command_argument(2,row_path)
   call init_parameters(base)
-  call fmr_prepare_application_parameters_with_elastic_storage(trim(config_path),trim(row_path), &
+  call fmr_prepare_application_parameters_with_elastic_storage('request.cfg','profile_8016.rows', &
        base,p,hdiag)
   write(*,'(*(g0))')'ELASTIC70_HOST_DIAG|status=',hdiag%status,'|discovery=',hdiag%discovery_status, &
        '|row=',hdiag%row_binding_status,'|profile=',hdiag%selected_profile_id, &
