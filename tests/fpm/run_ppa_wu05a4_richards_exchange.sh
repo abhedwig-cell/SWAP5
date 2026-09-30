@@ -76,6 +76,12 @@ for opt in 0 2; do
   cat "$OUT/controller.txt"
   grep -Fq 'PPA_WU05A4_OUTER_CONTROLLER=PASS' "$OUT/controller.txt"
 
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a4_outer_controller_richards.f90 -o "$OUT/test_controller_richards.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_controller_richards.o" -o "$OUT/test_controller_richards"
+  "$OUT/test_controller_richards" > "$OUT/controller_richards.txt"
+  cat "$OUT/controller_richards.txt"
+  grep -Fq 'PPA_WU05A4_OUTER_CONTROLLER_RICHARDS=PASS' "$OUT/controller_richards.txt"
+
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a4_richards_exchange.f90 -o "$OUT/test_fixed.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_fixed.o" -o "$OUT/test_fixed"
   "$OUT/test_fixed" > "$OUT/fixed.txt"
@@ -113,6 +119,7 @@ for opt in 0 2; do
 done
 
 cmp "$BUILD/o0/controller.txt" "$BUILD/o2/controller.txt"
+cmp "$BUILD/o0/controller_richards.txt" "$BUILD/o2/controller_richards.txt"
 cmp "$BUILD/o0/fixed.txt" "$BUILD/o2/fixed.txt"
 cmp "$BUILD/o0/pc.txt" "$BUILD/o2/pc.txt"
 cmp "$BUILD/o0/picard.txt" "$BUILD/o2/picard.txt"
