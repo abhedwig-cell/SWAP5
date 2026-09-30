@@ -12,6 +12,8 @@ module mod_fmr_serialized_reference_backend
        kernel_reference_floor_result_t, kernel_reference_floor_candidate_t, &
        KERNEL_STATUS_NOT_ADMITTED, KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
   use mod_fmr_checkpoint_orchestrator, only: fmr_trial_from_checkpoint, fmr_commit_candidate, fmr_discard_candidate
+  use mod_fmr_mode7_temporal_head_envelope, only: fmr_mode7_head_envelope_assessment_t, &
+       assess_fmr_mode7_temporal_head_envelope, FMR_MODE7_HEAD_ENVELOPE_OK
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
@@ -1965,6 +1967,7 @@ contains
     type(soil_water_temporal_indicator_result_t) :: indicator_result
     real(real64), allocatable :: previous_derivative(:)
     real(real64) :: normalized_indicator
+    type(fmr_mode7_head_envelope_assessment_t) :: head_envelope
     logical :: previous_available, replaced
     integer :: n
     ok = .false.
@@ -2021,7 +2024,17 @@ contains
     else if (.not. ieee_is_finite(indicator_result%head_inf_bound) .or. indicator_result%head_inf_bound < 0.0_real64) then
       self%last_observation%temporal_certificate_unavailable_reason = 'indicator-invalid'
     else
-      normalized_indicator = indicator_result%head_inf_bound / self%temporal_indicator_budget
+      if (request%boundary%bottom_mode == 7) then
+        call assess_fmr_mode7_temporal_head_envelope(indicator_result%head_inf_bound, &
+             self%temporal_indicator_budget, head_envelope)
+        if (head_envelope%status == FMR_MODE7_HEAD_ENVELOPE_OK .and. head_envelope%complete) then
+          normalized_indicator = head_envelope%normalized_error
+        else
+          normalized_indicator = huge(0.0_real64)
+        end if
+      else
+        normalized_indicator = indicator_result%head_inf_bound / self%temporal_indicator_budget
+      end if
       if (ieee_is_finite(normalized_indicator) .and. normalized_indicator >= 0.0_real64) then
         outcome%temporal_certificate_available = .true.
         outcome%temporal_indicator = normalized_indicator
