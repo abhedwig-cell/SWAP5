@@ -62,6 +62,7 @@ MODULE_SRC=(
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
+  src/runtime/mod_macropore_continuation_state.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
   src/runtime/mod_rossfast_d3r_model_binding.f90
