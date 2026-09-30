@@ -1,0 +1,56 @@
+name: F-PE-NLGLOB14Z18 post-event UPPER attribution
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z18-post-event-upper-attribution
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z18*.md'
+      - 'tests/fpe/run_fpe_nlglob14z18_segment.py'
+      - 'tests/fpe/run_fpe_nlglob14z18_segment.sh'
+      - '.github/workflows/f-pe-nlglob14z18.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  segment-a:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { route: HEAD, dt: "0.0000625", key: head-fine }
+          - { route: RUNOFF, dt: "0.0000625", key: runoff-fine }
+    name: segment A ${{ matrix.route }} fine
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z18_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" first "140.0" "z18-${{ matrix.key }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z18-${{ matrix.key }}-checkpoint
+          path: z18-${{ matrix.key }}.json
+          if-no-files-found: error
+
+  segment-b:
+    needs: segment-a
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { route: HEAD, dt: "0.0000625", key: head-fine }
+          - { route: RUNOFF, dt: "0.0000625", key: runoff-fine }
+    name: segment B ${{ matrix.route }} fine probe
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z18-${{ matrix.key }}-checkpoint
+          path: .
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z18_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" resume "262.0" "z18-${{ matrix.key }}.json"
