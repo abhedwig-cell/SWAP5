@@ -86,7 +86,7 @@ contains
          size(self%dynamic_volume_cp) == self%num_nodes
   end function macropore_state_ready
 
-  logical function macropore_state_same_values(self, other) result(same)
+  pure logical function macropore_state_same_values(self, other) result(same)
     class(macropore_continuation_state_t), intent(in) :: self
     type(macropore_continuation_state_t), intent(in) :: other
 
