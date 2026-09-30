@@ -1,0 +1,25 @@
+name: F-PE-NLGLOB14Z12B local fine RUNOFF recovery
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z12b-local-retry-recovery
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z12B*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14z12b*.py'
+      - 'tests/fpe/run_fpe_nlglob14z12b*.py'
+      - 'tests/fpe/run_fpe_nlglob14z12b*.sh'
+      - '.github/workflows/f-pe-nlglob14z12b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  local-recovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z12b.sh
