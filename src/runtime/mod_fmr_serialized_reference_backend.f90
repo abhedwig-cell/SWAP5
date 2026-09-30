@@ -303,6 +303,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
     real(real64) :: macropore_internal_exchange_residual_cm = 0.0_real64
     real(real64) :: macropore_balance_residual_cm = 0.0_real64
+    character(len=48) :: macropore_failure_stage = 'not-run'
     logical :: snow_active = .false.
     logical :: snow_event_prepared = .false.
     integer :: snow_status = 0
@@ -2458,6 +2459,7 @@ contains
         self%last_observation%macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
         self%last_observation%macropore_internal_exchange_residual_cm = macropore_result%internal_exchange_residual_cm
         self%last_observation%macropore_balance_residual_cm = macropore_result%macro_balance_residual_cm
+        self%last_observation%macropore_failure_stage = macropore_result%failure_stage
         if (macropore_result%status == MACRO_RUNTIME_RETRY) then
           solve_result = macropore_result%matrix_result
           solve_result%status = SW_SOLVE_RETRY_ADVISED
