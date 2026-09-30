@@ -1,0 +1,25 @@
+name: F-PE-NLGLOB14Z17E second local retry recovery
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z17e-second-retry-recovery
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z17E*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14z17e*.py'
+      - 'tests/fpe/run_fpe_nlglob14z17e*.py'
+      - 'tests/fpe/run_fpe_nlglob14z17e*.sh'
+      - '.github/workflows/f-pe-nlglob14z17e.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  second-local-retry-recovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z17e.sh
