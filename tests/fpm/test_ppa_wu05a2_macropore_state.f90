@@ -30,18 +30,18 @@ program test_ppa_wu05a2_macropore_state
   candidate%dynamic_volume_cp(1) = -106.0_real64
 
   call expect(accepted%icp_bottom_domain(1) == 2, 'accepted bottom isolated')
-  call expect(accepted%sorptivity(1,1) /= candidate%sorptivity(1,1), 'accepted sorptivity isolated')
-  call expect(accepted%theta_sorption_ref(1,1) /= candidate%theta_sorption_ref(1,1), 'accepted theta isolated')
-  call expect(accepted%absorption_time(1,1) /= candidate%absorption_time(1,1), 'accepted time isolated')
-  call expect(accepted%volume_domain_cp(1,1) /= candidate%volume_domain_cp(1,1), 'accepted volume isolated')
-  call expect(accepted%water_domain_cp(1,1) /= candidate%water_domain_cp(1,1), 'accepted water isolated')
-  call expect(accepted%dynamic_volume_cp(1) /= candidate%dynamic_volume_cp(1), 'accepted dynamic volume isolated')
+  call expect(.not. same_bits(accepted%sorptivity(1,1), candidate%sorptivity(1,1)), 'accepted sorptivity isolated')
+  call expect(.not. same_bits(accepted%theta_sorption_ref(1,1), candidate%theta_sorption_ref(1,1)), 'accepted theta isolated')
+  call expect(.not. same_bits(accepted%absorption_time(1,1), candidate%absorption_time(1,1)), 'accepted time isolated')
+  call expect(.not. same_bits(accepted%volume_domain_cp(1,1), candidate%volume_domain_cp(1,1)), 'accepted volume isolated')
+  call expect(.not. same_bits(accepted%water_domain_cp(1,1), candidate%water_domain_cp(1,1)), 'accepted water isolated')
+  call expect(.not. same_bits(accepted%dynamic_volume_cp(1), candidate%dynamic_volume_cp(1)), 'accepted dynamic volume isolated')
 
   ! Reject: throw candidate away, then retry from the unchanged accepted state.
   call candidate%clear()
   call copy_macropore_continuation_state(accepted, retry, ok)
   call expect(ok .and. retry%same_values(accepted), 'retry starts from accepted')
-  call expect(retry%dynamic_volume_cp(1) == 0.1_real64, 'rejected history absent')
+  call expect(same_bits(retry%dynamic_volume_cp(1), 0.1_real64), 'rejected history absent')
 
   ! Accept: atomically deep-copy a fully prepared candidate.
   retry%sorptivity = retry%sorptivity + 0.5_real64
@@ -53,7 +53,7 @@ program test_ppa_wu05a2_macropore_state
   call copy_macropore_continuation_state(accepted, restored, ok)
   call expect(ok .and. restored%same_values(accepted), 'restart round trip')
   restored%water_domain_cp(1,1) = restored%water_domain_cp(1,1) + 1.0_real64
-  call expect(restored%water_domain_cp(1,1) /= accepted%water_domain_cp(1,1), 'restart copy isolated')
+  call expect(.not. same_bits(restored%water_domain_cp(1,1), accepted%water_domain_cp(1,1)), 'restart copy isolated')
 
   call expect(accepted%payload_bytes() > 0, 'payload accounting')
 
@@ -65,6 +65,14 @@ program test_ppa_wu05a2_macropore_state
   print '(a)', 'PPA_WU05A2_MACROPORE_STATE_TEST PASS'
 
 contains
+  pure logical function same_bits(left, right) result(same)
+    real(real64), intent(in) :: left, right
+    integer(kind=8) :: left_bits, right_bits
+    left_bits = transfer(left, left_bits)
+    right_bits = transfer(right, right_bits)
+    same = left_bits == right_bits
+  end function same_bits
+
   subroutine expect(condition, label)
     logical, intent(in) :: condition
     character(len=*), intent(in) :: label
