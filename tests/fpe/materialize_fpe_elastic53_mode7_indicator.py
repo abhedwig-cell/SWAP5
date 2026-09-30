@@ -132,6 +132,9 @@ def main():
     oracle=oracle.replace("request%boundary%top_flux = q","request%boundary%top_flux = qeq+q")
     oracle=oracle.replace("request%boundary%bottom_flux = q","request%boundary%bottom_flux = 0.0_real64")
     oracle=oracle.replace(
+        "  call require(wrong_dirichlet_separations > 0, 'oracle distinguishes Neumann from Dirichlet bottom stiffness')\n",
+        "")
+    oracle=oracle.replace(
         """    if (q == 0.0_real64) then
       call require(indicator%head_inf_bound == 0.0_real64, 'stationary mode7 Binf exactly zero')
 """,
