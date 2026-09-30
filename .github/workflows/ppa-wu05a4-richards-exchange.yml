@@ -1,0 +1,20 @@
+name: PPA-WU05-A4 R2 Richards exchange probe
+
+on:
+  push:
+    branches:
+      - research/ppa-wu05-a4-r2-coupled-single-column
+    paths:
+      - 'research/macropore/mod_ppa_wu05a4_fixed_exchange_provider.f90'
+      - 'tests/fpm/test_ppa_wu05a4_richards_exchange.f90'
+      - 'tests/fpm/run_ppa_wu05a4_richards_exchange.sh'
+      - '.github/workflows/ppa-wu05a4-richards-exchange.yml'
+  workflow_dispatch:
+
+jobs:
+  richards-exchange:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run focused A4 Richards probe
+        run: bash tests/fpm/run_ppa_wu05a4_richards_exchange.sh
