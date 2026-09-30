@@ -246,7 +246,7 @@ contains
       return
     end if
 
-    call prepare_standard_sorptivity_history_request(history_request,geometry,candidate_view,dt,history_local,ok)
+    call prepare_standard_sorptivity_history_request(history_request,geometry,candidate_view,matrix_view,dt,history_local,ok)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
       return
