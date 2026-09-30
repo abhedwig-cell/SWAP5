@@ -44,7 +44,7 @@ for route,dt,horizon in fixtures:
     elif complete: cls="QUALIFIED_Z17B_LOCAL_RETRY_RECOVERY"
     else: cls="NLGLOB14Z17B_LOCAL_RECOVERY_HARD_FAILURE"
     rows.append({"route":route,"dt":dt,"horizon":horizon,"classification":cls,"nominal_retry_count":len(nominal),"nominal_retry_step":int(nominal[0]["STEP"]) if nominal else None,"rollback_ok":rollback_ok,"half_count":len(hs),"first_ok":first_ok,"second_ok":second_ok,"window_ok":window_ok,"recurrent_retry_count":len(recurrent),"complete":complete,"terminal_reason":res.get("TERMINAL_REASON") if res else None,"solver_status":int(res["SOLVER_STATUS"]) if res else None,"finite":finite,"mass_ok":mass,"max_ledger":ma,"cum_ledger":cu,"process_ok":cp.returncode==0})
-agg="QUALIFIED_Z17B_THREE_FIXTURE_LOCAL_RECOVERY" if all(x["classification"]=="QUALIFIED_Z14B_LOCAL_RETRY_RECOVERY" for x in rows) else "NLGLOB14Z17B_MIXED_LOCAL_RECOVERY"
+agg="QUALIFIED_Z17B_THREE_FIXTURE_LOCAL_RECOVERY" if all(x["classification"]=="QUALIFIED_Z17B_LOCAL_RETRY_RECOVERY" for x in rows) else "NLGLOB14Z17B_MIXED_LOCAL_RECOVERY"
 print("F_PE_NLGLOB14Z17B_RECORDS="+json.dumps(rows,separators=(",",":"),sort_keys=True))
-print("F_PE_NLGLOB14Z17B_SUMMARY="+json.dumps({"classification":agg,"case_count":len(rows),"qualified_cases":sum(x["classification"]=="QUALIFIED_Z14B_LOCAL_RETRY_RECOVERY" for x in rows)},separators=(",",":"),sort_keys=True))
+print("F_PE_NLGLOB14Z17B_SUMMARY="+json.dumps({"classification":agg,"case_count":len(rows),"qualified_cases":sum(x["classification"]=="QUALIFIED_Z17B_LOCAL_RETRY_RECOVERY" for x in rows)},separators=(",",":"),sort_keys=True))
 print("F_PE_NLGLOB14Z17B=PASS")
