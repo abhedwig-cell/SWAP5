@@ -16,7 +16,7 @@ program test_ppa_wu05a4_richards_trajectory
   real(real64), parameter :: dt=0.05_real64,tol=1.0e-12_real64
   real(real64), parameter :: recharge=0.05_real64,sorp_max=1.0_real64
   real(real64), parameter :: omega=0.5_real64
-  integer, parameter :: strict_max=20, practical_max=3
+  integer, parameter :: strict_max=50, practical_max=3
   real(real64), parameter :: strict_tol=1.0e-8_real64, practical_tol=1.0e-3_real64
 
   type(soil_water_parameter_set_t), target :: params
@@ -150,8 +150,10 @@ contains
     type(soil_water_solve_result_t)::predictor,result
     real(real64)::theta_iter,raw_rate,rate,prev_rate,rel
     integer::iter
+    logical::outer_converged
 
     ok=.false.
+    outer_converged=.false.
     request%base_state=state
     exchange%source_rate=0.0_real64
     call solver%solve(request,workspace,predictor)
@@ -178,14 +180,18 @@ contains
         rel=huge(1.0_real64)
       end if
       theta_iter=result%candidate_state%water_content(node)
-      if(prev_rate>0.0_real64 .and. rel<outer_tol)exit
+      if(prev_rate>0.0_real64 .and. rel<outer_tol)then
+        outer_converged=.true.
+        exit
+      end if
       prev_rate=rate
     end do
 
+    if(max_outer==strict_max .and. .not.outer_converged)return
     state=result%candidate_state
     last_bottom_flux=result%bottom_flux
     q_final=rate
-    iters=iter
+    iters=min(iter,max_outer)
     ok=.true.
   end subroutine coupled_step
 
