@@ -1,4 +1,4 @@
-name: F-PE-ELASTIC64 total-floor aggregation
+name: F-PE-ELASTIC64 cancellation-aware total floor
 
 concurrency:
   group: f-pe-elastic64-${{ github.ref }}
@@ -7,14 +7,14 @@ concurrency:
 on:
   push:
     branches:
-      - research/f-pe-elastic64-total-floor-aggregation
+      - research/f-pe-elastic64-cancellation-aware-total-floor
     paths:
-      - 'tests/fpe/prepare_fpe_elastic64.py'
+      - 'tests/fpe/prepare_fpe_elastic63.py'
       - 'tests/fpe/run_fpe_elastic64.sh'
       - 'tests/fpe/prepare_fpe_elastic55.py'
       - 'tests/fpe/materialize_fpe_elastic53_mode7_indicator.py'
       - 'tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py'
-      - 'docs/performance/F-PE-ELASTIC64_TOTAL_FLOOR_AGGREGATION_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-ELASTIC64_CANCELLATION_AWARE_TOTAL_FLOOR_PREREGISTRATION.md'
       - '.github/workflows/f-pe-elastic64.yml'
   workflow_dispatch:
 
@@ -38,5 +38,5 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: abhedwig-cell/SWAP5
           run-id: 36550782840
-      - name: Run total-floor aggregation study
+      - name: Run cancellation-aware total-floor study
         run: bash tests/fpe/run_fpe_elastic64.sh "$RUNNER_TEMP/elastic64-pdok"
