@@ -1,0 +1,22 @@
+name: PPA-WU05-A7 production promotion
+
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a7-production-shaping
+    paths:
+      - 'src/process/macropore/**'
+      - 'src/runtime/mod_ppa_wu05a5_macropore_restart.f90'
+      - 'tests/fpm/test_ppa_wu05a5_*.f90'
+      - 'tests/fpm/test_ppa_wu05a6_*.f90'
+      - 'tests/fpm/run_ppa_wu05a7_production_promotion.sh'
+      - '.github/workflows/ppa-wu05a7-production-promotion.yml'
+  workflow_dispatch:
+
+jobs:
+  promotion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run promoted macropore qualification
+        run: bash tests/fpm/run_ppa_wu05a7_production_promotion.sh
