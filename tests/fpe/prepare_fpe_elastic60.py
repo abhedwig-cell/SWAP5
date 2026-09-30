@@ -383,6 +383,7 @@ contains
 
   subroutine require_state_identity(a,b)
     class(transaction_state_t),allocatable,intent(in)::a,b
+    integer :: k
     select type(x=>a);type is(el60_state_t)
       select type(y=>b);type is(el60_state_t)
         call req(all(transfer(x%h,[(0_int64,k=1,N)])==transfer(y%h,[(0_int64,k=1,N)])),'head identity')
