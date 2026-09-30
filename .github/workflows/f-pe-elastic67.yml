@@ -1,0 +1,30 @@
+name: F-PE-ELASTIC67 negative N4 postmortem
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic67-negative-n4-postmortem
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen BRO artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic67-pdok
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+          github-token: ${{ github.token }}
+      - name: Run N4 postmortem
+        run: python3 tests/fpe/run_fpe_elastic67.py --root . --artifact-dir "$RUNNER_TEMP/elastic67-pdok"
