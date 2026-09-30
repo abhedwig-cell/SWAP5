@@ -4,7 +4,7 @@
   "title": "R2 coupled single-column prototype",
   "branch": "research/ppa-wu05-a4-r2-coupled-single-column",
   "baseline": "8a3e4f4fe47ca211629a1ac297f692bc9b699320",
-  "status": "ACTIVE_DYNAMIC_RICHARDS_PC_PASS",
+  "status": "ACTIVE_RICHARDS_PICARD_CHARACTERIZED",
   "production_activation": false,
   "richards_coupling": "DYNAMIC_PREDICTOR_CORRECTOR_RESEARCH_PASS",
   "gates": {
@@ -16,7 +16,7 @@
     "e7_interface": "PASS_LOCAL",
     "e9_extreme": "PASS_LOCAL"
   },
-  "next_action": "Characterize bounded multi-corrector Picard convergence before selecting strict vs practical R2 coupling policy.",
+  "next_action": "Run broad local reduced coupling-strength sweep; select adversarial regimes for a small real-Richards CI matrix before freezing strict/practical corrector policy.",
   "richards_probe": {
     "head": "0da844cfac7d0159f3ed7d72b142a7af37846d1c",
     "run_id": 36764661597,
@@ -28,5 +28,26 @@
     "head": "d366ad26035fbe3f566092af35d7c86d3a7eef41",
     "fresh_relative_exchange_change_after_first_corrector": 0.031138912963963632,
     "aged_relative_exchange_change_after_first_corrector": 0.0006121582947547024
+  },
+  "picard_characterization": {
+    "run_id": 36765412541,
+    "head": "88f322a98ae9e3f2f8a6346a9eb50ba53e8bbb87",
+    "fresh_rates": [
+      8.381378072635522,
+      8.120391070313651,
+      8.128768471960642,
+      8.128499820455954,
+      8.128508435993787,
+      8.128508159697473
+    ],
+    "aged_rates": [
+      0.2064276695708401,
+      0.20630130316064543,
+      0.20630138057255015,
+      0.20630138052512778,
+      0.2063013805251568,
+      0.20630138052515676
+    ],
+    "conclusion": "FAST_OUTER_FIXED_POINT_CONVERGENCE_TESTED_CASES"
   }
 }
