@@ -4,17 +4,17 @@
   "title": "R2 coupled single-column prototype",
   "branch": "research/ppa-wu05-a4-r2-coupled-single-column",
   "baseline": "8a3e4f4fe47ca211629a1ac297f692bc9b699320",
-  "status": "ACTIVE_PRESCRIBED_STATE_G1_G4_PASS",
+  "status": "QUALIFIED_R2_PRESCRIBED_STATE_SINGLE_COLUMN_READY_FOR_RICHARDS_COUPLING",
   "production_activation": false,
-  "richards_coupling": "HELD",
+  "richards_coupling": "AUTHORIZED_RESEARCH_ONLY",
   "gates": {
     "mass": "PASS_LOCAL",
     "candidate_isolation": "PASS_LOCAL",
     "reject_retry": "PASS_LOCAL",
     "e3_memory": "PASS_LOCAL",
-    "e4_crack": "PENDING",
-    "e7_interface": "PENDING",
-    "e9_extreme": "PENDING"
+    "e4_crack": "PASS_LOCAL",
+    "e7_interface": "PASS_LOCAL",
+    "e9_extreme": "PASS_LOCAL"
   },
-  "next_action": "Extend local R2 candidate harness with E4 crack-history, E7 interface reconstruction, and E9 extreme-input regressions."
+  "next_action": "Open minimal real-Richards coupling slice: one-step E2/E3 cases, internal exchange applied transactionally, no timestep-policy changes."
 }
