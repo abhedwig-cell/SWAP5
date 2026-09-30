@@ -8,7 +8,7 @@ program test_ppa_wu05a6_saturated_sources
   type(saturated_sources_result_t)::result
 
   call setup(interflow)
-  matrix=interflow
+  call setup(matrix)
 
   interflow%matrix_head=[20.0_real64]
   matrix%matrix_head=[2.0_real64]
