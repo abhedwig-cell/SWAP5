@@ -76,10 +76,17 @@ contains
     maxerr=maxval(abs(x-truth))
     maxres=0.0_real64
     do j=1,n
-       maxres=max(maxres,abs(b(j)*x(j) + merge(a(j)*x(j-1),0.0_real64,j>1) + &
-            merge(c(j)*x(j+1),0.0_real64,j<n) - rhs(j)))
+       maxres=max(maxres,abs(row_residual(j,n,a,b,c,x,rhs)))
     end do
     work=n+(n-1)
     deallocate(a,b,c,rhs,x,truth,gamma)
   end subroutine solve_case
+
+  pure real(real64) function row_residual(j,n,a,b,c,x,rhs) result(r)
+    integer,intent(in)::j,n
+    real(real64),intent(in)::a(:),b(:),c(:),x(:),rhs(:)
+    r=b(j)*x(j)-rhs(j)
+    if (j>1) r=r+a(j)*x(j-1)
+    if (j<n) r=r+c(j)*x(j+1)
+  end function row_residual
 end program test_fpe_nlglob14z28_variable_dimension
