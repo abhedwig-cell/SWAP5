@@ -10,8 +10,8 @@ trap 'rm -rf "$BUILD"' EXIT
 gfortran -std=f2008 -O3   src/runtime/mod_timestep_numerical_profile.f90   tests/fpe/test_fpe_nlglob14z43_profile.f90   -o "$BUILD/z43c_profile"
 "$BUILD/z43c_profile"
 
-python3 tests/fpe/materialize_fpe_nlglob14z43e_maxit16.py   --source tests/fpe/test_fpe_nlglob14z43a_reference_solvability.f90   --output "$BUILD/preflight_maxit16.f90"
-python3 tests/fpe/materialize_fpe_nlglob14z43e_maxit16.py   --source tests/fpe/test_fpe_nlglob14z43_admission_holdout.f90   --output "$BUILD/holdout_maxit16.f90"
+python3 tests/fpe/materialize_fpe_nlglob14z43c_maxit16.py   --source tests/fpe/test_fpe_nlglob14z43a_reference_solvability.f90   --output "$BUILD/preflight_maxit16.f90"
+python3 tests/fpe/materialize_fpe_nlglob14z43c_maxit16.py   --source tests/fpe/test_fpe_nlglob14z43_admission_holdout.f90   --output "$BUILD/holdout_maxit16.f90"
 
 compile_n() {
   local n="$1"
