@@ -23,7 +23,10 @@ when any adjacent retained pair increased.
 Therefore:
 - ELASTIC55 reported 15 violating eligible sequences;
 - the first ELASTIC56 harness reported 51 increasing transitions across 18
-  sequences.
+  sequences;
+- three of those 18 sequences had only two retained points and were outside the
+  ELASTIC55 eligibility definition;
+- the 15 eligible violating sequences contain 48 increasing transitions.
 
 The difference is a replay-definition mismatch, not a physical result.
 
@@ -50,6 +53,7 @@ is changed.
 
 The corrected harness must reproduce:
 - 170 eligible sequences;
-- 15 violating eligible sequences.
+- 15 violating eligible sequences;
+- 48 increasing transitions within those 15 eligible sequences.
 
 If it does not, ELASTIC56 is not qualified.
