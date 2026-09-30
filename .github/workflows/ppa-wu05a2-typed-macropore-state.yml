@@ -1,0 +1,23 @@
+name: PPA-WU05-A2 typed macropore state
+
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a2-typed-macropore-state
+  pull_request:
+    paths:
+      - 'src/runtime/mod_macropore_continuation_state.f90'
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'tests/fpm/test_ppa_wu05a2_macropore_state.f90'
+      - 'tests/fpm/run_ppa_wu05a2_qualification.sh'
+      - '.github/workflows/ppa-wu05a2-typed-macropore-state.yml'
+
+jobs:
+  state-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run A2 state gate
+        run: bash tests/fpm/run_ppa_wu05a2_qualification.sh
