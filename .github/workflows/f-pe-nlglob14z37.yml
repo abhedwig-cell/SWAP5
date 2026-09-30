@@ -1,0 +1,28 @@
+name: F-PE-NLGLOB14Z37 compiled manager timing
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z37-fortran-manager-timing
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z37*.md'
+      - 'src/runtime/mod_moving_interface_manager.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_reference_linear_solver.f90'
+      - 'src/solver/mod_reference_richards_workspace.f90'
+      - 'tests/fpe/test_fpe_nlglob14z37_fortran_timing.f90'
+      - 'tests/fpe/run_fpe_nlglob14z37.sh'
+      - '.github/workflows/f-pe-nlglob14z37.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compiled-timing:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z37.sh
