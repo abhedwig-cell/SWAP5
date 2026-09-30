@@ -94,13 +94,18 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
         raise SystemExit("F_PE_ELASTIC58_FAIL indicator block anchors")
     s=s[:start]+s[end:]
 
+    # Add independent mass-ledger scalars to the generated program.
+    s=s.replace(
+        "  real(real64)::dh_inf,dtheta_inf,dpond,dgwl,storage_full,storage_half\n",
+        "  real(real64)::dh_inf,dtheta_inf,dpond,dgwl,storage_full,storage_half,storage0,storage_oracle,candidate_mass,oracle_mass\n",1)
+
     # Replace the full-vs-two-half experiment with candidate-vs-32-substep oracle.
     start=s.find("  call bind_b110_default_mvg_provider(constitutive_half")
     end=s.find("  write(*,'(*(g0))')'ELASTIC55_BANK",start)
     if start<0 or end<0:
         raise SystemExit("F_PE_ELASTIC58_FAIL half-step block anchors")
 
-    replacement=r"""  call run_refined_oracle(p,heads,water,h0,qeq+delta,qeq,dt,res_half2,all_converged,storage_half)
+    replacement=r"""  call run_refined_oracle(p,heads,water,h0,qeq+delta,qeq,dt,res_half2,all_converged,storage_half,storage_oracle)
 
   dh_inf=0.0_real64;dtheta_inf=0.0_real64;dpond=0.0_real64;dgwl=0.0_real64
   storage_full=0.0_real64;ih=0;itheta=0;exact_identity=.false.
@@ -128,11 +133,15 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
     if out_start<0 or out_end<0:
         raise SystemExit("F_PE_ELASTIC58_FAIL output anchors")
     out_end=s.find("\n",out_end)+1
-    output=r"""  write(*,'(*(g0))')'ELASTIC58_ORACLE|regime=',trim(regime),'|h0=',h0,'|delta=',delta,'|dt=',dt, &
+    output=r"""  storage_full=sum(res_full%candidate_state%water_content*p%dz)
+  storage0=sum(water*p%dz)
+  candidate_mass=(storage_full-storage0)-((-qeq-delta)*dt+res_full%bottom_flux*dt)
+  oracle_mass=(storage_oracle-storage0)-((-qeq-delta)*dt+storage_half)
+  write(*,'(*(g0))')'ELASTIC58_ORACLE|regime=',trim(regime),'|h0=',h0,'|delta=',delta,'|dt=',dt, &
        '|candidate_status=',res_full%status,'|oracle_complete=',all_converged,'|dh_inf=',dh_inf, &
        '|dtheta_inf=',dtheta_inf,'|candidate_qbot=',res_full%bottom_flux,'|oracle_qbot=',res_half2%bottom_flux, &
        '|candidate_exchange=',res_full%bottom_flux*dt,'|oracle_exchange=',storage_half, &
-       '|candidate_mass=',res_full%unrounded_mass_balance_residual
+       '|candidate_mass=',candidate_mass,'|oracle_mass=',oracle_mass
   write(*,'(A)')'F_PE_ELASTIC58_ORACLE_EXEC=PASS'
 """
     s=s[:out_start]+output+s[out_end:]
@@ -141,12 +150,12 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
     anchor="  subroutine init_base(q,zv,dzv)\n"
     idx=s.find(anchor)
     if idx<0: raise SystemExit("F_PE_ELASTIC58_FAIL init_base insertion anchor")
-    routine=r"""  subroutine run_refined_oracle(q,hinit,winit,forcing_top_head,qtop,qbot,interval,result,ok,exchange)
+    routine=r"""  subroutine run_refined_oracle(q,hinit,winit,forcing_top_head,qtop,qbot,interval,result,ok,exchange,storage_end)
     type(fmr_b110_physical_parameters_t),intent(in)::q
     real(real64),intent(in)::hinit(N),winit(N),forcing_top_head,qtop,qbot,interval
     type(soil_water_solve_result_t),intent(out)::result
     logical,intent(out)::ok
-    real(real64),intent(out)::exchange
+    real(real64),intent(out)::exchange,storage_end
     type(soil_water_parameter_set_t),target::s
     type(reference_richards_legacy_solver_t)::solver
     type(reference_richards_legacy_workspace_t)::ws
@@ -160,7 +169,7 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
     real(real64)::subdt
     integer::j
 
-    ok=.false.;exchange=0.0_real64
+    ok=.false.;exchange=0.0_real64;storage_end=0.0_real64
     call init_soil(s,q)
     d=0.0_real64;si=0.0_real64;rt=0.0_real64
     call bind_b110_source_sink_provider(src,d,si,rt)
@@ -184,6 +193,7 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
       current=step_result%candidate_state
       result=step_result
     end do
+    storage_end=sum(current%water_content*q%dz)
     ok=.true.
   end subroutine
 
