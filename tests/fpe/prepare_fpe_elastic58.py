@@ -107,7 +107,7 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
     # Add independent mass-ledger scalars to the generated program.
     s=s.replace(
         "  real(real64)::dh_inf,dtheta_inf,dpond,dgwl,storage_full,storage_half\n",
-        "  real(real64)::dh_inf,dtheta_inf,dpond,dgwl,storage_full,storage_half,storage0,storage_oracle,candidate_mass,oracle_mass\n  integer::oracle_fail_step,oracle_last_success,oracle_fail_status,oracle_nonlinear,oracle_backtracking,oracle_jacobians,oracle_linear,oracle_headcalc,oracle_internal_retries\n  real(real64)::oracle_last_hmin,oracle_last_hmax\n",1)
+        "  real(real64)::dh_inf,dtheta_inf,dpond,dgwl,storage_full,storage_half,storage0,storage_oracle,candidate_mass,oracle_mass\n  integer::oracle_fail_step,oracle_last_success,oracle_fail_status,oracle_nonlinear,oracle_backtracking,oracle_jacobians,oracle_linear,oracle_internal_retries\n  real(real64)::oracle_last_hmin,oracle_last_hmax\n",1)
 
     # Replace the full-vs-two-half experiment with candidate-vs-32-substep oracle.
     start=s.find("  call bind_b110_default_mvg_provider(constitutive_half")
@@ -117,7 +117,7 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
 
     replacement=r"""  call run_refined_oracle(p,heads,water,h0,qeq+delta,qeq,dt,res_half2,all_converged,storage_half,storage_oracle, &
        oracle_fail_step,oracle_last_success,oracle_fail_status,oracle_nonlinear,oracle_backtracking,oracle_jacobians, &
-       oracle_linear,oracle_headcalc,oracle_internal_retries,oracle_last_hmin,oracle_last_hmax)
+       oracle_linear,oracle_internal_retries,oracle_last_hmin,oracle_last_hmax)
 
   dh_inf=0.0_real64;dtheta_inf=0.0_real64;dpond=0.0_real64;dgwl=0.0_real64
   storage_full=0.0_real64;ih=0;itheta=0;exact_identity=.false.
@@ -156,7 +156,7 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
        '|candidate_mass=',candidate_mass,'|oracle_mass=',oracle_mass, &
        '|fail_step=',oracle_fail_step,'|last_success=',oracle_last_success,'|fail_status=',oracle_fail_status, &
        '|fail_nonlinear=',oracle_nonlinear,'|fail_backtracking=',oracle_backtracking,'|fail_jacobians=',oracle_jacobians, &
-       '|fail_linear=',oracle_linear,'|fail_headcalc=',oracle_headcalc,'|fail_internal_retries=',oracle_internal_retries, &
+       '|fail_linear=',oracle_linear,'|fail_headcalc=','|fail_internal_retries=',oracle_internal_retries, &
        '|last_hmin=',oracle_last_hmin,'|last_hmax=',oracle_last_hmax
   write(*,'(A)')'F_PE_ELASTIC58_ORACLE_EXEC=PASS'
 """
@@ -167,14 +167,14 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
     idx=s.find(anchor)
     if idx<0: raise SystemExit("F_PE_ELASTIC58_FAIL init_base insertion anchor")
     routine=r"""  subroutine run_refined_oracle(q,hinit,winit,forcing_top_head,qtop,qbot,interval,result,ok,exchange,storage_end, &
-       fail_step,last_success,fail_status,fail_nonlinear,fail_backtracking,fail_jacobians,fail_linear,fail_headcalc, &
+       fail_step,last_success,fail_status,fail_nonlinear,fail_backtracking,fail_jacobians,fail_linear, &
        fail_internal_retries,last_hmin,last_hmax)
     type(fmr_b110_physical_parameters_t),intent(in)::q
     real(real64),intent(in)::hinit(N),winit(N),forcing_top_head,qtop,qbot,interval
     type(soil_water_solve_result_t),intent(out)::result
     logical,intent(out)::ok
     real(real64),intent(out)::exchange,storage_end,last_hmin,last_hmax
-    integer,intent(out)::fail_step,last_success,fail_status,fail_nonlinear,fail_backtracking,fail_jacobians,fail_linear,fail_headcalc,fail_internal_retries
+    integer,intent(out)::fail_step,last_success,fail_status,fail_nonlinear,fail_backtracking,fail_jacobians,fail_linear,fail_internal_retries
     type(soil_water_parameter_set_t),target::s
     type(reference_richards_legacy_solver_t)::solver
     type(reference_richards_legacy_workspace_t)::ws
@@ -216,7 +216,6 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
         fail_backtracking=step_result%diagnostics%backtracking_attempts
         fail_jacobians=step_result%diagnostics%jacobian_builds
         fail_linear=step_result%diagnostics%linear_solves
-        fail_headcalc=step_result%diagnostics%headcalc_calls
         fail_internal_retries=step_result%diagnostics%internal_retries
         last_hmin=minval(current%pressure_head);last_hmax=maxval(current%pressure_head)
         return
