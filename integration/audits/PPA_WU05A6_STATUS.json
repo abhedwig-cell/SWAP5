@@ -5,20 +5,25 @@
   "branch": "research/ppa-wu05-a6-source-rate-migration",
   "baseline": "8ff58acaf8049042b662aeb56708ddd9e0fc9321",
   "canonical_source_dependency_reconciled_through": "ddd218085afd363d22ce0b632d3ac893c7c9f40b",
-  "status": "ACTIVE_R1B_DARCY_SORPTIVITY_COMPETITION",
+  "status": "ACTIVE_R2_SATURATED_EXCHANGE",
   "production_activation": false,
   "phases": {
-    "unsaturated_absorption": "R1A_PASS_R1B_IN_PROGRESS",
+    "unsaturated_absorption": "PASS",
     "saturated_exchange": "PENDING",
     "inter_domain_exchange": "PENDING",
     "rapid_drainage": "PENDING",
     "top_limitation_redistribution": "PENDING",
     "accepted_vertical_flux": "PENDING"
   },
-  "next_action": "Implement and qualify exact B1.11 Darcy-versus-sorptivity winner selection for unsaturated matrix exchange.",
+  "next_action": "Qualify typed saturated exchange evaluator, then migrate inter-domain saturated exchange.",
   "r1a": {
     "run_id": 36772703007,
     "head": "1a781e87edf3c0739ad6bca458e957d5a0612ace",
+    "conclusion": "PASS"
+  },
+  "r1b": {
+    "run_id": 36772977070,
+    "head": "7da4b2bf2393799144ba188cd8d767c026068d35",
     "conclusion": "PASS"
   }
 }
