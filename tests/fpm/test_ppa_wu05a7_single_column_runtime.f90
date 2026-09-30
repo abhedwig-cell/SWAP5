@@ -130,7 +130,9 @@ program test_ppa_wu05a7_single_column_runtime
   if(.not.geometry%valid)error stop 'A7 runtime geometry'
   macro%icp_bottom_domain=geometry%bottom_domain
   macro%volume_domain_cp=geometry%volume_domain_cp
-  macro%water_domain_cp=0.4_real64*geometry%volume_domain_cp
+  macro%water_domain_cp=0.0_real64
+  macro%water_domain_cp(1,3)=0.5_real64
+  macro%water_domain_cp(1,2)=0.1_real64
   macro_snapshot=macro
 
   call setup_rate_template(macro,geometry,rate_template)
