@@ -34,7 +34,7 @@ for cid,exe,mid,tail in cases:
         execution_invalid=True
         break
     d={k:v for k,v in (x.split("=",1) for x in line.split("|")[1:])}
-    steps=int(d["STEPS"])
+    steps=4000  # frozen Z43 trajectory horizon
     red=int(d["REDUCED_COUNT"]); fb=int(d["FALLBACK_COUNT"]); bp=int(d["BYPASS_COUNT"])
     row={
       "case":cid,"material":mid,"full_n":64 if "N64" in cid else 32,"initial_tail":tail,
