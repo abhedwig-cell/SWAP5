@@ -163,6 +163,36 @@ Qualified claim:
 The `0.01 cm` route is therefore **not falsified** in the tested scope, but it
 is also **not completely independently qualified 96/96**.
 
+## Practical interpretation of the 0.01 cm benchmark
+
+The `0.01 cm` head bound used in this line is inherited from the
+TEMPORAL04 P1 research envelope. That preregistration explicitly states that
+its bounds were intentionally tighter than the broader practical-mode error
+tolerance used elsewhere in SWAP5 performance work.
+
+Therefore this closure treats `0.01 cm` as a deliberately strict research
+benchmark, not as a physically derived critical threshold and not as an
+application requirement.
+
+The purpose of carrying that strict benchmark through the ELASTIC physical
+budget work was to test whether the admitted mode-7 certificate could remain
+well bounded against an independent Reference construction. The result is
+strong enough for that research purpose: 84/96 accepted cases are
+independently qualified with no physical-envelope failures, while the remaining
+12 are sharply localized Reference-solvability gaps with identified
+solver-local mechanisms and no demonstrated physical exceedance.
+
+Further effort to force unchanged-Reference coverage from 87.5% to 100% is not
+required for closure of this research line. Doing so would answer a narrower
+numerical-oracle question, not the practical application-policy question.
+
+The practical successor should therefore be separated from oracle completion:
+select and qualify an application-owned temporal head budget for the intended
+MultiSWAP/MODFLOW operating regime using application-relevant accuracy,
+mass-conservation and runtime criteria. The selected application value may be
+looser than `0.01 cm`, but must be preregistered and validated rather than
+derived by post-hoc widening of this research envelope.
+
 ## Production-admission decision
 
 No new production default or application-policy admission is authorized by this
