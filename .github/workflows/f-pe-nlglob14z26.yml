@@ -3,7 +3,7 @@ name: F-PE-NLGLOB14Z26 event-window nonlinear work characterization
 on:
   push:
     branches:
-      - research/f-pe-nlglob14z26-post14-bidirectional
+      - research/f-pe-nlglob14z26-event-window-work
     paths:
       - 'docs/performance/F-PE-NLGLOB14Z26*.md'
       - 'tests/fpe/run_fpe_nlglob14z26_segment.py'
