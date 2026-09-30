@@ -6,6 +6,8 @@ on:
       - research/ppa-wu05-a6-source-rate-migration
     paths:
       - 'research/macropore/mod_ppa_wu05a6_sorptivity_rate.f90'
+      - 'research/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90'
+      - 'tests/fpm/test_ppa_wu05a6_unsat_absorption_rate.f90'
       - 'tests/fpm/test_ppa_wu05a6_sorptivity_rate.f90'
       - 'tests/fpm/run_ppa_wu05a6_r1a.sh'
       - '.github/workflows/ppa-wu05a6-r1a.yml'
