@@ -24,10 +24,11 @@ program test_ppa_wu05a4_richards_predictor_corrector
   type(reference_richards_legacy_solver_t) :: solver
   type(reference_richards_legacy_workspace_t) :: workspace
   type(soil_water_solve_request_t) :: request
-  type(soil_water_solve_result_t) :: predictor,fresh,aged
+  type(soil_water_solve_result_t) :: predictor,fresh,aged,fresh2,aged2
   real(real64), allocatable :: cofgen(:,:)
   real(real64) :: heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
-  real(real64) :: fresh_amount,aged_amount,fresh_rate,aged_rate
+  real(real64) :: fresh_amount,aged_amount,fresh_rate,aged_rate,fresh_amount2,aged_amount2
+  real(real64) :: fresh_rate2,aged_rate2,fresh_rel_change,aged_rel_change
   real(real64) :: matrix0,matrix_fresh,matrix_aged
   real(real64) :: macro_fresh,macro_aged,combined_fresh,combined_aged
   integer :: i,node
@@ -124,7 +125,34 @@ program test_ppa_wu05a4_richards_predictor_corrector
   if(abs(fresh%integrated_mass_balance_residual_cm)>1.0e-10_real64) error stop 'A4 fresh solver residual'
   if(abs(aged%integrated_mass_balance_residual_cm)>1.0e-10_real64) error stop 'A4 aged solver residual'
 
+  ! Characterize one additional Picard-like corrector using the first corrector
+  ! matrix state but the same accepted macropore history for this physical step.
+  fresh_amount2=sorptivity_amount(fresh%candidate_state%water_content(node),0.0_real64,0.0_real64)
+  aged_amount2=sorptivity_amount(aged%candidate_state%water_content(node),0.5_real64,0.47_real64)
+  fresh_amount2=min(fresh_amount2,macro_water0)
+  aged_amount2=min(aged_amount2,macro_water0)
+  fresh_rate2=fresh_amount2/dt
+  aged_rate2=aged_amount2/dt
+  fresh_rel_change=abs(fresh_rate2-fresh_rate)/max(abs(fresh_rate),1.0e-30_real64)
+  aged_rel_change=abs(aged_rate2-aged_rate)/max(abs(aged_rate),1.0e-30_real64)
+
+  exchange%source_rate=0.0_real64
+  exchange%source_rate(node)=fresh_rate2
+  call solver%solve(request,workspace,fresh2)
+  if(fresh2%status/=SW_SOLVE_CONVERGED) error stop 'A4 fresh second corrector did not converge'
+  exchange%source_rate=0.0_real64
+  exchange%source_rate(node)=aged_rate2
+  call solver%solve(request,workspace,aged2)
+  if(aged2%status/=SW_SOLVE_CONVERGED) error stop 'A4 aged second corrector did not converge'
+
+  if(fresh_rate2>fresh_rate*(1.0_real64+1.0e-10_real64)) &
+       error stop 'A4 fresh exchange increased after matrix wetting'
+  if(aged_rate2>aged_rate*(1.0_real64+1.0e-10_real64)) &
+       error stop 'A4 aged exchange increased after matrix wetting'
+
   write(*,'(*(g0))') 'PPA_WU05A4_PC_DIAG|FRESH_RATE=',fresh_rate,'|AGED_RATE=',aged_rate, &
+       '|FRESH_RATE2=',fresh_rate2,'|AGED_RATE2=',aged_rate2, &
+       '|FRESH_REL_CHANGE=',fresh_rel_change,'|AGED_REL_CHANGE=',aged_rel_change, &
        '|FRESH_MATRIX_GAIN=',matrix_fresh-matrix0,'|AGED_MATRIX_GAIN=',matrix_aged-matrix0, &
        '|FRESH_QBOT=',fresh%bottom_flux,'|AGED_QBOT=',aged%bottom_flux
   print '(a)', 'PPA_WU05A4_RICHARDS_PREDICTOR_CORRECTOR=PASS'
