@@ -11,6 +11,7 @@ on:
       - 'tests/fpm/test_ppa_wu05a4_richards_picard.f90'
       - 'tests/fpm/test_ppa_wu05a4_richards_adversarial_picard.f90'
       - 'tests/fpm/test_ppa_wu05a4_richards_stabilization.f90'
+      - 'tests/fpm/test_ppa_wu05a4_richards_trajectory.f90'
       - 'tests/fpm/run_ppa_wu05a4_richards_exchange.sh'
       - '.github/workflows/ppa-wu05a4-richards-exchange.yml'
   workflow_dispatch:
