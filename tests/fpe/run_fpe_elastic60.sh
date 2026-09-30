@@ -18,7 +18,7 @@ python3 tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py   --source tests/f
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
-  python3 tests/rom/compile_f_rom0_fortran_closure.py     --root "$ROOT" --stub "$BUILD/stub.f90" --target "$BUILD/test.f90"     --external-source "$BUILD/mod_fpe_elastic53_reference_richards_temporal_indicator.f90"     --external-source src/legacy/b1_10_port/headcalc.f90     --build "$OUT" --opt "$opt"
+  python3 tests/rom/compile_f_rom0_fortran_closure.py     --root "$ROOT" --stub "$BUILD/stub.f90" --target "$BUILD/test.f90"     --external-source "$BUILD/mod_fpe_elastic60_transaction_model.f90"     --external-source "$BUILD/mod_fpe_elastic53_reference_richards_temporal_indicator.f90"     --external-source src/legacy/b1_10_port/headcalc.f90     --build "$OUT" --opt "$opt"
 
   : > "$OUT/result.txt"
   for h0 in -20 10; do
