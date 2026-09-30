@@ -33,7 +33,7 @@ program test_ppa_wu05a4_richards_trajectory
   real(real64) :: strict_macro,practical_macro,strict_tabs,practical_tabs
   real(real64) :: strict_tref,practical_tref,strict_cum_ex,practical_cum_ex
   real(real64) :: strict_cum_qbot,practical_cum_qbot
-  real(real64) :: q_strict,q_practical,amount
+  real(real64) :: q_strict,q_practical,amount,last_bottom_flux
   integer :: i,node,step,strict_iters,practical_iters
   logical :: ok
 
@@ -128,8 +128,6 @@ program test_ppa_wu05a4_richards_trajectory
   print '(a)', 'PPA_WU05A4_RICHARDS_TRAJECTORY=PASS'
 
 contains
-
-  real(real64) :: last_bottom_flux
 
   subroutine init_state(state,h,w)
     type(soil_water_physical_state_t),intent(out)::state
