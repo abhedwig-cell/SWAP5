@@ -14,6 +14,10 @@ on:
       - 'tests/fpe/run_fpe_elastic65.sh'
       - 'docs/performance/F-PE-ELASTIC65_MODE7_CSAFE_BINDING_PREREGISTRATION.md'
       - 'docs/performance/F-PE-ELASTIC65_RESULT.md'
+      - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'tests/fkt/run_fkt22_eb_i25_preservation_gate.sh'
+      - 'tests/ross/run_ross12_serialized_production_wiring.sh'
       - '.github/workflows/f-pe-elastic65.yml'
   pull_request:
     branches:
@@ -24,6 +28,10 @@ on:
       - 'tests/fpe/run_fpe_elastic65.sh'
       - 'docs/performance/F-PE-ELASTIC65_MODE7_CSAFE_BINDING_PREREGISTRATION.md'
       - 'docs/performance/F-PE-ELASTIC65_RESULT.md'
+      - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'tests/fkt/run_fkt22_eb_i25_preservation_gate.sh'
+      - 'tests/ross/run_ross12_serialized_production_wiring.sh'
       - '.github/workflows/f-pe-elastic65.yml'
   workflow_dispatch:
 
