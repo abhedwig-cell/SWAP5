@@ -21,7 +21,19 @@ grep -Fq 'F_PE_MULTI06_PREP=PASS' "$BUILD/prep.txt" || fail "profile prep"
 python3 tests/fpe/materialize_fpe_multi06_headcalc_stubs.py   --source tests/fsi/fsi04_real_headcalc_stubs.f90   --geometry-json "$PROFILE/geometry.json"   --output "$BUILD/stub.f90" | tee "$BUILD/stub.txt"
 grep -Fq 'F_PE_MULTI06_STUB=PASS' "$BUILD/stub.txt" || fail "stub"
 
-python3 tests/rom/compile_f_rom0_fortran_closure.py   --root "$ROOT"   --stub "$BUILD/stub.f90"   --target tests/fpe/test_fpe_multi06_mode7_generated_worker_pool.f90   --external-source src/legacy/b1_10_port/headcalc.f90   --build "$BUILD/o2" --opt 2
+cp tests/rom/compile_f_rom0_fortran_closure.py "$BUILD/compile_multi06.py"
+python3 - "$BUILD/compile_multi06.py" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1])
+s=p.read_text()
+old='if not name.startswith(("iso_", "ieee_")):'
+new='if not name.startswith(("iso_", "ieee_", "omp_")):'
+if old not in s:
+    raise SystemExit("F_PE_MULTI06_FAIL compiler intrinsic seam")
+p.write_text(s.replace(old,new,1))
+PY
+python3 "$BUILD/compile_multi06.py"   --root "$ROOT"   --stub "$BUILD/stub.f90"   --target tests/fpe/test_fpe_multi06_mode7_generated_worker_pool.f90   --external-source src/legacy/b1_10_port/headcalc.f90   --build "$BUILD/o2" --opt 2
 
 export OMP_DYNAMIC=FALSE
 export OMP_THREAD_LIMIT=4
