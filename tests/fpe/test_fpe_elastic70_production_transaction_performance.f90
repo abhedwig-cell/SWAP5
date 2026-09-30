@@ -63,6 +63,9 @@ program test_fpe_elastic70_production_transaction_performance
   call init_parameters(base)
   call fmr_prepare_application_parameters_with_elastic_storage(trim(config_path),trim(row_path), &
        base,p,hdiag)
+  write(*,'(*(g0))')'ELASTIC70_HOST_DIAG|status=',hdiag%status,'|discovery=',hdiag%discovery_status, &
+       '|row=',hdiag%row_binding_status,'|profile=',hdiag%selected_profile_id, &
+       '|requested=',hdiag%generated_prior_requested,'|applied=',hdiag%generated_prior_applied
   call req(hdiag%status==FMR_ELAS_HOST_BINDING_OK,'generated host preparation')
   call req(hdiag%generated_prior_requested.and.hdiag%generated_prior_applied,'generated prior applied')
   call req(p%elasticity_active,'generated elasticity active')
