@@ -54,14 +54,25 @@ All 15 nonmonotone sequences are mandatory test cases.
 
 ## Matched monotone controls
 
-For every nonmonotone sequence choose one matched monotone control by the
-following frozen rule:
+For every nonmonotone sequence choose one matched monotone control.
 
-1. same profile, h0 and regime;
-2. among eligible monotone sequences, prefer opposite-signed delta with the same
-   absolute magnitude;
-3. otherwise choose the eligible monotone delta with minimum absolute distance;
-4. ties are broken by numeric delta ascending.
+The first qualification attempt showed that an exact same-profile + same-h0 +
+same-regime monotone control does not exist for every violating sequence. This is
+a bank-feasibility fact, not a controller result. The control rule is therefore
+amended before controller qualification as follows:
+
+1. same profile, h0 and delta, but a monotone alternative regime; preference
+   order GENERATED, FIXED_1E6, OFF;
+2. if unavailable, same profile, h0 and regime with opposite-signed delta of the
+   same absolute magnitude;
+3. if unavailable, same profile and h0, minimizing first regime mismatch, then
+   absolute delta distance, then numeric delta ascending;
+4. if no same-profile + same-h0 monotone sequence exists, qualification fails.
+
+This preserves profile and physical initial state for every control and, where
+possible, preserves forcing exactly while varying only the ELAS regime. It also
+directly tests whether the generic guard is inert on the observed GENERATED
+zero-violation route.
 
 Duplicate controls are retained only once in aggregate counts but the mapping
 from each violating sequence to its selected control is emitted.
@@ -222,3 +233,15 @@ It does not authorize:
 - ELAS default-on behavior;
 - swkimpl=1;
 - a production speed claim.
+
+
+## Preregistration amendment record
+
+The initial ELASTIC57B run failed before controller qualification because the
+original exact same-profile + same-h0 + same-regime control rule had no eligible
+monotone control for at least one violating sequence
+(profile 11060, h0=+2 cm, OFF, delta=+0.035 cm/day).
+
+No controller result from that failed run is used to select or tune the amended
+rule. The hierarchy above is based only on control availability and the already
+qualified ELASTIC56 regime attribution.
