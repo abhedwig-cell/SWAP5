@@ -58,7 +58,7 @@ jobs:
         run: |
           grep -Fq '0.20 cm' docs/performance/F-PE-ELASTIC69_APPLICATION_POLICY.md
           grep -Fq 'GENERATED ELAS' docs/performance/F-PE-ELASTIC69_APPLICATION_POLICY.md
-          grep -Fq 'not a universal SWAP default' docs/performance/F-PE-ELASTIC69_GENERATED_MODE7_APPLICATION_POLICY_PREREGISTRATION.md
+          grep -Fq 'not a universal SWAP accuracy tolerance' docs/performance/F-PE-ELASTIC69_GENERATED_MODE7_APPLICATION_POLICY_PREREGISTRATION.md
           grep -Fq 'Hard mass and solver convergence tolerances remain unchanged.' docs/performance/F-PE-ELASTIC69_APPLICATION_POLICY.md
           echo F_PE_ELASTIC69_A4_POLICY=PASS
       - name: Documentation checks
