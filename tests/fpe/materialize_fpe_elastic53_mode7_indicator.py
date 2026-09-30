@@ -62,8 +62,7 @@ def main():
     insert="""  use mod_fpe_elastic53_reference_richards_temporal_indicator, only: &
        evaluate_fpe_elastic53_reference_richards_temporal_indicator
 """
-    anchor="  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
-"
+    anchor="  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t\n"
     if anchor not in oracle: raise SystemExit("F_PE_ELASTIC53_FAIL oracle use anchor")
     oracle=oracle.replace(anchor,anchor+insert,1)
     oracle=oracle.replace("request%boundary%bottom_mode = 2","request%boundary%bottom_mode = 7")
