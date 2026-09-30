@@ -72,6 +72,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/adapter/mod_fmr_mode7_temporal_head_envelope.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
+  src/runtime/mod_fmr_restart_state_contract.f90
 )
 
 for opt in 0 2; do
