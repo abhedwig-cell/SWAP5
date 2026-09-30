@@ -13,6 +13,17 @@ on:
       - 'tests/fpe/test_fpe_elastic65_mode7_csafe_binding.f90'
       - 'tests/fpe/run_fpe_elastic65.sh'
       - 'docs/performance/F-PE-ELASTIC65_MODE7_CSAFE_BINDING_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-ELASTIC65_RESULT.md'
+      - '.github/workflows/f-pe-elastic65.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpe/test_fpe_elastic65_mode7_csafe_binding.f90'
+      - 'tests/fpe/run_fpe_elastic65.sh'
+      - 'docs/performance/F-PE-ELASTIC65_MODE7_CSAFE_BINDING_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-ELASTIC65_RESULT.md'
       - '.github/workflows/f-pe-elastic65.yml'
   workflow_dispatch:
 
