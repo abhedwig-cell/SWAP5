@@ -11,7 +11,10 @@ on:
     paths:
       - 'tests/fpe/test_fpe_elastic70_production_transaction_performance.f90'
       - 'tests/fpe/run_fpe_elastic70.sh'
+      - 'tests/fpe/prepare_fpe_elastic70_profile8016.py'
+      - 'tests/fpe/materialize_fpe_elastic70_headcalc_stubs.py'
       - 'docs/performance/F-PE-ELASTIC70_PRODUCTION_TRANSACTION_PERFORMANCE_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-ELASTIC70_PROFILE8016_AMENDMENT.md'
       - '.github/workflows/f-pe-elastic70.yml'
   workflow_dispatch:
 
