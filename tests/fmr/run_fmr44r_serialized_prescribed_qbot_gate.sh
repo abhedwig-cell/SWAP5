@@ -34,6 +34,20 @@ MODULE_SRC=(
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/runtime/mod_macropore_continuation_state.f90
+  src/process/macropore/mod_ppa_wu05a5_top_partition.f90
+  src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
+  src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90
+  src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90
+  src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90
+  src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90
+  src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90
+  src/solver/mod_macropore_exchange_overlay_provider.f90
+  src/runtime/mod_macropore_single_column_runtime.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
