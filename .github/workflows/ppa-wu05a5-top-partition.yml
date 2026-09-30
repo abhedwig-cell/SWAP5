@@ -1,0 +1,20 @@
+name: PPA-WU05-A5 top partition
+
+on:
+  push:
+    branches:
+      - research/ppa-wu05-a5-process-composition
+    paths:
+      - 'research/macropore/mod_ppa_wu05a5_top_partition.f90'
+      - 'tests/fpm/test_ppa_wu05a5_top_partition.f90'
+      - 'tests/fpm/run_ppa_wu05a5_top_partition.sh'
+      - '.github/workflows/ppa-wu05a5-top-partition.yml'
+  workflow_dispatch:
+
+jobs:
+  top-partition:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run A5 top partition gate
+        run: bash tests/fpm/run_ppa_wu05a5_top_partition.sh
