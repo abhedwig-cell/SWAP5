@@ -113,6 +113,11 @@ contains
 
     ! No perched zone in the first FMR admission scope.
     request%unsaturated%sorptivity%perched_active=.false.
+    if(matrix_view%active)then
+      request%unsaturated%sorptivity%matrix_top_saturated_node=matrix_view%top_node
+    else
+      request%unsaturated%sorptivity%matrix_top_saturated_node=n+1
+    end if
     request%interflow_sat%step_duration=step_duration
     request%interflow_sat%matrix_top_saturated_node=1
     request%interflow_sat%matrix_bottom_saturated_node=0
@@ -159,10 +164,11 @@ contains
          request%matrix_sat%valid() .and. request%rapid%valid() .and. request%limiter%valid()
   end subroutine prepare_standard_macropore_rate_request
 
-  subroutine prepare_standard_sorptivity_history_request(template,geometry,macro_view,step_duration,request,ok)
+  subroutine prepare_standard_sorptivity_history_request(template,geometry,macro_view,matrix_view,step_duration,request,ok)
     type(sorptivity_history_update_request_t),intent(in)::template
     type(macropore_geometry_result_t),intent(in)::geometry
     type(macropore_standard_storage_view_t),intent(in)::macro_view
+    type(matrix_saturated_zone_view_t),intent(in)::matrix_view
     real(real64),intent(in)::step_duration
     type(sorptivity_history_update_request_t),intent(out)::request
     logical,intent(out)::ok
@@ -174,6 +180,11 @@ contains
     request%bottom_domain=geometry%bottom_domain
     request%top_water_node=macro_view%top_water_node
     request%wet_fraction=macro_view%wet_fraction
+    if(matrix_view%active)then
+      request%matrix_top_saturated_node=matrix_view%top_node
+    else
+      request%matrix_top_saturated_node=geometry%num_nodes+1
+    end if
     ok=request%valid()
   end subroutine prepare_standard_sorptivity_history_request
 
