@@ -5,17 +5,17 @@
   "branch": "research/ppa-wu05-a6-source-rate-migration",
   "baseline": "8ff58acaf8049042b662aeb56708ddd9e0fc9321",
   "canonical_source_dependency_reconciled_through": "ddd218085afd363d22ce0b632d3ac893c7c9f40b",
-  "status": "ACTIVE_R3_SATURATED_INTERFLOW_COMPOSITION",
+  "status": "QUALIFIED_RESEARCH_PHASE_COMPLETE",
   "production_activation": false,
   "phases": {
     "unsaturated_absorption": "PASS",
     "saturated_exchange": "PASS",
-    "inter_domain_exchange": "RENAMED_SATURATED_INTERFLOW_REUSES_SATFLOW",
-    "rapid_drainage": "PENDING",
-    "top_limitation_redistribution": "PENDING",
-    "accepted_vertical_flux": "PENDING"
+    "inter_domain_exchange": "PASS_AS_SATURATED_INTERFLOW_COMPOSITION",
+    "rapid_drainage": "PASS",
+    "top_limitation_redistribution": "PASS",
+    "accepted_vertical_flux": "PASS_CORRECTED_REFERENCE"
   },
-  "next_action": "Compose two qualified SATFLOW invocations into QInIntSat/QInMtxSat/QOutMtxSat source terms, then migrate multi-compartment rapid drainage generator.",
+  "next_action": "Open PPA-WU05-A7 production shaping and admission-candidate qualification.",
   "r1a": {
     "run_id": 36772703007,
     "head": "1a781e87edf3c0739ad6bca458e957d5a0612ace",
@@ -33,5 +33,13 @@
   },
   "findings": {
     "r3_terminology": "QInIntSat is perched/top saturated matrix interflow, not macropore domain-to-domain exchange"
-  }
+  },
+  "qualification": {
+    "head": "947ffd03082da913dc709699896fb6779dbbb614",
+    "workflow_run_id": 36776134097,
+    "conclusion": "QUALIFIED_SOURCE_RATE_MIGRATION_COMPLETE_SINGLE_COLUMN",
+    "o0_o2_identity": "PASS",
+    "restart_replay": "PASS"
+  },
+  "production_admission": "NONE"
 }
