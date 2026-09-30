@@ -70,7 +70,7 @@ program test_macropore_standard_rate_adapter
        error stop 'A8 adapted dt'
 
   call setup_history(history_template)
-  call prepare_standard_sorptivity_history_request(history_template,geometry,macro_view,0.05_real64,history,ok)
+  call prepare_standard_sorptivity_history_request(history_template,geometry,macro_view,matrix_view,0.05_real64,history,ok)
   if(.not.ok)error stop 'A8 history adapter'
   if(history%top_water_node(1)/=3 .or. abs(history%wet_fraction(1,3)-0.35_real64)>1.0e-12_real64) &
        error stop 'A8 history dynamic view'
