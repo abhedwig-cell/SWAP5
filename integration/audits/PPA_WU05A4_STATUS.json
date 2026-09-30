@@ -4,7 +4,7 @@
   "title": "R2 coupled single-column prototype",
   "branch": "research/ppa-wu05-a4-r2-coupled-single-column",
   "baseline": "8a3e4f4fe47ca211629a1ac297f692bc9b699320",
-  "status": "QUALIFIED_RESEARCH_MAX_THREE_PRACTICAL_CANDIDATE",
+  "status": "QUALIFIED_RESEARCH_TYPED_OUTER_CONTROLLER",
   "production_activation": false,
   "richards_coupling": "DYNAMIC_PREDICTOR_CORRECTOR_RESEARCH_PASS",
   "gates": {
@@ -16,7 +16,7 @@
     "e7_interface": "PASS_LOCAL",
     "e9_extreme": "PASS_LOCAL"
   },
-  "next_action": "Implement typed research outer-coupling controller with strict and max-three policies, retry propagation, damping and atomic coupled candidate return; then qualify crack-history and rapid-drain trajectories.",
+  "next_action": "Extend typed R2 process with crack-history and rapid-drain candidate semantics and qualify trajectories through the typed controller.",
   "richards_probe": {
     "head": "0da844cfac7d0159f3ed7d72b142a7af37846d1c",
     "run_id": 36764661597,
@@ -76,5 +76,15 @@
     "max_head_abs_cm": 0.09865696566688342,
     "cumulative_bottom_abs_cm": 0.0020622361455155946,
     "conclusion": "MAX_THREE_CORRECTOR_PRACTICAL_ADMISSION_CANDIDATE_SUPPORTED"
+  },
+  "typed_controller": {
+    "run_id": 36769211873,
+    "head": "b0957e7e7756f165b7a8a41868e52bda42c9c79b",
+    "strict_exchange_cm_per_day": 1.7336720786642181,
+    "practical_exchange_cm_per_day": 1.7693267010703861,
+    "strict_outer_iterations": 21,
+    "practical_outer_iterations": 3,
+    "retry_propagation": "PASS",
+    "combined_mass": "PASS"
   }
 }
