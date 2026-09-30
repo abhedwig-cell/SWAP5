@@ -83,9 +83,16 @@ for opt in 0 2; do
   "$OUT/test_picard" > "$OUT/picard.txt"
   cat "$OUT/picard.txt"
   grep -Fq 'PPA_WU05A4_RICHARDS_PICARD_CHARACTERIZATION=PASS' "$OUT/picard.txt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a4_richards_adversarial_picard.f90 -o "$OUT/test_adv.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_adv.o" -o "$OUT/test_adv"
+  "$OUT/test_adv" > "$OUT/adv.txt"
+  cat "$OUT/adv.txt"
+  grep -Fq 'PPA_WU05A4_RICHARDS_ADVERSARIAL_PICARD=PASS' "$OUT/adv.txt"
 done
 
 cmp "$BUILD/o0/fixed.txt" "$BUILD/o2/fixed.txt"
 cmp "$BUILD/o0/pc.txt" "$BUILD/o2/pc.txt"
 cmp "$BUILD/o0/picard.txt" "$BUILD/o2/picard.txt"
+cmp "$BUILD/o0/adv.txt" "$BUILD/o2/adv.txt"
 echo "PPA_WU05A4_RICHARDS_GATE=PASS"
