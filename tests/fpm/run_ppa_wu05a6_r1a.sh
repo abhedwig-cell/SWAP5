@@ -20,6 +20,8 @@ for opt in 0 2; do
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90 -o "$OUT/sat.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_saturated_sources.f90 -o "$OUT/satsrc.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90 -o "$OUT/rapid.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90 -o "$OUT/toplimit.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90 -o "$OUT/vflux.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_unsat_absorption_rate.f90 -o "$OUT/test_unsat.o"
   gfortran -O"$opt" "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/test_unsat.o" -o "$OUT/test_unsat"
   "$OUT/test_unsat" > "$OUT/unsat.txt"
