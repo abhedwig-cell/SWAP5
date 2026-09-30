@@ -63,6 +63,8 @@ program test_ppa_wu05a7_fmr_macropore_transaction
   obs=backend%observation()
   write(*,'(*(g0))') 'PPA_WU05A7_FMR_DEBUG|STATUS=',result1%status,'|COMPLETED=',result1%completed, &
        '|ADMISSION_REJ=',diag1%admission_rejections,'|ATTEMPTS=',diag1%attempts,'|RETRIES=',diag1%retries, &
+       '|TEMP_REJ=',diag1%temporal_rejections,'|TEMP_MAX=',diag1%max_temporal_indicator, &
+       '|MASS_REJ=',diag1%mass_rejections,'|STEP_MASS_MAX=',diag1%max_abs_step_mass_residual, &
        '|MASS_COMPLETE=',result1%mass%complete,'|MASS_RES=',result1%mass%residual, &
        '|MACRO_EXEC=',obs%macropore_executed,'|MACRO_STATUS=',obs%macropore_status
   call require(result1%status==CANONICAL_STATUS_COMPLETED .and. result1%completed,'first FMR trial completed')
