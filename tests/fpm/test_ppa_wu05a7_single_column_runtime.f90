@@ -142,7 +142,10 @@ program test_ppa_wu05a7_single_column_runtime
   policy%enabled=.false.
   call runtime%execute(solver,workspace,request,macro,geometry_config,rate_template,history_request,policy,result)
   if(result%status/=MACRO_RUNTIME_INACTIVE)error stop 'A7 inactive status'
-  if(any(result%matrix_result%candidate_state%water_content/=direct_result%candidate_state%water_content)) &
+  if(any(transfer(result%matrix_result%candidate_state%water_content, &
+       [0_8], size(result%matrix_result%candidate_state%water_content)) /= &
+       transfer(direct_result%candidate_state%water_content, [0_8], &
+       size(direct_result%candidate_state%water_content)))) &
        error stop 'A7 inactive matrix preservation'
   if(.not.result%macropore_candidate%same_values(macro_snapshot))error stop 'A7 inactive macro preservation'
 
