@@ -24,6 +24,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/runtime/mod_macropore_continuation_state.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
@@ -58,6 +59,8 @@ MODULE_SRC=(
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   research/macropore/mod_ppa_wu05a4_fixed_exchange_provider.f90
+  research/macropore/mod_ppa_wu05a4_r2_macropore_process.f90
+  research/macropore/mod_ppa_wu05a4_outer_coupling_controller.f90
 )
 
 for opt in 0 2; do
@@ -67,6 +70,12 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
     objects+=("$obj")
   done
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a4_outer_controller.f90 -o "$OUT/test_controller.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_controller.o" -o "$OUT/test_controller"
+  "$OUT/test_controller" > "$OUT/controller.txt"
+  cat "$OUT/controller.txt"
+  grep -Fq 'PPA_WU05A4_OUTER_CONTROLLER=PASS' "$OUT/controller.txt"
+
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a4_richards_exchange.f90 -o "$OUT/test_fixed.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_fixed.o" -o "$OUT/test_fixed"
   "$OUT/test_fixed" > "$OUT/fixed.txt"
@@ -103,6 +112,7 @@ for opt in 0 2; do
   grep -Fq 'PPA_WU05A4_RICHARDS_TRAJECTORY=PASS' "$OUT/traj.txt"
 done
 
+cmp "$BUILD/o0/controller.txt" "$BUILD/o2/controller.txt"
 cmp "$BUILD/o0/fixed.txt" "$BUILD/o2/fixed.txt"
 cmp "$BUILD/o0/pc.txt" "$BUILD/o2/pc.txt"
 cmp "$BUILD/o0/picard.txt" "$BUILD/o2/picard.txt"
