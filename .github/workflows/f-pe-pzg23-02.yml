@@ -1,0 +1,40 @@
+name: F-PE-PZG23-02 accepted-history falsification
+
+concurrency:
+  group: f-pe-pzg23-02-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-pzg23-02-history-falsification
+    paths:
+      - 'tests/fpe/prepare_fpe_pzg23_02.py'
+      - 'tests/fpe/test_fpe_pzg23_02_history_falsification.f90'
+      - 'tests/fpe/run_fpe_pzg23_02_history_falsification.sh'
+      - 'docs/performance/F-PE-PZG23-02_HISTORY_FALSIFICATION_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-pzg23-02.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/pzg23-02-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Run accepted-history falsification
+        run: bash tests/fpe/run_fpe_pzg23_02_history_falsification.sh "$RUNNER_TEMP/pzg23-02-pdok"
