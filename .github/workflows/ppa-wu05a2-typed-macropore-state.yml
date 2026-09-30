@@ -1,5 +1,9 @@
 name: PPA-WU05-A2 typed macropore state
 
+concurrency:
+  group: ppa-wu05a2-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
