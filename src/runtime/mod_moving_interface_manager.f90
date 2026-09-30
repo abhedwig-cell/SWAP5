@@ -239,4 +239,194 @@ contains
     end if
   end subroutine choose_moving_interface_result
 
+
+  subroutine prepare_moving_interface_reduced_request_inplace(full_request, view, reduced_parameters, reduced_request, &
+                                                              ok, reason, reallocated)
+    type(soil_water_solve_request_t), intent(in) :: full_request
+    type(moving_interface_active_view_t), intent(in) :: view
+    type(soil_water_parameter_set_t), target, intent(inout) :: reduced_parameters
+    type(soil_water_solve_request_t), intent(inout) :: reduced_request
+    logical, intent(out) :: ok
+    character(len=*), intent(out) :: reason
+    logical, intent(out), optional :: reallocated
+    integer :: n, nf
+    logical :: did_reallocate
+
+    ok = .false.
+    reason = 'invalid-view'
+    did_reallocate = .false.
+    if (present(reallocated)) reallocated = .false.
+
+    if (.not. view%eligible) return
+    if (.not. associated(full_request%parameters)) then
+       reason = 'full-parameters-unbound'
+       return
+    end if
+    nf = full_request%parameters%active_nodes
+    n = view%active_nodes
+    if (nf /= view%full_nodes .or. n <= 0 .or. n >= nf) then
+       reason = 'view-shape-mismatch'
+       return
+    end if
+    if (full_request%base_state%active_nodes /= nf) then
+       reason = 'full-state-shape-mismatch'
+       return
+    end if
+    if (.not. allocated(full_request%parameters%z) .or. .not. allocated(full_request%parameters%dz) .or. &
+        .not. allocated(full_request%parameters%node_distance)) then
+       reason = 'full-parameter-shape-missing'
+       return
+    end if
+    if (.not. allocated(full_request%base_state%pressure_head) .or. &
+        .not. allocated(full_request%base_state%water_content)) then
+       reason = 'full-state-shape-missing'
+       return
+    end if
+
+    if (.not. allocated(reduced_parameters%z) .or. reduced_parameters%active_nodes /= n) then
+       if (allocated(reduced_parameters%z)) deallocate(reduced_parameters%z)
+       if (allocated(reduced_parameters%dz)) deallocate(reduced_parameters%dz)
+       if (allocated(reduced_parameters%node_distance)) deallocate(reduced_parameters%node_distance)
+       allocate(reduced_parameters%z(n), reduced_parameters%dz(n), reduced_parameters%node_distance(n))
+       did_reallocate = .true.
+    end if
+    reduced_parameters%parameter_set_id = full_request%parameters%parameter_set_id
+    reduced_parameters%active_nodes = n
+    reduced_parameters%z = full_request%parameters%z(1:n)
+    reduced_parameters%dz = full_request%parameters%dz(1:n)
+    reduced_parameters%node_distance = full_request%parameters%node_distance(1:n)
+
+    if (.not. allocated(reduced_request%base_state%pressure_head) .or. &
+        reduced_request%base_state%active_nodes /= n) then
+       if (allocated(reduced_request%base_state%pressure_head)) deallocate(reduced_request%base_state%pressure_head)
+       if (allocated(reduced_request%base_state%water_content)) deallocate(reduced_request%base_state%water_content)
+       allocate(reduced_request%base_state%pressure_head(n), reduced_request%base_state%water_content(n))
+       did_reallocate = .true.
+    end if
+
+    reduced_request%parameters => reduced_parameters
+    reduced_request%boundary = full_request%boundary
+    reduced_request%physical = full_request%physical
+    reduced_request%numerical = full_request%numerical
+    reduced_request%evaluation = full_request%evaluation
+    reduced_request%step_duration = full_request%step_duration
+    reduced_request%request_interface_sensitivity = .false.
+    reduced_request%base_state%active_nodes = n
+    reduced_request%base_state%pressure_head = full_request%base_state%pressure_head(1:n)
+    reduced_request%base_state%water_content = full_request%base_state%water_content(1:n)
+    reduced_request%base_state%ponding_depth = full_request%base_state%ponding_depth
+    reduced_request%base_state%groundwater_level = full_request%base_state%groundwater_level
+
+    if (present(reallocated)) reallocated = did_reallocate
+    ok = .true.
+    reason = 'reduced-request-ready-inplace'
+  end subroutine prepare_moving_interface_reduced_request_inplace
+
+
+  subroutine materialize_moving_interface_full_candidate_inplace(full_origin, reduced_result, tail_pressure_head, &
+                                                                  tail_water_content, full_candidate, ok, reason, &
+                                                                  reallocated)
+    type(soil_water_physical_state_t), intent(in) :: full_origin
+    type(soil_water_solve_result_t), intent(in) :: reduced_result
+    real(real64), intent(in) :: tail_pressure_head(:), tail_water_content(:)
+    type(soil_water_solve_result_t), intent(inout) :: full_candidate
+    logical, intent(out) :: ok
+    character(len=*), intent(out) :: reason
+    logical, intent(out), optional :: reallocated
+    integer :: na, nf, nt
+    logical :: did_reallocate
+
+    ok = .false.
+    reason = 'reduced-result-not-converged'
+    did_reallocate = .false.
+    if (present(reallocated)) reallocated = .false.
+    if (reduced_result%status /= SW_SOLVE_CONVERGED) return
+
+    nf = full_origin%active_nodes
+    na = reduced_result%candidate_state%active_nodes
+    if (nf <= 0 .or. na <= 0 .or. na >= nf) then
+       reason = 'candidate-shape-invalid'
+       return
+    end if
+    if (.not. allocated(reduced_result%candidate_state%pressure_head) .or. &
+        .not. allocated(reduced_result%candidate_state%water_content)) then
+       reason = 'reduced-candidate-shape-missing'
+       return
+    end if
+    nt = nf-na
+    if (size(tail_pressure_head) /= nt .or. size(tail_water_content) /= nt) then
+       reason = 'tail-shape-mismatch'
+       return
+    end if
+
+    if (.not. allocated(full_candidate%candidate_state%pressure_head) .or. &
+        full_candidate%candidate_state%active_nodes /= nf) then
+       if (allocated(full_candidate%candidate_state%pressure_head)) deallocate(full_candidate%candidate_state%pressure_head)
+       if (allocated(full_candidate%candidate_state%water_content)) deallocate(full_candidate%candidate_state%water_content)
+       allocate(full_candidate%candidate_state%pressure_head(nf), full_candidate%candidate_state%water_content(nf))
+       did_reallocate = .true.
+    end if
+
+    full_candidate%status = reduced_result%status
+    full_candidate%retry_advised = reduced_result%retry_advised
+    full_candidate%top_flux = reduced_result%top_flux
+    full_candidate%bottom_flux = reduced_result%bottom_flux
+    full_candidate%unrounded_mass_balance_residual = reduced_result%unrounded_mass_balance_residual
+    full_candidate%integrated_mass_balance_residual_available = reduced_result%integrated_mass_balance_residual_available
+    full_candidate%integrated_mass_balance_residual_cm = reduced_result%integrated_mass_balance_residual_cm
+    full_candidate%native_balance_rate_residual_available = reduced_result%native_balance_rate_residual_available
+    full_candidate%native_balance_rate_residual_cm_per_day = reduced_result%native_balance_rate_residual_cm_per_day
+    full_candidate%diagnostics = reduced_result%diagnostics
+    full_candidate%interface_sensitivity = reduced_result%interface_sensitivity
+    full_candidate%candidate_state%active_nodes = nf
+    full_candidate%candidate_state%pressure_head(1:na) = reduced_result%candidate_state%pressure_head
+    full_candidate%candidate_state%water_content(1:na) = reduced_result%candidate_state%water_content
+    full_candidate%candidate_state%pressure_head(na+1:nf) = tail_pressure_head
+    full_candidate%candidate_state%water_content(na+1:nf) = tail_water_content
+    full_candidate%candidate_state%ponding_depth = reduced_result%candidate_state%ponding_depth
+    full_candidate%candidate_state%groundwater_level = reduced_result%candidate_state%groundwater_level
+
+    if (present(reallocated)) reallocated = did_reallocate
+    ok = .true.
+    reason = 'full-candidate-materialized-inplace'
+  end subroutine materialize_moving_interface_full_candidate_inplace
+
+
+  subroutine select_moving_interface_route(reduced_status, reduced_valid, view, reduced_workspace_generation, &
+                                           fallback_reason, use_reduced, diagnostics)
+    integer, intent(in) :: reduced_status
+    logical, intent(in) :: reduced_valid
+    type(moving_interface_active_view_t), intent(in) :: view
+    integer(int64), intent(in) :: reduced_workspace_generation
+    character(len=*), intent(in) :: fallback_reason
+    logical, intent(out) :: use_reduced
+    type(moving_interface_manager_diagnostics_t), intent(out) :: diagnostics
+
+    diagnostics = moving_interface_manager_diagnostics_t()
+    diagnostics%full_nodes = view%full_nodes
+    diagnostics%active_nodes = view%active_nodes
+    diagnostics%tail_start_node = view%tail_start_node
+    diagnostics%interface_face = view%interface_face
+    diagnostics%reduced_workspace_generation = reduced_workspace_generation
+    diagnostics%reduced_attempted = view%eligible
+    use_reduced = .false.
+
+    if (.not. view%eligible) then
+       diagnostics%route = MI_MANAGER_ROUTE_FULL_BYPASS
+       diagnostics%fallback_reason = 'reduced-view-ineligible'
+       return
+    end if
+
+    if (reduced_valid .and. reduced_status == SW_SOLVE_CONVERGED) then
+       use_reduced = .true.
+       diagnostics%route = MI_MANAGER_ROUTE_REDUCED
+       diagnostics%reduced_accepted = .true.
+       diagnostics%fallback_reason = 'none'
+    else
+       diagnostics%route = MI_MANAGER_ROUTE_FULL_FALLBACK
+       diagnostics%fallback_used = .true.
+       diagnostics%fallback_reason = fallback_reason
+    end if
+  end subroutine select_moving_interface_route
+
 end module mod_moving_interface_manager
