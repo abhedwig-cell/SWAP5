@@ -4,7 +4,7 @@
   "title": "Typed macropore committed/candidate/restart state",
   "branch": "work/ppa-wu05-a2-typed-macropore-state",
   "baseline": "93d6c78c7ea5fac7060c61d51f992e75c02c65c4",
-  "status": "IMPLEMENTED_RECONCILED_QUALIFICATION_QUEUED",
+  "status": "RECONCILED_WITH_CURRENT_CANONICAL_QUALIFICATION_QUEUED",
   "production_source_mutation": "PERMITTED_STATE_INFRASTRUCTURE_ONLY",
   "active_macropore_physics_permitted": false,
   "continuation_fields": [
@@ -17,15 +17,15 @@
     "VlMpDyCp"
   ],
   "gates": {
-    "type_shape": "IMPLEMENTED_PENDING_RUN12",
-    "candidate_isolation": "IMPLEMENTED_PENDING_RUN12",
-    "reject": "IMPLEMENTED_PENDING_RUN12",
-    "accept": "IMPLEMENTED_PENDING_RUN12",
-    "retry": "IMPLEMENTED_PENDING_RUN12",
-    "restart": "IMPLEMENTED_PENDING_RUN12",
-    "inactive_preservation": "RECONCILED_STATIC_REVIEW_PASS_CI_PENDING"
+    "type_shape": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
+    "candidate_isolation": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
+    "reject": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
+    "accept": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
+    "retry": "IMPLEMENTED_AWAITING_CURRENT_HEAD_CI",
+    "restart": "IMPLEMENTED_INTEGRATED_COMPILE_GATE_AWAITING_CI",
+    "inactive_preservation": "CURRENT_CANONICAL_DELTA_NONOVERLAPPING_CI_AWAITING"
   },
-  "next_action": "Wait only for persisted run 36759833884; on PASS write A2 qualification/closeout, reopen draft PR #909, and proceed to A3 equation migration preregistration.",
+  "next_action": "Wait for current-head A2 CI to execute; on PASS record qualified A2 result and prepare PR #909 for admission. On FAIL, repair only the concrete gate failure.",
   "reconciled_canonical": "f9133b92cd7d128838029a162ee607bb8ba69689",
   "current_head": "ac998d39f2be304b24fbfbdab871983a4fc142b4",
   "pull_request": {
@@ -46,5 +46,18 @@
     "executed_by_a2_gate": true,
     "status": "PENDING_RUN12"
   },
-  "production_admission": "NONE"
+  "production_admission": "NONE",
+  "reconciliation": {
+    "canonical_head": "f9133b92cd7d128838029a162ee607bb8ba69689",
+    "merge_commit": "6314698056ff76d4031b91a3fc0c40aa89683bee",
+    "current_head": "f5b5237f92b613708484071d7d6b46608897480b",
+    "overlapping_canonical_source_delta": false,
+    "canonical_parallel_delta_preserved": true
+  },
+  "ci": {
+    "workflow": "PPA-WU05-A2 typed macropore state",
+    "latest_run_id": 36760002861,
+    "latest_run_head": "f5b5237f92b613708484071d7d6b46608897480b",
+    "latest_run_status": "QUEUED"
+  }
 }
