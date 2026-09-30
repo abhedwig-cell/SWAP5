@@ -29,7 +29,7 @@
     "E8_REJECT_RETRY",
     "E9_EXTREME_RAIN"
   ],
-  "next_action": "Run R1-MSTATE02: compare historical corrected-interface QTop reconstruction to universal top-down local-conservation reconstruction and assess PEARL/ANIMO coupling implications.",
+  "next_action": "Run E9 extreme-rainfall stress, then consolidate A3 interim R1 process map and decide whether physical decomposition is ready for coupled R2 work.",
   "local_research": {
     "E0_E2": "PASS",
     "E3_event_memory": "PASS_H6_SUPPORTED",
@@ -38,9 +38,10 @@
     "E6_icgwl": "SUPERSEDED_BY_E7_REFINED_BOUNDARY_RULE",
     "E7_interface_sweep": "PASS_10001_STATES_ZERO_INDEX_MISMATCH",
     "E8_reject_retry": "PASS_ALL_SEVEN_FIELDS_ATOMIC_RETRY_IDENTITY",
-    "R1_macrostate_bookkeeping": "PASS_GLOBAL_MASS_LOCAL_INTERFACE_PAIR_IMBALANCE_IDENTIFIED"
+    "R1_macrostate_bookkeeping": "PASS_GLOBAL_MASS_LOCAL_INTERFACE_PAIR_IMBALANCE_IDENTIFIED",
+    "R1_MSTATE02": "PASS_UNIVERSAL_LOCAL_CONSERVATION_RECONSTRUCTION"
   },
   "new_findings": {
-    "standard_route_qtop_interface_transition": "LOCAL_PAIRWISE_IMBALANCE_CANCELS_GLOBALLY; POSSIBLE PEARL_ANIMO_RELEVANCE"
+    "standard_route_qtop_interface_transition": "LOCAL_STANDARD_ROUTE_DIAGNOSTIC_INCONSISTENCY; WHOLE_DOMAIN_MASS_PRESERVED; PEARL_ANIMO_NOT_DEMONSTRATED_AFFECTED"
   }
 }
