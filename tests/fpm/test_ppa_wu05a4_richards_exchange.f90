@@ -25,7 +25,7 @@ program test_ppa_wu05a4_richards_exchange
   type(soil_water_solve_result_t) :: result
   real(real64), allocatable :: cofgen(:,:)
   real(real64) :: heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
-  real(real64) :: storage0,storage1,expected_exchange
+  real(real64) :: storage0,storage1,expected_exchange,expected_storage_change
   integer :: i
 
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
@@ -86,9 +86,16 @@ program test_ppa_wu05a4_richards_exchange
   call solver%solve(request,workspace,result)
   if(result%status/=SW_SOLVE_CONVERGED) error stop 'A4 Richards exchange solve did not converge'
   storage1=sum(result%candidate_state%water_content*params%dz)
+  expected_storage_change=(result%bottom_flux-request%boundary%top_flux+ &
+       sum(exchange%source_rate)-sum(exchange%sink_rate))*dt
 
-  if(abs((storage1-storage0)-expected_exchange)>1.0e-10_real64) &
-       error stop 'A4 Richards exchange storage receipt mismatch'
+  write(*,'(*(g0))') 'PPA_WU05A4_RICHARDS_DIAG|DSTORAGE=',storage1-storage0, &
+       '|EXCHANGE=',expected_exchange,'|BOTTOM_FLUX=',result%bottom_flux, &
+       '|EXPECTED_DSTORAGE=',expected_storage_change, &
+       '|SOLVER_RESIDUAL=',result%integrated_mass_balance_residual_cm
+
+  if(abs((storage1-storage0)-expected_storage_change)>1.0e-10_real64) &
+       error stop 'A4 Richards exchange full storage balance mismatch'
   if(.not.result%integrated_mass_balance_residual_available) &
        error stop 'A4 Richards exchange mass residual unavailable'
   if(abs(result%integrated_mass_balance_residual_cm)>1.0e-10_real64) &
