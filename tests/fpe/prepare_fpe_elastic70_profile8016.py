@@ -15,6 +15,20 @@ def load(name,path):
     spec.loader.exec_module(mod)
     return mod
 
+def parse_catalog(root):
+    import re
+    text=(root/"src/adapter/mod_fmr_elastic_storage_staringreeks_catalog.f90").read_text(encoding="utf-8")
+    out={}
+    for name in ("WCR","WCS","ALPHA","NPAR"):
+        m=re.search(rf"{name}\\(FMR_STARINGREEKS_CATALOG_COUNT\\)\\s*=\\s*\\[\\s*&(?P<body>.*?)\\]",text,re.S)
+        if not m:
+            raise SystemExit(f"F_PE_ELASTIC70_FAIL catalog {name}")
+        vals=[float(x) for x in re.findall(r"([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[Ee][+-]?\\d+)?)_real64",m.group("body"))]
+        if len(vals)!=36:
+            raise SystemExit(f"F_PE_ELASTIC70_FAIL catalog count {name}={len(vals)}")
+        out[name]=vals
+    return out
+
 def split_profile(horizons,n_nodes):
     if len(horizons)>n_nodes:
         raise SystemExit("F_PE_ELASTIC70_FAIL more horizons than nodes")
@@ -35,7 +49,7 @@ def split_profile(horizons,n_nodes):
             z.append(-0.5*(a+b)*100.0)
             dz.append((b-a)*100.0)
     nd=[abs(z[1]-z[0])]+[abs(z[i]-z[i-1]) for i in range(1,len(z))]
-    return z,dz,nd
+    return z,dz,nd,counts
 
 def main():
     ap=argparse.ArgumentParser()
@@ -56,7 +70,20 @@ def main():
     rows.write_text(e33.materialize_interchange(profile),encoding="utf-8")
     cfg=work/"request.cfg"
     cfg.write_text("ELASTIC_STORAGE_SOURCE=GENERATED_BOFEK_BRO_PRIOR\n",encoding="utf-8")
-    z,dz,nd=split_profile(profile["horizons"],NODES)
+    z,dz,nd,counts=split_profile(profile["horizons"],NODES)
+    cat=parse_catalog(root)
+    nodevals={k:[] for k in cat}
+    for h,count in zip(profile["horizons"],counts):
+        b=int(h["staringseriesblock"])
+        idx=(b-101) if 101<=b<=118 else 18+(b-201)
+        for k in cat:
+            nodevals[k].extend([cat[k][idx]]*count)
+    retention=work/"retention.txt"
+    with retention.open("w",encoding="utf-8") as fh:
+        for i in range(NODES):
+            fh.write("%.17g %.17g %.17g %.17g\n" % (
+                nodevals["WCR"][i],nodevals["WCS"][i],nodevals["ALPHA"][i],nodevals["NPAR"][i]
+            ))
     geom=work/"geometry.json"
     geom.write_text(json.dumps({"z_cm":z,"dz_cm":dz,"node_distance_cm":nd},
                                sort_keys=True,separators=(",",":"))+"\n",encoding="utf-8")
@@ -64,5 +91,6 @@ def main():
     print(f"ELASTIC70_CONFIG={cfg}")
     print(f"ELASTIC70_ROWS={rows}")
     print(f"ELASTIC70_GEOMETRY={geom}")
+    print(f"ELASTIC70_RETENTION={retention}")
     print("F_PE_ELASTIC70_PROFILE_PREP=PASS")
 if __name__=="__main__": main()
