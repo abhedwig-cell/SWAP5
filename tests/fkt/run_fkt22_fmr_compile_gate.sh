@@ -63,6 +63,19 @@ MODULE_SRC=(
   src/process/mod_snow_process.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_macropore_continuation_state.f90
+  src/process/macropore/mod_ppa_wu05a5_top_partition.f90
+  src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
+  src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90
+  src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90
+  src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90
+  src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90
+  src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90
+  src/solver/mod_macropore_exchange_overlay_provider.f90
+  src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
   src/runtime/mod_rossfast_d3r_model_binding.f90
