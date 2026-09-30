@@ -55,11 +55,13 @@ program test_fpe_elastic70_production_transaction_performance
   integer :: strict_case_complete(NCASE),policy_case_complete(NCASE)
   real(real64) :: strict_case_dt(NCASE),policy_case_dt(NCASE)
   logical :: ok
+  character(len=1024) :: config_path,row_path
 
-  call write_config('elastic70-request.cfg')
-  call write_rows('elastic70-valid.rows')
+  call req(command_argument_count()>=2,'config/row args')
+  call get_command_argument(1,config_path)
+  call get_command_argument(2,row_path)
   call init_parameters(base)
-  call fmr_prepare_application_parameters_with_elastic_storage('elastic70-request.cfg','elastic70-valid.rows', &
+  call fmr_prepare_application_parameters_with_elastic_storage(trim(config_path),trim(row_path), &
        base,p,hdiag)
   call req(hdiag%status==FMR_ELAS_HOST_BINDING_OK,'generated host preparation')
   call req(hdiag%generated_prior_requested.and.hdiag%generated_prior_applied,'generated prior applied')
@@ -145,8 +147,6 @@ program test_fpe_elastic70_production_transaction_performance
   write(*,'(*(g0))')'ELASTIC70_RUNTIME|repetitions=',NREP,'|strict_seconds=',strict_seconds, &
        '|policy_seconds=',policy_seconds,'|ratio=',policy_seconds/max(strict_seconds,tiny(1.0_real64))
   write(*,'(A)')'F_PE_ELASTIC70=PASS'
-
-  call execute_command_line('rm -f elastic70-request.cfg elastic70-valid.rows')
 
 contains
 
@@ -251,28 +251,6 @@ contains
     c%model_temporal_indicator_budget_available=.true.
     c%model_temporal_indicator_budget=budget
   end subroutine init_config
-
-  subroutine write_config(path)
-    character(len=*),intent(in)::path
-    integer::unit
-    open(newunit=unit,file=path,status='replace',action='write',form='formatted')
-    write(unit,'(A)')'ELASTIC_STORAGE_SOURCE=GENERATED_BOFEK_BRO_PRIOR'
-    close(unit)
-  end subroutine write_config
-
-  subroutine write_rows(path)
-    character(len=*),intent(in)::path
-    integer::unit
-    open(newunit=unit,file=path,status='replace',action='write',form='formatted')
-    write(unit,'(A)')FMR_ELAS_ROWS_MAGIC
-    write(unit,'(A)')'source_artifact_sha256='//FMR_ELAS_ROWS_SOURCE_HASH
-    write(unit,'(A)')'normalsoilprofile_id=101'
-    write(unit,'(A)')'row_count=2'
-    write(unit,'(A)')'columns='//FMR_ELAS_ROWS_COLUMNS
-    write(unit,'(A)')'101|1|0|0.8|101|1.45|1|2|0'
-    write(unit,'(A)')'101|2|0.8|1.6|201|1.3|1|3|0'
-    close(unit)
-  end subroutine write_rows
 
   subroutine req(condition,label)
     logical,intent(in)::condition
