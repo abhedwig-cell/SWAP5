@@ -1,0 +1,41 @@
+name: F-PE-MULTI07 mode7 population in-process
+
+concurrency:
+  group: f-pe-multi07-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-multi07-mode7-population-inprocess
+    paths:
+      - 'tests/fpe/prepare_fpe_multi07_population.py'
+      - 'tests/fpe/materialize_fpe_multi07_headcalc_stubs.py'
+      - 'tests/fpe/materialize_fpe_multi07_batch_fixture.py'
+      - 'tests/fpe/run_fpe_multi07_mode7_population_inprocess.sh'
+      - 'docs/performance/F-PE-MULTI07_MODE7_POPULATION_INPROCESS_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-multi07.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/multi07-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Run in-process population benchmark
+        run: bash tests/fpe/run_fpe_multi07_mode7_population_inprocess.sh "$RUNNER_TEMP/multi07-pdok"
