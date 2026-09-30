@@ -1,0 +1,76 @@
+name: F-PE-NLGLOB14Z15 split retreat 12:16 to 13:16
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z15-split-retreat-12-13
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z15*.md'
+      - 'tests/fpe/run_fpe_nlglob14z15_segment.py'
+      - 'tests/fpe/run_fpe_nlglob14z15_segment.sh'
+      - '.github/workflows/f-pe-nlglob14z15.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  segment-a:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - route: HEAD
+            dt: "0.000125"
+            key: head-coarse
+          - route: HEAD
+            dt: "0.0000625"
+            key: head-fine
+          - route: RUNOFF
+            dt: "0.000125"
+            key: runoff-coarse
+          - route: RUNOFF
+            dt: "0.0000625"
+            key: runoff-fine
+    name: segment A ${{ matrix.route }} dt=${{ matrix.dt }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z15_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" first "140.0" "z15-${{ matrix.key }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z15-${{ matrix.key }}-checkpoint
+          path: z15-${{ matrix.key }}.json
+          if-no-files-found: error
+
+  segment-b:
+    needs: segment-a
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - route: HEAD
+            dt: "0.000125"
+            key: head-coarse
+          - route: HEAD
+            dt: "0.0000625"
+            key: head-fine
+          - route: RUNOFF
+            dt: "0.000125"
+            key: runoff-coarse
+          - route: RUNOFF
+            dt: "0.0000625"
+            key: runoff-fine
+    name: segment B ${{ matrix.route }} dt=${{ matrix.dt }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z15-${{ matrix.key }}-checkpoint
+          path: .
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z15_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" resume "280.0" "z15-${{ matrix.key }}.json"
