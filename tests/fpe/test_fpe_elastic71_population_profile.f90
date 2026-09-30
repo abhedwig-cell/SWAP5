@@ -81,7 +81,9 @@ program test_fpe_elastic71_population_profile
 
   write(*,'(*(g0))')'ELASTIC71_PROFILE|count=',count,'|offset=',offset,'|budget=',budget, &
        '|completed=',completed,'|retries=',retries,'|temporal=',temporal, &
-       '|mass=',massrej,'|solver=',solverrej,'|dtbins=',dtbins
+       '|mass=',massrej,'|solver=',solverrej, &
+       '|dt1=',dtbins(1),'|dt2=',dtbins(2),'|dt3=',dtbins(3),'|dt4=',dtbins(4),'|dt5=',dtbins(5), &
+       '|dt6=',dtbins(6),'|dt7=',dtbins(7),'|dt8=',dtbins(8),'|dt9=',dtbins(9),'|dt10=',dtbins(10)
   write(*,'(A)')'F_PE_ELASTIC71_PROFILE=PASS'
 
 contains
