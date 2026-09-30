@@ -95,13 +95,18 @@ contains
     same = self%num_domains == other%num_domains .and. self%num_nodes == other%num_nodes
     if (.not. same) return
     same = all(self%icp_bottom_domain == other%icp_bottom_domain) .and. &
-         all(self%sorptivity == other%sorptivity) .and. &
-         all(self%theta_sorption_ref == other%theta_sorption_ref) .and. &
-         all(self%absorption_time == other%absorption_time) .and. &
-         all(self%volume_domain_cp == other%volume_domain_cp) .and. &
-         all(self%water_domain_cp == other%water_domain_cp) .and. &
-         all(self%dynamic_volume_cp == other%dynamic_volume_cp)
+         all(same_real_bits(self%sorptivity, other%sorptivity)) .and. &
+         all(same_real_bits(self%theta_sorption_ref, other%theta_sorption_ref)) .and. &
+         all(same_real_bits(self%absorption_time, other%absorption_time)) .and. &
+         all(same_real_bits(self%volume_domain_cp, other%volume_domain_cp)) .and. &
+         all(same_real_bits(self%water_domain_cp, other%water_domain_cp)) .and. &
+         all(same_real_bits(self%dynamic_volume_cp, other%dynamic_volume_cp))
   end function macropore_state_same_values
+
+  pure elemental logical function same_real_bits(left, right) result(same)
+    real(real64), intent(in) :: left, right
+    same = transfer(left, 0_int64) == transfer(right, 0_int64)
+  end function same_real_bits
 
   integer(int64) function macropore_state_payload_bytes(self) result(bytes)
     class(macropore_continuation_state_t), intent(in) :: self
