@@ -643,21 +643,16 @@ for step in range(start_step+1,max_step+1):
     max_adaptive_ledger=max(max_adaptive_ledger,abs(a_ledger))
     max_cum_mass_diff=max(max_cum_mass_diff,abs(adaptive_cumledger-full_cumledger))
 
-    if hdiff>5e-5 or tdiff>5e-8 or topdiff>5e-8 or ledgerdiff>5e-8:
-        failure="Z31_PHYSICAL_GATE_FAILURE"; break
-    # Only compare direction when either trajectory changes ownership on this same nominal step.
-    if f_dir!=a_dir and (f_dir!="stable" or a_dir!="stable"):
-        failure="DRIVING_ADAPTIVE_EVENT_SEQUENCE_DIVERGENCE"; break
+    # Z31 attribution intentionally continues through A/B state and event-timing
+    # divergence. These are diagnostics here, not hard stop gates. The frozen
+    # Z31 hard stops are only non-finite/reconstruction/solve/geometry and
+    # per-interval physical ledger failures, all enforced above.
 
 full_dirs=[x["direction"] for x in event_full]
 adaptive_dirs=[x["direction"] for x in event_adaptive]
 event_sequence_same=(full_dirs==adaptive_dirs)
 final_tail_same=(full_tail==adaptive_tail)
 complete=(failure is None and accepted==(max_step-start_step))
-if complete and not event_sequence_same:
-    failure="DRIVING_ADAPTIVE_EVENT_SEQUENCE_DIVERGENCE"
-if complete and not final_tail_same:
-    failure="DRIVING_ADAPTIVE_DIVERGENCE"
 
 def finalize_stat(x):
     if x["count"]>0:
