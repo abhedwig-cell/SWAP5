@@ -1,0 +1,35 @@
+name: F-PE-NLGLOB14Z17C repaired retreat 13:16 to 14:16
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z17c-repaired-event-continuation
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z17C*.md'
+      - 'tests/fpe/run_fpe_nlglob14z17c*.py'
+      - 'tests/fpe/run_fpe_nlglob14z17c*.sh'
+      - '.github/workflows/f-pe-nlglob14z17c.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repaired-event-continuation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - route: HEAD
+            dt: "0.0000625"
+          - route: RUNOFF
+            dt: "0.000125"
+          - route: RUNOFF
+            dt: "0.0000625"
+    name: repaired-event ${{ matrix.route }} dt=${{ matrix.dt }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z17c.sh "${{ matrix.route }}" "${{ matrix.dt }}"
