@@ -127,7 +127,7 @@ contains
     type(vertical_flux_reconstruction_request_t)::vertical_request
     type(sorptivity_history_update_request_t)::history_local
     real(real64),allocatable::current_domain(:,:),next_domain(:,:),current_node(:)
-    real(real64)::numerator,denominator,dt
+    real(real64)::numerator,denominator,dt,max_positive_exchange_overdraw_cm,max_negative_exchange_overfill_cm
     logical::ok
     integer::iter,nd,n
 
