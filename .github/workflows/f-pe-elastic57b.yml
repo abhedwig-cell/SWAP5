@@ -17,7 +17,7 @@ on:
       - 'tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py'
       - 'docs/performance/F-PE-ELASTIC57B_CONTROLLER_WORK_PREREGISTRATION.md'
       - '.github/workflows/f-pe-elastic57b.yml'
-  workflow_dispatch:
+  pull_request:\n    branches:\n      - research/f-pe-elastic57-controller-robustness\n    paths:\n      - 'tests/fpe/run_fpe_elastic57b_profile.py'\n      - 'tests/fpe/run_fpe_elastic57b.sh'\n      - 'tests/fpe/prepare_fpe_elastic55.py'\n      - 'tests/fpe/prepare_fpe_elastic53.py'\n      - 'tests/fpe/materialize_fpe_elastic53_mode7_indicator.py'\n      - 'tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py'\n      - 'docs/performance/F-PE-ELASTIC57B_CONTROLLER_WORK_PREREGISTRATION.md'\n      - '.github/workflows/f-pe-elastic57b.yml'\n  workflow_dispatch:
 
 jobs:
   qualify:
