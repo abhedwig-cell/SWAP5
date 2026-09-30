@@ -3,7 +3,7 @@ name: F-PE-NLGLOB14Z22 post-14 bidirectional continuation
 on:
   push:
     branches:
-      - research/f-pe-nlglob14z22-long-horizon-bidirectional
+      - research/f-pe-nlglob14z22-post14-bidirectional
     paths:
       - 'docs/performance/F-PE-NLGLOB14Z22*.md'
       - 'tests/fpe/run_fpe_nlglob14z22_segment.py'
@@ -25,11 +25,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: gfortran --version
-      - run: bash tests/fpe/run_fpe_nlglob14z22_segment.sh "${{ matrix.route }}" "0.0000625" first "140.0" "z21-${{ matrix.route }}.json"
+      - run: bash tests/fpe/run_fpe_nlglob14z22_segment.sh "${{ matrix.route }}" "0.0000625" first "140.0" "z22-${{ matrix.route }}.json"
       - uses: actions/upload-artifact@v4
         with:
-          name: z21-${{ matrix.route }}-checkpoint
-          path: z21-${{ matrix.route }}.json
+          name: z22-${{ matrix.route }}-checkpoint
+          path: z22-${{ matrix.route }}.json
           if-no-files-found: error
 
   segment-b:
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: z21-${{ matrix.route }}-checkpoint
+          name: z22-${{ matrix.route }}-checkpoint
           path: .
       - run: gfortran --version
-      - run: bash tests/fpe/run_fpe_nlglob14z22_segment.sh "${{ matrix.route }}" "0.0000625" resume "540.0" "z21-${{ matrix.route }}.json"
+      - run: bash tests/fpe/run_fpe_nlglob14z22_segment.sh "${{ matrix.route }}" "0.0000625" resume "540.0" "z22-${{ matrix.route }}.json"
