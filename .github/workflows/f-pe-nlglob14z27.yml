@@ -1,0 +1,23 @@
+name: F-PE-NLGLOB14Z27 solve-dimension audit
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z27-block-normalized-work
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z27*.md'
+      - 'tests/fpe/run_fpe_nlglob14z27.py'
+      - 'tests/fpe/run_fpe_nlglob14z26_segment.py'
+      - '.github/workflows/f-pe-nlglob14z27.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/fpe/run_fpe_nlglob14z27.py
