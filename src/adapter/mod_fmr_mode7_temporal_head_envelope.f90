@@ -28,12 +28,14 @@ contains
 
     assessment = fmr_mode7_head_envelope_assessment_t()
 
-    if (.not. ieee_is_finite(head_inf_bound_cm) .or. head_inf_bound_cm < 0.0_real64) return
-    if (.not. ieee_is_finite(head_budget_cm) .or. head_budget_cm < 0.0_real64) return
+    if (.not. ieee_is_finite(head_inf_bound_cm)) return
+    if (head_inf_bound_cm < 0.0_real64) return
+    if (.not. ieee_is_finite(head_budget_cm)) return
+    if (head_budget_cm < 0.0_real64) return
 
     assessment%estimated_head_error_cm = FMR_MODE7_HEAD_ALPHA * head_inf_bound_cm
-    if (.not. ieee_is_finite(assessment%estimated_head_error_cm) .or. &
-        assessment%estimated_head_error_cm < 0.0_real64) return
+    if (.not. ieee_is_finite(assessment%estimated_head_error_cm)) return
+    if (assessment%estimated_head_error_cm < 0.0_real64) return
 
     if (head_budget_cm == 0.0_real64) then
       if (assessment%estimated_head_error_cm == 0.0_real64) then
@@ -45,7 +47,8 @@ contains
       end if
     else
       assessment%normalized_error = assessment%estimated_head_error_cm / head_budget_cm
-      if (.not. ieee_is_finite(assessment%normalized_error) .or. assessment%normalized_error < 0.0_real64) return
+      if (.not. ieee_is_finite(assessment%normalized_error)) return
+      if (assessment%normalized_error < 0.0_real64) return
       assessment%accepted = assessment%normalized_error <= 1.0_real64
     end if
 
