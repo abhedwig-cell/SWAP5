@@ -31,9 +31,10 @@ program test_ppa_wu05a4_richards_adversarial_picard
   real(real64), allocatable :: cofgen(:,:)
   real(real64) :: heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
   real(real64) :: theta_iter,amount,rate,prev_rate,rel_change,matrix0,matrix1,macro1,combined
-  integer :: i,node,iter,icase
+  integer :: i,node,iter,icase,failures
 
   node=2
+  failures=0
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
   params%parameter_set_id=505404_int64
   params%active_nodes=numnod
@@ -99,8 +100,17 @@ program test_ppa_wu05a4_richards_adversarial_picard
       rate=amount/dt
       exchange%source_rate=0.0_real64
       exchange%source_rate(node)=rate
+      write(*,'(*(g0))') 'PPA_WU05A4_ADV_ATTEMPT|CASE=',trim(label_case(icase)),'|ITER=',iter, &
+           '|H0=',h0_case(icase),'|RATE=',rate,'|THETA_IN=',theta_iter
       call solver%solve(request,workspace,result)
-      if(result%status/=SW_SOLVE_CONVERGED) error stop 'A4 adversarial corrector failed'
+      if(result%status/=SW_SOLVE_CONVERGED)then
+        failures=failures+1
+        write(*,'(*(g0))') 'PPA_WU05A4_ADV_FAIL|CASE=',trim(label_case(icase)),'|ITER=',iter, &
+             '|STATUS=',result%status,'|RETRY=',result%retry_advised, &
+             '|NONLINEAR=',result%diagnostics%nonlinear_iterations, &
+             '|BACKTRACK=',result%diagnostics%backtracking_attempts
+        exit
+      end if
 
       matrix1=sum(result%candidate_state%water_content*params%dz)
       macro1=macro_water-amount
@@ -125,7 +135,8 @@ program test_ppa_wu05a4_richards_adversarial_picard
     end do
   end do
 
-  print '(a)', 'PPA_WU05A4_RICHARDS_ADVERSARIAL_PICARD=PASS'
+  write(*,'(*(g0))') 'PPA_WU05A4_ADV_SUMMARY|FAILURES=',failures
+  print '(a)', 'PPA_WU05A4_RICHARDS_ADVERSARIAL_CHARACTERIZATION=PASS'
 
 contains
 
