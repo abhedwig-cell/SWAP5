@@ -29,5 +29,12 @@
     "E8_REJECT_RETRY",
     "E9_EXTREME_RAIN"
   ],
-  "next_action": "Continue local E5 rapid-drain isolation, then E6/E7 corrected interface-index adjudication."
+  "next_action": "Run E7 groundwater/interface sweep with research-only corrected icgwl=ICpTpWaSrDm(id), focusing on mass continuity and interface transitions.",
+  "local_research": {
+    "E0_E2": "PASS",
+    "E3_event_memory": "PASS_H6_SUPPORTED",
+    "E4_crack_history": "PASS_HISTORY_ACTIVE",
+    "E5_rapid_drain": "PASS_CONTINUOUS_ONSET_STORAGE_CAPPED",
+    "E6_icgwl": "PASS_CANDIDATE_ICpTpWaSrDm_STRONGLY_SUPPORTED"
+  }
 }
