@@ -171,3 +171,58 @@ The immediate next step is to finish:
 3. source-bound characterization of the historical index-0 path.
 
 Only after those close should PPA-WU05-A2 define typed committed/candidate/restart DTOs.
+
+
+## Exact mass-transfer ownership map
+
+The B1.11 rate path separates gross matrix/macropore exchange from external column transfers.
+
+### External into the macropore domain
+
+- `QInTopVrtDm`: vertical surface input into macropores, partitioned from rainfall/irrigation/melt through the active macropore surface area;
+- `QInTopLatDm`: lateral surface/ponding input into macropores, originating from `QMpLatSs`.
+
+These are external to the soil matrix/macropore internal exchange system, but remain part of the whole-column top-boundary water accounting and must not be counted independently in both matrix and macropore receipts.
+
+### External out of the whole soil column
+
+- `QOutDrRapCp`, aggregated as `QRapDra`: rapid macropore drainage to the drainage/surface-water system.
+
+`QRapDra` is consumed by the surface-water module and is therefore an external accepted transfer with one owner.
+
+### Internal matrix/macropore transfers
+
+The following are gross internal transfers:
+
+- `QInIntSatDmCp`;
+- `QInMtxSatDmCp`;
+- `QOutMtxSatDmCp`;
+- `QOutMtxUnsDmCp`.
+
+They are combined into the signed net exchange
+
+`QExcMtxDmCp = QOutMtxSatDmCp + QOutMtxUnsDmCp - (QInIntSatDmCp + QInMtxSatDmCp)`.
+
+The domain sum becomes `QExcMpMtx`, and the column sum becomes `QMaPo`.
+
+`QExcMpMtx` enters the Richards residual with the opposite ownership to the macropore balance. Therefore this is an internal matrix/macropore transfer and cancels from whole-column accepted mass when booked once on each side.
+
+`QMaPo` is a diagnostic/net aggregate of that internal exchange. It must not be booked as an additional external flux.
+
+### Storage
+
+`WaUnMpDmCp` / domain and aggregate macropore storage are physical storage. Their accepted change belongs in whole-column storage reconciliation.
+
+### Root-related transfers
+
+No direct root-water extraction term is produced by `macropore.f90` or `macrorate.f90`. Root extraction remains on the matrix/soil-water side of the B1.11 source path. A future SWAP5 macropore DTO should therefore not invent a separate root-related macropore external receipt without an explicit new physical contract.
+
+### Mass ownership conclusion
+
+The A1 source-bound mass map supports the predecessor invariant:
+
+- surface macropore inflow is a partition of the top boundary, not a second independent precipitation/irrigation source;
+- rapid drainage is an external outflow;
+- matrix/macropore exchange is internal and cancels in whole-column mass;
+- storage change is physical;
+- rejected trials must publish none of these accepted receipts.
