@@ -62,28 +62,35 @@ def main():
                 seq=[r for r in rr if r["regime"]==reg and float(r["h0"])==h and float(r["delta"])==d]
                 seq=sorted(seq,key=lambda r:r["_retry"])
                 retained=[r for r in seq if int(r["full_status"])==1 and r["indicator_available"]=="T"]
+                if len(retained) < 3:
+                    continue
+                increasing=[]
                 for prev,nxt in zip(retained,retained[1:]):
                     b0=float(prev["indicator_binf"]); b1=float(nxt["indicator_binf"])
-                    if b1 > b0*(1+1e-12):
-                        i0=prev["_retry"]; i1=nxt["_retry"]
-                        cls="CONTIGUOUS" if i1==i0+1 else "GAP"
-                        rel=b1/b0-1.0 if b0>0 else math.inf
-                        mag="SMALL" if rel<=0.05 else ("MODERATE" if rel<=0.25 else "LARGE")
-                        p0=prev["all_converged"]=="T"; p1=nxt["all_converged"]=="T"
-                        h0=float(prev["dh_inf"]) if p0 else math.nan
-                        h1=float(nxt["dh_inf"]) if p1 else math.nan
-                        margin0=(ALPHA*b0-h0) if p0 else math.nan
-                        margin1=(ALPHA*b1-h1) if p1 else math.nan
-                        gaps=[]
-                        for j in range(i0+1,i1):
-                            x=seq[j]
-                            gaps.append(f"{j}:{x['full_status']}:{x['indicator_available']}")
-                        rec=dict(profile=a.profile_id,regime=reg,h0=h,delta=d,
-                                 retry0=i0,retry1=i1,dt0=float(prev["dt"]),dt1=float(nxt["dt"]),
-                                 b0=b0,b1=b1,growth=b1/b0 if b0>0 else math.inf,rel=rel,
-                                 cls=cls,mag=mag,p0=p0,p1=p1,hinf0=h0,hinf1=h1,
-                                 margin0=margin0,margin1=margin1,gaps=",".join(gaps) if gaps else "NONE")
-                        violations.append(rec)
+                    if b1 <= b0*(1+1e-12):
+                        continue
+                    i0=prev["_retry"]; i1=nxt["_retry"]
+                    cls="CONTIGUOUS" if i1==i0+1 else "GAP"
+                    rel=b1/b0-1.0 if b0>0 else math.inf
+                    mag="SMALL" if rel<=0.05 else ("MODERATE" if rel<=0.25 else "LARGE")
+                    p0=prev["all_converged"]=="T"; p1=nxt["all_converged"]=="T"
+                    h0=float(prev["dh_inf"]) if p0 else math.nan
+                    h1=float(nxt["dh_inf"]) if p1 else math.nan
+                    margin0=(ALPHA*b0-h0) if p0 else math.nan
+                    margin1=(ALPHA*b1-h1) if p1 else math.nan
+                    gaps=[]
+                    for j in range(i0+1,i1):
+                        x=seq[j]
+                        gaps.append(f"{j}:{x['full_status']}:{x['indicator_available']}")
+                    increasing.append(dict(profile=a.profile_id,regime=reg,h0=h,delta=d,
+                             retry0=i0,retry1=i1,dt0=float(prev["dt"]),dt1=float(nxt["dt"]),
+                             b0=b0,b1=b1,growth=b1/b0 if b0>0 else math.inf,rel=rel,
+                             cls=cls,mag=mag,p0=p0,p1=p1,hinf0=h0,hinf1=h1,
+                             margin0=margin0,margin1=margin1,gaps=",".join(gaps) if gaps else "NONE"))
+                if increasing:
+                    worst=max(increasing,key=lambda x:x["growth"])
+                    worst["transition_count"]=len(increasing)
+                    violations.append(worst)
 
     print(f"ELASTIC56_PROFILE_COUNT|profile={a.profile_id}|violations={len(violations)}")
     for v in violations:
@@ -94,7 +101,7 @@ def main():
             f"rel_increase={v['rel']:.17e}",f"class={v['cls']}",f"magnitude={v['mag']}",
             f"paired0={'T' if v['p0'] else 'F'}",f"paired1={'T' if v['p1'] else 'F'}",
             f"hinf0={v['hinf0']}",f"hinf1={v['hinf1']}",f"margin0={v['margin0']}",f"margin1={v['margin1']}",
-            f"gaps={v['gaps']}"
+            f"gaps={v['gaps']}",f"transition_count={v['transition_count']}"
         ])))
     print("F_PE_ELASTIC56_PROFILE=PASS")
 
