@@ -26,6 +26,7 @@ module mod_fmr_serialized_reference_backend
        fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
+       SW_SOLVE_RETRY_ADVISED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_TEMPORAL_INDICATOR_NOT_RUN
   use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
@@ -195,14 +196,6 @@ module mod_fmr_serialized_reference_backend
     logical :: root_extraction_active = .false.
     logical :: macropore_active = .false.
     type(macropore_runtime_config_t), allocatable :: macropore
-    logical :: macropore_active = .false.
-    logical :: macropore_executed = .false.
-    integer :: macropore_status = 0
-    integer :: macropore_outer_iterations = 0
-    real(real64) :: macropore_returned_surface_cm = 0.0_real64
-    real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
-    real(real64) :: macropore_internal_exchange_residual_cm = 0.0_real64
-    real(real64) :: macropore_balance_residual_cm = 0.0_real64
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
     logical :: tabulated_hydraulics_active = .false.
@@ -302,6 +295,14 @@ module mod_fmr_serialized_reference_backend
     character(len=48) :: temporal_certificate_unavailable_reason = 'not-evaluated'
     integer :: temporal_additional_tridiagonal_solves = 0
     integer :: temporal_additional_full_nonlinear_solves = 0
+    logical :: macropore_active = .false.
+    logical :: macropore_executed = .false.
+    integer :: macropore_status = 0
+    integer :: macropore_outer_iterations = 0
+    real(real64) :: macropore_returned_surface_cm = 0.0_real64
+    real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
+    real(real64) :: macropore_internal_exchange_residual_cm = 0.0_real64
+    real(real64) :: macropore_balance_residual_cm = 0.0_real64
     logical :: snow_active = .false.
     logical :: snow_event_prepared = .false.
     integer :: snow_status = 0
