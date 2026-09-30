@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$ROOT"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-nlglob14z43-${GITHUB_RUN_ID:-local}-$$"
+mkdir -p "$BUILD"
+trap 'rm -rf "$BUILD"' EXIT
+
+gfortran -std=f2008 -O3   src/runtime/mod_fmr_moving_interface_application_config.f90   tests/fpe/test_fpe_nlglob14z43_config.f90   -o "$BUILD/config_test"
+"$BUILD/config_test"
+
+python3 tests/rom/materialize_f_rom0_headcalc_stubs.py   --source tests/fsi/fsi04_real_headcalc_stubs.f90   --output "$BUILD/stub.f90" --nodes 64 --dz-cm 10
+
+python3 tests/fpe/materialize_fpe_timeint03_binding.py   --source src/adapter/mod_reference_richards_legacy_binding.f90   --output "$BUILD/mod_fpe_timeint03_reference_binding.f90"
+
+python3 tests/fpe/materialize_fpe_timeint02_headcalc.py   --source src/legacy/b1_10_port/headcalc.f90   --output "$BUILD/headcalc_z43.f90"
+
+python3 tests/fpe/compile_fpe_timeint03_closure.py   --root "$ROOT" --stub "$BUILD/stub.f90"   --target tests/fpe/test_fpe_nlglob14z42_large_profile_trajectory.f90   --external-source "$BUILD/headcalc_z43.f90"   --external-module-source "$BUILD/mod_fpe_timeint03_reference_binding.f90"   --build "$BUILD/compile" --opt 3
+
+python3 tests/fpe/run_fpe_nlglob14z43.py   "$BUILD/compile/timeint03_test" docs/performance/F-PE-BOFEK01_TESTBANK.json
