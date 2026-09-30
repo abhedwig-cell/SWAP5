@@ -56,6 +56,11 @@ program test_ppa_wu05a7_fmr_macropore_transaction
   call backend%initialize(top)
   call backend%run_trial(column,template,parameters,committed,forcing,config,0.0_real64,dt,checkpoint, &
        result1,candidate1,diag1)
+  obs=backend%observation()
+  write(*,'(*(g0))') 'PPA_WU05A7_FMR_DEBUG|STATUS=',result1%status,'|COMPLETED=',result1%completed, &
+       '|ADMISSION_REJ=',diag1%admission_rejections,'|ATTEMPTS=',diag1%attempts,'|RETRIES=',diag1%retries, &
+       '|MASS_COMPLETE=',result1%mass%complete,'|MASS_RES=',result1%mass%residual, &
+       '|MACRO_EXEC=',obs%macropore_executed,'|MACRO_STATUS=',obs%macropore_status
   call require(result1%status==CANONICAL_STATUS_COMPLETED .and. result1%completed,'first FMR trial completed')
   call require(candidate1%ready(),'first candidate ready')
   call require(result1%mass%complete .and. abs(result1%mass%residual)<=mass_tol,'first mass closed')
