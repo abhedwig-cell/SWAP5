@@ -18,8 +18,8 @@ def main():
        '|half2_nonlinear=',res_half2%diagnostics%nonlinear_iterations, &
        '|full_linear=',res_full%diagnostics%linear_solves,'|half1_linear=',res_half1%diagnostics%linear_solves, &
        '|half2_linear=',res_half2%diagnostics%linear_solves, &
-       '|full_headcalc=',res_full%diagnostics%headcalc_calls,'|half1_headcalc=',res_half1%diagnostics%headcalc_calls, &
-       '|half2_headcalc=',res_half2%diagnostics%headcalc_calls, &
+       '|full_jacobian=',res_full%diagnostics%jacobian_builds,'|half1_jacobian=',res_half1%diagnostics%jacobian_builds, &
+       '|half2_jacobian=',res_half2%diagnostics%jacobian_builds, &
        '|full_backtracking=',res_full%diagnostics%backtracking_attempts, &
        '|half1_backtracking=',res_half1%diagnostics%backtracking_attempts, &
        '|half2_backtracking=',res_half2%diagnostics%backtracking_attempts
