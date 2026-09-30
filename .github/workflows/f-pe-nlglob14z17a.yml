@@ -1,0 +1,36 @@
+name: F-PE-NLGLOB14Z17A three-fixture failure attribution
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z17a-three-fixture-attribution
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z17A*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14z17a*.py'
+      - 'tests/fpe/run_fpe_nlglob14z17a*.py'
+      - 'tests/fpe/run_fpe_nlglob14z17a*.sh'
+      - '.github/workflows/f-pe-nlglob14z17a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - route: HEAD
+            dt: "0.0000625"
+          - route: RUNOFF
+            dt: "0.000125"
+          - route: RUNOFF
+            dt: "0.0000625"
+    name: attribution ${{ matrix.route }} dt=${{ matrix.dt }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z17a.sh "${{ matrix.route }}" "${{ matrix.dt }}"
