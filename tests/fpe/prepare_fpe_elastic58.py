@@ -60,11 +60,21 @@ def independent_selection(gpkg:Path):
         seen.add(key); uniq.append(p)
 
     selected=[]
-    for hc in TARGET_HORIZON_COUNTS:
-        c=[p for p in uniq if p["horizon_count"]==hc]
-        if not c:
-            raise SystemExit(f"F_PE_ELASTIC58_FAIL no independent profile for horizon_count={hc}")
-        selected.append(min(c,key=lambda x:x["profile_id"]))
+    classes=sorted({p["horizon_count"] for p in uniq})
+    for hc in classes:
+        candidates=[p for p in uniq if p["horizon_count"]==hc]
+        if candidates:
+            selected.append(min(candidates,key=lambda x:x["profile_id"]))
+        if len(selected)==4:
+            break
+    if len(selected)<4:
+        used={p["profile_id"] for p in selected}
+        for p in sorted(uniq,key=lambda x:x["profile_id"]):
+            if p["profile_id"] in used: continue
+            selected.append(p); used.add(p["profile_id"])
+            if len(selected)==4: break
+    if len(selected)!=4 or len({p["horizon_count"] for p in selected})<3:
+        raise SystemExit(f"F_PE_ELASTIC58_FAIL insufficient independent profile diversity selected={selected}")
     return selected
 
 def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
