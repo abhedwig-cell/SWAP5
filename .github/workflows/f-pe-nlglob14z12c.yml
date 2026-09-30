@@ -1,0 +1,24 @@
+name: F-PE-NLGLOB14Z12C repaired fine RUNOFF event continuation
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z12c-repaired-event-continuation
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z12C*.md'
+      - 'tests/fpe/run_fpe_nlglob14z12c*.py'
+      - 'tests/fpe/run_fpe_nlglob14z12c*.sh'
+      - '.github/workflows/f-pe-nlglob14z12c.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repaired-event-continuation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z12c.sh
