@@ -69,22 +69,25 @@ print("F_PE_ELASTIC60_A2_HISTORY=PASS")
 print("F_PE_ELASTIC60_A3_INDICATOR=PASS")
 
 alphas={}
+infeasible=[]
 for se in sorted(LIMITS):
     tr=[r for r in records if r["role"]=="TRAIN" and r["se"]==se]
     if len(tr)!=9: raise SystemExit(f"F_PE_ELASTIC60_FAIL train count Se={se}: {len(tr)}")
-    ratios_h=[r["h"]/r["b"] for r in tr if r["b"]>0]
-    ratios_t=[LIMITS[se]/r["b"] for r in tr if r["b"]>0]
-    if len(ratios_h)!=len(tr) or len(ratios_t)!=len(tr):
+    hr=[(r["h"]/r["b"],r) for r in tr if r["b"]>0]
+    tratio=[(LIMITS[se]/r["b"],r) for r in tr if r["b"]>0]
+    if len(hr)!=len(tr) or len(tratio)!=len(tr):
         raise SystemExit(f"F_PE_ELASTIC60_FAIL zero Binf Se={se}")
-    L=max(ratios_h); U=min(ratios_t)
+    L,Lrec=max(hr,key=lambda x:x[0]); U,Urec=min(tratio,key=lambda x:x[0])
+    width=U/L if L>0 else math.inf
+    print(f"ELASTIC60_TRAIN_INTERVAL|se={se:.2f}|L={L:.17e}|L_case={Lrec['case']}|L_material={Lrec['m']}|L_forcing={Lrec['f']}|U={U:.17e}|U_case={Urec['case']}|U_material={Urec['m']}|U_forcing={Urec['f']}|width={width:.17e}")
     if L>U*(1+1e-12):
-        print(f"ELASTIC60_TRAIN_INFEASIBLE|se={se:.2f}|L={L:.17e}|U={U:.17e}")
-        raise SystemExit("F_PE_ELASTIC60_FAIL empty training interval")
+        infeasible.append((se,L,U,Lrec,Urec))
+        print(f"ELASTIC60_TRAIN_INFEASIBLE|se={se:.2f}|L={L:.17e}|U={U:.17e}|relative_overlap_deficit={(L/U-1.0):.17e}")
+        continue
     alpha=math.sqrt(L*U) if L>0 else 0.0
     alphas[se]=alpha
-    print(f"ELASTIC60_TRAIN|se={se:.2f}|L={L:.17e}|U={U:.17e}|alpha={alpha:.17e}|width={U/L if L>0 else math.inf:.17e}")
+    print(f"ELASTIC60_TRAIN_FEASIBLE|se={se:.2f}|alpha={alpha:.17e}")
 
-print("F_PE_ELASTIC60_A4_TRAIN_FEASIBLE=PASS")
 print("F_PE_ELASTIC60_A5_TRAIN_ONLY=PASS")
 print("F_PE_ELASTIC60_A6_HOLDOUT_BLIND=PASS")
 
@@ -93,6 +96,9 @@ upper_fail=[]
 for se in sorted(LIMITS):
     ho=[r for r in records if r["role"]=="HOLDOUT" and r["se"]==se]
     if len(ho)!=9: raise SystemExit(f"F_PE_ELASTIC60_FAIL hold count Se={se}: {len(ho)}")
+    if se not in alphas:
+        print(f"ELASTIC60_HOLDOUT_SKIPPED|se={se:.2f}|reason=EMPTY_TRAINING_INTERVAL")
+        continue
     a=alphas[se]; T=LIMITS[se]
     lower_rat=[]; upper_rat=[]
     for r in ho:
@@ -106,6 +112,7 @@ for se in sorted(LIMITS):
             upper_fail.append((r["case"],r["m"],se,r["f"],r["h"],r["b"],a,bound,ur))
     print(f"ELASTIC60_HOLDOUT|se={se:.2f}|cases={len(ho)}|max_error_over_bound={max(lower_rat):.17e}|max_bound_over_budget={max(upper_rat):.17e}|min_error_slack={min(1-x for x in lower_rat):.17e}|min_budget_slack={min(1-x for x in upper_rat):.17e}")
 
+print(f"ELASTIC60_TRAIN_INFEASIBLE_COUNT={len(infeasible)}")
 print(f"ELASTIC60_HOLDOUT_LOWER_FAILURES={len(lower_fail)}")
 print(f"ELASTIC60_HOLDOUT_UPPER_FAILURES={len(upper_fail)}")
 for x in lower_fail:
@@ -113,11 +120,17 @@ for x in lower_fail:
 for x in upper_fail:
     print("ELASTIC60_UPPER_FAIL|case=%d|material=%s|se=%.2f|forcing=%s|hinf=%.17e|binf=%.17e|alpha=%.17e|bound=%.17e|ratio=%.17e"%x)
 
-if lower_fail:
+if infeasible:
+    print("F_PE_ELASTIC60_A4_TRAIN_FEASIBLE=FALSIFIED")
+    print("F_PE_ELASTIC60_BRIDGE=FALSIFIED_EMPTY_TRAINING_INTERVAL")
+elif lower_fail:
+    print("F_PE_ELASTIC60_A4_TRAIN_FEASIBLE=PASS")
     print("F_PE_ELASTIC60_BRIDGE=FALSIFIED_ERROR_CONSERVATISM")
 elif upper_fail:
+    print("F_PE_ELASTIC60_A4_TRAIN_FEASIBLE=PASS")
     print("F_PE_ELASTIC60_BRIDGE=FALSIFIED_BUDGET_COMPATIBILITY")
 else:
+    print("F_PE_ELASTIC60_A4_TRAIN_FEASIBLE=PASS")
     print("F_PE_ELASTIC60_BRIDGE=PASS")
 print("F_PE_ELASTIC60_HOLDOUT_CLASSIFIED=PASS")
 PY
