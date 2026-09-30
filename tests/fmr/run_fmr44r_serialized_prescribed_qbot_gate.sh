@@ -101,6 +101,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
 
