@@ -57,7 +57,7 @@ full_th=th0[:]
 red_h=h0[:]
 red_th=th0[:]
 q1=fluxes(full_h)
-qtop1=top_flux(full_h)
+qtop1=top_flux(full_h[0])
 
 def full_residual():
     td0=[]
