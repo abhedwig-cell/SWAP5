@@ -2,8 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-elastic70-${GITHUB_RUN_ID:-local}-$$"
-mkdir -p "$BUILD"
+ARTIFACT_DIR="${1:?frozen BRO artifact directory required}"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-elastic70-${GITHUB_RUN_ID:-local}-$"
+mkdir -p "$BUILD/profile"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "F_PE_ELASTIC70_FAIL $*" >&2; exit 1; }
 
@@ -12,7 +13,7 @@ python3 tests/rom/materialize_f_rom0_headcalc_stubs.py   --source tests/fsi/fsi0
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
   python3 tests/rom/compile_f_rom0_fortran_closure.py     --root "$ROOT" --stub "$BUILD/stub.f90"     --target tests/fpe/test_fpe_elastic70_production_transaction_performance.f90     --external-source src/legacy/b1_10_port/headcalc.f90     --build "$OUT" --opt "$opt"
-  env -u SWAP5_ELASTIC_STORAGE_CONFIG "$OUT/rom0_test" | tee "$OUT/result.txt"
+  env -u SWAP5_ELASTIC_STORAGE_CONFIG "$OUT/rom0_test" "$BUILD/profile/request.cfg" "$BUILD/profile/profile_8016.rows" | tee "$OUT/result.txt"
   grep -Fq 'F_PE_ELASTIC70_A1_GENERATED=PASS' "$OUT/result.txt" || fail "generated O$opt"
   grep -Fq 'F_PE_ELASTIC70_A2_TRANSACTION_WORK=PASS' "$OUT/result.txt" || fail "work O$opt"
   grep -Fq 'F_PE_ELASTIC70=PASS' "$OUT/result.txt" || fail "result O$opt"
