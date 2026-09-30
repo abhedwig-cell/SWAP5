@@ -67,11 +67,17 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a4_richards_exchange.f90 -o "$OUT/test.o"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/out.txt"
-  grep -Fq 'PPA_WU05A4_RICHARDS_FIXED_EXCHANGE=PASS' "$OUT/out.txt"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a4_richards_exchange.f90 -o "$OUT/test_fixed.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_fixed.o" -o "$OUT/test_fixed"
+  "$OUT/test_fixed" > "$OUT/fixed.txt"
+  grep -Fq 'PPA_WU05A4_RICHARDS_FIXED_EXCHANGE=PASS' "$OUT/fixed.txt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a4_richards_predictor_corrector.f90 -o "$OUT/test_pc.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_pc.o" -o "$OUT/test_pc"
+  "$OUT/test_pc" > "$OUT/pc.txt"
+  grep -Fq 'PPA_WU05A4_RICHARDS_PREDICTOR_CORRECTOR=PASS' "$OUT/pc.txt"
 done
 
-cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
+cmp "$BUILD/o0/fixed.txt" "$BUILD/o2/fixed.txt"
+cmp "$BUILD/o0/pc.txt" "$BUILD/o2/pc.txt"
 echo "PPA_WU05A4_RICHARDS_GATE=PASS"
