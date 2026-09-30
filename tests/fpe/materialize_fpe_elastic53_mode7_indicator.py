@@ -66,7 +66,7 @@ def main():
     if anchor not in oracle: raise SystemExit("F_PE_ELASTIC53_FAIL oracle use anchor")
     oracle=oracle.replace(anchor,anchor+insert,1)
     oracle=oracle.replace("request%boundary%bottom_mode = 2","request%boundary%bottom_mode = 7")
-    oracle=oracle.replace("real(real64), parameter :: h0 = -75.0_real64","real(real64), parameter :: h0 = 2.0_real64")
+    oracle=oracle.replace("real(real64), parameter :: h0 = -75.0_real64","real(real64), parameter :: h0 = -75.0_real64")
     oracle=oracle.replace(
         "call solver%evaluate_temporal_indicator(request, result, indicator_request, workspace, indicator)",
         "call evaluate_fpe_elastic53_reference_richards_temporal_indicator(request, result, indicator_request, indicator)")
