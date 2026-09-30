@@ -1,0 +1,65 @@
+name: F-PE-ELASTIC69 generated mode7 application policy admission
+
+concurrency:
+  group: f-pe-elastic69-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic69-generated-mode7-application-policy
+    paths:
+      - 'docs/performance/F-PE-ELASTIC69_GENERATED_MODE7_APPLICATION_POLICY_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-ELASTIC69_APPLICATION_POLICY.md'
+      - '.github/workflows/f-pe-elastic69.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-ELASTIC69_GENERATED_MODE7_APPLICATION_POLICY_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-ELASTIC69_APPLICATION_POLICY.md'
+      - '.github/workflows/f-pe-elastic69.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch authorities
+        run: |
+          git fetch origin integration/f-ci-canonical
+          git fetch origin research/f-pe-elastic68-practical-budget-scan
+      - name: Verify canonical dependency authorities
+        run: |
+          test -f docs/performance/F-PE-ELASTIC44_CLOSURE.md
+          test -f docs/performance/F-PE-ELASTIC45_CLOSURE.md
+          test -f docs/performance/F-PE-ELASTIC65_CLOSURE.md
+          grep -Fq 'Status: CLOSED_ADMITTED' docs/performance/F-PE-ELASTIC44_CLOSURE.md
+          grep -Fq 'Status: CLOSED_ADMITTED' docs/performance/F-PE-ELASTIC45_CLOSURE.md
+          grep -Fq 'Status: CLOSED_PRODUCTION_ADMITTED' docs/performance/F-PE-ELASTIC65_CLOSURE.md
+          echo F_PE_ELASTIC69_A1_DEPENDENCIES=PASS
+      - name: Verify pinned ELASTIC68 evidence
+        run: |
+          test "$(git rev-parse origin/research/f-pe-elastic68-practical-budget-scan)" = "05f8cd7ed4a3e95b9c7c4c78cdb39f7e61fa1bb5"
+          git show 05f8cd7ed4a3e95b9c7c4c78cdb39f7e61fa1bb5:docs/performance/F-PE-ELASTIC68_RESULT.md > /tmp/elastic68-result.md
+          grep -Fq 'QUALIFIED_GENERATED_ELAS_MODE7_APPLICATION_HEAD_BUDGET_0P20_CANDIDATE' /tmp/elastic68-result.md
+          grep -Fq '64/64' /tmp/elastic68-result.md
+          grep -Fq '69' /tmp/elastic68-result.md
+          echo F_PE_ELASTIC69_A2_RESEARCH_EVIDENCE=PASS
+      - name: Verify documentation-only source scope
+        run: |
+          BASE="$(git merge-base HEAD origin/integration/f-ci-canonical)"
+          test -z "$(git diff --name-only "$BASE"..HEAD -- src)"
+          echo F_PE_ELASTIC69_A3_SOURCE_SCOPE=PASS
+      - name: Verify policy contract
+        run: |
+          grep -Fq '0.20 cm' docs/performance/F-PE-ELASTIC69_APPLICATION_POLICY.md
+          grep -Fq 'GENERATED ELAS' docs/performance/F-PE-ELASTIC69_APPLICATION_POLICY.md
+          grep -Fq 'not a universal SWAP accuracy tolerance' docs/performance/F-PE-ELASTIC69_GENERATED_MODE7_APPLICATION_POLICY_PREREGISTRATION.md
+          grep -Fq 'Hard mass and solver convergence tolerances remain unchanged.' docs/performance/F-PE-ELASTIC69_APPLICATION_POLICY.md
+          echo F_PE_ELASTIC69_A4_POLICY=PASS
+      - name: Documentation checks
+        run: python tools/docs/check_docs.py
