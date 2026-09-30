@@ -56,10 +56,16 @@ for line in open(sys.argv[1],encoding="utf-8"):
     rows.append(d)
 if not rows: raise SystemExit("F_PE_ELASTIC58_FAIL no points")
 
-seqs={}
+profiles=(11060,10260,8016,3030)
+regimes=("OFF","FIXED_1E6","GENERATED")
+heads=(-75.0,-20.0,2.0,10.0)
+deltas=(-0.05,-0.035,0.035,0.05)
+seqs={(p,r,h,d):[] for p in profiles for r in regimes for h in heads for d in deltas}
 for r in rows:
     k=(r["profile"],r["regime"],r["h0"],r["delta"])
-    seqs.setdefault(k,[]).append(r)
+    if k not in seqs:
+        raise SystemExit(f"F_PE_ELASTIC58_FAIL unexpected sequence key={k}")
+    seqs[k].append(r)
 for v in seqs.values(): v.sort(key=lambda r:r["retry"])
 if len(seqs)!=192:
     raise SystemExit(f"F_PE_ELASTIC58_FAIL sequence count={len(seqs)}")
