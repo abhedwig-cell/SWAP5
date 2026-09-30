@@ -98,7 +98,14 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" "${extra[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
   done
   echo "FKT22_FMR_COMPILE_O${opt}=PASS"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a7_fmr_macropore_transaction.f90 -o "$OUT/test_a7_fmr.o" || fail "compile A7 FMR transaction O$opt"
+  gfortran -fopenmp -O"$opt" "$OUT"/*.o -o "$OUT/test_a7_fmr" || fail "link A7 FMR transaction O$opt"
+  "$OUT/test_a7_fmr" > "$OUT/a7_fmr.txt" 2>&1 || { cat "$OUT/a7_fmr.txt" >&2; fail "runtime A7 FMR transaction O$opt"; }
+  cat "$OUT/a7_fmr.txt"
+  grep -Fq 'PPA_WU05A7_FMR_MACROPORE_TRANSACTION=PASS' "$OUT/a7_fmr.txt" || fail "missing A7 FMR transaction marker O$opt"
 done
+
+cmp "$BUILD/o0/a7_fmr.txt" "$BUILD/o2/a7_fmr.txt" || fail 'A7 FMR transaction O0/O2 drift'
 
 grep -Fq 'type(accepted_trajectory_direction_t) :: trajectory_direction' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'transactional trajectory state missing'
 grep -Fq 'typed%trajectory_direction = self%trajectory_direction' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'attempt-context capture missing'
