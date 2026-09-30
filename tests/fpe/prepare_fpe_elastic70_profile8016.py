@@ -20,10 +20,16 @@ def parse_catalog(root):
     text=(root/"src/adapter/mod_fmr_elastic_storage_staringreeks_catalog.f90").read_text(encoding="utf-8")
     out={}
     for name in ("WCR","WCS","ALPHA","NPAR"):
-        m=re.search(rf"{name}\\(FMR_STARINGREEKS_CATALOG_COUNT\\)\\s*=\\s*\\[\\s*&(?P<body>.*?)\\]",text,re.S)
+        pattern=name + r"\(FMR_STARINGREEKS_CATALOG_COUNT\)\s*=\s*\[\s*&(?P<body>.*?)\]"
+        m=re.search(pattern,text,re.S)
         if not m:
             raise SystemExit(f"F_PE_ELASTIC70_FAIL catalog {name}")
-        vals=[float(x) for x in re.findall(r"([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[Ee][+-]?\\d+)?)_real64",m.group("body"))]
+        vals=[
+            float(x) for x in re.findall(
+                r"([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[Ee][+-]?\d+)?)_real64",
+                m.group("body"),
+            )
+        ]
         if len(vals)!=36:
             raise SystemExit(f"F_PE_ELASTIC70_FAIL catalog count {name}={len(vals)}")
         out[name]=vals
