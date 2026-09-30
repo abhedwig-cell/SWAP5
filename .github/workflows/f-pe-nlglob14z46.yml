@@ -1,0 +1,26 @@
+name: F-PE-NLGLOB14Z46 explicit eligibility guard
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z46-explicit-eligibility-guard
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z46*.md'
+      - 'src/runtime/mod_timestep_numerical_profile.f90'
+      - 'src/runtime/mod_moving_interface_manager.f90'
+      - 'tests/fpe/test_fpe_nlglob14z46_eligibility.f90'
+      - 'tests/fpe/run_fpe_nlglob14z46.sh'
+      - '.github/workflows/f-pe-nlglob14z46.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  eligibility-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z46.sh
