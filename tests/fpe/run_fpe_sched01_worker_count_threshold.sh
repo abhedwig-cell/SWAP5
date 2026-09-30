@@ -86,6 +86,8 @@ for line in open(sys.argv[1],encoding="utf-8"):
     if not line.startswith("SCHED01_OBS|"): continue
     d={}
     for part in line.strip().split("|")[1:]:
+        if "=" not in part:
+            continue
         k,v=part.split("=",1); d[k]=v
     rows.append(d)
 
