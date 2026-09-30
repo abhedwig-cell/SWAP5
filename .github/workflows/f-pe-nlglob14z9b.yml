@@ -1,0 +1,177 @@
+name: F-PE-NLGLOB14Z9B split retreat 10:16 to 11:16
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z9b-split-retreat-10-to-11
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z9B*.md'
+      - 'tests/fpe/run_fpe_nlglob14z9b_segment.py'
+      - 'tests/fpe/run_fpe_nlglob14z9b_segment.sh'
+      - '.github/workflows/f-pe-nlglob14z9b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  segment-12:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - route: HEAD
+            dt: "0.000125"
+            key: coarse
+          - route: HEAD
+            dt: "0.0000625"
+            key: fine
+          - route: RUNOFF
+            dt: "0.000125"
+            key: coarse
+          - route: RUNOFF
+            dt: "0.0000625"
+            key: fine
+    name: segment 12 ${{ matrix.route }} ${{ matrix.key }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z9b_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" first "12.0" "z9b-${{ matrix.route }}-${{ matrix.key }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z9b-${{ matrix.route }}-${{ matrix.key }}-12
+          path: z9b-${{ matrix.route }}-${{ matrix.key }}.json
+          if-no-files-found: error
+
+  segment-24:
+    needs: segment-12
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - route: HEAD
+            dt: "0.000125"
+            key: coarse
+          - route: HEAD
+            dt: "0.0000625"
+            key: fine
+          - route: RUNOFF
+            dt: "0.000125"
+            key: coarse
+          - route: RUNOFF
+            dt: "0.0000625"
+            key: fine
+    name: segment 24 ${{ matrix.route }} ${{ matrix.key }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z9b-${{ matrix.route }}-${{ matrix.key }}-12
+          path: .
+      - run: bash tests/fpe/run_fpe_nlglob14z9b_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" resume "24.0" "z9b-${{ matrix.route }}-${{ matrix.key }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z9b-${{ matrix.route }}-${{ matrix.key }}-24
+          path: z9b-${{ matrix.route }}-${{ matrix.key }}.json
+          if-no-files-found: error
+
+  segment-36:
+    needs: segment-24
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - route: HEAD
+            dt: "0.000125"
+            key: coarse
+          - route: HEAD
+            dt: "0.0000625"
+            key: fine
+          - route: RUNOFF
+            dt: "0.000125"
+            key: coarse
+          - route: RUNOFF
+            dt: "0.0000625"
+            key: fine
+    name: segment 36 ${{ matrix.route }} ${{ matrix.key }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z9b-${{ matrix.route }}-${{ matrix.key }}-24
+          path: .
+      - run: bash tests/fpe/run_fpe_nlglob14z9b_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" resume "36.0" "z9b-${{ matrix.route }}-${{ matrix.key }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z9b-${{ matrix.route }}-${{ matrix.key }}-36
+          path: z9b-${{ matrix.route }}-${{ matrix.key }}.json
+          if-no-files-found: error
+
+  segment-48:
+    needs: segment-36
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - route: HEAD
+            dt: "0.000125"
+            key: coarse
+          - route: HEAD
+            dt: "0.0000625"
+            key: fine
+          - route: RUNOFF
+            dt: "0.000125"
+            key: coarse
+          - route: RUNOFF
+            dt: "0.0000625"
+            key: fine
+    name: segment 48 ${{ matrix.route }} ${{ matrix.key }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z9b-${{ matrix.route }}-${{ matrix.key }}-36
+          path: .
+      - run: bash tests/fpe/run_fpe_nlglob14z9b_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" resume "48.0" "z9b-${{ matrix.route }}-${{ matrix.key }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: z9b-${{ matrix.route }}-${{ matrix.key }}-48
+          path: z9b-${{ matrix.route }}-${{ matrix.key }}.json
+          if-no-files-found: error
+
+  segment-60:
+    needs: segment-48
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - route: HEAD
+            dt: "0.000125"
+            key: coarse
+          - route: HEAD
+            dt: "0.0000625"
+            key: fine
+          - route: RUNOFF
+            dt: "0.000125"
+            key: coarse
+          - route: RUNOFF
+            dt: "0.0000625"
+            key: fine
+    name: segment 60 ${{ matrix.route }} ${{ matrix.key }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: z9b-${{ matrix.route }}-${{ matrix.key }}-48
+          path: .
+      - run: bash tests/fpe/run_fpe_nlglob14z9b_segment.sh "${{ matrix.route }}" "${{ matrix.dt }}" resume "60.0" "z9b-${{ matrix.route }}-${{ matrix.key }}.json"
