@@ -1,0 +1,22 @@
+name: PPA-WU05-A7 real Richards runtime
+
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a7-production-shaping
+    paths:
+      - 'src/process/macropore/**'
+      - 'src/solver/mod_macropore_exchange_overlay_provider.f90'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90'
+      - 'tests/fpm/run_ppa_wu05a7_real_richards.sh'
+      - '.github/workflows/ppa-wu05a7-real-richards.yml'
+  workflow_dispatch:
+
+jobs:
+  real-richards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run A7 production runtime on Reference Richards
+        run: bash tests/fpm/run_ppa_wu05a7_real_richards.sh
