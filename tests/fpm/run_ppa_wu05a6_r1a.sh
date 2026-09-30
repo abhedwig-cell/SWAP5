@@ -24,6 +24,8 @@ for opt in 0 2; do
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90 -o "$OUT/vflux.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/runtime/mod_macropore_continuation_state.f90 -o "$OUT/state.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a5_top_partition.f90 -o "$OUT/topa5.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a5_multi_domain_process.f90 -o "$OUT/multia5.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a5_macropore_restart.f90 -o "$OUT/restarta5.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_sorptivity_history.f90 -o "$OUT/history.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     research/macropore/mod_ppa_wu05a6_rate_bundle.f90 -o "$OUT/bundle.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_unsat_absorption_rate.f90 -o "$OUT/test_unsat.o"
@@ -75,6 +77,12 @@ for opt in 0 2; do
   "$OUT/test_bundle" > "$OUT/bundle.txt"
   cat "$OUT/bundle.txt"
   grep -Fq 'PPA_WU05A6_RATE_BUNDLE=PASS' "$OUT/bundle.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_source_rate_replay.f90 -o "$OUT/test_replay.o"
+  gfortran -O"$opt" "$OUT/state.o" "$OUT/topa5.o" "$OUT/multia5.o" "$OUT/restarta5.o"     "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/sat.o" "$OUT/satsrc.o" "$OUT/rapid.o"     "$OUT/toplimit.o" "$OUT/vflux.o" "$OUT/history.o" "$OUT/bundle.o" "$OUT/test_replay.o" -o "$OUT/test_replay"
+  "$OUT/test_replay" > "$OUT/replay.txt"
+  cat "$OUT/replay.txt"
+  grep -Fq 'PPA_WU05A6_SOURCE_RATE_REPLAY=PASS' "$OUT/replay.txt"
 done
 cmp "$BUILD/o0/sorp.txt" "$BUILD/o2/sorp.txt"
 cmp "$BUILD/o0/unsat.txt" "$BUILD/o2/unsat.txt"
@@ -85,4 +93,5 @@ cmp "$BUILD/o0/toplimit.txt" "$BUILD/o2/toplimit.txt"
 cmp "$BUILD/o0/vflux.txt" "$BUILD/o2/vflux.txt"
 cmp "$BUILD/o0/history.txt" "$BUILD/o2/history.txt"
 cmp "$BUILD/o0/bundle.txt" "$BUILD/o2/bundle.txt"
+cmp "$BUILD/o0/replay.txt" "$BUILD/o2/replay.txt"
 echo 'PPA_WU05A6_R1A_GATE=PASS'
