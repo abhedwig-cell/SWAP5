@@ -7,6 +7,8 @@ on:
     paths:
       - 'research/macropore/mod_ppa_wu05a5_top_partition.f90'
       - 'research/macropore/mod_ppa_wu05a5_multi_domain_process.f90'
+      - 'research/macropore/mod_ppa_wu05a5_macropore_restart.f90'
+      - 'tests/fpm/test_ppa_wu05a5_restart_replay.f90'
       - 'tests/fpm/test_ppa_wu05a5_multi_domain_process.f90'
       - 'tests/fpm/test_ppa_wu05a5_top_partition.f90'
       - 'tests/fpm/run_ppa_wu05a5_top_partition.sh'
