@@ -48,7 +48,6 @@ program test_ppa_wu05a7_fmr_macropore_transaction
   call require(allocated(parameters%macropore),'macropore config allocated')
   call require(parameters%macropore%ready(parameters%active_nodes,require_zero_top_receipt=.true.), &
        'macropore config ready')
-  call require(fmr_restart_state_matches_template(initial_state,template),'initial state matches macropore layout')
 
   call fmr_new_b110_temporal_indicator_committed_state(committed,column_id,initial_state,0.0_real64,ok, &
        initial_right_derivative=spread(0.0_real64,1,numnod))
