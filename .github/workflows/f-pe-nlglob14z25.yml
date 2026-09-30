@@ -1,0 +1,23 @@
+name: F-PE-NLGLOB14Z25 chatter burden attribution
+
+on:
+  push:
+    branches:
+      - research/f-pe-nlglob14z25-chatter-burden
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z25*.md'
+      - 'tests/fpe/run_fpe_nlglob14z25.py'
+      - 'tests/fpe/data/f_pe_nlglob14z23_z22_event_evidence.json'
+      - '.github/workflows/f-pe-nlglob14z25.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  burden-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/fpe/run_fpe_nlglob14z25.py
