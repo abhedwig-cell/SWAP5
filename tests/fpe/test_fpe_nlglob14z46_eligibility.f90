@@ -37,7 +37,7 @@ module mod_fpe_nlglob14z46_test_providers
   end type
 
 contains
-  subroutine z46_constitutive_evaluate(self,h,theta,k,cap,dk)
+  subroutine z46_constitutive_evaluate(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
     class(z46_constitutive_t),intent(in)::self
     real(real64),intent(in)::h(:)
     real(real64),intent(out)::theta(:),k(:),cap(:),dk(:)
@@ -46,16 +46,16 @@ contains
     if(self%supports_point_conductivity()) k=k
   end subroutine
 
-  subroutine z46_source_sink_evaluate(self,h,theta,source,sink)
+  subroutine z46_source_sink_evaluate(self,pressure_head,water_content,source,sink)
     class(z46_source_sink_t),intent(in)::self
-    real(real64),intent(in)::h(:),theta(:)
+    real(real64),intent(in)::pressure_head(:),water_content(:)
     real(real64),intent(out)::source(:),sink(:)
     source=0.0_real64; sink=0.0_real64
     if(size(source)>0) source(1)=self%source_value
-    if(size(h)+size(theta)<0) sink=sink
+    if(size(pressure_head)+size(water_content)<0) sink=sink
   end subroutine
 
-  subroutine z46_root_sink_evaluate(self,h,theta,root_sink)
+  subroutine z46_root_sink_evaluate(self,pressure_head,water_content,root_sink)
     class(z46_root_sink_t),intent(in)::self
     real(real64),intent(in)::h(:),theta(:)
     real(real64),intent(out)::root_sink(:)
@@ -63,7 +63,7 @@ contains
     if(size(h)+size(theta)<0 .or. same_type_as(self,self).eqv..false.) root_sink=root_sink
   end subroutine
 
-  subroutine z46_top_evaluate(self,h,theta,requested,qtop,hsurf,qrunoff)
+  subroutine z46_top_evaluate(self,pressure_head_top,water_content_top,requested,actual_top_flux,surface_head,runoff_flux)
     class(z46_top_t),intent(in)::self
     real(real64),intent(in)::h,theta
     type(soil_water_boundary_conditions_t),intent(in)::requested
@@ -72,16 +72,16 @@ contains
     if(h+theta< -huge(1.0_real64) .or. same_type_as(self,self).eqv..false.) qtop=qtop
   end subroutine
 
-  subroutine z46_dynamic_top_evaluate(self,h,theta,pond,requested,result)
+  subroutine z46_dynamic_top_evaluate(self,pressure_head_top,water_content_top,candidate_ponding_depth,requested,result)
     class(z46_dynamic_top_t),intent(in)::self
-    real(real64),intent(in)::h,theta,pond
+    real(real64),intent(in)::pressure_head_top,water_content_top,candidate_ponding_depth
     type(soil_water_boundary_conditions_t),intent(in)::requested
     type(soil_water_top_boundary_result_t),intent(out)::result
     result=soil_water_top_boundary_result_t()
-    if(h+theta+pond+requested%top_flux< -huge(1.0_real64) .or. same_type_as(self,self).eqv..false.) result=result
+    if(pressure_head_top+water_content_top+candidate_ponding_depth+requested%top_flux< -huge(1.0_real64) .or. &\n       same_type_as(self,self).eqv..false.) result=result
   end subroutine
 
-  subroutine z46_macropore_evaluate(self,h,exchange,active)
+  subroutine z46_macropore_evaluate(self,pressure_head,exchange_flux,active)
     class(z46_macropore_t),intent(in)::self
     real(real64),intent(in)::h(:)
     real(real64),intent(out)::exchange(:)
