@@ -88,7 +88,7 @@ program test_ppa_wu05a7_fmr_macropore_transaction
   call require_state_identity(candidate_snapshot2,committed_after,'commit publishes exact candidate')
   call require(fmr_restart_state_matches_template(committed_after,template),'committed state matches macropore restart layout')
 
-  write(*,'(A,I0)') 'PPA_WU05A7_FMR_ACCEPTED_SUBSTEPS=',result2%accepted_substeps
+  write(*,'(A,I0)') 'PPA_WU05A7_FMR_ACCEPTED_SUBSTEPS=',diag2%accepted_substeps
   write(*,'(A,ES26.17E3)') 'PPA_WU05A7_FMR_MASS_RESIDUAL=',result2%mass%residual
   print '(A)' ,'PPA_WU05A7_FMR_MACROPORE_TRANSACTION=PASS'
 
