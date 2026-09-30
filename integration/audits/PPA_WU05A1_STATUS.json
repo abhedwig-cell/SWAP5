@@ -1,49 +1,28 @@
 {
   "schema": "swap5.ppa_wu05a1.status.v1",
   "work_unit": "PPA-WU05-A1",
-  "title": "Exact macropore source recovery and mutable-state/mass census",
   "branch": "research/ppa-wu05-a1-source-census-recovery",
   "baseline": "68fcf6d384608c11ab5a34cf2eab9924f9788ecd",
-  "status": "EXACT_SOURCE_RECOVERED_CENSUS_IN_PROGRESS",
+  "status": "SOURCE_RECOVERY_PASS_STATE_CENSUS_PARTIAL_COMPLETE",
   "production_source_mutation": false,
   "reference_source_mutation": false,
-  "predecessor": "PPA-WU05-A",
   "source_recovery": {
     "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
     "b0_macropore_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
     "b1_11_macropore_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
-    "b0_and_b1_11_macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
-    "swap001_target_count": 1,
-    "gate_g1": "PASS",
-    "gate_g2": "PASS"
+    "b0_b1_11_macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "verdict": "PASS"
   },
-  "recovered_corrobation": {
-    "f_pe16": "f5e2a12fca96559645feb8d8cd591b600f765d8c",
-    "f_pe15": "f475e0e050abdc885c016929c2d528fe1f8f0545",
-    "f_si15": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
-    "library_artifacts": [
-      "S12o_macropore_column_state.patch",
-      "S11_cumulative_from_pristine.patch",
-      "A23AU_REPORT.md"
-    ]
+  "exact_findings": {
+    "legacy_macrostatevar_backup_fields": ["ICpBtDm","VlMpDmCp","WaUnMpDmCp"],
+    "confirmed_minimum_continuation_fields": ["ICpBtDm","SorpDmCp","ThtSrpRefDmCp","TimAbsCumDmCp","VlMpDmCp","WaUnMpDmCp","VlMpDyCp"],
+    "legacy_rollback_complete": false,
+    "vlmpdycp_classification": "PHYSICAL_HYSTERETIC_GEOMETRY_HISTORY",
+    "sorptivity_history_trial_mutable": true,
+    "historical_index_zero_diagnostic": "SOURCE_AVAILABLE_CHARACTERIZATION_PENDING"
   },
-  "current_findings": {
-    "seven_candidate_fields_corrobated": true,
-    "final_state_census_complete": false,
-    "historical_rollback_surface_is_incomplete_for_trial_mutated_history": true,
-    "frmpwalwetold_requires_explicit_classification": true,
-    "historical_index_zero_qexcmtxdmcp_observation": "CORROBORATED_HISTORICAL_ONLY",
-    "exact_b1_11_source_oracle_available": true
-  },
-  "gates": {
-    "A1_G1_source_identity": "PASS",
-    "A1_G2_b1_11_derivation": "PASS",
-    "A1_G3_state_census": "IN_PROGRESS",
-    "A1_G4_transaction_census": "IN_PROGRESS",
-    "A1_G5_mass_census": "IN_PROGRESS",
-    "A1_G6_index_zero_characterization": "NOT_YET_RUN_ON_EXACT_ORACLE"
-  },
+  "mass_census": "IN_PROGRESS",
   "production_admission": "NONE",
-  "next_action": "Complete exact-source state/transaction/mass census, then characterize historical QExcMtxDmCp index-0 path on the exact B1.11 oracle."
+  "next_action": "Complete exact cross-call field and mass-transfer census, then characterize the source-bound index-0 path."
 }
