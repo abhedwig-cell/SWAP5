@@ -103,6 +103,12 @@ program test_fpe_sched02_lagged_work_selector
     if(.not.results_b(i)%mass%complete .or. results_b(i)%mass%missing_contribution_mask/=TX_MASS_MISSING_NONE) mass_fail_b=mass_fail_b+1
     if(diagnostics_b(i)%rejected/=0) rejected_b=rejected_b+1
     call req(results_b(i)%column_id==int(100000+i,int64),'interval B order')
+    if(.not.results_b(i)%completed .or. .not.results_b(i)%committed)then
+      write(*,'(*(g0))')'SCHED02_B_FAIL|profile=',profile_id,'|column=',i,'|origin=',mod(i-1,16), &
+           '|status=',results_b(i)%kernel_status,'|completed=',results_b(i)%completed,'|committed=',results_b(i)%committed, &
+           '|retries=',diagnostics_b(i)%retries,'|solver_rejections=',diagnostics_b(i)%rejected, &
+           '|attempts=',diagnostics_b(i)%attempts,'|final_time=',results_b(i)%final_committed_time
+    end if
     call req(results_b(i)%completed.and.results_b(i)%committed,'interval B column')
     call req(results_b(i)%final_revision==results_b(i)%initial_revision+1_int64,'interval B revision')
     call req(results_b(i)%final_committed_time_bound,'interval B time bound')
