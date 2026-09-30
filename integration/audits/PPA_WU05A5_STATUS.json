@@ -1,19 +1,25 @@
 {
-  "schema":"swap5.ppa_wu05a5.status.v1",
-  "work_unit":"PPA-WU05-A5",
-  "title":"Full macropore process composition",
-  "branch":"research/ppa-wu05-a5-process-composition",
-  "baseline":"8345f25924b7ca3cf87633a8901063f365df0c73",
-  "canonical_source_dependency_reconciled_through":"ddd218085afd363d22ce0b632d3ac893c7c9f40b",
-  "status":"PREREGISTERED_SOURCE_PROCESS_MAPPING",
-  "production_activation":false,
-  "phases":{
-    "top_partition":"PENDING",
-    "excess_redistribution":"PENDING",
-    "multi_domain_geometry":"PENDING",
-    "distributed_exchange":"PENDING",
-    "drainage_topology":"PENDING",
-    "restart_replay":"PENDING"
+  "schema": "swap5.ppa_wu05a5.status.v1",
+  "work_unit": "PPA-WU05-A5",
+  "title": "Full macropore process composition",
+  "branch": "research/ppa-wu05-a5-process-composition",
+  "baseline": "8345f25924b7ca3cf87633a8901063f365df0c73",
+  "canonical_source_dependency_reconciled_through": "ddd218085afd363d22ce0b632d3ac893c7c9f40b",
+  "status": "ACTIVE_P1_P2_EXACT_SOURCE_MAP_COMPLETE_LOCAL_FALSIFICATION_NEXT",
+  "production_activation": false,
+  "phases": {
+    "top_partition": "SOURCE_MAPPED",
+    "excess_redistribution": "SOURCE_MAPPED",
+    "multi_domain_geometry": "PENDING",
+    "distributed_exchange": "PENDING",
+    "drainage_topology": "PENDING",
+    "restart_replay": "PENDING"
   },
-  "next_action":"Map exact B1.11 top-input partition and excess-redistribution source paths, then build local falsification harness before modifying the typed process."
+  "next_action": "Trace upstream QMpLatSs authority and run local multi-domain receipt-conservation harness before typed implementation.",
+  "findings": {
+    "top_partition": "VERTICAL_DIRECT_PLUS_LATERAL_RUNOFF_PARTITION",
+    "excess_redistribution": "CROSS_DOMAIN_FIRST_THEN_RETURN_REMAINDER_TO_LATERAL_SURFACE_ROUTE",
+    "shrinkage_excess": "INTERNAL_RETURN_TO_MATRIX",
+    "synthetic_overflow_authority": "REJECTED_AS_SOURCE_MODEL"
+  }
 }
