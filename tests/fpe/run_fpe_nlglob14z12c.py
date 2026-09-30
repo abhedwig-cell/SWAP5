@@ -30,7 +30,7 @@ states=[fields(x) for x in lines if x.startswith("F_PE_NLGLOB14F_STATE|")]
 res=next((fields(x) for x in lines if x.startswith("F_PE_TIMEINT17A_RESULT|")),None)
 
 events=[]
-bad=False; reverse=False; skipped=False; prev_top=None; target=None
+bad=False; reverse=False; skipped=False; prev_top=None; late_phase=False; target=None
 for i in range(0,len(states),16):
     xs=states[i:i+16]
     if len(xs)!=16:
