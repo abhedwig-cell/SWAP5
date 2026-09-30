@@ -19,7 +19,7 @@ def theta(h):
         c26=m["theta_r"]+(m["theta_s"]-m["theta_r"])/((1.0+abs(m["alpha"]*hcrit)**m["n"])**mm)
         c27=(m["theta_s"]-c26)/(-hcrit)
         return min(c26+c27*(h-hcrit),m["theta_s"])
-    return m["theta_r"]+(m["theta_s"]-m["theta_r"])/((1.0+abs(m["alpha"]*h))**m["n"])**mm)
+    return m["theta_r"]+(m["theta_s"]-m["theta_r"])/((1.0+abs(m["alpha"]*h)**m["n"])**mm)
 
 def kval(h):
     th=theta(h)
