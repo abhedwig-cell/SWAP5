@@ -1,0 +1,42 @@
+name: F-PE-ELASTIC54 mode7 indicator calibration
+
+concurrency:
+  group: f-pe-elastic54-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic54-mode7-indicator-calibration
+    paths:
+      - 'tests/fpe/run_fpe_elastic54.py'
+      - 'tests/fpe/run_fpe_elastic54.sh'
+      - 'tests/fpe/prepare_fpe_elastic53.py'
+      - 'tests/fpe/materialize_fpe_elastic53_mode7_indicator.py'
+      - 'tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py'
+      - 'docs/performance/F-PE-ELASTIC54_MODE7_INDICATOR_CALIBRATION_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic54.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic54-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Run calibration and holdout
+        run: bash tests/fpe/run_fpe_elastic54.sh "$RUNNER_TEMP/elastic54-pdok"
