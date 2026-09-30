@@ -42,6 +42,7 @@ module mod_macropore_single_column_runtime
     type(macropore_runtime_policy_t) :: policy
   contains
     procedure,public::ready=>runtime_config_ready
+    procedure,public::fmr_bounded_ready=>runtime_config_fmr_bounded_ready
   end type macropore_runtime_config_t
 
   type, public :: macropore_runtime_result_t
@@ -95,6 +96,26 @@ contains
            maxval(abs(self%rate_template%limiter%potential_top_lateral_cm))<=1.0e-15_real64
     end if
   end function runtime_config_ready
+
+  logical function runtime_config_fmr_bounded_ready(self,active_nodes) result(ok)
+    class(macropore_runtime_config_t),intent(in)::self
+    integer,intent(in)::active_nodes
+
+    ok=self%ready(active_nodes,require_zero_top_receipt=.true.)
+    if(.not.ok)return
+
+    ! The currently qualified FMR temporal-certificate route is bounded to
+    ! zero matrix/macropore exchange. Rapid drainage remains admissible because
+    ! it is an explicitly external, storage-capped receipt generated from
+    ! immutable trial geometry/configuration. Full sorptivity/SATFLOW temporal
+    ! ownership requires separate qualification.
+    ok=maxval(abs(self%rate_template%unsaturated%sorptivity%sorptivity_max))<=1.0e-15_real64 .and. &
+         maxval(abs(self%rate_template%unsaturated%conductivity))<=1.0e-15_real64 .and. &
+         maxval(abs(self%rate_template%interflow_sat%cdarcy))<=1.0e-15_real64 .and. &
+         maxval(abs(self%rate_template%interflow_sat%ksat_horizontal))<=1.0e-15_real64 .and. &
+         maxval(abs(self%rate_template%matrix_sat%cdarcy))<=1.0e-15_real64 .and. &
+         maxval(abs(self%rate_template%matrix_sat%ksat_horizontal))<=1.0e-15_real64
+  end function runtime_config_fmr_bounded_ready
 
   pure logical function runtime_policy_valid(self) result(ok)
     class(macropore_runtime_policy_t),intent(in)::self
