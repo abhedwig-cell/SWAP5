@@ -50,6 +50,9 @@ module mod_moving_interface_manager
   public :: materialize_moving_interface_full_candidate_persistent
   public :: finalize_moving_interface_result_persistent
   public :: release_moving_interface_manager_context
+  public :: prepare_moving_interface_reduced_request_inplace
+  public :: materialize_moving_interface_full_candidate_inplace
+  public :: select_moving_interface_route
 
 contains
 
