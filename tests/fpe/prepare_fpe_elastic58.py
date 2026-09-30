@@ -133,8 +133,8 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
     if out_start<0 or out_end<0:
         raise SystemExit("F_PE_ELASTIC58_FAIL output anchors")
     out_end=s.find("\n",out_end)+1
-    output=r"""  storage_full=sum(res_full%candidate_state%water_content*p%dz)
-  storage0=sum(water*p%dz)
+    output=r"""  storage_full=sum(res_full%candidate_state%water_content*p%dz)+res_full%candidate_state%ponding_depth
+  storage0=sum(water*p%dz)+max(0.0_real64,h0)
   candidate_mass=(storage_full-storage0)-((-qeq-delta)*dt+res_full%bottom_flux*dt)
   oracle_mass=(storage_oracle-storage0)-((-qeq-delta)*dt+storage_half)
   write(*,'(*(g0))')'ELASTIC58_ORACLE|regime=',trim(regime),'|h0=',h0,'|delta=',delta,'|dt=',dt, &
@@ -193,7 +193,7 @@ def make_oracle_fixture(selector_fixture:Path, oracle_fixture:Path):
       current=step_result%candidate_state
       result=step_result
     end do
-    storage_end=sum(current%water_content*q%dz)
+    storage_end=sum(current%water_content*q%dz)+current%ponding_depth
     ok=.true.
   end subroutine
 
