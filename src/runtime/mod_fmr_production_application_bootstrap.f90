@@ -1,5 +1,6 @@
 module mod_fmr_production_application_bootstrap
   use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
+  use mod_canonical_contracts, only: canonical_interval_t
   use mod_soil_water_solver_contract, only: constitutive_storage_difference_ifc
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
@@ -586,17 +587,20 @@ contains
 
     type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
     type(fmr_aggregate_diagnostics_t) :: aggregate
+    type(canonical_interval_t) :: interval
     integer :: dispatch_status
 
     if (allocated(results)) deallocate(results)
     status = FMR_APP_BOOT_NOT_READY
     if (.not. self%ready()) return
-    if (associated(self%active_context)) then
-      status = FMR_APP_BOOT_CONTEXT_BUSY
+    interval%t0 = t0
+    interval%t1 = t1
+    if (.not. self%session%validate_interval(interval)) then
+      status = FMR_APP_BOOT_INVALID_CONFIG
       return
     end if
-    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) then
-      status = FMR_APP_BOOT_INVALID_CONFIG
+    if (associated(self%active_context)) then
+      status = FMR_APP_BOOT_CONTEXT_BUSY
       return
     end if
     if (size(effective_forcing) /= size(self%columns)) then
@@ -687,6 +691,7 @@ contains
     type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
     type(fmr_aggregate_diagnostics_t) :: aggregate
     type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(canonical_interval_t) :: interval
     integer(int64), allocatable :: receipt_column_ids(:)
     integer :: dispatch_status, i
 
@@ -694,6 +699,12 @@ contains
     if (allocated(receipts)) deallocate(receipts)
     status = FMR_APP_BOOT_NOT_READY
     if (.not. self%ready() .or. associated(self%active_context)) return
+    interval%t0 = t0
+    interval%t1 = t1
+    if (.not. self%session%validate_interval(interval)) then
+      status = FMR_APP_BOOT_INVALID_CONFIG
+      return
+    end if
     if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) then
       status = FMR_APP_BOOT_INVALID_CONFIG
       return
