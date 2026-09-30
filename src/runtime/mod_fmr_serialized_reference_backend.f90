@@ -2873,6 +2873,8 @@ contains
                            full%ponding_depth == half%ponding_depth .and. full%groundwater_level == half%groundwater_level
           if (same) same = allocated(full%snow) .eqv. allocated(half%snow)
           if (same) same = allocated(full%soil_temperature) .eqv. allocated(half%soil_temperature)
+          if (same) same = allocated(full%macropore) .eqv. allocated(half%macropore)
+          if (same .and. allocated(full%macropore)) same = full%macropore%same_values(half%macropore)
           ! F-MR39 deliberately does not introduce a new combined water/thermal
           ! timestep tolerance. Thermal temporal refinement remains qualified by
           ! F-VQ58; the existing Richards temporal acceptance route is preserved.
@@ -2903,6 +2905,9 @@ contains
          all(full%water_content == half%water_content) .and. &
          full%ponding_depth == half%ponding_depth .and. &
          full%groundwater_level == half%groundwater_level
+    if (.not. same) return
+    same = allocated(full%macropore) .eqv. allocated(half%macropore)
+    if (same .and. allocated(full%macropore)) same = full%macropore%same_values(half%macropore)
     if (.not. same) return
     same = allocated(full%snow) .eqv. allocated(half%snow)
     if (same .and. allocated(full%snow)) then
