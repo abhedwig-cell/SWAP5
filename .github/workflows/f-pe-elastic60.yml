@@ -1,0 +1,28 @@
+name: F-PE-ELASTIC60 state-stratified budget bridge
+
+concurrency:
+  group: f-pe-elastic60-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic60-state-stratified-budget-bridge
+    paths:
+      - 'tests/fpe/run_fpe_elastic60.sh'
+      - 'tests/fpe/materialize_fpe_elastic59_history.py'
+      - 'docs/performance/F-PE-ELASTIC60_STATE_STRATIFIED_BUDGET_BRIDGE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic60.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Run state-stratified train-holdout bridge
+        run: bash tests/fpe/run_fpe_elastic60.sh
