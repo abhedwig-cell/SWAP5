@@ -82,8 +82,10 @@ program test_fpe_pzg23_05_backtracking_instrumentation
     call req(ok.and.checkpoint%ready(),'interval A checkpoint')
 
     call backend%initialize(top)
+    write(*,'(*(g0))')'PZG23_05_BEGIN_B|origin=',origin
     call backend%run_trial(columns(1),templates(1),params(1),states(1),forcings(1),numerical,DT,2.0_real64*DT, &
          checkpoint,b_result,b_candidate,b_diag,trusted_prepared_parameters=.true.)
+    write(*,'(*(g0))')'PZG23_05_END_B|origin=',origin
 
     write(*,'(*(g0))')'PZG23_05|origin=',origin,'|h0=',H0(ih),'|delta=',DELTA(id), &
          '|completed=',b_result%completed,'|status=',b_result%status, &
