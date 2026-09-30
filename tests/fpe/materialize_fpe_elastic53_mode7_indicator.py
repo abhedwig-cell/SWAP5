@@ -66,6 +66,7 @@ def main():
     if anchor not in oracle: raise SystemExit("F_PE_ELASTIC53_FAIL oracle use anchor")
     oracle=oracle.replace(anchor,anchor+insert,1)
     oracle=oracle.replace("request%boundary%bottom_mode = 2","request%boundary%bottom_mode = 7")
+    oracle=oracle.replace("real(real64), parameter :: h0 = -75.0_real64","real(real64), parameter :: h0 = 2.0_real64")
     oracle=oracle.replace(
         "call solver%evaluate_temporal_indicator(request, result, indicator_request, workspace, indicator)",
         "call evaluate_fpe_elastic53_reference_richards_temporal_indicator(request, result, indicator_request, indicator)")
@@ -90,6 +91,38 @@ def main():
     if start<0 or end<0: raise SystemExit("F_PE_ELASTIC53_FAIL unsupported block")
     oracle=oracle[:start]+oracle[end:]
     # Replace semantic labels only; preserve independent zero-stiffness oracle math.
+    # Adapt the F-SI38 principal state to the mode-7 equilibrium geometry:
+    # uniform saturated head, qtop around free-drainage q=-K.
+    oracle=oracle.replace(
+        """    heads(1) = h0
+    do i = 2, numnod
+      heads(i) = heads(i-1) + parameters%node_distance(i)
+      call require(abs((heads(i-1)-heads(i))/parameters%node_distance(i)+1.0_real64) <= &
+           16.0_real64*epsilon(1.0_real64), 'hydrostatic predecessor gradient')
+    end do
+""",
+        """    heads = h0
+""")
+    oracle=oracle.replace(
+        "real(real64) :: expected_raw, expected_defect, expected_bounded, expected_binf, wrong_binf",
+        "real(real64) :: expected_raw, expected_defect, expected_bounded, expected_binf, wrong_binf, qeq")
+    oracle=oracle.replace(
+        """    call require(all(conductivity > 0.0_real64) .and. all(capacity > 0.0_real64), &
+         'positive base conductivity and capacity')
+""",
+        """    call require(all(conductivity > 0.0_real64) .and. all(capacity > 0.0_real64), &
+         'positive base conductivity and capacity')
+    qeq = -conductivity(1)
+""")
+    oracle=oracle.replace("request%boundary%top_flux = q","request%boundary%top_flux = qeq+q")
+    oracle=oracle.replace("request%boundary%bottom_flux = q","request%boundary%bottom_flux = 0.0_real64")
+    oracle=oracle.replace(
+        """    if (q == 0.0_real64) then
+      call require(indicator%head_inf_bound == 0.0_real64, 'stationary mode7 Binf exactly zero')
+""",
+        """    if (q == 0.0_real64) then
+      call require(indicator%head_inf_bound == 0.0_real64, 'stationary mode7 Binf exactly zero')
+""")
     oracle=oracle.replace("FSI38_","ELASTIC53_")
     oracle=oracle.replace("mode2","mode7")
     oracle=oracle.replace("Mode2","Mode7")
