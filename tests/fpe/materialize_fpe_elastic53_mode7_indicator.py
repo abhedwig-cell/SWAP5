@@ -71,8 +71,8 @@ def main():
         "call evaluate_fpe_elastic53_reference_richards_temporal_indicator(request, result, indicator_request, indicator)")
     # free drainage owns bottom flux, so remove prescribed-qbot identity requirement.
     oracle=oracle.replace(
-        "    call require(transfer(result%bottom_flux,0_int64) == transfer(q,0_int64), 'prescribed qbot exact identity')
-","")
+        """    call require(transfer(result%bottom_flux,0_int64) == transfer(q,0_int64), 'prescribed qbot exact identity')
+""","")
     # Mass ledger already uses result%bottom_flux and remains valid.
     # Remove the unsupported-mode-7 fail-closed check; production still owns that check elsewhere.
     start=oracle.find("    unsupported_request = request")
