@@ -43,10 +43,26 @@ for opt in 0 2; do
   "$OUT/test_rapid" > "$OUT/rapid.txt"
   cat "$OUT/rapid.txt"
   grep -Fq 'PPA_WU05A6_RAPID_DRAIN=PASS' "$OUT/rapid.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fpm/test_ppa_wu05a6_top_inflow_limiter.f90 -o "$OUT/test_toplimit.o"
+  gfortran -O"$opt" "$OUT/toplimit.o" "$OUT/test_toplimit.o" -o "$OUT/test_toplimit"
+  "$OUT/test_toplimit" > "$OUT/toplimit.txt"
+  cat "$OUT/toplimit.txt"
+  grep -Fq 'PPA_WU05A6_TOP_INFLOW_LIMITER=PASS' "$OUT/toplimit.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fpm/test_ppa_wu05a6_vertical_flux_reconstruction.f90 -o "$OUT/test_vflux.o"
+  gfortran -O"$opt" "$OUT/vflux.o" "$OUT/test_vflux.o" -o "$OUT/test_vflux"
+  "$OUT/test_vflux" > "$OUT/vflux.txt"
+  cat "$OUT/vflux.txt"
+  grep -Fq 'PPA_WU05A6_VERTICAL_FLUX_RECONSTRUCTION=PASS' "$OUT/vflux.txt"
 done
 cmp "$BUILD/o0/sorp.txt" "$BUILD/o2/sorp.txt"
 cmp "$BUILD/o0/unsat.txt" "$BUILD/o2/unsat.txt"
 cmp "$BUILD/o0/sat.txt" "$BUILD/o2/sat.txt"
 cmp "$BUILD/o0/satsrc.txt" "$BUILD/o2/satsrc.txt"
 cmp "$BUILD/o0/rapid.txt" "$BUILD/o2/rapid.txt"
+cmp "$BUILD/o0/toplimit.txt" "$BUILD/o2/toplimit.txt"
+cmp "$BUILD/o0/vflux.txt" "$BUILD/o2/vflux.txt"
 echo 'PPA_WU05A6_R1A_GATE=PASS'
