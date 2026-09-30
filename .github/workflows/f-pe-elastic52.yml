@@ -1,0 +1,41 @@
+name: F-PE-ELASTIC52 top-node mechanism attribution
+
+concurrency:
+  group: f-pe-elastic52-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic52-top-node-mechanism
+    paths:
+      - 'tests/fpe/prepare_fpe_elastic52.py'
+      - 'tests/fpe/run_fpe_elastic52.sh'
+      - 'tests/fpe/prepare_fpe_elastic50.py'
+      - 'tests/fpe/materialize_fpe_elastic46_headcalc_stubs.py'
+      - 'docs/performance/F-PE-ELASTIC52_TOP_NODE_MECHANISM_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic52.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic52-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Run top-node mechanism attribution
+        run: bash tests/fpe/run_fpe_elastic52.sh "$RUNNER_TEMP/elastic52-pdok"
