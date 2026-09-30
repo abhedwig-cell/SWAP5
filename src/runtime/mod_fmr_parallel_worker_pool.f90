@@ -9,7 +9,8 @@ module mod_fmr_parallel_worker_pool
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, fmr_count_templates, fmr_build_execution_order, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, &
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_serialized_reference_backend_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
@@ -191,8 +192,10 @@ contains
       template_index = find_template_index(columns(i)%template_id, templates)
       if (template_index <= 0) return
       if (templates(template_index)%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
-          templates(template_index)%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
           templates(template_index)%optional_state_layout_id /= 0_int64) return
+      if (templates(template_index)%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
+          templates(template_index)%numerical_continuation_layout_id /= &
+               FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
 
       if (columns(i)%parameter_ref < 1_int64 .or. columns(i)%parameter_ref > int(size(parameter_registry), int64)) return
       parameter_index = int(columns(i)%parameter_ref)
@@ -215,9 +218,27 @@ contains
           parameter_registry(parameter_index)%macropore_active .or. &
           parameter_registry(parameter_index)%hysteresis_active .or. &
           parameter_registry(parameter_index)%tabulated_hydraulics_active .or. &
-          parameter_registry(parameter_index)%elasticity_active .or. &
           parameter_registry(parameter_index)%frost_active .or. &
           allocated(parameter_registry(parameter_index)%snow)) return
+
+      if (parameter_registry(parameter_index)%elasticity_active) then
+        if (templates(template_index)%numerical_continuation_layout_id /= &
+             FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
+        if (parameter_registry(parameter_index)%ksatexm_extension_active .or. &
+            parameter_registry(parameter_index)%direct_retention_active) return
+        if (.not. parameter_registry(parameter_index)%prepared_default_mvg_available) return
+        if (.not. parameter_registry(parameter_index)%prepared_default_mvg%elastic_storage_active) return
+        if (parameter_registry(parameter_index)%prepared_default_mvg%active_nodes /= n) return
+        if (.not. allocated(parameter_registry(parameter_index)%prepared_default_mvg%specific_elastic_storage)) return
+        if (size(parameter_registry(parameter_index)%prepared_default_mvg%specific_elastic_storage) /= n) return
+        if (any(.not. ieee_is_finite(parameter_registry(parameter_index)%prepared_default_mvg%specific_elastic_storage))) return
+        if (any(parameter_registry(parameter_index)%prepared_default_mvg%specific_elastic_storage < 0.0_real64)) return
+        if (any(parameter_registry(parameter_index)%prepared_default_mvg%specific_elastic_storage /= &
+             parameter_registry(parameter_index)%cofgen(24,:))) return
+      else
+        if (templates(template_index)%numerical_continuation_layout_id == &
+             FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
+      end if
 
       if (columns(i)%forcing_handle < 1_int64 .or. columns(i)%forcing_handle > int(size(forcing_registry), int64)) return
       forcing_index = int(columns(i)%forcing_handle)
