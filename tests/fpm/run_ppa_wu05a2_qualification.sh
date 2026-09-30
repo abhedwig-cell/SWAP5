@@ -18,6 +18,11 @@ for opt in 0 2; do
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
 
+echo 'PPA_WU05A2_DTO_O0_O2=PASS'
+bash tests/fkt/run_fkt22_fmr_compile_gate.sh
+
+echo 'PPA_WU05A2_INTEGRATED_FMR_COMPILE=PASS'
+
 python3 - <<'PY'
 from pathlib import Path
 core=Path('src/runtime/mod_fmr_runtime_core.f90').read_text()
