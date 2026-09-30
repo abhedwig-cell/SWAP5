@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ppa-wu05a6-r1a-${GITHUB_RUN_ID:-local}-$$"
+mkdir -p "$BUILD"
+trap 'rm -rf "$BUILD"' EXIT
+FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace)
+
+for opt in 0 2; do
+  OUT="$BUILD/o$opt"; mkdir -p "$OUT"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90 -o "$OUT/sorp.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90 -o "$OUT/unsat.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_sorptivity_rate.f90 -o "$OUT/test_sorp.o"
+  gfortran -O"$opt" "$OUT/sorp.o" "$OUT/test_sorp.o" -o "$OUT/test_sorp"
+  "$OUT/test_sorp" > "$OUT/sorp.txt"
+  cat "$OUT/sorp.txt"
+  grep -Fq 'PPA_WU05A6_SORPTIVITY_RATE=PASS' "$OUT/sorp.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90 -o "$OUT/sat.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90 -o "$OUT/satsrc.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90 -o "$OUT/rapid.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90 -o "$OUT/toplimit.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90 -o "$OUT/vflux.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/runtime/mod_macropore_continuation_state.f90 -o "$OUT/state.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a5_top_partition.f90 -o "$OUT/topa5.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90 -o "$OUT/multia5.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/runtime/mod_ppa_wu05a5_macropore_restart.f90 -o "$OUT/restarta5.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90 -o "$OUT/history.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90 -o "$OUT/bundle.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_unsat_absorption_rate.f90 -o "$OUT/test_unsat.o"
+  gfortran -O"$opt" "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/test_unsat.o" -o "$OUT/test_unsat"
+  "$OUT/test_unsat" > "$OUT/unsat.txt"
+  cat "$OUT/unsat.txt"
+  grep -Fq 'PPA_WU05A6_UNSAT_ABSORPTION=PASS' "$OUT/unsat.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_saturated_exchange_rate.f90 -o "$OUT/test_sat.o"
+  gfortran -O"$opt" "$OUT/sat.o" "$OUT/test_sat.o" -o "$OUT/test_sat"
+  "$OUT/test_sat" > "$OUT/sat.txt"
+  cat "$OUT/sat.txt"
+  grep -Fq 'PPA_WU05A6_SATURATED_EXCHANGE=PASS' "$OUT/sat.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_saturated_sources.f90 -o "$OUT/test_satsrc.o"
+  gfortran -O"$opt" "$OUT/sat.o" "$OUT/satsrc.o" "$OUT/test_satsrc.o" -o "$OUT/test_satsrc"
+  "$OUT/test_satsrc" > "$OUT/satsrc.txt"
+  cat "$OUT/satsrc.txt"
+  grep -Fq 'PPA_WU05A6_SATURATED_SOURCES=PASS' "$OUT/satsrc.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_rapid_drain_rate.f90 -o "$OUT/test_rapid.o"
+  gfortran -O"$opt" "$OUT/rapid.o" "$OUT/test_rapid.o" -o "$OUT/test_rapid"
+  "$OUT/test_rapid" > "$OUT/rapid.txt"
+  cat "$OUT/rapid.txt"
+  grep -Fq 'PPA_WU05A6_RAPID_DRAIN=PASS' "$OUT/rapid.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fpm/test_ppa_wu05a6_top_inflow_limiter.f90 -o "$OUT/test_toplimit.o"
+  gfortran -O"$opt" "$OUT/toplimit.o" "$OUT/test_toplimit.o" -o "$OUT/test_toplimit"
+  "$OUT/test_toplimit" > "$OUT/toplimit.txt"
+  cat "$OUT/toplimit.txt"
+  grep -Fq 'PPA_WU05A6_TOP_INFLOW_LIMITER=PASS' "$OUT/toplimit.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fpm/test_ppa_wu05a6_vertical_flux_reconstruction.f90 -o "$OUT/test_vflux.o"
+  gfortran -O"$opt" "$OUT/vflux.o" "$OUT/test_vflux.o" -o "$OUT/test_vflux"
+  "$OUT/test_vflux" > "$OUT/vflux.txt"
+  cat "$OUT/vflux.txt"
+  grep -Fq 'PPA_WU05A6_VERTICAL_FLUX_RECONSTRUCTION=PASS' "$OUT/vflux.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_sorptivity_history.f90 -o "$OUT/test_history.o"
+  gfortran -O"$opt" "$OUT/state.o" "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/history.o" "$OUT/test_history.o" -o "$OUT/test_history"
+  "$OUT/test_history" > "$OUT/history.txt"
+  cat "$OUT/history.txt"
+  grep -Fq 'PPA_WU05A6_SORPTIVITY_HISTORY=PASS' "$OUT/history.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_rate_bundle.f90 -o "$OUT/test_bundle.o"
+  gfortran -O"$opt" "$OUT/state.o" "$OUT/topa5.o" "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/sat.o" "$OUT/satsrc.o"     "$OUT/rapid.o" "$OUT/toplimit.o" "$OUT/bundle.o" "$OUT/test_bundle.o" -o "$OUT/test_bundle"
+  "$OUT/test_bundle" > "$OUT/bundle.txt"
+  cat "$OUT/bundle.txt"
+  grep -Fq 'PPA_WU05A6_RATE_BUNDLE=PASS' "$OUT/bundle.txt"
+
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a6_source_rate_replay.f90 -o "$OUT/test_replay.o"
+  gfortran -O"$opt" "$OUT/state.o" "$OUT/topa5.o" "$OUT/multia5.o" "$OUT/restarta5.o"     "$OUT/sorp.o" "$OUT/unsat.o" "$OUT/sat.o" "$OUT/satsrc.o" "$OUT/rapid.o"     "$OUT/toplimit.o" "$OUT/vflux.o" "$OUT/history.o" "$OUT/bundle.o" "$OUT/test_replay.o" -o "$OUT/test_replay"
+  "$OUT/test_replay" > "$OUT/replay.txt"
+  cat "$OUT/replay.txt"
+  grep -Fq 'PPA_WU05A6_SOURCE_RATE_REPLAY=PASS' "$OUT/replay.txt"
+done
+cmp "$BUILD/o0/sorp.txt" "$BUILD/o2/sorp.txt"
+cmp "$BUILD/o0/unsat.txt" "$BUILD/o2/unsat.txt"
+cmp "$BUILD/o0/sat.txt" "$BUILD/o2/sat.txt"
+cmp "$BUILD/o0/satsrc.txt" "$BUILD/o2/satsrc.txt"
+cmp "$BUILD/o0/rapid.txt" "$BUILD/o2/rapid.txt"
+cmp "$BUILD/o0/toplimit.txt" "$BUILD/o2/toplimit.txt"
+cmp "$BUILD/o0/vflux.txt" "$BUILD/o2/vflux.txt"
+cmp "$BUILD/o0/history.txt" "$BUILD/o2/history.txt"
+cmp "$BUILD/o0/bundle.txt" "$BUILD/o2/bundle.txt"
+cmp "$BUILD/o0/replay.txt" "$BUILD/o2/replay.txt"
+echo 'PPA_WU05A7_PROMOTION_GATE=PASS'
