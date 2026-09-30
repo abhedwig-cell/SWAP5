@@ -93,3 +93,34 @@ If violations are predominantly CONTIGUOUS and material, route next work toward
 controller robustness to locally non-monotone indicators.
 
 No controller or production policy is changed in ELASTIC56.
+
+
+## Clarification amendment after first replay
+
+The first ELASTIC56 replay exposed a counting-semantic ambiguity in the parent
+ELASTIC55 wording.
+
+ELASTIC55's reported `15 monotonicity violations` were 15 **sequences with at
+least one increasing retained Binf transition**, not 15 individual increasing
+dt-to-dt transitions.
+
+Under the ELASTIC56 pairwise definition above, those 15 parent sequences contain
+51 increasing retained transitions in total.
+
+This amendment does not alter:
+- any case;
+- any profile;
+- any numerical result;
+- any classification rule.
+
+It corrects only gate A2:
+
+A2a. replay reproduces exactly 15 distinct violating
+`(profile,h0,delta,regime)` sequences;
+
+A2b. every increasing retained transition within those sequences is attributed;
+the first replay observed 51 such transitions and this count becomes the
+reproducibility check for the unchanged replay.
+
+The CONTIGUOUS/GAP and magnitude classifications remain preregistered exactly as
+above.
