@@ -5,17 +5,17 @@
   "branch": "research/ppa-wu05-a5-process-composition",
   "baseline": "8345f25924b7ca3cf87633a8901063f365df0c73",
   "canonical_source_dependency_reconciled_through": "ddd218085afd363d22ce0b632d3ac893c7c9f40b",
-  "status": "ACTIVE_P1_P5_LOCAL_PASS_COMPOSITION_NEXT",
+  "status": "QUALIFIED_RESEARCH_PHASE_COMPLETE",
   "production_activation": false,
   "phases": {
-    "top_partition": "LOCAL_PASS",
-    "excess_redistribution": "LOCAL_PASS",
-    "multi_domain_geometry": "LOCAL_PASS",
-    "distributed_exchange": "LOCAL_PASS",
-    "drainage_topology": "LOCAL_PASS",
-    "restart_replay": "PENDING"
+    "top_partition": "PASS",
+    "excess_redistribution": "PASS",
+    "multi_domain_geometry": "PASS",
+    "distributed_exchange": "PASS",
+    "drainage_topology": "PASS",
+    "restart_replay": "PASS"
   },
-  "next_action": "Compose P1-P5 into typed A5 multi-domain process candidate, qualify complete multi-domain mass/state result, then proceed to restart/replay.",
+  "next_action": "Open PPA-WU05-A6 source-rate migration into the qualified typed multi-domain architecture.",
   "findings": {
     "top_partition": "VERTICAL_DIRECT_PLUS_LATERAL_RUNOFF_PARTITION",
     "excess_redistribution": "CROSS_DOMAIN_FIRST_THEN_RETURN_REMAINDER_TO_LATERAL_SURFACE_ROUTE",
@@ -25,5 +25,11 @@
     "distributed_exchange": "NODEWISE_SUM_OVER_ACTIVE_DOMAINS; EXACT_INTERNAL_CANCELLATION; MOVING_BOTTOM_SUPPORTED",
     "drainage_topology": "MAIN_DOMAIN_ONLY; MULTI_COMPARTMENT_KD_WEIGHTED; SINGLE_EXTERNAL_OWNER"
   },
-  "qmplatss_authority": "BOUND_TOP_PONDING_PARTITION_REMOVED_FROM_MATRIX_TOP_FLUX_AND_RETURNED_ON_REJECTION"
+  "qmplatss_authority": "BOUND_TOP_PONDING_PARTITION_REMOVED_FROM_MATRIX_TOP_FLUX_AND_RETURNED_ON_REJECTION",
+  "qualification": {
+    "head": "6bc5936926b743d201a4a8f1abf1cd9f1a513e0a",
+    "workflow_run_id": 36772075072,
+    "conclusion": "QUALIFIED_SINGLE_COLUMN_COMPOSITION_ARCHITECTURE_READY_FOR_SOURCE_RATE_MIGRATION"
+  },
+  "production_admission": "NONE"
 }
