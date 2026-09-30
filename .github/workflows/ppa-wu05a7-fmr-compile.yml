@@ -1,0 +1,22 @@
+name: PPA-WU05-A7 FMR macropore compile
+
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a7-production-shaping
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'src/process/macropore/**'
+      - 'src/solver/mod_macropore_exchange_overlay_provider.f90'
+      - 'tests/fkt/run_fkt22_fmr_compile_gate.sh'
+      - '.github/workflows/ppa-wu05a7-fmr-compile.yml'
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile FMR with production macropore runtime
+        run: bash tests/fkt/run_fkt22_fmr_compile_gate.sh
