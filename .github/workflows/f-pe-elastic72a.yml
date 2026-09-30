@@ -12,6 +12,13 @@ on:
       - 'research/elastic/bro_bhrgt_peat_source_audit.py'
       - 'docs/performance/F-PE-ELASTIC72A_PEAT_SOURCE_PREREGISTRATION.md'
       - '.github/workflows/f-pe-elastic72a.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'research/elastic/bro_bhrgt_peat_source_audit.py'
+      - 'docs/performance/F-PE-ELASTIC72A_PEAT_SOURCE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic72a.yml'
   workflow_dispatch:
 
 jobs:
