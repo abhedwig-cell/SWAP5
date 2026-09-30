@@ -45,6 +45,10 @@ program test_ppa_wu05a7_fmr_macropore_transaction
   call initialize_forcing(forcing)
   call initialize_column_template(column,template)
   call initialize_config(config)
+  call require(allocated(parameters%macropore),'macropore config allocated')
+  call require(parameters%macropore%ready(parameters%active_nodes,require_zero_top_receipt=.true.), &
+       'macropore config ready')
+  call require(fmr_restart_state_matches_template(initial_state,template),'initial state matches macropore layout')
 
   call fmr_new_b110_committed_state(committed,column_id,initial_state,0.0_real64,ok)
   call require(ok,'committed initialized')
