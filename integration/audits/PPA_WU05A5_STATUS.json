@@ -5,23 +5,24 @@
   "branch": "research/ppa-wu05-a5-process-composition",
   "baseline": "8345f25924b7ca3cf87633a8901063f365df0c73",
   "canonical_source_dependency_reconciled_through": "ddd218085afd363d22ce0b632d3ac893c7c9f40b",
-  "status": "ACTIVE_P1_P3_LOCAL_PASS_P4_NEXT",
+  "status": "ACTIVE_P1_P4_LOCAL_PASS_P5_NEXT",
   "production_activation": false,
   "phases": {
     "top_partition": "LOCAL_PASS",
     "excess_redistribution": "LOCAL_PASS",
     "multi_domain_geometry": "LOCAL_PASS",
-    "distributed_exchange": "PENDING",
+    "distributed_exchange": "LOCAL_PASS",
     "drainage_topology": "PENDING",
     "restart_replay": "PENDING"
   },
-  "next_action": "Build local P4 distributed matrix/macropore exchange over active multi-domain geometry and test internal cancellation with moving domain bottoms.",
+  "next_action": "Map and test P5 source-bound multi-domain rapid-drain topology, then compose P1-P5 into one typed process candidate.",
   "findings": {
     "top_partition": "VERTICAL_DIRECT_PLUS_LATERAL_RUNOFF_PARTITION",
     "excess_redistribution": "CROSS_DOMAIN_FIRST_THEN_RETURN_REMAINDER_TO_LATERAL_SURFACE_ROUTE",
     "shrinkage_excess": "INTERNAL_RETURN_TO_MATRIX",
     "synthetic_overflow_authority": "REJECTED_AS_SOURCE_MODEL",
-    "multi_domain_geometry": "DOMAIN_VOLUME_PARTITION_CONSERVATIVE; ACTIVE_BOTTOM_DERIVED; NO_NEW_CONTINUATION_FIELD"
+    "multi_domain_geometry": "DOMAIN_VOLUME_PARTITION_CONSERVATIVE; ACTIVE_BOTTOM_DERIVED; NO_NEW_CONTINUATION_FIELD",
+    "distributed_exchange": "NODEWISE_SUM_OVER_ACTIVE_DOMAINS; EXACT_INTERNAL_CANCELLATION; MOVING_BOTTOM_SUPPORTED"
   },
   "qmplatss_authority": "BOUND_TOP_PONDING_PARTITION_REMOVED_FROM_MATRIX_TOP_FLUX_AND_RETURNED_ON_REJECTION"
 }
