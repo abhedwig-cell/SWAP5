@@ -13,7 +13,6 @@ on:
       - 'tests/fpm/run_ppa_wu05a7_fmr_transaction.sh'
       - 'tests/fpm/test_ppa_wu05a7_fmr_macropore_transaction.f90'
       - 'tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh'
-      - 'tests/fpm/test_ppa_wu05a7_fmr_macropore_transaction.f90'
       - '.github/workflows/ppa-wu05a7-fmr-integration.yml'
   workflow_dispatch:
 
