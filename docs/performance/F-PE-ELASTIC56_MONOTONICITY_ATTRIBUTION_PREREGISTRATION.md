@@ -124,3 +124,26 @@ reproducibility check for the unchanged replay.
 
 The CONTIGUOUS/GAP and magnitude classifications remain preregistered exactly as
 above.
+
+
+## Second clarification: exact parent eligibility semantics
+
+A subsequent exact-code reconciliation with ELASTIC55 showed that its
+monotonicity counter considered only sequences with at least three
+full-converged, indicator-available points.
+
+The initial ELASTIC56 exploratory pair count of 51 included three increasing
+transitions from shorter sequences that were never eligible for the parent
+ELASTIC55 monotonicity statistic.
+
+The parent-aligned unchanged replay therefore has:
+- 15 violating eligible sequences;
+- 48 increasing retained transitions inside those 15 sequences.
+
+This supersedes the earlier 51-transition reproducibility number only. All
+transition definitions, CONTIGUOUS/GAP classes, magnitude thresholds, cases and
+numerical outputs remain unchanged.
+
+Final A2 reproducibility gates are:
+- A2a exactly 15 violating eligible sequences;
+- A2b exactly 48 increasing retained transitions across those sequences.
