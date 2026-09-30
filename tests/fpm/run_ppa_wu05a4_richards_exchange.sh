@@ -75,6 +75,7 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a4_richards_predictor_corrector.f90 -o "$OUT/test_pc.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_pc.o" -o "$OUT/test_pc"
   "$OUT/test_pc" > "$OUT/pc.txt"
+  cat "$OUT/pc.txt"
   grep -Fq 'PPA_WU05A4_RICHARDS_PREDICTOR_CORRECTOR=PASS' "$OUT/pc.txt"
 done
 
