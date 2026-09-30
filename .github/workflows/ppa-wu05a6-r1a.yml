@@ -1,0 +1,20 @@
+name: PPA-WU05-A6 sorptivity rate
+
+on:
+  push:
+    branches:
+      - research/ppa-wu05-a6-source-rate-migration
+    paths:
+      - 'research/macropore/mod_ppa_wu05a6_sorptivity_rate.f90'
+      - 'tests/fpm/test_ppa_wu05a6_sorptivity_rate.f90'
+      - 'tests/fpm/run_ppa_wu05a6_r1a.sh'
+      - '.github/workflows/ppa-wu05a6-r1a.yml'
+  workflow_dispatch:
+
+jobs:
+  r1a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run A6 R1a source oracle
+        run: bash tests/fpm/run_ppa_wu05a6_r1a.sh
