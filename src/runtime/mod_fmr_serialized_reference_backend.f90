@@ -19,7 +19,8 @@ module mod_fmr_serialized_reference_backend
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
-       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
+       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
@@ -82,6 +83,8 @@ module mod_fmr_serialized_reference_backend
        evaluate_restricted_fixed_weir_surface_water, validate_fixed_weir_surface_water_parameters, &
        FIXED_WEIR_AVAILABLE
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
+  use mod_macropore_single_column_runtime, only: macropore_runtime_config_t, macropore_runtime_result_t, &
+       macropore_single_column_runtime_t, MACRO_RUNTIME_CONVERGED, MACRO_RUNTIME_RETRY
   implicit none
   private
 
@@ -191,6 +194,15 @@ module mod_fmr_serialized_reference_backend
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
     logical :: macropore_active = .false.
+    type(macropore_runtime_config_t), allocatable :: macropore
+    logical :: macropore_active = .false.
+    logical :: macropore_executed = .false.
+    integer :: macropore_status = 0
+    integer :: macropore_outer_iterations = 0
+    real(real64) :: macropore_returned_surface_cm = 0.0_real64
+    real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
+    real(real64) :: macropore_internal_exchange_residual_cm = 0.0_real64
+    real(real64) :: macropore_balance_residual_cm = 0.0_real64
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
     logical :: tabulated_hydraulics_active = .false.
@@ -401,6 +413,9 @@ module mod_fmr_serialized_reference_backend
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
+    logical :: macropore_active = .false.
+    type(macropore_runtime_config_t), allocatable :: macropore
+    type(macropore_single_column_runtime_t) :: macropore_runtime
     logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
@@ -890,6 +905,13 @@ contains
         if (allocated(parameters%soil_temperature) .or. allocated(forcing%soil_temperature) .or. &
             allocated(physical%soil_temperature)) return
       end if
+      if (parameters%macropore_active) then
+        if (.not. allocated(parameters%macropore) .or. .not. allocated(physical%macropore)) return
+        if (.not. parameters%macropore%ready(parameters%active_nodes,require_zero_top_receipt=.true.)) return
+        if (.not. physical%macropore%ready() .or. physical%macropore%num_nodes /= parameters%active_nodes) return
+      else
+        if (allocated(parameters%macropore) .or. allocated(physical%macropore)) return
+      end if
       model%state_profile_admitted = .true.
     class default
       return
@@ -1321,6 +1343,20 @@ contains
       diagnostics%admission_rejections = 1
       return
     end if
+    if (parameters%macropore_active) then
+      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          parameters%snow_active .or. parameters%soil_temperature_active .or. &
+          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. &
+          parameters%drainage_response_active .or. parameters%root_extraction_active .or. &
+          self%model%fixed_weir_surface_water_active .or. .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_MACROPORE) then
+      call reject_backend_trial(result, candidate, diagnostics)
+      return
+    end if
     if (parameters%black_evaporation_active) then
       if (parameters%boesten_evaporation_active .or. &
           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
@@ -1517,7 +1553,7 @@ contains
            size(parameters%cofgen,1) >= 24 .and. size(parameters%cofgen,2) == parameters%active_nodes
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
            parameters%bottom_mode == 2) .and. &
-           parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
+           parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
             .not. parameters%frost_active
        if (parameters%elasticity_active) then
@@ -1535,6 +1571,18 @@ contains
              parameters%bottom_mode == 5 .and. parameters%swkimpl == 0 .and. &
              .not. parameters%ksatexm_extension_active .and. parameters%prepared_default_mvg_available .and. &
              parameters%prepared_direct_retention_slot > 0
+      end if
+      if (parameters%macropore_active) then
+        ok = ok .and. allocated(parameters%macropore) .and. self%macropore_active .and. &
+             allocated(self%macropore) .and. self%soil_water_selection%uses_reference() .and. &
+             .not. parameters%snow_active .and. .not. parameters%soil_temperature_active .and. &
+             .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
+             .not. parameters%drainage_response_active .and. .not. parameters%root_extraction_active .and. &
+             .not. self%fixed_weir_surface_water_active
+        if (ok) ok = parameters%macropore%ready(parameters%active_nodes,require_zero_top_receipt=.true.)
+      else
+        ok = ok .and. .not. allocated(parameters%macropore) .and. .not. self%macropore_active .and. &
+             .not. allocated(self%macropore)
       end if
       if (parameters%snow_active) then
         ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared .and. &
@@ -1661,6 +1709,12 @@ contains
       end if
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
+      self%macropore_active = parameters%macropore_active
+      if (allocated(self%macropore)) deallocate(self%macropore)
+      if (parameters%macropore_active .and. allocated(parameters%macropore)) then
+        allocate(self%macropore)
+        self%macropore = parameters%macropore
+      end if
       self%snow_active = parameters%snow_active
       self%soil_temperature_active = parameters%soil_temperature_active
       self%black_evaporation_active = parameters%black_evaporation_active
@@ -2062,6 +2116,7 @@ contains
     type(trial_outcome_t), intent(out) :: outcome
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
+    type(macropore_runtime_result_t) :: macropore_result
     type(soil_water_accepted_step_direction_result_t) :: direction_result
     type(trajectory_step_token_t) :: direction_token
     type(process_hydraulic_view_t) :: hydraulic_start, hydraulic_end
@@ -2096,6 +2151,7 @@ contains
     self%last_observation%practical_richards_head_rel_tolerance = self%head_rel_tolerance
     self%last_observation%practical_richards_compartment_balance_tolerance = self%compartment_balance_tolerance
     self%last_observation%practical_richards_total_balance_tolerance = self%total_balance_tolerance
+    self%last_observation%macropore_active = self%macropore_active
     self%last_observation%soil_temperature_active = self%soil_temperature_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
@@ -2385,7 +2441,34 @@ contains
       end if
     end if
 
-    if (self%soil_water_selection%uses_rossfast()) then
+    if (self%macropore_active) then
+      select type (physical => state)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(physical%macropore) .or. .not. allocated(self%macropore)) return
+        call self%macropore_runtime%execute(self%solver, self%workspace, request, physical%macropore, &
+             self%macropore%geometry, self%macropore%rate_template, self%macropore%history, &
+             self%macropore%policy, macropore_result)
+        self%last_observation%macropore_executed = .true.
+        self%last_observation%macropore_status = macropore_result%status
+        self%last_observation%macropore_outer_iterations = macropore_result%outer_iterations
+        self%last_observation%macropore_returned_surface_cm = macropore_result%returned_surface_cm
+        self%last_observation%macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
+        self%last_observation%macropore_internal_exchange_residual_cm = macropore_result%internal_exchange_residual_cm
+        self%last_observation%macropore_balance_residual_cm = macropore_result%macro_balance_residual_cm
+        if (macropore_result%status == MACRO_RUNTIME_RETRY) then
+          solve_result = macropore_result%matrix_result
+          solve_result%status = SW_SOLVE_RETRY_ADVISED
+          solve_result%retry_advised = .true.
+        else if (macropore_result%status /= MACRO_RUNTIME_CONVERGED) then
+          return
+        else
+          solve_result = macropore_result%matrix_result
+          physical%macropore = macropore_result%macropore_candidate
+        end if
+      class default
+        return
+      end select
+    else if (self%soil_water_selection%uses_rossfast()) then
       call self%soil_water_selection%solve(request, solve_result)
     else if (trajectory_request_ok) then
       if (self%drainage_qbot_smooth_freatic_projection .and. .not. drainage_direction_available) then
@@ -2527,6 +2610,7 @@ contains
     end if
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
          snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
+    if (self%macropore_active) outcome%mass_out = outcome%mass_out + macropore_result%rapid_external_outflow_cm
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
       step_drainage_exchange = self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
@@ -2690,6 +2774,10 @@ contains
       if (self%fixed_weir_surface_water_active) error stop 'F-PM08D7 active model missing fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
       value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
+      if (self%macropore_active) then
+        if (.not. allocated(physical%macropore)) error stop 'PPA-WU05-A7 active macropore storage state incomplete'
+        value = value + sum(physical%macropore%water_domain_cp)
+      end if
       if (self%snow_active) then
         if (.not. allocated(physical%snow)) error stop 'F-MR06 active snow storage state incomplete'
         value = value + physical%snow%process%snow_water_storage
@@ -2721,6 +2809,11 @@ contains
            allocated(physical%water_content)
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
            size(physical%water_content) == physical%active_nodes
+      if (complete .and. self%macropore_active) then
+        complete = allocated(physical%macropore)
+        if (complete) complete = physical%macropore%ready() .and. physical%macropore%num_nodes == physical%active_nodes
+      end if
+      if (complete .and. .not. self%macropore_active) complete = .not. allocated(physical%macropore)
       if (complete .and. self%snow_active) complete = allocated(physical%snow)
       if (complete .and. .not. self%snow_active) complete = .not. allocated(physical%snow)
       if (complete .and. self%soil_temperature_active) then
