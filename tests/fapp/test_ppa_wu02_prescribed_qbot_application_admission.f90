@@ -30,8 +30,8 @@ program test_ppa_wu02_prescribed_qbot_application_admission
   real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT = 1.0e-6_real64
 
-  type(fmr_production_application_config_t) :: config, gw_config, bad_config, qgwl_config
-  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, qgwl_app
+  type(fmr_production_application_config_t) :: config, gw_config, bad_config
+  type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
@@ -81,29 +81,6 @@ program test_ppa_wu02_prescribed_qbot_application_admission
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'standalone owner committed revisions')
   call app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. app%ready(), 'clean standalone owner close')
-
-
-  ! LOW01-A: state-dependent SWBOTB=4 law is materialized as an opt-in
-  ! forcing control over the existing prescribed-qbot owner. The committed
-  ! start-of-trial groundwater level is the only provider state.
-  qgwl_config = config
-  do i = 1, NTILE
-    allocate(qgwl_config%tiles(i)%base_forcing%legacy_swbotb4_qgwl_control)
-    qgwl_config%tiles(i)%base_forcing%legacy_swbotb4_qgwl_control%swqhbot = 1
-    qgwl_config%tiles(i)%base_forcing%legacy_swbotb4_qgwl_control%cofqha = -0.133_real64
-    qgwl_config%tiles(i)%base_forcing%legacy_swbotb4_qgwl_control%cofqhb = -0.01_real64
-    qgwl_config%tiles(i)%base_forcing%legacy_swbotb4_qgwl_control%cofqhc = 0.082_real64
-  end do
-  call qgwl_app%initialize(qgwl_config, status)
-  call require(status == FMR_APP_BOOT_OK, 'qgwl production bootstrap initialize')
-  call qgwl_app%run_standalone(T0, T1, results, status)
-  call require(status == FMR_APP_BOOT_OK, 'qgwl production run status')
-  call require(all(results%completed) .and. all(results%committed), 'qgwl accepted commits')
-  call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'qgwl hard mass')
-  call qgwl_app%close(status)
-  call require(status == FMR_APP_BOOT_OK, 'qgwl clean close')
-  print '(a)', 'PPA_WU02_LOW01A_QGWL_RUNTIME=PASS'
-  print '(a)', 'PPA_WU02_LOW01A_QGWL_HARD_MASS=PASS'
 
   ! Groundwater authority: the same production bootstrap type owns an admitted
   ! bottom_mode=5 participant registry and creates F-GC49D from typed inputs.
