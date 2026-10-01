@@ -253,6 +253,9 @@ contains
     forcing%bottom_head=1.0_real64
     forcing%drainage_flux_by_level=0.0_real64
     forcing%subsurface_irrigation_source=0.0_real64
+    ! Controlled matrix recharge keeps the thin perched lens active over the
+    ! qualification interval. It is matrix forcing, not a macropore receipt.
+    forcing%subsurface_irrigation_source(2)=0.01_real64
     forcing%root_extraction_sink=0.0_real64
     allocate(forcing%macropore_top_input)
     forcing%macropore_top_input=fmr_macropore_top_input_forcing_t()
