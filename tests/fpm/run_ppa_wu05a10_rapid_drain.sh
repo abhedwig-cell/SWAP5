@@ -90,6 +90,13 @@ MODULE_SRC=(
   src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_macropore_configuration.f90
+  src/process/macropore/mod_rfm_unponded_activation.f90
+  src/runtime/mod_rfm_unponded_surface_composition.f90
+  src/process/macropore/mod_rfm_preferential_router.f90
+  src/process/macropore/mod_rfm_surface_event_age.f90
+  src/runtime/mod_rfm_physical_state.f90
+  src/runtime/mod_rfm_runtime_configuration.f90
+  src/runtime/mod_rfm_surface_forcing.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
 )
