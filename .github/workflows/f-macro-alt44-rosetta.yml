@@ -1,0 +1,39 @@
+name: F-MACRO-ALT44 Rosetta reproduction
+
+on:
+  push:
+    branches:
+      - research/f-macro-alt01-memory-falsification
+    paths:
+      - 'tools/research/macropore_alt44_rosetta_reproduction.py'
+      - '.github/workflows/f-macro-alt44-rosetta.yml'
+  workflow_dispatch:
+
+jobs:
+  rosetta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Rosetta
+        run: python -m pip install --disable-pip-version-check rosetta-soil
+      - name: Fetch authors Rosetta horizon table
+        run: |
+          curl -L --fail --retry 3 \
+            -o /tmp/rosetta_new_model_updates.csv \
+            'https://raw.githubusercontent.com/libonancaesar/neon-pf-database/main/doc/NEON%20soil%20properties/rosetta_new_model_updates.csv'
+      - name: Reproduce Ksat and emit full VG parameters
+        run: |
+          mkdir -p artifacts
+          python tools/research/macropore_alt44_rosetta_reproduction.py \
+            /tmp/rosetta_new_model_updates.csv \
+            artifacts/alt44_rosetta_full_parameters.csv \
+            artifacts/alt44_rosetta_summary.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-macro-alt44-rosetta
+          path: artifacts/
