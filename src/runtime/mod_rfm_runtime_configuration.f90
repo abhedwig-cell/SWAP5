@@ -16,7 +16,7 @@ module mod_rfm_runtime_configuration
     real(real64) :: mb_contact_length_cm=-1.0_real64
     integer :: sorptivity_panels=0
     integer :: mb_wall_node_index=0
-    real(real64),allocatable :: endpoint_depth_cm(:), endpoint_contact_thickness_cm(:)
+    real(real64),allocatable :: endpoint_depth_cm(:), endpoint_contact_thickness_cm(:), endpoint_area_fraction(:)
     integer,allocatable :: endpoint_node_index(:)
   contains
     procedure,public::valid=>rfm_runtime_configuration_valid
@@ -35,13 +35,14 @@ contains
       ieee_is_finite(self%exchange_length_cm).and.self%exchange_length_cm>0.0_real64.and. &
       ieee_is_finite(self%mb_contact_length_cm).and.self%mb_contact_length_cm>0.0_real64.and. &
       self%sorptivity_panels>0.and.self%mb_wall_node_index>0.and.allocated(self%endpoint_depth_cm).and. &
-      allocated(self%endpoint_contact_thickness_cm).and.allocated(self%endpoint_node_index)
+      allocated(self%endpoint_contact_thickness_cm).and.allocated(self%endpoint_area_fraction).and.allocated(self%endpoint_node_index)
     if(.not.ok)return
     n=size(self%endpoint_depth_cm)
-    ok=n>0.and.size(self%endpoint_node_index)==n.and.size(self%endpoint_contact_thickness_cm)==n.and. &
+    ok=n>0.and.size(self%endpoint_node_index)==n.and.size(self%endpoint_contact_thickness_cm)==n.and.size(self%endpoint_area_fraction)==n.and. &
       all(ieee_is_finite(self%endpoint_depth_cm)).and.all(self%endpoint_depth_cm>0.0_real64).and. &
       all(ieee_is_finite(self%endpoint_contact_thickness_cm)).and.all(self%endpoint_contact_thickness_cm>0.0_real64).and. &
-      all(self%endpoint_node_index>0)
+      all(ieee_is_finite(self%endpoint_area_fraction)).and.all(self%endpoint_area_fraction>0.0_real64).and. &
+      all(self%endpoint_area_fraction<=1.0_real64).and.all(self%endpoint_node_index>0)
     if(.not.ok)return
     do i=2,n
       if(self%endpoint_depth_cm(i)<=self%endpoint_depth_cm(i-1))then;ok=.false.;return;end if
@@ -52,6 +53,7 @@ contains
     class(rfm_runtime_configuration_t),intent(inout)::self
     if(allocated(self%endpoint_depth_cm))deallocate(self%endpoint_depth_cm)
     if(allocated(self%endpoint_contact_thickness_cm))deallocate(self%endpoint_contact_thickness_cm)
+    if(allocated(self%endpoint_area_fraction))deallocate(self%endpoint_area_fraction)
     if(allocated(self%endpoint_node_index))deallocate(self%endpoint_node_index)
     self%enabled=.false.;self%sigma_b=-1.0_real64;self%f_mb=-1.0_real64
     self%connectivity_p=-1.0_real64;self%z_ah_cm=-1.0_real64;self%z_ic_cm=-1.0_real64
