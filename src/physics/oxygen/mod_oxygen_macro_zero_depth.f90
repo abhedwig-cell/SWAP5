@@ -26,7 +26,7 @@ contains
                           - exp(-l/root_shape))
    end function oxygen_macro_zero_residual
 
-   subroutine oxygen_macro_zero_depth(ctop, microbial_scale, root_scale, microbial_shape, root_shape, &
+   pure subroutine oxygen_macro_zero_depth(ctop, microbial_scale, root_scale, microbial_shape, root_shape, &
                                       lroot, status, iterations, xtol, maxiter)
       real(real64), intent(in) :: ctop, microbial_scale, root_scale
       real(real64), intent(in) :: microbial_shape, root_shape
