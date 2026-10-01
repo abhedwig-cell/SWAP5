@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.f_macro_alt54.empirical_identifiability.v1",
+  "status": "QUALIFIED_EMPIRICAL_SYNTHESIS",
+  "parameters": {
+    "sigma_B": {
+      "status": "EVENT_ORDERING_SUPPORTED_MAGNITUDE_NOT_IDENTIFIED",
+      "decisive_missing_observation": "quantitative unponded preferential-entry fraction"
+    },
+    "p": {
+      "status": "HELD_OUT_CONSERVATIVE_TRACER_ENDPOINT_SHAPE_VALIDATED",
+      "spechtacker_profile1": 0.249,
+      "spechtacker_profile2_best": 0.219,
+      "spechtacker_profile2_heldout_r2": 0.975,
+      "colpach": 0.385
+    },
+    "f_MB": {
+      "status": "COMPOSITE_MASS_CONSTRAINT_ONLY",
+      "spechtacker_recovery": 0.95,
+      "site33_recovery": 0.96
+    },
+    "chi_wall": {
+      "status": "OPTIONAL_NOT_INDEPENDENTLY_IDENTIFIED"
+    }
+  },
+  "model_change_authorized": false,
+  "next": "full_conservative_tracer_forward_harness"
+}
