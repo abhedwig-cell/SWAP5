@@ -101,6 +101,13 @@ for opt in 0 2; do
   "$OUT/test" > "$OUT/out.txt"
   cat "$OUT/out.txt"
   grep -Fq 'PPA_WU05A7_REAL_RICHARDS_RUNTIME=PASS' "$OUT/out.txt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90 -o "$OUT/test_fmr_macro.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr_macro.o" -o "$OUT/test_fmr_macro"
+  "$OUT/test_fmr_macro" > "$OUT/fmr_macro.txt"
+  cat "$OUT/fmr_macro.txt"
+  grep -Fq 'PPA_WU05A8_FMR_MACRO_TRIAL=PASS' "$OUT/fmr_macro.txt"
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
+cmp "$BUILD/o0/fmr_macro.txt" "$BUILD/o2/fmr_macro.txt"
 echo "PPA_WU05A8_REAL_RICHARDS_GATE=PASS"
