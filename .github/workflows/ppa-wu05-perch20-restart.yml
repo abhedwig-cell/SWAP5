@@ -1,0 +1,24 @@
+name: PPA-WU05-PERCH20 reduction continuation restart
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch20-reduction-continuation-restart
+    paths:
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'tests/fpm/test_ppa_wu05_perch20_restart_lifecycle.f90'
+      - 'tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh'
+      - '.github/workflows/ppa-wu05-perch20-restart.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH20 reduction restart lifecycle
+        run: bash tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh
+      - name: Preserve PERCH19 source ladder
+        run: bash tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh
