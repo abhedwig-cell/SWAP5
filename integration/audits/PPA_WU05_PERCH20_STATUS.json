@@ -1,16 +1,35 @@
 {
   "schema": "swap5.ppa_wu05_perch20.status.v1",
   "workunit": "PPA-WU05-PERCH20",
-  "phase": "PREREGISTERED",
-  "decision": "MODEL_PROPOSED_RETRY_DIRECTIVE_REQUIRED",
+  "phase": "CLOSED_QUALIFIED_GENERIC_TRANSACTION_SEAM",
+  "decision": "QUALIFIED_MODEL_PROPOSED_RETRY_DIRECTIVE",
   "baseline": "d89912713f9182f4a5319a54cb6094930d38e2cd",
   "branch": "research/ppa-wu05-perch20-model-retry-directive",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "canonical_admitted": false,
-  "closed": false,
-  "next_action": "Implement the bounded generic full-trial retry directive and qualify it independently of macropores.",
-  "recovery_point": "d89912713f9182f4a5319a54cb6094930d38e2cd"
+  "closed": true,
+  "qualified_postimage": "e5f74d16bab08248e37e54a22e56d649a9d012fc",
+  "qualification_run": 36864339023,
+  "qualified_scope": [
+    "full-trial solver-rejection retry directive",
+    "exact model-proposed next attempt duration",
+    "post-failure attempt-context carry",
+    "legacy fixed retry preservation",
+    "legacy attempt-context rollback preservation",
+    "committed-state isolation",
+    "invalid-directive fail-closed behavior"
+  ],
+  "remaining_scope": [
+    "accepted-step numerical feedback",
+    "PERCH19 FrReduQ binding",
+    "numerical continuation persistence",
+    "A18 active perched end-to-end replay"
+  ],
+  "current_canonical": "100704c5a7283ae592bfa2104928ac16cd7ba32d",
+  "canonical_contains_retry_directive": false,
+  "next_action": "Open PPA-WU05-PERCH21 from current canonical and selectively integrate PERCH19 plus PERCH20.",
+  "recovery_point": "e5f74d16bab08248e37e54a22e56d649a9d012fc"
 }
