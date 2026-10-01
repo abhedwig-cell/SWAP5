@@ -1,0 +1,20 @@
+name: PPA-WU05-PERCH19 FrReduQ controller
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch19-frreduq-retry
+    paths:
+      - 'src/transaction/mod_ppa_wu05_perch19_frreduq_controller.f90'
+      - 'tests/fpm/test_ppa_wu05_perch19_frreduq_controller.f90'
+      - 'tests/fpm/run_ppa_wu05_perch19_frreduq_controller.sh'
+      - '.github/workflows/ppa-wu05-perch19-frreduq-controller.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact FrReduQ controller oracle
+        run: bash tests/fpm/run_ppa_wu05_perch19_frreduq_controller.sh
