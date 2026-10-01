@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.ppa_wu05a11.status.v1",
+  "workunit": "PPA-WU05-A11",
+  "phase": "BLOCKED_SOURCE_AUTHORITY",
+  "decision": "EXACT_PERCHED_CARRIER_AUTHORITY_REQUIRED",
+  "baseline": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "branch": "research/ppa-wu05-a11-perched-zone-carrier",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "closed": false,
+  "last_reconciled_head": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "last_reconciled_upstream": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "relevant_paths": [
+    "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90",
+    "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90",
+    "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90",
+    "src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90",
+    "src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90",
+    "src/runtime/mod_macropore_standard_rate_adapter.f90",
+    "src/runtime/mod_fmr_macropore_configuration.f90"
+  ],
+  "authority_paths": [
+    "docs/audits/PPA_WU05A11_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05A11_RESULT.md",
+    "docs/audits/PPA_WU05A10_CLOSEOUT.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+  ],
+  "historical_source_authority": {
+    "pr": 922,
+    "head": "b5b123dcc4450dcc3c76a789ba749205fa8474b5",
+    "paths": [
+      "docs/audits/PPA_WU05A6_R1A_SORPTIVITY_SOURCE_MAP.md",
+      "docs/audits/PPA_WU05A6_R2_SATFLOW_SOURCE_MAP.md",
+      "docs/audits/PPA_WU05A6_R3_INTERFLOW_CLARIFICATION.md",
+      "docs/audits/PPA_WU05A7_RESULT.md"
+    ]
+  },
+  "blockers": [
+    "Exact B1.11 rule for constructing the perched/top saturated matrix-zone FMR carrier is not retained in current canonical documentation.",
+    "The byte-exact SWAP 4.3.1 archive used by A1 was not retrievable from the current Project/Library file surface in this execution."
+  ],
+  "forbidden_shortcut": "Do not infer perched-zone topology solely from pressure_head >= 0 without source proof.",
+  "next_action": "Recover the exact B1.11 ICpTpSatZon/perched-zone construction and SATFLOW call arguments, then implement only the derived non-persistent FMR carrier and qualify A8/A9/A10 preservation.",
+  "recovery_point": "dcbc59927af70e514606668ad065999a718068cc"
+}
