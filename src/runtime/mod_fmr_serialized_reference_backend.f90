@@ -280,6 +280,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
     logical :: macropore_perched_exchange_active = .false.
     real(real64) :: macropore_perched_interflow_cm = 0.0_real64
+    logical :: macropore_accepted_state_seed_active = .false.
+    real(real64) :: macropore_accepted_state_seed_interflow_cm = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
@@ -2505,6 +2507,9 @@ contains
       self%last_observation%macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
       self%last_observation%macropore_perched_exchange_active = macropore_result%perched_exchange_active
       self%last_observation%macropore_perched_interflow_cm = macropore_result%perched_interflow_cm
+      self%last_observation%macropore_accepted_state_seed_active = macropore_result%accepted_state_seed_active
+      self%last_observation%macropore_accepted_state_seed_interflow_cm = &
+           macropore_result%accepted_state_seed_interflow_cm
       macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
       macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
       if (.not. ieee_is_finite(macropore_accepted_top_cm) .or. macropore_accepted_top_cm < 0.0_real64) return
