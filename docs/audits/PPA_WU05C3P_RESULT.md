@@ -2,42 +2,46 @@
 
 Date: 2026-10-01
 
-Status: `QUALIFIED_PRODUCTION_COMPOSITION_BOUNDARY`
+Status: `QUALIFIED_COMPOSITION / END_TO_END_ADMISSION_PENDING`
 
-## Gate
+C3Q qualified the pure Bartholomeus physical response. C3P tests the production ownership seam:
+oxygen is a root-sink modifier, not a water-flux owner.
 
 Persisted workflow:
 - `PPA WU05 C3P oxygen composition`
 - run `36919068192`
-- merge SHA `9198448df2d2a88398cc3085e736b3be44cd913d`
+- job `110560257874`
 - result: PASS
 
-Observed:
+Observed gate:
 
 ```text
 PPA_WU05C3P_ROOT_OXYGEN_COMPOSITION=PASS
 ```
 
-The gate compiles the current soil-water contract and hydraulic view, current root-water-uptake
-process, and the oxygen composition adapter together, then executes the focused composition test.
+The gate compiles the current soil-water contract, process hydraulic view, existing macro/Feddes
+root-water-uptake process and the oxygen composition adapter together.
 
-## Qualified ownership
+Qualified behavior:
+- existing drought/root sink is evaluated first;
+- oxygen factor is applied only to rooted nodes;
+- non-rooted sink entries are preserved;
+- final actual uptake is recomputed from the modified sink;
+- oxygen factors outside [0,1] fail closed;
+- the oxygen component does not book water independently.
 
-- existing root-water-uptake process owns the base sink;
-- oxygen owns no water mass;
-- oxygen factor is bounded [0,1] and shape-checked;
-- only rooted nodes are modified;
-- total actual uptake is recomputed from the composed sink;
-- invalid oxygen factors fail without producing a composed physical result.
+The earlier C3P CI failure was a harness dependency-order defect: the soil-water solver contract was
+not compiled before `mod_process_hydraulic_view`. The harness now compiles and links the full
+dependency set. A pre-existing unused-dummy warning in the broad solver contract is scoped out of
+this narrow gate; warning policy for the new oxygen code remains strict.
 
-Existing ABI warnings in the broad soil-water contract are explicitly excluded from this focused
-gate's `-Werror` policy via `-Wno-unused-dummy-argument`; this does not weaken warnings for the
-new oxygen composition code.
+Decision:
 
-## Decision
+`C3P = PASS / PRODUCTION COMPOSITION QUALIFIED`
 
-The root-sink composition boundary required by C3Q is qualified for production wiring.
-
-This does not yet admit the Bartholomeus option into canonical runtime selection. Remaining admission
-work is end-to-end option wiring plus preservation gates proving that oxygen-off behavior is unchanged
-and oxygen-on behavior reaches the qualified kernel/composition route.
+Remaining before canonical admission:
+1. wire the qualified Bartholomeus factor provider into the actual production root-uptake execution
+   selection for the admitted analytical-MvG option;
+2. prove non-oxygen route preservation;
+3. execute full oxygen end-to-end regression;
+4. persist admission/closeout and merge only after those gates pass.
