@@ -1,14 +1,18 @@
 {
-  "schema": "swap5.f_macro_tracer01d.composition_status.v2",
-  "status": "CLOSED_D1_QUALIFIED_EMPIRICAL_INITIAL_STATE_BLOCKER",
+  "schema": "swap5.f_macro_tracer01d.composition_status.v3",
+  "status": "CLOSED_D2A_FORWARD_HELDOUT_QUALIFIED_D2B_MB_WALL_BLOCKER",
+  "canonical_authority": "integration/f-ci-canonical@ebea588070f7a44dbaea78169f2548c745061c48",
   "qualified": {
     "matrix_reference_kernel": true,
     "accepted_flux_observer": true,
     "real_swap5_solver_composition": true,
     "tracer_mass_closure": true,
-    "timestep_refinement": true
+    "timestep_refinement": true,
+    "publication_initial_state_sensitivity": true,
+    "coupled_activation_matrix_ic_forward_comparison": true,
+    "profile2_heldout_validation": true
   },
-  "refinement": {
+  "d1_refinement": {
     "dt_seconds": [
       120,
       60,
@@ -18,19 +22,41 @@
     "L1_120_60": 0.0015162192486311466,
     "L1_60_30": 0.0007659631795578947
   },
-  "empirical_replay": {
-    "publication_authority_frozen": true,
+  "publication_case": {
     "exact_replay": false,
-    "targeted_repository_search_repeated_at_closure": true,
-    "blocker": "full Spechtacker publication initial 0-1 m theta profile unavailable",
-    "hybrid_echoRD_initial_profile_forbidden": true
+    "reason": "full observed Spechtacker 0-1 m initial theta(z) is not available",
+    "sensitivity_conditioned": true,
+    "deep_initial_state_explanation_supported": false
   },
-  "d2": {
-    "started": false,
-    "reason": "publication-faithful matrix hydrology initial state is not uniquely specified",
-    "profile2_heldout_forward_validation": false
+  "d2a": {
+    "run_id": 36851647976,
+    "head_sha": "fa549838dd9f0a020ae871c5c59c77a1ba1251cf",
+    "artifact_id": 11156266062,
+    "artifact_sha256": "f4111b0f3ae6c7f2c8fa430ba08c6661dcf79b7853de37a79d87bc5af38ba225",
+    "p_frozen": 0.249,
+    "f_MB": 0,
+    "selected_sigma_B_grid_member": 0.1,
+    "sigma_B_absolute_identified": false,
+    "preferential_fraction": 0.6288600351133447,
+    "profile1_r2": 0.9427036980202569,
+    "profile1_rmse": 0.03863039586241326,
+    "profile2_heldout_r2": 0.9774136086886085,
+    "profile2_heldout_rmse": 0.02648130696774259,
+    "predicted_recovery_fraction": 1.0000000000000009,
+    "published_recovery_fraction_approx": 0.95
+  },
+  "d2b": {
+    "status": "BLOCKED",
+    "blocker": "source-bound executable MB wall-retained tracer profile and bottom-survival owner absent",
+    "f_MB_residual_balancing_forbidden": true
   },
   "dispersion_authorized": false,
-  "stop_rule": "TRUE_EMPIRICAL_AUTHORITY_BLOCKER",
+  "new_rfm_physics_authorized": false,
+  "stop_rule": "TRUE_COMPOSITION_BLOCKER",
+  "result_documents": [
+    "docs/performance/F-MACRO-TRACER01D1S_RESULT.md",
+    "docs/performance/F-MACRO-TRACER01D2A_RESULT.md",
+    "docs/performance/F-MACRO-TRACER01D2B_BLOCKER.md"
+  ],
   "closure_document": "docs/performance/F-MACRO-TRACER01D_CLOSURE.md"
 }
