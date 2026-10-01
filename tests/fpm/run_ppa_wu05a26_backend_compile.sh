@@ -117,6 +117,7 @@ MODULE_SRC=(
   src/runtime/mod_rfm_production_candidate_composer.f90
   src/runtime/mod_rfm_live_trial_preparer.f90
   src/runtime/mod_rfm_matrix_source_provider.f90
+  src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
 )
