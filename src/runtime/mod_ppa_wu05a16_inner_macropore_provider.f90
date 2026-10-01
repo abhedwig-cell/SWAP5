@@ -10,7 +10,8 @@ module mod_ppa_wu05a16_inner_macropore_provider
        prepare_standard_macropore_rate_request
   use mod_ppa_wu05a15_exchange_derivative, only: macropore_exchange_derivative_result_t, &
        evaluate_macropore_exchange_derivative
-  use mod_macropore_covering_layer_input, only: covering_layer_input_request_t, evaluate_covering_layer_input
+  use mod_macropore_covering_layer_input, only: covering_layer_input_request_t, evaluate_covering_layer_input, &
+       evaluate_covering_layer_rate_derivative
   implicit none
   private
 
@@ -130,7 +131,10 @@ contains
     type(macropore_exchange_derivative_result_t)::derivative
     type(matrix_saturated_zone_view_t)::matrix_view
     type(soil_water_physical_state_t)::matrix
-    real(real64),allocatable::exchange(:)
+    real(real64),allocatable::exchange(:),covered_cm(:)
+    type(covering_layer_input_request_t)::covering
+    real(real64)::covered_dqdh
+    integer::cover_node
     logical::ok
 
     dexchange_dhead=0.0_real64
@@ -148,6 +152,23 @@ contains
     allocate(exchange(self%accepted_macro%num_nodes))
     exchange=sum(rates%qexc_to_matrix_rate,dim=1)
     dexchange_dhead=derivative%total_dqdh_node
+    if(self%covering_layer_enabled)then
+      cover_node=self%geometry%top_node-1
+      covering%top_node=self%geometry%top_node
+      covering%step_duration_day=self%step_duration
+      covering%matrix_head_above_cm=pressure_head(cover_node)
+      covering%dz_above_cm=self%dz(cover_node)
+      covering%minimum_polygon_diameter_cm=self%covering_minimum_polygon_diameter_cm
+      covering%covering_layer_ksat_cm_per_day=self%covering_ksat_cm_per_day
+      covering%total_macropore_volume_top_cm=sum(self%geometry%volume_domain_cp(:,self%geometry%top_node))
+      covering%domain_top_volume_cm=self%geometry%volume_domain_cp(:,self%geometry%top_node)
+      call evaluate_covering_layer_input(covering,covered_cm,ok)
+      if(.not.ok)return
+      call evaluate_covering_layer_rate_derivative(covering,covered_dqdh,ok)
+      if(.not.ok)return
+      exchange(cover_node)=exchange(cover_node)-sum(covered_cm)/self%step_duration
+      dexchange_dhead(cover_node)=dexchange_dhead(cover_node)-covered_dqdh
+    end if
     derivative_available=.true.
     active=max(maxval(abs(exchange)),maxval(abs(dexchange_dhead)))>1.0e-14_real64
   end subroutine evaluate_inner_macropore_derivative
