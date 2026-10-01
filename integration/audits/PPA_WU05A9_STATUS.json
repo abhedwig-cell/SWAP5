@@ -1,13 +1,15 @@
 {
   "schema": "swap5.ppa_wu05a9.status.v1",
   "workunit": "PPA-WU05-A9",
-  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
-  "decision": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE_FMR_MACROPORE_TOP_INPUT",
+  "phase": "CLOSED_CANONICAL_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_FMR_MACROPORE_TOP_INPUT",
   "baseline": "412592b874111f35404171f223d3f2518bcad32e",
   "branch": "work/ppa-wu05-a9-fmr-top-input",
-  "qualified_postimage": "3e0b0a94512183efbbe0cc1aff997e60d38296ae",
-  "qualification_run": 36827295266,
-  "current_head": "fbc2dde967fe25f03d0ab9c761bc0bbce5fb89b8",
+  "qualified_postimage": "0b3fd751ca8f8ae550f00e084c96e5f34de77971",
+  "qualification_run": 36827535183,
+  "admission_pr": 926,
+  "canonical_merge": "243f43cccd817c1bb175f14faa64efd574d6d3ca",
+  "postmerge_preservation_run": 36827754384,
   "scope": {
     "standard_swmbf1": true,
     "surface_connected": true,
@@ -31,6 +33,6 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
-  "closed": false
+  "canonical_admitted": true,
+  "closed": true
 }
