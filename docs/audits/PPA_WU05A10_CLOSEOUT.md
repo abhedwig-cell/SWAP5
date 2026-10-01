@@ -8,8 +8,8 @@ Decision: `CANONICALLY_ADMITTED_FMR_MACROPORE_RAPID_DRAIN`
 
 ## Canonical evidence
 
-- qualified code/test postimage: `7ddb02ba2ed774f046fd36e451f8cf1bd02c8338`
-- focused qualification run: `36828966630` — SUCCESS
+- qualified code/test postimage: `2714c755c50e1ea1ea3bb4e6fc466ce21c9f4e80`
+- focused qualification run: `36829166995` — SUCCESS
 - admission PR: #928
 - canonical admission merge: `190dad36a821f3a43f78f00fccf827c58cacedb6`
 - post-merge preservation run: `36829313469` — SUCCESS on that exact canonical merge
@@ -30,7 +30,7 @@ A9 source-faithful top input may be active simultaneously.
 
 ## Qualification evidence
 
-The A6 source oracle remained green.
+The A6 source oracle remained green. An unaligned drain level was explicitly falsified and rejected by production configuration validation.
 
 The real serialized FMR trial produced:
 
