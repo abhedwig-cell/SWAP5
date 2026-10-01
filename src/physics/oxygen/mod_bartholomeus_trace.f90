@@ -9,6 +9,7 @@ module mod_bartholomeus_trace
       real(real64) :: waterfilm_thickness_m = 0.0_real64
       real(real64) :: d_soil = 0.0_real64
       real(real64) :: r_microbial_z0 = 0.0_real64
+      real(real64) :: ctopnode = 0.0_real64
       real(real64) :: c_macro = 0.0_real64
       real(real64) :: c_min_micro = 0.0_real64
       real(real64) :: resp_factor = 0.0_real64
@@ -23,6 +24,7 @@ contains
       bartholomeus_trace_close = close1(a%waterfilm_thickness_m,b%waterfilm_thickness_m,rtol,atol) .and. &
                                  close1(a%d_soil,b%d_soil,rtol,atol) .and. &
                                  close1(a%r_microbial_z0,b%r_microbial_z0,rtol,atol) .and. &
+                                 close1(a%ctopnode,b%ctopnode,rtol,atol) .and. &
                                  close1(a%c_macro,b%c_macro,rtol,atol) .and. &
                                  close1(a%c_min_micro,b%c_min_micro,rtol,atol) .and. &
                                  close1(a%resp_factor,b%resp_factor,rtol,atol) .and. &
