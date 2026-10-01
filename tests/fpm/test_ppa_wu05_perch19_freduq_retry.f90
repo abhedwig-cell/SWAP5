@@ -241,7 +241,8 @@ program test_ppa_wu05_perch19_freduq_retry
   print '(a)', 'PPA_WU05A18_REFERENCE_RICHARDS_BASELINE=PASS'
   print '(a)', 'PPA_WU05A18_PERCHED_TOPOLOGY_RETAINED=PASS'
   print '(a)', 'PPA_WU05A18_BASELINE_GATE=PASS'
-  write(*,'(*(g0))') 'PPA_WU05A18_SOURCE_REDUCTION_ACCEPTED|FACTOR=',source_reduction_ladder(ireduce)
+  write(*,'(*(g0))') 'PPA_WU05_PERCH19_SOURCE_REDUCTION_ACCEPTED|FACTOR=', &
+       macro_result%source_flow_reduction_factor
   print '(a)', 'PPA_WU05A18_ACTIVE_PERCHED_INNER=PASS'
   print '(a)', 'PPA_WU05A18_INNER_MASS_CLOSURE=PASS'
 
