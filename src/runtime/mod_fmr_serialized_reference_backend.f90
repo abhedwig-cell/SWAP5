@@ -27,7 +27,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
+       soil_water_solve_result_t, soil_water_solver_diagnostics_t, soil_water_top_boundary_result_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_TEMPORAL_INDICATOR_NOT_RUN
   use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
@@ -88,6 +88,8 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_physical_state, only: rfm_physical_state_t, copy_rfm_physical_state
   use mod_rfm_runtime_configuration, only: rfm_runtime_configuration_t
   use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
+  use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
+  use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
 
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
@@ -1486,22 +1488,12 @@ contains
       return
     end if
     if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
-      ! A25 requires explicit immutable configuration.  Execution remains
-      ! fail-closed until the full orchestrator is bound in this workunit.
-      if (.not. self%model%rfm_configuration%valid()) then
-        result = kernel_result_t()
-        result%status = KERNEL_STATUS_NOT_ADMITTED
-        candidate = kernel_candidate_state_t()
-        diagnostics = kernel_diagnostics_t()
-        diagnostics%admission_rejections = 1
+      if (.not. self%model%rfm_configuration%valid() .or. parameters%macropore_active .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result,candidate,diagnostics)
         return
       end if
-      result = kernel_result_t()
-      result%status = KERNEL_STATUS_NOT_ADMITTED
-      candidate = kernel_candidate_state_t()
-      diagnostics = kernel_diagnostics_t()
-      diagnostics%admission_rejections = 1
-      return
     end if
     if (parameters%macropore_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
@@ -2321,16 +2313,22 @@ contains
     type(black_evaporation_result_t) :: black_result
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
+    type(rfm_matrix_source_provider_t), target :: rfm_source_provider
+    type(rfm_live_trial_prepare_result_t) :: rfm_live
+    type(soil_water_top_boundary_result_t) :: rfm_preflight
+    real(real64), allocatable, target :: rfm_source_rate(:)
+    real(real64), allocatable :: rfm_node_depth_cm(:)
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
+    real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
-    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
+    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok
     logical :: direct_retention_ok
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
@@ -2342,6 +2340,8 @@ contains
     outcome = trial_outcome_t()
     macropore_accepted_top_cm = 0.0_real64
     macropore_rapid_outflow_cm = 0.0_real64
+    rfm_preferential_input_cm = 0.0_real64
+    rfm_deep_receipt_cm = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
@@ -2418,7 +2418,7 @@ contains
     end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
-    if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
+    if (self%black_evaporation_active .or. self%boesten_evaporation_active .or. self%rfm_configuration%enabled) then
       request%boundary%top_mode = FSI_TOP_MODE_DYNAMIC_PROVIDER
     else
       request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
@@ -2559,7 +2559,7 @@ contains
       else
         if (allocated(physical%soil_temperature)) return
       end if
-      if (self%soil_temperature_active .or. self%drainage_response_active) then
+      if (self%soil_temperature_active .or. self%drainage_response_active .or. self%rfm_configuration%enabled) then
         call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
       end if
@@ -2601,7 +2601,44 @@ contains
     else
       request%evaluation%constitutive => self%constitutive
     end if
-    request%evaluation%source_sink => self%source_sink
+
+    if (self%rfm_configuration%enabled) then
+      if (self%direct_retention_active) return
+      if (.not. self%soil_water_selection%uses_reference()) return
+      select type (rfm_physical => state)
+      type is (fmr_b110_rfm_state_t)
+        if (.not. rfm_physical%rfm%ready()) return
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider, self%soil_parameters, &
+             self%hydraulic_parameters, self%swkmean, rfm_physical%ponding_depth, step_duration, &
+             self%rfm_surface_forcing%precipitation_rate_cm_per_day, self%rfm_surface_forcing%irrigation_rate_cm_per_day, &
+             self%rfm_surface_forcing%snowmelt_rate_cm_per_day, self%rfm_surface_forcing%runon_rate_cm_per_day, &
+             self%rfm_surface_forcing%potential_bare_soil_evaporation_cm_per_day, &
+             self%rfm_surface_forcing%potential_pond_evaporation_cm_per_day, self%rfm_surface_forcing%ponding_max_cm, &
+             self%rfm_surface_forcing%runoff_resistance_day, self%rfm_surface_forcing%runoff_exponent)
+        call rfm_top_provider%evaluate(rfm_physical%pressure_head(1), rfm_physical%water_content(1), &
+             rfm_physical%ponding_depth, request%boundary, rfm_preflight)
+        allocate(rfm_node_depth_cm(rfm_physical%active_nodes)); rfm_node_depth_cm=abs(self%soil_parameters%z)
+        call prepare_rfm_live_trial(rfm_physical%rfm,self%rfm_configuration,self%rfm_surface_forcing,hydraulic_start, &
+             self%constitutive,rfm_preflight,rfm_node_depth_cm,self%soil_parameters%dz,step_duration, &
+             max(self%compartment_balance_tolerance,FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM),rfm_live)
+        if(.not.rfm_live%valid)return
+        rfm_source_rate=rfm_live%candidate%matrix_source_rate_per_day
+        call bind_rfm_matrix_source_provider(rfm_source_provider,self%source_sink,rfm_source_rate,rfm_source_ok)
+        if(.not.rfm_source_ok)return
+        request%evaluation%source_sink=>rfm_source_provider
+        rfm_preferential_input_cm=rfm_live%surface%preferential_supply_cm_per_day*step_duration
+        rfm_deep_receipt_cm=rfm_live%candidate%deep_receipt_cm
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
+             self%swkmean,rfm_physical%ponding_depth,step_duration,rfm_live%surface%matrix_supply_cm_per_day, &
+             0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,self%rfm_surface_forcing%ponding_max_cm, &
+             self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent)
+        request%evaluation%dynamic_top_boundary=>rfm_top_provider
+      class default
+        return
+      end select
+    else
+      request%evaluation%source_sink=>self%source_sink
+    end if
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
          request%evaluation%top_boundary => self%top_boundary
@@ -2816,6 +2853,15 @@ contains
       physical%water_content = solve_result%candidate_state%water_content
       physical%ponding_depth = solve_result%candidate_state%ponding_depth
       physical%groundwater_level = solve_result%candidate_state%groundwater_level
+      if(self%rfm_configuration%enabled)then
+        select type(rfm_physical=>state)
+        type is(fmr_b110_rfm_state_t)
+          call copy_rfm_physical_state(rfm_live%candidate%candidate_rfm,rfm_physical%rfm,rfm_source_ok)
+          if(.not.rfm_source_ok)return
+        class default
+          return
+        end select
+      end if
     class default
       return
     end select
@@ -2830,6 +2876,10 @@ contains
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
          snow_event_applied_this_call, macropore_accepted_top_cm, macropore_rapid_outflow_cm, &
          outcome%mass_in, outcome%mass_out)
+    if(self%rfm_configuration%enabled)then
+      outcome%mass_in=outcome%mass_in+rfm_preferential_input_cm
+      outcome%mass_out=outcome%mass_out+rfm_deep_receipt_cm
+    end if
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
       step_drainage_exchange = self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
