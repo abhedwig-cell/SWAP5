@@ -1,0 +1,24 @@
+name: PPA-WU05-PERCH20 numerical continuation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch20-numerical-continuation
+    paths:
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'tests/fpm/test_ppa_wu05_perch20_numerical_continuation.f90'
+      - 'tests/fpm/run_ppa_wu05_perch20_numerical_continuation.sh'
+      - '.github/workflows/ppa-wu05-perch20-numerical-continuation.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH20 typed numerical continuation carrier
+        run: bash tests/fpm/run_ppa_wu05_perch20_numerical_continuation.sh
+      - name: Preserve current RFM optional-state layout
+        run: bash tests/fpm/run_ppa_wu05a20_rfm_optional_state_layout.sh
