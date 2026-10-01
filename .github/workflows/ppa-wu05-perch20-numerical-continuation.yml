@@ -9,6 +9,8 @@ on:
       - 'src/runtime/mod_fmr_runtime_core.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'src/transaction/mod_ppa_wu05_perch19_frreduq_controller.f90'
+      - 'src/transaction/mod_ppa_wu05_perch20_continuation_binding.f90'
       - 'tests/fpm/test_ppa_wu05_perch20_numerical_continuation.f90'
       - 'tests/fpm/run_ppa_wu05_perch20_numerical_continuation.sh'
       - '.github/workflows/ppa-wu05-perch20-numerical-continuation.yml'
