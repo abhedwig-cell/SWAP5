@@ -1,0 +1,20 @@
+name: PPA-WU05-PERCH19 FrReduQ retry ladder
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch19-freduq-retry-ladder
+    paths:
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'tests/fpm/test_ppa_wu05_perch19_freduq_ladder.f90'
+      - 'tests/fpm/run_ppa_wu05_perch19_freduq_ladder.sh'
+      - '.github/workflows/ppa-wu05-perch19-freduq.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH19 dtmin-gated source reduction ladder
+        run: bash tests/fpm/run_ppa_wu05_perch19_freduq_ladder.sh
