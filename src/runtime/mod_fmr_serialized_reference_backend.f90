@@ -85,6 +85,7 @@ module mod_fmr_serialized_reference_backend
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
   use mod_rfm_physical_state, only: rfm_physical_state_t, copy_rfm_physical_state
   use mod_rfm_runtime_configuration, only: rfm_runtime_configuration_t
+  use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
@@ -275,6 +276,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
     type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
+    type(rfm_surface_forcing_t), allocatable :: rfm_surface
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -431,6 +433,7 @@ module mod_fmr_serialized_reference_backend
     logical :: macropore_policy_configured = .false.
     type(macropore_single_column_runtime_t) :: macropore_runtime
     type(rfm_runtime_configuration_t) :: rfm_configuration
+    type(rfm_surface_forcing_t) :: rfm_surface_forcing
     logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
@@ -1862,6 +1865,7 @@ contains
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
+    self%rfm_surface_forcing = rfm_surface_forcing_t()
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
@@ -2056,6 +2060,18 @@ contains
       else if (allocated(self%projection_zero_direction)) then
         deallocate(self%projection_zero_direction)
       end if
+      if (self%rfm_configuration%enabled) then
+        if (.not. self%rfm_configuration%valid()) return
+        if (.not. allocated(forcing%rfm_surface)) return
+        if (.not. forcing%rfm_surface%valid()) return
+        if (self%macropore_active .or. self%snow_active .or. self%black_evaporation_active .or. &
+            self%boesten_evaporation_active .or. self%fixed_weir_surface_water_active) return
+        if (allocated(forcing%macropore_top_input)) return
+        self%rfm_surface_forcing = forcing%rfm_surface
+      else
+        if (allocated(forcing%rfm_surface)) return
+      end if
+
       if (allocated(forcing%macropore_top_input)) then
         if (.not. self%macropore_active) return
         if (.not. forcing%macropore_top_input%valid()) return
