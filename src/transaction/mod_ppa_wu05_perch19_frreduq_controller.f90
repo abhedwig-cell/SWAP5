@@ -69,7 +69,9 @@ contains
     if(dt>dtmin+eps)then
       ! Exact source ordering: ordinary temporal reduction owns this retry.
       action=PERCH19_ACTION_REDUCE_TIMESTEP
-      retry_dt=max(dtmin,0.5_real64*dt)
+      ! Ordinary temporal policy owns the actual dt reduction. The macropore
+      ! controller must not invent a competing timestep factor.
+      retry_dt=dt
       ok=.true.
       return
     end if
