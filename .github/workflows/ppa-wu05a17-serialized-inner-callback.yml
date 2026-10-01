@@ -1,0 +1,31 @@
+name: PPA-WU05-A17 serialized inner callback
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/ppa-wu05-a17-serialized-inner-callback
+    paths:
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpm/test_ppa_wu05a17_serialized_inner_callback.f90'
+      - 'tests/fpm/run_ppa_wu05a17_serialized_inner_callback.sh'
+      - '.github/workflows/ppa-wu05a17-serialized-inner-callback.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: A17 serialized inner callback transaction
+        run: bash tests/fpm/run_ppa_wu05a17_serialized_inner_callback.sh
+      - name: Preserve A16 inner callback prototype
+        run: bash tests/fpm/run_ppa_wu05a16_inner_callback.sh
+      - name: Preserve A16 actual provider
+        run: bash tests/fpm/run_ppa_wu05a16_actual_provider.sh
+      - name: Preserve A15 derivative
+        run: bash tests/fpm/run_ppa_wu05a15_exchange_derivative.sh
+      - name: Preserve corrected A11 carrier
+        run: bash tests/fpm/run_ppa_wu05a11_perched.sh
+      - name: Preserve A7-A10 admitted macropore route
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
