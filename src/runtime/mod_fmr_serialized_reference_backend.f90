@@ -279,6 +279,8 @@ module mod_fmr_serialized_reference_backend
     logical :: macropore_rapid_drain_active = .false.
     real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
     logical :: macropore_inner_richards_exchange_used = .false.
+    real(real64) :: macropore_inner_initial_exchange_rate_cm_per_day = 0.0_real64
+    real(real64) :: macropore_inner_final_exchange_rate_cm_per_day = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
@@ -2503,6 +2505,10 @@ contains
       self%last_observation%macropore_rapid_drain_active = self%macropore_config%rate_template%rapid%enabled
       self%last_observation%macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
       self%last_observation%macropore_inner_richards_exchange_used = macropore_result%inner_richards_exchange_used
+      self%last_observation%macropore_inner_initial_exchange_rate_cm_per_day = &
+           macropore_result%inner_initial_exchange_rate_cm_per_day
+      self%last_observation%macropore_inner_final_exchange_rate_cm_per_day = &
+           macropore_result%inner_final_exchange_rate_cm_per_day
       macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
       macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
       if (.not. ieee_is_finite(macropore_accepted_top_cm) .or. macropore_accepted_top_cm < 0.0_real64) return
