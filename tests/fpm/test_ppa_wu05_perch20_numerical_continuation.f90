@@ -13,6 +13,7 @@ program test_ppa_wu05_perch20_numerical_continuation
   type(fmr_template_t)::template
   type(fmr_b110_macropore_reduction_state_t)::state
   class(transaction_state_t),allocatable::copy
+  logical :: template_ok
 
   state%active_nodes=2
   allocate(state%pressure_head(2),state%water_content(2),state%macropore)
@@ -61,7 +62,6 @@ program test_ppa_wu05_perch20_numerical_continuation
   print '(a)', 'PPA_WU05_PERCH20_CARRIER_GATE=PASS'
 
 contains
-  logical :: template_ok
   subroutine require(condition,label)
     logical,intent(in)::condition
     character(len=*),intent(in)::label
