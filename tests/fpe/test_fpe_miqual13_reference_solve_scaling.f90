@@ -9,6 +9,8 @@ program test_fpe_miqual13_reference_solve_scaling
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
+  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t, &
+       bind_fixed_flux_top_boundary_provider
   implicit none
 
   integer, parameter :: nwarm=2000, nrun=200000
@@ -16,6 +18,7 @@ program test_fpe_miqual13_reference_solve_scaling
   type(b110_default_mvg_parameters_t), target :: hp
   type(b110_default_mvg_provider_t), target :: constitutive
   type(b110_source_sink_provider_t), target :: source_sink
+  type(fixed_flux_top_boundary_provider_t), target :: top_boundary
   type(reference_richards_legacy_solver_t) :: solver
   type(reference_richards_legacy_workspace_t) :: workspace
   type(soil_water_physical_state_t) :: state
@@ -55,6 +58,7 @@ program test_fpe_miqual13_reference_solve_scaling
   allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod))
   qdra=0.0_real64;qssdi=0.0_real64;qrot=0.0_real64
   call bind_b110_source_sink_provider(source_sink,qdra,qssdi,qrot)
+  call bind_fixed_flux_top_boundary_provider(top_boundary,0.0_real64)
 
   state%active_nodes=numnod
   allocate(state%pressure_head(numnod),state%water_content(numnod))
@@ -86,6 +90,7 @@ program test_fpe_miqual13_reference_solve_scaling
   req%numerical%ponding_tolerance=1.0e-10_real64
   req%evaluation%constitutive=>constitutive
   req%evaluation%source_sink=>source_sink
+  req%evaluation%top_boundary=>top_boundary
 
   timeint02_mode=1
   timeint02_thetam2=0.0_real64
