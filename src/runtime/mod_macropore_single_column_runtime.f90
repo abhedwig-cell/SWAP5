@@ -58,6 +58,7 @@ module mod_macropore_single_column_runtime
     real(real64) :: accepted_top_input_cm=0.0_real64
     real(real64) :: returned_surface_cm=0.0_real64
     real(real64) :: rapid_external_outflow_cm=0.0_real64
+    real(real64) :: covered_internal_transfer_cm=0.0_real64
     logical :: inner_richards_exchange_used=.false.
     real(real64) :: inner_initial_exchange_rate_cm_per_day=0.0_real64
     real(real64) :: inner_final_exchange_rate_cm_per_day=0.0_real64
@@ -337,6 +338,7 @@ contains
           result%status=MACRO_RUNTIME_FAILED
           return
         end if
+        result%covered_internal_transfer_cm=sum(covered_domain_cm)
         call apply_internal_covered_top_transfer(result%macropore_candidate,geometry,geometry_config%top_node, &
              covered_domain_cm,base_request%parameters%z,base_request%parameters%dz,candidate_view,ok)
         if(.not.ok)then
