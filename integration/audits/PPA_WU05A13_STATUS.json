@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_wu05a13.status.v1",
+  "workunit": "PPA-WU05-A13",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_RFM_SURFACE_EVENT_AGE_SERVICE",
+  "baseline": "ae4eede414692fb0071ea093050f5accd36dd48d",
+  "branch": "work/ppa-wu05-a13-rfm-surface-event-age",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "qualified_postimage": "9ab2f5996c6698916c5febe1ddb8a2685ee8d56c",
+  "qualification_run": 36861648257,
+  "scope": {
+    "tau_surface_transition": true,
+    "midpoint_evaluation_age": true,
+    "reset_on_inactive_interval": true,
+    "replay_identity": true,
+    "event_active_owner": "caller",
+    "commit_discard_owner": "caller",
+    "source_definition_owner": "caller",
+    "existing_state_layout_change": false,
+    "runtime_source_partition_change": false
+  },
+  "next": "canonical admission, then audit effective-infiltrating-source ownership before any actual RFM partition runtime"
+}
