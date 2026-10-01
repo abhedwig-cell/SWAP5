@@ -73,7 +73,7 @@ contains
       result%valid=.true.
       return
     end if
-    if(.not.(request%domain_bottom_cm<request%drain_level_cm .or. request%drain_type/=1))then
+    if(.not.(request%domain_bottom_cm<request%drain_level_cm+0.1_real64 .or. request%drain_type/=1))then
       result%valid=.true.
       return
     end if
