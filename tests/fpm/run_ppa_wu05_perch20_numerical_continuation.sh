@@ -119,6 +119,7 @@ for opt in 0 2; do
   grep -Fq 'PPA_WU05_PERCH20_LAYOUT_IDENTITY=PASS' "$OUT/out.txt" || fail "layout marker O$opt"
   grep -Fq 'PPA_WU05_PERCH20_CLONE_PAYLOAD=PASS' "$OUT/out.txt" || fail "clone marker O$opt"
   grep -Fq 'PPA_WU05_PERCH20_RESTART_MATCH=PASS' "$OUT/out.txt" || fail "restart marker O$opt"
+  grep -Fq 'PPA_WU05_PERCH20_COMMITTED_CARRIER=PASS' "$OUT/out.txt" || fail "committed marker O$opt"
   grep -Fq 'PPA_WU05_PERCH20_FAIL_CLOSED=PASS' "$OUT/out.txt" || fail "fail closed marker O$opt"
   grep -Fq 'PPA_WU05_PERCH20_CONTROLLER_BINDING=PASS' "$OUT/out.txt" || fail "controller marker O$opt"
   grep -Fq 'PPA_WU05_PERCH20_REJECT_ISOLATION=PASS' "$OUT/out.txt" || fail "isolation marker O$opt"
