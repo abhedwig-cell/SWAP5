@@ -2611,7 +2611,44 @@ contains
     else
       request%evaluation%constitutive => self%constitutive
     end if
-    request%evaluation%source_sink => self%source_sink
+
+    if (self%rfm_configuration%enabled) then
+      if (self%direct_retention_active) return
+      if (.not. self%soil_water_selection%uses_reference()) return
+      select type (rfm_physical => state)
+      type is (fmr_b110_rfm_state_t)
+        if (.not. rfm_physical%rfm%ready()) return
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider, self%soil_parameters, &
+             self%hydraulic_parameters, self%swkmean, rfm_physical%ponding_depth, step_duration, &
+             self%rfm_surface_forcing%precipitation_rate_cm_per_day, self%rfm_surface_forcing%irrigation_rate_cm_per_day, &
+             self%rfm_surface_forcing%snowmelt_rate_cm_per_day, self%rfm_surface_forcing%runon_rate_cm_per_day, &
+             self%rfm_surface_forcing%potential_bare_soil_evaporation_cm_per_day, &
+             self%rfm_surface_forcing%potential_pond_evaporation_cm_per_day, self%rfm_surface_forcing%ponding_max_cm, &
+             self%rfm_surface_forcing%runoff_resistance_day, self%rfm_surface_forcing%runoff_exponent)
+        call rfm_top_provider%evaluate(rfm_physical%pressure_head(1), rfm_physical%water_content(1), &
+             rfm_physical%ponding_depth, request%boundary, rfm_preflight)
+        allocate(rfm_node_depth_cm(rfm_physical%active_nodes)); rfm_node_depth_cm=abs(self%soil_parameters%z)
+        call prepare_rfm_live_trial(rfm_physical%rfm,self%rfm_configuration,self%rfm_surface_forcing,hydraulic_start, &
+             self%constitutive,rfm_preflight,rfm_node_depth_cm,self%soil_parameters%dz,step_duration, &
+             max(self%compartment_balance_tolerance,FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM),rfm_live)
+        if(.not.rfm_live%valid)return
+        rfm_source_rate=rfm_live%candidate%matrix_source_rate_per_day
+        call bind_rfm_matrix_source_provider(rfm_source_provider,self%source_sink,rfm_source_rate,rfm_source_ok)
+        if(.not.rfm_source_ok)return
+        request%evaluation%source_sink=>rfm_source_provider
+        rfm_preferential_input_cm=rfm_live%surface%preferential_supply_cm_per_day*step_duration
+        rfm_deep_receipt_cm=rfm_live%candidate%deep_receipt_cm
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
+             self%swkmean,rfm_physical%ponding_depth,step_duration,rfm_live%surface%matrix_supply_cm_per_day, &
+             0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,self%rfm_surface_forcing%ponding_max_cm, &
+             self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent)
+        request%evaluation%dynamic_top_boundary=>rfm_top_provider
+      class default
+        return
+      end select
+    else
+      request%evaluation%source_sink=>self%source_sink
+    end if
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
          request%evaluation%top_boundary => self%top_boundary
