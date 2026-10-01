@@ -27,7 +27,8 @@ contains
     call materialize_external_top_surface_transfer(b,r)
     call req(r%status==EXT_TOP_TRANSFER_OK,'status')
     call req(abs(r%ribasim_to_swap_cm-x)<=tol,'x')
-    call req(abs(r%legacy_runots_cm-runots)<=tol,'runots')
+    call req(abs(r%residual_external_supply_cm-x)<=tol,'residual supply')
+    call req(abs(r%composed_legacy_runots_cm-runots)<=tol,'runots')
     call req(abs(r%closure_residual_cm)<=tol,'closure')
   end subroutine
 
@@ -43,7 +44,7 @@ contains
     b%atmospheric_source_cm=0.30_real64
     b%soil_entry_cm=0.20_real64
     b%runoff_external_cm=0.10_real64
-    call evaluate(b,0.0_real64,0.0_real64)
+    call evaluate(b,0.0_real64,0.10_real64)
   end subroutine
 
   subroutine case_flood
