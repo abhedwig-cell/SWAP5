@@ -10,7 +10,7 @@ GEOMETRY="${2:?geometry id required}"
 HEAD_SOURCE="src/legacy/b1_10_port/headcalc.f90"
 if [[ "${3:-stock}" != stock ]]; then
   HEAD_SOURCE="$BUILD/top03_research_headcalc.f90"
-  python3 tests/fapp/make_top03_bottom_jacobian_probe.py "$HEAD_SOURCE" "$3"
+  python3 tests/fapp/make_top03_bottom_jacobian_probe.py "$HEAD_SOURCE" "$3" "${4:-bottom}"
 fi
 fail(){ echo "FAPP09_GATE_FAIL $*" >&2; exit 91; }
 
