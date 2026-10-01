@@ -1425,6 +1425,12 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
+    ! TOP03 external-head execution replaces the fixed top provider only for this
+    ! trial. Admission therefore must not require the ordinary fixed-top pointer.
+    if (forcing%external_top_surface_water_supplied .and. .not. parameters%external_top_surface_water_capable) then
+      call reject_backend_trial(result,candidate,diagnostics)
+      return
+    end if
     if (forcing%external_top_surface_water_supplied) then
       if (.not.parameters%external_top_surface_water_capable .or. .not.self%model%soil_water_selection%uses_reference() .or. &
           parameters%snow_active .or. parameters%macropore_active .or. parameters%black_evaporation_active .or. &
