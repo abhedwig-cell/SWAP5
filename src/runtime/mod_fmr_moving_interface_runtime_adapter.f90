@@ -128,8 +128,10 @@ contains
 
     if (reduced_valid) then
       nt = nf-na
-      if (.not. allocated(self%tail_pressure_head) .or. size(self%tail_pressure_head) /= nt) then
-        if (allocated(self%tail_pressure_head)) deallocate(self%tail_pressure_head)
+      if (.not. allocated(self%tail_pressure_head)) then
+        allocate(self%tail_pressure_head(nt), self%tail_water_content(nt))
+      else if (size(self%tail_pressure_head) /= nt) then
+        deallocate(self%tail_pressure_head)
         if (allocated(self%tail_water_content)) deallocate(self%tail_water_content)
         allocate(self%tail_pressure_head(nt), self%tail_water_content(nt))
       end if
