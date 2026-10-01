@@ -5,7 +5,7 @@ Date: 2026-10-01
 Status: `PREREGISTERED / PRODUCTION_ADMISSION_PATH`
 
 Baseline:
-`integration/f-ci-canonical@2a0b23a2c4e547f6de2613884207d10b2fce462e`
+`integration/f-ci-canonical@59048478a7ddff4df90beb81a1f9c4ee99b0f5d0`
 
 Research authority:
 
@@ -126,3 +126,13 @@ Canonical admission remains a separate explicit step.
 - no new physical restart field;
 - no reuse of the conflicting generic A11-A18 documentation namespace;
 - no change to default outer macropore execution when inner mode is disabled.
+
+
+## Current-canonical reconciliation
+
+PERCH19 was reconstructed onto current canonical `59048478a7ddff4df90beb81a1f9c4ee99b0f5d0` after the first pre-reconciliation CI attempt.
+
+The only overlapping canonical delta on the carried perched dependency surface was the serialized FMR backend RFM extension. PERCH19 retains that canonical RFM configuration/forcing surface and adds only the bounded inner-macropore observation fields required by the perched route.
+
+Backup of the pre-reconciliation branch:
+`backup/ppa-wu05-perch19-pre-reconcile-20261001@5b6d1597f17465fc4c6522f2569528ee68bce96a`.
