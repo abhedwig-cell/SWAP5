@@ -10,6 +10,8 @@ module mod_rfm_physical_state
     integer :: endpoint_count = 0
     real(real64) :: mb_water_cm = 0.0_real64
     real(real64), allocatable :: endpoint_water_cm(:)
+    real(real64), allocatable :: wall_age_day(:)
+    real(real64), allocatable :: wall_sorptivity_cm_sqrt_day(:)
     real(real64) :: tau_surface_day = 0.0_real64
   contains
     procedure, public :: initialize => rfm_state_initialize
@@ -46,8 +48,11 @@ contains
     if (endpoint_count <= 0) return
 
     self%endpoint_count = endpoint_count
-    allocate(self%endpoint_water_cm(endpoint_count))
+    allocate(self%endpoint_water_cm(endpoint_count),self%wall_age_day(endpoint_count), &
+         self%wall_sorptivity_cm_sqrt_day(endpoint_count))
     self%endpoint_water_cm = 0.0_real64
+    self%wall_age_day = 0.0_real64
+    self%wall_sorptivity_cm_sqrt_day = 0.0_real64
     self%mb_water_cm = 0.0_real64
     self%tau_surface_day = 0.0_real64
     ok = .true.
@@ -56,6 +61,8 @@ contains
   subroutine rfm_state_clear(self)
     class(rfm_physical_state_t), intent(inout) :: self
     if (allocated(self%endpoint_water_cm)) deallocate(self%endpoint_water_cm)
+    if (allocated(self%wall_age_day)) deallocate(self%wall_age_day)
+    if (allocated(self%wall_sorptivity_cm_sqrt_day)) deallocate(self%wall_sorptivity_cm_sqrt_day)
     self%endpoint_count = 0
     self%mb_water_cm = 0.0_real64
     self%tau_surface_day = 0.0_real64
@@ -64,13 +71,19 @@ contains
   pure logical function rfm_state_ready(self) result(ok)
     class(rfm_physical_state_t), intent(in) :: self
 
-    ok = self%endpoint_count > 0 .and. allocated(self%endpoint_water_cm)
+    ok = self%endpoint_count > 0 .and. allocated(self%endpoint_water_cm) .and. &
+         allocated(self%wall_age_day) .and. allocated(self%wall_sorptivity_cm_sqrt_day)
     if (.not. ok) return
-    ok = size(self%endpoint_water_cm) == self%endpoint_count
+    ok = size(self%endpoint_water_cm) == self%endpoint_count .and. &
+         size(self%wall_age_day) == self%endpoint_count .and. &
+         size(self%wall_sorptivity_cm_sqrt_day) == self%endpoint_count
     if (.not. ok) return
     ok = ieee_is_finite(self%mb_water_cm) .and. self%mb_water_cm >= 0.0_real64 .and. &
          ieee_is_finite(self%tau_surface_day) .and. self%tau_surface_day >= 0.0_real64 .and. &
-         all(ieee_is_finite(self%endpoint_water_cm)) .and. all(self%endpoint_water_cm >= 0.0_real64)
+         all(ieee_is_finite(self%endpoint_water_cm)) .and. all(self%endpoint_water_cm >= 0.0_real64) .and. &
+         all(ieee_is_finite(self%wall_age_day)) .and. all(self%wall_age_day >= 0.0_real64) .and. &
+         all(ieee_is_finite(self%wall_sorptivity_cm_sqrt_day)) .and. &
+         all(self%wall_sorptivity_cm_sqrt_day >= 0.0_real64)
   end function rfm_state_ready
 
   pure real(real64) function rfm_state_storage_cm(self) result(value)
@@ -92,7 +105,11 @@ contains
          transfer(self%tau_surface_day,0_int64) == transfer(other%tau_surface_day,0_int64)
     if (.not. same) return
     same = all(transfer(self%endpoint_water_cm,[0_int64],size(self%endpoint_water_cm)) == &
-         transfer(other%endpoint_water_cm,[0_int64],size(other%endpoint_water_cm)))
+         transfer(other%endpoint_water_cm,[0_int64],size(other%endpoint_water_cm))) .and. &
+         all(transfer(self%wall_age_day,[0_int64],size(self%wall_age_day)) == &
+         transfer(other%wall_age_day,[0_int64],size(other%wall_age_day))) .and. &
+         all(transfer(self%wall_sorptivity_cm_sqrt_day,[0_int64],size(self%wall_sorptivity_cm_sqrt_day)) == &
+         transfer(other%wall_sorptivity_cm_sqrt_day,[0_int64],size(other%wall_sorptivity_cm_sqrt_day)))
   end function rfm_state_same_values
 
   pure integer(int64) function rfm_state_payload_bytes(self) result(value)
@@ -101,7 +118,9 @@ contains
     if (.not. self%ready()) return
     value = int(storage_size(self%mb_water_cm)/8,int64) + &
          int(storage_size(self%tau_surface_day)/8,int64) + &
-         int(size(self%endpoint_water_cm),int64)*int(storage_size(self%endpoint_water_cm(1))/8,int64)
+         int(size(self%endpoint_water_cm),int64)*int(storage_size(self%endpoint_water_cm(1))/8,int64) + &
+         int(size(self%wall_age_day),int64)*int(storage_size(self%wall_age_day(1))/8,int64) + &
+         int(size(self%wall_sorptivity_cm_sqrt_day),int64)*int(storage_size(self%wall_sorptivity_cm_sqrt_day(1))/8,int64)
   end function rfm_state_payload_bytes
 
   subroutine copy_rfm_physical_state(source, target, ok)
@@ -116,6 +135,8 @@ contains
     if (.not. ok) return
     target%mb_water_cm = source%mb_water_cm
     target%endpoint_water_cm = source%endpoint_water_cm
+    target%wall_age_day = source%wall_age_day
+    target%wall_sorptivity_cm_sqrt_day = source%wall_sorptivity_cm_sqrt_day
     target%tau_surface_day = source%tau_surface_day
     ok = target%ready()
   end subroutine copy_rfm_physical_state

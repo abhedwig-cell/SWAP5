@@ -84,6 +84,8 @@ module mod_fmr_serialized_reference_backend
        FIXED_WEIR_AVAILABLE
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
   use mod_rfm_physical_state, only: rfm_physical_state_t, copy_rfm_physical_state
+  use mod_rfm_runtime_configuration, only: rfm_runtime_configuration_t
+  use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
@@ -274,6 +276,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
     type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
+    type(rfm_surface_forcing_t), allocatable :: rfm_surface
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -429,6 +432,8 @@ module mod_fmr_serialized_reference_backend
     type(macropore_runtime_policy_t) :: macropore_policy
     logical :: macropore_policy_configured = .false.
     type(macropore_single_column_runtime_t) :: macropore_runtime
+    type(rfm_runtime_configuration_t) :: rfm_configuration
+    type(rfm_surface_forcing_t) :: rfm_surface_forcing
     logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
@@ -502,6 +507,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: configure_macropore_policy => fmr_serialized_backend_configure_macropore_policy
+    procedure, public :: configure_rfm_runtime => fmr_serialized_backend_configure_rfm_runtime
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
     procedure, public :: commit_reference_floor_candidate => fmr_serialized_backend_commit_reference_floor_candidate
@@ -999,6 +1005,7 @@ contains
     if (allocated(self%model%macropore_config)) deallocate(self%model%macropore_config)
     self%model%macropore_policy = macropore_runtime_policy_t()
     self%model%macropore_policy_configured = .false.
+    call self%model%rfm_configuration%clear()
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
   end subroutine fmr_serialized_backend_initialize
@@ -1043,6 +1050,18 @@ contains
     self%model%macropore_policy_configured = .true.
     ok = .true.
   end subroutine fmr_serialized_backend_configure_macropore_policy
+
+  subroutine fmr_serialized_backend_configure_rfm_runtime(self, config, ok)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(rfm_runtime_configuration_t), intent(in) :: config
+    logical, intent(out) :: ok
+
+    ok = .false.
+    if (.not. self%initialized) return
+    if (.not. config%valid()) return
+    self%model%rfm_configuration = config
+    ok = self%model%rfm_configuration%valid()
+  end subroutine fmr_serialized_backend_configure_rfm_runtime
 
   subroutine fmr_serialized_backend_set_bottom_thermal_carrier_enabled(self, enabled)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -1411,7 +1430,16 @@ contains
       return
     end if
     if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
-      ! A20 admits the carrier/checkpoint topology only.
+      ! A25 requires explicit immutable configuration.  Execution remains
+      ! fail-closed until the full orchestrator is bound in this workunit.
+      if (.not. self%model%rfm_configuration%valid()) then
+        result = kernel_result_t()
+        result%status = KERNEL_STATUS_NOT_ADMITTED
+        candidate = kernel_candidate_state_t()
+        diagnostics = kernel_diagnostics_t()
+        diagnostics%admission_rejections = 1
+        return
+      end if
       result = kernel_result_t()
       result%status = KERNEL_STATUS_NOT_ADMITTED
       candidate = kernel_candidate_state_t()
@@ -1837,6 +1865,7 @@ contains
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
+    self%rfm_surface_forcing = rfm_surface_forcing_t()
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
@@ -2031,6 +2060,18 @@ contains
       else if (allocated(self%projection_zero_direction)) then
         deallocate(self%projection_zero_direction)
       end if
+      if (self%rfm_configuration%enabled) then
+        if (.not. self%rfm_configuration%valid()) return
+        if (.not. allocated(forcing%rfm_surface)) return
+        if (.not. forcing%rfm_surface%valid()) return
+        if (self%macropore_active .or. self%snow_active .or. self%black_evaporation_active .or. &
+            self%boesten_evaporation_active .or. self%fixed_weir_surface_water_active) return
+        if (allocated(forcing%macropore_top_input)) return
+        self%rfm_surface_forcing = forcing%rfm_surface
+      else
+        if (allocated(forcing%rfm_surface)) return
+      end if
+
       if (allocated(forcing%macropore_top_input)) then
         if (.not. self%macropore_active) return
         if (.not. forcing%macropore_top_input%valid()) return

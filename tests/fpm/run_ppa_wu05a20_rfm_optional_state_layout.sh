@@ -100,6 +100,8 @@ MODULE_SRC=(
   src/solver/mod_macropore_exchange_overlay_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_macropore_configuration.f90
+  src/runtime/mod_rfm_runtime_configuration.f90
+  src/runtime/mod_rfm_surface_forcing.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
 )
