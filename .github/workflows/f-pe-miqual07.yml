@@ -1,0 +1,25 @@
+name: F-PE-MIQUAL07 serialized runtime benchmark
+
+on:
+  push:
+    branches:
+      - research/f-pe-miqual07-serialized-runtime-benchmark
+    paths:
+      - 'docs/performance/F-PE-MIQUAL07_PREREGISTRATION.md'
+      - 'tests/fmr/test_fpe_miqual07_serialized_benchmark.f90'
+      - 'tests/fmr/run_fpe_miqual07.py'
+      - 'tests/fmr/run_fpe_miqual07.sh'
+      - '.github/workflows/f-pe-miqual07.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmr/run_fpe_miqual07.sh
