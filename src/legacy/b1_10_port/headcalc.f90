@@ -996,16 +996,11 @@ subroutine vector_F(iTask)
       end if
    end if
    if (provider_macropore_active) then
-      call evaluation_context%macropore%evaluate(state%h(1:numnod),state%theta(1:numnod), &
-           provider_macropore_exchange,provider_macropore_dqdh,provider_macropore_derivative_available, &
-           provider_macropore_rate_active)
-      if (provider_macropore_rate_active .and. .not.provider_macropore_derivative_available) &
-           error stop 'HeadCalc: active macropore provider omitted derivative'
+      call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
+           provider_macropore_exchange,provider_macropore_rate_active)
    else
       provider_macropore_rate_active=.false.
-      provider_macropore_derivative_available=.false.
       provider_macropore_exchange=0.0d0
-      provider_macropore_dqdh=0.0d0
    end if
 
 !  take care of top BC: ponding, runoff
@@ -1193,10 +1188,14 @@ subroutine jacobian_F()
       call MACROPORE(3)
       fsi_ws%dfdh_main(1:NN) = fsi_ws%dfdh_main(1:NN) - dFdhMp(1:NN)
    end if
-   if (provider_macropore_rate_active) then
-      if (.not.provider_macropore_derivative_available) &
+   if (provider_macropore_active) then
+      call evaluation_context%macropore%evaluate_derivative(state%h(1:numnod),state%theta(1:numnod), &
+           state%dimoca(1:numnod),provider_macropore_dqdh,provider_macropore_derivative_available, &
+           provider_macropore_rate_active)
+      if (provider_macropore_rate_active .and. .not.provider_macropore_derivative_available) &
            error stop 'HeadCalc: active macropore derivative unavailable'
-      fsi_ws%dfdh_main(1:NN)=fsi_ws%dfdh_main(1:NN)-provider_macropore_dqdh(1:NN)
+      if (provider_macropore_rate_active) &
+           fsi_ws%dfdh_main(1:NN)=fsi_ws%dfdh_main(1:NN)-provider_macropore_dqdh(1:NN)
    end if
 
 end subroutine jacobian_F
