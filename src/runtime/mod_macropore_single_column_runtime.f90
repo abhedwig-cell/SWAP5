@@ -195,6 +195,7 @@ contains
     n=accepted_macro%num_nodes
 
     if(policy%inner_richards_exchange_enabled)then
+      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INNER_ENTER'
       call inner_provider%configure(accepted_macro,geometry,rate_template_step,base_request%parameters%z, &
            base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
            base_request%base_state%groundwater_level,ok)
@@ -202,6 +203,7 @@ contains
         result%status=MACRO_RUNTIME_FAILED
         return
       end if
+      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=PROVIDER_CONFIGURED'
 
       ! Record the accepted-state inner rate for attribution only. This is not
       ! injected separately; HeadCalc obtains its own current-iterate rate from
@@ -213,7 +215,9 @@ contains
         result%status=MACRO_RUNTIME_FAILED
         return
       end if
+      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_REQUEST_READY'
       call evaluate_macropore_rate_bundle(rate_request,current_rates)
+      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_RATE_EVALUATED'
       if(.not.current_rates%valid)then
         result%status=MACRO_RUNTIME_FAILED
         return
@@ -223,7 +227,9 @@ contains
       request=base_request
       request%physical%macropore_active=.true.
       request%evaluation%macropore=>inner_provider
+      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=BEFORE_SOLVE'
       call solver%solve(request,workspace,corrector)
+      write(*,'(a,i0)') 'PPA_WU05A18_RUNTIME_STAGE=AFTER_SOLVE STATUS=',corrector%status
       result%corrector_solves=1
       result%outer_iterations=0
       result%final_relative_exchange_change=0.0_real64
