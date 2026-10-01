@@ -10,18 +10,31 @@ module mod_a25_node_s_test
   procedure::evaluate_point_conductivity=>ep
  end type
 contains
- subroutine ev(self,h,theta,k,c,dk)
-  class(linear_t),intent(in)::self;real(real64),intent(in)::h(:)
-  real(real64),intent(out)::theta(:),k(:),c(:),dk(:)
-  theta=0.4_real64+0.002_real64*h;k=1.0_real64;c=.002_real64;dk=0.0_real64
+ subroutine ev(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
+  class(linear_t),intent(in)::self
+  real(real64),intent(in)::pressure_head(:)
+  real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
+  water_content=0.4_real64+0.002_real64*pressure_head
+  conductivity=1.0_real64;capacity=.002_real64;dconductivity_dhead=0.0_real64
+  if(.not.same_type_as(self,self))error stop 'provider'
  end subroutine
- subroutine evd(self,h,m,theta,k,c,dk)
-  class(linear_t),intent(in)::self;real(real64),intent(in)::h(:);integer,intent(in)::m
-  real(real64),intent(out)::theta(:),k(:),c(:),dk(:);call self%evaluate(h,theta,k,c,dk)
+ subroutine evd(self,pressure_head,demand_mask,water_content,conductivity,capacity,dconductivity_dhead)
+  class(linear_t),intent(in)::self
+  real(real64),intent(in)::pressure_head(:);integer,intent(in)::demand_mask
+  real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
+  call self%evaluate(pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
+  if(demand_mask<0)error stop 'demand'
  end subroutine
- logical function sp(self) result(x);class(linear_t),intent(in)::self;x=.true.;end function
- subroutine ep(self,i,h,t,k,a);class(linear_t),intent(in)::self;integer,intent(in)::i
-  real(real64),intent(in)::h,t;real(real64),intent(out)::k;logical,intent(out)::a;k=1.0_real64;a=i>0
+ logical function sp(self) result(supported)
+  class(linear_t),intent(in)::self;supported=.true.
+  if(.not.same_type_as(self,self))supported=.false.
+ end function
+ subroutine ep(self,node_index,pressure_head,water_content,conductivity,available)
+  class(linear_t),intent(in)::self;integer,intent(in)::node_index
+  real(real64),intent(in)::pressure_head,water_content
+  real(real64),intent(out)::conductivity;logical,intent(out)::available
+  conductivity=1.0_real64;available=node_index>0
+  if(.not.same_type_as(self,self).or.pressure_head/=pressure_head.or.water_content/=water_content)available=.false.
  end subroutine
 end module
 program test_ppa_wu05a25_rfm_node_sorptivity
