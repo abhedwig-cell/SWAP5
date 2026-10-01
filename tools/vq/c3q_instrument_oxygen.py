@@ -20,6 +20,7 @@ def instrument(source:bytes)->bytes:
       b"      integer, save             :: c3q_trace_unit = -1\r\n"
       b"      integer, save             :: c3q_call_index = 0\r\n"
       b"      logical, save             :: c3q_trace_header = .FALSE.\r\n"
+      b"      logical, save             :: c3q_trace_open = .FALSE.\r\n"
     )+END
     out=once(source,decl_anchor,decl,"declaration")
 
@@ -56,7 +57,10 @@ def instrument(source:bytes)->bytes:
       b"      character(len=*), intent(in) :: route\r\n"
       b"      integer, intent(in) :: node\r\n"
       b"      real(8), intent(in) :: mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu\r\n"
-      b"      if (c3q_trace_unit < 0) open(newunit=c3q_trace_unit,file='c3q_oxygen_trace.csv',status='replace',action='write')\r\n"
+      b"      if (.not.c3q_trace_open) then\r\n"
+      b"         open(newunit=c3q_trace_unit,file='c3q_oxygen_trace.csv',status='replace',action='write')\r\n"
+      b"         c3q_trace_open=.TRUE.\r\n"
+      b"      end if\r\n"
       b"      if (.not.c3q_trace_header) then\r\n"
       b"         write(c3q_trace_unit,'(a)') 'call_index,route,node,matric_potential_pa,theta,gas_filled_porosity,soil_temp_k,max_resp_factor,waterfilm_thickness_m,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor'\r\n"
       b"         c3q_trace_header=.TRUE.\r\n"
