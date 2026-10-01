@@ -102,10 +102,12 @@ contains
   result%candidate_rfm%mb_water_cm=0.0_real64
   result%candidate_rfm%tau_surface_day=request%candidate_tau_surface_day
   allocate(result%matrix_source_rate_per_day(size(request%node_depth_cm)));result%matrix_source_rate_per_day=0.0_real64
+  ! Reference source/sink provider consumes areic compartment rates (cm/day).
+  ! Dividing by dz here would lose cross-domain mass for non-unit cells.
   do i=1,n
    node=request%endpoint_node_index(i)
    result%matrix_source_rate_per_day(node)=result%matrix_source_rate_per_day(node)+ &
-    result%endpoint_release%release_to_matrix_cm(i)/(request%node_thickness_cm(node)*request%step_duration_day)
+    result%endpoint_release%release_to_matrix_cm(i)/request%step_duration_day
   end do
   ! A26I leading MB route: fast-through film has no lateral wall exchange.
   result%deep_receipt_cm=mb
