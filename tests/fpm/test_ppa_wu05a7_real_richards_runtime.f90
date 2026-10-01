@@ -17,6 +17,19 @@ program test_ppa_wu05a7_real_richards_runtime
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t
   use mod_macropore_standard_storage, only: macropore_standard_storage_view_t, &
        canonicalize_macropore_standard_storage
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
+       kernel_candidate_state_t, kernel_diagnostics_t
+  use mod_kernel_committed_persistence, only: kernel_persistence_snapshot_t, export_kernel_committed_state, &
+       restore_kernel_committed_state, KERNEL_PERSISTENCE_OK
+  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_NUMERICAL_CONTINUATION_NONE
+  use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
+       fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
+       fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
+  use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
+  use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
@@ -148,6 +161,8 @@ program test_ppa_wu05a7_real_richards_runtime
   if(result%vertical_flux%max_local_residual_rate>1.0e-10_real64)error stop 'A7 real vertical residual'
   if(.not.macro%same_values(macro_snapshot))error stop 'A7 real accepted macro mutated'
 
+  call exercise_serialized_fmr()
+
   write(*,'(*(g0))') 'PPA_WU05A7_REAL_RICHARDS|OUTER_IT=',result%outer_iterations, &
        '|QEXC=',sum(result%exchange_rate_node), &
        '|MATRIX_RES=',result%matrix_result%integrated_mass_balance_residual_cm, &
@@ -155,6 +170,199 @@ program test_ppa_wu05a7_real_richards_runtime
   print '(a)', 'PPA_WU05A7_REAL_RICHARDS_RUNTIME=PASS'
 
 contains
+
+  subroutine exercise_serialized_fmr()
+    type(fmr_serialized_reference_backend_t) :: backend, restored_backend
+    type(fmr_b110_physical_parameters_t), target :: fparams
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(fmr_b110_physical_state_t) :: initial
+    type(fmr_macropore_physical_config_t) :: mcfg
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(canonical_numerical_config_t) :: numerical
+    type(kernel_committed_state_t) :: committed, restored
+    type(kernel_checkpoint_t) :: checkpoint, restored_checkpoint
+    type(kernel_candidate_state_t) :: candidate, replay_candidate, next_candidate, restored_next_candidate
+    type(kernel_result_t) :: kres, replay_result, next_result, restored_next_result
+    type(kernel_diagnostics_t) :: kdiag, replay_diag, next_diag, restored_next_diag
+    type(kernel_persistence_snapshot_t) :: persisted
+    class(transaction_state_t), allocatable :: before_state, after_trial_state, candidate_state, replay_state, &
+         restored_state, next_state, restored_next_state
+    logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
+    integer :: commit_status, persistence_status
+    integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
+    real(real64), parameter :: fmr_dt=1.0e-3_real64
+
+    fparams%parameter_set_id=lineage
+    fparams%active_nodes=numnod
+    allocate(fparams%z(numnod),fparams%dz(numnod),fparams%node_distance(numnod),fparams%cofgen(24,numnod))
+    fparams%z=z
+    fparams%dz=dz
+    fparams%node_distance=disnod(1:numnod)
+    fparams%cofgen=cofgen
+    fparams%bottom_mode=7
+    fparams%swkimpl=0
+    fparams%swkmean=1
+    fparams%swsophy=0
+    fparams%max_iterations=64
+    fparams%max_backtracking=24
+    fparams%min_step_duration=1.0e-12_real64
+    fparams%compartment_balance_tolerance=tol
+    fparams%total_balance_tolerance=tol
+    fparams%head_abs_tolerance=tol
+    fparams%head_rel_tolerance=tol
+    fparams%ponding_tolerance=tol
+    fparams%macropore_active=.true.
+    call prepare_fmr_b110_default_mvg(fparams,prepared)
+    if(.not.prepared)error stop 'A8 FMR prepared MVG'
+
+    mcfg%geometry=geometry_config
+    mcfg%rate_template=rate_template
+    mcfg%history_template=history_request
+    if(.not.mcfg%valid_for_nodes(numnod))error stop 'A8 FMR config validity'
+    allocate(fparams%macropore)
+    fparams%macropore=mcfg
+
+    initial%active_nodes=numnod
+    allocate(initial%pressure_head(numnod),initial%water_content(numnod),initial%macropore)
+    initial%pressure_head=heads
+    initial%water_content=water
+    initial%ponding_depth=0.0_real64
+    initial%groundwater_level=-200.0_real64
+    initial%macropore=macro
+
+    call fmr_new_b110_committed_state(committed,lineage,initial,0.0_real64,state_ok)
+    if(.not.state_ok)error stop 'A8 FMR committed init'
+
+    allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod), &
+         forcing%root_extraction_sink(numnod))
+    forcing%top_flux=0.0_real64
+    forcing%top_head=0.0_real64
+    forcing%bottom_flux=0.0_real64
+    forcing%bottom_head=-100.0_real64
+    forcing%drainage_flux_by_level=0.0_real64
+    forcing%subsurface_irrigation_source=0.0_real64
+    forcing%root_extraction_sink=0.0_real64
+
+    column%column_id=lineage
+    column%template_id=505801_int64
+    column%parameter_ref=lineage
+    column%state_handle=1_int64
+    column%forcing_handle=1_int64
+    column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+    template%template_id=column%template_id
+    template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
+    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+
+    numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+    numerical%transaction%temporal_tolerance=0.0_real64
+    numerical%transaction%mass_tolerance=1.0e-8_real64
+    numerical%transaction%retry_scale=0.5_real64
+    numerical%transaction%max_retries=40
+    numerical%max_committed_substeps=64
+
+    call backend%initialize(top)
+    call backend%configure_macropore_policy(policy,policy_ok)
+    if(.not.policy_ok)error stop 'A8 FMR policy configure'
+
+    call committed%capture_checkpoint(checkpoint,available)
+    if(.not.available)error stop 'A8 FMR checkpoint capture'
+    call committed%snapshot(before_state,available)
+    if(.not.available)error stop 'A8 FMR before snapshot'
+
+    call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
+         kres,candidate,kdiag,trusted_prepared_parameters=.true.)
+    if(.not.kres%completed .or. .not.candidate%ready())error stop 'A8 FMR active serialized trial'
+    if(.not.kres%mass%complete .or. abs(kres%mass%residual)>1.0e-8_real64)error stop 'A8 FMR mass receipt'
+    if(kdiag%temporal_rejections<=0)error stop 'A8 FMR temporal macropore identity not exercised'
+
+    call committed%snapshot(after_trial_state,available)
+    if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &
+         error stop 'A8 FMR candidate leaked into committed state'
+    call candidate%snapshot(candidate_state,available)
+    if(.not.available)error stop 'A8 FMR candidate snapshot'
+
+    call backend%discard_trial_candidate(candidate,kdiag)
+    if(candidate%ready())error stop 'A8 FMR discard retained candidate'
+    call committed%snapshot(after_trial_state,available)
+    if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &
+         error stop 'A8 FMR discard mutated committed state'
+
+    call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
+         replay_result,replay_candidate,replay_diag,trusted_prepared_parameters=.true.)
+    if(.not.replay_result%completed .or. .not.replay_candidate%ready())error stop 'A8 FMR checkpoint replay'
+    call replay_candidate%snapshot(replay_state,available)
+    if(.not.available .or. .not.same_fmr_state(candidate_state,replay_state))error stop 'A8 FMR replay identity'
+
+    call backend%commit_trial_candidate(committed,replay_candidate,replay_diag,did_commit,commit_status)
+    if(.not.did_commit .or. commit_status/=0)error stop 'A8 FMR candidate commit'
+    if(committed%current_revision()/=1_int64)error stop 'A8 FMR committed revision'
+    call committed%snapshot(after_trial_state,available)
+    if(.not.available .or. .not.same_fmr_state(replay_state,after_trial_state))error stop 'A8 FMR commit publication'
+
+    call export_kernel_committed_state(committed,layout_id,persisted,persisted_ok,persistence_status)
+    if(.not.persisted_ok .or. persistence_status/=KERNEL_PERSISTENCE_OK)error stop 'A8 FMR persistence export'
+    call persisted%snapshot_physical(restored_state,available)
+    if(.not.available .or. .not.fmr_restart_state_matches_template(restored_state,template)) &
+         error stop 'A8 FMR persisted restart layout'
+    if(.not.same_fmr_state(after_trial_state,restored_state))error stop 'A8 FMR seven-field persistence'
+
+    call restore_kernel_committed_state(persisted,layout_id,restored,restored_ok,persistence_status)
+    if(.not.restored_ok .or. persistence_status/=KERNEL_PERSISTENCE_OK)error stop 'A8 FMR persistence restore'
+    call restored%snapshot(restored_state,available)
+    if(.not.available .or. .not.same_fmr_state(after_trial_state,restored_state))error stop 'A8 FMR restored state'
+
+    call committed%capture_checkpoint(checkpoint,available)
+    if(.not.available)error stop 'A8 FMR next checkpoint'
+    call restored%capture_checkpoint(restored_checkpoint,available)
+    if(.not.available)error stop 'A8 FMR restored checkpoint'
+    call restored_backend%initialize(top)
+    call restored_backend%configure_macropore_policy(policy,policy_ok)
+    if(.not.policy_ok)error stop 'A8 FMR restored policy'
+
+    call backend%run_trial(column,template,fparams,committed,forcing,numerical,fmr_dt,2.0_real64*fmr_dt,checkpoint, &
+         next_result,next_candidate,next_diag,trusted_prepared_parameters=.true.)
+    call restored_backend%run_trial(column,template,fparams,restored,forcing,numerical,fmr_dt,2.0_real64*fmr_dt, &
+         restored_checkpoint,restored_next_result,restored_next_candidate,restored_next_diag, &
+         trusted_prepared_parameters=.true.)
+    if(.not.next_result%completed .or. .not.restored_next_result%completed)error stop 'A8 FMR restart continuation'
+    call next_candidate%snapshot(next_state,available)
+    if(.not.available)error stop 'A8 FMR next candidate'
+    call restored_next_candidate%snapshot(restored_next_state,available)
+    if(.not.available .or. .not.same_fmr_state(next_state,restored_next_state)) &
+         error stop 'A8 FMR restart next-candidate replay'
+
+    print '(a)', 'PPA_WU05A8_FMR_SERIALIZED_RUNTIME=PASS'
+    print '(a)', 'PPA_WU05A8_FMR_REJECT_REPLAY=PASS'
+    print '(a)', 'PPA_WU05A8_FMR_RESTART=PASS'
+  end subroutine exercise_serialized_fmr
+
+  logical function same_fmr_state(a,b) result(same)
+    class(transaction_state_t), intent(in) :: a,b
+    same=.false.
+    select type (aa=>a)
+    type is (fmr_b110_physical_state_t)
+      select type (bb=>b)
+      type is (fmr_b110_physical_state_t)
+        same=aa%active_nodes==bb%active_nodes
+        if(same)same=allocated(aa%pressure_head).eqv.allocated(bb%pressure_head)
+        if(same)same=allocated(aa%water_content).eqv.allocated(bb%water_content)
+        if(same.and.allocated(aa%pressure_head))same=all(transfer(aa%pressure_head,[0_int64],size(aa%pressure_head)) == &
+             transfer(bb%pressure_head,[0_int64],size(bb%pressure_head)))
+        if(same.and.allocated(aa%water_content))same=all(transfer(aa%water_content,[0_int64],size(aa%water_content)) == &
+             transfer(bb%water_content,[0_int64],size(bb%water_content)))
+        if(same)same=transfer(aa%ponding_depth,0_int64)==transfer(bb%ponding_depth,0_int64)
+        if(same)same=transfer(aa%groundwater_level,0_int64)==transfer(bb%groundwater_level,0_int64)
+        if(same)same=allocated(aa%macropore).eqv.allocated(bb%macropore)
+        if(same.and.allocated(aa%macropore))same=aa%macropore%same_values(bb%macropore)
+      class default
+        same=.false.
+      end select
+    class default
+      same=.false.
+    end select
+  end function same_fmr_state
 
   subroutine setup_geometry(config)
     type(macropore_geometry_config_t),intent(out)::config
