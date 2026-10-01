@@ -10,7 +10,9 @@ program test_top03_component_receipt
  call req(surface_water_component_receipt_matches(c,r,1e-12_real64)==FMR_SW_RECEIPT_OK,'exact')
  ! Equal scalar total, wrong components: must fail closed.
  r%subsurface_swap_to_surface_cm=.2;r%top_swap_to_surface_cm=-.1
- call req(abs((c%subsurface_swap_to_surface_cm+c%top_swap_to_surface_cm)-(r%subsurface_swap_to_surface_cm+r%top_swap_to_surface_cm))<1e-14_real64,'same total fixture')
+ call req(abs((c%subsurface_swap_to_surface_cm+c%top_swap_to_surface_cm) - &
+      (r%subsurface_swap_to_surface_cm+r%top_swap_to_surface_cm)) < 1e-14_real64, &
+      'same total fixture')
  call req(surface_water_component_receipt_matches(c,r,1e-12_real64)==FMR_SW_RECEIPT_MISMATCH,'component masking')
  r%subsurface_swap_to_surface_cm=.3;r%top_swap_to_surface_cm=-.2+5e-13_real64
  call req(surface_water_component_receipt_matches(c,r,1e-12_real64)==FMR_SW_RECEIPT_OK,'tolerance')
