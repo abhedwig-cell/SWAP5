@@ -73,7 +73,7 @@ contains
       do i = 1, nmax
          mid = 0.5_real64*(a+b)
          fm = residual(mid)
-         if (abs(b-a) <= tol*max(1.0_real64, abs(mid)) .or. fm == 0.0_real64) then
+         if (abs(b-a) <= tol*max(1.0_real64, abs(mid))) then
             x = mid
             status = OXYGEN_BRACKET_OK
             if (present(iterations)) iterations = i
