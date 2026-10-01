@@ -77,7 +77,7 @@ contains
   end function runtime_policy_valid
 
   subroutine runtime_execute(self,solver,workspace,base_request,accepted_macro,geometry_config,rate_template, &
-       history_request,top_input,policy,result)
+       history_request,policy,result,top_input)
     class(macropore_single_column_runtime_t),intent(inout)::self
     class(soil_water_solver_t),intent(inout)::solver
     class(soil_water_solver_workspace_base_t),intent(inout)::workspace
@@ -86,9 +86,9 @@ contains
     type(macropore_geometry_config_t),intent(in)::geometry_config
     type(macropore_rate_bundle_request_t),intent(in)::rate_template
     type(sorptivity_history_update_request_t),intent(in)::history_request
-    type(fmr_macropore_top_input_forcing_t),intent(in)::top_input
     type(macropore_runtime_policy_t),intent(in)::policy
     type(macropore_runtime_result_t),intent(out)::result
+    type(fmr_macropore_top_input_forcing_t),intent(in),optional::top_input
 
     type(soil_water_solve_request_t)::request
     type(soil_water_solve_result_t)::predictor,corrector
@@ -103,6 +103,7 @@ contains
     type(sorptivity_history_update_request_t)::history_local
     real(real64),allocatable::current_domain(:,:),next_domain(:,:),current_node(:)
     real(real64),allocatable::requested_top_vertical(:),requested_top_lateral(:)
+    type(fmr_macropore_top_input_forcing_t)::top_input_local
     real(real64)::numerator,denominator,dt
     logical::ok
     integer::iter,nd,n
@@ -162,7 +163,9 @@ contains
       return
     end if
 
-    call prepare_fmr_macropore_top_input(top_input,geometry_config,geometry,dt, &
+    top_input_local=fmr_macropore_top_input_forcing_t()
+    if(present(top_input))top_input_local=top_input
+    call prepare_fmr_macropore_top_input(top_input_local,geometry_config,geometry,dt, &
          requested_top_vertical,requested_top_lateral,ok)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
