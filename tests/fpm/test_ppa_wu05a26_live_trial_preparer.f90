@@ -30,8 +30,8 @@ program test_ppa_wu05a26_live_trial_preparer
  implicit none
  type(p_t)::p;type(process_hydraulic_view_t)::v;type(rfm_runtime_configuration_t)::c
  type(rfm_surface_forcing_t)::f;type(rfm_physical_state_t)::a,snap
- type(soil_water_top_boundary_result_t)::top;type(rfm_live_trial_prepare_result_t)::r,r2
- logical::ok;real(real64)::depth(2),thick(2)
+ type(soil_water_top_boundary_result_t)::top;type(rfm_live_trial_prepare_result_t)::r,r2,rr
+ logical::ok;integer::i;real(real64)::depth(2),thick(2),d12,d24
  call a%initialize(1,ok);if(.not.ok)error stop 'init';call copy_rfm_physical_state(a,snap,ok)
  c%enabled=.true.;c%sigma_b=1._real64;c%f_mb=.2_real64;c%connectivity_p=1._real64;c%z_ah_cm=20._real64;c%z_ic_cm=100._real64
  c%chi_wall=1._real64;c%exchange_length_cm=20._real64;c%mb_contact_length_cm=80._real64;c%sorptivity_panels=16;c%mb_wall_node_index=2
@@ -50,5 +50,33 @@ program test_ppa_wu05a26_live_trial_preparer
  top%regime=SW_TOP_BOUNDARY_REGIME_HEAD
  call prepare_rfm_live_trial(a,c,f,v,p,top,depth,thick,.01_real64,1e-10_real64,r2)
  if(r2%valid)error stop 'head regime admitted'
+
+ ! Zero-RFM numerical limit: matrix share equals effective supply and no fast-domain receipt/source remains.
+ top%regime=SW_TOP_BOUNDARY_REGIME_FLUX
+ top%net_potential_surface_flux=1e-8_real64
+ call prepare_rfm_live_trial(a,c,f,v,p,top,depth,thick,.01_real64,1e-10_real64,r2)
+ if(.not.r2%valid)error stop 'zero limit valid'
+ if(abs(r2%surface%matrix_supply_cm_per_day-r2%surface%effective_supply_cm_per_day)>1e-10_real64)error stop 'zero matrix equivalence'
+ if(r2%candidate%deep_receipt_cm>1e-10_real64.or.any(r2%candidate%matrix_source_rate_per_day>1e-10_real64))error stop 'zero fast receipt'
+
+ ! Frozen-hydraulic timestep refinement: compare one full, two half and four quarter candidate integrations.
+ top%net_potential_surface_flux=8._real64
+ call prepare_rfm_live_trial(a,c,f,v,p,top,depth,thick,.04_real64,1e-10_real64,r);if(.not.r%valid)error stop 'ref full'
+ call copy_rfm_physical_state(r%candidate%candidate_rfm,h1,ok);if(.not.ok)error stop 'ref full copy'
+ call copy_rfm_physical_state(a,h2,ok);if(.not.ok)error stop 'ref half init'
+ do i=1,2
+   call prepare_rfm_live_trial(h2,c,f,v,p,top,depth,thick,.02_real64,1e-10_real64,rr);if(.not.rr%valid)error stop 'ref half'
+   call copy_rfm_physical_state(rr%candidate%candidate_rfm,h2,ok);if(.not.ok)error stop 'ref half copy'
+ end do
+ call copy_rfm_physical_state(a,h4,ok);if(.not.ok)error stop 'ref quarter init'
+ do i=1,4
+   call prepare_rfm_live_trial(h4,c,f,v,p,top,depth,thick,.01_real64,1e-10_real64,rr);if(.not.rr%valid)error stop 'ref quarter'
+   call copy_rfm_physical_state(rr%candidate%candidate_rfm,h4,ok);if(.not.ok)error stop 'ref quarter copy'
+ end do
+ d12=abs(sum(h1%endpoint_water_cm)-sum(h2%endpoint_water_cm))
+ d24=abs(sum(h2%endpoint_water_cm)-sum(h4%endpoint_water_cm))
+ if(d24>d12+1e-12_real64)error stop 'refinement not contracting'
+ print '(a)','PPA_WU05A26_ZERO_RFM_LIMIT=PASS'
+ print '(a)','PPA_WU05A26_TIMESTEP_REFINEMENT=PASS'
  print '(a)','PPA_WU05A26_LIVE_TRIAL_PREPARER=PASS'
 end program
