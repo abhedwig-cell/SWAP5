@@ -376,13 +376,13 @@ contains
     character(len=*),intent(in)::label
     select type(s=>state)
     type is(fmr_b110_macropore_reduction_state_t)
-      if(.not.s%reduction_continuation%valid())error stop trim(label)//' invalid'
-      if(s%reduction_continuation%level/=level)error stop trim(label)//' level'
-      if(s%reduction_continuation%stable_steps/=stable_steps)error stop trim(label)//' stable steps'
-      if(transfer(s%reduction_continuation%previous_dt,0_int64)/=transfer(previous_dt,0_int64)) &
-           error stop trim(label)//' previous dt'
+      call require(s%reduction_continuation%valid(),trim(label)//' valid')
+      call require(s%reduction_continuation%level==level,trim(label)//' level')
+      call require(s%reduction_continuation%stable_steps==stable_steps,trim(label)//' stable steps')
+      call require(transfer(s%reduction_continuation%previous_dt,0_int64)==transfer(previous_dt,0_int64), &
+           trim(label)//' previous dt')
     class default
-      error stop trim(label)//' dynamic type'
+      call require(.false.,trim(label)//' dynamic type')
     end select
   end subroutine require_reduction
 
