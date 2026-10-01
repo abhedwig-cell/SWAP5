@@ -70,12 +70,16 @@ program test_ppa_wu05a12_fmr_perched_runtime
 
   cofgen=0.0_real64
   do i=1,numnod
-    cofgen(1,i)=0.02_real64; cofgen(2,i)=0.427494_real64; cofgen(3,i)=1.0e-4_real64
+    cofgen(1,i)=0.02_real64; cofgen(2,i)=0.427494_real64; cofgen(3,i)=31.225016_real64
     cofgen(4,i)=0.021659_real64; cofgen(5,i)=0.98087_real64; cofgen(6,i)=1.734737_real64
     cofgen(7,i)=1.0_real64-1.0_real64/cofgen(6,i); cofgen(8,i)=cofgen(4,i)
     cofgen(10,i)=cofgen(3,i); cofgen(11,i)=0.999_real64; cofgen(12,i)=0.99_real64*cofgen(3,i)
     cofgen(22,i)=-1.0e6_real64; cofgen(23,i)=1.0e-12_real64
   end do
+  ! Low-conductivity separator below the perched lens. Retention remains unchanged.
+  cofgen(3,3)=1.0e-4_real64
+  cofgen(10,3)=cofgen(3,3)
+  cofgen(12,3)=0.99_real64*cofgen(3,3)
   call initialize_b110_default_mvg_parameters(hp,cofgen)
   call bind_b110_default_mvg_provider(hyd,hp,dt)
 
