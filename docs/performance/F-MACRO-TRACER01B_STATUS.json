@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.f_macro_tracer01b.source_packet.v1",
+  "status": "SOURCE_PACKET_QUALIFIED_ORDERED_TRANSFER_INTERFACE_MISSING",
+  "source": {
+    "forcing": true,
+    "initial_theta": true,
+    "matrix_hydraulics": true,
+    "bromide_profiles": true,
+    "applied_tracer_metadata": true
+  },
+  "missing": [
+    "accepted_ordered_matrix_water_transfer_journal"
+  ],
+  "rejected_authority": "echoRD simulated water trajectory",
+  "required_owner": "SWAP5 matrix hydrology",
+  "next": "TRACER01-C accepted-state water-transfer observer"
+}
