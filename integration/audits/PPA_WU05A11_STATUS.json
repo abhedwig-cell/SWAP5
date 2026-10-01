@@ -1,26 +1,38 @@
 {
   "schema": "swap5.ppa_wu05a11.status.v1",
   "workunit": "PPA-WU05-A11",
-  "phase": "CORRECTED_REQUALIFICATION_REQUIRED",
-  "decision": "SOURCE_MAPPING_CORRECTED_AWAITING_FOCUSED_REQUALIFICATION",
+  "phase": "CLOSED_CORRECTED_QUALIFIED_FOLLOWUP_RESULT",
+  "decision": "CORRECTED_QUALIFIED_SOURCE_FAITHFUL_FMR_PERCHED_CARRIER",
   "baseline": "ebea588070f7a44dbaea78169f2548c745061c48",
   "branch": "research/ppa-wu05-a13-accepted-state-seed",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonical_admitted": false,
-  "closed": false,
+  "closed": true,
   "corrected_implementation": "8ff742c6ba02bce9ecc745e83ef094ab9d5b59c6",
   "corrected_oracle": "463c720e4d56ddd07c80f256cc7f984b26ca86d1",
+  "qualified_postimage": "867cafe3d9f50c712356d7bb40b78dbbad719b72",
+  "qualification_run": 36838931487,
+  "qualification_job": 110293028110,
   "superseded_qualification_run": 36834246991,
-  "correction": "Exact active B1.11 uses ICpTpPerZon=NPeGwl; +1 and ICpSatPeGwl alternatives are commented source. SATFLOW applies Lev-derived top fraction in CpTpZon.",
+  "source_correction": "Active B1.11 uses ICpTpPerZon=NPeGwl; the +1 and ICpSatPeGwl alternatives are commented source. SATFLOW applies the Lev-derived top fraction in CpTpZon.",
   "direct_corrected_probe": {
     "run": 36838101873,
     "perched_detected": true,
     "raw_interflow_cm": 5.3846153846153863e-8,
     "limited_interflow_cm": 5.3846153846153863e-8
   },
-  "next_action": "Run corrected A11 focused source/carrier gate plus A10 preservation on one persisted postimage.",
-  "recovery_point": "463c720e4d56ddd07c80f256cc7f984b26ca86d1"
+  "preservation": {
+    "a7_a8_a9_a10_gate": "PASS",
+    "run": 36838931487
+  },
+  "not_admitted": [
+    "serialized active perched production execution",
+    "inner-Richards macropore evaluation",
+    "canonical perched admission"
+  ],
+  "next_action": "Use corrected A11 carrier authority in a separate explicit inner-Richards macropore coupling architecture workunit; do not reuse the falsified A13 accepted-state seed route.",
+  "recovery_point": "867cafe3d9f50c712356d7bb40b78dbbad719b72"
 }
