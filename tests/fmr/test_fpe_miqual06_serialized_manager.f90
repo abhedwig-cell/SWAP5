@@ -180,7 +180,9 @@ contains
         heads(i)=10.0_real64*real(i-tail_start,real64)
       end do
     else
-      heads=-75.0_real64
+      do i=1,numnod
+        heads(i)=-200.0_real64+10.0_real64*real(i-1,real64)
+      end do
     end if
     call provider%evaluate(heads,water,kk,cap,dk)
     s%active_nodes=numnod
