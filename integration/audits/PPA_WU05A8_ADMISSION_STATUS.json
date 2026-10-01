@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.ppa_wu05a8.admission.v1",
+  "work_unit": "PPA-WU05-A8",
+  "title": "Selective canonical macropore FMR admission",
+  "branch": "admit/ppa-wu05-a8-macropore-fmr",
+  "canonical_base": "0b231d1669cf38d069f14c6d2f0f07cd3bb1c5b1",
+  "qualified_code_postimage": "23f264c0dc1267b96c039a360a356d73ba96eed6",
+  "qualification_run_id": 36821398193,
+  "status": "QUALIFIED_CANONICAL_ADMISSION_CANDIDATE_READY_FOR_MERGE_REVIEW",
+  "canonical_admission": "PENDING",
+  "scope": {
+    "solver": "REFERENCE_RICHARDS",
+    "execution": "SERIALIZED_SINGLE_COLUMN_FMR",
+    "macropore_route": "STANDARD_STORAGE",
+    "temporal_policy": "EXTERNAL_FULL_HALF",
+    "restart": "SEVEN_FIELD_CONTINUATION"
+  },
+  "holds": [
+    "NO_PERCHED_ZONE",
+    "NO_SURFACE_CONNECTED_MACROPORE_TOP_INPUT",
+    "NO_FMR_RAPID_DRAINAGE",
+    "NO_WITHIN_TRIAL_DYNAMIC_CRACK_GEOMETRY_FEEDBACK",
+    "NO_PARALLEL_MULTISWAP_MACROPORE"
+  ],
+  "receipts": {
+    "fmr_serialized_runtime": "PASS",
+    "reject_replay": "PASS",
+    "restart": "PASS",
+    "real_richards": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "next_action": "Open selective PR to integration/f-ci-canonical and merge only if branch remains mergeable and admission gate is green."
+}
