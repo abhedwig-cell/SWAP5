@@ -36,7 +36,7 @@ contains
       real(real64), intent(in), optional :: xtol
       integer, intent(in), optional :: maxiter
 
-      real(real64) :: lo, hi, mid, flo, fhi, fmid, tol, asymptote
+      real(real64) :: lo, hi, mid, fhi, fmid, tol, asymptote
       integer :: i, nmax
 
       if (ctop < 0.0_real64 .or. microbial_scale < 0.0_real64 .or. root_scale < 0.0_real64 .or. &
@@ -61,7 +61,6 @@ contains
       if (present(maxiter)) nmax = max(1, maxiter)
 
       lo = 0.0_real64
-      flo = ctop
       hi = max(microbial_shape, root_shape)
 
       do i = 1, nmax
@@ -87,7 +86,6 @@ contains
          end if
          if (fmid > 0.0_real64) then
             lo = mid
-            flo = fmid
          else
             hi = mid
             fhi = fmid
