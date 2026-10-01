@@ -84,7 +84,7 @@ contains
     real(real64) :: k_atm, k_top, k_sat, k1_atm, k1_max
     real(real64) :: emax, q0, q1, h0, h0max, p1, p2
     real(real64) :: top_dz, top_distance
-    logical :: ok
+    logical :: ok, external_applied
 
     result = b110_dynamic_top_boundary_result_t()
 
@@ -162,104 +162,8 @@ contains
     q1 = -q0 - request%previous_ponding_depth_cm/request%step_duration_day
     result%net_potential_surface_flux_cm_per_day = q0
 
-    if (q1 >= 0.0_real64 .and. q1 > emax) then
-      result%regime = B110_DYN_TOP_REGIME_HEAD
-      result%surface_head_cm = B110_DYN_TOP_ATMOSPHERIC_HEAD_CM
-      result%surface_face_conductivity_cm_per_day = k1_atm
-      result%surface_head_derivative_available = .true.
-      result%surface_head_dpressure_head_top = 0.0_real64
-      result%candidate_ponding_depth_cm = 0.0_real64
-      result%runoff_depth_cm = 0.0_real64
-      result%runoff_potential = .false.
-      result%actual_top_flux_cm_per_day = -k1_atm * &
-           ((result%surface_head_cm-request%pressure_head_top_cm)/top_distance + 1.0_real64)
-      result%status = B110_DYN_TOP_AVAILABLE
-      result%route = 'atmospheric-head'
-      return
-    end if
-
-    if (k1_max <= 0.0_real64) then
-      result%status = B110_DYN_TOP_INVALID_INPUT
-      result%route = 'nonpositive-saturated-face-k'
-      return
-    end if
-    h0 = request%pressure_head_top_cm - top_distance*(q1/k1_max + 1.0_real64)
-    if (h0 <= B110_DYN_TOP_HEAD_SWITCH_CM) then
-      result%regime = B110_DYN_TOP_REGIME_FLUX
-      result%actual_top_flux_cm_per_day = q1
-      result%surface_head_cm = 0.0_real64
-      result%surface_face_conductivity_cm_per_day = 0.0_real64
-      result%candidate_ponding_depth_cm = 0.0_real64
-      result%runoff_depth_cm = 0.0_real64
-      result%runoff_potential = .false.
-      result%status = B110_DYN_TOP_AVAILABLE
-      result%route = 'surface-flux'
-      return
-    end if
-
-    result%regime = B110_DYN_TOP_REGIME_HEAD
-    result%surface_face_conductivity_cm_per_day = k1_max
-    result%runoff_potential = .true.
-    p1 = k1_max/top_distance * request%step_duration_day
-    p2 = 1.0_real64/(p1+1.0_real64)
-    h0max = p2 * (request%previous_ponding_depth_cm + q0*request%step_duration_day - &
-         k1_max*request%step_duration_day + p1*request%pressure_head_top_cm)
-
-    if (h0max <= request%ponding_max_cm) then
-      result%candidate_ponding_depth_cm = max(0.0_real64, h0max)
-      result%runoff_depth_cm = 0.0_real64
-      if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
-        result%surface_head_derivative_available = .true.
-        result%surface_head_dpressure_head_top = p1/(1.0_real64+p1)
-      end if
-    else
-      ! Once the no-runoff analytical solution exceeds the ponding threshold,
-      ! branch selection must not depend on the current Newton candidate or dt
-      ! through an absolute runoff-depth gate. Enter the bounded analytical
-      ! linear-runoff solution directly.
-      if (request%runoff_resistance_day < B110_DYN_TOP_MIN_LINEAR_RSRO_DAY .or. &
-          request%runoff_exponent /= 1.0_real64) then
-        result%status = B110_DYN_TOP_UNSUPPORTED
-        result%route = 'active-runoff-outside-profile'
-        return
-      end if
-      p2 = 1.0_real64/(p1 + 1.0_real64 + request%step_duration_day/request%runoff_resistance_day)
-      result%candidate_ponding_depth_cm = p2 * (request%previous_ponding_depth_cm + &
-           q0*request%step_duration_day - k1_max*request%step_duration_day + &
-           p1*request%pressure_head_top_cm + &
-           request%step_duration_day/request%runoff_resistance_day*request%ponding_max_cm)
-      result%candidate_ponding_depth_cm = max(0.0_real64, result%candidate_ponding_depth_cm)
-      result%runoff_depth_cm = restricted_linear_runoff_depth(result%candidate_ponding_depth_cm, request)
-      if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
-        result%surface_head_derivative_available = .true.
-        result%surface_head_dpressure_head_top = p1*p2
-      end if
-    end if
-
-    if (request%external_surface_water_head_supplied .and. &
-        request%external_surface_water_head_cm > request%external_flooding_sill_head_cm .and. &
-        request%external_surface_water_head_cm > result%candidate_ponding_depth_cm) then
-      result%candidate_ponding_depth_cm = request%external_surface_water_head_cm
-      result%runoff_depth_cm = 0.0_real64
-      result%runoff_potential = .false.
-      result%surface_head_cm = request%external_surface_water_head_cm
-      result%surface_face_conductivity_cm_per_day = k1_max
-      result%actual_top_flux_cm_per_day = -k1_max * &
-           ((result%surface_head_cm-request%pressure_head_top_cm)/top_distance + 1.0_real64)
-      if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
-        result%surface_head_derivative_available = .true.
-        result%surface_head_dpressure_head_top = 0.0_real64
-      end if
-      if (.not. all_finite_result(result)) then
-        result = b110_dynamic_top_boundary_result_t()
-        result%status = B110_DYN_TOP_INVALID_INPUT
-        result%route = 'nonfinite-external-surface-water-result'
-        return
-      end if
-      result%status = B110_DYN_TOP_AVAILABLE
-      result%route = 'external-surface-water-head'
-      return
-    end if
+    call apply_external_surface_water_head(request,k1_max,top_distance,result%candidate_ponding_depth_cm,result,external_applied)
+    if (external_applied) return
 
     result%surface_head_cm = result%candidate_ponding_depth_cm
     result%actual_top_flux_cm_per_day = -k1_max * &
@@ -319,6 +223,37 @@ contains
     end if
     ok = .true.
   end subroutine validate_request
+
+  subroutine apply_external_surface_water_head(request, k1_max, top_distance, local_head_cm, result, applied)
+    type(b110_dynamic_top_boundary_request_t), intent(in) :: request
+    real(real64), intent(in) :: k1_max, top_distance, local_head_cm
+    type(b110_dynamic_top_boundary_result_t), intent(inout) :: result
+    logical, intent(out) :: applied
+    applied = .false.
+    if (.not. request%external_surface_water_head_supplied) return
+    if (request%external_surface_water_head_cm <= request%external_flooding_sill_head_cm) return
+    if (request%external_surface_water_head_cm <= local_head_cm) return
+    result%regime = B110_DYN_TOP_REGIME_HEAD
+    result%candidate_ponding_depth_cm = request%external_surface_water_head_cm
+    result%runoff_depth_cm = 0.0_real64
+    result%runoff_potential = .false.
+    result%surface_head_cm = request%external_surface_water_head_cm
+    result%surface_face_conductivity_cm_per_day = k1_max
+    result%actual_top_flux_cm_per_day = -k1_max * &
+         ((result%surface_head_cm-request%pressure_head_top_cm)/top_distance + 1.0_real64)
+    result%surface_head_derivative_available = .false.
+    result%surface_head_dpressure_head_top = 0.0_real64
+    if (.not. all_finite_result(result)) then
+      result = b110_dynamic_top_boundary_result_t()
+      result%status = B110_DYN_TOP_INVALID_INPUT
+      result%route = 'nonfinite-external-surface-water-result'
+      applied = .true.
+      return
+    end if
+    result%status = B110_DYN_TOP_AVAILABLE
+    result%route = 'external-surface-water-head'
+    applied = .true.
+  end subroutine apply_external_surface_water_head
 
   pure real(real64) function restricted_linear_runoff_depth(ponding_depth_cm, request) result(runoff_depth)
     real(real64), intent(in) :: ponding_depth_cm
