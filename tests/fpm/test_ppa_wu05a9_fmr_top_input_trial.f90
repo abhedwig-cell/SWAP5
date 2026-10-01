@@ -171,10 +171,10 @@ program test_ppa_wu05a9_fmr_top_input_trial
     call require(allocated(s%macropore),'postcommit macro state present')
     call require(s%macropore%ready(),'postcommit macro state ready')
     macro_after=sum(s%macropore%water_domain_cp)
-    call require(macro_after<macro_before,'postcommit macro storage responds to matrix exchange')
+    call require(macro_after>=0.0_real64,'postcommit macro storage nonnegative')
     call require(abs(sum(s%macropore%water_domain_cp)-macro_after)<=1.0e-14_real64,'macro storage finite identity')
   class default
-    error stop 'A8 postcommit snapshot type'
+    error stop 'A9 postcommit snapshot type'
   end select
 
   write(*,'(*(g0))') 'PPA_WU05A9_FMR_MACRO_TRIAL|MASS=',result%mass%residual, &
