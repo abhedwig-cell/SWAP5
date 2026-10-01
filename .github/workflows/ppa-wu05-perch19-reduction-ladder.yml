@@ -1,0 +1,23 @@
+name: PPA-WU05-PERCH19 source reduction ladder
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch19-frreduq-retry-ladder
+    paths:
+      - 'src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'tests/fpm/test_ppa_wu05_perch19_reduction_ladder.f90'
+      - 'tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh'
+      - '.github/workflows/ppa-wu05-perch19-reduction-ladder.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH19 exact controller and A18 replay
+        run: bash tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh
+      - name: Preserve A18 source-backed baseline
+        run: bash tests/fpm/run_ppa_wu05a18_andelst_perched_reference.sh
