@@ -1,6 +1,6 @@
 {
-  "schema": "swap5.f_macro_tracer01d.composition_status.v3",
-  "status": "CLOSED_D2A_FORWARD_HELDOUT_QUALIFIED_D2B_MB_WALL_BLOCKER",
+  "schema": "swap5.f_macro_tracer01d.composition_status.v4",
+  "status": "CLOSED_D2A_HELDOUT_QUALIFIED_D2B_STANDARD_FMR_BOTTOM_ROUTE_FALSIFIED",
   "canonical_authority": "integration/f-ci-canonical@ebea588070f7a44dbaea78169f2548c745061c48",
   "qualified": {
     "matrix_reference_kernel": true,
@@ -46,17 +46,24 @@
     "published_recovery_fraction_approx": 0.95
   },
   "d2b": {
-    "status": "BLOCKED",
-    "blocker": "source-bound executable MB wall-retained tracer profile and bottom-survival owner absent",
+    "status": "BLOCKED_AFTER_ROUTE_FALSIFICATION",
+    "wall_exchange_owner": "canonical FMR standard runtime available",
+    "vertical_internal_transfer_owner": "canonical FMR vertical flux reconstruction available",
+    "bottom_deep_export_owner": "absent",
+    "standard_fmr_complete_mb_owner": false,
+    "standard_fmr_bottom_route_falsified": true,
+    "reason": "canonical standard FMR candidate balance has no independent macropore lower-boundary export; reconstructed bottom face is algebraically zero up to roundoff",
+    "rapid_drain_as_bottom_export": "rejected_semantic_mismatch",
     "f_MB_residual_balancing_forbidden": true
   },
   "dispersion_authorized": false,
   "new_rfm_physics_authorized": false,
-  "stop_rule": "TRUE_COMPOSITION_BLOCKER",
+  "stop_rule": "EXPLICITLY_FALSIFIED_STANDARD_FMR_MB_BOTTOM_ROUTE",
   "result_documents": [
     "docs/performance/F-MACRO-TRACER01D1S_RESULT.md",
     "docs/performance/F-MACRO-TRACER01D2A_RESULT.md",
-    "docs/performance/F-MACRO-TRACER01D2B_BLOCKER.md"
+    "docs/performance/F-MACRO-TRACER01D2B_BLOCKER.md",
+    "docs/performance/F-MACRO-TRACER01D2B1_FMR_OWNERSHIP_AUDIT.md"
   ],
   "closure_document": "docs/performance/F-MACRO-TRACER01D_CLOSURE.md"
 }
