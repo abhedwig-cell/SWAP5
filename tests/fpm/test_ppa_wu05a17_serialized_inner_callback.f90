@@ -85,7 +85,8 @@ program test_ppa_wu05a17_serialized_inner_callback
   cofgen(3,4)=1.0e-6_real64
   cofgen(10,4)=cofgen(3,4)
   cofgen(12,4)=0.99_real64*cofgen(3,4)
-  call initialize_b110_default_mvg_parameters(hp,cofgen)
+  call initialize_b110_default_mvg_parameters(hp,cofgen,enable_elastic_storage=.true., &
+       specific_elastic_storage_input=cofgen(24,:))
   call bind_b110_default_mvg_provider(hyd,hp,dt)
 
   heads=[-0.5_real64,0.1_real64,0.1_real64,-0.5_real64,-0.5_real64,0.5_real64]
@@ -138,6 +139,20 @@ program test_ppa_wu05a17_serialized_inner_callback
 
   call setup_rate_template(macro,geometry,rate_template)
   call setup_history(history_request)
+
+  direct_request=request
+  direct_request%physical%macropore_active=.false.
+  call solver%solve(direct_request,workspace,direct_result)
+  write(*,'(*(g0))') 'PPA_WU05A17_BASELINE_RICHARDS|STATUS=',direct_result%status, &
+       '|RETRY=',direct_result%retry_advised, &
+       '|NONLINEAR_IT=',direct_result%diagnostics%nonlinear_iterations, &
+       '|INTERNAL_RETRIES=',direct_result%diagnostics%internal_retries
+  if(direct_result%status==SW_SOLVE_CONVERGED)then
+    write(*,'(*(g0))') 'PPA_WU05A17_BASELINE_HEADS|H1=',direct_result%candidate_state%pressure_head(1), &
+         '|H2=',direct_result%candidate_state%pressure_head(2),'|H3=',direct_result%candidate_state%pressure_head(3), &
+         '|H4=',direct_result%candidate_state%pressure_head(4),'|H5=',direct_result%candidate_state%pressure_head(5), &
+         '|H6=',direct_result%candidate_state%pressure_head(6)
+  end if
 
   ! A12 qualifies the serialized transaction path directly. The copied A10
   ! standalone direct-solver sanity run is intentionally omitted because the
