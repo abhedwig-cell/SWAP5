@@ -90,6 +90,8 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
   use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
   use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
+  use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
+  use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
 
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
@@ -2318,17 +2320,23 @@ contains
     type(soil_water_top_boundary_result_t) :: rfm_preflight
     real(real64), allocatable, target :: rfm_source_rate(:)
     real(real64), allocatable :: rfm_node_depth_cm(:)
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider
+    type(rfm_matrix_source_provider_t), target :: rfm_source_provider
+    type(rfm_live_trial_prepare_result_t) :: rfm_live
+    type(soil_water_top_boundary_result_t) :: rfm_preflight
+    real(real64), allocatable, target :: rfm_source_rate(:)
+    real(real64), allocatable :: rfm_node_depth_cm(:)
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider, rfm_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
     real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
+    real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
-    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok
+    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok, rfm_source_ok
     logical :: direct_retention_ok
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
