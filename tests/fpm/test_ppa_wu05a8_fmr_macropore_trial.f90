@@ -124,6 +124,11 @@ program test_ppa_wu05a8_fmr_macropore_trial
 
   call backend%run_trial(column,template,parameters,committed,forcing,config,0.0_real64,dt,checkpoint, &
        result,candidate,diagnostics)
+  write(error_unit,'(*(g0))') 'PPA_WU05A8_FMR_DIAG|STATUS=',result%status,'|COMPLETED=',result%completed, &
+       '|ADMISSION_REJECTIONS=',diagnostics%admission_rejections,'|TRANSACTION_CALLS=',diagnostics%transaction_calls, &
+       '|ATTEMPTS=',diagnostics%attempts,'|RETRIES=',diagnostics%retries,'|HEAD_CALC=',diagnostics%headcalc_calls, &
+       '|NONLINEAR=',diagnostics%nonlinear_iterations,'|CANDIDATE_READY=',candidate%ready()
+  flush(error_unit)
   call require(result%status==CANONICAL_STATUS_COMPLETED .and. result%completed,'FMR macropore trial completed')
   call require(result%mass%complete,'FMR macropore mass complete')
   call require(result%mass%missing_contribution_mask==TX_MASS_MISSING_NONE,'FMR macropore mass missing mask')
