@@ -1,127 +1,156 @@
-# PPA-WU05-A11 result — perched-zone carrier authority reconciliation
+# PPA-WU05-A11 result — source-faithful FMR perched-zone carrier
 
 Date: 2026-10-01
 
-Status: `BLOCKED_EXACT_4_3_1_CARRIER_PROVENANCE_ACCESS`
+Status: `QUALIFIED_FMR_PERCHED_CARRIER_FOLLOWUP_RESULT`
 
 Baseline: `integration/f-ci-canonical@ebea588070f7a44dbaea78169f2548c745061c48`
 
-Preregistration commit: `0a36b968b536bf6bae17eaa050eb6f0a3adf9705`
+Qualified code/test postimage: `2ad9cbda64a53707730990dd436588a47b86b5b2`
 
-## Reconciliation result
+Exact source-map postimage: `e11b7dc0593a1d49b7899b2c6349ab9ea019e456`
 
-PPA-WU05-A10 is canonically admitted and closed. Its exact technical admission merge is
-`190dad36a821f3a43f78f00fccf827c58cacedb6`; post-merge preservation run
-`36829313469` completed successfully. Documentation closeout PR #929 merged as
-canonical `ebea588070f7a44dbaea78169f2548c745061c48`.
+Qualification workflow: `.github/workflows/ppa-wu05a11-perched.yml`
 
-The next bounded capability remains perched/top saturated matrix-zone macropore exchange.
+Qualification run: `36834246991` — SUCCESS
 
-## Existing exact repository authority
+## Exact-source authority
 
-Historical A6 authority retained on PR #922 head
-`b5b123dcc4450dcc3c76a789ba749205fa8474b5` establishes from the exact B1.11
-macrorate oracle that:
+The user-provided `SWAP_4.3.1.zip` contains the exact A1-pinned nested source archive:
 
-- unsaturated absorption ends at `min(ICpBtDm, ICpTpSatZon-1)`;
-- the perched partly saturated matrix interval is excluded from unsaturated absorption;
-- MACRORATE uses a separate SATFLOW request for perched/top saturated matrix inflow
-  `QInIntSatDmCp`;
-- the ordinary saturated groundwater zone uses the separate `QInMtxSatDmCp` request;
-- both receipts are internal matrix-to-macropore transfers.
+`SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP`
 
-Current canonical code retains those source-bound process semantics in:
+with:
 
-- `mod_ppa_wu05a6_sorptivity_rate`;
-- `mod_ppa_wu05a6_unsat_absorption_rate`;
-- `mod_ppa_wu05a6_saturated_exchange_rate`;
-- `mod_ppa_wu05a6_saturated_sources`;
-- `mod_ppa_wu05a6_rate_bundle`.
+- 411,215 bytes;
+- SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`.
 
-The current FMR adapter deliberately suppresses the missing carrier.
+Relevant exact members include:
 
-## Carrier reconstruction obtained in this workunit
+- `SWAP/macropore.f90`: SHA-256
+  `1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b`;
+- `SWAP/macrorate.f90`: SHA-256
+  `537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7`;
+- `SWAP/calcgwl.f90`: SHA-256
+  `d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb`.
 
-A public historical SWAP source mirror was used only as corroborating locator evidence, not
-as the B1.11 oracle. Its refactored `macrorate.f90` is about 39.7 kB of ASCII text, while
-A1 pins the exact B1.11 file at 111,863 bytes and SHA-256
-`537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7`.
-It therefore cannot establish exact 4.3.1 byte provenance.
+The full carrier source map is persisted in
+`docs/audits/PPA_WU05A11_SOURCE_MAP.md`.
 
-The corroborating source nevertheless exposes the full legacy carrier shape:
+## Qualified capability
 
-- `NPeGwl`: deepest unsaturated node associated with perched groundwater search;
-- `BPeGwl`: bottom node of the perched saturated/percolation zone;
-- `PeGWL`: perched groundwater level;
-- `ICpTpPerZon = NPeGwl + 1` when perched groundwater exists;
-- `ICpBtPerZon = BPeGwl`;
-- `ICpSatPeGWl`: compartment containing the perched water level when the level cuts a compartment;
-- no perched groundwater: `ICpBtPerZon=-1` and `ICpTpPerZon=ICpTpSatZon`.
+A11 adds an explicit, opt-in FMR carrier for the standard SWAP perched/top saturated
+matrix-zone macropore path.
 
-The same source locates the groundwater/perched-groundwater search in the soil-water
-water-table logic. The search accumulates under-saturated volume
+Qualified:
 
-`sum((ThetaS-Theta)*dz)`
+- source-faithful perched-zone detection from current matrix state;
+- cumulative under-saturated-volume criterion using `CritUndSatVol`;
+- source-faithful zero-head interpolation for perched top and bottom levels;
+- derived top and bottom perched-zone compartment indices;
+- explicit distinction between a partially saturated top compartment and a fully
+  saturated top compartment;
+- reuse of the existing A6 perched exclusion in unsaturated absorption;
+- reuse of the existing A6 SATFLOW evaluator for `QInIntSatDmCp`;
+- internal matrix/macropore mass ownership unchanged;
+- no new continuation state;
+- no restart-schema expansion;
+- no solver-policy change.
 
-until either the critical under-saturated-volume threshold is reached or saturated matrix
-is encountered. Historical/manual semantics identify the default critical amount as
-approximately `0.1 cm`.
+The carrier is recomputed for each matrix trial from dynamic matrix state plus immutable
+configuration.
 
-This is sufficient to identify the expected FMR data dependency:
-current matrix `water_content`, immutable `theta_s`, current pressure head, `z/dz`,
-and the same water-level interpolation/search policy as the reference route.
+## Source-oracle evidence
 
-## Why G1 is still not closed
+The focused fixture contains a 0.01 cm under-saturated-volume gap.
 
-A1 previously recovered a byte-exact `SWAP_4.3.1.zip` of 8,959,314 bytes with
-SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`.
+With `CritUndSatVol=0.005 cm`:
 
-This execution located multiple retained Library copies with the same filename and byte
-size, including the prior A1 recovery copy. The file service permits metadata access and
-even a server-side Library copy, but raw-byte materialization is denied in the current
-Project context with:
+- the gap is a real separator;
+- perched zone = compartment 4 only;
+- perched water level = `-25.32258064516129 cm`.
 
-`This Project file does not have an authorized raw-byte materialization path.`
+With `CritUndSatVol=0.02 cm`:
 
-Therefore the reconstructed water-table/perched carrier cannot yet be promoted from
-strong corroboration to exact B1.11/4.3.1 source authority.
+- the gap is bridged;
+- perched zone = compartments 3 through 4;
+- perched water level = `-12.142857142857142 cm`;
+- perched bottom level = `-38.75 cm`.
 
-## Falsified shortcut
+These values follow the exact `calcgwl.f90` interpolation and water-table search.
 
-The production rule
+## FMR/A6 composition evidence
 
-`perched = contiguous nodes with pressure_head >= 0`
+The focused gate proves that the derived A11 view populates:
 
-is explicitly rejected.
+- `sorptivity.perched_active`;
+- `perched_top_node`;
+- `perched_bottom_node`;
+- `interflow_sat.matrix_top_saturated_node`;
+- `interflow_sat.matrix_bottom_saturated_node`;
+- perched reference water level;
+- partial-top semantics.
 
-The legacy/source-corroborated construction includes a cumulative under-saturated-volume
-criterion and water-level interpolation. A sign-only detector can therefore split or merge
-zones differently near nearly saturated compartments and would silently change the
-physical carrier.
+The resulting A6 bundle:
 
-## Implementation consequence
+- suppresses unsaturated absorption inside the perched interval;
+- produces positive perched matrix-to-macropore interflow;
+- exposes that transfer with negative `QExc_to_matrix` sign, consistent with the
+  source-bound internal-exchange convention.
 
-No production code is changed by A11 at this stage.
+## Qualification and preservation
 
-When exact G1 authority becomes readable, the expected bounded implementation is:
+Run `36834246991` completed successfully on exact postimage `2ad9cbda...`.
 
-1. derive a non-persistent perched matrix hydraulic view from current matrix state;
-2. populate `perched_active/top/bottom` in the existing A6 unsaturated request;
-3. populate the existing `interflow_sat` SATFLOW request with perched top, bottom,
-   saturated-level compartment and perched reference level;
-4. verify whether sorptivity-history update must apply the same perched exclusion before
-   changing any history logic;
-5. keep the seven-field macropore continuation state unchanged;
-6. prove active perched exchange mass cancellation, reject/discard/replay, restart and
-   exact A8/A9/A10 preservation.
+Its focused A11 step requires the markers:
+
+- `PPA_WU05A11_PERCHED_SOURCE_ORACLE=PASS`;
+- `PPA_WU05A11_PERCHED_FMR_CARRIER=PASS`;
+- `PPA_WU05A11_PERCHED_GATE=PASS`.
+
+The same job then executes the complete A10 preservation script. That step passed,
+therefore preserving the previously admitted A7/A8/A9/A10 serialized
+Reference-Richards macropore chain, including A9 top input and A10 rapid drainage.
+
+O0/O2 output identity is part of both focused gate scripts.
+
+## Preservation strategy
+
+A11 perched detection is explicitly opt-in.
+
+Existing A8/A9/A10 configurations remain neutral unless
+`perched_enabled=.true.` is supplied. This avoids silently expanding the already admitted
+canonical envelope.
+
+The default saturated-exchange partial-top behavior is also preserved. A11 only exposes an
+explicit boolean so the source case `ICpSatPeGwl=-1` can be represented.
+
+## What this result does not admit
+
+A11 is **not** yet a canonical production admission.
+
+This result does not yet prove:
+
+- full active perched-zone execution through a complete serialized FMR
+  predictor/corrector trial;
+- active perched reject/discard/replay;
+- active perched persistence/restart continuation;
+- canonical admission;
+- arbitrary covering-layer physics;
+- within-corrector dynamic crack displacement feedback;
+- RossFast;
+- parallel/concurrent MultiSWAP.
+
+Those require a bounded follow-on runtime qualification rather than widening this source/carrier gate.
 
 ## Decision
 
-`REAL_BLOCKER_EXACT_4_3_1_PERCHED_CARRIER_BYTES_NOT_AUTHORIZED_FOR_READ`
+`QUALIFIED_SOURCE_FAITHFUL_FMR_PERCHED_CARRIER_READY_FOR_RUNTIME_TRIAL_FOLLOWON`
 
-This is now an access/provenance blocker, not an unresolved physical-concept blocker.
+Lifecycle reached in A11:
 
-No mass tolerance, physical formula, persistence schema, or accepted A8/A9/A10 behavior
-has been changed. No GitHub Actions run is justified while G1 remains open.
+`implemented -> persisted -> tested -> qualified`
+
+Canonical admission is not claimed.
 
 The frozen Status-A denominator remains unchanged.
