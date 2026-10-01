@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.ppa_wu05a13.status.v1",
+  "workunit": "PPA-WU05-A13",
+  "phase": "CLOSED_FALSIFIED",
+  "decision": "FALSIFIED_ACCEPTED_STATE_SEED",
+  "baseline": "812496a6f73361849507c151d876d78b4cc3b4ab",
+  "canonical_reconciliation": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "branch": "research/ppa-wu05-a13-accepted-state-seed",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission_candidate": false,
+  "canonical_admitted": false,
+  "closed": true,
+  "corrected_a11_dependency": {
+    "implementation": "8ff742c6ba02bce9ecc745e83ef094ab9d5b59c6",
+    "oracle": "463c720e4d56ddd07c80f256cc7f984b26ca86d1",
+    "finding": "active B1.11 uses ICpTpPerZon=NPeGwl and SATFLOW top fraction"
+  },
+  "g1_accepted_state_seed": {
+    "passed": true,
+    "evidence_run": 36838101873,
+    "perched_detected": true,
+    "raw_interflow_cm": 5.3846153846153863e-8,
+    "limited_interflow_cm": 5.3846153846153863e-8
+  },
+  "g2_serialized_transfer": {
+    "passed": false,
+    "evidence_run": 36838415337,
+    "completed": true,
+    "temporal_rejections": 0,
+    "mass_rejections": 0,
+    "solver_rejections": 0,
+    "mass_residual_cm": 2.92300905702092e-16,
+    "initial_macro_storage_cm": 0.2,
+    "candidate_macro_storage_cm": 0.2,
+    "macro_storage_delta_cm": 0.0
+  },
+  "falsified_route": "A single source-order-aware accepted-state exchange seed is insufficient to retain transient perched QInIntSat through the current outer fixed-point runtime.",
+  "not_admitted": [
+    "accepted-state seed",
+    "active perched serialized production runtime",
+    "inner-Richards macropore callback",
+    "canonical perched admission"
+  ],
+  "next_action": "Requalify corrected A11 source/carrier dependency, then open an explicit inner-Richards macropore rate-evaluation architecture workunit.",
+  "recovery_point": "eae629c50a153b034bd2dde1dca7237b1f3083e5"
+}
