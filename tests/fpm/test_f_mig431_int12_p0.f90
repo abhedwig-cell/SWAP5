@@ -6,7 +6,7 @@ program test_f_mig431_int12_p0
   type(interception_progress_t)::p,pd,pr,pa,pb
   type(interception_trial_t)::tr,tr2
   type(interception_restart_t)::rst
-  real(real64)::sum_parts,before,retry_amt,direct_amt,a1,a2,b
+  real(real64)::sum_parts,before,retry_amt,direct_amt,a1,a2,b,final_amount
   integer::s
   call initialize_interception_window(43112_int64,10.0_real64,11.0_real64,0.37_real64,w,s)
   call req(s==INTWIN_OK,"init")
@@ -37,6 +37,7 @@ program test_f_mig431_int12_p0
   call prepare_interception_trial(wr,pr,11.0_real64,tr,s); sum_parts=sum_parts+tr%apportioned_amount()
   call accept_interception_trial(wr,tr,pr,s); call req(s==INTWIN_OK,"final")
   call req(pr%complete(wr),"complete")
+  final_amount=pr%accepted_amount(wr)
   call req(same_bits(pr%accepted_amount(wr),w%aggregate_value()),"aggregate exact endpoint")
   call req(abs(sum_parts-w%aggregate_value())<=8.0_real64*epsilon(1.0_real64),"partition conservation")
 
@@ -50,7 +51,7 @@ program test_f_mig431_int12_p0
 
   print '(a)',"F-MIG431-INT12-P0 PASS"
   print '(a,es24.16)',"aggregate=",p%accepted_amount(w)
-  print '(a,es24.16)',"final=",pr%accepted_amount(wr)
+  print '(a,es24.16)',"final=",final_amount
 contains
   pure logical function same_bits(x,y)
     real(real64),intent(in)::x,y
