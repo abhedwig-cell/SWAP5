@@ -1,50 +1,26 @@
 {
   "schema": "swap5.ppa_wu05a11.status.v1",
   "workunit": "PPA-WU05-A11",
-  "phase": "CLOSED_QUALIFIED_FOLLOWUP_RESULT",
-  "decision": "QUALIFIED_SOURCE_FAITHFUL_FMR_PERCHED_CARRIER_READY_FOR_RUNTIME_TRIAL_FOLLOWON",
+  "phase": "CORRECTED_REQUALIFICATION_REQUIRED",
+  "decision": "SOURCE_MAPPING_CORRECTED_AWAITING_FOCUSED_REQUALIFICATION",
   "baseline": "ebea588070f7a44dbaea78169f2548c745061c48",
-  "branch": "research/ppa-wu05-a11-perched-zone-carrier",
+  "branch": "research/ppa-wu05-a13-accepted-state-seed",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": true,
+  "qualified": false,
   "canonical_admitted": false,
-  "closed": true,
-  "qualified_postimage": "2ad9cbda64a53707730990dd436588a47b86b5b2",
-  "source_map_postimage": "e11b7dc0593a1d49b7899b2c6349ab9ea019e456",
-  "qualification_run": 36834246991,
-  "qualification_job": 110277704902,
-  "source_archive": {
-    "nested_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
-    "nested_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
-    "macropore_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
-    "macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
-    "calcgwl_sha256": "d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb"
+  "closed": false,
+  "corrected_implementation": "8ff742c6ba02bce9ecc745e83ef094ab9d5b59c6",
+  "corrected_oracle": "463c720e4d56ddd07c80f256cc7f984b26ca86d1",
+  "superseded_qualification_run": 36834246991,
+  "correction": "Exact active B1.11 uses ICpTpPerZon=NPeGwl; +1 and ICpSatPeGwl alternatives are commented source. SATFLOW applies Lev-derived top fraction in CpTpZon.",
+  "direct_corrected_probe": {
+    "run": 36838101873,
+    "perched_detected": true,
+    "raw_interflow_cm": 5.3846153846153863e-8,
+    "limited_interflow_cm": 5.3846153846153863e-8
   },
-  "qualified_scope": [
-    "opt-in source-faithful FMR perched-zone hydraulic carrier",
-    "CritUndSatVol cumulative under-saturated-volume criterion",
-    "perched top/bottom water-level interpolation and compartment mapping",
-    "A6 unsaturated perched exclusion",
-    "A6 SATFLOW QInIntSat composition",
-    "explicit partial-top saturated-zone semantics",
-    "no new continuation state"
-  ],
-  "preservation": {
-    "a7_a8_a9_a10_gate": "PASS",
-    "run": 36834246991
-  },
-  "not_admitted": [
-    "full serialized active perched predictor/corrector runtime qualification",
-    "active perched reject/replay",
-    "active perched restart continuation",
-    "canonical admission",
-    "covering-layer physics",
-    "within-corrector dynamic crack displacement feedback",
-    "RossFast",
-    "parallel MultiSWAP"
-  ],
-  "next_action": "Open a bounded follow-on workunit for real serialized FMR active-perched trial plus reject/replay/restart qualification before considering canonical admission.",
-  "recovery_point": "e11b7dc0593a1d49b7899b2c6349ab9ea019e456"
+  "next_action": "Run corrected A11 focused source/carrier gate plus A10 preservation on one persisted postimage.",
+  "recovery_point": "463c720e4d56ddd07c80f256cc7f984b26ca86d1"
 }
