@@ -1801,14 +1801,6 @@ contains
     self%drainage_response_window_exchange_available = self%drainage_response_active
     self%drainage_response_window_signed_exchange_native = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
-    moving_interface_diagnostics = moving_interface_manager_diagnostics_t()
-    moving_interface_runtime_eligible = .false.
-    moving_interface_ok = .false.
-    if (self%moving_interface_manager_enabled) then
-      self%last_observation%moving_interface_manager_requested = .true.
-      self%last_observation%moving_interface_manager_route = MI_MANAGER_ROUTE_FULL_BYPASS
-      self%last_observation%moving_interface_reason = 'runtime-envelope-ineligible'
-    end if
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
@@ -2200,6 +2192,14 @@ contains
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
+    moving_interface_diagnostics = moving_interface_manager_diagnostics_t()
+    moving_interface_runtime_eligible = .false.
+    moving_interface_ok = .false.
+    if (self%moving_interface_manager_enabled) then
+      self%last_observation%moving_interface_manager_requested = .true.
+      self%last_observation%moving_interface_manager_route = MI_MANAGER_ROUTE_FULL_BYPASS
+      self%last_observation%moving_interface_reason = 'runtime-envelope-ineligible'
+    end if
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
     self%last_observation%practical_richards_head_rel_tolerance = self%head_rel_tolerance
@@ -2321,19 +2321,6 @@ contains
       request%base_state%water_content = physical%water_content
       request%base_state%ponding_depth = physical%ponding_depth
       request%base_state%groundwater_level = physical%groundwater_level
-      moving_interface_runtime_eligible = self%moving_interface_manager_enabled .and. &
-         self%soil_water_selection%uses_reference() .and. .not. self%macropore_active .and. &
-         .not. trajectory_request_ok .and. .not. self%temporal_indicator_history_enabled .and. &
-         .not. self%direct_retention_active .and. .not. self%root_extraction_active .and. &
-         .not. self%drainage_response_active .and. .not. self%snow_active .and. &
-         .not. self%soil_temperature_active .and. .not. self%black_evaporation_active .and. &
-         .not. self%boesten_evaporation_active .and. .not. self%fixed_weir_surface_water_active .and. &
-         .not. self%practical_richards_a2c_active .and. self%bottom_mode == 2 .and. &
-         effective_bottom_mode == 2 .and. effective_bottom_flux == 0.0_real64 .and. &
-         self%swkimpl == 0 .and. self%swkmean == 1 .and. &
-         request%boundary%top_mode == FSI_TOP_MODE_EXPLICIT_FLUX .and. associated(self%hydraulic_parameters) .and. &
-         associated(self%qdra) .and. associated(self%qssdi) .and. associated(self%qrot)
-
     if (self%macropore_active) then
         if (.not. allocated(physical%macropore) .or. .not. allocated(self%macropore_config)) return
         if (.not. physical%macropore%ready()) return
@@ -2512,6 +2499,19 @@ contains
         call move_alloc(drainage_sink_direction, self%trajectory_request_workspace%incoming_sink_direction)
       end if
     end if
+
+    moving_interface_runtime_eligible = self%moving_interface_manager_enabled .and. &
+         self%soil_water_selection%uses_reference() .and. .not. self%macropore_active .and. &
+         .not. trajectory_request_ok .and. .not. self%temporal_indicator_history_enabled .and. &
+         .not. self%direct_retention_active .and. .not. self%root_extraction_active .and. &
+         .not. self%drainage_response_active .and. .not. self%snow_active .and. &
+         .not. self%soil_temperature_active .and. .not. self%black_evaporation_active .and. &
+         .not. self%boesten_evaporation_active .and. .not. self%fixed_weir_surface_water_active .and. &
+         .not. self%practical_richards_a2c_active .and. self%bottom_mode == 2 .and. &
+         effective_bottom_mode == 2 .and. effective_bottom_flux == 0.0_real64 .and. &
+         self%swkimpl == 0 .and. self%swkmean == 1 .and. &
+         request%boundary%top_mode == FSI_TOP_MODE_EXPLICIT_FLUX .and. associated(self%hydraulic_parameters) .and. &
+         associated(self%qdra) .and. associated(self%qssdi) .and. associated(self%qrot)
 
     if (self%macropore_active) then
       if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
