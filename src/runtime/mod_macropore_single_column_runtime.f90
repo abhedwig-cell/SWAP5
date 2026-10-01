@@ -184,8 +184,15 @@ contains
 
     top_input_local=fmr_macropore_top_input_forcing_t()
     if(present(top_input))top_input_local=top_input
-    call prepare_fmr_macropore_top_input(top_input_local,geometry_config,geometry,dt, &
-         requested_top_vertical,requested_top_lateral,ok)
+    if(geometry_config%top_node==1)then
+      call prepare_fmr_macropore_top_input(top_input_local,geometry_config,geometry,dt, &
+           requested_top_vertical,requested_top_lateral,ok)
+    else
+      allocate(requested_top_vertical(geometry%num_domains),requested_top_lateral(geometry%num_domains))
+      requested_top_vertical=0.0_real64
+      requested_top_lateral=0.0_real64
+      ok=top_input_local%valid() .and. .not.top_input_local%supplied
+    end if
     write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|TOP_OK=',ok
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
