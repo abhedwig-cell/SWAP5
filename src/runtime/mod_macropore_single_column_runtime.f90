@@ -55,6 +55,8 @@ module mod_macropore_single_column_runtime
     logical :: perched_exchange_active=.false.
     real(real64) :: perched_interflow_cm=0.0_real64
     logical :: accepted_state_seed_active=.false.
+    logical :: accepted_state_seed_perched_detected=.false.
+    real(real64) :: accepted_state_seed_raw_interflow_cm=0.0_real64
     real(real64) :: accepted_state_seed_interflow_cm=0.0_real64
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
     real(real64) :: macro_balance_residual_cm=huge(1.0_real64)
@@ -214,8 +216,10 @@ contains
       current_domain=current_rates%qexc_to_matrix_rate
       current_node=sum(current_domain,dim=1)
       overlay%exchange_rate=current_node
+      result%accepted_state_seed_perched_detected=rate_request%unsaturated%sorptivity%perched_active
+      result%accepted_state_seed_raw_interflow_cm=sum(current_rates%saturated%qin_interflow_rate)*dt
       result%accepted_state_seed_interflow_cm=sum(current_rates%qin_interflow_rate)*dt
-      result%accepted_state_seed_active=rate_request%unsaturated%sorptivity%perched_active .and. &
+      result%accepted_state_seed_active=result%accepted_state_seed_perched_detected .and. &
            result%accepted_state_seed_interflow_cm>0.0_real64
     end if
 
