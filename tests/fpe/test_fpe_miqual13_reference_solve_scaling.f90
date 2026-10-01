@@ -5,6 +5,7 @@ program test_fpe_miqual13_reference_solve_scaling
        soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
@@ -69,7 +70,7 @@ program test_fpe_miqual13_reference_solve_scaling
   req%parameters=>p
   req%base_state=state
   req%step_duration=0.00125_real64
-  req%boundary%top_mode=1
+  req%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
   req%boundary%top_flux=0.0_real64
   req%boundary%bottom_mode=2
   req%boundary%bottom_flux=0.0_real64
