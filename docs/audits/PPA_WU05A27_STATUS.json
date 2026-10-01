@@ -1,0 +1,33 @@
+{
+  "work_unit": "PPA-WU05-A27",
+  "baseline": "19f09b818b1bb30c1428919074c00098dbd062bd",
+  "checkpoint_commit": "c6c716e225a2673b498d617aa569327cec686034",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "status": "BOUNDED_COLUMN_ATTRIBUTION_COMPLETE_FULL_BENCHMARK_OPEN",
+  "next_action": "Complete physical geometry mapping and A/B/C evolving production runtime comparison; finite IC and rainfall cases",
+  "recovery_point": "docs/audits/PPA_WU05A27_COLUMN_ABLATION_RESULT.md",
+  "blockers": [],
+  "last_reconciled_head": "295f63cc16158802302a7810ef48cd32dd7f0f1d",
+  "last_reconciled_upstream": "19f09b818b1bb30c1428919074c00098dbd062bd",
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05A26_CLOSEOUT.md"
+  ],
+  "test_paths": [
+    "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
+    "tests/fpm/test_ppa_wu05a27_column_ablation.f90"
+  ],
+  "dependency_surface": [
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90",
+    "src/solver/mod_b110_source_sink_provider.f90",
+    "tests/fsi/fsi04_real_headcalc_stubs.f90"
+  ],
+  "interfaces_changed": [],
+  "production_claim": "No performance or full-equivalence claim"
+}
