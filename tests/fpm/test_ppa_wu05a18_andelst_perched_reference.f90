@@ -12,6 +12,11 @@ program test_ppa_wu05a18_andelst_perched_reference
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_macropore_standard_rate_adapter, only: matrix_saturated_zone_view_t,matrix_perched_zone_view_t, &
        derive_matrix_saturated_zone_view,derive_matrix_perched_zone_view
+  use mod_macropore_continuation_state, only: macropore_continuation_state_t
+  use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t,evaluate_macropore_geometry
+  use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t,initialize_fmr_macropore_standard_config
+  use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t,macropore_runtime_policy_t, &
+       macropore_runtime_result_t,MACRO_RUNTIME_CONVERGED
   implicit none
 
   real(real64),parameter :: dt=2.0e-3_real64
@@ -61,9 +66,19 @@ program test_ppa_wu05a18_andelst_perched_reference
   type(soil_water_solve_result_t) :: result
   type(matrix_saturated_zone_view_t) :: main_view
   type(matrix_perched_zone_view_t) :: perched_view
+  type(macropore_continuation_state_t) :: macro
+  type(macropore_geometry_result_t) :: geometry
+  type(fmr_macropore_physical_config_t) :: macro_config
+  type(macropore_single_column_runtime_t) :: macro_runtime
+  type(macropore_runtime_policy_t) :: macro_policy
+  type(macropore_runtime_result_t) :: macro_result
   real(real64),target :: qdra(1,numnod),qssdi(numnod),qrot(numnod)
   real(real64) :: cofgen(24,numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-  real(real64) :: theta_s(numnod)
+  real(real64) :: theta_s(numnod),theta_r(numnod),static_volume(numnod),domain_fraction(1,numnod), &
+       diameter(numnod),wall_correction(numnod),sorp_max(numnod),sorp_alpha(numnod), &
+       unsat_conductivity(numnod),entry_head(numnod),sorp_fac_parallel(numnod), &
+       ksat_horizontal(numnod),cdarcy(1,numnod)
+  integer :: potential_bottom(1)
   integer :: i
   logical :: ok
 
@@ -147,10 +162,72 @@ program test_ppa_wu05a18_andelst_perched_reference
   call require(main_view%top_node>=54 .and. main_view%top_node<=57,'source-consistent main groundwater top')
   call require(perched_view%bottom_node<main_view%top_node,'perched separated from main groundwater')
 
+  ! A18 G5: enable the already-qualified A17 inner callback on exactly the
+  ! same source-backed matrix state. Competing macropore transfers are
+  ! suppressed so any storage gain is attributable to perched QInIntSat.
+  theta_r=cofgen(1,:)
+  static_volume=0.04_real64*dz
+  domain_fraction=1.0_real64
+  potential_bottom(1)=numnod
+  diameter=10.0_real64
+  wall_correction=1.0_real64
+  sorp_max=0.0_real64
+  sorp_alpha=0.5_real64
+  unsat_conductivity=0.0_real64
+  entry_head=-10.0_real64
+  sorp_fac_parallel=0.33_real64
+  ksat_horizontal=cofgen(3,:)
+  cdarcy=0.0_real64
+
+  call initialize_fmr_macropore_standard_config(macro_config,1,static_volume,domain_fraction,potential_bottom, &
+       z,dz,diameter,theta_s,theta_r,wall_correction,sorp_max,sorp_alpha,unsat_conductivity,entry_head, &
+       sorp_fac_parallel,ksat_horizontal,cdarcy,1.0_real64,1.5_real64,1,ok, &
+       rapid_enabled=.false.,perched_enabled=.true.,critical_under_saturated_volume_cm=0.1_real64)
+  call require(ok .and. macro_config%valid_for_nodes(numnod),'A18 macropore config')
+  macro_config%rate_template%matrix_sat%ksat_horizontal=1.0e-30_real64
+  macro_config%rate_template%matrix_sat%cdarcy=0.0_real64
+
+  call macro%initialize(1,numnod,ok)
+  call require(ok,'A18 macropore state initialize')
+  macro%dynamic_volume_cp=0.0_real64
+  call evaluate_macropore_geometry(macro_config%geometry,macro%dynamic_volume_cp,geometry)
+  call require(geometry%valid,'A18 macropore geometry')
+  macro%icp_bottom_domain=geometry%bottom_domain
+  macro%volume_domain_cp=geometry%volume_domain_cp
+  macro%water_domain_cp=0.0_real64
+
+  macro_policy%enabled=.true.
+  macro_policy%inner_richards_exchange_enabled=.true.
+  macro_policy%max_correctors=80
+  macro_policy%exchange_relative_tolerance=1.0e-10_real64
+  macro_policy%exchange_floor=1.0e-12_real64
+  macro_policy%damping_previous_weight=0.5_real64
+  macro_policy%solver_mass_tolerance_cm=1.0e-8_real64
+  macro_policy%internal_exchange_tolerance_cm=1.0e-9_real64
+
+  call macro_runtime%execute(solver,workspace,request,macro,macro_config%geometry,macro_config%rate_template, &
+       macro_config%history_template,macro_policy,macro_result)
+  write(*,'(*(g0))') 'PPA_WU05A18_INNER|STATUS=',macro_result%status, &
+       '|USED=',macro_result%inner_richards_exchange_used, &
+       '|Q=',sum(macro_result%exchange_rate_node), &
+       '|MACRO_DELTA=',sum(macro_result%macropore_candidate%water_domain_cp)-sum(macro%water_domain_cp), &
+       '|INTERNAL_RES=',macro_result%internal_exchange_residual_cm, &
+       '|MACRO_RES=',macro_result%macro_balance_residual_cm
+  call require(macro_result%status==MACRO_RUNTIME_CONVERGED,'A18 inner runtime converged')
+  call require(macro_result%inner_richards_exchange_used,'A18 inner route used')
+  call require(sum(macro_result%exchange_rate_node)<-1.0e-10_real64,'A18 perched matrix-to-macro exchange')
+  call require(sum(macro_result%macropore_candidate%water_domain_cp)>sum(macro%water_domain_cp)+1.0e-12_real64, &
+       'A18 perched macro storage gain')
+  call require(abs(macro_result%internal_exchange_residual_cm)<=1.0e-9_real64,'A18 internal mass cancellation')
+  call require(abs(macro_result%macro_balance_residual_cm)<=1.0e-9_real64,'A18 macro mass closure')
+  call require(maxval(abs(macro%water_domain_cp))==0.0_real64,'A18 accepted macro state unchanged')
+
   print '(a)', 'PPA_WU05A18_SOURCE_ACCEPTED_SNAPSHOT=PASS'
   print '(a)', 'PPA_WU05A18_REFERENCE_RICHARDS_BASELINE=PASS'
   print '(a)', 'PPA_WU05A18_PERCHED_TOPOLOGY_RETAINED=PASS'
   print '(a)', 'PPA_WU05A18_BASELINE_GATE=PASS'
+  print '(a)', 'PPA_WU05A18_ACTIVE_PERCHED_INNER=PASS'
+  print '(a)', 'PPA_WU05A18_INNER_MASS_CLOSURE=PASS'
 
 contains
 
