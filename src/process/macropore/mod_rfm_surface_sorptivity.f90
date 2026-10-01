@@ -8,6 +8,7 @@ module mod_rfm_surface_sorptivity
   private
 
   public :: evaluate_rfm_surface_sorptivity
+  public :: evaluate_rfm_node_sorptivity
 
 contains
 
@@ -69,5 +70,46 @@ contains
     end if
     ok = .true.
   end subroutine evaluate_rfm_surface_sorptivity
+
+  subroutine evaluate_rfm_node_sorptivity(view, constitutive, node_index, panels, sorptivity, ok)
+    type(process_hydraulic_view_t), intent(in) :: view
+    class(constitutive_hydraulics_provider_t), intent(in) :: constitutive
+    integer, intent(in) :: node_index, panels
+    real(real64), intent(out) :: sorptivity
+    logical, intent(out) :: ok
+    real(real64), allocatable :: head(:), theta(:), conductivity(:), capacity(:), dkdh(:)
+    real(real64) :: h_initial, theta_initial, theta_s, dh, h_mid, integrand, integral
+    logical :: view_ok
+    integer :: i,n
+
+    sorptivity=0.0_real64;ok=.false.
+    call validate_process_hydraulic_view(view,view_ok)
+    if(.not.view_ok.or.panels<=0)return
+    n=view%active_nodes
+    if(node_index<1.or.node_index>n)return
+    h_initial=view%pressure_head(node_index);theta_initial=view%water_content(node_index)
+    if(.not.ieee_is_finite(h_initial).or..not.ieee_is_finite(theta_initial))return
+    if(h_initial>=0.0_real64)then;ok=.true.;return;end if
+    allocate(head(n),theta(n),conductivity(n),capacity(n),dkdh(n))
+    head=view%pressure_head;head(node_index)=0.0_real64
+    call constitutive%evaluate_demand(head,CONSTITUTIVE_DEMAND_WATER_CONTENT+CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+      theta,conductivity,capacity,dkdh)
+    theta_s=theta(node_index)
+    if(.not.ieee_is_finite(theta_s).or.theta_s<theta_initial)return
+    dh=-h_initial/real(panels,real64);integral=0.0_real64
+    do i=1,panels
+      h_mid=h_initial+(real(i,real64)-0.5_real64)*dh
+      head=view%pressure_head;head(node_index)=h_mid
+      call constitutive%evaluate_demand(head,CONSTITUTIVE_DEMAND_WATER_CONTENT+CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+        theta,conductivity,capacity,dkdh)
+      if(.not.ieee_is_finite(theta(node_index)).or..not.ieee_is_finite(conductivity(node_index)))return
+      if(conductivity(node_index)<0.0_real64)return
+      integrand=(theta_s+theta(node_index)-2.0_real64*theta_initial)*conductivity(node_index)
+      integral=integral+max(0.0_real64,integrand)*dh
+    end do
+    sorptivity=sqrt(max(0.0_real64,integral))
+    if(.not.ieee_is_finite(sorptivity))then;sorptivity=0.0_real64;return;end if
+    ok=.true.
+  end subroutine evaluate_rfm_node_sorptivity
 
 end module mod_rfm_surface_sorptivity
