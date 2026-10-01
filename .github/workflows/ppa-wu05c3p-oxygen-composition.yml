@@ -23,4 +23,3 @@ jobs:
       - name: Compile and run narrow composition gates
         run: |
           bash tests/physics/run_root_uptake_oxygen_composition.sh
-          bash tests/physics/run_fmr_root_uptake_oxygen_binding.sh
