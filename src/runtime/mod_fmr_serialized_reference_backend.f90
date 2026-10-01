@@ -16,6 +16,7 @@ module mod_fmr_serialized_reference_backend
        assess_fmr_mode7_temporal_head_envelope, FMR_MODE7_HEAD_ENVELOPE_OK
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
+       FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION, &
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
@@ -1484,6 +1485,12 @@ contains
       self%model%temporal_indicator_history_enabled = .false.
     case (FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
       self%model%temporal_indicator_history_enabled = .true.
+    case (FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION)
+      self%model%temporal_indicator_history_enabled = .false.
+      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
     case default
       call reject_backend_trial(result, candidate, diagnostics)
       return
@@ -1516,7 +1523,8 @@ contains
     end if
     if (parameters%macropore_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
-          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
+           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION) .or. &
           config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
         result = kernel_result_t()
         result%status = KERNEL_STATUS_NOT_ADMITTED
