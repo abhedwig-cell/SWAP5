@@ -8,9 +8,9 @@ module mod_fmr_moving_interface_runtime_adapter
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_moving_interface_manager, only: moving_interface_active_view_t, moving_interface_manager_diagnostics_t, &
-       moving_interface_manager_context_t, derive_moving_interface_active_view, &
+       moving_interface_manager_context_t, &
        prepare_moving_interface_reduced_request_persistent, materialize_moving_interface_full_candidate_persistent, &
-       finalize_moving_interface_result_persistent, MI_MANAGER_ROUTE_FULL_BYPASS
+       finalize_moving_interface_result_persistent, MI_MANAGER_ROUTE_REDUCED, MI_MANAGER_ROUTE_FULL_BYPASS
   implicit none
   private
 
@@ -26,7 +26,10 @@ module mod_fmr_moving_interface_runtime_adapter
     real(real64), pointer :: tail_pressure_head(:) => null()
     real(real64), pointer :: tail_water_content(:) => null()
     integer :: prepared_active_nodes = 0
+    integer :: prepared_drainage_levels = 0
     integer(int64) :: source_parameter_set_id = -1_int64
+    logical :: constitutive_bound = .false.
+    logical :: source_sink_bound = .false.
   contains
     procedure, public :: solve => fmr_moving_interface_runtime_solve
     procedure, public :: release => fmr_moving_interface_runtime_release
@@ -99,9 +102,14 @@ contains
       return
     end if
 
-    call derive_moving_interface_active_view(full_request%base_state, first_tail, view, prepared, reason)
-    if (.not. prepared .or. .not. view%eligible) then
-      call full_bypass(trim(reason))
+    view = moving_interface_active_view_t()
+    view%full_nodes = nf
+    view%active_nodes = first_tail
+    view%tail_start_node = first_tail
+    view%interface_face = first_tail
+    view%eligible = first_tail < nf
+    if (.not. view%eligible) then
+      call full_bypass('no-reduced-dimension')
       return
     end if
 
@@ -156,9 +164,17 @@ contains
     end if
 
     if (reduced_valid) then
-      empty_full = soil_water_solve_result_t()
-      call finalize_moving_interface_result_persistent(empty_full, .true., view, self%reduced_workspace%richards%generation, &
-           'none', self%context, diagnostics)
+      diagnostics = moving_interface_manager_diagnostics_t()
+      diagnostics%route = MI_MANAGER_ROUTE_REDUCED
+      diagnostics%full_nodes = view%full_nodes
+      diagnostics%active_nodes = view%active_nodes
+      diagnostics%tail_start_node = view%tail_start_node
+      diagnostics%interface_face = view%interface_face
+      diagnostics%reduced_workspace_generation = self%reduced_workspace%richards%generation
+      diagnostics%reduced_attempted = .true.
+      diagnostics%reduced_accepted = .true.
+      diagnostics%fallback_used = .false.
+      diagnostics%fallback_reason = 'none'
       selected = self%context%full_candidate
       ok = selected%status == SW_SOLVE_CONVERGED
       return
@@ -207,15 +223,26 @@ contains
         call initialize_b110_default_mvg_parameters(self%reduced_hydraulics, full_hydraulics%cofgen(:,1:n))
         self%prepared_active_nodes = n
         self%source_parameter_set_id = full_request%parameters%parameter_set_id
+        self%constitutive_bound = .false.
       end if
-      if (.not. associated(self%reduced_constitutive)) allocate(self%reduced_constitutive)
-      call bind_b110_default_mvg_provider(self%reduced_constitutive, self%reduced_hydraulics, full_request%step_duration)
+
+      if (.not. associated(self%reduced_constitutive)) then
+        allocate(self%reduced_constitutive)
+        self%constitutive_bound = .false.
+      end if
+      if (.not. self%constitutive_bound) then
+        call bind_b110_default_mvg_provider(self%reduced_constitutive, self%reduced_hydraulics, full_request%step_duration)
+        self%constitutive_bound = .true.
+      else
+        self%reduced_constitutive%step_duration = full_request%step_duration
+      end if
 
       if (.not. associated(self%reduced_qdra)) then
         allocate(self%reduced_qdra(levels,n), self%reduced_qssdi(n), self%reduced_qrot(n))
         self%reduced_qdra = 0.0_real64
         self%reduced_qssdi = 0.0_real64
         self%reduced_qrot = 0.0_real64
+        self%source_sink_bound = .false.
       else if (size(self%reduced_qdra,1) /= levels .or. size(self%reduced_qdra,2) /= n) then
         deallocate(self%reduced_qdra)
         if (associated(self%reduced_qssdi)) deallocate(self%reduced_qssdi)
@@ -224,9 +251,17 @@ contains
         self%reduced_qdra = 0.0_real64
         self%reduced_qssdi = 0.0_real64
         self%reduced_qrot = 0.0_real64
+        self%source_sink_bound = .false.
       end if
-      if (.not. associated(self%reduced_source_sink)) allocate(self%reduced_source_sink)
-      call bind_b110_source_sink_provider(self%reduced_source_sink, self%reduced_qdra, self%reduced_qssdi, self%reduced_qrot)
+      self%prepared_drainage_levels = levels
+      if (.not. associated(self%reduced_source_sink)) then
+        allocate(self%reduced_source_sink)
+        self%source_sink_bound = .false.
+      end if
+      if (.not. self%source_sink_bound) then
+        call bind_b110_source_sink_provider(self%reduced_source_sink, self%reduced_qdra, self%reduced_qssdi, self%reduced_qrot)
+        self%source_sink_bound = .true.
+      end if
       local_ok = .true.
     end subroutine prepare_reduced_provider
 
@@ -300,7 +335,10 @@ contains
       nullify(self%tail_water_content)
     end if
     self%prepared_active_nodes = 0
+    self%prepared_drainage_levels = 0
     self%source_parameter_set_id = -1_int64
+    self%constitutive_bound = .false.
+    self%source_sink_bound = .false.
   end subroutine fmr_moving_interface_runtime_release
 
 end module mod_fmr_moving_interface_runtime_adapter
