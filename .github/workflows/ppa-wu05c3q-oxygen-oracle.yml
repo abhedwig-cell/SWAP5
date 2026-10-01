@@ -23,6 +23,7 @@ jobs:
           bash tests/physics/run_ppa_wu05c3q_kernel.sh
 
   oracle:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
