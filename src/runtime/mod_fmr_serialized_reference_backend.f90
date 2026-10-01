@@ -90,8 +90,6 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
   use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
   use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
-  use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
-  use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
 
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
