@@ -124,6 +124,8 @@ program test_ppa_wu05a15_exchange_derivative
   work_request%unsaturated%sorptivity%sorptivity_max=0.0_real64
   work_request%unsaturated%conductivity=0.0_real64
   work_request%matrix_sat%cdarcy=0.0_real64
+  work_request%matrix_sat%ksat_horizontal=0.0_real64
+  work_request%matrix_sat%matrix_bottom_saturated_node=0
   call evaluate_macropore_rate_bundle(work_request,work_rates)
   call require(work_rates%valid .and. sum(work_rates%qin_interflow_rate)>0.0_real64,'A15 perched rate active')
   call evaluate_macropore_exchange_derivative(work_request,work_rates,capacity,derivative)
