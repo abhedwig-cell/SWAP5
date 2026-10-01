@@ -13,6 +13,7 @@ module mod_macropore_single_column_runtime
        build_macropore_standard_candidate
   use mod_macropore_standard_rate_adapter, only: matrix_saturated_zone_view_t, &
        prepare_standard_macropore_rate_request, prepare_standard_sorptivity_history_request
+  use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t, prepare_fmr_macropore_top_input
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t, &
        macropore_rate_bundle_result_t, evaluate_macropore_rate_bundle
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t, &
@@ -47,6 +48,8 @@ module mod_macropore_single_column_runtime
     integer :: corrector_solves=0
     integer :: outer_iterations=0
     real(real64) :: final_relative_exchange_change=huge(1.0_real64)
+    real(real64) :: requested_top_input_cm=0.0_real64
+    real(real64) :: accepted_top_input_cm=0.0_real64
     real(real64) :: returned_surface_cm=0.0_real64
     real(real64) :: rapid_external_outflow_cm=0.0_real64
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
@@ -74,7 +77,7 @@ contains
   end function runtime_policy_valid
 
   subroutine runtime_execute(self,solver,workspace,base_request,accepted_macro,geometry_config,rate_template, &
-       history_request,policy,result)
+       history_request,top_input,policy,result)
     class(macropore_single_column_runtime_t),intent(inout)::self
     class(soil_water_solver_t),intent(inout)::solver
     class(soil_water_solver_workspace_base_t),intent(inout)::workspace
@@ -83,6 +86,7 @@ contains
     type(macropore_geometry_config_t),intent(in)::geometry_config
     type(macropore_rate_bundle_request_t),intent(in)::rate_template
     type(sorptivity_history_update_request_t),intent(in)::history_request
+    type(fmr_macropore_top_input_forcing_t),intent(in)::top_input
     type(macropore_runtime_policy_t),intent(in)::policy
     type(macropore_runtime_result_t),intent(out)::result
 
@@ -90,7 +94,7 @@ contains
     type(soil_water_solve_result_t)::predictor,corrector
     type(macropore_exchange_overlay_provider_t),target::overlay
     type(macropore_geometry_result_t)::geometry
-    type(macropore_rate_bundle_request_t)::rate_request
+    type(macropore_rate_bundle_request_t)::rate_request,rate_template_step
     type(macropore_rate_bundle_result_t)::current_rates,raw_rates
     type(macropore_standard_candidate_receipt_t)::receipt
     type(macropore_standard_storage_view_t)::accepted_view,candidate_view
@@ -98,6 +102,7 @@ contains
     type(vertical_flux_reconstruction_request_t)::vertical_request
     type(sorptivity_history_update_request_t)::history_local
     real(real64),allocatable::current_domain(:,:),next_domain(:,:),current_node(:)
+    real(real64),allocatable::requested_top_vertical(:),requested_top_lateral(:)
     real(real64)::numerator,denominator,dt
     logical::ok
     integer::iter,nd,n
@@ -157,6 +162,17 @@ contains
       return
     end if
 
+    call prepare_fmr_macropore_top_input(top_input,geometry_config,geometry,dt, &
+         requested_top_vertical,requested_top_lateral,ok)
+    if(.not.ok)then
+      result%status=MACRO_RUNTIME_FAILED
+      return
+    end if
+    rate_template_step=rate_template
+    rate_template_step%limiter%potential_top_vertical_cm=requested_top_vertical
+    rate_template_step%limiter%potential_top_lateral_cm=requested_top_lateral
+    result%requested_top_input_cm=sum(requested_top_vertical)+sum(requested_top_lateral)
+
     call derive_macropore_standard_storage_view(accepted_macro,geometry_config%top_node, &
          base_request%parameters%z,base_request%parameters%dz,accepted_view)
     if(.not.accepted_view%valid)then
@@ -181,7 +197,7 @@ contains
       return
     end if
 
-    call prepare_standard_macropore_rate_request(rate_template,accepted_macro,geometry,accepted_view, &
+    call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
          predictor%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt,rate_request,matrix_view,ok)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
@@ -208,7 +224,7 @@ contains
         return
       end if
 
-      call prepare_standard_macropore_rate_request(rate_template,accepted_macro,geometry,accepted_view, &
+      call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
            corrector%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt,rate_request,matrix_view,ok)
       if(.not.ok)then
         result%status=MACRO_RUNTIME_FAILED
@@ -258,8 +274,14 @@ contains
       return
     end if
 
+    result%accepted_top_input_cm=raw_rates%top_partition%accepted_total_cm
     result%returned_surface_cm=receipt%returned_surface_cm
     result%rapid_external_outflow_cm=receipt%rapid_external_outflow_cm
+    if(abs(result%accepted_top_input_cm+result%returned_surface_cm-result%requested_top_input_cm)> &
+       policy%internal_exchange_tolerance_cm)then
+      result%status=MACRO_RUNTIME_FAILED
+      return
+    end if
     result%internal_exchange_residual_cm=sum(current_node)*dt - receipt%internal_exchange_to_matrix_cm
     result%macro_balance_residual_cm=receipt%macro_balance_residual_cm
     allocate(result%exchange_rate_domain_cp(nd,n),result%exchange_rate_node(n))
