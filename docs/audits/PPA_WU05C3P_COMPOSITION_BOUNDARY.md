@@ -145,3 +145,28 @@ atmospheric C_top
 
 The earlier statement "no dynamic OxygenState" remains valid for timestep persistence, but must not
 be misread as "nodes are independently evaluable in arbitrary order".
+
+
+## Implemented research composition seam
+
+A narrow research implementation now exists in:
+
+`src/process/mod_root_uptake_oxygen_composition.f90`
+
+It deliberately does not create a second root-water process. It composes an independently evaluated
+oxygen factor onto the existing drought-qualified root sink and returns one replacement
+`root_extraction_sink`.
+
+The module provides:
+- `compose_root_sink_with_oxygen_factor`: bounded [0,1] nodewise composition;
+- `evaluate_macro_feddes_drought_oxygen_uptake`: calls the existing drought process first, then
+  applies the oxygen factor through the same single-sink result type.
+
+Invalid/non-finite oxygen factors fail closed. Nodes below the rooted domain are preserved unchanged.
+The final uptake total is recomputed from the one composed sink.
+
+This is intentionally upstream of `mod_b110_root_sink_provider`: the solver provider continues to
+see exactly one already-composed root sink and acquires no oxygen-process ownership.
+
+Groundwater analytic tangent coverage is not widened by this seam. Oxygen-active composition remains
+outside the admitted drought-only tangent envelope until separately qualified.
