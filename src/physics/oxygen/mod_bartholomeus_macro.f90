@@ -23,7 +23,7 @@ module mod_bartholomeus_macro
 
 contains
 
-   pure function bartholomeus_macro_concentration(p, resp_factor, ok) result(c_macro)
+   function bartholomeus_macro_concentration(p, resp_factor, ok) result(c_macro)
       type(BartholomeusMacroInput), intent(in) :: p
       real(real64), intent(in) :: resp_factor
       logical, intent(out) :: ok
