@@ -9,6 +9,7 @@ on:
       - '.github/workflows/f-macro-tracer01d-fixture.yml'
       - 'tools/research/fortran/test_macro_tracer01d_spechtacker_fixture.f90'
       - 'tools/research/macropore_tracer01d_fixture_postprocess.py'
+      - 'tools/research/macropore_tracer01d_refinement_compare.py'
 
 jobs:
   fixture:
@@ -26,10 +27,18 @@ jobs:
           mkdir -p "$BUILD" artifacts
           python3 tests/rom/materialize_f_rom0_headcalc_stubs.py --source tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$BUILD/stub.f90" --nodes 10 --dz-cm 10
           python3 tests/rom/compile_f_rom0_fortran_closure.py --root "$GITHUB_WORKSPACE" --stub "$BUILD/stub.f90" --target tools/research/fortran/test_macro_tracer01d_spechtacker_fixture.f90 --external-source src/legacy/b1_10_port/headcalc.f90 --build "$BUILD/compile" --opt 2
-          "$BUILD/compile/rom0_test" artifacts/tracer01d_trajectory.csv | tee artifacts/tracer01d_runner.log
+          for DT in 120 60 30; do
+            "$BUILD/compile/rom0_test" "artifacts/tracer01d_trajectory_${DT}.csv" "$DT" | tee "artifacts/tracer01d_runner_${DT}.log"
+          done
       - name: Postprocess accepted hydrology through tracer observer/kernel
         run: |
-          python3 tools/research/macropore_tracer01d_fixture_postprocess.py artifacts/tracer01d_trajectory.csv | tee artifacts/tracer01d_result.json
+          for DT in 120 60 30; do
+            python3 tools/research/macropore_tracer01d_fixture_postprocess.py "artifacts/tracer01d_trajectory_${DT}.csv" > "artifacts/tracer01d_result_${DT}.json"
+            cat "artifacts/tracer01d_result_${DT}.json"
+          done
+          python3 tools/research/macropore_tracer01d_refinement_compare.py \
+            artifacts/tracer01d_result_120.json artifacts/tracer01d_result_60.json artifacts/tracer01d_result_30.json \
+            | tee artifacts/tracer01d_refinement.json
       - uses: actions/upload-artifact@v4
         with:
           name: f-macro-tracer01d-fixture
