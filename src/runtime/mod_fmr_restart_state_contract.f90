@@ -2,12 +2,14 @@ module mod_fmr_restart_state_contract
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
+       FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_SNOW, &
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
+       fmr_b110_macropore_reduction_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_black_evaporation_state_t, &
        fmr_b110_boesten_evaporation_state_t
   implicit none
@@ -76,6 +78,14 @@ contains
         select type (state)
         type is (fmr_b110_temporal_indicator_state_t)
           matches = thermal_optional_state_matches(state, template)
+        class default
+          matches = .false.
+        end select
+      case (FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION)
+        if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE) return
+        select type (state)
+        type is (fmr_b110_macropore_reduction_state_t)
+          matches = thermal_optional_state_matches(state, template) .and. state%macropore_reduction%valid()
         class default
           matches = .false.
         end select
