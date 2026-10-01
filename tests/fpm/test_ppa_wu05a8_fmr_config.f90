@@ -1,12 +1,40 @@
 program test_fmr_macropore_configuration
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
+  use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t, &
+       initialize_fmr_macropore_standard_config
   implicit none
 
   integer, parameter :: n=3, nd=1
-  type(fmr_macropore_physical_config_t) :: cfg
+  type(fmr_macropore_physical_config_t) :: cfg, initialized
+  real(real64) :: static_volume(n), domain_fraction(nd,n), z(n), dz(n), diameter(n)
+  real(real64) :: theta_s(n), theta_r(n), wall_correction(n), sorp_max(n), sorp_alpha(n)
+  real(real64) :: conductivity(n), entry_head(n), sorp_fac_parallel(n), ksat_horizontal(n), cdarcy(nd,n)
+  integer :: potential_bottom(nd)
+  logical :: ok
 
   call setup(cfg)
+
+  static_volume=0.5_real64
+  domain_fraction=1.0_real64
+  z=[-10.0_real64,-20.0_real64,-30.0_real64]
+  dz=10.0_real64
+  diameter=4.0_real64
+  theta_s=0.45_real64
+  theta_r=0.05_real64
+  wall_correction=0.95_real64
+  sorp_max=0.002_real64
+  sorp_alpha=0.5_real64
+  conductivity=0.0_real64
+  entry_head=-1.0_real64
+  sorp_fac_parallel=0.5_real64
+  ksat_horizontal=0.0_real64
+  cdarcy=0.0_real64
+  potential_bottom=n
+
+  call initialize_fmr_macropore_standard_config(initialized,1,static_volume,domain_fraction,potential_bottom, &
+       z,dz,diameter,theta_s,theta_r,wall_correction,sorp_max,sorp_alpha,conductivity,entry_head, &
+       sorp_fac_parallel,ksat_horizontal,cdarcy,1.0_real64,1.0_real64,0,ok)
+  if(.not.ok .or. .not.initialized%valid_for_nodes(n)) error stop 'A8 config initializer'
 
   if (.not. cfg%valid_for_nodes(n)) error stop 'A8 config valid baseline'
 
@@ -24,6 +52,7 @@ program test_fmr_macropore_configuration
 
   if (cfg%valid_for_nodes(n+1)) error stop 'A8 config node mismatch'
 
+  print '(a)', 'PPA_WU05A8_FMR_CONFIG_INITIALIZER=PASS'
   print '(a)', 'PPA_WU05A8_FMR_CONFIG=PASS'
 
 contains
