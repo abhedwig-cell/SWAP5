@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.f_macro_alt30.final_reduced_parameter_contract.v1",
+  "status": "QUALIFIED_RESEARCH_CONTRACT",
+  "modes": {
+    "RFM-minimal": {
+      "free_parameters": [
+        "sigma_B",
+        "f_MB",
+        "p"
+      ],
+      "assumptions": [
+        "ell_ex derived from structural geometry",
+        "chi_wall = 1 unless evidence supports wall inefficiency"
+      ]
+    },
+    "RFM-wall-corrected": {
+      "free_parameters": [
+        "sigma_B",
+        "f_MB",
+        "p",
+        "chi_wall"
+      ],
+      "assumptions": [
+        "ell_ex derived from structural geometry"
+      ]
+    }
+  },
+  "derived_inputs": [
+    "Z_AH from horizon/profile data",
+    "Z_IC from observed/derived structural maximum depth",
+    "K_surface from constitutive hydraulics",
+    "S_surface from constitutive sorptivity integral",
+    "ell_ex from ped/crack/macropore geometry",
+    "surface runoff/ponding state from surface boundary owner"
+  ],
+  "persistent_state": [
+    "fast-domain water storage",
+    "wall-event sorptivity",
+    "wall-event age",
+    "surface-source event age"
+  ],
+  "qualification_data": {
+    "sigma_B": "multiple events spanning weak to intense effective infiltration on one structural profile",
+    "f_MB": "deep receipt/bottom or tracer breakthrough information",
+    "p": "multi-depth dye/tracer/wetting-front observations",
+    "chi_wall": "paired dry/wet exchange evidence after ell_ex is independently constrained"
+  },
+  "production_status": "not admitted"
+}
