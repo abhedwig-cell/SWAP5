@@ -1,0 +1,220 @@
+{
+  "schema": "swap5.functional_closure.v1",
+  "work_unit": "F-MIG431-01",
+  "title": "SWAP 4.3.1 to SWAP5 functional closure registry",
+  "date": "2026-10-01",
+  "baseline": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "8bb835a065248aad06b18a3b563234b20033ba0d",
+    "legacy_inventory": "63 .f90 files, D3c census",
+    "legacy_inventory_authority": [
+      "docs/architecture/legacy-migration-control.md",
+      "docs/architecture/legacy-migration-hydraulic.md",
+      "docs/architecture/legacy-migration-processes.md",
+      "docs/architecture/legacy-migration-biophysics.md"
+    ]
+  },
+  "purpose": "Account for every scientifically or functionally relevant SWAP 4.3.1 capability by current SWAP5 disposition without inferring status from branch names or historical migration documents.",
+  "closure_rule": "Every identified legacy capability must end as CANONICALLY_ADMITTED, REPLACED_QUALIFIED, DELIBERATELY_RETIRED, or explicitly OPEN with one owner and dependency surface. Zero UNCLASSIFIED capabilities is required for functional closure.",
+  "governance": {
+    "canonical_admission_owner": "central SWAP5 regie",
+    "parallel_rule": "parallel where ownership is disjoint; serial where semantics are shared",
+    "branch_rule": "Capability branches start from a pinned canonical commit. An active capability branch must never use another active capability branch as its parent.",
+    "shared_change_rule": "A required change to shared semantics becomes a separate prerequisite work unit and is admitted before dependent capability work consumes it.",
+    "actions_rule": "Use local builds and experiments during development. Use GitHub Actions only for persisted qualification, admission, preservation, or another gate that specifically requires remote evidence.",
+    "registry_scope": "This registry records status and routing only. It does not itself authorize physics or production implementation."
+  },
+  "status_vocabulary": [
+    "CANONICALLY_ADMITTED",
+    "PARTIALLY_ADMITTED",
+    "IN_PROGRESS",
+    "OPEN_REVIEW",
+    "BLOCKED_DEPENDENCY",
+    "REPLACED_QUALIFIED",
+    "DELIBERATELY_RETIRED",
+    "UNCLASSIFIED"
+  ],
+  "disposition_vocabulary": [
+    "PRESERVE",
+    "MIGRATE",
+    "REPLACE",
+    "RETIRE",
+    "INVESTIGATE"
+  ],
+  "shared_surfaces": [
+    "committed/candidate state",
+    "transaction executor",
+    "Richards solver interface",
+    "hydraulic constitutive interface",
+    "top boundary",
+    "bottom boundary",
+    "root-water sink ownership",
+    "mass ledger",
+    "timestep policy",
+    "restart schema",
+    "FMR ABI",
+    "external coupling ownership"
+  ],
+  "families": [
+    {
+      "id": "HYDRAULIC_CORE",
+      "legacy_files": ["MOD_Kavg_Szym.f90","MOD_MvG_functions.f90","MOD_RIA.f90","WC_K_models_04_11.f90","boundtop.f90","headcalc.f90","soilwater.f90","sptabulated.f90","tridag.f90","hysteresis.f90","calcgwl.f90"],
+      "status": "PARTIALLY_ADMITTED",
+      "disposition": "PRESERVE",
+      "current_authority": ["docs/status-a/CURRENT_STATUS.md","docs/status-a/POST_STATUS_A_CURRENT_STATE.md"],
+      "note": "Reference Richards and qualified hydraulic core are admitted, but option-level closure still requires sub-capability census."
+    },
+    {
+      "id": "STATE_TRANSACTION_TIME_RESTART",
+      "legacy_files": ["arrays.f90","variables.f90","params.f90","swap.f90","timecontrol.f90","initialize.f90","watstor.f90","fluxes.f90","integral.f90"],
+      "status": "PARTIALLY_ADMITTED",
+      "disposition": "REPLACE",
+      "current_authority": ["docs/status-a/CURRENT_STATUS.md"],
+      "note": "Transactional execution and Restart v1 are admitted. Full legacy option/state census remains required."
+    },
+    {
+      "id": "LOWER_BOUNDARY_DRAINAGE_GROUNDWATER",
+      "legacy_files": ["boundbottom.f90","MOD_drainage.f90","divdra.f90","drainage.f90"],
+      "status": "PARTIALLY_ADMITTED",
+      "disposition": "PRESERVE",
+      "current_authority": ["docs/status-a/CURRENT_STATUS.md","docs/status-a/POST_STATUS_A_CURRENT_STATE.md"],
+      "note": "Drainage and a concrete MODFLOW6 chain exist; broader prescribed-head, timestep and groundwater-physics envelopes are explicitly not yet admitted."
+    },
+    {
+      "id": "SURFACE_ATMOSPHERE_IRRIGATION_RUNON",
+      "legacy_files": ["MOD_meteo.f90","MOD_runon.f90","irrigation.f90","interface_atmosphere.f90"],
+      "status": "UNCLASSIFIED",
+      "disposition": "INVESTIGATE",
+      "note": "Requires option-level comparison of legacy forcing, interception, irrigation, runon, runoff and ponding semantics against current production paths."
+    },
+    {
+      "id": "SURFACE_WATER",
+      "legacy_files": ["surfacewater.f90"],
+      "status": "PARTIALLY_ADMITTED",
+      "disposition": "REPLACE",
+      "current_authority": ["docs/status-a/POST_STATUS_A_CURRENT_STATE.md"],
+      "note": "Restricted standalone fixed-weir and bounded Ribasim external-owner profile exist. Multilevel exchange, SWMAN=2, top-runoff/rapid-drain binding and exact SWQHR1 parity remain outside the admitted profile."
+    },
+    {
+      "id": "MACROPORE",
+      "legacy_files": ["macropore.f90","macrorate.f90","macroporeoutput.f90"],
+      "status": "IN_PROGRESS",
+      "disposition": "MIGRATE",
+      "owner": "PPA-WU05-A successor line",
+      "current_authority": ["docs/status-a/POST_STATUS_A_CURRENT_STATE.md","integration/audits/PPA_WU05A_MACROPORE_AUTHORITY_CONTRACT.json"],
+      "note": "A8-A10 bounded production route is canonical. Covering/perched physics and other excluded envelope items remain active migration scope."
+    },
+    {
+      "id": "OXYGEN_STRESS",
+      "legacy_files": ["oxygenstress.f90","rootextraction.f90"],
+      "status": "IN_PROGRESS",
+      "disposition": "MIGRATE",
+      "owner": "PPA-WU05-C successor line",
+      "current_authority": ["integration/audits/PPA_WU05C_STATUS.json","integration/audits/PPA_WU05C_OXYGEN_AUTHORITY_CONTRACT.json"],
+      "note": "Review authority is canonical. Production migration is a separate successor; C1 reproduction is defined while Feddes/Bartholomeus source-bound work must remain explicit."
+    },
+    {
+      "id": "FROST_HYDRAULIC",
+      "legacy_files": ["frozencond.f90","temperature.f90"],
+      "status": "OPEN_REVIEW",
+      "disposition": "MIGRATE",
+      "owner": "PPA-WU05-B",
+      "current_authority": ["integration/audits/production_physics_application_envelope_gap_register.json"],
+      "note": "Sensible-temperature ownership exists; legacy frost hydraulic semantics/state still require bounded migration authority."
+    },
+    {
+      "id": "ROOT_UPTAKE_COMPENSATION",
+      "legacy_files": ["rootextraction.f90"],
+      "status": "OPEN_REVIEW",
+      "disposition": "MIGRATE",
+      "owner": "PPA-WU05-D",
+      "note": "Exact redistribution ordering/state and single root-sink mass ownership must be preserved."
+    },
+    {
+      "id": "SALINITY_SOLUTE",
+      "legacy_files": ["solute.f90","rootextraction.f90"],
+      "status": "BLOCKED_DEPENDENCY",
+      "disposition": "MIGRATE",
+      "owner": "future solute-owner work + PPA-WU05-E",
+      "blocker": "No admitted typed solute concentration/osmotic-state owner is established by the current PPA authority."
+    },
+    {
+      "id": "MICRO_ROOT_UPTAKE",
+      "legacy_files": ["RWU_micro.f90"],
+      "status": "OPEN_REVIEW",
+      "disposition": "MIGRATE",
+      "owner": "PPA-WU05-G",
+      "note": "Jong-van-Lier microscopic uptake is an alternative uptake model, not an algebraic Feddes modifier; independent state/model authority is required."
+    },
+    {
+      "id": "DYNAMIC_ROOT_SINK_SWKIMPL1",
+      "legacy_files": ["rootextraction.f90","headcalc.f90"],
+      "status": "BLOCKED_DEPENDENCY",
+      "disposition": "MIGRATE",
+      "owner": "PPA-WU05-H / separate numerical workunit",
+      "blocker": "Requires solver iteration contract plus root-response derivative/sensitivity coverage."
+    },
+    {
+      "id": "SNOW",
+      "legacy_files": ["snow.f90"],
+      "status": "PARTIALLY_ADMITTED",
+      "disposition": "PRESERVE",
+      "current_authority": ["docs/status-a/CURRENT_STATUS.md"],
+      "note": "Restricted one-call-daily path is admitted; broader legacy duration/subdaily envelope must be checked before family closure."
+    },
+    {
+      "id": "SOIL_TEMPERATURE",
+      "legacy_files": ["temperature.f90"],
+      "status": "PARTIALLY_ADMITTED",
+      "disposition": "PRESERVE",
+      "note": "Temperature owner exists according to PPA authority; exact legacy option envelope still needs closure classification independent of frost."
+    },
+    {
+      "id": "TILLAGE_MANAGEMENT",
+      "legacy_files": ["tillage.f90","management_soil.f90"],
+      "status": "UNCLASSIFIED",
+      "disposition": "INVESTIGATE",
+      "note": "Legacy tillage defect correction evidence exists, but production functional migration/admission must be established separately."
+    },
+    {
+      "id": "CROP_ET_ROOT",
+      "legacy_files": ["MOD_cropdevelopment.f90","fixed.f90","interface_plant.f90","rootextraction.f90","wofost.f90"],
+      "status": "PARTIALLY_ADMITTED",
+      "disposition": "PRESERVE",
+      "current_authority": ["docs/status-a/CURRENT_STATUS.md"],
+      "note": "Bounded WOFOST runtime and root sink ownership exist. Full legacy crop/ET/root option census remains required."
+    },
+    {
+      "id": "WOFOST_SOIL_NUTRIENT",
+      "legacy_files": ["wofost_soil_amendments.f90","wofost_soil_balancecheck.f90","wofost_soil_cropresidues.f90","wofost_soil_declarations.f90","wofost_soil_interface.f90","wofost_soil_orgmatn.f90","wofost_soil_parameters.f90","wofost_soil_rateconstants.f90","wofost_soil_watern.f90","wofostnut.f90"],
+      "status": "UNCLASSIFIED",
+      "disposition": "INVESTIGATE",
+      "note": "Do not infer admission from bounded WOFOST runtime. Nutrient/soil functionality needs an independent census and scope decision."
+    },
+    {
+      "id": "LEGACY_IO_OUTPUT_ADAPTERS",
+      "legacy_files": ["readswap.f90","swap_base.f90","swap_main.f90","swapoutput.f90","swap_csv_output.f90","MOD_out_PEARL_ANIMO.f90","description.f90"],
+      "status": "UNCLASSIFIED",
+      "disposition": "INVESTIGATE",
+      "note": "F-MIG431 closure tracks only functional semantics needed by SWAP5; byte-for-byte legacy I/O/output reproduction is not automatically required."
+    }
+  ],
+  "active_parallel_slots": {
+    "limit": 6,
+    "already_active": ["MACROPORE","OXYGEN_STRESS"],
+    "recommended_next": ["FROST_HYDRAULIC","ROOT_UPTAKE_COMPENSATION"],
+    "hold_until_census": ["SURFACE_ATMOSPHERE_IRRIGATION_RUNON","TILLAGE_MANAGEMENT","WOFOST_SOIL_NUTRIENT"],
+    "blocked": ["SALINITY_SOLUTE","DYNAMIC_ROOT_SINK_SWKIMPL1"]
+  },
+  "next_actions": [
+    "Expand the 63-file D3c census to subroutine/option-level functional capabilities, not file-level status.",
+    "Reconcile every capability against exact current canonical implementation and admission evidence.",
+    "Convert all UNCLASSIFIED families to bounded sub-capabilities with one owner/disposition.",
+    "Do not start new production branches merely because a legacy file exists; first identify the functional gap and shared dependency surface.",
+    "Issue new parallel work units only from this registry after overlap screening."
+  ],
+  "qualification": {
+    "state": "NOT_APPLICABLE_YET",
+    "reason": "Initial governance/inventory checkpoint only; no production or reference source mutation."
+  }
+}
