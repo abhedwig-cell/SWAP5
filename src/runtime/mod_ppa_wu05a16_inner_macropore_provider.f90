@@ -10,6 +10,7 @@ module mod_ppa_wu05a16_inner_macropore_provider
        prepare_standard_macropore_rate_request
   use mod_ppa_wu05a15_exchange_derivative, only: macropore_exchange_derivative_result_t, &
        evaluate_macropore_exchange_derivative
+  use mod_macropore_covering_layer_input, only: covering_layer_input_request_t, evaluate_covering_layer_input
   implicit none
   private
 
@@ -23,6 +24,9 @@ module mod_ppa_wu05a16_inner_macropore_provider
     real(real64) :: step_duration=0.0_real64
     real(real64) :: accepted_ponding_depth=0.0_real64
     real(real64) :: accepted_groundwater_level=0.0_real64
+    logical :: covering_layer_enabled=.false.
+    real(real64) :: covering_minimum_polygon_diameter_cm=0.0_real64
+    real(real64) :: covering_ksat_cm_per_day=0.0_real64
   contains
     procedure, public :: configure => configure_inner_macropore_provider
     procedure, public :: evaluate_rate => evaluate_inner_macropore_rate
@@ -32,13 +36,15 @@ module mod_ppa_wu05a16_inner_macropore_provider
 contains
 
   subroutine configure_inner_macropore_provider(self,accepted_macro,geometry,rate_template,z,dz,step_duration, &
-                                                 accepted_ponding_depth,accepted_groundwater_level,ok)
+                                                 accepted_ponding_depth,accepted_groundwater_level,ok, &
+                                                 covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(inout)::self
     type(macropore_continuation_state_t),intent(in)::accepted_macro
     type(macropore_geometry_result_t),intent(in)::geometry
     type(macropore_rate_bundle_request_t),intent(in)::rate_template
     real(real64),intent(in)::z(:),dz(:),step_duration,accepted_ponding_depth,accepted_groundwater_level
     logical,intent(out)::ok
+    real(real64),intent(in),optional::covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day
 
     self%configured=.false.
     ok=.false.
@@ -56,6 +62,14 @@ contains
     self%step_duration=step_duration
     self%accepted_ponding_depth=accepted_ponding_depth
     self%accepted_groundwater_level=accepted_groundwater_level
+    self%covering_layer_enabled=.false.
+    if(self%geometry%top_node>1)then
+      if(.not.present(covering_minimum_polygon_diameter_cm) .or. .not.present(covering_ksat_cm_per_day))return
+      if(covering_minimum_polygon_diameter_cm<=0.0_real64 .or. covering_ksat_cm_per_day<0.0_real64)return
+      self%covering_layer_enabled=.true.
+      self%covering_minimum_polygon_diameter_cm=covering_minimum_polygon_diameter_cm
+      self%covering_ksat_cm_per_day=covering_ksat_cm_per_day
+    end if
 
     call derive_macropore_standard_storage_view(self%accepted_macro,self%geometry%top_node,self%z,self%dz,self%accepted_view)
     if(.not.self%accepted_view%valid)return
@@ -75,6 +89,9 @@ contains
     type(macropore_rate_bundle_result_t)::rates
     type(matrix_saturated_zone_view_t)::matrix_view
     type(soil_water_physical_state_t)::matrix
+    type(covering_layer_input_request_t)::covering
+    real(real64),allocatable::covered_cm(:)
+    integer::cover_node
     logical::ok
 
     exchange_flux=0.0_real64
@@ -84,6 +101,20 @@ contains
     if(.not.ok)return
     if(size(exchange_flux)/=self%accepted_macro%num_nodes)return
     exchange_flux=sum(rates%qexc_to_matrix_rate,dim=1)
+    if(self%covering_layer_enabled)then
+      cover_node=self%geometry%top_node-1
+      covering%top_node=self%geometry%top_node
+      covering%step_duration_day=self%step_duration
+      covering%matrix_head_above_cm=pressure_head(cover_node)
+      covering%dz_above_cm=self%dz(cover_node)
+      covering%minimum_polygon_diameter_cm=self%covering_minimum_polygon_diameter_cm
+      covering%covering_layer_ksat_cm_per_day=self%covering_ksat_cm_per_day
+      covering%total_macropore_volume_top_cm=sum(self%geometry%volume_domain_cp(:,self%geometry%top_node))
+      covering%domain_top_volume_cm=self%geometry%volume_domain_cp(:,self%geometry%top_node)
+      call evaluate_covering_layer_input(covering,covered_cm,ok)
+      if(.not.ok)return
+      exchange_flux(cover_node)=exchange_flux(cover_node)-sum(covered_cm)/self%step_duration
+    end if
     active=maxval(abs(exchange_flux))>1.0e-14_real64
   end subroutine evaluate_inner_macropore_rate
 
