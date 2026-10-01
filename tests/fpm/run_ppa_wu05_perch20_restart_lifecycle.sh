@@ -34,6 +34,8 @@ MODULE_SRC=(
   src/process/macropore/mod_rfm_preferential_router.f90
   src/process/macropore/mod_rfm_surface_event_age.f90
   src/runtime/mod_rfm_physical_state.f90
+  src/runtime/mod_rfm_runtime_configuration.f90
+  src/runtime/mod_rfm_surface_forcing.f90
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_rossfast_d3r_table_kernel.f90
   src/solver/mod_rossfast_d3r_table_provider.f90
