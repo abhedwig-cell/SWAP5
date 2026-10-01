@@ -9,8 +9,7 @@ on:
       - 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
       - 'src/runtime/mod_macropore_single_column_runtime.f90'
       - 'src/process/macropore/mod_macropore_standard_storage.f90'
-      - 'tests/fpm/test_ppa_wu05_migmac01_inner_provider.f90'
-      - 'tests/fpm/run_ppa_wu05_migmac01_inner_provider.sh'
+      - 'tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh'
       - 'tests/fpm/test_ppa_wu05_migmac01_covering_layer.f90'
       - 'tests/fpm/run_ppa_wu05_migmac01_covering_layer.sh'
       - '.github/workflows/ppa-wu05-migmac01-covering-layer.yml'
@@ -23,5 +22,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Qualify source-faithful covering-layer operator
         run: bash tests/fpm/run_ppa_wu05_migmac01_covering_layer.sh
-      - name: Qualify covered inner-provider composition
-        run: bash tests/fpm/run_ppa_wu05_migmac01_inner_provider.sh
+      - name: Compile composition and preserve PERCH20 transaction semantics
+        run: bash tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh
