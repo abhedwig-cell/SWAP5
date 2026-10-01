@@ -10,6 +10,7 @@ on:
       - 'src/runtime/mod_macropore_single_column_runtime.f90'
       - 'tests/fpm/test_ppa_wu05_perch19_reduction_ladder.f90'
       - 'tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh'
+      - 'tests/fpm/run_ppa_wu05a18_andelst_perched_reference.sh'
       - '.github/workflows/ppa-wu05-perch19-reduction-ladder.yml'
 
 jobs:
