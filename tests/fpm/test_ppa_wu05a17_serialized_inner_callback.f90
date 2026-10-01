@@ -108,7 +108,7 @@ program test_ppa_wu05a17_serialized_inner_callback
   request%numerical%max_iterations=64
   request%numerical%max_backtracking=24
   request%numerical%conductivity_implicit_mode=0
-  request%numerical%conductivity_mean_method=1
+  request%numerical%conductivity_mean_method=5
   request%numerical%min_step_duration=1.0e-12_real64
   request%numerical%compartment_balance_tolerance=tol
   request%numerical%total_balance_tolerance=tol
@@ -194,7 +194,7 @@ contains
     fparams%cofgen=cofgen
     fparams%bottom_mode=7
     fparams%swkimpl=0
-    fparams%swkmean=1
+    fparams%swkmean=5
     fparams%swsophy=0
     fparams%max_iterations=64
     fparams%max_backtracking=24
