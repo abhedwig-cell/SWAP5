@@ -88,3 +88,57 @@ the existing root process supplies the base sink, oxygen supplies only factors i
 returns one final sink vector. It performs no mass booking and owns no accepted state.
 
 Production wiring remains disabled until the strict compiled gate and refreshed return-root diagnostics pass.
+
+
+## Qualification update — current B1.11 and persisted kernel gates
+
+Current corrected-reference authority is B1.11.
+
+On this branch, persisted workflow `VQ reference qualification` run `36912933046` completed
+successfully and re-established B1.11 as `QUALIFIED_NUMERICAL_BEHAVIOURAL`, including source
+manifest SHA-256 `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`.
+
+Persisted C3Q workflow run `36912932999`, kernel job `110539797272`, completed successfully with:
+
+```text
+PPA_WU05C3Q_KERNEL_SMOKE=PASS
+PPA_WU05C3R_MACRO_ZERO_DEPTH_CHECKS=27
+PPA_WU05C3R_MACRO_ZERO_DEPTH=PASS
+PPA_WU05C3R_SCALAR_BRACKET=PASS
+PPA_WU05C3Q_ROOT_COMPOSITION=PASS
+```
+
+The current B1.11 oxygenstress source retains the admitted SWAP-007 postimage
+`8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87`;
+later B1 corrections do not modify `oxygenstress.f90`.
+
+Source-bound local replay of that exact corrected oxygen source on 1000 real five-year grassgrowth
+evaluations, including 500 oxygen-limited rows, gave:
+
+- MICRO max absolute difference: `4.43e-17`;
+- MACRO bounded-solver max absolute difference: `5.86e-09 kg/m3`;
+- respiration-factor max absolute difference: `2.48e-05`;
+- RWU-factor max absolute difference: `1.22e-05`;
+- all sampled respiration/RWU differences remained inside legacy `SOLVE accuracy = 1e-4`.
+
+Qualified architecture findings:
+- no Bartholomeus continuation state across accepted timesteps;
+- vertical `C_top(node+1)=C_macro(node)` is ordered profile-call scratch;
+- six derived arrays are immutable-after-construction and require a complete construction/share key;
+- legacy c_macro/c_min_micro globals can be last-residual solver scratch and are not physical state;
+- water ownership remains with the existing root sink;
+- inner MACRO Newton/restart is replaceable by the proven bounded monotone solve.
+
+### Updated decision
+
+`C3Q = PASS / QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE`
+
+Scope is analytical-MvG Bartholomeus `SWOXYGEN=2 / SWOXYGENTYPE=1` with bounded inner/outer
+solves and ordered profile composition.
+
+Still outside this admission result:
+- SWSOPHY=1 tabular water-film path;
+- WFT300/practical lookup mode;
+- changed scientific parameters or formulation.
+
+Next gate: production wiring plus non-oxygen preservation and full oxygen end-to-end regression.
