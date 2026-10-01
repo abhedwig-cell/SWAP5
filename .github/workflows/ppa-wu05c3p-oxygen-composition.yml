@@ -1,15 +1,6 @@
 name: PPA WU05 C3P oxygen composition
 
 on:
-  pull_request:
-    paths:
-      - 'src/process/mod_root_uptake_oxygen_composition.f90'
-      - 'src/runtime/mod_fmr_root_uptake_oxygen_binding.f90'
-      - 'tests/physics/test_root_uptake_oxygen_composition.f90'
-      - 'tests/physics/test_fmr_root_uptake_oxygen_binding.f90'
-      - 'tests/physics/run_root_uptake_oxygen_composition.sh'
-      - 'tests/physics/run_fmr_root_uptake_oxygen_binding.sh'
-      - '.github/workflows/ppa-wu05c3p-oxygen-composition.yml'
   workflow_dispatch:
 
 permissions:
