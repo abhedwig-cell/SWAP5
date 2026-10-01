@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""Local O0/O2 LOW05-A qualification with explicit legacy support fixture."""
+import hashlib,json,os,pathlib,re,shlex,subprocess,tempfile
+ROOT=pathlib.Path(__file__).resolve().parents[2]
+TESTS=['tests/fmig431/test_low05a_application.f90','tests/fapp/test_ppa_low02_time_application_admission.f90','tests/fapp/test_ppa_wu01_production_application_bootstrap.f90','tests/fmig431/test_fmig431_low01a_qgwl_binding.f90','tests/fmig431/test_fmig431_low01a_transaction_contract.f90']
+FC=shlex.split(os.environ.get('FC','gfortran'))
+LINK=shlex.split(os.environ.get('FMR_FC_LINK_FLAGS',''))
+modules={}
+for p in list((ROOT/'src').rglob('*.f90'))+[ROOT/'tests/fsi/fsi04_real_headcalc_stubs.f90']:
+ for n in re.findall(r'^\s*module\s+(\w+)\s*$',p.read_text(),re.M|re.I):modules[n.lower()]=p
+ordered=[];seen=set();visiting=set()
+def visit(p):
+ if p in seen:return
+ if p in visiting:raise RuntimeError('module cycle: '+str(p))
+ visiting.add(p)
+ for n in re.findall(r'^\s*use\s+(?:,\s*non_intrinsic\s*::\s*)?(\w+)',p.read_text(),re.M|re.I):
+  q=modules.get(n.lower())
+  if q and q!=p:visit(q)
+  elif not q and n.lower() not in ('iso_fortran_env','iso_c_binding','ieee_arithmetic','omp_lib'):raise RuntimeError('unresolved module: '+n)
+ visiting.remove(p);seen.add(p);ordered.append(p)
+visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')
+for test in TESTS:visit(ROOT/test)
+testpaths={ROOT/p for p in TESTS};sources=[p for p in ordered if p not in testpaths]
+result={'work_unit':'F-MIG431-LOW05-A','scope':'bounded ordinary Reference application, existing FSI04 support fixture','compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],'source_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in ordered},'runs':{},'canonical_admission':False}
+with tempfile.TemporaryDirectory(prefix='low05a-') as folder:
+ for opt in ('O0','O2'):
+  build=pathlib.Path(folder)/opt;build.mkdir()
+  flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build)]
+  objects=[]
+  for p in sources:
+   obj=build/(p.stem+'.o');objects.append(str(obj))
+   subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,capture_output=True,text=True)
+  result['runs'][opt]={}
+  for test in TESTS:
+   p=ROOT/test;obj=build/(p.stem+'.o');exe=build/p.stem
+   subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,capture_output=True,text=True)
+   subprocess.run(FC+LINK+flags+objects+[str(obj),'-o',str(exe)],check=True,capture_output=True,text=True)
+   output=subprocess.check_output([str(exe)],text=True,stderr=subprocess.STDOUT)
+   markers=[line for line in output.splitlines() if 'PASS' in line]
+   if not markers:raise RuntimeError('no PASS markers: '+test)
+   result['runs'][opt][test]=markers
+   print(opt+' '+test+' PASS',flush=True)
+if result['runs']['O0']!=result['runs']['O2']:raise RuntimeError('O0/O2 markers differ')
+result['status']='LOCAL_BOUNDED_GATES_PASS';result['o0_o2_marker_identity']=True
+output=pathlib.Path(os.environ.get('LOW05A_RESULT','low05a_qualification_result.json'))
+output.write_text(json.dumps(result,indent=2)+'\n')
+print('LOW05A_LOCAL_QUALIFICATION=PASS')
