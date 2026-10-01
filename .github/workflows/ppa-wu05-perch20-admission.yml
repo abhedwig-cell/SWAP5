@@ -10,6 +10,8 @@ on:
       - 'src/legacy/b1_10_port/headcalc.f90'
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90'
+      - 'src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90'
+      - 'src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90'
       - 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
       - 'src/runtime/mod_macropore_standard_rate_adapter.f90'
       - 'src/runtime/mod_macropore_single_column_runtime.f90'
