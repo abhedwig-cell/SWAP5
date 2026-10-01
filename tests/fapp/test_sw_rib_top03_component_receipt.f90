@@ -5,16 +5,16 @@ program test_top03_component_receipt
  type(fmr_surface_water_component_candidate_t)::c
  type(fmr_surface_water_component_receipt_t)::r
  c%valid=.true.;r%valid=.true.
- c%subsurface_swap_to_surface_cm=.3;c%top_swap_to_surface_cm=-.2
- r%subsurface_swap_to_surface_cm=.3;r%top_swap_to_surface_cm=-.2
+ c%subsurface_swap_to_surface_cm=.3_real64;c%top_swap_to_surface_cm=-.2_real64
+ r%subsurface_swap_to_surface_cm=.3_real64;r%top_swap_to_surface_cm=-.2_real64
  call req(surface_water_component_receipt_matches(c,r,1e-12_real64)==FMR_SW_RECEIPT_OK,'exact')
  ! Equal scalar total, wrong components: must fail closed.
- r%subsurface_swap_to_surface_cm=.2;r%top_swap_to_surface_cm=-.1
+ r%subsurface_swap_to_surface_cm=.2_real64;r%top_swap_to_surface_cm=-.1_real64
  call req(abs((c%subsurface_swap_to_surface_cm+c%top_swap_to_surface_cm) - &
       (r%subsurface_swap_to_surface_cm+r%top_swap_to_surface_cm)) < 1e-12_real64, &
       'same total fixture')
  call req(surface_water_component_receipt_matches(c,r,1e-12_real64)==FMR_SW_RECEIPT_MISMATCH,'component masking')
- r%subsurface_swap_to_surface_cm=.3;r%top_swap_to_surface_cm=-.2+5e-13_real64
+ r%subsurface_swap_to_surface_cm=.3_real64;r%top_swap_to_surface_cm=-.2_real64+5e-13_real64
  call req(surface_water_component_receipt_matches(c,r,1e-12_real64)==FMR_SW_RECEIPT_OK,'tolerance')
  write(*,'(A)')'SW_RIB_TOP03_COMPONENT_RECEIPT=PASS'
 contains
