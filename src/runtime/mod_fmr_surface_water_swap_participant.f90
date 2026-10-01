@@ -49,6 +49,8 @@ module mod_fmr_surface_water_swap_participant
     integer(int64) :: origin_revision = -1_int64
     real(real64) :: origin_time = 0.0_real64
     real(real64) :: candidate_exchange_cm = 0.0_real64
+    real(real64) :: candidate_top_exchange_cm = 0.0_real64
+    logical :: candidate_top_exchange_available = .false.
     logical :: origin_captured = .false.
     logical :: live_candidate = .false.
   contains
@@ -206,6 +208,8 @@ contains
 
     duration = t1-t0
     self%candidate_exchange_cm = observation%drainage_response_window_signed_exchange_native
+    self%candidate_top_exchange_available = observation%top_surface_exchange_available
+    self%candidate_top_exchange_cm = observation%top_surface_signed_swap_to_external_cm
     self%live_candidate = .true.
     trial%valid = .true.
     trial%signed_soil_to_surface_exchange_cm = self%candidate_exchange_cm
@@ -220,6 +224,8 @@ contains
     if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
     self%live_candidate = .false.
     self%candidate_exchange_cm = 0.0_real64
+    self%candidate_top_exchange_cm = 0.0_real64
+    self%candidate_top_exchange_available = .false.
   end subroutine surface_water_discard_candidate
 
   subroutine surface_water_abandon_origin(self, status)
@@ -232,6 +238,8 @@ contains
     self%origin_revision = -1_int64
     self%origin_time = 0.0_real64
     self%candidate_exchange_cm = 0.0_real64
+    self%candidate_top_exchange_cm = 0.0_real64
+    self%candidate_top_exchange_available = .false.
     status = FMR_SW_PARTICIPANT_OK
   end subroutine surface_water_abandon_origin
 
@@ -268,6 +276,11 @@ contains
 
     ready=.false.
     if(.not.ieee_is_finite(top_candidate_cm))return
+    if(self%candidate_top_exchange_available)then
+      if(abs(top_candidate_cm-self%candidate_top_exchange_cm)>tolerance_cm)return
+    else if(abs(top_candidate_cm)>tolerance_cm)then
+      return
+    end if
     components%valid=.true.
     components%subsurface_swap_to_surface_cm=self%candidate_exchange_cm
     components%top_swap_to_surface_cm=top_candidate_cm
