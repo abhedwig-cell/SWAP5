@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.ppa_wu05a16.status.v1",
+  "workunit": "PPA-WU05-A16",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_BOUNDED_RFM_MATRIX_SHARE_DYNAMIC_TOP_REBINDING",
+  "baseline": "ecfe628daf78988aec3a784f1b91b9d110d95850",
+  "branch": "work/ppa-wu05-a16-rfm-matrix-share-rebinding",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "qualified_postimage": "c4783e6e59abb76d5c3b084e947fb3673416ae91",
+  "qualification_run": 36864593396,
+  "negative_run": {
+    "run_id": 36864496237,
+    "classification": "FOCUSED_RUNNER_PATH_ERROR",
+    "production_modules_falsified": false
+  },
+  "scope": {
+    "matrix_share_rebinding": true,
+    "b110_reverification": true,
+    "evaporation_double_count_guard": true,
+    "positive_previous_ponding_fallback": true,
+    "head_controlled_fallback": true,
+    "live_runtime_mutation": false,
+    "preferential_routing": false
+  },
+  "next": "canonical admission, then audit preferential-share routing ownership and exactly-once mass receipt before any live runtime composition"
+}
