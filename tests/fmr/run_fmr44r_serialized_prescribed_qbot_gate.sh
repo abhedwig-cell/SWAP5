@@ -16,7 +16,7 @@ grep -Fq 'parameters%bottom_mode == 2' src/runtime/mod_fmr_serialized_reference_
   fail 'serialized execution mode2 admission missing'
 grep -Fq 'self%bottom_mode /= 2' src/runtime/mod_fmr_serialized_reference_backend.f90 || \
   fail 'serialized temporal identity mode2 admission missing'
-grep -Fq 'request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2' \
+grep -Fq '(request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2)' \
   src/solver/mod_reference_richards_temporal_indicator.f90 || fail 'qualified F-SI38 source dependency missing'
 grep -Fq 'if (request%boundary%bottom_mode == 5) then' \
   src/solver/mod_reference_richards_temporal_indicator.f90 || fail 'F-SI38 Neumann/Dirichlet operator guard missing'
