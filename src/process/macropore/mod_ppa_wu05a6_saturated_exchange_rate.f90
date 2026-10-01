@@ -12,6 +12,7 @@ module mod_ppa_wu05a6_saturated_exchange_rate
     integer :: num_nodes = 0
     integer :: matrix_top_saturated_node = 1
     integer :: matrix_bottom_saturated_node = 0
+    logical :: matrix_partial_top_active = .true.
     integer :: swsep = 0
     real(real64) :: matrix_level = 0.0_real64
     real(real64) :: step_duration = 0.0_real64
@@ -120,7 +121,7 @@ contains
 
         else if(delh<0.0_real64)then
           matrix_fraction=1.0_real64
-          if(ic==request%matrix_top_saturated_node)then
+          if(ic==request%matrix_top_saturated_node .and. request%matrix_partial_top_active)then
             matrix_fraction=(request%matrix_level-(request%z(ic)-0.5_real64*request%dz(ic))) / &
                  request%dz(ic)
           end if
