@@ -1,0 +1,33 @@
+name: F-MACRO-TRACER01-D1S publication sensitivity
+on:
+  push:
+    branches:
+      - research/f-macro-tracer01-reference-kernel
+    paths:
+      - '.github/workflows/f-macro-tracer01d1s.yml'
+jobs:
+  sensitivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile publication sensitivity harness
+        run: |
+          set -euo pipefail
+          BUILD="$RUNNER_TEMP/tracer01d1s"
+          mkdir -p "$BUILD" artifacts
+          python3 tests/rom/materialize_f_rom0_headcalc_stubs.py --source tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$BUILD/stub.f90" --nodes 10 --dz-cm 10
+          python3 tests/rom/compile_f_rom0_fortran_closure.py --root "$GITHUB_WORKSPACE" --stub "$BUILD/stub.f90" --target tools/research/fortran/test_macro_tracer01d1s_spechtacker_pub_sens.f90 --external-source src/legacy/b1_10_port/headcalc.f90 --build "$BUILD/compile" --opt 2
+          for TH in 0.234 0.254 0.274 0.294 0.314; do
+            TAG=$(echo "$TH" | tr '.' 'p')
+            "$BUILD/compile/rom0_test" "artifacts/tracer01d1s_trajectory_${TAG}.csv" "$TH" | tee "artifacts/tracer01d1s_runner_${TAG}.log"
+            python3 tools/research/macropore_tracer01d_fixture_postprocess.py "artifacts/tracer01d1s_trajectory_${TAG}.csv" > "artifacts/result_${TAG}.json"
+          done
+          python3 tools/research/macropore_tracer01d1s_sensitivity_summary.py artifacts/result_*.json | tee artifacts/tracer01d1s_summary.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-macro-tracer01d1s-sensitivity
+          path: artifacts/
