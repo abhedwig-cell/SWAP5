@@ -112,3 +112,19 @@ This route is closed as `NO_RECOVERABLE_ACTIONS_ARTIFACT`; it is not a reason to
 During pre-execution review, invalid MACRO physical input was found to be represented inside the outer residual as an artificial very-negative value. That could incorrectly classify invalid input as full oxygen stress.
 
 The candidate now propagates invalid residual evaluation explicitly and fails closed. No physical result is returned from an invalid evaluation.
+
+
+## Authority update: exact B1.5p1 reconstruction
+
+C3Q oracle identity is now pinned to the existing VQ B1.5p1 deterministic reconstruction rather
+than to a generic corrected-4.3.1 label.
+
+The B1.5p1 oxygenstress target SHA-256 is
+`8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87`.
+
+Existing VQ evidence has already built B1.5p1 with GNU Fortran 14.2 and run the official five-year
+grass-growth control to normal completion. Its normalized result_output.csv was byte-identical to
+B0 on that control edge.
+
+C3Q therefore does not need to establish source provenance or basic buildability again. It needs
+only the new diagnostic physical-response trace and pure-kernel parity.
