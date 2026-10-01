@@ -250,8 +250,6 @@ contains
       write(*,'(A,I0)')'TOP03_DIAG_RESULT_STATUS=',result%status
       write(*,'(A,I0)')'TOP03_DIAG_SUBSTEPS=',diagnostics%accepted_substeps
       write(*,'(A,I0)')'TOP03_DIAG_ADMISSION_REJECTIONS=',diagnostics%admission_rejections
-      write(*,'(A,I0)')'TOP03_DIAG_REJECTED_ATTEMPTS=',diagnostics%rejected_attempts
-      write(*,'(A,I0)')'TOP03_DIAG_MODEL_CALLS=',diagnostics%model_calls
       observation=backend%observation()
       write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
       write(*,'(A,L1)')'TOP03_DIAG_ADMISSION_PREVIEW=',observation%execution_admission_preview
