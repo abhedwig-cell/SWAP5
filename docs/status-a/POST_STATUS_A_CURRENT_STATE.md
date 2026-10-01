@@ -1,6 +1,6 @@
 # SWAP5 post-Status-A current canonical state
 
-Date: 2026-09-18
+Date: 2026-10-01
 
 This page is the current development-state supplement to the frozen Status-A review authority. It does **not** retroactively expand the first colleague-review denominator fixed on 2026-09-16. It records later canonically admitted capabilities that are relevant when deciding what may be developed next.
 
@@ -119,3 +119,25 @@ The following remain outside the admitted Ribasim profile:
 - combined SWAP5 + MODFLOW6 + Ribasim triangle admission.
 
 The legacy `STTAB` storage relation is not assumed to map exactly to a Ribasim Basin profile between its knots. Q1H provides a separately named epsilon-controlled legacy-emulation route, but the default coupled production profile uses Ribasim-native geometry because Ribasim owns the surface-water state.
+
+
+## Current post-Status-A macropore capability
+
+Canonical now also contains a bounded production macropore route through serialized single-column FMR.
+
+The controlling authority is PPA-WU05-A8, canonically admitted by PR #923 at `9bad713b0d2ab24d40fcf937d11c850d3fb52a22`. Post-merge preservation run `36821651670` passed on that exact canonical postimage.
+
+The admitted envelope is deliberately narrow:
+
+- standard `swmbf=1` route;
+- Reference Richards only;
+- immutable FMR macropore configuration;
+- dynamic hydraulic views from accepted matrix/macropore state;
+- outer source/sink coupling while the inner Richards request keeps `macropore_active=.false.`;
+- transactional candidate-only publication;
+- committed-state persistence/restart for the seven continuation fields;
+- serialized single-column execution.
+
+The admission does not include perched-zone macropore physics, source-connected top input without separate source-faithful forcing, rapid drainage, within-corrector dynamic crack-geometry feedback, RossFast, or parallel/concurrent MultiSWAP macropore execution.
+
+This capability is post-Status-A and does not change the frozen Status-A denominator.
