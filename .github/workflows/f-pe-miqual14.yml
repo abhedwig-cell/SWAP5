@@ -1,0 +1,25 @@
+name: F-PE-MIQUAL14 serialized scale crossover
+
+on:
+  push:
+    branches:
+      - research/f-pe-miqual14-serialized-scale-crossover
+    paths:
+      - 'docs/performance/F-PE-MIQUAL14_PREREGISTRATION.md'
+      - 'tests/fpe/materialize_fpe_miqual14_geometry.py'
+      - 'tests/fmr/run_fpe_miqual14.py'
+      - 'tests/fmr/run_fpe_miqual14.sh'
+      - '.github/workflows/f-pe-miqual14.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmr/run_fpe_miqual14.sh
