@@ -1,0 +1,30 @@
+name: PPA-WU05-PERCH19 FrReduQ retry
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/ppa-wu05-perch19-freduq-retry
+    paths:
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'tests/fpm/test_ppa_wu05_perch19_freduq_retry.f90'
+      - 'tests/fpm/run_ppa_wu05_perch19_freduq_retry.sh'
+      - '.github/workflows/ppa-wu05-perch19-freduq-retry.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH19 exact source reduction retry
+        run: bash tests/fpm/run_ppa_wu05_perch19_freduq_retry.sh
+      - name: Preserve A18 solver-stable perched baseline
+        run: bash tests/fpm/run_ppa_wu05a18_andelst_baseline.sh
+      - name: Preserve A16 analytical callback
+        run: bash tests/fpm/run_ppa_wu05a16_inner_callback.sh
+      - name: Preserve A16 actual provider
+        run: bash tests/fpm/run_ppa_wu05a16_actual_provider.sh
+      - name: Preserve A15 derivative
+        run: bash tests/fpm/run_ppa_wu05a15_exchange_derivative.sh
+      - name: Preserve A7-A10 admitted macropore route
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
