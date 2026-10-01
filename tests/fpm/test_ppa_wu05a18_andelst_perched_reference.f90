@@ -80,7 +80,7 @@ program test_ppa_wu05a18_andelst_perched_reference
        ksat_horizontal(numnod),cdarcy(1,numnod)
   integer :: potential_bottom(1)
   real(real64),parameter :: source_reduction_ladder(4)=[1.0_real64,0.1_real64,0.01_real64,0.001_real64]
-  integer :: i,ireduce
+  integer :: i
   logical :: ok,inner_converged
 
   parameters%parameter_set_id=1801_int64
@@ -210,27 +210,23 @@ program test_ppa_wu05a18_andelst_perched_reference
   macro_policy%solver_mass_tolerance_cm=1.0e-8_real64
   macro_policy%internal_exchange_tolerance_cm=1.0e-9_real64
 
-  inner_converged=.false.
-  do ireduce=1,size(source_reduction_ladder)
-    macro_config%rate_template%unsaturated%sorptivity%flow_reduction=source_reduction_ladder(ireduce)
-    macro_config%rate_template%interflow_sat%flow_reduction=source_reduction_ladder(ireduce)
-    macro_config%rate_template%matrix_sat%flow_reduction=source_reduction_ladder(ireduce)
-    macro_config%rate_template%rapid%flow_reduction=source_reduction_ladder(ireduce)
+  macro_config%rate_template%unsaturated%sorptivity%flow_reduction=1.0_real64
+  macro_config%rate_template%interflow_sat%flow_reduction=1.0_real64
+  macro_config%rate_template%matrix_sat%flow_reduction=1.0_real64
+  macro_config%rate_template%rapid%flow_reduction=1.0_real64
 
-    write(*,'(*(g0))') 'PPA_WU05A18_SOURCE_REDUCTION_TRIAL|FACTOR=',source_reduction_ladder(ireduce)
-    call macro_runtime%execute(solver,workspace,request,macro,macro_config%geometry,macro_config%rate_template, &
-         macro_config%history_template,macro_policy,macro_result)
-    write(*,'(*(g0))') 'PPA_WU05A18_INNER_PRE|FACTOR=',source_reduction_ladder(ireduce), &
-         '|STATUS=',macro_result%status,'|USED=',macro_result%inner_richards_exchange_used, &
-         '|INITIAL_RATE=',macro_result%inner_initial_exchange_rate_cm_per_day, &
-         '|FINAL_RATE=',macro_result%inner_final_exchange_rate_cm_per_day, &
-         '|RETRY=',macro_result%retry_advised
-    if(macro_result%status==MACRO_RUNTIME_CONVERGED)then
-      inner_converged=.true.
-      exit
-    end if
-  end do
-  call require(inner_converged,'A18 inner runtime converged on exact source reduction ladder')
+  call macro_runtime%execute(solver,workspace,request,macro,macro_config%geometry,macro_config%rate_template, &
+       macro_config%history_template,macro_policy,macro_result)
+  call require(macro_result%status==MACRO_RUNTIME_CONVERGED,'PERCH19 automatic source ladder converged')
+  call require(macro_result%inner_reduction_attempts==2,'PERCH19 exact attempt count')
+  call require(macro_result%inner_reduction_index==1,'PERCH19 exact reduction index')
+  call require(abs(macro_result%inner_reduction_factor-source_reduction_ladder(2))<1.0e-15_real64, &
+       'PERCH19 selected exact 0.1 factor')
+  write(*,'(*(g0))') 'PPA_WU05_PERCH19_LADDER|ATTEMPTS=',macro_result%inner_reduction_attempts, &
+       '|INDEX=',macro_result%inner_reduction_index,'|FACTOR=',macro_result%inner_reduction_factor, &
+       '|INITIAL_RATE=',macro_result%inner_initial_exchange_rate_cm_per_day, &
+       '|FINAL_RATE=',macro_result%inner_final_exchange_rate_cm_per_day
+
   call require(macro_result%inner_richards_exchange_used,'A18 inner route used')
   call require(allocated(macro_result%exchange_rate_node),'A18 final exchange receipt allocated')
   call require(allocated(macro_result%macropore_candidate%water_domain_cp),'A18 macropore candidate allocated')
@@ -249,7 +245,8 @@ program test_ppa_wu05a18_andelst_perched_reference
   print '(a)', 'PPA_WU05A18_REFERENCE_RICHARDS_BASELINE=PASS'
   print '(a)', 'PPA_WU05A18_PERCHED_TOPOLOGY_RETAINED=PASS'
   print '(a)', 'PPA_WU05A18_BASELINE_GATE=PASS'
-  write(*,'(*(g0))') 'PPA_WU05A18_SOURCE_REDUCTION_ACCEPTED|FACTOR=',source_reduction_ladder(ireduce)
+  write(*,'(*(g0))') 'PPA_WU05_PERCH19_SOURCE_REDUCTION_ACCEPTED|FACTOR=',macro_result%inner_reduction_factor
+  print '(a)', 'PPA_WU05_PERCH19_AUTOMATIC_LADDER=PASS'
   print '(a)', 'PPA_WU05A18_ACTIVE_PERCHED_INNER=PASS'
   print '(a)', 'PPA_WU05A18_INNER_MASS_CLOSURE=PASS'
 
