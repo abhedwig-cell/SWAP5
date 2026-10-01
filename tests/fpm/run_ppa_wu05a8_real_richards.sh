@@ -15,7 +15,7 @@ MODULE_SRC=(
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_accepted_trajectory_directional_publication.f90
   src/transaction/mod_transaction_reference.f90
-  src/runtime/mod_fmr_mode7_temporal_head_envelope.f90
+  src/adapter/mod_fmr_mode7_temporal_head_envelope.f90
   src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
@@ -24,11 +24,11 @@ MODULE_SRC=(
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
-  src/solver/mod_fmr_rossfast_solver_selection_binding.f90
-  src/solver/mod_rossfast_d3r_model_binding.f90
-  src/solver/mod_rossfast_d3r_execution_policy.f90
+  src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
+  src/runtime/mod_rossfast_d3r_model_binding.f90
+  src/runtime/mod_rossfast_d3r_execution_policy.f90
   src/solver/mod_soil_water_solver_contract.f90
-  src/solver/mod_reference_richards_accepted_step_directional_service.f90
+  src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/runtime/mod_macropore_continuation_state.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_process.f90
