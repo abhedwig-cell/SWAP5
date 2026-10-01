@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse, pathlib, re, subprocess
 
 MODULE_RE=re.compile(r"^\s*module\s+(?!procedure\b|subroutine\b|function\b)([a-zA-Z_]\w*)",re.I)
-USE_RE=re.compile(r"^\s*use(?:\s*,\s*(?:non_)?intrinsic\s*::)?\s*(?:::)?\s*([a-zA-Z_]\w*)",re.I)
+USE_RE=re.compile(r"^\s*use\b(?:\s*,\s*(?:non_)?intrinsic\s*::)?\s*(?:::)?\s*([a-zA-Z_]\w*)",re.I)
 
 def source_modules(path):
     out=set()
