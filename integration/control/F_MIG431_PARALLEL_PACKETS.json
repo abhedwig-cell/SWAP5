@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.functional_closure.parallel_packets.v1",
+  "work_unit": "F-MIG431-01",
+  "date": "2026-10-01",
+  "baseline": "integration/f-ci-canonical@8bb835a065248aad06b18a3b563234b20033ba0d",
+  "packets": [
+    {
+      "id": "F-MIG431-LOW01",
+      "title": "Remaining legacy lower-boundary selector migration",
+      "type": "implementation-capable bounded successors",
+      "authority": "PPA-WU02 source inventory is closed; do not reopen broad archaeology",
+      "slices": [
+        {
+          "id": "LOW01-A",
+          "legacy": "SWBOTB=4",
+          "target": "q(gwl) state-dependent boundary-provider law",
+          "priority": 1,
+          "shared_hold": "generic bottom-boundary ABI fixed"
+        },
+        {
+          "id": "LOW01-B",
+          "legacy": "SWBOTB=8",
+          "target": "lysimeter plate active-set continuation",
+          "priority": 2,
+          "shared_hold": "transaction semantics fixed"
+        },
+        {
+          "id": "LOW01-C",
+          "legacy": "SWBOTB=3",
+          "target": "Cauchy/deep-aquifer explicit then implicit regimes",
+          "priority": 3,
+          "shared_hold": "groundwater ownership and bottom ABI fixed"
+        },
+        {
+          "id": "LOW01-D",
+          "legacy": "SWBOTB=1",
+          "target": "prescribed-GWL state machine",
+          "priority": 4,
+          "shared_hold": "must reconcile F-GC ownership; no predictor/corrector or datum semantics moved into solver"
+        },
+        {
+          "id": "LOW01-E",
+          "legacy": "SWBOTB=5 standalone DATE5/HBOT5",
+          "target": "standalone legacy time-law application adapter",
+          "priority": 5,
+          "shared_hold": "must not conflict with external groundwater-owner mode"
+        }
+      ],
+      "exclusions": [
+        "general SWP/BBC parser",
+        "internal mode 9 exposure",
+        "new groundwater coupling semantics",
+        "changes to qbot sign/mass owner"
+      ],
+      "recommendation": "Start LOW01-A first; it reuses the admitted generic flux row while adding only the missing state-dependent application law."
+    },
+    {
+      "id": "F-MIG431-INT12",
+      "title": "SWINTER=1/2 production migration",
+      "type": "two sibling implementation workunits after one shared runtime seam",
+      "authority": "PPA-WU04 scientific/transaction contract frozen",
+      "shared_prerequisite": {
+        "id": "INT12-P0",
+        "scope": "source-window aggregate provenance/progress owner and deterministic apportionment seam",
+        "rule": "implement once, admit before method-specific siblings if it requires shared runtime mutation"
+      },
+      "slices": [
+        {
+          "id": "INT12-C",
+          "legacy": "SWINTER=1",
+          "method": "Von Hoyningen-Hune/Braden",
+          "state": "no physical canopy storage",
+          "qualification": "independent B1.11 aggregate oracle + partition/retry/restart conservation"
+        },
+        {
+          "id": "INT12-D",
+          "legacy": "SWINTER=2",
+          "method": "Gash",
+          "state": "no physical canopy storage",
+          "qualification": "independent B1.11 aggregate oracle + partition/retry/restart conservation"
+        }
+      ],
+      "exclusions": [
+        "Rutter changes",
+        "calendar/file parser migration",
+        "hydraulic retry policy ownership",
+        "new canopy storage state"
+      ],
+      "recommendation": "Do not let C and D each invent their own aggregate-progress runtime state. Shared provenance seam first, equations separate."
+    },
+    {
+      "id": "F-MIG431-WOFN-SOURCE01",
+      "title": "Legacy WOFOST soil-N exact state/mass graph",
+      "type": "review-only",
+      "authority": "B1.11 corrected reference is current legacy authority; crop-N evidence does not cover soil-N",
+      "source_problem": "The Git reference workspace pins the complete 63-member B1.11 identity but does not expose all source members as ordinary text files; exact source reconstruction/materialization is needed for field-level census.",
+      "exit": [
+        "persistent N pools",
+        "transfer graph",
+        "water dependencies",
+        "crop-N exchange",
+        "management inputs",
+        "balance equations",
+        "restart boundary",
+        "internal-vs-external ownership proposal"
+      ],
+      "exclusions": [
+        "production nutrient implementation",
+        "ANIMO coupling implementation",
+        "new nutrient equations",
+        "changes to crop transaction core"
+      ],
+      "recommendation": "Proceed only when exact B1.11 member text can be reconstructed/materialized; until then the family remains an explicit open gap, not inferred from filenames."
+    }
+  ],
+  "parallelism": {
+    "can_run_together": [
+      "LOW01-A",
+      "INT12-P0 review/design",
+      "WOFN-SOURCE01 source reconstruction/review",
+      "existing macropore line",
+      "existing oxygen line"
+    ],
+    "serialize": [
+      "INT12-C and INT12-D shared runtime mutations through INT12-P0",
+      "LOW01-D with any concurrent F-GC change touching groundwater ownership",
+      "WOFN production implementation with any future conserved-solute owner design"
+    ],
+    "max_active_implementation_streams": 6
+  }
+}
