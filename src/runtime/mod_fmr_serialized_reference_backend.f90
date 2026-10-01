@@ -1699,8 +1699,7 @@ contains
     end if
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
-      ok = ok .and. (associated(self%top_boundary) .or. &
-           (parameters%external_top_surface_water_capable .and. self%soil_water_selection%uses_reference())) .and. &
+      ok = ok .and. associated(self%top_boundary) .and. &
            parameters%parameter_set_id > 0_int64 .and. parameters%active_nodes > 0 .and. &
            allocated(parameters%z) .and. allocated(parameters%dz) .and. allocated(parameters%node_distance) .and. &
            allocated(parameters%cofgen)
