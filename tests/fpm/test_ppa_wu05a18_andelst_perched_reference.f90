@@ -179,17 +179,21 @@ program test_ppa_wu05a18_andelst_perched_reference
   ksat_horizontal=cofgen(3,:)
   cdarcy=0.0_real64
 
+  print '(a)', 'PPA_WU05A18_STAGE=BEFORE_CONFIG'
   call initialize_fmr_macropore_standard_config(macro_config,1,static_volume,domain_fraction,potential_bottom, &
        z,dz,diameter,theta_s,theta_r,wall_correction,sorp_max,sorp_alpha,unsat_conductivity,entry_head, &
        sorp_fac_parallel,ksat_horizontal,cdarcy,1.0_real64,1.5_real64,1,ok, &
        rapid_enabled=.false.,perched_enabled=.true.,critical_under_saturated_volume_cm=0.1_real64)
+  print '(a,l1)', 'PPA_WU05A18_STAGE=AFTER_CONFIG OK=',ok
   call require(ok .and. macro_config%valid_for_nodes(numnod),'A18 macropore config')
   macro_config%rate_template%matrix_sat%ksat_horizontal=1.0e-30_real64
   macro_config%rate_template%matrix_sat%cdarcy=0.0_real64
 
+  print '(a)', 'PPA_WU05A18_STAGE=BEFORE_MACRO_INIT'
   call macro%initialize(1,numnod,ok)
   call require(ok,'A18 macropore state initialize')
   macro%dynamic_volume_cp=0.0_real64
+  print '(a)', 'PPA_WU05A18_STAGE=BEFORE_GEOMETRY'
   call evaluate_macropore_geometry(macro_config%geometry,macro%dynamic_volume_cp,geometry)
   call require(geometry%valid,'A18 macropore geometry')
   macro%icp_bottom_domain=geometry%bottom_domain
@@ -205,6 +209,7 @@ program test_ppa_wu05a18_andelst_perched_reference
   macro_policy%solver_mass_tolerance_cm=1.0e-8_real64
   macro_policy%internal_exchange_tolerance_cm=1.0e-9_real64
 
+  print '(a)', 'PPA_WU05A18_STAGE=BEFORE_RUNTIME'
   call macro_runtime%execute(solver,workspace,request,macro,macro_config%geometry,macro_config%rate_template, &
        macro_config%history_template,macro_policy,macro_result)
   write(*,'(*(g0))') 'PPA_WU05A18_INNER|STATUS=',macro_result%status, &
