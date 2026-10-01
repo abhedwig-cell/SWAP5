@@ -6,6 +6,9 @@ module mod_rfm_surface_forcing
 
   type, public :: rfm_surface_forcing_t
     logical :: supplied=.false.
+    ! Source-owned physical event identity for A13 tau_surface semantics.
+    ! Never infer this from a flux threshold inside the RFM runtime.
+    logical :: event_active=.false.
     real(real64) :: precipitation_rate_cm_per_day=0.0_real64
     real(real64) :: irrigation_rate_cm_per_day=0.0_real64
     real(real64) :: snowmelt_rate_cm_per_day=0.0_real64
