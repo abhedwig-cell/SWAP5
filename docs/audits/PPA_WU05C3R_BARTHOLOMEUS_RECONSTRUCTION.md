@@ -305,3 +305,29 @@ The runner uses strict GNU flags including `-Werror` and `-fcheck=all`. No GitHu
 Status is deliberately `GATE_PREPARED_NOT_EXECUTED`: repository tooling in this session can persist the source but does not provide a compiler execution surface for the remote checkout. No PASS is claimed without run evidence.
 
 The next qualification level must compare the bounded result directly with corrected 4.3.1 MACRO outputs, not merely residual closure.
+
+
+## Reconstruction checkpoint R8 — first composed pure response kernel
+
+Three research modules now represent the historical physical response without legacy module globals:
+
+- `mod_bartholomeus_micro`: microscopic/root + water-film oxygen requirement;
+- `mod_bartholomeus_macro`: macroscopic soil-gas oxygen concentration, using the bounded zero-depth solve;
+- `mod_bartholomeus_response`: outer respiration-factor balance and legacy RWU-factor mapping.
+
+The MICRO algebra is transcribed from the recovered public legacy implementation. The MACRO algebra is likewise transcribed, but its restart-based Newton solve is replaced by the R6 bounded monotone solve. The final RWU mapping preserves the historical special case at `max_resp_factor <= 1`.
+
+The exact `dum == ctop` boundary was identified during composition. The historical zero-depth root is then asymptotic (`l -> infinity`). The composed MACRO kernel now evaluates that analytical limit rather than treating it as a numerical failure.
+
+### Qualification status
+
+`FIRST_COMPOSED_RESEARCH_KERNEL / NOT_REFERENCE_QUALIFIED`
+
+Remaining before reference qualification:
+1. recover/compare any 4.2 -> 4.3.1 formula changes in MICRO/MACRO;
+2. add temperature-dependent parameter and microbial-respiration pure kernels;
+3. add source-equivalent water-film reference evaluation;
+4. execute strict standalone compilation/tests;
+5. compare response vectors against corrected 4.3.1 over real oxygen-stress cases.
+
+No production wiring is authorized yet.
