@@ -35,7 +35,7 @@ def instrument(source:bytes)->bytes:
     sat_anchor=b"         c_top(node+1) = C_macro\r\n      else"
     sat=(
       b"         c_top(node+1) = C_macro\r\n"+BEGIN+
-      b"         call c3q_write_trace('SATURATED',node,matric_potential,theta0,gas_filled_porosity,soil_temp,max_resp_factor,0.d0,0.d0,0.d0,0.d0,c_macro,0.d0,resp_factor,rwu_factor,c3q_c_mroot,w_root,w_root_z0,c3q_f_senes,c3q_q10_root,d_o2inwater,d_root,perc_org_mat,soil_density,depth,c3q_shape_micro,c3q_shape_root,c3q_rootradius_m,bunsencoeff,c3q_q10_micro,c3q_specific_humus)\r\n"+
+      b"         call c3q_write_trace('SATURATED',node,matric_potential,theta0,gas_filled_porosity,soil_temp,max_resp_factor,0.d0,0.d0,0.d0,0.d0,c_macro,0.d0,resp_factor,rwu_factor,c3q_c_mroot,w_root,w_root_z0,c3q_f_senes,c3q_q10_root,d_o2inwater,d_root,perc_org_mat,soil_density,depth,c3q_shape_micro,c3q_shape_root,c3q_rootradius_m,bunsencoeff,c3q_q10_micro,c3q_specific_humus,0.d0,0.d0)\r\n"+
       END+b"      else"
     )
     out=once(out,sat_anchor,sat,"saturated-route")
