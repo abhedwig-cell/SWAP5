@@ -1,0 +1,102 @@
+{
+  "schema": "swap5.f_macro_alt47.quantitative_observable_prereg.v1",
+  "status": "PREREGISTERED_OBSERVATION_OPERATOR / MODEL_PHYSICS_FROZEN",
+  "target_parameters": {
+    "sigma_B": {
+      "required_observable": [
+        "continuous preferential-entry or preferential-water fraction",
+        "or independently calibrated mapping from tracer inventory to preferential-entry fraction"
+      ],
+      "prohibited_proxies": [
+        "binary PF occurrence alone",
+        "categorical dye flow type frequency alone",
+        "post-hoc logistic detection model fitted jointly with sigma_B"
+      ]
+    },
+    "f_MB": {
+      "required_observable": [
+        "deep/bottom conservative-tracer receipt fraction",
+        "or deep drainage/fast-path water receipt with separable external mass accounting"
+      ]
+    },
+    "p": {
+      "required_observable": [
+        "multi-depth tracer/dye/wetting response normalized by total preferential receipt",
+        "depth centroid / deep fraction / endpoint distribution"
+      ]
+    }
+  },
+  "frozen_observation_operators": {
+    "dye_depth_shape": {
+      "inputs": [
+        "stained_fraction_by_depth"
+      ],
+      "outputs": [
+        "normalized_depth_centroid",
+        "normalized_deep_stained_fraction",
+        "maximum_stained_depth"
+      ],
+      "allowed_to_identify": [
+        "p"
+      ],
+      "not_allowed_to_identify": [
+        "sigma_B"
+      ],
+      "reason": "Dye geometry is not assumed proportional to preferential water volume."
+    },
+    "isotope_profile": {
+      "inputs": [
+        "background_delta2H",
+        "post_irrigation_delta2H_by_depth",
+        "soil_water_storage_by_depth",
+        "irrigation_delta2H"
+      ],
+      "outputs": [
+        "irrigation_water_fraction_by_depth",
+        "depth_integrated_tracer_water_inventory_if_single_endmember"
+      ],
+      "allowed_to_identify": [
+        "p",
+        "f_MB conditional on mass closure"
+      ],
+      "conditional_for_sigma_B": "only when one event/endmember can be isolated and total applied/returned water closes independently"
+    },
+    "trench_receipt": {
+      "inputs": [
+        "applied_irrigation",
+        "overland_flow",
+        "subsurface_flow",
+        "tracer_mixing"
+      ],
+      "outputs": [
+        "external_flow_fractions",
+        "event/pre-event water fractions"
+      ],
+      "allowed_to_identify": [
+        "f_MB or external-routing behavior"
+      ],
+      "not_allowed_to_identify": [
+        "sigma_B without vertical preferential-entry separation"
+      ]
+    },
+    "bromide_mass_profile": {
+      "inputs": [
+        "observed_tracer_mass_by_depth",
+        "applied_tracer_mass",
+        "water balance"
+      ],
+      "outputs": [
+        "normalized_depth_mass_profile",
+        "deep_tracer_fraction",
+        "recovered_mass_fraction"
+      ],
+      "allowed_to_identify": [
+        "p",
+        "f_MB"
+      ],
+      "conditional_for_sigma_B": "requires direct preferential-entry or matrix-vs-preferential source partition"
+    }
+  },
+  "calibration_rule": "Do not fit sigma_B until a continuous preferential-entry amount or independently calibrated observation operator is available.",
+  "selection_rule": "Freeze dataset/events and observation operator before inspecting RFM residuals."
+}
