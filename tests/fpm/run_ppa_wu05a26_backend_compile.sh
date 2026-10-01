@@ -91,7 +91,6 @@ MODULE_SRC=(
   src/runtime/mod_fmr_macropore_top_input.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
   src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
-  src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90
   src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
   src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90
   src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90
@@ -99,6 +98,7 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90
   src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90
+  src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90
   src/process/macropore/mod_macropore_standard_storage.f90
   src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
   src/runtime/mod_macropore_standard_rate_adapter.f90
