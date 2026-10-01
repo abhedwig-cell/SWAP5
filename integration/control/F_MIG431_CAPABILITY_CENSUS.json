@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.functional_closure.capability_census.v1",
+  "work_unit": "F-MIG431-01",
+  "date": "2026-10-01",
+  "baseline": "integration/f-ci-canonical@8bb835a065248aad06b18a3b563234b20033ba0d",
+  "source_authorities": [
+    "D3c 63-file legacy census",
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "capability-specific canonical status/closeout records"
+  ],
+  "note": "This is a routing census, not independent admission authority. PPA rows are reconciled where later canonical evidence is explicit; unresolved rows remain open rather than inferred.",
+  "counts": {
+    "seed_capabilities_from_ppa": 38
+  },
+  "buckets": {
+    "ADMITTED_OR_BOUNDED_PRODUCTION": [
+      "PPA-ATM-01 resolved typed forcing",
+      "PPA-ATM-03 bounded common forcing adapter",
+      "PPA-TOP-01 dynamic top boundary restricted profile",
+      "PPA-INT-00 no interception",
+      "PPA-INT-03 Rutter",
+      "PPA-ET-01 reference ET restricted",
+      "PPA-ET-00 PMdirect restricted",
+      "PPA-ET-REDU1 Black",
+      "PPA-ET-REDU2 Boesten-Stroosnijder",
+      "PPA-EVAP-ACT hydraulic actual evaporation",
+      "PPA-CROP-81 bounded WOFOST81",
+      "PPA-RWU-FEDDES drought-only root uptake",
+      "PPA-SW-RICH Reference Richards",
+      "PPA-LOW-06 zero bottom flux",
+      "PPA-LOW-QBOT prescribed qbot restricted",
+      "PPA-GW-01 typed groundwater interaction",
+      "PPA-DRA-01 drainage v1",
+      "PPA-SURF-WEIR restricted fixed weir",
+      "PPA-SURF-RUNOFF restricted runoff/runon response",
+      "PPA-SNOW restricted daily snow",
+      "PPA-THERM-SENS sensible soil temperature",
+      "PPA-IRR-HUPSEL restricted irrigation",
+      "PPA-RESTART admitted-state restart",
+      "PPA-OUTPUT-CANON typed result snapshot",
+      "PPA-APP-BOOT restricted application bootstrap",
+      "PPA-MSW-SER serialized MultiSWAP",
+      "PPA-MSW-PAR restricted parallel MultiSWAP",
+      "PPA-EXT-GC groundwater application service"
+    ],
+    "ACTIVE_EXISTING_LINES": [
+      "PPA-MACRO macropore: later canonical A8-A10 and successors supersede old F_NOT_YET_MIGRATED row; migration remains active beyond bounded admitted envelope",
+      "PPA-RWU-ADV oxygen component: PPA-WU05-C review authority closed and production successor active"
+    ],
+    "READY_FOR_BOUNDED_SUCCESSOR": [
+      "PPA-INT-12 SWINTER=1/2 daily aggregate interception: scientific/transaction authority frozen; production provider still absent",
+      "PPA-LOW-OTHER remaining SWBOTB selector families: source-bound slices already frozen by PPA-WU02",
+      "PPA-FROST legacy frost hydraulic feedback: separate source-bound review/migration required",
+      "PPA-IRR-OTHER remaining irrigation modes: extend only as bounded modes",
+      "PPA-MGMT complete management route: decompose, do not implement as one monolith"
+    ],
+    "REVIEW_FIRST": [
+      "PPA-HYST hydraulic hysteresis",
+      "PPA-TILL tillage, with unresolved corrected-reference decisions",
+      "PPA-SOL-HYD solute/salinity owner and hydraulic/root-stress semantics"
+    ],
+    "DEPENDENCY_BLOCKED": [
+      "salinity root stress -> typed solute/osmotic state owner",
+      "frost root stress -> admitted frost owner",
+      "macropore-related root uptake -> admitted relevant macropore owner/envelope",
+      "SWKIMPL=1 dynamic root-sink reevaluation -> nonlinear iteration and derivative/sensitivity authority",
+      "actual iMOD Coupler product route -> upstream product integration, not a SWAP4.3.1 physics migration blocker"
+    ],
+    "SEPARATE_SCOPE_DECISION_REQUIRED": [
+      "legacy meteorological file/calendar preprocessing: functionality versus legacy I/O compatibility must be separated",
+      "full legacy output family: output compatibility is not core-physics closure",
+      "WOFOST soil/nutrient family: current repository contains substantial later WOFOST/N work; reconcile F-WOF canonical admission before declaring a migration gap"
+    ]
+  },
+  "recommended_parallel_program": {
+    "active": [
+      "MACROPORE",
+      "OXYGEN"
+    ],
+    "slot_3": {
+      "id": "F-MIG431-LOW",
+      "target": "remaining lower-boundary selector families",
+      "reason": "source authority already frozen; largely disjoint from oxygen/macropore if shared bottom-boundary interface is held fixed"
+    },
+    "slot_4": {
+      "id": "F-MIG431-INT12",
+      "target": "SWINTER=1/2 production providers",
+      "reason": "scientific/transaction contract already frozen; mostly top-forcing/interception ownership"
+    },
+    "hold_next": [
+      "FROST until overlap with thermal/timestep work is reconciled",
+      "TILLAGE until SWAP-003/004 disposition is fixed",
+      "SOLUTE until state-owner program is defined"
+    ],
+    "max_parallel_capability_streams": 6
+  },
+  "shared_semantics_serializers": [
+    "Any modification of root-water sink ownership",
+    "Any modification of transaction/commit semantics",
+    "Any modification of restart schema common core",
+    "Any modification of Richards solver request/result contract",
+    "Any modification of generic top/bottom boundary ABI",
+    "Any modification of FMR ABI or mass-ledger ownership"
+  ],
+  "next_census_pass": [
+    "Reconcile F-WOF35-F-WOF43A and later canonical state against legacy WOFOST and WOFOST-soil/nutrient files",
+    "Expand PPA-LOW-OTHER into individual SWBOTB selectors and exact statuses",
+    "Expand PPA-INT-12 into SWINTER=1 and SWINTER=2 independent work units",
+    "Split advanced root stress into oxygen, compensation, salinity, frost, MICRO/Jong-van-Lier, macropore-related uptake and SWKIMPL=1",
+    "Classify legacy meteorological preprocessing and output as required functional semantics versus compatibility-only I/O"
+  ]
+}
