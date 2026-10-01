@@ -10,6 +10,7 @@ FLAGS=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -ffree-line-length-none)
   src/physics/oxygen/mod_bartholomeus_micro.f90 \
   src/physics/oxygen/mod_bartholomeus_macro.f90 \
   src/physics/oxygen/mod_bartholomeus_response.f90 \
+  src/physics/oxygen/mod_bartholomeus_profile_response.f90 \
   tests/physics/test_bartholomeus_kernel_smoke.f90 -o "$B/kernel"
 "$B/kernel"
 "$FC" "${FLAGS[@]}" src/physics/oxygen/mod_oxygen_macro_zero_depth.f90 tests/physics/test_oxygen_macro_zero_depth.f90 -o "$B/macro"
