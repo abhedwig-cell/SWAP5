@@ -281,6 +281,8 @@ module mod_fmr_serialized_reference_backend
     logical :: macropore_perched_exchange_active = .false.
     real(real64) :: macropore_perched_interflow_cm = 0.0_real64
     logical :: macropore_accepted_state_seed_active = .false.
+    logical :: macropore_accepted_state_seed_perched_detected = .false.
+    real(real64) :: macropore_accepted_state_seed_raw_interflow_cm = 0.0_real64
     real(real64) :: macropore_accepted_state_seed_interflow_cm = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
@@ -2508,6 +2510,10 @@ contains
       self%last_observation%macropore_perched_exchange_active = macropore_result%perched_exchange_active
       self%last_observation%macropore_perched_interflow_cm = macropore_result%perched_interflow_cm
       self%last_observation%macropore_accepted_state_seed_active = macropore_result%accepted_state_seed_active
+      self%last_observation%macropore_accepted_state_seed_perched_detected = &
+           macropore_result%accepted_state_seed_perched_detected
+      self%last_observation%macropore_accepted_state_seed_raw_interflow_cm = &
+           macropore_result%accepted_state_seed_raw_interflow_cm
       self%last_observation%macropore_accepted_state_seed_interflow_cm = &
            macropore_result%accepted_state_seed_interflow_cm
       macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
