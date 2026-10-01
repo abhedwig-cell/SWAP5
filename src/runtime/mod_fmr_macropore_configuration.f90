@@ -88,7 +88,7 @@ contains
     config%rate_template%unsaturated%sorptivity%history_absorption_time = 0.0_real64*domain_fraction
 
     config%rate_template%unsaturated%shape_factor = shape_factor
-    config%rate_template%unsaturated%pressure_head = -1.0_real64
+    config%rate_template%unsaturated%pressure_head = -1.0_real64 + 0.0_real64*z
     config%rate_template%unsaturated%elevation = z
     config%rate_template%unsaturated%conductivity = conductivity
     config%rate_template%unsaturated%entry_head = entry_head
