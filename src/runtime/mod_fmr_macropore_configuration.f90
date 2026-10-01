@@ -23,7 +23,8 @@ contains
        potential_bottom_domain, z, dz, diameter, theta_s, theta_r, wall_correction, sorptivity_max, &
        sorptivity_alpha, conductivity, entry_head, sorp_fac_parallel, ksat_horizontal, cdarcy, &
        flow_reduction, shape_factor, swsep, ok, rapid_enabled, rapid_drain_type, rapid_drain_level_cm, &
-       rapid_area_exponent, rapid_kd_reference, rapid_resistance_reference_day)
+       rapid_area_exponent, rapid_kd_reference, rapid_resistance_reference_day, perched_enabled, &
+       critical_under_saturated_volume_cm)
     type(fmr_macropore_physical_config_t), intent(out) :: config
     integer, intent(in) :: top_node
     real(real64), intent(in) :: static_volume_cp(:), domain_fraction(:,:), z(:), dz(:), diameter(:)
@@ -37,16 +38,23 @@ contains
     logical, intent(in), optional :: rapid_enabled
     integer, intent(in), optional :: rapid_drain_type
     real(real64), intent(in), optional :: rapid_drain_level_cm, rapid_area_exponent, rapid_kd_reference, &
-         rapid_resistance_reference_day
+         rapid_resistance_reference_day, critical_under_saturated_volume_cm
+    logical, intent(in), optional :: perched_enabled
 
     integer :: n, nd, id
     real(real64) :: bottom_level
-    logical :: rapid_on
+    logical :: rapid_on, perched_on
+    real(real64) :: perched_crit
 
     config = fmr_macropore_physical_config_t()
     ok = .false.
     rapid_on = .false.
     if (present(rapid_enabled)) rapid_on = rapid_enabled
+    perched_on = .false.
+    if (present(perched_enabled)) perched_on = perched_enabled
+    perched_crit = 0.0_real64
+    if (present(critical_under_saturated_volume_cm)) perched_crit = critical_under_saturated_volume_cm
+    if (perched_crit < 0.0_real64) return
 
     n = size(static_volume_cp)
     if (n <= 0) return
@@ -148,6 +156,8 @@ contains
     config%rate_template%limiter%redistribution_capacity_cm = config%rate_template%limiter%maximum_storage_cm
     config%rate_template%limiter%top_domain_fraction = domain_fraction(:,top_node)
     config%rate_template%top_node = top_node
+    config%rate_template%perched_detection_enabled = perched_on
+    config%rate_template%critical_under_saturated_volume_cm = perched_crit
 
     config%history_template%num_domains = nd
     config%history_template%num_nodes = n
@@ -173,6 +183,7 @@ contains
       sat%num_nodes = n
       sat%matrix_top_saturated_node = 1
       sat%matrix_bottom_saturated_node = 0
+      sat%matrix_partial_top_active = .true.
       sat%swsep = swsep
       sat%matrix_level = bottom_level
       sat%step_duration = 1.0_real64
@@ -226,9 +237,11 @@ contains
     ! First FMR admission scope: standard route only.
     if (self%rate_template%unsaturated%sorptivity%swmbf /= 1) return
 
-    ! No perched-zone physics until an explicit FMR carrier exists.
+    ! The immutable template remains neutral. A11 derives perched topology from
+    ! the current matrix hydraulic state for each trial when explicitly enabled.
     if (self%rate_template%unsaturated%sorptivity%perched_active) return
     if (self%rate_template%interflow_sat%matrix_bottom_saturated_node /= 0) return
+    if (self%rate_template%critical_under_saturated_volume_cm < 0.0_real64) return
 
     ! Dynamic A9 top forcing is interval-owned; the immutable template remains neutral.
     if (any(abs(self%rate_template%limiter%potential_top_vertical_cm) > 1.0e-15_real64)) return
