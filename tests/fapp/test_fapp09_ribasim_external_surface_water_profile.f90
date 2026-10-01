@@ -169,6 +169,12 @@ contains
          'wrong top component blocks publication')
     call require(committed%current_revision()==0_int64 .and. participant%has_live_candidate(), &
          'component mismatch preserves live candidate and origin')
+    call participant%commit_component_candidate(backend,committed,t0,t1,0.0_real64,component_receipt,exchange_tol, &
+         did_commit,status)
+    call require(.not.did_commit .and. status==FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH, &
+         'wrong top component cannot bypass commit')
+    call require(committed%current_revision()==0_int64 .and. participant%has_live_candidate(), &
+         'failed component commit preserves candidate')
     component_receipt%top_swap_to_surface_cm=0.0_real64
     call require(participant%component_publication_ready(committed,t0,t1,0.0_real64,component_receipt,exchange_tol), &
          'matched component receipt publication ready')
