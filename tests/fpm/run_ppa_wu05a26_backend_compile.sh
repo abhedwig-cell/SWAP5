@@ -26,6 +26,7 @@ MODULE_SRC=(
   src/transaction/mod_transaction_reference.f90
   src/adapter/mod_fmr_mode7_temporal_head_envelope.f90
   src/transaction/mod_fkt_temporal_indicator_history.f90
+  src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
@@ -90,6 +91,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_macropore_top_input.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
   src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
+  src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90
   src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
   src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90
   src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90
@@ -98,6 +100,7 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90
   src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90
   src/process/macropore/mod_macropore_standard_storage.f90
+  src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
   src/runtime/mod_macropore_standard_rate_adapter.f90
   src/solver/mod_macropore_exchange_overlay_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
