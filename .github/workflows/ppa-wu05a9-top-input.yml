@@ -13,6 +13,7 @@ on:
       - 'tests/fpm/run_ppa_wu05a9_top_input.sh'
       - 'tests/fpm/test_ppa_wu05a9_top_input.f90'
       - 'tests/fpm/test_ppa_wu05a9_fmr_top_input_trial.f90'
+      - 'tests/fpm/test_ppa_wu05a9_fmr_top_input_replay.f90'
       - '.github/workflows/ppa-wu05a9-top-input.yml'
   workflow_dispatch:
 
