@@ -11,7 +11,7 @@ program test_fapp09_ribasim_external_surface_water_profile
        FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
+       fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, &
        fmr_new_b110_fixed_weir_surface_water_committed_state
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
