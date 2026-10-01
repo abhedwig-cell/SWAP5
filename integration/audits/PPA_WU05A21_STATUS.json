@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.ppa_wu05a21.status.v1",
+  "workunit": "PPA-WU05-A21",
+  "phase": "CLOSED_TRUE_PHYSICS_OWNERSHIP_BLOCKER",
+  "decision": "LIVE_RFM_RUNTIME_BLOCKED_ON_FAST_DOMAIN_RELEASE_EXCHANGE_OWNERSHIP",
+  "baseline": "4a9878b03791b7b9d43aa34aa70ed7ccdce13b08",
+  "branch": "audit/ppa-wu05-a21-rfm-live-runtime-release-ownership",
+  "production_mutation": false,
+  "upstream_primitives": {
+    "a11": true,
+    "a12": true,
+    "a13": true,
+    "a15": true,
+    "a16": true,
+    "a17": true,
+    "a19": true,
+    "a20": true
+  },
+  "live_runtime_guard": "KEEP_KERNEL_STATUS_NOT_ADMITTED",
+  "blockers": {
+    "ic_transit_velocity_owner": "absent",
+    "mb_release_owner": "absent",
+    "rfm_wall_event_state": "not_admitted",
+    "mb_continuous_bottom_export_owner": "absent"
+  },
+  "rejected_shortcuts": {
+    "alt34_velocity_100_cm_h_as_default": true,
+    "alt34_mb_release_1_per_h_as_default": true,
+    "storage_only_live_runtime": true,
+    "instantaneous_endpoint_deposition": true,
+    "rapid_drain_as_mb_bottom": true
+  },
+  "resume_condition": "independently qualify a physically complete fast-domain release/exchange route",
+  "stop_rule": "TRUE_PHYSICS_OWNERSHIP_BLOCKER"
+}
