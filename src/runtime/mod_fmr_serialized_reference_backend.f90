@@ -296,6 +296,8 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_serialized_physical_observation_t
     logical :: solver_executed = .false.
     logical :: forcing_prepared = .false.
+    logical :: state_profile_prepared = .false.
+    logical :: execution_admission_preview = .false.
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
@@ -1565,6 +1567,8 @@ contains
       end if
     end if
     call prepare_snow_outer_event(self%model, parameters, committed, forcing, t0, t1)
+    self%model%last_observation%state_profile_prepared=self%model%state_profile_admitted
+    self%model%last_observation%execution_admission_preview=self%model%execution_admitted(parameters,config)
     if (self%bottom_thermal_requested .and. parameters%soil_temperature_active .and. &
         self%model%state_profile_admitted .and. config%max_committed_substeps <= ishft(huge(0), -1)) then
       call self%model%bottom_thermal_carrier%initialize(2 * config%max_committed_substeps, bottom_thermal_ok)
