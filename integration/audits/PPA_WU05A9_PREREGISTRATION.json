@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.ppa_wu05a9.preregistration.v1",
+  "work_unit": "PPA-WU05-A9",
+  "title": "FMR macropore source-faithful top-input forcing integration",
+  "baseline": "integration/f-ci-canonical@412592b874111f35404171f223d3f2518bcad32e",
+  "parent_capability": "PPA-WU05-A8 canonically admitted and closed",
+  "objective": "Add explicit source-faithful surface-to-macropore forcing for the bounded serialized single-column Reference-Richards FMR route without inferring physical source components from generic top_flux.",
+  "source_authority": {
+    "a1_census": "backup/ppa-before-reconcile-20260928@cadc3f25b55bf23b1d883dae137683c42884894f:integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+    "external_top_terms": [
+      "QInTopVrtDm",
+      "QInTopLatDm"
+    ],
+    "limiter_authority": "B1.11 MACRORATE standard-domain inflow limiting and redistribution already migrated/qualified in the macropore process stack",
+    "forcing_rule": "Only explicitly supplied source components may feed macropore top input. Generic FMR top_flux is not a provenance-preserving substitute."
+  },
+  "admitted_target_scope": [
+    "standard swmbf=1 macropore route",
+    "serialized single-column FMR",
+    "Reference Richards only",
+    "explicit source-carried precipitation/rain, surface irrigation, snowmelt, ponding/runon components only where provenance is explicit",
+    "candidate-only top-input partition with returned-surface receipt",
+    "transactional discard/retry/commit semantics inherited from A8",
+    "restart/persistence semantics unchanged except for no persistence of interval forcing"
+  ],
+  "excluded": [
+    "rapid drainage",
+    "perched-zone macropore physics",
+    "RossFast",
+    "parallel or concurrent MultiSWAP",
+    "dynamic crack-geometry displacement feedback within the same corrector",
+    "reverse engineering precipitation/irrigation/melt/runon from top_flux",
+    "inventing a new physical partition fraction not traceable to B1.11 authority"
+  ],
+  "invariants": [
+    "rejected trials do not mutate committed macropore or matrix state",
+    "surface input is booked exactly once",
+    "returned/rejected macropore top input remains surface-owned and is not lost",
+    "matrix/macropore internal exchange remains cancelling whole-column transfer",
+    "no mass tolerance relaxation",
+    "inactive A8 route remains preserved"
+  ],
+  "phases": [
+    "A9.1 recover exact B1.11 source mapping from physical surface forcing to QInTopVrtDm/QInTopLatDm",
+    "A9.2 define typed FMR top-input forcing carrier and fail-closed validation",
+    "A9.3 bind carrier to standard rate request and returned-surface receipt",
+    "A9.4 real-Richards candidate/discard/commit/mass tests",
+    "A9.5 full-half/restart preservation and selective qualification",
+    "A9.6 selective canonical admission and closure if qualified"
+  ],
+  "current_status": "PREREGISTERED_SOURCE_MAPPING_IN_PROGRESS"
+}
