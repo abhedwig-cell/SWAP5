@@ -1564,8 +1564,10 @@ contains
            size(parameters%node_distance) == parameters%active_nodes .and. &
            size(parameters%cofgen,1) >= 24 .and. size(parameters%cofgen,2) == parameters%active_nodes
       if (parameters%macropore_active) then
-        ok = ok .and. self%macropore_active .and. allocated(parameters%macropore) .and. &
-             allocated(self%macropore_config) .and. self%macropore_policy_configured .and. &
+        ! Admission precedes configure_parameters(). Validate the immutable
+        ! production config from the parameter carrier here; configure_parameters
+        ! materializes the model-owned copy only after this gate succeeds.
+        ok = ok .and. allocated(parameters%macropore) .and. self%macropore_policy_configured .and. &
              self%macropore_policy%valid() .and. self%macropore_policy%enabled .and. &
              self%soil_water_selection%uses_reference() .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%snow_active .and. &
