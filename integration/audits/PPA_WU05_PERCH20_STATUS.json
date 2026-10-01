@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.ppa_wu05_perch20.status.v1",
+  "workunit": "PPA-WU05-PERCH20",
+  "phase": "CLOSED_QUALIFIED_RESEARCH_RESULT",
+  "decision": "QUALIFIED_MACROPORE_NUMERICAL_CONTINUATION_INTEGRATION",
+  "canonical_baseline": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
+  "branch": "research/ppa-wu05-perch20-numerical-continuation",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admission_candidate": false,
+  "canonical_admitted": false,
+  "closed": true,
+  "qualified_postimage": "ce6d5a3dfddab6ec72972dfc1503dcebda48a3c8",
+  "qualification_run": 36892803443,
+  "qualification_job": 110472320621,
+  "numerical_layout_id": 505019,
+  "payload": [
+    "reduction_level",
+    "successful_steps",
+    "previous_reduction_dt"
+  ],
+  "qualified_scope": [
+    "layout identity",
+    "typed carrier clone",
+    "committed-state construction and snapshot",
+    "restart template matching",
+    "fail-closed layout mismatch",
+    "PERCH19 controller binding",
+    "trial-local reject isolation",
+    "backend macropore layout admission"
+  ],
+  "preservation": {
+    "canonical_rfm_optional_state_layout": "PASS",
+    "run": 36892803443
+  },
+  "next_action": "Open PPA-WU05-PERCH21 for the live Andelst retry/admission replay using the A18 source-backed fixture.",
+  "recovery_point": "ce6d5a3dfddab6ec72972dfc1503dcebda48a3c8"
+}
