@@ -12,7 +12,7 @@ program test_ppa_wu05_perch19_reduction_ladder
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_macropore_standard_rate_adapter, only: matrix_saturated_zone_view_t,matrix_perched_zone_view_t, &
        derive_matrix_saturated_zone_view,derive_matrix_perched_zone_view
-  use mod_macropore_continuation_state, only: macropore_continuation_state_t
+  use mod_macropore_continuation_state, only: macropore_continuation_state_t, copy_macropore_continuation_state
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t,evaluate_macropore_geometry
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t,initialize_fmr_macropore_standard_config
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t,macropore_runtime_policy_t, &
@@ -61,17 +61,17 @@ program test_ppa_wu05_perch19_reduction_ladder
   type(b110_source_sink_provider_t),target :: source_sink
   type(fixed_flux_top_boundary_provider_t),target :: top_provider
   type(reference_richards_legacy_solver_t) :: solver
-  type(reference_richards_legacy_workspace_t) :: workspace
+  type(reference_richards_legacy_workspace_t) :: workspace,workspace_replay
   type(soil_water_solve_request_t) :: request
   type(soil_water_solve_result_t) :: result
   type(matrix_saturated_zone_view_t) :: main_view
   type(matrix_perched_zone_view_t) :: perched_view
-  type(macropore_continuation_state_t) :: macro
+  type(macropore_continuation_state_t) :: macro,macro_replay
   type(macropore_geometry_result_t) :: geometry
   type(fmr_macropore_physical_config_t) :: macro_config
-  type(macropore_single_column_runtime_t) :: macro_runtime
+  type(macropore_single_column_runtime_t) :: macro_runtime,macro_runtime_replay
   type(macropore_runtime_policy_t) :: macro_policy
-  type(macropore_runtime_result_t) :: macro_result
+  type(macropore_runtime_result_t) :: macro_result,macro_result_replay
   real(real64),target :: qdra(1,numnod),qssdi(numnod),qrot(numnod)
   real(real64) :: cofgen(24,numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
   real(real64) :: theta_s(numnod),theta_r(numnod),static_volume(numnod),domain_fraction(1,numnod), &
@@ -237,6 +237,28 @@ program test_ppa_wu05_perch19_reduction_ladder
   call require(abs(macro_result%macro_balance_residual_cm)<=1.0e-9_real64,'A18 macro mass closure')
   call require(maxval(abs(macro%water_domain_cp))==0.0_real64,'A18 accepted macro state unchanged')
 
+  ! G4: a fresh runtime/workspace and a copied accepted seven-field state must
+  ! derive the same reduction index and candidate. The ladder index is not
+  ! persisted physical state.
+  call copy_macropore_continuation_state(macro,macro_replay,ok)
+  call require(ok,'PERCH19 restart accepted state copy')
+  call macro_runtime_replay%execute(solver,workspace_replay,request,macro_replay,macro_config%geometry, &
+       macro_config%rate_template,macro_config%history_template,macro_policy,macro_result_replay)
+  call require(macro_result_replay%status==MACRO_RUNTIME_CONVERGED,'PERCH19 restart replay converged')
+  call require(macro_result_replay%source_reduction_attempts==macro_result%source_reduction_attempts, &
+       'PERCH19 restart retry count')
+  call require(macro_result_replay%source_reduction_index==macro_result%source_reduction_index, &
+       'PERCH19 restart reduction index')
+  call require(transfer(macro_result_replay%source_reduction_factor,0_int64)== &
+       transfer(macro_result%source_reduction_factor,0_int64),'PERCH19 restart factor identity')
+  call require(all(transfer(macro_result_replay%exchange_rate_node,0_int64)== &
+       transfer(macro_result%exchange_rate_node,0_int64)),'PERCH19 restart exchange identity')
+  call require(all(transfer(macro_result_replay%macropore_candidate%water_domain_cp,0_int64)== &
+       transfer(macro_result%macropore_candidate%water_domain_cp,0_int64)), &
+       'PERCH19 restart macro candidate identity')
+  call require(maxval(abs(macro_replay%water_domain_cp))==0.0_real64,'PERCH19 restart accepted state unchanged')
+
+  print '(a)', 'PPA_WU05_PERCH19_REPLAY_RESTART=PASS'
   print '(a)', 'PPA_WU05_PERCH19_SOURCE_ACCEPTED_SNAPSHOT=PASS'
   print '(a)', 'PPA_WU05_PERCH19_REFERENCE_RICHARDS_BASELINE=PASS'
   print '(a)', 'PPA_WU05_PERCH19_PERCHED_TOPOLOGY_RETAINED=PASS'
