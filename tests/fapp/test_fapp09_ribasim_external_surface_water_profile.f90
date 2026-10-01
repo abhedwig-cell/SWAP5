@@ -399,7 +399,7 @@ contains
 
     config%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
     config%transaction%temporal_tolerance=1.0e3_real64
-    config%transaction%mass_tolerance=1.0e-8_real64
+    config%transaction%mass_tolerance=1.0e-10_real64
     config%transaction%retry_scale=0.5_real64; config%transaction%max_retries=2
     config%max_committed_substeps=8; config%progress_tolerance=0.0_real64
   end subroutine initialize_case
