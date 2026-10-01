@@ -3,8 +3,9 @@
   "work_unit": "F-MIG431-LOW01-A",
   "capability": "SWBOTB=4 q(gwl) lower-boundary migration",
   "branch": "work/f-mig431-low01a-qgwl-boundary",
-  "status": "QUALIFICATION_IN_PROGRESS_PROVIDER_BINDING_O0_O2_PASS",
-  "canonical_reconciled": "6a2d948e510ddaa4308392051dbba2972b951ae0",
+  "status": "QUALIFICATION_IN_PROGRESS_TRANSACTION_GATE_PERSISTED",
+  "canonical_reconciled": "e2d18564383e1350b0b9a68af0eaf668dac784af",
+  "canonical_reconcile_note": "canonical advanced substantially, but LOW01-A transaction/checkpoint/Task2 authority files remain byte-identical to the preregistered authority; serialized backend canonical blob remains the original base blob and LOW01-A changes are branch-local",
   "source_contract": "docs/migration/F-MIG431-LOW01A_STATE_TIMING_CONTRACT.md",
   "provider": "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90",
   "production_binding": "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -26,15 +27,10 @@
     "mass_owner_changed": false,
     "transaction_policy_changed": false
   },
-  "latest_canonical_delta": {
-    "from": "ae3c7a9ba4a9ab741992be965448cf633820d2a1",
-    "to": "6a2d948e510ddaa4308392051dbba2972b951ae0",
-    "classification": "NON_CONFLICTING_MACROPORE_AUDIT_EVIDENCE_ONLY"
-  },
+  "persisted_next_gate": "tests/fmig431/run_fmig431_low01a_transaction_contract.sh",
   "remaining_before_candidate": [
-    "integrated serialized Reference runtime q(gwl) trajectory at O0 and O2",
-    "explicit rejected-trial committed-state immutability through transaction owner",
-    "mass closure through existing qbot owner",
+    "execute persisted transaction contract gate",
+    "integrated serialized Reference runtime q(gwl) mass closure",
     "preservation gates for modes 2, 6 and 7",
     "final current-canonical reconcile"
   ],
