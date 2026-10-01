@@ -157,10 +157,14 @@ contains
     request%rapid%ponding_cm=max(0.0_real64,matrix%ponding_depth)
     request%rapid%water_storage_cm=sum(accepted_macro%water_domain_cp(1,:))
     request%rapid%volume_main_domain_cp=geometry%volume_domain_cp(1,:)
-    call derive_rapid_volume_under_drain(request%rapid%drain_level_cm,z,dz,geometry%volume_domain_cp(1,:), &
-         geometry%top_node,geometry%bottom_domain(1),volume_under_drain,rapid_view_ok)
-    if(.not.rapid_view_ok)return
-    request%rapid%volume_under_drain_cm=volume_under_drain
+    if(request%rapid%enabled)then
+      call derive_rapid_volume_under_drain(request%rapid%drain_level_cm,z,dz,geometry%volume_domain_cp(1,:), &
+           geometry%top_node,geometry%bottom_domain(1),volume_under_drain,rapid_view_ok)
+      if(.not.rapid_view_ok)return
+      request%rapid%volume_under_drain_cm=volume_under_drain
+    else
+      request%rapid%volume_under_drain_cm=0.0_real64
+    end if
 
     request%limiter%accepted_storage_cm=sum(accepted_macro%water_domain_cp,dim=2)
     request%limiter%maximum_storage_cm=sum(geometry%volume_domain_cp,dim=2)
