@@ -3,11 +3,13 @@
 from pathlib import Path
 import importlib.util
 import math
+import sys
 
 HERE = Path(__file__).resolve().parent
 PATH = HERE / 'macropore_tracer01_matrix_reference.py'
 spec = importlib.util.spec_from_file_location('tracer01', PATH)
 m = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = m
 spec.loader.exec_module(m)
 
 def close(a,b,tol=1e-12):
