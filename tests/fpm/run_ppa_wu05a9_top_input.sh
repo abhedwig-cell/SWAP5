@@ -118,9 +118,18 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_a9_fmr.o" -o "$OUT/test_a9_fmr"
   "$OUT/test_a9_fmr" | tee "$OUT/a9_fmr.txt"
   grep -Fq 'PPA_WU05A9_FMR_MACRO_TRIAL=PASS' "$OUT/a9_fmr.txt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a9_fmr_top_input_replay.f90 -o "$OUT/test_a9_replay.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_a9_replay.o" -o "$OUT/test_a9_replay"
+  "$OUT/test_a9_replay" | tee "$OUT/a9_replay.txt"
+  grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_SERIALIZED=PASS' "$OUT/a9_replay.txt"
+  grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_REJECT_REPLAY=PASS' "$OUT/a9_replay.txt"
+  grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_RESTART=PASS' "$OUT/a9_replay.txt"
+  grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_REPLAY_GATE=PASS' "$OUT/a9_replay.txt"
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
 cmp "$BUILD/o0/fmr_macro.txt" "$BUILD/o2/fmr_macro.txt"
 cmp "$BUILD/o0/a9_unit.txt" "$BUILD/o2/a9_unit.txt"
 cmp "$BUILD/o0/a9_fmr.txt" "$BUILD/o2/a9_fmr.txt"
+cmp "$BUILD/o0/a9_replay.txt" "$BUILD/o2/a9_replay.txt"
 echo "PPA_WU05A9_TOP_INPUT_GATE=PASS"
