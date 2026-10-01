@@ -1,15 +1,33 @@
 {
   "schema": "swap5.ppa_wu05a9.status.v1",
   "work_unit": "PPA-WU05-A9",
-  "phase": "SOURCE_MAPPING",
-  "decision": "IN_PROGRESS",
+  "phase": "SOURCE_OWNERSHIP_AND_CARRIER",
+  "decision": "PARTIAL_IMPLEMENTATION_SOURCE_OWNERSHIP_BINDING_HELD",
   "baseline": "412592b874111f35404171f223d3f2518bcad32e",
   "branch": "research/ppa-wu05-a9-fmr-top-input",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "canonical_admitted": false,
   "closed": false,
-  "next_safe_step": "Recover exact source mapping that produces QInTopVrtDm and QInTopLatDm, then implement only that typed carrier. Do not derive it from generic top_flux."
+  "next_safe_step": "Recover exact source mapping that produces QInTopVrtDm and QInTopLatDm, then implement only that typed carrier. Do not derive it from generic top_flux.",
+  "head_after_carrier": "9d74508cf598f1635032d786ce889597bee32924",
+  "evidence": {
+    "source_census": "backup/ppa-before-reconcile-20260928@cadc3f25b55bf23b1d883dae137683c42884894f:integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
+    "source_terms": [
+      "QInTopVrtDm",
+      "QInTopLatDm"
+    ],
+    "legacy_surface_balance_finding": "Ponding-layer balance subtracts integrated macropore top inputs while gross rain/snow/irrigation/runon remain external inputs. Therefore macropore top input is a surface-system partition/internal whole-column transfer, not an additional external input.",
+    "local_test": "gfortran O0 and O2 PASS with -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "local_marker": "PPA_WU05A9_TOP_INPUT_CARRIER=PASS",
+    "network_note": "Full repository local clone unavailable in current runtime because github.com DNS resolution is unavailable; no GitHub Action was spent for the isolated carrier."
+  },
+  "blocker": {
+    "type": "PHYSICAL_OWNERSHIP_INTERFACE",
+    "description": "A8 FMR currently accounts solver top flux as external boundary exchange and does not have a source-faithful surface owner that atomically debits ponding/surface water when QInTopVrtDm/QInTopLatDm enter macropores. Binding the carrier directly would create double counting or storage without a matching surface debit.",
+    "forbidden_repair": "Do not add macropore top input to external mass accounting and do not subtract it blindly from generic top_flux.",
+    "required_next_step": "Recover or define the bounded surface-owner transaction seam: original external surface forcing remains externally booked once; accepted macropore top input is debited from the same candidate surface authority; returned_surface_cm stays with that surface authority; matrix top-boundary exchange receives only its own residual/accepted share."
+  }
 }
