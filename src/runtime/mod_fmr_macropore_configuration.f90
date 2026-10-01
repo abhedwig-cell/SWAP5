@@ -3,13 +3,17 @@ module mod_fmr_macropore_configuration
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t
+  use mod_macropore_surface_top_input, only: macropore_surface_geometry_t
   implicit none
   private
 
   public :: initialize_fmr_macropore_standard_config
+  public :: configure_fmr_macropore_surface_top
 
   type, public :: fmr_macropore_physical_config_t
     type(macropore_geometry_config_t) :: geometry
+    logical :: surface_top_input_enabled = .false.
+    type(macropore_surface_geometry_t) :: surface_geometry
     type(macropore_rate_bundle_request_t) :: rate_template
     type(sorptivity_history_update_request_t) :: history_template
   contains
@@ -179,6 +183,31 @@ contains
 
   end subroutine initialize_fmr_macropore_standard_config
 
+  subroutine configure_fmr_macropore_surface_top(config, top_area_fraction, domain_top_area_fraction, ok)
+    type(fmr_macropore_physical_config_t), intent(inout) :: config
+    real(real64), intent(in) :: top_area_fraction
+    real(real64), intent(in) :: domain_top_area_fraction(:)
+    logical, intent(out) :: ok
+
+    integer :: nd
+
+    ok = .false.
+    nd = config%geometry%num_domains
+    if (.not. config%geometry%valid()) return
+    if (config%geometry%top_node /= 1) return
+    if (nd <= 0 .or. size(domain_top_area_fraction) /= nd) return
+
+    config%surface_top_input_enabled = .true.
+    config%surface_geometry%num_domains = nd
+    config%surface_geometry%top_area_fraction = top_area_fraction
+    config%surface_geometry%domain_top_area_fraction = domain_top_area_fraction
+    ok = config%surface_geometry%valid()
+    if (.not. ok) then
+      config%surface_top_input_enabled = .false.
+      config%surface_geometry = macropore_surface_geometry_t()
+    end if
+  end subroutine configure_fmr_macropore_surface_top
+
   pure logical function fmr_macropore_config_valid_for_nodes(self, active_nodes) result(ok)
     class(fmr_macropore_physical_config_t), intent(in) :: self
     integer, intent(in) :: active_nodes
@@ -211,6 +240,12 @@ contains
 
     ! First FMR admission scope: standard route only.
     if (self%rate_template%unsaturated%sorptivity%swmbf /= 1) return
+
+    if (self%surface_top_input_enabled) then
+      if (self%geometry%top_node /= 1) return
+      if (.not. self%surface_geometry%valid()) return
+      if (self%surface_geometry%num_domains /= nd) return
+    end if
 
     ! No perched-zone physics until an explicit FMR carrier exists.
     if (self%rate_template%unsaturated%sorptivity%perched_active) return
