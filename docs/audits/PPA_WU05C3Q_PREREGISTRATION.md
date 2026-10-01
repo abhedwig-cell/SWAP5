@@ -99,3 +99,16 @@ Therefore a minimal diagnostic-only corrected-4.3.1 trace specification is now p
 Status: `ORACLE_TRACE_SPEC_READY / ORACLE_VECTOR_EXECUTION_PENDING`.
 
 This is now the narrow execution dependency for the first real A/B comparison.
+
+
+## Existing Actions/artifact recovery attempt
+
+Repository Actions history available through the connector was searched for prior oxygen/PPA-WU05C/S9/S11 runs. No recoverable matching run/artifact was found in the accessible history.
+
+This route is closed as `NO_RECOVERABLE_ACTIONS_ARTIFACT`; it is not a reason to request another user upload.
+
+## Research-kernel hardening
+
+During pre-execution review, invalid MACRO physical input was found to be represented inside the outer residual as an artificial very-negative value. That could incorrectly classify invalid input as full oxygen stress.
+
+The candidate now propagates invalid residual evaluation explicitly and fails closed. No physical result is returned from an invalid evaluation.
