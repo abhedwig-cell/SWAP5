@@ -2,7 +2,12 @@
 
 Date: 2026-10-01
 
-Status: `QUALIFIED_ADMISSION_CANDIDATE / CANONICAL_MERGE_PENDING`
+Status: `PRODUCTION_READINESS_FALSIFIED / NOT_CANONICALLY_ADMITTED`
+
+The 2026-10-02 executable admission-boundary gate supersedes the readiness decision below.
+See [C3A boundary falsification](PPA_WU05C3A_BOUNDARY_FALSIFICATION.md).
+C3Q/C3P qualification remains bounded evidence; production saturation/invalid-input handling fails.
+The following original candidate description is a historical snapshot, not current admission authority.
 
 ## Scope
 

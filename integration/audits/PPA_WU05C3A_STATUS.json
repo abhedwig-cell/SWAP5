@@ -1,0 +1,33 @@
+{
+  "work_unit": "PPA-WU05-C3A",
+  "baseline": "ffde8d45567f3cf19d741a2e5d5794d03d8d1ced",
+  "last_reconciled_head": "ffde8d45567f3cf19d741a2e5d5794d03d8d1ced",
+  "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "status": "PRODUCTION_READINESS_FALSIFIED",
+  "canonical_admitted": false,
+  "recovery_point": "docs/audits/PPA_WU05C3A_BOUNDARY_FALSIFICATION.md",
+  "next_action": "Repair source-bound saturated handling and non-finite validation; dynamic execution and actual application binding remain required.",
+  "blockers": [
+    "Valid saturated profile rejected",
+    "NaN root radius accepted as successful full stress",
+    "Actual application binding not established"
+  ],
+  "test_paths": [
+    "tests/physics/run_bartholomeus_admission_boundaries.sh",
+    "tests/physics/run_bartholomeus_active_chain.sh",
+    "tests/fmr/run_c3a_bartholomeus_production_gate.sh"
+  ],
+  "evidence_paths": [
+    "docs/audits/PPA_WU05C3A_BOUNDARY_FALSIFICATION.md"
+  ],
+  "dependency_surface": [
+    "src/physics/oxygen",
+    "src/process/mod_bartholomeus_runtime_input.f90",
+    "src/process/mod_root_uptake_oxygen_composition.f90",
+    "src/runtime/mod_fmr_bartholomeus_execution.f90"
+  ]
+}
