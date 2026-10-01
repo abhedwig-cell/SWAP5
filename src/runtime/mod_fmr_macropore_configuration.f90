@@ -22,7 +22,8 @@ contains
   subroutine initialize_fmr_macropore_standard_config(config, top_node, static_volume_cp, domain_fraction, &
        potential_bottom_domain, z, dz, diameter, theta_s, theta_r, wall_correction, sorptivity_max, &
        sorptivity_alpha, conductivity, entry_head, sorp_fac_parallel, ksat_horizontal, cdarcy, &
-       flow_reduction, shape_factor, swsep, ok)
+       flow_reduction, shape_factor, swsep, ok, rapid_enabled, rapid_drain_type, rapid_drain_level_cm, &
+       rapid_area_exponent, rapid_kd_reference, rapid_resistance_reference_day)
     type(fmr_macropore_physical_config_t), intent(out) :: config
     integer, intent(in) :: top_node
     real(real64), intent(in) :: static_volume_cp(:), domain_fraction(:,:), z(:), dz(:), diameter(:)
@@ -33,12 +34,19 @@ contains
     real(real64), intent(in) :: flow_reduction, shape_factor
     integer, intent(in) :: swsep
     logical, intent(out) :: ok
+    logical, intent(in), optional :: rapid_enabled
+    integer, intent(in), optional :: rapid_drain_type
+    real(real64), intent(in), optional :: rapid_drain_level_cm, rapid_area_exponent, rapid_kd_reference, &
+         rapid_resistance_reference_day
 
     integer :: n, nd, id
     real(real64) :: bottom_level
+    logical :: rapid_on
 
     config = fmr_macropore_physical_config_t()
     ok = .false.
+    rapid_on = .false.
+    if (present(rapid_enabled)) rapid_on = rapid_enabled
 
     n = size(static_volume_cp)
     if (n <= 0) return
@@ -103,16 +111,22 @@ contains
     config%rate_template%rapid%top_water_node = potential_bottom_domain(1)
     config%rate_template%rapid%bottom_domain_node = potential_bottom_domain(1)
     config%rate_template%rapid%drain_type = 2
-    config%rate_template%rapid%enabled = .false.
+    if (present(rapid_drain_type)) config%rate_template%rapid%drain_type = rapid_drain_type
+    config%rate_template%rapid%enabled = rapid_on
     config%rate_template%rapid%saturated_top_fraction = 0.0_real64
     config%rate_template%rapid%water_level_cm = bottom_level
     config%rate_template%rapid%domain_bottom_cm = bottom_level
     config%rate_template%rapid%drain_level_cm = bottom_level
+    if (present(rapid_drain_level_cm)) config%rate_template%rapid%drain_level_cm = rapid_drain_level_cm
     config%rate_template%rapid%ponding_cm = 0.0_real64
     config%rate_template%rapid%step_duration = 1.0_real64
     config%rate_template%rapid%area_exponent = 3.0_real64
+    if (present(rapid_area_exponent)) config%rate_template%rapid%area_exponent = rapid_area_exponent
     config%rate_template%rapid%kd_reference = 1.0_real64
+    if (present(rapid_kd_reference)) config%rate_template%rapid%kd_reference = rapid_kd_reference
     config%rate_template%rapid%resistance_reference_day = 1.0_real64
+    if (present(rapid_resistance_reference_day)) &
+         config%rate_template%rapid%resistance_reference_day = rapid_resistance_reference_day
     config%rate_template%rapid%flow_reduction = flow_reduction
     config%rate_template%rapid%water_storage_cm = 0.0_real64
     config%rate_template%rapid%volume_under_drain_cm = 0.0_real64
@@ -216,12 +230,16 @@ contains
     if (self%rate_template%unsaturated%sorptivity%perched_active) return
     if (self%rate_template%interflow_sat%matrix_bottom_saturated_node /= 0) return
 
-    ! No source-faithful surface-to-macropore forcing in this first FMR slice.
+    ! Dynamic A9 top forcing is interval-owned; the immutable template remains neutral.
     if (any(abs(self%rate_template%limiter%potential_top_vertical_cm) > 1.0e-15_real64)) return
     if (any(abs(self%rate_template%limiter%potential_top_lateral_cm) > 1.0e-15_real64)) return
 
-    ! Rapid drainage remains out of the first FMR admission slice.
-    if (self%rate_template%rapid%enabled) return
+    ! A10 rapid drainage may be enabled only with a drain level aligned to a
+    ! compartment boundary. This keeps below-drain volume reconstruction exact.
+    if (self%rate_template%rapid%enabled) then
+      if (.not. rapid_drain_level_aligned(self%rate_template%rapid%drain_level_cm, &
+           self%rate_template%unsaturated%elevation, self%geometry%dz)) return
+    end if
 
     ! Template geometry/history must use the same top node.
     if (self%history_template%top_node /= self%geometry%top_node) return
@@ -236,5 +254,21 @@ contains
 
     ok = .true.
   end function fmr_macropore_config_valid_for_nodes
+
+  pure logical function rapid_drain_level_aligned(level, z, dz) result(aligned)
+    real(real64), intent(in) :: level
+    real(real64), intent(in) :: z(:), dz(:)
+    integer :: ic
+
+    aligned = .false.
+    if (size(z) /= size(dz) .or. size(z) <= 0) return
+    do ic = 1, size(z)
+      if (abs(level-(z(ic)+0.5_real64*dz(ic))) <= 1.0e-10_real64 .or. &
+          abs(level-(z(ic)-0.5_real64*dz(ic))) <= 1.0e-10_real64) then
+        aligned = .true.
+        return
+      end if
+    end do
+  end function rapid_drain_level_aligned
 
 end module mod_fmr_macropore_configuration

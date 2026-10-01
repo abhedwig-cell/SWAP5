@@ -83,6 +83,8 @@ contains
     logical,intent(out)::ok
 
     integer::id,n,nd,topw
+    real(real64)::volume_under_drain
+    logical::rapid_view_ok
 
     ok=.false.
     if(.not.accepted_macro%ready() .or. .not.geometry%valid .or. .not.macro_view%valid)return
@@ -90,9 +92,8 @@ contains
     nd=accepted_macro%num_domains
     if(matrix%active_nodes/=n .or. size(z)/=n .or. size(dz)/=n .or. step_duration<=0.0_real64)return
 
-    ! Dynamic top input may be supplied by the A9 source-faithful forcing carrier.
-    ! The immutable configuration template itself remains top-input neutral.
-    if(template%rapid%enabled)return
+    ! Dynamic A9 top input and A10 rapid drainage are both composed from
+    ! immutable configuration plus current accepted/candidate hydraulic views.
 
     call derive_matrix_saturated_zone_view(matrix,z,dz,matrix_view)
     if(.not.matrix_view%valid)return
@@ -151,8 +152,19 @@ contains
     request%rapid%top_water_node=macro_view%top_water_node(1)
     request%rapid%saturated_top_fraction=macro_view%wet_fraction(1,macro_view%top_water_node(1))
     request%rapid%water_level_cm=macro_view%water_level_cm(1)
-    request%rapid%water_storage_cm=sum(accepted_macro%water_domain_cp)
+    request%rapid%domain_bottom_cm=z(geometry%bottom_domain(1))-0.5_real64*dz(geometry%bottom_domain(1))
+    if(matrix%ponding_depth < -1.0e-10_real64)return
+    request%rapid%ponding_cm=max(0.0_real64,matrix%ponding_depth)
+    request%rapid%water_storage_cm=sum(accepted_macro%water_domain_cp(1,:))
     request%rapid%volume_main_domain_cp=geometry%volume_domain_cp(1,:)
+    if(request%rapid%enabled)then
+      call derive_rapid_volume_under_drain(request%rapid%drain_level_cm,z,dz,geometry%volume_domain_cp(1,:), &
+           geometry%top_node,geometry%bottom_domain(1),volume_under_drain,rapid_view_ok)
+      if(.not.rapid_view_ok)return
+      request%rapid%volume_under_drain_cm=volume_under_drain
+    else
+      request%rapid%volume_under_drain_cm=0.0_real64
+    end if
 
     request%limiter%accepted_storage_cm=sum(accepted_macro%water_domain_cp,dim=2)
     request%limiter%maximum_storage_cm=sum(geometry%volume_domain_cp,dim=2)
@@ -162,6 +174,36 @@ contains
     ok=request%unsaturated%valid() .and. request%interflow_sat%valid() .and. &
          request%matrix_sat%valid() .and. request%rapid%valid() .and. request%limiter%valid()
   end subroutine prepare_standard_macropore_rate_request
+
+  subroutine derive_rapid_volume_under_drain(drain_level,z,dz,volume_main,top_node,bottom_node,volume_under,ok)
+    real(real64),intent(in)::drain_level,z(:),dz(:),volume_main(:)
+    integer,intent(in)::top_node,bottom_node
+    real(real64),intent(out)::volume_under
+    logical,intent(out)::ok
+    integer::ic
+    real(real64)::upper,lower
+    logical::aligned
+
+    ok=.false.
+    volume_under=0.0_real64
+    if(size(z)/=size(dz) .or. size(z)/=size(volume_main))return
+    if(top_node<1 .or. bottom_node<top_node .or. bottom_node>size(z))return
+    if(any(dz<=0.0_real64) .or. any(volume_main<0.0_real64))return
+
+    aligned=.false.
+    do ic=top_node,bottom_node
+      upper=z(ic)+0.5_real64*dz(ic)
+      lower=z(ic)-0.5_real64*dz(ic)
+      if(abs(drain_level-upper)<=1.0e-10_real64 .or. abs(drain_level-lower)<=1.0e-10_real64)aligned=.true.
+    end do
+    if(.not.aligned)return
+
+    do ic=top_node,bottom_node
+      upper=z(ic)+0.5_real64*dz(ic)
+      if(upper<=drain_level+1.0e-10_real64)volume_under=volume_under+volume_main(ic)
+    end do
+    ok=.true.
+  end subroutine derive_rapid_volume_under_drain
 
   subroutine prepare_standard_sorptivity_history_request(template,geometry,macro_view,matrix_view,step_duration,request,ok)
     type(sorptivity_history_update_request_t),intent(in)::template
