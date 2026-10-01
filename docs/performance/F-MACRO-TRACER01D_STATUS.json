@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.f_macro_tracer01d.composition_status.v1",
+  "status": "SOFTWARE_COMPOSITION_QUALIFIED_EMPIRICAL_REPLAY_BLOCKED",
+  "qualified": {
+    "matrix_reference_kernel": true,
+    "accepted_flux_observer": true,
+    "real_swap5_solver_composition": true,
+    "tracer_mass_closure": true,
+    "timestep_refinement": true
+  },
+  "refinement": {
+    "dt_seconds": [
+      120,
+      60,
+      30
+    ],
+    "tracer_input_each": 2.099916,
+    "L1_120_60": 0.0015162192486311466,
+    "L1_60_30": 0.0007659631795578947
+  },
+  "empirical_replay": {
+    "publication_authority_frozen": true,
+    "exact_replay": false,
+    "blocker": "full Spechtacker initial 0-1 m theta profile unavailable"
+  },
+  "dispersion_authorized": false
+}
