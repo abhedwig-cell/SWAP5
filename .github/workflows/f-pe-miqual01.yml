@@ -12,6 +12,7 @@ on:
       - 'tests/fpe/materialize_fpe_nlglob14z43c_maxit16.py'
       - 'tests/fpe/test_fpe_nlglob14z43a_reference_solvability.f90'
       - 'tests/fpe/test_fpe_nlglob14z43_admission_holdout.f90'
+      - 'tests/fpe/compile_fpe_timeint03_closure.py'
       - '.github/workflows/f-pe-miqual01.yml'
   workflow_dispatch:
 
