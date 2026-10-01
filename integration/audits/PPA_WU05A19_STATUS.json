@@ -1,16 +1,16 @@
 {
   "schema": "swap5.ppa_wu05a19.status.v1",
   "workunit": "PPA-WU05-A19",
-  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
-  "decision": "QUALIFIED_MINIMAL_DEDICATED_RFM_PHYSICAL_STATE",
+  "phase": "CLOSED_CANONICAL_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_MINIMAL_DEDICATED_RFM_PHYSICAL_STATE",
   "baseline": "8cada0ea691cd129c8645fca0a4bb6626ba73422",
   "branch": "work/ppa-wu05-a19-rfm-physical-state",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
-  "closed": false,
+  "canonical_admitted": true,
+  "closed": true,
   "qualified_postimage": "34488da1b4202115a2c138200dd5985cf582411f",
   "qualification_run": 36866618323,
   "state_roles": [
@@ -23,5 +23,16 @@
   "backend_layout_integrated": false,
   "restart_integrated": false,
   "live_runtime_integrated": false,
-  "next": "canonical admission, then A20 optional-state layout/backend checkpoint-restart integration"
+  "next": "A20 optional-state layout/backend checkpoint-restart integration.",
+  "admission_pr": 944,
+  "canonical_merge": "09397ecdfc9aacc405d78467fe428efc7b026a67",
+  "postmerge_preservation": {
+    "method": "dependency-surface blob identity inheritance",
+    "source_blob_sha": "f84f67c42e5a4caf0b826d9f32fe05149775e150",
+    "test_blob_sha": "8d8ac0458c5f2c4fd26d9174eb5ef3ca317a6016",
+    "runner_blob_sha": "e5a80e66ccba71a0ae9376e0365c44f6c8053592",
+    "qualified_postimage": "34488da1b4202115a2c138200dd5985cf582411f",
+    "canonical_merge": "09397ecdfc9aacc405d78467fe428efc7b026a67",
+    "unchanged": true
+  }
 }
