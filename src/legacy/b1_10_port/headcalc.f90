@@ -196,6 +196,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       provider_source_sink_active = associated(evaluation_context%source_sink)
       provider_root_sink_active = associated(evaluation_context%root_sink)
       provider_macropore_active = physical_config%macropore_active .and. associated(evaluation_context%macropore)
+      if (physical_config%macropore_active .and. .not. provider_macropore_active) &
+           error stop 'HeadCalc: active explicit macropore route requires provider'
       if (.not. provider_constitutive_active) error stop 'HeadCalc: explicit constitutive provider required'
       provider_point_conductivity_supported = evaluation_context%constitutive%supports_point_conductivity()
       if (.not. provider_source_sink_active) error stop 'HeadCalc: explicit source/sink provider required'
