@@ -295,6 +295,7 @@ module mod_fmr_serialized_reference_backend
 
   type, public :: fmr_serialized_physical_observation_t
     logical :: solver_executed = .false.
+    logical :: forcing_prepared = .false.
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
@@ -2157,6 +2158,7 @@ contains
       self%bottom_flux = forcing%bottom_flux
       self%bottom_head = forcing%bottom_head
       self%forcing_admitted = .true.
+      self%last_observation%forcing_prepared = .true.
     class default
       return
     end select
