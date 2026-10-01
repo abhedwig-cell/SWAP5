@@ -29,6 +29,13 @@ MODULE_SRC=(
   src/runtime/mod_rossfast_d3r_execution_policy.f90
   src/runtime/mod_rossfast_d3r_model_binding.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/process/macropore/mod_rfm_unponded_activation.f90
+  src/runtime/mod_rfm_unponded_surface_composition.f90
+  src/process/macropore/mod_rfm_preferential_router.f90
+  src/process/macropore/mod_rfm_surface_event_age.f90
+  src/runtime/mod_rfm_physical_state.f90
+  src/runtime/mod_rfm_runtime_configuration.f90
+  src/runtime/mod_rfm_surface_forcing.f90
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_rossfast_d3r_table_kernel.f90
   src/solver/mod_rossfast_d3r_table_provider.f90
@@ -83,9 +90,12 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90
   src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90
+  src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90
+  src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
   src/process/macropore/mod_macropore_standard_storage.f90
   src/runtime/mod_macropore_standard_rate_adapter.f90
   src/solver/mod_macropore_exchange_overlay_provider.f90
+  src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_macropore_configuration.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
