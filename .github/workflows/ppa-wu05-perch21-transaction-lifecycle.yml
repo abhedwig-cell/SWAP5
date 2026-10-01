@@ -1,0 +1,20 @@
+name: PPA-WU05-PERCH21 transaction lifecycle
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch21-freduq-transaction-integration
+    paths:
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/fpm/test_ppa_wu05_perch21_transaction_lifecycle.f90'
+      - 'tests/fpm/run_ppa_wu05_perch21_transaction_lifecycle.sh'
+      - '.github/workflows/ppa-wu05-perch21-transaction-lifecycle.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH21 transaction lifecycle
+        run: bash tests/fpm/run_ppa_wu05_perch21_transaction_lifecycle.sh
