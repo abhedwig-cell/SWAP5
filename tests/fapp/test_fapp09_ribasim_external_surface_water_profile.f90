@@ -4,7 +4,8 @@ program test_fapp09_ribasim_external_surface_water_profile
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
-  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
+       kernel_result_t, kernel_diagnostics_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_BASE, &
        FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
@@ -38,6 +39,7 @@ program test_fapp09_ribasim_external_surface_water_profile
   call verify_materializer_guards()
   call verify_owner_xor()
   call verify_positive_recomposition_and_commit()
+  call verify_external_top_observation()
   call verify_negative_commit()
   call verify_stale_origin()
   write(*,'(A)') 'FAPP09_RIBASIM_EXTERNAL_SURFACE_WATER_PROFILE=PASS'
@@ -208,6 +210,44 @@ contains
     write(*,'(A)') 'FAPP09_RECOMPOSITION_DISCARD_REPLAY=PASS'
     write(*,'(A)') 'FAPP09_POSITIVE_DRAINAGE_TRANSACTION=PASS'
   end subroutine verify_positive_recomposition_and_commit
+
+
+  subroutine verify_external_top_observation()
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: base
+    type(canonical_numerical_config_t) :: config
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_result_t) :: result
+    type(kernel_diagnostics_t) :: diagnostics
+    type(fmr_serialized_physical_observation_t) :: observation
+    logical :: available
+    integer :: status
+
+    call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
+    base%external_top_surface_water_supplied=.true.
+    base%external_top_surface_water_head_cm=0.50_real64
+    base%external_top_surface_water_sill_cm=0.10_real64
+    base%top_ponding_max_cm=1.0_real64
+    base%top_runoff_resistance_day=1.0_real64
+    base%top_runoff_exponent=1.0_real64
+    call backend%initialize(top)
+    call committed%capture_checkpoint(checkpoint,available)
+    call require(available,'external top checkpoint')
+    call backend%run_trial(column,template,parameters,committed,base,config,t0,t1,checkpoint,result,candidate,diagnostics)
+    call require(result%completed.and.candidate%ready(),'external top trial completed')
+    observation=backend%observation()
+    call require(observation%top_surface_exchange_available,'external top observation available')
+    call require(observation%top_surface_signed_swap_to_external_cm<0.0_real64,'external top inundation signed negative')
+    call require(abs(observation%top_surface_closure_residual_cm)<=exchange_tol,'external top surface closure')
+    call backend%discard_trial_candidate(candidate,diagnostics)
+    write(*,'(A)')'TOP03_ACCEPTED_TOP_OBSERVATION=PASS'
+  end subroutine verify_external_top_observation
 
   subroutine verify_negative_commit()
     type(kernel_committed_state_t) :: committed
