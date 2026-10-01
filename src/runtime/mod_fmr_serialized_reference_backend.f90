@@ -94,6 +94,7 @@ module mod_fmr_serialized_reference_backend
   implicit none
   private
 
+  public :: fmr_new_b110_macropore_reduction_committed_state
   integer, parameter, public :: B110_SWBOTB2_OK = 0
   real(real64), parameter :: FMR_PRACTICAL_RICHARDS_A2C_TOL = 1.0e-8_real64
   real(real64), parameter :: FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM = 2.8e-16_real64
