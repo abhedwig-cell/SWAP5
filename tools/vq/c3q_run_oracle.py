@@ -6,7 +6,7 @@ import argparse, hashlib, json, shutil, subprocess
 from pathlib import Path
 
 from b0_source_runner import build_gfortran, run
-from b1_reconstruct import reconstruct
+from b1_11_reconstruct import reconstruct
 from c3q_instrument_oxygen import instrument, strip_trace, SOURCE_SHA256
 
 
@@ -62,7 +62,7 @@ def main() -> int:
     result = {
         "schema_version": 1,
         "slice": "PPA-WU05-C3Q",
-        "oracle": "B1.5p1",
+        "oracle": "B1.11",
         "qualified_reconstruction": recon["qualified_reconstruction"],
         "b1_source_manifest_sha256": recon["source_tree"]["manifest_sha256"],
         "oxygen_original_sha256": hashlib.sha256(original).hexdigest(),
