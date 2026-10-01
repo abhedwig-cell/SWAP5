@@ -3,6 +3,8 @@ on:
  push:
   branches: [work/ppa-wu05-a25-rfm-runtime-orchestrator]
   paths:
+   - 'src/runtime/mod_rfm_physical_state.f90'
+   - 'src/runtime/mod_rfm_runtime_configuration.f90'
    - 'src/runtime/mod_rfm_runtime_orchestrator.f90'
    - 'tests/fpm/test_ppa_wu05a25_rfm_runtime_orchestrator.f90'
    - 'tests/fpm/run_ppa_wu05a25_rfm_runtime_orchestrator.sh'
@@ -13,4 +15,9 @@ jobs:
   steps:
    - uses: actions/checkout@v4
    - run: sudo apt-get update && sudo apt-get install -y gfortran
-   - run: bash tests/fpm/run_ppa_wu05a25_rfm_runtime_orchestrator.sh
+   - name: Requalify A19 state semantics
+     run: bash tests/fpm/run_ppa_wu05a19_rfm_physical_state.sh
+   - name: Requalify A20 carrier checkpoint semantics
+     run: bash tests/fpm/run_ppa_wu05a20_rfm_optional_state_layout.sh
+   - name: Qualify A25 orchestrator
+     run: bash tests/fpm/run_ppa_wu05a25_rfm_runtime_orchestrator.sh
