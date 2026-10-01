@@ -8,6 +8,8 @@ on:
     paths:
       - 'src/runtime/mod_macropore_single_column_runtime.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpm/test_ppa_wu05a17_inner_transaction_infrastructure.f90'
+      - 'tests/fpm/run_ppa_wu05a17_inner_transaction_infrastructure.sh'
       - 'tests/fpm/test_ppa_wu05a17_serialized_inner_callback.f90'
       - 'tests/fpm/run_ppa_wu05a17_serialized_inner_callback.sh'
       - '.github/workflows/ppa-wu05a17-serialized-inner-callback.yml'
@@ -17,8 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: A17 serialized inner callback transaction
-        run: bash tests/fpm/run_ppa_wu05a17_serialized_inner_callback.sh
+      - name: A17 solver-stable inner transaction infrastructure
+        run: bash tests/fpm/run_ppa_wu05a17_inner_transaction_infrastructure.sh
       - name: Preserve A16 inner callback prototype
         run: bash tests/fpm/run_ppa_wu05a16_inner_callback.sh
       - name: Preserve A16 actual provider
