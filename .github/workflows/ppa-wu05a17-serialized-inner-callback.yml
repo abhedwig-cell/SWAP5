@@ -12,6 +12,11 @@ on:
       - 'tests/fpm/run_ppa_wu05a17_inner_transaction_infrastructure.sh'
       - 'tests/fpm/test_ppa_wu05a17_serialized_inner_callback.f90'
       - 'tests/fpm/run_ppa_wu05a17_serialized_inner_callback.sh'
+      - 'tests/fpm/run_ppa_wu05a16_inner_callback.sh'
+      - 'tests/fpm/run_ppa_wu05a16_actual_provider.sh'
+      - 'tests/fpm/run_ppa_wu05a15_exchange_derivative.sh'
+      - 'tests/fpm/run_ppa_wu05a11_perched.sh'
+      - 'tests/fpm/run_ppa_wu05a10_rapid_drain.sh'
       - '.github/workflows/ppa-wu05a17-serialized-inner-callback.yml'
 
 jobs:
