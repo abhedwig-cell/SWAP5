@@ -28,6 +28,7 @@ def instrument(source:bytes)->bytes:
       b"      integer, save             :: c3q_call_index = 0\r\n"
       b"      logical, save             :: c3q_trace_header = .FALSE.\r\n"
       b"      logical, save             :: c3q_trace_open = .FALSE.\r\n"
+      b"      real(8)                   :: c3q_cmacro_eval, c3q_cmicro_eval\r\n"
     )+END
     out=once(out,decl_anchor,decl,"declaration")
 
@@ -50,7 +51,9 @@ def instrument(source:bytes)->bytes:
       b"          if (rwu_factor < 0.d0) then\r\n"
       b"              rwu_factor = 0.d0\r\n"
       b"          end if\r\n"+BEGIN+
-      b"          call c3q_write_trace('PHYSICAL',node,matric_potential,theta0,gas_filled_porosity,soil_temp,max_resp_factor,waterfilm_thickness,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor,c3q_c_mroot,w_root,w_root_z0,c3q_f_senes,c3q_q10_root,d_o2inwater,d_root,perc_org_mat,soil_density,depth,c3q_shape_micro,c3q_shape_root,c3q_rootradius_m,bunsencoeff,c3q_q10_micro,c3q_specific_humus)\r\n"+
+      b"          call MICRO(c3q_c_mroot,w_root,c3q_f_senes,c3q_q10_root,soil_temp,sat_water_cont,gas_filled_porosity,d_o2inwater,d_root,perc_org_mat,soil_density,c3q_specific_humus,c3q_q10_micro,depth,c3q_shape_micro,c3q_rootradius_m,waterfilm_thickness,bunsencoeff,c3q_cmicro_eval,resp_factor)\r\n"
+      b"          call MACRO(c3q_cmacro_eval,depth,resp_factor,c3q_c_mroot,w_root_z0,c3q_f_senes,c3q_q10_root,soil_temp,ctopnode,c3q_shape_micro,c3q_shape_root,r_microbial_z0,d_soil)\r\n"
+      b"          call c3q_write_trace('PHYSICAL',node,matric_potential,theta0,gas_filled_porosity,soil_temp,max_resp_factor,waterfilm_thickness,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor,c3q_c_mroot,w_root,w_root_z0,c3q_f_senes,c3q_q10_root,d_o2inwater,d_root,perc_org_mat,soil_density,depth,c3q_shape_micro,c3q_shape_root,c3q_rootradius_m,bunsencoeff,c3q_q10_micro,c3q_specific_humus,c3q_cmacro_eval,c3q_cmicro_eval)\r\n"+
       END+
       b"      \r\n"
       b"      end if !if (gas_filled_porosity < 1.0d-6) !RB20131216 goto removed\r\n"
@@ -60,10 +63,10 @@ def instrument(source:bytes)->bytes:
     contains_anchor=b"   contains\r\n   \r\n   subroutine calc_ini_pars (numnod)"
     helper=(
       b"   contains\r\n"+BEGIN+
-      b"   subroutine c3q_write_trace(route,node,mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu,cmr,wr,wr0,fs,q10r,dw,dr,om,bd,dep,sm,sr,rr,bc,q10m,srh)\r\n"
+      b"   subroutine c3q_write_trace(route,node,mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu,cmr,wr,wr0,fs,q10r,dw,dr,om,bd,dep,sm,sr,rr,bc,q10m,srh,cmac_eval,cmic_eval)\r\n"
       b"      character(len=*), intent(in) :: route\r\n"
       b"      integer, intent(in) :: node\r\n"
-      b"      real(8), intent(in) :: mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu,cmr,wr,wr0,fs,q10r,dw,dr,om,bd,dep,sm,sr,rr,bc,q10m,srh\r\n"
+      b"      real(8), intent(in) :: mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu,cmr,wr,wr0,fs,q10r,dw,dr,om,bd,dep,sm,sr,rr,bc,q10m,srh,cmac_eval,cmic_eval\r\n"
       b"      c3q_call_index=c3q_call_index+1\r\n"
       b"      if (c3q_call_index > 500 .and. trim(route) == 'SATURATED') return\r\n"
       b"      if (c3q_call_index > 500 .and. trim(route) == 'PHYSICAL' .and. rwu >= 0.999999d0) return\r\n"
@@ -72,10 +75,10 @@ def instrument(source:bytes)->bytes:
       b"         c3q_trace_open=.TRUE.\r\n"
       b"      end if\r\n"
       b"      if (.not.c3q_trace_header) then\r\n"
-      b"         write(c3q_trace_unit,'(a)') 'call_index,route,node,matric_potential_pa,theta,gas_filled_porosity,soil_temp_k,max_resp_factor,waterfilm_thickness_m,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor,c_mroot,w_root,w_root_z0,f_senes,q10_root,d_o2inwater,d_root,perc_org_mat,soil_density,depth,shape_micro,shape_root,rootradius_m,bunsencoeff,q10_microbial,specific_resp_humus'\r\n"
+      b"         write(c3q_trace_unit,'(a)') 'call_index,route,node,matric_potential_pa,theta,gas_filled_porosity,soil_temp_k,max_resp_factor,waterfilm_thickness_m,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor,c_mroot,w_root,w_root_z0,f_senes,q10_root,d_o2inwater,d_root,perc_org_mat,soil_density,depth,shape_micro,shape_root,rootradius_m,bunsencoeff,q10_microbial,specific_resp_humus,c_macro_at_return,c_min_micro_at_return'\r\n"
       b"         c3q_trace_header=.TRUE.\r\n"
       b"      end if\r\n"
-      b"      write(c3q_trace_unit,'(i0,\",\",a,\",\",i0,29(\",\",es25.16e3))') c3q_call_index,trim(route),node,mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu,cmr,wr,wr0,fs,q10r,dw,dr,om,bd,dep,sm,sr,rr,bc,q10m,srh\r\n"
+      b"      write(c3q_trace_unit,'(i0,\",\",a,\",\",i0,31(\",\",es25.16e3))') c3q_call_index,trim(route),node,mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu,cmr,wr,wr0,fs,q10r,dw,dr,om,bd,dep,sm,sr,rr,bc,q10m,srh,cmac_eval,cmic_eval\r\n"
       b"   end subroutine c3q_write_trace\r\n"+END+
       b"   \r\n   subroutine calc_ini_pars (numnod)"
     )
