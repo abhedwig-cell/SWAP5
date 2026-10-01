@@ -4,6 +4,7 @@ module mod_rfm_signed_contact_research
  implicit none
  private
  type,public::signed_contact_request_t
+  logical::finite_contact=.false.
   real(real64)::dt=0.,storage=0.,capacity=0.,area=0.,bottom_depth=0.,length=0.,chi=0.,age=0.
   real(real64),allocatable::depth(:),thickness(:),matrix_head(:),conductivity(:),sorptivity(:),donor_water(:),receiver_space(:)
  end type
@@ -18,6 +19,7 @@ contains
   type(signed_contact_request_t),intent(in)::q
   type(signed_contact_result_t),intent(out)::r
   real(real64)::phi,hmp,dh,darcy,philip,rate,rootdiff,fill,release
+  real(real64)::lo,hi,wetlo,cd,cp,cross
   integer::i,n
   r=signed_contact_result_t()
   if(.not.all(ieee_is_finite([q%dt,q%storage,q%capacity,q%area,q%bottom_depth,q%length,q%chi,q%age])))return
@@ -35,7 +37,26 @@ contains
   do i=1,n
    hmp=max(0._real64,phi+q%depth(i));dh=hmp-q%matrix_head(i)
    darcy=8._real64*q%conductivity(i)*q%thickness(i)*dh*q%dt/q%length**2
-   if(q%matrix_head(i)>=0.)then
+   if(q%finite_contact)then
+    ! Integrate over the vertical contact segment, not its representative point.
+    lo=max(0._real64,q%depth(i)-q%thickness(i)/2)
+    hi=min(q%bottom_depth,q%depth(i)+q%thickness(i)/2)
+    cd=8._real64*q%conductivity(i)*q%dt/q%length**2
+    if(q%matrix_head(i)>=0.)then
+     rate=cd*(.5_real64*(max(0._real64,phi+hi)**2-max(0._real64,phi+lo)**2)-q%matrix_head(i)*(hi-lo))
+    else
+     wetlo=max(lo,-phi);rate=0._real64
+     if(hi>wetlo)then
+      cp=q%chi*4._real64/q%length*q%sorptivity(i)*rootdiff
+      if(cd>0.)then
+       cross=max(wetlo,min(hi,cp/cd-phi+q%matrix_head(i)))
+       rate=cp*(cross-wetlo)+cd*((phi-q%matrix_head(i))*(hi-cross)+.5_real64*(hi**2-cross**2))
+      else
+       rate=cp*(hi-wetlo)
+      endif
+     endif
+    endif
+   else if(q%matrix_head(i)>=0.)then
     ! Saturated contact: signed Darcy only. No second Philip contribution.
     rate=darcy
    else if(phi+q%depth(i)>0.)then
