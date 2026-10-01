@@ -2,6 +2,7 @@ module mod_rfm_research_adapter
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_rfm_surface_sorptivity, only: rfm_evaluate_surface_sorptivity
   use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
   implicit none
   private
@@ -38,6 +39,7 @@ module mod_rfm_research_adapter
   end type rfm_surface_activation_result_t
 
   public :: rfm_build_surface_hydraulic_input
+  public :: rfm_build_surface_hydraulic_input_from_state
   public :: rfm_evaluate_unponded_activation
   public :: rfm_connectivity_survival
   public :: rfm_validate_parameters
@@ -57,6 +59,22 @@ contains
     ok = .true.
   end subroutine rfm_validate_parameters
 
+  subroutine rfm_build_surface_hydraulic_input_from_state(view, constitutive, panels, source_rate, event_age, input, ok)
+    type(process_hydraulic_view_t), intent(in) :: view
+    class(constitutive_hydraulics_provider_t), intent(in) :: constitutive
+    integer, intent(in) :: panels
+    real(real64), intent(in) :: source_rate, event_age
+    type(rfm_surface_hydraulic_input_t), intent(out) :: input
+    logical, intent(out) :: ok
+    real(real64) :: surface_sorptivity
+    logical :: sorptivity_ok
+
+    input = rfm_surface_hydraulic_input_t()
+    ok = .false.
+    call rfm_evaluate_surface_sorptivity(view, constitutive, panels, surface_sorptivity, sorptivity_ok)
+    if (.not. sorptivity_ok) return
+    call rfm_build_surface_hydraulic_input(view, constitutive, surface_sorptivity, source_rate, event_age, input, ok)
+  end subroutine rfm_build_surface_hydraulic_input_from_state
   subroutine rfm_build_surface_hydraulic_input(view, constitutive, surface_sorptivity, source_rate, event_age, input, ok)
     type(process_hydraulic_view_t), intent(in) :: view
     class(constitutive_hydraulics_provider_t), intent(in) :: constitutive
