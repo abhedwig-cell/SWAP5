@@ -1,0 +1,16 @@
+name: PPA-WU05-A24 RFM source provider
+on:
+ push:
+  branches: [work/ppa-wu05-a24-rfm-richards-transaction-split]
+  paths:
+   - 'src/runtime/mod_rfm_matrix_source_provider.f90'
+   - 'tests/fpm/test_ppa_wu05a24_rfm_matrix_source_provider.f90'
+   - 'tests/fpm/run_ppa_wu05a24_rfm_matrix_source_provider.sh'
+   - '.github/workflows/ppa-wu05a24-rfm-source-provider.yml'
+jobs:
+ focused:
+  runs-on: ubuntu-latest
+  steps:
+   - uses: actions/checkout@v4
+   - run: sudo apt-get update && sudo apt-get install -y gfortran
+   - run: bash tests/fpm/run_ppa_wu05a24_rfm_matrix_source_provider.sh
