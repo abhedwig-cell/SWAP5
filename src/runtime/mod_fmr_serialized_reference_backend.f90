@@ -1434,14 +1434,12 @@ contains
       return
     end if
     if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
-      ! A26 guard remains until the qualified live-trial preparer is actually
-      ! invoked by the serialized transaction path in this same postimage.
-      if (.not. self%model%rfm_configuration%valid()) then
+      if (.not. self%model%rfm_configuration%valid() .or. parameters%macropore_active .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          .not. self%model%soil_water_selection%uses_reference()) then
         call reject_backend_trial(result, candidate, diagnostics)
         return
       end if
-      call reject_backend_trial(result, candidate, diagnostics)
-      return
     end if
     if (parameters%macropore_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
@@ -2785,6 +2783,15 @@ contains
       physical%water_content = solve_result%candidate_state%water_content
       physical%ponding_depth = solve_result%candidate_state%ponding_depth
       physical%groundwater_level = solve_result%candidate_state%groundwater_level
+      if (self%rfm_configuration%enabled) then
+        select type (rfm_physical => state)
+        type is (fmr_b110_rfm_state_t)
+          call copy_rfm_physical_state(rfm_live%candidate%candidate_rfm, rfm_physical%rfm, rfm_source_ok)
+          if (.not. rfm_source_ok) return
+        class default
+          return
+        end select
+      end if
     class default
       return
     end select
@@ -2799,6 +2806,10 @@ contains
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
          snow_event_applied_this_call, macropore_accepted_top_cm, macropore_rapid_outflow_cm, &
          outcome%mass_in, outcome%mass_out)
+    if (self%rfm_configuration%enabled) then
+      outcome%mass_in = outcome%mass_in + rfm_preferential_input_cm
+      outcome%mass_out = outcome%mass_out + rfm_deep_receipt_cm
+    end if
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
       step_drainage_exchange = self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
