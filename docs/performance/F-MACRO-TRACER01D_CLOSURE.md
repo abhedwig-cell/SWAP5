@@ -142,4 +142,57 @@ Therefore:
     PRODUCTION_CODE_CHANGE = NONE
     STOP_RULE = TRUE_COMPOSITION_BLOCKER
 
-This work unit closes at the requested valid stop condition.
+## D2B1 source audit and route falsification
+
+A direct audit of the canonically admitted standard FMR macropore runtime
+resolved part of the D2B blocker.
+
+The runtime already publishes source-owned wall-water exchange by domain and
+compartment and a balance-reconstructed vertical internal macropore flux.
+Those are suitable hydrologic observables for a disposable conservative tracer
+observer.
+
+However, the admitted standard candidate balance is:
+
+    storage change
+      = accepted top input
+      - wall exchange to matrix
+      - rapid external drainage
+
+There is no independent continuous macropore lower-boundary export term.
+
+Because the vertical-flux reconstruction uses the same terms, summing it over
+the active domain gives an algebraic lower-face flux of zero up to roundoff.
+
+Therefore the route:
+
+    canonical standard FMR
+      -> reconstructed lower macropore face
+      -> Spechtacker below-1-m bromide loss
+
+is explicitly falsified.
+
+A10 rapid drainage cannot be substituted because it is a separately owned
+drain-level/resistance process, not vertical breakthrough below the sampled
+profile.
+
+The residual D2B need is now narrower than before:
+
+    wall exchange owner = available
+    internal vertical transfer observer = available
+    independent MB bottom/deep export owner = absent
+
+This is a source-ownership blocker, not a tracer-conservation blocker.
+
+## Updated stop condition
+
+    D2A depth-profile forward validation = qualified
+    Profile-2 held-out validation = pass
+    canonical FMR wall-exchange reuse = source-compatible
+    canonical standard FMR as complete MB bottom owner = falsified
+    rapid drain as MB bottom receipt = rejected
+    full 95-percent recovery validation = blocked on real MB lower-boundary owner
+    new RFM physics = none
+
+This work unit closes at the requested valid stop condition: an explicitly
+falsified route with the remaining dependency isolated.
