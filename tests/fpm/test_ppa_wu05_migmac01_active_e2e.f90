@@ -171,6 +171,8 @@ program test_ppa_wu05_migmac01_active_e2e
     error stop 'MIGMAC01 active direct runtime failed'
   end if
   if(.not.result%inner_richards_exchange_used)error stop 'MIGMAC01 active direct route missing'
+  write(*,'(*(g0))') 'MIGMAC01_ACTIVE_ACCEPTED|H2=',result%matrix_result%candidate_state%pressure_head(2), &
+       '|COVERED=',result%covered_internal_transfer_cm,'|STATUS=',result%status
   if(result%covered_internal_transfer_cm<=0.0_real64)error stop 'MIGMAC01 active covered transfer missing'
   if(result%exchange_rate_node(2)>=0.0_real64)error stop 'MIGMAC01 active covered matrix sink missing'
   storage_after=sum(result%macropore_candidate%water_domain_cp)
