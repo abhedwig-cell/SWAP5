@@ -115,3 +115,33 @@ construction key matches.
 
 Later hysteresis reversal does not mutate the legacy oxygen precompute; preserving that behavior is
 part of 4.3.1 parity unless a separate scientific change is explicitly qualified.
+
+
+## Vertical oxygen-boundary propagation
+
+Exact legacy source inspection exposes one important within-call/profile dependency:
+
+```text
+C_top(1)      = atmospheric oxygen concentration
+C_top(node+1) = C_macro(node)
+```
+
+Therefore a single node evaluator remains instantaneous/stateless, but a rooted-profile evaluation is
+ordered from top to bottom and carries the current macro oxygen concentration as the upper boundary
+for the next node.
+
+This is not accepted-timestep continuation state and does not belong in `SwapContextSnapshot`.
+It is profile-evaluation scratch owned by the oxygen composition/caller for one root-profile pass.
+
+Revised composition:
+
+```text
+atmospheric C_top
+  -> node 1 evaluator -> C_macro(1)
+  -> node 2 evaluator -> C_macro(2)
+  -> ...
+  -> per-node rwu factors
+```
+
+The earlier statement "no dynamic OxygenState" remains valid for timestep persistence, but must not
+be misread as "nodes are independently evaluable in arbitrary order".
