@@ -240,6 +240,12 @@ contains
     call committed%capture_checkpoint(checkpoint,available)
     call require(available,'external top checkpoint')
     call backend%run_trial(column,template,parameters,committed,base,config,t0,t1,checkpoint,result,candidate,diagnostics)
+    if(.not.result%completed.or..not.candidate%ready())then
+      write(*,'(A,L1)')'TOP03_DIAG_COMPLETED=',result%completed
+      write(*,'(A,I0)')'TOP03_DIAG_RESULT_STATUS=',result%status
+      write(*,'(A,I0)')'TOP03_DIAG_SUBSTEPS=',diagnostics%accepted_substeps
+      write(*,'(A,A)')'TOP03_DIAG_ROUTE=',trim(result%route)
+    end if
     call require(result%completed.and.candidate%ready(),'external top trial completed')
     observation=backend%observation()
     call require(observation%top_surface_exchange_available,'external top observation available')
