@@ -115,8 +115,9 @@ contains
     real(real64),allocatable::requested_top_vertical(:),requested_top_lateral(:)
     type(fmr_macropore_top_input_forcing_t)::top_input_local
     real(real64)::numerator,denominator,dt
+    real(real64),parameter::source_reduction_ladder(4)=[1.0_real64,0.1_real64,0.01_real64,0.001_real64]
     logical::ok
-    integer::iter,nd,n
+    integer::iter,nd,n,ireduce,nreduce
 
     result=macropore_runtime_result_t()
     if(.not.policy%valid())then
