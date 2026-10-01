@@ -125,7 +125,7 @@ program test_ppa_wu05a9_fmr_surface_capacity_retry
   call backend%run_trial(column,template,parameters,committed,forcing,config,0.0_real64,dt,checkpoint, &
        result,candidate,diagnostics)
   write(error_unit,'(*(g0))') 'PPA_WU05A9_FMR_SURFACE_RETRY_DIAG|STATUS=',result%status,'|COMPLETED=',result%completed, &
-       '|ATTEMPTS=',diagnostics%attempts,'|RETRIES=',diagnostics%retries,'|ROLLBACKS=',diagnostics%rollbacks, &
+       '|ATTEMPTS=',diagnostics%attempts,'|RETRIES=',diagnostics%retries,'|ROLLBACKS=',diagnostics%trial_rollbacks, &
        '|CANDIDATE_READY=',candidate%ready()
   flush(error_unit)
 
@@ -147,7 +147,7 @@ program test_ppa_wu05a9_fmr_surface_capacity_retry
   end select
 
   write(*,'(*(g0))') 'PPA_WU05A9_FMR_SURFACE_CAPACITY_RETRY|STATUS=',result%status, &
-       '|ATTEMPTS=',diagnostics%attempts,'|RETRIES=',diagnostics%retries,'|ROLLBACKS=',diagnostics%rollbacks
+       '|ATTEMPTS=',diagnostics%attempts,'|RETRIES=',diagnostics%retries,'|ROLLBACKS=',diagnostics%trial_rollbacks
   print '(a)', 'PPA_WU05A9_FMR_SURFACE_CAPACITY_RETRY=PASS'
 
 contains
