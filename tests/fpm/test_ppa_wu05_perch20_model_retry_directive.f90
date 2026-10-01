@@ -97,6 +97,17 @@ contains
       outcome%retry_duration_proposal=2.0_real64
       outcome%retry_duration_reason=TEST_RETRY_REASON
       return
+    case(4)
+      ! Existing attempt-context rollback path, no model retry directive.
+      if(dt>0.5000000001_real64)then
+        self%working_level=9
+        outcome%solver_ok=.false.
+        return
+      end if
+      if(self%working_level/=0)then
+        outcome%solver_ok=.false.
+        return
+      end if
     case default
       error stop 'PERCH20 invalid test mode'
     end select
@@ -139,7 +150,7 @@ contains
 
   logical function test_context_required(self) result(required)
     class(test_model_t),intent(in)::self
-    required=self%mode==2
+    required=self%mode==2 .or. self%mode==4
   end function test_context_required
 
   subroutine test_capture_context(self,context)
@@ -213,6 +224,17 @@ program test_ppa_wu05_perch20_model_retry_directive
   deallocate(committed)
   allocate(test_state_t::committed)
   model=test_model_t()
+  model%mode=4
+  call execute_reference_interval(model,committed,0.0_real64,1.0_real64,policy,result)
+  call require(result%status==TX_STATUS_ACCEPTED,'legacy context rollback accepted')
+  call require(result%model_retry_directives==0,'legacy context no model directive')
+  call require(abs(result%accepted_dt-0.5_real64)<1.0e-15_real64,'legacy context fixed retry dt')
+  call require(model%working_level==0,'legacy failed context restored')
+  call require_committed_marker(committed,42.0_real64,'legacy context committed marker')
+
+  deallocate(committed)
+  allocate(test_state_t::committed)
+  model=test_model_t()
   model%mode=3
   call execute_reference_interval(model,committed,0.0_real64,1.0_real64,policy,result)
   call require(result%status==TX_STATUS_INVALID_MODEL_RETRY_DIRECTIVE,'invalid directive status')
@@ -223,6 +245,7 @@ program test_ppa_wu05_perch20_model_retry_directive
   print '(a)', 'PPA_WU05_PERCH20_LEGACY_RETRY_PRESERVATION=PASS'
   print '(a)', 'PPA_WU05_PERCH20_UPWARD_MODEL_RETRY=PASS'
   print '(a)', 'PPA_WU05_PERCH20_ATTEMPT_CONTEXT_CARRY=PASS'
+  print '(a)', 'PPA_WU05_PERCH20_LEGACY_CONTEXT_ROLLBACK=PASS'
   print '(a)', 'PPA_WU05_PERCH20_INVALID_DIRECTIVE_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU05_PERCH20_COMMITTED_ISOLATION=PASS'
   print '(a)', 'PPA_WU05_PERCH20_GATE=PASS'
