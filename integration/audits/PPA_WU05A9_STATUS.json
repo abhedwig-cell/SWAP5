@@ -11,7 +11,7 @@
   "qualified": false,
   "canonical_admitted": false,
   "closed": false,
-  "next_safe_step": "Recover exact source mapping that produces QInTopVrtDm and QInTopLatDm, then implement only that typed carrier. Do not derive it from generic top_flux.",
+  "next_safe_step": "Implement a dedicated A9 surface-partition candidate/receipt patterned after the existing transactional surface participant: source-supplied macropore top potentials remain candidate-only, accepted macro input debits candidate surface ownership, returned_surface_cm stays surface-owned, and commit is atomic. Keep raw weather-to-macropore partition outside this first binding.",
   "head_after_carrier": "9d74508cf598f1635032d786ce889597bee32924",
   "evidence": {
     "source_census": "backup/ppa-before-reconcile-20260928@cadc3f25b55bf23b1d883dae137683c42884894f:integration/audits/PPA_WU05A1_SOURCE_CENSUS.json",
@@ -29,5 +29,11 @@
     "description": "A8 FMR currently accounts solver top flux as external boundary exchange and does not have a source-faithful surface owner that atomically debits ponding/surface water when QInTopVrtDm/QInTopLatDm enter macropores. Binding the carrier directly would create double counting or storage without a matching surface debit.",
     "forbidden_repair": "Do not add macropore top input to external mass accounting and do not subtract it blindly from generic top_flux.",
     "required_next_step": "Recover or define the bounded surface-owner transaction seam: original external surface forcing remains externally booked once; accepted macropore top input is debited from the same candidate surface authority; returned_surface_cm stays with that surface authority; matrix top-boundary exchange receives only its own residual/accepted share."
+  },
+  "architecture_reuse_review": {
+    "existing_surface_participant": "src/runtime/mod_fmr_surface_water_swap_participant.f90",
+    "reuse_decision": "NOT_DIRECTLY_REUSABLE",
+    "reason": "Current participant is a transactional soil-to-surface-water coupling path driven by drainage/head forcing and explicitly rejects parameters%macropore_active. It does provide a useful origin/candidate/discard/publication/commit pattern, but not the missing rainfall/ponding-to-macropore ownership seam.",
+    "related_dynamic_top_authority": "docs/science/F-ROMV2_D21_RAIN_PONDING_RUNOFF_ADJUDICATION.md confirms current SWAP dynamic-top has explicit supply/ponding/runoff regimes; A9 must not collapse those thresholds into a generic fixed-flux partition."
   }
 }
