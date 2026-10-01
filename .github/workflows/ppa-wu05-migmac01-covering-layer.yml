@@ -11,6 +11,7 @@ on:
       - 'src/process/macropore/mod_macropore_standard_storage.f90'
       - 'tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh'
       - 'tests/fpm/test_ppa_wu05_migmac01_covering_layer.f90'
+      - 'tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh'
       - 'tests/fpm/run_ppa_wu05_migmac01_covering_layer.sh'
       - '.github/workflows/ppa-wu05-migmac01-covering-layer.yml'
   workflow_dispatch:
@@ -24,3 +25,5 @@ jobs:
         run: bash tests/fpm/run_ppa_wu05_migmac01_covering_layer.sh
       - name: Compile composition and preserve PERCH20 transaction semantics
         run: bash tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh
+      - name: Preserve PERCH20 reject restart lifecycle
+        run: bash tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh
