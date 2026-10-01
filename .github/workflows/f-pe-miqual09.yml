@@ -1,0 +1,25 @@
+name: F-PE-MIQUAL09 paired equilibrium serialized benchmark
+
+on:
+  push:
+    branches:
+      - research/f-pe-miqual09-paired-equilibrium-serialized-benchmark
+    paths:
+      - 'docs/performance/F-PE-MIQUAL09_PREREGISTRATION.md'
+      - 'tests/fpe/materialize_fpe_miqual09_length.py'
+      - 'tests/fmr/run_fpe_miqual09.py'
+      - 'tests/fmr/run_fpe_miqual09.sh'
+      - '.github/workflows/f-pe-miqual09.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmr/run_fpe_miqual09.sh
