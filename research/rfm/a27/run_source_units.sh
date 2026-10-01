@@ -4,13 +4,15 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 BUILD="$(mktemp -d)"
 trap 'rm -rf "$BUILD"' EXIT
-python3 - "$BUILD/grid_stubs.f90" <<'GRID'
+python3 - "$BUILD/grid_stubs.f90" "${A27_CELL_THICKNESS_CM:-10}" <<'GRID'
 from pathlib import Path
-import sys
+import sys, math
+cell=float(sys.argv[2])
+assert math.isfinite(cell) and cell>0
 s=Path('tests/fsi/fsi04_real_headcalc_stubs.f90').read_text()
 s=s.replace('numnod = 4','numnod = 10')
-s=s.replace('[-0.25d0, -0.75d0, -1.50d0, -2.50d0]','['+','.join(str(-5-10*i)+'d0' for i in range(10))+']')
-s=s.replace('[0.50d0, 0.50d0, 1.00d0, 1.00d0]','10.0d0').replace('disnod(numnod+1) = 1.0d0','disnod(numnod+1) = [5.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,5.0d0]')
+s=s.replace('[-0.25d0, -0.75d0, -1.50d0, -2.50d0]','['+','.join(str(-cell/2-cell*i)+'d0' for i in range(10))+']')
+s=s.replace('[0.50d0, 0.50d0, 1.00d0, 1.00d0]',str(cell)+'d0').replace('disnod(numnod+1) = 1.0d0','disnod(numnod+1) = ['+','.join(str(x)+'d0' for x in [cell/2]+[cell]*9+[cell/2])+']')
 Path(sys.argv[1]).write_text(s)
 GRID
 MODULE_SRC=(
