@@ -242,7 +242,7 @@ contains
     initial%groundwater_level=-200.0_real64
     initial%macropore=macro
 
-    reduction_initial=macropore_reduction_continuation_t(level=1,stable_steps=8,previous_dt=fmr_dt)
+    reduction_initial=macropore_reduction_continuation_t(level=1,stable_steps=7,previous_dt=fmr_dt)
     call fmr_new_b110_macropore_reduction_committed_state(committed,lineage,initial,reduction_initial,0.0_real64,state_ok)
     if(.not.state_ok)error stop 'PERCH20 transaction committed init'
 
@@ -310,7 +310,7 @@ contains
     call committed%snapshot(after_trial_state,available)
     if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &
          error stop 'PERCH20 discard mutated committed state'
-    call require_reduction(after_trial_state,1,8,fmr_dt,'discard accepted continuation')
+    call require_reduction(after_trial_state,1,7,fmr_dt,'discard accepted continuation')
 
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
          replay_result,replay_candidate,replay_diag,trusted_prepared_parameters=.true.)
