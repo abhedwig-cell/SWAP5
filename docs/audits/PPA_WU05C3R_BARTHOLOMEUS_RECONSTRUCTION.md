@@ -73,3 +73,50 @@ A production proposal requires:
 ## First finding
 
 A literal port of `oxygenstress.f90` is not the default strategy. Existing evidence already proves that part of the apparent state in the legacy routine is immutable derived data, and the 2008 scientific model is naturally decomposable into demand, macro transport, micro transport and a final supply/demand reduction. The next decisive question is whether any true cross-timestep oxygen state remains after exact equation reconstruction.
+
+
+## Reconstruction checkpoint R1
+
+### Numerical solve identified
+
+The SWAP-007 patch exposes the local Newton residual derivative in the legacy scalar solve:
+
+```text
+fi_a = ... exp(-l / shape_factor_microbialr)
+       - (r_mroot_z0 / d_soil) * l * exp(-l / shape_factor_rootr)
+lnew = abs(l - fi / fi_a)
+```
+
+This is strong evidence that the Newton machinery is an instantaneous scalar root solve in a length-like variable `l`, with current root and microbial respiration terms and current soil oxygen diffusivity. No evidence found so far indicates that `l` is committed physical state between timesteps.
+
+The legacy comments also explicitly mention an alternative ZBREND solution inside `SOLVE`. That independently supports classifying Newton as numerical execution policy rather than physical state.
+
+### State classification strengthened
+
+Evidence now supports, but does not yet fully qualify:
+
+- six soil/hydraulic arrays: immutable-after-construction derived data;
+- water-film thickness: recomputed from current matric potential and hydraulic precomputation;
+- `d_soil`: recomputed from current gas-filled porosity and immutable coefficients;
+- Newton variable `l`: likely call-local scalar scratch;
+- Newton restart: numerical recovery, not model-time continuation.
+
+Therefore H1/H2 remain live and strengthened. They are not yet admitted facts until the complete pristine equation/call graph is recovered.
+
+### Performance implication
+
+A SWAP5 design should separate:
+
+```text
+immutable soil precompute
+        +
+current node state/config
+        -> instantaneous oxygen response kernel
+        -> rwu reduction factor
+```
+
+and keep scalar-solver policy outside the physical-state object.
+
+### Remaining authority gap
+
+The available cumulative patch contains unchanged legacy equations only as context around changed hunks; it is not a complete pristine `oxygenstress.f90`. Exact B1.11 source materialization remains necessary before an exact independent kernel can be declared qualified. Library evidence is sufficient to continue architecture reconstruction but not to invent omitted equations.
