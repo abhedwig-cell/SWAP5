@@ -1,22 +1,37 @@
 {
   "schema": "swap5.ppa_wu05_perch19.status.v1",
   "workunit": "PPA-WU05-PERCH19",
-  "phase": "PREREGISTERED",
-  "decision": "SOURCE_FAITHFUL_FREDUQ_CONTINUATION_REQUIRED",
+  "phase": "CLOSED_PARTIAL_QUALIFIED_BLOCKED_TRANSACTION_INTERFACE",
+  "decision": "QUALIFIED_FREDUQ_STATE_MACHINE_REQUIRES_MODEL_PROPOSED_RETRY_DURATION_SEAM",
   "baseline": "ae4eede414692fb0071ea093050f5accd36dd48d",
+  "canonical_reconciliation": "d89912713f9182f4a5319a54cb6094930d38e2cd",
   "branch": "research/ppa-wu05-perch19-flow-reduction-ladder",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "pure source-faithful FrReduQ continuation state machine",
+  "production_admission_candidate": false,
   "canonical_admitted": false,
-  "closed": false,
+  "closed": true,
+  "qualified_postimage": "c33309b31ff5ce0962611554f37bca9290d40df0",
+  "qualification_run": 36862145326,
+  "qualification_job": 110368699898,
   "source_ladder": [1.0, 0.1, 0.01, 0.001],
-  "state_fields": [
-    "reduction_level",
-    "accepted_step_count",
-    "recovery_dt"
+  "qualified_transitions": [
+    "bounded escalation 0 to 3",
+    "geometric-mean retry-duration proposal",
+    "ten-step recovery",
+    "larger-dt recovery",
+    "committed-input isolation"
   ],
-  "next_action": "Implement and qualify the typed source transition state machine before serialized integration.",
-  "recovery_point": "ae4eede414692fb0071ea093050f5accd36dd48d"
+  "blocker": {
+    "code": "NO_MODEL_PROPOSED_RETRY_DURATION_SEAM",
+    "transaction_behavior": "attempt_dt = attempt_dt * retry_scale with 0 < retry_scale < 1",
+    "source_required_behavior": "after min-dt macropore escalation, retry at sqrt(DTMIN*DTMAX)"
+  },
+  "physical_macropore_state_changed": false,
+  "persistence_integration_deferred": true,
+  "next_action": "Open PPA-WU05-PERCH20 for a bounded model-proposed retry-duration transaction contract, then resume PERCH19 integration.",
+  "recovery_point": "e9b1b5b4be5195ff8a68f16f7426ac2b862b0ffb"
 }
