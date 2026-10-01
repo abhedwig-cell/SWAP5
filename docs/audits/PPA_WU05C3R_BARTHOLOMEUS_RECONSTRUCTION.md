@@ -358,3 +358,26 @@ This matches the recovered September performance result where the lookup materia
 ### Current missing core piece
 
 For analytical MvG, all physical algebra needed by the Bartholomeus response is now isolated. A source-equivalent reference integrator still has to be implemented or adapted for the water-film integral. Tabular `SWSOPHY=1` remains a separate compatibility path and is not silently generalized from the MvG route.
+
+
+## Reconstruction checkpoint R10 — independent MvG water-film oracle
+
+An independent converging composite-trapezoid implementation was added for the analytical-MvG water-film integral.
+
+It deliberately:
+- uses the recovered source integrand;
+- retains the historical lower integration bound and dry-end shortcut;
+- uses the historical relative convergence order (1e-5);
+- does not reproduce the known duplicate complete QROMBD call.
+
+It is named `independent`, not `reference`, because matching the source integrand and tolerance does not make trapezoid quadrature numerically identical to historical Romberg.
+
+Intended qualification triangle:
+
+```text
+corrected 4.3.1 Romberg  <->  independent quadrature
+           \                  /
+             WFT300 candidate
+```
+
+Agreement of all three over the operational envelope would separate physical/constitutive correctness from integration-policy differences more convincingly than comparing WFT300 only to one historical numerical implementation.
