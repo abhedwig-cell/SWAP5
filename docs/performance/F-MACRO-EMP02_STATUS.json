@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.f_macro_emp02.status.v1",
+  "status": "HIGH_VALUE_UNPONDED_AMOUNT_CANDIDATE_IDENTIFIED_DATA_EXECUTION_BLOCKED",
+  "branch": "research/f-macro-empirical01-multievent-qualification",
+  "canonical_authority": "integration/f-ci-canonical@ebea588070f7a44dbaea78169f2548c745061c48",
+  "frozen_parameter_target": "sigma_B",
+  "candidates": {
+    "zhang_2019": {
+      "doi": "10.1016/j.geoderma.2019.03.026",
+      "direct_partition": true,
+      "boundary": "ponded_double_ring",
+      "sigma_B_authorized": false,
+      "preferential_cumulative_fraction_range": [
+        0.66,
+        0.82
+      ]
+    },
+    "zhang_2022": {
+      "doi": "10.1016/j.geoderma.2022.116205",
+      "direct_partition": true,
+      "boundary": "ponded_head_controlled",
+      "sigma_B_authorized": false
+    },
+    "wen_2026": {
+      "doi": "10.1016/j.jhydrol.2026.135241",
+      "artificial_rainfall": true,
+      "surface_covering_partition": true,
+      "aggregate_pf_contribution_range": [
+        0.596,
+        0.787
+      ],
+      "aggregate_pf_occurrence_range": [
+        0.189,
+        0.4
+      ],
+      "event_level_payload_materialized": false,
+      "sigma_B_authorized": false,
+      "reason": "event/plot forcing, antecedent state, hydraulic binding and source-controlled/ponding interval ownership not yet jointly available"
+    }
+  },
+  "next_required_input": "Wen 2026 event/plot-level forcing and matrix-vs-preferential infiltration data with antecedent/hydraulic context",
+  "rfm_physics_change": false,
+  "production_change": false
+}
