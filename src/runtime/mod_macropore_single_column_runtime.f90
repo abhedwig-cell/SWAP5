@@ -13,6 +13,8 @@ module mod_macropore_single_column_runtime
        build_macropore_standard_candidate
   use mod_macropore_standard_rate_adapter, only: matrix_saturated_zone_view_t, &
        prepare_standard_macropore_rate_request, prepare_standard_sorptivity_history_request
+  use mod_macropore_surface_top_input, only: macropore_surface_forcing_t, macropore_surface_geometry_t, &
+       macropore_surface_request_result_t, derive_macropore_surface_request
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t, &
        macropore_rate_bundle_result_t, evaluate_macropore_rate_bundle
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t, &
@@ -36,6 +38,7 @@ module mod_macropore_single_column_runtime
     real(real64) :: damping_previous_weight=0.5_real64
     real(real64) :: solver_mass_tolerance_cm=1.0e-10_real64
     real(real64) :: internal_exchange_tolerance_cm=1.0e-10_real64
+    real(real64) :: surface_return_tolerance_cm=1.0e-10_real64
   contains
     procedure,public::valid=>runtime_policy_valid
   end type macropore_runtime_policy_t
@@ -51,6 +54,8 @@ module mod_macropore_single_column_runtime
     real(real64) :: rapid_external_outflow_cm=0.0_real64
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
     real(real64) :: macro_balance_residual_cm=huge(1.0_real64)
+    real(real64) :: surface_external_input_cm=0.0_real64
+    real(real64) :: surface_partition_residual_cm=0.0_real64
     type(soil_water_solve_result_t) :: matrix_result
     type(macropore_continuation_state_t) :: macropore_candidate
     type(vertical_flux_reconstruction_result_t) :: vertical_flux
@@ -70,11 +75,11 @@ contains
     ok=self%max_correctors>0 .and. self%exchange_relative_tolerance>0.0_real64 .and. &
        self%exchange_floor>0.0_real64 .and. self%damping_previous_weight>=0.0_real64 .and. &
        self%damping_previous_weight<1.0_real64 .and. self%solver_mass_tolerance_cm>0.0_real64 .and. &
-       self%internal_exchange_tolerance_cm>0.0_real64
+       self%internal_exchange_tolerance_cm>0.0_real64 .and. self%surface_return_tolerance_cm>=0.0_real64
   end function runtime_policy_valid
 
   subroutine runtime_execute(self,solver,workspace,base_request,accepted_macro,geometry_config,rate_template, &
-       history_request,policy,result)
+       history_request,policy,result,surface_forcing,surface_geometry)
     class(macropore_single_column_runtime_t),intent(inout)::self
     class(soil_water_solver_t),intent(inout)::solver
     class(soil_water_solver_workspace_base_t),intent(inout)::workspace
@@ -85,6 +90,8 @@ contains
     type(sorptivity_history_update_request_t),intent(in)::history_request
     type(macropore_runtime_policy_t),intent(in)::policy
     type(macropore_runtime_result_t),intent(out)::result
+    type(macropore_surface_forcing_t),intent(in),optional::surface_forcing
+    type(macropore_surface_geometry_t),intent(in),optional::surface_geometry
 
     type(soil_water_solve_request_t)::request
     type(soil_water_solve_result_t)::predictor,corrector
@@ -97,9 +104,10 @@ contains
     type(matrix_saturated_zone_view_t)::matrix_view
     type(vertical_flux_reconstruction_request_t)::vertical_request
     type(sorptivity_history_update_request_t)::history_local
+    type(macropore_surface_request_result_t)::surface_request
     real(real64),allocatable::current_domain(:,:),next_domain(:,:),current_node(:)
-    real(real64)::numerator,denominator,dt
-    logical::ok
+    real(real64)::numerator,denominator,dt,expected_matrix_top_flux,surface_scale
+    logical::ok,surface_active
     integer::iter,nd,n
 
     result=macropore_runtime_result_t()
@@ -114,6 +122,13 @@ contains
 
     request=base_request
     request%physical%macropore_active=.false.
+    surface_active=present(surface_forcing) .or. present(surface_geometry)
+    if(surface_active)then
+      if(.not.present(surface_forcing) .or. .not.present(surface_geometry))then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
+    end if
     overlay%base=>base_request%evaluation%source_sink
     request%evaluation%source_sink=>overlay
 
@@ -144,6 +159,24 @@ contains
     if(dt<=0.0_real64)then
       result%status=MACRO_RUNTIME_FAILED
       return
+    end if
+
+    if(surface_active)then
+      call derive_macropore_surface_request(surface_forcing,surface_geometry,dt,surface_request)
+      if(.not.surface_request%valid)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
+      expected_matrix_top_flux = -(surface_request%matrix_direct_supply_total_cm + &
+           surface_request%runon_total_cm)/dt
+      surface_scale=max(1.0_real64,abs(expected_matrix_top_flux),abs(base_request%boundary%top_flux))
+      if(abs(base_request%boundary%top_flux-expected_matrix_top_flux) > &
+           64.0_real64*epsilon(1.0_real64)*surface_scale)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
+      result%surface_external_input_cm=surface_request%direct_supply_total_cm+surface_request%runon_total_cm
+      result%surface_partition_residual_cm=surface_request%source_partition_residual_cm
     end if
 
     call evaluate_macropore_geometry(geometry_config,accepted_macro%dynamic_volume_cp,geometry)
@@ -181,8 +214,14 @@ contains
       return
     end if
 
-    call prepare_standard_macropore_rate_request(rate_template,accepted_macro,geometry,accepted_view, &
-         predictor%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt,rate_request,matrix_view,ok)
+    if(surface_active)then
+      call prepare_standard_macropore_rate_request(rate_template,accepted_macro,geometry,accepted_view, &
+           predictor%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt,rate_request,matrix_view,ok, &
+           surface_request=surface_request)
+    else
+      call prepare_standard_macropore_rate_request(rate_template,accepted_macro,geometry,accepted_view, &
+           predictor%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt,rate_request,matrix_view,ok)
+    end if
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
       return
@@ -208,8 +247,14 @@ contains
         return
       end if
 
-      call prepare_standard_macropore_rate_request(rate_template,accepted_macro,geometry,accepted_view, &
-           corrector%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt,rate_request,matrix_view,ok)
+      if(surface_active)then
+        call prepare_standard_macropore_rate_request(rate_template,accepted_macro,geometry,accepted_view, &
+             corrector%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt,rate_request,matrix_view,ok, &
+             surface_request=surface_request)
+      else
+        call prepare_standard_macropore_rate_request(rate_template,accepted_macro,geometry,accepted_view, &
+             corrector%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt,rate_request,matrix_view,ok)
+      end if
       if(.not.ok)then
         result%status=MACRO_RUNTIME_FAILED
         return
@@ -237,6 +282,27 @@ contains
     ! Use the exact exchange vector injected into the converged corrector for mass identity.
     current_node=sum(current_domain,dim=1)
     result%matrix_result=corrector
+
+    if(surface_active)then
+      result%returned_surface_cm=raw_rates%top_partition%returned_surface_cm
+      result%surface_partition_residual_cm = &
+           surface_request%matrix_direct_supply_total_cm + surface_request%runon_total_cm + &
+           raw_rates%top_partition%accepted_total_cm + raw_rates%top_partition%returned_surface_cm - &
+           result%surface_external_input_cm
+      if(abs(surface_request%lateral_requested_total_cm)>policy%surface_return_tolerance_cm)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
+      if(raw_rates%top_partition%returned_surface_cm>policy%surface_return_tolerance_cm)then
+        result%retry_advised=.true.
+        result%status=MACRO_RUNTIME_RETRY
+        return
+      end if
+      if(abs(result%surface_partition_residual_cm)>policy%surface_return_tolerance_cm)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
+    end if
 
     call build_macropore_standard_candidate(accepted_macro,geometry,raw_rates%top_partition,current_domain, &
          raw_rates%rapid_outflow_cp_cm,dt,geometry_config%top_node,base_request%parameters%z, &
