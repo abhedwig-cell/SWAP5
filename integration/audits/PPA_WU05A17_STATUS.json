@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.ppa_wu05a17.status.v1",
+  "workunit": "PPA-WU05-A17",
+  "phase": "CLOSED_PARTIAL_QUALIFIED_TRANSACTION_INFRASTRUCTURE",
+  "decision": "QUALIFIED_INNER_CALLBACK_TRANSACTION_INFRASTRUCTURE_PERCHED_E2E_BLOCKED",
+  "baseline": "51584ec8f340ae01e6e7d2d34e66c9fc011c1394",
+  "canonical_reconciliation": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "branch": "work/ppa-wu05-a17-serialized-inner-callback",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "serialized inner-callback transaction infrastructure",
+  "production_admission_candidate": false,
+  "canonical_admitted": false,
+  "closed": true,
+  "qualified_postimage": "31f8a789f7f0d4d8c44a418cf08a2529c39c9fbb",
+  "qualification_run": 36849023154,
+  "qualification_job": 110326010736,
+  "qualified_capabilities": [
+    "opt-in inner_richards_exchange_enabled execution route",
+    "current-iterate A6 rate evaluation through A16 provider",
+    "A15 derivative composition in Reference-Richards Jacobian",
+    "single internal exchange ownership",
+    "serialized candidate materialization",
+    "mass closure",
+    "reject/discard/replay",
+    "seven-field persistence and restart"
+  ],
+  "preservation": {
+    "a16_analytic_callback": "PASS",
+    "a16_actual_provider": "PASS",
+    "a15_derivative": "PASS",
+    "corrected_a11": "PASS",
+    "a7_a8_a9_a10": "PASS",
+    "run": 36849023154
+  },
+  "active_perched_e2e": {
+    "qualified": false,
+    "blocker": "NO_SOLVER_STABLE_REFERENCE_RICHARDS_PERCHED_AUTHORITY_FIXTURE",
+    "four_node_finding": "direct provider sees initial perched exchange but accepted interval loses thin perched topology",
+    "six_node_finding": "baseline Reference-Richards solve without macropore callback already fails nonlinear convergence"
+  },
+  "not_admitted": [
+    "active perched production runtime",
+    "canonical perched admission",
+    "covering-layer extension",
+    "dynamic crack feedback",
+    "RossFast",
+    "parallel MultiSWAP"
+  ],
+  "next_action": "Open PPA-WU05-A18 to recover or independently qualify a solver-stable source-backed perched Reference-Richards baseline before replaying A17 inner callback.",
+  "recovery_point": "31f8a789f7f0d4d8c44a418cf08a2529c39c9fbb"
+}
