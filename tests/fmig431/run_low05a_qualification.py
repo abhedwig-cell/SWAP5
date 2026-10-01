@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Local O0/O2 LOW05-A qualification with explicit legacy support fixture."""
-import hashlib,json,os,pathlib,re,shlex,subprocess,tempfile
+import base64,gzip,hashlib,json,os,pathlib,re,shlex,subprocess,tempfile
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 TESTS=['tests/fmig431/test_low05a_application.f90','tests/fapp/test_ppa_low02_time_application_admission.f90','tests/fapp/test_ppa_wu01_production_application_bootstrap.f90','tests/fmig431/test_fmig431_low01a_qgwl_binding.f90','tests/fmig431/test_fmig431_low01a_transaction_contract.f90']
+frozen_authority=json.loads((ROOT/'tests/fmig431/low05a_frozen_authority_sha256.json').read_text())
+for path,expected in frozen_authority['sha256'].items():
+ if hashlib.sha256((ROOT/path).read_bytes()).hexdigest()!=expected:raise RuntimeError('shared authority drift: '+path)
 FC=shlex.split(os.environ.get('FC','gfortran'))
 LINK=shlex.split(os.environ.get('FMR_FC_LINK_FLAGS',''))
 modules={}
@@ -21,12 +24,23 @@ def visit(p):
 visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')
 for test in TESTS:visit(ROOT/test)
 testpaths={ROOT/p for p in TESTS};sources=[p for p in ordered if p not in testpaths]
-result={'work_unit':'F-MIG431-LOW05-A','scope':'bounded ordinary Reference application, existing FSI04 support fixture','compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],'source_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in ordered},'runs':{},'canonical_admission':False}
+result={'work_unit':'F-MIG431-LOW05-A','scope':'bounded ordinary Reference application, existing FSI04 support fixture','compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],'source_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in ordered},'runs':{},'canonical_admission':False,'shared_authority_drift_check':'PASS','shared_authority_baseline':frozen_authority['baseline']}
 with tempfile.TemporaryDirectory(prefix='low05a-') as folder:
  for opt in ('O0','O2'):
   build=pathlib.Path(folder)/opt;build.mkdir()
   flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build)]
-  objects=[]
+  carrier=json.loads((ROOT/'integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json').read_text())
+  member=next(m for m in carrier['members'] if m['path']=='SWAP/functions.f90')
+  raw=gzip.decompress(base64.b64decode(member['gzip_base64']))
+  if hashlib.sha256(raw).hexdigest()!=member['sha256']:raise RuntimeError('frozen source hash mismatch')
+  text=raw.decode()
+  match=re.search(r'^\s*real\(8\) function afgen .*?^\s*end function afgen',text,re.M|re.S|re.I)
+  if not match:raise RuntimeError('AFGEN extraction failed')
+  frozen=build/'frozen_b111_afgen.f90';frozen.write_text(match.group(0)+'\n')
+  frozen_obj=build/'frozen_b111_afgen.o'
+  subprocess.run(FC+flags+['-c',str(frozen),'-o',str(frozen_obj)],check=True,capture_output=True,text=True)
+  result['frozen_functions_sha256']=member['sha256']
+  objects=[str(frozen_obj)]
   for p in sources:
    obj=build/(p.stem+'.o');objects.append(str(obj))
    subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,capture_output=True,text=True)
@@ -45,3 +59,4 @@ result['status']='LOCAL_BOUNDED_GATES_PASS';result['o0_o2_marker_identity']=True
 output=pathlib.Path(os.environ.get('LOW05A_RESULT','low05a_qualification_result.json'))
 output.write_text(json.dumps(result,indent=2)+'\n')
 print('LOW05A_LOCAL_QUALIFICATION=PASS')
+

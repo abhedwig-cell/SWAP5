@@ -17,6 +17,10 @@ program test_low05a_application
   use mod_fmr_runtime_core, only: fmr_logical_column_t
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
        fmr_serialized_physical_observation_t, fmr_new_b110_committed_state
+  use mod_fmr_groundwater_head_forcing_adapter
+  use mod_canonical_contracts, only: canonical_forcing_t
+  use mod_groundwater_topology_composition, only: groundwater_topology_t
+  use mod_groundwater_application_plan, only: groundwater_tile_predictor_input_t, groundwater_cell_area_input_t
   implicit none
   real(real64), parameter :: T0=5100.1875_real64, T1=5100.6875_real64, HARD_MASS_GATE=1.0e-12_real64
   type(fmr_production_application_config_t) :: cfg, oracle, badcfg
@@ -24,6 +28,12 @@ program test_low05a_application
   type(fmr_serialized_column_result_t), allocatable :: a(:), b(:), rejected(:)
   type(fmr_b110_physical_forcing_t) :: effective(1)
   type(fmr_hbot5_control_t) :: law
+  type(fmr_groundwater_head_forcing_materializer_t) :: materializer
+  class(canonical_forcing_t), allocatable :: mapped
+  type(groundwater_topology_t) :: topology
+  type(groundwater_tile_predictor_input_t) :: predictors(0)
+  type(groundwater_cell_area_input_t) :: areas(0)
+  integer(int64) :: context_handle
   type(fmr_hbot5_proposal_t) :: proposal
   real(real64) :: k, nan
   integer :: status, j
@@ -80,6 +90,12 @@ program test_low05a_application
   call require(status==FMR_APP_BOOT_OK,'ordinary mode5 bootstrap without groundwater datum/ledger')
   call direct%initialize(oracle,status)
   call require(status==FMR_APP_BOOT_OK,'default groundwater-owned mode5 preserved')
+  call app%materialize_groundwater_context(topology,predictors,areas,context_handle,status)
+  call require(status/=FMR_APP_BOOT_OK .and. context_handle==0_int64,'ordinary owner rejects groundwater context')
+  call materializer%initialize(cfg%tiles(1)%base_forcing)
+  call require(.not. materializer%profile_admitted(cfg%tiles(1)%parameters),'ordinary law rejects groundwater profile')
+  call materializer%materialize(-0.75_real64,oracle%tiles(1)%groundwater_datum,mapped,status)
+  call require(status/=0 .and. .not. allocated(mapped),'groundwater materializer rejects competing head law')
   call app%run_standalone(T0,T1,a,status)
   call require(status==FMR_APP_BOOT_OK,'ordinary physical transaction')
   call direct%run_standalone(T0,T1,b,status)
@@ -98,6 +114,7 @@ program test_low05a_application
   print '(a)', 'LOW05A_PRODUCTION_FROZEN_ENDPOINT_MASS=PASS'
   print '(a)', 'LOW05A_DEFAULT_GROUNDWATER_MODE5_PRESERVED=PASS'
   print '(a)', 'LOW05A_EFFECTIVE_FORCING_OWNERSHIP_FAIL_CLOSED=PASS'
+  print '(a)', 'LOW05A_GROUNDWATER_CONTEXT_MATERIALIZER_REJECTION=PASS'
 
   do j=1,5
     badcfg=cfg
@@ -118,11 +135,32 @@ program test_low05a_application
     call badapp%close(status)
   end do
   print '(a)', 'LOW05A_BOOTSTRAP_PROFILE_FAIL_CLOSED=PASS'
+  call qualify_frozen_source_oracle()
   call qualify_exchange_directions(cfg)
   call qualify_transaction_restart(cfg)
   print '(a)', 'LOW05A_APPLICATION_GATE=PASS'
 contains
 
+
+  subroutine qualify_frozen_source_oracle()
+    real(real64), external :: afgen
+    type(fmr_hbot5_control_t) :: control
+    type(fmr_hbot5_proposal_t) :: resolved
+    real(real64) :: table(6), t, oracle_head
+    integer :: i,s
+    table=[1001.0_real64,-100.0_real64,1002.0_real64,20.0_real64,1003.0_real64,-30.0_real64]
+    call control%initialize(table(1:6:2),table(2:6:2),0.0_real64,1000.0_real64, &
+         0.0_real64,4.0_real64,s)
+    call require(s==FMR_HBOT5_OK,'source oracle table')
+    do i=1,64
+      t=real(i,real64)/16.0_real64
+      call control%resolve(0.0_real64,t,resolved,s)
+      oracle_head=afgen(table,6,1000.0_real64+t)
+      call require(s==FMR_HBOT5_OK .and. same_bits(resolved%pressure_head_cm,oracle_head), &
+           'exact frozen B1.11 AFGEN compiled-source identity')
+    end do
+    print '(a)', 'LOW05A_FROZEN_B111_AFGEN_64_POINT_BIT_IDENTITY=PASS'
+  end subroutine
 
   subroutine qualify_exchange_directions(config)
     type(fmr_production_application_config_t), intent(in) :: config
