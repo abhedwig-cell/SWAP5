@@ -7,15 +7,15 @@ module mod_a26_live_provider
   procedure::evaluate=>ev;procedure::evaluate_demand=>evd;procedure::supports_point_conductivity=>sp;procedure::evaluate_point_conductivity=>ep
  end type
 contains
- subroutine ev(self,h,theta,k,c,dk);class(p_t),intent(in)::self;real(real64),intent(in)::h(:);real(real64),intent(out)::theta(:),k(:),c(:),dk(:)
- theta=.3_real64;k=1._real64;c=.002_real64;dk=0._real64
+ subroutine ev(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead);class(p_t),intent(in)::self;real(real64),intent(in)::pressure_head(:);real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
+ water_content=.3_real64;conductivity=1._real64;capacity=.002_real64;dconductivity_dhead=0._real64
  end subroutine
- subroutine evd(self,h,m,theta,k,c,dk);class(p_t),intent(in)::self;real(real64),intent(in)::h(:);integer,intent(in)::m
- real(real64),intent(out)::theta(:),k(:),c(:),dk(:);call self%evaluate(h,theta,k,c,dk)
+ subroutine evd(self,pressure_head,demand_mask,water_content,conductivity,capacity,dconductivity_dhead);class(p_t),intent(in)::self;real(real64),intent(in)::pressure_head(:);integer,intent(in)::demand_mask
+ real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:);call self%evaluate(pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
  end subroutine
  logical function sp(self);class(p_t),intent(in)::self;sp=.true.;end function
- subroutine ep(self,i,h,t,k,a);class(p_t),intent(in)::self;integer,intent(in)::i;real(real64),intent(in)::h,t;real(real64),intent(out)::k;logical,intent(out)::a
- k=1._real64;a=i>0
+ subroutine ep(self,node_index,pressure_head,water_content,conductivity,available);class(p_t),intent(in)::self;integer,intent(in)::node_index;real(real64),intent(in)::pressure_head,water_content;real(real64),intent(out)::conductivity;logical,intent(out)::available
+ conductivity=1._real64;available=node_index>0
  end subroutine
 end module
 program test_ppa_wu05a26_live_trial_preparer
