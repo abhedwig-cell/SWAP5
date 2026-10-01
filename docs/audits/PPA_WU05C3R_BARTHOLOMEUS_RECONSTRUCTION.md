@@ -195,3 +195,27 @@ Properties:
 This is not yet the Bartholomeus kernel. It is the solver-policy component into which the exact reconstructed physical residual can later be injected.
 
 A focused standalone test covers no-stress, full-stress and interior-root behavior. No GitHub Actions workflow is added at this stage.
+
+
+## Reconstruction checkpoint R4 — physical residual boundary
+
+Recovered source-context from the exact no-stress patch establishes the legacy `SOLVE/myfunc` sign contract:
+
+```text
+residual(resp_factor) = c_macro(resp_factor) - c_min_micro(resp_factor)
+```
+
+where the historical implementation states that increasing respiration demand decreases `c_macro` and increases `c_min_micro`.
+
+Therefore:
+- residual at maximum demand >= 0: exact no-stress result;
+- residual at zero <= 0: full-stress result;
+- opposite endpoint signs: one interior balance point is sought by the legacy bracketed route.
+
+A pure `mod_oxygen_balance_contract` now records this source-bound algebra without importing legacy globals.
+
+### Important boundary
+
+The complete algebra inside legacy `MACRO` and `MICRO` is not yet present in the indexed patch evidence. It will not be reconstructed from variable names or inferred literature equations. The next kernel step requires extraction of the pristine/patched `oxygenstress.f90` payload from the retained source package or another exact source-bearing artefact.
+
+R4 therefore advances the kernel boundary without fabricating omitted physics.
