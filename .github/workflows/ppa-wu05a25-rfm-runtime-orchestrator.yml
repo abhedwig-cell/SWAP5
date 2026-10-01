@@ -19,5 +19,7 @@ jobs:
      run: bash tests/fpm/run_ppa_wu05a19_rfm_physical_state.sh
    - name: Requalify A20 carrier checkpoint semantics
      run: bash tests/fpm/run_ppa_wu05a20_rfm_optional_state_layout.sh
+   - name: Qualify A25 node sorptivity
+     run: bash tests/fpm/run_ppa_wu05a25_rfm_node_sorptivity.sh
    - name: Qualify A25 orchestrator
      run: bash tests/fpm/run_ppa_wu05a25_rfm_runtime_orchestrator.sh
