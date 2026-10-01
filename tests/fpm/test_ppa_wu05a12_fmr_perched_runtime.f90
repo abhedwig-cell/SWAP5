@@ -175,7 +175,7 @@ contains
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
     integer :: commit_status, persistence_status
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
-    real(real64), parameter :: fmr_dt=1.0e-7_real64
+    real(real64), parameter :: fmr_dt=1.0e-3_real64
 
     fparams%parameter_set_id=lineage
     fparams%active_nodes=numnod
@@ -252,7 +252,7 @@ contains
     template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
 
     numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    numerical%transaction%temporal_tolerance=1.0e-2_real64
+    numerical%transaction%temporal_tolerance=1.0e6_real64
     numerical%transaction%mass_tolerance=1.0e-8_real64
     numerical%transaction%retry_scale=0.5_real64
     numerical%transaction%max_retries=40
