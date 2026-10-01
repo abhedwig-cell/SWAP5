@@ -15,6 +15,7 @@ MODULE_SRC=(
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_accepted_trajectory_directional_publication.f90
   src/transaction/mod_transaction_reference.f90
+  src/runtime/mod_fmr_mode7_temporal_head_envelope.f90
   src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
@@ -23,7 +24,11 @@ MODULE_SRC=(
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
+  src/solver/mod_fmr_rossfast_solver_selection_binding.f90
+  src/solver/mod_rossfast_d3r_model_binding.f90
+  src/solver/mod_rossfast_d3r_execution_policy.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/solver/mod_reference_richards_accepted_step_directional_service.f90
   src/runtime/mod_macropore_continuation_state.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_process.f90
@@ -58,6 +63,9 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
+  src/adapter/mod_b110_serialized_context_binding.f90
+  src/process/mod_snow_process.f90
+  src/process/mod_restricted_fixed_weir_surface_water.f90
   src/process/macropore/mod_ppa_wu05a5_top_partition.f90
   src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
@@ -73,6 +81,8 @@ MODULE_SRC=(
   src/runtime/mod_macropore_standard_rate_adapter.f90
   src/solver/mod_macropore_exchange_overlay_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
+  src/runtime/mod_fmr_macropore_configuration.f90
+  src/runtime/mod_fmr_serialized_reference_backend.f90
 )
 
 for opt in 0 2; do
