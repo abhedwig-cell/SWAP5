@@ -76,6 +76,11 @@ contains
     endpoint_input_cm=routing%endpoint_amount*request%step_duration_day
 
     er=request%endpoint_release
+    if(.not.allocated(er%accepted_wall_age_day))allocate(er%accepted_wall_age_day(n))
+    if(.not.allocated(er%wall_sorptivity_cm_sqrt_day))allocate(er%wall_sorptivity_cm_sqrt_day(n))
+    if(size(er%accepted_wall_age_day)/=n.or.size(er%wall_sorptivity_cm_sqrt_day)/=n)return
+    er%accepted_wall_age_day=accepted%wall_age_day
+    er%wall_sorptivity_cm_sqrt_day=accepted%wall_sorptivity_cm_sqrt_day
     if(.not.allocated(er%accepted_storage_cm))allocate(er%accepted_storage_cm(n))
     if(size(er%accepted_storage_cm)/=n)return
     er%accepted_storage_cm=accepted%endpoint_water_cm+endpoint_input_cm
@@ -96,6 +101,8 @@ contains
     call copy_rfm_physical_state(accepted,result%candidate_rfm,ok)
     if(.not.ok)return
     result%candidate_rfm%endpoint_water_cm=result%endpoint_release%candidate_storage_cm
+    result%candidate_rfm%wall_age_day=result%endpoint_release%candidate_wall_age_day
+    result%candidate_rfm%wall_sorptivity_cm_sqrt_day=result%endpoint_release%candidate_wall_sorptivity_cm_sqrt_day
     result%candidate_rfm%mb_water_cm=0.0_real64
 
     allocate(result%matrix_source_rate_per_day(size(request%node_thickness_cm)))
