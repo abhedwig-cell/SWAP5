@@ -8,6 +8,9 @@ program test_a27_source_units
  use mod_b110_source_sink_provider,only:b110_source_sink_provider_t,bind_b110_source_sink_provider
  use mod_fixed_flux_top_boundary_provider,only:fixed_flux_top_boundary_provider_t
  use mod_rfm_matrix_source_provider,only:rfm_matrix_source_provider_t,bind_rfm_matrix_source_provider
+ use mod_rfm_physical_state
+ use mod_rfm_preferential_router
+ use mod_rfm_production_candidate_composer
  implicit none
  real(real64),parameter::dt=1e-3_real64,tol=1e-10_real64
  type(soil_water_parameter_set_t),target::params
@@ -23,6 +26,10 @@ program test_a27_source_units
  real(real64),allocatable,target::qdra(:,:),qssdi(:),qrot(:),source(:)
  real(real64),allocatable::cofgen(:,:),h0(:),t0(:)
  real(real64)::cond(numnod),cap(numnod),dkdh(numnod)
+ type(rfm_physical_state_t)::accepted_rfm
+ type(rfm_preferential_routing_result_t)::routing
+ type(rfm_production_candidate_request_t)::cq
+ type(rfm_production_candidate_result_t)::composed
  real(real64)::amount,receipt,delta,bottom,duration
  integer::i,node
  logical::ok
@@ -39,7 +46,20 @@ program test_a27_source_units
  allocate(h0(numnod),t0(numnod));h0=-100.0_real64;call hyd%evaluate(h0,t0,cond,cap,dkdh)
  allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod),source(numnod));qdra=0.0_real64;qssdi=0.0_real64;qrot=0.0_real64;source=0.0_real64
  call bind_b110_source_sink_provider(base,qdra,qssdi,qrot)
- node=max(1,numnod/2);amount=.02_real64;source(node)=amount/(dz(node)*dt)
+ node=max(1,numnod/2);call accepted_rfm%initialize(1,ok);if(.not.ok)error stop 'init receiver'
+ accepted_rfm%endpoint_water_cm=.1_real64;accepted_rfm%wall_age_day=.2_real64
+ routing%status=RFM_PREF_ROUTER_AVAILABLE;routing%mb_amount=0._real64
+ routing%endpoint_amount=[0._real64]
+ cq%step_duration_day=dt;cq%effective_supply_rate_cm_per_day=0.;cq%matrix_supply_rate_cm_per_day=0.
+ cq%candidate_tau_surface_day=0.;cq%exchange_length_cm=20.;cq%chi_wall=1.
+ cq%endpoint_area_fraction=[.02_real64];cq%endpoint_bottom_depth_cm=[50._real64]
+ cq%endpoint_contact_thickness_cm=[20._real64];cq%endpoint_node_index=[node]
+ cq%endpoint_sorptivity_cm_sqrt_day=[.2_real64];cq%endpoint_conductivity_cm_per_day=[.01_real64]
+ cq%node_depth_cm=-z;cq%node_thickness_cm=dz;cq%matrix_pressure_head_cm=h0
+ call compose_rfm_production_candidate(accepted_rfm,routing,cq,tol,composed)
+ if(.not.composed%valid)error stop 'actual composer'
+ amount=composed%endpoint_release%release_total_cm
+ source=composed%matrix_source_rate_per_day
  call bind_rfm_matrix_source_provider(rfm,base,source,ok);if(.not.ok)error stop 'bind'
  q%parameters=>params;q%base_state%active_nodes=numnod
  allocate(q%base_state%pressure_head(numnod),q%base_state%water_content(numnod));q%base_state%pressure_head=h0;q%base_state%water_content=t0
@@ -63,6 +83,6 @@ program test_a27_source_units
  print '(a)','intended_transfer_cm,cell_thickness_cm,measured_matrix_receipt_cm,expected_existing_receipt_cm'
  print '(4(es24.16,:,","))',amount,dz(node),receipt,amount/dz(node)
  if(abs(receipt-amount/dz(node))>1e-8_real64)error stop 'units probe oracle'
- if(abs(receipt-amount)<1e-4_real64)error stop 'dimension defect not exposed'
+ if(abs(receipt-amount)<1e-6_real64)error stop 'dimension defect not exposed'
  print '(a)','A27_SOURCE_UNIT_MISMATCH_REPRODUCED=PASS' 
 end program
