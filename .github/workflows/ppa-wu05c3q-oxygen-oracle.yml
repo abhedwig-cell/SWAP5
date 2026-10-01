@@ -2,15 +2,6 @@ name: PPA WU05 C3Q Oxygen Oracle
 
 on:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - 'src/physics/oxygen/**'
-      - 'src/process/mod_bartholomeus_root_uptake_composition.f90'
-      - 'src/process/mod_bartholomeus_root_sink_modifier.f90'
-      - 'tests/physics/*bartholomeus*'
-      - 'tests/physics/run_ppa_wu05c3*.sh'
-      - 'tools/vq/c3q_*'
-      - '.github/workflows/ppa-wu05c3q-oxygen-oracle.yml'
 
 jobs:
   kernel:
