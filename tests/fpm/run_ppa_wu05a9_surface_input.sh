@@ -113,8 +113,14 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr_macro.o" -o "$OUT/test_fmr_macro"
   "$OUT/test_fmr_macro" | tee "$OUT/fmr_macro.txt"
   grep -Fq 'PPA_WU05A8_FMR_MACRO_TRIAL=PASS' "$OUT/fmr_macro.txt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a9_fmr_surface_top_input.f90 -o "$OUT/test_fmr_surface.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr_surface.o" -o "$OUT/test_fmr_surface"
+  "$OUT/test_fmr_surface" | tee "$OUT/fmr_surface.txt"
+  grep -Fq 'PPA_WU05A9_FMR_SURFACE_TOP_INPUT=PASS' "$OUT/fmr_surface.txt"
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
 cmp "$BUILD/o0/fmr_macro.txt" "$BUILD/o2/fmr_macro.txt"
 cmp "$BUILD/o0/surface.txt" "$BUILD/o2/surface.txt"
+cmp "$BUILD/o0/fmr_surface.txt" "$BUILD/o2/fmr_surface.txt"
 echo "PPA_WU05A9_SURFACE_REGRESSION_GATE=PASS"
