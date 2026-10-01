@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.ppa_wu05a21.status.v1",
+  "workunit": "PPA-WU05-A21",
+  "phase": "CLOSED_TRUE_PHYSICS_OWNERSHIP_BLOCKER",
+  "decision": "LIVE_RFM_RUNTIME_BLOCKED_ON_FAST_DOMAIN_FATE_OWNER",
+  "baseline": "4a9878b03791b7b9d43aa34aa70ed7ccdce13b08",
+  "branch": "audit/ppa-wu05-a21-rfm-live-runtime-readiness",
+  "surface_entry_chain_ready": true,
+  "dedicated_rfm_state_ready": true,
+  "checkpoint_layout_ready": true,
+  "live_runtime_authorized": false,
+  "runtime_reject_guard_must_remain": true,
+  "blocker": {
+    "class": "MISSING_FAST_DOMAIN_FATE_OWNER",
+    "terminating_endpoint_release_owner": false,
+    "rfm_mb_wall_exchange_owner": false,
+    "rfm_mb_bottom_or_deep_export_owner": false,
+    "storage_only_route_rejected": true
+  },
+  "rejected_shortcuts": [
+    "reuse_standard_swap_macropore_state_or_exchange",
+    "use_A10_rapid_drain_as_generic_RFM_MB_bottom_export",
+    "admit_storage_only_live_runtime"
+  ],
+  "resume_condition": "source-backed preregistered endpoint-release and persistent/deep MB fate contracts with exact candidate/commit mass ownership",
+  "suggested_successors": [
+    "PPA-WU05-A22A_RFM_TERMINATING_ENDPOINT_RELEASE",
+    "PPA-WU05-A22B_RFM_MB_WALL_DEEP_FATE"
+  ],
+  "stop_rule": "TRUE_PHYSICS_OWNERSHIP_BLOCKER"
+}
