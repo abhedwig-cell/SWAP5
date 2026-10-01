@@ -38,7 +38,8 @@ program test_fpe_multi06_mode7_generated_worker_pool
   type(fixed_flux_top_boundary_provider_t), target :: top
   type(canonical_numerical_config_t) :: numerical
   character(len=32) :: arg
-  integer :: workers,dispatch_status,pool_status,i,origin,ih,id,j,completed,committed,retries,mass_fail,solver
+  integer :: workers,dispatch_status,pool_status,i,origin,ih,id,j,completed,committed,retries,mass_fail,solver,clock0,clock1,clock_rate
+  real(real64) :: solve_seconds
   logical :: prepared
 
   if(command_argument_count()/=1) error stop 'usage WORKERS'
@@ -64,8 +65,11 @@ program test_fpe_multi06_mode7_generated_worker_pool
     call init_column_state(i,H0(ih),DELTA(id),params(1),forcings(i),states(i),columns(i))
   end do
 
+  call system_clock(clock0,clock_rate)
   call fmr_run_parallel_physical_multiswap(columns,templates,params,forcings,states,numerical,top,0.0_real64,DT, &
        32,workers,results,diagnostics,aggregate,dispatch_status,pool_status,runtime)
+  call system_clock(clock1)
+  solve_seconds=real(clock1-clock0,real64)/real(clock_rate,real64)
 
   call req(dispatch_status==FMR_SERIAL_DISPATCH_OK,'serialized dispatch')
   call req(pool_status==FMR_PARALLEL_POOL_OK,'pool status')
@@ -104,7 +108,7 @@ program test_fpe_multi06_mode7_generated_worker_pool
        '|retries=',retries,'|mass_fail=',mass_fail,'|diagnostic_rejected=',solver, &
        '|aggregate_retries=',aggregate%retries,'|max_simultaneous=',runtime%max_simultaneous_real_physical_solves, &
        '|aggregate_mass_complete=',runtime%authoritative_aggregate_mass%complete, &
-       '|aggregate_mass_residual=',runtime%authoritative_aggregate_mass%residual
+       '|aggregate_mass_residual=',runtime%authoritative_aggregate_mass%residual,'|solve_seconds=',solve_seconds
   write(*,'(A)')'F_PE_MULTI06=PASS'
 
 contains
