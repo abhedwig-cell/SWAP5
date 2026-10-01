@@ -1,10 +1,12 @@
 program test_ppa_wu05_migmac01_covering_layer
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_macropore_covering_layer_input, only: covering_layer_input_request_t, evaluate_covering_layer_input
+  use mod_macropore_covering_layer_input, only: covering_layer_input_request_t, evaluate_covering_layer_input, &
+       evaluate_covering_layer_rate_derivative
   implicit none
   type(covering_layer_input_request_t) :: req
   real(real64), allocatable :: q(:)
   logical :: ok
+  real(real64) :: dqdh
 
   req%top_node=3
   req%step_duration_day=0.1_real64
@@ -19,6 +21,9 @@ program test_ppa_wu05_migmac01_covering_layer
   if(abs(q(1)-0.11023356798381329_real64)>5e-14_real64) error stop 2
   if(abs(q(2)-0.07348904532254219_real64)>5e-14_real64) error stop 3
   if(abs(sum(q)-0.18372261330635548_real64)>5e-14_real64) error stop 4
+  call evaluate_covering_layer_rate_derivative(req,dqdh,ok)
+  if(.not.ok) error stop 8
+  if(abs(dqdh-0.12248174220423698_real64)>5e-14_real64) error stop 9
 
   req%matrix_head_above_cm=0.0_real64
   call evaluate_covering_layer_input(req,q,ok)
