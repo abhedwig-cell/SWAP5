@@ -4,9 +4,28 @@
   "title": "Production hydraulic views and FMR integration",
   "branch": "work/ppa-wu05-a8-fmr-macropore-adapter",
   "baseline": "5669489d854603440702dba4d3e51ea99254572f",
-  "canonical_reconciled_through": "ddd218085afd363d22ce0b632d3ac893c7c9f40b",
-  "status": "PREREGISTERED_HYDRAULIC_VIEW_ADAPTER",
-  "production_activation": false,
+  "canonical_reconciled_through": "0b231d1669cf38d069f14c6d2f0f07cd3bb1c5b1",
+  "status": "QUALIFIED_PRODUCTION_FMR_SINGLE_COLUMN_ADMISSION_CANDIDATE_READY_FOR_SELECTIVE_CANONICAL_PACKAGING",
+  "production_activation": "IMPLEMENTED_ON_WORK_BRANCH_BOUNDED_SCOPE",
   "canonical_admission": "NONE",
-  "next_action": "Implement and qualify source-bound macropore hydraulic-view derivation from continuation state and geometry."
+  "next_action": "Create clean selective admission branch from current canonical with production postimage and minimum qualification evidence.",
+  "qualification": {
+    "head": "5edd7d6c928c2e2047c829766167f63819d21b2f",
+    "focused_run_id": 36820455608,
+    "mock_runtime": "PASS_O0_O2",
+    "real_richards": "PASS_O0_O2",
+    "transaction": "PASS",
+    "discard_replay": "PASS",
+    "persistence_restart": "PASS",
+    "next_candidate_replay": "PASS"
+  },
+  "scope_holds": [
+    "NO_PERCHED_ZONE",
+    "NO_SURFACE_CONNECTED_MACROPORE_TOP_INPUT",
+    "RAPID_DRAINAGE_DISABLED_IN_FMR_ADMISSION_SCOPE",
+    "FIXED_CRACK_GEOMETRY_WITHIN_TRIAL",
+    "REFERENCE_RICHARDS_ONLY",
+    "SERIALIZED_SINGLE_COLUMN_ONLY"
+  ],
+  "packaging_blocker": "PR #922 carries broad A1-A8 research history; selective canonical packaging required."
 }
