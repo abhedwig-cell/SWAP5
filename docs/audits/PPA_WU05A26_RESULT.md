@@ -3,56 +3,81 @@
 Date: 2026-10-01
 Status: QUALIFIED_ADMISSION_CANDIDATE
 
-Reconciled canonical baseline: e2d18564383e1350b0b9a68af0eaf668dac784af
-Qualified source postimage: 2a77a36411ecedf3840566de1f5130322dc417fe
-Equivalent no-source-change branch head after qualification: 44f4225b512fde778558b8bac7395346d6eea250
-Qualification run: 36922167441
-Qualification job: 110570615817
-Conclusion: SUCCESS
+Reconciled canonical base: e2d18564383e1350b0b9a68af0eaf668dac784af
+Qualified content postimage: 2a77a36411ecedf3840566de1f5130322dc417fe
+Qualification run: 36922167441 — SUCCESS
+Qualification job: 110570615817 — SUCCESS
 
-## Qualified production envelope
+Current branch head after a tree-neutral compile-order metadata commit: 44f4225b512fde778558b8bac7395346d6eea250.
+Git compare reports zero changed files between 2a77a364 and 44f4225b; therefore the qualified source tree is unchanged.
 
-The serialized Reference backend now composes the bounded RFM runtime only for:
-- explicit valid RFM configuration and forcing;
-- unponded, runoff-free B1.10 flux-controlled surface operation;
-- Reference Richards;
+## Qualified production composition
+
+Bounded scope:
+- unponded;
+- runoff-free;
+- B1.10 flux-controlled surface regime;
+- explicit caller-owned RFM parameters and endpoint geometry;
 - no simultaneous standard SWAP macropore execution;
-- no numerical-continuation layout;
-- accepted-state-frozen first-order split.
+- Reference Richards matrix solver;
+- accepted-state-frozen first-order operator split;
+- candidate-only RFM state;
+- distinct MB deep receipt;
+- fail closed outside scope.
 
-The route is:
+Composition:
+1. accepted RFM state and accepted matrix hydraulic view;
+2. A13 surface event age;
+3. A12/A11 hydraulic activation;
+4. A15 B1.10 effective surface receipt and matrix/preferential partition;
+5. A17 endpoint routing;
+6. A26H wall hydraulic history binding;
+7. A26J endpoint storage geometry;
+8. A26K hydrostatic IC macropore head;
+9. A22A stored IC endpoint release;
+10. A26I leading MB fast-through route as distinct deep receipt, with no passage wall exchange;
+11. A23 whole-column ledger;
+12. A24 internal matrix-source provider;
+13. real Reference Richards candidate trial;
+14. transaction owner decides accept/reject.
 
-accepted matrix/RFM state
--> B1.10 preflight
--> A13 event age
--> A11/A12 activation
--> A15 effective surface receipt
--> A17 routing
--> A26H wall hydraulic binding
--> A26J/A26K IC stored-water geometry and hydrostatic head
--> terminating IC wall release
--> A24 internal matrix source
--> Reference Richards candidate
--> RFM candidate + distinct MB deep receipt
--> A23 whole-column ledger
--> transaction owner accept/reject.
-
-Leading fast-through MB passage has no lateral wall exchange. Its water is published as distinct deep receipt. A22B remains a standalone primitive but is not the leading production owner.
+This remains an explicit first-order split, not a monolithic nonlinear RFM/Richards solve.
 
 ## Qualification evidence
 
-Run 36922167441 passed:
-- live-trial preparer;
-- timestep-refinement oracle;
-- accepted-state immutability and deterministic replay;
-- unsupported head-controlled regime fail-closed;
-- serialized backend O0/O2 compile/preservation;
-- real Reference Richards source binding and mass-balance oracle.
+Run 36922167441 passed in one reconciled gate:
+- PPA-WU05-A26 live trial preparer;
+- serialized backend O0/O2 compile/preservation gate;
+- real Reference Richards source binding.
 
-Earlier failures during reconciliation were compile-harness dependency-order defects introduced by newer canonical PERCH/macropore modules. No physics parameter was changed to obtain a pass.
+Earlier focused evidence additionally qualified:
+- production composer and A23 closure;
+- accepted-state immutability and bit-identical replay;
+- zero-RFM/reference limit;
+- timestep-refinement behavior;
+- checkpoint/RFM state carrier;
+- unsupported surface regimes fail closed;
+- A26H wall-history ownership;
+- A26J storage geometry;
+- A26K hydrostatic endpoint head.
 
-## Admission decision
+## Reconciliation
 
-A20's unconditional RFM NOT_ADMITTED guard is replaced only in the same postimage that invokes the qualified live preparer and A24 source seam. Unsupported combinations remain rejected.
+Canonical advanced substantially after the original A26 branch. The reconciled postimage preserves the later standard-macropore reduction continuation and PERCH work. RFM requires FMR_NUMERICAL_CONTINUATION_NONE and cannot consume the standard-macropore reduction continuation simultaneously.
 
-This is an explicit first-order operator split. It is not claimed as monolithic nonlinear RFM/Richards coupling.
+The only reconcile failures were focused compile-list topological-order defects introduced by new canonical dependencies. No RFM physics oracle failed.
+
+## Decision
+
+    A26 = QUALIFIED_ADMISSION_CANDIDATE
+    A20_RFM_GUARD = REPLACED_ONLY_WITH_LIVE_COMPOSITION
+    STANDARD_MACROPORE_COEXECUTION = REJECTED
+    MB_FAST_THROUGH_WALL_EXCHANGE = NOT_IN_LEADING_PRODUCTION_ROUTE
+    MB_DEEP_RECEIPT = DISTINCT
+    IC_MACRO_HEAD = HYDROSTATIC_FROM_EXPLICIT_STORAGE_GEOMETRY
+    ACCEPTED_ORIGIN_IMMUTABLE = QUALIFIED
+    RETRY_REPLAY = QUALIFIED
+    ZERO_RFM_LIMIT = QUALIFIED
+    TIMESTEP_REFINEMENT = QUALIFIED
+    REFERENCE_RICHARDS_BINDING = QUALIFIED
+    NEXT = canonical admission and post-merge preservation
