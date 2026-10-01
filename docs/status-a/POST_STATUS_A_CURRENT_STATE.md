@@ -130,6 +130,7 @@ The controlling authority chain is now:
 1. PPA-WU05-A8, canonically admitted by PR #923 at `9bad713b0d2ab24d40fcf937d11c850d3fb52a22`, for the bounded serialized Reference-Richards macropore runtime and continuation-state contract;
 2. PPA-WU05-A9, canonically admitted by PR #926 at `243f43cccd817c1bb175f14faa64efd574d6d3ca`, for the source-faithful surface-connected macropore top-input carrier;
 3. PPA-WU05-A10, canonically admitted by PR #928 at `190dad36a821f3a43f78f00fccf827c58cacedb6`, for source-bound main-domain rapid drainage. Post-merge A10 preservation run `36829313469` passed on that exact canonical merge.
+4. PPA-WU05-PERCH20, qualified for canonical admission from the clean-current-canonical reconstruction at code/test postimage `e07f9302b7f78d2389da1db86648e10aca864b26` by run `36896827529`, for source-backed perched-zone execution through the current-iterate inner-Richards callback and exact bounded `FrReduQ=[1,0.1,0.01,0.001]` retry ladder. This item becomes canonically admitted only when its admission PR is merged and post-merge preservation is green.
 
 The admitted envelope is deliberately narrow:
 
@@ -149,8 +150,13 @@ The admitted envelope is deliberately narrow:
 - main-domain rapid drainage through the source-bound A6 RAPIDDRAIN formulation;
 - dynamic rapid-drain water level, saturated top fraction, ponding, active bottom and storage views;
 - exact below-drain volume reconstruction for drain levels aligned to compartment boundaries;
-- accepted rapid drainage booked exactly once as external whole-column outflow.
+- accepted rapid drainage booked exactly once as external whole-column outflow;
+- opt-in source-faithful perched-zone detection through the legacy `CritUndSatVol` carrier;
+- current-iterate macropore exchange evaluated inside Reference Richards residual/Jacobian construction;
+- source-faithful local macropore exchange derivative semantics, including the exact absence of an explicit perched `QInIntSat` derivative in B1.11;
+- exact bounded macropore convergence-reduction ladder `1.0 -> 0.1 -> 0.01 -> 0.001`, recomputed per trial and never persisted as physical state;
+- candidate/history publication only after a converged reduction attempt.
 
-The admission does not include inference of source components from generic FMR `top_flux`, independent ponding/runon macropore source terms, simultaneous A9 ownership with Snow/Black/Boesten/fixed-weir surface-water routes, covering-layer or perched-zone macropore physics, arbitrary within-compartment rapid-drain levels, multiple rapid-drain levels, fixed-weir/Ribasim ownership of the same rapid-drain receipt, within-corrector dynamic crack-geometry feedback, RossFast, or parallel/concurrent MultiSWAP macropore execution.
+The admission does not include inference of source components from generic FMR `top_flux`, independent ponding/runon macropore source terms, simultaneous A9 ownership with Snow/Black/Boesten/fixed-weir surface-water routes, covering-layer macropore extension, arbitrary within-compartment rapid-drain levels, multiple rapid-drain levels, fixed-weir/Ribasim ownership of the same rapid-drain receipt, within-corrector dynamic crack-geometry continuation feedback, RossFast macropore execution, or parallel/concurrent MultiSWAP macropore execution.
 
 This capability is post-Status-A and does not change the frozen Status-A denominator.
