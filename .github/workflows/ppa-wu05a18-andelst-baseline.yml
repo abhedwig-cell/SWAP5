@@ -1,0 +1,20 @@
+name: PPA-WU05-A18 perched authority baseline
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-a18-perched-authority-fixture
+    paths:
+      - 'tests/fsi/ppa_wu05a18_andelst_headcalc_stubs.f90'
+      - 'tests/fpm/test_ppa_wu05a18_andelst_perched_reference.f90'
+      - 'tests/fpm/run_ppa_wu05a18_andelst_perched_reference.sh'
+      - '.github/workflows/ppa-wu05a18-andelst-baseline.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: A18 accepted Andelst perched Reference baseline
+        run: bash tests/fpm/run_ppa_wu05a18_andelst_perched_reference.sh
