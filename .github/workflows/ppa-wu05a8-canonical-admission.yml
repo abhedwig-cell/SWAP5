@@ -1,0 +1,34 @@
+name: PPA-WU05-A8 canonical admission
+
+on:
+  push:
+    branches:
+      - admit/ppa-wu05-a8-macropore-fmr
+    paths:
+      - 'src/process/macropore/**'
+      - 'src/runtime/mod_macropore_standard_rate_adapter.f90'
+      - 'src/runtime/mod_fmr_macropore_configuration.f90'
+      - 'tests/fpm/test_ppa_wu05a8_fmr_config.f90'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90'
+      - 'tests/fpm/test_ppa_wu05a7_single_column_runtime.f90'
+      - 'tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90'
+      - 'tests/fpm/test_ppa_wu05a8_rate_adapter.f90'
+            - 'tests/fpm/run_ppa_wu05a8_real_richards.sh'
+      - '.github/workflows/ppa-wu05a8-runtime-adapter.yml'
+  workflow_dispatch:
+
+jobs:
+  mock-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run A8 mock/runtime adapter gate
+        run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
+  real-richards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run A8 real Richards adapter gate
+        run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
