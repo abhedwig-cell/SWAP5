@@ -1,0 +1,20 @@
+name: PPA-WU05-PERCH20 model retry directive
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch20-model-retry-directive
+    paths:
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/fpm/test_ppa_wu05_perch20_model_retry_directive.f90'
+      - 'tests/fpm/run_ppa_wu05_perch20_model_retry_directive.sh'
+      - '.github/workflows/ppa-wu05-perch20-model-retry.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH20 model retry directive
+        run: bash tests/fpm/run_ppa_wu05_perch20_model_retry_directive.sh
