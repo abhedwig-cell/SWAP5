@@ -28,6 +28,7 @@ program test_macro_tracer01d_spechtacker_fixture
   real(real64) :: last_qtop=0.0_real64, last_qbot=0.0_real64
   integer :: unit, i, accepted, retries
   character(len=256) :: outfile
+  character(len=64) :: dt_arg
   logical :: ok
 
   if (numnod /= 10) error stop 'TRACER01-D fixture requires 10 nodes'
@@ -46,6 +47,11 @@ program test_macro_tracer01d_spechtacker_fixture
   irrig_end = 4680.0_real64 / 86400.0_real64
   horizon = 8600.0_real64 / 86400.0_real64
   dt_base = 120.0_real64 / 86400.0_real64
+  call get_command_argument(2, dt_arg)
+  if (len_trim(dt_arg) > 0) then
+     read(dt_arg,*) dt_base
+     dt_base = dt_base / 86400.0_real64
+  end if
   dt_min = 1.0_real64 / 86400.0_real64
 
   theta0 = [0.2405_real64, 0.1844_real64, 0.20775_real64, 0.2525_real64, 0.2773_real64, &
