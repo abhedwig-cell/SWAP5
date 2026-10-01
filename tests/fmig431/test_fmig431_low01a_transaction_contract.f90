@@ -16,7 +16,8 @@ program test_fmig431_low01a_transaction_contract
   call fmr_resolve_legacy_qgwl_bottom_boundary(c,committed_gwl,retry,status)
   call require(transfer(first%typed_bottom_flux,0_8)==transfer(retry%typed_bottom_flux,0_8),'retry bit identity')
   call fmr_resolve_legacy_qgwl_bottom_boundary(c,rejected_candidate_gwl,next,status)
-  call require(next%typed_bottom_flux/=first%typed_bottom_flux,'accepted-next-state sensitivity')
+  call require(abs(next%typed_bottom_flux-first%typed_bottom_flux)>100.0_real64*epsilon(1.0_real64), &
+       'accepted-next-state sensitivity')
   print '(a)','F-MIG431-LOW01A_REJECTED_TRIAL_COMMITTED_GWL_IMMUTABILITY=PASS'
   print '(a)','F-MIG431-LOW01A_FAILED_THEN_ACCEPTED_RETRY_QBOT_IDENTITY=PASS'
 contains
