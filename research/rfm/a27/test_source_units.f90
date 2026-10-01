@@ -80,9 +80,9 @@ program test_a27_source_units
  delta=sum((r1%candidate_state%water_content-r0%candidate_state%water_content)*dz)
  bottom=(r1%bottom_flux-r0%bottom_flux)*dt
  receipt=delta-bottom
- print '(a)','intended_transfer_cm,cell_thickness_cm,measured_matrix_receipt_cm,expected_existing_receipt_cm'
- print '(4(es24.16,:,","))',amount,dz(node),receipt,amount/dz(node)
- if(abs(receipt-amount/dz(node))>1e-8_real64)error stop 'units probe oracle'
- if(abs(receipt-amount)<1e-6_real64)error stop 'dimension defect not exposed'
- print '(a)','A27_SOURCE_UNIT_MISMATCH_REPRODUCED=PASS' 
+ print '(a)','intended_transfer_cm,cell_thickness_cm,measured_matrix_receipt_cm,expected_corrected_receipt_cm'
+ print '(4(es24.16,:,","))',amount,dz(node),receipt,amount
+ if(abs(receipt-amount)>1e-8_real64)error stop 'units probe oracle'
+
+ print '(a)','A27_SOURCE_UNIT_CORRECTION=PASS' 
 end program
