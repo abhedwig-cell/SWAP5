@@ -324,7 +324,7 @@ contains
     real(real64) :: heads(1)
     logical :: ok
     integer :: status
-    call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
+    call initialize_case(committed,column,template,parameters,base,config,signed_rate)
     call materializer%initialize(base,parameters,status)
     heads(1)=-12.25_real64
     call materializer%materialize(heads,forcing,status)
