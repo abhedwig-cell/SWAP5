@@ -1,0 +1,32 @@
+name: PPA-WU05-PERCH19 FrReduQ retry ladder
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch19-frreduq-ladder
+    paths:
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'tests/fpm/test_ppa_wu05a18_andelst_perched_reference.f90'
+      - 'tests/fpm/run_ppa_wu05_perch19_frreduq_ladder.sh'
+      - '.github/workflows/ppa-wu05-perch19-frreduq-ladder.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact source FrReduQ ladder on Andelst perched authority
+        run: bash tests/fpm/run_ppa_wu05_perch19_frreduq_ladder.sh
+      - name: Preserve A17 inner transaction infrastructure
+        run: bash tests/fpm/run_ppa_wu05a17_inner_transaction_infrastructure.sh
+      - name: Preserve A16 analytical callback
+        run: bash tests/fpm/run_ppa_wu05a16_inner_callback.sh
+      - name: Preserve A16 actual provider
+        run: bash tests/fpm/run_ppa_wu05a16_actual_provider.sh
+      - name: Preserve A15 derivative
+        run: bash tests/fpm/run_ppa_wu05a15_exchange_derivative.sh
+      - name: Preserve corrected perched carrier
+        run: bash tests/fpm/run_ppa_wu05a11_perched.sh
+      - name: Preserve A7-A10 default macropore route
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
