@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.ppa_wu05_perch19.status.v1",
+  "workunit": "PPA-WU05-PERCH19",
+  "phase": "CLOSED_QUALIFIED_STATE_MACHINE_PROTOCOL_FOLLOWUP_REQUIRED",
+  "decision": "QUALIFIED_SOURCE_FAITHFUL_FREDUQ_STATE_MACHINE_REQUIRES_TRANSACTION_RETRY_PROTOCOL",
+  "canonical_reconciliation": "aea20f61381f0c750fc90f2eb5201b8a40efcd73",
+  "branch": "research/ppa-wu05-perch19-freduq-state-machine",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admission_candidate": false,
+  "canonical_admitted": false,
+  "closed": true,
+  "qualified_postimage": "1bfef148c129a0e0c40ee8bc1cd8600b30904ed4",
+  "qualification_run": 36861781525,
+  "source_levels": [1.0,0.1,0.01,0.001],
+  "qualified_scope": [
+    "exact FrReduQ factor ladder",
+    "minimum-timestep escalation",
+    "sqrt(dtmin*dtmax) retry duration",
+    "accepted-step recovery",
+    "rollback snapshot",
+    "numerical persistence roundtrip",
+    "fail-closed exhaustion"
+  ],
+  "remaining_blocker": "TRANSACTION_MODEL_HAS_NO_POST_ROLLBACK_RETRY_FEEDBACK_OR_FINAL_ACCEPT_FEEDBACK_HOOK",
+  "next_action": "Open PPA-WU05-PERCH20 transaction numerical-retry feedback contract.",
+  "recovery_point": "1bfef148c129a0e0c40ee8bc1cd8600b30904ed4"
+}
