@@ -33,6 +33,7 @@ module mod_macropore_single_column_runtime
   type, public :: macropore_runtime_policy_t
     logical :: enabled=.false.
     logical :: inner_richards_exchange_enabled=.false.
+    logical :: source_flow_reduction_retry_enabled=.false.
     integer :: max_correctors=40
     real(real64) :: exchange_relative_tolerance=1.0e-8_real64
     real(real64) :: exchange_floor=1.0e-12_real64
@@ -57,6 +58,9 @@ module mod_macropore_single_column_runtime
     logical :: inner_richards_exchange_used=.false.
     real(real64) :: inner_initial_exchange_rate_cm_per_day=0.0_real64
     real(real64) :: inner_final_exchange_rate_cm_per_day=0.0_real64
+    integer :: source_flow_reduction_attempts=0
+    integer :: source_flow_reduction_index=-1
+    real(real64) :: source_flow_reduction_factor=1.0_real64
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
     real(real64) :: macro_balance_residual_cm=huge(1.0_real64)
     type(soil_water_solve_result_t) :: matrix_result
