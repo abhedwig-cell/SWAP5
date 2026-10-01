@@ -13,6 +13,7 @@ on:
       - 'tests/fpm/test_ppa_wu05a9_surface_top_input.f90'
       - 'tests/fpm/test_ppa_wu05a9_fmr_surface_top_input.f90'
       - 'tests/fpm/test_ppa_wu05a9_fmr_surface_capacity_retry.f90'
+      - 'tests/fpm/test_ppa_wu05a9_fmr_surface_forcing_mismatch.f90'
       - 'tests/fpm/run_ppa_wu05a9_surface_input.sh'
       - '.github/workflows/ppa-wu05a9-surface-input.yml'
   workflow_dispatch:
