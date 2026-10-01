@@ -5,13 +5,13 @@
   "branch": "admission/ppa-wu05-a8-fmr-macropore",
   "canonical_reconciliation_base": "0b231d1669cf38d069f14c6d2f0f07cd3bb1c5b1",
   "selective_postimage": "e364f03cd247ade34a58074da37cd0dd147c31ac",
-  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
-  "decision": "QUALIFIED_PRODUCTION_FMR_SINGLE_COLUMN_ADMISSION_CANDIDATE",
+  "phase": "CLOSED_CANONICAL_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_BOUNDED_FMR_MACROPORE_SINGLE_COLUMN",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "qualification": {
     "workflow": ".github/workflows/ppa-wu05a8-selective-admission.yml",
     "run": 36821243957,
@@ -28,5 +28,12 @@
     "rossfast": false,
     "parallel_multiswap": false
   },
-  "next_action": "RECONCILE -> ADMIT -> CLOSE if canonical head remains unchanged and clean PR remains qualified"
+  "next_action": "CLOSED. Any broader macropore capability requires a new bounded work unit.",
+  "closed": true,
+  "canonical_admission": {
+    "pull_request": 923,
+    "merge_sha": "9bad713b0d2ab24d40fcf937d11c850d3fb52a22",
+    "postmerge_preservation_run": 36821651670,
+    "postmerge_preservation_conclusion": "success"
+  }
 }
