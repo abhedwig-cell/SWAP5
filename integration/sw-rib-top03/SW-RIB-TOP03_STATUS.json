@@ -4,7 +4,7 @@
   "date": "2026-10-01",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "e2d18564383e1350b0b9a68af0eaf668dac784af",
-  "decision": "QUALIFIED_LOCAL_TEMPORAL_IDENTITY_BLOCKER__NO_PRODUCTION_ADMISSION",
+  "decision": "QUALIFIED_BOUNDED_TEMPORAL_RESEARCH__NONLINEAR_TRANSITION_BLOCKER__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -133,9 +133,10 @@
     "typed external head forcing"
   ],
   "blockers": [
-    "Shared BASE temporal identity gate returns huge() for non-identical full/half transient end states. O0/O2 fixture converges, passes mass gates, but records 3 temporal rejections and zero accepted substeps. TOP03 cannot supply a live inundation candidate under that unchanged policy."
+    "Shared BASE temporal identity gate returns huge() for non-identical full/half transient end states. O0/O2 fixture converges, passes mass gates, but records 3 temporal rejections and zero accepted substeps. TOP03 cannot supply a live inundation candidate under that unchanged policy.",
+    "Isolated fixed-grid nonlinear research reaches 80-iteration retries near saturation on refined 0.25-day integrations; full/half acceptance repair alone does not supply a trustworthy reference."
   ],
-  "next_action": "Numerical/integration regie must issue an admitted transient temporal acceptance contract for this bounded BASE inundation composition. Then rerun normal focused FAPP09 gate and top-active component receipt/replay tests. Do not waive mass or accept a rejected candidate.",
+  "next_action": "Investigate the near-saturated nonlinear/boundary transition with a physically representative column and independently justified bottom boundary before selecting a production temporal norm or certificate. Use the short-onset refinement only as bounded research evidence; do not promote partial integrations or waive mass/head convergence.",
   "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -176,5 +177,13 @@
     "alternative_temporal_route": "Existing Reference Richards model indicator rejects dynamic top with boundary-envelope-deferred; fixed flux provider also required.",
     "review_record": "integration/sw-rib-top03/TOP03_CANONICAL_PREREQUISITE_REVIEW.md",
     "production_admission": false
+  },
+  "temporal_research": {
+    "source_postimage": "7e53b14619183156efd5ebceeb6201a82ccdf03b",
+    "tested": true,
+    "qualified_scope": "Four-node synthetic onset refinement and observed nonlinear retry, O0/O2 exact result identity excluding CPU.",
+    "production_qualified": false,
+    "result": "integration/sw-rib-top03/TOP03_TEMPORAL_RESEARCH_RESULT.json",
+    "review": "integration/sw-rib-top03/TOP03_TEMPORAL_ROUTE_DECISION.md"
   }
 }

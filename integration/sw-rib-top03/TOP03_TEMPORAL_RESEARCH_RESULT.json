@@ -1,0 +1,578 @@
+{
+  "schema": "swap5.top03.temporal_research.v1",
+  "decision": "SHORT_ONSET_REFINEMENT_OBSERVED__LONG_INTERVAL_NONLINEAR_RETRY_BLOCKER",
+  "production_admission": false,
+  "o0_o2_exact_identity_excluding_cpu": true,
+  "profiles": [
+    {
+      "profile": 1,
+      "initial_head_cm": -123,
+      "initial_pond_cm": 0,
+      "short_grid_1_transfer_cm": -0.08537331631175116,
+      "short_grid_512_transfer_cm": -0.1403762126556837,
+      "one_step_relative_difference_from_finest_percent": 39.18249061102984,
+      "last_transfer_difference_ratio": 1.98950275243306,
+      "last_differences": {
+        "profile": 1,
+        "steps": 512,
+        "transfer_difference_cm": 0.0001663968262871629,
+        "water_profile_l1_cm": 0.00016639572956889115,
+        "head_inf_cm": 0.15220348224440272
+      },
+      "long_incomplete_grids": [
+        {
+          "steps": "4",
+          "completed": "3",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "8",
+          "completed": "3",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "16",
+          "completed": "4",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "32",
+          "completed": "5",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "64",
+          "completed": "7",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "128",
+          "completed": "12",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "256",
+          "completed": "20",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "512",
+          "completed": "36",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        }
+      ]
+    },
+    {
+      "profile": 2,
+      "initial_head_cm": -123,
+      "initial_pond_cm": 0.02,
+      "short_grid_1_transfer_cm": -0.06537331631175115,
+      "short_grid_512_transfer_cm": -0.12037621265568367,
+      "one_step_relative_difference_from_finest_percent": 45.69249615890412,
+      "last_transfer_difference_ratio": 1.989502752434721,
+      "last_differences": {
+        "profile": 2,
+        "steps": 512,
+        "transfer_difference_cm": 0.00016639682628705188,
+        "water_profile_l1_cm": 0.00016639572956889115,
+        "head_inf_cm": 0.15220348224440272
+      },
+      "long_incomplete_grids": [
+        {
+          "steps": "4",
+          "completed": "3",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "8",
+          "completed": "3",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "16",
+          "completed": "4",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "32",
+          "completed": "5",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "64",
+          "completed": "7",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "128",
+          "completed": "12",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "256",
+          "completed": "20",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "512",
+          "completed": "36",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        }
+      ]
+    },
+    {
+      "profile": 3,
+      "initial_head_cm": -10,
+      "initial_pond_cm": 0,
+      "short_grid_1_transfer_cm": -0.03582022714790471,
+      "short_grid_512_transfer_cm": -0.040951711910943454,
+      "one_step_relative_difference_from_finest_percent": 12.530574482937462,
+      "last_transfer_difference_ratio": 1.994304164760845,
+      "last_differences": {
+        "profile": 3,
+        "steps": 512,
+        "transfer_difference_cm": 0.00001528926073735004,
+        "water_profile_l1_cm": 0.000014875592212915123,
+        "head_inf_cm": 0.01494909884653417
+      },
+      "long_incomplete_grids": [
+        {
+          "steps": "2",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "4",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "8",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "16",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "32",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "64",
+          "completed": "2",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "128",
+          "completed": "3",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "256",
+          "completed": "5",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "512",
+          "completed": "8",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        }
+      ]
+    },
+    {
+      "profile": 4,
+      "initial_head_cm": -10,
+      "initial_pond_cm": 0.02,
+      "short_grid_1_transfer_cm": -0.015820227147904715,
+      "short_grid_512_transfer_cm": -0.02095171191094348,
+      "one_step_relative_difference_from_finest_percent": 24.491959343706387,
+      "last_transfer_difference_ratio": 1.99430416475654,
+      "last_differences": {
+        "profile": 4,
+        "steps": 512,
+        "transfer_difference_cm": 0.00001528926073736739,
+        "water_profile_l1_cm": 0.000014875592212915123,
+        "head_inf_cm": 0.01494909884653417
+      },
+      "long_incomplete_grids": [
+        {
+          "steps": "2",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "4",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "8",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "16",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "32",
+          "completed": "1",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "64",
+          "completed": "2",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "128",
+          "completed": "3",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "256",
+          "completed": "5",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        },
+        {
+          "steps": "512",
+          "completed": "8",
+          "stop_code": "1",
+          "solver_status": "2",
+          "solver_route": "legacy-reference-retry"
+        }
+      ]
+    }
+  ],
+  "successive_short_grid_differences": [
+    {
+      "profile": 1,
+      "steps": 2,
+      "transfer_difference_cm": 0.02321116156290838,
+      "water_profile_l1_cm": 0.023263217436925276,
+      "head_inf_cm": 44.72930056931936
+    },
+    {
+      "profile": 1,
+      "steps": 4,
+      "transfer_difference_cm": 0.013876402662292592,
+      "water_profile_l1_cm": 0.013876411076558404,
+      "head_inf_cm": 15.903631132683898
+    },
+    {
+      "profile": 1,
+      "steps": 8,
+      "transfer_difference_cm": 0.008338964432372684,
+      "water_profile_l1_cm": 0.008338953690334105,
+      "head_inf_cm": 6.301524893894793
+    },
+    {
+      "profile": 1,
+      "steps": 16,
+      "transfer_difference_cm": 0.004657220417289831,
+      "water_profile_l1_cm": 0.0046572058350040635,
+      "head_inf_cm": 4.029197562563482
+    },
+    {
+      "profile": 1,
+      "steps": 32,
+      "transfer_difference_cm": 0.0024808559051489876,
+      "water_profile_l1_cm": 0.002480844565800444,
+      "head_inf_cm": 2.2277992658677874
+    },
+    {
+      "profile": 1,
+      "steps": 64,
+      "transfer_difference_cm": 0.0012854922009059022,
+      "water_profile_l1_cm": 0.0012854850869594148,
+      "head_inf_cm": 1.1679377594506093
+    },
+    {
+      "profile": 1,
+      "steps": 128,
+      "transfer_difference_cm": 0.0006553553928325684,
+      "water_profile_l1_cm": 0.0006553513897746277,
+      "head_inf_cm": 0.5979558051435134
+    },
+    {
+      "profile": 1,
+      "steps": 256,
+      "transfer_difference_cm": 0.00033104694389443634,
+      "water_profile_l1_cm": 0.0003310448170586455,
+      "head_inf_cm": 0.30257596017413846
+    },
+    {
+      "profile": 1,
+      "steps": 512,
+      "transfer_difference_cm": 0.0001663968262871629,
+      "water_profile_l1_cm": 0.00016639572956889115,
+      "head_inf_cm": 0.15220348224440272
+    },
+    {
+      "profile": 2,
+      "steps": 2,
+      "transfer_difference_cm": 0.02321116156290838,
+      "water_profile_l1_cm": 0.023263217436925276,
+      "head_inf_cm": 44.72930056931936
+    },
+    {
+      "profile": 2,
+      "steps": 4,
+      "transfer_difference_cm": 0.013876402662292592,
+      "water_profile_l1_cm": 0.013876411076558404,
+      "head_inf_cm": 15.903631132683898
+    },
+    {
+      "profile": 2,
+      "steps": 8,
+      "transfer_difference_cm": 0.008338964432372697,
+      "water_profile_l1_cm": 0.008338953690334105,
+      "head_inf_cm": 6.301524893894793
+    },
+    {
+      "profile": 2,
+      "steps": 16,
+      "transfer_difference_cm": 0.00465722041728979,
+      "water_profile_l1_cm": 0.0046572058350040635,
+      "head_inf_cm": 4.029197562563482
+    },
+    {
+      "profile": 2,
+      "steps": 32,
+      "transfer_difference_cm": 0.0024808559051490153,
+      "water_profile_l1_cm": 0.002480844565800444,
+      "head_inf_cm": 2.2277992658677874
+    },
+    {
+      "profile": 2,
+      "steps": 64,
+      "transfer_difference_cm": 0.0012854922009058883,
+      "water_profile_l1_cm": 0.0012854850869594148,
+      "head_inf_cm": 1.1679377594506093
+    },
+    {
+      "profile": 2,
+      "steps": 128,
+      "transfer_difference_cm": 0.00065535539283261,
+      "water_profile_l1_cm": 0.0006553513897746277,
+      "head_inf_cm": 0.5979558051435134
+    },
+    {
+      "profile": 2,
+      "steps": 256,
+      "transfer_difference_cm": 0.00033104694389449185,
+      "water_profile_l1_cm": 0.0003310448170586455,
+      "head_inf_cm": 0.30257596017413846
+    },
+    {
+      "profile": 2,
+      "steps": 512,
+      "transfer_difference_cm": 0.00016639682628705188,
+      "water_profile_l1_cm": 0.00016639572956889115,
+      "head_inf_cm": 0.15220348224440272
+    },
+    {
+      "profile": 3,
+      "steps": 2,
+      "transfer_difference_cm": 0.00203968459116069,
+      "water_profile_l1_cm": 0.002077668961534551,
+      "head_inf_cm": 1.2946633103347986
+    },
+    {
+      "profile": 3,
+      "steps": 4,
+      "transfer_difference_cm": 0.0013770266354239113,
+      "water_profile_l1_cm": 0.001382715826214631,
+      "head_inf_cm": 0.9871054230742589
+    },
+    {
+      "profile": 3,
+      "steps": 8,
+      "transfer_difference_cm": 0.0008107778737361723,
+      "water_profile_l1_cm": 0.000803959613859595,
+      "head_inf_cm": 0.689562430730148
+    },
+    {
+      "profile": 3,
+      "steps": 16,
+      "transfer_difference_cm": 0.0004443597602150906,
+      "water_profile_l1_cm": 0.0004367152543632291,
+      "head_inf_cm": 0.40676815186601134
+    },
+    {
+      "profile": 3,
+      "steps": 32,
+      "transfer_difference_cm": 0.00023348693485090305,
+      "water_profile_l1_cm": 0.00022827263084673755,
+      "head_inf_cm": 0.22098810118765
+    },
+    {
+      "profile": 3,
+      "steps": 64,
+      "transfer_difference_cm": 0.00011974681859911601,
+      "water_profile_l1_cm": 0.00011675654526299706,
+      "head_inf_cm": 0.11525451632802985
+    },
+    {
+      "profile": 3,
+      "steps": 128,
+      "transfer_difference_cm": 0.00006062145195089713,
+      "water_profile_l1_cm": 0.00005903179488403465,
+      "head_inf_cm": 0.058862056724238165
+    },
+    {
+      "profile": 3,
+      "steps": 256,
+      "transfer_difference_cm": 0.000030491436364611657,
+      "water_profile_l1_cm": 0.00002967444394796903,
+      "head_inf_cm": 0.029742653161321186
+    },
+    {
+      "profile": 3,
+      "steps": 512,
+      "transfer_difference_cm": 0.00001528926073735004,
+      "water_profile_l1_cm": 0.000014875592212915123,
+      "head_inf_cm": 0.01494909884653417
+    },
+    {
+      "profile": 4,
+      "steps": 2,
+      "transfer_difference_cm": 0.0020396845911606863,
+      "water_profile_l1_cm": 0.002077668961534551,
+      "head_inf_cm": 1.2946633103347986
+    },
+    {
+      "profile": 4,
+      "steps": 4,
+      "transfer_difference_cm": 0.0013770266354239079,
+      "water_profile_l1_cm": 0.001382715826214631,
+      "head_inf_cm": 0.9871054230742589
+    },
+    {
+      "profile": 4,
+      "steps": 8,
+      "transfer_difference_cm": 0.0008107778737361793,
+      "water_profile_l1_cm": 0.000803959613859595,
+      "head_inf_cm": 0.689562430730148
+    },
+    {
+      "profile": 4,
+      "steps": 16,
+      "transfer_difference_cm": 0.00044435976021508714,
+      "water_profile_l1_cm": 0.0004367152543632291,
+      "head_inf_cm": 0.40676815186601134
+    },
+    {
+      "profile": 4,
+      "steps": 32,
+      "transfer_difference_cm": 0.00023348693485089264,
+      "water_profile_l1_cm": 0.00022827263084673755,
+      "head_inf_cm": 0.22098810118765
+    },
+    {
+      "profile": 4,
+      "steps": 64,
+      "transfer_difference_cm": 0.00011974681859912642,
+      "water_profile_l1_cm": 0.00011675654526299706,
+      "head_inf_cm": 0.11525451632802985
+    },
+    {
+      "profile": 4,
+      "steps": 128,
+      "transfer_difference_cm": 0.000060621451950938765,
+      "water_profile_l1_cm": 0.00005903179488403465,
+      "head_inf_cm": 0.058862056724238165
+    },
+    {
+      "profile": 4,
+      "steps": 256,
+      "transfer_difference_cm": 0.000030491436364580432,
+      "water_profile_l1_cm": 0.00002967444394796903,
+      "head_inf_cm": 0.029742653161321186
+    },
+    {
+      "profile": 4,
+      "steps": 512,
+      "transfer_difference_cm": 0.00001528926073736739,
+      "water_profile_l1_cm": 0.000014875592212915123,
+      "head_inf_cm": 0.01494909884653417
+    }
+  ],
+  "maximum_reported_interval_ledger_residual_cm": 1.3297696277447812e-13,
+  "scope": "Four-node synthetic 3 cm column, fixed external head. Finest grid is a comparator, not ground truth.",
+  "timing_scope": "Local descriptive CPU only; no portable performance claim.",
+  "raw_log_sha256": "d5eda4a8220abcbf6ddd7340e7595e12bac1f8268db6b8cb255f33ea1086496e",
+  "source_postimage": "7e53b14619183156efd5ebceeb6201a82ccdf03b",
+  "canonical_inspected": "19f09b818b1bb30c1428919074c00098dbd062bd"
+}
