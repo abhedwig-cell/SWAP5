@@ -220,8 +220,8 @@ contains
     mcfg%rate_template%unsaturated%conductivity=0.0_real64
     mcfg%rate_template%matrix_sat%ksat_horizontal=0.0_real64
     mcfg%rate_template%matrix_sat%cdarcy=0.0_real64
-    mcfg%rate_template%interflow_sat%ksat_horizontal=1.0e-4_real64
-    mcfg%rate_template%interflow_sat%cdarcy=1.0e-4_real64
+    mcfg%rate_template%interflow_sat%ksat_horizontal=1.0e-6_real64
+    mcfg%rate_template%interflow_sat%cdarcy=1.0e-6_real64
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A17 inner callback config validity'
     allocate(fparams%macropore)
     fparams%macropore=mcfg
