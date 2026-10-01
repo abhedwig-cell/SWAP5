@@ -39,7 +39,8 @@ module mod_fmr_serialized_reference_backend
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
-  use mod_fmr_moving_interface_runtime_adapter, only: fmr_moving_interface_runtime_adapter_t
+  use mod_fmr_moving_interface_runtime_adapter, only: fmr_moving_interface_runtime_adapter_t, &
+       fmr_moving_interface_runtime_timing_t
   use mod_moving_interface_manager, only: moving_interface_manager_diagnostics_t, MI_MANAGER_ROUTE_FULL_BYPASS
   use mod_timestep_numerical_profile, only: timestep_numerical_profile_t, TIMESTEP_PROFILE_MOVING_INTERFACE_MANAGER
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -502,6 +503,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: commit_reference_floor_candidate => fmr_serialized_backend_commit_reference_floor_candidate
     procedure, public :: discard_reference_floor_candidate => fmr_serialized_backend_discard_reference_floor_candidate
     procedure, public :: observation => fmr_serialized_backend_observation
+    procedure, public :: moving_interface_timing_snapshot => fmr_serialized_backend_moving_interface_timing_snapshot
     procedure, public :: set_bottom_thermal_carrier_enabled => fmr_serialized_backend_set_bottom_thermal_carrier_enabled
     procedure, public :: bottom_thermal_snapshot => fmr_serialized_backend_bottom_thermal_snapshot
     procedure, public :: set_top_sensible_boundary_enabled => fmr_serialized_backend_set_top_sensible_boundary_enabled
@@ -1517,6 +1519,12 @@ contains
     type(fmr_serialized_physical_observation_t) :: obs
     obs = self%model%last_observation
   end function fmr_serialized_backend_observation
+
+  subroutine fmr_serialized_backend_moving_interface_timing_snapshot(self, timing)
+    class(fmr_serialized_reference_backend_t), intent(in) :: self
+    type(fmr_moving_interface_runtime_timing_t), intent(out) :: timing
+    call self%model%moving_interface_adapter%timing_snapshot(timing)
+  end subroutine fmr_serialized_backend_moving_interface_timing_snapshot
 
   logical function fmr_serialized_attempt_context_required(self) result(required)
     class(fmr_serialized_reference_model_t), intent(in) :: self
