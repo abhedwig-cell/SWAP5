@@ -10,10 +10,11 @@ module mod_macropore_single_column_runtime
        evaluate_macropore_geometry
   use mod_macropore_standard_storage, only: macropore_standard_storage_view_t, &
        macropore_standard_candidate_receipt_t, derive_macropore_standard_storage_view, &
-       build_macropore_standard_candidate
+       build_macropore_standard_candidate, apply_internal_covered_top_transfer
   use mod_macropore_standard_rate_adapter, only: matrix_saturated_zone_view_t, &
        prepare_standard_macropore_rate_request, prepare_standard_sorptivity_history_request
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t, prepare_fmr_macropore_top_input
+  use mod_macropore_covering_layer_input, only: covering_layer_input_request_t, evaluate_covering_layer_input
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t, &
        macropore_rate_bundle_result_t, evaluate_macropore_rate_bundle
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t, &
@@ -88,7 +89,7 @@ contains
   end function runtime_policy_valid
 
   subroutine runtime_execute(self,solver,workspace,base_request,accepted_macro,geometry_config,rate_template, &
-       history_request,policy,result,top_input,reduction_accepted)
+       history_request,policy,result,top_input,reduction_accepted,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day)
     class(macropore_single_column_runtime_t),intent(inout)::self
     class(soil_water_solver_t),intent(inout)::solver
     class(soil_water_solver_workspace_base_t),intent(inout)::workspace
@@ -101,6 +102,7 @@ contains
     type(macropore_runtime_result_t),intent(out)::result
     type(fmr_macropore_top_input_forcing_t),intent(in),optional::top_input
     type(macropore_reduction_continuation_t),intent(in),optional::reduction_accepted
+    real(real64),intent(in),optional::covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day
 
     type(soil_water_solve_request_t)::request
     type(soil_water_solve_result_t)::predictor,corrector
@@ -115,8 +117,9 @@ contains
     type(vertical_flux_reconstruction_request_t)::vertical_request
     type(sorptivity_history_update_request_t)::history_local
     real(real64),allocatable::current_domain(:,:),next_domain(:,:),current_node(:)
-    real(real64),allocatable::requested_top_vertical(:),requested_top_lateral(:)
+    real(real64),allocatable::requested_top_vertical(:),requested_top_lateral(:),covered_domain_cm(:)
     type(fmr_macropore_top_input_forcing_t)::top_input_local
+    type(covering_layer_input_request_t)::covering_request
     real(real64)::numerator,denominator,dt
     logical::ok,can_reduce
     integer::iter,nd,n
@@ -248,7 +251,7 @@ contains
 
         call inner_provider%configure(accepted_macro,geometry,rate_template_attempt,base_request%parameters%z, &
              base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
-             base_request%base_state%groundwater_level,ok)
+             base_request%base_state%groundwater_level,ok,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day)
         if(.not.ok)then
           result%status=MACRO_RUNTIME_FAILED
           return
@@ -311,6 +314,40 @@ contains
       if(.not.ok .or. .not.receipt%valid)then
         result%status=MACRO_RUNTIME_FAILED
         return
+      end if
+      if(geometry_config%top_node>1)then
+        if(.not.present(covering_minimum_polygon_diameter_cm) .or. .not.present(covering_ksat_cm_per_day))then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+        covering_request%top_node=geometry_config%top_node
+        covering_request%step_duration_day=dt
+        covering_request%matrix_head_above_cm=corrector%candidate_state%pressure_head(geometry_config%top_node-1)
+        covering_request%dz_above_cm=base_request%parameters%dz(geometry_config%top_node-1)
+        covering_request%minimum_polygon_diameter_cm=covering_minimum_polygon_diameter_cm
+        covering_request%covering_layer_ksat_cm_per_day=covering_ksat_cm_per_day
+        covering_request%total_macropore_volume_top_cm=sum(geometry%volume_domain_cp(:,geometry_config%top_node))
+        covering_request%domain_top_volume_cm=geometry%volume_domain_cp(:,geometry_config%top_node)
+        call evaluate_covering_layer_input(covering_request,covered_domain_cm,ok)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+        call apply_internal_covered_top_transfer(result%macropore_candidate,geometry,geometry_config%top_node, &
+             covered_domain_cm,base_request%parameters%z,base_request%parameters%dz,candidate_view,ok)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+        receipt%internal_exchange_to_matrix_cm=receipt%internal_exchange_to_matrix_cm-sum(covered_domain_cm)
+        receipt%macro_storage_change_cm=receipt%macro_storage_change_cm+sum(covered_domain_cm)
+        receipt%macro_balance_residual_cm=receipt%macro_storage_change_cm - &
+             (receipt%accepted_top_cm-receipt%internal_exchange_to_matrix_cm-receipt%rapid_external_outflow_cm)
+        receipt%valid=abs(receipt%macro_balance_residual_cm)<=1.0e-10_real64
+        if(.not.receipt%valid)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
       end if
 
       call prepare_standard_sorptivity_history_request(history_request,geometry,candidate_view,matrix_view,dt, &
