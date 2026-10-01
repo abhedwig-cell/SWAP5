@@ -54,5 +54,12 @@ contains
       x%actual_top_flux_cm_per_day==y%actual_top_flux_cm_per_day.and.x%surface_head_cm==y%surface_head_cm.and. &
       x%candidate_ponding_depth_cm==y%candidate_ponding_depth_cm.and.x%runoff_depth_cm==y%runoff_depth_cm
   end function
-  subroutine req(x,m);logical,intent(in)::x;character(*),intent(in)::m;if(.not.x)error stop m;end subroutine
+  subroutine req(x,m)
+    logical,intent(in)::x
+    character(*),intent(in)::m
+    if(.not.x)then
+      write(*,'(A,1X,A)')'SW_RIB_TOP02_FAIL',trim(m)
+      error stop 1
+    end if
+  end subroutine
 end program
