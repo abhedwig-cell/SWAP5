@@ -1,23 +1,26 @@
 {
   "work_unit": "PPA-WU05-A27",
-  "baseline": "19f09b818b1bb30c1428919074c00098dbd062bd",
-  "checkpoint_commit": "d23d0c62ac84b63f013cd9466cad359d8c0121c3",
+  "baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+  "checkpoint_commit": "34a7861377da05727647d22937c25f8d73e702ef",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "SOURCE_REPAIR_LOCALLY_TESTED_SIGNED_TRANSITION_ROUTE_FALSIFIED",
-  "next_action": "Reconcile and qualify bounded source-unit repair; resolve wetted-contact and frozen-sorptivity transition contract before two-way production integration",
-  "recovery_point": "docs/audits/PPA_WU05A27_SIGNED_CONTACT_RESULT.md",
+  "status": "SOURCE_REPAIR_QUALIFIED_FOR_REGIE_REVIEW_TWO_WAY_HISTORY_CONTRACT_BLOCKED",
+  "next_action": "Central regie may review the independently qualified areic source correction. Research continuation requires an explicit transient uptake/contact-history contract before two-way production integration; full paired performance/equivalence and scaling remain open.",
+  "recovery_point": "docs/audits/PPA_WU05A27_FINITE_CONTACT_RESULT.md",
   "blockers": [
-    "Point-wetting and frozen-history saturation hard switches create finite flux jumps; research prototype cannot be production-admitted"
+    "Finite contact removes the point-wetting discontinuity but frozen-event-S still creates a 0.05640716960416655 cm saturation-boundary jump",
+    "Endpoint-wide event age and S do not represent newly wetted segment histories; a physical uptake/history contract is required"
   ],
-  "last_reconciled_head": "295f63cc16158802302a7810ef48cd32dd7f0f1d",
-  "last_reconciled_upstream": "029453104b98d835790f2e09eb9e804aa3eaff4a",
+  "last_reconciled_head": "34a7861377da05727647d22937c25f8d73e702ef",
+  "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
   "authority_paths": [
     "AGENTS.md",
     "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
-    "docs/audits/PPA_WU05A26_CLOSEOUT.md"
+    "docs/audits/PPA_WU05A26_CLOSEOUT.md",
+    "docs/audits/PPA_WU05A27_FINITE_CONTACT_CONTRACT.md",
+    "integration/control/SWAP5_WORKSTREAM_REGISTRY.json"
   ],
   "test_paths": [
     "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
@@ -39,6 +42,30 @@
     "research/rfm/a27"
   ],
   "interfaces_changed": [],
-  "production_claim": "Only source conversion repaired on A27; no canonical admission or performance/equivalence claim",
-  "research_result": "120 evolving column cases and 20000 process cases; correction closes actual composer/Reference source receipt; transition hard switches explicitly falsified"
+  "production_claim": "Bounded source correction qualified locally on persisted postimage; not canonically admitted. No E1 production envelope, speedup or stability claim.",
+  "research_result": "150 evolving actual Richards columns with finite-contact mode and five timestep resolutions; full raw records and solver counters retained. 5/10/20 cm actual source receipts conserve endpoint release. Finite first-contact continuity resolved; frozen-history saturated switch remains falsified.",
+  "source_repair_qualified": true,
+  "canonical_admitted": false,
+  "qualification_scopes": {
+    "bounded_source_repair": {
+      "postimage": "34a7861377da05727647d22937c25f8d73e702ef",
+      "gates": [
+        "source receipt at cell dz 5,10,20 cm",
+        "A26 production composer",
+        "A26 live preparer zero-RFM/refinement",
+        "A26 actual Richards binding",
+        "A26 serialized backend O0/O2 optional-state runtime/persistence"
+      ]
+    },
+    "finite_contact_research": {
+      "column_postimage": "76008ec089879708d01bd965b12d04cd3ed2ae61",
+      "oracle_postimage": "34a7861377da05727647d22937c25f8d73e702ef",
+      "cases": 150,
+      "sampled_records": 1500,
+      "production_eligible": false
+    },
+    "full_a27_benchmark": "OPEN"
+  },
+  "evidence_archive": "docs/audits/evidence/PPA_WU05A27_FINITE_CONTACT_EVIDENCE.json.gz",
+  "evidence_sha256": "a57ed20f3efc7cc5919da36afeef7a3d6a4cdff45d13ab3577ea8230fb72a360"
 }
