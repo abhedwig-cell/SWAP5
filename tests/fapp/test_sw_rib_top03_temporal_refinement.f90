@@ -21,8 +21,8 @@ program top03_refinement
  type(fmr_top_surface_exchange_t)::x
  real(real64),allocatable,target::qdra(:,:),qssdi(:),qrot(:)
  real(real64)::cofgen(24,numnod),cond(numnod),cap(numnod),dkdh(numnod)
- real(real64)::heads(2),hstart(numnod),theta0(numnod),dt,transfer_cm,bottom_cm,resmax,cpu0,cpu1,first_cm,storage0,bottom_rate
- integer::i,profile,level,steps,j,iters,done
+ real(real64)::heads(2),hstart(numnod),theta0(numnod),dt,transfer_cm,bottom_cm,resmax,cpu0,cpu1,first_cm,storage0,bottom_rate,horizon
+ integer::i,profile,level,steps,j,iters,done,window,stop_code
  logical::continued,valid
  heads=[-123.0_real64,-10.0_real64]
  allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod))
@@ -51,16 +51,20 @@ program top03_refinement
  q%numerical%min_step_duration=1e-6_real64
  q%numerical%head_abs_tolerance=1e-12_real64;q%numerical%head_rel_tolerance=1e-12_real64;q%numerical%ponding_tolerance=1e-12_real64
  q%evaluation%constitutive=>hyd;q%evaluation%source_sink=>source;q%evaluation%dynamic_top_boundary=>top
- print '(a)','profile,steps,completed,iterations,transfer_cm,bottom_cm,storage_change_cm,ledger_residual_cm,max_step_soil_residual_cm,first_transfer_cm,cpu_seconds,h1,h2,h3,h4,theta1,theta2,theta3,theta4'
+ print '(a)','profile,window,stop_code,solver_status,solver_route,steps,completed,iterations,transfer_cm,bottom_cm,storage_change_cm,ledger_residual_cm,max_step_soil_residual_cm,first_transfer_cm,cpu_seconds,h1,h2,h3,h4,theta1,theta2,theta3,theta4'
  do profile=1,4
   continued=mod(profile,2)==0
   hstart=heads((profile+1)/2)
   call bind_b110_default_mvg_provider(hyd,hp,0.25_real64)
   call hyd%evaluate(hstart,theta0,cond,cap,dkdh)
   bottom_rate=-cond(1)
+  do window=1,2
+   horizon=0.25_real64
+   if(window==2)horizon=0.001953125_real64
   do level=0,9
-   steps=2**level;dt=0.25_real64/real(steps,real64)
+   steps=2**level;dt=horizon/real(steps,real64)
    call integrate()
+  end do
   end do
  end do
 contains
@@ -71,7 +75,7 @@ contains
   if(continued)q%base_state%ponding_depth=0.02_real64
   q%base_state%groundwater_level=-2.25_real64
   storage0=sum(theta0*dz)+q%base_state%ponding_depth
-  transfer_cm=0.0_real64;bottom_cm=0.0_real64;resmax=0.0_real64;first_cm=0.0_real64;iters=0;done=0
+  transfer_cm=0.0_real64;bottom_cm=0.0_real64;resmax=0.0_real64;first_cm=0.0_real64;iters=0;done=0;stop_code=0
   q%step_duration=dt;q%boundary%bottom_flux=bottom_rate
   q%numerical%compartment_balance_tolerance=max(1e-12_real64,1e-12_real64/dt)
   q%numerical%total_balance_tolerance=q%numerical%compartment_balance_tolerance
@@ -84,11 +88,17 @@ contains
    top%external_flooding_sill_head_cm=0.01_real64
    call solver%solve(q,workspace,r)
    iters=iters+r%diagnostics%nonlinear_iterations
-   if(r%status/=SW_SOLVE_CONVERGED)exit
+   if(r%status/=SW_SOLVE_CONVERGED)then
+    stop_code=1
+    exit
+   end if
    if(.not.r%integrated_mass_balance_residual_available)error stop 'missing soil mass oracle'
    resmax=max(resmax,abs(r%integrated_mass_balance_residual_cm))
    if(abs(r%integrated_mass_balance_residual_cm)>1e-10_real64)error stop 'soil mass gate'
-   if(r%top_flux>0.0_real64)exit
+   if(r%top_flux>0.0_real64)then
+    stop_code=2
+    exit
+   end if
    call materialize_fmr_top_surface_exchange(q%base_state%ponding_depth,r%candidate_state%ponding_depth, &
      0.0_real64,0.0_real64,-r%top_flux*dt,0.0_real64,x)
    if(x%status/=FMR_TOP_EXCHANGE_OK.or.abs(x%closure_residual_cm)>1e-12_real64)error stop 'surface closure'
@@ -99,7 +109,7 @@ contains
    done=j
   end do
   call cpu_time(cpu1)
-  print '(i0,3(a,i0),15(a,es24.16))',profile,',',steps,',',done,',',iters, &
+  print '(i0,3(a,i0),a,a,3(a,i0),15(a,es24.16))',profile,',',window,',',stop_code,',',r%status,',',trim(r%diagnostics%route),',',steps,',',done,',',iters, &
    ',',transfer_cm,',',bottom_cm,',',sum(q%base_state%water_content*dz)+q%base_state%ponding_depth-storage0, &
    ',',sum(q%base_state%water_content*dz)+q%base_state%ponding_depth-storage0+transfer_cm-bottom_cm, &
    ',',resmax,',',first_cm,',',cpu1-cpu0, &
