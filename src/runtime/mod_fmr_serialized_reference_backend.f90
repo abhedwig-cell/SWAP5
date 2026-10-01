@@ -828,6 +828,27 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_temporal_indicator_committed_state
 
+  subroutine fmr_new_b110_macropore_reduction_committed_state(committed, lineage_id, state, reduction, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(fmr_macropore_reduction_continuation_t), intent(in) :: reduction
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+
+    ok = .false.
+    if (.not. reduction%valid()) return
+    if (.not. allocated(state%macropore)) return
+    allocate(fmr_b110_macropore_reduction_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_macropore_reduction_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      typed_carrier%macropore_reduction = reduction
+    end select
+    call committed%initialize(lineage_id, carrier, ok, initial_time)
+  end subroutine fmr_new_b110_macropore_reduction_committed_state
+
   subroutine fmr_new_b110_fixed_weir_surface_water_committed_state(committed, lineage_id, state, initial_time, ok)
     type(kernel_committed_state_t), intent(out) :: committed
     integer(int64), intent(in) :: lineage_id
@@ -939,6 +960,10 @@ contains
     type is (fmr_b110_rfm_state_t)
       matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active
+    type is (fmr_b110_macropore_reduction_state_t)
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active .and. &
+           state%macropore_reduction%valid()
     type is (fmr_b110_physical_state_t)
       matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active
