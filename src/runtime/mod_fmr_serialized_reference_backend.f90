@@ -1998,6 +1998,7 @@ contains
         if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
       end if
       if (allocated(forcing%legacy_swbotb4_qgwl_control)) then
+        if (allocated(forcing%legacy_swbotb2_control)) return
         if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
         if (.not. allocated(self%legacy_swbotb4_qgwl_control)) allocate(self%legacy_swbotb4_qgwl_control)
         self%legacy_swbotb4_qgwl_control = forcing%legacy_swbotb4_qgwl_control
