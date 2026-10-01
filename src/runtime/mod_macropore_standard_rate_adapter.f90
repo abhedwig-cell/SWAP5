@@ -117,9 +117,7 @@ contains
     if(matrix%active_nodes/=n .or. size(z)/=n .or. size(dz)/=n .or. step_duration<=0.0_real64)return
 
     ! Dynamic top input may be supplied by the A9 source-faithful forcing carrier.
-    ! The immutable configuration template itself remains top-input neutral.
-    if(template%rapid%enabled)return
-
+    ! A10 may additionally opt in the typed source-bound rapid-drain request.
     call derive_matrix_saturated_zone_view(matrix,z,dz,matrix_view)
     if(.not.matrix_view%valid)return
 
