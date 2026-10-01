@@ -9,6 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: Qualify A26H wall history
         run: bash tests/fpm/run_ppa_wu05a26h_wall_history.sh
