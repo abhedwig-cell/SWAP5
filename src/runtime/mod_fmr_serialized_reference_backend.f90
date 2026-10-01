@@ -39,6 +39,9 @@ module mod_fmr_serialized_reference_backend
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
+  use mod_fmr_moving_interface_runtime_adapter, only: fmr_moving_interface_runtime_adapter_t
+  use mod_moving_interface_manager, only: moving_interface_manager_diagnostics_t, MI_MANAGER_ROUTE_FULL_BYPASS
+  use mod_timestep_numerical_profile, only: timestep_numerical_profile_t, TIMESTEP_PROFILE_MOVING_INTERFACE_MANAGER
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_fmr_rossfast_solver_selection_binding, only: fmr_rossfast_solver_selection_binding_t, &
        FMR_ROSSFAST_BIND_INTERNAL_ERROR
@@ -273,6 +276,12 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
+    logical :: moving_interface_manager_requested = .false.
+    integer :: moving_interface_manager_route = 0
+    integer :: moving_interface_full_nodes = 0
+    integer :: moving_interface_active_nodes = 0
+    logical :: moving_interface_fallback_used = .false.
+    character(len=64) :: moving_interface_reason = 'not-requested'
     logical :: practical_richards_a2c_active = .false.
     real(real64) :: practical_richards_head_abs_tolerance = 0.0_real64
     real(real64) :: practical_richards_head_rel_tolerance = 0.0_real64
@@ -371,6 +380,8 @@ module mod_fmr_serialized_reference_backend
     class(top_boundary_provider_t), pointer :: top_boundary => null()
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace
+    logical :: moving_interface_manager_enabled = .false.
+    type(fmr_moving_interface_runtime_adapter_t) :: moving_interface_adapter
     type(fmr_rossfast_solver_selection_binding_t) :: soil_water_selection
     real(real64), pointer :: qdra(:,:) => null()
     logical :: drainage_response_active = .false.
@@ -483,6 +494,7 @@ module mod_fmr_serialized_reference_backend
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
+    procedure, public :: configure_moving_interface_profile => fmr_serialized_backend_configure_moving_interface_profile
     procedure, public :: configure_macropore_policy => fmr_serialized_backend_configure_macropore_policy
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
@@ -915,6 +927,8 @@ contains
     self%initialized = .false.
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
     if (.not. selection_ok) return
+    self%model%moving_interface_manager_enabled = .false.
+    call self%model%moving_interface_adapter%release()
     self%model%top_boundary => top_boundary
     self%model%temporal_indicator_history_enabled = .false.
     self%model%temporal_indicator_budget_supplied = .false.
@@ -969,6 +983,21 @@ contains
     end if
     self%initialized = ok
   end subroutine fmr_serialized_backend_configure_soil_water_model
+
+  subroutine fmr_serialized_backend_configure_moving_interface_profile(self, profile, ok)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(timestep_numerical_profile_t), intent(in) :: profile
+    logical, intent(out) :: ok
+
+    ok = .false.
+    self%model%moving_interface_manager_enabled = .false.
+    call self%model%moving_interface_adapter%release()
+    if (.not. self%initialized) return
+    if (profile%kind /= TIMESTEP_PROFILE_MOVING_INTERFACE_MANAGER) return
+    if (.not. profile%execution_ready()) return
+    self%model%moving_interface_manager_enabled = .true.
+    ok = .true.
+  end subroutine fmr_serialized_backend_configure_moving_interface_profile
 
   subroutine fmr_serialized_backend_configure_macropore_policy(self, policy, ok)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -1772,6 +1801,14 @@ contains
     self%drainage_response_window_exchange_available = self%drainage_response_active
     self%drainage_response_window_signed_exchange_native = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
+    moving_interface_diagnostics = moving_interface_manager_diagnostics_t()
+    moving_interface_runtime_eligible = .false.
+    moving_interface_ok = .false.
+    if (self%moving_interface_manager_enabled) then
+      self%last_observation%moving_interface_manager_requested = .true.
+      self%last_observation%moving_interface_manager_route = MI_MANAGER_ROUTE_FULL_BYPASS
+      self%last_observation%moving_interface_reason = 'runtime-envelope-ineligible'
+    end if
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
@@ -2131,6 +2168,7 @@ contains
     type(trial_outcome_t), intent(out) :: outcome
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
+    type(moving_interface_manager_diagnostics_t) :: moving_interface_diagnostics
     type(macropore_runtime_result_t) :: macropore_result
     type(soil_water_accepted_step_direction_result_t) :: direction_result
     type(trajectory_step_token_t) :: direction_token
@@ -2155,6 +2193,7 @@ contains
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
+    logical :: moving_interface_runtime_eligible, moving_interface_ok
     real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
     integer :: effective_bottom_mode, swbotb2_status
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
@@ -2282,7 +2321,20 @@ contains
       request%base_state%water_content = physical%water_content
       request%base_state%ponding_depth = physical%ponding_depth
       request%base_state%groundwater_level = physical%groundwater_level
-      if (self%macropore_active) then
+      moving_interface_runtime_eligible = self%moving_interface_manager_enabled .and. &
+         self%soil_water_selection%uses_reference() .and. .not. self%macropore_active .and. &
+         .not. trajectory_request_ok .and. .not. self%temporal_indicator_history_enabled .and. &
+         .not. self%direct_retention_active .and. .not. self%root_extraction_active .and. &
+         .not. self%drainage_response_active .and. .not. self%snow_active .and. &
+         .not. self%soil_temperature_active .and. .not. self%black_evaporation_active .and. &
+         .not. self%boesten_evaporation_active .and. .not. self%fixed_weir_surface_water_active .and. &
+         .not. self%practical_richards_a2c_active .and. self%bottom_mode == 2 .and. &
+         effective_bottom_mode == 2 .and. effective_bottom_flux == 0.0_real64 .and. &
+         self%swkimpl == 0 .and. self%swkmean == 1 .and. &
+         request%boundary%top_mode == FSI_TOP_MODE_EXPLICIT_FLUX .and. associated(self%hydraulic_parameters) .and. &
+         associated(self%qdra) .and. associated(self%qssdi) .and. associated(self%qrot)
+
+    if (self%macropore_active) then
         if (.not. allocated(physical%macropore) .or. .not. allocated(self%macropore_config)) return
         if (.not. physical%macropore%ready()) return
       else
@@ -2491,6 +2543,10 @@ contains
         trajectory_solver_used = .true.
       end if
       call stage_trajectory_step_result(self%trajectory_direction, direction_token, direction_result, trajectory_stage_ok)
+    else if (moving_interface_runtime_eligible) then
+      call self%moving_interface_adapter%solve(self%solver, self%workspace, request, self%hydraulic_parameters, &
+           self%qdra, self%qssdi, self%qrot, solve_result, moving_interface_diagnostics, moving_interface_ok)
+      if (.not. moving_interface_ok) return
     else
       call self%solver%solve(request, self%workspace, solve_result)
     end if
@@ -2500,6 +2556,21 @@ contains
     self%last_observation%top_flux = solve_result%top_flux
     self%last_observation%bottom_flux = solve_result%bottom_flux
     self%last_observation%solver_diagnostics = solve_result%diagnostics
+    if (self%moving_interface_manager_enabled) then
+      if (moving_interface_runtime_eligible) then
+        self%last_observation%moving_interface_manager_route = moving_interface_diagnostics%route
+        self%last_observation%moving_interface_full_nodes = moving_interface_diagnostics%full_nodes
+        self%last_observation%moving_interface_active_nodes = moving_interface_diagnostics%active_nodes
+        self%last_observation%moving_interface_fallback_used = moving_interface_diagnostics%fallback_used
+        self%last_observation%moving_interface_reason = moving_interface_diagnostics%fallback_reason
+      else
+        self%last_observation%moving_interface_manager_route = MI_MANAGER_ROUTE_FULL_BYPASS
+        self%last_observation%moving_interface_full_nodes = request%base_state%active_nodes
+        self%last_observation%moving_interface_active_nodes = request%base_state%active_nodes
+        self%last_observation%moving_interface_fallback_used = .false.
+        self%last_observation%moving_interface_reason = 'runtime-envelope-ineligible'
+      end if
+    end if
     self%last_observation%solver_equation_residual_available = .false.
     call populate_snow_observation(self)
     outcome%nonlinear_iterations = solve_result%diagnostics%nonlinear_iterations
