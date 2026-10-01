@@ -2929,6 +2929,9 @@ contains
         if (.not. full%macropore%ready() .or. .not. half%macropore%ready()) return
         if (full%macropore%num_nodes /= n .or. half%macropore%num_nodes /= n .or. &
             full%macropore%num_domains /= half%macropore%num_domains) return
+        ! ICpBtDm is discrete topology, not a continuous centimetre-scale
+        ! coordinate. A full/half topology mismatch therefore fails closed.
+        if (any(full%macropore%icp_bottom_domain /= half%macropore%icp_bottom_domain)) return
 
         value = 0.0_real64
         value = max(value, maxval(abs(full%pressure_head-half%pressure_head)))
