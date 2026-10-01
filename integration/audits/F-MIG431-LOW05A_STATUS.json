@@ -1,20 +1,18 @@
 {
   "schema_version": 1,
   "work_unit": "F-MIG431-LOW05-A",
-  "baseline": "44c6df02a58edee79f88dde8ca8aadbec26337fc",
-  "last_reconciled_upstream": "44c6df02a58edee79f88dde8ca8aadbec26337fc",
-  "status": "BLOCKED_SHARED_AUTHORITY_PREREQUISITE",
-  "branch": null,
+  "baseline": "029453104b98d835790f2e09eb9e804aa3eaff4a",
+  "last_reconciled_upstream": "029453104b98d835790f2e09eb9e804aa3eaff4a",
+  "status": "OFFICIALLY_ISSUED_PREREGISTERED",
+  "branch": "work/f-mig431-low05a-prescribed-head-application",
   "implemented": false,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "production_admitted": false,
-  "review_checks": "local source hash/roundtrip/staging/arithmetic checks PASS; no production qualification",
-  "blockers": [
-    "F-MIG431-LOW05-P0"
-  ],
-  "next_action": "Resolve LOW05-P0 before LOW05-A production implementation branch issuance",
+  "review_checks": "LOW05-P0 optional-selector plumbing and independent abstract proposal/context trace PASS locally; production tests not run",
+  "blockers": [],
+  "next_action": "Implement bounded DATE5/HBOT5 provider, ordinary ownership opt-in, original-proposal callback and attempt-context wiring on the official branch; persist before qualification",
   "recovery_point": "this record and companion feasibility review in their containing Git commit",
   "authority_paths": [
     "AGENTS.md",
@@ -39,12 +37,17 @@
     "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
     "integration/audits/F-MIG431-LOW05A_FEASIBILITY_RESULT.json",
     "docs/migration/F-MIG431-LOW05A_FEASIBILITY_REVIEW.md",
-    "integration/audits/F-MIG431-LOW05P0_PREREQUISITE.json"
+    "integration/audits/F-MIG431-LOW05P0_PREREQUISITE.json",
+    "docs/migration/F-MIG431-LOW05P0_SHARED_CONTRACT.md",
+    "integration/audits/F-MIG431-LOW05P0_RESULT.json",
+    "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md"
   ],
   "nonclaims": [
     "all lower boundaries migrated",
-    "LOW05-A officially issued",
+    "LOW05-A production implemented",
     "new groundwater owner",
     "production qualification"
-  ]
+  ],
+  "shared_authority_contract_checkpoint": "fe0eebb92ed2ded55a9817fcda40390b3dd968c8",
+  "preregistration": "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md"
 }
