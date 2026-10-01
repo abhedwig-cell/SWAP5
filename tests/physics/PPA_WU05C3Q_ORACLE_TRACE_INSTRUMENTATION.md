@@ -13,7 +13,7 @@ Emit one CSV row at the end of each physical `OxygenStress(node,...)` evaluation
 ## Header
 
 ```text
-call_index,node,matric_potential_pa,theta,gas_filled_porosity,soil_temp_k,max_resp_factor,waterfilm_thickness_m,d_soil,r_microbial_z0,c_macro,c_min_micro,resp_factor,rwu_factor
+call_index,node,matric_potential_pa,theta,gas_filled_porosity,soil_temp_k,max_resp_factor,waterfilm_thickness_m,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor
 ```
 
 ## Required values
@@ -43,3 +43,18 @@ values. C3Q comparison for that route is on the defined output subset.
 ## No hidden tolerance
 
 Capture raw doubles. Difference/tolerance analysis happens after capture.
+
+
+## Implemented transformation
+
+`tools/vq/c3q_instrument_oxygen.py` implements the diagnostic transformation.
+
+Gates:
+- exact corrected B1.5p1 oxygenstress SHA required;
+- declaration anchor must occur exactly once;
+- final-response anchor must occur exactly once;
+- trace blocks are explicitly delimited;
+- stripping those trace blocks must restore the original B1.5p1 bytes exactly.
+
+The trace now includes `ctopnode` because exact-source reconciliation established the ordered
+vertical propagation `C_top(node+1)=C_macro(node)`.
