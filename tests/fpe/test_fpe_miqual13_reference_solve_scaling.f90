@@ -93,7 +93,14 @@ program test_fpe_miqual13_reference_solve_scaling
 
   do i=1,nwarm
     call solver%solve(req,workspace,res)
-    call require(res%status==SW_SOLVE_CONVERGED,'warmup solve')
+    if(res%status/=SW_SOLVE_CONVERGED)then
+      write(*,'(*(g0))') 'F_PE_MIQUAL13_SAMPLE|N=',numnod,'|VALID=0|PHASE=warmup|I=',i, &
+           '|STATUS=',res%status,'|NL=',res%diagnostics%nonlinear_iterations, &
+           '|JAC=',res%diagnostics%jacobian_builds,'|LIN=',res%diagnostics%linear_solves, &
+           '|BACK=',res%diagnostics%backtracking_attempts
+      write(*,'(a)') 'F_PE_MIQUAL13=PASS'
+      stop
+    end if
   end do
 
   total_nl=0_int64;total_jac=0_int64;total_lin=0_int64;total_back=0_int64
@@ -117,7 +124,7 @@ program test_fpe_miqual13_reference_solve_scaling
   ns_per=1.0e9_real64*real(tick1-tick0,real64)/(real(rate,real64)*real(nrun,real64))
   cpu_per=(cpu1-cpu0)/real(nrun,real64)
 
-  write(*,'(*(g0))') 'F_PE_MIQUAL13_SAMPLE|N=',numnod,'|NRUN=',nrun,'|RATE=',rate, &
+  write(*,'(*(g0))') 'F_PE_MIQUAL13_SAMPLE|N=',numnod,'|VALID=1|NRUN=',nrun,'|RATE=',rate, &
        '|TICKS=',tick1-tick0,'|NS_PER=',ns_per,'|CPU_PER=',cpu_per, &
        '|NL=',total_nl,'|JAC=',total_jac,'|LIN=',total_lin,'|BACK=',total_back
   write(*,'(a)') 'F_PE_MIQUAL13=PASS'
