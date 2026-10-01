@@ -177,11 +177,8 @@ contains
       result%surface_head_cm = request%external_surface_water_head_cm
       result%surface_face_conductivity_cm_per_day = k1_max
       result%candidate_ponding_depth_cm = request%external_surface_water_head_cm
-      ! In the dynamic-provider contract runoff_depth carries the signed legacy
-      ! RUNOTS interval amount. Negative is external surface water -> SWAP.
-      result%runoff_depth_cm = -(result%candidate_ponding_depth_cm-request%previous_ponding_depth_cm) + &
-           q0*request%step_duration_day + result%actual_top_flux_cm_per_day*request%step_duration_day
-      result%runoff_potential = abs(result%runoff_depth_cm) > 0.0_real64
+      result%runoff_depth_cm = 0.0_real64
+      result%runoff_potential = .false.
       result%surface_head_derivative_available = .true.
       result%surface_head_dpressure_head_top = 0.0_real64
       result%actual_top_flux_cm_per_day = -k1_max * &
