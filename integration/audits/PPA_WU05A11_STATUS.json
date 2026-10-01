@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.ppa_wu05a11.status.v1",
+  "workunit": "PPA-WU05-A11",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_BOUNDED_RFM_UNPONDED_ACTIVATION_SERVICE",
+  "baseline": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "branch": "work/ppa-wu05-a11-rfm-unponded-activation",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "qualified_postimage": "bf3e8424eccf271d943e03bfe16c76f97ff0bc08",
+  "qualification_run": 36859780186,
+  "scope": {
+    "unponded_source_controlled_only": true,
+    "explicit_sigma_b_required": true,
+    "default_sigma_b": false,
+    "derives_hydraulic_state": false,
+    "runtime_binding": false,
+    "routing": false,
+    "f_mb": false,
+    "connectivity_p": false
+  },
+  "fail_closed": {
+    "positive_ponding": "SURFACE_BOUNDARY_REQUIRED",
+    "invalid_parameters": "INVALID"
+  },
+  "next": "canonical admission, then separate A12 hydraulic-view/sorptivity binding"
+}
