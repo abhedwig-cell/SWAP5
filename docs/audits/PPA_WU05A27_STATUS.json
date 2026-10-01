@@ -1,17 +1,17 @@
 {
   "work_unit": "PPA-WU05-A27",
   "baseline": "19f09b818b1bb30c1428919074c00098dbd062bd",
-  "checkpoint_commit": "c6c716e225a2673b498d617aa569327cec686034",
+  "checkpoint_commit": "b09568352f022eb43bd0b20f36db10485b299046",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "BOUNDED_COLUMN_ATTRIBUTION_COMPLETE_FULL_BENCHMARK_OPEN",
-  "next_action": "Complete physical geometry mapping and A/B/C evolving production runtime comparison; finite IC and rainfall cases",
-  "recovery_point": "docs/audits/PPA_WU05A27_COLUMN_ABLATION_RESULT.md",
+  "status": "FINITE_RECEIVER_TWO_WAY_RESEARCH_COMPLETE_FULL_BENCHMARK_OPEN",
+  "next_action": "Persist signed IC exchange and saturation-transition contract, then prototype RFM research integration and complete A/B/C benchmark",
+  "recovery_point": "docs/audits/PPA_WU05A27_FINITE_EXCHANGE_RESULT.md",
   "blockers": [],
   "last_reconciled_head": "295f63cc16158802302a7810ef48cd32dd7f0f1d",
-  "last_reconciled_upstream": "19f09b818b1bb30c1428919074c00098dbd062bd",
+  "last_reconciled_upstream": "44c6df02a58edee79f88dde8ca8aadbec26337fc",
   "authority_paths": [
     "AGENTS.md",
     "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
@@ -19,7 +19,9 @@
   ],
   "test_paths": [
     "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
-    "tests/fpm/test_ppa_wu05a27_column_ablation.f90"
+    "tests/fpm/test_ppa_wu05a27_column_ablation.f90",
+    "tests/fpm/run_ppa_wu05a27_finite_exchange.sh",
+    "tests/fpm/test_ppa_wu05a27_finite_exchange.f90"
   ],
   "dependency_surface": [
     "src/legacy/b1_10_port/headcalc.f90",
@@ -29,5 +31,6 @@
     "tests/fsi/fsi04_real_headcalc_stubs.f90"
   ],
   "interfaces_changed": [],
-  "production_claim": "No performance or full-equivalence claim"
+  "production_claim": "No performance or full-equivalence claim",
+  "research_result": "54 local evolving-column cases passed ledger and storage bounds; timestep refinement contracts. Production RFM remains unchanged."
 }
