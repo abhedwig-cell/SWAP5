@@ -1,0 +1,28 @@
+name: PPA-WU05-PERCH19 source reduction ladder
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/ppa-wu05-perch19-flow-reduction-ladder
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/process/macropore/**'
+      - 'src/runtime/mod_fmr_macropore_configuration.f90'
+      - 'src/runtime/mod_macropore_standard_rate_adapter.f90'
+      - 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'tests/fsi/ppa_wu05a18_andelst_headcalc_stubs.f90'
+      - 'tests/fpm/test_ppa_wu05_perch19_reduction_ladder.f90'
+      - 'tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh'
+      - '.github/workflows/ppa-wu05-perch19-reduction-ladder.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact source reduction ladder on Andelst perched authority
+        run: bash tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh
