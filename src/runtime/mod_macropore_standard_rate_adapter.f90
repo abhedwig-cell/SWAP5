@@ -90,9 +90,8 @@ contains
     nd=accepted_macro%num_domains
     if(matrix%active_nodes/=n .or. size(z)/=n .or. size(dz)/=n .or. step_duration<=0.0_real64)return
 
-    ! First FMR-admission scope is deliberately top-input neutral and rapid-drain inactive.
-    if(any(abs(template%limiter%potential_top_vertical_cm)>1.0e-15_real64) .or. &
-       any(abs(template%limiter%potential_top_lateral_cm)>1.0e-15_real64))return
+    ! Dynamic top input may be supplied by the A9 source-faithful forcing carrier.
+    ! The immutable configuration template itself remains top-input neutral.
     if(template%rapid%enabled)return
 
     call derive_matrix_saturated_zone_view(matrix,z,dz,matrix_view)
