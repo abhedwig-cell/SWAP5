@@ -23,8 +23,8 @@ module mod_fmr_moving_interface_runtime_adapter
     real(real64), pointer :: reduced_qdra(:,:) => null()
     real(real64), pointer :: reduced_qssdi(:) => null()
     real(real64), pointer :: reduced_qrot(:) => null()
-    real(real64), allocatable :: tail_pressure_head(:)
-    real(real64), allocatable :: tail_water_content(:)
+    real(real64), pointer :: tail_pressure_head(:) => null()
+    real(real64), pointer :: tail_water_content(:) => null()
     integer :: prepared_active_nodes = 0
     integer(int64) :: source_parameter_set_id = -1_int64
   contains
@@ -128,11 +128,15 @@ contains
 
     if (reduced_valid) then
       nt = nf-na
-      if (.not. allocated(self%tail_pressure_head)) then
+      if (.not. associated(self%tail_pressure_head)) then
         allocate(self%tail_pressure_head(nt), self%tail_water_content(nt))
       else if (size(self%tail_pressure_head) /= nt) then
         deallocate(self%tail_pressure_head)
-        if (allocated(self%tail_water_content)) deallocate(self%tail_water_content)
+        nullify(self%tail_pressure_head)
+        if (associated(self%tail_water_content)) then
+          deallocate(self%tail_water_content)
+          nullify(self%tail_water_content)
+        end if
         allocate(self%tail_pressure_head(nt), self%tail_water_content(nt))
       end if
       self%tail_pressure_head(1) = reduced_result%candidate_state%pressure_head(na) + &
@@ -283,8 +287,14 @@ contains
       deallocate(self%reduced_qrot)
       nullify(self%reduced_qrot)
     end if
-    if (allocated(self%tail_pressure_head)) deallocate(self%tail_pressure_head)
-    if (allocated(self%tail_water_content)) deallocate(self%tail_water_content)
+    if (associated(self%tail_pressure_head)) then
+      deallocate(self%tail_pressure_head)
+      nullify(self%tail_pressure_head)
+    end if
+    if (associated(self%tail_water_content)) then
+      deallocate(self%tail_water_content)
+      nullify(self%tail_water_content)
+    end if
     self%prepared_active_nodes = 0
     self%source_parameter_set_id = -1_int64
   end subroutine fmr_moving_interface_runtime_release
