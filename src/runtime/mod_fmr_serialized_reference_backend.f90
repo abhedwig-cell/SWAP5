@@ -1693,6 +1693,12 @@ contains
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     logical :: ok
     ok = numerical_config%max_committed_substeps > 0 .and. self%state_profile_admitted
+    if (self%external_top_surface_water_supplied) then
+      ok = ok .and. self%soil_water_selection%uses_reference() .and. &
+           .not.self%fixed_weir_surface_water_active .and. .not.self%snow_active .and. &
+           .not.self%black_evaporation_active .and. .not.self%boesten_evaporation_active .and. &
+           .not.self%macropore_active
+    end if
     if (self%fixed_weir_surface_water_active) then
       ok = ok .and. self%fixed_weir_surface_water_configured .and. .not. self%temporal_indicator_history_enabled .and. &
            numerical_config%transaction%temporal_mode == TX_TEMPORAL_EXTERNAL_FULL_HALF
