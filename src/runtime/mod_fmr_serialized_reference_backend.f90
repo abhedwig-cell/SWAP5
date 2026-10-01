@@ -2486,8 +2486,8 @@ contains
       class is (fmr_b110_physical_state_t)
         call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
              self%macropore_config%geometry, self%macropore_config%rate_template, &
-             self%macropore_config%history_template, self%macropore_top_input_forcing, &
-             self%macropore_policy, macropore_result)
+             self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+             top_input=self%macropore_top_input_forcing)
       class default
         return
       end select
