@@ -78,6 +78,16 @@ MODULE_SRC=(
  src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
  src/process/macropore/mod_rfm_surface_sorptivity.f90
  research/rfm/a27/mod_rfm_signed_contact_research.f90
+ src/process/macropore/mod_rfm_unponded_activation.f90
+ src/runtime/mod_rfm_unponded_surface_composition.f90
+ src/process/macropore/mod_rfm_preferential_router.f90
+ src/process/macropore/mod_rfm_surface_event_age.f90
+ src/runtime/mod_rfm_physical_state.f90
+ src/process/macropore/mod_rfm_endpoint_release.f90
+ src/runtime/mod_rfm_whole_column_candidate_ledger.f90
+ src/runtime/mod_rfm_ic_storage_geometry.f90
+ src/runtime/mod_rfm_ic_hydrostatic_head.f90
+ src/runtime/mod_rfm_production_candidate_composer.f90
 )
 objects=()
 for source in "${MODULE_SRC[@]}"; do
