@@ -29,6 +29,11 @@ MODULE_SRC=(
   src/runtime/mod_rossfast_d3r_execution_policy.f90
   src/runtime/mod_rossfast_d3r_model_binding.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/process/macropore/mod_rfm_unponded_activation.f90
+  src/runtime/mod_rfm_unponded_surface_composition.f90
+  src/process/macropore/mod_rfm_preferential_router.f90
+  src/process/macropore/mod_rfm_surface_event_age.f90
+  src/runtime/mod_rfm_physical_state.f90
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_rossfast_d3r_table_kernel.f90
   src/solver/mod_rossfast_d3r_table_provider.f90
