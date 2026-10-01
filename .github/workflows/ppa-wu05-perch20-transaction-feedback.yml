@@ -1,0 +1,20 @@
+name: PPA-WU05-PERCH20 transaction retry feedback
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch20-transaction-retry-feedback
+    paths:
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/fpm/test_ppa_wu05_perch20_transaction_retry_feedback.f90'
+      - 'tests/fpm/run_ppa_wu05_perch20_transaction_retry_feedback.sh'
+      - '.github/workflows/ppa-wu05-perch20-transaction-feedback.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH20 protocol and transaction preservation
+        run: bash tests/fpm/run_ppa_wu05_perch20_transaction_retry_feedback.sh
