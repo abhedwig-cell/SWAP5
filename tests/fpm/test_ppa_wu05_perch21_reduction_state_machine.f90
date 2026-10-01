@@ -11,7 +11,8 @@ program test_ppa_wu05_perch21_reduction_state_machine
   integer :: i
 
   call initialize_macropore_reduction_continuation(committed,0.03_real64,ok)
-  call require(ok .and. committed%ready(),'initial continuation')
+  call require(ok,'initial continuation initialized')
+  call require(committed%ready(),'initial continuation ready')
   call require(committed%reduction_level==0,'initial level zero')
   call require(committed%accepted_step_count==0,'initial accepted count zero')
   call require(abs(committed%factor()-1.0_real64)<1.0e-15_real64,'factor level zero')
