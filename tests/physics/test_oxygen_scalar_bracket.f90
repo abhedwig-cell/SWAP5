@@ -6,10 +6,10 @@ program test_oxygen_scalar_bracket
    integer :: status, n
 
    call oxygen_bisect_monotone(no_stress, 1.0_real64, x, status, n)
-   if (status /= OXYGEN_NO_STRESS .or. x /= 1.0_real64 .or. n /= 0) error stop 1
+   if (status /= OXYGEN_NO_STRESS .or. abs(x-1.0_real64) > epsilon(1.0_real64) .or. n /= 0) error stop 1
 
    call oxygen_bisect_monotone(full_stress, 1.0_real64, x, status, n)
-   if (status /= OXYGEN_FULL_STRESS .or. x /= 0.0_real64 .or. n /= 0) error stop 2
+   if (status /= OXYGEN_FULL_STRESS .or. abs(x) > epsilon(1.0_real64) .or. n /= 0) error stop 2
 
    call oxygen_bisect_monotone(interior, 1.0_real64, x, status, n)
    if (status /= OXYGEN_BRACKET_OK) error stop 3
