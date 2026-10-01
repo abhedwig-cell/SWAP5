@@ -1,0 +1,25 @@
+name: F-PE-MIQUAL04 dynamic-top runoff ponding qualification
+
+on:
+  push:
+    branches:
+      - research/f-pe-miqual04-dynamic-top-runoff-ponding
+    paths:
+      - 'docs/performance/F-PE-MIQUAL04_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_miqual04_dynamic_top.f90'
+      - 'tests/fpe/run_fpe_miqual04.py'
+      - 'tests/fpe/run_fpe_miqual04.sh'
+      - '.github/workflows/f-pe-miqual04.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_miqual04.sh
