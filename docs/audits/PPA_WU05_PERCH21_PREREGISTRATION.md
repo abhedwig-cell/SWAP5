@@ -5,7 +5,7 @@ Date: 2026-10-01
 Status: `PREREGISTERED / CANONICAL_RECONSTRUCTION`
 
 Baseline:
-`integration/f-ci-canonical@f477f3fb7bf272757ac7a764bf9492883a521754`
+`integration/f-ci-canonical@59048478a7ddff4df90beb81a1f9c4ee99b0f5d0`
 
 Qualified research dependencies:
 
@@ -41,7 +41,7 @@ accounting or qualification tests.
 2. PERCH19 exact controller/A18 active retry remains green;
 3. PERCH20 candidate/commit/reject/restart remains green;
 4. current canonical RFM A24 real-Richards split and matrix-source-provider gates remain green;
-5. later current-canonical RFM A25 node-sorptivity/runtime-orchestrator and A26H wall-history gates remain green;
+5. later current-canonical RFM A25 node-sorptivity/runtime-orchestrator, A26H wall-history and A26J initial-storage-geometry gates remain green;
 6. default macropore path with reduction continuation disabled remains preserved;
 7. no historical generic A11-A18 docs/status paths are introduced;
 8. one persisted postimage passes all relevant gates at O0/O2 where the owning tests
