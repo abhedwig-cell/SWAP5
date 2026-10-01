@@ -1,0 +1,140 @@
+{
+  "schema": "swap5.f_macro_alt47.dataset_matrix.v1",
+  "candidates": [
+    {
+      "id": "GFZ-Hartmann-2024",
+      "doi": "10.5880/GFZ.4.4.2024.001",
+      "public": true,
+      "controlled_irrigation": true,
+      "observations": [
+        "soil-moisture time series",
+        "delta2H soil-water profiles",
+        "trinary Brilliant Blue images"
+      ],
+      "strengths": [
+        "multi-depth response",
+        "continuous dye depth metrics",
+        "isotope profile",
+        "same chronosequences as Hartmann 2022"
+      ],
+      "limitations": [
+        "three consecutive irrigation days with different intensities and isotope concentrations",
+        "post-irrigation isotope profile mixes sequential inputs",
+        "dye stained geometry is not water-volume fraction"
+      ],
+      "admissible_targets": [
+        "p",
+        "f_MB conditionally"
+      ],
+      "sigma_B_status": "not directly identifiable from current public observables"
+    },
+    {
+      "id": "HILLSCAPE-Maier-2021",
+      "doi": "10.5880/fidgeo.2021.011",
+      "public": true,
+      "controlled_irrigation": true,
+      "observations": [
+        "overland flow",
+        "trench subsurface flow",
+        "flow rate",
+        "EC/tracer mixing",
+        "soil properties"
+      ],
+      "strengths": [
+        "quantitative water receipts",
+        "controlled sprinkling",
+        "mass/routing information"
+      ],
+      "limitations": [
+        "trench SSF is lateral hillslope receipt, not a direct vertical preferential-entry partition",
+        "runoff-generation mechanisms include lateral and saturation controls"
+      ],
+      "admissible_targets": [
+        "f_MB/external routing sensitivity"
+      ],
+      "sigma_B_status": "not isolated"
+    },
+    {
+      "id": "Weiherbach-Spechtacker-site33",
+      "source": "Zehe/Fluhler experiments as used by Sternagel et al. 2019 HESS",
+      "public_article": true,
+      "raw_data_publicly_located": false,
+      "controlled_irrigation": true,
+      "observations": [
+        "observed vertical bromide mass profiles",
+        "measured macropore counts/diameters/depths"
+      ],
+      "strengths": [
+        "quantitative tracer mass by depth",
+        "explicit macropore structure",
+        "preferential-flow sites"
+      ],
+      "limitations": [
+        "raw numeric profiles not located in an open machine-readable repository in ALT47 search",
+        "single/few experiment structure insufficient by itself for sigma_B event transferability"
+      ],
+      "admissible_targets": [
+        "p",
+        "f_MB",
+        "wall/geometry checks"
+      ],
+      "sigma_B_status": "conditional on raw source-partition data"
+    },
+    {
+      "id": "North-China-dual-infiltration-dye",
+      "source": "Quantifying preferential flows on two farmlands in the North China plain using dual infiltration and dye tracer methods",
+      "public_article": false,
+      "raw_data_public": false,
+      "controlled_infiltration": true,
+      "observations": [
+        "matrix infiltration rate",
+        "steady infiltration rate",
+        "derived preferential-flow infiltration rate",
+        "dye estimate"
+      ],
+      "strengths": [
+        "direct quantitative PFIR concept"
+      ],
+      "limitations": [
+        "data available only on request",
+        "limited transferability/events"
+      ],
+      "admissible_targets": [
+        "sigma_B conceptually"
+      ],
+      "sigma_B_status": "promising but inaccessible in current public-data workflow"
+    },
+    {
+      "id": "NEON-PF-v1.1",
+      "hydroshare": "847b15cd15524b78acd58a2a8be242c1",
+      "public": true,
+      "observations": [
+        "binary/categorical PF signals",
+        "multi-depth timing",
+        "antecedent moisture",
+        "storm descriptors"
+      ],
+      "strengths": [
+        "very large event population",
+        "held-out ranking tests",
+        "state/intensity coverage"
+      ],
+      "limitations": [
+        "no direct preferential-water amount",
+        "binary labels do not identify sigma_B magnitude"
+      ],
+      "admissible_targets": [
+        "activation ordering",
+        "transferability ranking"
+      ],
+      "sigma_B_status": "non-identifiable from binary labels"
+    }
+  ],
+  "primary_conclusion": "No currently materialized public candidate provides a clean, event-level continuous vertical preferential-entry fraction sufficient to estimate sigma_B without an additional observation model.",
+  "recommended_use": {
+    "GFZ": "qualify p/depth-routing observation operator and conditional f_MB/deep response",
+    "HILLSCAPE": "quantitative routing/receipt cross-check",
+    "NEON": "large-sample activation ordering and held-out transferability",
+    "sigma_B": "seek/request direct PF fraction dataset or run dedicated controlled experiment"
+  }
+}
