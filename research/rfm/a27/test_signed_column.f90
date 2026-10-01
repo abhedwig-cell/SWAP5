@@ -45,7 +45,7 @@ program test_ppa_wu05a27_signed_column
  allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod),source(numnod),h0(numnod),t0(numnod))
  do soil=1,2
  do wet=0,2
- do mode=0,3
+ do mode=0,4
  do ref=0,4
  dt=.002_real64/(2**ref);ns=nint(1._real64/dt)
  ks=1._real64;if(soil==2)ks=5._real64
@@ -112,7 +112,8 @@ program test_ppa_wu05a27_signed_column
   into_macro=sum(pos);out_macro=sum(neg)
   qdra(1,:)=pos/dt;qssdi=neg/dt
  endif
- if(mode==3)then
+ if(mode>=3)then
+  contact%finite_contact=mode==4
   contact%dt=dt;contact%storage=macro_water;contact%capacity=5._real64;contact%area=.05_real64
   contact%bottom_depth=100._real64;contact%length=20._real64;contact%chi=1._real64;contact%age=(step-1)*dt
   contact%depth=-z;contact%thickness=dz;contact%matrix_head=q%base_state%pressure_head
