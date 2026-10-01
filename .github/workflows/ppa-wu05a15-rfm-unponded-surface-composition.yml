@@ -1,0 +1,23 @@
+name: PPA-WU05-A15 RFM unponded surface composition
+
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a15-rfm-unponded-surface-composition
+    paths:
+      - 'src/runtime/mod_rfm_unponded_surface_composition.f90'
+      - 'tests/fpm/test_ppa_wu05a15_rfm_unponded_surface_composition.f90'
+      - 'tests/fpm/run_ppa_wu05a15_rfm_unponded_surface_composition.sh'
+      - '.github/workflows/ppa-wu05a15-rfm-unponded-surface-composition.yml'
+
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run focused A15 gate
+        run: bash tests/fpm/run_ppa_wu05a15_rfm_unponded_surface_composition.sh
