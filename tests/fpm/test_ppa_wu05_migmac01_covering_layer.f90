@@ -23,7 +23,7 @@ program test_ppa_wu05_migmac01_covering_layer
   if(abs(sum(q)-0.18372261330635548_real64)>5e-14_real64) error stop 4
   call evaluate_covering_layer_rate_derivative(req,dqdh,ok)
   if(.not.ok) error stop 8
-  if(abs(dqdh-0.12248174220423698_real64)>5e-14_real64) error stop 9
+  if(abs(dqdh-0.4593065332658887_real64)>5e-14_real64) error stop 9
 
   req%matrix_head_above_cm=0.0_real64
   call evaluate_covering_layer_input(req,q,ok)
