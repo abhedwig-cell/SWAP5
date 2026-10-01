@@ -1,0 +1,20 @@
+name: PPA-WU05-PERCH19 FrReduQ state machine
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch19-flow-reduction-ladder
+    paths:
+      - 'src/runtime/mod_fmr_macropore_reduction_continuation.f90'
+      - 'tests/fpm/test_ppa_wu05_perch19_reduction_state_machine.f90'
+      - 'tests/fpm/run_ppa_wu05_perch19_reduction_state_machine.sh'
+      - '.github/workflows/ppa-wu05-perch19-reduction-state.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH19 exact FrReduQ state machine
+        run: bash tests/fpm/run_ppa_wu05_perch19_reduction_state_machine.sh
