@@ -54,6 +54,8 @@ module mod_macropore_single_column_runtime
     real(real64) :: rapid_external_outflow_cm=0.0_real64
     logical :: perched_exchange_active=.false.
     real(real64) :: perched_interflow_cm=0.0_real64
+    logical :: accepted_state_seed_active=.false.
+    real(real64) :: accepted_state_seed_interflow_cm=0.0_real64
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
     real(real64) :: macro_balance_residual_cm=huge(1.0_real64)
     type(soil_water_solve_result_t) :: matrix_result
@@ -193,6 +195,29 @@ contains
     n=accepted_macro%num_nodes
     allocate(current_domain(nd,n),next_domain(nd,n),current_node(n),overlay%exchange_rate(n))
     overlay%exchange_rate=0.0_real64
+
+    ! PPA-WU05-A13: only the explicit perched route receives a source-order-aware
+    ! initial exchange estimate. Pre-A13 configurations retain the exact
+    ! zero-exchange predictor path.
+    if(rate_template_step%perched_detection_enabled)then
+      call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
+           base_request%base_state,base_request%parameters%z,base_request%parameters%dz,dt,rate_request,matrix_view,ok)
+      if(.not.ok)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
+      call evaluate_macropore_rate_bundle(rate_request,current_rates)
+      if(.not.current_rates%valid)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
+      current_domain=current_rates%qexc_to_matrix_rate
+      current_node=sum(current_domain,dim=1)
+      overlay%exchange_rate=current_node
+      result%accepted_state_seed_interflow_cm=sum(current_rates%qin_interflow_rate)*dt
+      result%accepted_state_seed_active=rate_request%unsaturated%sorptivity%perched_active .and. &
+           result%accepted_state_seed_interflow_cm>0.0_real64
+    end if
 
     call solver%solve(request,workspace,predictor)
     result%predictor_solves=1
