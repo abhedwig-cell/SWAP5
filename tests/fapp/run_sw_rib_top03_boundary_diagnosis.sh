@@ -7,15 +7,20 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 STUB="${1:?stub path required}"
 GEOMETRY="${2:?geometry id required}"
+HEAD_SOURCE="src/legacy/b1_10_port/headcalc.f90"
+if [[ "${3:-stock}" != stock ]]; then
+  HEAD_SOURCE="$BUILD/top03_research_headcalc.f90"
+  python3 tests/fapp/make_top03_bottom_jacobian_probe.py "$HEAD_SOURCE" "$3"
+fi
 fail(){ echo "FAPP09_GATE_FAIL $*" >&2; exit 91; }
 
-python3 - "$BUILD/compile-order.txt" "$STUB" <<'PY'
+python3 - "$BUILD/compile-order.txt" "$STUB" "$HEAD_SOURCE" <<'PY'
 from pathlib import Path
 import re,sys
 test=Path("tests/fapp/test_sw_rib_top03_boundary_diagnosis.f90")
 stub=Path(sys.argv[2])
 top=Path("tests/fmr/mod_fmr04_fixed_top_provider.f90")
-headcalc=Path("src/legacy/b1_10_port/headcalc.f90")
+headcalc=Path(sys.argv[3])
 candidates=[stub,top]+sorted(p for p in Path("src").rglob("*.f90") if "src/legacy/" not in p.as_posix())+[headcalc,test]
 mr=re.compile(r"^\s*module\s+(?!procedure\b|subroutine\b|function\b)([a-zA-Z_]\w*)",re.I)
 ur=re.compile(r"^\s*use(?:\s*,\s*[^:]*)?\s*(?:::\s*)?([a-zA-Z_]\w*)",re.I)
