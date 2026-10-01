@@ -88,7 +88,7 @@ program test_ppa_wu05a17_serialized_inner_callback
   call initialize_b110_default_mvg_parameters(hp,cofgen)
   call bind_b110_default_mvg_provider(hyd,hp,dt)
 
-  heads=[-5.0_real64,0.20_real64,-0.02_real64,0.50_real64]
+  heads=[-5.0_real64,3.0_real64,-0.50_real64,0.50_real64]
   call hyd%evaluate(heads,water,cond,cap,dkdh)
 
   allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod))
@@ -258,9 +258,6 @@ contains
     forcing%bottom_head=1.0_real64
     forcing%drainage_flux_by_level=0.0_real64
     forcing%subsurface_irrigation_source=0.0_real64
-    ! Controlled matrix recharge keeps the thin perched lens active over the
-    ! qualification interval. It is matrix forcing, not a macropore receipt.
-    forcing%subsurface_irrigation_source(2)=0.01_real64
     forcing%root_extraction_sink=0.0_real64
     allocate(forcing%macropore_top_input)
     forcing%macropore_top_input=fmr_macropore_top_input_forcing_t()
