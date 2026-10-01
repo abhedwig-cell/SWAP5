@@ -18,8 +18,8 @@ module mod_fmr_moving_interface_runtime_adapter
     type(moving_interface_manager_context_t) :: context
     type(reference_richards_legacy_workspace_t) :: reduced_workspace
     type(b110_default_mvg_parameters_t), pointer :: reduced_hydraulics => null()
-    type(b110_default_mvg_provider_t) :: reduced_constitutive
-    type(b110_source_sink_provider_t) :: reduced_source_sink
+    type(b110_default_mvg_provider_t), pointer :: reduced_constitutive => null()
+    type(b110_source_sink_provider_t), pointer :: reduced_source_sink => null()
     real(real64), pointer :: reduced_qdra(:,:) => null()
     real(real64), pointer :: reduced_qssdi(:) => null()
     real(real64), pointer :: reduced_qrot(:) => null()
@@ -194,6 +194,7 @@ contains
         self%prepared_active_nodes = n
         self%source_parameter_set_id = full_request%parameters%parameter_set_id
       end if
+      if (.not. associated(self%reduced_constitutive)) allocate(self%reduced_constitutive)
       call bind_b110_default_mvg_provider(self%reduced_constitutive, self%reduced_hydraulics, full_request%step_duration)
 
       if (.not. associated(self%reduced_qdra) .or. size(self%reduced_qdra,1) /= levels .or. &
@@ -206,6 +207,7 @@ contains
       self%reduced_qdra = full_qdra(:,1:n)
       self%reduced_qssdi = full_qssdi(1:n)
       self%reduced_qrot = full_qrot(1:n)
+      if (.not. associated(self%reduced_source_sink)) allocate(self%reduced_source_sink)
       call bind_b110_source_sink_provider(self%reduced_source_sink, self%reduced_qdra, self%reduced_qssdi, self%reduced_qrot)
       local_ok = .true.
     end subroutine prepare_reduced_provider
@@ -245,6 +247,14 @@ contains
     if (associated(self%reduced_hydraulics)) then
       deallocate(self%reduced_hydraulics)
       nullify(self%reduced_hydraulics)
+    end if
+    if (associated(self%reduced_constitutive)) then
+      deallocate(self%reduced_constitutive)
+      nullify(self%reduced_constitutive)
+    end if
+    if (associated(self%reduced_source_sink)) then
+      deallocate(self%reduced_source_sink)
+      nullify(self%reduced_source_sink)
     end if
     if (associated(self%reduced_qdra)) then
       deallocate(self%reduced_qdra)
