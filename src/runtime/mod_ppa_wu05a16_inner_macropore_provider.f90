@@ -1,0 +1,152 @@
+module mod_ppa_wu05a16_inner_macropore_provider
+  use, intrinsic :: iso_fortran_env, only: real64
+  use mod_soil_water_solver_contract, only: macropore_exchange_provider_t, soil_water_physical_state_t
+  use mod_macropore_continuation_state, only: macropore_continuation_state_t, copy_macropore_continuation_state
+  use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t
+  use mod_macropore_standard_storage, only: macropore_standard_storage_view_t, derive_macropore_standard_storage_view
+  use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t, macropore_rate_bundle_result_t, &
+       evaluate_macropore_rate_bundle
+  use mod_macropore_standard_rate_adapter, only: matrix_saturated_zone_view_t, &
+       prepare_standard_macropore_rate_request
+  use mod_ppa_wu05a15_exchange_derivative, only: macropore_exchange_derivative_result_t, &
+       evaluate_macropore_exchange_derivative
+  implicit none
+  private
+
+  type, extends(macropore_exchange_provider_t), public :: ppa_wu05a16_inner_macropore_provider_t
+    logical :: configured=.false.
+    type(macropore_continuation_state_t) :: accepted_macro
+    type(macropore_geometry_result_t) :: geometry
+    type(macropore_standard_storage_view_t) :: accepted_view
+    type(macropore_rate_bundle_request_t) :: rate_template
+    real(real64), allocatable :: z(:),dz(:)
+    real(real64) :: step_duration=0.0_real64
+    real(real64) :: accepted_ponding_depth=0.0_real64
+    real(real64) :: accepted_groundwater_level=0.0_real64
+  contains
+    procedure, public :: configure => configure_inner_macropore_provider
+    procedure, public :: evaluate_rate => evaluate_inner_macropore_rate
+    procedure, public :: evaluate_derivative => evaluate_inner_macropore_derivative
+  end type ppa_wu05a16_inner_macropore_provider_t
+
+contains
+
+  subroutine configure_inner_macropore_provider(self,accepted_macro,geometry,rate_template,z,dz,step_duration, &
+                                                 accepted_ponding_depth,accepted_groundwater_level,ok)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(inout)::self
+    type(macropore_continuation_state_t),intent(in)::accepted_macro
+    type(macropore_geometry_result_t),intent(in)::geometry
+    type(macropore_rate_bundle_request_t),intent(in)::rate_template
+    real(real64),intent(in)::z(:),dz(:),step_duration,accepted_ponding_depth,accepted_groundwater_level
+    logical,intent(out)::ok
+
+    self%configured=.false.
+    ok=.false.
+    if(.not.accepted_macro%ready() .or. .not.geometry%valid)return
+    if(step_duration<=0.0_real64)return
+    if(size(z)/=accepted_macro%num_nodes .or. size(dz)/=accepted_macro%num_nodes .or. any(dz<=0.0_real64))return
+    if(geometry%num_nodes/=accepted_macro%num_nodes .or. geometry%num_domains/=accepted_macro%num_domains)return
+
+    call copy_macropore_continuation_state(accepted_macro,self%accepted_macro,ok)
+    if(.not.ok)return
+    self%geometry=geometry
+    self%rate_template=rate_template
+    self%z=z
+    self%dz=dz
+    self%step_duration=step_duration
+    self%accepted_ponding_depth=accepted_ponding_depth
+    self%accepted_groundwater_level=accepted_groundwater_level
+
+    call derive_macropore_standard_storage_view(self%accepted_macro,self%geometry%top_node,self%z,self%dz,self%accepted_view)
+    if(.not.self%accepted_view%valid)return
+    if(maxval(abs(self%accepted_view%normalized_water_cm-self%accepted_macro%water_domain_cp))>1.0e-10_real64)return
+
+    self%configured=.true.
+    ok=.true.
+  end subroutine configure_inner_macropore_provider
+
+  subroutine evaluate_inner_macropore_rate(self,pressure_head,water_content,exchange_flux,active)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
+    real(real64),intent(in)::pressure_head(:),water_content(:)
+    real(real64),intent(out)::exchange_flux(:)
+    logical,intent(out)::active
+
+    type(macropore_rate_bundle_request_t)::request
+    type(macropore_rate_bundle_result_t)::rates
+    type(matrix_saturated_zone_view_t)::matrix_view
+    type(soil_water_physical_state_t)::matrix
+    logical::ok
+
+    exchange_flux=0.0_real64
+    active=.false.
+    if(.not.self%configured)return
+    call evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok)
+    if(.not.ok)return
+    if(size(exchange_flux)/=self%accepted_macro%num_nodes)return
+    exchange_flux=sum(rates%qexc_to_matrix_rate,dim=1)
+    active=maxval(abs(exchange_flux))>1.0e-14_real64
+  end subroutine evaluate_inner_macropore_rate
+
+  subroutine evaluate_inner_macropore_derivative(self,pressure_head,water_content,capacity,dexchange_dhead, &
+                                                  derivative_available,active)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
+    real(real64),intent(in)::pressure_head(:),water_content(:),capacity(:)
+    real(real64),intent(out)::dexchange_dhead(:)
+    logical,intent(out)::derivative_available,active
+
+    type(macropore_rate_bundle_request_t)::request
+    type(macropore_rate_bundle_result_t)::rates
+    type(macropore_exchange_derivative_result_t)::derivative
+    type(matrix_saturated_zone_view_t)::matrix_view
+    type(soil_water_physical_state_t)::matrix
+    real(real64),allocatable::exchange(:)
+    logical::ok
+
+    dexchange_dhead=0.0_real64
+    derivative_available=.false.
+    active=.false.
+    if(.not.self%configured)return
+    if(size(capacity)/=self%accepted_macro%num_nodes)return
+
+    call evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok)
+    if(.not.ok)return
+    call evaluate_macropore_exchange_derivative(request,rates,capacity,derivative)
+    if(.not.derivative%valid)return
+    if(size(dexchange_dhead)/=self%accepted_macro%num_nodes)return
+
+    allocate(exchange(self%accepted_macro%num_nodes))
+    exchange=sum(rates%qexc_to_matrix_rate,dim=1)
+    dexchange_dhead=derivative%total_dqdh_node
+    derivative_available=.true.
+    active=max(maxval(abs(exchange)),maxval(abs(dexchange_dhead)))>1.0e-14_real64
+  end subroutine evaluate_inner_macropore_derivative
+
+  subroutine evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
+    real(real64),intent(in)::pressure_head(:),water_content(:)
+    type(macropore_rate_bundle_request_t),intent(out)::request
+    type(macropore_rate_bundle_result_t),intent(out)::rates
+    type(matrix_saturated_zone_view_t),intent(out)::matrix_view
+    type(soil_water_physical_state_t),intent(out)::matrix
+    logical,intent(out)::ok
+    integer::n
+
+    ok=.false.
+    n=self%accepted_macro%num_nodes
+    if(size(pressure_head)/=n .or. size(water_content)/=n)return
+
+    matrix%active_nodes=n
+    allocate(matrix%pressure_head(n),matrix%water_content(n))
+    matrix%pressure_head=pressure_head
+    matrix%water_content=water_content
+    matrix%ponding_depth=self%accepted_ponding_depth
+    matrix%groundwater_level=self%accepted_groundwater_level
+
+    call prepare_standard_macropore_rate_request(self%rate_template,self%accepted_macro,self%geometry,self%accepted_view, &
+         matrix,self%z,self%dz,self%step_duration,request,matrix_view,ok)
+    if(.not.ok)return
+    call evaluate_macropore_rate_bundle(request,rates)
+    ok=rates%valid
+  end subroutine evaluate_current_rates
+
+end module mod_ppa_wu05a16_inner_macropore_provider
