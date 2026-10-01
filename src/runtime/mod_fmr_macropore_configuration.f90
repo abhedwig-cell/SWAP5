@@ -34,7 +34,7 @@ contains
     integer, intent(in) :: swsep
     logical, intent(out) :: ok
 
-    integer :: n, nd
+    integer :: n, nd, id
     real(real64) :: bottom_level
 
     config = fmr_macropore_physical_config_t()
@@ -95,10 +95,10 @@ contains
     config%rate_template%unsaturated%groundwater_level_domain = z(potential_bottom_domain)
     config%rate_template%unsaturated%sorp_fac_parallel = sorp_fac_parallel
 
+    bottom_level = z(potential_bottom_domain(1)) - 0.5_real64*dz(potential_bottom_domain(1))
     call initialize_saturated_template(config%rate_template%interflow_sat)
     call initialize_saturated_template(config%rate_template%matrix_sat)
 
-    bottom_level = z(potential_bottom_domain(1)) - 0.5_real64*dz(potential_bottom_domain(1))
     config%rate_template%rapid%num_nodes = n
     config%rate_template%rapid%top_water_node = potential_bottom_domain(1)
     config%rate_template%rapid%bottom_domain_node = potential_bottom_domain(1)
