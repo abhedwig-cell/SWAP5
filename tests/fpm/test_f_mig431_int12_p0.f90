@@ -18,7 +18,7 @@ program test_f_mig431_int12_p0
 
   before=p%accepted_amount(w)
   call prepare_interception_trial(w,p,10.5_real64,tr,s); call req(s==INTWIN_OK,"reject candidate")
-  call req(p%accepted_amount(w)==before,"rejected trial immutable")
+  call req(same_bits(p%accepted_amount(w),before),"rejected trial immutable")
   call prepare_interception_trial(w,p,10.25_real64,tr2,s); call req(s==INTWIN_OK,"retry")
   retry_amt=tr2%apportioned_amount()
   call accept_interception_trial(w,tr2,p,s); call req(s==INTWIN_OK,"retry accept")
@@ -27,17 +27,17 @@ program test_f_mig431_int12_p0
   call initialize_interception_progress(w,pd,s)
   call prepare_interception_trial(w,pd,10.125_real64,tr,s); call accept_interception_trial(w,tr,pd,s)
   call prepare_interception_trial(w,pd,10.25_real64,tr,s); direct_amt=tr%apportioned_amount()
-  call req(retry_amt==direct_amt,"failed then accepted equals direct")
+  call req(same_bits(retry_amt,direct_amt),"failed then accepted equals direct")
 
   call export_interception_restart(w,p,rst,s); call req(s==INTWIN_OK,"restart export")
   call restore_interception_restart(rst,wr,pr,s); call req(s==INTWIN_OK,"restart restore")
-  call req(pr%accepted_amount(wr)==p%accepted_amount(w),"restart progress identity")
+  call req(same_bits(pr%accepted_amount(wr),p%accepted_amount(w)),"restart progress identity")
   call prepare_interception_trial(wr,pr,10.625_real64,tr,s); sum_parts=sum_parts+tr%apportioned_amount()
   call accept_interception_trial(wr,tr,pr,s); call req(s==INTWIN_OK,"post restart")
   call prepare_interception_trial(wr,pr,11.0_real64,tr,s); sum_parts=sum_parts+tr%apportioned_amount()
   call accept_interception_trial(wr,tr,pr,s); call req(s==INTWIN_OK,"final")
   call req(pr%complete(wr),"complete")
-  call req(pr%accepted_amount(wr)==w%aggregate_value(),"aggregate exact endpoint")
+  call req(same_bits(pr%accepted_amount(wr),w%aggregate_value()),"aggregate exact endpoint")
   call req(abs(sum_parts-w%aggregate_value())<=8.0_real64*epsilon(1.0_real64),"partition conservation")
 
   call initialize_interception_progress(w,pa,s)
@@ -46,12 +46,16 @@ program test_f_mig431_int12_p0
   call initialize_interception_progress(wr,pb,s)
   call prepare_interception_trial(wr,pb,20.7_real64,tr2,s); b=tr2%apportioned_amount()
   call prepare_interception_trial(w,pa,10.4_real64,tr,s); a2=tr%apportioned_amount()
-  call req(a1==a2 .and. b>0.0_real64,"ABA deterministic")
+  call req(same_bits(a1,a2) .and. b>0.0_real64,"ABA deterministic")
 
   print '(a)',"F-MIG431-INT12-P0 PASS"
   print '(a,es24.16)',"aggregate=",p%accepted_amount(w)
   print '(a,es24.16)',"final=",pr%accepted_amount(wr)
 contains
+  pure logical function same_bits(x,y)
+    real(real64),intent(in)::x,y
+    same_bits=transfer(x,0_int64)==transfer(y,0_int64)
+  end function
   subroutine req(ok,label)
     logical,intent(in)::ok; character(len=*),intent(in)::label
     if(.not.ok) then; print '(a)',"FAIL "//trim(label); error stop 1; end if
