@@ -254,6 +254,8 @@ contains
       write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
       write(*,'(A,L1)')'TOP03_DIAG_ADMISSION_PREVIEW=',observation%execution_admission_preview
       write(*,'(A,L1)')'TOP03_DIAG_FORCING_PREPARED=',observation%forcing_prepared
+      write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
+      write(*,'(A,L1)')'TOP03_DIAG_EXEC_ADMITTED=',observation%execution_admission_preview
       write(*,'(A,L1)')'TOP03_DIAG_SOLVER_EXECUTED=',observation%solver_executed
       write(*,'(A,I0)')'TOP03_DIAG_SOLVER_STATUS=',observation%solver_status
       write(*,'(A,ES24.16)')'TOP03_DIAG_QTOP=',observation%top_flux
