@@ -1,0 +1,24 @@
+name: PPA-WU05-A11 perched carrier
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-a11-perched-zone-carrier
+    paths:
+      - "src/process/macropore/**"
+      - "src/runtime/mod_macropore_standard_rate_adapter.f90"
+      - "src/runtime/mod_fmr_macropore_configuration.f90"
+      - "tests/fpm/test_ppa_wu05a11_perched_carrier.f90"
+      - "tests/fpm/run_ppa_wu05a11_perched.sh"
+      - ".github/workflows/ppa-wu05a11-perched.yml"
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Focused A11 source/carrier gate
+        run: bash tests/fpm/run_ppa_wu05a11_perched.sh
+      - name: Preserve A7-A10 macropore production route
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
