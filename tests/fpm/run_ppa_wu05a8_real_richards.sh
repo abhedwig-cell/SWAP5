@@ -24,10 +24,14 @@ MODULE_SRC=(
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
-  src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
-  src/runtime/mod_rossfast_d3r_model_binding.f90
+  src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
+  src/runtime/mod_rossfast_d3r_model_binding.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/solver/mod_rossfast_d3r_table_kernel.f90
+  src/solver/mod_rossfast_d3r_table_provider.f90
+  src/solver/mod_rossfast_d3r_soil_water_solver.f90
+  src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/runtime/mod_macropore_continuation_state.f90
   src/solver/mod_process_hydraulic_view.f90
