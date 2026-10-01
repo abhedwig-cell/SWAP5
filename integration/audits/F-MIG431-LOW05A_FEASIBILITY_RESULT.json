@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MIG431-LOW05-A",
+  "baseline": "44c6df02a58edee79f88dde8ca8aadbec26337fc",
+  "result": "SHARED_AUTHORITY_PREREQUISITE_REQUIRED",
+  "scope": "source/feasibility review only; no production qualification",
+  "source_identity": "8 complete source members match pinned B1.11 manifest",
+  "static_staging": "BoundBottom precedes retry loop; TimeControl(5) reduces dt inside loop without BoundBottom re-entry",
+  "interpolation_cases": [
+    {
+      "t": -1,
+      "hbot_cm": -100
+    },
+    {
+      "t": 0,
+      "hbot_cm": -100
+    },
+    {
+      "t": 0.25,
+      "hbot_cm": -50
+    },
+    {
+      "t": 0.5,
+      "hbot_cm": 0
+    },
+    {
+      "t": 1,
+      "hbot_cm": 100
+    },
+    {
+      "t": 2,
+      "hbot_cm": 100
+    }
+  ],
+  "retry_counterexample": {
+    "t0": 0,
+    "initial_dt": 1,
+    "retry_dt": 0.25,
+    "legacy_latched_hbot_cm": 100,
+    "per_retry_endpoint_hbot_cm": -50,
+    "difference_cm": 150
+  },
+  "production_changed": false,
+  "production_tests_run": false,
+  "actions_dispatched": false
+}

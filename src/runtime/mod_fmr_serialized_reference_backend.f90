@@ -73,6 +73,8 @@ module mod_fmr_serialized_reference_backend
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
        evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
        FMR_DRAIN_BIND_OK
+  use mod_fmr_legacy_qgwl_bottom_boundary_provider, only: fmr_qgwl_bottom_boundary_config_t, &
+       fmr_qgwl_bottom_boundary_result_t, fmr_evaluate_legacy_qgwl_bottom_boundary, FMR_QGWL_OK
   use mod_fmr_drainage_qbot_directional_binding, only: project_fmr_qbot_smooth_groundwater_level, &
        compose_fmr_qbot_drainage_sink_direction, FMR_QBOT_DRAIN_DIRECTION_OK
   use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, soil_temperature_parameters_t, &
@@ -278,6 +280,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
+    type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     real(real64), allocatable :: drainage_flux_by_level(:,:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
@@ -437,6 +440,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
+    type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
@@ -1985,6 +1989,14 @@ contains
       else
         if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
       end if
+      if (allocated(forcing%legacy_swbotb4_qgwl_control)) then
+        if (allocated(forcing%legacy_swbotb2_control)) return
+        if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (.not. allocated(self%legacy_swbotb4_qgwl_control)) allocate(self%legacy_swbotb4_qgwl_control)
+        self%legacy_swbotb4_qgwl_control = forcing%legacy_swbotb4_qgwl_control
+      else if (allocated(self%legacy_swbotb4_qgwl_control)) then
+        deallocate(self%legacy_swbotb4_qgwl_control)
+      end if
       if (allocated(forcing%legacy_swbotb2_control)) then
         if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
         if (.not. forcing%legacy_swbotb2_control%ready()) return
@@ -2334,7 +2346,8 @@ contains
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
     real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
-    integer :: effective_bottom_mode, swbotb2_status
+    integer :: effective_bottom_mode, swbotb2_status, swbotb4_status
+    type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
@@ -2396,6 +2409,18 @@ contains
     if (step_duration <= 0.0_real64) return
     effective_bottom_mode = self%bottom_mode
     effective_bottom_flux = self%bottom_flux
+    if (allocated(self%legacy_swbotb4_qgwl_control)) then
+      select type (physical_control => state)
+      class is (fmr_b110_physical_state_t)
+        call fmr_evaluate_legacy_qgwl_bottom_boundary(self%legacy_swbotb4_qgwl_control, &
+             physical_control%groundwater_level, swbotb4_result, swbotb4_status)
+        if (swbotb4_status /= FMR_QGWL_OK .or. .not. swbotb4_result%available) return
+        effective_bottom_mode = 2
+        effective_bottom_flux = swbotb4_result%qbot_cm_per_day
+      class default
+        return
+      end select
+    end if
     if (allocated(self%legacy_swbotb2_control)) then
       select type (physical_control => state)
       class is (fmr_b110_physical_state_t)

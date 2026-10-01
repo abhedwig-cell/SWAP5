@@ -1,5 +1,7 @@
 module mod_fmr_legacy_bottom_boundary_application_binding
   use, intrinsic :: iso_fortran_env, only: real64
+  use mod_fmr_legacy_qgwl_bottom_boundary_provider, only: fmr_qgwl_bottom_boundary_config_t, &
+       fmr_qgwl_bottom_boundary_result_t, fmr_evaluate_legacy_qgwl_bottom_boundary, FMR_QGWL_OK
   implicit none
   private
 
@@ -16,7 +18,7 @@ module mod_fmr_legacy_bottom_boundary_application_binding
     real(real64) :: typed_bottom_flux = 0.0_real64
   end type fmr_legacy_bottom_boundary_binding_t
 
-  public :: fmr_resolve_legacy_bottom_boundary
+  public :: fmr_resolve_legacy_bottom_boundary, fmr_resolve_legacy_qgwl_bottom_boundary
 
 contains
 
@@ -39,5 +41,26 @@ contains
       status = FMR_LEGACY_BOTTOM_BINDING_OK
     end if
   end subroutine fmr_resolve_legacy_bottom_boundary
+
+  subroutine fmr_resolve_legacy_qgwl_bottom_boundary(config, committed_groundwater_level_cm, binding, status)
+    type(fmr_qgwl_bottom_boundary_config_t), intent(in) :: config
+    real(real64), intent(in) :: committed_groundwater_level_cm
+    type(fmr_legacy_bottom_boundary_binding_t), intent(out) :: binding
+    integer, intent(out) :: status
+    type(fmr_qgwl_bottom_boundary_result_t) :: provider_result
+    integer :: provider_status
+
+    binding = fmr_legacy_bottom_boundary_binding_t()
+    binding%legacy_swbotb = 4
+    status = FMR_LEGACY_BOTTOM_BINDING_UNSUPPORTED_MODE
+
+    call fmr_evaluate_legacy_qgwl_bottom_boundary(config, committed_groundwater_level_cm, provider_result, provider_status)
+    if (provider_status /= FMR_QGWL_OK .or. .not. provider_result%available) return
+
+    binding%available = .true.
+    binding%typed_bottom_mode = 2
+    binding%typed_bottom_flux = provider_result%qbot_cm_per_day
+    status = FMR_LEGACY_BOTTOM_BINDING_OK
+  end subroutine fmr_resolve_legacy_qgwl_bottom_boundary
 
 end module mod_fmr_legacy_bottom_boundary_application_binding
