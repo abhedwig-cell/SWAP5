@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.ppa_wu05a14.status.v1",
+  "workunit": "PPA-WU05-A14",
+  "phase": "CLOSED_QUALIFIED_ARCHITECTURE_RESULT",
+  "decision": "FEASIBLE_INNER_RATE_CALLBACK_DESIGN_REQUIRES_SOLVER_INTERFACE_EXTENSION_AND_DERIVATIVE_MIGRATION",
+  "canonical_reconciliation": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "branch": "research/ppa-wu05-a14-inner-richards-macropore-design",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": true,
+  "qualification_type": "exact-source-and-current-architecture-reconciliation",
+  "canonical_admitted": false,
+  "closed": true,
+  "findings": [
+    "source_sink provider is timestep-constant and is not the correct nonlinear hook",
+    "unused macropore_exchange_provider_t is the narrowest intended architecture slot",
+    "current provider ABI lacks current water content and local dQ/dh",
+    "exact B1.11 evaluates exchange in vector_F and derivative in jacobian_F",
+    "persistent macropore continuation state can remain outside HeadCalc"
+  ],
+  "required_followup": "PPA-WU05-A15 source-faithful dFdhMp derivative migration and qualification",
+  "not_admitted": [
+    "inner-Richards macropore callback implementation",
+    "perched serialized production runtime",
+    "canonical perched admission"
+  ],
+  "recovery_point": "bf530033e68498cdd684f5f42459d50ff520fccd"
+}
