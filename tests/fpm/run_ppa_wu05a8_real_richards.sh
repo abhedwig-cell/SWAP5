@@ -100,8 +100,7 @@ for opt in 0 2; do
   done
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/out.txt"
-  cat "$OUT/out.txt"
+  "$OUT/test" | tee "$OUT/out.txt"
   grep -Fq 'PPA_WU05A7_REAL_RICHARDS_RUNTIME=PASS' "$OUT/out.txt"
 
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90 -o "$OUT/test_fmr_macro.o"
