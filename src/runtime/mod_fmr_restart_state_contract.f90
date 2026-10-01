@@ -5,7 +5,8 @@ module mod_fmr_restart_state_contract
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_SNOW, &
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
-       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
+       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_black_evaporation_state_t, &
        fmr_b110_boesten_evaporation_state_t
@@ -96,19 +97,28 @@ contains
     matches = .false.
     if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id)) return
     if (allocated(state%snow) .and. allocated(state%soil_temperature)) return
+    if (allocated(state%macropore) .and. (allocated(state%snow) .or. allocated(state%soil_temperature))) return
 
     select case (template%optional_state_layout_id)
     case (FMR_OPTIONAL_STATE_LAYOUT_BASE)
-      matches = .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature)
+      matches = .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature) .and. &
+           .not. allocated(state%macropore)
     case (FMR_OPTIONAL_STATE_LAYOUT_SNOW)
-      matches = .not. allocated(state%soil_temperature)
+      matches = .not. allocated(state%soil_temperature) .and. .not. allocated(state%macropore)
     case (FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE)
-      if (allocated(state%snow)) return
+      if (allocated(state%snow) .or. allocated(state%macropore)) return
       if (.not. allocated(state%soil_temperature)) then
         matches = .true.
       else
         matches = state%soil_temperature%ready() .and. &
              state%soil_temperature%node_count() == state%active_nodes
+      end if
+    case (FMR_OPTIONAL_STATE_LAYOUT_MACROPORE)
+      if (allocated(state%snow) .or. allocated(state%soil_temperature)) return
+      if (.not. allocated(state%macropore)) then
+        matches = .true.
+      else
+        matches = state%macropore%ready() .and. state%macropore%num_nodes == state%active_nodes
       end if
     case default
       matches = .false.
