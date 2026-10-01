@@ -58,3 +58,19 @@ Decision:
 `QUALIFIED_PERCHED_PRODUCTION_ADMISSION_CANDIDATE`.
 
 The later canonical delta through `42bb867e1da993fe2127d23fe3e449e5244f7407` adds only the independently admitted RFM A26K hydrostatic-head files and does not touch the PERCH21 dependency surface. Its evidence is therefore inherited under the repository's unchanged-dependency rule. Canonical admission remains a separate PR/merge/post-merge-preservation step.
+
+## Canonical admission and closeout
+
+Canonical admission completed through PR #963 and PR #964.
+
+Post-merge preservation run `36907018287` completed SUCCESS on canonical head
+`8bb835a065248aad06b18a3b563234b20033ba0d`.
+
+The post-merge gate passed PERCH20 restart and transaction continuation, PERCH19 Andelst active retry,
+A10 rapid drainage, and the canonical RFM preservation surface including A26K hydrostatic IC head.
+
+Final decision:
+
+`CANONICALLY_ADMITTED_PERCHED_INNER_RICHARDS_PRODUCTION_ROUTE`.
+
+PERCH21 is closed.
