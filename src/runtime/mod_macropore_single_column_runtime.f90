@@ -33,6 +33,7 @@ module mod_macropore_single_column_runtime
   type, public :: macropore_runtime_policy_t
     logical :: enabled=.false.
     logical :: inner_richards_exchange_enabled=.false.
+    logical :: source_reduction_retry_enabled=.false.
     integer :: max_correctors=40
     real(real64) :: exchange_relative_tolerance=1.0e-8_real64
     real(real64) :: exchange_floor=1.0e-12_real64
@@ -57,6 +58,10 @@ module mod_macropore_single_column_runtime
     logical :: inner_richards_exchange_used=.false.
     real(real64) :: inner_initial_exchange_rate_cm_per_day=0.0_real64
     real(real64) :: inner_final_exchange_rate_cm_per_day=0.0_real64
+    integer :: source_reduction_attempts=0
+    integer :: source_reduction_level=0
+    real(real64) :: source_reduction_factor=1.0_real64
+    logical :: source_reduction_dtmin_gate=.false.
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
     real(real64) :: macro_balance_residual_cm=huge(1.0_real64)
     type(soil_water_solve_result_t) :: matrix_result
@@ -100,7 +105,7 @@ contains
     type(macropore_exchange_overlay_provider_t),target::overlay
     type(ppa_wu05a16_inner_macropore_provider_t),target::inner_provider
     type(macropore_geometry_result_t)::geometry
-    type(macropore_rate_bundle_request_t)::rate_request,rate_template_step
+    type(macropore_rate_bundle_request_t)::rate_request,rate_template_step,rate_template_trial
     type(macropore_rate_bundle_result_t)::current_rates,raw_rates
     type(macropore_standard_candidate_receipt_t)::receipt
     type(macropore_standard_storage_view_t)::accepted_view,candidate_view
@@ -110,9 +115,10 @@ contains
     real(real64),allocatable::current_domain(:,:),next_domain(:,:),current_node(:)
     real(real64),allocatable::requested_top_vertical(:),requested_top_lateral(:)
     type(fmr_macropore_top_input_forcing_t)::top_input_local
-    real(real64)::numerator,denominator,dt
-    logical::ok
-    integer::iter,nd,n
+    real(real64)::numerator,denominator,dt,reduction_factor
+    real(real64),parameter::source_reduction_ladder(4)=[1.0_real64,0.1_real64,0.01_real64,0.001_real64]
+    logical::ok,at_dtmin
+    integer::iter,nd,n,ireduce,nreduce
 
     result=macropore_runtime_result_t()
     if(.not.policy%valid())then
@@ -195,53 +201,90 @@ contains
     n=accepted_macro%num_nodes
 
     if(policy%inner_richards_exchange_enabled)then
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INNER_ENTER'
-      call inner_provider%configure(accepted_macro,geometry,rate_template_step,base_request%parameters%z, &
-           base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
-           base_request%base_state%groundwater_level,ok)
-      if(.not.ok)then
-        result%status=MACRO_RUNTIME_FAILED
-        return
+      at_dtmin=dt<=base_request%numerical%min_step_duration*(1.0_real64+1.0e-12_real64)
+      result%source_reduction_dtmin_gate=at_dtmin
+      if(policy%source_reduction_retry_enabled .and. at_dtmin)then
+        nreduce=size(source_reduction_ladder)
+      else
+        nreduce=1
       end if
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=PROVIDER_CONFIGURED'
 
-      ! Record the accepted-state inner rate for attribution only. This is not
-      ! injected separately; HeadCalc obtains its own current-iterate rate from
-      ! the provider.
-      call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
-           base_request%base_state,base_request%parameters%z,base_request%parameters%dz,dt, &
-           rate_request,matrix_view,ok)
-      if(.not.ok)then
-        result%status=MACRO_RUNTIME_FAILED
-        return
-      end if
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_REQUEST_READY'
-      call evaluate_macropore_rate_bundle(rate_request,current_rates)
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_RATE_EVALUATED'
-      if(.not.current_rates%valid)then
-        result%status=MACRO_RUNTIME_FAILED
-        return
-      end if
-      result%inner_initial_exchange_rate_cm_per_day=sum(current_rates%qexc_to_matrix_rate)
+      do ireduce=1,nreduce
+        if(policy%source_reduction_retry_enabled)then
+          reduction_factor=source_reduction_ladder(ireduce)
+        else
+          reduction_factor=rate_template_step%unsaturated%sorptivity%flow_reduction
+        end if
 
-      request=base_request
-      request%physical%macropore_active=.true.
-      request%evaluation%macropore=>inner_provider
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=BEFORE_SOLVE'
-      call solver%solve(request,workspace,corrector)
-      write(*,'(a,i0)') 'PPA_WU05A18_RUNTIME_STAGE=AFTER_SOLVE STATUS=',corrector%status
-      result%corrector_solves=1
-      result%outer_iterations=0
-      result%final_relative_exchange_change=0.0_real64
-      result%inner_richards_exchange_used=.true.
+        rate_template_trial=rate_template_step
+        rate_template_trial%unsaturated%sorptivity%flow_reduction=reduction_factor
+        rate_template_trial%interflow_sat%flow_reduction=reduction_factor
+        rate_template_trial%matrix_sat%flow_reduction=reduction_factor
+        rate_template_trial%rapid%flow_reduction=reduction_factor
+
+        result%source_reduction_attempts=ireduce
+        result%source_reduction_level=ireduce-1
+        result%source_reduction_factor=reduction_factor
+
+        call inner_provider%configure(accepted_macro,geometry,rate_template_trial,base_request%parameters%z, &
+             base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
+             base_request%base_state%groundwater_level,ok)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+
+        call prepare_standard_macropore_rate_request(rate_template_trial,accepted_macro,geometry,accepted_view, &
+             base_request%base_state,base_request%parameters%z,base_request%parameters%dz,dt, &
+             rate_request,matrix_view,ok)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+        call evaluate_macropore_rate_bundle(rate_request,current_rates)
+        if(.not.current_rates%valid)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+        result%inner_initial_exchange_rate_cm_per_day=sum(current_rates%qexc_to_matrix_rate)
+
+        request=base_request
+        request%physical%macropore_active=.true.
+        request%evaluation%macropore=>inner_provider
+        call solver%solve(request,workspace,corrector)
+        result%corrector_solves=result%corrector_solves+1
+        result%outer_iterations=0
+        result%final_relative_exchange_change=0.0_real64
+        result%inner_richards_exchange_used=.true.
+
+        if(corrector%status==SW_SOLVE_CONVERGED)exit
+
+        result%retry_advised=corrector%retry_advised .or. corrector%status==SW_SOLVE_RETRY_ADVISED
+        if(.not.result%retry_advised)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+
+        ! Exact B1.11 ordering: while dt can still be reduced, temporal
+        ! ownership wins and FrReduQ remains at level 0.
+        if(.not.at_dtmin)then
+          result%status=MACRO_RUNTIME_RETRY
+          return
+        end if
+
+        if(ireduce==nreduce)then
+          result%status=MACRO_RUNTIME_RETRY
+          return
+        end if
+      end do
 
       if(corrector%status/=SW_SOLVE_CONVERGED)then
-        result%retry_advised=corrector%retry_advised .or. corrector%status==SW_SOLVE_RETRY_ADVISED
-        result%status=merge(MACRO_RUNTIME_RETRY,MACRO_RUNTIME_FAILED,result%retry_advised)
+        result%status=MACRO_RUNTIME_RETRY
         return
       end if
+      result%retry_advised=.false.
 
-      call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
+      call prepare_standard_macropore_rate_request(rate_template_trial,accepted_macro,geometry,accepted_view, &
            corrector%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt, &
            rate_request,matrix_view,ok)
       if(.not.ok)then
