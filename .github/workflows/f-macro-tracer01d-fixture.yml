@@ -2,6 +2,11 @@ name: F-MACRO-TRACER01-D fixture composition
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - research/f-macro-tracer01-reference-kernel
+    paths:
+      - '.github/workflows/f-macro-tracer01d-fixture.yml'
 
 jobs:
   fixture:
