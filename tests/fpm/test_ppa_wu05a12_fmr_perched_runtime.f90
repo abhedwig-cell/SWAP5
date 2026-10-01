@@ -282,6 +282,16 @@ contains
     if(kdiag%temporal_acceptance_source/=TX_TEMPORAL_EXTERNAL_FULL_HALF) &
          error stop 'A12 FMR perched temporal acceptance source'
     observation=backend%observation()
+    call candidate%snapshot(candidate_state,available)
+    if(.not.available)error stop 'A12 FMR perched candidate diagnostic snapshot'
+    select type(diag_state=>candidate_state)
+    type is(fmr_b110_physical_state_t)
+      write(*,'(*(g0))') 'PPA_WU05A12_MATRIX_CANDIDATE|H1=',diag_state%pressure_head(1), &
+           '|H2=',diag_state%pressure_head(2),'|H3=',diag_state%pressure_head(3), &
+           '|H4=',diag_state%pressure_head(4),'|GWL=',diag_state%groundwater_level
+    class default
+      error stop 'A12 FMR perched candidate diagnostic type'
+    end select
     write(*,'(*(g0))') 'PPA_WU05A12_PERCHED_OBS|ACTIVE=',observation%macropore_perched_exchange_active, &
          '|INTERFLOW=',observation%macropore_perched_interflow_cm
     if(.not.observation%macropore_perched_exchange_active)error stop 'A12 FMR perched inactive'
