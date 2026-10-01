@@ -196,3 +196,56 @@ This is a source-ownership blocker, not a tracer-conservation blocker.
 
 This work unit closes at the requested valid stop condition: an explicitly
 falsified route with the remaining dependency isolated.
+
+
+## D2B2 recovery-observation correction
+
+The source and publication audit changes the interpretation of the reported
+approximately 95% Spechtacker recovery.
+
+The experiment reconstructed bromide mass from destructive soil-profile
+sampling approximately one day after irrigation. It did not measure a
+lower-boundary bromide breakthrough flux.
+
+The byte-exact B1.11 A1 source census independently confirms that the standard
+SWAP macropore bottom is impermeable and that no macropore bottom external flux
+exists in that source path.
+
+The reported unrecovered approximately 5% therefore cannot be treated as a
+required 5% modeled macropore-bottom flux.
+
+It is instead an observation/recovery envelope that may include sampling,
+analytical, lateral and any genuine below-profile loss terms.
+
+D2A predicts:
+
+    explicit modeled bottom loss = 0%
+
+which lies within the approximately 5% unrecovered envelope.
+
+Therefore:
+
+    D2A_RECOVERY_BOUND_CONSISTENCY = PASS
+    EXACT_95_PERCENT_RECOVERY_PROCESS_REPRODUCTION = NOT_CLAIMED
+    f_MB_FROM_RECOVERY = NOT_IDENTIFIED
+    BOTTOM_OWNER_REQUIRED_FOR_CURRENT_VALIDATION_CLAIM = NO
+
+The D2B1 falsification remains valid and useful: canonical standard FMR is not
+a lower-boundary breakthrough owner. That missing process matters only for a
+future attempt to physically decompose the unrecovered mass, not for the
+current bounded validation claim.
+
+## Final scientific verdict
+
+The qualified bounded Spechtacker result is:
+
+    coupled no-dispersion SWAP5 matrix + frozen RFM IC forward model
+    -> Profile 1 quantitative fit passes
+    -> Profile 2 held-out validation passes
+    -> deep initial-state sensitivity does not explain the signal
+    -> modeled bottom loss does not violate the observed recovery envelope
+    -> no dispersion or new RFM physics is required
+
+The line does not identify the absolute sigma_B magnitude or f_MB.
+
+This is the strongest justified closure with the available data.
