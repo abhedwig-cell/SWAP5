@@ -2,22 +2,15 @@
 
 Date: 2026-10-01
 
-Status: `EXACT_SOURCE_MAP / IMPLEMENTED_PENDING_QUALIFICATION`
+Status: `CORRECTED_EXACT_SOURCE_MAP / REQUALIFICATION_REQUIRED`
 
 Baseline: `integration/f-ci-canonical@ebea588070f7a44dbaea78169f2548c745061c48`
 
-Implementation checkpoint: `2ad9cbda64a53707730990dd436588a47b86b5b2`
+Corrected implementation checkpoint: `8ff742c6ba02bce9ecc745e83ef094ab9d5b59c6`
 
 ## Exact source recovery
 
 The user supplied `SWAP_4.3.1.zip` directly in this workunit.
-
-The outer distribution differs from the earlier A1 retained-copy hash:
-
-- uploaded bytes: 8,958,994;
-- uploaded outer SHA-256: `76a79498423ee612a7861efb564b10c4360a4f648396eefcf8e9011919a66039`.
-
-That outer packaging difference does **not** affect the source oracle used here.
 
 The nested source archive is byte-exact with A1 authority:
 
@@ -25,150 +18,104 @@ The nested source archive is byte-exact with A1 authority:
 - bytes: 411,215;
 - SHA-256: `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`.
 
-This exactly equals the A1-pinned official source-archive identity.
+Relevant exact members:
 
-Relevant members:
-
-- `SWAP/macropore.f90`: 88,138 bytes, SHA-256
+- `SWAP/macropore.f90`: SHA-256
   `1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b`;
-- `SWAP/macrorate.f90`: 111,863 bytes, SHA-256
+- `SWAP/macrorate.f90`: SHA-256
   `537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7`;
-- `SWAP/calcgwl.f90`: 13,602 bytes, SHA-256
+- `SWAP/calcgwl.f90`: SHA-256
   `d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb`.
-
-A1 already established that `macrorate.f90` is unchanged in B1.11 and that SWAP-001
-only changes the unrelated non-conformable assignment in `macropore.f90`. The perched
-carrier logic used by A11 is therefore exact source authority.
 
 ## CALCGWL perched-zone construction
 
 After the ordinary groundwater table has been identified, CALCGWL searches upward from
-the main groundwater zone for the first compartment with nonnegative pressure head.
+the main groundwater zone for a saturated compartment above an under-saturated separator.
 
-If none exists, there is no perched groundwater.
-
-If one exists, the bottom elevation of the perched saturated region is reconstructed from
-the zero-head crossing beneath that saturated compartment. The containing bottom node is
-stored as `BPeGwl`.
-
-From that bottom, CALCGWL searches upward. When negative pressure head is encountered,
-the helper `watertable` accumulates:
+The `watertable` helper accumulates:
 
 `TotUndSatVol += max(0, ThetaS - Theta) * dz`.
 
-The unsaturated interval is treated as a real separator when:
+The under-saturated interval is a real separator when the accumulated deficit reaches the
+source criterion. Otherwise the search bridges that interval and continues upward.
 
-- the top of the profile is reached; or
-- `TotUndSatVol > CritUndSatVol - 1e-8`.
+The perched top and bottom levels are reconstructed with the source zero-pressure-head
+interpolation and `nodlev` mapping.
 
-If a saturated compartment is encountered before the critical under-saturated volume is
-exceeded, the search continues upward and the thin under-saturated interval remains part
-of the same perched saturated system.
+## Corrected exact MACRORATE mapping
 
-The perched water level is calculated with the same zero-pressure-head interpolation used
-for the ordinary water table.
+A13 source reinspection found an error in the first A11 transcription.
 
-## MACROSTATE carrier mapping
+The **active** B1.11 code is:
 
-Exact `macropore.f90` then maps CALCGWL state into MACRORATE indices.
+`ICpTpPerZon = NPeGwl`
 
-When `NPeGwl > 0`:
+The visually adjacent `+ 1` is after the Fortran comment marker `!` and is therefore
+not executable source.
+
+Likewise the historical `ICpSatPeGwl` alternatives in this source block are commented
+out and must not be represented as active B1.11 logic.
+
+Therefore, when `NPeGwl > 0`:
 
 - `ICpBtPerZon = BPeGwl`;
-- `ICpTpPerZon = NPeGwl + 1`;
-- if `PeGwl < Z(NPeGwl)-0.5*DZ(NPeGwl)`,
-  `ICpSatPeGwl = ICpTpPerZon`;
-- otherwise `ICpSatPeGwl = -1`;
-- special surface case: if `NPeGwl == 1` and `PeGwl > Z(1)`,
-  `ICpTpPerZon = 1`.
+- `ICpTpPerZon = NPeGwl`.
 
 When no perched groundwater exists:
 
 - `ICpBtPerZon = -1`;
 - `ICpTpPerZon = ICpTpSatZon`.
 
-## MACRORATE use
+## Exact SATFLOW top fraction
 
-Exact B1.11 MACRORATE uses the carrier in two separate places.
+The active SATFLOW loop starts at `CpTpZon`.
 
-### Unsaturated absorption
+For that top saturated compartment it always multiplies the resistance/conductance term
+by the fraction:
 
-The lower active absorption limit is:
+`(Lev - (Z(ic) - 0.5*DZ(ic))) / DZ(ic)`.
 
-`min(ICpBtDm, ICpTpSatZon-1)`.
+Thus the active B1.11 source always applies the `PeGwl`-derived matrix saturation
+fraction in the top perched compartment. There is no active current-source switch that
+turns that fraction off for a fully saturated top compartment.
 
-Within that range, compartments are evaluated only when they lie outside:
+## Corrected A11 oracle
 
-`[ICpTpPerZon, ICpBtPerZon]`.
+For the six-node source fixture used by A11:
 
-Thus the perched saturated/percolation interval is excluded from unsaturated sorptivity/Darcy absorption.
+- with `CritUndSatVol = 0.005 cm`, corrected perched bounds are compartments **3..4**;
+- with `CritUndSatVol = 0.02 cm`, corrected perched bounds are compartments **2..4**.
 
-### Saturated interflow into macropores
+The perched water-level and bottom-level interpolation values remain unchanged from the
+previous oracle; the correction is the source-exact compartment mapping and top-fraction
+semantics.
 
-The perched zone is passed to SATFLOW as:
+## Runtime representation
 
-- top: `ICpTpPerZon`;
-- bottom: `ICpBtPerZon`;
-- partial saturated-level compartment: `ICpSatPeGwl`;
-- matrix reference level: `PeGwl`.
-
-This produces `QInIntSatDmCp`.
-
-The ordinary saturated groundwater zone is passed separately and produces
-`QInMtxSatDmCp`.
-
-Both are internal matrix-to-macropore transfers.
-
-## Typed A11 representation
-
-A11 preserves that decomposition with no new persistent state.
-
-New immutable/request configuration:
-
-- explicit `perched_detection_enabled`;
-- `critical_under_saturated_volume_cm`.
-
-New derived runtime view:
+A11/A13 now represents the exact source mapping as a recomputable hydraulic view:
 
 - active flag;
-- top compartment;
+- source-exact top compartment;
 - bottom compartment;
-- partial-top flag;
 - perched water level;
-- perched-zone bottom level.
+- bottom level;
+- top fraction active for SATFLOW.
 
-The view is recomputed from current trial matrix state and immutable configuration.
+No new persistent state is introduced.
 
-The existing A6 contracts are reused:
+The existing A6 contracts remain the owning rate layer:
 
-- `sorptivity_rate_request_t%perched_*`;
-- `interflow_sat` SATFLOW request;
-- `QInIntSat` internal-exchange ownership.
+- perched exclusion from unsaturated absorption;
+- `QInIntSat` via the existing SATFLOW evaluator;
+- internal matrix/macropore mass ownership unchanged.
 
-The saturated-exchange request gains one explicit boolean to distinguish a partially
-saturated top compartment from a fully saturated top compartment. Its default is true so
-the pre-A11 main-groundwater behavior is preserved.
+## Superseded evidence
 
-## Source-oracle qualification fixture
+The earlier A11 qualification run `36834246991` was green against the first
+implementation, but that implementation contained the off-by-one top-node transcription
+described above.
 
-The A11 fixture contains a 0.01 cm under-saturated-volume gap.
+That run is therefore superseded for the corrected perched carrier. A fresh corrected A11
+qualification is required before the carrier is again labelled qualified.
 
-With:
-
-- `CritUndSatVol = 0.005 cm`, the gap separates the perched bodies and the active
-  perched zone is compartment 4 only;
-- `CritUndSatVol = 0.02 cm`, the gap is bridged and the active perched zone spans
-  compartments 3 through 4.
-
-The expected water levels are generated directly from the exact CALCGWL interpolation
-relations and are asserted numerically in the focused test.
-
-## Preservation boundary
-
-Perched detection is opt-in.
-
-All A8/A9/A10 configurations that do not explicitly enable A11 retain their previous
-neutral perched template and therefore their admitted behavior.
-
-No continuation-state field, restart schema, mass tolerance, solver policy or rapid-drain
-formula is changed.
+The frozen Status-A denominator and canonical A8/A9/A10 envelope are unchanged.
