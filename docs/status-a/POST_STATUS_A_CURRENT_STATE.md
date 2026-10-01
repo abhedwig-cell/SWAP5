@@ -128,7 +128,8 @@ Canonical now also contains a bounded production macropore route through seriali
 The controlling authority chain is now:
 
 1. PPA-WU05-A8, canonically admitted by PR #923 at `9bad713b0d2ab24d40fcf937d11c850d3fb52a22`, for the bounded serialized Reference-Richards macropore runtime and continuation-state contract;
-2. PPA-WU05-A9, canonically admitted by PR #926 at `243f43cccd817c1bb175f14faa64efd574d6d3ca`, for the source-faithful surface-connected macropore top-input carrier. Post-merge A9 preservation run `36827754384` passed on that exact canonical merge.
+2. PPA-WU05-A9, canonically admitted by PR #926 at `243f43cccd817c1bb175f14faa64efd574d6d3ca`, for the source-faithful surface-connected macropore top-input carrier;
+3. PPA-WU05-A10, canonically admitted by PR #928 at `190dad36a821f3a43f78f00fccf827c58cacedb6`, for source-bound main-domain rapid drainage. Post-merge A10 preservation run `36829313469` passed on that exact canonical merge.
 
 The admitted envelope is deliberately narrow:
 
@@ -144,8 +145,12 @@ The admitted envelope is deliberately narrow:
 - explicit separately owned lateral overland/infiltration-excess macropore input;
 - current accepted macropore top geometry for source partitioning;
 - capacity limitation, redistribution and returned-surface receipt through the admitted A6 logic;
-- accepted macropore top input booked exactly once in whole-column external mass accounting.
+- accepted macropore top input booked exactly once in whole-column external mass accounting;
+- main-domain rapid drainage through the source-bound A6 RAPIDDRAIN formulation;
+- dynamic rapid-drain water level, saturated top fraction, ponding, active bottom and storage views;
+- exact below-drain volume reconstruction for drain levels aligned to compartment boundaries;
+- accepted rapid drainage booked exactly once as external whole-column outflow.
 
-The admission does not include inference of those source components from generic FMR `top_flux`, independent ponding/runon macropore source terms, simultaneous A9 ownership with Snow/Black/Boesten/fixed-weir surface-water routes, covering-layer or perched-zone macropore physics, rapid drainage, within-corrector dynamic crack-geometry feedback, RossFast, or parallel/concurrent MultiSWAP macropore execution.
+The admission does not include inference of source components from generic FMR `top_flux`, independent ponding/runon macropore source terms, simultaneous A9 ownership with Snow/Black/Boesten/fixed-weir surface-water routes, covering-layer or perched-zone macropore physics, arbitrary within-compartment rapid-drain levels, multiple rapid-drain levels, fixed-weir/Ribasim ownership of the same rapid-drain receipt, within-corrector dynamic crack-geometry feedback, RossFast, or parallel/concurrent MultiSWAP macropore execution.
 
 This capability is post-Status-A and does not change the frozen Status-A denominator.
