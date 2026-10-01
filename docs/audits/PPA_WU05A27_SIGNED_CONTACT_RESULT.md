@@ -1,6 +1,6 @@
 # A27 signed contact prototype and source-unit repair result
 
-Date: 2026-10-02 UTC
+Date: 2026-10-01 UTC
 Status: RESEARCH_BLOCK_COMPLETE; TRANSITION_ROUTE_FALSIFIED; SOURCE_REPAIR_LOCALLY_TESTED
 Full A27 benchmark: OPEN. Canonical admission: NOT_CLAIMED.
 Reconciled canonical: 029453104b98d835790f2e09eb9e804aa3eaff4a.
