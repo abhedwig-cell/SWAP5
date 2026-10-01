@@ -52,7 +52,7 @@ program test_a27_source_units
  routing%endpoint_amount=[0._real64]
  cq%step_duration_day=dt;cq%effective_supply_rate_cm_per_day=0.;cq%matrix_supply_rate_cm_per_day=0.
  cq%candidate_tau_surface_day=0.;cq%exchange_length_cm=20.;cq%chi_wall=1.
- cq%endpoint_area_fraction=[.02_real64];cq%endpoint_bottom_depth_cm=[50._real64]
+ cq%endpoint_area_fraction=[.02_real64];cq%endpoint_bottom_depth_cm=[-z(node)+dz(node)/2._real64]
  cq%endpoint_contact_thickness_cm=[20._real64];cq%endpoint_node_index=[node]
  cq%endpoint_sorptivity_cm_sqrt_day=[.2_real64];cq%endpoint_conductivity_cm_per_day=[.01_real64]
  cq%node_depth_cm=-z;cq%node_thickness_cm=dz;cq%matrix_pressure_head_cm=h0
