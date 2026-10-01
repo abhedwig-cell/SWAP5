@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.f_macro_alt17.griessfirn_evidence.v1",
+  "status": "EXTERNAL_EVIDENCE_IDENTIFIED",
+  "experiment": {
+    "source": "Hartmann et al. 2022 HESS 26, 4953-4974",
+    "total_irrigation_mm": 40,
+    "intensities_mm_h": [20, 40, 60],
+    "moraine_ages_years": [110, 160, 4900, 13500],
+    "profiles_per_subplot_nominal": 5
+  },
+  "external_dataset": {
+    "doi": "10.5880/GFZ.4.4.2024.001",
+    "license": "CC BY 4.0",
+    "contains": [
+      "soil moisture response time series",
+      "stable isotope profiles",
+      "trinary Brilliant Blue flow-path images/files"
+    ]
+  },
+  "model_findings": {
+    "old_moraines": "higher intensity generally activates more/deeper flow paths",
+    "young_moraines": "higher intensity can increase runoff and reduce number/dye coverage of infiltrating paths",
+    "surface_boundary_required": true,
+    "event_specific_connectivity_supported": false
+  }
+}
