@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa_wu05a9.status.v1",
+  "workunit": "PPA-WU05-A9",
+  "phase": "IMPLEMENTATION_IN_PROGRESS",
+  "decision": "PREREGISTERED_FMR_SOURCE_FAITHFUL_MACROPORE_TOP_INPUT",
+  "baseline": "412592b874111f35404171f223d3f2518bcad32e",
+  "branch": "work/ppa-wu05-a9-fmr-top-input",
+  "scope": {
+    "standard_swmbf1": true,
+    "surface_connected": true,
+    "reference_richards": true,
+    "serialized_single_column": true,
+    "explicit_net_rain": true,
+    "explicit_net_irrigation": true,
+    "explicit_melt": true,
+    "explicit_lateral_overland_carrier": true,
+    "infer_from_top_flux": false,
+    "ponding_as_independent_source": false,
+    "runon_as_independent_source": false,
+    "covering_layer": false,
+    "perched_zone": false,
+    "rapid_drainage": false,
+    "rossfast": false,
+    "parallel_multiswap": false
+  },
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "closed": false
+}
