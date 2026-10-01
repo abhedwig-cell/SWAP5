@@ -7,6 +7,10 @@ module mod_transaction_reference
   integer, parameter, public :: TX_STATUS_ACCEPTED = 0
   integer, parameter, public :: TX_STATUS_RETRY_EXHAUSTED = 1
   integer, parameter, public :: TX_STATUS_INVALID_INTERVAL = 2
+  integer, parameter, public :: TX_STATUS_INVALID_MODEL_RETRY_DIRECTIVE = 3
+  integer, parameter, public :: TX_STATUS_ACCEPTED_FEEDBACK_FAILED = 4
+
+  integer, parameter, public :: TX_RETRY_REASON_NONE = 0
   integer, parameter, public :: TX_ROUTE_NONE = 0
   integer, parameter, public :: TX_ROUTE_MODEL_CERTIFIED = 1
   integer, parameter, public :: TX_ROUTE_TWO_HALF = 2
@@ -71,6 +75,9 @@ module mod_transaction_reference
     integer :: alternative_solver_calls = 0
     integer :: workspace_full_resets = 0
     integer(int64) :: workspace_zeroed_bytes = 0_int64
+    logical :: retry_duration_proposal_available = .false.
+    real(real64) :: retry_duration_proposal = 0.0_real64
+    integer :: retry_duration_reason = TX_RETRY_REASON_NONE
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
   end type trial_outcome_t
 
@@ -83,6 +90,7 @@ module mod_transaction_reference
     procedure :: attempt_context_required => default_attempt_context_required
     procedure :: capture_attempt_context => default_capture_attempt_context
     procedure :: restore_attempt_context => default_restore_attempt_context
+    procedure :: apply_accepted_feedback => default_apply_accepted_feedback
   end type transaction_model_t
 
   type, public :: transaction_policy_t
@@ -107,6 +115,12 @@ module mod_transaction_reference
     integer :: temporal_rejections = 0
     integer :: temporal_certificate_unavailable_rejections = 0
     integer :: mass_rejections = 0
+    integer :: model_retry_directives = 0
+    integer :: invalid_model_retry_directives = 0
+    integer :: accepted_feedback_calls = 0
+    integer :: accepted_feedback_failures = 0
+    integer :: last_model_retry_reason = TX_RETRY_REASON_NONE
+    real(real64) :: last_model_retry_duration = 0.0_real64
     integer :: nonlinear_iterations = 0
     integer :: accepted_nonlinear_iterations = 0
     integer :: internal_retries = 0
@@ -203,6 +217,14 @@ contains
     end if
   end subroutine default_restore_attempt_context
 
+  subroutine default_apply_accepted_feedback(self, accepted_dt, ok)
+    class(transaction_model_t), intent(inout) :: self
+    real(real64), intent(in) :: accepted_dt
+    logical, intent(out) :: ok
+    if (.not. same_type_as(self, self)) error stop 'unreachable transaction model type'
+    ok = ieee_is_finite(accepted_dt) .and. accepted_dt > 0.0_real64
+  end subroutine default_apply_accepted_feedback
+
   subroutine default_storage_accounting_status(self, state, complete, missing_mask)
     class(transaction_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: state
@@ -282,9 +304,16 @@ contains
 
       if (.not. full_outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
-        if (context_required) call model%restore_attempt_context(checkpoint_context)
-        call reject_and_retry(result, retry_index, policy, attempt_dt)
-        if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
+        if (full_outcome%retry_duration_proposal_available) then
+          call apply_model_retry_directive(model, context_required, checkpoint_context, full_outcome, &
+               t1-t0, retry_index, policy, result, attempt_dt)
+          if (result%status == TX_STATUS_RETRY_EXHAUSTED .or. &
+              result%status == TX_STATUS_INVALID_MODEL_RETRY_DIRECTIVE) return
+        else
+          if (context_required) call model%restore_attempt_context(checkpoint_context)
+          call reject_and_retry(result, retry_index, policy, attempt_dt)
+          if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
+        end if
         cycle
       end if
 
@@ -428,6 +457,14 @@ contains
            accepted_missing_mask == TX_MASS_MISSING_NONE
 
       if (context_required) call model%restore_attempt_context(half_context)
+      call model%apply_accepted_feedback(attempt_dt, temporal_ok)
+      result%accepted_feedback_calls = result%accepted_feedback_calls + 1
+      if (.not. temporal_ok) then
+        result%accepted_feedback_failures = result%accepted_feedback_failures + 1
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
+        result%status = TX_STATUS_ACCEPTED_FEEDBACK_FAILED
+        return
+      end if
       call move_alloc(half_state, committed)
       result%status = TX_STATUS_ACCEPTED
       result%accepted_route = TX_ROUTE_TWO_HALF
@@ -582,6 +619,14 @@ contains
            outcome%mass_accounting_complete .and. accepted_missing_mask == TX_MASS_MISSING_NONE
 
       if (context_required) call model%restore_attempt_context(accepted_context)
+      call model%apply_accepted_feedback(attempt_dt, temporal_ok)
+      result%accepted_feedback_calls = result%accepted_feedback_calls + 1
+      if (.not. temporal_ok) then
+        result%accepted_feedback_failures = result%accepted_feedback_failures + 1
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
+        result%status = TX_STATUS_ACCEPTED_FEEDBACK_FAILED
+        return
+      end if
       call move_alloc(candidate_state, committed)
       result%status = TX_STATUS_ACCEPTED
       result%accepted_route = TX_ROUTE_MODEL_CERTIFIED
@@ -629,6 +674,44 @@ contains
     ! the original no-tolerance coverage semantics.
     matches = a <= b .and. b <= a
   end function ordered_real_equal
+
+  subroutine apply_model_retry_directive(model, context_required, checkpoint_context, outcome, &
+                                               requested_dt, retry_index, policy, result, attempt_dt)
+    class(transaction_model_t), intent(inout) :: model
+    logical, intent(in) :: context_required
+    class(transaction_attempt_context_t), allocatable, intent(inout) :: checkpoint_context
+    type(trial_outcome_t), intent(in) :: outcome
+    real(real64), intent(in) :: requested_dt
+    integer, intent(in) :: retry_index
+    type(transaction_policy_t), intent(in) :: policy
+    type(transaction_result_t), intent(inout) :: result
+    real(real64), intent(inout) :: attempt_dt
+
+    result%rollbacks = result%rollbacks + 1
+    if (retry_index >= policy%max_retries) then
+      result%status = TX_STATUS_RETRY_EXHAUSTED
+      return
+    end if
+
+    if (.not. ieee_is_finite(outcome%retry_duration_proposal) .or. &
+        outcome%retry_duration_proposal <= 0.0_real64 .or. &
+        outcome%retry_duration_proposal > requested_dt .or. &
+        outcome%retry_duration_reason <= TX_RETRY_REASON_NONE) then
+      result%invalid_model_retry_directives = result%invalid_model_retry_directives + 1
+      result%status = TX_STATUS_INVALID_MODEL_RETRY_DIRECTIVE
+      return
+    end if
+
+    if (context_required) then
+      call model%capture_attempt_context(checkpoint_context)
+    end if
+
+    result%retries = result%retries + 1
+    result%model_retry_directives = result%model_retry_directives + 1
+    result%last_model_retry_reason = outcome%retry_duration_reason
+    result%last_model_retry_duration = outcome%retry_duration_proposal
+    attempt_dt = outcome%retry_duration_proposal
+  end subroutine apply_model_retry_directive
 
   subroutine reject_and_retry(result, retry_index, policy, attempt_dt)
     type(transaction_result_t), intent(inout) :: result
