@@ -1,87 +1,85 @@
 #!/usr/bin/env python3
-"""Fail-closed diagnostic instrumentation for exact B1.5p1 oxygenstress.f90.
-
-The transformation is intentionally narrow. It adds only diagnostic declarations and a CSV write.
-It refuses any source whose SHA is not the pinned corrected B1.5p1 oxygenstress identity.
-"""
+"""Reversible diagnostic instrumentation for exact B1.11 oxygenstress.f90."""
 from __future__ import annotations
-
-import argparse
-import hashlib
+import argparse, hashlib
 from pathlib import Path
 
-SOURCE_SHA256 = "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87"
-BEGIN = b"! C3Q_TRACE_BEGIN\r\n"
-END = b"! C3Q_TRACE_END\r\n"
+SOURCE_SHA256="8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87"
+BEGIN=b"! C3Q_TRACE_BEGIN\r\n"; END=b"! C3Q_TRACE_END\r\n"
 
+def sha(b:bytes)->str: return hashlib.sha256(b).hexdigest()
+def once(data,old,new,label):
+    n=data.count(old)
+    if n!=1: raise ValueError(f"{label}: expected one anchor, found {n}")
+    return data.replace(old,new,1)
 
-def sha(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
+def instrument(source:bytes)->bytes:
+    if sha(source)!=SOURCE_SHA256: raise ValueError(f"source identity mismatch:{sha(source)}")
+    decl_anchor=b"      logical                    :: ini = .TRUE.\r\n"
+    decl=decl_anchor+BEGIN+(
+      b"      integer, save             :: c3q_trace_unit = -1\r\n"
+      b"      integer, save             :: c3q_call_index = 0\r\n"
+      b"      logical, save             :: c3q_trace_header = .FALSE.\r\n"
+    )+END
+    out=once(source,decl_anchor,decl,"declaration")
 
+    sat_anchor=b"         c_top(node+1) = C_macro\r\n      else"
+    sat=(
+      b"         c_top(node+1) = C_macro\r\n"+BEGIN+
+      b"         call c3q_write_trace('SATURATED',node,matric_potential,theta0,gas_filled_porosity,soil_temp,max_resp_factor,0.d0,0.d0,0.d0,0.d0,c_macro,0.d0,resp_factor,rwu_factor)\r\n"+
+      END+b"      else"
+    )
+    out=once(out,sat_anchor,sat,"saturated-route")
 
-def replace_once(data: bytes, old: bytes, new: bytes, label: str) -> bytes:
-    n = data.count(old)
-    if n != 1:
-        raise ValueError(f"{label}: expected one anchor, found {n}")
-    return data.replace(old, new, 1)
+    physical_anchor=(
+      b"          if (rwu_factor < 0.d0) then\r\n"
+      b"              rwu_factor = 0.d0\r\n"
+      b"          end if\r\n"
+      b"      \r\n"
+      b"      end if !if (gas_filled_porosity < 1.0d-6) !RB20131216 goto removed\r\n"
+    )
+    physical=(
+      b"          if (rwu_factor < 0.d0) then\r\n"
+      b"              rwu_factor = 0.d0\r\n"
+      b"          end if\r\n"+BEGIN+
+      b"          call c3q_write_trace('PHYSICAL',node,matric_potential,theta0,gas_filled_porosity,soil_temp,max_resp_factor,waterfilm_thickness,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor)\r\n"+
+      END+
+      b"      \r\n"
+      b"      end if !if (gas_filled_porosity < 1.0d-6) !RB20131216 goto removed\r\n"
+    )
+    out=once(out,physical_anchor,physical,"physical-route")
 
-
-def instrument(source: bytes) -> bytes:
-    if sha(source) != SOURCE_SHA256:
-        raise ValueError(f"source identity mismatch: {sha(source)}")
-
-    decl_anchor = b"      real(8) top1,top2\r\n"
-    decl = decl_anchor + BEGIN + (
-        b"      integer, save :: c3q_trace_unit = -1\r\n"
-        b"      integer, save :: c3q_call_index = 0\r\n"
-        b"      logical, save :: c3q_trace_header = .false.\r\n"
-    ) + END
-    out = replace_once(source, decl_anchor, decl, "declaration")
-
-    # Anchor immediately after the legacy lower clamp of rwu_factor. This records the final
-    # physical response for the node, including the max_resp_factor==1 special case.
-    write_anchor = b"          if (rwu_factor.lt.0.0d0) rwu_factor=0.0d0\r\n"
-    write_block = write_anchor + BEGIN + (
-        b"          if (c3q_trace_unit < 0) then\r\n"
-        b"             open(newunit=c3q_trace_unit,file='c3q_oxygen_trace.csv',status='replace',action='write')\r\n"
-        b"          end if\r\n"
-        b"          if (.not.c3q_trace_header) then\r\n"
-        b"             write(c3q_trace_unit,'(a)') 'call_index,node,matric_potential_pa,theta,gas_filled_porosity,soil_temp_k,max_resp_factor,waterfilm_thickness_m,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor'\r\n"
-        b"             c3q_trace_header = .true.\r\n"
-        b"          end if\r\n"
-        b"          c3q_call_index = c3q_call_index + 1\r\n"
-        b"          write(c3q_trace_unit,'(i0,\",\",i0,13(\",\",es25.16e3))') c3q_call_index,node,matric_potential,theta0,gas_filled_porosity,soil_temp,max_resp_factor,waterfilm_thickness,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor\r\n"
-        b"          flush(c3q_trace_unit)\r\n"
-    ) + END
-    out = replace_once(out, write_anchor, write_block, "final-response")
+    contains_anchor=b"   contains\r\n   \r\n   subroutine calc_ini_pars (numnod)"
+    helper=(
+      b"   contains\r\n"+BEGIN+
+      b"   subroutine c3q_write_trace(route,node,mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu)\r\n"
+      b"      character(len=*), intent(in) :: route\r\n"
+      b"      integer, intent(in) :: node\r\n"
+      b"      real(8), intent(in) :: mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu\r\n"
+      b"      if (c3q_trace_unit < 0) open(newunit=c3q_trace_unit,file='c3q_oxygen_trace.csv',status='replace',action='write')\r\n"
+      b"      if (.not.c3q_trace_header) then\r\n"
+      b"         write(c3q_trace_unit,'(a)') 'call_index,route,node,matric_potential_pa,theta,gas_filled_porosity,soil_temp_k,max_resp_factor,waterfilm_thickness_m,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor'\r\n"
+      b"         c3q_trace_header=.TRUE.\r\n"
+      b"      end if\r\n"
+      b"      c3q_call_index=c3q_call_index+1\r\n"
+      b"      write(c3q_trace_unit,'(i0,\",\",a,\",\",i0,13(\",\",es25.16e3))') c3q_call_index,trim(route),node,mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu\r\n"
+      b"      flush(c3q_trace_unit)\r\n"
+      b"   end subroutine c3q_write_trace\r\n"+END+
+      b"   \r\n   subroutine calc_ini_pars (numnod)"
+    )
+    out=once(out,contains_anchor,helper,"helper")
     return out
 
-
-def strip_trace(data: bytes) -> bytes:
+def strip_trace(data:bytes)->bytes:
     while BEGIN in data:
-        start = data.index(BEGIN)
-        stop = data.index(END, start) + len(END)
-        data = data[:start] + data[stop:]
+        a=data.index(BEGIN); b=data.index(END,a)+len(END); data=data[:a]+data[b:]
     return data
 
-
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("source", type=Path)
-    parser.add_argument("output", type=Path)
-    args = parser.parse_args()
-
-    original = args.source.read_bytes()
-    traced = instrument(original)
-    if strip_trace(traced) != original:
-        raise SystemExit("C3Q instrumentation reversibility gate failed")
-    args.output.write_bytes(traced)
-    print("C3Q_INSTRUMENTATION=PASS")
-    print(f"C3Q_ORIGINAL_SHA256={sha(original)}")
-    print(f"C3Q_INSTRUMENTED_SHA256={sha(traced)}")
-    print("C3Q_STRIP_RESTORES_ORIGINAL=PASS")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+def main():
+    ap=argparse.ArgumentParser(); ap.add_argument("source",type=Path); ap.add_argument("output",type=Path); a=ap.parse_args()
+    original=a.source.read_bytes(); traced=instrument(original)
+    if strip_trace(traced)!=original: raise SystemExit("C3Q_STRIP_RESTORES_ORIGINAL=FAIL")
+    a.output.write_bytes(traced)
+    print("C3Q_INSTRUMENTATION=PASS"); print("C3Q_STRIP_RESTORES_ORIGINAL=PASS")
+    print(f"C3Q_ORIGINAL_SHA256={sha(original)}"); print(f"C3Q_INSTRUMENTED_SHA256={sha(traced)}")
+if __name__=="__main__": main()
