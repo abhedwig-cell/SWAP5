@@ -16,7 +16,7 @@ program test_ppa_wu05_perch19_freduq_ladder
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t,evaluate_macropore_geometry
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t,initialize_fmr_macropore_standard_config
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t,macropore_runtime_policy_t, &
-       macropore_runtime_result_t,MACRO_RUNTIME_CONVERGED
+       macropore_runtime_result_t,MACRO_RUNTIME_CONVERGED,MACRO_RUNTIME_RETRY
   implicit none
 
   real(real64),parameter :: dt=2.0e-3_real64
@@ -218,7 +218,7 @@ program test_ppa_wu05_perch19_freduq_ladder
        '|ATTEMPTS=',macro_result%source_reduction_attempts, &
        '|FACTOR=',macro_result%source_reduction_factor, &
        '|DTMIN_GATE=',macro_result%source_reduction_dtmin_gate
-  call require(macro_result%status==3,'PERCH19 above-dtmin returns retry')
+  call require(macro_result%status==MACRO_RUNTIME_RETRY,'PERCH19 above-dtmin returns retry')
   call require(.not.macro_result%source_reduction_dtmin_gate,'PERCH19 above-dtmin gate closed')
   call require(macro_result%source_reduction_attempts==1,'PERCH19 above-dtmin only factor one')
   call require(abs(macro_result%source_reduction_factor-1.0_real64)<1.0e-15_real64, &
