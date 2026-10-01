@@ -51,6 +51,25 @@ program test_signed_contact
  call check(sat0-sat1>1e-3_real64,'history saturation falsification')
  print '(a,es24.16)','A27_POINT_WETTING_JUMP_CM=',wet1-wet0
  print '(a,es24.16)','A27_FROZEN_HISTORY_SATURATION_JUMP_CM=',sat0-sat1
+ ! Finite geometry: first wetting occurs at the lower segment face.
+ q%finite_contact=.true.;q%depth=4.5_real64;q%matrix_head=-10._real64
+ call evaluate_signed_contact(q,r);wet0=sum(r%matrix_gain)
+ q%depth=4.5_real64+1e-9_real64
+ call evaluate_signed_contact(q,r);wet1=sum(r%matrix_gain)
+ call check(wet0==0._real64.and.wet1>=0._real64.and.wet1<1e-9_real64,'finite first-contact continuity')
+ print '(a,es24.16)','A27_FINITE_FIRST_CONTACT_DELTA_CM=',wet1-wet0
+ q%depth=5._real64;call evaluate_signed_contact(q,r)
+ expect=.5_real64*.4_real64*2._real64*(sqrt(.3_real64)-sqrt(.2_real64))
+ call check(abs(sum(r%matrix_gain)-expect)<1e-14_real64,'half wet Philip integral')
+ q%depth=8._real64;q%sorptivity=0.;q%matrix_head=1._real64
+ call evaluate_signed_contact(q,r);call check(abs(sum(r%matrix_gain)-.016_real64)<1e-14_real64,'fully wet integrated Darcy')
+ q%sorptivity=2._real64;q%matrix_head=-1e-9_real64
+ call evaluate_signed_contact(q,r);sat0=sum(r%matrix_gain)
+ q%matrix_head=0._real64
+ call evaluate_signed_contact(q,r);sat1=sum(r%matrix_gain)
+ call check(sat0-sat1>1e-3_real64,'geometry does not fix frozen history')
+ print '(a,es24.16)','A27_FINITE_FROZEN_HISTORY_SATURATION_JUMP_CM=',sat0-sat1
+ print '(a)','A27_FINITE_CONTACT_ORACLES=PASS'
  q%dt=ieee_value(0._real64,ieee_quiet_nan);call evaluate_signed_contact(q,r);call check(.not.r%valid,'nan fail closed')
  print '(a)','A27_SIGNED_CONTACT_ORACLES=PASS'
  print '(a)','A27_SIGNED_CONTACT_SCREEN_20000=PASS'
