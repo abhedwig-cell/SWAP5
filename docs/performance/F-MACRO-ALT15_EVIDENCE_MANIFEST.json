@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.f_macro_alt15.evidence_acquisition.v1",
+  "status": "RESEARCH_ONLY",
+  "tiers": [
+    {
+      "tier": 1,
+      "name": "NEON preferential-flow event database / Li et al. 2025",
+      "purpose": ["F1 weak-event activation", "F2 intensity response", "F3 duration/event structure", "F4 antecedent-state transferability"],
+      "observations": [
+        "1-min multi-depth volumetric soil moisture",
+        "10-min precipitation",
+        "event-based PF classifications via non-sequential response and velocity threshold",
+        "antecedent mean and variability of soil moisture",
+        "soil texture and site covariates"
+      ],
+      "access": "Open NEON source data; derived PF database and analysis code publicly available",
+      "strength": "Best broad event-level discriminator for activation timing and state/intensity dependence",
+      "limitation": "Not a controlled single-soil laboratory experiment; structural parameters vary among sites"
+    },
+    {
+      "tier": 1,
+      "name": "Hartmann et al. 2022 Griessfirn Brilliant Blue irrigation series",
+      "purpose": ["F2 intensity response", "F5 connectivity transferability"],
+      "observations": [
+        "same total irrigation amount 40 mm",
+        "20, 40, 60 mm/h irrigation intensities",
+        "five excavated vertical profiles per subplot",
+        "dye-derived flow-path morphology and depth distributions",
+        "soil physical/structural metadata"
+      ],
+      "access": "Paper tables downloadable; soil structure/texture repository open; Brilliant Blue images available from authors",
+      "strength": "Controlled intensity perturbation on the same plots/profile classes",
+      "limitation": "Antecedent moisture is not the main controlled factor; image data may require author request"
+    },
+    {
+      "tier": 2,
+      "name": "Hardie et al. antecedent-moisture dye experiment",
+      "purpose": ["F4 antecedent-state transferability", "arrival-depth response"],
+      "observations": [
+        "25 mm Brilliant Blue application",
+        "high versus low antecedent soil moisture",
+        "wetting-front depth and velocity"
+      ],
+      "access": "Published article; raw open dataset not confirmed",
+      "strength": "Very strong controlled antecedent-state contrast",
+      "limitation": "Raw time series/data availability uncertain"
+    },
+    {
+      "tier": 2,
+      "name": "Wuestebach multi-depth soil-moisture PF monitoring",
+      "purpose": ["F1", "F2", "F4", "event occurrence"],
+      "observations": [
+        "3-year soil moisture monitoring",
+        "101 locations",
+        "5, 20, 50 cm response classes",
+        "precipitation characteristics",
+        "antecedent soil moisture"
+      ],
+      "access": "TR32 database metadata/download page",
+      "strength": "Same catchment, many events, direct non-sequential response classification",
+      "limitation": "The public record found may primarily expose publication-level material rather than the full processed event table"
+    },
+    {
+      "tier": 3,
+      "name": "WUR rainfall-simulator/macropore experiments 2016",
+      "purpose": ["fast breakthrough signature", "macropore/no-macropore contrast"],
+      "observations": [
+        "soil-column drainage response",
+        "controlled artificial macropores",
+        "rainfall-simulator hillslope experiments"
+      ],
+      "access": "Open article",
+      "strength": "Direct WUR macropore experiment and breakthrough observations",
+      "limitation": "Not designed as a systematic antecedent-moisture/intensity transferability experiment"
+    }
+  ],
+  "decision_order": [
+    "Use NEON-derived event database first for activation occurrence/timing statistics.",
+    "Use Hartmann intensity series for controlled intensity and connectivity-depth signatures.",
+    "Use Hardie published contrast as a strong antecedent-state falsification benchmark and pursue raw data if needed.",
+    "Only after these screens calibrate or reject sigma_B; do not retune geometry event by event."
+  ]
+}
