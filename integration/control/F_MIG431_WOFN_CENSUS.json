@@ -1,0 +1,139 @@
+{
+  "schema": "swap5.functional_closure.wofn_census.v1",
+  "work_unit": "F-MIG431-WOFN-CENSUS",
+  "date": "2026-10-01",
+  "status": "REVIEW_CENSUS_COMPLETE_IMPLEMENTATION_NOT_AUTHORIZED",
+  "legacy_family": {
+    "files": [
+      {
+        "file": "wofostnut.f90",
+        "role": "crop nitrogen demand, uptake, allocation, stress and crop-N state"
+      },
+      {
+        "file": "wofost_soil_interface.f90",
+        "role": "crop-soil nutrient exchange interface"
+      },
+      {
+        "file": "wofost_soil_declarations.f90",
+        "role": "soil nutrient state/parameter/global declarations requiring ownership classification"
+      },
+      {
+        "file": "wofost_soil_parameters.f90",
+        "role": "soil nutrient parameters and derived constants"
+      },
+      {
+        "file": "wofost_soil_rateconstants.f90",
+        "role": "soil nutrient transformation rate constants"
+      },
+      {
+        "file": "wofost_soil_orgmatn.f90",
+        "role": "soil organic matter and nitrogen transformation processes"
+      },
+      {
+        "file": "wofost_soil_watern.f90",
+        "role": "soil water/nitrogen coupling and mineral-N transport/availability semantics"
+      },
+      {
+        "file": "wofost_soil_cropresidues.f90",
+        "role": "crop-residue return and residue pools"
+      },
+      {
+        "file": "wofost_soil_amendments.f90",
+        "role": "organic/mineral amendment or management inputs to soil nutrient system"
+      },
+      {
+        "file": "wofost_soil_balancecheck.f90",
+        "role": "soil nutrient balance diagnostics"
+      }
+    ],
+    "caveat": "Roles are semantic migration categories derived from the legacy migration map and filenames; exact equations/state fields still require source-level trace before implementation."
+  },
+  "current_swap5": {
+    "crop_n_files": [
+      "src/crop/mod_wofost81_nitrogen.f90",
+      "src/crop/mod_wofost81_n_owner_state.f90",
+      "src/crop/mod_wofost81_n_stress.f90"
+    ],
+    "admitted_reference_evidence": "F-WOF-PP01 qualifies WOFOST-owned organ-N state and cumulative N uptake on potential-production cases.",
+    "migration_evidence": "F-WOF-PP02 qualifies versioned parameter and N state as part of WOFOST81 crop migration preservation.",
+    "runtime_evidence": "F-WOF-PP03 activates WOFOST81 with N_UNLIMITED / SWCROPSNM=0 and explicitly states soil-N coupling is not introduced.",
+    "absent_from_current_crop_tree": [
+      "soil organic matter N process module",
+      "crop residue soil-N process module",
+      "soil amendment process module",
+      "soil-water N process module",
+      "legacy soil-N balance process module"
+    ],
+    "interpretation": "Current crop-N implementation cannot be treated as evidence that the legacy WOFOST soil-N subsystem is migrated."
+  },
+  "capability_split": [
+    {
+      "id": "WOFN-CROP",
+      "capability": "crop N demand/state/stress/uptake accounting",
+      "status": "PARTIAL_MIGRATION_PRESENT",
+      "owner": "F-WOF",
+      "note": "Crop-N scientific preservation exists; current production runtime is deliberately N-unlimited in PP03. Reconcile later canonical admissions before broader claim."
+    },
+    {
+      "id": "WOFN-SOIL-OM",
+      "capability": "soil organic matter and N transformations",
+      "status": "OPEN_LEGACY_CAPABILITY",
+      "owner": null
+    },
+    {
+      "id": "WOFN-RESIDUE",
+      "capability": "crop residue return and residue pools",
+      "status": "OPEN_LEGACY_CAPABILITY",
+      "owner": null
+    },
+    {
+      "id": "WOFN-AMEND",
+      "capability": "soil amendments/fertilizer/management nutrient inputs",
+      "status": "OPEN_LEGACY_CAPABILITY",
+      "owner": null
+    },
+    {
+      "id": "WOFN-WATERN",
+      "capability": "soil-water/mineral-N coupling",
+      "status": "OPEN_LEGACY_CAPABILITY",
+      "owner": null
+    },
+    {
+      "id": "WOFN-EXCHANGE",
+      "capability": "crop-soil N supply/uptake exchange contract",
+      "status": "OPEN_INTERFACE_DECISION",
+      "owner": null
+    },
+    {
+      "id": "WOFN-BAL",
+      "capability": "soil nutrient balance diagnostics",
+      "status": "OPEN_LEGACY_CAPABILITY",
+      "owner": null
+    }
+  ],
+  "architectural_decision": {
+    "do_not_do": "Do not copy the ten legacy files wholesale into the current crop transaction.",
+    "required_before_implementation": [
+      "Recover exact state and mass-transfer graph from legacy source",
+      "Determine whether soil-N remains a SWAP5-owned optional subsystem or is deliberately externalized",
+      "If externalized, define which crop-N demand/supply interface SWAP5 retains",
+      "Keep water and nitrogen mass ownership distinct",
+      "Do not design around future ANIMO coupling until the legacy functional disposition is explicit"
+    ]
+  },
+  "recommended_disposition": "INVESTIGATE_THEN_DECIDE_MIGRATE_OR_EXTERNALIZE",
+  "parallelism": "Review can proceed independently of macropore/oxygen. Production implementation must wait for ownership decision because soil-N introduces a new conserved-state/mass-ledger domain.",
+  "next_workunit": {
+    "id": "F-MIG431-WOFN-SOURCE01",
+    "type": "review-only exact source state/mass graph",
+    "exit": [
+      "exact persistent state inventory",
+      "N mass pools and transfers",
+      "water-state dependencies",
+      "crop-N exchange variables",
+      "management inputs",
+      "restart requirements",
+      "proposal: internal SWAP5 optional component versus explicit external owner"
+    ]
+  }
+}
