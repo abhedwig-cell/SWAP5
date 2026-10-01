@@ -163,6 +163,18 @@ program test_fpe_miqual07_serialized_benchmark
        '|BOTTOM_H=',final_state%pressure_head(numnod),'|TOP_TH=',theta_top,'|MID_TH=',theta_mid, &
        '|BOTTOM_TH=',theta_bottom,'|STORAGE=',storage,'|POND=',final_state%ponding_depth, &
        '|TAIL=',final_tail,'|LAST_REASON=',trim(last_reason)
+  write(*,'(a)',advance='no') 'F_PE_MIQUAL07_H='
+  do i=1,numnod
+    write(*,'(es26.17e3)',advance='no') final_state%pressure_head(i)
+    if(i<numnod) write(*,'(a)',advance='no') ','
+  end do
+  write(*,*)
+  write(*,'(a)',advance='no') 'F_PE_MIQUAL07_TH='
+  do i=1,numnod
+    write(*,'(es26.17e3)',advance='no') final_state%water_content(i)
+    if(i<numnod) write(*,'(a)',advance='no') ','
+  end do
+  write(*,*)
   write(*,'(a)') 'F_PE_MIQUAL07=PASS'
 
 contains
