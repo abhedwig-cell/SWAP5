@@ -1,0 +1,23 @@
+name: PPA-WU05-A13 RFM surface event age
+
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a13-rfm-surface-event-age
+    paths:
+      - 'src/process/macropore/mod_rfm_surface_event_age.f90'
+      - 'tests/fpm/test_ppa_wu05a13_rfm_surface_event_age.f90'
+      - 'tests/fpm/run_ppa_wu05a13_rfm_surface_event_age.sh'
+      - '.github/workflows/ppa-wu05a13-rfm-surface-event-age.yml'
+
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run focused A13 gate
+        run: bash tests/fpm/run_ppa_wu05a13_rfm_surface_event_age.sh
