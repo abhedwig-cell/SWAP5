@@ -185,7 +185,7 @@ contains
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
     integer :: commit_status, persistence_status
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
-    real(real64), parameter :: fmr_dt=1.0e-4_real64
+    real(real64), parameter :: fmr_dt=1.0e-5_real64
     real(real64) :: direct_exchange(numnod)
 
     fparams%parameter_set_id=lineage
