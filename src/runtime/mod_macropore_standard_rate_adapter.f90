@@ -201,6 +201,7 @@ contains
     real(real64) function ordinary_water_level(node_index) result(level)
       integer,intent(in)::node_index
       real(real64)::distance,bottom
+      level=0.0_real64
       bottom=z(node_index)-0.5_real64*dz(node_index)
       if(node_index<n .and. matrix%pressure_head(node_index+1)>=0.0_real64)then
         distance=node_spacing(node_index)
@@ -216,6 +217,7 @@ contains
     real(real64) function perched_bottom_level(node_index) result(level)
       integer,intent(in)::node_index
       real(real64)::distance,bottom
+      level=0.0_real64
       bottom=z(node_index)-0.5_real64*dz(node_index)
       if(node_index<n .and. matrix%pressure_head(node_index+1)<=0.0_real64)then
         distance=node_spacing(node_index)
