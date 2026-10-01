@@ -127,5 +127,22 @@
       "WOFN production implementation with any future conserved-solute owner design"
     ],
     "max_active_implementation_streams": 6
-  }
+  },
+  "issued_workunits": [
+    {
+      "id": "F-MIG431-LOW01-A",
+      "branch": "work/f-mig431-low01a-qgwl-boundary",
+      "base": "8bb835a065248aad06b18a3b563234b20033ba0d",
+      "preregistration_commit": "a32a23e0af8920a8b29aeebca8ae916bdea4d9c8",
+      "state": "READY_FOR_OWNER_EXECUTION"
+    },
+    {
+      "id": "F-MIG431-INT12-P0",
+      "branch": "work/f-mig431-int12-p0-aggregate-runtime",
+      "base": "8bb835a065248aad06b18a3b563234b20033ba0d",
+      "preregistration_commit": "83a56f6fa2cb7a6893f9f0f54778fd0618e672f4",
+      "state": "READY_FOR_OWNER_EXECUTION"
+    }
+  ],
+  "branch_issuance_rule": "Central F-MIG431 regie is the branch allocator for new 4.3.1 closure work. Owner chats must reuse issued branches and must not create sibling/sub-branches unless the preregistered shared-authority stop condition is reached."
 }
