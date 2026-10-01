@@ -82,10 +82,10 @@ contains
     config%rate_template%unsaturated%sorptivity%sorptivity_max = sorptivity_max
     config%rate_template%unsaturated%sorptivity%sorptivity_alpha = sorptivity_alpha
     config%rate_template%unsaturated%sorptivity%domain_fraction = domain_fraction
-    config%rate_template%unsaturated%sorptivity%wet_fraction = 0.0_real64
-    config%rate_template%unsaturated%sorptivity%history_sorptivity = 0.0_real64
-    config%rate_template%unsaturated%sorptivity%history_theta_ref = 0.0_real64
-    config%rate_template%unsaturated%sorptivity%history_absorption_time = 0.0_real64
+    config%rate_template%unsaturated%sorptivity%wet_fraction = 0.0_real64*domain_fraction
+    config%rate_template%unsaturated%sorptivity%history_sorptivity = 0.0_real64*domain_fraction
+    config%rate_template%unsaturated%sorptivity%history_theta_ref = 0.0_real64*domain_fraction
+    config%rate_template%unsaturated%sorptivity%history_absorption_time = 0.0_real64*domain_fraction
 
     config%rate_template%unsaturated%shape_factor = shape_factor
     config%rate_template%unsaturated%pressure_head = -1.0_real64
@@ -121,16 +121,16 @@ contains
     config%rate_template%rapid%volume_main_domain_cp = static_volume_cp*domain_fraction(1,:)
 
     config%rate_template%limiter%num_domains = nd
-    config%rate_template%limiter%accepted_storage_cm = 0.0_real64
+    config%rate_template%limiter%accepted_storage_cm = 0.0_real64*real(potential_bottom_domain,real64)
     config%rate_template%limiter%maximum_storage_cm = &
          [(sum(static_volume_cp(top_node:potential_bottom_domain(id))* &
                domain_fraction(id,top_node:potential_bottom_domain(id))), id=1,nd)]
-    config%rate_template%limiter%minimum_storage_cm = 0.0_real64
-    config%rate_template%limiter%potential_top_vertical_cm = 0.0_real64
-    config%rate_template%limiter%potential_top_lateral_cm = 0.0_real64
-    config%rate_template%limiter%potential_interflow_sat_cm = 0.0_real64
-    config%rate_template%limiter%potential_matrix_sat_cm = 0.0_real64
-    config%rate_template%limiter%potential_outflow_cm = 0.0_real64
+    config%rate_template%limiter%minimum_storage_cm = 0.0_real64*real(potential_bottom_domain,real64)
+    config%rate_template%limiter%potential_top_vertical_cm = 0.0_real64*real(potential_bottom_domain,real64)
+    config%rate_template%limiter%potential_top_lateral_cm = 0.0_real64*real(potential_bottom_domain,real64)
+    config%rate_template%limiter%potential_interflow_sat_cm = 0.0_real64*real(potential_bottom_domain,real64)
+    config%rate_template%limiter%potential_matrix_sat_cm = 0.0_real64*real(potential_bottom_domain,real64)
+    config%rate_template%limiter%potential_outflow_cm = 0.0_real64*real(potential_bottom_domain,real64)
     config%rate_template%limiter%redistribution_capacity_cm = config%rate_template%limiter%maximum_storage_cm
     config%rate_template%limiter%top_domain_fraction = domain_fraction(:,top_node)
     config%rate_template%top_node = top_node
@@ -143,7 +143,7 @@ contains
     config%history_template%bottom_domain = potential_bottom_domain
     config%history_template%top_water_node = potential_bottom_domain
     config%history_template%wall_correction = wall_correction
-    config%history_template%wet_fraction = 0.0_real64
+    config%history_template%wet_fraction = 0.0_real64*domain_fraction
     config%history_template%domain_fraction = domain_fraction
     config%history_template%diameter = diameter
 
@@ -166,11 +166,11 @@ contains
       sat%shape_factor = shape_factor
       sat%bottom_domain = potential_bottom_domain
       sat%top_macro_saturated_node = potential_bottom_domain
-      sat%macro_saturated_fraction = 0.0_real64
+      sat%macro_saturated_fraction = 0.0_real64*real(potential_bottom_domain,real64)
       sat%macro_reference_level = z(potential_bottom_domain)
       sat%z = z
       sat%dz = dz
-      sat%matrix_head = -1.0_real64
+      sat%matrix_head = -1.0_real64 + 0.0_real64*z
       sat%ksat_horizontal = ksat_horizontal
       sat%diameter = diameter
       sat%domain_fraction = domain_fraction
