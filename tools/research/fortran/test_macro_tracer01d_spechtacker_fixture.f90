@@ -25,6 +25,7 @@ program test_macro_tracer01d_spechtacker_fixture
   real(real64) :: theta0(10), heads(10)
   real(real64) :: t, dt_try, dt_base, dt_min, horizon, irrig_end, rain
   real(real64) :: tr, ts, alpha_cm, nvg, mvg, ksat_cm_day, lambda
+  real(real64) :: last_qtop=0.0_real64, last_qbot=0.0_real64
   integer :: unit, i, accepted, retries
   character(len=256) :: outfile
   logical :: ok
@@ -156,8 +157,6 @@ contains
     last_qbot=res%bottom_flux
     success=.true.
   end subroutine solve_step
-
-  real(real64) :: last_qtop=0.0_real64, last_qbot=0.0_real64
 
   subroutine write_row(u,t0,step_dt,rain_now,s0,s1)
     integer,intent(in)::u
