@@ -20,6 +20,7 @@ program test_fapp09_ribasim_external_surface_water_profile
   use mod_fmr_surface_water_swap_participant, only: fmr_surface_water_swap_participant_t, fmr_surface_water_trial_t, &
        fmr_surface_water_external_profile_admitted, FMR_SW_PARTICIPANT_OK, &
        FMR_SW_PARTICIPANT_ORIGIN_DRIFT, FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH
+  use mod_fmr_surface_water_component_receipt, only: fmr_surface_water_component_receipt_t
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -134,6 +135,7 @@ contains
     type(fmr_surface_water_swap_participant_t) :: participant
     type(fmr_surface_water_trial_t) :: trial1,trial2
     type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr_surface_water_component_receipt_t) :: component_receipt
     type(fmr04_fixed_flux_top_provider_t), target :: top
     class(transaction_state_t), allocatable :: snapshot
     real(real64) :: heads(1),expected
@@ -159,6 +161,17 @@ contains
     call require(trial1%accepted_substeps==1,'single accepted substep profile')
     call require(abs(trial1%signed_soil_to_surface_exchange_cm-expected)<=exchange_tol,'positive requested exchange')
     call require(committed%current_revision()==0_int64,'trial does not mutate accepted state')
+
+    component_receipt%valid=.true.
+    component_receipt%subsurface_swap_to_surface_cm=trial1%signed_soil_to_surface_exchange_cm
+    component_receipt%top_swap_to_surface_cm=0.125_real64
+    call require(.not.participant%component_publication_ready(committed,t0,t1,0.0_real64,component_receipt,exchange_tol), &
+         'wrong top component blocks publication')
+    call require(committed%current_revision()==0_int64 .and. participant%has_live_candidate(), &
+         'component mismatch preserves live candidate and origin')
+    component_receipt%top_swap_to_surface_cm=0.0_real64
+    call require(participant%component_publication_ready(committed,t0,t1,0.0_real64,component_receipt,exchange_tol), &
+         'matched component receipt publication ready')
 
     call participant%commit_candidate(backend,committed,t0,t1,0.0_real64,exchange_tol,did_commit,status)
     call require(.not.did_commit .and. status==FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH,'availability mismatch blocks commit')
