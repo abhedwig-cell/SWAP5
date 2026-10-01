@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - work/ppa-wu05-a9-fmr-top-input
+      - integration/f-ci-canonical
     paths:
       - 'src/process/macropore/**'
       - 'src/runtime/mod_fmr_macropore_top_input.f90'
