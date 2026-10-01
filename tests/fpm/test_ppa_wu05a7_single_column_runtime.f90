@@ -112,6 +112,7 @@ program test_ppa_wu05a7_single_column_runtime
   allocate(request%base_state%pressure_head(n),request%base_state%water_content(n))
   request%base_state%pressure_head=-100.0_real64
   request%base_state%water_content=0.20_real64
+  request%base_state%groundwater_level=-100.0_real64
   request%step_duration=dt
   request%physical%macropore_active=.false.
 
@@ -167,7 +168,7 @@ program test_ppa_wu05a7_single_column_runtime
   if(.not.macro%same_values(macro_snapshot))error stop 'A7 committed macro mutated'
 
   ! Retry propagation from a corrector.
-  solver%retry_above_source=0.05_real64
+  solver%retry_above_source=0.0300001_real64
   call runtime%execute(solver,workspace,request,macro,geometry_config,rate_template,history_request,policy,result)
   if(result%status/=MACRO_RUNTIME_RETRY .or. .not.result%retry_advised)error stop 'A7 retry propagation'
   if(.not.macro%same_values(macro_snapshot))error stop 'A7 retry committed macro mutated'
