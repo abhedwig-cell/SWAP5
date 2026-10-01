@@ -272,11 +272,15 @@ module mod_soil_water_solver_contract
        type(soil_water_top_boundary_result_t), intent(out) :: result
      end subroutine dynamic_top_boundary_evaluate_ifc
 
-     subroutine macropore_evaluate_ifc(self, pressure_head, exchange_flux, active)
+     subroutine macropore_evaluate_ifc(self, pressure_head, water_content, exchange_flux, &
+                                        dexchange_dhead, derivative_available, active)
        import :: macropore_exchange_provider_t, real64
        class(macropore_exchange_provider_t), intent(in) :: self
        real(real64), intent(in) :: pressure_head(:)
+       real(real64), intent(in) :: water_content(:)
        real(real64), intent(out) :: exchange_flux(:)
+       real(real64), intent(out) :: dexchange_dhead(:)
+       logical, intent(out) :: derivative_available
        logical, intent(out) :: active
      end subroutine macropore_evaluate_ifc
 
