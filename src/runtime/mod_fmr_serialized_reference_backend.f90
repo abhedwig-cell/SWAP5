@@ -292,8 +292,6 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: macropore_returned_surface_cm = 0.0_real64
     logical :: macropore_rapid_drain_active = .false.
     real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
-    rfm_preferential_input_cm = 0.0_real64
-    rfm_deep_receipt_cm = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
@@ -2283,6 +2281,8 @@ contains
     outcome = trial_outcome_t()
     macropore_accepted_top_cm = 0.0_real64
     macropore_rapid_outflow_cm = 0.0_real64
+    rfm_preferential_input_cm = 0.0_real64
+    rfm_deep_receipt_cm = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
