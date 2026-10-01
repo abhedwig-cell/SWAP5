@@ -276,6 +276,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: macropore_requested_top_cm = 0.0_real64
     real(real64) :: macropore_accepted_top_cm = 0.0_real64
     real(real64) :: macropore_returned_surface_cm = 0.0_real64
+    real(real64) :: macropore_rapid_drain_cm = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
@@ -2164,6 +2165,7 @@ contains
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm
+    real(real64) :: macropore_rapid_drain_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
@@ -2179,6 +2181,7 @@ contains
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
     macropore_accepted_top_cm = 0.0_real64
+    macropore_rapid_drain_cm = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
@@ -2497,7 +2500,10 @@ contains
       self%last_observation%macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
       self%last_observation%macropore_returned_surface_cm = macropore_result%returned_surface_cm
       macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
+      macropore_rapid_drain_cm = macropore_result%rapid_external_outflow_cm
+      self%last_observation%macropore_rapid_drain_cm = macropore_rapid_drain_cm
       if (.not. ieee_is_finite(macropore_accepted_top_cm) .or. macropore_accepted_top_cm < 0.0_real64) return
+      if (.not. ieee_is_finite(macropore_rapid_drain_cm) .or. macropore_rapid_drain_cm < 0.0_real64) return
       if (macropore_result%status /= MACRO_RUNTIME_CONVERGED) then
         if (macropore_result%status == MACRO_RUNTIME_RETRY) solve_result%retry_advised = .true.
         return
@@ -2647,7 +2653,8 @@ contains
       end select
     end if
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
-         snow_event_applied_this_call, macropore_accepted_top_cm, outcome%mass_in, outcome%mass_out)
+         snow_event_applied_this_call, macropore_accepted_top_cm, macropore_rapid_drain_cm, &
+         outcome%mass_in, outcome%mass_out)
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
       step_drainage_exchange = self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
@@ -2748,9 +2755,10 @@ contains
   end subroutine record_top_sensible_boundary_sample
 
   subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
-                                     macropore_accepted_top_cm, total_in, total_out)
+                                     macropore_accepted_top_cm, macropore_rapid_drain_cm, total_in, total_out)
     class(fmr_serialized_reference_model_t), intent(in) :: self
     real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux, macropore_accepted_top_cm
+    real(real64), intent(in) :: macropore_rapid_drain_cm
     logical, intent(in) :: snow_event_applied
     real(real64), intent(out) :: total_in, total_out
     integer :: i, level
@@ -2759,7 +2767,8 @@ contains
     if (self%snow_active) external_top_flux = self%base_top_flux
     total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration + &
          macropore_accepted_top_cm
-    total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration
+    total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration + &
+         macropore_rapid_drain_cm
     do i = 1, size(self%qssdi)
       value = self%qssdi(i) * step_duration
       if (value >= 0.0_real64) then
