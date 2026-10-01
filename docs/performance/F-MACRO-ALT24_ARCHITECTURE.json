@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.f_macro_alt24.rfm_architecture_inventory.v1",
+  "status": "RESEARCH_ONLY",
+  "leading_architecture": {
+    "surface_boundary": [
+      "accepted top pressure head",
+      "accepted top water content",
+      "ponding/runoff state"
+    ],
+    "derived_activation": [
+      "K_surface",
+      "S_surface",
+      "b50(event_age)",
+      "activation_fraction"
+    ],
+    "structural_fast_domain": [
+      "f_MB",
+      "C_struct(z)",
+      "activation-weighted IC quantile recruitment"
+    ],
+    "persistent_state": [
+      "fast-domain water storage by active endpoint/path class",
+      "wall_event_sorptivity per active contact",
+      "wall_event_age per active contact",
+      "surface_source_event_age"
+    ],
+    "derived_not_persistent": [
+      "dynamic macropore volume",
+      "total macropore volume",
+      "active domain-bottom index",
+      "wet-wall/contact fraction",
+      "active connectivity distribution"
+    ],
+    "trial_scratch": [
+      "exchange/rate intermediates",
+      "Jacobian intermediates",
+      "candidate flux receipts"
+    ]
+  },
+  "genuinely_new_candidate_parameters": [
+    "sigma_B",
+    "f_MB",
+    "continuous connectivity shape parameters"
+  ],
+  "profile_derived_or_existing_candidates": [
+    "Z_AH",
+    "Z_IC",
+    "surface K",
+    "surface sorptivity",
+    "matrix hydraulic functions",
+    "ponding/runoff state"
+  ],
+  "retained_for_now": [
+    "wall-exchange physics and its qualified interface semantics"
+  ],
+  "verdict": {
+    "implementation_burden": "materially reduced in research architecture",
+    "persistent_state_burden": "materially reduced in information roles",
+    "geometry_parameter_burden": "likely reduced",
+    "activation_parameter_burden": "reduced to one new structural heterogeneity parameter if K/S remain derived",
+    "total_calibration_burden": "not yet proven lower because wall-exchange parameters and structural mapping remain open",
+    "production_readiness": "not claimed"
+  }
+}
