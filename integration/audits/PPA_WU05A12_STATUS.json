@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.ppa_wu05a12.status.v1",
+  "workunit": "PPA-WU05-A12",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_RFM_HYDRAULIC_VIEW_SORPTIVITY_BINDING",
+  "baseline": "03708d387f452e82044cffbff681da8252d3e717",
+  "branch": "work/ppa-wu05-a12-rfm-hydraulic-binding",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "qualified_postimage": "facfca66e0656e622c2677a0392aa44d9bedb29d",
+  "qualification_run": 36860909511,
+  "negative_run": {
+    "run_id": 36860761059,
+    "classification": "TEST_HARNESS_COMPILE_FAILURE",
+    "production_modules_falsified": false
+  },
+  "scope": {
+    "process_hydraulic_view_binding": true,
+    "point_surface_conductivity": true,
+    "transformed_integral_sorptivity": true,
+    "a11_composition": true,
+    "sigma_b_owner": "caller",
+    "source_rate_owner": "caller",
+    "event_age_owner": "caller",
+    "top_input_ownership_change": false,
+    "routing": false,
+    "f_mb": false,
+    "connectivity_p": false
+  },
+  "next": "separate A13 committed-state observation composition or explicit event-age/source ownership; do not change source partition until those owners are frozen"
+}
