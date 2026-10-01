@@ -1,0 +1,53 @@
+module mod_bartholomeus_runtime_input
+  use iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_soil_temperature_contract, only: soil_temperature_field_view_t
+  implicit none
+  private
+
+  integer, parameter, public :: BARTHOLOMEUS_INPUT_OK=0
+  integer, parameter, public :: BARTHOLOMEUS_INPUT_SHAPE=1
+  integer, parameter, public :: BARTHOLOMEUS_INPUT_INVALID=2
+
+  type, public :: bartholomeus_runtime_view_t
+    integer :: rooted_nodes=0
+    real(real64), allocatable :: pressure_head_cm(:)
+    real(real64), allocatable :: water_content(:)
+    real(real64), allocatable :: soil_temperature_k(:)
+  end type
+  public :: build_bartholomeus_runtime_view
+
+contains
+  subroutine build_bartholomeus_runtime_view(hydraulic,thermal,rooted_nodes,view,status)
+    type(process_hydraulic_view_t),intent(in)::hydraulic
+    type(soil_temperature_field_view_t),intent(in)::thermal
+    integer,intent(in)::rooted_nodes
+    type(bartholomeus_runtime_view_t),intent(out)::view
+    integer,intent(out)::status
+    integer::n
+
+    view=bartholomeus_runtime_view_t(); status=BARTHOLOMEUS_INPUT_SHAPE
+    n=hydraulic%active_nodes
+    if(n<=0 .or. thermal%active_nodes/=n) return
+    if(rooted_nodes<0 .or. rooted_nodes>n) return
+    if(.not.allocated(hydraulic%pressure_head) .or. .not.allocated(hydraulic%water_content)) return
+    if(.not.allocated(thermal%temperature_c)) return
+    if(size(hydraulic%pressure_head)/=n .or. size(hydraulic%water_content)/=n .or. size(thermal%temperature_c)/=n) return
+    if(rooted_nodes>0) then
+      if(any(.not.ieee_is_finite(hydraulic%pressure_head(1:rooted_nodes))) .or. &
+         any(.not.ieee_is_finite(hydraulic%water_content(1:rooted_nodes))) .or. &
+         any(.not.ieee_is_finite(thermal%temperature_c(1:rooted_nodes)))) then
+        status=BARTHOLOMEUS_INPUT_INVALID; return
+      end if
+    end if
+    view%rooted_nodes=rooted_nodes
+    allocate(view%pressure_head_cm(rooted_nodes),view%water_content(rooted_nodes),view%soil_temperature_k(rooted_nodes))
+    if(rooted_nodes>0) then
+      view%pressure_head_cm=hydraulic%pressure_head(1:rooted_nodes)
+      view%water_content=hydraulic%water_content(1:rooted_nodes)
+      view%soil_temperature_k=thermal%temperature_c(1:rooted_nodes)+273.15_real64
+    end if
+    status=BARTHOLOMEUS_INPUT_OK
+  end subroutine
+end module
