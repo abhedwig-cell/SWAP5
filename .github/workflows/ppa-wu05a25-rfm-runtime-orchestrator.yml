@@ -5,6 +5,8 @@ on:
   paths:
    - 'src/runtime/mod_rfm_physical_state.f90'
    - 'src/runtime/mod_rfm_runtime_configuration.f90'
+   - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+   - 'tests/fpm/run_ppa_wu05a20_rfm_optional_state_layout.sh'
    - 'src/runtime/mod_rfm_runtime_orchestrator.f90'
    - 'tests/fpm/test_ppa_wu05a25_rfm_runtime_orchestrator.f90'
    - 'tests/fpm/run_ppa_wu05a25_rfm_runtime_orchestrator.sh'
