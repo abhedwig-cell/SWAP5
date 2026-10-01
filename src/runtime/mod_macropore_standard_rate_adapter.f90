@@ -6,6 +6,7 @@ module mod_macropore_standard_rate_adapter
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t
   use mod_macropore_standard_storage, only: macropore_standard_storage_view_t
+  use mod_macropore_surface_top_input, only: macropore_surface_request_result_t
   implicit none
   private
 
@@ -71,7 +72,7 @@ contains
   end subroutine derive_matrix_saturated_zone_view
 
   subroutine prepare_standard_macropore_rate_request(template,accepted_macro,geometry,macro_view, &
-       matrix,z,dz,step_duration,request,matrix_view,ok)
+       matrix,z,dz,step_duration,request,matrix_view,ok,surface_request)
     type(macropore_rate_bundle_request_t),intent(in)::template
     type(macropore_continuation_state_t),intent(in)::accepted_macro
     type(macropore_geometry_result_t),intent(in)::geometry
@@ -81,6 +82,7 @@ contains
     type(macropore_rate_bundle_request_t),intent(out)::request
     type(matrix_saturated_zone_view_t),intent(out)::matrix_view
     logical,intent(out)::ok
+    type(macropore_surface_request_result_t),intent(in),optional::surface_request
 
     integer::id,n,nd,topw
 
@@ -90,10 +92,19 @@ contains
     nd=accepted_macro%num_domains
     if(matrix%active_nodes/=n .or. size(z)/=n .or. size(dz)/=n .or. step_duration<=0.0_real64)return
 
-    ! First FMR-admission scope is deliberately top-input neutral and rapid-drain inactive.
+    ! Immutable template never owns step top input. A9 may provide a typed
+    ! step-specific surface request; absent that request the A8 zero-top route
+    ! remains exact.
     if(any(abs(template%limiter%potential_top_vertical_cm)>1.0e-15_real64) .or. &
        any(abs(template%limiter%potential_top_lateral_cm)>1.0e-15_real64))return
     if(template%rapid%enabled)return
+    if(present(surface_request))then
+      if(.not.surface_request%valid .or. surface_request%num_domains/=nd)return
+      if(.not.allocated(surface_request%requested_vertical_cm) .or. &
+         .not.allocated(surface_request%requested_lateral_cm))return
+      if(size(surface_request%requested_vertical_cm)/=nd .or. &
+         size(surface_request%requested_lateral_cm)/=nd)return
+    end if
 
     call derive_matrix_saturated_zone_view(matrix,z,dz,matrix_view)
     if(.not.matrix_view%valid)return
@@ -159,6 +170,13 @@ contains
     request%limiter%maximum_storage_cm=sum(geometry%volume_domain_cp,dim=2)
     request%limiter%redistribution_capacity_cm=max(0.0_real64, &
          request%limiter%maximum_storage_cm-request%limiter%accepted_storage_cm)
+    if(present(surface_request))then
+      request%limiter%potential_top_vertical_cm=surface_request%requested_vertical_cm
+      request%limiter%potential_top_lateral_cm=surface_request%requested_lateral_cm
+    else
+      request%limiter%potential_top_vertical_cm=0.0_real64
+      request%limiter%potential_top_lateral_cm=0.0_real64
+    end if
 
     ok=request%unsaturated%valid() .and. request%interflow_sat%valid() .and. &
          request%matrix_sat%valid() .and. request%rapid%valid() .and. request%limiter%valid()
