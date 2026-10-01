@@ -6,6 +6,8 @@ on:
    - 'src/runtime/mod_rfm_matrix_source_provider.f90'
    - 'tests/fpm/test_ppa_wu05a24_rfm_matrix_source_provider.f90'
    - 'tests/fpm/run_ppa_wu05a24_rfm_matrix_source_provider.sh'
+   - 'tests/fpm/test_ppa_wu05a24_real_richards_split.f90'
+   - 'tests/fpm/run_ppa_wu05a24_real_richards_split.sh'
    - '.github/workflows/ppa-wu05a24-rfm-source-provider.yml'
 jobs:
  focused:
@@ -14,3 +16,4 @@ jobs:
    - uses: actions/checkout@v4
    - run: sudo apt-get update && sudo apt-get install -y gfortran
    - run: bash tests/fpm/run_ppa_wu05a24_rfm_matrix_source_provider.sh
+   - run: bash tests/fpm/run_ppa_wu05a24_real_richards_split.sh
