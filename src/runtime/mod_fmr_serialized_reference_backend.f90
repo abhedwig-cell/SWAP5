@@ -84,6 +84,7 @@ module mod_fmr_serialized_reference_backend
        FIXED_WEIR_AVAILABLE
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
+  use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
        macropore_runtime_result_t, MACRO_RUNTIME_CONVERGED, MACRO_RUNTIME_RETRY
   implicit none
@@ -263,6 +264,7 @@ module mod_fmr_serialized_reference_backend
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
+    type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -270,6 +272,10 @@ module mod_fmr_serialized_reference_backend
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
+    logical :: macropore_top_input_active = .false.
+    real(real64) :: macropore_requested_top_cm = 0.0_real64
+    real(real64) :: macropore_accepted_top_cm = 0.0_real64
+    real(real64) :: macropore_returned_surface_cm = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
@@ -408,6 +414,7 @@ module mod_fmr_serialized_reference_backend
     logical :: root_extraction_active = .false.
     logical :: macropore_active = .false.
     type(fmr_macropore_physical_config_t), allocatable :: macropore_config
+    type(fmr_macropore_top_input_forcing_t) :: macropore_top_input_forcing
     type(macropore_runtime_policy_t) :: macropore_policy
     logical :: macropore_policy_configured = .false.
     type(macropore_single_column_runtime_t) :: macropore_runtime
@@ -1767,6 +1774,7 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
+    self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
@@ -1961,6 +1969,15 @@ contains
       else if (allocated(self%projection_zero_direction)) then
         deallocate(self%projection_zero_direction)
       end if
+      if (allocated(forcing%macropore_top_input)) then
+        if (.not. self%macropore_active) return
+        if (.not. forcing%macropore_top_input%valid()) return
+        if (forcing%macropore_top_input%supplied) then
+          if (self%snow_active .or. self%black_evaporation_active .or. self%boesten_evaporation_active .or. &
+              self%fixed_weir_surface_water_active) return
+        end if
+        self%macropore_top_input_forcing = forcing%macropore_top_input
+      end if
       self%base_top_flux = forcing%top_flux
       self%top_flux = forcing%top_flux
       if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate
@@ -2146,6 +2163,7 @@ contains
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
+    real(real64) :: macropore_accepted_top_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
@@ -2160,6 +2178,7 @@ contains
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
+    macropore_accepted_top_cm = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
@@ -2467,11 +2486,18 @@ contains
       class is (fmr_b110_physical_state_t)
         call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
              self%macropore_config%geometry, self%macropore_config%rate_template, &
-             self%macropore_config%history_template, self%macropore_policy, macropore_result)
+             self%macropore_config%history_template, self%macropore_top_input_forcing, &
+             self%macropore_policy, macropore_result)
       class default
         return
       end select
       solve_result = macropore_result%matrix_result
+      self%last_observation%macropore_top_input_active = self%macropore_top_input_forcing%supplied
+      self%last_observation%macropore_requested_top_cm = macropore_result%requested_top_input_cm
+      self%last_observation%macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
+      self%last_observation%macropore_returned_surface_cm = macropore_result%returned_surface_cm
+      macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
+      if (.not. ieee_is_finite(macropore_accepted_top_cm) .or. macropore_accepted_top_cm < 0.0_real64) return
       if (macropore_result%status /= MACRO_RUNTIME_CONVERGED) then
         if (macropore_result%status == MACRO_RUNTIME_RETRY) solve_result%retry_advised = .true.
         return
@@ -2621,7 +2647,7 @@ contains
       end select
     end if
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
-         snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
+         snow_event_applied_this_call, macropore_accepted_top_cm, outcome%mass_in, outcome%mass_out)
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
       step_drainage_exchange = self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
@@ -2722,16 +2748,17 @@ contains
   end subroutine record_top_sensible_boundary_sample
 
   subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
-                                     total_in, total_out)
+                                     macropore_accepted_top_cm, total_in, total_out)
     class(fmr_serialized_reference_model_t), intent(in) :: self
-    real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux
+    real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux, macropore_accepted_top_cm
     logical, intent(in) :: snow_event_applied
     real(real64), intent(out) :: total_in, total_out
     integer :: i, level
     real(real64) :: value, external_top_flux
     external_top_flux = solver_top_flux
     if (self%snow_active) external_top_flux = self%base_top_flux
-    total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration
+    total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration + &
+         macropore_accepted_top_cm
     total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration
     do i = 1, size(self%qssdi)
       value = self%qssdi(i) * step_duration
