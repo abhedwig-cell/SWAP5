@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05_perch19.status.v1",
+  "workunit": "PPA-WU05-PERCH19",
+  "phase": "PREREGISTERED",
+  "decision": "SOURCE_FAITHFUL_FREDUQ_CONTINUATION_REQUIRED",
+  "baseline": "ae4eede414692fb0071ea093050f5accd36dd48d",
+  "branch": "research/ppa-wu05-perch19-flow-reduction-ladder",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "closed": false,
+  "source_ladder": [1.0, 0.1, 0.01, 0.001],
+  "state_fields": [
+    "reduction_level",
+    "accepted_step_count",
+    "recovery_dt"
+  ],
+  "next_action": "Implement and qualify the typed source transition state machine before serialized integration.",
+  "recovery_point": "ae4eede414692fb0071ea093050f5accd36dd48d"
+}
