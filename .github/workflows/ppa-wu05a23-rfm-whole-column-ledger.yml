@@ -1,0 +1,16 @@
+name: PPA-WU05-A23 RFM whole column ledger
+on:
+  push:
+    branches: [work/ppa-wu05-a23-rfm-whole-column-candidate-ledger]
+    paths:
+      - 'src/runtime/mod_rfm_whole_column_candidate_ledger.f90'
+      - 'tests/fpm/test_ppa_wu05a23_rfm_whole_column_candidate_ledger.f90'
+      - 'tests/fpm/run_ppa_wu05a23_rfm_whole_column_candidate_ledger.sh'
+      - '.github/workflows/ppa-wu05a23-rfm-whole-column-ledger.yml'
+jobs:
+ focused:
+  runs-on: ubuntu-latest
+  steps:
+   - uses: actions/checkout@v4
+   - run: sudo apt-get update && sudo apt-get install -y gfortran
+   - run: bash tests/fpm/run_ppa_wu05a23_rfm_whole_column_candidate_ledger.sh
