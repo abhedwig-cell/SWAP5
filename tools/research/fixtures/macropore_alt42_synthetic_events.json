@@ -1,0 +1,82 @@
+{
+  "events": [
+    {
+      "profile_id": "P1",
+      "event_id": "w_short",
+      "source_rate_cm_per_day": 4,
+      "duration_day": 0.05,
+      "total_input_cm": 0.2,
+      "mean_antecedent_theta": 0.25,
+      "cv_antecedent_theta": 0.1,
+      "ponded": false,
+      "pf_observed": false
+    },
+    {
+      "profile_id": "P1",
+      "event_id": "w_long",
+      "source_rate_cm_per_day": 4.1,
+      "duration_day": 0.5,
+      "total_input_cm": 2.05,
+      "mean_antecedent_theta": 0.26,
+      "cv_antecedent_theta": 0.11,
+      "ponded": false,
+      "pf_observed": true
+    },
+    {
+      "profile_id": "P1",
+      "event_id": "i_short",
+      "source_rate_cm_per_day": 8,
+      "duration_day": 0.05,
+      "total_input_cm": 0.4,
+      "mean_antecedent_theta": 0.25,
+      "cv_antecedent_theta": 0.1,
+      "ponded": false,
+      "pf_observed": false
+    },
+    {
+      "profile_id": "P1",
+      "event_id": "i_long",
+      "source_rate_cm_per_day": 8.2,
+      "duration_day": 0.5,
+      "total_input_cm": 4.1,
+      "mean_antecedent_theta": 0.26,
+      "cv_antecedent_theta": 0.11,
+      "ponded": false,
+      "pf_observed": true
+    },
+    {
+      "profile_id": "P1",
+      "event_id": "cont",
+      "source_rate_cm_per_day": 8,
+      "duration_day": 0.5,
+      "total_input_cm": 4,
+      "mean_antecedent_theta": 0.25,
+      "cv_antecedent_theta": 0.1,
+      "ponded": false,
+      "fragmented_group": "G1",
+      "pf_observed": true
+    },
+    {
+      "profile_id": "P1",
+      "event_id": "frag",
+      "source_rate_cm_per_day": 8,
+      "duration_day": 0.5,
+      "total_input_cm": 4,
+      "mean_antecedent_theta": 0.25,
+      "cv_antecedent_theta": 0.1,
+      "ponded": false,
+      "fragmented_group": "G1",
+      "pf_observed": false
+    },
+    {
+      "profile_id": "P2",
+      "event_id": "other",
+      "source_rate_cm_per_day": 4,
+      "duration_day": 0.5,
+      "total_input_cm": 2,
+      "mean_antecedent_theta": 0.25,
+      "cv_antecedent_theta": 0.1,
+      "ponded": false
+    }
+  ]
+}
