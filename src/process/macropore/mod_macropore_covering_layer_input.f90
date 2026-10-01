@@ -36,6 +36,8 @@ contains
     if (.not. all(ieee_is_finite(scalars))) return
     if (self%step_duration_day <= 0.0_real64 .or. self%dz_above_cm <= 0.0_real64) return
     if (self%minimum_polygon_diameter_cm <= 0.0_real64 .or. self%covering_layer_ksat_cm_per_day < 0.0_real64) return
+    ! B1.11 uses VlMpStCp + VlMpDyCp directly in sqrt(1-V). The physical
+    ! area/volume fraction must therefore stay strictly between zero and one.
     if (self%total_macropore_volume_top_cm <= 0.0_real64 .or. self%total_macropore_volume_top_cm >= 1.0_real64) return
     if (any(.not. ieee_is_finite(self%domain_top_volume_cm)) .or. any(self%domain_top_volume_cm < 0.0_real64)) return
     if (abs(sum(self%domain_top_volume_cm)-self%total_macropore_volume_top_cm) > 1.0e-12_real64) return
