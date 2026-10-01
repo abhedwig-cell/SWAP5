@@ -1433,12 +1433,14 @@ contains
       return
     end if
     if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
-      if (.not. self%model%rfm_configuration%valid() .or. parameters%macropore_active .or. &
-          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
-          .not. self%model%soil_water_selection%uses_reference()) then
+      ! A26 guard remains until the qualified live-trial preparer is actually
+      ! invoked by the serialized transaction path in this same postimage.
+      if (.not. self%model%rfm_configuration%valid()) then
         call reject_backend_trial(result, candidate, diagnostics)
         return
       end if
+      call reject_backend_trial(result, candidate, diagnostics)
+      return
     end if
     if (parameters%macropore_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
