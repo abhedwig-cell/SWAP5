@@ -1425,6 +1425,17 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
+    if (forcing%external_top_surface_water_supplied) then
+      if (.not.parameters%external_top_surface_water_capable .or. .not.self%model%soil_water_selection%uses_reference() .or. &
+          parameters%snow_active .or. parameters%macropore_active .or. parameters%black_evaporation_active .or. &
+          parameters%boesten_evaporation_active .or. self%model%fixed_weir_surface_water_active .or. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    else if (parameters%external_top_surface_water_capable) then
+      ! Capability may be present while no external head is supplied; preserve the ordinary BASE route.
+    end if
     if (self%model%fixed_weir_surface_water_active) then
       if (parameters%drainage_response_active) then
         call reject_backend_trial(result, candidate, diagnostics)
