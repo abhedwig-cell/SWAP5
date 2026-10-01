@@ -10,6 +10,7 @@ program test_fpe_miqual07_serialized_benchmark
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_committed_state
+  use mod_fmr_moving_interface_runtime_adapter, only: fmr_moving_interface_runtime_timing_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -37,6 +38,7 @@ program test_fpe_miqual07_serialized_benchmark
   type(fmr_template_t)::template
   type(canonical_numerical_config_t)::config
   type(fmr_serialized_physical_observation_t)::obs
+  type(fmr_moving_interface_runtime_timing_t)::mi_timing
   class(transaction_state_t),allocatable::snapshot
   logical::ok,available,did_commit,complete
   integer::i,last_accepted,attempts,retries,total_nl,total_jac,total_lin,total_back
@@ -153,6 +155,8 @@ program test_fpe_miqual07_serialized_benchmark
   theta_mid=final_state%water_content((numnod+1)/2)
   theta_bottom=final_state%water_content(numnod)
   final_tail=tail_identity(final_state,parameters%cofgen(2,:))
+  mi_timing=fmr_moving_interface_runtime_timing_t()
+  if(trim(variant)=='MANAGER') call backend%moving_interface_timing_snapshot(mi_timing)
 
   write(*,'(*(g0))') 'F_PE_MIQUAL07_RESULT|VARIANT=',trim(variant),'|WORKLOAD=',trim(workload), &
        '|COMPLETE=',merge(1,0,complete),'|LAST_ACCEPTED=',last_accepted,'|FAIL_REASON=',trim(fail_reason), &
@@ -162,7 +166,9 @@ program test_fpe_miqual07_serialized_benchmark
        '|TOP_H=',final_state%pressure_head(1),'|MID_H=',final_state%pressure_head((numnod+1)/2), &
        '|BOTTOM_H=',final_state%pressure_head(numnod),'|TOP_TH=',theta_top,'|MID_TH=',theta_mid, &
        '|BOTTOM_TH=',theta_bottom,'|STORAGE=',storage,'|POND=',final_state%ponding_depth, &
-       '|TAIL=',final_tail,'|LAST_REASON=',trim(last_reason)
+       '|TAIL=',final_tail,'|LAST_REASON=',trim(last_reason), &
+       '|MI_CLOCK_RATE=',mi_timing%clock_rate,'|MI_CALLS=',mi_timing%successful_reduced_calls, &
+       '|MI_TOTAL_TICKS=',mi_timing%adapter_total_ticks,'|MI_SOLVE_TICKS=',mi_timing%reduced_solve_ticks
   write(*,'(a)',advance='no') 'F_PE_MIQUAL07_H='
   do i=1,numnod
     write(*,'(es26.17e3)',advance='no') final_state%pressure_head(i)
