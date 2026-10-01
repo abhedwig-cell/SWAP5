@@ -142,3 +142,30 @@ Still outside this admission result:
 - changed scientific parameters or formulation.
 
 Next gate: production wiring plus non-oxygen preservation and full oxygen end-to-end regression.
+
+
+## Production composition qualification update
+
+Production composition gate `PPA WU05 C3P oxygen composition` was repaired without changing
+production physics. The initial failures were qualification-harness dependency/warning-policy
+issues: first the hydraulic contract module was omitted from compile order, then an existing
+solver-contract unused-dummy warning was incorrectly promoted to an error by the narrow harness.
+
+After correcting only the harness, persisted run `36918960435` completed successfully:
+
+```text
+PPA_WU05C3P_ROOT_OXYGEN_COMPOSITION=PASS
+```
+
+This qualifies the existing root-water-uptake composition boundary for applying bounded
+per-rooted-node oxygen factors while preserving root-sink ownership.
+
+C3Q/C3P now jointly establish:
+- source-bound Bartholomeus response parity;
+- pure bounded oxygen response kernel;
+- ordered profile oxygen composition contract;
+- root-water-uptake modifier composition;
+- no new water-mass owner.
+
+Remaining admission work is end-to-end production wiring/configuration and preservation regression,
+not redesign of the physical kernel.
