@@ -17,6 +17,8 @@ on:
       - 'tests/fsi/ppa_wu05a18_andelst_headcalc_stubs.f90'
       - 'tests/fpm/test_ppa_wu05_perch19_reduction_ladder.f90'
       - 'tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh'
+      - 'tests/fpm/run_ppa_wu05a10_rapid_drain.sh'
+      - 'tests/fpm/run_ppa_wu05a20_rfm_optional_state_layout.sh'
       - '.github/workflows/ppa-wu05-perch19-reduction-ladder.yml'
 
 jobs:
