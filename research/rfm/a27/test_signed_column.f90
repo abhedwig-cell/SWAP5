@@ -46,7 +46,7 @@ program test_ppa_wu05a27_signed_column
  do soil=1,2
  do wet=0,2
  do mode=0,3
- do ref=0,2
+ do ref=0,4
  dt=.002_real64/(2**ref);ns=nint(1._real64/dt)
  ks=1._real64;if(soil==2)ks=5._real64
  water_table=-200._real64;if(wet>0)water_table=-20._real64
