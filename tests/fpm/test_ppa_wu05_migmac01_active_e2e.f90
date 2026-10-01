@@ -473,6 +473,7 @@ contains
     bundle%unsaturated%sorptivity%flow_reduction=1.0_real64
     bundle%unsaturated%sorptivity%bottom_domain=numnod
     bundle%unsaturated%sorptivity%top_water_node=3
+    bundle%unsaturated%sorptivity%bottom_domain=numnod
     bundle%unsaturated%sorptivity%theta=water
     bundle%unsaturated%sorptivity%theta_s=0.427494_real64
     bundle%unsaturated%sorptivity%theta_r=0.02_real64
@@ -536,6 +537,8 @@ contains
     bundle%limiter%redistribution_capacity_cm=max(0.0_real64, &
          bundle%limiter%maximum_storage_cm-bundle%limiter%accepted_storage_cm)
     bundle%limiter%top_domain_fraction=1.0_real64
+    bundle%limiter%accepted_storage_cm=sum(state%water_domain_cp(:,3:numnod),dim=2)
+    bundle%limiter%maximum_storage_cm=sum(geom%volume_domain_cp(:,3:numnod),dim=2)
     bundle%top_node=3
   end subroutine setup_rate_template
 
