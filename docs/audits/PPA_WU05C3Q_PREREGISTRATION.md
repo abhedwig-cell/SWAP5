@@ -128,3 +128,20 @@ B0 on that control edge.
 
 C3Q therefore does not need to establish source provenance or basic buildability again. It needs
 only the new diagnostic physical-response trace and pure-kernel parity.
+
+
+## C3Q VQ reuse implementation
+
+`tools/vq/c3q_prepare_oracle.py` now reuses the existing deterministic `b1_reconstruct` function.
+
+It refuses to proceed unless:
+- the supplied archive passes canonical B0 identity;
+- B1.5p1 reconstruction passes all existing correction and source-manifest gates;
+- reconstructed `oxygenstress.f90` is exactly
+  `8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87`.
+
+The current helper deliberately stops before diagnostic injection. The instrumentation itself must
+be a separately reviewed byte transformation so qualification diagnostics cannot accidentally
+modify physical code.
+
+No new GitHub Actions workflow is added. Existing VQ/local execution infrastructure is preferred.
