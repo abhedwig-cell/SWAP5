@@ -8,6 +8,7 @@ B="${TMPDIR:-/tmp}/swap5-a25";rm -rf "${B}";mkdir -p "${B}"
  src/process/macropore/mod_rfm_preferential_router.f90 \
  src/process/macropore/mod_rfm_surface_event_age.f90 \
  src/runtime/mod_rfm_physical_state.f90 \
+ src/runtime/mod_rfm_runtime_configuration.f90 \
  src/process/macropore/mod_rfm_endpoint_release.f90 \
  src/process/macropore/mod_rfm_mb_wall_deep_fate.f90 \
  src/runtime/mod_rfm_whole_column_candidate_ledger.f90 \
