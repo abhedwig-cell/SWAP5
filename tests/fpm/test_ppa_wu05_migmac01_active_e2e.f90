@@ -82,7 +82,7 @@ program test_ppa_wu05_migmac01_active_e2e
   call bind_b110_default_mvg_provider(hyd,hp,dt)
 
   heads=-100.0_real64
-  heads(2)=0.25_real64
+  heads(2)=0.25_real64 ! active B1.11 covering cell
   call hyd%evaluate(heads,water,cond,cap,dkdh)
 
   allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod))
