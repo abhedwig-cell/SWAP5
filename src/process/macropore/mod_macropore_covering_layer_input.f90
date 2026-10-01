@@ -56,6 +56,7 @@ contains
     requested_vertical_cm = 0.0_real64
 
     ! Exact B1.11 covering-layer branch. Henpr1/CritHtop is zero there.
+    ! This amount is an internal matrix-to-macropore transfer, not external precipitation.
     if (request%matrix_head_above_cm <= 0.0_real64) then
       ok = .true.
       return
