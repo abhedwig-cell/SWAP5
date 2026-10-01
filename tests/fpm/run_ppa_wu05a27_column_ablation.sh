@@ -10,7 +10,7 @@ import sys
 s=Path('tests/fsi/fsi04_real_headcalc_stubs.f90').read_text()
 s=s.replace('numnod = 4','numnod = 10')
 s=s.replace('[-0.25d0, -0.75d0, -1.50d0, -2.50d0]','['+','.join(str(-5-10*i)+'d0' for i in range(10))+']')
-s=s.replace('[0.50d0, 0.50d0, 1.00d0, 1.00d0]','10.0d0').replace('disnod(numnod+1) = 1.0d0','disnod(numnod+1) = 10.0d0')
+s=s.replace('[0.50d0, 0.50d0, 1.00d0, 1.00d0]','10.0d0').replace('disnod(numnod+1) = 1.0d0','disnod(numnod+1) = [5.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,5.0d0]')
 Path(sys.argv[1]).write_text(s)
 GRID
 MODULE_SRC=(
