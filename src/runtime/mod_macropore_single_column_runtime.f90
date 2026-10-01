@@ -169,7 +169,6 @@ contains
     end if
 
     call evaluate_macropore_geometry(geometry_config,accepted_macro%dynamic_volume_cp,geometry)
-    write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|GEOM_VALID=',geometry%valid,'|TOP=',geometry_config%top_node
     if(.not.geometry%valid)then
       result%status=MACRO_RUNTIME_FAILED
       return
@@ -209,7 +208,6 @@ contains
 
     call derive_macropore_standard_storage_view(accepted_macro,geometry_config%top_node, &
          base_request%parameters%z,base_request%parameters%dz,accepted_view)
-    write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|VIEW_VALID=',accepted_view%valid
     if(.not.accepted_view%valid)then
       result%status=MACRO_RUNTIME_FAILED
       return
