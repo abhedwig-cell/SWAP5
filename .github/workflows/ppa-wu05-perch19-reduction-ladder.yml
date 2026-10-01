@@ -26,3 +26,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Exact source reduction ladder on Andelst perched authority
         run: bash tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh
+      - name: Preserve admitted A7-A10 macropore route
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
+      - name: Preserve current canonical RFM optional-state layout
+        run: bash tests/fpm/run_ppa_wu05a20_rfm_optional_state_layout.sh
