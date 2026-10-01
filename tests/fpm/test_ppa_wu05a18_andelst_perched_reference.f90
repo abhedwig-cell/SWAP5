@@ -212,14 +212,19 @@ program test_ppa_wu05a18_andelst_perched_reference
   print '(a)', 'PPA_WU05A18_STAGE=BEFORE_RUNTIME'
   call macro_runtime%execute(solver,workspace,request,macro,macro_config%geometry,macro_config%rate_template, &
        macro_config%history_template,macro_policy,macro_result)
-  write(*,'(*(g0))') 'PPA_WU05A18_INNER|STATUS=',macro_result%status, &
+  write(*,'(*(g0))') 'PPA_WU05A18_INNER_PRE|STATUS=',macro_result%status, &
        '|USED=',macro_result%inner_richards_exchange_used, &
-       '|Q=',sum(macro_result%exchange_rate_node), &
+       '|INITIAL_RATE=',macro_result%inner_initial_exchange_rate_cm_per_day, &
+       '|FINAL_RATE=',macro_result%inner_final_exchange_rate_cm_per_day, &
+       '|RETRY=',macro_result%retry_advised
+  call require(macro_result%status==MACRO_RUNTIME_CONVERGED,'A18 inner runtime converged')
+  call require(macro_result%inner_richards_exchange_used,'A18 inner route used')
+  call require(allocated(macro_result%exchange_rate_node),'A18 final exchange receipt allocated')
+  call require(allocated(macro_result%macropore_candidate%water_domain_cp),'A18 macropore candidate allocated')
+  write(*,'(*(g0))') 'PPA_WU05A18_INNER|Q=',sum(macro_result%exchange_rate_node), &
        '|MACRO_DELTA=',sum(macro_result%macropore_candidate%water_domain_cp)-sum(macro%water_domain_cp), &
        '|INTERNAL_RES=',macro_result%internal_exchange_residual_cm, &
        '|MACRO_RES=',macro_result%macro_balance_residual_cm
-  call require(macro_result%status==MACRO_RUNTIME_CONVERGED,'A18 inner runtime converged')
-  call require(macro_result%inner_richards_exchange_used,'A18 inner route used')
   call require(sum(macro_result%exchange_rate_node)<-1.0e-10_real64,'A18 perched matrix-to-macro exchange')
   call require(sum(macro_result%macropore_candidate%water_domain_cp)>sum(macro%water_domain_cp)+1.0e-12_real64, &
        'A18 perched macro storage gain')
