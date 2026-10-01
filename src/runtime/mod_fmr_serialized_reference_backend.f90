@@ -24,6 +24,7 @@ module mod_fmr_serialized_reference_backend
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
+  use mod_fmr_top_surface_exchange, only: fmr_top_surface_exchange_t, materialize_fmr_top_surface_exchange, FMR_TOP_EXCHANGE_OK
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
@@ -215,6 +216,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
+    logical :: external_top_surface_water_capable = .false.
     logical :: macropore_active = .false.
     type(fmr_macropore_physical_config_t), allocatable :: macropore
     logical :: snow_active = .false.
@@ -285,14 +287,32 @@ module mod_fmr_serialized_reference_backend
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
     type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
+    logical :: external_top_surface_water_supplied = .false.
+    real(real64) :: external_top_surface_water_head_cm = 0.0_real64
+    real(real64) :: external_top_surface_water_sill_cm = 0.0_real64
+    real(real64) :: top_precipitation_rate_cm_per_day = 0.0_real64
+    real(real64) :: top_irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: top_snowmelt_rate_cm_per_day = 0.0_real64
+    real(real64) :: top_runon_rate_cm_per_day = 0.0_real64
+    real(real64) :: top_bare_soil_evaporation_rate_cm_per_day = 0.0_real64
+    real(real64) :: top_pond_evaporation_rate_cm_per_day = 0.0_real64
+    real(real64) :: top_ponding_max_cm = 0.0_real64
+    real(real64) :: top_runoff_resistance_day = 0.0_real64
+    real(real64) :: top_runoff_exponent = 1.0_real64
     type(rfm_surface_forcing_t), allocatable :: rfm_surface
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
     logical :: solver_executed = .false.
+    logical :: forcing_prepared = .false.
+    logical :: state_profile_prepared = .false.
+    logical :: execution_admission_preview = .false.
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
+    logical :: top_surface_exchange_available = .false.
+    real(real64) :: top_surface_signed_swap_to_external_cm = 0.0_real64
+    real(real64) :: top_surface_closure_residual_cm = 0.0_real64
     logical :: macropore_top_input_active = .false.
     real(real64) :: macropore_requested_top_cm = 0.0_real64
     real(real64) :: macropore_accepted_top_cm = 0.0_real64
@@ -432,6 +452,18 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: base_top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
+    logical :: external_top_surface_water_supplied = .false.
+    real(real64) :: external_top_surface_water_head_cm = 0.0_real64
+    real(real64) :: external_top_surface_water_sill_cm = 0.0_real64
+    real(real64) :: top_precipitation_rate = 0.0_real64
+    real(real64) :: top_irrigation_rate = 0.0_real64
+    real(real64) :: top_snowmelt_rate = 0.0_real64
+    real(real64) :: top_runon_rate = 0.0_real64
+    real(real64) :: top_bare_soil_evaporation_rate = 0.0_real64
+    real(real64) :: top_pond_evaporation_rate = 0.0_real64
+    real(real64) :: top_ponding_max = 0.0_real64
+    real(real64) :: top_runoff_resistance = 0.0_real64
+    real(real64) :: top_runoff_exponent = 1.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
@@ -1448,6 +1480,23 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
+    ! TOP03 external-head execution replaces the fixed top provider only for this
+    ! trial. Admission therefore must not require the ordinary fixed-top pointer.
+    if (forcing%external_top_surface_water_supplied .and. .not. parameters%external_top_surface_water_capable) then
+      call reject_backend_trial(result,candidate,diagnostics)
+      return
+    end if
+    if (forcing%external_top_surface_water_supplied) then
+      if (.not.parameters%external_top_surface_water_capable .or. .not.self%model%soil_water_selection%uses_reference() .or. &
+          parameters%snow_active .or. parameters%macropore_active .or. parameters%black_evaporation_active .or. &
+          parameters%boesten_evaporation_active .or. self%model%fixed_weir_surface_water_active .or. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    else if (parameters%external_top_surface_water_capable) then
+      ! Capability may be present while no external head is supplied; preserve the ordinary BASE route.
+    end if
     if (self%model%fixed_weir_surface_water_active) then
       if (parameters%drainage_response_active) then
         call reject_backend_trial(result, candidate, diagnostics)
@@ -1577,6 +1626,19 @@ contains
       end if
     end if
     call prepare_snow_outer_event(self%model, parameters, committed, forcing, t0, t1)
+    if (forcing%external_top_surface_water_supplied) then
+      if (.not. parameters%external_top_surface_water_capable .or. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          parameters%snow_active .or. parameters%macropore_active .or. parameters%black_evaporation_active .or. &
+          parameters%boesten_evaporation_active .or. parameters%soil_temperature_active .or. &
+          self%model%fixed_weir_surface_water_active .or. .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    end if
+    self%model%last_observation%state_profile_prepared=self%model%state_profile_admitted
+    self%model%last_observation%execution_admission_preview=self%model%execution_admitted(parameters,config)
     if (self%bottom_thermal_requested .and. parameters%soil_temperature_active .and. &
         self%model%state_profile_admitted .and. config%max_committed_substeps <= ishft(huge(0), -1)) then
       call self%model%bottom_thermal_carrier%initialize(2 * config%max_committed_substeps, bottom_thermal_ok)
@@ -1704,15 +1766,21 @@ contains
     class(kernel_parameters_t), intent(in) :: parameters
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     logical :: ok
-    ok = associated(self%top_boundary) .and. numerical_config%max_committed_substeps > 0 .and. &
-         self%state_profile_admitted
+    ok = numerical_config%max_committed_substeps > 0 .and. self%state_profile_admitted
+    if (self%external_top_surface_water_supplied) then
+      ok = ok .and. self%soil_water_selection%uses_reference() .and. &
+           .not.self%fixed_weir_surface_water_active .and. .not.self%snow_active .and. &
+           .not.self%black_evaporation_active .and. .not.self%boesten_evaporation_active .and. &
+           .not.self%macropore_active
+    end if
     if (self%fixed_weir_surface_water_active) then
       ok = ok .and. self%fixed_weir_surface_water_configured .and. .not. self%temporal_indicator_history_enabled .and. &
            numerical_config%transaction%temporal_mode == TX_TEMPORAL_EXTERNAL_FULL_HALF
     end if
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
-      ok = ok .and. parameters%parameter_set_id > 0_int64 .and. parameters%active_nodes > 0 .and. &
+      ok = ok .and. associated(self%top_boundary) .and. &
+           parameters%parameter_set_id > 0_int64 .and. parameters%active_nodes > 0 .and. &
            allocated(parameters%z) .and. allocated(parameters%dz) .and. allocated(parameters%node_distance) .and. &
            allocated(parameters%cofgen)
       if (ok) ok = size(parameters%z) == parameters%active_nodes .and. &
@@ -1987,6 +2055,16 @@ contains
         if (.not. allocated(forcing%drainage_flux_by_level) .or. allocated(forcing%drainage_response_controls)) return
         if (size(forcing%drainage_flux_by_level,1) <= 0 .or. size(forcing%drainage_flux_by_level,2) /= n) return
       end if
+      if (forcing%external_top_surface_water_supplied) then
+        if (.not. self%soil_water_selection%uses_reference()) return
+        if (.not. all(ieee_is_finite([forcing%external_top_surface_water_head_cm, &
+             forcing%external_top_surface_water_sill_cm,forcing%top_precipitation_rate_cm_per_day, &
+             forcing%top_irrigation_rate_cm_per_day,forcing%top_snowmelt_rate_cm_per_day, &
+             forcing%top_runon_rate_cm_per_day,forcing%top_bare_soil_evaporation_rate_cm_per_day, &
+             forcing%top_pond_evaporation_rate_cm_per_day,forcing%top_ponding_max_cm, &
+             forcing%top_runoff_resistance_day,forcing%top_runoff_exponent]))) return
+        if (forcing%top_runoff_resistance_day < 0.0_real64 .or. forcing%top_runoff_exponent <= 0.0_real64) return
+      end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
       if (self%root_extraction_active) then
         if (any(forcing%root_extraction_sink < 0.0_real64)) return
@@ -2144,9 +2222,22 @@ contains
       self%top_flux = forcing%top_flux
       if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate
       self%top_head = forcing%top_head
+      self%external_top_surface_water_supplied = forcing%external_top_surface_water_supplied
+      self%external_top_surface_water_head_cm = forcing%external_top_surface_water_head_cm
+      self%external_top_surface_water_sill_cm = forcing%external_top_surface_water_sill_cm
+      self%top_precipitation_rate = forcing%top_precipitation_rate_cm_per_day
+      self%top_irrigation_rate = forcing%top_irrigation_rate_cm_per_day
+      self%top_snowmelt_rate = forcing%top_snowmelt_rate_cm_per_day
+      self%top_runon_rate = forcing%top_runon_rate_cm_per_day
+      self%top_bare_soil_evaporation_rate = forcing%top_bare_soil_evaporation_rate_cm_per_day
+      self%top_pond_evaporation_rate = forcing%top_pond_evaporation_rate_cm_per_day
+      self%top_ponding_max = forcing%top_ponding_max_cm
+      self%top_runoff_resistance = forcing%top_runoff_resistance_day
+      self%top_runoff_exponent = forcing%top_runoff_exponent
       self%bottom_flux = forcing%bottom_flux
       self%bottom_head = forcing%bottom_head
       self%forcing_admitted = .true.
+      self%last_observation%forcing_prepared = .true.
     class default
       return
     end select
@@ -2310,6 +2401,7 @@ contains
     type(trial_outcome_t), intent(out) :: outcome
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
+    type(fmr_top_surface_exchange_t) :: top_exchange
     type(macropore_runtime_result_t) :: macropore_result
     type(soil_water_accepted_step_direction_result_t) :: direction_result
     type(trajectory_step_token_t) :: direction_token
@@ -2321,7 +2413,7 @@ contains
     type(black_evaporation_result_t) :: black_result
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, external_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
@@ -2385,7 +2477,8 @@ contains
     snow_event_applied_this_call = .false.
     if (.not. self%forcing_admitted .or. .not. associated(self%soil_parameters) .or. &
         .not. associated(self%hydraulic_parameters) .or. .not. associated(self%constitutive) .or. &
-        .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
+        .not. associated(self%source_sink)) return
+    if (.not. self%external_top_surface_water_supplied .and. .not. associated(self%top_boundary)) return
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
                                                            self%macropore_reduction_continuation_enabled, &
@@ -2470,6 +2563,20 @@ contains
         if (.not. physical%macropore%ready()) return
       else
         if (allocated(physical%macropore)) return
+      end if
+
+      if (self%external_top_surface_water_supplied) then
+        if (self%snow_active .or. self%macropore_active .or. self%black_evaporation_active .or. self%boesten_evaporation_active) return
+        call bind_b110_dynamic_top_boundary_solver_provider(external_top_provider,self%soil_parameters, &
+             self%hydraulic_parameters,self%swkmean,physical%ponding_depth,step_duration, &
+             self%top_precipitation_rate,self%top_irrigation_rate,self%top_snowmelt_rate,self%top_runon_rate, &
+             self%top_bare_soil_evaporation_rate,self%top_pond_evaporation_rate,self%top_ponding_max, &
+             self%top_runoff_resistance,self%top_runoff_exponent)
+        external_top_provider%external_surface_water_head_supplied=.true.
+        external_top_provider%external_surface_water_head_cm=self%external_top_surface_water_head_cm
+        external_top_provider%external_flooding_sill_head_cm=self%external_top_surface_water_sill_cm
+        request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
+        request%evaluation%dynamic_top_boundary=>external_top_provider
       end if
 
       if (self%black_evaporation_active) then
@@ -2706,6 +2813,17 @@ contains
     self%last_observation%solver_status = solve_result%status
     self%last_observation%top_flux = solve_result%top_flux
     self%last_observation%bottom_flux = solve_result%bottom_flux
+    if (self%external_top_surface_water_supplied .and. solve_result%status == SW_SOLVE_CONVERGED) then
+      call materialize_fmr_top_surface_exchange(request%base_state%ponding_depth, &
+           solve_result%candidate_state%ponding_depth, &
+           step_duration*(self%top_precipitation_rate+self%top_irrigation_rate+self%top_snowmelt_rate+self%top_runon_rate), &
+           step_duration*(self%top_bare_soil_evaporation_rate+self%top_pond_evaporation_rate), &
+           max(0.0_real64,-solve_result%top_flux)*step_duration, 0.0_real64, top_exchange)
+      if (top_exchange%status /= FMR_TOP_EXCHANGE_OK) return
+      self%last_observation%top_surface_exchange_available=top_exchange%available
+      self%last_observation%top_surface_signed_swap_to_external_cm=top_exchange%signed_swap_to_external_cm
+      self%last_observation%top_surface_closure_residual_cm=top_exchange%closure_residual_cm
+    end if
     self%last_observation%solver_diagnostics = solve_result%diagnostics
     self%last_observation%solver_equation_residual_available = .false.
     call populate_snow_observation(self)

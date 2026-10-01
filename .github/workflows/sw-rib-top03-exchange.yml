@@ -1,0 +1,19 @@
+name: SW-RIB-TOP03 transactional top exchange
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_top_surface_exchange.f90'
+      - 'tests/fapp/test_sw_rib_top03_exchange.f90'
+      - 'tests/fapp/run_sw_rib_top03_exchange.sh'
+      - '.github/workflows/sw-rib-top03-exchange.yml'
+  push:
+    branches: [work/sw-rib-top03-transactional-top-exchange]
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fapp/run_sw_rib_top03_exchange.sh

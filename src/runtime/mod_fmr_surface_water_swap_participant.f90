@@ -13,6 +13,8 @@ module mod_fmr_surface_water_swap_participant
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK
   use mod_fmr_surface_water_head_forcing_adapter, only: fmr_surface_water_head_forcing_materializer_t, &
        FMR_SW_HEAD_FORCING_OK
+  use mod_fmr_surface_water_component_receipt, only: fmr_surface_water_component_candidate_t, &
+       fmr_surface_water_component_receipt_t, surface_water_component_receipt_matches, FMR_SW_RECEIPT_OK
   implicit none
   private
 
@@ -47,6 +49,8 @@ module mod_fmr_surface_water_swap_participant
     integer(int64) :: origin_revision = -1_int64
     real(real64) :: origin_time = 0.0_real64
     real(real64) :: candidate_exchange_cm = 0.0_real64
+    real(real64) :: candidate_top_exchange_cm = 0.0_real64
+    logical :: candidate_top_exchange_available = .false.
     logical :: origin_captured = .false.
     logical :: live_candidate = .false.
   contains
@@ -55,7 +59,9 @@ module mod_fmr_surface_water_swap_participant
     procedure, public :: discard_candidate => surface_water_discard_candidate
     procedure, public :: abandon_origin => surface_water_abandon_origin
     procedure, public :: publication_ready => surface_water_publication_ready
+    procedure, public :: component_publication_ready => surface_water_component_publication_ready
     procedure, public :: commit_candidate => surface_water_commit_candidate
+    procedure, public :: commit_component_candidate => surface_water_commit_component_candidate
     procedure, public :: has_origin => surface_water_has_origin
     procedure, public :: has_live_candidate => surface_water_has_live_candidate
     procedure, public :: captured_revision => surface_water_captured_revision
@@ -202,6 +208,8 @@ contains
 
     duration = t1-t0
     self%candidate_exchange_cm = observation%drainage_response_window_signed_exchange_native
+    self%candidate_top_exchange_available = observation%top_surface_exchange_available
+    self%candidate_top_exchange_cm = observation%top_surface_signed_swap_to_external_cm
     self%live_candidate = .true.
     trial%valid = .true.
     trial%signed_soil_to_surface_exchange_cm = self%candidate_exchange_cm
@@ -216,6 +224,8 @@ contains
     if (self%candidate%ready()) call backend%discard_trial_candidate(self%candidate, self%diagnostics)
     self%live_candidate = .false.
     self%candidate_exchange_cm = 0.0_real64
+    self%candidate_top_exchange_cm = 0.0_real64
+    self%candidate_top_exchange_available = .false.
   end subroutine surface_water_discard_candidate
 
   subroutine surface_water_abandon_origin(self, status)
@@ -228,6 +238,8 @@ contains
     self%origin_revision = -1_int64
     self%origin_time = 0.0_real64
     self%candidate_exchange_cm = 0.0_real64
+    self%candidate_top_exchange_cm = 0.0_real64
+    self%candidate_top_exchange_available = .false.
     status = FMR_SW_PARTICIPANT_OK
   end subroutine surface_water_abandon_origin
 
@@ -253,6 +265,29 @@ contains
     if (abs(realized_exchange_cm-self%candidate_exchange_cm) > tolerance_cm) return
     ready = .true.
   end function surface_water_publication_ready
+
+
+  logical function surface_water_component_publication_ready(self, committed, t0, t1, top_candidate_cm, receipt, tolerance_cm) result(ready)
+    class(fmr_surface_water_swap_participant_t), intent(in) :: self
+    type(kernel_committed_state_t), intent(in) :: committed
+    real(real64), intent(in) :: t0,t1,top_candidate_cm,tolerance_cm
+    type(fmr_surface_water_component_receipt_t), intent(in) :: receipt
+    type(fmr_surface_water_component_candidate_t) :: components
+
+    ready=.false.
+    if(.not.ieee_is_finite(top_candidate_cm))return
+    if(self%candidate_top_exchange_available)then
+      if(abs(top_candidate_cm-self%candidate_top_exchange_cm)>tolerance_cm)return
+    else if(abs(top_candidate_cm)>tolerance_cm)then
+      return
+    end if
+    components%valid=.true.
+    components%subsurface_swap_to_surface_cm=self%candidate_exchange_cm
+    components%top_swap_to_surface_cm=top_candidate_cm
+    if(surface_water_component_receipt_matches(components,receipt,tolerance_cm)/=FMR_SW_RECEIPT_OK)return
+    if(.not.self%publication_ready(committed,t0,t1,receipt%subsurface_swap_to_surface_cm,tolerance_cm))return
+    ready=.true.
+  end function surface_water_component_publication_ready
 
   subroutine surface_water_commit_candidate(self, backend, committed, t0, t1, realized_exchange_cm, tolerance_cm, &
        did_commit, status)
@@ -285,6 +320,31 @@ contains
     self%candidate_exchange_cm = 0.0_real64
     status = FMR_SW_PARTICIPANT_OK
   end subroutine surface_water_commit_candidate
+
+
+  subroutine surface_water_commit_component_candidate(self,backend,committed,t0,t1,top_candidate_cm,receipt,tolerance_cm,did_commit,status)
+    class(fmr_surface_water_swap_participant_t),intent(inout)::self
+    type(fmr_serialized_reference_backend_t),intent(inout)::backend
+    type(kernel_committed_state_t),intent(inout)::committed
+    real(real64),intent(in)::t0,t1,top_candidate_cm,tolerance_cm
+    type(fmr_surface_water_component_receipt_t),intent(in)::receipt
+    logical,intent(out)::did_commit
+    integer,intent(out)::status
+    integer::kernel_status
+
+    did_commit=.false.
+    status=FMR_SW_PARTICIPANT_PREFLIGHT_FAILED
+    if(.not.self%component_publication_ready(committed,t0,t1,top_candidate_cm,receipt,tolerance_cm))then
+      if(self%origin_captured.and.self%live_candidate.and.receipt%valid) status=FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH
+      return
+    end if
+    call backend%commit_trial_candidate(committed,self%candidate,self%diagnostics,did_commit,kernel_status)
+    if(.not.did_commit.or.kernel_status/=KERNEL_COMMIT_STATUS_COMMITTED)then
+      did_commit=.false.;status=FMR_SW_PARTICIPANT_COMMIT_FAILED;return
+    end if
+    self%live_candidate=.false.;self%origin_captured=.false.;self%candidate_exchange_cm=0._real64
+    status=FMR_SW_PARTICIPANT_OK
+  end subroutine surface_water_commit_component_candidate
 
   logical function surface_water_has_origin(self) result(value)
     class(fmr_surface_water_swap_participant_t), intent(in) :: self

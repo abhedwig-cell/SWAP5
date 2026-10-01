@@ -53,7 +53,7 @@ Path(sys.argv[1]).write_text("\n".join(p.as_posix() for p in order)+"\n")
 print(f"FAPP09_COMPILE_CLOSURE_FILES={len(order)}")
 PY
 
-for required in   src/process/mod_drainage_extended_exchange.f90   src/runtime/mod_fmr_drainage_response_binding.f90   src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90   src/runtime/mod_fmr_surface_water_swap_participant.f90   src/runtime/mod_fmr_serialized_reference_backend.f90; do
+for required in   src/process/mod_drainage_extended_exchange.f90   src/runtime/mod_fmr_drainage_response_binding.f90   src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90   src/runtime/mod_fmr_surface_water_swap_participant.f90   src/runtime/mod_fmr_surface_water_component_receipt.f90   src/runtime/mod_fmr_serialized_reference_backend.f90; do
   grep -Fqx "$required" "$BUILD/compile-order.txt" || fail "missing compile closure: $required"
 done
 echo 'FAPP09_COMPILE_CLOSURE=PASS'

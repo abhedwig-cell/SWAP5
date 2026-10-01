@@ -4,13 +4,14 @@ program test_fapp09_ribasim_external_surface_water_profile
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
-  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
+       kernel_result_t, kernel_diagnostics_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_BASE, &
        FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
+       fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, &
        fmr_new_b110_fixed_weir_surface_water_committed_state
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
@@ -20,6 +21,7 @@ program test_fapp09_ribasim_external_surface_water_profile
   use mod_fmr_surface_water_swap_participant, only: fmr_surface_water_swap_participant_t, fmr_surface_water_trial_t, &
        fmr_surface_water_external_profile_admitted, FMR_SW_PARTICIPANT_OK, &
        FMR_SW_PARTICIPANT_ORIGIN_DRIFT, FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH
+  use mod_fmr_surface_water_component_receipt, only: fmr_surface_water_component_receipt_t
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -37,6 +39,7 @@ program test_fapp09_ribasim_external_surface_water_profile
   call verify_materializer_guards()
   call verify_owner_xor()
   call verify_positive_recomposition_and_commit()
+  call verify_external_top_observation()
   call verify_negative_commit()
   call verify_stale_origin()
   write(*,'(A)') 'FAPP09_RIBASIM_EXTERNAL_SURFACE_WATER_PROFILE=PASS'
@@ -134,6 +137,7 @@ contains
     type(fmr_surface_water_swap_participant_t) :: participant
     type(fmr_surface_water_trial_t) :: trial1,trial2
     type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr_surface_water_component_receipt_t) :: component_receipt
     type(fmr04_fixed_flux_top_provider_t), target :: top
     class(transaction_state_t), allocatable :: snapshot
     real(real64) :: heads(1),expected
@@ -159,6 +163,23 @@ contains
     call require(trial1%accepted_substeps==1,'single accepted substep profile')
     call require(abs(trial1%signed_soil_to_surface_exchange_cm-expected)<=exchange_tol,'positive requested exchange')
     call require(committed%current_revision()==0_int64,'trial does not mutate accepted state')
+
+    component_receipt%valid=.true.
+    component_receipt%subsurface_swap_to_surface_cm=trial1%signed_soil_to_surface_exchange_cm
+    component_receipt%top_swap_to_surface_cm=0.125_real64
+    call require(.not.participant%component_publication_ready(committed,t0,t1,0.0_real64,component_receipt,exchange_tol), &
+         'wrong top component blocks publication')
+    call require(committed%current_revision()==0_int64 .and. participant%has_live_candidate(), &
+         'component mismatch preserves live candidate and origin')
+    call participant%commit_component_candidate(backend,committed,t0,t1,0.0_real64,component_receipt,exchange_tol, &
+         did_commit,status)
+    call require(.not.did_commit .and. status==FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH, &
+         'wrong top component cannot bypass commit')
+    call require(committed%current_revision()==0_int64 .and. participant%has_live_candidate(), &
+         'failed component commit preserves candidate')
+    component_receipt%top_swap_to_surface_cm=0.0_real64
+    call require(participant%component_publication_ready(committed,t0,t1,0.0_real64,component_receipt,exchange_tol), &
+         'matched component receipt publication ready')
 
     call participant%commit_candidate(backend,committed,t0,t1,0.0_real64,exchange_tol,did_commit,status)
     call require(.not.did_commit .and. status==FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH,'availability mismatch blocks commit')
@@ -189,6 +210,67 @@ contains
     write(*,'(A)') 'FAPP09_RECOMPOSITION_DISCARD_REPLAY=PASS'
     write(*,'(A)') 'FAPP09_POSITIVE_DRAINAGE_TRANSACTION=PASS'
   end subroutine verify_positive_recomposition_and_commit
+
+
+  subroutine verify_external_top_observation()
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: base
+    type(canonical_numerical_config_t) :: config
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_result_t) :: result
+    type(kernel_diagnostics_t) :: diagnostics
+    type(fmr_serialized_physical_observation_t) :: observation
+    logical :: available
+    integer :: status
+
+    call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
+    parameters%external_top_surface_water_capable=.true.
+    parameters%drainage_response_active=.false.
+    if(allocated(parameters%drainage_response_levels))deallocate(parameters%drainage_response_levels)
+    base%external_top_surface_water_supplied=.true.
+    allocate(base%drainage_flux_by_level(1,parameters%active_nodes))
+    base%drainage_flux_by_level=0.0_real64
+    base%top_flux=0.0_real64
+    base%external_top_surface_water_head_cm=0.02_real64
+    base%external_top_surface_water_sill_cm=0.01_real64
+    base%top_ponding_max_cm=1.0_real64
+    base%top_runoff_resistance_day=1.0_real64
+    base%top_runoff_exponent=1.0_real64
+    call backend%initialize(top)
+    call committed%capture_checkpoint(checkpoint,available)
+    call require(available,'external top checkpoint')
+    call backend%run_trial(column,template,parameters,committed,base,config,t0,t1,checkpoint,result,candidate,diagnostics)
+    if(.not.result%completed.or..not.candidate%ready())then
+      write(*,'(A,L1)')'TOP03_DIAG_COMPLETED=',result%completed
+      write(*,'(A,I0)')'TOP03_DIAG_RESULT_STATUS=',result%status
+      write(*,'(A,I0)')'TOP03_DIAG_SUBSTEPS=',diagnostics%accepted_substeps
+      write(*,'(A,I0)')'TOP03_DIAG_ADMISSION_REJECTIONS=',diagnostics%admission_rejections
+      observation=backend%observation()
+      write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
+      write(*,'(A,L1)')'TOP03_DIAG_ADMISSION_PREVIEW=',observation%execution_admission_preview
+      write(*,'(A,L1)')'TOP03_DIAG_FORCING_PREPARED=',observation%forcing_prepared
+      write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
+      write(*,'(A,L1)')'TOP03_DIAG_EXEC_ADMITTED=',observation%execution_admission_preview
+      write(*,'(A,L1)')'TOP03_DIAG_SOLVER_EXECUTED=',observation%solver_executed
+      write(*,'(A,I0)')'TOP03_DIAG_SOLVER_STATUS=',observation%solver_status
+      write(*,'(A,ES24.16)')'TOP03_DIAG_QTOP=',observation%top_flux
+      write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
+      write(*,'(A,L1)')'TOP03_DIAG_EXEC_PREVIEW=',observation%execution_admission_preview
+    end if
+    call require(result%completed.and.candidate%ready(),'external top trial completed')
+    observation=backend%observation()
+    call require(observation%top_surface_exchange_available,'external top observation available')
+    call require(observation%top_surface_signed_swap_to_external_cm<0.0_real64,'external top inundation signed negative')
+    call require(abs(observation%top_surface_closure_residual_cm)<=exchange_tol,'external top surface closure')
+    call backend%discard_trial_candidate(candidate,diagnostics)
+    write(*,'(A)')'TOP03_ACCEPTED_TOP_OBSERVATION=PASS'
+  end subroutine verify_external_top_observation
 
   subroutine verify_negative_commit()
     type(kernel_committed_state_t) :: committed

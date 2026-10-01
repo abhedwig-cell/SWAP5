@@ -1,0 +1,15 @@
+name: SW-RIB-TOP03 end-to-end compile
+on:
+  push:
+    branches: [work/sw-rib-top03-transactional-top-exchange]
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+      - 'src/runtime/mod_fmr_top_surface_exchange.f90'
+      - '.github/workflows/sw-rib-top03-e2e.yml'
+jobs:
+  compile:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh

@@ -1,0 +1,17 @@
+name: SW-RIB-TOP03 signed RUNOTS qualification
+on:
+  push:
+    branches: [work/sw-rib-top03-transactional-top-exchange]
+    paths:
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'tests/fapp/test_sw_rib_top03_external_head_runots.f90'
+      - 'tests/fapp/run_sw_rib_top03_external_head_runots.sh'
+      - '.github/workflows/sw-rib-top03-runots.yml'
+  pull_request:
+    branches: [integration/f-ci-canonical]
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fapp/run_sw_rib_top03_external_head_runots.sh

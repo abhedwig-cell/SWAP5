@@ -27,6 +27,9 @@ module mod_b110_dynamic_top_boundary_solver_adapter
      real(real64) :: runoff_resistance = 0.0_real64
      real(real64) :: fixed_top_node_conductivity = -1.0_real64
      real(real64) :: runoff_exponent = 1.0_real64
+     logical :: external_surface_water_head_supplied = .false.
+     real(real64) :: external_surface_water_head_cm = 0.0_real64
+     real(real64) :: external_flooding_sill_head_cm = 0.0_real64
    contains
      procedure :: evaluate => b110_dynamic_solver_top_evaluate
   end type b110_dynamic_top_boundary_solver_provider_t
@@ -100,6 +103,9 @@ contains
     b110_request%runoff_resistance_day = self%runoff_resistance
     b110_request%runoff_exponent = self%runoff_exponent
     b110_request%fixed_top_node_conductivity_cm_per_day = self%fixed_top_node_conductivity
+    b110_request%external_surface_water_head_supplied = self%external_surface_water_head_supplied
+    b110_request%external_surface_water_head_cm = self%external_surface_water_head_cm
+    b110_request%external_flooding_sill_head_cm = self%external_flooding_sill_head_cm
 
     call evaluate_b110_dynamic_top_boundary(self%geometry, self%hydraulics, b110_request, b110_result)
     if (b110_result%status /= B110_DYN_TOP_AVAILABLE) then
