@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.f_macro_tracer01d0.spechtacker_authority.v1",
+  "status": "EXPERIMENT_AUTHORITY_FROZEN",
+  "publication": {
+    "forcing": {
+      "duration_h": 2.5,
+      "intensity_mm_h": 11.1,
+      "bromide_kg_m3": 0.165
+    },
+    "recovery_fraction": 0.95,
+    "initial_theta_15cm": 0.274,
+    "hydraulics": {
+      "ksat_m_s": 0.0000025,
+      "theta_s": 0.4,
+      "theta_r": 0.04,
+      "alpha_m_inv": 1.9,
+      "n": 1.25
+    }
+  },
+  "echoRD_fixture": "separate comparator only",
+  "hybrid_forbidden": true,
+  "exact_publication_replay_blocker": "full initial theta profile below 15 cm"
+}
