@@ -175,7 +175,7 @@ contains
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
     integer :: commit_status, persistence_status
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
-    real(real64), parameter :: fmr_dt=1.0e-3_real64
+    real(real64), parameter :: fmr_dt=1.0e-7_real64
 
     fparams%parameter_set_id=lineage
     fparams%active_nodes=numnod
@@ -278,6 +278,8 @@ contains
     if(kdiag%temporal_acceptance_source/=TX_TEMPORAL_EXTERNAL_FULL_HALF) &
          error stop 'A12 FMR perched temporal acceptance source'
     observation=backend%observation()
+    write(*,'(*(g0))') 'PPA_WU05A12_PERCHED_OBS|ACTIVE=',observation%macropore_perched_exchange_active, &
+         '|INTERFLOW=',observation%macropore_perched_interflow_cm
     if(.not.observation%macropore_perched_exchange_active)error stop 'A12 FMR perched inactive'
     if(observation%macropore_perched_interflow_cm<=0.0_real64)error stop 'A12 FMR perched missing interflow receipt'
 
