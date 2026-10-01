@@ -548,6 +548,15 @@ contains
     sat%cdarcy=0.0_real64
   end subroutine setup_sat
 
+  subroutine require(condition,label)
+    logical,intent(in)::condition
+    character(len=*),intent(in)::label
+    if(.not.condition)then
+      write(*,'(a,1x,a)') 'PPA_WU05_PERCH20_FAIL',trim(label)
+      error stop 1
+    end if
+  end subroutine require
+
   subroutine setup_history(history)
     type(sorptivity_history_update_request_t),intent(out)::history
     history%num_domains=nd
