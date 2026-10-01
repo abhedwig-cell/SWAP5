@@ -111,7 +111,7 @@ contains
     real(real64),allocatable::requested_top_vertical(:),requested_top_lateral(:)
     type(fmr_macropore_top_input_forcing_t)::top_input_local
     real(real64)::numerator,denominator,dt
-    logical::ok
+    logical::ok,seeded_predictor
     integer::iter,nd,n
 
     result=macropore_runtime_result_t()
@@ -197,6 +197,7 @@ contains
     n=accepted_macro%num_nodes
     allocate(current_domain(nd,n),next_domain(nd,n),current_node(n),overlay%exchange_rate(n))
     overlay%exchange_rate=0.0_real64
+    seeded_predictor=.false.
 
     ! PPA-WU05-A13: only the explicit perched route receives a source-order-aware
     ! initial exchange estimate. Pre-A13 configurations retain the exact
@@ -221,6 +222,7 @@ contains
       result%accepted_state_seed_interflow_cm=sum(current_rates%qin_interflow_rate)*dt
       result%accepted_state_seed_active=result%accepted_state_seed_perched_detected .and. &
            result%accepted_state_seed_interflow_cm>0.0_real64
+      seeded_predictor=.true.
     end if
 
     call solver%solve(request,workspace,predictor)
@@ -242,7 +244,16 @@ contains
       result%status=MACRO_RUNTIME_FAILED
       return
     end if
-    current_domain=current_rates%qexc_to_matrix_rate
+    if(seeded_predictor)then
+      ! Treat the accepted-state seed as the first fixed-point iterate instead
+      ! of discarding it after the predictor. This is the same damping contract
+      ! used by subsequent outer correctors.
+      next_domain=policy%damping_previous_weight*current_domain + &
+           (1.0_real64-policy%damping_previous_weight)*current_rates%qexc_to_matrix_rate
+      current_domain=next_domain
+    else
+      current_domain=current_rates%qexc_to_matrix_rate
+    end if
 
     do iter=1,policy%max_correctors
       current_node=sum(current_domain,dim=1)
