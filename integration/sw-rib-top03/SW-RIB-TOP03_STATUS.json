@@ -1,0 +1,140 @@
+{
+  "schema": "swap5.sw_rib_top03.route_review.v1",
+  "work_unit": "SW-RIB-TOP03",
+  "date": "2026-10-01",
+  "baseline": "485571d448a0fef52b1ec6d48ccd6dc7d5919f61",
+  "last_reconciled_upstream": "e2d18564383e1350b0b9a68af0eaf668dac784af",
+  "decision": "CURRENT_LAST_SOLVE_OBSERVATION_RECIPE_FALSIFIED_BY_SOURCE_AND_ALGEBRA",
+  "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
+  "affected_invariants": [
+    3,
+    7,
+    11,
+    13,
+    28
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_admission": false,
+  "fixture_repair": "When disabling drainage_response_active, supply allocated zero drainage_flux_by_level(1,active_nodes); remove duplicate top_flux assignment. Forcing preparation otherwise returns before solve.",
+  "evidence": {
+    "old_runtime_run": 36915617547,
+    "old_runtime_job": 110548736110,
+    "old_runtime_conclusion": "failure; solver_executed=false; accepted_substeps=0",
+    "old_run_reuse": "Historical only; this is not evidence against the current repaired fixture.",
+    "latest_observed_run": 36922826825,
+    "latest_observed_head": "485571d448a0fef52b1ec6d48ccd6dc7d5919f61",
+    "latest_observed_status": "queued",
+    "static_algebra_checks": "Executed JavaScript arithmetic and assertions in this session; not compiled Fortran or runtime qualification.",
+    "counterexamples": [
+      {
+        "name": "ponding_ledger",
+        "s0": 0,
+        "s1": 0.02,
+        "atmosphere": 0,
+        "evaporation": 0,
+        "soil_entry": 0.1,
+        "runoff": 0,
+        "signed_swap_to_external": -0.12000000000000001,
+        "soil_only_top_net_in": 0.1,
+        "total_storage_change": 0.12000000000000001,
+        "unbooked_ponding": 0.02,
+        "clipped_signed": -0.12000000000000001
+      },
+      {
+        "name": "exfiltration_clipping",
+        "s0": 0.02,
+        "s1": 0.02,
+        "atmosphere": 0,
+        "evaporation": 0,
+        "soil_entry": -0.1,
+        "runoff": 0,
+        "signed_swap_to_external": 0.1,
+        "soil_only_top_net_in": -0.1,
+        "total_storage_change": -0.1,
+        "unbooked_ponding": 0,
+        "clipped_signed": 0
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "TOP03-R1",
+      "classification": "confirmed source-level fixture defect",
+      "detail": "Direct fixture disables response drainage and removes levels, but initializes neither drainage controls nor explicit drainage flux. prepare_forcing requires allocated drainage_flux_by_level whenever response drainage is inactive.",
+      "repair": "explicit zero drainage array persisted in this checkpoint; compile/runtime verification outstanding"
+    },
+    {
+      "id": "TOP03-R2",
+      "classification": "confirmed mass-contract inconsistency",
+      "detail": "fmr_serialized_storage includes ponding. account_external_fluxes uses accepted soil top_flux alone. For a converged soil balance with ponding growth, the transaction ledger omits that growth's external supply. With no atmospheric flux, 0.10 cm soil input and 0.02 cm ponding growth require 0.12 cm supply; current soil-only top accounting records 0.10 cm.",
+      "boundary": "Do not add a receipt on top of the existing soil flux booking. Establish one total SWAP control-volume boundary contribution, or explicitly separate external surface storage ownership before changing storage semantics."
+    },
+    {
+      "id": "TOP03-R3",
+      "classification": "confirmed sign-loss recipe",
+      "detail": "max(0,-accepted qtop) discards positive exfiltration. Pure materializer supports signed soil_entry; clipping is not required by its validation. Either preserve signed soil_entry with qualified runoff/exfiltration composition or fail closed on positive qtop. Current recipe does neither."
+    },
+    {
+      "id": "TOP03-R4",
+      "classification": "unqualified temporal publication",
+      "detail": "last_observation top fields are assigned per converged solve and do not accumulate a window carrier. Participant's accepted_substeps==1 rejects outer multistep only; TX_TEMPORAL_EXTERNAL_FULL_HALF still evaluates full and half attempts. A final solve observation does not establish accepted whole-window transfer.",
+      "required": "Window carrier must follow accepted branch selection, attempt context capture/restore, half-step composition, retries and final candidate origin; mirror the existing transaction-aware drainage carrier rather than summing every solve."
+    },
+    {
+      "id": "TOP03-R5",
+      "classification": "confirmed receipt bypass",
+      "detail": "commit_candidate performs scalar subsurface validation and kernel commit without requiring top receipt when candidate_top_exchange_available is true. component_publication_ready cannot prevent callers using the scalar entry point.",
+      "required": "Fail closed on scalar publication/commit for top-active candidates; preserve scalar FAPP09 path for top-inactive candidates."
+    },
+    {
+      "id": "TOP03-R6",
+      "classification": "missing typed resolved-head binding",
+      "detail": "surface_water_head_forcing_adapter materializes resolved_heads_cm only into drainage_response_controls. External top head is copied from base_forcing, not updated from resolved_heads_cm. Same-origin recomposition therefore has no established resolved top-head binding.",
+      "required": "Define explicit typed external top-head materialization and head datum/sill ownership; qualify same-origin head changes end to end."
+    },
+    {
+      "id": "TOP03-R7",
+      "classification": "unqualified fallback composition",
+      "detail": "The external provider route is conditional on external head exceeding sill and previous ponding. Otherwise it falls back to atmospheric/ponded/runoff routes. Backend nevertheless materializes with zero runoff and potential evaporation sums. That is not a qualified general surface balance.",
+      "required": "Bound first profile explicitly to qualified inundation and zero or accepted actual evaporation/runoff; reject unqualified fallback instead of silently publishing."
+    }
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "docs/development/workstream-execution-protocol.md",
+    "integration/sw-rib-adm01/ADM01_CANONICAL_APPLICATION_CLOSEOUT.json"
+  ],
+  "relevant_paths": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_top_surface_exchange.f90",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90"
+  ],
+  "test_paths": [
+    "tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90",
+    "tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh"
+  ],
+  "dependency_surface": [
+    "accepted attempt/window mass ownership",
+    "surface storage ownership",
+    "attempt context restore",
+    "component receipt commit",
+    "typed external head forcing"
+  ],
+  "blockers": [
+    "Current integration recipe is falsified; its O0/O2 success alone cannot establish production admission.",
+    "No callable shell/compiler/runtime execution tool is exposed in this session. GitHub tools support reading/re-running existing workflows but expose no workflow-dispatch action. No local Fortran compile/run is claimed."
+  ],
+  "next_action": "Replace last-solve publication recipe with accepted-window carrier and coherent total control-volume mass accounting; bind typed resolved head, fail closed on scalar bypass/unqualified profiles, then run focused O0/O2 and receipt replay/preservation tests.",
+  "recovery_point": "This record's commit on work/sw-rib-top03-transactional-top-exchange; PR #956 stays draft.",
+  "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
+  "ci_policy": "No new Actions run requested. Checkpoint uses skip ci because runtime cannot qualify the falsified recipe; existing queued evidence is not awaited as an admission gate for this source/algebra decision."
+}

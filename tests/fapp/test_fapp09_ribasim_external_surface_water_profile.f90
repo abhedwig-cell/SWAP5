@@ -234,7 +234,8 @@ contains
     parameters%drainage_response_active=.false.
     if(allocated(parameters%drainage_response_levels))deallocate(parameters%drainage_response_levels)
     base%external_top_surface_water_supplied=.true.
-    base%top_flux=0.0_real64
+    allocate(base%drainage_flux_by_level(1,parameters%active_nodes))
+    base%drainage_flux_by_level=0.0_real64
     base%top_flux=0.0_real64
     base%external_top_surface_water_head_cm=0.02_real64
     base%external_top_surface_water_sill_cm=0.01_real64
