@@ -100,7 +100,7 @@ program test_ppa_wu05a12_fmr_perched_runtime
   request%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
   request%boundary%bottom_mode=7
   request%boundary%top_flux=0.0_real64
-  request%boundary%bottom_head=-100.0_real64
+  request%boundary%bottom_head=0.50_real64
   request%physical%macropore_active=.false.
   request%numerical%max_iterations=64
   request%numerical%max_backtracking=24
@@ -232,7 +232,7 @@ contains
     forcing%top_flux=0.0_real64
     forcing%top_head=0.0_real64
     forcing%bottom_flux=0.0_real64
-    forcing%bottom_head=-100.0_real64
+    forcing%bottom_head=0.50_real64
     forcing%drainage_flux_by_level=0.0_real64
     forcing%subsurface_irrigation_source=0.0_real64
     forcing%root_extraction_sink=0.0_real64
