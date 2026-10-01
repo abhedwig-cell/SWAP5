@@ -90,6 +90,10 @@ contains
    iters=iters+r%diagnostics%nonlinear_iterations
    if(r%status/=SW_SOLVE_CONVERGED)then
     stop_code=1
+    print '(a,5(a,i0),4(a,es24.16))','STOP',',',profile,',',window,',',steps,',',j, &
+      ',',r%diagnostics%nonlinear_iterations,',',maxval(abs(workspace%richards%residual)), &
+      ',',maxval(abs(workspace%state_binding%h-workspace%richards%old_head)), &
+      ',',minval(workspace%richards%provider_capacity),',',maxval(workspace%richards%provider_capacity)
     exit
    end if
    if(.not.r%integrated_mass_balance_residual_available)error stop 'missing soil mass oracle'
