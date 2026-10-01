@@ -162,7 +162,14 @@ program test_ppa_wu05_migmac01_active_e2e
 
   call runtime%execute(solver,workspace,request,macro,geometry_config,rate_template,history_request,policy,result, &
        covering_minimum_polygon_diameter_cm=10.0_real64,covering_ksat_cm_per_day=5.0_real64)
-  if(result%status/=MACRO_RUNTIME_CONVERGED)error stop 'MIGMAC01 active direct runtime failed'
+  if(result%status/=MACRO_RUNTIME_CONVERGED)then
+    write(*,'(*(g0))') 'MIGMAC01_ACTIVE_DIAG|STATUS=',result%status,'|RETRY=',result%retry_advised, &
+         '|OUTER=',result%outer_iterations,'|PRED=',result%predictor_solves,'|CORR=',result%corrector_solves, &
+         '|REL=',result%final_relative_exchange_change,'|COVERED=',result%covered_internal_transfer_cm, &
+         '|INNER_RES=',result%internal_exchange_residual_cm,'|MACRO_RES=',result%macro_balance_residual_cm, &
+         '|MATRIX_STATUS=',result%matrix_result%status,'|MATRIX_RES=',result%matrix_result%integrated_mass_balance_residual_cm
+    error stop 'MIGMAC01 active direct runtime failed'
+  end if
   if(.not.result%inner_richards_exchange_used)error stop 'MIGMAC01 active direct route missing'
   if(result%covered_internal_transfer_cm<=0.0_real64)error stop 'MIGMAC01 active covered transfer missing'
   if(result%exchange_rate_node(2)>=0.0_real64)error stop 'MIGMAC01 active covered matrix sink missing'
