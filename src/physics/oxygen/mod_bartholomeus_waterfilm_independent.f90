@@ -9,7 +9,7 @@ module mod_bartholomeus_waterfilm_independent
 
 contains
 
-   pure function bartholomeus_waterfilm_mvg_independent(matric_potential_pa,p,ok) result(thickness)
+   function bartholomeus_waterfilm_mvg_independent(matric_potential_pa,p,ok) result(thickness)
       real(real64), intent(in) :: matric_potential_pa
       type(BartholomeusWaterfilmMvgInput), intent(in) :: p
       logical, intent(out) :: ok
