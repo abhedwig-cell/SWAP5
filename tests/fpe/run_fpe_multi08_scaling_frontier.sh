@@ -64,7 +64,7 @@ export OMP_PLACES="${OMP_PLACES:-cores}"
 logical="$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1)"
 export OMP_THREAD_LIMIT="${OMP_THREAD_LIMIT:-$logical}"
 
-echo "population,workers,rep,seconds,completed,committed,retries,mass_fail,max_simultaneous,aggregate_mass_residual" > "$OUTDIR/results.csv"
+echo "population,workers,rep,process_seconds,solve_seconds,completed,committed,retries,mass_fail,max_simultaneous,aggregate_mass_residual" > "$OUTDIR/results.csv"
 
 for n in $POPS; do
   target="$BUILD/test_n${n}.f90"
@@ -92,7 +92,7 @@ n,w,rep,sec,summary=sys.argv[1:]
 d={}
 for p in summary.split("|")[1:]:
     k,v=p.split("=",1); d[k]=v
-print(",".join([n,w,rep,sec,d["completed"],d["committed"],d["retries"],d["mass_fail"],d["max_simultaneous"],d["aggregate_mass_residual"]]))
+print(",".join([n,w,rep,sec,d["solve_seconds"],d["completed"],d["committed"],d["retries"],d["mass_fail"],d["max_simultaneous"],d["aggregate_mass_residual"]]))
 PY
     done
   done
@@ -109,7 +109,7 @@ with open(dst,"w",newline="") as f:
     fields=["population","workers","median_seconds","min_seconds","max_seconds","speedup","efficiency","throughput_columns_s","retries","mass_fail","max_simultaneous"]
     w=csv.DictWriter(f,fieldnames=fields); w.writeheader()
     med={}
-    for k,rs in groups.items(): med[k]=statistics.median(float(x["seconds"]) for x in rs)
+    for k,rs in groups.items(): med[k]=statistics.median(float(x["solve_seconds"]) for x in rs)
     for (n,nw),rs in sorted(groups.items()):
         base=med.get((n,1)); m=med[(n,nw)]
         if base is None: raise SystemExit(f"missing worker1 population {n}")
