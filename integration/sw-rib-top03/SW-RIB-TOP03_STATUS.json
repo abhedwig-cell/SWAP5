@@ -4,7 +4,7 @@
   "date": "2026-10-01",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "e2d18564383e1350b0b9a68af0eaf668dac784af",
-  "decision": "QUALIFIED_BOUNDED_TEMPORAL_RESEARCH__NONLINEAR_TRANSITION_BLOCKER__NO_PRODUCTION_ADMISSION",
+  "decision": "QUALIFIED_BOUNDARY_DIAGNOSIS__FINITE_DIFFERENCE_REPAIR_ROUTES_FALSIFIED__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -136,7 +136,7 @@
     "Shared BASE temporal identity gate returns huge() for non-identical full/half transient end states. O0/O2 fixture converges, passes mass gates, but records 3 temporal rejections and zero accepted substeps. TOP03 cannot supply a live inundation candidate under that unchanged policy.",
     "Isolated fixed-grid nonlinear research reaches 80-iteration retries near saturation on refined 0.25-day integrations; full/half acceptance repair alone does not supply a trustworthy reference."
   ],
-  "next_action": "Investigate the near-saturated nonlinear/boundary transition with a physically representative column and independently justified bottom boundary before selecting a production temporal norm or certificate. Use the short-onset refinement only as bounded research evidence; do not promote partial integrations or waive mass/head convergence.",
+  "next_action": "Use complete representative-column reference sequences for physically intended lower-boundary modes 2/5 and the complete dry mode7 case to study temporal error. Keep near-saturated free-drainage mode7 unsupported by any new TOP03 production claim until iteration-level failure is attributed. Do not replace a requested lower boundary for convenience. Finite-difference boundary Jacobian probes are research only and are not a production repair.",
   "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -170,9 +170,9 @@
   ],
   "resumption_review": {
     "branch_head": "66e3e3d098bf0b638058259b8665e17772b298e5",
-    "canonical_head": "19f09b818b1bb30c1428919074c00098dbd062bd",
+    "canonical_head": "44c6df02a58edee79f88dde8ca8aadbec26337fc",
     "agents_blob": "3da9ffe679b8fcde0ccab1fa1311dd6c81e5336b",
-    "canonical_delta": "A26 bounded unponded flux-controlled RFM runtime admitted; no new external-head temporal acceptance.",
+    "canonical_delta": "SWBOTB=4 q(gwl) admission advanced canonical; no new dynamic-top temporal or nonlinear acceptance.",
     "source_reconciliation_performed": false,
     "alternative_temporal_route": "Existing Reference Richards model indicator rejects dynamic top with boundary-envelope-deferred; fixed flux provider also required.",
     "review_record": "integration/sw-rib-top03/TOP03_CANONICAL_PREREQUISITE_REVIEW.md",
@@ -185,5 +185,18 @@
     "production_qualified": false,
     "result": "integration/sw-rib-top03/TOP03_TEMPORAL_RESEARCH_RESULT.json",
     "review": "integration/sw-rib-top03/TOP03_TEMPORAL_ROUTE_DECISION.md"
+  },
+  "boundary_diagnosis": {
+    "tested": true,
+    "qualified_scope": "Synthetic geometry/lower-boundary factorial diagnosis and analytical saturated steady control, O0/O2.",
+    "production_qualified": false,
+    "result": "integration/sw-rib-top03/TOP03_BOUNDARY_DIAGNOSIS_RESULT.json",
+    "decision_record": "integration/sw-rib-top03/TOP03_BOUNDARY_DIAGNOSIS_DECISION.md",
+    "source_postimages": {
+      "stock": "70cefc280426b65cc0d436ffc7c339732dd860c1",
+      "bottom_only": "8e112ab77a410e9cfd88e93b9733308d5fff643c",
+      "both_boundaries": "8542dbd73d82c010cbd07a854f467c31e2174684"
+    },
+    "production_source_modified": false
   }
 }
