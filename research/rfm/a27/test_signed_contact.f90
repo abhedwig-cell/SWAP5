@@ -58,10 +58,10 @@ program test_signed_contact
  call evaluate_signed_contact(q,r);wet1=sum(r%matrix_gain)
  call check(wet0==0._real64.and.wet1>=0._real64.and.wet1<1e-9_real64,'finite first-contact continuity')
  print '(a,es24.16)','A27_FINITE_FIRST_CONTACT_DELTA_CM=',wet1-wet0
- q%depth=5._real64;call evaluate_signed_contact(q,r)
+ q%depth=5._real64;q%conductivity=0._real64;call evaluate_signed_contact(q,r)
  expect=.5_real64*.4_real64*2._real64*(sqrt(.3_real64)-sqrt(.2_real64))
  call check(abs(sum(r%matrix_gain)-expect)<1e-14_real64,'half wet Philip integral')
- q%depth=8._real64;q%sorptivity=0.;q%matrix_head=1._real64
+ q%depth=8._real64;q%conductivity=1._real64;q%sorptivity=0.;q%matrix_head=1._real64
  call evaluate_signed_contact(q,r);call check(abs(sum(r%matrix_gain)-.016_real64)<1e-14_real64,'fully wet integrated Darcy')
  q%sorptivity=2._real64;q%matrix_head=-1e-9_real64
  call evaluate_signed_contact(q,r);sat0=sum(r%matrix_gain)
