@@ -223,10 +223,12 @@ contains
     mcfg%history_template=history_request
     mcfg%rate_template%rapid%enabled=.true.
     mcfg%rate_template%rapid%drain_type=2
-    mcfg%rate_template%rapid%drain_level_cm=-2.0_real64
+    mcfg%rate_template%rapid%drain_level_cm=-1.9_real64
     mcfg%rate_template%rapid%area_exponent=3.0_real64
     mcfg%rate_template%rapid%kd_reference=0.001_real64
     mcfg%rate_template%rapid%resistance_reference_day=20.0_real64
+    if(mcfg%valid_for_nodes(numnod))error stop 'A10 unaligned rapid-drain level admitted'
+    mcfg%rate_template%rapid%drain_level_cm=-2.0_real64
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A10 FMR rapid-drain config validity'
     allocate(fparams%macropore)
     fparams%macropore=mcfg
