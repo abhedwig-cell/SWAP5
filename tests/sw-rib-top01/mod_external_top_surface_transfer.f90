@@ -19,7 +19,8 @@ module mod_external_top_surface_transfer
   type, public :: external_top_surface_transfer_t
     integer :: status = EXT_TOP_TRANSFER_INVALID
     real(real64) :: ribasim_to_swap_cm = 0.0_real64
-    real(real64) :: legacy_runots_cm = 0.0_real64
+    real(real64) :: residual_external_supply_cm = 0.0_real64
+    real(real64) :: composed_legacy_runots_cm = 0.0_real64
     real(real64) :: closure_residual_cm = 0.0_real64
   end type
 
@@ -45,7 +46,8 @@ contains
         balance%soil_entry_cm + balance%runoff_external_cm
 
     result%ribasim_to_swap_cm = x
-    result%legacy_runots_cm = -x
+    result%residual_external_supply_cm = x
+    result%composed_legacy_runots_cm = balance%runoff_external_cm - x
     result%closure_residual_cm = ds - (balance%atmospheric_source_cm + x - balance%evaporation_cm - &
          balance%soil_entry_cm - balance%runoff_external_cm)
     if (.not. ieee_is_finite(x) .or. .not. ieee_is_finite(result%closure_residual_cm)) return
