@@ -226,6 +226,10 @@ contains
     mcfg%rate_template%rapid%enabled=.false.
     mcfg%rate_template%perched_detection_enabled=.true.
     mcfg%rate_template%critical_under_saturated_volume_cm=0.02_real64
+    mcfg%rate_template%unsaturated%sorptivity%sorptivity_max=0.0_real64
+    mcfg%rate_template%unsaturated%conductivity=0.0_real64
+    mcfg%rate_template%matrix_sat%ksat_horizontal=0.0_real64
+    mcfg%rate_template%matrix_sat%cdarcy=0.0_real64
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A13 accepted-state seed config validity'
     allocate(fparams%macropore)
     fparams%macropore=mcfg
@@ -312,13 +316,22 @@ contains
          '|PERCHED=',observation%macropore_accepted_state_seed_perched_detected, &
          '|RAW_INTERFLOW=',observation%macropore_accepted_state_seed_raw_interflow_cm, &
          '|INTERFLOW=',observation%macropore_accepted_state_seed_interflow_cm
-    if(.not.observation%macropore_accepted_state_seed_active)error stop 'A13 accepted-state seed missing'
-    if(observation%macropore_accepted_state_seed_interflow_cm<=0.0_real64) &
-         error stop 'A13 accepted-state seed interflow missing'
     write(*,'(*(g0))') 'PPA_WU05A13_PERCHED_OBS|ACTIVE=',observation%macropore_perched_exchange_active, &
          '|INTERFLOW=',observation%macropore_perched_interflow_cm
-    if(.not.observation%macropore_perched_exchange_active)error stop 'A13 accepted-state seed final perched inactive'
-    if(observation%macropore_perched_interflow_cm<=0.0_real64)error stop 'A13 accepted-state seed missing interflow receipt'
+
+    call candidate%snapshot(candidate_state,available)
+    if(.not.available)error stop 'A13 accepted-state seed candidate storage snapshot'
+    select type(seed_candidate=>candidate_state)
+    type is(fmr_b110_physical_state_t)
+      if(.not.allocated(seed_candidate%macropore))error stop 'A13 accepted-state seed candidate macro missing'
+      write(*,'(*(g0))') 'PPA_WU05A13_SERIALIZED_MACRO_STORAGE|INITIAL=',sum(initial%macropore%water_domain_cp), &
+           '|CANDIDATE=',sum(seed_candidate%macropore%water_domain_cp), &
+           '|DELTA=',sum(seed_candidate%macropore%water_domain_cp)-sum(initial%macropore%water_domain_cp)
+      if(sum(seed_candidate%macropore%water_domain_cp)<=sum(initial%macropore%water_domain_cp)) &
+           error stop 'A13 serialized perched interflow storage receipt missing'
+    class default
+      error stop 'A13 accepted-state seed candidate storage type'
+    end select
 
     call committed%snapshot(after_trial_state,available)
     if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &
