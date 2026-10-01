@@ -1,58 +1,27 @@
-# PPA-WU05-A26 result — bounded RFM serialized-backend dispatch
+# PPA-WU05-A26 result — bounded live RFM serialized backend
 
 Date: 2026-10-01
-Status: BLOCKED_BY_NODE_HYDRAULIC_HISTORY_CONTRACT
-Baseline reconciled against: integration/f-ci-canonical@641a8ba7fad5b67f0ebff7c78dd065270ed46329
-Investigated branch head: ae901a9a394e79b103e45393614fc33379ec5c3d
+Status: QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE
+Qualified postimage: 836d5f8d5d001e0fa45eb838401abd1a9df86785
+Qualification run: 36910084764 — SUCCESS
 
-## Reconciliation
+Focused markers:
+- PPA_WU05A26_ZERO_RFM_LIMIT=PASS
+- PPA_WU05A26_TIMESTEP_REFINEMENT=PASS
+- PPA_WU05A26_LIVE_TRIAL_PREPARER=PASS
+- PPA_WU05A26_BACKEND_STATIC_BINDING=PASS
+- PPA_WU05A26_BACKEND_RUNTIME_O0=PASS
+- PPA_WU05A26_BACKEND_RUNTIME_O2=PASS
+- PPA_WU05A26_BACKEND_COMPILE_GATE=PASS
 
-A25 is canonically admitted and closed as a bounded candidate-orchestrator primitive. Live backend dispatch remains deliberately not admitted and the A20 RFM NOT_ADMITTED guard remains authoritative.
+The serialized Reference backend invokes the qualified RFM live-trial preparer in the same postimage in which the A20 NOT_ADMITTED guard is replaced.
 
-A26 preregistration correctly requires same-postimage backend dispatch through A11-A25 and the A24 matrix-source seam. The branch addition of source-owned `rfm_surface_forcing_t%event_active` is consistent with A13: event identity must not be inferred from a flux threshold.
+Bounded route: explicit caller-owned RFM configuration/forcing; unponded runoff-free B1.10 flux regime; Reference Richards only; standard SWAP macropore mutually excluded; accepted-state frozen first-order split; hydrostatic IC exchange through A26J/K+A22A; IC matrix receipt only through A24; leading fast-through MB as distinct deep receipt with no passage wall exchange.
 
-## Blocking finding
+Checkpoint preservation, zero-RFM limit, timestep-refinement contraction, accepted-state immutability/replay, and O0/O2 preservation are qualified.
 
-The live composition currently has no qualified contract that connects A25 node-hydraulic sorptivity derivation to A25 endpoint wall-history state.
+Earlier A26 blockers were resolved by canonically admitted A26H, A26J and A26K plus the A26I source-backed route correction. Failed runs before 36910084764 were harness/compile defects and did not falsify physics.
 
-`evaluate_rfm_node_sorptivity` is qualified as a node-hydraulic primitive, but `compose_rfm_runtime_candidate` does not consume caller-derived endpoint wall sorptivity. Before evaluating endpoint release it unconditionally assigns:
+This remains an explicit first-order operator split, not a monolithic nonlinear RFM/Richards solve.
 
-```fortran
-er%accepted_wall_age_day=accepted%wall_age_day
-er%wall_sorptivity_cm_sqrt_day=accepted%wall_sorptivity_cm_sqrt_day
-```
-
-The admitted RFM state initializer sets `wall_sorptivity_cm_sqrt_day` to zero. Therefore a normally initialized live RFM state has no admitted transition that seeds or refreshes endpoint wall sorptivity from the accepted matrix hydraulic state.
-
-This matters physically. With zero stored wall sorptivity the Philip contribution to endpoint-to-matrix wall exchange is zero. Simply supplying a derived value in `request%endpoint_release%wall_sorptivity_cm_sqrt_day` does not work because the orchestrator overwrites it. Seeding arbitrary values at initialization would introduce hidden caller physics and would not establish the required accepted-state node-hydraulic mapping.
-
-The same ownership question applies to MB wall sorptivity/history: the A25 request carries it, while the dedicated RFM state currently carries endpoint wall history only. A26 must not invent a universal MB history/default.
-
-## Classification
-
-This is an architecture/physics ownership blocker, not a harness defect and not a numerical-parameter failure.
-
-It does not falsify A25's bounded primitive claims. It blocks composing those primitives into a production live backend without changing or extending the admitted contract.
-
-## Required resolution before dispatch
-
-A follow-up contract must explicitly decide and qualify, from the accepted origin only:
-
-1. whether endpoint wall sorptivity is recomputed from accepted matrix node hydraulics each trial or persisted as physical history;
-2. if persisted, the exact update/reset rule and restart semantics;
-3. how newly wetted endpoints receive their first nonzero sorptivity without arbitrary defaults;
-4. the corresponding MB wall sorptivity/history ownership;
-5. that retry/replay remains bit-identical and rejected trials do not mutate committed history.
-
-Only after that contract is qualified may A26 wire the A25 candidate into the A24 source seam and consider removal of the A20 guard.
-
-## Decision
-
-```text
-A26_BACKEND_DISPATCH = BLOCKED
-BLOCKER = NODE_HYDRAULIC_TO_WALL_HISTORY_OWNERSHIP
-A25_PHYSICS = NOT_FALSIFIED
-A20_RUNTIME_GUARD = KEEP
-PARAMETER_TUNING = FORBIDDEN
-NEXT = qualify explicit endpoint/MB wall-hydraulic history contract, then resume A26
-```
+Decision: A26 is a qualified production-admission candidate. Next: canonical admission and post-merge preservation.

@@ -1,0 +1,13 @@
+name: PPA-WU05-A26 admission reconcile
+# exact-head preservation gate
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a26-admission-reconcile
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpm/run_ppa_wu05a26_live_trial_preparer.sh
+      - run: bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
