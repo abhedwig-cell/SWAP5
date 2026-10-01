@@ -143,7 +143,7 @@ contains
 
 
   subroutine qualify_frozen_source_oracle()
-    real(real64), external :: afgen
+    real(real64), external :: low05_b111_afgen
     type(fmr_hbot5_control_t) :: control
     type(fmr_hbot5_proposal_t) :: resolved
     real(real64) :: table(6), t, oracle_head
@@ -155,7 +155,7 @@ contains
     do i=1,64
       t=real(i,real64)/16.0_real64
       call control%resolve(0.0_real64,t,resolved,s)
-      oracle_head=afgen(table,6,1000.0_real64+t)
+      oracle_head=low05_b111_afgen(table,6,1000.0_real64+t)
       call require(s==FMR_HBOT5_OK .and. same_bits(resolved%pressure_head_cm,oracle_head), &
            'exact frozen B1.11 AFGEN compiled-source identity')
     end do

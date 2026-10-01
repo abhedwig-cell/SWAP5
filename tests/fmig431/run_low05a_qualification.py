@@ -36,19 +36,19 @@ with tempfile.TemporaryDirectory(prefix='low05a-') as folder:
   text=raw.decode()
   match=re.search(r'^\s*real\(8\) function afgen .*?^\s*end function afgen',text,re.M|re.S|re.I)
   if not match:raise RuntimeError('AFGEN extraction failed')
-  frozen=build/'frozen_b111_afgen.f90';frozen.write_text(match.group(0)+'\n')
+  frozen=build/'frozen_b111_afgen.f90';frozen.write_text(re.sub(r'\bafgen\b','low05_b111_afgen',match.group(0),flags=re.I)+'\n')
   frozen_obj=build/'frozen_b111_afgen.o'
-  subprocess.run(FC+flags+['-c',str(frozen),'-o',str(frozen_obj)],check=True,capture_output=True,text=True)
+  subprocess.run(FC+flags+['-c',str(frozen),'-o',str(frozen_obj)],check=True,text=True,stdout=subprocess.DEVNULL)
   result['frozen_functions_sha256']=member['sha256']
   objects=[str(frozen_obj)]
   for p in sources:
    obj=build/(p.stem+'.o');objects.append(str(obj))
-   subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,capture_output=True,text=True)
+   subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,text=True,stdout=subprocess.DEVNULL)
   result['runs'][opt]={}
   for test in TESTS:
    p=ROOT/test;obj=build/(p.stem+'.o');exe=build/p.stem
-   subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,capture_output=True,text=True)
-   subprocess.run(FC+LINK+flags+objects+[str(obj),'-o',str(exe)],check=True,capture_output=True,text=True)
+   subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,text=True,stdout=subprocess.DEVNULL)
+   subprocess.run(FC+LINK+flags+objects+[str(obj),'-o',str(exe)],check=True,text=True,stdout=subprocess.DEVNULL)
    output=subprocess.check_output([str(exe)],text=True,stderr=subprocess.STDOUT)
    markers=[line for line in output.splitlines() if 'PASS' in line]
    if not markers:raise RuntimeError('no PASS markers: '+test)
