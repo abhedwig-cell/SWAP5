@@ -251,11 +251,10 @@ program test_ppa_wu05_perch19_reduction_ladder
        'PERCH19 restart reduction index')
   call require(transfer(macro_result_replay%source_reduction_factor,0_int64)== &
        transfer(macro_result%source_reduction_factor,0_int64),'PERCH19 restart factor identity')
-  call require(all(transfer(macro_result_replay%exchange_rate_node,0_int64)== &
-       transfer(macro_result%exchange_rate_node,0_int64)),'PERCH19 restart exchange identity')
-  call require(all(transfer(macro_result_replay%macropore_candidate%water_domain_cp,0_int64)== &
-       transfer(macro_result%macropore_candidate%water_domain_cp,0_int64)), &
-       'PERCH19 restart macro candidate identity')
+  call require(all(macro_result_replay%exchange_rate_node==macro_result%exchange_rate_node), &
+       'PERCH19 restart exchange identity')
+  call require(all(macro_result_replay%macropore_candidate%water_domain_cp== &
+       macro_result%macropore_candidate%water_domain_cp),'PERCH19 restart macro candidate identity')
   call require(maxval(abs(macro_replay%water_domain_cp))==0.0_real64,'PERCH19 restart accepted state unchanged')
 
   print '(a)', 'PPA_WU05_PERCH19_REPLAY_RESTART=PASS'
