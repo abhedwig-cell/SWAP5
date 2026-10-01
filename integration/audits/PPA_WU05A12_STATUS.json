@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.ppa_wu05a12.status.v1",
+  "workunit": "PPA-WU05-A12",
+  "phase": "CLOSED_BLOCKED_RUNTIME_ARCHITECTURE",
+  "decision": "ZERO_EXCHANGE_PREDICTOR_ERASES_TRANSIENT_PERCHED_TOPOLOGY_BEFORE_RATE_EVALUATION",
+  "baseline": "f0291d8c5c153417465a5bd8f464bd4a2fd88c33",
+  "canonical_reconciliation": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "branch": "work/ppa-wu05-a12-fmr-perched-runtime",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission_candidate": false,
+  "canonical_admitted": false,
+  "closed": true,
+  "final_falsification_postimage": "a725ca0d2b4e12290414a2e3c373a62daa67d044",
+  "inherited_a11_qualified": true,
+  "evidence_runs": [
+    {
+      "run": 36835429082,
+      "finding": "serialized transaction completes after temporal subdivision but perched receipt is zero"
+    },
+    {
+      "run": 36835572710,
+      "finding": "1e-7 d route falsified by 1902 solver rejections"
+    },
+    {
+      "run": 36835780391,
+      "finding": "no temporal subdivision, clean mass closure, perched receipt still zero"
+    },
+    {
+      "run": 36835897354,
+      "finding": "whole-column low-K route falsified by 2368 solver rejections"
+    },
+    {
+      "run": 36836155603,
+      "finding": "diagnostic candidate proves zero-exchange predictor removes perched topology"
+    },
+    {
+      "run": 36836252893,
+      "finding": "bottom-head consistency change does not alter candidate topology"
+    },
+    {
+      "run": 36836401286,
+      "finding": "layered no-retry serialized case remains mass-clean but loses perched topology before first A11 receipt"
+    }
+  ],
+  "final_diagnostic": {
+    "run": 36836401286,
+    "temporal_rejections": 0,
+    "mass_rejections": 0,
+    "solver_rejections": 0,
+    "mass_residual_cm": 2.92300905702092e-16,
+    "candidate_pressure_head_cm": [
+      -4.170506351341114,
+      -3.1404780717433942,
+      -2.4767609479047978,
+      -2.5166502088784615
+    ],
+    "perched_exchange_active": false,
+    "perched_interflow_cm": 0.0
+  },
+  "architecture_blocker": "Current macropore runtime performs a zero-exchange Reference-Richards predictor before deriving perched topology/rates. Transient perched topology can disappear before QInIntSat is evaluated.",
+  "source_order_contrast": "Exact B1.11 evaluates MACRORATE from MACROPORE during nonlinear headcalc with perched/saturated carrier state already available from MACROSTATE.",
+  "forbidden_workarounds": [
+    "do not weaken mass tolerances to force admission",
+    "do not qualify by repeatedly tuning a synthetic fixture until a positive perched receipt appears",
+    "do not silently move macropore physics into the Reference-Richards nonlinear loop",
+    "do not replace CritUndSatVol carrier semantics by pressure_head sign only"
+  ],
+  "next_action": "Open a bounded architecture workunit testing a source-order-aware accepted-state macropore exchange seed for the first Richards solve, preserving A8-A10 contracts. If falsified, escalate explicitly to inner-Richards macropore coupling design.",
+  "recovery_point": "a725ca0d2b4e12290414a2e3c373a62daa67d044"
+}
