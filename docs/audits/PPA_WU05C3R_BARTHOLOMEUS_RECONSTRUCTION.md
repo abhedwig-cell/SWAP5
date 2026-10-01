@@ -331,3 +331,30 @@ Remaining before reference qualification:
 5. compare response vectors against corrected 4.3.1 over real oxygen-stress cases.
 
 No production wiring is authorized yet.
+
+
+## Reconstruction checkpoint R9 — supporting physics and water-film boundary
+
+Pure source-equivalent kernels were added for:
+- temperature-dependent oxygen diffusivity, root diffusivity, free-air diffusivity, surface tension and Bunsen solubility;
+- microbial respiration including the legacy moisture-response piecewise law;
+- analytical-MvG water-film integrand and the final length-density -> film-thickness algebra.
+
+The water-film decomposition confirms that Romberg is numerical policy rather than model physics. For analytical MvG the physical/constitutive contract is:
+
+```text
+hydraulic parameters + matric potential + surface tension
+    -> integral of pore-length-density integrand
+    -> length_density_gas_pores
+    -> waterfilm_thickness
+```
+
+The integration engine can therefore remain selectable:
+- reference: source-equivalent numerical integration;
+- practical: WFT300/successor interpolation after requalification.
+
+This matches the recovered September performance result where the lookup materially reduced runtime while leaving the physical contract unchanged.
+
+### Current missing core piece
+
+For analytical MvG, all physical algebra needed by the Bartholomeus response is now isolated. A source-equivalent reference integrator still has to be implemented or adapted for the water-film integral. Tabular `SWSOPHY=1` remains a separate compatibility path and is not silently generalized from the MvG route.
