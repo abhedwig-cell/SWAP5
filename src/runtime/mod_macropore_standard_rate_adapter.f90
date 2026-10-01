@@ -20,6 +20,7 @@ module mod_macropore_standard_rate_adapter
   public :: derive_matrix_saturated_zone_view
   public :: prepare_standard_macropore_rate_request
   public :: prepare_standard_sorptivity_history_request
+  public :: macropore_volume_below_level
 
 contains
 
@@ -69,6 +70,31 @@ contains
       end if
     end do
   end subroutine derive_matrix_saturated_zone_view
+
+  pure real(real64) function macropore_volume_below_level(bottom_node,level_cm,volume_cp,z,dz) result(volume)
+    integer,intent(in)::bottom_node
+    real(real64),intent(in)::level_cm
+    real(real64),intent(in)::volume_cp(:),z(:),dz(:)
+    integer::ic,n
+    real(real64)::z_help
+
+    volume=0.0_real64
+    n=size(volume_cp)
+    if(n<=0 .or. size(z)/=n .or. size(dz)/=n)return
+    if(bottom_node<1 .or. bottom_node>n .or. any(dz<=0.0_real64))return
+
+    ic=bottom_node+1
+    z_help=z(bottom_node)-0.5_real64*dz(bottom_node)
+    do while(z_help<level_cm .and. ic>1)
+      ic=ic-1
+      z_help=z_help+dz(ic)
+      volume=volume+volume_cp(ic)
+    end do
+    if(volume>0.0_real64)then
+      volume=volume-(z_help-level_cm)*volume_cp(ic)/dz(ic)
+      volume=max(0.0_real64,volume)
+    end if
+  end function macropore_volume_below_level
 
   subroutine prepare_standard_macropore_rate_request(template,accepted_macro,geometry,macro_view, &
        matrix,z,dz,step_duration,request,matrix_view,ok)
@@ -151,8 +177,15 @@ contains
     request%rapid%top_water_node=macro_view%top_water_node(1)
     request%rapid%saturated_top_fraction=macro_view%wet_fraction(1,macro_view%top_water_node(1))
     request%rapid%water_level_cm=macro_view%water_level_cm(1)
-    request%rapid%water_storage_cm=sum(accepted_macro%water_domain_cp)
+    request%rapid%domain_bottom_cm=z(geometry%bottom_domain(1))-0.5_real64*dz(geometry%bottom_domain(1))
+    request%rapid%ponding_cm=max(0.0_real64,matrix%ponding_depth)
+    request%rapid%water_storage_cm=sum(accepted_macro%water_domain_cp(1,:))
     request%rapid%volume_main_domain_cp=geometry%volume_domain_cp(1,:)
+    request%rapid%volume_under_drain_cm=0.0_real64
+    if(request%rapid%domain_bottom_cm<request%rapid%drain_level_cm)then
+      request%rapid%volume_under_drain_cm=macropore_volume_below_level(geometry%bottom_domain(1), &
+           request%rapid%drain_level_cm,geometry%volume_domain_cp(1,:),z,dz)
+    end if
 
     request%limiter%accepted_storage_cm=sum(accepted_macro%water_domain_cp,dim=2)
     request%limiter%maximum_storage_cm=sum(geometry%volume_domain_cp,dim=2)
