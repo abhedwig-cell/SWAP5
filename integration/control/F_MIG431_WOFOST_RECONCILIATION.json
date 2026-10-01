@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.functional_closure.wofost_reconciliation.v1",
+  "work_unit": "F-MIG431-01",
+  "date": "2026-10-01",
+  "baseline": "integration/f-ci-canonical@8bb835a065248aad06b18a3b563234b20033ba0d",
+  "verdict": "WOFOST_CORE_PARTIAL_CANONICAL_F_WOF_ADVANCED_STACK_QUALIFIED_NOT_CANONICAL_WOFOST_SOIL_NUTRIENT_LEGACY_FAMILY_NOT_COVERED",
+  "layers": [
+    {
+      "id": "WOFOST81_BOUNDED_CORE",
+      "status": "CANONICALLY_ADMITTED_RESTRICTED",
+      "authority": "PPA-CROP-81 / current canonical",
+      "scope": "bounded daily WOFOST81 crop-event runtime",
+      "holds": [
+        "N-unlimited request=supply profile in PPA audit",
+        "no inference of full legacy WOFOST-soil nutrient cycle",
+        "no inference of all crop/calendar variants"
+      ]
+    },
+    {
+      "id": "F_WOF35_43A_STACK",
+      "status": "QUALIFIED_OR_IMPLEMENTED_NONCANONICAL_FRONTIER",
+      "authority": [
+        "integration/f-wof/F-WOF35_STATUS.json through F-WOF43A_STATUS.json"
+      ],
+      "facts": [
+        "F-WOF36 qualifies restricted physical PTRA/QROT accepted-window binding",
+        "F-WOF38 qualifies in-memory atomic crop-owner plus event-receipt publication",
+        "F-WOF39 qualifies accepted-window lifecycle retirement",
+        "F-WOF40 qualifies true-process restart behavior using candidate persistence API",
+        "F-WOF41 qualifies production-owner persistence API on its work branch",
+        "F-WOF42 qualifies persistence-layout completeness but explicitly requires canonical runtime composition",
+        "F-WOF43A is only an owner-qualified canopy-view candidate and still requires independent F-VQ"
+      ],
+      "nonclaim": "Do not mark these capabilities as canonically admitted until explicit canonical composition/admission evidence exists."
+    },
+    {
+      "id": "WOFOST_CROP_N",
+      "status": "PRESENT_IN_CANONICAL_SOURCE_REQUIRES_ADMISSION_RECONCILIATION",
+      "evidence": [
+        "src/crop/mod_wofost81_nitrogen.f90",
+        "src/crop/mod_wofost81_n_owner_state.f90",
+        "src/crop/mod_wofost81_n_stress.f90"
+      ],
+      "note": "Presence in canonical source tree is not sufficient to claim the legacy WOFOST-soil nutrient family is migrated. Determine exact admission envelope and lineage."
+    },
+    {
+      "id": "LEGACY_WOFOST_SOIL_NUTRIENT",
+      "status": "OPEN_FUNCTIONAL_GAP_UNTIL_PROVEN",
+      "legacy_files": [
+        "wofost_soil_amendments.f90",
+        "wofost_soil_balancecheck.f90",
+        "wofost_soil_cropresidues.f90",
+        "wofost_soil_declarations.f90",
+        "wofost_soil_interface.f90",
+        "wofost_soil_orgmatn.f90",
+        "wofost_soil_parameters.f90",
+        "wofost_soil_rateconstants.f90",
+        "wofost_soil_watern.f90",
+        "wofostnut.f90"
+      ],
+      "current_tree_observation": "No matching process modules for amendments, crop residues, organic-matter N, soil-water N or the legacy soil-N family were found under current src/crop; only crop-side WOFOST81 nitrogen module names are visible.",
+      "required_action": "Perform source-semantic capability census before deciding MIGRATE, REPLACE, or RETIRE. Do not equate crop N stress/owner code with soil N cycling."
+    }
+  ],
+  "routing": {
+    "do_not_open_yet": "A broad WOFOST-soil implementation branch",
+    "next_workunit": "F-MIG431-WOFN-CENSUS",
+    "type": "review-only source-to-current semantic census",
+    "owned_surface": [
+      "legacy WOFOST soil/nutrient files",
+      "current WOFOST crop-N lineage/admission evidence"
+    ],
+    "forbidden_surface": [
+      "crop transaction core",
+      "FMR ABI",
+      "root-water mass owner",
+      "ANIMO coupling design",
+      "new nutrient physics"
+    ],
+    "exit": [
+      "map each legacy soil/nutrient process to current implementation or explicit gap",
+      "identify persistent state and mass owners",
+      "separate crop-N from soil-N functionality",
+      "propose bounded successor slices without production mutation"
+    ]
+  }
+}
