@@ -1,12 +1,14 @@
 program test_ppa_wu05_perch20_numerical_continuation
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_transaction_reference, only: transaction_state_t
+  use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_NUMERICAL_CONTINUATION_NONE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
        FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &
-       fmr_b110_macropore_reduction_state_t, fmr_macropore_reduction_continuation_t
+       fmr_b110_macropore_reduction_state_t, fmr_macropore_reduction_continuation_t, &
+       fmr_new_b110_macropore_reduction_committed_state
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   use mod_ppa_wu05_perch19_frreduq_controller, only: PERCH19_ACTION_REDUCE_TIMESTEP, &
        PERCH19_ACTION_RETRY_REDUCED_EXCHANGE
@@ -15,6 +17,8 @@ program test_ppa_wu05_perch20_numerical_continuation
 
   type(fmr_template_t)::template
   type(fmr_b110_macropore_reduction_state_t)::state
+  type(fmr_b110_physical_state_t)::physical_seed
+  type(kernel_committed_state_t)::committed
   type(fmr_macropore_reduction_continuation_t)::accepted_controller,candidate_controller
   class(transaction_state_t),allocatable::copy
   logical :: template_ok,transition_ok
@@ -57,6 +61,29 @@ program test_ppa_wu05_perch20_numerical_continuation
   call require(.not.fmr_restart_state_matches_template(state,template),'temporal layout rejects continuation carrier')
   template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION
 
+  physical_seed%active_nodes=state%active_nodes
+  physical_seed%pressure_head=state%pressure_head
+  physical_seed%water_content=state%water_content
+  allocate(physical_seed%macropore)
+  physical_seed%macropore=state%macropore
+  accepted_controller%reduction_level=2
+  accepted_controller%successful_steps=4
+  accepted_controller%previous_reduction_dt=0.125_real64
+  call fmr_new_b110_macropore_reduction_committed_state(committed,520099_int64,physical_seed, &
+       accepted_controller,0.0_real64,transition_ok)
+  call require(transition_ok,'committed carrier initialized')
+  call committed%snapshot(copy,transition_ok)
+  call require(transition_ok,'committed snapshot available')
+  call require(fmr_restart_state_matches_template(copy,template),'committed snapshot restart matches')
+  select type(typed=>copy)
+  type is(fmr_b110_macropore_reduction_state_t)
+    call require(typed%macropore_reduction%reduction_level==2,'committed level')
+    call require(typed%macropore_reduction%successful_steps==4,'committed counter')
+    call require(typed%macropore_reduction%previous_reduction_dt==0.125_real64,'committed dtold')
+  class default
+    error stop 'PERCH20 committed carrier type'
+  end select
+
   state%macropore_reduction%reduction_level=4
   call require(.not.state%macropore_reduction%valid(),'invalid level rejected')
   call require(.not.fmr_restart_state_matches_template(state,template),'invalid payload restart rejected')
@@ -83,6 +110,7 @@ program test_ppa_wu05_perch20_numerical_continuation
   print '(a)', 'PPA_WU05_PERCH20_LAYOUT_IDENTITY=PASS'
   print '(a)', 'PPA_WU05_PERCH20_CLONE_PAYLOAD=PASS'
   print '(a)', 'PPA_WU05_PERCH20_RESTART_MATCH=PASS'
+  print '(a)', 'PPA_WU05_PERCH20_COMMITTED_CARRIER=PASS'
   print '(a)', 'PPA_WU05_PERCH20_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU05_PERCH20_CONTROLLER_BINDING=PASS'
   print '(a)', 'PPA_WU05_PERCH20_REJECT_ISOLATION=PASS'
