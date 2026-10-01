@@ -84,6 +84,7 @@ for opt in 0 2; do
   grep -Fq 'PPA_WU05_PERCH19_EXACT_LADDER=PASS' "$OUT/out.txt"
   grep -Fq 'PPA_WU05_PERCH19_ACTIVE_PERCHED_INNER=PASS' "$OUT/out.txt"
   grep -Fq 'PPA_WU05_PERCH19_INNER_MASS_CLOSURE=PASS' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05_PERCH19_REPLAY_RESTART=PASS' "$OUT/out.txt"
   grep -Fq 'PPA_WU05_PERCH19_GATE=PASS' "$OUT/out.txt"
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
