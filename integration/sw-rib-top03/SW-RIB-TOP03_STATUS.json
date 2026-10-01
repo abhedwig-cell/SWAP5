@@ -2,9 +2,9 @@
   "schema": "swap5.sw_rib_top03.route_review.v1",
   "work_unit": "SW-RIB-TOP03",
   "date": "2026-10-01",
-  "baseline": "485571d448a0fef52b1ec6d48ccd6dc7d5919f61",
+  "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "e2d18564383e1350b0b9a68af0eaf668dac784af",
-  "decision": "CURRENT_LAST_SOLVE_OBSERVATION_RECIPE_FALSIFIED_BY_SOURCE_AND_ALGEBRA",
+  "decision": "BOUNDED_INTERVAL_REPAIR_IMPLEMENTED_PENDING_RUNTIME_QUALIFICATION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -129,12 +129,25 @@
     "component receipt commit",
     "typed external head forcing"
   ],
-  "blockers": [
-    "Current integration recipe is falsified; its O0/O2 success alone cannot establish production admission.",
-    "No callable shell/compiler/runtime execution tool is exposed in this session. GitHub tools support reading/re-running existing workflows but expose no workflow-dispatch action. No local Fortran compile/run is claimed."
-  ],
-  "next_action": "Replace last-solve publication recipe with accepted-window carrier and coherent total control-volume mass accounting; bind typed resolved head, fail closed on scalar bypass/unqualified profiles, then run focused O0/O2 and receipt replay/preservation tests.",
+  "blockers": [],
+  "next_action": "Compile/run focused real FAPP09 fixture locally; then receipt replay, origin, masking and default-off tests.",
   "recovery_point": "This record's commit on work/sw-rib-top03-transactional-top-exchange; PR #956 stays draft.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
-  "ci_policy": "No new Actions run requested. Checkpoint uses skip ci because runtime cannot qualify the falsified recipe; existing queued evidence is not awaited as an admission gate for this source/algebra decision."
+  "ci_policy": "No new Actions run requested. Checkpoint uses skip ci because runtime cannot qualify the falsified recipe; existing queued evidence is not awaited as an admission gate for this source/algebra decision.",
+  "implementation_slice": {
+    "contract": "integration/sw-rib-top03/TOP03_BOUNDED_INTERVAL_CONTRACT.md",
+    "implemented": true,
+    "tested": false,
+    "qualified": false,
+    "local_compiler": "GNU Fortran 13.3.0 installed in disposable local compiler prefix",
+    "repairs": [
+      "typed imposed head excludes atmosphere-only pond Newton equation",
+      "stable head at equal ponding",
+      "attempt-context surface interval accumulation",
+      "total control-volume top ledger replacement",
+      "typed resolved head updates top forcing",
+      "scalar publication/commit gated via private component preflight",
+      "explicit bounded profile and exfiltration rejection"
+    ]
+  }
 }

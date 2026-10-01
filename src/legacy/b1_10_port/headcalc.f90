@@ -554,7 +554,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !     test for waterbalance of ponding layer
       if (provider_dynamic_top_active) then
          if (state%ftoph) state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
-         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
+         if (.NOT.flnonconv .AND. pond_balance_option_allows() .AND. &
+             .NOT.provider_dynamic_top_result%external_surface_head_imposed) then
             deviat = state%pond - state%pondm1 - provider_dynamic_top_result%net_potential_surface_flux*dt + &
                      state%runots - state%qtop * dt
             if (abs(deviat) > CritDevPondDt) then

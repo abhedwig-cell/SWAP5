@@ -166,7 +166,7 @@ contains
     ! profile local ponding before the solve is the accepted previous ponding.
     external_active = request%external_surface_water_head_supplied .and. &
          request%external_surface_water_head_cm > request%external_flooding_sill_head_cm .and. &
-         request%external_surface_water_head_cm > request%previous_ponding_depth_cm
+         request%external_surface_water_head_cm >= request%previous_ponding_depth_cm
     if (external_active) then
       if (k1_max <= 0.0_real64) then
         result%status = B110_DYN_TOP_INVALID_INPUT

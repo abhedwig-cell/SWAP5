@@ -386,6 +386,9 @@ module mod_fmr_serialized_reference_backend
   ! Worker-local transactional scratch for thermal transfer provenance. This is
   ! attempt context, never compact committed column state.
   type, extends(transaction_attempt_context_t) :: fmr_serialized_attempt_context_t
+    logical :: top_exchange_window_available = .false.
+    real(real64) :: top_exchange_window_cm = 0.0_real64
+    real(real64) :: top_exchange_window_residual_cm = 0.0_real64
     logical :: bottom_thermal_active = .false.
     logical :: bottom_thermal_valid = .true.
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
@@ -398,6 +401,9 @@ module mod_fmr_serialized_reference_backend
   end type fmr_serialized_attempt_context_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
+    logical :: top_exchange_window_available = .false.
+    real(real64) :: top_exchange_window_cm = 0.0_real64
+    real(real64) :: top_exchange_window_residual_cm = 0.0_real64
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
@@ -1602,6 +1608,7 @@ contains
     end if
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
+    if (.not.result%completed) self%model%top_exchange_window_available = .false.
     if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
     nullify(self%model%hydraulic_parameters)
     nullify(self%model%trusted_parameter_source)
@@ -1645,12 +1652,16 @@ contains
     class(fmr_serialized_reference_backend_t), intent(in) :: self
     type(fmr_serialized_physical_observation_t) :: obs
     obs = self%model%last_observation
+    obs%top_surface_exchange_available = self%model%top_exchange_window_available
+    obs%top_surface_signed_swap_to_external_cm = self%model%top_exchange_window_cm
+    obs%top_surface_closure_residual_cm = self%model%top_exchange_window_residual_cm
   end function fmr_serialized_backend_observation
 
   logical function fmr_serialized_attempt_context_required(self) result(required)
     class(fmr_serialized_reference_model_t), intent(in) :: self
 
-    required = self%trajectory_direction_requested .or. self%drainage_response_active .or. &
+    required = self%external_top_surface_water_supplied .or. &
+         self%trajectory_direction_requested .or. self%drainage_response_active .or. &
          self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid .or. &
          self%top_sensible_boundary_carrier_active .or. .not. self%top_sensible_boundary_carrier_valid
   end function fmr_serialized_attempt_context_required
@@ -1670,6 +1681,9 @@ contains
       call self%top_sensible_boundary_carrier%copy_to(typed%top_sensible_boundary_carrier)
       typed%drainage_response_window_exchange_available = self%drainage_response_window_exchange_available
       typed%drainage_response_window_signed_exchange_native = self%drainage_response_window_signed_exchange_native
+      typed%top_exchange_window_available = self%top_exchange_window_available
+      typed%top_exchange_window_cm = self%top_exchange_window_cm
+      typed%top_exchange_window_residual_cm = self%top_exchange_window_residual_cm
       typed%trajectory_direction = self%trajectory_direction
     end select
   end subroutine fmr_serialized_capture_attempt_context
@@ -1688,6 +1702,9 @@ contains
       call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)
       self%drainage_response_window_exchange_available = typed%drainage_response_window_exchange_available
       self%drainage_response_window_signed_exchange_native = typed%drainage_response_window_signed_exchange_native
+      self%top_exchange_window_available = typed%top_exchange_window_available
+      self%top_exchange_window_cm = typed%top_exchange_window_cm
+      self%top_exchange_window_residual_cm = typed%top_exchange_window_residual_cm
       self%trajectory_direction = typed%trajectory_direction
     class default
       self%bottom_thermal_carrier_active = .false.
@@ -1698,6 +1715,9 @@ contains
       call self%top_sensible_boundary_carrier%clear()
       self%drainage_response_window_exchange_available = .false.
       self%drainage_response_window_signed_exchange_native = 0.0_real64
+      self%top_exchange_window_available = .false.
+      self%top_exchange_window_cm = 0.0_real64
+      self%top_exchange_window_residual_cm = 0.0_real64
       call configure_trajectory_direction(self%trajectory_direction, .false.)
     end select
   end subroutine fmr_serialized_restore_attempt_context
@@ -1932,6 +1952,9 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
+    self%top_exchange_window_available = .false.
+    self%top_exchange_window_cm = 0.0_real64
+    self%top_exchange_window_residual_cm = 0.0_real64
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
     self%rfm_surface_forcing = rfm_surface_forcing_t()
     self%drainage_response_evaluations = 0
@@ -2005,6 +2028,14 @@ contains
              forcing%top_pond_evaporation_rate_cm_per_day,forcing%top_ponding_max_cm, &
              forcing%top_runoff_resistance_day,forcing%top_runoff_exponent]))) return
         if (forcing%top_runoff_resistance_day < 0.0_real64 .or. forcing%top_runoff_exponent <= 0.0_real64) return
+        ! First profile: imposed inundation, no evaporation or snowmelt.
+        ! Nonnegative atmospheric inputs are booked once with external supply.
+        if (forcing%external_top_surface_water_head_cm <= max(0.0_real64,forcing%external_top_surface_water_sill_cm)) return
+        if (forcing%top_bare_soil_evaporation_rate_cm_per_day /= 0.0_real64 .or. &
+            forcing%top_pond_evaporation_rate_cm_per_day /= 0.0_real64 .or. &
+            forcing%top_snowmelt_rate_cm_per_day /= 0.0_real64 .or. forcing%top_flux /= 0.0_real64) return
+        if (min(forcing%top_precipitation_rate_cm_per_day,forcing%top_irrigation_rate_cm_per_day, &
+                forcing%top_runon_rate_cm_per_day) < 0.0_real64) return
       end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
       if (self%root_extraction_active) then
@@ -2164,6 +2195,7 @@ contains
       if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate
       self%top_head = forcing%top_head
       self%external_top_surface_water_supplied = forcing%external_top_surface_water_supplied
+      self%top_exchange_window_available = self%external_top_surface_water_supplied
       self%external_top_surface_water_head_cm = forcing%external_top_surface_water_head_cm
       self%external_top_surface_water_sill_cm = forcing%external_top_surface_water_sill_cm
       self%top_precipitation_rate = forcing%top_precipitation_rate_cm_per_day
@@ -2506,6 +2538,7 @@ contains
       end if
 
       if (self%external_top_surface_water_supplied) then
+        if (physical%ponding_depth > self%external_top_surface_water_head_cm) return
         if (self%snow_active .or. self%macropore_active .or. self%black_evaporation_active .or. self%boesten_evaporation_active) return
         call bind_b110_dynamic_top_boundary_solver_provider(external_top_provider,self%soil_parameters, &
              self%hydraulic_parameters,self%swkmean,physical%ponding_depth,step_duration, &
@@ -2741,11 +2774,15 @@ contains
     self%last_observation%top_flux = solve_result%top_flux
     self%last_observation%bottom_flux = solve_result%bottom_flux
     if (self%external_top_surface_water_supplied .and. solve_result%status == SW_SOLVE_CONVERGED) then
+      ! Exfiltration/runoff composition is outside this first inundation profile.
+      ! Reject explicitly; never hide a positive accepted soil flux by clipping.
+      if (.not.ieee_is_finite(solve_result%top_flux) .or. solve_result%top_flux > 0.0_real64) return
+      if (solve_result%candidate_state%ponding_depth /= self%external_top_surface_water_head_cm) return
       call materialize_fmr_top_surface_exchange(request%base_state%ponding_depth, &
            solve_result%candidate_state%ponding_depth, &
            step_duration*(self%top_precipitation_rate+self%top_irrigation_rate+self%top_snowmelt_rate+self%top_runon_rate), &
            step_duration*(self%top_bare_soil_evaporation_rate+self%top_pond_evaporation_rate), &
-           max(0.0_real64,-solve_result%top_flux)*step_duration, 0.0_real64, top_exchange)
+           -solve_result%top_flux*step_duration, 0.0_real64, top_exchange)
       if (top_exchange%status /= FMR_TOP_EXCHANGE_OK) return
       self%last_observation%top_surface_exchange_available=top_exchange%available
       self%last_observation%top_surface_signed_swap_to_external_cm=top_exchange%signed_swap_to_external_cm
@@ -2893,6 +2930,23 @@ contains
            self%drainage_response_window_exchange_available
       self%last_observation%drainage_response_window_signed_exchange_native = &
            self%drainage_response_window_signed_exchange_native
+    end if
+    if (self%external_top_surface_water_supplied) then
+      ! account_external_fluxes booked the soil-face top term. Replace that term
+      ! with atmosphere plus signed external exchange for soil+local pond storage.
+      ! Receipt validation itself never books mass.
+      outcome%mass_in = outcome%mass_in - max(0.0_real64,-solve_result%top_flux)*step_duration + &
+           step_duration*(self%top_precipitation_rate+self%top_irrigation_rate+self%top_runon_rate) + &
+           max(0.0_real64,-top_exchange%signed_swap_to_external_cm)
+      outcome%mass_out = outcome%mass_out - max(0.0_real64,solve_result%top_flux)*step_duration + &
+           max(0.0_real64,top_exchange%signed_swap_to_external_cm)
+      if (.not.self%top_exchange_window_available) return
+      self%top_exchange_window_cm = self%top_exchange_window_cm + top_exchange%signed_swap_to_external_cm
+      self%top_exchange_window_residual_cm = self%top_exchange_window_residual_cm + top_exchange%closure_residual_cm
+      if (.not.all(ieee_is_finite([self%top_exchange_window_cm,self%top_exchange_window_residual_cm]))) then
+        self%top_exchange_window_available = .false.
+        return
+      end if
     end if
     outcome%bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration
     outcome%terminal_bottom_outward_flux_native = -solve_result%bottom_flux

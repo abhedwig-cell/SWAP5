@@ -135,6 +135,7 @@ contains
     result%net_potential_surface_flux = b110_result%net_potential_surface_flux_cm_per_day
     result%surface_head_derivative_available = b110_result%surface_head_derivative_available
     result%surface_head_dpressure_head_top = b110_result%surface_head_dpressure_head_top
+    result%external_surface_head_imposed = b110_result%route == 'external-surface-water-head'
     result%carries_surface_mass_terms = .true.
     result%runoff_potential = b110_result%runoff_potential
     result%runoff_resolved = .true.

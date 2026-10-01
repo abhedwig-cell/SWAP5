@@ -78,6 +78,9 @@ contains
     end if
 
     forcing = self%base_forcing
+    if (forcing%external_top_surface_water_supplied) then
+      forcing%external_top_surface_water_head_cm = resolved_heads_cm(1)
+    end if
     if (allocated(forcing%drainage_flux_by_level)) deallocate(forcing%drainage_flux_by_level)
     if (allocated(forcing%drainage_response_controls)) deallocate(forcing%drainage_response_controls)
     allocate(forcing%drainage_response_controls(self%nlevels))

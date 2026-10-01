@@ -76,6 +76,9 @@ module mod_soil_water_solver_contract
      real(real64) :: net_potential_surface_flux = 0.0_real64
      logical :: surface_head_derivative_available = .false.
      real(real64) :: surface_head_dpressure_head_top = 0.0_real64
+     ! Imposed external head replaces the local pond balance equation.
+     ! Accepted surface supply is materialized by runtime after convergence.
+     logical :: external_surface_head_imposed = .false.
      logical :: carries_surface_mass_terms = .false.
      logical :: runoff_potential = .false.
      logical :: runoff_resolved = .false.

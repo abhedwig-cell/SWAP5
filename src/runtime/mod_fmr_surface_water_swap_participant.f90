@@ -246,11 +246,23 @@ contains
   logical function surface_water_publication_ready(self, committed, t0, t1, realized_exchange_cm, tolerance_cm) result(ready)
     class(fmr_surface_water_swap_participant_t), intent(in) :: self
     type(kernel_committed_state_t), intent(in) :: committed
+    real(real64), intent(in) :: t0,t1,realized_exchange_cm,tolerance_cm
+    ready = component_origin_publication_ready(self,committed,t0,t1,realized_exchange_cm,tolerance_cm)
+  end function surface_water_publication_ready
+
+  logical function component_origin_publication_ready(self, committed, t0, t1, realized_exchange_cm, tolerance_cm, component_validated) result(ready)
+    class(fmr_surface_water_swap_participant_t), intent(in) :: self
+    type(kernel_committed_state_t), intent(in) :: committed
     real(real64), intent(in) :: t0, t1, realized_exchange_cm, tolerance_cm
     real(real64) :: candidate_t0, candidate_t1
     logical :: interval_available
+    logical, intent(in), optional :: component_validated
 
     ready = .false.
+    if (self%candidate_top_exchange_available) then
+      if (.not.present(component_validated)) return
+      if (.not.component_validated) return
+    end if
     if (.not. self%origin_captured .or. .not. self%live_candidate) return
     if (.not. committed%ready() .or. .not. self%candidate%ready()) return
     if (.not. ieee_is_finite(realized_exchange_cm) .or. .not. ieee_is_finite(tolerance_cm) .or. tolerance_cm < 0.0_real64) return
@@ -264,7 +276,7 @@ contains
     if (.not. self%trial_result%completed .or. .not. self%trial_result%mass%complete) return
     if (abs(realized_exchange_cm-self%candidate_exchange_cm) > tolerance_cm) return
     ready = .true.
-  end function surface_water_publication_ready
+  end function component_origin_publication_ready
 
 
   logical function surface_water_component_publication_ready(self, committed, t0, t1, top_candidate_cm, receipt, tolerance_cm) result(ready)
@@ -285,7 +297,7 @@ contains
     components%subsurface_swap_to_surface_cm=self%candidate_exchange_cm
     components%top_swap_to_surface_cm=top_candidate_cm
     if(surface_water_component_receipt_matches(components,receipt,tolerance_cm)/=FMR_SW_RECEIPT_OK)return
-    if(.not.self%publication_ready(committed,t0,t1,receipt%subsurface_swap_to_surface_cm,tolerance_cm))return
+    if(.not.component_origin_publication_ready(self,committed,t0,t1,receipt%subsurface_swap_to_surface_cm,tolerance_cm,component_validated=.true.))return
     ready=.true.
   end function surface_water_component_publication_ready
 
