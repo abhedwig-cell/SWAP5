@@ -1,0 +1,27 @@
+name: F-PE-MIQUAL06 serialized runtime manager seam
+
+on:
+  push:
+    branches:
+      - work/f-pe-miqual06-serialized-runtime-manager-seam
+    paths:
+      - 'docs/performance/F-PE-MIQUAL06_PREREGISTRATION.md'
+      - 'src/runtime/mod_fmr_moving_interface_runtime_adapter.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fmr/test_fpe_miqual06_serialized_manager.f90'
+      - 'tests/fmr/run_fpe_miqual06_serialized_manager.sh'
+      - 'tests/fpe/compile_fpe_timeint03_closure.py'
+      - '.github/workflows/f-pe-miqual06.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmr/run_fpe_miqual06_serialized_manager.sh
