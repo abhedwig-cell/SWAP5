@@ -29,7 +29,7 @@ module mod_macropore_single_column_runtime
   integer,parameter,public::MACRO_RUNTIME_CONVERGED=2
   integer,parameter,public::MACRO_RUNTIME_RETRY=3
   integer,parameter,public::MACRO_RUNTIME_FAILED=4
-  real(real64),parameter :: PERCH_SOURCE_REDUCTION_LADDER(4) = &
+  real(real64),parameter,public :: PERCH_SOURCE_REDUCTION_LADDER(4) = &
        [1.0_real64,0.1_real64,0.01_real64,0.001_real64]
 
   type, public :: macropore_runtime_policy_t
