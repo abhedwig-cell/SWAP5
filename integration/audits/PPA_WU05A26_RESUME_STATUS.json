@@ -1,0 +1,14 @@
+{
+  "schema": "swap5.ppa_wu05a26.status.v1",
+  "workunit": "PPA-WU05-A26",
+  "phase": "BLOCKED",
+  "decision": "BLOCKED_MISSING_MACRO_SIDE_HEAD_OWNER",
+  "canonical_baseline": "f477f3fb7bf272757ac7a764bf9492883a521754",
+  "branch": "work/ppa-wu05-a26-rfm-backend-dispatch-resume",
+  "backend_dispatch": false,
+  "runtime_guard_removal_authorized": false,
+  "a26h_admitted": true,
+  "a25_falsified": false,
+  "blocker": "A22A/A22B require caller-owned macro_to_matrix_head_difference_cm, but no admitted RFM owner defines the macropore-side hydraulic head. Assuming zero macro pressure head would add unqualified physics.",
+  "next": "Qualify a source-backed macropore-side hydraulic-head contract for endpoint and MB wall exchange, then resume A26."
+}
