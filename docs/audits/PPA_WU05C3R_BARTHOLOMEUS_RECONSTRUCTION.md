@@ -219,3 +219,40 @@ A pure `mod_oxygen_balance_contract` now records this source-bound algebra witho
 The complete algebra inside legacy `MACRO` and `MICRO` is not yet present in the indexed patch evidence. It will not be reconstructed from variable names or inferred literature equations. The next kernel step requires extraction of the pristine/patched `oxygenstress.f90` payload from the retained source package or another exact source-bearing artefact.
 
 R4 therefore advances the kernel boundary without fabricating omitted physics.
+
+
+## Reconstruction checkpoint R5 — upstream formula recovery
+
+The public SWAP-model/SWAP source exposes the complete legacy physical oxygen module. Its file history identifies the same 2017/2018 optimized Bartholomeus implementation family that is visible in the retained 4.3.1 patch context.
+
+Recovered formula blocks include:
+- `TEMP_DEPENDENT_PARAMETERS`;
+- `microbial_resp`;
+- `MICRO`;
+- `MACRO`;
+- `SOLVE/myfunc`;
+- water-film `FUNC` and integration machinery.
+
+Cross-version consistency already established:
+- the optimization header and cache algebra match retained 4.3.1 context;
+- the MACRO Newton derivative is exactly the expression patched by SWAP-007 in 4.3.1;
+- the SOLVE residual/sign semantics match the recovered 4.3.1 fast-no-stress patch;
+- the same six immutable precompute quantities occur.
+
+This makes the public source a strong reconstruction aid, but not yet a substitute for the pinned 4.3.1 authority. Formula blocks must be classified as unchanged/corrected/version-sensitive before being copied into the independent kernel.
+
+### Newly visible architecture
+
+MICRO is an instantaneous algebraic function of respiration factor plus current node/config quantities.
+
+MACRO is also instantaneous in physical inputs. Its internal Newton iteration solves for a depth `l` at which oxygen concentration becomes zero when total respiration is sufficiently high. That inner Newton solve is distinct from the outer respiration-factor solve.
+
+Therefore the physical route contains two numerical solves in the historical implementation:
+1. outer balance: choose respiration factor so c_macro = c_min_micro;
+2. conditional inner MACRO solve: determine zero-oxygen penetration depth l.
+
+Neither solve is evidence of cross-timestep oxygen storage.
+
+### New optimization target
+
+The earlier statement that removing the outer Newton route structurally removes all SWAP-007-like risk was too broad. SWAP-007 is in the inner MACRO Newton solve for `l`. A clean SWAP5 kernel should therefore also replace or robustly bound that inner solve rather than merely changing the outer SOLVE policy.
