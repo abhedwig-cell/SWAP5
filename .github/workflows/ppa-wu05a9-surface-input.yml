@@ -11,6 +11,7 @@ on:
       - 'src/runtime/mod_fmr_macropore_configuration.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fpm/test_ppa_wu05a9_surface_top_input.f90'
+      - 'tests/fpm/test_ppa_wu05a9_fmr_surface_top_input.f90'
       - 'tests/fpm/run_ppa_wu05a9_surface_input.sh'
       - '.github/workflows/ppa-wu05a9-surface-input.yml'
   workflow_dispatch:
