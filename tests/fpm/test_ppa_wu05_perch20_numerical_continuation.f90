@@ -6,14 +6,20 @@ program test_ppa_wu05_perch20_numerical_continuation
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
        FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &
-       fmr_b110_macropore_reduction_state_t
+       fmr_b110_macropore_reduction_state_t, fmr_macropore_reduction_continuation_t
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
+  use mod_ppa_wu05_perch19_frreduq_controller, only: PERCH19_ACTION_REDUCE_TIMESTEP, &
+       PERCH19_ACTION_RETRY_REDUCED_EXCHANGE
+  use mod_ppa_wu05_perch20_continuation_binding, only: perch20_failure_transition, perch20_success_transition
   implicit none
 
   type(fmr_template_t)::template
   type(fmr_b110_macropore_reduction_state_t)::state
+  type(fmr_macropore_reduction_continuation_t)::accepted_controller,candidate_controller
   class(transaction_state_t),allocatable::copy
-  logical :: template_ok
+  logical :: template_ok,transition_ok
+  integer :: action
+  real(real64) :: retry_dt
 
   state%active_nodes=2
   allocate(state%pressure_head(2),state%water_content(2),state%macropore)
@@ -55,10 +61,31 @@ program test_ppa_wu05_perch20_numerical_continuation
   call require(.not.state%macropore_reduction%valid(),'invalid level rejected')
   call require(.not.fmr_restart_state_matches_template(state,template),'invalid payload restart rejected')
 
+  accepted_controller=fmr_macropore_reduction_continuation_t()
+  call perch20_failure_transition(accepted_controller,0.01_real64,0.001_real64,0.1_real64, &
+       candidate_controller,action,retry_dt,transition_ok)
+  call require(transition_ok .and. action==PERCH19_ACTION_REDUCE_TIMESTEP,'temporal precedence')
+  call require(candidate_controller%reduction_level==0,'temporal retry leaves accepted level')
+
+  call perch20_failure_transition(accepted_controller,0.001_real64,0.001_real64,0.1_real64, &
+       candidate_controller,action,retry_dt,transition_ok)
+  call require(transition_ok .and. action==PERCH19_ACTION_RETRY_REDUCED_EXCHANGE,'reduction transition')
+  call require(candidate_controller%reduction_level==1,'candidate reduction level')
+  call require(accepted_controller%reduction_level==0,'accepted controller unchanged on candidate retry')
+  call require(abs(retry_dt-0.01_real64)<1.0e-15_real64,'source retry dt')
+
+  accepted_controller=candidate_controller
+  accepted_controller%successful_steps=9
+  call perch20_success_transition(accepted_controller,0.001_real64,candidate_controller,transition_ok)
+  call require(transition_ok .and. candidate_controller%reduction_level==0,'ten-step recovery')
+  call require(candidate_controller%successful_steps==0,'recovery counter reset')
+
   print '(a)', 'PPA_WU05_PERCH20_LAYOUT_IDENTITY=PASS'
   print '(a)', 'PPA_WU05_PERCH20_CLONE_PAYLOAD=PASS'
   print '(a)', 'PPA_WU05_PERCH20_RESTART_MATCH=PASS'
   print '(a)', 'PPA_WU05_PERCH20_FAIL_CLOSED=PASS'
+  print '(a)', 'PPA_WU05_PERCH20_CONTROLLER_BINDING=PASS'
+  print '(a)', 'PPA_WU05_PERCH20_REJECT_ISOLATION=PASS'
   print '(a)', 'PPA_WU05_PERCH20_CARRIER_GATE=PASS'
 
 contains
