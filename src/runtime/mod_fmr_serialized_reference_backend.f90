@@ -2397,7 +2397,8 @@ contains
     snow_event_applied_this_call = .false.
     if (.not. self%forcing_admitted .or. .not. associated(self%soil_parameters) .or. &
         .not. associated(self%hydraulic_parameters) .or. .not. associated(self%constitutive) .or. &
-        .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
+        .not. associated(self%source_sink)) return
+    if (.not. self%external_top_surface_water_supplied .and. .not. associated(self%top_boundary)) return
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
                                                            self%fixed_weir_surface_water_active, &
