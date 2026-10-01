@@ -96,3 +96,22 @@ Mode selection is numerical policy, not crop/soil physical configuration.
 - changing Bartholomeus parameter values;
 - coupling oxygen directly to water-mass ownership;
 - carrying solver guesses across timesteps.
+
+
+## Hysteresis construction-key constraint
+
+Recovered S9 evidence establishes an important qualification on the immutable dataset.
+
+Several precomputed quantities are constructed through `watcon()`. With hysteresis enabled, that
+evaluation depends on the node's initial wetting/drying branch. The dataset is therefore:
+
+`immutable-after-construction`
+
+but not universally a function of nominal soil parameters alone.
+
+A MultiSWAP sharing key must include every construction dependency, including the initial
+hysteresis branch when `SWHYST>0`. Columns may share one oxygen precompute only when this complete
+construction key matches.
+
+Later hysteresis reversal does not mutate the legacy oxygen precompute; preserving that behavior is
+part of 4.3.1 parity unless a separate scientific change is explicitly qualified.
