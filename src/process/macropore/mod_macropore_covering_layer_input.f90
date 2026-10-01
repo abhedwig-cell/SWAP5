@@ -48,6 +48,7 @@ contains
 
     real(real64), parameter :: pi_legacy = 3.14159_real64
     real(real64) :: ld, r0, w_geom, total_amount, domain_fraction
+    integer :: id
 
     ok = .false.
     if (.not. request%valid()) return
@@ -73,7 +74,7 @@ contains
          request%step_duration_day
     total_amount = max(0.0_real64,total_amount)
 
-    do concurrent (integer :: id=1:size(requested_vertical_cm))
+    do id=1,size(requested_vertical_cm)
       domain_fraction = request%domain_top_volume_cm(id)/request%total_macropore_volume_top_cm
       requested_vertical_cm(id) = domain_fraction*total_amount
     end do
