@@ -70,6 +70,7 @@ program test_macro_tracer01d_spechtacker_fixture
   retries = 0
   do while (t < horizon - 1.0e-14_real64)
      dt_try = min(dt_base, horizon-t)
+     if (t < irrig_end .and. t + dt_try > irrig_end) dt_try = irrig_end - t
      do
         call solve_step(state, t, dt_try, next_state, ok)
         if (ok) exit
