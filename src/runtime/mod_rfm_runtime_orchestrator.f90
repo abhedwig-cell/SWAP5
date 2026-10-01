@@ -16,6 +16,7 @@ module mod_rfm_runtime_orchestrator
     real(real64) :: step_duration_day=0.0_real64
     real(real64) :: effective_supply_rate_cm_per_day=0.0_real64
     real(real64) :: matrix_supply_rate_cm_per_day=0.0_real64
+    real(real64) :: candidate_tau_surface_day=0.0_real64
     integer, allocatable :: endpoint_node_index(:)
     integer :: mb_wall_node_index=0
     real(real64), allocatable :: node_thickness_cm(:)
@@ -56,6 +57,7 @@ contains
     if(routing%status/=RFM_PREF_ROUTER_AVAILABLE)return
     if(.not.ieee_is_finite(request%step_duration_day).or.request%step_duration_day<=0.0_real64)return
     if(.not.ieee_is_finite(tolerance).or.tolerance<0.0_real64)return
+    if(.not.ieee_is_finite(request%candidate_tau_surface_day).or.request%candidate_tau_surface_day<0.0_real64)return
     if(.not.allocated(routing%endpoint_amount))return
     n=accepted%endpoint_count
     if(size(routing%endpoint_amount)/=n)return
@@ -104,6 +106,7 @@ contains
     result%candidate_rfm%wall_age_day=result%endpoint_release%candidate_wall_age_day
     result%candidate_rfm%wall_sorptivity_cm_sqrt_day=result%endpoint_release%candidate_wall_sorptivity_cm_sqrt_day
     result%candidate_rfm%mb_water_cm=0.0_real64
+    result%candidate_rfm%tau_surface_day=request%candidate_tau_surface_day
 
     allocate(result%matrix_source_rate_per_day(size(request%node_thickness_cm)))
     result%matrix_source_rate_per_day=0.0_real64
