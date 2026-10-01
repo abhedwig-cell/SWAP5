@@ -58,7 +58,11 @@ program top03_temporal_controller
  q%evaluation%constitutive=>hyd;q%evaluation%source_sink=>source;q%evaluation%dynamic_top_boundary=>top
 
  horizon=0.25_real64
- print '(a)','geometry,bottom_mode,profile,policy,budget_cm,stop_code,accepted,rejected,trials,iterations,top_cm,bottom_cm,storage_cm,ledger_cm,cpu_seconds'
+ write(*,'(a)',advance='no')'geometry,bottom_mode,profile,policy,budget_cm,stop_code,accepted,rejected,trials,iterations,top_cm,bottom_cm,storage_cm,ledger_cm,cpu_seconds,time_days,pond_cm'
+ do i=1,numnod
+ write(*,'(a,i0)',advance='no')',theta',i
+ end do
+ print *
  do bottom_case=1,3
  q%boundary%bottom_mode=bottom_modes(bottom_case)
  do profile=1,2
@@ -149,6 +153,9 @@ contains
  if(policy==2)defect=max(water_error,top_error,bot_error)
  end if
  allowance=budget*dt/horizon
+ if(trials<=20)then
+ write(*,'(a,4(a,i0),a,es24.16,a,i0,4(a,es24.16),3(a,l1))')'TRACE',',',geometry_id,',',bottom_modes(bottom_case),',',profile,',',policy,',',budget,',',trials,',',t,',',dt,',',defect,',',allowance,',',ok1,',',ok2,',',ok3
+ end if
  if(defect<=allowance)then
  accepted_state=half;top_sum=top_sum+half_top;bot_sum=bot_sum+half_bot;t=t+dt;accepted=accepted+1
  if(defect<allowance/4.0_real64)dt=min(2.0_real64*dt,horizon-t)
@@ -160,8 +167,13 @@ contains
  end if
  end do
  call cpu_time(cpu1)
- print '(i0,3(a,i0),a,es24.16,5(a,i0),5(a,es24.16))',geometry_id,',',bottom_modes(bottom_case),',',profile,',',policy,',',budget,',',fail_code,',',accepted,',',rejected,',',trials,',',iterations, &
+ write(*,'(i0,3(a,i0),a,es24.16,5(a,i0),5(a,es24.16))',advance='no')geometry_id,',',bottom_modes(bottom_case),',',profile,',',policy,',',budget,',',fail_code,',',accepted,',',rejected,',',trials,',',iterations, &
  ',',top_sum,',',bot_sum,',',sum(accepted_state%base_state%water_content*dz)+accepted_state%base_state%ponding_depth-storage0, &
  ',',sum(accepted_state%base_state%water_content*dz)+accepted_state%base_state%ponding_depth-storage0+top_sum-bot_sum,',',cpu1-cpu0
+ write(*,'(2(a,es24.16))',advance='no')',',t,',',accepted_state%base_state%ponding_depth
+ do i=1,numnod
+ write(*,'(a,es24.16)',advance='no')',',accepted_state%base_state%water_content(i)
+ end do
+ print *
  end subroutine
 end program
