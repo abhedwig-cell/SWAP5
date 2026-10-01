@@ -12,7 +12,8 @@
   ],
   "note": "This is a routing census, not independent admission authority. PPA rows are reconciled where later canonical evidence is explicit; unresolved rows remain open rather than inferred.",
   "counts": {
-    "seed_capabilities_from_ppa": 38
+    "seed_capabilities_from_ppa": 38,
+    "wofost_reconciliation": "completed checkpoint 9606ead3498d94eecd9c979079cedd927dcb5f5d"
   },
   "buckets": {
     "ADMITTED_OR_BOUNDED_PRODUCTION": [
@@ -59,7 +60,8 @@
     "REVIEW_FIRST": [
       "PPA-HYST hydraulic hysteresis",
       "PPA-TILL tillage, with unresolved corrected-reference decisions",
-      "PPA-SOL-HYD solute/salinity owner and hydraulic/root-stress semantics"
+      "PPA-SOL-HYD solute/salinity owner and hydraulic/root-stress semantics",
+      "Legacy WOFOST soil/nutrient family -> F-MIG431-WOFN-CENSUS; crop-side WOFOST81 N code must not be conflated with soil N cycling"
     ],
     "DEPENDENCY_BLOCKED": [
       "salinity root stress -> typed solute/osmotic state owner",
@@ -70,8 +72,7 @@
     ],
     "SEPARATE_SCOPE_DECISION_REQUIRED": [
       "legacy meteorological file/calendar preprocessing: functionality versus legacy I/O compatibility must be separated",
-      "full legacy output family: output compatibility is not core-physics closure",
-      "WOFOST soil/nutrient family: current repository contains substantial later WOFOST/N work; reconcile F-WOF canonical admission before declaring a migration gap"
+      "full legacy output family: output compatibility is not core-physics closure"
     ]
   },
   "recommended_parallel_program": {
@@ -105,7 +106,7 @@
     "Any modification of FMR ABI or mass-ledger ownership"
   ],
   "next_census_pass": [
-    "Reconcile F-WOF35-F-WOF43A and later canonical state against legacy WOFOST and WOFOST-soil/nutrient files",
+    "Execute F-MIG431-WOFN-CENSUS as review-only semantic mapping before any WOFOST-soil production branch",
     "Expand PPA-LOW-OTHER into individual SWBOTB selectors and exact statuses",
     "Expand PPA-INT-12 into SWINTER=1 and SWINTER=2 independent work units",
     "Split advanced root stress into oxygen, compensation, salinity, frost, MICRO/Jong-van-Lier, macropore-related uptake and SWKIMPL=1",
