@@ -14,6 +14,16 @@ module mod_fmr_moving_interface_runtime_adapter
   implicit none
   private
 
+  type, public :: fmr_moving_interface_runtime_profile_t
+    integer(int64) :: solve_calls = 0_int64
+    real(real64) :: eligibility_tail_cpu = 0.0_real64
+    real(real64) :: reduced_request_cpu = 0.0_real64
+    real(real64) :: provider_prepare_cpu = 0.0_real64
+    real(real64) :: reduced_solve_cpu = 0.0_real64
+    real(real64) :: reconstruct_materialize_cpu = 0.0_real64
+    real(real64) :: finalize_publish_cpu = 0.0_real64
+  end type fmr_moving_interface_runtime_profile_t
+
   type, public :: fmr_moving_interface_runtime_adapter_t
     type(moving_interface_manager_context_t) :: context
     type(reference_richards_legacy_workspace_t) :: reduced_workspace
@@ -27,9 +37,12 @@ module mod_fmr_moving_interface_runtime_adapter
     real(real64), pointer :: tail_water_content(:) => null()
     integer :: prepared_active_nodes = 0
     integer(int64) :: source_parameter_set_id = -1_int64
+    type(fmr_moving_interface_runtime_profile_t) :: profile
   contains
     procedure, public :: solve => fmr_moving_interface_runtime_solve
     procedure, public :: release => fmr_moving_interface_runtime_release
+    procedure, public :: reset_profile => fmr_moving_interface_runtime_reset_profile
+    procedure, public :: profile_snapshot => fmr_moving_interface_runtime_profile_snapshot
   end type fmr_moving_interface_runtime_adapter_t
 
 contains
@@ -52,11 +65,14 @@ contains
     type(soil_water_solve_result_t) :: reduced_result, full_result, empty_full
     integer :: nf, na, first_tail, i, nt
     logical :: prepared, materialized, reduced_valid
+    real(real64) :: p0, p1
     character(len=64) :: reason
 
     selected = soil_water_solve_result_t()
     diagnostics = moving_interface_manager_diagnostics_t()
     ok = .false.
+    self%profile%solve_calls = self%profile%solve_calls + 1_int64
+    call cpu_time(p0)
 
     nf = full_request%base_state%active_nodes
     if (nf <= 1 .or. full_hydraulics%active_nodes /= nf) then
@@ -101,15 +117,25 @@ contains
 
     call derive_moving_interface_active_view(full_request%base_state, first_tail, view, prepared, reason)
     if (.not. prepared .or. .not. view%eligible) then
+      call cpu_time(p1)
+      self%profile%eligibility_tail_cpu = self%profile%eligibility_tail_cpu + (p1-p0)
       call full_bypass(trim(reason))
       return
     end if
+    call cpu_time(p1)
+    self%profile%eligibility_tail_cpu = self%profile%eligibility_tail_cpu + (p1-p0)
+    p0 = p1
 
     call prepare_moving_interface_reduced_request_persistent(full_request, view, self%context, prepared, reason)
     if (.not. prepared) then
+      call cpu_time(p1)
+      self%profile%reduced_request_cpu = self%profile%reduced_request_cpu + (p1-p0)
       call full_fallback(trim(reason))
       return
     end if
+    call cpu_time(p1)
+    self%profile%reduced_request_cpu = self%profile%reduced_request_cpu + (p1-p0)
+    p0 = p1
 
     na = view%active_nodes
     call prepare_reduced_provider(na, prepared)
@@ -123,8 +149,14 @@ contains
     nullify(self%context%reduced_request%evaluation%root_sink)
     nullify(self%context%reduced_request%evaluation%dynamic_top_boundary)
     nullify(self%context%reduced_request%evaluation%macropore)
+    call cpu_time(p1)
+    self%profile%provider_prepare_cpu = self%profile%provider_prepare_cpu + (p1-p0)
+    p0 = p1
 
     call full_solver%solve(self%context%reduced_request, self%reduced_workspace, reduced_result)
+    call cpu_time(p1)
+    self%profile%reduced_solve_cpu = self%profile%reduced_solve_cpu + (p1-p0)
+    p0 = p1
     reduced_valid = reduced_result%status == SW_SOLVE_CONVERGED
 
     if (reduced_valid) then
@@ -154,6 +186,9 @@ contains
            self%tail_pressure_head, self%tail_water_content, self%context, materialized, reason)
       reduced_valid = materialized
     end if
+    call cpu_time(p1)
+    self%profile%reconstruct_materialize_cpu = self%profile%reconstruct_materialize_cpu + (p1-p0)
+    p0 = p1
 
     if (reduced_valid) then
       empty_full = soil_water_solve_result_t()
@@ -161,6 +196,8 @@ contains
            'none', self%context, diagnostics)
       selected = self%context%full_candidate
       ok = selected%status == SW_SOLVE_CONVERGED
+      call cpu_time(p1)
+      self%profile%finalize_publish_cpu = self%profile%finalize_publish_cpu + (p1-p0)
       return
     end if
 
@@ -301,6 +338,18 @@ contains
     end if
     self%prepared_active_nodes = 0
     self%source_parameter_set_id = -1_int64
+    self%profile = fmr_moving_interface_runtime_profile_t()
   end subroutine fmr_moving_interface_runtime_release
+
+  subroutine fmr_moving_interface_runtime_reset_profile(self)
+    class(fmr_moving_interface_runtime_adapter_t), intent(inout) :: self
+    self%profile = fmr_moving_interface_runtime_profile_t()
+  end subroutine fmr_moving_interface_runtime_reset_profile
+
+  function fmr_moving_interface_runtime_profile_snapshot(self) result(snapshot)
+    class(fmr_moving_interface_runtime_adapter_t), intent(in) :: self
+    type(fmr_moving_interface_runtime_profile_t) :: snapshot
+    snapshot = self%profile
+  end function fmr_moving_interface_runtime_profile_snapshot
 
 end module mod_fmr_moving_interface_runtime_adapter
