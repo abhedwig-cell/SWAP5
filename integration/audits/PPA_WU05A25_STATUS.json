@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.ppa_wu05a25.status.v1",
+  "workunit": "PPA-WU05-A25",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_BOUNDED_RFM_RUNTIME_ORCHESTRATOR",
+  "baseline": "2a0b23a2c4e547f6de2613884207d10b2fce462e",
+  "branch": "work/ppa-wu05-a25-rfm-runtime-orchestrator",
+  "qualified_postimage": "d1e33f8867887ca6f1e57e52853ee83b8332650f",
+  "qualification_run": 36878318797,
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "backend_dispatch": false,
+  "runtime_guard_removal_authorized": false,
+  "inherited_surface_fail_closed": [
+    "PPA-WU05-A15",
+    "PPA-WU05-A16"
+  ],
+  "next": "PPA-WU05-A26 backend dispatch and same-postimage replacement of A20 NOT_ADMITTED guard"
+}
