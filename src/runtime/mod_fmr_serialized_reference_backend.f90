@@ -86,6 +86,9 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_physical_state, only: rfm_physical_state_t, copy_rfm_physical_state
   use mod_rfm_runtime_configuration, only: rfm_runtime_configuration_t
   use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
+  use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
+  use mod_rfm_production_candidate_composer, only: rfm_production_candidate_request_t, rfm_production_candidate_result_t, &
+       compose_rfm_production_candidate
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
@@ -1430,22 +1433,12 @@ contains
       return
     end if
     if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
-      ! A25 requires explicit immutable configuration.  Execution remains
-      ! fail-closed until the full orchestrator is bound in this workunit.
-      if (.not. self%model%rfm_configuration%valid()) then
-        result = kernel_result_t()
-        result%status = KERNEL_STATUS_NOT_ADMITTED
-        candidate = kernel_candidate_state_t()
-        diagnostics = kernel_diagnostics_t()
-        diagnostics%admission_rejections = 1
+      if (.not. self%model%rfm_configuration%valid() .or. parameters%macropore_active .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result, candidate, diagnostics)
         return
       end if
-      result = kernel_result_t()
-      result%status = KERNEL_STATUS_NOT_ADMITTED
-      candidate = kernel_candidate_state_t()
-      diagnostics = kernel_diagnostics_t()
-      diagnostics%admission_rejections = 1
-      return
     end if
     if (parameters%macropore_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
@@ -2262,7 +2255,10 @@ contains
     type(black_evaporation_result_t) :: black_result
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
+    type(rfm_matrix_source_provider_t), target :: rfm_source_provider
+    type(rfm_production_candidate_result_t) :: rfm_candidate
+    real(real64), allocatable, target :: rfm_source_rate(:)
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
