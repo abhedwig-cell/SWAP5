@@ -31,6 +31,7 @@ program test_ppa_wu05a17_serialized_inner_callback
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
+  use mod_ppa_wu05a16_inner_macropore_provider, only: ppa_wu05a16_inner_macropore_provider_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
@@ -169,6 +170,7 @@ contains
     type(fmr_b110_physical_forcing_t) :: forcing
     type(fmr_b110_physical_state_t) :: initial
     type(fmr_macropore_physical_config_t) :: mcfg
+    type(ppa_wu05a16_inner_macropore_provider_t) :: direct_inner_provider
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
     type(canonical_numerical_config_t) :: numerical
@@ -184,6 +186,7 @@ contains
     integer :: commit_status, persistence_status
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
     real(real64), parameter :: fmr_dt=1.0e-4_real64
+    real(real64) :: direct_exchange(numnod)
 
     fparams%parameter_set_id=lineage
     fparams%active_nodes=numnod
@@ -231,6 +234,13 @@ contains
     initial%macropore=macro
     initial%macropore%water_domain_cp=0.0_real64
     initial%macropore%water_domain_cp(1,4)=0.20_real64
+
+    call direct_inner_provider%configure(initial%macropore,geometry,mcfg%rate_template,z,dz,fmr_dt, &
+         initial%ponding_depth,initial%groundwater_level,policy_ok)
+    if(.not.policy_ok)error stop 'A17 direct provider configure'
+    call direct_inner_provider%evaluate_rate(initial%pressure_head,initial%water_content,direct_exchange,policy_ok)
+    write(*,'(*(g0))') 'PPA_WU05A17_DIRECT_INITIAL_RATE|ACTIVE=',policy_ok,'|Q=',sum(direct_exchange), &
+         '|Q1=',direct_exchange(1),'|Q2=',direct_exchange(2),'|Q3=',direct_exchange(3),'|Q4=',direct_exchange(4)
 
     call fmr_new_b110_committed_state(committed,lineage,initial,0.0_real64,state_ok)
     if(.not.state_ok)error stop 'A17 inner callback committed init'
