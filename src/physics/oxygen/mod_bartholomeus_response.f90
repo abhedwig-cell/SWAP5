@@ -23,6 +23,7 @@ contains
       real(real64), intent(out) :: resp_factor
       logical, intent(out) :: ok
       integer :: status
+      logical :: residual_valid
 
       ok = .false.
       if (p%max_resp_factor < 0.0_real64) then
@@ -30,7 +31,9 @@ contains
          return
       end if
 
+      residual_valid = .true.
       call oxygen_bisect_monotone(residual, p%max_resp_factor, resp_factor, status, xtol=1.0e-8_real64)
+      if (.not. residual_valid) return
       if (status == OXYGEN_INVALID_BRACKET) return
       ok = .true.
 
@@ -43,9 +46,8 @@ contains
          c_micro = bartholomeus_micro_concentration(p%micro,x)
          c_macro = bartholomeus_macro_concentration(p%macro,x,macro_ok)
          if (.not. macro_ok) then
-            ! Invalid physical input is surfaced through a deliberately negative
-            ! residual; caller validation must prevent this path in production.
-            f = -huge(1.0_real64)
+            residual_valid = .false.
+            f = 0.0_real64
          else
             f = c_macro-c_micro
          end if
