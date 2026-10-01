@@ -148,6 +148,19 @@ program test_ppa_wu05a13_accepted_state_seed
   policy%solver_mass_tolerance_cm=1.0e-9_real64
   policy%internal_exchange_tolerance_cm=1.0e-9_real64
 
+  ! G1: test the accepted-state seed directly, before the transaction layer can
+  ! replace the backend observation with a later full/half substep.
+  call runtime%execute(solver,workspace,request,macro,geometry_config,rate_template,history_request,policy,result)
+  write(*,'(*(g0))') 'PPA_WU05A13_DIRECT_SEED|DETECTED=',result%accepted_state_seed_perched_detected, &
+       '|RAW_INTERFLOW=',result%accepted_state_seed_raw_interflow_cm, &
+       '|INTERFLOW=',result%accepted_state_seed_interflow_cm, &
+       '|FINAL_ACTIVE=',result%perched_exchange_active, &
+       '|FINAL_INTERFLOW=',result%perched_interflow_cm, &
+       '|STATUS=',result%status
+  if(.not.result%accepted_state_seed_perched_detected)error stop 'A13 direct seed perched topology missing'
+  if(result%accepted_state_seed_raw_interflow_cm<=0.0_real64)error stop 'A13 direct seed raw interflow missing'
+  if(result%accepted_state_seed_interflow_cm<=0.0_real64)error stop 'A13 direct seed limited interflow missing'
+
   call exercise_serialized_fmr()
 
   write(*,'(*(g0))') 'PPA_WU05A7_REAL_RICHARDS|OUTER_IT=',result%outer_iterations, &
