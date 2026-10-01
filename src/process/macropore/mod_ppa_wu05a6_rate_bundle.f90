@@ -19,6 +19,8 @@ module mod_ppa_wu05a6_rate_bundle
     type(rapid_drain_request_t) :: rapid
     type(standard_inflow_limit_request_t) :: limiter
     integer :: top_node = 1
+    logical :: perched_detection_enabled = .false.
+    real(real64) :: critical_under_saturated_volume_cm = 0.0_real64
   end type macropore_rate_bundle_request_t
 
   type, public :: macropore_rate_bundle_result_t

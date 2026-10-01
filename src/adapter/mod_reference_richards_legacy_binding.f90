@@ -339,8 +339,8 @@ contains
     end if
     call validate_soil_water_request(request, common_ok)
     if (.not. common_ok) return
-    if (request%physical%macropore_active) then
-       route = 'explicit-macropore-deferred'
+    if (request%physical%macropore_active .and. .not. associated(request%evaluation%macropore)) then
+       route = 'explicit-macropore-provider-required'
        return
     end if
     if (request%numerical%conductivity_implicit_mode /= 0) then

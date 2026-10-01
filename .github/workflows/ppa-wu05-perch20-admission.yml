@@ -1,0 +1,35 @@
+name: PPA-WU05-PERCH20 production admission
+# Requalified after canonical sync 42bb867e
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/ppa-wu05-perch20-production-admission
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90'
+      - 'src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90'
+      - 'src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90'
+      - 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
+      - 'src/runtime/mod_macropore_standard_rate_adapter.f90'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'src/runtime/mod_fmr_macropore_configuration.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fsi/ppa_wu05_perch20_andelst_headcalc_stubs.f90'
+      - 'tests/fpm/test_ppa_wu05_perch20_andelst_admission.f90'
+      - 'tests/fpm/run_ppa_wu05_perch20_admission.sh'
+      - 'tests/fpm/run_ppa_wu05a10_rapid_drain.sh'
+      - '.github/workflows/ppa-wu05-perch20-admission.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clean-canonical Andelst perched admission gate
+        run: bash tests/fpm/run_ppa_wu05_perch20_admission.sh
+      - name: Preserve admitted A7-A10 default macropore route
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
