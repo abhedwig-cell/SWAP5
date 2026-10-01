@@ -90,7 +90,7 @@ program test_ppa_wu05a27_column_ablation
   enddo
   call evaluate_saturated_exchange(sq,sx)
   if(.not.sx%valid)error stop 'exchange request'
-  qdra(1,:)=sx%matrix_to_macro_amount_cm(1,:)/(dt*dz)
+  qdra(1,:)=sx%matrix_to_macro_amount_cm(1,:)/dt
  endif
  call solver%solve(q,w0,r0)
  if(r0%status/=SW_SOLVE_CONVERGED)then
@@ -98,10 +98,11 @@ program test_ppa_wu05a27_column_ablation
   error stop 'column solve'
  endif
  if(.not.r0%integrated_mass_balance_residual_available.or.abs(r0%integrated_mass_balance_residual_cm)>tol)error stop 'column mass'
- cum_exchange=cum_exchange+sum(qdra(1,:)*dz)*dt
+ cum_exchange=cum_exchange+sum(qdra(1,:))*dt
  cum_bottom=cum_bottom+r0%bottom_flux*dt
  iters=iters+r0%diagnostics%nonlinear_iterations;backs=backs+r0%diagnostics%backtracking_attempts
  q%base_state=r0%candidate_state
+ if(abs(sum(q%base_state%water_content*dz)-initial_storage-cum_bottom+cum_exchange)>1e-7_real64)error stop "whole column ledger"
  if(mod(step,max(1,ns/10))==0)then
   call cpu_time(clock1)
   print '(3(i0,","),8(es24.16,","),2(i0,","),es24.16)',soil,wet,mode,dt,step*dt,cum_exchange,cum_bottom, &
