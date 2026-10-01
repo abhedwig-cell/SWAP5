@@ -381,6 +381,7 @@ module mod_fmr_serialized_reference_backend
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace
     logical :: moving_interface_manager_enabled = .false.
+    logical :: moving_interface_interval_sources_zero = .false.
     type(fmr_moving_interface_runtime_adapter_t) :: moving_interface_adapter
     type(fmr_rossfast_solver_selection_binding_t) :: soil_water_selection
     real(real64), pointer :: qdra(:,:) => null()
@@ -1796,6 +1797,7 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
+    self%moving_interface_interval_sources_zero = .false.
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
@@ -1980,6 +1982,8 @@ contains
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
       self%qrot_zero = 0.0_real64
+      self%moving_interface_interval_sources_zero = .not. self%drainage_response_active .and. &
+           all(self%qdra == 0.0_real64) .and. all(self%qssdi == 0.0_real64) .and. all(self%qrot == 0.0_real64)
 
       if (self%drainage_qbot_smooth_freatic_projection) then
         if (allocated(self%projection_zero_direction)) then
@@ -2511,7 +2515,8 @@ contains
          effective_bottom_mode == 2 .and. effective_bottom_flux == 0.0_real64 .and. &
          self%swkimpl == 0 .and. self%swkmean == 1 .and. &
          request%boundary%top_mode == FSI_TOP_MODE_EXPLICIT_FLUX .and. associated(self%hydraulic_parameters) .and. &
-         associated(self%qdra) .and. associated(self%qssdi) .and. associated(self%qrot)
+         associated(self%qdra) .and. associated(self%qssdi) .and. associated(self%qrot) .and. &
+         self%moving_interface_interval_sources_zero
 
     if (self%macropore_active) then
       if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
@@ -2545,7 +2550,8 @@ contains
       call stage_trajectory_step_result(self%trajectory_direction, direction_token, direction_result, trajectory_stage_ok)
     else if (moving_interface_runtime_eligible) then
       call self%moving_interface_adapter%solve(self%solver, self%workspace, request, self%hydraulic_parameters, &
-           self%qdra, self%qssdi, self%qrot, solve_result, moving_interface_diagnostics, moving_interface_ok)
+           self%qdra, self%qssdi, self%qrot, self%moving_interface_interval_sources_zero, solve_result, &
+           moving_interface_diagnostics, moving_interface_ok)
       if (.not. moving_interface_ok) return
     else
       call self%solver%solve(request, self%workspace, solve_result)
