@@ -1,5 +1,5 @@
 program test_ppa_wu05a8_fmr_macropore_trial
-  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64, error_unit
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_MASS_MISSING_NONE
   use mod_canonical_contracts, only: canonical_numerical_config_t, CANONICAL_STATUS_COMPLETED
@@ -41,14 +41,14 @@ program test_ppa_wu05a8_fmr_macropore_trial
   type(b110_default_mvg_parameters_t),target :: hp
   type(b110_default_mvg_provider_t) :: hyd
   class(transaction_state_t),allocatable :: snapshot
-  real(real64),allocatable :: cofgen(:,:), static_volume(:), domain_fraction(:,:), diameter(:)
+  real(real64),allocatable :: static_volume(:), domain_fraction(:,:), diameter(:)
   real(real64),allocatable :: theta_s(:),theta_r(:),wall_correction(:),sorp_max(:),sorp_alpha(:)
   real(real64),allocatable :: conductivity(:),entry_head(:),sorp_fac_parallel(:),ksat_horizontal(:),cdarcy(:,:)
   integer,allocatable :: potential_bottom(:)
   real(real64) :: heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
   real(real64) :: macro_before, macro_after
   logical :: ok, did_commit, available
-  integer :: commit_status, i
+  integer :: commit_status
 
   call initialize_parameters(parameters)
   call initialize_macropore_config(parameters,ok)
@@ -253,7 +253,8 @@ contains
     logical,intent(in)::condition
     character(len=*),intent(in)::label
     if(.not.condition)then
-      write(*,'(a,1x,a)') 'PPA_WU05A8_FMR_FAIL',trim(label)
+      write(error_unit,'(a,1x,a)') 'PPA_WU05A8_FMR_FAIL',trim(label)
+      flush(error_unit)
       error stop 1
     end if
   end subroutine require
