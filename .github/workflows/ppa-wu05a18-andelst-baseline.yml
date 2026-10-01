@@ -9,6 +9,7 @@ on:
       - 'tests/fsi/ppa_wu05a18_andelst_headcalc_stubs.f90'
       - 'tests/fpm/test_ppa_wu05a18_andelst_perched_reference.f90'
       - 'tests/fpm/run_ppa_wu05a18_andelst_perched_reference.sh'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
       - '.github/workflows/ppa-wu05a18-andelst-baseline.yml'
 
 jobs:
