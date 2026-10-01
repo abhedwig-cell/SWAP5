@@ -60,6 +60,7 @@ contains
 
     ! Exact B1.11 covering-layer branch. Henpr1/CritHtop is zero there.
     ! This amount is an internal matrix-to-macropore transfer, not external precipitation.
+    ! MIGMAC01 transaction composition consumes the accepted amount exactly once.
     if (request%matrix_head_above_cm <= 0.0_real64) then
       ok = .true.
       return
