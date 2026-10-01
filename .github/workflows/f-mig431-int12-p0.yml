@@ -2,11 +2,8 @@ name: F-MIG431-INT12-P0 qualification
 on:
   push:
     branches: [work/f-mig431-int12-p0-aggregate-runtime]
-    paths:
-      - "src/runtime/mod_interception_source_window_runtime.f90"
-      - "tests/fpm/test_f_mig431_int12_p0.f90"
-      - "tests/fpm/run_f_mig431_int12_p0.sh"
-      - ".github/workflows/f-mig431-int12-p0.yml"
+  pull_request:
+    branches: [integration/f-ci-canonical]
   workflow_dispatch:
 jobs:
   qualify:
