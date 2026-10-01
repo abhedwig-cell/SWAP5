@@ -76,6 +76,7 @@ program test_ppa_wu05a17_serialized_inner_callback
     cofgen(7,i)=1.0_real64-1.0_real64/cofgen(6,i); cofgen(8,i)=cofgen(4,i)
     cofgen(10,i)=cofgen(3,i); cofgen(11,i)=0.999_real64; cofgen(12,i)=0.99_real64*cofgen(3,i)
     cofgen(22,i)=-1.0e6_real64; cofgen(23,i)=1.0e-12_real64
+    cofgen(24,i)=3.0e-6_real64
   end do
   ! Low-conductivity separator below the perched lens. Retention remains unchanged.
   cofgen(3,1)=1.0e-4_real64
@@ -199,6 +200,7 @@ contains
     fparams%swkimpl=0
     fparams%swkmean=5
     fparams%swsophy=0
+    fparams%elasticity_active=.true.
     fparams%max_iterations=64
     fparams%max_backtracking=24
     fparams%min_step_duration=1.0e-12_real64
@@ -229,6 +231,9 @@ contains
     allocate(initial%pressure_head(numnod),initial%water_content(numnod),initial%macropore)
     initial%pressure_head=heads
     initial%water_content=water
+    where(initial%pressure_head>=0.0_real64)
+      initial%water_content=cofgen(2,:)+initial%pressure_head*cofgen(24,:)
+    end where
     initial%ponding_depth=0.0_real64
     initial%groundwater_level=-2.0_real64
     initial%macropore=macro
