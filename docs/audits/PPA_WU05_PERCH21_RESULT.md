@@ -2,7 +2,7 @@
 
 Date: 2026-10-01
 
-Status: `QUALIFICATION_PENDING`
+Status: `QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE`
 
 Canonical reconstruction baseline:
 `integration/f-ci-canonical@59048478a7ddff4df90beb81a1f9c4ee99b0f5d0`.
@@ -29,13 +29,13 @@ rebased exactly and A26J preservation was added.
 
 ## Qualification gate
 
-Current qualification run:
+Qualified current-canonical reconstruction run:
 
-`36895719940`
+`36906093634`
 
-Qualified code postimage under test:
+Qualified code postimage:
 
-`dbeb180544269e963fa2a73ebff4732b166e83d4`.
+`708af277cecdcb40432256d55be15139d9e507e7`.
 
 The gate requires:
 
@@ -51,10 +51,10 @@ The gate requires:
 - RFM A26H wall history;
 - RFM A26J initial-storage geometry.
 
-No production-admission conclusion is recorded until this exact gate completes green.
+Run `36906093634` completed SUCCESS. All declared PERCH20, PERCH19, A10 and current RFM preservation steps passed on the same postimage.
 
-## Intended decision if green
+Decision:
 
 `QUALIFIED_PERCHED_PRODUCTION_ADMISSION_CANDIDATE`.
 
-Canonical admission remains a separate PR/merge/post-merge-preservation step.
+The later canonical delta through `42bb867e1da993fe2127d23fe3e449e5244f7407` adds only the independently admitted RFM A26K hydrostatic-head files and does not touch the PERCH21 dependency surface. Its evidence is therefore inherited under the repository's unchanged-dependency rule. Canonical admission remains a separate PR/merge/post-merge-preservation step.
