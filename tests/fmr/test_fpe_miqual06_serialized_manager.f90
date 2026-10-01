@@ -118,8 +118,14 @@ contains
 
     call backend%run_trial(column,template,parameters,committed,forcing,config,0.0_real64,dt,checkpoint, &
          result,candidate,diagnostics)
-    call require(candidate%ready(),'candidate ready')
     obs=backend%observation()
+    write(*,'(*(g0))') 'F_PE_MIQUAL06_TRIAL|MANAGER=',merge(1,0,enable_manager),'|SAT=',merge(1,0,saturated), &
+         '|STATUS=',result%status,'|COMPLETED=',merge(1,0,result%completed),'|CANDIDATE=',merge(1,0,candidate%ready()), &
+         '|ADMISSION_REJ=',diagnostics%admission_rejections,'|SOLVER_REJ=',diagnostics%solver_rejections, &
+         '|MASS_REJ=',diagnostics%mass_rejections,'|TEMP_REJ=',diagnostics%temporal_rejections, &
+         '|ATTEMPTS=',diagnostics%attempts,'|SOLVER_EXEC=',merge(1,0,obs%solver_executed), &
+         '|SOLVER_STATUS=',obs%solver_status
+    call require(candidate%ready(),'candidate ready')
     call require(obs%solver_executed,'solver executed')
     call candidate%snapshot(snapshot,available)
     call require(available,'candidate snapshot available')
