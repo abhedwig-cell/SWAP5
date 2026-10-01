@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MIG431-LOW05-A",
+  "baseline": "44c6df02a58edee79f88dde8ca8aadbec26337fc",
+  "last_reconciled_upstream": "44c6df02a58edee79f88dde8ca8aadbec26337fc",
+  "status": "BLOCKED_SHARED_AUTHORITY_PREREQUISITE",
+  "branch": null,
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_admitted": false,
+  "review_checks": "local source hash/roundtrip/staging/arithmetic checks PASS; no production qualification",
+  "blockers": [
+    "F-MIG431-LOW05-P0"
+  ],
+  "next_action": "Resolve LOW05-P0 before LOW05-A production implementation branch issuance",
+  "recovery_point": "this record and companion feasibility review in their containing Git commit",
+  "authority_paths": [
+    "AGENTS.md",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "docs/migration/F-MIG431-LOW01A_CLOSEOUT.md",
+    "docs/numerics/transactional-time-stepping.md",
+    "docs/capabilities/restart-v1.md",
+    "src/runtime/mod_groundwater_coupling_contract.f90"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90",
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/runtime/mod_fmr_committed_restart.f90"
+  ],
+  "evidence_paths": [
+    "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
+    "integration/audits/F-MIG431-LOW05A_FEASIBILITY_RESULT.json",
+    "docs/migration/F-MIG431-LOW05A_FEASIBILITY_REVIEW.md",
+    "integration/audits/F-MIG431-LOW05P0_PREREQUISITE.json"
+  ],
+  "nonclaims": [
+    "all lower boundaries migrated",
+    "LOW05-A officially issued",
+    "new groundwater owner",
+    "production qualification"
+  ]
+}
