@@ -256,3 +256,37 @@ Neither solve is evidence of cross-timestep oxygen storage.
 ### New optimization target
 
 The earlier statement that removing the outer Newton route structurally removes all SWAP-007-like risk was too broad. SWAP-007 is in the inner MACRO Newton solve for `l`. A clean SWAP5 kernel should therefore also replace or robustly bound that inner solve rather than merely changing the outer SOLVE policy.
+
+
+## Reconstruction checkpoint R6 — MACRO inner solve is uniquely bracketable
+
+For the legacy high-demand MACRO branch define
+
+```text
+A = shape_microbial^2 * r_microbial_z0 / d_soil
+B = shape_root^2      * r_mroot_z0      / d_soil
+
+f(l) = ctop
+     - A * [1 - (l/sm) exp(-l/sm) - exp(-l/sm)]
+     - B * [1 - (l/sr) exp(-l/sr) - exp(-l/sr)]
+```
+
+The exact derivative is
+
+```text
+f'(l) = -(r_microbial_z0/d_soil) * l * exp(-l/sm)
+        -(r_mroot_z0/d_soil)     * l * exp(-l/sr)
+```
+
+which is the derivative visible in the SWAP-007 source patch.
+
+For physically non-negative respiration and positive diffusivity:
+- `f(0)=ctop`;
+- `f'(l)<0` for `l>0` whenever demand is nonzero;
+- `lim(l->infinity) f(l)=ctop-A-B = ctop-dum`.
+
+The legacy code enters this solve when `dum >= ctop`. Therefore for `dum > ctop` there is exactly one positive finite root. At equality the root is asymptotic/infinite.
+
+Conclusion: restart-based Newton is not required by the mathematics. The physical problem is a monotone one-dimensional bracketed root.
+
+A pure bounded candidate `mod_oxygen_macro_zero_depth` was added. It brackets by deterministic upper-bound expansion and then bisects. This removes derivative division and restart policy from the candidate kernel. It is research code pending 4.3.1 numerical parity tests.
