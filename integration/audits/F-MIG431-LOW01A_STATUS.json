@@ -3,7 +3,7 @@
   "work_unit": "F-MIG431-LOW01-A",
   "capability": "SWBOTB=4 q(gwl) lower-boundary migration",
   "branch": "work/f-mig431-low01a-qgwl-boundary",
-  "status": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "status": "CANONICAL_ADMITTED_CLOSED",
   "canonical_reconciled": "19f09b818b1bb30c1428919074c00098dbd062bd",
   "qualification_head": "32747a69ee6ff5e5a6937bb9433746391d977ee9",
   "qualification_run": 36926021938,
@@ -24,5 +24,8 @@
   },
   "reconcile_note": "LOW01-A q(gwl) seam replayed onto canonical backend after RFM/macropore backend evolution; final gate passed. Canonical advanced one further documentation-only commit after the reconciled base; no runtime/authority file changed.",
   "scope_claim": "SWBOTB=4 only",
-  "next": "central F-MIG431 regie may admit this candidate to canonical"
+  "next": "none; LOW01-A closed",
+  "canonical_merge_commit": "5ab13625c757407e633d0871fea663a5b6fabaeb",
+  "closeout_commit": "ffd0745109d6c7cc9e3bca3ccf41b5cc38c0edeb",
+  "admission_pr": 972
 }
