@@ -29,8 +29,8 @@ program test_ppa_wu05a26_live_trial_preparer
  use mod_rfm_live_trial_preparer
  implicit none
  type(p_t)::p;type(process_hydraulic_view_t)::v;type(rfm_runtime_configuration_t)::c
- type(rfm_surface_forcing_t)::f;type(rfm_physical_state_t)::a,snap,h1,h2,h4
- type(rfm_physical_state_t)::h1,h2,h4
+ type(rfm_surface_forcing_t)::f;type(rfm_physical_state_t)::a,snap,state_full,state_half,state_quarter
+ type(rfm_physical_state_t)::state_full,state_half,state_quarter
  type(soil_water_top_boundary_result_t)::top;type(rfm_live_trial_prepare_result_t)::r,r2,rr
  logical::ok;integer::i;real(real64)::depth(2),thick(2),d12,d24
  call a%initialize(1,ok);if(.not.ok)error stop 'init';call copy_rfm_physical_state(a,snap,ok)
@@ -63,19 +63,19 @@ program test_ppa_wu05a26_live_trial_preparer
  ! Frozen-hydraulic timestep refinement: compare one full, two half and four quarter candidate integrations.
  top%net_potential_surface_flux=8._real64
  call prepare_rfm_live_trial(a,c,f,v,p,top,depth,thick,.04_real64,1e-10_real64,r);if(.not.r%valid)error stop 'ref full'
- call copy_rfm_physical_state(r%candidate%candidate_rfm,h1,ok);if(.not.ok)error stop 'ref full copy'
- call copy_rfm_physical_state(a,h2,ok);if(.not.ok)error stop 'ref half init'
+ call copy_rfm_physical_state(r%candidate%candidate_rfm,state_full,ok);if(.not.ok)error stop 'ref full copy'
+ call copy_rfm_physical_state(a,state_half,ok);if(.not.ok)error stop 'ref half init'
  do i=1,2
-   call prepare_rfm_live_trial(h2,c,f,v,p,top,depth,thick,.02_real64,1e-10_real64,rr);if(.not.rr%valid)error stop 'ref half'
-   call copy_rfm_physical_state(rr%candidate%candidate_rfm,h2,ok);if(.not.ok)error stop 'ref half copy'
+   call prepare_rfm_live_trial(state_half,c,f,v,p,top,depth,thick,.02_real64,1e-10_real64,rr);if(.not.rr%valid)error stop 'ref half'
+   call copy_rfm_physical_state(rr%candidate%candidate_rfm,state_half,ok);if(.not.ok)error stop 'ref half copy'
  end do
- call copy_rfm_physical_state(a,h4,ok);if(.not.ok)error stop 'ref quarter init'
+ call copy_rfm_physical_state(a,state_quarter,ok);if(.not.ok)error stop 'ref quarter init'
  do i=1,4
-   call prepare_rfm_live_trial(h4,c,f,v,p,top,depth,thick,.01_real64,1e-10_real64,rr);if(.not.rr%valid)error stop 'ref quarter'
-   call copy_rfm_physical_state(rr%candidate%candidate_rfm,h4,ok);if(.not.ok)error stop 'ref quarter copy'
+   call prepare_rfm_live_trial(state_quarter,c,f,v,p,top,depth,thick,.01_real64,1e-10_real64,rr);if(.not.rr%valid)error stop 'ref quarter'
+   call copy_rfm_physical_state(rr%candidate%candidate_rfm,state_quarter,ok);if(.not.ok)error stop 'ref quarter copy'
  end do
- d12=abs(sum(h1%endpoint_water_cm)-sum(h2%endpoint_water_cm))
- d24=abs(sum(h2%endpoint_water_cm)-sum(h4%endpoint_water_cm))
+ d12=abs(sum(state_full%endpoint_water_cm)-sum(state_half%endpoint_water_cm))
+ d24=abs(sum(state_half%endpoint_water_cm)-sum(state_quarter%endpoint_water_cm))
  if(d24>d12+1e-12_real64)error stop 'refinement not contracting'
  print '(a)','PPA_WU05A26_ZERO_RFM_LIMIT=PASS'
  print '(a)','PPA_WU05A26_TIMESTEP_REFINEMENT=PASS'
