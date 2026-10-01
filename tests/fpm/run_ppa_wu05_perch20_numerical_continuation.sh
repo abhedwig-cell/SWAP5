@@ -20,6 +20,7 @@ MODULE_SRC=(
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_accepted_trajectory_directional_publication.f90
   src/transaction/mod_transaction_reference.f90
+  src/transaction/mod_ppa_wu05_perch19_frreduq_controller.f90
   src/adapter/mod_fmr_mode7_temporal_head_envelope.f90
   src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
@@ -102,6 +103,7 @@ MODULE_SRC=(
   src/runtime/mod_rfm_surface_forcing.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
+  src/transaction/mod_ppa_wu05_perch20_continuation_binding.f90
 )
 
 for opt in 0 2; do
@@ -118,6 +120,8 @@ for opt in 0 2; do
   grep -Fq 'PPA_WU05_PERCH20_CLONE_PAYLOAD=PASS' "$OUT/out.txt" || fail "clone marker O$opt"
   grep -Fq 'PPA_WU05_PERCH20_RESTART_MATCH=PASS' "$OUT/out.txt" || fail "restart marker O$opt"
   grep -Fq 'PPA_WU05_PERCH20_FAIL_CLOSED=PASS' "$OUT/out.txt" || fail "fail closed marker O$opt"
+  grep -Fq 'PPA_WU05_PERCH20_CONTROLLER_BINDING=PASS' "$OUT/out.txt" || fail "controller marker O$opt"
+  grep -Fq 'PPA_WU05_PERCH20_REJECT_ISOLATION=PASS' "$OUT/out.txt" || fail "isolation marker O$opt"
   grep -Fq 'PPA_WU05_PERCH20_CARRIER_GATE=PASS' "$OUT/out.txt" || fail "gate marker O$opt"
   echo "PPA_WU05_PERCH20_RUNTIME_O${opt}=PASS"
 done
