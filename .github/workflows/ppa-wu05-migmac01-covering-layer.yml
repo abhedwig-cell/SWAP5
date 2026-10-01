@@ -25,5 +25,7 @@ jobs:
         run: bash tests/fpm/run_ppa_wu05_migmac01_covering_layer.sh
       - name: Compile composition and preserve PERCH20 transaction semantics
         run: bash tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh
+      - name: Qualify active covered-transfer E2E
+        run: bash tests/fpm/run_ppa_wu05_migmac01_active_e2e.sh
       - name: Preserve PERCH20 reject restart lifecycle
         run: bash tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh
