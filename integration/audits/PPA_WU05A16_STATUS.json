@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.ppa_wu05a16.status.v1",
+  "workunit": "PPA-WU05-A16",
+  "phase": "CLOSED_QUALIFIED_RESEARCH_PROTOTYPE",
+  "decision": "QUALIFIED_INNER_CALLBACK_PROTOTYPE",
+  "baseline": "dec0211bbae0a8e57b539cb7a95bf47e3d4ebc54",
+  "canonical_reconciliation": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "branch": "research/ppa-wu05-a16-inner-callback-prototype",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admission_candidate": false,
+  "canonical_admitted": false,
+  "closed": true,
+  "qualified_postimage": "dc0e8dec75188dcbeb2fe61ce81ee94965aaa155",
+  "qualification_run": 36843916653,
+  "qualification_job": 110309361642,
+  "qualified_scope": [
+    "split current-iterate macropore rate and derivative provider ABI",
+    "HeadCalc vector_F residual composition",
+    "HeadCalc jacobian_F local diagonal composition",
+    "provider-absent and inactive-path preservation",
+    "analytical current-iterate callback solution",
+    "read-only actual A11/A6/A15 provider",
+    "accepted seven-field state isolation"
+  ],
+  "analytical_evidence": {
+    "calls": 3,
+    "first_head_cm": -1.0,
+    "last_head_cm": -1.0526315789473681,
+    "expected_head_cm": -1.0526315789473684,
+    "nonlinear_iterations": 2
+  },
+  "actual_provider_evidence": {
+    "first_exchange_cm_per_day": -4.571428571428572,
+    "second_exchange_cm_per_day": -6.777777777777779,
+    "perched_dqdh": 0.0,
+    "accepted_state_unchanged": true
+  },
+  "preservation": {
+    "a15": "PASS",
+    "corrected_a11": "PASS",
+    "a7_a8_a9_a10": "PASS",
+    "run": 36843916653
+  },
+  "not_admitted": [
+    "serialized FMR inner-callback transaction integration",
+    "inner-callback reject/replay/restart",
+    "production perched runtime",
+    "canonical perched admission"
+  ],
+  "next_action": "Open PPA-WU05-A17 serialized inner-callback transaction integration using A16 provider; retain legacy outer route when disabled.",
+  "recovery_point": "dc0e8dec75188dcbeb2fe61ce81ee94965aaa155"
+}
