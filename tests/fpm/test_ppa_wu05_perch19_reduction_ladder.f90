@@ -17,6 +17,8 @@ program test_ppa_wu05_perch19_reduction_ladder
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t,initialize_fmr_macropore_standard_config
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t,macropore_runtime_policy_t, &
        macropore_runtime_result_t,MACRO_RUNTIME_CONVERGED
+  use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t, &
+       reduction_after_retry,reduction_after_accept
   implicit none
 
   real(real64),parameter :: dt=2.0e-3_real64
