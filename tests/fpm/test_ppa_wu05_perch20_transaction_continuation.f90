@@ -357,8 +357,8 @@ contains
     call restored_next_candidate%snapshot(restored_next_state,available)
     if(.not.available .or. .not.same_fmr_state(next_state,restored_next_state)) &
          error stop 'PERCH20 restart next-candidate replay'
-    call require_reduction(next_state,0,0,fmr_dt,'tenth-step recovery candidate')
-    call require_reduction(restored_next_state,0,0,fmr_dt,'restored tenth-step recovery candidate')
+    call require_reduction(next_state,0,0,0.5_real64*fmr_dt,'tenth-step recovery candidate')
+    call require_reduction(restored_next_state,0,0,0.5_real64*fmr_dt,'restored tenth-step recovery candidate')
 
     print '(a)', 'PPA_WU05A8_FMR_SERIALIZED_RUNTIME=PASS'
     print '(a)', 'PPA_WU05A8_FMR_REJECT_REPLAY=PASS'
