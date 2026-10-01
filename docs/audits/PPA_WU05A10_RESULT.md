@@ -6,11 +6,11 @@ Status: QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE
 
 Baseline: `integration/f-ci-canonical@7db09b56deb99decf32f47d2deed72710a04e8b5`
 
-Qualified code/test postimage: `7ddb02ba2ed774f046fd36e451f8cf1bd02c8338`
+Qualified code/test postimage: `2714c755c50e1ea1ea3bb4e6fc466ce21c9f4e80`
 
 Qualification workflow: `.github/workflows/ppa-wu05a10-rapid-drain.yml`
 
-Qualification run: `36828966630` — SUCCESS
+Qualification run: `36829166995` — SUCCESS
 
 ## Qualified scope
 
@@ -65,7 +65,8 @@ The gate proves:
 - commit;
 - persistence export/restore;
 - restart continuation and identical next candidate;
-- O0/O2 output identity.
+- O0/O2 output identity;
+- unaligned within-compartment drain levels fail closed in production configuration validation.
 
 ## Preservation
 
