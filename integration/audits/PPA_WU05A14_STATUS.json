@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.ppa_wu05a14.status.v1",
+  "workunit": "PPA-WU05-A14",
+  "phase": "CLOSED_TRUE_OWNERSHIP_BLOCKER",
+  "decision": "RUNTIME_RFM_SOURCE_PARTITION_BLOCKED_ON_JOINT_SURFACE_COMPOSITION_OWNER",
+  "baseline": "ad0737b1a9968ba7a14933dd8332b37f94ad8a37",
+  "branch": "audit/ppa-wu05-a14-rfm-effective-supply-ownership",
+  "production_mutation": false,
+  "qualified_prerequisites": {
+    "a11": "CLOSED_CANONICAL_ADMITTED",
+    "a12": "CLOSED_CANONICAL_ADMITTED",
+    "a13": "CLOSED_CANONICAL_ADMITTED"
+  },
+  "ownership": {
+    "matrix_dynamic_top_owner": "available",
+    "a9_source_component_carrier": "available",
+    "common_effective_infiltrating_supply_receipt": "absent",
+    "matrix_actual_top_flux_as_rfm_source": "rejected_circular",
+    "a9_requested_source_as_rfm_source": "rejected_semantic_mismatch",
+    "a9_post_limiter_receipt_as_rfm_source": "rejected_wrong_ownership_stage"
+  },
+  "runtime_rfm_partition_authorized": false,
+  "new_runoff_law_authorized": false,
+  "existing_a8_a9_a10_preserved": true,
+  "resume_condition": "new preregistered joint surface composition owner with exact mass and transactional semantics",
+  "stop_rule": "TRUE_OWNERSHIP_BLOCKER"
+}
