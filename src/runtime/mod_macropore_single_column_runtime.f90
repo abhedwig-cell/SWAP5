@@ -190,6 +190,10 @@ contains
     rate_template_step%limiter%potential_top_vertical_cm=requested_top_vertical
     rate_template_step%limiter%potential_top_lateral_cm=requested_top_lateral
     result%requested_top_input_cm=sum(requested_top_vertical)+sum(requested_top_lateral)
+    if(geometry_config%top_node>1 .and. result%requested_top_input_cm>1.0e-14_real64)then
+      result%status=MACRO_RUNTIME_FAILED
+      return
+    end if
 
     call derive_macropore_standard_storage_view(accepted_macro,geometry_config%top_node, &
          base_request%parameters%z,base_request%parameters%dz,accepted_view)
