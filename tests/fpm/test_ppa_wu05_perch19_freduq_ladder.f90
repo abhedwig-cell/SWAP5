@@ -131,7 +131,7 @@ program test_ppa_wu05_perch19_freduq_ladder
   request%numerical%max_backtracking=4
   request%numerical%conductivity_implicit_mode=0
   request%numerical%conductivity_mean_method=1
-  request%numerical%min_step_duration=dt
+  request%numerical%min_step_duration=1.0e-5_real64
   request%numerical%compartment_balance_tolerance=1.0e-6_real64
   request%numerical%total_balance_tolerance=1.0e-5_real64
   request%numerical%head_abs_tolerance=1.0e-2_real64
@@ -210,6 +210,23 @@ program test_ppa_wu05_perch19_freduq_ladder
   macro_policy%solver_mass_tolerance_cm=1.0e-8_real64
   macro_policy%internal_exchange_tolerance_cm=1.0e-9_real64
 
+  ! Above dtmin, exact source ordering gives temporal ownership priority:
+  ! only FrReduQ=1 is attempted and retry is returned to the timestep owner.
+  call macro_runtime%execute(solver,workspace,request,macro,macro_config%geometry,macro_config%rate_template, &
+       macro_config%history_template,macro_policy,macro_result)
+  write(*,'(*(g0))') 'PPA_WU05_PERCH19_ABOVE_DTMIN|STATUS=',macro_result%status, &
+       '|ATTEMPTS=',macro_result%source_reduction_attempts, &
+       '|FACTOR=',macro_result%source_reduction_factor, &
+       '|DTMIN_GATE=',macro_result%source_reduction_dtmin_gate
+  call require(macro_result%status==3,'PERCH19 above-dtmin returns retry')
+  call require(.not.macro_result%source_reduction_dtmin_gate,'PERCH19 above-dtmin gate closed')
+  call require(macro_result%source_reduction_attempts==1,'PERCH19 above-dtmin only factor one')
+  call require(abs(macro_result%source_reduction_factor-1.0_real64)<1.0e-15_real64, &
+       'PERCH19 above-dtmin factor one')
+  call require(maxval(abs(macro%water_domain_cp))==0.0_real64,'PERCH19 above-dtmin accepted macro unchanged')
+
+  ! At dtmin, retry the same accepted-state trial through the exact source ladder.
+  request%numerical%min_step_duration=dt
   call macro_runtime%execute(solver,workspace,request,macro,macro_config%geometry,macro_config%rate_template, &
        macro_config%history_template,macro_policy,macro_result)
   write(*,'(*(g0))') 'PPA_WU05_PERCH19_LADDER|STATUS=',macro_result%status, &
