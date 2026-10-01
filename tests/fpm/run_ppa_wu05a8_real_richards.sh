@@ -33,7 +33,6 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_table_provider.f90
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
-  src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/runtime/mod_macropore_continuation_state.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_process.f90
@@ -67,6 +66,7 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
+  src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/adapter/mod_b110_serialized_context_binding.f90
   src/process/mod_snow_process.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
