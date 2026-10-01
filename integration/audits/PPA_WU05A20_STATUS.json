@@ -1,16 +1,16 @@
 {
   "schema": "swap5.ppa_wu05a20.status.v1",
   "workunit": "PPA-WU05-A20",
-  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
-  "decision": "QUALIFIED_RFM_OPTIONAL_STATE_CARRIER_FAIL_CLOSED_RUNTIME",
+  "phase": "CLOSED_CANONICAL_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_RFM_OPTIONAL_STATE_CARRIER_FAIL_CLOSED_RUNTIME",
   "baseline": "100704c5a7283ae592bfa2104928ac16cd7ba32d",
   "branch": "work/ppa-wu05-a20-rfm-optional-state-layout",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
-  "closed": false,
+  "canonical_admitted": true,
+  "closed": true,
   "qualified_postimage": "183360a3207cb5c6e83ef6881f65bba2260ddf0e",
   "qualification_run": 36868999374,
   "layout_id": 505002,
@@ -24,5 +24,17 @@
     "external_restart_codec": false,
     "live_rfm_runtime": false
   },
-  "next": "canonical admission and closeout; then A21 may preregister the first live bounded RFM runtime composition only after forcing/parameter ownership and whole-column mass accounting are explicit."
+  "next": "A21 bounded live RFM runtime composition preregistration; must make forcing/parameter ownership, matrix rebinding, fast-state update and whole-column mass accounting explicit before removing the runtime reject guard.",
+  "admission_pr": 946,
+  "canonical_merge": "1472797d5e1b8d61175c5eb760d63a364adaf0cb",
+  "postmerge_preservation": {
+    "method": "dependency-surface blob identity inheritance",
+    "runtime_core_blob_sha": "283c812deeaec151caad520adfb3d8df39e894d0",
+    "backend_blob_sha": "e0e995783bfe5c92c8a58c385c05f0bb25faaf60",
+    "test_blob_sha": "62974abf9a58a645e822454b5288c4830963a0f2",
+    "runner_blob_sha": "1c91c2a2935fdfee9c51a299fac9d06c2c15bdb4",
+    "qualified_postimage": "183360a3207cb5c6e83ef6881f65bba2260ddf0e",
+    "canonical_merge": "1472797d5e1b8d61175c5eb760d63a364adaf0cb",
+    "unchanged": true
+  }
 }
