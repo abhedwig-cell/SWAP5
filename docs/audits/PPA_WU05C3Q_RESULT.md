@@ -169,3 +169,26 @@ C3Q/C3P now jointly establish:
 
 Remaining admission work is end-to-end production wiring/configuration and preservation regression,
 not redesign of the physical kernel.
+
+
+## C3P production-composition gate
+
+The first production-composition workflow failure was diagnosed as test-harness dependency ordering,
+not an oxygen/composition defect: `mod_process_hydraulic_view` was compiled before its existing
+`mod_soil_water_solver_contract` dependency. The runner was repaired without changing production
+physics. A pre-existing unused-dummy warning in the broad solver contract is scoped out only for
+this focused composition harness; oxygen/composition sources remain under `-Wall -Wextra -Werror`.
+
+Persisted rerun:
+- workflow: `PPA WU05 C3P oxygen composition`
+- run: `36919068192`
+- job: `110560257874`
+- result: SUCCESS
+- observed gate: `PPA_WU05C3P_ROOT_OXYGEN_COMPOSITION=PASS`
+
+This qualifies the production ownership seam tested here:
+the existing drought/root-water-uptake process owns and computes the base root extraction sink;
+the oxygen composition layer applies a bounded [0,1] modifier only to rooted nodes and recomputes
+the resulting uptake total. Oxygen does not book water independently.
+
+C3P focused composition status: `PASS`.
