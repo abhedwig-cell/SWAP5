@@ -17,6 +17,7 @@ module mod_rfm_runtime_orchestrator
     real(real64) :: effective_supply_rate_cm_per_day=0.0_real64
     real(real64) :: matrix_supply_rate_cm_per_day=0.0_real64
     integer, allocatable :: endpoint_node_index(:)
+    integer :: mb_wall_node_index=0
     real(real64), allocatable :: node_thickness_cm(:)
     type(rfm_endpoint_release_request_t) :: endpoint_release
     type(rfm_mb_fate_request_t) :: mb_fate
@@ -62,6 +63,7 @@ contains
     if(.not.allocated(request%node_thickness_cm).or.size(request%node_thickness_cm)<=0)return
     if(any(request%node_thickness_cm<=0.0_real64).or.any(.not.ieee_is_finite(request%node_thickness_cm)))return
     if(any(request%endpoint_node_index<1).or.any(request%endpoint_node_index>size(request%node_thickness_cm)))return
+    if(request%mb_wall_node_index<1.or.request%mb_wall_node_index>size(request%node_thickness_cm))return
 
     effective_cm=request%effective_supply_rate_cm_per_day*request%step_duration_day
     matrix_cm=request%matrix_supply_rate_cm_per_day*request%step_duration_day
@@ -103,9 +105,8 @@ contains
       result%matrix_source_rate_per_day(node)=result%matrix_source_rate_per_day(node)+ &
         result%endpoint_release%release_to_matrix_cm(i)/(request%node_thickness_cm(node)*request%step_duration_day)
     end do
-    ! MB wall exchange is assigned by the caller to an explicit owning node.
-    ! For A25 slice 1, require endpoint_node_index(1) as the explicit MB wall owner.
-    node=request%endpoint_node_index(1)
+    ! MB wall exchange uses an explicit caller-owned matrix-node mapping.
+    node=request%mb_wall_node_index
     result%matrix_source_rate_per_day(node)=result%matrix_source_rate_per_day(node)+ &
       result%mb_fate%wall_to_matrix_cm/(request%node_thickness_cm(node)*request%step_duration_day)
 
