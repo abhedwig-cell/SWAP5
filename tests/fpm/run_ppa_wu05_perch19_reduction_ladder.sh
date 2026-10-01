@@ -2,21 +2,14 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ppa-wu05a20-rfm-layout-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ppa-wu05-perch19-baseline-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
-fail(){ echo "PPA_WU05A20_FAIL $*" >&2; exit 1; }
-
-grep -Fq 'FMR_OPTIONAL_STATE_LAYOUT_RFM = 505002_int64' src/runtime/mod_fmr_runtime_core.f90 || fail 'layout id missing'
-grep -Fq 'type, extends(fmr_b110_physical_state_t), public :: fmr_b110_rfm_state_t'   src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'RFM carrier missing'
-grep -Fq 'physical%rfm%storage_cm()' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'RFM storage accounting missing'
-grep -Fq 'full%rfm%same_values(half%rfm)' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'RFM temporal identity missing'
-grep -Fq 'template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM'   src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'RFM runtime reject guard missing'
-echo 'PPA_WU05A20_STATIC_BINDING=PASS'
+fail(){ echo "PPA_WU05A18_FAIL $*" >&2; exit 1; }
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace)
 MODULE_SRC=(
-  tests/fsi/fsi04_real_headcalc_stubs.f90
+  tests/fsi/ppa_wu05a18_andelst_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
@@ -103,8 +96,6 @@ MODULE_SRC=(
   src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_macropore_configuration.f90
-  src/runtime/mod_rfm_runtime_configuration.f90
-  src/runtime/mod_rfm_surface_forcing.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
 )
@@ -116,14 +107,14 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT"     -c tests/fpm/test_ppa_wu05a20_rfm_optional_state_layout.f90 -o "$OUT/test.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fpm/test_ppa_wu05_perch19_reduction_ladder.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" | tee "$OUT/out.txt"
-  grep -Fq 'PPA_WU05A20_RFM_OPTIONAL_STATE_LAYOUT=PASS' "$OUT/out.txt" || fail "missing O$opt marker"
-  echo "PPA_WU05A20_RUNTIME_O${opt}=PASS"
+  grep -Fq 'PPA_WU05A18_SOURCE_ACCEPTED_SNAPSHOT=PASS' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05A18_REFERENCE_RICHARDS_BASELINE=PASS' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05A18_PERCHED_TOPOLOGY_RETAINED=PASS' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05A18_BASELINE_GATE=PASS' "$OUT/out.txt"
 done
-
-cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt" || fail 'O0/O2 semantic drift'
-git diff --check -- src/runtime/mod_fmr_runtime_core.f90 src/runtime/mod_fmr_serialized_reference_backend.f90   tests/fpm/test_ppa_wu05a20_rfm_optional_state_layout.f90
-
-echo 'PPA_WU05A20_RFM_OPTIONAL_STATE_GATE=PASS'
+cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
+echo "PPA_WU05A18_BASELINE_O0_O2=PASS"

@@ -1,0 +1,55 @@
+name: PPA-WU05-PERCH21 canonical reconstruction
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/ppa-wu05-perch21-current-canonical
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/process/macropore/**'
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_macropore_configuration.f90'
+      - 'src/runtime/mod_macropore_standard_rate_adapter.f90'
+      - 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
+      - 'src/runtime/mod_rfm_*.f90'
+      - 'tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh'
+      - 'tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh'
+      - 'tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh'
+      - 'tests/fpm/run_ppa_wu05a10_rapid_drain.sh'
+      - 'tests/fpm/run_ppa_wu05a20_rfm_optional_state_layout.sh'
+      - 'tests/fpm/run_ppa_wu05a25_rfm_node_sorptivity.sh'
+      - 'tests/fpm/run_ppa_wu05a25_rfm_runtime_orchestrator.sh'
+      - 'tests/fpm/run_ppa_wu05a26h_wall_history.sh'
+      - '.github/workflows/ppa-wu05-perch21-canonical.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PERCH20 restart lifecycle
+        run: bash tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh
+      - name: PERCH20 transaction continuation
+        run: bash tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh
+      - name: PERCH19 Andelst active retry
+        run: bash tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh
+      - name: Preserve admitted A10 rapid drainage
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
+      - name: Preserve canonical RFM optional-state carrier
+        run: bash tests/fpm/run_ppa_wu05a20_rfm_optional_state_layout.sh
+      - name: Preserve canonical RFM real-Richards split
+        run: bash tests/fpm/run_ppa_wu05a24_real_richards_split.sh
+      - name: Preserve canonical RFM matrix source provider
+        run: bash tests/fpm/run_ppa_wu05a24_rfm_matrix_source_provider.sh
+      - name: Preserve canonical RFM node sorptivity
+        run: bash tests/fpm/run_ppa_wu05a25_rfm_node_sorptivity.sh
+      - name: Preserve canonical RFM runtime orchestrator
+        run: bash tests/fpm/run_ppa_wu05a25_rfm_runtime_orchestrator.sh
+      - name: Preserve canonical RFM wall history
+        run: bash tests/fpm/run_ppa_wu05a26h_wall_history.sh
