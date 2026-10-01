@@ -95,10 +95,10 @@ contains
     n=matrix%active_nodes
     if(n<=1 .or. critical_under_saturated_volume_cm<0.0_real64)return
     if(size(theta_s)/=n .or. size(z)/=n .or. size(dz)/=n .or. any(dz<=0.0_real64))return
+    if(any(z(1:n-1)<=z(2:n)))return
     if(.not.matrix_view%valid)return
     if(.not.allocated(matrix%pressure_head) .or. .not.allocated(matrix%water_content))return
     if(size(matrix%pressure_head)/=n .or. size(matrix%water_content)/=n)return
-    if(any(theta_s<matrix%water_content-1.0e-10_real64))return
 
     ! Exact 4.3.1 CALCGWL/MACROSTATE carrier semantics, represented as a
     ! recomputable hydraulic view. A whole-profile saturated state has no
