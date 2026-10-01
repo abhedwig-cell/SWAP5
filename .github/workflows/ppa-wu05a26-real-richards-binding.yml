@@ -1,0 +1,11 @@
+name: PPA-WU05-A26 real Richards binding
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a26-rfm-live-composition
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpm/run_ppa_wu05a26_real_richards_binding.sh
