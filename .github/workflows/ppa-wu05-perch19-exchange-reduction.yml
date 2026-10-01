@@ -1,0 +1,20 @@
+name: PPA-WU05-PERCH19 FrReduQ state machine
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-perch19-freduq-state-machine
+    paths:
+      - 'src/runtime/mod_ppa_wu05_perch19_exchange_reduction.f90'
+      - 'tests/fpm/test_ppa_wu05_perch19_exchange_reduction.f90'
+      - 'tests/fpm/run_ppa_wu05_perch19_exchange_reduction.sh'
+      - '.github/workflows/ppa-wu05-perch19-exchange-reduction.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact FrReduQ state-machine oracle
+        run: bash tests/fpm/run_ppa_wu05_perch19_exchange_reduction.sh
