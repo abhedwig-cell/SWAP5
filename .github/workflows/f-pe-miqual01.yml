@@ -1,0 +1,28 @@
+name: F-PE-MIQUAL01 broad post-admission moving-interface qualification
+
+on:
+  push:
+    branches:
+      - research/f-pe-miqual01-broad-postadmission-qualification
+    paths:
+      - 'docs/performance/F-PE-MIQUAL01_PREREGISTRATION.md'
+      - 'tests/fpe/run_fpe_miqual01.py'
+      - 'tests/fpe/run_fpe_miqual01.sh'
+      - 'tests/fpe/test_fpe_nlglob14z43_profile.f90'
+      - 'tests/fpe/materialize_fpe_nlglob14z43c_maxit16.py'
+      - 'tests/fpe/test_fpe_nlglob14z43a_reference_solvability.f90'
+      - 'tests/fpe/test_fpe_nlglob14z43_admission_holdout.f90'
+      - '.github/workflows/f-pe-miqual01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_miqual01.sh
