@@ -1774,6 +1774,8 @@ contains
     real(real64) :: black_values(9), boesten_values(9)
     real(real64) :: macro_surface_direct_rate, expected_matrix_top_flux, flux_scale
     self%forcing_admitted = .false.
+    self%macropore_surface_forcing_active = .false.
+    self%macropore_surface_forcing = macropore_surface_forcing_t()
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
@@ -2497,9 +2499,17 @@ contains
       if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
       select type (physical_macro => state)
       class is (fmr_b110_physical_state_t)
-        call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
-             self%macropore_config%geometry, self%macropore_config%rate_template, &
-             self%macropore_config%history_template, self%macropore_policy, macropore_result)
+        if (self%macropore_surface_forcing_active) then
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+               surface_forcing=self%macropore_surface_forcing, &
+               surface_geometry=self%macropore_config%surface_geometry)
+        else
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result)
+        end if
       class default
         return
       end select
