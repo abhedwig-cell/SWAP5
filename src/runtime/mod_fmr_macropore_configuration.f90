@@ -7,6 +7,7 @@ module mod_fmr_macropore_configuration
   private
 
   public :: initialize_fmr_macropore_standard_config
+  public :: configure_fmr_macropore_rapid_drainage
 
   type, public :: fmr_macropore_physical_config_t
     type(macropore_geometry_config_t) :: geometry
@@ -179,6 +180,29 @@ contains
 
   end subroutine initialize_fmr_macropore_standard_config
 
+  subroutine configure_fmr_macropore_rapid_drainage(config, drain_type, drain_level_cm, area_exponent, &
+       kd_reference, resistance_reference_day, ok)
+    type(fmr_macropore_physical_config_t),intent(inout)::config
+    integer,intent(in)::drain_type
+    real(real64),intent(in)::drain_level_cm,area_exponent,kd_reference,resistance_reference_day
+    logical,intent(out)::ok
+
+    ok=.false.
+    if(.not.config%geometry%valid())return
+    if(drain_type<1)return
+    if(area_exponent<=0.0_real64 .or. kd_reference<0.0_real64 .or. resistance_reference_day<=0.0_real64)return
+
+    config%rate_template%rapid%enabled=.true.
+    config%rate_template%rapid%drain_type=drain_type
+    config%rate_template%rapid%drain_level_cm=drain_level_cm
+    config%rate_template%rapid%area_exponent=area_exponent
+    config%rate_template%rapid%kd_reference=kd_reference
+    config%rate_template%rapid%resistance_reference_day=resistance_reference_day
+
+    ok=config%rate_template%rapid%valid()
+    if(.not.ok)config%rate_template%rapid%enabled=.false.
+  end subroutine configure_fmr_macropore_rapid_drainage
+
   pure logical function fmr_macropore_config_valid_for_nodes(self, active_nodes) result(ok)
     class(fmr_macropore_physical_config_t), intent(in) :: self
     integer, intent(in) :: active_nodes
@@ -220,9 +244,10 @@ contains
     if (any(abs(self%rate_template%limiter%potential_top_vertical_cm) > 1.0e-15_real64)) return
     if (any(abs(self%rate_template%limiter%potential_top_lateral_cm) > 1.0e-15_real64)) return
 
-    ! Rapid drainage remains out of the first FMR admission slice.
-    if (self%rate_template%rapid%enabled) return
-
+    ! A10 may opt in source-bound domain-1 rapid drainage. The typed rapid
+    ! request owns its immutable physical parameters; dynamic water level,
+    ! active domain bottom, top saturation and volume-under-drain are derived
+    ! per trial by the standard rate adapter.
     ! Template geometry/history must use the same top node.
     if (self%history_template%top_node /= self%geometry%top_node) return
     if (self%rate_template%top_node /= self%geometry%top_node) return
