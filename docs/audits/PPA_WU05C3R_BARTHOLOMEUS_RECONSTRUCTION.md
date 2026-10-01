@@ -175,3 +175,23 @@ The old experiments establish strong algorithmic evidence but were performed in 
 - state/ownership proof at the SWAP5 interface;
 - direct comparison of Newton versus bracketed solve cost/robustness;
 - requalification on current SWAP5 hydraulic/thermal owner views.
+
+
+## Reconstruction checkpoint R3 — standalone solver skeleton
+
+The historical C3A/C3B workflow names were recovered only from a failed reconcile-tree transcript. No complete source/result artefacts were recovered and no corresponding PR is present in current repository history. They are therefore classified as provenance clues only and are not used as qualification evidence.
+
+A new independent research component was added under `src/physics/oxygen/mod_oxygen_scalar_bracket.f90`.
+
+Properties:
+- pure residual callback;
+- no SWAP globals or I/O;
+- exact maximum-demand no-stress fast exit;
+- explicit full-stress endpoint;
+- bounded bisection for an interior root;
+- no persistent state;
+- no Newton derivative and therefore no SWAP-007 overflow route in this candidate execution policy.
+
+This is not yet the Bartholomeus kernel. It is the solver-policy component into which the exact reconstructed physical residual can later be injected.
+
+A focused standalone test covers no-stress, full-stress and interior-root behavior. No GitHub Actions workflow is added at this stage.
