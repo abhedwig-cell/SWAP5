@@ -1,7 +1,10 @@
 module mod_root_uptake_oxygen_composition
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t
+  use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_root_water_uptake_process, only: root_water_uptake_parameters_t, root_water_uptake_request_t, &
+       root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t, evaluate_macro_feddes_drought_uptake, &
+       ROOT_UPTAKE_OK
   implicit none
   private
 
@@ -10,8 +13,31 @@ module mod_root_uptake_oxygen_composition
   integer, parameter, public :: ROOT_OXYGEN_COMPOSE_INVALID_FACTOR = 2
 
   public :: compose_root_sink_with_oxygen_factor
+  public :: evaluate_macro_feddes_drought_oxygen_uptake
 
 contains
+
+  subroutine evaluate_macro_feddes_drought_oxygen_uptake(parameters, hydraulic_view, request, oxygen_factor, &
+                                                          fluxes, diagnostics, status)
+    type(root_water_uptake_parameters_t), intent(in) :: parameters
+    type(process_hydraulic_view_t), intent(in) :: hydraulic_view
+    type(root_water_uptake_request_t), intent(in) :: request
+    real(real64), intent(in) :: oxygen_factor(:)
+    type(root_water_uptake_flux_result_t), intent(out) :: fluxes
+    type(root_water_uptake_diagnostics_t), intent(out) :: diagnostics
+    integer, intent(out) :: status
+    type(root_water_uptake_flux_result_t) :: drought_fluxes
+
+    call evaluate_macro_feddes_drought_uptake(parameters, hydraulic_view, request, drought_fluxes, diagnostics)
+    if (diagnostics%status /= ROOT_UPTAKE_OK) then
+      fluxes = root_water_uptake_flux_result_t()
+      status = ROOT_OXYGEN_COMPOSE_SHAPE
+      return
+    end if
+
+    call compose_root_sink_with_oxygen_factor(drought_fluxes, request%rooted_nodes, oxygen_factor, fluxes, status)
+  end subroutine evaluate_macro_feddes_drought_oxygen_uptake
+
 
   subroutine compose_root_sink_with_oxygen_factor(base_fluxes, rooted_nodes, oxygen_factor, fluxes, status)
     type(root_water_uptake_flux_result_t), intent(in) :: base_fluxes
