@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.ppa_wu05a15.status.v1",
+  "workunit": "PPA-WU05-A15",
+  "phase": "CLOSED_QUALIFIED_FOLLOWUP_RESULT",
+  "decision": "QUALIFIED_SOURCE_FAITHFUL_EXCHANGE_DERIVATIVE",
+  "baseline": "ad18a3f3551a13f49abd221c6ea53158c043dab9",
+  "canonical_reconciliation": "ebea588070f7a44dbaea78169f2548c745061c48",
+  "branch": "research/ppa-wu05-a15-exchange-derivative",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": true,
+  "qualified_postimage": "0b678c48c7bf6d44be45b24ad4985f2c9b04b3db",
+  "qualification_run": 36840728248,
+  "qualification_job": 110298954048,
+  "qualified_scope": [
+    "standard swabs=1 sorptivity derivative",
+    "Darcy unsaturated derivative",
+    "ordinary main saturated exchange derivative",
+    "explicit zero derivative for perched QInIntSat",
+    "side-effect-free typed node derivative aggregation"
+  ],
+  "negative_source_evidence": {
+    "perched_qinintsat_derivative": "ABSENT_IN_B1_11_MACRORATE_2",
+    "covering_layer": "SOURCE_MAPPED_NOT_IMPLEMENTED_CURRENT_SCOPE"
+  },
+  "preservation": {
+    "corrected_a11": "PASS",
+    "a7_a8_a9_a10": "PASS",
+    "run": 36840728248
+  },
+  "not_admitted": [
+    "HeadCalc macropore provider wiring",
+    "solver ABI extension",
+    "serialized active perched production runtime",
+    "canonical perched admission"
+  ],
+  "next_action": "Open PPA-WU05-A16 research callback prototype using the qualified A15 derivative and corrected A11 carrier.",
+  "recovery_point": "0b678c48c7bf6d44be45b24ad4985f2c9b04b3db"
+}
