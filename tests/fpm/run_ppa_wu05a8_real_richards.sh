@@ -28,6 +28,7 @@ MODULE_SRC=(
   src/runtime/mod_rossfast_d3r_execution_policy.f90
   src/runtime/mod_rossfast_d3r_model_binding.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_rossfast_d3r_table_kernel.f90
   src/solver/mod_rossfast_d3r_table_provider.f90
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
@@ -51,7 +52,6 @@ MODULE_SRC=(
   src/process/mod_soil_temperature_contract.f90
   src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
-  src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
