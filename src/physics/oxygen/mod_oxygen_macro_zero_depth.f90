@@ -78,7 +78,7 @@ contains
       do i = 1, nmax
          mid = 0.5_real64*(lo+hi)
          fmid = oxygen_macro_zero_residual(mid, ctop, microbial_scale, root_scale, microbial_shape, root_shape)
-         if (abs(hi-lo) <= tol*max(1.0_real64,abs(mid)) .or. fmid == 0.0_real64) then
+         if (abs(hi-lo) <= tol*max(1.0_real64,abs(mid))) then
             lroot = mid
             status = OXYGEN_MACRO_ROOT_OK
             if (present(iterations)) iterations = i
