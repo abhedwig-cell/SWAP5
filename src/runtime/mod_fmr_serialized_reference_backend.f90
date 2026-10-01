@@ -1956,6 +1956,16 @@ contains
         if (.not. allocated(forcing%drainage_flux_by_level) .or. allocated(forcing%drainage_response_controls)) return
         if (size(forcing%drainage_flux_by_level,1) <= 0 .or. size(forcing%drainage_flux_by_level,2) /= n) return
       end if
+      if (forcing%external_top_surface_water_supplied) then
+        if (.not. self%soil_water_selection%uses_reference()) return
+        if (.not. all(ieee_is_finite([forcing%external_top_surface_water_head_cm, &
+             forcing%external_top_surface_water_sill_cm,forcing%top_precipitation_rate_cm_per_day, &
+             forcing%top_irrigation_rate_cm_per_day,forcing%top_snowmelt_rate_cm_per_day, &
+             forcing%top_runon_rate_cm_per_day,forcing%top_bare_soil_evaporation_rate_cm_per_day, &
+             forcing%top_pond_evaporation_rate_cm_per_day,forcing%top_ponding_max_cm, &
+             forcing%top_runoff_resistance_day,forcing%top_runoff_exponent]))) return
+        if (forcing%top_runoff_resistance_day < 0.0_real64 .or. forcing%top_runoff_exponent <= 0.0_real64) return
+      end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
       if (self%root_extraction_active) then
         if (any(forcing%root_extraction_sink < 0.0_real64)) return
