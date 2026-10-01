@@ -100,3 +100,13 @@ each Richards candidate head and booked exactly once as internal matrix-to-macro
 That composition must prove reject/replay/restart and preserve A9/A10/PERCH21.
 
 No direct rain shortcut for `IcTopMp > 1` is permitted.
+
+## Runtime ownership correction
+
+Active E2E diagnostics showed that the existing A9 top-input preparer intentionally rejects
+`top_node > 1`. MIGMAC01 therefore must not call that surface-connected preparer for a
+covered route. The runtime now preserves A9 unchanged for `top_node == 1`; for
+`top_node > 1` it requires the external top-input carrier to be unsupplied/zero and creates
+zero external requested-top arrays locally. The only covered source is then the B1.11
+trial-head-dependent internal transfer. This is an ownership correction, not a relaxation of
+A9's fail-closed contract.
