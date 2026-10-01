@@ -1,0 +1,26 @@
+name: F-PE-MIQUAL12 manager component-cost attribution
+
+on:
+  push:
+    branches:
+      - research/f-pe-miqual12-manager-component-cost-attribution
+    paths:
+      - 'docs/performance/F-PE-MIQUAL12_PREREGISTRATION.md'
+      - 'src/runtime/mod_fmr_moving_interface_runtime_adapter.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpe/materialize_fpe_miqual12_profile.py'
+      - 'tests/fmr/run_fpe_miqual12_profile.sh'
+      - '.github/workflows/f-pe-miqual12.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmr/run_fpe_miqual12_profile.sh
