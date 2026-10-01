@@ -82,7 +82,7 @@ for opt in 0 2; do
     tests/fpm/test_ppa_wu05a26_real_richards_binding.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" | tee "$OUT/out.txt"
-  grep -Fq 'PPA_WU05A26_REAL_RICHARDS_SPLIT=PASS' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05A26_REAL_RICHARDS_BINDING=PASS' "$OUT/out.txt"
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
-echo "PPA_WU05A26_REAL_RICHARDS_SPLIT_GATE=PASS"
+echo "PPA_WU05A26_REAL_RICHARDS_BINDING_GATE=PASS"
