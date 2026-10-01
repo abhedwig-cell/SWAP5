@@ -274,12 +274,12 @@ contains
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
          kres,candidate,kdiag,trusted_prepared_parameters=.true.)
     write(*,'(*(g0))') 'PPA_WU05A8_FMR_TRIAL_DIAG|STATUS=',kres%status,'|COMPLETED=',kres%completed, &
-         '|TEMP_ERR=',kres%temporal_error,'|TEMP_REJ=',kdiag%temporal_rejections, &
+         '|TEMP_ERR=',kdiag%max_temporal_indicator,'|TEMP_REJ=',kdiag%temporal_rejections, &
          '|MASS_REJ=',kdiag%mass_rejections,'|SOLVER_REJ=',kdiag%solver_rejections, &
          '|MASS=',kres%mass%residual
     if(.not.kres%completed .or. .not.candidate%ready())error stop 'A8 FMR active serialized trial'
     if(.not.kres%mass%complete .or. abs(kres%mass%residual)>1.0e-8_real64)error stop 'A8 FMR mass receipt'
-    if(kres%temporal_error>numerical%transaction%temporal_tolerance) &
+    if(kdiag%max_temporal_indicator>numerical%transaction%temporal_tolerance) &
          error stop 'A8 FMR temporal physical norm exceeded'
 
     call committed%snapshot(after_trial_state,available)
