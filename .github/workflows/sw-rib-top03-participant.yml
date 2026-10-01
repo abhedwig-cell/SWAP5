@@ -1,0 +1,25 @@
+name: SW-RIB-TOP03 participant transaction qualification
+on:
+  push:
+    branches: [work/sw-rib-top03-transactional-top-exchange]
+    paths:
+      - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'
+      - 'src/runtime/mod_fmr_surface_water_component_receipt.f90'
+      - 'tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90'
+      - 'tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh'
+      - '.github/workflows/sw-rib-top03-participant.yml'
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_surface_water_swap_participant.f90'
+      - 'src/runtime/mod_fmr_surface_water_component_receipt.f90'
+      - 'tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90'
+      - 'tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh'
+      - '.github/workflows/sw-rib-top03-participant.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh
