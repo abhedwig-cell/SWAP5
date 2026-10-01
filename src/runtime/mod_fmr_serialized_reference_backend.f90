@@ -207,6 +207,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
+    logical :: external_top_surface_water_capable = .false.
     logical :: macropore_active = .false.
     type(fmr_macropore_physical_config_t), allocatable :: macropore
     logical :: snow_active = .false.
@@ -1673,15 +1674,16 @@ contains
     class(kernel_parameters_t), intent(in) :: parameters
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     logical :: ok
-    ok = associated(self%top_boundary) .and. numerical_config%max_committed_substeps > 0 .and. &
-         self%state_profile_admitted
+    ok = numerical_config%max_committed_substeps > 0 .and. self%state_profile_admitted
     if (self%fixed_weir_surface_water_active) then
       ok = ok .and. self%fixed_weir_surface_water_configured .and. .not. self%temporal_indicator_history_enabled .and. &
            numerical_config%transaction%temporal_mode == TX_TEMPORAL_EXTERNAL_FULL_HALF
     end if
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
-      ok = ok .and. parameters%parameter_set_id > 0_int64 .and. parameters%active_nodes > 0 .and. &
+      ok = ok .and. (associated(self%top_boundary) .or. &
+           (parameters%external_top_surface_water_capable .and. self%soil_water_selection%uses_reference())) .and. &
+           parameters%parameter_set_id > 0_int64 .and. parameters%active_nodes > 0 .and. &
            allocated(parameters%z) .and. allocated(parameters%dz) .and. allocated(parameters%node_distance) .and. &
            allocated(parameters%cofgen)
       if (ok) ok = size(parameters%z) == parameters%active_nodes .and. &
