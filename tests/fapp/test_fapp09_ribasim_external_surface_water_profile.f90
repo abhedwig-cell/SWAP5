@@ -40,6 +40,7 @@ program test_fapp09_ribasim_external_surface_water_profile
   call verify_owner_xor()
   call verify_positive_recomposition_and_commit()
   call verify_external_top_observation()
+  call verify_external_top_component_transaction()
   call verify_negative_commit()
   call verify_stale_origin()
   write(*,'(A)') 'FAPP09_RIBASIM_EXTERNAL_SURFACE_WATER_PROFILE=PASS'
@@ -231,6 +232,8 @@ contains
 
     call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
     parameters%external_top_surface_water_capable=.true.
+    parameters%max_iterations=80
+    parameters%max_backtracking=16
     parameters%drainage_response_active=.false.
     if(allocated(parameters%drainage_response_levels))deallocate(parameters%drainage_response_levels)
     base%external_top_surface_water_supplied=.true.
@@ -259,18 +262,118 @@ contains
       write(*,'(A,L1)')'TOP03_DIAG_EXEC_ADMITTED=',observation%execution_admission_preview
       write(*,'(A,L1)')'TOP03_DIAG_SOLVER_EXECUTED=',observation%solver_executed
       write(*,'(A,I0)')'TOP03_DIAG_SOLVER_STATUS=',observation%solver_status
+      write(*,'(A,I0)')'TOP03_DIAG_ITERATIONS=',observation%solver_diagnostics%nonlinear_iterations
       write(*,'(A,ES24.16)')'TOP03_DIAG_QTOP=',observation%top_flux
       write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
       write(*,'(A,L1)')'TOP03_DIAG_EXEC_PREVIEW=',observation%execution_admission_preview
     end if
     call require(result%completed.and.candidate%ready(),'external top trial completed')
     observation=backend%observation()
+    call require(observation%solver_status==1,'external top Richards converged')
+    call require(result%mass%complete,'external top ledger complete')
+    call require(abs(result%mass%residual)<=config%transaction%mass_tolerance,'external top ledger closure')
+    call require(abs(observation%top_surface_signed_swap_to_external_cm + &
+         result%mass%total_in-result%mass%total_out-base%bottom_flux*duration)<=1.0e-10_real64, &
+         'selected whole-window transfer matches independent ledger')
     call require(observation%top_surface_exchange_available,'external top observation available')
     call require(observation%top_surface_signed_swap_to_external_cm<0.0_real64,'external top inundation signed negative')
     call require(abs(observation%top_surface_closure_residual_cm)<=exchange_tol,'external top surface closure')
     call backend%discard_trial_candidate(candidate,diagnostics)
     write(*,'(A)')'TOP03_ACCEPTED_TOP_OBSERVATION=PASS'
   end subroutine verify_external_top_observation
+
+
+  subroutine verify_external_top_component_transaction()
+    type(kernel_committed_state_t) :: committed,other
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: base,forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fmr_surface_water_head_forcing_materializer_t) :: materializer
+    type(fmr_surface_water_swap_participant_t) :: participant
+    type(fmr_surface_water_trial_t) :: trial
+    type(fmr_surface_water_component_receipt_t) :: receipt
+    type(fmr_serialized_physical_observation_t) :: observation
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_result_t) :: result0,result1
+    type(kernel_diagnostics_t) :: diagnostics
+    type(fmr_b110_physical_state_t) :: state
+    real(real64) :: heads(1),expected,replayed
+    logical :: did_commit,ok
+    integer :: status
+
+    call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
+    call backend%initialize(top)
+    call materializer%initialize(base,parameters,status)
+    heads(1)=-12.25_real64
+    call materializer%materialize(heads,forcing,status)
+    call committed%capture_checkpoint(checkpoint,ok)
+    call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result0,candidate,diagnostics)
+    call require(result0%completed,'preservation baseline completed')
+    call backend%discard_trial_candidate(candidate,diagnostics)
+    parameters%external_top_surface_water_capable=.true.
+    call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result1,candidate,diagnostics)
+    call require(result1%completed,'capability-on forcing-off preservation completed')
+    call require(result0%mass%total_in==result1%mass%total_in.and.result0%mass%total_out==result1%mass%total_out, &
+         'capability-on forcing-off identical ledger')
+    call backend%discard_trial_candidate(candidate,diagnostics)
+    write(*,'(A)')'TOP03_CAPABILITY_ON_FORCING_OFF_PRESERVATION=PASS'
+
+    parameters%max_iterations=80
+    parameters%max_backtracking=16
+    base%top_flux=0.0_real64
+    base%external_top_surface_water_supplied=.true.
+    base%external_top_surface_water_head_cm=0.02_real64
+    base%external_top_surface_water_sill_cm=0.01_real64
+    base%top_ponding_max_cm=1.0_real64
+    base%top_runoff_resistance_day=1.0_real64
+    base%top_runoff_exponent=1.0_real64
+    call materializer%initialize(base,parameters,status)
+    call require(status==FMR_SW_HEAD_FORCING_OK,'top component materializer initialized')
+    heads(1)=0.02_real64
+    call participant%capture_origin(committed,status)
+    call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial,status)
+    call require(status==FMR_SW_PARTICIPANT_OK.and.trial%valid,'top component real trial completed')
+    observation=backend%observation()
+    expected=observation%top_surface_signed_swap_to_external_cm
+    call require(observation%top_surface_exchange_available.and.expected<0.0_real64,'top component negative inundation')
+    call require(committed%current_revision()==0_int64,'top trial remains tentative')
+    call require(.not.participant%publication_ready(committed,t0,t1,trial%signed_soil_to_surface_exchange_cm,exchange_tol), &
+         'top-active scalar publication rejected')
+    call participant%commit_candidate(backend,committed,t0,t1,trial%signed_soil_to_surface_exchange_cm,exchange_tol,did_commit,status)
+    call require(.not.did_commit.and.participant%has_live_candidate().and.participant%has_origin(),'scalar bypass preserves candidate')
+    receipt%valid=.true.
+    receipt%top_swap_to_surface_cm=expected+0.01_real64
+    receipt%subsurface_swap_to_surface_cm=trial%signed_soil_to_surface_exchange_cm-0.01_real64
+    call participant%commit_component_candidate(backend,committed,t0,t1,expected,receipt,exchange_tol,did_commit,status)
+    call require(.not.did_commit.and.committed%current_revision()==0_int64,'scalar-total masking rejected')
+    receipt%subsurface_swap_to_surface_cm=trial%signed_soil_to_surface_exchange_cm
+    call participant%commit_component_candidate(backend,committed,t0,t1,expected,receipt,exchange_tol,did_commit,status)
+    call require(.not.did_commit.and.participant%has_live_candidate().and.participant%has_origin(),'wrong top receipt preserves live origin')
+
+    call participant%discard_candidate(backend)
+    heads(1)=0.03_real64
+    call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial,status)
+    call require(status==FMR_SW_PARTICIPANT_OK.and.trial%valid,'same-origin changed head replay')
+    observation=backend%observation()
+    replayed=observation%top_surface_signed_swap_to_external_cm
+    call require(abs(replayed-expected)>exchange_tol,'resolved head changes accepted top transfer')
+    call build_base_state(parameters,state)
+    call fmr_new_b110_committed_state(other,column_id+1_int64,state,t0,ok)
+    receipt%top_swap_to_surface_cm=replayed
+    receipt%subsurface_swap_to_surface_cm=trial%signed_soil_to_surface_exchange_cm
+    call participant%commit_component_candidate(backend,other,t0,t1,replayed,receipt,exchange_tol,did_commit,status)
+    call require(.not.did_commit.and.other%current_revision()==0_int64.and.participant%has_live_candidate(),'top stale origin rejected')
+    call participant%commit_component_candidate(backend,committed,t0,t1,replayed,receipt,exchange_tol,did_commit,status)
+    call require(did_commit.and.status==FMR_SW_PARTICIPANT_OK.and.committed%current_revision()==1_int64,'top correct exactly-once commit')
+    call participant%commit_component_candidate(backend,committed,t0,t1,replayed,receipt,exchange_tol,did_commit,status)
+    call require(.not.did_commit.and.committed%current_revision()==1_int64,'top duplicate commit rejected')
+    write(*,'(A)')'TOP03_REAL_COMPONENT_TRANSACTION=PASS'
+  end subroutine verify_external_top_component_transaction
 
   subroutine verify_negative_commit()
     type(kernel_committed_state_t) :: committed
