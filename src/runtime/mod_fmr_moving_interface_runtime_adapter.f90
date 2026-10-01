@@ -197,9 +197,10 @@ contains
       if (.not. associated(self%reduced_constitutive)) allocate(self%reduced_constitutive)
       call bind_b110_default_mvg_provider(self%reduced_constitutive, self%reduced_hydraulics, full_request%step_duration)
 
-      if (.not. associated(self%reduced_qdra) .or. size(self%reduced_qdra,1) /= levels .or. &
-          size(self%reduced_qdra,2) /= n) then
-        if (associated(self%reduced_qdra)) deallocate(self%reduced_qdra)
+      if (.not. associated(self%reduced_qdra)) then
+        allocate(self%reduced_qdra(levels,n), self%reduced_qssdi(n), self%reduced_qrot(n))
+      else if (size(self%reduced_qdra,1) /= levels .or. size(self%reduced_qdra,2) /= n) then
+        deallocate(self%reduced_qdra)
         if (associated(self%reduced_qssdi)) deallocate(self%reduced_qssdi)
         if (associated(self%reduced_qrot)) deallocate(self%reduced_qrot)
         allocate(self%reduced_qdra(levels,n), self%reduced_qssdi(n), self%reduced_qrot(n))
