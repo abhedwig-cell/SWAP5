@@ -52,6 +52,8 @@ A9 does not admit or infer:
 
 Unsupported combinations remain fail-closed.
 
+For the first admitted slice, an explicitly supplied macropore top-input carrier is also not composed with the FMR snow, Black evaporation, Boesten evaporation, or fixed-weir surface-water routes. Those routes may share the same surface-water source ownership and require a separate composition contract before combination.
+
 ## Ownership invariants
 
 1. Top forcing is explicit dynamic forcing, never immutable macropore configuration.
