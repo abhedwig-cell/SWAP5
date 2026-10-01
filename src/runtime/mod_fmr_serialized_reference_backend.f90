@@ -83,6 +83,7 @@ module mod_fmr_serialized_reference_backend
        evaluate_restricted_fixed_weir_surface_water, validate_fixed_weir_surface_water_parameters, &
        FIXED_WEIR_AVAILABLE
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
+  use mod_macropore_surface_top_input, only: macropore_surface_forcing_t
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
        macropore_runtime_result_t, MACRO_RUNTIME_CONVERGED, MACRO_RUNTIME_RETRY
@@ -263,6 +264,7 @@ module mod_fmr_serialized_reference_backend
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
+    type(macropore_surface_forcing_t), allocatable :: macropore_surface
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -408,6 +410,8 @@ module mod_fmr_serialized_reference_backend
     logical :: root_extraction_active = .false.
     logical :: macropore_active = .false.
     type(fmr_macropore_physical_config_t), allocatable :: macropore_config
+    logical :: macropore_surface_forcing_active = .false.
+    type(macropore_surface_forcing_t) :: macropore_surface_forcing
     type(macropore_runtime_policy_t) :: macropore_policy
     logical :: macropore_policy_configured = .false.
     type(macropore_single_column_runtime_t) :: macropore_runtime
@@ -937,6 +941,8 @@ contains
     call self%clear_fixed_weir_surface_water()
     self%model%macropore_active = .false.
     if (allocated(self%model%macropore_config)) deallocate(self%model%macropore_config)
+    self%model%macropore_surface_forcing_active = .false.
+    self%model%macropore_surface_forcing = macropore_surface_forcing_t()
     self%model%macropore_policy = macropore_runtime_policy_t()
     self%model%macropore_policy_configured = .false.
     call self%kernel%bind_model(self%model)
@@ -1766,6 +1772,7 @@ contains
     type(canonical_numerical_config_t), intent(in) :: config
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9)
+    real(real64) :: macro_surface_direct_rate, expected_matrix_top_flux, flux_scale
     self%forcing_admitted = .false.
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
@@ -1817,6 +1824,31 @@ contains
     type is (fmr_b110_physical_forcing_t)
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
+      self%macropore_surface_forcing_active = .false.
+      self%macropore_surface_forcing = macropore_surface_forcing_t()
+      if (self%macropore_active .and. allocated(self%macropore_config)) then
+        if (self%macropore_config%surface_top_input_enabled) then
+          if (.not. allocated(forcing%macropore_surface)) return
+          if (.not. forcing%macropore_surface%valid()) return
+          if (forcing%macropore_surface%lateral_overland_to_macropores_cm /= 0.0_real64) return
+          if (self%black_evaporation_active .or. self%boesten_evaporation_active .or. &
+              self%fixed_weir_surface_water_active) return
+          macro_surface_direct_rate = forcing%macropore_surface%precipitation_rate_cm_per_day + &
+               forcing%macropore_surface%irrigation_rate_cm_per_day + &
+               forcing%macropore_surface%snowmelt_rate_cm_per_day
+          expected_matrix_top_flux = -((1.0_real64-self%macropore_config%surface_geometry%top_area_fraction) * &
+               macro_surface_direct_rate + forcing%macropore_surface%runon_rate_cm_per_day)
+          flux_scale = max(1.0_real64,abs(expected_matrix_top_flux),abs(forcing%top_flux))
+          if (abs(forcing%top_flux-expected_matrix_top_flux) > 64.0_real64*epsilon(1.0_real64)*flux_scale) return
+          self%macropore_surface_forcing = forcing%macropore_surface
+          self%macropore_surface_forcing_active = .true.
+        else
+          if (allocated(forcing%macropore_surface)) return
+        end if
+      else
+        if (allocated(forcing%macropore_surface)) return
+      end if
+
       if (self%drainage_response_active) then
         if (allocated(forcing%drainage_flux_by_level) .or. .not. allocated(self%drainage_response_levels) .or. &
             .not. allocated(forcing%drainage_response_controls)) return
@@ -2731,6 +2763,12 @@ contains
     real(real64) :: value, external_top_flux
     external_top_flux = solver_top_flux
     if (self%snow_active) external_top_flux = self%base_top_flux
+    if (self%macropore_surface_forcing_active) then
+      external_top_flux = -(self%macropore_surface_forcing%precipitation_rate_cm_per_day + &
+           self%macropore_surface_forcing%irrigation_rate_cm_per_day + &
+           self%macropore_surface_forcing%snowmelt_rate_cm_per_day + &
+           self%macropore_surface_forcing%runon_rate_cm_per_day)
+    end if
     total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration
     total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration
     do i = 1, size(self%qssdi)
