@@ -70,3 +70,21 @@ The stored legacy `c_min_micro` after ZBREND is not a valid parity oracle for th
 - add fresh MICRO-at-returned-root diagnostics for exact formula parity;
 - qualify the reference water-film policy;
 - then create the production composition candidate.
+
+
+## Post-result implementation hardening
+
+The persisted candidate was reviewed against strict GNU warning semantics before production wiring.
+
+Corrections made:
+- the inner bounded zero-depth routine is now `pure`, matching its use from the pure MACRO evaluator;
+- the outer residual callback interface is no longer incorrectly constrained to `pure`, allowing explicit fail-closed propagation of invalid physical evaluation;
+- unused bisection endpoint assignments were removed;
+- real equality checks in the scalar gate were removed;
+- a composed-kernel smoke gate and a non-owning root-sink composition gate were added.
+
+A separate `mod_bartholomeus_root_uptake_composition` now expresses the intended ownership boundary:
+the existing root process supplies the base sink, oxygen supplies only factors in [0,1], and composition
+returns one final sink vector. It performs no mass booking and owns no accepted state.
+
+Production wiring remains disabled until the strict compiled gate and refreshed return-root diagnostics pass.
