@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.f_macro_emp01.status.v1",
+  "status": "QUALIFIED_PONDED_BOUNDARY_RESULT_UNPONDED_SIGMA_AMOUNT_BLOCKED",
+  "branch": "research/f-macro-empirical01-multievent-qualification",
+  "canonical_authority": "integration/f-ci-canonical@ebea588070f7a44dbaea78169f2548c745061c48",
+  "frozen_rfm_parameters": [
+    "sigma_B",
+    "f_MB",
+    "p"
+  ],
+  "north_china": {
+    "doi": "10.1016/j.geoderma.2022.116205",
+    "boundary": "ponded_head_controlled",
+    "ly": {
+      "n": 9,
+      "mean_pf_fraction": 0.981111111111111,
+      "range": [
+        0.97,
+        0.99
+      ]
+    },
+    "sz": {
+      "n": 8,
+      "mean_pf_fraction": 0.39375,
+      "range": [
+        0,
+        0.77
+      ]
+    },
+    "sigma_B_calibration_authorized": false,
+    "future_ponded_gate": true
+  },
+  "evidence_matrix": {
+    "NEON": "unponded activation ordering supported; amount not observed",
+    "Spechtacker": "depth forward + held-out validation qualified; source partition not directly observed",
+    "HILLSCAPE": "quantitative downstream same-event receipt; not direct source partition",
+    "GFZ": "depth/morphology evidence; direct morphology-to-water operator rejected",
+    "North_China": "direct quantitative PF amount; ponded regime"
+  },
+  "decisive_gap": "direct quantitative matrix-versus-preferential source partition under unponded forcing with independent hydraulic state",
+  "production_change": false,
+  "rfm_physics_change": false
+}
