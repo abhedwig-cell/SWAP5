@@ -231,6 +231,7 @@ contains
 
     call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
     parameters%external_top_surface_water_capable=.true.
+    parameters%external_top_surface_water_capable=.true.
     base%external_top_surface_water_supplied=.true.
     base%external_top_surface_water_head_cm=0.50_real64
     base%external_top_surface_water_sill_cm=0.10_real64
