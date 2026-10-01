@@ -1,15 +1,15 @@
-module mod_bartholomeus_waterfilm_reference
+module mod_bartholomeus_waterfilm_independent
    use iso_fortran_env, only : real64
    use mod_bartholomeus_waterfilm, only : BartholomeusWaterfilmMvgInput, &
                                            bartholomeus_waterfilm_mvg_integrand, &
                                            bartholomeus_waterfilm_from_length_density
    implicit none
    private
-   public :: bartholomeus_waterfilm_mvg_reference
+   public :: bartholomeus_waterfilm_mvg_independent
 
 contains
 
-   pure function bartholomeus_waterfilm_mvg_reference(matric_potential_pa,p,ok) result(thickness)
+   pure function bartholomeus_waterfilm_mvg_independent(matric_potential_pa,p,ok) result(thickness)
       real(real64), intent(in) :: matric_potential_pa
       type(BartholomeusWaterfilmMvgInput), intent(in) :: p
       logical, intent(out) :: ok
@@ -65,4 +65,4 @@ contains
       s = h*s
    end function
 
-end module mod_bartholomeus_waterfilm_reference
+end module mod_bartholomeus_waterfilm_independent
