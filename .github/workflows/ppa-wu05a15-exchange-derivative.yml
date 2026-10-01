@@ -1,0 +1,24 @@
+name: PPA-WU05-A15 exchange derivative
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-a15-exchange-derivative
+    paths:
+      - 'src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90'
+      - 'tests/fpm/test_ppa_wu05a15_exchange_derivative.f90'
+      - 'tests/fpm/run_ppa_wu05a15_exchange_derivative.sh'
+      - '.github/workflows/ppa-wu05a15-exchange-derivative.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: A15 exact exchange derivative gate
+        run: bash tests/fpm/run_ppa_wu05a15_exchange_derivative.sh
+      - name: Preserve corrected A11 carrier
+        run: bash tests/fpm/run_ppa_wu05a11_perched.sh
+      - name: Preserve A7-A10 admitted macropore route
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
