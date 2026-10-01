@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.ppa_wu05a15.status.v1",
+  "workunit": "PPA-WU05-A15",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_BOUNDED_UNPONDED_RFM_SURFACE_COMPOSITION_RECEIPT",
+  "baseline": "d89912713f9182f4a5319a54cb6094930d38e2cd",
+  "branch": "work/ppa-wu05-a15-rfm-unponded-surface-composition",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "qualified_postimage": "1056406db887aab0b3fe13d3a5071da5965275fa",
+  "qualification_run": 36863638042,
+  "scope": {
+    "b110_preflight_flux_only": true,
+    "unponded_only": true,
+    "runoff_free_only": true,
+    "effective_supply_owner": "preflight.net_potential_surface_flux",
+    "actual_top_flux_as_source": false,
+    "runtime_request_mutation": false,
+    "preferential_routing": false
+  },
+  "blocker_resolution": {
+    "a14_unponded_subset": "resolved",
+    "ponded_head_controlled": "still_blocked"
+  },
+  "next": "A16 may rebind only the matrix share into a fresh dynamic-top request and prove the recomposed case remains flux-controlled; preferential routing remains separate."
+}
