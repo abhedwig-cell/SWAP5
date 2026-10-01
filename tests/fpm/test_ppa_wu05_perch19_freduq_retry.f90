@@ -245,6 +245,10 @@ program test_ppa_wu05_perch19_freduq_retry
        macro_result%source_flow_reduction_factor
   print '(a)', 'PPA_WU05A18_ACTIVE_PERCHED_INNER=PASS'
   print '(a)', 'PPA_WU05A18_INNER_MASS_CLOSURE=PASS'
+  print '(a)', 'PPA_WU05_PERCH19_EXACT_LADDER=PASS'
+  print '(a)', 'PPA_WU05_PERCH19_ACCEPTED_STATE_ISOLATION=PASS'
+  print '(a)', 'PPA_WU05_PERCH19_ACTIVE_PERCHED=PASS'
+  print '(a)', 'PPA_WU05_PERCH19_GATE=PASS'
 
 contains
 
