@@ -296,6 +296,8 @@ contains
       error stop 'A13 accepted-state seed candidate diagnostic type'
     end select
     write(*,'(*(g0))') 'PPA_WU05A13_SEED_OBS|ACTIVE=',observation%macropore_accepted_state_seed_active, &
+         '|PERCHED=',observation%macropore_accepted_state_seed_perched_detected, &
+         '|RAW_INTERFLOW=',observation%macropore_accepted_state_seed_raw_interflow_cm, &
          '|INTERFLOW=',observation%macropore_accepted_state_seed_interflow_cm
     if(.not.observation%macropore_accepted_state_seed_active)error stop 'A13 accepted-state seed missing'
     if(observation%macropore_accepted_state_seed_interflow_cm<=0.0_real64) &
