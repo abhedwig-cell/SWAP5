@@ -77,6 +77,9 @@ program test_ppa_wu05a12_fmr_perched_runtime
     cofgen(22,i)=-1.0e6_real64; cofgen(23,i)=1.0e-12_real64
   end do
   ! Low-conductivity separator below the perched lens. Retention remains unchanged.
+  cofgen(3,1)=1.0e-4_real64
+  cofgen(10,1)=cofgen(3,1)
+  cofgen(12,1)=0.99_real64*cofgen(3,1)
   cofgen(3,3)=1.0e-4_real64
   cofgen(10,3)=cofgen(3,3)
   cofgen(12,3)=0.99_real64*cofgen(3,3)
@@ -179,7 +182,7 @@ contains
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
     integer :: commit_status, persistence_status
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
-    real(real64), parameter :: fmr_dt=1.0e-3_real64
+    real(real64), parameter :: fmr_dt=1.0e-4_real64
 
     fparams%parameter_set_id=lineage
     fparams%active_nodes=numnod
