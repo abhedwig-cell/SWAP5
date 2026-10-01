@@ -35,11 +35,17 @@ contains
   subroutine close(x,y,label)
     real(real64),intent(in)::x,y
     character(*),intent(in)::label
-    if(abs(x-y)>tol) error stop label
+    if(abs(x-y)>tol) then
+      write(*,'(A,1X,A)') 'LOW01A_FAIL',trim(label)
+      error stop 1
+    end if
   end subroutine
   subroutine require(ok,label)
     logical,intent(in)::ok
     character(*),intent(in)::label
-    if(.not.ok) error stop label
+    if(.not.ok) then
+      write(*,'(A,1X,A)') 'LOW01A_FAIL',trim(label)
+      error stop 1
+    end if
   end subroutine
 end program test_fmig431_low01a_qgwl_binding
