@@ -292,6 +292,9 @@ contains
     observation=backend%observation()
     if(.not.observation%macropore_inner_richards_exchange_used) &
          error stop 'A17 inner callback route not used'
+    write(*,'(*(g0))') 'PPA_WU05A17_INNER_EXCHANGE|INITIAL_RATE=', &
+         observation%macropore_inner_initial_exchange_rate_cm_per_day, &
+         '|FINAL_RATE=',observation%macropore_inner_final_exchange_rate_cm_per_day
     call candidate%snapshot(candidate_state,available)
     if(.not.available)error stop 'A17 inner callback candidate diagnostic snapshot'
     select type(diag_state=>candidate_state)
