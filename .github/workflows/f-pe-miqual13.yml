@@ -1,0 +1,25 @@
+name: F-PE-MIQUAL13 reference solve dimension scaling
+
+on:
+  push:
+    branches:
+      - research/f-pe-miqual13-reference-solve-dimension-scaling
+    paths:
+      - 'docs/performance/F-PE-MIQUAL13_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_miqual13_reference_solve_scaling.f90'
+      - 'tests/fpe/run_fpe_miqual13.py'
+      - 'tests/fpe/run_fpe_miqual13.sh'
+      - '.github/workflows/f-pe-miqual13.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_miqual13.sh
