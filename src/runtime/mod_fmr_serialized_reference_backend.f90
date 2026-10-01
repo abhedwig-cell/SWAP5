@@ -20,7 +20,7 @@ module mod_fmr_serialized_reference_backend
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
-       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
@@ -83,6 +83,7 @@ module mod_fmr_serialized_reference_backend
        evaluate_restricted_fixed_weir_surface_water, validate_fixed_weir_surface_water_parameters, &
        FIXED_WEIR_AVAILABLE
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
+  use mod_rfm_physical_state, only: rfm_physical_state_t, copy_rfm_physical_state
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
@@ -171,6 +172,14 @@ module mod_fmr_serialized_reference_backend
   contains
     procedure :: clone => fmr_b110_boesten_evaporation_state_clone
   end type fmr_b110_boesten_evaporation_state_t
+
+  ! PPA-WU05-A20 dedicated RFM optional physical-state carrier.
+  ! Carrier/checkpoint semantics are admitted separately from live execution.
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_rfm_state_t
+    type(rfm_physical_state_t) :: rfm
+  contains
+    procedure :: clone => fmr_b110_rfm_state_clone
+  end type fmr_b110_rfm_state_t
 
   type, extends(kernel_parameters_t), public :: fmr_b110_physical_parameters_t
     integer(int64) :: parameter_set_id = 0_int64
@@ -514,6 +523,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
   public :: fmr_new_b110_black_evaporation_committed_state
   public :: fmr_new_b110_boesten_evaporation_committed_state
+  public :: fmr_new_b110_rfm_committed_state
 
 contains
 
@@ -701,6 +711,20 @@ contains
     end select
   end subroutine fmr_b110_boesten_evaporation_state_clone
 
+  subroutine fmr_b110_rfm_state_clone(self, copy)
+    class(fmr_b110_rfm_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    logical :: ok
+
+    allocate(fmr_b110_rfm_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_rfm_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      call copy_rfm_physical_state(self%rfm, typed_copy%rfm, ok)
+      if (.not. ok) error stop 'PPA-WU05-A20 RFM clone rejected valid source'
+    end select
+  end subroutine fmr_b110_rfm_state_clone
+
   logical function fmr_b110_temporal_history_available(self) result(available)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
     available = self%temporal_history%available(self%active_nodes)
@@ -816,6 +840,30 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_boesten_evaporation_committed_state
 
+  subroutine fmr_new_b110_rfm_committed_state(committed, lineage_id, state, rfm_state, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(rfm_physical_state_t), intent(in) :: rfm_state
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+    logical :: copied
+
+    ok = .false.
+    if (.not. rfm_state%ready()) return
+    if (allocated(state%macropore) .or. allocated(state%snow) .or. allocated(state%soil_temperature)) return
+
+    allocate(fmr_b110_rfm_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_rfm_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      call copy_rfm_physical_state(rfm_state, typed_carrier%rfm, copied)
+      if (.not. copied) return
+    end select
+    call committed%initialize(lineage_id, carrier, ok, initial_time)
+  end subroutine fmr_new_b110_rfm_committed_state
+
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
@@ -840,6 +888,9 @@ contains
     type is (fmr_b110_boesten_evaporation_state_t)
       matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. boesten_evaporation_active
+    type is (fmr_b110_rfm_state_t)
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_physical_state_t)
       matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active
@@ -1352,6 +1403,15 @@ contains
       return
     end select
     if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id)) then
+      result = kernel_result_t()
+      result%status = KERNEL_STATUS_NOT_ADMITTED
+      candidate = kernel_candidate_state_t()
+      diagnostics = kernel_diagnostics_t()
+      diagnostics%admission_rejections = 1
+      return
+    end if
+    if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
+      ! A20 admits the carrier/checkpoint topology only.
       result = kernel_result_t()
       result%status = KERNEL_STATUS_NOT_ADMITTED
       candidate = kernel_candidate_state_t()
@@ -2812,6 +2872,13 @@ contains
     class(transaction_state_t), intent(in) :: state
     if (.not. associated(self%soil_parameters)) error stop 'F-MR06 storage requested before parameter binding'
     select type (physical => state)
+    type is (fmr_b110_rfm_state_t)
+      if (.not. allocated(physical%water_content)) error stop 'PPA-WU05-A20 RFM matrix storage incomplete'
+      if (allocated(physical%macropore) .or. allocated(physical%snow) .or. allocated(physical%soil_temperature)) &
+           error stop 'PPA-WU05-A20 RFM carrier mixed optional state'
+      if (.not. physical%rfm%ready()) error stop 'PPA-WU05-A20 RFM fast storage incomplete'
+      value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth + &
+           physical%rfm%storage_cm()
     type is (fmr_b110_fixed_weir_surface_water_state_t)
       if (.not. self%fixed_weir_surface_water_active) error stop 'F-PM08D7 inactive model with fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
@@ -2845,6 +2912,13 @@ contains
     missing_mask = TX_MASS_MISSING_UNSPECIFIED
     if (.not. associated(self%soil_parameters)) return
     select type (physical => state)
+    type is (fmr_b110_rfm_state_t)
+      complete = physical%active_nodes == self%soil_parameters%active_nodes .and. &
+           allocated(physical%pressure_head) .and. allocated(physical%water_content) .and. &
+           .not. allocated(physical%macropore) .and. .not. allocated(physical%snow) .and. &
+           .not. allocated(physical%soil_temperature) .and. physical%rfm%ready()
+      if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
+           size(physical%water_content) == physical%active_nodes
     type is (fmr_b110_fixed_weir_surface_water_state_t)
       if (.not. self%fixed_weir_surface_water_active) return
       complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
@@ -2887,6 +2961,18 @@ contains
       value = huge(0.0_real64)
       return
     end if
+
+    select type (full => full_state)
+    type is (fmr_b110_rfm_state_t)
+      value = huge(0.0_real64)
+      select type (half => half_state)
+      type is (fmr_b110_rfm_state_t)
+        if (base_physical_states_identical(full,half) .and. full%rfm%same_values(half%rfm)) value = 0.0_real64
+      class default
+      end select
+      return
+    class default
+    end select
 
     if (self%fixed_weir_surface_water_active) then
       value = huge(0.0_real64)
