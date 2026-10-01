@@ -13,6 +13,8 @@ module mod_fmr_surface_water_swap_participant
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK
   use mod_fmr_surface_water_head_forcing_adapter, only: fmr_surface_water_head_forcing_materializer_t, &
        FMR_SW_HEAD_FORCING_OK
+  use mod_fmr_surface_water_component_receipt, only: fmr_surface_water_component_candidate_t, &
+       fmr_surface_water_component_receipt_t, surface_water_component_receipt_matches, FMR_SW_RECEIPT_OK
   implicit none
   private
 
@@ -55,6 +57,7 @@ module mod_fmr_surface_water_swap_participant
     procedure, public :: discard_candidate => surface_water_discard_candidate
     procedure, public :: abandon_origin => surface_water_abandon_origin
     procedure, public :: publication_ready => surface_water_publication_ready
+    procedure, public :: component_publication_ready => surface_water_component_publication_ready
     procedure, public :: commit_candidate => surface_water_commit_candidate
     procedure, public :: has_origin => surface_water_has_origin
     procedure, public :: has_live_candidate => surface_water_has_live_candidate
@@ -253,6 +256,24 @@ contains
     if (abs(realized_exchange_cm-self%candidate_exchange_cm) > tolerance_cm) return
     ready = .true.
   end function surface_water_publication_ready
+
+
+  logical function surface_water_component_publication_ready(self, committed, t0, t1, top_candidate_cm, receipt, tolerance_cm) result(ready)
+    class(fmr_surface_water_swap_participant_t), intent(in) :: self
+    type(kernel_committed_state_t), intent(in) :: committed
+    real(real64), intent(in) :: t0,t1,top_candidate_cm,tolerance_cm
+    type(fmr_surface_water_component_receipt_t), intent(in) :: receipt
+    type(fmr_surface_water_component_candidate_t) :: components
+
+    ready=.false.
+    if(.not.ieee_is_finite(top_candidate_cm))return
+    components%valid=.true.
+    components%subsurface_swap_to_surface_cm=self%candidate_exchange_cm
+    components%top_swap_to_surface_cm=top_candidate_cm
+    if(surface_water_component_receipt_matches(components,receipt,tolerance_cm)/=FMR_SW_RECEIPT_OK)return
+    if(.not.self%publication_ready(committed,t0,t1,receipt%subsurface_swap_to_surface_cm,tolerance_cm))return
+    ready=.true.
+  end function surface_water_component_publication_ready
 
   subroutine surface_water_commit_candidate(self, backend, committed, t0, t1, realized_exchange_cm, tolerance_cm, &
        did_commit, status)
