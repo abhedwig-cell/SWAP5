@@ -1,6 +1,6 @@
 {
-  "schema": "swap5.f_macro_tracer01d.composition_status.v1",
-  "status": "SOFTWARE_COMPOSITION_QUALIFIED_EMPIRICAL_REPLAY_BLOCKED",
+  "schema": "swap5.f_macro_tracer01d.composition_status.v2",
+  "status": "CLOSED_D1_QUALIFIED_EMPIRICAL_INITIAL_STATE_BLOCKER",
   "qualified": {
     "matrix_reference_kernel": true,
     "accepted_flux_observer": true,
@@ -21,7 +21,16 @@
   "empirical_replay": {
     "publication_authority_frozen": true,
     "exact_replay": false,
-    "blocker": "full Spechtacker initial 0-1 m theta profile unavailable"
+    "targeted_repository_search_repeated_at_closure": true,
+    "blocker": "full Spechtacker publication initial 0-1 m theta profile unavailable",
+    "hybrid_echoRD_initial_profile_forbidden": true
   },
-  "dispersion_authorized": false
+  "d2": {
+    "started": false,
+    "reason": "publication-faithful matrix hydrology initial state is not uniquely specified",
+    "profile2_heldout_forward_validation": false
+  },
+  "dispersion_authorized": false,
+  "stop_rule": "TRUE_EMPIRICAL_AUTHORITY_BLOCKER",
+  "closure_document": "docs/performance/F-MACRO-TRACER01D_CLOSURE.md"
 }
