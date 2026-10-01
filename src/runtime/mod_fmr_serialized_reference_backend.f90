@@ -17,6 +17,7 @@ module mod_fmr_serialized_reference_backend
        assess_fmr_mode7_temporal_head_envelope, FMR_MODE7_HEAD_ENVELOPE_OK
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
+       FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION, &
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
@@ -432,6 +433,7 @@ module mod_fmr_serialized_reference_backend
     type(macropore_single_column_runtime_t) :: macropore_runtime
     logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
+    logical :: macropore_reduction_continuation_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
     logical :: temporal_indicator_budget_valid = .false.
     real(real64) :: temporal_indicator_budget = 0.0_real64
@@ -520,6 +522,7 @@ module mod_fmr_serialized_reference_backend
 
   public :: prepare_fmr_b110_default_mvg
   public :: fmr_new_b110_committed_state
+  public :: fmr_new_b110_macropore_reduction_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
   public :: fmr_new_b110_black_evaporation_committed_state
@@ -858,31 +861,39 @@ contains
   end subroutine fmr_new_b110_boesten_evaporation_committed_state
 
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
+                                                               macropore_reduction_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
                                                                boesten_evaporation_active) result(matches)
     class(transaction_state_t), intent(in) :: state
-    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active
+    logical, intent(in) :: temporal_history_enabled, macropore_reduction_enabled, fixed_weir_surface_water_active
     logical, intent(in) :: black_evaporation_active, boesten_evaporation_active
     if (black_evaporation_active .and. boesten_evaporation_active) then
       matches = .false.
       return
     end if
     select type (state)
+    type is (fmr_b110_macropore_reduction_state_t)
+      matches = macropore_reduction_enabled .and. .not. temporal_history_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. &
+           .not. boesten_evaporation_active .and. state%reduction_continuation%valid()
     type is (fmr_b110_temporal_indicator_state_t)
-      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+      matches = temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_fixed_weir_surface_water_state_t)
-      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active .and. &
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_black_evaporation_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
-           black_evaporation_active .and. .not. boesten_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_boesten_evaporation_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. boesten_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. boesten_evaporation_active
     type is (fmr_b110_physical_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active
     class default
       matches = .false.
@@ -924,6 +935,7 @@ contains
     call committed%snapshot(snapshot, available)
     if (.not. available) return
     if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled, &
+                                                           model%macropore_reduction_continuation_enabled, &
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
                                                            model%boesten_evaporation_active)) return
@@ -967,6 +979,7 @@ contains
     if (.not. selection_ok) return
     self%model%top_boundary => top_boundary
     self%model%temporal_indicator_history_enabled = .false.
+    self%model%macropore_reduction_continuation_enabled = .false.
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
     self%model%temporal_indicator_budget = 0.0_real64
@@ -1383,11 +1396,15 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
+    self%model%macropore_reduction_continuation_enabled = .false.
     select case (template%numerical_continuation_layout_id)
     case (FMR_NUMERICAL_CONTINUATION_NONE)
       self%model%temporal_indicator_history_enabled = .false.
     case (FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
       self%model%temporal_indicator_history_enabled = .true.
+    case (FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION)
+      self%model%temporal_indicator_history_enabled = .false.
+      self%model%macropore_reduction_continuation_enabled = .true.
     case default
       call reject_backend_trial(result, candidate, diagnostics)
       return
@@ -1402,7 +1419,10 @@ contains
     end if
     if (parameters%macropore_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
-          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
+           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION) .or. &
+          (template%numerical_continuation_layout_id == FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION .and. &
+           .not. self%model%macropore_policy%source_reduction_retry_enabled) .or. &
           config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
         result = kernel_result_t()
         result%status = KERNEL_STATUS_NOT_ADMITTED
@@ -2269,6 +2289,7 @@ contains
         .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
+                                                           self%macropore_reduction_continuation_enabled, &
                                                            self%fixed_weir_surface_water_active, &
                                                            self%black_evaporation_active, &
                                                            self%boesten_evaporation_active)) return
