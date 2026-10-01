@@ -1,16 +1,16 @@
 {
   "schema": "swap5.ppa_wu05a16.status.v1",
   "workunit": "PPA-WU05-A16",
-  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
-  "decision": "QUALIFIED_BOUNDED_RFM_MATRIX_SHARE_DYNAMIC_TOP_REBINDING",
+  "phase": "CLOSED_CANONICAL_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_BOUNDED_RFM_MATRIX_SHARE_DYNAMIC_TOP_REBINDING",
   "baseline": "ecfe628daf78988aec3a784f1b91b9d110d95850",
   "branch": "work/ppa-wu05-a16-rfm-matrix-share-rebinding",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
-  "closed": false,
+  "canonical_admitted": true,
+  "closed": true,
   "qualified_postimage": "c4783e6e59abb76d5c3b084e947fb3673416ae91",
   "qualification_run": 36864593396,
   "negative_run": {
@@ -27,5 +27,16 @@
     "live_runtime_mutation": false,
     "preferential_routing": false
   },
-  "next": "canonical admission, then audit preferential-share routing ownership and exactly-once mass receipt before any live runtime composition"
+  "next": "A17 ownership audit: preferential-share routing and exactly-once mass receipt before any live runtime composition.",
+  "admission_pr": 939,
+  "canonical_merge": "5bb8d8381f29cd7b6d6fa456c6634643e5ab99b8",
+  "postmerge_preservation": {
+    "method": "dependency-surface blob identity inheritance",
+    "source_blob_sha": "54900d2895c2aba40d1740d5f27beb5f71d7967a",
+    "test_blob_sha": "29e7cbdc2ad9778cd17398e45f83b4fa15567182",
+    "runner_blob_sha": "5f134e45c6133ecfeb13051e4bc5c1b610476014",
+    "qualified_postimage": "c4783e6e59abb76d5c3b084e947fb3673416ae91",
+    "canonical_merge": "5bb8d8381f29cd7b6d6fa456c6634643e5ab99b8",
+    "unchanged": true
+  }
 }
