@@ -8,6 +8,7 @@ Canonical merge: 695b1b382cc7452a5c45b57bbc30bc009a1a0f1f
 Qualified reconciled source postimage: 2a77a36411ecedf3840566de1f5130322dc417fe
 Qualification run: 36922167441
 Qualification job: 110570615817
+Post-merge preservation run: 36924536424 — SUCCESS
 
 A26 closes the bounded live RFM production-runtime line. The former A20 unconditional NOT_ADMITTED guard has been replaced by real A11-A26 composition in the serialized Reference backend, while unsupported regimes remain fail-closed.
 
