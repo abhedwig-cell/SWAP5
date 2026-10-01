@@ -1,70 +1,50 @@
 {
   "schema": "swap5.ppa_wu05a11.status.v1",
   "workunit": "PPA-WU05-A11",
-  "phase": "BLOCKED_SOURCE_AUTHORITY_ACCESS",
-  "decision": "EXACT_4_3_1_PERCHED_CARRIER_BYTES_NOT_AUTHORIZED_FOR_READ",
+  "phase": "CLOSED_QUALIFIED_FOLLOWUP_RESULT",
+  "decision": "QUALIFIED_SOURCE_FAITHFUL_FMR_PERCHED_CARRIER_READY_FOR_RUNTIME_TRIAL_FOLLOWON",
   "baseline": "ebea588070f7a44dbaea78169f2548c745061c48",
   "branch": "research/ppa-wu05-a11-perched-zone-carrier",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "canonical_admitted": false,
-  "closed": false,
-  "last_reconciled_head": "9bbc63298f03e91dff854f5dc5bf5159c8e5541c",
-  "last_reconciled_upstream": "ebea588070f7a44dbaea78169f2548c745061c48",
-  "relevant_paths": [
-    "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90",
-    "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90",
-    "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90",
-    "src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90",
-    "src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90",
-    "src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90",
-    "src/runtime/mod_macropore_standard_rate_adapter.f90",
-    "src/runtime/mod_fmr_macropore_configuration.f90"
-  ],
-  "authority_paths": [
-    "docs/audits/PPA_WU05A11_PREREGISTRATION.md",
-    "docs/audits/PPA_WU05A11_RESULT.md",
-    "docs/audits/PPA_WU05A10_CLOSEOUT.md",
-    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
-  ],
-  "historical_exact_rate_authority": {
-    "pr": 922,
-    "head": "b5b123dcc4450dcc3c76a789ba749205fa8474b5",
-    "paths": [
-      "docs/audits/PPA_WU05A6_R1A_SORPTIVITY_SOURCE_MAP.md",
-      "docs/audits/PPA_WU05A6_R2_SATFLOW_SOURCE_MAP.md",
-      "docs/audits/PPA_WU05A6_R3_INTERFLOW_CLARIFICATION.md",
-      "docs/audits/PPA_WU05A7_RESULT.md"
-    ]
-  },
-  "carrier_reconstruction": {
-    "status": "STRONGLY_CORROBORATED_NOT_EXACT_B1_11_PROVENANCE",
-    "fields": [
-      "NPeGwl",
-      "BPeGwl",
-      "PeGWL",
-      "ICpTpPerZon",
-      "ICpBtPerZon",
-      "ICpSatPeGWl",
-      "ICpTpSatZon",
-      "ICpSatGWl"
-    ],
-    "criterion": "cumulative under-saturated matrix volume plus pressure-head/water-level search",
-    "persistent_state_required": false
-  },
+  "closed": true,
+  "qualified_postimage": "2ad9cbda64a53707730990dd436588a47b86b5b2",
+  "source_map_postimage": "e11b7dc0593a1d49b7899b2c6349ab9ea019e456",
+  "qualification_run": 36834246991,
+  "qualification_job": 110277704902,
   "source_archive": {
-    "expected_bytes": 8959314,
-    "expected_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-    "retained_library_copies_found": true,
-    "raw_materialization": "DENIED_BY_CURRENT_PROJECT_AUTHORIZATION"
+    "nested_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "macropore_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+    "macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "calcgwl_sha256": "d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb"
   },
-  "blockers": [
-    "The exact SWAP 4.3.1 archive is present in retained Library metadata but raw-byte materialization is denied in this Project context.",
-    "Without re-reading the exact 4.3.1 water-table/perched-zone construction, the reconstructed carrier cannot be promoted to G1 source authority."
+  "qualified_scope": [
+    "opt-in source-faithful FMR perched-zone hydraulic carrier",
+    "CritUndSatVol cumulative under-saturated-volume criterion",
+    "perched top/bottom water-level interpolation and compartment mapping",
+    "A6 unsaturated perched exclusion",
+    "A6 SATFLOW QInIntSat composition",
+    "explicit partial-top saturated-zone semantics",
+    "no new continuation state"
   ],
-  "falsified_shortcut": "Do not derive perched topology from pressure_head >= 0 alone; the source-corroborated route includes a cumulative under-saturated-volume criterion and water-level interpolation.",
-  "next_action": "Obtain authorized raw access to the retained exact SWAP_4.3.1.zip or otherwise persist the exact 4.3.1 water-table carrier source in repository authority; then close G1 before production implementation.",
-  "recovery_point": "9bbc63298f03e91dff854f5dc5bf5159c8e5541c"
+  "preservation": {
+    "a7_a8_a9_a10_gate": "PASS",
+    "run": 36834246991
+  },
+  "not_admitted": [
+    "full serialized active perched predictor/corrector runtime qualification",
+    "active perched reject/replay",
+    "active perched restart continuation",
+    "canonical admission",
+    "covering-layer physics",
+    "within-corrector dynamic crack displacement feedback",
+    "RossFast",
+    "parallel MultiSWAP"
+  ],
+  "next_action": "Open a bounded follow-on workunit for real serialized FMR active-perched trial plus reject/replay/restart qualification before considering canonical admission.",
+  "recovery_point": "e11b7dc0593a1d49b7899b2c6349ab9ea019e456"
 }
