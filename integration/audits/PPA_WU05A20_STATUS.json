@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_wu05a20.status.v1",
+  "workunit": "PPA-WU05-A20",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_RFM_OPTIONAL_STATE_CARRIER_FAIL_CLOSED_RUNTIME",
+  "baseline": "100704c5a7283ae592bfa2104928ac16cd7ba32d",
+  "branch": "work/ppa-wu05-a20-rfm-optional-state-layout",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "qualified_postimage": "183360a3207cb5c6e83ef6881f65bba2260ddf0e",
+  "qualification_run": 36868999374,
+  "layout_id": 505002,
+  "scope": {
+    "committed_state_constructor": true,
+    "polymorphic_clone": true,
+    "kernel_checkpoint_snapshot": true,
+    "storage_accounting_binding": true,
+    "temporal_identity_binding": true,
+    "runtime_execution_guard": "KERNEL_STATUS_NOT_ADMITTED",
+    "external_restart_codec": false,
+    "live_rfm_runtime": false
+  },
+  "next": "canonical admission and closeout; then A21 may preregister the first live bounded RFM runtime composition only after forcing/parameter ownership and whole-column mass accounting are explicit."
+}
