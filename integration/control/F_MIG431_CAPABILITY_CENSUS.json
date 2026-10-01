@@ -13,7 +13,8 @@
   "note": "This is a routing census, not independent admission authority. PPA rows are reconciled where later canonical evidence is explicit; unresolved rows remain open rather than inferred.",
   "counts": {
     "seed_capabilities_from_ppa": 38,
-    "wofost_reconciliation": "completed checkpoint 9606ead3498d94eecd9c979079cedd927dcb5f5d"
+    "wofost_reconciliation": "completed checkpoint 9606ead3498d94eecd9c979079cedd927dcb5f5d",
+    "wofost_n_census": "completed checkpoint 7a8d9b692c33644653580725d97e5f57ec891aba"
   },
   "buckets": {
     "ADMITTED_OR_BOUNDED_PRODUCTION": [
@@ -61,7 +62,7 @@
       "PPA-HYST hydraulic hysteresis",
       "PPA-TILL tillage, with unresolved corrected-reference decisions",
       "PPA-SOL-HYD solute/salinity owner and hydraulic/root-stress semantics",
-      "Legacy WOFOST soil/nutrient family -> F-MIG431-WOFN-CENSUS; crop-side WOFOST81 N code must not be conflated with soil N cycling"
+      "WOFN-SOIL subsystem: crop-N is distinct and partially present; soil organic matter/N, residues, amendments, water-N, crop-soil exchange and N-balance remain open pending exact source state/mass census"
     ],
     "DEPENDENCY_BLOCKED": [
       "salinity root stress -> typed solute/osmotic state owner",
@@ -106,7 +107,7 @@
     "Any modification of FMR ABI or mass-ledger ownership"
   ],
   "next_census_pass": [
-    "Execute F-MIG431-WOFN-CENSUS as review-only semantic mapping before any WOFOST-soil production branch",
+    "Execute F-MIG431-WOFN-SOURCE01 exact source state/mass graph before deciding internal migration versus explicit external ownership",
     "Expand PPA-LOW-OTHER into individual SWBOTB selectors and exact statuses",
     "Expand PPA-INT-12 into SWINTER=1 and SWINTER=2 independent work units",
     "Split advanced root stress into oxygen, compensation, salinity, frost, MICRO/Jong-van-Lier, macropore-related uptake and SWKIMPL=1",
