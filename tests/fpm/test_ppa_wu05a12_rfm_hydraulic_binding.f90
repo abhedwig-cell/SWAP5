@@ -1,5 +1,6 @@
 program test_ppa_wu05a12_rfm_hydraulic_binding
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_rfm_unponded_activation, only: RFM_ACTIVATION_AVAILABLE, &
@@ -9,6 +10,15 @@ program test_ppa_wu05a12_rfm_hydraulic_binding
   implicit none
 
   real(real64), parameter :: tol=1.0e-12_real64
+
+  type, extends(constitutive_hydraulics_provider_t) :: linear_test_constitutive_t
+  contains
+    procedure :: evaluate => test_evaluate
+    procedure :: evaluate_demand => test_evaluate_demand
+    procedure :: supports_point_conductivity => test_supports_point_conductivity
+    procedure :: evaluate_point_conductivity => test_point_conductivity
+  end type linear_test_constitutive_t
+
   type(linear_test_constitutive_t) :: constitutive
   type(process_hydraulic_view_t) :: view
   type(fmr_rfm_hydraulic_activation_result_t) :: result
@@ -42,14 +52,6 @@ program test_ppa_wu05a12_rfm_hydraulic_binding
   if (ok) error stop 'A12 invalid panel count accepted'
 
   print '(a)', 'PPA_WU05A12_RFM_HYDRAULIC_BINDING=PASS'
-
-  type, extends(constitutive_hydraulics_provider_t) :: linear_test_constitutive_t
-  contains
-    procedure :: evaluate => test_evaluate
-    procedure :: evaluate_demand => test_evaluate_demand
-    procedure :: supports_point_conductivity => test_supports_point_conductivity
-    procedure :: evaluate_point_conductivity => test_point_conductivity
-  end type linear_test_constitutive_t
 
 contains
 
@@ -86,8 +88,8 @@ contains
     real(real64), intent(out) :: conductivity
     logical, intent(out) :: available
     conductivity=1.0_real64
-    available=node_index==1
-    if (.not.same_type_as(self,self) .or. pressure_head/=pressure_head .or. water_content/=water_content) available=.false.
+    available=node_index==1 .and. ieee_is_finite(pressure_head) .and. ieee_is_finite(water_content)
+    if (.not.same_type_as(self,self)) available=.false.
   end subroutine test_point_conductivity
 
 end program test_ppa_wu05a12_rfm_hydraulic_binding
