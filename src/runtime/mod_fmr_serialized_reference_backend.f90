@@ -5,6 +5,7 @@ module mod_fmr_serialized_reference_backend
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF, &
        TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
+  use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
@@ -138,6 +139,12 @@ module mod_fmr_serialized_reference_backend
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
+
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_macropore_reduction_state_t
+    type(macropore_reduction_continuation_t) :: reduction_continuation
+  contains
+    procedure :: clone => fmr_b110_macropore_reduction_state_clone
+  end type fmr_b110_macropore_reduction_state_t
 
   type, extends(fmr_b110_physical_state_t), public :: fmr_b110_temporal_indicator_state_t
     private
@@ -654,6 +661,17 @@ contains
     end select
   end subroutine fmr_b110_state_clone
 
+  subroutine fmr_b110_macropore_reduction_state_clone(self, copy)
+    class(fmr_b110_macropore_reduction_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_macropore_reduction_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_macropore_reduction_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%reduction_continuation = self%reduction_continuation
+    end select
+  end subroutine fmr_b110_macropore_reduction_state_clone
+
   subroutine fmr_b110_temporal_indicator_state_clone(self, copy)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
     class(transaction_state_t), allocatable, intent(out) :: copy
@@ -732,6 +750,26 @@ contains
     end select
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_committed_state
+
+  subroutine fmr_new_b110_macropore_reduction_committed_state(committed,lineage_id,state,reduction,initial_time,ok)
+    type(kernel_committed_state_t),intent(out)::committed
+    integer(int64),intent(in)::lineage_id
+    type(fmr_b110_physical_state_t),intent(in)::state
+    type(macropore_reduction_continuation_t),intent(in)::reduction
+    real(real64),intent(in)::initial_time
+    logical,intent(out)::ok
+    class(transaction_state_t),allocatable::carrier
+
+    ok=.false.
+    if(.not.reduction%valid())return
+    allocate(fmr_b110_macropore_reduction_state_t :: carrier)
+    select type(typed_carrier=>carrier)
+    type is(fmr_b110_macropore_reduction_state_t)
+      call copy_b110_physical_state(state,typed_carrier)
+      typed_carrier%reduction_continuation=reduction
+    end select
+    call committed%initialize(lineage_id,carrier,ok,initial_time)
+  end subroutine fmr_new_b110_macropore_reduction_committed_state
 
   subroutine fmr_new_b110_temporal_indicator_committed_state(committed, lineage_id, state, initial_time, ok, &
                                                               initial_right_derivative)
@@ -2489,6 +2527,14 @@ contains
     if (self%macropore_active) then
       if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
       select type (physical_macro => state)
+      type is (fmr_b110_macropore_reduction_state_t)
+        call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+             self%macropore_config%geometry, self%macropore_config%rate_template, &
+             self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+             top_input=self%macropore_top_input_forcing, &
+             reduction_accepted=physical_macro%reduction_continuation)
+        if(macropore_result%status==MACRO_RUNTIME_CONVERGED) &
+             physical_macro%reduction_continuation=macropore_result%reduction_candidate
       class is (fmr_b110_physical_state_t)
         call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
              self%macropore_config%geometry, self%macropore_config%rate_template, &
