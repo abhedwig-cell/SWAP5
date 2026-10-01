@@ -10,7 +10,7 @@ program test_ppa_wu05a22b_rfm_mb_wall_deep_fate
   req%contact_length_cm=80.0_real64
   req%exchange_length_cm=20.0_real64
   req%chi_wall=1.0_real64
-  req%wall_sorptivity_cm_sqrt_day=0.1_real64
+  req%wall_sorptivity_cm_sqrt_day=0.02_real64
   req%matrix_conductivity_cm_per_day=0.001_real64
   req%macro_to_matrix_head_difference_cm=10.0_real64
   req%wall_age_day=0.0_real64
