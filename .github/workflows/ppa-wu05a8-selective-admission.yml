@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - admission/ppa-wu05-a8-fmr-macropore
+      - integration/f-ci-canonical
     paths:
       - 'src/process/macropore/**'
       - 'src/runtime/mod_macropore_continuation_state.f90'
