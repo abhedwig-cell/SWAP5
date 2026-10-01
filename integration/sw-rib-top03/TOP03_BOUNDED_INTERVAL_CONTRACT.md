@@ -17,3 +17,9 @@ Window exchange and residual are captured/restored in the transaction attempt co
 For the bounded single-level participant, resolved_heads_cm(1) materializes both the drainage control and opt-in external top head in the existing cm datum. Default-off forcing remains unchanged. The product adapter must supply that datum; arbitrary datum transforms are not admitted here.
 
 Required qualification: O0/O2 real BASE convergence, surface and total mass closure, accepted full/half carrier, wrong receipt rejection with live origin preserved, correct exactly-once commit, scalar bypass rejection, stale origin rejection, anti-masking, same-origin changed-head replay, bounded-profile rejection and external-off preservation. Live Ribasim application/geometry admission remains separate from this SWAP-side candidate.
+
+## Numerical prerequisite found by local execution
+
+The existing BASE temporal function `fmr_serialized_temporal_identity` returns zero only for bitwise-identical full/half physical end states and `huge()` otherwise. This remains unchanged by TOP03. The imposed-head wetting fixture converges with an 80-iteration fixture budget, and both full and half soil-plus-pond ledgers close near 1e-13 cm, but the full/half end states differ. Transaction policy consequently rejects the interval solely on temporal identity. Raising a finite tolerance cannot qualify this route.
+
+An admitted transient temporal acceptance path for the bounded BASE inundation composition is a shared numerical prerequisite owned by the numerical/integration regie. TOP03 must not invent a head-error norm, disable temporal rejection, accept a rejected candidate or widen an unqualified history-state composition. Until that prerequisite is issued and qualified, the new real component transaction tests remain pending and no production candidate is claimed.

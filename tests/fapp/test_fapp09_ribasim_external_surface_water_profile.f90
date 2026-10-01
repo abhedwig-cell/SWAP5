@@ -35,12 +35,19 @@ program test_fapp09_ribasim_external_surface_water_profile
   real(real64), parameter :: signed_rate=1.0e-2_real64
   real(real64), parameter :: exchange_tol=1.0e-12_real64
   integer(int64), parameter :: column_id=49009_int64
+  character(len=32) :: mode
+
+  call get_command_argument(1,mode)
 
   call verify_materializer_guards()
   call verify_owner_xor()
   call verify_positive_recomposition_and_commit()
-  call verify_external_top_observation()
-  call verify_external_top_component_transaction()
+  if (trim(mode)/='preservation') then
+    call verify_external_top_observation()
+    call verify_external_top_component_transaction()
+  else
+    call verify_default_off_capability()
+  end if
   call verify_negative_commit()
   call verify_stale_origin()
   write(*,'(A)') 'FAPP09_RIBASIM_EXTERNAL_SURFACE_WATER_PROFILE=PASS'
@@ -235,7 +242,7 @@ contains
     parameters%max_iterations=80
     parameters%max_backtracking=16
     ! Surface/transaction fixture, no temporal accuracy claim. Mass gate unchanged.
-    config%transaction%temporal_tolerance=1.0e15_real64
+    config%transaction%temporal_tolerance=1.0e3_real64
     parameters%drainage_response_active=.false.
     if(allocated(parameters%drainage_response_levels))deallocate(parameters%drainage_response_levels)
     base%external_top_surface_water_supplied=.true.
@@ -288,6 +295,57 @@ contains
   end subroutine verify_external_top_observation
 
 
+  subroutine verify_default_off_capability()
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: base,forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fmr_surface_water_head_forcing_materializer_t) :: materializer
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_result_t) :: a,b
+    type(kernel_diagnostics_t) :: diagnostics
+    class(transaction_state_t),allocatable :: sa,sb
+    real(real64) :: heads(1)
+    logical :: ok
+    integer :: status
+    call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
+    call materializer%initialize(base,parameters,status)
+    heads(1)=-12.25_real64
+    call materializer%materialize(heads,forcing,status)
+    call backend%initialize(top)
+    call committed%capture_checkpoint(checkpoint,ok)
+    call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,a,candidate,diagnostics)
+    call require(a%completed,'default-off baseline completed')
+    call candidate%snapshot(sa,ok)
+    call require(ok,'default-off baseline snapshot')
+    call backend%discard_trial_candidate(candidate,diagnostics)
+    parameters%external_top_surface_water_capable=.true.
+    call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,b,candidate,diagnostics)
+    call require(b%completed,'capability-on forcing-off completed')
+    call candidate%snapshot(sb,ok)
+    call require(ok,'capability-on forcing-off snapshot')
+    call require(a%mass%total_in==b%mass%total_in.and.a%mass%total_out==b%mass%total_out,'default-off identical mass')
+    select type(sa)
+    type is(fmr_b110_physical_state_t)
+      select type(sb)
+      type is(fmr_b110_physical_state_t)
+        call require(all(sa%pressure_head==sb%pressure_head).and.all(sa%water_content==sb%water_content).and. &
+             sa%ponding_depth==sb%ponding_depth,'default-off identical physical state')
+      class default
+        call require(.false.,'default-off candidate type')
+      end select
+    class default
+      call require(.false.,'default-off baseline type')
+    end select
+    call backend%discard_trial_candidate(candidate,diagnostics)
+    write(*,'(A)')'FAPP09_TOP03_DEFAULT_OFF_PRESERVATION=PASS'
+  end subroutine verify_default_off_capability
+
   subroutine verify_external_top_component_transaction()
     type(kernel_committed_state_t) :: committed,other
     type(fmr_logical_column_t) :: column
@@ -331,7 +389,7 @@ contains
     parameters%max_iterations=80
     parameters%max_backtracking=16
     ! Surface/transaction fixture, no temporal accuracy claim. Mass gate unchanged.
-    config%transaction%temporal_tolerance=1.0e15_real64
+    config%transaction%temporal_tolerance=1.0e3_real64
     base%top_flux=0.0_real64
     base%external_top_surface_water_supplied=.true.
     base%external_top_surface_water_head_cm=0.02_real64

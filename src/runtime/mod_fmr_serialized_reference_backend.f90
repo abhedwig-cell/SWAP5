@@ -1105,6 +1105,10 @@ contains
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     logical, intent(in) :: enabled
     self%bottom_thermal_requested = enabled
+    self%model%external_top_surface_water_supplied = forcing%external_top_surface_water_supplied
+    self%model%top_exchange_window_available = .false.
+    self%model%top_exchange_window_cm = 0.0_real64
+    self%model%top_exchange_window_residual_cm = 0.0_real64
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.
