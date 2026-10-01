@@ -343,6 +343,8 @@ contains
           result%status=MACRO_RUNTIME_FAILED
           return
         end if
+        current_node(geometry_config%top_node-1)=current_node(geometry_config%top_node-1)- &
+             sum(covered_domain_cm)/dt
         receipt%internal_exchange_to_matrix_cm=receipt%internal_exchange_to_matrix_cm-sum(covered_domain_cm)
         receipt%macro_storage_change_cm=receipt%macro_storage_change_cm+sum(covered_domain_cm)
         receipt%macro_balance_residual_cm=receipt%macro_storage_change_cm - &
