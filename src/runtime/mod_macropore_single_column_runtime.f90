@@ -199,49 +199,64 @@ contains
     n=accepted_macro%num_nodes
 
     if(policy%inner_richards_exchange_enabled)then
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INNER_ENTER'
-      call inner_provider%configure(accepted_macro,geometry,rate_template_step,base_request%parameters%z, &
-           base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
-           base_request%base_state%groundwater_level,ok)
-      if(.not.ok)then
-        result%status=MACRO_RUNTIME_FAILED
-        return
-      end if
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=PROVIDER_CONFIGURED'
-
-      ! Record the accepted-state inner rate for attribution only. This is not
-      ! injected separately; HeadCalc obtains its own current-iterate rate from
-      ! the provider.
-      call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
-           base_request%base_state,base_request%parameters%z,base_request%parameters%dz,dt, &
-           rate_request,matrix_view,ok)
-      if(.not.ok)then
-        result%status=MACRO_RUNTIME_FAILED
-        return
-      end if
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_REQUEST_READY'
-      call evaluate_macropore_rate_bundle(rate_request,current_rates)
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_RATE_EVALUATED'
-      if(.not.current_rates%valid)then
-        result%status=MACRO_RUNTIME_FAILED
-        return
-      end if
-      result%inner_initial_exchange_rate_cm_per_day=sum(current_rates%qexc_to_matrix_rate)
-
-      request=base_request
-      request%physical%macropore_active=.true.
-      request%evaluation%macropore=>inner_provider
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=BEFORE_SOLVE'
-      call solver%solve(request,workspace,corrector)
-      write(*,'(a,i0)') 'PPA_WU05A18_RUNTIME_STAGE=AFTER_SOLVE STATUS=',corrector%status
-      result%corrector_solves=1
+      result%inner_richards_exchange_used=.true.
       result%outer_iterations=0
       result%final_relative_exchange_change=0.0_real64
-      result%inner_richards_exchange_used=.true.
+      nreduce=merge(size(source_reduction_ladder),1,policy%source_flow_reduction_retry_enabled)
+
+      do ireduce=1,nreduce
+        rate_template_step=rate_template
+        rate_template_step%limiter%potential_top_vertical_cm=requested_top_vertical
+        rate_template_step%limiter%potential_top_lateral_cm=requested_top_lateral
+        if(policy%source_flow_reduction_retry_enabled)then
+          rate_template_step%unsaturated%sorptivity%flow_reduction=source_reduction_ladder(ireduce)
+          rate_template_step%interflow_sat%flow_reduction=source_reduction_ladder(ireduce)
+          rate_template_step%matrix_sat%flow_reduction=source_reduction_ladder(ireduce)
+          rate_template_step%rapid%flow_reduction=source_reduction_ladder(ireduce)
+        end if
+        result%source_flow_reduction_attempts=ireduce
+        result%source_flow_reduction_index=ireduce-1
+        result%source_flow_reduction_factor=rate_template_step%interflow_sat%flow_reduction
+
+        call inner_provider%configure(accepted_macro,geometry,rate_template_step,base_request%parameters%z, &
+             base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
+             base_request%base_state%groundwater_level,ok)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+
+        call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
+             base_request%base_state,base_request%parameters%z,base_request%parameters%dz,dt, &
+             rate_request,matrix_view,ok)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+        call evaluate_macropore_rate_bundle(rate_request,current_rates)
+        if(.not.current_rates%valid)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+        result%inner_initial_exchange_rate_cm_per_day=sum(current_rates%qexc_to_matrix_rate)
+
+        request=base_request
+        request%physical%macropore_active=.true.
+        request%evaluation%macropore=>inner_provider
+        call solver%solve(request,workspace,corrector)
+        result%corrector_solves=result%corrector_solves+1
+        if(corrector%status==SW_SOLVE_CONVERGED)exit
+
+        result%retry_advised=corrector%retry_advised .or. corrector%status==SW_SOLVE_RETRY_ADVISED
+        if(.not.policy%source_flow_reduction_retry_enabled .or. .not.result%retry_advised)then
+          result%status=merge(MACRO_RUNTIME_RETRY,MACRO_RUNTIME_FAILED,result%retry_advised)
+          return
+        end if
+      end do
 
       if(corrector%status/=SW_SOLVE_CONVERGED)then
-        result%retry_advised=corrector%retry_advised .or. corrector%status==SW_SOLVE_RETRY_ADVISED
-        result%status=merge(MACRO_RUNTIME_RETRY,MACRO_RUNTIME_FAILED,result%retry_advised)
+        result%retry_advised=.true.
+        result%status=MACRO_RUNTIME_RETRY
         return
       end if
 
