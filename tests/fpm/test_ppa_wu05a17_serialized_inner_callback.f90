@@ -79,16 +79,13 @@ program test_ppa_wu05a17_serialized_inner_callback
     cofgen(24,i)=3.0e-6_real64
   end do
   ! Low-conductivity separator below the perched lens. Retention remains unchanged.
-  cofgen(3,1)=1.0e-4_real64
-  cofgen(10,1)=cofgen(3,1)
-  cofgen(12,1)=0.99_real64*cofgen(3,1)
-  cofgen(3,3)=1.0e-4_real64
-  cofgen(10,3)=cofgen(3,3)
-  cofgen(12,3)=0.99_real64*cofgen(3,3)
+  cofgen(3,4)=1.0e-4_real64
+  cofgen(10,4)=cofgen(3,4)
+  cofgen(12,4)=0.99_real64*cofgen(3,4)
   call initialize_b110_default_mvg_parameters(hp,cofgen)
   call bind_b110_default_mvg_provider(hyd,hp,dt)
 
-  heads=[-5.0_real64,3.0_real64,-0.50_real64,0.50_real64]
+  heads=[-5.0_real64,1.0_real64,11.0_real64,-5.0_real64,-7.0_real64,3.0_real64]
   call hyd%evaluate(heads,water,cond,cap,dkdh)
 
   allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod))
@@ -101,11 +98,11 @@ program test_ppa_wu05a17_serialized_inner_callback
   request%base_state%pressure_head=heads
   request%base_state%water_content=water
   request%base_state%ponding_depth=0.0_real64
-  request%base_state%groundwater_level=-2.0_real64
+  request%base_state%groundwater_level=-52.0_real64
   request%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
   request%boundary%bottom_mode=5
   request%boundary%top_flux=0.0_real64
-  request%boundary%bottom_head=1.5_real64
+  request%boundary%bottom_head=8.0_real64
   request%physical%macropore_active=.false.
   request%numerical%max_iterations=64
   request%numerical%max_backtracking=24
@@ -235,17 +232,18 @@ contains
       initial%water_content=cofgen(2,:)+initial%pressure_head*cofgen(24,:)
     end where
     initial%ponding_depth=0.0_real64
-    initial%groundwater_level=-2.0_real64
+    initial%groundwater_level=-52.0_real64
     initial%macropore=macro
     initial%macropore%water_domain_cp=0.0_real64
-    initial%macropore%water_domain_cp(1,4)=0.20_real64
+    initial%macropore%water_domain_cp(1,numnod)=0.20_real64
 
     call direct_inner_provider%configure(initial%macropore,geometry,mcfg%rate_template,z,dz,fmr_dt, &
          initial%ponding_depth,initial%groundwater_level,policy_ok)
     if(.not.policy_ok)error stop 'A17 direct provider configure'
     call direct_inner_provider%evaluate_rate(initial%pressure_head,initial%water_content,direct_exchange,policy_ok)
     write(*,'(*(g0))') 'PPA_WU05A17_DIRECT_INITIAL_RATE|ACTIVE=',policy_ok,'|Q=',sum(direct_exchange), &
-         '|Q1=',direct_exchange(1),'|Q2=',direct_exchange(2),'|Q3=',direct_exchange(3),'|Q4=',direct_exchange(4)
+         '|Q1=',direct_exchange(1),'|Q2=',direct_exchange(2),'|Q3=',direct_exchange(3), &
+         '|Q4=',direct_exchange(4),'|Q5=',direct_exchange(5),'|Q6=',direct_exchange(6)
 
     call fmr_new_b110_committed_state(committed,lineage,initial,0.0_real64,state_ok)
     if(.not.state_ok)error stop 'A17 inner callback committed init'
@@ -255,7 +253,7 @@ contains
     forcing%top_flux=0.0_real64
     forcing%top_head=0.0_real64
     forcing%bottom_flux=0.0_real64
-    forcing%bottom_head=1.5_real64
+    forcing%bottom_head=8.0_real64
     forcing%drainage_flux_by_level=0.0_real64
     forcing%subsurface_irrigation_source=0.0_real64
     forcing%root_extraction_sink=0.0_real64
@@ -317,7 +315,8 @@ contains
       if(.not.allocated(diag_state%macropore))error stop 'A17 inner callback candidate macro missing'
       write(*,'(*(g0))') 'PPA_WU05A17_MATRIX_CANDIDATE|H1=',diag_state%pressure_head(1), &
            '|H2=',diag_state%pressure_head(2),'|H3=',diag_state%pressure_head(3), &
-           '|H4=',diag_state%pressure_head(4),'|GWL=',diag_state%groundwater_level
+           '|H4=',diag_state%pressure_head(4),'|H5=',diag_state%pressure_head(5), &
+           '|H6=',diag_state%pressure_head(6),'|GWL=',diag_state%groundwater_level
       write(*,'(*(g0))') 'PPA_WU05A17_MACRO_STORAGE|INITIAL=',sum(initial%macropore%water_domain_cp), &
            '|CANDIDATE=',sum(diag_state%macropore%water_domain_cp), &
            '|DELTA=',sum(diag_state%macropore%water_domain_cp)-sum(initial%macropore%water_domain_cp)
