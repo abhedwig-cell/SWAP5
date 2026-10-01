@@ -7,6 +7,8 @@ on:
       - research/f-macro-tracer01-reference-kernel
     paths:
       - '.github/workflows/f-macro-tracer01d-fixture.yml'
+      - 'tools/research/fortran/test_macro_tracer01d_spechtacker_fixture.f90'
+      - 'tools/research/macropore_tracer01d_fixture_postprocess.py'
 
 jobs:
   fixture:
