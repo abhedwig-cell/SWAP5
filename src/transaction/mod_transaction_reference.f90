@@ -260,6 +260,8 @@ contains
     real(real64) :: full_mass_residual, half_mass_residual, terr
     logical :: solver_ok, mass_ok, temporal_ok, context_required
     logical :: storage_start_complete, storage_end_complete, full_storage_end_complete
+    logical :: retry_feedback_ok, retry_override_available, accepted_feedback_ok
+    real(real64) :: retry_override_dt
     integer(int64) :: start_missing_mask, end_missing_mask, accepted_missing_mask
     integer(int64) :: full_end_missing_mask, full_missing_mask
     integer :: retry_index
@@ -309,7 +311,20 @@ contains
       if (.not. full_outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
         if (context_required) call model%restore_attempt_context(checkpoint_context)
-        call reject_and_retry(result, retry_index, policy, attempt_dt)
+        if (retry_index < policy%max_retries) then
+          call model%apply_retry_feedback(full_outcome,attempt_dt,retry_override_available,retry_override_dt, &
+               retry_feedback_ok)
+          if (.not.retry_feedback_ok) then
+            result%rollbacks=result%rollbacks+1
+            result%status=TX_STATUS_RETRY_EXHAUSTED
+            return
+          end if
+          if (context_required) call model%capture_attempt_context(checkpoint_context)
+        else
+          retry_override_available=.false.
+          retry_override_dt=attempt_dt
+        end if
+        call reject_and_retry(result,retry_index,policy,attempt_dt,retry_override_available,retry_override_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
       end if
@@ -367,7 +382,25 @@ contains
       if (.not. solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
         if (context_required) call model%restore_attempt_context(checkpoint_context)
-        call reject_and_retry(result, retry_index, policy, attempt_dt)
+        if (retry_index < policy%max_retries) then
+          if (.not.half1_outcome%solver_ok) then
+            call model%apply_retry_feedback(half1_outcome,attempt_dt,retry_override_available,retry_override_dt, &
+                 retry_feedback_ok)
+          else
+            call model%apply_retry_feedback(half2_outcome,attempt_dt,retry_override_available,retry_override_dt, &
+                 retry_feedback_ok)
+          end if
+          if (.not.retry_feedback_ok) then
+            result%rollbacks=result%rollbacks+1
+            result%status=TX_STATUS_RETRY_EXHAUSTED
+            return
+          end if
+          if (context_required) call model%capture_attempt_context(checkpoint_context)
+        else
+          retry_override_available=.false.
+          retry_override_dt=attempt_dt
+        end if
+        call reject_and_retry(result,retry_index,policy,attempt_dt,retry_override_available,retry_override_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
       end if
@@ -454,6 +487,12 @@ contains
            accepted_missing_mask == TX_MASS_MISSING_NONE
 
       if (context_required) call model%restore_attempt_context(half_context)
+      call model%apply_accepted_feedback(attempt_dt,accepted_feedback_ok)
+      if (.not.accepted_feedback_ok) then
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
+        result%status=TX_STATUS_RETRY_EXHAUSTED
+        return
+      end if
       call move_alloc(half_state, committed)
       result%status = TX_STATUS_ACCEPTED
       result%accepted_route = TX_ROUTE_TWO_HALF
@@ -494,6 +533,8 @@ contains
     real(real64) :: storage0, storage_candidate, mass_residual
     logical :: mass_ok, temporal_ok, certificate_valid, context_required
     logical :: storage_start_complete, storage_end_complete
+    logical :: retry_feedback_ok, retry_override_available, accepted_feedback_ok
+    real(real64) :: retry_override_dt
     integer(int64) :: start_missing_mask, end_missing_mask, accepted_missing_mask
     integer :: retry_index
 
@@ -531,7 +572,20 @@ contains
       if (.not. outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
         if (context_required) call model%restore_attempt_context(checkpoint_context)
-        call reject_and_retry(result, retry_index, policy, attempt_dt)
+        if (retry_index < policy%max_retries) then
+          call model%apply_retry_feedback(outcome,attempt_dt,retry_override_available,retry_override_dt, &
+               retry_feedback_ok)
+          if (.not.retry_feedback_ok) then
+            result%rollbacks=result%rollbacks+1
+            result%status=TX_STATUS_RETRY_EXHAUSTED
+            return
+          end if
+          if (context_required) call model%capture_attempt_context(checkpoint_context)
+        else
+          retry_override_available=.false.
+          retry_override_dt=attempt_dt
+        end if
+        call reject_and_retry(result,retry_index,policy,attempt_dt,retry_override_available,retry_override_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
       end if
@@ -608,6 +662,12 @@ contains
            outcome%mass_accounting_complete .and. accepted_missing_mask == TX_MASS_MISSING_NONE
 
       if (context_required) call model%restore_attempt_context(accepted_context)
+      call model%apply_accepted_feedback(attempt_dt,accepted_feedback_ok)
+      if (.not.accepted_feedback_ok) then
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
+        result%status=TX_STATUS_RETRY_EXHAUSTED
+        return
+      end if
       call move_alloc(candidate_state, committed)
       result%status = TX_STATUS_ACCEPTED
       result%accepted_route = TX_ROUTE_MODEL_CERTIFIED
