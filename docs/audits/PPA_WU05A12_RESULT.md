@@ -167,3 +167,27 @@ Only if that route is qualified should active perched production admission be re
 If that seed cannot preserve the source semantics, the next decision boundary is an
 explicit inner-Richards macropore coupling design. That must not be introduced silently
 inside A12.
+
+
+## Subsequent A11 source correction
+
+A13 reinspection of the exact 4.3.1 source found that the A11 carrier used an off-by-one
+translation: active B1.11 uses `ICpTpPerZon=NPeGwl`, while the apparent `+1` is commented
+source text. SATFLOW also applies the perched-level fraction directly in the top saturated
+compartment.
+
+Therefore A12's original zero-`QInIntSat` experiments were partly confounded by that A11
+translation defect and must not be cited as proof that the exact source carrier itself
+cannot produce perched exchange.
+
+A13 repeated the experiment after correcting the source mapping. The accepted-state
+carrier then detected the perched zone and produced positive raw and limited
+`QInIntSat = 5.3846153846153863e-8 cm`.
+
+However, the serialized outer-coupled candidate still ended with exactly zero macropore
+storage increase after the other macropore sources were disabled. Thus A12's broader
+ordering concern survives in refined form: exact perched exchange exists at accepted state,
+but the current outer fixed-point path does not retain it in the completed transaction.
+
+A12 remains closed as historical falsification evidence, superseded by A13 for the precise
+cause and architecture decision.
