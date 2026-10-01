@@ -244,7 +244,6 @@ contains
       write(*,'(A,L1)')'TOP03_DIAG_COMPLETED=',result%completed
       write(*,'(A,I0)')'TOP03_DIAG_RESULT_STATUS=',result%status
       write(*,'(A,I0)')'TOP03_DIAG_SUBSTEPS=',diagnostics%accepted_substeps
-      write(*,'(A,A)')'TOP03_DIAG_ROUTE=',trim(result%route)
     end if
     call require(result%completed.and.candidate%ready(),'external top trial completed')
     observation=backend%observation()
