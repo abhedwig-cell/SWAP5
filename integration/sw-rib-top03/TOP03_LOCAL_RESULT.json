@@ -1,0 +1,42 @@
+{
+  "work_unit": "SW-RIB-TOP03",
+  "postimage": "4c164b087e11c110baeb7a56795d4a1ff109d1ab",
+  "compiler": "GNU Fortran 13.3.0; -std=f2008 -fcheck=all -ffpe-trap=invalid,zero,overflow; O0 and O2",
+  "decision": "QUALIFIED_LOCAL_TEMPORAL_IDENTITY_BLOCKER__NO_PRODUCTION_ADMISSION",
+  "production_admission": false,
+  "claims": {
+    "default_off_physical_and_ledger_identity": "PASS O0/O2",
+    "existing_fapp09_owner_gate": "PASS O0/O2 in preservation mode",
+    "provider_never_publishes_external_transfer": "PASS O0/O2",
+    "pure_surface_materializer_and_anti_masking": "PASS O0/O2",
+    "real_transient_solver_convergence": "PASS O0/O2 in characterization mode",
+    "real_transient_mass_gate": "No mass rejection with unchanged 1e-10 cm tolerance",
+    "real_transient_temporal_gate": "REJECTS 3 times; unchanged exact identity policy",
+    "rejected_candidate_publication": "No candidate, no commit, no top carrier publication",
+    "full_top03_production_gate": "BLOCKED; successful top-active component transaction tests not reached"
+  },
+  "commands": [
+    "PATH=<local gfortran wrapper> RUNNER_TEMP=<isolated dir> bash tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh preservation",
+    "PATH=<local gfortran wrapper> RUNNER_TEMP=<isolated dir> bash tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh characterize",
+    "PATH=<local gfortran wrapper> bash tests/fapp/run_sw_rib_top03_external_head_runots.sh",
+    "PATH=<local gfortran wrapper> bash tests/fapp/run_sw_rib_top03_exchange.sh"
+  ],
+  "numerical_authority": "src/runtime/mod_fmr_serialized_reference_backend.f90:fmr_serialized_temporal_identity; src/transaction/mod_transaction_reference.f90:full/half mass and temporal acceptance",
+  "policy_held_fixed": "No new temporal error norm/certificate, no shared numerical option changes, no tolerance override in production.",
+  "source_sha256": {
+    ".github/workflows/sw-rib-top03-runots.yml": "5e72f619afe074c970cec8a9c09ff14c0969ebbc418565b4787ee8cf11b1e989",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "ed5a7af8291e92d5bd2498d1d94a59e7550fcf08164f362a47d760c53016df8d",
+    "src/legacy/b1_10_port/headcalc.f90": "7409ba2ce8f82ae4e44c7de85452cdf28b27bd7522067cddda0e91514edb2519",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "666d7f0046addf8b947252c42607dc813e888a9e0f52404816a4c8cb2e483152",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "3ad8f02921017ba94f8758a9c62748047b4e04bd13757875fcac014068f8f38b",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90": "be453e51ec18709b9cc548b2495182ba04957dbc294b156394951015c5b2f2d6",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "7f856f4fe703c4ffea52d1b64d847e015ff5e2aeb0d96d460bbe1fe6df4b28f2",
+    "src/solver/mod_soil_water_solver_contract.f90": "5fd0c9d2139a0e9a3c55ba0d920bb8b8abd93b36d6be4f1f0cf170b692a7984e",
+    "tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh": "eb9004e49f525c2595342046e41f3a50e315d3e5715dd94fd4d84a331f6395c4",
+    "tests/fapp/run_sw_rib_top03_external_head_runots.sh": "80a9cbbd5845fed7250c1d56a03c6100d6985c158e09a6a5f83fdba12ffc8a33",
+    "tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90": "247e0909fc608f0d59c3d3f297bce48c0ff68cb7c6e8cf02f3cf208c93193598",
+    "tests/fapp/test_sw_rib_top03_external_head_runots.f90": "2aa855c534a255416200ed3d30a1311986ed7fd81cf1d2e5f2083ad0e47e276f"
+  },
+  "local_remote_reconciliation": "Source/test/workflow contents match persisted postimage; one runner executable bit differs only. Runner was invoked explicitly through bash. Restored original executable mode in evidence commit; source bytes unchanged.",
+  "test_output_scope": "Evidence text stores filtered stable markers; complete compiler warning logs remain local scratch. FAPP09 OWNER PASS in characterize mode is preservation plus successful detection of a blocker, not inundation production qualification."
+}

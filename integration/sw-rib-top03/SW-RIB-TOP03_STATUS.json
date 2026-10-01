@@ -4,7 +4,7 @@
   "date": "2026-10-01",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "e2d18564383e1350b0b9a68af0eaf668dac784af",
-  "decision": "BOUNDED_INTERVAL_REPAIR_IMPLEMENTED_PENDING_RUNTIME_QUALIFICATION",
+  "decision": "QUALIFIED_LOCAL_TEMPORAL_IDENTITY_BLOCKER__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -15,7 +15,7 @@
   ],
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "production_admission": false,
   "fixture_repair": "When disabling drainage_response_active, supply allocated zero drainage_flux_by_level(1,active_nodes); remove duplicate top_flux assignment. Forcing preparation otherwise returns before solve.",
@@ -27,7 +27,7 @@
     "latest_observed_run": 36922826825,
     "latest_observed_head": "485571d448a0fef52b1ec6d48ccd6dc7d5919f61",
     "latest_observed_status": "queued",
-    "static_algebra_checks": "Executed JavaScript arithmetic and assertions in this session; not compiled Fortran or runtime qualification.",
+    "static_algebra_checks": "Historical source/algebra review retained; superseded by local compiled characterization for current repair.",
     "counterexamples": [
       {
         "name": "ponding_ledger",
@@ -57,7 +57,9 @@
         "unbooked_ponding": 0,
         "clipped_signed": 0
       }
-    ]
+    ],
+    "final_local_result": "integration/sw-rib-top03/TOP03_LOCAL_RESULT.json",
+    "qualification_boundary": "PASS means preservation, pure exchange/receipt and expected rejection characterization only. The full TOP03 production runtime/receipt path is NOT qualified."
   },
   "findings": [
     {
@@ -129,17 +131,19 @@
     "component receipt commit",
     "typed external head forcing"
   ],
-  "blockers": [],
-  "next_action": "Compile/run focused real FAPP09 fixture locally; then receipt replay, origin, masking and default-off tests.",
-  "recovery_point": "This record's commit on work/sw-rib-top03-transactional-top-exchange; PR #956 stays draft.",
+  "blockers": [
+    "Shared BASE temporal identity gate returns huge() for non-identical full/half transient end states. O0/O2 fixture converges, passes mass gates, but records 3 temporal rejections and zero accepted substeps. TOP03 cannot supply a live inundation candidate under that unchanged policy."
+  ],
+  "next_action": "Numerical/integration regie must issue an admitted transient temporal acceptance contract for this bounded BASE inundation composition. Then rerun normal focused FAPP09 gate and top-active component receipt/replay tests. Do not waive mass or accept a rejected candidate.",
+  "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
-  "ci_policy": "No new Actions run requested. Checkpoint uses skip ci because runtime cannot qualify the falsified recipe; existing queued evidence is not awaited as an admission gate for this source/algebra decision.",
+  "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
   "implementation_slice": {
     "contract": "integration/sw-rib-top03/TOP03_BOUNDED_INTERVAL_CONTRACT.md",
     "implemented": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
-    "local_compiler": "GNU Fortran 13.3.0 installed in disposable local compiler prefix",
+    "local_compiler": "GNU Fortran 13.3.0; -std=f2008 -fcheck=all -ffpe-trap=invalid,zero,overflow; O0 and O2",
     "repairs": [
       "typed imposed head excludes atmosphere-only pond Newton equation",
       "stable head at equal ponding",
@@ -149,5 +153,17 @@
       "scalar publication/commit gated via private component preflight",
       "explicit bounded profile and exfiltration rejection"
     ]
-  }
+  },
+  "last_reconciled_head": "4c164b087e11c110baeb7a56795d4a1ff109d1ab",
+  "checkpoint_commit": "4c164b087e11c110baeb7a56795d4a1ff109d1ab",
+  "pending_tests": [
+    "successful real inundation candidate and accepted full/half carrier",
+    "top-active wrong/correct receipt end-to-end",
+    "scalar commit bypass with real top-active candidate",
+    "same-origin changed top-head replay",
+    "top-active stale-origin and exactly-once commit",
+    "optional-composition/exfiltration admission failures",
+    "live Ribasim local-pond/secondary-storage geometry disjointness",
+    "canonical current-source reconciliation and admission"
+  ]
 }
