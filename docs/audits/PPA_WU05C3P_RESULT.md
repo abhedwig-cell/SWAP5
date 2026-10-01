@@ -45,3 +45,28 @@ Remaining before canonical admission:
 2. prove non-oxygen route preservation;
 3. execute full oxygen end-to-end regression;
 4. persist admission/closeout and merge only after those gates pass.
+
+
+## C3A production execution seam
+
+A single production execution seam now composes the qualified components:
+
+```text
+activation
+ -> hydraulic + thermal runtime view
+ -> reference water-film provider
+ -> typed response assembly
+ -> ordered profile oxygen solve
+ -> per-node oxygen factors
+ -> existing root sink composition
+```
+
+The seam has an explicit oxygen-disabled preservation route that returns the incoming root-water
+uptake result unchanged. Unsupported historical oxygen/water-film combinations fail closed before
+any root sink is modified.
+
+A narrow preservation test is persisted at
+`tests/physics/test_fmr_bartholomeus_execution_preservation.f90`.
+
+This completes the code-level production seam. Full application-level end-to-end regression remains
+the final admission evidence before canonical merge.
