@@ -70,3 +70,19 @@ A narrow preservation test is persisted at
 
 This completes the code-level production seam. Full application-level end-to-end regression remains
 the final admission evidence before canonical merge.
+
+
+## C3A application-preservation gate
+
+A dependency-light application gate is now persisted at
+`tests/fmr/run_c3a_bartholomeus_production_gate.sh`.
+
+It asserts statically that the production execution seam:
+- returns `base_fluxes` directly on the disabled route;
+- only enters physics on the explicitly active route;
+- uses the qualified factor provider and existing root-sink composition;
+- introduces no file I/O or saved continuation state.
+
+It then reuses the qualified root-sink composition gate and the fail-closed activation matrix gate.
+
+This gate is intended for local execution first. No automatic GitHub Actions trigger is added.
