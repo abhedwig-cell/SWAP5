@@ -21,9 +21,9 @@ compile_n() {
   python3 tests/fpe/materialize_fpe_timeint03_binding.py     --source src/adapter/mod_reference_richards_legacy_binding.f90     --output "$dir/mod_fpe_timeint03_reference_binding.f90"
   python3 tests/fpe/materialize_fpe_timeint02_headcalc.py     --source src/legacy/b1_10_port/headcalc.f90     --output "$dir/headcalc_miqual01.f90"
 
-  python3 tests/fpe/compile_fpe_timeint03_closure.py     --root "$ROOT" --stub "$dir/stub.f90"     --target "$BUILD/preflight_maxit16.f90"     --external-source "$dir/headcalc_miqual01.f90"     --external-module-source "$dir/mod_fpe_timeint03_reference_binding.f90"     --build "$dir/preflight" --opt 3
+  python3 tests/fpe/compile_fpe_miqual01_closure.py     --root "$ROOT" --stub "$dir/stub.f90"     --target "$BUILD/preflight_maxit16.f90"     --external-source "$dir/headcalc_miqual01.f90"     --external-module-source "$dir/mod_fpe_timeint03_reference_binding.f90"     --build "$dir/preflight" --opt 3
 
-  python3 tests/fpe/compile_fpe_timeint03_closure.py     --root "$ROOT" --stub "$dir/stub.f90"     --target "$BUILD/trajectory_maxit16.f90"     --external-source "$dir/headcalc_miqual01.f90"     --external-module-source "$dir/mod_fpe_timeint03_reference_binding.f90"     --build "$dir/trajectory" --opt 3
+  python3 tests/fpe/compile_fpe_miqual01_closure.py     --root "$ROOT" --stub "$dir/stub.f90"     --target "$BUILD/trajectory_maxit16.f90"     --external-source "$dir/headcalc_miqual01.f90"     --external-module-source "$dir/mod_fpe_timeint03_reference_binding.f90"     --build "$dir/trajectory" --opt 3
 }
 
 compile_n 32
