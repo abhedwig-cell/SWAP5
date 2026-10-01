@@ -7,6 +7,7 @@ on:
       - 'src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90'
       - 'src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90'
       - 'tests/fmig431/**'
   workflow_dispatch:
 jobs:
