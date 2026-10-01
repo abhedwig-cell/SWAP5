@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.f_macro_tracer01d1s.status.v1",
+  "status": "QUALIFIED_SENSITIVITY_D2_CONDITIONALLY_AUTHORIZED",
+  "run": {
+    "id": 36850783213,
+    "head_sha": "6aa0ebbf933ea5055c4fbc42e619da809f604cae",
+    "artifact_id": 11155541836,
+    "artifact_sha256": "568865eb8fb83f9696f1fcfb5384b571305ad3330d9ae5b418da67f6f6087260"
+  },
+  "envelope": {
+    "theta_1m": [
+      0.234,
+      0.254,
+      0.274,
+      0.294,
+      0.314
+    ],
+    "accepted_packets_each": 720,
+    "retries_each": 0,
+    "max_abs_global_tracer_residual": 1.7763568394002505e-15,
+    "max_bottom_flux_residual_cm_per_day": 2.826829048618862e-12,
+    "max_L1_to_central": 0.0036148499233657322,
+    "tracer_centroid_m_range": [
+      0.09434204320342388,
+      0.09517865723932911
+    ],
+    "fraction_below_20cm_range": [
+      0.08275404023136601,
+      0.08615140040944608
+    ],
+    "fraction_below_50cm_range": [
+      0.000005735458811754325,
+      0.000007222674569014146
+    ],
+    "bottom_export_range": [
+      0,
+      5.962591422564172e-22
+    ]
+  },
+  "observed_profile1_centroid_m": 0.176,
+  "decisions": {
+    "exact_replay": false,
+    "initial_state_sensitivity_pass": true,
+    "d2_sensitivity_conditioned_authorized": true,
+    "dispersion_authorized": false,
+    "new_rfm_physics_authorized": false
+  }
+}
