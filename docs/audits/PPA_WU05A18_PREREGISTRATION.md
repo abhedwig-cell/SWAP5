@@ -118,3 +118,81 @@ groundwater level.
 - `QUALIFIED_A17_ACTIVE_PERCHED_E2E`;
 - `SHIPPED_CASE_HAS_NO_DISTINCT_PERCHED_BODY`;
 - `BLOCKED_NO_SOURCE_STABLE_PERCHED_FIXTURE`.
+
+
+## Recovered G1/G2 evidence — 2026-10-01
+
+The exact user-supplied distribution was materialized and inspected locally.
+
+### Package contents
+
+The official distribution contains:
+
+- `cases/3.macroporeflow/swap.swp`;
+- Andelst meteorology and detailed rainfall inputs;
+- `swap.bbc` and `swap.dra`;
+- crop files;
+- packaged Linux and Windows executables;
+- exact `SWAP.ZIP`;
+- exact `TTUTIL.ZIP`;
+- the supplied Linux compiler script.
+
+The case identifies itself as:
+
+`Case: Macropore flow (Andelst)`
+
+and runs from 1998-01-01 to 1999-04-26 with `SWMACRO=1` and
+`CRITUNDSATVOL=0.1 cm`.
+
+### Portable local rebuild
+
+The packaged Linux executable is not runnable in the current container because
+`libimf.so` is unavailable.
+
+TTUTIL was rebuilt from the packaged source with gfortran.
+
+SWAP 4.3.1 was then rebuilt from the packaged source in the exact source order listed by
+`compile_link_431_linux.sh`.
+
+Portability-only changes:
+
+- Intel `!DEC$` conditional compilation was resolved to the ordinary Linux,
+  non-MultiSWAP, non-ANIMO, non-SSS branches;
+- gfortran legacy argument compatibility was enabled;
+- Intel `-save` was not emulated globally because it conflicts with PURE procedures in
+  gfortran.
+
+No physical equation or case input was changed for the authority run.
+
+### False-positive guard
+
+A first diagnostic trigger on `NPeGwl>0` stopped at
+`t1900=35795.0`, but the apparent perched node coincided with the ordinary saturated
+zone. That event is rejected as perched authority.
+
+A stricter diagnostic then required:
+
+`BPeGwl < NodGwl - 1`.
+
+### First distinct perched body
+
+The unmodified official Andelst case then produced:
+
+- `t1900 = 35797.50454372`;
+- `Gwl = -59.98714 cm`;
+- `NodGwl = 47`;
+- `PeGwl = -18.07459 cm`;
+- `NPeGwl = 19`;
+- `PeGwl_bot = -28.09488 cm`;
+- `BPeGwl = 29`;
+- `NumNod = 112`.
+
+The pressure-head vector shows a distinct positive-head lens at nodes 19..28, followed by
+negative heads through the separator, before positive heads reappear in the ordinary
+groundwater zone near node 48.
+
+This passes G2: the shipped official SWAP 4.3.1 macropore case itself contains a genuine
+source-defined perched groundwater body.
+
+The next A18 action is therefore exact snapshot/forcing extraction around this event,
+not construction of a synthetic replacement profile.
