@@ -162,13 +162,12 @@ contains
     end if
     if(npegwl<1 .or. npegwl>n)return
 
-    view%top_node=npegwl+1
-    view%partial_top_active=.false.
-    if(water_level<z(npegwl)-0.5_real64*dz(npegwl))then
-      view%partial_top_active=.true.
-    else if(npegwl==1 .and. water_level>z(npegwl))then
-      view%top_node=1
-    end if
+    ! Exact active B1.11 MACRORATE code is:
+    !   ICpTpPerZon = NPeGwl
+    ! The historic "+ 1" and ICpSatPeGwl alternatives are commented out.
+    ! SATFLOW always applies the PeGwl-derived saturation fraction in CpTpZon.
+    view%top_node=npegwl
+    view%partial_top_active=.true.
 
     if(view%top_node<1 .or. view%top_node>n)return
     if(view%bottom_node<view%top_node)return
