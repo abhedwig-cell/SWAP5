@@ -75,7 +75,7 @@ def instrument(source:bytes)->bytes:
       b"         write(c3q_trace_unit,'(a)') 'call_index,route,node,matric_potential_pa,theta,gas_filled_porosity,soil_temp_k,max_resp_factor,waterfilm_thickness_m,d_soil,r_microbial_z0,ctopnode,c_macro,c_min_micro,resp_factor,rwu_factor,c_mroot,w_root,w_root_z0,f_senes,q10_root,d_o2inwater,d_root,perc_org_mat,soil_density,depth,shape_micro,shape_root,rootradius_m,bunsencoeff,q10_microbial,specific_resp_humus'\r\n"
       b"         c3q_trace_header=.TRUE.\r\n"
       b"      end if\r\n"
-      b"      write(c3q_trace_unit,'(i0,\",\",a,\",\",i0,30(\",\",es25.16e3))') c3q_call_index,trim(route),node,mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu,cmr,wr,wr0,fs,q10r,dw,dr,om,bd,dep,sm,sr,rr,bc,q10m,srh\r\n"
+      b"      write(c3q_trace_unit,'(i0,\",\",a,\",\",i0,29(\",\",es25.16e3))') c3q_call_index,trim(route),node,mp,th,gfp,temp,maxrf,wft,ds,rm,ctop,cmac,cmic,rf,rwu,cmr,wr,wr0,fs,q10r,dw,dr,om,bd,dep,sm,sr,rr,bc,q10m,srh\r\n"
       b"   end subroutine c3q_write_trace\r\n"+END+
       b"   \r\n   subroutine calc_ini_pars (numnod)"
     )
