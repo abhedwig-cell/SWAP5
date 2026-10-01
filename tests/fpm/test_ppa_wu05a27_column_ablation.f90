@@ -59,7 +59,7 @@ program test_ppa_wu05a27_column_ablation
  if(allocated(q%base_state%pressure_head))deallocate(q%base_state%pressure_head,q%base_state%water_content)
  allocate(q%base_state%pressure_head(numnod),q%base_state%water_content(numnod));q%base_state%pressure_head=h0;q%base_state%water_content=t0
  q%base_state%ponding_depth=0.0_real64;q%base_state%groundwater_level=water_table
- q%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX;q%boundary%bottom_mode=7;q%boundary%top_flux=0.0_real64;q%boundary%bottom_head=water_table+100._real64
+ q%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX;q%boundary%bottom_mode=5;q%boundary%top_flux=0.0_real64;q%boundary%bottom_head=water_table+100._real64
  q%physical%macropore_active=.false.;q%numerical%max_iterations=64;q%numerical%max_backtracking=24
  q%numerical%conductivity_implicit_mode=0;q%numerical%conductivity_mean_method=1;q%numerical%min_step_duration=1e-12_real64
  q%numerical%compartment_balance_tolerance=tol;q%numerical%total_balance_tolerance=tol;q%numerical%head_abs_tolerance=tol
