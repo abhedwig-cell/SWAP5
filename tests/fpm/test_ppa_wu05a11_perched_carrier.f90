@@ -48,14 +48,14 @@ program test_ppa_wu05a11_perched_carrier
   ! bridged and the upper saturated compartment belongs to the same perched zone.
   call derive_matrix_perched_zone_view(matrix,theta_s,z,dz,matrix_view,0.005_real64,perched_tight)
   call require(perched_tight%valid .and. perched_tight%active,'tight perched valid')
-  call require(perched_tight%top_node==4 .and. perched_tight%bottom_node==4,'tight perched bounds')
+  call require(perched_tight%top_node==3 .and. perched_tight%bottom_node==4,'tight perched bounds')
   call require(abs(perched_tight%water_level_cm+25.32258064516129_real64)<1.0e-12_real64, &
        'tight perched water level')
 
   call derive_matrix_perched_zone_view(matrix,theta_s,z,dz,matrix_view,0.02_real64,perched_merge)
   call require(perched_merge%valid .and. perched_merge%active,'merged perched valid')
-  call require(perched_merge%top_node==3 .and. perched_merge%bottom_node==4,'merged perched bounds')
-  call require(.not.perched_merge%partial_top_active,'merged perched full top compartment')
+  call require(perched_merge%top_node==2 .and. perched_merge%bottom_node==4,'merged perched bounds')
+  call require(perched_merge%partial_top_active,'merged perched top fraction active')
   call require(abs(perched_merge%water_level_cm+12.142857142857142_real64)<1.0e-12_real64, &
        'merged perched water level')
   call require(abs(perched_merge%bottom_level_cm+38.75_real64)<1.0e-12_real64,'merged perched bottom level')
@@ -96,11 +96,11 @@ program test_ppa_wu05a11_perched_carrier
        request,matrix_view,ok)
   call require(ok,'A11 FMR rate request')
   call require(request%unsaturated%sorptivity%perched_active,'A11 request perched active')
-  call require(request%unsaturated%sorptivity%perched_top_node==3 .and. &
+  call require(request%unsaturated%sorptivity%perched_top_node==2 .and. &
        request%unsaturated%sorptivity%perched_bottom_node==4,'A11 unsaturated perched exclusion')
-  call require(request%interflow_sat%matrix_top_saturated_node==3 .and. &
+  call require(request%interflow_sat%matrix_top_saturated_node==2 .and. &
        request%interflow_sat%matrix_bottom_saturated_node==4,'A11 interflow bounds')
-  call require(.not.request%interflow_sat%matrix_partial_top_active,'A11 interflow full top')
+  call require(request%interflow_sat%matrix_partial_top_active,'A11 interflow top fraction')
   call require(abs(request%interflow_sat%matrix_level-perched_merge%water_level_cm)<1.0e-12_real64, &
        'A11 interflow reference level')
 
@@ -109,7 +109,8 @@ program test_ppa_wu05a11_perched_carrier
   call require(sum(rates%qin_interflow_rate)>0.0_real64,'A11 perched interflow positive')
   call require(rates%qexc_to_matrix_rate(1,4)<0.0_real64,'A11 perched exchange sign')
   call require(abs(rates%unsaturated%selected_rate_cm_per_day(1,3))<1.0e-15_real64 .and. &
-       abs(rates%unsaturated%selected_rate_cm_per_day(1,4))<1.0e-15_real64,'A11 perched excludes absorption')
+       abs(rates%unsaturated%selected_rate_cm_per_day(1,4))<1.0e-15_real64 .and. &
+       abs(rates%unsaturated%selected_rate_cm_per_day(1,2))<1.0e-15_real64,'A11 perched excludes absorption')
 
   print '(a)', 'PPA_WU05A11_PERCHED_SOURCE_ORACLE=PASS'
   print '(a)', 'PPA_WU05A11_PERCHED_FMR_CARRIER=PASS'
