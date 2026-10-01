@@ -11,6 +11,8 @@ on:
       - 'src/runtime/mod_fmr_restart_state_contract.f90'
       - 'tests/fpm/test_ppa_wu05_perch20_restart_lifecycle.f90'
       - 'tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh'
+      - 'tests/fpm/test_ppa_wu05_perch20_transaction_continuation.f90'
+      - 'tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh'
       - '.github/workflows/ppa-wu05-perch20-restart.yml'
 
 jobs:
@@ -20,5 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: PERCH20 reduction restart lifecycle
         run: bash tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh
+      - name: PERCH20 candidate commit reject continuation
+        run: bash tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh
       - name: Preserve PERCH19 source ladder
         run: bash tests/fpm/run_ppa_wu05_perch19_reduction_ladder.sh
