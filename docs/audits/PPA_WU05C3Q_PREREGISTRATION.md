@@ -86,3 +86,16 @@ C3Q can qualify a production-admission candidate only if:
 - SWAP-007 class is absent or explicitly guarded;
 - standard non-oxygen routes are unaffected.
 
+
+
+## Oracle evidence search result
+
+Recovered historical oxygen performance evidence does not contain the complete per-call C3Q trace vector. It contains useful aggregate timing, route counts, Newton histograms and output comparisons, but those cannot substitute for physical intermediate parity.
+
+Therefore a minimal diagnostic-only corrected-4.3.1 trace specification is now persisted at:
+
+`tests/physics/PPA_WU05C3Q_ORACLE_TRACE_INSTRUMENTATION.md`
+
+Status: `ORACLE_TRACE_SPEC_READY / ORACLE_VECTOR_EXECUTION_PENDING`.
+
+This is now the narrow execution dependency for the first real A/B comparison.
