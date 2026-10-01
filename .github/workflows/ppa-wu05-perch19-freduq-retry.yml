@@ -19,7 +19,7 @@ jobs:
       - name: PERCH19 exact source reduction retry
         run: bash tests/fpm/run_ppa_wu05_perch19_freduq_retry.sh
       - name: Preserve A18 solver-stable perched baseline
-        run: bash tests/fpm/run_ppa_wu05a18_andelst_baseline.sh
+        run: bash tests/fpm/run_ppa_wu05a18_andelst_perched_reference.sh
       - name: Preserve A16 analytical callback
         run: bash tests/fpm/run_ppa_wu05a16_inner_callback.sh
       - name: Preserve A16 actual provider
