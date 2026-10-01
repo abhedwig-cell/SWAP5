@@ -215,10 +215,12 @@ contains
       ! injected separately; HeadCalc obtains its own current-iterate rate from
       ! the provider.
       rate_template_attempt=rate_template_step
-      rate_template_attempt%unsaturated%sorptivity%flow_reduction=reduction_attempt%factor()
-      rate_template_attempt%interflow_sat%flow_reduction=reduction_attempt%factor()
-      rate_template_attempt%matrix_sat%flow_reduction=reduction_attempt%factor()
-      rate_template_attempt%rapid%flow_reduction=reduction_attempt%factor()
+      if(policy%source_reduction_retry_enabled)then
+        rate_template_attempt%unsaturated%sorptivity%flow_reduction=reduction_attempt%factor()
+        rate_template_attempt%interflow_sat%flow_reduction=reduction_attempt%factor()
+        rate_template_attempt%matrix_sat%flow_reduction=reduction_attempt%factor()
+        rate_template_attempt%rapid%flow_reduction=reduction_attempt%factor()
+      end if
       call prepare_standard_macropore_rate_request(rate_template_attempt,accepted_macro,geometry,accepted_view, &
            base_request%base_state,base_request%parameters%z,base_request%parameters%dz,dt, &
            rate_request,matrix_view,ok)
@@ -237,10 +239,12 @@ contains
 
       do
         rate_template_attempt=rate_template_step
-        rate_template_attempt%unsaturated%sorptivity%flow_reduction=reduction_attempt%factor()
-        rate_template_attempt%interflow_sat%flow_reduction=reduction_attempt%factor()
-        rate_template_attempt%matrix_sat%flow_reduction=reduction_attempt%factor()
-        rate_template_attempt%rapid%flow_reduction=reduction_attempt%factor()
+        if(policy%source_reduction_retry_enabled)then
+          rate_template_attempt%unsaturated%sorptivity%flow_reduction=reduction_attempt%factor()
+          rate_template_attempt%interflow_sat%flow_reduction=reduction_attempt%factor()
+          rate_template_attempt%matrix_sat%flow_reduction=reduction_attempt%factor()
+          rate_template_attempt%rapid%flow_reduction=reduction_attempt%factor()
+        end if
 
         call inner_provider%configure(accepted_macro,geometry,rate_template_attempt,base_request%parameters%z, &
              base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
@@ -274,8 +278,13 @@ contains
         reduction_attempt=reduction_next
       end do
 
-      call reduction_after_accept(reduction_attempt,dt,result%reduction_candidate)
-      result%accepted_source_reduction_factor=reduction_attempt%factor()
+      if(policy%source_reduction_retry_enabled)then
+        call reduction_after_accept(reduction_attempt,dt,result%reduction_candidate)
+        result%accepted_source_reduction_factor=reduction_attempt%factor()
+      else
+        result%reduction_candidate=reduction_attempt
+        result%accepted_source_reduction_factor=rate_template_attempt%interflow_sat%flow_reduction
+      end if
 
       call prepare_standard_macropore_rate_request(rate_template_attempt,accepted_macro,geometry,accepted_view, &
            corrector%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt, &
