@@ -18,6 +18,7 @@ module mod_macropore_covering_layer_input
   end type covering_layer_input_request_t
 
   public :: evaluate_covering_layer_input
+  public :: evaluate_covering_layer_rate_derivative
 
 contains
 
@@ -84,5 +85,29 @@ contains
     if (abs(sum(requested_vertical_cm)-total_amount) > 1.0e-12_real64) return
     ok = .true.
   end subroutine evaluate_covering_layer_input
+
+  subroutine evaluate_covering_layer_rate_derivative(request, derivative_rate_per_head, ok)
+    type(covering_layer_input_request_t), intent(in) :: request
+    real(real64), intent(out) :: derivative_rate_per_head
+    logical, intent(out) :: ok
+    real(real64), parameter :: pi_legacy = 3.14159_real64
+    real(real64) :: ld, r0, w_geom
+
+    derivative_rate_per_head = 0.0_real64
+    ok = .false.
+    if (.not. request%valid()) return
+    if (request%matrix_head_above_cm <= 0.0_real64) then
+      ok = .true.
+      return
+    end if
+    ld = request%minimum_polygon_diameter_cm
+    r0 = 0.5_real64*ld*(1.0_real64-sqrt(1.0_real64-request%total_macropore_volume_top_cm))
+    if (r0 <= 0.0_real64 .or. .not. ieee_is_finite(r0)) return
+    w_geom = 1.0_real64/(1.0_real64 + ld/(pi_legacy*request%dz_above_cm/2.0_real64)* &
+         log(ld/(pi_legacy*r0)) + ld**2/(6.0_real64*request%dz_above_cm**2))
+    if (.not. ieee_is_finite(w_geom) .or. w_geom < 0.0_real64) return
+    derivative_rate_per_head = w_geom*request%covering_layer_ksat_cm_per_day/(request%dz_above_cm/2.0_real64)
+    ok = ieee_is_finite(derivative_rate_per_head) .and. derivative_rate_per_head >= 0.0_real64
+  end subroutine evaluate_covering_layer_rate_derivative
 
 end module mod_macropore_covering_layer_input
