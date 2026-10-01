@@ -574,6 +574,9 @@ contains
     end do
     call atm_app%initialize(atm_config, local_status)
     call require(local_status == FMR_APP_BOOT_OK .and. atm_app%ready(), 'ATM02 owner initialize')
+    call atm_app%run_standalone_with_forcing_receipts(T1, T1, atm02_forcing, results, receipts, local_status)
+    call require(local_status == FMR_APP_BOOT_INVALID_CONFIG .and. atm_app%ready(), &
+         'receipt route rejects zero-length interval without mutating owner')
     call atm_app%run_standalone_with_forcing_receipts(T0, T1, atm02_forcing, results, receipts, local_status)
     call require(local_status == FMR_APP_BOOT_OK .and. all(results%completed) .and. all(results%committed), 'ATM02 owner commit')
     call require(size(receipts) == NTILE .and. receipts(1)%receipt%ready() .and. receipts(2)%receipt%ready(), &
