@@ -29,7 +29,7 @@ program test_ppa_wu05a26_live_trial_preparer
  use mod_rfm_live_trial_preparer
  implicit none
  type(p_t)::p;type(process_hydraulic_view_t)::v;type(rfm_runtime_configuration_t)::c
- type(rfm_surface_forcing_t)::f;type(rfm_physical_state_t)::a,snap
+ type(rfm_surface_forcing_t)::f;type(rfm_physical_state_t)::a,snap,h1,h2,h4
  type(soil_water_top_boundary_result_t)::top;type(rfm_live_trial_prepare_result_t)::r,r2,rr
  logical::ok;integer::i;real(real64)::depth(2),thick(2),d12,d24
  call a%initialize(1,ok);if(.not.ok)error stop 'init';call copy_rfm_physical_state(a,snap,ok)
