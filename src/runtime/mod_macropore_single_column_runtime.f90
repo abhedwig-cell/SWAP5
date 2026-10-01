@@ -55,6 +55,8 @@ module mod_macropore_single_column_runtime
     real(real64) :: returned_surface_cm=0.0_real64
     real(real64) :: rapid_external_outflow_cm=0.0_real64
     logical :: inner_richards_exchange_used=.false.
+    real(real64) :: inner_initial_exchange_rate_cm_per_day=0.0_real64
+    real(real64) :: inner_final_exchange_rate_cm_per_day=0.0_real64
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
     real(real64) :: macro_balance_residual_cm=huge(1.0_real64)
     type(soil_water_solve_result_t) :: matrix_result
@@ -201,6 +203,23 @@ contains
         return
       end if
 
+      ! Record the accepted-state inner rate for attribution only. This is not
+      ! injected separately; HeadCalc obtains its own current-iterate rate from
+      ! the provider.
+      call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
+           base_request%base_state,base_request%parameters%z,base_request%parameters%dz,dt, &
+           rate_request,matrix_view,ok)
+      if(.not.ok)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
+      call evaluate_macropore_rate_bundle(rate_request,current_rates)
+      if(.not.current_rates%valid)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
+      result%inner_initial_exchange_rate_cm_per_day=sum(current_rates%qexc_to_matrix_rate)
+
       request=base_request
       request%physical%macropore_active=.true.
       request%evaluation%macropore=>inner_provider
@@ -232,6 +251,7 @@ contains
       allocate(current_domain(nd,n),current_node(n))
       current_domain=raw_rates%qexc_to_matrix_rate
       current_node=sum(current_domain,dim=1)
+      result%inner_final_exchange_rate_cm_per_day=sum(current_domain)
       result%matrix_result=corrector
 
       call build_macropore_standard_candidate(accepted_macro,geometry,raw_rates%top_partition,current_domain, &
