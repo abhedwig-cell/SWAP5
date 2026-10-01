@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.f_macro.rfm_rc1.closeout.v1",
+  "status": "QUALIFIED_RESEARCH_CANDIDATE_EMPIRICAL_ADMISSION_BLOCKED",
+  "frozen_at_alt": 35,
+  "free_parameters_minimal": [
+    "sigma_B",
+    "f_MB",
+    "p"
+  ],
+  "optional_parameters": [
+    "chi_wall"
+  ],
+  "derived_inputs": [
+    "Z_AH",
+    "Z_IC",
+    "K_surface",
+    "S_surface",
+    "ell_ex",
+    "surface_boundary_state"
+  ],
+  "persistent_state": [
+    "fast_domain_water_storage",
+    "wall_event_sorptivity",
+    "wall_event_age",
+    "surface_event_age"
+  ],
+  "falsified_or_rejected": [
+    "strict_memoryless_wall_absorption",
+    "single_cumulative_scalar_philip_history",
+    "free_characteristic_activation_time",
+    "event_specific_geometry",
+    "fixed_active_depth_distribution",
+    "categorical_flow_type_equals_water_flux",
+    "free_R_AH",
+    "generic_sigma_B_0.65_default",
+    "ell_ex_default_free_calibration"
+  ],
+  "blocker": "event_level_empirical_payload_for_fixed_sigma_B_transferability",
+  "production_admitted": false,
+  "shadow_ready": true
+}
