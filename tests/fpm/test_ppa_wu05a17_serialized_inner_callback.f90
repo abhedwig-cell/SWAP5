@@ -71,21 +71,24 @@ program test_ppa_wu05a17_serialized_inner_callback
 
   cofgen=0.0_real64
   do i=1,numnod
-    cofgen(1,i)=0.02_real64; cofgen(2,i)=0.427494_real64; cofgen(3,i)=31.225016_real64
+    cofgen(1,i)=0.02_real64; cofgen(2,i)=0.427494_real64; cofgen(3,i)=0.01_real64
     cofgen(4,i)=0.021659_real64; cofgen(5,i)=0.98087_real64; cofgen(6,i)=1.734737_real64
     cofgen(7,i)=1.0_real64-1.0_real64/cofgen(6,i); cofgen(8,i)=cofgen(4,i)
     cofgen(10,i)=cofgen(3,i); cofgen(11,i)=0.999_real64; cofgen(12,i)=0.99_real64*cofgen(3,i)
     cofgen(22,i)=-1.0e6_real64; cofgen(23,i)=1.0e-12_real64
     cofgen(24,i)=3.0e-6_real64
   end do
-  ! Low-conductivity separator below the perched lens. Retention remains unchanged.
-  cofgen(3,4)=1.0e-4_real64
+  ! Low-conductivity caps isolate the perched lens from surface and main groundwater.
+  cofgen(3,1)=1.0e-6_real64
+  cofgen(10,1)=cofgen(3,1)
+  cofgen(12,1)=0.99_real64*cofgen(3,1)
+  cofgen(3,4)=1.0e-6_real64
   cofgen(10,4)=cofgen(3,4)
   cofgen(12,4)=0.99_real64*cofgen(3,4)
   call initialize_b110_default_mvg_parameters(hp,cofgen)
   call bind_b110_default_mvg_provider(hyd,hp,dt)
 
-  heads=[-5.0_real64,1.0_real64,11.0_real64,-5.0_real64,-7.0_real64,3.0_real64]
+  heads=[-0.5_real64,0.1_real64,0.1_real64,-0.5_real64,-0.5_real64,0.5_real64]
   call hyd%evaluate(heads,water,cond,cap,dkdh)
 
   allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod))
@@ -98,11 +101,11 @@ program test_ppa_wu05a17_serialized_inner_callback
   request%base_state%pressure_head=heads
   request%base_state%water_content=water
   request%base_state%ponding_depth=0.0_real64
-  request%base_state%groundwater_level=-52.0_real64
+  request%base_state%groundwater_level=-50.0_real64
   request%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
   request%boundary%bottom_mode=5
   request%boundary%top_flux=0.0_real64
-  request%boundary%bottom_head=8.0_real64
+  request%boundary%bottom_head=5.5_real64
   request%physical%macropore_active=.false.
   request%numerical%max_iterations=64
   request%numerical%max_backtracking=24
@@ -215,7 +218,7 @@ contains
     mcfg%history_template=history_request
     mcfg%rate_template%rapid%enabled=.false.
     mcfg%rate_template%perched_detection_enabled=.true.
-    mcfg%rate_template%critical_under_saturated_volume_cm=0.02_real64
+    mcfg%rate_template%critical_under_saturated_volume_cm=0.005_real64
     mcfg%rate_template%unsaturated%sorptivity%sorptivity_max=0.0_real64
     mcfg%rate_template%unsaturated%conductivity=0.0_real64
     mcfg%rate_template%matrix_sat%ksat_horizontal=0.0_real64
@@ -234,7 +237,7 @@ contains
       initial%water_content=cofgen(2,:)+initial%pressure_head*cofgen(24,:)
     end where
     initial%ponding_depth=0.0_real64
-    initial%groundwater_level=-52.0_real64
+    initial%groundwater_level=-50.0_real64
     initial%macropore=macro
     initial%macropore%water_domain_cp=0.0_real64
     initial%macropore%water_domain_cp(1,numnod)=0.20_real64
@@ -255,7 +258,7 @@ contains
     forcing%top_flux=0.0_real64
     forcing%top_head=0.0_real64
     forcing%bottom_flux=0.0_real64
-    forcing%bottom_head=8.0_real64
+    forcing%bottom_head=5.5_real64
     forcing%drainage_flux_by_level=0.0_real64
     forcing%subsurface_irrigation_source=0.0_real64
     forcing%root_extraction_sink=0.0_real64
@@ -522,7 +525,7 @@ contains
     bundle%limiter%top_domain_fraction=1.0_real64
     bundle%top_node=1
     bundle%perched_detection_enabled=.true.
-    bundle%critical_under_saturated_volume_cm=0.02_real64
+    bundle%critical_under_saturated_volume_cm=0.005_real64
   end subroutine setup_rate_template
 
   subroutine setup_sat(sat)
