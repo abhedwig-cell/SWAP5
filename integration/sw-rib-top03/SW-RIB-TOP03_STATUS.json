@@ -26,7 +26,7 @@
     "old_run_reuse": "Historical only; this is not evidence against the current repaired fixture.",
     "latest_observed_run": 36922826825,
     "latest_observed_head": "485571d448a0fef52b1ec6d48ccd6dc7d5919f61",
-    "latest_observed_status": "queued",
+    "latest_observed_status": "completed",
     "static_algebra_checks": "Historical source/algebra review retained; superseded by local compiled characterization for current repair.",
     "counterexamples": [
       {
@@ -59,7 +59,8 @@
       }
     ],
     "final_local_result": "integration/sw-rib-top03/TOP03_LOCAL_RESULT.json",
-    "qualification_boundary": "PASS means preservation, pure exchange/receipt and expected rejection characterization only. The full TOP03 production runtime/receipt path is NOT qualified."
+    "qualification_boundary": "PASS means preservation, pure exchange/receipt and expected rejection characterization only. The full TOP03 production runtime/receipt path is NOT qualified.",
+    "latest_observed_conclusion": "failure"
   },
   "findings": [
     {
@@ -165,5 +166,15 @@
     "optional-composition/exfiltration admission failures",
     "live Ribasim local-pond/secondary-storage geometry disjointness",
     "canonical current-source reconciliation and admission"
-  ]
+  ],
+  "resumption_review": {
+    "branch_head": "66e3e3d098bf0b638058259b8665e17772b298e5",
+    "canonical_head": "19f09b818b1bb30c1428919074c00098dbd062bd",
+    "agents_blob": "3da9ffe679b8fcde0ccab1fa1311dd6c81e5336b",
+    "canonical_delta": "A26 bounded unponded flux-controlled RFM runtime admitted; no new external-head temporal acceptance.",
+    "source_reconciliation_performed": false,
+    "alternative_temporal_route": "Existing Reference Richards model indicator rejects dynamic top with boundary-envelope-deferred; fixed flux provider also required.",
+    "review_record": "integration/sw-rib-top03/TOP03_CANONICAL_PREREQUISITE_REVIEW.md",
+    "production_admission": false
+  }
 }
