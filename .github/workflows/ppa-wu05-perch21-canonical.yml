@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - work/ppa-wu05-perch21-current-canonical
+      - work/ppa-wu05-perch21-postmerge-closeout
     paths:
       - 'src/solver/mod_soil_water_solver_contract.f90'
       - 'src/legacy/b1_10_port/headcalc.f90'
@@ -56,3 +57,5 @@ jobs:
         run: bash tests/fpm/run_ppa_wu05a26h_wall_history.sh
       - name: Preserve canonical RFM initial storage geometry
         run: bash tests/fpm/run_ppa_wu05a26j_ic_storage_geometry.sh
+      - name: Preserve canonical RFM hydrostatic IC head
+        run: bash tests/fpm/run_ppa_wu05a26k_ic_hydrostatic_head.sh
