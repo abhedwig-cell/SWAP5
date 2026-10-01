@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.ppa_wu05_perch19.status.v1",
+  "workunit": "PPA-WU05-PERCH19",
+  "phase": "CLOSED_QUALIFIED_FOLLOWUP_RESULT",
+  "decision": "QUALIFIED_SOURCE_FAITHFUL_FREDUQ_RETRY_POLICY",
+  "baseline": "5434665c34cff570066ccd2d76e10a092f7979d7",
+  "canonical_reconciliation": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
+  "branch": "work/ppa-wu05-perch19-freduq-retry",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admission_candidate": false,
+  "canonical_admitted": false,
+  "closed": true,
+  "qualified_postimage": "8a238992d37ea640241666b51efc3e1d1a3a6bbb",
+  "qualification_run": 36881577203,
+  "qualification_job": 110434383960,
+  "source_ladder": [1.0, 0.1, 0.01, 0.001],
+  "authority_result": {
+    "attempts": 2,
+    "selected_index": 1,
+    "selected_factor": 0.1,
+    "initial_exchange_cm_per_day": -1.2839647212405492,
+    "final_exchange_cm_per_day": -0.25748894374328285,
+    "macro_storage_gain_cm": 0.0005149778874865657,
+    "internal_exchange_residual_cm": 0.0,
+    "macro_balance_residual_cm": 0.0
+  },
+  "preservation": {
+    "a18_baseline": "PASS",
+    "a16_analytic": "PASS",
+    "a16_actual_provider": "PASS",
+    "a15_derivative": "PASS",
+    "a7_a8_a9_a10": "PASS",
+    "run": 36881577203
+  },
+  "closed_blocker": "PRODUCTION_INNER_ROUTE_LACKS_SOURCE_FAITHFUL_FREDUQ_RETRY_STATE_MACHINE",
+  "next_action": "Construct a uniquely namespaced perched production-admission branch from current canonical, carrying only required code/evidence and avoiding generic PPA-WU05-A11 path collisions.",
+  "recovery_point": "8a238992d37ea640241666b51efc3e1d1a3a6bbb"
+}
