@@ -1,16 +1,16 @@
 {
   "schema": "swap5.ppa_wu05a12.status.v1",
   "workunit": "PPA-WU05-A12",
-  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
-  "decision": "QUALIFIED_RFM_HYDRAULIC_VIEW_SORPTIVITY_BINDING",
+  "phase": "CLOSED_CANONICAL_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_RFM_HYDRAULIC_VIEW_SORPTIVITY_BINDING",
   "baseline": "03708d387f452e82044cffbff681da8252d3e717",
   "branch": "work/ppa-wu05-a12-rfm-hydraulic-binding",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
-  "closed": false,
+  "canonical_admitted": true,
+  "closed": true,
   "qualified_postimage": "facfca66e0656e622c2677a0392aa44d9bedb29d",
   "qualification_run": 36860909511,
   "negative_run": {
@@ -31,5 +31,17 @@
     "f_mb": false,
     "connectivity_p": false
   },
-  "next": "separate A13 committed-state observation composition or explicit event-age/source ownership; do not change source partition until those owners are frozen"
+  "next": "A13 authority audit: committed-state observation plus event-age/source ownership; no source-partition mutation until ownership is explicit",
+  "admission_pr": 932,
+  "canonical_merge": "aea20f61381f0c750fc90f2eb5201b8a40efcd73",
+  "postmerge_preservation": {
+    "method": "dependency-surface blob identity inheritance",
+    "sorptivity_blob_sha": "47c7e7a5a1dce51e07a02e6457590c130cba2044",
+    "binding_blob_sha": "85dda0d7c34b0d1bb8c383c9c3175704fc91f6fe",
+    "test_blob_sha": "db2dc585b44e820a818b175cc1a9562bcc4b4401",
+    "runner_blob_sha": "8350a936a11b075f5d6ecbc3f9984ef5288b08f2",
+    "qualified_postimage": "facfca66e0656e622c2677a0392aa44d9bedb29d",
+    "canonical_merge": "aea20f61381f0c750fc90f2eb5201b8a40efcd73",
+    "unchanged": true
+  }
 }
