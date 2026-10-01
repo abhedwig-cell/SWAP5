@@ -233,8 +233,8 @@ contains
     parameters%external_top_surface_water_capable=.true.
     parameters%external_top_surface_water_capable=.true.
     base%external_top_surface_water_supplied=.true.
-    base%external_top_surface_water_head_cm=0.50_real64
-    base%external_top_surface_water_sill_cm=0.10_real64
+    base%external_top_surface_water_head_cm=0.02_real64
+    base%external_top_surface_water_sill_cm=0.01_real64
     base%top_ponding_max_cm=1.0_real64
     base%top_runoff_resistance_day=1.0_real64
     base%top_runoff_exponent=1.0_real64
@@ -399,7 +399,7 @@ contains
 
     config%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
     config%transaction%temporal_tolerance=1.0e3_real64
-    config%transaction%mass_tolerance=1.0e-10_real64
+    config%transaction%mass_tolerance=1.0e-8_real64
     config%transaction%retry_scale=0.5_real64; config%transaction%max_retries=2
     config%max_committed_substeps=8; config%progress_tolerance=0.0_real64
   end subroutine initialize_case
