@@ -6,7 +6,7 @@ rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
 "${FC}" -std=f2008 -Wall -Wextra -pedantic \
   src/solver/mod_soil_water_solver_contract.f90 \
-  src/process/evaporation/mod_restricted_surface_evaporation.f90 \
+  src/process/mod_restricted_surface_evaporation.f90 \
   src/solver/mod_b110_default_mvg_provider.f90 \
   src/solver/mod_b110_dynamic_top_boundary_provider.f90 \
   src/process/macropore/mod_rfm_unponded_activation.f90 \
