@@ -1,0 +1,27 @@
+name: F-PE-MIQUAL12 serialized manager component attribution
+
+on:
+  push:
+    branches:
+      - research/f-pe-miqual12-serialized-manager-component-attribution
+    paths:
+      - 'docs/performance/F-PE-MIQUAL12_PREREGISTRATION.md'
+      - 'src/runtime/mod_fmr_moving_interface_runtime_adapter.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fmr/test_fpe_miqual07_serialized_benchmark.f90'
+      - 'tests/fmr/run_fpe_miqual12.py'
+      - 'tests/fmr/run_fpe_miqual12.sh'
+      - '.github/workflows/f-pe-miqual12.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmr/run_fpe_miqual12.sh
