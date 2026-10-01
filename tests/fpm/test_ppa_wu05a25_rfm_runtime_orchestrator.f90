@@ -3,13 +3,21 @@ program test_ppa_wu05a25_rfm_runtime_orchestrator
  use mod_rfm_physical_state
  use mod_rfm_preferential_router
  use mod_rfm_runtime_orchestrator
+ use mod_rfm_runtime_configuration,only:rfm_runtime_configuration_t
  implicit none
  real(real64),parameter::T=1e-12_real64
  type(rfm_physical_state_t)::accepted,snapshot
  type(rfm_preferential_routing_result_t)::routing
  type(rfm_runtime_orchestrator_request_t)::q
  type(rfm_runtime_orchestrator_result_t)::r,r2
+ type(rfm_runtime_configuration_t)::cfg
  logical::ok
+ cfg%enabled=.true.;cfg%sigma_b=.65_real64;cfg%f_mb=.2_real64;cfg%connectivity_p=.25_real64
+ cfg%z_ah_cm=20.0_real64;cfg%z_ic_cm=100.0_real64;cfg%chi_wall=1.0_real64
+ cfg%exchange_length_cm=20.0_real64;cfg%mb_contact_length_cm=80.0_real64;cfg%sorptivity_panels=32
+ cfg%mb_wall_node_index=1;cfg%endpoint_depth_cm=[40.0_real64,100.0_real64]
+ cfg%endpoint_contact_thickness_cm=[20.0_real64,60.0_real64];cfg%endpoint_node_index=[2,3]
+ if(.not.cfg%valid())error stop 'runtime config'
  call accepted%initialize(2,ok);if(.not.ok)error stop 'init'
  accepted%endpoint_water_cm=[0.10_real64,0.05_real64];accepted%tau_surface_day=0.2_real64
  call copy_rfm_physical_state(accepted,snapshot,ok)
