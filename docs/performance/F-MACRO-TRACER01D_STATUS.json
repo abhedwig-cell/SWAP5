@@ -1,6 +1,6 @@
 {
-  "schema": "swap5.f_macro_tracer01d.composition_status.v4",
-  "status": "CLOSED_D2A_HELDOUT_QUALIFIED_D2B_STANDARD_FMR_BOTTOM_ROUTE_FALSIFIED",
+  "schema": "swap5.f_macro_tracer01d.composition_status.v5",
+  "status": "CLOSED_D2A_FORWARD_HELDOUT_QUALIFIED_RECOVERY_BOUND_CONSISTENT",
   "canonical_authority": "integration/f-ci-canonical@ebea588070f7a44dbaea78169f2548c745061c48",
   "qualified": {
     "matrix_reference_kernel": true,
@@ -46,24 +46,27 @@
     "published_recovery_fraction_approx": 0.95
   },
   "d2b": {
-    "status": "BLOCKED_AFTER_ROUTE_FALSIFICATION",
-    "wall_exchange_owner": "canonical FMR standard runtime available",
-    "vertical_internal_transfer_owner": "canonical FMR vertical flux reconstruction available",
-    "bottom_deep_export_owner": "absent",
-    "standard_fmr_complete_mb_owner": false,
+    "status": "RECOVERY_BOUND_CONSISTENT_BOTTOM_ROUTE_NOT_REQUIRED_FOR_CURRENT_CLAIM",
+    "experimental_recovery_interpretation": "profile recovery observation, not measured lower-boundary breakthrough",
+    "published_recovery_fraction_approx": 0.95,
+    "modeled_explicit_bottom_loss_fraction": 0,
+    "within_unrecovered_envelope": true,
+    "exact_recovery_process_reproduced": false,
+    "f_MB_identified": false,
     "standard_fmr_bottom_route_falsified": true,
-    "reason": "canonical standard FMR candidate balance has no independent macropore lower-boundary export; reconstructed bottom face is algebraically zero up to roundoff",
-    "rapid_drain_as_bottom_export": "rejected_semantic_mismatch",
-    "f_MB_residual_balancing_forbidden": true
+    "bottom_owner_required_for_current_claim": false,
+    "bottom_owner_required_for_future_physical_partition_of_missing_mass": true,
+    "rapid_drain_as_bottom_export": "rejected_semantic_mismatch"
   },
   "dispersion_authorized": false,
   "new_rfm_physics_authorized": false,
-  "stop_rule": "EXPLICITLY_FALSIFIED_STANDARD_FMR_MB_BOTTOM_ROUTE",
+  "stop_rule": "QUALIFIED_FORWARD_COMPARISON_HELDOUT_VALIDATION_AND_RECOVERY_BOUND_CONSISTENCY",
   "result_documents": [
     "docs/performance/F-MACRO-TRACER01D1S_RESULT.md",
     "docs/performance/F-MACRO-TRACER01D2A_RESULT.md",
     "docs/performance/F-MACRO-TRACER01D2B_BLOCKER.md",
-    "docs/performance/F-MACRO-TRACER01D2B1_FMR_OWNERSHIP_AUDIT.md"
+    "docs/performance/F-MACRO-TRACER01D2B1_FMR_OWNERSHIP_AUDIT.md",
+    "docs/performance/F-MACRO-TRACER01D2B2_RECOVERY_INTERPRETATION.md"
   ],
   "closure_document": "docs/performance/F-MACRO-TRACER01D_CLOSURE.md"
 }
