@@ -243,7 +243,9 @@ program test_ppa_wu05_perch19_freduq_ladder
   print '(a)', 'PPA_WU05_PERCH19_REFERENCE_RICHARDS_BASELINE=PASS'
   print '(a)', 'PPA_WU05_PERCH19_PERCHED_TOPOLOGY_RETAINED=PASS'
   print '(a)', 'PPA_WU05_PERCH19_BASELINE_GATE=PASS'
-  write(*,'(*(g0))') 'PPA_WU05_PERCH19_SOURCE_REDUCTION_ACCEPTED|FACTOR=',source_reduction_ladder(ireduce)
+  write(*,'(*(g0))') 'PPA_WU05_PERCH19_SOURCE_REDUCTION_ACCEPTED|FACTOR=',macro_result%source_reduction_factor
+  print '(a)', 'PPA_WU05_PERCH19_DTMIN_GATE=PASS'
+  print '(a)', 'PPA_WU05_PERCH19_SOURCE_REDUCTION_LADDER=PASS'
   print '(a)', 'PPA_WU05_PERCH19_ACTIVE_PERCHED_INNER=PASS'
   print '(a)', 'PPA_WU05_PERCH19_INNER_MASS_CLOSURE=PASS'
 
