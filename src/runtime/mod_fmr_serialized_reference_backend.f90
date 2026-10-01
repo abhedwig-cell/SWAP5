@@ -2869,6 +2869,11 @@ contains
       return
     end if
 
+    if (self%macropore_active) then
+      value = fmr_macropore_physical_temporal_error(self, full_state, half_state)
+      return
+    end if
+
     same = .false.
     select type (full => full_state)
     class is (fmr_b110_physical_state_t)
@@ -2900,6 +2905,46 @@ contains
       value = huge(0.0_real64)
     end if
   end function fmr_serialized_temporal_identity
+
+  real(real64) function fmr_macropore_physical_temporal_error(self, full_state, half_state) result(value)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: full_state, half_state
+    integer :: n
+
+    value = huge(0.0_real64)
+    if (.not. self%macropore_active .or. .not. associated(self%soil_parameters)) return
+
+    select type (full => full_state)
+    class is (fmr_b110_physical_state_t)
+      select type (half => half_state)
+      class is (fmr_b110_physical_state_t)
+        if (full%active_nodes /= half%active_nodes .or. full%active_nodes /= self%soil_parameters%active_nodes) return
+        n = full%active_nodes
+        if (n <= 0) return
+        if (.not. allocated(full%pressure_head) .or. .not. allocated(half%pressure_head) .or. &
+            .not. allocated(full%water_content) .or. .not. allocated(half%water_content)) return
+        if (size(full%pressure_head) /= n .or. size(half%pressure_head) /= n .or. &
+            size(full%water_content) /= n .or. size(half%water_content) /= n) return
+        if (.not. allocated(full%macropore) .or. .not. allocated(half%macropore)) return
+        if (.not. full%macropore%ready() .or. .not. half%macropore%ready()) return
+        if (full%macropore%num_nodes /= n .or. half%macropore%num_nodes /= n .or. &
+            full%macropore%num_domains /= half%macropore%num_domains) return
+
+        value = 0.0_real64
+        value = max(value, maxval(abs(full%pressure_head-half%pressure_head)))
+        value = max(value, abs(full%ponding_depth-half%ponding_depth))
+        value = max(value, abs(full%groundwater_level-half%groundwater_level))
+        value = max(value, maxval(abs((full%water_content-half%water_content)*self%soil_parameters%dz)))
+        value = max(value, maxval(abs(full%macropore%water_domain_cp-half%macropore%water_domain_cp)))
+        value = max(value, maxval(abs(full%macropore%volume_domain_cp-half%macropore%volume_domain_cp)))
+        value = max(value, maxval(abs(full%macropore%dynamic_volume_cp-half%macropore%dynamic_volume_cp)))
+      class default
+        return
+      end select
+    class default
+      return
+    end select
+  end function fmr_macropore_physical_temporal_error
 
   logical function base_physical_states_identical(full, half) result(same)
     class(fmr_b110_physical_state_t), intent(in) :: full, half
