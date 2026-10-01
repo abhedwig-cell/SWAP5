@@ -1,0 +1,27 @@
+name: F-PE-MIQUAL11 zero-source invariant
+
+on:
+  push:
+    branches:
+      - work/f-pe-miqual11-zero-source-invariant
+    paths:
+      - 'docs/performance/F-PE-MIQUAL11_PREREGISTRATION.md'
+      - 'src/runtime/mod_fmr_moving_interface_runtime_adapter.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - '.github/workflows/f-pe-miqual11.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - name: Preserve serialized seam semantics
+        run: bash tests/fmr/run_fpe_miqual06_serialized_manager.sh
+      - name: Re-run unchanged paired benchmark
+        run: bash tests/fmr/run_fpe_miqual09.sh
