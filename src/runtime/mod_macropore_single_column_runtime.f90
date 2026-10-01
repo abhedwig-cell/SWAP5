@@ -169,10 +169,13 @@ contains
     end if
 
     call evaluate_macropore_geometry(geometry_config,accepted_macro%dynamic_volume_cp,geometry)
+    write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|GEOM_VALID=',geometry%valid,'|TOP=',geometry_config%top_node
     if(.not.geometry%valid)then
       result%status=MACRO_RUNTIME_FAILED
       return
     end if
+    write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|GEOM_DIFF=',maxval(abs(geometry%volume_domain_cp-accepted_macro%volume_domain_cp)), &
+         '|BOTTOM_MATCH=',all(geometry%bottom_domain==accepted_macro%icp_bottom_domain)
     if(maxval(abs(geometry%volume_domain_cp-accepted_macro%volume_domain_cp))>1.0e-10_real64 .or. &
        any(geometry%bottom_domain/=accepted_macro%icp_bottom_domain))then
       result%status=MACRO_RUNTIME_FAILED
@@ -183,6 +186,7 @@ contains
     if(present(top_input))top_input_local=top_input
     call prepare_fmr_macropore_top_input(top_input_local,geometry_config,geometry,dt, &
          requested_top_vertical,requested_top_lateral,ok)
+    write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|TOP_OK=',ok
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
       return
@@ -198,6 +202,7 @@ contains
 
     call derive_macropore_standard_storage_view(accepted_macro,geometry_config%top_node, &
          base_request%parameters%z,base_request%parameters%dz,accepted_view)
+    write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|VIEW_VALID=',accepted_view%valid
     if(.not.accepted_view%valid)then
       result%status=MACRO_RUNTIME_FAILED
       return
