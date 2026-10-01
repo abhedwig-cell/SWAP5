@@ -29,6 +29,11 @@ program test_sw_rib_top02_external_head
   call req(abs(b%surface_head_cm-0.50_real64)<1e-14_real64,'external head exact')
   call req(abs(b%candidate_ponding_depth_cm-0.50_real64)<1e-14_real64,'external pond exact')
   call req(b%runoff_depth_cm<0.0_real64,'flooding publishes negative RUNOTS')
+  write(*,'(A,ES24.16)')'TOP03_RUNOTS=',b%runoff_depth_cm
+  write(*,'(A,ES24.16)')'TOP03_DS=',0.50_real64-base%previous_ponding_depth_cm
+  write(*,'(A,ES24.16)')'TOP03_Q0=',b%net_potential_surface_flux_cm_per_day
+  write(*,'(A,ES24.16)')'TOP03_QTOP=',b%actual_top_flux_cm_per_day
+  write(*,'(A,ES24.16)')'TOP03_DT=',base%step_duration_day
   call req(abs(b%runoff_depth_cm - (-(0.50_real64-base%previous_ponding_depth_cm) + &
        b%net_potential_surface_flux_cm_per_day*base%step_duration_day + &
        b%actual_top_flux_cm_per_day*base%step_duration_day)) < 1e-12_real64,'RUNOTS surface closure')
