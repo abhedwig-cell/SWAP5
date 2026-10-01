@@ -22,6 +22,9 @@ program test_fmig431_low01a_transaction_contract
 contains
   subroutine require(ok,label)
     logical,intent(in)::ok;character(*),intent(in)::label
-    if(.not.ok)error stop label
+    if(.not.ok) then
+      write(*,'(A,1X,A)') 'LOW01A_FAIL',trim(label)
+      error stop 1
+    end if
   end subroutine
 end program
