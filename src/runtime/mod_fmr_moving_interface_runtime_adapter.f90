@@ -14,6 +14,13 @@ module mod_fmr_moving_interface_runtime_adapter
   implicit none
   private
 
+  type, public :: fmr_moving_interface_runtime_timing_t
+    integer(int64) :: clock_rate = 0_int64
+    integer(int64) :: successful_reduced_calls = 0_int64
+    integer(int64) :: adapter_total_ticks = 0_int64
+    integer(int64) :: reduced_solve_ticks = 0_int64
+  end type fmr_moving_interface_runtime_timing_t
+
   type, public :: fmr_moving_interface_runtime_adapter_t
     type(moving_interface_manager_context_t) :: context
     type(reference_richards_legacy_workspace_t) :: reduced_workspace
@@ -27,8 +34,10 @@ module mod_fmr_moving_interface_runtime_adapter
     real(real64), pointer :: tail_water_content(:) => null()
     integer :: prepared_active_nodes = 0
     integer(int64) :: source_parameter_set_id = -1_int64
+    type(fmr_moving_interface_runtime_timing_t) :: timing
   contains
     procedure, public :: solve => fmr_moving_interface_runtime_solve
+    procedure, public :: timing_snapshot => fmr_moving_interface_runtime_timing_snapshot
     procedure, public :: release => fmr_moving_interface_runtime_release
   end type fmr_moving_interface_runtime_adapter_t
 
@@ -51,12 +60,15 @@ contains
     type(moving_interface_active_view_t) :: view
     type(soil_water_solve_result_t) :: reduced_result, full_result, empty_full
     integer :: nf, na, first_tail, i, nt
+    integer(int64) :: total_t0, total_t1, solve_t0, solve_t1, rate
     logical :: prepared, materialized, reduced_valid
     character(len=64) :: reason
 
     selected = soil_water_solve_result_t()
     diagnostics = moving_interface_manager_diagnostics_t()
     ok = .false.
+    call system_clock(total_t0, rate)
+    if (self%timing%clock_rate == 0_int64) self%timing%clock_rate = rate
 
     nf = full_request%base_state%active_nodes
     if (nf <= 1 .or. full_hydraulics%active_nodes /= nf) then
@@ -124,7 +136,9 @@ contains
     nullify(self%context%reduced_request%evaluation%dynamic_top_boundary)
     nullify(self%context%reduced_request%evaluation%macropore)
 
+    call system_clock(solve_t0)
     call full_solver%solve(self%context%reduced_request, self%reduced_workspace, reduced_result)
+    call system_clock(solve_t1)
     reduced_valid = reduced_result%status == SW_SOLVE_CONVERGED
 
     if (reduced_valid) then
@@ -161,6 +175,12 @@ contains
            'none', self%context, diagnostics)
       selected = self%context%full_candidate
       ok = selected%status == SW_SOLVE_CONVERGED
+      if (ok) then
+        call system_clock(total_t1)
+        self%timing%successful_reduced_calls = self%timing%successful_reduced_calls + 1_int64
+        self%timing%adapter_total_ticks = self%timing%adapter_total_ticks + max(0_int64,total_t1-total_t0)
+        self%timing%reduced_solve_ticks = self%timing%reduced_solve_ticks + max(0_int64,solve_t1-solve_t0)
+      end if
       return
     end if
 
@@ -265,6 +285,12 @@ contains
     end if
   end function saturated_tail_start
 
+  subroutine fmr_moving_interface_runtime_timing_snapshot(self, timing)
+    class(fmr_moving_interface_runtime_adapter_t), intent(in) :: self
+    type(fmr_moving_interface_runtime_timing_t), intent(out) :: timing
+    timing = self%timing
+  end subroutine fmr_moving_interface_runtime_timing_snapshot
+
   subroutine fmr_moving_interface_runtime_release(self)
     class(fmr_moving_interface_runtime_adapter_t), intent(inout) :: self
     if (associated(self%reduced_hydraulics)) then
@@ -301,6 +327,7 @@ contains
     end if
     self%prepared_active_nodes = 0
     self%source_parameter_set_id = -1_int64
+    self%timing = fmr_moving_interface_runtime_timing_t()
   end subroutine fmr_moving_interface_runtime_release
 
 end module mod_fmr_moving_interface_runtime_adapter
