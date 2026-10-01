@@ -151,6 +151,21 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: temporal_history_snapshot => fmr_b110_temporal_history_snapshot
   end type fmr_b110_temporal_indicator_state_t
 
+  type, public :: fmr_macropore_reduction_continuation_t
+    integer :: reduction_level = 0
+    integer :: successful_steps = 0
+    real(real64) :: previous_reduction_dt = 0.0_real64
+  contains
+    procedure, public :: valid => fmr_macropore_reduction_continuation_valid
+    procedure, public :: factor => fmr_macropore_reduction_continuation_factor
+  end type fmr_macropore_reduction_continuation_t
+
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_macropore_reduction_state_t
+    type(fmr_macropore_reduction_continuation_t) :: macropore_reduction
+  contains
+    procedure :: clone => fmr_b110_macropore_reduction_state_clone
+  end type fmr_b110_macropore_reduction_state_t
+
   ! D7 physical optional-state family.  SWST exists only on feature-active
   ! columns; inactive B1.10 states retain their previous layout and footprint.
   type, extends(fmr_b110_physical_state_t), public :: fmr_b110_fixed_weir_surface_water_state_t
@@ -683,6 +698,33 @@ contains
       end if
     end select
   end subroutine fmr_b110_temporal_indicator_state_clone
+
+  logical function fmr_macropore_reduction_continuation_valid(self) result(valid)
+    class(fmr_macropore_reduction_continuation_t), intent(in) :: self
+    valid = self%reduction_level >= 0 .and. self%reduction_level <= 3 .and. &
+         self%successful_steps >= 0 .and. self%successful_steps <= 10 .and. &
+         ieee_is_finite(self%previous_reduction_dt) .and. self%previous_reduction_dt >= 0.0_real64
+  end function fmr_macropore_reduction_continuation_valid
+
+  real(real64) function fmr_macropore_reduction_continuation_factor(self) result(factor)
+    class(fmr_macropore_reduction_continuation_t), intent(in) :: self
+    if (.not. self%valid()) then
+      factor = 0.0_real64
+      return
+    end if
+    factor = 0.1_real64 ** self%reduction_level
+  end function fmr_macropore_reduction_continuation_factor
+
+  subroutine fmr_b110_macropore_reduction_state_clone(self, copy)
+    class(fmr_b110_macropore_reduction_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_macropore_reduction_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_macropore_reduction_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%macropore_reduction = self%macropore_reduction
+    end select
+  end subroutine fmr_b110_macropore_reduction_state_clone
 
   subroutine fmr_b110_fixed_weir_surface_water_state_clone(self, copy)
     class(fmr_b110_fixed_weir_surface_water_state_t), intent(in) :: self
