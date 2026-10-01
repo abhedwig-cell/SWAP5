@@ -1567,6 +1567,17 @@ contains
       end if
     end if
     call prepare_snow_outer_event(self%model, parameters, committed, forcing, t0, t1)
+    if (forcing%external_top_surface_water_supplied) then
+      if (.not. parameters%external_top_surface_water_capable .or. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          parameters%snow_active .or. parameters%macropore_active .or. parameters%black_evaporation_active .or. &
+          parameters%boesten_evaporation_active .or. parameters%soil_temperature_active .or. &
+          self%model%fixed_weir_surface_water_active .or. .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    end if
     self%model%last_observation%state_profile_prepared=self%model%state_profile_admitted
     self%model%last_observation%execution_admission_preview=self%model%execution_admitted(parameters,config)
     if (self%bottom_thermal_requested .and. parameters%soil_temperature_active .and. &
