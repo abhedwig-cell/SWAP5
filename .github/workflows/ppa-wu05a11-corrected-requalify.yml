@@ -1,0 +1,19 @@
+name: PPA-WU05-A11 corrected carrier requalification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05-a13-accepted-state-seed
+    paths:
+      - '.github/workflows/ppa-wu05a11-corrected-requalify.yml'
+
+jobs:
+  requalify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Corrected A11 source/carrier gate
+        run: bash tests/fpm/run_ppa_wu05a11_perched.sh
+      - name: Preserve A7-A10 admitted macropore route
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
