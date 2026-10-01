@@ -1,0 +1,30 @@
+{
+  "schema":"swap5.ppa_wu05_perch19.status.v1",
+  "workunit":"PPA-WU05-PERCH19",
+  "phase":"CLOSED_QUALIFIED_CONTROLLER_AND_RUNTIME_RETRY",
+  "decision":"QUALIFIED_SOURCE_FAITHFUL_FREDUQ_CONTROLLER_AND_ACTIVE_RETRY_ROUTE",
+  "canonical_reconciliation":"0bf4bc0aec1d1f5d157ba6b4a88f0117c854bf6b",
+  "branch":"research/ppa-wu05-perch19-frreduq-retry-ladder",
+  "implemented":true,
+  "persisted":true,
+  "tested":true,
+  "qualified":true,
+  "production_admission_candidate":false,
+  "canonical_admitted":false,
+  "closed":true,
+  "qualified_postimage":"665258f5d31c023a4594f151060fcd00e62bb04f",
+  "qualification_run":36874562748,
+  "qualification_job":110410554364,
+  "ladder":[1.0,0.1,0.01,0.001],
+  "qualified_scope":[
+    "typed source-faithful reduction controller",
+    "bounded failure escalation",
+    "ten-stable-step recovery",
+    "larger-dt recovery",
+    "A18 source-backed automatic retry from 1.0 to 0.1",
+    "controller-disabled A18 preservation"
+  ],
+  "remaining_blocker":"ACCEPTED_REDUCTION_NUMERICAL_CONTINUATION_NOT_PERSISTED_THROUGH_FMR_RESTART",
+  "next_action":"Open PPA-WU05-PERCH20 for explicit numerical-continuation publication, reject isolation and restart.",
+  "recovery_point":"665258f5d31c023a4594f151060fcd00e62bb04f"
+}
