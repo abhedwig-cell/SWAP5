@@ -52,6 +52,8 @@ module mod_macropore_single_column_runtime
     real(real64) :: accepted_top_input_cm=0.0_real64
     real(real64) :: returned_surface_cm=0.0_real64
     real(real64) :: rapid_external_outflow_cm=0.0_real64
+    logical :: perched_exchange_active=.false.
+    real(real64) :: perched_interflow_cm=0.0_real64
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
     real(real64) :: macro_balance_residual_cm=huge(1.0_real64)
     type(soil_water_solve_result_t) :: matrix_result
@@ -280,6 +282,9 @@ contains
     result%accepted_top_input_cm=raw_rates%top_partition%accepted_total_cm
     result%returned_surface_cm=receipt%returned_surface_cm
     result%rapid_external_outflow_cm=receipt%rapid_external_outflow_cm
+    result%perched_interflow_cm=sum(raw_rates%qin_interflow_rate)*dt
+    result%perched_exchange_active=rate_request%unsaturated%sorptivity%perched_active .and. &
+         result%perched_interflow_cm>0.0_real64
     if(abs(result%accepted_top_input_cm+result%returned_surface_cm-result%requested_top_input_cm)> &
        policy%internal_exchange_tolerance_cm)then
       result%status=MACRO_RUNTIME_FAILED
