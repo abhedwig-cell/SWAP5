@@ -357,6 +357,7 @@ contains
     parameters%elasticity_active=.false.; parameters%frost_active=.false.; parameters%soil_temperature_active=.false.
     parameters%black_evaporation_active=.false.; parameters%boesten_evaporation_active=.false.
     parameters%drainage_response_active=.true.; parameters%drainage_qbot_smooth_freatic_projection=.false.
+    parameters%external_top_surface_water_capable=.true.
     allocate(parameters%drainage_response_levels(1))
     parameters%drainage_response_levels(1)%variant=FMR_DRAIN_VARIANT_EXTENDED_SIGNED
     parameters%drainage_response_levels(1)%extended%zbotdr_cm=-100.0_real64
