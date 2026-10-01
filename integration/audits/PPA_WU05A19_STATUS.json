@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.ppa_wu05a19.status.v1",
+  "workunit": "PPA-WU05-A19",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_MINIMAL_DEDICATED_RFM_PHYSICAL_STATE",
+  "baseline": "8cada0ea691cd129c8645fca0a4bb6626ba73422",
+  "branch": "work/ppa-wu05-a19-rfm-physical-state",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "qualified_postimage": "34488da1b4202115a2c138200dd5985cf582411f",
+  "qualification_run": 36866618323,
+  "state_roles": [
+    "mb_water_cm",
+    "endpoint_water_cm",
+    "tau_surface_day"
+  ],
+  "interval_integration_owner": "A19",
+  "standard_macropore_state_mutated": false,
+  "backend_layout_integrated": false,
+  "restart_integrated": false,
+  "live_runtime_integrated": false,
+  "next": "canonical admission, then A20 optional-state layout/backend checkpoint-restart integration"
+}
