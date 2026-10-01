@@ -23,6 +23,8 @@ module mod_fmr_moving_interface_runtime_adapter
     real(real64), pointer :: reduced_qdra(:,:) => null()
     real(real64), pointer :: reduced_qssdi(:) => null()
     real(real64), pointer :: reduced_qrot(:) => null()
+    real(real64), allocatable :: tail_pressure_head(:)
+    real(real64), allocatable :: tail_water_content(:)
     integer :: prepared_active_nodes = 0
     integer(int64) :: source_parameter_set_id = -1_int64
   contains
@@ -46,8 +48,7 @@ contains
 
     type(moving_interface_active_view_t) :: view
     type(soil_water_solve_result_t) :: reduced_result, full_result, empty_full
-    real(real64), allocatable :: tail_h(:), tail_theta(:)
-    integer :: nf, na, first_tail, i
+    integer :: nf, na, first_tail, i, nt
     logical :: prepared, materialized, reduced_valid
     character(len=64) :: reason
 
@@ -126,18 +127,24 @@ contains
     reduced_valid = reduced_result%status == SW_SOLVE_CONVERGED
 
     if (reduced_valid) then
-      allocate(tail_h(nf-na), tail_theta(nf-na))
-      tail_h(1) = reduced_result%candidate_state%pressure_head(na) + full_request%parameters%node_distance(na+1)
-      do i = 2, nf-na
-        tail_h(i) = tail_h(i-1) + full_request%parameters%node_distance(na+i)
+      nt = nf-na
+      if (.not. allocated(self%tail_pressure_head) .or. size(self%tail_pressure_head) /= nt) then
+        if (allocated(self%tail_pressure_head)) deallocate(self%tail_pressure_head)
+        if (allocated(self%tail_water_content)) deallocate(self%tail_water_content)
+        allocate(self%tail_pressure_head(nt), self%tail_water_content(nt))
+      end if
+      self%tail_pressure_head(1) = reduced_result%candidate_state%pressure_head(na) + &
+           full_request%parameters%node_distance(na+1)
+      do i = 2, nt
+        self%tail_pressure_head(i) = self%tail_pressure_head(i-1) + full_request%parameters%node_distance(na+i)
       end do
-      tail_theta = full_hydraulics%cofgen(2,na+1:nf)
-      if (any(tail_h < 0.0_real64)) reduced_valid = .false.
+      self%tail_water_content = full_hydraulics%cofgen(2,na+1:nf)
+      if (any(self%tail_pressure_head < 0.0_real64)) reduced_valid = .false.
     end if
 
     if (reduced_valid) then
-      call materialize_moving_interface_full_candidate_persistent(full_request%base_state, reduced_result, tail_h, tail_theta, &
-           self%context, materialized, reason)
+      call materialize_moving_interface_full_candidate_persistent(full_request%base_state, reduced_result, &
+           self%tail_pressure_head, self%tail_water_content, self%context, materialized, reason)
       reduced_valid = materialized
     end if
 
@@ -219,7 +226,7 @@ contains
     type(soil_water_solve_request_t), intent(in) :: request
     type(b110_default_mvg_parameters_t), intent(in) :: hydraulics
     integer :: i, n
-    logical, allocatable :: saturated(:)
+    logical :: saturated_i
 
     n = request%base_state%active_nodes
     first = n + 1
@@ -227,19 +234,24 @@ contains
         .not. allocated(request%base_state%water_content)) return
     if (.not. allocated(hydraulics%cofgen) .or. size(hydraulics%cofgen,2) /= n) return
 
-    allocate(saturated(n))
-    saturated = request%base_state%pressure_head >= 0.0_real64 .and. &
-         abs(request%base_state%water_content-hydraulics%cofgen(2,1:n)) <= 1.0e-10_real64
-
     do i = n, 1, -1
-      if (saturated(i)) then
+      saturated_i = request%base_state%pressure_head(i) >= 0.0_real64 .and. &
+           abs(request%base_state%water_content(i)-hydraulics%cofgen(2,i)) <= 1.0e-10_real64
+      if (saturated_i) then
         first = i
       else
         exit
       end if
     end do
     if (first <= n .and. first > 1) then
-      if (any(saturated(1:first-1))) first = -1
+      do i = 1, first-1
+        saturated_i = request%base_state%pressure_head(i) >= 0.0_real64 .and. &
+             abs(request%base_state%water_content(i)-hydraulics%cofgen(2,i)) <= 1.0e-10_real64
+        if (saturated_i) then
+          first = -1
+          exit
+        end if
+      end do
     end if
   end function saturated_tail_start
 
@@ -269,6 +281,8 @@ contains
       deallocate(self%reduced_qrot)
       nullify(self%reduced_qrot)
     end if
+    if (allocated(self%tail_pressure_head)) deallocate(self%tail_pressure_head)
+    if (allocated(self%tail_water_content)) deallocate(self%tail_water_content)
     self%prepared_active_nodes = 0
     self%source_parameter_set_id = -1_int64
   end subroutine fmr_moving_interface_runtime_release
