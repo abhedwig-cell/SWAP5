@@ -1986,20 +1986,6 @@ contains
       end if
 
       self%black_evaporation_forcing = fmr_black_evaporation_runtime_forcing_t()
-      if (self%external_top_surface_water_supplied) then
-        if (self%snow_active .or. self%macropore_active .or. self%black_evaporation_active .or. self%boesten_evaporation_active) return
-        call bind_b110_dynamic_top_boundary_solver_provider(external_top_provider,self%soil_parameters, &
-             self%hydraulic_parameters,self%swkmean,physical%ponding_depth,step_duration, &
-             self%top_precipitation_rate,self%top_irrigation_rate,self%top_snowmelt_rate,self%top_runon_rate, &
-             self%top_bare_soil_evaporation_rate,self%top_pond_evaporation_rate,self%top_ponding_max, &
-             self%top_runoff_resistance,self%top_runoff_exponent)
-        external_top_provider%external_surface_water_head_supplied=.true.
-        external_top_provider%external_surface_water_head_cm=self%external_top_surface_water_head_cm
-        external_top_provider%external_flooding_sill_head_cm=self%external_top_surface_water_sill_cm
-        request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
-        request%evaluation%dynamic_top_boundary=>external_top_provider
-      end if
-
       if (self%black_evaporation_active) then
         if (.not. allocated(forcing%black_evaporation)) return
         if (forcing%top_flux /= 0.0_real64) return
@@ -2465,6 +2451,20 @@ contains
         if (.not. physical%macropore%ready()) return
       else
         if (allocated(physical%macropore)) return
+      end if
+
+      if (self%external_top_surface_water_supplied) then
+        if (self%snow_active .or. self%macropore_active .or. self%black_evaporation_active .or. self%boesten_evaporation_active) return
+        call bind_b110_dynamic_top_boundary_solver_provider(external_top_provider,self%soil_parameters, &
+             self%hydraulic_parameters,self%swkmean,physical%ponding_depth,step_duration, &
+             self%top_precipitation_rate,self%top_irrigation_rate,self%top_snowmelt_rate,self%top_runon_rate, &
+             self%top_bare_soil_evaporation_rate,self%top_pond_evaporation_rate,self%top_ponding_max, &
+             self%top_runoff_resistance,self%top_runoff_exponent)
+        external_top_provider%external_surface_water_head_supplied=.true.
+        external_top_provider%external_surface_water_head_cm=self%external_top_surface_water_head_cm
+        external_top_provider%external_flooding_sill_head_cm=self%external_top_surface_water_sill_cm
+        request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
+        request%evaluation%dynamic_top_boundary=>external_top_provider
       end if
 
       if (self%black_evaporation_active) then
