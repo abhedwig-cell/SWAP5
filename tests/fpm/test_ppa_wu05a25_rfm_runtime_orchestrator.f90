@@ -24,7 +24,7 @@ program test_ppa_wu05a25_rfm_runtime_orchestrator
  routing%status=RFM_PREF_ROUTER_AVAILABLE;routing%mb_amount=1.5_real64
  allocate(routing%endpoint_amount(2),routing%endpoint_weight(2))
  routing%endpoint_amount=[2.0_real64,1.5_real64];routing%endpoint_weight=[2.0_real64/3.5_real64,1.5_real64/3.5_real64]
- q%step_duration_day=0.1_real64
+ q%step_duration_day=0.1_real64;q%candidate_tau_surface_day=0.3_real64
  q%effective_supply_rate_cm_per_day=8.0_real64;q%matrix_supply_rate_cm_per_day=3.0_real64
  q%endpoint_node_index=[2,3];q%mb_wall_node_index=1;q%node_thickness_cm=[10.0_real64,10.0_real64,20.0_real64]
  q%endpoint_release%contact_thickness_cm=[20.0_real64,20.0_real64]
@@ -43,6 +43,7 @@ program test_ppa_wu05a25_rfm_runtime_orchestrator
  if(.not.accepted%same_values(snapshot))error stop 'accepted mutated'
  if(abs(r%ledger%whole_column_residual_cm)>T)error stop 'ledger'
  if(abs(r%candidate_rfm%mb_water_cm)>T)error stop 'MB storage'
+ if(abs(r%candidate_rfm%tau_surface_day-0.3_real64)>T)error stop 'tau surface'
  if(abs(sum(r%matrix_source_rate_per_day*q%node_thickness_cm)*q%step_duration_day- &
    (r%endpoint_release%release_total_cm+r%mb_fate%wall_to_matrix_cm))>T)error stop 'source map'
  call compose_rfm_runtime_candidate(accepted,routing,q,T,r2)
