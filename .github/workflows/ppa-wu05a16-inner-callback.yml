@@ -9,8 +9,11 @@ on:
       - 'src/solver/mod_soil_water_solver_contract.f90'
       - 'src/legacy/b1_10_port/headcalc.f90'
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
       - 'tests/fpm/test_ppa_wu05a16_inner_callback.f90'
+      - 'tests/fpm/test_ppa_wu05a16_actual_provider.f90'
       - 'tests/fpm/run_ppa_wu05a16_inner_callback.sh'
+      - 'tests/fpm/run_ppa_wu05a16_actual_provider.sh'
       - '.github/workflows/ppa-wu05a16-inner-callback.yml'
 
 jobs:
@@ -20,6 +23,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: A16 analytical inner callback
         run: bash tests/fpm/run_ppa_wu05a16_inner_callback.sh
+      - name: Actual A11 A15 inner provider
+        run: bash tests/fpm/run_ppa_wu05a16_actual_provider.sh
       - name: Preserve A15 derivative
         run: bash tests/fpm/run_ppa_wu05a15_exchange_derivative.sh
       - name: Preserve corrected A11 carrier
