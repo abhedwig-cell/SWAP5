@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.f_macro_alt27.wall_parameter_inventory.v1",
+  "status": "RESEARCH_ONLY_SOURCE_THEORY_BOUND",
+  "legacy_wall_exchange_controls": [
+    {
+      "name": "SWSORP",
+      "role": "selects hydraulic-derived Parlange or empirical sorptivity",
+      "rfm_decision": "remove switch; use hydraulic-derived route"
+    },
+    {
+      "name": "SORPFACPARL",
+      "role": "multiplicative correction for wall/interface efficiency including repellency",
+      "rfm_decision": "retain information role as optional chi_wall"
+    },
+    {
+      "name": "SORPMAX",
+      "role": "maximum empirical sorptivity",
+      "rfm_decision": "remove"
+    },
+    {
+      "name": "SORPALFA",
+      "role": "empirical sorptivity-curve fitting parameter",
+      "rfm_decision": "remove"
+    },
+    {
+      "name": "ShapeFacMp",
+      "role": "uncertainty factor for lateral Darcy exchange; theory range about 1-2",
+      "rfm_decision": "fix/derive, not jointly calibrate"
+    },
+    {
+      "name": "polygon/exchange length",
+      "role": "lateral exchange distance and wall-area scale",
+      "rfm_decision": "retain as ell_ex unless independently derived"
+    }
+  ],
+  "leading_rfm_wall_core": {
+    "derived": [
+      "raw wall sorptivity from matrix hydraulics and contact-start state",
+      "matrix hydraulic conductivity",
+      "head gradient"
+    ],
+    "persistent_history": [
+      "wall_event_sorptivity",
+      "wall_event_age"
+    ],
+    "free_candidates": [
+      "chi_wall",
+      "ell_ex"
+    ],
+    "fixed_or_derived": [
+      "f_shape"
+    ]
+  }
+}
