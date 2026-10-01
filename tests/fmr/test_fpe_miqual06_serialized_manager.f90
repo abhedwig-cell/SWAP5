@@ -19,7 +19,7 @@ program test_fpe_miqual06_serialized_manager
 
   integer, parameter :: tail_start=13
   real(real64), parameter :: dt=0.00125_real64
-  real(real64), parameter :: top_flux=-0.01_real64
+  real(real64), parameter :: top_flux=0.0_real64
   real(real64), parameter :: tol=1.0e-12_real64
   type(fmr_b110_physical_state_t) :: default_state, manager_state, bypass_state
   type(fmr_serialized_physical_observation_t) :: default_obs, manager_obs, bypass_obs
