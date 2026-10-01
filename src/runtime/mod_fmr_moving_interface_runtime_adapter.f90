@@ -35,13 +35,15 @@ module mod_fmr_moving_interface_runtime_adapter
 contains
 
   subroutine fmr_moving_interface_runtime_solve(self, full_solver, full_workspace, full_request, full_hydraulics, &
-                                                 full_qdra, full_qssdi, full_qrot, selected, diagnostics, ok)
+                                                 full_qdra, full_qssdi, full_qrot, sources_verified_zero, &
+                                                 selected, diagnostics, ok)
     class(fmr_moving_interface_runtime_adapter_t), intent(inout) :: self
     type(reference_richards_legacy_solver_t), intent(inout) :: full_solver
     type(reference_richards_legacy_workspace_t), intent(inout) :: full_workspace
     type(soil_water_solve_request_t), intent(in) :: full_request
     type(b110_default_mvg_parameters_t), intent(in) :: full_hydraulics
     real(real64), target, intent(in) :: full_qdra(:,:), full_qssdi(:), full_qrot(:)
+    logical, intent(in) :: sources_verified_zero
     type(soil_water_solve_result_t), intent(out) :: selected
     type(moving_interface_manager_diagnostics_t), intent(out) :: diagnostics
     logical, intent(out) :: ok
@@ -86,8 +88,7 @@ contains
       call full_bypass('source-shape-ineligible')
       return
     end if
-    if (any(abs(full_qdra) > 0.0_real64) .or. any(abs(full_qssdi) > 0.0_real64) .or. &
-        any(abs(full_qrot) > 0.0_real64)) then
+    if (.not. sources_verified_zero) then
       call full_bypass('active-source-sink-ineligible')
       return
     end if
@@ -212,15 +213,18 @@ contains
 
       if (.not. associated(self%reduced_qdra)) then
         allocate(self%reduced_qdra(levels,n), self%reduced_qssdi(n), self%reduced_qrot(n))
+        self%reduced_qdra = 0.0_real64
+        self%reduced_qssdi = 0.0_real64
+        self%reduced_qrot = 0.0_real64
       else if (size(self%reduced_qdra,1) /= levels .or. size(self%reduced_qdra,2) /= n) then
         deallocate(self%reduced_qdra)
         if (associated(self%reduced_qssdi)) deallocate(self%reduced_qssdi)
         if (associated(self%reduced_qrot)) deallocate(self%reduced_qrot)
         allocate(self%reduced_qdra(levels,n), self%reduced_qssdi(n), self%reduced_qrot(n))
+        self%reduced_qdra = 0.0_real64
+        self%reduced_qssdi = 0.0_real64
+        self%reduced_qrot = 0.0_real64
       end if
-      self%reduced_qdra = full_qdra(:,1:n)
-      self%reduced_qssdi = full_qssdi(1:n)
-      self%reduced_qrot = full_qrot(1:n)
       if (.not. associated(self%reduced_source_sink)) allocate(self%reduced_source_sink)
       call bind_b110_source_sink_provider(self%reduced_source_sink, self%reduced_qdra, self%reduced_qssdi, self%reduced_qrot)
       local_ok = .true.
