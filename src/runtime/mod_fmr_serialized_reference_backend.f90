@@ -438,6 +438,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
+    type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
