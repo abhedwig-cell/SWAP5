@@ -1,0 +1,24 @@
+name: F-PE-MIQUAL02 reference-valid manager qualification
+
+on:
+  push:
+    branches:
+      - research/f-pe-miqual02-reference-valid-manager-qualification
+    paths:
+      - 'docs/performance/F-PE-MIQUAL02_PREREGISTRATION.md'
+      - 'tests/fpe/run_fpe_miqual02.py'
+      - 'tests/fpe/run_fpe_miqual02.sh'
+      - '.github/workflows/f-pe-miqual02.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_miqual02.sh
