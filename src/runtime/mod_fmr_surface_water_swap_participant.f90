@@ -59,6 +59,7 @@ module mod_fmr_surface_water_swap_participant
     procedure, public :: publication_ready => surface_water_publication_ready
     procedure, public :: component_publication_ready => surface_water_component_publication_ready
     procedure, public :: commit_candidate => surface_water_commit_candidate
+    procedure, public :: commit_component_candidate => surface_water_commit_component_candidate
     procedure, public :: has_origin => surface_water_has_origin
     procedure, public :: has_live_candidate => surface_water_has_live_candidate
     procedure, public :: captured_revision => surface_water_captured_revision
@@ -306,6 +307,31 @@ contains
     self%candidate_exchange_cm = 0.0_real64
     status = FMR_SW_PARTICIPANT_OK
   end subroutine surface_water_commit_candidate
+
+
+  subroutine surface_water_commit_component_candidate(self,backend,committed,t0,t1,top_candidate_cm,receipt,tolerance_cm,did_commit,status)
+    class(fmr_surface_water_swap_participant_t),intent(inout)::self
+    type(fmr_serialized_reference_backend_t),intent(inout)::backend
+    type(kernel_committed_state_t),intent(inout)::committed
+    real(real64),intent(in)::t0,t1,top_candidate_cm,tolerance_cm
+    type(fmr_surface_water_component_receipt_t),intent(in)::receipt
+    logical,intent(out)::did_commit
+    integer,intent(out)::status
+    integer::kernel_status
+
+    did_commit=.false.
+    status=FMR_SW_PARTICIPANT_PREFLIGHT_FAILED
+    if(.not.self%component_publication_ready(committed,t0,t1,top_candidate_cm,receipt,tolerance_cm))then
+      if(self%origin_captured.and.self%live_candidate.and.receipt%valid) status=FMR_SW_PARTICIPANT_EXCHANGE_MISMATCH
+      return
+    end if
+    call backend%commit_trial_candidate(committed,self%candidate,self%diagnostics,did_commit,kernel_status)
+    if(.not.did_commit.or.kernel_status/=KERNEL_COMMIT_STATUS_COMMITTED)then
+      did_commit=.false.;status=FMR_SW_PARTICIPANT_COMMIT_FAILED;return
+    end if
+    self%live_candidate=.false.;self%origin_captured=.false.;self%candidate_exchange_cm=0._real64
+    status=FMR_SW_PARTICIPANT_OK
+  end subroutine surface_water_commit_component_candidate
 
   logical function surface_water_has_origin(self) result(value)
     class(fmr_surface_water_swap_participant_t), intent(in) :: self
