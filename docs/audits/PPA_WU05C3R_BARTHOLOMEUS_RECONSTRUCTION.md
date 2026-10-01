@@ -290,3 +290,18 @@ The legacy code enters this solve when `dum >= ctop`. Therefore for `dum > ctop`
 Conclusion: restart-based Newton is not required by the mathematics. The physical problem is a monotone one-dimensional bracketed root.
 
 A pure bounded candidate `mod_oxygen_macro_zero_depth` was added. It brackets by deterministic upper-bound expansion and then bisects. This removes derivative division and restart policy from the candidate kernel. It is research code pending 4.3.1 numerical parity tests.
+
+
+## Reconstruction checkpoint R7 — local numerical gate prepared
+
+A focused standalone numerical gate now exercises the bounded MACRO zero-depth candidate over:
+- the asymptotic/no-finite-root boundary;
+- 25 positive-domain combinations spanning source scales from 1e-12 to 1e3;
+- direct sampled monotonicity around every solved root;
+- an extreme scale-separation case representative of the tiny-derivative failure class behind SWAP-007.
+
+The runner uses strict GNU flags including `-Werror` and `-fcheck=all`. No GitHub Actions workflow was added.
+
+Status is deliberately `GATE_PREPARED_NOT_EXECUTED`: repository tooling in this session can persist the source but does not provide a compiler execution surface for the remote checkout. No PASS is claimed without run evidence.
+
+The next qualification level must compare the bounded result directly with corrected 4.3.1 MACRO outputs, not merely residual closure.
