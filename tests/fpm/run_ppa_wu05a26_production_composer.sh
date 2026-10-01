@@ -2,6 +2,7 @@
 set -euo pipefail
 B="${TMPDIR:-/tmp}/swap5-a26c";rm -rf "${B}";mkdir -p "${B}"
 "${FC:-gfortran}" -std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace \
+ src/solver/mod_soil_water_solver_contract.f90 \
  src/process/macropore/mod_rfm_unponded_activation.f90 \
  src/runtime/mod_rfm_unponded_surface_composition.f90 \
  src/process/macropore/mod_rfm_preferential_router.f90 \
