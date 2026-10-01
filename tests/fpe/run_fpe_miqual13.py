@@ -1,3 +1,4 @@
+# Protocol-correct bank continuation after structured invalid-dimension reporting.
 #!/usr/bin/env python3
 import json,statistics,subprocess,sys
 
