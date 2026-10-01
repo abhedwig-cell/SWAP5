@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.f_macro_alt35.fixed_sigma_transferability_prereg.v1",
+  "status": "PREREGISTERED_EMPIRICAL_TEST / PAYLOAD_BLOCKED",
+  "target_hypothesis": "one sigma_B per structural profile transfers across held-out events",
+  "calibration_split": {
+    "unit": "site/profile",
+    "rule": "estimate sigma_B on a subset spanning at least low and medium source intensity; never tune per event"
+  },
+  "held_out_tests": [
+    "weak versus intense events",
+    "short versus long events",
+    "contrasting antecedent mean soil moisture",
+    "contrasting antecedent soil-moisture spatial variability"
+  ],
+  "required_fields": [
+    "stormPeakIntensity",
+    "stormSum",
+    "stormDuration",
+    "smBeforePrecip_*",
+    "smResponseType_*",
+    "flowTypes",
+    "flowPosition",
+    "velocity_computed_*",
+    "PF_velocity_metric_* or equivalent PF label"
+  ],
+  "reject_fixed_sigma_if": [
+    "systematic intensity-dependent bias remains after one profile-level sigma_B is fixed",
+    "systematic antecedent-state bias remains after K/S are derived from state",
+    "PF response depends materially on antecedent spatial-moisture variability in a way the fixed-sigma_B/top-state model cannot reproduce"
+  ],
+  "prohibited": [
+    "event-specific sigma_B",
+    "intensity-specific sigma_B",
+    "retuning connectivity geometry to repair activation errors"
+  ]
+}
