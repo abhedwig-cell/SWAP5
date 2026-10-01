@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.ppa_wu05_perch19.status.v1",
+  "workunit": "PPA-WU05-PERCH19",
+  "phase": "CLOSED_QUALIFIED_RESEARCH_RESULT",
+  "decision": "QUALIFIED_RETRY_LADDER_REQUIRES_NUMERICAL_CONTINUATION_STATE",
+  "research_baseline": "77f47a7d98cece4b371fdf078525a7ade7daec4a",
+  "canonical_reconciliation": "e9f210a41bca5bf9c6b9118f91a2be020e76b26f",
+  "branch": "research/ppa-wu05-perch19-frreduq-retry",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admission_candidate": false,
+  "canonical_admitted": false,
+  "closed": true,
+  "qualified_postimage": "12cf9682fe7a4dfb8c0658dc90ba46e73958a0e3",
+  "qualification_run": 36873515942,
+  "qualification_job": 110406992683,
+  "qualified_scope": [
+    "temporal retry precedence over FrReduQ escalation",
+    "bounded 1/0.1/0.01/0.001 reduction ladder",
+    "terminal failure after level three",
+    "rejected candidate controller isolation",
+    "controller payload restart roundtrip",
+    "ten-accepted-step recovery",
+    "larger-dt immediate recovery"
+  ],
+  "required_numerical_continuation_payload": [
+    "reduction_level",
+    "successful_steps",
+    "previous_reduction_dt"
+  ],
+  "architecture_blocker": "Current macropore serialized admission requires FMR_NUMERICAL_CONTINUATION_NONE, but exact source recovery semantics require accepted numerical continuation state.",
+  "next_action": "Open PPA-WU05-PERCH20 to integrate the qualified controller into a dedicated FMR numerical-continuation layout with transaction and restart semantics.",
+  "recovery_point": "2ff679063f47bb8a7c9700376e51a34f998638bf"
+}
