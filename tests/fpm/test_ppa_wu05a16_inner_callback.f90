@@ -33,7 +33,8 @@ module ppa_wu05a16_test_providers
     real(real64) :: capacity_value=0.02_real64
     real(real64), allocatable :: dz(:)
   contains
-    procedure :: evaluate => linear_macropore_evaluate
+    procedure :: evaluate_rate => linear_macropore_rate_evaluate
+    procedure :: evaluate_derivative => linear_macropore_derivative_evaluate
   end type linear_macropore_t
 
   public :: reset_macro_trace
@@ -81,16 +82,15 @@ contains
     if(.not.same_type_as(self,self))error stop 'A16 impossible top type'
   end subroutine requested_flux_top_evaluate
 
-  subroutine linear_macropore_evaluate(self,pressure_head,water_content,exchange_flux,dexchange_dhead,derivative_available,active)
+  subroutine linear_macropore_rate_evaluate(self,pressure_head,water_content,exchange_flux,active)
     class(linear_macropore_t),intent(in)::self
     real(real64),intent(in)::pressure_head(:),water_content(:)
-    real(real64),intent(out)::exchange_flux(:),dexchange_dhead(:)
-    logical,intent(out)::derivative_available,active
+    real(real64),intent(out)::exchange_flux(:)
+    logical,intent(out)::active
     integer::n
 
     n=size(pressure_head)
-    if(size(water_content)/=n .or. size(exchange_flux)/=n .or. size(dexchange_dhead)/=n) &
-         error stop 'A16 macropore callback shape'
+    if(size(water_content)/=n .or. size(exchange_flux)/=n)error stop 'A16 macropore rate shape'
     if(.not.allocated(self%dz) .or. size(self%dz)/=n)error stop 'A16 macropore dz'
 
     macro_calls=macro_calls+1
@@ -101,17 +101,36 @@ contains
     last_head=pressure_head(1)
     last_water=water_content(1)
 
-    derivative_available=.true.
     active=self%enabled
     if(.not.active)then
       exchange_flux=0.0_real64
+      return
+    end if
+    exchange_flux=self%lambda_per_day*self%capacity_value*self%dz*pressure_head
+  end subroutine linear_macropore_rate_evaluate
+
+  subroutine linear_macropore_derivative_evaluate(self,pressure_head,water_content,capacity,dexchange_dhead, &
+                                                   derivative_available,active)
+    class(linear_macropore_t),intent(in)::self
+    real(real64),intent(in)::pressure_head(:),water_content(:),capacity(:)
+    real(real64),intent(out)::dexchange_dhead(:)
+    logical,intent(out)::derivative_available,active
+    integer::n
+
+    n=size(pressure_head)
+    if(size(water_content)/=n .or. size(capacity)/=n .or. size(dexchange_dhead)/=n) &
+         error stop 'A16 macropore derivative shape'
+    if(.not.allocated(self%dz) .or. size(self%dz)/=n)error stop 'A16 macropore derivative dz'
+    if(maxval(abs(capacity-self%capacity_value))>1.0e-14_real64)error stop 'A16 current capacity mismatch'
+
+    active=self%enabled
+    derivative_available=.true.
+    if(.not.active)then
       dexchange_dhead=0.0_real64
       return
     end if
-
-    dexchange_dhead=self%lambda_per_day*self%capacity_value*self%dz
-    exchange_flux=dexchange_dhead*pressure_head
-  end subroutine linear_macropore_evaluate
+    dexchange_dhead=self%lambda_per_day*capacity*self%dz
+  end subroutine linear_macropore_derivative_evaluate
 
 end module ppa_wu05a16_test_providers
 
