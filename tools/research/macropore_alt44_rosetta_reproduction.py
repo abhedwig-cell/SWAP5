@@ -51,17 +51,21 @@ def predict(rows, estimate_type):
 def main(src,out_csv,out_json):
     rows=load_rows(Path(src))
     variants={}
-    for est in ("linear","geo"):
+    for est in ("log","geo","linear"):
         idx,res=predict(rows,est)
         errs=[]
         std_errs=[]
         for i,p in zip(idx,res):
             target=finite(rows[i].get("ksat_T"))
             target_sd=finite(rows[i].get("ksat_T_std"))
-            if target is not None:
-                errs.append(relerr(float(p["ksat"]),target))
-            if target_sd is not None and p.get("ksat_std") is not None:
-                std_errs.append(relerr(float(p["ksat_std"]),target_sd))
+            pred_k = float(p["ksat"])
+            if est == "log":
+                pred_k = 10.0**pred_k
+            if target is not None and math.isfinite(pred_k):
+                errs.append(relerr(pred_k,target))
+            pred_sd = p.get("ksat_std")
+            if target_sd is not None and pred_sd is not None and math.isfinite(float(pred_sd)):
+                std_errs.append(relerr(float(pred_sd),target_sd))
         variants[est]={
             "n":len(errs),
             "median_relative_ksat_error":median(errs) if errs else None,
@@ -69,15 +73,20 @@ def main(src,out_csv,out_json):
             "median_relative_ksat_std_error":median(std_errs) if std_errs else None,
         }
 
-    chosen=min(
-        (k for k,v in variants.items() if v["median_relative_ksat_error"] is not None),
-        key=lambda k: variants[k]["median_relative_ksat_error"]
-    )
+    finite_variants=[
+        k for k,v in variants.items()
+        if v["median_relative_ksat_error"] is not None
+        and math.isfinite(v["median_relative_ksat_error"])
+    ]
+    chosen=min(finite_variants,key=lambda k: variants[k]["median_relative_ksat_error"])
 
-    # Strict enough to establish same workflow, but allow ordinary serialization noise.
+    # Authors' ksat_T is expected to be the geometric mean: either geo directly
+    # or 10**(log-space ensemble mean). Require near-bit-level agreement.
     reproducible = variants[chosen]["median_relative_ksat_error"] <= 1e-6
 
-    idx,res=predict(rows,chosen)
+    # Use log-space output as the authority for alpha/n/K distributions:
+    # convert means geometrically, retain bootstrap SD in log10 space.
+    idx,res=predict(rows,"log")
     pred_by_idx=dict(zip(idx,res))
     fields=[
         "siteid","hzname","hzndept","hzndepb","midpointcm",
@@ -97,6 +106,10 @@ def main(src,out_csv,out_json):
                 continue
             p=pred_by_idx[i]
             target=finite(r.get("ksat_T"))
+            ksat_geo=10.0**float(p["ksat"])
+            alpha_geo=10.0**float(p["alpha"])
+            n_geo=10.0**float(p["npar"])
+            k0_geo=10.0**float(p["k0"])
             rec={
                 "siteid":r.get("siteid"),"hzname":r.get("hzname"),
                 "hzndept":r.get("hzndept"),"hzndepb":r.get("hzndepb"),
@@ -105,12 +118,12 @@ def main(src,out_csv,out_json):
                 "authors_ksat_T":r.get("ksat_T"),"authors_ksat_T_std":r.get("ksat_T_std"),
                 "rosetta_code":p.get("code"),
                 "theta_r":p.get("thr"),"theta_s":p.get("ths"),
-                "alpha_per_cm":p.get("alpha"),"n":p.get("npar"),
-                "ksat_cm_day":p.get("ksat"),"k0_cm_day":p.get("k0"),"l":p.get("lpar"),
+                "alpha_per_cm":alpha_geo,"n":n_geo,
+                "ksat_cm_day":ksat_geo,"k0_cm_day":k0_geo,"l":p.get("lpar"),
                 "theta_r_std":p.get("thr_std"),"theta_s_std":p.get("ths_std"),
                 "alpha_std":p.get("alpha_std"),"n_std":p.get("npar_std"),
                 "ksat_std":p.get("ksat_std"),"k0_std":p.get("k0_std"),"l_std":p.get("lpar_std"),
-                "relative_ksat_error":relerr(float(p["ksat"]),target) if target is not None else None,
+                "relative_ksat_error":relerr(ksat_geo,target) if target is not None else None,
             }
             w.writerow(rec)
 
@@ -120,7 +133,8 @@ def main(src,out_csv,out_json):
         "rosetta_version":3,
         "input_model":"SSC only (model code 2)",
         "estimate_variants":variants,
-        "chosen_estimate_type":chosen,
+        "chosen_estimate_type_for_ksat_reproduction":chosen,
+        "parameter_emission_basis":"Rosetta v3 log ensemble means; alpha/n/Ksat/K0 emitted as geometric means; *_std retained in log10 space",
         "authors_csv":str(src),
         "output_rows":len(res),
         "reproduction_gate":{
