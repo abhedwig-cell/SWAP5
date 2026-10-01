@@ -120,3 +120,58 @@ and keep scalar-solver policy outside the physical-state object.
 ### Remaining authority gap
 
 The available cumulative patch contains unchanged legacy equations only as context around changed hunks; it is not a complete pristine `oxygenstress.f90`. Exact B1.11 source materialization remains necessary before an exact independent kernel can be declared qualified. Library evidence is sufficient to continue architecture reconstruction but not to invent omitted equations.
+
+
+## Reconstruction checkpoint R2 — recovered 2026-09-03 performance evidence
+
+A previously completed SWAP 4.3.1 oxygenstress performance investigation was recovered from the project Library. This materially advances C3R and must be treated as historical experimental evidence, not yet as canonical SWAP5 production authority.
+
+### Exact-preserving findings already demonstrated
+
+1. `waterfilmthickness` redundantly invoked a complete QROMBD integration a second time with identical limits/parameters. QROMBD already owns its convergence loop. Removing the duplicate integration preserved model output and Newton statistics in controlled physical-oxygen tests and reduced total runtime by about 20% in the grass case.
+
+2. `SOLVE` can test the maximum respiration endpoint first. The residual `myfunc` decreases with respiration demand because macro oxygen concentration decreases while the required micro/root concentration increases. If oxygen supply is sufficient at `max_resp_factor`, the exact solution is immediately the maximum respiration factor. Historical instrumentation found about 95% of expensive physical OxygenStress calls in the official grass case ended at `alpwet=1`. This exact early exit added roughly 12–13% runtime reduction on top of finding 1.
+
+3. The legacy implementation already supports a bracketed ZBREND path over `[0,max_resp_factor]`. This further confirms that the root solve is an instantaneous constitutive response, not cross-timestep physical continuation state.
+
+### Approximate/high-performance finding already demonstrated
+
+A 300-point logarithmic cubic-Hermite water-film lookup (WFT300) was tested against the corrected Romberg route for analytical Mualem–Van Genuchten hydraulics.
+
+Historical broad-regression timing gains relative to the already-improved Romberg route included approximately:
+- grassgrowth 5 y: 32%;
+- sand B02/O02/O01 5 y: 31%;
+- B05/O05 5 y: 49%;
+- clay-type profile 5 y: 18%;
+- peat-type profile 5 y: 22%.
+
+Well-conditioned cases generally retained identical aggregate Newton histograms and differences at/below printed rounding. A demanding stable B05/O05 case showed a small transient crop-output difference but 300/600/1000 table resolutions produced identical daily output to one another, demonstrating a resolution plateau. Pathological homogeneous O05/O13 profiles already had Richards nonconvergence in the Romberg baseline and are not suitable transparent-regression gates.
+
+### Consequence for SWAP5 strategy
+
+Do not reproduce the old execution structure.
+
+The production candidate should be developed in two layers:
+
+A. exact/reference kernel:
+- immutable precompute;
+- current node state;
+- exact no-stress endpoint test;
+- one reference water-film evaluation;
+- bounded scalar response solve only when stress is possible.
+
+B. optional practical/performance kernel:
+- WFT lookup or successor interpolant;
+- explicitly qualified approximation envelope;
+- reference kernel retained as oracle/fallback.
+
+This matches the broader SWAP5 policy of qualifying exact-preserving waste removal before practical approximation.
+
+### Remaining work
+
+The old experiments establish strong algorithmic evidence but were performed in SWAP 4.3.1. C3R still needs:
+- exact pristine source extraction/materialization;
+- a standalone reference kernel independent of legacy module globals;
+- state/ownership proof at the SWAP5 interface;
+- direct comparison of Newton versus bracketed solve cost/robustness;
+- requalification on current SWAP5 hydraulic/thermal owner views.
