@@ -16,7 +16,7 @@ program test_ppa_wu05a18_andelst_perched_reference
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t,evaluate_macropore_geometry
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t,initialize_fmr_macropore_standard_config
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t,macropore_runtime_policy_t, &
-       macropore_runtime_result_t,MACRO_RUNTIME_CONVERGED
+       macropore_runtime_result_t,MACRO_RUNTIME_CONVERGED,PERCH_SOURCE_REDUCTION_LADDER
   implicit none
 
   real(real64),parameter :: dt=2.0e-3_real64
@@ -71,7 +71,7 @@ program test_ppa_wu05a18_andelst_perched_reference
   type(fmr_macropore_physical_config_t) :: macro_config
   type(macropore_single_column_runtime_t) :: macro_runtime
   type(macropore_runtime_policy_t) :: macro_policy
-  type(macropore_runtime_result_t) :: macro_result
+  type(macropore_runtime_result_t) :: macro_result,macro_replay
   real(real64),target :: qdra(1,numnod),qssdi(numnod),qrot(numnod)
   real(real64) :: cofgen(24,numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
   real(real64) :: theta_s(numnod),theta_r(numnod),static_volume(numnod),domain_fraction(1,numnod), &
@@ -210,6 +210,10 @@ program test_ppa_wu05a18_andelst_perched_reference
   macro_policy%solver_mass_tolerance_cm=1.0e-8_real64
   macro_policy%internal_exchange_tolerance_cm=1.0e-9_real64
 
+  call require(size(PERCH_SOURCE_REDUCTION_LADDER)==4,'PERCH19 exact ladder size')
+  call require(maxval(abs(PERCH_SOURCE_REDUCTION_LADDER-source_reduction_ladder))<1.0e-15_real64, &
+       'PERCH19 exact source ladder values')
+
   macro_config%rate_template%unsaturated%sorptivity%flow_reduction=1.0_real64
   macro_config%rate_template%interflow_sat%flow_reduction=1.0_real64
   macro_config%rate_template%matrix_sat%flow_reduction=1.0_real64
@@ -241,6 +245,26 @@ program test_ppa_wu05a18_andelst_perched_reference
   call require(abs(macro_result%macro_balance_residual_cm)<=1.0e-9_real64,'A18 macro mass closure')
   call require(maxval(abs(macro%water_domain_cp))==0.0_real64,'A18 accepted macro state unchanged')
 
+  ! Replay from exactly the same accepted authority. Reduction diagnostics are
+  ! trial-local and must be recomputed, not restored.
+  call macro_runtime%execute(solver,workspace,request,macro,macro_config%geometry,macro_config%rate_template, &
+       macro_config%history_template,macro_policy,macro_replay)
+  call require(macro_replay%status==MACRO_RUNTIME_CONVERGED,'PERCH19 replay converged')
+  call require(macro_replay%inner_reduction_attempts==macro_result%inner_reduction_attempts, &
+       'PERCH19 replay attempt count')
+  call require(macro_replay%inner_reduction_index==macro_result%inner_reduction_index, &
+       'PERCH19 replay reduction index')
+  call require(abs(macro_replay%inner_reduction_factor-macro_result%inner_reduction_factor)<1.0e-15_real64, &
+       'PERCH19 replay reduction factor')
+  call require(maxval(abs(macro_replay%matrix_result%candidate_state%pressure_head- &
+       macro_result%matrix_result%candidate_state%pressure_head))<1.0e-12_real64,'PERCH19 replay matrix candidate')
+  call require(maxval(abs(macro_replay%macropore_candidate%water_domain_cp- &
+       macro_result%macropore_candidate%water_domain_cp))<1.0e-12_real64,'PERCH19 replay macro candidate')
+  call require(abs(macro_replay%inner_final_exchange_rate_cm_per_day- &
+       macro_result%inner_final_exchange_rate_cm_per_day)<1.0e-12_real64,'PERCH19 replay exchange receipt')
+
+  print '(a)', 'PPA_WU05_PERCH19_EXACT_LADDER=PASS'
+  print '(a)', 'PPA_WU05_PERCH19_DETERMINISTIC_REPLAY=PASS'
   print '(a)', 'PPA_WU05A18_SOURCE_ACCEPTED_SNAPSHOT=PASS'
   print '(a)', 'PPA_WU05A18_REFERENCE_RICHARDS_BASELINE=PASS'
   print '(a)', 'PPA_WU05A18_PERCHED_TOPOLOGY_RETAINED=PASS'
