@@ -231,7 +231,10 @@ contains
 
     call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
     parameters%external_top_surface_water_capable=.true.
+    parameters%drainage_response_active=.false.
+    if(allocated(parameters%drainage_response_levels))deallocate(parameters%drainage_response_levels)
     base%external_top_surface_water_supplied=.true.
+    base%top_flux=0.0_real64
     base%top_flux=0.0_real64
     base%external_top_surface_water_head_cm=0.02_real64
     base%external_top_surface_water_sill_cm=0.01_real64
