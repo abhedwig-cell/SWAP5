@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.ppa_wu05a17.status.v1",
+  "workunit": "PPA-WU05-A17",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_EXPLICIT_PARAMETER_RFM_PREFERENTIAL_ROUTER",
+  "baseline": "f71cccad728b4cc0dc515c449ac6a06a0de30716",
+  "branch": "work/ppa-wu05-a17-rfm-preferential-routing",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "qualified_postimage": "9d4c247666c9641aa1c29f835187dcd4c2afcdbb",
+  "qualification_run": 36865436660,
+  "scope": {
+    "explicit_f_mb": true,
+    "explicit_connectivity_p": true,
+    "explicit_structural_depths": true,
+    "caller_owned_endpoint_grid": true,
+    "exact_mass_receipt": true,
+    "state_mapping": false,
+    "wall_exchange": false,
+    "transit": false,
+    "bottom_breakthrough": false
+  },
+  "next": "canonical admission, then A18 audit of candidate fast-domain state mapping and exactly-once ownership"
+}
