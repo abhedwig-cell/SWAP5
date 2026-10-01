@@ -83,6 +83,8 @@ module mod_transaction_reference
     procedure :: attempt_context_required => default_attempt_context_required
     procedure :: capture_attempt_context => default_capture_attempt_context
     procedure :: restore_attempt_context => default_restore_attempt_context
+    procedure :: apply_retry_feedback => default_apply_retry_feedback
+    procedure :: apply_accepted_feedback => default_apply_accepted_feedback
   end type transaction_model_t
 
   type, public :: transaction_policy_t
@@ -202,6 +204,30 @@ contains
       error stop 'unreachable transaction attempt context type'
     end if
   end subroutine default_restore_attempt_context
+
+
+  subroutine default_apply_retry_feedback(self, outcome, attempted_dt, override_available, override_dt, ok)
+    class(transaction_model_t), intent(inout) :: self
+    type(trial_outcome_t), intent(in) :: outcome
+    real(real64), intent(in) :: attempted_dt
+    logical, intent(out) :: override_available
+    real(real64), intent(out) :: override_dt
+    logical, intent(out) :: ok
+
+    override_available = .false.
+    override_dt = attempted_dt
+    ok = attempted_dt > 0.0_real64 .and. ieee_is_finite(attempted_dt)
+    if (.not. same_type_as(self,self) .or. outcome%nonlinear_iterations < 0) ok = .false.
+  end subroutine default_apply_retry_feedback
+
+  subroutine default_apply_accepted_feedback(self, accepted_dt, ok)
+    class(transaction_model_t), intent(inout) :: self
+    real(real64), intent(in) :: accepted_dt
+    logical, intent(out) :: ok
+
+    ok = accepted_dt > 0.0_real64 .and. ieee_is_finite(accepted_dt)
+    if (.not. same_type_as(self,self)) ok = .false.
+  end subroutine default_apply_accepted_feedback
 
   subroutine default_storage_accounting_status(self, state, complete, missing_mask)
     class(transaction_model_t), intent(in) :: self
@@ -630,11 +656,16 @@ contains
     matches = a <= b .and. b <= a
   end function ordered_real_equal
 
-  subroutine reject_and_retry(result, retry_index, policy, attempt_dt)
+  subroutine reject_and_retry(result, retry_index, policy, attempt_dt, override_available, override_dt)
     type(transaction_result_t), intent(inout) :: result
     integer, intent(in) :: retry_index
     type(transaction_policy_t), intent(in) :: policy
     real(real64), intent(inout) :: attempt_dt
+    logical, intent(in), optional :: override_available
+    real(real64), intent(in), optional :: override_dt
+
+    logical :: use_override
+    real(real64) :: requested_dt
 
     result%rollbacks = result%rollbacks + 1
     if (retry_index >= policy%max_retries) then
@@ -642,7 +673,23 @@ contains
       return
     end if
     result%retries = result%retries + 1
-    attempt_dt = attempt_dt * policy%retry_scale
+
+    use_override = .false.
+    if (present(override_available)) use_override = override_available
+    if (use_override) then
+      if (.not. present(override_dt)) then
+        result%status = TX_STATUS_RETRY_EXHAUSTED
+        return
+      end if
+      requested_dt = result%requested_t1-result%requested_t0
+      if (.not. ieee_is_finite(override_dt) .or. override_dt <= 0.0_real64 .or. requested_dt <= 0.0_real64) then
+        result%status = TX_STATUS_RETRY_EXHAUSTED
+        return
+      end if
+      attempt_dt = min(override_dt,requested_dt)
+    else
+      attempt_dt = attempt_dt * policy%retry_scale
+    end if
   end subroutine reject_and_retry
 
   pure logical function valid_policy(policy)
