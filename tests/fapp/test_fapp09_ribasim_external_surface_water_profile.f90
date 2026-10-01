@@ -234,6 +234,8 @@ contains
     parameters%external_top_surface_water_capable=.true.
     parameters%max_iterations=80
     parameters%max_backtracking=16
+    ! Surface/transaction fixture, no temporal accuracy claim. Mass gate unchanged.
+    config%transaction%temporal_tolerance=1.0e15_real64
     parameters%drainage_response_active=.false.
     if(allocated(parameters%drainage_response_levels))deallocate(parameters%drainage_response_levels)
     base%external_top_surface_water_supplied=.true.
@@ -253,6 +255,9 @@ contains
       write(*,'(A,L1)')'TOP03_DIAG_COMPLETED=',result%completed
       write(*,'(A,I0)')'TOP03_DIAG_RESULT_STATUS=',result%status
       write(*,'(A,I0)')'TOP03_DIAG_SUBSTEPS=',diagnostics%accepted_substeps
+      write(*,'(A,I0)')'TOP03_DIAG_MASS_REJECTIONS=',diagnostics%mass_rejections
+      write(*,'(A,I0)')'TOP03_DIAG_SOLVER_REJECTIONS=',diagnostics%solver_rejections
+      write(*,'(A,I0)')'TOP03_DIAG_TEMPORAL_REJECTIONS=',diagnostics%temporal_rejections
       write(*,'(A,I0)')'TOP03_DIAG_ADMISSION_REJECTIONS=',diagnostics%admission_rejections
       observation=backend%observation()
       write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
@@ -325,6 +330,8 @@ contains
 
     parameters%max_iterations=80
     parameters%max_backtracking=16
+    ! Surface/transaction fixture, no temporal accuracy claim. Mass gate unchanged.
+    config%transaction%temporal_tolerance=1.0e15_real64
     base%top_flux=0.0_real64
     base%external_top_surface_water_supplied=.true.
     base%external_top_surface_water_head_cm=0.02_real64
