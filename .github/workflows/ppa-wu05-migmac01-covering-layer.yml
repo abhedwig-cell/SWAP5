@@ -6,6 +6,7 @@ on:
       - research/ppa-wu05-migmac01-covering-layer
     paths:
       - 'src/process/macropore/mod_macropore_covering_layer_input.f90'
+      - 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
       - 'tests/fpm/test_ppa_wu05_migmac01_covering_layer.f90'
       - 'tests/fpm/run_ppa_wu05_migmac01_covering_layer.sh'
       - '.github/workflows/ppa-wu05-migmac01-covering-layer.yml'
