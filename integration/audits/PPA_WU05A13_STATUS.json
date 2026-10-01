@@ -1,16 +1,16 @@
 {
   "schema": "swap5.ppa_wu05a13.status.v1",
   "workunit": "PPA-WU05-A13",
-  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
-  "decision": "QUALIFIED_RFM_SURFACE_EVENT_AGE_SERVICE",
+  "phase": "CLOSED_CANONICAL_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_RFM_SURFACE_EVENT_AGE_SERVICE",
   "baseline": "ae4eede414692fb0071ea093050f5accd36dd48d",
   "branch": "work/ppa-wu05-a13-rfm-surface-event-age",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
-  "closed": false,
+  "canonical_admitted": true,
+  "closed": true,
   "qualified_postimage": "9ab2f5996c6698916c5febe1ddb8a2685ee8d56c",
   "qualification_run": 36861648257,
   "scope": {
@@ -24,5 +24,16 @@
     "existing_state_layout_change": false,
     "runtime_source_partition_change": false
   },
-  "next": "canonical admission, then audit effective-infiltrating-source ownership before any actual RFM partition runtime"
+  "next": "A14 authority audit: effective infiltrating supply / surface-boundary ownership before any runtime RFM source partition",
+  "admission_pr": 934,
+  "canonical_merge": "77a73c4bac08b92549890fa90139a13b37649bb0",
+  "postmerge_preservation": {
+    "method": "dependency-surface blob identity inheritance",
+    "source_blob_sha": "93210151f1324dfeedf3fd67dd6616ffdcb5bd67",
+    "test_blob_sha": "4c315d493432f72d8f442d42b9456e9419858262",
+    "runner_blob_sha": "1c6d717dd98a4aa8b4c238dc5e76264bdf67e3cd",
+    "qualified_postimage": "9ab2f5996c6698916c5febe1ddb8a2685ee8d56c",
+    "canonical_merge": "77a73c4bac08b92549890fa90139a13b37649bb0",
+    "unchanged": true
+  }
 }
