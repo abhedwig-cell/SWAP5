@@ -5,7 +5,11 @@
   "branch": "work/f-mig431-low01a-qgwl-boundary",
   "status": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
   "qualification_head": "4b3e24cc0233ffd402ab094a690e230dae6d86f4",
-  "qualification_run": 36923891201,
+  "qualification_run": {
+    "run_id": 36926021938,
+    "head_sha": "32747a69ee6ff5e5a6937bb9433746391d977ee9",
+    "conclusion": "success"
+  },
   "qualification_conclusion": "success",
   "canonical_last_reconciled": "e2d18564383e1350b0b9a68af0eaf668dac784af",
   "source_contract": "docs/migration/F-MIG431-LOW01A_STATE_TIMING_CONTRACT.md",
@@ -28,5 +32,18 @@
     "LOW01-A remains state-dependent q(gwl); it is not reclassified as a time-dependent prescribed flux.",
     "Canonical has advanced since the original preregistration; final admission still requires current-head reconcile before merge."
   ],
-  "scope_claim": "SWBOTB=4 only"
+  "scope_claim": "SWBOTB=4 only",
+  "canonical_reconciled": "19f09b818b1bb30c1428919074c00098dbd062bd",
+  "canonical_reconcile_note": "LOW01-A q(gwl) seam replayed onto canonical backend at 0c902322; final canonical delta to 19f09b8 is one documentation-only PPA_WU05A26 closeout line and does not touch LOW01-A authority.",
+  "persisted_evidence": {
+    "provider": "PASS",
+    "binding": "PASS",
+    "rejected_trial_committed_gwl_immutability": "PASS",
+    "failed_then_accepted_retry_qbot_identity": "PASS",
+    "transaction_O0_O2_identity": "PASS",
+    "prescribed_qbot_preservation": "PASS",
+    "production_seam_static": "PASS"
+  },
+  "remaining_before_candidate": [],
+  "next_disposition": "CENTRAL_CANONICAL_ADMISSION"
 }
