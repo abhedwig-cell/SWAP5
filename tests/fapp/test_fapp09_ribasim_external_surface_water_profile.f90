@@ -44,7 +44,7 @@ program test_fapp09_ribasim_external_surface_water_profile
   call verify_positive_recomposition_and_commit()
   if (trim(mode)/='preservation') then
     call verify_external_top_observation()
-    call verify_external_top_component_transaction()
+    if (trim(mode)/='characterize') call verify_external_top_component_transaction()
   else
     call verify_default_off_capability()
   end if
@@ -278,6 +278,17 @@ contains
       write(*,'(A,ES24.16)')'TOP03_DIAG_QTOP=',observation%top_flux
       write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
       write(*,'(A,L1)')'TOP03_DIAG_EXEC_PREVIEW=',observation%execution_admission_preview
+    end if
+    if (trim(mode)=='characterize') then
+      observation=backend%observation()
+      call require(.not.result%completed.and..not.candidate%ready(),'identity policy rejects transient candidate')
+      call require(observation%solver_status==1,'characterization Richards converged')
+      call require(diagnostics%mass_rejections==0.and.diagnostics%solver_rejections==0,'characterization solver and mass accepted')
+      call require(diagnostics%temporal_rejections==3,'characterization isolated temporal rejection')
+      call require(committed%current_revision()==0_int64,'characterization rejects without commit')
+      call require(.not.observation%top_surface_exchange_available,'rejected interval publishes no top carrier')
+      write(*,'(A)')'FAPP09_TOP03_TRANSIENT_TEMPORAL_BLOCKER=PASS'
+      return
     end if
     call require(result%completed.and.candidate%ready(),'external top trial completed')
     observation=backend%observation()
