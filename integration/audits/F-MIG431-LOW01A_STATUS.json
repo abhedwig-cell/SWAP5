@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MIG431-LOW01-A",
+  "capability": "SWBOTB=4 q(gwl) lower-boundary migration",
+  "branch": "work/f-mig431-low01a-qgwl-boundary",
+  "status": "IMPLEMENTATION_IN_PROGRESS_LOCAL_PROVIDER_QUALIFIED",
+  "canonical_reconciled": "ae3c7a9ba4a9ab741992be965448cf633820d2a1",
+  "source_contract": "docs/migration/F-MIG431-LOW01A_STATE_TIMING_CONTRACT.md",
+  "provider": "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90",
+  "production_binding": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+  "local_evidence": {
+    "provider_compile_gfortran_f2008": "PASS",
+    "provider_runtime_oracle": "PASS",
+    "exponential_exact_equation": "PASS",
+    "table_linear_interpolation": "PASS",
+    "endpoint_clamping": "PASS",
+    "fail_closed_validation": "IMPLEMENTED",
+    "production_qbot_owner_reused": true,
+    "generic_solver_abi_changed": false,
+    "mass_owner_changed": false,
+    "transaction_policy_changed": false
+  },
+  "remaining_before_candidate": [
+    "compile and run integrated Reference production gate at O0 and O2",
+    "explicit rejected-trial committed-state immutability and same-checkpoint retry evidence",
+    "A/B/A runtime determinism",
+    "preservation gates for modes 2, 6 and 7",
+    "final current-canonical reconcile"
+  ],
+  "scope_claim": "SWBOTB=4 only"
+}
