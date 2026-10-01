@@ -29,6 +29,8 @@ module mod_macropore_single_column_runtime
   integer,parameter,public::MACRO_RUNTIME_CONVERGED=2
   integer,parameter,public::MACRO_RUNTIME_RETRY=3
   integer,parameter,public::MACRO_RUNTIME_FAILED=4
+  real(real64),parameter :: PERCH_SOURCE_REDUCTION_LADDER(4) = &
+       [1.0_real64,0.1_real64,0.01_real64,0.001_real64]
 
   type, public :: macropore_runtime_policy_t
     logical :: enabled=.false.
@@ -57,6 +59,9 @@ module mod_macropore_single_column_runtime
     logical :: inner_richards_exchange_used=.false.
     real(real64) :: inner_initial_exchange_rate_cm_per_day=0.0_real64
     real(real64) :: inner_final_exchange_rate_cm_per_day=0.0_real64
+    integer :: inner_reduction_attempts=0
+    integer :: inner_reduction_index=-1
+    real(real64) :: inner_reduction_factor=1.0_real64
     real(real64) :: internal_exchange_residual_cm=huge(1.0_real64)
     real(real64) :: macro_balance_residual_cm=huge(1.0_real64)
     type(soil_water_solve_result_t) :: matrix_result
@@ -100,7 +105,7 @@ contains
     type(macropore_exchange_overlay_provider_t),target::overlay
     type(ppa_wu05a16_inner_macropore_provider_t),target::inner_provider
     type(macropore_geometry_result_t)::geometry
-    type(macropore_rate_bundle_request_t)::rate_request,rate_template_step
+    type(macropore_rate_bundle_request_t)::rate_request,rate_template_step,rate_template_attempt
     type(macropore_rate_bundle_result_t)::current_rates,raw_rates
     type(macropore_standard_candidate_receipt_t)::receipt
     type(macropore_standard_storage_view_t)::accepted_view,candidate_view
@@ -112,7 +117,7 @@ contains
     type(fmr_macropore_top_input_forcing_t)::top_input_local
     real(real64)::numerator,denominator,dt
     logical::ok
-    integer::iter,nd,n
+    integer::iter,nd,n,ireduce
 
     result=macropore_runtime_result_t()
     if(.not.policy%valid())then
@@ -195,53 +200,71 @@ contains
     n=accepted_macro%num_nodes
 
     if(policy%inner_richards_exchange_enabled)then
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INNER_ENTER'
-      call inner_provider%configure(accepted_macro,geometry,rate_template_step,base_request%parameters%z, &
-           base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
-           base_request%base_state%groundwater_level,ok)
-      if(.not.ok)then
-        result%status=MACRO_RUNTIME_FAILED
-        return
-      end if
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=PROVIDER_CONFIGURED'
-
-      ! Record the accepted-state inner rate for attribution only. This is not
-      ! injected separately; HeadCalc obtains its own current-iterate rate from
-      ! the provider.
-      call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
-           base_request%base_state,base_request%parameters%z,base_request%parameters%dz,dt, &
-           rate_request,matrix_view,ok)
-      if(.not.ok)then
-        result%status=MACRO_RUNTIME_FAILED
-        return
-      end if
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_REQUEST_READY'
-      call evaluate_macropore_rate_bundle(rate_request,current_rates)
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_RATE_EVALUATED'
-      if(.not.current_rates%valid)then
-        result%status=MACRO_RUNTIME_FAILED
-        return
-      end if
-      result%inner_initial_exchange_rate_cm_per_day=sum(current_rates%qexc_to_matrix_rate)
-
-      request=base_request
-      request%physical%macropore_active=.true.
-      request%evaluation%macropore=>inner_provider
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=BEFORE_SOLVE'
-      call solver%solve(request,workspace,corrector)
-      write(*,'(a,i0)') 'PPA_WU05A18_RUNTIME_STAGE=AFTER_SOLVE STATUS=',corrector%status
-      result%corrector_solves=1
-      result%outer_iterations=0
-      result%final_relative_exchange_change=0.0_real64
       result%inner_richards_exchange_used=.true.
 
-      if(corrector%status/=SW_SOLVE_CONVERGED)then
+      do ireduce=1,size(PERCH_SOURCE_REDUCTION_LADDER)
+        rate_template_attempt=rate_template_step
+        rate_template_attempt%unsaturated%sorptivity%flow_reduction=PERCH_SOURCE_REDUCTION_LADDER(ireduce)
+        rate_template_attempt%interflow_sat%flow_reduction=PERCH_SOURCE_REDUCTION_LADDER(ireduce)
+        rate_template_attempt%matrix_sat%flow_reduction=PERCH_SOURCE_REDUCTION_LADDER(ireduce)
+        rate_template_attempt%rapid%flow_reduction=PERCH_SOURCE_REDUCTION_LADDER(ireduce)
+
+        call inner_provider%configure(accepted_macro,geometry,rate_template_attempt,base_request%parameters%z, &
+             base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
+             base_request%base_state%groundwater_level,ok)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+
+        ! Attribution only. This rate is not applied separately; HeadCalc obtains
+        ! current-iterate rates from the provider.
+        call prepare_standard_macropore_rate_request(rate_template_attempt,accepted_macro,geometry,accepted_view, &
+             base_request%base_state,base_request%parameters%z,base_request%parameters%dz,dt, &
+             rate_request,matrix_view,ok)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+        call evaluate_macropore_rate_bundle(rate_request,current_rates)
+        if(.not.current_rates%valid)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+        result%inner_initial_exchange_rate_cm_per_day=sum(current_rates%qexc_to_matrix_rate)
+
+        request=base_request
+        request%physical%macropore_active=.true.
+        request%evaluation%macropore=>inner_provider
+        call solver%solve(request,workspace,corrector)
+        result%corrector_solves=result%corrector_solves+1
+        result%inner_reduction_attempts=ireduce
+
+        if(corrector%status==SW_SOLVE_CONVERGED)then
+          result%inner_reduction_index=ireduce-1
+          result%inner_reduction_factor=PERCH_SOURCE_REDUCTION_LADDER(ireduce)
+          exit
+        end if
+
+        ! A rejected reduction attempt owns no candidate publication. The next
+        ! exact source factor restarts from base_request/accepted_macro.
         result%retry_advised=corrector%retry_advised .or. corrector%status==SW_SOLVE_RETRY_ADVISED
-        result%status=merge(MACRO_RUNTIME_RETRY,MACRO_RUNTIME_FAILED,result%retry_advised)
+        if(.not.result%retry_advised)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+      end do
+
+      result%outer_iterations=0
+      result%final_relative_exchange_change=0.0_real64
+
+      if(corrector%status/=SW_SOLVE_CONVERGED)then
+        result%retry_advised=.true.
+        result%status=MACRO_RUNTIME_RETRY
         return
       end if
 
-      call prepare_standard_macropore_rate_request(rate_template_step,accepted_macro,geometry,accepted_view, &
+      call prepare_standard_macropore_rate_request(rate_template_attempt,accepted_macro,geometry,accepted_view, &
            corrector%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt, &
            rate_request,matrix_view,ok)
       if(.not.ok)then
