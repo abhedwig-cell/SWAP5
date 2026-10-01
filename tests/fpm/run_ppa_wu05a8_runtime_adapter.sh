@@ -29,6 +29,8 @@ for opt in 0 2; do
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/runtime/mod_ppa_wu05a5_macropore_restart.f90 -o "$OUT/restarta5.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90 -o "$OUT/history.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90 -o "$OUT/bundle.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/macropore/mod_macropore_standard_storage.f90 -o "$OUT/stdstorage.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/runtime/mod_macropore_standard_rate_adapter.f90 -o "$OUT/rateadapter.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/macropore/mod_macropore_dynamic_crack.f90 -o "$OUT/dynamic_crack.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_macropore_exchange_overlay_provider.f90 -o "$OUT/overlay.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/runtime/mod_macropore_single_column_runtime.f90 -o "$OUT/runtime.o"
