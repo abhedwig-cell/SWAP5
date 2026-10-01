@@ -1,6 +1,6 @@
 {
-  "schema": "swap5.f_macro_emp02.status.v1",
-  "status": "HIGH_VALUE_UNPONDED_AMOUNT_CANDIDATE_IDENTIFIED_DATA_EXECUTION_BLOCKED",
+  "schema": "swap5.f_macro_emp02.status.v2",
+  "status": "HIGH_VALUE_CANDIDATE_IDENTIFIED_TRUE_EVENT_DATA_BLOCKER",
   "branch": "research/f-macro-empirical01-multievent-qualification",
   "canonical_authority": "integration/f-ci-canonical@ebea588070f7a44dbaea78169f2548c745061c48",
   "frozen_parameter_target": "sigma_B",
@@ -40,5 +40,13 @@
   },
   "next_required_input": "Wen 2026 event/plot-level forcing and matrix-vs-preferential infiltration data with antecedent/hydraulic context",
   "rfm_physics_change": false,
-  "production_change": false
+  "production_change": false,
+  "wen_2026_acquisition": {
+    "targeted_public_search_complete": true,
+    "event_plot_payload_materialized": false,
+    "aggregate_article_values_sufficient_for_sigma_B": false,
+    "blocker": "per-plot/event rainfall, total-vs-matrix infiltration, antecedent state and surface-boundary timing are not machine-materialized",
+    "resume_document": "docs/performance/F-MACRO-EMP02_DATA_ACCESS_BLOCKER.md"
+  },
+  "stop_rule": "TRUE_DATA_EXECUTION_BLOCKER"
 }
