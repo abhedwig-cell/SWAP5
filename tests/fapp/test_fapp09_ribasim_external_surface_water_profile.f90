@@ -244,6 +244,10 @@ contains
       write(*,'(A,L1)')'TOP03_DIAG_COMPLETED=',result%completed
       write(*,'(A,I0)')'TOP03_DIAG_RESULT_STATUS=',result%status
       write(*,'(A,I0)')'TOP03_DIAG_SUBSTEPS=',diagnostics%accepted_substeps
+      observation=backend%observation()
+      write(*,'(A,L1)')'TOP03_DIAG_SOLVER_EXECUTED=',observation%solver_executed
+      write(*,'(A,I0)')'TOP03_DIAG_SOLVER_STATUS=',observation%solver_status
+      write(*,'(A,ES24.16)')'TOP03_DIAG_QTOP=',observation%top_flux
     end if
     call require(result%completed.and.candidate%ready(),'external top trial completed')
     observation=backend%observation()
