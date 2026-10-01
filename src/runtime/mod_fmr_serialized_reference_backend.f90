@@ -25,7 +25,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
+       soil_water_solve_result_t, soil_water_solver_diagnostics_t, soil_water_top_boundary_result_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_TEMPORAL_INDICATOR_NOT_RUN
   use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
@@ -87,8 +87,7 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_runtime_configuration, only: rfm_runtime_configuration_t
   use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
   use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
-  use mod_rfm_production_candidate_composer, only: rfm_production_candidate_request_t, rfm_production_candidate_result_t, &
-       compose_rfm_production_candidate
+  use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
@@ -293,6 +292,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: macropore_returned_surface_cm = 0.0_real64
     logical :: macropore_rapid_drain_active = .false.
     real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
+    rfm_preferential_input_cm = 0.0_real64
+    rfm_deep_receipt_cm = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
@@ -2258,18 +2259,21 @@ contains
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
     type(rfm_matrix_source_provider_t), target :: rfm_source_provider
-    type(rfm_production_candidate_result_t) :: rfm_candidate
+    type(rfm_live_trial_prepare_result_t) :: rfm_live
+    type(soil_water_top_boundary_result_t) :: rfm_preflight
     real(real64), allocatable, target :: rfm_source_rate(:)
+    real(real64), allocatable :: rfm_node_depth_cm(:)
     type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
+    real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
-    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
+    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok
     logical :: direct_retention_ok
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
@@ -2497,7 +2501,7 @@ contains
       else
         if (allocated(physical%soil_temperature)) return
       end if
-      if (self%soil_temperature_active .or. self%drainage_response_active) then
+      if (self%soil_temperature_active .or. self%drainage_response_active .or. self%rfm_configuration%enabled) then
         call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
       end if
