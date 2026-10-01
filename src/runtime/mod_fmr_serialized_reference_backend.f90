@@ -436,6 +436,18 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: base_top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
+    logical :: external_top_surface_water_supplied = .false.
+    real(real64) :: external_top_surface_water_head_cm = 0.0_real64
+    real(real64) :: external_top_surface_water_sill_cm = 0.0_real64
+    real(real64) :: top_precipitation_rate = 0.0_real64
+    real(real64) :: top_irrigation_rate = 0.0_real64
+    real(real64) :: top_snowmelt_rate = 0.0_real64
+    real(real64) :: top_runon_rate = 0.0_real64
+    real(real64) :: top_bare_soil_evaporation_rate = 0.0_real64
+    real(real64) :: top_pond_evaporation_rate = 0.0_real64
+    real(real64) :: top_ponding_max = 0.0_real64
+    real(real64) :: top_runoff_resistance = 0.0_real64
+    real(real64) :: top_runoff_exponent = 1.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
