@@ -1,16 +1,16 @@
 {
   "schema": "swap5.ppa_wu05a15.status.v1",
   "workunit": "PPA-WU05-A15",
-  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
-  "decision": "QUALIFIED_BOUNDED_UNPONDED_RFM_SURFACE_COMPOSITION_RECEIPT",
+  "phase": "CLOSED_CANONICAL_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_BOUNDED_UNPONDED_RFM_SURFACE_COMPOSITION_RECEIPT",
   "baseline": "d89912713f9182f4a5319a54cb6094930d38e2cd",
   "branch": "work/ppa-wu05-a15-rfm-unponded-surface-composition",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
-  "closed": false,
+  "canonical_admitted": true,
+  "closed": true,
   "qualified_postimage": "1056406db887aab0b3fe13d3a5071da5965275fa",
   "qualification_run": 36863638042,
   "scope": {
@@ -26,5 +26,16 @@
     "a14_unponded_subset": "resolved",
     "ponded_head_controlled": "still_blocked"
   },
-  "next": "A16 may rebind only the matrix share into a fresh dynamic-top request and prove the recomposed case remains flux-controlled; preferential routing remains separate."
+  "next": "A16 bounded matrix-share rebinding into a fresh dynamic-top request; prove recomposed case remains flux-controlled before any runtime source mutation.",
+  "admission_pr": 937,
+  "canonical_merge": "875171570df1141bb116dcacfb18d8969211b601",
+  "postmerge_preservation": {
+    "method": "dependency-surface blob identity inheritance",
+    "source_blob_sha": "0107156b127d185df2d93d9de0ec18153072a245",
+    "test_blob_sha": "8387dcb9b3a6ae17c31e63d9d837d8a21afd526d",
+    "runner_blob_sha": "9d119f46d12856072d1c8c24e79427389bb45c0a",
+    "qualified_postimage": "1056406db887aab0b3fe13d3a5071da5965275fa",
+    "canonical_merge": "875171570df1141bb116dcacfb18d8969211b601",
+    "unchanged": true
+  }
 }
