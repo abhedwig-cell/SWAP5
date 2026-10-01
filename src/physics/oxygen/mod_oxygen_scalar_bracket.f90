@@ -11,7 +11,7 @@ module mod_oxygen_scalar_bracket
    public :: oxygen_bisect_monotone
 
    abstract interface
-      pure function oxygen_residual(x) result(f)
+      function oxygen_residual(x) result(f)
          import real64
          real(real64), intent(in) :: x
          real(real64) :: f
@@ -81,10 +81,8 @@ contains
          end if
          if (fm > 0.0_real64) then
             a = mid
-            fa = fm
          else
             b = mid
-            fb = fm
          end if
       end do
 
