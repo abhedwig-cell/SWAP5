@@ -1,16 +1,16 @@
 {
   "schema": "swap5.ppa_wu05a11.status.v1",
   "workunit": "PPA-WU05-A11",
-  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
-  "decision": "QUALIFIED_BOUNDED_RFM_UNPONDED_ACTIVATION_SERVICE",
+  "phase": "CLOSED_CANONICAL_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_BOUNDED_RFM_UNPONDED_ACTIVATION_SERVICE",
   "baseline": "ebea588070f7a44dbaea78169f2548c745061c48",
   "branch": "work/ppa-wu05-a11-rfm-unponded-activation",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
-  "closed": false,
+  "canonical_admitted": true,
+  "closed": true,
   "qualified_postimage": "bf3e8424eccf271d943e03bfe16c76f97ff0bc08",
   "qualification_run": 36859780186,
   "scope": {
@@ -27,5 +27,16 @@
     "positive_ponding": "SURFACE_BOUNDARY_REQUIRED",
     "invalid_parameters": "INVALID"
   },
-  "next": "canonical admission, then separate A12 hydraulic-view/sorptivity binding"
+  "next": "PPA-WU05-A12: bind committed process hydraulic view and qualified sorptivity derivation to A11 without changing top-input ownership",
+  "admission_pr": 930,
+  "canonical_merge": "a9aa16681a4c4b89b7dea0af2d601744b8b9e08b",
+  "postmerge_preservation": {
+    "method": "dependency-surface blob identity inheritance",
+    "source_blob_sha": "9e4533801862146495f430089b2c489e3a22a21a",
+    "test_blob_sha": "afe75079aa4f68aaea512c8ef3a72630c215032d",
+    "runner_blob_sha": "33c43f8af7a5cfe3219340dcd8f2bc2753a6385",
+    "qualified_postimage": "bf3e8424eccf271d943e03bfe16c76f97ff0bc08",
+    "canonical_merge": "a9aa16681a4c4b89b7dea0af2d601744b8b9e08b",
+    "unchanged": true
+  }
 }
