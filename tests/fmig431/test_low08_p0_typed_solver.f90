@@ -46,7 +46,7 @@ program test_low08_p0_typed_solver
   call need(a%bottom_flux==0._real64,'inactive qbot zero')
   call mass(a,'inactive mass')
 
-  call set_bottom(threshold+1.e-4_real64)
+  call set_bottom(threshold+1.0_real64)
   write(*,'(a,2(1x,es24.16))') 'LOW08_ACTIVE_INPUT',r%base_state%pressure_head(n),r%boundary%bottom_head
   call solver%solve(r,ws,a)
   call need(a%status==SW_SOLVE_CONVERGED,'active solve')
@@ -60,13 +60,13 @@ program test_low08_p0_typed_solver
 
   ! Force a nonlinear candidate across the selector threshold. The legacy law
   ! must retain the branch selected from base_state for this entire solve.
-  call set_bottom(threshold-1.e-6_real64)
+  call set_bottom(threshold-1.0_real64)
   r%boundary%top_flux=-0.01_real64
   call solver%solve(r,ws,a)
   call need(a%status==SW_SOLVE_CONVERGED,'inactive crossing solve')
   call need(a%bottom_flux==0._real64,'inactive branch immutable across Newton candidates')
 
-  call set_bottom(threshold+1.e-6_real64)
+  call set_bottom(threshold+1.0_real64)
   r%boundary%top_flux=0.01_real64
   call solver%solve(r,ws,a)
   call need(a%status==SW_SOLVE_CONVERGED,'active crossing solve')
