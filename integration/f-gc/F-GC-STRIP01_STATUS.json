@@ -3,8 +3,8 @@
   "work_unit": "F-GC-STRIP01",
   "title": "50 m cross-section SWAP\u2013MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
-  "phase": "FALSIFY_COMPONENTS_PARTIAL_COUPLE_PERSIST",
-  "state": "AB_QUALIFIED_C_SHORT_SMOKE_LONGER_WINDOWS_FAIL",
+  "phase": "QUALIFY_PERSIST_BOUNDED_C_ADVISE",
+  "state": "AB_QUALIFIED_C_STATIONARY_ROUTE_AND_BOUNDED_DRY_DAY",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,14 +74,17 @@
     "coupled_run": true,
     "hupsel_run": false,
     "production_delta": [],
-    "qualification": "AB_NATIVE_PASS_C_PARTIAL_RESEARCH_ONLY",
+    "qualification": "AB_NATIVE_PASS_C_STATIONARY_TRANSFER_AND_DRY_DAY_RESEARCH_ONLY",
     "canonical_admission": false,
     "coupled_short_smoke": true,
     "coupled_phase_c_qualified": false,
     "whole_unit_closed": false,
-    "research_domain_implemented": true
+    "research_domain_implemented": true,
+    "coupled_stationary_far_route_qualified": true,
+    "coupled_dry_day_window_comparison_qualified": true,
+    "restart_qualified": false
   },
-  "next_permitted_action": "Diagnose nonlinear reject/replay behavior under corrected interface heads and qualify temporal error independently before physically long C; then D/E. Keep shared production guards unchanged.",
+  "next_permitted_action": "Reconcile pressure-zero GWL diagnostic ownership for the selected Reference path, qualify dynamic forcing transitions and temporal window cost, then real Hupsel P/ET/runoff/surface-storage and committed-only restart. No production guard or canonical admission change.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -141,9 +144,19 @@
   },
   "blockers": [
     {
-      "id": "STRIP01_LONGER_WINDOW_SWAPPARTICIPANT",
-      "classification": "SWAP_NONLINEAR_AND_TEMPORAL_COMPONENT_REJECTIONS",
-      "detail": "Longer windows and changed bottom head cannot complete with frozen retries/substep ceiling. No tolerance widened."
+      "id": "STRIP01_DYNAMIC_WINDOW_CEILING",
+      "classification": "TEMPORAL_COST_LIMIT",
+      "detail": "0.01-day extension fails frozen 32-substep ceiling after accepted dry-start prefix; optional numeric allocation variants do not remove this failure."
+    },
+    {
+      "id": "STRIP01_REFERENCE_GWL_READOUT",
+      "classification": "SELECTED_RAW_BACKEND_DIAGNOSTIC_OWNERSHIP",
+      "detail": "Carried GWL is not refreshed by selected plain mode-5 Reference path. Distinguish native pressure-zero interpolation; no claim about all application postprocessing paths."
+    },
+    {
+      "id": "STRIP01_HUPSEL_RESTART",
+      "classification": "NOT_EXECUTED_NOT_QUALIFIED",
+      "detail": "Full dynamic meteorology/ET/runoff and durable restart remain outside current bounded qualification."
     }
   ],
   "research_evidence": {
@@ -157,6 +170,34 @@
     "qualified_only": "Four 3e-6 d windows at equilibrated initial head -5m, physical SWAP Ss=1e-5/m; not far-cell-to-drain proof",
     "checks": [
       "FINAL_COMPONENT_AND_COUPLED_PANEL_EXPECTED_OUTCOMES",
+      "PYTHON_COMPILE",
+      "DOC_SOURCE_CHECK",
+      "MKDOCS_STRICT"
+    ]
+  },
+  "refinement_evidence": {
+    "archive": "integration/f-gc/strip01/evidence/refinement_C_20261002.tar.gz",
+    "summary": "integration/f-gc/strip01/refinement/refinement_summary.json",
+    "result_document": "docs/integration/F-GC-STRIP01_REFINEMENT_RESULT.md",
+    "preregistration_documents": [
+      "docs/integration/F-GC-STRIP01_REFINEMENT_PREREGISTRATION.md",
+      "docs/integration/F-GC-STRIP01_STEADY_TRANSFER_PREREGISTRATION.md"
+    ],
+    "preregistration_remote_head": "3c0e1ee9f02594ab42aaca0fe8d9466a8e05ad67",
+    "source_base": "5d3ef86670f66379bf03c777e46c49dc698ae663",
+    "canonical_admission": false,
+    "actions_dispatched": 0,
+    "strict_stationary_original_numerical_settings": true,
+    "dry_day_numerical_allocation_variants": true,
+    "unchanged_physical_and_temporal_budgets": true,
+    "inner_numerical_stopping_criteria_changed_in_variants": true,
+    "sha256": "c78bec5bb93925f4dce481fa7fe525c05272608129a3be048cb96fda13eba3cd",
+    "qualification": "FINAL_POSTIMAGE_FULL_LOCAL_REPLAY_PASS_EXPECTED_NEGATIVES_PRESERVED",
+    "archive_root": "evidence",
+    "checks": [
+      "COMPILED_SOURCE_IDENTITY",
+      "FULL_LOCAL_QUALIFICATION_RUNNER",
+      "ORIGINAL_16_CASE_REGRESSION",
       "PYTHON_COMPILE",
       "DOC_SOURCE_CHECK",
       "MKDOCS_STRICT"

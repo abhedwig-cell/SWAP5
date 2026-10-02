@@ -5,12 +5,12 @@ module mod_strip01_research_swap
   use mod_transaction_reference, only: transaction_state_t,TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t,canonical_forcing_t
   use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_result_t, &
-       kernel_candidate_state_t,kernel_diagnostics_t
+       kernel_candidate_state_t,kernel_diagnostics_t,kernel_reference_floor_result_t,kernel_reference_floor_candidate_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t,fmr_template_t,FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t,fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t,fmr_serialized_reference_backend_t,fmr_new_b110_temporal_indicator_committed_state, &
-       fmr_serialized_physical_observation_t,prepare_fmr_b110_default_mvg
+       fmr_serialized_physical_observation_t,prepare_fmr_b110_default_mvg,fmr_new_b110_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t,b110_default_mvg_provider_t, &
@@ -32,8 +32,18 @@ module mod_strip01_research_swap
   type(fixed_flux_top_boundary_provider_t),target,save::top(NC)
   type(canonical_numerical_config_t),save::config
   type(groundwater_head_datum_t),save::datum
+  logical,save::depth_budget_rate=.false.,newton_budget_allocation=.false.
+  real(real64),save::last_floor_gwl=0
   real(real64),save::t0=0,t1=0
 contains
+  integer(c_int) function strip_set_rate_budget(flag) bind(C,name="strip_set_rate_budget")
+    integer(c_int),value::flag
+    depth_budget_rate=flag/=0;strip_set_rate_budget=0
+  end function
+  integer(c_int) function strip_set_newton_budget(flag) bind(C,name="strip_set_newton_budget")
+    integer(c_int),value::flag
+    newton_budget_allocation=flag/=0;strip_set_newton_budget=0
+  end function
   integer(c_int) function strip_initialize(rain_cm_day,initial_head_m,elastic_per_cm) bind(C,name="strip_initialize")
     real(c_double),value::rain_cm_day,initial_head_m,elastic_per_cm
     type(fmr_b110_physical_state_t)::physical
@@ -110,6 +120,8 @@ contains
     real(c_double),intent(out)::q(NC),delta(NC),residual(NC)
     class(canonical_forcing_t),allocatable::forcing
     type(fmr_serialized_physical_observation_t)::observation
+    class(transaction_state_t),allocatable::trial_snapshot
+    logical::snapshot_ok
     integer::i,status
     strip_trial=1;q=0;delta=0;residual=huge(0.0_real64)
     do i=1,NC
@@ -117,6 +129,13 @@ contains
       call materializer(i)%materialize(real(head(i),real64),datum,forcing,status)
       if(status/=0)then
         strip_trial=100+i;return
+      end if
+      if(depth_budget_rate)then
+        p(i)%compartment_balance_tolerance=1e-12_real64/(numnod*(t1-t0))
+        p(i)%total_balance_tolerance=1e-12_real64/(t1-t0)
+      end if
+      if(newton_budget_allocation)then
+        p(i)%head_abs_tolerance=1e-8_real64;p(i)%head_rel_tolerance=2e-11_real64
       end if
       select type(typed=>forcing)
       type is(fmr_b110_physical_forcing_t)
@@ -137,6 +156,18 @@ contains
       end if
       if(.not.result(i)%bottom_interface_exchange_available)then
         strip_trial=300+i;return
+      end if
+      if(newton_budget_allocation)then
+        call candidate(i)%snapshot(trial_snapshot,snapshot_ok)
+        if(.not.snapshot_ok)return
+        select type(physical=>trial_snapshot)
+        class is(fmr_b110_physical_state_t)
+          if(maxval(abs(physical%pressure_head))>500.0_real64)then
+            strip_trial=450+i;return
+          end if
+        class default
+          return
+        end select
       end if
       q(i)=.01_real64*result(i)%bottom_outward_exchange_native/(t1-t0)
       delta(i)=.01_real64*result(i)%mass%storage_change
@@ -179,5 +210,124 @@ contains
       end select
     end do
     strip_state=0
+  end function
+  integer(c_int) function strip_hydraulics(heads,water,k) bind(C,name="strip_hydraulics")
+    real(c_double),intent(in)::heads(numnod)
+    real(c_double),intent(out)::water(numnod),k(numnod)
+    type(b110_default_mvg_parameters_t),target::hp
+    type(b110_default_mvg_provider_t)::provider
+    real(real64)::c(numnod),dk(numnod)
+    hp=p(1)%prepared_default_mvg
+    call bind_b110_default_mvg_provider(provider,hp,1e-4_real64)
+    call provider%evaluate(heads,water,k,c,dk)
+    strip_hydraulics=0
+  end function
+
+  integer(c_int) function strip_load_profiles(heads,gwl) bind(C,name="strip_load_profiles")
+    real(c_double),intent(in)::heads(numnod,NC),gwl(NC)
+    type(fmr_b110_physical_state_t)::physical
+    type(b110_default_mvg_parameters_t),target::hp
+    type(b110_default_mvg_provider_t)::provider
+    real(real64)::water(numnod),k(numnod),c(numnod),dk(numnod),history(numnod)
+    integer::i
+    logical::ok
+    strip_load_profiles=1;history=0
+    do i=1,NC
+      if(state(i)%current_revision()/=0)return
+      hp=p(i)%prepared_default_mvg
+      call bind_b110_default_mvg_provider(provider,hp,1e-4_real64)
+      call provider%evaluate(heads(:,i),water,k,c,dk)
+      physical=fmr_b110_physical_state_t();physical%active_nodes=numnod
+      allocate(physical%pressure_head(numnod),physical%water_content(numnod))
+      physical%pressure_head=heads(:,i);physical%water_content=water
+      physical%groundwater_level=gwl(i);physical%ponding_depth=0
+      call fmr_new_b110_temporal_indicator_committed_state(state(i),col(i)%column_id,physical,0.0_real64,ok,history)
+      if(.not.ok)return
+    end do
+    strip_load_profiles=0
+  end function
+  integer(c_int) function strip_profiles(heads,water) bind(C,name="strip_profiles")
+    real(c_double),intent(out)::heads(numnod,NC),water(numnod,NC)
+    class(transaction_state_t),allocatable::snapshot
+    integer::i
+    logical::ok
+    strip_profiles=1
+    do i=1,NC
+      call state(i)%snapshot(snapshot,ok);if(.not.ok)return
+      select type(physical=>snapshot)
+      class is(fmr_b110_physical_state_t)
+        heads(:,i)=physical%pressure_head;water(:,i)=physical%water_content
+      class default
+        return
+      end select
+    end do
+    strip_profiles=0
+  end function
+  real(c_double) function strip_floor_reported_gwl() bind(C,name="strip_floor_reported_gwl")
+    strip_floor_reported_gwl=.01_real64*last_floor_gwl
+  end function
+  integer(c_int) function strip_floor(total_dt,interface_head,subdivisions,heads,water,stats) bind(C,name="strip_floor")
+    real(c_double),value::total_dt,interface_head
+    integer(c_int),value::subdivisions
+    real(c_double),intent(out)::heads(numnod),water(numnod),stats(8)
+    type(kernel_committed_state_t)::temporary
+    type(kernel_reference_floor_result_t)::sample
+    type(kernel_reference_floor_candidate_t)::floor_candidate
+    type(kernel_diagnostics_t)::diagnostic
+    type(fmr_template_t)::floor_template
+    type(fmr_serialized_reference_backend_t)::floor_backend
+    type(fmr_b110_physical_forcing_t)::forcing
+    type(fmr_b110_physical_parameters_t)::floor_parameters
+    class(transaction_state_t),allocatable::snapshot
+    real(real64)::dt,start
+    integer::j,status
+    logical::ok,committed
+    strip_floor=1;heads=0;water=0;stats=0
+    if(total_dt<=0.or.subdivisions<1)return
+    call state(1)%snapshot(snapshot,ok);if(.not.ok)return
+    select type(physical=>snapshot)
+    class is(fmr_b110_physical_state_t)
+      call fmr_new_b110_committed_state(temporary,col(1)%column_id,physical,0.0_real64,ok)
+    class default
+      return
+    end select
+    if(.not.ok)return
+    floor_template=tmpl(1);floor_template%numerical_continuation_layout_id=0
+    call floor_backend%initialize(top(1))
+    forcing=base(1);forcing%bottom_head=100.0_real64*(interface_head+6.0_real64)
+    dt=total_dt/subdivisions
+    floor_parameters=p(1)
+    if(depth_budget_rate)then
+      floor_parameters%compartment_balance_tolerance=1e-12_real64/(numnod*dt)
+      floor_parameters%total_balance_tolerance=1e-12_real64/dt
+    end if
+    if(newton_budget_allocation)then
+      floor_parameters%head_abs_tolerance=1e-8_real64;floor_parameters%head_rel_tolerance=2e-11_real64
+    end if
+    do j=1,subdivisions
+      start=(j-1)*dt
+      call floor_backend%run_reference_floor_sample(col(1),floor_template,floor_parameters,temporary,forcing, &
+           start,j*dt,1e-12_real64,sample,floor_candidate,diagnostic)
+      stats(1)=sample%status;stats(3)=stats(3)+sample%nonlinear_iterations
+      stats(4)=max(stats(4),abs(sample%mass%residual))
+      if(.not.sample%sample_valid)then
+        strip_floor=100+sample%status;return
+      end if
+      stats(5)=stats(5)+sample%mass%storage_change
+      stats(6)=stats(6)+sample%bottom_outward_exchange_native
+      stats(7)=stats(7)+sample%mass%total_in
+      stats(8)=stats(8)+sample%mass%total_out
+      call floor_backend%commit_reference_floor_candidate(temporary,floor_candidate,diagnostic,committed,status)
+      if(.not.committed.or.status/=0)return
+      stats(2)=j
+      call temporary%snapshot(snapshot,ok);if(.not.ok)return
+      select type(physical=>snapshot)
+      class is(fmr_b110_physical_state_t)
+        heads=physical%pressure_head;water=physical%water_content;last_floor_gwl=physical%groundwater_level
+      class default
+        return
+      end select
+    end do
+    strip_floor=0
   end function
 end module

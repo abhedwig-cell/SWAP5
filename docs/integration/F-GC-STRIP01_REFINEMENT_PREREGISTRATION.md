@@ -114,3 +114,13 @@ near-drain datum to avoid unnecessary absolute-head cancellation in the oracle.
 Require native MF head difference <=1e-9 m. Keep interface exchange and total
 physical mass tests unchanged. The independent oracle and physical guards,
 not a green native flag alone, determine the bounded claim.
+
+The five-window MF budget experiment passed with dense-oracle and original
+interface/global mass checks. For a variable-window extension apply the same
+4e-14/dt rate allocation at each window through MF's existing RCLOSE memory
+variable before its prepared solve. The integrated/head allocation stays fixed;
+log the effective value and verify the independent dense oracle every time.
+The frozen predictor/retry/substep ceilings remain. Exploratory extension:
+3e-6 d startup, four 1e-4 d windows, five 1e-3, four 0.005, ten 0.01,
+twenty 0.02, forty 0.05, two hundred 0.1 d windows. A failed attempt is
+preserved and not counted as a complete physical-period qualification.

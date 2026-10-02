@@ -28,6 +28,11 @@ class Swap:
                                *[v.ctypes.data_as(ctypes.POINTER(ctypes.c_double)) for v in values])
         assert rc==0
         return rev,*values
+    def profiles(self):
+        values=[np.zeros((50,30)) for _ in range(2)]
+        f=self.lib.strip_profiles;f.restype=ctypes.c_int;f.argtypes=[ctypes.POINTER(ctypes.c_double)]*2
+        assert f(*[v.ctypes.data_as(ctypes.POINTER(ctypes.c_double)) for v in values])==0
+        return values
     def commit(self):return self.lib.strip_commit()
 
 

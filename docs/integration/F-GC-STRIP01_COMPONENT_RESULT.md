@@ -159,3 +159,6 @@ window convergence, restart continuation and physically interpretable head/GWL
 separation remain unqualified. D/E are deferred under the user's phase-order
 requirement. These negative findings are candidates for later numerical/coupling
 work; this unit is not closed and not admitted to canonical governance.
+
+
+Subsequent qualification: [stationary route, numerical refinement and bounded dry-day result](F-GC-STRIP01_REFINEMENT_RESULT.md). The original configuration failures above remain preserved.

@@ -1,0 +1,68 @@
+{
+  "state": "AB_QUALIFIED_C_STATIONARY_ROUTE_AND_BOUNDED_DRY_DAY",
+  "canonical_admission": false,
+  "whole_unit_complete": false,
+  "steady_transfer": {
+    "windows": 10,
+    "days": 1.0,
+    "max_balance_residual_m3": 4.548444954011188e-15,
+    "rain_m3": 0.05000000000000001,
+    "drain_m3": 0.049999999999954525,
+    "swap_storage_change_m3": 4.831690603168681e-15,
+    "mf_storage_change_m3": 0.0
+  },
+  "max_native_lateral_face_error_m3_day": 1.5334955527634975e-15,
+  "gwl_minus_head_m": [
+    0.003335188781808718,
+    0.005303285794465928
+  ],
+  "disconnect_negative": {
+    "failure": "PRE_PUBLICATION_EXCHANGE_MISMATCH",
+    "accepted_windows": 0,
+    "origin_unchanged": true,
+    "replay_identical": true
+  },
+  "dry_day005": {
+    "windows": 210,
+    "days": 1.005403,
+    "max_balance_residual_m3": 1.186892381252469e-14,
+    "rain_m3": 0.05027015,
+    "drain_m3": 6.858065262349555e-13,
+    "swap_storage_change_m3": 0.05027014999999581,
+    "mf_storage_change_m3": 1.4210854715202004e-17
+  },
+  "dry_day0025": {
+    "windows": 410,
+    "days": 1.005403,
+    "max_balance_residual_m3": 1.296030882440291e-14,
+    "rain_m3": 0.05027015,
+    "drain_m3": 6.858065262349555e-13,
+    "swap_storage_change_m3": 0.05027014999995317,
+    "mf_storage_change_m3": 1.4210854715202004e-17
+  },
+  "max_window_schedule_pressure_difference_cm": 9.625114216760267e-08,
+  "panels": {
+    "strip01-refinement-results": {
+      "complete": 18,
+      "total": 44,
+      "max_completed_mass_residual_cm": 8.470329472543003e-22
+    },
+    "strip01-refinement-repaired": {
+      "complete": 33,
+      "total": 44,
+      "max_completed_mass_residual_cm": 2.710505431213761e-20
+    },
+    "strip01-refinement-allocated": {
+      "complete": 43,
+      "total": 44,
+      "max_completed_mass_residual_cm": 2.710505431213761e-20
+    }
+  },
+  "raw_reference_gwl_diagnostic": {
+    "reported_gwl_m": -5.0,
+    "pressure_zero_gwl_m": -5.006532803573434,
+    "temporally_admitted": false
+  },
+  "hupsel_qualified": false,
+  "restart_qualified": false
+}
