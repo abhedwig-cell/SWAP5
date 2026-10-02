@@ -3328,8 +3328,11 @@ contains
       if (self%macropore_active) then
         if (.not. allocated(self%macropore_config)) error stop 'F-MR06 active macropore config missing'
         if (.not. allocated(self%macropore_config%matrix_area_fraction)) error stop 'F-MR06 active macropore area fraction missing'
-        value = sum(self%soil_parameters%dz * physical%water_content * self%macropore_config%matrix_area_fraction) + &
-             physical%ponding_depth
+          value = sum(self%soil_parameters%dz * physical%water_content * self%macropore_config%matrix_area_fraction) + &
+               physical%ponding_depth
+        else
+          error stop 'F-MR06 active macropore area fraction missing'
+        end if
       else
         value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
       end if
