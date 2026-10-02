@@ -28,7 +28,7 @@ program falsify_bartholomeus_gate
   total=total+1;minfac=minval(fac)
   if(minfac>=1._real64-1.e-14_real64)nostress=nostress+1
   gfpmin=minval(d%soil(:)%saturated_water_content-v%water_content)
-  write(*,'(a,4(es14.6,1x),a,es14.6)')'GATE_ROW ',heads(ih),temps(it),roots(ir),gfpmin,' MINFAC ',minfac
+  write(*,'(a,4(es14.6,1x),a,es14.6)')'GATE_ROW ',heads(ih),temps(it),roots(ir),gfpmin,' CTOP ',top,' MINFAC ',minfac
  enddo;enddo;enddo;enddo
  print '(a,i0)','GATE_TOTAL=',total
  print '(a,i0)','GATE_NOSTRESS=',nostress
