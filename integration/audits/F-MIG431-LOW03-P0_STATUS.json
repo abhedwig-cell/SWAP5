@@ -1,13 +1,13 @@
 {
   "work_unit": "F-MIG431-LOW03-P0",
   "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
-  "last_reconciled_head": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
+  "last_reconciled_head": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
   "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
-  "state": "TYPED_DIRECT_SOLVER_IMPLEMENTED_PENDING_POSTIMAGE_TESTS",
+  "state": "BOUNDED_DIRECT_SOLVER_QUALIFIED_PENDING_CANONICAL_ADMISSION",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_mode3_admitted": false,
   "production_delta": [
     "src/solver/mod_soil_water_solver_contract.f90",
@@ -19,11 +19,11 @@
     "direct typed Reference mode3 solver path only; serialized application still rejects3"
   ],
   "checkpoint_commit": "2b523d818c5c5135d466495b31c5b20ae29b79be",
-  "next_action": "Fresh local O0/O2 composition, physical solver, independent mass, rejected replay and admitted-boundary preservation on persisted postimage",
+  "next_action": "Normal canonical PR admission of bounded shared solver seam; then source-bound LOW03-A application preregistration",
   "blockers": [
-    "Existing typed bottom boundary has no resistance or include-half-cell authority",
-    "Dormant implicit mode3 depends on legacy globals and lacks accepted mass publication",
-    "SWKIMPL1 mode3 and5 derivative policy differs; do not silently unify"
+    "No bounded direct-solver blocker remains after completed qualification",
+    "Full mode3 application still requires source-bound forcing/proposal, transactional accepted accounting and production restart qualification",
+    "SWKIMPL1, macropores and interface sensitivity remain outside the declared P0 envelope"
   ],
   "relevant_paths": [
     "src/solver/mod_soil_water_solver_contract.f90",
@@ -48,7 +48,9 @@
     "tests/fmig431/run_low03_solver_qualification.py"
   ],
   "evidence_paths": [
-    "integration/audits/F-MIG431-LOW03-P0_COMPOSITION.json"
+    "integration/audits/F-MIG431-LOW03-P0_COMPOSITION.json",
+    "integration/audits/F-MIG431-LOW03-P0_BOUNDED_QUALIFICATION.json",
+    "docs/migration/F-MIG431-LOW03-P0_QUALIFICATION_REVIEW.md"
   ],
   "dependency_surface": [
     "src/solver",
@@ -71,6 +73,12 @@
     "Restart of committed state",
     "Existing groundwater owner and mode5 semantics held fixed"
   ],
-  "recovery_point": "c240a3c1c880663d86e1a702ff283a866ca809ee",
-  "test_scope": "Persisted frozen B1.11 bottom-row composition, O0/O2,6075 cases each; not full Richards/mass/restart qualification"
+  "recovery_point": "3407286de38d8d11219678257874afd3c44320a7",
+  "test_scope": "Frozen B1.11 6075 bottom-row cases and 45 direct physical solves per optimization, independent compartment/whole-column mass, exact physical qbot, failed replay, fresh scratch, physical restart continuation, six existing application preservation programs",
+  "typed_solver_canonical_admitted": false,
+  "tested_postimage": "3407286de38d8d11219678257874afd3c44320a7",
+  "qualification_run": 36970096511,
+  "qualification_job": 110722079851,
+  "qualification_artifact_id": 11210724958,
+  "scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed"
 }
