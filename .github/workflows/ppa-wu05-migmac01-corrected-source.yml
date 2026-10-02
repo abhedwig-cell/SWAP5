@@ -1,0 +1,43 @@
+name: MIGMAC01 corrected source typed carriers
+on:
+  push:
+    branches: [research/ppa-wu05-migmac01-covering-layer, reconcile/ppa-wu05-migmac01-current-canonical]
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/solver/mod_reference_richards_workspace.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/runtime/mod_fmr_macropore_configuration.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpm/test_ppa_wu05_migmac01_corrected_source_diagnostic.f90'
+      - 'tests/fpm/run_ppa_wu05_migmac01_corrected_source_diagnostic.sh'
+      - 'tests/fpm/run_ppa_wu05a9_top_input.sh'
+      - 'tests/fpm/run_ppa_wu05a10_rapid_drain.sh'
+      - 'tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh'
+      - 'tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh'
+      - '.github/workflows/ppa-wu05-migmac01-corrected-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  corrected-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and replay frozen corrected source on O0 and O2
+        run: bash tests/fpm/run_ppa_wu05_migmac01_corrected_source_diagnostic.sh
+      - name: Diagnose legacy synthetic MIGMAC01 transaction E2E
+        continue-on-error: true
+        run: bash tests/fpm/run_ppa_wu05_migmac01_active_e2e.sh
+      - name: Preserve A9 surface-connected top input
+        if: always()
+        run: bash tests/fpm/run_ppa_wu05a9_top_input.sh
+      - name: Preserve A10 rapid drainage
+        if: always()
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
+      - name: Preserve PERCH20 transaction continuation
+        if: always()
+        run: bash tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh
+      - name: Preserve PERCH20 restart lifecycle
+        if: always()
+        run: bash tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh
