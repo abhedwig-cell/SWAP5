@@ -1,0 +1,134 @@
+{
+  "state": "REFERENCE_FLOOR_DIAGNOSIS_COMPLETED",
+  "profile": "C0",
+  "code_fields": [
+    "floor_status",
+    "sample_valid",
+    "nonlinear_iterations",
+    "internal_retries"
+  ],
+  "committed_state_preserved": true,
+  "coupled_window_qualification": false,
+  "probes": [
+    {
+      "column": 1,
+      "head_m": -5,
+      "duration_day": 0.001,
+      "codes": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "accepted_dt_day": 0.001,
+      "native_mass_residual": 0.0,
+      "storage_change_native": 0.0,
+      "bottom_outward_exchange_native": -0.0
+    },
+    {
+      "column": 1,
+      "head_m": -5,
+      "duration_day": 1e-05,
+      "codes": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "accepted_dt_day": 1e-05,
+      "native_mass_residual": 0.0,
+      "storage_change_native": 0.0,
+      "bottom_outward_exchange_native": -0.0
+    },
+    {
+      "column": 50,
+      "head_m": -4.5,
+      "duration_day": 0.001,
+      "codes": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "accepted_dt_day": 0.001,
+      "native_mass_residual": 0.0,
+      "storage_change_native": 0.0,
+      "bottom_outward_exchange_native": -0.0
+    },
+    {
+      "column": 50,
+      "head_m": -4.5,
+      "duration_day": 1e-05,
+      "codes": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "accepted_dt_day": 1e-05,
+      "native_mass_residual": 0.0,
+      "storage_change_native": 0.0,
+      "bottom_outward_exchange_native": -0.0
+    },
+    {
+      "column": 1,
+      "head_m": -4.996934702272599,
+      "duration_day": 0.001,
+      "codes": [
+        0,
+        1,
+        4,
+        0
+      ],
+      "accepted_dt_day": 0.001,
+      "native_mass_residual": 0.0,
+      "storage_change_native": 8.745999237191882e-05,
+      "bottom_outward_exchange_native": -8.745999237191882e-05
+    },
+    {
+      "column": 1,
+      "head_m": -4.996934702272599,
+      "duration_day": 1e-05,
+      "codes": [
+        204,
+        0,
+        16,
+        1
+      ],
+      "accepted_dt_day": 1e-05,
+      "native_mass_residual": 1.7976931348623157e+308,
+      "storage_change_native": 0.0,
+      "bottom_outward_exchange_native": 0.0
+    },
+    {
+      "column": 50,
+      "head_m": -4.964812337059502,
+      "duration_day": 0.001,
+      "codes": [
+        0,
+        1,
+        5,
+        0
+      ],
+      "accepted_dt_day": 0.001,
+      "native_mass_residual": 0.0,
+      "storage_change_native": -0.009107979723296467,
+      "bottom_outward_exchange_native": 0.009107979723296467
+    },
+    {
+      "column": 50,
+      "head_m": -4.964812337059502,
+      "duration_day": 1e-05,
+      "codes": [
+        0,
+        1,
+        7,
+        0
+      ],
+      "accepted_dt_day": 1e-05,
+      "native_mass_residual": 1.3552527156068805e-20,
+      "storage_change_native": -9.233522504814573e-05,
+      "bottom_outward_exchange_native": 9.233522504814574e-05
+    }
+  ]
+}

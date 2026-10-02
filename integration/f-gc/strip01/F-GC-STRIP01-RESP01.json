@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01-RESP01",
+  "parent": "F-GC-STRIP01",
+  "state": "REGISTERED_SHARED_NUMERICAL_PROFILE_QUALIFICATION_PREREQUISITE",
+  "canonical_head": "a9cd833092a83e0477f891989962d98d11177ade",
+  "interfaces_changed": [],
+  "production_implementation_authorized_by_this_record": false,
+  "findings": [
+    "C0 and C1 real 50-column first-window status 6 swap-corrector; zero accepted windows",
+    "Independent normal backend perturbed-head trials reject with temporal/solver counters, no mass/admission rejections",
+    "Independent physical-only Reference-floor 0.001 d samples pass; perturbed left sample at 0.00001 d fails solver",
+    "Unqualified heuristic initial response hint requires source-backed replacement before E2E qualification"
+  ],
+  "required_work": [
+    "Trace first temporal rejection and subsequent reduced-step solver failure without altering acceptance gates",
+    "Qualify dynamic accepted-origin q(H), history initialization and profile response/tangent for partially saturated B01 columns with positive fixed-plane pressure",
+    "Qualify predictor bootstrap independently of structural heuristic hints",
+    "Route any solver or temporal-policy change through its owning shared authority before use in STRIP01",
+    "Demonstrate accepted-window coupled mass closure, timestep convergence, reject/replay and restart before Hupsel qualification"
+  ],
+  "invariants": [
+    "committed state unchanged on rejection",
+    "no double physical storage",
+    "production drainage NONE guard preserved",
+    "no Reference-floor bypass of transaction",
+    "no GWL=head acceptance shortcut",
+    "no tolerance widening solely to pass"
+  ],
+  "root_cause_proven": false,
+  "evidence_review": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md"
+}

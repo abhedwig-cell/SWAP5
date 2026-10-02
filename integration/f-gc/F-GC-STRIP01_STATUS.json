@@ -3,8 +3,8 @@
   "work_unit": "F-GC-STRIP01",
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
-  "phase": "PREREGISTER_BUILD_ORACLES_FALSIFY_COMPONENTS",
-  "state": "STANDALONE_AB_QUALIFIED_C0_RESEARCH_PREREGISTERED_NATIVE_COMPONENT_PENDING",
+  "phase": "QUALIFY_PERSIST_ADVISE",
+  "state": "STANDALONE_AB_AND_C0_C1_NATIVE_COMPONENTS_QUALIFIED_REAL_RESPONSE_PREREQUISITE_REGISTERED",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -69,20 +69,22 @@
     "standalone_modflow_built": true,
     "analytical_oracle_implemented": true,
     "drain_down_run": true,
-    "coupled_run": false,
+    "coupled_run": true,
     "hupsel_run": false,
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Evaluate native confined no-STO C0 component evidence, then implement explicit research-only generic context driver without changing production bootstrap guards.",
+    "next_action": "Resolve F-GC-STRIP01-RESP01 through owning numerical/profile authority, then qualify normal accepted-origin response before Hupsel/restart.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
-    "qualification_document": "docs/integration/F-GC-STRIP01_STANDALONE_QUALIFICATION.md",
+    "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
     "complete_native_result": "integration/f-gc/strip01/results/native_complete.json.gz",
     "hupsel_input_candidate": "integration/f-gc/strip01/inputs/hupsel_public_2002_2004.met",
-    "coupled_domain_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01_COUPLED_DOMAIN_PREREQUISITE.json"
+    "coupled_domain_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01_COUPLED_DOMAIN_PREREQUISITE.json",
+    "accepted_coupled_windows": 0,
+    "coupled_qualification": false
   },
-  "next_permitted_action": "Evaluate native confined no-STO C0 component evidence, then implement explicit research-only generic context driver without changing production bootstrap guards.",
+  "next_permitted_action": "Resolve F-GC-STRIP01-RESP01 through owning numerical/profile authority, then qualify normal accepted-origin response before Hupsel/restart.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -116,7 +118,7 @@
       0.12274343003824484
     ],
     "total_recharge_m3_per_day": 0.05,
-    "model_claim_ceiling": "selected-reference standalone native MODFLOW6 A/B qualified, with explicit low-K negative; no SWAP coupled run, Hupsel run or canonical admission"
+    "model_claim_ceiling": "Standalone A/B qualified; confined C0/C1 groundwater components qualified; real 50-column first windows rejected with exact fresh-origin replay and committed-state preservation. No coupled qualification, Hupsel execution or canonical admission."
   },
   "native_execution": {
     "workflow": ".github/workflows/f-gc-strip01-standalone-modflow.yml",
@@ -184,8 +186,26 @@
     "review": "docs/integration/F-GC-STRIP01_C0_DOMAIN_FEASIBILITY.md",
     "analytical_oracle": "PASS",
     "production_authority_guard": "PASS_LOCAL_O2",
-    "native_component": "PENDING_PERSISTED_RUN",
-    "real_swap_coupled": false,
+    "native_component": "PASS_NATIVE_PERSISTED_RUN_37068409553",
+    "real_swap_coupled": "ATTEMPTED_FIRST_WINDOW_REJECTED",
     "production_admission": false
+  },
+  "canonical_reconciliation": {
+    "head": "a9cd833092a83e0477f891989962d98d11177ade",
+    "delta": "Only .github/workflows/issue-989-storage-contract.yml changed since 53059a5; all 143 compiled src blobs per profile unchanged."
+  },
+  "response_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01-RESP01.json",
+  "c1_research": {
+    "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C1_PREREGISTRATION.json",
+    "native_component": "PASS_LOCAL_PINNED_NATIVE_ENGINE",
+    "real_swap_coupled": "ATTEMPTED_FIRST_WINDOW_REJECTED",
+    "accepted_windows": 0
+  },
+  "native_c0_evidence": {
+    "run_id": 37068409553,
+    "source_commit": "1001fadcf569c936187332ccdfc213e2ce507856",
+    "conclusion": "success",
+    "artifact_id": 11253058393,
+    "artifact_sha256": "5edf1e46b0478a8454314074ef56146416b60f4deff378b333b45fc50e044cac"
   }
 }
