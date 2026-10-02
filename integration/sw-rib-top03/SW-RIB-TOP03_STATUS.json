@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
-  "decision": "DISCRETE_CONTACT_MULTIPLE_ROOTS_VERIFIED__CONTINUUM_ORACLE_MATRIX_PENDING__NO_PRODUCTION_ADMISSION",
+  "decision": "CONTINUUM_STATIONARY_CONTACT_VERIFIED__DRY_LAYER_STORAGE_REQUIRED__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -186,7 +186,8 @@
     "tests/fapp/mod_top03_continuous_contact.f90",
     "tests/fapp/test_sw_rib_top03_continuous_contact.f90",
     "tests/fapp/run_sw_rib_top03_continuous_contact.py",
-    "tests/fapp/analyze_sw_rib_top03_nonlinear_contact.py"
+    "tests/fapp/analyze_sw_rib_top03_nonlinear_contact.py",
+    "tests/fapp/analyze_sw_rib_top03_continuous_contact.py"
   ],
   "dependency_surface": [
     "accepted attempt/window mass ownership",
@@ -197,16 +198,15 @@
   ],
   "blockers": [
     "BASE exact-state temporal acceptance remains unchanged and no finite dynamic-top budget is admitted.",
-    "Adding zero-capacity layer rows under SWKIMPL=0 freezes interior K at solve origin and fails the independently reconstructed current-K stationary contact prerequisite; a separate local nonlinear layer solve is needed.",
     "A stateful boundary reduction has no admitted explicit layer candidate/storage/receipt ownership contract; hidden mutable dynamic-provider state is forbidden.",
     "The constant saturated surface-contact resistance fails 24 ready physical comparisons against an explicit partly unsaturated transition layer. No physical production envelope is qualified.",
-    "Initially prewetting the layer does not remove model mismatch. A matched unsaturated contact law and explicit storage treatment require independent qualification.",
     "R=0/R=0.05 trajectories still fail numerically; thin L=0.02 cm finest joint contraction remains unready.",
     "Ribasim/SWAP ownership of local pond versus external waterbody storage remains unqualified.",
-    "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage."
+    "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage.",
+    "Continuum stationary contact is component-qualified in the bounded synthetic matrix; five ready dry-start transfer comparisons fail because the contact has no owned layer storage. Stateful candidate/storage/receipt semantics remain required."
   ],
-  "next_action": "Replay the same 566-case continuum matrix after removing redundant multistart hot-path work and adding per-case raw journals. Apply original multistart, independent SciPy, mass, numerical readiness and physical budgets.",
-  "recovery_point": "Resume from TOP03_NONLINEAR_CONTACT_PREREGISTRATION.md and test-only nonlinear contact module/fixture/runner in this checkpoint on the same branch.",
+  "next_action": "Implement a test-only stateful layer reduction with immutable origin, candidate layer storage and separately owned external and matrix transfers; qualify attempt restore and accepted-window composition before production ABI admission.",
+  "recovery_point": "Resume from TOP03_NONLINEAR_CONTACT_DECISION.md and TOP03_UNSATURATED_CONTACT_ELIMINATION_DESIGN.md on the existing draft branch.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All three unsaturated-contact research phases ran locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Exact-source evidence and explicit scope only; commits use skip ci.",
   "implementation_slice": {
@@ -225,8 +225,8 @@
       "explicit bounded profile and exfiltration rejection"
     ]
   },
-  "last_reconciled_head": "3ae05b280aef2850280426662e889c1bf7ed6f45",
-  "checkpoint_commit": "3ae05b280aef2850280426662e889c1bf7ed6f45",
+  "last_reconciled_head": "0df7ab1a23c84ba06345d88344bbb9680783a0a6",
+  "checkpoint_commit": "0df7ab1a23c84ba06345d88344bbb9680783a0a6",
   "pending_tests": [
     "independent candidate-K nonlinear layer closure and stateful owned-storage reduction; constant R already falsified in prior ready comparisons",
     "representative-soil/contact-parameter envelope",
@@ -456,14 +456,18 @@
     "production_qualified": false,
     "interpretation": "Correct saturated limit; constant saturated resistance does not reproduce the partly unsaturated explicit layer even for a prewetted layer origin. Storage alone is not established as a sufficient fix."
   },
-  "status": "DISCRETE_CONTACT_MULTIPLE_ROOTS_VERIFIED__CONTINUUM_ORACLE_MATRIX_PENDING__NO_PRODUCTION_ADMISSION",
+  "status": "CONTINUUM_STATIONARY_CONTACT_VERIFIED__DRY_LAYER_STORAGE_REQUIRED__NO_PRODUCTION_ADMISSION",
   "evidence_paths": [
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_RESULT.json",
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_DECISION.md",
     "integration/sw-rib-top03/evidence/explicit_layer/",
     "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_RESULT.json",
     "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_DECISION.md",
-    "integration/sw-rib-top03/evidence/unsaturated_contact/"
+    "integration/sw-rib-top03/evidence/unsaturated_contact/",
+    "integration/sw-rib-top03/TOP03_CONTINUOUS_CONTACT_RESULT.json",
+    "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_PRIMARY_RESULT.json",
+    "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_DECISION.md",
+    "integration/sw-rib-top03/evidence/nonlinear_contact/raw_records.tar.gz"
   ],
   "unsaturated_contact_research": {
     "implemented": true,
@@ -519,7 +523,7 @@
   "nonlinear_contact_research": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "production_qualified": false,
     "baseline": "3c3171ec223d2b7f5b93b0a75b62d2b7c40ab4b7",
@@ -537,6 +541,27 @@
     "initial_continuum_source": "4338fc4e985f3e9e24825d209dde0eac3c770378",
     "initial_continuum_execution": "incomplete: 30-second process bound at m8/R0.5/ns512",
     "initial_continuum_controls_replayed_O0": 494,
-    "execution_followup": "integration/sw-rib-top03/TOP03_CONTINUOUS_CONTACT_EXECUTION_FOLLOWUP.md"
+    "execution_followup": "integration/sw-rib-top03/TOP03_CONTINUOUS_CONTACT_EXECUTION_FOLLOWUP.md",
+    "continuum_source_postimage": "0df7ab1a23c84ba06345d88344bbb9680783a0a6",
+    "continuum_cases_per_build": 566,
+    "continuum_local_controls_passed": 468,
+    "continuum_dynamic_completed": 18,
+    "continuum_dynamic_total": 18,
+    "O0_O2_raw_records_exact": true,
+    "initial_494_controls_preserved_exact": true,
+    "inherited_trajectories_exact": 54,
+    "physical_verdicts": {
+      "passed": 10,
+      "failed": 5,
+      "unready": 9
+    },
+    "ready_prewetted_comparisons_passed": 8,
+    "independent_max_flux_error_cm_day": 1.248743330961588e-10,
+    "max_mass_error_cm": 2.212674488077937e-13,
+    "qualified_scope": "Stationary continuum law and bounded component matrix only; no dry-start trajectory equivalence or production admission.",
+    "result": "integration/sw-rib-top03/TOP03_CONTINUOUS_CONTACT_RESULT.json",
+    "primary_result": "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_PRIMARY_RESULT.json",
+    "decision": "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_DECISION.md",
+    "evidence": "integration/sw-rib-top03/evidence/nonlinear_contact/raw_records.tar.gz"
   }
 }
