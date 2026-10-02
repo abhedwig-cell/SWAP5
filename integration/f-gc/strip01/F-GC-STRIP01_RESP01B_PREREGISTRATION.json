@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01-RESP01B",
+  "parent": "F-GC-STRIP01-RESP01",
+  "state": "PREREGISTERED_BEFORE_EXECUTION",
+  "source_commit": "1f84f4f6fd8f4ef1efee2d84316645b22a4a212e",
+  "purpose": "Locate the first transaction rejection category for the actual MF6 trial heads by ending each diagnostic immediately after its first rejected transaction attempt.",
+  "profiles": {
+    "C0": {
+      "stage_m": -5,
+      "trial_heads_m": {
+        "1": -4.996934702272599,
+        "50": -4.964812337059502
+      }
+    },
+    "C1": {
+      "stage_m": -1,
+      "trial_heads_m": {
+        "1": -0.994865526330005,
+        "50": -0.9742777220884193
+      }
+    }
+  },
+  "durations_day": [
+    0.001,
+    0.0005,
+    0.0001,
+    0.00001
+  ],
+  "configuration": "Same canonical research fixture and all tolerances/soil/grid/forcing as RESP01A; only research fixture max_retries set to zero to expose counters before retry. No acceptance result from this truncated diagnostic can qualify an interval.",
+  "tangent_requested": false,
+  "output": [
+    "canonical transaction status",
+    "accepted substeps",
+    "solver rejections",
+    "temporal rejections",
+    "mass and admission rejections",
+    "attempt/retry counters"
+  ],
+  "preservation": "Each probe begins from an untouched committed origin; compare full committed state before/after.",
+  "interpretation_limits": [
+    "Early stop may classify the first rejection type but does not reveal all later retry sequence.",
+    "No root cause conclusion or production policy change.",
+    "Normal eight-retry configuration remains the qualification authority."
+  ],
+  "completion_gate": "Persist every actual C0/C1 first-window trial-head probe; compare first rejection class by duration/profile and retain RESP01A matrix unchanged."
+}
