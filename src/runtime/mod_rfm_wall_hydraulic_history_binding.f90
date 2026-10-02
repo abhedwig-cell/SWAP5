@@ -21,7 +21,7 @@ module mod_rfm_wall_hydraulic_history_binding
 contains
 
   subroutine bind_rfm_wall_hydraulics_from_accepted(accepted,endpoint_input_cm,endpoint_node_index,mb_wall_node_index, &
-       view,constitutive,panels,result,skip_unused_mb_hydraulics)
+       view,constitutive,panels,result,skip_unused_mb_hydraulics,endpoint_panels,mb_panels)
     type(rfm_physical_state_t),intent(in)::accepted
     real(real64),intent(in)::endpoint_input_cm(:)
     integer,intent(in)::endpoint_node_index(:),mb_wall_node_index,panels
@@ -29,7 +29,8 @@ contains
     class(constitutive_hydraulics_provider_t),intent(in)::constitutive
     type(rfm_wall_hydraulic_binding_result_t),intent(out)::result
     logical,intent(in),optional::skip_unused_mb_hydraulics
-    integer::i,n,node
+    integer,intent(in),optional::endpoint_panels(:),mb_panels
+    integer::i,n,node,panel_count
     logical::view_ok,available,sok,skip_mb
     real(real64)::s,k
 
@@ -39,6 +40,12 @@ contains
     call validate_process_hydraulic_view(view,view_ok);if(.not.view_ok)return
     n=accepted%endpoint_count
     if(size(endpoint_input_cm)/=n.or.size(endpoint_node_index)/=n)return
+    if(present(endpoint_panels))then
+      if(size(endpoint_panels)/=n.or.any(endpoint_panels<=0))return
+    end if
+    if(present(mb_panels))then
+      if(mb_panels<=0)return
+    end if
     if(any(endpoint_input_cm<0.0_real64).or.any(.not.ieee_is_finite(endpoint_input_cm)))return
     if(any(endpoint_node_index<1).or.any(endpoint_node_index>view%active_nodes))return
     if(mb_wall_node_index<1.or.mb_wall_node_index>view%active_nodes)return
@@ -52,7 +59,8 @@ contains
         s=accepted%wall_sorptivity_cm_sqrt_day(i)
         if(.not.ieee_is_finite(s).or.s<0.0_real64)return
       else if(endpoint_input_cm(i)>0.0_real64)then
-        call evaluate_rfm_node_sorptivity(view,constitutive,node,panels,s,sok)
+        panel_count=panels;if(present(endpoint_panels))panel_count=endpoint_panels(i)
+        call evaluate_rfm_node_sorptivity(view,constitutive,node,panel_count,s,sok)
         if(.not.sok)return
       else
         s=0.0_real64
@@ -63,7 +71,8 @@ contains
       node=mb_wall_node_index
       call constitutive%evaluate_point_conductivity(node,view%pressure_head(node),view%water_content(node),k,available)
       if(.not.available.or..not.ieee_is_finite(k).or.k<0.0_real64)return
-      call evaluate_rfm_node_sorptivity(view,constitutive,node,panels,s,sok);if(.not.sok)return
+      panel_count=panels;if(present(mb_panels))panel_count=mb_panels
+      call evaluate_rfm_node_sorptivity(view,constitutive,node,panel_count,s,sok);if(.not.sok)return
       result%mb_conductivity_cm_per_day=k
       result%mb_sorptivity_cm_sqrt_day=s
     end if
