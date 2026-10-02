@@ -1726,7 +1726,7 @@ contains
         ok = ok .and. allocated(parameters%macropore) .and. self%macropore_policy_configured .and. &
              self%macropore_policy%valid() .and. self%macropore_policy%enabled .and. &
              self%soil_water_selection%uses_reference() .and. &
-             .not. parameters%root_extraction_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. parameters%black_evaporation_active .and. &
              .not. parameters%boesten_evaporation_active .and. .not. parameters%drainage_response_active .and. &
              .not. self%fixed_weir_surface_water_active .and. &
