@@ -53,7 +53,7 @@ mapfile -t MODULE_SRC < <(
   awk '$0 != "tests/fsi/fsi04_real_headcalc_stubs.f90"'
 )
 
-COMMON=(-std=f2008 -ffree-line-length-none -fcheck=all -fbacktrace)
+COMMON=(-std=f2008 -ffree-line-length-none -fcheck=all -fbacktrace -g)
 for opt in 0 2; do
   B="$BUILD/o$opt"
   mkdir -p "$B"
