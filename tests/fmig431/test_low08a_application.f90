@@ -12,6 +12,7 @@ program test_low08a_application
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_kernel_transactions
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
+  use variables, only: fldtmin
   use mod_fixed_flux_top_boundary_provider
   use mod_groundwater_topology_composition, only: groundwater_topology_t
   use mod_groundwater_application_plan, only: groundwater_tile_predictor_input_t, groundwater_cell_area_input_t
@@ -38,6 +39,7 @@ program test_low08a_application
   integer :: status,j
   logical :: ok, app_transaction_ok
 
+  fldtmin=.false.
   call initialize_application_config(cfg,-75.0_real64,conductivity0)
   cfg%tiles(1)%parameters%bottom_mode=8
   cfg%tiles(1)%ordinary_lysimeter_plate=.true.
