@@ -90,7 +90,14 @@
     "macro_balance_residual_cm": null,
     "accepted_macro_immutable": true,
     "swap5_other_exchange_at_reference_cm_per_day": -4.867061508767989,
-    "reference_other_exchange_cm_per_day": -0.40973640650434007
+    "reference_other_exchange_cm_per_day": -0.40973640650434007,
+    "exact_postimage_diagnostic": {
+      "head": "54457f772cd68f875319923d6cfd832a60947dd1",
+      "dependency_git_blobs_verified": true,
+      "gate": "tests/fpm/run_ppa_wu05_migmac01_source_origin_diagnostic.sh",
+      "result": "NEGATIVE_EVIDENCE_REPRODUCED_O0_O2",
+      "active_e2e_qualification": false
+    }
   },
   "source_interval_blocker_resolved": true
 }
