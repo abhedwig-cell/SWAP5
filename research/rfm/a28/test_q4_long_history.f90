@@ -470,8 +470,8 @@ contains
     case(2)
       if(phase<.05_real64.or.(phase>=.18_real64.and.phase<.23_real64))r=6._real64
     case(3)
-      if(phase<.12_real64)r=.8_real64
-      if(phase>=.40_real64.and.phase<.52_real64)r=1.5_real64
+      if(phase<.12_real64)r=2.0_real64
+      if(phase>=.40_real64.and.phase<.52_real64)r=3.0_real64
     end select
   end function q4_rain_rate
   real(real64) function rain_rate(regime,t) result(r)
