@@ -1,0 +1,15 @@
+{
+  "work_unit": "PPA-WU05-A29",
+  "status": "OBSERVABILITY_IMPLEMENTED_EXECUTABLE_QUALIFICATION_PENDING",
+  "depends_on": "PPA-WU05-A28",
+  "branch": "work/ppa-wu05-a28-rfm-approximate-mode",
+  "preregistration": "docs/audits/PPA_WU05A29_PREREGISTRATION.md",
+  "implemented": {
+    "policy_provenance_observation": true,
+    "panel_band_occupancy_counters": true,
+    "paired_subset": false
+  },
+  "counter_semantics": "Cumulative numerical-work evaluations performed by the serialized Reference backend, including trial/retry evaluations. Counts are separated into 64, 32, 16 and unexpected-other panel selections.",
+  "next_action": "Qualify observability on the frozen Q4B Stage-B fixture, then select the current canonical MultiSWAP-MODFLOW coupled subset authority.",
+  "claim_boundary": "No coupled A29 result yet. A28 remains opt-in production candidate only."
+}
