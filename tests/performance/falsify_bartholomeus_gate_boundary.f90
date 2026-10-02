@@ -7,7 +7,7 @@ program falsify_bartholomeus_gate_boundary
  use mod_bartholomeus_waterfilm_provider,only:BARTHOLOMEUS_WATERFILM_REFERENCE
  use mod_bartholomeus_no_stress_gate,only:bartholomeus_macro_supply_bound_no_stress
  implicit none
- integer,parameter::NCASE=512,NNEAR=9
+ integer,parameter::NCASE=4096,NNEAR=9
  real(real64),parameter::eps(NNEAR)=[-1e-4_real64,-1e-6_real64,-1e-8_real64,-1e-10_real64,0._real64,1e-10_real64,1e-8_real64,1e-6_real64,1e-4_real64]
  type(bartholomeus_runtime_view_t)::v
  type(BartholomeusImmutableDataset)::d
@@ -20,9 +20,16 @@ program falsify_bartholomeus_gate_boundary
  allocate(v%pressure_head_cm(1),v%water_content(1),v%soil_temperature_k(1));v%rooted_nodes=1
  do k=1,NCASE
    theta_r=0.01_real64+0.09_real64*u(k,1); theta_s=max(theta_r+0.12_real64,0.32_real64+0.28_real64*u(k,2))
-   alpha=0.002_real64+0.048_real64*u(k,3); npar=1.05_real64+1.75_real64*u(k,4)
-   head=-(0.2_real64*10._real64**(4.2_real64*u(k,5))); temp=273.5_real64+35._real64*u(k,6)
-   gfp=max(1.01e-4_real64,(theta_s-theta_r)*(0.002_real64+0.90_real64*u(k,7)))
+   alpha=0.0002_real64+0.0998_real64*u(k,3); npar=1.01_real64+2.49_real64*u(k,4)
+   select case(mod(k,32))
+   case(0); npar=2._real64
+   case(1); npar=2._real64-1e-12_real64
+   case(2); npar=2._real64+1e-12_real64
+   case(3); npar=1.01_real64
+   end select
+   head=-(0.01_real64*10._real64**(7.5_real64*u(k,5))); temp=268._real64+45._real64*u(k,6)
+   gfp=max(1.000001e-4_real64,(theta_s-theta_r)*(0.00025_real64+0.95_real64*u(k,7)))
+   if(mod(k,29)==0)gfp=1.000001e-4_real64
    depth=0.005_real64+0.495_real64*u(k,8)
    call setup_case(theta_r,theta_s,alpha,npar,depth,u(k,9),u(k,10),u(k,11),d,c,ok)
    if(.not.ok)cycle
