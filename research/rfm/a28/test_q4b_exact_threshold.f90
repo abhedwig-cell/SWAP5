@@ -95,6 +95,9 @@ contains
     m=metrics_t()
     call init_parameters(parameters,soil,ks)
     parameters%bottom_mode=3
+    call cauchy%initialize_sine(0._real64,0._real64,[0._real64,366._real64],-55._real64,45._real64, &
+         0._real64,1.2_real64,5._real64,.true.,cauchy_status)
+    if(cauchy_status/=FMR_CAUCHY3_OK)then;m%status=-936;return;end if
     wt=water_table(regime)
     heads=wt-z
     call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
