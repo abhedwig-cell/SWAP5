@@ -1,7 +1,7 @@
 module mod_rfm_live_trial_preparer
  use,intrinsic::iso_fortran_env,only:real64
  use mod_soil_water_solver_contract,only:soil_water_top_boundary_result_t,constitutive_hydraulics_provider_t
- use mod_process_hydraulic_view,only:process_hydraulic_view_t
+ use mod_process_hydraulic_view,only:process_hydraulic_view_t,validate_process_hydraulic_view
  use mod_rfm_runtime_configuration,only:rfm_runtime_configuration_t
  use mod_rfm_surface_forcing,only:rfm_surface_forcing_t
  use mod_rfm_physical_state,only:rfm_physical_state_t
@@ -46,10 +46,11 @@ contains
   real(real64),allocatable::endpoint_input_cm(:)
   integer,allocatable::endpoint_panels(:)
   integer::surface_panels,mb_panels,i
-  logical::ok
+  logical::ok,view_ok
   result=rfm_live_trial_prepare_result_t()
   if(.not.config%valid().or..not.forcing%valid().or..not.accepted%ready())return
   if(size(node_depth_cm)/=view%active_nodes.or.size(node_thickness_cm)/=view%active_nodes)return
+  call validate_process_hydraulic_view(view,view_ok);if(.not.view_ok)return
   ageq%accepted_age_day=accepted%tau_surface_day;ageq%step_duration_day=step_duration_day
   ageq%event_active=forcing%event_active
   surface_panels=config%sorptivity_panels_for_head(view%pressure_head(1))
