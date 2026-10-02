@@ -1,5 +1,8 @@
 name: PPA-WU05-A27 ABC01 production screen
 on:
+  push:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
   workflow_dispatch:
 jobs:
   abc01:
