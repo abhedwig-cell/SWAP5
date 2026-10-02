@@ -64,3 +64,10 @@ The candidate typed application failed in job 110841159885 with a SIGSEGV in `mo
 NOT YET PRODUCTION-ADMISSION CANDIDATE.
 
 Boundary safety and B1.11 preservation are currently positive, and measured performance is substantial. The unresolved typed production-application preservation gate remains a blocker. No canonical admission is claimed.
+
+
+## Dependency-surface reconciliation against current canonical
+
+A direct compare from the PERF02 merge-base `a89990169fb8429a0fd143df9e3d28b9a35d28b8` to current canonical `6f52733173d1909ff1027771f0d737d4face0323` shows 36 canonical commits but only the F-MIG431-LOW08-A/P0 lower-boundary family on the scientific/runtime source surface: `src/legacy/b1_10_port/headcalc.f90` and `src/adapter/mod_reference_richards_legacy_binding.f90`, plus its tests/evidence and publication documentation. No Bartholomeus oxygen source, parameter contract, waterfilm, factor provider, MICRO/MACRO equation, crop oxygen carrier, or oxygen execution binding changed in that canonical delta.
+
+Therefore the latest PR merge-postimage boundary and B1.11 evidence already exercise PERF02 composed with the current lower-boundary source changes. The typed-application SIGSEGV is independently reproduced by the canonical-only control and is not attributable to a changed oxygen dependency. The research branch remains historically behind canonical and must still be reconciled before admission, but the 36-commit count must not be misreported as 36 unknown PERF02 scientific dependencies.
