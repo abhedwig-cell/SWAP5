@@ -181,13 +181,14 @@ contains
   associate(p=>value%tiles(1)%parameters%bartholomeus)
    p%selection%oxygen_mode=2;p%selection%oxygen_type=1;p%specific_root_length_m_kg=1
    call construct_bartholomeus_dataset(value%tiles(1)%parameters%cofgen,dz,spread(.02_real64,1,numnod),spread(.6_real64,1,numnod),spread(1300._real64,1,numnod),w100,w500,w100,-100._real64,-500._real64,0,p%soil,valid)
+   if(.not.valid) error stop 'oxygen dataset'
    p%crop%c_mroot=1e-5;p%crop%f_senes=1;p%crop%q10_root=2;p%crop%specific_resp_humus=1e-6;p%crop%q10_microbial=2;p%crop%microbial_shape_m=.9;p%crop%root_shape_m=.9;p%crop%root_radius_m=.0002;p%crop%max_resp_factor=2
   end associate
-  call publish_crop_bartholomeus_input([1._real64,.8_real64,.6_real64],20._real64,value%tiles(1)%base_forcing%crop_oxygen,valid)
+  call publish_crop_bartholomeus_input([1._real64,.8_real64,.6_real64],20._real64,value%tiles(1)%base_forcing%crop_oxygen,valid);if(.not.valid) error stop 'crop oxygen'
   rp%active_nodes=numnod;rp%hlim3l=-500;rp%hlim3h=-300;rp%hlim4=-16000;rp%adcrl=.1_real64;rp%adcrh=.5_real64
   rq%rooted_nodes=3;rq%potential_transpiration=.03_real64;rq%cumulative_root_fraction=[0._real64,.4_real64,.8_real64,1._real64]
   view%active_nodes=numnod;view%pressure_head=value%tiles(1)%initial_state%pressure_head;view%water_content=value%tiles(1)%initial_state%water_content
-  call evaluate_macro_feddes_drought_uptake(rp,view,rq,rf,rd);value%tiles(1)%base_forcing%root_extraction_sink=rf%root_extraction_sink
+  call evaluate_macro_feddes_drought_uptake(rp,view,rq,rf,rd);if(rd%status/=ROOT_UPTAKE_OK) error stop 'drought owner';value%tiles(1)%base_forcing%root_extraction_sink=rf%root_extraction_sink
   value%tiles(1)%base_forcing%root_extraction_sink(4)=.005_real64
   value%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   value%tiles(1)%initial_right_derivative=spread(0._real64,1,numnod)
