@@ -1,0 +1,42 @@
+name: PPA WU05 C3A PERF02 qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90'
+      - 'src/physics/oxygen/mod_bartholomeus_factor_provider.f90'
+      - 'tests/performance/benchmark_bartholomeus_perf02.f90'
+      - 'tests/performance/run_bartholomeus_perf02.py'
+      - 'tests/physics/run_bartholomeus_active_chain.sh'
+      - '.github/workflows/ppa-wu05c3a-perf02-qualification.yml'
+  workflow_dispatch:
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Corrected B1.11 assembled oracle O0 O2
+        run: python3 tests/physics/run_bartholomeus_b111_assembled.py
+      - name: Typed production application O0 O2
+        run: python3 tests/physics/run_bartholomeus_application.py
+      - name: PERF02 boundary falsification
+        if: always()
+        run: python3 tests/performance/run_bartholomeus_gate_boundary.py
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/performance/run_bartholomeus_perf02.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c3a-perf02-performance
+          path: c3a_perf02_result.json
+
+  canonical-application-control:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integration/f-ci-canonical
+      - name: Current canonical typed production application control
+        run: python3 tests/physics/run_bartholomeus_application.py

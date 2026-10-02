@@ -39,6 +39,7 @@ for m in "${mods[@]}"; do "$FC" "${F[@]}" -c "src/physics/oxygen/$m.f90" -o "$B/
 "$FC" "${F[@]}" -c src/physics/oxygen/mod_bartholomeus_parameter_contract.f90 -o "$B/params.o"
 "$FC" "${F[@]}" -c src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90 -o "$B/wfp.o"
 "$FC" "${F[@]}" -c src/physics/oxygen/mod_bartholomeus_response_assembly.f90 -o "$B/assembly.o"
+"$FC" "${F[@]}" -c src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90 -o "$B/gate.o"
 "$FC" "${F[@]}" -c src/physics/oxygen/mod_bartholomeus_factor_provider.f90 -o "$B/provider.o"
 "$FC" "${F[@]}" tests/physics/test_bartholomeus_active_chain.f90 "$B"/*.o -o "$B/test"
 "$B/test"
