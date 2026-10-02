@@ -58,7 +58,7 @@ program test_low03_typed_solver
   request%boundary%bottom_mode=3
   request%boundary%bottom_head=-100.0_real64
   request%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
-  request%step_duration=0.001_real64
+  request%step_duration=0.125_real64
   request%numerical%max_iterations=100
   request%numerical%max_backtracking=100
   request%numerical%conductivity_implicit_mode=0
