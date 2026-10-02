@@ -28,9 +28,12 @@ with tempfile.TemporaryDirectory(prefix="c3a-perf-") as td:
     vals=[]; outputs=[]
     for _ in range(7):
         out=subprocess.check_output([str(exe)],text=True);outputs.append(out)
-        vals.append(float(re.search(r"C3A_PERF_NS_PER_EVAL=\s*([0-9.Ee+\-]+)",out).group(1)))
+        vals.append([float(x) for x in re.findall(r"C3A_PERF_NS_PER_EVAL=\s*([0-9.Ee+\-]+)",out)])
+    regimes=["low_ctop","mid_ctop","high_ctop"]
+    by_regime={name:[row[i] for row in vals] for i,name in enumerate(regimes)}
     result={"compiler":subprocess.check_output(FC+["--version"],text=True).splitlines()[0],
-            "head":os.environ.get("GITHUB_SHA","not-specified"),"ns_per_eval":vals,
-            "median_ns_per_eval":statistics.median(vals),"min_ns_per_eval":min(vals),"outputs":outputs}
+            "head":os.environ.get("GITHUB_SHA","not-specified"),"ns_per_eval_by_run":vals,
+            "regimes":{name:{"values":v,"median_ns_per_eval":statistics.median(v),"min_ns_per_eval":min(v)}
+                       for name,v in by_regime.items()},"outputs":outputs}
     print(json.dumps(result,indent=2))
     pathlib.Path(os.environ.get("C3A_PERF_RESULT","c3a_perf_result.json")).write_text(json.dumps(result,indent=2)+"\n")
