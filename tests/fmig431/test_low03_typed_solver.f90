@@ -64,6 +64,7 @@ program test_low03_typed_solver
   request%numerical%conductivity_implicit_mode=0
   request%numerical%conductivity_mean_method=1
   request%numerical%head_abs_tolerance=1.0e-12_real64
+  request%numerical%head_rel_tolerance=1.0e-12_real64
   request%numerical%compartment_balance_tolerance=1.0e-12_real64
   request%numerical%total_balance_tolerance=1.0e-12_real64
   request%evaluation%constitutive=>hydraulic
