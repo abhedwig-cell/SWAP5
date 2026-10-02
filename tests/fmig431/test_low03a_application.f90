@@ -170,7 +170,7 @@ contains
       p%cofgen(10,k)=p%cofgen(3,k);p%cofgen(11,k)=0.999_real64;p%cofgen(12,k)=0.99_real64*p%cofgen(3,k)
       p%cofgen(22,k)=-1.0e6_real64;p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%bottom_mode=3;p%swkimpl=0;p%swkmean=1;p%swsophy=0;p%max_iterations=20;p%max_backtracking=8
+    p%bottom_mode=3;p%swkimpl=0;p%swkmean=1;p%swsophy=0;p%max_iterations=100;p%max_backtracking=100
     p%root_extraction_active=.false.;p%macropore_active=.false.;p%snow_active=.false.;p%hysteresis_active=.false.
     p%tabulated_hydraulics_active=.false.;p%direct_retention_active=.false.;p%ksatexm_extension_active=.false.
     p%elasticity_active=.false.;p%frost_active=.false.;p%soil_temperature_active=.false.;p%drainage_response_active=.false.
