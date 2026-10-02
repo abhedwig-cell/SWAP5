@@ -252,6 +252,7 @@ program top03_stateful_contact_probe
   write(*,'(A)')'COMPLETE'
 contains
   subroutine lifecycle()
+    use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
     type(top03_contact_result_t) :: full,changed,replay,first,second,forged,continued,restarted
     type(top03_nonlinear_contact_t) :: restored
     real(real64),allocatable :: initial(:),saved_theta(:),checkpoint(:)
@@ -270,6 +271,10 @@ contains
     if(any(contact%origin_head/=initial).or.any(contact%origin_theta/=saved_theta))error stop 'rejected trial mutated origin'
     forged=full;forged%external_input=forged%external_input+0.001_real64
     if(validate_top03_layer_candidate(contact,-123.0_real64,forged))error stop 'forged transfer accepted'
+    forged=full;forged%q=ieee_value(0.0_real64,ieee_quiet_nan)
+    if(validate_top03_layer_candidate(contact,-123.0_real64,forged))error stop 'nonfinite flux accepted'
+    forged=full;forged%storage_change=0.0_real64
+    if(abs(full%storage_change)>1e-11_real64.and.validate_top03_layer_candidate(contact,-123.0_real64,forged))error stop 'lost storage accepted'
     forged=full;forged%head(1)=forged%head(1)+0.01_real64
     if(validate_top03_layer_candidate(contact,-123.0_real64,forged))error stop 'forged profile accepted'
     call bind_top03_layer_origin(contact,initial,-123.0_real64,dt/2,0)

@@ -326,7 +326,7 @@ contains
     call faces(self,hs,candidate%head,k,dk,q,left,right,ok,.false.)
     if(.not.ok)return
     call storage(self,candidate%head,theta,cap);dz=self%thickness/real(n,real64)
-    if(maxval(abs(dz*(theta-self%origin_theta)/self%dt+q(1:n)-q(2:n+1)))>1e-10_real64)return
+    if(maxval(abs(dz*(theta-self%origin_theta)/self%dt+q(1:n)-q(2:n+1)))>ROOT_TOL)return
     if(maxval(abs(q-candidate%flux))>1e-10_real64.or.maxval(abs(theta-candidate%theta))>1e-12_real64)return
     if(abs(candidate%q-q(n+1))>1e-10_real64)return
     if(abs(candidate%external_input+self%dt*q(1))>1e-11_real64.or. &
