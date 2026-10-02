@@ -4,7 +4,7 @@ program test_a28_q4_long_history
   use mod_transaction_reference,only:transaction_state_t,TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts,only:canonical_numerical_config_t,CANONICAL_STATUS_COMPLETED
   use mod_kernel_transactions,only:kernel_committed_state_t,kernel_checkpoint_t,kernel_result_t, &
-       kernel_candidate_state_t,kernel_diagnostics_t
+       kernel_candidate_state_t,kernel_diagnostics_t,kernel_reconstruct_committed_state_trusted,KERNEL_TRUSTED_RECONSTRUCTION_OK
   use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t,FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE,FMR_OPTIONAL_STATE_LAYOUT_BASE,FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, &
        FMR_OPTIONAL_STATE_LAYOUT_RFM
@@ -83,7 +83,7 @@ contains
     type(fmr_logical_column_t)::column
     type(fmr_template_t)::template
     type(canonical_numerical_config_t)::config
-    type(kernel_committed_state_t)::committed
+    type(kernel_committed_state_t)::committed,reconstructed
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_result_t)::result
     type(kernel_candidate_state_t)::candidate
@@ -92,11 +92,13 @@ contains
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::hyd
     type(macropore_geometry_result_t)::mg
-    class(transaction_state_t),allocatable::snapshot
+    class(transaction_state_t),allocatable::snapshot,replay_snapshot,original_snapshot
     real(real64)::heads(numnod),theta(numnod),cond(numnod),cap(numnod),dkdh(numnod)
     real(real64)::wt,rain,t0,t1,macro_area,deep_fraction,endpoint_depth,sorpmax,ks
-    integer::step,nsteps,commit_status
-    logical::ok,did_commit,available
+    integer::step,nsteps,commit_status,reconstruct_status
+    integer(int64)::saved_lineage,saved_revision
+    real(real64)::saved_time
+    logical::ok,did_commit,available,time_available,reconstructed_ok
     integer(int64)::c0,c1,crate
 
     m=metrics_t()
@@ -185,6 +187,13 @@ contains
       t0=real(step-1,real64)*DT;t1=real(step,real64)*DT
       rain=q4_rain_rate(regime,t0)
       call init_forcing(forcing,arm,rain,macro_area)
+      if(arm==ARM_C.and.step==nsteps/2)then
+        call committed%snapshot(original_snapshot,available);if(.not.available)then;m%status=-912;m%fail_step=step;exit;end if
+        saved_lineage=committed%current_lineage_id();saved_revision=committed%current_revision()
+        call committed%current_time(saved_time,time_available);if(.not.time_available)then;m%status=-913;m%fail_step=step;exit;end if
+        call kernel_reconstruct_committed_state_trusted(reconstructed,saved_lineage,saved_revision,original_snapshot,saved_time,.true.,reconstructed_ok,reconstruct_status)
+        if(.not.reconstructed_ok.or.reconstruct_status/=KERNEL_TRUSTED_RECONSTRUCTION_OK)then;m%status=-914;m%fail_step=step;exit;end if
+      end if
       call fmr_capture_checkpoint(committed,checkpoint,ok)
       if(.not.ok)then;m%status=-908;m%fail_step=step;exit;end if
       call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint, &
@@ -211,6 +220,26 @@ contains
       if(result%bottom_interface_exchange_available) m%bottom_out=m%bottom_out+result%bottom_outward_exchange_native
       call backend%commit_trial_candidate(committed,candidate,diagnostics,did_commit,commit_status)
       if(.not.did_commit)then;m%status=-909;m%fail_step=step;exit;end if
+      if(arm==ARM_C.and.step==nsteps/2)then
+        call fmr_capture_checkpoint(reconstructed,checkpoint,ok);if(.not.ok)then;m%status=-915;m%fail_step=step;exit;end if
+        call backend%run_trial(column,template,parameters,reconstructed,forcing,config,t0,t1,checkpoint,result,candidate,diagnostics)
+        if(.not.result%completed)then;m%status=-916;m%fail_step=step;exit;end if
+        call backend%commit_trial_candidate(reconstructed,candidate,diagnostics,did_commit,commit_status)
+        if(.not.did_commit)then;m%status=-917;m%fail_step=step;exit;end if
+        call committed%snapshot(snapshot,available);if(.not.available)then;m%status=-918;m%fail_step=step;exit;end if
+        call reconstructed%snapshot(replay_snapshot,available);if(.not.available)then;m%status=-919;m%fail_step=step;exit;end if
+        select type(a=>snapshot)
+        type is(fmr_b110_rfm_state_t)
+          select type(b=>replay_snapshot)
+          type is(fmr_b110_rfm_state_t)
+            if(.not.a%rfm%same_values(b%rfm).or.any(a%pressure_head/=b%pressure_head).or.any(a%water_content/=b%water_content))then
+              m%status=-920;m%fail_step=step;exit
+            end if
+          class default;m%status=-921;m%fail_step=step;exit
+          end select
+        class default;m%status=-922;m%fail_step=step;exit
+        end select
+      end if
     end do
     call system_clock(c1)
     if(crate>0_int64)m%wall_seconds=real(c1-c0,real64)/real(crate,real64)
