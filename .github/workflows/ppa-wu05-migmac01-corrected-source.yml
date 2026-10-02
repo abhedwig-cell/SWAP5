@@ -1,0 +1,22 @@
+name: MIGMAC01 corrected source typed carriers
+on:
+  push:
+    branches: [research/ppa-wu05-migmac01-covering-layer]
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/runtime/mod_fmr_macropore_configuration.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpm/test_ppa_wu05_migmac01_corrected_source_diagnostic.f90'
+      - 'tests/fpm/run_ppa_wu05_migmac01_corrected_source_diagnostic.sh'
+      - '.github/workflows/ppa-wu05-migmac01-corrected-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  corrected-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and replay frozen corrected source on O0 and O2
+        run: bash tests/fpm/run_ppa_wu05_migmac01_corrected_source_diagnostic.sh
