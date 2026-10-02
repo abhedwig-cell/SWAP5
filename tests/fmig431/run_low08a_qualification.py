@@ -45,15 +45,15 @@ with tempfile.TemporaryDirectory(prefix='low03a-') as folder:
     build=pathlib.Path(folder)/opt;build.mkdir()
     flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build)]
     carrier=json.loads((ROOT/'integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json').read_text())
-  member=next(m for m in carrier['members'] if m['path']=='SWAP/functions.f90')
-  raw=gzip.decompress(base64.b64decode(member['gzip_base64']))
-  if hashlib.sha256(raw).hexdigest()!=member['sha256']:raise RuntimeError('frozen source hash mismatch')
-  match=re.search(r'^\s*real\(8\) function afgen .*?^\s*end function afgen',raw.decode(),re.M|re.S|re.I)
-  if not match:raise RuntimeError('AFGEN extraction failed')
-  frozen=build/'frozen_b111_afgen.f90';frozen.write_text(re.sub(r'\bafgen\b','low05_b111_afgen',match.group(0),flags=re.I)+'\n')
-  frozen_obj=build/'frozen_b111_afgen.o'
-  subprocess.run(FC+flags+['-c',str(frozen),'-o',str(frozen_obj)],check=True,text=True,stdout=subprocess.DEVNULL)
-  objects=[str(frozen_obj)]
+    member=next(m for m in carrier['members'] if m['path']=='SWAP/functions.f90')
+    raw=gzip.decompress(base64.b64decode(member['gzip_base64']))
+    if hashlib.sha256(raw).hexdigest()!=member['sha256']:raise RuntimeError('frozen source hash mismatch')
+    match=re.search(r'^\s*real\(8\) function afgen .*?^\s*end function afgen',raw.decode(),re.M|re.S|re.I)
+    if not match:raise RuntimeError('AFGEN extraction failed')
+    frozen=build/'frozen_b111_afgen.f90';frozen.write_text(re.sub(r'\bafgen\b','low05_b111_afgen',match.group(0),flags=re.I)+'\n')
+    frozen_obj=build/'frozen_b111_afgen.o'
+    subprocess.run(FC+flags+['-c',str(frozen),'-o',str(frozen_obj)],check=True,text=True,stdout=subprocess.DEVNULL)
+    objects=[str(frozen_obj)]
     for p in sources:
       obj=build/(p.stem+'.o');objects.append(str(obj))
       subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,text=True)
