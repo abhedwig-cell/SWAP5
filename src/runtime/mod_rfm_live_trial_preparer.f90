@@ -36,7 +36,7 @@ module mod_rfm_live_trial_preparer
   type(rfm_wall_hydraulic_binding_result_t)::wall
   type(rfm_production_candidate_result_t)::candidate
  end type
- public::prepare_rfm_live_trial,clear_surface_hydraulic_memo
+ public::prepare_rfm_live_trial
 contains
  subroutine prepare_rfm_live_trial(accepted,config,forcing,view,constitutive,preflight,node_depth_cm,node_thickness_cm, &
       step_duration_day,tolerance,result,surface_memo)
