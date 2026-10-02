@@ -42,7 +42,7 @@ contains
     if (request%numerical%conductivity_implicit_mode /= 0) return
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
         request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
-        request%boundary%bottom_mode /= 3) return
+        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8) return
     if (request%step_duration <= 0.0_real64) return
 
     ! Pure legacy-call binding. These assignments mirror explicit request/configuration
