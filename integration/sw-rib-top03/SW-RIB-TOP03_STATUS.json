@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
-  "decision": "BASE_TEMPORAL_ACCEPTANCE_CONTRACT_FALSIFIED__CONCRETE_NUMERICAL_PREREQUISITE_BLOCKER__NO_PRODUCTION_ADMISSION",
+  "decision": "MICRORELIEF_PARTIAL_CONTACT_SUPPORTED__FLAT_SURFACE_TEMPORAL_BLOCKER_REFRAMED__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -70,6 +70,18 @@
       "source_postimage": "2d1b5be49d08b02c866e77e6ed865b2122e6b40e",
       "conclusion": "successfully executed O0/O2 probe; O0/O2 exact identity; preregistered acceptance route falsified",
       "production_code_changed": false
+    },
+    "microrelief_surface_probe": {
+      "preregistration": "integration/sw-rib-top03/TOP03_MICRORELIEF_SURFACE_PREREGISTRATION.md",
+      "result": "integration/sw-rib-top03/TOP03_MICRORELIEF_SURFACE_RESULT.json",
+      "decision": "integration/sw-rib-top03/TOP03_MICRORELIEF_SURFACE_DECISION.md",
+      "workflow_run": 36979646830,
+      "workflow_job": 110751025672,
+      "source_postimage": "7759895c0976856af2933e95e76a24b3989db7ca",
+      "sharp_limit_control": "PASS",
+      "O0_O2_exact_output": true,
+      "production_code_changed": false,
+      "conclusion": "Partial-contact amplitudes D=0.05, 0.10 and 0.25 cm each complete 20/20 tested paths through 16 substeps and satisfy the preregistered state+top+bottom contraction criterion for every tested window."
     }
   },
   "findings": [
@@ -143,11 +155,12 @@
     "typed external head forcing"
   ],
   "blockers": [
-    "The shared BASE exact-state temporal identity gate still returns huge() for non-identical full/half transient end states, so the real top-active fixture cannot be admitted under the unchanged policy.",
-    "The preregistered exact FAPP09 refinement probe (run 36975133856) falsifies the proposed bounded state+top+bottom full/half replacement: no tested window provides the required contracting sequence. At 0.0625 d the bottom-transfer discrepancy grows from 0.0090519551 to 0.0501560628 cm while state/top errors shrink; at 0.03125 d state, top and bottom discrepancies all grow under further refinement.",
-    "Refined paths also hit SW_SOLVE_RETRY_ADVISED/nonlinear failure before a complete finer oracle is available (0.25 d and 0.125 d at 4 substeps; 0.0625 d and 0.03125 d at 8 substeps). This is a numerical prerequisite blocker, not a receipt/commit defect."
+    "The existing production BASE temporal identity policy is still exact-state-only and therefore cannot accept transient dynamic-top full/half states.",
+    "The original flat-surface imposed-head fixture remains non-contracting/nonlinear under refinement and is not a valid basis for selecting a finite tolerance.",
+    "A physically smoothed partial-contact microrelief probe now supplies complete contracting refinement evidence, but the surface-geometry law and its application parameterization are research-only and not yet production-qualified.",
+    "Higher-stage evolution from partial to full wetting, Ribasim/SWAP surface-storage ownership, and an evidence-backed temporal error budget remain unqualified."
   ],
-  "next_action": "Keep PR #956 draft. Do not implement a finite BASE tolerance from the tested full/half route and do not weaken the physical fixture or ignore bottom throughput. Any continuation requires a separately preregistered numerical prerequisite that produces a trustworthy transient accuracy oracle for the unchanged dynamic-top problem. Only after that prerequisite is qualified may TOP03 resume live candidate receipt/replay/commit qualification.",
+  "next_action": "Keep PR #956 draft. Continue with the microrelief/partial-contact prerequisite: define an explicit surface-geometry contract, test stage evolution through partial-to-full wetting without changing the soil or lower boundary, and only then derive a bounded temporal acceptance budget from complete refinement evidence. Do not select a production D from the current mechanism sweep.",
   "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -167,25 +180,27 @@
       "explicit bounded profile and exfiltration rejection"
     ]
   },
-  "last_reconciled_head": "2d1b5be49d08b02c866e77e6ed865b2122e6b40e",
+  "last_reconciled_head": "1587e485495f025c2bf9a403ea9e0b5fb5737702",
   "checkpoint_commit": "4c164b087e11c110baeb7a56795d4a1ff109d1ab",
   "pending_tests": [
-    "successful real inundation candidate after a separately qualified temporal prerequisite",
+    "stage-evolution microrelief trajectory from partial toward full wetting",
+    "surface geometry/storage ownership contract with Ribasim",
+    "evidence-backed dynamic-top temporal state+top+bottom budget over qualified geometry envelope",
+    "successful real inundation candidate under qualified temporal prerequisite",
     "top-active wrong/correct receipt end-to-end",
     "scalar commit bypass with real top-active candidate",
     "same-origin changed top-head replay",
     "top-active stale-origin and exactly-once commit",
     "optional-composition/exfiltration admission failures",
-    "live Ribasim local-pond/secondary-storage geometry disjointness",
     "canonical current-source reconciliation and admission"
   ],
   "resumption_review": {
-    "branch_head": "2d1b5be49d08b02c866e77e6ed865b2122e6b40e",
+    "branch_head": "1587e485495f025c2bf9a403ea9e0b5fb5737702",
     "canonical_head": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
     "source_reconciliation_performed": true,
-    "relevant_reconciliation": "Shared mod_transaction_reference and mod_reference_richards_temporal_indicator blobs are byte-identical to current canonical. The serialized backend has later canonical additions, but its BASE exact-state temporal identity behavior remains unchanged. Historical TOP03 qualification was not promoted across changed dependencies.",
-    "alternative_temporal_route": "Existing Reference Richards temporal certificate remains outside the dynamic-top boundary envelope and therefore cannot authorize this fixture.",
-    "review_record": "integration/sw-rib-top03/TOP03_BASE_TEMPORAL_ACCEPTANCE_DECISION.md",
+    "relevant_reconciliation": "Current TOP03 source remains on the dedicated branch. Shared exact-state transaction acceptance is unchanged. The microrelief work is test-only and does not mutate production physics or admitted transaction semantics.",
+    "alternative_temporal_route": "Flat-surface finite full/half acceptance remains falsified. Partial-contact geometry now provides a new refinement oracle candidate, but no finite production tolerance has been selected.",
+    "review_record": "integration/sw-rib-top03/TOP03_MICRORELIEF_SURFACE_DECISION.md",
     "production_admission": false
   },
   "temporal_research": {
@@ -326,5 +341,18 @@
     "any_preregistered_window_passes": false,
     "strongest_complete_window_day": 0.0625,
     "reason": "Two successive complete refinement pairs exist, but relevant bottom-transfer discrepancy increases by about 5.54x; the 0.03125 d sequence is non-contracting in state, top and bottom metrics."
+  },
+  "microrelief_surface_research": {
+    "status": "SUPPORTED_BOUNDED_RESEARCH_DIRECTION",
+    "run": 36979646830,
+    "source_postimage": "7759895c0976856af2933e95e76a24b3989db7ca",
+    "sharp_limit_control": true,
+    "O0_O2_exact_output": true,
+    "full_contact_D_0_02_complete_paths": "10/20",
+    "partial_contact_D_0_05_complete_paths": "20/20",
+    "partial_contact_D_0_10_complete_paths": "20/20",
+    "partial_contact_D_0_25_complete_paths": "20/20",
+    "interpretation": "The supported mechanism is partial areal hydraulic contact / reduced contact conductance, not merely a lower representative surface head.",
+    "production_qualified": false
   }
 }
