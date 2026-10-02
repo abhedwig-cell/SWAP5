@@ -14,6 +14,7 @@ def main():
     ap.add_argument('--build',type=Path,required=True)
     ap.add_argument('--compiler',default='gfortran')
     ap.add_argument('--controls-only',action='store_true')
+    ap.add_argument('--extended',action='store_true')
     args=ap.parse_args(); build=args.build.resolve();build.mkdir(parents=True,exist_ok=True)
     os.chdir(ROOT)
     stub=build/'reference_stubs.f90'
@@ -21,9 +22,10 @@ def main():
                     'tests/fsi/fsi04_real_headcalc_stubs.f90',str(stub)],check=True)
     text=stub.read_text()
     # Only unused legacy capacity is expanded; all scientific grids are explicit request data.
-    block='''module MOD_grid
+    capacity=256 if args.extended else 64
+    block=f'''module MOD_grid
   implicit none
-  integer, parameter :: numnod = 64
+  integer, parameter :: numnod = {capacity}
   integer :: grid_i
   real(8), parameter :: z(numnod) = [(-0.05d0*(grid_i-0.5d0),grid_i=1,numnod)]
   real(8), parameter :: dz(numnod) = 0.05d0
@@ -69,7 +71,12 @@ end module MOD_grid
     # independent saturated Darcy controls, including arithmetic-interface diagnostic
     for L,R,m,mean,mode in itertools.product([0.02,0.2],[0.05,0.5,1.0],[1,2,4,8],[6,1],[1,2]):
         cases.append(dict(mode=mode,L=L,R=R,m=m,ns=1,wet=0,mean=mean,analytic=1))
-    if not args.controls_only:
+    if args.extended:
+        cases=[]
+        for L,R,m,ns in itertools.product([0.02,0.2],[0.5,1.0],[4,8,16,32],[64,128,256,512]):
+            for mode,wet in [(1,0),(1,1),(2,0)]:
+                cases.append(dict(mode=mode,L=L,R=R,m=m,ns=ns,wet=wet,mean=6,analytic=0))
+    elif not args.controls_only:
         for m,ns in itertools.product([1,2,4,8],[8,16,32,64]):
             cases.append(dict(mode=0,L=0.0,R=0.0,m=m,ns=ns,wet=0,mean=6,analytic=0))
         for L,R,m,ns in itertools.product([0.02,0.2],[0.05,0.5,1.0],[1,2,4,8],[8,16,32,64]):

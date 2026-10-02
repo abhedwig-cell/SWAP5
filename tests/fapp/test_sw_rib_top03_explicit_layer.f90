@@ -170,6 +170,12 @@ program top03_explicit_layer
     qinterface=top_input-skin_delta
     write(*,'(A,1X,I0,17(1X,ES24.16),1X,I0)')'EVENT',e,top_input,bottom_out,base_delta,skin_delta, &
          request%base_state%ponding_depth,mass,max_mass,qinterface,H,parent_theta,parent_head,iterations
+    if(nlayer>0)then
+      call hyd%evaluate(request%base_state%pressure_head,theta0,conductivity,capacity,dkdh)
+      write(*,'(A,1X,I0,4(1X,ES24.16))')'LAYER',e,minval(request%base_state%pressure_head(1:nlayer)), &
+           maxval(request%base_state%pressure_head(1:nlayer)),minval(conductivity(1:nlayer))/klayer, &
+           maxval(conductivity(1:nlayer))/klayer
+    end if
   end do
   if(analytic==1)write(*,'(A,3(1X,ES24.16))')'ANALYTIC',jexact,head_error,flux_error
   write(*,'(A)')'COMPLETE'
