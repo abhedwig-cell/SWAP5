@@ -3,6 +3,7 @@ program benchmark_bartholomeus_e2e
  use MOD_grid,only:numnod,z,dz,disnod
  use mod_fmr_runtime_core
  use mod_fmr_serialized_reference_backend
+ use mod_transaction_reference,only:TX_TEMPORAL_MODEL_CERTIFICATE
  use mod_fmr_production_application_bootstrap
  use mod_fmr_serialized_multiswap_runtime,only:fmr_serialized_column_result_t
  use mod_b110_default_mvg_provider
@@ -188,5 +189,11 @@ contains
   view%active_nodes=numnod;view%pressure_head=value%tiles(1)%initial_state%pressure_head;view%water_content=value%tiles(1)%initial_state%water_content
   call evaluate_macro_feddes_drought_uptake(rp,view,rq,rf,rd);value%tiles(1)%base_forcing%root_extraction_sink=rf%root_extraction_sink
   value%tiles(1)%base_forcing%root_extraction_sink(4)=.005_real64
+  value%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  value%tiles(1)%initial_right_derivative=spread(0._real64,1,numnod)
+  value%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+  value%numerical%transaction%temporal_tolerance=1._real64
+  value%numerical%model_temporal_indicator_budget_available=.true.
+  value%numerical%model_temporal_indicator_budget=.01_real64
  end subroutine
 end program
