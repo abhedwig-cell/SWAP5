@@ -1,23 +1,22 @@
 {
   "work_unit": "PPA-WU05-A27",
   "baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-  "checkpoint_commit": "a806d3f0d1cc9d3ff65a1c3f437c1ea005309b18",
+  "checkpoint_commit": "d8c2b96daed5f4732d7b65354b5e1e588c7267f7",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "ABC01_SCREEN_COMPLETED_C_RUNTIME_TRANSITION_BLOCKED_DEP01_QUALIFIED_BRANCH_ONLY",
-  "next_action": "Run a narrow production-C wet-to-dry transition attribution from the accepted R2/G1/B01 wet state; quantify endpoint release source and compare source-on/source-off Reference solves. Keep pressure-aware mixed-wall research separate. Then run a zero-waste RFM sorptivity-cost attribution without changing ABC01.",
+  "status": "ABC01_QUALIFIED_RESEARCH_RESULT_PERFORMANCE_ATTRIBUTION_ACTIVE",
+  "next_action": "Profile RFM trial-preparation and constitutive overhead on the qualified DEP01/DEP02/DEP03 production route before any further physical tuning. Preserve the pressure-aware research seam as separate blocked research.",
   "recovery_point": "docs/audits/PPA_WU05A27_ABC01_RESULT.md",
   "blockers": [
-    "Production C completes only 8/32 ABC01 cases; 24/32 fail later in runtime with solver rejections and no admission/temporal/mass rejection.",
-    "Pulsed C cases fail reproducibly at the first dry interval after rain cessation; endpoint-release source transition is not yet causally isolated.",
-    "Comparator A in ABC01 is invalid as configured because the ordinary base carrier external full/half temporal hook requires exact identity; A must use a separately qualified Reference temporal route.",
-    "C is 3.69x-5.18x slower than B across the eight successful single-run overlap cases at the preregistered 64-panel RFM configuration; no speedup claim is supported.",
-    "DEP01 live-layout plus restored quantitative RFM temporal metric is qualified on the A27 branch but not canonically admitted.",
-    "Pressure-aware moving-contact research remains independently blocked by its retained refinement failures."
+    "Qualified ABC01 shows repaired RFM C is hydrologically E1 in all 29 jointly completed B/C cases, but current RFM is about 4.3-5.3x slower than standard macropore in the preregistered CI timing sample.",
+    "The current slowdown is not explained by additional Richards nonlinear iterations; RFM trial-preparation/constitutive overhead is not yet decomposed.",
+    "DEP01, DEP02 and DEP03 are qualified branch-local shared-backend repair candidates and are not canonically admitted by A27.",
+    "Matrix-only A remains invalid in ABC01 because the generic base-state full/half temporal path is exact-identity based; no RFM-versus-matrix speed claim is available.",
+    "Pressure-aware moving-contact research remains separately blocked by retained refinement failures."
   ],
-  "last_reconciled_head": "a806d3f0d1cc9d3ff65a1c3f437c1ea005309b18",
+  "last_reconciled_head": "d8c2b96daed5f4732d7b65354b5e1e588c7267f7",
   "last_reconciled_upstream": "f7c261a7f059c91d4a0aac16e378351f293aa080",
   "authority_paths": [
     "AGENTS.md",
@@ -37,7 +36,8 @@
     "docs/audits/PPA_WU05A27_ABC01_RESULT.md",
     "docs/audits/PPA_WU05A27_ABC01_DEP01_PREREGISTRATION.md",
     "docs/audits/PPA_WU05A27_ABC01_DEP01_RECONCILIATION_ADDENDUM.md",
-    "docs/audits/PPA_WU05A27_ABC01_DEP01_RESULT.md"
+    "docs/audits/PPA_WU05A27_ABC01_DEP01_RESULT.md",
+    "docs/audits/PPA_WU05A27_ABC01_STATUS.json"
   ],
   "test_paths": [
     "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
@@ -75,8 +75,8 @@
     "research/rfm/a27"
   ],
   "interfaces_changed": [],
-  "production_claim": "No A27 production speedup or broad hydrologic-equivalence claim. Branch-local DEP01 repairs make admitted RFM live execution reachable and preserve the previously qualified quantitative RFM temporal metric, but are not canonically admitted. ABC01 shows E1 only in 8 completed B/C cases; C runtime stability and performance are blockers.",
-  "research_result": "ABC01 production screen: B completes29/32, C8/32; all8 overlap cases are E1. C fails24/32 after admission, entirely through solver rejection; pulsed regimes fail at the first dry step after rain cessation except near-saturated R3. Successful C cases are3.69x-5.18x slower than B in single-run CI timing at64 sorptivity panels. Comparator A is invalid under the chosen base full/half temporal policy. DEP01 is branch-locally qualified on current-canonical backend preservation.",
+  "production_claim": "ABC01 is a qualified research result on the branch: B completes 29/32, repaired production RFM C 30/32, and all 29 jointly completed pairs are E1. RFM is not faster: C takes about 4.3-5.3x B wall time in the preregistered CI timing sample. No portable speed claim or canonical admission is made.",
+  "research_result": "ABC01 qualified after branch-local DEP01 live-layout, DEP02 continuous RFM full/half temporal metric and DEP03 zero-supply continuation repairs. The primary B/C hydrologic result is 29/29 jointly completed cases E1. Performance proposition fails in the current implementation; next work is profiler-level decomposition of RFM trial preparation and constitutive quadrature.",
   "source_repair_qualified": true,
   "canonical_admitted": false,
   "qualification_scopes": {
@@ -98,20 +98,22 @@
       "production_eligible": false
     },
     "full_a27_benchmark": {
-      "phase": "ABC01 production screen completed",
-      "run_id": 36991919530,
-      "postimage": "41daf2c62f9c74a0310a1443f1cf92000c7565d3",
-      "artifact_id": 11220260500,
-      "result_counts": {
-        "E1": 8,
-        "C_RUNTIME_FAILED": 21,
-        "B_RUNTIME_FAILED": 3
-      },
+      "phase": "ABC01 QUALIFIED_RESEARCH_RESULT_WITH_SHARED_REPAIR_CANDIDATES",
+      "qualified_postimage": "586cb21a44ff24385718f160adf9d5a6e65e409e",
+      "run_id": 36991992438,
+      "artifact_id": 11220220713,
+      "artifact_sha256": "a71255570a77cfb3ed111cf030529cec8506dca4838f92d192fff21fad732063",
+      "cases": 32,
       "B_completed": 29,
-      "C_completed": 8,
-      "A_valid": false,
+      "C_completed": 30,
+      "joint_completed": 29,
+      "E1": 29,
+      "E0": 0,
+      "E2": 0,
+      "E3": 0,
+      "performance": "C about 4.3-5.3x B wall time in preregistered CI timing sample",
       "production_speedup_claim": false,
-      "next": "wet-to-dry C transition attribution"
+      "next": "PROFILE_RFM_TRIAL_PREPARATION_AND_CONSTITUTIVE_OVERHEAD"
     },
     "bounded_cohort_research": {
       "code_postimage": "8ff6309a7eba98ee9cd66ef79da0bb7c5da0a5a2",

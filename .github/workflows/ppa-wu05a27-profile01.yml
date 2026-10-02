@@ -1,0 +1,20 @@
+name: PPA-WU05-A27 PROFILE01 RFM preparation overhead
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Profile RFM preparation
+        run: |
+          mkdir -p /tmp/a27-profile01
+          bash research/rfm/a27/run_profile01.sh /tmp/a27-profile01
+      - name: Upload profile evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a27-profile01
+          path: /tmp/a27-profile01
