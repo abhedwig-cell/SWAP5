@@ -6,6 +6,8 @@ on:
     paths:
       - 'src/process/macropore/mod_macropore_dynamic_shrinkage.f90'
       - 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
+      - 'tests/fpm/test_ppa_wu05_migmac02_provider_geometry.f90'
+      - 'tests/fpm/run_ppa_wu05_migmac02_provider_geometry.sh'
       - 'tests/fpm/test_ppa_wu05_migmac02_dynamic_shrinkage.f90'
       - 'tests/fpm/run_ppa_wu05_migmac02_dynamic_shrinkage.sh'
       - '.github/workflows/ppa-wu05-migmac02-dynamic-shrinkage.yml'
@@ -19,5 +21,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: Run O0/O2 pure operator gate
         run: bash tests/fpm/run_ppa_wu05_migmac02_dynamic_shrinkage.sh
+      - name: Exercise active provider geometry seam O0/O2
+        run: bash tests/fpm/run_ppa_wu05_migmac02_provider_geometry.sh
       - name: Compile provider seam and preserve MIGMAC01 source transaction
         run: bash tests/fpm/run_ppa_wu05_migmac01_corrected_source_diagnostic.sh
