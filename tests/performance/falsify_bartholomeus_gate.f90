@@ -4,6 +4,7 @@ program falsify_bartholomeus_gate
  use mod_bartholomeus_parameter_contract
  use mod_bartholomeus_factor_provider,only:evaluate_bartholomeus_factors_from_state
  use mod_bartholomeus_waterfilm_provider,only:BARTHOLOMEUS_WATERFILM_REFERENCE
+ use mod_bartholomeus_no_stress_gate,only:bartholomeus_macro_supply_bound_no_stress
  implicit none
  integer,parameter::N=3
  real(real64),parameter::heads(11)=real([-1,-3,-5,-10,-20,-40,-75,-100,-200,-500,-1000],real64)
@@ -15,10 +16,10 @@ program falsify_bartholomeus_gate
  type(BartholomeusCropParameters)::c
  real(real64)::wr(N),w0(N),top,gfpmin,minfac
  real(real64),allocatable::fac(:)
- integer::ih,it,ir,ic,total,nostress
+ integer::ih,it,ir,ic,total,nostress,skips,false_skips
  logical::ok
  call setup(v,d,c)
- total=0;nostress=0
+ total=0;nostress=0;skips=0;false_skips=0
  do ih=1,size(heads);do it=1,size(temps);do ir=1,size(roots);do ic=1,size(ctops)
   v%pressure_head_cm=heads(ih);v%soil_temperature_k=temps(it)
   call theta_from_head(heads(ih),v%water_content)
@@ -27,11 +28,16 @@ program falsify_bartholomeus_gate
   if(.not.ok)error stop 'reference'
   total=total+1;minfac=minval(fac)
   if(minfac>=1._real64-1.e-14_real64)nostress=nostress+1
+  if(bartholomeus_macro_supply_bound_no_stress(v,d,c,w0,top))then
+   skips=skips+1;if(minfac<1._real64-1.e-14_real64)false_skips=false_skips+1
+  endif
   gfpmin=minval(d%soil(:)%saturated_water_content-v%water_content)
   write(*,'(a,4(es14.6,1x),a,es14.6)')'GATE_ROW ',heads(ih),temps(it),roots(ir),gfpmin,' CTOP ',top,' MINFAC ',minfac
  enddo;enddo;enddo;enddo
  print '(a,i0)','GATE_TOTAL=',total
  print '(a,i0)','GATE_NOSTRESS=',nostress
+ print '(a,i0)','GATE_BOUND_SKIPS=',skips
+ print '(a,i0)','GATE_BOUND_FALSE_SKIPS=',false_skips
 contains
  subroutine setup(v,d,c)
   type(bartholomeus_runtime_view_t),intent(out)::v;type(BartholomeusImmutableDataset),intent(out)::d
