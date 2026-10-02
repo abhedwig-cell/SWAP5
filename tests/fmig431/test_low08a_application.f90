@@ -74,7 +74,12 @@ program test_low08a_application
   columns(1)%parameter_ref=1_int64;columns(1)%state_handle=1_int64;columns(1)%forcing_handle=1_int64
   columns(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   call backend%initialize(top)
-  call fmr_new_b110_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok)
+  block
+    real(real64) :: previous(numnod)
+    previous=0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(states(1),columns(1)%column_id, &
+         cfg%tiles(1)%initial_state,T0,ok,previous)
+  end block
   call require(ok,'committed state')
   call states(1)%capture_checkpoint(cp,ok)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
