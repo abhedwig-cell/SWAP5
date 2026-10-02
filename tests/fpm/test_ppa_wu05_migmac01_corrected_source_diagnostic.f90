@@ -399,5 +399,175 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
   if(result%vertical_flux%max_local_residual_rate>1.0e-10_real64)error stop 'MIGMAC01 active vertical residual'
   if(.not.macro%same_values(macro_snapshot))error stop 'MIGMAC01 active accepted macro mutated'
 
-  print '(a)', 'PPA_WU05_MIGMAC01_CORRECTED_SOURCE=DIRECT_ONLY_NOT_TRANSACTION_QUALIFIED'
+  call exercise_source_transaction()
+
+  print '(a)', 'PPA_WU05_MIGMAC01_CORRECTED_SOURCE=SOURCE_TRANSACTION_QUALIFIED'
+
+contains
+
+  subroutine exercise_source_transaction()
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr_b110_physical_parameters_t), target :: fparams
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(fmr_b110_physical_state_t) :: initial
+    type(macropore_reduction_continuation_t) :: reduction_initial
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(canonical_numerical_config_t) :: numerical
+    type(kernel_committed_state_t) :: committed, restored
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_candidate_state_t) :: candidate, replay_candidate
+    type(kernel_result_t) :: kres, replay_result
+    type(kernel_diagnostics_t) :: kdiag, replay_diag
+    type(kernel_persistence_snapshot_t) :: persisted
+    class(transaction_state_t), allocatable :: before_state, after_state, candidate_state, replay_state, restored_state
+    logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
+    integer :: commit_status, persistence_status
+    integer(int64), parameter :: lineage=505901_int64, layout_id=505001_int64
+
+    fparams%parameter_set_id=lineage
+    fparams%active_nodes=numnod
+    allocate(fparams%z(numnod),fparams%dz(numnod),fparams%node_distance(numnod),fparams%cofgen(24,numnod))
+    fparams%z=z
+    fparams%dz=dz
+    fparams%node_distance=disnod(1:numnod)
+    fparams%cofgen=cofgen
+    fparams%bottom_mode=2
+    fparams%swkimpl=0
+    fparams%swkmean=1
+    fparams%swsophy=0
+    fparams%max_iterations=64
+    fparams%max_backtracking=24
+    fparams%min_step_duration=1.0e-12_real64
+    fparams%compartment_balance_tolerance=tol
+    fparams%total_balance_tolerance=tol
+    fparams%head_abs_tolerance=tol
+    fparams%head_rel_tolerance=tol
+    fparams%ponding_tolerance=tol
+    fparams%macropore_active=.true.
+    call prepare_fmr_b110_default_mvg(fparams,prepared)
+    if(.not.prepared)error stop 'MIGMAC01 source transaction MVG'
+    allocate(fparams%macropore)
+    fparams%macropore=source_config
+    if(.not.fparams%macropore%valid_for_nodes(numnod))error stop 'MIGMAC01 source transaction config'
+
+    initial%active_nodes=numnod
+    allocate(initial%pressure_head(numnod),initial%water_content(numnod),initial%macropore)
+    initial%pressure_head=heads
+    initial%water_content=water
+    initial%ponding_depth=source_scalars(3)
+    initial%groundwater_level=source_scalars(4)
+    initial%macropore=macro
+
+    reduction_initial=macropore_reduction_continuation_t(level=0,stable_steps=0,previous_dt=dt)
+    call fmr_new_b110_macropore_reduction_committed_state(committed,lineage,initial,reduction_initial, &
+         source_scalars(1),state_ok)
+    if(.not.state_ok)error stop 'MIGMAC01 source transaction committed init'
+
+    allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod), &
+         forcing%root_extraction_sink(numnod))
+    forcing%top_flux=end_scalars(3)
+    forcing%top_head=0.0_real64
+    forcing%bottom_flux=end_scalars(4)
+    forcing%bottom_head=-100.0_real64
+    forcing%drainage_flux_by_level=qdra
+    forcing%subsurface_irrigation_source=qssdi
+    forcing%root_extraction_sink=qrot
+
+    column%column_id=lineage
+    column%template_id=lineage
+    column%parameter_ref=lineage
+    column%state_handle=1_int64
+    column%forcing_handle=1_int64
+    column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+    template%template_id=lineage
+    template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
+    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION
+    template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+
+    numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+    numerical%transaction%temporal_tolerance=1.0e-2_real64
+    numerical%transaction%mass_tolerance=1.0e-8_real64
+    numerical%transaction%retry_scale=0.5_real64
+    numerical%transaction%max_retries=40
+    numerical%max_committed_substeps=64
+
+    policy%source_reduction_retry_enabled=.false.
+    call backend%initialize(top)
+    call backend%configure_macropore_policy(policy,policy_ok)
+    if(.not.policy_ok)error stop 'MIGMAC01 source transaction policy'
+
+    call committed%capture_checkpoint(checkpoint,available)
+    if(.not.available)error stop 'MIGMAC01 source transaction checkpoint'
+    call committed%snapshot(before_state,available)
+    if(.not.available)error stop 'MIGMAC01 source transaction before state'
+
+    call backend%run_trial(column,template,fparams,committed,forcing,numerical,source_scalars(1), &
+         source_scalars(1)+dt,checkpoint,kres,candidate,kdiag,trusted_prepared_parameters=.true.)
+    write(*,'(*(g0))') 'MIGMAC01_SOURCE_TRANSACTION|STATUS=',kres%status,'|COMPLETED=',kres%completed, &
+         '|MASS=',kres%mass%residual,'|SOLVER_REJ=',kdiag%solver_rejections, &
+         '|TEMP_REJ=',kdiag%temporal_rejections,'|MASS_REJ=',kdiag%mass_rejections
+    if(.not.kres%completed .or. .not.candidate%ready())error stop 'MIGMAC01 source transaction trial'
+    if(.not.kres%mass%complete .or. abs(kres%mass%residual)>1.0e-8_real64) &
+         error stop 'MIGMAC01 source transaction mass'
+
+    call committed%snapshot(after_state,available)
+    if(.not.available .or. .not.same_source_state(before_state,after_state)) &
+         error stop 'MIGMAC01 source transaction candidate leaked'
+    call candidate%snapshot(candidate_state,available)
+    if(.not.available)error stop 'MIGMAC01 source transaction candidate snapshot'
+
+    call backend%discard_trial_candidate(candidate,kdiag)
+    if(candidate%ready())error stop 'MIGMAC01 source transaction discard'
+    call committed%snapshot(after_state,available)
+    if(.not.available .or. .not.same_source_state(before_state,after_state)) &
+         error stop 'MIGMAC01 source transaction discard mutated committed'
+
+    call backend%run_trial(column,template,fparams,committed,forcing,numerical,source_scalars(1), &
+         source_scalars(1)+dt,checkpoint,replay_result,replay_candidate,replay_diag,trusted_prepared_parameters=.true.)
+    if(.not.replay_result%completed .or. .not.replay_candidate%ready())error stop 'MIGMAC01 source transaction replay'
+    call replay_candidate%snapshot(replay_state,available)
+    if(.not.available .or. .not.same_source_state(candidate_state,replay_state)) &
+         error stop 'MIGMAC01 source transaction replay identity'
+
+    call backend%commit_trial_candidate(committed,replay_candidate,replay_diag,did_commit,commit_status)
+    if(.not.did_commit .or. commit_status/=0)error stop 'MIGMAC01 source transaction commit'
+    call committed%snapshot(after_state,available)
+    if(.not.available .or. .not.same_source_state(replay_state,after_state)) &
+         error stop 'MIGMAC01 source transaction commit publication'
+
+    call export_kernel_committed_state(committed,layout_id,persisted,persisted_ok,persistence_status)
+    if(.not.persisted_ok .or. persistence_status/=KERNEL_PERSISTENCE_OK) &
+         error stop 'MIGMAC01 source transaction persistence export'
+    call restore_kernel_committed_state(persisted,layout_id,restored,restored_ok,persistence_status)
+    if(.not.restored_ok .or. persistence_status/=KERNEL_PERSISTENCE_OK) &
+         error stop 'MIGMAC01 source transaction persistence restore'
+    call restored%snapshot(restored_state,available)
+    if(.not.available .or. .not.fmr_restart_state_matches_template(restored_state,template)) &
+         error stop 'MIGMAC01 source transaction restart layout'
+    if(.not.same_source_state(after_state,restored_state))error stop 'MIGMAC01 source transaction restart identity'
+
+    print '(a)', 'PPA_WU05_MIGMAC01_SOURCE_REJECT_REPLAY=PASS'
+    print '(a)', 'PPA_WU05_MIGMAC01_SOURCE_COMMIT=PASS'
+    print '(a)', 'PPA_WU05_MIGMAC01_SOURCE_RESTART=PASS'
+  end subroutine exercise_source_transaction
+
+  logical function same_source_state(a,b) result(same)
+    class(transaction_state_t),intent(in)::a,b
+    same=.false.
+    select type(x=>a)
+    class is(fmr_b110_physical_state_t)
+      select type(y=>b)
+      class is(fmr_b110_physical_state_t)
+        if(x%active_nodes/=y%active_nodes)return
+        if(.not.allocated(x%pressure_head).or..not.allocated(y%pressure_head))return
+        if(.not.allocated(x%water_content).or..not.allocated(y%water_content))return
+        if(.not.allocated(x%macropore).or..not.allocated(y%macropore))return
+        same=all(x%pressure_head==y%pressure_head).and.all(x%water_content==y%water_content).and. &
+             x%ponding_depth==y%ponding_depth.and.x%groundwater_level==y%groundwater_level.and. &
+             x%macropore%same_values(y%macropore)
+      end select
+    end select
+  end function same_source_state
+
 end program test_ppa_wu05_migmac01_corrected_source_diagnostic
