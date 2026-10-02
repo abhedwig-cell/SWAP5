@@ -2,7 +2,7 @@
 
 Date: 2026-10-01
 
-Status: `QUALIFIED_TRANSACTION_COMPOSITION_ACTIVE_E2E_PENDING`
+Status: `QUALIFIED_TRANSACTION_COMPOSITION_SYNTHETIC_ACTIVE_FIXTURE_FALSIFIED`
 
 Qualified postimage:
 `f88c1fc3106b88fec60edb93fdc56f331ad75dff`
@@ -36,3 +36,21 @@ transfer with:
 - replay/restart identity.
 
 No tolerance relaxation or direct-surface shortcut is permitted.
+
+
+## Active fixture falsification
+
+Run `36932614330` reached and converged Reference Richards after the covered-route ownership
+repair. The synthetic fixture started the covering cell at `h(2)=+0.25 cm`, but the accepted
+Richards state was:
+
+`h(2) = -66.629577345080222 cm`.
+
+Consequently the exact B1.11 condition `h(IcTopMp-1) > 0` was false at acceptance and the
+covered transfer was exactly zero. This is not a covering-operator failure. It falsifies this
+synthetic state as an active covering-layer authority fixture.
+
+Per the preregistered no-tuning rule, MIGMAC01 will not increase the synthetic starting head,
+forcing, timestep or tolerances merely to obtain a positive transfer. The remaining admission
+blocker is now a source-backed SWAP 4.3.1 state/interval with `IcTopMp>1` and positive accepted
+covering-cell head.
