@@ -257,8 +257,12 @@ contains
     context_required = model%attempt_context_required()
     call committed%clone(checkpoint)
     if (context_required) call model%capture_attempt_context(checkpoint_context)
-    storage0 = model%storage(checkpoint)
     call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
+    if (storage_start_complete) then
+      storage0 = model%storage(checkpoint)
+    else
+      storage0 = ieee_value(0.0_real64, ieee_quiet_nan)
+    end if
     attempt_dt = t1 - t0
 
     do retry_index = 0, policy%max_retries
@@ -511,8 +515,12 @@ contains
       end if
 
       if (context_required) call model%capture_attempt_context(accepted_context)
-      storage_candidate = model%storage(candidate_state)
       call model%storage_accounting_status(candidate_state, storage_end_complete, end_missing_mask)
+      if (storage_end_complete) then
+        storage_candidate = model%storage(candidate_state)
+      else
+        storage_candidate = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       mass_residual = storage_candidate - storage0 - (outcome%mass_in - outcome%mass_out)
       result%full_mass_residual = mass_residual
       result%accepted_mass_residual = mass_residual
