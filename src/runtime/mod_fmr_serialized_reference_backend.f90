@@ -3166,6 +3166,7 @@ contains
       self%last_observation%drainage_response_window_signed_exchange_native = &
            self%drainage_response_window_signed_exchange_native
     end if
+    if (self%bottom_mode == 8) write(*,'(a,1x,l1,1x,i0,1x,es24.16)') 'LOW08A_ADVANCE_PREMASS',solve_result%converged,solve_result%status,solve_result%bottom_flux
     outcome%bottom_outward_exchange_native = -solve_result%bottom_flux * step_duration
     outcome%terminal_bottom_outward_flux_native = -solve_result%bottom_flux
     if (.not. ieee_is_finite(outcome%bottom_outward_exchange_native) .or. &
