@@ -86,6 +86,19 @@ program test_low03_typed_solver
     call solver%solve(request,ws,result)
     if(result%status/=SW_SOLVE_CONVERGED)then
       print *, 'FAILED CASE',j,flag,ir,ie,result%status,trim(result%diagnostics%route)
+      print *, 'ITER/RESIDUAL',result%diagnostics%nonlinear_iterations,maxval(abs(ws%richards%residual)), &
+            sum(ws%richards%residual),ws%state_binding%kmean(n+1)
+      print *, 'RESIDUAL VECTOR',ws%richards%residual
+      boundary_saved=request%boundary
+      request%boundary%bottom_mode=5
+      request%boundary%bottom_external_resistance_days=0._real64
+      request%boundary%bottom_include_half_cell=.true.
+      request%boundary%bottom_flux=0._real64
+      request%boundary%bottom_head=aq-(p%z(n)-.5_real64*p%dz(n))
+      call solver%solve(request,ws5,head5)
+      print *, 'SAME-FIXTURE MODE5',head5%status,head5%diagnostics%nonlinear_iterations, &
+            maxval(abs(ws5%richards%residual)),sum(ws5%richards%residual)
+      request%boundary=boundary_saved
       error stop 'typed3 did not converge'
     end if
     if(flag==0)then
