@@ -181,3 +181,8 @@ Historical selector rows above retain their recorded snapshot. Later canonical a
 ## Central SWBOTB=1 shared prerequisite registration
 
 F-MIG431-LOWGWL01-P0 registers the shared Richards/provider/candidate-mass prerequisite after LOW05-A closure. Mode1 is not a simple mode5 application adapter: in-profile NN selection and saturated-node reconstruction differ from below-profile head closure. The [preregistration](../migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md) records scope, held-fixed authorities and mandatory gates. Persisted local O0/O2 negative diagnosis proves public mode1 remains fail-closed and a direct, deliberately unguarded call reads beyond the exact active-node typed geometry. This is not production qualification or mode1 admission. Modes1/3/8 remain open, with1 next. No production source, ABI, transaction, restart or groundwater owner changed.
+
+
+## User priority decision, 2026-10-02
+
+SWBOTB=1 and F-MIG431-LOWGWL01-P0 are parked by explicit user decision. Earlier statements that1 is next are superseded for scheduling only. Existing source/negative diagnostic evidence and branch remain intact. Mode1 is still not migrated or admitted and is not declared obsolete or scientifically falsified. Active next review order is3, then8. Do not claim complete lower-boundary migration while1 is parked. The mode1 status record is the recovery authority.

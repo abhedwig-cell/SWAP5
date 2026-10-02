@@ -1,6 +1,6 @@
 # F-MIG431-LOWGWL01-P0: shared Richards prerequisite
 
-Status: centrally registered prerequisite; no SWBOTB=1 production admission.
+Status: PARKED_BY_USER_DECISION on 2026-10-02; no active implementation and no SWBOTB=1 production admission.
 Baseline: `27b271c2f3d1ea54e0110f56b73400e3b6935e11` on integration/f-ci-canonical.
 Workstream: central F-MIG431 lower-boundary migration.
 Official sole branch: `work/f-mig431-lowgwl01-p0-shared-richards-authority`.
@@ -8,7 +8,7 @@ Future application unit LOWGWL01-A is not issued. LOW01-A already denotes admitt
 
 ## Reconcile and falsification
 
-LOW05-A is closed through PR#974. SWBOTB=1 remains the next larger line before 3 and 8. It is not a bounded application adapter over existing mode5. Source-authority carrier `integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json` contains the lossless corrected SWAP4.3.1 B1.11 sources. Verify every member hash before extraction. Full corrected-member manifest: `docs/performance/evidence/F-PE19_B1_11_source_manifest.sha256`. No source re-upload is required.
+LOW05-A is closed through PR#974. Historical preregistration order was SWBOTB=1 before 3 and 8. The user parked mode1 on 2026-10-02; current active sequence is 3, then8. It is not a bounded application adapter over existing mode5. Source-authority carrier `integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json` contains the lossless corrected SWAP4.3.1 B1.11 sources. Verify every member hash before extraction. Full corrected-member manifest: `docs/performance/evidence/F-PE19_B1_11_source_manifest.sha256`. No source re-upload is required.
 
 B1.11 readswap.f90:851-873 reads DATE1/GWLEVEL in cm, bounds [-10000,1000], overlap check, and rejects any supplied GWLEVEL above the fifth compartment lower face. Ordinary migration must preserve that geometry/domain guard. Headcalc.f90:94-129 has a higher-groundwater special top branch, but that branch is outside this ordinary parser-admissible slice; it must not be admitted accidentally.
 
@@ -43,3 +43,7 @@ Invariants: solver returns candidates only; rejected trials do not alter committ
 ## Recovery
 
 Read `integration/audits/F-MIG431-LOWGWL01-P0_STATUS.json` first. Runner `tests/fmig431/run_lowgwl01_feasibility.py` builds a fresh isolated closure at O0/O2 with bounds/FPE checks; its support fixture is FSI04, not whole-model E2E evidence. The raw diagnostic intentionally bypasses the public guard and must never be exported as production use. Central status will record the exact persisted postimage and result after replay. No production sources are changed by this registration.
+
+## Parking decision, 2026-10-02
+
+The user explicitly parked SWBOTB=1. P0 and future LOWGWL01-A are inactive. Keep the issued branch and all source/diagnostic evidence intact for possible recovery; no implementation or qualification work proceeds without explicit reprioritization. This is prioritization, not scientific falsification, removal, migration or admission. Mode1 remains an open legacy capability. Next central source-backed feasibility review is SWBOTB=3, then8. Existing admitted modes2/4/5/6/7 are unchanged.
