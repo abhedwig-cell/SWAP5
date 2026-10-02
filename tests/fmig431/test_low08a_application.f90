@@ -44,11 +44,15 @@ program test_low08a_application
   cfg%tiles(1)%ledger_id=0_int64
   cfg%tiles(1)%base_forcing%bottom_head=-80.0_real64
   cfg%tiles(1)%base_forcing%bottom_flux=0.0_real64
+  print '(a)', 'LOW08A_STAGE_BEFORE_INIT'
   call app%initialize(cfg,status)
+  print '(a,1x,i0)', 'LOW08A_STAGE_AFTER_INIT',status
   call require(status==FMR_APP_BOOT_OK .and. app%ready(),'ordinary lysimeter bootstrap')
   call app%materialize_groundwater_context(topology,predictors,areas,context_handle,status)
   call require(status/=FMR_APP_BOOT_OK .and. context_handle==0_int64,'reject groundwater context')
+  print '(a)', 'LOW08A_STAGE_BEFORE_RUN'
   call app%run_standalone(T0,T1,result,status)
+  print '(a,1x,i0)', 'LOW08A_STAGE_AFTER_RUN',status
   call require(status==FMR_APP_BOOT_OK .and. result(1)%completed .and. result(1)%committed,'application transaction')
   call require(result(1)%mass%complete .and. abs(result(1)%mass%residual)<=HARD_MASS_GATE,'application mass')
   call app%close(status)
