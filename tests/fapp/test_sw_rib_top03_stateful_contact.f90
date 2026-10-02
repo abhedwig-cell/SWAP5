@@ -11,7 +11,7 @@ program top03_stateful_contact_probe
   use mod_top03_explicit_layer_provider, only: top03_layer_contact_provider_t
   use mod_top03_stateful_contact, only: top03_nonlinear_contact_t=>top03_stateful_contact_t, &
        top03_contact_result_t=>top03_stateful_result_t,bind_top03_nonlinear_contact=>bind_top03_stateful_contact, &
-       bind_top03_layer_origin,CONTACT_AVAILABLE
+       bind_top03_layer_origin,validate_top03_layer_candidate,CONTACT_AVAILABLE
   implicit none
   type(soil_water_parameter_set_t),target :: params
   type(b110_default_mvg_parameters_t),target :: hp
@@ -127,6 +127,10 @@ program top03_stateful_contact_probe
     call bind_top03_layer_origin(contact,layer_origin,h0(1),dt,policy)
     layer_origin_mass=sum(contact%origin_theta)*L/real(2*m,real64)
   end if
+  if(analytic==2)then
+    call lifecycle()
+    stop
+  end if
   allocate(qdra(1,n),qssdi(n),qrot(n));qdra=0;qssdi=0;qrot=0
   call bind_b110_source_sink_provider(source,qdra,qssdi,qrot)
   request%parameters=>params;request%base_state%active_nodes=n
@@ -205,6 +209,7 @@ program top03_stateful_contact_probe
         if(contact_max_residual>1e-11_real64.or.contact_max_interface_error>1e-10_real64.or. &
              contact_max_flux_error>1e-10_real64)error stop 'candidate contact hard gate'
         if(any(layer_origin/=saved_layer).or.any(contact%origin_head/=saved_layer))error stop 'layer origin mutated'
+        if(.not.validate_top03_layer_candidate(contact,sol%candidate_state%pressure_head(1),local))error stop 'invalid layer candidate'
         if(abs(local%mass_error)>1e-11_real64)error stop 'layer local mass failure'
         top_input=top_input+local%external_input
         layer_origin=local%head
@@ -225,6 +230,14 @@ program top03_stateful_contact_probe
     qinterface=top_input-skin_delta
     write(*,'(A,1X,I0,17(1X,ES24.16),1X,I0)')'EVENT',e,top_input,bottom_out,base_delta,skin_delta, &
          request%base_state%ponding_depth,mass,max_mass,qinterface,H,parent_theta,parent_head,iterations
+    if(mode==6.and.analytic==0)then
+      write(*,'(A,2(1X,I0),6(1X,ES24.16))')'LAYER_BINDING',e,policy,H,origin(1), &
+           sol%candidate_state%pressure_head(1),dt,local%external_input,local%matrix_input
+      do i=1,2*m
+        write(*,'(A,2(1X,I0),4(1X,ES24.16))')'LAYER_PROFILE',e,i,saved_layer(i),local%head(i),local%theta(i),local%flux(i)
+      end do
+      write(*,'(A,1X,I0,1X,ES24.16)')'LAYER_BOTTOM',e,local%flux(2*m+1)
+    end if
     if(mode==6)write(*,'(A,1X,I0,5(1X,ES24.16))')'STATEFUL',e,contact_max_residual, &
          contact_max_interface_error,contact_max_flux_error,local%interface_head,local%q
     if(nlayer>0)then
@@ -237,6 +250,53 @@ program top03_stateful_contact_probe
   if(analytic==1)write(*,'(A,3(1X,ES24.16))')'ANALYTIC',jexact,head_error,flux_error
   write(*,'(A)')'COMPLETE'
 contains
+  subroutine lifecycle()
+    type(top03_contact_result_t) :: full,changed,replay,first,second,forged,continued,restarted
+    type(top03_nonlinear_contact_t) :: restored
+    real(real64),allocatable :: initial(:),saved_theta(:),checkpoint(:)
+    real(real64) :: balance
+    integer :: unit
+    initial=layer_origin;dt=1e-4_real64
+    call bind_top03_layer_origin(contact,initial,-123.0_real64,dt,0)
+    saved_theta=contact%origin_theta
+    call contact%solve(-123.0_real64,full)
+    if(.not.validate_top03_layer_candidate(contact,-123.0_real64,full))error stop 'full lifecycle unavailable'
+    call contact%solve(-120.0_real64,changed)
+    if(.not.validate_top03_layer_candidate(contact,-120.0_real64,changed))error stop 'changed-head unavailable'
+    if(validate_top03_layer_candidate(contact,-123.0_real64,changed))error stop 'changed-head receipt accepted'
+    call contact%solve(-123.0_real64,replay)
+    if(any(full%head/=replay%head).or.any(full%flux/=replay%flux))error stop 'same-origin replay differs'
+    if(any(contact%origin_head/=initial).or.any(contact%origin_theta/=saved_theta))error stop 'rejected trial mutated origin'
+    forged=full;forged%external_input=forged%external_input+0.001_real64
+    if(validate_top03_layer_candidate(contact,-123.0_real64,forged))error stop 'forged transfer accepted'
+    forged=full;forged%head(1)=forged%head(1)+0.01_real64
+    if(validate_top03_layer_candidate(contact,-123.0_real64,forged))error stop 'forged profile accepted'
+    call bind_top03_layer_origin(contact,initial,-123.0_real64,dt/2,0)
+    if(validate_top03_layer_candidate(contact,-123.0_real64,full))error stop 'wrong-dt candidate accepted'
+    call contact%solve(-123.0_real64,first)
+    if(.not.validate_top03_layer_candidate(contact,-123.0_real64,first))error stop 'half retry unavailable'
+    call bind_top03_layer_origin(contact,first%head,-123.0_real64,dt/2,0)
+    if(validate_top03_layer_candidate(contact,-123.0_real64,first))error stop 'stale origin candidate accepted'
+    call contact%solve(-123.0_real64,second)
+    if(.not.validate_top03_layer_candidate(contact,-123.0_real64,second))error stop 'second half unavailable'
+    balance=first%external_input+second%external_input-first%matrix_input-second%matrix_input- &
+         sum((second%theta-saved_theta)*L/real(2*m,real64))
+    if(abs(balance)>1e-11_real64)error stop 'half composition mass failure'
+    checkpoint=second%head
+    open(newunit=unit,status='scratch',form='unformatted',action='readwrite')
+    write(unit)L,R,m,contact%stage,dt,checkpoint
+    rewind(unit)
+    read(unit)L,R,m,H,dt,checkpoint
+    close(unit)
+    call bind_top03_nonlinear_contact(restored,params,hp,H,L,R,2*m)
+    call bind_top03_layer_origin(restored,checkpoint,-123.0_real64,dt,0)
+    call bind_top03_layer_origin(contact,second%head,-123.0_real64,dt,0)
+    call contact%solve(-122.0_real64,continued);call restored%solve(-122.0_real64,restarted)
+    if(.not.validate_top03_layer_candidate(contact,-122.0_real64,continued).or. &
+         .not.validate_top03_layer_candidate(restored,-122.0_real64,restarted))error stop 'restart unavailable'
+    if(any(continued%head/=restarted%head).or.any(continued%flux/=restarted%flux))error stop 'restart continuation differs'
+    write(*,'(A,3(1X,ES24.16))')'LIFECYCLE_PASS',full%mass_error,balance,continued%mass_error
+  end subroutine
   real(real64) function sample_head(at,first,last) result(value)
     real(real64),intent(in) :: at
     integer,intent(in) :: first,last

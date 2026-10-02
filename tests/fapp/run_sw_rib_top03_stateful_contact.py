@@ -74,6 +74,8 @@ end module MOD_grid
     for R,m,ns in itertools.product([0.5,1.0],[8,16,32],[128,256,512]):
         for mode,wet in [(1,0),(1,1),(2,0),(6,0),(6,1)]:
             cases.append(dict(mode=mode,L=0.2,R=R,m=m,ns=ns,wet=wet,mean=6,analytic=0))
+    for R,m,wet in itertools.product([0.5,1.0],[8,16,32],[0,1]):
+        cases.append(dict(mode=6,L=0.2,R=R,m=m,ns=1,wet=wet,mean=6,analytic=2))
     (build/'cases.json').write_text(json.dumps(cases,indent=2)+'\n')
     print(f'CASES_PER_BUILD={len(cases)} COMPILE_CLOSURE={len(order)}',flush=True)
     common=['-std=f2008','-ffree-line-length-none','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow']
@@ -107,6 +109,7 @@ end module MOD_grid
             if run.returncode and not ('CONTACT_UNAVAILABLE' in run.stdout and 'dynamic top-boundary provider unavailable' in run.stderr):
                 (out/'records.json').write_text(json.dumps(rows)+'\n')
                 raise RuntimeError(f'runtime failed {c}: {run.stderr}\n{run.stdout}')
+            if c['analytic']==2 and 'LIFECYCLE_PASS' not in run.stdout:raise RuntimeError('lifecycle gate incomplete: '+run.stdout)
             if c['analytic']==1 and c['mean']==6:
                 line=next((x for x in run.stdout.splitlines() if x.startswith('ANALYTIC')),None)
                 if line is None:raise RuntimeError(f'analytical trajectory incomplete: {c}: {run.stdout}')

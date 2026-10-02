@@ -12,13 +12,15 @@ module mod_top03_stateful_contact
   private
   integer,parameter,public :: CONTACT_AVAILABLE=1,CONTACT_INVALID=2,CONTACT_NO_ROOT=3, &
        CONTACT_BRANCH_UNAVAILABLE=4,CONTACT_SEED_DISAGREEMENT=5
-  real(real64),parameter :: ROOT_TOL=1e-11_real64
+  real(real64),parameter :: ROOT_TOL=1e-12_real64
   type,public :: top03_stateful_result_t
     integer :: status=CONTACT_INVALID,iterations=0
     real(real64) :: q=0,interface_head=0,interface_head_other=0,dq_dsoil_head=0,dinterface_dsoil_head=0
     real(real64) :: max_face_residual=huge(1.0_real64),soil_k=0,seed_head_difference=0,seed_flux_difference=0
+    real(real64) :: bound_stage=0,bound_hs=0,bound_dt=0
+    integer :: bound_policy=-1
     real(real64) :: external_input=0,matrix_input=0,storage_change=0,mass_error=0
-    real(real64),allocatable :: head(:),theta(:),k(:),flux(:)
+    real(real64),allocatable :: head(:),theta(:),k(:),flux(:),origin_head(:)
   end type
   type,extends(dynamic_top_boundary_provider_t),public :: top03_stateful_contact_t
     type(soil_water_parameter_set_t),pointer :: geometry=>null()
@@ -33,7 +35,7 @@ module mod_top03_stateful_contact
     procedure :: evaluate => evaluate_contact_boundary
     procedure :: solve => solve_contact
   end type
-  public :: bind_top03_stateful_contact, bind_top03_layer_origin
+  public :: bind_top03_stateful_contact, bind_top03_layer_origin, validate_top03_layer_candidate
 contains
   subroutine bind_top03_stateful_contact(self,geometry,soil,stage,thickness,resistance,nodes)
     type(top03_stateful_contact_t),intent(out) :: self
@@ -275,6 +277,8 @@ contains
     result%interface_head_other=h(n)+0.5_real64*dz+result%q*0.5_real64*dz/k(n)
     result%dinterface_dsoil_head=1.0_real64-result%dq_dsoil_head*d/ks+result%q*d*dks/(ks*ks)
     call storage(self,h,theta,cap)
+    result%origin_head=self%origin_head;result%bound_stage=self%stage;result%bound_hs=hs
+    result%bound_dt=self%dt;result%bound_policy=self%conductivity_policy
     result%head=h;result%theta=theta;result%k=k;result%flux=q
     result%max_face_residual=maxval(abs(dz*(theta-self%origin_theta)/self%dt+q(1:n)-q(2:n+1)))
     result%external_input=-self%dt*q(1);result%matrix_input=-self%dt*q(n+1)
@@ -295,6 +299,35 @@ contains
     end if
     call solve_one(self,hs,0,result)
   end subroutine
+
+  logical function validate_top03_layer_candidate(self,hs,candidate) result(valid)
+    class(top03_stateful_contact_t),intent(in) :: self
+    real(real64),intent(in) :: hs
+    type(top03_stateful_result_t),intent(in) :: candidate
+    real(real64) :: k(self%layer_nodes),dk(self%layer_nodes),q(self%layer_nodes+1), &
+         left(self%layer_nodes+1),right(self%layer_nodes+1),theta(self%layer_nodes),cap(self%layer_nodes),dz
+    logical :: ok
+    integer :: n
+    valid=.false.;n=self%layer_nodes
+    if(candidate%status/=CONTACT_AVAILABLE)return
+    if(.not.allocated(candidate%head).or..not.allocated(candidate%theta).or. &
+         .not.allocated(candidate%origin_head).or..not.allocated(candidate%flux))return
+    if(size(candidate%head)/=n.or.size(candidate%theta)/=n.or.size(candidate%origin_head)/=n.or.size(candidate%flux)/=n+1)return
+    if(any(candidate%origin_head/=self%origin_head).or.candidate%bound_stage/=self%stage.or. &
+         candidate%bound_hs/=hs.or.candidate%bound_dt/=self%dt.or.candidate%bound_policy/=self%conductivity_policy)return
+    if(.not.all(ieee_is_finite(candidate%head)).or..not.all(ieee_is_finite(candidate%flux)).or. &
+         .not.all(ieee_is_finite(candidate%theta)))return
+    call faces(self,hs,candidate%head,k,dk,q,left,right,ok,.false.)
+    if(.not.ok)return
+    call storage(self,candidate%head,theta,cap);dz=self%thickness/real(n,real64)
+    if(maxval(abs(dz*(theta-self%origin_theta)/self%dt+q(1:n)-q(2:n+1)))>1e-10_real64)return
+    if(maxval(abs(q-candidate%flux))>1e-10_real64.or.maxval(abs(theta-candidate%theta))>1e-12_real64)return
+    if(abs(candidate%q-q(n+1))>1e-10_real64)return
+    if(abs(candidate%external_input+self%dt*q(1))>1e-11_real64.or. &
+         abs(candidate%matrix_input+self%dt*q(n+1))>1e-11_real64.or. &
+         abs(candidate%storage_change-sum(dz*(theta-self%origin_theta)))>1e-11_real64)return
+    valid=abs(candidate%external_input-candidate%matrix_input-candidate%storage_change)<=1e-11_real64
+  end function
 
   subroutine evaluate_contact_boundary(self,pressure_head_top,water_content_top,candidate_ponding_depth,requested,result)
     class(top03_stateful_contact_t),intent(in) :: self
