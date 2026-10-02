@@ -129,7 +129,7 @@ program test_transaction_reference
   call test_temporal_retry(failures)
   call test_solver_failure_no_leak(failures)
   call test_mass_gate(failures)
-  call test_incomplete_storage_fails_closed(failures) ! issue #989 focused regression
+  call test_incomplete_storage_fails_closed(failures) ! issue #989 focused regression; registered LOW08 trigger
   call test_noncalendar_time(failures)
   call test_repeatability(failures)
   call test_parallel_independence(failures)
