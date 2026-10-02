@@ -48,6 +48,7 @@ program test_low08_p0_typed_solver
   call set_bottom(threshold+1.e-4_real64)
   call solver%solve(r,ws,a)
   call need(a%status==SW_SOLVE_CONVERGED,'active solve')
+  write(*,'(a,3(1x,es24.16))') 'LOW08_ACTIVE_DIAG',a%bottom_flux,ws%state_binding%qbot,ws%richards%head_gradient(n+1)
   call need(a%bottom_flux/=0._real64,'active qbot nonzero')
   call mass(a,'active mass')
   call solver%solve(r,clean,b)
