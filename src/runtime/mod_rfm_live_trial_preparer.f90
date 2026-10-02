@@ -19,6 +19,16 @@ module mod_rfm_live_trial_preparer
       compose_rfm_production_candidate
  implicit none
  private
+ type,public::rfm_surface_hydraulic_memo_t
+  logical::valid=.false.
+  integer::panels=0
+  real(real64)::surface_pressure_head=0._real64
+  real(real64)::surface_water_content=0._real64
+  real(real64)::conductivity_cm_per_day=0._real64
+  real(real64)::sorptivity_cm_sqrt_day=0._real64
+ contains
+  procedure::clear=>clear_surface_hydraulic_memo
+ end type
  type,public::rfm_live_trial_prepare_result_t
   logical::valid=.false.
   type(rfm_surface_event_age_result_t)::event_age
@@ -31,7 +41,7 @@ module mod_rfm_live_trial_preparer
  public::prepare_rfm_live_trial
 contains
  subroutine prepare_rfm_live_trial(accepted,config,forcing,view,constitutive,preflight,node_depth_cm,node_thickness_cm, &
-      step_duration_day,tolerance,result)
+      step_duration_day,tolerance,result,surface_memo)
   type(rfm_physical_state_t),intent(in)::accepted
   type(rfm_runtime_configuration_t),intent(in)::config
   type(rfm_surface_forcing_t),intent(in)::forcing
@@ -40,11 +50,12 @@ contains
   type(soil_water_top_boundary_result_t),intent(in)::preflight
   real(real64),intent(in)::node_depth_cm(:),node_thickness_cm(:),step_duration_day,tolerance
   type(rfm_live_trial_prepare_result_t),intent(out)::result
+  type(rfm_surface_hydraulic_memo_t),intent(inout),optional::surface_memo
   type(rfm_surface_event_age_request_t)::ageq
   type(rfm_preferential_routing_request_t)::routeq
   type(rfm_production_candidate_request_t)::cq
   real(real64),allocatable::endpoint_input_cm(:)
-  logical::ok
+  logical::ok,memo_hit
   result=rfm_live_trial_prepare_result_t()
   if(.not.config%valid().or..not.forcing%valid().or..not.accepted%ready())return
   if(size(node_depth_cm)/=view%active_nodes.or.size(node_thickness_cm)/=view%active_nodes)return
@@ -56,8 +67,26 @@ contains
     result%activation=fmr_rfm_hydraulic_activation_result_t()
     result%activation%activation%status=RFM_ACTIVATION_AVAILABLE
   else
-    call evaluate_fmr_rfm_activation_from_view(view,constitutive,config%sorptivity_panels,config%sigma_b, &
-         preflight%net_potential_surface_flux,result%event_age%evaluation_age_day,result%activation,ok)
+    memo_hit=.false.
+    if(present(surface_memo))then
+      memo_hit=surface_memo%valid .and. surface_memo%panels==config%sorptivity_panels .and. &
+           surface_memo%surface_pressure_head==view%pressure_head(1) .and. &
+           surface_memo%surface_water_content==view%water_content(1)
+    end if
+    if(memo_hit)then
+      call evaluate_fmr_rfm_activation_from_view(view,constitutive,config%sorptivity_panels,config%sigma_b, &
+           preflight%net_potential_surface_flux,result%event_age%evaluation_age_day,result%activation,ok, &
+           surface_memo%conductivity_cm_per_day,surface_memo%sorptivity_cm_sqrt_day)
+    else
+      call evaluate_fmr_rfm_activation_from_view(view,constitutive,config%sorptivity_panels,config%sigma_b, &
+           preflight%net_potential_surface_flux,result%event_age%evaluation_age_day,result%activation,ok)
+      if(ok.and.present(surface_memo))then
+        surface_memo%valid=.true.;surface_memo%panels=config%sorptivity_panels
+        surface_memo%surface_pressure_head=view%pressure_head(1);surface_memo%surface_water_content=view%water_content(1)
+        surface_memo%conductivity_cm_per_day=result%activation%surface_conductivity_cm_per_day
+        surface_memo%sorptivity_cm_sqrt_day=result%activation%surface_sorptivity_cm_sqrt_day
+      end if
+    end if
     if(.not.ok)return
   end if
   call compose_rfm_unponded_surface_receipt(preflight,result%activation%activation,tolerance,result%surface)
