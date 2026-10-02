@@ -1,0 +1,17 @@
+name: SW-RIB-TOP03 microrelief stage probe
+on:
+  push:
+    branches: [work/sw-rib-top03-transactional-top-exchange]
+    paths:
+      - 'tests/fapp/mod_top03_microrelief_top_provider.f90'
+      - 'tests/fapp/test_sw_rib_top03_microrelief_stage_probe.f90'
+      - 'tests/fapp/run_sw_rib_top03_microrelief_stage_probe.sh'
+      - 'integration/sw-rib-top03/TOP03_MICRORELIEF_STAGE_PREREGISTRATION.md'
+      - '.github/workflows/sw-rib-top03-microrelief-stage-probe.yml'
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and run event-aligned partial-to-full wetting probe
+        run: bash tests/fapp/run_sw_rib_top03_microrelief_stage_probe.sh
