@@ -1,23 +1,23 @@
 {
   "work_unit": "PPA-WU05-A27",
   "baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-  "checkpoint_commit": "d8c2b96daed5f4732d7b65354b5e1e588c7267f7",
+  "checkpoint_commit": "0861767270fda7d2c59b8d4284794853742b0edf",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "ABC01_QUALIFIED_RESEARCH_RESULT_PERFORMANCE_ATTRIBUTION_ACTIVE",
-  "next_action": "Profile RFM trial-preparation and constitutive overhead on the qualified DEP01/DEP02/DEP03 production route before any further physical tuning. Preserve the pressure-aware research seam as separate blocked research.",
-  "recovery_point": "docs/audits/PPA_WU05A27_ABC01_RESULT.md",
+  "status": "PERF02_QUALIFIED_CURRENT_CANONICAL_PERFORMANCE_ATTRIBUTION_CONTINUES",
+  "next_action": "Profile and eliminate remaining wet-surface sorptivity recomputation without changing the 64-panel numerical definition. First determine reuse multiplicity across full/half/retry trials from one accepted state; do not lower panel count before exact-preserving reuse/caching is exhausted.",
+  "recovery_point": "docs/audits/PPA_WU05A27_PERF02_RESULT.md",
   "blockers": [
-    "Qualified ABC01 shows repaired RFM C is hydrologically E1 in all 29 jointly completed B/C cases, but current RFM is about 4.3-5.3x slower than standard macropore in the preregistered CI timing sample.",
-    "The current slowdown is not explained by additional Richards nonlinear iterations; RFM trial-preparation/constitutive overhead is not yet decomposed.",
-    "DEP01, DEP02 and DEP03 are qualified branch-local shared-backend repair candidates and are not canonically admitted by A27.",
-    "Matrix-only A remains invalid in ABC01 because the generic base-state full/half temporal path is exact-identity based; no RFM-versus-matrix speed claim is available.",
+    "PERF02 removes the two identified unused constitutive integrations exactly, but wet cached live preparation still spends 65 demand calls in the surface sorptivity integral.",
+    "On current canonical, C is near/equal to B in some timing cases but remains materially slower in R4/G2/B01 and R6/G2/O05; no general speed advantage is established.",
+    "DEP01, DEP02, DEP03, PERF02 and CANREC01 remain branch-local repair candidates; canonical admission is not claimed.",
+    "Matrix-only A remains invalid under its generic exact-identity full/half temporal route.",
     "Pressure-aware moving-contact research remains separately blocked by retained refinement failures."
   ],
-  "last_reconciled_head": "d8c2b96daed5f4732d7b65354b5e1e588c7267f7",
-  "last_reconciled_upstream": "f7c261a7f059c91d4a0aac16e378351f293aa080",
+  "last_reconciled_head": "0861767270fda7d2c59b8d4284794853742b0edf",
+  "last_reconciled_upstream": "d92f1f8510300b34ee878fdbac237168c8fd7032",
   "authority_paths": [
     "AGENTS.md",
     "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
@@ -37,7 +37,12 @@
     "docs/audits/PPA_WU05A27_ABC01_DEP01_PREREGISTRATION.md",
     "docs/audits/PPA_WU05A27_ABC01_DEP01_RECONCILIATION_ADDENDUM.md",
     "docs/audits/PPA_WU05A27_ABC01_DEP01_RESULT.md",
-    "docs/audits/PPA_WU05A27_ABC01_STATUS.json"
+    "docs/audits/PPA_WU05A27_ABC01_STATUS.json",
+    "docs/audits/PPA_WU05A27_PERF02_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05A27_PERF02_RESULT.md",
+    "docs/audits/PPA_WU05A27_CANREC01_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05A27_CANREC01_RESULT.md",
+    "docs/audits/PPA_WU05A27_BACKEND_PRESERVATION_GATE_NOTE.md"
   ],
   "test_paths": [
     "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
@@ -62,7 +67,11 @@
     "research/rfm/a27/test_pressure_receiver_extension.f90",
     "research/rfm/a27/run_production_abc01.sh",
     "research/rfm/a27/test_production_abc01.f90",
-    "research/rfm/a27/analyze_production_abc01.py"
+    "research/rfm/a27/analyze_production_abc01.py",
+    "research/rfm/a27/test_profile01.f90",
+    "research/rfm/a27/run_profile01.sh",
+    "research/rfm/a27/compare_perf02_abc.py",
+    "tests/fpm/run_ppa_wu05a27_backend_preservation.sh"
   ],
   "dependency_surface": [
     "src/legacy/b1_10_port/headcalc.f90",
@@ -75,8 +84,8 @@
     "research/rfm/a27"
   ],
   "interfaces_changed": [],
-  "production_claim": "ABC01 is a qualified research result on the branch: B completes 29/32, repaired production RFM C 30/32, and all 29 jointly completed pairs are E1. RFM is not faster: C takes about 4.3-5.3x B wall time in the preregistered CI timing sample. No portable speed claim or canonical admission is made.",
-  "research_result": "ABC01 qualified after branch-local DEP01 live-layout, DEP02 continuous RFM full/half temporal metric and DEP03 zero-supply continuation repairs. The primary B/C hydrologic result is 29/29 jointly completed cases E1. Performance proposition fails in the current implementation; next work is profiler-level decomposition of RFM trial preparation and constitutive quadrature.",
+  "production_claim": "Qualified branch result on current-canonical code: RFM C remains hydrologically identical to the pre-MIGMAC qualified C postimage outside timing; B=29/32, C=30/32 and all 29 joint cases are E1. PERF02 reduces wet cached preparation from 130 to 65 constitutive-demand calls and dry cached preparation from 130 to 0. Timing improves strongly but does not establish a general RFM speed advantage. No canonical admission.",
+  "research_result": "PERF02 exact-preserving zero-waste removal is qualified. Final run 36999473010 passes A26 live, A27 current-canonical backend compile, A8 standard macropore, PROFILE call gates, full ABC, exact C non-timing identity and current-canonical E1 gates. CANREC01 fixes a canonical MIGMAC01 unsafe optional-component allocation guard that otherwise segfaulted base arm A.",
   "source_repair_qualified": true,
   "canonical_admitted": false,
   "qualification_scopes": {
@@ -190,6 +199,39 @@
         "A26 serialized backend compile/static preservation",
         "A8 real-Richards standard macropore"
       ],
+      "result": "QUALIFIED_BRANCH_ONLY",
+      "canonical_admitted": false
+    },
+    "perf02_zero_waste": {
+      "postimage": "0861767270fda7d2c59b8d4284794853742b0edf",
+      "canonical_code_base": "9abdc23f759f4d7711881d535797d0ee56d67584",
+      "canonical_observed_after_run": "d92f1f8510300b34ee878fdbac237168c8fd7032",
+      "run_id": 36999473010,
+      "artifact_id": 11223770178,
+      "artifact_sha256": "f8ca0b6ea924f7f911531d80113dd6b2302d31ef5ae76d0de212a76820ff6e21",
+      "wet_cached_demand_calls_before": 130,
+      "wet_cached_demand_calls_after": 65,
+      "dry_cached_demand_calls_before": 130,
+      "dry_cached_demand_calls_after": 0,
+      "B_completed": 29,
+      "C_completed": 30,
+      "joint_completed": 29,
+      "E1": 29,
+      "C_non_timing_identity_rows": 32,
+      "timing_B_over_C": [
+        1.0540060502881994,
+        0.3365309761649625,
+        0.8098176144617205,
+        0.5075062362120282
+      ],
+      "result": "QUALIFIED_BRANCH_ONLY"
+    },
+    "canrec01": {
+      "defect": "unsafe non-short-circuit allocated(self%macropore_config%matrix_area_fraction) component access",
+      "failing_run": 36999130548,
+      "repaired_postimage": "762e1bb452b55e32e5fd6983d95e6ae5cc5b485e",
+      "confirmation_run": 36999253235,
+      "final_owner_run": 36999473010,
       "result": "QUALIFIED_BRANCH_ONLY",
       "canonical_admitted": false
     }
