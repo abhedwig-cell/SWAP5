@@ -1,237 +1,65 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "PPA-WU05-MIGMAC01",
-  "status": "QUALIFIED_SOURCE_TRANSACTION_WITH_G7_ATTRIBUTION_OPEN",
-  "baseline": "6a2d948e510ddaa4308392051dbba2972b951ae0",
-  "checkpoint_commit": "containing commit",
-  "last_reconciled_head": "44baf4a509d9238b7ac9cf16df8d49412b222e3c",
-  "last_reconciled_upstream": "7a629a10cabb3553ff77474423e6ccac81b29aec",
+  "status": "PRODUCTION_ADMISSION_CANDIDATE_PENDING_CANONICAL_RECONCILIATION",
+  "owning_branch": "research/ppa-wu05-migmac01-covering-layer",
+  "qualified_postimage": "16c66c41c8bbc009cd0efa76c79502532af85f66",
+  "status_head_parent": "ace22e240d02ade24c64948998c18a56fdb10560",
+  "canonical_observed": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "preserved": false,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "production_admission_candidate": true,
   "canonically_admitted": false,
   "closed": false,
-  "qualified_prerequisite": {
-    "head": "f88c1fc3106b88fec60edb93fdc56f331ad75dff",
-    "run": 36925950836,
-    "scope": "operator and transaction composition only"
-  },
-  "active_e2e": {
-    "run": 36932614330,
-    "head": "e84ac3f55cc1805e5c10ca70043a8502fa0c19e0",
-    "status": 2,
-    "h_cover_cm": -66.62957734508022,
-    "covered_cm": 0,
-    "passed": false,
-    "mass_residuals": "not printed before failing assertion"
-  },
-  "blockers": [
-    "G3R: bounded CALCGWL correction targeted-qualified; corrected whole-reference admission remains excluded",
-    "G3: corrected-source strict ordinary and active inner-Richards replay both request retry; no accepted SWAP5 covered state",
-    "G4: serialized backend lacks immutable covering physical parameters and propagation",
-    "G5: explicit Richards request lacks source matrix-area carrier for storage/conductivity/Jacobian and integrated ownership",
-    "G6: ordinary source replay native compartment residual 2.7351454434665357e-12 exceeds fixed 1e-12 at node 36; precision-scale attribution suggested, not fully proven",
-    "G7: corrected exact-last-rate provider discrepancy remains max 0.00091392659217592875 cm/day; no widened parity tolerance"
-  ],
-  "next_action": "Record explicit source matrix-area and immutable covering physical-parameter contracts; repair those integration gaps without legacy globals; separately resolve strict Reference native-rate precision and corrected last-rate discrepancy before stable active qualification. No source-state tuning.",
-  "recovery_point": "docs/audits/PPA_WU05_MIGMAC01_B1_CORRECTION_RESULT.md and this status at containing commit",
-  "evidence_paths": [
-    "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_AUTHORITY_RECOVERY.md",
-    "docs/audits/PPA_WU05_MIGMAC01_RESULT.md",
-    "docs/audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_RESULT.md",
-    "docs/audits/PPA_WU05_MIGMAC01_SOURCE_ORIGIN_REPLAY_RESULT.md",
-    "integration/audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_CHECKS.json",
-    "integration/evidence/ppa_wu05_migmac01/source_origin_local_o0_o2.txt",
-    "docs/audits/PPA_WU05_MIGMAC01_REFERENCE_CARRIER_DEFECT.md",
-    "integration/audits/PPA_WU05_MIGMAC01_REFERENCE_CARRIER_CHECKS.json",
-    "integration/evidence/ppa_wu05_migmac01/source_carrier_exact_postimage_o0_o2.txt",
-    "docs/audits/PPA_WU05_MIGMAC01_B1_CORRECTION_RESULT.md",
-    "integration/audits/PPA_WU05_MIGMAC01_CORRECTED_REFERENCE_CHECKS.json",
-    "integration/evidence/ppa_wu05_migmac01/b1_correction_qualification_run.txt",
-    "integration/evidence/ppa_wu05_migmac01/corrected_source_exact_postimage_o0_o2.txt"
-  ],
-  "authority_paths": [
-    "docs/audits/PPA_WU05_MIGMAC01_PREREGISTRATION.md",
-    "docs/audits/PPA_WU05_MIGMAC01_SOURCE_RECONCILIATION.md",
-    "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_E2E_PREREGISTRATION.md",
-    "docs/audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_PREREGISTRATION.md",
-    "docs/audits/PPA_WU05_MIGMAC01_SOURCE_REPLAY_PREREGISTRATION.md"
-  ],
-  "dependency_surface": [
-    "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "src/runtime/mod_macropore_single_column_runtime.f90",
-    "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90",
-    "src/process/macropore/mod_macropore_covering_layer_input.f90",
-    "src/legacy/b1_10_port/headcalc.f90",
-    "src/solver/mod_soil_water_solver_contract.f90",
-    "src/runtime/mod_fmr_macropore_configuration.f90",
-    "src/runtime/mod_macropore_standard_rate_adapter.f90"
-  ],
-  "canonical_delta_requires_reconciliation": false,
-  "frozen_status_a_denominator_changed": false,
-  "production_changed_this_recovery": false,
   "source_event": {
-    "status": "LOCAL_SOURCE_VERIFIED_PERSISTED",
-    "label": "MODIFIED_ANDELST_COVERED_TOP",
-    "preregistration": "a20b15ed3e45cd9ccba491ed00e64223c3cd1e38",
-    "evidence_commit": "9eaf64ac572e080f77e8ea03a17b43ce220e19df",
+    "label": "MODIFIED_ANDELST_COVERED_TOP_PLUS_BOUNDED_B1_CORRECTION",
     "top_node": 3,
-    "h_cover_cm": 0.09997836037968703,
-    "covered_cm": 0.000060543248402701375,
-    "cover_ownership_residual_cm": 0,
-    "macro_balance_residual_cm": 2.0973891026732083e-16
-  },
-  "source_origin_replay": {
-    "status": "LOCAL_NEGATIVE_EVIDENCE_NOT_ACTIVE_E2E_QUALIFICATION",
-    "preregistration": "76cdc7a9746651befda46093df65117138d80f7f",
+    "source_backed_direct_qualified": true,
+    "source_backed_transaction_qualified": true,
+    "covered_transfer_cm": 9.353230881732672e-7,
+    "transaction_mass_residual_cm": 1.0020738579197275e-16,
     "optimization_levels": [
       "O0",
       "O2"
     ],
-    "runtime_status": 3,
-    "retry_advised": true,
-    "iterations": 64,
-    "last_tentative_h_cover_cm": -4.979836179819938,
-    "accepted_state_available": false,
-    "covered_cm": 0,
-    "internal_exchange_residual_cm": null,
-    "macro_balance_residual_cm": null,
-    "accepted_macro_immutable": true,
-    "swap5_other_exchange_at_reference_cm_per_day": -4.867061508767989,
-    "reference_other_exchange_cm_per_day": -0.40973640650434007,
-    "exact_postimage_diagnostic": {
-      "head": "54457f772cd68f875319923d6cfd832a60947dd1",
-      "dependency_git_blobs_verified": true,
-      "gate": "tests/fpm/run_ppa_wu05_migmac01_source_origin_diagnostic.sh",
-      "result": "NEGATIVE_EVIDENCE_REPRODUCED_O0_O2",
-      "active_e2e_qualification": false
-    },
-    "latest_reference_attribution": {
-      "finding": "CONFIRMED_REFERENCE_CARRIER_DEFECT",
-      "source_main": 55,
-      "source_perched_top": 55,
-      "source_perched_bottom": 55,
-      "migrated_perched_top": 1,
-      "migrated_perched_bottom": 29,
-      "duplicate_ordinary_node": 55,
-      "source_duplicate_factor": 2,
-      "production_changed": false
-    },
-    "reference_carrier_exact_postimage_diagnostic": {
-      "head": "c49c8210876efbaaf4d72305eb921f70d237224a",
-      "test_and_csv_git_blobs_verified": true,
-      "production_dependencies_unchanged_from_previous_exact_gate": true,
-      "gate": "tests/fpm/run_ppa_wu05_migmac01_source_origin_diagnostic.sh",
-      "result": "REFERENCE_CARRIER_DEFECT_AND_NEGATIVE_REPLAY_REPRODUCED_O0_O2",
-      "active_e2e_qualification": false
-    }
+    "reject_replay": true,
+    "commit_publication": true,
+    "persistence_restart": true
   },
-  "source_interval_blocker_resolved": true,
-  "canonical_head_last_checked": "7a629a10cabb3553ff77474423e6ccac81b29aec",
-  "canonical_incremental_delta_after_probe": {
-    "from": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
-    "to": "c240a3c1c880663d86e1a702ff283a866ca809ee",
-    "scope": "LOW03 P0 preregistration/status, lower-boundary classification and isolated diagnostic tests",
-    "migmac01_dependency_surface_changed": false
-  },
-  "canonical_incremental_delta_after_carrier_attribution": {
-    "from": "c240a3c1c880663d86e1a702ff283a866ca809ee",
-    "to": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
-    "files": [
-      "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
-      "integration/audits/F-MIG431-LOW03-P0_COMPOSITION.json",
-      "integration/audits/F-MIG431-LOW03-P0_STATUS.json",
-      "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
-      "integration/audits/production_physics_application_envelope_gap_register.json"
-    ],
-    "production_dependency_surface_changed": false
-  },
-  "canonical_incremental_delta_after_b1_correction": {
-    "from": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
-    "to": "7a629a10cabb3553ff77474423e6ccac81b29aec",
-    "files": [
-      "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
-      "docs/migration/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_PREREGISTRATION.md",
-      "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json",
-      "integration/audits/F-MIG431-LOW03-P0_STATUS.json",
-      "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
-      "integration/audits/production_physics_application_envelope_gap_register.json"
-    ],
-    "production_dependency_surface_changed": false
-  },
-  "corrected_reference": {
-    "correction_preregistration": "edb6ce307d9b934b967ea1830ebc5ef867e6260c",
-    "targeted_qualification": {
-      "head": "5b4666d1a168b8f73868bfab0d00c8f342ce4fa8",
-      "run": 36970592651,
-      "job": 110723548647,
-      "result": "SUCCESS",
-      "scope": "exact full CALCGWL module; seven source carrier cases; O0/O2 bounds and strict FPE",
-      "global_b1_admission": false
-    },
-    "patched_calcgwl_sha256": "37c63446c8e8b0e80ac3f840d1ec636004d69bf7b15492451bde124f206f2834",
-    "capture": {
-      "label": "MODIFIED_ANDELST_COVERED_TOP_PLUS_BOUNDED_B1_CORRECTION",
-      "time": 35797.64377776882,
-      "dt": 0.00003703703529296305,
-      "top_node": 3,
-      "h_cover_accepted_cm": 0.0006823090387507746,
-      "covered_cm": 9.521088298971577e-7,
-      "cover_ownership_residual_cm": 0,
-      "macro_balance_residual_cm": 2.0801435118671108e-16,
-      "capture_sha256": "ecb3436099a1dd3907c85c6cb74f3cb42f75f1249cd67fdaba8d0ecadc4276ac",
-      "full_reference_qualified": false
-    },
-    "swap5_replay": {
-      "head": "44baf4a509d9238b7ac9cf16df8d49412b222e3c",
-      "gate": "tests/fpm/run_ppa_wu05_migmac01_corrected_source_diagnostic.sh",
-      "tested": true,
-      "optimization_levels": [
-        "O0",
-        "O2"
-      ],
-      "test_blob": "e980923251f868e680b2c0ef2809ef561598fa3a",
-      "compiled_dependency_blobs_verified": 92,
-      "result": "NEGATIVE_EVIDENCE_REPRODUCED",
-      "ordinary_status": 2,
-      "ordinary_iterations": 64,
-      "ordinary_max_local_rate": 2.7351454434665357e-12,
-      "ordinary_local_node": 36,
-      "ordinary_scratch_integrated_sum_cm": 2.0142939864728307e-16,
-      "ordinary_typed_mass_residual_available": false,
-      "ordinary_theta_quantum_rate_node36": 2.9976023076450086e-12,
-      "active_runtime_status": 3,
-      "active_retry_advised": true,
-      "active_accepted_state_available": false,
-      "active_last_tentative_h_cover_cm": -0.10221739026906902,
-      "active_internal_residual_cm": null,
-      "active_macro_residual_cm": null,
-      "accepted_macro_immutable": true,
-      "qualified": false
-    }
-  },
-  "last_checked_branch_head": "7687d89a351ba36ae234641ecff37469cd811940",
-  "current_canonical_observed": "800f6a9b0f4e91a62e4f1b2a391c6b4308892508",
-  "source_backed_direct_qualified": true,
-  "source_backed_transaction_qualified": true,
   "preservation": {
     "a9_surface_connected": true,
     "a10_rapid_drainage": true,
     "perch20_transaction": true,
     "perch20_restart": true
   },
-  "remaining_blockers": [
-    "G7 exact last-rate discrepancy attribution"
+  "resolved_blockers": {
+    "G3": "resolved by corrected source carrier plus source-backed convergence",
+    "G4": "immutable covering parameters typed and propagated",
+    "G5": "matrix-area carrier typed and integrated into matrix ownership",
+    "G6": "stable constitutive storage increment plus migrated B1.11 short-step policy",
+    "G7": "last-rate comparison lacks state-identical mutable macropore carrier; discrepancy retained but operator mismatch not established"
+  },
+  "open_blockers": [],
+  "caveats": [
+    "Whole SWAP 4.3.1/B1.11 is not globally requalified; the bounded CALCGWL correction is targeted-qualified only.",
+    "Bitwise B1.11 last-rate macropore exchange parity is not proven because the persisted last-rate artifact lacks the complete mutable macropore carrier.",
+    "The older synthetic active MIGMAC01 fixture remains diagnostic and is not used as source-backed authority."
   ],
-  "production_admission_candidate": false,
-  "canonical_admitted": false,
+  "canonical_reconciliation": {
+    "required": true,
+    "reason": "owning branch is substantially behind current canonical and diverged; canonical admission requires reconcile and exact-postimage rerun",
+    "canonical_admission_claimed": false
+  },
   "evidence": {
     "source_transaction_result": "docs/audits/PPA_WU05_MIGMAC01_SOURCE_TRANSACTION_RESULT.md",
+    "g7_attribution": "docs/audits/PPA_WU05_MIGMAC01_G7_ATTRIBUTION.md",
     "typed_physical_contract": "docs/audits/PPA_WU05_MIGMAC01_TYPED_PHYSICAL_CONTRACT.md",
     "provider_shortstep_preregistration": "docs/audits/PPA_WU05_MIGMAC01_PROVIDER_SHORTSTEP_PREREGISTRATION.md",
     "root_composition_preregistration": "docs/audits/PPA_WU05_MIGMAC01_ROOT_COMPOSITION_PREREGISTRATION.md",
     "qualification_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36989583419"
-  }
+  },
+  "next_action": "Reconcile the qualified MIGMAC01 production delta with current integration/f-ci-canonical, rerun the exact source transaction and preservation gates on the reconciled postimage, then admit only if those gates remain green."
 }
