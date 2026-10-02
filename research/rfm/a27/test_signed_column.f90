@@ -20,6 +20,8 @@ program test_ppa_wu05a27_signed_column
  type(signed_contact_result_t)::cr
  type(process_hydraulic_view_t)::view
  real(real64)::stheta(numnod),scond(numnod),scap(numnod),sdk(numnod),ss
+ real(real64)::event_seed(numnod),event_age(numnod),trial_seed(numnod),trial_age(numnod)
+ logical::wall_wet(numnod),trial_wet(numnod)
  integer::soil,wet,mode,ref,step,ns,iters,backs,k
  type(saturated_exchange_request_t)::sq
  type(saturated_exchange_result_t)::sx
@@ -45,7 +47,7 @@ program test_ppa_wu05a27_signed_column
  allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod),source(numnod),h0(numnod),t0(numnod))
  do soil=1,2
  do wet=0,2
- do mode=0,4
+ do mode=0,6
  do ref=0,4
  dt=.002_real64/(2**ref);ns=nint(1._real64/dt)
  ks=1._real64;if(soil==2)ks=5._real64
@@ -84,6 +86,9 @@ program test_ppa_wu05a27_signed_column
  allocate(sq%domain_fraction(1,numnod),sq%cdarcy(1,numnod));sq%domain_fraction=1.;sq%cdarcy=.1_real64*16._real64/(20._real64**2)*(ks*.1_real64)*10._real64
  macro_initial=0.;if(wet==2)macro_initial=4._real64
  macro_water=macro_initial
+ event_seed=0.;event_age=0.;wall_wet=.false.
+ if(allocated(contact%contact_age))deallocate(contact%contact_age)
+ if(allocated(contact%capillary_budget))deallocate(contact%capillary_budget)
  cum_exchange=0.;cum_bottom=0.;iters=0;backs=0.;initial_storage=sum(t0*dz)
  call cpu_time(clock0)
  do step=1,ns
@@ -113,7 +118,7 @@ program test_ppa_wu05a27_signed_column
   qdra(1,:)=pos/dt;qssdi=neg/dt
  endif
  if(mode>=3)then
-  contact%finite_contact=mode==4
+  contact%finite_contact=mode>=4
   contact%dt=dt;contact%storage=macro_water;contact%capacity=5._real64;contact%area=.05_real64
   contact%bottom_depth=100._real64;contact%length=20._real64;contact%chi=1._real64;contact%age=(step-1)*dt
   contact%depth=-z;contact%thickness=dz;contact%matrix_head=q%base_state%pressure_head
@@ -130,6 +135,19 @@ program test_ppa_wu05a27_signed_column
    if(.not.ok)error stop 'contact sorptivity'
    contact%sorptivity(k)=ss
   enddo
+  if(mode>=5)then
+   trial_seed=event_seed;trial_age=event_age
+   trial_wet=macro_water>0._real64.and.(-z+dz/2)>100._real64-macro_water/.05_real64
+   do k=1,numnod
+    if(.not.trial_wet(k))then
+     trial_seed(k)=0.;trial_age(k)=0.
+    else if(.not.wall_wet(k))then
+     trial_seed(k)=contact%sorptivity(k);trial_age(k)=0.
+    endif
+   enddo
+   contact%sorptivity=trial_seed;contact%contact_age=trial_age
+   if(mode==6)contact%capillary_budget=max(0._real64,cofgen(2,:)-q%base_state%water_content)*dz
+  endif
   call evaluate_signed_contact(contact,cr)
   if(.not.cr%valid)error stop 'signed contact'
   into_macro=sum(cr%matrix_loss);out_macro=sum(cr%matrix_gain)
@@ -142,6 +160,9 @@ program test_ppa_wu05a27_signed_column
  endif
  if(.not.r0%integrated_mass_balance_residual_available.or.abs(r0%integrated_mass_balance_residual_cm)>tol)error stop 'column mass'
  macro_water=macro_water+into_macro-out_macro
+ if(mode>=5)then
+  event_seed=trial_seed;event_age=trial_age+merge(dt,0._real64,trial_wet);wall_wet=trial_wet
+ endif
  if(macro_water< -1e-12_real64.or.macro_water>5._real64+1e-12_real64)error stop 'receiver capacity'
  cum_exchange=cum_exchange+into_macro-out_macro
  cum_bottom=cum_bottom+r0%bottom_flux*dt

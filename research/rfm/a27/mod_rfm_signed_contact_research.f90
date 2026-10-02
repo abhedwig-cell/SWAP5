@@ -7,6 +7,7 @@ module mod_rfm_signed_contact_research
   logical::finite_contact=.false.
   real(real64)::dt=0.,storage=0.,capacity=0.,area=0.,bottom_depth=0.,length=0.,chi=0.,age=0.
   real(real64),allocatable::depth(:),thickness(:),matrix_head(:),conductivity(:),sorptivity(:),donor_water(:),receiver_space(:)
+  real(real64),allocatable::contact_age(:),capillary_budget(:)
  end type
  type,public::signed_contact_result_t
   logical::valid=.false.
@@ -19,7 +20,7 @@ contains
   type(signed_contact_request_t),intent(in)::q
   type(signed_contact_result_t),intent(out)::r
   real(real64)::phi,hmp,dh,darcy,philip,rate,rootdiff,fill,release
-  real(real64)::lo,hi,wetlo,cd,cp,cross
+  real(real64)::lo,hi,wetlo,cd,cp,cross,darcy_only,excess
   integer::i,n
   r=signed_contact_result_t()
   if(.not.all(ieee_is_finite([q%dt,q%storage,q%capacity,q%area,q%bottom_depth,q%length,q%chi,q%age])))return
@@ -31,10 +32,19 @@ contains
   if(.not.all(ieee_is_finite(q%depth)).or..not.all(ieee_is_finite(q%thickness)).or..not.all(ieee_is_finite(q%matrix_head)).or..not.all(ieee_is_finite(q%conductivity)).or..not.all(ieee_is_finite(q%sorptivity)).or..not.all(ieee_is_finite(q%donor_water)).or..not.all(ieee_is_finite(q%receiver_space)))return
   if(any(q%depth<0).or.any(q%depth>q%bottom_depth).or.any(q%thickness<=0).or.any(q%conductivity<0).or.any(q%sorptivity<0).or.any(q%donor_water<0).or.any(q%receiver_space<0))return
   if(q%capacity/q%area>q%bottom_depth)return
+  if(allocated(q%contact_age))then
+   if(size(q%contact_age)/=n)return
+   if(.not.all(ieee_is_finite(q%contact_age)).or.any(q%contact_age<0.))return
+  endif
+  if(allocated(q%capillary_budget))then
+   if(.not.q%finite_contact.or.size(q%capillary_budget)/=n)return
+   if(.not.all(ieee_is_finite(q%capillary_budget)).or.any(q%capillary_budget<0.))return
+  endif
   allocate(r%matrix_gain(n),r%matrix_loss(n));r%matrix_gain=0.;r%matrix_loss=0.
   phi=-q%bottom_depth+q%storage/q%area
   rootdiff=q%dt/(sqrt(q%age+q%dt)+sqrt(q%age))
   do i=1,n
+   if(allocated(q%contact_age))rootdiff=q%dt/(sqrt(q%contact_age(i)+q%dt)+sqrt(q%contact_age(i)))
    hmp=max(0._real64,phi+q%depth(i));dh=hmp-q%matrix_head(i)
    darcy=8._real64*q%conductivity(i)*q%thickness(i)*dh*q%dt/q%length**2
    if(q%finite_contact)then
@@ -53,6 +63,12 @@ contains
        rate=cp*(cross-wetlo)+cd*((phi-q%matrix_head(i))*(hi-cross)+.5_real64*(hi**2-cross**2))
       else
        rate=cp*(hi-wetlo)
+      endif
+      if(allocated(q%capillary_budget))then
+       ! Bound only enhancement above hydraulic Darcy, not through-flow itself.
+       darcy_only=cd*((phi-q%matrix_head(i))*(hi-wetlo)+.5_real64*(hi**2-wetlo**2))
+       excess=max(0._real64,rate-darcy_only)
+       rate=darcy_only+min(excess,q%capillary_budget(i))
       endif
      endif
     endif
