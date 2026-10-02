@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/process/macropore/mod_macropore_dynamic_shrinkage.f90'
       - 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
+      - 'src/runtime/mod_macropore_single_column_runtime.f90'
       - 'tests/fpm/test_ppa_wu05_migmac02_provider_geometry.f90'
       - 'tests/fpm/run_ppa_wu05_migmac02_provider_geometry.sh'
       - 'tests/fpm/test_ppa_wu05_migmac02_dynamic_shrinkage.f90'
