@@ -1,0 +1,18 @@
+name: PPA-WU05-A27 PERF03 sorptivity reuse falsification
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  perf03:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p /tmp/a27-perf03
+          bash research/rfm/a27/run_perf03.sh /tmp/a27-perf03
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a27-perf03
+          path: /tmp/a27-perf03
