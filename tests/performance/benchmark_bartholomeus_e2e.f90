@@ -54,6 +54,103 @@ contains
   enddo
   call system_clock(q);t1c=real(q,real64);ns=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
  end subroutine
+  subroutine initialize_application_config(value, initial_head, conductivity0)
+    type(fmr_production_application_config_t), intent(out) :: value
+    real(real64), intent(in) :: initial_head
+    real(real64), intent(out) :: conductivity0
+
+    value%initial_time = T0
+    value%numerical%transaction%temporal_tolerance = 0.0_real64
+    value%numerical%transaction%mass_tolerance = HARD_MASS_GATE
+    value%numerical%transaction%retry_scale = 0.5_real64
+    value%numerical%transaction%max_retries = 2
+    value%numerical%max_committed_substeps = 8
+    value%numerical%progress_tolerance = 0.0_real64
+
+    allocate(value%tiles(1))
+    value%tiles(1)%tile_id = 660101_int64
+    value%tiles(1)%ledger_id = 760101_int64
+    value%tiles(1)%template%template_id = 660201_int64
+    value%tiles(1)%template%physics_topology_id = 660210_int64
+    value%tiles(1)%template%vertical_layout_id = 660220_int64
+    value%tiles(1)%template%state_layout_id = 660230_int64
+    value%tiles(1)%template%solver_interface_id = 660240_int64
+    value%tiles(1)%template%optional_state_layout_id = 0_int64
+    value%tiles(1)%template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
+    value%tiles(1)%template%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
+
+    call initialize_parameters(value%tiles(1)%parameters, 670001_int64)
+    call initialize_state_and_forcing(value%tiles(1)%parameters, value%tiles(1)%initial_state, &
+         value%tiles(1)%base_forcing, initial_head, conductivity0)
+  end subroutine initialize_application_config
+
+  subroutine initialize_parameters(p, parameter_id)
+    type(fmr_b110_physical_parameters_t), intent(out) :: p
+    integer(int64), intent(in) :: parameter_id
+    integer :: k
+
+    p%parameter_set_id = parameter_id
+    p%active_nodes = numnod
+    allocate(p%z(numnod), p%dz(numnod), p%node_distance(numnod), p%cofgen(24, numnod))
+    p%z = z
+    p%dz = dz
+    p%node_distance = disnod(1:numnod)
+    p%cofgen = 0.0_real64
+    do k = 1, numnod
+      p%cofgen(1,k) = 0.032_real64
+      p%cofgen(2,k) = 0.423_real64
+      p%cofgen(3,k) = 4.75_real64
+      p%cofgen(4,k) = 0.0135_real64
+      p%cofgen(5,k) = 0.365_real64
+      p%cofgen(6,k) = 1.455_real64
+      p%cofgen(7,k) = 1.0_real64 - 1.0_real64 / p%cofgen(6,k)
+      p%cofgen(8,k) = p%cofgen(4,k)
+      p%cofgen(10,k) = p%cofgen(3,k)
+      p%cofgen(11,k) = 0.999_real64
+      p%cofgen(12,k) = 0.99_real64 * p%cofgen(3,k)
+      p%cofgen(22,k) = -1.0e6_real64
+      p%cofgen(23,k) = 1.0e-12_real64
+    end do
+    p%bottom_mode = 2
+    p%swkimpl = 0
+    p%swkmean = 1
+    p%swsophy = 0
+    p%max_iterations = 8
+    p%max_backtracking = 4
+    p%root_extraction_active = .false.
+    p%macropore_active = .false.
+    p%snow_active = .false.
+    p%hysteresis_active = .false.
+    p%tabulated_hydraulics_active = .false.
+    p%elasticity_active = .false.
+    p%frost_active = .false.
+    p%soil_temperature_active = .false.
+    p%drainage_response_active = .false.
+  end subroutine initialize_parameters
+
+  subroutine initialize_state_and_forcing(p, state, forcing, initial_head, conductivity0)
+    type(fmr_b110_physical_parameters_t), intent(in) :: p
+    type(fmr_b110_physical_state_t), intent(out) :: state
+    type(fmr_b110_physical_forcing_t), intent(out) :: forcing
+    real(real64), intent(in) :: initial_head
+    real(real64), intent(out) :: conductivity0
+
+    type(b110_default_mvg_parameters_t), target :: hp
+    type(b110_default_mvg_provider_t) :: provider
+    real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
+
+    heads = initial_head
+    call initialize_b110_default_mvg_parameters(hp, p%cofgen)
+    call bind_b110_default_mvg_provider(provider, hp, T1 - T0)
+    call provider%evaluate(heads, water, conductivity, capacity, dkdh)
+    conductivity0 = conductivity(1)
+
+    state%active_nodes = numnod
+    allocate(state%pressure_head(numnod), state%water_content(numnod))
+    state%pressure_head = heads
+    state%water_content = water
+    state%ponding_depth = 0.0_real64
+    state%groundwater_level = -2.0_real64
  subroutine add_root_thermal_oxygen(value)
   type(fmr_production_application_config_t),intent(inout)::value
   type(b110_default_mvg_parameters_t),target::hp
