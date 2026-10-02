@@ -43,6 +43,7 @@ program test_low03a_application
   call initialize_application_config(cfg,-75.0_real64,conductivity0)
   cfg%tiles(1)%parameters%bottom_mode=3
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  allocate(cfg%tiles(1)%initial_right_derivative(numnod));cfg%tiles(1)%initial_right_derivative=0.0_real64
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
   cfg%numerical%model_temporal_indicator_budget_available=.true.
   cfg%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
