@@ -113,7 +113,7 @@ def main(out):
     kk=(np.arange(10000)+.5)*np.pi/L
     analytic=L*(TS-TI)*(1-np.sum(2/(L*kk)**2*np.exp(-10*kk*kk*.2)))
     numerical=next(r['wall_receipt_cm'] for r in reference if r['beta']==0 and r['stage']=='initial_wet')
-    summary['constant_D_analytic_error_cm']=abs(numerical-analytic)
+    summary['constant_D_analytic_error_cm']=float(abs(numerical-analytic))
     summary['max_ledger_cm']=max(abs(r['ledger_cm']) for r in rows+tight)
     for n in [8,16,32,64,128]:
         a=[r for r in comparisons if r['n']==n];cases={}
@@ -121,7 +121,7 @@ def main(out):
             k=tuple(r[x] for x in ['beta','pulse','evap_cm_day','gap_day']);cases.setdefault(k,[]).append(r)
         fail=[k for k,v in cases.items() if max(max(r['storage_error_cm'],r['receipt_error_cm']) for r in v)>.01 or max(r['max_band_theta_error'] for r in v)>.001]
         summary['candidates'][str(n)]={'pass_cases':24-len(fail),'total_cases':24,'max_mass_error_cm':max(max(r['storage_error_cm'],r['receipt_error_cm']) for r in a),'max_theta_error':max(r['max_band_theta_error'] for r in a),'failing_cases':fail,'packed_moisture_bytes':8*n}
-    summary['reference_qualified']=all(summary['reference_gates'][k]['pass'] for k in ['512_1024','temporal']) and summary['constant_D_analytic_error_cm']<=.0001
+    summary['reference_qualified']=bool(all(summary['reference_gates'][k]['pass'] for k in ['512_1024','temporal']) and summary['constant_D_analytic_error_cm']<=.0001)
     (out/'lateral_summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps(summary,indent=2),flush=True)
     assert summary['reference_qualified'],'reference gate failed; preserve output before prospective refinement'
