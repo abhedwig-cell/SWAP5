@@ -11,6 +11,7 @@ program test_low03a_dep01_serialized_context
   type(soil_water_parameter_set_t), target :: parameters
   type(soil_water_solve_request_t) :: request
   integer, parameter :: admitted(5)=[7,-2,5,2,3]
+  integer, parameter :: rejected(3)=[1,8,9]
   integer :: i
   logical :: ok
 
@@ -41,7 +42,7 @@ program test_low03a_dep01_serialized_context
   print '(a)','LOW03A_DEP01_EXISTING_MODES_AND_MODE3_MIRROR=PASS'
 
   do i=1,3
-    call make_request([1,8,9](i),0)
+    call make_request(rejected(i),0)
     call bind_b110_serialized_legacy_context(request,ok)
     call require(.not.ok,'unsupported selector admitted')
   end do
