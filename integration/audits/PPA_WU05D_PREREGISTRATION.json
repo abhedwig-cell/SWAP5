@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-D",
+  "title": "Compensated root-water-uptake source/order/owner authority",
+  "protocol": "RECONCILE -> SOURCE AUTHORITY -> CORROBORATING TRACE -> ORDER/STATE/MASS CLASSIFY -> MIGRATION SLICING -> QUALIFY -> CLOSE OR BLOCK",
+  "branch": "audit/ppa-wu05d-compensation-authority",
+  "canonical_base": "e473afc2d378a2567a59cc0db1577b4c724feeb2",
+  "parent_authority": [
+    "integration/audits/PPA_WU05_STATUS.json",
+    "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json",
+    "integration/audits/PPA_WU05C_OXYGEN_AUTHORITY_CONTRACT.json",
+    "integration/f-ci/F-CI31_STATUS.json",
+    "src/process/mod_root_water_uptake_process.f90"
+  ],
+  "corrected_reference": {
+    "snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "b1_11_change": "NONE_FOR_ROOTEXTRACTION"
+  },
+  "scope": [
+    "compensation owner relative to the existing nodewise root-water sink owner",
+    "ordering relative to pre-compensation drought/wetness/salinity/frost stress reductions",
+    "Jarvis versus Walsum option boundary",
+    "candidate/retry/rollback semantics",
+    "stress-attribution versus accepted water-mass semantics",
+    "dependency slicing for later production"
+  ],
+  "non_goals": [
+    "production implementation",
+    "inventing compensation equations from later artifacts",
+    "oxygen, salinity or frost production admission",
+    "MICRO/Jong-van-Lier migration",
+    "root-growth model redesign",
+    "solver/tolerance/timestep changes",
+    "ROM"
+  ],
+  "fail_closed_rule": "Later rootextraction artifacts and historical contracts may corroborate owner/order boundaries but are not the exact B1.11 equation oracle. If exact B1.11 source bytes remain unavailable, equation-level and persistent-state claims remain held.",
+  "pass_conditions": [
+    "single accepted nodewise root-sink mass owner preserved",
+    "compensation classified as a root-uptake composition/modification surface rather than a second mass owner",
+    "exact B1.11 source identity pinned and later-artifact mismatch explicitly classified",
+    "persistent state/restart not inferred without exact source",
+    "retry cannot compound scaling from rejected trial output",
+    "Jarvis/Walsum and multi-stressor dependencies sliced explicitly",
+    "no src/ or reference/ mutation"
+  ]
+}
