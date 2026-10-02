@@ -1,0 +1,58 @@
+{
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C0_FIRST_REAL_CONTEXT_WINDOW",
+  "state": "PREREGISTERED_BEFORE_EXECUTION",
+  "research_only": true,
+  "source_head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c",
+  "profile": "STRIP01-C0",
+  "columns": 50,
+  "grid": {
+    "nodes": 60,
+    "dz_cm": 10,
+    "depth_m": 6
+  },
+  "soil": {
+    "source": "tests/fpe/data/fpe_elastic05_staringreeks_2018.csv",
+    "unit": "B01",
+    "theta_r": 0.02,
+    "theta_s": 0.42749391,
+    "alpha_per_cm": 0.02165898,
+    "n": 1.73473668,
+    "lambda": 0.98087016,
+    "ks_cm_per_day": 31.22501566,
+    "interpretation": "homogeneous research archetype, not a BOFEK-ID profile or field calibration"
+  },
+  "forcing": {
+    "top_flux_cm_day": 0,
+    "et": 0,
+    "root_sink": 0
+  },
+  "initial_state": {
+    "head_m": -5,
+    "far_column_head_m": -4.5,
+    "pressure": "hydrostatic h_cm = 100*H-z_cm",
+    "pulse": "initial far-column physical storage perturbation; no meteorological or well source in coupled model"
+  },
+  "window": {
+    "t0_day": 0,
+    "t1_day": 0.001
+  },
+  "mass": {
+    "equation": "-Q_DRN*dt = delta_S_SWAP",
+    "storage": "committed water content times dz plus ponding",
+    "window_limit_m3": 1e-8,
+    "flux_m_per_s": 1e-15
+  },
+  "coupling": {
+    "driver": "explicit research registry/context; existing production ABI and service",
+    "sto": false,
+    "recharge": false,
+    "well": false,
+    "drn_owner": "MODFLOW_RESEARCH",
+    "mf6_initial_head_m": -4.999,
+    "predictor_metadata": "qbot=-0.001 cm/day, inverse slope=-100 day; predictor only, not physical flux or storage",
+    "corrector": "real SWAP accepted-origin response"
+  },
+  "failure_policy": "Record actual failed stage, return code and unchanged revisions; no tolerance widening or artificial sources",
+  "scope_ceiling": "one accepted window / negative result, no transient Hupsel, restart or production admission"
+}
