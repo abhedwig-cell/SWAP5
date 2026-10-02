@@ -1,0 +1,68 @@
+{
+  "cases": 500,
+  "records": 5000,
+  "thresholds": {
+    "macro_storage_cm": 0.01,
+    "exchange_cm": 0.01,
+    "bottom_cm": 0.01,
+    "theta_top": 0.001,
+    "theta_mid": 0.001,
+    "theta_bottom": 0.001,
+    "head_top_cm": 1.0,
+    "head_mid_cm": 1.0,
+    "head_bottom_cm": 1.0
+  },
+  "mass_residual_max_cm": 3.0852820298576946e-15,
+  "whole_column_ledger_max_cm": 3.8613556796462944e-13,
+  "modes": {
+    "8": {
+      "passed": 49,
+      "total": 50,
+      "max_errors": {
+        "macro_storage_cm": 0.011872694249303262,
+        "exchange_cm": 0.01187269424931059,
+        "bottom_cm": 0.005974499351224738,
+        "theta_top": 1.7903111783623693e-06,
+        "theta_mid": 1.5291480948143032e-07,
+        "theta_bottom": 0.000605235187954356,
+        "head_top_cm": 0.0006598982107313134,
+        "head_mid_cm": 0.004340062992380211,
+        "head_bottom_cm": 0.26404104365586534
+      },
+      "failures": [
+        {
+          "soil": 1,
+          "wet": 4,
+          "mode": 8,
+          "dt_day": 0.000125,
+          "macro_storage_cm": 0.011872694249303262,
+          "exchange_cm": 0.01187269424931059,
+          "bottom_cm": 0.005974499351224738,
+          "theta_top": 0.0,
+          "theta_mid": 1.9262369477246466e-14,
+          "theta_bottom": 0.000605235187954356,
+          "head_top_cm": 0.0,
+          "head_mid_cm": 2.8563817977556027e-11,
+          "head_bottom_cm": 0.26404104365586534,
+          "passed": false
+        }
+      ]
+    },
+    "9": {
+      "passed": 50,
+      "total": 50,
+      "max_errors": {
+        "macro_storage_cm": 0.0031242929174021827,
+        "exchange_cm": 0.0031242929174044587,
+        "bottom_cm": 0.0014763729083092092,
+        "theta_top": 2.770854721778626e-07,
+        "theta_mid": 1.6756156795416643e-08,
+        "theta_bottom": 0.0001390663415465898,
+        "head_top_cm": 0.00010213218313026573,
+        "head_mid_cm": 0.0005932597988511645,
+        "head_bottom_cm": 0.06060914056857314
+      },
+      "failures": []
+    }
+  }
+}

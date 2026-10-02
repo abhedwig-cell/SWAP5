@@ -1,26 +1,28 @@
 {
   "work_unit": "PPA-WU05-A27",
   "baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-  "checkpoint_commit": "34a7861377da05727647d22937c25f8d73e702ef",
+  "checkpoint_commit": "8ff6309a7eba98ee9cd66ef79da0bb7c5da0a5a2",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "SOURCE_REPAIR_QUALIFIED_FOR_REGIE_REVIEW_TWO_WAY_HISTORY_CONTRACT_BLOCKED",
-  "next_action": "Central regie may review the independently qualified areic source correction. Research continuation requires an explicit transient uptake/contact-history contract before two-way production integration; full paired performance/equivalence and scaling remain open.",
-  "recovery_point": "docs/audits/PPA_WU05A27_FINITE_CONTACT_RESULT.md",
+  "status": "BOUNDED_16_COHORT_RESEARCH_SCREEN_PASS_PHYSICAL_CLOSURE_BLOCKED",
+  "next_action": "Independent physical closure contract for moisture feedback/frozen seed/dry reset; then full production A/B/C. Do not admit compressed research state.",
+  "recovery_point": "docs/audits/PPA_WU05A27_BOUNDED_COHORT_RESULT.md",
   "blockers": [
-    "Finite contact removes the point-wetting discontinuity but frozen-event-S still creates a 0.05640716960416655 cm saturation-boundary jump",
-    "Endpoint-wide event age and S do not represent newly wetted segment histories; a physical uptake/history contract is required"
+    "Physical closure not independently justified",
+    "Fixed-count approximation lacks monotonic finest-grid contraction",
+    "Full production A/B/C and repeated timing/scaling remain open"
   ],
   "last_reconciled_head": "34a7861377da05727647d22937c25f8d73e702ef",
-  "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+  "last_reconciled_upstream": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
   "authority_paths": [
     "AGENTS.md",
     "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
     "docs/audits/PPA_WU05A26_CLOSEOUT.md",
     "docs/audits/PPA_WU05A27_FINITE_CONTACT_CONTRACT.md",
-    "integration/control/SWAP5_WORKSTREAM_REGISTRY.json"
+    "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+    "docs/audits/PPA_WU05A27_BOUNDED_COHORT_CONTRACT.md"
   ],
   "test_paths": [
     "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
@@ -29,7 +31,10 @@
     "tests/fpm/test_ppa_wu05a27_finite_exchange.f90",
     "research/rfm/a27/run_signed_contact.sh",
     "research/rfm/a27/run_signed_column.sh",
-    "research/rfm/a27/run_source_units.sh"
+    "research/rfm/a27/run_source_units.sh",
+    "research/rfm/a27/run_wall_cohort.sh",
+    "research/rfm/a27/run_capillary_budget.sh",
+    "research/rfm/a27/analyze_bounded_cohorts.py"
   ],
   "dependency_surface": [
     "src/legacy/b1_10_port/headcalc.f90",
@@ -43,7 +48,7 @@
   ],
   "interfaces_changed": [],
   "production_claim": "Bounded source correction qualified locally on persisted postimage; not canonically admitted. No E1 production envelope, speedup or stability claim.",
-  "research_result": "150 evolving actual Richards columns with finite-contact mode and five timestep resolutions; full raw records and solver counters retained. 5/10/20 cm actual source receipts conserve endpoint release. Finite first-contact continuity resolved; frozen-history saturated switch remains falsified.",
+  "research_result": "500 cases / 5000 sampled records; 8/node passes49/50,16/node passes50/50 against exact research cohort mode7; not production E1",
   "source_repair_qualified": true,
   "canonical_admitted": false,
   "qualification_scopes": {
@@ -64,8 +69,17 @@
       "sampled_records": 1500,
       "production_eligible": false
     },
-    "full_a27_benchmark": "OPEN"
+    "full_a27_benchmark": "OPEN",
+    "bounded_cohort_research": {
+      "code_postimage": "8ff6309a7eba98ee9cd66ef79da0bb7c5da0a5a2",
+      "cases": 500,
+      "records": 5000,
+      "mode8_pass": 49,
+      "mode9_pass": 50,
+      "comparisons_per_mode": 50,
+      "production_eligible": false
+    }
   },
-  "evidence_archive": "docs/audits/evidence/PPA_WU05A27_FINITE_CONTACT_EVIDENCE.json.gz",
-  "evidence_sha256": "a57ed20f3efc7cc5919da36afeef7a3d6a4cdff45d13ab3577ea8230fb72a360"
+  "evidence_archive": "docs/audits/evidence/PPA_WU05A27_COHORT_EVIDENCE.tar.gz.part-*",
+  "evidence_sha256": "b816cd0920e91905403ac9c437b20b3b3c6b8c6b8b8a5adb40d443c0864ec245"
 }

@@ -1,5 +1,7 @@
 # PPA-WU05-A27 result: first falsified replacement route
 
+Current continuation authority (2026-10-02): [bounded cohort frontier](PPA_WU05A27_BOUNDED_COHORT_RESULT.md) and `PPA_WU05A27_STATUS.json`. Sixteen cohorts/node pass the finite research screen; physical closure and full production A/B/C remain open. The initial negative result below is retained as its historical process-scope finding.
+
 Date: 2026-10-01
 Status: PARTIAL_NEGATIVE_RESULT; A27 full benchmark remains OPEN
 Reconciled canonical: 19f09b818b1bb30c1428919074c00098dbd062bd
