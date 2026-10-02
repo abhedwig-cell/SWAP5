@@ -1,10 +1,10 @@
 program test_low08a_application
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, fmr_logical_column_t
+  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, fmr_logical_column_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
-       fmr_new_b110_committed_state
+       fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_tile_config_t, fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK
@@ -12,7 +12,7 @@ program test_low08a_application
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_kernel_transactions
   use mod_fmr_committed_restart
-  use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use variables, only: fldtmin
   use mod_fixed_flux_top_boundary_provider
   use mod_groundwater_topology_composition, only: groundwater_topology_t
@@ -44,8 +44,11 @@ program test_low08a_application
   cfg%tiles(1)%parameters%bottom_mode=8
   cfg%tiles(1)%ordinary_lysimeter_plate=.true.
   cfg%tiles(1)%ledger_id=0_int64
-  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
-  cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  allocate(cfg%tiles(1)%initial_right_derivative(numnod));cfg%tiles(1)%initial_right_derivative=0.0_real64
+  cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+  cfg%numerical%model_temporal_indicator_budget_available=.true.
+  cfg%numerical%model_temporal_indicator_budget=1.0_real64
   cfg%tiles(1)%base_forcing%bottom_head=cfg%tiles(1)%initial_state%pressure_head(numnod)+ &
        0.5_real64*cfg%tiles(1)%parameters%dz(numnod)+1.0_real64
   cfg%tiles(1)%base_forcing%top_flux=0.0_real64
@@ -75,7 +78,11 @@ program test_low08a_application
   columns(1)%parameter_ref=1_int64;columns(1)%state_handle=1_int64;columns(1)%forcing_handle=1_int64
   columns(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   call backend%initialize(top)
-  call fmr_new_b110_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok)
+  block
+    real(real64)::previous(numnod)
+    previous=0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok,previous)
+  end block
   call require(ok,'committed state')
   call states(1)%capture_checkpoint(cp,ok)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
