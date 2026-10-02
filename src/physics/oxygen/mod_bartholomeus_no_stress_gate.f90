@@ -11,18 +11,19 @@ module mod_bartholomeus_no_stress_gate
  private
  public::bartholomeus_macro_supply_bound_no_stress
 contains
- pure logical function bartholomeus_macro_supply_bound_no_stress(view,data,crop,w_root_z0,atmospheric_ctop) result(skip)
+ pure logical function bartholomeus_macro_supply_bound_no_stress(view,data,crop,w_root,w_root_z0,atmospheric_ctop) result(skip)
   type(bartholomeus_runtime_view_t),intent(in)::view
   type(BartholomeusImmutableDataset),intent(in)::data
   type(BartholomeusCropParameters),intent(in)::crop
-  real(real64),intent(in)::w_root_z0(:),atmospheric_ctop
+  real(real64),intent(in)::w_root(:),w_root_z0(:),atmospheric_ctop
   type(BartholomeusTemperatureResult)::t
   type(BartholomeusMicroInput)::mi
   type(BartholomeusWaterfilmMvgInput)::wf
   real(real64)::ctop,gfp,mp,dsoil,rm,a,b,demand,cmacro,ilower,film_ub,cmicro_ub
   integer::i
   skip=.false.;ctop=atmospheric_ctop
-  if(size(w_root_z0)/=view%rooted_nodes)return
+  if(size(w_root)/=view%rooted_nodes .or. size(w_root_z0)/=view%rooted_nodes)return
+  if(any(w_root<0._real64) .or. any(w_root_z0<0._real64))return
   do i=1,view%rooted_nodes
    gfp=max(0._real64,data%soil(i)%saturated_water_content-view%water_content(i))
    if(view%pressure_head_cm(i)>=0._real64)gfp=0._real64
@@ -53,7 +54,7 @@ contains
    if(ilower<=0._real64)return
    film_ub=bartholomeus_waterfilm_from_length_density(ilower,mp,t%surface_tension_water)
    if(.not.(film_ub>0._real64))return
-   mi%c_mroot=crop%c_mroot;mi%w_root=w_root_z0(i);mi%f_senes=crop%f_senes;mi%q10_root=crop%q10_root
+   mi%c_mroot=crop%c_mroot;mi%w_root=w_root(i);mi%f_senes=crop%f_senes;mi%q10_root=crop%q10_root
    mi%soil_temp_k=view%soil_temperature_k(i);mi%sat_water_content=data%soil(i)%saturated_water_content
    mi%gas_filled_porosity=gfp;mi%d_o2_in_water=t%d_o2_in_water;mi%d_root=t%d_root
    mi%percent_org_mat=data%soil(i)%percent_org_mat;mi%soil_density=data%soil(i)%soil_density
