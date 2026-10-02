@@ -3366,7 +3366,8 @@ contains
     class is (fmr_b110_physical_state_t)
       if (self%fixed_weir_surface_water_active) return
       complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
-           allocated(physical%water_content)
+           allocated(physical%water_content) .and. allocated(self%soil_parameters%dz)
+      if (complete) complete = size(self%soil_parameters%dz) == self%soil_parameters%active_nodes
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
            size(physical%water_content) == physical%active_nodes
       if (complete .and. self%macropore_active) then
