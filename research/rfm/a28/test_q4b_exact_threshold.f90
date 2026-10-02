@@ -86,7 +86,7 @@ contains
     class(transaction_state_t),allocatable::snapshot,replay_snapshot,original_snapshot
     real(real64)::heads(numnod),theta(numnod),cond(numnod),cap(numnod),dkdh(numnod)
     real(real64)::wt,rain,t0,t1,macro_area,deep_fraction,endpoint_depth,sorpmax,ks
-    integer::step,nsteps,commit_status,reconstruct_status,cauchy_status
+    integer::step,nsteps,commit_status,reconstruct_status,cauchy_status,selection_status
     integer(int64)::saved_lineage,saved_revision
     real(real64)::saved_time
     logical::ok,did_commit,available,time_available,reconstructed_ok
@@ -119,6 +119,8 @@ contains
     end if
 
     call backend%initialize(top)
+    call backend%configure_soil_water_model('REFERENCE_RICHARDS',ok,selection_status)
+    if(.not.ok)then;m%status=-934;return;end if
     if(arm==ARM_B)then
       policy%enabled=.true.
       policy%inner_richards_exchange_enabled=.false.
@@ -193,6 +195,8 @@ contains
         call kernel_reconstruct_committed_state_trusted(reconstructed,saved_lineage,saved_revision,original_snapshot,saved_time,.true.,reconstructed_ok,reconstruct_status)
         if(.not.reconstructed_ok.or.reconstruct_status/=KERNEL_TRUSTED_RECONSTRUCTION_OK)then;m%status=-914;m%fail_step=step;exit;end if
         call replay_backend%initialize(top)
+        call replay_backend%configure_soil_water_model('REFERENCE_RICHARDS',ok,selection_status)
+        if(.not.ok)then;m%status=-935;m%fail_step=step;exit;end if
         call replay_backend%configure_rfm_runtime(rfmcfg,ok)
         if(.not.ok)then;m%status=-928;m%fail_step=step;exit;end if
       end if
