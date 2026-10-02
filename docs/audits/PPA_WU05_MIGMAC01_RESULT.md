@@ -1,8 +1,8 @@
 # PPA-WU05-MIGMAC01 result — covering-layer standard macropore route
 
-Date: 2026-10-01
+Date: 2026-10-02
 
-Status: `QUALIFIED_TRANSACTION_COMPOSITION_SYNTHETIC_ACTIVE_FIXTURE_FALSIFIED`
+Status: `QUALIFIED_PREREQUISITE_SOURCE_ORIGIN_COMPOSITION_BLOCKED`
 
 Qualified postimage:
 `f88c1fc3106b88fec60edb93fdc56f331ad75dff`
@@ -54,3 +54,17 @@ Per the preregistered no-tuning rule, MIGMAC01 will not increase the synthetic s
 forcing, timestep or tolerances merely to obtain a positive transfer. The remaining admission
 blocker is now a source-backed SWAP 4.3.1 state/interval with `IcTopMp>1` and positive accepted
 covering-cell head.
+
+## Source-backed recovery and current blocker (2026-10-02)
+
+The missing source event is resolved by the preregistered modified-Andelst
+experiment: accepted h(2)=+0.09997836 cm, covered transfer=6.05432484e-5 cm,
+exact matrix sink ownership, macro closure=2.10e-16 cm.
+The current source-origin Reference-Richards replay fails the complete strict
+convergence gate and its last tentative covering head is negative.
+Other exchange differs materially from B1.11; immutable serialized covering
+parameters and an explicit matrix-area carrier are also absent.
+See [source-origin replay result](PPA_WU05_MIGMAC01_SOURCE_ORIGIN_REPLAY_RESULT.md)
+and [controlled reference result](PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_RESULT.md).
+These replace the prior missing-source-event blocker; no active E2E qualification,
+new preservation, production admission or closeout is claimed.

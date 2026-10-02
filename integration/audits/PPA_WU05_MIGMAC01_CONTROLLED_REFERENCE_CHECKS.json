@@ -22,5 +22,11 @@
   "reference_final_head_receipt_note": "Legacy converged receipt is lagged by last nonlinear iteration; do not demand exact final-head equivalence from this extraction.",
   "source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
   "capture_sha256": "030ec38600e7b6d3a02df5533f036bf561b57851e8257c8e42fbcaf22d8b5a85",
-  "swap5_qualified": false
+  "swap5_qualified": false,
+  "ttutil_manifest_sha256": "2356185c052b75021988ad4552b3cfb17bf8b48c8ce9b22a9a177df2ab8060fe",
+  "ttutil_members": 153,
+  "instrumented_source_sha256": {
+    "macropore.f90": "6d35aaf5c557dfc1c2c9f59aecd93bc66c77b004e3f78a65bd26123b096f23cb",
+    "soilwater.f90": "dbc0a7144d9037ed417904ef35b63833be325270f1769c072ef200d57faca2e0"
+  }
 }

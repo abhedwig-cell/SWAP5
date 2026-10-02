@@ -3,7 +3,17 @@ import sys, subprocess, shutil, hashlib, json, os
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from b0_source_runner import SWAP_ORDER, select_dec_branches
 root=Path('reference-run').resolve(); src=Path(os.environ.get('B111_SOURCE',str(root/'source'))).resolve(); selected=root/'selected'; selected.mkdir(exist_ok=True)
+manifest=Path(__file__).resolve().parents[2]/'tests/data/ppa_wu05_migmac01/B1.11-source-manifest.sha256'
+for row in manifest.read_text().splitlines():
+ digest,size,name=row.split()
+ member=src/Path(name).name
+ assert len(member.read_bytes())==int(size) and hashlib.sha256(member.read_bytes()).hexdigest()==digest, 'B1.11 manifest mismatch: '+name
 tt=Path(os.environ['TTUTIL_SOURCE']).resolve()
+tt_manifest=manifest.with_name('TTUTIL-source-manifest.sha256')
+for row in tt_manifest.read_text().splitlines():
+ digest,size,name=row.split()
+ member=tt/name
+ assert len(member.read_bytes())==int(size) and hashlib.sha256(member.read_bytes()).hexdigest()==digest, 'TTUTIL manifest mismatch: '+name
 bt=root/'ttobj'; bs=root/'swobj';bt.mkdir(exist_ok=True);bs.mkdir(exist_ok=True)
 fc=os.environ.get('FC','gfortran')
 log=(root/'build.log').open('w')

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "work_unit": "PPA-WU05-MIGMAC01",
-  "status": "BLOCKED_SOURCE_BACKED_ACTIVE_INTERVAL_NOT_ESTABLISHED",
+  "status": "BLOCKED_SOURCE_ORIGIN_COMPOSITION_NOT_QUALIFIED",
   "baseline": "6a2d948e510ddaa4308392051dbba2972b951ae0",
   "checkpoint_commit": "containing commit",
-  "last_reconciled_head": "6947aa40939892f4ed09b6dfea44159328175021",
-  "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+  "last_reconciled_head": "76cdc7a9746651befda46093df65117138d80f7f",
+  "last_reconciled_upstream": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -28,26 +28,69 @@
     "mass_residuals": "not printed before failing assertion"
   },
   "blockers": [
-    "G2: no reconstructed accepted IcTopMp>1 reference interval with positive covered transfer"
+    "G3: fixed source-origin direct replay requests retry and has dry final tentative covering head; large other-exchange discrepancy requires attribution",
+    "G4: serialized backend lacks immutable covering physical parameters and propagation",
+    "G5: explicit Richards request lacks source matrix-area carrier"
   ],
-  "next_action": "Recover covered reference case or preregister a scientifically fixed controlled B1.11 variant, explicitly distinct from unmodified official Andelst; capture complete accepted state and mass terms before SWAP5 active replay",
-  "recovery_point": "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_AUTHORITY_RECOVERY.md and this record at their containing commit",
+  "next_action": "Reconcile and preregister shared matrix-area/covering-parameter contracts, attribute saturated/perched source-origin exchange discrepancy, rerun identical frozen origin before qualification",
+  "recovery_point": "docs/audits/PPA_WU05_MIGMAC01_SOURCE_ORIGIN_REPLAY_RESULT.md and this record at containing commit",
   "evidence_paths": [
     "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_AUTHORITY_RECOVERY.md",
-    "docs/audits/PPA_WU05_MIGMAC01_RESULT.md"
+    "docs/audits/PPA_WU05_MIGMAC01_RESULT.md",
+    "docs/audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_RESULT.md",
+    "docs/audits/PPA_WU05_MIGMAC01_SOURCE_ORIGIN_REPLAY_RESULT.md",
+    "integration/audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_CHECKS.json",
+    "integration/evidence/ppa_wu05_migmac01/source_origin_local_o0_o2.txt"
   ],
   "authority_paths": [
     "docs/audits/PPA_WU05_MIGMAC01_PREREGISTRATION.md",
     "docs/audits/PPA_WU05_MIGMAC01_SOURCE_RECONCILIATION.md",
-    "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_E2E_PREREGISTRATION.md"
+    "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_E2E_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05_MIGMAC01_SOURCE_REPLAY_PREREGISTRATION.md"
   ],
   "dependency_surface": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "src/runtime/mod_macropore_single_column_runtime.f90",
     "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90",
-    "src/process/macropore/mod_macropore_covering_layer_input.f90"
+    "src/process/macropore/mod_macropore_covering_layer_input.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/runtime/mod_fmr_macropore_configuration.f90",
+    "src/runtime/mod_macropore_standard_rate_adapter.f90"
   ],
   "canonical_delta_requires_reconciliation": true,
   "frozen_status_a_denominator_changed": false,
-  "production_changed_this_recovery": false
+  "production_changed_this_recovery": false,
+  "source_event": {
+    "status": "LOCAL_SOURCE_VERIFIED_PERSISTED",
+    "label": "MODIFIED_ANDELST_COVERED_TOP",
+    "preregistration": "a20b15ed3e45cd9ccba491ed00e64223c3cd1e38",
+    "evidence_commit": "9eaf64ac572e080f77e8ea03a17b43ce220e19df",
+    "top_node": 3,
+    "h_cover_cm": 0.09997836037968703,
+    "covered_cm": 0.000060543248402701375,
+    "cover_ownership_residual_cm": 0,
+    "macro_balance_residual_cm": 2.0973891026732083e-16
+  },
+  "source_origin_replay": {
+    "status": "LOCAL_NEGATIVE_EVIDENCE_NOT_ACTIVE_E2E_QUALIFICATION",
+    "preregistration": "76cdc7a9746651befda46093df65117138d80f7f",
+    "optimization_levels": [
+      "O0",
+      "O2"
+    ],
+    "runtime_status": 3,
+    "retry_advised": true,
+    "iterations": 64,
+    "last_tentative_h_cover_cm": -4.979836179819938,
+    "accepted_state_available": false,
+    "covered_cm": 0,
+    "internal_exchange_residual_cm": null,
+    "macro_balance_residual_cm": null,
+    "accepted_macro_immutable": true,
+    "swap5_other_exchange_at_reference_cm_per_day": -4.867061508767989,
+    "reference_other_exchange_cm_per_day": -0.40973640650434007
+  },
+  "source_interval_blocker_resolved": true
 }
