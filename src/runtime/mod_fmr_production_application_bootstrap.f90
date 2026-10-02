@@ -60,6 +60,7 @@ module mod_fmr_production_application_bootstrap
   ! WU03 may supply already-resolved effective forcing without changing lower-boundary ownership.
   type, public :: fmr_production_application_tile_config_t
     logical :: ordinary_prescribed_head = .false.
+    logical :: ordinary_implicit_cauchy = .false.
     integer(int64) :: tile_id = 0_int64
     integer(int64) :: ledger_id = 0_int64
     integer :: execution_class = FMR_EXECUTION_EASY
@@ -85,6 +86,7 @@ module mod_fmr_production_application_bootstrap
     private
     logical :: initialized = .false.
     logical :: ordinary_head_application = .false.
+    logical :: ordinary_cauchy_application = .false.
     logical :: direct_retention_owner_active = .false.
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
@@ -127,7 +129,7 @@ contains
 
     integer :: i, local_status, n
     logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile, ordinary_head_profile
-    logical :: direct_retention_requested
+    logical :: ordinary_cauchy_profile, direct_retention_requested
     type(black_evaporation_state_t) :: initial_black_state
     type(boesten_evaporation_state_t) :: initial_boesten_state
     type(fmr_groundwater_temporal_budget_policy_t) :: temporal_budget_policy
@@ -142,6 +144,7 @@ contains
         config%groundwater_parallel_workers /= 4) return
 
     ordinary_head_profile = .true.
+    ordinary_cauchy_profile = .true.
     groundwater_profile = .true.
     standalone_profile = .true.
     prescribed_qbot_profile = .true.
@@ -154,13 +157,14 @@ contains
       groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5 .and. &
            .not. config%tiles(i)%ordinary_prescribed_head
       ordinary_head_profile = ordinary_head_profile .and. config%tiles(i)%ordinary_prescribed_head
+      ordinary_cauchy_profile = ordinary_cauchy_profile .and. config%tiles(i)%ordinary_implicit_cauchy
       standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
       prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2
       direct_retention_requested = direct_retention_requested .or. config%tiles(i)%parameters%direct_retention_active
     end do
     if (.not. int64_values_unique(config%tiles%tile_id)) return
     if (.not. groundwater_profile .and. .not. standalone_profile .and. .not. prescribed_qbot_profile .and. &
-        .not. ordinary_head_profile) then
+         .not. ordinary_head_profile .and. .not. ordinary_cauchy_profile) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
@@ -211,6 +215,7 @@ contains
     allocate(self%parameters(n), self%base_forcing(n), self%committed(n))
     allocate(self%backend, self%top_boundary)
     self%ordinary_head_application = ordinary_head_profile
+    self%ordinary_cauchy_application = ordinary_cauchy_profile
     self%numerical = config%numerical
 
     call self%backend%initialize(self%top_boundary)
@@ -422,7 +427,25 @@ contains
           status = FMR_APP_BOOT_INVALID_CONFIG
           return
         end if
-      else if (allocated(effective_forcing(i)%legacy_swbotb5_control)) then
+        if (allocated(effective_forcing(i)%legacy_swbotb3_implicit_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      else if (self%ordinary_cauchy_application) then
+        if (.not. allocated(effective_forcing(i)%legacy_swbotb3_implicit_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+        if (.not. effective_forcing(i)%legacy_swbotb3_implicit_control%ready()) then
+          status = FMR_APP_BOOT_INVALID_CONFIG
+          return
+        end if
+        if (allocated(effective_forcing(i)%legacy_swbotb5_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      else if (allocated(effective_forcing(i)%legacy_swbotb5_control) .or. &
+               allocated(effective_forcing(i)%legacy_swbotb3_implicit_control)) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
       end if
@@ -744,7 +767,7 @@ contains
     if (tile%parameters%parameter_set_id <= 0_int64) return
     if (tile%parameters%active_nodes <= 0) return
     if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and. &
-        tile%parameters%bottom_mode /= 2) return
+        tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 3) return
 
     ! WU01 established the no-new-physics production owner. PPA-WU02-A only
     ! widens normal application reachability to the already admitted typed
@@ -802,16 +825,35 @@ contains
     if (.not. allocated(tile%initial_state%pressure_head) .or. .not. allocated(tile%initial_state%water_content)) return
     if (size(tile%initial_state%pressure_head) /= tile%parameters%active_nodes .or. &
         size(tile%initial_state%water_content) /= tile%parameters%active_nodes) return
+    if (tile%ordinary_prescribed_head .and. tile%ordinary_implicit_cauchy) return
     if (tile%ordinary_prescribed_head) then
       if (tile%parameters%bottom_mode /= 5) return
       if (.not. allocated(tile%base_forcing%legacy_swbotb5_control)) return
       if (.not. tile%base_forcing%legacy_swbotb5_control%ready()) return
+      if (allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
       if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
       if (tile%parameters%direct_retention_active) return
       if (allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
           allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
+    else if (tile%ordinary_implicit_cauchy) then
+      if (tile%parameters%bottom_mode /= 3 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
+      if (.not. allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
+      if (.not. tile%base_forcing%legacy_swbotb3_implicit_control%ready()) return
+      if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
+      if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
+      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if (tile%parameters%direct_retention_active .or. tile%parameters%ksatexm_extension_active .or. &
+          tile%parameters%elasticity_active .or. tile%parameters%black_evaporation_active .or. &
+          tile%parameters%boesten_evaporation_active) return
+      if (tile%parameters%active_nodes > 1) then
+        if (any(tile%parameters%cofgen(:,2:tile%parameters%active_nodes) /= &
+             spread(tile%parameters%cofgen(:,1), 2, tile%parameters%active_nodes-1))) return
+      end if
     else
-      if (allocated(tile%base_forcing%legacy_swbotb5_control)) return
+      if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
     end if
     if (tile%parameters%bottom_mode == 5 .and. .not. tile%ordinary_prescribed_head) then
       if (tile%ledger_id <= 0_int64 .or. .not. tile%groundwater_datum%valid()) return
@@ -861,6 +903,7 @@ contains
     end if
     self%initialized = .false.
     self%ordinary_head_application = .false.
+    self%ordinary_cauchy_application = .false.
   end subroutine discard_owner_storage
 
 end module mod_fmr_production_application_bootstrap
