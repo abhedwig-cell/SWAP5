@@ -158,7 +158,8 @@ contains
     call owner%initialize(c,s);call require(s==FMR_APP_BOOT_OK,'active owner initialize')
     call owner%run_standalone(T0,T0+1.0e-5_real64,r,s)
     call require(s==FMR_APP_BOOT_OK .and. r(1)%mass%complete,'active ordinary application')
-    call require(r(1)%mass%total_in+r(1)%mass%total_out>0.0_real64,'active plate exchange')
+    call require(abs(r(1)%mass%total_in)+abs(r(1)%mass%total_out)>1.0e-14_real64,'active plate exchange')
+    call require(abs(r(1)%mass%residual)<=HARD_MASS_GATE,'active hard mass')
     forcing(1)=c%tiles(1)%base_forcing
     forcing(1)%bottom_head=forcing(1)%bottom_head+10.0_real64
     call owner%run_standalone_with_forcing(T0+1.0e-5_real64,T0+2.0e-5_real64,forcing,r,s)
