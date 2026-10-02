@@ -45,7 +45,8 @@ def main():
     times = np.array([r["day"] for r in dd], dtype=float)
     storage = np.array([r["storage_m3"] for r in dd], dtype=float)
     drainage = np.array([r["cumulative_drain_m3"] for r in dd], dtype=float)
-    axes[1].plot(times, storage, label="aquifer storage")
+    storage_loss = .2 * 50.0 * 7.0 - storage
+    axes[1].plot(times, storage_loss, label="aquifer storage loss")
     axes[1].plot(times, drainage, label="cumulative DRN outflow")
     axes[1].set(xlabel="Elapsed time (d)", ylabel="Water volume (m³)",
                 title="Drain-down storage and outflow")
