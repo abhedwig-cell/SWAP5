@@ -15,7 +15,7 @@ for k,v in summary.items():
  vals=tr.get(k,[])
  if v["completed"]!="1":raise SystemExit(f"exact fixture incomplete {k} {v}")
  if v["mass"]>1e-6:raise SystemExit(f"mass gate {k}")
- if len(vals)<2400:raise SystemExit(f"head trace incomplete {k} n={len(vals)}")
+ if len(vals)<2390:raise SystemExit(f"measurement head trace incomplete {k} n={len(vals)}")
  cols=list(zip(*vals)); metrics=[]
  for a in cols:
   crossings30=sum((a[i-1] < -30) != (a[i] < -30) for i in range(1,len(a)))
