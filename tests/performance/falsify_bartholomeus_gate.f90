@@ -6,10 +6,10 @@ program falsify_bartholomeus_gate
  use mod_bartholomeus_waterfilm_provider,only:BARTHOLOMEUS_WATERFILM_REFERENCE
  implicit none
  integer,parameter::N=3
- real(real64),parameter::heads(11)=[-1._real64,-3.,-5.,-10.,-20.,-40.,-75.,-100.,-200.,-500.,-1000.]
- real(real64),parameter::temps(5)=[278.,283.,288.,293.,303.]
- real(real64),parameter::roots(5)=[0._real64,.1,.3,.6,1.]
- real(real64),parameter::ctops(4)=[.27_real64,2.7,27.,270.]
+ real(real64),parameter::heads(11)=real([-1,-3,-5,-10,-20,-40,-75,-100,-200,-500,-1000],real64)
+ real(real64),parameter::temps(5)=real([278,283,288,293,303],real64)
+ real(real64),parameter::roots(5)=[0._real64,.1_real64,.3_real64,.6_real64,1._real64]
+ real(real64),parameter::ctops(4)=[.27_real64,2.7_real64,27._real64,270._real64]
  type(bartholomeus_runtime_view_t)::v
  type(BartholomeusImmutableDataset)::d
  type(BartholomeusCropParameters)::c
