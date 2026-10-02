@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_unit": "PPA-WU05-MIGMAC01",
-  "status": "BLOCKED_SOURCE_ORIGIN_COMPOSITION_NOT_QUALIFIED",
+  "status": "BLOCKED_CONFIRMED_B111_REFERENCE_CARRIER_DEFECT",
   "baseline": "6a2d948e510ddaa4308392051dbba2972b951ae0",
   "checkpoint_commit": "containing commit",
   "last_reconciled_head": "76cdc7a9746651befda46093df65117138d80f7f",
@@ -28,19 +28,22 @@
     "mass_residuals": "not printed before failing assertion"
   },
   "blockers": [
+    "G3R: B1.11 CALCGWL misclassifies ordinary node 55 as perched, misses shallow water and double-counts ordinary node 55; corrected reference qualification required",
     "G3: fixed source-origin direct replay requests retry and has dry final tentative covering head; large other-exchange discrepancy requires attribution",
     "G4: serialized backend lacks immutable covering physical parameters and propagation",
     "G5: explicit Richards request lacks source matrix-area carrier"
   ],
-  "next_action": "Reconcile and preregister shared matrix-area/covering-parameter contracts, attribute saturated/perched source-origin exchange discrepancy, rerun identical frozen origin before qualification",
-  "recovery_point": "docs/audits/PPA_WU05_MIGMAC01_SOURCE_ORIGIN_REPLAY_RESULT.md and this record at containing commit",
+  "next_action": "Preregister and qualify bounded B1 perched-search correction without rewriting B1.11; recapture active source state; reconcile matrix-area and immutable covering-parameter contracts before MIGMAC01 active admission",
+  "recovery_point": "docs/audits/PPA_WU05_MIGMAC01_REFERENCE_CARRIER_DEFECT.md and this status at containing commit",
   "evidence_paths": [
     "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_AUTHORITY_RECOVERY.md",
     "docs/audits/PPA_WU05_MIGMAC01_RESULT.md",
     "docs/audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_RESULT.md",
     "docs/audits/PPA_WU05_MIGMAC01_SOURCE_ORIGIN_REPLAY_RESULT.md",
     "integration/audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_CHECKS.json",
-    "integration/evidence/ppa_wu05_migmac01/source_origin_local_o0_o2.txt"
+    "integration/evidence/ppa_wu05_migmac01/source_origin_local_o0_o2.txt",
+    "docs/audits/PPA_WU05_MIGMAC01_REFERENCE_CARRIER_DEFECT.md",
+    "integration/audits/PPA_WU05_MIGMAC01_REFERENCE_CARRIER_CHECKS.json"
   ],
   "authority_paths": [
     "docs/audits/PPA_WU05_MIGMAC01_PREREGISTRATION.md",
@@ -97,6 +100,17 @@
       "gate": "tests/fpm/run_ppa_wu05_migmac01_source_origin_diagnostic.sh",
       "result": "NEGATIVE_EVIDENCE_REPRODUCED_O0_O2",
       "active_e2e_qualification": false
+    },
+    "latest_reference_attribution": {
+      "finding": "CONFIRMED_REFERENCE_CARRIER_DEFECT",
+      "source_main": 55,
+      "source_perched_top": 55,
+      "source_perched_bottom": 55,
+      "migrated_perched_top": 1,
+      "migrated_perched_bottom": 29,
+      "duplicate_ordinary_node": 55,
+      "source_duplicate_factor": 2,
+      "production_changed": false
     }
   },
   "source_interval_blocker_resolved": true,

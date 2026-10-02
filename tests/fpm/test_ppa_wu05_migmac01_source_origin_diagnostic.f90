@@ -3,7 +3,7 @@ program test_ppa_wu05_migmac01_source_origin_diagnostic
   use MOD_swap_mp, only: frarmtrx,ictopmp
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, SW_SOLVE_CONVERGED
+       soil_water_solve_result_t, soil_water_physical_state_t, SW_SOLVE_CONVERGED
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
@@ -37,6 +37,8 @@ program test_ppa_wu05_migmac01_source_origin_diagnostic
   use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
   use mod_ppa_wu05a16_inner_macropore_provider, only: ppa_wu05a16_inner_macropore_provider_t
   use mod_macropore_covering_layer_input, only: covering_layer_input_request_t,evaluate_covering_layer_input
+  use mod_macropore_standard_rate_adapter, only: matrix_saturated_zone_view_t,matrix_perched_zone_view_t, &
+       derive_matrix_saturated_zone_view,derive_matrix_perched_zone_view
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
@@ -65,6 +67,10 @@ program test_ppa_wu05_migmac01_source_origin_diagnostic
   real(real64)::source_end_h(numnod),source_end_theta(numnod),source_qexc(numnod),probe_exchange(numnod),probe_theta(numnod),end_node(7)
   real(real64),allocatable::covered_probe(:)
   logical::probe_active
+  type(matrix_saturated_zone_view_t)::source_matrix_view
+  type(matrix_perched_zone_view_t)::source_perched_view
+  type(soil_water_physical_state_t)::source_rate_matrix
+  real(real64)::source_rate_meta(13),source_rate_nodes(3,numnod)
   type(macropore_single_column_runtime_t)::runtime
   type(macropore_runtime_policy_t)::policy
   type(macropore_runtime_result_t)::result
@@ -111,6 +117,28 @@ program test_ppa_wu05_migmac01_source_origin_diagnostic
     end select
   end do
   close(u)
+  open(newunit=u,file='tests/data/ppa_wu05_migmac01/modified_andelst_last_rate.csv',status='old')
+  read(u,'(a)')line
+  read(line,*)label,source_rate_meta
+  do ic=1,numnod
+    read(u,'(a)')line
+    read(line,*)label,id,source_rate_nodes(:,id)
+  end do
+  close(u)
+  source_rate_matrix%active_nodes=numnod
+  source_rate_matrix%pressure_head=source_rate_nodes(1,:)
+  source_rate_matrix%water_content=source_rate_nodes(2,:)
+  source_rate_matrix%groundwater_level=source_rate_meta(6)
+  source_rate_matrix%ponding_depth=source_scalars(3)
+  call derive_matrix_saturated_zone_view(source_rate_matrix,z,dz,source_matrix_view)
+  call derive_matrix_perched_zone_view(source_rate_matrix,origin(14,:),z,dz,source_matrix_view, &
+       source_rate_meta(13),source_perched_view)
+  if(.not.source_matrix_view%valid.or..not.source_perched_view%valid)error stop 'source carrier probe invalid'
+  write(*,'(*(g0))') 'SOURCE_CARRIER_AT_LAST_RATE|MAIN=',source_matrix_view%top_node, &
+       '|PERCHED_ACTIVE=',source_perched_view%active,'|TOP=',source_perched_view%top_node, &
+       '|BOTTOM=',source_perched_view%bottom_node,'|B111_MAIN=',int(source_rate_meta(10)), &
+       '|B111_PERCHED_TOP=',int(source_rate_meta(11)),'|B111_PERCHED_BOTTOM=',int(source_rate_meta(12)), &
+       '|MAX_HEAD_LAG=',maxval(abs(source_rate_nodes(1,:)-source_end_h))
   if(any(z/=origin(1,:)).or.any(dz/=origin(2,:)))error stop 'source grid mismatch'
   cofgen=origin(13:36,:)
   frarmtrx=origin(5,:)
@@ -207,6 +235,23 @@ program test_ppa_wu05_migmac01_source_origin_diagnostic
       write(*,'(*(g0))') 'SOURCE_RATE_DIFF|NODE=',ic,'|SWAP5=',probe_exchange(ic),'|REFERENCE=',source_qexc(ic), &
         '|H=',source_end_h(ic),'|FRACTION=',origin(5,ic)
   end do
+  block
+    type(macropore_rate_bundle_request_t)::ablation_template
+    ablation_template=rate_template
+    ablation_template%perched_detection_enabled=.false.
+    call probe%configure(macro,geometry,ablation_template,z,dz,dt,source_scalars(3),source_rate_meta(6),ok, &
+         covering_minimum_polygon_diameter_cm=10.0_real64,covering_ksat_cm_per_day=1.0_real64)
+    if(.not.ok)error stop 'diagnostic ablation configure'
+    call probe%evaluate_rate(source_rate_nodes(1,:),source_rate_nodes(2,:),probe_exchange,probe_active)
+    write(*,'(*(g0))') 'SOURCE_DIAGNOSTIC_ABLATION_ONLY|PERCHED_OFF_OTHER=',sum(probe_exchange(3:)), &
+         '|REFERENCE_OTHER=',sum(source_qexc(3:)),'|MAX_RATE_DIFF=',maxval(abs(probe_exchange-source_qexc)), &
+         '|MAX_DIFF_NODE=',maxloc(abs(probe_exchange-source_qexc)),'|NODE55=',probe_exchange(55), &
+         '|REFERENCE_NODE55=',source_qexc(55)
+  end block
+  call probe%configure(macro,geometry,rate_template,z,dz,dt,source_scalars(3),source_scalars(4),ok, &
+       covering_minimum_polygon_diameter_cm=10.0_real64,covering_ksat_cm_per_day=1.0_real64)
+  if(.not.ok)error stop 'restore active probe'
+  call probe%evaluate_rate(source_end_h,source_end_theta,probe_exchange,probe_active)
   cover_probe%top_node=3;cover_probe%step_duration_day=dt
   cover_probe%matrix_head_above_cm=source_end_h(2);cover_probe%dz_above_cm=dz(2)
   cover_probe%minimum_polygon_diameter_cm=10.0_real64;cover_probe%covering_layer_ksat_cm_per_day=1.0_real64
