@@ -28,6 +28,7 @@ program test_low08_p0_typed_solver
 
   call set_bottom(threshold)
   call solver%solve(r,ws,a)
+  write(*,'(a,1x,i0,1x,a,1x,i0,1x,es24.16)') 'LOW08_EQUALITY_DIAG',a%status,trim(a%diagnostics%route),a%diagnostics%nonlinear_iterations,maxval(abs(ws%richards%residual))
   call need(a%status==SW_SOLVE_CONVERGED,'equality solve')
   call need(a%bottom_flux==0._real64,'strict equality is inactive')
 
