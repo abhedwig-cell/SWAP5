@@ -136,7 +136,7 @@
     "Shared BASE temporal identity gate returns huge() for non-identical full/half transient end states. O0/O2 fixture converges, passes mass gates, but records 3 temporal rejections and zero accepted substeps. TOP03 cannot supply a live inundation candidate under that unchanged policy.",
     "Isolated fixed-grid nonlinear research reaches 80-iteration retries near saturation on refined 0.25-day integrations; full/half acceptance repair alone does not supply a trustworthy reference."
   ],
-  "next_action": "Develop a source/reference-consistent near-saturation or temporal-retry route only after explicit bounded residual/accuracy contract. No further Newton-only tuning or incidental conductivity smoothing. Branch-local root gap is established for one frozen trial, not global root absence; cutoff-removal counterfactual is falsified. Keep production temporal throughput and real component-commit prerequisites.",
+  "next_action": "Run preregistered unchanged-source growth2 retry-packet full-horizon experiment. Positive single-interval completion is not production/temporal accuracy qualification. Keep all rejected prefix state and flux unpublished.",
   "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -283,6 +283,14 @@
     "left_limit_residual_cm_day": -0.07177363221434341,
     "right_limit_residual_cm_day": 0.10817170734317383,
     "global_root_absence_claim": false,
+    "production_qualified": false
+  },
+  "retry_research": {
+    "source_checkpoint": "a8e493a3a0e29ac8a863556a4f8d85cf0d74186b",
+    "result": "integration/sw-rib-top03/TOP03_RETRY_RESULT.json",
+    "O0_O2_identity": true,
+    "completed_packets": 4,
+    "packets_per_build": 14,
     "production_qualified": false
   }
 }
