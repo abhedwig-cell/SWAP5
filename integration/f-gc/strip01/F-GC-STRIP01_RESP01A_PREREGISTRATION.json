@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01-RESP01A",
+  "parent": "F-GC-STRIP01-RESP01",
+  "state": "PREREGISTERED_BEFORE_EXECUTION",
+  "purpose": "Map numerical solvability as a function of fixed-plane head displacement and trial duration in the exact C0/C1 accepted-origin backend, so solver rejection and temporal rejection can be separated by response regime.",
+  "source": {
+    "work_branch": "work/f-gc-strip01-50m-swap-modflow-benchmark",
+    "source_commit": "29747b2d48c771dfd144a2d37079521301e07266",
+    "compiled_source_manifest": "integration/f-gc/strip01/results/c0_compiled_source_blobs.json",
+    "production_source_edits": false
+  },
+  "profiles": [
+    "C0",
+    "C1"
+  ],
+  "sampled_columns": [
+    1,
+    50
+  ],
+  "head_offsets_m": [
+    0,
+    -1e-8,
+    1e-8,
+    -1e-7,
+    1e-7,
+    -0.000001,
+    0.000001,
+    -0.000003,
+    0.000003,
+    -0.00001,
+    0.00001,
+    -0.00003,
+    0.00003,
+    -0.0001,
+    0.0001,
+    -0.0003,
+    0.0003,
+    -0.001,
+    0.001,
+    -0.003,
+    0.003,
+    -0.01,
+    0.01
+  ],
+  "durations_day": [
+    0.001,
+    0.0001,
+    0.00001
+  ],
+  "accepted_origin_heads": "C0 -5.0 m in columns 1-49 and -4.5 m in column 50; C1 -1.0 m in columns 1-49 and -0.5 m in column 50; offsets added to each matching origin.",
+  "controls": "Zero-offset equilibrium; exact nonzero offsets at prior MF6 trial heads where they fall in this set; tangent disabled throughout to isolate base transaction path.",
+  "frozen_gates": "Use the existing C0/C1 numerical and mass/temporal policy without change. No floors substituted into normal transactions; no changed retries, tolerances, forcing, profile, grids or constitutive parameters.",
+  "measurements": [
+    "transaction status",
+    "accepted substeps",
+    "solver and temporal rejection counts",
+    "attempts/retries",
+    "completed time",
+    "committed state hash/revisions before and after"
+  ],
+  "invariants": [
+    "Every probe begins from fresh committed origin in a separate fixture initialization",
+    "Rejected trial must preserve state; accepted probe may advance only its disposable diagnostic fixture",
+    "No MODFLOW or production bootstrap semantics altered",
+    "No acceptance criterion based on equality of GWL and MODFLOW/interface head"
+  ],
+  "interpretation": "Characterization only. It cannot establish coupled-window qualification, production policy, a causal root cause, or a tolerance change.",
+  "completion_gate": "Persist every matrix row including failures; report monotonicity/nonmonotonicity by head and duration; only then decide whether RESP01 can be resolved or must remain shared-authority blocker."
+}
