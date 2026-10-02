@@ -5,7 +5,7 @@ program benchmark_bartholomeus_c3a
   use mod_bartholomeus_factor_provider, only: evaluate_bartholomeus_factors_from_state
   use mod_bartholomeus_waterfilm_provider, only: BARTHOLOMEUS_WATERFILM_REFERENCE
   implicit none
-  integer,parameter::N=3, WARM=2000, REPS=200000
+  integer,parameter::N=3, WARM=500, REPS=50000
   type(bartholomeus_runtime_view_t)::view
   type(BartholomeusImmutableDataset)::data
   type(BartholomeusCropParameters)::crop
