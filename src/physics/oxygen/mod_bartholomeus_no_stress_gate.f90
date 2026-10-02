@@ -19,7 +19,7 @@ contains
   type(BartholomeusTemperatureResult)::t
   type(BartholomeusMicroInput)::mi
   type(BartholomeusWaterfilmMvgInput)::wf
-  real(real64)::ctop,gfp,mp,dsoil,rm,a,b,demand,cmacro,ipeak,xpeak,fmax,film_lb,cmicro_ub
+  real(real64)::ctop,gfp,mp,dsoil,rm,a,b,demand,cmacro,ilower,film_ub,cmicro_ub
   integer::i
   skip=.false.;ctop=atmospheric_ctop
   if(size(w_root_z0)/=view%rooted_nodes)return
@@ -44,23 +44,22 @@ contains
    wf%capac_term=data%soil(i)%waterfilm_capac_term;wf%n_minus_1=data%soil(i)%waterfilm_n_minus_1
    wf%m_plus_1=data%soil(i)%waterfilm_m_plus_1;wf%alpha_per_pa=data%soil(i)%waterfilm_alpha_per_pa
    wf%gen_n=data%soil(i)%waterfilm_gen_n;wf%surface_tension_water=t%surface_tension_water
-   if(wf%gen_n<=2._real64)then
-      fmax=bartholomeus_waterfilm_mvg_integrand(mp,wf)
-   else
-      xpeak=((wf%gen_n+1._real64)/(wf%gen_n-2._real64))**(1._real64/wf%gen_n)/wf%alpha_per_pa
-      xpeak=min(mp,max(1.e-10_real64,xpeak))
-      fmax=max(bartholomeus_waterfilm_mvg_integrand(mp,wf),bartholomeus_waterfilm_mvg_integrand(xpeak,wf))
-   endif
-   ipeak=mp*fmax
-   film_lb=bartholomeus_waterfilm_from_length_density(ipeak,mp,t%surface_tension_water)
-   if(.not.(film_lb>0._real64))return
+   ! Positive integrand lower bound: for n<=2 it is increasing, so the integral
+   ! over the upper half interval is at least (H/2)*f(H/2). This lower bound on
+   ! length density yields an upper bound on film thickness, the conservative
+   ! direction because MICRO demand increases with film thickness.
+   if(wf%gen_n>2._real64)return
+   ilower=.5_real64*mp*bartholomeus_waterfilm_mvg_integrand(.5_real64*mp,wf)
+   if(ilower<=0._real64)return
+   film_ub=bartholomeus_waterfilm_from_length_density(ilower,mp,t%surface_tension_water)
+   if(.not.(film_ub>0._real64))return
    mi%c_mroot=crop%c_mroot;mi%w_root=w_root_z0(i);mi%f_senes=crop%f_senes;mi%q10_root=crop%q10_root
    mi%soil_temp_k=view%soil_temperature_k(i);mi%sat_water_content=data%soil(i)%saturated_water_content
    mi%gas_filled_porosity=gfp;mi%d_o2_in_water=t%d_o2_in_water;mi%d_root=t%d_root
    mi%percent_org_mat=data%soil(i)%percent_org_mat;mi%soil_density=data%soil(i)%soil_density
    mi%specific_resp_humus=crop%specific_resp_humus;mi%q10_microbial=crop%q10_microbial
    mi%depth_m=data%soil(i)%depth_m;mi%microbial_shape_m=crop%microbial_shape_m;mi%root_radius_m=crop%root_radius_m
-   mi%waterfilm_thickness_m=film_lb;mi%bunsen_coeff=t%bunsen_coeff
+   mi%waterfilm_thickness_m=film_ub;mi%bunsen_coeff=t%bunsen_coeff
    cmicro_ub=bartholomeus_micro_concentration(mi,crop%max_resp_factor)
    if(cmacro<cmicro_ub)return
    ctop=cmacro
