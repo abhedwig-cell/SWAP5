@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
-  "decision": "STATIONARY_CONTACT_ORACLE_BLOCKED_BY_ORIGIN_FROZEN_INTERIOR_K__SOURCE_SCHEME_MASS_VERIFIED__NO_PRODUCTION_ADMISSION",
+  "decision": "INDEPENDENT_NONLINEAR_CONTACT_IMPLEMENTED__LOCAL_MATRIX_PENDING__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -179,7 +179,10 @@
     "tests/fapp/mod_top03_stationary_layer_provider.f90",
     "tests/fapp/test_sw_rib_top03_stationary_layer.f90",
     "tests/fapp/run_sw_rib_top03_stationary_layer.py",
-    "tests/fapp/analyze_sw_rib_top03_stationary_layer.py"
+    "tests/fapp/analyze_sw_rib_top03_stationary_layer.py",
+    "tests/fapp/mod_top03_nonlinear_contact.f90",
+    "tests/fapp/test_sw_rib_top03_nonlinear_contact.f90",
+    "tests/fapp/run_sw_rib_top03_nonlinear_contact.py"
   ],
   "dependency_surface": [
     "accepted attempt/window mass ownership",
@@ -198,8 +201,8 @@
     "Ribasim/SWAP ownership of local pond versus external waterbody storage remains unqualified.",
     "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage."
   ],
-  "next_action": "Preregister and implement an independent test-only local nonlinear layer closure with current-candidate K, matched interface head/conductance, root/branch controls and saturated limit. Follow TOP03_UNSATURATED_CONTACT_ELIMINATION_DESIGN.md. Stateful production reduction requires explicit layer-storage/state ownership and separate receipt/restart/temporal qualification; keep PR #956 draft.",
-  "recovery_point": "Read unsaturated-contact preregistration, candidate-K audit extension, numerical-policy reconciliation, final result/decision/design and raw evidence. Resume from source 3ae05b28 on this branch. The origin-K numerical balance passes; zero-capacity rows do not establish a current-K stationary contact oracle. No physical reduction is admitted.",
+  "next_action": "Run the persisted 558-case O0/O2 nonlinear-contact matrix locally; verify current-K face and tangent controls before eventwise physical comparisons. Preserve failures and unchanged inherited trajectories.",
+  "recovery_point": "Resume from TOP03_NONLINEAR_CONTACT_PREREGISTRATION.md and test-only nonlinear contact module/fixture/runner in this checkpoint on the same branch.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All three unsaturated-contact research phases ran locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Exact-source evidence and explicit scope only; commits use skip ci.",
   "implementation_slice": {
@@ -263,7 +266,7 @@
     },
     "production_source_modified": false
   },
-  "last_reviewed_canonical": "0c18a9fffa14bce9e25a4cf773420c5824c0c819",
+  "last_reviewed_canonical": "f7c261a7f059c91d4a0aac16e378351f293aa080",
   "temporal_controller_research": {
     "preregistration_commit": "17fb8d0d15f04f3dcedfacc0e3338ddcdbd72fad",
     "result": "integration/sw-rib-top03/TOP03_TEMPORAL_CONTROLLER_RESULT.json",
@@ -449,7 +452,7 @@
     "production_qualified": false,
     "interpretation": "Correct saturated limit; constant saturated resistance does not reproduce the partly unsaturated explicit layer even for a prewetted layer origin. Storage alone is not established as a sufficient fix."
   },
-  "status": "STATIONARY_CONTACT_ORACLE_BLOCKED_BY_ORIGIN_FROZEN_INTERIOR_K__SOURCE_SCHEME_MASS_VERIFIED__NO_PRODUCTION_ADMISSION",
+  "status": "INDEPENDENT_NONLINEAR_CONTACT_IMPLEMENTED__LOCAL_MATRIX_PENDING__NO_PRODUCTION_ADMISSION",
   "evidence_paths": [
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_RESULT.json",
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_DECISION.md",
@@ -508,5 +511,15 @@
     "reviewed": true,
     "research_source_held_fixed": true,
     "current_canonical_qualification_inherited": false
+  },
+  "nonlinear_contact_research": {
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "production_qualified": false,
+    "baseline": "3c3171ec223d2b7f5b93b0a75b62d2b7c40ab4b7",
+    "preregistration": "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_PREREGISTRATION.md",
+    "scope": "Independent current-candidate K stationary layer closure, matched physical interface and condensed response; no time/storage state."
   }
 }
