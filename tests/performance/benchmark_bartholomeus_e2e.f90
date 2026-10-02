@@ -22,42 +22,25 @@ program benchmark_bartholomeus_e2e
  integer::i,j,rate,status
  call initialize_application_config(cfg,-75._real64,k);call add_root_thermal_oxygen(cfg)
  off=cfg;off%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
- call app%initialize(cfg,status);if(status/=FMR_APP_BOOT_OK)error stop 'active init'
- call app%run_standalone(T0,T1,r,status);print *,'E2E_FIRST_ACTIVE=',status,r(1)%kernel_status,r(1)%completed,r(1)%committed
- call app%close(status);call app%initialize(cfg,status)
- call offapp%initialize(off,status);if(status/=FMR_APP_BOOT_OK)error stop 'off init'
- do i=1,WARM
-  call app%run_standalone(T0,T1,r,status);if(status/=FMR_APP_BOOT_OK)then;print *,'E2E_ACTIVE_REJECT=',status,r(1)%kernel_status;error stop 'active warm';endif
-  call offapp%run_standalone(T0,T1,r,status);if(status/=FMR_APP_BOOT_OK)error stop 'off warm'
- end do
+ call system_clock(i,rate)
  do j=1,ROUNDS
-  if(mod(j,2)==1)then
-   call timed_active(ton(j));call timed_off(toff(j))
-  else
-   call timed_off(toff(j));call timed_active(ton(j))
-  endif
+  call system_clock(i);t0c=real(i,real64)
+  do status=1,REPS
+   call app%initialize(cfg,i);if(i/=FMR_APP_BOOT_OK)error stop 'active init'
+   call app%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'active run'
+   call app%close(i)
+  enddo
+  call system_clock(i);t1c=real(i,real64);ton(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
+  call system_clock(i);t0c=real(i,real64)
+  do status=1,REPS
+   call offapp%initialize(off,i);if(i/=FMR_APP_BOOT_OK)error stop 'off init'
+   call offapp%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'off run'
+   call offapp%close(i)
+  enddo
+  call system_clock(i);t1c=real(i,real64);toff(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
   print '(a,i0,a,es24.16,a,es24.16,a,es24.16)','E2E_ROUND=',j,' ON_NS=',ton(j),' OFF_NS=',toff(j),' RATIO=',ton(j)/toff(j)
  enddo
- call app%close(status);call offapp%close(status)
 contains
- subroutine timed_active(ns)
-  real(real64),intent(out)::ns
-  integer::q
-  call system_clock(q,rate);t0c=real(q,real64)
-  do i=1,REPS
-   call app%run_standalone(T0,T1,r,status);if(status/=FMR_APP_BOOT_OK)error stop 'active'
-  enddo
-  call system_clock(q);t1c=real(q,real64);ns=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
- end subroutine
- subroutine timed_off(ns)
-  real(real64),intent(out)::ns
-  integer::q
-  call system_clock(q,rate);t0c=real(q,real64)
-  do i=1,REPS
-   call offapp%run_standalone(T0,T1,r,status);if(status/=FMR_APP_BOOT_OK)error stop 'off'
-  enddo
-  call system_clock(q);t1c=real(q,real64);ns=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
- end subroutine
   subroutine initialize_application_config(value, initial_head, conductivity0)
     type(fmr_production_application_config_t), intent(out) :: value
     real(real64), intent(in) :: initial_head
