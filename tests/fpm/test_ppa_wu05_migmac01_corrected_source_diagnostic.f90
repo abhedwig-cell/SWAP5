@@ -410,6 +410,7 @@ contains
     type(fmr_b110_physical_parameters_t), target :: fparams
     type(fmr_b110_physical_forcing_t) :: forcing
     type(fmr_b110_physical_state_t) :: initial
+    type(macropore_reduction_continuation_t) :: reduction_initial
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
     type(canonical_numerical_config_t) :: numerical
@@ -458,7 +459,9 @@ contains
     initial%groundwater_level=source_scalars(4)
     initial%macropore=macro
 
-    call fmr_new_b110_committed_state(committed,lineage,initial,source_scalars(1),state_ok)
+    reduction_initial=macropore_reduction_continuation_t(level=0,stable_steps=0,previous_dt=dt)
+    call fmr_new_b110_macropore_reduction_committed_state(committed,lineage,initial,reduction_initial, &
+         source_scalars(1),state_ok)
     if(.not.state_ok)error stop 'MIGMAC01 source transaction committed init'
 
     allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod), &
@@ -479,7 +482,7 @@ contains
     column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     template%template_id=lineage
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
-    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION
     template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
 
     numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
@@ -489,7 +492,7 @@ contains
     numerical%transaction%max_retries=40
     numerical%max_committed_substeps=64
 
-    policy%source_reduction_retry_enabled=.false.
+    policy%source_reduction_retry_enabled=.true.
     call backend%initialize(top)
     call backend%configure_macropore_policy(policy,policy_ok)
     if(.not.policy_ok)error stop 'MIGMAC01 source transaction policy'
