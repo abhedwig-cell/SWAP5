@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
+  "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
+  "phase": "RECONCILE_PREREGISTERED",
+  "state": "RESEARCH_PREREGISTERED_NOT_CANONICALLY_ADMITTED",
+  "canonical_start": {
+    "branch": "integration/f-ci-canonical",
+    "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
+  },
+  "source": {
+    "branch": "work/f-gc-strip01-50m-swap-modflow-benchmark",
+    "base": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
+  },
+  "objective": "Build and qualify a reproducible 50-cell half-drain-spacing standalone MODFLOW6 strip, drain-down, then bounded real SWAP-MODFLOW6 coupling and Hupsel experiment, with explicit ownership, mass balance, restart and replay evidence.",
+  "scope": {
+    "width_m": 50,
+    "symmetry_full_spacing_m": 100,
+    "ncol": 50,
+    "dx_m": 1,
+    "nlay": 1,
+    "aquifer_base_m": -10,
+    "model_top_m": 0,
+    "initial_uniform_recharge_m_per_day": 0.001,
+    "initial_kx_sweep_m_per_day": [
+      0.1,
+      0.25,
+      0.5,
+      1,
+      2
+    ],
+    "candidate_drain_stage_m": -5,
+    "candidate_kx_m_per_day": 0.5,
+    "phase_order": [
+      "standalone_MODFLOW_steady_oracle",
+      "standalone_MODFLOW_drain_down",
+      "simple_coupled_SWAP_MODFLOW",
+      "Hupsel_forcing",
+      "transaction_restart_replay"
+    ]
+  },
+  "reconciled_authority": {
+    "fixed_interface_contract": "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
+    "admitted_drain_owner": "NONE",
+    "modflow_sto_role": "HEAD_STATE_CAPACITANCE",
+    "independent_regional_physical_storage_authorized": false,
+    "current_publication_order": [
+      "MODFLOW_finalize_time_step_once",
+      "SWAP_commit_once",
+      "interface_ledger_commit_once"
+    ],
+    "current_restart_boundary": "committed-only; no prepared handle or mid-Newton state"
+  },
+  "research_boundary": {
+    "standalone_modflow_physical_storage_and_drn": "may be qualified as a groundwater-only model",
+    "coupled_physical_aquifer_storage_and_drainage": "requires explicit non-overlapping application-domain ownership authority before making physical whole-domain balance claims",
+    "production_adapter_or_ABI_change": false,
+    "canonical_admission": false
+  },
+  "historical_reference": {
+    "library_report": "Rapport_Koppeling_SWAP4_en_MODFLOW6_V04.docx",
+    "repository_fixture": "tests/f-app06/fixtures/hupsel_swinter0_b111_exact.part00.csv",
+    "legacy_strip_relevance": "10-cell initially saturated drain-down fixture; historical test idea only"
+  },
+  "progress": {
+    "preregistration_persisted": true,
+    "branch_issued": true,
+    "standalone_modflow_built": false,
+    "analytical_oracle_implemented": false,
+    "drain_down_run": false,
+    "coupled_run": false,
+    "hupsel_run": false,
+    "production_delta": [],
+    "qualification": "not_started",
+    "canonical_admission": false
+  },
+  "next_permitted_action": "Reconcile exact F-GC44-F-GC49D fixture inputs and current soil/Hupsel data authority; then build a reproducible independent groundwater-only oracle and persist its precise configuration. Do not claim the coupled physical storage/drainage balance until its application-domain ownership is resolved."
+}
