@@ -44,6 +44,11 @@ program test_low08a_application
   cfg%tiles(1)%parameters%bottom_mode=8
   cfg%tiles(1)%ordinary_lysimeter_plate=.true.
   cfg%tiles(1)%ledger_id=0_int64
+  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  allocate(cfg%tiles(1)%initial_right_derivative(numnod));cfg%tiles(1)%initial_right_derivative=0.0_real64
+  cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+  cfg%numerical%model_temporal_indicator_budget_available=.true.
+  cfg%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
   cfg%tiles(1)%base_forcing%bottom_head=-80.0_real64
   cfg%tiles(1)%base_forcing%bottom_flux=0.0_real64
   print '(a)', 'LOW08A_STAGE_BEFORE_INIT'
