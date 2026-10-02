@@ -57,7 +57,7 @@ program test_low08a_application
   call app%materialize_groundwater_context(topology,predictors,areas,context_handle,status)
   call require(status/=FMR_APP_BOOT_OK .and. context_handle==0_int64,'reject groundwater context')
   print '(a)', 'LOW08A_STAGE_BEFORE_RUN'
-  call app%run_standalone(T0,T0+0.01_real64,result,status)
+  call app%run_standalone(T0,T0+0.001_real64,result,status)
   print '(a,1x,i0)', 'LOW08A_STAGE_AFTER_RUN',status
   if(allocated(result)) write(*,'(a,1x,l1,1x,l1,1x,l1,1x,i0,1x,i0,1x,a)') 'LOW08A_RUN_DIAG',result(1)%admitted,result(1)%completed,result(1)%committed,result(1)%kernel_status,result(1)%commit_status,trim(result(1)%admission_status)
   if(allocated(result)) print '(a,1x,l1,1x,l1,1x,l1,1x,i0,1x,i0,1x,a,1x,i0,1x,i0,1x,i0)', 'LOW08A_RUN_DIAG',result(1)%admitted,result(1)%completed,result(1)%committed,result(1)%kernel_status,result(1)%commit_status,trim(result(1)%admission_status),result(1)%solver_nonlinear_iterations,result(1)%solver_internal_retries,result(1)%accepted_substeps
