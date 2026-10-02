@@ -11,6 +11,7 @@ program test_low08a_application
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_kernel_transactions
+  use mod_fmr_committed_restart
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_NONE
   use variables, only: fldtmin
   use mod_fixed_flux_top_boundary_provider
@@ -117,8 +118,120 @@ program test_low08a_application
     call badapp%close(status)
   end do
   print '(a)', 'LOW08A_APPLICATION_FAIL_CLOSED_MATRIX=PASS'
+  call qualify_active_inactive_application(cfg)
+  call qualify_transaction_restart(cfg)
   print '(a)', 'LOW08A_APPLICATION_GATE=PASS'
 contains
+
+  subroutine qualify_active_inactive_application(config)
+    type(fmr_production_application_config_t),intent(in)::config
+    type(fmr_production_application_config_t)::c
+    type(fmr_production_application_bootstrap_t)::owner
+    type(fmr_serialized_column_result_t),allocatable::r(:)
+    type(fmr_b110_physical_forcing_t)::forcing(1)
+    real(real64)::threshold
+    integer::s
+    c=config
+    c%numerical%transaction%temporal_mode=TX_TEMPORAL_NONE
+    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    if(allocated(c%tiles(1)%initial_right_derivative))deallocate(c%tiles(1)%initial_right_derivative)
+    threshold=c%tiles(1)%base_forcing%bottom_head-0.5_real64*c%tiles(1)%parameters%dz(numnod)+1.0e-5_real64
+    c%tiles(1)%initial_state%pressure_head=threshold-1.0_real64
+    call refresh_water(c%tiles(1))
+    c%tiles(1)%base_forcing%top_flux=0.0_real64
+    call owner%initialize(c,s);call require(s==FMR_APP_BOOT_OK,'inactive owner initialize')
+    call owner%run_standalone(T0,T0+1.0e-5_real64,r,s)
+    call require(s==FMR_APP_BOOT_OK .and. r(1)%mass%complete,'inactive ordinary application')
+    call require(abs(r(1)%mass%total_in)+abs(r(1)%mass%total_out)<1.0e-12_real64,'inactive qbot exactly zero')
+    call owner%close(s)
+    c=config
+    c%numerical%transaction%temporal_mode=TX_TEMPORAL_NONE
+    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    if(allocated(c%tiles(1)%initial_right_derivative))deallocate(c%tiles(1)%initial_right_derivative)
+    threshold=c%tiles(1)%base_forcing%bottom_head-0.5_real64*c%tiles(1)%parameters%dz(numnod)+1.0e-5_real64
+    c%tiles(1)%initial_state%pressure_head=threshold+1.0_real64
+    call refresh_water(c%tiles(1))
+    c%tiles(1)%base_forcing%top_flux=0.0_real64
+    call owner%initialize(c,s);call require(s==FMR_APP_BOOT_OK,'active owner initialize')
+    call owner%run_standalone(T0,T0+1.0e-5_real64,r,s)
+    call require(s==FMR_APP_BOOT_OK .and. r(1)%mass%complete,'active ordinary application')
+    call require(r(1)%mass%total_in+r(1)%mass%total_out>0.0_real64,'active plate exchange')
+    forcing(1)=c%tiles(1)%base_forcing
+    forcing(1)%bottom_head=forcing(1)%bottom_head+2.0_real64
+    call owner%run_standalone_with_forcing(T0+1.0e-5_real64,T0+2.0e-5_real64,forcing,r,s)
+    call require(s==FMR_APP_BOOT_OK .and. r(1)%mass%complete,'changed hplate continuation')
+    call owner%close(s)
+    print '(a)', 'LOW08A_INACTIVE_ACTIVE_CHANGED_HPLATE=PASS'
+  end subroutine
+
+  subroutine qualify_transaction_restart(config)
+    type(fmr_production_application_config_t),intent(in)::config
+    type(fmr_serialized_reference_backend_t),target::backend,resumed
+    type(fixed_flux_top_boundary_provider_t),target::local_top
+    type(fmr_logical_column_t)::col(1)
+    type(kernel_committed_state_t)::state(1),restored(1)
+    type(kernel_checkpoint_t)::checkpoint,restart_checkpoint
+    type(kernel_candidate_state_t)::a_candidate,b_candidate
+    type(kernel_result_t)::a1,b,a2,continued,restarted
+    type(kernel_diagnostics_t)::d
+    type(fmr_committed_restart_bundle_t)::bundle
+    type(fmr_b110_physical_forcing_t)::forcing_a,forcing_b
+    logical::good
+    integer::s
+    col(1)%column_id=config%tiles(1)%tile_id;col(1)%template_id=config%tiles(1)%template%template_id
+    col(1)%parameter_ref=1_int64;col(1)%state_handle=1_int64;col(1)%forcing_handle=1_int64
+    col(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+    call backend%initialize(local_top);call resumed%initialize(local_top)
+    block
+      real(real64)::previous(numnod)
+      previous=0.0_real64
+      call fmr_new_b110_temporal_indicator_committed_state(state(1),col(1)%column_id,config%tiles(1)%initial_state,T0,good,previous)
+    end block
+    call require(good,'restart initial state')
+    call state(1)%capture_checkpoint(checkpoint,good);call require(good,'restart checkpoint')
+    forcing_a=config%tiles(1)%base_forcing
+    call backend%run_trial(col(1),config%tiles(1)%template,config%tiles(1)%parameters,state(1),forcing_a, &
+         config%numerical,T0,T0+1.0e-5_real64,checkpoint,a1,a_candidate,d)
+    call require(a1%completed .and. a_candidate%ready(),'A trial')
+    call backend%discard_trial_candidate(a_candidate,d)
+    forcing_b=forcing_a;forcing_b%bottom_head=forcing_b%bottom_head-20.0_real64
+    call backend%run_trial(col(1),config%tiles(1)%template,config%tiles(1)%parameters,state(1),forcing_b, &
+         config%numerical,T0,T0+1.0e-5_real64,checkpoint,b,b_candidate,d)
+    if(b_candidate%ready())call backend%discard_trial_candidate(b_candidate,d)
+    call require(state(1)%current_revision()==0_int64,'B trial preserves committed revision')
+    call backend%run_trial(col(1),config%tiles(1)%template,config%tiles(1)%parameters,state(1),forcing_a, &
+         config%numerical,T0,T0+1.0e-5_real64,checkpoint,a2,a_candidate,d)
+    call require(a2%completed .and. a_candidate%ready(),'A/B/A replay')
+    call require(same_bits(a1%mass%storage_end,a2%mass%storage_end) .and. &
+         same_bits(a1%terminal_bottom_outward_flux_native,a2%terminal_bottom_outward_flux_native),'A/B/A physical identity')
+    call backend%commit_trial_candidate(state(1),a_candidate,d,good,s);call require(good,'commit A')
+    call fmr_export_committed_restart(col,[config%tiles(1)%template],state,config%tiles(1)%parameters%parameter_set_id,bundle,good,s)
+    call require(good .and. s==FMR_RESTART_OK,'restart export')
+    call fmr_restore_committed_restart(bundle,config%tiles(1)%parameters%parameter_set_id,col,[config%tiles(1)%template],restored,good,s)
+    call require(good .and. s==FMR_RESTART_OK,'fresh restart restore')
+    call state(1)%capture_checkpoint(checkpoint,good);call restored(1)%capture_checkpoint(restart_checkpoint,good)
+    forcing_b=forcing_a;forcing_b%bottom_head=forcing_b%bottom_head+5.0_real64
+    call backend%run_trial(col(1),config%tiles(1)%template,config%tiles(1)%parameters,state(1),forcing_b,config%numerical, &
+         T0+1.0e-5_real64,T0+2.0e-5_real64,checkpoint,continued,a_candidate,d)
+    call resumed%run_trial(col(1),config%tiles(1)%template,config%tiles(1)%parameters,restored(1),forcing_b,config%numerical, &
+         T0+1.0e-5_real64,T0+2.0e-5_real64,restart_checkpoint,restarted,b_candidate,d)
+    call require(continued%completed .and. restarted%completed,'restart continuation')
+    call require(same_bits(continued%mass%storage_end,restarted%mass%storage_end) .and. &
+         same_bits(continued%terminal_bottom_outward_flux_native,restarted%terminal_bottom_outward_flux_native), &
+         'fresh backend restart identity')
+    print '(a)', 'LOW08A_ROLLBACK_ABA_RESTART_CHANGED_HPLATE=PASS'
+  end subroutine
+
+  subroutine refresh_water(tile)
+    type(fmr_production_application_tile_config_t),intent(inout)::tile
+    type(b110_default_mvg_parameters_t),target::hp
+    type(b110_default_mvg_provider_t)::provider
+    real(real64)::water(numnod),conductivity(numnod),capacity(numnod),derivative(numnod)
+    call initialize_b110_default_mvg_parameters(hp,tile%parameters%cofgen)
+    call bind_b110_default_mvg_provider(provider,hp,1.0e-5_real64)
+    call provider%evaluate(tile%initial_state%pressure_head,water,conductivity,capacity,derivative)
+    tile%initial_state%water_content=water
+  end subroutine
   subroutine initialize_application_config(value,initial_head,k0)
     type(fmr_production_application_config_t),intent(out)::value
     real(real64),intent(in)::initial_head
