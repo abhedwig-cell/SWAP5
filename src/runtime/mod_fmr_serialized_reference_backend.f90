@@ -3303,6 +3303,7 @@ contains
     class(transaction_state_t), intent(in) :: state
     if (.not. associated(self%soil_parameters)) error stop 'F-MR06 storage requested before parameter binding'
     if (.not. allocated(self%soil_parameters%dz)) error stop 'F-MR06 storage parameter dz missing'
+    write(*,'(a,1x,i0,1x,i0,1x,i0)') 'LOW08A_STORAGE_ENTER',self%bottom_mode,self%soil_parameters%active_nodes,size(self%soil_parameters%dz)
     select type (physical => state)
     type is (fmr_b110_rfm_state_t)
       if (.not. allocated(physical%water_content)) error stop 'PPA-WU05-A20 RFM matrix storage incomplete'
@@ -3319,6 +3320,7 @@ contains
       value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth + &
            physical%surface_water%storage
     class is (fmr_b110_physical_state_t)
+      write(*,'(a,1x,i0,1x,l1,1x,i0)') 'LOW08A_STORAGE_PHYSICAL',physical%active_nodes,allocated(physical%water_content),merge(size(physical%water_content),-1,allocated(physical%water_content))
       if (self%fixed_weir_surface_water_active) error stop 'F-PM08D7 active model missing fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
       if (self%macropore_active .and. allocated(self%macropore_config) .and. &
