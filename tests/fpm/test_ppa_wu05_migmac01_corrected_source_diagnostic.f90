@@ -269,9 +269,8 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
          '|LAST_TENTATIVE_H2=',workspace%richards%old_head(2), &
          '|THETA_QUANTUM_NODE36=',spacing(origin(4,36))*dz(36)/dt
     if(.not.macro%same_values(macro_snapshot))error stop 'direct diagnostic mutated accepted macro'
-    print '(a)', 'PPA_WU05_MIGMAC01_CORRECTED_SOURCE=BLOCKED_NOT_QUALIFIED'
-    stop 0
   end if
+  if(direct_result%status==SW_SOLVE_CONVERGED)then
   write(*,'(*(g0))') 'SOURCE_DIRECT|H2=',direct_result%candidate_state%pressure_head(2), &
        '|MASS=',direct_result%integrated_mass_balance_residual_cm
   policy%enabled=.false.
@@ -285,6 +284,8 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
          transfer(direct_result%candidate_state%pressure_head,[0_int64],numnod))) &
        error stop 'MIGMAC01 active inactive head identity'
   if(.not.result%macropore_candidate%same_values(macro_snapshot))error stop 'MIGMAC01 active inactive macro identity'
+
+  end if
 
   ! Active strict source-backed standard macropore coupling.
   policy%enabled=.true.
