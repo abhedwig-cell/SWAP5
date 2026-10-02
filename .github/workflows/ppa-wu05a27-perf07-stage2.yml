@@ -1,0 +1,20 @@
+name: PPA-WU05-A27 PERF07 adaptive trajectory
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  trajectory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Adaptive production trajectory screen
+        run: |
+          mkdir -p /tmp/a27-perf07-stage2
+          bash research/rfm/a27/run_production_abc01.sh /tmp/a27-perf07-stage2
+      - name: Upload trajectory evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a27-perf07-stage2
+          path: /tmp/a27-perf07-stage2
