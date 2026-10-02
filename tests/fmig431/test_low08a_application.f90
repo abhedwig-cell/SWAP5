@@ -7,7 +7,7 @@ program test_low08a_application
        fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
-       fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK
+       fmr_production_application_tile_config_t, fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_kernel_transactions
