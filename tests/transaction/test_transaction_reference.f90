@@ -37,7 +37,7 @@ contains
   end subroutine test_clone
 
   subroutine test_advance(self, state, t0, t1, outcome)
-    class(test_model_t), intent(in) :: self
+    class(test_model_t), intent(inout) :: self
     class(transaction_state_t), intent(inout) :: state
     real(real64), intent(in) :: t0, t1
     type(trial_outcome_t), intent(out) :: outcome
