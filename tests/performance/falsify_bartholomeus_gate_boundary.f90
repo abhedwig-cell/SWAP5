@@ -27,7 +27,7 @@ program falsify_bartholomeus_gate_boundary
    call setup_case(theta_r,theta_s,alpha,npar,depth,u(k,9),u(k,10),u(k,11),d,c,ok)
    if(.not.ok)cycle
    v%pressure_head_cm=head;v%water_content=theta_s-gfp;v%soil_temperature_k=temp
-   wr=0.002_real64+2._real64*u(k,12);w0=wr
+   wr=0.002_real64+2._real64*u(k,12);w0=0.002_real64+2._real64*u(k,22)
    c%c_mroot=1e-7_real64*10._real64**(4._real64*u(k,13))
    c%f_senes=0.05_real64+0.95_real64*u(k,14)
    c%specific_resp_humus=1e-8_real64*10._real64**(4._real64*u(k,15))
@@ -41,11 +41,11 @@ program falsify_bartholomeus_gate_boundary
      call check_point(ct,npar>2._real64)
    enddo
    ! Locate gate decision boundary in ctop, if bracketed, then probe densely around it.
-   lo=1e-4_real64;hi=1e6_real64;slo=bartholomeus_macro_supply_bound_no_stress(v,d,c,w0,lo);shi=bartholomeus_macro_supply_bound_no_stress(v,d,c,w0,hi)
+   lo=1e-4_real64;hi=1e6_real64;slo=bartholomeus_macro_supply_bound_no_stress(v,d,c,wr,w0,lo);shi=bartholomeus_macro_supply_bound_no_stress(v,d,c,wr,w0,hi)
    if((.not.slo).and.shi)then
      do it=1,70
        mid=sqrt(lo*hi)
-       if(bartholomeus_macro_supply_bound_no_stress(v,d,c,w0,mid))then;hi=mid;else;lo=mid;endif
+       if(bartholomeus_macro_supply_bound_no_stress(v,d,c,wr,w0,mid))then;hi=mid;else;lo=mid;endif
      enddo
      gate_ct=hi
      do j=1,NNEAR;near_gate=near_gate+1;call check_point(gate_ct*(1._real64+eps(j)),npar>2._real64);enddo
@@ -77,7 +77,7 @@ contains
   if(ctop<=0)return
   call evaluate_bartholomeus_factors_from_state(v,d,c,wr,w0,ctop,BARTHOLOMEUS_WATERFILM_REFERENCE,fac,ok)
   if(.not.ok)return
-  facmin=minval(fac);g=bartholomeus_macro_supply_bound_no_stress(v,d,c,w0,ctop)
+  facmin=minval(fac);g=bartholomeus_macro_supply_bound_no_stress(v,d,c,wr,w0,ctop)
   total=total+1
   if(g)then
     skips=skips+1
