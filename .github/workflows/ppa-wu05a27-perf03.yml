@@ -1,8 +1,6 @@
 name: PPA-WU05-A27 PERF03 sorptivity reuse falsification
 on:
-  push:
-    branches:
-      - work/ppa-wu05-a27-rfm-performance-equivalence
+  workflow_dispatch:
 jobs:
   perf03:
     runs-on: ubuntu-latest
