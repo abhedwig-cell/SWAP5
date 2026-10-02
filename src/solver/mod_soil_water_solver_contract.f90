@@ -51,6 +51,8 @@ module mod_soil_water_solver_contract
 
   type, public :: soil_water_physical_config_t
      logical :: macropore_active = .false.
+     ! Immutable matrix cross-section. Absence preserves the unit-area route.
+     real(real64), allocatable :: matrix_area_fraction(:)
   end type soil_water_physical_config_t
 
   type, public :: soil_water_numerical_config_t
@@ -94,6 +96,7 @@ module mod_soil_water_solver_contract
    contains
      procedure(constitutive_evaluate_ifc), deferred :: evaluate
      procedure :: evaluate_demand => constitutive_evaluate_demand_fallback
+     procedure :: evaluate_water_content_increment => constitutive_water_content_increment_fallback
      procedure :: supports_point_conductivity => constitutive_supports_point_conductivity_fallback
      procedure :: evaluate_point_conductivity => constitutive_evaluate_point_conductivity_unavailable
   end type constitutive_hydraulics_provider_t
@@ -321,6 +324,19 @@ contains
     call self%evaluate(pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
   end subroutine constitutive_evaluate_demand_fallback
 
+  subroutine constitutive_water_content_increment_fallback(self, pressure_head, previous_pressure_head, &
+                                                             water_content, previous_water_content, increment)
+    class(constitutive_hydraulics_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:), previous_pressure_head(:)
+    real(real64), intent(in) :: water_content(:), previous_water_content(:)
+    real(real64), intent(out) :: increment(:)
+    if (size(pressure_head) /= size(previous_pressure_head) .or. &
+        size(pressure_head) /= size(water_content) .or. size(pressure_head) /= size(previous_water_content) .or. &
+        size(pressure_head) /= size(increment)) error stop 'constitutive storage increment shape mismatch'
+    increment = water_content - previous_water_content
+    if (.not. same_type_as(self,self)) increment = water_content - previous_water_content
+  end subroutine constitutive_water_content_increment_fallback
+
   logical function constitutive_supports_point_conductivity_fallback(self) result(supported)
     class(constitutive_hydraulics_provider_t), intent(in) :: self
     supported = .false.
@@ -401,6 +417,12 @@ contains
     if (.not. allocated(request%base_state%water_content)) return
     if (size(request%base_state%pressure_head) /= n) return
     if (size(request%base_state%water_content) /= n) return
+    if (allocated(request%physical%matrix_area_fraction)) then
+      if (size(request%physical%matrix_area_fraction) /= n) return
+      if (any(.not. ieee_is_finite(request%physical%matrix_area_fraction))) return
+      if (any(request%physical%matrix_area_fraction <= 0.0_real64) .or. &
+          any(request%physical%matrix_area_fraction > 1.0_real64)) return
+    end if
     if (request%step_duration <= 0.0_real64) return
     if (.not. associated(request%evaluation%constitutive)) return
     if (request%boundary%bottom_mode /= 3) then
