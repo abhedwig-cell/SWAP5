@@ -113,7 +113,7 @@ contains
     type(soil_water_solve_result_t)::predictor,corrector
     type(macropore_exchange_overlay_provider_t),target::overlay
     type(ppa_wu05a16_inner_macropore_provider_t),target::inner_provider
-    type(macropore_geometry_result_t)::geometry,accepted_geometry
+    type(macropore_geometry_result_t)::geometry
     type(macropore_rate_bundle_request_t)::rate_request,rate_template_step,rate_template_attempt
     type(macropore_rate_bundle_result_t)::current_rates,raw_rates
     type(macropore_standard_candidate_receipt_t)::receipt
@@ -173,7 +173,6 @@ contains
     end if
 
     call evaluate_macropore_geometry(geometry_config,accepted_macro%dynamic_volume_cp,geometry)
-    accepted_geometry=geometry
     if(.not.geometry%valid)then
       result%status=MACRO_RUNTIME_FAILED
       return
