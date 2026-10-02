@@ -33,3 +33,24 @@ Admission therefore requires either:
 2. a direct analytical upper bound on `c_micro` that avoids assuming monotonicity.
 
 No skip gate is admitted from the MvG integral bound alone.
+
+
+## Correct conservative direction and first falsification
+
+A numerical monotonicity falsification over 36,150 MICRO evaluations found zero decreases in c_micro as waterfilm thickness increased across the tested admitted-like domain.
+
+Therefore a safe no-stress proof needs an upper bound on waterfilm thickness, hence a lower bound on MvG length-density integral.
+
+For admitted n <= 2, the positive increasing integrand gives:
+`I >= (H/2) * f(H/2)`.
+
+This yields a conservative film upper bound and therefore a conservative c_micro upper bound at max_resp_factor. Combined with the exact cheap MACRO concentration, the gate returns NO_STRESS only when `c_macro >= c_micro_upper_bound` for every rooted node.
+
+Initial 1100-state falsification:
+- full Reference no-stress: 765;
+- analytical pre-waterfilm skips: 672;
+- false skips: 0;
+- capture of no-stress states: 87.84%;
+- overall skip fraction in this synthetic sweep: 61.09%.
+
+These fractions are not production-frequency estimates. Boundary-focused falsification remains required.
