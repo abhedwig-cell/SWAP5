@@ -1,6 +1,6 @@
 {
   "work_unit": "F-MIG431-LOW03-A",
-  "state": "BLOCKED_SHARED_CONTEXT_MODE3_PREREQUISITE_REGISTERED",
+  "state": "BLOCKED_SHARED_TEMPORAL_ACCEPTANCE_PREREQUISITE_REGISTERED",
   "baseline": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
   "reconciled_canonical_head": "e50a1bad6482b0aaeaf25a87e1fd1b1d5e19a846",
   "official_branch": "work/f-mig431-low03-a-implicit-cauchy-application",
@@ -26,7 +26,7 @@
     "tests/fmig431/run_low03a_source_oracles.py"
   ],
   "design_conclusion": "No shared-authority mutation is required by the bounded design: proposal-head history fits existing attempt-context ownership; Q4 is trial-local immutable forcing; existing solver, transaction, mass and Restart-v1 owners remain unchanged.",
-  "next_action": "Central adjudication/qualification of F-MIG431-LOW03-A-DEP01. Do not silently mutate shared context binding from LOW03-A.",
+  "next_action": "Central numerical/transaction authority must qualify a finite temporal acceptance contract for ordinary implicit mode3 before LOW03-A resumes.",
   "held_fixed": [
     "Solver residual/Jacobian/common boundary",
     "C ABI",
@@ -57,21 +57,27 @@
   ],
   "claim_ceiling": "This unit never establishes migration of all SWBOTB3 or all lower boundaries",
   "blocker": {
-    "id": "F-MIG431-LOW03-A-DEP01",
-    "authority": "src/adapter/mod_b110_serialized_context_binding.f90",
-    "classification": "SHARED_AUTHORITY_PREREQUISITE",
-    "trigger_run": 36987639976,
-    "trigger_postimage": "67ec5945888077b6fa6c36f8e803c060249458c0",
-    "evidence": "application admitted and typed Haq/Q4 staged, but shared context bridge rejects bottom_mode=3 before solver execution",
-    "required_action": "central semantic-successor qualification of mode3 allowlist in shared serialized legacy-context bridge before LOW03-A consumes it",
-    "record": "docs/migration/F-MIG431-LOW03-A_SHARED_CONTEXT_PREREQUISITE.md"
+    "id": "F-MIG431-LOW03-A-DEP02",
+    "authority": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/transaction/mod_transaction_reference.f90"
+    ],
+    "classification": "SHARED_TEMPORAL_ACCEPTANCE_PREREQUISITE",
+    "trigger_run": 36988363611,
+    "trigger_postimage": "12dca0e38611d243a638a1f6e2caf035d497acd5",
+    "evidence": "mode3 solver converges with zero solver/mass rejections, but serialized bit-identity temporal policy returns huge for non-identical full/two-half candidates and exhausts retries",
+    "record": "docs/migration/F-MIG431-LOW03-A_TEMPORAL_ACCEPTANCE_PREREQUISITE.md"
   },
   "latest_qualification": {
-    "run": 36987639976,
-    "postimage": "67ec5945888077b6fa6c36f8e803c060249458c0",
+    "run": 36988363611,
+    "postimage": "12dca0e38611d243a638a1f6e2caf035d497acd5",
     "source_oracles": "PASS",
     "cauchy_provider": "PASS",
-    "application": "BLOCKED_BEFORE_SOLVER_BY_SHARED_CONTEXT_MODE_ALLOWLIST",
-    "solver_executed": false
+    "dep01_reachability": "PASS",
+    "solver": "CONVERGED",
+    "solver_rejections": 0,
+    "mass_rejections": 0,
+    "temporal_rejections": 3,
+    "application": "BLOCKED_SHARED_TEMPORAL_ACCEPTANCE"
   }
 }
