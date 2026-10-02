@@ -5,6 +5,7 @@ module mod_rfm_runtime_configuration
   private
   integer,parameter,public :: RFM_SORPTIVITY_POLICY_EXACT=0
   integer,parameter,public :: RFM_SORPTIVITY_POLICY_A28_V1=1
+  character(len=*),parameter,public :: RFM_SORPTIVITY_POLICY_A28_V1_NAME='A28_V1'
 
   type, public :: rfm_runtime_configuration_t
     logical :: enabled=.false.
