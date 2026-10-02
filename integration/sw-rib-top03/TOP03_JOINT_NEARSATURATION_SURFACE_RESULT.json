@@ -1,0 +1,158 @@
+{
+  "schema": "swap5.top03.joint_nearsaturation_surface_probe.v1",
+  "date": "2026-10-02",
+  "status": "PARTIAL_NUMERICAL_IMPROVEMENT__NOT_QUALIFIED",
+  "production_code_changed": false,
+  "production_admission": false,
+  "preregistration": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_PREREGISTRATION.md",
+  "scope": {
+    "geometry": 2,
+    "bottom_mode": 7,
+    "initial_profile": "dry profile 1",
+    "microrelief_amplitude_cm": 0.05,
+    "refinements": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "constitutive_transition_widths_cm": [
+      1e-08,
+      0.02,
+      0.2,
+      2.0
+    ],
+    "forcing": "external stage rise 0.005 to 0.300 cm; pulse extension falls back to 0.005 cm",
+    "builds": [
+      "O0",
+      "O2"
+    ]
+  },
+  "candidate": {
+    "soil_water_content": "quintic smoothstep blend from MvG theta to theta_s over -delta_h < h < 0",
+    "soil_capacity": "analytic derivative of the modified theta(h)",
+    "soil_conductivity": "Mualem K from regularized saturation, blended to Ks by the same smoothstep",
+    "surface_wet_fraction": "quintic smoothstep CDF of normalized external stage over microrelief amplitude",
+    "surface_storage": "integral of wet fraction; dS/dH equals wet fraction",
+    "mean_wet_head": "surface storage divided by wet fraction"
+  },
+  "controls": {
+    "legacy_soil_plus_legacy_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4,
+      "stop_events_by_refinement_1_2_4_8": [
+        4,
+        3,
+        3,
+        3
+      ]
+    },
+    "delta_0_02_soil_plus_legacy_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4
+    },
+    "delta_2_soil_plus_legacy_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4
+    },
+    "near_legacy_soil_plus_smooth_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4
+    },
+    "delta_0_02_soil_plus_smooth_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4
+    }
+  },
+  "joint_candidate_delta_2_cm": {
+    "rising": {
+      "refinement_steps": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "completed": [
+        true,
+        false,
+        false,
+        true
+      ],
+      "stop_event_if_failed": [
+        null,
+        3,
+        3,
+        null
+      ],
+      "newton_iterations": [
+        105,
+        147,
+        191,
+        312
+      ],
+      "complete_paths": 2,
+      "total_paths": 4
+    },
+    "rise_and_recession": {
+      "stage_sequence_cm": [
+        0.005,
+        0.02,
+        0.05,
+        0.1,
+        0.2,
+        0.3,
+        0.2,
+        0.1,
+        0.05,
+        0.02,
+        0.005
+      ],
+      "refinement_steps": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "completed": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "stop_event_if_failed": [
+        null,
+        3,
+        3,
+        10
+      ],
+      "newton_iterations": [
+        187,
+        147,
+        191,
+        422
+      ],
+      "complete_paths": 1,
+      "total_paths": 4
+    }
+  },
+  "completed_pulse_mass_closure": {
+    "refinement_steps": 1,
+    "signed_top_transfer_cm": -1.3516563876882026,
+    "bottom_transfer_cm": -1.0348712873309638,
+    "soil_plus_surface_storage_change_cm": 0.3167851003573361,
+    "combined_ledger_residual_cm": 9.725553695716371e-14,
+    "maximum_soil_balance_residual_cm": 4.567179967551738e-14
+  },
+  "oracles": {
+    "modified_theta_derivative_matches_capacity": true,
+    "near_saturation_conductivity_cutoff_jump_removed": true,
+    "optimization_level_output_identity_O0_O2": true,
+    "failed_trials_counted_as_accepted": false
+  },
+  "decision": "The joint concept has a positive mechanism signal, including one complete rise/recession trajectory and roundoff-level combined mass closure. It remains timestep-sensitive and fails multiple tested refinements. This falsifies the tested parameterization as a robust or production-ready formulation, not the broader idea of co-regularizing surface storage and near-saturation hydraulics.",
+  "evidence_logs": [
+    "integration/sw-rib-top03/evidence/joint_nearsaturation_surface/raw_records.txt"
+  ],
+  "harness": "tests/fapp/run_sw_rib_top03_joint_microrelief_probe.sh"
+}
+
