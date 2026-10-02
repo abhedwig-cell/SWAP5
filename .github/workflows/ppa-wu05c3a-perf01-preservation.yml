@@ -1,0 +1,17 @@
+name: PPA-WU05-C3A PERF01 preservation
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/ppa-wu05c3a-zero-waste-performance]
+    paths:
+      - 'src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90'
+      - '.github/workflows/ppa-wu05c3a-perf01-preservation.yml'
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: B1.11 assembled oracle
+        run: python3 tests/physics/run_bartholomeus_b111_assembled.py
+      - name: Production application
+        run: python3 tests/physics/run_bartholomeus_application.py
