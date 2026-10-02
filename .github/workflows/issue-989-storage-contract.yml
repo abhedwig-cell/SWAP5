@@ -1,0 +1,21 @@
+name: Issue 989 storage contract qualification
+on:
+  push:
+    branches:
+      - fix/989-serialized-storage-shape-contract
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Transaction storage fail-closed regression
+        run: |
+          B="$RUNNER_TEMP/issue989-tx"
+          mkdir -p "$B"
+          gfortran -O0 -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -J"$B" -I"$B" \
+            src/transaction/mod_transaction_reference.f90 tests/transaction/test_transaction_reference.f90 \
+            -o "$B/test_transaction_reference"
+          "$B/test_transaction_reference"
+      - name: Typed production application reproducer
+        run: python3 tests/physics/run_bartholomeus_application.py
