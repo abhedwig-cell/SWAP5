@@ -46,3 +46,16 @@ compressive MODFLOW storage change. The interface ledger, if used later, is
 transfer accounting only. Native storage terms are checked separately.
 Replay uses the same physical accepted origin and must not mutate it.
 Only after C has passed may a longer weather/Hupsel sequence be interpreted.
+
+## Preregistered physical elasticity diagnostic (before variant execution)
+
+The zero-elasticity component panel failed the inherited temporal gate while
+nonlinear solves converged. The saturated default provider uses C=dt*1e-7
+per cm and the indicator divides an M norm by sqrt(min(C*dz)). A positive
+finite saturated specific storage is a separate physical model, not a
+tolerance change. Test Ss=1e-5 /m (1e-7 /cm), equal to the lower confined
+layer, using the existing provider elasticity option. SWAP retains its
+own saturated compression above -6 m; MODFLOW retains it below -6 m.
+The original zero-elasticity model remains failed. No fitted Ss sweep.
+Panel dt=1e-4,1e-3,1e-2 d with unchanged temporal and mass gates.
+If unsuccessful, persist the failure without bypassing the temporal gate.
