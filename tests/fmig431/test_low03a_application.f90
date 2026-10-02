@@ -35,7 +35,7 @@ program test_low03a_application
   integer(int64) :: context_handle
   real(real64) :: conductivity0,haq_eq,rimlay
   integer :: status,j
-  logical :: ok
+  logical :: ok, app_transaction_ok
 
   rimlay=10.0_real64
   call initialize_application_config(cfg,-75.0_real64,conductivity0)
@@ -64,12 +64,8 @@ program test_low03a_application
   write(*,'(a,1x,l1,1x,es24.16,1x,es24.16,1x,es24.16,1x,es24.16,1x,es24.16,1x,i0)') 'LOW03A_MASS_DIAG', &
        result(1)%mass%complete,result(1)%mass%storage_start,result(1)%mass%storage_end,result(1)%mass%total_in, &
        result(1)%mass%total_out,result(1)%mass%residual,result(1)%mass%accepted_transaction_count
-  call require(status==FMR_APP_BOOT_OK .and. result(1)%completed .and. result(1)%committed,'ordinary Cauchy transaction')
-  call require(abs(result(1)%mass%residual)<=HARD_MASS_GATE,'whole-profile mass closure')
-  call require(result(1)%mass%complete,'mass accounting complete')
+  app_transaction_ok = status==FMR_APP_BOOT_OK .and. result(1)%completed .and. result(1)%committed
   call app%close(status)
-  print '(a)', 'LOW03A_ORDINARY_APPLICATION_MASS=PASS'
-  print '(a)', 'LOW03A_GROUNDWATER_OWNER_SEPARATION=PASS'
 
   columns(1)%column_id=cfg%tiles(1)%tile_id
   columns(1)%template_id=cfg%tiles(1)%template%template_id
@@ -84,8 +80,19 @@ program test_low03a_application
   call require(ok,'checkpoint')
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,trial,candidate,diag)
-  call require(trial%completed .and. candidate%ready(),'backend trial')
   obs=backend%observation()
+  write(*,'(a,1x,i0,1x,l1,1x,i0,1x,i0,1x,i0,1x,i0,1x,i0)') 'LOW03A_DIRECT_DIAG', &
+       trial%status,trial%completed,diag%attempts,diag%retries,diag%solver_rejections,diag%mass_rejections, &
+       diag%temporal_rejections
+  write(*,'(a,1x,l1,1x,es24.16,1x,es24.16,1x,es24.16,1x,es24.16)') 'LOW03A_OBS_DIAG', &
+       obs%cauchy3_proposal_available,obs%cauchy3_proposed_t0,obs%cauchy3_proposed_t1, &
+       obs%cauchy3_aquifer_head_cm,obs%cauchy3_q4_cm_per_day
+  call require(app_transaction_ok,'ordinary Cauchy transaction')
+  call require(abs(result(1)%mass%residual)<=HARD_MASS_GATE,'whole-profile mass closure')
+  call require(result(1)%mass%complete,'mass accounting complete')
+  call require(trial%completed .and. candidate%ready(),'backend trial')
+  print '(a)', 'LOW03A_ORDINARY_APPLICATION_MASS=PASS'
+  print '(a)', 'LOW03A_GROUNDWATER_OWNER_SEPARATION=PASS'
   call require(obs%cauchy3_proposal_available,'proposal observation')
   call require(same_bits(obs%cauchy3_proposed_t0,T0) .and. same_bits(obs%cauchy3_proposed_t1,T1), &
        'proposal interval observation')
