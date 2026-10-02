@@ -65,7 +65,13 @@ def analyze(build,previous,source,canonical,new_kernel=False):
     assert len(saturated)==18 and all(r['complete'] and r['analytic'][1]<=1e-9 and r['analytic'][2]<=1e-10 for r in saturated)
     result=dict(schema='swap5.top03.stateful_contact.v1',source_postimage=source,canonical_inspected=canonical,production_code_changed=False,production_admission=False,cases_per_build=len(raw),O0_O2_raw_records_exact=x==y,raw_sha256=hashlib.sha256(x).hexdigest(),inherited_trajectories_exact=unchanged,saturated_controls=18,new_trajectories=len(dynamic),new_trajectories_completed=sum(r['complete'] for r in dynamic),stopped_trajectories=[dict(case=r['case'],stop=r['stop']) for r in dynamic if not r['complete']],max_soil_layer_mass_error_cm=max(abs(e['mass']) for r in rows.values() for e in r['events'].values()),physical_verdict_counts=dict(collections.Counter(str(c['physical_equivalence']) for c in comparisons)),comparisons=comparisons,independent_profile_audits=profiles,lifecycle_cases=lifecycles,scope='Time-discrete distributed storage reduction matching pinned SWKIMPL=0 explicit layer. Component candidate/restart gates only; no production receipt/runtime/restart admission.')
 
-    if new_kernel:result.update(current_kernel_reference_trajectories=54,changed_reference_trajectories=54-unchanged,qualification_inherited=False)
+    if new_kernel:
+        manifest=json.loads((build/'overlay_manifest.json').read_text())
+        assert manifest['canonical_source']==canonical
+        result.update(current_kernel_reference_trajectories=54,changed_reference_trajectories=54-unchanged,qualification_inherited=False,
+                      production_code_changed=manifest['production_source_changed'],
+                      canonical_branch_changed=False,prospective_patch=manifest.get('candidate_patch'),
+                      research_overlay=manifest['research_overlay'],canonical_admission=False)
     return result
 
 def main():

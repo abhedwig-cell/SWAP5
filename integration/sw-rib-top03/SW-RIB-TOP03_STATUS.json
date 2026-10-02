@@ -627,5 +627,25 @@
     "result": "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_RESULT.json",
     "decision": "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_DECISION.md",
     "evidence": "integration/sw-rib-top03/evidence/stateful_contact/raw_records.tar.gz"
+  },
+  "canonical_contact_reconciliation": {
+    "canonical_inspected": "cd03d041f967f1bedc8d1a68d0ed17c71988d50d",
+    "source_postimage": "061f79bca6d2b1cbe214c70863303cf49644ea1a",
+    "vanilla_compile": "FAIL: missing external_surface_head_imposed",
+    "prospective_patch_component_qualified": true,
+    "canonical_admission": false,
+    "canonical_branch_changed": false,
+    "component_cases_per_build": 120,
+    "O0_O2_raw_records_exact": true,
+    "physical_verdicts": {
+      "passed": 15,
+      "failed": 0,
+      "unready": 9
+    },
+    "preservation_suite_qualified": false,
+    "decision": "integration/sw-rib-top03/TOP03_CANONICAL_CONTACT_DECISION.md",
+    "result": "integration/sw-rib-top03/TOP03_CANONICAL_CONTACT_RESULT.json",
+    "ownership_contract": "integration/sw-rib-top03/TOP03_NATIVE_PROFILE_INTEGRATION_CONTRACT.md",
+    "evidence": "integration/sw-rib-top03/evidence/canonical_contact/raw_records.tar.gz"
   }
 }

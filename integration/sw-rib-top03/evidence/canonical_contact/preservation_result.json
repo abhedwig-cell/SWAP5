@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.top03.canonical_preservation.v1",
+  "canonical": "cd03d041f967f1bedc8d1a68d0ed17c71988d50d",
+  "prospective_patch_admitted": false,
+  "LOW08": {
+    "O0_first_three_pass_both": true,
+    "fourth_test": "test_ppa_low02_time_application_admission",
+    "failure_both": "SIGSEGV in fmr_serialized_storage",
+    "O2_reached": false,
+    "suite_qualified": false
+  },
+  "TIMEINT12_derivative": {
+    "optimization": "O2",
+    "points": 608,
+    "passed": true
+  },
+  "TIMEINT12A": {
+    "optimization": "O2",
+    "numerical_records_equal_to_unpatched_canonical": true,
+    "runner_characterization_pass": true,
+    "physical_summary": {
+      "advance": false,
+      "cases": 12,
+      "complete": 6,
+      "ledger_ok": true,
+      "max_work_ratio": 1.6683673469387754,
+      "median_work_ratio": 1.3196779540610941,
+      "pond_ok": false
+    },
+    "full_physical_completion": false
+  }
+}
