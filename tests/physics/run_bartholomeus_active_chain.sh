@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 FC="${FC:-gfortran}"; B="${TMPDIR:-/tmp}/c3a_active"; rm -rf "$B";mkdir -p "$B"
-F=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -J"$B" -I"$B")
+F=("-${C3A_OPT:-O0}" -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -J"$B" -I"$B")
 cat > "$B/mod_transaction_reference.f90" <<'EOF'
 module mod_transaction_reference
  implicit none

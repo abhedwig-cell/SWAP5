@@ -71,7 +71,8 @@ module mod_fmr_serialized_reference_backend
   use mod_soil_temperature_contract, only: soil_temperature_at_node, soil_temperature_field_view_t, &
        build_soil_temperature_field_view
   use mod_crop_bartholomeus_input, only: crop_bartholomeus_input_t, valid_crop_bartholomeus_input
-  use mod_fmr_bartholomeus_contract, only: fmr_bartholomeus_parameters_t, valid_fmr_bartholomeus_parameters
+  use mod_fmr_bartholomeus_contract, only: fmr_bartholomeus_parameters_t, valid_fmr_bartholomeus_parameters, &
+       matches_bartholomeus_hydraulic_owner
   use mod_fmr_bartholomeus_activation, only: select_fmr_bartholomeus_route, FMR_BARTHOLOMEUS_ACTIVE, &
        FMR_BARTHOLOMEUS_DISABLED
   use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
@@ -1865,6 +1866,7 @@ contains
                .not.parameters%macropore_active .and. .not.parameters%snow_active .and. &
                .not.parameters%drainage_response_active .and. .not.self%fixed_weir_surface_water_active
           ok=ok .and. parameters%bartholomeus%soil%initial_hysteresis_branch==0
+          ok=ok .and. matches_bartholomeus_hydraulic_owner(parameters%bartholomeus,parameters%cofgen,parameters%dz)
         end if
       end if
     class default

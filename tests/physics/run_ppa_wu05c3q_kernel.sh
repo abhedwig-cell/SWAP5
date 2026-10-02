@@ -17,5 +17,6 @@ FLAGS=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -ffree-line-length-none)
 "$B/macro"
 "$FC" "${FLAGS[@]}" src/physics/oxygen/mod_oxygen_scalar_bracket.f90 tests/physics/test_oxygen_scalar_bracket.f90 -o "$B/bracket"
 "$B/bracket"
-"$FC" "${FLAGS[@]}" src/process/mod_bartholomeus_root_uptake_composition.f90 tests/physics/test_bartholomeus_root_uptake_composition.f90 -o "$B/compose"
-"$B/compose"
+# C3P is the single production composition authority; retain the C3Q gate label.
+bash tests/physics/run_root_uptake_oxygen_composition.sh
+echo 'PPA_WU05C3Q_ROOT_COMPOSITION=PASS'

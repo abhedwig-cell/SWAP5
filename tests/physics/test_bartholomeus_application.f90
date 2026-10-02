@@ -43,6 +43,7 @@ program test_bartholomeus_application
   call offapp%initialize(off,status)
   call require(status==FMR_APP_BOOT_OK,'OFF application admission')
   call app%run_standalone(T0,T1,a,status)
+  if(status/=FMR_APP_BOOT_OK) print *, 'APP_REJECT status/kernel=',status,a(1)%kernel_status
   call require(status==FMR_APP_BOOT_OK .and. a(1)%committed,'active application commits')
   call require(abs(a(1)%mass%residual)<=HARD_MASS_GATE,'active hard unrounded water balance')
   call offapp%run_standalone(T0,T1,b,status)
@@ -79,6 +80,13 @@ program test_bartholomeus_application
   call require(replay%completed .and. .not.obs%bartholomeus_executed,'OFF after active resets')
   call require(same_bits(replay%mass%total_out,b(1)%mass%total_out),'OFF application exact preservation')
   call backend%discard_trial_candidate(other,diag2)
+  bad=off
+  deallocate(bad%tiles(1)%parameters%bartholomeus,bad%tiles(1)%base_forcing%crop_oxygen)
+  call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
+       bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2)
+  call require(replay%completed .and. same_bits(replay%mass%total_out,b(1)%mass%total_out), &
+       'OFF bit-identical to pre-existing backend with no oxygen carrier')
+  call backend%discard_trial_candidate(other,diag2)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,replay,candidate,diag)
   call require(replay%completed .and. same_bits(replay%mass%total_out,first%mass%total_out),'A/B/A exact replay')
@@ -102,7 +110,22 @@ program test_bartholomeus_application
        same_bits(continuation%mass%storage_end,restart%mass%storage_end),'restart exact identity')
   print '(a)','C3A_ACTUAL_CALL_NONROOTED_SINGLE_SINK_ABA_RESTART=PASS'
 
-  do i=1,5
+  do i=1,2
+    bad=cfg
+    bad%tiles(1)%base_forcing%root_extraction_sink(1:3)=0.0_real64
+    if(i==1) bad%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3=[real(real64)::]
+    call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
+         bad%tiles(1)%base_forcing,bad%numerical,T1,T1+1.0e-5_real64,cp,first,candidate,diag)
+    obs=backend%observation()
+    call require(first%completed .and. obs%bartholomeus_executed,'active no-roots/zero-demand trial')
+    call require(all(abs(obs%root_oxygen_final_sink-bad%tiles(1)%base_forcing%root_extraction_sink)<=0), &
+         'no roots/zero demand preserve supplied sink')
+    call require(abs(first%mass%residual)<=HARD_MASS_GATE,'no roots/zero demand single owner mass')
+    call backend%discard_trial_candidate(candidate,diag)
+  end do
+  print '(a)','C3A_ACTUAL_APPLICATION_NO_ROOTS_ZERO_DEMAND=PASS'
+
+  do i=1,7
     bad=cfg
     select case(i)
     case(1)
@@ -115,6 +138,10 @@ program test_bartholomeus_application
       bad%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3(1)=ieee_value(k,ieee_quiet_nan)
     case(5)
       bad%tiles(1)%parameters%bartholomeus%specific_root_length_m_kg=0
+    case(6)
+      bad%tiles(1)%parameters%bartholomeus%soil%soil(1)%depth_m=1.0_real64
+    case(7)
+      bad%tiles(1)%parameters%bartholomeus%soil%soil(1)%waterfilm_gen_n=3.0_real64
     end select
     call badapp%initialize(bad,status)
     if(status==FMR_APP_BOOT_OK) then
@@ -141,6 +168,7 @@ contains
     value%tiles(1)%ledger_id=0_int64
     value%tiles(1)%parameters%root_extraction_active=.true.
     value%tiles(1)%parameters%soil_temperature_active=.true.
+    value%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
     allocate(value%tiles(1)%parameters%soil_temperature,value%tiles(1)%initial_state%soil_temperature, &
          value%tiles(1)%base_forcing%soil_temperature,value%tiles(1)%parameters%bartholomeus, &
          value%tiles(1)%base_forcing%crop_oxygen)

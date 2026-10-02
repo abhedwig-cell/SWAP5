@@ -18,7 +18,25 @@
       "application": "not_migrated",
       "groundwater_relation": "direct_gwl_state_semantics",
       "classification": "PRESERVED_NOT_TYPED_AS_LEGACY_MODE",
-      "risk": "high_state_machine"
+      "risk": "high_state_machine",
+      "shared_prerequisite": {
+        "work_unit": "F-MIG431-LOWGWL01-P0",
+        "status": "PARKED_BY_USER_DECISION",
+        "production_admitted": false,
+        "authority": "docs/migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md"
+      },
+      "migration_disposition": {
+        "date": "2026-10-02",
+        "state": "PARKED_BY_USER_DECISION",
+        "authority": "Explicit user instruction: Dit is een vreemde optie. Laten we deze parkeren.",
+        "meaning": "Defer SWBOTB1 migration and its shared prerequisite; not migrated, not admitted, not removed or scientifically falsified.",
+        "resume_condition": "Explicit central reprioritization or user instruction",
+        "next_active_selector": 3,
+        "active_sequence": [
+          3,
+          8
+        ]
+      }
     },
     {
       "selector": "2",
@@ -244,8 +262,9 @@
     {
       "id": "PPA-LOW01",
       "priority": 5,
-      "status": "NOT_IMPLEMENTED",
-      "meaning": "prescribed-groundwater-level hybrid boundary/state machine"
+      "status": "PARKED_BY_USER_DECISION",
+      "meaning": "prescribed-groundwater-level hybrid boundary/state machine",
+      "prerequisite": "F-MIG431-LOWGWL01-P0"
     },
     {
       "id": "PPA-LOW03",
@@ -298,5 +317,12 @@
     "qualification_run": 36964835178,
     "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
     "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
-  }
+  },
+  "lower_boundary_active_sequence": [
+    3,
+    8
+  ],
+  "parked_selectors": [
+    1
+  ]
 }

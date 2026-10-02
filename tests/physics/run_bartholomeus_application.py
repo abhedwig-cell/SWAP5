@@ -43,8 +43,10 @@ with tempfile.TemporaryDirectory(prefix='c3a-application-') as folder:
    p=ROOT/test;obj=build/(p.stem+'.o');exe=build/p.stem
    subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,stdout=subprocess.DEVNULL)
    subprocess.run(FC+LINK+flags+objects+[str(obj),'-o',str(exe)],check=True,stdout=subprocess.DEVNULL)
-   output=subprocess.check_output([str(exe)],text=True,stderr=subprocess.STDOUT)
+   completed=subprocess.run([str(exe)],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+   output=completed.stdout
    print(output,flush=True)
+   completed.check_returncode()
    if 'PPA_WU05C3A_APPLICATION_CHAIN=PASS' not in output:raise RuntimeError('missing actual application marker')
    result['runs'][opt][test]=output.splitlines()
 result['status']='LOCAL_APPLICATION_GATES_PASS'
