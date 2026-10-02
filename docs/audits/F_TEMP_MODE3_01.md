@@ -42,3 +42,9 @@ Add bottom_mode=3 to the modes admitted to the existing physical temporal-error 
 4. Q4B Stage A remains exact-only; approximate A28_V1 is not run until an executable threshold-crossing exact fixture is frozen.
 
 No canonical admission is claimed by this record.
+
+## Repair qualification
+
+Post-repair bounded decomposition run 37077818300 passes for B01 and O05, BASE and exact-RFM layouts. All four one-step mode-3 cases complete in one attempt with zero temporal, solver, admission or mass rejections. BASE and RFM have identical nonlinear/backtracking counts per soil and identical mass residuals (B01 3.5666e-15 cm; O05 1.0057e-15 cm).
+
+This qualifies the bounded repair behavior only. Broader regression/canonical admission remains separate.
