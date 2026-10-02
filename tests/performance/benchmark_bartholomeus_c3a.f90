@@ -50,14 +50,14 @@ contains
       d%soil(j)%percent_org_mat=.02_real64
       d%soil(j)%percent_sand=.6_real64
       d%soil(j)%soil_density=1300._real64
-      d%soil(j)%diffusivity%gas_porosity_at_reference=.1_real64
-      d%soil(j)%diffusivity%reference_diffusivity=1.e-6_real64
-      d%soil(j)%waterfilm_gen_alpha_per_cm=.0135_real64
+      d%soil(j)%diffusivity%gfp100=.1_real64
+      d%soil(j)%diffusivity%term1=2._real64*.1_real64**3+.04_real64*.1_real64
+      d%soil(j)%diffusivity%exponent=3._real64
+      d%soil(j)%waterfilm_capac_term=.001_real64
+      d%soil(j)%waterfilm_n_minus_1=.455_real64
+      d%soil(j)%waterfilm_m_plus_1=1.687_real64
+      d%soil(j)%waterfilm_alpha_per_pa=.000135_real64
       d%soil(j)%waterfilm_gen_n=1.455_real64
-      d%soil(j)%waterfilm_theta_r=.032_real64
-      d%soil(j)%waterfilm_theta_s=.423_real64
-      d%soil(j)%waterfilm_reference_head_cm=-100._real64
-      d%soil(j)%waterfilm_reference_content=.30_real64
     end do
     c%c_mroot=1.e-5_real64;c%f_senes=1;c%q10_root=2
     c%specific_resp_humus=1.e-6_real64;c%q10_microbial=2
