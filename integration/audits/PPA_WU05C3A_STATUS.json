@@ -1,8 +1,8 @@
 {
   "work_unit": "PPA-WU05-C3A",
   "baseline": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
-  "checkpoint_commit": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
-  "last_reconciled_head": "5f28db3e5997d30aeb619e6815c447b56c9eceff",
+  "checkpoint_commit": "6d3d47e1fe46a5ce0402f76b64289717c068207b",
+  "last_reconciled_head": "6d3d47e1fe46a5ce0402f76b64289717c068207b",
   "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
   "implemented": true,
   "persisted": true,
@@ -45,5 +45,33 @@
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "src/runtime/mod_fmr_root_uptake_process_binding.f90"
   ],
-  "canonical_admission_owner": "central SWAP5 regie"
+  "canonical_admission_owner": "central SWAP5 regie",
+  "tested_postimage": "6d3d47e1fe46a5ce0402f76b64289717c068207b",
+  "local_gate_execution": {
+    "compiler": "GNU Fortran 13.3.0",
+    "date": "2026-10-02",
+    "all_exit_codes": 0,
+    "markers": [
+      "PPA_WU05C3A_ACTIVE_CHAIN=PASS",
+      "PPA_WU05C3A_DYNAMIC_RUNTIME_BOUNDARIES=PASS",
+      "PPA_WU05C3A_ADMISSION_BOUNDARIES=PASS",
+      "PPA_WU05C3A_PRODUCTION_PRESERVATION_GATE=PASS",
+      "PPA_WU05C3P_ROOT_OXYGEN_COMPOSITION=PASS",
+      "PPA_WU05C3P_ACTIVATION=PASS",
+      "PPA_WU05C3Q_KERNEL_SMOKE=PASS",
+      "PPA_WU05C3R_MACRO_ZERO_DEPTH_CHECKS=27",
+      "PPA_WU05C3R_MACRO_ZERO_DEPTH=PASS",
+      "PPA_WU05C3R_SCALAR_BRACKET=PASS",
+      "PPA_WU05C3Q_ROOT_COMPOSITION=PASS"
+    ]
+  },
+  "canonical_comparison": {
+    "head": "6d3d47e1fe46a5ce0402f76b64289717c068207b",
+    "canonical": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+    "ahead_by": 149,
+    "behind_by": 204,
+    "files": 75,
+    "existing_canonical_files_modified": 0,
+    "application_caller_added": false
+  }
 }

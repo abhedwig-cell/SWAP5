@@ -91,6 +91,10 @@ Quality governance sections 5-6 require returning this shared decision to centra
 
 ## Executed preservation and status
 
+Executed persisted postimage: 6d3d47e1fe46a5ce0402f76b64289717c068207b.
+Connector readback confirmed exact content identity for both commented source
+files, this audit and the status checkpoint before the final rerun.
+
 The existing narrow runtime, active-chain, admission-boundary, C3A preservation,
 C3P composition/activation and C3Q kernel gates were rerun locally with GNU
 Fortran 13.3.0. Their executed markers and exit codes are recorded in the status
@@ -99,3 +103,9 @@ checkpoint. No GitHub Actions were requested for this read-only producer audit.
 Only explanatory source comments were added. There is no new physics route,
 crop state, sink booking or application caller. PR #962 remains draft; canonical
 admission and post-merge preservation are not claimed.
+
+The exact GitHub comparison reports 149 commits ahead / 204 behind, 75 added
+files and no existing canonical file changed. This independently confirms that
+the candidate does not yet modify an existing application caller. It also
+requires canonical reconciliation before admission, even after the shared input
+decision is resolved. PR #962 was checked open/draft with this tested head.
