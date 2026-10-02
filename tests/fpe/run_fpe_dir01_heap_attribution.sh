@@ -161,6 +161,8 @@ SRC=(
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${SRC[@]}")
 
 objects=()
 for source in "${SRC[@]}"; do

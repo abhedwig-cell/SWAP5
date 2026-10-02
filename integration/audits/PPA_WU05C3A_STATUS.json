@@ -2,18 +2,20 @@
   "work_unit": "PPA-WU05-C3A",
   "baseline": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
   "checkpoint_commit": "39dd9ea44d1e27abfc799e63338a8d07edf71308",
-  "last_reconciled_head": "39dd9ea44d1e27abfc799e63338a8d07edf71308",
-  "last_reconciled_upstream": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
+  "last_reconciled_head": "7098a0535e58b5ea2ab269b56d5ea537dcabca48",
+  "last_reconciled_upstream": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "focused_repair_qualified": true,
-  "status": "APPLICATION_IMPLEMENTED_LOCAL_EXPERIMENTS_PASS_PERSISTED_REPLAY_PENDING",
+  "status": "OXYGEN_QUALIFICATION_PASS_BACKEND_BUILD_REPAIR_PERSISTED_PRESERVATION_PENDING",
   "canonical_admitted": false,
   "recovery_point": "docs/audits/PPA_WU05C3A_SHARED_INTEGRATION_CONTRACT.md",
-  "next_action": "Replay persisted actual application O0/O2, unchanged B1.11 complete-source oracle, narrow C3Q/C3P and six canonical lower-boundary/application programs; qualification then canonical admission.",
-  "blockers": [],
+  "next_action": "Replay affected backend runtime/application gates on this persisted build-only repair; inspect qualification logs/artifacts from successful run36968761028; reconcile current canonical before admission.",
+  "blockers": [
+    "Broader runtime preservation and latest canonical reconciliation remain pending."
+  ],
   "authority_paths": [
     "docs/development/quality-governance-a-aa.md",
     "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
@@ -62,5 +64,20 @@
     "src/runtime/mod_fmr_bartholomeus_contract.f90",
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "src/runtime/mod_fmr_production_application_bootstrap.f90"
-  ]
+  ],
+  "oxygen_qualification": {
+    "run": 36968761028,
+    "postimage": "7098a0535e58b5ea2ab269b56d5ea537dcabca48",
+    "conclusion": "success",
+    "scope": "Declared oxygen admission workflow only; broader CI not implied."
+  },
+  "build_repair": {
+    "surface": "160 compile manifests add one dependency helper call; original content identity verified after stripping inserted comment/call.",
+    "production_source_changed": false,
+    "local_precheckpoint_compile": "FKT22 O0/O2 PASS; persisted replay pending",
+    "negative_findings": [
+      "Recovered fixed dependency list compiled waterfilm provider before runtime view.",
+      "Fixed list omitted existing PERCH19 backend prerequisite."
+    ]
+  }
 }

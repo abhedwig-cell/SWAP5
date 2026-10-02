@@ -161,6 +161,8 @@ MODULE_SRC=(
  src/runtime/mod_fmr_committed_restart.f90
  tests/fmr/mod_fmr04_fixed_top_provider.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 for opt in 0 2; do
  OUT="$BUILD/o$opt"; objects=()
  for src in "${MODULE_SRC[@]}"; do
