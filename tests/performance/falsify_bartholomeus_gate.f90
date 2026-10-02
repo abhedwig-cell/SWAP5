@@ -28,7 +28,7 @@ program falsify_bartholomeus_gate
   if(.not.ok)error stop 'reference'
   total=total+1;minfac=minval(fac)
   if(minfac>=1._real64-1.e-14_real64)nostress=nostress+1
-  if(bartholomeus_macro_supply_bound_no_stress(v,d,c,w0,top))then
+  if(bartholomeus_macro_supply_bound_no_stress(v,d,c,wr,w0,top))then
    skips=skips+1;if(minfac<1._real64-1.e-14_real64)false_skips=false_skips+1
   endif
   gfpmin=minval(d%soil(:)%saturated_water_content-v%water_content)
