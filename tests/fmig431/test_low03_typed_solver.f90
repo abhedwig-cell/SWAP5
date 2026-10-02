@@ -31,6 +31,7 @@ program test_low03_typed_solver
   real(real64), target :: drainage(1,n), irrigation(n), roots(n)
   integer :: i,j,flag,ir,ie,count
   real(real64) :: aq,resistance,extra,expected,storage_residual,heads_saved(n),theta_saved(n),conductance
+  real(real64) :: face_flux(n+1),cell_amount(n)
   real(real64), parameter :: resistances(3)=[0._real64,10._real64,100._real64]
   type(soil_water_solve_result_t) :: replay,head5,failed
   type(reference_richards_legacy_workspace_t) :: clean,ws5
@@ -126,6 +127,20 @@ program test_low03_typed_solver
       print *,storage_residual,result%integrated_mass_balance_residual_cm
       error stop 'independent whole-column mass identity'
     end if
+    ! Independent finite-volume reconstruction; no solver residual or
+    ! head-gradient workspace is used as the mass oracle. Kmean is the
+    ! frozen conductivity actually used by the declared SWKIMPL0 solve.
+    face_flux(1)=result%top_flux
+    face_flux(n+1)=expected
+    do i=2,n
+      face_flux(i)=-ws%state_binding%kmean(i)*( &
+        (result%candidate_state%pressure_head(i-1)-result%candidate_state%pressure_head(i))/ &
+        p%node_distance(i)+1._real64)
+    end do
+    cell_amount=(result%candidate_state%water_content-theta_saved)*p%dz &
+      -request%step_duration*(face_flux(2:n+1)-face_flux(1:n))
+    if(maxval(abs(cell_amount))>1.e-12_real64)error stop 'independent compartment mass identity'
+    if(abs(sum(cell_amount)-storage_residual)>1.e-12_real64)error stop 'compartment sum identity'
     if(any(request%base_state%pressure_head/=heads_saved).or. &
        any(request%base_state%water_content/=theta_saved))error stop 'base state mutated'
     call solver%solve(request,clean,replay)
@@ -150,6 +165,7 @@ program test_low03_typed_solver
   end do
   end do
   print '(a,i0)', 'LOW03_TYPED_PHYSICAL_MASS_REPLAY_ZERO_R=PASS cases=',count
+  print '(a)', 'LOW03_TYPED_INDEPENDENT_COMPARTMENT_MASS=PASS'
   request%boundary%bottom_mode=3
   request%boundary%bottom_head=-90._real64
   request%boundary%bottom_flux=0._real64
