@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "canonical_head": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+  "runs": [
+    {
+      "code_sha": "aa31ae45f2fffabaee5f2d869f4eb7b71557de8f",
+      "exit_code": 1,
+      "dependency_sha256": {
+        "research/rfm/a27/probe_lateral_profile.py": "f4ea7b6e6ce7e31f6a761edb2545b5d2ecbcb196a3a79763646f3ac43a066259",
+        "docs/audits/PPA_WU05A27_LATERAL_PROFILE_CONTRACT.md": "a03bb9c3c64c7d3223ccfb5e30c27a706f97c6166bc864f4594269418993afa8"
+      }
+    },
+    {
+      "code_sha": "a1abfe0e058fe9baf12f48ca14a8ee0b006cde86",
+      "exit_code": 0,
+      "dependency_sha256": {
+        "research/rfm/a27/probe_lateral_profile.py": "aa312f0db7e3dede2d4465c25484eb14cb3eb282d9a3da7f32218d5b1940767a",
+        "docs/audits/PPA_WU05A27_LATERAL_PROFILE_CONTRACT.md": "a03bb9c3c64c7d3223ccfb5e30c27a706f97c6166bc864f4594269418993afa8"
+      }
+    }
+  ],
+  "initial_final_numerical_csv_identity": {
+    "lateral_profiles.csv": true,
+    "lateral_comparison.csv": true,
+    "lateral_trajectories.csv": true,
+    "lateral_tight_trajectories.csv": true,
+    "lateral_solver_counters.csv": true,
+    "lateral_reference_refinement.csv": true
+  },
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "archive_sha256": "d2295673e53e44d3aeb757743322f421ba14957f75ee73b549cc36aff6cca476",
+  "archive_bytes": 227408,
+  "parts": [
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-000",
+      "bytes": 16000,
+      "sha256": "fb4d103033a19c9f711ce6603e29cfbefc2d47440fd238b9a690a675806c3ebf"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-001",
+      "bytes": 16000,
+      "sha256": "c67ab76891a151f9e9e4d7ac718974f0bea02bb9384776cb1e96b7e66f48d078"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-002",
+      "bytes": 16000,
+      "sha256": "0d36d88fbe71330044550133bfd683ddb90c96667cd0db613b6d880eb67a2809"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-003",
+      "bytes": 16000,
+      "sha256": "6c722abcbbaa146010e1c04f66628aa880c6f4447301872903fbffdab19d4328"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-004",
+      "bytes": 16000,
+      "sha256": "c3fdbd718e61feea8fe67f9192f35c9a44b0afb6af101043f7ed673a9e1d9092"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-005",
+      "bytes": 16000,
+      "sha256": "c21845a52d4e80423201f7730b3737a1809beec4bd2e5775104b0ae1fa152aea"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-006",
+      "bytes": 16000,
+      "sha256": "3fbc5c869caf1c2b125c1d84b4c167c26389b46a28176ca2ddf0e6124fea4bd4"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-007",
+      "bytes": 16000,
+      "sha256": "9970e734161322918c4e4fd13e7df545e00035a9817f1fa22fc195ec8435008b"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-008",
+      "bytes": 16000,
+      "sha256": "6429155cb77810e9693fc3772acf533e3ed0d1b584aefa0335bf532c84ff7672"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-009",
+      "bytes": 16000,
+      "sha256": "b97cdde64311c79906e2eade2bb127f3875b0437b4a9c8cb962bbc6e71af1096"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-010",
+      "bytes": 16000,
+      "sha256": "5ba9c2ecaadde852008244bdd42273fd88a8e285434c53bf22fbe28c0b0b2852"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-011",
+      "bytes": 16000,
+      "sha256": "572e61f6f386badcc841818a5af09e479278679fb41f43102093336bfe8a2398"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-012",
+      "bytes": 16000,
+      "sha256": "44253c7c13c1fd12005a707d456450a93527ff15224f8ca645a116c1ca7af450"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-013",
+      "bytes": 16000,
+      "sha256": "7552bbbbed6f757a99a0a1697edf842c2d2d76f6236e3f053d333eb0b4ba1553"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-014",
+      "bytes": 3408,
+      "sha256": "34982a2ab85f26d9491a559cda0b114dc1e65b38e6704fa3d4519cebbb6a5a2b"
+    }
+  ],
+  "files": {
+    "lateral_comparison.csv": {
+      "bytes": 78814,
+      "sha256": "d19e0f536b39184d43a8f253fedd7a729293fdf665c210c4899419aea0cff169"
+    },
+    "lateral_profiles.csv": {
+      "bytes": 475139,
+      "sha256": "5d5ebdbd6a4a908140db713dcd975d5a1f9300005751bf0045139989712f3c6c"
+    },
+    "lateral_reference_refinement.csv": {
+      "bytes": 47862,
+      "sha256": "7991c7bc78838a7b2d03fedc8b3138095fb8e2e7256087efdd0ab6137d255f8f"
+    },
+    "lateral_solver_counters.csv": {
+      "bytes": 9471,
+      "sha256": "e15edc69a24eb1578f90ba53681e45a941ea639526ca4bc1666ee5ee60481710"
+    },
+    "lateral_summary.json": {
+      "bytes": 7724,
+      "sha256": "ed083a10a52bb5c6aaf1ab1284bb693649575ffd81461790633920593a941542"
+    },
+    "lateral_tight_trajectories.csv": {
+      "bytes": 34476,
+      "sha256": "8b0ac1a1b4ef14980081d42563ca621ed30216cdf1933fb3170cc92de4230c11"
+    },
+    "lateral_trajectories.csv": {
+      "bytes": 273827,
+      "sha256": "ea224fd9a3753317c2230822de26268ab79ec3e2272e7a2409190fb7bf7811b6"
+    },
+    "a27-lateral-profile-initial.log": {
+      "bytes": 1800,
+      "sha256": "3734b125be9e27fb245d35c534d7bd7331598e2af10665c36b2aad7996af2748"
+    },
+    "a27-lateral-profile-final.log": {
+      "bytes": 7930,
+      "sha256": "1dcf3e62e982475fe4b8238deba8445290359424c2bc8ef60a943fc80c1ae312"
+    }
+  },
+  "production_qualified": false,
+  "canonical_admitted": false
+}
