@@ -9,7 +9,7 @@ for line in lines:
     if line.startswith(("Q4EXACT,","Q4APPROX,")):
         vals=line.split(",")
         rows.append(dict(zip(header,vals)))
-def key(r):return (r["soil"],r["geom"],r["regime"])
+def key(r):return (r["soil"],r["geom"],r["history"])
 exact={key(r):r for r in rows if r["Q4"]=="Q4EXACT"}
 approx={key(r):r for r in rows if r["Q4"]=="Q4APPROX"}
 if set(exact)!=set(approx):raise SystemExit("case key mismatch")
