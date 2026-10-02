@@ -1,0 +1,26 @@
+name: PPA-WU05-A27 current-canonical ABC crash diagnostic
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ABC with unbuffered Fortran output
+        env:
+          GFORTRAN_UNBUFFERED_ALL: "1"
+        run: |
+          mkdir -p /tmp/a27-crash
+          set +e
+          bash research/rfm/a27/run_production_abc01.sh /tmp/a27-crash
+          rc=$?
+          echo "ABC_DIAGNOSTIC_RC=$rc"
+          tail -n 30 /tmp/a27-crash/abc_o0.txt || true
+          exit 0
+      - name: Upload crash evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a27-canonical-crash
+          path: /tmp/a27-crash
