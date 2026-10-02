@@ -1135,16 +1135,17 @@ subroutine vector_F(iTask)
          state%qbot = -1.0d0 * state%kmean(numnod+1)
          fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
       
-      else if (swbotb == 8) then                                  
-         
-         ! lysimeter option
+      else if (swbotb == 8) then
+
+         ! lysimeter option; flboth was selected once from solve-entry state
          if (flboth) then
-            state%hbot = hplate
-            fsi_ws%residual(NN) = fsi_ws%residual(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1)
+            state%hbot = lysimeter_plate_head
+            state%qbot = -state%kmean(NN+1) * fsi_ws%head_gradient(NN+1)
+            fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
          else
             state%qbot = 0.0d0
          end if
-      
+
       else
          
           ! flux bottom boundary
