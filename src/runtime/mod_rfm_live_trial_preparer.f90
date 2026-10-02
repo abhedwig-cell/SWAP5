@@ -19,7 +19,6 @@ module mod_rfm_live_trial_preparer
       compose_rfm_production_candidate
  implicit none
  private
- public::rfm_surface_hydraulic_memo_t
  type,public::rfm_live_trial_prepare_result_t
   logical::valid=.false.
   type(rfm_surface_event_age_result_t)::event_age
