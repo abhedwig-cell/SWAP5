@@ -64,6 +64,8 @@ def main():
     if "6.8.0" not in version:
         raise ValueError("preregistered MODFLOW6 6.8.0 required")
     import flopy
+    if flopy.__version__ != "3.9.5":
+        raise ValueError(f"preregistered FloPy 3.9.5 required, got {flopy.__version__}")
     a.output.mkdir(parents=True, exist_ok=True)
     rows=[]
     for k in [.1,.25,.5,1.,2.]:

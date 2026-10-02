@@ -72,10 +72,10 @@
     "coupled_run": false,
     "hupsel_run": false,
     "production_delta": [],
-    "qualification": "independent_oracle_reproduced_locally; native_MODFLOW6_AB_pending",
+    "qualification": "independent_oracle_local_replay_pass; native_MODFLOW6_AB_workflow_registered_not_run",
     "canonical_admission": false
   },
-  "next_permitted_action": "Execute tests/fgc/strip01/run_standalone.py against MODFLOW6 6.8.0 and FloPy 3.9.5, preserve all generated inputs/logs, and adjudicate the frozen profile, budget, mesh and drain-down gates. Then complete soil/forcing retrieval and resolve regional physical storage/drainage ownership before the coupled stage.",
+  "next_permitted_action": "Execute the registered standalone A/B workflow through an authorized GitHub Actions route. If it fails, inspect model inputs and native package budgets against the frozen oracle; repair only when physically justified. After A/B passes, proceed to the coupled ownership/data gates.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -110,5 +110,13 @@
     ],
     "total_recharge_m3_per_day": 0.05,
     "model_claim_ceiling": "independent analytical/discrete oracle only; no native MODFLOW6 run, drain-down qualification, SWAP coupling, Hupsel qualification or production admission"
+  },
+  "native_execution": {
+    "workflow": ".github/workflows/f-gc-strip01-standalone-modflow.yml",
+    "workflow_run": null,
+    "native_modflow_executed": false,
+    "expected_engine": "MODFLOW6 6.8.0",
+    "expected_flopy": "3.9.5",
+    "artifact": "F-GC-STRIP01-{run_id}"
   }
 }
