@@ -25,7 +25,7 @@ program benchmark_bartholomeus_e2e
  call app%initialize(cfg,status);if(status/=FMR_APP_BOOT_OK)error stop 'active init'
  call offapp%initialize(off,status);if(status/=FMR_APP_BOOT_OK)error stop 'off init'
  do i=1,WARM
-  call app%run_standalone(T0,T1,r,status);if(status/=FMR_APP_BOOT_OK)error stop 'active warm'
+  call app%run_standalone(T0,T1,r,status);if(status/=FMR_APP_BOOT_OK)then;print *,'E2E_ACTIVE_REJECT=',status,r(1)%kernel_status;error stop 'active warm';endif
   call offapp%run_standalone(T0,T1,r,status);if(status/=FMR_APP_BOOT_OK)error stop 'off warm'
  end do
  do j=1,ROUNDS
