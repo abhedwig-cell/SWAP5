@@ -10,29 +10,36 @@ program benchmark_bartholomeus_c3a
   type(BartholomeusImmutableDataset)::data
   type(BartholomeusCropParameters)::crop
   real(real64)::wroot(N),wz0(N),ctop,t0,t1,checksum
+  real(real64),parameter::tops(3)=[.27_real64,27._real64,2700._real64]
+  character(len=12),parameter::labels(3)=[character(len=12)::'low_ctop','mid_ctop','high_ctop']
+  integer::k
   real(real64),allocatable::f(:)
   integer::i,rate,c0,c1
   logical::ok
 
   call setup_case(view,data,crop,wroot,wz0,ctop)
-  checksum=0
-  do i=1,WARM
-    call evaluate_bartholomeus_factors_from_state(view,data,crop,wroot,wz0,ctop,BARTHOLOMEUS_WATERFILM_REFERENCE,f,ok)
-    if(.not.ok) error stop 'warmup'
-    checksum=checksum+sum(f)
-  end do
   call system_clock(c0,rate)
-  do i=1,REPS
-    call evaluate_bartholomeus_factors_from_state(view,data,crop,wroot,wz0,ctop,BARTHOLOMEUS_WATERFILM_REFERENCE,f,ok)
-    if(.not.ok) error stop 'benchmark'
-    checksum=checksum+sum(f)
+  do k=1,3
+    ctop=tops(k);checksum=0
+    do i=1,WARM
+      call evaluate_bartholomeus_factors_from_state(view,data,crop,wroot,wz0,ctop,BARTHOLOMEUS_WATERFILM_REFERENCE,f,ok)
+      if(.not.ok) error stop 'warmup'
+      checksum=checksum+sum(f)
+    end do
+    call system_clock(c0)
+    do i=1,REPS
+      call evaluate_bartholomeus_factors_from_state(view,data,crop,wroot,wz0,ctop,BARTHOLOMEUS_WATERFILM_REFERENCE,f,ok)
+      if(.not.ok) error stop 'benchmark'
+      checksum=checksum+sum(f)
+    end do
+    call system_clock(c1)
+    t0=real(c1-c0,real64)/real(rate,real64)
+    print '(a,a)','C3A_PERF_REGIME=',trim(labels(k))
+    print '(a,i0)','C3A_PERF_REPS=',REPS
+    print '(a,es24.16)','C3A_PERF_SECONDS=',t0
+    print '(a,es24.16)','C3A_PERF_NS_PER_EVAL=',t0*1.e9_real64/REPS
+    print '(a,es24.16)','C3A_PERF_CHECKSUM=',checksum
   end do
-  call system_clock(c1)
-  t0=real(c1-c0,real64)/real(rate,real64)
-  print '(a,i0)','C3A_PERF_REPS=',REPS
-  print '(a,es24.16)','C3A_PERF_SECONDS=',t0
-  print '(a,es24.16)','C3A_PERF_NS_PER_EVAL=',t0*1.e9_real64/REPS
-  print '(a,es24.16)','C3A_PERF_CHECKSUM=',checksum
 contains
   subroutine setup_case(v,d,c,wr,w0,top)
     type(bartholomeus_runtime_view_t),intent(out)::v
