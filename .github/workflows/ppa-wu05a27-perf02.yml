@@ -14,7 +14,7 @@ jobs:
       - name: A26 live trial preservation
         run: bash tests/fpm/run_ppa_wu05a26_live_trial_preparer.sh
       - name: A26 backend preservation
-        run: bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
+        run: bash tests/fpm/run_ppa_wu05a27_backend_preservation.sh
       - name: A8 standard macropore preservation
         run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
       - name: PROFILE01 postimage call counts
