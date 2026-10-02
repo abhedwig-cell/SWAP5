@@ -3,7 +3,7 @@
   "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
   "last_reconciled_head": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
   "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
-  "state": "BOUNDED_DIRECT_SOLVER_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "state": "BOUNDED_SOLVER_QUALIFIED_CANONICAL_ADMISSION_BLOCKED_SHARED_DEPENDENCIES",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -18,12 +18,12 @@
     "internal Fortran soil_water_boundary_conditions_t fields bottom_external_resistance_days and bottom_include_half_cell",
     "direct typed Reference mode3 solver path only; serialized application still rejects3"
   ],
-  "checkpoint_commit": "2b523d818c5c5135d466495b31c5b20ae29b79be",
-  "next_action": "Normal canonical PR admission of bounded shared solver seam; then source-bound LOW03-A application preregistration",
+  "checkpoint_commit": "28616cc050938efd1170867496cd27fe869c3ebc",
+  "next_action": "Execute registered DEP01 dependency-aware local semantic requalification on the same official branch; do not merge PR975 or issue LOW03-A before explicit shared-contract acceptance",
   "blockers": [
-    "No bounded direct-solver blocker remains after completed qualification",
-    "Full mode3 application still requires source-bound forcing/proposal, transactional accepted accounting and production restart qualification",
-    "SWKIMPL1, macropores and interface sensitivity remain outside the declared P0 envelope"
+    "Additional shared typed-contract change needs semantic RossFast/transitive binding preservation, not inherited numerical evidence",
+    "Historical RossFast guard already rejects canonical; it must not be simply replaced by candidate hash",
+    "LOW03-A application forcing/proposal/transaction gates remain separately open"
   ],
   "relevant_paths": [
     "src/solver/mod_soil_water_solver_contract.f90",
@@ -50,7 +50,8 @@
   "evidence_paths": [
     "integration/audits/F-MIG431-LOW03-P0_COMPOSITION.json",
     "integration/audits/F-MIG431-LOW03-P0_BOUNDED_QUALIFICATION.json",
-    "docs/migration/F-MIG431-LOW03-P0_QUALIFICATION_REVIEW.md"
+    "docs/migration/F-MIG431-LOW03-P0_QUALIFICATION_REVIEW.md",
+    "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json"
   ],
   "dependency_surface": [
     "src/solver",
@@ -73,12 +74,18 @@
     "Restart of committed state",
     "Existing groundwater owner and mode5 semantics held fixed"
   ],
-  "recovery_point": "3407286de38d8d11219678257874afd3c44320a7",
+  "recovery_point": "28616cc050938efd1170867496cd27fe869c3ebc",
   "test_scope": "Frozen B1.11 6075 bottom-row cases and 45 direct physical solves per optimization, independent compartment/whole-column mass, exact physical qbot, failed replay, fresh scratch, physical restart continuation, six existing application preservation programs",
   "typed_solver_canonical_admitted": false,
   "tested_postimage": "3407286de38d8d11219678257874afd3c44320a7",
   "qualification_run": 36970096511,
   "qualification_job": 110722079851,
   "qualification_artifact_id": 11210724958,
-  "scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed"
+  "scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
+  "canonical_production_implemented": false,
+  "implementation_location": "official LOW03-P0 branch only",
+  "qualification_scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
+  "complete_admission_qualification": false,
+  "pull_request": 975,
+  "shared_authority_prerequisite": "F-MIG431-LOW03-P0-DEP01"
 }

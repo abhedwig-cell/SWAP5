@@ -2113,6 +2113,19 @@
       "production_delta": [],
       "authority": "docs/migration/F-MIG431-LOW03-P0_PREREGISTRATION.md",
       "effect": "Implicit3 reuses Richards bottom-row physics with added series resistance, not a new solver. Ordinary mode5 is only the same-K zero-R limit; shared typed resistance and accepted mass ownership remain prerequisites. Mode1 parked,3/8 open."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "BOUNDED_DIRECT_SOLVER_QUALIFIED_ADMISSION_BLOCKED_SHARED_DEPENDENCIES",
+      "canonical_basis": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+      "qualified_postimage": "3407286de38d8d11219678257874afd3c44320a7",
+      "qualification_run": 36970096511,
+      "pull_request": 975,
+      "production_admitted": false,
+      "canonical_production_delta": [],
+      "shared_authority_prerequisite": "F-MIG431-LOW03-P0-DEP01",
+      "authority": "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json",
+      "effect": "Branch-only direct typed Reference resistive-head solver passes source, independent compartment/whole mass, replay, physical restart and admitted application preservation. Complete transitive RossFast/shared-contract semantic qualification remains missing. Historical RossFast guard already rejects canonical and is not proof of a new regression. No LOW03-A application issued;1 parked,3/8 open."
     }
   ]
 }
