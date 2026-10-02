@@ -81,6 +81,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
   FMR_GW_PLACEHOLDER
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 compile_variant(){
   local name="$1"

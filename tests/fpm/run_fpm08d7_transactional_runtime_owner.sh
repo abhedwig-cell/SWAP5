@@ -45,6 +45,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90
   tests/fmr/mod_fmr04_fixed_top_provider.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 # Owner-oracle normalization after live execution exposed two fixture semantics:
 # (1) equal top-in/bottom-out background flux makes gross total_in/total_out

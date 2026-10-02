@@ -89,6 +89,8 @@ SRC=(
   SERVICE_PLACEHOLDER
   src/runtime/mod_fmr_serialized_reference_backend.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${SRC[@]}")
 
 compile_variant(){
   local name="$1"

@@ -172,6 +172,8 @@ SRC=(
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   BACKEND_PLACEHOLDER
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${SRC[@]}")
 
 compile_variant(){
   local name="$1"

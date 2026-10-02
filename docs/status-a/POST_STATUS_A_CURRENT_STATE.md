@@ -154,3 +154,12 @@ The admitted envelope is deliberately narrow:
 The admission does not include inference of source components from generic FMR `top_flux`, independent ponding/runon macropore source terms, simultaneous A9 ownership with Snow/Black/Boesten/fixed-weir surface-water routes, covering-layer or perched-zone macropore physics, arbitrary within-compartment rapid-drain levels, multiple rapid-drain levels, fixed-weir/Ribasim ownership of the same rapid-drain receipt, within-corrector dynamic crack-geometry feedback, RossFast, or parallel/concurrent MultiSWAP macropore execution.
 
 This capability is post-Status-A and does not change the frozen Status-A denominator.
+
+
+## Current post-Status-A Bartholomeus oxygen capability
+
+Canonical now contains the bounded PPA-WU05-C3A Bartholomeus oxygen-stress route admitted by PR #962 at `179673b16b84bc48fa5e0e83341a8a8e80b2211a`. Exact candidate `63b7c982d12a7df8f6f933d32fc382fbcc02bb67` passed final qualification run `36972631192`, including the actual typed Reference application, complete unchanged B1.11 assembled oracle and affected current-canonical/shared-backend preservation.
+
+The admitted envelope is oxygen mode 2/type 1 with analytical MvG REFERENCE waterfilm in the homogeneous serial typed Fortran Reference application, bottom 2 or 7 and the existing restricted thermal owner. Oxygen OFF remains exact; unsupported active compositions fail closed. Oxygen adds no accepted continuation state, checkpoint/restart field, solver ABI or water ledger.
+
+Groundwater-coupled, macropore, snow, drainage-response, elastic, hysteretic, tabular, PRACTICAL/WFT300 and worker-parallel oxygen remain outside the admitted envelope. This admission also does not close salinity, frost, compensation or MICRO/JvL gaps and does not alter the frozen Status A denominator. See `docs/audits/PPA_WU05C3A_CLOSEOUT.md`.

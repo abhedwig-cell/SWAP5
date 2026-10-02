@@ -112,6 +112,8 @@ MODULE_SRC=(
   src/process/mod_whole_column_sensible_energy_accounting.f90
   "$MODULE"
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"

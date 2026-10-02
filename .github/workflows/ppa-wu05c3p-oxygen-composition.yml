@@ -1,0 +1,16 @@
+name: PPA WU05 C3P oxygen composition
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  composition:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and run narrow composition gates
+        run: |
+          bash tests/physics/run_root_uptake_oxygen_composition.sh

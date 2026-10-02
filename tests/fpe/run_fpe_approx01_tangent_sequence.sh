@@ -76,6 +76,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90
   src/runtime/mod_fmr_groundwater_swap_participant.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 objects=()
 for source in "${MODULE_SRC[@]}"; do

@@ -2161,6 +2161,34 @@
       "production_delta": [],
       "canonical_admitted": false,
       "effect": "Sole implicit ordinary Cauchy application unit preregistered; frozen aquifer head versus current-trial extra-flux timing explicit. Explicit3 remains open."
+    },
+    {
+      "work_unit": "PPA-WU05-C3A",
+      "date": "2026-10-02",
+      "state": "CANONICAL_ADMITTED_BOUNDED_CLOSED",
+      "pull_request": 962,
+      "qualified_postimage": "63b7c982d12a7df8f6f933d32fc382fbcc02bb67",
+      "qualification_run": 36972631192,
+      "qualification_job": 110729643691,
+      "canonical_merge_commit": "179673b16b84bc48fa5e0e83341a8a8e80b2211a",
+      "production_admitted": true,
+      "admitted_scope": "Bartholomeus oxygen mode2/type1; analytical MvG REFERENCE waterfilm; homogeneous serial typed Fortran Reference application; bottom2/7; existing restricted thermal owner.",
+      "remains_open": [
+        "salinity",
+        "frost",
+        "compensation",
+        "MICRO/JvL",
+        "groundwater-coupled oxygen",
+        "macropore oxygen",
+        "snow oxygen",
+        "drainage-response oxygen",
+        "elastic oxygen",
+        "hysteretic oxygen",
+        "tabular oxygen",
+        "PRACTICAL/WFT300 oxygen",
+        "worker-parallel oxygen"
+      ],
+      "effect": "Closes only the bounded C3A Bartholomeus oxygen application gap. No broad PPA-RWU-ADV closure and no frozen Status A rewrite."
     }
   ]
 }

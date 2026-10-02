@@ -8,6 +8,7 @@ module mod_fmr_production_application_bootstrap
        fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_serialized_execution_plan, &
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
+       FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
@@ -737,6 +738,7 @@ contains
     if (tile%template%template_id <= 0_int64) return
     if (tile%template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
     if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .and. &
+        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE .and. &
         tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .and. &
         tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
     if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
@@ -751,9 +753,20 @@ contains
     ! prescribed-qbot mode 2; process composition remains fail-closed here.
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
         tile%parameters%hysteresis_active .or. &
-        tile%parameters%frost_active .or. tile%parameters%soil_temperature_active .or. &
-        tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active .or. &
+        tile%parameters%frost_active .or. &
+        tile%parameters%drainage_response_active .or. &
         tile%parameters%tabulated_hydraulics_active) return
+    ! The original bare-soil admission remains exact when the new carrier is
+    ! absent. Only the source-bound standalone root/thermal slice is widened.
+    if(allocated(tile%parameters%bartholomeus)) then
+      if(tile%parameters%bottom_mode/=2 .and. tile%parameters%bottom_mode/=7) return
+      if(.not.tile%parameters%root_extraction_active) return
+      if(tile%parameters%elasticity_active .or. tile%parameters%direct_retention_active) return
+      if(tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active) return
+    else
+      if(tile%parameters%soil_temperature_active .or. tile%parameters%root_extraction_active) return
+      if(allocated(tile%base_forcing%crop_oxygen)) return
+    end if
 
     if (tile%parameters%black_evaporation_active) then
       if (tile%parameters%boesten_evaporation_active) return
@@ -777,7 +790,11 @@ contains
       if (tile%initial_black_ldwet /= 0.0_real64) return
       if (tile%parameters%bottom_mode == 5) return
     else
-      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if(tile%parameters%soil_temperature_active) then
+        if(tile%template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE) return
+      else
+        if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      end if
       if (allocated(tile%parameters%black_evaporation) .or. allocated(tile%parameters%boesten_evaporation)) return
       if (tile%initial_black_ldwet /= 0.0_real64 .or. tile%initial_boesten_spev /= 0.0_real64 .or. &
           tile%initial_boesten_saev /= 0.0_real64) return

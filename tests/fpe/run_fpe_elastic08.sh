@@ -71,6 +71,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 CSV="tests/fpe/data/fpe_elastic05_staringreeks_2018.csv"
 
