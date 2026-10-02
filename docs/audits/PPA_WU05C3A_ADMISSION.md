@@ -2,7 +2,11 @@
 
 Date: 2026-10-01
 
-Status: `PRODUCTION_READINESS_FALSIFIED / NOT_CANONICALLY_ADMITTED`
+Status: `REPAIRED_FOCUSED_GATES_PASS / SHARED_APPLICATION_BINDING_AUTHORITY_REQUIRED`
+
+Current 2026-10-02 repair authority: [C3A repair result](PPA_WU05C3A_REPAIR_RESULT.md).
+The two executable defects were repaired; actual application binding and admission remain held.
+The preceding falsification below is retained as historical evidence.
 
 The 2026-10-02 executable admission-boundary gate supersedes the readiness decision below.
 See [C3A boundary falsification](PPA_WU05C3A_BOUNDARY_FALSIFICATION.md).
