@@ -57,6 +57,13 @@ program test_low03a_application
   write(*,'(a,1x,i0,1x,l1,1x,l1,1x,l1,1x,i0,1x,i0,1x,a)') 'LOW03A_TX_DIAG',status, &
        result(1)%admitted,result(1)%completed,result(1)%committed,result(1)%kernel_status,result(1)%commit_status, &
        trim(result(1)%admission_status)
+  write(*,'(a,1x,l1,1x,a,1x,i0,1x,i0,1x,i0,1x,i0,1x,i0)') 'LOW03A_SOLVER_DIAG', &
+       result(1)%solver_executed,trim(result(1)%solver_route),result(1)%solver_iterations, &
+       result(1)%solver_nonlinear_iterations,result(1)%solver_internal_retries,result(1)%solver_headcalc_calls, &
+       result(1)%accepted_substeps
+  write(*,'(a,1x,l1,1x,es24.16,1x,es24.16,1x,es24.16,1x,es24.16,1x,es24.16,1x,i0)') 'LOW03A_MASS_DIAG', &
+       result(1)%mass%complete,result(1)%mass%storage_start,result(1)%mass%storage_end,result(1)%mass%total_in, &
+       result(1)%mass%total_out,result(1)%mass%residual,result(1)%mass%accepted_transaction_count
   call require(status==FMR_APP_BOOT_OK .and. result(1)%completed .and. result(1)%committed,'ordinary Cauchy transaction')
   call require(abs(result(1)%mass%residual)<=HARD_MASS_GATE,'whole-profile mass closure')
   call require(result(1)%mass%complete,'mass accounting complete')
