@@ -271,6 +271,31 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
          '|SCRATCH_INTEGRATED_SUM=',dt*sum(workspace%richards%residual(1:numnod)), &
          '|LAST_TENTATIVE_H2=',workspace%richards%old_head(2), &
          '|THETA_QUANTUM_NODE36=',spacing(origin(4,36))*dz(36)/dt
+    write(*,'(*(g0))') 'G6_NODE36_FINAL|RES=',workspace%richards%residual(36), &
+         '|OLD_H=',workspace%richards%old_head(36), &
+         '|HEAD_ULP=',spacing(workspace%richards%old_head(36)), &
+         '|DELTA_H=',workspace%richards%delta_head(36), &
+         '|JLOW=',workspace%richards%dfdh_lower(36), &
+         '|JMAIN=',workspace%richards%dfdh_main(36), &
+         '|JUP=',workspace%richards%dfdh_upper(36), &
+         '|THETA=',workspace%richards%provider_theta(36), &
+         '|THETA_ULP=',spacing(workspace%richards%provider_theta(36)), &
+         '|CAP=',workspace%richards%provider_capacity(36), &
+         '|FRARMTRX=',origin(5,36)
+    write(*,'(*(g0))') 'G6_NODE36_REPRESENTABLE|RATE_UP=', &
+         (nearest(workspace%richards%provider_theta(36),1.0_real64)-workspace%richards%provider_theta(36))* &
+         origin(5,36)*dz(36)/dt, &
+         '|RATE_DOWN=', &
+         (nearest(workspace%richards%provider_theta(36),-1.0_real64)-workspace%richards%provider_theta(36))* &
+         origin(5,36)*dz(36)/dt, &
+         '|RES_IF_UP=',workspace%richards%residual(36)+ &
+         (nearest(workspace%richards%provider_theta(36),1.0_real64)-workspace%richards%provider_theta(36))* &
+         origin(5,36)*dz(36)/dt, &
+         '|RES_IF_DOWN=',workspace%richards%residual(36)+ &
+         (nearest(workspace%richards%provider_theta(36),-1.0_real64)-workspace%richards%provider_theta(36))* &
+         origin(5,36)*dz(36)/dt, &
+         '|THETA_ULP_HEAD_EQUIV=',spacing(workspace%richards%provider_theta(36))/ &
+         max(abs(workspace%richards%provider_capacity(36)),tiny(1.0_real64))
     if(.not.macro%same_values(macro_snapshot))error stop 'direct diagnostic mutated accepted macro'
   end if
   if(direct_result%status==SW_SOLVE_CONVERGED)then
