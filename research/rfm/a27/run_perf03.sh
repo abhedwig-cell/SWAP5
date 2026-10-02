@@ -11,29 +11,23 @@ s=s.replace('[0.50d0, 0.50d0, 1.00d0, 1.00d0]','10.0d0')
 s=s.replace('disnod(numnod+1) = 1.0d0','disnod(numnod+1) = [5.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,10.0d0,5.0d0]')
 Path(sys.argv[1]).write_text(s)
 GRID
-python3 - "$B/grid.f90" research/rfm/a27/test_perf03.f90 > "$B/src" <<'PY'
+mapfile -t MODULE_SRC < <(python3 - "$B/grid.f90" <<'SOURCES'
 from pathlib import Path
-import re,sys
-mods={}
-for p in sorted(Path('src').rglob('*.f90')):
- t=p.read_text()
- for m in re.findall(r'^\s*module\s+(\w+)\s*$',t,re.M|re.I):mods[m.lower()]=str(p)
-p=Path(sys.argv[1])
-for m in re.findall(r'^\s*module\s+(\w+)\s*$',p.read_text(),re.M|re.I):mods[m.lower()]=str(p)
-seen=set();order=[]
-def visit(p):
- if p in seen:return
- t=Path(p).read_text()
- for m in re.findall(r'^\s*use\s*(?:,\s*(?:intrinsic|non_intrinsic)\s*)?(?:::\s*)?(\w+)',t,re.M|re.I):
-  q=mods.get(m.lower())
-  if q:visit(q)
- seen.add(p);order.append(p)
-for m in re.findall(r'^\s*use\s*(?:,\s*(?:intrinsic|non_intrinsic)\s*)?(?:::\s*)?(\w+)',Path(sys.argv[2]).read_text(),re.M|re.I):
- q=mods.get(m.lower())
- if q:visit(q)
-print('\n'.join(order))
-PY
-mkdir "$B/o";objs=()
+import sys
+lines=Path('tests/fpm/run_ppa_wu05a26_backend_compile.sh').read_text().splitlines()
+inside=False
+for raw in lines:
+    s=raw.strip()
+    if s=='MODULE_SRC=(':
+        inside=True;continue
+    if inside and s==')':break
+    if inside and s:
+        if s=='tests/fsi/fsi04_real_headcalc_stubs.f90':s=sys.argv[1]
+        print(s)
+SOURCES
+)
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}" | awk '$0 != "tests/fsi/fsi04_real_headcalc_stubs.f90"')
+printf '%s\n' "${MODULE_SRC[@]}" > "$B/src"mkdir "$B/o";objs=()
 while IFS= read -r s;do [[ -z "$s" ]]&&continue;o="$B/o/$(basename "${s%.*}").o";gfortran -std=f2008 -ffree-line-length-none -O2 -J"$B/o" -I"$B/o" -c "$s" -o "$o";objs+=("$o");done < "$B/src"
 gfortran -std=f2008 -ffree-line-length-none -O2 -J"$B/o" -I"$B/o" "${objs[@]}" research/rfm/a27/test_perf03.f90 -o "$B/p"
 "$B/p"|tee "$OUT/perf03.csv"
