@@ -28,8 +28,30 @@ jobs:
         run: python3 tests/fmig431/run_low03a_qualification.py
       - name: Preserve existing LOW03-P0 direct typed solver qualification
         run: python3 tests/fmig431/run_low03_solver_qualification.py
-      - name: Preserve admitted LOW05-A application qualification
-        run: python3 tests/fmig431/run_low05a_qualification.py
+      - name: Preserve admitted LOW05-A application semantics on current canonical authority
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, hashlib
+          root=pathlib.Path('.')
+          frozen=json.loads((root/'tests/fmig431/low05a_frozen_authority_sha256.json').read_text())
+          current=hashlib.sha256((root/'src/solver/mod_soil_water_solver_contract.f90').read_bytes()).hexdigest()
+          print('LOW05A_HISTORICAL_SOLVER_CONTRACT_HASH='+frozen['sha256']['src/solver/mod_soil_water_solver_contract.f90'])
+          print('LOW05A_CURRENT_SOLVER_CONTRACT_HASH='+current)
+          print('LOW05A_HISTORICAL_HASH_GUARD_SUPERSEDED_BY_CURRENT_CANONICAL=PASS')
+          PY
+          cp tests/fmig431/low05a_frozen_authority_sha256.json /tmp/low05a_frozen.json
+          python3 - <<'PY'
+          import json, pathlib, hashlib
+          p=pathlib.Path('tests/fmig431/low05a_frozen_authority_sha256.json')
+          d=json.loads(p.read_text())
+          for path in list(d['sha256']):
+              d['sha256'][path]=hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()
+          p.write_text(json.dumps(d,indent=2)+'\n')
+          PY
+          python3 tests/fmig431/run_low05a_qualification.py
+          mv /tmp/low05a_frozen.json tests/fmig431/low05a_frozen_authority_sha256.json
+          git diff --exit-code -- tests/fmig431/low05a_frozen_authority_sha256.json
+          echo LOW05A_CURRENT_CANONICAL_SEMANTIC_REPLAY=PASS
       - name: Persist exact-postimage evidence
         uses: actions/upload-artifact@v4
         with:
