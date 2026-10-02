@@ -1,0 +1,15 @@
+name: PPA-WU05-C3A PERF02 MICRO monotonicity
+on:
+  push:
+    branches: [research/ppa-wu05c3a-oxygen-eligibility-gate]
+    paths:
+      - 'tests/performance/falsify_bartholomeus_micro_monotonicity.f90'
+      - 'tests/performance/run_bartholomeus_micro_monotonicity.py'
+      - '.github/workflows/ppa-wu05c3a-perf02-micro.yml'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/performance/run_bartholomeus_micro_monotonicity.py
