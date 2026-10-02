@@ -6,23 +6,24 @@
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "BOUNDED_16_COHORT_RESEARCH_SCREEN_PASS_PHYSICAL_CLOSURE_BLOCKED",
-  "next_action": "Independent physical closure contract for moisture feedback/frozen seed/dry reset; then full production A/B/C. Do not admit compressed research state.",
-  "recovery_point": "docs/audits/PPA_WU05A27_BOUNDED_COHORT_RESULT.md",
+  "status": "PHYSICAL_MECHANISM_PROBES_PREREGISTERED",
+  "next_action": "Implement and run source-feedback, contact-interruption and signed-coupling probes",
+  "recovery_point": "docs/audits/PPA_WU05A27_PHYSICAL_MECHANISMS_CONTRACT.md",
   "blockers": [
     "Physical closure not independently justified",
     "Fixed-count approximation lacks monotonic finest-grid contraction",
     "Full production A/B/C and repeated timing/scaling remain open"
   ],
-  "last_reconciled_head": "2d721f10f4f7ad9ff8d9695d89252a7b91ab607f",
-  "last_reconciled_upstream": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
+  "last_reconciled_head": "afc7d219f5aa2ee74ba51c411e40c1d8921d04aa",
+  "last_reconciled_upstream": "c240a3c1c880663d86e1a702ff283a866ca809ee",
   "authority_paths": [
     "AGENTS.md",
     "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
     "docs/audits/PPA_WU05A26_CLOSEOUT.md",
     "docs/audits/PPA_WU05A27_FINITE_CONTACT_CONTRACT.md",
     "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
-    "docs/audits/PPA_WU05A27_BOUNDED_COHORT_CONTRACT.md"
+    "docs/audits/PPA_WU05A27_BOUNDED_COHORT_CONTRACT.md",
+    "docs/audits/PPA_WU05A27_PHYSICAL_MECHANISMS_CONTRACT.md"
   ],
   "test_paths": [
     "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
