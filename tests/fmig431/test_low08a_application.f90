@@ -47,7 +47,6 @@ program test_low08a_application
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   allocate(cfg%tiles(1)%initial_right_derivative(numnod));cfg%tiles(1)%initial_right_derivative=0.0_real64
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
-  cfg%numerical%transaction%mass_tolerance=1.0e-8_real64
   cfg%numerical%model_temporal_indicator_budget_available=.true.
   cfg%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
   cfg%tiles(1)%base_forcing%bottom_head=-70.0_real64
@@ -123,8 +122,8 @@ contains
     value%numerical%transaction%temporal_tolerance=1.0e-6_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
-    value%numerical%transaction%max_retries=16
-    value%numerical%max_committed_substeps=512
+    value%numerical%transaction%max_retries=2
+    value%numerical%max_committed_substeps=8
     value%numerical%progress_tolerance=0.0_real64
     allocate(value%tiles(1))
     value%tiles(1)%tile_id=680101_int64
