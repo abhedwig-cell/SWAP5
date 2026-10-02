@@ -58,10 +58,13 @@ for key,arms in sorted(keys.items()):
             B_nonlinear=B["nonlinear"],C_nonlinear=C["nonlinear"],B_retries=B["retries"],C_retries=C["retries"]))
         counts[cls]=counts.get(cls,0)+1
 
-with (out/"abc_comparison.csv").open("w",newline="") as f:
-    w=csv.DictWriter(f,fieldnames=list(comparison[0]));w.writeheader();w.writerows(comparison)
 with (out/"abc_raw.csv").open("w",newline="") as f:
     w=csv.DictWriter(f,fieldnames=abc_header);w.writeheader();w.writerows(rows)
+if comparison:
+    with (out/"abc_comparison.csv").open("w",newline="") as f:
+        w=csv.DictWriter(f,fieldnames=list(comparison[0]));w.writeheader();w.writerows(comparison)
+else:
+    (out/"abc_comparison.csv").write_text("soil,geom,regime,classification,reason\n")
 
 timing_rows=[]
 if timing:
@@ -96,7 +99,15 @@ if timing_summary:
     with (out/"abc_timing.csv").open("w",newline="") as f:
         w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(timing_summary)
 
+arm_counts={}
+for r in rows:
+    arm_counts[str(r["arm"])]=arm_counts.get(str(r["arm"]),0)+1
+complete_key_count=sum(1 for arms in keys.values() if all(a in arms for a in (1,2,3)))
 summary={
+ "parsed_abc_rows":len(rows),
+ "arm_counts":arm_counts,
+ "unique_keys":len(keys),
+ "complete_abc_keys":complete_key_count,
  "screen_cases":len(comparison),
  "classification_counts":counts,
  "all_completed_B":sum(1 for x in comparison if x["B_completed"]),
@@ -106,3 +117,5 @@ summary={
 }
 (out/"abc_summary.json").write_text(json.dumps(summary,indent=2)+"\n")
 print(json.dumps(summary,indent=2))
+if not comparison:
+    raise SystemExit("A27 ABC01 parse gate: no complete A/B/C key")
