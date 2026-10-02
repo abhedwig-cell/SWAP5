@@ -1,0 +1,40 @@
+{
+  "work_unit": "PPA-WU05-A28",
+  "branch": "work/ppa-wu05-a28-rfm-approximate-mode",
+  "status": "IMPLEMENTED_AWAITING_EXECUTED_QUALIFICATION",
+  "purpose": "Explicit opt-in approximate RFM sorptivity mode derived from PERF07_V1",
+  "reference_default_preserved": true,
+  "approximate_default": false,
+  "policy": {
+    "name": "RFM_SORPTIVITY_POLICY_PERF07_V1",
+    "reference_panels": 64,
+    "bands": [
+      {"head_lt_cm": -300.0, "panels": 64},
+      {"head_ge_cm": -300.0, "head_lt_cm": -100.0, "panels": 32},
+      {"head_ge_cm": -100.0, "head_lt_cm": -30.0, "panels": 16},
+      {"head_ge_cm": -30.0, "panels": 8}
+    ]
+  },
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "q1_q2": {
+    "scope": "configuration fail-closed semantics plus 36 Staringreeks-2018 materials x 17 heads",
+    "gate": "max relative sorptivity error <= 0.01",
+    "execution_evidence": null
+  },
+  "q3": {
+    "scope": "32-case exact fixed-64 C versus explicit PERF07_V1 C",
+    "gates": ["mass residual <= 1e-6 cm","storage difference <= 0.02 cm","drainage difference <= 0.02 cm","max sampled theta difference <= 0.01","no exact-complete to approximate-incomplete regression"],
+    "execution_evidence": null
+  },
+  "q4": {
+    "scope": "long wet-dry/history trajectories",
+    "implemented": false,
+    "required_before_multiswap_modflow_production_eligibility": true
+  },
+  "next_action": "Execute Q1-Q2 on the persisted postimage. If green, execute Q3. Only then design/preregister Q4 long-history qualification.",
+  "claim_boundary": "No production eligibility, speed guarantee, canonical admission, or MultiSWAP-MODFLOW suitability is claimed without executed Q1-Q4 evidence."
+}
