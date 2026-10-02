@@ -67,7 +67,7 @@ contains
   end subroutine test_advance
 
   function test_storage(self, state) result(value)
-    class(test_model_t), intent(inout) :: self
+    class(test_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: state
     real(real64) :: value
     if (.not. self%storage_complete) error stop 'incomplete storage must not be evaluated'
