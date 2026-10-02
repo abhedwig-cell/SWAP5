@@ -1812,7 +1812,7 @@ contains
         ok = ok .and. allocated(parameters%macropore) .and. self%macropore_policy_configured .and. &
              self%macropore_policy%valid() .and. self%macropore_policy%enabled .and. &
              self%soil_water_selection%uses_reference() .and. &
-             .not. parameters%root_extraction_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. parameters%black_evaporation_active .and. &
              .not. parameters%boesten_evaporation_active .and. .not. parameters%drainage_response_active .and. &
              .not. self%fixed_weir_surface_water_active .and. &
@@ -2664,6 +2664,10 @@ contains
     request%numerical%head_abs_tolerance = self%head_abs_tolerance
     request%numerical%head_rel_tolerance = self%head_rel_tolerance
     request%numerical%ponding_tolerance = self%ponding_tolerance
+    if (self%macropore_active .and. allocated(self%macropore_config)) then
+      if (allocated(self%macropore_config%matrix_area_fraction)) &
+           request%physical%matrix_area_fraction = self%macropore_config%matrix_area_fraction
+    end if
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
       if (physical%active_nodes /= self%soil_parameters%active_nodes .or. .not. allocated(physical%pressure_head) .or. &
@@ -2931,18 +2935,35 @@ contains
       if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
       select type (physical_macro => state)
       type is (fmr_b110_macropore_reduction_state_t)
-        call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
-             self%macropore_config%geometry, self%macropore_config%rate_template, &
-             self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-             top_input=self%macropore_top_input_forcing, &
-             reduction_accepted=physical_macro%reduction_continuation)
+        if (self%macropore_config%covering_parameters_available) then
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+               top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation, &
+               covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
+               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day)
+        else
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+               top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation)
+        end if
         if(macropore_result%status==MACRO_RUNTIME_CONVERGED) &
              physical_macro%reduction_continuation=macropore_result%reduction_candidate
       class is (fmr_b110_physical_state_t)
-        call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
-             self%macropore_config%geometry, self%macropore_config%rate_template, &
-             self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-             top_input=self%macropore_top_input_forcing)
+        if (self%macropore_config%covering_parameters_available) then
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+               top_input=self%macropore_top_input_forcing, &
+               covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
+               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day)
+        else
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+               top_input=self%macropore_top_input_forcing)
+        end if
       class default
         return
       end select
@@ -3298,7 +3319,11 @@ contains
     class is (fmr_b110_physical_state_t)
       if (self%fixed_weir_surface_water_active) error stop 'F-PM08D7 active model missing fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
-      value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
+      if (self%macropore_active .and. allocated(self%macropore_config) .and. allocated(self%macropore_config%matrix_area_fraction)) then
+        value = sum(self%soil_parameters%dz * physical%water_content * self%macropore_config%matrix_area_fraction) + physical%ponding_depth
+      else
+        value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
+      end if
       if (self%macropore_active) then
         if (.not. allocated(physical%macropore) .or. .not. physical%macropore%ready()) &
              error stop 'F-MR06 active macropore storage state incomplete'
@@ -3472,7 +3497,11 @@ contains
         value = max(value, maxval(abs(full%pressure_head-half%pressure_head)))
         value = max(value, abs(full%ponding_depth-half%ponding_depth))
         value = max(value, abs(full%groundwater_level-half%groundwater_level))
-        value = max(value, maxval(abs((full%water_content-half%water_content)*self%soil_parameters%dz)))
+        if (allocated(self%macropore_config) .and. allocated(self%macropore_config%matrix_area_fraction)) then
+          value = max(value, maxval(abs((full%water_content-half%water_content)*self%soil_parameters%dz * self%macropore_config%matrix_area_fraction)))
+        else
+          value = max(value, maxval(abs((full%water_content-half%water_content)*self%soil_parameters%dz)))
+        end if
         value = max(value, maxval(abs(full%macropore%water_domain_cp-half%macropore%water_domain_cp)))
         value = max(value, maxval(abs(full%macropore%volume_domain_cp-half%macropore%volume_domain_cp)))
         value = max(value, maxval(abs(full%macropore%dynamic_volume_cp-half%macropore%dynamic_volume_cp)))
