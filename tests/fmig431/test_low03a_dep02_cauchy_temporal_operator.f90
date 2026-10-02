@@ -58,7 +58,7 @@ contains
     req%base_state%pressure_head=heads;req%base_state%water_content=water
     req%boundary%bottom_mode=3;req%boundary%bottom_flux=q4
     req%boundary%bottom_external_resistance_days=r;req%boundary%bottom_include_half_cell=include_half
-    q=1.e-6_real64
+    q=1.e-3_real64
     if(include_half)then
       aq=(heads(n)+p%z(n))+(q-q4)*(0.5_real64*p%dz(n)/kb(n)+r)
     else
@@ -79,6 +79,7 @@ contains
     call hyd%evaluate(sol%candidate_state%pressure_head,cw,ck,cc,cd)
     call oracle(r,include_half,ind%current_right_derivative,cc,binf,bneumann,bdirichlet)
     call need(close(ind%head_inf_bound,binf),'independent Cauchy oracle')
+    write(*,'(a,3(1x,es24.16))') 'LOW03A_DEP02_ROW',binf,bneumann,bdirichlet
   end subroutine
   subroutine oracle(r,include_half,deriv,capacity,binf,bneumann,bdirichlet)
     real(real64),intent(in)::r,deriv(:),capacity(:)
