@@ -50,7 +50,7 @@ program test_low08a_application
   cfg%numerical%model_temporal_indicator_budget_available=.true.
   cfg%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
   cfg%tiles(1)%base_forcing%bottom_head=-70.0_real64
-  cfg%tiles(1)%base_forcing%top_flux=0.0_real64
+  cfg%tiles(1)%base_forcing%top_flux=-conductivity0
   cfg%tiles(1)%base_forcing%bottom_flux=0.0_real64
   print '(a)', 'LOW08A_STAGE_BEFORE_INIT'
   call app%initialize(cfg,status)
