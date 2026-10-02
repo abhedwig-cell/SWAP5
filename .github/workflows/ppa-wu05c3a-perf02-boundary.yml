@@ -1,5 +1,12 @@
 name: PPA WU05 C3A PERF02 boundary falsification
 on:
+  push:
+    branches: [research/ppa-wu05c3a-oxygen-eligibility-gate]
+    paths:
+      - 'tests/performance/falsify_bartholomeus_gate_boundary.f90'
+      - 'tests/performance/run_bartholomeus_gate_boundary.py'
+      - 'src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90'
+      - '.github/workflows/ppa-wu05c3a-perf02-boundary.yml'
   workflow_dispatch:
 jobs:
   boundary:
