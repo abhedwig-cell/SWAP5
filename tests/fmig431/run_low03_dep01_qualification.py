@@ -14,7 +14,7 @@ for p,m in BASE['files'].items():
  if blob(raw)!=m['git_blob'] or hashlib.sha256(raw).hexdigest()!=m['sha256']:raise RuntimeError('baseline carrier corrupt: '+p)
 FC=shlex.split(os.environ.get('FC','gfortran'));LINK=shlex.split(os.environ.get('FMR_FC_LINK_FLAGS',''))
 modules={}
-for p in list((ROOT/'src').rglob('*.f90'))+[ROOT/'tests/fsi/fsi04_real_headcalc_stubs.f90']:
+for p in list((ROOT/'src').rglob('*.f90'))+[ROOT/'tests/fsi/fsi04_real_headcalc_stubs.f90']+[ROOT/t for t in TESTS]:
  for n in re.findall(r'^\s*module\s+(\w+)\s*$',p.read_text(),re.M|re.I):modules[n.lower()]=p
 ordered=[];seen=set();visiting=set()
 def visit(p):
