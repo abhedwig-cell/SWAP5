@@ -1,0 +1,17 @@
+{
+  "work_unit": "F-GC-STRIP01",
+  "status": "FROZEN_HEAD_GATE_FAIL",
+  "run_id": 37046847285,
+  "source_commit": "abdd1f479fe064773cbb16cc4bb7ced85aba493e",
+  "artifact_id": 11244329174,
+  "artifact_sha256": "f514714b35476486ebbb9873a5ff83a9f8f252948a94572886c175f94b96669b",
+  "case": {
+    "kx_m_d": 0.1,
+    "ncol": 50
+  },
+  "head_error_m": 0.008489737928864649,
+  "frozen_head_limit_m": 0.005,
+  "mass_residual_m3_d": 5.1375084741955845e-11,
+  "upstream_thickness_recurrence_max_error_m": 3.008202904553059e-7,
+  "interpretation": "Independent diagnostic upstream-thickness recurrence reproduces native profile; arithmetic-thickness Dupuit oracle discrepancy is retained as discretization evidence. Original head gate is not widened. Remaining cases were not executed by this fail-fast revision."
+}
