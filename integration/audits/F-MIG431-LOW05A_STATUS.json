@@ -2,17 +2,17 @@
   "schema_version": 1,
   "work_unit": "F-MIG431-LOW05-A",
   "baseline": "029453104b98d835790f2e09eb9e804aa3eaff4a",
-  "last_reconciled_upstream": "029453104b98d835790f2e09eb9e804aa3eaff4a",
-  "status": "OFFICIALLY_ISSUED_PREREGISTERED",
+  "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+  "status": "QUALIFIED_BOUNDED_ADMISSION_CANDIDATE",
   "branch": "work/f-mig431-low05a-prescribed-head-application",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_admitted": false,
-  "review_checks": "LOW05-P0 optional-selector plumbing and independent abstract proposal/context trace PASS locally; production tests not run",
+  "review_checks": "Six clean-build Fortran programs PASS at O0/O2; 137 exact source hashes; progress counts43/348 identical; immutable shared physics/ABI hashes PASS",
   "blockers": [],
-  "next_action": "Implement bounded DATE5/HBOT5 provider, ordinary ownership opt-in, original-proposal callback and attempt-context wiring on the official branch; persist before qualification",
+  "next_action": "Normal PR canonical admission and verified closeout",
   "recovery_point": "this record and companion feasibility review in their containing Git commit",
   "authority_paths": [
     "AGENTS.md",
@@ -40,14 +40,22 @@
     "integration/audits/F-MIG431-LOW05P0_PREREQUISITE.json",
     "docs/migration/F-MIG431-LOW05P0_SHARED_CONTRACT.md",
     "integration/audits/F-MIG431-LOW05P0_RESULT.json",
-    "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md"
+    "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md",
+    "docs/migration/F-MIG431-LOW05A_RESULT.md",
+    "integration/audits/F-MIG431-LOW05A_LOCAL_QUALIFICATION.json",
+    "docs/migration/F-MIG431-LOW05A_PROGRESS_PREREGISTRATION.md",
+    "integration/audits/F-MIG431-LOW05A_QUALIFICATION_RESULT.json"
   ],
   "nonclaims": [
     "all lower boundaries migrated",
-    "LOW05-A production implemented",
-    "new groundwater owner",
-    "production qualification"
+    "canonical admission before verified PR merge",
+    "unrestricted transient or mixed-ownership envelope",
+    "general nonlinear temporal-error theorem"
   ],
   "shared_authority_contract_checkpoint": "fe0eebb92ed2ded55a9817fcda40390b3dd968c8",
-  "preregistration": "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md"
+  "preregistration": "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md",
+  "local_bounded_gates_pass": true,
+  "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+  "qualification_scope": "All seven bounded gate roles PASS locally and in persisted run36964835178 at O0/O2",
+  "same_call_progress_gate": "CLOSED_PASS"
 }
