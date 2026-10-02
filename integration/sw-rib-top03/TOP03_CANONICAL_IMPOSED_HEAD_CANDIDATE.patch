@@ -1,0 +1,23 @@
+--- a/src/solver/mod_soil_water_solver_contract.f90
++++ b/src/solver/mod_soil_water_solver_contract.f90
+@@ -81,6 +81,8 @@
+      real(real64) :: net_potential_surface_flux = 0.0_real64
+      logical :: surface_head_derivative_available = .false.
+      real(real64) :: surface_head_dpressure_head_top = 0.0_real64
++     ! Proposed TOP03 seam: imposed head has external supply after convergence.
++     logical :: external_surface_head_imposed = .false.
+      logical :: carries_surface_mass_terms = .false.
+      logical :: runoff_potential = .false.
+      logical :: runoff_resolved = .false.
+--- a/src/legacy/b1_10_port/headcalc.f90
++++ b/src/legacy/b1_10_port/headcalc.f90
+@@ -612,7 +612,8 @@
+ !     test for waterbalance of ponding layer
+       if (provider_dynamic_top_active) then
+          if (state%ftoph) state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
+-         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
++         if (.NOT.flnonconv .AND. pond_balance_option_allows() .AND. &
++             .NOT.provider_dynamic_top_result%external_surface_head_imposed) then
+             deviat = state%pond - state%pondm1 - provider_dynamic_top_result%net_potential_surface_flux*dt + &
+                      state%runots - state%qtop * dt
+             if (abs(deviat) > CritDevPondDt) then
