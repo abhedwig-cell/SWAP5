@@ -55,6 +55,8 @@ contains
       outcome%mass_out = start_water - end_water
       outcome%nonlinear_iterations = 1
       outcome%solver_ok = .true.
+      outcome%mass_accounting_complete = .true.
+      outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
       if (self%advance_calls == self%fail_on_call) then
         state%water = -999.0_real64
         outcome%solver_ok = .false.
