@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
-  "decision": "INDEPENDENT_NONLINEAR_CONTACT_IMPLEMENTED__LOCAL_MATRIX_PENDING__NO_PRODUCTION_ADMISSION",
+  "decision": "DISCRETE_CONTACT_MULTIPLE_ROOTS_VERIFIED__CONTINUUM_ORACLE_MATRIX_PENDING__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -182,7 +182,11 @@
     "tests/fapp/analyze_sw_rib_top03_stationary_layer.py",
     "tests/fapp/mod_top03_nonlinear_contact.f90",
     "tests/fapp/test_sw_rib_top03_nonlinear_contact.f90",
-    "tests/fapp/run_sw_rib_top03_nonlinear_contact.py"
+    "tests/fapp/run_sw_rib_top03_nonlinear_contact.py",
+    "tests/fapp/mod_top03_continuous_contact.f90",
+    "tests/fapp/test_sw_rib_top03_continuous_contact.f90",
+    "tests/fapp/run_sw_rib_top03_continuous_contact.py",
+    "tests/fapp/analyze_sw_rib_top03_nonlinear_contact.py"
   ],
   "dependency_surface": [
     "accepted attempt/window mass ownership",
@@ -201,7 +205,7 @@
     "Ribasim/SWAP ownership of local pond versus external waterbody storage remains unqualified.",
     "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage."
   ],
-  "next_action": "Run the persisted 558-case O0/O2 nonlinear-contact matrix locally; verify current-K face and tangent controls before eventwise physical comparisons. Preserve failures and unchanged inherited trajectories.",
+  "next_action": "Execute the persisted 566-case continuum stationary-contact extension; independently audit retained FV roots and compare continuum scalar roots with SciPy quadrature/Brent. Preserve primary negative evidence and unchanged production policy.",
   "recovery_point": "Resume from TOP03_NONLINEAR_CONTACT_PREREGISTRATION.md and test-only nonlinear contact module/fixture/runner in this checkpoint on the same branch.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All three unsaturated-contact research phases ran locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Exact-source evidence and explicit scope only; commits use skip ci.",
@@ -452,7 +456,7 @@
     "production_qualified": false,
     "interpretation": "Correct saturated limit; constant saturated resistance does not reproduce the partly unsaturated explicit layer even for a prewetted layer origin. Storage alone is not established as a sufficient fix."
   },
-  "status": "INDEPENDENT_NONLINEAR_CONTACT_IMPLEMENTED__LOCAL_MATRIX_PENDING__NO_PRODUCTION_ADMISSION",
+  "status": "DISCRETE_CONTACT_MULTIPLE_ROOTS_VERIFIED__CONTINUUM_ORACLE_MATRIX_PENDING__NO_PRODUCTION_ADMISSION",
   "evidence_paths": [
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_RESULT.json",
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_DECISION.md",
@@ -520,6 +524,15 @@
     "production_qualified": false,
     "baseline": "3c3171ec223d2b7f5b93b0a75b62d2b7c40ab4b7",
     "preregistration": "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_PREREGISTRATION.md",
-    "scope": "Independent current-candidate K stationary layer closure, matched physical interface and condensed response; no time/storage state."
+    "scope": "Independent current-candidate K stationary layer closure, matched physical interface and condensed response; no time/storage state.",
+    "primary_source_postimage": "47d76926a401253fc86fa9844ebe5c26cdc8ff55",
+    "primary_tested": true,
+    "primary_local_available": 458,
+    "primary_local_total": 468,
+    "primary_dynamic_completed": 9,
+    "primary_dynamic_total": 18,
+    "primary_physical_comparisons_available": 0,
+    "primary_multiroot_observed": true,
+    "extension": "integration/sw-rib-top03/TOP03_CONTINUOUS_CONTACT_EXTENSION.md"
   }
 }
