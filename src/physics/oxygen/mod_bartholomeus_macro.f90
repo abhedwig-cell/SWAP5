@@ -1,6 +1,6 @@
 module mod_bartholomeus_macro
    use iso_fortran_env, only : real64
-   use mod_oxygen_macro_zero_depth, only : oxygen_macro_zero_depth, OXYGEN_MACRO_ROOT_OK, OXYGEN_MACRO_NO_FINITE_ROOT
+   use mod_oxygen_macro_zero_depth, only : oxygen_macro_zero_depth_fast, OXYGEN_MACRO_ROOT_OK, OXYGEN_MACRO_NO_FINITE_ROOT
    implicit none
    private
 
@@ -48,7 +48,7 @@ contains
          return
       end if
 
-      call oxygen_macro_zero_depth(p%ctop,a,b,p%microbial_shape_m,p%root_shape_m,lroot,status)
+      call oxygen_macro_zero_depth_fast(p%ctop,a,b,p%microbial_shape_m,p%root_shape_m,lroot,status)
       if (status == OXYGEN_MACRO_NO_FINITE_ROOT) then
          ! Boundary dum == ctop: l -> infinity. Use the analytical limit.
          c_macro = p%ctop - a*(1.0_real64-exp(-p%depth_m/p%microbial_shape_m)) - &
