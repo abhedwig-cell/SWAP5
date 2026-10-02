@@ -1,10 +1,10 @@
 program test_low08a_application
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, fmr_logical_column_t
+  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, fmr_logical_column_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
-       fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state
+       fmr_new_b110_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_tile_config_t, fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK
@@ -12,14 +12,13 @@ program test_low08a_application
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_kernel_transactions
   use mod_fmr_committed_restart
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_NONE
+  use mod_transaction_reference, only: TX_TEMPORAL_NONE
   use variables, only: fldtmin
   use mod_fixed_flux_top_boundary_provider
   use mod_groundwater_topology_composition, only: groundwater_topology_t
   use mod_groundwater_application_plan, only: groundwater_tile_predictor_input_t, groundwater_cell_area_input_t
   implicit none
   real(real64), parameter :: T0=5100.1875_real64,T1=5100.6875_real64,HARD_MASS_GATE=1.0e-12_real64
-  real(real64), parameter :: QUALIFICATION_HEAD_BUDGET=1.0e-2_real64
   type(fmr_production_application_config_t) :: cfg,bad
   type(fmr_production_application_bootstrap_t) :: app,badapp
   type(fmr_serialized_column_result_t),allocatable :: result(:)
@@ -73,12 +72,7 @@ program test_low08a_application
   columns(1)%parameter_ref=1_int64;columns(1)%state_handle=1_int64;columns(1)%forcing_handle=1_int64
   columns(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   call backend%initialize(top)
-  block
-    real(real64) :: previous(numnod)
-    previous=0.0_real64
-    call fmr_new_b110_temporal_indicator_committed_state(states(1),columns(1)%column_id, &
-         cfg%tiles(1)%initial_state,T0,ok,previous)
-  end block
+  call fmr_new_b110_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok)
   call require(ok,'committed state')
   call states(1)%capture_checkpoint(cp,ok)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
@@ -180,11 +174,7 @@ contains
     col(1)%parameter_ref=1_int64;col(1)%state_handle=1_int64;col(1)%forcing_handle=1_int64
     col(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     call backend%initialize(local_top);call resumed%initialize(local_top)
-    block
-      real(real64)::previous(numnod)
-      previous=0.0_real64
-      call fmr_new_b110_temporal_indicator_committed_state(state(1),col(1)%column_id,config%tiles(1)%initial_state,T0,good,previous)
-    end block
+    call fmr_new_b110_committed_state(state(1),col(1)%column_id,config%tiles(1)%initial_state,T0,good)
     call require(good,'restart initial state')
     call state(1)%capture_checkpoint(checkpoint,good);call require(good,'restart checkpoint')
     forcing_a=config%tiles(1)%base_forcing
