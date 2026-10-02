@@ -45,6 +45,8 @@ MODULE_SRC=(
   src/process/mod_restricted_surface_evaporation.f90
   src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 compile_tree() {
   local tree="$1" tag="$2"

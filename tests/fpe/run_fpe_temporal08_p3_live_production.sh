@@ -116,6 +116,8 @@ MODULE_SRC=(
   src/adapter/mod_modflow6_fgc34_c_bridge.f90
   tests/fpe/mod_fpe_temporal08_production_live_fixture.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 objects=()
 for source in "${MODULE_SRC[@]}"; do

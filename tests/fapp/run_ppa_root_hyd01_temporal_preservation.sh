@@ -165,6 +165,8 @@ MODULE_SRC=(
   src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90
   src/runtime/mod_modflow6_multiswap_cell_response.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 
 run_opt(){

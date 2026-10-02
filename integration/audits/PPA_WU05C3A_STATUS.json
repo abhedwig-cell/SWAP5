@@ -1,0 +1,86 @@
+{
+  "work_unit": "PPA-WU05-C3A",
+  "baseline": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
+  "checkpoint_commit": "commit containing final workflow and this record; resolve from Git history",
+  "last_reconciled_head": "42c9367f65b7fa7f98b8d173afae74b4a7d92827",
+  "last_reconciled_upstream": "7a629a10cabb3553ff77474423e6ccac81b29aec",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "focused_repair_qualified": true,
+  "status": "LOCAL_SHARED_PRESERVATION_PASS_FINAL_PERSISTED_QUALIFICATION_PENDING",
+  "canonical_admitted": false,
+  "recovery_point": "docs/audits/PPA_WU05C3A_ADMISSION.md",
+  "next_action": "Actively wait for final exact-postimage qualification; evaluate artifacts/logs, admit bounded route and preserve exact postmerge if required gates pass.",
+  "blockers": [],
+  "authority_paths": [
+    "docs/development/quality-governance-a-aa.md",
+    "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+    "docs/audits/PPA_WU05C3A_REPAIR_PREREGISTRATION.md"
+  ],
+  "test_paths": [
+    "tests/physics/run_bartholomeus_runtime_boundaries.sh",
+    "tests/physics/run_bartholomeus_admission_boundaries.sh",
+    "tests/physics/run_bartholomeus_active_chain.sh",
+    "tests/fmr/run_c3a_bartholomeus_production_gate.sh",
+    "tests/physics/run_ppa_wu05c3q_kernel.sh",
+    "tests/physics/run_bartholomeus_shared_preservation.py",
+    "tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+    "tests/fpm/run_ppa_wu05a10_rapid_drain.sh",
+    "tests/fpm/run_ppa_wu05a26_backend_compile.sh"
+  ],
+  "evidence_paths": [
+    "docs/audits/PPA_WU05C3A_REPAIR_RESULT.md",
+    "docs/audits/PPA_WU05C3A_BOUNDARY_FALSIFICATION.md",
+    "docs/audits/PPA_WU05C3A_APPLICATION_INPUT_AUDIT.md"
+  ],
+  "dependency_surface": [
+    "src/physics/oxygen",
+    "src/process/mod_bartholomeus_runtime_input.f90",
+    "src/process/mod_root_uptake_oxygen_composition.f90",
+    "src/runtime/mod_fmr_bartholomeus_execution.f90"
+  ],
+  "canonical_admission_owner": "central SWAP5 regie",
+  "local_gate_execution": {
+    "compiler": "GNU Fortran 13.3.0",
+    "date": "2026-10-02",
+    "all_exit_codes": 0,
+    "markers": [
+      "PPA_WU05C3A_ACTIVE_CHAIN=PASS",
+      "PPA_WU05C3A_DYNAMIC_RUNTIME_BOUNDARIES=PASS",
+      "PPA_WU05C3A_ADMISSION_BOUNDARIES=PASS",
+      "PPA_WU05C3A_PRODUCTION_PRESERVATION_GATE=PASS",
+      "PPA_WU05C3P_ROOT_OXYGEN_COMPOSITION=PASS",
+      "PPA_WU05C3P_ACTIVATION=PASS",
+      "PPA_WU05C3Q_KERNEL_SMOKE=PASS",
+      "PPA_WU05C3R_MACRO_ZERO_DEPTH_CHECKS=27",
+      "PPA_WU05C3R_MACRO_ZERO_DEPTH=PASS",
+      "PPA_WU05C3R_SCALAR_BRACKET=PASS",
+      "PPA_WU05C3Q_ROOT_COMPOSITION=PASS"
+    ]
+  },
+  "canonical_delta_review": "10 LOW05-A commits: backend/application ordinary prescribed-head addition, no crop/root/oxygen/thermal contract change; no whole-application preservation inferred.",
+  "interfaces_changed": [
+    "src/crop/mod_crop_bartholomeus_input.f90",
+    "src/runtime/mod_fmr_bartholomeus_contract.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "oxygen_qualification": {
+    "run": 36968761028,
+    "postimage": "7098a0535e58b5ea2ab269b56d5ea537dcabca48",
+    "conclusion": "success",
+    "scope": "Declared oxygen admission workflow only; broader CI not implied."
+  },
+  "build_repair": {
+    "surface": "160 compile manifests add one dependency helper call; original content identity verified after stripping inserted comment/call.",
+    "production_source_changed": false,
+    "local_precheckpoint_compile": "FKT22 O0/O2 PASS; persisted replay pending",
+    "negative_findings": [
+      "Recovered fixed dependency list compiled waterfilm provider before runtime view.",
+      "Fixed list omitted existing PERCH19 backend prerequisite."
+    ]
+  },
+  "local_shared_preservation": "integration/audits/PPA_WU05C3A_SHARED_PRESERVATION_RESULT.json"
+}
