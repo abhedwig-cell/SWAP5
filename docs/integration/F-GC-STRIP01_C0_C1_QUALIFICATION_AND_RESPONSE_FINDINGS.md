@@ -36,9 +36,9 @@ Both pass preregistered head 1e-8 m and rate 1e-10 m³/d gates. Right/base flow 
 
 Two C0 negatives remain important. The first engine download used a nonexistent subset name and failed before numerical execution. After fixing the filename, initializing a zero-STO steady solve exactly at drain stage caused an inactive-DRN singular initial linearization for the far-source case. A stage+0.001 m initial Newton guess fixed that steady solve; it introduces no physical storage. Coupled initial state uses the actual hydrostatic origins, not this steady-component warm guess.
 
-![C0 groundwater component](../../integration/f-gc/strip01/figures/c0_native_component.svg)
+![C0 groundwater component](assets/f-gc-strip01/c0_native_component.svg)
 
-![C1 groundwater component](../../integration/f-gc/strip01/figures/c1_native_component.svg)
+![C1 groundwater component](assets/f-gc-strip01/c1_native_component.svg)
 
 ## Real 50-column coupling falsification
 
