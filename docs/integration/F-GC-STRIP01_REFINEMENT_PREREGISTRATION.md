@@ -83,3 +83,15 @@ This is an exact coordinate transformation of the confined MF equations, not
 a changed boundary condition. Compare original and shifted short physical
 head/exchange/balance. Preserve the original failure and do not infer success
 for long forcing until actual coupled windows and budget tests complete.
+
+## Symmetric-positive-definite native linear solver configuration
+
+The datum shift did not repair the failure; preserve it as a negative result.
+IMS CSV shows inner residual ~1.33e-12 against 1e-12, while head changes are
+~1e-15 m. BiCGSTAB makes negligible progress over 200 inner iterations.
+The matrix here is symmetric: uniform confined T, positive Ss/dt, nonpositive
+API HCOF and nonnegative DRN diagonal. Its positive storage diagonal makes
+it positive definite. Test native CG instead of BiCGSTAB, holding every
+head/rate/outer tolerance and iteration ceiling unchanged. This is a solver
+configuration alternative for this declared SPD case only, not a generic
+coupling algorithm or altered physical model. Keep BiCGSTAB failures.
