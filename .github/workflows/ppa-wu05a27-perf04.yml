@@ -1,0 +1,18 @@
+name: PPA-WU05-A27 PERF04 memo qualification
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  memo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: A26 live preservation
+        run: bash tests/fpm/run_ppa_wu05a26_live_trial_preparer.sh
+      - name: Backend preservation
+        run: bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
+      - name: A8 preservation
+        run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
+      - name: PERF04 memo semantics
+        run: bash research/rfm/a27/run_perf04_memo.sh
