@@ -2,10 +2,10 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ppa-wu05-perch20-restart-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ppa-wu05-migmac01-source-origin-diagnostic-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
-fail(){ echo "PPA_WU05_PERCH20_FAIL $*" >&2; exit 1; }
+fail(){ echo "PPA_WU05_PERCH20_TX_FAIL $*" >&2; exit 1; }
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace)
 MODULE_SRC=(
@@ -55,31 +55,8 @@ MODULE_SRC=(
   src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/solver/mod_b110_smooth_freatic_projection.f90
-  src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/process/mod_soil_temperature_contract.f90
-  src/physics/oxygen/mod_oxygen_macro_zero_depth.f90
-  src/physics/oxygen/mod_oxygen_scalar_bracket.f90
-  src/physics/oxygen/mod_bartholomeus_micro.f90
-  src/physics/oxygen/mod_bartholomeus_macro.f90
-  src/physics/oxygen/mod_bartholomeus_response.f90
-  src/physics/oxygen/mod_bartholomeus_profile_response.f90
-  src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90
-  src/physics/oxygen/mod_bartholomeus_temperature.f90
-  src/physics/oxygen/mod_bartholomeus_microbial.f90
-  src/physics/oxygen/mod_bartholomeus_waterfilm.f90
-  src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90
-  src/process/mod_bartholomeus_runtime_input.f90
-  src/physics/oxygen/mod_bartholomeus_parameter_contract.f90
-  src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90
-  src/physics/oxygen/mod_bartholomeus_response_assembly.f90
-  src/physics/oxygen/mod_bartholomeus_factor_provider.f90
-  src/process/mod_root_water_uptake_process.f90
-  src/process/mod_root_uptake_oxygen_composition.f90
-  src/runtime/mod_fmr_bartholomeus_activation.f90
-  src/runtime/mod_fmr_bartholomeus_contract.f90
-  src/crop/mod_crop_bartholomeus_input.f90
-  src/runtime/mod_fmr_bartholomeus_execution.f90
   src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_linear_solver.f90
@@ -116,18 +93,15 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90
   src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
   src/process/macropore/mod_macropore_standard_storage.f90
+  src/process/macropore/mod_macropore_covering_layer_input.f90
   src/runtime/mod_macropore_standard_rate_adapter.f90
   src/solver/mod_macropore_exchange_overlay_provider.f90
-  src/process/macropore/mod_macropore_covering_layer_input.f90
   src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_macropore_configuration.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
-  src/runtime/mod_fmr_committed_restart.f90
 )
-# Additive C3A backend prerequisites; existing gate semantics stay fixed.
-mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
@@ -137,13 +111,9 @@ for opt in 0 2; do
     objects+=("$obj")
   done
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
-    tests/fpm/test_ppa_wu05_perch20_restart_lifecycle.f90 -o "$OUT/test.o"
+    tests/fpm/test_ppa_wu05_migmac01_source_origin_diagnostic.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" | tee "$OUT/out.txt"
-  grep -Fq 'PPA_WU05_PERCH20_CLONE_ISOLATION=PASS' "$OUT/out.txt"
-  grep -Fq 'PPA_WU05_PERCH20_LAYOUT_FAIL_CLOSED=PASS' "$OUT/out.txt"
-  grep -Fq 'PPA_WU05_PERCH20_RESTART_EXACT=PASS' "$OUT/out.txt"
-  grep -Fq 'PPA_WU05_PERCH20_RESTART_GATE=PASS' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05_MIGMAC01_SOURCE_ORIGIN=BLOCKED_NOT_QUALIFIED' "$OUT/out.txt"
 done
-cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
-echo "PPA_WU05_PERCH20_O0_O2_IDENTITY=PASS"
+echo 'PPA_WU05_MIGMAC01_SOURCE_ORIGIN_NEGATIVE_EVIDENCE_O0_O2=RECORDED'

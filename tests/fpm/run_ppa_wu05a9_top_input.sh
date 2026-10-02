@@ -48,8 +48,31 @@ MODULE_SRC=(
   src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/solver/mod_b110_smooth_freatic_projection.f90
+  src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/process/mod_soil_temperature_contract.f90
+  src/physics/oxygen/mod_oxygen_macro_zero_depth.f90
+  src/physics/oxygen/mod_oxygen_scalar_bracket.f90
+  src/physics/oxygen/mod_bartholomeus_micro.f90
+  src/physics/oxygen/mod_bartholomeus_macro.f90
+  src/physics/oxygen/mod_bartholomeus_response.f90
+  src/physics/oxygen/mod_bartholomeus_profile_response.f90
+  src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90
+  src/physics/oxygen/mod_bartholomeus_temperature.f90
+  src/physics/oxygen/mod_bartholomeus_microbial.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90
+  src/process/mod_bartholomeus_runtime_input.f90
+  src/physics/oxygen/mod_bartholomeus_parameter_contract.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90
+  src/physics/oxygen/mod_bartholomeus_response_assembly.f90
+  src/physics/oxygen/mod_bartholomeus_factor_provider.f90
+  src/process/mod_root_water_uptake_process.f90
+  src/process/mod_root_uptake_oxygen_composition.f90
+  src/runtime/mod_fmr_bartholomeus_activation.f90
+  src/runtime/mod_fmr_bartholomeus_contract.f90
+  src/crop/mod_crop_bartholomeus_input.f90
+  src/runtime/mod_fmr_bartholomeus_execution.f90
   src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_linear_solver.f90
@@ -88,6 +111,7 @@ MODULE_SRC=(
   src/process/macropore/mod_macropore_standard_storage.f90
   src/runtime/mod_macropore_standard_rate_adapter.f90
   src/solver/mod_macropore_exchange_overlay_provider.f90
+  src/process/macropore/mod_macropore_covering_layer_input.f90
   src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_macropore_configuration.f90

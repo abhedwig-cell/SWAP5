@@ -1,5 +1,6 @@
 module mod_fmr_macropore_configuration
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t
@@ -12,6 +13,10 @@ module mod_fmr_macropore_configuration
     type(macropore_geometry_config_t) :: geometry
     type(macropore_rate_bundle_request_t) :: rate_template
     type(sorptivity_history_update_request_t) :: history_template
+    real(real64), allocatable :: matrix_area_fraction(:)
+    logical :: covering_parameters_available = .false.
+    real(real64) :: covering_minimum_polygon_diameter_cm = 0.0_real64
+    real(real64) :: covering_ksat_cm_per_day = 0.0_real64
   contains
     procedure, public :: valid_for_nodes => fmr_macropore_config_valid_for_nodes
   end type fmr_macropore_physical_config_t
@@ -24,7 +29,8 @@ contains
        sorptivity_alpha, conductivity, entry_head, sorp_fac_parallel, ksat_horizontal, cdarcy, &
        flow_reduction, shape_factor, swsep, ok, rapid_enabled, rapid_drain_type, rapid_drain_level_cm, &
        rapid_area_exponent, rapid_kd_reference, rapid_resistance_reference_day, perched_enabled, &
-       critical_under_saturated_volume_cm)
+       critical_under_saturated_volume_cm, matrix_area_fraction, covering_minimum_polygon_diameter_cm, &
+       covering_ksat_cm_per_day)
     type(fmr_macropore_physical_config_t), intent(out) :: config
     integer, intent(in) :: top_node
     real(real64), intent(in) :: static_volume_cp(:), domain_fraction(:,:), z(:), dz(:), diameter(:)
@@ -40,6 +46,8 @@ contains
     real(real64), intent(in), optional :: rapid_drain_level_cm, rapid_area_exponent, rapid_kd_reference, &
          rapid_resistance_reference_day, critical_under_saturated_volume_cm
     logical, intent(in), optional :: perched_enabled
+    real(real64), intent(in), optional :: matrix_area_fraction(:)
+    real(real64), intent(in), optional :: covering_minimum_polygon_diameter_cm, covering_ksat_cm_per_day
 
     integer :: n, nd, id
     real(real64) :: bottom_level
@@ -58,6 +66,22 @@ contains
 
     n = size(static_volume_cp)
     if (n <= 0) return
+    if (present(matrix_area_fraction)) then
+      if (size(matrix_area_fraction) /= n) return
+      if (any(.not. ieee_is_finite(matrix_area_fraction)) .or. any(matrix_area_fraction <= 0.0_real64) .or. &
+          any(matrix_area_fraction > 1.0_real64)) return
+      config%matrix_area_fraction = matrix_area_fraction
+    end if
+    if (top_node > 1) then
+      if (.not. present(matrix_area_fraction) .or. .not. present(covering_minimum_polygon_diameter_cm) .or. &
+          .not. present(covering_ksat_cm_per_day)) return
+      if (.not. ieee_is_finite(covering_minimum_polygon_diameter_cm) .or. &
+          .not. ieee_is_finite(covering_ksat_cm_per_day)) return
+      if (covering_minimum_polygon_diameter_cm <= 0.0_real64 .or. covering_ksat_cm_per_day < 0.0_real64) return
+      config%covering_parameters_available = .true.
+      config%covering_minimum_polygon_diameter_cm = covering_minimum_polygon_diameter_cm
+      config%covering_ksat_cm_per_day = covering_ksat_cm_per_day
+    end if
     nd = size(domain_fraction,1)
     if (nd <= 0 .or. size(domain_fraction,2) /= n) return
     if (top_node < 1 .or. top_node > n) return
@@ -213,6 +237,16 @@ contains
     if (active_nodes <= 0) return
     if (.not. self%geometry%valid()) return
     if (self%geometry%num_nodes /= active_nodes) return
+    if (allocated(self%matrix_area_fraction)) then
+      if (size(self%matrix_area_fraction) /= active_nodes) return
+      if (any(.not. ieee_is_finite(self%matrix_area_fraction)) .or. &
+          any(self%matrix_area_fraction <= 0.0_real64) .or. any(self%matrix_area_fraction > 1.0_real64)) return
+    end if
+    if (self%covering_parameters_available) then
+      if (.not. ieee_is_finite(self%covering_minimum_polygon_diameter_cm) .or. &
+          .not. ieee_is_finite(self%covering_ksat_cm_per_day)) return
+      if (self%covering_minimum_polygon_diameter_cm <= 0.0_real64 .or. self%covering_ksat_cm_per_day < 0.0_real64) return
+    end if
 
     nd = self%geometry%num_domains
     if (nd <= 0) return
