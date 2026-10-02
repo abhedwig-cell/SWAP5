@@ -1801,10 +1801,10 @@ contains
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
             .not. parameters%frost_active
        if (parameters%bottom_mode == 3) then
-         ok = ok .and. allocated(self%legacy_swbotb3_implicit_control) .and. self%soil_water_selection%uses_reference()
-         if (ok) ok = self%legacy_swbotb3_implicit_control%ready()
-       else
-         ok = ok .and. .not. allocated(self%legacy_swbotb3_implicit_control)
+         ! Admission precedes configure_parameters()/prepare_interval(). The
+         ! immutable forcing-owned Cauchy control is therefore validated in
+         ! prepare_interval, not through stale model-local state here.
+         ok = ok .and. self%soil_water_selection%uses_reference()
        end if
        if (parameters%elasticity_active) then
          ok = ok .and. self%soil_water_selection%uses_reference() .and. &
@@ -2080,6 +2080,7 @@ contains
         allocate(self%legacy_swbotb3_implicit_control)
         self%legacy_swbotb3_implicit_control = forcing%legacy_swbotb3_implicit_control
       end if
+      if (self%bottom_mode == 3 .and. .not. allocated(self%legacy_swbotb3_implicit_control)) return
       if (allocated(forcing%legacy_swbotb4_qgwl_control)) then
         if (allocated(forcing%legacy_swbotb2_control)) return
         if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
