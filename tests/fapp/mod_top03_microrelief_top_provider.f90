@@ -13,6 +13,7 @@ module mod_top03_microrelief_top_provider
     type(b110_default_mvg_parameters_t), pointer :: hydraulics => null()
     real(real64) :: external_stage_cm = 0.0_real64
     real(real64) :: microrelief_amplitude_cm = 0.0_real64
+    real(real64) :: surface_contact_resistance_day = 0.0_real64
   contains
     procedure :: evaluate => top03_microrelief_evaluate
     procedure :: wet_fraction => top03_wet_fraction
@@ -24,16 +25,20 @@ module mod_top03_microrelief_top_provider
 
 contains
 
-  subroutine bind_top03_microrelief_provider(provider, geometry, hydraulics, external_stage_cm, microrelief_amplitude_cm)
+  subroutine bind_top03_microrelief_provider(provider, geometry, hydraulics, external_stage_cm, microrelief_amplitude_cm, &
+       surface_contact_resistance_day)
     type(top03_microrelief_provider_t), intent(out) :: provider
     type(soil_water_parameter_set_t), target, intent(in) :: geometry
     type(b110_default_mvg_parameters_t), target, intent(in) :: hydraulics
     real(real64), intent(in) :: external_stage_cm, microrelief_amplitude_cm
+    real(real64), intent(in), optional :: surface_contact_resistance_day
 
     provider%geometry => geometry
     provider%hydraulics => hydraulics
     provider%external_stage_cm = external_stage_cm
     provider%microrelief_amplitude_cm = microrelief_amplitude_cm
+    provider%surface_contact_resistance_day = 0.0_real64
+    if (present(surface_contact_resistance_day)) provider%surface_contact_resistance_day = surface_contact_resistance_day
   end subroutine bind_top03_microrelief_provider
 
   subroutine top03_microrelief_evaluate(self, pressure_head_top, water_content_top, candidate_ponding_depth, requested, result)
@@ -44,7 +49,7 @@ contains
     type(soil_water_boundary_conditions_t), intent(in) :: requested
     type(soil_water_top_boundary_result_t), intent(out) :: result
 
-    real(real64) :: k_top, k_sat, k_face, k_contact, top_distance
+    real(real64) :: k_top, k_sat, k_face, k_eff, k_contact, top_distance
     real(real64) :: fwet, hwet, storage
     logical :: ok
 
@@ -55,8 +60,10 @@ contains
     if (.not. associated(self%geometry) .or. .not. associated(self%hydraulics)) return
     if (self%geometry%active_nodes <= 0 .or. .not. allocated(self%geometry%node_distance)) return
     if (size(self%geometry%node_distance) < 1) return
-    if (.not. ieee_is_finite(self%external_stage_cm) .or. .not. ieee_is_finite(self%microrelief_amplitude_cm)) return
-    if (self%external_stage_cm <= 0.0_real64 .or. self%microrelief_amplitude_cm < 0.0_real64) return
+    if (.not. ieee_is_finite(self%external_stage_cm) .or. .not. ieee_is_finite(self%microrelief_amplitude_cm) .or. &
+        .not. ieee_is_finite(self%surface_contact_resistance_day)) return
+    if (self%external_stage_cm <= 0.0_real64 .or. self%microrelief_amplitude_cm < 0.0_real64 .or. &
+        self%surface_contact_resistance_day < 0.0_real64) return
     if (.not. ieee_is_finite(pressure_head_top) .or. .not. ieee_is_finite(water_content_top) .or. &
         .not. ieee_is_finite(candidate_ponding_depth)) return
 
@@ -70,12 +77,18 @@ contains
 
     ! Exact fixture policy: SWKMEAN=1, arithmetic mean at the surface face.
     k_face = 0.5_real64 * (k_sat + k_top)
+    if (self%surface_contact_resistance_day == 0.0_real64) then
+      ! Exact R=0 control: preserve the previously tested microrelief arithmetic bit-for-bit.
+      k_eff = k_face
+    else
+      k_eff = top_distance / (top_distance/k_face + self%surface_contact_resistance_day)
+    end if
     fwet = self%wet_fraction()
     hwet = self%mean_wet_head()
     storage = self%surface_storage()
-    k_contact = fwet * k_face
+    k_contact = fwet * k_eff
 
-    if (.not. all(ieee_is_finite([k_face,fwet,hwet,storage,k_contact]))) return
+    if (.not. all(ieee_is_finite([k_face,k_eff,fwet,hwet,storage,k_contact]))) return
     if (fwet <= 0.0_real64 .or. fwet > 1.0_real64 .or. k_contact <= 0.0_real64) return
     if (storage < 0.0_real64 .or. hwet < 0.0_real64) return
 
