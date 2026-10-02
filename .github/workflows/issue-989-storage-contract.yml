@@ -19,3 +19,5 @@ jobs:
           "$B/test_transaction_reference"
       - name: Typed production application reproducer
         run: python3 tests/physics/run_bartholomeus_application.py
+
+# PR trigger refresh
