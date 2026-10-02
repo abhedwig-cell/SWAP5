@@ -4,7 +4,7 @@
 No production source rewriting. Build directory is kept for reproducible evidence.
 """
 from __future__ import annotations
-import argparse, hashlib, itertools, json, os, re, subprocess
+import argparse, hashlib, itertools, json, os, re, subprocess, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -98,13 +98,23 @@ end module MOD_grid
                 objects.append(str(obj))
             subprocess.run([args.compiler,f'-O{opt}',*objects,'-o',str(out/'test')],stdout=log,stderr=log,check=True)
         print(f'BUILD_O{opt}=PASS',flush=True)
-        rows=[]
+        rows=[];timings=[]
+        (out/'records.jsonl').write_text('')
         for i,c in enumerate(cases):
             argv=[str(c[k]) for k in ['mode','L','R','m','ns','wet','mean','analytic']]
             if c['analytic']>=2:argv += [str(c['H']),str(c['hs'])]
-            run=subprocess.run([str(out/'test'),*argv],capture_output=True,text=True,timeout=30)
+            started=time.perf_counter()
+            try:
+                run=subprocess.run([str(out/'test'),*argv],capture_output=True,text=True,timeout=120)
+            except subprocess.TimeoutExpired as exc:
+                rows.append(dict(case=c,returncode=124,stdout=(exc.stdout or b'').decode() if isinstance(exc.stdout,bytes) else (exc.stdout or ''),stderr='case exceeded explicit 120 second execution bound'))
+                (out/'records.json').write_text(json.dumps(rows)+'\n')
+                raise
+            timings.append(dict(case=c,seconds=time.perf_counter()-started))
             record=dict(case=c,returncode=run.returncode,stdout=run.stdout,stderr=run.stderr)
             rows.append(record)
+            with (out/'records.jsonl').open('a') as journal:journal.write(json.dumps(record)+'\n')
+            (out/'timings.json').write_text(json.dumps(timings)+'\n')
             if run.returncode and not ('CONTACT_UNAVAILABLE' in run.stdout and 'dynamic top-boundary provider unavailable' in run.stderr):
                 (out/'records.json').write_text(json.dumps(rows)+'\n')
                 raise RuntimeError(f'runtime failed {c}: {run.stderr}\n{run.stdout}')

@@ -236,22 +236,13 @@ contains
     real(real64),intent(in) :: hs
     type(top03_continuous_result_t),intent(out) :: result
     integer,intent(in),optional :: seed
-    type(top03_continuous_result_t) :: other
-    integer :: i
+    ! The monotone scalar bracket supplies the selected root. Multiple starts
+    ! remain a component qualification control, not repeated hot-path work.
     if(present(seed))then
-      call solve_one(self,hs,seed,result);return
+      call solve_one(self,hs,seed,result)
+    else
+      call solve_one(self,hs,0,result)
     end if
-    call solve_one(self,hs,0,result)
-    if(result%status/=CONTACT_AVAILABLE)return
-    do i=1,2
-      call solve_one(self,hs,i,other)
-      if(other%status/=CONTACT_AVAILABLE)then
-        result%status=CONTACT_UNCONVERGED;return
-      end if
-      result%seed_flux_difference=max(result%seed_flux_difference,abs(result%q-other%q))
-      result%seed_head_difference=max(result%seed_head_difference,abs(result%interface_head-other%interface_head))
-    end do
-    if(result%seed_flux_difference>1e-9_real64.or.result%seed_head_difference>1e-7_real64)result%status=CONTACT_UNCONVERGED
   end subroutine
 
   subroutine evaluate_boundary(self,pressure_head_top,water_content_top,candidate_ponding_depth,requested,result)

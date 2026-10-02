@@ -223,15 +223,21 @@ contains
     real(real64),intent(in) :: hs
     type(top03_contact_result_t) :: a,b,plus,minus
     real(real64),allocatable :: saved(:,:)
-    real(real64) :: eps,fdq,fdi,qerr,ierr,probe,kvalue,ksplus,ksminus
+    real(real64) :: eps,fdq,fdi,qerr,ierr,probe,kvalue,ksplus,ksminus,seed_q(0:2),seed_head(0:2)
+    integer :: seed_status(0:2)
     integer :: seed,k
     logical :: ok,branch_match
     saved=contact%layer%cofgen
     do seed=0,2
       call contact%solve(hs,b,seed)
+      seed_q(seed)=b%q;seed_head(seed)=b%interface_head;seed_status(seed)=b%status
       write(*,'(A,3(1X,I0),3(1X,ES24.16))')'ROOT',seed,b%status,b%iterations,b%q,b%length_residual,b%interface_head
     end do
     call contact%solve(hs,a)
+    if(any(seed_status/=CONTACT_AVAILABLE))a%status=3
+    a%seed_flux_difference=maxval(abs(seed_q-seed_q(0)))
+    a%seed_head_difference=maxval(abs(seed_head-seed_head(0)))
+    if(a%seed_flux_difference>1e-9_real64.or.a%seed_head_difference>1e-7_real64)a%status=3
     if(any(saved/=contact%layer%cofgen))error stop 'local solver mutated parameters'
     write(*,'(A,1X,I0,7(1X,ES24.16))')'CONTROL',a%status,a%q,a%length_residual, &
          a%flux_identity_error,a%seed_head_difference,a%seed_flux_difference,a%interface_head,contact%cut_head
