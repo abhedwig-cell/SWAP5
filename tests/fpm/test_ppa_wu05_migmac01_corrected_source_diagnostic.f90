@@ -161,6 +161,7 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
   request%base_state%water_content=water
   request%base_state%ponding_depth=source_scalars(3)
   request%base_state%groundwater_level=source_scalars(4)
+  request%physical%matrix_area_fraction=origin(5,:)
   request%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
   request%boundary%bottom_mode=2
   request%boundary%top_flux=end_scalars(3)
@@ -205,7 +206,9 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
        levels(4),int(levels(6)),ok,rapid_enabled=.true.,rapid_drain_type=2, &
        rapid_drain_level_cm=rapid_cfg(4),rapid_area_exponent=rapid_cfg(1), &
        rapid_kd_reference=rapid_cfg(2),rapid_resistance_reference_day=rapid_cfg(3),perched_enabled=.true., &
-       critical_under_saturated_volume_cm=0.1_real64) ! exact official CRITUNDSATVOL, swap.swp line 348
+       critical_under_saturated_volume_cm=0.1_real64,matrix_area_fraction=origin(5,:), &
+       covering_minimum_polygon_diameter_cm=10.0_real64,covering_ksat_cm_per_day=1.0_real64) &
+       ! exact official CRITUNDSATVOL plus captured covering physical parameters
   if(.not.ok)error stop 'source configuration invalid'
   geometry_config=source_config%geometry
   call evaluate_macropore_geometry(geometry_config,macro%dynamic_volume_cp,geometry)

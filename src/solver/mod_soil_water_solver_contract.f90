@@ -48,6 +48,8 @@ module mod_soil_water_solver_contract
 
   type, public :: soil_water_physical_config_t
      logical :: macropore_active = .false.
+     ! Immutable matrix cross-section. Absence preserves the unit-area route.
+     real(real64), allocatable :: matrix_area_fraction(:)
   end type soil_water_physical_config_t
 
   type, public :: soil_water_numerical_config_t
@@ -356,6 +358,12 @@ contains
     if (.not. allocated(request%base_state%water_content)) return
     if (size(request%base_state%pressure_head) /= n) return
     if (size(request%base_state%water_content) /= n) return
+    if (allocated(request%physical%matrix_area_fraction)) then
+      if (size(request%physical%matrix_area_fraction) /= n) return
+      if (any(.not. ieee_is_finite(request%physical%matrix_area_fraction))) return
+      if (any(request%physical%matrix_area_fraction <= 0.0_real64) .or. &
+          any(request%physical%matrix_area_fraction > 1.0_real64)) return
+    end if
     if (request%step_duration <= 0.0_real64) return
     if (.not. associated(request%evaluation%constitutive)) return
     ok = .true.
