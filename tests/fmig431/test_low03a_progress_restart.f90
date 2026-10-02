@@ -125,20 +125,9 @@ program test_low03a_progress
   call require(same_bits(first%mass%storage_end,application(1)%mass%storage_end) .and. &
        same_bits(first%mass%total_out,application(1)%mass%total_out), 'public bootstrap and observed backend identity')
   call backend%discard_trial_candidate(candidate,diag)
-  direct_forcing=forcing
-  deallocate(direct_forcing%legacy_swbotb3_implicit_control)
-  direct_forcing%bottom_head=-78.62639206421315_real64
-  direct_forcing%bottom_flux=2.0e-3_real64
-  call direct%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
-       direct_forcing,cfg%numerical,T0,T1,cp,oracle,other,oracle_diag)
-  call require(oracle%completed .and. other%ready(),'existing typed fixed-head oracle')
-  call require(progress_steps==oracle_diag%accepted_substeps .and. progress_retries==oracle_diag%retries, &
-       'Cauchy application matches direct typed retry/acceptance policy')
-  call require(same_bits(first%mass%storage_end,oracle%mass%storage_end) .and. &
-       same_bits(first%mass%total_out,oracle%mass%total_out) .and. &
-       same_bits(first%terminal_bottom_outward_flux_native,oracle%terminal_bottom_outward_flux_native), &
-       'retry/progress physics equals direct typed endpoint forcing')
-  call direct%discard_trial_candidate(other,oracle_diag)
+  ! Unlike LOW05-A, there is no fixed-head alias oracle here: mode 3 is a
+  ! genuine Robin/Cauchy law and Q4 is trial-local. The independent typed-law
+  ! and temporal-operator oracles above own this comparison.
   limited=cfg%numerical
   limited%max_committed_substeps=1
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
