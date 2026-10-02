@@ -1,0 +1,29 @@
+name: F-MIG431 LOW08-A qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: O0 O2 qualification
+        id: qualify
+        env:
+          LOW08A_TESTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          LOW08A_RESULT: low08a_qualification_result.json
+        run: |
+          set -o pipefail
+          python3 tests/fmig431/run_low08a_qualification.py 2>&1 | tee low08a_qualification.log
+          test ${PIPESTATUS[0]} -eq 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: F-MIG431-LOW08-A-qualification
+          path: |
+            low08a_qualification_result.json
+            low08a_qualification.log
+          if-no-files-found: warn

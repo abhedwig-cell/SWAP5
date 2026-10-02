@@ -1821,7 +1821,7 @@ contains
         ok = ok .and. .not. allocated(parameters%macropore)
       end if
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
-           parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3) .and. &
+           parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
             .not. parameters%frost_active
@@ -3319,8 +3319,9 @@ contains
     class is (fmr_b110_physical_state_t)
       if (self%fixed_weir_surface_water_active) error stop 'F-PM08D7 active model missing fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
-      if (self%macropore_active .and. allocated(self%macropore_config) .and. &
-          allocated(self%macropore_config%matrix_area_fraction)) then
+      if (self%macropore_active) then
+        if (.not. allocated(self%macropore_config)) error stop 'F-MR06 active macropore config missing'
+        if (.not. allocated(self%macropore_config%matrix_area_fraction)) error stop 'F-MR06 active macropore area fraction missing'
         value = sum(self%soil_parameters%dz * physical%water_content * self%macropore_config%matrix_area_fraction) + &
              physical%ponding_depth
       else
@@ -3394,7 +3395,7 @@ contains
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
     if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &
-        self%bottom_mode /= 2) then
+        self%bottom_mode /= 2 .and. self%bottom_mode /= 8) then
       value = huge(0.0_real64)
       return
     end if

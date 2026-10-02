@@ -145,7 +145,8 @@ contains
     end if
     if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX .or. &
         (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
-         request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 7)) then
+         request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 7 .and. &
+         request%boundary%bottom_mode /= 8)) then
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'boundary-envelope-deferred'
        return
@@ -278,7 +279,9 @@ contains
     ! is zero and therefore contributes no bottom-head stiffness to the defect
     ! operator. The top boundary is likewise an explicit prescribed flux and
     ! already carries no top-face stiffness here.
-    if (request%boundary%bottom_mode == 5) then
+    if (request%boundary%bottom_mode == 5 .or. (request%boundary%bottom_mode == 8 .and. &
+         request%base_state%pressure_head(n) > request%boundary%bottom_head - &
+         0.5_real64*request%parameters%dz(n) + 1.0e-5_real64)) then
        bottom_distance = 0.5_real64*request%parameters%dz(n)
        face_conductance = conductivity_base(n)/bottom_distance
        if (.not. ieee_is_finite(face_conductance) .or. face_conductance <= 0.0_real64) then

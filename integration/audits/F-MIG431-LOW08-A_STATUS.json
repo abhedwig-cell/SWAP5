@@ -1,12 +1,18 @@
 {
   "work_unit": "F-MIG431-LOW08-A",
-  "state": "CENTRALLY_PREREGISTERED_OFFICIAL_BRANCH_ISSUED",
+  "state": "QUALIFIED_ADMISSION_CANDIDATE",
   "canonical_baseline": "d6a9e5a9edfec92d463ad0e30b4b5b6a39e9511c",
   "official_branch": "work/f-mig431-low08-a-lysimeter-application",
   "depends_on": "F-MIG431-LOW08-P0",
-  "implemented": false,
-  "tested": false,
-  "qualified": false,
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
   "canonical_admitted": false,
-  "claim_ceiling": "ordinary application only; SWBOTB1 parked and explicit mode3 open"
+  "claim_ceiling": "ordinary application only; SWBOTB1 parked and explicit mode3 open",
+  "qualified_postimage": "487b6bc2aac187844e6a25fc2ba38f047b80f36c",
+  "qualification_run": 37073798161,
+  "qualification_artifact": 11256088839,
+  "qualification_result": "BOUNDED_APPLICATION_GATES_PASS",
+  "o0_o2_marker_identity": true,
+  "architecture_note": "Mode-8 temporal branch is reconstructed from immutable solve-entry request/base_state; no qbot-value inference, persistent active-set state, restart field, or generic kernel contract extension."
 }
