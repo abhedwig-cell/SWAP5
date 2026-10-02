@@ -9,7 +9,7 @@ STUB="${1:?stub path required}"
 GEOMETRY="${2:?geometry id required}"
 HEAD_SOURCE="src/legacy/b1_10_port/headcalc.f90"
 HEAD_SOURCE="$BUILD/top03_research_headcalc.f90"
-python3 tests/fapp/make_top03_terminal_trace_probe.py "$HEAD_SOURCE"
+python3 tests/fapp/make_top03_terminal_trace_probe.py "$HEAD_SOURCE" ${3:+--strict-descent}
 fail(){ echo "FAPP09_GATE_FAIL $*" >&2; exit 91; }
 
 python3 - "$BUILD/compile-order.txt" "$STUB" "$HEAD_SOURCE" <<'PY'
@@ -72,6 +72,5 @@ for opt in 0 2; do
   cat "$OUT/output.txt"
   echo "TOP03_TRANSITION_O${opt}=COMPLETED"
 done
-
 
 

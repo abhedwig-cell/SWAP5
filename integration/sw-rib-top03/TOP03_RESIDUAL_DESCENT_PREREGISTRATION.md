@@ -1,0 +1,9 @@
+# TOP03 residual-descent research extension
+
+Initial observational traces reproduce the unguarded failure counts. They show repeated residual growth being permitted by the line-search shortcut Fmax < compartment mass tolerance, even while pressure changes exceed the pressure convergence tolerance. Example: shallow/dry/free-drainage, 512 subdivisions, step 24, iterations 73..80 oscillate in bottom residual and head at approximately -0.02814 cm. All trial mass residuals are small, but pressure corrections remain above 1e-12 cm. This does not establish that every failure has this mechanism.
+
+Before further execution, preregister a discriminating research-only line-search variation: keep the strict residual norm decrease condition unchanged, but permit its existing small-mass shortcut only when the scaled pressure correction also meets both original pressure tolerances. Hold all physics, Jacobian, capacity floor, final convergence gates, iteration/backtrack limits and failure handling fixed. This is a stronger progress requirement, not relaxation of pressure acceptance or production policy. The original loop may still exhaust backtracking and reach its existing convergence/failure path; do not claim this changes that separate policy.
+
+Run both instrumented-original and stronger-shortcut variants on the complete surface factorial under O0/O2. Require exact reproduction of stock numerical records for instrumentation alone, trace identity, original analytical controls and hard mass gates. Compare repaired and new failures, complete-in-both interval transfer, and iteration counts. Classify residual-growth shortcuts separately from exhausted line searches. Production admission remains false regardless of this research result; temporal interval acceptance is unresolved.
+
+Observational additions record the exact scaled pressure criterion and total signed residual sum. No Actions required. Persist the source extension before testing it.
