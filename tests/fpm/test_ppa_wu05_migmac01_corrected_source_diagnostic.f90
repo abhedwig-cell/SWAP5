@@ -339,6 +339,12 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
          '|NODE=',maxloc(abs(workspace%richards%residual(1:numnod)),dim=1), &
          '|RATE_SUM=',sum(workspace%richards%residual(1:numnod)), &
          '|INTEGRATED_SUM=',dt*sum(workspace%richards%residual(1:numnod))
+    write(*,'(*(g0))') 'ACTIVE_INNER_GATES|FMAX=',workspace%richards%last_fmax_rate, &
+         '|COMP_OK=',workspace%richards%last_compartment_gate_passed, &
+         '|TOTAL=',workspace%richards%last_total_balance_rate, &
+         '|TOTAL_OK=',workspace%richards%last_total_gate_passed, &
+         '|HEAD_RATIO=',workspace%richards%last_head_criterion_ratio, &
+         '|HEAD_OK=',workspace%richards%last_head_gate_passed
     write(*,'(*(g0))') 'ACTIVE_INNER_NODE|RES=', &
          workspace%richards%residual(maxloc(abs(workspace%richards%residual(1:numnod)),dim=1)), &
          '|OLD_H=',workspace%richards%old_head(maxloc(abs(workspace%richards%residual(1:numnod)),dim=1)), &

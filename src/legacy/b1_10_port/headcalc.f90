@@ -552,6 +552,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end if
       flnonconv3 = .FALSE.
 
+      fsi_ws%last_fmax_rate = Fmax
+      fsi_ws%last_total_balance_rate = sum1
+      fsi_ws%last_head_criterion_ratio = 0.0d0
+      fsi_ws%last_compartment_gate_passed = Fmax <= CritDevBalCp
+      fsi_ws%last_total_gate_passed = dabs(sum1) <= CritDevBalTot
+      fsi_ws%last_head_gate_passed = .TRUE.
+
 !     apply performance criteria per compartment
       do i = 1, NN
 
@@ -563,12 +570,18 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        test for change of pressure head
          if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
+            fsi_ws%last_head_criterion_ratio = max(fsi_ws%last_head_criterion_ratio, &
+                 abs(state%h(i)-fsi_ws%old_head(i))/CritDevh2Cp)
             if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
+               fsi_ws%last_head_gate_passed = .FALSE.
                if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          else
+            fsi_ws%last_head_criterion_ratio = max(fsi_ws%last_head_criterion_ratio, &
+                 abs(state%h(i)-fsi_ws%old_head(i))/abs(fsi_ws%old_head(i))/CritDevh1Cp)
             if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
+               fsi_ws%last_head_gate_passed = .FALSE.
                if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if

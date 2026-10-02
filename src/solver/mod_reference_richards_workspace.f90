@@ -37,6 +37,14 @@ module mod_reference_richards_workspace
      logical :: unsaturated_flags(3) = .false.
      real(real64), allocatable :: warm_start_head(:)
      logical :: has_warm_start = .false.
+     ! Read-only post-trial observations of the native HeadCalc convergence
+     ! gates. These fields never participate in the convergence decision.
+     real(real64) :: last_fmax_rate = 0.0_real64
+     real(real64) :: last_total_balance_rate = 0.0_real64
+     real(real64) :: last_head_criterion_ratio = 0.0_real64
+     logical :: last_compartment_gate_passed = .false.
+     logical :: last_total_gate_passed = .false.
+     logical :: last_head_gate_passed = .false.
      type(soil_water_solver_diagnostics_t) :: diagnostics
      integer :: profile_full_reset_calls = 0
      integer(int64) :: profile_zeroed_bytes = 0_int64
@@ -106,6 +114,12 @@ contains
     workspace%dfdh_lower(active_nodes) = 0.0_real64
     workspace%unsaturated_flags = .false.
     workspace%has_warm_start = .false.
+    workspace%last_fmax_rate = 0.0_real64
+    workspace%last_total_balance_rate = 0.0_real64
+    workspace%last_head_criterion_ratio = 0.0_real64
+    workspace%last_compartment_gate_passed = .false.
+    workspace%last_total_gate_passed = .false.
+    workspace%last_head_gate_passed = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
     workspace%poisoned = .false.
   end subroutine prepare_reference_workspace_for_solve
@@ -144,6 +158,12 @@ contains
     workspace%unsaturated_flags = .false.
     workspace%warm_start_head = 0.0_real64
     workspace%has_warm_start = .false.
+    workspace%last_fmax_rate = 0.0_real64
+    workspace%last_total_balance_rate = 0.0_real64
+    workspace%last_head_criterion_ratio = 0.0_real64
+    workspace%last_compartment_gate_passed = .false.
+    workspace%last_total_gate_passed = .false.
+    workspace%last_head_gate_passed = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
     workspace%tridag_factorization_capture_active = .false.
     workspace%poisoned = .false.
@@ -206,6 +226,12 @@ contains
     workspace%unsaturated_flags = .true.
     workspace%warm_start_head = qnan
     workspace%has_warm_start = .true.
+    workspace%last_fmax_rate = qnan
+    workspace%last_total_balance_rate = qnan
+    workspace%last_head_criterion_ratio = qnan
+    workspace%last_compartment_gate_passed = .false.
+    workspace%last_total_gate_passed = .false.
+    workspace%last_head_gate_passed = .false.
     workspace%diagnostics%route = 'poisoned'
     workspace%tridag_factorization_capture_active = .false.
     workspace%poisoned = .true.
