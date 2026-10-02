@@ -23,8 +23,10 @@ cat > "$B/mod_soil_water_solver_contract.f90" <<'EOF'
 module mod_soil_water_solver_contract
  use iso_fortran_env,only:real64
  implicit none
- type::soil_water_state_t
+ type::soil_water_physical_state_t
+  integer::active_nodes=0
   real(real64),allocatable::pressure_head(:),water_content(:)
+  real(real64)::ponding_depth=0._real64,groundwater_level=0._real64
  end type
 end module
 EOF
