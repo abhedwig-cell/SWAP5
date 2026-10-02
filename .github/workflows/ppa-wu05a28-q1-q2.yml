@@ -1,0 +1,20 @@
+name: PPA-WU05-A28 approximate RFM Q1-Q2
+on:
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile live backend
+        run: bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
+      - name: A28 configuration and 36-soil frontier
+        run: |
+          mkdir -p /tmp/a28
+          bash research/rfm/a28/run_q1_q2.sh /tmp/a28
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a28-q1-q2
+          path: /tmp/a28
