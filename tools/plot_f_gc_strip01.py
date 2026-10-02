@@ -16,7 +16,7 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args()
     data = json.loads(a.result.read_text(encoding="utf-8"))
-    if data.get("status") != "STANDALONE_AB_PASS" or data.get("coupled_executed") is not False:
+    if data.get("status") not in ("STANDALONE_AB_PASS", "STANDALONE_REFERENCE_AB_PASS_WITH_SWEEP_NEGATIVE") or data.get("coupled_executed") is not False:
         raise SystemExit("refusing to plot absent or non-passing native standalone result")
     a.output.mkdir(parents=True, exist_ok=True)
 
@@ -41,20 +41,6 @@ def main():
                 title="Mesh refinement at K = 0.5 m/d")
     axes[0].grid(True, alpha=.25)
     axes[0].legend()
-    cs = data["conductance_sensitivity"]
-    conductance = np.array([r["conductance_m2_d"] for r in cs], dtype=float)
-    drain_cell = np.array([r["heads_m"][0] for r in cs], dtype=float)
-    symmetry_cell = np.array([r["heads_m"][-1] for r in cs], dtype=float)
-    fig, ax = plt.subplots(figsize=(7.4, 4.6), constrained_layout=True)
-    ax.semilogx(conductance, drain_cell, marker="o", label="drain-cell head")
-    ax.semilogx(conductance, symmetry_cell, marker="o", label="right-edge cell head")
-    ax.set(xlabel="DRN conductance (m²/d)", ylabel="MODFLOW head (m)",
-           title="Finite-conductance sensitivity (K = 0.5 m/d)")
-    ax.grid(True, which="both", alpha=.25)
-    ax.legend()
-    fig.savefig(a.output / "conductance_sensitivity.svg")
-    plt.close(fig)
-
     dd = data["drain_down"]
     times = np.array([r["day"] for r in dd], dtype=float)
     storage = np.array([r["storage_m3"] for r in dd], dtype=float)
@@ -67,6 +53,20 @@ def main():
     axes[1].grid(True, alpha=.25)
     axes[1].legend()
     fig.savefig(a.output / "mesh_and_drain_down.svg")
+    plt.close(fig)
+
+    cs = data["conductance_sensitivity"]
+    conductance = np.array([r["conductance_m2_d"] for r in cs], dtype=float)
+    drain_cell = np.array([r["heads_m"][0] for r in cs], dtype=float)
+    symmetry_cell = np.array([r["heads_m"][-1] for r in cs], dtype=float)
+    fig, ax = plt.subplots(figsize=(7.4, 4.6), constrained_layout=True)
+    ax.semilogx(conductance, drain_cell, marker="o", label="drain-cell head")
+    ax.semilogx(conductance, symmetry_cell, marker="o", label="right-edge cell head")
+    ax.set(xlabel="DRN conductance (m²/d)", ylabel="MODFLOW head (m)",
+           title="Finite-conductance sensitivity (K = 0.5 m/d)")
+    ax.grid(True, which="both", alpha=.25)
+    ax.legend()
+    fig.savefig(a.output / "conductance_sensitivity.svg")
     plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(8.4, 5.2), constrained_layout=True)
