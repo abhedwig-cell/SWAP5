@@ -102,7 +102,8 @@ contains
 
     call initialize_b110_default_mvg_parameters(hp,cofgen)
     call bind_b110_default_mvg_provider(hyd,hp,0.25_real64)
-    call hyd%evaluate(initial_head_cm,theta0,conductivity,capacity,dkdh)
+    h0 = initial_head_cm
+    call hyd%evaluate(h0,theta0,conductivity,capacity,dkdh)
     bottom_rate = -conductivity(1)
 
     allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod))
