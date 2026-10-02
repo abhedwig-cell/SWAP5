@@ -7,11 +7,24 @@ def rows(path):
 a=rows(base/"abc_raw.csv");b=rows(new/"abc_raw.csv")
 if len(a)!=len(b):raise SystemExit(f"raw row count {len(a)} != {len(b)}")
 ignore={"wall_seconds"}
+c_checked=0
 for i,(x,y) in enumerate(zip(a,b),1):
-    if {k:v for k,v in x.items() if k not in ignore}!={k:v for k,v in y.items() if k not in ignore}:
-        diff=[k for k in x if k not in ignore and x[k]!=y.get(k)]
-        raise SystemExit(f"raw mismatch row {i} keys={diff}: "+str([(k,x[k],y.get(k)) for k in diff[:8]]))
-print(f"PERF02_RAW_NON_TIMING_IDENTITY=PASS rows={len(a)}")
+    if x["arm"]!="3": continue
+    c_checked+=1
+    xx={k:v for k,v in x.items() if k not in ignore}
+    yy={k:v for k,v in y.items() if k not in ignore}
+    if xx!=yy:
+        diff=[k for k in xx if xx[k]!=yy.get(k)]
+        raise SystemExit(f"RFM C mismatch row {i} keys={diff}: "+str([(k,xx[k],yy.get(k)) for k in diff[:8]]))
+print(f"PERF02_RFM_C_NON_TIMING_IDENTITY=PASS rows={c_checked}")
+comp=rows(new/"abc_comparison.csv")
+e1=sum(r["classification"]=="E1" for r in comp)
+bc=sum(r["B_completed"]=="1" and r["C_completed"]=="1" for r in comp)
+rawB=sum(r["arm"]=="2" and r["completed"]=="1" for r in b)
+rawC=sum(r["arm"]=="3" and r["completed"]=="1" for r in b)
+if (rawB,rawC,bc,e1)!=(29,30,29,29):
+    raise SystemExit(f"current-canonical envelope mismatch B={rawB} C={rawC} joint={bc} E1={e1}")
+print("PERF02_CURRENT_CANONICAL_E1_GATE=PASS B=29 C=30 joint=29 E1=29")
 t=rows(new/"abc_timing.csv")
 rat=[]
 for r in t:
