@@ -84,8 +84,14 @@ for opt in 0 2; do
   objects+=("$obj")
  done
  "${FC:-gfortran}" -std=f2008 -ffree-line-length-none -fcheck=all -O"$opt" -J"$OUT" -I"$OUT" "${objects[@]}" research/rfm/a27/test_pressure_receiver.f90 -o "$OUT/test"
- "$OUT/test" > "$OUT/out.txt"
+ set +e
+ "$OUT/test" > "$OUT/out.txt" 2> "$OUT/err.txt"
+ status=$?
+ set -e
+ echo "A27_PRESSURE_RECEIVER_O${opt}_STATUS=${status}"
+ cat "$OUT/out.txt"
+ cat "$OUT/err.txt" >&2
+ if [[ "$status" -ne 0 ]]; then exit "$status"; fi
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
-cat "$BUILD/o2/out.txt"
 grep -Fq 'A27_PRESSURE_RECEIVER_SEAM=PASS' "$BUILD/o2/out.txt"
