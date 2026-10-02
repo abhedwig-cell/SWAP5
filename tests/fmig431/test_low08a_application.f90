@@ -118,8 +118,7 @@ contains
     real(real64),intent(in)::initial_head
     real(real64),intent(out)::k0
     value%initial_time=T0
-    value%numerical%transaction%temporal_mode=TX_TEMPORAL_NONE
-    value%numerical%transaction%temporal_tolerance=0.0_real64
+    value%numerical%transaction%temporal_tolerance=1.0e-6_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
     value%numerical%transaction%max_retries=2
