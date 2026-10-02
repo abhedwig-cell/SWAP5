@@ -8,6 +8,7 @@ module mod_macropore_dynamic_shrinkage
     real(real64) :: alpha_k = 0.0_real64
     real(real64) :: beta_k = 0.0_real64
     real(real64) :: gamma_k = 0.0_real64
+    real(real64) :: transition_moisture_ratio = 0.0_real64
   contains
     procedure :: valid => clay_kim_valid
   end type clay_kim_shrinkage_t
@@ -25,6 +26,7 @@ module mod_macropore_dynamic_shrinkage
     real(real64) :: minimum_subsidence_cm = 0.0_real64
   end type dynamic_crack_request_t
 
+  public :: prepare_clay_kim_option1
   public :: evaluate_clay_kim_shrinkage_fraction
   public :: evaluate_dynamic_crack_volume
 
@@ -33,15 +35,39 @@ contains
   logical function clay_kim_valid(self)
     class(clay_kim_shrinkage_t), intent(in) :: self
     clay_kim_valid = ieee_is_finite(self%alpha_k) .and. ieee_is_finite(self%beta_k) .and. &
-         ieee_is_finite(self%gamma_k) .and. self%alpha_k >= 0.0_real64
+         ieee_is_finite(self%gamma_k) .and. ieee_is_finite(self%transition_moisture_ratio) .and. &
+         self%alpha_k > 0.0_real64 .and. self%beta_k /= 0.0_real64 .and. &
+         self%transition_moisture_ratio >= 0.0_real64
   end function clay_kim_valid
+
+  subroutine prepare_clay_kim_option1(theta_s, shr_par_a, shr_par_b, shr_par_c, parameters, ok)
+    real(real64), intent(in) :: theta_s, shr_par_a, shr_par_b, shr_par_c
+    type(clay_kim_shrinkage_t), intent(out) :: parameters
+    logical, intent(out) :: ok
+    real(real64) :: argument
+
+    parameters = clay_kim_shrinkage_t()
+    ok = .false.
+    if (.not. ieee_is_finite(theta_s) .or. theta_s <= 0.0_real64 .or. theta_s >= 1.0_real64) return
+    if (.not. ieee_is_finite(shr_par_a) .or. .not. ieee_is_finite(shr_par_b) .or. &
+        .not. ieee_is_finite(shr_par_c)) return
+    if (shr_par_a <= 0.0_real64 .or. shr_par_b == 0.0_real64) return
+    argument = (shr_par_c-1.0_real64)/(shr_par_a*shr_par_b)
+    if (argument <= 0.0_real64) return
+    parameters%alpha_k = shr_par_a
+    parameters%beta_k = shr_par_b
+    parameters%gamma_k = shr_par_c
+    parameters%transition_moisture_ratio = -log(argument)/shr_par_b
+    if (parameters%transition_moisture_ratio > theta_s/(1.0_real64-theta_s)-0.01_real64) return
+    ok = parameters%valid()
+  end subroutine prepare_clay_kim_option1
 
   subroutine evaluate_clay_kim_shrinkage_fraction(theta, theta_s, parameters, shrink_fraction, ok)
     real(real64), intent(in) :: theta, theta_s
     type(clay_kim_shrinkage_t), intent(in) :: parameters
     real(real64), intent(out) :: shrink_fraction
     logical, intent(out) :: ok
-    real(real64) :: moisture_ratio, void_ratio, void_ratio_saturated
+    real(real64) :: moisture_ratio, void_ratio, solid_volume_fraction
 
     ok = .false.
     shrink_fraction = 0.0_real64
@@ -49,18 +75,19 @@ contains
     if (.not. ieee_is_finite(theta) .or. .not. ieee_is_finite(theta_s)) return
     if (theta < 0.0_real64 .or. theta_s <= 0.0_real64 .or. theta_s >= 1.0_real64 .or. theta > theta_s) return
 
-    moisture_ratio = theta / max(1.0e-30_real64, 1.0_real64-theta)
-    void_ratio_saturated = theta_s / (1.0_real64-theta_s)
-    void_ratio = parameters%alpha_k*exp(-parameters%beta_k*moisture_ratio) + &
-         parameters%gamma_k*moisture_ratio
-    ! B1.11 theory: e may not fall below e0; that is the zero-shrinkage floor.
-    void_ratio = max(parameters%alpha_k, void_ratio)
-    if (void_ratio > void_ratio_saturated + 1.0e-12_real64) return
-
-    ! Relative aggregate volume loss with saturated aggregate volume as reference.
-    shrink_fraction = max(0.0_real64, min(1.0_real64, &
-         (void_ratio_saturated-void_ratio)/(1.0_real64+void_ratio_saturated)))
-    ok = .true.
+    ! Exact B1.11 SHRINK source semantics: MoisR = Theta / (1-ThetaS).
+    solid_volume_fraction = 1.0_real64-theta_s
+    moisture_ratio = theta/solid_volume_fraction
+    if (moisture_ratio > parameters%transition_moisture_ratio) then
+      void_ratio = moisture_ratio
+    else
+      void_ratio = parameters%alpha_k*exp(-parameters%beta_k*moisture_ratio) + &
+           parameters%gamma_k*moisture_ratio
+      void_ratio = max(void_ratio,parameters%alpha_k)
+    end if
+    ! Exact B1.11 line 1573.
+    shrink_fraction = theta_s-void_ratio*solid_volume_fraction
+    ok = ieee_is_finite(shrink_fraction) .and. shrink_fraction >= 0.0_real64 .and. shrink_fraction < 1.0_real64
   end subroutine evaluate_clay_kim_shrinkage_fraction
 
   subroutine evaluate_dynamic_crack_volume(request, shrink_fraction, dynamic_volume_cm, ok)
