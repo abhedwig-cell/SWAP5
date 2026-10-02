@@ -201,3 +201,8 @@ The branch-only direct typed Reference SWKIMPL0 resistive-head candidate passes 
 ## LOW03-P0 shared dependency closure, 2026-10-02
 
 Combined run36971466508/job110726138312 qualifies exact postimage `b1b5d6c22f18decd2db270531cd986ddf59af6ef`. Downloaded artifact11212276848 SHA256 `2bc97a2fb4439661ce4c4ea5afff9b81b1530badcead2775a94e008baa0dc9a2` contains three complete result JSONs identical to fresh local runs. DEP01 is accepted closed: six unchanged numerical programs, including36-material/216-case RossFast, adapter/selection, serialized wiring and solver-seam pilot, preserve complete stdout across canonical/candidate and O0/O2; new unsupported-field/mode tests pass. No historical guard is changed. PR#975 is ready for normal merge only; this record does not admit its production delta or full mode3 application. Protected/permission failures remain stop conditions.1 parked,3/8 application open.
+
+
+## LOW03-P0 canonical closeout and LOW03-A issuance
+
+PR#975 normally merges at `82351099a8c5c77ce111f8ace6648b8b5ffa7167`. [LOW03-P0 closeout](../migration/F-MIG431-LOW03-P0_CLOSEOUT.md) admits only the qualified direct typed SWKIMPL0 resistive-head solver and closes DEP01 dependency preservation. Ordinary SWBOTB3 application is not admitted. [LOW03-A preregistration](../migration/F-MIG431-LOW03-A_PREREGISTRATION.md) issues one implicit application branch: aquifer head is frozen before retries, while optional extra QBOT4 samples the actual trial endpoint. Explicit3 remains open pending separate committed-GWL/profile-resistance reconciliation.1 remains parked;3/8 application remain open; all-lower-boundary migration is not claimed.

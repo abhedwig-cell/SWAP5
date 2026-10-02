@@ -1,9 +1,9 @@
 {
   "work_unit": "F-MIG431-LOW03-P0",
   "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
-  "last_reconciled_head": "7a629a10cabb3553ff77474423e6ccac81b29aec",
+  "last_reconciled_head": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
   "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
-  "state": "COMPLETE_SHARED_SOLVER_QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "state": "CANONICAL_ADMITTED_CLOSED_BOUNDED_TYPED_SOLVER",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -19,11 +19,10 @@
     "direct typed Reference mode3 solver path only; serialized application still rejects3"
   ],
   "checkpoint_commit": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
-  "next_action": "Normal PR975 merge at exact expected head b1b5d6c22f18decd2db270531cd986ddf59af6ef; no protected-check bypass; then close P0 and preregister LOW03-A application",
+  "next_action": "Execute sole LOW03-A application branch after preregistration; no further P0 production edits",
   "blockers": [
-    "No declared bounded P0 solver/dependency qualification blocker remains",
-    "Full SWBOTB3 application forcing/proposal/transaction/restart remains unadmitted",
-    "SWKIMPL1/macropores/interface sensitivity remain deferred"
+    "No P0 solver/dependency blocker remains",
+    "Full mode3 application remains unadmitted; implicit LOW03-A preregistered, explicit3 still open"
   ],
   "relevant_paths": [
     "src/solver/mod_soil_water_solver_contract.f90",
@@ -67,7 +66,7 @@
     3,
     8
   ],
-  "future_application_unit": "LOW03-A not issued",
+  "future_application_unit": "F-MIG431-LOW03-A implicit ordinary Cauchy application preregistered; explicit3 remains open",
   "invariants_affected": [
     "Explicit physics input/provider ownership",
     "Solver candidate versus runtime commit",
@@ -77,17 +76,21 @@
   ],
   "recovery_point": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
   "test_scope": "Frozen B1.11 6075 bottom-row cases and 45 direct physical solves per optimization, independent compartment/whole-column mass, exact physical qbot, failed replay, fresh scratch, physical restart continuation, six existing application preservation programs",
-  "typed_solver_canonical_admitted": false,
+  "typed_solver_canonical_admitted": true,
   "tested_postimage": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
   "qualification_run": 36971466508,
   "qualification_job": 110726138312,
   "qualification_artifact_id": 11212276848,
   "scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
-  "canonical_production_implemented": false,
-  "implementation_location": "official LOW03-P0 branch only",
+  "canonical_production_implemented": true,
+  "implementation_location": "integration/f-ci-canonical via PR975",
   "qualification_scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
   "complete_admission_qualification": true,
   "pull_request": 975,
   "shared_authority_prerequisite": "F-MIG431-LOW03-P0-DEP01",
-  "shared_dependency_gate_state": "SEMANTIC_SUCCESSOR_ACCEPTED_CLOSED"
+  "shared_dependency_gate_state": "ACCEPTED_CLOSED",
+  "application_mode3_admitted": false,
+  "canonical_merge_commit": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+  "closeout": "docs/migration/F-MIG431-LOW03-P0_CLOSEOUT.md",
+  "admission_dependency_inheritance": "Qualified b1b5d6c22f18decd2db270531cd986ddf59af6ef to merge82351099a8c5c77ce111f8ace6648b8b5ffa7167 changes six governance/evidence files only; no production/test/runner/asset/source-carrier mutation"
 }

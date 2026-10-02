@@ -2138,6 +2138,29 @@
       "canonical_production_delta": [],
       "production_application_admitted": false,
       "effect": "Exact combined physical and shared binding qualification complete. Normal canonical merge may proceed; full SWBOTB3 application stays closed."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "CANONICAL_ADMITTED_CLOSED_BOUNDED_TYPED_SOLVER",
+      "pull_request": 975,
+      "canonical_merge_commit": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+      "qualification_run": 36971466508,
+      "production_delta": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "src/legacy/b1_10_port/headcalc.f90"
+      ],
+      "production_application_admitted": false,
+      "effect": "Shared typed resistance prerequisite canonically admitted and closed; ordinary mode3 application still open."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-A",
+      "state": "CENTRALLY_PREREGISTERED_OFFICIAL_BRANCH_ISSUED",
+      "baseline": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+      "official_branch": "work/f-mig431-low03-a-implicit-cauchy-application",
+      "production_delta": [],
+      "canonical_admitted": false,
+      "effect": "Sole implicit ordinary Cauchy application unit preregistered; frozen aquifer head versus current-trial extra-flux timing explicit. Explicit3 remains open."
     }
   ]
 }

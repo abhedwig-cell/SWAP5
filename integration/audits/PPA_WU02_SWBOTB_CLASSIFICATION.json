@@ -275,12 +275,20 @@
     {
       "id": "PPA-LOW03",
       "priority": 6,
-      "status": "SHARED_SOLVER_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "status": "SHARED_TYPED_SOLVER_ADMITTED_APPLICATION_OPEN",
       "meaning": "deep-aquifer Cauchy explicit/implicit boundary",
       "prerequisite": "F-MIG431-LOW03-P0",
       "shared_dependency_gate": "F-MIG431-LOW03-P0-DEP01",
       "production_application_admitted": false,
-      "shared_dependency_gate_state": "ACCEPTED_CLOSED"
+      "shared_dependency_gate_state": "ACCEPTED_CLOSED",
+      "shared_solver_admission": {
+        "work_unit": "F-MIG431-LOW03-P0",
+        "pull_request": 975,
+        "merge_commit": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+        "qualification_run": 36971466508,
+        "scope": "direct typed Reference SWKIMPL0 only"
+      },
+      "next_application_unit": "F-MIG431-LOW03-A implicit only"
     },
     {
       "id": "PPA-LOW08",
@@ -336,11 +344,13 @@
     1
   ],
   "post_low03p0_review": {
-    "state": "SHARED_SOLVER_QUALIFIED_PENDING_CANONICAL_ADMISSION",
-    "postimage": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
-    "run": 36971466508,
+    "state": "CANONICAL_ADMITTED_CLOSED_BOUNDED_TYPED_SOLVER",
+    "canonical_merge_commit": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
     "pull_request": 975,
-    "production_application_admitted": false,
-    "authority": "integration/audits/F-MIG431-LOW03-P0_COMPLETE_QUALIFICATION.json"
+    "qualification_run": 36971466508,
+    "scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
+    "application_mode3_admitted": false,
+    "implicit_application": "LOW03-A preregistered",
+    "explicit_application": "open"
   }
 }
