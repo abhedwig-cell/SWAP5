@@ -203,10 +203,11 @@
     "R=0/R=0.05 trajectories still fail numerically; thin L=0.02 cm finest joint contraction remains unready.",
     "Ribasim/SWAP ownership of local pond versus external waterbody storage remains unqualified.",
     "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage.",
-    "Continuum stationary contact is component-qualified in the bounded synthetic matrix; five ready dry-start transfer comparisons fail because the contact has no owned layer storage. Stateful candidate/storage/receipt semantics remain required."
+    "Continuum stationary contact is component-qualified in the bounded synthetic matrix; five ready dry-start transfer comparisons fail because the contact has no owned layer storage. Stateful candidate/storage/receipt semantics remain required.",
+    "Stateful contact implementation gate is blocked by unavailable local command execution; no stateful build/test/qualification claim."
   ],
-  "next_action": "Implement a test-only stateful layer reduction with immutable origin, candidate layer storage and separately owned external and matrix transfers; qualify attempt restore and accepted-window composition before production ABI admission.",
-  "recovery_point": "Resume from TOP03_NONLINEAR_CONTACT_DECISION.md and TOP03_UNSATURATED_CONTACT_ELIMINATION_DESIGN.md on the existing draft branch.",
+  "next_action": "Reconcile current branch/status. Inspect any unconfirmed local stateful files before reuse or regenerate from pinned baseline. Persist coherent source and lifecycle/independent audit tests, then execute preregistered O0/O2 matrix.",
+  "recovery_point": "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_PREREGISTRATION.md",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All three unsaturated-contact research phases ran locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Exact-source evidence and explicit scope only; commits use skip ci.",
   "implementation_slice": {
@@ -226,7 +227,7 @@
     ]
   },
   "last_reconciled_head": "0df7ab1a23c84ba06345d88344bbb9680783a0a6",
-  "checkpoint_commit": "0df7ab1a23c84ba06345d88344bbb9680783a0a6",
+  "checkpoint_commit": "af6a6344bb1dc76c62a562de3be40d74cd7b6f21",
   "pending_tests": [
     "independent candidate-K nonlinear layer closure and stateful owned-storage reduction; constant R already falsified in prior ready comparisons",
     "representative-soil/contact-parameter envelope",
@@ -270,7 +271,7 @@
     },
     "production_source_modified": false
   },
-  "last_reviewed_canonical": "f7c261a7f059c91d4a0aac16e378351f293aa080",
+  "last_reviewed_canonical": "a89990169fb8429a0fd143df9e3d28b9a35d28b8",
   "temporal_controller_research": {
     "preregistration_commit": "17fb8d0d15f04f3dcedfacc0e3338ddcdbd72fad",
     "result": "integration/sw-rib-top03/TOP03_TEMPORAL_CONTROLLER_RESULT.json",
@@ -518,7 +519,20 @@
     ],
     "reviewed": true,
     "research_source_held_fixed": true,
-    "current_canonical_qualification_inherited": false
+    "current_canonical_qualification_inherited": false,
+    "latest_review": {
+      "from": "f7c261a7f059c91d4a0aac16e378351f293aa080",
+      "to": "a89990169fb8429a0fd143df9e3d28b9a35d28b8",
+      "relevant_changed_paths": [
+        "src/legacy/b1_10_port/headcalc.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/solver/mod_b110_default_mvg_provider.f90",
+        "src/solver/mod_reference_richards_workspace.f90",
+        "src/solver/mod_soil_water_solver_contract.f90"
+      ],
+      "research_source_held_fixed": true,
+      "qualification_inherited": false
+    }
   },
   "nonlinear_contact_research": {
     "implemented": true,
@@ -563,5 +577,22 @@
     "primary_result": "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_PRIMARY_RESULT.json",
     "decision": "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_DECISION.md",
     "evidence": "integration/sw-rib-top03/evidence/nonlinear_contact/raw_records.tar.gz"
+  },
+  "stateful_contact_research": {
+    "status": "PREREGISTRATION_PERSISTED__LOCAL_EXECUTION_UNAVAILABLE",
+    "baseline": "1f507d6cc18f995ef7c171b61d3eb7601669da02",
+    "preregistration_commit": "af6a6344bb1dc76c62a562de3be40d74cd7b6f21",
+    "preregistration": "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_PREREGISTRATION.md",
+    "implemented": false,
+    "persisted": true,
+    "persisted_scope": "Design and preregistration only; no confirmed source postimage.",
+    "tested": false,
+    "qualified": false,
+    "production_admission": false,
+    "numerical_policy": "Match explicit SWKIMPL=0: immutable-origin interior/interface K, candidate-K arithmetic top boundary. Separate from stationary continuum closure.",
+    "execution_failure": "Local exec_command stopped returning responses, including a true command in /tmp with login disabled. Source-generation and inspection calls produced no response; pending orchestration cells were terminated. No compilation or scientific execution result was obtained.",
+    "recovery": "Reconcile current branch/status. Inspect any unconfirmed local stateful files before reuse or regenerate from pinned baseline. Persist coherent source and lifecycle/independent audit tests, then execute preregistered O0/O2 matrix.",
+    "canonical_inspected": "a89990169fb8429a0fd143df9e3d28b9a35d28b8",
+    "current_canonical_qualification_inherited": false
   }
 }
