@@ -238,6 +238,17 @@ contains
       if(result%bottom_interface_exchange_available) m%bottom_out=m%bottom_out+result%bottom_outward_exchange_native
       call backend%commit_trial_candidate(committed,candidate,diagnostics,did_commit,commit_status)
       if(.not.did_commit)then;m%status=-909;m%fail_step=step;exit;end if
+      if(arm==ARM_C.and.mod(step,120)==0)then
+        call committed%snapshot(snapshot,available);if(.not.available)then;m%status=-929;m%fail_step=step;exit;end if
+        select type(cs=>snapshot)
+        type is(fmr_b110_rfm_state_t)
+          write(*,'(*(g0,:,","))') 'CYCLE',soil,geom,regime,merge(1,0,approximate_mode),step, &
+               sum(cs%water_content*dz)+cs%rfm%storage_cm()+cs%ponding_depth,cs%water_content(1), &
+               cs%water_content(max(1,min(size(cs%water_content),5))),cs%water_content(size(cs%water_content)), &
+               sum(cs%rfm%endpoint_water_cm),maxval(cs%rfm%wall_age_day),maxval(cs%rfm%wall_sorptivity_cm_sqrt_day)
+        class default;m%status=-930;m%fail_step=step;exit
+        end select
+      end if
       if(arm==ARM_C.and.step==nsteps/2)then
         call fmr_capture_checkpoint(reconstructed,checkpoint,ok);if(.not.ok)then;m%status=-915;m%fail_step=step;exit;end if
         call replay_backend%run_trial(column,template,parameters,reconstructed,forcing,config,t0,t1,checkpoint,result,candidate,diagnostics)
