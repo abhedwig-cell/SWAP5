@@ -86,8 +86,8 @@ contains
     type(kernel_committed_state_t)::committed,reconstructed
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_result_t)::result
-    type(kernel_candidate_state_t)::candidate
-    type(kernel_diagnostics_t)::diagnostics
+    type(kernel_candidate_state_t)::candidate,discard_candidate
+    type(kernel_diagnostics_t)::diagnostics,discard_diagnostics
     type(macropore_runtime_policy_t)::policy
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::hyd
@@ -196,6 +196,23 @@ contains
       end if
       call fmr_capture_checkpoint(committed,checkpoint,ok)
       if(.not.ok)then;m%status=-908;m%fail_step=step;exit;end if
+      if(arm==ARM_C.and.step==nsteps/2)then
+        call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result,discard_candidate,discard_diagnostics)
+        if(.not.result%completed)then;m%status=-923;m%fail_step=step;exit;end if
+        call backend%rollback_trial_candidate(discard_candidate,discard_diagnostics)
+        call committed%snapshot(replay_snapshot,available);if(.not.available)then;m%status=-924;m%fail_step=step;exit;end if
+        select type(a=>original_snapshot)
+        type is(fmr_b110_rfm_state_t)
+          select type(b=>replay_snapshot)
+          type is(fmr_b110_rfm_state_t)
+            if(.not.a%rfm%same_values(b%rfm).or.any(a%pressure_head/=b%pressure_head).or.any(a%water_content/=b%water_content))then
+              m%status=-925;m%fail_step=step;exit
+            end if
+          class default;m%status=-926;m%fail_step=step;exit
+          end select
+        class default;m%status=-927;m%fail_step=step;exit
+        end select
+      end if
       call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint, &
            result,candidate,diagnostics)
       m%status=result%status
