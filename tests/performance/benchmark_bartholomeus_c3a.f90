@@ -3,6 +3,7 @@ program benchmark_bartholomeus_c3a
   use mod_bartholomeus_runtime_input, only: bartholomeus_runtime_view_t
   use mod_bartholomeus_parameter_contract
   use mod_bartholomeus_factor_provider, only: evaluate_bartholomeus_factors_from_state
+  use mod_bartholomeus_waterfilm_provider, only: BARTHOLOMEUS_WATERFILM_REFERENCE
   implicit none
   integer,parameter::N=3, WARM=2000, REPS=200000
   type(bartholomeus_runtime_view_t)::view
@@ -16,13 +17,13 @@ program benchmark_bartholomeus_c3a
   call setup_case(view,data,crop,wroot,wz0,ctop)
   checksum=0
   do i=1,WARM
-    call evaluate_bartholomeus_factors_from_state(view,data,crop,wroot,wz0,ctop,0,f,ok)
+    call evaluate_bartholomeus_factors_from_state(view,data,crop,wroot,wz0,ctop,BARTHOLOMEUS_WATERFILM_REFERENCE,f,ok)
     if(.not.ok) error stop 'warmup'
     checksum=checksum+sum(f)
   end do
   call system_clock(c0,rate)
   do i=1,REPS
-    call evaluate_bartholomeus_factors_from_state(view,data,crop,wroot,wz0,ctop,0,f,ok)
+    call evaluate_bartholomeus_factors_from_state(view,data,crop,wroot,wz0,ctop,BARTHOLOMEUS_WATERFILM_REFERENCE,f,ok)
     if(.not.ok) error stop 'benchmark'
     checksum=checksum+sum(f)
   end do
