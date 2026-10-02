@@ -8,6 +8,7 @@ module mod_rfm_live_trial_preparer
  use mod_rfm_surface_event_age,only:rfm_surface_event_age_request_t,rfm_surface_event_age_result_t, &
       evaluate_rfm_surface_event_age,RFM_SURFACE_EVENT_AGE_AVAILABLE
  use mod_fmr_rfm_activation_binding,only:fmr_rfm_hydraulic_activation_result_t,evaluate_fmr_rfm_activation_from_view
+ use mod_rfm_unponded_activation,only:RFM_ACTIVATION_AVAILABLE
  use mod_rfm_unponded_surface_composition,only:rfm_unponded_surface_composition_result_t, &
       compose_rfm_unponded_surface_receipt,RFM_SURFACE_COMPOSITION_AVAILABLE
  use mod_rfm_preferential_router,only:rfm_preferential_routing_request_t,rfm_preferential_routing_result_t, &
@@ -51,9 +52,14 @@ contains
   ageq%event_active=forcing%event_active
   call evaluate_rfm_surface_event_age(ageq,result%event_age)
   if(result%event_age%status/=RFM_SURFACE_EVENT_AGE_AVAILABLE)return
-  call evaluate_fmr_rfm_activation_from_view(view,constitutive,config%sorptivity_panels,config%sigma_b, &
-       preflight%net_potential_surface_flux,result%event_age%evaluation_age_day,result%activation,ok)
-  if(.not.ok)return
+  if(preflight%net_potential_surface_flux==0.0_real64)then
+    result%activation=fmr_rfm_hydraulic_activation_result_t()
+    result%activation%activation%status=RFM_ACTIVATION_AVAILABLE
+  else
+    call evaluate_fmr_rfm_activation_from_view(view,constitutive,config%sorptivity_panels,config%sigma_b, &
+         preflight%net_potential_surface_flux,result%event_age%evaluation_age_day,result%activation,ok)
+    if(.not.ok)return
+  end if
   call compose_rfm_unponded_surface_receipt(preflight,result%activation%activation,tolerance,result%surface)
   if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)return
   routeq%f_mb=config%f_mb;routeq%connectivity_p=config%connectivity_p;routeq%z_ah_cm=config%z_ah_cm;routeq%z_ic_cm=config%z_ic_cm
@@ -63,7 +69,7 @@ contains
   allocate(endpoint_input_cm(size(result%routing%endpoint_amount)))
   endpoint_input_cm=result%routing%endpoint_amount*step_duration_day
   call bind_rfm_wall_hydraulics_from_accepted(accepted,endpoint_input_cm,config%endpoint_node_index,config%mb_wall_node_index, &
-       view,constitutive,config%sorptivity_panels,result%wall)
+       view,constitutive,config%sorptivity_panels,result%wall,skip_unused_mb_hydraulics=.true.)
   if(.not.result%wall%valid)return
   cq%step_duration_day=step_duration_day;cq%effective_supply_rate_cm_per_day=result%surface%effective_supply_cm_per_day
   cq%matrix_supply_rate_cm_per_day=result%surface%matrix_supply_cm_per_day
