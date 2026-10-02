@@ -128,6 +128,17 @@ contains
     c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     if(allocated(c%tiles(1)%initial_right_derivative))deallocate(c%tiles(1)%initial_right_derivative)
     threshold=c%tiles(1)%base_forcing%bottom_head-0.5_real64*c%tiles(1)%parameters%dz(numnod)+1.0e-5_real64
+    c%tiles(1)%initial_state%pressure_head=threshold
+    call refresh_water(c%tiles(1))
+    call owner%initialize(c,s);call require(s==FMR_APP_BOOT_OK,'equality owner initialize')
+    call owner%run_standalone(T0,T0+1.0e-5_real64,r,s)
+    call require(s==FMR_APP_BOOT_OK .and. r(1)%mass%complete,'equality ordinary application')
+    call require(abs(r(1)%mass%total_in)+abs(r(1)%mass%total_out)<1.0e-12_real64,'strict equality inactive')
+    call owner%close(s)
+    c=config
+    c%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    threshold=c%tiles(1)%base_forcing%bottom_head-0.5_real64*c%tiles(1)%parameters%dz(numnod)+1.0e-5_real64
     c%tiles(1)%initial_state%pressure_head=threshold-1.0_real64
     call refresh_water(c%tiles(1))
     c%tiles(1)%base_forcing%top_flux=0.0_real64
@@ -149,10 +160,12 @@ contains
     call require(s==FMR_APP_BOOT_OK .and. r(1)%mass%complete,'active ordinary application')
     call require(r(1)%mass%total_in+r(1)%mass%total_out>0.0_real64,'active plate exchange')
     forcing(1)=c%tiles(1)%base_forcing
-    forcing(1)%bottom_head=forcing(1)%bottom_head+2.0_real64
+    forcing(1)%bottom_head=forcing(1)%bottom_head+10.0_real64
     call owner%run_standalone_with_forcing(T0+1.0e-5_real64,T0+2.0e-5_real64,forcing,r,s)
     call require(s==FMR_APP_BOOT_OK .and. r(1)%mass%complete,'changed hplate continuation')
+    call require(abs(r(1)%mass%residual)<=HARD_MASS_GATE,'changed hplate hard mass')
     call owner%close(s)
+    print '(a)', 'LOW08A_EQUALITY_STRICT_INACTIVE=PASS'
     print '(a)', 'LOW08A_INACTIVE_ACTIVE_CHANGED_HPLATE=PASS'
   end subroutine
 
