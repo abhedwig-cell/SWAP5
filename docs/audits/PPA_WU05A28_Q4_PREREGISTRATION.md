@@ -59,3 +59,12 @@ This gate tests deterministic replay/transaction ownership. It does not claim ex
 ## Decision boundary
 
 Q4 passes only if all histories and replay gates pass without policy retuning. Passing Q4 can support an A28 long-history production-candidate claim. It does not itself establish canonical admission, MultiSWAP scaling performance, MODFLOW coupling stability or a portable speedup.
+
+## Q4 design note
+
+Repository inspection shows that `fmr_capture_checkpoint` exposes checkpoint capture for trial/retry semantics, but the A27 fixture does not expose a public committed-state restore-from-checkpoint operation. Q4 therefore separates two claims:
+
+- **replay from accepted state**: create two independent committed-state copies from the same accepted snapshot and execute identical forcing; require identical results;
+- **transaction rollback**: exercise candidate discard and verify the original committed state is unchanged.
+
+Do not label either test as external serialized restart. File-format restart remains outside A28 unless a real restart API is located and exercised.
