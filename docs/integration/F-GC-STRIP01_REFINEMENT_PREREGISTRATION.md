@@ -26,3 +26,25 @@ The comparison determines whether the current certificate is conservative in
 this bounded startup panel and whether changed-bottom-head failure persists
 without the temporal indicator. A new numerical route would need separate
 preregistration, refinement evidence and publication/restart qualification.
+
+## Additional unit-correct configuration repair, before execution
+
+Read-only HeadCalc instrumentation on the 1e-6 m changed-head case found a
+zero final Newton correction, but rate residual 4.2469e-12 cm/d exceeded its
+effective 2.8e-12 cm/d gate. HeadCalc residual includes dz*delta(theta)/dt;
+its convergence tolerance is a rate, whereas the original research specification
+stated the budget as 1e-12 cm of water depth. These are different quantities.
+
+Preserve the original fixed-rate panel as negative evidence. Test an opt-in
+research configuration mapping the unchanged 1e-12 cm depth budget to total
+rate tolerance 1e-12/dt cm/d and local rate tolerance 1e-12/(30*dt) cm/d.
+No head or temporal budget changes. The separate transaction/global mass guard
+remains 1e-12 cm; it is not replaced by the rate test. The existing native
+roundoff floor still applies. This is a declared dimensional configuration
+repair, not a production solver patch or tolerance fitting exercise.
+
+Repeat the same independent refinement panel and compare complete profiles,
+exchange and mass. A pass alone is insufficient; retain actual refinement
+errors and verify origin identity. Only then retry the existing short/extended
+coupled panel with this numerical configuration. Coupled volume threshold,
+publication order and all temporal limits remain frozen.
