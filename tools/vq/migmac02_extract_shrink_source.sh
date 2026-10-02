@@ -16,7 +16,7 @@ import sys
 p=Path(sys.argv[1])
 text=p.read_text(encoding="latin-1")
 lines=text.splitlines()
-for needle in ("SUBROUTINE SHRINKPAR","ShrRel","VlMpDyCp"):
+for needle in ("SUBROUTINE SHRINKPAR","FUNCTION SHRINK","VlMpDyCp"):
     print(f"===== {needle} =====")
     hits=[i for i,x in enumerate(lines) if needle.lower() in x.lower()]
     for i in hits[:12]:
