@@ -117,6 +117,14 @@
     "native_modflow_executed": false,
     "expected_engine": "MODFLOW6 6.8.0",
     "expected_flopy": "3.9.5",
-    "artifact": "F-GC-STRIP01-{run_id}"
+    "artifact": "F-GC-STRIP01-{run_id}",
+    "first_attempt": {
+      "run_id": 37043685398,
+      "conclusion": "failure",
+      "jobs_created": 0,
+      "classification": "workflow configuration rejected before numerical execution",
+      "cause": "literal backslashes preceded GitHub expression delimiters; no MODFLOW run occurred"
+    },
+    "configuration_repaired": true
   }
 }

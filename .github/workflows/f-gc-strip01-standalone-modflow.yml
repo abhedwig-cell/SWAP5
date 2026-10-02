@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
-      MPLCONFIGDIR: \${{ runner.temp }}/mplconfig
+      MPLCONFIGDIR: ${{ runner.temp }}/mplconfig
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -38,18 +38,18 @@ jobs:
                    release_id="6.8.0", subset={"mf6"},
                    downloads_dir=root / "strip01-downloads", force=True, quiet=False)
           PY
-          echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  \${RUNNER_TEMP}/strip01-downloads/modflow6-6.8.0-linux.zip" | sha256sum -c -
-          "\${RUNNER_TEMP}/strip01-mf6/mf6" -v
+          echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  ${RUNNER_TEMP}/strip01-downloads/modflow6-6.8.0-linux.zip" | sha256sum -c -
+          "${RUNNER_TEMP}/strip01-mf6/mf6" -v
       - name: Reproduce independent oracle and native MODFLOW A/B
         run: |
-          python tests/fgc/strip01/oracle.py --output "\${RUNNER_TEMP}/strip01-results/oracle"
-          python tests/fgc/strip01/run_standalone.py --mf6 "\${RUNNER_TEMP}/strip01-mf6/mf6" --output "\${RUNNER_TEMP}/strip01-results/native"
-          git rev-parse HEAD > "\${RUNNER_TEMP}/strip01-results/source_commit.txt"
+          python tests/fgc/strip01/oracle.py --output "${RUNNER_TEMP}/strip01-results/oracle"
+          python tests/fgc/strip01/run_standalone.py --mf6 "${RUNNER_TEMP}/strip01-mf6/mf6" --output "${RUNNER_TEMP}/strip01-results/native"
+          git rev-parse HEAD > "${RUNNER_TEMP}/strip01-results/source_commit.txt"
       - name: Persist research outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: F-GC-STRIP01-\${{ github.run_id }}
-          path: \${{ runner.temp }}/strip01-results/
+          name: F-GC-STRIP01-${{ github.run_id }}
+          path: ${{ runner.temp }}/strip01-results/
           if-no-files-found: warn
           retention-days: 90
