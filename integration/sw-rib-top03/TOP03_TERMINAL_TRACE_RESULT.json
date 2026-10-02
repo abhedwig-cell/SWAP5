@@ -1,0 +1,259 @@
+{
+  "scope": "isolated terminal trace and pressure-aware line-search shortcut research",
+  "source_checkpoint": "71bb2d49c68639df7b48df167380c007d82acf5a",
+  "production_qualified": false,
+  "decision": "RESIDUAL_GROWTH_SHORTCUT_CONFIRMED__PARTIAL_REPAIR_NOT_SUFFICIENT_FOR_ADMISSION",
+  "variants": {
+    "stock": {
+      "O0_O2_identity": true,
+      "baseline_numerical_identity": true,
+      "trajectories_per_build": 702,
+      "analytical_controls_pass": 156,
+      "failures": 109,
+      "repaired_count": 0,
+      "new_failure_count": 0,
+      "terminal_failed_traces": 109,
+      "terminal_pressure_only_failures": 62,
+      "observed_growth_shortcuts_while_pressure_not_converged": 368,
+      "terminal_backtracking_exhaustions": 6,
+      "max_aggregate_ledger_cm": 1.8912649224489542e-13,
+      "max_top_difference_both_complete_cm": 0.0,
+      "iterations_total": 1285898,
+      "repaired": [],
+      "new_failures": []
+    },
+    "strict": {
+      "O0_O2_identity": true,
+      "baseline_numerical_identity": false,
+      "trajectories_per_build": 702,
+      "analytical_controls_pass": 156,
+      "failures": 80,
+      "repaired_count": 29,
+      "new_failure_count": 0,
+      "terminal_failed_traces": 80,
+      "terminal_pressure_only_failures": 3,
+      "observed_growth_shortcuts_while_pressure_not_converged": 0,
+      "terminal_backtracking_exhaustions": 9,
+      "max_aggregate_ledger_cm": 3.9979131116751887e-13,
+      "max_top_difference_both_complete_cm": 3.019806626980426e-14,
+      "iterations_total": 1295250,
+      "repaired": [
+        [
+          "2",
+          "7",
+          "1",
+          "1",
+          "256"
+        ],
+        [
+          "2",
+          "7",
+          "1",
+          "1",
+          "512"
+        ],
+        [
+          "2",
+          "7",
+          "1",
+          "1",
+          "1024"
+        ],
+        [
+          "2",
+          "7",
+          "1",
+          "2",
+          "256"
+        ],
+        [
+          "2",
+          "7",
+          "1",
+          "2",
+          "512"
+        ],
+        [
+          "2",
+          "7",
+          "1",
+          "2",
+          "1024"
+        ],
+        [
+          "2",
+          "7",
+          "1",
+          "3",
+          "256"
+        ],
+        [
+          "2",
+          "7",
+          "1",
+          "3",
+          "512"
+        ],
+        [
+          "2",
+          "7",
+          "1",
+          "3",
+          "1024"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "1",
+          "32"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "1",
+          "128"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "1",
+          "256"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "1",
+          "512"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "1",
+          "1024"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "2",
+          "32"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "2",
+          "128"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "2",
+          "256"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "2",
+          "512"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "2",
+          "1024"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "3",
+          "32"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "3",
+          "128"
+        ],
+        [
+          "2",
+          "7",
+          "2",
+          "3",
+          "1024"
+        ],
+        [
+          "2",
+          "7",
+          "3",
+          "3",
+          "512"
+        ],
+        [
+          "3",
+          "7",
+          "2",
+          "1",
+          "1"
+        ],
+        [
+          "3",
+          "7",
+          "2",
+          "1",
+          "16"
+        ],
+        [
+          "3",
+          "7",
+          "2",
+          "2",
+          "1"
+        ],
+        [
+          "3",
+          "7",
+          "2",
+          "2",
+          "16"
+        ],
+        [
+          "3",
+          "7",
+          "2",
+          "3",
+          "1"
+        ],
+        [
+          "3",
+          "7",
+          "2",
+          "3",
+          "16"
+        ]
+      ],
+      "new_failures": []
+    }
+  },
+  "log_sha256": {
+    "top03-terminal-g2-stock.log": "23f7421b3067c7d97871a8cfd5b235723487d9b8ab6174692b6a5c14bdab1e4b",
+    "top03-terminal-g3-stock.log": "23de794e9944844b08068aa9bf24833ef8f3eb2a5aab4fcd0aa935c75763de58",
+    "top03-terminal-g2-strict.log": "752ac9c717e1da0ce21af8f5300714acb98f23e5ef45abab786d85c22d4daeba",
+    "top03-terminal-g3-strict.log": "8f6f79551dfea424c1b14cd3a9e21a1351a90d00a96beab6d447162012aec2c2"
+  },
+  "source_sha256": {
+    "tests/fapp/make_top03_terminal_trace_probe.py": "8c539161a52e9c488c69c1fc0ca6c32f7ff163fe03654b805ee7d7a042dab0e2",
+    "tests/fapp/run_sw_rib_top03_terminal_trace.sh": "c98e37eef18c4335fb9c36e02af3baf78e565b223cf4e50428891c2388deef56",
+    "tests/fapp/analyze_sw_rib_top03_terminal_trace.py": "50179910481434182fcd9db1f59185856a194753e150522b5a4daefbf51bd80d"
+  }
+}
