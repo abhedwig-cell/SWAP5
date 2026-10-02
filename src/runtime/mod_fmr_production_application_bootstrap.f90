@@ -159,7 +159,8 @@ contains
         return
       end if
       groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5 .and. &
-           .not. config%tiles(i)%ordinary_prescribed_head
+           .not. config%tiles(i)%ordinary_prescribed_head .and. .not. config%tiles(i)%ordinary_implicit_cauchy .and. &
+           .not. config%tiles(i)%ordinary_lysimeter_plate
       ordinary_head_profile = ordinary_head_profile .and. config%tiles(i)%ordinary_prescribed_head
       ordinary_cauchy_profile = ordinary_cauchy_profile .and. config%tiles(i)%ordinary_implicit_cauchy
       ordinary_lysimeter_profile = ordinary_lysimeter_profile .and. config%tiles(i)%ordinary_lysimeter_plate
