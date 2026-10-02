@@ -179,6 +179,20 @@ contains
     call require(s==FMR_APP_BOOT_OK .and. r(1)%mass%complete,'changed hplate continuation')
     call require(abs(r(1)%mass%residual)<=HARD_MASS_GATE,'changed hplate hard mass')
     call owner%close(s)
+    c=config
+    c%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    if(.not.allocated(c%tiles(1)%initial_right_derivative))allocate(c%tiles(1)%initial_right_derivative(numnod))
+    c%tiles(1)%initial_right_derivative=0.0_real64
+    c%tiles(1)%base_forcing%bottom_head=c%tiles(1)%initial_state%pressure_head(numnod)+ &
+         0.5_real64*c%tiles(1)%parameters%dz(numnod)
+    c%tiles(1)%base_forcing%top_flux=0.0_real64
+    call owner%initialize(c,s);call require(s==FMR_APP_BOOT_OK,'active zero-flux owner initialize')
+    call owner%run_standalone(T0,T0+1.0e-5_real64,r,s)
+    call require(s==FMR_APP_BOOT_OK .and. r(1)%mass%complete,'active zero-flux application')
+    call require(abs(r(1)%mass%total_in)+abs(r(1)%mass%total_out)<1.0e-12_real64,'active branch permits zero Darcy flux')
+    call owner%close(s)
+    print '(a)', 'LOW08A_ACTIVE_ZERO_FLUX_BRANCH_IDENTITY=PASS'
     print '(a)', 'LOW08A_EQUALITY_STRICT_INACTIVE=PASS'
     print '(a)', 'LOW08A_INACTIVE_ACTIVE_CHANGED_HPLATE=PASS'
   end subroutine
