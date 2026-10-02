@@ -1,0 +1,9 @@
+{
+  "state": "INFRASTRUCTURE_FAILURE_REPAIRED",
+  "run_id": 37067983853,
+  "job_id": 111040435982,
+  "source_commit": "cf269e30f0cdc9f0ea04b8a7171cc1811c9e82ae",
+  "native_execution": false,
+  "cause": "FloPy MODFLOW-ORG release subset requires actual shared-library filename libmf6.so, not logical stem libmf6",
+  "repair": "use release-reported filename libmf6.so; same pinned 6.8.0 archive and SHA256; no model/tolerance changes"
+}

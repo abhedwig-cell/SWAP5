@@ -33,7 +33,7 @@ jobs:
           (root / "strip01-mf6").mkdir(parents=True, exist_ok=True)
           (root / "strip01-downloads").mkdir(parents=True, exist_ok=True)
           run_main(root / "strip01-mf6", owner="MODFLOW-ORG", repo="modflow6",
-                   release_id="6.8.0", subset={"mf6", "libmf6"},
+                   release_id="6.8.0", subset={"mf6", "libmf6.so"},
                    downloads_dir=root / "strip01-downloads", force=True, quiet=False)
           PY
           echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  ${RUNNER_TEMP}/strip01-downloads/modflow6-6.8.0-linux.zip" | sha256sum -c -
