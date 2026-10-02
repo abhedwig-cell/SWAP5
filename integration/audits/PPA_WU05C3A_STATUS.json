@@ -3,7 +3,7 @@
   "baseline": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
   "checkpoint_commit": "6d3d47e1fe46a5ce0402f76b64289717c068207b",
   "last_reconciled_head": "6d3d47e1fe46a5ce0402f76b64289717c068207b",
-  "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+  "last_reconciled_upstream": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -66,12 +66,13 @@
     ]
   },
   "canonical_comparison": {
-    "head": "6d3d47e1fe46a5ce0402f76b64289717c068207b",
-    "canonical": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-    "ahead_by": 149,
-    "behind_by": 204,
+    "head": "46fac633d3b332bdf9430fad18415dba81fe5d41",
+    "canonical": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
+    "ahead_by": 150,
+    "behind_by": 214,
     "files": 75,
     "existing_canonical_files_modified": 0,
     "application_caller_added": false
-  }
+  },
+  "canonical_delta_review": "10 LOW05-A commits: backend/application ordinary prescribed-head addition, no crop/root/oxygen/thermal contract change; no whole-application preservation inferred."
 }

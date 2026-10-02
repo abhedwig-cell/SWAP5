@@ -109,3 +109,16 @@ files and no existing canonical file changed. This independently confirms that
 the candidate does not yet modify an existing application caller. It also
 requires canonical reconciliation before admission, even after the shared input
 decision is resolved. PR #962 was checked open/draft with this tested head.
+
+### Later canonical movement during final verification
+
+Canonical advanced to 27b271c2f3d1ea54e0110f56b73400e3b6935e11 while this
+audit was completing. The exact ten-commit delta admits LOW05-A ordinary
+prescribed-head application control. Its backend patch adds proposal scratch,
+control and lower-head staging; it does not change the composed root-sink
+interface. No crop, root-uptake, oxygen or thermal contract changes occur in
+that delta, and neither AGENTS nor shared integration governance changed.
+The shared producer/application-input decision therefore remains open.
+Local focused evidence is retained on its unchanged tested dependencies; no
+whole-application preservation or backend qualification on the new canonical
+is inferred. The status records the newer canonical comparison separately.
