@@ -30,3 +30,12 @@ Historical Black/Boesten shell guards remain authorities for their own work unit
 This closeout does not admit groundwater-coupled, macropore, snow, drainage-response, elastic, hysteretic, tabular, PRACTICAL/WFT300 or worker-parallel oxygen. It does not admit a generic parser or full crop lifecycle. Other PPA-RWU-ADV gaps, including salinity, frost, compensation and MICRO/JvL, remain open.
 
 The frozen Status A authority is unchanged.
+
+
+## Postmerge preservation
+
+Exact merge postimage `179673b16b84bc48fa5e0e83341a8a8e80b2211a` preserved A10 in run `36974258153` and A26 in run `36974258427`.
+
+The first A9 replay, run `36974258400`, failed before execution because its historical explicit compile list omitted the already-canonical A16 inner-macropore provider now used by `mod_macropore_single_column_runtime`. Adding that existing provider exposed its A15 derivative and PERCH19 prerequisites in run `36974764691`. No production source, assertion, tolerance or A9 physics was changed. The completed compile closure was persisted in `tests/fpm/run_ppa_wu05a9_top_input.sh`; final run `36975001110` passed at postimage `ffb09cda71c8b8ad8d6f187d03d240be901c6ccc`.
+
+These failures are therefore recorded as preservation-harness dependency-closure defects, not oxygen, macropore or A9 behavioural regressions. C3A postmerge preservation is closed.
