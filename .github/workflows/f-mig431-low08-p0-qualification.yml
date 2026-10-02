@@ -1,0 +1,28 @@
+name: F-MIG431 LOW08-P0 qualification
+on:
+  push:
+    branches: [work/f-mig431-low08-p0-lysimeter-active-set]
+    paths:
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/adapter/mod_reference_richards_state_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'tests/fmig431/test_low08_p0_typed_solver.f90'
+      - 'tests/fmig431/run_low08_p0_qualification.py'
+      - '.github/workflows/f-mig431-low08-p0-qualification.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: O0 O2 qualification
+        env:
+          LOW08P0_TESTED_SHA: ${{ github.sha }}
+          LOW08P0_RESULT: low08_p0_qualification_result.json
+        run: python3 tests/fmig431/run_low08_p0_qualification.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: F-MIG431-LOW08-P0-qualification
+          path: low08_p0_qualification_result.json

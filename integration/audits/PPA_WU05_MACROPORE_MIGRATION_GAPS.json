@@ -1,12 +1,11 @@
 {
   "schema": "swap5.ppa_wu05.macropore_migration_gap_audit.v1",
-  "date": "2026-10-01",
-  "canonical_audit_base": "ae3c7a9ba4a9ab741992be965448cf633820d2a1",
+  "date": "2026-10-02",
+  "canonical_audit_base": "9abdc23f759f4d7711881d535797d0ee56d67584",
   "audit_commit": "cbb3e967d07b8533ddfe4816f42233a0ff42e6f3",
   "standard_core_perched_exchange": "CANONICALLY_ADMITTED",
   "broad_swap431_macropore_migration_complete": false,
   "remaining_standard_gaps": [
-    "covering-layer IcTopMp>1 physics",
     "dynamic shrinkage/crack geometry feedback",
     "within-compartment and multiple rapid-drain geometry",
     "ponding/runon and other surface-owner compositions",
@@ -18,13 +17,21 @@
     "parallel/concurrent MultiSWAP macropore execution"
   ],
   "separate_rfm_gap": "complete live backend dispatch not established by this audit",
-  "next_workunit": "PPA-WU05-MIGMAC01",
-  "next_scope": "covering-layer source reconciliation and authority fixture",
+  "next_workunit": "PPA-WU05-MIGMAC02",
+  "next_scope": "dynamic shrinkage/crack geometry feedback source reconciliation and bounded standard-route migration",
   "migmac01_progress": {
     "date": "2026-10-02",
-    "source_event": "MODIFIED_ANDELST_COVERED_TOP_ACTIVE_PERSISTED",
-    "production_gap": "OPEN_BLOCKED_SOURCE_ORIGIN_COMPOSITION",
-    "evidence": "docs/audits/PPA_WU05_MIGMAC01_SOURCE_ORIGIN_REPLAY_RESULT.md",
+    "source_event": "MODIFIED_ANDELST_COVERED_TOP_PLUS_BOUNDED_B1_CORRECTION",
+    "production_gap": "CLOSED_CANONICALLY_ADMITTED",
+    "evidence": "docs/audits/PPA_WU05_MIGMAC01_CLOSEOUT.md",
+    "canonical_pr": 983,
+    "canonical_merge": "611af5461212dc34c210064b60cf5a4efb7eee9f",
+    "admitted": true
+  },
+  "migmac02_progress": {
+    "date": "2026-10-02",
+    "production_gap": "OPEN",
+    "scope": "dynamic shrinkage/crack geometry feedback",
     "admitted": false
   }
 }

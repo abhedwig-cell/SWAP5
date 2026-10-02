@@ -87,7 +87,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    integer                          :: numnod
    integer                          :: swmacro, swbotb, swkimpl, swkmean, maxit, maxbacktr
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
-   real(8)                          :: CritDevBalCp, CritDevBalTot
+   real(8)                          :: CritDevBalCp, CritDevBalTot, lysimeter_plate_head
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
@@ -112,6 +112,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    legacy_state_binding = .not. present(state_binding)
    typed_bottom_invalid=.false.
    typed_bottom_conductance=0.0d0
+   if (legacy_state_binding) then
+      lysimeter_plate_head=hplate
+   else
+      lysimeter_plate_head=0.0d0
+   end if
    explicit_geometry = .not. legacy_state_binding
    if (explicit_geometry) then
       if (.not. present(parameter_set)) error stop 'HeadCalc: explicit parameter geometry required'
@@ -144,19 +149,32 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       state => local_state_binding
       call capture_legacy_state(state)
    end if
-   swmacro = legacy_swmacro
-   swbotb = legacy_swbotb
-   dt = legacy_dt
-   swkimpl = legacy_swkimpl
-   swkmean = legacy_swkmean
-   maxit = legacy_maxit
-   maxbacktr = legacy_maxbacktr
-   dtmin = legacy_dtmin
-   critdevh2cp = legacy_critdevh2cp
-   critdevh1cp = legacy_critdevh1cp
-   critdevponddt = legacy_critdevponddt
-   CritDevBalCp = legacy_CritDevBalCp
-   CritDevBalTot = legacy_CritDevBalTot
+   swmacro = 0
+   if (legacy_state_binding) swmacro = legacy_swmacro
+   swbotb = 0
+   if (legacy_state_binding) swbotb = legacy_swbotb
+   dt = 0.0d0
+   if (legacy_state_binding) dt = legacy_dt
+   swkimpl = 0
+   if (legacy_state_binding) swkimpl = legacy_swkimpl
+   swkmean = 0
+   if (legacy_state_binding) swkmean = legacy_swkmean
+   maxit = 0
+   if (legacy_state_binding) maxit = legacy_maxit
+   maxbacktr = 0
+   if (legacy_state_binding) maxbacktr = legacy_maxbacktr
+   dtmin = 0.0d0
+   if (legacy_state_binding) dtmin = legacy_dtmin
+   critdevh2cp = 0.0d0
+   if (legacy_state_binding) critdevh2cp = legacy_critdevh2cp
+   critdevh1cp = 0.0d0
+   if (legacy_state_binding) critdevh1cp = legacy_critdevh1cp
+   critdevponddt = 0.0d0
+   if (legacy_state_binding) critdevponddt = legacy_critdevponddt
+   CritDevBalCp = 0.0d0
+   if (legacy_state_binding) CritDevBalCp = legacy_CritDevBalCp
+   CritDevBalTot = 0.0d0
+   if (legacy_state_binding) CritDevBalTot = legacy_CritDevBalTot
    if (.not. legacy_state_binding) then
       if (.not. present(physical_config)) error stop 'HeadCalc: explicit physical config required'
       if (physical_config%macropore_active) then
@@ -176,6 +194,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       swmacro = 0
       if (.not. present(boundary_conditions)) error stop 'HeadCalc: explicit boundary conditions required'
       swbotb = boundary_conditions%bottom_mode
+      if (swbotb == 8) lysimeter_plate_head=boundary_conditions%bottom_head
       if (.not. present(numerical_config)) error stop 'HeadCalc: explicit numerical config required'
       if (.not. present(explicit_step_duration)) error stop 'HeadCalc: explicit step duration required'
       if (explicit_step_duration <= 0.0d0) error stop 'HeadCalc: explicit step duration must be positive'
@@ -1085,8 +1104,9 @@ subroutine vector_F(iTask)
 !  for swbotb = 8, depending on iTask
    if (iTask == 1) then
       if (swbotb == 8) then
-         if (state%h(NN) > Critdz - grid_disnod(NN+1) + hplate) then
-            fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / grid_disnod(NN+1) + 1.0d0
+         if (.not. legacy_state_binding) write(*,'(a,4(1x,es24.16))') 'LOW08_INTERNAL_SELECTOR',state%h(NN),lysimeter_plate_head,grid_disnod(NN+1),Critdz
+         if (state%h(NN) > Critdz - grid_disnod(NN+1) + lysimeter_plate_head) then
+            fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
             flboth = .TRUE.
          else
             flboth = .FALSE.
@@ -1096,7 +1116,7 @@ subroutine vector_F(iTask)
       end if
    else
       if (swbotb == 8 .AND. flboth) then
-         fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / grid_disnod(NN+1) + 1.0d0
+         fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
       end if
    end if
 
@@ -1154,16 +1174,17 @@ subroutine vector_F(iTask)
          state%qbot = -1.0d0 * state%kmean(numnod+1)
          fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
       
-      else if (swbotb == 8) then                                  
-         
-         ! lysimeter option
+      else if (swbotb == 8) then
+
+         ! lysimeter option; flboth was selected once from solve-entry state
          if (flboth) then
-            state%hbot = hplate
-            fsi_ws%residual(NN) = fsi_ws%residual(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1)
+            state%hbot = lysimeter_plate_head
+            state%qbot = -state%kmean(NN+1) * fsi_ws%head_gradient(NN+1)
+            fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
          else
             state%qbot = 0.0d0
          end if
-      
+
       else
          
           ! flux bottom boundary

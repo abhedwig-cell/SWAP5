@@ -1,12 +1,12 @@
 {
   "work_unit": "F-MIG431-LOW08-P0",
-  "state": "CENTRALLY_PREREGISTERED_OFFICIAL_BRANCH_ISSUED",
+  "state": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
   "canonical_baseline": "220810c42f330e1d2615332683a54c19381ef62d",
   "official_branch": "work/f-mig431-low08-p0-lysimeter-active-set",
   "scope": "Typed Reference SWBOTB=8 lysimeter-plate solve-entry active-set semantics only",
-  "implemented": false,
-  "tested": false,
-  "qualified": false,
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
   "canonical_admitted": false,
   "source_authority": "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
   "claim_ceiling": "solver route only; no application/bootstrap admission",
@@ -14,5 +14,25 @@
     "swbotb1": "PARKED",
     "explicit_swbotb3": "OPEN",
     "swbotb8": "ACTIVE"
-  }
+  },
+  "latest_qualification": {
+    "run": 37000264871,
+    "artifact": 11223621131,
+    "tested_postimage": "7198b2ad4e9208efbe0ad9e312688dca8c178975",
+    "conclusion": "SUCCESS",
+    "optimization_levels": [
+      "O0",
+      "O2"
+    ],
+    "low08_solver": "PASS",
+    "low03_preservation": "PASS",
+    "low01a_preservation": "PASS",
+    "low02_application_preservation": "PASS"
+  },
+  "findings": {
+    "bottom_face_distance": "Source law uses grid_disnod(NN+1), the bottom-node to boundary-face distance; qualification fixture uses 0.5*dz(N) for the homogeneous geometry.",
+    "active_set_lifetime": "Selected in vector_F(1) and immutable through vector_F(2) Newton/backtracking evaluations.",
+    "state_ownership": "solve-local flboth only; no transaction/restart state"
+  },
+  "next_action": "Persist closeout candidate and open normal PR for solver-route admission only. Application/bootstrap admission remains separate."
 }
