@@ -95,3 +95,22 @@ it positive definite. Test native CG instead of BiCGSTAB, holding every
 head/rate/outer tolerance and iteration ceiling unchanged. This is a solver
 configuration alternative for this declared SPD case only, not a generic
 coupling algorithm or altered physical model. Keep BiCGSTAB failures.
+
+## MF residual error allocation with an independent matrix oracle
+
+CG alone and CG with translated datum also failed. Do not call either repair
+qualified. A distinct MF numerical-budget experiment uses the SPD storage
+bound: ||delta H||inf <= ||r||inf*dt/(Ss*b*A). Allocate 1e-9 m head error
+(1% of the unchanged 1e-7 m temporal head budget). With Ss*b*A=4e-5 m2,
+choose native RCLOSE <=4e-14/max(window_dt) m3/d. Worst integrated sum error
+is then <=50*4e-14=2e-12 m3 per window, below the unchanged 1e-8 m3 limit.
+This is explicitly a different inner solver threshold, not qualification of
+the original 1e-12-rate gate. No fit or tolerance sweep.
+
+For every completed MF solve, solve its fifty-cell symmetric matrix separately
+using NumPy dense LU, with the accepted old head, exactly published API HCOF/RHS,
+closed ends and the active/inactive one-cell DRN branch. Translate to a zero
+near-drain datum to avoid unnecessary absolute-head cancellation in the oracle.
+Require native MF head difference <=1e-9 m. Keep interface exchange and total
+physical mass tests unchanged. The independent oracle and physical guards,
+not a green native flag alone, determine the bounded claim.
