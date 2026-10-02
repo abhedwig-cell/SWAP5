@@ -44,19 +44,23 @@ contains
   type(rfm_preferential_routing_request_t)::routeq
   type(rfm_production_candidate_request_t)::cq
   real(real64),allocatable::endpoint_input_cm(:)
+  integer,allocatable::endpoint_panels(:)
+  integer::surface_panels,mb_panels,i
   logical::ok
   result=rfm_live_trial_prepare_result_t()
   if(.not.config%valid().or..not.forcing%valid().or..not.accepted%ready())return
   if(size(node_depth_cm)/=view%active_nodes.or.size(node_thickness_cm)/=view%active_nodes)return
   ageq%accepted_age_day=accepted%tau_surface_day;ageq%step_duration_day=step_duration_day
   ageq%event_active=forcing%event_active
+  surface_panels=config%sorptivity_panels_for_head(view%pressure_head(1))
+  if(surface_panels<=0)return
   call evaluate_rfm_surface_event_age(ageq,result%event_age)
   if(result%event_age%status/=RFM_SURFACE_EVENT_AGE_AVAILABLE)return
   if(preflight%net_potential_surface_flux==0.0_real64)then
     result%activation=fmr_rfm_hydraulic_activation_result_t()
     result%activation%activation%status=RFM_ACTIVATION_AVAILABLE
   else
-    call evaluate_fmr_rfm_activation_from_view(view,constitutive,config%sorptivity_panels,config%sigma_b, &
+    call evaluate_fmr_rfm_activation_from_view(view,constitutive,surface_panels,config%sigma_b, &
          preflight%net_potential_surface_flux,result%event_age%evaluation_age_day,result%activation,ok)
     if(.not.ok)return
   end if
@@ -68,8 +72,15 @@ contains
   if(result%routing%status/=RFM_PREF_ROUTER_AVAILABLE)return
   allocate(endpoint_input_cm(size(result%routing%endpoint_amount)))
   endpoint_input_cm=result%routing%endpoint_amount*step_duration_day
+  allocate(endpoint_panels(size(config%endpoint_node_index)))
+  do i=1,size(endpoint_panels)
+    endpoint_panels(i)=config%sorptivity_panels_for_head(view%pressure_head(config%endpoint_node_index(i)))
+    if(endpoint_panels(i)<=0)return
+  end do
+  mb_panels=config%sorptivity_panels_for_head(view%pressure_head(config%mb_wall_node_index))
+  if(mb_panels<=0)return
   call bind_rfm_wall_hydraulics_from_accepted(accepted,endpoint_input_cm,config%endpoint_node_index,config%mb_wall_node_index, &
-       view,constitutive,config%sorptivity_panels,result%wall,skip_unused_mb_hydraulics=.true.)
+       view,constitutive,config%sorptivity_panels,result%wall,skip_unused_mb_hydraulics=.true.,endpoint_panels=endpoint_panels,mb_panels=mb_panels)
   if(.not.result%wall%valid)return
   cq%step_duration_day=step_duration_day;cq%effective_supply_rate_cm_per_day=result%surface%effective_supply_cm_per_day
   cq%matrix_supply_rate_cm_per_day=result%surface%matrix_supply_cm_per_day
