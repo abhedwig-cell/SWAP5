@@ -3303,6 +3303,7 @@ contains
     class(transaction_state_t), intent(in) :: state
     if (.not. associated(self%soil_parameters)) error stop 'F-MR06 storage requested before parameter binding'
     if (.not. allocated(self%soil_parameters%dz)) error stop 'F-MR06 storage parameter dz missing'
+    write(*,'(a,1x,i0)') 'LOW08A_STORAGE_ENTER_MODE',self%bottom_mode
     write(*,'(a,1x,i0,1x,i0,1x,i0)') 'LOW08A_STORAGE_ENTER',self%bottom_mode,self%soil_parameters%active_nodes,size(self%soil_parameters%dz)
     select type (physical => state)
     type is (fmr_b110_rfm_state_t)
@@ -3369,6 +3370,7 @@ contains
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
            size(physical%water_content) == physical%active_nodes
     class is (fmr_b110_physical_state_t)
+      write(*,'(a,1x,i0,1x,i0)') 'LOW08A_STORAGE_PHYSICAL',physical%active_nodes,size(physical%water_content)
       if (self%fixed_weir_surface_water_active) return
       complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
            allocated(physical%water_content)
