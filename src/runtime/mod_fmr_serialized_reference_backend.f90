@@ -106,6 +106,8 @@ module mod_fmr_serialized_reference_backend
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
        macropore_runtime_result_t, MACRO_RUNTIME_CONVERGED, MACRO_RUNTIME_RETRY
   use mod_fmr_legacy_head_bottom_boundary_provider, only: fmr_hbot5_control_t, fmr_hbot5_proposal_t, FMR_HBOT5_OK
+  use mod_fmr_legacy_cauchy_bottom_boundary_provider, only: fmr_cauchy3_control_t, fmr_cauchy3_proposal_t, &
+       FMR_CAUCHY3_OK
   implicit none
   private
 
@@ -290,6 +292,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
+    type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
     type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     real(real64), allocatable :: drainage_flux_by_level(:,:)
@@ -315,6 +318,11 @@ module mod_fmr_serialized_reference_backend
     logical :: hbot5_proposal_available = .false.
     real(real64) :: hbot5_proposed_t0 = 0.0_real64, hbot5_proposed_t1 = 0.0_real64
     real(real64) :: hbot5_sample_t1900 = 0.0_real64, hbot5_pressure_head_cm = 0.0_real64
+    logical :: cauchy3_proposal_available = .false.
+    real(real64) :: cauchy3_proposed_t0 = 0.0_real64, cauchy3_proposed_t1 = 0.0_real64
+    real(real64) :: cauchy3_head_sample_t1900 = 0.0_real64, cauchy3_sine_phase_day = 0.0_real64
+    real(real64) :: cauchy3_aquifer_head_cm = 0.0_real64
+    real(real64) :: cauchy3_q4_sample_t1900 = 0.0_real64, cauchy3_q4_cm_per_day = 0.0_real64
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
@@ -404,6 +412,7 @@ module mod_fmr_serialized_reference_backend
   ! attempt context, never compact committed column state.
   type, extends(transaction_attempt_context_t) :: fmr_serialized_attempt_context_t
     type(fmr_hbot5_proposal_t) :: hbot5_proposal
+    type(fmr_cauchy3_proposal_t) :: cauchy3_proposal
     logical :: bottom_thermal_active = .false.
     logical :: bottom_thermal_valid = .true.
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
@@ -418,6 +427,8 @@ module mod_fmr_serialized_reference_backend
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
     type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
     type(fmr_hbot5_proposal_t) :: hbot5_proposal
+    type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
+    type(fmr_cauchy3_proposal_t) :: cauchy3_proposal
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
@@ -1628,6 +1639,9 @@ contains
     if (allocated(forcing%legacy_swbotb5_control)) then
       call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
            result, candidate, diagnostics, target_selector=select_hbot5_proposal)
+    else if (allocated(forcing%legacy_swbotb3_implicit_control)) then
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics, target_selector=select_cauchy3_proposal)
     else
       call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
            result, candidate, diagnostics)
@@ -1673,6 +1687,22 @@ contains
       call self%model%legacy_swbotb5_control%resolve(cursor,target_t1,self%model%hbot5_proposal,provider_status)
       valid = provider_status == FMR_HBOT5_OK .and. self%model%hbot5_proposal%available
     end subroutine
+
+    subroutine select_cauchy3_proposal(cursor, requested_t1, target_t1, max_retries_cap, valid)
+      real(real64), intent(in) :: cursor, requested_t1
+      real(real64), intent(out) :: target_t1
+      integer, intent(out) :: max_retries_cap
+      logical, intent(out) :: valid
+      integer :: provider_status
+      target_t1 = requested_t1
+      max_retries_cap = config%transaction%max_retries
+      valid = .false.
+      self%model%cauchy3_proposal = fmr_cauchy3_proposal_t()
+      if (.not. allocated(self%model%legacy_swbotb3_implicit_control)) return
+      call self%model%legacy_swbotb3_implicit_control%resolve_proposal(cursor, target_t1, &
+           self%model%cauchy3_proposal, provider_status)
+      valid = provider_status == FMR_CAUCHY3_OK .and. self%model%cauchy3_proposal%available
+    end subroutine
   end subroutine fmr_serialized_backend_run_trial
 
   subroutine reject_backend_trial(result, candidate, diagnostics)
@@ -1695,7 +1725,8 @@ contains
   logical function fmr_serialized_attempt_context_required(self) result(required)
     class(fmr_serialized_reference_model_t), intent(in) :: self
 
-    required = allocated(self%legacy_swbotb5_control) .or. self%trajectory_direction_requested .or. self%drainage_response_active .or. &
+    required = allocated(self%legacy_swbotb5_control) .or. allocated(self%legacy_swbotb3_implicit_control) .or. &
+         self%trajectory_direction_requested .or. self%drainage_response_active .or. &
          self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid .or. &
          self%top_sensible_boundary_carrier_active .or. .not. self%top_sensible_boundary_carrier_valid
   end function fmr_serialized_attempt_context_required
@@ -1708,6 +1739,7 @@ contains
     select type (typed => context)
     type is (fmr_serialized_attempt_context_t)
       typed%hbot5_proposal = self%hbot5_proposal
+      typed%cauchy3_proposal = self%cauchy3_proposal
       typed%bottom_thermal_active = self%bottom_thermal_carrier_active
       typed%bottom_thermal_valid = self%bottom_thermal_carrier_valid
       call self%bottom_thermal_carrier%copy_to(typed%bottom_thermal_carrier)
@@ -1727,6 +1759,7 @@ contains
     select type (typed => context)
     type is (fmr_serialized_attempt_context_t)
       self%hbot5_proposal = typed%hbot5_proposal
+      self%cauchy3_proposal = typed%cauchy3_proposal
       self%bottom_thermal_carrier_active = typed%bottom_thermal_active
       self%bottom_thermal_carrier_valid = typed%bottom_thermal_valid
       call self%bottom_thermal_carrier%restore_from(typed%bottom_thermal_carrier)
@@ -1738,6 +1771,7 @@ contains
       self%trajectory_direction = typed%trajectory_direction
     class default
       self%hbot5_proposal = fmr_hbot5_proposal_t()
+      self%cauchy3_proposal = fmr_cauchy3_proposal_t()
       self%bottom_thermal_carrier_active = .false.
       self%bottom_thermal_carrier_valid = .false.
       call self%bottom_thermal_carrier%clear()
@@ -1787,10 +1821,16 @@ contains
         ok = ok .and. .not. allocated(parameters%macropore)
       end if
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
-           parameters%bottom_mode == 2) .and. &
+           parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
             .not. parameters%frost_active
+       if (parameters%bottom_mode == 3) then
+         ! Admission precedes configure_parameters()/prepare_interval(). The
+         ! immutable forcing-owned Cauchy control is therefore validated in
+         ! prepare_interval, not through stale model-local state here.
+         ok = ok .and. self%soil_water_selection%uses_reference()
+       end if
        if (parameters%elasticity_active) then
          ok = ok .and. self%soil_water_selection%uses_reference() .and. &
               .not. parameters%ksatexm_extension_active .and. .not. parameters%direct_retention_active .and. &
@@ -1993,7 +2033,9 @@ contains
     self%forcing_admitted = .false.
     if(allocated(self%crop_oxygen)) deallocate(self%crop_oxygen)
     self%hbot5_proposal = fmr_hbot5_proposal_t()
+    self%cauchy3_proposal = fmr_cauchy3_proposal_t()
     if (allocated(self%legacy_swbotb5_control)) deallocate(self%legacy_swbotb5_control)
+    if (allocated(self%legacy_swbotb3_implicit_control)) deallocate(self%legacy_swbotb3_implicit_control)
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
     self%rfm_surface_forcing = rfm_surface_forcing_t()
     self%drainage_response_evaluations = 0
@@ -2081,11 +2123,21 @@ contains
       end if
       if (allocated(forcing%legacy_swbotb5_control)) then
         if (self%bottom_mode /= 5 .or. .not. self%soil_water_selection%uses_reference()) return
-        if (allocated(forcing%legacy_swbotb2_control) .or. allocated(forcing%legacy_swbotb4_qgwl_control)) return
+        if (allocated(forcing%legacy_swbotb3_implicit_control) .or. allocated(forcing%legacy_swbotb2_control) .or. &
+            allocated(forcing%legacy_swbotb4_qgwl_control)) return
         if (.not. forcing%legacy_swbotb5_control%ready()) return
         allocate(self%legacy_swbotb5_control)
         self%legacy_swbotb5_control = forcing%legacy_swbotb5_control
       end if
+      if (allocated(forcing%legacy_swbotb3_implicit_control)) then
+        if (self%bottom_mode /= 3 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (allocated(forcing%legacy_swbotb5_control) .or. allocated(forcing%legacy_swbotb2_control) .or. &
+            allocated(forcing%legacy_swbotb4_qgwl_control)) return
+        if (.not. forcing%legacy_swbotb3_implicit_control%ready()) return
+        allocate(self%legacy_swbotb3_implicit_control)
+        self%legacy_swbotb3_implicit_control = forcing%legacy_swbotb3_implicit_control
+      end if
+      if (self%bottom_mode == 3 .and. .not. allocated(self%legacy_swbotb3_implicit_control)) return
       if (allocated(forcing%legacy_swbotb4_qgwl_control)) then
         if (allocated(forcing%legacy_swbotb2_control)) return
         if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
@@ -2453,7 +2505,8 @@ contains
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
     real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
-    integer :: effective_bottom_mode, swbotb2_status, swbotb4_status
+    real(real64) :: cauchy3_q4, cauchy3_q4_sample_t1900
+    integer :: effective_bottom_mode, swbotb2_status, swbotb4_status, cauchy3_status
     type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     character(len=64) :: drainage_direction_route
@@ -2567,6 +2620,25 @@ contains
     request%boundary%top_head = self%top_head
     request%boundary%bottom_flux = effective_bottom_flux
     request%boundary%bottom_head = self%bottom_head
+    if (allocated(self%legacy_swbotb3_implicit_control)) then
+      if (.not. self%cauchy3_proposal%covers(t0,t1)) return
+      call self%legacy_swbotb3_implicit_control%resolve_q4(t0, t1, cauchy3_q4, cauchy3_q4_sample_t1900, cauchy3_status)
+      if (cauchy3_status /= FMR_CAUCHY3_OK) return
+      request%boundary%bottom_mode = 3
+      request%boundary%bottom_head = self%cauchy3_proposal%aquifer_total_head_cm
+      request%boundary%bottom_flux = cauchy3_q4
+      request%boundary%bottom_external_resistance_days = &
+           self%legacy_swbotb3_implicit_control%external_resistance_days()
+      request%boundary%bottom_include_half_cell = self%legacy_swbotb3_implicit_control%half_cell_enabled()
+      self%last_observation%cauchy3_proposal_available = .true.
+      self%last_observation%cauchy3_proposed_t0 = self%cauchy3_proposal%t0
+      self%last_observation%cauchy3_proposed_t1 = self%cauchy3_proposal%original_t1
+      self%last_observation%cauchy3_head_sample_t1900 = self%cauchy3_proposal%legacy_head_sample_t1900
+      self%last_observation%cauchy3_sine_phase_day = self%cauchy3_proposal%sine_phase_day
+      self%last_observation%cauchy3_aquifer_head_cm = self%cauchy3_proposal%aquifer_total_head_cm
+      self%last_observation%cauchy3_q4_sample_t1900 = cauchy3_q4_sample_t1900
+      self%last_observation%cauchy3_q4_cm_per_day = cauchy3_q4
+    end if
     if (allocated(self%legacy_swbotb5_control)) then
       if (.not. self%hbot5_proposal%covers(t0,t1)) return
       request%boundary%bottom_head = self%hbot5_proposal%pressure_head_cm
