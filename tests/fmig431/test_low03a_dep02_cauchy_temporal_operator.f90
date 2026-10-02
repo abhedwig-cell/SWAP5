@@ -24,7 +24,7 @@ program test_low03a_dep02_cauchy_temporal_operator
   real(real64),target::dra(1,numnod),irr(numnod),root(numnod)
   real(real64)::cof(24,numnod),heads(numnod),water(numnod),kb(numnod),cap(numnod),dk(numnod)
   real(real64)::cw(numnod),ck(numnod),cc(numnod),cd(numnod)
-  real(real64)::res(2),extra(2),expected,wrong_neumann,wrong_dirichlet
+  real(real64)::res(2),extra(2),expected,wrong_neumann,wrong_dirichlet,defect,dneumann,ddirichlet
   integer::i,j,k,cases,separated
   logical::half
   call configure()
@@ -35,10 +35,10 @@ program test_low03a_dep02_cauchy_temporal_operator
       do k=0,1
         half=k==0
         if(.not.half.and.res(i)==0._real64)cycle
-        call one(res(i),half,extra(j),expected,wrong_neumann,wrong_dirichlet)
+        call one(res(i),half,extra(j),expected,wrong_neumann,wrong_dirichlet,defect,dneumann,ddirichlet)
         cases=cases+1
-        if(abs(expected-wrong_neumann)>1.e3_real64*epsilon(1._real64)*max(1._real64,abs(expected)))separated=separated+1
-        if(abs(expected-wrong_dirichlet)>1.e3_real64*epsilon(1._real64)*max(1._real64,abs(expected)))separated=separated+1
+        if(abs(defect-dneumann)>1.e3_real64*epsilon(1._real64)*max(1._real64,abs(defect)))separated=separated+1
+        if(abs(defect-ddirichlet)>1.e3_real64*epsilon(1._real64)*max(1._real64,abs(defect)))separated=separated+1
       end do
     end do
   end do
@@ -48,10 +48,10 @@ program test_low03a_dep02_cauchy_temporal_operator
   print '(a,i0)', 'LOW03A_DEP02_SEPARATIONS=',separated
   print '(a)', 'LOW03A_DEP02_CAUCHY_TEMPORAL_OPERATOR=PASS'
 contains
-  subroutine one(r,include_half,q4,binf,bneumann,bdirichlet)
+  subroutine one(r,include_half,q4,binf,bneumann,bdirichlet,defect,dneumann,ddirichlet)
     real(real64),intent(in)::r,q4
     logical,intent(in)::include_half
-    real(real64),intent(out)::binf,bneumann,bdirichlet
+    real(real64),intent(out)::binf,bneumann,bdirichlet,defect,dneumann,ddirichlet
     real(real64)::aq,q,stor0,stor1,mres
     integer::n
     n=numnod
@@ -77,14 +77,15 @@ contains
     call need(ind%status==SW_TEMPORAL_INDICATOR_AVAILABLE.and.ind%available,'indicator available')
     call need(ind%additional_full_nonlinear_solves==0.and.ind%additional_tridiagonal_solves==1,'work contract')
     call hyd%evaluate(sol%candidate_state%pressure_head,cw,ck,cc,cd)
-    call oracle(r,include_half,ind%current_right_derivative,cc,binf,bneumann,bdirichlet)
+    call oracle(r,include_half,ind%current_right_derivative,cc,binf,bneumann,bdirichlet,defect,dneumann,ddirichlet)
     call need(close(ind%head_inf_bound,binf),'independent Cauchy oracle')
-    write(*,'(a,3(1x,es24.16))') 'LOW03A_DEP02_ROW',binf,bneumann,bdirichlet
+    call need(close(ind%defect_m_norm,defect),'independent Cauchy defect norm')
+    write(*,'(a,6(1x,es24.16))') 'LOW03A_DEP02_ROW',binf,bneumann,bdirichlet,defect,dneumann,ddirichlet
   end subroutine
-  subroutine oracle(r,include_half,deriv,capacity,binf,bneumann,bdirichlet)
+  subroutine oracle(r,include_half,deriv,capacity,binf,bneumann,bdirichlet,defect,dneumann,ddirichlet)
     real(real64),intent(in)::r,deriv(:),capacity(:)
     logical,intent(in)::include_half
-    real(real64),intent(out)::binf,bneumann,bdirichlet
+    real(real64),intent(out)::binf,bneumann,bdirichlet,defect,dneumann,ddirichlet
     real(real64)::mw(numnod),lo(numnod),di(numnod),up(numnod),rhs(numnod),er(numnod)
     real(real64)::x(numnod),xn(numnod),xd(numnod),dn(numnod),dd(numnod),g,raw,dv
     integer::m
@@ -107,9 +108,9 @@ contains
     call thomas(lo,dn,up,rhs,xn,ok);call need(ok,'oracle neumann solve')
     call thomas(lo,dd,up,rhs,xd,ok);call need(ok,'oracle dirichlet solve')
     raw=sqrt(sum(mw*er*er))
-    dv=sqrt(sum(mw*x*x));binf=min(raw,2._real64*dv)/sqrt(minval(mw))
-    dv=sqrt(sum(mw*xn*xn));bneumann=min(raw,2._real64*dv)/sqrt(minval(mw))
-    dv=sqrt(sum(mw*xd*xd));bdirichlet=min(raw,2._real64*dv)/sqrt(minval(mw))
+    defect=sqrt(sum(mw*x*x));binf=min(raw,2._real64*defect)/sqrt(minval(mw))
+    dneumann=sqrt(sum(mw*xn*xn));bneumann=min(raw,2._real64*dneumann)/sqrt(minval(mw))
+    ddirichlet=sqrt(sum(mw*xd*xd));bdirichlet=min(raw,2._real64*ddirichlet)/sqrt(minval(mw))
   end subroutine
   subroutine thomas(lo,di,up,rhs,x,ok)
     real(real64),intent(in)::lo(:),di(:),up(:),rhs(:);real(real64),intent(out)::x(:);logical,intent(out)::ok
