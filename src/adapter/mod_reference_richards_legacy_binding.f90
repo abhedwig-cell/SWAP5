@@ -154,15 +154,17 @@ contains
             request%evaluation, request%boundary, request%numerical, request%physical, &
             request%step_duration, request%parameters)
 
-       ! B1.10 SWBOTB=5 prescribes head at the lower boundary face, so qbot is
+       ! B1.10 SWBOTB=5 and active SWBOTB=8 prescribe head at the lower boundary face, so qbot is
        ! an output rather than an input boundary condition. HeadCalc already
        ! leaves the exact unrounded compartment residual vector in worker scratch.
        ! Materialize qbot with exact B1.10 watstor()+fluxes() arithmetic grouping
        ! from explicit request/state/provider data; do not call legacy fluxes(),
        ! which mutates integration globals outside the focused solver service.
-       if (request%boundary%bottom_mode == 5 .and. .not. ws%state_binding%fldecdt .and. &
+       if ((request%boundary%bottom_mode == 5 .or. request%boundary%bottom_mode == 8) .and. .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
-          call materialize_prescribed_head_bottom_flux(request, ws%richards, ws%state_binding)
+          if (request%boundary%bottom_mode == 5 .or. ws%state_binding%qbot /= 0.0_real64) then
+             call materialize_prescribed_head_bottom_flux(request, ws%richards, ws%state_binding)
+          end if
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
           result%native_balance_rate_residual_available = .true.
           result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
@@ -358,9 +360,22 @@ contains
     end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
         request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
-        request%boundary%bottom_mode /= 3) then
+        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8) then
        route = 'legacy-bottom-mode-deferred'
        return
+    end if
+    if (request%boundary%bottom_mode == 8) then
+       route = 'lysimeter-plate-domain-deferred'
+       if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
+       if (.not. ieee_is_finite(request%boundary%bottom_head)) return
+       if (.not. ieee_is_finite(request%boundary%bottom_flux) .or. request%boundary%bottom_flux /= 0.0_real64) return
+       if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+       if (.not. request%boundary%bottom_include_half_cell) return
+       n=request%parameters%active_nodes
+       if (n < 2) return
+       if (.not. ieee_is_finite(request%parameters%node_distance(n))) return
+       if (request%parameters%node_distance(n) <= 0.0_real64) return
+       if (.not. ieee_is_finite(request%base_state%pressure_head(n))) return
     end if
     if (request%boundary%bottom_mode == 3) then
        route = 'resistive-bottom-domain-deferred'
