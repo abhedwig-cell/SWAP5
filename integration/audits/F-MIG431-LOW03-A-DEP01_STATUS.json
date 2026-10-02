@@ -1,7 +1,7 @@
 {
   "work_unit": "F-MIG431-LOW03-A-DEP01",
   "parent_work_unit": "F-MIG431-LOW03-A",
-  "state": "QUALIFIED_PREREQUISITE_CANDIDATE_READY_FOR_CANONICAL_ADMISSION",
+  "state": "CANONICAL_ADMITTED_CLOSED_SHARED_PREREQUISITE",
   "canonical_baseline": "3869ec27a7314375fd7919debb6abe7c6450f261",
   "official_branch": "work/f-mig431-low03-a-dep01-serialized-context-mode3",
   "trigger": {
@@ -35,7 +35,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "prerequisite_for": "F-MIG431-LOW03-A ordinary implicit Cauchy application",
   "qualification_requirements": [
     "focused context mirror and fail-closed O0/O2",
@@ -76,5 +76,9 @@
     "rossfast_mode3_rejection_preserved": "PASS",
     "low03_p0_typed_solver_preservation": "PASS"
   },
-  "next_action": "Normal PR to integration/f-ci-canonical; after canonical admission reconcile LOW03-A and resume full application qualification."
+  "next_action": "Reconcile official LOW03-A branch with current canonical including this prerequisite, then resume bounded ordinary implicit Cauchy application qualification.",
+  "pull_request": 976,
+  "canonical_merge_commit": "b3e33273ecd83703360e97911748247665228e1b",
+  "closeout": "docs/migration/F-MIG431-LOW03-A-DEP01_CLOSEOUT.md",
+  "admission_dependency_inheritance": "Qualified production/test postimage 850f946095f813626dca1efc3a9bd671b41faad9 -> evidence-only bde569751db8125134dd6c314f31a90b581f3334 -> normal merge b3e33273ecd83703360e97911748247665228e1b; no production/test/runner mutation after qualification."
 }
