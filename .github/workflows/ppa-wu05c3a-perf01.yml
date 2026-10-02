@@ -1,0 +1,22 @@
+name: PPA-WU05-C3A PERF01 benchmark
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/ppa-wu05c3a-zero-waste-performance
+    paths:
+      - 'src/physics/oxygen/**'
+      - 'src/process/mod_bartholomeus_runtime_input.f90'
+      - 'tests/performance/benchmark_bartholomeus_c3a.f90'
+      - 'tests/performance/run_bartholomeus_c3a_benchmark.py'
+      - '.github/workflows/ppa-wu05c3a-perf01.yml'
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/performance/run_bartholomeus_c3a_benchmark.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05c3a-perf01
+          path: c3a_perf_result.json
