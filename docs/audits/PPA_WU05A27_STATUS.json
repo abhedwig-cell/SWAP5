@@ -1,24 +1,24 @@
 {
   "work_unit": "PPA-WU05-A27",
   "baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-  "checkpoint_commit": "b57a2c65c468a6d2fb3812a4e8902b410f575c22",
+  "checkpoint_commit": "a806d3f0d1cc9d3ff65a1c3f437c1ea005309b18",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "PRESSURE_AWARE_MOVING_CONTACT_REFINEMENT_BLOCKED_RESEARCH_ONLY",
-  "next_action": "Keep production A/B/C separate. Before more pressure-aware moving-contact work, preregister a physically consistent saturated/seep contact mapping or continuous subcell pressure/contact operator under auxiliary no-independent-matrix-storage ownership, then repeat refinement without case tuning.",
-  "recovery_point": "docs/audits/PPA_WU05A27_PRESSURE_RECEIVER_RESULT.md",
+  "status": "ABC01_SCREEN_COMPLETED_C_RUNTIME_TRANSITION_BLOCKED_DEP01_QUALIFIED_BRANCH_ONLY",
+  "next_action": "Run a narrow production-C wet-to-dry transition attribution from the accepted R2/G1/B01 wet state; quantify endpoint release source and compare source-on/source-off Reference solves. Keep pressure-aware mixed-wall research separate. Then run a zero-waste RFM sorptivity-cost attribution without changing ABC01.",
+  "recovery_point": "docs/audits/PPA_WU05A27_ABC01_RESULT.md",
   "blockers": [
-    "General theta-only saturated closure remains falsified; saturated pressure must remain explicit authority.",
-    "Auxiliary no-independent-matrix-storage ownership is selected for A27 research, but the pressure-aware moving-contact seam failed both preregistered matrix-refinement gates.",
-    "The tested seam crosses two different reverse-exchange conductance laws at hmp=0; a physically defensible mapping/continuous contact transition is not yet qualified.",
-    "The lateral wall profile has not yet been coupled under the selected auxiliary ownership after this pressure-seam failure.",
-    "Full production A/B/C, repeated timing, stability attribution and multi-column scaling remain open.",
-    "Current production RFM remains one-way at the matrix source seam; the signed research seam must not be relabeled production comparator C."
+    "Production C completes only 8/32 ABC01 cases; 24/32 fail later in runtime with solver rejections and no admission/temporal/mass rejection.",
+    "Pulsed C cases fail reproducibly at the first dry interval after rain cessation; endpoint-release source transition is not yet causally isolated.",
+    "Comparator A in ABC01 is invalid as configured because the ordinary base carrier external full/half temporal hook requires exact identity; A must use a separately qualified Reference temporal route.",
+    "C is 3.69x-5.18x slower than B across the eight successful single-run overlap cases at the preregistered 64-panel RFM configuration; no speedup claim is supported.",
+    "DEP01 live-layout plus restored quantitative RFM temporal metric is qualified on the A27 branch but not canonically admitted.",
+    "Pressure-aware moving-contact research remains independently blocked by its retained refinement failures."
   ],
-  "last_reconciled_head": "b57a2c65c468a6d2fb3812a4e8902b410f575c22",
-  "last_reconciled_upstream": "3869ec27a7314375fd7919debb6abe7c6450f261",
+  "last_reconciled_head": "a806d3f0d1cc9d3ff65a1c3f437c1ea005309b18",
+  "last_reconciled_upstream": "f7c261a7f059c91d4a0aac16e378351f293aa080",
   "authority_paths": [
     "AGENTS.md",
     "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
@@ -32,7 +32,12 @@
     "docs/audits/PPA_WU05A27_MIXED_WALL_STATE_DESIGN.md",
     "docs/audits/PPA_WU05A27_PRESSURE_RECEIVER_CONTRACT.md",
     "docs/audits/PPA_WU05A27_PRESSURE_RECEIVER_REFINEMENT_ADDENDUM.md",
-    "docs/audits/PPA_WU05A27_PRESSURE_RECEIVER_RESULT.md"
+    "docs/audits/PPA_WU05A27_PRESSURE_RECEIVER_RESULT.md",
+    "docs/audits/PPA_WU05A27_ABC01_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05A27_ABC01_RESULT.md",
+    "docs/audits/PPA_WU05A27_ABC01_DEP01_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05A27_ABC01_DEP01_RECONCILIATION_ADDENDUM.md",
+    "docs/audits/PPA_WU05A27_ABC01_DEP01_RESULT.md"
   ],
   "test_paths": [
     "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
@@ -54,7 +59,10 @@
     "research/rfm/a27/verify_real_hydraulics_evidence.py",
     "research/rfm/a27/run_pressure_receiver.sh",
     "research/rfm/a27/test_pressure_receiver.f90",
-    "research/rfm/a27/test_pressure_receiver_extension.f90"
+    "research/rfm/a27/test_pressure_receiver_extension.f90",
+    "research/rfm/a27/run_production_abc01.sh",
+    "research/rfm/a27/test_production_abc01.f90",
+    "research/rfm/a27/analyze_production_abc01.py"
   ],
   "dependency_surface": [
     "src/legacy/b1_10_port/headcalc.f90",
@@ -67,8 +75,8 @@
     "research/rfm/a27"
   ],
   "interfaces_changed": [],
-  "production_claim": "A27 source correction remains research-branch only; current-canonical backend preservation gates pass on the reconciled postimage. The pressure-aware moving-contact research seam is not qualified. No production E1 envelope, speedup, stability claim or canonical admission.",
-  "research_result": "Current-canonical backend reconciliation passes A26 live/backend/actual-Richards plus A27 column/finite/reverse gates. Auxiliary wall research selects Reference as sole matrix-storage owner and explicit pressure as saturated authority. A finite signed pressure-receiver seam conserves combined water to near machine precision, exercises both directions, moving contact and reject/replay, but fails the preregistered matrix-refinement gate and a frozen five-step extension fails monotone refinement. Source inspection shows the tested moving contact crosses distinct submerged-cdarcy and seep-face reverse conductance laws; transition mapping remains unqualified.",
+  "production_claim": "No A27 production speedup or broad hydrologic-equivalence claim. Branch-local DEP01 repairs make admitted RFM live execution reachable and preserve the previously qualified quantitative RFM temporal metric, but are not canonically admitted. ABC01 shows E1 only in 8 completed B/C cases; C runtime stability and performance are blockers.",
+  "research_result": "ABC01 production screen: B completes29/32, C8/32; all8 overlap cases are E1. C fails24/32 after admission, entirely through solver rejection; pulsed regimes fail at the first dry step after rain cessation except near-saturated R3. Successful C cases are3.69x-5.18x slower than B in single-run CI timing at64 sorptivity panels. Comparator A is invalid under the chosen base full/half temporal policy. DEP01 is branch-locally qualified on current-canonical backend preservation.",
   "source_repair_qualified": true,
   "canonical_admitted": false,
   "qualification_scopes": {
@@ -89,7 +97,22 @@
       "sampled_records": 1500,
       "production_eligible": false
     },
-    "full_a27_benchmark": "OPEN",
+    "full_a27_benchmark": {
+      "phase": "ABC01 production screen completed",
+      "run_id": 36991919530,
+      "postimage": "41daf2c62f9c74a0310a1443f1cf92000c7565d3",
+      "artifact_id": 11220260500,
+      "result_counts": {
+        "E1": 8,
+        "C_RUNTIME_FAILED": 21,
+        "B_RUNTIME_FAILED": 3
+      },
+      "B_completed": 29,
+      "C_completed": 8,
+      "A_valid": false,
+      "production_speedup_claim": false,
+      "next": "wet-to-dry C transition attribution"
+    },
     "bounded_cohort_research": {
       "code_postimage": "8ff6309a7eba98ee9cd66ef79da0bb7c5da0a5a2",
       "cases": 500,
@@ -154,6 +177,19 @@
       "max_combined_ledger_cm": 1.199040866595169e-14,
       "finest_receiver_difference_cm": 0.000007649607158377592,
       "production_eligible": false
+    },
+    "abc01_dep01": {
+      "implementation_postimage": "a806d3f0d1cc9d3ff65a1c3f437c1ea005309b18",
+      "current_canonical_code_base": "0c18a9fffa14bce9e25a4cf773420c5824c0c819",
+      "current_canonical_observed": "f7c261a7f059c91d4a0aac16e378351f293aa080",
+      "final_preservation_run": 36993219391,
+      "gates": [
+        "A26 live trial preparer",
+        "A26 serialized backend compile/static preservation",
+        "A8 real-Richards standard macropore"
+      ],
+      "result": "QUALIFIED_BRANCH_ONLY",
+      "canonical_admitted": false
     }
   },
   "evidence_archive": "docs/audits/evidence/PPA_WU05A27_COHORT_EVIDENCE.tar.gz.part-*",
@@ -172,7 +208,10 @@
     "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS_MANIFEST.json",
     "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS.tar.gz.part-*",
     "docs/audits/evidence/PPA_WU05A27_PRESSURE_RECEIVER.csv",
-    "docs/audits/evidence/PPA_WU05A27_PRESSURE_RECEIVER_SUMMARY.json"
+    "docs/audits/evidence/PPA_WU05A27_PRESSURE_RECEIVER_SUMMARY.json",
+    "docs/audits/evidence/PPA_WU05A27_ABC01_CLASSIFICATION.csv",
+    "docs/audits/evidence/PPA_WU05A27_ABC01_SUMMARY.json",
+    "docs/audits/evidence/PPA_WU05A27_ABC01_TIMING.csv"
   ],
   "verification_record": "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS_VERIFICATION.json",
   "mixed_wall_design_implemented": false,

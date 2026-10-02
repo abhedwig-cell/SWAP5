@@ -1,0 +1,28 @@
+{
+  "work_unit": "PPA-WU05-A27-ABC01",
+  "source_run_id": 36991919530,
+  "source_postimage": "41daf2c62f9c74a0310a1443f1cf92000c7565d3",
+  "artifact_id": 11220260500,
+  "artifact_digest": "sha256:4d48cce68c030c09658dc5465cc9ba13ab0f7de521601d63ea6236cfb986ab2e",
+  "cases": 32,
+  "classification_counts": {
+    "E1": 8,
+    "C_RUNTIME_FAILED": 21,
+    "B_RUNTIME_FAILED": 3
+  },
+  "B_completed": 29,
+  "C_completed": 8,
+  "C_completed_regimes": [4, 6],
+  "C_runtime_failure_regimes": [1, 2, 3, 5, 7, 8],
+  "BC_overlap_completed": 8,
+  "BC_overlap_all_E1": true,
+  "overlap_storage_diff_cm": {"min": 0.00006540754743422639, "median": 0.0004667167669460959, "max": 0.002778337585027657},
+  "overlap_drain_diff_cm": {"min": 0.00006540746352479143, "median": 0.0004667168262423825, "max": 0.00277833763268992},
+  "overlap_theta_diff": {"min": 0.00009446687882369575, "median": 0.0005646360092492857, "max": 0.001968478740340708},
+  "single_run_C_over_B_wall_ratio": {"min": 3.691182332121604, "median": 4.357672058792149, "max": 5.180021965024922},
+  "A_valid_comparator": false,
+  "A_failure_attribution": "30/32 temporal rejection from exact-state base temporal hook; 2/32 solver rejection",
+  "C_failure_attribution": "24/32 runtime failures after DEP01 reachability repair; all solver rejections with zero admission/temporal/mass rejections",
+  "production_speedup_claim": false,
+  "canonical_admitted": false
+}

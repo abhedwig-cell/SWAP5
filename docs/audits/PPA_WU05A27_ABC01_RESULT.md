@@ -1,93 +1,85 @@
-# PPA-WU05-A27 ABC01 result — production RFM versus standard macropore
+# PPA-WU05-A27-ABC01 result — current production RFM versus standard macropore
 
 Date: 2026-10-02  
-Status: QUALIFIED_RESEARCH_RESULT_WITH_SHARED_REPAIR_CANDIDATES  
-Qualified branch postimage: `586cb21a44ff24385718f160adf9d5a6e65e409e`  
-Qualification run: 36991992438 — SUCCESS  
-Evidence artifact: 11220220713  
-Artifact digest: `sha256:a71255570a77cfb3ed111cf030529cec8506dca4838f92d192fff21fad732063`
+Status: SCREEN_COMPLETED; RFM_RUNTIME_STABILITY_BLOCKED; NO_SPEEDUP_CLAIM
 
-## Executive result
+Preregistration: `docs/audits/PPA_WU05A27_ABC01_PREREGISTRATION.md`  
+Production screen run: `36991919530`  
+Screen postimage: `41daf2c62f9c74a0310a1443f1cf92000c7565d3`  
+Evidence artifact: `11220260500`  
+Artifact digest: `sha256:4d48cce68c030c09658dc5465cc9ba13ab0f7de521601d63ea6236cfb986ab2e`
 
-The preregistered production A/B/C screen is now executable after three source-backed shared-backend defects were exposed and repaired branch-locally.
+## Comparator validity
 
-For the primary B/C question:
+Comparator B is the current standard macropore serialized Reference route. Comparator C is the admitted A26 RFM route plus the DEP01 live-layout reachability repair. No A27 pressure-aware research code is present in C.
 
-- standard macropore B completed 29/32 cases;
-- admitted RFM C completed 30/32 cases;
-- all 29 cases completed by both B and C classify **E1** under the preregistered thresholds;
-- no completed pair required post-hoc E2 attribution and none classified E3;
-- the only two remaining C failures are B01/R3 near-saturated storm cases, for both geometries; B also fails those same two cases at step 1;
-- B has one additional failure, O05/G2/R1 at step 13, where C completes.
+Comparator A, as initially preregistered, is **not a valid matrix-only comparator in this screen**. The ordinary base physical carrier's external full/half temporal hook accepts only bit-identical states. Thirty of 32 A records therefore fail on temporal rejection at the first interval; the two wettest fail on the solver. This is a benchmark-policy mismatch, not evidence that Reference Richards generally cannot run those cases. A must be rerun later through a qualified matrix Reference temporal route.
 
-This is strong evidence that the repaired production RFM route is hydrologically close to the standard macropore comparator over the bounded ABC01 screen. It is not evidence of exact mechanistic identity.
+The B/C conclusions below do not use A.
 
-## Performance result
+## B/C completion envelope
 
-RFM is **not faster** in the current production implementation.
+The screen contains 2 soils x 2 geometries x 8 regimes = 32 B/C keys.
 
-Five-repeat fresh-state timing medians on the four preregistered cases:
+- B completes 29/32.
+- C completes 8/32.
+- Every B/C key where both complete is E1 under the preregistered thresholds: 8/8.
+- Corrected classification of the full screen is 8 E1, 21 C_RUNTIME_FAILED and 3 B_RUNTIME_FAILED.
+- No C failure is an admission failure after DEP01.
 
-| Case | B median s | C median s | B/C |
-| --- | ---: | ---: | ---: |
-| R2/G1/B01 | 0.002953 | 0.013227 | 0.223 |
-| R4/G2/B01 | 0.003051 | 0.016080 | 0.190 |
-| R5/G1/O05 | 0.002830 | 0.013696 | 0.207 |
-| R6/G2/O05 | 0.002773 | 0.012027 | 0.231 |
+C completes only:
+- R4 long moderate rainfall;
+- R6 continuous low flow;
 
-Equivalently, C took about 4.3–5.3 times B wall time on this CI runner.
+for both soils and both geometries.
 
-The nonlinear-iteration counts are almost identical in these timing cases. Therefore the observed slowdown is not explained by extra Richards nonlinear work. It points primarily to RFM trial-preparation/composition overhead and associated repeated constitutive work. This attribution is a performance hypothesis supported by the counters, not yet a profiler-level decomposition.
+C fails in R1, R2, R3, R5, R7 and R8. All 24 C failures have solver rejections and zero admission, temporal and mass rejections.
 
-CI timing is machine-specific and is not a portable speed guarantee.
+For pulsed regimes R1/R2, R5 and R7/R8, C fails respectively on steps 5, 4 and 9: exactly the first interval after the rainfall pulse stops. R3 is the separate near-saturated storm case and fails during the wet phase.
 
-## Hydrologic screen
+This pattern is consistent across soils and geometries. It identifies wet-to-dry continuation with stored terminating-endpoint water as the next stability target. It does not yet prove endpoint release is the sole cause.
 
-The 29 completed B/C pairs all satisfy E1:
-- final total-storage and total-drainage differences remain within the preregistered 0.05 cm / 5% envelope;
-- representative theta differences remain <= 0.02;
-- mass accounting remains within the preregistered bound.
+## Hydrologic agreement where both routes complete
 
-The continuous R4/R6 cases already passed after DEP02. DEP03 then removed the artificial event-cessation failure and extended successful C execution across the short, repeated and deep-loading event cases.
+Across the eight E1 overlap cases:
 
-## Shared defects exposed by ABC01
+- final total-storage difference: 6.54e-5 to 2.78e-3 cm, median 4.67e-4 cm;
+- total-drainage difference: 6.54e-5 to 2.78e-3 cm, median 4.67e-4 cm;
+- maximum sampled theta difference: 9.45e-5 to 1.97e-3, median 5.65e-4.
 
-### DEP01 — unreachable RFM live carrier
+These results support bounded hydrologic similarity only for the low/moderate continuous-forcing cases that both implementations complete. They do not establish equivalence in the failed pulse or wet regimes.
 
-`state_matches_numerical_continuation_layout()` had no exact `fmr_b110_rfm_state_t` branch. The dedicated RFM carrier therefore failed state-profile admission before the first transaction.
+## Performance
 
-Branch-local repair: explicit RFM no-continuation layout case.
+On the eight successful B/C screen cases, C wall time is 3.69x to 5.18x B, median 4.36x.
 
-### DEP02 — impossible nontrivial temporal acceptance
+The preregistered repeated timing set has only two cases where C completes all repetitions:
 
-The RFM full/half temporal function returned zero only for bit-identical full and half states and `huge()` otherwise. Since RFM has no model-certificate route, nontrivial live evolution was structurally rejected.
+- B01 / G2 / R4: B median 0.003122 s, C median 0.015486 s, so C is about 4.96x slower;
+- O05 / G2 / R6: B median 0.002864 s, C median 0.011563 s, so C is about 4.04x slower.
 
-Branch-local repair: dimensional full/half metric over matrix head, ponding, groundwater, theta×dz, MB storage and endpoint storage. History variables with non-length dimensions were not mixed into this centimetre-scale norm.
+Nonlinear iteration counts are nearly identical in these successful cases. The measured slowdown therefore is not explained by extra Richards iterations. Source inspection identifies a zero-waste candidate: the live RFM wall-hydraulic binder evaluates MB wall sorptivity on every step even though the A26 production composer treats leading MB as fast-through and does not consume the MB wall-sorptivity result. This is an attribution candidate, not yet a measured decomposition.
 
-### DEP03 — dry continuation blocked
+The RFM configuration here uses 64 sorptivity panels as preregistered. Timing is CI-machine-specific and does not establish a portable factor.
 
-The activation layer already supported zero source, but surface composition converted `supply <= 0` to REFERENCE_REQUIRED. RFM therefore failed exactly when a rainfall event ended, preventing continued release of accepted IC storage.
+## Production interpretation
 
-Branch-local repair: zero supply is a valid zero surface receipt; negative supply remains outside the RFM route.
+The original A27 proposition is not supported by this screen in its present form.
 
-All three repairs preserve the bounded A26 first-order accepted-state-frozen split. They do not add monolithic coupling or pressure-aware A27 research physics.
+Current production RFM is hydrologically close to standard macropore in the narrow regimes where it completes, but:
+- its completion envelope is much narrower in this stress screen;
+- pulsed wet-to-dry continuation is a repeatable solver blocker;
+- it is substantially slower than B in the successful timing cases under the fixed 64-panel configuration.
 
-## Matrix-only A arm
+No production speedup, stability advantage, E1 production envelope or canonical A27 admission is claimed.
 
-A did not complete because the generic base-state temporal function still uses exact full/half identity semantics. That is an existing broader Reference transaction limitation and is not required to answer the primary B/C A27 question. It is not repaired here.
+## Next experiment
 
-Consequently ABC01 does not provide a valid matrix-only wall-time baseline. No RFM-versus-matrix speed claim is made.
+Before pressure-aware wall research or parameter tuning, isolate the RFM first-dry-step source transition from a successfully accepted wet trajectory. The diagnostic should retain the production accepted state and quantify:
+- endpoint storage and wall age at rain cessation;
+- exact endpoint-to-matrix release amount/rate;
+- Reference solve with the production release source;
+- a no-release diagnostic solve from the same matrix state;
+- a fixed source-scale ladder for attribution only.
 
-## Interpretation
-
-The earlier concern that production RFM was not doing what it should was justified, but the dominant initial failures were integration/admission defects rather than evidence that the reduced physical concept itself was unusable.
-
-After repairing those defects, the bounded hydrologic behavior is much better than the pre-repair runtime suggested: 29/29 jointly completed cases are E1.
-
-The current performance proposition, however, fails. RFM as presently composed is substantially slower than the standard macropore route in the preregistered timing sample. A27 should therefore continue as a performance-attribution problem, not as further hydrologic tuning.
-
-## Governance
-
-DEP01, DEP02 and DEP03 are qualified branch-local shared-backend repair candidates. They are **not canonical-admitted by A27**. Central SWAP5 regie owns canonical admission.
-
-The A27 pressure-aware signed research seam remains excluded from comparator C and from these repairs.
+Separately, performance attribution should measure the cost of surface/endpoint/unused-MB sorptivity quadrature without changing ABC01.

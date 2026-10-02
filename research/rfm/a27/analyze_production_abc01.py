@@ -28,9 +28,17 @@ for key,arms in sorted(keys.items()):
     cls="REVIEW_MODEL_FORM"
     reason=""
     if not B["completed"]:
-        cls="B_NOT_ADMITTED";reason=f"status={B['status']} step={B['fail_step']}"
+        if B.get("admission_rejections",0)>0 and B.get("attempts",0)==0:
+            cls="B_NOT_ADMITTED"
+        else:
+            cls="B_RUNTIME_FAILED"
+        reason=f"status={B['status']} step={B['fail_step']} solver_rej={B.get('solver_rejections',0)} temporal_rej={B.get('temporal_rejections',0)}"
     elif not C["completed"]:
-        cls="C_NOT_ADMITTED";reason=f"status={C['status']} step={C['fail_step']}"
+        if C.get("admission_rejections",0)>0 and C.get("attempts",0)==0:
+            cls="C_NOT_ADMITTED"
+        else:
+            cls="C_RUNTIME_FAILED"
+        reason=f"status={C['status']} step={C['fail_step']} solver_rej={C.get('solver_rejections',0)} temporal_rej={C.get('temporal_rejections',0)}"
     else:
         input_scale=max(B["total_in_cm"],C["total_in_cm"],0.1)
         storage_diff=abs(B["total_storage_cm"]-C["total_storage_cm"])
@@ -47,7 +55,10 @@ for key,arms in sorted(keys.items()):
         else:
             reason="outside E1 thresholds; requires model-form attribution"
     comparison.append(dict(soil=key[0],geom=key[1],regime=key[2],classification=cls,reason=reason,
-        B_completed=B["completed"],C_completed=C["completed"],accepted_input_B_cm=B["total_in_cm"],
+        A_completed=A["completed"],A_status=A["status"],A_fail_step=A["fail_step"],
+        B_completed=B["completed"],B_status=B["status"],B_fail_step=B["fail_step"],
+        C_completed=C["completed"],C_status=C["status"],C_fail_step=C["fail_step"],
+        accepted_input_B_cm=B["total_in_cm"],
         accepted_input_C_cm=C["total_in_cm"],storage_diff_cm=(abs(B["total_storage_cm"]-C["total_storage_cm"]) if B["completed"] and C["completed"] else None),
         total_drain_diff_cm=(abs((B["bottom_out_cm"]+B["fast_external_out_cm"])-(C["bottom_out_cm"]+C["fast_external_out_cm"])) if B["completed"] and C["completed"] else None),
         max_theta_diff=(max(abs(B[k]-C[k]) for k in ["theta1","theta5","theta10"]) if B["completed"] and C["completed"] else None),

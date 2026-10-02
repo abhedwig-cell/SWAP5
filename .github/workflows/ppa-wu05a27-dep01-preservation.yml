@@ -1,8 +1,6 @@
 name: PPA-WU05-A27 DEP01 standard-macropore preservation
 on:
-  push:
-    branches:
-      - work/ppa-wu05-a27-rfm-performance-equivalence
+  workflow_dispatch:
 jobs:
   a8-preservation:
     runs-on: ubuntu-latest
