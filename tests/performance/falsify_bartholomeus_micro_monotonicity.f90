@@ -5,9 +5,9 @@ program falsify_micro_monotonicity
  type(BartholomeusMicroInput)::p
  real(real64)::prev,cur,w,rf
  integer::it,ig,ir,iw,viol,total
- real(real64),parameter::temps(5)=[278._real64,283.,288.,293.,303.]
- real(real64),parameter::gfps(6)=[.005_real64,.02,.05,.10,.20,.35]
- real(real64),parameter::roots(5)=[0._real64,.1,.3,.6,1.]
+ real(real64),parameter::temps(5)=real([278,283,288,293,303],real64)
+ real(real64),parameter::gfps(6)=[.005_real64,.02_real64,.05_real64,.10_real64,.20_real64,.35_real64]
+ real(real64),parameter::roots(5)=[0._real64,.1_real64,.3_real64,.6_real64,1._real64]
  viol=0;total=0
  do it=1,size(temps);do ig=1,size(gfps);do ir=1,size(roots)
   p%c_mroot=1e-5;p%w_root=roots(ir);p%f_senes=1;p%q10_root=2;p%soil_temp_k=temps(it)
