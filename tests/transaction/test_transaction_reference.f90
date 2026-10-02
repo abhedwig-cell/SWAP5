@@ -273,8 +273,7 @@ contains
     policy%max_retries=0
     call execute_reference_interval(model,state,0.0_real64,0.1_real64,policy,result)
     call expect_true(result%status==TX_STATUS_RETRY_EXHAUSTED,'incomplete storage fails closed',failures)
-    call expect_true(iand(result%accepted_missing_contribution_mask,TX_MASS_MISSING_STORAGE_START)/=0_int64, &
-         'missing start storage recorded',failures)
+    call expect_true(result%mass_rejections==1,'incomplete storage rejected by mass gate',failures)
     call expect_close(water_of(state),1.0_real64,0.0_real64,'incomplete storage cannot commit',failures)
   end subroutine test_incomplete_storage_fails_closed
 
