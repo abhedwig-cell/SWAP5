@@ -3,8 +3,8 @@ program falsify_bartholomeus_gate_boundary
  use iso_fortran_env,only:real64,int64
  use mod_bartholomeus_runtime_input,only:bartholomeus_runtime_view_t
  use mod_bartholomeus_parameter_contract
- use mod_bartholomeus_factor_provider,only:evaluate_bartholomeus_factors_from_state
- use mod_bartholomeus_waterfilm_provider,only:BARTHOLOMEUS_WATERFILM_REFERENCE
+ use mod_bartholomeus_factor_provider,only:evaluate_bartholomeus_factors
+ use mod_bartholomeus_waterfilm_provider,only:evaluate_bartholomeus_waterfilm,BARTHOLOMEUS_WATERFILM_REFERENCE,BARTHOLOMEUS_WATERFILM_OK
  use mod_bartholomeus_no_stress_gate,only:bartholomeus_macro_supply_bound_no_stress
  implicit none
  integer,parameter::NCASE=4096,NNEAR=9
@@ -13,8 +13,8 @@ program falsify_bartholomeus_gate_boundary
  type(BartholomeusImmutableDataset)::d
  type(BartholomeusCropParameters)::c
  real(real64)::wr(1),w0(1),facmin,ct,lo,hi,mid,gate_ct,ref_ct,theta_r,theta_s,alpha,npar,gfp,head,temp,depth
- real(real64),allocatable::fac(:)
- integer::k,j,it,total,skips,false_skips,n_gt2,n_gt2_skips,near_gate,near_ref
+ real(real64),allocatable::fac(:),film(:)
+ integer::k,j,it,total,skips,false_skips,n_gt2,n_gt2_skips,near_gate,near_ref,wf_status
  logical::ok,sg,slo,shi,rlo,rhi
  total=0;skips=0;false_skips=0;n_gt2=0;n_gt2_skips=0;near_gate=0;near_ref=0
  allocate(v%pressure_head_cm(1),v%water_content(1),v%soil_temperature_k(1));v%rooted_nodes=1
@@ -82,7 +82,7 @@ contains
   real(real64),intent(in)::ctop;logical,intent(in)::is_gt2
   logical::g
   if(ctop<=0)return
-  call evaluate_bartholomeus_factors_from_state(v,d,c,wr,w0,ctop,BARTHOLOMEUS_WATERFILM_REFERENCE,fac,ok)
+  call reference_factors(ctop,ok)
   if(.not.ok)return
   facmin=minval(fac);g=bartholomeus_macro_supply_bound_no_stress(v,d,c,wr,w0,ctop)
   total=total+1
@@ -97,8 +97,16 @@ contains
  end subroutine
  subroutine ref_no_stress(ctop,res)
   real(real64),intent(in)::ctop;logical,intent(out)::res
-  call evaluate_bartholomeus_factors_from_state(v,d,c,wr,w0,ctop,BARTHOLOMEUS_WATERFILM_REFERENCE,fac,ok)
+  call reference_factors(ctop,ok)
   res=ok.and.minval(fac)>=1._real64-1e-14_real64
+ end subroutine
+ subroutine reference_factors(ctop,valid)
+  real(real64),intent(in)::ctop;logical,intent(out)::valid
+  ! Oracle deliberately bypasses PERF02. This is the admitted PERF01 Reference path:
+  ! evaluate waterfilm first, then evaluate factors from that explicit waterfilm.
+  call evaluate_bartholomeus_waterfilm(v,d,BARTHOLOMEUS_WATERFILM_REFERENCE,film,wf_status)
+  if(wf_status/=BARTHOLOMEUS_WATERFILM_OK)then;valid=.false.;return;endif
+  call evaluate_bartholomeus_factors(v,d,c,wr,w0,film,ctop,fac,valid)
  end subroutine
  subroutine setup_case(tr,ts,a,n,dz,uo,us,ub,data,crop,valid)
   real(real64),intent(in)::tr,ts,a,n,dz,uo,us,ub
