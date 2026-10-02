@@ -98,3 +98,7 @@ The Status-A F-PE11 closure must not be paraphrased as a universal whole-model s
 ## Authority boundaries
 
 Architecture pages from earlier phases may describe desired generic kernels, APIs, adapters or migration endpoints. Use them as target/design history only. For what is actually admitted now, use this page together with [SWAP5 Status-A current status](CURRENT_STATUS.md) and [Theory, code and evidence traceability](TRACEABILITY.md).
+
+## Later bounded lower-boundary admission: LOW05-A
+
+PR#974 canonically admits the homogeneous typed Fortran ordinary Reference DATE5/HBOT5 prescribed lower-face pressure-head adapter at `e88af3da54b743958b887d9cc15647227388333a`. Existing typed physics, transaction/restart/mass ownership and default groundwater-owned mode5 semantics are unchanged. Original proposal endpoint is frozen through sibling/retry staging; ordinary ownership is explicit and excludes GWledger/datum. [Closeout and claim ceiling](../migration/F-MIG431-LOW05A_CLOSEOUT.md) bind source, qualification and admission. Qualification run36964835178 proves bounded progress, rollback, restart and existing2/4/6/7/defaultGW5 preservation at O0/O2. It does not assert global green CI, a generic parser, mixed ownership, broad transient accuracy or migration of1/3/8.

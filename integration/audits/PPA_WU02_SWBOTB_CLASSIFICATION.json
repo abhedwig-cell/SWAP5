@@ -94,10 +94,28 @@
       "meaning": "prescribed_lower_face_pressure_head",
       "time": "DATE5_HBOT5_table_in_legacy",
       "typed_contract": "admitted",
-      "application": "restricted_groundwater_profile",
+      "application": "canonical_bounded_ordinary_DATE5_HBOT5_typed_Reference_adapter_and_existing_restricted_groundwater_profile",
       "groundwater_relation": "used_by_F_GC_head_coupling_but_not_identical_to_legacy_DATE5_adapter",
-      "classification": "RESTRICTED_PRODUCTION",
-      "risk": "low_existing_restricted_route"
+      "classification": "RESTRICTED_PRODUCTION_TYPED_APPLICATION_CANONICAL",
+      "risk": "low_within_explicit_original_proposal_timing_and_non_groundwater_owner_contract",
+      "qualification": {
+        "work_unit": "F-MIG431-LOW05-A",
+        "state": "CANONICAL_ADMITTED_CLOSED",
+        "pull_request": 974,
+        "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+        "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+        "qualification_run": 36964835178,
+        "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+        "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+      },
+      "nonclaims": [
+        "general SWP/BBC parser",
+        "public C ABI",
+        "mixed ownership",
+        "unrestricted transient accuracy/domain",
+        "RossFast head mode",
+        "new groundwater datum/ownership"
+      ]
     },
     {
       "selector": "6",
@@ -200,8 +218,18 @@
     {
       "id": "PPA-LOW05-APP",
       "priority": 3,
-      "status": "NOT_IMPLEMENTED",
-      "meaning": "ordinary non-groundwater-owned prescribed-head application adapter"
+      "status": "CANONICAL_ADMITTED_CLOSED",
+      "meaning": "ordinary non-groundwater-owned prescribed-head application adapter",
+      "admission": {
+        "work_unit": "F-MIG431-LOW05-A",
+        "state": "CANONICAL_ADMITTED_CLOSED",
+        "pull_request": 974,
+        "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+        "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+        "qualification_run": 36964835178,
+        "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+        "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+      }
     },
     {
       "id": "PPA-LOW04",
@@ -260,5 +288,15 @@
     "pull_request": 972,
     "canonical_merge_commit": "5ab13625c757407e633d0871fea663a5b6fabaeb",
     "effect": "SWBOTB=4 q(gwl) is now a typed production application law using committed/start-of-trial groundwater level and the existing prescribed-qbot owner. No claim for other selectors."
+  },
+  "post_low05a_update": {
+    "work_unit": "F-MIG431-LOW05-A",
+    "state": "CANONICAL_ADMITTED_CLOSED",
+    "pull_request": 974,
+    "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+    "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+    "qualification_run": 36964835178,
+    "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+    "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
   }
 }

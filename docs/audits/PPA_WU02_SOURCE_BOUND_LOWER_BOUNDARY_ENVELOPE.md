@@ -171,3 +171,8 @@ calendar-string ingestion, internal -2 as a normal user selector, mixed
 bottom-mode applications, RossFast execution of this legacy control, or new
 groundwater-coupling semantics. Those boundaries are machine-recorded in
 `integration/audits/PPA_LOW02_TIME_STATUS.json`.
+
+
+## Current lower-boundary authority after LOW05-A (2026-10-02)
+
+Historical selector rows above retain their recorded snapshot. Later canonical authority admits4 via PR#972/5ab13625 and the bounded ordinary5 DATE5/HBOT5 adapter via PR#974/`e88af3da54b743958b887d9cc15647227388333a`. See [LOW05-A closeout](../migration/F-MIG431-LOW05A_CLOSEOUT.md). Modes2,4,6,7 and default groundwater5 are preserved in the named six-program qualification;1/3/8 remain open. Internal-2 and9 are not ordinary application selectors. This is not all-lower-boundary migration and not generic legacy parser admission.
