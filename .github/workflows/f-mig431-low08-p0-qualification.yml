@@ -1,18 +1,21 @@
 name: F-MIG431 LOW08-P0 qualification
 on:
   push:
-    branches: [work/f-mig431-low08-p0-lysimeter-active-set]
+    branches: [work/f-mig431-low08-p0-lysimeter-active-set, fix/989-serialized-storage-shape-contract]
     paths:
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/adapter/mod_reference_richards_state_binding.f90'
       - 'src/legacy/b1_10_port/headcalc.f90'
       - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/transaction/test_transaction_reference.f90'
       - 'tests/fmig431/test_low08_p0_typed_solver.f90'
       - 'tests/fmig431/run_low08_p0_qualification.py'
       - '.github/workflows/f-mig431-low08-p0-qualification.yml'
   workflow_dispatch:
 jobs:
   qualify:
+    if: github.ref_name == 'work/f-mig431-low08-p0-lysimeter-active-set'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,3 +29,19 @@ jobs:
         with:
           name: F-MIG431-LOW08-P0-qualification
           path: low08_p0_qualification_result.json
+
+  issue989:
+    if: github.ref_name == 'fix/989-serialized-storage-shape-contract'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Transaction storage fail-closed regression
+        run: |
+          B="$RUNNER_TEMP/issue989-tx"
+          mkdir -p "$B"
+          gfortran -O0 -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -J"$B" -I"$B" \
+            src/transaction/mod_transaction_reference.f90 tests/transaction/test_transaction_reference.f90 \
+            -o "$B/test_transaction_reference"
+          "$B/test_transaction_reference"
+      - name: Typed production application reproducer
+        run: python3 tests/physics/run_bartholomeus_application.py
