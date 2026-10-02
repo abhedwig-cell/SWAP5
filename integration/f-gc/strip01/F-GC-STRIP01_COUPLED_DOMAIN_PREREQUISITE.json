@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "state": "REGISTERED_UNRESOLVED_SHARED_APPLICATION_DOMAIN_PREREQUISITE",
+  "canonical_head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c",
+  "problem": "Current fixed-interface production authority owns physical SWAP-column storage, classifies MODFLOW STO as HEAD_STATE_CAPACITANCE and admits drainage owner NONE. A physical 50 m coupled aquifer/storage/DRN balance cannot inherit independent aquifer storage or active drainage by reinterpretation.",
+  "controlling_contracts": [
+    "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
+    "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md"
+  ],
+  "required_decisions": [
+    "Specify the fixed coupling-plane elevation, SWAP column interval and MODFLOW physical aquifer interval in one datum, including the wet/dry range.",
+    "Prove non-overlapping physical storage volumes. Standalone convertible Sy over the whole 10 m layer cannot be copied into an overlapping SWAP soil domain.",
+    "Assign the left drain route and destination uniquely to MODFLOW and disable SWAP and surface-water representations of that same route.",
+    "Declare whether physical regional storage is an explicit independent saturated-domain owner, or the experiment is a zero-storage limiting model; classify any numerical head capacitance separately.",
+    "Derive accepted-window physical balance with SWAP storage, permitted physical aquifer storage, forcing/ET/runoff and DRN; cancel interface transfer once and never treat ledger as storage.",
+    "Bind a source-backed sand profile and the recovered meteorological candidate through current typed application contracts."
+  ],
+  "required_gates": [
+    "disjoint-domain geometry audit",
+    "component storage-function and DRN-budget oracle",
+    "far-column pulse transported laterally to sole DRN route",
+    "accepted-window global closure under predeclared limits",
+    "whole-window reject/replay identity",
+    "committed-only restart continuation",
+    "current fixed-interface production preservation"
+  ],
+  "production_source_change_implemented": false,
+  "production_ABI_change_implemented": false,
+  "canonical_admission": false,
+  "claim_ceiling": "standalone A/B and recovered input candidate only; C-E await this explicit ownership/profile seam",
+  "next_action": "Central application-domain reconciliation/preregistration of the coupled experimental profile before any shared authority widening. Reuse this single work branch; do not create sibling repair/admission branches."
+}

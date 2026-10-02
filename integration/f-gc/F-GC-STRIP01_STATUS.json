@@ -3,8 +3,8 @@
   "work_unit": "F-GC-STRIP01",
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
-  "phase": "BUILD_ORACLES",
-  "state": "RESEARCH_ORACLE_REPRODUCED_NATIVE_MODFLOW_QUEUED_COUPLED_INPUTS_BLOCKED",
+  "phase": "QUALIFY_PERSIST_ADVISE",
+  "state": "STANDALONE_REFERENCE_QUALIFIED_COUPLED_DOMAIN_PREREQUISITE_REGISTERED",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -66,19 +66,23 @@
   "progress": {
     "preregistration_persisted": true,
     "branch_issued": true,
-    "standalone_modflow_built": false,
+    "standalone_modflow_built": true,
     "analytical_oracle_implemented": true,
-    "drain_down_run": false,
+    "drain_down_run": true,
     "coupled_run": false,
     "hupsel_run": false,
     "production_delta": [],
-    "qualification": "oracle_local_replay_pass; native_MODFLOW6_AB_and_conductance_sensitivity_queued; no native result yet",
+    "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Wait for native MODFLOW A/B Actions run 37046847285 (includes the preregistered conductance sensitivity), inspect job logs and artifact, then persist real results. Run 37044022443 is the earlier fixed-conductance-only code revision.",
+    "next_action": "Reconcile the registered experimental coupled-domain physical storage/drain ownership prerequisite before C-E; complete soil-profile and current typed forcing binding qualification.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
-    "plot_script": "tools/plot_f_gc_strip01.py"
+    "plot_script": "tools/plot_f_gc_strip01.py",
+    "qualification_document": "docs/integration/F-GC-STRIP01_STANDALONE_QUALIFICATION.md",
+    "complete_native_result": "integration/f-gc/strip01/results/native_complete.json.gz",
+    "hupsel_input_candidate": "integration/f-gc/strip01/inputs/hupsel_public_2002_2004.met",
+    "coupled_domain_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01_COUPLED_DOMAIN_PREREQUISITE.json"
   },
-  "next_permitted_action": "Execute the registered standalone A/B workflow through an authorized GitHub Actions route. If it fails, inspect model inputs and native package budgets against the frozen oracle; repair only when physically justified. After A/B passes, proceed to the coupled ownership/data gates.",
+  "next_permitted_action": "Reconcile the registered experimental coupled-domain physical storage/drain ownership prerequisite before C-E; complete soil-profile and current typed forcing binding qualification.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -112,12 +116,12 @@
       0.12274343003824484
     ],
     "total_recharge_m3_per_day": 0.05,
-    "model_claim_ceiling": "independent analytical/discrete oracle only; no native MODFLOW6 run, drain-down qualification, SWAP coupling, Hupsel qualification or production admission"
+    "model_claim_ceiling": "selected-reference standalone native MODFLOW6 A/B qualified, with explicit low-K negative; no SWAP coupled run, Hupsel run or canonical admission"
   },
   "native_execution": {
     "workflow": ".github/workflows/f-gc-strip01-standalone-modflow.yml",
-    "workflow_run": 37046847285,
-    "native_modflow_executed": false,
+    "workflow_run": 37065274386,
+    "native_modflow_executed": true,
     "expected_engine": "MODFLOW6 6.8.0",
     "expected_flopy": "3.9.5",
     "artifact": "F-GC-STRIP01-{run_id}",
@@ -137,33 +141,42 @@
       "cause": "runner reports no job objects; the failure remains infrastructure-level and produced no numerical evidence"
     },
     "repair_note": "Remove runner-context references from job-level environment and artifact path, and use a workspace-relative result directory.",
-    "job_id": null,
-    "queue_status": "queued",
-    "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37046847285",
-    "first_active_attempt": {
-      "run_id": 37044022443,
-      "head_sha": "6f93436baa4e09791737fb9e9f76b57ce205a737",
-      "job_id": 110960842285,
-      "status": "queued",
-      "checked_at": "2026-10-02T18:00Z",
-      "numerical_evidence": false
-    },
+    "job_id": 111031452682,
+    "queue_status": "completed",
+    "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37065274386",
     "attempts": [
       {
-        "run_id": 37044022443,
-        "head_sha": "6f93436baa4e09791737fb9e9f76b57ce205a737",
-        "job_id": 110960842285,
-        "status": "queued",
-        "includes_drn_conductance_sensitivity": false,
-        "numerical_evidence": false
+        "run_id": 37046847285,
+        "source_commit": "abdd1f479fe064773cbb16cc4bb7ced85aba493e",
+        "conclusion": "failure",
+        "classification": "native low-K arithmetic-oracle head gate failed; mass rate passed; original fail-fast runner prevented remaining cases"
       },
       {
-        "run_id": 37046847285,
-        "head_sha": "abdd1f479fe064773cbb16cc4bb7ced85aba493e",
-        "status": "queued",
-        "includes_drn_conductance_sensitivity": true,
-        "numerical_evidence": false
+        "run_id": 37064998077,
+        "source_commit": "da0d9f123aff63cd85f0e0059aa7e4c576075319",
+        "conclusion": "failure",
+        "classification": "full A/B executed; native package balances passed; linear Sy*head observation mismatched native regularized saturation storage"
+      },
+      {
+        "run_id": 37065274386,
+        "source_commit": "1c443c38d22a947798e847be469d535039cf2783",
+        "conclusion": "success",
+        "classification": "selected-reference A/B pass with retained low-K sweep negative; source-bound storage observation corrected"
       }
-    ]
+    ],
+    "conclusion": "success",
+    "source_commit": "1c443c38d22a947798e847be469d535039cf2783",
+    "artifact_id": 11252192677,
+    "artifact_sha256": "ce0f738616961e395851c9a815b11365eb7aa027a1b5da28495ff2d87e5db350"
+  },
+  "hupsel_candidate": {
+    "source_repo": "SWAP-model/swap-testcases",
+    "source_commit": "a1b15843e9e9732713bed1ee41d09c16c3136593",
+    "blob_sha": "7d1b71eab5d229e45ae351117188a034efef4e15",
+    "days": 1096,
+    "start": "2002-01-01",
+    "end": "2004-12-31",
+    "original_B0_raw_identity_matches": false,
+    "current_typed_binding_qualified": false
   }
 }
