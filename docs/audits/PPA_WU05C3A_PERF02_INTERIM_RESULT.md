@@ -80,3 +80,14 @@ The canonical-control backtrace reaches `fmr_serialized_storage`. In the current
 This asymmetry is a concrete fail-closed contract gap on current canonical and is consistent with the observed raw SIGSEGV. It is not yet proof that this missing guard is the unique root cause: the malformed extent may originate earlier in state/configuration ownership. PERF02 therefore records the canonical defect as an upstream runtime blocker rather than patching `mod_fmr_serialized_reference_backend` on the oxygen-performance branch.
 
 No repository search found an existing persisted finding for this exact storage SIGSEGV/shape-contract failure. The owning runtime line should reproduce it with a minimal storage/state fixture, identify where the inconsistent extent is introduced, and repair at the earliest correct ownership boundary. PERF02 should then rerun only the required typed production-application preservation against the repaired canonical postimage.
+
+
+## A26/live-trial/backend preservation status
+
+No new Actions were started for A26. Existing PERF01 merge-postimage evidence remains directly relevant because PERF02 changes only the oxygen factor-provider path and adds a pure pre-waterfilm gate; it does not change the A26 live-trial preparation contract, backend ABI, accepted state, candidate state, checkpoint/restart ownership, or RFM optional-state carrier.
+
+Existing run 36992278171 / job 110790997847 passed both:
+- `PPA_WU05A26_BACKEND_RUNTIME_O2=PASS`;
+- `PPA_WU05A26_BACKEND_COMPILE_GATE=PASS`.
+
+The latest PERF02 qualification additionally compiles the current backend dependency closure far enough to pass the complete corrected B1.11 assembled O0/O2 oracle and then reaches the unrelated canonical storage SIGSEGV in the typed application. There is no evidence of an A26/live-trial/backend compile regression introduced by PERF02. This is preservation by unchanged ownership surface plus existing persisted authority, not a claim that a fresh A26 Action was rerun on the PERF02 head.
