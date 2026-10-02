@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - work/ppa-wu05-a28-rfm-approximate-mode
+  pull_request:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
 jobs:
   qualify:
     runs-on: ubuntu-latest
