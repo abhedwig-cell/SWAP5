@@ -66,8 +66,14 @@ if sys.argv[2]=='pulse':
  src=src.replace('n_amp=1,n_stage=6,n_refine=4','n_amp=1,n_stage=11,n_refine=4')
  src=src.replace('[0.005_real64,0.020_real64,0.050_real64,0.100_real64,0.200_real64,0.300_real64]',
   '[0.005_real64,0.020_real64,0.050_real64,0.100_real64,0.200_real64,0.300_real64, &\n       0.200_real64,0.100_real64,0.050_real64,0.020_real64,0.005_real64]')
- src=src.replace('if(solve_result%top_flux>0.0_real64)then\n          result%solver_status=-903;result%stop_event=ie;result%stop_substep=is\n          return\n        end if','')
-elif sys.argv[2]!='rising':
+src=src.replace('if(solve_result%top_flux>0.0_real64)then\n          result%solver_status=-903;result%stop_event=ie;result%stop_substep=is\n          return\n        end if','')
+src=src.replace('if(solve_result%status/=SW_SOLVE_CONVERGED)then\n          result%stop_event=ie;result%stop_substep=is\n          return\n        end if',
+'''if(solve_result%status/=SW_SOLVE_CONVERGED)then
+          write(*,'(A,4(1X,I0),1X,A,1X,ES24.16)') 'FAIL_DIAG',ie,is,solve_result%status,solve_result%diagnostics%nonlinear_iterations,trim(solve_result%diagnostics%route),maxval(abs(workspace%richards%residual))
+          result%stop_event=ie;result%stop_substep=is
+          return
+        end if''')
+if sys.argv[2]!='rising' and sys.argv[2]!='pulse':
  raise SystemExit('history must be rising or pulse')
 if not (('n_amp=1,n_stage=11,n_refine=4' if sys.argv[2]=='pulse' else 'n_amp=1,n_stage=6,n_refine=4') in src) or '[0.05_real64]' not in src:
  raise SystemExit('failed to narrow stage probe to D=0.05 cm')
