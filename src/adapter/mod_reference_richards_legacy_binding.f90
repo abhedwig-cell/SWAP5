@@ -162,7 +162,9 @@ contains
        ! which mutates integration globals outside the focused solver service.
        if ((request%boundary%bottom_mode == 5 .or. request%boundary%bottom_mode == 8) .and. .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
-          call materialize_prescribed_head_bottom_flux(request, ws%richards, ws%state_binding)
+          if (request%boundary%bottom_mode == 5 .or. ws%state_binding%qbot /= 0.0_real64) then
+             call materialize_prescribed_head_bottom_flux(request, ws%richards, ws%state_binding)
+          end if
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
           result%native_balance_rate_residual_available = .true.
           result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
