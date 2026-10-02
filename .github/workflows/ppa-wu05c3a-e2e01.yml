@@ -1,0 +1,15 @@
+name: PPA-WU05-C3A E2E01 runtime impact
+on:
+  push:
+    branches: [research/ppa-wu05c3a-e2e-runtime-impact]
+    paths:
+      - 'tests/performance/benchmark_bartholomeus_e2e.f90'
+      - 'tests/performance/run_bartholomeus_e2e.py'
+      - '.github/workflows/ppa-wu05c3a-e2e01.yml'
+  workflow_dispatch:
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/performance/run_bartholomeus_e2e.py
