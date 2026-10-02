@@ -42,7 +42,7 @@ program top03_base_temporal_acceptance_probe
   type(soil_water_solve_request_t) :: request
   type(path_result_t) :: paths(4)
   real(real64), allocatable, target :: qdra(:,:), qssdi(:), qrot(:)
-  real(real64) :: cofgen(24,numnod), theta0(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
+  real(real64) :: cofgen(24,numnod), h0(numnod), theta0(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
   real(real64), parameter :: initial_head_cm = -123.0_real64
   real(real64), parameter :: initial_ponding_cm = 0.0_real64
   real(real64), parameter :: initial_gwl_cm = -2.25_real64
