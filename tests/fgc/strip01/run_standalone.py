@@ -84,6 +84,24 @@ def main():
             assert error<=HEAD_LIMIT_M, row
             assert abs(rch-total)<=RATE_LIMIT_M3_D and abs(rch+drn)<=RATE_LIMIT_M3_D, row
             assert np.min(np.diff(h))>=-1e-9, row
+    # Preregistered finite-conductance sensitivity at the selected K and 50-cell mesh.
+    conductance_sensitivity=[]
+    for c in [10.,100.,1000.]:
+        folder=a.output/f"conductance_c{c:g}"
+        heads_c, budgets_c=build(flopy,folder,exe,.5,n=50,conductance=c)
+        t_c=heads_c.get_times()[-1]
+        h_c=heads_c.get_data(totim=t_c).ravel()
+        expected_c, total_c=discrete(50,1.,1,.001,.5,-5,-10,c)
+        error_c=float(np.max(np.abs(h_c-expected_c)))
+        drn_c=rate(budgets_c,"DRN",t_c)
+        rch_c=rate(budgets_c,"RCHA",t_c)
+        row_c=dict(conductance_m2_d=c,head_error_m=error_c,drain_m3_d=drn_c,
+                   recharge_m3_d=rch_c,budget_residual_m3_d=rch_c+drn_c,
+                   heads_m=h_c.tolist())
+        conductance_sensitivity.append(row_c)
+        assert error_c<=HEAD_LIMIT_M, row_c
+        assert abs(rch_c-total_c)<=RATE_LIMIT_M3_D and abs(rch_c+drn_c)<=RATE_LIMIT_M3_D, row_c
+
     heads, budgets=build(flopy,a.output/"drain_down",exe,.5,transient=True)
     prev_t=0.; prev_storage=.2*50*7.; cumulative=0.; trajectory=[]
     for t in heads.get_times():
@@ -101,7 +119,8 @@ def main():
         prev_t=t; prev_storage=storage
     result=dict(status="STANDALONE_AB_PASS",version=version.strip(),
                 executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(),
-                flopy_version=flopy.__version__,steady=rows,drain_down=trajectory,
+                flopy_version=flopy.__version__,steady=rows,
+                conductance_sensitivity=conductance_sensitivity,drain_down=trajectory,
                 coupled_executed=False)
     (a.output/"standalone_result.json").write_text(json.dumps(result,indent=2)+"\n")
     print("STRIP01_NATIVE_MODFLOW_STANDALONE_AB=PASS")
