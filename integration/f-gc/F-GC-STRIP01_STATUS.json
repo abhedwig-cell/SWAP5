@@ -3,8 +3,8 @@
   "work_unit": "F-GC-STRIP01",
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
-  "phase": "BUILD_ORACLES",
-  "state": "RESEARCH_ORACLE_REPRODUCED_STANDALONE_MODFLOW_PENDING",
+  "phase": "QUALIFY_STANDALONE_AB_ADVISE_COUPLED_PREREQUISITE",
+  "state": "RESEARCH_STANDALONE_AB_PASS_COUPLED_DOMAIN_DECISION_REQUIRED",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -66,16 +66,16 @@
   "progress": {
     "preregistration_persisted": true,
     "branch_issued": true,
-    "standalone_modflow_built": false,
+    "standalone_modflow_built": true,
     "analytical_oracle_implemented": true,
-    "drain_down_run": false,
+    "drain_down_run": true,
     "coupled_run": false,
     "hupsel_run": false,
     "production_delta": [],
-    "qualification": "independent_oracle_reproduced_locally; native_MODFLOW6_AB_pending",
+    "qualification": "STANDALONE_AB_LOCAL_PASS_ONLY",
     "canonical_admission": false
   },
-  "next_permitted_action": "Execute tests/fgc/strip01/run_standalone.py against MODFLOW6 6.8.0 and FloPy 3.9.5, preserve all generated inputs/logs, and adjudicate the frozen profile, budget, mesh and drain-down gates. Then complete soil/forcing retrieval and resolve regional physical storage/drainage ownership before the coupled stage.",
+  "next_permitted_action": "Obtain explicit shared research application-domain storage/drainage contract, preserving production authority; then build C real 50-column coupling and D Hupsel. See F-GC-STRIP01_COUPLED_PREREQUISITE.md.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -109,6 +109,46 @@
       0.12274343003824484
     ],
     "total_recharge_m3_per_day": 0.05,
-    "model_claim_ceiling": "independent analytical/discrete oracle only; no native MODFLOW6 run, drain-down qualification, SWAP coupling, Hupsel qualification or production admission"
+    "model_claim_ceiling": "independent analytical/discrete oracle only; no native MODFLOW6 run, drain-down qualification, SWAP coupling, Hupsel qualification or production admission",
+    "historical_replay_at": "ed64560140900fe00bd5475991808968de7cbf2e"
+  },
+  "native_evidence": {
+    "engine": "MODFLOW6 6.8.0",
+    "flopy": "3.9.5",
+    "execution": "local",
+    "actions_dispatched": 0,
+    "archive": "integration/f-gc/strip01/evidence/native_AB_20261002.tar.gz",
+    "sha256": "fbcec01311aa832a3bd6d23a489b55d0959fa36895fc428174d4db24ad23eff5",
+    "result_document": "docs/integration/F-GC-STRIP01_RESULT.md",
+    "max_head_error_m": 1.0497999802794311e-8,
+    "max_steady_budget_residual_m3_day": 6.820932707540805e-14,
+    "max_transient_volume_residual_m3": 4.533262654149439e-12,
+    "negative_configurations": [
+      "NEWTON_DEFAULT",
+      "NEWTON_AMT_HMK"
+    ],
+    "qualified_configuration": "PICARD_AMT_HMK",
+    "coupled_run": false,
+    "hupsel_run": false,
+    "whole_unit_closed": false
+  },
+  "blockers": [
+    {
+      "id": "STRIP01_SHARED_RESEARCH_DOMAIN_AUTHORITY",
+      "class": "UNRESOLVED_SCIENTIFIC_AUTHORITY",
+      "authority": "docs/development/quality-governance-a-aa.md section 5",
+      "proposal": "docs/integration/F-GC-STRIP01_COUPLED_PREREQUISITE.md",
+      "production_guard_blob": "4f826df4f0580bcde7941a1511acc4a67646ec72"
+    }
+  ],
+  "validation": {
+    "documentation_source_checks": "PASS",
+    "mkdocs_strict": "PASS",
+    "source_diff_check": "PASS",
+    "source_sha256": {
+      "oracle": "912f9934ba55ae63faaacbbf9a9556877c6ec2fdbf07b68a8b6d205fda377b37",
+      "native_runner": "cc87402a2ad5d0fe4addcf2e3753985c72509a448928fc360d8e425edee1a14d"
+    },
+    "preserved_concurrent_oracle_commits": true
   }
 }

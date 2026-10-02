@@ -22,12 +22,14 @@ def build(flopy, folder, executable, k, n=50, conductance=100., transient=False)
     flopy.mf6.ModflowIms(sim, outer_dvclose=1e-10, inner_dvclose=1e-11,
                         outer_maximum=200, inner_maximum=300, rcloserecord=1e-10,
                         linear_acceleration="BICGSTAB")
-    gwf = flopy.mf6.ModflowGwf(sim, modelname="strip", save_flows=True,
-                             newtonoptions="NEWTON")
+    gwf = flopy.mf6.ModflowGwf(sim, modelname="strip", save_flows=True)
     flopy.mf6.ModflowGwfdis(gwf, nlay=1, nrow=1, ncol=n, delr=50/n, delc=1,
                           top=0., botm=-10.)
     flopy.mf6.ModflowGwfic(gwf, strt=-3. if transient else -4.5)
-    flopy.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, save_flows=True)
+    # Align thickness averaging with the independently frozen Dupuit FV oracle.
+    # Harmonic K remains unchanged for the homogeneous aquifer.
+    flopy.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, save_flows=True,
+                          alternative_cell_averaging="AMT-HMK")
     flopy.mf6.ModflowGwfsto(gwf, iconvert=1, sy=.2, ss=0.,
                           transient={0: True} if transient else None,
                           steady_state=None if transient else {0: True})
