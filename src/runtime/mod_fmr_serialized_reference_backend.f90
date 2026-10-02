@@ -3382,7 +3382,10 @@ contains
       if (complete .and. self%snow_active) complete = allocated(physical%snow)
       if (complete .and. .not. self%snow_active) complete = .not. allocated(physical%snow)
       if (complete .and. self%soil_temperature_active) then
-        complete = allocated(physical%soil_temperature)
+        complete = allocated(self%soil_temperature_parameters)
+        if (complete) complete = self%soil_temperature_parameters%ready()
+        if (complete) complete = self%soil_temperature_parameters%node_count() == physical%active_nodes
+        if (complete) complete = allocated(physical%soil_temperature)
         if (complete) complete = physical%soil_temperature%ready() .and. &
              physical%soil_temperature%node_count() == physical%active_nodes
       end if
