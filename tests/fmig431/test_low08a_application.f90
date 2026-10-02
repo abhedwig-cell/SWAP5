@@ -57,7 +57,7 @@ program test_low08a_application
   call app%materialize_groundwater_context(topology,predictors,areas,context_handle,status)
   call require(status/=FMR_APP_BOOT_OK .and. context_handle==0_int64,'reject groundwater context')
   print '(a)', 'LOW08A_STAGE_BEFORE_RUN'
-  call app%run_standalone(T0,T1,result,status)
+  call app%run_standalone(T0,T0+0.01_real64,result,status)
   print '(a,1x,i0)', 'LOW08A_STAGE_AFTER_RUN',status
   call require(status==FMR_APP_BOOT_OK .and. result(1)%completed .and. result(1)%committed,'application transaction')
   call require(result(1)%mass%complete .and. abs(result(1)%mass%residual)<=HARD_MASS_GATE,'application mass')
