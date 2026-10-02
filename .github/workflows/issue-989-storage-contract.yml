@@ -13,8 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: fix/989-serialized-storage-shape-contract
       - name: Transaction storage fail-closed regression
         run: |
           B="$RUNNER_TEMP/issue989-tx"
