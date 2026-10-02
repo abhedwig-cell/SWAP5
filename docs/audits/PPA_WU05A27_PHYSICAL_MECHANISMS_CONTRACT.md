@@ -24,3 +24,7 @@ Slab: length10cm,D=10cm2/day,theta_i=0.20,theta_s=0.45. Cell-centred conservativ
 Fortran source checks: actual outputs versus independent algebra within1e-12cm, O0/O2 equality, immutable accepted history, replay, reset/reseed. Persist raw output, exact code SHA, hashes, compiler/package versions and scripts. The500-case cohort screens remain unchanged.
 
 No production source, top receipt, MB fate, A26H contract, ABI, restart state or numerical defaults may change. New operators live under research/rfm/a27. This block chooses a physical/state research route; it cannot admit or establish full A/B/C equivalence/performance. Central regie owns admission.
+
+## Prospective reference refinement addendum
+
+The first run at code6a90f18842472025f88eeb324b69275cad143f9b failed the unchanged successive-mesh rewet gate:256/512 maximum difference0.00028329703464377923cm >0.0001cm. The assertion stopped before CSV export and pressure-reversal evaluation; retain its traceback and do not count that run as a complete pass. Add1024 and2048 cells, retaining the128/256/512 observations. Apply the same0.0001cm gates to the2048 continuous-analytic error and1024/2048 rewet difference. Export2048-cell profiles. No mechanism parameters or comparator policies change. This addendum precedes the refined run.

@@ -18,7 +18,7 @@ def analytic(t):
     k=(np.arange(10000)+.5)*np.pi/L
     return L*(TS-TI)*(1-np.sum(2/(L*k)**2*np.exp(-D*k*k*t)))
 validation=[];interruption=[];wetting=[];profiles=[]
-for n in [128,256,512]:
+for n in [128,256,512,1024,2048]:
     initial=np.full(n,TI)
     for t in [.05,.2,1.]:
         p=evolve(initial,t,True);u=amount(initial,p)
@@ -47,12 +47,12 @@ for n in [128,256,512]:
             reset=reset_seed*math.sqrt(renew)
             retained=S0*(math.sqrt(.2+renew)-math.sqrt(.2))
             interruption.append(dict(n=n,gap_day=gap,renewed_day=renew,matrix_mean=float(dry.mean()),dry_mass_change_cm=amount(before,dry),retained_profile_uptake_cm=actual,same_mean_homogenized_uptake_cm=erased_u,reset_seed_uptake_cm=reset,retained_clock_uptake_cm=retained,reset_over_reference=reset/actual))
-        if n==512:
+        if n==2048:
             after=evolve(dry,.001,True)
             for j in range(n):profiles.append(dict(n=n,gap_day=gap,x_cm=(j+.5)*L/n,theta_before_dry=float(before[j]),theta_after_dry=float(dry[j]),theta_after_rewet=float(after[j]),theta_homogenized=float(erased[j])))
-assert max(r['error_cm'] for r in validation if r['n']==512)<=.0001
-fine={(r['gap_day'],r['renewed_day']):r for r in interruption if r['n']==512}
-mesh_error=max(abs(r['retained_profile_uptake_cm']-fine[(r['gap_day'],r['renewed_day'])]['retained_profile_uptake_cm']) for r in interruption if r['n']==256)
+assert max(r['error_cm'] for r in validation if r['n']==2048)<=.0001
+fine={(r['gap_day'],r['renewed_day']):r for r in interruption if r['n']==2048}
+mesh_error=max(abs(r['retained_profile_uptake_cm']-fine[(r['gap_day'],r['renewed_day'])]['retained_profile_uptake_cm']) for r in interruption if r['n']==1024)
 assert mesh_error<=.0001
 coupling=[];cm,cp=.5,.05
 for ks in [.025,1.,5.]:
@@ -84,7 +84,7 @@ for r in coupling:
 for name,rows in [('slab_validation.csv',validation),('wetting_feedback.csv',wetting),('interrupted_contact.csv',interruption),('interrupted_profiles.csv',profiles),('signed_coupling.csv',coupling)]:
     with (OUT/name).open('w',newline='') as f:
         w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
-summary={'slab_finest_analytic_error_cm':max(r['error_cm'] for r in validation if r['n']==512),'rewet_256_512_max_difference_cm':mesh_error,'dry_max_mass_change_cm':max(abs(r['dry_mass_change_cm']) for r in interruption),'wetting_ratio_exact':.75,'reset_ratio_range_finest':[min(r['reset_over_reference'] for r in interruption if r['n']==512),max(r['reset_over_reference'] for r in interruption if r['n']==512)],'coupling':{mode:{'max_macro_head_error_cm':max(r['macro_head_error_cm'] for r in coupling if r['mode']==mode),'max_exchange_error_cm':max(r['cum_exchange_error_cm'] for r in coupling if r['mode']==mode),'max_equilibrium_overshoots':max(r['equilibrium_overshoots'] for r in coupling if r['mode']==mode),'max_negative_head_steps':max(r['negative_head_steps'] for r in coupling if r['mode']==mode)} for mode in ['explicit','backward','subcycle','one_sided']},'production_qualified':False}
+summary={'slab_finest_analytic_error_cm':max(r['error_cm'] for r in validation if r['n']==2048),'rewet_1024_2048_max_difference_cm':mesh_error,'dry_max_mass_change_cm':max(abs(r['dry_mass_change_cm']) for r in interruption),'wetting_ratio_exact':.75,'reset_ratio_range_finest':[min(r['reset_over_reference'] for r in interruption if r['n']==2048),max(r['reset_over_reference'] for r in interruption if r['n']==2048)],'coupling':{mode:{'max_macro_head_error_cm':max(r['macro_head_error_cm'] for r in coupling if r['mode']==mode),'max_exchange_error_cm':max(r['cum_exchange_error_cm'] for r in coupling if r['mode']==mode),'max_equilibrium_overshoots':max(r['equilibrium_overshoots'] for r in coupling if r['mode']==mode),'max_negative_head_steps':max(r['negative_head_steps'] for r in coupling if r['mode']==mode)} for mode in ['explicit','backward','subcycle','one_sided']},'production_qualified':False}
 (OUT/'physical_mechanisms_summary.json').write_text(json.dumps(summary,indent=2)+'\n')
 print(json.dumps(summary,indent=2))
 print('A27_INDEPENDENT_MECHANISM_REFERENCE_CHECKS=PASS')
