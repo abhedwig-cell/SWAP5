@@ -335,6 +335,18 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
          '|MATRIX_STATUS=',result%matrix_result%status,'|MATRIX_RES=',result%matrix_result%integrated_mass_balance_residual_cm
     write(*,'(*(g0))') 'SOURCE_INNER_LAST_TRIAL|H2=',workspace%richards%old_head(2), &
          '|ITERATIONS=',workspace%legacy_worker%diagnostics%nonlinear_iterations
+    write(*,'(*(g0))') 'ACTIVE_INNER_SCRATCH|MAX_RATE=',maxval(abs(workspace%richards%residual(1:numnod))), &
+         '|NODE=',maxloc(abs(workspace%richards%residual(1:numnod)),dim=1), &
+         '|RATE_SUM=',sum(workspace%richards%residual(1:numnod)), &
+         '|INTEGRATED_SUM=',dt*sum(workspace%richards%residual(1:numnod))
+    write(*,'(*(g0))') 'ACTIVE_INNER_NODE|RES=', &
+         workspace%richards%residual(maxloc(abs(workspace%richards%residual(1:numnod)),dim=1)), &
+         '|OLD_H=',workspace%richards%old_head(maxloc(abs(workspace%richards%residual(1:numnod)),dim=1)), &
+         '|DELTA_H=',workspace%richards%delta_head(maxloc(abs(workspace%richards%residual(1:numnod)),dim=1)), &
+         '|THETA=',workspace%richards%provider_theta(maxloc(abs(workspace%richards%residual(1:numnod)),dim=1)), &
+         '|DTHETA=',workspace%richards%provider_water_content_increment( &
+              maxloc(abs(workspace%richards%residual(1:numnod)),dim=1)), &
+         '|CAP=',workspace%richards%provider_capacity(maxloc(abs(workspace%richards%residual(1:numnod)),dim=1))
     if(.not.macro%same_values(macro_snapshot))error stop 'diagnostic mutated accepted macro'
     if(result%status/=3.or..not.result%retry_advised)error stop 'unexpected diagnostic outcome; reassess evidence'
     print '(a)', 'PPA_WU05_MIGMAC01_CORRECTED_SOURCE=BLOCKED_NOT_QUALIFIED'
