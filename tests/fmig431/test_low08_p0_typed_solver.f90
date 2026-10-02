@@ -29,6 +29,7 @@ program test_low08_p0_typed_solver
   print '(a)', 'LOW08_STAGE_SETUP=PASS'
   hplate=-80._real64
   threshold=critdz-p%node_distance(n)+hplate
+  write(*,'(a,3(1x,es24.16))') 'LOW08_GEOM_DIAG',hplate,p%node_distance(n),threshold
 
   print '(a)', 'LOW08_STAGE_BEFORE_EQUALITY_SET'
   call set_bottom(threshold)
@@ -46,6 +47,7 @@ program test_low08_p0_typed_solver
   call mass(a,'inactive mass')
 
   call set_bottom(threshold+1.e-4_real64)
+  write(*,'(a,2(1x,es24.16))') 'LOW08_ACTIVE_INPUT',r%base_state%pressure_head(n),r%boundary%bottom_head
   call solver%solve(r,ws,a)
   call need(a%status==SW_SOLVE_CONVERGED,'active solve')
   write(*,'(a,3(1x,es24.16))') 'LOW08_ACTIVE_DIAG',a%bottom_flux,ws%state_binding%qbot,ws%richards%head_gradient(n+1)
