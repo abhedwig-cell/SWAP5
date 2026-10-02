@@ -114,7 +114,10 @@ for opt in 0 2; do
     tests/fpm/test_ppa_wu05_migmac01_corrected_source_diagnostic.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" | tee "$OUT/out.txt"
-  grep -Fq 'PPA_WU05_MIGMAC01_CORRECTED_SOURCE=BLOCKED_NOT_QUALIFIED' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05_MIGMAC01_CORRECTED_SOURCE=SOURCE_TRANSACTION_QUALIFIED' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05_MIGMAC01_SOURCE_REJECT_REPLAY=PASS' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05_MIGMAC01_SOURCE_COMMIT=PASS' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05_MIGMAC01_SOURCE_RESTART=PASS' "$OUT/out.txt"
 
 done
-echo 'PPA_WU05_MIGMAC01_CORRECTED_SOURCE_NEGATIVE_EVIDENCE_O0_O2=RECORDED'
+echo 'PPA_WU05_MIGMAC01_CORRECTED_SOURCE_TRANSACTION_O0_O2=PASS'
