@@ -290,6 +290,17 @@ contains
           return
        end if
        diagonal(n) = diagonal(n)+face_conductance
+    else if (request%boundary%bottom_mode == 8) then
+       if (result%bottom_flux /= 0.0_real64) then
+          bottom_distance = 0.5_real64*request%parameters%dz(n)
+          face_conductance = conductivity_base(n)/bottom_distance
+          if (.not. ieee_is_finite(face_conductance) .or. face_conductance <= 0.0_real64) then
+             indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+             indicator_result%route = 'invalid-bottom-conductance'
+             return
+          end if
+          diagonal(n) = diagonal(n)+face_conductance
+       end if
     else if (request%boundary%bottom_mode == 3) then
        if (.not. ieee_is_finite(request%boundary%bottom_external_resistance_days) .or. &
            request%boundary%bottom_external_resistance_days < 0.0_real64) then
