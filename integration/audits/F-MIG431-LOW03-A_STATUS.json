@@ -1,6 +1,6 @@
 {
   "work_unit": "F-MIG431-LOW03-A",
-  "state": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "state": "CANONICAL_ADMITTED_CLOSED",
   "baseline": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
   "reconciled_canonical_head": "e50a1bad6482b0aaeaf25a87e1fd1b1d5e19a846",
   "official_branch": "work/f-mig431-low03-a-implicit-cauchy-application",
@@ -12,7 +12,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "production_delta": [
     "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90",
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -26,7 +26,7 @@
     "tests/fmig431/run_low03a_source_oracles.py"
   ],
   "design_conclusion": "No shared-authority mutation is required by the bounded design: proposal-head history fits existing attempt-context ownership; Q4 is trial-local immutable forcing; existing solver, transaction, mass and Restart-v1 owners remain unchanged.",
-  "next_action": "Persist complete qualification/closeout evidence, open normal PR to integration/f-ci-canonical, obtain canonical admission, then update final closeout without overstating explicit mode3 or mode8.",
+  "next_action": "LOW03-A closed. Active lower-boundary sequence proceeds to SWBOTB=8. Explicit SwBotb3Impl=0 remains open; SWBOTB=1 remains parked.",
   "held_fixed": [
     "Solver residual/Jacobian/common boundary",
     "C ABI",
@@ -76,5 +76,11 @@
     "low01a_preservation": "PASS",
     "prescribed_qbot_preservation": "PASS",
     "production_bootstrap_preservation": "PASS"
+  },
+  "canonical_admission": {
+    "pr": 977,
+    "merge": "6f2b1b73a02d1f6492cc31cfea13964d3020854e",
+    "merged_at": "2026-10-02T09:41:32Z",
+    "method": "normal merge"
   }
 }

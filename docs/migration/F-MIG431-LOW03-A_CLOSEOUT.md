@@ -1,6 +1,6 @@
 # F-MIG431-LOW03-A qualification closeout
 
-Status before canonical merge: **QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE**.
+Final status: **CANONICAL_ADMITTED_CLOSED**.
 
 Qualified exact postimage: `2634098e621dc6a7358ab20ea70f7dd196b3ba26`.
 
@@ -60,4 +60,4 @@ Run `36990238847` passes O0/O2 gates for LOW03-P0, LOW05-A against current canon
 
 This closeout does not admit explicit `SwBotb3Impl=0`. It does not unpark SWBOTB=1. It does not admit SWBOTB=8. It does not add groundwater ownership, a MODFLOW datum conversion, a public C ABI or a new restart format.
 
-Canonical admission remains false until the normal PR is merged.
+Canonical admission: PR #977, normal merge `6f2b1b73a02d1f6492cc31cfea13964d3020854e` at 2026-10-02T09:41:32Z.
