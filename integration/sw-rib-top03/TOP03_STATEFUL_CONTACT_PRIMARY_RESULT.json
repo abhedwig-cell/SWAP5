@@ -1,0 +1,4197 @@
+{
+  "schema": "swap5.top03.stateful_contact.v1",
+  "source_postimage": "02a6f7447764db25359a8eecacb4938e0ff163ef",
+  "canonical_inspected": "a89990169fb8429a0fd143df9e3d28b9a35d28b8",
+  "production_code_changed": false,
+  "production_admission": false,
+  "cases_per_build": 108,
+  "O0_O2_raw_records_exact": true,
+  "raw_sha256": "fe56410a2d207ce5a8e9a2a63cd327bc360d29147fdedcbc0ecea3d5aefb618a",
+  "inherited_trajectories_exact": 54,
+  "saturated_controls": 18,
+  "new_trajectories": 36,
+  "new_trajectories_completed": 35,
+  "stopped_trajectories": [
+    {
+      "case": {
+        "mode": 6,
+        "L": 0.2,
+        "R": 0.5,
+        "m": 16,
+        "ns": 256,
+        "wet": 1,
+        "mean": 6,
+        "analytic": 0
+      },
+      "stop": {
+        "event": 6,
+        "substep": 218,
+        "status": 2,
+        "iterations": 8713,
+        "route": "legacy-reference-retry"
+      }
+    }
+  ],
+  "max_soil_layer_mass_error_cm": 1.5742407377672407e-12,
+  "physical_verdict_counts": {
+    "None": 9,
+    "True": 15
+  },
+  "comparisons": [
+    {
+      "R_day": 0.5,
+      "prewetted": false,
+      "event": 1,
+      "explicit_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0018335005328886655,
+              "bottom": 0.001752677272453717,
+              "interface": 0.0018323356325922746,
+              "water_l1": 7.965836010853655e-05,
+              "head_inf": 0.07084192402410161
+            },
+            "fine_pair": {
+              "top": 0.0010010801635033095,
+              "bottom": 0.0009757018942116412,
+              "interface": 0.0010007069047751616,
+              "water_l1": 2.500501056379445e-05,
+              "head_inf": 0.022284254431966577
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0030032596319332088,
+              "bottom": 0.0011518098033551326,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 1.3095431228737908e-05,
+              "bottom": 1.1715565248818921e-05,
+              "interface": 1.3033508282966899e-05,
+              "water_l1": 1.3179430265186642e-06,
+              "head_inf": 0.0010123035381663925
+            },
+            "fine_pair": {
+              "top": 1.1934290981008289e-05,
+              "bottom": 1.2327979160172559e-05,
+              "interface": 1.195089147865147e-05,
+              "water_l1": 3.770876644548782e-07,
+              "head_inf": 0.00030516827993021245
+            },
+            "contracting": {
+              "top": true,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0030032596319332088,
+              "bottom": 0.0011518098033551326,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0018335005327579368,
+              "bottom": 0.0017526772724623801,
+              "interface": 0.0018323356324614903,
+              "water_l1": 7.965836010984106e-05,
+              "head_inf": 0.07084192402543588
+            },
+            "fine_pair": {
+              "top": 0.0010010801634846578,
+              "bottom": 0.0009757018942157143,
+              "interface": 0.0010007069047565098,
+              "water_l1": 2.500501056434956e-05,
+              "head_inf": 0.022284254432286765
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003003259631933609,
+              "bottom": 0.0011518098033550907,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 1.3095431217025055e-05,
+              "bottom": 1.1715565248680143e-05,
+              "interface": 1.3033508271309557e-05,
+              "water_l1": 1.3179430265186642e-06,
+              "head_inf": 0.0010123035381084389
+            },
+            "fine_pair": {
+              "top": 1.1934290996218344e-05,
+              "bottom": 1.2327979159308666e-05,
+              "interface": 1.1950891493861526e-05,
+              "water_l1": 3.7708766459365606e-07,
+              "head_inf": 0.0003051682800041533
+            },
+            "contracting": {
+              "top": true,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003003259631933609,
+              "bottom": 0.0011518098033550907,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": null,
+      "difference": {
+        "top": 8.010259122670504e-14,
+        "bottom": 8.378714388967978e-15,
+        "interface": 8.004708007547379e-14,
+        "water_l1": 2.7755575615628914e-17,
+        "head_inf": 7.149836278586008e-14
+      },
+      "budget": {
+        "top": 0.013013038527732834,
+        "bottom": 0.00560723921342053,
+        "interface": 0.012548801782284204,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": false,
+      "event": 2,
+      "explicit_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0017827973707673639,
+              "bottom": 0.0017827973707358336,
+              "interface": 0.0017827973707673639,
+              "water_l1": 4.440892098500626e-16,
+              "head_inf": 1.1688428003253648e-12
+            },
+            "fine_pair": {
+              "top": 0.0009850380804862224,
+              "bottom": 0.0009850380804876102,
+              "interface": 0.0009850380804862224,
+              "water_l1": 0.0,
+              "head_inf": 1.0969003483296547e-13
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0034954391599564083,
+              "bottom": 0.001643645761086142,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 5.156908209791311e-06,
+              "bottom": 5.957362082392725e-06,
+              "interface": 5.178066988242858e-06,
+              "water_l1": 7.792951022822514e-07,
+              "head_inf": 0.0005854302663823585
+            },
+            "fine_pair": {
+              "top": 2.49394164569261e-05,
+              "bottom": 2.346676199821429e-05,
+              "interface": 2.487610441892496e-05,
+              "water_l1": 1.4093424379191255e-06,
+              "head_inf": 0.0010586801221319497
+            },
+            "contracting": {
+              "top": false,
+              "bottom": false,
+              "water_l1": false
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0034954391599564083,
+              "bottom": 0.001643645761086142,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0017827973706418532,
+              "bottom": 0.0017827973707436884,
+              "interface": 0.0017827973706417977,
+              "water_l1": 1.6653345369377348e-16,
+              "head_inf": 5.615508058554042e-13
+            },
+            "fine_pair": {
+              "top": 0.000985038080479339,
+              "bottom": 0.0009850380804898862,
+              "interface": 0.000985038080479339,
+              "water_l1": 1.1102230246251565e-16,
+              "head_inf": 3.652633751016765e-13
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0034954391599574274,
+              "bottom": 0.001643645761085986,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 5.1569081651603454e-06,
+              "bottom": 5.957362087832818e-06,
+              "interface": 5.178066943611892e-06,
+              "water_l1": 7.792951016161176e-07,
+              "head_inf": 0.0005854302655845522
+            },
+            "fine_pair": {
+              "top": 2.4939416413849447e-05,
+              "bottom": 2.3466762007595676e-05,
+              "interface": 2.4876104375848307e-05,
+              "water_l1": 1.4093424374750363e-06,
+              "head_inf": 0.001058680121988953
+            },
+            "contracting": {
+              "top": false,
+              "bottom": false,
+              "water_l1": false
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0034954391599574274,
+              "bottom": 0.001643645761085986,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": null,
+      "difference": {
+        "top": 2.0378143616994748e-13,
+        "bottom": 3.11972669919669e-14,
+        "interface": 2.0378143616994748e-13,
+        "water_l1": 3.885780586188048e-16,
+        "head_inf": 1.0813572259849025e-12
+      },
+      "budget": {
+        "top": 0.014981756639825632,
+        "bottom": 0.007574583044344567,
+        "interface": 0.014517486131358528,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": false,
+      "event": 3,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0017838970593805348,
+              "bottom": 0.0017838970593512804,
+              "interface": 0.0017838970593805348,
+              "water_l1": 0.0,
+              "head_inf": 1.9628743075372768e-13
+            },
+            "fine_pair": {
+              "top": 0.0009855884421002825,
+              "bottom": 0.0009855884421046957,
+              "interface": 0.0009855884421002825,
+              "water_l1": 0.0,
+              "head_inf": 3.885780586188048e-14
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003989679194952028,
+              "bottom": 0.002137624807625348,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 3.2850043859777855e-05,
+              "bottom": 2.9773704113472688e-05,
+              "interface": 3.27155625885478e-05,
+              "water_l1": 2.9418584689966387e-06,
+              "head_inf": 0.002230291313167987
+            },
+            "fine_pair": {
+              "top": 1.198887281650407e-05,
+              "bottom": 1.3341446594372641e-05,
+              "interface": 1.2040305433447251e-05,
+              "water_l1": 1.3011411494900926e-06,
+              "head_inf": 0.0009862729619340982
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003989679194952028,
+              "bottom": 0.002137624807625348,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0017838970592694015,
+              "bottom": 0.0017838970593554437,
+              "interface": 0.0017838970592694015,
+              "water_l1": 0.0,
+              "head_inf": 2.5712765250318625e-13
+            },
+            "fine_pair": {
+              "top": 0.0009855884420982841,
+              "bottom": 0.0009855884421064998,
+              "interface": 0.0009855884420982841,
+              "water_l1": 2.7755575615628914e-17,
+              "head_inf": 1.1945999744966684e-13
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0039896791949536525,
+              "bottom": 0.0021376248076250765,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 3.285004378617007e-05,
+              "bottom": 2.9773704124852474e-05,
+              "interface": 3.271556251494001e-05,
+              "water_l1": 2.941858471133818e-06,
+              "head_inf": 0.0022302913142275838
+            },
+            "fine_pair": {
+              "top": 1.1988872717583199e-05,
+              "bottom": 1.3341446613440722e-05,
+              "interface": 1.2040305334415358e-05,
+              "water_l1": 1.301141151432983e-06,
+              "head_inf": 0.0009862729624248168
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0039896791949536525,
+              "bottom": 0.0021376248076250765,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 3.248512570053208e-13,
+        "bottom": 5.42343947529389e-14,
+        "interface": 3.249622793077833e-13,
+        "water_l1": 3.3306690738754696e-16,
+        "head_inf": 8.752998326144734e-13
+      },
+      "budget": {
+        "top": 0.016958716779808113,
+        "bottom": 0.009550499230501391,
+        "interface": 0.016494403989055006,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": false,
+      "event": 4,
+      "explicit_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0017856454027815882,
+              "bottom": 0.0017856454027514457,
+              "interface": 0.0017856454027815882,
+              "water_l1": 6.106226635438361e-16,
+              "head_inf": 1.425526363618701e-13
+            },
+            "fine_pair": {
+              "top": 0.000986463906670787,
+              "bottom": 0.0009864639066767822,
+              "interface": 0.000986463906670787,
+              "water_l1": 0.0,
+              "head_inf": 1.7985612998927536e-14
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.00448749922405904,
+              "bottom": 0.0026350286584047857,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 3.3305236107894487e-06,
+              "bottom": 3.8841787397547733e-07,
+              "interface": 3.1972970154781066e-06,
+              "water_l1": 3.5857148961704333e-06,
+              "head_inf": 0.002760600060438767
+            },
+            "fine_pair": {
+              "top": 2.933419492090472e-05,
+              "bottom": 2.7533495053355672e-05,
+              "interface": 2.926173592343595e-05,
+              "water_l1": 1.7282408819041528e-06,
+              "head_inf": 0.0013307973559568698
+            },
+            "contracting": {
+              "top": false,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.00448749922405904,
+              "bottom": 0.0026350286584047857,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0017856454026837776,
+              "bottom": 0.0017856454027532775,
+              "interface": 0.0017856454026837776,
+              "water_l1": 5.551115123125783e-17,
+              "head_inf": 3.8613556796462944e-13
+            },
+            "fine_pair": {
+              "top": 0.0009864639066621272,
+              "bottom": 0.0009864639066777814,
+              "interface": 0.0009864639066621272,
+              "water_l1": 0.0,
+              "head_inf": 1.5698553568199713e-13
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004487499224061223,
+              "bottom": 0.002635028658404399,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 3.3305237179259706e-06,
+              "bottom": 3.8841788990717774e-07,
+              "interface": 3.1972971226146285e-06,
+              "water_l1": 3.5857148943940764e-06,
+              "head_inf": 0.0027606000598823233
+            },
+            "fine_pair": {
+              "top": 2.9334194779462308e-05,
+              "bottom": 2.753349508355374e-05,
+              "interface": 2.9261735781993536e-05,
+              "water_l1": 1.7282408809882188e-06,
+              "head_inf": 0.0013307973556713204
+            },
+            "contracting": {
+              "top": false,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004487499224061223,
+              "bottom": 0.002635028658404399,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": null,
+      "difference": {
+        "top": 4.3653969328261155e-13,
+        "bottom": 7.72715225139109e-14,
+        "interface": 4.3653969328261155e-13,
+        "water_l1": 9.992007221626409e-16,
+        "head_inf": 8.182343691487404e-13
+      },
+      "budget": {
+        "top": 0.018949996896236162,
+        "bottom": 0.011540114633619142,
+        "interface": 0.018485618541556014,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": false,
+      "event": 5,
+      "explicit_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0017892847609205509,
+              "bottom": 0.0017892847608900753,
+              "interface": 0.0017892847609205509,
+              "water_l1": 1.3877787807814457e-16,
+              "head_inf": 1.0036416142611415e-13
+            },
+            "fine_pair": {
+              "top": 0.0009883149330923713,
+              "bottom": 0.0009883149331011976,
+              "interface": 0.0009883149330923713,
+              "water_l1": 0.0,
+              "head_inf": 5.10702591327572e-15
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.00499272153141824,
+              "bottom": 0.0031394452295538527,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 2.802107924337882e-05,
+              "bottom": 2.5312975358293688e-05,
+              "interface": 2.7935528395084397e-05,
+              "water_l1": 2.622553038900133e-06,
+              "head_inf": 0.0020849546988470635
+            },
+            "fine_pair": {
+              "top": 2.7610615068063282e-05,
+              "bottom": 2.7728285336758862e-05,
+              "interface": 2.7611744868760724e-05,
+              "water_l1": 1.1654046244702343e-07,
+              "head_inf": 9.267873814478023e-05
+            },
+            "contracting": {
+              "top": true,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.00499272153141824,
+              "bottom": 0.0031394452295538527,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0017892847607759998,
+              "bottom": 0.0017892847608970142,
+              "interface": 0.0017892847607759998,
+              "water_l1": 1.1102230246251565e-16,
+              "head_inf": 3.632649736573512e-13
+            },
+            "fine_pair": {
+              "top": 0.0009883149330789376,
+              "bottom": 0.0009883149331011976,
+              "interface": 0.0009883149330789376,
+              "water_l1": 3.885780586188048e-16,
+              "head_inf": 1.0871303857129533e-12
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004992721531420956,
+              "bottom": 0.0031394452295533466,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 2.8021079369500157e-05,
+              "bottom": 2.5312975338254162e-05,
+              "interface": 2.7935528521316755e-05,
+              "water_l1": 2.6225530380674655e-06,
+              "head_inf": 0.0020849546975920674
+            },
+            "fine_pair": {
+              "top": 2.7610614876216744e-05,
+              "bottom": 2.772828538011307e-05,
+              "interface": 2.7611744676914185e-05,
+              "water_l1": 1.1654046261355688e-07,
+              "head_inf": 9.267873841167784e-05
+            },
+            "contracting": {
+              "top": true,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004992721531420956,
+              "bottom": 0.0031394452295533466,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": null,
+      "difference": {
+        "top": 5.432321259490891e-13,
+        "bottom": 1.0119682869458302e-13,
+        "interface": 5.432321259490891e-13,
+        "water_l1": 6.661338147750939e-16,
+        "head_inf": 1.5789591856218976e-12
+      },
+      "budget": {
+        "top": 0.02097088612567296,
+        "bottom": 0.013557780918215412,
+        "interface": 0.020506387476998313,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": false,
+      "event": 6,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.001792840940016971,
+              "bottom": 0.0017928409399868839,
+              "interface": 0.001792840940016971,
+              "water_l1": 0.0,
+              "head_inf": 2.3092638912203256e-14
+            },
+            "fine_pair": {
+              "top": 0.000990096858899836,
+              "bottom": 0.0009900968589106052,
+              "interface": 0.000990096858899836,
+              "water_l1": 0.0,
+              "head_inf": 3.9968028886505635e-15
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0055051636870038,
+              "bottom": 0.003651135494882186,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 4.6756462069530436e-05,
+              "bottom": 4.489516408090477e-05,
+              "interface": 4.670774071091621e-05,
+              "water_l1": 1.8125766326204662e-06,
+              "head_inf": 0.0014906650103496677
+            },
+            "fine_pair": {
+              "top": 2.6391272310744007e-05,
+              "bottom": 2.652199701236313e-05,
+              "interface": 2.6393044028738544e-05,
+              "water_l1": 1.2895297796244876e-07,
+              "head_inf": 0.00010607641953064295
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0055051636870038,
+              "bottom": 0.003651135494882186,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.001792840939857765,
+              "bottom": 0.001792840939997431,
+              "interface": 0.001792840939857765,
+              "water_l1": 2.220446049250313e-16,
+              "head_inf": 5.289102489314246e-13
+            },
+            "fine_pair": {
+              "top": 0.0009900968588882897,
+              "bottom": 0.0009900968589108272,
+              "interface": 0.0009900968588882897,
+              "water_l1": 1.1102230246251565e-16,
+              "head_inf": 1.4277468096679513e-13
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.005505163687007055,
+              "bottom": 0.0036511354948815804,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 4.675646221252716e-05,
+              "bottom": 4.489516404659888e-05,
+              "interface": 4.670774085391294e-05,
+              "water_l1": 1.8125766322873993e-06,
+              "head_inf": 0.001490665010197345
+            },
+            "fine_pair": {
+              "top": 2.6391272067938232e-05,
+              "bottom": 2.6521997053663426e-05,
+              "interface": 2.6393043785932768e-05,
+              "water_l1": 1.2895297818449336e-07,
+              "head_inf": 0.00010607641968651826
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.005505163687007055,
+              "bottom": 0.0036511354948815804,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 6.511458039426543e-13,
+        "bottom": 1.2112533198660458e-13,
+        "interface": 6.511458039426543e-13,
+        "water_l1": 4.996003610813204e-16,
+        "head_inf": 8.613110225041964e-13
+      },
+      "budget": {
+        "top": 0.0230206547480152,
+        "bottom": 0.015604541979528742,
+        "interface": 0.022556051962030817,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": true,
+      "event": 1,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005922248806468633,
+              "bottom": 0.0005720234936236537,
+              "interface": 0.0005919345669981313,
+              "water_l1": 1.9911073347367303e-05,
+              "head_inf": 0.017999553247387556
+            },
+            "fine_pair": {
+              "top": 0.0002476986288330041,
+              "bottom": 0.00024053635075583363,
+              "interface": 0.0002475941566116302,
+              "water_l1": 7.057805852722643e-06,
+              "head_inf": 0.006355978627293979
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.002898575506805774,
+              "bottom": 0.0011632965681280041,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 1.642136360052726e-05,
+              "bottom": 1.7506455135853083e-05,
+              "interface": 1.647844758712047e-05,
+              "water_l1": 1.028007543202314e-06,
+              "head_inf": 0.0007858765982124982
+            },
+            "fine_pair": {
+              "top": 3.124604237347839e-06,
+              "bottom": 2.575437399884861e-06,
+              "interface": 3.105758186516816e-06,
+              "water_l1": 5.303207653573061e-07,
+              "head_inf": 0.0003996435426725231
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.002898575506805774,
+              "bottom": 0.0011632965681280041,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005922248805419472,
+              "bottom": 0.0005720234936324176,
+              "interface": 0.0005919345668932707,
+              "water_l1": 1.9911073347977926e-05,
+              "head_inf": 0.017999553247805444
+            },
+            "fine_pair": {
+              "top": 0.00024769862881635074,
+              "bottom": 0.0002405363507600733,
+              "interface": 0.00024759415659492134,
+              "water_l1": 7.057805852833665e-06,
+              "head_inf": 0.0063559786273419405
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0028985755068062042,
+              "bottom": 0.0011632965681279588,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 1.642136361973412e-05,
+              "bottom": 1.750645513554777e-05,
+              "interface": 1.647844760643835e-05,
+              "water_l1": 1.028007543452114e-06,
+              "head_inf": 0.0007858765983566052
+            },
+            "fine_pair": {
+              "top": 3.124604224524763e-06,
+              "bottom": 2.575437400349767e-06,
+              "interface": 3.1057581734716955e-06,
+              "water_l1": 5.303207654683284e-07,
+              "head_inf": 0.0003996435428108569
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0028985755068062042,
+              "bottom": 0.0011632965681279588,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 8.609779555968089e-14,
+        "bottom": 9.076073226310655e-15,
+        "interface": 8.593126210598712e-14,
+        "water_l1": 1.3877787807814457e-16,
+        "head_inf": 1.6564527527407336e-13
+      },
+      "budget": {
+        "top": 0.012594302027223097,
+        "bottom": 0.005653186272512017,
+        "interface": 0.012595165022783546,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": true,
+      "event": 2,
+      "explicit_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005800726913870458,
+              "bottom": 0.00058007269135954,
+              "interface": 0.0005800726913870458,
+              "water_l1": 1.1102230246251565e-16,
+              "head_inf": 4.39870362356487e-13
+            },
+            "fine_pair": {
+              "top": 0.00024339965349234882,
+              "bottom": 0.0002433996534905447,
+              "interface": 0.00024339965349234882,
+              "water_l1": 0.0,
+              "head_inf": 6.705747068735946e-14
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0033906858844752388,
+              "bottom": 0.0016551690124305962,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 2.416434010160673e-05,
+              "bottom": 2.3363886227173447e-05,
+              "interface": 2.414318132309967e-05,
+              "water_l1": 7.792951026708295e-07,
+              "head_inf": 0.0005854302663879096
+            },
+            "fine_pair": {
+              "top": 9.978365429264002e-06,
+              "bottom": 8.505710974854308e-06,
+              "interface": 9.91505339115184e-06,
+              "water_l1": 1.4093424383077036e-06,
+              "head_inf": 0.0010586801221306175
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": false
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0033906858844752388,
+              "bottom": 0.0016551690124305962,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005800726912498777,
+              "bottom": 0.0005800726913740284,
+              "interface": 0.0005800726912498777,
+              "water_l1": 1.942890293094024e-16,
+              "head_inf": 3.561595462997502e-13
+            },
+            "fine_pair": {
+              "top": 0.00024339965348185721,
+              "bottom": 0.00024339965349437498,
+              "interface": 0.00024339965348191273,
+              "water_l1": 4.163336342344337e-16,
+              "head_inf": 1.0647038806155251e-12
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0033906858844762393,
+              "bottom": 0.001655169012430446,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 2.416434014934632e-05,
+              "bottom": 2.3363886221677843e-05,
+              "interface": 2.4143181370894773e-05,
+              "water_l1": 7.792951013108063e-07,
+              "head_inf": 0.0005854302653427457
+            },
+            "fine_pair": {
+              "top": 9.978365392127042e-06,
+              "bottom": 8.505710982653625e-06,
+              "interface": 9.915053354125902e-06,
+              "water_l1": 1.4093424376138142e-06,
+              "head_inf": 0.001058680122118183
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": false
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0033906858844762393,
+              "bottom": 0.001655169012430446,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": null,
+      "difference": {
+        "top": 2.0017321133991572e-13,
+        "bottom": 3.0031532816110484e-14,
+        "interface": 2.0011770018868447e-13,
+        "water_l1": 7.216449660063518e-16,
+        "head_inf": 1.701527807540515e-12
+      },
+      "budget": {
+        "top": 0.014562743537900956,
+        "bottom": 0.007620676049722384,
+        "interface": 0.014563579136736473,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": true,
+      "event": 3,
+      "explicit_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005811723800014379,
+              "bottom": 0.0005811723799745705,
+              "interface": 0.0005811723800015489,
+              "water_l1": 0.0,
+              "head_inf": 1.9628743075372768e-13
+            },
+            "fine_pair": {
+              "top": 0.00024395001510602032,
+              "bottom": 0.00024395001510763015,
+              "interface": 0.0002439500151059093,
+              "water_l1": 0.0,
+              "head_inf": 3.885780586188048e-14
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003884925919470857,
+              "bottom": 0.002149148058969802,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 3.528795548435326e-06,
+              "bottom": 4.5245580385100403e-07,
+              "interface": 3.394314277205268e-06,
+              "water_l1": 2.9418584689966387e-06,
+              "head_inf": 0.002230291313167987
+            },
+            "fine_pair": {
+              "top": 2.9721782107694494e-06,
+              "bottom": 1.6196044289040756e-06,
+              "interface": 2.9207455938262683e-06,
+              "water_l1": 1.3011411494900926e-06,
+              "head_inf": 0.0009862729619340982
+            },
+            "contracting": {
+              "top": true,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003884925919470857,
+              "bottom": 0.002149148058969802,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005811723798778701,
+              "bottom": 0.0005811723799851731,
+              "interface": 0.0005811723798778701,
+              "water_l1": 0.0,
+              "head_inf": 2.3447910280083306e-13
+            },
+            "fine_pair": {
+              "top": 0.00024395001510035819,
+              "bottom": 0.00024395001511079428,
+              "interface": 0.00024395001510035819,
+              "water_l1": 0.0,
+              "head_inf": 8.681944052568724e-14
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0038849259194724626,
+              "bottom": 0.0021491480589695354,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 3.528795473495272e-06,
+              "bottom": 4.5245581500874543e-07,
+              "interface": 3.394314202265214e-06,
+              "water_l1": 2.941858471078307e-06,
+              "head_inf": 0.002230291314222921
+            },
+            "fine_pair": {
+              "top": 2.9721783033620497e-06,
+              "bottom": 1.6196044115568409e-06,
+              "interface": 2.9207456864188686e-06,
+              "water_l1": 1.3011411515162496e-06,
+              "head_inf": 0.000986272962569812
+            },
+            "contracting": {
+              "top": true,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0038849259194724626,
+              "bottom": 0.0021491480589695354,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": null,
+      "difference": {
+        "top": 3.2107649872159527e-13,
+        "bottom": 5.3290705182007514e-14,
+        "interface": 3.2107649872159527e-13,
+        "water_l1": 3.0531133177191805e-16,
+        "head_inf": 8.590905764549461e-13
+      },
+      "budget": {
+        "top": 0.01653970367788343,
+        "bottom": 0.009596592235879208,
+        "interface": 0.016540496994432944,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": true,
+      "event": 4,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005829207234024913,
+              "bottom": 0.0005829207233748468,
+              "interface": 0.0005829207234024913,
+              "water_l1": 6.106226635438361e-16,
+              "head_inf": 1.425526363618701e-13
+            },
+            "fine_pair": {
+              "top": 0.0002448254796765248,
+              "bottom": 0.0002448254796795779,
+              "interface": 0.0002448254796765248,
+              "water_l1": 0.0,
+              "head_inf": 1.7985612998927536e-14
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004382745948577869,
+              "bottom": 0.002646551909749239,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 3.265177192213198e-05,
+              "bottom": 2.8932830435646206e-05,
+              "interface": 3.2518545326709614e-05,
+              "water_l1": 3.5857148961704333e-06,
+              "head_inf": 0.002760600060438767
+            },
+            "fine_pair": {
+              "top": 1.4373143893631202e-05,
+              "bottom": 1.2572444030134466e-05,
+              "interface": 1.4300684896051408e-05,
+              "water_l1": 1.7282408819041528e-06,
+              "head_inf": 0.0013307973559568698
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004382745948577869,
+              "bottom": 0.002646551909749239,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005829207232929123,
+              "bottom": 0.00058292072338334,
+              "interface": 0.0005829207232929123,
+              "water_l1": 1.6653345369377348e-16,
+              "head_inf": 5.404565683875262e-13
+            },
+            "fine_pair": {
+              "top": 0.0002448254796655336,
+              "bottom": 0.0002448254796820759,
+              "interface": 0.0002448254796655336,
+              "water_l1": 0.0,
+              "head_inf": 2.4868995751603507e-14
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004382745948580039,
+              "bottom": 0.0026465519097488583,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 3.265177203104486e-05,
+              "bottom": 2.8932830419603484e-05,
+              "interface": 3.251854543562249e-05,
+              "water_l1": 3.585714894421832e-06,
+              "head_inf": 0.0027606000597983904
+            },
+            "fine_pair": {
+              "top": 1.4373143757295814e-05,
+              "bottom": 1.2572444058500665e-05,
+              "interface": 1.4300684759827043e-05,
+              "water_l1": 1.7282408809882188e-06,
+              "head_inf": 0.001330797355803437
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004382745948580039,
+              "bottom": 0.0026465519097488583,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 4.338751580235112e-13,
+        "bottom": 7.6216810640517e-14,
+        "interface": 4.3376413572104866e-13,
+        "water_l1": 9.992007221626409e-16,
+        "head_inf": 9.523493105234593e-13
+      },
+      "budget": {
+        "top": 0.01853098379431148,
+        "bottom": 0.011586207638996957,
+        "interface": 0.018531711546933952,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": true,
+      "event": 5,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.000586560081541454,
+              "bottom": 0.0005865600815134764,
+              "interface": 0.000586560081541454,
+              "water_l1": 1.3877787807814457e-16,
+              "head_inf": 1.0036416142611415e-13
+            },
+            "fine_pair": {
+              "top": 0.0002466765060981091,
+              "bottom": 0.0002466765061039933,
+              "interface": 0.0002466765060981091,
+              "water_l1": 0.0,
+              "head_inf": 5.10702591327572e-15
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004887968255937069,
+              "bottom": 0.0031509684808983065,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 5.734232755483237e-05,
+              "bottom": 5.463422366791537e-05,
+              "interface": 5.725677670653795e-05,
+              "water_l1": 2.622553038900133e-06,
+              "head_inf": 0.0020849546988470635
+            },
+            "fine_pair": {
+              "top": 1.2649564040789762e-05,
+              "bottom": 1.2767234313537656e-05,
+              "interface": 1.2650693841376182e-05,
+              "water_l1": 1.1654046244702343e-07,
+              "head_inf": 9.267873814478023e-05
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004887968255937069,
+              "bottom": 0.0031509684808983065,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005865600813858007,
+              "bottom": 0.0005865600815268546,
+              "interface": 0.0005865600813856897,
+              "water_l1": 1.1102230246251565e-16,
+              "head_inf": 3.6770586575585185e-13
+            },
+            "fine_pair": {
+              "top": 0.0002466765060823439,
+              "bottom": 0.0002466765061055476,
+              "interface": 0.00024667650608245495,
+              "water_l1": 2.220446049250313e-16,
+              "head_inf": 6.394884621840902e-13
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004887968255939773,
+              "bottom": 0.003150968480897806,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 5.73423276833962e-05,
+              "bottom": 5.463422364748727e-05,
+              "interface": 5.7256776835101775e-05,
+              "water_l1": 2.6225530380674655e-06,
+              "head_inf": 0.002084954697590069
+            },
+            "fine_pair": {
+              "top": 1.2649563854161272e-05,
+              "bottom": 1.2767234355004486e-05,
+              "interface": 1.2650693654858713e-05,
+              "water_l1": 1.1654046278009034e-07,
+              "head_inf": 9.267873839680085e-05
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004887968255939773,
+              "bottom": 0.003150968480897806,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 5.409006575973763e-13,
+        "bottom": 1.0008660566995786e-13,
+        "interface": 5.407896352949138e-13,
+        "water_l1": 4.996003610813204e-16,
+        "head_inf": 1.1497469643018121e-12
+      },
+      "budget": {
+        "top": 0.020551873023748276,
+        "bottom": 0.013603873923593225,
+        "interface": 0.02055248048237625,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 0.5,
+      "prewetted": true,
+      "event": 6,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.000590116260637874,
+              "bottom": 0.0005901162606103405,
+              "interface": 0.000590116260637874,
+              "water_l1": 0.0,
+              "head_inf": 2.3092638912203256e-14
+            },
+            "fine_pair": {
+              "top": 0.0002484584319055738,
+              "bottom": 0.0002484584319135674,
+              "interface": 0.0002484584319055738,
+              "water_l1": 0.0,
+              "head_inf": 3.9968028886505635e-15
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.005400410411522628,
+              "bottom": 0.00366265874622664,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 7.607771038098399e-05,
+              "bottom": 7.421641239069299e-05,
+              "interface": 7.602898902236976e-05,
+              "water_l1": 1.8125766326204662e-06,
+              "head_inf": 0.0014906650103496677
+            },
+            "fine_pair": {
+              "top": 1.1430221283470487e-05,
+              "bottom": 1.1560945989086413e-05,
+              "interface": 1.1431993001354002e-05,
+              "water_l1": 1.2895297796244876e-07,
+              "head_inf": 0.00010607641953064295
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.005400410411522628,
+              "bottom": 0.00366265874622664,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0005901162604676768,
+              "bottom": 0.0005901162606274379,
+              "interface": 0.0005901162604676768,
+              "water_l1": 7.771561172376096e-16,
+              "head_inf": 7.480682739924305e-13
+            },
+            "fine_pair": {
+              "top": 0.0002484584318909189,
+              "bottom": 0.0002484584319154548,
+              "interface": 0.0002484584318909189,
+              "water_l1": 2.7755575615628914e-16,
+              "head_inf": 5.3734794391857577e-14
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.00540041041152587,
+              "bottom": 0.0036626587462260407,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 7.607771052708934e-05,
+              "bottom": 7.421641235583198e-05,
+              "interface": 7.602898916847511e-05,
+              "water_l1": 1.8125766322873993e-06,
+              "head_inf": 0.0014906650102002317
+            },
+            "fine_pair": {
+              "top": 1.1430221046992983e-05,
+              "bottom": 1.1560946028166263e-05,
+              "interface": 1.1431992765098542e-05,
+              "water_l1": 1.289529780179599e-07,
+              "head_inf": 0.00010607641971582815
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.00540041041152587,
+              "bottom": 0.0036626587462260407,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 6.483702463810914e-13,
+        "bottom": 1.199040866595169e-13,
+        "interface": 6.482592240786289e-13,
+        "water_l1": 6.661338147750939e-16,
+        "head_inf": 8.990586053414518e-13
+      },
+      "budget": {
+        "top": 0.022601641646090513,
+        "bottom": 0.01565063498490656,
+        "interface": 0.022602144967408755,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": false,
+      "event": 1,
+      "explicit_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 0.0037705821036602694,
+              "bottom": 0.0003480387873586316,
+              "interface": 0.003740770843239427,
+              "water_l1": 0.0033927320558471974,
+              "head_inf": 1.3427067486414934
+            },
+            "fine_pair": {
+              "top": 0.0021136087730566633,
+              "bottom": 0.0002085921765288398,
+              "interface": 0.0020963055113844553,
+              "water_l1": 0.001887713334860569,
+              "head_inf": 0.7411062508915158
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": false,
+              "head_inf": false
+            },
+            "budget": {
+              "top": 0.0026240746081430183,
+              "bottom": 0.0010352624862618176,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 7.604476257544457e-05,
+              "bottom": 6.313923676682862e-06,
+              "interface": 7.432211663116473e-05,
+              "water_l1": 6.800819294436322e-05,
+              "head_inf": 0.026386935008680723
+            },
+            "fine_pair": {
+              "top": 5.8020731855346064e-05,
+              "bottom": 5.355039353675123e-06,
+              "interface": 5.71373613322268e-05,
+              "water_l1": 5.178232200053756e-05,
+              "head_inf": 0.019569493918687897
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0026240746081430183,
+              "bottom": 0.0010352624862618176,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 0.003770582103629627,
+              "bottom": 0.0003480387873584113,
+              "interface": 0.003740770843208452,
+              "water_l1": 0.003392732055853276,
+              "head_inf": 1.342706748642442
+            },
+            "fine_pair": {
+              "top": 0.0021136087730507236,
+              "bottom": 0.0002085921765292648,
+              "interface": 0.0020963055113781826,
+              "water_l1": 0.0018877133348680075,
+              "head_inf": 0.7411062508936261
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": false,
+              "head_inf": false
+            },
+            "budget": {
+              "top": 0.0026240746081428535,
+              "bottom": 0.0010352624862618226,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 7.604476256717341e-05,
+              "bottom": 6.313923676510257e-06,
+              "interface": 7.432211662289356e-05,
+              "water_l1": 6.800819294336402e-05,
+              "head_inf": 0.02638693500829703
+            },
+            "fine_pair": {
+              "top": 5.8020731881880394e-05,
+              "bottom": 5.355039353162512e-06,
+              "interface": 5.713736135881664e-05,
+              "water_l1": 5.1782321996318714e-05,
+              "head_inf": 0.019569493917035885
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0026240746081428535,
+              "bottom": 0.0010352624862618226,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": null,
+      "difference": {
+        "top": 3.2862601528904634e-14,
+        "bottom": 9.870576578308032e-16,
+        "interface": 3.2862601528904634e-14,
+        "water_l1": 4.829470157119431e-15,
+        "head_inf": 2.291500322826323e-12
+      },
+      "budget": {
+        "top": 0.011496298432572072,
+        "bottom": 0.0051410499450472704,
+        "interface": 0.011046048686679156,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": false,
+      "event": 2,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0014665435396974957,
+              "bottom": 0.0014628258167808245,
+              "interface": 0.0014664793829243794,
+              "water_l1": 3.6535661151748666e-06,
+              "head_inf": 0.0022894477294985727
+            },
+            "fine_pair": {
+              "top": 0.0008218920126313312,
+              "bottom": 0.0008204110026909794,
+              "interface": 0.0008218663069253229,
+              "water_l1": 1.455304231179344e-06,
+              "head_inf": 0.0009098680721080221
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003208465487081552,
+              "bottom": 0.0013712368334597087,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 4.553392252754085e-05,
+              "bottom": 4.26341815979725e-05,
+              "interface": 4.539771618894406e-05,
+              "water_l1": 2.7635345778154186e-06,
+              "head_inf": 0.0015409792641549735
+            },
+            "fine_pair": {
+              "top": 1.9629007036892077e-05,
+              "bottom": 2.0413433916219303e-05,
+              "interface": 1.9655302997301227e-05,
+              "water_l1": 7.581308882065318e-07,
+              "head_inf": 0.00042203434776943993
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003208465487081552,
+              "bottom": 0.0013712368334597087,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.001466543539581977,
+              "bottom": 0.00146282581679745,
+              "interface": 0.0014664793828089162,
+              "water_l1": 3.653566114952822e-06,
+              "head_inf": 0.0022894477294581606
+            },
+            "fine_pair": {
+              "top": 0.0008218920126474849,
+              "bottom": 0.0008204110026975714,
+              "interface": 0.0008218663069451959,
+              "water_l1": 1.4553041499942854e-06,
+              "head_inf": 0.0009098680366443901
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003208465487081856,
+              "bottom": 0.0013712368334596805,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 4.5533922514773284e-05,
+              "bottom": 4.2634181596987175e-05,
+              "interface": 4.5397716174788716e-05,
+              "water_l1": 2.763534581395888e-06,
+              "head_inf": 0.0015409792641687403
+            },
+            "fine_pair": {
+              "top": 1.962900699853387e-05,
+              "bottom": 2.0413433917385038e-05,
+              "interface": 1.9655302956556042e-05,
+              "water_l1": 7.581308103798978e-07,
+              "head_inf": 0.00042203429524922953
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003208465487081856,
+              "bottom": 0.0013712368334596805,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 6.078471059822732e-14,
+        "bottom": 5.6343818499726694e-15,
+        "interface": 6.45039577307216e-14,
+        "water_l1": 8.14071032806396e-14,
+        "head_inf": 5.95807847503238e-11
+      },
+      "budget": {
+        "top": 0.013833861948326209,
+        "bottom": 0.006484947333838835,
+        "interface": 0.013370953624771972,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": false,
+      "event": 3,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0014650749220771475,
+              "bottom": 0.0014650744559065176,
+              "interface": 0.0014650749140882602,
+              "water_l1": 4.5815320981468233e-10,
+              "head_inf": 2.8892026948668104e-07
+            },
+            "fine_pair": {
+              "top": 0.0008213818091531433,
+              "bottom": 0.000821381629714818,
+              "interface": 0.0008213818060631706,
+              "water_l1": 1.76345577029835e-10,
+              "head_inf": 1.1097829677453319e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003624112898658768,
+              "bottom": 0.0017864802466118312,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 4.017791896981926e-05,
+              "bottom": 4.09575192189815e-05,
+              "interface": 4.018320342902282e-05,
+              "water_l1": 7.74315803392378e-07,
+              "head_inf": 0.00043275286992772166
+            },
+            "fine_pair": {
+              "top": 1.795478728106037e-05,
+              "bottom": 1.8446498554952617e-05,
+              "interface": 1.796959353161931e-05,
+              "water_l1": 4.769049920527735e-07,
+              "head_inf": 0.00026654421258065497
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003624112898658768,
+              "bottom": 0.0017864802466118312,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0014650749219661252,
+              "bottom": 0.0014650744559216167,
+              "interface": 0.0014650749139772379,
+              "water_l1": 4.58153376348136e-10,
+              "head_inf": 2.8892036096905827e-07
+            },
+            "fine_pair": {
+              "top": 0.0008213818092346337,
+              "bottom": 0.0008213816296880339,
+              "interface": 0.0008213818061446609,
+              "water_l1": 1.76345577029835e-10,
+              "head_inf": 1.109782608033072e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0036241128986605844,
+              "bottom": 0.0017864802466113134,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 4.017791889454614e-05,
+              "bottom": 4.095751923463564e-05,
+              "interface": 4.0183203353638675e-05,
+              "water_l1": 7.74315803392378e-07,
+              "head_inf": 0.0004327528699263894
+            },
+            "fine_pair": {
+              "top": 1.795478706512199e-05,
+              "bottom": 1.8446498619900664e-05,
+              "interface": 1.7969593315680932e-05,
+              "water_l1": 4.769049920527735e-07,
+              "head_inf": 0.00026654421255356553
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0036241128986605844,
+              "bottom": 0.0017864802466113134,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 3.632649736573512e-13,
+        "bottom": 1.0361156377314273e-13,
+        "interface": 3.632649736573512e-13,
+        "water_l1": 0.0,
+        "head_inf": 3.375077994860476e-14
+      },
+      "budget": {
+        "top": 0.015496451594635072,
+        "bottom": 0.008145920986447326,
+        "interface": 0.015033480708672046,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": false,
+      "event": 4,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0014663236212586472,
+              "bottom": 0.0014663231075891514,
+              "interface": 0.0014663236125432855,
+              "water_l1": 5.049264062417791e-10,
+              "head_inf": 3.212787422768315e-07
+            },
+            "fine_pair": {
+              "top": 0.000822006616296056,
+              "bottom": 0.0008220064089907997,
+              "interface": 0.0008220066127602177,
+              "water_l1": 2.037670587817786e-10,
+              "head_inf": 1.2935979976091971e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004042174050177325,
+              "bottom": 0.0022039405647326002,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 7.33689099703394e-05,
+              "bottom": 6.608104336833232e-05,
+              "interface": 7.306360556402769e-05,
+              "water_l1": 6.982562179763674e-06,
+              "head_inf": 0.003933636076500768
+            },
+            "fine_pair": {
+              "top": 5.034022106831237e-06,
+              "bottom": 7.969585634398646e-06,
+              "interface": 5.143560267151237e-06,
+              "water_l1": 2.8260253328027396e-06,
+              "head_inf": 0.0015918157582723858
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004042174050177325,
+              "bottom": 0.0022039405647326002,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0014663236211306385,
+              "bottom": 0.0014663231076097183,
+              "interface": 0.0014663236124152768,
+              "water_l1": 5.049264617529303e-10,
+              "head_inf": 3.212788226569785e-07
+            },
+            "fine_pair": {
+              "top": 0.0008220066163817652,
+              "bottom": 0.0008220064089636547,
+              "interface": 0.0008220066128458159,
+              "water_l1": 2.0376716980408105e-10,
+              "head_inf": 1.2935982329764784e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004042174050180373,
+              "bottom": 0.0022039405647317567,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 7.336890983322686e-05,
+              "bottom": 6.60810434013337e-05,
+              "interface": 7.306360542691515e-05,
+              "water_l1": 6.982562179846941e-06,
+              "head_inf": 0.003933636076505209
+            },
+            "fine_pair": {
+              "top": 5.034021768657304e-06,
+              "bottom": 7.969585730877027e-06,
+              "interface": 5.143559929088326e-06,
+              "water_l1": 2.8260253328027396e-06,
+              "head_inf": 0.0015918157582812675
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004042174050180373,
+              "bottom": 0.0022039405647317567,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 6.096234628216735e-13,
+        "bottom": 1.6872614416740817e-13,
+        "interface": 6.095124405192109e-13,
+        "water_l1": 0.0,
+        "head_inf": 1.021405182655144e-14
+      },
+      "budget": {
+        "top": 0.017168696200709297,
+        "bottom": 0.0098157622589304,
+        "interface": 0.01670562990061543,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": false,
+      "event": 5,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.001468862429251483,
+              "bottom": 0.001468861661301446,
+              "interface": 0.0014688624164250763,
+              "water_l1": 7.550989000737474e-10,
+              "head_inf": 4.884225619505855e-07
+            },
+            "fine_pair": {
+              "top": 0.0008232777565411187,
+              "bottom": 0.0008232774513837193,
+              "interface": 0.0008232777514171064,
+              "water_l1": 3.0003050044413726e-10,
+              "head_inf": 1.9361229242065292e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004465229995419182,
+              "bottom": 0.0026258193053176034,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 2.878003268791396e-05,
+              "bottom": 3.7311509046178415e-05,
+              "interface": 2.907833381338154e-05,
+              "water_l1": 8.233175247590596e-06,
+              "head_inf": 0.004712927661219446
+            },
+            "fine_pair": {
+              "top": 2.4018750179877202e-05,
+              "bottom": 2.03661958765311e-05,
+              "interface": 2.3874922888911243e-05,
+              "water_l1": 3.5087270477962562e-06,
+              "head_inf": 0.002008852680764228
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004465229995419182,
+              "bottom": 0.0026258193053176034,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0014688624290754015,
+              "bottom": 0.001468861661331311,
+              "interface": 0.001468862416249106,
+              "water_l1": 7.550992053850791e-10,
+              "head_inf": 4.884226787460477e-07
+            },
+            "fine_pair": {
+              "top": 0.0008232777566348215,
+              "bottom": 0.000823277451354798,
+              "interface": 0.0008232777515106982,
+              "water_l1": 3.0003050044413726e-10,
+              "head_inf": 1.9361234260273363e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004465229995423432,
+              "bottom": 0.0026258193053164316,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 2.8780032492958796e-05,
+              "bottom": 3.7311509093973516e-05,
+              "interface": 2.9078333618426377e-05,
+              "water_l1": 8.23317524750733e-06,
+              "head_inf": 0.004712927661159938
+            },
+            "fine_pair": {
+              "top": 2.401874972079998e-05,
+              "bottom": 2.0366196006538217e-05,
+              "interface": 2.3874922429834022e-05,
+              "water_l1": 3.5087270477962562e-06,
+              "head_inf": 0.0020088526807451323
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004465229995423432,
+              "bottom": 0.0026258193053164316,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 8.499867476530198e-13,
+        "bottom": 2.3436808049837055e-13,
+        "interface": 8.498757253505573e-13,
+        "water_l1": 0.0,
+        "head_inf": 1.4210854715202004e-14
+      },
+      "budget": {
+        "top": 0.01886091998167673,
+        "bottom": 0.011503277221270414,
+        "interface": 0.018397672061832723,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": false,
+      "event": 6,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0014714535634713366,
+              "bottom": 0.0014714530276880855,
+              "interface": 0.0014714535547276641,
+              "water_l1": 5.270169856075313e-10,
+              "head_inf": 3.4694873685126026e-07
+            },
+            "fine_pair": {
+              "top": 0.0008245751136621848,
+              "bottom": 0.0008245749045189821,
+              "interface": 0.0008245751102298193,
+              "water_l1": 2.057081727180332e-10,
+              "head_inf": 1.3508800034145452e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004893015997422418,
+              "bottom": 0.0030524522619430968,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 2.538659457007597e-05,
+              "bottom": 2.7165710857146586e-05,
+              "interface": 2.5433358078807977e-05,
+              "water_l1": 1.732352793604175e-06,
+              "head_inf": 0.001008287932700913
+            },
+            "fine_pair": {
+              "top": 1.9141488587837152e-05,
+              "bottom": 1.9685342312003584e-05,
+              "interface": 1.915665634577568e-05,
+              "water_l1": 5.286859302011671e-07,
+              "head_inf": 0.0003077413154057851
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004893015997422418,
+              "bottom": 0.0030524522619430968,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0014714535632475156,
+              "bottom": 0.0014714530277261106,
+              "interface": 0.0014714535545037322,
+              "water_l1": 5.27016791318502e-10,
+              "head_inf": 3.4694866002382696e-07
+            },
+            "fine_pair": {
+              "top": 0.0008245751137592183,
+              "bottom": 0.0008245749044890061,
+              "interface": 0.0008245751103268528,
+              "water_l1": 2.057083114959113e-10,
+              "head_inf": 1.350880136641308e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004893015997427814,
+              "bottom": 0.003052452261941606,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 2.5386594320830902e-05,
+              "bottom": 2.7165710921261965e-05,
+              "interface": 2.5433357829562908e-05,
+              "water_l1": 1.732352793465397e-06,
+              "head_inf": 0.0010082879324477823
+            },
+            "fine_pair": {
+              "top": 1.9141488016738428e-05,
+              "bottom": 1.96853424723753e-05,
+              "interface": 1.9156655774565934e-05,
+              "water_l1": 5.286859303121894e-07,
+              "head_inf": 0.0003077413154390918
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004893015997427814,
+              "bottom": 0.003052452261941606,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 1.0791367799356522e-12,
+        "bottom": 2.981503932630858e-13,
+        "interface": 1.0791367799356522e-12,
+        "water_l1": 5.551115123125783e-17,
+        "head_inf": 8.615330671091215e-14
+      },
+      "budget": {
+        "top": 0.020572063989689672,
+        "bottom": 0.013209809047772386,
+        "interface": 0.02010864509210873,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": true,
+      "event": 1,
+      "explicit_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00011229289807684895,
+              "bottom": 4.430920892169524e-05,
+              "interface": 0.000113400998083657,
+              "water_l1": 0.00015771020696664362,
+              "head_inf": 0.08897938944039296
+            },
+            "fine_pair": {
+              "top": 6.300041787304922e-05,
+              "bottom": 3.86386130267289e-05,
+              "interface": 6.134324937367985e-05,
+              "water_l1": 3.4071125256274204e-05,
+              "head_inf": 0.019181513840852205
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.002549936349153667,
+              "bottom": 0.001040463387097049,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 2.392956305458105e-05,
+              "bottom": 4.265432348559556e-07,
+              "interface": 2.2772313453933712e-05,
+              "water_l1": 2.2345770208070936e-05,
+              "head_inf": 0.010381952997860822
+            },
+            "fine_pair": {
+              "top": 2.1212259012692858e-05,
+              "bottom": 1.4812256253753792e-06,
+              "interface": 2.0689810499019412e-05,
+              "water_l1": 1.9208584898178227e-05,
+              "head_inf": 0.0071660535520408075
+            },
+            "contracting": {
+              "top": true,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.002549936349153667,
+              "bottom": 0.001040463387097049,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00011229289800807063,
+              "bottom": 4.4309208919913676e-05,
+              "interface": 0.00011340099801415704,
+              "water_l1": 0.0001577102069912628,
+              "head_inf": 0.08897938944799932
+            },
+            "fine_pair": {
+              "top": 6.30004178704402e-05,
+              "bottom": 3.8638613026463486e-05,
+              "interface": 6.134324937134839e-05,
+              "water_l1": 3.4071125253248846e-05,
+              "head_inf": 0.019181513837942532
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0025499363491535434,
+              "bottom": 0.0010404633870970516,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 2.392956304692051e-05,
+              "bottom": 4.26543234715443e-07,
+              "interface": 2.2772313446273174e-05,
+              "water_l1": 2.234577020759909e-05,
+              "head_inf": 0.010381952997601473
+            },
+            "fine_pair": {
+              "top": 2.1212259031511138e-05,
+              "bottom": 1.4812256253840528e-06,
+              "interface": 2.0689810518004226e-05,
+              "water_l1": 1.920858489709576e-05,
+              "head_inf": 0.0071660535516571144
+            },
+            "contracting": {
+              "top": true,
+              "bottom": false,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0025499363491535434,
+              "bottom": 0.0010404633870970516,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": null,
+      "difference": {
+        "top": 2.475797344914099e-14,
+        "bottom": 4.839878497975292e-16,
+        "interface": 2.475797344914099e-14,
+        "water_l1": 1.1379786002407855e-15,
+        "head_inf": 7.318590178329032e-13
+      },
+      "budget": {
+        "top": 0.011199745396614669,
+        "bottom": 0.005161853548388196,
+        "interface": 0.011213075741709565,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": true,
+      "event": 2,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.0001098836115174251,
+              "bottom": 0.00010870577861835096,
+              "interface": 0.00010986346791397317,
+              "water_l1": 1.1576892601228295e-06,
+              "head_inf": 0.0007284551651420834
+            },
+            "fine_pair": {
+              "top": 8.435352974178745e-06,
+              "bottom": 7.948444541050481e-06,
+              "interface": 8.426990332599527e-06,
+              "water_l1": 4.785457939082693e-07,
+              "head_inf": 0.00030059103221757866
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003108156122987283,
+              "bottom": 0.0013871937407943366,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 2.5426453484578282e-05,
+              "bottom": 2.255945157167427e-05,
+              "interface": 2.529086163360894e-05,
+              "water_l1": 2.73141004775157e-06,
+              "head_inf": 0.0015211807369026609
+            },
+            "fine_pair": {
+              "top": 5.770106755342841e-06,
+              "bottom": 6.5635103034950015e-06,
+              "interface": 5.796547895065007e-06,
+              "water_l1": 7.669623795225622e-07,
+              "head_inf": 0.00042668877658025295
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003108156122987283,
+              "bottom": 0.0013871937407943366,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00010988361143476899,
+              "bottom": 0.0001087057786372525,
+              "interface": 0.00010986346783525835,
+              "water_l1": 1.1576891794373712e-06,
+              "head_inf": 0.0007284551302357833
+            },
+            "fine_pair": {
+              "top": 8.435352990443512e-06,
+              "bottom": 7.948444537789201e-06,
+              "interface": 8.426990347587537e-06,
+              "water_l1": 4.785457782818803e-07,
+              "head_inf": 0.0003005910136368861
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0031081561229879405,
+              "bottom": 0.0013871937407942362,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 2.5426453433063934e-05,
+              "bottom": 2.2559451574019618e-05,
+              "interface": 2.5290861581372948e-05,
+              "water_l1": 2.7314100839448407e-06,
+              "head_inf": 0.00152118075756702
+            },
+            "fine_pair": {
+              "top": 5.770106689451104e-06,
+              "bottom": 6.563510316026644e-06,
+              "interface": 5.796547828451626e-06,
+              "water_l1": 7.669623296735484e-07,
+              "head_inf": 0.0004266887456654267
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0031081561229879405,
+              "bottom": 0.0013871937407942362,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 1.315059172668498e-13,
+        "bottom": 2.0108914533523148e-14,
+        "interface": 1.340039190722564e-13,
+        "water_l1": 9.642286968869485e-14,
+        "head_inf": 5.369615863060062e-11
+      },
+      "budget": {
+        "top": 0.013432624491949131,
+        "bottom": 0.006548774963177346,
+        "interface": 0.013434821553625825,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": true,
+      "event": 3,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00010997155341896381,
+              "bottom": 0.00010997114452643286,
+              "interface": 0.00010997154642056195,
+              "water_l1": 4.0185824112803914e-10,
+              "head_inf": 2.535548921933639e-07
+            },
+            "fine_pair": {
+              "top": 8.539390135897662e-06,
+              "bottom": 8.539226966586266e-06,
+              "interface": 8.539387328809767e-06,
+              "water_l1": 1.6036516559125857e-10,
+              "head_inf": 1.009639012394814e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0035237971292345015,
+              "bottom": 0.0018024410039051897,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 2.009143920234102e-05,
+              "bottom": 2.08710395527556e-05,
+              "interface": 2.0096723662876848e-05,
+              "water_l1": 7.743159053386073e-07,
+              "head_inf": 0.00043275291630839874
+            },
+            "fine_pair": {
+              "top": 4.101483852991805e-06,
+              "bottom": 4.593195183394405e-06,
+              "interface": 4.116290104438924e-06,
+              "water_l1": 4.769050488129256e-07,
+              "head_inf": 0.00026654424877570193
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0035237971292345015,
+              "bottom": 0.0018024410039051897,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00010997155338798859,
+              "bottom": 0.00010997114451510859,
+              "interface": 0.00010997154638958673,
+              "water_l1": 4.018583521503416e-10,
+              "head_inf": 2.5355498411983035e-07
+            },
+            "fine_pair": {
+              "top": 8.539390167427996e-06,
+              "bottom": 8.539226956066903e-06,
+              "interface": 8.5393873603401e-06,
+              "water_l1": 1.6036511008010734e-10,
+              "head_inf": 1.009638515014899e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0035237971292367046,
+              "bottom": 0.001802441003904573,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 2.0091439063674166e-05,
+              "bottom": 2.087103958575698e-05,
+              "interface": 2.0096723524321014e-05,
+              "water_l1": 7.743159053941184e-07,
+              "head_inf": 0.00043275291634126134
+            },
+            "fine_pair": {
+              "top": 4.1014836358321816e-06,
+              "bottom": 4.59319524703794e-06,
+              "interface": 4.116289887501345e-06,
+              "water_l1": 4.769050488129256e-07,
+              "head_inf": 0.0002665442487450598
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0035237971292367046,
+              "bottom": 0.001802441003904573,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 4.4064751847372463e-13,
+        "bottom": 1.2329026688462363e-13,
+        "interface": 4.404254738687996e-13,
+        "water_l1": 0.0,
+        "head_inf": 6.217248937900877e-14
+      },
+      "budget": {
+        "top": 0.015095188516938005,
+        "bottom": 0.008209764015620758,
+        "interface": 0.015097323738270038,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": true,
+      "event": 4,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00011122028773202786,
+              "bottom": 0.00011121977405434413,
+              "interface": 0.00011122027901677711,
+              "water_l1": 5.049256568412375e-10,
+              "head_inf": 3.2127817162219685e-07
+            },
+            "fine_pair": {
+              "top": 9.164207324552365e-06,
+              "bottom": 9.164000026040675e-06,
+              "interface": 9.164203788603054e-06,
+              "water_l1": 2.0376703102620297e-10,
+              "head_inf": 1.2935970206129355e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003941858280685759,
+              "bottom": 0.002219901322066697,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 5.328243024504964e-05,
+              "bottom": 4.599456364154375e-05,
+              "interface": 5.2977125838737926e-05,
+              "water_l1": 6.982562179763674e-06,
+              "head_inf": 0.003933636076503877
+            },
+            "fine_pair": {
+              "top": 8.819281272831603e-06,
+              "bottom": 5.883717747262596e-06,
+              "interface": 8.709743112622625e-06,
+              "water_l1": 2.8260253330802954e-06,
+              "head_inf": 0.0015918157584255965
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003941858280685759,
+              "bottom": 0.002219901322066697,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00011122028768317804,
+              "bottom": 0.00011121977404859873,
+              "interface": 0.00011122027896781628,
+              "water_l1": 5.049256568412375e-10,
+              "head_inf": 3.212782422323812e-07
+            },
+            "fine_pair": {
+              "top": 9.164207370959687e-06,
+              "bottom": 9.164000011607776e-06,
+              "interface": 9.164203835010376e-06,
+              "water_l1": 2.037670865373542e-10,
+              "head_inf": 1.2935970383765039e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003941858280689244,
+              "bottom": 0.002219901322065736,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 5.328243004731892e-05,
+              "bottom": 4.599456369061561e-05,
+              "interface": 5.2977125641007206e-05,
+              "water_l1": 6.982562179846941e-06,
+              "head_inf": 0.00393363607650965
+            },
+            "fine_pair": {
+              "top": 8.81928162421719e-06,
+              "bottom": 5.8837176481196796e-06,
+              "interface": 8.709743463786168e-06,
+              "water_l1": 2.8260253330802954e-06,
+              "head_inf": 0.0015918157583918457
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.003941858280689244,
+              "bottom": 0.002219901322065736,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 6.971090371621358e-13,
+        "bottom": 1.9231838344069274e-13,
+        "interface": 6.968869925572108e-13,
+        "water_l1": 0.0,
+        "head_inf": 1.8207657603852567e-14
+      },
+      "budget": {
+        "top": 0.016767433122743033,
+        "bottom": 0.009879605288266789,
+        "interface": 0.016769472929951786,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": true,
+      "event": 5,
+      "explicit_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00011375909572552967,
+              "bottom": 0.00011375832776633343,
+              "interface": 0.00011375908289912307,
+              "water_l1": 7.550989000737474e-10,
+              "head_inf": 4.884225570656042e-07
+            },
+            "fine_pair": {
+              "top": 1.0435347569837106e-05,
+              "bottom": 1.0435042419265628e-05,
+              "interface": 1.043534244582478e-05,
+              "water_l1": 3.0003050044413726e-10,
+              "head_inf": 1.9361229730563423e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004364914225927616,
+              "bottom": 0.0026417800626517027,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 8.693552962624196e-06,
+              "bottom": 1.7225029319500873e-05,
+              "interface": 8.991854088091777e-06,
+              "water_l1": 8.233175247590596e-06,
+              "head_inf": 0.004712927661219446
+            },
+            "fine_pair": {
+              "top": 1.0165446800436406e-05,
+              "bottom": 6.512892494370259e-06,
+              "interface": 1.0021619509359425e-05,
+              "water_l1": 3.5087270477962562e-06,
+              "head_inf": 0.002008852680764228
+            },
+            "contracting": {
+              "top": false,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004364914225927616,
+              "bottom": 0.0026417800626517027,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": false,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00011375909562871822,
+              "bottom": 0.0001137583277696641,
+              "interface": 0.00011375908280242264,
+              "water_l1": 7.550992053850791e-10,
+              "head_inf": 4.884226774137801e-07
+            },
+            "fine_pair": {
+              "top": 1.0435347624460078e-05,
+              "bottom": 1.0435042402667793e-05,
+              "interface": 1.043534250033673e-05,
+              "water_l1": 3.0003050044413726e-10,
+              "head_inf": 1.9361234393500126e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004364914225932305,
+              "bottom": 0.00264178006265041,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": false,
+            "coarse_pair": {
+              "top": 8.693552706939833e-06,
+              "bottom": 1.7225029383283186e-05,
+              "interface": 8.991853832407415e-06,
+              "water_l1": 8.233175247590596e-06,
+              "head_inf": 0.0047129276613020465
+            },
+            "fine_pair": {
+              "top": 1.0165446327925487e-05,
+              "bottom": 6.512892627874578e-06,
+              "interface": 1.002161903707055e-05,
+              "water_l1": 3.5087270477962562e-06,
+              "head_inf": 0.002008852680828177
+            },
+            "contracting": {
+              "top": false,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004364914225932305,
+              "bottom": 0.00264178006265041,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": null,
+      "difference": {
+        "top": 9.379164112033322e-13,
+        "bottom": 2.5857094243519896e-13,
+        "interface": 9.376943665984072e-13,
+        "water_l1": 0.0,
+        "head_inf": 1.4210854715202004e-14
+      },
+      "budget": {
+        "top": 0.018459656903710462,
+        "bottom": 0.01156712025060681,
+        "interface": 0.018461515091169077,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    },
+    {
+      "R_day": 1,
+      "prewetted": true,
+      "event": 6,
+      "explicit_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00011635022994527233,
+              "bottom": 0.00011634969415297292,
+              "interface": 0.00011635022120159988,
+              "water_l1": 5.270169856075313e-10,
+              "head_inf": 3.4694873685126026e-07
+            },
+            "fine_pair": {
+              "top": 1.1732704691014284e-05,
+              "bottom": 1.1732495554528377e-05,
+              "interface": 1.1732701258648781e-05,
+              "water_l1": 2.057081727180332e-10,
+              "head_inf": 1.3508800034145452e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004792700227930851,
+              "bottom": 0.003068413019277196,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 5.300114844786208e-06,
+              "bottom": 7.079231130469044e-06,
+              "interface": 5.346878353518214e-06,
+              "water_l1": 1.732352793604175e-06,
+              "head_inf": 0.001008287932700913
+            },
+            "fine_pair": {
+              "top": 5.2881852083963565e-06,
+              "bottom": 5.832038929842742e-06,
+              "interface": 5.303352966223862e-06,
+              "water_l1": 5.286859302011671e-07,
+              "head_inf": 0.0003077413154057851
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.004792700227930851,
+              "bottom": 0.003068413019277196,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "reduced_reference": {
+        "ready": true,
+        "axes": {
+          "ns": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 0.00011635022980083232,
+              "bottom": 0.00011634969416446372,
+              "interface": 0.00011635022105704884,
+              "water_l1": 5.270167358073508e-10,
+              "head_inf": 3.4694863160211753e-07
+            },
+            "fine_pair": {
+              "top": 1.1732704748856904e-05,
+              "bottom": 1.173249553682032e-05,
+              "interface": 1.17327013164914e-05,
+              "water_l1": 2.0570836700706252e-10,
+              "head_inf": 1.3508804164175103e-07
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0047927002279366865,
+              "bottom": 0.003068413019275584,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          },
+          "m": {
+            "ready": true,
+            "coarse_pair": {
+              "top": 5.3001145344788725e-06,
+              "bottom": 7.0792312107936795e-06,
+              "interface": 5.346878043210879e-06,
+              "water_l1": 1.7323527933821303e-06,
+              "head_inf": 0.0010082879326049898
+            },
+            "fine_pair": {
+              "top": 5.288184623863934e-06,
+              "bottom": 5.832039093767172e-06,
+              "interface": 5.303352381802462e-06,
+              "water_l1": 5.286859301734115e-07,
+              "head_inf": 0.0003077413153302899
+            },
+            "contracting": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true
+            },
+            "within": {
+              "top": true,
+              "bottom": true,
+              "water_l1": true,
+              "head_inf": true
+            },
+            "budget": {
+              "top": 0.0047927002279366865,
+              "bottom": 0.003068413019275584,
+              "water_l1": 0.001,
+              "head_inf": 0.1
+            }
+          }
+        }
+      },
+      "physical_equivalence": true,
+      "difference": {
+        "top": 1.1670664434859646e-12,
+        "bottom": 3.2240876635114546e-13,
+        "interface": 1.166955421183502e-12,
+        "water_l1": 5.551115123125783e-17,
+        "head_inf": 8.659739592076221e-14
+      },
+      "budget": {
+        "top": 0.020170800911723404,
+        "bottom": 0.013273652077108785,
+        "interface": 0.020172488121445082,
+        "water_l1": 0.005,
+        "head_inf": 0.5
+      },
+      "within": {
+        "top": true,
+        "bottom": true,
+        "interface": true,
+        "water_l1": true,
+        "head_inf": true
+      }
+    }
+  ],
+  "independent_profile_audits": [],
+  "lifecycle_cases": [],
+  "scope": "Time-discrete distributed storage reduction matching pinned SWKIMPL=0 explicit layer. Component candidate/restart gates only; no production receipt/runtime/restart admission."
+}

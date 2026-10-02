@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
-  "decision": "CONTINUUM_STATIONARY_CONTACT_VERIFIED__DRY_LAYER_STORAGE_REQUIRED__NO_PRODUCTION_ADMISSION",
+  "decision": "STATEFUL_DISTRIBUTED_CONTACT_COMPONENT_VERIFIED__RUNTIME_ADMISSION_OPEN",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -187,7 +187,11 @@
     "tests/fapp/test_sw_rib_top03_continuous_contact.f90",
     "tests/fapp/run_sw_rib_top03_continuous_contact.py",
     "tests/fapp/analyze_sw_rib_top03_nonlinear_contact.py",
-    "tests/fapp/analyze_sw_rib_top03_continuous_contact.py"
+    "tests/fapp/analyze_sw_rib_top03_continuous_contact.py",
+    "tests/fapp/mod_top03_stateful_contact.f90",
+    "tests/fapp/test_sw_rib_top03_stateful_contact.f90",
+    "tests/fapp/run_sw_rib_top03_stateful_contact.py",
+    "tests/fapp/analyze_sw_rib_top03_stateful_contact.py"
   ],
   "dependency_surface": [
     "accepted attempt/window mass ownership",
@@ -203,11 +207,10 @@
     "R=0/R=0.05 trajectories still fail numerically; thin L=0.02 cm finest joint contraction remains unready.",
     "Ribasim/SWAP ownership of local pond versus external waterbody storage remains unqualified.",
     "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage.",
-    "Continuum stationary contact is component-qualified in the bounded synthetic matrix; five ready dry-start transfer comparisons fail because the contact has no owned layer storage. Stateful candidate/storage/receipt semantics remain required.",
-    "Stateful contact implementation gate is blocked by unavailable local command execution; no stateful build/test/qualification claim."
+    "Stateful storage and candidate/lifecycle gates are qualified only in the pinned test-only layer component. Production accepted-window carrier, receipt integration, external surface storage ownership and current-canonical qualification remain open."
   ],
-  "next_action": "Reconcile current branch/status. Inspect any unconfirmed local stateful files before reuse or regenerate from pinned baseline. Persist coherent source and lifecycle/independent audit tests, then execute preregistered O0/O2 matrix.",
-  "recovery_point": "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_PREREGISTRATION.md",
+  "next_action": "Read final stateful decision and exact-source evidence; production capsule/carrier integration and current-canonical reconciliation require owning authority. Consider existing explicit profile storage before creating another production storage owner.",
+  "recovery_point": "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_DECISION.md",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All three unsaturated-contact research phases ran locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Exact-source evidence and explicit scope only; commits use skip ci.",
   "implementation_slice": {
@@ -226,8 +229,8 @@
       "explicit bounded profile and exfiltration rejection"
     ]
   },
-  "last_reconciled_head": "0df7ab1a23c84ba06345d88344bbb9680783a0a6",
-  "checkpoint_commit": "af6a6344bb1dc76c62a562de3be40d74cd7b6f21",
+  "last_reconciled_head": "3e6f7449047de4514607e437a80fab76dbb539d6",
+  "checkpoint_commit": "3e6f7449047de4514607e437a80fab76dbb539d6",
   "pending_tests": [
     "independent candidate-K nonlinear layer closure and stateful owned-storage reduction; constant R already falsified in prior ready comparisons",
     "representative-soil/contact-parameter envelope",
@@ -457,7 +460,7 @@
     "production_qualified": false,
     "interpretation": "Correct saturated limit; constant saturated resistance does not reproduce the partly unsaturated explicit layer even for a prewetted layer origin. Storage alone is not established as a sufficient fix."
   },
-  "status": "CONTINUUM_STATIONARY_CONTACT_VERIFIED__DRY_LAYER_STORAGE_REQUIRED__NO_PRODUCTION_ADMISSION",
+  "status": "STATEFUL_DISTRIBUTED_CONTACT_COMPONENT_VERIFIED__RUNTIME_ADMISSION_OPEN",
   "evidence_paths": [
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_RESULT.json",
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_DECISION.md",
@@ -468,7 +471,10 @@
     "integration/sw-rib-top03/TOP03_CONTINUOUS_CONTACT_RESULT.json",
     "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_PRIMARY_RESULT.json",
     "integration/sw-rib-top03/TOP03_NONLINEAR_CONTACT_DECISION.md",
-    "integration/sw-rib-top03/evidence/nonlinear_contact/raw_records.tar.gz"
+    "integration/sw-rib-top03/evidence/nonlinear_contact/raw_records.tar.gz",
+    "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_RESULT.json",
+    "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_DECISION.md",
+    "integration/sw-rib-top03/evidence/stateful_contact/raw_records.tar.gz"
   ],
   "unsaturated_contact_research": {
     "implemented": true,
@@ -579,20 +585,47 @@
     "evidence": "integration/sw-rib-top03/evidence/nonlinear_contact/raw_records.tar.gz"
   },
   "stateful_contact_research": {
-    "status": "PREREGISTRATION_PERSISTED__LOCAL_EXECUTION_UNAVAILABLE",
+    "status": "STATEFUL_DISTRIBUTED_CONTACT_COMPONENT_VERIFIED__RUNTIME_ADMISSION_OPEN",
     "baseline": "1f507d6cc18f995ef7c171b61d3eb7601669da02",
     "preregistration_commit": "af6a6344bb1dc76c62a562de3be40d74cd7b6f21",
     "preregistration": "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_PREREGISTRATION.md",
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
-    "persisted_scope": "Design and preregistration only; no confirmed source postimage.",
-    "tested": false,
+    "persisted_scope": "Pinned test-only module/fixture/runner, independent analyzer and scientific evidence.",
+    "tested": true,
     "qualified": false,
     "production_admission": false,
     "numerical_policy": "Match explicit SWKIMPL=0: immutable-origin interior/interface K, candidate-K arithmetic top boundary. Separate from stationary continuum closure.",
-    "execution_failure": "Local exec_command stopped returning responses, including a true command in /tmp with login disabled. Source-generation and inspection calls produced no response; pending orchestration cells were terminated. No compilation or scientific execution result was obtained.",
-    "recovery": "Reconcile current branch/status. Inspect any unconfirmed local stateful files before reuse or regenerate from pinned baseline. Persist coherent source and lifecycle/independent audit tests, then execute preregistered O0/O2 matrix.",
+    "execution_failure": null,
+    "recovery": "Read final stateful decision and exact-source evidence; production capsule/carrier integration and current-canonical reconciliation require owning authority. Consider existing explicit profile storage before creating another production storage owner.",
     "canonical_inspected": "a89990169fb8429a0fd143df9e3d28b9a35d28b8",
-    "current_canonical_qualification_inherited": false
+    "current_canonical_qualification_inherited": false,
+    "component_qualified": true,
+    "qualified_scope": "Synthetic distributed layer, conductivity_policy=0, L=0.2 cm,R=0.5/1 day,m=8/16/32,ns=128/256/512; 36 trajectories and component candidate/replay/restart gates. Production scope is not qualified.",
+    "source_postimage": "3e6f7449047de4514607e437a80fab76dbb539d6",
+    "local_execution_recovered": true,
+    "primary_source_postimage": "02a6f7447764db25359a8eecacb4938e0ff163ef",
+    "primary_completed": 35,
+    "primary_new_total": 36,
+    "final_new_completed": 36,
+    "final_new_total": 36,
+    "final_cases_per_build": 120,
+    "outer_iteration_bound": 80,
+    "local_residual_target_cm_day": 1e-11,
+    "local_post_target_corrections": 3,
+    "O0_O2_raw_records_exact": true,
+    "inherited_trajectories_exact": 54,
+    "saturated_controls": 18,
+    "lifecycle_cases": 12,
+    "independent_profile_audits": 216,
+    "physical_verdicts": {
+      "passed": 15,
+      "failed": 0,
+      "unready": 9
+    },
+    "max_soil_layer_mass_error_cm": 3.68594044175552e-14,
+    "result": "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_RESULT.json",
+    "decision": "integration/sw-rib-top03/TOP03_STATEFUL_CONTACT_DECISION.md",
+    "evidence": "integration/sw-rib-top03/evidence/stateful_contact/raw_records.tar.gz"
   }
 }
