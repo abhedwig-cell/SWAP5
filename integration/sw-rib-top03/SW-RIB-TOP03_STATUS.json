@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
-  "decision": "FINITE_CONTACT_RESISTANCE_ROBUSTLY_SUPPORTED__VALUE_NOT_PHYSICALLY_QUALIFIED__EXPLICIT_LAYER_EQUIVALENCE_NEXT__NO_PRODUCTION_ADMISSION",
+  "decision": "FINITE_CONTACT_RESISTANCE_ROBUSTLY_SUPPORTED__EXPLICIT_LAYER_PHYSICAL_QUALIFICATION_REQUIRED__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -107,7 +107,8 @@
       "r0_control": true,
       "production_code_changed": false,
       "conclusion": "R_s=0.50 and 1.00 day complete and jointly contract at all four refinements for every tested D, including D=0. No R_s<=0.25 day does so."
-    }
+    },
+    "explicit_layer_prerequisite": "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_PREREQUISITE.md"
   },
   "findings": [
     {
@@ -180,14 +181,14 @@
     "typed external head forcing"
   ],
   "blockers": [
-    "The existing production BASE temporal identity policy is exact-state-only; no finite dynamic-top acceptance budget is yet admitted.",
-    "Finite contact resistance is robustly supported as the dominant regularizing surface mechanism in the synthetic TOP03 fixture, but its successful resistance magnitude is not physically parameterized or qualified.",
-    "A published field example reports a much smaller crust resistance (~0.055 day) than the first robust TOP03 test value (0.50 day); the fixture threshold may therefore also represent unresolved layering, coarse top-node geometry or other near-surface effects.",
-    "Reduced contact resistance must be checked against an explicit thin transition-layer representation before it can be treated as production surface physics.",
-    "Ribasim/SWAP ownership of local surface storage and external surface-water volume remains unqualified."
+    "The exact-state BASE temporal acceptance policy remains unchanged and no finite dynamic-top temporal budget is yet admitted.",
+    "Finite surface-contact resistance robustly regularizes the synthetic TOP03 stage trajectory, including the flat-surface control, but the successful resistance magnitude is not physically qualified.",
+    "The current four-node TOP03 mechanism fixture cannot support an explicit thin-layer calibration because its z/dz geometry and uniform 1 cm node_distance are intentionally synthetic rather than a faithful near-surface discretization.",
+    "A geometrically consistent explicit transition-layer versus reduced R_s=L_s/K_s equivalence authority is required before contact resistance can become production surface physics.",
+    "Ribasim/SWAP ownership of local surface storage versus the represented external water body remains unqualified."
   ],
-  "next_action": "Keep PR #956 draft. Run an explicit thin transition-layer equivalence experiment using R_s=L_s/K_s, preserving the deeper soil, lower boundary, stage forcing and mass gates. Require the reduced resistance boundary to reproduce explicit-layer accepted states and integrated top/bottom exchange across a bounded layer envelope before any production parameterization or temporal-tolerance work.",
-  "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
+  "next_action": "Keep PR #956 draft and stop modifying TOP03 production physics. Execute the separately bounded explicit transition-layer prerequisite on a geometrically consistent profile fixture, using local surface refinement and R_s=L_s/K_s equivalence. Resume TOP03 temporal and receipt/commit qualification only after that physical surface-contact envelope is independently qualified.",
+  "recovery_point": "Contact-resistance research and physical review are persisted through branch checkpoint 81f18d178bac05f46d9f0493efa6649f3227c78d. Production code remains unchanged by the microrelief/contact research. Resume on the same branch and PR #956 only after the explicit-layer prerequisite is qualified.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
   "implementation_slice": {
@@ -206,10 +207,10 @@
       "explicit bounded profile and exfiltration rejection"
     ]
   },
-  "last_reconciled_head": "1587e485495f025c2bf9a403ea9e0b5fb5737702",
-  "checkpoint_commit": "4c164b087e11c110baeb7a56795d4a1ff109d1ab",
+  "last_reconciled_head": "81f18d178bac05f46d9f0493efa6649f3227c78d",
+  "checkpoint_commit": "81f18d178bac05f46d9f0493efa6649f3227c78d",
   "pending_tests": [
-    "explicit transition-layer versus reduced R_s=L_s/K_s equivalence",
+    "geometrically consistent explicit transition-layer versus reduced R_s=L_s/K_s equivalence",
     "representative-soil/contact-parameter envelope",
     "surface geometry/storage ownership contract with Ribasim",
     "evidence-backed dynamic-top temporal state+top+bottom budget over qualified surface envelope",
