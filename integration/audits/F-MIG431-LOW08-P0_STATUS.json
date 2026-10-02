@@ -1,13 +1,13 @@
 {
   "work_unit": "F-MIG431-LOW08-P0",
-  "state": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "state": "CANONICAL_ADMITTED_CLOSED",
   "canonical_baseline": "220810c42f330e1d2615332683a54c19381ef62d",
   "official_branch": "work/f-mig431-low08-p0-lysimeter-active-set",
   "scope": "Typed Reference SWBOTB=8 lysimeter-plate solve-entry active-set semantics only",
   "implemented": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "source_authority": "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
   "claim_ceiling": "solver route only; no application/bootstrap admission",
   "active_sequence_context": {
@@ -34,5 +34,10 @@
     "active_set_lifetime": "Selected in vector_F(1) and immutable through vector_F(2) Newton/backtracking evaluations.",
     "state_ownership": "solve-local flboth only; no transaction/restart state"
   },
-  "next_action": "Persist closeout candidate and open normal PR for solver-route admission only. Application/bootstrap admission remains separate."
+  "next_action": "LOW08-P0 solver route closed. Ordinary SWBOTB=8 application/bootstrap admission remains separate; explicit SwBotb3Impl=0 remains open and SWBOTB=1 remains parked.",
+  "canonical_admission": {
+    "pr": 984,
+    "merge": "4a743bda053a67e26e559e788e98fddac3b796ff",
+    "method": "normal merge"
+  }
 }

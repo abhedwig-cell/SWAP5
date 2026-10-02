@@ -1,6 +1,6 @@
 # F-MIG431-LOW08-P0 closeout
 
-Status before canonical merge: **QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE**.
+Final status: **CANONICAL_ADMITTED_CLOSED**.
 
 Qualified exact postimage: `7198b2ad4e9208efbe0ad9e312688dca8c178975`.
 
@@ -29,3 +29,5 @@ O0 and O2 pass the LOW08 direct threshold/regime/mass/replay/fail-closed fixture
 ## Nonclaims
 
 This is solver-route admission only. No ordinary production application/bootstrap profile for SWBOTB=8 is admitted by P0. SWBOTB=1 remains parked and explicit SwBotb3Impl=0 remains open.
+
+Canonical admission: PR #984, normal merge `4a743bda053a67e26e559e788e98fddac3b796ff`.
