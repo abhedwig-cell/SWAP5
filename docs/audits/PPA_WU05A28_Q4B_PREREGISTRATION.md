@@ -33,3 +33,11 @@ Stage B then runs the frozen fixture with A28_V1 and compares against exact.
 ## Claim boundary
 
 Q4B answers only the missing threshold-crossing long-history question. It does not add field validation, canonical admission, MultiSWAP scaling or MODFLOW coupling qualification.
+
+## Stage-A frozen outcome
+
+Exact-only run 37032036237 identifies O05 with forcing variant 3 as the executable dynamic threshold fixture in both geometry variants. Each completes 24 days with mass residual below 1e-10 cm and repeatedly occupies both the < -30 cm and [-30,-3) cm bands. With cycle-boundary sampling the transition counter is 19 across 20 cycles because the first sampled state has no preceding sample; this satisfies the intended repeated-crossing requirement without changing forcing.
+
+No executable Stage-A candidate visits the >= -3 cm band. Do not intensify forcing merely to manufacture that occupancy. The >= -3 cm 16-panel branch remains covered by the 36-material constitutive Q2 frontier; Q4B dynamic qualification is frozen to the observed -30 cm 64/32 transition.
+
+Stage B is now allowed only for O05, forcing variant 3, geometry 1 and 2, with the exact forcing and initial state unchanged.
