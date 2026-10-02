@@ -12,7 +12,7 @@ program test_low08a_application
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_kernel_transactions
   use mod_fmr_committed_restart
-  use mod_transaction_reference, only: TX_TEMPORAL_NONE
+  use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF
   use variables, only: fldtmin
   use mod_fixed_flux_top_boundary_provider
   use mod_groundwater_topology_composition, only: groundwater_topology_t
@@ -45,7 +45,7 @@ program test_low08a_application
   cfg%tiles(1)%ordinary_lysimeter_plate=.true.
   cfg%tiles(1)%ledger_id=0_int64
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
-  cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_NONE
+  cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
   cfg%tiles(1)%base_forcing%bottom_head=cfg%tiles(1)%initial_state%pressure_head(numnod)+ &
        0.5_real64*cfg%tiles(1)%parameters%dz(numnod)+1.0_real64
   cfg%tiles(1)%base_forcing%top_flux=0.0_real64
@@ -124,7 +124,7 @@ contains
     real(real64)::threshold
     integer::s
     c=config
-    c%numerical%transaction%temporal_mode=TX_TEMPORAL_NONE
+    c%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
     c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     if(allocated(c%tiles(1)%initial_right_derivative))deallocate(c%tiles(1)%initial_right_derivative)
     threshold=c%tiles(1)%base_forcing%bottom_head-0.5_real64*c%tiles(1)%parameters%dz(numnod)+1.0e-5_real64
@@ -137,7 +137,7 @@ contains
     call require(abs(r(1)%mass%total_in)+abs(r(1)%mass%total_out)<1.0e-12_real64,'inactive qbot exactly zero')
     call owner%close(s)
     c=config
-    c%numerical%transaction%temporal_mode=TX_TEMPORAL_NONE
+    c%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
     c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     if(allocated(c%tiles(1)%initial_right_derivative))deallocate(c%tiles(1)%initial_right_derivative)
     threshold=c%tiles(1)%base_forcing%bottom_head-0.5_real64*c%tiles(1)%parameters%dz(numnod)+1.0e-5_real64
