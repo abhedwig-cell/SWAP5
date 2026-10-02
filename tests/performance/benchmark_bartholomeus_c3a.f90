@@ -53,6 +53,7 @@ contains
       d%soil(j)%diffusivity%gfp100=.1_real64
       d%soil(j)%diffusivity%term1=2._real64*.1_real64**3+.04_real64*.1_real64
       d%soil(j)%diffusivity%exponent=3._real64
+      d%initial_hysteresis_branch=0
       d%soil(j)%waterfilm_capac_term=.001_real64
       d%soil(j)%waterfilm_n_minus_1=.455_real64
       d%soil(j)%waterfilm_m_plus_1=1.687_real64
