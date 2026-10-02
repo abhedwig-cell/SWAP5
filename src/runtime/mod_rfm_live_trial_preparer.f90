@@ -27,6 +27,9 @@ module mod_rfm_live_trial_preparer
   type(rfm_preferential_routing_result_t)::routing
   type(rfm_wall_hydraulic_binding_result_t)::wall
   type(rfm_production_candidate_result_t)::candidate
+  integer::surface_panels=0
+  integer,allocatable::endpoint_panels(:)
+  integer::mb_panels=0
  end type
  public::prepare_rfm_live_trial
 contains
@@ -55,6 +58,7 @@ contains
   ageq%event_active=forcing%event_active
   surface_panels=config%sorptivity_panels_for_head(view%pressure_head(1))
   if(surface_panels<=0)return
+  result%surface_panels=surface_panels
   call evaluate_rfm_surface_event_age(ageq,result%event_age)
   if(result%event_age%status/=RFM_SURFACE_EVENT_AGE_AVAILABLE)return
   if(preflight%net_potential_surface_flux==0.0_real64)then
@@ -73,13 +77,15 @@ contains
   if(result%routing%status/=RFM_PREF_ROUTER_AVAILABLE)return
   allocate(endpoint_input_cm(size(result%routing%endpoint_amount)))
   endpoint_input_cm=result%routing%endpoint_amount*step_duration_day
-  allocate(endpoint_panels(size(config%endpoint_node_index)))
+  allocate(endpoint_panels(size(config%endpoint_node_index)),result%endpoint_panels(size(config%endpoint_node_index)))
   do i=1,size(endpoint_panels)
     endpoint_panels(i)=config%sorptivity_panels_for_head(view%pressure_head(config%endpoint_node_index(i)))
     if(endpoint_panels(i)<=0)return
   end do
+  result%endpoint_panels=endpoint_panels
   mb_panels=config%sorptivity_panels_for_head(view%pressure_head(config%mb_wall_node_index))
   if(mb_panels<=0)return
+  result%mb_panels=mb_panels
   call bind_rfm_wall_hydraulics_from_accepted(accepted,endpoint_input_cm,config%endpoint_node_index,config%mb_wall_node_index, &
        view,constitutive,config%sorptivity_panels,result%wall,skip_unused_mb_hydraulics=.true.,endpoint_panels=endpoint_panels,mb_panels=mb_panels)
   if(.not.result%wall%valid)return
