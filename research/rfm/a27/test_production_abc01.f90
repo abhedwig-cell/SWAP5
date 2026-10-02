@@ -15,7 +15,7 @@ program test_a27_production_abc01
   use mod_fmr_macropore_configuration,only:initialize_fmr_macropore_standard_config
   use mod_macropore_single_column_runtime,only:macropore_runtime_policy_t
   use mod_ppa_wu05a5_multi_domain_process,only:macropore_geometry_result_t,evaluate_macropore_geometry
-  use mod_rfm_runtime_configuration,only:rfm_runtime_configuration_t,RFM_SORPTIVITY_POLICY_A28_V1
+  use mod_rfm_runtime_configuration,only:rfm_runtime_configuration_t,RFM_SORPTIVITY_POLICY_PERF07_V1
   use mod_rfm_physical_state,only:rfm_physical_state_t
   use mod_b110_default_mvg_provider,only:b110_default_mvg_parameters_t,b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters,bind_b110_default_mvg_provider
@@ -356,7 +356,7 @@ contains
     c%enabled=.true.;c%sigma_b=.65_real64;c%f_mb=deep_fraction;c%connectivity_p=1._real64
     c%z_ah_cm=20._real64;c%z_ic_cm=endpoint_depth;c%chi_wall=1._real64
     c%exchange_length_cm=20._real64;c%mb_contact_length_cm=80._real64;c%sorptivity_panels=64
-     if(approximate_mode)c%sorptivity_policy=RFM_SORPTIVITY_POLICY_A28_V1
+     if(approximate_mode)c%sorptivity_policy=RFM_SORPTIVITY_POLICY_PERF07_V1
     c%mb_wall_node_index=numnod
     c%endpoint_depth_cm=[endpoint_depth];c%endpoint_contact_thickness_cm=[20._real64]
     c%endpoint_area_fraction=[macro_area*(1._real64-deep_fraction)];c%endpoint_node_index=[node]
