@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#39424e"/>
+    </marker>
+    <style>
+      .title{font:700 38px Arial,sans-serif;fill:#1f2933}
+      .head{font:700 29px Arial,sans-serif;fill:#102a43}
+      .box{font:600 25px Arial,sans-serif;fill:#1f2933}
+      .small{font:400 21px Arial,sans-serif;fill:#39424e}
+      .arrow{stroke:#39424e;stroke-width:4;fill:none;marker-end:url(#arrow2)}
+      .both{stroke:#627d98;stroke-width:4;fill:none;marker-end:url(#arrow2)}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <text x="70" y="65" class="title">Van zelfstandig modelprogramma naar modulaire modelomgeving</text>
+
+  <rect x="70" y="120" width="600" height="680" rx="30" fill="#f7f8fa" stroke="#cbd2d9" stroke-width="2"/>
+  <text x="185" y="175" class="head">Zelfstandige modeluitvoering</text>
+  <rect x="120" y="340" width="150" height="90" rx="18" fill="#ffffff" stroke="#7b8794" stroke-width="2"/>
+  <text x="158" y="395" class="box">Invoer</text>
+  <rect x="340" y="280" width="260" height="210" rx="26" fill="#eaf2f8" stroke="#7b8794" stroke-width="3"/>
+  <text x="420" y="350" class="head">SWAP</text>
+  <text x="390" y="395" class="small">modelberekening</text>
+  <text x="392" y="430" class="small">tijdsturing + I/O</text>
+  <rect x="120" y="545" width="150" height="90" rx="18" fill="#ffffff" stroke="#7b8794" stroke-width="2"/>
+  <text x="150" y="600" class="box">Uitvoer</text>
+  <line x1="270" y1="385" x2="340" y2="385" class="arrow"/>
+  <path d="M470 490 C470 565 345 590 270 590" class="arrow"/>
+  <text x="145" y="735" class="small">Eén programma organiseert de volledige uitvoering.</text>
+
+  <rect x="730" y="120" width="800" height="680" rx="30" fill="#f7f8fa" stroke="#cbd2d9" stroke-width="2"/>
+  <text x="910" y="175" class="head">Gekoppelde modelcomponenten</text>
+  <rect x="790" y="275" width="220" height="115" rx="22" fill="#f7f1e8" stroke="#9f8b70" stroke-width="2"/>
+  <text x="855" y="325" class="box">SWAP5</text>
+  <text x="820" y="360" class="small">onverzadigde zone</text>
+  <rect x="1045" y="275" width="220" height="115" rx="22" fill="#e7f2f7" stroke="#7092a3" stroke-width="2"/>
+  <text x="1083" y="325" class="box">MODFLOW 6</text>
+  <text x="1090" y="360" class="small">grondwater</text>
+  <rect x="1300" y="275" width="180" height="115" rx="22" fill="#eef4ec" stroke="#84a27c" stroke-width="2"/>
+  <text x="1345" y="325" class="box">Ribasim</text>
+  <text x="1322" y="360" class="small">oppervlaktewater</text>
+
+  <line x1="1010" y1="330" x2="1045" y2="330" class="both"/>
+  <line x1="1045" y1="365" x2="1010" y2="365" class="both"/>
+  <line x1="1265" y1="330" x2="1300" y2="330" class="both"/>
+  <line x1="1300" y1="365" x2="1265" y2="365" class="both"/>
+
+  <rect x="800" y="500" width="660" height="165" rx="22" fill="#ffffff" stroke="#b8c2cc" stroke-width="2"/>
+  <text x="855" y="545" class="box">Gemeenschappelijke voorzieningen</text>
+  <text x="845" y="590" class="small">modelconfiguratie · gegevensbeheer · koppeling</text>
+  <text x="930" y="625" class="small">versie en provenance · reproduceerbaarheid</text>
+
+  <text x="850" y="735" class="small">De figuur schrijft geen specifieke productiearchitectuur voor.</text>
+</svg>

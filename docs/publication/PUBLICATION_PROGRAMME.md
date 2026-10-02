@@ -150,6 +150,48 @@ PUB-RC / ACCELERATE
 
 A result does not become a separate paper merely because it can be plotted under more than one of these headings.
 
+### STROMINGEN-OVERVIEW — Dutch hydrological community overview
+
+Status: **CONTEXT-ONLY DISSEMINATION; NO PRIMARY SCIENTIFIC RESULT OWNERSHIP**.
+
+Purpose:
+
+- explain the transition toward a modular Dutch hydrological modelling instrumentarium;
+- position SWAP5 conceptually alongside the public MODFLOW 6, iMOD and Ribasim developments;
+- distinguish implemented, qualified, developing and research-stage capability for the Dutch hydrological community;
+- provide context for later international papers without pre-empting their methods or results.
+
+Governing documents:
+
+- `STROMINGEN_OVERVIEW_ARTICLE_PLAN.md`
+- `STROMINGEN_RED_TEAM_AUDIT.md`
+- `STROMINGEN_FIGURE_PLAN.md`
+- `STROMINGEN_FIGURE_BRIEFS.md`
+- `STROMINGEN_AUTHORSHIP_POSITIONING.md`
+- `STROMINGEN_CLAIM_LEDGER.md`
+- `STROMINGEN_MANUSCRIPT_DRAFT.md`
+- `STROMINGEN_SOURCE_AUDIT.md`
+
+Publication classification:
+
+`PUB_CONTEXT_ONLY` unless an exact statement is already independently published elsewhere and is cited as such.
+
+STROMINGEN-OVERVIEW owns no new scientific inference. In particular it must not claim:
+
+- P1 evidence-preserving modernization results or transactional migration method;
+- P2 solver-admissibility, discrepancy, regime or performance results;
+- PUB-GC coupling semantics, response/convergence evidence or scientific interface results;
+- PUB-SG aggregation-transferability results;
+- PUB-RC information-value results;
+- F-ROM compact-state or predictive-ambiguity results;
+- prospective HYDRO-MEMORY, DIFFICULTY, NUM-UNC or TRACE primary inferences.
+
+Rule:
+
+> A research question may be named only at a broad thematic level. An unpublished international-paper research question should not be reproduced in near-final wording, and no quantitative or mechanistic answer may be previewed.
+
+The Stromingen overview may later summarize already published international results in Dutch, provided those results are explicitly cited and their existing paper ownership remains clear.
+
 ## Publication firewall
 
 The same code, test harness or reference dataset may support multiple publication lines. The same primary scientific inference may not.
