@@ -32,6 +32,7 @@ module mod_macropore_standard_storage
   public :: derive_macropore_standard_storage_view
   public :: canonicalize_macropore_standard_storage
   public :: build_macropore_standard_candidate
+  public :: apply_internal_covered_top_transfer
 
 contains
 
@@ -187,5 +188,29 @@ contains
     receipt%valid=abs(receipt%macro_balance_residual_cm)<=1.0e-10_real64
     ok=receipt%valid
   end subroutine build_macropore_standard_candidate
+
+  subroutine apply_internal_covered_top_transfer(candidate,geometry,top_node,covered_domain_cm,z,dz,view,ok)
+    type(macropore_continuation_state_t),intent(inout)::candidate
+    type(macropore_geometry_result_t),intent(in)::geometry
+    integer,intent(in)::top_node
+    real(real64),intent(in)::covered_domain_cm(:),z(:),dz(:)
+    type(macropore_standard_storage_view_t),intent(out)::view
+    logical,intent(out)::ok
+    integer::id
+    real(real64)::total,capacity
+
+    ok=.false.
+    if(.not.candidate%ready() .or. .not.geometry%valid)return
+    if(top_node<=1 .or. top_node/=geometry%top_node)return
+    if(size(covered_domain_cm)/=candidate%num_domains .or. any(covered_domain_cm<0.0_real64))return
+    do id=1,candidate%num_domains
+      total=sum(candidate%water_domain_cp(id,top_node:geometry%bottom_domain(id)))+covered_domain_cm(id)
+      capacity=sum(geometry%volume_domain_cp(id,top_node:geometry%bottom_domain(id)))
+      if(total>capacity+1.0e-10_real64)return
+      candidate%water_domain_cp(id,:)=0.0_real64
+      candidate%water_domain_cp(id,geometry%bottom_domain(id))=min(max(total,0.0_real64),capacity)
+    end do
+    call canonicalize_macropore_standard_storage(candidate,top_node,z,dz,view,ok)
+  end subroutine apply_internal_covered_top_transfer
 
 end module mod_macropore_standard_storage

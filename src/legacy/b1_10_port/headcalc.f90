@@ -14,6 +14,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !                          and conductivities for next time step
 ! ----------------------------------------------------------------------
    ! input
+   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, prepare_reference_workspace_for_solve
@@ -163,6 +164,14 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (.not. associated(evaluation_context%macropore)) &
               error stop 'HeadCalc: explicit macropore route requires macropore provider'
       end if
+      if (allocated(physical_config%matrix_area_fraction)) then
+         if (size(physical_config%matrix_area_fraction) /= numnod) &
+              error stop 'HeadCalc: explicit matrix-area carrier shape mismatch'
+         if (any(.not. ieee_is_finite(physical_config%matrix_area_fraction)) .or. &
+             any(physical_config%matrix_area_fraction <= 0.0d0) .or. &
+             any(physical_config%matrix_area_fraction > 1.0d0)) &
+              error stop 'HeadCalc: invalid explicit matrix-area carrier'
+      end if
       ! Explicit/provider macropore physics never activates legacy module-global ownership.
       swmacro = 0
       if (.not. present(boundary_conditions)) error stop 'HeadCalc: explicit boundary conditions required'
@@ -266,7 +275,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          state%theta(1) = watcon(1,state%gwlinp)
          state%kmean(1) = hconduc(1,state%gwlinp,state%theta(1),rfcp(1))
 !        in case of static macropores FrArMtrx < 1
-         if (swmacro == 1) state%kmean(1) = matrix_fraction(1) * state%kmean(1)
+         if (matrix_area_scaling_active()) state%kmean(1) = matrix_fraction(1) * state%kmean(1)
 
          fsi_ws%vertical_flux(1) = q1
          do i = 1, numnod
@@ -282,7 +291,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (SwKimpl == 1) then
             do i = 1, numnod
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (swmacro == 1)  state%k(i) = matrix_fraction(i) * state%k(i)
+               if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
                if (i > 1) then
                   state%kmean(i)=hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
                end if
@@ -334,7 +343,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
    end if
    do i = 1, numnod
-      if (swmacro == 1)  state%k(i)     = matrix_fraction(i) * state%k(i)
+      if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
       if (i > 1)         state%kmean(i) = hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
    end do
    state%kmean(numnod+1) = state%k(numnod)
@@ -410,7 +419,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (SwKimpl == 1) then
          do i = 1, NN
             fsi_ws%dconductivity_dhead(i)= dhconduc(i,state%h(i),state%theta(i),state%dimoca(i),rfcp(i))
-            if (swmacro == 1) fsi_ws%dconductivity_dhead(i) = matrix_fraction(i) * fsi_ws%dconductivity_dhead(i)
+            if (matrix_area_scaling_active()) fsi_ws%dconductivity_dhead(i) = matrix_fraction(i) * fsi_ws%dconductivity_dhead(i)
          end do
          do i = 2, NN
             fsi_ws%dfdh_upper(i)   = - state%kmean(i) / grid_disnod(i)
@@ -516,7 +525,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             call Rootextraction(2)
             do i = 1, NN
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (swmacro == 1) state%k(i) = matrix_fraction(i) * state%k(i)
+               if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
                if (i > 1) then
                   state%kmean(i) = hcomean(swkmean, state%k(i-1), state%k(i), grid_dz(i-1), grid_dz(i), i, state%h(i-1), state%h(i))
                end if
@@ -551,7 +560,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       flnonconv = .FALSE.
 
 !     flags introduced for debugging/macropore iteration policy
-      if (swmacro == 1) then
+      if (macropore_iteration_policy_active()) then
          fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
          fsi_ws%nonconverged_head(1:numnod) = .FALSE.
       end if
@@ -562,19 +571,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        test for water balance deviation of soil compartments
          if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
-            if (swmacro == 1) fsi_ws%nonconverged_balance(i) = .TRUE.
+            if (macropore_iteration_policy_active()) fsi_ws%nonconverged_balance(i) = .TRUE.
             flnonconv     = .TRUE.
          end if
 
 !        test for change of pressure head
          if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
             if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
-               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          else
             if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
-               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          end if
@@ -617,7 +626,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       
 
 !     implemented to improve iteration performance in case of macropores
-      if (dt <  0.01d0 .AND. swmacro == 1 .AND. .NOT.flnonconv3) then 
+      if (dt < 0.01d0 .AND. macropore_iteration_policy_active() .AND. .NOT.flnonconv3) then
          flok = .TRUE.
          if (dt > 10.d0*dtmin) then
             do i = 1, nodgwl
@@ -763,10 +772,29 @@ logical function macropore_exchange_retry_available()
    end if
 end function macropore_exchange_retry_available
 
+logical function macropore_iteration_policy_active()
+   if (swmacro == 1) then
+      macropore_iteration_policy_active = .true.
+   else
+      macropore_iteration_policy_active = provider_macropore_active .and. present(physical_config) .and. &
+           allocated(physical_config%matrix_area_fraction)
+   end if
+end function macropore_iteration_policy_active
+
+logical function matrix_area_scaling_active()
+   if (legacy_state_binding) then
+      matrix_area_scaling_active = swmacro == 1
+   else
+      matrix_area_scaling_active = present(physical_config) .and. allocated(physical_config%matrix_area_fraction)
+   end if
+end function matrix_area_scaling_active
+
 real(8) function matrix_fraction(node)
    integer, intent(in) :: node
    if (legacy_state_binding .or. swmacro == 1) then
       matrix_fraction = legacy_frarmtrx(node)
+   else if (present(physical_config) .and. allocated(physical_config%matrix_area_fraction)) then
+      matrix_fraction = physical_config%matrix_area_fraction(node)
    else
       matrix_fraction = 1.0d0
    end if
@@ -992,8 +1020,16 @@ subroutine vector_F(iTask)
 !  functions
    real(8)                    :: afgen
 
+   if (provider_constitutive_active .and. matrix_area_scaling_active()) then
+      call evaluation_context%constitutive%evaluate_water_content_increment(state%h(1:numnod), state%hm1(1:numnod), &
+           state%theta(1:numnod), state%thetm1(1:numnod), fsi_ws%provider_water_content_increment(1:numnod))
+   else
+      fsi_ws%provider_water_content_increment(1:numnod) = state%theta(1:numnod)-state%thetm1(1:numnod)
+   end if
+
 !  top layer
-   fsi_ws%residual(1) = (state%theta(1) - state%thetm1(1)) * matrix_fraction(1) * grid_dz(1) / dt + fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
+   fsi_ws%residual(1) = fsi_ws%provider_water_content_increment(1) * matrix_fraction(1) * grid_dz(1) / dt + &
+        fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
 
 !  depending on iTask
    if (iTask == 2 .AND. swmacro == 1) QMpLatSsSav = QMpLatSs
@@ -1010,8 +1046,10 @@ subroutine vector_F(iTask)
       end if
    end if
    if (provider_macropore_active) then
-      call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
-           provider_macropore_exchange,provider_macropore_rate_active)
+      if (.not. fsi_ws%unsaturated_flags(3)) then
+         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
+              provider_macropore_exchange,provider_macropore_rate_active)
+      end if
    else
       provider_macropore_rate_active=.false.
       provider_macropore_exchange=0.0d0
@@ -1032,7 +1070,7 @@ subroutine vector_F(iTask)
 
 !  layers 2 to (NN-1)
    do i = 2, NN-1
-      fsi_ws%residual(i) = (state%theta(i) - state%thetm1(i)) * matrix_fraction(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
+      fsi_ws%residual(i) = fsi_ws%provider_water_content_increment(i) * matrix_fraction(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
    end do
 
 !  for bottom BC
@@ -1067,11 +1105,11 @@ subroutine vector_F(iTask)
       state%theta(NN) = watcon(NN,state%h(NN))
       state%k(NN)     = hconduc(NN,state%h(NN),state%theta(NN),rfcp(NN))
       ! in case of static macropores FrArMtrx < 1
-      if (swmacro == 1) state%k(NN) = matrix_fraction(NN) * state%k(NN)
+      if (matrix_area_scaling_active()) state%k(NN) = matrix_fraction(NN) * state%k(NN)
       state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
-      fsi_ws%residual(NN)       = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
+      fsi_ws%residual(NN)       = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
    else
-      fsi_ws%residual(NN) = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
+      fsi_ws%residual(NN) = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
       if (swbotb == 3 .and. .not. legacy_state_binding) then
          call evaluate_resistive_bottom_boundary(boundary_conditions,state%h(NN),grid_z(NN), &
               grid_disnod(NN+1),state%kmean(NN+1),state%qbot,typed_bottom_conductance,typed_bottom_ok)
@@ -1112,7 +1150,7 @@ subroutine vector_F(iTask)
          else
             state%kmean(numnod+1) = hconduc(numnod,state%h(numnod),state%theta(numnod),rfcp(numnod))
          end if
-         if (swmacro == 1) state%kmean(numnod+1) = matrix_fraction(numnod) * state%kmean(numnod+1)
+         if (matrix_area_scaling_active()) state%kmean(numnod+1) = matrix_fraction(numnod) * state%kmean(numnod+1)
          state%qbot = -1.0d0 * state%kmean(numnod+1)
          fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
       
@@ -1212,7 +1250,7 @@ subroutine jacobian_F()
       call MACROPORE(3)
       fsi_ws%dfdh_main(1:NN) = fsi_ws%dfdh_main(1:NN) - dFdhMp(1:NN)
    end if
-   if (provider_macropore_active) then
+   if (provider_macropore_active .and. .not. fsi_ws%unsaturated_flags(3)) then
       call evaluation_context%macropore%evaluate_derivative(state%h(1:numnod),state%theta(1:numnod), &
            state%dimoca(1:numnod),provider_macropore_dqdh,provider_macropore_derivative_available, &
            provider_macropore_rate_active)
