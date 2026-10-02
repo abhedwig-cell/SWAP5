@@ -69,4 +69,4 @@ for opt in 0 2; do
   grep -Fq 'A28_Q4_LONG_HISTORY_EXECUTION_COMPLETE' "$OUTDIR/q4_o$opt.txt"
 done
 
-cmp "$OUTDIR/q4_o0.txt" "$OUTDIR/q4_o2.txt" || true
+python3 research/rfm/a28/analyze_q4_long_history.py "$OUTDIR/q4_o2.txt" | tee "$OUTDIR/q4_summary.txt"
