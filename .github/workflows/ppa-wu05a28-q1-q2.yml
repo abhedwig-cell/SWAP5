@@ -1,6 +1,9 @@
 name: PPA-WU05-A28 approximate RFM Q1-Q2
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - work/ppa-wu05-a28-rfm-approximate-mode
 jobs:
   qualify:
     runs-on: ubuntu-latest
