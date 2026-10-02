@@ -13,7 +13,7 @@ program benchmark_bartholomeus_e2e
  use mod_process_hydraulic_view
  implicit none
  integer,parameter::WARM=100,REPS=2000,ROUNDS=7
- real(real64),parameter::T0=5100.1875_real64,T1=T0+1.e-5_real64
+ real(real64),parameter::T0=5100.1875_real64,T1=T0+1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
  type(fmr_production_application_config_t)::cfg,off
  type(fmr_production_application_bootstrap_t)::app,offapp
  type(fmr_serialized_column_result_t),allocatable::r(:)
