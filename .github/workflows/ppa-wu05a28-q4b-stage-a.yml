@@ -1,6 +1,9 @@
 name: PPA-WU05-A28 Q4B Stage A exact
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - qualification/ppa-wu05-a28-q4b-stage-a
 jobs:
   exact-threshold:
     runs-on: ubuntu-latest
