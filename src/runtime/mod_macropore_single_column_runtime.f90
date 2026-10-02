@@ -22,6 +22,7 @@ module mod_macropore_single_column_runtime
   use mod_ppa_wu05a6_vertical_flux_reconstruction, only: vertical_flux_reconstruction_request_t, &
        vertical_flux_reconstruction_result_t, reconstruct_vertical_flux
   use mod_ppa_wu05a16_inner_macropore_provider, only: ppa_wu05a16_inner_macropore_provider_t
+  use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t
   use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t, &
        reduction_after_retry, reduction_after_accept
   implicit none
@@ -90,7 +91,8 @@ contains
   end function runtime_policy_valid
 
   subroutine runtime_execute(self,solver,workspace,base_request,accepted_macro,geometry_config,rate_template, &
-       history_request,policy,result,top_input,reduction_accepted,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day)
+       history_request,policy,result,top_input,reduction_accepted,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day, &
+       shrinkage_config,matrix_area_fraction)
     class(macropore_single_column_runtime_t),intent(inout)::self
     class(soil_water_solver_t),intent(inout)::solver
     class(soil_water_solver_workspace_base_t),intent(inout)::workspace
@@ -104,6 +106,8 @@ contains
     type(fmr_macropore_top_input_forcing_t),intent(in),optional::top_input
     type(macropore_reduction_continuation_t),intent(in),optional::reduction_accepted
     real(real64),intent(in),optional::covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day
+    type(dynamic_shrinkage_config_t),intent(in),optional::shrinkage_config
+    real(real64),intent(in),optional::matrix_area_fraction(:)
 
     type(soil_water_solve_request_t)::request
     type(soil_water_solve_result_t)::predictor,corrector
@@ -266,7 +270,8 @@ contains
 
         call inner_provider%configure(accepted_macro,geometry,rate_template_attempt,base_request%parameters%z, &
              base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
-             base_request%base_state%groundwater_level,ok,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day)
+             base_request%base_state%groundwater_level,ok,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day, &
+             geometry_config,shrinkage_config,base_request%base_state%water_content,matrix_area_fraction)
         if(.not.ok)then
           result%status=MACRO_RUNTIME_FAILED
           return
@@ -302,6 +307,22 @@ contains
       else
         result%reduction_candidate=reduction_attempt
         result%accepted_source_reduction_factor=rate_template_attempt%interflow_sat%flow_reduction
+      end if
+
+      if(present(shrinkage_config))then
+        if(shrinkage_config%enabled)then
+          call inner_provider%evaluate_trial_geometry(corrector%candidate_state%water_content,geometry,ok)
+          if(.not.ok)then
+            result%status=MACRO_RUNTIME_FAILED
+            return
+          end if
+          call derive_macropore_standard_storage_view(accepted_macro,geometry%top_node,base_request%parameters%z, &
+               base_request%parameters%dz,accepted_view)
+          if(.not.accepted_view%valid)then
+            result%status=MACRO_RUNTIME_FAILED
+            return
+          end if
+        end if
       end if
 
       call prepare_standard_macropore_rate_request(rate_template_attempt,accepted_macro,geometry,accepted_view, &
