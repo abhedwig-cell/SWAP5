@@ -88,7 +88,7 @@ contains
     class(transaction_state_t),allocatable::snapshot,replay_snapshot,original_snapshot
     real(real64)::heads(numnod),theta(numnod),cond(numnod),cap(numnod),dkdh(numnod)
     real(real64)::wt,rain,t0,t1,macro_area,deep_fraction,endpoint_depth,sorpmax,ks
-    integer::step,nsteps,commit_status,reconstruct_status,cauchy_status,cauchy_status,cauchy_status
+    integer::step,nsteps,commit_status,reconstruct_status,cauchy_status
     integer(int64)::saved_lineage,saved_revision
     real(real64)::saved_time
     logical::ok,did_commit,available,time_available,reconstructed_ok
@@ -453,10 +453,6 @@ contains
       f%rfm_surface%runoff_exponent=1._real64
     end if
     f%top_head=0._real64;f%bottom_flux=0._real64;f%bottom_head=0._real64
-    allocate(f%legacy_swbotb3_implicit_control)
-    call f%legacy_swbotb3_implicit_control%initialize_sine(0._real64,0._real64,[0._real64,366._real64], &
-         -45._real64,42._real64,0._real64,1.2_real64,2._real64,.true.,cauchy_status)
-    if(cauchy_status/=FMR_CAUCHY3_OK)error stop 'Q4B cauchy control'
     allocate(f%drainage_flux_by_level(1,numnod),f%subsurface_irrigation_source(numnod),f%root_extraction_sink(numnod))
     f%drainage_flux_by_level=0._real64;f%subsurface_irrigation_source=0._real64;f%root_extraction_sink=0._real64
   end subroutine init_forcing
