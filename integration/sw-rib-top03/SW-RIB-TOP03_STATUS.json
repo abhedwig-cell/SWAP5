@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
-  "decision": "STATIONARY_CONTACT_ORACLE_BLOCKED_BY_ORIGIN_FROZEN_INTERIOR_K__SOURCE_SCHEME_AUDIT_PENDING__NO_PRODUCTION_ADMISSION",
+  "decision": "STATIONARY_CONTACT_ORACLE_BLOCKED_BY_ORIGIN_FROZEN_INTERIOR_K__SOURCE_SCHEME_MASS_VERIFIED__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -190,16 +190,18 @@
   ],
   "blockers": [
     "BASE exact-state temporal acceptance remains unchanged and no finite dynamic-top budget is admitted.",
+    "Adding zero-capacity layer rows under SWKIMPL=0 freezes interior K at solve origin and fails the independently reconstructed current-K stationary contact prerequisite; a separate local nonlinear layer solve is needed.",
+    "A stateful boundary reduction has no admitted explicit layer candidate/storage/receipt ownership contract; hidden mutable dynamic-provider state is forbidden.",
     "The constant saturated surface-contact resistance fails 24 ready physical comparisons against an explicit partly unsaturated transition layer. No physical production envelope is qualified.",
     "Initially prewetting the layer does not remove model mismatch. A matched unsaturated contact law and explicit storage treatment require independent qualification.",
     "R=0/R=0.05 trajectories still fail numerically; thin L=0.02 cm finest joint contraction remains unready.",
     "Ribasim/SWAP ownership of local pond versus external waterbody storage remains unqualified.",
     "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage."
   ],
-  "next_action": "Execute diagnostic-only source-scheme audit at unchanged 1e-10 cm mass gates; preserve failed current-K audit and all prior trajectories; record bounded research decision.",
-  "recovery_point": "Resume from TOP03_UNSATURATED_CONTACT_PREREGISTRATION.md and the stationary-layer provider/fixture/runner/analyzer in this checkpoint on the same branch.",
+  "next_action": "Preregister and implement an independent test-only local nonlinear layer closure with current-candidate K, matched interface head/conductance, root/branch controls and saturated limit. Follow TOP03_UNSATURATED_CONTACT_ELIMINATION_DESIGN.md. Stateful production reduction requires explicit layer-storage/state ownership and separate receipt/restart/temporal qualification; keep PR #956 draft.",
+  "recovery_point": "Read unsaturated-contact preregistration, candidate-K audit extension, numerical-policy reconciliation, final result/decision/design and raw evidence. Resume from source 3ae05b28 on this branch. The origin-K numerical balance passes; zero-capacity rows do not establish a current-K stationary contact oracle. No physical reduction is admitted.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
-  "ci_policy": "This explicit-layer phase executed locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Prior persisted workflow evidence remains bound to its original scope. Commits use skip ci.",
+  "ci_policy": "All three unsaturated-contact research phases ran locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Exact-source evidence and explicit scope only; commits use skip ci.",
   "implementation_slice": {
     "contract": "integration/sw-rib-top03/TOP03_BOUNDED_INTERVAL_CONTRACT.md",
     "implemented": true,
@@ -216,10 +218,10 @@
       "explicit bounded profile and exfiltration rejection"
     ]
   },
-  "last_reconciled_head": "6099e059d8fb2dfda53b9bb925b4b072a6a54345",
-  "checkpoint_commit": "6099e059d8fb2dfda53b9bb925b4b072a6a54345",
+  "last_reconciled_head": "3ae05b280aef2850280426662e889c1bf7ed6f45",
+  "checkpoint_commit": "3ae05b280aef2850280426662e889c1bf7ed6f45",
   "pending_tests": [
-    "geometrically consistent explicit transition-layer versus reduced R_s=L_s/K_s equivalence",
+    "independent candidate-K nonlinear layer closure and stateful owned-storage reduction; constant R already falsified in prior ready comparisons",
     "representative-soil/contact-parameter envelope",
     "surface geometry/storage ownership contract with Ribasim",
     "evidence-backed dynamic-top temporal state+top+bottom budget over qualified surface envelope",
@@ -447,16 +449,19 @@
     "production_qualified": false,
     "interpretation": "Correct saturated limit; constant saturated resistance does not reproduce the partly unsaturated explicit layer even for a prewetted layer origin. Storage alone is not established as a sufficient fix."
   },
-  "status": "STATIONARY_CONTACT_ORACLE_BLOCKED_BY_ORIGIN_FROZEN_INTERIOR_K__SOURCE_SCHEME_AUDIT_PENDING__NO_PRODUCTION_ADMISSION",
+  "status": "STATIONARY_CONTACT_ORACLE_BLOCKED_BY_ORIGIN_FROZEN_INTERIOR_K__SOURCE_SCHEME_MASS_VERIFIED__NO_PRODUCTION_ADMISSION",
   "evidence_paths": [
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_RESULT.json",
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_DECISION.md",
-    "integration/sw-rib-top03/evidence/explicit_layer/"
+    "integration/sw-rib-top03/evidence/explicit_layer/",
+    "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_RESULT.json",
+    "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_DECISION.md",
+    "integration/sw-rib-top03/evidence/unsaturated_contact/"
   ],
   "unsaturated_contact_research": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "production_qualified": false,
     "baseline": "89913ab29b8916249893289bd9bd4a265bb8d8b3",
@@ -471,6 +476,37 @@
     "audit_source_postimage": "1276dbc2e8a6c165842cac048d51d07ee993e599",
     "final_head_stationary_audit": "FAIL",
     "stationary_oracle_qualified": false,
-    "policy_reconciliation": "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_POLICY_RECONCILIATION.md"
+    "policy_reconciliation": "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_POLICY_RECONCILIATION.md",
+    "status": "STATIONARY_ORACLE_NOT_ESTABLISHED__ORIGIN_K_SCHEME_INDEPENDENTLY_VERIFIED",
+    "source_scheme_audit_postimage": "3ae05b280aef2850280426662e889c1bf7ed6f45",
+    "phases": 3,
+    "cases_per_phase_per_build": 192,
+    "total_executed_cases": 1152,
+    "O0_O2_exact_output": true,
+    "diagnostic_replay_preserved": true,
+    "inherited_trajectories_exact": 54,
+    "origin_K_scheme_audit": "PASS",
+    "physical_verdicts": {
+      "passed": 0,
+      "failed": 0,
+      "unavailable": 120
+    },
+    "result": "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_RESULT.json",
+    "decision": "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_DECISION.md",
+    "design": "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_ELIMINATION_DESIGN.md",
+    "evidence": "integration/sw-rib-top03/evidence/unsaturated_contact/raw_records.tar.gz",
+    "production_code_changed": false
+  },
+  "canonical_delta_review": {
+    "from": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
+    "to": "0c18a9fffa14bce9e25a4cf773420c5824c0c819",
+    "relevant_changed_paths": [
+      "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    ],
+    "reviewed": true,
+    "research_source_held_fixed": true,
+    "current_canonical_qualification_inherited": false
   }
 }
