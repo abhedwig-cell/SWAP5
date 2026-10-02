@@ -1,0 +1,26 @@
+{
+  "work_unit": "PPA-WU05-C3A",
+  "checkpoint": "f385fb0afbd35d9d345c60896e9f941a7413085a",
+  "canonical_review": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+  "production_changes_since_oxygen_qualified_postimage": [],
+  "oxygen_qualification": {
+    "run": 36968761028,
+    "job": 110718122764,
+    "postimage": "7098a0535e58b5ea2ab269b56d5ea537dcabca48",
+    "conclusion": "success",
+    "max_rwu_difference": 0.00002376016773375511,
+    "acceptance": 0.0001
+  },
+  "local_replays": {
+    "application_O0_O2": "PASS",
+    "FKT22_compile_O0_O2": "PASS",
+    "FKT22_runtime_O0_O2_identity": "PASS"
+  },
+  "negative_findings": {
+    "black_evaporation_historical_gate": "Not qualified in local materialization: requires origin fetch and original work-unit production-delta preregistration. This does not establish a physics regression; do not weaken gate."
+  },
+  "canonical_delta": "Two lower-boundary research/authority commits, no production dependency intersection.",
+  "admitted": false,
+  "next_action": "Finish exact-fixture identity/readback and admission documentation; reconcile remaining affected preservation failures before PR readiness/merge.",
+  "local_fixture_identity": "One fetched FKT22 fixture has an extra trailing newline; original bytes recovered by stripping that newline. Local result is experimental until exact persisted fixture replay."
+}
