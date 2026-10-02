@@ -70,6 +70,7 @@ contains
     class(test_model_t), intent(inout) :: self
     class(transaction_state_t), intent(in) :: state
     real(real64) :: value
+    if (.not. self%storage_complete) error stop 'incomplete storage must not be evaluated'
     if (self%k < -huge(0.0_real64)) error stop 'unreachable'
     select type(state)
     type is(test_state_t)
