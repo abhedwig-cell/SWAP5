@@ -1,40 +1,50 @@
 {
   "work_unit": "PPA-WU05-A28",
+  "status": "Q1_Q3_QUALIFIED_BRANCH_ONLY_LONG_HISTORY_OPEN",
   "branch": "work/ppa-wu05-a28-rfm-approximate-mode",
-  "status": "IMPLEMENTED_AWAITING_EXECUTED_QUALIFICATION",
-  "purpose": "Explicit opt-in approximate RFM sorptivity mode derived from PERF07_V1",
-  "reference_default_preserved": true,
-  "approximate_default": false,
-  "policy": {
-    "name": "RFM_SORPTIVITY_POLICY_PERF07_V1",
-    "reference_panels": 64,
-    "bands": [
-      {"head_lt_cm": -300.0, "panels": 64},
-      {"head_ge_cm": -300.0, "head_lt_cm": -100.0, "panels": 32},
-      {"head_ge_cm": -100.0, "head_lt_cm": -30.0, "panels": 16},
-      {"head_ge_cm": -30.0, "panels": 8}
-    ]
-  },
+  "qualified_postimage": "281ee3680fa290e8ae84f90f5033f0883b203413",
+  "result_record": "docs/audits/PPA_WU05A28_RESULT.md",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "canonical_admitted": false,
-  "q1_q2": {
-    "scope": "configuration fail-closed semantics plus 36 Staringreeks-2018 materials x 17 heads",
-    "gate": "max relative sorptivity error <= 0.01",
-    "execution_evidence": null
+  "production_default": false,
+  "multiswap_modflow_eligible": false,
+  "approximate_policy": {
+    "name": "RFM_SORPTIVITY_POLICY_A28_V1",
+    "reference_panels": 64,
+    "bands": [
+      {"condition": "h_cm < -30", "panels": 64},
+      {"condition": "-30 <= h_cm < -3", "panels": 32},
+      {"condition": "h_cm >= -3", "panels": 16}
+    ]
   },
-  "q3": {
-    "scope": "32-case exact fixed-64 C versus explicit PERF07_V1 C",
-    "gates": ["mass residual <= 1e-6 cm","storage difference <= 0.02 cm","drainage difference <= 0.02 cm","max sampled theta difference <= 0.01","no exact-complete to approximate-incomplete regression"],
-    "execution_evidence": null
+  "retained_falsification": {
+    "policy": "PERF07_V1",
+    "run_id": 37005436943,
+    "max_relative_sorptivity_error": 0.045950703328370868,
+    "case": "O13 h=-100 cm"
+  },
+  "qualification": {
+    "run_id": 37006043173,
+    "artifact_id": 11225924965,
+    "artifact_sha256": "751bb633cad621aafa06b6c37f0e4284333a786ed7dd7b35301b25eadcefcc8b",
+    "materials": 36,
+    "pressure_heads_per_material": 17,
+    "max_relative_sorptivity_error": 0.0070868132213172735,
+    "joint_exact_approx_C": 30,
+    "max_total_storage_diff_cm": 5.9105396132963506e-9,
+    "max_bottom_out_diff_cm": 2.6587865242788666e-9,
+    "max_sampled_theta_diff": 1.707468610945284e-10,
+    "max_approx_mass_residual_cm": 9.817536974349172e-11,
+    "non_E1_joint_BC": 0
   },
   "q4": {
-    "scope": "long wet-dry/history trajectories",
+    "scope": "long repeated wet-dry and wall-history trajectories including restart/replay and accumulated drift",
     "implemented": false,
     "required_before_multiswap_modflow_production_eligibility": true
   },
-  "next_action": "Execute Q1-Q2 on the persisted postimage. If green, execute Q3. Only then design/preregister Q4 long-history qualification.",
-  "claim_boundary": "No production eligibility, speed guarantee, canonical admission, or MultiSWAP-MODFLOW suitability is claimed without executed Q1-Q4 evidence."
+  "next_action": "Design and run Q4 locally where possible; persist only final qualification evidence.",
+  "claim_boundary": "Explicit opt-in approximate RFM mode qualified for broadened constitutive catalog and short 32-case ABC trajectories only. No long-history, canonical, MultiSWAP or MODFLOW production admission."
 }
