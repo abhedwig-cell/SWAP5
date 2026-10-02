@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
-  "decision": "MICRORELIEF_PARTIAL_CONTACT_SUPPORTED__FLAT_SURFACE_TEMPORAL_BLOCKER_REFRAMED__NO_PRODUCTION_ADMISSION",
+  "decision": "MICRORELIEF_ONSET_SUPPORTED__SIMPLE_STAGE_EVOLUTION_FALSIFIED__FINITE_CONTACT_RESISTANCE_NEXT__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -82,6 +82,17 @@
       "O0_O2_exact_output": true,
       "production_code_changed": false,
       "conclusion": "Partial-contact amplitudes D=0.05, 0.10 and 0.25 cm each complete 20/20 tested paths through 16 substeps and satisfy the preregistered state+top+bottom contraction criterion for every tested window."
+    },
+    "microrelief_stage_probe": {
+      "preregistration": "integration/sw-rib-top03/TOP03_MICRORELIEF_STAGE_PREREGISTRATION.md",
+      "result": "integration/sw-rib-top03/TOP03_MICRORELIEF_STAGE_RESULT.json",
+      "decision": "integration/sw-rib-top03/TOP03_MICRORELIEF_STAGE_DECISION.md",
+      "workflow_run": 36980247134,
+      "workflow_job": 110752893458,
+      "source_postimage": "7c340134ef95b6a77f5817995fbb870decca7cac",
+      "O0_O2_exact_output": true,
+      "production_code_changed": false,
+      "conclusion": "Simple uniform microrelief K_contact=f_wet*K_face does not complete partial-to-full stage evolution for any tested amplitude."
     }
   },
   "findings": [
@@ -155,12 +166,12 @@
     "typed external head forcing"
   ],
   "blockers": [
-    "The existing production BASE temporal identity policy is still exact-state-only and therefore cannot accept transient dynamic-top full/half states.",
-    "The original flat-surface imposed-head fixture remains non-contracting/nonlinear under refinement and is not a valid basis for selecting a finite tolerance.",
-    "A physically smoothed partial-contact microrelief probe now supplies complete contracting refinement evidence, but the surface-geometry law and its application parameterization are research-only and not yet production-qualified.",
-    "Higher-stage evolution from partial to full wetting, Ribasim/SWAP surface-storage ownership, and an evidence-backed temporal error budget remain unqualified."
+    "The existing production BASE temporal identity policy is exact-state-only and cannot accept transient dynamic-top full/half states.",
+    "The flat-surface imposed-head fixture remains non-contracting/nonlinear and cannot justify a finite tolerance.",
+    "Fixed shallow-stage partial contact is supported as an onset regularization mechanism, but simple uniform microrelief with K_contact=f_wet*K_face fails again as wet fraction/contact conductance increases during stage evolution.",
+    "A finite, physically explicit surface contact resistance / transition-layer law and its Ribasim/SWAP storage ownership remain unqualified."
   ],
-  "next_action": "Keep PR #956 draft. Continue with the microrelief/partial-contact prerequisite: define an explicit surface-geometry contract, test stage evolution through partial-to-full wetting without changing the soil or lower boundary, and only then derive a bounded temporal acceptance budget from complete refinement evidence. Do not select a production D from the current mechanism sweep.",
+  "next_action": "Keep PR #956 draft. Test a bounded finite surface-contact resistance / transition-layer law in series with the microrelief wet fraction, preserving the same soil, lower boundary, stage events and mass accounting. Do not revisit temporal acceptance until this physical surface prerequisite supplies complete contracting stage-evolution evidence.",
   "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -183,9 +194,9 @@
   "last_reconciled_head": "1587e485495f025c2bf9a403ea9e0b5fb5737702",
   "checkpoint_commit": "4c164b087e11c110baeb7a56795d4a1ff109d1ab",
   "pending_tests": [
-    "stage-evolution microrelief trajectory from partial toward full wetting",
+    "finite contact-resistance / transition-layer stage-evolution probe",
     "surface geometry/storage ownership contract with Ribasim",
-    "evidence-backed dynamic-top temporal state+top+bottom budget over qualified geometry envelope",
+    "evidence-backed dynamic-top temporal state+top+bottom budget over qualified surface envelope",
     "successful real inundation candidate under qualified temporal prerequisite",
     "top-active wrong/correct receipt end-to-end",
     "scalar commit bypass with real top-active candidate",
@@ -354,5 +365,18 @@
     "partial_contact_D_0_25_complete_paths": "20/20",
     "interpretation": "The supported mechanism is partial areal hydraulic contact / reduced contact conductance, not merely a lower representative surface head.",
     "production_qualified": false
+  },
+  "microrelief_stage_research": {
+    "status": "FALSIFIED_AS_SUFFICIENT_SURFACE_LAW",
+    "run": 36980247134,
+    "source_postimage": "7c340134ef95b6a77f5817995fbb870decca7cac",
+    "O0_O2_exact_output": true,
+    "any_complete_full_trajectory": false,
+    "notable_failures": {
+      "D_0_05": "fails at H=0.05 cm (full wetting)",
+      "D_0_10": "fails at H=0.10 cm (full wetting)",
+      "D_0_25": "fails at H=0.20 cm (wet fraction 0.8, before full wetting)"
+    },
+    "interpretation": "Partial contact helps onset, but increasing effective contact conductance reintroduces the near-saturated nonlinear failure."
   }
 }
