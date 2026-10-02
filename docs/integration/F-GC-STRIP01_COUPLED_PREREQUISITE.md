@@ -1,5 +1,10 @@
 # STRIP01 coupled-domain prerequisite
 
+> Historical prerequisite assessment. Its blanket restriction on isolated research
+> is superseded by [research domain](F-GC-STRIP01_RESEARCH_DOMAIN.md) and
+> [executed component results](F-GC-STRIP01_COMPONENT_RESULT.md). Shared production
+> ownership and canonical admission still require their separate governance.
+
 Status: **proposed shared application-domain contract; not accepted or qualified**.
 Pinned canonical 53059a5225fa45cd6121d4bc4c7310dcc4e0660c.
 

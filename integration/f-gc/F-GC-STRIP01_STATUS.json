@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "work_unit": "F-GC-STRIP01",
-  "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
+  "title": "50 m cross-section SWAP\u2013MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
-  "phase": "QUALIFY_STANDALONE_AB_ADVISE_COUPLED_PREREQUISITE",
-  "state": "STANDALONE_AB_PASS_SHARED_BRANCH_CONCURRENT_WRITER_STOP",
+  "phase": "FALSIFY_COMPONENTS_PARTIAL_COUPLE_PERSIST",
+  "state": "AB_QUALIFIED_C_SHORT_SMOKE_LONGER_WINDOWS_FAIL",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -56,7 +56,7 @@
   },
   "research_boundary": {
     "standalone_modflow_physical_storage_and_drn": "may be qualified as a groundwater-only model",
-    "coupled_physical_aquifer_storage_and_drainage": "requires explicit non-overlapping application-domain ownership authority before making physical whole-domain balance claims",
+    "coupled_physical_aquifer_storage_and_drainage": "explicit isolated disjoint-domain research harness under STRIP01 mandate; no production admission",
     "production_adapter_or_ABI_change": false,
     "canonical_admission": false
   },
@@ -71,21 +71,25 @@
     "standalone_modflow_built": true,
     "analytical_oracle_implemented": true,
     "drain_down_run": true,
-    "coupled_run": false,
+    "coupled_run": true,
     "hupsel_run": false,
     "production_delta": [],
-    "qualification": "STANDALONE_AB_LOCAL_PASS_ONLY",
-    "canonical_admission": false
+    "qualification": "AB_NATIVE_PASS_C_PARTIAL_RESEARCH_ONLY",
+    "canonical_admission": false,
+    "coupled_short_smoke": true,
+    "coupled_phase_c_qualified": false,
+    "whole_unit_closed": false,
+    "research_domain_implemented": true
   },
-  "next_permitted_action": "Restore exclusive STRIP01 branch ownership, reconcile the concurrent two-line runner and workflow addition without losing either evidence set, then resolve shared research-domain authority before C/D/E.",
+  "next_permitted_action": "Diagnose nonlinear reject/replay behavior under corrected interface heads and qualify temporal error independently before physically long C; then D/E. Keep shared production guards unchanged.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
     "persisted_result": "integration/f-gc/strip01/results/oracle.json",
     "persisted_figure": "integration/f-gc/strip01/results/oracle_profiles.svg",
     "local_replay": "PASS; parsed JSON exactly identical to persisted result",
-    "local_native_modflow": false,
-    "local_flopy_available": false,
+    "local_native_modflow": true,
+    "local_flopy_available": true,
     "fixed_conductance_m2_per_day": 100,
     "drain_down_specific_yield": 0.2,
     "standalone_only_storage_parameters": true,
@@ -111,8 +115,8 @@
       0.12274343003824484
     ],
     "total_recharge_m3_per_day": 0.05,
-    "model_claim_ceiling": "independent analytical/discrete oracle only; no native MODFLOW6 run, drain-down qualification, SWAP coupling, Hupsel qualification or production admission",
-    "historical_replay_at": "ed64560140900fe00bd5475991808968de7cbf2e"
+    "historical_replay_at": "ed64560140900fe00bd5475991808968de7cbf2e",
+    "historical_model_claim_ceiling": "independent analytical/discrete oracle only; no native MODFLOW6 run, drain-down qualification, SWAP coupling, Hupsel qualification or production admission"
   },
   "native_evidence": {
     "engine": "MODFLOW6 6.8.0",
@@ -122,7 +126,7 @@
     "archive": "integration/f-gc/strip01/evidence/native_AB_20261002.tar.gz",
     "sha256": "fbcec01311aa832a3bd6d23a489b55d0959fa36895fc428174d4db24ad23eff5",
     "result_document": "docs/integration/F-GC-STRIP01_RESULT.md",
-    "max_head_error_m": 1.0497999802794311e-8,
+    "max_head_error_m": 1.0497999802794311e-08,
     "max_steady_budget_residual_m3_day": 6.820932707540805e-14,
     "max_transient_volume_residual_m3": 4.533262654149439e-12,
     "negative_configurations": [
@@ -137,18 +141,25 @@
   },
   "blockers": [
     {
-      "id": "STRIP01_CONCURRENT_WRITER",
-      "class": "OWNERSHIP_CONFLICT",
-      "observed_shared_head": "63bd2ac0155837ae5b5e97166e4e8a574ced1f83",
-      "rejected_update": "non-fast-forward HTTP422",
-      "resolution": "Pause the other writer or explicitly choose which session owns the shared branch; no force update performed."
-    },
-    {
-      "id": "STRIP01_SHARED_RESEARCH_DOMAIN_AUTHORITY",
-      "class": "UNRESOLVED_SCIENTIFIC_AUTHORITY",
-      "authority": "docs/development/quality-governance-a-aa.md section 5",
-      "proposal": "docs/integration/F-GC-STRIP01_COUPLED_PREREQUISITE.md",
-      "production_guard_blob": "4f826df4f0580bcde7941a1511acc4a67646ec72"
+      "id": "STRIP01_LONGER_WINDOW_SWAPPARTICIPANT",
+      "classification": "SWAP_NONLINEAR_AND_TEMPORAL_COMPONENT_REJECTIONS",
+      "detail": "Longer windows and changed bottom head cannot complete with frozen retries/substep ceiling. No tolerance widened."
     }
-  ]
+  ],
+  "research_evidence": {
+    "archive": "integration/f-gc/strip01/evidence/research_C_20261002.tar.gz",
+    "sha256": "80a5bdbf50e135d9eb5fd96f565c0435a1b033f8420ab9ceb37b3ac0a1be7b3e",
+    "summary": "integration/f-gc/strip01/research/research_summary.json",
+    "result_document": "docs/integration/F-GC-STRIP01_COMPONENT_RESULT.md",
+    "isolated_domain_contract": "docs/integration/F-GC-STRIP01_RESEARCH_DOMAIN.md",
+    "canonical_admission": false,
+    "actions_dispatched": 0,
+    "qualified_only": "Four 3e-6 d windows at equilibrated initial head -5m, physical SWAP Ss=1e-5/m; not far-cell-to-drain proof",
+    "checks": [
+      "FINAL_COMPONENT_AND_COUPLED_PANEL_EXPECTED_OUTCOMES",
+      "PYTHON_COMPILE",
+      "DOC_SOURCE_CHECK",
+      "MKDOCS_STRICT"
+    ]
+  }
 }

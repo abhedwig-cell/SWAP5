@@ -78,12 +78,11 @@ python tests/fgc/strip01/analyze.py --results /tmp/strip01-replay
 
 ## Actual remaining boundary
 
-The whole requested benchmark is **not complete**. SWAP coupling, Hupsel,
-far-cell-to-drain transfer and coupled reject/replay/restart were not executed.
-The current production bootstrap explicitly rejects physical independent
-storage and active MODFLOW drainage. A non-overlapping research domain contract
-must be accepted centrally before changing shared application/mass ownership.
-The concrete proposed next slice is documented in
-F-GC-STRIP01_COUPLED_PREREQUISITE.md. This is not a request for missing SWAP4.3.1
-uploads and not a claim that the known M1-C3 Hupsel gate remains blocked.
-No publication claim or whole-unit closeout is inferred from A/B.
+A/B remain locally qualified. Isolated real SWAP/MODFLOW short-window research
+now ran, including exact replay, commit identity and combined mass balance.
+Longer windows failed. Full phase C, far-cell-to-drain transfer, Hupsel and
+coupled restart are **not qualified**. See [component results](F-GC-STRIP01_COMPONENT_RESULT.md)
+and [disjoint research contract](F-GC-STRIP01_RESEARCH_DOMAIN.md). The earlier
+prerequisite's blanket stop on research was too broad; changing shared
+production ownership still requires a separate governance decision.
+No publication claim or whole-unit closeout follows from these results.

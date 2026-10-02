@@ -19,6 +19,25 @@ def main():
     entries[-1]="tests/fgc/strip01/research_swap.f90"
     entries=subprocess.check_output([sys.executable,"tests/support/augment_bartholomeus_backend_sources.py",*entries],
                                     cwd=root,text=True).splitlines()
+    # The historical F-GC46 list predates later drainage dependencies. Resolve
+    # source USE dependencies for this research build; do not edit that gate.
+    module_files={}
+    for path in sorted((root/"src").rglob("*.f90")) + [root/entries[0]]:
+        for name in re.findall(r"^\s*module\s+(?!procedure\b|function\b|subroutine\b)(\w+)",
+                               path.read_text(),re.M|re.I):
+            module_files[name.lower()]=str(path.relative_to(root))
+    ordered=[]; visiting=set(); done=set()
+    def visit(entry):
+        if entry in done:return
+        if entry in visiting:raise ValueError("cyclic module dependency: "+entry)
+        visiting.add(entry)
+        for name in re.findall(r"^\s*use(?:\s*,[^:]+::)?\s+(\w+)",
+                               (root/entry).read_text(),re.M|re.I):
+            dependency=module_files.get(name.lower())
+            if dependency and dependency!=entry:visit(dependency)
+        visiting.remove(entry); done.add(entry); ordered.append(entry)
+    for entry in entries:visit(entry)
+    entries=ordered
     a.output.mkdir(parents=True,exist_ok=True); objects=[]
     for entry in entries:
         obj=a.output/(Path(entry).stem+".o")
