@@ -2,7 +2,7 @@
 """Local O0/O2 LOW05-A qualification with explicit legacy support fixture."""
 import base64,gzip,hashlib,json,os,pathlib,re,shlex,subprocess,tempfile
 ROOT=pathlib.Path(__file__).resolve().parents[2]
-TESTS=['tests/fmig431/test_low05a_application.f90','tests/fapp/test_ppa_low02_time_application_admission.f90','tests/fapp/test_ppa_wu01_production_application_bootstrap.f90','tests/fmig431/test_fmig431_low01a_qgwl_binding.f90','tests/fmig431/test_fmig431_low01a_transaction_contract.f90']
+TESTS=['tests/fmig431/test_low05a_application.f90','tests/fmig431/test_low05a_progress.f90','tests/fapp/test_ppa_low02_time_application_admission.f90','tests/fapp/test_ppa_wu01_production_application_bootstrap.f90','tests/fmig431/test_fmig431_low01a_qgwl_binding.f90','tests/fmig431/test_fmig431_low01a_transaction_contract.f90']
 frozen_authority=json.loads((ROOT/'tests/fmig431/low05a_frozen_authority_sha256.json').read_text())
 for path,expected in frozen_authority['sha256'].items():
  if hashlib.sha256((ROOT/path).read_bytes()).hexdigest()!=expected:raise RuntimeError('shared authority drift: '+path)
@@ -24,7 +24,8 @@ def visit(p):
 visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')
 for test in TESTS:visit(ROOT/test)
 testpaths={ROOT/p for p in TESTS};sources=[p for p in ordered if p not in testpaths]
-result={'work_unit':'F-MIG431-LOW05-A','scope':'bounded ordinary Reference application, existing FSI04 support fixture','compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],'source_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in ordered},'runs':{},'canonical_admission':False,'shared_authority_drift_check':'PASS','shared_authority_baseline':frozen_authority['baseline']}
+result={'work_unit':'F-MIG431-LOW05-A','scope':'bounded ordinary Reference application, existing FSI04 support fixture','compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],'source_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in ordered},'runs':{},'progress_counts':{},'tested_postimage':os.environ.get('LOW05A_TESTED_SHA',os.environ.get('GITHUB_SHA','not-specified')),'canonical_admission':False,'shared_authority_drift_check':'PASS','shared_authority_baseline':frozen_authority['baseline']}
+result['runner_sha256']=hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest()
 with tempfile.TemporaryDirectory(prefix='low05a-') as folder:
  for opt in ('O0','O2'):
   build=pathlib.Path(folder)/opt;build.mkdir()
@@ -53,10 +54,14 @@ with tempfile.TemporaryDirectory(prefix='low05a-') as folder:
    markers=[line for line in output.splitlines() if 'PASS' in line]
    if not markers:raise RuntimeError('no PASS markers: '+test)
    result['runs'][opt][test]=markers
+   if test.endswith('test_low05a_progress.f90'):
+    counts=re.search(r'LOW05A_PROGRESS_COUNTS steps=(\d+) retries=(\d+)',output)
+    if not counts:raise RuntimeError('missing progress counters')
+    result['progress_counts'][opt]={'accepted_substeps':int(counts[1]),'retries':int(counts[2])}
    print(opt+' '+test+' PASS',flush=True)
 if result['runs']['O0']!=result['runs']['O2']:raise RuntimeError('O0/O2 markers differ')
+if result['progress_counts']['O0']!=result['progress_counts']['O2']:raise RuntimeError('O0/O2 progress counters differ')
 result['status']='LOCAL_BOUNDED_GATES_PASS';result['o0_o2_marker_identity']=True
 output=pathlib.Path(os.environ.get('LOW05A_RESULT','low05a_qualification_result.json'))
 output.write_text(json.dumps(result,indent=2)+'\n')
 print('LOW05A_LOCAL_QUALIFICATION=PASS')
-

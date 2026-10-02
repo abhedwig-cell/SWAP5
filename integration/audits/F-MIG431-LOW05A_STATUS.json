@@ -3,7 +3,7 @@
   "work_unit": "F-MIG431-LOW05-A",
   "baseline": "029453104b98d835790f2e09eb9e804aa3eaff4a",
   "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-  "status": "IMPLEMENTED_LOCAL_BOUNDED_GATES_PASS_ADMISSION_PENDING",
+  "status": "PROGRESS_GATE_PERSISTED_CLEAN_QUALIFICATION_PENDING",
   "branch": "work/f-mig431-low05a-prescribed-head-application",
   "implemented": true,
   "persisted": true,
@@ -12,7 +12,7 @@
   "production_admitted": false,
   "review_checks": "All five local test programs pass at O0/O2 with identical PASS markers; 136 exact persisted source inputs; no Actions used",
   "blockers": [],
-  "next_action": "Qualify same-call accepted shortened-step progression/resampling and review bounded production admission on this same official branch; keep production admission false until completed",
+  "next_action": "Run clean six-program O0/O2 pack, evaluate accepted-progress and frozen-physics evidence, then bounded admission",
   "recovery_point": "this record and companion feasibility review in their containing Git commit",
   "authority_paths": [
     "AGENTS.md",
@@ -54,5 +54,6 @@
   "preregistration": "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md",
   "local_bounded_gates_pass": true,
   "qualification_postimage": "7f45ba251a14f56b06172a6ab24e3315e19c28bc",
-  "qualification_scope": "Five Fortran programs at O0/O2, frozen AFGEN oracle, shared ABI/physics hash preservation; full declared admission evidence incomplete"
+  "qualification_scope": "Five Fortran programs at O0/O2, frozen AFGEN oracle, shared ABI/physics hash preservation; full declared admission evidence incomplete",
+  "progress_preregistration": "docs/migration/F-MIG431-LOW05A_PROGRESS_PREREGISTRATION.md"
 }
