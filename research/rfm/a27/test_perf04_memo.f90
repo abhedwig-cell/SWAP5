@@ -27,6 +27,10 @@ program test_a27_perf04_memo
  view%active_nodes=numnod;allocate(view%pressure_head(numnod),view%water_content(numnod));view%pressure_head=h;view%water_content=t
  view%ponding_depth=0._real64;view%groundwater_level=-150._real64;depth=abs(z)
  call state%initialize(1,ok);if(.not.ok)error stop 'state'
+ ! Isolate surface memo semantics: endpoint hydraulics are already accepted/cached.
+ state%endpoint_water_cm=.02_real64
+ state%wall_age_day=.03_real64
+ state%wall_sorptivity_cm_sqrt_day=14._real64
  call init_cfg(cfg);wet%supplied=.true.;wet%event_active=.true.;wet%precipitation_rate_cm_per_day=8._real64;wet%runoff_exponent=1._real64
  top%status=SW_TOP_BOUNDARY_AVAILABLE;top%regime=SW_TOP_BOUNDARY_REGIME_FLUX;top%carries_surface_mass_terms=.true.;top%runoff_resolved=.true.
  top%net_potential_surface_flux=8._real64
