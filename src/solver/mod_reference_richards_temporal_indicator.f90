@@ -144,7 +144,8 @@ contains
        return
     end if
     if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX .or. &
-        (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. request%boundary%bottom_mode /= 7)) then
+        (request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
+         request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 7)) then
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'boundary-envelope-deferred'
        return
@@ -280,6 +281,31 @@ contains
     if (request%boundary%bottom_mode == 5) then
        bottom_distance = 0.5_real64*request%parameters%dz(n)
        face_conductance = conductivity_base(n)/bottom_distance
+       if (.not. ieee_is_finite(face_conductance) .or. face_conductance <= 0.0_real64) then
+          indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+          indicator_result%route = 'invalid-bottom-conductance'
+          return
+       end if
+       diagonal(n) = diagonal(n)+face_conductance
+    else if (request%boundary%bottom_mode == 3) then
+       if (.not. ieee_is_finite(request%boundary%bottom_external_resistance_days) .or. &
+           request%boundary%bottom_external_resistance_days < 0.0_real64) then
+          indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+          indicator_result%route = 'invalid-cauchy-resistance'
+          return
+       end if
+       if (request%boundary%bottom_include_half_cell) then
+          bottom_distance = 0.5_real64*request%parameters%dz(n)
+          face_conductance = 1.0_real64/(bottom_distance/conductivity_base(n) + &
+               request%boundary%bottom_external_resistance_days)
+       else
+          if (request%boundary%bottom_external_resistance_days <= 0.0_real64) then
+             indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+             indicator_result%route = 'invalid-cauchy-resistance'
+             return
+          end if
+          face_conductance = 1.0_real64/request%boundary%bottom_external_resistance_days
+       end if
        if (.not. ieee_is_finite(face_conductance) .or. face_conductance <= 0.0_real64) then
           indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
           indicator_result%route = 'invalid-bottom-conductance'
