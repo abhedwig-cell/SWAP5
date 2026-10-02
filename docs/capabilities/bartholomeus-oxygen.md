@@ -1,7 +1,7 @@
 # Bartholomeus oxygen stress: bounded production capability
 
-Status: production-admission candidate, 2026-10-02. Canonical admission is recorded
-separately in the C3A status/closeout authority, not inferred from this document.
+Status: canonically admitted bounded production capability, 2026-10-02. Admission is
+limited to the envelope below and is recorded by PPA-WU05-C3A PR #962 and closeout.
 
 ## Applicability
 
@@ -66,3 +66,10 @@ include no stress, intermediate stress, full stress, saturation and multi-node
 propagation. Final RWU differences are required <=legacy SOLVE accuracy 1e-4.
 This is bounded behavioural qualification, not an independent scientific review
 or validation of every crop, soil or practical lookup.
+
+
+## Canonical admission
+
+PPA-WU05-C3A was qualified on exact candidate `63b7c982d12a7df8f6f933d32fc382fbcc02bb67` by workflow run `36972631192`, job `110729643691`. Artifact `11212966516` has digest `sha256:59917ee261edc2e822cd8068720beb92ccf3ec10fdfd05abdec30524a25aad24`. PR #962 merged to canonical as `179673b16b84bc48fa5e0e83341a8a8e80b2211a`.
+
+The shared-result JSON may report `tested_postimage: not-specified` because `C3A_TESTED_SHA` was not set. Commit identity is instead established by the checkout/job log and artifact `workflow_run.head_sha`; no stronger claim is made for that JSON field. Salinity, frost, compensation, MICRO/JvL, macropore oxygen, groundwater-coupled oxygen and other excluded compositions remain outside this admission.
