@@ -12,12 +12,14 @@ def theta(h):
     if h>-.01:return min(at(-.01)+(ts-at(-.01))/.01*(h+.01),ts)
     return at(h)
 
-def analyze(build,previous,source,canonical):
+def analyze(build,previous,source,canonical,new_kernel=False):
     x=(build/'o0/records.json').read_bytes();y=(build/'o2/records.json').read_bytes()
     raw=json.loads(x);assert raw==json.loads(y)
     inherited={key(r['case']):r for r in json.loads((previous/'o0/records.json').read_bytes())}
     keep=[r for r in raw if r['case']['analytic']==0 and r['case']['mode'] in [1,2]]
-    assert len(keep)==54 and all(r==inherited[key(r['case'])] for r in keep)
+    assert len(keep)==54
+    unchanged=sum(r==inherited[key(r['case'])] for r in keep)
+    if not new_kernel:assert unchanged==54
     rows={key(r['case']):parse(r) for r in raw};profiles=[];lifecycles=[]
     for r in raw:
         c=r['case'];lines=[s.split() for s in r['stdout'].splitlines()]
@@ -61,9 +63,12 @@ def analyze(build,previous,source,canonical):
     dynamic=[r for r in rows.values() if r['case']['analytic']==0 and r['case']['mode']==6]
     saturated=[r for r in rows.values() if r['case']['analytic']==1]
     assert len(saturated)==18 and all(r['complete'] and r['analytic'][1]<=1e-9 and r['analytic'][2]<=1e-10 for r in saturated)
-    return dict(schema='swap5.top03.stateful_contact.v1',source_postimage=source,canonical_inspected=canonical,production_code_changed=False,production_admission=False,cases_per_build=len(raw),O0_O2_raw_records_exact=x==y,raw_sha256=hashlib.sha256(x).hexdigest(),inherited_trajectories_exact=54,saturated_controls=18,new_trajectories=len(dynamic),new_trajectories_completed=sum(r['complete'] for r in dynamic),stopped_trajectories=[dict(case=r['case'],stop=r['stop']) for r in dynamic if not r['complete']],max_soil_layer_mass_error_cm=max(abs(e['mass']) for r in rows.values() for e in r['events'].values()),physical_verdict_counts=dict(collections.Counter(str(c['physical_equivalence']) for c in comparisons)),comparisons=comparisons,independent_profile_audits=profiles,lifecycle_cases=lifecycles,scope='Time-discrete distributed storage reduction matching pinned SWKIMPL=0 explicit layer. Component candidate/restart gates only; no production receipt/runtime/restart admission.')
+    result=dict(schema='swap5.top03.stateful_contact.v1',source_postimage=source,canonical_inspected=canonical,production_code_changed=False,production_admission=False,cases_per_build=len(raw),O0_O2_raw_records_exact=x==y,raw_sha256=hashlib.sha256(x).hexdigest(),inherited_trajectories_exact=unchanged,saturated_controls=18,new_trajectories=len(dynamic),new_trajectories_completed=sum(r['complete'] for r in dynamic),stopped_trajectories=[dict(case=r['case'],stop=r['stop']) for r in dynamic if not r['complete']],max_soil_layer_mass_error_cm=max(abs(e['mass']) for r in rows.values() for e in r['events'].values()),physical_verdict_counts=dict(collections.Counter(str(c['physical_equivalence']) for c in comparisons)),comparisons=comparisons,independent_profile_audits=profiles,lifecycle_cases=lifecycles,scope='Time-discrete distributed storage reduction matching pinned SWKIMPL=0 explicit layer. Component candidate/restart gates only; no production receipt/runtime/restart admission.')
+
+    if new_kernel:result.update(current_kernel_reference_trajectories=54,changed_reference_trajectories=54-unchanged,qualification_inherited=False)
+    return result
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('build',type=Path);p.add_argument('output',type=Path);p.add_argument('--previous',type=Path,required=True);p.add_argument('--source',required=True);p.add_argument('--canonical',required=True);a=p.parse_args()
-    r=analyze(a.build,a.previous,a.source,a.canonical);a.output.write_text(json.dumps(r,indent=2)+'\n');print(json.dumps({k:v for k,v in r.items() if k not in ['comparisons','independent_profile_audits','lifecycle_cases']},indent=2));print('independent_profiles',len(r['independent_profile_audits']),'lifecycle_cases',len(r['lifecycle_cases']))
+    p=argparse.ArgumentParser();p.add_argument('build',type=Path);p.add_argument('output',type=Path);p.add_argument('--previous',type=Path,required=True);p.add_argument('--source',required=True);p.add_argument('--canonical',required=True);p.add_argument('--new-kernel',action='store_true');a=p.parse_args()
+    r=analyze(a.build,a.previous,a.source,a.canonical,a.new_kernel);a.output.write_text(json.dumps(r,indent=2)+'\n');print(json.dumps({k:v for k,v in r.items() if k not in ['comparisons','independent_profile_audits','lifecycle_cases']},indent=2));print('independent_profiles',len(r['independent_profile_audits']),'lifecycle_cases',len(r['lifecycle_cases']))
 if __name__=='__main__':main()

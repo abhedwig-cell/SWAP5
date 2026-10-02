@@ -1,0 +1,9 @@
+# TOP03 canonical contact component replay
+
+Baseline research evidence: 6d7cac07954f8081e922b10db115b4ad34b89f64; immutable scientific overlay source 3e6f7449047de4514607e437a80fab76dbb539d6. New kernel: cd03d041f967f1bedc8d1a68d0ed17c71988d50d. No canonical merge or production source change.
+
+Replay the same 120-case O0/O2 component matrix in a detached canonical checkout, with exact Git-sourced test-only files. The newer kernel has stable water-content increments, matrix-area plumbing and lower-boundary solver changes. Consequently do not require or claim bitwise inheritance of old explicit trajectories. Execute all 54 current-kernel reference trajectories anew; report which old records changed. Require exact O0/O2 identity on the new source, all 36 contact trajectories, 18 saturated controls, 12 component lifecycle controls and independent layer profiles. Retain original hard mass, local-residual, interface, space/time readiness and physical budgets. Null remains unready.
+
+Every compiled repository file must match either exact canonical or the declared test-only overlay. Generated stubs are retained. A failure or unavailable solve is not an admissible flux and does not prove root nonexistence. New evidence qualifies only the tested kernel component, not BASE transaction temporal acceptance or production receipts/restart. Existing exact-state temporal gating and owned storage contracts remain fixed. Invariants 3,7,11,13,14,28 apply.
+
+After the replay, make the production ownership decision concrete: the explicit profile already owns layer storage; a separate boundary capsule is optional and needs justification. A bounded imposed-head application still requires an authorized transient temporal-acceptance contract and its runtime/receipt qualification. Do not replace the BASE identity gate with a fitted tolerance. Persist new source before the matrix and all positive/negative outcomes afterwards.
