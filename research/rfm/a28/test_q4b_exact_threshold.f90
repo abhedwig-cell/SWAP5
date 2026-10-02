@@ -22,7 +22,7 @@ program test_a28_q4b_exact_threshold
   use mod_process_hydraulic_view,only:process_hydraulic_view_t
   use mod_rfm_surface_sorptivity,only:evaluate_rfm_node_sorptivity
   use mod_fixed_flux_top_boundary_provider,only:fixed_flux_top_boundary_provider_t
-  use mod_fmr_legacy_cauchy_bottom_boundary_provider,only:fmr_cauchy3_control_t,FMR_CAUCHY3_OK
+  use mod_fmr_legacy_cauchy_bottom_boundary_provider,only:fmr_cauchy3_control_t,fmr_cauchy3_proposal_t,FMR_CAUCHY3_OK
   implicit none
 
   integer,parameter::ARM_A=1,ARM_B=2,ARM_C=3
@@ -67,6 +67,7 @@ contains
     type(fmr_b110_physical_parameters_t),target::parameters
     type(fmr_b110_physical_forcing_t)::forcing
     type(fmr_cauchy3_control_t)::cauchy
+    type(fmr_cauchy3_proposal_t)::probe
     type(fmr_b110_physical_state_t)::physical
     type(rfm_physical_state_t)::rfm
     type(rfm_runtime_configuration_t)::rfmcfg
@@ -179,6 +180,8 @@ contains
       rain=0._real64
       call init_forcing(forcing,arm,rain,macro_area)
       allocate(forcing%legacy_swbotb3_implicit_control);forcing%legacy_swbotb3_implicit_control=cauchy
+      call forcing%legacy_swbotb3_implicit_control%resolve_proposal(t0,t1,probe,cauchy_status)
+      if(cauchy_status/=FMR_CAUCHY3_OK.or..not.probe%available)then;m%status=-934;m%fail_step=step;exit;end if
       if(arm==ARM_C.and.step==nsteps/2)then
         call committed%snapshot(original_snapshot,available);if(.not.available)then;m%status=-912;m%fail_step=step;exit;end if
         saved_lineage=committed%current_lineage_id();saved_revision=committed%current_revision()
