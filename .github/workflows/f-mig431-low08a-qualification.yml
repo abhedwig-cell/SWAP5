@@ -1,0 +1,26 @@
+name: F-MIG431 LOW08-A qualification
+on:
+  push:
+    branches: [work/f-mig431-low08-a-lysimeter-application]
+    paths:
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fmig431/test_low08a_application.f90'
+      - 'tests/fmig431/run_low08a_qualification.py'
+      - '.github/workflows/f-mig431-low08a-qualification.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: O0 O2 qualification
+        env:
+          LOW08A_TESTED_SHA: ${{ github.sha }}
+          LOW08A_RESULT: low08a_qualification_result.json
+        run: python3 tests/fmig431/run_low08a_qualification.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: F-MIG431-LOW08-A-qualification
+          path: low08a_qualification_result.json
