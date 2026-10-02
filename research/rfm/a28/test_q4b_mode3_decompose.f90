@@ -52,10 +52,10 @@ program test_a28_q4b_mode3_decompose
     geom=1;regime=3
     arm=ARM_A
     call run_arm(soil,geom,regime,arm,m)
-    write(*,'(*(g0,:,","))') 'DECOMP',soil,geom,arm,0,merge(1,0,m%completed),m%status,m%fail_step,m%admission_rejections,m%solver_rejections,m%max_mass
+    write(*,'(*(g0,:,","))') 'DECOMP',soil,geom,arm,0,merge(1,0,m%completed),m%status,m%fail_step,m%admission_rejections,m%solver_rejections,m%max_mass_resid
     arm=ARM_C
     call run_arm(soil,geom,regime,arm,m)
-    write(*,'(*(g0,:,","))') 'DECOMP',soil,geom,arm,0,merge(1,0,m%completed),m%status,m%fail_step,m%admission_rejections,m%solver_rejections,m%max_mass
+    write(*,'(*(g0,:,","))') 'DECOMP',soil,geom,arm,0,merge(1,0,m%completed),m%status,m%fail_step,m%admission_rejections,m%solver_rejections,m%max_mass_resid
   end do
   print '(a)','A28_Q4B_MODE3_DECOMPOSE_COMPLETE'
 
@@ -248,7 +248,7 @@ contains
       end if
       m%total_in=m%total_in+result%mass%total_in
       m%total_out=m%total_out+result%mass%total_out
-      m%max_mass_resid=max(m%max_mass_resid,abs(result%mass%residual))
+      m%max_mass_resid_resid=max(m%max_mass_resid_resid,abs(result%mass%residual))
       if(result%bottom_interface_exchange_available) m%bottom_out=m%bottom_out+result%bottom_outward_exchange_native
       call backend%commit_trial_candidate(committed,candidate,diagnostics,did_commit,commit_status)
       if(.not.did_commit)then;m%status=-909;m%fail_step=step;exit;end if
@@ -539,7 +539,7 @@ contains
     integer,intent(in)::soil,geom,regime,arm,rep
     type(metrics_t),intent(in)::m
     write(*,'(*(g0,:,","))') trim(prefix),soil,geom,regime,arm,merge(1,0,m%completed),m%status,m%fail_step, &
-         m%wall_seconds,m%total_in,m%total_out,m%bottom_out,m%fast_external_out,m%max_mass_resid, &
+         m%wall_seconds,m%total_in,m%total_out,m%bottom_out,m%fast_external_out,m%max_mass_resid_resid, &
          m%matrix_storage,m%fast_storage,m%ponding,m%total_storage,m%h1,m%h5,m%h10,m%t1,m%t5,m%t10, &
          m%transaction_calls,m%attempts,m%retries,m%nonlinear,m%backtracks,m%headcalc,m%min_substep, &
          m%admission_rejections,m%solver_rejections,m%temporal_rejections,m%mass_rejections,m%trial_rollbacks
