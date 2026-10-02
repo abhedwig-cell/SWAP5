@@ -68,3 +68,9 @@ Repository inspection shows that `fmr_capture_checkpoint` exposes checkpoint cap
 - **transaction rollback**: exercise candidate discard and verify the original committed state is unchanged.
 
 Do not label either test as external serialized restart. File-format restart remains outside A28 unless a real restart API is located and exercised.
+
+## Reconstruction refinement
+
+A later bounded inspection located the public trusted persistence boundary `kernel_reconstruct_committed_state_trusted`. Q4 may therefore additionally reconstruct a fresh committed carrier from an accepted physical snapshot plus its original lineage, revision and committed time, then replay the next forcing interval. Require the reconstructed and uninterrupted paths to produce bitwise-identical RFM state and exact sampled matrix state.
+
+This qualifies the in-memory trusted reconstruction contract for this RFM continuation state. It still does not qualify a particular external restart file codec or parser.
