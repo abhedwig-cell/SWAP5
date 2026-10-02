@@ -3325,15 +3325,12 @@ contains
       if (self%fixed_weir_surface_water_active) error stop 'F-PM08D7 active model missing fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
       write(*,'(a,1x,l1,1x,l1)') 'LOW08A_STORAGE_FLAGS',self%macropore_active,allocated(self%macropore_config)
-      if (self%macropore_active .and. allocated(self%macropore_config)) then
+      if (self%macropore_active) then
+        if (.not. allocated(self%macropore_config)) error stop 'F-MR06 active macropore config missing'
         if (.not. allocated(self%macropore_config%matrix_area_fraction)) error stop 'F-MR06 active macropore area fraction missing'
-      end if
-      if (self%macropore_active .and. allocated(self%macropore_config) .and. &
-          allocated(self%macropore_config%matrix_area_fraction)) then
         value = sum(self%soil_parameters%dz * physical%water_content * self%macropore_config%matrix_area_fraction) + &
              physical%ponding_depth
       else
-        write(*,'(a,1x,es24.16,1x,es24.16)') 'LOW08A_STORAGE_SUMS',sum(self%soil_parameters%dz * physical%water_content),physical%ponding_depth
         value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
       end if
       if (self%macropore_active) then
