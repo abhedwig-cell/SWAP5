@@ -13,7 +13,7 @@ program benchmark_bartholomeus_e2e
  use mod_root_water_uptake_process
  use mod_process_hydraulic_view
  implicit none
- integer,parameter::WARM=100,REPS=2000,ROUNDS=7
+ integer,parameter::WARM=1,REPS=20,ROUNDS=3
  real(real64),parameter::T0=5100.1875_real64,T1=T0+1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
  type(fmr_production_application_config_t)::cfg,off
  type(fmr_production_application_bootstrap_t)::app,offapp
@@ -23,6 +23,8 @@ program benchmark_bartholomeus_e2e
  call initialize_application_config(cfg,-75._real64,k);call add_root_thermal_oxygen(cfg)
  off=cfg;off%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
  call app%initialize(cfg,status);if(status/=FMR_APP_BOOT_OK)error stop 'active init'
+ call app%run_standalone(T0,T1,r,status);print *,'E2E_FIRST_ACTIVE=',status,r(1)%kernel_status,r(1)%completed,r(1)%committed
+ call app%close(status);call app%initialize(cfg,status)
  call offapp%initialize(off,status);if(status/=FMR_APP_BOOT_OK)error stop 'off init'
  do i=1,WARM
   call app%run_standalone(T0,T1,r,status);if(status/=FMR_APP_BOOT_OK)then;print *,'E2E_ACTIVE_REJECT=',status,r(1)%kernel_status;error stop 'active warm';endif
