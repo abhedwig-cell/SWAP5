@@ -176,3 +176,8 @@ groundwater-coupling semantics. Those boundaries are machine-recorded in
 ## Current lower-boundary authority after LOW05-A (2026-10-02)
 
 Historical selector rows above retain their recorded snapshot. Later canonical authority admits4 via PR#972/5ab13625 and the bounded ordinary5 DATE5/HBOT5 adapter via PR#974/`e88af3da54b743958b887d9cc15647227388333a`. See [LOW05-A closeout](../migration/F-MIG431-LOW05A_CLOSEOUT.md). Modes2,4,6,7 and default groundwater5 are preserved in the named six-program qualification;1/3/8 remain open. Internal-2 and9 are not ordinary application selectors. This is not all-lower-boundary migration and not generic legacy parser admission.
+
+
+## Central SWBOTB=1 shared prerequisite registration
+
+F-MIG431-LOWGWL01-P0 registers the shared Richards/provider/candidate-mass prerequisite after LOW05-A closure. Mode1 is not a simple mode5 application adapter: in-profile NN selection and saturated-node reconstruction differ from below-profile head closure. The [preregistration](../migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md) records scope, held-fixed authorities and mandatory gates. Persisted local O0/O2 negative diagnosis proves public mode1 remains fail-closed and a direct, deliberately unguarded call reads beyond the exact active-node typed geometry. This is not production qualification or mode1 admission. Modes1/3/8 remain open, with1 next. No production source, ABI, transaction, restart or groundwater owner changed.

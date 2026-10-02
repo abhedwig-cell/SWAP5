@@ -4,15 +4,15 @@
   "baseline": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
   "last_reconciled_head": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
   "official_branch": "work/f-mig431-lowgwl01-p0-shared-richards-authority",
-  "state": "SHARED_AUTHORITY_PREREQUISITE_REGISTERED",
+  "state": "SHARED_AUTHORITY_BLOCKER_REPRODUCED_AND_REGISTERED",
   "implemented": false,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "production_mode1_admitted": false,
-  "checkpoint_commit": "registration commit containing this record; resolve from Git history",
-  "recovery_point": "registration postimage; no production delta",
-  "next_action": "Replay persisted diagnostic locally at O0/O2; persist negative result, then shared-authority design before production implementation",
+  "checkpoint_commit": "3e7e4f63183390eff6a389eae52e66b3db31b210",
+  "recovery_point": "3e7e4f63183390eff6a389eae52e66b3db31b210",
+  "next_action": "On issued P0 branch, freeze source-backed shared solver/provider/candidate-mass design decision before production implementation; LOWGWL01-A remains unissued",
   "blockers": [
     "Typed HeadCalc mode1 below-profile indexing requires shared solver work",
     "In-profile legacy-global constitutive reads require explicit provider ownership",
@@ -55,5 +55,6 @@
     1,
     3,
     8
-  ]
+  ],
+  "test_scope": "Negative feasibility only: public fail-closed and direct raw-mode1 bounds blocker, fresh O0/O2 builds at persisted postimage"
 }
