@@ -1,5 +1,6 @@
 module mod_fmr_bartholomeus_execution
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_soil_temperature_contract, only: soil_temperature_field_view_t
   use mod_bartholomeus_runtime_input, only: bartholomeus_runtime_view_t, build_bartholomeus_runtime_view, &
@@ -44,6 +45,25 @@ contains
     end if
     if(route/=FMR_BARTHOLOMEUS_ACTIVE) then
       status=FMR_BARTHOLOMEUS_EXEC_UNSUPPORTED;return
+    end if
+
+    ! No extraction requires no oxygen physics or current owner views.
+    ! Configuration remains fail-closed because route selection precedes this exit.
+    if(size(w_root)==0 .and. size(w_root_z0)==0) then
+      final_fluxes=base_fluxes
+      status=FMR_BARTHOLOMEUS_EXEC_OK
+      return
+    end if
+    if(allocated(base_fluxes%root_extraction_sink)) then
+      if(size(w_root)==size(w_root_z0) .and. size(w_root)<=size(base_fluxes%root_extraction_sink)) then
+        if(all(ieee_is_finite(base_fluxes%root_extraction_sink(1:size(w_root))))) then
+          if(all(abs(base_fluxes%root_extraction_sink(1:size(w_root)))<=tiny(1.0_real64))) then
+            final_fluxes=base_fluxes
+            status=FMR_BARTHOLOMEUS_EXEC_OK
+            return
+          end if
+        end if
+      end if
     end if
 
     call build_bartholomeus_runtime_view(hydraulic,thermal,size(w_root),view,input_status)

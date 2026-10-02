@@ -17,8 +17,26 @@ module mod_bartholomeus_runtime_input
     real(real64), allocatable :: soil_temperature_k(:)
   end type
   public :: build_bartholomeus_runtime_view
+  public :: valid_bartholomeus_runtime_view
 
 contains
+  pure logical function valid_bartholomeus_runtime_view(view) result(ok)
+    type(bartholomeus_runtime_view_t),intent(in)::view
+    integer::n
+    ok=.false.;n=view%rooted_nodes
+    if(n<0) return
+    if(.not.allocated(view%pressure_head_cm)) return
+    if(.not.allocated(view%water_content)) return
+    if(.not.allocated(view%soil_temperature_k)) return
+    if(size(view%pressure_head_cm)/=n .or. size(view%water_content)/=n .or. size(view%soil_temperature_k)/=n) return
+    if(any(.not.ieee_is_finite(view%pressure_head_cm))) return
+    if(any(.not.ieee_is_finite(view%water_content))) return
+    if(any(.not.ieee_is_finite(view%soil_temperature_k))) return
+    if(any(view%water_content<0) .or. any(view%water_content>1)) return
+    if(any(view%soil_temperature_k<=0)) return
+    ok=.true.
+  end function
+
   subroutine build_bartholomeus_runtime_view(hydraulic,thermal,rooted_nodes,view,status)
     type(process_hydraulic_view_t),intent(in)::hydraulic
     type(soil_temperature_field_view_t),intent(in)::thermal

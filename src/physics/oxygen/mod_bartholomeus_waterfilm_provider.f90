@@ -1,6 +1,7 @@
 module mod_bartholomeus_waterfilm_provider
   use iso_fortran_env, only: real64
-  use mod_bartholomeus_runtime_input, only: bartholomeus_runtime_view_t
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_bartholomeus_runtime_input, only: bartholomeus_runtime_view_t, valid_bartholomeus_runtime_view
   use mod_bartholomeus_parameter_contract, only: BartholomeusImmutableDataset
   use mod_bartholomeus_temperature, only: BartholomeusTemperatureResult, bartholomeus_temperature_parameters
   use mod_bartholomeus_waterfilm, only: BartholomeusWaterfilmMvgInput
@@ -29,13 +30,21 @@ contains
     integer::i,n
 
     status=BARTHOLOMEUS_WATERFILM_INVALID; n=view%rooted_nodes
-    if(.not.allocated(data%soil) .or. n<0 .or. n>size(data%soil)) return
+    if(.not.allocated(data%soil)) return
+    if(n<0 .or. n>size(data%soil)) return
+    if(.not.valid_bartholomeus_runtime_view(view)) return
     if(mode==BARTHOLOMEUS_WATERFILM_PRACTICAL) then
       status=BARTHOLOMEUS_WATERFILM_MODE_NOT_ADMITTED; return
     end if
     if(mode/=BARTHOLOMEUS_WATERFILM_REFERENCE) return
     allocate(waterfilm(n))
     do i=1,n
+      ! Legacy OxygenStress skips waterfilm and respiration at GFP < 1e-4.
+      if(view%pressure_head_cm(i)>=0 .or. &
+           data%soil(i)%saturated_water_content-view%water_content(i)<1.e-4_real64) then
+        waterfilm(i)=0.0_real64
+        cycle
+      end if
       mp=abs(view%pressure_head_cm(i))*98.0665_real64
       t=bartholomeus_temperature_parameters(view%soil_temperature_k(i))
       p%capac_term=data%soil(i)%waterfilm_capac_term
@@ -45,7 +54,8 @@ contains
       p%gen_n=data%soil(i)%waterfilm_gen_n
       p%surface_tension_water=t%surface_tension_water
       waterfilm(i)=bartholomeus_waterfilm_mvg_independent(mp,p,ok)
-      if(.not.ok .or. waterfilm(i)<0.0_real64) return
+      if(.not.ok .or. .not.ieee_is_finite(waterfilm(i))) return
+      if(waterfilm(i)<0.0_real64) return
     end do
     status=BARTHOLOMEUS_WATERFILM_OK
   end subroutine
