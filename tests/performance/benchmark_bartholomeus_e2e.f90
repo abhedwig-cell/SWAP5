@@ -80,7 +80,6 @@ contains
    p%crop%c_mroot=1e-5;p%crop%f_senes=1;p%crop%q10_root=2;p%crop%specific_resp_humus=1e-6;p%crop%q10_microbial=2;p%crop%microbial_shape_m=.9;p%crop%root_shape_m=.9;p%crop%root_radius_m=.0002;p%crop%max_resp_factor=2
   end associate
   call publish_crop_bartholomeus_input([1._real64,.8_real64,.6_real64],20._real64,value%tiles(1)%base_forcing%crop_oxygen,valid)
-  rp%active_nodes=numnod;rp%hlim3l=-500;rp%hlim3h=-100;rp%hlim4=-16000;rp%hlim2u=-25;rp%hlim2l=-25
   rp%active_nodes=numnod;rp%hlim3l=-500;rp%hlim3h=-300;rp%hlim4=-16000;rp%adcrl=.1_real64;rp%adcrh=.5_real64
   rq%rooted_nodes=3;rq%potential_transpiration=.03_real64;rq%cumulative_root_fraction=[0._real64,.4_real64,.8_real64,1._real64]
   view%active_nodes=numnod;view%pressure_head=value%tiles(1)%initial_state%pressure_head;view%water_content=value%tiles(1)%initial_state%water_content
