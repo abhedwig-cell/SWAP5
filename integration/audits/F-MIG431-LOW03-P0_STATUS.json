@@ -3,16 +3,16 @@
   "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
   "last_reconciled_head": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
   "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
-  "state": "CENTRAL_SHARED_RESISTIVE_HEAD_PREREQUISITE_REGISTERED",
+  "state": "COMPOSITION_PROVEN_SHARED_TYPED_RESISTANCE_PREREQUISITE_OPEN",
   "implemented": false,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "production_mode3_admitted": false,
   "production_delta": [],
   "interfaces_changed": [],
-  "checkpoint_commit": "registration commit containing this record; resolve from Git history",
-  "next_action": "Replay persisted bottom-row composition diagnostic locally; record concrete shared typed resistance/request and candidate-mass design before production implementation",
+  "checkpoint_commit": "c240a3c1c880663d86e1a702ff283a866ca809ee",
+  "next_action": "On sole issued LOW03-P0 branch, freeze minimal shared typed Robin resistance/half-cell/extra-flux request contract and mode3 candidate mass ownership before production edits; preserve mode5 ordinary/GW semantics.",
   "blockers": [
     "Existing typed bottom boundary has no resistance or include-half-cell authority",
     "Dormant implicit mode3 depends on legacy globals and lacks accepted mass publication",
@@ -60,5 +60,7 @@
     "Unrounded exactly-once accepted mass",
     "Restart of committed state",
     "Existing groundwater owner and mode5 semantics held fixed"
-  ]
+  ],
+  "recovery_point": "c240a3c1c880663d86e1a702ff283a866ca809ee",
+  "test_scope": "Persisted frozen B1.11 bottom-row composition, O0/O2,6075 cases each; not full Richards/mass/restart qualification"
 }

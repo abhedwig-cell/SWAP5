@@ -2102,6 +2102,17 @@
       "canonical_basis": "90622bdcaa67aff52ccbd9035c0f48dee70cc745",
       "production_delta": [],
       "production_admitted": false
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "COMPOSITION_PROVEN_SHARED_TYPED_RESISTANCE_PREREQUISITE_OPEN",
+      "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
+      "diagnostic_postimage": "c240a3c1c880663d86e1a702ff283a866ca809ee",
+      "diagnostic_cases_per_optimization": 6075,
+      "production_admitted": false,
+      "production_delta": [],
+      "authority": "docs/migration/F-MIG431-LOW03-P0_PREREGISTRATION.md",
+      "effect": "Implicit3 reuses Richards bottom-row physics with added series resistance, not a new solver. Ordinary mode5 is only the same-K zero-R limit; shared typed resistance and accepted mass ownership remain prerequisites. Mode1 parked,3/8 open."
     }
   ]
 }

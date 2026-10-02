@@ -186,3 +186,8 @@ F-MIG431-LOWGWL01-P0 registers the shared Richards/provider/candidate-mass prere
 ## User priority decision, 2026-10-02
 
 SWBOTB=1 and F-MIG431-LOWGWL01-P0 are parked by explicit user decision. Earlier statements that1 is next are superseded for scheduling only. Existing source/negative diagnostic evidence and branch remain intact. Mode1 is still not migrated or admitted and is not declared obsolete or scientifically falsified. Active next review order is3, then8. Do not claim complete lower-boundary migration while1 is parked. The mode1 status record is the recovery authority.
+
+
+## SWBOTB3 implicit composition review, 2026-10-02
+
+F-MIG431-LOW03-P0 establishes a source-backed resistive-head prerequisite. Frozen B1.11 flux/Jacobian and mode5-gradient fragments pass6075 cases each at O0/O2 against persisted postimage `c240a3c1c880663d86e1a702ff283a866ca809ee`:225 zero-R head-limit cases and810 nonzero-R cases discriminating ordinary mode5. This is bottom-row algebra at identical K, not solver convergence, physical-domain, retry/restart/mass qualification or production admission. Existing Richards unknowns and solver can be reused; current typed boundary cannot represent external resistance/half-cell suppression. A fixed HBOT5 transformation alone is insufficient for general3. SWKIMPL1 derivative policy differs between legacy3 and5 and is not silently harmonized. The [preregistration](../migration/F-MIG431-LOW03-P0_PREREGISTRATION.md) and mode3 status/evidence bind the sole prerequisite branch. Mode1 stays parked;3 and8 remain open. No production source or shared contract has yet changed.
