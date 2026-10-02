@@ -54,3 +54,12 @@ This preserves visibility of both call-elimination gain and remaining per-call o
 ## Admission boundary
 
 PERF02 does not broaden C3A physics. Any history-aware suppression or approximate gate requires a later work unit.
+
+
+## Reconstruction refinement
+
+The current SWAP5 scalar solver already evaluates the residual at `max_resp_factor` before bisection and returns `OXYGEN_NO_STRESS` when that endpoint remains feasible. Therefore the historical fast-no-stress idea is not missing at the scalar-solver level.
+
+The remaining opportunity is earlier: prove the same no-stress result before REFERENCE waterfilm evaluation. PERF01 profiling shows waterfilm dominates call cost. PERF02 therefore targets a conservative pre-waterfilm sufficient bound, not a duplicate scalar-solver fast path.
+
+A simple gas-filled-porosity threshold was falsified in the first 1100-state sweep: 765 states were no-stress, but no GFP-only threshold safely separated all stress cases. Multivariate empirical thresholds are diagnostic only and are not admission candidates without an equation-backed sufficient bound.
