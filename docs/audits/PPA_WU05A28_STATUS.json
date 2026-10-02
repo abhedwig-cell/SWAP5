@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05-A28",
-  "status": "Q1_Q3_QUALIFIED_BRANCH_ONLY_LONG_HISTORY_OPEN",
+  "status": "PRODUCTION_CANDIDATE_ENVELOPE_DEFINED_A29_OPEN",
   "branch": "work/ppa-wu05-a28-rfm-approximate-mode",
   "qualified_postimage": "281ee3680fa290e8ae84f90f5033f0883b203413",
   "result_record": "docs/audits/PPA_WU05A28_RESULT.md",
@@ -15,15 +15,24 @@
     "name": "RFM_SORPTIVITY_POLICY_A28_V1",
     "reference_panels": 64,
     "bands": [
-      {"condition": "h_cm < -30", "panels": 64},
-      {"condition": "-30 <= h_cm < -3", "panels": 32},
-      {"condition": "h_cm >= -3", "panels": 16}
+      {
+        "condition": "h_cm < -30",
+        "panels": 64
+      },
+      {
+        "condition": "-30 <= h_cm < -3",
+        "panels": 32
+      },
+      {
+        "condition": "h_cm >= -3",
+        "panels": 16
+      }
     ]
   },
   "retained_falsification": {
     "policy": "PERF07_V1",
     "run_id": 37005436943,
-    "max_relative_sorptivity_error": 0.045950703328370868,
+    "max_relative_sorptivity_error": 0.04595070332837087,
     "case": "O13 h=-100 cm"
   },
   "qualification": {
@@ -41,10 +50,17 @@
     "non_E1_joint_BC": 0
   },
   "q4": {
-    "scope": "long repeated wet-dry and wall-history trajectories including restart/replay and accumulated drift",
-    "implemented": false,
-    "required_before_multiswap_modflow_production_eligibility": true
+    "status": "PARTIAL_H1_H2_QUALIFIED_H3_FIXTURE_FALSIFIED",
+    "result": "docs/audits/PPA_WU05A28_Q4_RESULT.md"
   },
-  "next_action": "Design and run Q4 locally where possible; persist only final qualification evidence.",
-  "claim_boundary": "Explicit opt-in approximate RFM mode qualified for broadened constitutive catalog and short 32-case ABC trajectories only. No long-history, canonical, MultiSWAP or MODFLOW production admission."
+  "next_action": "Add policy provenance and panel-band occupancy observability, then run a paired stratified MultiSWAP-MODFLOW subset on current canonical coupling semantics.",
+  "claim_boundary": "A28_V1 is an explicit opt-in branch-qualified production candidate. Exact remains default. Coupled MultiSWAP-MODFLOW numerical and performance admission is not yet established.",
+  "q4b": {
+    "status": "QUALIFIED_BRANCH_ONLY",
+    "result": "docs/audits/PPA_WU05A28_Q4B_RESULT.md",
+    "dynamic_transition": "64_to_32_at_h_minus_30_cm",
+    "dynamic_16_panel_crossing": false
+  },
+  "production_envelope": "docs/audits/PPA_WU05A28_PRODUCTION_ENVELOPE.md",
+  "next_work_unit": "PPA-WU05-A29"
 }
