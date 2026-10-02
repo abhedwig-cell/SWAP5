@@ -3302,6 +3302,7 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: state
     if (.not. associated(self%soil_parameters)) error stop 'F-MR06 storage requested before parameter binding'
+    if (.not. allocated(self%soil_parameters%dz)) error stop 'F-MR06 storage parameter dz missing'
     select type (physical => state)
     type is (fmr_b110_rfm_state_t)
       if (.not. allocated(physical%water_content)) error stop 'PPA-WU05-A20 RFM matrix storage incomplete'
