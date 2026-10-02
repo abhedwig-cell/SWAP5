@@ -1,0 +1,16 @@
+name: SW-RIB-TOP03 BASE temporal acceptance probe
+on:
+  push:
+    branches: [work/sw-rib-top03-transactional-top-exchange]
+    paths:
+      - 'tests/fapp/test_sw_rib_top03_base_temporal_acceptance_probe.f90'
+      - 'tests/fapp/run_sw_rib_top03_base_temporal_acceptance_probe.sh'
+      - 'integration/sw-rib-top03/TOP03_BASE_TEMPORAL_ACCEPTANCE_PREREGISTRATION.md'
+      - '.github/workflows/sw-rib-top03-base-temporal-probe.yml'
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and run exact BASE full-half probe
+        run: bash tests/fapp/run_sw_rib_top03_base_temporal_acceptance_probe.sh
