@@ -19,3 +19,12 @@ Earlier wrapper and experimental MACRO-root changes showed no material performan
 The active-chain harness was isolated from an unrelated current lower-boundary `compare-reals` Werror with a minimal hydraulic-state test contract. No production solver code, oxygen assertion or tolerance was weakened.
 
 PERF01 changes performance only. It does not broaden the bounded C3A oxygen admission envelope.
+
+
+## Merge-postimage verification
+
+Merge postimage `56458070502e38cf0ac0e9b35cfe700814d3772a` passed PPA-WU05-A26 live-trial preparation and backend compilation in run `36992278171`.
+
+Broad canonical run `36992278090` passed all frozen authorities exercised before its final moving-preservation check, including FCI24, FCI27, FCI28 restart, FCI29 ownership, FCI30 restricted parallel, FCI31 root uptake, FCI34 root attribution, FCI36 DIVDRA, FCI37 parallel root uptake, FCI39 evaporation capacity, FCI40 forcing, FCI19 lineage/candidate preservation, and historical FCI03-FCI18.
+
+The final `current-restricted-canonical-preservation` check failed on pre-existing admitted dependency drift in `src/runtime/mod_a23bu_worker_execution_context.f90` relative to FCI110 baseline `a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a`. PERF01 does not modify that file or worker execution ownership. This failure is classified as unrelated moving-baseline drift and is not evidence of a Bartholomeus regression.
