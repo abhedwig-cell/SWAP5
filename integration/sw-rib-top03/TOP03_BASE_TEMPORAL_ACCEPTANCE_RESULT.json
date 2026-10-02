@@ -1,0 +1,272 @@
+{
+  "schema": "swap5.sw_rib_top03.base_temporal_acceptance_probe.v1",
+  "date": "2026-10-02",
+  "status": "FALSIFIED_BOUNDED_FULL_HALF_ACCEPTANCE_ROUTE__NO_PRODUCTION_ADMISSION",
+  "branch": "work/sw-rib-top03-transactional-top-exchange",
+  "source_postimage": "2d1b5be49d08b02c866e77e6ed865b2122e6b40e",
+  "canonical_inspected": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
+  "workflow_run": 36975133856,
+  "workflow_job": 110737197925,
+  "runner_image": "ubuntu-24.04",
+  "compile_closure_files": 23,
+  "optimization_identity": {
+    "O0_O2_exact_output": true
+  },
+  "fixture": {
+    "initial_head_cm": -123,
+    "initial_ponding_cm": 0,
+    "initial_groundwater_level_cm": -2.25,
+    "external_head_cm": 0.02,
+    "external_sill_cm": 0.01,
+    "bottom_mode": 7,
+    "physical_problem_changed": false
+  },
+  "hard_gates": {
+    "soil_mass_residual_tolerance_cm": 1e-10,
+    "surface_closure_tolerance_cm": 1e-12,
+    "whole_path_ledger_tolerance_cm": 1e-10,
+    "admitted_top_sign": "qtop <= 0",
+    "complete_paths_close_mass": true
+  },
+  "paths": [
+    {
+      "window_day": 0.25,
+      "steps": 1,
+      "complete": true,
+      "iterations": 41,
+      "top_cm": -0.3713872933640344,
+      "bottom_cm": -0.09323619101653988,
+      "storage_change_cm": 0.2781511023476275,
+      "ledger_residual_cm": 1.3297696277447812e-13
+    },
+    {
+      "window_day": 0.25,
+      "steps": 2,
+      "complete": true,
+      "iterations": 73,
+      "top_cm": -0.614552756238608,
+      "bottom_cm": -0.2529401723113101,
+      "storage_change_cm": 0.3616125839272568,
+      "ledger_residual_cm": -4.1022740759899534e-14
+    },
+    {
+      "window_day": 0.25,
+      "steps": 4,
+      "complete": false,
+      "stop_step": 4,
+      "solver_status": 2
+    },
+    {
+      "window_day": 0.25,
+      "steps": 8,
+      "complete": false,
+      "stop_step": 4,
+      "solver_status": 2
+    },
+    {
+      "window_day": 0.125,
+      "steps": 1,
+      "complete": true,
+      "iterations": 21,
+      "top_cm": -0.2767838331572252,
+      "bottom_cm": -0.031139252619205565,
+      "storage_change_cm": 0.2456445805380516,
+      "ledger_residual_cm": 3.195707587444474e-14
+    },
+    {
+      "window_day": 0.125,
+      "steps": 2,
+      "complete": true,
+      "iterations": 46,
+      "top_cm": -0.42927894852702186,
+      "bottom_cm": -0.07974805956977148,
+      "storage_change_cm": 0.3495308889572142,
+      "ledger_residual_cm": -3.620714839058792e-14
+    },
+    {
+      "window_day": 0.125,
+      "steps": 4,
+      "complete": false,
+      "stop_step": 4,
+      "solver_status": 2
+    },
+    {
+      "window_day": 0.125,
+      "steps": 8,
+      "complete": false,
+      "stop_step": 5,
+      "solver_status": 2
+    },
+    {
+      "window_day": 0.0625,
+      "steps": 1,
+      "complete": true,
+      "iterations": 14,
+      "top_cm": -0.2137337915127465,
+      "bottom_cm": -0.009591365647126886,
+      "storage_change_cm": 0.20414242586561748,
+      "ledger_residual_cm": -2.121566811119635e-15
+    },
+    {
+      "window_day": 0.0625,
+      "steps": 2,
+      "complete": true,
+      "iterations": 30,
+      "top_cm": -0.3332837954409086,
+      "bottom_cm": -0.018643320772468757,
+      "storage_change_cm": 0.3146404746684657,
+      "ledger_residual_cm": 2.585084923900638e-14
+    },
+    {
+      "window_day": 0.0625,
+      "steps": 4,
+      "complete": true,
+      "iterations": 87,
+      "top_cm": -0.4368104024223356,
+      "bottom_cm": -0.06879938353495618,
+      "storage_change_cm": 0.36801101888739174,
+      "ledger_residual_cm": 1.2323475573339238e-14
+    },
+    {
+      "window_day": 0.0625,
+      "steps": 8,
+      "complete": false,
+      "stop_step": 6,
+      "solver_status": 2
+    },
+    {
+      "window_day": 0.03125,
+      "steps": 1,
+      "complete": true,
+      "iterations": 11,
+      "top_cm": -0.16705649920419272,
+      "bottom_cm": -0.003095536510627423,
+      "storage_change_cm": 0.16396096269356675,
+      "ledger_residual_cm": 1.454999315475547e-15
+    },
+    {
+      "window_day": 0.03125,
+      "steps": 2,
+      "complete": true,
+      "iterations": 31,
+      "top_cm": -0.25936176855761467,
+      "bottom_cm": -0.0040984347542592885,
+      "storage_change_cm": 0.25526333380335475,
+      "ledger_residual_cm": -6.279698983036042e-16
+    },
+    {
+      "window_day": 0.03125,
+      "steps": 4,
+      "complete": true,
+      "iterations": 59,
+      "top_cm": -0.3661718803008889,
+      "bottom_cm": -0.01366252742127721,
+      "storage_change_cm": 0.3525093528796037,
+      "ledger_residual_cm": -7.9432987964978e-15
+    },
+    {
+      "window_day": 0.03125,
+      "steps": 8,
+      "complete": false,
+      "stop_step": 8,
+      "solver_status": 2
+    }
+  ],
+  "adjacent_pair_errors": [
+    {
+      "window_day": 0.25,
+      "coarse_steps": 1,
+      "fine_steps": 2,
+      "available": true,
+      "head_inf_cm": 37.31684353954941,
+      "water_l1_cm": 0.08346148157962949,
+      "max_cell_water_cm": 0.04152726220584069,
+      "ponding_cm": 0,
+      "groundwater_cm": 0,
+      "top_exchange_cm": 0.24316546287457352,
+      "bottom_exchange_cm": 0.15970398129477023
+    },
+    {
+      "window_day": 0.125,
+      "coarse_steps": 1,
+      "fine_steps": 2,
+      "available": true,
+      "head_inf_cm": 41.327348981221995,
+      "water_l1_cm": 0.10388630841916252,
+      "max_cell_water_cm": 0.046805103350679556,
+      "ponding_cm": 0,
+      "groundwater_cm": 0,
+      "top_exchange_cm": 0.15249511536979665,
+      "bottom_exchange_cm": 0.04860880695056591
+    },
+    {
+      "window_day": 0.0625,
+      "coarse_steps": 1,
+      "fine_steps": 2,
+      "available": true,
+      "head_inf_cm": 45.15537442506741,
+      "water_l1_cm": 0.11051620950824845,
+      "max_cell_water_cm": 0.05074624555743601,
+      "ponding_cm": 0,
+      "groundwater_cm": 0,
+      "top_exchange_cm": 0.11955000392816209,
+      "bottom_exchange_cm": 0.009051955125341871
+    },
+    {
+      "window_day": 0.0625,
+      "coarse_steps": 2,
+      "fine_steps": 4,
+      "available": true,
+      "head_inf_cm": 36.37689603950155,
+      "water_l1_cm": 0.05337054421892576,
+      "max_cell_water_cm": 0.03722156159868861,
+      "ponding_cm": 0,
+      "groundwater_cm": 0,
+      "top_exchange_cm": 0.10352660698142702,
+      "bottom_exchange_cm": 0.05015606276248742
+    },
+    {
+      "window_day": 0.03125,
+      "coarse_steps": 1,
+      "fine_steps": 2,
+      "available": true,
+      "head_inf_cm": 46.403897035603556,
+      "water_l1_cm": 0.09150970683672058,
+      "max_cell_water_cm": 0.04279544775171751,
+      "ponding_cm": 0,
+      "groundwater_cm": 0,
+      "top_exchange_cm": 0.09230526935342195,
+      "bottom_exchange_cm": 0.0010028982436318654
+    },
+    {
+      "window_day": 0.03125,
+      "coarse_steps": 2,
+      "fine_steps": 4,
+      "available": true,
+      "head_inf_cm": 53.91586818642887,
+      "water_l1_cm": 0.09726919957669472,
+      "max_cell_water_cm": 0.05985309175717313,
+      "ponding_cm": 0,
+      "groundwater_cm": 0,
+      "top_exchange_cm": 0.1068101117432742,
+      "bottom_exchange_cm": 0.009564092667017922
+    }
+  ],
+  "preregistered_decision_rule": {
+    "minimum_successive_complete_adjacent_pairs": 2,
+    "require_state_contraction": true,
+    "require_top_exchange_contraction": true,
+    "require_relevant_bottom_exchange_contraction": true
+  },
+  "decision_evaluation": {
+    "window_0_25_day": "FAIL: only one complete adjacent pair",
+    "window_0_125_day": "FAIL: only one complete adjacent pair",
+    "window_0_0625_day": "FAIL: two pairs exist, but bottom exchange discrepancy increases 0.0090519551 -> 0.0501560628 cm",
+    "window_0_03125_day": "FAIL: state, top and bottom discrepancies increase from 1-vs-2 to 2-vs-4",
+    "any_window_passes": false
+  },
+  "conclusion": "The exact physical BASE inundation fixture does not provide the contracting independent refinement evidence required to replace the identity gate with a bounded full/half tolerance. No production temporal acceptance criterion is justified by this route.",
+  "production_code_changed": false,
+  "production_admission": false,
+  "next_action": "Keep PR #956 draft. Treat BASE temporal acceptance as a concrete numerical prerequisite/blocker. Any future route must be separately preregistered and must not weaken the physical fixture, ignore bottom throughput, or reuse these non-contracting pairs as an accuracy certificate."
+}
