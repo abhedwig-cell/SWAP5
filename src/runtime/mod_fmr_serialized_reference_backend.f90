@@ -99,7 +99,8 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_runtime_configuration, only: rfm_runtime_configuration_t
   use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
   use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
-  use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, rfm_surface_hydraulic_memo_t, prepare_rfm_live_trial
+  use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, rfm_surface_hydraulic_memo_t, &
+       prepare_rfm_live_trial, clear_surface_hydraulic_memo
 
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
@@ -1100,7 +1101,7 @@ contains
     self%model%trusted_prepared_default_mvg = .false.
     nullify(self%model%trusted_parameter_source)
     nullify(self%model%hydraulic_parameters)
-    call self%model%rfm_surface_hydraulic_memo%clear()
+    call clear_surface_hydraulic_memo(self%model%rfm_surface_hydraulic_memo)
     call self%bottom_thermal_candidate%clear()
     self%model%top_sensible_boundary_carrier_active = .false.
     self%model%top_sensible_boundary_carrier_valid = .true.
@@ -1678,7 +1679,7 @@ contains
     call self%model%top_sensible_boundary_carrier%clear()
     self%model%top_sensible_boundary_carrier_active = .false.
     self%model%top_sensible_boundary_carrier_valid = .true.
-    call self%model%rfm_surface_hydraulic_memo%clear()
+    call clear_surface_hydraulic_memo(self%model%rfm_surface_hydraulic_memo)
   contains
     subroutine select_hbot5_proposal(cursor, requested_t1, target_t1, max_retries_cap, valid)
       real(real64), intent(in) :: cursor, requested_t1
