@@ -1,22 +1,24 @@
 {
   "work_unit": "PPA-WU05-A27",
   "baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-  "checkpoint_commit": "9de14bbd961ac12ea0f111d22cc7323285ba698f",
+  "checkpoint_commit": "b57a2c65c468a6d2fb3812a4e8902b410f575c22",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "GENERAL_THETA_ONLY_WALL_ROUTE_FALSIFIED_RESEARCH_ONLY",
-  "next_action": "Select explicit matrix-volume/mean ownership for pressure-aware wall research; retain signed saturated operator; moving contact/receiver and production A/B/C remain OPEN",
-  "recovery_point": "docs/audits/PPA_WU05A27_REAL_HYDRAULICS_RESULT.md",
+  "status": "PRESSURE_AWARE_MOVING_CONTACT_REFINEMENT_BLOCKED_RESEARCH_ONLY",
+  "next_action": "Keep production A/B/C separate. Before more pressure-aware moving-contact work, preregister a physically consistent saturated/seep contact mapping or continuous subcell pressure/contact operator under auxiliary no-independent-matrix-storage ownership, then repeat refinement without case tuning.",
+  "recovery_point": "docs/audits/PPA_WU05A27_PRESSURE_RECEIVER_RESULT.md",
   "blockers": [
-    "General theta-only saturated closure falsified; pressure and physical matrix-volume/mean ownership not qualified",
-    "Moving contact and actual receiver/profile feedback not implemented after failed dependency gate",
-    "Full production A/B/C and repeated timing/scaling remain open",
-    "Canonical82351099 shared contract/headcalc/binding delta requires branch reconciliation and affected Richards/backend requalification before full A/B/C"
+    "General theta-only saturated closure remains falsified; saturated pressure must remain explicit authority.",
+    "Auxiliary no-independent-matrix-storage ownership is selected for A27 research, but the pressure-aware moving-contact seam failed both preregistered matrix-refinement gates.",
+    "The tested seam crosses two different reverse-exchange conductance laws at hmp=0; a physically defensible mapping/continuous contact transition is not yet qualified.",
+    "The lateral wall profile has not yet been coupled under the selected auxiliary ownership after this pressure-seam failure.",
+    "Full production A/B/C, repeated timing, stability attribution and multi-column scaling remain open.",
+    "Current production RFM remains one-way at the matrix source seam; the signed research seam must not be relabeled production comparator C."
   ],
-  "last_reconciled_head": "9de14bbd961ac12ea0f111d22cc7323285ba698f",
-  "last_reconciled_upstream": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+  "last_reconciled_head": "b57a2c65c468a6d2fb3812a4e8902b410f575c22",
+  "last_reconciled_upstream": "3869ec27a7314375fd7919debb6abe7c6450f261",
   "authority_paths": [
     "AGENTS.md",
     "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
@@ -27,7 +29,10 @@
     "docs/audits/PPA_WU05A27_PHYSICAL_MECHANISMS_CONTRACT.md",
     "docs/audits/PPA_WU05A27_LATERAL_PROFILE_CONTRACT.md",
     "docs/audits/PPA_WU05A27_REAL_HYDRAULICS_CONTRACT.md",
-    "docs/audits/PPA_WU05A27_MIXED_WALL_STATE_DESIGN.md"
+    "docs/audits/PPA_WU05A27_MIXED_WALL_STATE_DESIGN.md",
+    "docs/audits/PPA_WU05A27_PRESSURE_RECEIVER_CONTRACT.md",
+    "docs/audits/PPA_WU05A27_PRESSURE_RECEIVER_REFINEMENT_ADDENDUM.md",
+    "docs/audits/PPA_WU05A27_PRESSURE_RECEIVER_RESULT.md"
   ],
   "test_paths": [
     "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
@@ -46,7 +51,10 @@
     "research/rfm/a27/probe_lateral_profile.py",
     "research/rfm/a27/run_real_hydraulics.sh",
     "research/rfm/a27/analyze_real_hydraulics.py",
-    "research/rfm/a27/verify_real_hydraulics_evidence.py"
+    "research/rfm/a27/verify_real_hydraulics_evidence.py",
+    "research/rfm/a27/run_pressure_receiver.sh",
+    "research/rfm/a27/test_pressure_receiver.f90",
+    "research/rfm/a27/test_pressure_receiver_extension.f90"
   ],
   "dependency_surface": [
     "src/legacy/b1_10_port/headcalc.f90",
@@ -59,8 +67,8 @@
     "research/rfm/a27"
   ],
   "interfaces_changed": [],
-  "production_claim": "Bounded source correction qualified locally on persisted postimage; not canonically admitted. No E1 production envelope, speedup or stability claim.",
-  "research_result": "500 cases / 5000 sampled records; 8/node passes49/50,16/node passes50/50 against exact research cohort mode7; not production E1; physical feedback, no-loss interruption and signed linear coupling probes completed; frozen/reset exact closure falsified within diagnostic scope;128-cell fixed-wall moisture profile passes24/24 declared nonlinear diffusion/drying cases, smallest passing tested resolution; no moving-contact qualification;general theta-only saturated wall route falsified at36/36 catalog materials; solver K/C timestep-dependent at saturation; pressure-aware design proposed only",
+  "production_claim": "A27 source correction remains research-branch only; current-canonical backend preservation gates pass on the reconciled postimage. The pressure-aware moving-contact research seam is not qualified. No production E1 envelope, speedup, stability claim or canonical admission.",
+  "research_result": "Current-canonical backend reconciliation passes A26 live/backend/actual-Richards plus A27 column/finite/reverse gates. Auxiliary wall research selects Reference as sole matrix-storage owner and explicit pressure as saturated authority. A finite signed pressure-receiver seam conserves combined water to near machine precision, exercises both directions, moving contact and reject/replay, but fails the preregistered matrix-refinement gate and a frozen five-step extension fails monotone refinement. Source inspection shows the tested moving contact crosses distinct submerged-cdarcy and seep-face reverse conductance laws; transition mapping remains unqualified.",
   "source_repair_qualified": true,
   "canonical_admitted": false,
   "qualification_scopes": {
@@ -95,8 +103,8 @@
       "code_postimage": "467d734fbe8b5ea350a43e0fbf73ee412cda38cc",
       "source_O0_O2": "PASS",
       "finest_cells": 2048,
-      "analytic_error_cm": 5.944729808415872e-07,
-      "rewet_mesh_difference_cm": 1.6230529882171885e-05,
+      "analytic_error_cm": 5.944729808415872e-7,
+      "rewet_mesh_difference_cm": 0.000016230529882171885,
       "initial_reference_gate": "FAIL at256/512, retained",
       "production_eligible": false
     },
@@ -127,6 +135,25 @@
         "raw_identity_with_original": "PASS",
         "scope": "source-domain probes only, not complete backend preservation"
       }
+    },
+    "backend_current_canonical_reconciliation": {
+      "canonical": "3869ec27a7314375fd7919debb6abe7c6450f261",
+      "merge_postimage": "b57a2c65c468a6d2fb3812a4e8902b410f575c22",
+      "run_id": 36976462557,
+      "job_id": 110741257480,
+      "result": "PASS",
+      "scope": "A26 live trial/backend/actual Richards plus A27 column ablation/finite exchange/reverse exchange; not full A/B/C"
+    },
+    "pressure_receiver_research": {
+      "ownership": "AUXILIARY_WALL_SHAPE_NO_INDEPENDENT_MATRIX_STORAGE; REFERENCE_RICHARDS_MATRIX_STORAGE_AUTHORITY",
+      "pressure_authority": "accepted Reference pressure head; no saturated theta inversion and no numerical capacity as storage",
+      "original_run": 36975724320,
+      "original_result": "FAIL_MATRIX_REFINEMENT",
+      "extension_run": 36976029998,
+      "extension_result": "FAIL_MONOTONE_MATRIX_REFINEMENT",
+      "max_combined_ledger_cm": 1.199040866595169e-14,
+      "finest_receiver_difference_cm": 0.000007649607158377592,
+      "production_eligible": false
     }
   },
   "evidence_archive": "docs/audits/evidence/PPA_WU05A27_COHORT_EVIDENCE.tar.gz.part-*",
@@ -143,9 +170,14 @@
     "docs/audits/evidence/PPA_WU05A27_LATERAL_MANIFEST.json",
     "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-*",
     "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS_MANIFEST.json",
-    "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS.tar.gz.part-*"
+    "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS.tar.gz.part-*",
+    "docs/audits/evidence/PPA_WU05A27_PRESSURE_RECEIVER.csv",
+    "docs/audits/evidence/PPA_WU05A27_PRESSURE_RECEIVER_SUMMARY.json"
   ],
   "verification_record": "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS_VERIFICATION.json",
   "mixed_wall_design_implemented": false,
-  "canonical_backend_delta_merged_into_branch": false
+  "canonical_backend_delta_merged_into_branch": true,
+  "mixed_wall_ownership_selected": "AUXILIARY_SHAPE_NO_INDEPENDENT_MATRIX_STORAGE",
+  "pressure_receiver_seam_implemented": true,
+  "pressure_receiver_seam_qualified": false
 }

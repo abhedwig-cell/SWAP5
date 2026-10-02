@@ -1,0 +1,53 @@
+{
+  "work_unit": "PPA-WU05-A27",
+  "evidence_type": "pressure_aware_receiver_research_summary",
+  "current_canonical_reconciled": "3869ec27a7314375fd7919debb6abe7c6450f261",
+  "reconciled_postimage": "b57a2c65c468a6d2fb3812a4e8902b410f575c22",
+  "backend_requalification": {
+    "run_id": 36976462557,
+    "job_id": 110741257480,
+    "conclusion": "PASS",
+    "gates": [
+      "A26 live trial preparer",
+      "A26 serialized backend compile",
+      "A26 actual Richards binding",
+      "A27 column ablation",
+      "A27 finite exchange",
+      "A27 reverse exchange"
+    ]
+  },
+  "pressure_receiver": {
+    "original_contract_run": 36975724320,
+    "original_gate": "FAIL_MATRIX_REFINEMENT",
+    "extension_run": 36976029998,
+    "extension_gate": "FAIL_MONOTONE_MATRIX_REFINEMENT",
+    "optimization_scope": "O0 only for the retained negative pressure-receiver runs; O2 was not reached after O0 failure",
+    "matrix_successive_differences_cm": [
+      0.02899875634043525,
+      0.01092408630066899,
+      0.003962457628233551,
+      0.004218704754372027
+    ],
+    "finest_receiver_difference_cm": 0.000007649607158377592,
+    "max_combined_ledger_cm": 1.199040866595169e-14,
+    "ownership_gates_reached": "PASS before final refinement assertions",
+    "production_eligible": false
+  },
+  "contact_transition_diagnostic": {
+    "swsep": 0,
+    "cdarcy_per_day": 0.0005,
+    "shape_factor": 0.1,
+    "diameter_cm": 20,
+    "ks_cm_day": 31.22501566,
+    "dz_cm": 10,
+    "submerged_reverse_conductance_per_day": 0.0005,
+    "seep_face_reverse_conductance_per_day": 1.2490006264,
+    "ratio": 2498.0012528,
+    "causal_claim": "Potential moving-contact confounder identified from source algebra; not isolated as sole cause of refinement failure."
+  },
+  "claims": {
+    "qualified": false,
+    "canonical_admitted": false,
+    "full_abc_open": true
+  }
+}
