@@ -409,15 +409,39 @@ contains
 
     x_old = abs(c(4)*head_old)**c(6)
     if (.not. ieee_is_finite(x_old)) return
-    dx = x_old*expm1(c(6)*log1p(relative_abs_change))
+    dx = x_old*b110_expm1(c(6)*b110_log1p(relative_abs_change))
     if (.not. ieee_is_finite(dx)) return
-    dlog_se = -c(7)*log1p(dx/(1.0_real64+x_old))
+    dlog_se = -c(7)*b110_log1p(dx/(1.0_real64+x_old))
     if (.not. ieee_is_finite(dlog_se)) return
     se_old = 1.0_real64/((1.0_real64+x_old)**c(7))
     if (.not. ieee_is_finite(se_old)) return
-    delta_theta = c(25)*se_old*expm1(dlog_se)/normalization
+    delta_theta = c(25)*se_old*b110_expm1(dlog_se)/normalization
     if (.not. ieee_is_finite(delta_theta)) delta_theta = fallback
   end function b110_vg_same_branch_increment
+
+  pure real(real64) function b110_log1p(x) result(value)
+    real(real64), intent(in) :: x
+    real(real64) :: x2
+    if (abs(x) < 1.0e-3_real64) then
+      x2 = x*x
+      value = x - 0.5_real64*x2 + x*x2/3.0_real64 - x2*x2/4.0_real64 + &
+           x*x2*x2/5.0_real64 - x2*x2*x2/6.0_real64
+    else
+      value = log(1.0_real64+x)
+    end if
+  end function b110_log1p
+
+  pure real(real64) function b110_expm1(x) result(value)
+    real(real64), intent(in) :: x
+    real(real64) :: x2
+    if (abs(x) < 1.0e-3_real64) then
+      x2 = x*x
+      value = x + 0.5_real64*x2 + x*x2/6.0_real64 + x2*x2/24.0_real64 + &
+           x*x2*x2/120.0_real64 + x2*x2*x2/720.0_real64
+    else
+      value = exp(x)-1.0_real64
+    end if
+  end function b110_expm1
 
   pure real(real64) function b110_moiscap(c, head, step_duration) result(capacity)
     real(real64), intent(in) :: c(:), head, step_duration
