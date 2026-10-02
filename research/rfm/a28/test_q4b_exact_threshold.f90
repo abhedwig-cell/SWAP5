@@ -26,7 +26,8 @@ program test_a28_q4b_exact_threshold
   implicit none
 
   integer,parameter::ARM_A=1,ARM_B=2,ARM_C=3
-  real(real64),parameter::DT=0.01_real64,TEND=24.0_real64
+  real(real64),parameter::DT=0.01_real64
+  real(real64),parameter::SPINUP_END=2.4_real64,RAMP_END=7.2_real64,TEND=31.2_real64
   type metrics_t
     logical::completed=.false.
     integer::status=-999,fail_step=0
@@ -95,8 +96,7 @@ contains
     m=metrics_t()
     call init_parameters(parameters,soil,ks)
     parameters%bottom_mode=3
-    call cauchy%initialize_sine(0._real64,0._real64,[0._real64,366._real64],-55._real64,45._real64, &
-         0._real64,1.2_real64,5._real64,.true.,cauchy_status)
+    call initialize_q4b_cauchy(cauchy,0._real64,wt,0._real64,cauchy_status)
     if(cauchy_status/=FMR_CAUCHY3_OK)then;m%status=-936;return;end if
     wt=water_table(regime)
     heads=wt-z
@@ -184,6 +184,8 @@ contains
       t0=real(step-1,real64)*DT;t1=real(step,real64)*DT
       rain=0._real64
       call init_forcing(forcing,arm,rain,macro_area)
+      call initialize_q4b_cauchy(cauchy,t0,wt,q4b_amplitude(t0),cauchy_status)
+      if(cauchy_status/=FMR_CAUCHY3_OK)then;m%status=-936;m%fail_step=step;exit;end if
       allocate(forcing%legacy_swbotb3_implicit_control);forcing%legacy_swbotb3_implicit_control=cauchy
       call forcing%legacy_swbotb3_implicit_control%resolve_proposal(t0,t1,probe,cauchy_status)
       if(cauchy_status/=FMR_CAUCHY3_OK.or..not.probe%available)then
@@ -250,7 +252,7 @@ contains
         call committed%snapshot(snapshot,available);if(.not.available)then;m%status=-931;m%fail_step=step;exit;end if
         select type(ts=>snapshot)
         type is(fmr_b110_rfm_state_t)
-          write(*,'(*(g0,:,","))') 'HEADTRACE',soil,geom,step,t0,ts%pressure_head(1), &
+          if(t0>=RAMP_END)write(*,'(*(g0,:,","))') 'HEADTRACE',soil,geom,step,t0,ts%pressure_head(1), &
                ts%pressure_head(rfmcfg%endpoint_node_index(1)),ts%pressure_head(rfmcfg%mb_wall_node_index)
         class default;m%status=-932;m%fail_step=step;exit
         end select
@@ -475,6 +477,27 @@ contains
     end select
   end function water_table
 
+
+  real(real64) function q4b_amplitude(t) result(a)
+    real(real64),intent(in)::t
+    if(t<SPINUP_END)then
+      a=0._real64
+    else if(t<RAMP_END)then
+      a=45._real64*(t-SPINUP_END)/(RAMP_END-SPINUP_END)
+    else
+      a=45._real64
+    end if
+  end function q4b_amplitude
+
+  subroutine initialize_q4b_cauchy(control,t,mean_head,amplitude,status)
+    type(fmr_cauchy3_control_t),intent(inout)::control
+    real(real64),intent(in)::t,mean_head,amplitude
+    integer,intent(out)::status
+    real(real64)::year0
+    year0=floor(t/366._real64)*366._real64
+    call control%initialize_sine(0._real64,0._real64,[year0,year0+366._real64],mean_head,amplitude, &
+         0._real64,1.2_real64,5._real64,.true.,status)
+  end subroutine initialize_q4b_cauchy
 
   real(real64) function q4b_rain_rate(soil,geom,t) result(r)
     integer,intent(in)::soil,geom
