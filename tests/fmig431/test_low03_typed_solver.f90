@@ -1,5 +1,5 @@
 program test_low03_typed_solver
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64,int64
   use mod_soil_water_solver_contract
   use mod_reference_richards_legacy_binding
   use mod_reference_richards_state_binding
@@ -8,6 +8,10 @@ program test_low03_typed_solver
   use mod_b110_default_mvg_provider
   use mod_b110_source_sink_provider
   use mod_fixed_flux_top_boundary_provider
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t,fmr_new_b110_committed_state
+  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_kernel_committed_persistence
+  use mod_transaction_reference, only: transaction_state_t
   implicit none
   integer, parameter :: n=8
   type(soil_water_parameter_set_t), target :: p
@@ -31,6 +35,12 @@ program test_low03_typed_solver
   type(soil_water_solve_result_t) :: replay,head5,failed
   type(reference_richards_legacy_workspace_t) :: clean,ws5
   type(soil_water_boundary_conditions_t) :: boundary_saved
+  type(fmr_b110_physical_state_t) :: physical
+  type(kernel_committed_state_t) :: committed,restored
+  type(kernel_persistence_snapshot_t) :: snapshot
+  class(transaction_state_t),allocatable :: restored_physical
+  integer :: restart_status
+  logical :: restart_ok
   p%active_nodes=n
   allocate(p%z(n),p%dz(n),p%node_distance(n))
   do i=1,n
@@ -155,6 +165,39 @@ program test_low03_typed_solver
   if(result%status/=SW_SOLVE_CONVERGED.or.replay%status/=SW_SOLVE_CONVERGED)error stop 'reject replay failed'
   if(any(result%candidate_state%pressure_head/=replay%candidate_state%pressure_head))error stop 'rejected scratch leaked'
   print '(a)', 'LOW03_TYPED_REJECT_REPLAY=PASS'
+  ! Round-trip solver-selected physical state through the existing opaque
+  ! committed persistence mechanism. This does not forge a kernel candidate
+  ! or claim serialized mode3 application/transaction admission.
+  physical%active_nodes=n
+  physical%pressure_head=result%candidate_state%pressure_head
+  physical%water_content=result%candidate_state%water_content
+  physical%ponding_depth=result%candidate_state%ponding_depth
+  physical%groundwater_level=result%candidate_state%groundwater_level
+  call fmr_new_b110_committed_state(committed,760301_int64,physical,request%step_duration,restart_ok)
+  if(.not.restart_ok)error stop 'physical checkpoint construction'
+  call export_kernel_committed_state(committed,660230_int64,snapshot,restart_ok,restart_status)
+  if(.not.restart_ok.or.restart_status/=KERNEL_PERSISTENCE_OK)error stop 'physical restart export'
+  call restore_kernel_committed_state(snapshot,660230_int64,restored,restart_ok,restart_status)
+  if(.not.restart_ok.or.restart_status/=KERNEL_PERSISTENCE_OK)error stop 'physical restart restore'
+  call restored%snapshot(restored_physical,restart_ok)
+  if(.not.restart_ok)error stop 'restored snapshot unavailable'
+  request%base_state=result%candidate_state
+  call solver%solve(request,ws,result)
+  if(result%status/=SW_SOLVE_CONVERGED)error stop 'direct continuation failed'
+  select type(saved=>restored_physical)
+  type is(fmr_b110_physical_state_t)
+    request%base_state%pressure_head=saved%pressure_head
+    request%base_state%water_content=saved%water_content
+    request%base_state%ponding_depth=saved%ponding_depth
+    request%base_state%groundwater_level=saved%groundwater_level
+  class default
+    error stop 'wrong restored physical type'
+  end select
+  call solver%solve(request,clean,replay)
+  if(replay%status/=SW_SOLVE_CONVERGED)error stop 'restored continuation failed'
+  if(any(result%candidate_state%pressure_head/=replay%candidate_state%pressure_head))error stop 'restart changed heads'
+  if(result%bottom_flux/=replay%bottom_flux)error stop 'restart changed bottom flux'
+  print '(a)', 'LOW03_TYPED_PHYSICAL_RESTART_CONTINUATION=PASS'
   request%boundary%bottom_include_half_cell=.false.
   request%boundary%bottom_external_resistance_days=0._real64
   call solver%solve(request,ws,failed)
