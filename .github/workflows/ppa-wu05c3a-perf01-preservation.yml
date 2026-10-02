@@ -5,6 +5,7 @@ on:
     branches: [research/ppa-wu05c3a-zero-waste-performance]
     paths:
       - 'src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90'
+      - 'tests/physics/run_bartholomeus_active_chain.sh'
       - '.github/workflows/ppa-wu05c3a-perf01-preservation.yml'
 jobs:
   preserve:
