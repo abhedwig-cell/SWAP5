@@ -99,7 +99,10 @@ contains
     call initialize_q4b_cauchy(cauchy,0._real64,wt,0._real64,cauchy_status)
     if(cauchy_status/=FMR_CAUCHY3_OK)then;m%status=-936;return;end if
     wt=water_table(regime)
-    heads=wt-z
+    ! Mode-3 Stage A starts from a state consistent with its stationary aquifer head.
+    ! z is depth below surface in this fixture; zero-flux equilibrium therefore has
+    ! pressure head = aquifer total head - elevation = wt + z.
+    heads=wt+z
     call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
     call bind_b110_default_mvg_provider(hyd,hp,DT)
     call hyd%evaluate(heads,theta,cond,cap,dkdh)
