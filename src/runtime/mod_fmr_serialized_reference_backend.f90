@@ -3488,10 +3488,33 @@ contains
     if (same) then
       value = 0.0_real64
     else
-      value = huge(0.0_real64)
+      value = base_physical_temporal_error(self,full_state,half_state)
     end if
   end function fmr_serialized_temporal_identity
 
+
+  real(real64) function base_physical_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    value=huge(0.0_real64)
+    if(.not.associated(self%soil_parameters))return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        if(full%active_nodes/=half%active_nodes.or.full%active_nodes/=self%soil_parameters%active_nodes)return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head))return
+        if(.not.allocated(full%water_content).or..not.allocated(half%water_content))return
+        value=0.0_real64
+        value=max(value,maxval(abs(full%pressure_head-half%pressure_head)))
+        value=max(value,abs(full%ponding_depth-half%ponding_depth))
+        value=max(value,abs(full%groundwater_level-half%groundwater_level))
+        value=max(value,maxval(abs((full%water_content-half%water_content)*self%soil_parameters%dz)))
+      class default
+      end select
+    class default
+    end select
+  end function base_physical_temporal_error
   real(real64) function fmr_macropore_physical_temporal_error(self, full_state, half_state) result(value)
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
