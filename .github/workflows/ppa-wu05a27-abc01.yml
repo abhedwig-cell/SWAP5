@@ -13,6 +13,7 @@ jobs:
           mkdir -p /tmp/a27-abc01
           bash research/rfm/a27/run_production_abc01.sh /tmp/a27-abc01
       - name: Upload A/B/C evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ppa-wu05a27-abc01
