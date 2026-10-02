@@ -3309,6 +3309,7 @@ contains
       if (allocated(physical%macropore) .or. allocated(physical%snow) .or. allocated(physical%soil_temperature)) &
            error stop 'PPA-WU05-A20 RFM carrier mixed optional state'
       if (.not. physical%rfm%ready()) error stop 'PPA-WU05-A20 RFM fast storage incomplete'
+      if (size(self%soil_parameters%dz) /= size(physical%water_content)) error stop 'F-MR06 storage shape mismatch'
       value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth + &
            physical%rfm%storage_cm()
     type is (fmr_b110_fixed_weir_surface_water_state_t)
