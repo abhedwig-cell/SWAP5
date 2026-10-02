@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "BUILD_ORACLES",
-  "state": "RESEARCH_ORACLE_REPRODUCED_STANDALONE_MODFLOW_PENDING",
+  "state": "RESEARCH_ORACLE_REPRODUCED_NATIVE_MODFLOW_QUEUED",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -72,8 +72,9 @@
     "coupled_run": false,
     "hupsel_run": false,
     "production_delta": [],
-    "qualification": "independent_oracle_local_replay_pass; native_MODFLOW6_AB_workflow_registered_not_run",
-    "canonical_admission": false
+    "qualification": "independent_oracle_local_replay_pass; native_MODFLOW6_run_queued",
+    "canonical_admission": false,
+    "next_action": "Await run 37044022443 and evaluate full native MODFLOW6 A/B logs and artifact; then persist result and proceed to data/ownership gates."
   },
   "next_permitted_action": "Execute the registered standalone A/B workflow through an authorized GitHub Actions route. If it fails, inspect model inputs and native package budgets against the frozen oracle; repair only when physically justified. After A/B passes, proceed to the coupled ownership/data gates.",
   "oracle_evidence": {
@@ -113,7 +114,7 @@
   },
   "native_execution": {
     "workflow": ".github/workflows/f-gc-strip01-standalone-modflow.yml",
-    "workflow_run": null,
+    "workflow_run": 37044022443,
     "native_modflow_executed": false,
     "expected_engine": "MODFLOW6 6.8.0",
     "expected_flopy": "3.9.5",
@@ -133,6 +134,17 @@
       "classification": "workflow initialization/configuration failure before model execution",
       "cause": "runner reports no job objects; the failure remains infrastructure-level and produced no numerical evidence"
     },
-    "repair_note": "Remove runner-context references from job-level environment and artifact path, and use a workspace-relative result directory."
+    "repair_note": "Remove runner-context references from job-level environment and artifact path, and use a workspace-relative result directory.",
+    "job_id": 110960842285,
+    "queue_status": "queued",
+    "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37044022443",
+    "first_active_attempt": {
+      "run_id": 37044022443,
+      "head_sha": "6f93436baa4e09791737fb9e9f76b57ce205a737",
+      "job_id": 110960842285,
+      "status": "queued",
+      "checked_at": "2026-10-02T18:00Z",
+      "numerical_evidence": false
+    }
   }
 }
