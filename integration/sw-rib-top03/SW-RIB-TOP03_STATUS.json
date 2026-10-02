@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
-  "decision": "UNSATURATED_STATIONARY_LAYER_FACTORIAL_PERSISTED__TEST_PENDING__NO_PRODUCTION_ADMISSION",
+  "decision": "STATIONARY_CONTACT_ORACLE_BLOCKED_BY_ORIGIN_FROZEN_INTERIOR_K__SOURCE_SCHEME_AUDIT_PENDING__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -196,7 +196,7 @@
     "Ribasim/SWAP ownership of local pond versus external waterbody storage remains unqualified.",
     "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage."
   ],
-  "next_action": "Replay the unchanged 192-case matrix with final-head independent layer face/ledger audit. Audit gates and exact trajectory preservation precede final physical decision.",
+  "next_action": "Execute diagnostic-only source-scheme audit at unchanged 1e-10 cm mass gates; preserve failed current-K audit and all prior trajectories; record bounded research decision.",
   "recovery_point": "Resume from TOP03_UNSATURATED_CONTACT_PREREGISTRATION.md and the stationary-layer provider/fixture/runner/analyzer in this checkpoint on the same branch.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "This explicit-layer phase executed locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Prior persisted workflow evidence remains bound to its original scope. Commits use skip ci.",
@@ -261,7 +261,7 @@
     },
     "production_source_modified": false
   },
-  "last_reviewed_canonical": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
+  "last_reviewed_canonical": "0c18a9fffa14bce9e25a4cf773420c5824c0c819",
   "temporal_controller_research": {
     "preregistration_commit": "17fb8d0d15f04f3dcedfacc0e3338ddcdbd72fad",
     "result": "integration/sw-rib-top03/TOP03_TEMPORAL_CONTROLLER_RESULT.json",
@@ -447,7 +447,7 @@
     "production_qualified": false,
     "interpretation": "Correct saturated limit; constant saturated resistance does not reproduce the partly unsaturated explicit layer even for a prewetted layer origin. Storage alone is not established as a sufficient fix."
   },
-  "status": "UNSATURATED_STATIONARY_LAYER_FACTORIAL_PERSISTED__TEST_PENDING__NO_PRODUCTION_ADMISSION",
+  "status": "STATIONARY_CONTACT_ORACLE_BLOCKED_BY_ORIGIN_FROZEN_INTERIOR_K__SOURCE_SCHEME_AUDIT_PENDING__NO_PRODUCTION_ADMISSION",
   "evidence_paths": [
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_RESULT.json",
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_DECISION.md",
@@ -467,6 +467,10 @@
     "primary_O0_O2_exact_output": true,
     "primary_cases_per_build": 192,
     "primary_inherited_trajectories_exact": 54,
-    "audit_extension": "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_AUDIT_EXTENSION.md"
+    "audit_extension": "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_AUDIT_EXTENSION.md",
+    "audit_source_postimage": "1276dbc2e8a6c165842cac048d51d07ee993e599",
+    "final_head_stationary_audit": "FAIL",
+    "stationary_oracle_qualified": false,
+    "policy_reconciliation": "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_POLICY_RECONCILIATION.md"
   }
 }

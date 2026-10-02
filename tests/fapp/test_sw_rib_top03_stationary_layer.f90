@@ -21,7 +21,7 @@ program top03_stationary_layer
   type(soil_water_solve_result_t) :: sol
   type(soil_water_top_boundary_result_t) :: audit_top
   real(real64),allocatable,target :: qdra(:,:),qssdi(:),qrot(:)
-  real(real64),allocatable :: cofgen(:,:),h0(:),theta0(:),conductivity(:),capacity(:),dkdh(:),origin(:),origin_theta(:),face_flux(:)
+  real(real64),allocatable :: cofgen(:,:),h0(:),theta0(:),conductivity(:),capacity(:),dkdh(:),origin(:),origin_theta(:),face_flux(:),origin_k(:),audit_theta(:),audit_capacity(:),audit_dkdh(:)
   integer,allocatable :: parent(:)
   real(real64),parameter :: stages(6)=[0.005_real64,0.02_real64,0.05_real64,0.1_real64,0.2_real64,0.3_real64]
   real(real64),parameter :: widths(4)=[0.5_real64,0.5_real64,1.0_real64,1.0_real64]
@@ -29,6 +29,7 @@ program top03_stationary_layer
   real(real64) :: L,R,dt,H,position,ksoil,klayer,jexact,cumres,ktop,skin0,base0,skin,base,total0
   real(real64) :: top_input,bottom_out,max_mass,mass,base_delta,skin_delta,origin_pond,origin_gwl
   real(real64) :: max_layer_local_residual,max_layer_rate_residual,reconstructed_interface,kface,local_residual
+  real(real64) :: max_frozen_local_residual,max_frozen_rate_residual,frozen_interface
   real(real64) :: parent_theta(4),parent_head(4),head_error,flux_error,qinterface
   integer :: mode,m,ns,wet,mean,analytic,n,nlayer,i,p,s,e,nstages,iterations
   character(len=80) :: arg
@@ -134,7 +135,9 @@ program top03_stationary_layer
   base0=sum(theta0(nlayer+1:n)*params%dz(nlayer+1:n));skin0=0.0_real64
   if(nlayer>0)skin0=sum(theta0(1:nlayer)*params%dz(1:nlayer))
   total0=base0+skin0+request%base_state%ponding_depth
-  allocate(face_flux(n+1));max_layer_local_residual=0;max_layer_rate_residual=0;reconstructed_interface=0
+  allocate(face_flux(n+1),origin_k(n),audit_theta(n),audit_capacity(n),audit_dkdh(n))
+  max_layer_local_residual=0;max_layer_rate_residual=0;reconstructed_interface=0
+  max_frozen_local_residual=0;max_frozen_rate_residual=0;frozen_interface=0
   top_input=0;bottom_out=0;max_mass=0;iterations=0;head_error=0;flux_error=0
   do e=1,nstages
     if(analytic==0)H=stages(e)
@@ -180,6 +183,19 @@ program top03_stationary_layer
         max_layer_local_residual=max(max_layer_local_residual,local_residual)
         max_layer_rate_residual=max(max_layer_rate_residual,local_residual/dt)
         reconstructed_interface=reconstructed_interface-face_flux(nlayer+1)*dt
+        ! SWKIMPL=0 freezes interior K at solve entry. Preserve and audit that
+        ! source-bound numerical law separately from the failed current-K audit.
+        call hyd%evaluate(origin,audit_theta,origin_k,audit_capacity,audit_dkdh)
+        do i=2,nlayer+1
+          kface=(params%dz(i-1)+params%dz(i))/(params%dz(i-1)/origin_k(i-1)+params%dz(i)/origin_k(i))
+          face_flux(i)=-kface*((sol%candidate_state%pressure_head(i-1)- &
+               sol%candidate_state%pressure_head(i))/params%node_distance(i)+1.0_real64)
+        end do
+        local_residual=maxval(abs((theta0(1:nlayer)-origin_theta(1:nlayer))*params%dz(1:nlayer)+ &
+             dt*(face_flux(1:nlayer)-face_flux(2:nlayer+1))))
+        max_frozen_local_residual=max(max_frozen_local_residual,local_residual)
+        max_frozen_rate_residual=max(max_frozen_rate_residual,local_residual/dt)
+        frozen_interface=frozen_interface-face_flux(nlayer+1)*dt
       end if
       request%base_state=sol%candidate_state
     end do
@@ -197,6 +213,8 @@ program top03_stationary_layer
     qinterface=top_input-skin_delta
     if(nlayer>0)write(*,'(A,1X,I0,4(1X,ES24.16))')'AUDIT',e,max_layer_local_residual, &
          max_layer_rate_residual,reconstructed_interface,reconstructed_interface-qinterface
+    if(nlayer>0)write(*,'(A,1X,I0,4(1X,ES24.16))')'FROZEN_AUDIT',e,max_frozen_local_residual, &
+         max_frozen_rate_residual,frozen_interface,frozen_interface-qinterface
     write(*,'(A,1X,I0,17(1X,ES24.16),1X,I0)')'EVENT',e,top_input,bottom_out,base_delta,skin_delta, &
          request%base_state%ponding_depth,mass,max_mass,qinterface,H,parent_theta,parent_head,iterations
     if(nlayer>0)then
