@@ -358,9 +358,22 @@ contains
     end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
         request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
-        request%boundary%bottom_mode /= 3) then
+        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8) then
        route = 'legacy-bottom-mode-deferred'
        return
+    end if
+    if (request%boundary%bottom_mode == 8) then
+       route = 'lysimeter-plate-domain-deferred'
+       if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
+       if (.not. ieee_is_finite(request%boundary%bottom_head)) return
+       if (.not. ieee_is_finite(request%boundary%bottom_flux) .or. request%boundary%bottom_flux /= 0.0_real64) return
+       if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+       if (.not. request%boundary%bottom_include_half_cell) return
+       n=request%parameters%active_nodes
+       if (n < 2) return
+       if (.not. ieee_is_finite(request%parameters%node_distance(n))) return
+       if (request%parameters%node_distance(n) <= 0.0_real64) return
+       if (.not. ieee_is_finite(request%base_state%pressure_head(n))) return
     end if
     if (request%boundary%bottom_mode == 3) then
        route = 'resistive-bottom-domain-deferred'
