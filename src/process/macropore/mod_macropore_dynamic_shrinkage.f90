@@ -156,8 +156,8 @@ contains
       request%geometry_factor=config%geometry_factor(ic)
       request%matrix_area_fraction=matrix_area_fraction(ic)
       request%prior_dynamic_volume_cm=accepted_dynamic_volume(ic)
-      if(ic>1)request%neighbour_dynamic_volume_cm=request%neighbour_dynamic_volume_cm+accepted_dynamic_volume(ic-1)
-      if(ic<n)request%neighbour_dynamic_volume_cm=request%neighbour_dynamic_volume_cm+accepted_dynamic_volume(ic+1)
+      request%neighbour_dynamic_volume_cm = accepted_dynamic_volume(max(1,ic-1)) + &
+           accepted_dynamic_volume(min(n,ic+1))
       request%minimum_subsidence_cm=config%minimum_subsidence_cm(ic)
       call evaluate_dynamic_crack_volume(request,shrink,candidate_dynamic_volume(ic),local_ok)
       if(.not.local_ok)return
