@@ -12,7 +12,7 @@ module mod_top03_stateful_contact
   private
   integer,parameter,public :: CONTACT_AVAILABLE=1,CONTACT_INVALID=2,CONTACT_NO_ROOT=3, &
        CONTACT_BRANCH_UNAVAILABLE=4,CONTACT_SEED_DISAGREEMENT=5
-  real(real64),parameter :: ROOT_TOL=1e-12_real64
+  real(real64),parameter :: ROOT_TOL=1e-11_real64
   type,public :: top03_stateful_result_t
     integer :: status=CONTACT_INVALID,iterations=0
     real(real64) :: q=0,interface_head=0,interface_head_other=0,dq_dsoil_head=0,dinterface_dsoil_head=0
@@ -315,6 +315,7 @@ contains
     if(size(candidate%head)/=n.or.size(candidate%theta)/=n.or.size(candidate%origin_head)/=n.or.size(candidate%flux)/=n+1)return
     if(any(candidate%origin_head/=self%origin_head).or.candidate%bound_stage/=self%stage.or. &
          candidate%bound_hs/=hs.or.candidate%bound_dt/=self%dt.or.candidate%bound_policy/=self%conductivity_policy)return
+    if(.not.all(ieee_is_finite([candidate%q,candidate%external_input,candidate%matrix_input,candidate%storage_change])))return
     if(.not.all(ieee_is_finite(candidate%head)).or..not.all(ieee_is_finite(candidate%flux)).or. &
          .not.all(ieee_is_finite(candidate%theta)))return
     call faces(self,hs,candidate%head,k,dk,q,left,right,ok,.false.)
