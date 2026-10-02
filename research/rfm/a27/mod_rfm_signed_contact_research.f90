@@ -8,6 +8,7 @@ module mod_rfm_signed_contact_research
   real(real64)::dt=0.,storage=0.,capacity=0.,area=0.,bottom_depth=0.,length=0.,chi=0.,age=0.
   real(real64),allocatable::depth(:),thickness(:),matrix_head(:),conductivity(:),sorptivity(:),donor_water(:),receiver_space(:)
   real(real64),allocatable::contact_age(:),capillary_budget(:)
+  real(real64),allocatable::unsaturated_potential(:)
  end type
  type,public::signed_contact_result_t
   logical::valid=.false.
@@ -41,6 +42,10 @@ contains
    if(.not.q%finite_contact.or.size(q%capillary_budget)/=n)return
    if(.not.all(ieee_is_finite(q%capillary_budget)).or.any(q%capillary_budget<0.))return
   endif
+  if(allocated(q%unsaturated_potential))then
+   if(.not.q%finite_contact.or.size(q%unsaturated_potential)/=n)return
+   if(.not.all(ieee_is_finite(q%unsaturated_potential)).or.any(q%unsaturated_potential<0.))return
+  endif
   allocate(r%matrix_gain(n),r%matrix_loss(n));r%matrix_gain=0.;r%matrix_loss=0.
   phi=-q%bottom_depth+q%storage/q%area
   rootdiff=q%dt/(sqrt(q%age+q%dt)+sqrt(q%age))
@@ -65,6 +70,7 @@ contains
       else
        rate=cp*(hi-wetlo)
       endif
+      if(allocated(q%unsaturated_potential))rate=q%unsaturated_potential(i)
       if(allocated(q%capillary_budget))then
        ! Bound only enhancement above hydraulic Darcy, not through-flow itself.
        darcy_only=cd*((phi-q%matrix_head(i))*(hi-wetlo)+.5_real64*(hi**2-wetlo**2))

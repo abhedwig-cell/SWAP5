@@ -78,6 +78,7 @@ MODULE_SRC=(
  src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
  src/process/macropore/mod_rfm_surface_sorptivity.f90
  research/rfm/a27/mod_rfm_signed_contact_research.f90
+ research/rfm/a27/mod_wall_cohort_research.f90
 )
 objects=()
 for source in "${MODULE_SRC[@]}"; do

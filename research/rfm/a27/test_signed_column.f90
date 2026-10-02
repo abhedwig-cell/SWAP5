@@ -10,6 +10,7 @@ program test_ppa_wu05a27_signed_column
  use mod_rfm_matrix_source_provider,only:rfm_matrix_source_provider_t,bind_rfm_matrix_source_provider
  use mod_ppa_wu05a6_saturated_exchange_rate
  use mod_rfm_signed_contact_research
+ use mod_wall_cohort_research
  use mod_process_hydraulic_view,only:process_hydraulic_view_t
  use mod_rfm_surface_sorptivity,only:evaluate_rfm_node_sorptivity
  implicit none
@@ -22,8 +23,11 @@ program test_ppa_wu05a27_signed_column
  real(real64)::stheta(numnod),scond(numnod),scap(numnod),sdk(numnod),ss
  real(real64)::event_seed(numnod),event_age(numnod),trial_seed(numnod),trial_age(numnod)
  logical::wall_wet(numnod),trial_wet(numnod)
+ type(wall_cohort_t)::walls(numnod),trial_walls(numnod)
+ real(real64)::wetlo,wethi,cohort_phi,potential,darcy_potential,cumulative_ic_input
  integer::soil,wet,mode,ref,step,ns,iters,backs,k
  integer::budget_hits,new_wall_events,dry_resets
+ integer::max_cohorts,total_cohorts
  type(saturated_exchange_request_t)::sq
  type(saturated_exchange_result_t)::sx
  type(soil_water_parameter_set_t),target::params
@@ -44,11 +48,11 @@ program test_ppa_wu05a27_signed_column
  allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
  params%parameter_set_id=526_int64;params%active_nodes=numnod;params%z=z;params%dz=dz;params%node_distance=disnod(1:numnod)
 
- print '(a)','soil,wet,reverse_on,dt_day,time_day,exchange_cm,bottom_cm,storage_cm,storage_change_cm,max_abs_head_change_cm,mass_residual_cm,newton,backtracks,cpu_seconds,macro_storage_cm,macro_water_level_cm,budget_hits,new_wall_events,dry_resets,head_top_cm,head_mid_cm,head_bottom_cm,theta_top,theta_mid,theta_bottom'
+ print '(a)','soil,wet,reverse_on,dt_day,time_day,exchange_cm,bottom_cm,storage_cm,storage_change_cm,max_abs_head_change_cm,mass_residual_cm,newton,backtracks,cpu_seconds,macro_storage_cm,macro_water_level_cm,budget_hits,new_wall_events,dry_resets,head_top_cm,head_mid_cm,head_bottom_cm,theta_top,theta_mid,theta_bottom,max_live_cohorts,nominal_cohort_bytes,imposed_ic_input_cm'
  allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod),source(numnod),h0(numnod),t0(numnod))
  do soil=1,2
- do wet=0,3
- do mode=0,6
+ do wet=0,4
+ do mode=0,7
  do ref=0,4
  dt=.002_real64/(2**ref);ns=nint(1._real64/dt)
  ks=1._real64;if(soil==2)ks=5._real64
@@ -88,13 +92,22 @@ program test_ppa_wu05a27_signed_column
  macro_initial=0.;if(wet==2.or.wet==3)macro_initial=4._real64
  macro_water=macro_initial
  event_seed=0.;event_age=0.;wall_wet=.false.
+ do k=1,numnod
+  walls(k)=wall_cohort_t();trial_walls(k)=wall_cohort_t()
+ enddo
+ max_cohorts=0;cumulative_ic_input=0.
  budget_hits=0;new_wall_events=0;dry_resets=0
  if(allocated(contact%contact_age))deallocate(contact%contact_age)
  if(allocated(contact%capillary_budget))deallocate(contact%capillary_budget)
+ if(allocated(contact%unsaturated_potential))deallocate(contact%unsaturated_potential)
  cum_exchange=0.;cum_bottom=0.;iters=0;backs=0.;initial_storage=sum(t0*dz)
  call cpu_time(clock0)
  do step=1,ns
  qdra=0.;qssdi=0.
+ if(wet==4)then
+  macro_water=macro_water+2._real64*dt
+  cumulative_ic_input=cumulative_ic_input+2._real64*dt
+ endif
  if((wet==1.or.wet==2).and.step>ns/2)q%boundary%bottom_head=40._real64
  into_macro=0.;out_macro=0.
  if(mode>0)then
@@ -137,7 +150,7 @@ program test_ppa_wu05a27_signed_column
    if(.not.ok)error stop 'contact sorptivity'
    contact%sorptivity(k)=ss
   enddo
-  if(mode>=5)then
+  if(mode==5.or.mode==6)then
    trial_seed=event_seed;trial_age=event_age
    trial_wet=macro_water>0._real64.and.(-z+dz/2)>100._real64-macro_water/.05_real64
    do k=1,numnod
@@ -149,6 +162,21 @@ program test_ppa_wu05a27_signed_column
    enddo
    contact%sorptivity=trial_seed;contact%contact_age=trial_age
    if(mode==6)contact%capillary_budget=max(0._real64,cofgen(2,:)-q%base_state%water_content)*dz
+  endif
+  if(mode==7)then
+   cohort_phi=-100._real64+macro_water/.05_real64
+   contact%unsaturated_potential=[(0._real64,k=1,numnod)]
+   contact%capillary_budget=max(0._real64,cofgen(2,:)-q%base_state%water_content)*dz
+   do k=1,numnod
+    wethi=min(100._real64,-z(k)+dz(k)/2)
+    wetlo=min(wethi,max(0._real64,-z(k)-dz(k)/2,-cohort_phi))
+    call prepare_wall_cohorts(walls(k),wetlo,wethi,contact%sorptivity(k),trial_walls(k),ok)
+    if(.not.ok)error stop 'wall cohort preparation'
+    if(contact%matrix_head(k)<0.)then
+     call wall_potential(trial_walls(k),cohort_phi,contact%matrix_head(k),contact%conductivity(k),dt,contact%length,contact%chi,potential,darcy_potential)
+     contact%unsaturated_potential(k)=potential
+    endif
+   enddo
   endif
   call evaluate_signed_contact(contact,cr)
   if(.not.cr%valid)error stop 'signed contact'
@@ -163,24 +191,31 @@ program test_ppa_wu05a27_signed_column
  endif
  if(.not.r0%integrated_mass_balance_residual_available.or.abs(r0%integrated_mass_balance_residual_cm)>tol)error stop 'column mass'
  macro_water=macro_water+into_macro-out_macro
- if(mode>=5)then
+ if(mode==5.or.mode==6)then
   new_wall_events=new_wall_events+count(trial_wet.and..not.wall_wet)
   dry_resets=dry_resets+count(wall_wet.and..not.trial_wet)
   event_seed=trial_seed;event_age=trial_age+merge(dt,0._real64,trial_wet);wall_wet=trial_wet
+ endif
+ if(mode==7)then
+  walls=trial_walls;total_cohorts=0
+  do k=1,numnod
+   call advance_wall_cohorts(walls(k),dt);total_cohorts=total_cohorts+wall_count(walls(k))
+  enddo
+  max_cohorts=max(max_cohorts,total_cohorts)
  endif
  if(macro_water< -1e-12_real64.or.macro_water>5._real64+1e-12_real64)error stop 'receiver capacity'
  cum_exchange=cum_exchange+into_macro-out_macro
  cum_bottom=cum_bottom+r0%bottom_flux*dt
  iters=iters+r0%diagnostics%nonlinear_iterations;backs=backs+r0%diagnostics%backtracking_attempts
  q%base_state=r0%candidate_state
- if(abs(sum(q%base_state%water_content*dz)-initial_storage-cum_bottom+macro_water-macro_initial)>1e-7_real64)error stop "whole column ledger"
+ if(abs(sum(q%base_state%water_content*dz)-initial_storage-cum_bottom+macro_water-macro_initial-cumulative_ic_input)>1e-7_real64)error stop "whole column ledger"
  if(mod(step,max(1,ns/10))==0)then
   call cpu_time(clock1)
-  print '(3(i0,","),8(es24.16,","),2(i0,","),3(es24.16,","),3(i0,","),6(es24.16,:,","))',soil,wet,mode,dt,step*dt,cum_exchange,cum_bottom, &
+  print '(3(i0,","),8(es24.16,","),2(i0,","),3(es24.16,","),3(i0,","),6(es24.16,","),2(i0,","),es24.16)',soil,wet,mode,dt,step*dt,cum_exchange,cum_bottom, &
    sum(q%base_state%water_content*dz),sum(q%base_state%water_content*dz)-initial_storage, &
    maxval(abs(q%base_state%pressure_head-h0)),r0%integrated_mass_balance_residual_cm,iters,backs,clock1-clock0,macro_water,-100._real64+macro_water/.05_real64, &
    budget_hits,new_wall_events,dry_resets,q%base_state%pressure_head(1),q%base_state%pressure_head(node),q%base_state%pressure_head(numnod), &
-   q%base_state%water_content(1),q%base_state%water_content(node),q%base_state%water_content(numnod)
+   q%base_state%water_content(1),q%base_state%water_content(node),q%base_state%water_content(numnod),max_cohorts,32*max_cohorts,cumulative_ic_input
  endif
  enddo
  enddo
