@@ -9,10 +9,10 @@
   "tested": true,
   "qualified": true,
   "focused_repair_qualified": true,
-  "status": "CANONICAL_ADMITTED_CLOSEOUT_PERSISTED_POSTMERGE_PRESERVATION_PENDING",
+  "status": "CANONICAL_ADMITTED_BOUNDED_CLOSED",
   "canonical_admitted": true,
   "recovery_point": "docs/audits/PPA_WU05C3A_CLOSEOUT.md",
-  "next_action": "Wait for exact merge-postimage A9/A10/A26 preservation runs 36974258400, 36974258153 and 36974258427; classify any failure before declaring final closed preservation.",
+  "next_action": "Closed. Any envelope expansion requires a new bounded work unit.",
   "blockers": [],
   "authority_paths": [
     "docs/development/quality-governance-a-aa.md",
@@ -98,13 +98,36 @@
     "date": "2026-10-02",
     "scope": "Bounded oxygen mode2/type1 analytical-MvG REFERENCE waterfilm, homogeneous serial typed Fortran Reference application, bottom2/7, restricted thermal owner only.",
     "postmerge_preservation": {
-      "state": "QUEUED",
+      "state": "PASS_AFTER_A9_HARNESS_CLOSURE_REPAIR",
       "merge_postimage": "179673b16b84bc48fa5e0e83341a8a8e80b2211a",
-      "runs": {
-        "A9": 36974258400,
-        "A10": 36974258153,
-        "A26": 36974258427
-      }
+      "A10": {
+        "run": 36974258153,
+        "conclusion": "success"
+      },
+      "A26": {
+        "run": 36974258427,
+        "conclusion": "success"
+      },
+      "A9_initial": {
+        "run": 36974258400,
+        "conclusion": "failure",
+        "classification": "compile-manifest dependency closure only; missing existing A16 provider"
+      },
+      "A9_repair1": {
+        "run": 36974764691,
+        "conclusion": "failure",
+        "classification": "compile-manifest dependency closure only; A16 exposed missing A15 derivative prerequisite"
+      },
+      "A9_final": {
+        "run": 36975001110,
+        "postimage": "ffb09cda71c8b8ad8d6f187d03d240be901c6ccc",
+        "conclusion": "success"
+      },
+      "harness_repair_commits": [
+        "814ef70440436cc15c16217d6a6328fac80a46fa",
+        "ffb09cda71c8b8ad8d6f187d03d240be901c6ccc"
+      ],
+      "production_source_changed_by_repair": false
     }
   }
 }
