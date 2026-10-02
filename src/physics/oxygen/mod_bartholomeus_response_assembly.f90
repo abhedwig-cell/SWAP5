@@ -36,7 +36,7 @@ contains
       gfp=max(0.0_real64,gfp)
       if(view%pressure_head_cm(i)>=0) gfp=0.0_real64
       ! SWAP pressure head is cm water. Legacy oxygenstress uses positive matric potential in Pa.
-      mp=abs(view%pressure_head_cm(i))*98.0665_real64
+      mp=-view%pressure_head_cm(i)*100.0_real64
       t=bartholomeus_temperature_parameters(view%soil_temperature_k(i))
       dsoil=bartholomeus_soil_diffusivity(t%d_gas_free_air,gfp,data%soil(i)%diffusivity)
       rm=bartholomeus_microbial_respiration(view%soil_temperature_k(i),data%soil(i)%percent_org_mat, &

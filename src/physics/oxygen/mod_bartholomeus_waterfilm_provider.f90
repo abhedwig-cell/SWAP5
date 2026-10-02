@@ -45,7 +45,7 @@ contains
         waterfilm(i)=0.0_real64
         cycle
       end if
-      mp=abs(view%pressure_head_cm(i))*98.0665_real64
+      mp=-view%pressure_head_cm(i)*100.0_real64
       t=bartholomeus_temperature_parameters(view%soil_temperature_k(i))
       p%capac_term=data%soil(i)%waterfilm_capac_term
       p%n_minus_1=data%soil(i)%waterfilm_n_minus_1

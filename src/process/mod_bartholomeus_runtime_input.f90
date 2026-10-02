@@ -64,7 +64,8 @@ contains
     if(rooted_nodes>0) then
       view%pressure_head_cm=hydraulic%pressure_head(1:rooted_nodes)
       view%water_content=hydraulic%water_content(1:rooted_nodes)
-      view%soil_temperature_k=thermal%temperature_c(1:rooted_nodes)+273.15_real64
+      ! Preserve the pinned OxygenStress conversion, not a new scientific correction.
+      view%soil_temperature_k=thermal%temperature_c(1:rooted_nodes)+273.0_real64
     end if
     status=BARTHOLOMEUS_INPUT_OK
   end subroutine
