@@ -1,0 +1,7 @@
+# TOP03 single frozen-origin residual diagnosis
+
+Research only; source baseline3a54aaf498cbdbe1581c6aff3f4048e89f4500c7, canonical reviewed0d44f0195c94a9732c67b5e77f2148912df9bbc8. No production change or new solver proposal. Retain original constitutive law, original frozen interior conductivities, pressure-aware research line search, 80/16 iteration bounds and all mass gates.
+
+Observe geometry2, bottom7, dry profile1, ramp history3,2048 steps. Persist origin theta, endpoint heads/residuals, frozen interior face conductivities, source/sink terms, geometry and complete provider coefficients at iteration80. Reproduce existing failed step86 and O0/O2 identity. Instrumentation must preserve its trajectory.
+
+Where all upper three nodes are saturated, eliminate their linear flux equations with fixed origin and conductivity. Form the exact remaining bottom residual using the actual piecewise retention/conductivity source law. Require reconstruction of every dumped residual before interpreting root brackets. Examine one-sided residuals at the inherited conductivity cutoff and verify that upper heads stay on the saturated branch. A sign change across a discontinuity is not proof of a root. A branch-local root exclusion does not establish absence of a global column root. Do not claim production qualification or change reference physics. If bounded reconstruction fails, report that failure and stop the inference.
