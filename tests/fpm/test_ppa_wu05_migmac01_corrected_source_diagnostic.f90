@@ -80,8 +80,9 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
   real(real64)::heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod),storage_before,storage_after
   real(real64)::origin(77,numnod),node_cfg(7,numnod),domain_cfg(4,nd),source_scalars(12),end_scalars(7),levels(6),rapid_cfg(4)
   real(real64)::fraction(nd,numnod),diameter(numnod),cdarcy(nd,numnod)
+  real(real64)::head_ratio_node, head_change_node, head_tolerance_node
   type(fmr_macropore_physical_config_t)::source_config
-  integer::i,j,u,ios,ic,id
+  integer::i,j,u,ios,ic,id,head_ratio_index
   character(len=20000)::line
   character(len=40)::label
   logical::ok
@@ -345,6 +346,34 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
          '|TOTAL_OK=',workspace%richards%last_total_gate_passed, &
          '|HEAD_RATIO=',workspace%richards%last_head_criterion_ratio, &
          '|HEAD_OK=',workspace%richards%last_head_gate_passed
+    head_ratio_index=1
+    head_ratio_node=-1.0_real64
+    head_change_node=0.0_real64
+    head_tolerance_node=0.0_real64
+    do ic=1,numnod
+      head_change_node=abs(workspace%richards%delta_head(ic))
+      if(abs(workspace%richards%old_head(ic))<1.0_real64)then
+        head_tolerance_node=request%numerical%head_abs_tolerance
+      else
+        head_tolerance_node=request%numerical%head_rel_tolerance*abs(workspace%richards%old_head(ic))
+      end if
+      if(head_tolerance_node>0.0_real64 .and. head_change_node/head_tolerance_node>head_ratio_node)then
+        head_ratio_node=head_change_node/head_tolerance_node
+        head_ratio_index=ic
+      end if
+    end do
+    head_change_node=abs(workspace%richards%delta_head(head_ratio_index))
+    if(abs(workspace%richards%old_head(head_ratio_index))<1.0_real64)then
+      head_tolerance_node=request%numerical%head_abs_tolerance
+    else
+      head_tolerance_node=request%numerical%head_rel_tolerance*abs(workspace%richards%old_head(head_ratio_index))
+    end if
+    write(*,'(*(g0))') 'ACTIVE_INNER_HEAD_LIMIT|NODE=',head_ratio_index, &
+         '|RATIO=',head_ratio_node,'|OLD_H=',workspace%richards%old_head(head_ratio_index), &
+         '|DELTA_H=',workspace%richards%delta_head(head_ratio_index),'|TOL_H=',head_tolerance_node, &
+         '|H_ULP=',spacing(workspace%richards%old_head(head_ratio_index)), &
+         '|RES=',workspace%richards%residual(head_ratio_index), &
+         '|JMAIN=',workspace%richards%dfdh_main(head_ratio_index)
     write(*,'(*(g0))') 'ACTIVE_INNER_NODE|RES=', &
          workspace%richards%residual(maxloc(abs(workspace%richards%residual(1:numnod)),dim=1)), &
          '|OLD_H=',workspace%richards%old_head(maxloc(abs(workspace%richards%residual(1:numnod)),dim=1)), &
