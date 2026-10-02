@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU05-A27-ABC01",
+  "status": "QUALIFIED_RESEARCH_RESULT_WITH_SHARED_REPAIR_CANDIDATES",
+  "branch": "work/ppa-wu05-a27-rfm-performance-equivalence",
+  "head": "586cb21a44ff24385718f160adf9d5a6e65e409e",
+  "qualification": {
+    "run_id": 36991992438,
+    "conclusion": "success",
+    "artifact_id": 11220220713,
+    "artifact_sha256": "a71255570a77cfb3ed111cf030529cec8506dca4838f92d192fff21fad732063"
+  },
+  "screen": {
+    "cases": 32,
+    "b_completed": 29,
+    "c_completed": 30,
+    "joint_completed": 29,
+    "e1": 29,
+    "e0": 0,
+    "e2": 0,
+    "e3": 0
+  },
+  "performance": {
+    "verdict": "CURRENT_RFM_SLOWER_THAN_STANDARD_MACROPORE_IN_PREREGISTERED_CI_SAMPLE",
+    "b_over_c_ratio": [
+      0.22323339414729793,
+      0.18976279006046928,
+      0.20665762328831283,
+      0.23054247043073137
+    ],
+    "portable_speed_claim": false
+  },
+  "repairs": [
+    {
+      "id": "DEP01",
+      "meaning": "dedicated RFM carrier live layout admission",
+      "canonical_admitted": false
+    },
+    {
+      "id": "DEP02",
+      "meaning": "continuous RFM external full-half temporal metric",
+      "canonical_admitted": false
+    },
+    {
+      "id": "DEP03",
+      "meaning": "zero-supply dry continuation for stored RFM release",
+      "canonical_admitted": false
+    }
+  ],
+  "next": "PROFILE_RFM_TRIAL_PREPARATION_AND_CONSTITUTIVE_OVERHEAD_BEFORE_ANY_FURTHER_PHYSICAL_TUNING"
+}
