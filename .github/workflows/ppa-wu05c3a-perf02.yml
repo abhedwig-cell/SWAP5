@@ -1,0 +1,19 @@
+name: PPA-WU05-C3A PERF02 eligibility falsification
+on:
+  push:
+    branches: [research/ppa-wu05c3a-oxygen-eligibility-gate]
+    paths:
+      - 'tests/performance/falsify_bartholomeus_gate.f90'
+      - 'tests/performance/run_bartholomeus_gate_falsification.py'
+      - '.github/workflows/ppa-wu05c3a-perf02.yml'
+  workflow_dispatch:
+jobs:
+  falsify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/performance/run_bartholomeus_gate_falsification.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c3a-perf02-gate
+          path: c3a_gate_result.json
