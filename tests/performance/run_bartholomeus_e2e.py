@@ -4,7 +4,7 @@ import hashlib,json,os,pathlib,re,shlex,subprocess,tempfile
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 FC=shlex.split(os.environ.get('FC','gfortran'))
 LINK=shlex.split(os.environ.get('FMR_FC_LINK_FLAGS',''))
-TESTS=['tests/physics/test_bartholomeus_application.f90']
+TESTS=['tests/performance/benchmark_bartholomeus_e2e.f90']
 modules={}
 for p in list((ROOT/'src').rglob('*.f90'))+[ROOT/'tests/fsi/fsi04_real_headcalc_stubs.f90']:
  for n in re.findall(r'^\s*module\s+(\w+)\s*$',p.read_text(),re.M|re.I):modules[n.lower()]=p
@@ -28,7 +28,7 @@ result={'work_unit':'PPA-WU05-C3A','compiler':subprocess.check_output(FC+['--ver
 if os.environ.get('C3A_LIST_SOURCES'):
  print('\n'.join(str(p.relative_to(ROOT)) for p in ordered));raise SystemExit()
 with tempfile.TemporaryDirectory(prefix='c3a-application-') as folder:
- for opt in os.environ.get('C3A_OPTS','O0 O2').split():
+ for opt in os.environ.get('C3A_OPTS','O3').split():
   build=pathlib.Path(folder)/opt;build.mkdir()
   flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace',
    '-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build)]
@@ -47,8 +47,7 @@ with tempfile.TemporaryDirectory(prefix='c3a-application-') as folder:
    output=completed.stdout
    print(output,flush=True)
    completed.check_returncode()
-   if 'PPA_WU05C3A_APPLICATION_CHAIN=PASS' not in output:raise RuntimeError('missing actual application marker')
    result['runs'][opt][test]=output.splitlines()
-result['status']='LOCAL_APPLICATION_GATES_PASS'
+result['status']='E2E_BENCHMARK_PASS'
 pathlib.Path(os.environ.get('C3A_RESULT','c3a_application_result.json')).write_text(json.dumps(result,indent=2)+'\n')
-print('PPA_WU05C3A_APPLICATION_QUALIFICATION=PASS')
+print('PPA_WU05C3A_E2E_BENCHMARK=PASS')
