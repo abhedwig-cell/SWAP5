@@ -1,0 +1,29 @@
+{
+  "work_unit": "F-GC-STRIP01",
+  "canonical_reconciliation": {
+    "head": "8d2271dd23a963b98dfb25dfcadad0502221350e",
+    "delta": "Since source baseline 53059a5 only Issue 989 workflow trigger/checkout changes; no production source, numerical or owning-contract delta."
+  },
+  "validation": {
+    "native_ab_c0": {
+      "run_id": 37073868243,
+      "source_commit": "29747b2d48c771dfd144a2d37079521301e07266",
+      "conclusion": "success",
+      "artifact_id": 11255964292,
+      "artifact_sha256": "a6da010baffa9d75c8286ce9d81efcc22a0c296615cff157c6433420778b4506"
+    },
+    "documentation": {
+      "run_id": 37074776275,
+      "source_commit": "0eb3a9bac3939ece0f2b86ea92316086a3f8b525",
+      "source_check": "PASS",
+      "mkdocs_strict": "PASS",
+      "artifact_id": 11256194305,
+      "artifact_sha256": "d2abcc6af880704965991188596a5965d59167469e0420dbae2d918d5e893e8d",
+      "first_failure_record": "integration/f-gc/strip01/results/documentation_first_failure.json"
+    },
+    "claim_ceiling": "No positive coupled qualification, Hupsel execution, restart continuation or canonical admission."
+  },
+  "coupled_first_window_status": "FIRST_WINDOW_REJECTED",
+  "accepted_coupled_windows": 0,
+  "canonical_admission": false
+}
