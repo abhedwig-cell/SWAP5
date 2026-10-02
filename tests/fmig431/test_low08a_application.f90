@@ -123,8 +123,8 @@ contains
     value%numerical%transaction%temporal_tolerance=1.0e-6_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
-    value%numerical%transaction%max_retries=2
-    value%numerical%max_committed_substeps=8
+    value%numerical%transaction%max_retries=16
+    value%numerical%max_committed_substeps=512
     value%numerical%progress_tolerance=0.0_real64
     allocate(value%tiles(1))
     value%tiles(1)%tile_id=680101_int64
