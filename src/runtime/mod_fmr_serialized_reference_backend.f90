@@ -3302,16 +3302,12 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: state
     if (.not. associated(self%soil_parameters)) error stop 'F-MR06 storage requested before parameter binding'
-    if (.not. allocated(self%soil_parameters%dz)) error stop 'F-MR06 storage parameter dz missing'
-    write(*,'(a,1x,i0)') 'LOW08A_STORAGE_ENTER_MODE',self%bottom_mode
-    write(*,'(a,1x,i0,1x,i0,1x,i0)') 'LOW08A_STORAGE_ENTER',self%bottom_mode,self%soil_parameters%active_nodes,size(self%soil_parameters%dz)
     select type (physical => state)
     type is (fmr_b110_rfm_state_t)
       if (.not. allocated(physical%water_content)) error stop 'PPA-WU05-A20 RFM matrix storage incomplete'
       if (allocated(physical%macropore) .or. allocated(physical%snow) .or. allocated(physical%soil_temperature)) &
            error stop 'PPA-WU05-A20 RFM carrier mixed optional state'
       if (.not. physical%rfm%ready()) error stop 'PPA-WU05-A20 RFM fast storage incomplete'
-      if (size(self%soil_parameters%dz) /= size(physical%water_content)) error stop 'F-MR06 storage shape mismatch'
       value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth + &
            physical%rfm%storage_cm()
     type is (fmr_b110_fixed_weir_surface_water_state_t)
@@ -3321,18 +3317,12 @@ contains
       value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth + &
            physical%surface_water%storage
     class is (fmr_b110_physical_state_t)
-      write(*,'(a,1x,i0,1x,l1,1x,i0)') 'LOW08A_STORAGE_PHYSICAL',physical%active_nodes,allocated(physical%water_content),merge(size(physical%water_content),-1,allocated(physical%water_content))
       if (self%fixed_weir_surface_water_active) error stop 'F-PM08D7 active model missing fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
-      write(*,'(a,1x,l1,1x,l1)') 'LOW08A_STORAGE_FLAGS',self%macropore_active,allocated(self%macropore_config)
-      if (self%macropore_active) then
-        if (.not. allocated(self%macropore_config)) error stop 'F-MR06 active macropore config missing'
-        if (.not. allocated(self%macropore_config%matrix_area_fraction)) error stop 'F-MR06 active macropore area fraction missing'
-          value = sum(self%soil_parameters%dz * physical%water_content * self%macropore_config%matrix_area_fraction) + &
-               physical%ponding_depth
-        else
-          error stop 'F-MR06 active macropore area fraction missing'
-        end if
+      if (self%macropore_active .and. allocated(self%macropore_config) .and. &
+          allocated(self%macropore_config%matrix_area_fraction)) then
+        value = sum(self%soil_parameters%dz * physical%water_content * self%macropore_config%matrix_area_fraction) + &
+             physical%ponding_depth
       else
         value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
       end if
@@ -3346,7 +3336,6 @@ contains
         value = value + physical%snow%process%snow_water_storage
       end if
     class default
-      write(*,'(a,1x,i0)') 'LOW08A_STORAGE_TYPE_MISMATCH_MODE',self%bottom_mode
       error stop 'F-MR06 physical storage type mismatch'
     end select
   end function fmr_serialized_storage
@@ -3375,7 +3364,6 @@ contains
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
            size(physical%water_content) == physical%active_nodes
     class is (fmr_b110_physical_state_t)
-      write(*,'(a,1x,i0,1x,i0)') 'LOW08A_STORAGE_PHYSICAL',physical%active_nodes,size(physical%water_content)
       if (self%fixed_weir_surface_water_active) return
       complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
            allocated(physical%water_content)
@@ -3406,7 +3394,7 @@ contains
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
     if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &
-        self%bottom_mode /= 2 .and. self%bottom_mode /= 8) then
+        self%bottom_mode /= 2) then
       value = huge(0.0_real64)
       return
     end if
