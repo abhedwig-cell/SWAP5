@@ -26,8 +26,6 @@ module mod_rfm_live_trial_preparer
   real(real64)::surface_water_content=0._real64
   real(real64)::conductivity_cm_per_day=0._real64
   real(real64)::sorptivity_cm_sqrt_day=0._real64
- contains
-  procedure::clear=>clear_surface_hydraulic_memo
  end type
  type,public::rfm_live_trial_prepare_result_t
   logical::valid=.false.
@@ -38,7 +36,7 @@ module mod_rfm_live_trial_preparer
   type(rfm_wall_hydraulic_binding_result_t)::wall
   type(rfm_production_candidate_result_t)::candidate
  end type
- public::prepare_rfm_live_trial
+ public::prepare_rfm_live_trial,clear_surface_hydraulic_memo
 contains
  subroutine prepare_rfm_live_trial(accepted,config,forcing,view,constitutive,preflight,node_depth_cm,node_thickness_cm, &
       step_duration_day,tolerance,result,surface_memo)
