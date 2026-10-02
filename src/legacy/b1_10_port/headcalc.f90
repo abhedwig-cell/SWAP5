@@ -14,6 +14,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !                          and conductivities for next time step
 ! ----------------------------------------------------------------------
    ! input
+   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, prepare_reference_workspace_for_solve

@@ -207,7 +207,7 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
        rapid_drain_level_cm=rapid_cfg(4),rapid_area_exponent=rapid_cfg(1), &
        rapid_kd_reference=rapid_cfg(2),rapid_resistance_reference_day=rapid_cfg(3),perched_enabled=.true., &
        critical_under_saturated_volume_cm=0.1_real64,matrix_area_fraction=origin(5,:), &
-       covering_minimum_polygon_diameter_cm=10.0_real64,covering_ksat_cm_per_day=1.0_real64) &
+       covering_minimum_polygon_diameter_cm=10.0_real64,covering_ksat_cm_per_day=1.0_real64)
        ! exact official CRITUNDSATVOL plus captured covering physical parameters
   if(.not.ok)error stop 'source configuration invalid'
   geometry_config=source_config%geometry
