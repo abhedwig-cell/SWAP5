@@ -152,6 +152,11 @@ contains
     state%water_content = water
     state%ponding_depth = 0.0_real64
     state%groundwater_level = -2.0_real64
+    forcing%top_flux=-conductivity0;forcing%top_head=initial_head;forcing%bottom_flux=-conductivity0;forcing%bottom_head=-100._real64
+    allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod),forcing%root_extraction_sink(numnod))
+    forcing%drainage_flux_by_level=0;forcing%subsurface_irrigation_source=0;forcing%root_extraction_sink=0
+  end subroutine initialize_state_and_forcing
+
  subroutine add_root_thermal_oxygen(value)
   type(fmr_production_application_config_t),intent(inout)::value
   type(b110_default_mvg_parameters_t),target::hp
