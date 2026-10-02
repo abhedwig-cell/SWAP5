@@ -1,0 +1,20 @@
+name: PPA-WU05-MIGMAC02 dynamic shrinkage operator
+on:
+  push:
+    branches:
+      - research/ppa-wu05-migmac02-dynamic-shrinkage
+    paths:
+      - 'src/process/macropore/mod_macropore_dynamic_shrinkage.f90'
+      - 'tests/fpm/test_ppa_wu05_migmac02_dynamic_shrinkage.f90'
+      - 'tests/fpm/run_ppa_wu05_migmac02_dynamic_shrinkage.sh'
+      - '.github/workflows/ppa-wu05-migmac02-dynamic-shrinkage.yml'
+  workflow_dispatch:
+jobs:
+  pure-operator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run O0/O2 pure operator gate
+        run: bash tests/fpm/run_ppa_wu05_migmac02_dynamic_shrinkage.sh
