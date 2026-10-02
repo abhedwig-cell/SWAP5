@@ -86,7 +86,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    integer                          :: numnod
    integer                          :: swmacro, swbotb, swkimpl, swkmean, maxit, maxbacktr
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
-   real(8)                          :: CritDevBalCp, CritDevBalTot, lysimeter_plate_head, lysimeter_selector_head
+   real(8)                          :: CritDevBalCp, CritDevBalTot, lysimeter_plate_head
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
@@ -111,7 +111,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    legacy_state_binding = .not. present(state_binding)
    typed_bottom_invalid=.false.
    typed_bottom_conductance=0.0d0
-   lysimeter_selector_head=0.0d0
    if (legacy_state_binding) then
       lysimeter_plate_head=hplate
    else
@@ -371,9 +370,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    do i = 2, NN
       fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/grid_disnod(i) + 1.0d0
    end do
-
-!  Freeze the typed lysimeter selector immediately before the legacy first residual.
-   if (swbotb == 8 .and. .not. legacy_state_binding) lysimeter_selector_head=state%h(NN)
 
 !  calculate vector fsi_ws%residual (first time)
    call vector_F(1)
@@ -1070,8 +1066,7 @@ subroutine vector_F(iTask)
 !  for swbotb = 8, depending on iTask
    if (iTask == 1) then
       if (swbotb == 8) then
-         if (merge(lysimeter_selector_head,state%h(NN),.not.legacy_state_binding) > &
-             Critdz - grid_disnod(NN+1) + lysimeter_plate_head) then
+         if (state%h(NN) > Critdz - grid_disnod(NN+1) + lysimeter_plate_head) then
             fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
             flboth = .TRUE.
          else
