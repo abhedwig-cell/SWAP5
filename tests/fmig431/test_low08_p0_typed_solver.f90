@@ -24,10 +24,13 @@ program test_low08_p0_typed_solver
   real(real64),target::dra(1,n),irr(n),roots(n)
   integer::i
   call setup()
+  print '(a)', 'LOW08_STAGE_SETUP=PASS'
   hplate=-80._real64
   threshold=critdz-p%node_distance(n)+hplate
 
+  print '(a)', 'LOW08_STAGE_BEFORE_EQUALITY_SET'
   call set_bottom(threshold)
+  print '(a)', 'LOW08_STAGE_AFTER_EQUALITY_SET'
   initial_theta=r%base_state%water_content
   call solver%solve(r,ws,a)
   write(*,'(a,1x,i0,1x,a,1x,i0,1x,es24.16)') 'LOW08_EQUALITY_DIAG',a%status,trim(a%diagnostics%route),a%diagnostics%nonlinear_iterations,maxval(abs(ws%richards%residual))
