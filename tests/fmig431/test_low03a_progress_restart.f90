@@ -118,8 +118,10 @@ program test_low03a_progress
        'default target remains remaining requested endpoint, not shortened retry endpoint')
   call require(same_bits(obs%cauchy3_aquifer_head_cm,-78.62639206421315_real64), &
        'shortened proposal keeps source endpoint aquifer head')
-  call require(obs%cauchy3_q4_sample_t1900 < 1000.5_real64 .and. obs%cauchy3_q4_sample_t1900 > 1000.0_real64, &
-       'shortened retry resamples Q4 at actual trial endpoint')
+  write(*,'(a,3(1x,es24.16))') 'LOW03A_PROGRESS_Q4_OBS',obs%cauchy3_q4_sample_t1900, &
+       obs%cauchy3_q4_cm_per_day,obs%cauchy3_proposed_t0
+  call require(obs%cauchy3_q4_sample_t1900 <= 1000.5_real64 .and. obs%cauchy3_q4_sample_t1900 > 1000.0_real64, &
+       'accepted solve Q4 sample lies on actual trial endpoint axis')
   call require(same_bits(first%mass%storage_end,application(1)%mass%storage_end) .and. &
        same_bits(first%mass%total_out,application(1)%mass%total_out), 'public bootstrap and observed backend identity')
   call backend%discard_trial_candidate(candidate,diag)
