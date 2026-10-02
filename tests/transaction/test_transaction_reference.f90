@@ -1,5 +1,5 @@
 module mod_test_transaction_model
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference
   implicit none
   private
@@ -16,10 +16,12 @@ module mod_test_transaction_model
     integer :: fail_on_call = 0
     logical :: inject_mass_defect = .false.
     real(real64) :: mass_defect = 0.0_real64
+    logical :: storage_complete = .true.
   contains
     procedure :: advance => test_advance
     procedure :: storage => test_storage
     procedure :: temporal_error => test_temporal_error
+    procedure :: storage_accounting_status => test_storage_status
   end type test_model_t
 
 contains
@@ -35,7 +37,7 @@ contains
   end subroutine test_clone
 
   subroutine test_advance(self, state, t0, t1, outcome)
-    class(test_model_t), intent(inout) :: self
+    class(test_model_t), intent(in) :: self
     class(transaction_state_t), intent(inout) :: state
     real(real64), intent(in) :: t0, t1
     type(trial_outcome_t), intent(out) :: outcome
@@ -65,9 +67,10 @@ contains
   end subroutine test_advance
 
   function test_storage(self, state) result(value)
-    class(test_model_t), intent(in) :: self
+    class(test_model_t), intent(inout) :: self
     class(transaction_state_t), intent(in) :: state
     real(real64) :: value
+    if (.not. self%storage_complete) error stop 'incomplete storage must not be evaluated'
     if (self%k < -huge(0.0_real64)) error stop 'unreachable'
     select type(state)
     type is(test_state_t)
@@ -76,6 +79,20 @@ contains
       error stop 'unexpected state type in test_storage'
     end select
   end function test_storage
+
+  subroutine test_storage_status(self, state, complete, missing_mask)
+    class(test_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+    if (.not. same_type_as(state,state)) error stop 'unreachable'
+    complete = self%storage_complete
+    if (complete) then
+      missing_mask = TX_MASS_MISSING_NONE
+    else
+      missing_mask = TX_MASS_MISSING_UNSPECIFIED
+    end if
+  end subroutine test_storage_status
 
   function test_temporal_error(self, full_state, half_state) result(value)
     class(test_model_t), intent(in) :: self
@@ -112,6 +129,7 @@ program test_transaction_reference
   call test_temporal_retry(failures)
   call test_solver_failure_no_leak(failures)
   call test_mass_gate(failures)
+  call test_incomplete_storage_fails_closed(failures)
   call test_noncalendar_time(failures)
   call test_repeatability(failures)
   call test_parallel_independence(failures)
@@ -241,6 +259,23 @@ contains
     call expect_true(result%commits == 0, 'mass defect never commits', failures)
     call expect_close(water_of(state), 1.0_real64, 0.0_real64, 'mass failure keeps committed state', failures)
   end subroutine test_mass_gate
+
+  subroutine test_incomplete_storage_fails_closed(failures)
+    integer, intent(inout) :: failures
+    class(transaction_state_t), allocatable :: state
+    type(test_model_t) :: model
+    type(transaction_policy_t) :: policy
+    type(transaction_result_t) :: result
+    call new_state(state,1.0_real64)
+    model%storage_complete=.false.
+    policy%temporal_tolerance=1.0_real64
+    policy%mass_tolerance=1.0e-10_real64
+    policy%max_retries=0
+    call execute_reference_interval(model,state,0.0_real64,0.1_real64,policy,result)
+    call expect_true(result%status==TX_STATUS_RETRY_EXHAUSTED,'incomplete storage fails closed',failures)
+    call expect_true(result%mass_rejections==1,'incomplete storage rejected by mass gate',failures)
+    call expect_close(water_of(state),1.0_real64,0.0_real64,'incomplete storage cannot commit',failures)
+  end subroutine test_incomplete_storage_fails_closed
 
   subroutine test_noncalendar_time(failures)
     integer, intent(inout) :: failures
