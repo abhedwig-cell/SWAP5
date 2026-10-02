@@ -187,7 +187,7 @@
     "A geometrically consistent explicit transition-layer versus reduced R_s=L_s/K_s equivalence authority is required before contact resistance can become production surface physics.",
     "Ribasim/SWAP ownership of local surface storage versus the represented external water body remains unqualified."
   ],
-  "next_action": "Keep PR #956 draft and stop modifying TOP03 production physics. Execute the separately bounded explicit transition-layer prerequisite on a geometrically consistent profile fixture, using local surface refinement and R_s=L_s/K_s equivalence. Resume TOP03 temporal and receipt/commit qualification only after that physical surface-contact envelope is independently qualified.",
+  "next_action": "Implement and persist the geometrically consistent explicit-layer/reduced-resistance probe, then execute analytical controls and event-aligned space/time refinement. Keep TOP03 production and BASE acceptance fixed.",
   "recovery_point": "Contact-resistance research and physical review are persisted through branch checkpoint 81f18d178bac05f46d9f0493efa6649f3227c78d. Production code remains unchanged by the microrelief/contact research. Resume on the same branch and PR #956 only after the explicit-layer prerequisite is qualified.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -252,7 +252,7 @@
     },
     "production_source_modified": false
   },
-  "last_reviewed_canonical": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
+  "last_reviewed_canonical": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
   "temporal_controller_research": {
     "preregistration_commit": "17fb8d0d15f04f3dcedfacc0e3338ddcdbd72fad",
     "result": "integration/sw-rib-top03/TOP03_TEMPORAL_CONTROLLER_RESULT.json",
@@ -413,6 +413,14 @@
     ],
     "flat_surface_also_repaired": true,
     "interpretation": "A finite matrix-to-surface-water contact resistance is sufficient to regularize this fixture; microrelief is not numerically necessary but remains a separate geometry/storage mechanism.",
+    "production_qualified": false
+  },
+  "explicit_layer_research": {
+    "status": "PREREGISTERED_NOT_EXECUTED",
+    "baseline": "99da94ef964052e96d1bf11d975acbb7856353a9",
+    "canonical_inspected": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
+    "preregistration": "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_PREREGISTRATION.md",
+    "production_code_changed": false,
     "production_qualified": false
   }
 }
