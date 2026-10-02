@@ -5,6 +5,7 @@ module mod_fmr_serialized_reference_backend
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF, &
        TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
+  use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
@@ -16,6 +17,7 @@ module mod_fmr_serialized_reference_backend
        assess_fmr_mode7_temporal_head_envelope, FMR_MODE7_HEAD_ENVELOPE_OK
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
+       FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION, &
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
@@ -25,7 +27,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
+       soil_water_solve_result_t, soil_water_solver_diagnostics_t, soil_water_top_boundary_result_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_TEMPORAL_INDICATOR_NOT_RUN
   use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
@@ -71,6 +73,8 @@ module mod_fmr_serialized_reference_backend
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
        evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
        FMR_DRAIN_BIND_OK
+  use mod_fmr_legacy_qgwl_bottom_boundary_provider, only: fmr_qgwl_bottom_boundary_config_t, &
+       fmr_qgwl_bottom_boundary_result_t, fmr_evaluate_legacy_qgwl_bottom_boundary, FMR_QGWL_OK
   use mod_fmr_drainage_qbot_directional_binding, only: project_fmr_qbot_smooth_groundwater_level, &
        compose_fmr_qbot_drainage_sink_direction, FMR_QBOT_DRAIN_DIRECTION_OK
   use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, soil_temperature_parameters_t, &
@@ -84,10 +88,16 @@ module mod_fmr_serialized_reference_backend
        FIXED_WEIR_AVAILABLE
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
   use mod_rfm_physical_state, only: rfm_physical_state_t, copy_rfm_physical_state
+  use mod_rfm_runtime_configuration, only: rfm_runtime_configuration_t
+  use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
+  use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
+  use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
+
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
        macropore_runtime_result_t, MACRO_RUNTIME_CONVERGED, MACRO_RUNTIME_RETRY
+  use mod_fmr_legacy_head_bottom_boundary_provider, only: fmr_hbot5_control_t, fmr_hbot5_proposal_t, FMR_HBOT5_OK
   implicit none
   private
 
@@ -139,6 +149,12 @@ module mod_fmr_serialized_reference_backend
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
+
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_macropore_reduction_state_t
+    type(macropore_reduction_continuation_t) :: reduction_continuation
+  contains
+    procedure :: clone => fmr_b110_macropore_reduction_state_clone
+  end type fmr_b110_macropore_reduction_state_t
 
   type, extends(fmr_b110_physical_state_t), public :: fmr_b110_temporal_indicator_state_t
     private
@@ -264,7 +280,9 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
+    type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
+    type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     real(real64), allocatable :: drainage_flux_by_level(:,:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
@@ -274,10 +292,14 @@ module mod_fmr_serialized_reference_backend
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
     type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
+    type(rfm_surface_forcing_t), allocatable :: rfm_surface
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
     logical :: solver_executed = .false.
+    logical :: hbot5_proposal_available = .false.
+    real(real64) :: hbot5_proposed_t0 = 0.0_real64, hbot5_proposed_t1 = 0.0_real64
+    real(real64) :: hbot5_sample_t1900 = 0.0_real64, hbot5_pressure_head_cm = 0.0_real64
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
@@ -287,6 +309,9 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: macropore_returned_surface_cm = 0.0_real64
     logical :: macropore_rapid_drain_active = .false.
     real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
+    logical :: macropore_inner_richards_exchange_used = .false.
+    real(real64) :: macropore_inner_initial_exchange_rate_cm_per_day = 0.0_real64
+    real(real64) :: macropore_inner_final_exchange_rate_cm_per_day = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
@@ -363,6 +388,7 @@ module mod_fmr_serialized_reference_backend
   ! Worker-local transactional scratch for thermal transfer provenance. This is
   ! attempt context, never compact committed column state.
   type, extends(transaction_attempt_context_t) :: fmr_serialized_attempt_context_t
+    type(fmr_hbot5_proposal_t) :: hbot5_proposal
     logical :: bottom_thermal_active = .false.
     logical :: bottom_thermal_valid = .true.
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
@@ -375,6 +401,8 @@ module mod_fmr_serialized_reference_backend
   end type fmr_serialized_attempt_context_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
+    type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
+    type(fmr_hbot5_proposal_t) :: hbot5_proposal
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
@@ -420,6 +448,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
+    type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
@@ -429,8 +458,11 @@ module mod_fmr_serialized_reference_backend
     type(macropore_runtime_policy_t) :: macropore_policy
     logical :: macropore_policy_configured = .false.
     type(macropore_single_column_runtime_t) :: macropore_runtime
+    type(rfm_runtime_configuration_t) :: rfm_configuration
+    type(rfm_surface_forcing_t) :: rfm_surface_forcing
     logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
+    logical :: macropore_reduction_continuation_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
     logical :: temporal_indicator_budget_valid = .false.
     real(real64) :: temporal_indicator_budget = 0.0_real64
@@ -502,6 +534,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: configure_macropore_policy => fmr_serialized_backend_configure_macropore_policy
+    procedure, public :: configure_rfm_runtime => fmr_serialized_backend_configure_rfm_runtime
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
     procedure, public :: commit_reference_floor_candidate => fmr_serialized_backend_commit_reference_floor_candidate
@@ -519,6 +552,7 @@ module mod_fmr_serialized_reference_backend
 
   public :: prepare_fmr_b110_default_mvg
   public :: fmr_new_b110_committed_state
+  public :: fmr_new_b110_macropore_reduction_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
   public :: fmr_new_b110_black_evaporation_committed_state
@@ -661,6 +695,31 @@ contains
     end select
   end subroutine fmr_b110_state_clone
 
+  subroutine fmr_b110_macropore_reduction_state_clone(self, copy)
+    class(fmr_b110_macropore_reduction_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_macropore_reduction_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_macropore_reduction_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%reduction_continuation = self%reduction_continuation
+    end select
+  end subroutine fmr_b110_macropore_reduction_state_clone
+
+  subroutine fmr_b110_rfm_state_clone(self, copy)
+    class(fmr_b110_rfm_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    logical :: ok
+
+    allocate(fmr_b110_rfm_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_rfm_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      call copy_rfm_physical_state(self%rfm, typed_copy%rfm, ok)
+      if (.not. ok) error stop 'PPA-WU05-A20 RFM clone rejected valid source'
+    end select
+  end subroutine fmr_b110_rfm_state_clone
+
   subroutine fmr_b110_temporal_indicator_state_clone(self, copy)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
     class(transaction_state_t), allocatable, intent(out) :: copy
@@ -711,20 +770,6 @@ contains
     end select
   end subroutine fmr_b110_boesten_evaporation_state_clone
 
-  subroutine fmr_b110_rfm_state_clone(self, copy)
-    class(fmr_b110_rfm_state_t), intent(in) :: self
-    class(transaction_state_t), allocatable, intent(out) :: copy
-    logical :: ok
-
-    allocate(fmr_b110_rfm_state_t :: copy)
-    select type (typed_copy => copy)
-    type is (fmr_b110_rfm_state_t)
-      call copy_b110_physical_state(self, typed_copy)
-      call copy_rfm_physical_state(self%rfm, typed_copy%rfm, ok)
-      if (.not. ok) error stop 'PPA-WU05-A20 RFM clone rejected valid source'
-    end select
-  end subroutine fmr_b110_rfm_state_clone
-
   logical function fmr_b110_temporal_history_available(self) result(available)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
     available = self%temporal_history%available(self%active_nodes)
@@ -753,6 +798,50 @@ contains
     end select
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_committed_state
+
+  subroutine fmr_new_b110_macropore_reduction_committed_state(committed,lineage_id,state,reduction,initial_time,ok)
+    type(kernel_committed_state_t),intent(out)::committed
+    integer(int64),intent(in)::lineage_id
+    type(fmr_b110_physical_state_t),intent(in)::state
+    type(macropore_reduction_continuation_t),intent(in)::reduction
+    real(real64),intent(in)::initial_time
+    logical,intent(out)::ok
+    class(transaction_state_t),allocatable::carrier
+
+    ok=.false.
+    if(.not.reduction%valid())return
+    allocate(fmr_b110_macropore_reduction_state_t :: carrier)
+    select type(typed_carrier=>carrier)
+    type is(fmr_b110_macropore_reduction_state_t)
+      call copy_b110_physical_state(state,typed_carrier)
+      typed_carrier%reduction_continuation=reduction
+    end select
+    call committed%initialize(lineage_id,carrier,ok,initial_time)
+  end subroutine fmr_new_b110_macropore_reduction_committed_state
+
+  subroutine fmr_new_b110_rfm_committed_state(committed, lineage_id, state, rfm_state, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(rfm_physical_state_t), intent(in) :: rfm_state
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+    logical :: copied
+
+    ok = .false.
+    if (.not. rfm_state%ready()) return
+    if (allocated(state%macropore) .or. allocated(state%snow) .or. allocated(state%soil_temperature)) return
+
+    allocate(fmr_b110_rfm_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_rfm_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      call copy_rfm_physical_state(rfm_state, typed_carrier%rfm, copied)
+      if (.not. copied) return
+    end select
+    call committed%initialize(lineage_id, carrier, ok, initial_time)
+  end subroutine fmr_new_b110_rfm_committed_state
 
   subroutine fmr_new_b110_temporal_indicator_committed_state(committed, lineage_id, state, initial_time, ok, &
                                                               initial_right_derivative)
@@ -840,59 +929,40 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_boesten_evaporation_committed_state
 
-  subroutine fmr_new_b110_rfm_committed_state(committed, lineage_id, state, rfm_state, initial_time, ok)
-    type(kernel_committed_state_t), intent(out) :: committed
-    integer(int64), intent(in) :: lineage_id
-    type(fmr_b110_physical_state_t), intent(in) :: state
-    type(rfm_physical_state_t), intent(in) :: rfm_state
-    real(real64), intent(in) :: initial_time
-    logical, intent(out) :: ok
-    class(transaction_state_t), allocatable :: carrier
-    logical :: copied
-
-    ok = .false.
-    if (.not. rfm_state%ready()) return
-    if (allocated(state%macropore) .or. allocated(state%snow) .or. allocated(state%soil_temperature)) return
-
-    allocate(fmr_b110_rfm_state_t :: carrier)
-    select type (typed_carrier => carrier)
-    type is (fmr_b110_rfm_state_t)
-      call copy_b110_physical_state(state, typed_carrier)
-      call copy_rfm_physical_state(rfm_state, typed_carrier%rfm, copied)
-      if (.not. copied) return
-    end select
-    call committed%initialize(lineage_id, carrier, ok, initial_time)
-  end subroutine fmr_new_b110_rfm_committed_state
-
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
+                                                               macropore_reduction_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
                                                                boesten_evaporation_active) result(matches)
     class(transaction_state_t), intent(in) :: state
-    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active
+    logical, intent(in) :: temporal_history_enabled, macropore_reduction_enabled, fixed_weir_surface_water_active
     logical, intent(in) :: black_evaporation_active, boesten_evaporation_active
     if (black_evaporation_active .and. boesten_evaporation_active) then
       matches = .false.
       return
     end if
     select type (state)
+    type is (fmr_b110_macropore_reduction_state_t)
+      matches = macropore_reduction_enabled .and. .not. temporal_history_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. &
+           .not. boesten_evaporation_active .and. state%reduction_continuation%valid()
     type is (fmr_b110_temporal_indicator_state_t)
-      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+      matches = temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_fixed_weir_surface_water_state_t)
-      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active .and. &
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_black_evaporation_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
-           black_evaporation_active .and. .not. boesten_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_boesten_evaporation_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. boesten_evaporation_active
-    type is (fmr_b110_rfm_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. .not. boesten_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. boesten_evaporation_active
     type is (fmr_b110_physical_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active
     class default
       matches = .false.
@@ -934,6 +1004,7 @@ contains
     call committed%snapshot(snapshot, available)
     if (.not. available) return
     if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled, &
+                                                           model%macropore_reduction_continuation_enabled, &
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
                                                            model%boesten_evaporation_active)) return
@@ -977,6 +1048,7 @@ contains
     if (.not. selection_ok) return
     self%model%top_boundary => top_boundary
     self%model%temporal_indicator_history_enabled = .false.
+    self%model%macropore_reduction_continuation_enabled = .false.
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
     self%model%temporal_indicator_budget = 0.0_real64
@@ -999,6 +1071,7 @@ contains
     if (allocated(self%model%macropore_config)) deallocate(self%model%macropore_config)
     self%model%macropore_policy = macropore_runtime_policy_t()
     self%model%macropore_policy_configured = .false.
+    call self%model%rfm_configuration%clear()
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
   end subroutine fmr_serialized_backend_initialize
@@ -1043,6 +1116,18 @@ contains
     self%model%macropore_policy_configured = .true.
     ok = .true.
   end subroutine fmr_serialized_backend_configure_macropore_policy
+
+  subroutine fmr_serialized_backend_configure_rfm_runtime(self, config, ok)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(rfm_runtime_configuration_t), intent(in) :: config
+    logical, intent(out) :: ok
+
+    ok = .false.
+    if (.not. self%initialized) return
+    if (.not. config%valid()) return
+    self%model%rfm_configuration = config
+    ok = self%model%rfm_configuration%valid()
+  end subroutine fmr_serialized_backend_configure_rfm_runtime
 
   subroutine fmr_serialized_backend_set_bottom_thermal_carrier_enabled(self, enabled)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -1393,11 +1478,15 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
+    self%model%macropore_reduction_continuation_enabled = .false.
     select case (template%numerical_continuation_layout_id)
     case (FMR_NUMERICAL_CONTINUATION_NONE)
       self%model%temporal_indicator_history_enabled = .false.
     case (FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
       self%model%temporal_indicator_history_enabled = .true.
+    case (FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION)
+      self%model%temporal_indicator_history_enabled = .false.
+      self%model%macropore_reduction_continuation_enabled = .true.
     case default
       call reject_backend_trial(result, candidate, diagnostics)
       return
@@ -1411,17 +1500,19 @@ contains
       return
     end if
     if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
-      ! A20 admits the carrier/checkpoint topology only.
-      result = kernel_result_t()
-      result%status = KERNEL_STATUS_NOT_ADMITTED
-      candidate = kernel_candidate_state_t()
-      diagnostics = kernel_diagnostics_t()
-      diagnostics%admission_rejections = 1
-      return
+      if (.not. self%model%rfm_configuration%valid() .or. parameters%macropore_active .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
     end if
     if (parameters%macropore_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
-          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
+           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION) .or. &
+          (template%numerical_continuation_layout_id == FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION .and. &
+           .not. self%model%macropore_policy%source_reduction_retry_enabled) .or. &
           config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
         result = kernel_result_t()
         result%status = KERNEL_STATUS_NOT_ADMITTED
@@ -1510,8 +1601,13 @@ contains
         self%model%trusted_parameter_source => parameters
       end if
     end if
-    call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
-         result, candidate, diagnostics)
+    if (allocated(forcing%legacy_swbotb5_control)) then
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics, target_selector=select_hbot5_proposal)
+    else
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics)
+    end if
     if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
     nullify(self%model%hydraulic_parameters)
     nullify(self%model%trusted_parameter_source)
@@ -1538,6 +1634,21 @@ contains
     call self%model%top_sensible_boundary_carrier%clear()
     self%model%top_sensible_boundary_carrier_active = .false.
     self%model%top_sensible_boundary_carrier_valid = .true.
+  contains
+    subroutine select_hbot5_proposal(cursor, requested_t1, target_t1, max_retries_cap, valid)
+      real(real64), intent(in) :: cursor, requested_t1
+      real(real64), intent(out) :: target_t1
+      integer, intent(out) :: max_retries_cap
+      logical, intent(out) :: valid
+      integer :: provider_status
+      target_t1 = requested_t1
+      max_retries_cap = config%transaction%max_retries
+      valid = .false.
+      self%model%hbot5_proposal = fmr_hbot5_proposal_t()
+      if (.not. allocated(self%model%legacy_swbotb5_control)) return
+      call self%model%legacy_swbotb5_control%resolve(cursor,target_t1,self%model%hbot5_proposal,provider_status)
+      valid = provider_status == FMR_HBOT5_OK .and. self%model%hbot5_proposal%available
+    end subroutine
   end subroutine fmr_serialized_backend_run_trial
 
   subroutine reject_backend_trial(result, candidate, diagnostics)
@@ -1560,7 +1671,7 @@ contains
   logical function fmr_serialized_attempt_context_required(self) result(required)
     class(fmr_serialized_reference_model_t), intent(in) :: self
 
-    required = self%trajectory_direction_requested .or. self%drainage_response_active .or. &
+    required = allocated(self%legacy_swbotb5_control) .or. self%trajectory_direction_requested .or. self%drainage_response_active .or. &
          self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid .or. &
          self%top_sensible_boundary_carrier_active .or. .not. self%top_sensible_boundary_carrier_valid
   end function fmr_serialized_attempt_context_required
@@ -1572,6 +1683,7 @@ contains
     allocate(fmr_serialized_attempt_context_t :: context)
     select type (typed => context)
     type is (fmr_serialized_attempt_context_t)
+      typed%hbot5_proposal = self%hbot5_proposal
       typed%bottom_thermal_active = self%bottom_thermal_carrier_active
       typed%bottom_thermal_valid = self%bottom_thermal_carrier_valid
       call self%bottom_thermal_carrier%copy_to(typed%bottom_thermal_carrier)
@@ -1590,6 +1702,7 @@ contains
 
     select type (typed => context)
     type is (fmr_serialized_attempt_context_t)
+      self%hbot5_proposal = typed%hbot5_proposal
       self%bottom_thermal_carrier_active = typed%bottom_thermal_active
       self%bottom_thermal_carrier_valid = typed%bottom_thermal_valid
       call self%bottom_thermal_carrier%restore_from(typed%bottom_thermal_carrier)
@@ -1600,6 +1713,7 @@ contains
       self%drainage_response_window_signed_exchange_native = typed%drainage_response_window_signed_exchange_native
       self%trajectory_direction = typed%trajectory_direction
     class default
+      self%hbot5_proposal = fmr_hbot5_proposal_t()
       self%bottom_thermal_carrier_active = .false.
       self%bottom_thermal_carrier_valid = .false.
       call self%bottom_thermal_carrier%clear()
@@ -1836,7 +1950,10 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
+    self%hbot5_proposal = fmr_hbot5_proposal_t()
+    if (allocated(self%legacy_swbotb5_control)) deallocate(self%legacy_swbotb5_control)
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
+    self%rfm_surface_forcing = rfm_surface_forcing_t()
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
@@ -1904,6 +2021,21 @@ contains
         if (any(forcing%root_extraction_sink < 0.0_real64)) return
       else
         if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
+      end if
+      if (allocated(forcing%legacy_swbotb5_control)) then
+        if (self%bottom_mode /= 5 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (allocated(forcing%legacy_swbotb2_control) .or. allocated(forcing%legacy_swbotb4_qgwl_control)) return
+        if (.not. forcing%legacy_swbotb5_control%ready()) return
+        allocate(self%legacy_swbotb5_control)
+        self%legacy_swbotb5_control = forcing%legacy_swbotb5_control
+      end if
+      if (allocated(forcing%legacy_swbotb4_qgwl_control)) then
+        if (allocated(forcing%legacy_swbotb2_control)) return
+        if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (.not. allocated(self%legacy_swbotb4_qgwl_control)) allocate(self%legacy_swbotb4_qgwl_control)
+        self%legacy_swbotb4_qgwl_control = forcing%legacy_swbotb4_qgwl_control
+      else if (allocated(self%legacy_swbotb4_qgwl_control)) then
+        deallocate(self%legacy_swbotb4_qgwl_control)
       end if
       if (allocated(forcing%legacy_swbotb2_control)) then
         if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
@@ -2031,6 +2163,18 @@ contains
       else if (allocated(self%projection_zero_direction)) then
         deallocate(self%projection_zero_direction)
       end if
+      if (self%rfm_configuration%enabled) then
+        if (.not. self%rfm_configuration%valid()) return
+        if (.not. allocated(forcing%rfm_surface)) return
+        if (.not. forcing%rfm_surface%valid()) return
+        if (self%macropore_active .or. self%snow_active .or. self%black_evaporation_active .or. &
+            self%boesten_evaporation_active .or. self%fixed_weir_surface_water_active) return
+        if (allocated(forcing%macropore_top_input)) return
+        self%rfm_surface_forcing = forcing%rfm_surface
+      else
+        if (allocated(forcing%rfm_surface)) return
+      end if
+
       if (allocated(forcing%macropore_top_input)) then
         if (.not. self%macropore_active) return
         if (.not. forcing%macropore_top_input%valid()) return
@@ -2221,27 +2365,36 @@ contains
     type(black_evaporation_result_t) :: black_result
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
+    type(rfm_matrix_source_provider_t), target :: rfm_source_provider
+    type(rfm_live_trial_prepare_result_t) :: rfm_live
+    type(soil_water_top_boundary_result_t) :: rfm_preflight
+    real(real64), allocatable, target :: rfm_source_rate(:)
+    real(real64), allocatable :: rfm_node_depth_cm(:)
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
+    real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
-    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
+    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok
     logical :: direct_retention_ok
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
     real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
-    integer :: effective_bottom_mode, swbotb2_status
+    integer :: effective_bottom_mode, swbotb2_status, swbotb4_status
+    type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
     macropore_accepted_top_cm = 0.0_real64
     macropore_rapid_outflow_cm = 0.0_real64
+    rfm_preferential_input_cm = 0.0_real64
+    rfm_deep_receipt_cm = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
@@ -2288,6 +2441,7 @@ contains
         .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
+                                                           self%macropore_reduction_continuation_enabled, &
                                                            self%fixed_weir_surface_water_active, &
                                                            self%black_evaporation_active, &
                                                            self%boesten_evaporation_active)) return
@@ -2295,6 +2449,18 @@ contains
     if (step_duration <= 0.0_real64) return
     effective_bottom_mode = self%bottom_mode
     effective_bottom_flux = self%bottom_flux
+    if (allocated(self%legacy_swbotb4_qgwl_control)) then
+      select type (physical_control => state)
+      class is (fmr_b110_physical_state_t)
+        call fmr_evaluate_legacy_qgwl_bottom_boundary(self%legacy_swbotb4_qgwl_control, &
+             physical_control%groundwater_level, swbotb4_result, swbotb4_status)
+        if (swbotb4_status /= FMR_QGWL_OK .or. .not. swbotb4_result%available) return
+        effective_bottom_mode = 2
+        effective_bottom_flux = swbotb4_result%qbot_cm_per_day
+      class default
+        return
+      end select
+    end if
     if (allocated(self%legacy_swbotb2_control)) then
       select type (physical_control => state)
       class is (fmr_b110_physical_state_t)
@@ -2317,7 +2483,7 @@ contains
     end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
-    if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
+    if (self%black_evaporation_active .or. self%boesten_evaporation_active .or. self%rfm_configuration%enabled) then
       request%boundary%top_mode = FSI_TOP_MODE_DYNAMIC_PROVIDER
     else
       request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
@@ -2327,6 +2493,15 @@ contains
     request%boundary%top_head = self%top_head
     request%boundary%bottom_flux = effective_bottom_flux
     request%boundary%bottom_head = self%bottom_head
+    if (allocated(self%legacy_swbotb5_control)) then
+      if (.not. self%hbot5_proposal%covers(t0,t1)) return
+      request%boundary%bottom_head = self%hbot5_proposal%pressure_head_cm
+      self%last_observation%hbot5_proposal_available = .true.
+      self%last_observation%hbot5_proposed_t0 = self%hbot5_proposal%t0
+      self%last_observation%hbot5_proposed_t1 = self%hbot5_proposal%original_t1
+      self%last_observation%hbot5_sample_t1900 = self%hbot5_proposal%legacy_sample_t1900
+      self%last_observation%hbot5_pressure_head_cm = self%hbot5_proposal%pressure_head_cm
+    end if
     request%numerical%max_iterations = self%max_iterations
     request%numerical%max_backtracking = self%max_backtracking
     request%numerical%conductivity_implicit_mode = self%swkimpl
@@ -2458,7 +2633,7 @@ contains
       else
         if (allocated(physical%soil_temperature)) return
       end if
-      if (self%soil_temperature_active .or. self%drainage_response_active) then
+      if (self%soil_temperature_active .or. self%drainage_response_active .or. self%rfm_configuration%enabled) then
         call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
       end if
@@ -2500,7 +2675,44 @@ contains
     else
       request%evaluation%constitutive => self%constitutive
     end if
-    request%evaluation%source_sink => self%source_sink
+
+    if (self%rfm_configuration%enabled) then
+      if (self%direct_retention_active) return
+      if (.not. self%soil_water_selection%uses_reference()) return
+      select type (rfm_physical => state)
+      type is (fmr_b110_rfm_state_t)
+        if (.not. rfm_physical%rfm%ready()) return
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider, self%soil_parameters, &
+             self%hydraulic_parameters, self%swkmean, rfm_physical%ponding_depth, step_duration, &
+             self%rfm_surface_forcing%precipitation_rate_cm_per_day, self%rfm_surface_forcing%irrigation_rate_cm_per_day, &
+             self%rfm_surface_forcing%snowmelt_rate_cm_per_day, self%rfm_surface_forcing%runon_rate_cm_per_day, &
+             self%rfm_surface_forcing%potential_bare_soil_evaporation_cm_per_day, &
+             self%rfm_surface_forcing%potential_pond_evaporation_cm_per_day, self%rfm_surface_forcing%ponding_max_cm, &
+             self%rfm_surface_forcing%runoff_resistance_day, self%rfm_surface_forcing%runoff_exponent)
+        call rfm_top_provider%evaluate(rfm_physical%pressure_head(1), rfm_physical%water_content(1), &
+             rfm_physical%ponding_depth, request%boundary, rfm_preflight)
+        allocate(rfm_node_depth_cm(rfm_physical%active_nodes)); rfm_node_depth_cm=abs(self%soil_parameters%z)
+        call prepare_rfm_live_trial(rfm_physical%rfm,self%rfm_configuration,self%rfm_surface_forcing,hydraulic_start, &
+             self%constitutive,rfm_preflight,rfm_node_depth_cm,self%soil_parameters%dz,step_duration, &
+             max(self%compartment_balance_tolerance,FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM),rfm_live)
+        if(.not.rfm_live%valid)return
+        rfm_source_rate=rfm_live%candidate%matrix_source_rate_per_day
+        call bind_rfm_matrix_source_provider(rfm_source_provider,self%source_sink,rfm_source_rate,rfm_source_ok)
+        if(.not.rfm_source_ok)return
+        request%evaluation%source_sink=>rfm_source_provider
+        rfm_preferential_input_cm=rfm_live%surface%preferential_supply_cm_per_day*step_duration
+        rfm_deep_receipt_cm=rfm_live%candidate%deep_receipt_cm
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
+             self%swkmean,rfm_physical%ponding_depth,step_duration,rfm_live%surface%matrix_supply_cm_per_day, &
+             0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,self%rfm_surface_forcing%ponding_max_cm, &
+             self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent)
+        request%evaluation%dynamic_top_boundary=>rfm_top_provider
+      class default
+        return
+      end select
+    else
+      request%evaluation%source_sink=>self%source_sink
+    end if
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
          request%evaluation%top_boundary => self%top_boundary
@@ -2546,6 +2758,14 @@ contains
     if (self%macropore_active) then
       if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
       select type (physical_macro => state)
+      type is (fmr_b110_macropore_reduction_state_t)
+        call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+             self%macropore_config%geometry, self%macropore_config%rate_template, &
+             self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+             top_input=self%macropore_top_input_forcing, &
+             reduction_accepted=physical_macro%reduction_continuation)
+        if(macropore_result%status==MACRO_RUNTIME_CONVERGED) &
+             physical_macro%reduction_continuation=macropore_result%reduction_candidate
       class is (fmr_b110_physical_state_t)
         call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
              self%macropore_config%geometry, self%macropore_config%rate_template, &
@@ -2561,6 +2781,11 @@ contains
       self%last_observation%macropore_returned_surface_cm = macropore_result%returned_surface_cm
       self%last_observation%macropore_rapid_drain_active = self%macropore_config%rate_template%rapid%enabled
       self%last_observation%macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
+      self%last_observation%macropore_inner_richards_exchange_used = macropore_result%inner_richards_exchange_used
+      self%last_observation%macropore_inner_initial_exchange_rate_cm_per_day = &
+           macropore_result%inner_initial_exchange_rate_cm_per_day
+      self%last_observation%macropore_inner_final_exchange_rate_cm_per_day = &
+           macropore_result%inner_final_exchange_rate_cm_per_day
       macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
       macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
       if (.not. ieee_is_finite(macropore_accepted_top_cm) .or. macropore_accepted_top_cm < 0.0_real64) return
@@ -2702,6 +2927,15 @@ contains
       physical%water_content = solve_result%candidate_state%water_content
       physical%ponding_depth = solve_result%candidate_state%ponding_depth
       physical%groundwater_level = solve_result%candidate_state%groundwater_level
+      if(self%rfm_configuration%enabled)then
+        select type(rfm_physical=>state)
+        type is(fmr_b110_rfm_state_t)
+          call copy_rfm_physical_state(rfm_live%candidate%candidate_rfm,rfm_physical%rfm,rfm_source_ok)
+          if(.not.rfm_source_ok)return
+        class default
+          return
+        end select
+      end if
     class default
       return
     end select
@@ -2716,6 +2950,10 @@ contains
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
          snow_event_applied_this_call, macropore_accepted_top_cm, macropore_rapid_outflow_cm, &
          outcome%mass_in, outcome%mass_out)
+    if(self%rfm_configuration%enabled)then
+      outcome%mass_in=outcome%mass_in+rfm_preferential_input_cm
+      outcome%mass_out=outcome%mass_out+rfm_deep_receipt_cm
+    end if
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
       step_drainage_exchange = self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration

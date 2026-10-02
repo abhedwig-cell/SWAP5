@@ -1,0 +1,23 @@
+{
+  "schema":"swap5.ppa_wu05.macropore_migration_gap_audit.v1",
+  "date":"2026-10-01",
+  "canonical_audit_base":"ae3c7a9ba4a9ab741992be965448cf633820d2a1",
+  "audit_commit":"cbb3e967d07b8533ddfe4816f42233a0ff42e6f3",
+  "standard_core_perched_exchange":"CANONICALLY_ADMITTED",
+  "broad_swap431_macropore_migration_complete":false,
+  "remaining_standard_gaps":[
+    "covering-layer IcTopMp>1 physics",
+    "dynamic shrinkage/crack geometry feedback",
+    "within-compartment and multiple rapid-drain geometry",
+    "ponding/runon and other surface-owner compositions",
+    "fixed-weir/Ribasim rapid-drain receipt composition",
+    "full official SWAP 4.3.1 macropore case equivalence matrix"
+  ],
+  "execution_expansions_not_counted_as_physics_gaps":[
+    "RossFast macropore execution",
+    "parallel/concurrent MultiSWAP macropore execution"
+  ],
+  "separate_rfm_gap":"complete live backend dispatch not established by this audit",
+  "next_workunit":"PPA-WU05-MIGMAC01",
+  "next_scope":"covering-layer source reconciliation and authority fixture"
+}

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+B="${TMPDIR:-/tmp}/swap5-a25";rm -rf "${B}";mkdir -p "${B}"
+"${FC:-gfortran}" -std=f2008 -Wall -Wextra -pedantic \
+ src/solver/mod_soil_water_solver_contract.f90 \
+ src/process/macropore/mod_rfm_unponded_activation.f90 \
+ src/runtime/mod_rfm_unponded_surface_composition.f90 \
+ src/process/macropore/mod_rfm_preferential_router.f90 \
+ src/process/macropore/mod_rfm_surface_event_age.f90 \
+ src/runtime/mod_rfm_physical_state.f90 \
+ src/runtime/mod_rfm_runtime_configuration.f90 \
+ src/process/macropore/mod_rfm_endpoint_release.f90 \
+ src/process/macropore/mod_rfm_mb_wall_deep_fate.f90 \
+ src/runtime/mod_rfm_whole_column_candidate_ledger.f90 \
+ src/runtime/mod_rfm_runtime_orchestrator.f90 \
+ tests/fpm/test_ppa_wu05a25_rfm_runtime_orchestrator.f90 \
+ -J"${B}" -o "${B}/a25"
+"${B}/a25"

@@ -1,0 +1,11 @@
+name: PPA-WU05-A26K focused IC hydrostatic head
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a26k-ic-hydrostatic-head
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpm/run_ppa_wu05a26k_ic_hydrostatic_head.sh

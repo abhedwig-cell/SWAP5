@@ -74,6 +74,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_dynamic_top_active, provider_runoff_resolved
    logical :: explicit_geometry
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
+   logical :: provider_macropore_active, provider_macropore_rate_active, provider_macropore_derivative_available
    logical :: provider_tuple_valid, provider_tuple_from_candidate
    logical :: provider_point_conductivity_supported, provider_point_conductivity_available
 !  local
@@ -86,6 +87,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    real(8)                          :: CritDevBalCp, CritDevBalTot
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
+   real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
    logical                          :: flnonconv, flnonconv3
    logical                          :: flboth, flok
@@ -152,7 +154,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    CritDevBalTot = legacy_CritDevBalTot
    if (.not. legacy_state_binding) then
       if (.not. present(physical_config)) error stop 'HeadCalc: explicit physical config required'
-      if (physical_config%macropore_active) error stop 'HeadCalc: active explicit macropore route not admitted'
+      if (physical_config%macropore_active) then
+         if (.not. present(evaluation_context)) error stop 'HeadCalc: explicit macropore route requires evaluation context'
+         if (.not. associated(evaluation_context%macropore)) &
+              error stop 'HeadCalc: explicit macropore route requires macropore provider'
+      end if
+      ! Explicit/provider macropore physics never activates legacy module-global ownership.
       swmacro = 0
       if (.not. present(boundary_conditions)) error stop 'HeadCalc: explicit boundary conditions required'
       swbotb = boundary_conditions%bottom_mode
@@ -181,10 +188,16 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    provider_point_conductivity_available = .false.
    provider_source_sink_active = .false.
    provider_root_sink_active = .false.
+   provider_macropore_active = .false.
+   provider_macropore_rate_active = .false.
+   provider_macropore_derivative_available = .false.
    if (.not. legacy_state_binding .and. present(evaluation_context)) then
       provider_constitutive_active = associated(evaluation_context%constitutive)
       provider_source_sink_active = associated(evaluation_context%source_sink)
       provider_root_sink_active = associated(evaluation_context%root_sink)
+      provider_macropore_active = physical_config%macropore_active .and. associated(evaluation_context%macropore)
+      if (physical_config%macropore_active .and. .not. provider_macropore_active) &
+           error stop 'HeadCalc: active explicit macropore route requires provider'
       if (.not. provider_constitutive_active) error stop 'HeadCalc: explicit constitutive provider required'
       provider_point_conductivity_supported = evaluation_context%constitutive%supports_point_conductivity()
       if (.not. provider_source_sink_active) error stop 'HeadCalc: explicit source/sink provider required'
@@ -208,6 +221,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       fsi_ws => local_fsi_workspace
    end if
    call prepare_reference_workspace_for_solve(fsi_ws, numnod)
+   allocate(provider_macropore_exchange(numnod),provider_macropore_dqdh(numnod))
+   provider_macropore_exchange=0.0d0
+   provider_macropore_dqdh=0.0d0
    ctx%diagnostics%headcalc_calls = ctx%diagnostics%headcalc_calls + 1
 
 !  reset some variables at the start of a new day
@@ -979,6 +995,13 @@ subroutine vector_F(iTask)
          QMpLatSs = QMpLatSsSav
       end if
    end if
+   if (provider_macropore_active) then
+      call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
+           provider_macropore_exchange,provider_macropore_rate_active)
+   else
+      provider_macropore_rate_active=.false.
+      provider_macropore_exchange=0.0d0
+   end if
 
 !  take care of top BC: ponding, runoff
    if (.NOT. provider_runoff_resolved) then
@@ -1091,6 +1114,8 @@ subroutine vector_F(iTask)
    end if
 
    if (swmacro == 1) fsi_ws%residual(1:NN) = fsi_ws%residual(1:NN) - QExcMpMtx(1:NN)
+   if (provider_macropore_rate_active) &
+        fsi_ws%residual(1:NN)=fsi_ws%residual(1:NN)-provider_macropore_exchange(1:NN)
 
 end subroutine vector_F
 
@@ -1162,6 +1187,15 @@ subroutine jacobian_F()
    if (swmacro == 1 .AND. .NOT.fsi_ws%unsaturated_flags(3)) then
       call MACROPORE(3)
       fsi_ws%dfdh_main(1:NN) = fsi_ws%dfdh_main(1:NN) - dFdhMp(1:NN)
+   end if
+   if (provider_macropore_active) then
+      call evaluation_context%macropore%evaluate_derivative(state%h(1:numnod),state%theta(1:numnod), &
+           state%dimoca(1:numnod),provider_macropore_dqdh,provider_macropore_derivative_available, &
+           provider_macropore_rate_active)
+      if (provider_macropore_rate_active .and. .not.provider_macropore_derivative_available) &
+           error stop 'HeadCalc: active macropore derivative unavailable'
+      if (provider_macropore_rate_active) &
+           fsi_ws%dfdh_main(1:NN)=fsi_ws%dfdh_main(1:NN)-provider_macropore_dqdh(1:NN)
    end if
 
 end subroutine jacobian_F

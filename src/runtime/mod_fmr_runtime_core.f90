@@ -12,6 +12,7 @@ module mod_fmr_runtime_core
 
   integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_NONE = 0_int64
   integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY = 1_int64
+  integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION = 2_int64
 
   ! Qualified optional physical-state topology identities.  The layout ID is a
   ! template capability identity; it does not imply that every column using the

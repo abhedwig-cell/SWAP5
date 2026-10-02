@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.ppa_wu05_perch21.status.v1",
+  "workunit": "PPA-WU05-PERCH21",
+  "phase": "CLOSED_CANONICALLY_ADMITTED",
+  "decision": "CANONICALLY_ADMITTED_PERCHED_INNER_RICHARDS_PRODUCTION_ROUTE",
+  "canonical_reconciliation": "8bb835a065248aad06b18a3b563234b20033ba0d",
+  "branch": "integration/f-ci-canonical",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admission_candidate": true,
+  "canonical_admitted": true,
+  "closed": true,
+  "qualified_postimage": "708af277cecdcb40432256d55be15139d9e507e7",
+  "qualification_run": 36906093634,
+  "qualified_scope": [
+    "PERCH20 restart lifecycle",
+    "PERCH20 transaction continuation",
+    "PERCH19 source-faithful Andelst active retry",
+    "A10 rapid-drain preservation",
+    "canonical RFM optional-state preservation",
+    "RFM A24 real-Richards split and matrix source provider",
+    "RFM A25 node sorptivity and runtime orchestrator",
+    "RFM A26H wall history",
+    "RFM A26J initial-storage geometry"
+  ],
+  "inherited_unchanged_dependency_evidence": [
+    "RFM A26K hydrostatic head"
+  ],
+  "next_action": "None; PERCH21 closed.",
+  "recovery_point": "708af277cecdcb40432256d55be15139d9e507e7",
+  "post_merge_preservation_run": 36907018287,
+  "post_merge_preservation_head": "8bb835a065248aad06b18a3b563234b20033ba0d"
+}

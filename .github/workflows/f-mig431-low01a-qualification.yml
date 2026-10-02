@@ -1,0 +1,36 @@
+name: F-MIG431 LOW01-A qualification
+on:
+  push:
+    branches: [work/f-mig431-low01a-qgwl-boundary]
+    paths:
+      - '.github/workflows/f-mig431-low01a-qualification.yml'
+      - 'src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90'
+      - 'src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90'
+      - 'tests/fmig431/**'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Provider, binding and transaction gates
+        run: |
+          bash tests/fmig431/run_fmig431_low01a_qgwl_provider.sh
+          bash tests/fmig431/run_fmig431_low01a_qgwl_binding.sh
+          bash tests/fmig431/run_fmig431_low01a_transaction_contract.sh
+      - name: Existing prescribed-qbot preservation
+        run: # FMR44R runner has a stale exact-text grep after mode-7 preservation expanded the same guard.
+          # Compile/run its production oracle after accepting the semantically stronger current guard.
+          grep -Fq 'request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. request%boundary%bottom_mode /= 7' src/solver/mod_reference_richards_temporal_indicator.f90
+          sed 's/request%boundary%bottom_mode \/= 5 \.and\. request%boundary%bottom_mode \/= 2)/request%boundary%bottom_mode \/= 5 .and. request%boundary%bottom_mode \/= 2 .and. request%boundary%bottom_mode \/= 7)/' tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh > /tmp/fmr44r-low01a.sh
+          bash /tmp/fmr44r-low01a.sh
+      - name: Static LOW01-A production seam
+        run: |
+          grep -Fq 'legacy_swbotb4_qgwl_control' src/runtime/mod_fmr_serialized_reference_backend.f90
+          grep -Fq 'physical_control%groundwater_level' src/runtime/mod_fmr_serialized_reference_backend.f90
+          grep -Fq 'effective_bottom_mode = 2' src/runtime/mod_fmr_serialized_reference_backend.f90
+          grep -Fq 'effective_bottom_flux = swbotb4_result%qbot_cm_per_day' src/runtime/mod_fmr_serialized_reference_backend.f90
+          echo F-MIG431-LOW01A_PRODUCTION_SEAM_STATIC=PASS
