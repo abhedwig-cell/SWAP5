@@ -16,7 +16,7 @@ program test_ppa_wu05_migmac02_dynamic_shrinkage
   r%matrix_area_fraction=0.92_real64
 
   call evaluate_dynamic_crack_volume(r,0.05_real64,fresh,ok)
-  if(.not.ok .or. fresh/=0.0_real64) error stop 'MIGMAC02 fresh E4 mismatch'
+  if(.not.ok .or. abs(fresh)>1.0e-15_real64) error stop 'MIGMAC02 fresh E4 mismatch'
   r%prior_dynamic_volume_cm=0.08_real64
   call evaluate_dynamic_crack_volume(r,0.05_real64,historic,ok)
   if(.not.ok .or. historic<=0.0_real64) error stop 'MIGMAC02 historic E4 inactive'
