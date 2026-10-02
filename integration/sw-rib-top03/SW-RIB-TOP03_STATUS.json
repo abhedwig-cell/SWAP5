@@ -3,7 +3,7 @@
   "work_unit": "SW-RIB-TOP03",
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
-  "last_reconciled_upstream": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
+  "last_reconciled_upstream": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
   "decision": "FINITE_CONTACT_RESISTANCE_ROBUSTLY_SUPPORTED__EXPLICIT_LAYER_PHYSICAL_QUALIFICATION_REQUIRED__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
@@ -171,7 +171,11 @@
   ],
   "test_paths": [
     "tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90",
-    "tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh"
+    "tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh",
+    "tests/fapp/mod_top03_explicit_layer_provider.f90",
+    "tests/fapp/test_sw_rib_top03_explicit_layer.f90",
+    "tests/fapp/run_sw_rib_top03_explicit_layer.py",
+    "tests/fapp/analyze_sw_rib_top03_explicit_layer.py"
   ],
   "dependency_surface": [
     "accepted attempt/window mass ownership",
@@ -181,16 +185,17 @@
     "typed external head forcing"
   ],
   "blockers": [
-    "The exact-state BASE temporal acceptance policy remains unchanged and no finite dynamic-top temporal budget is yet admitted.",
-    "Finite surface-contact resistance robustly regularizes the synthetic TOP03 stage trajectory, including the flat-surface control, but the successful resistance magnitude is not physically qualified.",
-    "The current four-node TOP03 mechanism fixture cannot support an explicit thin-layer calibration because its z/dz geometry and uniform 1 cm node_distance are intentionally synthetic rather than a faithful near-surface discretization.",
-    "A geometrically consistent explicit transition-layer versus reduced R_s=L_s/K_s equivalence authority is required before contact resistance can become production surface physics.",
-    "Ribasim/SWAP ownership of local surface storage versus the represented external water body remains unqualified."
+    "BASE exact-state temporal acceptance remains unchanged and no finite dynamic-top budget is admitted.",
+    "The constant saturated surface-contact resistance fails 24 ready physical comparisons against an explicit partly unsaturated transition layer. No physical production envelope is qualified.",
+    "Initially prewetting the layer does not remove model mismatch. A matched unsaturated contact law and explicit storage treatment require independent qualification.",
+    "R=0/R=0.05 trajectories still fail numerically; thin L=0.02 cm finest joint contraction remains unready.",
+    "Ribasim/SWAP ownership of local pond versus external waterbody storage remains unqualified.",
+    "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage."
   ],
-  "next_action": "Implement and persist the geometrically consistent explicit-layer/reduced-resistance probe, then execute analytical controls and event-aligned space/time refinement. Keep TOP03 production and BASE acceptance fixed.",
-  "recovery_point": "Contact-resistance research and physical review are persisted through branch checkpoint 81f18d178bac05f46d9f0493efa6649f3227c78d. Production code remains unchanged by the microrelief/contact research. Resume on the same branch and PR #956 only after the explicit-layer prerequisite is qualified.",
+  "next_action": "Preregister a nonlinear unsaturated thin-layer reduction with matched interface head/conductance and independently owned storage, using the qualified 2 mm explicit-layer numerical comparisons. Do not productionize constant R or add storage alone as an untested repair. Keep PR #956 draft.",
+  "recovery_point": "Resume from the explicit-layer preregistration, source commits 657f3db0/6099e059, result/decision and raw evidence on the same branch. The proposed constant saturated resistance route is falsified within 24 ready comparisons; TOP03 acceptance/receipt/commit prerequisites are still open.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
-  "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
+  "ci_policy": "This explicit-layer phase executed locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Prior persisted workflow evidence remains bound to its original scope. Commits use skip ci.",
   "implementation_slice": {
     "contract": "integration/sw-rib-top03/TOP03_BOUNDED_INTERVAL_CONTRACT.md",
     "implemented": true,
@@ -207,8 +212,8 @@
       "explicit bounded profile and exfiltration rejection"
     ]
   },
-  "last_reconciled_head": "81f18d178bac05f46d9f0493efa6649f3227c78d",
-  "checkpoint_commit": "81f18d178bac05f46d9f0493efa6649f3227c78d",
+  "last_reconciled_head": "6099e059d8fb2dfda53b9bb925b4b072a6a54345",
+  "checkpoint_commit": "6099e059d8fb2dfda53b9bb925b4b072a6a54345",
   "pending_tests": [
     "geometrically consistent explicit transition-layer versus reduced R_s=L_s/K_s equivalence",
     "representative-soil/contact-parameter envelope",
@@ -416,11 +421,32 @@
     "production_qualified": false
   },
   "explicit_layer_research": {
-    "status": "PREREGISTERED_NOT_EXECUTED",
-    "baseline": "99da94ef964052e96d1bf11d975acbb7856353a9",
+    "status": "SATURATED_LIMIT_VERIFIED__CONSTANT_RESISTANCE_FALSIFIED_IN_READY_DRY_CASES",
+    "preregistration_commit": "21f5d4e60116b5e25e0ee90b7c891a1a6838b131",
+    "primary_source_postimage": "657f3db099dfb999d1174f7a800ff7918ee767d1",
+    "extension_source_postimage": "6099e059d8fb2dfda53b9bb925b4b072a6a54345",
     "canonical_inspected": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
     "preregistration": "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_PREREGISTRATION.md",
+    "extension_preregistration": "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_REFINEMENT_EXTENSION.md",
+    "result": "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_RESULT.json",
+    "decision": "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_DECISION.md",
+    "evidence": "integration/sw-rib-top03/evidence/explicit_layer/raw_records.tar.gz",
+    "primary_cases_per_build": 400,
+    "extension_cases_per_build": 192,
+    "O0_O2_exact_output": true,
+    "analytical_harmonic_controls": 48,
+    "ready_physical_comparisons": 24,
+    "passed_physical_comparisons": 0,
+    "unready_comparisons": 48,
+    "max_mass_error_cm": 5.557360127639299e-14,
     "production_code_changed": false,
-    "production_qualified": false
-  }
+    "production_qualified": false,
+    "interpretation": "Correct saturated limit; constant saturated resistance does not reproduce the partly unsaturated explicit layer even for a prewetted layer origin. Storage alone is not established as a sufficient fix."
+  },
+  "status": "EXPLICIT_LAYER_SATURATED_LIMIT_VERIFIED__CONSTANT_RESISTANCE_REDUCTION_FALSIFIED__UNSATURATED_CONTACT_PREREQUISITE__NO_PRODUCTION_ADMISSION",
+  "evidence_paths": [
+    "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_RESULT.json",
+    "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_DECISION.md",
+    "integration/sw-rib-top03/evidence/explicit_layer/"
+  ]
 }

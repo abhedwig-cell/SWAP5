@@ -51,6 +51,7 @@ def reference_ready(rows,c,event,extended=False):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('build',type=Path);ap.add_argument('output',type=Path)
     ap.add_argument('--source',required=True);ap.add_argument('--canonical',required=True)
+    ap.add_argument('--primary-source',required=True)
     ap.add_argument('--extension',type=Path)
     args=ap.parse_args()
     raw0=(args.build/'o0/records.json').read_bytes();raw2=(args.build/'o2/records.json').read_bytes()
@@ -90,6 +91,8 @@ def main():
     arithmetic=[r for r in allrows if r['case']['analytic'] and r['case']['mean']==1]
     verdicts=collections.Counter(str(c['physical_equivalence']) for c in comparisons)
     result=dict(schema='swap5.sw_rib_top03.explicit_layer.v1',date='2026-10-02',
+        status='SATURATED_LIMIT_VERIFIED__CONSTANT_RESISTANCE_FALSIFIED_IN_READY_DRY_CASES__NO_PRODUCTION_ADMISSION',
+        primary_source_postimage=args.primary_source,
         source_postimage=args.source,canonical_inspected=args.canonical,production_code_changed=False,production_admission=False,
         O0_O2_exact_output=True,records_per_build=len(allrows),raw_O0_sha256=hashlib.sha256(raw0).hexdigest(),
         extension=extension_metadata,unique_cases=len(rows),
@@ -97,10 +100,13 @@ def main():
         analytical_max_head_error_cm=max(r['analytic'][1] for r in harmonic),
         analytical_max_flux_error_cm_day=max(r['analytic'][2] for r in harmonic),
         arithmetic_max_flux_error_cm_day=max(r['analytic'][2] for r in arithmetic),
-        max_independent_mass_error_cm=max(abs(e['mass']) for r in allrows for e in r['events'].values()),
-        max_solver_mass_error_cm=max(abs(e['solver_mass']) for r in allrows for e in r['events'].values()),
+        max_independent_mass_error_cm=max(abs(e['mass']) for r in rows.values() for e in r['events'].values()),
+        max_solver_mass_error_cm=max(abs(e['solver_mass']) for r in rows.values() for e in r['events'].values()),
         trajectory_counts=[dict(mode=k[0],wet=k[1],complete=k[2],count=v) for k,v in sorted(counts.items())],
         verdict_counts=dict(verdicts),comparisons=comparisons,
+        extension_all_trajectories_complete=all(r['complete'] for r in extra) if args.extension else None,
+        extension_trajectory_counts=[dict(mode=k[0],wet=k[1],complete=k[2],count=v) for k,v in sorted(collections.Counter(
+            (r['case']['mode'],r['case']['wet'],r['complete']) for r in extra).items())] if args.extension else None,
         stopped_cases=[dict(case=r['case'],stop=r['stop']) for r in allrows if r['stop']],
         evidence_scope='Real Richards, synthetic retention/layers and original free-drainage dry soil; analytical controls separately use mode5. No BASE acceptance/receipt/commit qualification.')
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(result,indent=2)+'\n')

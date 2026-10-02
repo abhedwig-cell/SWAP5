@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.top03.explicit_layer.evidence.v1",
+  "archive": "raw_records.tar.gz",
+  "archive_sha256": "06a3f3f15cb43ced906d55bf10c5c0875719f1b2ae8335c65fb67f2d35eb9bde",
+  "archive_bytes": 625198,
+  "files": {
+    "README.txt": "d070dc063073925d6a584920313628dd396c742b2ea933030f931b7c0aded511",
+    "controls-final/cases.json": "a7ff5dc82c6ced1c110df202edd46cebb9c69195e860cc904e56d74f3e2c6b6e",
+    "controls-final/o0/build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controls-final/o0/records.json": "81e94b642583363cd7710a9358b8ba47de384b58cdb7ae9b59a1494da0281505",
+    "controls-final/o2/build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controls-final/o2/records.json": "81e94b642583363cd7710a9358b8ba47de384b58cdb7ae9b59a1494da0281505",
+    "controls-final/reference_stubs.f90": "edfed793416eb8a16d46d936713bda0ea79635bd39cb7e85d38ba8eb4b249170",
+    "controls-final/source_manifest.json": "23d70543135b638451a6c56097f5ce0713e6a98d89e60ca516eb4503ff041c0c",
+    "extended/cases.json": "ba852224bddf5830a997c9b122bfae85d6d2ec4cdb3fec095f7667250226b93e",
+    "extended/o0/build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "extended/o0/records.json": "103ded6a230791fb4e79eac794a447adfa5b80ab9883c94837ddab782199ce37",
+    "extended/o2/build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "extended/o2/records.json": "103ded6a230791fb4e79eac794a447adfa5b80ab9883c94837ddab782199ce37",
+    "extended/reference_stubs.f90": "f0cb0ebf7963d59b5cc1562ebb969bc55debafc2c4709d89bea117738defac28",
+    "extended/source_manifest.json": "571af39bfeb697c427e920b88a294a9747f1f9bed816e7dd3feee9a27b34d284",
+    "full/cases.json": "a123165102b0807ccc7417fdcea60f89fe6d40e04dc61c85887b3df2ce89a644",
+    "full/o0/build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full/o0/records.json": "220c7320b697fcb0ebca7234d9a41aa40382d6d897434a44527322406cd7435b",
+    "full/o2/build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full/o2/records.json": "220c7320b697fcb0ebca7234d9a41aa40382d6d897434a44527322406cd7435b",
+    "full/reference_stubs.f90": "edfed793416eb8a16d46d936713bda0ea79635bd39cb7e85d38ba8eb4b249170",
+    "full/source_manifest.json": "4af3f806ae475faf7a3a46eb8861421193aa1d372f9ed0ff9e0fc33533b66ace",
+    "verification/controls-final.log": "07a9b434e7efd407655948460afa6c03a54966be26494a4f28e4b0f8127d65a9",
+    "verification/docs-build-final.log": "39e79ad4c4b4259cb621dee8f7c115e0ca68a1197038341ad6fcbcbffb7be7e5",
+    "verification/extended.log": "19e3407a3c55336847afecd908c70b8a2c7d9f73185610713b90a396aa1fcb2c",
+    "verification/full.log": "fabccd8e99a57582fd2ad99ebf43d5df198330011db7dcd6d41431c5473fc4ab",
+    "verification/preservation.log": "6ce87fe9efa4d89e66f6b203d9d6260dd41fb7dceec5ebf32ce98449cf1f920c",
+    "verification/source_reconciliation.json": "c0f1ccfc2ea0011068f913549cb3106c073991ba6a762c940b80ff5451bd6db2",
+    "verification/verification.json": "c8517f8c591ddd97e8e12130e16991925244056a7d79d534d43617871cc45be1"
+  },
+  "verification": {
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "flags": [
+      "-std=f2008",
+      "-ffree-line-length-none",
+      "-fcheck=all",
+      "-fbacktrace",
+      "-ffpe-trap=invalid,zero,overflow",
+      "-O0 / -O2"
+    ],
+    "docs_source_checks": "PASS",
+    "mkdocs_strict": "PASS",
+    "unchanged_contact_probe": "PASS",
+    "final_analytical_controls_O0_O2": "PASS",
+    "production_source_changed": false,
+    "actions_requested": false,
+    "canonical_dependency_delta": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_soil_water_solver_contract.f90"
+    ],
+    "current_canonical_inheritance": false,
+    "latest_canonical_observed": "800f6a9b429ed2a392e4c3778951bb92eca042aa"
+  }
+}
