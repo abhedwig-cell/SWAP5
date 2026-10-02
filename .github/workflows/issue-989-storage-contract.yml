@@ -2,6 +2,11 @@ name: Issue 989 storage contract qualification
 on:
   push:
     branches: [fix/989-serialized-storage-shape-contract]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/transaction/test_transaction_reference.f90'
   workflow_dispatch:
 jobs:
   qualify:
