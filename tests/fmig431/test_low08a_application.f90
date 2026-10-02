@@ -137,9 +137,9 @@ contains
     real(real64)::threshold
     integer::s
     c=config
-    c%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
-    if(allocated(c%tiles(1)%initial_right_derivative))deallocate(c%tiles(1)%initial_right_derivative)
+    c%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    if(.not.allocated(c%tiles(1)%initial_right_derivative))allocate(c%tiles(1)%initial_right_derivative(numnod));c%tiles(1)%initial_right_derivative=0.0_real64
     threshold=c%tiles(1)%base_forcing%bottom_head-0.5_real64*c%tiles(1)%parameters%dz(numnod)+1.0e-5_real64
     c%tiles(1)%initial_state%pressure_head=threshold
     call refresh_water(c%tiles(1))
@@ -149,8 +149,8 @@ contains
     call require(abs(r(1)%mass%total_in)+abs(r(1)%mass%total_out)<1.0e-12_real64,'strict equality inactive')
     call owner%close(s)
     c=config
-    c%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    c%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     threshold=c%tiles(1)%base_forcing%bottom_head-0.5_real64*c%tiles(1)%parameters%dz(numnod)+1.0e-5_real64
     c%tiles(1)%initial_state%pressure_head=threshold-1.0_real64
     call refresh_water(c%tiles(1))
@@ -161,9 +161,9 @@ contains
     call require(abs(r(1)%mass%total_in)+abs(r(1)%mass%total_out)<1.0e-12_real64,'inactive qbot exactly zero')
     call owner%close(s)
     c=config
-    c%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
-    if(allocated(c%tiles(1)%initial_right_derivative))deallocate(c%tiles(1)%initial_right_derivative)
+    c%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+    c%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    if(.not.allocated(c%tiles(1)%initial_right_derivative))allocate(c%tiles(1)%initial_right_derivative(numnod));c%tiles(1)%initial_right_derivative=0.0_real64
     threshold=c%tiles(1)%base_forcing%bottom_head-0.5_real64*c%tiles(1)%parameters%dz(numnod)+1.0e-5_real64
     c%tiles(1)%initial_state%pressure_head=threshold+1.0_real64
     call refresh_water(c%tiles(1))
