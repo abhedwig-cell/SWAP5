@@ -772,7 +772,12 @@ logical function macropore_exchange_retry_available()
 end function macropore_exchange_retry_available
 
 logical function macropore_iteration_policy_active()
-   macropore_iteration_policy_active = swmacro == 1 .or. provider_macropore_active
+   if (swmacro == 1) then
+      macropore_iteration_policy_active = .true.
+   else
+      macropore_iteration_policy_active = provider_macropore_active .and. present(physical_config) .and. &
+           allocated(physical_config%matrix_area_fraction)
+   end if
 end function macropore_iteration_policy_active
 
 logical function matrix_area_scaling_active()
