@@ -3,6 +3,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT"
 BUILD="$(mktemp -d)"
+TEST_SOURCE="${1:-research/rfm/a27/test_pressure_receiver.f90}"
+EXPECTED_MARKER="${2:-A27_PRESSURE_RECEIVER_SEAM=PASS}"
 trap 'rm -rf "$BUILD"' EXIT
 python3 - "$BUILD/grid_stubs.f90" <<'GRID'
 from pathlib import Path
@@ -83,7 +85,7 @@ for opt in 0 2; do
   "${FC:-gfortran}" -std=f2008 -ffree-line-length-none -fcheck=all -O"$opt" -J"$OUT" -I"$OUT" -c "$source" -o "$obj"
   objects+=("$obj")
  done
- "${FC:-gfortran}" -std=f2008 -ffree-line-length-none -fcheck=all -O"$opt" -J"$OUT" -I"$OUT" "${objects[@]}" research/rfm/a27/test_pressure_receiver.f90 -o "$OUT/test"
+ "${FC:-gfortran}" -std=f2008 -ffree-line-length-none -fcheck=all -O"$opt" -J"$OUT" -I"$OUT" "${objects[@]}" "$TEST_SOURCE" -o "$OUT/test"
  set +e
  "$OUT/test" > "$OUT/out.txt" 2> "$OUT/err.txt"
  status=$?
@@ -94,4 +96,4 @@ for opt in 0 2; do
  if [[ "$status" -ne 0 ]]; then exit "$status"; fi
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
-grep -Fq 'A27_PRESSURE_RECEIVER_SEAM=PASS' "$BUILD/o2/out.txt"
+grep -Fq "$EXPECTED_MARKER" "$BUILD/o2/out.txt"

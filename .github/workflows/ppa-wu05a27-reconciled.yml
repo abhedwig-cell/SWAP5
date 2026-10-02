@@ -21,5 +21,5 @@ jobs:
         run: bash tests/fpm/run_ppa_wu05a27_finite_exchange.sh
       - name: A27 reverse exchange
         run: bash tests/fpm/run_ppa_wu05a27_reverse_exchange.sh
-      - name: A27 pressure-aware receiver seam
-        run: bash research/rfm/a27/run_pressure_receiver.sh
+      - name: A27 pressure-aware receiver refinement extension
+        run: bash research/rfm/a27/run_pressure_receiver.sh research/rfm/a27/test_pressure_receiver_extension.f90 A27_PRESSURE_RECEIVER_EXTENSION=PASS
