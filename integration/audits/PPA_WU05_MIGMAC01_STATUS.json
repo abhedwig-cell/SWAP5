@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
   "work_unit": "PPA-WU05-MIGMAC01",
-  "status": "PRODUCTION_ADMISSION_CANDIDATE_PENDING_CANONICAL_RECONCILIATION",
+  "status": "QUALIFIED_ADMISSION_CANDIDATE_READY_FOR_CANONICAL_INTEGRATION",
   "owning_branch": "research/ppa-wu05-migmac01-covering-layer",
-  "qualified_postimage": "16c66c41c8bbc009cd0efa76c79502532af85f66",
+  "qualified_postimage": "8f3f2d487fe177b74a14e0c5aa2942d25c342e09",
   "status_head_parent": "ace22e240d02ade24c64948998c18a56fdb10560",
-  "canonical_observed": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
+  "canonical_observed": "f7c261a7f059c91d4a0aac16e378351f293aa080",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -49,8 +49,13 @@
     "The older synthetic active MIGMAC01 fixture remains diagnostic and is not used as source-backed authority."
   ],
   "canonical_reconciliation": {
-    "required": true,
-    "reason": "owning branch is substantially behind current canonical and diverged; canonical admission requires reconcile and exact-postimage rerun",
+    "required": false,
+    "completed": true,
+    "base": "f7c261a7f059c91d4a0aac16e378351f293aa080",
+    "branch": "reconcile/ppa-wu05-migmac01-canonical",
+    "qualified_postimage": "8f3f2d487fe177b74a14e0c5aa2942d25c342e09",
+    "corrected_source_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36994347915",
+    "focused_backend_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36994347868",
     "canonical_admission_claimed": false
   },
   "evidence": {
@@ -59,7 +64,10 @@
     "typed_physical_contract": "docs/audits/PPA_WU05_MIGMAC01_TYPED_PHYSICAL_CONTRACT.md",
     "provider_shortstep_preregistration": "docs/audits/PPA_WU05_MIGMAC01_PROVIDER_SHORTSTEP_PREREGISTRATION.md",
     "root_composition_preregistration": "docs/audits/PPA_WU05_MIGMAC01_ROOT_COMPOSITION_PREREGISTRATION.md",
-    "qualification_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36989583419"
+    "qualification_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36989583419",
+    "canonical_reconciliation_result": "docs/audits/PPA_WU05_MIGMAC01_CANONICAL_RECONCILIATION_RESULT.md",
+    "corrected_source_canonical_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36994347915",
+    "focused_backend_canonical_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36994347868"
   },
-  "next_action": "Reconcile the qualified MIGMAC01 production delta with current integration/f-ci-canonical, rerun the exact source transaction and preservation gates on the reconciled postimage, then admit only if those gates remain green."
+  "next_action": "Open the canonical integration PR from reconcile/ppa-wu05-migmac01-canonical to integration/f-ci-canonical; merge only if the PR remains based on f7c261a7... or a later canonical delta is reconciled and the required gates remain valid. Then persist canonical admission and closeout."
 }
