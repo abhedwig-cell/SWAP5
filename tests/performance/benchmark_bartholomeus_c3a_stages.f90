@@ -4,7 +4,7 @@ program benchmark_bartholomeus_c3a_stages
  use mod_bartholomeus_parameter_contract
  use mod_bartholomeus_waterfilm_provider
  use mod_bartholomeus_response_assembly,only:assemble_bartholomeus_response_inputs
- use mod_bartholomeus_profile_response,only:evaluate_bartholomeus_profile
+ use mod_bartholomeus_profile_response,only:bartholomeus_profile_factors
  use mod_bartholomeus_response,only:BartholomeusResponseInput
  implicit none
  integer,parameter::N=3,WARM=500,REPS=50000
@@ -28,9 +28,9 @@ program benchmark_bartholomeus_c3a_stages
  do i=1,REPS;call assemble_bartholomeus_response_inputs(v,d,c,wr,w0,film,inp,ok);if(.not.ok)error stop 'assembly';end do
  call system_clock(b);sec=real(b-a,real64)/rate;print '(a,es24.16)','STAGE_ASSEMBLY_NS=',sec*1e9_real64/REPS
  top=.27_real64
- do i=1,WARM;call evaluate_bartholomeus_profile(inp,top,fac,ok);end do
+ do i=1,WARM;call bartholomeus_profile_factors(inp,top,fac,ok);end do
  call system_clock(a)
- do i=1,REPS;call evaluate_bartholomeus_profile(inp,top,fac,ok);if(.not.ok)error stop 'profile';end do
+ do i=1,REPS;call bartholomeus_profile_factors(inp,top,fac,ok);if(.not.ok)error stop 'profile';end do
  call system_clock(b);sec=real(b-a,real64)/rate;print '(a,es24.16)','STAGE_PROFILE_NS=',sec*1e9_real64/REPS
  chk=chk+sum(fac);print '(a,es24.16)','STAGE_CHECKSUM=',chk
 contains
