@@ -1,0 +1,56 @@
+{
+  "work_unit": "F-MIG431-LOW03-A-DEP01",
+  "parent_work_unit": "F-MIG431-LOW03-A",
+  "state": "CENTRALLY_PREREGISTERED_OFFICIAL_PREREQUISITE_BRANCH_ISSUED",
+  "canonical_baseline": "3869ec27a7314375fd7919debb6abe7c6450f261",
+  "official_branch": "work/f-mig431-low03-a-dep01-serialized-context-mode3",
+  "trigger": {
+    "low03a_postimage": "f5b29383fd523c5dcbc56e8774141e5ea5f79dc2",
+    "workflow_run": 36976190316,
+    "finding": "Application admitted, proposal present, three solver rejections before solver execution; no mass or temporal rejection."
+  },
+  "blocker": {
+    "file": "src/adapter/mod_b110_serialized_context_binding.f90",
+    "current_allowed_bottom_modes": [
+      7,
+      -2,
+      5,
+      2
+    ],
+    "missing_required_mode": 3,
+    "classification": "REAL_SHARED_APPLICATION_CONTEXT_PREREQUISITE"
+  },
+  "authorized_production_delta": [
+    "Add typed bottom_mode=3 to the serialized legacy-context allowed-mode guard only."
+  ],
+  "held_fixed": [
+    "LOW03-P0 solver residual/Jacobian and common typed boundary contract",
+    "SWKIMPL1 rejection",
+    "modes 2/internal -2,5,7 semantics",
+    "RossFast mode3 rejection",
+    "C ABI, groundwater ownership, ledgers, transaction policy and Restart-v1 format",
+    "historical LOW03-P0-DEP01 guard and accepted evidence"
+  ],
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "prerequisite_for": "F-MIG431-LOW03-A ordinary implicit Cauchy application",
+  "qualification_requirements": [
+    "focused context mirror and fail-closed O0/O2",
+    "mode 2/-2/5/7 preservation",
+    "LOW03-P0 solver preservation",
+    "current-canonical versus candidate RossFast/shared-binding preservation",
+    "exact postimage and runner evidence"
+  ],
+  "claim_ceiling": "Serialized Reference context carrier for an already validated typed mode3 request only; no mode3 application admission.",
+  "parked_selectors": [
+    1
+  ],
+  "active_sequence": [
+    3,
+    8
+  ],
+  "explicit_mode3": "OPEN"
+}
