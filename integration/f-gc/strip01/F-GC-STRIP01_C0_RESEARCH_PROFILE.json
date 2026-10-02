@@ -39,7 +39,9 @@
       "stage_m": -5,
       "conductance_m2_per_day": 100,
       "owner": "MODFLOW_RESEARCH_ONLY"
-    }
+    },
+    "solver_initial_head_m": -4.999,
+    "initial_head_semantics": "steady zero-STO solver initial guess only; no water-storage initial-condition term"
   },
   "swap": {
     "columns": 50,

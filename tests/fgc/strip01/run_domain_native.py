@@ -41,7 +41,9 @@ def main():
                                outer_maximum=200, inner_maximum=300, rcloserecord=1e-11)
             gwf = flopy.mf6.ModflowGwf(sim, modelname='strip', save_flows=True)
             flopy.mf6.ModflowGwfdis(gwf, nlay=1, nrow=1, ncol=N, delr=DX, delc=DY, top=PLANE, botm=BASE)
-            flopy.mf6.ModflowGwfic(gwf, strt=STAGE)
+            # Activate the draining branch in the initial linearization. This
+            # is a steady solve with no STO, so it supplies no initial water.
+            flopy.mf6.ModflowGwfic(gwf, strt=STAGE + 0.001)
             flopy.mf6.ModflowGwfnpf(gwf, icelltype=0, k=K, save_flows=True)
             flopy.mf6.ModflowGwfdrn(gwf, stress_period_data=[((0, 0, 0), STAGE, C)])
             if name == 'uniform':
