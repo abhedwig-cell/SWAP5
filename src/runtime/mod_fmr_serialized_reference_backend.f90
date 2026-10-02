@@ -2209,7 +2209,11 @@ contains
 
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
-      self%qrot_unmodified=forcing%root_extraction_sink
+      if(allocated(self%crop_oxygen)) then
+        self%qrot_unmodified=forcing%root_extraction_sink
+      else
+        if(allocated(self%qrot_unmodified)) deallocate(self%qrot_unmodified)
+      end if
       self%qrot_zero = 0.0_real64
 
       if (self%drainage_qbot_smooth_freatic_projection) then
@@ -2497,9 +2501,11 @@ contains
     call populate_snow_observation(self)
     ! Re-enter from the ORIGINAL base root sink for every sibling/retry/step.
     ! qrot is worker scratch. Reducing its previous value would create history.
-    if(.not.allocated(self%qrot_unmodified) .or. .not.associated(self%qrot)) return
-    if(size(self%qrot_unmodified)/=size(self%qrot)) return
-    self%qrot=self%qrot_unmodified
+    if(allocated(self%crop_oxygen)) then
+      if(.not.allocated(self%qrot_unmodified) .or. .not.associated(self%qrot)) return
+      if(size(self%qrot_unmodified)/=size(self%qrot)) return
+      self%qrot=self%qrot_unmodified
+    end if
     call populate_fixed_weir_surface_water_observation(self)
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%drainage_qbot_projection_active = self%drainage_qbot_smooth_freatic_projection

@@ -1,0 +1,50 @@
+name: PPA WU05 C3A production oxygen admission
+on:
+  push:
+    branches:
+      - research/ppa-wu05c3-bartholomeus-reconstruction
+    paths:
+      - '.github/workflows/ppa-wu05c3a-production-admission.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      FC: gfortran-13
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact postimage and compiler
+        run: |
+          git rev-parse HEAD
+          gfortran-13 --version
+      - name: Narrow physics, invalid inputs and ownership preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            bash tests/physics/run_bartholomeus_runtime_boundaries.sh
+            bash tests/physics/run_bartholomeus_admission_boundaries.sh
+            bash tests/fmr/run_c3a_bartholomeus_production_gate.sh
+            bash tests/physics/run_ppa_wu05c3q_kernel.sh
+            bash tests/physics/run_bartholomeus_waterfilm_provider.sh
+            bash tests/physics/run_bartholomeus_response_assembly.sh
+          } 2>&1 | tee c3a_narrow_gates.log
+      - name: Actual production application O0 and O2
+        run: python3 tests/physics/run_bartholomeus_application.py
+      - name: Full unchanged B1.11 assembled source oracle O0 and O2
+        run: python3 tests/physics/run_bartholomeus_b111_assembled.py
+      - name: Current canonical application and lower-boundary preservation O0 and O2
+        run: python3 tests/fmig431/run_low05a_qualification.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ppa-wu05-c3a-production-admission
+          if-no-files-found: error
+          path: |
+            c3a_application_result.json
+            c3a_b111_assembled_result.json
+            low05a_qualification_result.json
+            c3a_narrow_gates.log

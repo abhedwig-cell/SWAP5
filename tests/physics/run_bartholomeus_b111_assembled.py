@@ -6,14 +6,14 @@ FC=shlex.split(os.environ.get('FC','gfortran'))
 carrier=json.loads((ROOT/'integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json').read_text())
 raw=gzip.decompress(base64.b64decode(carrier['gzip_base64']))
 if hashlib.sha256(raw).hexdigest()!=carrier['sha256']:raise RuntimeError('exact source identity failure')
-base=pathlib.Path(os.environ.get('TMPDIR','/tmp'))/'c3a_active'
 evidence={'tested_postimage':os.environ.get('C3A_TESTED_SHA',os.environ.get('GITHUB_SHA','not-specified')),
           'source_sha256':carrier['sha256'],'runs':{}}
 for opt in ('O0','O2'):
- subprocess.run(['bash','tests/physics/run_bartholomeus_active_chain.sh'],cwd=ROOT,check=True,
-                env=dict(os.environ,C3A_OPT=opt))
  with tempfile.TemporaryDirectory(prefix='c3a-b111-') as temp:
   build=pathlib.Path(temp);source=build/'oxygenstress.f90';source.write_bytes(raw)
+  subprocess.run(['bash','tests/physics/run_bartholomeus_active_chain.sh'],cwd=ROOT,check=True,
+                 env=dict(os.environ,C3A_OPT=opt,TMPDIR=str(build)))
+  base=build/'c3a_active'
   flags=['-'+opt,'-ffree-line-length-none','-fcheck=all','-fbacktrace','-J'+str(build),'-I'+str(build),'-I'+str(base)]
   objects=[]
   for p in [ROOT/'tests/physics/support/c3a_b111_oxygen_owners.f90',source]:
