@@ -263,7 +263,7 @@ contains
       error stop 1
     end if
     if(a%nonlinear_iterations/=b%nonlinear_iterations)then
-      write(*,'(A,1X,ES24.16,1X,3(I0,1X))')'CONTROL_FAIL_ITERATIONS',horizon,nsteps,a%nonlinear_iterations,b%nonlinear_iterations
+      write(*,'(A,1X,ES24.16,3(1X,I0))')'CONTROL_FAIL_ITERATIONS',horizon,nsteps,a%nonlinear_iterations,b%nonlinear_iterations
       error stop 1
     end if
     if(a%complete)then
