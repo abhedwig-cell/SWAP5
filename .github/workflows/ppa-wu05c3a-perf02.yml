@@ -5,6 +5,7 @@ on:
     paths:
       - 'tests/performance/falsify_bartholomeus_gate.f90'
       - 'tests/performance/run_bartholomeus_gate_falsification.py'
+      - 'src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90'
       - '.github/workflows/ppa-wu05c3a-perf02.yml'
   workflow_dispatch:
 jobs:
@@ -17,5 +18,6 @@ jobs:
         with:
           name: c3a-perf02-gate
           path: c3a_gate_result.json
+
 
 
