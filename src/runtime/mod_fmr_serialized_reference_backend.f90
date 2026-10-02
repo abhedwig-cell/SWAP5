@@ -3367,11 +3367,15 @@ contains
     class is (fmr_b110_physical_state_t)
       if (self%fixed_weir_surface_water_active) return
       complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
-           allocated(physical%water_content)
+           allocated(physical%water_content) .and. allocated(self%soil_parameters%dz)
+      if (complete) complete = size(self%soil_parameters%dz) == self%soil_parameters%active_nodes
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
            size(physical%water_content) == physical%active_nodes
       if (complete .and. self%macropore_active) then
-        complete = allocated(physical%macropore)
+        complete = allocated(self%macropore_config)
+        if (complete) complete = allocated(self%macropore_config%matrix_area_fraction)
+        if (complete) complete = size(self%macropore_config%matrix_area_fraction) == physical%active_nodes
+        if (complete) complete = allocated(physical%macropore)
         if (complete) complete = physical%macropore%ready() .and. &
              physical%macropore%num_nodes == physical%active_nodes
       end if
@@ -3379,7 +3383,10 @@ contains
       if (complete .and. self%snow_active) complete = allocated(physical%snow)
       if (complete .and. .not. self%snow_active) complete = .not. allocated(physical%snow)
       if (complete .and. self%soil_temperature_active) then
-        complete = allocated(physical%soil_temperature)
+        complete = allocated(self%soil_temperature_parameters)
+        if (complete) complete = self%soil_temperature_parameters%ready()
+        if (complete) complete = self%soil_temperature_parameters%node_count() == physical%active_nodes
+        if (complete) complete = allocated(physical%soil_temperature)
         if (complete) complete = physical%soil_temperature%ready() .and. &
              physical%soil_temperature%node_count() == physical%active_nodes
       end if
