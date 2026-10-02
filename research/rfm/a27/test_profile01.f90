@@ -14,25 +14,32 @@ module mod_a27_counting_mvg
  end type
 contains
  subroutine reset_counts();eval_calls=0;demand_calls=0;point_calls=0;end subroutine
- subroutine ceval(self,h,t,k,c,d)
+ subroutine ceval(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
    class(counting_mvg_t),intent(in)::self
-   real(real64),intent(in)::h(:);real(real64),intent(out)::t(:),k(:),c(:),d(:)
-   eval_calls=eval_calls+1;call self%inner%evaluate(h,t,k,c,d)
+   real(real64),intent(in)::pressure_head(:)
+   real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
+   eval_calls=eval_calls+1
+   call self%inner%evaluate(pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
  end subroutine
- subroutine cdemand(self,h,mask,t,k,c,d)
+ subroutine cdemand(self,pressure_head,demand_mask,water_content,conductivity,capacity,dconductivity_dhead)
    class(counting_mvg_t),intent(in)::self
-   real(real64),intent(in)::h(:);integer,intent(in)::mask
-   real(real64),intent(out)::t(:),k(:),c(:),d(:)
-   demand_calls=demand_calls+1;call self%inner%evaluate_demand(h,mask,t,k,c,d)
+   real(real64),intent(in)::pressure_head(:);integer,intent(in)::demand_mask
+   real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
+   demand_calls=demand_calls+1
+   call self%inner%evaluate_demand(pressure_head,demand_mask,water_content,conductivity,capacity,dconductivity_dhead)
  end subroutine
  logical function csupports(self)
    class(counting_mvg_t),intent(in)::self
    csupports=self%inner%supports_point_conductivity()
  end function
- subroutine cpoint(self,node,h,t,k,available)
+ subroutine cpoint(self,node_index,pressure_head,water_content,conductivity,available)
    class(counting_mvg_t),intent(in)::self
-   integer,intent(in)::node;real(real64),intent(in)::h,t;real(real64),intent(out)::k;logical,intent(out)::available
-   point_calls=point_calls+1;call self%inner%evaluate_point_conductivity(node,h,t,k,available)
+   integer,intent(in)::node_index
+   real(real64),intent(in)::pressure_head,water_content
+   real(real64),intent(out)::conductivity
+   logical,intent(out)::available
+   point_calls=point_calls+1
+   call self%inner%evaluate_point_conductivity(node_index,pressure_head,water_content,conductivity,available)
  end subroutine
 end module
 
