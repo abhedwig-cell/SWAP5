@@ -12,7 +12,7 @@
   "production_admitted": false,
   "review_checks": "Six clean-build Fortran programs PASS at O0/O2; 137 exact source hashes; progress counts43/348 identical; immutable shared physics/ABI hashes PASS",
   "blockers": [],
-  "next_action": "Complete one dedicated persisted qualification run, review checks, then canonical admission via sole official branch PR and closeout",
+  "next_action": "Normal PR canonical admission and verified closeout",
   "recovery_point": "this record and companion feasibility review in their containing Git commit",
   "authority_paths": [
     "AGENTS.md",
@@ -43,7 +43,8 @@
     "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md",
     "docs/migration/F-MIG431-LOW05A_RESULT.md",
     "integration/audits/F-MIG431-LOW05A_LOCAL_QUALIFICATION.json",
-    "docs/migration/F-MIG431-LOW05A_PROGRESS_PREREGISTRATION.md"
+    "docs/migration/F-MIG431-LOW05A_PROGRESS_PREREGISTRATION.md",
+    "integration/audits/F-MIG431-LOW05A_QUALIFICATION_RESULT.json"
   ],
   "nonclaims": [
     "all lower boundaries migrated",
@@ -54,7 +55,7 @@
   "shared_authority_contract_checkpoint": "fe0eebb92ed2ded55a9817fcda40390b3dd968c8",
   "preregistration": "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md",
   "local_bounded_gates_pass": true,
-  "qualification_postimage": "d4a97e7bb15952fdc903a881cf80abf6426098fd",
-  "qualification_scope": "All seven preregistered bounded gate roles complete in six programs locally at O0/O2; persisted qualification replay pending",
+  "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+  "qualification_scope": "All seven bounded gate roles PASS locally and in persisted run36964835178 at O0/O2",
   "same_call_progress_gate": "CLOSED_PASS"
 }
