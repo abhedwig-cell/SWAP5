@@ -11,7 +11,7 @@ program test_low08a_application
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_kernel_transactions
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_NONE
   use variables, only: fldtmin
   use mod_fixed_flux_top_boundary_provider
   use mod_groundwater_topology_composition, only: groundwater_topology_t
@@ -116,7 +116,8 @@ contains
     real(real64),intent(in)::initial_head
     real(real64),intent(out)::k0
     value%initial_time=T0
-    value%numerical%transaction%temporal_tolerance=1.0e-6_real64
+    value%numerical%transaction%temporal_mode=TX_TEMPORAL_NONE
+    value%numerical%transaction%temporal_tolerance=0.0_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
     value%numerical%transaction%max_retries=2
