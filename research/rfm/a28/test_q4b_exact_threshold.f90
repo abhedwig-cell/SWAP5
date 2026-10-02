@@ -120,8 +120,6 @@ contains
     end if
 
     call backend%initialize(top)
-    call cauchy%initialize_sine(0._real64,0._real64,[0._real64,366._real64],-50._real64,45._real64,0._real64,1.2_real64,5._real64,.true.,cauchy_status)
-    if(cauchy_status/=FMR_CAUCHY3_OK)then;m%status=-933;return;end if
     if(arm==ARM_B)then
       policy%enabled=.true.
       policy%inner_richards_exchange_enabled=.false.
