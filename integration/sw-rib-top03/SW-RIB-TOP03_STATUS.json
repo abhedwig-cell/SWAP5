@@ -4,7 +4,7 @@
   "date": "2026-10-01",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "e2d18564383e1350b0b9a68af0eaf668dac784af",
-  "decision": "RESIDUAL_GROWTH_SHORTCUT_CONFIRMED__PARTIAL_NUMERICAL_REPAIR__NO_PRODUCTION_ADMISSION",
+  "decision": "ACTUAL_PROVIDER_K_DISCONTINUITY_CONFIRMED__SMOOTH_DERIVATIVE_ROUTE_FALSIFIED__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -136,7 +136,7 @@
     "Shared BASE temporal identity gate returns huge() for non-identical full/half transient end states. O0/O2 fixture converges, passes mass gates, but records 3 temporal rejections and zero accepted substeps. TOP03 cannot supply a live inundation candidate under that unchanged policy.",
     "Isolated fixed-grid nonlinear research reaches 80-iteration retries near saturation on refined 0.25-day integrations; full/half acceptance repair alone does not supply a trustworthy reference."
   ],
-  "next_action": "Validate actual residual/Jacobian consistency for retained free-drainage failures and exhausted line-search behavior. Pressure-aware progress shortcut is a supported research partial repair only. Complete-window throughput accuracy and real top-active receipts remain pending.",
+  "next_action": "Establish inherited conductivity cutoff reference-policy intent and perform source-consistent frozen-origin residual/branch or explicit counterfactual tests. Do not smooth or remove the cutoff as an undeclared preservation-only repair. Retain temporal throughput and component-commit qualification prerequisites.",
   "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -199,7 +199,7 @@
     },
     "production_source_modified": false
   },
-  "last_reviewed_canonical": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+  "last_reviewed_canonical": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
   "temporal_controller_research": {
     "preregistration_commit": "17fb8d0d15f04f3dcedfacc0e3338ddcdbd72fad",
     "result": "integration/sw-rib-top03/TOP03_TEMPORAL_CONTROLLER_RESULT.json",
@@ -237,6 +237,18 @@
     "repaired_failures": 29,
     "retained_failures": 80,
     "new_failures": 0,
+    "production_qualified": false
+  },
+  "constitutive_cut_research": {
+    "preregistration_commit": "e4cdbdbd161ab994bab32f2b86bef5ff535ad333",
+    "result": "integration/sw-rib-top03/TOP03_CONSTITUTIVE_CUT_RESULT.json",
+    "decision": "integration/sw-rib-top03/TOP03_CONSTITUTIVE_CUT_DECISION.md",
+    "cut_oracle_O0_O2_identity": true,
+    "cut_head_cm": -0.012386042337589586,
+    "K_jump_cm_day": 0.1799453461146694,
+    "smooth_derivative_variant_integrations_executed": 0,
+    "remaining_failure_correlation": 25,
+    "all_failures_explained": false,
     "production_qualified": false
   }
 }

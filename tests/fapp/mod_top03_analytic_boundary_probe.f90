@@ -1,4 +1,5 @@
-! Research-only derivative for the exact, bounded default MvG fixture.
+! FALSIFIED research hypothesis: smooth MvG derivative omits actual cutoff branches.
+! Its oracle intentionally rejects the route; do not reuse as a qualified derivative.
 module mod_top03_analytic_boundary_probe
  use,intrinsic::iso_fortran_env,only:real64
  use mod_b110_default_mvg_provider,only:b110_default_mvg_parameters_t,evaluate_b110_default_mvg_conductivity

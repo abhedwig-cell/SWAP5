@@ -1,0 +1,429 @@
+{
+  "scope": "exact synthetic default-MvG provider cutoff and existing terminal trace correlation",
+  "canonical_reviewed": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
+  "preregistration_commit": "e4cdbdbd161ab994bab32f2b86bef5ff535ad333",
+  "cut_oracle_O0_O2_identity": true,
+  "cut_head_cm": -0.012386042337589586,
+  "finest_bracket": {
+    "cut_head_cm": -0.012386042337589586,
+    "delta_cm": 1e-09,
+    "K_left_cm_day": 4.570054653885331,
+    "K_right_cm_day": 4.75,
+    "jump_cm_day": 0.1799453461146694,
+    "secant_per_day": 89972673.05733469,
+    "relative_jump": 0.03788323076098303
+  },
+  "smooth_analytic_oracle_runs": [
+    {
+      "geometry": 2,
+      "variant": "bottom",
+      "runtime_exit": 91,
+      "build": "O0",
+      "integrations_executed": 0,
+      "O2_executed": false
+    },
+    {
+      "geometry": 2,
+      "variant": "both",
+      "runtime_exit": 91,
+      "build": "O0",
+      "integrations_executed": 0,
+      "O2_executed": false
+    },
+    {
+      "geometry": 3,
+      "variant": "bottom",
+      "runtime_exit": 91,
+      "build": "O0",
+      "integrations_executed": 0,
+      "O2_executed": false
+    },
+    {
+      "geometry": 3,
+      "variant": "both",
+      "runtime_exit": 91,
+      "build": "O0",
+      "integrations_executed": 0,
+      "O2_executed": false
+    }
+  ],
+  "terminal_trace_correlation": {
+    "stock": {
+      "failed_grids": 109,
+      "cross_cut_in_terminal_window": 9,
+      "repeated_crossings": 6,
+      "terminal_within_1e_5_cm": 10,
+      "crossing_cases": [
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "1",
+            "32"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "1",
+            "2048"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "2",
+            "32"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "2",
+            "2048"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "3",
+            "32"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "2",
+            "3",
+            "4096"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "3",
+            "3",
+            "256"
+          ],
+          "crossings": 1
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "3",
+            "3",
+            "2048"
+          ],
+          "crossings": 1
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "3",
+            "3",
+            "4096"
+          ],
+          "crossings": 1
+        }
+      ]
+    },
+    "strict": {
+      "failed_grids": 80,
+      "cross_cut_in_terminal_window": 25,
+      "repeated_crossings": 19,
+      "terminal_within_1e_5_cm": 21,
+      "crossing_cases": [
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "1",
+            "32"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "1",
+            "2048"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "2",
+            "32"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "2",
+            "2048"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "3",
+            "32"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "1",
+            "3",
+            "2048"
+          ],
+          "crossings": 1
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "2",
+            "1",
+            "2048"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "2",
+            "1",
+            "4096"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "2",
+            "2",
+            "2048"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "2",
+            "2",
+            "4096"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "2",
+            "3",
+            "256"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "2",
+            "7",
+            "2",
+            "3",
+            "4096"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "1",
+            "512"
+          ],
+          "crossings": 1
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "1",
+            "1024"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "1",
+            "2048"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "1",
+            "4096"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "2",
+            "512"
+          ],
+          "crossings": 1
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "2",
+            "1024"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "2",
+            "2048"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "2",
+            "4096"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "3",
+            "1024"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "2",
+            "3",
+            "4096"
+          ],
+          "crossings": 2
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "3",
+            "3",
+            "256"
+          ],
+          "crossings": 1
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "3",
+            "3",
+            "2048"
+          ],
+          "crossings": 1
+        },
+        {
+          "grid": [
+            "3",
+            "7",
+            "3",
+            "3",
+            "4096"
+          ],
+          "crossings": 1
+        }
+      ]
+    }
+  },
+  "B110_legacy_cutoff_confirmed": true,
+  "B110_legacy_source_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+  "B111_module_equivalence_claimed": false,
+  "log_sha256": {
+    "top03-cut-g2.log": "00c9aba570125e895d98f3d8dc1d5a2056fdbd988667eddfb49ab806c04808c1",
+    "top03-analytic-g2-bottom.log": "986e621ed0603dde3f2deab43b92f58954dc57e1a458af161b2185a000697bfa",
+    "top03-analytic-g2-both.log": "a9bd567c12de8679d08e7e7874799fed6b6a3b8deea257171eff586cd21fb4af",
+    "top03-cut-g3.log": "00c9aba570125e895d98f3d8dc1d5a2056fdbd988667eddfb49ab806c04808c1",
+    "top03-analytic-g3-bottom.log": "deabc7c15bee12516d3dff23790b3a9921d0eff2b284c7fde0066c64af39acae",
+    "top03-analytic-g3-both.log": "99ac4ec694faa55fa0adb40a5fd526fb9b8371b8ce6df0e8f6256f2d3a8a3784"
+  },
+  "decision": "ACTUAL_PROVIDER_K_DISCONTINUITY_CONFIRMED__SMOOTH_DERIVATIVE_ROUTE_FALSIFIED",
+  "production_qualified": false,
+  "all_remaining_failures_explained": false,
+  "source_sha256": {
+    "tests/fapp/mod_top03_constitutive_cut_probe.f90": "48fd4091e4d1298abddd527d405296821975c243cfef5532a596b6975337c9ac",
+    "tests/fapp/test_sw_rib_top03_constitutive_cut.f90": "d79d9316d4155ad7f725df68769e6d7a17386e3fcc2c5e4fc9c7ca9961868f62",
+    "tests/fapp/run_sw_rib_top03_constitutive_cut.sh": "f092a4b9e1088ee512afd84fe5095776293cbce981ec4ca44de55ca8bb885c33",
+    "tests/fapp/analyze_sw_rib_top03_constitutive_cut.py": "8dec907079c3080027fa75479d339ffcc5dc3958448fcd9da9b625000b075323",
+    "src/solver/mod_b110_default_mvg_provider.f90": "47c61a5135c8e88c4d08a8b7a6dd291f8c7ec508d63bbefcfaad05b2ac6593ee"
+  }
+}
