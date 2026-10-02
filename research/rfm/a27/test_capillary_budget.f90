@@ -33,6 +33,10 @@ program test_capillary_budget
  print '(a,es24.16)','A27_MIXED_AGE_UPTAKE_CM=',mixture
  print '(a,es24.16)','A27_HOMOGENEOUS_MEAN_AGE_UPTAKE_CM=',homogeneous
  print '(a,es24.16)','A27_MEAN_AGE_CLOSURE_ERROR_CM=',mixture-homogeneous
+ homogeneous=.4_real64*2._real64*(sqrt(1.1_real64)-1._real64)
+ call check(mixture-homogeneous>1e-3_real64,'endpoint first-contact age is not closed memory')
+ print '(a,es24.16)','A27_ENDPOINT_FIRST_CLOCK_UPTAKE_CM=',homogeneous
+ print '(a,es24.16)','A27_ENDPOINT_FIRST_CLOCK_CLOSURE_ERROR_CM=',mixture-homogeneous
  do i=1,20000
   u=real(mod(i*7919,20003),real64)/20003._real64
   q%dt=1e-5_real64+u;q%storage=u;q%conductivity=10*u;q%matrix_head=40*u-20

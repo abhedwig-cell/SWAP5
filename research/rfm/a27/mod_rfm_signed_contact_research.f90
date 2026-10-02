@@ -11,6 +11,7 @@ module mod_rfm_signed_contact_research
  end type
  type,public::signed_contact_result_t
   logical::valid=.false.
+  integer::budget_limited_contacts=0
   real(real64)::storage_candidate=0.,ledger_residual=0.
   real(real64),allocatable::matrix_gain(:),matrix_loss(:)
  end type
@@ -68,6 +69,7 @@ contains
        ! Bound only enhancement above hydraulic Darcy, not through-flow itself.
        darcy_only=cd*((phi-q%matrix_head(i))*(hi-wetlo)+.5_real64*(hi**2-wetlo**2))
        excess=max(0._real64,rate-darcy_only)
+       if(excess>q%capillary_budget(i))r%budget_limited_contacts=r%budget_limited_contacts+1
        rate=darcy_only+min(excess,q%capillary_budget(i))
       endif
      endif

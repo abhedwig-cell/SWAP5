@@ -23,6 +23,7 @@ program test_ppa_wu05a27_signed_column
  real(real64)::event_seed(numnod),event_age(numnod),trial_seed(numnod),trial_age(numnod)
  logical::wall_wet(numnod),trial_wet(numnod)
  integer::soil,wet,mode,ref,step,ns,iters,backs,k
+ integer::budget_hits,new_wall_events,dry_resets
  type(saturated_exchange_request_t)::sq
  type(saturated_exchange_result_t)::sx
  type(soil_water_parameter_set_t),target::params
@@ -43,15 +44,15 @@ program test_ppa_wu05a27_signed_column
  allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
  params%parameter_set_id=526_int64;params%active_nodes=numnod;params%z=z;params%dz=dz;params%node_distance=disnod(1:numnod)
 
- print '(a)','soil,wet,reverse_on,dt_day,time_day,exchange_cm,bottom_cm,storage_cm,storage_change_cm,max_abs_head_change_cm,mass_residual_cm,newton,backtracks,cpu_seconds,macro_storage_cm,macro_water_level_cm'
+ print '(a)','soil,wet,reverse_on,dt_day,time_day,exchange_cm,bottom_cm,storage_cm,storage_change_cm,max_abs_head_change_cm,mass_residual_cm,newton,backtracks,cpu_seconds,macro_storage_cm,macro_water_level_cm,budget_hits,new_wall_events,dry_resets,head_top_cm,head_mid_cm,head_bottom_cm,theta_top,theta_mid,theta_bottom'
  allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod),source(numnod),h0(numnod),t0(numnod))
  do soil=1,2
- do wet=0,2
+ do wet=0,3
  do mode=0,6
  do ref=0,4
  dt=.002_real64/(2**ref);ns=nint(1._real64/dt)
  ks=1._real64;if(soil==2)ks=5._real64
- water_table=-200._real64;if(wet>0)water_table=-20._real64
+ water_table=-200._real64;if(wet==1.or.wet==2)water_table=-20._real64
  cofgen=0._real64
  do i=1,numnod
   cofgen(1,i)=0.02_real64;cofgen(2,i)=0.427494_real64;cofgen(3,i)=ks
@@ -84,16 +85,17 @@ program test_ppa_wu05a27_signed_column
  sq%diameter=[(20._real64,k=1,numnod)]
  if(allocated(sq%domain_fraction))deallocate(sq%domain_fraction,sq%cdarcy)
  allocate(sq%domain_fraction(1,numnod),sq%cdarcy(1,numnod));sq%domain_fraction=1.;sq%cdarcy=.1_real64*16._real64/(20._real64**2)*(ks*.1_real64)*10._real64
- macro_initial=0.;if(wet==2)macro_initial=4._real64
+ macro_initial=0.;if(wet==2.or.wet==3)macro_initial=4._real64
  macro_water=macro_initial
  event_seed=0.;event_age=0.;wall_wet=.false.
+ budget_hits=0;new_wall_events=0;dry_resets=0
  if(allocated(contact%contact_age))deallocate(contact%contact_age)
  if(allocated(contact%capillary_budget))deallocate(contact%capillary_budget)
  cum_exchange=0.;cum_bottom=0.;iters=0;backs=0.;initial_storage=sum(t0*dz)
  call cpu_time(clock0)
  do step=1,ns
  qdra=0.;qssdi=0.
- if(wet>0.and.step>ns/2)q%boundary%bottom_head=40._real64
+ if((wet==1.or.wet==2).and.step>ns/2)q%boundary%bottom_head=40._real64
  into_macro=0.;out_macro=0.
  if(mode>0)then
   sq%macro_reference_level=[-100._real64+macro_water/.05_real64]
@@ -150,6 +152,7 @@ program test_ppa_wu05a27_signed_column
   endif
   call evaluate_signed_contact(contact,cr)
   if(.not.cr%valid)error stop 'signed contact'
+  budget_hits=budget_hits+cr%budget_limited_contacts
   into_macro=sum(cr%matrix_loss);out_macro=sum(cr%matrix_gain)
   qdra(1,:)=cr%matrix_loss/dt;qssdi=cr%matrix_gain/dt
  endif
@@ -161,6 +164,8 @@ program test_ppa_wu05a27_signed_column
  if(.not.r0%integrated_mass_balance_residual_available.or.abs(r0%integrated_mass_balance_residual_cm)>tol)error stop 'column mass'
  macro_water=macro_water+into_macro-out_macro
  if(mode>=5)then
+  new_wall_events=new_wall_events+count(trial_wet.and..not.wall_wet)
+  dry_resets=dry_resets+count(wall_wet.and..not.trial_wet)
   event_seed=trial_seed;event_age=trial_age+merge(dt,0._real64,trial_wet);wall_wet=trial_wet
  endif
  if(macro_water< -1e-12_real64.or.macro_water>5._real64+1e-12_real64)error stop 'receiver capacity'
@@ -171,9 +176,11 @@ program test_ppa_wu05a27_signed_column
  if(abs(sum(q%base_state%water_content*dz)-initial_storage-cum_bottom+macro_water-macro_initial)>1e-7_real64)error stop "whole column ledger"
  if(mod(step,max(1,ns/10))==0)then
   call cpu_time(clock1)
-  print '(3(i0,","),8(es24.16,","),2(i0,","),3(es24.16,:,","))',soil,wet,mode,dt,step*dt,cum_exchange,cum_bottom, &
+  print '(3(i0,","),8(es24.16,","),2(i0,","),3(es24.16,","),3(i0,","),6(es24.16,:,","))',soil,wet,mode,dt,step*dt,cum_exchange,cum_bottom, &
    sum(q%base_state%water_content*dz),sum(q%base_state%water_content*dz)-initial_storage, &
-   maxval(abs(q%base_state%pressure_head-h0)),r0%integrated_mass_balance_residual_cm,iters,backs,clock1-clock0,macro_water,-100._real64+macro_water/.05_real64
+   maxval(abs(q%base_state%pressure_head-h0)),r0%integrated_mass_balance_residual_cm,iters,backs,clock1-clock0,macro_water,-100._real64+macro_water/.05_real64, &
+   budget_hits,new_wall_events,dry_resets,q%base_state%pressure_head(1),q%base_state%pressure_head(node),q%base_state%pressure_head(numnod), &
+   q%base_state%water_content(1),q%base_state%water_content(node),q%base_state%water_content(numnod)
  endif
  enddo
  enddo
