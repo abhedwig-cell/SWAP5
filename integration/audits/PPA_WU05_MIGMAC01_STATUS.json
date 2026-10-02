@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_unit": "PPA-WU05-MIGMAC01",
-  "status": "BLOCKED_CORRECTED_SOURCE_REPLAY_AND_TYPED_PHYSICAL_CONTRACTS",
+  "status": "QUALIFIED_SOURCE_TRANSACTION_WITH_G7_ATTRIBUTION_OPEN",
   "baseline": "6a2d948e510ddaa4308392051dbba2972b951ae0",
   "checkpoint_commit": "containing commit",
   "last_reconciled_head": "44baf4a509d9238b7ac9cf16df8d49412b222e3c",
@@ -211,5 +211,27 @@
       "accepted_macro_immutable": true,
       "qualified": false
     }
+  },
+  "last_checked_branch_head": "7687d89a351ba36ae234641ecff37469cd811940",
+  "current_canonical_observed": "800f6a9b0f4e91a62e4f1b2a391c6b4308892508",
+  "source_backed_direct_qualified": true,
+  "source_backed_transaction_qualified": true,
+  "preservation": {
+    "a9_surface_connected": true,
+    "a10_rapid_drainage": true,
+    "perch20_transaction": true,
+    "perch20_restart": true
+  },
+  "remaining_blockers": [
+    "G7 exact last-rate discrepancy attribution"
+  ],
+  "production_admission_candidate": false,
+  "canonical_admitted": false,
+  "evidence": {
+    "source_transaction_result": "docs/audits/PPA_WU05_MIGMAC01_SOURCE_TRANSACTION_RESULT.md",
+    "typed_physical_contract": "docs/audits/PPA_WU05_MIGMAC01_TYPED_PHYSICAL_CONTRACT.md",
+    "provider_shortstep_preregistration": "docs/audits/PPA_WU05_MIGMAC01_PROVIDER_SHORTSTEP_PREREGISTRATION.md",
+    "root_composition_preregistration": "docs/audits/PPA_WU05_MIGMAC01_ROOT_COMPOSITION_PREREGISTRATION.md",
+    "qualification_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36989583419"
   }
 }
