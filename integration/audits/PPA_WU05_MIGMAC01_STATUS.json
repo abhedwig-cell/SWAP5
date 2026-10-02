@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "work_unit": "PPA-WU05-MIGMAC01",
-  "status": "QUALIFIED_ADMISSION_CANDIDATE_READY_FOR_CANONICAL_INTEGRATION",
+  "status": "CANONICALLY_ADMITTED_CLOSED",
   "owning_branch": "research/ppa-wu05-migmac01-covering-layer",
   "qualified_postimage": "8f3f2d487fe177b74a14e0c5aa2942d25c342e09",
   "status_head_parent": "ace22e240d02ade24c64948998c18a56fdb10560",
@@ -12,8 +12,8 @@
   "qualified": true,
   "preserved": true,
   "production_admission_candidate": true,
-  "canonically_admitted": false,
-  "closed": false,
+  "canonically_admitted": true,
+  "closed": true,
   "source_event": {
     "label": "MODIFIED_ANDELST_COVERED_TOP_PLUS_BOUNDED_B1_CORRECTION",
     "top_node": 3,
@@ -69,5 +69,17 @@
     "corrected_source_canonical_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36994347915",
     "focused_backend_canonical_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36994347868"
   },
-  "next_action": "Open the canonical integration PR from reconcile/ppa-wu05-migmac01-canonical to integration/f-ci-canonical; merge only if the PR remains based on f7c261a7... or a later canonical delta is reconciled and the required gates remain valid. Then persist canonical admission and closeout."
+  "next_action": "None for bounded MIGMAC01 admission. Exact B1.11 last-rate parity remains explicitly unclaimed unless a future source capture includes the complete mutable last-rate macropore carrier.",
+  "canonical_merge": "611af5461212dc34c210064b60cf5a4efb7eee9f",
+  "canonical_pr": 983,
+  "canonical_postimage_verified": true,
+  "canonical_postimage_verification": {
+    "merge_head": "611af5461212dc34c210064b60cf5a4efb7eee9f",
+    "production_blobs_equal_pr_head": true,
+    "pr_head": "0485ad3536c772881f36766feba92f896917d54c",
+    "qualified_production_postimage": "8f3f2d487fe177b74a14e0c5aa2942d25c342e09",
+    "corrected_source_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36994347915",
+    "focused_backend_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36994347868",
+    "broad_canonical_failure_preexisting_on_base": true
+  }
 }
