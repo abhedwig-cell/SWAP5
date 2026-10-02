@@ -751,9 +751,20 @@ contains
     ! prescribed-qbot mode 2; process composition remains fail-closed here.
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
         tile%parameters%hysteresis_active .or. &
-        tile%parameters%frost_active .or. tile%parameters%soil_temperature_active .or. &
-        tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active .or. &
+        tile%parameters%frost_active .or. &
+        tile%parameters%drainage_response_active .or. &
         tile%parameters%tabulated_hydraulics_active) return
+    ! The original bare-soil admission remains exact when the new carrier is
+    ! absent. Only the source-bound standalone root/thermal slice is widened.
+    if(allocated(tile%parameters%bartholomeus)) then
+      if(tile%parameters%bottom_mode/=2 .and. tile%parameters%bottom_mode/=7) return
+      if(.not.tile%parameters%root_extraction_active) return
+      if(tile%parameters%elasticity_active .or. tile%parameters%direct_retention_active) return
+      if(tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active) return
+    else
+      if(tile%parameters%soil_temperature_active .or. tile%parameters%root_extraction_active) return
+      if(allocated(tile%base_forcing%crop_oxygen)) return
+    end if
 
     if (tile%parameters%black_evaporation_active) then
       if (tile%parameters%boesten_evaporation_active) return

@@ -5,7 +5,7 @@ module mod_bartholomeus_parameter_contract
   implicit none
   private
   public :: BartholomeusSoilNodeParameters, BartholomeusCropParameters, BartholomeusImmutableDataset
-  public :: validate_bartholomeus_parameters
+  public :: validate_bartholomeus_parameters, construct_bartholomeus_dataset
 
   type :: BartholomeusSoilNodeParameters
     real(real64) :: saturated_water_content
@@ -41,6 +41,59 @@ module mod_bartholomeus_parameter_contract
   end type
 
 contains
+  subroutine construct_bartholomeus_dataset(cofgen,dz_cm,orgmat,psand,bdens, &
+       theta_campbell_100,theta_campbell_500,theta_gfp,head100,head500, &
+       initial_hysteresis_branch,data,ok)
+    ! theta_* are evaluations from the owning hydraulic construction. They
+    ! must include the applicable initial hysteresis branch, not current theta.
+    ! No sharing/cache API is supplied: sharing requires ALL these dependencies.
+    real(real64),intent(in)::cofgen(:,:),dz_cm(:),orgmat(:),psand(:),bdens(:)
+    real(real64),intent(in)::theta_campbell_100(:),theta_campbell_500(:),theta_gfp(:),head100,head500
+    integer,intent(in)::initial_hysteresis_branch
+    type(BartholomeusImmutableDataset),intent(out)::data
+    logical,intent(out)::ok
+    type(BartholomeusImmutableDataset)::candidate
+    integer::i,n
+    real(real64)::b,gfp
+    ok=.false.;n=size(dz_cm)
+    if(n<=0 .or. size(cofgen,1)<7 .or. size(cofgen,2)/=n) return
+    if(size(orgmat)/=n .or. size(psand)/=n .or. size(bdens)/=n) return
+    if(size(theta_campbell_100)/=n .or. size(theta_campbell_500)/=n .or. size(theta_gfp)/=n) return
+    if(any(.not.ieee_is_finite(cofgen(1:7,:)))) return
+    if(any(.not.ieee_is_finite(dz_cm)) .or. any(dz_cm<=0)) return
+    if(any(.not.ieee_is_finite(orgmat)) .or. any(orgmat<0) .or. any(orgmat>1)) return
+    if(any(.not.ieee_is_finite(psand)) .or. any(psand<0) .or. any(psand>1)) return
+    if(any(.not.ieee_is_finite(bdens)) .or. any(bdens<=0)) return
+    if(any(.not.ieee_is_finite(theta_campbell_100)) .or. any(.not.ieee_is_finite(theta_campbell_500))) return
+    if(any(.not.ieee_is_finite(theta_gfp))) return
+    if(.not.ieee_is_finite(head100) .or. .not.ieee_is_finite(head500)) return
+    if(head100>=0 .or. head500>=head100) return
+    if(any(theta_campbell_500<=0) .or. any(theta_campbell_100<=theta_campbell_500)) return
+    if(any(theta_campbell_100>cofgen(2,:)) .or. any(theta_gfp<0) .or. any(theta_gfp>=cofgen(2,:))) return
+    if(any(cofgen(1,:)<0) .or. any(cofgen(2,:)<=cofgen(1,:)) .or. any(cofgen(2,:)>1)) return
+    if(any(cofgen(4,:)<=0) .or. any(cofgen(6,:)<=1) .or. any(cofgen(7,:)<=0)) return
+    allocate(candidate%soil(n))
+    candidate%initial_hysteresis_branch=initial_hysteresis_branch
+    do i=1,n
+      b=(log10(-head500)-log10(-head100))/(log10(theta_campbell_100(i))-log10(theta_campbell_500(i)))
+      gfp=cofgen(2,i)-theta_gfp(i)
+      candidate%soil(i)%saturated_water_content=cofgen(2,i)
+      candidate%soil(i)%percent_org_mat=orgmat(i)*100.0_real64
+      candidate%soil(i)%percent_sand=psand(i)*(1.0_real64-orgmat(i))*100.0_real64
+      candidate%soil(i)%soil_density=bdens(i)
+      candidate%soil(i)%depth_m=dz_cm(i)*0.01_real64
+      candidate%soil(i)%diffusivity%gfp100=gfp
+      candidate%soil(i)%diffusivity%term1=2.0_real64*gfp**3+0.04_real64*gfp
+      candidate%soil(i)%diffusivity%exponent=2.0_real64+3.0_real64/b
+      candidate%soil(i)%waterfilm_capac_term=(cofgen(2,i)-cofgen(1,i))* &
+           0.01_real64*cofgen(4,i)*cofgen(6,i)*cofgen(7,i)
+      candidate%soil(i)%waterfilm_n_minus_1=cofgen(6,i)-1.0_real64
+      candidate%soil(i)%waterfilm_m_plus_1=cofgen(7,i)+1.0_real64
+      candidate%soil(i)%waterfilm_alpha_per_pa=0.01_real64*cofgen(4,i)
+      candidate%soil(i)%waterfilm_gen_n=cofgen(6,i)
+    end do
+    data=candidate;ok=.true.
+  end subroutine
   pure logical function validate_bartholomeus_parameters(data,crop,rooted_nodes) result(ok)
     type(BartholomeusImmutableDataset),intent(in)::data
     type(BartholomeusCropParameters),intent(in)::crop

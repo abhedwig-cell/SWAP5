@@ -68,7 +68,14 @@ module mod_fmr_serialized_reference_backend
   use mod_process_hydraulic_view, only: process_hydraulic_view_t, build_process_hydraulic_view
   use mod_b110_smooth_freatic_projection, only: b110_smooth_freatic_projection_diagnostics_t, &
        evaluate_b110_smooth_freatic_projection, B110_GWL_PROJECTION_OK
-  use mod_soil_temperature_contract, only: soil_temperature_at_node
+  use mod_soil_temperature_contract, only: soil_temperature_at_node, soil_temperature_field_view_t, &
+       build_soil_temperature_field_view
+  use mod_crop_bartholomeus_input, only: crop_bartholomeus_input_t, valid_crop_bartholomeus_input
+  use mod_fmr_bartholomeus_contract, only: fmr_bartholomeus_parameters_t, valid_fmr_bartholomeus_parameters
+  use mod_fmr_bartholomeus_activation, only: select_fmr_bartholomeus_route, FMR_BARTHOLOMEUS_ACTIVE, &
+       FMR_BARTHOLOMEUS_DISABLED
+  use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
+  use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
        evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
@@ -220,6 +227,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
+    type(fmr_bartholomeus_parameters_t), allocatable :: bartholomeus
     logical :: macropore_active = .false.
     type(fmr_macropore_physical_config_t), allocatable :: macropore
     logical :: snow_active = .false.
@@ -287,6 +295,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
     real(real64), allocatable :: root_extraction_sink(:)
+    type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     type(snow_forcing_t), allocatable :: snow
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
@@ -296,6 +305,11 @@ module mod_fmr_serialized_reference_backend
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
+    logical :: bartholomeus_executed = .false.
+    integer :: bartholomeus_status = 0
+    real(real64) :: root_oxygen_base_uptake = 0.0_real64
+    real(real64) :: root_oxygen_final_uptake = 0.0_real64
+    real(real64), allocatable :: root_oxygen_final_sink(:)
     logical :: solver_executed = .false.
     logical :: hbot5_proposal_available = .false.
     real(real64) :: hbot5_proposed_t0 = 0.0_real64, hbot5_proposed_t1 = 0.0_real64
@@ -429,6 +443,10 @@ module mod_fmr_serialized_reference_backend
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
     real(real64), pointer :: qrot_zero(:) => null()
+    ! Disposable worker inputs/scratch, not accepted oxygen continuation state.
+    real(real64), allocatable :: qrot_unmodified(:)
+    type(fmr_bartholomeus_parameters_t), allocatable :: bartholomeus
+    type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     real(real64), allocatable :: projection_zero_direction(:)
     integer :: bottom_mode = 7
     integer :: swkimpl = 0
@@ -994,6 +1012,11 @@ contains
     class(transaction_state_t), allocatable :: snapshot
     logical :: available
     call clear_snow_preparation(model)
+    if(allocated(parameters%bartholomeus)) then
+      if(.not.valid_fmr_bartholomeus_parameters(parameters%bartholomeus,parameters%active_nodes)) return
+    else
+      if(allocated(forcing%crop_oxygen)) return
+    end if
     model%snow_active = parameters%snow_active
     model%soil_temperature_active = parameters%soil_temperature_active
     model%black_evaporation_active = parameters%black_evaporation_active
@@ -1731,6 +1754,7 @@ contains
     class(kernel_parameters_t), intent(in) :: parameters
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     logical :: ok
+    integer :: oxygen_route,waterfilm_mode
     ok = associated(self%top_boundary) .and. numerical_config%max_committed_substeps > 0 .and. &
          self%state_profile_admitted
     if (self%fixed_weir_surface_water_active) then
@@ -1830,6 +1854,19 @@ contains
         ok = ok .and. parameters%drainage_response_active .and. parameters%bottom_mode == 2 .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%macropore_active
       end if
+      if(allocated(parameters%bartholomeus)) then
+        ok=ok .and. valid_fmr_bartholomeus_parameters(parameters%bartholomeus,parameters%active_nodes)
+        call select_fmr_bartholomeus_route(parameters%bartholomeus%selection,oxygen_route,waterfilm_mode)
+        if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
+          ok=ok .and. parameters%root_extraction_active .and. parameters%soil_temperature_active .and. &
+               self%soil_water_selection%uses_reference() .and. &
+               (parameters%bottom_mode==2 .or. parameters%bottom_mode==7) .and. &
+               .not.parameters%direct_retention_active .and. .not.parameters%elasticity_active .and. &
+               .not.parameters%macropore_active .and. .not.parameters%snow_active .and. &
+               .not.parameters%drainage_response_active .and. .not.self%fixed_weir_surface_water_active
+          ok=ok .and. parameters%bartholomeus%soil%initial_hysteresis_branch==0
+        end if
+      end if
     class default
       ok = .false.
     end select
@@ -1907,6 +1944,8 @@ contains
       end if
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
+      if(allocated(self%bartholomeus)) deallocate(self%bartholomeus)
+      if(allocated(parameters%bartholomeus)) self%bartholomeus=parameters%bartholomeus
       self%macropore_active = parameters%macropore_active
       if (allocated(self%macropore_config)) deallocate(self%macropore_config)
       if (parameters%macropore_active .and. allocated(parameters%macropore)) then
@@ -1950,6 +1989,7 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
+    if(allocated(self%crop_oxygen)) deallocate(self%crop_oxygen)
     self%hbot5_proposal = fmr_hbot5_proposal_t()
     if (allocated(self%legacy_swbotb5_control)) deallocate(self%legacy_swbotb5_control)
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
@@ -2017,6 +2057,21 @@ contains
         if (size(forcing%drainage_flux_by_level,1) <= 0 .or. size(forcing%drainage_flux_by_level,2) /= n) return
       end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
+      if(allocated(self%bartholomeus)) then
+        block
+          integer :: oxygen_route,waterfilm_mode
+          call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
+          if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
+            if(.not.allocated(forcing%crop_oxygen)) return
+            if(.not.valid_crop_bartholomeus_input(forcing%crop_oxygen,n)) return
+            self%crop_oxygen=forcing%crop_oxygen
+          else if(oxygen_route/=FMR_BARTHOLOMEUS_DISABLED) then
+            return
+          end if
+        end block
+      else
+        if(allocated(forcing%crop_oxygen)) return
+      end if
       if (self%root_extraction_active) then
         if (any(forcing%root_extraction_sink < 0.0_real64)) return
       else
@@ -2152,6 +2207,7 @@ contains
 
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
+      self%qrot_unmodified=forcing%root_extraction_sink
       self%qrot_zero = 0.0_real64
 
       if (self%drainage_qbot_smooth_freatic_projection) then
@@ -2361,6 +2417,11 @@ contains
     type(soil_temperature_state_t) :: soil_temperature_trial
     type(soil_temperature_result_t) :: soil_temperature_result
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
+    type(soil_temperature_field_view_t) :: oxygen_thermal
+    type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
+    real(real64),allocatable :: oxygen_w_root(:)
+    real(real64) :: atmospheric_ctop
+    integer :: oxygen_route,waterfilm_mode,oxygen_status,oxygen_nodes
     type(black_evaporation_forcing_t) :: black_process_forcing
     type(black_evaporation_result_t) :: black_result
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
@@ -2432,6 +2493,11 @@ contains
       self%last_observation%temporal_certificate_unavailable_reason = 'indicator-not-evaluated'
     end if
     call populate_snow_observation(self)
+    ! Re-enter from the ORIGINAL base root sink for every sibling/retry/step.
+    ! qrot is worker scratch. Reducing its previous value would create history.
+    if(.not.allocated(self%qrot_unmodified) .or. .not.associated(self%qrot)) return
+    if(size(self%qrot_unmodified)/=size(self%qrot)) return
+    self%qrot=self%qrot_unmodified
     call populate_fixed_weir_surface_water_observation(self)
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%drainage_qbot_projection_active = self%drainage_qbot_smooth_freatic_projection
@@ -2636,6 +2702,32 @@ contains
       if (self%soil_temperature_active .or. self%drainage_response_active .or. self%rfm_configuration%enabled) then
         call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
+      end if
+      if(allocated(self%bartholomeus)) then
+        call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
+        if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
+          if(.not.allocated(self%crop_oxygen) .or. .not.allocated(physical%soil_temperature)) return
+          call build_soil_temperature_field_view(physical%soil_temperature,oxygen_thermal,oxygen_status)
+          if(oxygen_status/=SOIL_TEMP_OK) return
+          oxygen_nodes=size(self%crop_oxygen%root_density_kg_m3)
+          allocate(oxygen_w_root(oxygen_nodes))
+          oxygen_w_root=1.0_real64/self%bartholomeus%specific_root_length_m_kg
+          atmospheric_ctop=672.0_real64/(8.314472_real64*(self%crop_oxygen%air_temperature_c+273.0_real64))
+          oxygen_base%root_extraction_sink=self%qrot_unmodified
+          oxygen_base%actual_uptake_total=sum(self%qrot_unmodified)
+          call fmr_apply_bartholomeus_to_root_sink(self%bartholomeus%selection,hydraulic_start,oxygen_thermal, &
+               self%bartholomeus%soil,self%bartholomeus%crop,oxygen_w_root, &
+               self%crop_oxygen%root_density_kg_m3,atmospheric_ctop,oxygen_base,oxygen_final,oxygen_status)
+          self%last_observation%bartholomeus_executed=.true.
+          self%last_observation%bartholomeus_status=oxygen_status
+          self%last_observation%root_oxygen_base_uptake=oxygen_base%actual_uptake_total
+          if(oxygen_status/=FMR_BARTHOLOMEUS_EXEC_OK) return
+          self%qrot=oxygen_final%root_extraction_sink
+          self%last_observation%root_oxygen_final_uptake=oxygen_final%actual_uptake_total
+          self%last_observation%root_oxygen_final_sink=oxygen_final%root_extraction_sink
+        else if(oxygen_route/=FMR_BARTHOLOMEUS_DISABLED) then
+          return
+        end if
       end if
     class default
       return

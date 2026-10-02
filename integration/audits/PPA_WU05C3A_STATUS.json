@@ -6,16 +6,15 @@
   "last_reconciled_upstream": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
   "implemented": true,
   "persisted": true,
-  "tested": true,
+  "tested": false,
   "qualified": false,
   "focused_repair_qualified": true,
-  "status": "REPAIRED_FOCUSED_GATES_PASS_SHARED_APPLICATION_BINDING_AUTHORITY_REQUIRED",
+  "status": "SHARED_INTEGRATION_IMPLEMENTED_APPLICATION_QUALIFICATION_PENDING",
   "canonical_admitted": false,
-  "recovery_point": "docs/audits/PPA_WU05C3A_APPLICATION_INPUT_AUDIT.md",
-  "next_action": "Central accepts the proposed additive input/call-site merge contract in PPA_WU05C3A_APPLICATION_INPUT_AUDIT.md; no intrinsic backend forcing or ledger schema change is required.",
+  "recovery_point": "docs/audits/PPA_WU05C3A_SHARED_INTEGRATION_CONTRACT.md",
+  "next_action": "Compile and qualify the actual typed production application/backend on the persisted implementation; then source-bound replay, canonical preservation and admission.",
   "blockers": [
-    "Shared crop authority must publish SRL-derived kg/m and current nodal root-density kg/m3 with dedicated Bartholomeus respiration parameters",
-    "Shared application authority must select the actual producer/call site and owner-consistent hydraulic/thermal staging"
+    "Application and source-bound qualification not yet executed for the new shared implementation"
   ],
   "authority_paths": [
     "docs/development/quality-governance-a-aa.md",
