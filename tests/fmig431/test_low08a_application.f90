@@ -46,6 +46,7 @@ program test_low08a_application
   cfg%tiles(1)%ledger_id=0_int64
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+  cfg%numerical%transaction%mass_tolerance=1.0e-8_real64
   cfg%numerical%model_temporal_indicator_budget_available=.true.
   cfg%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
   cfg%tiles(1)%base_forcing%bottom_head=-70.0_real64
