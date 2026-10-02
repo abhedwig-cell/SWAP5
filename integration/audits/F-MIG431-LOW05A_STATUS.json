@@ -3,16 +3,16 @@
   "work_unit": "F-MIG431-LOW05-A",
   "baseline": "029453104b98d835790f2e09eb9e804aa3eaff4a",
   "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-  "status": "PROGRESS_GATE_PERSISTED_CLEAN_QUALIFICATION_PENDING",
+  "status": "QUALIFIED_BOUNDED_ADMISSION_CANDIDATE",
   "branch": "work/f-mig431-low05a-prescribed-head-application",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "production_admitted": false,
-  "review_checks": "All five local test programs pass at O0/O2 with identical PASS markers; 136 exact persisted source inputs; no Actions used",
+  "review_checks": "Six clean-build Fortran programs PASS at O0/O2; 137 exact source hashes; progress counts43/348 identical; immutable shared physics/ABI hashes PASS",
   "blockers": [],
-  "next_action": "Run clean six-program O0/O2 pack, evaluate accepted-progress and frozen-physics evidence, then bounded admission",
+  "next_action": "Complete one dedicated persisted qualification run, review checks, then canonical admission via sole official branch PR and closeout",
   "recovery_point": "this record and companion feasibility review in their containing Git commit",
   "authority_paths": [
     "AGENTS.md",
@@ -42,18 +42,19 @@
     "integration/audits/F-MIG431-LOW05P0_RESULT.json",
     "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md",
     "docs/migration/F-MIG431-LOW05A_RESULT.md",
-    "integration/audits/F-MIG431-LOW05A_LOCAL_QUALIFICATION.json"
+    "integration/audits/F-MIG431-LOW05A_LOCAL_QUALIFICATION.json",
+    "docs/migration/F-MIG431-LOW05A_PROGRESS_PREREGISTRATION.md"
   ],
   "nonclaims": [
     "all lower boundaries migrated",
-    "full declared qualification complete",
-    "canonical admission",
-    "unrestricted transient or mixed-ownership envelope"
+    "canonical admission before verified PR merge",
+    "unrestricted transient or mixed-ownership envelope",
+    "general nonlinear temporal-error theorem"
   ],
   "shared_authority_contract_checkpoint": "fe0eebb92ed2ded55a9817fcda40390b3dd968c8",
   "preregistration": "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md",
   "local_bounded_gates_pass": true,
-  "qualification_postimage": "7f45ba251a14f56b06172a6ab24e3315e19c28bc",
-  "qualification_scope": "Five Fortran programs at O0/O2, frozen AFGEN oracle, shared ABI/physics hash preservation; full declared admission evidence incomplete",
-  "progress_preregistration": "docs/migration/F-MIG431-LOW05A_PROGRESS_PREREGISTRATION.md"
+  "qualification_postimage": "d4a97e7bb15952fdc903a881cf80abf6426098fd",
+  "qualification_scope": "All seven preregistered bounded gate roles complete in six programs locally at O0/O2; persisted qualification replay pending",
+  "same_call_progress_gate": "CLOSED_PASS"
 }

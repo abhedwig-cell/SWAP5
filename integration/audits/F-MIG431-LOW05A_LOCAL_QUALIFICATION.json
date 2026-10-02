@@ -133,6 +133,7 @@
     "src/runtime/mod_fmr_restart_state_contract.f90": "ba4badcc80b6b320336ce1438aec2a4691063cc7a6969397ce30e0e32b9fac7f",
     "src/runtime/mod_fmr_committed_restart.f90": "344b574b7c9d7f636b6961143beb6753f8088a0ffb5ca53afbd839eb627f398e",
     "tests/fmig431/test_low05a_application.f90": "2737ae9bea618886bbbe2e4983bf79352524d1c189e215d542ed14729216b231",
+    "tests/fmig431/test_low05a_progress.f90": "e87849119f65ebb343e9ab22f7e16077d3fd330d3d16e21a9c0ca530eb4a2cd4",
     "tests/fapp/test_ppa_low02_time_application_admission.f90": "ccda3999b7ab00d3c6751d2d3612e6c6588c6b3d342db17be8b905ccc59f9cbb",
     "src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90": "c5fcb4e03c677502ff22a79e94faf807cd8edf72bdcd7f15c3cef406fd24f0e8",
     "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90": "181562caa9190f64b5474b11b7b1cfef0d8b29d51196b1b16aa2b6a8aa672219",
@@ -154,6 +155,14 @@
         "LOW05A_PHYSICAL_RETRY_ROLLBACK_ABA=PASS",
         "LOW05A_COMMITTED_RESTART_FRESH_BACKEND_IDENTITY=PASS",
         "LOW05A_APPLICATION_GATE=PASS"
+      ],
+      "tests/fmig431/test_low05a_progress.f90": [
+        "LOW05A_SAME_CALL_ACCEPTED_SHORTENED_PROGRESS=PASS",
+        "LOW05A_PROGRESS_FIXED_HEAD_ORACLE_IDENTITY=PASS",
+        "LOW05A_ACCEPTED_PRIVATE_PROGRESS_OUTER_ROLLBACK=PASS",
+        "LOW05A_HISTORY_MISSING_FAIL_CLOSED=PASS",
+        "LOW05A_DYNAMIC_HISTORY_RESTART_CHANGED_HEAD=PASS",
+        "LOW05A_PROGRESS_GATE=PASS"
       ],
       "tests/fapp/test_ppa_low02_time_application_admission.f90": [
         "PPA_LOW02_SOURCE_LAW_ORACLES=PASS",
@@ -213,6 +222,14 @@
         "LOW05A_COMMITTED_RESTART_FRESH_BACKEND_IDENTITY=PASS",
         "LOW05A_APPLICATION_GATE=PASS"
       ],
+      "tests/fmig431/test_low05a_progress.f90": [
+        "LOW05A_SAME_CALL_ACCEPTED_SHORTENED_PROGRESS=PASS",
+        "LOW05A_PROGRESS_FIXED_HEAD_ORACLE_IDENTITY=PASS",
+        "LOW05A_ACCEPTED_PRIVATE_PROGRESS_OUTER_ROLLBACK=PASS",
+        "LOW05A_HISTORY_MISSING_FAIL_CLOSED=PASS",
+        "LOW05A_DYNAMIC_HISTORY_RESTART_CHANGED_HEAD=PASS",
+        "LOW05A_PROGRESS_GATE=PASS"
+      ],
       "tests/fapp/test_ppa_low02_time_application_admission.f90": [
         "PPA_LOW02_SOURCE_LAW_ORACLES=PASS",
         "PPA_LOW02_SINE_CALENDAR_RESET=PASS",
@@ -258,41 +275,31 @@
       ]
     }
   },
+  "progress_counts": {
+    "O0": {
+      "accepted_substeps": 43,
+      "retries": 348
+    },
+    "O2": {
+      "accepted_substeps": 43,
+      "retries": 348
+    }
+  },
+  "tested_postimage": "d4a97e7bb15952fdc903a881cf80abf6426098fd",
   "canonical_admission": false,
   "shared_authority_drift_check": "PASS",
   "shared_authority_baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+  "runner_sha256": "75d4462713bc8e69456507c758d9e86affba0456b17235e2f820439b8b897f5e",
   "frozen_functions_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
   "status": "LOCAL_BOUNDED_GATES_PASS",
   "o0_o2_marker_identity": true,
-  "tested_postimage": "7f45ba251a14f56b06172a6ab24e3315e19c28bc",
   "canonical_baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
   "production_admitted": false,
-  "qualification_scope": "Completed bounded local gates; full admission qualification pending",
+  "qualification_scope": "All declared bounded six-program gates complete locally; persisted CI confirmation pending",
   "outstanding_admission_evidence": [
-    "Same-call accepted shortened-step progression/resampling, distinct from accepted-boundary fresh request",
-    "Canonical admission and closeout review"
+    "Dedicated persisted six-program qualification replay and canonical PR merge"
   ],
-  "negative_findings": [
-    {
-      "scope": "Exploratory nonstationary direction fixture",
-      "outcome": "Transaction rejected under strict original configuration; no production gates relaxed",
-      "claim": "Does not prove a generic inherited solver defect"
-    },
-    {
-      "scope": "SWKIMPL=1 exploratory fixture",
-      "outcome": "Existing profile rejected; returned to original policy"
-    },
-    {
-      "scope": "Stationary zero/upward fixture",
-      "outcome": "Initial oracle used wrong lower-face distance; corrected to half last dz without production change"
-    },
-    {
-      "scope": "Exact-source AFGEN harness",
-      "outcome": "Existing support stub defines AFGEN; frozen routine isolated by symbol rename without changing arithmetic"
-    },
-    {
-      "scope": "Local checkout verification",
-      "outcome": "Three unchanged preservation fixtures had extra trailing newline; restored exact persisted bytes and repeated clean qualification"
-    }
-  ]
+  "same_call_progress_gate": "CLOSED_PASS",
+  "production_mutation_this_phase": "NONE",
+  "numerical_configuration": "Existing Reference temporal-history certificate with explicit initial derivative and head budget; physical solver tolerances and hard mass unchanged"
 }
