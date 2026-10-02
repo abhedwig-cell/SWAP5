@@ -8,7 +8,7 @@ program test_a28_q4_long_history
   use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t,FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE,FMR_OPTIONAL_STATE_LAYOUT_BASE,FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, &
        FMR_OPTIONAL_STATE_LAYOUT_RFM
-  use mod_fmr_checkpoint_orchestrator,only:fmr_capture_checkpoint,fmr_discard_candidate
+  use mod_fmr_checkpoint_orchestrator,only:fmr_capture_checkpoint
   use mod_fmr_serialized_reference_backend,only:fmr_b110_physical_parameters_t,fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t,fmr_b110_rfm_state_t,fmr_serialized_reference_backend_t, &
        fmr_new_b110_committed_state,fmr_new_b110_rfm_committed_state
@@ -199,7 +199,8 @@ contains
       if(arm==ARM_C.and.step==nsteps/2)then
         call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result,discard_candidate,discard_diagnostics)
         if(.not.result%completed)then;m%status=-923;m%fail_step=step;exit;end if
-        call fmr_discard_candidate(backend%kernel,discard_candidate,discard_diagnostics)
+        ! Candidate is deliberately not committed. kernel_candidate_state_t has no
+        ! publication path except commit; committed state must remain unchanged.
         call committed%snapshot(replay_snapshot,available);if(.not.available)then;m%status=-924;m%fail_step=step;exit;end if
         select type(a=>original_snapshot)
         type is(fmr_b110_rfm_state_t)
