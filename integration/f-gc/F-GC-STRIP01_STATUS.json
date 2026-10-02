@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "BUILD_ORACLES",
-  "state": "RESEARCH_ORACLE_REPRODUCED_NATIVE_MODFLOW_QUEUED",
+  "state": "RESEARCH_ORACLE_REPRODUCED_NATIVE_MODFLOW_QUEUED_COUPLED_INPUTS_BLOCKED",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -72,9 +72,11 @@
     "coupled_run": false,
     "hupsel_run": false,
     "production_delta": [],
-    "qualification": "independent_oracle_local_replay_pass; native_MODFLOW6_run_queued",
+    "qualification": "oracle_local_replay_pass; native_MODFLOW6_AB_and_conductance_sensitivity_queued; no native result yet",
     "canonical_admission": false,
-    "next_action": "Await run 37044022443 and evaluate full native MODFLOW6 A/B logs and artifact; then persist result and proceed to data/ownership gates."
+    "next_action": "Wait for native MODFLOW A/B Actions run 37046847285 (includes the preregistered conductance sensitivity), inspect job logs and artifact, then persist real results. Run 37044022443 is the earlier fixed-conductance-only code revision.",
+    "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
+    "plot_script": "tools/plot_f_gc_strip01.py"
   },
   "next_permitted_action": "Execute the registered standalone A/B workflow through an authorized GitHub Actions route. If it fails, inspect model inputs and native package budgets against the frozen oracle; repair only when physically justified. After A/B passes, proceed to the coupled ownership/data gates.",
   "oracle_evidence": {
@@ -114,7 +116,7 @@
   },
   "native_execution": {
     "workflow": ".github/workflows/f-gc-strip01-standalone-modflow.yml",
-    "workflow_run": 37044022443,
+    "workflow_run": 37046847285,
     "native_modflow_executed": false,
     "expected_engine": "MODFLOW6 6.8.0",
     "expected_flopy": "3.9.5",
@@ -135,9 +137,9 @@
       "cause": "runner reports no job objects; the failure remains infrastructure-level and produced no numerical evidence"
     },
     "repair_note": "Remove runner-context references from job-level environment and artifact path, and use a workspace-relative result directory.",
-    "job_id": 110960842285,
+    "job_id": null,
     "queue_status": "queued",
-    "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37044022443",
+    "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37046847285",
     "first_active_attempt": {
       "run_id": 37044022443,
       "head_sha": "6f93436baa4e09791737fb9e9f76b57ce205a737",
@@ -145,6 +147,23 @@
       "status": "queued",
       "checked_at": "2026-10-02T18:00Z",
       "numerical_evidence": false
-    }
+    },
+    "attempts": [
+      {
+        "run_id": 37044022443,
+        "head_sha": "6f93436baa4e09791737fb9e9f76b57ce205a737",
+        "job_id": 110960842285,
+        "status": "queued",
+        "includes_drn_conductance_sensitivity": false,
+        "numerical_evidence": false
+      },
+      {
+        "run_id": 37046847285,
+        "head_sha": "abdd1f479fe064773cbb16cc4bb7ced85aba493e",
+        "status": "queued",
+        "includes_drn_conductance_sensitivity": true,
+        "numerical_evidence": false
+      }
+    ]
   }
 }
