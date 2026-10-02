@@ -5,6 +5,8 @@ module mod_bartholomeus_no_stress_gate
  use mod_bartholomeus_temperature,only:BartholomeusTemperatureResult,bartholomeus_temperature_parameters
  use mod_bartholomeus_soil_diffusivity,only:bartholomeus_soil_diffusivity
  use mod_bartholomeus_microbial,only:bartholomeus_microbial_respiration
+ use mod_bartholomeus_micro,only:BartholomeusMicroInput,bartholomeus_micro_concentration
+ use mod_bartholomeus_waterfilm,only:BartholomeusWaterfilmMvgInput,bartholomeus_waterfilm_mvg_integrand,bartholomeus_waterfilm_from_length_density
  implicit none
  private
  public::bartholomeus_macro_supply_bound_no_stress
@@ -15,7 +17,9 @@ contains
   type(BartholomeusCropParameters),intent(in)::crop
   real(real64),intent(in)::w_root_z0(:),atmospheric_ctop
   type(BartholomeusTemperatureResult)::t
-  real(real64)::ctop,gfp,mp,dsoil,rm,a,b,demand,cmacro
+  type(BartholomeusMicroInput)::mi
+  type(BartholomeusWaterfilmMvgInput)::wf
+  real(real64)::ctop,gfp,mp,dsoil,rm,a,b,demand,cmacro,ipeak,xpeak,fmax,film_lb,cmicro_ub
   integer::i
   skip=.false.;ctop=atmospheric_ctop
   if(size(w_root_z0)/=view%rooted_nodes)return
@@ -33,16 +37,34 @@ contains
    b=crop%root_shape_m**2*(crop%f_senes*crop%c_mroot*w_root_z0(i)*crop%max_resp_factor * &
        crop%q10_root**(.1_real64*(view%soil_temperature_k(i)-298._real64)))/dsoil
    demand=a+b
-   ! Macro-only sufficient screen: if even the maximum-respiration macro profile
-   ! has no oxygen margin, no claim is made. MICRO is deliberately not approximated.
    if(demand>=ctop)return
    cmacro=ctop-a*(1._real64-exp(-data%soil(i)%depth_m/crop%microbial_shape_m)) - &
                b*(1._real64-exp(-data%soil(i)%depth_m/crop%root_shape_m))
-   ! A positive macro concentration alone cannot prove the unknown waterfilm MICRO
-   ! demand is feasible, so this first bound intentionally makes no skip claim yet.
    if(cmacro<=0._real64)return
+   wf%capac_term=data%soil(i)%waterfilm_capac_term;wf%n_minus_1=data%soil(i)%waterfilm_n_minus_1
+   wf%m_plus_1=data%soil(i)%waterfilm_m_plus_1;wf%alpha_per_pa=data%soil(i)%waterfilm_alpha_per_pa
+   wf%gen_n=data%soil(i)%waterfilm_gen_n;wf%surface_tension_water=t%surface_tension_water
+   if(wf%gen_n<=2._real64)then
+      fmax=bartholomeus_waterfilm_mvg_integrand(mp,wf)
+   else
+      xpeak=((wf%gen_n+1._real64)/(wf%gen_n-2._real64))**(1._real64/wf%gen_n)/wf%alpha_per_pa
+      xpeak=min(mp,max(1.e-10_real64,xpeak))
+      fmax=max(bartholomeus_waterfilm_mvg_integrand(mp,wf),bartholomeus_waterfilm_mvg_integrand(xpeak,wf))
+   endif
+   ipeak=mp*fmax
+   film_lb=bartholomeus_waterfilm_from_length_density(ipeak,mp,t%surface_tension_water)
+   if(.not.(film_lb>0._real64))return
+   mi%c_mroot=crop%c_mroot;mi%w_root=w_root_z0(i);mi%f_senes=crop%f_senes;mi%q10_root=crop%q10_root
+   mi%soil_temp_k=view%soil_temperature_k(i);mi%sat_water_content=data%soil(i)%saturated_water_content
+   mi%gas_filled_porosity=gfp;mi%d_o2_in_water=t%d_o2_in_water;mi%d_root=t%d_root
+   mi%percent_org_mat=data%soil(i)%percent_org_mat;mi%soil_density=data%soil(i)%soil_density
+   mi%specific_resp_humus=crop%specific_resp_humus;mi%q10_microbial=crop%q10_microbial
+   mi%depth_m=data%soil(i)%depth_m;mi%microbial_shape_m=crop%microbial_shape_m;mi%root_radius_m=crop%root_radius_m
+   mi%waterfilm_thickness_m=film_lb;mi%bunsen_coeff=t%bunsen_coeff
+   cmicro_ub=bartholomeus_micro_concentration(mi,crop%max_resp_factor)
+   if(cmacro<cmicro_ub)return
    ctop=cmacro
   enddo
-  skip=.false.
+  skip=.true.
  end function
 end module
