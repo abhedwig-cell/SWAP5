@@ -1,0 +1,21 @@
+{
+  "work_unit": "PPA-WU05-C3A",
+  "run": 36968615218,
+  "job": 110717685992,
+  "postimage": "f3d60c6d1630cb953e3d8bcf17e5c61c9b42b1e5",
+  "result": "FAIL_HARNESS",
+  "classification": "AUTHORITY_BINDING_DEFECT",
+  "failed_gate": "tests/physics/test_bartholomeus_response_assembly.f90 ERROR STOP 2",
+  "cause": "Older fixture expected T_C+273.15; corrected B1.11 and qualified production path use T_C+273. Older fixture also omitted immutable waterfilm fields now explicitly validated.",
+  "physics_change": false,
+  "repair": "Update fixture to source convention and initialize required valid immutable fields; preserve all production equations, acceptance tolerance and fail-closed guards.",
+  "local_repaired_gate": "PPA_WU05C3P_RESPONSE_ASSEMBLY=PASS",
+  "prior_run_markers": [
+    "PPA_WU05C3A_DYNAMIC_RUNTIME_BOUNDARIES=PASS",
+    "PPA_WU05C3A_ADMISSION_BOUNDARIES=PASS",
+    "PPA_WU05C3A_PRODUCTION_PRESERVATION_GATE=PASS",
+    "PPA_WU05C3Q_KERNEL_SMOKE=PASS",
+    "PPA_WU05C3Q_ROOT_COMPOSITION=PASS",
+    "PPA_WU05C3P_WATERFILM_PROVIDER=PASS"
+  ]
+}
