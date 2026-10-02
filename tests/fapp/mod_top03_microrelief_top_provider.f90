@@ -104,10 +104,6 @@ contains
       result%route = 'top03-microrelief-nonfinite'
     end if
 
-    ! Keep the interface values semantically consumed in this research provider.
-    if (requested%top_mode < 0 .and. water_content_top < 0.0_real64 .and. candidate_ponding_depth < 0.0_real64) then
-      result%status = SW_TOP_BOUNDARY_UNAVAILABLE
-    end if
   end subroutine top03_microrelief_evaluate
 
   pure real(real64) function top03_wet_fraction(self) result(value)
