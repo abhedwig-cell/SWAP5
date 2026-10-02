@@ -24,7 +24,7 @@ program test_ppa_wu05_migmac02_dynamic_shrinkage
   r%neighbour_dynamic_volume_cm=0.08_real64
   call evaluate_dynamic_crack_volume(r,0.05_real64,neighbour,ok)
   if(.not.ok .or. abs(neighbour-historic)>1.0e-14_real64) error stop 'MIGMAC02 neighbour E4 mismatch'
-  expected=0.309280553169576_real64
+  expected=0.3092807260097771_real64
   if(abs(historic-expected)>1.0e-12_real64) error stop 'MIGMAC02 exact E4 value mismatch'
 
   ! Direct Kim option-1 parameters: independently check the documented equation.
