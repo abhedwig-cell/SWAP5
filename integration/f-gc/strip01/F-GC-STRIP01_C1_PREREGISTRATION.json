@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C1_SHALLOW_GROUNDWATER_PROFILE",
+  "state": "PREREGISTERED_BEFORE_EXECUTION",
+  "parent_experiment": "C0_FIRST_REAL_CONTEXT_WINDOW",
+  "rationale": "The benchmark requests a numerically easy Dutch sand and decimetre groundwater mounding. The C0 5 m deep groundwater pilot fails isolated dynamic SWAP response. Explicitly test one shallow water-table alternative, preserving C0 negatives and all mass/head tolerances; no shared solver repair.",
+  "geometry": {
+    "width_m": 50,
+    "dx_m": 1,
+    "swap_depth_m": 2,
+    "swap_nodes": 20,
+    "dz_cm": 10,
+    "coupling_plane_m": -2,
+    "modflow_base_m": -10,
+    "modflow_top_m": -2,
+    "icelltype": 0,
+    "storage": "NO_STO",
+    "k_m_day": 0.5,
+    "T_m2_day": 4,
+    "drain_stage_m": -1,
+    "conductance_m2_day": 100
+  },
+  "initial": {
+    "head_m": -1,
+    "far_head_m": -0.5,
+    "MF_initial_guess_m": -0.999,
+    "far_initial_storage_perturbation": "same 0.5 m hydrostatic far-column uplift as C0"
+  },
+  "soil": "exact Staringreeks 2018 B01 row; homogeneous research archetype",
+  "forcing": "zero top/ET/root/sources for first accepted-origin drain-release window",
+  "limits": {
+    "native_head_error_m": 1e-8,
+    "native_rate_residual_m3_d": 1e-10,
+    "coupled_flux_m_s": 1e-15,
+    "coupled_window_mass_m3": 1e-8,
+    "cumulative_mass_m3": 0.000001,
+    "strict_head_cm": 1e-12,
+    "strict_native_balance_cm": 1e-12,
+    "maxit": 16,
+    "backtracking": 8,
+    "temporal_head_budget_cm": 0.00001
+  },
+  "window_day": 0.001,
+  "oracle_uniform_rise_continuum_m": 0.3125,
+  "claims": "separate C1 research alternative only; no claim C0 repaired or canonical envelope widened",
+  "next_if_fail": "route isolated profile-response solvability to central numerical authority before solver/policy changes",
+  "canonical_admission": false
+}
