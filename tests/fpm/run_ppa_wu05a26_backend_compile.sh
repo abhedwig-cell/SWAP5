@@ -10,7 +10,9 @@ fail(){ echo "PPA_WU05A26_BACKEND_FAIL $*" >&2; exit 1; }
 grep -Fq 'FMR_OPTIONAL_STATE_LAYOUT_RFM = 505002_int64' src/runtime/mod_fmr_runtime_core.f90 || fail 'layout id missing'
 grep -Fq 'type, extends(fmr_b110_physical_state_t), public :: fmr_b110_rfm_state_t'   src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'RFM carrier missing'
 grep -Fq 'physical%rfm%storage_cm()' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'RFM storage accounting missing'
-grep -Fq 'full%rfm%same_values(half%rfm)' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'RFM temporal identity missing'
+grep -Fq 'abs(full%rfm%mb_water_cm-half%rfm%mb_water_cm)' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'RFM temporal MB metric missing'
+grep -Fq 'maxval(abs(full%rfm%endpoint_water_cm-half%rfm%endpoint_water_cm))' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'RFM temporal endpoint metric missing'
+if grep -Fq 'full%rfm%same_values(half%rfm)' src/runtime/mod_fmr_serialized_reference_backend.f90; then fail 'obsolete RFM exact temporal identity remains'; fi
 grep -Fq 'call prepare_rfm_live_trial' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'live preparer not bound'
 grep -Fq 'call bind_rfm_matrix_source_provider' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'A24 source seam not bound'
 grep -Fq 'rfm_deep_receipt_cm' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail 'deep receipt not accounted'
