@@ -4,6 +4,8 @@ on:
     branches: [research/ppa-wu05-migmac01-covering-layer]
     paths:
       - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/solver/mod_reference_richards_workspace.f90'
       - 'src/legacy/b1_10_port/headcalc.f90'
       - 'src/runtime/mod_fmr_macropore_configuration.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
