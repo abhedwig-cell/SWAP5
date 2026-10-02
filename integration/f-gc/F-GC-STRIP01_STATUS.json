@@ -4,14 +4,16 @@
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_STANDALONE_AB_ADVISE_COUPLED_PREREQUISITE",
-  "state": "RESEARCH_STANDALONE_AB_PASS_COUPLED_DOMAIN_DECISION_REQUIRED",
+  "state": "STANDALONE_AB_PASS_SHARED_BRANCH_CONCURRENT_WRITER_STOP",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
   },
   "source": {
-    "branch": "work/f-gc-strip01-50m-swap-modflow-benchmark",
-    "base": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
+    "branch": "work/f-gc-strip01-local-ab-evidence-20261002",
+    "base": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c",
+    "shared_work_branch": "work/f-gc-strip01-50m-swap-modflow-benchmark",
+    "recovery_base": "6be6c2c79c0a86173868d9723d9f8acfdc87567a"
   },
   "objective": "Build and qualify a reproducible 50-cell half-drain-spacing standalone MODFLOW6 strip, drain-down, then bounded real SWAP-MODFLOW6 coupling and Hupsel experiment, with explicit ownership, mass balance, restart and replay evidence.",
   "scope": {
@@ -75,7 +77,7 @@
     "qualification": "STANDALONE_AB_LOCAL_PASS_ONLY",
     "canonical_admission": false
   },
-  "next_permitted_action": "Obtain explicit shared research application-domain storage/drainage contract, preserving production authority; then build C real 50-column coupling and D Hupsel. See F-GC-STRIP01_COUPLED_PREREQUISITE.md.",
+  "next_permitted_action": "Restore exclusive STRIP01 branch ownership, reconcile the concurrent two-line runner and workflow addition without losing either evidence set, then resolve shared research-domain authority before C/D/E.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -130,9 +132,17 @@
     "qualified_configuration": "PICARD_AMT_HMK",
     "coupled_run": false,
     "hupsel_run": false,
-    "whole_unit_closed": false
+    "whole_unit_closed": false,
+    "tested_source_carrier": "6be6c2c79c0a86173868d9723d9f8acfdc87567a"
   },
   "blockers": [
+    {
+      "id": "STRIP01_CONCURRENT_WRITER",
+      "class": "OWNERSHIP_CONFLICT",
+      "observed_shared_head": "63bd2ac0155837ae5b5e97166e4e8a574ced1f83",
+      "rejected_update": "non-fast-forward HTTP422",
+      "resolution": "Pause the other writer or explicitly choose which session owns the shared branch; no force update performed."
+    },
     {
       "id": "STRIP01_SHARED_RESEARCH_DOMAIN_AUTHORITY",
       "class": "UNRESOLVED_SCIENTIFIC_AUTHORITY",
@@ -140,15 +150,5 @@
       "proposal": "docs/integration/F-GC-STRIP01_COUPLED_PREREQUISITE.md",
       "production_guard_blob": "4f826df4f0580bcde7941a1511acc4a67646ec72"
     }
-  ],
-  "validation": {
-    "documentation_source_checks": "PASS",
-    "mkdocs_strict": "PASS",
-    "source_diff_check": "PASS",
-    "source_sha256": {
-      "oracle": "912f9934ba55ae63faaacbbf9a9556877c6ec2fdbf07b68a8b6d205fda377b37",
-      "native_runner": "cc87402a2ad5d0fe4addcf2e3753985c72509a448928fc360d8e425edee1a14d"
-    },
-    "preserved_concurrent_oracle_commits": true
-  }
+  ]
 }
