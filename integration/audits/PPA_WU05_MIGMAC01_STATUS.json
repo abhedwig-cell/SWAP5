@@ -1,0 +1,65 @@
+{
+  "schema_version": 2,
+  "work_unit": "PPA-WU05-MIGMAC01",
+  "status": "PRODUCTION_ADMISSION_CANDIDATE_PENDING_CANONICAL_RECONCILIATION",
+  "owning_branch": "research/ppa-wu05-migmac01-covering-layer",
+  "qualified_postimage": "16c66c41c8bbc009cd0efa76c79502532af85f66",
+  "status_head_parent": "ace22e240d02ade24c64948998c18a56fdb10560",
+  "canonical_observed": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "production_admission_candidate": true,
+  "canonically_admitted": false,
+  "closed": false,
+  "source_event": {
+    "label": "MODIFIED_ANDELST_COVERED_TOP_PLUS_BOUNDED_B1_CORRECTION",
+    "top_node": 3,
+    "source_backed_direct_qualified": true,
+    "source_backed_transaction_qualified": true,
+    "covered_transfer_cm": 9.353230881732672e-7,
+    "transaction_mass_residual_cm": 1.0020738579197275e-16,
+    "optimization_levels": [
+      "O0",
+      "O2"
+    ],
+    "reject_replay": true,
+    "commit_publication": true,
+    "persistence_restart": true
+  },
+  "preservation": {
+    "a9_surface_connected": true,
+    "a10_rapid_drainage": true,
+    "perch20_transaction": true,
+    "perch20_restart": true
+  },
+  "resolved_blockers": {
+    "G3": "resolved by corrected source carrier plus source-backed convergence",
+    "G4": "immutable covering parameters typed and propagated",
+    "G5": "matrix-area carrier typed and integrated into matrix ownership",
+    "G6": "stable constitutive storage increment plus migrated B1.11 short-step policy",
+    "G7": "last-rate comparison lacks state-identical mutable macropore carrier; discrepancy retained but operator mismatch not established"
+  },
+  "open_blockers": [],
+  "caveats": [
+    "Whole SWAP 4.3.1/B1.11 is not globally requalified; the bounded CALCGWL correction is targeted-qualified only.",
+    "Bitwise B1.11 last-rate macropore exchange parity is not proven because the persisted last-rate artifact lacks the complete mutable macropore carrier.",
+    "The older synthetic active MIGMAC01 fixture remains diagnostic and is not used as source-backed authority."
+  ],
+  "canonical_reconciliation": {
+    "required": true,
+    "reason": "owning branch is substantially behind current canonical and diverged; canonical admission requires reconcile and exact-postimage rerun",
+    "canonical_admission_claimed": false
+  },
+  "evidence": {
+    "source_transaction_result": "docs/audits/PPA_WU05_MIGMAC01_SOURCE_TRANSACTION_RESULT.md",
+    "g7_attribution": "docs/audits/PPA_WU05_MIGMAC01_G7_ATTRIBUTION.md",
+    "typed_physical_contract": "docs/audits/PPA_WU05_MIGMAC01_TYPED_PHYSICAL_CONTRACT.md",
+    "provider_shortstep_preregistration": "docs/audits/PPA_WU05_MIGMAC01_PROVIDER_SHORTSTEP_PREREGISTRATION.md",
+    "root_composition_preregistration": "docs/audits/PPA_WU05_MIGMAC01_ROOT_COMPOSITION_PREREGISTRATION.md",
+    "qualification_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/36989583419"
+  },
+  "next_action": "Reconcile the qualified MIGMAC01 production delta with current integration/f-ci-canonical, rerun the exact source transaction and preservation gates on the reconciled postimage, then admit only if those gates remain green."
+}
