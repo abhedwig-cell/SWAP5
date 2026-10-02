@@ -64,13 +64,17 @@ contains
     end if
 
     supply = preflight%net_potential_surface_flux
-    if (supply <= 0.0_real64) then
+    if (supply < 0.0_real64) then
       result%status = RFM_SURFACE_COMPOSITION_REFERENCE_REQUIRED
       return
     end if
 
     if (activation%status /= RFM_ACTIVATION_AVAILABLE) then
       result%status = RFM_SURFACE_COMPOSITION_INVALID
+      return
+    end if
+    if (supply == 0.0_real64) then
+      result%status = RFM_SURFACE_COMPOSITION_AVAILABLE
       return
     end if
     matrix_rate = activation%matrix_rate_cm_per_day
