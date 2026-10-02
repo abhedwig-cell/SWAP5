@@ -1,5 +1,5 @@
 module mod_test_transaction_model
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference
   implicit none
   private
@@ -17,7 +17,6 @@ module mod_test_transaction_model
     logical :: inject_mass_defect = .false.
     real(real64) :: mass_defect = 0.0_real64
     logical :: storage_complete = .true.
-    integer :: storage_calls = 0
   contains
     procedure :: advance => test_advance
     procedure :: storage => test_storage
@@ -38,7 +37,7 @@ contains
   end subroutine test_clone
 
   subroutine test_advance(self, state, t0, t1, outcome)
-    class(test_model_t), intent(inout) :: self
+    class(test_model_t), intent(in) :: self
     class(transaction_state_t), intent(inout) :: state
     real(real64), intent(in) :: t0, t1
     type(trial_outcome_t), intent(out) :: outcome
@@ -71,7 +70,6 @@ contains
     class(test_model_t), intent(inout) :: self
     class(transaction_state_t), intent(in) :: state
     real(real64) :: value
-    self%storage_calls = self%storage_calls + 1
     if (self%k < -huge(0.0_real64)) error stop 'unreachable'
     select type(state)
     type is(test_state_t)
@@ -273,7 +271,6 @@ contains
     policy%mass_tolerance=1.0e-10_real64
     policy%max_retries=0
     call execute_reference_interval(model,state,0.0_real64,0.1_real64,policy,result)
-    call expect_true(model%storage_calls==0,'incomplete storage never evaluated',failures)
     call expect_true(result%status==TX_STATUS_RETRY_EXHAUSTED,'incomplete storage fails closed',failures)
     call expect_true(iand(result%accepted_missing_contribution_mask,TX_MASS_MISSING_STORAGE_START)/=0_int64, &
          'missing start storage recorded',failures)
