@@ -69,7 +69,6 @@ contains
     type(fmr_b110_physical_parameters_t),target::parameters
     type(fmr_b110_physical_forcing_t)::forcing
     type(fmr_cauchy3_control_t)::cauchy
-    type(fmr_cauchy3_control_t)::cauchy
     type(fmr_b110_physical_state_t)::physical
     type(rfm_physical_state_t)::rfm
     type(rfm_runtime_configuration_t)::rfmcfg
@@ -97,9 +96,6 @@ contains
     m=metrics_t()
     call init_parameters(parameters,soil,ks)
     parameters%bottom_mode=3
-    call cauchy%initialize_sine(0._real64,0._real64,[0._real64,366._real64],-55._real64,45._real64, &
-         0._real64,1.2_real64,5._real64,.true.,cauchy_status)
-    if(cauchy_status/=FMR_CAUCHY3_OK)then;m%status=-933;return;end if
     wt=water_table(regime)
     heads=wt-z
     call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
@@ -186,8 +182,6 @@ contains
       t0=real(step-1,real64)*DT;t1=real(step,real64)*DT
       rain=0._real64
       call init_forcing(forcing,arm,rain,macro_area)
-      allocate(forcing%legacy_swbotb3_implicit_control)
-      forcing%legacy_swbotb3_implicit_control=cauchy
       allocate(forcing%legacy_swbotb3_implicit_control);forcing%legacy_swbotb3_implicit_control=cauchy
       if(arm==ARM_C.and.step==nsteps/2)then
         call committed%snapshot(original_snapshot,available);if(.not.available)then;m%status=-912;m%fail_step=step;exit;end if
@@ -433,7 +427,6 @@ contains
 
   subroutine init_forcing(f,arm,rain,macro_area)
     type(fmr_b110_physical_forcing_t),intent(out)::f
-    integer::cauchy_status
     integer,intent(in)::arm
     real(real64),intent(in)::rain,macro_area
     f=fmr_b110_physical_forcing_t()
