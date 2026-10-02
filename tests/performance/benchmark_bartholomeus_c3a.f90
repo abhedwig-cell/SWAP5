@@ -38,28 +38,20 @@ contains
     type(BartholomeusImmutableDataset),intent(out)::d
     type(BartholomeusCropParameters),intent(out)::c
     real(real64),intent(out)::wr(N),w0(N),top
-    integer::j
+    real(real64)::cofgen(7,N),dz(N),org(N),sand(N),bd(N),w100(N),w500(N)
+    logical::valid
+    cofgen=0._real64
+    cofgen(1,:)=.05_real64;cofgen(2,:)=.45_real64;cofgen(4,:)=.01_real64
+    cofgen(6,:)=1.5_real64;cofgen(7,:)=1._real64-1._real64/cofgen(6,:)
+    dz=10._real64;org=.02_real64;sand=.6_real64;bd=1300._real64
+    w100=.30_real64;w500=.20_real64
+    call construct_bartholomeus_dataset(cofgen,dz,org,sand,bd,w100,w500,w100,-100._real64,-500._real64,0,d,valid)
+    if(.not.valid) error stop 'dataset construction'
     v%rooted_nodes=N
-    allocate(v%pressure_head_cm(N),v%water_content(N),v%soil_temperature_k(N),d%soil(N))
-    v%pressure_head_cm=[-50._real64,-10._real64,-1._real64]
-    v%water_content=[.40_real64,.422_real64,.423_real64]
-    v%soil_temperature_k=[293._real64,293._real64,293._real64]
-    do j=1,N
-      d%soil(j)%saturated_water_content=.423_real64
-      d%soil(j)%depth_m=.1_real64
-      d%soil(j)%percent_org_mat=.02_real64
-      d%soil(j)%percent_sand=.6_real64
-      d%soil(j)%soil_density=1300._real64
-      d%soil(j)%diffusivity%gfp100=.1_real64
-      d%soil(j)%diffusivity%term1=2._real64*.1_real64**3+.04_real64*.1_real64
-      d%soil(j)%diffusivity%exponent=3._real64
-      d%initial_hysteresis_branch=0
-      d%soil(j)%waterfilm_capac_term=.001_real64
-      d%soil(j)%waterfilm_n_minus_1=.455_real64
-      d%soil(j)%waterfilm_m_plus_1=1.687_real64
-      d%soil(j)%waterfilm_alpha_per_pa=.000135_real64
-      d%soil(j)%waterfilm_gen_n=1.455_real64
-    end do
+    allocate(v%pressure_head_cm(N),v%water_content(N),v%soil_temperature_k(N))
+    v%pressure_head_cm=[-100._real64,-500._real64,-10._real64]
+    v%water_content=[.30_real64,.20_real64,.40_real64]
+    v%soil_temperature_k=293._real64
     c%c_mroot=1.e-5_real64;c%f_senes=1;c%q10_root=2
     c%specific_resp_humus=1.e-6_real64;c%q10_microbial=2
     c%microbial_shape_m=.9_real64;c%root_shape_m=.9_real64
