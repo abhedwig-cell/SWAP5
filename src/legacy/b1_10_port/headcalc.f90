@@ -111,7 +111,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    legacy_state_binding = .not. present(state_binding)
    typed_bottom_invalid=.false.
    typed_bottom_conductance=0.0d0
-   lysimeter_plate_head=hplate
+   if (legacy_state_binding) then
+      lysimeter_plate_head=hplate
+   else
+      lysimeter_plate_head=0.0d0
+   end if
    explicit_geometry = .not. legacy_state_binding
    if (explicit_geometry) then
       if (.not. present(parameter_set)) error stop 'HeadCalc: explicit parameter geometry required'
