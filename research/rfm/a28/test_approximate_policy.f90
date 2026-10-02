@@ -4,7 +4,7 @@ program test_a28_approximate_policy
  use mod_b110_default_mvg_provider,only:b110_default_mvg_parameters_t,b110_default_mvg_provider_t,initialize_b110_default_mvg_parameters,bind_b110_default_mvg_provider
  use mod_process_hydraulic_view,only:process_hydraulic_view_t
  use mod_rfm_surface_sorptivity,only:evaluate_rfm_node_sorptivity
- use mod_rfm_runtime_configuration,only:rfm_runtime_configuration_t,RFM_SORPTIVITY_POLICY_EXACT,RFM_SORPTIVITY_POLICY_PERF07_V1
+ use mod_rfm_runtime_configuration,only:rfm_runtime_configuration_t,RFM_SORPTIVITY_POLICY_EXACT,RFM_SORPTIVITY_POLICY_A28_V1
  implicit none
  real(real64),parameter::hs(17)=[-2000._real64,-1000._real64,-500._real64,-400._real64,-350._real64,-300._real64,-250._real64,-200._real64,-150._real64,-100._real64,-75._real64,-50._real64,-30._real64,-20._real64,-10._real64,-3._real64,-1._real64]
  real(real64)::cof(24,numnod),h(numnod),t(numnod),k(numnod),cap(numnod),dk(numnod),s64,sa,rel,maxrel,sq
@@ -71,13 +71,13 @@ contains
   c%endpoint_depth_cm=10;c%endpoint_contact_thickness_cm=10;c%endpoint_area_fraction=1;c%endpoint_node_index=1
   if(.not.c%valid())error stop 'exact config invalid'
   if(c%sorptivity_panels_for_head(-20._real64)/=64)error stop 'exact changed'
-  c%sorptivity_policy=RFM_SORPTIVITY_POLICY_PERF07_V1
+  c%sorptivity_policy=RFM_SORPTIVITY_POLICY_A28_V1
   if(.not.c%valid())error stop 'approx config invalid'
-  if(c%sorptivity_panels_for_head(-301._real64)/=64.or.c%sorptivity_panels_for_head(-300._real64)/=32.or. &
-     c%sorptivity_panels_for_head(-100._real64)/=16.or.c%sorptivity_panels_for_head(-30._real64)/=8)error stop 'policy boundary'
+  if(c%sorptivity_panels_for_head(-31._real64)/=64.or.c%sorptivity_panels_for_head(-30._real64)/=32.or. &
+     c%sorptivity_panels_for_head(-3._real64)/=16.or.c%sorptivity_panels_for_head(-1._real64)/=16)error stop 'policy boundary'
   c%sorptivity_panels=32;if(c%valid())error stop 'approx ceiling accepted'
   c%sorptivity_panels=64;c%sorptivity_policy=99;if(c%valid())error stop 'unknown policy accepted'
-  c%sorptivity_policy=RFM_SORPTIVITY_POLICY_PERF07_V1
+  c%sorptivity_policy=RFM_SORPTIVITY_POLICY_A28_V1
  end subroutine
  subroutine init_cof(x,tr,ts,a,n,l,ksat)
   real(real64),intent(out)::x(:,:);real(real64),intent(in)::tr,ts,a,n,l,ksat;integer::q
