@@ -1,0 +1,11 @@
+# TOP03 bounded analytic boundary derivative research
+
+Canonical advanced to 27b271c2f3d1ea54e0110f56b73400e3b6935e11 with ordinary prescribed-head application admission. Its delta changes bootstrap/backend proposal ownership and Status-A records, but not headcalc, MvG physics or the standalone diagnosis dependency surface. AGENTS remains 3da9ffe679b8fcde0ccab1fa1311dd6c81e5336b. Production TOP03 reconciliation with that new backend is pending; this research does not merge canonical or combine the new ordinary application with TOP03.
+
+Parent 79834d87daed77d19970c48662de0076f9eed1af. Validate candidate-dependent boundary conductivity derivatives for the existing synthetic default-MvG profile, with zero air-entry head and no KSATEXM/elastic extension. For h < 0 use the analytic derivative of K = Ks*s^l*[1-(u/(1+u))^m]^2, u=(alpha*abs(h))^n and s=(1+u)^(-m). For h > 0 K is constant. At h=0 the unsaturated derivative is singular for n=1.455; do not claim a smooth derivative or treat a central finite difference across that point as exact.
+
+First compare against the actual provider at 11 pressure heads using four non-crossing finite-difference scales. Require relative agreement <=1e-5 for moderate unsaturated heads <=-0.001 cm and exact zero in the saturated control. Nearer saturation report all discrepancies rather than assert derivative qualification: floating-point evaluation/cancellation may limit the oracle.
+
+Then generate scratch Jacobian variants: (1) add the full dK/dh of free drainage in the bottom diagonal; (2) also include -.5*dK_top/dh*surface_gradient in the external-head arithmetic-mean top diagonal. This differentiates candidate-dependent boundary K while leaving interior face K frozen. Retain the pressure-aware progress shortcut from the supported partial repair. The physical residual, capacity floor, final gates, 80/16 iteration/backtrack limits and imposed head remain unchanged.
+
+Run all 702 surface-diagnosis trajectories per O0/O2 build for both variants. Compare with original and pressure-aware-only evidence, report repaired/new failures and complete-in-both transport. Require analytical controls and mass gates, O0/O2 identity and derivative oracle identity. Near-zero nonsmoothness may make either variant fail; persist that finding. No production source, provider ABI or accepted policy change; no Actions.
