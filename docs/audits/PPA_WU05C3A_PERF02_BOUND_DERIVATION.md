@@ -54,3 +54,12 @@ Initial 1100-state falsification:
 - overall skip fraction in this synthetic sweep: 61.09%.
 
 These fractions are not production-frequency estimates. Boundary-focused falsification remains required.
+
+
+## Production-envelope check
+
+The current typed Bartholomeus parameter contract validates `waterfilm_gen_n > 1` and does not impose an upper bound of 2. Therefore `n > 2` is part of the syntactically admitted analytical-MvG production envelope and the monotone-increasing lower-bound proof must not be extrapolated to it.
+
+PERF02 deliberately does not add a piecewise `n > 2` optimization. The gate returns false for `n > 2`, which preserves the complete PERF01 Reference route. Boundary qualification must assert zero skips for those cases. This is a performance false negative by design, not a physics approximation.
+
+The boundary oracle must also bypass PERF02 itself. After integration into the factor provider, calling `evaluate_bartholomeus_factors_from_state` is not an independent Reference oracle because that routine contains the gate. The qualification oracle therefore evaluates REFERENCE waterfilm explicitly and then calls `evaluate_bartholomeus_factors`, reproducing the admitted PERF01 path without the PERF02 shortcut.
