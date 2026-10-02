@@ -42,8 +42,7 @@ program test_low03a_application
   cfg%tiles(1)%parameters%bottom_mode=3
   cfg%tiles(1)%ordinary_implicit_cauchy=.true.
   cfg%tiles(1)%ledger_id=0_int64
-  haq_eq=cfg%tiles(1)%initial_state%pressure_head(numnod)+z(numnod) + &
-       (-conductivity0)*(0.5_real64*dz(numnod)/conductivity0+rimlay)
+  haq_eq=-75.0_real64
   allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control)
   call cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control%initialize_table( &
        T0,1000.0_real64,[1000.0_real64,1000.5_real64,1001.0_real64],[haq_eq,haq_eq,haq_eq], &
@@ -185,7 +184,7 @@ contains
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::provider
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    heads=initial_head
+    heads=initial_head-p%z
     call initialize_b110_default_mvg_parameters(hp,p%cofgen)
     call bind_b110_default_mvg_provider(provider,hp,T1-T0)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
@@ -193,7 +192,7 @@ contains
     state%active_nodes=numnod
     allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head=heads;state%water_content=water;state%ponding_depth=0.0_real64;state%groundwater_level=-2.0_real64
-    forcing%top_flux=-k0;forcing%top_head=initial_head;forcing%bottom_flux=0.0_real64;forcing%bottom_head=-100.0_real64
+    forcing%top_flux=0.0_real64;forcing%top_head=heads(1);forcing%bottom_flux=0.0_real64;forcing%bottom_head=initial_head
     allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod),forcing%root_extraction_sink(numnod))
     forcing%drainage_flux_by_level=0.0_real64;forcing%subsurface_irrigation_source=0.0_real64;forcing%root_extraction_sink=0.0_real64
   end subroutine
