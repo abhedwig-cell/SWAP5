@@ -7,6 +7,13 @@ on:
       - 'tests/performance/run_bartholomeus_gate_boundary.py'
       - 'src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90'
       - '.github/workflows/ppa-wu05c3a-perf02-boundary.yml'
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/performance/falsify_bartholomeus_gate_boundary.f90'
+      - 'tests/performance/run_bartholomeus_gate_boundary.py'
+      - 'src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90'
+      - '.github/workflows/ppa-wu05c3a-perf02-boundary.yml'
   workflow_dispatch:
 jobs:
   boundary:
