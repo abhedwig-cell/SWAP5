@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "e2d18564383e1350b0b9a68af0eaf668dac784af",
-  "decision": "BRANCH_LOCAL_RESIDUAL_GAP_CONFIRMED__NEWTON_TUNING_ROUTE_INSUFFICIENT__NO_PRODUCTION_ADMISSION",
+  "decision": "SOURCE_PRESERVING_RETRY_PARTIALLY_REPAIRS__FULL_HORIZON_ROUTE_FALSIFIED__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -136,7 +136,7 @@
     "Shared BASE temporal identity gate returns huge() for non-identical full/half transient end states. O0/O2 fixture converges, passes mass gates, but records 3 temporal rejections and zero accepted substeps. TOP03 cannot supply a live inundation candidate under that unchanged policy.",
     "Isolated fixed-grid nonlinear research reaches 80-iteration retries near saturation on refined 0.25-day integrations; full/half acceptance repair alone does not supply a trustworthy reference."
   ],
-  "next_action": "Run preregistered unchanged-source growth2 retry-packet full-horizon experiment. Positive single-interval completion is not production/temporal accuracy qualification. Keep all rejected prefix state and flux unpublished.",
+  "next_action": "No production adoption of tested growth2 retry. If continued, define a bounded event/branch-aware source-preserving temporal/throughput contract or a qualified B1 reference-correction route before implementation. Do not repeat undirected Newton, cutoff-removal or minimum-step tuning. Independent real BASE temporal acceptance and component-commit qualification remain outstanding.",
   "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -291,6 +291,21 @@
     "O0_O2_identity": true,
     "completed_packets": 4,
     "packets_per_build": 14,
+    "production_qualified": false
+  },
+  "retry_horizon_research": {
+    "source_checkpoint": "8f09cecac2d26d10a80fe6f4004d981545c99ee7",
+    "result": "integration/sw-rib-top03/TOP03_RETRY_HORIZON_RESULT.json",
+    "decision": "integration/sw-rib-top03/TOP03_RETRY_HORIZON_DECISION.md",
+    "O0_O2_identity": true,
+    "trajectories_per_build": 56,
+    "baseline_failures": 30,
+    "retained_failures": 20,
+    "repaired_count": 10,
+    "new_failure_count": 0,
+    "finest_pairs_complete": 2,
+    "trajectory_families": 8,
+    "production_source_modified": false,
     "production_qualified": false
   }
 }
