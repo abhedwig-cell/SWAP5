@@ -16,8 +16,6 @@ jobs:
   standalone-ab:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-    env:
-      MPLCONFIGDIR: ${{ runner.temp }}/mplconfig
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -42,14 +40,14 @@ jobs:
           "${RUNNER_TEMP}/strip01-mf6/mf6" -v
       - name: Reproduce independent oracle and native MODFLOW A/B
         run: |
-          python tests/fgc/strip01/oracle.py --output "${RUNNER_TEMP}/strip01-results/oracle"
-          python tests/fgc/strip01/run_standalone.py --mf6 "${RUNNER_TEMP}/strip01-mf6/mf6" --output "${RUNNER_TEMP}/strip01-results/native"
-          git rev-parse HEAD > "${RUNNER_TEMP}/strip01-results/source_commit.txt"
+          python tests/fgc/strip01/oracle.py --output strip01-results/oracle
+          python tests/fgc/strip01/run_standalone.py --mf6 "${RUNNER_TEMP}/strip01-mf6/mf6" --output strip01-results/native
+          git rev-parse HEAD > strip01-results/source_commit.txt
       - name: Persist research outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: F-GC-STRIP01-${{ github.run_id }}
-          path: ${{ runner.temp }}/strip01-results/
+          path: strip01-results/
           if-no-files-found: warn
           retention-days: 90

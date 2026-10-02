@@ -125,6 +125,14 @@
       "classification": "workflow configuration rejected before numerical execution",
       "cause": "literal backslashes preceded GitHub expression delimiters; no MODFLOW run occurred"
     },
-    "configuration_repaired": true
+    "configuration_repaired": true,
+    "second_attempt": {
+      "run_id": 37043874582,
+      "conclusion": "failure",
+      "jobs_created": 0,
+      "classification": "workflow initialization/configuration failure before model execution",
+      "cause": "runner reports no job objects; the failure remains infrastructure-level and produced no numerical evidence"
+    },
+    "repair_note": "Remove runner-context references from job-level environment and artifact path, and use a workspace-relative result directory."
   }
 }
