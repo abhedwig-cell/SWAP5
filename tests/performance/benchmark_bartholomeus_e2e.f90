@@ -1,5 +1,5 @@
 program benchmark_bartholomeus_e2e
- use iso_fortran_env,only:real64
+ use iso_fortran_env,only:real64,int64
  use MOD_grid,only:numnod,z,dz,disnod
  use mod_fmr_runtime_core
  use mod_fmr_production_application_bootstrap
