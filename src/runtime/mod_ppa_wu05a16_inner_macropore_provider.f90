@@ -2,7 +2,8 @@ module mod_ppa_wu05a16_inner_macropore_provider
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: macropore_exchange_provider_t, soil_water_physical_state_t
   use mod_macropore_continuation_state, only: macropore_continuation_state_t, copy_macropore_continuation_state
-  use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t
+  use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t, macropore_geometry_result_t, evaluate_macropore_geometry
+  use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t, evaluate_dynamic_crack_profile
   use mod_macropore_standard_storage, only: macropore_standard_storage_view_t, derive_macropore_standard_storage_view
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t, macropore_rate_bundle_result_t, &
        evaluate_macropore_rate_bundle
@@ -19,7 +20,10 @@ module mod_ppa_wu05a16_inner_macropore_provider
     logical :: configured=.false.
     type(macropore_continuation_state_t) :: accepted_macro
     type(macropore_geometry_result_t) :: geometry
+    type(macropore_geometry_config_t) :: geometry_config
+    type(dynamic_shrinkage_config_t) :: shrinkage
     type(macropore_standard_storage_view_t) :: accepted_view
+    real(real64), allocatable :: accepted_matrix_theta(:), matrix_area_fraction(:)
     type(macropore_rate_bundle_request_t) :: rate_template
     real(real64), allocatable :: z(:),dz(:)
     real(real64) :: step_duration=0.0_real64
@@ -38,7 +42,8 @@ contains
 
   subroutine configure_inner_macropore_provider(self,accepted_macro,geometry,rate_template,z,dz,step_duration, &
                                                  accepted_ponding_depth,accepted_groundwater_level,ok, &
-                                                 covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day)
+                                                 covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day, &
+                                                 geometry_config,shrinkage,accepted_matrix_theta,matrix_area_fraction)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(inout)::self
     type(macropore_continuation_state_t),intent(in)::accepted_macro
     type(macropore_geometry_result_t),intent(in)::geometry
@@ -46,6 +51,9 @@ contains
     real(real64),intent(in)::z(:),dz(:),step_duration,accepted_ponding_depth,accepted_groundwater_level
     logical,intent(out)::ok
     real(real64),intent(in),optional::covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day
+    type(macropore_geometry_config_t),intent(in),optional::geometry_config
+    type(dynamic_shrinkage_config_t),intent(in),optional::shrinkage
+    real(real64),intent(in),optional::accepted_matrix_theta(:),matrix_area_fraction(:)
 
     self%configured=.false.
     ok=.false.
@@ -58,6 +66,16 @@ contains
     if(.not.ok)return
     self%geometry=geometry
     self%rate_template=rate_template
+    self%shrinkage=dynamic_shrinkage_config_t()
+    if(present(shrinkage))self%shrinkage=shrinkage
+    if(self%shrinkage%enabled)then
+      if(.not.present(geometry_config) .or. .not.present(accepted_matrix_theta) .or. .not.present(matrix_area_fraction))return
+      if(.not.geometry_config%valid() .or. .not.self%shrinkage%valid_for_nodes(accepted_macro%num_nodes))return
+      if(size(accepted_matrix_theta)/=accepted_macro%num_nodes .or. size(matrix_area_fraction)/=accepted_macro%num_nodes)return
+      self%geometry_config=geometry_config
+      self%accepted_matrix_theta=accepted_matrix_theta
+      self%matrix_area_fraction=matrix_area_fraction
+    end if
     self%z=z
     self%dz=dz
     self%step_duration=step_duration
@@ -180,6 +198,9 @@ contains
     type(macropore_rate_bundle_result_t),intent(out)::rates
     type(matrix_saturated_zone_view_t),intent(out)::matrix_view
     type(soil_water_physical_state_t),intent(out)::matrix
+    type(macropore_geometry_result_t)::geometry_current
+    type(macropore_standard_storage_view_t)::view_current
+    real(real64),allocatable::dynamic_current(:)
     logical,intent(out)::ok
     integer::n
 
@@ -194,7 +215,19 @@ contains
     matrix%ponding_depth=self%accepted_ponding_depth
     matrix%groundwater_level=self%accepted_groundwater_level
 
-    call prepare_standard_macropore_rate_request(self%rate_template,self%accepted_macro,self%geometry,self%accepted_view, &
+    geometry_current=self%geometry
+    view_current=self%accepted_view
+    if(self%shrinkage%enabled)then
+      call evaluate_dynamic_crack_profile(self%shrinkage,water_content,self%accepted_matrix_theta,self%dz, &
+           self%matrix_area_fraction,self%accepted_macro%dynamic_volume_cp,dynamic_current,ok)
+      if(.not.ok)return
+      call evaluate_macropore_geometry(self%geometry_config,dynamic_current,geometry_current)
+      if(.not.geometry_current%valid)return
+      call derive_macropore_standard_storage_view(self%accepted_macro,geometry_current%top_node,self%z,self%dz,view_current)
+      if(.not.view_current%valid)return
+    end if
+
+    call prepare_standard_macropore_rate_request(self%rate_template,self%accepted_macro,geometry_current,view_current, &
          matrix,self%z,self%dz,self%step_duration,request,matrix_view,ok)
     if(.not.ok)return
     call evaluate_macropore_rate_bundle(request,rates)
