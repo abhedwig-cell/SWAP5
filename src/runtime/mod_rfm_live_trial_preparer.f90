@@ -44,7 +44,6 @@ contains
   type(rfm_preferential_routing_request_t)::routeq
   type(rfm_production_candidate_request_t)::cq
   real(real64),allocatable::endpoint_input_cm(:)
-  integer::surface_panels
   logical::ok
   result=rfm_live_trial_prepare_result_t()
   if(.not.config%valid().or..not.forcing%valid().or..not.accepted%ready())return
@@ -53,21 +52,11 @@ contains
   ageq%event_active=forcing%event_active
   call evaluate_rfm_surface_event_age(ageq,result%event_age)
   if(result%event_age%status/=RFM_SURFACE_EVENT_AGE_AVAILABLE)return
-  surface_panels=config%sorptivity_panels
-  if(config%sorptivity_panels==64)then
-    if(view%pressure_head(1)>=(-30._real64))then
-      surface_panels=8
-    else if(view%pressure_head(1)>=(-100._real64))then
-      surface_panels=16
-    else if(view%pressure_head(1)>=(-300._real64))then
-      surface_panels=32
-    end if
-  end if
   if(preflight%net_potential_surface_flux==0.0_real64)then
     result%activation=fmr_rfm_hydraulic_activation_result_t()
     result%activation%activation%status=RFM_ACTIVATION_AVAILABLE
   else
-    call evaluate_fmr_rfm_activation_from_view(view,constitutive,surface_panels,config%sigma_b, &
+    call evaluate_fmr_rfm_activation_from_view(view,constitutive,config%sorptivity_panels,config%sigma_b, &
          preflight%net_potential_surface_flux,result%event_age%evaluation_age_day,result%activation,ok)
     if(.not.ok)return
   end if

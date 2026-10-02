@@ -1,8 +1,6 @@
 name: PPA-WU05-A27 PERF06 panel frontier stage1
 on:
-  push:
-    branches:
-      - work/ppa-wu05-a27-rfm-performance-equivalence
+  workflow_dispatch:
 jobs:
   stage1:
     runs-on: ubuntu-latest
