@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "F-GC-STRIP01-RESP01C",
+  "title": "Expose canonical backend observation for first-attempt coupled-window rejection",
+  "status": "PREREGISTERED_RESEARCH_DIAGNOSTIC",
+  "purpose": "After RESP01A/B isolated the acceptance pattern and first-attempt rejection category, read the backend's already-public immutable observation immediately after a single no-retry trial. Determine whether the first rejection is accompanied by a finite temporal head bound/budget/certificate or solver status/equation-residual/iteration diagnostics.",
+  "scope": {
+    "profiles": ["C0", "C1"],
+    "sampled_columns": [1, 50],
+    "trial_heads": "Actual MODFLOW trial heads frozen in F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
+    "durations_days": [0.001, 0.0005, 0.0001, 0.00001],
+    "max_retries": 0,
+    "tangent_requested": false,
+    "attempts_per_probe": 1
+  },
+  "measurement": {
+    "primary": [
+      "existing result status and rejection counters",
+      "backend observation solver_executed and solver_status",
+      "solver equation residual availability/value and solver diagnostic route/iterations",
+      "temporal indicator enabled/status/availability/route",
+      "temporal head infinity bound, supplied/valid head budget, normalized indicator",
+      "temporal certificate availability and unavailable reason",
+      "additional tridiagonal and full nonlinear solve counts"
+    ],
+    "state_integrity": "Capture committed state before and after every trial; require exact equality. Require no candidate commit. Reinitialize a fresh process and require exact parsed-JSON equality.",
+    "implementation_boundary": "Only a research fixture copy and local diagnostic harness may change. No production source, ABI, acceptance gate, or tolerance change."
+  },
+  "interpretation_limits": [
+    "This diagnostic explains first-attempt observations only; it does not change rejection behavior or qualify an accepted interval.",
+    "A finite public observation field is not by itself proof of the internal causal root unless its gate and status agree.",
+    "No accepted coupled window, Hupsel run, or coupled qualification is claimed."
+  ],
+  "reproducibility": {
+    "source_ref": "integration/f-ci-canonical at the recorded canonical reconcile head",
+    "research_fixture_baseline": "work/f-gc-strip01-50m-swap-modflow-benchmark at RESP01B preregistration commit bdb1dacdce1256ed6a3a6cc134146168dd56edf7",
+    "builder": "tools/build_f_gc_strip01_research_context.py",
+    "local_execution": true,
+    "persisted_qualification_action": false
+  }
+}
