@@ -19,20 +19,20 @@ program benchmark_bartholomeus_e2e
  type(fmr_production_application_bootstrap_t)::app,offapp
  type(fmr_serialized_column_result_t),allocatable::r(:)
  real(real64)::ton(ROUNDS),toff(ROUNDS),t0c,t1c,k
- integer::i,j,rate,status
+ integer::i,j,rate,status,rep
  call initialize_application_config(cfg,-75._real64,k);call add_root_thermal_oxygen(cfg)
  off=cfg;off%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
  call system_clock(i,rate)
  do j=1,ROUNDS
   call system_clock(i);t0c=real(i,real64)
-  do status=1,REPS
+  do rep=1,REPS
    call app%initialize(cfg,i);if(i/=FMR_APP_BOOT_OK)error stop 'active init'
    call app%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'active run'
    call app%close(i)
   enddo
   call system_clock(i);t1c=real(i,real64);ton(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
   call system_clock(i);t0c=real(i,real64)
-  do status=1,REPS
+  do rep=1,REPS
    call offapp%initialize(off,i);if(i/=FMR_APP_BOOT_OK)error stop 'off init'
    call offapp%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'off run'
    call offapp%close(i)
