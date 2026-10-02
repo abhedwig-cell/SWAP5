@@ -1,21 +1,22 @@
 {
   "work_unit": "PPA-WU05-A27",
   "baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-  "checkpoint_commit": "a1abfe0e058fe9baf12f48ca14a8ee0b006cde86",
+  "checkpoint_commit": "9de14bbd961ac12ea0f111d22cc7323285ba698f",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "BOUNDED_LATERAL_MOISTURE_FRONTIER_RESEARCH_ONLY",
-  "next_action": "Preregister moving-contact bounded vertical patch state and retention/conductivity-derived diffusion; full production A/B/C still OPEN",
-  "recovery_point": "docs/audits/PPA_WU05A27_LATERAL_PROFILE_RESULT.md",
+  "status": "GENERAL_THETA_ONLY_WALL_ROUTE_FALSIFIED_RESEARCH_ONLY",
+  "next_action": "Select explicit matrix-volume/mean ownership for pressure-aware wall research; retain signed saturated operator; moving contact/receiver and production A/B/C remain OPEN",
+  "recovery_point": "docs/audits/PPA_WU05A27_REAL_HYDRAULICS_RESULT.md",
   "blockers": [
-    "Moving-contact bounded patch closure and retention/conductivity mapping not qualified",
-    "Actual matrix/receiver coupling of profile closure not qualified",
-    "Full production A/B/C and repeated timing/scaling remain open"
+    "General theta-only saturated closure falsified; pressure and physical matrix-volume/mean ownership not qualified",
+    "Moving contact and actual receiver/profile feedback not implemented after failed dependency gate",
+    "Full production A/B/C and repeated timing/scaling remain open",
+    "Canonical82351099 shared contract/headcalc/binding delta requires branch reconciliation and affected Richards/backend requalification before full A/B/C"
   ],
-  "last_reconciled_head": "a1abfe0e058fe9baf12f48ca14a8ee0b006cde86",
-  "last_reconciled_upstream": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+  "last_reconciled_head": "9de14bbd961ac12ea0f111d22cc7323285ba698f",
+  "last_reconciled_upstream": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
   "authority_paths": [
     "AGENTS.md",
     "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
@@ -24,7 +25,9 @@
     "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
     "docs/audits/PPA_WU05A27_BOUNDED_COHORT_CONTRACT.md",
     "docs/audits/PPA_WU05A27_PHYSICAL_MECHANISMS_CONTRACT.md",
-    "docs/audits/PPA_WU05A27_LATERAL_PROFILE_CONTRACT.md"
+    "docs/audits/PPA_WU05A27_LATERAL_PROFILE_CONTRACT.md",
+    "docs/audits/PPA_WU05A27_REAL_HYDRAULICS_CONTRACT.md",
+    "docs/audits/PPA_WU05A27_MIXED_WALL_STATE_DESIGN.md"
   ],
   "test_paths": [
     "tests/fpm/run_ppa_wu05a27_column_ablation.sh",
@@ -40,7 +43,10 @@
     "research/rfm/a27/run_physical_mechanisms.sh",
     "research/rfm/a27/probe_physical_mechanisms.py",
     "research/rfm/a27/analyze_physical_mechanisms.py",
-    "research/rfm/a27/probe_lateral_profile.py"
+    "research/rfm/a27/probe_lateral_profile.py",
+    "research/rfm/a27/run_real_hydraulics.sh",
+    "research/rfm/a27/analyze_real_hydraulics.py",
+    "research/rfm/a27/verify_real_hydraulics_evidence.py"
   ],
   "dependency_surface": [
     "src/legacy/b1_10_port/headcalc.f90",
@@ -54,7 +60,7 @@
   ],
   "interfaces_changed": [],
   "production_claim": "Bounded source correction qualified locally on persisted postimage; not canonically admitted. No E1 production envelope, speedup or stability claim.",
-  "research_result": "500 cases / 5000 sampled records; 8/node passes49/50,16/node passes50/50 against exact research cohort mode7; not production E1; physical feedback, no-loss interruption and signed linear coupling probes completed; frozen/reset exact closure falsified within diagnostic scope;128-cell fixed-wall moisture profile passes24/24 declared nonlinear diffusion/drying cases, smallest passing tested resolution; no moving-contact qualification",
+  "research_result": "500 cases / 5000 sampled records; 8/node passes49/50,16/node passes50/50 against exact research cohort mode7; not production E1; physical feedback, no-loss interruption and signed linear coupling probes completed; frozen/reset exact closure falsified within diagnostic scope;128-cell fixed-wall moisture profile passes24/24 declared nonlinear diffusion/drying cases, smallest passing tested resolution; no moving-contact qualification;general theta-only saturated wall route falsified at36/36 catalog materials; solver K/C timestep-dependent at saturation; pressure-aware design proposed only",
   "source_repair_qualified": true,
   "canonical_admitted": false,
   "qualification_scopes": {
@@ -103,6 +109,24 @@
       "pass_cases": 24,
       "reference_gate": "PASS",
       "production_eligible": false
+    },
+    "actual_constitutive_domain_research": {
+      "source_code_postimage": "eb493c53feec8f80cd10cff76aff5ae400644da9",
+      "analysis_postimage": "9de14bbd961ac12ea0f111d22cc7323285ba698f",
+      "materials": 36,
+      "hydraulic_samples": 1296,
+      "actual_signed_exchange_samples": 576,
+      "source_O0_O2": "PASS",
+      "falsified_general_theta_only_materials": 36,
+      "timestep_dependent_solver_K_C_materials": 36,
+      "max_high_precision_unsaturated_derivative_relative_discrepancy": 1.351378272945856e-15,
+      "production_eligible": false,
+      "current_canonical_point_gate": {
+        "canonical": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+        "O0_O2": "PASS",
+        "raw_identity_with_original": "PASS",
+        "scope": "source-domain probes only, not complete backend preservation"
+      }
     }
   },
   "evidence_archive": "docs/audits/evidence/PPA_WU05A27_COHORT_EVIDENCE.tar.gz.part-*",
@@ -117,7 +141,11 @@
     "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS_MANIFEST.json",
     "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-*",
     "docs/audits/evidence/PPA_WU05A27_LATERAL_MANIFEST.json",
-    "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-*"
+    "docs/audits/evidence/PPA_WU05A27_LATERAL.tar.gz.part-*",
+    "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS_MANIFEST.json",
+    "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS.tar.gz.part-*"
   ],
-  "verification_record": "docs/audits/evidence/PPA_WU05A27_LATERAL_VERIFICATION.json"
+  "verification_record": "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS_VERIFICATION.json",
+  "mixed_wall_design_implemented": false,
+  "canonical_backend_delta_merged_into_branch": false
 }

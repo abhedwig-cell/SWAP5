@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "canonical_head": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+  "runs": [
+    {
+      "scope": "source hydraulic and actual signed exchange, O0/O2",
+      "code_sha": "eb493c53feec8f80cd10cff76aff5ae400644da9",
+      "exit_code": 0,
+      "dependency_sha256": {
+        "research/rfm/a27/test_real_hydraulics.f90": "768eddf5066827bebd92adff363a6c9f8e5b7b014ea301cffe14e5c7b71c1a73",
+        "research/rfm/a27/run_real_hydraulics.sh": "7620ecdb0179cb272075fa6de1403094a0f29e699ecae693a0f3da529ad3c564",
+        "src/solver/mod_soil_water_solver_contract.f90": "7d6a5522e42501f80112d9c16625eba1c875d8c79a3aafe69911bf22d317cfcc",
+        "src/solver/mod_b110_default_mvg_provider.f90": "47c61a5135c8e88c4d08a8b7a6dd291f8c7ec508d63bbefcfaad05b2ac6593ee",
+        "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81",
+        "tests/fpe/data/fpe_elastic05_staringreeks_2018.csv": "6a7e8514e537f78d57f4aec981a106f30c0852dd56dd7cdc522d123d3473121f",
+        "docs/audits/PPA_WU05A27_REAL_HYDRAULICS_CONTRACT.md": "b649da371df3447a4dddc2a7f196a7bdd9ace7bbb3fd0c4837ee326b6cb60886"
+      }
+    },
+    {
+      "scope": "Decimal80 adjudication and source counterexamples",
+      "code_sha": "9de14bbd961ac12ea0f111d22cc7323285ba698f",
+      "exit_code": 0,
+      "dependency_sha256": {
+        "research/rfm/a27/analyze_real_hydraulics.py": "49b2f73055c5edb5a592b92407d232a393f2936083d582b79bb0e8552fe6828f",
+        "tests/fpe/data/fpe_elastic05_staringreeks_2018.csv": "6a7e8514e537f78d57f4aec981a106f30c0852dd56dd7cdc522d123d3473121f",
+        "docs/audits/PPA_WU05A27_REAL_HYDRAULICS_CONTRACT.md": "1345f64b9ede733519068220c6cd8e78d47ee446fb2c1b9529985c89c31d55bc"
+      }
+    },
+    {
+      "scope": "isolated current-canonical production definitions with pinned A27 source tests; both O0/O2 and old/new byte identity",
+      "code_sha": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+      "dependency_refs": {
+        "src/solver/mod_soil_water_solver_contract.f90": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+        "src/solver/mod_b110_default_mvg_provider.f90": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+        "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+        "tests/fpe/data/fpe_elastic05_staringreeks_2018.csv": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+        "research/rfm/a27/test_real_hydraulics.f90": "eb493c53feec8f80cd10cff76aff5ae400644da9",
+        "research/rfm/a27/run_real_hydraulics.sh": "eb493c53feec8f80cd10cff76aff5ae400644da9"
+      },
+      "exit_code": 0,
+      "dependency_sha256": {
+        "src/solver/mod_soil_water_solver_contract.f90": "345b73d328bbbba9cb84cc6d6fa8d5cd58bb3bcbfe44ed84a87b024156455d71",
+        "src/solver/mod_b110_default_mvg_provider.f90": "47c61a5135c8e88c4d08a8b7a6dd291f8c7ec508d63bbefcfaad05b2ac6593ee",
+        "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81",
+        "tests/fpe/data/fpe_elastic05_staringreeks_2018.csv": "6a7e8514e537f78d57f4aec981a106f30c0852dd56dd7cdc522d123d3473121f",
+        "research/rfm/a27/test_real_hydraulics.f90": "768eddf5066827bebd92adff363a6c9f8e5b7b014ea301cffe14e5c7b71c1a73",
+        "research/rfm/a27/run_real_hydraulics.sh": "7620ecdb0179cb272075fa6de1403094a0f29e699ecae693a0f3da529ad3c564"
+      }
+    }
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "precision_backend": "stdlib Decimal80, central increment1e-25cm"
+  },
+  "archive_bytes": 73248,
+  "archive_sha256": "74285fe905bf67cf848ac15d3668dfb607a0a8f31c8d6d17b94637bd99adc0c4",
+  "parts": [
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS.tar.gz.part-000",
+      "bytes": 16000,
+      "sha256": "f247d150bc112cbfeee2cfecae8229529b59b8b876fce1ec0cba805ee585c3a5"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS.tar.gz.part-001",
+      "bytes": 16000,
+      "sha256": "ac4ae3418f6c79a415417337f6c099c2d06dbb5e8ece456be6e8ec5c62a459bc"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS.tar.gz.part-002",
+      "bytes": 16000,
+      "sha256": "73be63bc3365df8aa88f7cdab2243569528ab91f006ce925161d88b0a7000e57"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS.tar.gz.part-003",
+      "bytes": 16000,
+      "sha256": "bfa1a863641e3acd5d918854d82105662049e4f671768c7682b5d2afe593018d"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_REAL_HYDRAULICS.tar.gz.part-004",
+      "bytes": 9248,
+      "sha256": "f28bac0106e9970ebee500e5e8dc54ff10ffb74098223fdeef03ef6a693f3e8e"
+    }
+  ],
+  "files": {
+    "a27-real-analysis-final.log": {
+      "bytes": 822,
+      "sha256": "8b90df20380dad6f8a6dd4c94640b1a023963c7d2162f98819587ab2dc542c52"
+    },
+    "a27-real-analysis.log": {
+      "bytes": 656,
+      "sha256": "8d2596ecfce2de9071c3c5e80389bcd8ffebc48fb31806bf2a791395a365f8c1"
+    },
+    "a27-real-darcy.csv": {
+      "bytes": 88802,
+      "sha256": "f774dadbc8e412c633ebf291013d003459bbc34409faa8c5a8ffbcf25aee0269"
+    },
+    "a27-real-darcy.log": {
+      "bytes": 111,
+      "sha256": "9244f941254fc20ed859bc678ca4ee5221cad10987b7c9ad634f2d8d44faf611"
+    },
+    "a27-real-hydraulics.csv": {
+      "bytes": 299539,
+      "sha256": "6a18ac81241a2a52913315c2b9be0d72aa9678d4593505728ca2c4071609c6b0"
+    },
+    "a27-real-hydraulics.log": {
+      "bytes": 111,
+      "sha256": "9244f941254fc20ed859bc678ca4ee5221cad10987b7c9ad634f2d8d44faf611"
+    },
+    "real_domain_counterexamples.csv": {
+      "bytes": 5447,
+      "sha256": "8accece93aa127d24b28ffe22acb12ce4092d385175830c5970a18f8cf994e93"
+    },
+    "real_hydraulics_summary.json": {
+      "bytes": 781,
+      "sha256": "8deb192c5bf206a0906ab1b2716c5b92fa0e22b2e3ef257188fe65cb84657a9b"
+    },
+    "real_unsaturated_derivative.csv": {
+      "bytes": 139708,
+      "sha256": "0e3f65414870890a8c4f743b717fb3260fcc36b663b2a59f97e835a83eaa737a"
+    },
+    "a27-real-canonical-hydraulics.csv": {
+      "bytes": 299539,
+      "sha256": "6a18ac81241a2a52913315c2b9be0d72aa9678d4593505728ca2c4071609c6b0"
+    },
+    "a27-real-canonical-darcy.csv": {
+      "bytes": 88802,
+      "sha256": "f774dadbc8e412c633ebf291013d003459bbc34409faa8c5a8ffbcf25aee0269"
+    },
+    "a27-real-canonical-hydraulics.log": {
+      "bytes": 111,
+      "sha256": "9244f941254fc20ed859bc678ca4ee5221cad10987b7c9ad634f2d8d44faf611"
+    },
+    "a27-real-canonical-darcy.log": {
+      "bytes": 111,
+      "sha256": "9244f941254fc20ed859bc678ca4ee5221cad10987b7c9ad634f2d8d44faf611"
+    },
+    "canonical_requalification_input_refs.json": {
+      "bytes": 586,
+      "sha256": "afcc6b797856f728a6230b467d8ab3ff7f402bfdc26fe7d6b59b7dd083e97e83"
+    }
+  },
+  "production_qualified": false,
+  "canonical_admitted": false,
+  "canonical_point_gate_raw_identity": true
+}
