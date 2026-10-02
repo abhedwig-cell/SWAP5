@@ -144,7 +144,6 @@ program top03_stateful_contact_probe
     request%boundary%bottom_mode=5;request%boundary%bottom_head=10.0_real64
   end if
   request%numerical%max_iterations=80
-  if(mode==6)request%numerical%max_iterations=160
   request%numerical%max_backtracking=16
   request%numerical%conductivity_implicit_mode=0;request%numerical%conductivity_mean_method=mean
   request%numerical%min_step_duration=1e-6_real64
