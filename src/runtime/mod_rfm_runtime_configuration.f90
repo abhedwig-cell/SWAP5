@@ -4,7 +4,7 @@ module mod_rfm_runtime_configuration
   implicit none
   private
   integer,parameter,public :: RFM_SORPTIVITY_POLICY_EXACT=0
-  integer,parameter,public :: RFM_SORPTIVITY_POLICY_PERF07_V1=1
+  integer,parameter,public :: RFM_SORPTIVITY_POLICY_A28_V1=1
 
   type, public :: rfm_runtime_configuration_t
     logical :: enabled=.false.
@@ -43,7 +43,7 @@ contains
     if(.not.ok)return
     select case(self%sorptivity_policy)
     case(RFM_SORPTIVITY_POLICY_EXACT)
-    case(RFM_SORPTIVITY_POLICY_PERF07_V1)
+    case(RFM_SORPTIVITY_POLICY_A28_V1)
       ok=self%sorptivity_panels==64
     case default
       ok=.false.
@@ -81,16 +81,14 @@ contains
     select case(self%sorptivity_policy)
     case(RFM_SORPTIVITY_POLICY_EXACT)
       panels=self%sorptivity_panels
-    case(RFM_SORPTIVITY_POLICY_PERF07_V1)
+    case(RFM_SORPTIVITY_POLICY_A28_V1)
       if(self%sorptivity_panels/=64)return
-      if(pressure_head_cm<(-300.0_real64))then
+      if(pressure_head_cm<(-30.0_real64))then
         panels=64
-      else if(pressure_head_cm<(-100.0_real64))then
+      else if(pressure_head_cm<(-3.0_real64))then
         panels=32
-      else if(pressure_head_cm<(-30.0_real64))then
-        panels=16
       else
-        panels=8
+        panels=16
       end if
     end select
   end function
