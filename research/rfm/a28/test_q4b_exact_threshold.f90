@@ -23,8 +23,6 @@ program test_a28_q4b_exact_threshold
   use mod_rfm_surface_sorptivity,only:evaluate_rfm_node_sorptivity
   use mod_fixed_flux_top_boundary_provider,only:fixed_flux_top_boundary_provider_t
   use mod_fmr_legacy_cauchy_bottom_boundary_provider,only:fmr_cauchy3_control_t,FMR_CAUCHY3_OK
-  use mod_fmr_legacy_cauchy_bottom_boundary_provider,only:fmr_cauchy3_control_t,FMR_CAUCHY3_OK
-  use mod_fmr_legacy_cauchy_bottom_boundary_provider,only:fmr_cauchy3_control_t,FMR_CAUCHY3_OK
   implicit none
 
   integer,parameter::ARM_A=1,ARM_B=2,ARM_C=3
