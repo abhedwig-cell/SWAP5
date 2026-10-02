@@ -1,0 +1,150 @@
+{
+  "schema": "swap5.hydro_memory.cap01.preregistration.v1",
+  "date": "2026-09-19",
+  "authority_base": "187e30153c890151768e929170d14bb22af1d86d",
+  "work_unit": "HYDRO-MEMORY-CAP01",
+  "phase": "A_ROOT_ACTIVE_RESPONSE_ROUTE",
+  "purpose": "Qualify the existing Reference-Richards root-active groundwater response without new physics or solver changes before any HYDRO-MEMORY scientific run.",
+  "discovered_authority_boundary": {
+    "analytic_tangent": "NOT_ADMITTED_WITH_ROOT_UPTAKE",
+    "evidence": [
+      "mod_modflow6_swap_predictor_tangent_adapter sets root_uptake_covered false",
+      "mod_reference_richards_accepted_step_directional_service rejects associated root_sink",
+      "mod_modflow6_swap_predictor_response admits MODFLOW6_DERIVATIVE_CENTERED_FD without requiring tangent_complete"
+    ],
+    "disposition": "Preserve analytic fail-closed behavior. Use independently evaluated centered finite difference of the complete root-active production trajectory."
+  },
+  "frozen_profile": {
+    "richards": "Reference Richards",
+    "swkimpl": 0,
+    "swsophy": 0,
+    "predictor_lower_boundary": "prescribed qbot / SW_STEP_CONTROL_BOTTOM_FLUX",
+    "corrector_lower_boundary": "prescribed groundwater head / bottom_mode=5",
+    "root_sink": "nonzero immutable precomputed sink within one window",
+    "excluded": [
+      "drainage response",
+      "macropore",
+      "snow",
+      "hysteresis",
+      "tabulated hydraulics",
+      "elasticity",
+      "frost",
+      "soil temperature"
+    ],
+    "temporal_policy": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance": 0.000001,
+    "numerical_continuation": "FMR_NUMERICAL_CONTINUATION_NONE",
+    "local_response_equilibrium_anchor": "h=-75 cm; qtop=qbot=-K(h), derived from frozen constitutive law"
+  },
+  "tests": [
+    "root-active real production trial completes with hard mass",
+    "requested analytic accepted-trajectory direction remains unavailable/fail-closed",
+    "centered-FD endpoint derivative from qbot plus/minus perturbations is finite and well-conditioned",
+    "typed MODFLOW6 predictor response accepts centered FD with root_uptake_active=true and root_uptake_covered=false",
+    "groundwater head materializer preserves the root sink bit-for-bit for multiple heads",
+    "same-origin prescribed-head correctors do not mutate committed state before publication",
+    "local root-active centered-FD predictor agrees with centered corrector flux slope within 5 percent"
+  ],
+  "tolerances": {
+    "hard_mass_cm": 1e-12,
+    "fd_qbot_perturbation_cm_per_day": 0.0001,
+    "corrector_head_perturbation_m": 0.000001,
+    "local_slope_relative_error_max": 0.05
+  },
+  "pass_decision": "CAP01_A_PASS_CENTERED_FD_ROUTE",
+  "fail_decision": "CAP01_BLOCKED_ROOT_ACTIVE_GROUNDWATER_RESPONSE",
+  "nonclaims": [
+    "no analytic root-active tangent admission",
+    "no long drought/recovery scientific result",
+    "no PPA-WU01 root-active production-bootstrap widening",
+    "no MODFLOW6 dynamic-storage drawdown/recharge qualification yet"
+  ],
+  "amendments": [
+    {
+      "id": "CAP01-A1",
+      "date": "2026-09-19",
+      "trigger": "Pre-hypothesis root-active nominal trial on the F-GC44 TX_TEMPORAL_MODEL_CERTIFICATE fixture failed with temporal certificate unavailable and solver retries; zero mass rejections.",
+      "decision": "Use the canonical default TX_TEMPORAL_EXTERNAL_FULL_HALF route with its existing temporal_tolerance=1e-6 for CAP01 Phase A. Preserve the Richards physics, root sink, mass gate, FD perturbations and 5% slope gate unchanged.",
+      "rationale": "Root-active production authority is not qualified for the accepted-trajectory temporal certificate route. CAP01 no longer needs that certificate because root-active response is preregistered as centered finite difference. The selected policy is the canonical transaction default, not a fitted tolerance.",
+      "forbidden": "No further temporal-tolerance tuning after observing the centered-FD/slope result."
+    },
+    {
+      "id": "CAP01-A2",
+      "date": "2026-09-19",
+      "trigger": "Under canonical external full-half timing, the root-active nominal trial still failed with 8 solver rejections, 1 temporal rejection, 0 certificate-unavailable and 0 mass rejections.",
+      "decision": "Align the CAP01 state topology with the already-qualified root-active FMR09 route: FMR_NUMERICAL_CONTINUATION_NONE and fmr_new_b110_committed_state. Do not use the F-GC44 Richards temporal-history continuation carrier.",
+      "rationale": "The temporal-history carrier is needed by the analytic accepted-trajectory tangent route that CAP01 explicitly does not admit for root uptake. Centered-FD response samples complete production trials and does not require that continuation state.",
+      "unchanged": [
+        "root sink",
+        "mass gate",
+        "qbot perturbation",
+        "head perturbation",
+        "5 percent slope gate",
+        "Richards physics",
+        "groundwater-head corrector physics"
+      ]
+    },
+    {
+      "id": "CAP01-A3",
+      "date": "2026-09-19",
+      "trigger": "Root-active nominal execution remained solver-rejected after binding canonical temporal policy and root-active state topology. The remaining fixture inherited F-GC44 hydrostatic state plus near-zero qbot, unlike the existing root-active runtime authority.",
+      "decision": "Use the FMR09 hydraulic equilibrium anchor for the local CAP01 response gate: constant pressure head -75 cm and top/bottom reference flux equal to minus the constitutive conductivity K(-75 cm). Keep the root extraction unbalanced.",
+      "rationale": "This removes an unrelated initial-condition disequilibrium while preserving a genuine hydraulic effect of root extraction. The equilibrium flux is derived deterministically from the frozen constitutive parameters, not tuned against CAP01 output.",
+      "unchanged": [
+        "ROOT_TOTAL=0.02 cm/day",
+        "hard mass gate",
+        "FD qbot perturbation",
+        "head perturbation",
+        "5 percent slope gate",
+        "no balancing subsurface source"
+      ]
+    },
+    {
+      "id": "CAP01-A4",
+      "date": "2026-09-19",
+      "type": "DIAGNOSTIC_CHARACTERIZATION_ONLY",
+      "trigger": "The A3 exact-equilibrium unbalanced root sink failed exclusively through solver rejection: 9 solver rejections, 0 temporal rejections, 0 mass rejections.",
+      "purpose": "Discriminate a general root-active fixture failure from a failure specific to net hydraulic root extraction before closing CAP01.",
+      "fixed_cases": [
+        {
+          "id": "Z",
+          "root_total_cm_per_day": 0,
+          "subsurface_source": "zero",
+          "expected_control": "must complete"
+        },
+        {
+          "id": "B",
+          "root_total_cm_per_day": 0.02,
+          "subsurface_source": "exactly equal to root sink by node",
+          "expected_control": "must complete"
+        },
+        {
+          "id": "U1",
+          "root_total_cm_per_day": 0.0002,
+          "subsurface_source": "zero",
+          "expected_control": "observe only"
+        },
+        {
+          "id": "U2",
+          "root_total_cm_per_day": 0.002,
+          "subsurface_source": "zero",
+          "expected_control": "observe only"
+        },
+        {
+          "id": "U3",
+          "root_total_cm_per_day": 0.02,
+          "subsurface_source": "zero",
+          "expected_control": "observe only"
+        }
+      ],
+      "frozen_environment": "Same A3 h=-75 cm equilibrium state, qtop=qbot=-K(-75 cm), same Richards parameters and canonical external full-half transaction policy.",
+      "interpretation_rules": [
+        "If Z and B complete but one or more U cases fail through solver rejection, classify the gap as net-root-extraction hydraulic execution, not generic root-active binding/accounting.",
+        "If Z fails, classify the CAP01 fixture/runtime route as invalid and do not infer a net-root-specific blocker.",
+        "If B fails, existing FMR09-style balanced root evidence has not been reproduced on the CAP01 production-trial route and must be reconciled before further inference.",
+        "No unbalanced sink amplitude or numerical tolerance may be adjusted after observing this matrix."
+      ],
+      "qualification_effect": "None. A4 cannot turn CAP01 green. The original unbalanced ROOT_TOTAL=0.02 cm/day Phase-A gate remains the qualification target."
+    }
+  ]
+}
