@@ -3395,7 +3395,7 @@ contains
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
     if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &
-        self%bottom_mode /= 2) then
+        self%bottom_mode /= 2 .and. self%bottom_mode /= 8) then
       value = huge(0.0_real64)
       return
     end if
