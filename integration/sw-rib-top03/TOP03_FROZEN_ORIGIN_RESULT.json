@@ -1,0 +1,282 @@
+{
+  "scope": "single failed fixed-origin trial; exact linear elimination on saturated upper-node branch",
+  "production_qualified": false,
+  "global_root_absence_claim": false,
+  "source_checkpoint": "e2608a343799021b21e37bf3bed3659c6a100019",
+  "decision": "BRANCH_LOCAL_RESIDUAL_GAP_CONFIRMED__NEWTON_TUNING_CANNOT_SUPPLY_MISSING_BRANCH_ROOT",
+  "O0_O2_identity": true,
+  "instrumentation_preserves_trajectory": true,
+  "failed_step": 86,
+  "residual_reconstruction_max_error_cm_day": 0.0,
+  "bottom_head_interval_cm": [
+    -0.02,
+    0.0
+  ],
+  "cut_head_cm": -0.012386042337589586,
+  "left_residual_cm_day": -0.07177364100916606,
+  "right_residual_cm_day": 0.10817170958084343,
+  "left_limit_residual_cm_day": -0.07177363221434341,
+  "right_limit_residual_cm_day": 0.10817170734317383,
+  "branch_argument": "Upper saturated rows are linear and uniquely eliminated. Bottom storage and K are nondecreasing on each branch; eliminated incoming flux decreases with bottom head, hence bottom residual is strictly increasing on each branch. Left limit is negative, right limit positive: no zero in [-.02,0] under this saturated-upper branch. Upper heads remain positive at both interval endpoints and are affine, so the entire interval satisfies that branch assumption. Other branches or global roots are not excluded.",
+  "sampled_eliminated_states": [
+    {
+      "bottom_head_cm": -0.02,
+      "upper_heads_cm": [
+        0.021150972259283182,
+        0.023452916777849466,
+        0.026905833555698894
+      ],
+      "bottom_residual_cm_day": -0.132484475152852,
+      "Kbottom_cm_day": 4.526743403779054
+    },
+    {
+      "bottom_head_cm": -0.012486042337589586,
+      "upper_heads_cm": [
+        0.0218869997280792,
+        0.025660999184237514,
+        0.03132199836847499
+      ],
+      "bottom_residual_cm_day": -0.07265064093725382,
+      "Kbottom_cm_day": 4.569401461365559
+    },
+    {
+      "bottom_head_cm": -0.012286042337589587,
+      "upper_heads_cm": [
+        0.021906590668083523,
+        0.02571977200425048,
+        0.031439544008500915
+      ],
+      "bottom_residual_cm_day": 0.1083953787696128,
+      "Kbottom_cm_day": 4.75
+    },
+    {
+      "bottom_head_cm": -0.012396042337589586,
+      "upper_heads_cm": [
+        0.021895815651081164,
+        0.025687446953243414,
+        0.03137489390648679
+      ],
+      "bottom_residual_cm_day": -0.07186145801137567,
+      "Kbottom_cm_day": 4.569989209400202
+    },
+    {
+      "bottom_head_cm": -0.012376042337589587,
+      "upper_heads_cm": [
+        0.02189777474508157,
+        0.025693324235244633,
+        0.03138664847048922
+      ],
+      "bottom_residual_cm_day": 0.10819408071549308,
+      "Kbottom_cm_day": 4.75
+    },
+    {
+      "bottom_head_cm": -0.012387042337589586,
+      "upper_heads_cm": [
+        0.021896697243381353,
+        0.025690091730143978,
+        0.03138018346028792
+      ],
+      "bottom_residual_cm_day": -0.07178241605744873,
+      "Kbottom_cm_day": 4.570048114013008
+    },
+    {
+      "bottom_head_cm": -0.012385042337589587,
+      "upper_heads_cm": [
+        0.021896893152781403,
+        0.025690679458344124,
+        0.03138135891668821
+      ],
+      "bottom_residual_cm_day": 0.1081739447422505,
+      "Kbottom_cm_day": 4.75
+    },
+    {
+      "bottom_head_cm": -0.012386142337589586,
+      "upper_heads_cm": [
+        0.021896785402611366,
+        0.025690356207834015,
+        0.03138071241566799
+      ],
+      "bottom_residual_cm_day": -0.07177451061301987,
+      "Kbottom_cm_day": 4.570054005784441
+    },
+    {
+      "bottom_head_cm": -0.012385942337589587,
+      "upper_heads_cm": [
+        0.021896804993551375,
+        0.025690414980654035,
+        0.03138082996130803
+      ],
+      "bottom_residual_cm_day": 0.10817193108380874,
+      "Kbottom_cm_day": 4.75
+    },
+    {
+      "bottom_head_cm": -0.012386052337589586,
+      "upper_heads_cm": [
+        0.021896794218534372,
+        0.025690382655603035,
+        0.03138076531120603
+      ],
+      "bottom_residual_cm_day": -0.07177372005532767,
+      "Kbottom_cm_day": 4.570054594975471
+    },
+    {
+      "bottom_head_cm": -0.012386032337589586,
+      "upper_heads_cm": [
+        0.02189679617762838,
+        0.025690388532885064,
+        0.03138077706577009
+      ],
+      "bottom_residual_cm_day": 0.10817172971805533,
+      "Kbottom_cm_day": 4.75
+    },
+    {
+      "bottom_head_cm": -0.012386043337589586,
+      "upper_heads_cm": [
+        0.021896795100126678,
+        0.02569038530037995,
+        0.031380770600759854
+      ],
+      "bottom_residual_cm_day": -0.07177364100916606,
+      "Kbottom_cm_day": 4.570054653885331
+    },
+    {
+      "bottom_head_cm": -0.012386041337589587,
+      "upper_heads_cm": [
+        0.02189679529603606,
+        0.025690385888108097,
+        0.03138077177621615
+      ],
+      "bottom_residual_cm_day": 0.10817170958084343,
+      "Kbottom_cm_day": 4.75
+    },
+    {
+      "bottom_head_cm": 0.0,
+      "upper_heads_cm": [
+        0.023110066259714138,
+        0.02933019877914234,
+        0.03866039755828463
+      ],
+      "bottom_residual_cm_day": 0.13442692951410162,
+      "Kbottom_cm_day": 4.75
+    }
+  ],
+  "frozen_trial": {
+    "coefficients": [
+      0.032,
+      0.423,
+      4.75,
+      0.0135,
+      0.365,
+      1.455,
+      0.3127147766323024,
+      0.0135,
+      0.0,
+      4.75,
+      0.999,
+      4.7025,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -1000000.0,
+      1e-12,
+      0.0,
+      0.391,
+      0.42299971360849864,
+      2.8639150134734948e-05,
+      1.0,
+      0.0061425,
+      0.45500000000000007,
+      1.3127147766323024,
+      3.197802197802198,
+      3.0760750000000003,
+      2.365,
+      -0.6872852233676976,
+      -0.635,
+      0.0,
+      -1.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "nodes": [
+      [
+        1.0,
+        -0.25,
+        0.5,
+        0.25,
+        0.423,
+        0.021810721757467465,
+        0.423,
+        4.75,
+        1.355289214188815e-10,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        2.0,
+        -0.75,
+        0.5,
+        0.5,
+        0.423,
+        0.025432165258136154,
+        0.423,
+        4.75,
+        3.171436446791631e-10,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        3.0,
+        -1.5,
+        1.0,
+        0.75,
+        0.422999751962678,
+        0.030864330459063897,
+        0.423,
+        4.75,
+        -0.003966793248329381,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        4.0,
+        -2.5,
+        1.0,
+        1.0,
+        0.42299105178847196,
+        -0.012386041652879874,
+        0.4229996090000314,
+        4.514350244166664,
+        0.11050310502455396,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "header": [
+      4.0,
+      0.0001220703125,
+      0.02,
+      -4.715596286608118,
+      -4.75
+    ]
+  },
+  "log_sha256": "9cd63d142a7df88cf4fa3ecd3642e9f6bc639c0771ae1d4f257d4e39a59526b4",
+  "source_sha256": {
+    "tests/fapp/make_top03_frozen_origin_probe.py": "316836e0a674b83b1dce1c8e6cfc5c9577a1c5524d12c461c5c1b27b8342c432",
+    "tests/fapp/run_sw_rib_top03_frozen_origin.sh": "5d1c1b525978368e413088ef71238e20ca01250044aac7f0e2a734f814f6fa81",
+    "tests/fapp/analyze_sw_rib_top03_frozen_origin.py": "a426aee200b801fdc15beb5df1244bfa414148142586ab0a46542b0219b1778f",
+    "src/legacy/b1_10_port/headcalc.f90": "7409ba2ce8f82ae4e44c7de85452cdf28b27bd7522067cddda0e91514edb2519",
+    "src/solver/mod_b110_default_mvg_provider.f90": "47c61a5135c8e88c4d08a8b7a6dd291f8c7ec508d63bbefcfaad05b2ac6593ee"
+  }
+}
