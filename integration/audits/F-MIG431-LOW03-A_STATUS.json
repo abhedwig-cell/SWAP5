@@ -1,7 +1,8 @@
 {
   "work_unit": "F-MIG431-LOW03-A",
-  "state": "CENTRALLY_PREREGISTERED_OFFICIAL_BRANCH_ISSUED",
+  "state": "DESIGN_AND_FROZEN_SOURCE_ORACLES_PERSISTED_PRE_IMPLEMENTATION",
   "baseline": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+  "reconciled_canonical_head": "e50a1bad6482b0aaeaf25a87e1fd1b1d5e19a846",
   "official_branch": "work/f-mig431-low03-a-implicit-cauchy-application",
   "prerequisite": "F-MIG431-LOW03-P0",
   "prerequisite_state": "CANONICAL_ADMITTED_CLOSED_BOUNDED_TYPED_SOLVER",
@@ -14,21 +15,12 @@
   "canonical_admitted": false,
   "production_delta": [],
   "interfaces_changed": [],
-  "next_action": "Frozen source-law/proposal-vs-trial sampling oracles and concrete application binding design before production edits",
-  "authority_paths": [
-    "docs/migration/F-MIG431-LOW03-A_PREREGISTRATION.md",
-    "docs/migration/F-MIG431-LOW03-P0_CLOSEOUT.md",
-    "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
-    "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md",
-    "docs/numerics/transactional-time-stepping.md",
-    "docs/capabilities/restart-v1.md"
+  "design_checkpoint": [
+    "docs/migration/F-MIG431-LOW03-A_APPLICATION_BINDING.md",
+    "tests/fmig431/run_low03a_source_oracles.py"
   ],
-  "relevant_paths": [
-    "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "src/runtime/mod_fmr_production_application_bootstrap.f90",
-    "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90",
-    "src/adapter/mod_reference_richards_legacy_binding.f90"
-  ],
+  "design_conclusion": "No shared-authority mutation is required by the bounded design: proposal-head history fits existing attempt-context ownership; Q4 is trial-local immutable forcing; existing solver, transaction, mass and Restart-v1 owners remain unchanged.",
+  "next_action": "Implement the bounded application provider and serialized/bootstrap binding exactly to the persisted contract, then run source/application/preservation qualification.",
   "held_fixed": [
     "Solver residual/Jacobian/common boundary",
     "C ABI",
@@ -39,7 +31,7 @@
   "application_timing": {
     "aquifer_table_head": "Original proposal endpoint, frozen before retry loop",
     "aquifer_sine_head": "Original proposal start calendar-year phase, frozen before retry loop",
-    "extra_qbot4": "Current actual trial endpoint; not frozen to original proposal endpoint"
+    "extra_qbot4": "Current actual individual solve endpoint; not frozen to original proposal endpoint"
   },
   "fail_closed": [
     "AQPER0",
