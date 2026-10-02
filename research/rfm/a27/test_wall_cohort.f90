@@ -6,6 +6,7 @@ program test_wall_cohort
  real(real64)::p,d,expected
  logical::ok
  integer::n,j,ref
+ real(real64)::seed_integral,old_uptake
  call prepare_wall_cohorts(accepted,5.5_real64,6._real64,2._real64,candidate,ok)
  call check(ok,'initial wet segment');call advance_wall_cohorts(candidate,1._real64);accepted=candidate
  call prepare_wall_cohorts(accepted,5._real64,6._real64,2._real64,candidate,ok)
@@ -43,6 +44,14 @@ program test_wall_cohort
   call check(wall_count(accepted)==n,'uncompressed positive-history growth')
   print '(3(i0,:,","))',n,wall_count(accepted),32*wall_count(accepted)
  enddo
+ seed_integral=sum((accepted%hi-accepted%lo)*accepted%seed)
+ candidate=accepted
+ call compress_wall_cohorts(candidate,8,.1_real64,ok)
+ call check(ok.and.wall_count(candidate)<=8,'bounded interval count')
+ call check(abs(sum((candidate%hi-candidate%lo)*candidate%seed)-seed_integral)<1e-12_real64,'seed integral preserved')
+ call check(abs(sum(candidate%hi-candidate%lo)-1._real64)<1e-12_real64,'bounded coverage preserved')
+ call check(wall_count(accepted)==2000,'compression isolated from accepted')
+ call compress_wall_cohorts(candidate,0,.1_real64,ok);call check(.not.ok,'invalid history limit')
  print '(a)','A27_WALL_COHORT_ORACLES=PASS'
 contains
  subroutine check(ok,label)

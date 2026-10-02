@@ -6,7 +6,7 @@ module mod_wall_cohort_research
  type,public::wall_cohort_t
   real(real64),allocatable::lo(:),hi(:),age(:),seed(:)
  end type
- public::prepare_wall_cohorts,wall_potential,advance_wall_cohorts,wall_count
+ public::prepare_wall_cohorts,wall_potential,advance_wall_cohorts,wall_count,compress_wall_cohorts
 contains
  pure integer function wall_count(w) result(n)
   type(wall_cohort_t),intent(in)::w
@@ -55,6 +55,38 @@ contains
   type(wall_cohort_t),intent(inout)::w
   real(real64),intent(in)::dt
   if(allocated(w%age))w%age=w%age+dt
+ end subroutine
+ subroutine compress_wall_cohorts(w,limit,dt,ok)
+  type(wall_cohort_t),intent(inout)::w
+  integer,intent(in)::limit
+  real(real64),intent(in)::dt
+  logical,intent(out)::ok
+  real(real64)::score,best,l1,l2,s1,s2,age
+  integer::n,j,k
+  ok=.false.
+  if(limit<1.or..not.ieee_is_finite(dt).or.dt<=0.)return
+  n=wall_count(w)
+  do while(n>limit)
+   best=huge(1._real64);k=1
+   do j=1,n-1
+    score=abs(w%age(j+1)-w%age(j))/(w%age(j+1)+w%age(j)+dt)
+    if(score<best)then;best=score;k=j;endif
+   enddo
+   l1=w%hi(k)-w%lo(k);l2=w%hi(k+1)-w%lo(k+1)
+   s1=l1*w%seed(k);s2=l2*w%seed(k+1)
+   if(s1+s2>0.)then
+    age=(s1*w%age(k)+s2*w%age(k+1))/(s1+s2)
+   else
+    age=(l1*w%age(k)+l2*w%age(k+1))/(l1+l2)
+   endif
+   w%hi(k)=w%hi(k+1);w%seed(k)=(s1+s2)/(l1+l2);w%age(k)=age
+   do j=k+1,n-1
+    w%lo(j)=w%lo(j+1);w%hi(j)=w%hi(j+1);w%age(j)=w%age(j+1);w%seed(j)=w%seed(j+1)
+   enddo
+   n=n-1
+   w%lo=w%lo(:n);w%hi=w%hi(:n);w%age=w%age(:n);w%seed=w%seed(:n)
+  enddo
+  ok=.true.
  end subroutine
  pure subroutine wall_potential(w,phi,head,conductivity,dt,length,chi,potential,darcy)
   type(wall_cohort_t),intent(in)::w

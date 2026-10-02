@@ -52,7 +52,7 @@ program test_ppa_wu05a27_signed_column
  allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod),source(numnod),h0(numnod),t0(numnod))
  do soil=1,2
  do wet=0,4
- do mode=0,7
+ do mode=0,9
  do ref=0,4
  dt=.002_real64/(2**ref);ns=nint(1._real64/dt)
  ks=1._real64;if(soil==2)ks=5._real64
@@ -163,7 +163,7 @@ program test_ppa_wu05a27_signed_column
    contact%sorptivity=trial_seed;contact%contact_age=trial_age
    if(mode==6)contact%capillary_budget=max(0._real64,cofgen(2,:)-q%base_state%water_content)*dz
   endif
-  if(mode==7)then
+  if(mode>=7)then
    cohort_phi=-100._real64+macro_water/.05_real64
    contact%unsaturated_potential=[(0._real64,k=1,numnod)]
    contact%capillary_budget=max(0._real64,cofgen(2,:)-q%base_state%water_content)*dz
@@ -172,6 +172,10 @@ program test_ppa_wu05a27_signed_column
     wetlo=min(wethi,max(0._real64,-z(k)-dz(k)/2,-cohort_phi))
     call prepare_wall_cohorts(walls(k),wetlo,wethi,contact%sorptivity(k),trial_walls(k),ok)
     if(.not.ok)error stop 'wall cohort preparation'
+    if(mode>=8)then
+     call compress_wall_cohorts(trial_walls(k),8*2**(mode-8),dt,ok)
+     if(.not.ok)error stop 'wall cohort compression'
+    endif
     if(contact%matrix_head(k)<0.)then
      call wall_potential(trial_walls(k),cohort_phi,contact%matrix_head(k),contact%conductivity(k),dt,contact%length,contact%chi,potential,darcy_potential)
      contact%unsaturated_potential(k)=potential
@@ -196,7 +200,7 @@ program test_ppa_wu05a27_signed_column
   dry_resets=dry_resets+count(wall_wet.and..not.trial_wet)
   event_seed=trial_seed;event_age=trial_age+merge(dt,0._real64,trial_wet);wall_wet=trial_wet
  endif
- if(mode==7)then
+ if(mode>=7)then
   walls=trial_walls;total_cohorts=0
   do k=1,numnod
    call advance_wall_cohorts(walls(k),dt);total_cohorts=total_cohorts+wall_count(walls(k))
