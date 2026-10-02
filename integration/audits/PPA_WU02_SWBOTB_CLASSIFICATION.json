@@ -18,7 +18,13 @@
       "application": "not_migrated",
       "groundwater_relation": "direct_gwl_state_semantics",
       "classification": "PRESERVED_NOT_TYPED_AS_LEGACY_MODE",
-      "risk": "high_state_machine"
+      "risk": "high_state_machine",
+      "shared_prerequisite": {
+        "work_unit": "F-MIG431-LOWGWL01-P0",
+        "status": "SHARED_AUTHORITY_PREREQUISITE_REGISTERED",
+        "production_admitted": false,
+        "authority": "docs/migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md"
+      }
     },
     {
       "selector": "2",
@@ -244,8 +250,9 @@
     {
       "id": "PPA-LOW01",
       "priority": 5,
-      "status": "NOT_IMPLEMENTED",
-      "meaning": "prescribed-groundwater-level hybrid boundary/state machine"
+      "status": "BLOCKED_ON_REGISTERED_SHARED_RICHARDS_PREREQUISITE",
+      "meaning": "prescribed-groundwater-level hybrid boundary/state machine",
+      "prerequisite": "F-MIG431-LOWGWL01-P0"
     },
     {
       "id": "PPA-LOW03",

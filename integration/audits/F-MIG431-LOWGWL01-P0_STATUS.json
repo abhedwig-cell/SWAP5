@@ -1,0 +1,59 @@
+{
+  "work_unit": "F-MIG431-LOWGWL01-P0",
+  "workstream": "central F-MIG431 lower-boundary",
+  "baseline": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
+  "last_reconciled_head": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
+  "official_branch": "work/f-mig431-lowgwl01-p0-shared-richards-authority",
+  "state": "SHARED_AUTHORITY_PREREQUISITE_REGISTERED",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_mode1_admitted": false,
+  "checkpoint_commit": "registration commit containing this record; resolve from Git history",
+  "recovery_point": "registration postimage; no production delta",
+  "next_action": "Replay persisted diagnostic locally at O0/O2; persist negative result, then shared-authority design before production implementation",
+  "blockers": [
+    "Typed HeadCalc mode1 below-profile indexing requires shared solver work",
+    "In-profile legacy-global constitutive reads require explicit provider ownership",
+    "Candidate/full-node accepted mass publication and transaction/restart contract require qualification"
+  ],
+  "relevant_paths": [
+    "docs/migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/solver/mod_reference_richards_state_binding.f90",
+    "src/solver/mod_soil_water_solver_contract.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
+    "docs/performance/evidence/F-PE19_B1_11_source_manifest.sha256",
+    "docs/numerics/transactional-time-stepping.md",
+    "docs/capabilities/restart-v1.md",
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md"
+  ],
+  "test_paths": [
+    "tests/fmig431/test_lowgwl01_feasibility.f90",
+    "tests/fmig431/run_lowgwl01_feasibility.py"
+  ],
+  "evidence_paths": [
+    "integration/audits/F-MIG431-LOWGWL01-P0_FEASIBILITY.json"
+  ],
+  "dependency_surface": [
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter",
+    "src/solver",
+    "src/runtime",
+    "tests/fsi/fsi04_real_headcalc_stubs.f90"
+  ],
+  "interfaces_changed": [],
+  "production_delta": [],
+  "future_application_unit": "F-MIG431-LOWGWL01-A not issued",
+  "remaining_order": [
+    1,
+    3,
+    8
+  ]
+}
