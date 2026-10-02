@@ -20,13 +20,15 @@ module mod_fmr_rfm_activation_binding
 
 contains
 
-  subroutine evaluate_fmr_rfm_activation_from_view(view,constitutive,panels,sigma_b,source_rate,event_age,result,ok)
+  subroutine evaluate_fmr_rfm_activation_from_view(view,constitutive,panels,sigma_b,source_rate,event_age,result,ok, &
+       precomputed_conductivity,precomputed_sorptivity)
     type(process_hydraulic_view_t), intent(in) :: view
     class(constitutive_hydraulics_provider_t), intent(in) :: constitutive
     integer, intent(in) :: panels
     real(real64), intent(in) :: sigma_b,source_rate,event_age
     type(fmr_rfm_hydraulic_activation_result_t), intent(out) :: result
     logical, intent(out) :: ok
+    real(real64), intent(in), optional :: precomputed_conductivity,precomputed_sorptivity
 
     type(rfm_unponded_activation_request_t) :: request
     real(real64) :: conductivity,sorptivity
@@ -42,13 +44,20 @@ contains
     if (.not. ieee_is_finite(source_rate) .or. source_rate < 0.0_real64) return
     if (.not. ieee_is_finite(event_age) .or. event_age < 0.0_real64) return
 
-    call constitutive%evaluate_point_conductivity(1,view%pressure_head(1),view%water_content(1), &
-         conductivity,conductivity_available)
-    if (.not. conductivity_available) return
-    if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) return
-
-    call evaluate_rfm_surface_sorptivity(view,constitutive,panels,sorptivity,sorptivity_ok)
-    if (.not. sorptivity_ok) return
+    if (present(precomputed_conductivity) .neqv. present(precomputed_sorptivity)) return
+    if (present(precomputed_conductivity)) then
+      conductivity=precomputed_conductivity
+      sorptivity=precomputed_sorptivity
+      if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) return
+      if (.not. ieee_is_finite(sorptivity) .or. sorptivity < 0.0_real64) return
+    else
+      call constitutive%evaluate_point_conductivity(1,view%pressure_head(1),view%water_content(1), &
+           conductivity,conductivity_available)
+      if (.not. conductivity_available) return
+      if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) return
+      call evaluate_rfm_surface_sorptivity(view,constitutive,panels,sorptivity,sorptivity_ok)
+      if (.not. sorptivity_ok) return
+    end if
 
     request%sigma_b = sigma_b
     request%matrix_conductivity_cm_per_day = conductivity
