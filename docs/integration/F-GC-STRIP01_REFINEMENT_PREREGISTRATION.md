@@ -66,3 +66,20 @@ research numerical-configuration variant; it does not qualify the original
 strict panel. Do not accept a variant solely from successful solves: repeat
 all refinement measurements, keep actual trajectory errors above budget as
 negative evidence, and test unchanged mass/replay before coupled use.
+
+## Datum-invariance conditioning diagnostic
+
+The repaired extended coupled case passes three windows then reaches the outer
+ceiling with interface mismatch ~1e-18 m3/d but native MF convergence false.
+At near-zero exchange the absolute MF rate criterion is stricter than roundoff
+in a linear system expressed around absolute head -5 m. Test a uniform +5 m
+translation of MF top, base, DRN stage, initial head and API head coordinates.
+Convert MF head back to the physical land datum before SWAP materialization.
+Ss, thickness, T, head gradients, drain head excess, exchange, physical storage
+and all numerical tolerances remain unchanged. API RHS is formed directly in
+the translated coordinate to avoid cancellation of large absolute-head terms.
+
+This is an exact coordinate transformation of the confined MF equations, not
+a changed boundary condition. Compare original and shifted short physical
+head/exchange/balance. Preserve the original failure and do not infer success
+for long forcing until actual coupled windows and budget tests complete.
