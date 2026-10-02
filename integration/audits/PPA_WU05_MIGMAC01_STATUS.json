@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU05-MIGMAC01",
+  "status": "BLOCKED_SOURCE_BACKED_ACTIVE_INTERVAL_NOT_ESTABLISHED",
+  "baseline": "6a2d948e510ddaa4308392051dbba2972b951ae0",
+  "checkpoint_commit": "containing commit",
+  "last_reconciled_head": "6947aa40939892f4ed09b6dfea44159328175021",
+  "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "closed": false,
+  "qualified_prerequisite": {
+    "head": "f88c1fc3106b88fec60edb93fdc56f331ad75dff",
+    "run": 36925950836,
+    "scope": "operator and transaction composition only"
+  },
+  "active_e2e": {
+    "run": 36932614330,
+    "head": "e84ac3f55cc1805e5c10ca70043a8502fa0c19e0",
+    "status": 2,
+    "h_cover_cm": -66.62957734508022,
+    "covered_cm": 0,
+    "passed": false,
+    "mass_residuals": "not printed before failing assertion"
+  },
+  "blockers": [
+    "G2: no reconstructed accepted IcTopMp>1 reference interval with positive covered transfer"
+  ],
+  "next_action": "Recover covered reference case or preregister a scientifically fixed controlled B1.11 variant, explicitly distinct from unmodified official Andelst; capture complete accepted state and mass terms before SWAP5 active replay",
+  "recovery_point": "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_AUTHORITY_RECOVERY.md and this record at their containing commit",
+  "evidence_paths": [
+    "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_AUTHORITY_RECOVERY.md",
+    "docs/audits/PPA_WU05_MIGMAC01_RESULT.md"
+  ],
+  "authority_paths": [
+    "docs/audits/PPA_WU05_MIGMAC01_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05_MIGMAC01_SOURCE_RECONCILIATION.md",
+    "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_E2E_PREREGISTRATION.md"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_macropore_single_column_runtime.f90",
+    "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90",
+    "src/process/macropore/mod_macropore_covering_layer_input.f90"
+  ],
+  "canonical_delta_requires_reconciliation": true,
+  "frozen_status_a_denominator_changed": false,
+  "production_changed_this_recovery": false
+}
