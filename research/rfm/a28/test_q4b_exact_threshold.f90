@@ -24,6 +24,7 @@ program test_a28_q4b_exact_threshold
   use mod_fixed_flux_top_boundary_provider,only:fixed_flux_top_boundary_provider_t
   use mod_fmr_legacy_cauchy_bottom_boundary_provider,only:fmr_cauchy3_control_t,FMR_CAUCHY3_OK
   use mod_fmr_legacy_cauchy_bottom_boundary_provider,only:fmr_cauchy3_control_t,FMR_CAUCHY3_OK
+  use mod_fmr_legacy_cauchy_bottom_boundary_provider,only:fmr_cauchy3_control_t,FMR_CAUCHY3_OK
   implicit none
 
   integer,parameter::ARM_A=1,ARM_B=2,ARM_C=3
@@ -68,6 +69,7 @@ contains
     type(fmr_b110_physical_parameters_t),target::parameters
     type(fmr_b110_physical_forcing_t)::forcing
     type(fmr_cauchy3_control_t)::cauchy
+    type(fmr_cauchy3_control_t)::cauchy
     type(fmr_b110_physical_state_t)::physical
     type(rfm_physical_state_t)::rfm
     type(rfm_runtime_configuration_t)::rfmcfg
@@ -86,7 +88,7 @@ contains
     class(transaction_state_t),allocatable::snapshot,replay_snapshot,original_snapshot
     real(real64)::heads(numnod),theta(numnod),cond(numnod),cap(numnod),dkdh(numnod)
     real(real64)::wt,rain,t0,t1,macro_area,deep_fraction,endpoint_depth,sorpmax,ks
-    integer::step,nsteps,commit_status,reconstruct_status,cauchy_status,cauchy_status
+    integer::step,nsteps,commit_status,reconstruct_status,cauchy_status,cauchy_status,cauchy_status
     integer(int64)::saved_lineage,saved_revision
     real(real64)::saved_time
     logical::ok,did_commit,available,time_available,reconstructed_ok
@@ -122,6 +124,8 @@ contains
     end if
 
     call backend%initialize(top)
+    call cauchy%initialize_sine(0._real64,0._real64,[0._real64,366._real64],-50._real64,45._real64,0._real64,1.2_real64,5._real64,.true.,cauchy_status)
+    if(cauchy_status/=FMR_CAUCHY3_OK)then;m%status=-933;return;end if
     if(arm==ARM_B)then
       policy%enabled=.true.
       policy%inner_richards_exchange_enabled=.false.
@@ -182,6 +186,8 @@ contains
       t0=real(step-1,real64)*DT;t1=real(step,real64)*DT
       rain=0._real64
       call init_forcing(forcing,arm,rain,macro_area)
+      allocate(forcing%legacy_swbotb3_implicit_control)
+      forcing%legacy_swbotb3_implicit_control=cauchy
       allocate(forcing%legacy_swbotb3_implicit_control);forcing%legacy_swbotb3_implicit_control=cauchy
       if(arm==ARM_C.and.step==nsteps/2)then
         call committed%snapshot(original_snapshot,available);if(.not.available)then;m%status=-912;m%fail_step=step;exit;end if
