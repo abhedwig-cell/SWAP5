@@ -197,8 +197,7 @@ contains
       if(arm==ARM_C.and.step==nsteps/2)then
         call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result,discard_candidate,discard_diagnostics)
         if(.not.result%completed)then;m%status=-923;m%fail_step=step;exit;end if
-        ! Candidate is deliberately not committed. kernel_candidate_state_t has no
-        ! publication path except commit; committed state must remain unchanged.
+        call backend%discard_trial_candidate(discard_candidate,discard_diagnostics)
         call committed%snapshot(replay_snapshot,available);if(.not.available)then;m%status=-924;m%fail_step=step;exit;end if
         select type(a=>original_snapshot)
         type is(fmr_b110_rfm_state_t)
