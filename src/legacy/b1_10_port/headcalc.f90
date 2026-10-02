@@ -546,7 +546,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       flnonconv = .FALSE.
 
 !     flags introduced for debugging/macropore iteration policy
-      if (swmacro == 1) then
+      if (macropore_iteration_policy_active()) then
          fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
          fsi_ws%nonconverged_head(1:numnod) = .FALSE.
       end if
@@ -564,7 +564,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        test for water balance deviation of soil compartments
          if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
-            if (swmacro == 1) fsi_ws%nonconverged_balance(i) = .TRUE.
+            if (macropore_iteration_policy_active()) fsi_ws%nonconverged_balance(i) = .TRUE.
             flnonconv     = .TRUE.
          end if
 
@@ -574,7 +574,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                  abs(state%h(i)-fsi_ws%old_head(i))/CritDevh2Cp)
             if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
                fsi_ws%last_head_gate_passed = .FALSE.
-               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          else
@@ -582,7 +582,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                  abs(state%h(i)-fsi_ws%old_head(i))/abs(fsi_ws%old_head(i))/CritDevh1Cp)
             if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
                fsi_ws%last_head_gate_passed = .FALSE.
-               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          end if
@@ -625,7 +625,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       
 
 !     implemented to improve iteration performance in case of macropores
-      if (dt <  0.01d0 .AND. swmacro == 1 .AND. .NOT.flnonconv3) then 
+      if (dt < 0.01d0 .AND. macropore_iteration_policy_active() .AND. .NOT.flnonconv3) then
          flok = .TRUE.
          if (dt > 10.d0*dtmin) then
             do i = 1, nodgwl
@@ -770,6 +770,10 @@ logical function macropore_exchange_retry_available()
       macropore_exchange_retry_available = IDecMpRat < 3
    end if
 end function macropore_exchange_retry_available
+
+logical function macropore_iteration_policy_active()
+   macropore_iteration_policy_active = swmacro == 1 .or. provider_macropore_active
+end function macropore_iteration_policy_active
 
 logical function matrix_area_scaling_active()
    if (legacy_state_binding) then
@@ -1036,8 +1040,10 @@ subroutine vector_F(iTask)
       end if
    end if
    if (provider_macropore_active) then
-      call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
-           provider_macropore_exchange,provider_macropore_rate_active)
+      if (.not. fsi_ws%unsaturated_flags(3)) then
+         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
+              provider_macropore_exchange,provider_macropore_rate_active)
+      end if
    else
       provider_macropore_rate_active=.false.
       provider_macropore_exchange=0.0d0
@@ -1228,7 +1234,7 @@ subroutine jacobian_F()
       call MACROPORE(3)
       fsi_ws%dfdh_main(1:NN) = fsi_ws%dfdh_main(1:NN) - dFdhMp(1:NN)
    end if
-   if (provider_macropore_active) then
+   if (provider_macropore_active .and. .not. fsi_ws%unsaturated_flags(3)) then
       call evaluation_context%macropore%evaluate_derivative(state%h(1:numnod),state%theta(1:numnod), &
            state%dimoca(1:numnod),provider_macropore_dqdh,provider_macropore_derivative_available, &
            provider_macropore_rate_active)
