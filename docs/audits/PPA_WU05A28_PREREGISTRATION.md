@@ -11,13 +11,15 @@ Promote the qualified PERF07 research policy into an explicit, non-default RFM r
 
 The runtime configuration exposes a versioned sorptivity policy:
 - RFM_SORPTIVITY_POLICY_EXACT = 0: existing fixed-panel behavior;
-- RFM_SORPTIVITY_POLICY_PERF07_V1 = 1: explicit approximate opt-in.
+- RFM_SORPTIVITY_POLICY_A28_V1 = 1: explicit approximate opt-in.
 
-PERF07_V1 is valid only with the 64-panel reference ceiling and selects:
-- h < -300 cm: 64 panels;
-- -300 <= h < -100 cm: 32 panels;
-- -100 <= h < -30 cm: 16 panels;
-- h >= -30 cm: 8 panels.
+A28_V1 is valid only with the 64-panel reference ceiling and selects:
+Initial PERF07 policy was prospectively falsified by Q2 (max 4.5951% over 36 materials, O13 at h=-100 cm). The replacement A28_V1 policy is frozen from the broadened frontier with margin:
+- h < -30 cm: 64 panels;
+- -30 <= h < -3 cm: 32 panels;
+- h >= -3 cm: 16 panels.
+
+The sampled 36-material frontier gives maxima of 0.7087% at -30 cm for 32 panels and 0.6318% at -3 cm for 16 panels. The 8-panel route is not admitted into A28_V1 because its -1 cm maximum is 0.9824%, too close to the 1% gate for an unsampled continuous interval.
 
 The exact policy remains the default. Unknown policies fail configuration validation. The approximate policy is numerical execution policy only and does not change physical state ownership, mass accounting, forcing, or Reference Richards ownership.
 
@@ -27,13 +29,13 @@ The exact policy remains the default. Unknown policies fail configuration valida
 - default configuration remains EXACT;
 - clear() restores EXACT;
 - invalid policy fails closed;
-- PERF07_V1 with a non-64 reference ceiling fails closed;
+- A28_V1 with a non-64 reference ceiling fails closed;
 - exact panel selection is unchanged.
 
 ### Q2 broadened constitutive panel frontier
 Use all 36 Staringreeks-2018 catalog rows already used by A27 actual-hydraulics qualification, not only B01/O05.
 Sample h = -2000,-1000,-500,-400,-350,-300,-250,-200,-150,-100,-75,-50,-30,-20,-10,-3,-1 cm.
-Compare PERF07_V1 against 64 panels with the actual default-MvG provider.
+Compare A28_V1 against 64 panels with the actual default-MvG provider.
 Gate: maximum relative surface-sorptivity error <= 1%.
 
 This is a constitutive/numerical gate, not field validation.
