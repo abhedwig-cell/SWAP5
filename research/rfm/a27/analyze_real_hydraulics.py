@@ -1,10 +1,12 @@
 """Adjudicate actual-provider domain and saturated pressure counterexamples."""
 import csv,json,sys
+from decimal import Decimal,localcontext
 from pathlib import Path
 hyd_path,darcy_path,out=map(Path,sys.argv[1:]);out.mkdir(parents=True,exist_ok=True)
 def read(p):
     with p.open() as f:return list(csv.DictReader(f))
 r=read(hyd_path);q=read(darcy_path)
+catalog={x['name']:x for x in read(Path(__file__).resolve().parents[3]/'tests/fpe/data/fpe_elastic05_staringreeks_2018.csv')}
 assert len(r)==1296 and len(q)==576
 codes=sorted({x['code'] for x in r});assert len(codes)==36
 table=[];unsaturated=[]
@@ -24,11 +26,20 @@ for code in codes:
     for x in r:
         if x['code']!=code or float(x['head_cm'])>=0:continue
         c=float(x['provider_C_cm_inv']);deriv=float(x['retention_derivative_cm_inv'])
-        unsaturated.append(dict(code=code,dt_day=float(x['dt_day']),head_cm=float(x['head_cm']),retention_derivative_cm_inv=deriv,provider_C_cm_inv=c,relative_derivative_discrepancy=abs(c-deriv)/deriv,physical_D_cm2_day=float(x['physical_D_cm2_day'])))
+        material=catalog[code]
+        with localcontext() as ctx:
+            ctx.prec=80
+            wr,ws,al,nn=[Decimal(material[k]) for k in ['wcr','wcs','alpha','npar']]
+            mm=Decimal(str(1-1/float(material['npar'])))
+            hh=Decimal(x['head_cm']);eps=Decimal('1e-25')
+            theta=lambda v:wr+(ws-wr)/(1+(-al*v)**nn)**mm
+            precise=float((theta(hh+eps)-theta(hh-eps))/(2*eps))
+        assert abs(c-precise)/precise<1e-10,'high precision derivative mismatch'
+        unsaturated.append(dict(code=code,dt_day=float(x['dt_day']),head_cm=float(x['head_cm']),retention_derivative_cm_inv=deriv,provider_C_cm_inv=c,relative_derivative_discrepancy=abs(c-deriv)/deriv,finite_difference_D_cm2_day=float(x['physical_D_cm2_day']),high_precision_retention_derivative_cm_inv=precise,provider_relative_high_precision_derivative_discrepancy=abs(c-precise)/precise,high_precision_physical_D_cm2_day=float(x['K_cm_day'])/precise))
 for name,rows in [('real_domain_counterexamples.csv',table),('real_unsaturated_derivative.csv',unsaturated)]:
     with (out/name).open('w',newline='') as f:
         w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
-summary={'materials':36,'hydraulic_rows':len(r),'actual_signed_source_rows':len(q),'theta_only_general_route_falsified_materials':36,'timestep_dependent_provider_K_C_materials':36,'saturated_provider_D_ratio':1000.,'max_unsaturated_relative_derivative_discrepancy':max(x['relative_derivative_discrepancy'] for x in unsaturated),'max_source_Darcy_algebra_error_cm_day':max(x['signed_source_algebra_error_cm_day'] for x in table),'positive_zero_reverse_source_signs':'PASS','scope':'default MvG without physical elastic storage, all repository catalog Ks values; source primitives, not production A/B/C','production_qualified':False,'canonical_admitted':False}
+summary={'materials':36,'hydraulic_rows':len(r),'actual_signed_source_rows':len(q),'theta_only_general_route_falsified_materials':36,'timestep_dependent_provider_K_C_materials':36,'saturated_provider_D_ratio':1000.,'max_unsaturated_relative_derivative_discrepancy':max(x['relative_derivative_discrepancy'] for x in unsaturated),'max_unsaturated_relative_high_precision_derivative_discrepancy':max(x['provider_relative_high_precision_derivative_discrepancy'] for x in unsaturated),'high_precision_backend':'Python Decimal80, central difference1e-25cm','max_source_Darcy_algebra_error_cm_day':max(x['signed_source_algebra_error_cm_day'] for x in table),'positive_zero_reverse_source_signs':'PASS','scope':'default MvG without physical elastic storage, all repository catalog Ks values; source primitives, not production A/B/C','production_qualified':False,'canonical_admitted':False}
 (out/'real_hydraulics_summary.json').write_text(json.dumps(summary,indent=2)+'\n')
 print(json.dumps(summary,indent=2))
 print('A27_REAL_DOMAIN_FALSIFIERS_VERIFIED=PASS')
