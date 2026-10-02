@@ -7,6 +7,7 @@ program test_low08_p0_typed_solver
   use mod_b110_default_mvg_provider
   use mod_b110_source_sink_provider
   use mod_fixed_flux_top_boundary_provider
+  use variables, only: fldtmin
   implicit none
   integer,parameter::n=8
   real(real64),parameter::critdz=1.e-5_real64,tol=1.e-11_real64
@@ -23,6 +24,7 @@ program test_low08_p0_typed_solver
   real(real64)::cof(24,n),theta(n),k(n),cap(n),dk(n),hplate,threshold
   real(real64),target::dra(1,n),irr(n),roots(n)
   integer::i
+  fldtmin=.false.
   call setup()
   print '(a)', 'LOW08_STAGE_SETUP=PASS'
   hplate=-80._real64
