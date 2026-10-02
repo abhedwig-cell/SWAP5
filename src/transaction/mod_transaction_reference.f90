@@ -1,5 +1,5 @@
 module mod_transaction_reference
-  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite, ieee_value, ieee_quiet_nan
   use, intrinsic :: iso_fortran_env, only: real64, int64
   implicit none
   private
@@ -257,8 +257,12 @@ contains
     context_required = model%attempt_context_required()
     call committed%clone(checkpoint)
     if (context_required) call model%capture_attempt_context(checkpoint_context)
-    storage0 = model%storage(checkpoint)
     call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
+    if (storage_start_complete) then
+      storage0 = model%storage(checkpoint)
+    else
+      storage0 = ieee_value(0.0_real64, ieee_quiet_nan)
+    end if
     attempt_dt = t1 - t0
 
     do retry_index = 0, policy%max_retries
@@ -288,8 +292,12 @@ contains
         cycle
       end if
 
-      storage_full = model%storage(full_state)
       call model%storage_accounting_status(full_state, full_storage_end_complete, full_end_missing_mask)
+      if (full_storage_end_complete) then
+        storage_full = model%storage(full_state)
+      else
+        storage_full = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       full_mass_residual = storage_full - storage0 - (full_outcome%mass_in - full_outcome%mass_out)
       full_missing_mask = ior(start_missing_mask, full_end_missing_mask)
       full_missing_mask = ior(full_missing_mask, full_outcome%missing_mass_contribution_mask)
@@ -346,8 +354,12 @@ contains
         cycle
       end if
 
-      storage_half = model%storage(half_state)
       call model%storage_accounting_status(half_state, storage_end_complete, end_missing_mask)
+      if (storage_end_complete) then
+        storage_half = model%storage(half_state)
+      else
+        storage_half = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       half_mass_residual = storage_half - storage0 - &
         ((half1_outcome%mass_in + half2_outcome%mass_in) - &
          (half1_outcome%mass_out + half2_outcome%mass_out))
@@ -480,8 +492,12 @@ contains
     context_required = model%attempt_context_required()
     call committed%clone(checkpoint)
     if (context_required) call model%capture_attempt_context(checkpoint_context)
-    storage0 = model%storage(checkpoint)
     call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
+    if (storage_start_complete) then
+      storage0 = model%storage(checkpoint)
+    else
+      storage0 = ieee_value(0.0_real64, ieee_quiet_nan)
+    end if
     attempt_dt = t1 - t0
 
     do retry_index = 0, policy%max_retries
@@ -511,8 +527,12 @@ contains
       end if
 
       if (context_required) call model%capture_attempt_context(accepted_context)
-      storage_candidate = model%storage(candidate_state)
       call model%storage_accounting_status(candidate_state, storage_end_complete, end_missing_mask)
+      if (storage_end_complete) then
+        storage_candidate = model%storage(candidate_state)
+      else
+        storage_candidate = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       mass_residual = storage_candidate - storage0 - (outcome%mass_in - outcome%mass_out)
       result%full_mass_residual = mass_residual
       result%accepted_mass_residual = mass_residual
