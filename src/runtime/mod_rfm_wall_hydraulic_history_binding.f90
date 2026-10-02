@@ -21,18 +21,20 @@ module mod_rfm_wall_hydraulic_history_binding
 contains
 
   subroutine bind_rfm_wall_hydraulics_from_accepted(accepted,endpoint_input_cm,endpoint_node_index,mb_wall_node_index, &
-       view,constitutive,panels,result)
+       view,constitutive,panels,result,skip_unused_mb_hydraulics)
     type(rfm_physical_state_t),intent(in)::accepted
     real(real64),intent(in)::endpoint_input_cm(:)
     integer,intent(in)::endpoint_node_index(:),mb_wall_node_index,panels
     type(process_hydraulic_view_t),intent(in)::view
     class(constitutive_hydraulics_provider_t),intent(in)::constitutive
     type(rfm_wall_hydraulic_binding_result_t),intent(out)::result
+    logical,intent(in),optional::skip_unused_mb_hydraulics
     integer::i,n,node
-    logical::view_ok,available,sok
+    logical::view_ok,available,sok,skip_mb
     real(real64)::s,k
 
     result=rfm_wall_hydraulic_binding_result_t()
+    skip_mb=.false.;if(present(skip_unused_mb_hydraulics))skip_mb=skip_unused_mb_hydraulics
     if(.not.accepted%ready().or.panels<=0)return
     call validate_process_hydraulic_view(view,view_ok);if(.not.view_ok)return
     n=accepted%endpoint_count
@@ -57,12 +59,14 @@ contains
       end if
       result%endpoint_sorptivity_cm_sqrt_day(i)=s
     end do
-    node=mb_wall_node_index
-    call constitutive%evaluate_point_conductivity(node,view%pressure_head(node),view%water_content(node),k,available)
-    if(.not.available.or..not.ieee_is_finite(k).or.k<0.0_real64)return
-    call evaluate_rfm_node_sorptivity(view,constitutive,node,panels,s,sok);if(.not.sok)return
-    result%mb_conductivity_cm_per_day=k
-    result%mb_sorptivity_cm_sqrt_day=s
+    if(.not.skip_mb)then
+      node=mb_wall_node_index
+      call constitutive%evaluate_point_conductivity(node,view%pressure_head(node),view%water_content(node),k,available)
+      if(.not.available.or..not.ieee_is_finite(k).or.k<0.0_real64)return
+      call evaluate_rfm_node_sorptivity(view,constitutive,node,panels,s,sok);if(.not.sok)return
+      result%mb_conductivity_cm_per_day=k
+      result%mb_sorptivity_cm_sqrt_day=s
+    end if
     result%valid=.true.
   end subroutine
 end module mod_rfm_wall_hydraulic_history_binding
