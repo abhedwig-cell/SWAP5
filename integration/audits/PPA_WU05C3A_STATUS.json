@@ -1,18 +1,18 @@
 {
   "work_unit": "PPA-WU05-C3A",
   "baseline": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
-  "checkpoint_commit": "commit containing final workflow and this record; resolve from Git history",
-  "last_reconciled_head": "42c9367f65b7fa7f98b8d173afae74b4a7d92827",
-  "last_reconciled_upstream": "7a629a10cabb3553ff77474423e6ccac81b29aec",
+  "checkpoint_commit": "63b7c982d12a7df8f6f933d32fc382fbcc02bb67",
+  "last_reconciled_head": "63b7c982d12a7df8f6f933d32fc382fbcc02bb67",
+  "last_reconciled_upstream": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "focused_repair_qualified": true,
-  "status": "LOCAL_SHARED_PRESERVATION_PASS_FINAL_PERSISTED_QUALIFICATION_PENDING",
-  "canonical_admitted": false,
-  "recovery_point": "docs/audits/PPA_WU05C3A_ADMISSION.md",
-  "next_action": "Actively wait for final exact-postimage qualification; evaluate artifacts/logs, admit bounded route and preserve exact postmerge if required gates pass.",
+  "status": "CANONICAL_ADMITTED_BOUNDED_CLOSED",
+  "canonical_admitted": true,
+  "recovery_point": "docs/audits/PPA_WU05C3A_CLOSEOUT.md",
+  "next_action": "Closed. Any envelope expansion requires a new bounded work unit.",
   "blockers": [],
   "authority_paths": [
     "docs/development/quality-governance-a-aa.md",
@@ -60,7 +60,7 @@
       "PPA_WU05C3Q_ROOT_COMPOSITION=PASS"
     ]
   },
-  "canonical_delta_review": "10 LOW05-A commits: backend/application ordinary prescribed-head addition, no crop/root/oxygen/thermal contract change; no whole-application preservation inferred.",
+  "canonical_delta_review": "Canonical delta 7a629a10..82351099 comprised LOW03 lower-boundary solver/application authority. Shared solver/legacy-binding changes were exercised by final current-canonical application/lower-boundary and shared-backend preservation gates; no oxygen/crop/thermal ownership broadening inferred.",
   "interfaces_changed": [
     "src/crop/mod_crop_bartholomeus_input.f90",
     "src/runtime/mod_fmr_bartholomeus_contract.f90",
@@ -82,5 +82,20 @@
       "Fixed list omitted existing PERCH19 backend prerequisite."
     ]
   },
-  "local_shared_preservation": "integration/audits/PPA_WU05C3A_SHARED_PRESERVATION_RESULT.json"
+  "local_shared_preservation": "integration/audits/PPA_WU05C3A_SHARED_PRESERVATION_RESULT.json",
+  "final_qualification": {
+    "run": 36972631192,
+    "job": 110729643691,
+    "postimage": "63b7c982d12a7df8f6f933d32fc382fbcc02bb67",
+    "conclusion": "success",
+    "artifact_id": 11212966516,
+    "artifact_digest": "sha256:59917ee261edc2e822cd8068720beb92ccf3ec10fdfd05abdec30524a25aad24",
+    "tested_postimage_json_note": "C3A_TESTED_SHA was not set; commit identity is bound by checkout/job log and artifact workflow_run.head_sha."
+  },
+  "canonical_admission": {
+    "pull_request": 962,
+    "merge_commit": "179673b16b84bc48fa5e0e83341a8a8e80b2211a",
+    "date": "2026-10-02",
+    "scope": "Bounded oxygen mode2/type1 analytical-MvG REFERENCE waterfilm, homogeneous serial typed Fortran Reference application, bottom2/7, restricted thermal owner only."
+  }
 }
