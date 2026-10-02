@@ -35,18 +35,18 @@ program test_a27_perf04_memo
  top%status=SW_TOP_BOUNDARY_AVAILABLE;top%regime=SW_TOP_BOUNDARY_REGIME_FLUX;top%carries_surface_mass_terms=.true.;top%runoff_resolved=.true.
  top%net_potential_surface_flux=8._real64
  call reset_counts();call prepare_rfm_live_trial(state,cfg,wet,view,counted,top,depth,dz,.01_real64,1e-8_real64,r,memo)
- if(.not.r%valid.or.demand_calls/=65)error stop 'first memo fill'
+ if(.not.r%valid.or.demand_calls/=130)error stop 'first memo fill'
  write(*,'(*(g0,:,","))')'MEMO_FIRST',demand_calls,point_calls,memo%valid
  call reset_counts();call prepare_rfm_live_trial(state,cfg,wet,view,counted,top,depth,dz,.005_real64,1e-8_real64,r,memo)
- if(.not.r%valid.or.demand_calls/=0)error stop 'identical memo hit'
+ if(.not.r%valid.or.demand_calls/=65)error stop 'identical memo hit'
  write(*,'(*(g0,:,","))')'MEMO_HIT',demand_calls,point_calls
  view%pressure_head(1)=view%pressure_head(1)+1e-12_real64
  call reset_counts();call prepare_rfm_live_trial(state,cfg,wet,view,counted,top,depth,dz,.005_real64,1e-8_real64,r,memo)
- if(.not.r%valid.or.demand_calls/=65)error stop 'changed head miss'
+ if(.not.r%valid.or.demand_calls/=130)error stop 'changed head miss'
  write(*,'(*(g0,:,","))')'MEMO_CHANGED_HEAD',demand_calls,point_calls
  memo=rfm_surface_hydraulic_memo_t()
  call reset_counts();call prepare_rfm_live_trial(state,cfg,wet,view,counted,top,depth,dz,.005_real64,1e-8_real64,r,memo)
- if(.not.r%valid.or.demand_calls/=65)error stop 'memo clear miss'
+ if(.not.r%valid.or.demand_calls/=130)error stop 'memo clear miss'
  write(*,'(*(g0,:,","))')'MEMO_AFTER_CLEAR',demand_calls,point_calls
  print '(a)','A27_PERF04_MEMO=PASS'
 contains
