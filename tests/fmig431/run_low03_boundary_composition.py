@@ -35,12 +35,12 @@ frozen+=function('b111_j3',f'if(flag==0)then\n{j0}\nelse\n{j1}\nend if\nvalue=dF
 frozen+=function('q5_wrapper',grad+'\nvalue=-kmean(NN+1)*hgrad(NN+1)')
 frozen+='real(8) function b111_q5(h,z,aq,k,d) result(value)\nreal(8),intent(in)::h,z,aq,k,d\nvalue=q5_wrapper(h,z,aq,k,d,0.d0,0)\nend function\nend module\n'
 FC=shlex.split(os.environ.get('FC','gfortran'));LINK=shlex.split(os.environ.get('FMR_FC_LINK_FLAGS',''))
-result={'work_unit':'F-MIG431-LOW03-P0','tested_postimage':os.environ.get('LOW03_TESTED_SHA','not-specified'),'scope':'frozen bottom-row algebra only, same K; no solver/transaction/restart qualification','b111_headcalc_sha256':member['sha256'],'carrier_sha256':hashlib.sha256(CARRIER.read_bytes()).hexdigest(),'test_sha256':hashlib.sha256(TEST.read_bytes()).hexdigest(),'runner_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),'frozen_wrapper_sha256':hashlib.sha256(frozen.encode()).hexdigest(),'compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],'runs':{},'production_admitted':False}
+result={'work_unit':'F-MIG431-LOW03-P0','tested_postimage':os.environ.get('LOW03_TESTED_SHA',os.environ.get('GITHUB_SHA','not-specified')),'scope':'frozen bottom-row algebra only, same K; no solver/transaction/restart qualification','b111_headcalc_sha256':member['sha256'],'carrier_sha256':hashlib.sha256(CARRIER.read_bytes()).hexdigest(),'typed_contract_sha256':hashlib.sha256((ROOT/'src/solver/mod_soil_water_solver_contract.f90').read_bytes()).hexdigest(),'test_sha256':hashlib.sha256(TEST.read_bytes()).hexdigest(),'runner_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),'frozen_wrapper_sha256':hashlib.sha256(frozen.encode()).hexdigest(),'compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],'runs':{},'production_admitted':False}
 with tempfile.TemporaryDirectory(prefix='low03-composition-') as folder:
     for opt in ('O0','O2'):
         b=pathlib.Path(folder)/opt;b.mkdir();oracle=b/'frozen.f90';oracle.write_text(frozen)
         exe=b/'test';flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fcheck=all','-ffpe-trap=invalid,zero,overflow','-J'+str(b),'-I'+str(b)]
-        subprocess.run(FC+LINK+flags+[str(oracle),str(TEST),'-o',str(exe)],check=True,capture_output=True,text=True)
+        subprocess.run(FC+LINK+flags+[str(ROOT/'src/solver/mod_soil_water_solver_contract.f90'),str(oracle),str(TEST),'-o',str(exe)],check=True,capture_output=True,text=True)
         output=subprocess.check_output([str(exe)],text=True).strip()
         if not output.startswith('LOW03_COMPOSITION_PASS'):raise RuntimeError('missing marker')
         result['runs'][opt]=output;print(opt+' '+output,flush=True)
