@@ -19,6 +19,7 @@ module mod_reference_richards_workspace
      real(real64), allocatable :: sink(:)
      real(real64), allocatable :: source(:)
      real(real64), allocatable :: provider_theta(:)
+     real(real64), allocatable :: provider_water_content_increment(:)
      real(real64), allocatable :: provider_k(:)
      real(real64), allocatable :: provider_capacity(:)
      real(real64), allocatable :: provider_dkdh(:)
@@ -64,7 +65,8 @@ contains
        allocate(workspace%dfdh_lower(active_nodes), workspace%dfdh_main(active_nodes), workspace%dfdh_upper(active_nodes))
        allocate(workspace%residual(active_nodes), workspace%delta_head(active_nodes), workspace%tridag_gamma(active_nodes))
        allocate(workspace%sink(active_nodes), workspace%source(active_nodes))
-       allocate(workspace%provider_theta(active_nodes), workspace%provider_k(active_nodes))
+       allocate(workspace%provider_theta(active_nodes), workspace%provider_water_content_increment(active_nodes), &
+            workspace%provider_k(active_nodes))
        allocate(workspace%provider_capacity(active_nodes), workspace%provider_dkdh(active_nodes))
        allocate(workspace%provider_root_sink(active_nodes))
        allocate(workspace%dconductivity_dhead(active_nodes), workspace%old_head(active_nodes))
@@ -124,6 +126,7 @@ contains
     workspace%sink = 0.0_real64
     workspace%source = 0.0_real64
     workspace%provider_theta = 0.0_real64
+    workspace%provider_water_content_increment = 0.0_real64
     workspace%provider_k = 0.0_real64
     workspace%provider_capacity = 0.0_real64
     workspace%provider_dkdh = 0.0_real64
@@ -185,6 +188,7 @@ contains
     workspace%sink = qnan
     workspace%source = qnan
     workspace%provider_theta = qnan
+    workspace%provider_water_content_increment = qnan
     workspace%provider_k = qnan
     workspace%provider_capacity = qnan
     workspace%provider_dkdh = qnan
@@ -219,6 +223,7 @@ contains
     if (allocated(workspace%sink)) deallocate(workspace%sink)
     if (allocated(workspace%source)) deallocate(workspace%source)
     if (allocated(workspace%provider_theta)) deallocate(workspace%provider_theta)
+    if (allocated(workspace%provider_water_content_increment)) deallocate(workspace%provider_water_content_increment)
     if (allocated(workspace%provider_k)) deallocate(workspace%provider_k)
     if (allocated(workspace%provider_capacity)) deallocate(workspace%provider_capacity)
     if (allocated(workspace%provider_dkdh)) deallocate(workspace%provider_dkdh)
@@ -262,6 +267,8 @@ contains
     if (allocated(workspace%sink)) nreal = nreal + size(workspace%sink, kind=int64)
     if (allocated(workspace%source)) nreal = nreal + size(workspace%source, kind=int64)
     if (allocated(workspace%provider_theta)) nreal = nreal + size(workspace%provider_theta, kind=int64)
+    if (allocated(workspace%provider_water_content_increment)) &
+         nreal = nreal + size(workspace%provider_water_content_increment, kind=int64)
     if (allocated(workspace%provider_k)) nreal = nreal + size(workspace%provider_k, kind=int64)
     if (allocated(workspace%provider_capacity)) nreal = nreal + size(workspace%provider_capacity, kind=int64)
     if (allocated(workspace%provider_dkdh)) nreal = nreal + size(workspace%provider_dkdh, kind=int64)

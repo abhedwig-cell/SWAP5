@@ -997,8 +997,16 @@ subroutine vector_F(iTask)
 !  functions
    real(8)                    :: afgen
 
+   if (provider_constitutive_active) then
+      call evaluation_context%constitutive%evaluate_water_content_increment(state%h(1:numnod), state%hm1(1:numnod), &
+           state%theta(1:numnod), state%thetm1(1:numnod), fsi_ws%provider_water_content_increment(1:numnod))
+   else
+      fsi_ws%provider_water_content_increment(1:numnod) = state%theta(1:numnod)-state%thetm1(1:numnod)
+   end if
+
 !  top layer
-   fsi_ws%residual(1) = (state%theta(1) - state%thetm1(1)) * matrix_fraction(1) * grid_dz(1) / dt + fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
+   fsi_ws%residual(1) = fsi_ws%provider_water_content_increment(1) * matrix_fraction(1) * grid_dz(1) / dt + &
+        fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
 
 !  depending on iTask
    if (iTask == 2 .AND. swmacro == 1) QMpLatSsSav = QMpLatSs
@@ -1037,7 +1045,7 @@ subroutine vector_F(iTask)
 
 !  layers 2 to (NN-1)
    do i = 2, NN-1
-      fsi_ws%residual(i) = (state%theta(i) - state%thetm1(i)) * matrix_fraction(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
+      fsi_ws%residual(i) = fsi_ws%provider_water_content_increment(i) * matrix_fraction(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
    end do
 
 !  for bottom BC
@@ -1074,9 +1082,9 @@ subroutine vector_F(iTask)
       ! in case of static macropores FrArMtrx < 1
       if (matrix_area_scaling_active()) state%k(NN) = matrix_fraction(NN) * state%k(NN)
       state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
-      fsi_ws%residual(NN)       = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
+      fsi_ws%residual(NN)       = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
    else
-      fsi_ws%residual(NN) = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
+      fsi_ws%residual(NN) = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
       if (swbotb == 3 .AND. swbotb3Impl == 1) then
          
          ! Cauchy-relation, implemented as head boundary

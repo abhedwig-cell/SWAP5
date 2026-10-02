@@ -93,6 +93,7 @@ module mod_soil_water_solver_contract
    contains
      procedure(constitutive_evaluate_ifc), deferred :: evaluate
      procedure :: evaluate_demand => constitutive_evaluate_demand_fallback
+     procedure :: evaluate_water_content_increment => constitutive_water_content_increment_fallback
      procedure :: supports_point_conductivity => constitutive_supports_point_conductivity_fallback
      procedure :: evaluate_point_conductivity => constitutive_evaluate_point_conductivity_unavailable
   end type constitutive_hydraulics_provider_t
@@ -318,6 +319,20 @@ contains
     if (demand_mask < 0) error stop 'constitutive demand mask must be nonnegative'
     call self%evaluate(pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
   end subroutine constitutive_evaluate_demand_fallback
+
+  subroutine constitutive_water_content_increment_fallback(self, pressure_head, previous_pressure_head, &
+                                                             water_content, previous_water_content, increment)
+    class(constitutive_hydraulics_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:), previous_pressure_head(:)
+    real(real64), intent(in) :: water_content(:), previous_water_content(:)
+    real(real64), intent(out) :: increment(:)
+
+    if (size(pressure_head) /= size(previous_pressure_head) .or. &
+        size(pressure_head) /= size(water_content) .or. size(pressure_head) /= size(previous_water_content) .or. &
+        size(pressure_head) /= size(increment)) error stop 'constitutive storage increment shape mismatch'
+    increment = water_content - previous_water_content
+    if (.not. same_type_as(self,self)) increment = water_content - previous_water_content
+  end subroutine constitutive_water_content_increment_fallback
 
   logical function constitutive_supports_point_conductivity_fallback(self) result(supported)
     class(constitutive_hydraulics_provider_t), intent(in) :: self
