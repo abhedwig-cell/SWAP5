@@ -1,0 +1,20 @@
+name: PPA-WU05-A28 Q4B exact frontier
+on:
+  push:
+    branches:
+      - qualification/ppa-wu05-a28-q4b
+jobs:
+  exact-frontier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact-only threshold frontier
+        run: |
+          mkdir -p /tmp/a28-q4b
+          bash research/rfm/a28/run_q4b_exact_frontier.sh /tmp/a28-q4b
+      - name: Upload Q4B exact evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a28-q4b-exact
+          path: /tmp/a28-q4b
