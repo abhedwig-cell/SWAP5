@@ -102,6 +102,7 @@ contains
    top%delegate%external_surface_water_head_supplied=.true.;top%delegate%external_surface_water_head_cm=external_head
    top%delegate%external_flooding_sill_head_cm=0.01_real64
    trace=top03_top_trace_t()
+   write(trace%label,'(i0,5(a,i0))')geometry_id,',',q%boundary%bottom_mode,',',profile,',',history,',',steps,',',j
    call solver%solve(q,workspace,r)
    external_calls=external_calls+trace%external_calls;flux_calls=flux_calls+trace%flux_calls
    head_calls=head_calls+trace%head_calls;evaluations=evaluations+trace%calls;within_switches=within_switches+trace%switches
@@ -150,4 +151,3 @@ contains
    ',',minval(q%base_state%water_content),',',maxval(q%base_state%water_content),',',water_diff,',',head_diff
  end subroutine
 end program
-

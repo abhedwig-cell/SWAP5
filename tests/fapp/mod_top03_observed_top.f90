@@ -7,6 +7,7 @@ module mod_top03_observed_top
  implicit none
  type::top03_top_trace_t
  integer::calls=0,external_calls=0,flux_calls=0,head_calls=0,switches=0,last_regime=0
+ character(len=120)::label=''
  end type
  type,extends(dynamic_top_boundary_provider_t)::top03_observed_top_t
  type(b110_dynamic_top_boundary_solver_provider_t)::delegate
@@ -27,7 +28,12 @@ module mod_top03_observed_top
  if(result%external_surface_head_imposed)self%trace%external_calls=self%trace%external_calls+1
  if(result%regime==SW_TOP_BOUNDARY_REGIME_FLUX)self%trace%flux_calls=self%trace%flux_calls+1
  if(result%regime==SW_TOP_BOUNDARY_REGIME_HEAD)self%trace%head_calls=self%trace%head_calls+1
- if(self%trace%last_regime/=0.and.self%trace%last_regime/=result%regime)self%trace%switches=self%trace%switches+1
+ if(self%trace%last_regime/=0.and.self%trace%last_regime/=result%regime)then
+ self%trace%switches=self%trace%switches+1
+ write(*,'(a,a,3(a,i0),2(a,es24.16),a,a)')'REGIME_CHANGE,',trim(self%trace%label), &
+ ',',self%trace%calls,',',self%trace%last_regime,',',result%regime,',',pressure_head_top, &
+ ',',candidate_ponding_depth,',',trim(result%route)
+ end if
  self%trace%last_regime=result%regime
  end subroutine
 end module
