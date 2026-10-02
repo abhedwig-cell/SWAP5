@@ -1,6 +1,7 @@
 program test_low03_boundary_composition
   use, intrinsic :: iso_fortran_env, only: real64
   use frozen_low03_oracle
+  use mod_soil_water_solver_contract
   implicit none
   real(real64), parameter :: hs(5)=[-1000._real64,-100._real64,-10._real64,0._real64,10._real64]
   real(real64), parameter :: aquifers(3)=[-400._real64,-100._real64,20._real64]
@@ -10,6 +11,9 @@ program test_low03_boundary_composition
   real(real64), parameter :: extras(3)=[-1._real64,0._real64,1._real64]
   integer :: ih,ia,ik,id,ir,flag,ie,cases,limits,differences
   real(real64) :: h,a,k,d,r,q,j,conductance,expected,q5,z
+  real(real64) :: typed_q,typed_j
+  logical :: valid
+  type(soil_water_boundary_conditions_t) :: boundary
   cases=0;limits=0;differences=0;z=-195._real64
   do ih=1,size(hs)
   do ia=1,size(aquifers)
@@ -27,6 +31,12 @@ program test_low03_boundary_composition
     end if
     q=b111_q3(h,z,a,k,d,r,flag)+extras(ie)
     j=b111_j3(h,z,a,k,d,r,flag)
+    boundary%bottom_mode=3;boundary%bottom_head=a;boundary%bottom_flux=extras(ie)
+    boundary%bottom_external_resistance_days=r;boundary%bottom_include_half_cell=flag==0
+    call evaluate_resistive_bottom_boundary(boundary,h,z,d,k,typed_q,typed_j,valid)
+    if(.not.valid)error stop 'typed boundary unexpectedly rejected'
+    if(abs(typed_q-q)>64*epsilon(q)*max(1._real64,abs(q)))error stop 'typed flux versus frozen B111'
+    if(abs(typed_j-j)>64*epsilon(j)*max(1._real64,abs(j)))error stop 'typed Jacobian versus frozen B111'
     expected=conductance*(a-(h+z))+extras(ie)
     if(abs(q-expected)>64*epsilon(q)*max(1._real64,abs(q),abs(expected)))error stop 'Robin source mismatch'
     if(abs(j-conductance)>64*epsilon(j)*max(1._real64,abs(j)))error stop 'Jacobian source mismatch'

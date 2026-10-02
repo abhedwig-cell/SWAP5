@@ -44,6 +44,9 @@ module mod_soil_water_solver_contract
      real(real64) :: top_head = 0.0_real64
      real(real64) :: bottom_flux = 0.0_real64
      real(real64) :: bottom_head = 0.0_real64
+     ! Mode3 head is external total head; flux is independent extra qbot.
+     real(real64) :: bottom_external_resistance_days = 0.0_real64
+     logical :: bottom_include_half_cell = .true.
   end type soil_water_boundary_conditions_t
 
   type, public :: soil_water_physical_config_t
@@ -223,6 +226,7 @@ module mod_soil_water_solver_contract
   end type soil_water_solver_t
 
   public :: validate_soil_water_request
+  public :: evaluate_resistive_bottom_boundary
 
   abstract interface
      subroutine constitutive_evaluate_ifc(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
@@ -336,6 +340,47 @@ contains
     if (.not. same_type_as(self,self)) return
   end subroutine constitutive_evaluate_point_conductivity_unavailable
 
+  pure subroutine evaluate_resistive_bottom_boundary(boundary, head, elevation, distance, conductivity, &
+                                                    flux, conductance, ok)
+    type(soil_water_boundary_conditions_t), intent(in) :: boundary
+    real(real64), intent(in) :: head, elevation, distance, conductivity
+    real(real64), intent(out) :: flux, conductance
+    logical, intent(out) :: ok
+    real(real64) :: resistance, half_resistance, difference
+    flux=0.0_real64; conductance=0.0_real64; ok=.false.
+    if (boundary%bottom_mode /= 3) return
+    if (.not. ieee_is_finite(boundary%bottom_head)) return
+    if (.not. ieee_is_finite(boundary%bottom_flux)) return
+    if (.not. ieee_is_finite(boundary%bottom_external_resistance_days)) return
+    if (boundary%bottom_head < -10000.0_real64 .or. boundary%bottom_head > 1000.0_real64) return
+    if (abs(boundary%bottom_flux) > 100.0_real64) return
+    resistance=boundary%bottom_external_resistance_days
+    if (resistance < 0.0_real64 .or. resistance > 100000.0_real64) return
+    if (.not. ieee_is_finite(head) .or. .not. ieee_is_finite(elevation)) return
+    if (abs(head) > 1.0e10_real64 .or. abs(elevation) > 1.0e6_real64) return
+    if (boundary%bottom_include_half_cell) then
+       if (.not. ieee_is_finite(distance) .or. .not. ieee_is_finite(conductivity)) return
+       if (distance <= 0.0_real64 .or. conductivity <= 0.0_real64) return
+       if (conductivity < 1.0_real64) then
+          if (distance > huge(distance)*conductivity) return
+       end if
+       half_resistance=distance/conductivity
+       if (half_resistance > huge(resistance)-resistance) return
+       resistance=half_resistance+resistance
+    end if
+    if (resistance <= tiny(resistance)) return
+    conductance=1.0_real64/resistance
+    difference=boundary%bottom_head-(head+elevation)
+    if (abs(difference) > 1.0_real64) then
+       if (conductance > huge(flux)/abs(difference)) then
+          conductance=0.0_real64
+          return
+       end if
+    end if
+    flux=difference/resistance+boundary%bottom_flux
+    ok=ieee_is_finite(flux) .and. ieee_is_finite(conductance)
+  end subroutine evaluate_resistive_bottom_boundary
+
   subroutine validate_soil_water_request(request, ok)
     type(soil_water_solve_request_t), intent(in) :: request
     logical, intent(out) :: ok
@@ -358,6 +403,11 @@ contains
     if (size(request%base_state%water_content) /= n) return
     if (request%step_duration <= 0.0_real64) return
     if (.not. associated(request%evaluation%constitutive)) return
+    if (request%boundary%bottom_mode /= 3) then
+       if (.not. ieee_is_finite(request%boundary%bottom_external_resistance_days)) return
+       if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+       if (.not. request%boundary%bottom_include_half_cell) return
+    end if
     ok = .true.
   end subroutine validate_soil_water_request
 

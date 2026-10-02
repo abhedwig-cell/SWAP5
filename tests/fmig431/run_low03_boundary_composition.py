@@ -40,7 +40,7 @@ with tempfile.TemporaryDirectory(prefix='low03-composition-') as folder:
     for opt in ('O0','O2'):
         b=pathlib.Path(folder)/opt;b.mkdir();oracle=b/'frozen.f90';oracle.write_text(frozen)
         exe=b/'test';flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fcheck=all','-ffpe-trap=invalid,zero,overflow','-J'+str(b),'-I'+str(b)]
-        subprocess.run(FC+LINK+flags+[str(oracle),str(TEST),'-o',str(exe)],check=True,capture_output=True,text=True)
+        subprocess.run(FC+LINK+flags+[str(ROOT/'src/solver/mod_soil_water_solver_contract.f90'),str(oracle),str(TEST),'-o',str(exe)],check=True,capture_output=True,text=True)
         output=subprocess.check_output([str(exe)],text=True).strip()
         if not output.startswith('LOW03_COMPOSITION_PASS'):raise RuntimeError('missing marker')
         result['runs'][opt]=output;print(opt+' '+output,flush=True)

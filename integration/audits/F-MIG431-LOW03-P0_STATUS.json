@@ -3,16 +3,23 @@
   "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
   "last_reconciled_head": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
   "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
-  "state": "CONCRETE_TYPED_CONTRACT_FROZEN_BEFORE_IMPLEMENTATION",
-  "implemented": false,
+  "state": "TYPED_DIRECT_SOLVER_IMPLEMENTED_PENDING_POSTIMAGE_TESTS",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "production_mode3_admitted": false,
-  "production_delta": [],
-  "interfaces_changed": [],
-  "checkpoint_commit": "c240a3c1c880663d86e1a702ff283a866ca809ee",
-  "next_action": "Implement bounded solver-only mode3 at SWKIMPL0, persist postimage, then local physical/mass/preservation tests. Serialized application profile remains closed to3.",
+  "production_delta": [
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "interfaces_changed": [
+    "internal Fortran soil_water_boundary_conditions_t fields bottom_external_resistance_days and bottom_include_half_cell",
+    "direct typed Reference mode3 solver path only; serialized application still rejects3"
+  ],
+  "checkpoint_commit": "2b523d818c5c5135d466495b31c5b20ae29b79be",
+  "next_action": "Fresh local O0/O2 composition, physical solver, independent mass, rejected replay and admitted-boundary preservation on persisted postimage",
   "blockers": [
     "Existing typed bottom boundary has no resistance or include-half-cell authority",
     "Dormant implicit mode3 depends on legacy globals and lacks accepted mass publication",
@@ -31,11 +38,14 @@
     "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md",
     "docs/numerics/transactional-time-stepping.md",
     "docs/capabilities/restart-v1.md",
-    "src/runtime/mod_groundwater_coupling_contract.f90"
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "docs/migration/F-MIG431-LOW03-P0_TYPED_CONTRACT.md"
   ],
   "test_paths": [
     "tests/fmig431/test_low03_boundary_composition.f90",
-    "tests/fmig431/run_low03_boundary_composition.py"
+    "tests/fmig431/run_low03_boundary_composition.py",
+    "tests/fmig431/test_low03_typed_solver.f90",
+    "tests/fmig431/run_low03_solver_qualification.py"
   ],
   "evidence_paths": [
     "integration/audits/F-MIG431-LOW03-P0_COMPOSITION.json"
