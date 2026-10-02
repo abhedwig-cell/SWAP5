@@ -1,0 +1,12 @@
+name: PPA-WU05-A27 DEP01 standard-macropore preservation
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  a8-preservation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: A8 real-Richards standard macropore preservation
+        run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
