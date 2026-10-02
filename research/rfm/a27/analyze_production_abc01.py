@@ -14,7 +14,7 @@ for line in abc[1:]:
     d=dict(zip(abc_header,vals))
     for k in ["soil","geom","regime","arm","completed","status","fail_step","transaction_calls","attempts","retries","nonlinear","backtracks","headcalc"]:
         d[k]=int(d[k])
-    for k in [x for x in abc_header if x not in {"soil","geom","regime","arm","completed","status","fail_step","transaction_calls","attempts","retries","nonlinear","backtracks","headcalc"}]:
+    for k in [x for x in abc_header if x not in {"soil","geom","regime","arm","completed","status","fail_step","transaction_calls","attempts","retries","nonlinear","backtracks","headcalc","admission_rejections","solver_rejections","temporal_rejections","mass_rejections","trial_rollbacks"}]:
         d[k]=float(d[k])
     rows.append(d)
 

@@ -35,13 +35,14 @@ program test_a27_production_abc01
     real(real64)::h1=0.0_real64,h5=0.0_real64,h10=0.0_real64,t1=0.0_real64,t5=0.0_real64,t10=0.0_real64
     real(real64)::min_substep=huge(0.0_real64)
     integer::transaction_calls=0,attempts=0,retries=0,nonlinear=0,backtracks=0,headcalc=0
+    integer::admission_rejections=0,solver_rejections=0,temporal_rejections=0,mass_rejections=0,trial_rollbacks=0
   end type
   type(metrics_t)::m
   integer::soil,geom,regime,arm,rep
   integer,parameter::timing_soil(4)=[1,1,2,2],timing_geom(4)=[1,2,1,2],timing_regime(4)=[2,4,5,6]
   integer::k
 
-  write(*,'(a)') 'ABC,soil,geom,regime,arm,completed,status,fail_step,wall_seconds,total_in_cm,total_out_cm,bottom_out_cm,fast_external_out_cm,max_mass_resid_cm,matrix_storage_cm,fast_storage_cm,ponding_cm,total_storage_cm,h1_cm,h5_cm,h10_cm,theta1,theta5,theta10,transaction_calls,attempts,retries,nonlinear,backtracks,headcalc,min_substep_day'
+  write(*,'(a)') 'ABC,soil,geom,regime,arm,completed,status,fail_step,wall_seconds,total_in_cm,total_out_cm,bottom_out_cm,fast_external_out_cm,max_mass_resid_cm,matrix_storage_cm,fast_storage_cm,ponding_cm,total_storage_cm,h1_cm,h5_cm,h10_cm,theta1,theta5,theta10,transaction_calls,attempts,retries,nonlinear,backtracks,headcalc,min_substep_day,admission_rejections,solver_rejections,temporal_rejections,mass_rejections,trial_rollbacks'
   do soil=1,2
     do geom=1,2
       do regime=1,8
@@ -194,6 +195,11 @@ contains
       m%nonlinear=m%nonlinear+diagnostics%nonlinear_iterations
       m%backtracks=m%backtracks+diagnostics%backtracking_attempts
       m%headcalc=m%headcalc+diagnostics%headcalc_calls
+      m%admission_rejections=m%admission_rejections+diagnostics%admission_rejections
+      m%solver_rejections=m%solver_rejections+diagnostics%solver_rejections
+      m%temporal_rejections=m%temporal_rejections+diagnostics%temporal_rejections
+      m%mass_rejections=m%mass_rejections+diagnostics%mass_rejections
+      m%trial_rollbacks=m%trial_rollbacks+diagnostics%trial_rollbacks
       if(diagnostics%accepted_substeps>0) m%min_substep=min(m%min_substep,diagnostics%min_accepted_substep_duration)
       if(.not.result%completed.or.result%status/=CANONICAL_STATUS_COMPLETED.or..not.result%mass%complete)then
         m%fail_step=step;exit
@@ -423,7 +429,8 @@ contains
     write(*,'(*(g0,:,","))') trim(prefix),soil,geom,regime,arm,merge(1,0,m%completed),m%status,m%fail_step, &
          m%wall_seconds,m%total_in,m%total_out,m%bottom_out,m%fast_external_out,m%max_mass_resid, &
          m%matrix_storage,m%fast_storage,m%ponding,m%total_storage,m%h1,m%h5,m%h10,m%t1,m%t5,m%t10, &
-         m%transaction_calls,m%attempts,m%retries,m%nonlinear,m%backtracks,m%headcalc,m%min_substep
+         m%transaction_calls,m%attempts,m%retries,m%nonlinear,m%backtracks,m%headcalc,m%min_substep, &
+         m%admission_rejections,m%solver_rejections,m%temporal_rejections,m%mass_rejections,m%trial_rollbacks
   end subroutine print_metrics
 
 end program test_a27_production_abc01

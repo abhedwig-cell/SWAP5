@@ -979,6 +979,10 @@ contains
     type is (fmr_b110_boesten_evaporation_state_t)
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
            .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. boesten_evaporation_active
+    type is (fmr_b110_rfm_state_t)
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_physical_state_t)
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
            .not. fixed_weir_surface_water_active .and. &
