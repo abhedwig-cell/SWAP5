@@ -2,7 +2,7 @@
 
 Date: 2026-10-02
 
-Status: `QUALIFIED_PREREQUISITE_CONFIRMED_B111_REFERENCE_CARRIER_DEFECT`
+Status: `QUALIFIED_PREREQUISITES_CORRECTED_SOURCE_REPLAY_BLOCKED`
 
 Qualified postimage:
 `f88c1fc3106b88fec60edb93fdc56f331ad75dff`
@@ -80,3 +80,24 @@ production change or admission fixture. The reference must be corrected and
 qualified in B1 before whole-case comparison can qualify MIGMAC01.
 PERCH21 must not be regressed to recreate this demonstrated defect.
 See [reference carrier defect](PPA_WU05_MIGMAC01_REFERENCE_CARRIER_DEFECT.md).
+
+## Corrected-reference recovery, 2026-10-02
+
+Bounded B1 CALCGWL correction is targeted-qualified on head
+5b4666d1a168b8f73868bfab0d00c8f342ce4fa8, run 36970592651 SUCCESS.
+See PPA_WU05_MIGMAC01_B1_CORRECTION_RESULT.md for the exact scope.
+Immutable B1.11 and the previous negative source replay remain preserved as
+historical evidence; no global B1 successor admission is claimed.
+
+A new first accepted positive-covered event was captured under the same fixed
+modified-Andelst input: h(2)=0.00068230903875077459 cm,
+covered=9.521088298971577e-7 cm, exact opposite matrix sink, macro residual
+2.0801435118671108e-16 cm. This is corrected-source evidence.
+
+SWAP5 ordinary and active macro replays on exact diagnostic postimage
+44baf4a509d9238b7ac9cf16df8d49412b222e3c both request retry, reproduced O0/O2.
+No accepted SWAP5 covered transfer is available. Strict native-rate precision,
+remaining rate discrepancy, explicit matrix-area ownership and serialized
+covering physical-parameter propagation remain blockers.
+Full MIGMAC01 qualification, preservation, admission and closeout remain FALSE.
+Canonical checked at 7a629a10cabb3553ff77474423e6ccac81b29aec; no affected production delta.

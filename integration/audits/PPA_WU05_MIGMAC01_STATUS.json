@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "work_unit": "PPA-WU05-MIGMAC01",
-  "status": "BLOCKED_CONFIRMED_B111_REFERENCE_CARRIER_DEFECT",
+  "status": "BLOCKED_CORRECTED_SOURCE_REPLAY_AND_TYPED_PHYSICAL_CONTRACTS",
   "baseline": "6a2d948e510ddaa4308392051dbba2972b951ae0",
   "checkpoint_commit": "containing commit",
-  "last_reconciled_head": "76cdc7a9746651befda46093df65117138d80f7f",
-  "last_reconciled_upstream": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
+  "last_reconciled_head": "44baf4a509d9238b7ac9cf16df8d49412b222e3c",
+  "last_reconciled_upstream": "7a629a10cabb3553ff77474423e6ccac81b29aec",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -28,13 +28,15 @@
     "mass_residuals": "not printed before failing assertion"
   },
   "blockers": [
-    "G3R: B1.11 CALCGWL misclassifies ordinary node 55 as perched, misses shallow water and double-counts ordinary node 55; corrected reference qualification required",
-    "G3: fixed source-origin direct replay requests retry and has dry final tentative covering head; large other-exchange discrepancy requires attribution",
+    "G3R: bounded CALCGWL correction targeted-qualified; corrected whole-reference admission remains excluded",
+    "G3: corrected-source strict ordinary and active inner-Richards replay both request retry; no accepted SWAP5 covered state",
     "G4: serialized backend lacks immutable covering physical parameters and propagation",
-    "G5: explicit Richards request lacks source matrix-area carrier"
+    "G5: explicit Richards request lacks source matrix-area carrier for storage/conductivity/Jacobian and integrated ownership",
+    "G6: ordinary source replay native compartment residual 2.7351454434665357e-12 exceeds fixed 1e-12 at node 36; precision-scale attribution suggested, not fully proven",
+    "G7: corrected exact-last-rate provider discrepancy remains max 0.00091392659217592875 cm/day; no widened parity tolerance"
   ],
-  "next_action": "Preregister and qualify bounded B1 perched-search correction without rewriting B1.11; recapture active source state; reconcile matrix-area and immutable covering-parameter contracts before MIGMAC01 active admission",
-  "recovery_point": "docs/audits/PPA_WU05_MIGMAC01_REFERENCE_CARRIER_DEFECT.md and this status at containing commit",
+  "next_action": "Record explicit source matrix-area and immutable covering physical-parameter contracts; repair those integration gaps without legacy globals; separately resolve strict Reference native-rate precision and corrected last-rate discrepancy before stable active qualification. No source-state tuning.",
+  "recovery_point": "docs/audits/PPA_WU05_MIGMAC01_B1_CORRECTION_RESULT.md and this status at containing commit",
   "evidence_paths": [
     "docs/audits/PPA_WU05_MIGMAC01_ACTIVE_AUTHORITY_RECOVERY.md",
     "docs/audits/PPA_WU05_MIGMAC01_RESULT.md",
@@ -44,7 +46,11 @@
     "integration/evidence/ppa_wu05_migmac01/source_origin_local_o0_o2.txt",
     "docs/audits/PPA_WU05_MIGMAC01_REFERENCE_CARRIER_DEFECT.md",
     "integration/audits/PPA_WU05_MIGMAC01_REFERENCE_CARRIER_CHECKS.json",
-    "integration/evidence/ppa_wu05_migmac01/source_carrier_exact_postimage_o0_o2.txt"
+    "integration/evidence/ppa_wu05_migmac01/source_carrier_exact_postimage_o0_o2.txt",
+    "docs/audits/PPA_WU05_MIGMAC01_B1_CORRECTION_RESULT.md",
+    "integration/audits/PPA_WU05_MIGMAC01_CORRECTED_REFERENCE_CHECKS.json",
+    "integration/evidence/ppa_wu05_migmac01/b1_correction_qualification_run.txt",
+    "integration/evidence/ppa_wu05_migmac01/corrected_source_exact_postimage_o0_o2.txt"
   ],
   "authority_paths": [
     "docs/audits/PPA_WU05_MIGMAC01_PREREGISTRATION.md",
@@ -63,7 +69,7 @@
     "src/runtime/mod_fmr_macropore_configuration.f90",
     "src/runtime/mod_macropore_standard_rate_adapter.f90"
   ],
-  "canonical_delta_requires_reconciliation": true,
+  "canonical_delta_requires_reconciliation": false,
   "frozen_status_a_denominator_changed": false,
   "production_changed_this_recovery": false,
   "source_event": {
@@ -123,7 +129,7 @@
     }
   },
   "source_interval_blocker_resolved": true,
-  "canonical_head_last_checked": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+  "canonical_head_last_checked": "7a629a10cabb3553ff77474423e6ccac81b29aec",
   "canonical_incremental_delta_after_probe": {
     "from": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
     "to": "c240a3c1c880663d86e1a702ff283a866ca809ee",
@@ -141,5 +147,69 @@
       "integration/audits/production_physics_application_envelope_gap_register.json"
     ],
     "production_dependency_surface_changed": false
+  },
+  "canonical_incremental_delta_after_b1_correction": {
+    "from": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+    "to": "7a629a10cabb3553ff77474423e6ccac81b29aec",
+    "files": [
+      "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+      "docs/migration/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_PREREGISTRATION.md",
+      "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json",
+      "integration/audits/F-MIG431-LOW03-P0_STATUS.json",
+      "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+      "integration/audits/production_physics_application_envelope_gap_register.json"
+    ],
+    "production_dependency_surface_changed": false
+  },
+  "corrected_reference": {
+    "correction_preregistration": "edb6ce307d9b934b967ea1830ebc5ef867e6260c",
+    "targeted_qualification": {
+      "head": "5b4666d1a168b8f73868bfab0d00c8f342ce4fa8",
+      "run": 36970592651,
+      "job": 110723548647,
+      "result": "SUCCESS",
+      "scope": "exact full CALCGWL module; seven source carrier cases; O0/O2 bounds and strict FPE",
+      "global_b1_admission": false
+    },
+    "patched_calcgwl_sha256": "37c63446c8e8b0e80ac3f840d1ec636004d69bf7b15492451bde124f206f2834",
+    "capture": {
+      "label": "MODIFIED_ANDELST_COVERED_TOP_PLUS_BOUNDED_B1_CORRECTION",
+      "time": 35797.64377776882,
+      "dt": 0.00003703703529296305,
+      "top_node": 3,
+      "h_cover_accepted_cm": 0.0006823090387507746,
+      "covered_cm": 9.521088298971577e-7,
+      "cover_ownership_residual_cm": 0,
+      "macro_balance_residual_cm": 2.0801435118671108e-16,
+      "capture_sha256": "ecb3436099a1dd3907c85c6cb74f3cb42f75f1249cd67fdaba8d0ecadc4276ac",
+      "full_reference_qualified": false
+    },
+    "swap5_replay": {
+      "head": "44baf4a509d9238b7ac9cf16df8d49412b222e3c",
+      "gate": "tests/fpm/run_ppa_wu05_migmac01_corrected_source_diagnostic.sh",
+      "tested": true,
+      "optimization_levels": [
+        "O0",
+        "O2"
+      ],
+      "test_blob": "e980923251f868e680b2c0ef2809ef561598fa3a",
+      "compiled_dependency_blobs_verified": 92,
+      "result": "NEGATIVE_EVIDENCE_REPRODUCED",
+      "ordinary_status": 2,
+      "ordinary_iterations": 64,
+      "ordinary_max_local_rate": 2.7351454434665357e-12,
+      "ordinary_local_node": 36,
+      "ordinary_scratch_integrated_sum_cm": 2.0142939864728307e-16,
+      "ordinary_typed_mass_residual_available": false,
+      "ordinary_theta_quantum_rate_node36": 2.9976023076450086e-12,
+      "active_runtime_status": 3,
+      "active_retry_advised": true,
+      "active_accepted_state_available": false,
+      "active_last_tentative_h_cover_cm": -0.10221739026906902,
+      "active_internal_residual_cm": null,
+      "active_macro_residual_cm": null,
+      "accepted_macro_immutable": true,
+      "qualified": false
+    }
   }
 }

@@ -24,7 +24,7 @@
   "capture_sha256": "ecb3436099a1dd3907c85c6cb74f3cb42f75f1249cd67fdaba8d0ecadc4276ac",
   "swap5_qualified": false,
   "correction_preregistration_head": "edb6ce307d9b934b967ea1830ebc5ef867e6260c",
-  "status": "LOCAL_TESTED_NOT_PERSISTED_QUALIFICATION",
+  "status": "TARGETED_CALCGWL_CORRECTION_QUALIFIED_SOURCE_CAPTURE_VERIFIED_SWAP5_REPLAY_BLOCKED",
   "global_b1_admission": false,
   "targeted_source_cases": [
     "saturated_containing_cell",
@@ -35,5 +35,43 @@
     "no_perched",
     "exact_112_node_last_rate"
   ],
-  "canonical_head": "0d44f0195c94a9732c67b5e77f2148912df9bbc8"
+  "canonical_head": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+  "targeted_qualification": {
+    "head": "5b4666d1a168b8f73868bfab0d00c8f342ce4fa8",
+    "run": 36970592651,
+    "job": 110723548647,
+    "result": "SUCCESS",
+    "scope": "exact full CALCGWL module; seven source carrier cases; O0/O2 bounds and strict FPE",
+    "global_b1_admission": false
+  },
+  "patched_calcgwl_sha256": "37c63446c8e8b0e80ac3f840d1ec636004d69bf7b15492451bde124f206f2834",
+  "source_case_rerun_uses_exact_qualified_patch": true,
+  "corrected_last_rate_sha256": "65ea04f993867d9026771064418f5afaac2f7312647f4b8ce0bb2d7e3a54e270",
+  "corrected_source_replay": {
+    "head": "44baf4a509d9238b7ac9cf16df8d49412b222e3c",
+    "gate": "tests/fpm/run_ppa_wu05_migmac01_corrected_source_diagnostic.sh",
+    "tested": true,
+    "optimization_levels": [
+      "O0",
+      "O2"
+    ],
+    "test_blob": "e980923251f868e680b2c0ef2809ef561598fa3a",
+    "compiled_dependency_blobs_verified": 92,
+    "result": "NEGATIVE_EVIDENCE_REPRODUCED",
+    "ordinary_status": 2,
+    "ordinary_iterations": 64,
+    "ordinary_max_local_rate": 2.7351454434665357e-12,
+    "ordinary_local_node": 36,
+    "ordinary_scratch_integrated_sum_cm": 2.0142939864728307e-16,
+    "ordinary_typed_mass_residual_available": false,
+    "ordinary_theta_quantum_rate_node36": 2.9976023076450086e-12,
+    "active_runtime_status": 3,
+    "active_retry_advised": true,
+    "active_accepted_state_available": false,
+    "active_last_tentative_h_cover_cm": -0.10221739026906902,
+    "active_internal_residual_cm": null,
+    "active_macro_residual_cm": null,
+    "accepted_macro_immutable": true,
+    "qualified": false
+  }
 }
