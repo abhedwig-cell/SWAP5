@@ -1,0 +1,16 @@
+name: PPA-WU05-MIGMAC02 source extraction
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/ppa-wu05-migmac02-dynamic-shrinkage]
+    paths:
+      - 'tools/vq/migmac02_extract_shrink_source.sh'
+      - '.github/workflows/ppa-wu05-migmac02-source-extraction.yml'
+jobs:
+  extract-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash tools/vq/migmac02_extract_shrink_source.sh
