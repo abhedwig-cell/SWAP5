@@ -1,8 +1,5 @@
 name: PPA-WU05-A27 reconciled backend requalification
 on:
-  push:
-    branches:
-      - work/ppa-wu05-a27-rfm-performance-equivalence
   workflow_dispatch:
 jobs:
   focused:

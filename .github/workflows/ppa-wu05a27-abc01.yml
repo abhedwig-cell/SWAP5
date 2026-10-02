@@ -1,0 +1,19 @@
+name: PPA-WU05-A27 ABC01 production screen
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  abc01:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Production A/B/C screen
+        run: |
+          mkdir -p /tmp/a27-abc01
+          bash research/rfm/a27/run_production_abc01.sh /tmp/a27-abc01
+      - name: Upload A/B/C evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a27-abc01
+          path: /tmp/a27-abc01
