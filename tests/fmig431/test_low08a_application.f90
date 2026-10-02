@@ -215,7 +215,11 @@ contains
     col(1)%parameter_ref=1_int64;col(1)%state_handle=1_int64;col(1)%forcing_handle=1_int64
     col(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     call backend%initialize(local_top);call resumed%initialize(local_top)
-    call fmr_new_b110_committed_state(state(1),col(1)%column_id,config%tiles(1)%initial_state,T0,good)
+    block
+      real(real64)::previous(numnod)
+      previous=0.0_real64
+      call fmr_new_b110_temporal_indicator_committed_state(state(1),col(1)%column_id,config%tiles(1)%initial_state,T0,good,previous)
+    end block
     call require(good,'restart initial state')
     call state(1)%capture_checkpoint(checkpoint,good);call require(good,'restart checkpoint')
     forcing_a=config%tiles(1)%base_forcing
