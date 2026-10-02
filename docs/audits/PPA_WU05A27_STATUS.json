@@ -14,7 +14,7 @@
     "Fixed-count approximation lacks monotonic finest-grid contraction",
     "Full production A/B/C and repeated timing/scaling remain open"
   ],
-  "last_reconciled_head": "34a7861377da05727647d22937c25f8d73e702ef",
+  "last_reconciled_head": "2d721f10f4f7ad9ff8d9695d89252a7b91ab607f",
   "last_reconciled_upstream": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
   "authority_paths": [
     "AGENTS.md",
@@ -81,5 +81,13 @@
     }
   },
   "evidence_archive": "docs/audits/evidence/PPA_WU05A27_COHORT_EVIDENCE.tar.gz.part-*",
-  "evidence_sha256": "b816cd0920e91905403ac9c437b20b3b3c6b8c6b8b8a5adb40d443c0864ec245"
+  "evidence_sha256": "b816cd0920e91905403ac9c437b20b3b3c6b8c6b8b8a5adb40d443c0864ec245",
+  "evidence_paths": [
+    "docs/audits/evidence/PPA_WU05A27_COHORT_RUN_MANIFEST.json",
+    "docs/audits/evidence/PPA_WU05A27_BOUNDED_SUMMARY.json",
+    "docs/audits/evidence/PPA_WU05A27_BOUNDED_COMPARISON.csv",
+    "docs/audits/evidence/PPA_WU05A27_BOUNDED_REFINEMENT.csv",
+    "docs/audits/evidence/PPA_WU05A27_BOUNDED_MEMORY.csv",
+    "docs/audits/evidence/PPA_WU05A27_COHORT_EVIDENCE.tar.gz.part-*"
+  ]
 }
