@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "profile_id": "STRIP01-C0",
+  "state": "PREREGISTERED_RESEARCH_PROFILE_NOT_PRODUCTION_ADMITTED",
+  "canonical_head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c",
+  "scope": "Explicit zero-storage saturated lower-domain alternative for research C; not a reinterpretation of standalone convertible A/B",
+  "geometry": {
+    "ncol": 50,
+    "dx_m": 1,
+    "dy_m": 1,
+    "surface_m": 0,
+    "coupling_plane_m": -6,
+    "swap_interval_m": [
+      -6,
+      0
+    ],
+    "modflow_interval_m": [
+      -10,
+      -6
+    ],
+    "right": "NO_FLOW",
+    "base": "NO_FLOW",
+    "head_lower_bound_m": -5.999,
+    "head_upper_bound_m": 0
+  },
+  "modflow": {
+    "icelltype": 0,
+    "k_m_per_day": 0.5,
+    "transmissivity_m2_per_day": 2,
+    "sto_package": "ABSENT",
+    "ss": 0,
+    "sy": 0,
+    "physical_variable_storage_m3": 0,
+    "recharge_package": "ABSENT_WHEN_COUPLED",
+    "api_sources": 50,
+    "drain": {
+      "cell": 0,
+      "stage_m": -5,
+      "conductance_m2_per_day": 100,
+      "owner": "MODFLOW_RESEARCH_ONLY"
+    }
+  },
+  "swap": {
+    "columns": 50,
+    "physical_storage_owner": "SWAP",
+    "mode": 5,
+    "head_binding": "datum-aligned fixed lower-face hydraulic head",
+    "same_drain_representation": "DISABLED",
+    "soil_profile": "SOURCE_BINDING_PENDING",
+    "simple_forcing": "source-bound fixed top flux first; no roots/macropores/snow"
+  },
+  "balance": {
+    "q_swap": "positive outward",
+    "q_bot": "positive into SWAP",
+    "q_api": "positive into MODFLOW",
+    "physical_equation": "P-ET-runoff-Q_DRN = delta_S_SWAP",
+    "interface": "cancel area-integrated accepted exchange once",
+    "sto": "zero variable storage, not an additional physical reservoir",
+    "ledger": "accounting, not storage"
+  },
+  "research_execution": {
+    "production_bootstrap": "Must continue to reject MODFLOW-owned active drainage; do not remove guard",
+    "candidate_seam": "Explicitly marked research driver of the generic Fortran participant registry/application context and existing Python prepared-solve service",
+    "production_sources_changed": false,
+    "abi_changed": false,
+    "allowed_claims": "research results only after real simulations; analytical oracle is not E2E qualification"
+  },
+  "gates": {
+    "flux_tolerance_m_per_s": 1e-15,
+    "max_accepted_window_balance_residual_m3": 1e-8,
+    "max_cumulative_balance_residual_m3": 0.000001,
+    "geometry_fail_closed": true,
+    "one_drain_owner": true,
+    "reject_replay": "committed origins unchanged",
+    "restart": "committed-only SWAP plus reproducible accepted groundwater origin, never mid-Newton checkpoint",
+    "far_column_route": "real SWAP pulse at far column must pass all MF6 internal faces and reach sole DRN",
+    "native_confined_head_error_m": 1e-8,
+    "native_confined_rate_residual_m3_per_day": 1e-10,
+    "native_gate_basis": "constant transmissivity finite-volume law has no nonlinear thickness approximation; limits cover solver roundoff only"
+  },
+  "negative_domains": [
+    "Net extraction with no compensating interface release has no draining zero-storage solution",
+    "No-source inactive-drain zero-storage operator is nonunique unless an additional explicitly qualified state-selection rule is defined",
+    "Head below coupling plane invalidates saturated lower-domain assumption",
+    "Surface emergence requires separate runoff/top boundary handling"
+  ],
+  "open_requirements": [
+    "Source-backed 6 m sand grid and constitutive initialization",
+    "Research-only initialization and per-window rematerialization of the generic context",
+    "Native no-STO MF6 component test before real SWAP coupling",
+    "Physical storage observations from committed SWAP state",
+    "Resolved ET/meteorological binding before D; root extraction not inherited from current fixed-interface production profile"
+  ],
+  "authority_guard": "tests/fgc/strip01/test_production_domain_guard.f90",
+  "oracle": "tests/fgc/strip01/domain_oracle.py",
+  "canonical_admission": false
+}

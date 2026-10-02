@@ -1,0 +1,41 @@
+STRIP01_MODFLOW_DRAIN_TOPOLOGY=PASS
+STRIP01_PRODUCTION_DRAIN_GUARD=PASS
+STRIP01_PRODUCTION_STORAGE_GUARD=PASS
+PPA_WU01_TYPED_CONFIG_TO_FMR_OWNER=PASS
+PPA_WU01_STANDALONE_REFERENCE_RICHARDS_RUNTIME=PASS
+PPA_WU01_STANDALONE_HARD_MASS=PASS
+PPA_WU01_COMMITTED_STATE_FORTRAN_OWNED=PASS
+PPA_WU01_FGC49B_REGISTRY_FORTRAN_OWNED=PASS
+PPA_WU01_MASS_LEDGERS_FORTRAN_OWNED=PASS
+PPA_WU01_FGC49D_CONTEXT_FROM_PRODUCTION_OWNER=PASS
+PPA_WU01_NO_QUALIFICATION_FIXTURE_BOOTSTRAP=PASS
+PPA_WU01_UNADMITTED_PROFILE_FAILS_CLOSED=PASS
+PPA_WU01_GROUNDWATER_ROOT_EXTRACTION_FAIL_CLOSED=PASS
+PPA_WU01_GROUNDWATER_DRAINAGE_RESPONSE_FAIL_CLOSED=PASS
+PPA_WU01_GROUNDWATER_ACTIVE_PROCESS_COMPOSITION_FAIL_CLOSED=PASS
+FPE_MULTI04_P0_DEFAULT_SERIAL_WORKER_COUNT=PASS
+FPE_MULTI04_P0_WORKER_LOCAL_BACKEND_2_OWNERSHIP=PASS
+FPE_MULTI04_P0_WORKER_LOCAL_BACKEND_4_OWNERSHIP=PASS
+FPE_MULTI04_P0_UNSUPPORTED_WORKERS_FAIL_CLOSED=PASS
+FPE_MULTI04_P0_NON_GROUNDWATER_PARALLEL_FAIL_CLOSED=PASS
+F_GC_STORAGE_HEAD_STATE_CAPACITANCE_AUTHORITY=PASS
+F_GC_DRAINAGE_NONE_AUTHORITY=PASS
+F_GC_UNRESOLVED_APPLICATION_AUTHORITY_FAIL_CLOSED=PASS
+F_GC_STALE_SWAP_RESPONSE_ORIGIN_FAIL_CLOSED=PASS
+PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS
+At line 166 of file /workspace/scratch/356a8174b195/f_gc_strip01/current_probe/src/runtime/mod_fmr_production_application_bootstrap.f90
+Fortran runtime warning: An array temporary was created
+At line 166 of file /workspace/scratch/356a8174b195/f_gc_strip01/current_probe/src/runtime/mod_fmr_production_application_bootstrap.f90
+Fortran runtime warning: An array temporary was created
+At line 166 of file /workspace/scratch/356a8174b195/f_gc_strip01/current_probe/src/runtime/mod_fmr_production_application_bootstrap.f90
+Fortran runtime warning: An array temporary was created
+At line 199 of file /workspace/scratch/356a8174b195/f_gc_strip01/current_probe/src/runtime/mod_fmr_production_application_bootstrap.f90
+Fortran runtime warning: An array temporary was created
+At line 166 of file /workspace/scratch/356a8174b195/f_gc_strip01/current_probe/src/runtime/mod_fmr_production_application_bootstrap.f90
+Fortran runtime warning: An array temporary was created
+At line 199 of file /workspace/scratch/356a8174b195/f_gc_strip01/current_probe/src/runtime/mod_fmr_production_application_bootstrap.f90
+Fortran runtime warning: An array temporary was created
+At line 166 of file /workspace/scratch/356a8174b195/f_gc_strip01/current_probe/src/runtime/mod_fmr_production_application_bootstrap.f90
+Fortran runtime warning: An array temporary was created
+At line 199 of file /workspace/scratch/356a8174b195/f_gc_strip01/current_probe/src/runtime/mod_fmr_production_application_bootstrap.f90
+Fortran runtime warning: An array temporary was created

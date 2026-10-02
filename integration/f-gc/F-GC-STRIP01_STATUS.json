@@ -3,8 +3,8 @@
   "work_unit": "F-GC-STRIP01",
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
-  "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "STANDALONE_REFERENCE_QUALIFIED_COUPLED_DOMAIN_PREREQUISITE_REGISTERED",
+  "phase": "PREREGISTER_BUILD_ORACLES_FALSIFY_COMPONENTS",
+  "state": "STANDALONE_AB_QUALIFIED_C0_RESEARCH_PREREGISTERED_NATIVE_COMPONENT_PENDING",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Reconcile the registered experimental coupled-domain physical storage/drain ownership prerequisite before C-E; complete soil-profile and current typed forcing binding qualification.",
+    "next_action": "Evaluate native confined no-STO C0 component evidence, then implement explicit research-only generic context driver without changing production bootstrap guards.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_STANDALONE_QUALIFICATION.md",
@@ -82,7 +82,7 @@
     "hupsel_input_candidate": "integration/f-gc/strip01/inputs/hupsel_public_2002_2004.met",
     "coupled_domain_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01_COUPLED_DOMAIN_PREREQUISITE.json"
   },
-  "next_permitted_action": "Reconcile the registered experimental coupled-domain physical storage/drain ownership prerequisite before C-E; complete soil-profile and current typed forcing binding qualification.",
+  "next_permitted_action": "Evaluate native confined no-STO C0 component evidence, then implement explicit research-only generic context driver without changing production bootstrap guards.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -178,5 +178,14 @@
     "end": "2004-12-31",
     "original_B0_raw_identity_matches": false,
     "current_typed_binding_qualified": false
+  },
+  "c0_research": {
+    "profile": "integration/f-gc/strip01/F-GC-STRIP01_C0_RESEARCH_PROFILE.json",
+    "review": "docs/integration/F-GC-STRIP01_C0_DOMAIN_FEASIBILITY.md",
+    "analytical_oracle": "PASS",
+    "production_authority_guard": "PASS_LOCAL_O2",
+    "native_component": "PENDING_PERSISTED_RUN",
+    "real_swap_coupled": false,
+    "production_admission": false
   }
 }
