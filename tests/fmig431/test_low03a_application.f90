@@ -86,6 +86,8 @@ program test_low03a_application
   write(*,'(a,1x,l1,1x,es24.16,1x,es24.16,1x,es24.16,1x,es24.16)') 'LOW03A_OBS_DIAG', &
        obs%cauchy3_proposal_available,obs%cauchy3_proposed_t0,obs%cauchy3_proposed_t1, &
        obs%cauchy3_aquifer_head_cm,obs%cauchy3_q4_cm_per_day
+  write(*,'(a,1x,l1,1x,i0,1x,a,1x,i0)') 'LOW03A_LAST_SOLVE',obs%solver_executed,obs%solver_status, &
+       trim(obs%solver_diagnostics%route),obs%solver_diagnostics%nonlinear_iterations
   call require(app_transaction_ok,'ordinary Cauchy transaction')
   call require(abs(result(1)%mass%residual)<=HARD_MASS_GATE,'whole-profile mass closure')
   call require(result(1)%mass%complete,'mass accounting complete')
