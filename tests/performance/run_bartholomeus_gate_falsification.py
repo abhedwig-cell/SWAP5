@@ -21,12 +21,24 @@ with tempfile.TemporaryDirectory() as td:
  out=subprocess.check_output([str(exe)],text=True);print(out)
  rows=[]
  for line in out.splitlines():
-  m=re.match(r"GATE_ROW\s+([\d.Ee+\-]+)\s+([\d.Ee+\-]+)\s+([\d.Ee+\-]+)\s+([\d.Ee+\-]+)\s+MINFAC\s+([\d.Ee+\-]+)",line)
+  m=re.match(r"GATE_ROW\s+([\d.Ee+\-]+)\s+([\d.Ee+\-]+)\s+([\d.Ee+\-]+)\s+([\d.Ee+\-]+)\s+CTOP\s+([\d.Ee+\-]+)\s+MINFAC\s+([\d.Ee+\-]+)",line)
   if m:rows.append(tuple(map(float,m.groups())))
  candidates=[]
  for th in sorted(set(r[3] for r in rows)):
-  sel=[r for r in rows if r[3]>=th];fp=sum(r[4]<1-1e-14 for r in sel)
+  sel=[r for r in rows if r[3]>=th];fp=sum(r[5]<1-1e-14 for r in sel)
   candidates.append({"gfp_min_threshold":th,"skips":len(sel),"false_skips":fp})
  safe=[x for x in candidates if x["false_skips"]==0]
- result={"head":os.environ.get("GITHUB_SHA","not-specified"),"rows":len(rows),"no_stress":sum(r[4]>=1-1e-14 for r in rows),"safe_gfp_rules":safe}
+ result={"head":os.environ.get("GITHUB_SHA","not-specified"),"rows":len(rows),"no_stress":sum(r[5]>=1-1e-14 for r in rows),"safe_gfp_rules":safe}
+ # Search conservative conjunctive rules GFP>=g, CTOP>=c, root<=r, temp<=t.
+ combos=[]
+ for g in sorted(set(x[3] for x in rows)):
+  for ct in sorted(set(x[4] for x in rows)):
+   for root in sorted(set(x[2] for x in rows)):
+    for temp in sorted(set(x[1] for x in rows)):
+     sel=[x for x in rows if x[3]>=g and x[4]>=ct and x[2]<=root and x[1]<=temp]
+     if not sel: continue
+     fp=sum(x[5]<1-1e-14 for x in sel)
+     if fp==0: combos.append({"gfp":g,"ctop":ct,"root_max":root,"temp_max":temp,"skips":len(sel)})
+ combos.sort(key=lambda x:x["skips"],reverse=True)
+ result["safe_conjunctive_rules"]=combos[:50]
  pathlib.Path("c3a_gate_result.json").write_text(json.dumps(result,indent=2)+"\n");print(json.dumps(result,indent=2))
