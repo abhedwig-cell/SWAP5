@@ -31,7 +31,7 @@ program test_ppa_wu05_migmac01_corrected_source_diagnostic
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
        fmr_serialized_physical_observation_t, fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_b110_macropore_reduction_state_t, &
-       fmr_new_b110_macropore_reduction_committed_state, prepare_fmr_b110_default_mvg
+       fmr_new_b110_committed_state, fmr_new_b110_macropore_reduction_committed_state, prepare_fmr_b110_default_mvg
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t, initialize_fmr_macropore_standard_config
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
@@ -410,7 +410,6 @@ contains
     type(fmr_b110_physical_parameters_t), target :: fparams
     type(fmr_b110_physical_forcing_t) :: forcing
     type(fmr_b110_physical_state_t) :: initial
-    type(macropore_reduction_continuation_t) :: reduction_initial
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
     type(canonical_numerical_config_t) :: numerical
@@ -459,9 +458,7 @@ contains
     initial%groundwater_level=source_scalars(4)
     initial%macropore=macro
 
-    reduction_initial=macropore_reduction_continuation_t(level=0,stable_steps=0,previous_dt=dt)
-    call fmr_new_b110_macropore_reduction_committed_state(committed,lineage,initial,reduction_initial, &
-         source_scalars(1),state_ok)
+    call fmr_new_b110_committed_state(committed,lineage,initial,source_scalars(1),state_ok)
     if(.not.state_ok)error stop 'MIGMAC01 source transaction committed init'
 
     allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod), &
@@ -482,7 +479,7 @@ contains
     column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     template%template_id=lineage
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
-    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION
+    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
 
     numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
