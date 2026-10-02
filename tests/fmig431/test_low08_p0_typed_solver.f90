@@ -17,6 +17,7 @@ program test_low08_p0_typed_solver
   type(fixed_flux_top_boundary_provider_t),target::top
   type(reference_richards_legacy_solver_t)::solver
   type(reference_richards_legacy_workspace_t)::ws,clean
+  real(real64)::initial_theta(n)
   type(soil_water_solve_request_t)::r
   type(soil_water_solve_result_t)::a,b,failed
   real(real64)::cof(24,n),theta(n),k(n),cap(n),dk(n),hplate,threshold
@@ -27,6 +28,7 @@ program test_low08_p0_typed_solver
   threshold=critdz-p%node_distance(n)+hplate
 
   call set_bottom(threshold)
+  initial_theta=r%base_state%water_content
   call solver%solve(r,ws,a)
   write(*,'(a,1x,i0,1x,a,1x,i0,1x,es24.16)') 'LOW08_EQUALITY_DIAG',a%status,trim(a%diagnostics%route),a%diagnostics%nonlinear_iterations,maxval(abs(ws%richards%residual))
   call need(a%status==SW_SOLVE_CONVERGED,'equality solve')
@@ -83,6 +85,7 @@ contains
     real(real64),intent(in)::hn
     r%base_state%pressure_head=-100._real64-p%z
     r%base_state%pressure_head(n)=hn
+    if(.not.allocated(r%base_state%water_content))allocate(r%base_state%water_content(n))
     call hyd%evaluate(r%base_state%pressure_head,r%base_state%water_content,k,cap,dk)
     r%boundary%bottom_head=hplate;r%boundary%bottom_flux=0
     r%boundary%bottom_external_resistance_days=0;r%boundary%bottom_include_half_cell=.true.
