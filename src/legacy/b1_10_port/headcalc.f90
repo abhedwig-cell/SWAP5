@@ -186,10 +186,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       swmacro = 0
       if (.not. present(boundary_conditions)) error stop 'HeadCalc: explicit boundary conditions required'
       swbotb = boundary_conditions%bottom_mode
-      if (swbotb == 8) then
-         lysimeter_plate_head=boundary_conditions%bottom_head
-         lysimeter_selector_head=state%h(numnod)
-      end if
+      if (swbotb == 8) lysimeter_plate_head=boundary_conditions%bottom_head
       if (.not. present(numerical_config)) error stop 'HeadCalc: explicit numerical config required'
       if (.not. present(explicit_step_duration)) error stop 'HeadCalc: explicit step duration required'
       if (explicit_step_duration <= 0.0d0) error stop 'HeadCalc: explicit step duration must be positive'
@@ -374,6 +371,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    do i = 2, NN
       fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/grid_disnod(i) + 1.0d0
    end do
+
+!  Freeze the typed lysimeter selector immediately before the legacy first residual.
+   if (swbotb == 8 .and. .not. legacy_state_binding) lysimeter_selector_head=state%h(NN)
 
 !  calculate vector fsi_ws%residual (first time)
    call vector_F(1)
