@@ -13,3 +13,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 tests/performance/run_bartholomeus_micro_monotonicity.py
+
