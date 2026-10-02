@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.layer-rom.external-application-authority-review.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-APP0",
+  "date": "2026-09-20",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "frozen_evidence_source": "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+  "blindness": {
+    "new_reference_panel_executed": false,
+    "new_candidate_responses_viewed": false,
+    "acceptance_thresholds_tuned_to_candidate_response": false
+  },
+  "eligibility_rule": {
+    "required": [
+      "independent of Layer-ROM candidate performance",
+      "directly tied to the hydrological purpose",
+      "absolute or externally anchored acceptance meaning",
+      "time scale or temporal-allocation semantics specified or defensibly bounded",
+      "not merely measurement error, numerical closure, or generic goodness-of-fit"
+    ],
+    "primary_gate": "criterion vector; no weighted composite score"
+  },
+  "purpose_reviews": {
+    "GW-R": {
+      "target": "regional groundwater recharge / water balance",
+      "useful_external_authority": [
+        "Purpose-specific groundwater prediction criteria must be defined from intended use.",
+        "Recharge uncertainty can be mapped to head/flow consequences through a prediction-specific groundwater sensitivity model.",
+        "Temporal aggregation of recharge can alter groundwater-system responses and must therefore be explicit."
+      ],
+      "rejected_threshold_candidates": [
+        {
+          "candidate": "<1% groundwater-model water-balance discrepancy",
+          "reason": "Numerical/accounting closure criterion; not allowed recharge-boundary representation error."
+        },
+        {
+          "candidate": "<10% average recharge error",
+          "reason": "Case-specific synthetic estimability result, not a normative application threshold."
+        },
+        {
+          "candidate": "monthly aggregation as universally sufficient",
+          "reason": "Supported only for specific systems/applications; no portable absolute error tolerance follows."
+        }
+      ],
+      "absolute_tolerance_authority": "NOT_FOUND",
+      "temporal_semantics_authority": "PARTIAL_ONLY",
+      "decision": "BLOCKED"
+    },
+    "GW-D": {
+      "target": "dynamic shallow-groundwater response / exchange",
+      "useful_external_authority": [
+        "Recharge-to-head consequences are prediction- and system-specific.",
+        "Head sensitivity varies strongly between sites; mapping requires groundwater-system properties and a defined prediction endpoint.",
+        "Temporal resolution can matter strongly for shallow groundwater and groundwater-surface-water exchange."
+      ],
+      "rejected_threshold_candidates": [
+        {
+          "candidate": "fixed absolute recharge-flux tolerance inferred from head sensitivity",
+          "reason": "No portable mapping exists without an authorized groundwater response model and target head consequence."
+        },
+        {
+          "candidate": "generic head RMSE calibration target",
+          "reason": "Calibration goodness-of-fit is not an exchange/reversal acceptance requirement."
+        },
+        {
+          "candidate": "zero sign/reversal error as externally required rule",
+          "reason": "Scientifically attractive as a diagnostic, but no independent application authority was found that makes it the acceptance threshold for GW-D."
+        }
+      ],
+      "absolute_tolerance_authority": "NOT_FOUND",
+      "temporal_semantics_authority": "PARTIAL_ONLY",
+      "decision": "BLOCKED"
+    },
+    "SCI-P": {
+      "target": "profile/process research including soil moisture, zone storage, local flux, gradient, timing and extrema",
+      "useful_external_authority": [
+        "Soil-moisture product and model-validation literature provides empirical error magnitudes and sensor/product requirements.",
+        "Fit-for-purpose literature requires scientific-purpose criteria to be defined explicitly before evaluation."
+      ],
+      "rejected_threshold_candidates": [
+        {
+          "candidate": "0.04 m3/m3 soil-moisture RMSE",
+          "reason": "SMAP remote-sensing product requirement; not a Layer-ROM process/profile research fidelity requirement."
+        },
+        {
+          "candidate": "empirical VWC RMSE bands from individual studies",
+          "reason": "Achieved/model-specific performance, not independent process-model sufficiency authority."
+        }
+      ],
+      "absolute_tolerance_authority": "NOT_FOUND",
+      "temporal_semantics_authority": "NOT_FOUND_FOR_REQUIRED_PROCESS_VECTOR",
+      "decision": "BLOCKED"
+    }
+  },
+  "cross_purpose_decision": {
+    "first_validation_route": null,
+    "reason": "No purpose has sufficiently direct independent absolute tolerance authority to freeze a defensible acceptance envelope without introducing a new scientific choice.",
+    "application_tolerance_authority_state": "BLOCKED_EXTERNAL_OR_PURPOSE_OWNER_REQUIREMENT",
+    "candidate_frontier_remains_frozen": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "validation_execution_authorized": false
+  },
+  "consequence": "Do not preregister a numerical acceptance envelope or expose a new blind Reference/candidate panel until purpose-owner or independently traceable application requirements provide the missing thresholds and temporal semantics.",
+  "non_conclusions": [
+    "No statement that Layer-ROM fails any application.",
+    "No statement that Layer-ROM passes any application.",
+    "No ranking among L4, L6 and R8.",
+    "No change to existing shared-host cost evidence.",
+    "No production admission."
+  ]
+}
