@@ -1,6 +1,9 @@
 name: PPA-WU05-A29 observability
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - qualification/ppa-wu05-a29-observability
 jobs:
   observability:
     runs-on: ubuntu-latest
