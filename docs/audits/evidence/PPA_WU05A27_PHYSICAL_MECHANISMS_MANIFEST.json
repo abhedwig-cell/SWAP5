@@ -1,0 +1,192 @@
+{
+  "schema": 1,
+  "status": "LOCAL_RESEARCH_ONLY",
+  "canonical_head": "c240a3c1c880663d86e1a702ff283a866ca809ee",
+  "runs": [
+    {
+      "code_sha": "6a90f18842472025f88eeb324b69275cad143f9b",
+      "completed": false,
+      "exit_code": 1,
+      "dependency_sha256": {
+        "research/rfm/a27/probe_physical_mechanisms.py": "439c4fec2bc7bf556e1f67149ca9e33ea19e99311be3a4bb30ace5f85202e8d4",
+        "research/rfm/a27/run_physical_mechanisms.sh": "1fccd8f9b5ce2ce76a6484740d2f30926d8f51fabc6779f09faa46360011dfe3",
+        "research/rfm/a27/test_physical_mechanisms.f90": "d2366797d9c325301bee58991d198ae491d67396f5a056bbf4b3ed49e37b360f",
+        "src/runtime/mod_macropore_continuation_state.f90": "ce0e8289429f7bacfb4c04ce49fbec4a6d2500f0d383ce7fb8970e34eb216dc6",
+        "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90": "98cb4da7c906dd01525ca630707a8d5b4a11e4871b24b75126fbacf8a8e418ff",
+        "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "3da5143101af19abcab58afccf4c8f0cf328e06e1b462b145ce74874f0ac40d5",
+        "src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90": "ea1b5008abcf6241b82acc38e33526ca0833f9ac592884f729c42655c1b855c9",
+        "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81"
+      },
+      "scope": "source O0/O2 and independent reference; initial run fails rewet mesh gate"
+    },
+    {
+      "code_sha": "467d734fbe8b5ea350a43e0fbf73ee412cda38cc",
+      "completed": true,
+      "exit_code": 0,
+      "dependency_sha256": {
+        "research/rfm/a27/probe_physical_mechanisms.py": "530bbe9339e9f28f6e7921c2099d6c4e06547ed8f3b46d53f2da01278ab911e2",
+        "research/rfm/a27/run_physical_mechanisms.sh": "1fccd8f9b5ce2ce76a6484740d2f30926d8f51fabc6779f09faa46360011dfe3",
+        "research/rfm/a27/test_physical_mechanisms.f90": "d2366797d9c325301bee58991d198ae491d67396f5a056bbf4b3ed49e37b360f",
+        "src/runtime/mod_macropore_continuation_state.f90": "ce0e8289429f7bacfb4c04ce49fbec4a6d2500f0d383ce7fb8970e34eb216dc6",
+        "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90": "98cb4da7c906dd01525ca630707a8d5b4a11e4871b24b75126fbacf8a8e418ff",
+        "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "3da5143101af19abcab58afccf4c8f0cf328e06e1b462b145ce74874f0ac40d5",
+        "src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90": "ea1b5008abcf6241b82acc38e33526ca0833f9ac592884f729c42655c1b855c9",
+        "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81"
+      },
+      "scope": "source O0/O2 and independent reference; initial run fails rewet mesh gate"
+    }
+  ],
+  "analysis_script_sha256": "d1f167566679a60492e6f4f92f334330a900a94171afc2f81a9ed276d391dec7",
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "archive_sha256": "6f6be47e268734acadfde64f585794f0369484cda302368101fddb34520ed6e2",
+  "archive_bytes": 276842,
+  "parts": [
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-000",
+      "bytes": 16000,
+      "sha256": "8a64d057d26af41140a9787aaf649d6398016a16824b0c03b68038a7fa40d7fa"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-001",
+      "bytes": 16000,
+      "sha256": "b4bf0b1b8c22259cf83a1c9bc71342d9bf3546cef3f26a5b5b67f7409b298e18"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-002",
+      "bytes": 16000,
+      "sha256": "e84cf24745c23e093ea1d6477b8a764ed921bc6ec980165ecfee10cee093a62a"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-003",
+      "bytes": 16000,
+      "sha256": "ae293d733b505114bb4f4d0344f3038b88a8e3567ee5af8f61f0fba59bb89dcf"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-004",
+      "bytes": 16000,
+      "sha256": "4334c669f5055db0de9e68dd79cc87cd316c269d3c633e6e3e90f27ed0c192c2"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-005",
+      "bytes": 16000,
+      "sha256": "9d47b7472649ebe2b5bf95ebe85b6316d13ed99e94920a95e2c3b89fe2c1623e"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-006",
+      "bytes": 16000,
+      "sha256": "3fd30f32f1e883d1f4ac872b5e17f184ae8647c2d6105fadfbc02c39e760b6dc"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-007",
+      "bytes": 16000,
+      "sha256": "428df5088f495585db8e92e2f2611906e8a7e21b5139470320b0115649ffa081"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-008",
+      "bytes": 16000,
+      "sha256": "0fca9672b31b51e5c6cc4bd06a0bb6eec34e80b91f616560844113fc31ae292e"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-009",
+      "bytes": 16000,
+      "sha256": "7cd0cf04ebd01631384de73466b42bc5d0735fa4ef06c2c6edcfcde18a28aba6"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-010",
+      "bytes": 16000,
+      "sha256": "d3a563bdda1478b198e38dbce3f97c02c1993b06cf8d2e6fbb2a65a643b82f44"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-011",
+      "bytes": 16000,
+      "sha256": "86b4b05b7c58501348ff729c665ab090f3711693213f5e24f61ed663223df990"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-012",
+      "bytes": 16000,
+      "sha256": "65d1ef1840d8b5b48635017c57d37e4093f0594a0fd027a84beb8740d3a191d1"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-013",
+      "bytes": 16000,
+      "sha256": "81e1d3673e66ecc32be21fed4f57919e6f11ec82c08f01dac891a883d1f70479"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-014",
+      "bytes": 16000,
+      "sha256": "58854256e10641aefe53a12fcd38cacc69f6fa60865035b11cf1e480ee6be18a"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-015",
+      "bytes": 16000,
+      "sha256": "c7e15eb10559206a43a914ac78b2e454f91b78aeed2393983f4398403c4d2c21"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-016",
+      "bytes": 16000,
+      "sha256": "d427c4e4b77ccc467072c6da22c6f4c8787c273538f9d2ebb109a1b50b64ccd3"
+    },
+    {
+      "path": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-017",
+      "bytes": 4842,
+      "sha256": "f2c07b46a4533166368725bb6f287bd6ffcc73c61bf10b78a209c4f86c2152b4"
+    }
+  ],
+  "files": {
+    "interrupted_contact.csv": {
+      "bytes": 9800,
+      "sha256": "dd7cbef8ee512835f22249f46c1d8b20808e47b8ec663d52a2bb5a924203166e"
+    },
+    "interrupted_profiles.csv": {
+      "bytes": 848333,
+      "sha256": "cb01c182c2bd0ec1a9edab13e148b13621c8d09348984093deed8c81295f88c1"
+    },
+    "physical_mechanisms_summary.json": {
+      "bytes": 1160,
+      "sha256": "438c2587a59dd29b607ffb66895085783232b432b3688b3d9f722878404b8115"
+    },
+    "signed_coupling.csv": {
+      "bytes": 73258,
+      "sha256": "0fe433e622400d2ef3fea96048e71725c771fd8c53dbc4306dc16a5a104da669"
+    },
+    "signed_coupling_comparison.csv": {
+      "bytes": 5083,
+      "sha256": "52e8ec4381d58f3d99f16e7afbb357ac3ff876441a0545b1536ffd0f6492d7e3"
+    },
+    "slab_refinement.csv": {
+      "bytes": 320,
+      "sha256": "47506913c6856c019c5fa0534dc3876299625395733247ec625cfe70eb7cdbb8"
+    },
+    "slab_validation.csv": {
+      "bytes": 1091,
+      "sha256": "a3cdb6c51878ceeedfaec8e7bac47e08566081392c7b68067474800bb4d7503a"
+    },
+    "wetting_feedback.csv": {
+      "bytes": 2487,
+      "sha256": "92c47ea9b04acaf06316adb1ed4a6a8a236c1b6456e8029566a7544fea3ce782"
+    },
+    "a27-mechanism-independent.log": {
+      "bytes": 235,
+      "sha256": "f4bcad07bac13ce6c772288da8598b1d13b7ec193bfec08edb09bc35c69bc811"
+    },
+    "a27-mechanism-source.log": {
+      "bytes": 1085,
+      "sha256": "d07d0c4a4e8a42190c559419a4797c10bcec1ef5d6feb0f764d6ed9ffe8bb43f"
+    },
+    "a27-mechanism-refined-source.log": {
+      "bytes": 1085,
+      "sha256": "d07d0c4a4e8a42190c559419a4797c10bcec1ef5d6feb0f764d6ed9ffe8bb43f"
+    },
+    "a27-mechanism-refined.log": {
+      "bytes": 1208,
+      "sha256": "048507c8dafd9e6437eb0db2e5c389468980f63a2ed937ff24403450338701d8"
+    }
+  },
+  "production_qualified": false,
+  "canonical_admitted": false
+}

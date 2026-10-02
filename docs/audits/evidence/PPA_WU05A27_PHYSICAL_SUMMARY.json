@@ -1,0 +1,37 @@
+{
+  "slab_finest_analytic_error_cm": 5.944729808415872e-07,
+  "rewet_1024_2048_max_difference_cm": 1.6230529882171885e-05,
+  "dry_max_mass_change_cm": 6.884683795282953e-16,
+  "wetting_ratio_exact": 0.75,
+  "reset_ratio_range_finest": [
+    1.3072941420350122,
+    17.336849220748483
+  ],
+  "coupling": {
+    "explicit": {
+      "max_macro_head_error_cm": 33.426188994056446,
+      "max_exchange_error_cm": 1.6713094497028222,
+      "max_equilibrium_overshoots": 8,
+      "max_negative_head_steps": 1
+    },
+    "backward": {
+      "max_macro_head_error_cm": 0.6804299512506908,
+      "max_exchange_error_cm": 0.03402149756253453,
+      "max_equilibrium_overshoots": 0,
+      "max_negative_head_steps": 0
+    },
+    "subcycle": {
+      "max_macro_head_error_cm": 0.06741355727248166,
+      "max_exchange_error_cm": 0.0033706778636241053,
+      "max_equilibrium_overshoots": 0,
+      "max_negative_head_steps": 0
+    },
+    "one_sided": {
+      "max_macro_head_error_cm": 9.77381100594356,
+      "max_exchange_error_cm": 0.48869055029717806,
+      "max_equilibrium_overshoots": 1,
+      "max_negative_head_steps": 2
+    }
+  },
+  "production_qualified": false
+}

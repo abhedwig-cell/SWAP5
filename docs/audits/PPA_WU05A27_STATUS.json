@@ -1,21 +1,21 @@
 {
   "work_unit": "PPA-WU05-A27",
   "baseline": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
-  "checkpoint_commit": "8ff6309a7eba98ee9cd66ef79da0bb7c5da0a5a2",
+  "checkpoint_commit": "467d734fbe8b5ea350a43e0fbf73ee412cda38cc",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "status": "PHYSICAL_MECHANISM_PROBES_PREREGISTERED",
-  "next_action": "Implement and run source-feedback, contact-interruption and signed-coupling probes",
-  "recovery_point": "docs/audits/PPA_WU05A27_PHYSICAL_MECHANISMS_CONTRACT.md",
+  "status": "PHYSICAL_MECHANISM_FRONTIER_RESEARCH_ONLY",
+  "next_action": "Preregister bounded lateral moisture/profile research with variable diffusivity and explicit drying boundary; full production A/B/C remains open",
+  "recovery_point": "docs/audits/PPA_WU05A27_PHYSICAL_MECHANISMS_RESULT.md",
   "blockers": [
-    "Physical closure not independently justified",
-    "Fixed-count approximation lacks monotonic finest-grid contraction",
+    "Nonlinear physical closure and drying hypothesis not qualified",
+    "Fixed-count cohort approximation lacks monotonic finest-grid contraction",
     "Full production A/B/C and repeated timing/scaling remain open"
   ],
-  "last_reconciled_head": "afc7d219f5aa2ee74ba51c411e40c1d8921d04aa",
-  "last_reconciled_upstream": "c240a3c1c880663d86e1a702ff283a866ca809ee",
+  "last_reconciled_head": "467d734fbe8b5ea350a43e0fbf73ee412cda38cc",
+  "last_reconciled_upstream": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
   "authority_paths": [
     "AGENTS.md",
     "docs/audits/PPA_WU05A27_PREREGISTRATION.md",
@@ -35,7 +35,10 @@
     "research/rfm/a27/run_source_units.sh",
     "research/rfm/a27/run_wall_cohort.sh",
     "research/rfm/a27/run_capillary_budget.sh",
-    "research/rfm/a27/analyze_bounded_cohorts.py"
+    "research/rfm/a27/analyze_bounded_cohorts.py",
+    "research/rfm/a27/run_physical_mechanisms.sh",
+    "research/rfm/a27/probe_physical_mechanisms.py",
+    "research/rfm/a27/analyze_physical_mechanisms.py"
   ],
   "dependency_surface": [
     "src/legacy/b1_10_port/headcalc.f90",
@@ -49,7 +52,7 @@
   ],
   "interfaces_changed": [],
   "production_claim": "Bounded source correction qualified locally on persisted postimage; not canonically admitted. No E1 production envelope, speedup or stability claim.",
-  "research_result": "500 cases / 5000 sampled records; 8/node passes49/50,16/node passes50/50 against exact research cohort mode7; not production E1",
+  "research_result": "500 cases / 5000 sampled records; 8/node passes49/50,16/node passes50/50 against exact research cohort mode7; not production E1; physical feedback, no-loss interruption and signed linear coupling probes completed; frozen/reset exact closure falsified within diagnostic scope",
   "source_repair_qualified": true,
   "canonical_admitted": false,
   "qualification_scopes": {
@@ -79,6 +82,15 @@
       "mode9_pass": 50,
       "comparisons_per_mode": 50,
       "production_eligible": false
+    },
+    "physical_mechanisms_research": {
+      "code_postimage": "467d734fbe8b5ea350a43e0fbf73ee412cda38cc",
+      "source_O0_O2": "PASS",
+      "finest_cells": 2048,
+      "analytic_error_cm": 5.944729808415872e-07,
+      "rewet_mesh_difference_cm": 1.6230529882171885e-05,
+      "initial_reference_gate": "FAIL at256/512, retained",
+      "production_eligible": false
     }
   },
   "evidence_archive": "docs/audits/evidence/PPA_WU05A27_COHORT_EVIDENCE.tar.gz.part-*",
@@ -89,6 +101,9 @@
     "docs/audits/evidence/PPA_WU05A27_BOUNDED_COMPARISON.csv",
     "docs/audits/evidence/PPA_WU05A27_BOUNDED_REFINEMENT.csv",
     "docs/audits/evidence/PPA_WU05A27_BOUNDED_MEMORY.csv",
-    "docs/audits/evidence/PPA_WU05A27_COHORT_EVIDENCE.tar.gz.part-*"
-  ]
+    "docs/audits/evidence/PPA_WU05A27_COHORT_EVIDENCE.tar.gz.part-*",
+    "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS_MANIFEST.json",
+    "docs/audits/evidence/PPA_WU05A27_PHYSICAL_MECHANISMS.tar.gz.part-*"
+  ],
+  "verification_record": "docs/audits/evidence/PPA_WU05A27_PHYSICAL_VERIFICATION.json"
 }
