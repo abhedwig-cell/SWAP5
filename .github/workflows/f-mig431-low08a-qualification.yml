@@ -2,19 +2,6 @@ name: F-MIG431 LOW08-A qualification
 on:
   pull_request:
     branches: [integration/f-ci-canonical]
-  push:
-    branches: [work/f-mig431-low08-a-lysimeter-application]
-    paths:
-      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
-      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
-      - 'src/adapter/mod_b110_serialized_context_binding.f90'
-      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
-      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
-      - 'src/solver/mod_reference_richards_state_binding.f90'
-      - 'src/legacy/b1_10_port/headcalc.f90'
-      - 'tests/fmig431/test_low08a_application.f90'
-      - 'tests/fmig431/run_low08a_qualification.py'
-      - '.github/workflows/f-mig431-low08a-qualification.yml'
   workflow_dispatch:
 jobs:
   qualify:
