@@ -450,6 +450,16 @@ contains
           status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
           return
         end if
+      else if (self%ordinary_lysimeter_application) then
+        if (.not. ieee_is_finite(effective_forcing(i)%bottom_head) .or. effective_forcing(i)%bottom_flux /= 0.0_real64) then
+          status = FMR_APP_BOOT_INVALID_CONFIG
+          return
+        end if
+        if (allocated(effective_forcing(i)%legacy_swbotb5_control) .or. &
+            allocated(effective_forcing(i)%legacy_swbotb3_implicit_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
       else if (allocated(effective_forcing(i)%legacy_swbotb5_control) .or. &
                allocated(effective_forcing(i)%legacy_swbotb3_implicit_control)) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
