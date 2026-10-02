@@ -194,7 +194,7 @@ contains
     real(real64),allocatable :: h(:),k(:),dk(:),q(:),left(:),right(:),f(:),upper(:),diagonal(:),lower(:), &
          rhs(:),step(:),trial(:),sensitivity(:),lo(:),hi(:),theta(:),cap(:),tt(:),cc(:)
     real(real64) :: dz,d,es,et,z,ks,dks,totalr,partial,lambda,norm,newnorm
-    integer :: i,n,it,bt
+    integer :: i,n,it,bt,polish
     logical :: ok,good,accepted
     result=top03_stateful_result_t();n=self%layer_nodes
     if(.not.associated(self%soil).or..not.associated(self%geometry))return
@@ -221,7 +221,7 @@ contains
       if(seed==1)h(i)=max(lo(i),min(hi(i),-123.0_real64))
       if(seed==2)h(i)=max(lo(i),min(hi(i),0.0_real64))
     end do
-    result%status=CONTACT_NO_ROOT
+    result%status=CONTACT_NO_ROOT;polish=0
     do it=1,100
       result%iterations=it
       call faces(self,hs,h,k,dk,q,left,right,ok,.true.)
@@ -230,7 +230,12 @@ contains
       end if
       call storage(self,h,theta,cap)
       f=dz*(theta-self%origin_theta)/self%dt+q(1:n)-q(2:n+1);norm=maxval(abs(f))
-      if(norm<=ROOT_TOL)exit
+      if(norm<=ROOT_TOL)then
+        polish=polish+1
+        if(polish>=4)exit
+      else
+        polish=0
+      end if
       upper=0;lower=0
       do i=1,n
         diagonal(i)=dz*cap(i)/self%dt+right(i)-left(i+1)
