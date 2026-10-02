@@ -1047,8 +1047,8 @@ subroutine vector_F(iTask)
 !  for swbotb = 8, depending on iTask
    if (iTask == 1) then
       if (swbotb == 8) then
-         if (state%h(NN) > Critdz - grid_disnod(NN+1) + hplate) then
-            fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / grid_disnod(NN+1) + 1.0d0
+         if (state%h(NN) > Critdz - grid_disnod(NN+1) + lysimeter_plate_head) then
+            fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
             flboth = .TRUE.
          else
             flboth = .FALSE.
@@ -1058,7 +1058,7 @@ subroutine vector_F(iTask)
       end if
    else
       if (swbotb == 8 .AND. flboth) then
-         fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / grid_disnod(NN+1) + 1.0d0
+         fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
       end if
    end if
 
