@@ -38,9 +38,7 @@ program test_a28_q4_long_history
     integer::admission_rejections=0,solver_rejections=0,temporal_rejections=0,mass_rejections=0,trial_rollbacks=0
   end type
   type(metrics_t)::m
-  integer::soil,geom,regime,arm,rep
-  integer,parameter::timing_soil(4)=[1,1,2,2],timing_geom(4)=[1,2,1,2],timing_regime(4)=[1,2,3,1]
-  integer::k
+  integer::soil,geom,regime,arm
   logical::approximate_mode
   character(len=32)::mode_arg
   mode_arg='';call get_command_argument(1,mode_arg)
