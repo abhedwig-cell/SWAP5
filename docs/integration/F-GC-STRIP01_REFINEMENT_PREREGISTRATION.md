@@ -48,3 +48,21 @@ exchange and mass. A pass alone is insufficient; retain actual refinement
 errors and verify origin identity. Only then retry the existing short/extended
 coupled panel with this numerical configuration. Coupled volume threshold,
 publication order and all temporal limits remain frozen.
+
+## Additional explicit Newton error-allocation experiment
+
+The dimensional repair completed 33/44 trajectories versus 18/44 originally,
+but finer changed-head paths still failed. Print-only observation found rate
+residual below the corrected gate while normalized Newton head change was
+7.0692e-12, exceeding the fixed 1e-12 iteration threshold. This distinguishes
+iteration stopping from the unchanged 1e-5 cm trajectory error budget.
+
+Before execution, allocate at most 1e-8 cm (0.001 of that trajectory budget)
+to the Newton head stopping test. Absolute criterion 1e-8 cm and relative
+criterion 1e-8/500=2e-11, bounded by profile head magnitude <=500 cm.
+Leaving that magnitude domain invalidates this allocation. Keep the same
+integrated mass guard and same temporal certificate budget. This is a distinct
+research numerical-configuration variant; it does not qualify the original
+strict panel. Do not accept a variant solely from successful solves: repeat
+all refinement measurements, keep actual trajectory errors above budget as
+negative evidence, and test unchanged mass/replay before coupled use.
