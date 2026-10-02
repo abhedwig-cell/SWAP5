@@ -1,0 +1,64 @@
+{
+  "work_unit": "F-MIG431-LOW03-P0",
+  "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
+  "last_reconciled_head": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
+  "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
+  "state": "CENTRAL_SHARED_RESISTIVE_HEAD_PREREQUISITE_REGISTERED",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_mode3_admitted": false,
+  "production_delta": [],
+  "interfaces_changed": [],
+  "checkpoint_commit": "registration commit containing this record; resolve from Git history",
+  "next_action": "Replay persisted bottom-row composition diagnostic locally; record concrete shared typed resistance/request and candidate-mass design before production implementation",
+  "blockers": [
+    "Existing typed bottom boundary has no resistance or include-half-cell authority",
+    "Dormant implicit mode3 depends on legacy globals and lacks accepted mass publication",
+    "SWKIMPL1 mode3 and5 derivative policy differs; do not silently unify"
+  ],
+  "relevant_paths": [
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/solver/mod_reference_richards_state_binding.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "authority_paths": [
+    "docs/migration/F-MIG431-LOW03-P0_PREREGISTRATION.md",
+    "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
+    "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md",
+    "docs/numerics/transactional-time-stepping.md",
+    "docs/capabilities/restart-v1.md",
+    "src/runtime/mod_groundwater_coupling_contract.f90"
+  ],
+  "test_paths": [
+    "tests/fmig431/test_low03_boundary_composition.f90",
+    "tests/fmig431/run_low03_boundary_composition.py"
+  ],
+  "evidence_paths": [
+    "integration/audits/F-MIG431-LOW03-P0_COMPOSITION.json"
+  ],
+  "dependency_surface": [
+    "src/solver",
+    "src/adapter",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/runtime"
+  ],
+  "parked_selectors": [
+    1
+  ],
+  "active_sequence": [
+    3,
+    8
+  ],
+  "future_application_unit": "LOW03-A not issued",
+  "invariants_affected": [
+    "Explicit physics input/provider ownership",
+    "Solver candidate versus runtime commit",
+    "Unrounded exactly-once accepted mass",
+    "Restart of committed state",
+    "Existing groundwater owner and mode5 semantics held fixed"
+  ]
+}

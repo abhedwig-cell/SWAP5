@@ -82,7 +82,13 @@
       "application": "not_migrated",
       "groundwater_relation": "deep_aquifer_head_and_resistance",
       "classification": "PRESERVED_NOT_TYPED",
-      "risk": "high_nonlinear_and_timing"
+      "risk": "high_nonlinear_and_timing",
+      "shared_prerequisite": {
+        "work_unit": "F-MIG431-LOW03-P0",
+        "status": "CENTRAL_SHARED_RESISTIVE_HEAD_PREREQUISITE_REGISTERED",
+        "production_admitted": false,
+        "authority": "docs/migration/F-MIG431-LOW03-P0_PREREGISTRATION.md"
+      }
     },
     {
       "selector": "4",
@@ -269,8 +275,9 @@
     {
       "id": "PPA-LOW03",
       "priority": 6,
-      "status": "NOT_IMPLEMENTED",
-      "meaning": "deep-aquifer Cauchy explicit/implicit boundary"
+      "status": "SHARED_RESISTIVE_HEAD_RECONCILIATION",
+      "meaning": "deep-aquifer Cauchy explicit/implicit boundary",
+      "prerequisite": "F-MIG431-LOW03-P0"
     },
     {
       "id": "PPA-LOW08",
