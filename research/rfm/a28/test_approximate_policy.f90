@@ -7,13 +7,14 @@ program test_a28_approximate_policy
  use mod_rfm_runtime_configuration,only:rfm_runtime_configuration_t,RFM_SORPTIVITY_POLICY_EXACT,RFM_SORPTIVITY_POLICY_PERF07_V1
  implicit none
  real(real64),parameter::hs(17)=[-2000._real64,-1000._real64,-500._real64,-400._real64,-350._real64,-300._real64,-250._real64,-200._real64,-150._real64,-100._real64,-75._real64,-50._real64,-30._real64,-20._real64,-10._real64,-3._real64,-1._real64]
- real(real64)::cof(24,numnod),h(numnod),t(numnod),k(numnod),cap(numnod),dk(numnod),s64,sa,rel,maxrel
+ real(real64)::cof(24,numnod),h(numnod),t(numnod),k(numnod),cap(numnod),dk(numnod),s64,sa,rel,maxrel,sq
+ real(real64)::front8(17)=0._real64,front16(17)=0._real64,front32(17)=0._real64
  real(real64)::wcr,wcs,alpha,npar,lambda,ks
  type(b110_default_mvg_parameters_t),target::hp
  type(b110_default_mvg_provider_t)::hyd
  type(process_hydraulic_view_t)::view
  type(rfm_runtime_configuration_t)::cfg
- integer::u,ios,year,unitid,i,p,count
+ integer::u,ios,year,unitid,i,p,count,q
  character(len=3)::soil
  character(len=1024)::filename,header
  logical::ok
@@ -40,11 +41,23 @@ program test_a28_approximate_policy
    call evaluate_rfm_node_sorptivity(view,hyd,1,64,s64,ok);if(.not.ok)error stop '64'
    call evaluate_rfm_node_sorptivity(view,hyd,1,p,sa,ok);if(.not.ok)error stop 'approx'
    rel=abs(sa-s64)/max(abs(s64),1e-10_real64);maxrel=max(maxrel,rel)
+   do q=8,32,8
+    if(q==24)cycle
+    call evaluate_rfm_node_sorptivity(view,hyd,1,q,sq,ok);if(.not.ok)error stop 'frontier'
+    select case(q)
+    case(8);front8(i)=max(front8(i),abs(sq-s64)/max(abs(s64),1e-10_real64))
+    case(16);front16(i)=max(front16(i),abs(sq-s64)/max(abs(s64),1e-10_real64))
+    case(32);front32(i)=max(front32(i),abs(sq-s64)/max(abs(s64),1e-10_real64))
+    end select
+   end do
    write(*,'(*(g0,:,","))')'A28',soil,hs(i),p,s64,sa,rel
   end do
  end do
  close(u)
  if(count/=36)error stop 'catalog count'
+ do i=1,size(hs)
+  write(*,'(*(g0,:,","))')'FRONTIER',hs(i),front8(i),front16(i),front32(i)
+ end do
  write(*,'(*(g0,:,","))')'MAXREL',maxrel
  if(maxrel>0.01_real64)error stop 'one percent gate'
  print '(a)','A28_APPROXIMATE_POLICY_Q1_Q2=PASS'
