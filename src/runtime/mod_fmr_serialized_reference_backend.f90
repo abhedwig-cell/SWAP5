@@ -97,6 +97,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
        macropore_runtime_result_t, MACRO_RUNTIME_CONVERGED, MACRO_RUNTIME_RETRY
+  use mod_fmr_legacy_head_bottom_boundary_provider, only: fmr_hbot5_control_t, fmr_hbot5_proposal_t, FMR_HBOT5_OK
   implicit none
   private
 
@@ -279,6 +280,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
+    type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
     type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     real(real64), allocatable :: drainage_flux_by_level(:,:)
@@ -295,6 +297,9 @@ module mod_fmr_serialized_reference_backend
 
   type, public :: fmr_serialized_physical_observation_t
     logical :: solver_executed = .false.
+    logical :: hbot5_proposal_available = .false.
+    real(real64) :: hbot5_proposed_t0 = 0.0_real64, hbot5_proposed_t1 = 0.0_real64
+    real(real64) :: hbot5_sample_t1900 = 0.0_real64, hbot5_pressure_head_cm = 0.0_real64
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
@@ -383,6 +388,7 @@ module mod_fmr_serialized_reference_backend
   ! Worker-local transactional scratch for thermal transfer provenance. This is
   ! attempt context, never compact committed column state.
   type, extends(transaction_attempt_context_t) :: fmr_serialized_attempt_context_t
+    type(fmr_hbot5_proposal_t) :: hbot5_proposal
     logical :: bottom_thermal_active = .false.
     logical :: bottom_thermal_valid = .true.
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
@@ -395,6 +401,8 @@ module mod_fmr_serialized_reference_backend
   end type fmr_serialized_attempt_context_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
+    type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
+    type(fmr_hbot5_proposal_t) :: hbot5_proposal
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
@@ -1593,8 +1601,13 @@ contains
         self%model%trusted_parameter_source => parameters
       end if
     end if
-    call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
-         result, candidate, diagnostics)
+    if (allocated(forcing%legacy_swbotb5_control)) then
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics, target_selector=select_hbot5_proposal)
+    else
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics)
+    end if
     if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
     nullify(self%model%hydraulic_parameters)
     nullify(self%model%trusted_parameter_source)
@@ -1621,6 +1634,21 @@ contains
     call self%model%top_sensible_boundary_carrier%clear()
     self%model%top_sensible_boundary_carrier_active = .false.
     self%model%top_sensible_boundary_carrier_valid = .true.
+  contains
+    subroutine select_hbot5_proposal(cursor, requested_t1, target_t1, max_retries_cap, valid)
+      real(real64), intent(in) :: cursor, requested_t1
+      real(real64), intent(out) :: target_t1
+      integer, intent(out) :: max_retries_cap
+      logical, intent(out) :: valid
+      integer :: provider_status
+      target_t1 = requested_t1
+      max_retries_cap = config%transaction%max_retries
+      valid = .false.
+      self%model%hbot5_proposal = fmr_hbot5_proposal_t()
+      if (.not. allocated(self%model%legacy_swbotb5_control)) return
+      call self%model%legacy_swbotb5_control%resolve(cursor,target_t1,self%model%hbot5_proposal,provider_status)
+      valid = provider_status == FMR_HBOT5_OK .and. self%model%hbot5_proposal%available
+    end subroutine
   end subroutine fmr_serialized_backend_run_trial
 
   subroutine reject_backend_trial(result, candidate, diagnostics)
@@ -1643,7 +1671,7 @@ contains
   logical function fmr_serialized_attempt_context_required(self) result(required)
     class(fmr_serialized_reference_model_t), intent(in) :: self
 
-    required = self%trajectory_direction_requested .or. self%drainage_response_active .or. &
+    required = allocated(self%legacy_swbotb5_control) .or. self%trajectory_direction_requested .or. self%drainage_response_active .or. &
          self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid .or. &
          self%top_sensible_boundary_carrier_active .or. .not. self%top_sensible_boundary_carrier_valid
   end function fmr_serialized_attempt_context_required
@@ -1655,6 +1683,7 @@ contains
     allocate(fmr_serialized_attempt_context_t :: context)
     select type (typed => context)
     type is (fmr_serialized_attempt_context_t)
+      typed%hbot5_proposal = self%hbot5_proposal
       typed%bottom_thermal_active = self%bottom_thermal_carrier_active
       typed%bottom_thermal_valid = self%bottom_thermal_carrier_valid
       call self%bottom_thermal_carrier%copy_to(typed%bottom_thermal_carrier)
@@ -1673,6 +1702,7 @@ contains
 
     select type (typed => context)
     type is (fmr_serialized_attempt_context_t)
+      self%hbot5_proposal = typed%hbot5_proposal
       self%bottom_thermal_carrier_active = typed%bottom_thermal_active
       self%bottom_thermal_carrier_valid = typed%bottom_thermal_valid
       call self%bottom_thermal_carrier%restore_from(typed%bottom_thermal_carrier)
@@ -1683,6 +1713,7 @@ contains
       self%drainage_response_window_signed_exchange_native = typed%drainage_response_window_signed_exchange_native
       self%trajectory_direction = typed%trajectory_direction
     class default
+      self%hbot5_proposal = fmr_hbot5_proposal_t()
       self%bottom_thermal_carrier_active = .false.
       self%bottom_thermal_carrier_valid = .false.
       call self%bottom_thermal_carrier%clear()
@@ -1919,6 +1950,8 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
+    self%hbot5_proposal = fmr_hbot5_proposal_t()
+    if (allocated(self%legacy_swbotb5_control)) deallocate(self%legacy_swbotb5_control)
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
     self%rfm_surface_forcing = rfm_surface_forcing_t()
     self%drainage_response_evaluations = 0
@@ -1988,6 +2021,13 @@ contains
         if (any(forcing%root_extraction_sink < 0.0_real64)) return
       else
         if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
+      end if
+      if (allocated(forcing%legacy_swbotb5_control)) then
+        if (self%bottom_mode /= 5 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (allocated(forcing%legacy_swbotb2_control) .or. allocated(forcing%legacy_swbotb4_qgwl_control)) return
+        if (.not. forcing%legacy_swbotb5_control%ready()) return
+        allocate(self%legacy_swbotb5_control)
+        self%legacy_swbotb5_control = forcing%legacy_swbotb5_control
       end if
       if (allocated(forcing%legacy_swbotb4_qgwl_control)) then
         if (allocated(forcing%legacy_swbotb2_control)) return
@@ -2453,6 +2493,15 @@ contains
     request%boundary%top_head = self%top_head
     request%boundary%bottom_flux = effective_bottom_flux
     request%boundary%bottom_head = self%bottom_head
+    if (allocated(self%legacy_swbotb5_control)) then
+      if (.not. self%hbot5_proposal%covers(t0,t1)) return
+      request%boundary%bottom_head = self%hbot5_proposal%pressure_head_cm
+      self%last_observation%hbot5_proposal_available = .true.
+      self%last_observation%hbot5_proposed_t0 = self%hbot5_proposal%t0
+      self%last_observation%hbot5_proposed_t1 = self%hbot5_proposal%original_t1
+      self%last_observation%hbot5_sample_t1900 = self%hbot5_proposal%legacy_sample_t1900
+      self%last_observation%hbot5_pressure_head_cm = self%hbot5_proposal%pressure_head_cm
+    end if
     request%numerical%max_iterations = self%max_iterations
     request%numerical%max_backtracking = self%max_backtracking
     request%numerical%conductivity_implicit_mode = self%swkimpl

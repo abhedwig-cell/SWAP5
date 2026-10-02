@@ -24,7 +24,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
         soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t, &
         soil_water_top_boundary_result_t, SW_TOP_BOUNDARY_AVAILABLE, &
         SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD, &
-        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY
+        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY, evaluate_resistive_bottom_boundary
    use MOD_arrays,         only: mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
@@ -73,6 +73,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_dynamic_top_active, provider_runoff_resolved
    logical :: explicit_geometry
+   logical :: typed_bottom_invalid, typed_bottom_ok
+   real(8) :: typed_bottom_conductance
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
    logical :: provider_macropore_active, provider_macropore_rate_active, provider_macropore_derivative_available
    logical :: provider_tuple_valid, provider_tuple_from_candidate
@@ -107,6 +109,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !---------------------------------------------------------------------
 
    legacy_state_binding = .not. present(state_binding)
+   typed_bottom_invalid=.false.
+   typed_bottom_conductance=0.0d0
    explicit_geometry = .not. legacy_state_binding
    if (explicit_geometry) then
       if (.not. present(parameter_set)) error stop 'HeadCalc: explicit parameter geometry required'
@@ -350,6 +354,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !  calculate vector fsi_ws%residual (first time)
    call vector_F(1)
+   if (typed_bottom_invalid) then
+      state%fldecdt=.true.
+      ctx%control%request_dt_reduction=.true.
+      return
+   end if
 
 !  initial estimate of fsi_ws%residual inner product
    sumold = 0.5d0 * dot_product(fsi_ws%residual(1:NN), fsi_ws%residual(1:NN))
@@ -517,6 +526,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        re-calculate fsi_ws%residual-function
          call vector_F(2)
+         if (typed_bottom_invalid) then
+            state%fldecdt=.true.
+            ctx%control%request_dt_reduction=.true.
+            return
+         end if
 
 !        calculate maximum deviation per compartment and new inner product
          sump = 0.5d0 * dot_product(fsi_ws%residual(1:NN), fsi_ws%residual(1:NN))
@@ -1058,7 +1072,15 @@ subroutine vector_F(iTask)
       fsi_ws%residual(NN)       = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
    else
       fsi_ws%residual(NN) = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
-      if (swbotb == 3 .AND. swbotb3Impl == 1) then
+      if (swbotb == 3 .and. .not. legacy_state_binding) then
+         call evaluate_resistive_bottom_boundary(boundary_conditions,state%h(NN),grid_z(NN), &
+              grid_disnod(NN+1),state%kmean(NN+1),state%qbot,typed_bottom_conductance,typed_bottom_ok)
+         if (.not. typed_bottom_ok) then
+            typed_bottom_invalid=.true.
+            return
+         end if
+         fsi_ws%residual(NN)=fsi_ws%residual(NN)-state%qbot
+      else if (swbotb == 3 .AND. swbotb3Impl == 1) then
          
          ! Cauchy-relation, implemented as head boundary
          if (SwBotb3ResVert == 0) then
@@ -1147,6 +1169,8 @@ subroutine jacobian_F()
    fsi_ws%dfdh_main(NN) = state%dimoca(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - fsi_ws%dfdh_upper(NN) 
    if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/(grid_z(NN)-state%gwlinp) 
+   else if (swbotb == 3 .and. .not. legacy_state_binding) then
+      fsi_ws%dfdh_main(NN)=fsi_ws%dfdh_main(NN)+typed_bottom_conductance
    else if (swbotb == 3 .AND. swbotb3Impl == 1) then ! Cauchy
       if (SwBotb3ResVert == 0) then
          fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 1.0d0 / (grid_disnod(NN+1)/state%kmean(NN+1) + rimlay)   

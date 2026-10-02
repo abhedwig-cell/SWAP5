@@ -812,7 +812,7 @@
         "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
         "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
       ],
-      "typed_input_config_authority": "B1.11 selector catalogue 1..8 is recovered. Remaining application gaps are explicit migration slices rather than authority ambiguity.",
+      "typed_input_config_authority": "B1.11 selector catalogue 1..8 is recovered. Remaining application gaps are explicit migration slices rather than authority ambiguity. Later canonical admissions close SWBOTB4 and bounded ordinary5;1/3/8 remain open.",
       "state_ownership": "Variant-specific; PPA-WU02 fixes the required state/transaction concerns per selector.",
       "transaction_status": "Not established for the remaining legacy selector families.",
       "qualification_evidence": [
@@ -820,15 +820,15 @@
         "B1.11 source-bound selector inventory",
         "F-CI95 exact SWBOTB=6 restricted mapping",
         "PPA-WU02-A canonical typed qbot admission",
-        "PPA-LOW02-TIME workflow 35426047814 PASS and PR #360 canonical admission"
+        "PPA-LOW02-TIME workflow 35426047814 PASS and PR #360 canonical admission",
+        "F-MIG431-LOW01-A PR#972 canonical q(gwl) admission",
+        "F-MIG431-LOW05-A run36964835178 / PR#974 canonical bounded ordinary head adapter"
       ],
       "production_admission": "NO broad lower-boundary family admission",
       "production_reachable": "NO_FOR_REMAINING_SELECTOR_FAMILIES",
       "restrictions": [
         "SWBOTB=1 prescribed-groundwater-level hybrid semantics not migrated",
         "SWBOTB=3 Cauchy/deep-aquifer semantics not migrated",
-        "SWBOTB=4 q(gwl) application law not migrated",
-        "legacy standalone SWBOTB=5 DATE5/HBOT5 application adapter not migrated",
         "SWBOTB=8 lysimeter active-set continuation not migrated"
       ],
       "scientific_risk": "MEDIUM to HIGH by selector",
@@ -1681,6 +1681,59 @@
         "Product configuration mapping to an admitted PPA-WU01 profile"
       ],
       "priority_band": "P0"
+    },
+    {
+      "id": "PPA-LOW05-APP",
+      "subsystem": "lower boundary",
+      "capability": "Ordinary non-groundwater-owned prescribed lower-face pressure-head DATE5/HBOT5 typed application adapter",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected",
+        "files": [
+          "SWAP/readswap.f90",
+          "SWAP/boundbottom.f90",
+          "SWAP/functions.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "typed_input_config_authority": "Immutable numeric DATE5/HBOT5 table, explicit calendar origins/simulation window and tile ordinary_prescribed_head opt-in; no file parser",
+      "state_ownership": "Existing committed physical/restart owner; immutable control and rollback-local endpoint proposal; no GWledger/datum",
+      "transaction_status": "Original endpoint sampling before context capture; frozen full/half/retry proposal; new accepted private cursor reproposal; partial-progress rollback and restart qualified",
+      "qualification_evidence": [
+        "integration/audits/F-MIG431-LOW05A_QUALIFICATION_RESULT.json",
+        "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md"
+      ],
+      "production_admission": {
+        "work_unit": "F-MIG431-LOW05-A",
+        "state": "CANONICAL_ADMITTED_CLOSED",
+        "pull_request": 974,
+        "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+        "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+        "qualification_run": 36964835178,
+        "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+        "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+      },
+      "production_reachable": "YES_RESTRICTED_TYPED_APPLICATION_CANONICAL",
+      "restrictions": [
+        "general SWP/BBC parser",
+        "public C ABI",
+        "mixed ownership",
+        "unrestricted transient accuracy/domain",
+        "RossFast head mode",
+        "new groundwater datum/ownership"
+      ],
+      "scientific_risk": "LOW within tested bounded composition; no generic transient theorem",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "existing typed Reference bottom_mode5",
+        "F-MIG431-LOW05P0 shared timing contract"
+      ],
+      "priority_band": "CLOSED"
     }
   ],
   "backlog": {
@@ -2014,6 +2067,100 @@
         "job": 105886744366
       },
       "effect": "Adds restricted typed SWREDU=2 Boesten-Stroosnijder production reachability for 0<COFRED<=1 with atomic transactional SPEV/SAEV and unchanged hydraulic ownership of actual evaporation."
+    },
+    {
+      "work_unit": "F-MIG431-LOW05-A",
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "pull_request": 974,
+      "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+      "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+      "qualification_run": 36964835178,
+      "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+      "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+    },
+    {
+      "work_unit": "F-MIG431-LOWGWL01-P0",
+      "state": "SHARED_AUTHORITY_BLOCKER_REPRODUCED_AND_REGISTERED",
+      "baseline": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
+      "diagnostic_postimage": "3e7e4f63183390eff6a389eae52e66b3db31b210",
+      "production_admitted": false,
+      "authority": "docs/migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md",
+      "effect": "SWBOTB1 requires shared Richards indexing, explicit constitutive ownership and accepted candidate/mass qualification before an application adapter can be issued. Modes1/3/8 remain open; existing admitted2/4/5/6/7 unchanged."
+    },
+    {
+      "work_unit": "F-MIG431-LOWGWL01-P0",
+      "date": "2026-10-02",
+      "state": "PARKED_BY_USER_DECISION",
+      "authority": "Explicit user instruction: Dit is een vreemde optie. Laten we deze parkeren.",
+      "meaning": "Defer SWBOTB1 migration and its shared prerequisite; not migrated, not admitted, not removed or scientifically falsified.",
+      "resume_condition": "Explicit central reprioritization or user instruction",
+      "next_active_selector": 3,
+      "active_sequence": [
+        3,
+        8
+      ],
+      "canonical_basis": "90622bdcaa67aff52ccbd9035c0f48dee70cc745",
+      "production_delta": [],
+      "production_admitted": false
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "COMPOSITION_PROVEN_SHARED_TYPED_RESISTANCE_PREREQUISITE_OPEN",
+      "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
+      "diagnostic_postimage": "c240a3c1c880663d86e1a702ff283a866ca809ee",
+      "diagnostic_cases_per_optimization": 6075,
+      "production_admitted": false,
+      "production_delta": [],
+      "authority": "docs/migration/F-MIG431-LOW03-P0_PREREGISTRATION.md",
+      "effect": "Implicit3 reuses Richards bottom-row physics with added series resistance, not a new solver. Ordinary mode5 is only the same-K zero-R limit; shared typed resistance and accepted mass ownership remain prerequisites. Mode1 parked,3/8 open."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "BOUNDED_DIRECT_SOLVER_QUALIFIED_ADMISSION_BLOCKED_SHARED_DEPENDENCIES",
+      "canonical_basis": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+      "qualified_postimage": "3407286de38d8d11219678257874afd3c44320a7",
+      "qualification_run": 36970096511,
+      "pull_request": 975,
+      "production_admitted": false,
+      "canonical_production_delta": [],
+      "shared_authority_prerequisite": "F-MIG431-LOW03-P0-DEP01",
+      "authority": "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json",
+      "effect": "Branch-only direct typed Reference resistive-head solver passes source, independent compartment/whole mass, replay, physical restart and admitted application preservation. Complete transitive RossFast/shared-contract semantic qualification remains missing. Historical RossFast guard already rejects canonical and is not proof of a new regression. No LOW03-A application issued;1 parked,3/8 open."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "COMPLETE_SHARED_SOLVER_QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "qualification_run": 36971466508,
+      "postimage": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+      "shared_dependency_gate": "F-MIG431-LOW03-P0-DEP01",
+      "shared_dependency_state": "ACCEPTED_CLOSED",
+      "pull_request": 975,
+      "canonical_production_delta": [],
+      "production_application_admitted": false,
+      "effect": "Exact combined physical and shared binding qualification complete. Normal canonical merge may proceed; full SWBOTB3 application stays closed."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "CANONICAL_ADMITTED_CLOSED_BOUNDED_TYPED_SOLVER",
+      "pull_request": 975,
+      "canonical_merge_commit": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+      "qualification_run": 36971466508,
+      "production_delta": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "src/legacy/b1_10_port/headcalc.f90"
+      ],
+      "production_application_admitted": false,
+      "effect": "Shared typed resistance prerequisite canonically admitted and closed; ordinary mode3 application still open."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-A",
+      "state": "CENTRALLY_PREREGISTERED_OFFICIAL_BRANCH_ISSUED",
+      "baseline": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+      "official_branch": "work/f-mig431-low03-a-implicit-cauchy-application",
+      "production_delta": [],
+      "canonical_admitted": false,
+      "effect": "Sole implicit ordinary Cauchy application unit preregistered; frozen aquifer head versus current-trial extra-flux timing explicit. Explicit3 remains open."
     }
   ]
 }

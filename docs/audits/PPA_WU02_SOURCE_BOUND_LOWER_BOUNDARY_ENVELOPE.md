@@ -171,3 +171,38 @@ calendar-string ingestion, internal -2 as a normal user selector, mixed
 bottom-mode applications, RossFast execution of this legacy control, or new
 groundwater-coupling semantics. Those boundaries are machine-recorded in
 `integration/audits/PPA_LOW02_TIME_STATUS.json`.
+
+
+## Current lower-boundary authority after LOW05-A (2026-10-02)
+
+Historical selector rows above retain their recorded snapshot. Later canonical authority admits4 via PR#972/5ab13625 and the bounded ordinary5 DATE5/HBOT5 adapter via PR#974/`e88af3da54b743958b887d9cc15647227388333a`. See [LOW05-A closeout](../migration/F-MIG431-LOW05A_CLOSEOUT.md). Modes2,4,6,7 and default groundwater5 are preserved in the named six-program qualification;1/3/8 remain open. Internal-2 and9 are not ordinary application selectors. This is not all-lower-boundary migration and not generic legacy parser admission.
+
+
+## Central SWBOTB=1 shared prerequisite registration
+
+F-MIG431-LOWGWL01-P0 registers the shared Richards/provider/candidate-mass prerequisite after LOW05-A closure. Mode1 is not a simple mode5 application adapter: in-profile NN selection and saturated-node reconstruction differ from below-profile head closure. The [preregistration](../migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md) records scope, held-fixed authorities and mandatory gates. Persisted local O0/O2 negative diagnosis proves public mode1 remains fail-closed and a direct, deliberately unguarded call reads beyond the exact active-node typed geometry. This is not production qualification or mode1 admission. Modes1/3/8 remain open, with1 next. No production source, ABI, transaction, restart or groundwater owner changed.
+
+
+## User priority decision, 2026-10-02
+
+SWBOTB=1 and F-MIG431-LOWGWL01-P0 are parked by explicit user decision. Earlier statements that1 is next are superseded for scheduling only. Existing source/negative diagnostic evidence and branch remain intact. Mode1 is still not migrated or admitted and is not declared obsolete or scientifically falsified. Active next review order is3, then8. Do not claim complete lower-boundary migration while1 is parked. The mode1 status record is the recovery authority.
+
+
+## SWBOTB3 implicit composition review, 2026-10-02
+
+F-MIG431-LOW03-P0 establishes a source-backed resistive-head prerequisite. Frozen B1.11 flux/Jacobian and mode5-gradient fragments pass6075 cases each at O0/O2 against persisted postimage `c240a3c1c880663d86e1a702ff283a866ca809ee`:225 zero-R head-limit cases and810 nonzero-R cases discriminating ordinary mode5. This is bottom-row algebra at identical K, not solver convergence, physical-domain, retry/restart/mass qualification or production admission. Existing Richards unknowns and solver can be reused; current typed boundary cannot represent external resistance/half-cell suppression. A fixed HBOT5 transformation alone is insufficient for general3. SWKIMPL1 derivative policy differs between legacy3 and5 and is not silently harmonized. The [preregistration](../migration/F-MIG431-LOW03-P0_PREREGISTRATION.md) and mode3 status/evidence bind the sole prerequisite branch. Mode1 stays parked;3 and8 remain open. No production source or shared contract has yet changed.
+
+
+## LOW03-P0 bounded solver evidence and transitive admission stop
+
+The branch-only direct typed Reference SWKIMPL0 resistive-head candidate passes source-bound O0/O2 qualification run36970096511 at `3407286de38d8d11219678257874afd3c44320a7`, including independent compartment/whole mass and physical restart continuation. It is not canonically admitted and is not full SWBOTB3 application migration. PR#975 is explicitly blocked by [LOW03-P0-DEP01](../migration/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_PREREGISTRATION.md): the additional common typed-contract mutation still needs semantic RossFast/transitive binding preservation. Its historical hash guard already differs from current canonical, so the red guard is not itself proof of a new LOW03 regression. No guard bypass, solver merge or new branch occurs.1 remains parked;3/8 remain open.
+
+
+## LOW03-P0 shared dependency closure, 2026-10-02
+
+Combined run36971466508/job110726138312 qualifies exact postimage `b1b5d6c22f18decd2db270531cd986ddf59af6ef`. Downloaded artifact11212276848 SHA256 `2bc97a2fb4439661ce4c4ea5afff9b81b1530badcead2775a94e008baa0dc9a2` contains three complete result JSONs identical to fresh local runs. DEP01 is accepted closed: six unchanged numerical programs, including36-material/216-case RossFast, adapter/selection, serialized wiring and solver-seam pilot, preserve complete stdout across canonical/candidate and O0/O2; new unsupported-field/mode tests pass. No historical guard is changed. PR#975 is ready for normal merge only; this record does not admit its production delta or full mode3 application. Protected/permission failures remain stop conditions.1 parked,3/8 application open.
+
+
+## LOW03-P0 canonical closeout and LOW03-A issuance
+
+PR#975 normally merges at `82351099a8c5c77ce111f8ace6648b8b5ffa7167`. [LOW03-P0 closeout](../migration/F-MIG431-LOW03-P0_CLOSEOUT.md) admits only the qualified direct typed SWKIMPL0 resistive-head solver and closes DEP01 dependency preservation. Ordinary SWBOTB3 application is not admitted. [LOW03-A preregistration](../migration/F-MIG431-LOW03-A_PREREGISTRATION.md) issues one implicit application branch: aquifer head is frozen before retries, while optional extra QBOT4 samples the actual trial endpoint. Explicit3 remains open pending separate committed-GWL/profile-resistance reconciliation.1 remains parked;3/8 application remain open; all-lower-boundary migration is not claimed.

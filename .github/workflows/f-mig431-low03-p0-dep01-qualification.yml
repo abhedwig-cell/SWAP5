@@ -1,0 +1,27 @@
+name: F-MIG431 LOW03-P0 complete shared qualification
+on:
+  push:
+    branches: [work/f-mig431-low03-p0-resistive-head-authority]
+    paths: [.github/workflows/f-mig431-low03-p0-dep01-qualification.yml]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Frozen B1.11 bottom-row composition
+        run: python3 tests/fmig431/run_low03_boundary_composition.py
+      - name: Direct Reference mass replay physical restart and admitted applications
+        run: python3 tests/fmig431/run_low03_solver_qualification.py
+      - name: Current-canonical paired RossFast shared-contract successor
+        run: python3 tests/fmig431/run_low03_dep01_qualification.py
+      - name: Persist complete exact-postimage qualification
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-MIG431-LOW03-P0-complete-shared-qualification
+          path: |
+            low03_boundary_composition_result.json
+            low03_solver_qualification_result.json
+            low03_dep01_result.json

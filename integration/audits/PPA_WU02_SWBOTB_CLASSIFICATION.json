@@ -18,7 +18,25 @@
       "application": "not_migrated",
       "groundwater_relation": "direct_gwl_state_semantics",
       "classification": "PRESERVED_NOT_TYPED_AS_LEGACY_MODE",
-      "risk": "high_state_machine"
+      "risk": "high_state_machine",
+      "shared_prerequisite": {
+        "work_unit": "F-MIG431-LOWGWL01-P0",
+        "status": "PARKED_BY_USER_DECISION",
+        "production_admitted": false,
+        "authority": "docs/migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md"
+      },
+      "migration_disposition": {
+        "date": "2026-10-02",
+        "state": "PARKED_BY_USER_DECISION",
+        "authority": "Explicit user instruction: Dit is een vreemde optie. Laten we deze parkeren.",
+        "meaning": "Defer SWBOTB1 migration and its shared prerequisite; not migrated, not admitted, not removed or scientifically falsified.",
+        "resume_condition": "Explicit central reprioritization or user instruction",
+        "next_active_selector": 3,
+        "active_sequence": [
+          3,
+          8
+        ]
+      }
     },
     {
       "selector": "2",
@@ -64,7 +82,13 @@
       "application": "not_migrated",
       "groundwater_relation": "deep_aquifer_head_and_resistance",
       "classification": "PRESERVED_NOT_TYPED",
-      "risk": "high_nonlinear_and_timing"
+      "risk": "high_nonlinear_and_timing",
+      "shared_prerequisite": {
+        "work_unit": "F-MIG431-LOW03-P0",
+        "status": "COMPOSITION_PROVEN_SHARED_TYPED_RESISTANCE_PREREQUISITE_OPEN",
+        "production_admitted": false,
+        "authority": "docs/migration/F-MIG431-LOW03-P0_PREREGISTRATION.md"
+      }
     },
     {
       "selector": "4",
@@ -94,10 +118,28 @@
       "meaning": "prescribed_lower_face_pressure_head",
       "time": "DATE5_HBOT5_table_in_legacy",
       "typed_contract": "admitted",
-      "application": "restricted_groundwater_profile",
+      "application": "canonical_bounded_ordinary_DATE5_HBOT5_typed_Reference_adapter_and_existing_restricted_groundwater_profile",
       "groundwater_relation": "used_by_F_GC_head_coupling_but_not_identical_to_legacy_DATE5_adapter",
-      "classification": "RESTRICTED_PRODUCTION",
-      "risk": "low_existing_restricted_route"
+      "classification": "RESTRICTED_PRODUCTION_TYPED_APPLICATION_CANONICAL",
+      "risk": "low_within_explicit_original_proposal_timing_and_non_groundwater_owner_contract",
+      "qualification": {
+        "work_unit": "F-MIG431-LOW05-A",
+        "state": "CANONICAL_ADMITTED_CLOSED",
+        "pull_request": 974,
+        "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+        "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+        "qualification_run": 36964835178,
+        "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+        "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+      },
+      "nonclaims": [
+        "general SWP/BBC parser",
+        "public C ABI",
+        "mixed ownership",
+        "unrestricted transient accuracy/domain",
+        "RossFast head mode",
+        "new groundwater datum/ownership"
+      ]
     },
     {
       "selector": "6",
@@ -200,8 +242,18 @@
     {
       "id": "PPA-LOW05-APP",
       "priority": 3,
-      "status": "NOT_IMPLEMENTED",
-      "meaning": "ordinary non-groundwater-owned prescribed-head application adapter"
+      "status": "CANONICAL_ADMITTED_CLOSED",
+      "meaning": "ordinary non-groundwater-owned prescribed-head application adapter",
+      "admission": {
+        "work_unit": "F-MIG431-LOW05-A",
+        "state": "CANONICAL_ADMITTED_CLOSED",
+        "pull_request": 974,
+        "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+        "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+        "qualification_run": 36964835178,
+        "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+        "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+      }
     },
     {
       "id": "PPA-LOW04",
@@ -216,14 +268,27 @@
     {
       "id": "PPA-LOW01",
       "priority": 5,
-      "status": "NOT_IMPLEMENTED",
-      "meaning": "prescribed-groundwater-level hybrid boundary/state machine"
+      "status": "PARKED_BY_USER_DECISION",
+      "meaning": "prescribed-groundwater-level hybrid boundary/state machine",
+      "prerequisite": "F-MIG431-LOWGWL01-P0"
     },
     {
       "id": "PPA-LOW03",
       "priority": 6,
-      "status": "NOT_IMPLEMENTED",
-      "meaning": "deep-aquifer Cauchy explicit/implicit boundary"
+      "status": "SHARED_TYPED_SOLVER_ADMITTED_APPLICATION_OPEN",
+      "meaning": "deep-aquifer Cauchy explicit/implicit boundary",
+      "prerequisite": "F-MIG431-LOW03-P0",
+      "shared_dependency_gate": "F-MIG431-LOW03-P0-DEP01",
+      "production_application_admitted": false,
+      "shared_dependency_gate_state": "ACCEPTED_CLOSED",
+      "shared_solver_admission": {
+        "work_unit": "F-MIG431-LOW03-P0",
+        "pull_request": 975,
+        "merge_commit": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+        "qualification_run": 36971466508,
+        "scope": "direct typed Reference SWKIMPL0 only"
+      },
+      "next_application_unit": "F-MIG431-LOW03-A implicit only"
     },
     {
       "id": "PPA-LOW08",
@@ -260,5 +325,32 @@
     "pull_request": 972,
     "canonical_merge_commit": "5ab13625c757407e633d0871fea663a5b6fabaeb",
     "effect": "SWBOTB=4 q(gwl) is now a typed production application law using committed/start-of-trial groundwater level and the existing prescribed-qbot owner. No claim for other selectors."
+  },
+  "post_low05a_update": {
+    "work_unit": "F-MIG431-LOW05-A",
+    "state": "CANONICAL_ADMITTED_CLOSED",
+    "pull_request": 974,
+    "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+    "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+    "qualification_run": 36964835178,
+    "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+    "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+  },
+  "lower_boundary_active_sequence": [
+    3,
+    8
+  ],
+  "parked_selectors": [
+    1
+  ],
+  "post_low03p0_review": {
+    "state": "CANONICAL_ADMITTED_CLOSED_BOUNDED_TYPED_SOLVER",
+    "canonical_merge_commit": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+    "pull_request": 975,
+    "qualification_run": 36971466508,
+    "scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
+    "application_mode3_admitted": false,
+    "implicit_application": "LOW03-A preregistered",
+    "explicit_application": "open"
   }
 }

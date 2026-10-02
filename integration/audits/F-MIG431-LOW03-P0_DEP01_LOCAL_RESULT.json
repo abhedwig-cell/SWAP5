@@ -1,0 +1,256 @@
+{
+  "work_unit": "F-MIG431-LOW03-P0-DEP01",
+  "scope": "current canonical versus LOW03 shared-contract semantic preservation, not mode3 application or performance admission",
+  "tested_postimage": "8fa02ea27d06589e98736256e719f1096de04062",
+  "baseline": "7a629a10cabb3553ff77474423e6ccac81b29aec",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "runner_sha256": "899bf02500d5d892809d8e1b4443bf7e1b309c268a0a40ae725a3169f1e69fde",
+  "canonical_admission": false,
+  "status": "SEMANTIC_SUCCESSOR_LOCAL_PASS",
+  "baseline_candidate_o0_o2_complete_output_identity": true,
+  "result_sha256": "b2548ab1da1e396624fdeaa5ac827212dc9964fc0ed3084a21fd0a2c355301d1",
+  "runs": {
+    "baseline": {
+      "O0": {
+        "tests/ross/test_ross13_36_material_production_envelope.f90": {
+          "stdout_sha256": "c7bf816157b360927b985a6a3bcc3e8847f81f1c965bbe63cd9085eceeb92311"
+        },
+        "tests/ross/test_fross22_admission_all_material.f90": {
+          "stdout_sha256": "96646ce03570cfd6ce2751a86ca041e49095f9f9b2a01ef72098761f1cc473b2",
+          "matrix": {
+            "K2_final_count": 212,
+            "K4_final_count": 2,
+            "K8_final_count": 2,
+            "case_count": 216,
+            "escalation_by_effective_saturation_index": {
+              "3": 4
+            },
+            "escalation_by_forcing": {
+              "DRYING": 2,
+              "NOMINAL": 2
+            },
+            "escalation_by_material": {
+              "B05": 2,
+              "O01": 2
+            },
+            "failed_cases": {
+              "mass": [],
+              "retry": [],
+              "route": [],
+              "temporal": [],
+              "tier_distribution": [],
+              "work": []
+            },
+            "gate": "PASS",
+            "mass_pass_count": 216,
+            "mean_linear_solves": 6.444444444444445,
+            "retry_contract_pass_count": 216,
+            "route_valid_count": 216,
+            "schema": "swap5.f-ross21.all-material-research-matrix.v1",
+            "temporal_accepted_count": 216,
+            "tier_distribution_expected": true,
+            "work_contract_pass_count": 216,
+            "worst": {
+              "mass_residual_abs_cm": 4.8269770215183063e-14,
+              "temporal_indicator": 0.8535759368211358
+            }
+          }
+        },
+        "tests/ross/test_ross12_soil_water_solver_adapter.f90": {
+          "stdout_sha256": "59c16b1a625342d3cc9eceee3e190b4f7f67ef60a29d484f744748c234d72888"
+        },
+        "tests/ross/test_ross12_solver_selection_binding.f90": {
+          "stdout_sha256": "062f2e0e4bfb1be77b5417c98f3b6cadfaa5b773ae81ffc9dac9147507d1816c"
+        },
+        "tests/ross/test_ross12_serialized_production_wiring.f90": {
+          "stdout_sha256": "96d31ea2d5ed05ef92a78820fd4cd1f70b9ea013ab982e9850d18551f516c4e2"
+        },
+        "tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90": {
+          "stdout_sha256": "89426d59e1baa92015b8cb6e0965235c1a71a9fa4e99ef3b178ef5fc5a644faf"
+        }
+      },
+      "O2": {
+        "tests/ross/test_ross13_36_material_production_envelope.f90": {
+          "stdout_sha256": "c7bf816157b360927b985a6a3bcc3e8847f81f1c965bbe63cd9085eceeb92311"
+        },
+        "tests/ross/test_fross22_admission_all_material.f90": {
+          "stdout_sha256": "96646ce03570cfd6ce2751a86ca041e49095f9f9b2a01ef72098761f1cc473b2",
+          "matrix": {
+            "K2_final_count": 212,
+            "K4_final_count": 2,
+            "K8_final_count": 2,
+            "case_count": 216,
+            "escalation_by_effective_saturation_index": {
+              "3": 4
+            },
+            "escalation_by_forcing": {
+              "DRYING": 2,
+              "NOMINAL": 2
+            },
+            "escalation_by_material": {
+              "B05": 2,
+              "O01": 2
+            },
+            "failed_cases": {
+              "mass": [],
+              "retry": [],
+              "route": [],
+              "temporal": [],
+              "tier_distribution": [],
+              "work": []
+            },
+            "gate": "PASS",
+            "mass_pass_count": 216,
+            "mean_linear_solves": 6.444444444444445,
+            "retry_contract_pass_count": 216,
+            "route_valid_count": 216,
+            "schema": "swap5.f-ross21.all-material-research-matrix.v1",
+            "temporal_accepted_count": 216,
+            "tier_distribution_expected": true,
+            "work_contract_pass_count": 216,
+            "worst": {
+              "mass_residual_abs_cm": 4.8269770215183063e-14,
+              "temporal_indicator": 0.8535759368211358
+            }
+          }
+        },
+        "tests/ross/test_ross12_soil_water_solver_adapter.f90": {
+          "stdout_sha256": "59c16b1a625342d3cc9eceee3e190b4f7f67ef60a29d484f744748c234d72888"
+        },
+        "tests/ross/test_ross12_solver_selection_binding.f90": {
+          "stdout_sha256": "062f2e0e4bfb1be77b5417c98f3b6cadfaa5b773ae81ffc9dac9147507d1816c"
+        },
+        "tests/ross/test_ross12_serialized_production_wiring.f90": {
+          "stdout_sha256": "96d31ea2d5ed05ef92a78820fd4cd1f70b9ea013ab982e9850d18551f516c4e2"
+        },
+        "tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90": {
+          "stdout_sha256": "89426d59e1baa92015b8cb6e0965235c1a71a9fa4e99ef3b178ef5fc5a644faf"
+        }
+      }
+    },
+    "candidate": {
+      "O0": {
+        "tests/ross/test_ross13_36_material_production_envelope.f90": {
+          "stdout_sha256": "c7bf816157b360927b985a6a3bcc3e8847f81f1c965bbe63cd9085eceeb92311"
+        },
+        "tests/ross/test_fross22_admission_all_material.f90": {
+          "stdout_sha256": "96646ce03570cfd6ce2751a86ca041e49095f9f9b2a01ef72098761f1cc473b2",
+          "matrix": {
+            "K2_final_count": 212,
+            "K4_final_count": 2,
+            "K8_final_count": 2,
+            "case_count": 216,
+            "escalation_by_effective_saturation_index": {
+              "3": 4
+            },
+            "escalation_by_forcing": {
+              "DRYING": 2,
+              "NOMINAL": 2
+            },
+            "escalation_by_material": {
+              "B05": 2,
+              "O01": 2
+            },
+            "failed_cases": {
+              "mass": [],
+              "retry": [],
+              "route": [],
+              "temporal": [],
+              "tier_distribution": [],
+              "work": []
+            },
+            "gate": "PASS",
+            "mass_pass_count": 216,
+            "mean_linear_solves": 6.444444444444445,
+            "retry_contract_pass_count": 216,
+            "route_valid_count": 216,
+            "schema": "swap5.f-ross21.all-material-research-matrix.v1",
+            "temporal_accepted_count": 216,
+            "tier_distribution_expected": true,
+            "work_contract_pass_count": 216,
+            "worst": {
+              "mass_residual_abs_cm": 4.8269770215183063e-14,
+              "temporal_indicator": 0.8535759368211358
+            }
+          }
+        },
+        "tests/ross/test_ross12_soil_water_solver_adapter.f90": {
+          "stdout_sha256": "59c16b1a625342d3cc9eceee3e190b4f7f67ef60a29d484f744748c234d72888"
+        },
+        "tests/ross/test_ross12_solver_selection_binding.f90": {
+          "stdout_sha256": "062f2e0e4bfb1be77b5417c98f3b6cadfaa5b773ae81ffc9dac9147507d1816c"
+        },
+        "tests/ross/test_ross12_serialized_production_wiring.f90": {
+          "stdout_sha256": "96d31ea2d5ed05ef92a78820fd4cd1f70b9ea013ab982e9850d18551f516c4e2"
+        },
+        "tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90": {
+          "stdout_sha256": "89426d59e1baa92015b8cb6e0965235c1a71a9fa4e99ef3b178ef5fc5a644faf"
+        },
+        "tests/fmig431/test_low03_dep01_defaults.f90": {
+          "stdout_sha256": "3efb83ef6e6a204bde988eb5c05a6f63ff66a67de9a6e6c699ff374c40bfdbd1"
+        }
+      },
+      "O2": {
+        "tests/ross/test_ross13_36_material_production_envelope.f90": {
+          "stdout_sha256": "c7bf816157b360927b985a6a3bcc3e8847f81f1c965bbe63cd9085eceeb92311"
+        },
+        "tests/ross/test_fross22_admission_all_material.f90": {
+          "stdout_sha256": "96646ce03570cfd6ce2751a86ca041e49095f9f9b2a01ef72098761f1cc473b2",
+          "matrix": {
+            "K2_final_count": 212,
+            "K4_final_count": 2,
+            "K8_final_count": 2,
+            "case_count": 216,
+            "escalation_by_effective_saturation_index": {
+              "3": 4
+            },
+            "escalation_by_forcing": {
+              "DRYING": 2,
+              "NOMINAL": 2
+            },
+            "escalation_by_material": {
+              "B05": 2,
+              "O01": 2
+            },
+            "failed_cases": {
+              "mass": [],
+              "retry": [],
+              "route": [],
+              "temporal": [],
+              "tier_distribution": [],
+              "work": []
+            },
+            "gate": "PASS",
+            "mass_pass_count": 216,
+            "mean_linear_solves": 6.444444444444445,
+            "retry_contract_pass_count": 216,
+            "route_valid_count": 216,
+            "schema": "swap5.f-ross21.all-material-research-matrix.v1",
+            "temporal_accepted_count": 216,
+            "tier_distribution_expected": true,
+            "work_contract_pass_count": 216,
+            "worst": {
+              "mass_residual_abs_cm": 4.8269770215183063e-14,
+              "temporal_indicator": 0.8535759368211358
+            }
+          }
+        },
+        "tests/ross/test_ross12_soil_water_solver_adapter.f90": {
+          "stdout_sha256": "59c16b1a625342d3cc9eceee3e190b4f7f67ef60a29d484f744748c234d72888"
+        },
+        "tests/ross/test_ross12_solver_selection_binding.f90": {
+          "stdout_sha256": "062f2e0e4bfb1be77b5417c98f3b6cadfaa5b773ae81ffc9dac9147507d1816c"
+        },
+        "tests/ross/test_ross12_serialized_production_wiring.f90": {
+          "stdout_sha256": "96d31ea2d5ed05ef92a78820fd4cd1f70b9ea013ab982e9850d18551f516c4e2"
+        },
+        "tests/publication/test_pub_p2e01_solver_seam_paired_pilot.f90": {
+          "stdout_sha256": "89426d59e1baa92015b8cb6e0965235c1a71a9fa4e99ef3b178ef5fc5a644faf"
+        },
+        "tests/fmig431/test_low03_dep01_defaults.f90": {
+          "stdout_sha256": "3efb83ef6e6a204bde988eb5c05a6f63ff66a67de9a6e6c699ff374c40bfdbd1"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "work_unit": "F-MIG431-LOW03-A",
+  "state": "CENTRALLY_PREREGISTERED_OFFICIAL_BRANCH_ISSUED",
+  "baseline": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+  "official_branch": "work/f-mig431-low03-a-implicit-cauchy-application",
+  "prerequisite": "F-MIG431-LOW03-P0",
+  "prerequisite_state": "CANONICAL_ADMITTED_CLOSED_BOUNDED_TYPED_SOLVER",
+  "prerequisite_merge": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+  "scope": "Ordinary non-groundwater-owned implicit SWBOTB3 application adapter; SWKIMPL0 bare homogeneous Reference SHAPE_3=1; DATE3/sine aquifer head and optional DATE4/QBOT4 independent trial timing",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "production_delta": [],
+  "interfaces_changed": [],
+  "next_action": "Frozen source-law/proposal-vs-trial sampling oracles and concrete application binding design before production edits",
+  "authority_paths": [
+    "docs/migration/F-MIG431-LOW03-A_PREREGISTRATION.md",
+    "docs/migration/F-MIG431-LOW03-P0_CLOSEOUT.md",
+    "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
+    "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md",
+    "docs/numerics/transactional-time-stepping.md",
+    "docs/capabilities/restart-v1.md"
+  ],
+  "relevant_paths": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90"
+  ],
+  "held_fixed": [
+    "Solver residual/Jacobian/common boundary",
+    "C ABI",
+    "Groundwater datum/storage owner",
+    "Transaction ledger",
+    "Restart format"
+  ],
+  "application_timing": {
+    "aquifer_table_head": "Original proposal endpoint, frozen before retry loop",
+    "aquifer_sine_head": "Original proposal start calendar-year phase, frozen before retry loop",
+    "extra_qbot4": "Current actual trial endpoint; not frozen to original proposal endpoint"
+  },
+  "fail_closed": [
+    "AQPER0",
+    "R0 without half-cell",
+    "Evaluated head outside bounded typed domain",
+    "Nonfinite or nonmonotone typed dates",
+    "Missing proposal history",
+    "Mixed/groundwater-owned/RossFast/macropore/SWKIMPL1/sensitivity routes"
+  ],
+  "explicit3_state": "OPEN_NOT_ISSUED_REQUIRES_SEPARATE_GWL_AND_SATURATED_PROFILE_RECONCILE",
+  "parked_selectors": [
+    1
+  ],
+  "active_sequence": [
+    3,
+    8
+  ],
+  "claim_ceiling": "This unit never establishes migration of all SWBOTB3 or all lower boundaries"
+}

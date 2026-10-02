@@ -1,0 +1,73 @@
+{
+  "work_unit": "F-MIG431-LOWGWL01-P0",
+  "claim": "negative diagnostic only; public mode1 must remain fail-closed",
+  "tested_postimage": "3e7e4f63183390eff6a389eae52e66b3db31b210",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "source_sha256": {
+    "tests/fsi/fsi04_real_headcalc_stubs.f90": "80eb9087c36057a922185bdc27b435d30721ab9be780e2f5082fc8258d96a25f",
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+    "src/runtime/mod_a23bu_worker_execution_context.f90": "3bba0d4c16685c6af91e84285d1c296c396c72fcf91978c412ca1ca1d6a8270f",
+    "src/solver/mod_soil_water_solver_contract.f90": "7d6a5522e42501f80112d9c16625eba1c875d8c79a3aafe69911bf22d317cfcc",
+    "src/solver/mod_reference_richards_workspace.f90": "9eff22ece8ce73900131bb55c589908f832895c20f48f9c52bc4a95a4b5f78f2",
+    "src/solver/mod_reference_linear_solver.f90": "99924ba6e42d3ade458333f65d71d48b71e262b570a2381b5350682919ec14eb",
+    "src/solver/mod_reference_richards_state_binding.f90": "11609ee59a2f1a888c408c611a54b773f931bb5e0b5c46bd3ebb4a016bcf32d2",
+    "src/legacy/b1_10_port/headcalc.f90": "9346b171987ab095e480fa03761ec292e584cd60202f54b602e3004e4a3da8ee",
+    "src/solver/mod_b110_default_mvg_provider.f90": "47c61a5135c8e88c4d08a8b7a6dd291f8c7ec508d63bbefcfaad05b2ac6593ee",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": "bc5cb47ea986c9dbb39db722dae75e5637d78efa178236fa2d62ecc48e94a0b1",
+    "src/solver/mod_b110_direct_retention_core.f90": "6bdc5210911803a9b36e41b38aa706c92b8cab3e30ca797cc6d6be2586153336",
+    "src/solver/mod_b110_direct_retention_provider.f90": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9",
+    "src/solver/mod_b110_source_sink_provider.f90": "9f77a9fbd2f79b93aff97f8f5bee3ba8d7314a9d179c2fb3f3a0b93de33f118d",
+    "src/solver/mod_b110_root_sink_provider.f90": "7679dec5f23ea59ceabd3f5a1f7de65b30728b4ca6999dc33d499665acd0cd2e",
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": "83fac9a3f6bbae7f097b9f0d72d018b3d8d50553a8325f5a3f7b7f1d86f7e9e8",
+    "src/solver/mod_reference_richards_temporal_indicator.f90": "ed905ef971c14b63447bc1935add26dd91457d7255b76ea69986b6d44ace50bc",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "bb78230b3ef55b9701c4aa5d20f3178c04570d4f91830ba9457b8d7242f933d8",
+    "tests/fmig431/test_lowgwl01_feasibility.f90": "2785a75914aeaf2ac6a12adb622778aaca982ae3b5a0dad7b8e10ab2710569ed"
+  },
+  "runner_sha256": "a2b72d166d92964d1e0e2672d7c7048ed2566c36116d5d29b5e2d2aef3ede06a",
+  "runs": {
+    "O0": {
+      "public_gate": "F-MIG431-LOWGWL01_TYPED_MODE1_FAIL_CLOSED=PASS",
+      "raw_diagnostic_exit": 2,
+      "raw_diagnostic": "Index '9' of dimension 1 of array 'parameter_set%z' above upper bound of 8",
+      "geometry": "8 active nodes, exact z(8), GWLEVEL=-100 cm; fifth lower face=-50 cm"
+    },
+    "O2": {
+      "public_gate": "F-MIG431-LOWGWL01_TYPED_MODE1_FAIL_CLOSED=PASS",
+      "raw_diagnostic_exit": 2,
+      "raw_diagnostic": "Index '9' of dimension 1 of array 'parameter_set%z' above upper bound of 8",
+      "geometry": "8 active nodes, exact z(8), GWLEVEL=-100 cm; fifth lower face=-50 cm"
+    }
+  },
+  "production_qualification": false,
+  "canonical_mode1_admission": false,
+  "status": "NEGATIVE_FEASIBILITY_REPRODUCED",
+  "o0_o2_identity": true,
+  "persisted_input_git_blob_identity": {
+    "status": "PASS",
+    "postimage": "3e7e4f63183390eff6a389eae52e66b3db31b210",
+    "git_blobs": {
+      "tests/fsi/fsi04_real_headcalc_stubs.f90": "23c00e4a188e88bc36ef95cbe4faaacdd6aad639",
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5418b6a1a9f651e818678f347c9cd8399693eb82",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "8cf848d0ac85602bcde434d76189990f30c11dcb",
+      "src/runtime/mod_a23bu_worker_execution_context.f90": "7861f062c5c7c3aa6bf386a9af793489d4a76f56",
+      "src/solver/mod_soil_water_solver_contract.f90": "1afbb686be7c3e95c4311abbf65d6a601296a62d",
+      "src/solver/mod_reference_richards_workspace.f90": "52b35eddf6a831e5534708ce313a9e3630ba5cd4",
+      "src/solver/mod_reference_linear_solver.f90": "0ab15b79e8e74c94df43e4c27dfede268c28c112",
+      "src/solver/mod_reference_richards_state_binding.f90": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+      "src/legacy/b1_10_port/headcalc.f90": "a5b9ac4a4ea6d00ead53482bfa180091e13a9619",
+      "src/solver/mod_b110_default_mvg_provider.f90": "f5cf3cab64a3a5559b7115a78161d62fc88c903d",
+      "src/solver/mod_b110_default_mvg_directional_provider.f90": "1eae1c4092542d224cceb9c2d494f91eba2565c3",
+      "src/solver/mod_b110_direct_retention_core.f90": "4079f23ac63a60efb80e499029346fac88f8a780",
+      "src/solver/mod_b110_direct_retention_provider.f90": "8de39d457ee85ef930c021be360648c490b2c732",
+      "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac",
+      "src/solver/mod_b110_root_sink_provider.f90": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+      "src/solver/mod_fixed_flux_top_boundary_provider.f90": "fb226f133bd48d8ab945f111c76897aeff49facf",
+      "src/solver/mod_reference_richards_temporal_indicator.f90": "34ba400d5548d92c22bc6dd82a32b65f7a1ddc97",
+      "src/adapter/mod_reference_richards_legacy_binding.f90": "6d3003ceff8e51b5bce326485e7c13dcc35fedd3",
+      "tests/fmig431/test_lowgwl01_feasibility.f90": "9b7bbf26a8eaf1b9fc229e51e8b51797f953ad37",
+      "tests/fmig431/run_lowgwl01_feasibility.py": "1ff29c6f2a9fc99af410d514774d602e3d301ee7"
+    }
+  },
+  "production_delta": []
+}
