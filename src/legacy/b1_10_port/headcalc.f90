@@ -86,7 +86,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    integer                          :: numnod
    integer                          :: swmacro, swbotb, swkimpl, swkmean, maxit, maxbacktr
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
-   real(8)                          :: CritDevBalCp, CritDevBalTot, lysimeter_plate_head
+   real(8)                          :: CritDevBalCp, CritDevBalTot, lysimeter_plate_head, lysimeter_selector_head
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
@@ -111,6 +111,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    legacy_state_binding = .not. present(state_binding)
    typed_bottom_invalid=.false.
    typed_bottom_conductance=0.0d0
+   lysimeter_selector_head=0.0d0
    if (legacy_state_binding) then
       lysimeter_plate_head=hplate
    else
@@ -185,7 +186,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       swmacro = 0
       if (.not. present(boundary_conditions)) error stop 'HeadCalc: explicit boundary conditions required'
       swbotb = boundary_conditions%bottom_mode
-      if (swbotb == 8) lysimeter_plate_head=boundary_conditions%bottom_head
+      if (swbotb == 8) then
+         lysimeter_plate_head=boundary_conditions%bottom_head
+         lysimeter_selector_head=state%h(numnod)
+      end if
       if (.not. present(numerical_config)) error stop 'HeadCalc: explicit numerical config required'
       if (.not. present(explicit_step_duration)) error stop 'HeadCalc: explicit step duration required'
       if (explicit_step_duration <= 0.0d0) error stop 'HeadCalc: explicit step duration must be positive'
@@ -1066,7 +1070,8 @@ subroutine vector_F(iTask)
 !  for swbotb = 8, depending on iTask
    if (iTask == 1) then
       if (swbotb == 8) then
-         if (state%h(NN) > Critdz - grid_disnod(NN+1) + lysimeter_plate_head) then
+         if (merge(lysimeter_selector_head,state%h(NN),.not.legacy_state_binding) > &
+             Critdz - grid_disnod(NN+1) + lysimeter_plate_head) then
             fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
             flboth = .TRUE.
          else
