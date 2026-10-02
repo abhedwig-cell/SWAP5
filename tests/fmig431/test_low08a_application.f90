@@ -113,9 +113,6 @@ contains
     real(real64),intent(out)::k0
     value%initial_time=T0
     value%numerical%transaction%temporal_tolerance=0.0_real64
-  value%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
-  value%numerical%model_temporal_indicator_budget_available=.true.
-  value%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
     value%numerical%transaction%max_retries=2
@@ -130,8 +127,7 @@ contains
     value%tiles(1)%template%state_layout_id=680230_int64
     value%tiles(1)%template%solver_interface_id=680240_int64
     value%tiles(1)%template%optional_state_layout_id=0_int64
-    value%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
-    allocate(value%tiles(1)%initial_right_derivative(numnod));value%tiles(1)%initial_right_derivative=0.0_real64
+    value%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     value%tiles(1)%template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     call initialize_parameters(value%tiles(1)%parameters,690001_int64)
     call initialize_state_forcing(value%tiles(1)%parameters,value%tiles(1)%initial_state,value%tiles(1)%base_forcing,initial_head,k0)
