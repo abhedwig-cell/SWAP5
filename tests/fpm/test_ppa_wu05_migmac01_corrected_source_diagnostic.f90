@@ -444,6 +444,7 @@ contains
     fparams%head_abs_tolerance=tol
     fparams%head_rel_tolerance=tol
     fparams%ponding_tolerance=tol
+    fparams%root_extraction_active=.true.
     fparams%macropore_active=.true.
     call prepare_fmr_b110_default_mvg(fparams,prepared)
     if(.not.prepared)error stop 'MIGMAC01 source transaction MVG'
