@@ -2,7 +2,6 @@ module mod_bartholomeus_profile_response
   use iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_bartholomeus_response, only: BartholomeusResponseInput, bartholomeus_respiration_factor, bartholomeus_rwu_factor
-  use mod_bartholomeus_macro, only: bartholomeus_macro_concentration
   implicit none
   private
   public :: bartholomeus_profile_factors
@@ -38,11 +37,20 @@ contains
       call bartholomeus_respiration_factor(p,rf,node_ok)
       if (.not.node_ok) return
       factors(i)=bartholomeus_rwu_factor(rf,p%max_resp_factor)
-      ! The next-node upper boundary must be the MACRO value at the returned factor.
-      cmacro = bartholomeus_macro_concentration(p%macro,rf,node_ok)
+      ! The next-node upper boundary must be the fresh MACRO value at the returned factor.
+      cmacro = fresh_macro(p,rf,node_ok)
       if (.not.node_ok) return
       ctop=cmacro
     end do
     ok=.true.
+  contains
+    function fresh_macro(p,rf,node_ok) result(c)
+      use mod_bartholomeus_macro, only: bartholomeus_macro_concentration
+      type(BartholomeusResponseInput), intent(in) :: p
+      real(real64), intent(in) :: rf
+      logical, intent(out) :: node_ok
+      real(real64) :: c
+      c=bartholomeus_macro_concentration(p%macro,rf,node_ok)
+    end function
   end subroutine
 end module
