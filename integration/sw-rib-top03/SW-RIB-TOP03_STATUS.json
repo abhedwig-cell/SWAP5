@@ -4,7 +4,7 @@
   "date": "2026-10-01",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "e2d18564383e1350b0b9a68af0eaf668dac784af",
-  "decision": "SURFACE_SWITCHING_DIAGNOSED__SMOOTH_FORCING_REPAIR_FALSIFIED__NO_PRODUCTION_ADMISSION",
+  "decision": "BOUNDED_NEWTON_DIRECTION_REPAIR_FALSIFIED__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -136,7 +136,7 @@
     "Shared BASE temporal identity gate returns huge() for non-identical full/half transient end states. O0/O2 fixture converges, passes mass gates, but records 3 temporal rejections and zero accepted substeps. TOP03 cannot supply a live inundation candidate under that unchanged policy.",
     "Isolated fixed-grid nonlinear research reaches 80-iteration retries near saturation on refined 0.25-day integrations; full/half acceptance repair alone does not supply a trustworthy reference."
   ],
-  "next_action": "Research safeguarded nonlinear proposals and saturation active-set behavior, without changing physical residual/storage or replacing accepted exchange with provider flux. Separately resolve external sill event sampling and complete-window throughput accuracy.",
+  "next_action": "Trace stalled free-drainage terminal iteration: residual, accepted line-search factor, constitutive and boundary terms. Direction caps and earlier boundary FD probes are insufficient. Keep complete-window throughput acceptance and production top-active receipt qualification separate.",
   "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -217,6 +217,15 @@
     "O0_O2_identity": true,
     "trajectories_per_build": 702,
     "failed_without_switching": 66,
+    "production_qualified": false
+  },
+  "newton_guard_research": {
+    "preregistration_commit": "8559048762c44ce3223f42e46b446f5503b99e48",
+    "result": "integration/sw-rib-top03/TOP03_NEWTON_GUARD_RESULT.json",
+    "decision": "integration/sw-rib-top03/TOP03_NEWTON_GUARD_DECISION.md",
+    "O0_O2_identity": true,
+    "guarded_integrations": 2808,
+    "original_failures_repaired": 0,
     "production_qualified": false
   }
 }
