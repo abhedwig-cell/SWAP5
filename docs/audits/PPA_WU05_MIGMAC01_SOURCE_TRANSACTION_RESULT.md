@@ -3,7 +3,7 @@
 Date: 2026-10-02
 Status: QUALIFIED_SOURCE_TRANSACTION_WITH_G7_ATTRIBUTION_OPEN
 Qualified postimage: 16c66c41c8bbc009cd0efa76c79502532af85f66
-Preservation run: https://github.com/abhedwig-cell/SWAP5/actions/runs/36989594192
+Preservation run: https://github.com/abhedwig-cell/SWAP5/actions/runs/36989583419
 Owning branch: research/ppa-wu05-migmac01-covering-layer
 
 ## What changed
