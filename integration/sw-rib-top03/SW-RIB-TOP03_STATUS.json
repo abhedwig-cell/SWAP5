@@ -647,5 +647,16 @@
     "result": "integration/sw-rib-top03/TOP03_CANONICAL_CONTACT_RESULT.json",
     "ownership_contract": "integration/sw-rib-top03/TOP03_NATIVE_PROFILE_INTEGRATION_CONTRACT.md",
     "evidence": "integration/sw-rib-top03/evidence/canonical_contact/raw_records.tar.gz"
+  },
+  "surface_formulation_reassessment": {
+    "status": "BOUNDARY_SWITCHING_NOT_SUFFICIENT__NO_PRODUCTION_FORMULATION_ADMITTED",
+    "result": "integration/sw-rib-top03/TOP03_SURFACE_FORMULATION_REASSESSMENT_RESULT.json",
+    "decision_document": "integration/sw-rib-top03/TOP03_SURFACE_FORMULATION_REASSESSMENT.md",
+    "implemented_production_code": false,
+    "new_solver_runs": false,
+    "boundary_switch_hypothesis": "falsified as a necessary cause for tested bank; 66 failures have no switch",
+    "localized_blocker": "branch-local Richards residual gap across near-saturation K cutoff in frozen failed step 86; no global-root-absence claim",
+    "unified_surface_control_volume": "preferred future ownership contract for Ribasim; alone does not change wet imposed-head Richards problem",
+    "production_admission": false
   }
 }

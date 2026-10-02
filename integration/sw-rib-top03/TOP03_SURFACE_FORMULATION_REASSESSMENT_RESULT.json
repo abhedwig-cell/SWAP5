@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.sw_rib_top03.surface_formulation_reassessment.v1",
+  "date": "2026-10-02",
+  "decision": "BOUNDARY_SWITCHING_NOT_SUFFICIENT__NO_PRODUCTION_FORMULATION_ADMITTED",
+  "canonical_reference": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
+    "qualification_note": "TOP03 research artifacts include branch-side external-head changes; the transition research provider source matches this pin, but the branch-only inundation contract is not canonical."
+  },
+  "implemented_production_code": false,
+  "new_solver_runs": false,
+  "evidence_only_reassessment": true,
+  "hypotheses": {
+    "sharp_boundary_switch_is_necessary_cause": {
+      "status": "falsified_for_tested_bank",
+      "evidence": "TOP03_SURFACE_TRANSITION_RESULT.json",
+      "failed_trajectories_without_any_switch": 66,
+      "constant_vs_abrupt_matched_failures": [
+        33,
+        33
+      ],
+      "linear_external_head_ramp_failures": 43
+    },
+    "removing_near_saturation_K_shortcut_is_sufficient": {
+      "status": "falsified",
+      "evidence": "TOP03_CUT_COUNTERFACTUAL_RESULT.json",
+      "stock_failures_before_after": [
+        109,
+        155
+      ],
+      "pressure_aware_failures_before_after": [
+        80,
+        126
+      ]
+    },
+    "direction_capping_is_sufficient": {
+      "status": "falsified_for_tested_caps",
+      "evidence": "TOP03_NEWTON_GUARD_RESULT.json",
+      "cap_1_repairs": 0,
+      "cap_0_1_new_failures": 21
+    },
+    "boundary_only_surface_reformulation_resolves_wet_no_switch_failures": {
+      "status": "falsified_for_tested_bank",
+      "reason": "For connected inundation with continuous head, eliminating local surface storage returns the same imposed-head Richards problem; a fixed-origin failed step has no root on the inspected saturated-upper branch and bottom-head interval."
+    }
+  },
+  "localized_solver_obstruction": {
+    "evidence": "TOP03_FROZEN_ORIGIN_RESULT.json",
+    "failed_step": 86,
+    "head_interval_cm": [
+      -0.02,
+      0.0
+    ],
+    "K_cut_head_cm": -0.012386042337589586,
+    "left_residual_cm_day": -0.07177364100916606,
+    "right_residual_cm_day": 0.10817170958084343,
+    "residual_reconstruction_max_error_cm_day": 0.0,
+    "global_root_absence_claim": false
+  },
+  "mass_and_transaction": {
+    "max_transition_aggregate_ledger_residual_cm": 1.8912649224489542e-13,
+    "surface_cv_balance": "proposed accounting identity recorded in decision document; no new production implementation or transaction qualification",
+    "exactly_once_accept_reject_replay_restart": "not newly qualified",
+    "known_interface_findings": [
+      "TOP03-R2",
+      "TOP03-R3",
+      "TOP03-R4",
+      "TOP03-R5",
+      "TOP03-R6",
+      "TOP03-R7"
+    ]
+  },
+  "alternatives": {
+    "complementarity_semismooth": "not implemented; remains a possible numerical method, but does not by itself change the wet imposed-head limit",
+    "smooth_regularized_boundary": "no physical epsilon selected; gradual stage ramp and conductivity-cutoff counterfactual do not establish a robust repair",
+    "unified_local_surface_control_volume": "preferred mass-ownership architecture for Ribasim coupling; does not repair the demonstrated Richards branch gap in connected-head limit",
+    "finite_contact_resistance": "numerically completes bounded tests for Rs>=0.50 day; falsified against ready dry explicit-layer comparisons as equivalent physics",
+    "constant_contact_conductance_or_direction_cap": "not sufficient on tested bank"
+  },
+  "regression_scope": {
+    "TOP03_transition_trajectories_per_optimization": 702,
+    "O0_O2_exact": true,
+    "analytical_controls": 156,
+    "Ribasim_runtime_inundation_recession_qualification": "not achieved"
+  },
+  "production_admission": false,
+  "next_research_question": "Can a source-consistent Richards discretization/solver cross the measured near-saturation constitutive branch gap for the frozen wet no-switch case while preserving the existing soil physics and mass ownership?",
+  "decision_document": "integration/sw-rib-top03/TOP03_SURFACE_FORMULATION_REASSESSMENT.md"
+}
