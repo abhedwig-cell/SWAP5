@@ -4,6 +4,7 @@ import hashlib,json,os,pathlib,re,shlex,subprocess,tempfile
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 TESTS=[
  'tests/fmig431/test_low03a_cauchy_provider.f90',
+ 'tests/fmig431/test_low03a_dep02_cauchy_temporal_operator.f90',
  'tests/fmig431/test_low03a_application.f90',
  'tests/fmig431/test_low03_typed_solver.f90',
  'tests/fmig431/test_fmig431_low01a_qgwl_binding.f90',
