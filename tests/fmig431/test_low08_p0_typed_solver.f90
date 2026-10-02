@@ -28,8 +28,8 @@ program test_low08_p0_typed_solver
   call setup()
   print '(a)', 'LOW08_STAGE_SETUP=PASS'
   hplate=-80._real64
-  threshold=critdz-p%node_distance(n)+hplate
-  write(*,'(a,3(1x,es24.16))') 'LOW08_GEOM_DIAG',hplate,p%node_distance(n),threshold
+  threshold=critdz-0.5_real64*p%dz(n)+hplate
+  write(*,'(a,3(1x,es24.16))') 'LOW08_GEOM_DIAG',hplate,0.5_real64*p%dz(n),threshold
 
   print '(a)', 'LOW08_STAGE_BEFORE_EQUALITY_SET'
   call set_bottom(threshold)
