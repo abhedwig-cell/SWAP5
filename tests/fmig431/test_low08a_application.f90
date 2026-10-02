@@ -50,7 +50,7 @@ program test_low08a_application
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
   cfg%numerical%model_temporal_indicator_budget_available=.true.
   cfg%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
-  cfg%tiles(1)%base_forcing%bottom_head=-60.0_real64
+  cfg%tiles(1)%base_forcing%bottom_head=-80.0_real64
   cfg%tiles(1)%base_forcing%top_flux=0.0_real64
   cfg%tiles(1)%base_forcing%bottom_flux=0.0_real64
   print '(a)', 'LOW08A_STAGE_BEFORE_INIT'
@@ -293,7 +293,7 @@ contains
     state%active_nodes=numnod
     allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head=heads;state%water_content=water;state%ponding_depth=0.0_real64;state%groundwater_level=-2.0_real64
-    forcing%top_flux=0.0_real64;forcing%top_head=initial_head;forcing%bottom_flux=0.0_real64;forcing%bottom_head=-60.0_real64
+    forcing%top_flux=0.0_real64;forcing%top_head=initial_head;forcing%bottom_flux=0.0_real64;forcing%bottom_head=-80.0_real64
     allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod),forcing%root_extraction_sink(numnod))
     forcing%drainage_flux_by_level=0.0_real64;forcing%subsurface_irrigation_source=0.0_real64;forcing%root_extraction_sink=0.0_real64
   end subroutine
