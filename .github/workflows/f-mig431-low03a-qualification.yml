@@ -6,6 +6,7 @@ on:
       - 'src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'src/adapter/mod_b110_serialized_context_binding.f90'
       - 'tests/fmig431/test_low03a_*.f90'
       - 'tests/fmig431/run_low03a_*.py'
       - '.github/workflows/f-mig431-low03a-qualification.yml'
