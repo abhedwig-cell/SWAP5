@@ -113,7 +113,7 @@ contains
     type(soil_water_solve_result_t)::predictor,corrector
     type(macropore_exchange_overlay_provider_t),target::overlay
     type(ppa_wu05a16_inner_macropore_provider_t),target::inner_provider
-    type(macropore_geometry_result_t)::geometry
+    type(macropore_geometry_result_t)::geometry,accepted_geometry
     type(macropore_rate_bundle_request_t)::rate_request,rate_template_step,rate_template_attempt
     type(macropore_rate_bundle_result_t)::current_rates,raw_rates
     type(macropore_standard_candidate_receipt_t)::receipt
@@ -173,6 +173,7 @@ contains
     end if
 
     call evaluate_macropore_geometry(geometry_config,accepted_macro%dynamic_volume_cp,geometry)
+    accepted_geometry=geometry
     if(.not.geometry%valid)then
       result%status=MACRO_RUNTIME_FAILED
       return
@@ -343,6 +344,15 @@ contains
       current_node=sum(current_domain,dim=1)
       result%inner_final_exchange_rate_cm_per_day=sum(current_domain)
       result%matrix_result=corrector
+      if(present(shrinkage_config))then
+        if(shrinkage_config%enabled)then
+          call inner_provider%evaluate_trial_geometry(corrector%candidate_state%water_content,geometry,ok)
+          if(.not.ok)then
+            result%status=MACRO_RUNTIME_FAILED
+            return
+          end if
+        end if
+      end if
 
       call build_macropore_standard_candidate(accepted_macro,geometry,raw_rates%top_partition,current_domain, &
            raw_rates%rapid_outflow_cp_cm,dt,geometry_config%top_node,base_request%parameters%z, &
@@ -515,6 +525,15 @@ contains
     ! Use the exact exchange vector injected into the converged corrector for mass identity.
     current_node=sum(current_domain,dim=1)
     result%matrix_result=corrector
+    if(present(shrinkage_config))then
+      if(shrinkage_config%enabled)then
+        call inner_provider%evaluate_trial_geometry(corrector%candidate_state%water_content,geometry,ok)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+      end if
+    end if
 
     call build_macropore_standard_candidate(accepted_macro,geometry,raw_rates%top_partition,current_domain, &
          raw_rates%rapid_outflow_cp_cm,dt,geometry_config%top_node,base_request%parameters%z, &
