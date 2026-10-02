@@ -67,4 +67,3 @@ print '(a,i0)','C3A_ADMISSION_BOUNDARY_FAILURES=',failures
  end if
  print '(a)','PPA_WU05C3A_ADMISSION_BOUNDARIES=PASS'
 end program
-

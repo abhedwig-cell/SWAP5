@@ -2,7 +2,7 @@
 
 Date: 2026-10-01
 
-Status: `IMPLEMENTED / END_TO_END_PENDING`
+Status: `ACTUAL_APPLICATION_QUALIFIED / FINAL_ADMISSION_PENDING`
 
 The Bartholomeus production route is fail-closed.
 

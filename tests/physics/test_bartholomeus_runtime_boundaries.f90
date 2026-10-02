@@ -154,4 +154,3 @@ contains
   call fmr_apply_bartholomeus_to_root_sink(cfg,h,t,d,c,wr,wr0,.275_real64,base,out,status)
  end subroutine
 end program
-

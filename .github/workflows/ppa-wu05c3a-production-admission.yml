@@ -1,5 +1,5 @@
 name: PPA WU05 C3A production oxygen admission
-# Source-unit fixture repaired after run 36968615218; production physics unchanged.
+# Final exact-postimage qualification, including current-source shared preservation.
 on:
   push:
     branches:
@@ -39,6 +39,16 @@ jobs:
         run: python3 tests/physics/run_bartholomeus_b111_assembled.py
       - name: Current canonical application and lower-boundary preservation O0 and O2
         run: python3 tests/fmig431/run_low05a_qualification.py
+      - name: Current shared backend preservation O0 and O2
+        run: |
+          set -euo pipefail
+          python3 tests/physics/run_bartholomeus_shared_preservation.py 2>&1 | tee c3a_shared_preservation.log
+          {
+            bash tests/fkt/run_fkt22_fmr_compile_gate.sh
+            bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+            bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
+            bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
+          } 2>&1 | tee c3a_backend_preservation.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -49,3 +59,6 @@ jobs:
             c3a_b111_assembled_result.json
             low05a_qualification_result.json
             c3a_narrow_gates.log
+            c3a_shared_preservation_result.json
+            c3a_shared_preservation.log
+            c3a_backend_preservation.log

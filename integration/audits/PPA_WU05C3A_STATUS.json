@@ -1,21 +1,19 @@
 {
   "work_unit": "PPA-WU05-C3A",
   "baseline": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
-  "checkpoint_commit": "39dd9ea44d1e27abfc799e63338a8d07edf71308",
-  "last_reconciled_head": "7098a0535e58b5ea2ab269b56d5ea537dcabca48",
-  "last_reconciled_upstream": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+  "checkpoint_commit": "commit containing final workflow and this record; resolve from Git history",
+  "last_reconciled_head": "42c9367f65b7fa7f98b8d173afae74b4a7d92827",
+  "last_reconciled_upstream": "7a629a10cabb3553ff77474423e6ccac81b29aec",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "focused_repair_qualified": true,
-  "status": "OXYGEN_QUALIFICATION_PASS_BACKEND_BUILD_REPAIR_PERSISTED_PRESERVATION_PENDING",
+  "status": "LOCAL_SHARED_PRESERVATION_PASS_FINAL_PERSISTED_QUALIFICATION_PENDING",
   "canonical_admitted": false,
-  "recovery_point": "docs/audits/PPA_WU05C3A_SHARED_INTEGRATION_CONTRACT.md",
-  "next_action": "Replay affected backend runtime/application gates on this persisted build-only repair; inspect qualification logs/artifacts from successful run36968761028; reconcile current canonical before admission.",
-  "blockers": [
-    "Broader runtime preservation and latest canonical reconciliation remain pending."
-  ],
+  "recovery_point": "docs/audits/PPA_WU05C3A_ADMISSION.md",
+  "next_action": "Actively wait for final exact-postimage qualification; evaluate artifacts/logs, admit bounded route and preserve exact postmerge if required gates pass.",
+  "blockers": [],
   "authority_paths": [
     "docs/development/quality-governance-a-aa.md",
     "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
@@ -26,7 +24,11 @@
     "tests/physics/run_bartholomeus_admission_boundaries.sh",
     "tests/physics/run_bartholomeus_active_chain.sh",
     "tests/fmr/run_c3a_bartholomeus_production_gate.sh",
-    "tests/physics/run_ppa_wu05c3q_kernel.sh"
+    "tests/physics/run_ppa_wu05c3q_kernel.sh",
+    "tests/physics/run_bartholomeus_shared_preservation.py",
+    "tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+    "tests/fpm/run_ppa_wu05a10_rapid_drain.sh",
+    "tests/fpm/run_ppa_wu05a26_backend_compile.sh"
   ],
   "evidence_paths": [
     "docs/audits/PPA_WU05C3A_REPAIR_RESULT.md",
@@ -79,5 +81,6 @@
       "Recovered fixed dependency list compiled waterfilm provider before runtime view.",
       "Fixed list omitted existing PERCH19 backend prerequisite."
     ]
-  }
+  },
+  "local_shared_preservation": "integration/audits/PPA_WU05C3A_SHARED_PRESERVATION_RESULT.json"
 }
