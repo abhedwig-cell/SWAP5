@@ -1,7 +1,6 @@
 name: PPA-WU05-A26 live trial preparer
 on:
-  push:
-    branches:
+  workflow_dispatch:
 jobs:
   focused:
     runs-on: ubuntu-latest
