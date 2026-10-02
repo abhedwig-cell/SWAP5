@@ -6,6 +6,7 @@ TESTS=[
  'tests/fmig431/test_low08a_application.f90',
  'tests/fmig431/test_low08_p0_typed_solver.f90',
  'tests/fmig431/test_low03a_application.f90',
+ 'tests/fmig431/test_low05a_application.f90',
  'tests/fmig431/test_fmig431_low01a_qgwl_binding.f90',
  'tests/fapp/test_ppa_low02_time_application_admission.f90',
  'tests/fapp/test_ppa_wu01_production_application_bootstrap.f90'
