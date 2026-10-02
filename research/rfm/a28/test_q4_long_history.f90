@@ -71,7 +71,7 @@ contains
   subroutine run_arm(soil,geom,regime,arm,m)
     integer,intent(in)::soil,geom,regime,arm
     type(metrics_t),intent(out)::m
-    type(fmr_serialized_reference_backend_t)::backend
+    type(fmr_serialized_reference_backend_t)::backend,replay_backend
     type(fixed_flux_top_boundary_provider_t),target::top
     type(fmr_b110_physical_parameters_t),target::parameters
     type(fmr_b110_physical_forcing_t)::forcing
@@ -191,6 +191,9 @@ contains
         call committed%current_time(saved_time,time_available);if(.not.time_available)then;m%status=-913;m%fail_step=step;exit;end if
         call kernel_reconstruct_committed_state_trusted(reconstructed,saved_lineage,saved_revision,original_snapshot,saved_time,.true.,reconstructed_ok,reconstruct_status)
         if(.not.reconstructed_ok.or.reconstruct_status/=KERNEL_TRUSTED_RECONSTRUCTION_OK)then;m%status=-914;m%fail_step=step;exit;end if
+        call replay_backend%initialize(top)
+        call replay_backend%configure_rfm_runtime(rfmcfg,ok)
+        if(.not.ok)then;m%status=-928;m%fail_step=step;exit;end if
       end if
       call fmr_capture_checkpoint(committed,checkpoint,ok)
       if(.not.ok)then;m%status=-908;m%fail_step=step;exit;end if
@@ -237,9 +240,9 @@ contains
       if(.not.did_commit)then;m%status=-909;m%fail_step=step;exit;end if
       if(arm==ARM_C.and.step==nsteps/2)then
         call fmr_capture_checkpoint(reconstructed,checkpoint,ok);if(.not.ok)then;m%status=-915;m%fail_step=step;exit;end if
-        call backend%run_trial(column,template,parameters,reconstructed,forcing,config,t0,t1,checkpoint,result,candidate,diagnostics)
+        call replay_backend%run_trial(column,template,parameters,reconstructed,forcing,config,t0,t1,checkpoint,result,candidate,diagnostics)
         if(.not.result%completed)then;m%status=-916;m%fail_step=step;exit;end if
-        call backend%commit_trial_candidate(reconstructed,candidate,diagnostics,did_commit,commit_status)
+        call replay_backend%commit_trial_candidate(reconstructed,candidate,diagnostics,did_commit,commit_status)
         if(.not.did_commit)then;m%status=-917;m%fail_step=step;exit;end if
         call committed%snapshot(snapshot,available);if(.not.available)then;m%status=-918;m%fail_step=step;exit;end if
         call reconstructed%snapshot(replay_snapshot,available);if(.not.available)then;m%status=-919;m%fail_step=step;exit;end if
