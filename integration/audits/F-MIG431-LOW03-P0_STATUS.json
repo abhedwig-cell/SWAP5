@@ -1,9 +1,9 @@
 {
   "work_unit": "F-MIG431-LOW03-P0",
   "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
-  "last_reconciled_head": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+  "last_reconciled_head": "7a629a10cabb3553ff77474423e6ccac81b29aec",
   "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
-  "state": "BOUNDED_SOLVER_QUALIFIED_CANONICAL_ADMISSION_BLOCKED_SHARED_DEPENDENCIES",
+  "state": "COMPLETE_SHARED_SOLVER_QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -18,12 +18,12 @@
     "internal Fortran soil_water_boundary_conditions_t fields bottom_external_resistance_days and bottom_include_half_cell",
     "direct typed Reference mode3 solver path only; serialized application still rejects3"
   ],
-  "checkpoint_commit": "28616cc050938efd1170867496cd27fe869c3ebc",
-  "next_action": "Execute registered DEP01 dependency-aware local semantic requalification on the same official branch; do not merge PR975 or issue LOW03-A before explicit shared-contract acceptance",
+  "checkpoint_commit": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+  "next_action": "Normal PR975 merge at exact expected head b1b5d6c22f18decd2db270531cd986ddf59af6ef; no protected-check bypass; then close P0 and preregister LOW03-A application",
   "blockers": [
-    "Additional shared typed-contract change needs semantic RossFast/transitive binding preservation, not inherited numerical evidence",
-    "Historical RossFast guard already rejects canonical; it must not be simply replaced by candidate hash",
-    "LOW03-A application forcing/proposal/transaction gates remain separately open"
+    "No declared bounded P0 solver/dependency qualification blocker remains",
+    "Full SWBOTB3 application forcing/proposal/transaction/restart remains unadmitted",
+    "SWKIMPL1/macropores/interface sensitivity remain deferred"
   ],
   "relevant_paths": [
     "src/solver/mod_soil_water_solver_contract.f90",
@@ -51,7 +51,8 @@
     "integration/audits/F-MIG431-LOW03-P0_COMPOSITION.json",
     "integration/audits/F-MIG431-LOW03-P0_BOUNDED_QUALIFICATION.json",
     "docs/migration/F-MIG431-LOW03-P0_QUALIFICATION_REVIEW.md",
-    "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json"
+    "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json",
+    "integration/audits/F-MIG431-LOW03-P0_COMPLETE_QUALIFICATION.json"
   ],
   "dependency_surface": [
     "src/solver",
@@ -74,18 +75,19 @@
     "Restart of committed state",
     "Existing groundwater owner and mode5 semantics held fixed"
   ],
-  "recovery_point": "28616cc050938efd1170867496cd27fe869c3ebc",
+  "recovery_point": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
   "test_scope": "Frozen B1.11 6075 bottom-row cases and 45 direct physical solves per optimization, independent compartment/whole-column mass, exact physical qbot, failed replay, fresh scratch, physical restart continuation, six existing application preservation programs",
   "typed_solver_canonical_admitted": false,
-  "tested_postimage": "3407286de38d8d11219678257874afd3c44320a7",
-  "qualification_run": 36970096511,
-  "qualification_job": 110722079851,
-  "qualification_artifact_id": 11210724958,
+  "tested_postimage": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+  "qualification_run": 36971466508,
+  "qualification_job": 110726138312,
+  "qualification_artifact_id": 11212276848,
   "scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
   "canonical_production_implemented": false,
   "implementation_location": "official LOW03-P0 branch only",
   "qualification_scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
-  "complete_admission_qualification": false,
+  "complete_admission_qualification": true,
   "pull_request": 975,
-  "shared_authority_prerequisite": "F-MIG431-LOW03-P0-DEP01"
+  "shared_authority_prerequisite": "F-MIG431-LOW03-P0-DEP01",
+  "shared_dependency_gate_state": "SEMANTIC_SUCCESSOR_ACCEPTED_CLOSED"
 }

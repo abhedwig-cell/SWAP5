@@ -1,7 +1,7 @@
 {
   "work_unit": "F-MIG431-LOW03-P0-DEP01",
   "parent_work_unit": "F-MIG431-LOW03-P0",
-  "state": "REGISTERED_SHARED_DEPENDENCY_QUALIFICATION_BLOCKER",
+  "state": "SEMANTIC_SUCCESSOR_ACCEPTED_CLOSED",
   "date": "2026-10-02",
   "canonical_basis": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
   "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
@@ -75,195 +75,14 @@
     3,
     8
   ],
-  "pr_check_snapshot": [
-    {
-      "id": 36970385690,
-      "name": "PUB-P2E02 Reference uncertainty",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385681,
-      "name": "PUB-P1E02 post-solver rollback",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385773,
-      "name": "PUB-P2E10 broad E0 paired matrix",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385749,
-      "name": "PUB-P2E06 Reference local-balance scaling",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385770,
-      "name": "PUB-P2E04 Reference B/C sweeps",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385744,
-      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385712,
-      "name": "F-CI96 F-ROSS12 postimage preservation",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385847,
-      "name": "F-MIG431-INT12-P0 qualification",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385759,
-      "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385840,
-      "name": "PUB-P2E08 Reference valid calibration domain",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385708,
-      "name": "PUB-P2E04 Reference failure census",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385751,
-      "name": "PUB-ME D5 workspace authority",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385890,
-      "name": "F-GC42 live whole-window service",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385757,
-      "name": "PUB-ME D3 origin authority",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385788,
-      "name": "F-PE-ZERO-WASTE01 paired runtime",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385853,
-      "name": "PUB-ME D1 transition authority",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385860,
-      "name": "Documentation",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385793,
-      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385731,
-      "name": "PUB-P2E01 E0 paired pilot",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385801,
-      "name": "PUB-P2E07 Reference cancellation floor",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385692,
-      "name": "PUB-P2E09 Reference-only threshold freeze",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385703,
-      "name": "F-CI110 reconstructed performance admission",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385736,
-      "name": "F-PERF-CANON01 B1 recomposition",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385825,
-      "name": "F-PERF-CANON01 D AHL50",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385754,
-      "name": "F-PE-REPAIR01 root-sink qbot ownership",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970385742,
-      "name": "F-CI canonical qualification",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    },
-    {
-      "id": 36970383583,
-      "name": "PPA-WU05-A26 live trial preparer",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "28616cc050938efd1170867496cd27fe869c3ebc"
-    }
-  ]
+  "closed_at": "2026-10-02",
+  "accepted_qualification": {
+    "run": 36971466508,
+    "job": 110726138312,
+    "postimage": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+    "artifact_id": 11212276848,
+    "artifact_digest": "sha256:2bc97a2fb4439661ce4c4ea5afff9b81b1530badcead2775a94e008baa0dc9a2",
+    "result": "PASS"
+  },
+  "closure": "All six existing numerical programs pass on exact current canonical and candidate at O0/O2, complete stdout identity across four runs; candidate fail-closed default/unsupported-mode tests pass. Historical guard unchanged. Bounded shared dependency closure accepted by central lower-boundary regie; no global CI-green claim."
 }

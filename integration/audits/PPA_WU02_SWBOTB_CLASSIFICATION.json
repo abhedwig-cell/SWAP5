@@ -275,11 +275,12 @@
     {
       "id": "PPA-LOW03",
       "priority": 6,
-      "status": "BOUNDED_SOLVER_QUALIFIED_CANONICAL_ADMISSION_BLOCKED_SHARED_DEPENDENCIES",
+      "status": "SHARED_SOLVER_QUALIFIED_PENDING_CANONICAL_ADMISSION",
       "meaning": "deep-aquifer Cauchy explicit/implicit boundary",
       "prerequisite": "F-MIG431-LOW03-P0",
       "shared_dependency_gate": "F-MIG431-LOW03-P0-DEP01",
-      "production_application_admitted": false
+      "production_application_admitted": false,
+      "shared_dependency_gate_state": "ACCEPTED_CLOSED"
     },
     {
       "id": "PPA-LOW08",
@@ -335,12 +336,11 @@
     1
   ],
   "post_low03p0_review": {
-    "canonical_basis": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
-    "qualified_postimage": "3407286de38d8d11219678257874afd3c44320a7",
-    "run": 36970096511,
+    "state": "SHARED_SOLVER_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "postimage": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+    "run": 36971466508,
     "pull_request": 975,
-    "state": "BOUNDED_SOLVER_QUALIFIED_CANONICAL_ADMISSION_BLOCKED_SHARED_DEPENDENCIES",
-    "production_delta_on_canonical": [],
-    "authority": "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json"
+    "production_application_admitted": false,
+    "authority": "integration/audits/F-MIG431-LOW03-P0_COMPLETE_QUALIFICATION.json"
   }
 }
