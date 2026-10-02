@@ -3371,7 +3371,10 @@ contains
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
            size(physical%water_content) == physical%active_nodes
       if (complete .and. self%macropore_active) then
-        complete = allocated(physical%macropore)
+        complete = allocated(self%macropore_config)
+        if (complete) complete = allocated(self%macropore_config%matrix_area_fraction)
+        if (complete) complete = size(self%macropore_config%matrix_area_fraction) == physical%active_nodes
+        if (complete) complete = allocated(physical%macropore)
         if (complete) complete = physical%macropore%ready() .and. &
              physical%macropore%num_nodes == physical%active_nodes
       end if
