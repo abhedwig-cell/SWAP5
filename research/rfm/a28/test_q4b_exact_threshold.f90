@@ -433,6 +433,7 @@ contains
 
   subroutine init_forcing(f,arm,rain,macro_area)
     type(fmr_b110_physical_forcing_t),intent(out)::f
+    integer::cauchy_status
     integer,intent(in)::arm
     real(real64),intent(in)::rain,macro_area
     f=fmr_b110_physical_forcing_t()
