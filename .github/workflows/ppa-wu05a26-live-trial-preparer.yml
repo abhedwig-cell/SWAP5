@@ -9,3 +9,13 @@ jobs:
       - uses: actions/checkout@v4
       - run: bash tests/fpm/run_ppa_wu05a26_live_trial_preparer.sh
       - run: bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
+      - name: MIGMAC01 reconciled source qualification
+        run: bash tests/fpm/run_ppa_wu05_migmac01_corrected_source_diagnostic.sh
+      - name: MIGMAC01 preserve A9
+        run: bash tests/fpm/run_ppa_wu05a9_top_input.sh
+      - name: MIGMAC01 preserve A10
+        run: bash tests/fpm/run_ppa_wu05a10_rapid_drain.sh
+      - name: MIGMAC01 preserve PERCH20 transaction
+        run: bash tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh
+      - name: MIGMAC01 preserve PERCH20 restart
+        run: bash tests/fpm/run_ppa_wu05_perch20_restart_lifecycle.sh
