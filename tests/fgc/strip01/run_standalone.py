@@ -68,6 +68,10 @@ def main():
         raise ValueError(f"preregistered FloPy 3.9.5 required, got {flopy.__version__}")
     a.output.mkdir(parents=True, exist_ok=True)
     rows=[]
+    failures=[]
+    def check(ok, gate, case):
+        if not ok:
+            failures.append(dict(gate=gate,case=case))
     for k in [.1,.25,.5,1.,2.]:
         for n in [50,100]:
             folder=a.output/f"steady_k{k}_n{n}"
@@ -81,9 +85,17 @@ def main():
             row=dict(k=k,n=n,head_error_m=error,drain_m3_d=drn,recharge_m3_d=rch,
                      budget_residual_m3_d=rch+drn,heads_m=h.tolist())
             rows.append(row)
-            assert error<=HEAD_LIMIT_M, row
-            assert abs(rch-total)<=RATE_LIMIT_M3_D and abs(rch+drn)<=RATE_LIMIT_M3_D, row
-            assert np.min(np.diff(h))>=-1e-9, row
+            case=dict(phase="steady",k=k,n=n)
+            check(error<=HEAD_LIMIT_M,"arithmetic_dupuit_head",case)
+            check(abs(rch-total)<=RATE_LIMIT_M3_D and abs(rch+drn)<=RATE_LIMIT_M3_D,"mass_rate",case)
+            check(np.min(np.diff(h))>=-1e-9,"spatial_monotonicity",case)
+            # Independent diagnostic for upstream saturated-thickness conductance.
+            upstream=[-5. + 10. + total/100.]
+            for i in range(n-1):
+                old=upstream[-1]
+                qdx_over_k=.001*(50/n)**2*(n-i-1)/k
+                upstream.append((old+np.sqrt(old*old+4*qdx_over_k))/2)
+            row["upstream_diagnostic_head_error_m"]=float(np.max(np.abs(h-(np.array(upstream)-10.))))
     # Preregistered finite-conductance sensitivity at the selected K and 50-cell mesh.
     conductance_sensitivity=[]
     for c in [10.,100.,1000.]:
@@ -99,8 +111,9 @@ def main():
                    recharge_m3_d=rch_c,budget_residual_m3_d=rch_c+drn_c,
                    heads_m=h_c.tolist())
         conductance_sensitivity.append(row_c)
-        assert error_c<=HEAD_LIMIT_M, row_c
-        assert abs(rch_c-total_c)<=RATE_LIMIT_M3_D and abs(rch_c+drn_c)<=RATE_LIMIT_M3_D, row_c
+        case_c=dict(phase="conductance",k=.5,n=50,conductance=c)
+        check(error_c<=HEAD_LIMIT_M,"arithmetic_dupuit_head",case_c)
+        check(abs(rch_c-total_c)<=RATE_LIMIT_M3_D and abs(rch_c+drn_c)<=RATE_LIMIT_M3_D,"mass_rate",case_c)
 
     heads, budgets=build(flopy,a.output/"drain_down",exe,.5,transient=True)
     prev_t=0.; prev_storage=.2*50*7.; cumulative=0.; trajectory=[]
@@ -114,16 +127,25 @@ def main():
         row=dict(day=t,storage_m3=storage,cumulative_drain_m3=cumulative,
                  residual_m3=residual,sto_rate_m3_d=sto,drain_rate_m3_d=drn,heads_m=h.tolist())
         trajectory.append(row)
-        assert storage<=prev_storage+VOLUME_LIMIT_M3, row
-        assert abs(residual)<=VOLUME_LIMIT_M3 and abs(sto+drn)<=RATE_LIMIT_M3_D, row
+        check(storage<=prev_storage+VOLUME_LIMIT_M3,"storage_monotonicity",dict(phase="drain_down",day=t))
+        check(abs(residual)<=VOLUME_LIMIT_M3,"cumulative_mass",dict(phase="drain_down",day=t))
+        check(abs(sto+drn)<=RATE_LIMIT_M3_D,"mass_rate",dict(phase="drain_down",day=t))
         prev_t=t; prev_storage=storage
-    result=dict(status="STANDALONE_AB_PASS",version=version.strip(),
+    reference_failures=[f for f in failures if f["case"].get("k",.5)==.5]
+    status=("STANDALONE_AB_PASS" if not failures else
+            "STANDALONE_REFERENCE_AB_PASS_WITH_SWEEP_NEGATIVE" if not reference_failures else
+            "STANDALONE_AB_FAIL")
+    result=dict(status=status,gate_failures=failures,reference_qualified=not reference_failures,
+                original_limits=dict(head_m=HEAD_LIMIT_M,rate_m3_d=RATE_LIMIT_M3_D,volume_m3=VOLUME_LIMIT_M3),
+                version=version.strip(),
                 executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(),
                 flopy_version=flopy.__version__,steady=rows,
                 conductance_sensitivity=conductance_sensitivity,drain_down=trajectory,
                 coupled_executed=False)
     (a.output/"standalone_result.json").write_text(json.dumps(result,indent=2)+"\n")
-    print("STRIP01_NATIVE_MODFLOW_STANDALONE_AB=PASS")
+    print("STRIP01_NATIVE_MODFLOW_STANDALONE_AB="+status)
+    if reference_failures:
+        raise SystemExit("selected-reference gates failed; full diagnostics persisted")
 
 
 if __name__=="__main__":
