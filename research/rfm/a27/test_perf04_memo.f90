@@ -7,7 +7,7 @@ program test_a27_perf04_memo
  use mod_rfm_physical_state,only:rfm_physical_state_t
  use mod_rfm_runtime_configuration,only:rfm_runtime_configuration_t
  use mod_rfm_surface_forcing,only:rfm_surface_forcing_t
- use mod_rfm_live_trial_preparer,only:rfm_live_trial_prepare_result_t,rfm_surface_hydraulic_memo_t,prepare_rfm_live_trial,clear_surface_hydraulic_memo
+ use mod_rfm_live_trial_preparer,only:rfm_live_trial_prepare_result_t,rfm_surface_hydraulic_memo_t,prepare_rfm_live_trial
  use mod_soil_water_solver_contract,only:soil_water_top_boundary_result_t,SW_TOP_BOUNDARY_AVAILABLE,SW_TOP_BOUNDARY_REGIME_FLUX
  implicit none
  type(b110_default_mvg_parameters_t),target::hp
@@ -40,7 +40,7 @@ program test_a27_perf04_memo
  call reset_counts();call prepare_rfm_live_trial(state,cfg,wet,view,counted,top,depth,dz,.005_real64,1e-8_real64,r,memo)
  if(.not.r%valid.or.demand_calls/=65)error stop 'changed head miss'
  write(*,'(*(g0,:,","))')'MEMO_CHANGED_HEAD',demand_calls,point_calls
- call clear_surface_hydraulic_memo(memo)
+ memo=rfm_surface_hydraulic_memo_t()
  call reset_counts();call prepare_rfm_live_trial(state,cfg,wet,view,counted,top,depth,dz,.005_real64,1e-8_real64,r,memo)
  if(.not.r%valid.or.demand_calls/=65)error stop 'memo clear miss'
  write(*,'(*(g0,:,","))')'MEMO_AFTER_CLEAR',demand_calls,point_calls
