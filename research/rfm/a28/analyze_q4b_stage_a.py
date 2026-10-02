@@ -25,6 +25,14 @@ for k,v in summary.items():
 print(json.dumps(out,indent=2))
 total30=sum(x["cross30"] for vv in out.values() for x in vv)
 total3=sum(x["cross3"] for vv in out.values() for x in vv)
+for k,metrics in out.items():
+ for j in (0,1):
+  bands=set()
+  if metrics[j]["min"] < -30: bands.add(0)
+  if metrics[j]["min"] < -3 and metrics[j]["max"] >= -30: bands.add(1)
+  if metrics[j]["max"] >= -3: bands.add(2)
+  if len(bands)<2 or metrics[j]["cross30"]+metrics[j]["cross3"]<20:
+   raise SystemExit(f"insufficient threshold cycling {k} consumer={j}: {metrics[j]}")
 if total30<20:raise SystemExit(f"insufficient -30 crossings {total30}")
 if total3<20:raise SystemExit(f"insufficient -3 crossings {total3}")
 print(f"A28_Q4B_STAGE_A=PASS cross30={total30} cross3={total3}")
