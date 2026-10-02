@@ -1,8 +1,6 @@
 name: PPA-WU05-A27 PROFILE01 RFM preparation overhead
 on:
-  push:
-    branches:
-      - work/ppa-wu05-a27-rfm-performance-equivalence
+  workflow_dispatch:
 jobs:
   profile:
     runs-on: ubuntu-latest

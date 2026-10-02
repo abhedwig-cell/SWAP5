@@ -1,0 +1,52 @@
+name: PPA-WU05-A27 PERF02 zero-waste qualification
+on:
+  push:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: A26 live trial preservation
+        run: bash tests/fpm/run_ppa_wu05a26_live_trial_preparer.sh
+      - name: A26 backend preservation
+        run: bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
+      - name: A8 standard macropore preservation
+        run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
+      - name: PROFILE01 postimage call counts
+        run: |
+          mkdir -p /tmp/perf02-profile
+          bash research/rfm/a27/run_profile01.sh /tmp/perf02-profile
+          python3 - <<'PY'
+          import json
+          j=json.load(open('/tmp/perf02-profile/profile01_summary.json'))
+          assert j['counts']['FULL_WET_CACHED']['demand']==65,j['counts']['FULL_WET_CACHED']
+          assert j['counts']['FULL_DRY_CACHED']['demand']==0,j['counts']['FULL_DRY_CACHED']
+          print('PERF02_PROFILE_CALL_GATE=PASS')
+          PY
+      - name: Qualified ABC01 postimage
+        run: |
+          mkdir -p /tmp/perf02-abc
+          bash research/rfm/a27/run_production_abc01.sh /tmp/perf02-abc
+      - name: Fetch qualified ABC01 baseline
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/perf02-base
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/11220220713/zip -o /tmp/base.zip
+          unzip -q /tmp/base.zip -d /tmp/perf02-base
+      - name: Exact non-timing preservation and timing report
+        run: python3 research/rfm/a27/compare_perf02_abc.py /tmp/perf02-base /tmp/perf02-abc
+      - name: Upload PERF02 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a27-perf02
+          path: |
+            /tmp/perf02-profile
+            /tmp/perf02-abc
