@@ -52,5 +52,5 @@ jobs:
           git commit -m "evidence(LOW08-A): persist bounded qualification"
           git push
       - name: Enforce qualification result
-        if: steps.qualify.outputs.exit_code != '0'
+        if: always() && steps.qualify.outputs.exit_code != '0'
         run: exit 1
