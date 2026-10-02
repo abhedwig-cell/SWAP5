@@ -106,6 +106,8 @@ contains
     call initialize_b110_default_mvg_parameters(hp,cof);call bind_b110_default_mvg_provider(hyd,hp,.01_real64)
     dra=0;irr=0;roots=0;call bind_b110_source_sink_provider(src,dra,irr,roots)
     r%parameters=>p;r%base_state%active_nodes=n;allocate(r%base_state%pressure_head(n),r%base_state%water_content(n))
+    r%base_state%pressure_head=-100._real64-p%z
+    call hyd%evaluate(r%base_state%pressure_head,r%base_state%water_content,k,cap,dk)
     r%boundary%bottom_mode=8;r%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX;r%step_duration=.01
     r%numerical%max_iterations=100;r%numerical%max_backtracking=100;r%numerical%conductivity_implicit_mode=0;r%numerical%conductivity_mean_method=1
     r%numerical%head_abs_tolerance=1.e-10;r%numerical%head_rel_tolerance=1.e-10;r%numerical%compartment_balance_tolerance=1.e-10;r%numerical%total_balance_tolerance=1.e-10
