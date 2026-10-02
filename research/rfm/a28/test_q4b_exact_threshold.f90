@@ -22,6 +22,7 @@ program test_a28_q4b_exact_threshold
   use mod_process_hydraulic_view,only:process_hydraulic_view_t
   use mod_rfm_surface_sorptivity,only:evaluate_rfm_node_sorptivity
   use mod_fixed_flux_top_boundary_provider,only:fixed_flux_top_boundary_provider_t
+  use mod_fmr_legacy_cauchy_bottom_boundary_provider,only:fmr_cauchy3_control_t,FMR_CAUCHY3_OK
   implicit none
 
   integer,parameter::ARM_A=1,ARM_B=2,ARM_C=3
@@ -83,7 +84,7 @@ contains
     class(transaction_state_t),allocatable::snapshot,replay_snapshot,original_snapshot
     real(real64)::heads(numnod),theta(numnod),cond(numnod),cap(numnod),dkdh(numnod)
     real(real64)::wt,rain,t0,t1,macro_area,deep_fraction,endpoint_depth,sorpmax,ks
-    integer::step,nsteps,commit_status,reconstruct_status
+    integer::step,nsteps,commit_status,reconstruct_status,cauchy_status
     integer(int64)::saved_lineage,saved_revision
     real(real64)::saved_time
     logical::ok,did_commit,available,time_available,reconstructed_ok
@@ -317,7 +318,7 @@ contains
       p%cofgen(10,i)=ks;p%cofgen(11,i)=.999_real64;p%cofgen(12,i)=.99_real64*ks
       p%cofgen(22,i)=-1e6_real64;p%cofgen(23,i)=1e-12_real64
     end do
-    p%bottom_mode=7;p%swkimpl=0;p%swkmean=1;p%swsophy=0
+    p%bottom_mode=3;p%swkimpl=0;p%swkmean=1;p%swsophy=0
     p%max_iterations=64;p%max_backtracking=24;p%min_step_duration=1e-12_real64
     p%compartment_balance_tolerance=1e-8_real64;p%total_balance_tolerance=1e-8_real64
     p%head_abs_tolerance=1e-8_real64;p%head_rel_tolerance=1e-8_real64;p%ponding_tolerance=1e-8_real64
@@ -439,6 +440,10 @@ contains
       f%rfm_surface%runoff_exponent=1._real64
     end if
     f%top_head=0._real64;f%bottom_flux=0._real64;f%bottom_head=0._real64
+    allocate(f%legacy_swbotb3_implicit_control)
+    call f%legacy_swbotb3_implicit_control%initialize_sine(0._real64,0._real64,[0._real64,366._real64], &
+         -45._real64,42._real64,0._real64,1.2_real64,2._real64,.true.,cauchy_status)
+    if(cauchy_status/=FMR_CAUCHY3_OK)error stop 'Q4B cauchy control'
     allocate(f%drainage_flux_by_level(1,numnod),f%subsurface_irrigation_source(numnod),f%root_extraction_sink(numnod))
     f%drainage_flux_by_level=0._real64;f%subsurface_irrigation_source=0._real64;f%root_extraction_sink=0._real64
   end subroutine init_forcing
@@ -463,8 +468,7 @@ contains
     real(real64),intent(in)::t
     real(real64)::phase
     phase=modulo(t,1.2_real64);r=0._real64
-    if(phase<.08_real64)r=4._real64
-    if(phase>=.30_real64.and.phase<.38_real64)r=2._real64
+    r=0._real64
   end function q4b_rain_rate
   real(real64) function rain_rate(regime,t) result(r)
     integer,intent(in)::regime
