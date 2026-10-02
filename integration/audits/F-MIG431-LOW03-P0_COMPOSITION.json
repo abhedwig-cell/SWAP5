@@ -1,0 +1,25 @@
+{
+  "work_unit": "F-MIG431-LOW03-P0",
+  "tested_postimage": "c240a3c1c880663d86e1a702ff283a866ca809ee",
+  "scope": "frozen bottom-row algebra only, same K; no solver/transaction/restart qualification",
+  "b111_headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+  "carrier_sha256": "164628daaa52f44254c1cc4f845324f4ac3f4582d166063ed08ab1445570ad7d",
+  "test_sha256": "25fcc01ada1a7f438b73f3f34d73b7cb17a4babfe0a7579969fbb27eee98f248",
+  "runner_sha256": "e5719d690525b9c6f9c5cf9c40703d36796380799d01ad2abc546442d3fdb376",
+  "frozen_wrapper_sha256": "b494c6b478d27fc8e6bec7d64dbb6861bf49a9f4511736c67da4fd08ea3168ab",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "runs": {
+    "O0": "LOW03_COMPOSITION_PASS cases=6075 zero_R_limits=225 nonzero_R_nonaliases=810",
+    "O2": "LOW03_COMPOSITION_PASS cases=6075 zero_R_limits=225 nonzero_R_nonaliases=810"
+  },
+  "production_admitted": false,
+  "status": "BOTTOM_ROW_COMPOSITION_DIAGNOSTIC_PASS",
+  "persisted_input_git_blob_identity": {
+    "status": "PASS",
+    "git_blobs": {
+      "tests/fmig431/test_low03_boundary_composition.f90": "99c215f229df75d74331272c8db1d886be121126",
+      "tests/fmig431/run_low03_boundary_composition.py": "8515477b8058d492cd2143490e4f8bf75cf22a96",
+      "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json": "0d6bb503675450e5f104406525119ada70ed68d8"
+    }
+  }
+}
