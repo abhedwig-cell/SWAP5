@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "800f6a9b429ed2a392e4c3778951bb92eca042aa",
-  "decision": "FINITE_CONTACT_RESISTANCE_ROBUSTLY_SUPPORTED__EXPLICIT_LAYER_PHYSICAL_QUALIFICATION_REQUIRED__NO_PRODUCTION_ADMISSION",
+  "decision": "UNSATURATED_STATIONARY_LAYER_FACTORIAL_PERSISTED__TEST_PENDING__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -175,7 +175,11 @@
     "tests/fapp/mod_top03_explicit_layer_provider.f90",
     "tests/fapp/test_sw_rib_top03_explicit_layer.f90",
     "tests/fapp/run_sw_rib_top03_explicit_layer.py",
-    "tests/fapp/analyze_sw_rib_top03_explicit_layer.py"
+    "tests/fapp/analyze_sw_rib_top03_explicit_layer.py",
+    "tests/fapp/mod_top03_stationary_layer_provider.f90",
+    "tests/fapp/test_sw_rib_top03_stationary_layer.f90",
+    "tests/fapp/run_sw_rib_top03_stationary_layer.py",
+    "tests/fapp/analyze_sw_rib_top03_stationary_layer.py"
   ],
   "dependency_surface": [
     "accepted attempt/window mass ownership",
@@ -192,8 +196,8 @@
     "Ribasim/SWAP ownership of local pond versus external waterbody storage remains unqualified.",
     "Dedicated TOP03 source is not reconciled/admitted to the changed current-canonical solver/runtime postimage."
   ],
-  "next_action": "Preregister a nonlinear unsaturated thin-layer reduction with matched interface head/conductance and independently owned storage, using the qualified 2 mm explicit-layer numerical comparisons. Do not productionize constant R or add storage alone as an untested repair. Keep PR #956 draft.",
-  "recovery_point": "Resume from the explicit-layer preregistration, source commits 657f3db0/6099e059, result/decision and raw evidence on the same branch. The proposed constant saturated resistance route is falsified within 24 ready comparisons; TOP03 acceptance/receipt/commit prerequisites are still open.",
+  "next_action": "Run persisted stationary-layer factorial locally at O0/O2; apply unchanged reference and physical budgets; preserve numerical failures and mass/origin hard gates.",
+  "recovery_point": "Resume from TOP03_UNSATURATED_CONTACT_PREREGISTRATION.md and the stationary-layer provider/fixture/runner/analyzer in this checkpoint on the same branch.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "This explicit-layer phase executed locally at O0/O2 with GNU Fortran 13.3.0; no Actions run requested. Prior persisted workflow evidence remains bound to its original scope. Commits use skip ci.",
   "implementation_slice": {
@@ -443,10 +447,20 @@
     "production_qualified": false,
     "interpretation": "Correct saturated limit; constant saturated resistance does not reproduce the partly unsaturated explicit layer even for a prewetted layer origin. Storage alone is not established as a sufficient fix."
   },
-  "status": "EXPLICIT_LAYER_SATURATED_LIMIT_VERIFIED__CONSTANT_RESISTANCE_REDUCTION_FALSIFIED__UNSATURATED_CONTACT_PREREQUISITE__NO_PRODUCTION_ADMISSION",
+  "status": "UNSATURATED_STATIONARY_LAYER_FACTORIAL_PERSISTED__TEST_PENDING__NO_PRODUCTION_ADMISSION",
   "evidence_paths": [
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_RESULT.json",
     "integration/sw-rib-top03/TOP03_EXPLICIT_LAYER_DECISION.md",
     "integration/sw-rib-top03/evidence/explicit_layer/"
-  ]
+  ],
+  "unsaturated_contact_research": {
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "production_qualified": false,
+    "baseline": "89913ab29b8916249893289bd9bd4a265bb8d8b3",
+    "preregistration": "integration/sw-rib-top03/TOP03_UNSATURATED_CONTACT_PREREGISTRATION.md",
+    "scope": "Discrete nonlinear stationary-layer oracle; retains algebraic layer heads; conductivity/storage factorial before boundary-only elimination."
+  }
 }
