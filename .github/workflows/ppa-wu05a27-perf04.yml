@@ -1,8 +1,6 @@
 name: PPA-WU05-A27 PERF04 memo qualification
 on:
-  push:
-    branches:
-      - work/ppa-wu05-a27-rfm-performance-equivalence
+  workflow_dispatch:
 jobs:
   memo:
     runs-on: ubuntu-latest
