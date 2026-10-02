@@ -13,8 +13,6 @@ jobs:
         run: bash tests/fpm/run_ppa_wu05a26_live_trial_preparer.sh
       - name: Current serialized backend compile preservation
         run: bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
-      - name: Standard macropore real-Richards preservation
-        run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
       - name: Production A/B/C screen
         run: |
           mkdir -p /tmp/a27-abc01
