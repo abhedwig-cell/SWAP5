@@ -4,6 +4,7 @@ on:
     branches: [work/f-mig431-low08-p0-lysimeter-active-set]
     paths:
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/adapter/mod_reference_richards_state_binding.f90'
       - 'src/legacy/b1_10_port/headcalc.f90'
       - 'src/solver/mod_soil_water_solver_contract.f90'
       - 'tests/fmig431/test_low08_p0_typed_solver.f90'
