@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Classify declared constitutive counterfactual; never grant production admission."""
 import csv, hashlib, json
+from collections import Counter
 from pathlib import Path
 root=Path(__file__).resolve().parents[2]
 out=root/'integration/sw-rib-top03/evidence/cut_counterfactual';out.mkdir(parents=True,exist_ok=True)
@@ -52,8 +53,12 @@ for policy in ('stock','strict'):
   'analytical_controls_pass':controls,'max_ledger_cm':max(abs(float(r['ledger_residual_cm'])) for r in rows),
   'max_complete_window_differences_cm':{k:max(d[k] for d in diffs) for k in diffs[0]},
   'iterations_total':sum(int(r['iterations']) for r in rows),'repaired':repaired,'new_failures':new,'retained':retained,
+  'new_failures_by_bottom_mode':dict(Counter(k[1] for k in new)),
+  'repairs_by_bottom_mode':dict(Counter(k[1] for k in repaired)),
   'free_drainage_finest_sequences':sequences}
 result={'scope':'isolated declared conductivity counterfactual, stock/pressure-aware line search; no kernel or commit',
+ 'source_checkpoint':'e452ebab26523c825cda5e5fdd92b7911d009b0c',
+ 'decision':'REMOVING_K_SHORTCUT_ALONE_FALSIFIED_AS_ROBUST_REPAIR__NO_PRODUCTION_ADMISSION',
  'production_qualified':False,'reference_equivalence':False,'variants':results,'log_sha256':hashes}
 result['source_sha256']={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [root/'tests/fapp'/n for n in ('make_top03_cut_counterfactual.py','run_sw_rib_top03_cut_counterfactual.sh','analyze_sw_rib_top03_cut_counterfactual.py')]}
 (root/'integration/sw-rib-top03/TOP03_CUT_COUNTERFACTUAL_RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
