@@ -4,7 +4,7 @@
   "date": "2026-10-02",
   "baseline": "757caabcbda7af41da414091a9ec7b2f69add63f",
   "last_reconciled_upstream": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
-  "decision": "MICRORELIEF_ONSET_SUPPORTED__SIMPLE_STAGE_EVOLUTION_FALSIFIED__FINITE_CONTACT_RESISTANCE_NEXT__NO_PRODUCTION_ADMISSION",
+  "decision": "FINITE_CONTACT_RESISTANCE_ROBUSTLY_SUPPORTED__VALUE_NOT_PHYSICALLY_QUALIFIED__EXPLICIT_LAYER_EQUIVALENCE_NEXT__NO_PRODUCTION_ADMISSION",
   "scope": "Falsifies the inspected BASE integration recipe, not TOP02 hydraulics, pure materializer, or the possibility of transactional inundation.",
   "affected_invariants": [
     3,
@@ -93,6 +93,20 @@
       "O0_O2_exact_output": true,
       "production_code_changed": false,
       "conclusion": "Simple uniform microrelief K_contact=f_wet*K_face does not complete partial-to-full stage evolution for any tested amplitude."
+    },
+    "contact_resistance_probe": {
+      "preregistration": "integration/sw-rib-top03/TOP03_CONTACT_RESISTANCE_PREREGISTRATION.md",
+      "result": "integration/sw-rib-top03/TOP03_CONTACT_RESISTANCE_RESULT.json",
+      "decision": "integration/sw-rib-top03/TOP03_CONTACT_RESISTANCE_DECISION.md",
+      "physical_review": "integration/sw-rib-top03/TOP03_CONTACT_RESISTANCE_PHYSICAL_REVIEW.md",
+      "workflow_run": 36980868364,
+      "workflow_job": 110754853573,
+      "preservation_run": 36980868227,
+      "source_postimage": "175770f781636a940ee14c336ff03b22f8d04c24",
+      "O0_O2_exact_output": true,
+      "r0_control": true,
+      "production_code_changed": false,
+      "conclusion": "R_s=0.50 and 1.00 day complete and jointly contract at all four refinements for every tested D, including D=0. No R_s<=0.25 day does so."
     }
   },
   "findings": [
@@ -166,12 +180,13 @@
     "typed external head forcing"
   ],
   "blockers": [
-    "The existing production BASE temporal identity policy is exact-state-only and cannot accept transient dynamic-top full/half states.",
-    "The flat-surface imposed-head fixture remains non-contracting/nonlinear and cannot justify a finite tolerance.",
-    "Fixed shallow-stage partial contact is supported as an onset regularization mechanism, but simple uniform microrelief with K_contact=f_wet*K_face fails again as wet fraction/contact conductance increases during stage evolution.",
-    "A finite, physically explicit surface contact resistance / transition-layer law and its Ribasim/SWAP storage ownership remain unqualified."
+    "The existing production BASE temporal identity policy is exact-state-only; no finite dynamic-top acceptance budget is yet admitted.",
+    "Finite contact resistance is robustly supported as the dominant regularizing surface mechanism in the synthetic TOP03 fixture, but its successful resistance magnitude is not physically parameterized or qualified.",
+    "A published field example reports a much smaller crust resistance (~0.055 day) than the first robust TOP03 test value (0.50 day); the fixture threshold may therefore also represent unresolved layering, coarse top-node geometry or other near-surface effects.",
+    "Reduced contact resistance must be checked against an explicit thin transition-layer representation before it can be treated as production surface physics.",
+    "Ribasim/SWAP ownership of local surface storage and external surface-water volume remains unqualified."
   ],
-  "next_action": "Keep PR #956 draft. Test a bounded finite surface-contact resistance / transition-layer law in series with the microrelief wet fraction, preserving the same soil, lower boundary, stage events and mass accounting. Do not revisit temporal acceptance until this physical surface prerequisite supplies complete contracting stage-evolution evidence.",
+  "next_action": "Keep PR #956 draft. Run an explicit thin transition-layer equivalence experiment using R_s=L_s/K_s, preserving the deeper soil, lower boundary, stage forcing and mass gates. Require the reduced resistance boundary to reproduce explicit-layer accepted states and integrated top/bottom exchange across a bounded layer envelope before any production parameterization or temporal-tolerance work.",
   "recovery_point": "Source/test postimage 4c164b087e11c110baeb7a56795d4a1ff109d1ab; local evidence persisted in TOP03_LOCAL_RESULT.json and evidence/*.txt. Same branch and PR #956.",
   "canonical_admission_owner": "Canonical integration authority; no merge or new branch.",
   "ci_policy": "All work and O0/O2 characterization executed locally; no Actions run requested. Commits use skip ci. No production admission or live Ribasim qualification.",
@@ -194,7 +209,8 @@
   "last_reconciled_head": "1587e485495f025c2bf9a403ea9e0b5fb5737702",
   "checkpoint_commit": "4c164b087e11c110baeb7a56795d4a1ff109d1ab",
   "pending_tests": [
-    "finite contact-resistance / transition-layer stage-evolution probe",
+    "explicit transition-layer versus reduced R_s=L_s/K_s equivalence",
+    "representative-soil/contact-parameter envelope",
     "surface geometry/storage ownership contract with Ribasim",
     "evidence-backed dynamic-top temporal state+top+bottom budget over qualified surface envelope",
     "successful real inundation candidate under qualified temporal prerequisite",
@@ -378,5 +394,24 @@
       "D_0_25": "fails at H=0.20 cm (wet fraction 0.8, before full wetting)"
     },
     "interpretation": "Partial contact helps onset, but increasing effective contact conductance reintroduces the near-saturated nonlinear failure."
+  },
+  "contact_resistance_research": {
+    "status": "SUPPORTED_FORMULATION__PARAMETER_VALUE_UNQUALIFIED",
+    "run": 36980868364,
+    "source_postimage": "175770f781636a940ee14c336ff03b22f8d04c24",
+    "O0_O2_exact_output": true,
+    "robust_resistances_day": [
+      0.5,
+      1
+    ],
+    "failed_tested_resistances_day": [
+      0,
+      0.05,
+      0.1,
+      0.25
+    ],
+    "flat_surface_also_repaired": true,
+    "interpretation": "A finite matrix-to-surface-water contact resistance is sufficient to regularize this fixture; microrelief is not numerically necessary but remains a separate geometry/storage mechanism.",
+    "production_qualified": false
   }
 }
