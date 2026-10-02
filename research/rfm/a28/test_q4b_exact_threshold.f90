@@ -181,7 +181,11 @@ contains
       call init_forcing(forcing,arm,rain,macro_area)
       allocate(forcing%legacy_swbotb3_implicit_control);forcing%legacy_swbotb3_implicit_control=cauchy
       call forcing%legacy_swbotb3_implicit_control%resolve_proposal(t0,t1,probe,cauchy_status)
-      if(cauchy_status/=FMR_CAUCHY3_OK.or..not.probe%available)then;m%status=-934;m%fail_step=step;exit;end if
+      if(cauchy_status/=FMR_CAUCHY3_OK.or..not.probe%available)then
+        m%status=-940-cauchy_status;m%fail_step=step
+        write(*,'(*(g0,:,","))') 'CAUCHY_PROBE_FAIL',soil,geom,step,t0,t1,cauchy_status,merge(1,0,probe%available)
+        exit
+      end if
       if(arm==ARM_C.and.step==nsteps/2)then
         call committed%snapshot(original_snapshot,available);if(.not.available)then;m%status=-912;m%fail_step=step;exit;end if
         saved_lineage=committed%current_lineage_id();saved_revision=committed%current_revision()
