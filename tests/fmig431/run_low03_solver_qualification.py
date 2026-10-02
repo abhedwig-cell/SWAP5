@@ -52,7 +52,11 @@ with tempfile.TemporaryDirectory(prefix='low05a-') as folder:
    p=ROOT/test;obj=build/(p.stem+'.o');exe=build/p.stem
    subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,text=True,stdout=subprocess.DEVNULL)
    subprocess.run(FC+LINK+flags+objects+[str(obj),'-o',str(exe)],check=True,text=True,stdout=subprocess.DEVNULL)
-   output=subprocess.check_output([str(exe)],text=True,stderr=subprocess.STDOUT)
+   try:
+    output=subprocess.check_output([str(exe)],text=True,stderr=subprocess.STDOUT)
+   except subprocess.CalledProcessError as error:
+    print(error.output,flush=True)
+    raise
    markers=[line for line in output.splitlines() if 'PASS' in line]
    if not markers:raise RuntimeError('no PASS markers: '+test)
    result['runs'][opt][test]=markers
