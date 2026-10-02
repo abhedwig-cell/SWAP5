@@ -1,10 +1,10 @@
 program test_low03a_application
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, fmr_logical_column_t
+  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, fmr_logical_column_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
-       fmr_new_b110_committed_state
+       fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_legacy_cauchy_bottom_boundary_provider
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
@@ -17,6 +17,7 @@ program test_low03a_application
   use mod_groundwater_application_plan, only: groundwater_tile_predictor_input_t, groundwater_cell_area_input_t
   implicit none
   real(real64), parameter :: T0=5100.1875_real64,T1=5100.6875_real64,HARD_MASS_GATE=1.0e-12_real64
+  real(real64), parameter :: QUALIFICATION_HEAD_BUDGET=1.0e-2_real64
   type(fmr_production_application_config_t) :: cfg,bad
   type(fmr_production_application_bootstrap_t) :: app,badapp
   type(fmr_serialized_column_result_t),allocatable :: result(:)
@@ -40,6 +41,10 @@ program test_low03a_application
   rimlay=10.0_real64
   call initialize_application_config(cfg,-75.0_real64,conductivity0)
   cfg%tiles(1)%parameters%bottom_mode=3
+  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+  cfg%numerical%model_temporal_indicator_budget_available=.true.
+  cfg%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
   cfg%tiles(1)%ordinary_implicit_cauchy=.true.
   cfg%tiles(1)%ledger_id=0_int64
   haq_eq=cfg%tiles(1)%initial_state%pressure_head(numnod)+z(numnod) + &
@@ -74,7 +79,11 @@ program test_low03a_application
   columns(1)%forcing_handle=1_int64
   columns(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   call backend%initialize(top)
-  call fmr_new_b110_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok)
+  block
+    real(real64)::previous(numnod)
+    previous=0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok,previous)
+  end block
   call require(ok,'committed state')
   call states(1)%capture_checkpoint(cp,ok)
   call require(ok,'checkpoint')
