@@ -62,6 +62,7 @@ program test_low08a_application
   if(allocated(result)) write(*,'(a,1x,l1,1x,l1,1x,l1,1x,i0,1x,i0,1x,a)') 'LOW08A_RUN_DIAG',result(1)%admitted,result(1)%completed,result(1)%committed,result(1)%kernel_status,result(1)%commit_status,trim(result(1)%admission_status)
   if(allocated(result)) print '(a,1x,l1,1x,l1,1x,l1,1x,i0,1x,i0,1x,a,1x,i0,1x,i0,1x,i0)', 'LOW08A_RUN_DIAG',result(1)%admitted,result(1)%completed,result(1)%committed,result(1)%kernel_status,result(1)%commit_status,trim(result(1)%admission_status),result(1)%solver_nonlinear_iterations,result(1)%solver_internal_retries,result(1)%accepted_substeps
   if(allocated(result))write(*,'(a,1x,l1,1x,l1,1x,l1,1x,i0,1x,i0,1x,a)') 'LOW08A_RESULT_DIAG',result(1)%admitted,result(1)%completed,result(1)%committed,result(1)%kernel_status,result(1)%accepted_substeps,trim(result(1)%admission_status)
+  if(allocated(result))write(*,'(a,1x,l1,1x,a,1x,i0,1x,i0,1x,i0)') 'LOW08A_SOLVER_DIAG',result(1)%solver_executed,trim(result(1)%solver_route),result(1)%solver_nonlinear_iterations,result(1)%solver_internal_retries,result(1)%accepted_substeps
   call require(status==FMR_APP_BOOT_OK .and. result(1)%completed .and. result(1)%committed,'application transaction')
   call require(result(1)%mass%complete .and. abs(result(1)%mass%residual)<=HARD_MASS_GATE,'application mass')
   call app%close(status)
