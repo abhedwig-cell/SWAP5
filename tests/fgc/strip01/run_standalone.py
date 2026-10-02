@@ -52,6 +52,17 @@ def rate(cbc, text, time):
                      for v in values))
 
 
+def native_sy_storage(heads):
+    """MF6 6.8.0 sQuadraticSaturation with Newton SATOMEGA=1e-6."""
+    eps=1e-6
+    br=np.clip((np.asarray(heads)+10.)/10.,0.,1.)
+    av=1./(1.-eps)
+    sat=np.where(br<eps,av*.5*br*br/eps,
+                 np.where(br<1.-eps,av*br+.5*(1.-av),
+                          np.where(br<1.,1.-av*.5*(1.-br)**2/eps,1.)))
+    return float(.2*10.*np.sum(sat))
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--mf6", type=Path, required=True)
@@ -116,16 +127,21 @@ def main():
         check(abs(rch_c-total_c)<=RATE_LIMIT_M3_D and abs(rch_c+drn_c)<=RATE_LIMIT_M3_D,"mass_rate",case_c)
 
     heads, budgets=build(flopy,a.output/"drain_down",exe,.5,transient=True)
-    prev_t=0.; prev_storage=.2*50*7.; cumulative=0.; trajectory=[]
+    initial_storage=native_sy_storage(np.full(50,-3.))
+    prev_t=0.; prev_storage=initial_storage; cumulative=0.; trajectory=[]
     for t in heads.get_times():
         h=heads.get_data(totim=t).ravel()
-        storage=float(.2*np.sum(h+10.))
+        geometric_storage=float(.2*np.sum(h+10.))
+        storage=native_sy_storage(h)
         drn=rate(budgets,"DRN",t)
         sto=rate(budgets,"STO-SY",t)
         cumulative-=drn*(t-prev_t)
-        residual=storage-.2*50*7.+cumulative
+        residual=storage-initial_storage+cumulative
+        geometric_residual=geometric_storage-.2*50*7.+cumulative
         row=dict(day=t,storage_m3=storage,cumulative_drain_m3=cumulative,
-                 residual_m3=residual,sto_rate_m3_d=sto,drain_rate_m3_d=drn,heads_m=h.tolist())
+                 residual_m3=residual,geometric_storage_m3=geometric_storage,
+                 geometric_residual_m3=geometric_residual,
+                 sto_rate_m3_d=sto,drain_rate_m3_d=drn,heads_m=h.tolist())
         trajectory.append(row)
         check(storage<=prev_storage+VOLUME_LIMIT_M3,"storage_monotonicity",dict(phase="drain_down",day=t))
         check(abs(residual)<=VOLUME_LIMIT_M3,"cumulative_mass",dict(phase="drain_down",day=t))
@@ -136,6 +152,8 @@ def main():
             "STANDALONE_REFERENCE_AB_PASS_WITH_SWEEP_NEGATIVE" if not reference_failures else
             "STANDALONE_AB_FAIL")
     result=dict(status=status,gate_failures=failures,reference_qualified=not reference_failures,
+                storage_law="MF6_6.8.0_Newton_sQuadraticSaturation_eps_1e-6",
+                initial_storage_m3=initial_storage,
                 original_limits=dict(head_m=HEAD_LIMIT_M,rate_m3_d=RATE_LIMIT_M3_D,volume_m3=VOLUME_LIMIT_M3),
                 version=version.strip(),
                 executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(),
