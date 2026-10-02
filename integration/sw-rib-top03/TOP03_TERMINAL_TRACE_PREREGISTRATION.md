@@ -1,0 +1,9 @@
+# TOP03 terminal-iteration diagnosis preregistration
+
+Parent 1dd72fe03ebf34c4d04b11a40f84233ddb3ea036; canonical 828df126e0c0d70f5cbfae51614bfc3b53e832a4, unchanged AGENTS. Observational research only, no solver operation, physical equation, convergence gate, interface or committed-state change.
+
+Generate a scratch headcalc that prints iterations 73..80 after the original residual-based line search. Use the same 702 surface histories/geometries/lower-boundary trajectories per O0/O2 build, without a direction cap. Identify every physical substep using the observational provider label. Record iteration/backtrack counters, dt/factor, previous/current residual squared norm, maximum residual, actual head change, proposed head change, old/new top and bottom head, top/bottom flux, bottom conductivity/capacity, bottom Jacobian diagonal/residual, pressure range, top-face conductivity and balance thresholds.
+
+Require all numerical and stop records to reproduce the persisted unguarded surface-transition baseline exactly except CPU, including failure status/progress/iterations and physical transfer. Require trace identity O0/O2. A trace is diagnostic evidence only: a large iteration proposal is not accepted state, a failed substep supplies no accepted mass, and a small final mass residual alone does not authorize relaxation of pressure convergence.
+
+Classify stalled cases from the trace: line search exhausted without residual progress; ongoing damped convergence under the iteration ceiling; repeated sign crossing around saturation; residual/boundary oscillation; or another explicitly observed mechanism. Compare actual bottom conductivity reevaluation and frozen/interior Jacobian staging. Do not assume direction caps or previously insufficient finite-difference probes are a fix. Preserve analytical controls and mass checks. No Actions needed.
