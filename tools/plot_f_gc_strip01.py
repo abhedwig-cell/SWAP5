@@ -41,6 +41,20 @@ def main():
                 title="Mesh refinement at K = 0.5 m/d")
     axes[0].grid(True, alpha=.25)
     axes[0].legend()
+    cs = data["conductance_sensitivity"]
+    conductance = np.array([r["conductance_m2_d"] for r in cs], dtype=float)
+    drain_cell = np.array([r["heads_m"][0] for r in cs], dtype=float)
+    symmetry_cell = np.array([r["heads_m"][-1] for r in cs], dtype=float)
+    fig, ax = plt.subplots(figsize=(7.4, 4.6), constrained_layout=True)
+    ax.semilogx(conductance, drain_cell, marker="o", label="drain-cell head")
+    ax.semilogx(conductance, symmetry_cell, marker="o", label="right-edge cell head")
+    ax.set(xlabel="DRN conductance (m²/d)", ylabel="MODFLOW head (m)",
+           title="Finite-conductance sensitivity (K = 0.5 m/d)")
+    ax.grid(True, which="both", alpha=.25)
+    ax.legend()
+    fig.savefig(a.output / "conductance_sensitivity.svg")
+    plt.close(fig)
+
     dd = data["drain_down"]
     times = np.array([r["day"] for r in dd], dtype=float)
     storage = np.array([r["storage_m3"] for r in dd], dtype=float)
