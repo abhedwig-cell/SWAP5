@@ -45,8 +45,6 @@ program test_low08a_application
   cfg%tiles(1)%ordinary_lysimeter_plate=.true.
   cfg%tiles(1)%ledger_id=0_int64
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
-  if(.not.allocated(cfg%tiles(1)%initial_right_derivative))allocate(cfg%tiles(1)%initial_right_derivative(numnod))
-  cfg%tiles(1)%initial_right_derivative=0.0_real64
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
   cfg%numerical%model_temporal_indicator_budget_available=.true.
   cfg%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
