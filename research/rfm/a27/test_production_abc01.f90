@@ -145,6 +145,7 @@ contains
     end if
 
     template%template_id=527000_int64+int(100*soil+10*geom+arm,int64)
+    template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     template%physics_topology_id=527100_int64+int(geom,int64)
     template%vertical_layout_id=527200_int64
     template%state_layout_id=527300_int64+int(arm,int64)

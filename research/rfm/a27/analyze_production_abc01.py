@@ -46,17 +46,17 @@ for key,arms in sorted(keys.items()):
             cls="E1"
         else:
             reason="outside E1 thresholds; requires model-form attribution"
-        comparison.append(dict(soil=key[0],geom=key[1],regime=key[2],classification=cls,reason=reason,
-            B_completed=B["completed"],C_completed=C["completed"],accepted_input_B_cm=B["total_in_cm"],
-            accepted_input_C_cm=C["total_in_cm"],storage_diff_cm=(abs(B["total_storage_cm"]-C["total_storage_cm"]) if B["completed"] and C["completed"] else None),
-            total_drain_diff_cm=(abs((B["bottom_out_cm"]+B["fast_external_out_cm"])-(C["bottom_out_cm"]+C["fast_external_out_cm"])) if B["completed"] and C["completed"] else None),
-            max_theta_diff=(max(abs(B[k]-C[k]) for k in ["theta1","theta5","theta10"]) if B["completed"] and C["completed"] else None),
-            max_head_diff_cm=(max(abs(B[k]-C[k]) for k in ["h1_cm","h5_cm","h10_cm"]) if B["completed"] and C["completed"] else None),
-            B_fast_storage_cm=B["fast_storage_cm"],C_fast_storage_cm=C["fast_storage_cm"],
-            B_fast_external_out_cm=B["fast_external_out_cm"],C_fast_external_out_cm=C["fast_external_out_cm"],
-            B_wall_seconds=B["wall_seconds"],C_wall_seconds=C["wall_seconds"],
-            B_nonlinear=B["nonlinear"],C_nonlinear=C["nonlinear"],B_retries=B["retries"],C_retries=C["retries"]))
-        counts[cls]=counts.get(cls,0)+1
+    comparison.append(dict(soil=key[0],geom=key[1],regime=key[2],classification=cls,reason=reason,
+        B_completed=B["completed"],C_completed=C["completed"],accepted_input_B_cm=B["total_in_cm"],
+        accepted_input_C_cm=C["total_in_cm"],storage_diff_cm=(abs(B["total_storage_cm"]-C["total_storage_cm"]) if B["completed"] and C["completed"] else None),
+        total_drain_diff_cm=(abs((B["bottom_out_cm"]+B["fast_external_out_cm"])-(C["bottom_out_cm"]+C["fast_external_out_cm"])) if B["completed"] and C["completed"] else None),
+        max_theta_diff=(max(abs(B[k]-C[k]) for k in ["theta1","theta5","theta10"]) if B["completed"] and C["completed"] else None),
+        max_head_diff_cm=(max(abs(B[k]-C[k]) for k in ["h1_cm","h5_cm","h10_cm"]) if B["completed"] and C["completed"] else None),
+        B_fast_storage_cm=B["fast_storage_cm"],C_fast_storage_cm=C["fast_storage_cm"],
+        B_fast_external_out_cm=B["fast_external_out_cm"],C_fast_external_out_cm=C["fast_external_out_cm"],
+        B_wall_seconds=B["wall_seconds"],C_wall_seconds=C["wall_seconds"],
+        B_nonlinear=B["nonlinear"],C_nonlinear=C["nonlinear"],B_retries=B["retries"],C_retries=C["retries"]))
+    counts[cls]=counts.get(cls,0)+1
 
 with (out/"abc_raw.csv").open("w",newline="") as f:
     w=csv.DictWriter(f,fieldnames=abc_header);w.writeheader();w.writerows(rows)
