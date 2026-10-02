@@ -1,5 +1,7 @@
 name: Issue 989 storage contract qualification
 on:
+  push:
+    branches: [fix/989-serialized-storage-shape-contract]
   workflow_dispatch:
 jobs:
   qualify:
