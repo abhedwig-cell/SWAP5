@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-B",
+  "title": "Legacy frost hydraulic boundary source trace",
+  "protocol": "RECONCILE -> SOURCE AUTHORITY -> MATERIALIZE -> SEMANTIC TRACE -> STATE/RECOMPUTABILITY -> INTERFACE CONTRACT -> QUALIFY -> CLOSE OR BLOCK",
+  "branch": "audit/ppa-wu05b-frost-authority",
+  "canonical_base": "add4adf54be39251ccbb6b000eed01e98326fb83",
+  "parent_authority": [
+    "integration/audits/PPA_WU05_STATUS.json",
+    "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json",
+    "integration/audits/production_physics_application_envelope_gap_register.json"
+  ],
+  "corrected_reference": {
+    "snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "frozencond_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+    "temperature_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+    "b1_11_change": "NONE_FOR_FROZENCOND_OR_TEMPERATURE"
+  },
+  "scope": [
+    "recover exact frozencond/temperature call graph",
+    "classify frost-related fields as persistent state, recomputable result or scratch",
+    "bind read-only temperature-to-hydraulic dependency",
+    "bind frost scaling into hydraulic K/dKdh/Jacobian semantics",
+    "freeze restart and rollback rules",
+    "preserve legacy frost/macropore incompatibility",
+    "separate legacy hydraulic frost modifier from new thermodynamic phase-change physics"
+  ],
+  "non_goals": [
+    "production frost implementation",
+    "new latent-heat physics",
+    "explicit ice-content storage",
+    "snow-energy redesign",
+    "root frost-stress implementation",
+    "solver/tolerance/timestep changes",
+    "ROM"
+  ],
+  "exit_conditions": [
+    "byte-exact B1.11 frozencond and temperature source materialized or otherwise directly source-traced",
+    "all cross-call mutable frost fields classified",
+    "temperature and hydraulic ownership explicit",
+    "K and dKdh/Jacobian consistency requirement frozen",
+    "restart and rollback semantics explicit",
+    "no production/reference mutation in this review"
+  ],
+  "fail_closed_rule": "If exact B1.11 source bytes cannot be materialized, detailed equation/state/restart claims remain blocked; only non-conflation and existing-owner boundaries may be recorded."
+}
