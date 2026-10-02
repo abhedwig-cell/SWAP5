@@ -27,7 +27,8 @@ for raw in lines:
 SOURCES
 )
 mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}" | awk '$0 != "tests/fsi/fsi04_real_headcalc_stubs.f90"')
-printf '%s\n' "${MODULE_SRC[@]}" > "$B/src"mkdir "$B/o";objs=()
+printf '%s\n' "${MODULE_SRC[@]}" > "$B/src"
+mkdir "$B/o";objs=()
 while IFS= read -r s;do [[ -z "$s" ]]&&continue;o="$B/o/$(basename "${s%.*}").o";gfortran -std=f2008 -ffree-line-length-none -O2 -J"$B/o" -I"$B/o" -c "$s" -o "$o";objs+=("$o");done < "$B/src"
 gfortran -std=f2008 -ffree-line-length-none -O2 -J"$B/o" -I"$B/o" "${objs[@]}" research/rfm/a27/test_perf03.f90 -o "$B/p"
 "$B/p"|tee "$OUT/perf03.csv"
