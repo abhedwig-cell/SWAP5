@@ -1019,7 +1019,7 @@ subroutine vector_F(iTask)
 !  functions
    real(8)                    :: afgen
 
-   if (provider_constitutive_active) then
+   if (provider_constitutive_active .and. matrix_area_scaling_active()) then
       call evaluation_context%constitutive%evaluate_water_content_increment(state%h(1:numnod), state%hm1(1:numnod), &
            state%theta(1:numnod), state%thetm1(1:numnod), fsi_ws%provider_water_content_increment(1:numnod))
    else
