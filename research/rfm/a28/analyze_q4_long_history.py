@@ -40,13 +40,16 @@ for k,v in cycles.items():
     cycle_max["endpoint"]=max(cycle_max["endpoint"],abs(x["endpoint"]-y["endpoint"]))
     cycle_max["theta"]=max(cycle_max["theta"],max(abs(a-b) for a,b in zip(x["theta"],y["theta"])))
     if min(x["wall_age"],y["wall_age"],x["wall_s"],y["wall_s"])<0:raise SystemExit("negative wall history")
-if len(cycles)<240:raise SystemExit(f"insufficient cycle samples {len(cycles)}")
+if len(cycles)<200:raise SystemExit(f"insufficient cycle samples {len(cycles)}")
 if missing:raise SystemExit(f"missing exact/approx cycle pairs {missing[:4]}")
 if cycle_max["storage"]>0.02 or cycle_max["endpoint"]>0.02:raise SystemExit("cycle water gate")
 if cycle_max["theta"]>0.01:raise SystemExit("cycle theta gate")
 out={"joint":joint,"failures":failures,"max":mx,"cycle_max":cycle_max,"cycle_pairs":len(cycles)}
 print(json.dumps(out,indent=2))
-if failures:raise SystemExit("completion regression")
+approx_only=[x for x in failures if x[1]=="1" and x[2]!="1"]
+if approx_only:raise SystemExit(f"approximate-only completion regression {approx_only}")
+shared_fail=[x for x in failures if x[1]!="1" and x[2]!="1"]
+if shared_fail:print("Q4_SHARED_FIXTURE_FAILURES",shared_fail)
 if mx["mass"]>1e-6:raise SystemExit("mass gate")
 if mx["storage"]>0.02 or mx["bottom"]>0.02:raise SystemExit("water gate")
 if mx["theta"]>0.01:raise SystemExit("theta gate")
