@@ -1,0 +1,18 @@
+name: PPA-WU05-A28 Q4B mode3 decomposition
+on:
+  push:
+    branches:
+      - qualification/ppa-wu05-a28-q4b-stage-a
+jobs:
+  decompose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p /tmp/a28-q4b-decompose
+          bash research/rfm/a28/run_q4b_mode3_decompose.sh /tmp/a28-q4b-decompose
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a28-q4b-mode3-decompose
+          path: /tmp/a28-q4b-decompose
