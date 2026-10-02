@@ -1,7 +1,7 @@
 program top03_stationary_layer
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, SW_SOLVE_CONVERGED
+       soil_water_solve_result_t, soil_water_top_boundary_result_t, SW_SOLVE_CONVERGED
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, reference_richards_legacy_workspace_t
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
@@ -19,14 +19,16 @@ program top03_stationary_layer
   type(reference_richards_legacy_workspace_t) :: workspace
   type(soil_water_solve_request_t) :: request
   type(soil_water_solve_result_t) :: sol
+  type(soil_water_top_boundary_result_t) :: audit_top
   real(real64),allocatable,target :: qdra(:,:),qssdi(:),qrot(:)
-  real(real64),allocatable :: cofgen(:,:),h0(:),theta0(:),conductivity(:),capacity(:),dkdh(:),origin(:),origin_theta(:)
+  real(real64),allocatable :: cofgen(:,:),h0(:),theta0(:),conductivity(:),capacity(:),dkdh(:),origin(:),origin_theta(:),face_flux(:)
   integer,allocatable :: parent(:)
   real(real64),parameter :: stages(6)=[0.005_real64,0.02_real64,0.05_real64,0.1_real64,0.2_real64,0.3_real64]
   real(real64),parameter :: widths(4)=[0.5_real64,0.5_real64,1.0_real64,1.0_real64]
   real(real64),parameter :: centers(4)=[-0.25_real64,-0.75_real64,-1.5_real64,-2.5_real64]
   real(real64) :: L,R,dt,H,position,ksoil,klayer,jexact,cumres,ktop,skin0,base0,skin,base,total0
   real(real64) :: top_input,bottom_out,max_mass,mass,base_delta,skin_delta,origin_pond,origin_gwl
+  real(real64) :: max_layer_local_residual,max_layer_rate_residual,reconstructed_interface,kface,local_residual
   real(real64) :: parent_theta(4),parent_head(4),head_error,flux_error,qinterface
   integer :: mode,m,ns,wet,mean,analytic,n,nlayer,i,p,s,e,nstages,iterations
   character(len=80) :: arg
@@ -132,6 +134,7 @@ program top03_stationary_layer
   base0=sum(theta0(nlayer+1:n)*params%dz(nlayer+1:n));skin0=0.0_real64
   if(nlayer>0)skin0=sum(theta0(1:nlayer)*params%dz(1:nlayer))
   total0=base0+skin0+request%base_state%ponding_depth
+  allocate(face_flux(n+1));max_layer_local_residual=0;max_layer_rate_residual=0;reconstructed_interface=0
   top_input=0;bottom_out=0;max_mass=0;iterations=0;head_error=0;flux_error=0
   do e=1,nstages
     if(analytic==0)H=stages(e)
@@ -161,6 +164,23 @@ program top03_stationary_layer
         flux_error=max(flux_error,abs(sol%top_flux+jexact),abs(sol%bottom_flux+jexact))
       end if
       top_input=top_input-sol%top_flux*dt;bottom_out=bottom_out-sol%bottom_flux*dt
+      if(nlayer>0)then
+        ! Independent final-head reconstruction, not the solver's lagged K cache.
+        call hyd%evaluate(sol%candidate_state%pressure_head,theta0,conductivity,capacity,dkdh)
+        call top%evaluate(sol%candidate_state%pressure_head(1),theta0(1), &
+             sol%candidate_state%ponding_depth,request%boundary,audit_top)
+        face_flux(1)=audit_top%actual_top_flux
+        do i=2,nlayer+1
+          kface=(params%dz(i-1)+params%dz(i))/(params%dz(i-1)/conductivity(i-1)+params%dz(i)/conductivity(i))
+          face_flux(i)=-kface*((sol%candidate_state%pressure_head(i-1)- &
+               sol%candidate_state%pressure_head(i))/params%node_distance(i)+1.0_real64)
+        end do
+        local_residual=maxval(abs((theta0(1:nlayer)-origin_theta(1:nlayer))*params%dz(1:nlayer)+ &
+             dt*(face_flux(1:nlayer)-face_flux(2:nlayer+1))))
+        max_layer_local_residual=max(max_layer_local_residual,local_residual)
+        max_layer_rate_residual=max(max_layer_rate_residual,local_residual/dt)
+        reconstructed_interface=reconstructed_interface-face_flux(nlayer+1)*dt
+      end if
       request%base_state=sol%candidate_state
     end do
     base=sum(request%base_state%water_content(nlayer+1:n)*params%dz(nlayer+1:n));skin=0
@@ -175,6 +195,8 @@ program top03_stationary_layer
       parent_head(p)=sample_head(centers(p),nlayer+1,n)
     end do
     qinterface=top_input-skin_delta
+    if(nlayer>0)write(*,'(A,1X,I0,4(1X,ES24.16))')'AUDIT',e,max_layer_local_residual, &
+         max_layer_rate_residual,reconstructed_interface,reconstructed_interface-qinterface
     write(*,'(A,1X,I0,17(1X,ES24.16),1X,I0)')'EVENT',e,top_input,bottom_out,base_delta,skin_delta, &
          request%base_state%ponding_depth,mass,max_mass,qinterface,H,parent_theta,parent_head,iterations
     if(nlayer>0)then

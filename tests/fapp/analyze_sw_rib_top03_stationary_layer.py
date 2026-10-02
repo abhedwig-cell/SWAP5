@@ -11,11 +11,19 @@ def analyze(build, source, canonical, previous):
     assert raw==(build/'o2/records.json').read_bytes(), 'O0/O2 mismatch'
     records=json.loads(raw); rows={key(r['case']):parse(r) for r in records}
     old={key(r['case']):r for r in json.loads((previous/'o0/records.json').read_bytes())}
-    inherited=[]
+    inherited=[];audits=[]
+    for r in records:
+        for line in r['stdout'].splitlines():
+            x=line.split()
+            if x and x[0]=='AUDIT':
+                audits.append(dict(case=r['case'],event=int(x[1]),local_integrated_residual_cm=float(x[2]),
+                                   local_rate_residual_cm_day=float(x[3]),interface_input_cm=float(x[4]),
+                                   interface_ledger_error_cm=float(x[5])))
     for r in records:
         if r['case']['analytic'] or r['case']['mode'] not in [1,2]:continue
         assert key(r['case']) in old
-        assert r==old[key(r['case'])], ('inherited trajectory changed',r['case'])
+        clean=dict(r,stdout='\n'.join(x for x in r['stdout'].splitlines() if not x.startswith('AUDIT'))+'\n')
+        assert clean==old[key(r['case'])], ('inherited trajectory changed',r['case'])
         inherited.append(r['case'])
     controls=[r for r in rows.values() if r['case']['analytic']]
     assert len(controls)==30
@@ -42,6 +50,8 @@ def analyze(build, source, canonical, previous):
                                     signed_shift={k:bb[k]-aa[k] for k in ['top','bottom','interface','layer_storage']})
                         if ar['ready'] and br['ready']:item['within_fixed_physical_budgets']=all(within.values())
                     diagnostics.append(item)
+    assert audits and max(a['local_integrated_residual_cm'] for a in audits)<=1e-10, 'reconstructed local layer mass gate'
+    assert max(abs(a['interface_ledger_error_cm']) for a in audits)<=1e-10, 'reconstructed interface ledger gate'
     massless=[r for r in rows.values() if r['case']['mode'] in [3,4]]
     assert all(e['layer_storage']==0 for r in massless for e in r['events'].values())
     summaries={q:dict(collections.Counter(str(d['within_fixed_physical_budgets']) for d in diagnostics if d['question']==q))
@@ -50,6 +60,9 @@ def analyze(build, source, canonical, previous):
                 source_postimage=source,canonical_inspected=canonical,production_code_changed=False,production_admission=False,
                 records_per_build=len(records),O0_O2_exact_output=True,raw_sha256=hashlib.sha256(raw).hexdigest(),
                 inherited_trajectories_exact=len(inherited),analytical_controls=len(controls),
+                independent_face_audit=dict(max_local_integrated_residual_cm=max(a['local_integrated_residual_cm'] for a in audits),
+                   max_local_rate_residual_cm_day=max(a['local_rate_residual_cm_day'] for a in audits),
+                   max_interface_ledger_error_cm=max(abs(a['interface_ledger_error_cm']) for a in audits)),
                 analytical_max_head_error_cm=max(r['analytic'][1] for r in controls),
                 analytical_max_flux_error_cm_day=max(r['analytic'][2] for r in controls),
                 max_mass_error_cm=max(abs(e[k]) for r in rows.values() for e in r['events'].values() for k in ['mass','solver_mass']),
