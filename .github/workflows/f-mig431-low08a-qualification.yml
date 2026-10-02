@@ -2,6 +2,8 @@ name: F-MIG431 LOW08-A qualification
 permissions:
   contents: write
 on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
   push:
     branches: [work/f-mig431-low08-a-lysimeter-application]
     paths:
