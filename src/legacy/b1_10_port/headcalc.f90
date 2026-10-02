@@ -148,19 +148,32 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       state => local_state_binding
       call capture_legacy_state(state)
    end if
-   swmacro = legacy_swmacro
-   swbotb = legacy_swbotb
-   dt = legacy_dt
-   swkimpl = legacy_swkimpl
-   swkmean = legacy_swkmean
-   maxit = legacy_maxit
-   maxbacktr = legacy_maxbacktr
-   dtmin = legacy_dtmin
-   critdevh2cp = legacy_critdevh2cp
-   critdevh1cp = legacy_critdevh1cp
-   critdevponddt = legacy_critdevponddt
-   CritDevBalCp = legacy_CritDevBalCp
-   CritDevBalTot = legacy_CritDevBalTot
+   swmacro = 0
+   if (legacy_state_binding) swmacro = legacy_swmacro
+   swbotb = 0
+   if (legacy_state_binding) swbotb = legacy_swbotb
+   dt = 0.0d0
+   if (legacy_state_binding) dt = legacy_dt
+   swkimpl = 0
+   if (legacy_state_binding) swkimpl = legacy_swkimpl
+   swkmean = 0
+   if (legacy_state_binding) swkmean = legacy_swkmean
+   maxit = 0
+   if (legacy_state_binding) maxit = legacy_maxit
+   maxbacktr = 0
+   if (legacy_state_binding) maxbacktr = legacy_maxbacktr
+   dtmin = 0.0d0
+   if (legacy_state_binding) dtmin = legacy_dtmin
+   critdevh2cp = 0.0d0
+   if (legacy_state_binding) critdevh2cp = legacy_critdevh2cp
+   critdevh1cp = 0.0d0
+   if (legacy_state_binding) critdevh1cp = legacy_critdevh1cp
+   critdevponddt = 0.0d0
+   if (legacy_state_binding) critdevponddt = legacy_critdevponddt
+   CritDevBalCp = 0.0d0
+   if (legacy_state_binding) CritDevBalCp = legacy_CritDevBalCp
+   CritDevBalTot = 0.0d0
+   if (legacy_state_binding) CritDevBalTot = legacy_CritDevBalTot
    if (.not. legacy_state_binding) then
       if (.not. present(physical_config)) error stop 'HeadCalc: explicit physical config required'
       if (physical_config%macropore_active) then
