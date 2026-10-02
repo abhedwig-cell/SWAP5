@@ -1,0 +1,20 @@
+name: PPA-WU05-A28 Q4B Stage B
+on:
+  push:
+    branches:
+      - qualification/ppa-wu05-a28-q4b-stage2
+jobs:
+  frozen-comparison:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Frozen exact versus A28 threshold history
+        run: |
+          mkdir -p /tmp/a28-q4b-stage2
+          bash research/rfm/a28/run_q4b_stage_b.sh /tmp/a28-q4b-stage2
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a28-q4b-stage2
+          path: /tmp/a28-q4b-stage2
