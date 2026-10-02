@@ -28,12 +28,16 @@ program test_ppa_wu05_migmac02_dynamic_shrinkage
   if(abs(historic-expected)>1.0e-12_real64) error stop 'MIGMAC02 exact E4 value mismatch'
 
   ! Direct Kim option-1 parameters: independently check the documented equation.
-  kim%alpha_k=0.343_real64
-  kim%beta_k=2.0_real64
-  kim%gamma_k=1.0_real64
-  call evaluate_clay_kim_shrinkage_fraction(0.30_real64,0.50_real64,kim,shrink,ok)
+  call prepare_clay_kim_option1(0.50_real64,0.20_real64,2.0_real64,1.20_real64,kim,ok)
+  if(.not.ok) error stop 'MIGMAC02 SHRINKPAR option1 invalid'
+  if(abs(kim%transition_moisture_ratio-0.34657359027997265_real64)>1.0e-14_real64) &
+       error stop 'MIGMAC02 SHRINKPAR transition mismatch'
+  call evaluate_clay_kim_shrinkage_fraction(0.10_real64,0.50_real64,kim,shrink,ok)
   if(.not.ok) error stop 'MIGMAC02 Kim evaluation invalid'
-  if(shrink<0.0_real64 .or. shrink>=1.0_real64) error stop 'MIGMAC02 Kim range'
+  if(abs(shrink-0.31296799539643605_real64)>1.0e-14_real64) error stop 'MIGMAC02 exact SHRINK mismatch'
+  call evaluate_clay_kim_shrinkage_fraction(0.20_real64,0.50_real64,kim,shrink,ok)
+  if(.not.ok .or. abs(shrink-0.30_real64)>1.0e-14_real64) &
+       error stop 'MIGMAC02 normal shrinkage branch mismatch'
 
   print '(a)', 'PPA_WU05_MIGMAC02_E4_HYSTERESIS=PASS'
   print '(a,es24.16)', 'PPA_WU05_MIGMAC02_E4_DYNAMIC_CM=',historic
