@@ -1,0 +1,22 @@
+name: PPA-WU05-A28 Q4 long history
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  q4:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Long-history exact versus approximate RFM
+        run: |
+          mkdir -p /tmp/a28-q4
+          bash research/rfm/a28/run_q4_long_history.sh /tmp/a28-q4
+      - name: Upload Q4 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a28-q4
+          path: /tmp/a28-q4
