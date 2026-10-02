@@ -88,6 +88,7 @@ end module MOD_grid
                                stdout=log,stderr=log,check=True)
                 objects.append(str(obj))
             subprocess.run([args.compiler,f'-O{opt}',*objects,'-o',str(out/'test')],stdout=log,stderr=log,check=True)
+        (out/'test').chmod((out/'test').stat().st_mode | 0o100)
         print(f'BUILD_O{opt}=PASS',flush=True)
         rows=[];timings=[]
         (out/'records.jsonl').write_text('')
