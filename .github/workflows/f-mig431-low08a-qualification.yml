@@ -11,6 +11,7 @@ on:
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/adapter/mod_b110_serialized_context_binding.f90'
       - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
       - 'src/solver/mod_reference_richards_state_binding.f90'
       - 'src/legacy/b1_10_port/headcalc.f90'
       - 'tests/fmig431/test_low08a_application.f90'
