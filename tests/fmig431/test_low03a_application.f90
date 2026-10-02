@@ -54,6 +54,9 @@ program test_low03a_application
   call app%materialize_groundwater_context(topology,predictors,areas,context_handle,status)
   call require(status/=FMR_APP_BOOT_OK .and. context_handle==0_int64,'ordinary Cauchy rejects groundwater context')
   call app%run_standalone(T0,T1,result,status)
+  write(*,'(a,1x,i0,1x,l1,1x,l1,1x,l1,1x,i0,1x,i0,1x,a)') 'LOW03A_TX_DIAG',status, &
+       result(1)%admitted,result(1)%completed,result(1)%committed,result(1)%kernel_status,result(1)%commit_status, &
+       trim(result(1)%admission_status)
   call require(status==FMR_APP_BOOT_OK .and. result(1)%completed .and. result(1)%committed,'ordinary Cauchy transaction')
   call require(abs(result(1)%mass%residual)<=HARD_MASS_GATE,'whole-profile mass closure')
   call require(result(1)%mass%complete,'mass accounting complete')
