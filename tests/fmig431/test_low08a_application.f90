@@ -77,6 +77,9 @@ program test_low08a_application
   call states(1)%capture_checkpoint(cp,ok)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,trial,candidate,diag)
+  write(*,'(a,8(1x,i0),2(1x,es24.16))') 'LOW08A_TX_DIAG',trial%status,diag%attempts,diag%retries, &
+       diag%solver_rejections,diag%temporal_rejections,diag%mass_rejections,diag%accepted_substeps, &
+       diag%nonlinear_iterations,diag%max_abs_step_mass_residual,diag%max_temporal_indicator
   call require(trial%completed .and. candidate%ready(),'serialized trial')
   call require(abs(trial%mass%residual)<=HARD_MASS_GATE,'serialized mass')
   call backend%discard_trial_candidate(candidate,diag)
