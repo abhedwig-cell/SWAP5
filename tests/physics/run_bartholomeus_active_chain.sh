@@ -19,7 +19,18 @@ module mod_transaction_reference
 end module
 EOF
 "$FC" "${F[@]}" -c "$B/mod_transaction_reference.f90" -o "$B/tr.o"
-"$FC" "${F[@]}" -Wno-unused-dummy-argument -c src/solver/mod_soil_water_solver_contract.f90 -o "$B/contract.o"
+cat > "$B/mod_soil_water_solver_contract.f90" <<'EOF'
+module mod_soil_water_solver_contract
+ use iso_fortran_env,only:real64
+ implicit none
+ type::soil_water_physical_state_t
+  integer::active_nodes=0
+  real(real64),allocatable::pressure_head(:),water_content(:)
+  real(real64)::ponding_depth=0._real64,groundwater_level=0._real64
+ end type
+end module
+EOF
+"$FC" "${F[@]}" -c "$B/mod_soil_water_solver_contract.f90" -o "$B/contract.o"
 "$FC" "${F[@]}" -c src/solver/mod_process_hydraulic_view.f90 -o "$B/h.o"
 "$FC" "${F[@]}" -c src/process/mod_soil_temperature_contract.f90 -o "$B/t.o"
 mods=(mod_oxygen_macro_zero_depth mod_oxygen_scalar_bracket mod_bartholomeus_micro mod_bartholomeus_macro mod_bartholomeus_response mod_bartholomeus_profile_response mod_bartholomeus_soil_diffusivity mod_bartholomeus_temperature mod_bartholomeus_microbial mod_bartholomeus_waterfilm mod_bartholomeus_waterfilm_independent)
