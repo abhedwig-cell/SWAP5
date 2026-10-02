@@ -36,7 +36,7 @@ contains
     class(clay_kim_shrinkage_t), intent(in) :: self
     clay_kim_valid = ieee_is_finite(self%alpha_k) .and. ieee_is_finite(self%beta_k) .and. &
          ieee_is_finite(self%gamma_k) .and. ieee_is_finite(self%transition_moisture_ratio) .and. &
-         self%alpha_k > 0.0_real64 .and. self%beta_k /= 0.0_real64 .and. &
+         self%alpha_k > 0.0_real64 .and. abs(self%beta_k) > tiny(1.0_real64) .and. &
          self%transition_moisture_ratio >= 0.0_real64
   end function clay_kim_valid
 
@@ -51,7 +51,7 @@ contains
     if (.not. ieee_is_finite(theta_s) .or. theta_s <= 0.0_real64 .or. theta_s >= 1.0_real64) return
     if (.not. ieee_is_finite(shr_par_a) .or. .not. ieee_is_finite(shr_par_b) .or. &
         .not. ieee_is_finite(shr_par_c)) return
-    if (shr_par_a <= 0.0_real64 .or. shr_par_b == 0.0_real64) return
+    if (shr_par_a <= 0.0_real64 .or. abs(shr_par_b) <= tiny(1.0_real64)) return
     argument = (shr_par_c-1.0_real64)/(shr_par_a*shr_par_b)
     if (argument <= 0.0_real64) return
     parameters%alpha_k = shr_par_a
