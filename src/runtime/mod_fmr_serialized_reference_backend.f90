@@ -3319,8 +3319,9 @@ contains
     class is (fmr_b110_physical_state_t)
       if (self%fixed_weir_surface_water_active) error stop 'F-PM08D7 active model missing fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
-      if (self%macropore_active .and. allocated(self%macropore_config) .and. &
-          allocated(self%macropore_config%matrix_area_fraction)) then
+      if (self%macropore_active) then
+        if (.not. allocated(self%macropore_config)) error stop 'F-MR06 active macropore config missing'
+        if (.not. allocated(self%macropore_config%matrix_area_fraction)) error stop 'F-MR06 active macropore area fraction missing'
         value = sum(self%soil_parameters%dz * physical%water_content * self%macropore_config%matrix_area_fraction) + &
              physical%ponding_depth
       else
