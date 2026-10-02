@@ -658,5 +658,28 @@
     "localized_blocker": "branch-local Richards residual gap across near-saturation K cutoff in frozen failed step 86; no global-root-absence claim",
     "unified_surface_control_volume": "preferred future ownership contract for Ribasim; alone does not change wet imposed-head Richards problem",
     "production_admission": false
+  },
+  "joint_nearsaturation_surface_probe": {
+    "status": "PARTIAL_NUMERICAL_IMPROVEMENT__NOT_QUALIFIED",
+    "preregistration": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_PREREGISTRATION.md",
+    "result": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_SURFACE_RESULT.json",
+    "decision": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_SURFACE_DECISION.md",
+    "test_runner": "tests/fapp/run_sw_rib_top03_joint_microrelief_probe.sh",
+    "production_code_changed": false,
+    "delta_h_cm_tested": [
+      1e-08,
+      0.02,
+      0.2,
+      2.0
+    ],
+    "joint_delta_2_rising_completed": 2,
+    "joint_delta_2_rising_total": 4,
+    "joint_delta_2_pulse_completed": 1,
+    "joint_delta_2_pulse_total": 4,
+    "pulse_ledger_residual_cm": 9.725553695716371e-14,
+    "O0_O2_output_identity": true,
+    "production_admission": false,
+    "conclusion": "Jointly smoothing soil theta/capacity/K and surface wet fraction/storage completes some previously failing paths, but failures remain non-monotonic across timestep refinements and recession; this parameterization is falsified as robust."
   }
 }
+
