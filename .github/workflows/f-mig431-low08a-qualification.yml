@@ -1,6 +1,4 @@
 name: F-MIG431 LOW08-A qualification
-permissions:
-  contents: write
 on:
   pull_request:
     branches: [integration/f-ci-canonical]
@@ -23,12 +21,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: O0 O2 qualification
         id: qualify
         continue-on-error: true
         env:
-          LOW08A_TESTED_SHA: ${{ github.sha }}
+          LOW08A_TESTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           LOW08A_RESULT: low08a_qualification_result.json
         run: |
           set -o pipefail
@@ -41,20 +41,6 @@ jobs:
             low08a_qualification_result.json
             low08a_qualification.log
           if-no-files-found: warn
-      - name: Persist exact-postimage qualification evidence
-        run: |
-          if [ -f low08a_qualification_result.json ]; then
-            cp low08a_qualification_result.json integration/audits/F-MIG431-LOW08-A_QUALIFICATION.json
-          else
-            printf '{"work_unit":"F-MIG431-LOW08-A","tested_postimage":"%s","status":"QUALIFICATION_FAILED","exit_code":%s}\n' "$GITHUB_SHA" "${{ steps.qualify.outputs.exit_code }}" > integration/audits/F-MIG431-LOW08-A_QUALIFICATION.json
-          fi
-          cp low08a_qualification.log integration/audits/F-MIG431-LOW08-A_QUALIFICATION.log
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add integration/audits/F-MIG431-LOW08-A_QUALIFICATION.json
-          git diff --cached --quiet && exit 0
-          git commit -m "evidence(LOW08-A): persist bounded qualification"
-          git push
       - name: Enforce qualification result
         if: steps.qualify.outputs.exit_code != '0'
         run: exit 1
