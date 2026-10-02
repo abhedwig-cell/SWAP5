@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcm.execution-authority.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCM",
+  "authority": "NO_B1HCM_EXECUTION_IS_DECISION_AUTHORITY",
+  "detected_before_result_exposure": true,
+  "detection_context": {
+    "workflow_run": 35505540455,
+    "executed_head": "4d74d35584e0467ae9af8503144f5f27b9b30ce5",
+    "state_when_detected": "material jobs had entered execution but no scientific result/artifact had been retrieved or used"
+  },
+  "reason": [
+    "B1HCF established corrected QEND semantics as an instantaneous terminal Darcy diagnostic evaluated from endpoint state.",
+    "The persisted B1HCM analyzer constructed R_star by linearly extrapolating the finite-step Reference QEND/BOTTOM_FLUX field itself.",
+    "That violates the inherited corrected QEND contract because the finite-step persisted Reference BOTTOM_FLUX is interval/balance materialized, not the required terminal Darcy diagnostic."
+  ],
+  "disposition": {
+    "workflow_run_35505540455": "DIAGNOSTIC_ONLY_NOT_DECISION_AUTHORITY_EVEN_IF_COMPLETED",
+    "current_B1HCM_analyzer": "FAIL_CLOSED_SUPERSEDED",
+    "successor": "LAYER-ROM-B1HCMR",
+    "successor_requirement": "Freeze QEND as zero-head Darcy flux derived from the p=1 Richardson-extrapolated endpoint bottom-cell theta before successor response execution."
+  },
+  "scientific_effect": "No observed B1HCM response was used to choose state, partition, closure, tolerance, Richardson order, or successor semantics. The repair restores an already-established upstream QEND definition.",
+  "production_rom_authorized": false
+}

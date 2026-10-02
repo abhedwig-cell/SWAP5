@@ -1,0 +1,210 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcmr.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCMR",
+  "phase": "PREREGISTERED_BEFORE_SEMANTIC_REPAIR_REBASE_RESPONSE",
+  "title": "Corrected-QEND continuous-time reduced Layer-ROM rebase",
+  "trigger": {
+    "B1HCL_decision": "B1HCL_FIRST_ORDER_REFERENCE_LIMIT_SUPPORTED_ALL_MATERIALS",
+    "superseded_work_unit": "LAYER-ROM-B1HCM",
+    "execution_authority": "integration/f-rom/LAYER_ROM_B1HCM_EXECUTION_AUTHORITY.json",
+    "reason": "B1HCM violated inherited B1HCF terminal-flux semantics by extrapolating the finite-step Reference BOTTOM_FLUX field. B1HCMR restores QEND as a terminal Darcy diagnostic derived from endpoint state."
+  },
+  "authority": {
+    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "controlled_reference_basis": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "B1HCF_corrected_flux_semantics": "integration/f-rom/LAYER_ROM_B1HCF_RESULT.json",
+    "B1HCL_reference_limit": "integration/f-rom/LAYER_ROM_B1HCL_RESULT.json",
+    "B1HCL_run": 35505239620,
+    "B1HCL_aggregate_artifact_id": 10603104252,
+    "B1HCL_aggregate_digest": "sha256:95cb19ed4df84413e00087223c5103909e0a6499a06b571caf34adc33e60d159",
+    "candidate_numerical_authority": "integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json"
+  },
+  "scope": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "representations": [
+      "L4",
+      "L6",
+      "R8",
+      "U4",
+      "U8",
+      "R16_OP"
+    ],
+    "targeted_ladder": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "placement_controls": {
+      "dimension4": [
+        "L4",
+        "U4"
+      ],
+      "dimension8": [
+        "R8",
+        "U8"
+      ]
+    },
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero prescribed pressure head at fixed 160 cm",
+    "horizon_day": 1.024,
+    "output_interval_day": 0.001,
+    "output_count": 1024,
+    "sinks": false,
+    "moving_water_table": false,
+    "no_new_state_closure_partition": true
+  },
+  "reference_semantics": {
+    "fine_dt_day": 0.00025,
+    "ultra_dt_day": 0.000125,
+    "frozen_Richardson_order": 1,
+    "state_limit": "For total storage, cumulative bottom exchange, QAVG and each 10-cm theta coordinate: R_star = 2*ultra - fine at common outputs.",
+    "QEND": "For each common endpoint, derive QEND by applying the frozen zero-head bottom Darcy operator to the Richardson-extrapolated bottom 10-cm theta. Do not extrapolate persisted finite-step BOTTOM_FLUX/QEND directly.",
+    "QEND_ultra_sensitivity": "Derive ultrafine QEND from ultrafine endpoint bottom-cell theta with the same zero-head Darcy operator.",
+    "zone_storage": "Derive 0-80 cm and 80-160 cm storage from the Richardson-extrapolated 10-cm theta coordinates.",
+    "rationale": "This exactly restores the corrected terminal-flux semantics established in B1HCF and keeps state-derived observables internally coherent."
+  },
+  "candidate_integrators": {
+    "governing": {
+      "id": "DOP853_STRICT",
+      "method": "DOP853",
+      "rtol": 1e-11,
+      "atol": 1e-13,
+      "max_step_day": 0.001
+    },
+    "independent_check": {
+      "id": "RADAU_STRICT",
+      "method": "Radau",
+      "rtol": 1e-10,
+      "atol": 1e-12,
+      "max_step_day": 0.001
+    }
+  },
+  "numerical_floors": {
+    "storage_rms": 1e-12,
+    "cumulative_bottom_rms": 1e-12,
+    "qavg_rms": 1e-9,
+    "qend_rms": 1e-9,
+    "mapped_theta_rms": 1e-13,
+    "source": "B1HCI/B1HCL unchanged"
+  },
+  "oracle_gate": {
+    "rule": "For each material, representation and primary continuous component, DOP853-versus-Radau RMS <= max(component floor, 0.01 * DOP853-versus-R_star RMS).",
+    "unresolved": "Exclude unresolved representation/material from scientific rebase and close panel as oracle unresolved."
+  },
+  "response_vector": {
+    "continuous": [
+      "storage",
+      "cumulative_bottom",
+      "qavg",
+      "qend",
+      "mapped_theta",
+      "upper_0_80_storage",
+      "lower_80_160_storage"
+    ],
+    "sign": [
+      "qavg_sign_mismatch",
+      "qend_sign_mismatch"
+    ],
+    "extrema": [
+      "max_abs_final_cumulative_bottom_error_cm"
+    ],
+    "report": [
+      "RMS",
+      "max absolute",
+      "mean absolute where implemented"
+    ],
+    "checkpoints_steps": [
+      64,
+      128,
+      256,
+      512,
+      1024
+    ]
+  },
+  "placement_gate": {
+    "primary": [
+      "cumulative_bottom_rms",
+      "qavg_rms",
+      "qend_rms",
+      "mapped_theta_rms",
+      "qavg_sign_mismatch",
+      "qend_sign_mismatch"
+    ],
+    "rule": "Targeted placement is stable-supported only if componentwise no-worse with at least one strict improvement versus its uniform same-dimension control under BOTH R_star and ultrafine Reference.",
+    "tolerance_continuous": 1e-12,
+    "sign_rule": "integer no-worse"
+  },
+  "dimension_gate": {
+    "ladder": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "rule": "A higher-dimension transition is stable componentwise-no-worse only if the no-worse relation holds under BOTH R_star and ultrafine Reference on every placement primary component. Report all component relations, no scalar score."
+  },
+  "equal_grid_control": {
+    "rule": "R16_OP is not required to equal R_star at absolute machine floor because R_star retains higher-order extrapolation residual. Report DOP853-to-R_star and DOP853-to-ultra plus the inherited B1HCL numerical-resolution scale.",
+    "closure_claim": "No equal-grid model-form discrepancy may be inferred unless it exceeds the prospectively qualified temporal-limit uncertainty."
+  },
+  "comparator_boundary": {
+    "CoRichards": "HELD in B1HCMR. Same-partition Richards spatial-discretization versus Layer-ROM closure decomposition requires separately temporally qualified B1HCN.",
+    "application_acceptance": false
+  },
+  "artifact_provenance": {
+    "B1H": {
+      "B02": 10600214649,
+      "B05": 10600409481,
+      "B06": 10600414651,
+      "B11": 10600034910,
+      "B12": 10599789755,
+      "B16": 10600289675
+    },
+    "B1HCK": {
+      "B02": 10602639932,
+      "B05": 10602999048,
+      "B06": 10603098741,
+      "B11": 10603393122,
+      "B12": 10603830084,
+      "B16": 10603820596
+    },
+    "B1HCL": {
+      "B02": 10603208865,
+      "B05": 10602989491,
+      "B06": 10603760794,
+      "B11": 10603223814,
+      "B12": 10603770562,
+      "B16": 10603433546
+    }
+  },
+  "decisions": {
+    "complete": "B1HCMR_CORRECTED_CONTINUOUS_TIME_REDUCED_LADDER_REBASED",
+    "oracle_unresolved": "B1HCMR_NUMERICAL_ORACLE_UNRESOLVED"
+  },
+  "next_if_complete": "LAYER-ROM-B1HCN_TEMPORALLY_QUALIFIED_SAME_PARTITION_CORICHARDS_REBASE",
+  "firewalls": [
+    "NO_USE_OF_B1HCM_RESPONSE_FOR_SELECTION",
+    "NO_NEW_REFERENCE_GENERATION",
+    "NO_NEW_CLOSURE_STATE_OR_PARTITION",
+    "NO_POST_RESPONSE_ORACLE_RETUNING",
+    "NO_WEIGHTED_SCORE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "evidence_classification": "SEMANTIC_REPAIR_REBASE_USING_PROSPECTIVELY_QUALIFIED_REFERENCE_LIMIT_AND_NEW_CONTINUOUS_TIME_REDUCED_CANDIDATE_RESPONSE",
+  "production_rom_authorized": false
+}

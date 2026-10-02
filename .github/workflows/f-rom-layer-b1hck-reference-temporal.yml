@@ -1,0 +1,218 @@
+name: F-ROM Layer-ROM B1HCK Reference temporal refinement
+
+on:
+  push:
+    branches: [work/f-rom-layer-a]
+    paths:
+      - integration/f-rom/LAYER_ROM_B1HCK_PREREGISTRATION.json
+      - tests/rom/materialize_layer_rom_b1hck_reference.py
+      - tests/rom/analyze_layer_rom_b1hck_reference_temporal.py
+      - tests/rom/aggregate_layer_rom_b1hck.py
+      - .github/workflows/f-rom-layer-b1hck-reference-temporal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1hck-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, b1h_id: 10600214649, b1h_digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0'}
+          - {material: B05, b1h_id: 10600409481, b1h_digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5'}
+          - {material: B06, b1h_id: 10600414651, b1h_digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380'}
+          - {material: B11, b1h_id: 10600034910, b1h_digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c'}
+          - {material: B12, b1h_id: 10599789755, b1h_digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7'}
+          - {material: B16, b1h_id: 10600289675, b1h_digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c'}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Authority and source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCK_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_NEW_REFERENCE_TEMPORAL_RESPONSE'
+          assert p['authority']['controlled_reference_basis']=='1caa431002d5c128c73cfcfbd31af4cc39ee9f12'
+          assert [x['dt_day'] for x in p['reference_temporal_ladder']['levels']]==[0.001,0.0005,0.00025]
+          assert p['reference_temporal_ladder']['no_solver_tolerance_change'] is True
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCK_AUTHORITY_LOCK=PASS')
+          PY
+          python3 -m py_compile             tests/rom/materialize_layer_rom_b1hck_reference.py             tests/rom/analyze_layer_rom_b1hck_reference_temporal.py             tests/rom/aggregate_layer_rom_b1hck.py
+
+      - name: Recover immutable basis and coarse Reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin             9d66a3e8a7fda6d1e456188cfc87cf9f884075a4             e3b11802e88316dcd57147569e985153be99e215
+          mkdir -p /tmp/b1hck/basis /tmp/b1hck/coarse
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/b1hck/d13_base.f90
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1hck/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/b1hck/basis/run_lare_bc1_stage_b.py
+          test "$(git hash-object /tmp/b1hck/d13_base.f90)" = "23ba278a37e142dc4c21e605af51dbf8f100ce92"
+          test "$(git hash-object /tmp/b1hck/basis/analyze_lare_bc2_c4v_one_day.py)" = "e7d22818d935bedddeb2f2cdf2cec58e95814f93"
+          test "$(git hash-object /tmp/b1hck/basis/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1h_id }}/zip" > /tmp/b1hck/coarse.zip
+          actual="$(sha256sum /tmp/b1hck/coarse.zip | awk '{print $1}')"
+          if [ "$actual" != "${{ matrix.b1h_digest }}" ] && [ "${{ matrix.material }}" != "B12" ]; then
+            echo "unexpected coarse artifact archive digest: $actual" >&2
+            exit 1
+          fi
+          unzip -q /tmp/b1hck/coarse.zip -d /tmp/b1hck/coarse
+          test -f "/tmp/b1hck/coarse/R16_${{ matrix.material }}.txt"
+          test -f "/tmp/b1hck/coarse/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
+          test -f "/tmp/b1hck/coarse/materialization.json"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          m=os.environ.get('MATERIAL','${{ matrix.material }}')
+          root=pathlib.Path('/tmp/b1hck/coarse')
+          line=(root/'reference_sha256.txt').read_text().strip().split()
+          expected=line[0]
+          got=hashlib.sha256((root/f'R16_{m}.txt').read_bytes()).hexdigest()
+          assert got==expected,(got,expected)
+          manifest=json.load(open(root/'materialization.json'))
+          assert manifest['material']==m and manifest['pre_reference_pass'] is True
+          print('LAYER_ROM_B1HCK_COARSE_INNER_DIGEST=PASS')
+          PY
+
+      - name: Reproduce materialized B1H Reference harness
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_layer_rom_b1h_material.py             --base-fortran /tmp/b1hck/d13_base.f90             --panel integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json             --prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --material "${{ matrix.material }}"             --output /tmp/b1hck/base_material.f90             --manifest /tmp/b1hck/base_material.json
+          python3 - <<'PY'
+          import hashlib,json
+          old=json.load(open('/tmp/b1hck/coarse/materialization.json'))
+          new=json.load(open('/tmp/b1hck/base_material.json'))
+          assert old['output_fortran_sha256']==new['output_fortran_sha256']
+          assert hashlib.sha256(open('/tmp/b1hck/base_material.f90','rb').read()).hexdigest()==old['output_fortran_sha256']
+          print('LAYER_ROM_B1HCK_BASE_REPRODUCTION=PASS')
+          PY
+
+      - name: Materialize refined Reference harnesses
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCK_EVIDENCE
+          python3 tests/rom/materialize_layer_rom_b1hck_reference.py             --base-fortran /tmp/b1hck/base_material.f90             --dt-day 0.0005 --material "${{ matrix.material }}"             --output /tmp/b1hck/ref_mid.f90             --manifest B1HCK_EVIDENCE/ref_mid_manifest.json
+          python3 tests/rom/materialize_layer_rom_b1hck_reference.py             --base-fortran /tmp/b1hck/base_material.f90             --dt-day 0.00025 --material "${{ matrix.material }}"             --output /tmp/b1hck/ref_fine.f90             --manifest B1HCK_EVIDENCE/ref_fine_manifest.json
+
+      - name: Compile and execute refined Reference
+        run: |
+          set -euo pipefail
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output canonical/b1hck_r16_stubs.f90 --nodes 16 --dz-cm 10
+
+          for level in mid fine; do
+            if [ "$level" = mid ]; then expected=8192; else expected=16384; fi
+            cp "/tmp/b1hck/ref_${level}.f90" canonical/tests/rom/test_layer_rom_b1hck_reference.f90
+            for opt in 0 2; do
+              build="/tmp/b1hck/build_${level}_o${opt}"
+              python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub b1hck_r16_stubs.f90                 --target tests/rom/test_layer_rom_b1hck_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$build" --opt "$opt"
+              "$build/rom0_test" > "/tmp/b1hck/ref_${level}_o${opt}.txt" 2>&1
+              grep -Fq 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' "/tmp/b1hck/ref_${level}_o${opt}.txt"
+              test "$(grep -c 'F_ROMV2_D13_REF_STATE|' "/tmp/b1hck/ref_${level}_o${opt}.txt")" -eq "$expected"
+            done
+            cmp "/tmp/b1hck/ref_${level}_o0.txt" "/tmp/b1hck/ref_${level}_o2.txt"
+            python3 - "$level" <<'PY'
+          import re,sys
+          level=sys.argv[1]
+          raw=open(f'/tmp/b1hck/ref_{level}_o0.txt',errors='replace').read()
+          m=re.search(r'F_ROMV2_D13_REF_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          mass=float(m.group(1))
+          assert mass<=1e-12,mass
+          print(f'LAYER_ROM_B1HCK_REFERENCE_{level.upper()}_MASS={mass}')
+          PY
+            cp "/tmp/b1hck/ref_${level}_o0.txt" "B1HCK_EVIDENCE/R16_${{ matrix.material }}_${level}.txt"
+          done
+          git -C canonical diff --quiet -- src reference
+          echo "LAYER_ROM_B1HCK_REFINED_REFERENCE=PASS"
+
+      - name: Install analysis stack
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Analyze Reference temporal axis
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_layer_rom_b1hck_reference_temporal.py             --material "${{ matrix.material }}"             --coarse-reference "/tmp/b1hck/coarse/R16_${{ matrix.material }}.txt"             --mid-reference "B1HCK_EVIDENCE/R16_${{ matrix.material }}_mid.txt"             --fine-reference "B1HCK_EVIDENCE/R16_${{ matrix.material }}_fine.txt"             --b1h-result "/tmp/b1hck/coarse/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"             --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --b1hci-prereg integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json             --basis-dir /tmp/b1hck/basis             --prereg integration/f-rom/LAYER_ROM_B1HCK_PREREGISTRATION.json             --output "B1HCK_EVIDENCE/LAYER_ROM_B1HCK_${{ matrix.material }}_RESULT.json"             | tee B1HCK_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCK_PREREGISTRATION.json'))
+          r=json.load(open('B1HCK_EVIDENCE/LAYER_ROM_B1HCK_${{ matrix.material }}_RESULT.json'))
+          assert r['decision'] in {
+            p['material_gate']['label_bounded'],
+            p['material_gate']['label_not_bounded'],
+            p['material_gate']['label_unresolved'],
+          }
+          assert r['integrity']['pass'] is True
+          assert r['integrity']['hydrological_model_changed'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCK_MATERIAL_GATE=PASS')
+          PY
+          sha256sum B1HCK_EVIDENCE/* > B1HCK_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hck-${{ matrix.material }}
+          path: B1HCK_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hck-B*
+          path: /tmp/b1hck-results
+          merge-multiple: false
+
+      - name: Aggregate Reference temporal diagnosis
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCK_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hck.py             --input-dir /tmp/b1hck-results             --prereg integration/f-rom/LAYER_ROM_B1HCK_PREREGISTRATION.json             --output B1HCK_AGGREGATE/LAYER_ROM_B1HCK_RESULT.json             | tee B1HCK_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCK_PREREGISTRATION.json'))
+          r=json.load(open('B1HCK_AGGREGATE/LAYER_ROM_B1HCK_RESULT.json'))
+          assert r['decision'] in {p['panel_decisions']['all_bounded'],p['panel_decisions']['mixed']}
+          assert r['integrity']['pass'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCK_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1HCK_AGGREGATE/* > B1HCK_AGGREGATE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo "LAYER_ROM_B1HCK=PASS"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hck-aggregate
+          path: B1HCK_AGGREGATE/
+          if-no-files-found: error

@@ -1,0 +1,212 @@
+name: F-ROM Layer-ROM B1H material transfer
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json'
+      - 'integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json'
+      - 'tests/rom/materialize_layer_rom_b1h_material.py'
+      - 'tests/rom/analyze_layer_rom_b1h_material.py'
+      - 'tests/rom/aggregate_layer_rom_b1h.py'
+      - '.github/workflows/f-rom-layer-b1h-material-transfer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1h-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B02, B05, B06, B11, B12, B16]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Assert research-only source freeze and recover pinned basis
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 HEAD -- src reference)"
+          echo "LAYER_ROM_B1H_SOURCE_REFERENCE_DIFF=${changed:-NONE}"
+          test -z "$changed"
+
+          git fetch --no-tags origin \
+            9d66a3e8a7fda6d1e456188cfc87cf9f884075a4 \
+            e3b11802e88316dcd57147569e985153be99e215
+
+          mkdir -p /tmp/b1h/basis
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/b1h/d13_base.f90
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1h/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/b1h/basis/run_lare_bc1_stage_b.py
+
+          d13_sha="$(git hash-object /tmp/b1h/d13_base.f90)"
+          c4v_sha="$(git hash-object /tmp/b1h/basis/analyze_lare_bc2_c4v_one_day.py)"
+          bc1_sha="$(git hash-object /tmp/b1h/basis/run_lare_bc1_stage_b.py)"
+          canonical_sha="$(git -C canonical rev-parse HEAD)"
+          echo "LAYER_ROM_B1H_D13_BLOB=$d13_sha"
+          echo "LAYER_ROM_B1H_C4V_BLOB=$c4v_sha"
+          echo "LAYER_ROM_B1H_BC1_BLOB=$bc1_sha"
+          echo "LAYER_ROM_B1H_CANONICAL_HEAD=$canonical_sha"
+          python3 - "$d13_sha" "$c4v_sha" "$bc1_sha" "$canonical_sha" <<'PY'
+          import sys
+          got=sys.argv[1:]
+          want=[
+            "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+            "e7d22818d935bedddeb2f2cdf2cec58e95814f93",
+            "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+            "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+          ]
+          assert got==want,(got,want)
+          print("LAYER_ROM_B1H_PROVENANCE_VALUES=PASS")
+          PY
+          echo "LAYER_ROM_B1H_AUTHORITY_RECOVERY=PASS"
+
+      - name: Install analysis dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Materialize and preflight ${{ matrix.material }} before Reference
+        run: |
+          set -euo pipefail
+          mkdir -p B1H_EVIDENCE
+          python3 tests/rom/materialize_layer_rom_b1h_material.py \
+            --base-fortran /tmp/b1h/d13_base.f90 \
+            --panel integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json \
+            --prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json \
+            --material "${{ matrix.material }}" \
+            --output /tmp/b1h/reference_${{ matrix.material }}.f90 \
+            --manifest B1H_EVIDENCE/materialization.json \
+            | tee B1H_EVIDENCE/preflight.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('B1H_EVIDENCE/materialization.json'))
+          assert p['pre_reference_pass'] is True
+          assert p['reference_response_generated'] is False
+          assert p['closure_changed'] is False
+          assert p['boundary_semantics_changed'] is False
+          print('LAYER_ROM_B1H_PRE_REFERENCE_GATE=PASS')
+          PY
+
+      - name: Generate deterministic R16 Reference
+        run: |
+          set -euo pipefail
+          cp "/tmp/b1h/reference_${{ matrix.material }}.f90" canonical/tests/rom/test_layer_rom_b1h_reference.f90
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py \
+            --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 \
+            --output canonical/b1h_r16_stubs.f90 --nodes 16 --dz-cm 10
+          for opt in 0 2; do
+            build="/tmp/b1h/build_${{ matrix.material }}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py \
+              --root canonical \
+              --stub b1h_r16_stubs.f90 \
+              --target tests/rom/test_layer_rom_b1h_reference.f90 \
+              --external-source src/legacy/b1_10_port/headcalc.f90 \
+              --build "$build" --opt "$opt"
+            "$build/rom0_test" > "/tmp/b1h/reference_${{ matrix.material }}_o${opt}.txt" 2>&1
+            grep -Fq 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' "/tmp/b1h/reference_${{ matrix.material }}_o${opt}.txt"
+            test "$(grep -c 'F_ROMV2_D13_REF_STATE|' "/tmp/b1h/reference_${{ matrix.material }}_o${opt}.txt")" -eq 4096
+            test "$(grep -c 'F_ROMV2_D13_REF_INITIAL|' "/tmp/b1h/reference_${{ matrix.material }}_o${opt}.txt")" -eq 4
+          done
+          cmp "/tmp/b1h/reference_${{ matrix.material }}_o0.txt" "/tmp/b1h/reference_${{ matrix.material }}_o2.txt"
+          python3 - <<'PY'
+          import re
+          path="/tmp/b1h/reference_${{ matrix.material }}_o0.txt"
+          raw=open(path,errors='replace').read()
+          m=re.search(r'F_ROMV2_D13_REF_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          mass=float(m.group(1))
+          assert mass <= 1e-12, mass
+          print(f"LAYER_ROM_B1H_REFERENCE_MASS={mass}")
+          PY
+          cp "/tmp/b1h/reference_${{ matrix.material }}_o0.txt" "B1H_EVIDENCE/R16_${{ matrix.material }}.txt"
+          sha256sum "B1H_EVIDENCE/R16_${{ matrix.material }}.txt" > B1H_EVIDENCE/reference_sha256.txt
+          git -C canonical diff --quiet -- src reference
+          echo "LAYER_ROM_B1H_REFERENCE=PASS"
+
+      - name: Execute frozen L4/L6/R8 and placement controls
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_layer_rom_b1h_material.py \
+            --reference "/tmp/b1h/reference_${{ matrix.material }}_o0.txt" \
+            --basis-dir /tmp/b1h/basis \
+            --panel integration/f-rom/LAYER_ROM_B0_TRANSFER_PANEL_PREREGISTRATION.json \
+            --prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json \
+            --materialization B1H_EVIDENCE/materialization.json \
+            --material "${{ matrix.material }}" \
+            --output "B1H_EVIDENCE/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json" \
+            | tee B1H_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open("B1H_EVIDENCE/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"))
+          assert p['decision']=='B1H_MATERIAL_TRANSFER_CHARACTERIZED'
+          assert p['integrity']['pass'] is True
+          assert p['application_acceptance_adjudicated'] is False
+          assert p['performance_measurement_performed'] is False
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1H_MATERIAL_GATE=PASS')
+          PY
+          sha256sum B1H_EVIDENCE/* > B1H_EVIDENCE/sha256.txt
+
+      - name: Upload material evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1h-${{ matrix.material }}
+          path: B1H_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1h-B*
+          path: /tmp/b1h-results
+          merge-multiple: false
+
+      - name: Aggregate prospective material transfer
+        run: |
+          set -euo pipefail
+          mkdir -p B1H_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1h.py \
+            --input-dir /tmp/b1h-results \
+            --prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json \
+            --output B1H_AGGREGATE/LAYER_ROM_B1H_RESULT.json \
+            | tee B1H_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('B1H_AGGREGATE/LAYER_ROM_B1H_RESULT.json'))
+          assert p['decision']=='B1H_TRANSFER_PANEL_CHARACTERIZED'
+          assert p['all_material_integrity_pass'] is True
+          assert p['application_acceptance_adjudicated'] is False
+          assert p['performance_measurement_performed'] is False
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1H_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1H_AGGREGATE/* > B1H_AGGREGATE/sha256.txt
+
+      - name: Upload aggregate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1h-aggregate
+          path: B1H_AGGREGATE/
+          if-no-files-found: error

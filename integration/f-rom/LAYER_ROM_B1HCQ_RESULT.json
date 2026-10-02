@@ -1,0 +1,106 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hc-q.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HC-Q",
+  "decision": "B1HCQ_FULL_COMMON_COHORT_AVAILABLE",
+  "execution": {
+    "workflow_run": 35499501536,
+    "executed_head": "0631b49abc3cc17db8d026552e0ec444306cd842",
+    "conclusion": "success",
+    "aggregate_artifact_id": 10601659925,
+    "aggregate_artifact_digest": "sha256:0544f94b58ccf12503c7250ed0cdffa037706f3ac31df82e88a69cae427f3f1f",
+    "raw_result_sha256": "92999e6995fdac411ac4fa18ac630c454d39e75af273ec903cb811f6b862d4ce"
+  },
+  "repaired_from": {
+    "workflow_run": 35499370033,
+    "repair_record": "integration/f-rom/LAYER_ROM_B1HCQ_REPAIR_RECORD.json",
+    "scientific_design_changed": false
+  },
+  "cohort": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "material_history_cells": 24,
+    "members": {
+      "L4": {
+        "dimension": 4,
+        "qualified_cells": 24,
+        "full_common_cohort": true
+      },
+      "L6": {
+        "dimension": 6,
+        "qualified_cells": 24,
+        "full_common_cohort": true
+      },
+      "R8": {
+        "dimension": 8,
+        "qualified_cells": 24,
+        "full_common_cohort": true
+      }
+    },
+    "cells_common_to_all_three_members": 24,
+    "minimum_full_common_cohort_dimension": 4
+  },
+  "integrity": {
+    "pass": true,
+    "all_R16_exact_B1H_reproduction": true,
+    "all_status_or_trace_identity": true,
+    "technical_failures": {},
+    "maximum_qualified_mass_residual_cm": 3.469446951953614e-18
+  },
+  "controls": {
+    "B02_R16_stdout_sha256": "82cf20316d2d47889cc5e0c9990692e46b069d15a513cb3d8e751a0d1e1c8ac2",
+    "B05_R16_stdout_sha256": "bde820849c1bf209295bf36998ff8f5f9f578617cecbeee2af718ef6747ce81f",
+    "B06_R16_stdout_sha256": "0cbfc5909924a3fdd018b1833545cb1568471c4c59b7035677f35ded051cfb32",
+    "B11_R16_stdout_sha256": "24f22047cf24637a242f83474f0a2d4e2ef0adcf3d03f8e6c430194de5ec3590",
+    "B12_R16_stdout_sha256": "16598c0be9ab6c26a1196d5836d400d632f0c1bf9c0fb24a68312407b83b2652",
+    "B16_R16_stdout_sha256": "50b739491b87a6472ea3b5dc398f746ce309d2f1921a9764f09122453a03fd53"
+  },
+  "material_artifacts": {
+    "B02": {
+      "id": 10601589862,
+      "digest": "sha256:dd31968a447019f4d483a1ec931a17c073806b52c58541ea97cc632cb08218cf"
+    },
+    "B05": {
+      "id": 10602175157,
+      "digest": "sha256:c65d6fa84fa0d3df4f9401e46808dc78d12813c48b61ec63402edebf4ae95ab9"
+    },
+    "B06": {
+      "id": 10602070291,
+      "digest": "sha256:82575403367398a86543d94754bef596ace3688552b3042fc5912c5f0d2c4f19"
+    },
+    "B11": {
+      "id": 10600849049,
+      "digest": "sha256:f63648c948018e01d9d1e857cec0336bcbf7dcac125a59274e0e5dbd54be7e65"
+    },
+    "B12": {
+      "id": 10602120091,
+      "digest": "sha256:b5199abdd53798f1076a72320dd2e6ae26e5335bbddf3e916988aa67576f6303"
+    },
+    "B16": {
+      "id": 10601764361,
+      "digest": "sha256:8dfe5424b7e96170b6c7588ab5bd54e6ee8926fe35f4795e9928dccbf3dc2295"
+    }
+  },
+  "adjudication": [
+    "All three same-partition conventional Richards comparators L4, L6 and R8 are numerically admissible for every frozen material-history cell under the unchanged strict policy.",
+    "Comparator availability is therefore not a coverage limiter for the six-material transfer decomposition.",
+    "No hydrological error comparison, runtime measurement or application acceptance was performed in B1HC-Q."
+  ],
+  "next": "Preregister B1HC-D componentwise LARE-versus-same-partition-CoRichards hydrological decomposition on the exact 72 qualified member-material-history cells before exposing CoRichards errors.",
+  "hydrological_comparison_performed": false,
+  "performance_measurement_performed": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}

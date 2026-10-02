@@ -1,0 +1,184 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hci.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCI",
+  "phase": "PREREGISTERED_BEFORE_INDEPENDENT_NUMERICAL_ORACLE_RESULTS",
+  "title": "Independent high-order integration oracle for the frozen fixed-head Layer-ROM ODE",
+  "scientific_question": "Do the frozen R16_OP Layer-ROM trajectories approach an independently integrated continuous-time solution of the same ODE, and can the B1HCH near-floor exceptions be attributed to finite-step/roundoff behaviour rather than unresolved model-form evidence?",
+  "trigger": {
+    "B1HCH_decision": "B1HCH_R16_SELF_CONVERGENCE_MIXED",
+    "B1HCH_closeout": "integration/f-rom/LAYER_ROM_B1HCH_CLOSEOUT.json",
+    "reason": "Four materials show approximately second-order Heun self-convergence, B11 is fully saturated below the frozen identity floor, and B12 has one near-floor nonmonotone storage component. An independent ODE integration route is required before any closure/state redesign."
+  },
+  "scope": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "primary_representation": {
+      "id": "R16_OP",
+      "dimension": 16,
+      "boundaries_cm": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "equal-grid no-spatial-reduction Layer-ROM ODE control"
+    },
+    "secondary_representation": {
+      "id": "R8",
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "reduced targeted-placement numerical context only"
+    },
+    "boundary": "fixed zero pressure head at 160 cm, zero top flux",
+    "closure": "unchanged standard LARE internal closure plus BC1 CURRENT_LAYER_FACE zero-head bottom closure",
+    "state": "unchanged layer storages plus cumulative boundary bookkeeping",
+    "new_reference_trajectory": false,
+    "reference_used_in_primary_oracle_decision": false,
+    "hydrological_model_changed": false
+  },
+  "fixed_step_heun": {
+    "dt_day": [
+      0.0001,
+      0.00005,
+      0.000025
+    ],
+    "integrator": "same source-anchored iterative Heun route used in B1HCG/B1HCH",
+    "source": "B1HCH implementation and pinned C4V/BC1 basis"
+  },
+  "independent_oracles": [
+    {
+      "id": "DOP853_STRICT",
+      "implementation": "scipy.integrate.solve_ivp",
+      "method": "DOP853",
+      "rtol": 1e-11,
+      "atol": 1e-13,
+      "max_step_day": 0.001,
+      "dense_output": false
+    },
+    {
+      "id": "RADAU_STRICT",
+      "implementation": "scipy.integrate.solve_ivp",
+      "method": "Radau",
+      "rtol": 1e-10,
+      "atol": 1e-12,
+      "max_step_day": 0.001,
+      "dense_output": false
+    }
+  ],
+  "common_output_times": {
+    "start_day": 0.001,
+    "end_day": 1.024,
+    "interval_day": 0.001,
+    "count": 1024
+  },
+  "observables": [
+    "total_storage_cm",
+    "cumulative_bottom_exchange_cm",
+    "QAVG_cm_per_day",
+    "QEND_cm_per_day",
+    "mapped_10cm_theta"
+  ],
+  "pooled_comparison": {
+    "histories": "pool X01-X04",
+    "times": "pool all 1024 common output times",
+    "mapped_theta": "also pool 16 mapped cells",
+    "metrics": [
+      "RMS difference",
+      "maximum absolute difference"
+    ]
+  },
+  "oracle_agreement_gate": {
+    "basis": "Numerical resolution gate only, not hydrological acceptance. Compare DOP853_STRICT versus RADAU_STRICT on identical ODE/state.",
+    "per_component_absolute_floor": {
+      "storage_rms": 1e-12,
+      "cumulative_bottom_rms": 1e-12,
+      "qavg_rms": 1e-9,
+      "qend_rms": 1e-9,
+      "mapped_theta_rms": 1e-13
+    },
+    "relative_to_existing_B1HCH_mid_fine": "For each component, oracle-pair RMS must be <= max(component absolute floor, 0.10 * the immutable B1HCH R16_OP mid-fine RMS self-difference for that material/component).",
+    "role": "Establish that the independent oracle pair is materially tighter than the already observed Heun refinement scale wherever that scale is resolvable."
+  },
+  "heun_to_oracle_gate": {
+    "governing_oracle": "DOP853_STRICT, provided the oracle-agreement gate passes",
+    "component_rule": [
+      "Let d1,d2,d3 be pooled RMS differences from Heun dt 1e-4, 5e-5, 2.5e-5 to DOP853_STRICT.",
+      "If the immutable B1HCH mid-fine RMS for the component is <= the component absolute floor, classify NUMERICALLY_SATURATED when d3 <= the same absolute floor; no strict monotonicity is required inside that numerical floor.",
+      "Otherwise require d2 <= d1 + absolute_floor, d3 <= d2 + absolute_floor, and d3 <= max(absolute_floor, 0.75 * B1HCH_mid_fine_RMS)."
+    ],
+    "expected_order_context": "For a second-order asymptotic Heun regime the finest error is approximately one third of the mid-fine difference; the 0.75 multiplier is a preregistered conservative numerical consistency bound, not a hydrological tolerance.",
+    "material_supported": "all five primary R16_OP components pass either NUMERICALLY_SATURATED or HEUN_APPROACHES_ORACLE"
+  },
+  "panel_decision_labels": {
+    "all_six_supported": "B1HCI_INDEPENDENT_ODE_ORACLE_SUPPORTS_HEUN_LIMIT_ALL_MATERIALS",
+    "mixed": "B1HCI_INDEPENDENT_ODE_ORACLE_RELATION_MIXED",
+    "oracle_unresolved": "B1HCI_INDEPENDENT_ORACLE_NOT_NUMERICALLY_RESOLVED"
+  },
+  "decision_logic": [
+    "If either independent oracle fails integration/domain checks on any material or the oracle-agreement gate fails on any primary R16_OP component, use B1HCI_INDEPENDENT_ORACLE_NOT_NUMERICALLY_RESOLVED.",
+    "Else if all six materials satisfy the frozen Heun-to-oracle material rule, use B1HCI_INDEPENDENT_ODE_ORACLE_SUPPORTS_HEUN_LIMIT_ALL_MATERIALS.",
+    "Else use B1HCI_INDEPENDENT_ODE_ORACLE_RELATION_MIXED."
+  ],
+  "interpretation_rules": [
+    "Support means the fixed-step Heun research propagator is approaching a stable solution of the unchanged Layer-ROM ODE on the frozen panel. It does not establish that this ODE equals continuous Richards.",
+    "If all six are supported while R16_OP retains nonzero finite-Reference residuals, the next causal axis is finite-Reference temporal/discretization contribution, not closure/state redesign.",
+    "If the oracle relation is mixed, hold closure/state redesign and diagnose the research propagator or ODE integration domain.",
+    "R8 is secondary numerical context and cannot override the R16_OP panel decision."
+  ],
+  "provenance": {
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "B1HCH_material_run": 35502001117,
+    "B1HCH_aggregate_repair_run": 35502200612,
+    "B1HCH_aggregate_artifact_id": 10602199199,
+    "B1HCH_aggregate_digest": "sha256:151834b72480a4906f9f8171a30189a91baaa656fbd072cf6ea59d79201eab3f",
+    "B1HCH_raw_result_sha256": "f86679614840e6795811fab677835fae39108b6065515cb54c8fea508a87b6db",
+    "basis_head": "e3b11802e88316dcd57147569e985153be99e215"
+  },
+  "firewalls": [
+    "NO_NEW_REFERENCE_TRAJECTORY",
+    "NO_REFERENCE_IN_PRIMARY_ORACLE_DECISION",
+    "NO_NEW_STATE_OR_PARTITION",
+    "NO_CLOSURE_FITTING",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

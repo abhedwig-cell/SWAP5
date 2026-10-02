@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hce.e1.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCE-E1",
+  "status": "CLOSED_REFERENCE_FLUX_METRIC_SEMANTICS_INCONSISTENCY_FOUND_TEMPORAL_GATE_HELD",
+  "decision": "B1HCE_E1_BOTTOM_TERMINAL_OPERATOR_SEMANTICS_DIFFER_E2_HELD",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCE_PREREGISTRATION.json",
+    "result": "integration/f-rom/LAYER_ROM_B1HCE_E1_RESULT.json",
+    "workflow_run": 35500156497,
+    "artifact_id": 10601841775,
+    "artifact_digest": "sha256:b86081e9ee323ee0dfd52206c7de60a4f2c6543fb15ea008ffd5e095fa6f964f"
+  },
+  "hold": [
+    "B1HCE-E2 temporal refinement",
+    "new boundary closure",
+    "fixed-head comparator-frontier claims relying on the noncommensurate bottom-flux component",
+    "application acceptance",
+    "performance claim"
+  ],
+  "next_authorized": "LAYER-ROM-B1HCF_FLUX_METRIC_SEMANTICS_RECONCILIATION",
+  "production_rom_authorized": false
+}

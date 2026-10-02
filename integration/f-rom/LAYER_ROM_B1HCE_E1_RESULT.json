@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hce.e1.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCE-E1",
+  "decision": "B1HCE_E1_BOTTOM_TERMINAL_OPERATOR_SEMANTICS_DIFFER_E2_HELD",
+  "execution": {
+    "workflow_run": 35500156497,
+    "executed_head": "4641dc0c8a7c69877448cda23d4ffbb93b694ce8",
+    "conclusion": "success",
+    "aggregate_artifact_id": 10601841775,
+    "aggregate_artifact_digest": "sha256:b86081e9ee323ee0dfd52206c7de60a4f2c6543fb15ea008ffd5e095fa6f964f"
+  },
+  "identity": {
+    "all_material_R16_internal_identity_pass": true,
+    "all_material_constitutive_identity_pass": true,
+    "all_material_R16_bottom_identity_pass": false,
+    "E2_authorized": false
+  },
+  "R16_bottom_pointwise_candidate_minus_logged_reference_flux": {
+    "B02": {
+      "rms_cm_per_day": 0.07478487853228669,
+      "max_abs_cm_per_day": 0.6056343232703298,
+      "sign_mismatch_count": 0
+    },
+    "B05": {
+      "rms_cm_per_day": 0.008653019276637279,
+      "max_abs_cm_per_day": 0.2250119508548778,
+      "sign_mismatch_count": 0
+    },
+    "B06": {
+      "rms_cm_per_day": 0.10561666787262465,
+      "max_abs_cm_per_day": 0.5517000238791923,
+      "sign_mismatch_count": 0
+    },
+    "B11": {
+      "rms_cm_per_day": 0.0000038076899596520994,
+      "max_abs_cm_per_day": 0.000006903881082057084,
+      "sign_mismatch_count": 0
+    },
+    "B12": {
+      "rms_cm_per_day": 3.578793085308359e-8,
+      "max_abs_cm_per_day": 5.8423119037899485e-8,
+      "sign_mismatch_count": 0
+    },
+    "B16": {
+      "rms_cm_per_day": 0.003468218306777605,
+      "max_abs_cm_per_day": 0.006534110757221434,
+      "sign_mismatch_count": 0
+    }
+  },
+  "critical_teacher_forced_internal_RMS_cm_per_day": {
+    "B02": {
+      "L4": 1.6589384940537861,
+      "L6": 0.07981236310013116,
+      "R8": 0.0008317447488889093
+    },
+    "B05": {
+      "L4": 1.912843727074136,
+      "L6": 0.4098151628595901,
+      "R8": 0.1739245848639807
+    },
+    "B06": {
+      "L4": 7.877539139045691,
+      "L6": 1.315688210655476,
+      "R8": 0.23479916982099264
+    },
+    "B11": {
+      "L4": 0.0009964752858235902,
+      "L6": 0.0004231835893539203,
+      "R8": 0.00021486742679053817
+    },
+    "B12": {
+      "L4": 0.00005553437220873512,
+      "L6": 0.000023465999536562737,
+      "R8": 0.000010936851434334648
+    },
+    "B16": {
+      "L4": 0.0931879009802746,
+      "L6": 0.016975135430129407,
+      "R8": 0.007795463361979842
+    }
+  },
+  "code_semantics_reconciliation": {
+    "canonical_source": "src/adapter/mod_reference_richards_legacy_binding.f90@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "mode5_materialization": "materialize_prescribed_head_bottom_flux",
+    "formula": "qbot = qtop + root_sink_sum + drainage_sum + (storage_new-storage_old)/dt - subsurface_source_sum",
+    "laboratory_reduction": "With zero top flux and no sinks/sources, printed outward BOTTOM_FLUX = BOTTOM_OUTWARD_EXCHANGE/dt = -(storage_new-storage_old)/dt.",
+    "backend_mapping": "mod_fmr_serialized_reference_backend assigns terminal_bottom_outward_flux_native = -solve_result%bottom_flux after this materialization.",
+    "scientific_consequence": "The persisted label 'terminal' does not denote an instantaneous end-state Darcy face evaluation for SWBOTB=5 in these artifacts."
+  },
+  "adjudication": [
+    "The equal-grid internal Darcy operator is numerically identical to the fine Reference-state diagnostic; the constitutive inverse is also consistent with logged pressure heads.",
+    "The R16 bottom mismatch is not evidence that the algebraic zero-head Darcy boundary formula differs. It arises because the Reference artifact exposes a balance-materialized interval flux under a field named terminal bottom flux.",
+    "Therefore the previously used Layer-ROM bottom_flux_rmse and bottom_flux_sign comparisons mix an instantaneous candidate Darcy flux with an interval-average Reference flux and are not scientifically commensurate.",
+    "Cumulative bottom exchange, total storage and mapped-profile metrics remain semantically valid and are not invalidated by this finding.",
+    "E2 temporal refinement is held by the preregistered gate. The next action is metric-semantics reconciliation of existing fixed-head evidence before any new dynamics experiment."
+  ],
+  "affected_evidence": [
+    "Layer-ROM B1/B1H/B1HC-D bottom_flux_rmse_cm_per_day",
+    "Layer-ROM B1/B1H/B1HC-D bottom_flux_sign_errors where based on logged BOTTOM_FLUX versus terminal candidate q",
+    "Any comparator-relative frontier whose decision vector included those two components"
+  ],
+  "unaffected_or_retained": [
+    "state-information A1 future-response distinction evidence except any interpretation calling the logged Reference flux instantaneous",
+    "storage_rmse_cm",
+    "cumulative_bottom_rmse_cm",
+    "upper/lower storage RMSE",
+    "mapped_theta/profile reconstruction metrics",
+    "water balance and mass conservation",
+    "teacher-forced internal-interface diagnostics from E1"
+  ],
+  "next": "LAYER-ROM-B1HCF: reconcile flux metric semantics and re-adjudicate fixed-head frontiers from immutable artifacts using commensurate interval-average and terminal-state diagnostic flux definitions.",
+  "production_rom_authorized": false
+}

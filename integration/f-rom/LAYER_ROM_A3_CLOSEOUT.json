@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.layer-rom.phase-a3.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A3",
+  "status": "CLOSED_FIRST_MOMENT_NEGATIVE_LOCAL_RESOLUTION_ROUTE_SELECTED_FOR_NEXT_REGIME",
+  "decision": "A3_FIRST_MOMENT_OPERATOR_NOT_BROADLY_SUPPORTED",
+  "authority": {
+    "execution_authority": "integration/f-rom/LAYER_ROM_A3_EXECUTION_AUTHORITY.json",
+    "preregistration": "integration/f-rom/LAYER_ROM_A3_PREREGISTRATION.json",
+    "workflow_run": 35495220671,
+    "artifact_id": 10599939300,
+    "artifact_digest": "sha256:6dcfcfbe7d05b28ab62e0d14d3911959e541a39caeaa22690d824e9aa5152a24",
+    "executed_head": "71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f",
+    "result_sha256": "bab62de3e2841e3352808cb9a77d93b66f0cfc2a6fb513b199c2f5bcacf97945",
+    "reproduced_predecessor_run": 35495160112
+  },
+  "conclusions": [
+    "One global first moment is not a useful substitute for the localized fourth storage state under the frozen B01 fixed-flux operator gate.",
+    "L4 remains the scientifically cleaner four-state representation because its extra scalar is placed where closure error localizes.",
+    "This is a representation/closure conclusion, not application acceptance."
+  ],
+  "next_authorized": "LAYER-ROM-A4_EXPLICIT_LAYER_FIDELITY_FRONTIER_RECONCILIATION",
+  "production_rom_authorized": false
+}

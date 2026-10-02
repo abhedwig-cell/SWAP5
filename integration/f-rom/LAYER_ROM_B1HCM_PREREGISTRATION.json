@@ -1,0 +1,304 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcm.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCM",
+  "phase": "PREREGISTERED_BEFORE_CONTINUOUS_TIME_REDUCED_LADDER_RESPONSE",
+  "title": "Continuous-time reduced Layer-ROM ladder rebase against the temporally qualified Reference limit",
+  "scientific_question": "After removing both finite Reference temporal truncation and reduced-candidate Heun integration error, what fixed-head fidelity remains attributable to vertical representation and the unchanged Layer-ROM closure across the six-material transfer panel?",
+  "trigger": {
+    "B1HCL_decision": "B1HCL_FIRST_ORDER_REFERENCE_LIMIT_SUPPORTED_ALL_MATERIALS",
+    "B1HCL_closeout": "integration/f-rom/LAYER_ROM_B1HCL_CLOSEOUT.json",
+    "reason": "B1HCL demonstrated that the former equal-grid R16_OP residual was finite Reference temporal truncation. Reduced candidates must now be compared in independently resolved continuous-time form before model-form attribution."
+  },
+  "authority": {
+    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "candidate_basis": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215",
+    "B1H_preregistration": "integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json",
+    "B1HCI_preregistration": "integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json",
+    "B1HCL_preregistration": "integration/f-rom/LAYER_ROM_B1HCL_PREREGISTRATION.json",
+    "B1HCL_execution": {
+      "workflow_run": 35505239620,
+      "artifact_id": 10603104252,
+      "digest": "sha256:95cb19ed4df84413e00087223c5103909e0a6499a06b571caf34adc33e60d159"
+    }
+  },
+  "scope": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero prescribed pressure head at fixed 160 cm",
+    "horizon_day": 1.024,
+    "common_output_interval_day": 0.001,
+    "common_output_count": 1024,
+    "sinks": false,
+    "moving_water_table": false,
+    "hydrological_model_changed": false
+  },
+  "representations": [
+    {
+      "id": "L4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "targeted dimension-4 candidate"
+    },
+    {
+      "id": "L6",
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "targeted intermediate candidate"
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "targeted persistent-GW candidate"
+    },
+    {
+      "id": "U4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "role": "same-dimension uniform placement control"
+    },
+    {
+      "id": "U8",
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ],
+      "role": "same-dimension uniform placement control"
+    },
+    {
+      "id": "R16_OP",
+      "dimension": 16,
+      "boundaries_cm": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "equal-grid operator control"
+    }
+  ],
+  "candidate_integrators": [
+    {
+      "id": "DOP853_STRICT",
+      "method": "DOP853",
+      "rtol": 1e-11,
+      "atol": 1e-13,
+      "max_step_day": 0.001
+    },
+    {
+      "id": "RADAU_STRICT",
+      "method": "Radau",
+      "rtol": 1e-10,
+      "atol": 1e-12,
+      "max_step_day": 0.001
+    }
+  ],
+  "governing_candidate": "DOP853_STRICT after per-representation oracle agreement passes",
+  "reference_limit": {
+    "formula": "R_star = 2 * REF_DT_1P25E4 - REF_DT_2P5E4, pointwise at common output coordinates",
+    "order": 1,
+    "qualification": "B1HCL prospective fourth-level holdout supported first-order limit on all six materials and five observables",
+    "source_files": "fine Reference from immutable B1HCK material artifact plus ultra Reference from immutable B1HCL material artifact",
+    "note": "R_star is an observable-space temporal-limit estimate, not a new Richards state trajectory or production route."
+  },
+  "numerical_floors": {
+    "storage_rms": 1e-12,
+    "cumulative_bottom_rms": 1e-12,
+    "qavg_rms": 1e-9,
+    "qend_rms": 1e-9,
+    "mapped_theta_rms": 1e-13,
+    "source": "inherited unchanged from B1HCI/B1HCL"
+  },
+  "oracle_agreement_gate": {
+    "rule": "For each material, representation and component, DOP853-versus-Radau RMS <= max(component floor, 0.01 * DOP853-versus-R_star RMS).",
+    "role": "Numerical-resolution gate only. The 0.01 factor is frozen before reduced continuous-time responses and is not a hydrological tolerance.",
+    "failure": "Any unresolved representation/component is excluded from scientific rebase and causes panel decision B1HCM_NUMERICAL_ORACLE_UNRESOLVED."
+  },
+  "response_vector": [
+    "total-storage RMS and maximum absolute error versus R_star",
+    "cumulative-bottom-exchange RMS and maximum absolute error versus R_star",
+    "QAVG RMS and maximum absolute error versus R_star",
+    "QEND RMS and maximum absolute error versus R_star",
+    "QAVG sign-mismatch count versus R_star",
+    "QEND sign-mismatch count versus R_star",
+    "mapped 10-cm theta RMS and maximum absolute error versus R_star",
+    "maximum absolute final cumulative-bottom-exchange error across histories",
+    "DOP853 versus Radau numerical-oracle RMS for every primary component",
+    "R16_OP residual versus R_star as temporal-limit closure/operator identity control"
+  ],
+  "placement_test": {
+    "dimension4": [
+      "L4",
+      "U4"
+    ],
+    "dimension8": [
+      "R8",
+      "U8"
+    ],
+    "primary_components": [
+      "cumulative_bottom_rms",
+      "qavg_rms",
+      "qend_rms",
+      "mapped_theta_rms",
+      "qavg_sign_mismatch",
+      "qend_sign_mismatch"
+    ],
+    "support_rule": "Targeted placement is supported only if no worse than the uniform control in every primary component within exact metric equality tolerance 1e-12 for continuous metrics and integer equality for sign counts, and strictly better in at least one."
+  },
+  "dimension_test": {
+    "ladder": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "rule": "Report every componentwise transition. Do not select an application-acceptable minimum without external purpose tolerances."
+  },
+  "model_form_interpretation": {
+    "equal_grid_rule": "If R16_OP DOP853-to-R_star is within the inherited numerical floor on all five continuous components and has zero QAVG/QEND sign mismatch, equal-grid Layer-ROM closure/operator is numerically consistent with the temporally extrapolated Reference laboratory.",
+    "reduced_residual_rule": "Residuals of numerically resolved reduced members relative to R_star then contain representation plus coarse closure/localization effects; they are not candidate time-integration error.",
+    "no_coarse_richards_attribution_yet": "Do not partition reduced residual into Richards spatial-discretization versus Layer-ROM model-form until same-partition CoRichards is itself rebased to temporally qualified Reference."
+  },
+  "decisions": {
+    "complete": "B1HCM_CONTINUOUS_TIME_REDUCED_LADDER_REBASED",
+    "oracle_unresolved": "B1HCM_NUMERICAL_ORACLE_UNRESOLVED"
+  },
+  "artifact_provenance": {
+    "B1H": {
+      "B02": {
+        "id": 10600214649
+      },
+      "B05": {
+        "id": 10600409481
+      },
+      "B06": {
+        "id": 10600414651
+      },
+      "B11": {
+        "id": 10600034910
+      },
+      "B12": {
+        "id": 10599789755
+      },
+      "B16": {
+        "id": 10600289675
+      }
+    },
+    "B1HCK": {
+      "B02": {
+        "id": 10602639932
+      },
+      "B05": {
+        "id": 10602999048
+      },
+      "B06": {
+        "id": 10603098741
+      },
+      "B11": {
+        "id": 10603393122
+      },
+      "B12": {
+        "id": 10603830084
+      },
+      "B16": {
+        "id": 10603820596
+      }
+    },
+    "B1HCL": {
+      "B02": {
+        "id": 10603208865
+      },
+      "B05": {
+        "id": 10602989491
+      },
+      "B06": {
+        "id": 10603760794
+      },
+      "B11": {
+        "id": 10603223814
+      },
+      "B12": {
+        "id": 10603770562
+      },
+      "B16": {
+        "id": 10603433546
+      }
+    }
+  },
+  "firewalls": [
+    "NO_NEW_REFERENCE_GENERATION",
+    "NO_CLOSURE_OR_STATE_CHANGE",
+    "NO_PARTITION_RETUNING",
+    "NO_POST_RESPONSE_ORACLE_TOLERANCE_CHANGE",
+    "NO_CORICHARDS_MODEL_FORM_DECOMPOSITION_IN_B1HCM",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "evidence_classification": "RETROSPECTIVE_REBASE_USING_PROSPECTIVELY_QUALIFIED_REFERENCE_LIMIT_AND_NEW_CONTINUOUS_TIME_CANDIDATE_INTEGRATION",
+  "production_rom_authorized": false
+}

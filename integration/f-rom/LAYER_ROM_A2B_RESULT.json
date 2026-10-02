@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.layer-rom.phase-a2b.result-summary.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A2B",
+  "decision": "A2B_NO_STORAGE_ONLY_CLOSURE_SUPPORTED",
+  "execution": {
+    "workflow_run": 35494593395,
+    "executed_head": "ed23f162e98b1365e3b4021f228b19486467c383",
+    "conclusion": "success",
+    "artifact_id": 10599628932,
+    "artifact_digest": "sha256:7c34670ea1dea618c014e55bd99959f809a82c77bacd17ce829887f13b5b33d5"
+  },
+  "scope": {
+    "state": "L3/L4 exact layer storage only",
+    "operator": "teacher-forced long-to-local interface closure",
+    "reduced_state_propagated": false,
+    "application_acceptance": false
+  },
+  "L3_pooled_primary": {
+    "C_LARE_TAYLOR": {
+      "rms_error_cm_per_day": 0.6396881114475614,
+      "max_abs_error_cm_per_day": 2.921964619536876,
+      "mean_signed_error_cm_per_day": -0.23918943628792114,
+      "flux_sign_mismatch_count": 0,
+      "solve_failure_count": 0
+    },
+    "C_INT_CENTROID_LONG_ONLY": {
+      "rms_error_cm_per_day": 0.4788037851118537,
+      "max_abs_error_cm_per_day": 1.8709347793435818,
+      "mean_signed_error_cm_per_day": -0.09604499042721083,
+      "flux_sign_mismatch_count": 0,
+      "solve_failure_count": 0,
+      "broad_support": false
+    },
+    "C_QS_STORAGE_LONG_ONLY": {
+      "rms_error_cm_per_day": 0.5356242152153846,
+      "max_abs_error_cm_per_day": 2.0113424968204328,
+      "mean_signed_error_cm_per_day": -0.08003394113180112,
+      "flux_sign_mismatch_count": 0,
+      "solve_failure_count": 0,
+      "broad_support": false
+    }
+  },
+  "L4_pooled_primary": {
+    "C_LARE_TAYLOR": {
+      "rms_error_cm_per_day": 0.29203982502073617,
+      "max_abs_error_cm_per_day": 1.4147938305151513
+    },
+    "C_INT_CENTROID_LONG_ONLY": {
+      "rms_error_cm_per_day": 0.4945069604015549,
+      "max_abs_error_cm_per_day": 1.8792299702950963
+    },
+    "C_QS_STORAGE_LONG_ONLY": {
+      "rms_error_cm_per_day": 0.5487569242476475,
+      "max_abs_error_cm_per_day": 2.0325936531676714
+    }
+  },
+  "broad_support_failures": {
+    "C_INT_CENTROID_LONG_ONLY": [
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4"
+    ],
+    "C_QS_STORAGE_LONG_ONLY": [
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4"
+    ]
+  },
+  "critical_high_state_case": {
+    "case": "S3_B1_F3",
+    "L3": {
+      "C_LARE_TAYLOR": {
+        "rms": 1.2768395726582609,
+        "max_abs": 2.921964619536876
+      },
+      "C_INT_CENTROID_LONG_ONLY": {
+        "rms": 0.9069716062585566,
+        "max_abs": 1.8709347793435818
+      },
+      "C_QS_STORAGE_LONG_ONLY": {
+        "rms": 1.018121669192887,
+        "max_abs": 2.0113424968204328
+      }
+    }
+  },
+  "numerical": {
+    "max_centroid_nfev": 6,
+    "max_qs_nfev": 3,
+    "max_qs_storage_residual_theta": 6.256106743762757e-14,
+    "structural_tests": "PASS"
+  },
+  "adjudication": [
+    "Both non-fitted storage-only alternatives improve the pooled L3 RMS and maximum error but fail the preregistered broad-support rule because all three S2 primary cases worsen in both RMS and maximum error.",
+    "The S3_B1_F3 high-state dry case improves materially for both alternatives, demonstrating regime-dependent closure behavior rather than a generally superior storage-only closure.",
+    "L4 with unchanged C_LARE_TAYLOR remains substantially better than either A2B alternative on the pooled primary cohort.",
+    "Because A1 found no additional future-response state-information value for L4 over L3 in the frozen common cohort, the L4 advantage continues to identify localization/gradient information needed by the closure rather than a demonstrated general future-state-information deficit.",
+    "The preregistered state-augmentation gate is therefore activated. No storage-only A2B closure is authorized for reduced-state propagation."
+  ],
+  "next": "LAYER-ROM-A3: preregister one minimal physically interpretable gradient/moment state and compare it with the same-dimension L4 storage-resolution control before any reduced propagation.",
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM",
+    "NO_EMPIRICAL_CORRECTION"
+  ],
+  "production_rom_authorized": false
+}

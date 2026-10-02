@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.layer-rom.phase-b1h.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1H",
+  "status": "CLOSED_TRANSFER_CHARACTERIZED_COMPARATOR_DECOMPOSITION_AUTHORIZED",
+  "decision": "B1H_TRANSFER_PANEL_CHARACTERIZED_PLACEMENT_TRANSFERS_DIMENSION_ORDER_NOT_UNIVERSAL",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json",
+    "repair_record": "integration/f-rom/LAYER_ROM_B1H_REPAIR_RECORD.json",
+    "workflow_run": 35495947476,
+    "executed_head": "4c68807f392f7458fc0786fa085b487b92dd24d0",
+    "aggregate_artifact_id": 10600374489,
+    "aggregate_artifact_digest": "sha256:ca2197a7cb4e7479e39a097d5652916582e473e6500dbe7be6a810d65ddf6852",
+    "raw_aggregate_result_sha256": "7dfa874c4afbd495031ed19b44b84a7a9e4f3cb5f2cce9674990872a8a4b0a67"
+  },
+  "conclusions": [
+    "Material transfer rejects a universal fixed minimum dimension.",
+    "Targeted placement is robust at dimension eight across the six prospectively selected materials, but dimension-four placement has a B05 counterexample.",
+    "Higher dimension can trade bottom-flux/profile improvement against slightly worse cumulative-exchange/storage fidelity on B02 and B16.",
+    "Same-partition CoRichards decomposition is now the authorized next gate; no partition retuning or closure fitting is authorized."
+  ],
+  "next_authorized": "LAYER-ROM-B1HC_SAME_PARTITION_CORICHARDS_TRANSFER_QUALIFICATION",
+  "production_rom_authorized": false
+}

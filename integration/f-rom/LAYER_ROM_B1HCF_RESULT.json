@@ -1,0 +1,181 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcf.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCF",
+  "decision": "B1HCF_CORRECTED_FIXED_HEAD_METRICS_RECONCILED",
+  "execution": {
+    "workflow_run": 35500822057,
+    "executed_head": "37f85e31ffec6859c8b0f40bd5af95ab93039517",
+    "conclusion": "success",
+    "aggregate_artifact_id": 10602356919,
+    "aggregate_artifact_digest": "sha256:e1b4be5a09ef36cfa336a83d6b35cb9c3b6a530b827d91795d24795fee1ba04e",
+    "raw_result_sha256": "8ba4656430326262958697570ed5c0bc7e5784bfac835fa731f0d64aba44cc0a"
+  },
+  "semantics": {
+    "QAVG": "interval-average outward bottom flux derived from bottom exchange over the observation interval",
+    "QEND": "terminal end-state zero-head Darcy diagnostic reconstructed commensurately for Reference, CoRichards and Layer-ROM",
+    "superseded": "prior comparisons of Layer-ROM terminal Darcy flux against Reference balance-materialized interval-average BOTTOM_FLUX"
+  },
+  "corrected_placement": {
+    "dimension4_GW": {
+      "supported_materials": [
+        "B02",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "counterexample": [
+        "B05"
+      ]
+    },
+    "dimension8_GW": {
+      "supported_materials": [
+        "B02",
+        "B05",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "counterexample": []
+    },
+    "profile_relation": "TRADEOFF for all six materials at both dimension 4 and dimension 8 under the frozen componentwise vector"
+  },
+  "corrected_same_partition_counts": {
+    "L4": {
+      "GW": {
+        "LayerROM_no_worse": 1,
+        "CoRichards_no_worse": 5,
+        "tradeoff": 0
+      },
+      "PROFILE": {
+        "tradeoff": 6
+      }
+    },
+    "L6": {
+      "GW": {
+        "LayerROM_no_worse": 0,
+        "CoRichards_no_worse": 4,
+        "tradeoff": 2
+      },
+      "PROFILE": {
+        "tradeoff": 6
+      }
+    },
+    "R8": {
+      "GW": {
+        "LayerROM_no_worse": 0,
+        "CoRichards_no_worse": 4,
+        "tradeoff": 2
+      },
+      "PROFILE": {
+        "tradeoff": 6
+      }
+    }
+  },
+  "dimension_order": {
+    "CoRichards": "All corrected day-1 GW/profile components are nonincreasing L4->L6->R8 on all six materials.",
+    "LayerROM_nonmonotone_components": {
+      "abs_mean_signed_qavg": [
+        "B02",
+        "B16"
+      ],
+      "abs_mean_signed_qend": [
+        "B11",
+        "B12"
+      ],
+      "cumulative_bottom_rmse": [
+        "B02",
+        "B16"
+      ],
+      "max_abs_final_cumulative_bottom_error": [
+        "B16"
+      ],
+      "qend_rmse": [
+        "B11",
+        "B12"
+      ],
+      "storage_rmse": [
+        "B02",
+        "B16"
+      ]
+    }
+  },
+  "R16_OP_day1": {
+    "B02": {
+      "storage_rmse_cm": 0.009127872189932221,
+      "cumulative_bottom_rmse_cm": 0.00912787218996105,
+      "qavg_rmse_cm_per_day": 0.07322760433501076,
+      "qend_rmse_cm_per_day": 0.04485667838394446,
+      "mapped_theta_rmse": 0.00015773726368909657
+    },
+    "B05": {
+      "storage_rmse_cm": 0.0005584688838293555,
+      "cumulative_bottom_rmse_cm": 0.0005584688838501917,
+      "qavg_rmse_cm_per_day": 0.015570470252499273,
+      "qend_rmse_cm_per_day": 0.019420154132688567,
+      "mapped_theta_rmse": 0.00000969778854658786
+    },
+    "B06": {
+      "storage_rmse_cm": 0.016314981683467202,
+      "cumulative_bottom_rmse_cm": 0.016314981683473073,
+      "qavg_rmse_cm_per_day": 0.0997677125656832,
+      "qend_rmse_cm_per_day": 0.0570055532735083,
+      "mapped_theta_rmse": 0.00020854236156421404
+    },
+    "B11": {
+      "storage_rmse_cm": 0.0000016406765137545186,
+      "cumulative_bottom_rmse_cm": 0.000001640676500331074,
+      "qavg_rmse_cm_per_day": 0.0000029407472377744035,
+      "qend_rmse_cm_per_day": 1.6542291721245815e-7,
+      "mapped_theta_rmse": 8.790505427690041e-8
+    },
+    "B12": {
+      "storage_rmse_cm": 1.6200551561201394e-8,
+      "cumulative_bottom_rmse_cm": 1.620055205865614e-8,
+      "qavg_rmse_cm_per_day": 2.7633353554036975e-8,
+      "qend_rmse_cm_per_day": 4.5966400781446843e-10,
+      "mapped_theta_rmse": 1.2788693157212098e-9
+    },
+    "B16": {
+      "storage_rmse_cm": 0.0019498674955631546,
+      "cumulative_bottom_rmse_cm": 0.0019498674955578169,
+      "qavg_rmse_cm_per_day": 0.003282564674883727,
+      "qend_rmse_cm_per_day": 0.001123915477615529,
+      "mapped_theta_rmse": 0.000028677195867684617
+    }
+  },
+  "adjudication": [
+    "Separating QAVG from QEND repairs the fixed-head flux semantics without changing the retained storage, cumulative-exchange or profile evidence.",
+    "The targeted lower-zone placement result survives correction for the groundwater vector at dimension eight on all six transfer materials; dimension four retains the B05 counterexample.",
+    "Same-partition CoRichards is componentwise no worse than Layer-ROM for the corrected GW vector on most material/dimension combinations, so a material Layer-ROM model-form/state-evolution burden remains after spatial discretization is controlled.",
+    "R16_OP retains nonzero corrected storage, cumulative, QAVG and QEND residuals on all six materials. With equal-grid spatial operator identity already established, this authorizes temporal/state-evolution diagnosis.",
+    "The magnitude of those residuals has not been mapped to an external application tolerance."
+  ],
+  "supersession": {
+    "held": "all prior fixed-head multicomponent frontier decisions that required the mixed-semantics bottom_flux metrics",
+    "retained": [
+      "storage",
+      "cumulative bottom exchange",
+      "upper/lower storage",
+      "mapped profile"
+    ],
+    "superseded": [
+      "mixed-semantics bottom_flux_rmse_cm_per_day",
+      "mixed-semantics bottom_flux_sign_errors"
+    ]
+  },
+  "next": [
+    "LAYER-ROM-B1HCG_CORRECTED_TEMPORAL_STATE_EVOLUTION_DIAGNOSIS",
+    "LAYER-ROM-B1R_B01_FIXED_HEAD_FRONTIER_REPAIR"
+  ],
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_NEW_REFERENCE_TRAJECTORY",
+    "NO_CLOSURE_FITTING",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

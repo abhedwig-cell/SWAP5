@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.layer-rom.phase-a.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A1",
+  "status": "CLOSED_STATE_INFORMATION_REPLAY_CLOSURE_STAGE_AUTHORIZED",
+  "decision": "L3_MINIMUM_BOUNDED_STATE_INFORMATION_CANDIDATE_ACTIVE_ZONE_PLACEMENT_SUPPORTED_CLOSURE_TEST_JUSTIFIED",
+  "authority": {
+    "canonical_basis": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+    "preregistration": "integration/f-rom/LAYER_ROM_A1_PREREGISTRATION.json",
+    "result": "integration/f-rom/LAYER_ROM_A1_RESULT.json",
+    "workflow_run": 35493862040,
+    "artifact_id": 10599363587,
+    "artifact_digest": "sha256:5d161d9e78eed5c9c72308e0e9f5fa30150a35794293895bc2d2bd9b5fa49b2c",
+    "raw_result_sha256": "796069c3a8d477252d458f8368833841024d42e905b3d8a1d0589f4d69f550cd"
+  },
+  "conclusions": [
+    "L3 [0,140,150,160 cm] is the smallest frozen storage representation without reduction-induced aliases through the 1x diagnostic radius in the 41-state common cohort.",
+    "L4 and L6 are information-equivalent to L3 in this cohort at every preregistered radius from 0.25x through 4x.",
+    "Uniform and near-uniform same-dimension controls retain substantially more hidden state ambiguity and larger purpose-response ambiguity.",
+    "L2 remains an informative aggressive challenge but is not a sufficient-state claim.",
+    "Prior standard-LARE D3 to D4 dynamics improvement must not be interpreted as evidence that D4 carries more predictive state information in this domain; the immediate unresolved mechanism is closure/resolution."
+  ],
+  "limitations": [
+    "candidate-enriched common cohort, not a population-frequency sample",
+    "partly exposed predecessor evidence, not blind confirmation",
+    "B01 160 cm pure-hydraulics domain only",
+    "no application acceptance",
+    "no closure ranking",
+    "no performance claim"
+  ],
+  "next_authorized": "LAYER-ROM-A2_SAME_STATE_INTERFACE_CLOSURE_AUDIT"
+}

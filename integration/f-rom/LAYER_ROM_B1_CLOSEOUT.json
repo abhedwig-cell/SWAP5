@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.layer-rom.phase-b1.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1",
+  "status": "CLOSED_DIMENSION4_GW_FRONTIER_REPLICATED_PROFILE_FRONTIER_NOT_REACHED",
+  "decision": "B1_DIMENSION4_GW_FRONTIER_REPLICATED",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1_PREREGISTRATION.json",
+    "result": "integration/f-rom/LAYER_ROM_B1_RESULT.json",
+    "workflow_run": 35495496560,
+    "artifact_id": 10600039230,
+    "artifact_digest": "sha256:544cca1a352f9ba8cc490ebc610d515e420ac598614e4cddf7459535f7aeab0b"
+  },
+  "conclusions": [
+    "L4 is the first member of the frozen L2/L3/L4/L6 ladder that crosses both blind groundwater comparator vectors.",
+    "L6 improves the continuous groundwater and profile errors further but does not cross the FMC full-profile vector.",
+    "Dimension 4 is therefore a bounded groundwater-frontier result, not an application-independent minimum representation.",
+    "The next uncertainty is temporal persistence and reversal behavior, not another storage-only closure search."
+  ],
+  "next_authorized": "LAYER-ROM-B2_LONG_HORIZON_REVERSAL_FIXED_HEAD_VALIDATION",
+  "production_rom_authorized": false
+}

@@ -1,0 +1,135 @@
+name: F-ROM Layer-ROM B1HC-D hydrological decomposition
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1HCD_PREREGISTRATION.json'
+      - 'tests/rom/analyze_layer_rom_b1hcd_material.py'
+      - 'tests/rom/aggregate_layer_rom_b1hcd.py'
+      - '.github/workflows/f-rom-layer-b1hcd-decomposition.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1hcd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, b1h_id: 10600214649, b1h_digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0', q_id: 10601589862, q_digest: 'dd31968a447019f4d483a1ec931a17c073806b52c58541ea97cc632cb08218cf'}
+          - {material: B05, b1h_id: 10600409481, b1h_digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5', q_id: 10602175157, q_digest: 'c65d6fa84fa0d3df4f9401e46808dc78d12813c48b61ec63402edebf4ae95ab9'}
+          - {material: B06, b1h_id: 10600414651, b1h_digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380', q_id: 10602070291, q_digest: '82575403367398a86543d94754bef596ace3688552b3042fc5912c5f0d2c4f19'}
+          - {material: B11, b1h_id: 10600034910, b1h_digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c', q_id: 10600849049, q_digest: 'f63648c948018e01d9d1e857cec0336bcbf7dcac125a59274e0e5dbd54be7e65'}
+          - {material: B12, b1h_id: 10599789755, b1h_digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7', q_id: 10602120091, q_digest: 'b5199abdd53798f1076a72320dd2e6ae26e5335bbddf3e916988aa67576f6303'}
+          - {material: B16, b1h_id: 10600289675, b1h_digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c', q_id: 10601764361, q_digest: '8dfe5424b7e96170b6c7588ab5bd54e6ee8926fe35f4795e9928dccbf3dc2295'}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install analysis dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Lock decomposition authority and recover immutable evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCD_PREREGISTRATION.json'))
+          q=json.load(open('integration/f-rom/LAYER_ROM_B1HCQ_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_FIRST_SAME_PARTITION_HYDROLOGICAL_ERROR_EXPOSURE'
+          assert q['decision']=='B1HCQ_FULL_COMMON_COHORT_AVAILABLE'
+          assert p['cohort']['total_member_material_history_cells']==72
+          assert p['performance_comparison_authorized'] is False
+          assert 'NO_NEW_REFERENCE_TRAJECTORY' in p['firewalls']
+          print('LAYER_ROM_B1HCD_AUTHORITY_LOCK=PASS')
+          PY
+
+          mkdir -p /tmp/b1hcd/b1h /tmp/b1hcd/q
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1h_id }}/zip" > /tmp/b1hcd/b1h.zip
+          echo "${{ matrix.b1h_digest }}  /tmp/b1hcd/b1h.zip" | sha256sum -c -
+          unzip -q /tmp/b1hcd/b1h.zip -d /tmp/b1hcd/b1h
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.q_id }}/zip" > /tmp/b1hcd/q.zip
+          echo "${{ matrix.q_digest }}  /tmp/b1hcd/q.zip" | sha256sum -c -
+          unzip -q /tmp/b1hcd/q.zip -d /tmp/b1hcd/q
+
+          test -f "/tmp/b1hcd/b1h/R16_${{ matrix.material }}.txt"
+          test -f "/tmp/b1hcd/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
+          for member in L4 L6 R8; do
+            test -f "/tmp/b1hcd/q/${member}/LAYER_ROM_B1HCQ_${{ matrix.material }}_${member}_RESULT.json"
+            for hist in X01 X02 X03 X04; do
+              test -f "/tmp/b1hcd/q/${member}/${member}-${hist}-o0.txt"
+            done
+          done
+
+      - name: Decompose same-partition hydrological errors
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCD_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_b1hcd_material.py             --material "${{ matrix.material }}"             --b1h-dir /tmp/b1hcd/b1h             --b1hcq-dir /tmp/b1hcd/q             --prereg integration/f-rom/LAYER_ROM_B1HCD_PREREGISTRATION.json             --output "B1HCD_EVIDENCE/LAYER_ROM_B1HCD_${{ matrix.material }}_RESULT.json"             | tee B1HCD_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open("B1HCD_EVIDENCE/LAYER_ROM_B1HCD_${{ matrix.material }}_RESULT.json"))
+          assert p['decision']=='B1HCD_MATERIAL_DECOMPOSED'
+          assert p['integrity']['pass'] is True
+          assert p['performance_measurement_performed'] is False
+          assert p['application_acceptance_adjudicated'] is False
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCD_MATERIAL_GATE=PASS')
+          PY
+          sha256sum B1HCD_EVIDENCE/* > B1HCD_EVIDENCE/sha256.txt
+
+      - name: Upload material decomposition
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcd-${{ matrix.material }}
+          path: B1HCD_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hcd-B*
+          path: /tmp/b1hcd-results
+          merge-multiple: false
+
+      - name: Aggregate full-cohort decomposition
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCD_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hcd.py             --input-dir /tmp/b1hcd-results             --prereg integration/f-rom/LAYER_ROM_B1HCD_PREREGISTRATION.json             --output B1HCD_AGGREGATE/LAYER_ROM_B1HCD_RESULT.json             | tee B1HCD_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('B1HCD_AGGREGATE/LAYER_ROM_B1HCD_RESULT.json'))
+          assert r['decision']=='B1HCD_FULL_COHORT_HYDROLOGICAL_DECOMPOSITION_COMPLETE'
+          assert r['performance_measurement_performed'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCD_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1HCD_AGGREGATE/* > B1HCD_AGGREGATE/sha256.txt
+
+      - name: Upload aggregate decomposition
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcd-aggregate
+          path: B1HCD_AGGREGATE/
+          if-no-files-found: error

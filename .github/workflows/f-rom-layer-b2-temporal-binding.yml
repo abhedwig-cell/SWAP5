@@ -1,0 +1,102 @@
+name: F-ROM Layer-ROM B2 temporal evidence binding
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B2_EVIDENCE_BINDING.json'
+      - 'tests/rom/analyze_layer_rom_b2_temporal_binding.py'
+      - '.github/workflows/f-rom-layer-b2-temporal-binding.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-layer-b2-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  bind-temporal-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert Layer-ROM research source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          echo "LAYER_ROM_B2_SOURCE_FREEZE=PASS"
+
+      - name: Materialize exact historical evidence
+        run: |
+          set -euo pipefail
+          REF=133009f60c31fb8c7d7edbf9754c1f4c4071f2f8
+          mkdir -p /tmp/layer-rom-b2
+          git show "${REF}:integration/f-rom/LARE_BC2_C4V_RESULT.json" > /tmp/layer-rom-b2/C4V_RESULT.json
+          git show "${REF}:integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json" > /tmp/layer-rom-b2/C4V_CLOSEOUT.json
+          git show "${REF}:integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json" > /tmp/layer-rom-b2/C4W_CLOSEOUT.json
+          test "$(git hash-object /tmp/layer-rom-b2/C4V_RESULT.json)" = dbbf889e75bcd255c1b98ef19e05d4f2775936f4
+          test "$(git hash-object /tmp/layer-rom-b2/C4V_CLOSEOUT.json)" = 9f2ec6b464997a1726e384c3070ba59687b9182d
+          test "$(git hash-object /tmp/layer-rom-b2/C4W_CLOSEOUT.json)" = 811dd0e77ebd682e62de96341d3f969f75ca10e2
+          echo "LAYER_ROM_B2_HISTORICAL_BLOBS=PASS"
+
+      - name: Lock evidence classification
+        run: |
+          python3 - <<'PY'
+          import json
+          b=json.load(open('integration/f-rom/LAYER_ROM_B2_EVIDENCE_BINDING.json'))
+          assert b['phase']=='FROZEN_EXTRACTION_OF_PREEXISTING_PROSPECTIVE_EVIDENCE'
+          assert b['evidence_classification']['Layer_ROM_B2']=='RETROSPECTIVE_AUTHORITY_BINDING_AND_REANALYSIS_ONLY'
+          assert [r['Layer_ROM'] for r in b['frozen_representation_subset']]==['L3','L4','L6']
+          assert b['contextual_resolution_control']['source_member']=='R8'
+          assert 'NO_NEW_BLIND_CLAIM' in b['firewalls']
+          print('LAYER_ROM_B2_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Reconcile one-day and reversal evidence twice
+        run: |
+          set -euo pipefail
+          mkdir -p LAYER_ROM_B2_EVIDENCE
+          for rep in 1 2; do
+            python3 tests/rom/analyze_layer_rom_b2_temporal_binding.py \
+              --b1 integration/f-rom/LAYER_ROM_B1_RESULT.json \
+              --binding integration/f-rom/LAYER_ROM_B2_EVIDENCE_BINDING.json \
+              --c4v-result /tmp/layer-rom-b2/C4V_RESULT.json \
+              --c4v-closeout /tmp/layer-rom-b2/C4V_CLOSEOUT.json \
+              --c4w-closeout /tmp/layer-rom-b2/C4W_CLOSEOUT.json \
+              --output LAYER_ROM_B2_EVIDENCE/result-${rep}.json \
+              | tee LAYER_ROM_B2_EVIDENCE/analyzer-${rep}.txt
+          done
+          cmp LAYER_ROM_B2_EVIDENCE/result-1.json LAYER_ROM_B2_EVIDENCE/result-2.json
+          cp LAYER_ROM_B2_EVIDENCE/result-1.json LAYER_ROM_B2_EVIDENCE/LAYER_ROM_B2_RESULT.json
+
+      - name: Validate B2 firewalls
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LAYER_ROM_B2_EVIDENCE/LAYER_ROM_B2_RESULT.json'))
+          assert r['decision'] in {
+              'B2_ONE_DAY_GW_FRONTIER_NOT_REACHED_WITHIN_L3_L4_L6_R8_REQUIRED',
+              'B2_ONE_DAY_GW_FRONTIER_PERSISTS_WITHIN_L3_L4_L6',
+              'B2_SOURCE_AUTHORITY_INCONSISTENT'
+          }
+          assert r['evidence_classification']['Layer_ROM_B2']=='RETROSPECTIVE_AUTHORITY_BINDING_AND_REANALYSIS_ONLY'
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B2_RESULT_GATE=PASS')
+          PY
+          sha256sum LAYER_ROM_B2_EVIDENCE/* > LAYER_ROM_B2_EVIDENCE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo "LAYER_ROM_B2_TEMPORAL_BINDING=PASS"
+
+      - name: Upload B2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b2-temporal-binding
+          path: LAYER_ROM_B2_EVIDENCE/
+          if-no-files-found: error

@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.layer-rom.cost1.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-COST1",
+  "status": "CLOSED_SHARED_HOST_COST_REDUCTION_SIGNAL_RESOLVED_FIDELITY_UNCHANGED",
+  "decision": "COST1_SHARED_HOST_SIX_MATERIAL_SCREEN_COMPLETE",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json",
+    "repair_record": "integration/f-rom/LAYER_ROM_COST1_REPAIR_RECORD.json",
+    "result": "integration/f-rom/LAYER_ROM_COST1_RESULT.json",
+    "workflow_run": 35507539740,
+    "executed_head": "3a6f03ae57a8c8100f52a37bbec4b821612bee59",
+    "aggregate_artifact_id": 10603918398,
+    "aggregate_artifact_digest": "sha256:4a6afdda60def554332e7c976844ae063998c8051ccf76b854b30b00aab7467b"
+  },
+  "resolved_cost_signals": {
+    "L4": {
+      "robust_vs_R16": true,
+      "BASE_CPU_fraction_R16_range": [
+        0.002013384127957098,
+        0.0038750780269153503
+      ],
+      "FINE_CPU_fraction_R16_range": [
+        0.0075037672138169005,
+        0.013835803364480717
+      ],
+      "BASE_CPU_fraction_same_partition_CoRichards_range": [
+        0.014195507115780513,
+        0.026038414645474257
+      ],
+      "FINE_CPU_fraction_same_partition_CoRichards_range": [
+        0.05290584116553048,
+        0.09296906603049067
+      ]
+    },
+    "L6": {
+      "robust_vs_R16": true,
+      "BASE_CPU_fraction_R16_range": [
+        0.00283728864532399,
+        0.006101526558490141
+      ],
+      "FINE_CPU_fraction_R16_range": [
+        0.010562825568227548,
+        0.01937141873912571
+      ],
+      "BASE_CPU_fraction_same_partition_CoRichards_range": [
+        0.01232512758121025,
+        0.029754394041281846
+      ],
+      "FINE_CPU_fraction_same_partition_CoRichards_range": [
+        0.042579138960510104,
+        0.09446567523345294
+      ]
+    },
+    "R8": {
+      "robust_vs_R16": true,
+      "BASE_CPU_fraction_R16_range": [
+        0.003675470152149704,
+        0.007922072505716077
+      ],
+      "FINE_CPU_fraction_R16_range": [
+        0.013608914297837551,
+        0.02483742068202484
+      ],
+      "BASE_CPU_fraction_same_partition_CoRichards_range": [
+        0.012532027397208573,
+        0.030303326551888603
+      ],
+      "FINE_CPU_fraction_same_partition_CoRichards_range": [
+        0.04294699320369194,
+        0.09500752096007202
+      ]
+    }
+  },
+  "scientific_interpretation": [
+    "Execution cost is not the limiting feasibility axis in the frozen six-material fixed-head laboratory: L4, L6 and R8 all satisfy the preregistered robust shared-host reduction rule versus R16.",
+    "The result remains strong under the FINE timing bracket, which uses four times smaller Layer-ROM timestep than BASE.",
+    "Every Layer-ROM BASE and FINE route is also resolved cheaper than its same-partition CoRichards comparator on every material.",
+    "This cost result does not repair or redefine fidelity. L4 remains materially closure-limited on B02/B05/B06, L6 retains a B05 CoRichards advantage, and R8 retains a B05 groundwater tradeoff.",
+    "The practical research bottleneck therefore moves from computational feasibility to purpose-dependent fidelity, material-dependent representation selection and external application tolerances."
+  ],
+  "claim_boundary": [
+    "shared-host screening only",
+    "no pooled portable speedup estimator",
+    "no formal CPU baseline",
+    "no hydrological application acceptance",
+    "no production ROM admission"
+  ],
+  "next_authorized": "LAYER-ROM-CF1_FROZEN_COST_FIDELITY_SYNTHESIS",
+  "production_rom_authorized": false
+}

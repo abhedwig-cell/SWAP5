@@ -1,0 +1,76 @@
+name: F-ROM Layer-ROM B1HCH aggregate repair
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1HCH_REPAIR_RECORD.json'
+      - 'tests/rom/aggregate_layer_rom_b1hch.py'
+      - '.github/workflows/f-rom-layer-b1hch-aggregate-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  aggregate-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock repair authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('integration/f-rom/LAYER_ROM_B1HCH_REPAIR_RECORD.json'))
+          assert r['failed_run']['workflow_run']==35502001117
+          assert r['failed_run']['material_jobs']=='ALL_SIX_SUCCESS'
+          assert r['failed_run']['aggregate_scientific_result_exposed'] is True
+          assert r['failed_run']['exposed_decision']=='B1HCH_R16_SELF_CONVERGENCE_MIXED'
+          assert r['repair']['route'].startswith('aggregate-only')
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCH_REPAIR_AUTHORITY=PASS')
+          PY
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+
+      - name: Recover immutable six-material artifacts from failed aggregate run
+        uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hch-B*
+          path: /tmp/b1hch-results
+          merge-multiple: false
+          run-id: 35502001117
+          github-token: ${{ github.token }}
+
+      - name: Reproduce aggregate result
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCH_REPAIR_EVIDENCE
+          python3 tests/rom/aggregate_layer_rom_b1hch.py             --input-dir /tmp/b1hch-results             --prereg integration/f-rom/LAYER_ROM_B1HCH_PREREGISTRATION.json             --output B1HCH_REPAIR_EVIDENCE/LAYER_ROM_B1HCH_RESULT.json             | tee B1HCH_REPAIR_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          expected=json.load(open('integration/f-rom/LAYER_ROM_B1HCH_REPAIR_RECORD.json'))['failed_run']
+          r=json.load(open('B1HCH_REPAIR_EVIDENCE/LAYER_ROM_B1HCH_RESULT.json'))
+          assert r['decision']==expected['exposed_decision']
+          assert r['R16_OP_SELF_CONVERGENT']==expected['exposed_primary_map']
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_measurement_performed'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCH_REPRODUCTION=PASS')
+          PY
+          sha256sum B1HCH_REPAIR_EVIDENCE/* > B1HCH_REPAIR_EVIDENCE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo "LAYER_ROM_B1HCH_AGGREGATE_REPAIR=PASS"
+
+      - name: Upload repaired aggregate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hch-aggregate-repaired
+          path: B1HCH_REPAIR_EVIDENCE/
+          if-no-files-found: error

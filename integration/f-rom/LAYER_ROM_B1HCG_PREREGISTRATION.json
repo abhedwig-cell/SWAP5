@@ -1,0 +1,201 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcg.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCG",
+  "phase": "PREREGISTERED_BEFORE_TEMPORAL_REFINEMENT_RESULTS",
+  "title": "Corrected fixed-head temporal/state-evolution diagnosis",
+  "scientific_question": "Does the nonzero equal-grid R16_OP residual under corrected QAVG/QEND semantics decrease systematically when only the Layer-ROM research integrator time step is refined, and how much of the R8 residual remains beyond that equal-grid temporal floor?",
+  "authority": {
+    "canonical": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "metric_semantics": "integration/f-rom/LAYER_ROM_B1HCF_CLOSEOUT.json",
+    "operator_identity": "integration/f-rom/LAYER_ROM_B1HCE_E1_CLOSEOUT.json",
+    "transfer_panel": "integration/f-rom/LAYER_ROM_B1H_CLOSEOUT.json",
+    "required_B1HCF_decision": "B1HCF_CORRECTED_FIXED_HEAD_METRICS_RECONCILED"
+  },
+  "scope": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "representations": [
+      {
+        "id": "R8",
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ],
+        "role": "targeted reduced representation"
+      },
+      {
+        "id": "R16_OP",
+        "dimension": 16,
+        "boundaries_cm": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ],
+        "role": "equal-grid no-spatial-reduction operator/state-evolution control"
+      }
+    ],
+    "boundary": "fixed zero pressure head at 160 cm, zero top flux",
+    "sinks": false,
+    "moving_water_table": false,
+    "no_new_reference_trajectory": true
+  },
+  "temporal_ladder": {
+    "observation_dt_day": 0.001,
+    "integrator": "unchanged source-anchored iterative Heun research propagator",
+    "dt_day": [
+      0.0001,
+      0.00005,
+      0.000025
+    ],
+    "substeps_per_observation": [
+      10,
+      20,
+      40
+    ],
+    "closure": "unchanged standard LARE adjacent-layer internal operator plus BC1 zero-head bottom operator",
+    "initial_state": "same frozen B1H initial states"
+  },
+  "corrected_observables": {
+    "QAVG": "candidate cumulative-bottom increment over one observation interval divided by 0.001 d versus Reference BOTTOM_OUTWARD_EXCHANGE/0.001 d",
+    "QEND": "candidate terminal zero-head Darcy diagnostic versus terminal diagnostic reconstructed from committed Reference bottom-cell theta",
+    "retained": [
+      "storage_rmse_cm",
+      "cumulative_bottom_rmse_cm",
+      "max_abs_final_cumulative_bottom_error_cm",
+      "mapped_theta_rmse",
+      "upper_storage_rmse_cm",
+      "lower_storage_rmse_cm"
+    ],
+    "corrected": [
+      "qavg_rmse_cm_per_day",
+      "qavg_sign_errors",
+      "abs_mean_signed_qavg_error_cm_per_day",
+      "qend_rmse_cm_per_day",
+      "qend_sign_errors",
+      "abs_mean_signed_qend_error_cm_per_day"
+    ]
+  },
+  "checkpoints_steps": [
+    64,
+    128,
+    256,
+    512,
+    1024
+  ],
+  "hard_controls": {
+    "dt_1e4_reproduces_B1HCF_continuous_components_max_abs": 1e-11,
+    "dt_1e4_reproduces_B1HCF_sign_counts_exact": true,
+    "water_ledger_cm": 1e-10,
+    "relation_tolerance": 1e-12
+  },
+  "causal_core": [
+    "storage_rmse_cm",
+    "cumulative_bottom_rmse_cm",
+    "qavg_rmse_cm_per_day",
+    "qend_rmse_cm_per_day",
+    "mapped_theta_rmse"
+  ],
+  "full_response_vector": [
+    "storage_rmse_cm",
+    "cumulative_bottom_rmse_cm",
+    "qavg_rmse_cm_per_day",
+    "qavg_sign_errors",
+    "abs_mean_signed_qavg_error_cm_per_day",
+    "qend_rmse_cm_per_day",
+    "qend_sign_errors",
+    "abs_mean_signed_qend_error_cm_per_day",
+    "max_abs_final_cumulative_bottom_error_cm",
+    "mapped_theta_rmse",
+    "upper_storage_rmse_cm",
+    "lower_storage_rmse_cm"
+  ],
+  "adjudication": {
+    "component_temporal_nonincrease": "For a continuous error component, e(dt/2) <= e(dt) + 1e-12 at both refinements. For sign-error counts, counts may not increase.",
+    "material_R16_temporal_signature": "All five causal-core R16_OP components are temporally nonincreasing and at least one causal-core component strictly decreases beyond 1e-12 from dt=1e-4 to dt=2.5e-5.",
+    "all_material_temporal_signature": "All six materials satisfy material_R16_temporal_signature.",
+    "interpretation_if_all_materials": "Classify the equal-grid residual as carrying a systematic temporal-integration/state-evolution signature. Do not claim it is fully explained or eliminated unless the residual itself approaches numerical identity.",
+    "interpretation_if_mixed": "Classify temporal contribution as material/component dependent and hold any simple temporal-floor explanation.",
+    "R8_vs_R16": "At each dt and material report componentwise R8 versus R16_OP relations. Do not subtract errors as an additive spatial-closure estimate.",
+    "no_application_threshold": true,
+    "no_weighted_score": true,
+    "decision_labels": {
+      "all_materials_and_finest_core_numerical_identity": "B1HCG_R16_TEMPORAL_SIGNATURE_SUPPORTED_NUMERICAL_COLLAPSE",
+      "all_materials_but_finest_core_residual_remains": "B1HCG_R16_TEMPORAL_SIGNATURE_SUPPORTED_RESIDUAL_REMAINS",
+      "mixed_material_or_component_signature": "B1HCG_TEMPORAL_SIGNATURE_MIXED"
+    },
+    "finest_core_numerical_identity": "All five R16_OP causal-core errors at dt=2.5e-5 d are <= 1e-12 for every material. This is a numerical identity criterion only."
+  },
+  "provenance": {
+    "B1H_workflow_run": 35495947476,
+    "B1HCF_workflow_run": 35500822057,
+    "B1HCF_aggregate_artifact": {
+      "id": 10602356919,
+      "digest": "sha256:e1b4be5a09ef36cfa336a83d6b35cb9c3b6a530b827d91795d24795fee1ba04e"
+    },
+    "C4V_basis_head": "e3b11802e88316dcd57147569e985153be99e215"
+  },
+  "firewalls": [
+    "NO_NEW_REFERENCE_TRAJECTORY",
+    "NO_NEW_STATE_OR_PARTITION",
+    "NO_CLOSURE_FITTING",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false,
+  "pre_execution_operationalization": {
+    "date": "2026-09-20",
+    "before_first_B1HCG_execution": true,
+    "decision_checkpoint_step": 1024,
+    "decision_horizon_day": 1.024,
+    "diagnostic_checkpoints_steps": [
+      64,
+      128,
+      256,
+      512
+    ],
+    "material_R16_temporal_signature_application": "Apply the preregistered five-component nonincrease plus at-least-one-strict-decrease rule at step 1024. Report the same componentwise relations at all earlier frozen checkpoints without allowing them to override the step-1024 decision.",
+    "continuous_strict_tolerance": 1e-12,
+    "sign_count_rule": "nonincrease only; sign counts are reported but are not part of the five-component causal core",
+    "baseline_reproduction": "Check both R8 and R16_OP at every frozen checkpoint against the immutable B1HCF per-material corrected result; continuous components <=1e-11 absolute difference and sign counts exact.",
+    "scientific_effect": "NONE: no material, state, partition, dt, closure, response component, or decision direction is changed.",
+    "primary_temporal_horizon_step": 1024,
+    "alias_note": "primary_temporal_horizon_step is an implementation-name alias of decision_checkpoint_step, both frozen at 1024 before any successful B1HCG scientific result."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.layer-rom.phase-a.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-A",
+  "status": "CLOSED_B01_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE_ESTABLISHED",
+  "decision": "PURPOSE_DEPENDENT_EXPLICIT_LAYER_FRONTIER_CONFIRMED_NO_UNIVERSAL_MINIMUM",
+  "authority": {
+    "canonical": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "curve": "integration/f-rom/LAYER_ROM_PHASE_A_DIMENSION_CLOSURE_FIDELITY_CURVE.json",
+    "A4": "integration/f-rom/LAYER_ROM_A4_RESULT.json",
+    "A1": "integration/f-rom/LAYER_ROM_A1_CLOSEOUT.json",
+    "A2": "integration/f-rom/LAYER_ROM_A2_RESULT.json",
+    "A2B": "integration/f-rom/LAYER_ROM_A2B_CLOSEOUT.json",
+    "A3": "integration/f-rom/LAYER_ROM_A3_CLOSEOUT.json",
+    "boundary": "integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json",
+    "comparator": "integration/f-rom/LAYER_ROM_COMP1_COMPARATOR_AUTHORITY.json"
+  },
+  "answers_to_phase_question": {
+    "minimum_vertical_state_information": "For the bounded B01 cohort, L3 [0-140,140-150,150-160 cm] is the minimum demonstrated storage-information candidate. This is not a universal sufficiency claim.",
+    "where_information_must_be_located": "The decisive extra scalar is local near the active lower interface. At equal dimension, L4 explicit localization materially outperforms L3 plus a global first moment.",
+    "inter_layer_closure": "No tested L3 storage-only or L3+M1 closure is broadly supported. Standard LARE is physically coherent and resolution-convergent; shortening the long layer is the supported repair mechanism in Phase A.",
+    "purpose_dependence": "Short-horizon fixed-head GW response reaches a comparator-relative frontier at L4, while persistence through 1.024 day first appears at R8. Profile fidelity is stricter and comparator dependent.",
+    "computational_reduction": "Shared-host cost signal is material for L4 (~1.94x R16 reference/candidate CPU ratio) but nearly disappears at R8 (~1.02x). These are screening ratios, not portable speedup claims."
+  },
+  "scientific_decision": [
+    "Do not pursue a universal three-layer production ROM.",
+    "Retain L4/L6/R8 as the explicit targeted-layer research ladder for transfer tests.",
+    "Do not add a second global moment or empirical correction at this point.",
+    "Do not select an application-acceptable dimension until external purpose tolerances exist.",
+    "Do not make a formal performance claim."
+  ],
+  "next_phase": "PHASE_B_TRANSFER_AND_PURPOSE_ENVELOPE",
+  "phase_B_gate": "Freeze material/forcing transfer panel and L4/L6/R8 partitions prospectively before exposing new Reference responses. Use existing B14 transfer evidence as prior evidence, not as the only generality test.",
+  "production_rom_authorized": false
+}

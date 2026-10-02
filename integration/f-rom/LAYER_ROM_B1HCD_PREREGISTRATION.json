@@ -1,0 +1,183 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hc-d.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HC-D",
+  "phase": "PREREGISTERED_BEFORE_FIRST_SAME_PARTITION_HYDROLOGICAL_ERROR_EXPOSURE",
+  "title": "Six-material Layer-ROM versus same-partition CoRichards hydrological decomposition",
+  "question": "For the frozen six-material fixed-head transfer panel, how much of the Layer-ROM error pattern is shared with conventional Richards on the same vertical partition, and how much appears only after replacing the Richards spatial operator by the layer closure?",
+  "authority": {
+    "canonical": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "B1H_preregistration": "integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json",
+    "B1H_result": "integration/f-rom/LAYER_ROM_B1H_RESULT.json",
+    "B1H_closeout": "integration/f-rom/LAYER_ROM_B1H_CLOSEOUT.json",
+    "B1HCQ_preregistration": "integration/f-rom/LAYER_ROM_B1HCQ_PREREGISTRATION.json",
+    "B1HCQ_result": "integration/f-rom/LAYER_ROM_B1HCQ_RESULT.json",
+    "B1HCQ_closeout": "integration/f-rom/LAYER_ROM_B1HCQ_CLOSEOUT.json",
+    "required_B1HCQ_decision": "B1HCQ_FULL_COMMON_COHORT_AVAILABLE"
+  },
+  "cohort": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "members": [
+      {
+        "id": "L4",
+        "dimension": 4,
+        "boundaries_cm": [
+          0,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "L6",
+        "dimension": 6,
+        "boundaries_cm": [
+          0,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "R8",
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      }
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "cells_per_member": 24,
+    "total_member_material_history_cells": 72,
+    "checkpoints_steps": [
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "primary_checkpoint_step": 1024,
+    "primary_horizon_day": 1.024,
+    "no_coverage_selection": true
+  },
+  "evidence_sources": {
+    "B1H_reference_and_LARE": {
+      "workflow_run": 35495947476,
+      "rule": "Use immutable per-material B1H R16 Reference and persisted B1H LARE summaries. Do not regenerate or retune Layer-ROM trajectories."
+    },
+    "B1HCQ_CoRichards": {
+      "workflow_run": 35499501536,
+      "aggregate_artifact_id": 10601659925,
+      "aggregate_artifact_digest": "sha256:0544f94b58ccf12503c7250ed0cdffa037706f3ac31df82e88a69cae427f3f1f",
+      "rule": "Use only O0 scientific stdout from cells already qualified O0/O2-identical in B1HC-Q."
+    }
+  },
+  "response_vector": {
+    "groundwater": [
+      "storage_rmse_cm",
+      "cumulative_bottom_rmse_cm",
+      "bottom_flux_rmse_cm_per_day",
+      "bottom_flux_sign_errors",
+      "abs_mean_signed_bottom_flux_error_cm_per_day",
+      "max_abs_final_cumulative_bottom_error_cm"
+    ],
+    "vertical_state": [
+      "upper_0_80_storage_rmse_cm",
+      "lower_80_160_storage_rmse_cm",
+      "mapped_theta_rmse"
+    ],
+    "timing_context": [
+      "reference_reversal_steps",
+      "candidate_reversal_steps",
+      "reversal_step_sequence_mismatch"
+    ]
+  },
+  "comparison_contract": {
+    "numeric_equality_tolerance": 1e-12,
+    "component_relation": [
+      "COR_STRICTLY_BETTER: CoRichards error < Layer-ROM error - tolerance.",
+      "NUMERICALLY_EQUAL: absolute error-metric difference <= tolerance.",
+      "LARE_STRICTLY_BETTER: Layer-ROM error < CoRichards error - tolerance."
+    ],
+    "vector_relation": {
+      "COR_COMPONENTWISE_NO_WORSE": "CoRichards is no worse on every declared vector component and strictly better on at least one.",
+      "LARE_COMPONENTWISE_NO_WORSE": "Layer-ROM is no worse on every declared vector component and strictly better on at least one.",
+      "NUMERICALLY_EQUIVALENT": "Every component is equal within the frozen numerical tolerance.",
+      "TRADEOFF": "Neither route is componentwise no-worse."
+    },
+    "same_partition_gap": "For nonnegative magnitude metrics report Layer-ROM error minus CoRichards error as a descriptive gap only.",
+    "nonadditivity_firewall": "Do not call the same-partition gap an additive closure error. CoRichards discretization and Layer-ROM model-form errors may interact or compensate."
+  },
+  "preregistered_diagnostics": {
+    "B05_dimension4_counterexample": {
+      "question": "Does B05 L4 remain difficult under same-partition Richards, or is the B1H L4 failure predominantly introduced by the layer closure?",
+      "rule": "Report the complete L4 vector for both routes. Do not add U4 CoRichards after seeing this result."
+    },
+    "B02_B16_nonmonotone_exchange": {
+      "question": "Do the B1H L6-to-R8 cumulative-exchange/storage tradeoffs on B02 and B16 also occur in same-partition Richards?",
+      "rule": "Compare the frozen L4/L6/R8 dimension ordering separately for each response component; no scalar monotonicity score."
+    },
+    "high_dimension_floor": {
+      "question": "At R8 across transfer materials, does CoRichards continue toward Reference while Layer-ROM approaches a nonzero exchange/flux floor?",
+      "rule": "Report per-material R8 component gaps. No universal floor is inferred from six materials."
+    }
+  },
+  "adjudication_rules": {
+    "no_single_score": true,
+    "no_application_threshold": true,
+    "closure_model_form_signal": "A material/member has a broad Layer-ROM-specific burden only when CoRichards is componentwise no-worse on the six-component groundwater vector with at least one strict improvement. Profile/state components remain separately reported.",
+    "discretization_signal": "A component whose CoRichards error remains comparable to or worse than Layer-ROM under the frozen relation is not attributable to Layer-ROM closure/model-form alone.",
+    "dimension_order_transfer": "For each route separately report whether every individual error component is nonincreasing from L4 to L6 to R8. A route may be monotone for one purpose component and nonmonotone for another.",
+    "B05_interpretation": "Do not infer a new partition from B05. The decomposition only decides whether the targeted-L4 failure is shared with same-partition Richards or predominantly Layer-ROM-specific.",
+    "successor_if_LARE_specific": "If same-partition CoRichards is broadly no-worse for the difficult cells/materials, authorize a teacher-forced fixed-head operator localization diagnostic before inventing new state.",
+    "successor_if_shared": "If the dominant difficult-cell errors and dimension tradeoffs persist in CoRichards, prioritize representation/partition/discretization study rather than closure retuning."
+  },
+  "output_requirements": [
+    "per material x member x checkpoint Layer-ROM and CoRichards response vectors",
+    "per component same-partition relation and descriptive gap",
+    "per material/member GW vector relation",
+    "per route dimension-order monotonicity by component",
+    "B05 L4 diagnostic",
+    "B02 and B16 L6-to-R8 exchange/storage diagnostic",
+    "R8 cross-material residual vectors",
+    "no pooled ranking as primary decision"
+  ],
+  "firewalls": [
+    "NO_NEW_REFERENCE_TRAJECTORY",
+    "NO_NEW_LAYER_ROM_TRAJECTORY",
+    "NO_PARTITION_RETUNING",
+    "NO_CLOSURE_FITTING",
+    "NO_WEIGHTED_SCORE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_MEASUREMENT",
+    "NO_EMPIRICAL_ERROR_SUBTRACTION_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "performance_comparison_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}

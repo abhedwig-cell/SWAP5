@@ -1,0 +1,339 @@
+{
+  "schema": "swap5.layer-rom.cost1.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-COST1",
+  "phase": "PREREGISTERED_AFTER_PHASE_B_FIDELITY_FREEZE_BEFORE_NEW_TIMING_EXPOSURE",
+  "title": "Six-material shared-host execution-cost bracket on the frozen fixed-head Layer-ROM frontier",
+  "purpose": "Measure the implementation cost of the retained L4/L6/R8 Layer-ROM ladder relative to temporally qualified same-partition CoRichards and ultrafine R16 on the exact six-material fixed-head panel, without turning the shared-host result into a formal or portable speedup claim.",
+  "authority": {
+    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "controlled_execution_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "fidelity_freeze": "integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
+    "model_form_decomposition": "integration/f-rom/LAYER_ROM_B1HCP_RESULT.json",
+    "LayerROM_numerical_authority": "integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json",
+    "CoRichards_temporal_authority": "integration/f-rom/LAYER_ROM_B1HCO_CLOSEOUT.json",
+    "Reference_temporal_authority": "integration/f-rom/LAYER_ROM_B1HCL_CLOSEOUT.json",
+    "timing_methodology_source": "work/f-rom-lare-rs1 LARE-BC2-C4T",
+    "timing_methodology_execution_head": "4f938b040d92ee46646e3397278c78a46942944c",
+    "compiled_LARE_source_blob": "97d7aca98326f6f1e91a8a1c9af537a5f0056419"
+  },
+  "workload": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "depth_cm": 160,
+    "horizon_day": 1.024,
+    "output_interval_day": 0.001,
+    "top_flux_cm_per_day": 0,
+    "bottom_pressure_head_cm": 0,
+    "sinks": false,
+    "moving_water_table": false,
+    "complete_workload": "all four frozen histories for one material"
+  },
+  "route_set": {
+    "LayerROM": [
+      {
+        "id": "LR4_BASE",
+        "dimension": 4,
+        "partition_cm": [
+          130,
+          10,
+          10,
+          10
+        ],
+        "integrator": "iterative Heun",
+        "dt_day": 0.0001,
+        "role": "original B1H finite-step execution"
+      },
+      {
+        "id": "LR6_BASE",
+        "dimension": 6,
+        "partition_cm": [
+          110,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "integrator": "iterative Heun",
+        "dt_day": 0.0001,
+        "role": "original B1H finite-step execution"
+      },
+      {
+        "id": "LR8_BASE",
+        "dimension": 8,
+        "partition_cm": [
+          90,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "integrator": "iterative Heun",
+        "dt_day": 0.0001,
+        "role": "original B1H finite-step execution"
+      },
+      {
+        "id": "LR4_FINE",
+        "dimension": 4,
+        "partition_cm": [
+          130,
+          10,
+          10,
+          10
+        ],
+        "integrator": "iterative Heun",
+        "dt_day": 0.000025,
+        "role": "fourfold temporal-refinement cost sensitivity"
+      },
+      {
+        "id": "LR6_FINE",
+        "dimension": 6,
+        "partition_cm": [
+          110,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "integrator": "iterative Heun",
+        "dt_day": 0.000025,
+        "role": "fourfold temporal-refinement cost sensitivity"
+      },
+      {
+        "id": "LR8_FINE",
+        "dimension": 8,
+        "partition_cm": [
+          90,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "integrator": "iterative Heun",
+        "dt_day": 0.000025,
+        "role": "fourfold temporal-refinement cost sensitivity"
+      }
+    ],
+    "CoRichards": [
+      {
+        "id": "COR4",
+        "dimension": 4,
+        "partition_cm": [
+          130,
+          10,
+          10,
+          10
+        ],
+        "dt_rule": "0.00025 d for every material"
+      },
+      {
+        "id": "COR6",
+        "dimension": 6,
+        "partition_cm": [
+          110,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "dt_rule": "0.000125 d for B05; 0.00025 d otherwise"
+      },
+      {
+        "id": "COR8",
+        "dimension": 8,
+        "partition_cm": [
+          90,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "dt_rule": "0.000125 d for B05; 0.00025 d otherwise"
+      }
+    ],
+    "Reference": {
+      "id": "R16",
+      "dimension": 16,
+      "partition_cm": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "dt_day": 0.000125,
+      "role": "B1HCL ultrafine temporally qualified Reference execution"
+    }
+  },
+  "LayerROM_cost_semantics": {
+    "continuous_time_fidelity_not_retimed": true,
+    "reason": "B1HCMR continuous-time fidelity uses independent SciPy DOP853/Radau oracles; timing those Python implementations against compiled Fortran would be an implementation-language comparison, not a Layer-ROM algorithm comparison.",
+    "bracket": [
+      "BASE reports the cost of the exact finite-step research propagator originally used in B1H.",
+      "FINE reports a fourfold temporal-refinement sensitivity of the identical equations and closure.",
+      "Continuous-time scientific fidelity remains B1HCMR/B1HCP authority and is not replaced by either timing route."
+    ],
+    "claim_rule": "A cost advantage robust for both BASE and FINE is stronger shared-host evidence than BASE alone, but neither is a formal or portable speedup."
+  },
+  "compiled_equivalence_gates": {
+    "LayerROM_BASE": [
+      "material parameters and frozen lambdas reproduce B1H materialization exactly",
+      "standalone Fortran equations are the already C4T-equivalence-qualified standard Layer-ROM equations with only material/history/horizon changes",
+      "O0 and O2 scientific stdout identical",
+      "water ledger <= 1e-10 cm"
+    ],
+    "LayerROM_FINE": [
+      "identical source to BASE except dt=2.5e-5 and substeps-per-observation=40",
+      "O0 and O2 scientific stdout identical",
+      "water ledger <= 1e-10 cm"
+    ],
+    "CoRichards": [
+      "benchmark-capable harness validation mode byte-reproduces the immutable B1HCN fine output, except B05 L6/R8 which byte-reproduce the immutable B1HCO ultra output",
+      "no solver/fallback/tolerance/physics change"
+    ],
+    "R16": [
+      "benchmark-capable harness validation mode byte-reproduces immutable B1HCL ultrafine Reference stdout",
+      "no solver/tolerance/physics change"
+    ],
+    "failure_rule": "Any material-route implementation-equivalence failure blocks timing for that material; no route or material may be dropped after timing exposure."
+  },
+  "compiler": {
+    "compiler": "GNU Fortran",
+    "optimization": "-O2",
+    "flags_source": "canonical tests/rom/compile_f_rom0_fortran_closure.py plus C4T fairness binding",
+    "same_applicable_runtime_checks": true,
+    "one_runner_per_material": true
+  },
+  "timing_protocol": {
+    "primary_measure": "in-process Fortran CPU_TIME around repeated complete four-history workloads",
+    "diagnostic_measure": "external monotonic wall time",
+    "calibration_route": "R16",
+    "calibration_repeat_candidates": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128
+    ],
+    "target_cpu_seconds_min": 0.3,
+    "target_cpu_seconds_max": 4,
+    "warmups_per_route": 2,
+    "measured_rounds": 20,
+    "route_count": 10,
+    "order": "10 cyclic rotations of frozen base order plus 10 cyclic rotations of reversed base order; every route occupies every position exactly twice",
+    "base_order": [
+      "LR4_BASE",
+      "LR6_BASE",
+      "LR8_BASE",
+      "LR4_FINE",
+      "LR6_FINE",
+      "LR8_FINE",
+      "COR4",
+      "COR6",
+      "COR8",
+      "R16"
+    ],
+    "checksum_every_sample": true,
+    "no_posthoc_outlier_deletion": true
+  },
+  "statistics": {
+    "per_route": [
+      "mean",
+      "median",
+      "p10",
+      "p90",
+      "sample_sd"
+    ],
+    "pairwise": "paired CPU delta over 20 position-balanced rounds with mean, sd, SE and two-SE interval",
+    "resolved_cheaper": "mean(A-B)+2*SE < 0",
+    "resolved_more_expensive": "mean(A-B)-2*SE > 0",
+    "otherwise": "UNRESOLVED",
+    "primary_ratios": [
+      "mean CPU / R16",
+      "mean CPU / same-partition CoRichards"
+    ],
+    "no_weighted_cost_fidelity_score": true
+  },
+  "panel_summary_rules": {
+    "per_material_required": true,
+    "geometric_or_arithmetic_speedup_pooling_forbidden": true,
+    "route_cost_range_across_materials": "report min/median/max of per-material mean ratios only as descriptive spread",
+    "robust_reduction_signal": "For a Layer-ROM dimension, both BASE and FINE are resolved cheaper than R16 on all six materials.",
+    "same_partition_cost_signal": "Report per material/dimension whether BASE and FINE are resolved cheaper than same-partition CoRichards; do not merge with fidelity into a scalar winner."
+  },
+  "decisions": {
+    "complete": "COST1_SHARED_HOST_SIX_MATERIAL_SCREEN_COMPLETE",
+    "implementation_blocked": "COST1_IMPLEMENTATION_EQUIVALENCE_OR_TIMING_BLOCKED"
+  },
+  "firewalls": [
+    "NO_FIDELITY_RETUNING_FROM_COST",
+    "NO_ROUTE_OR_MATERIAL_DROPPING_AFTER_TIMING",
+    "NO_DOP853_PYTHON_VS_FORTRAN_SPEEDUP_CLAIM",
+    "NO_WEIGHTED_COST_ERROR_SCORE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_FORMAL_CPU_BASELINE",
+    "NO_PORTABLE_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "performance_class": "SHARED_HOST_SCREENING_ONLY",
+  "production_rom_authorized": false,
+  "post_calibration_feasibility_amendment": {
+    "date": "2026-09-20",
+    "trigger": {
+      "workflow_run": 35507294494,
+      "material": "B16",
+      "calibration_route": "R16",
+      "repeats": 1,
+      "observed_cpu_seconds": 15.339844,
+      "original_target_cpu_seconds_max": 4
+    },
+    "timing_exposure_boundary": "Only the R16 calibration route was executed. No Layer-ROM or CoRichards comparative timing sample and no position-balanced measured round had been exposed.",
+    "repair": [
+      "Preserve the complete four-history material workload as the indivisible timing unit.",
+      "If repeats=1 already exceeds target_cpu_seconds_max, use repeats=1 as an ATOMIC_WORKLOAD_OVER_TARGET calibration instead of declaring calibration unresolved.",
+      "Do not change materials, histories, route set, compiler, fidelity authority, warmups, measured rounds, route order, checksum gate, pairwise statistics or resolution rule.",
+      "Report the calibration mode explicitly in every material result."
+    ],
+    "rationale": "The original upper calibration target assumed the atomic complete workload could fit below 4 CPU-s. B16 falsified that operational assumption before any comparative route timing was exposed. Subdividing the frozen four-history workload would change the workload; retaining repeats=1 preserves the preregistered workload and only relaxes an unattainable repetition-calibration convenience.",
+    "scientific_effect": "NONE_ON_FIDELITY_OR_ROUTE_DEFINITIONS; TIMING_FEASIBILITY_REPAIR_ONLY",
+    "performance_claim_effect": "NONE; remains shared-host screening only with no formal or portable speedup claim"
+  }
+}
