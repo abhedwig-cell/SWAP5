@@ -2,7 +2,7 @@
   "work_unit": "PPA-WU05-C3A",
   "baseline": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
   "checkpoint_commit": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
-  "last_reconciled_head": "f8b1055111e5c4ebb64014d0432c774383b6f5a8",
+  "last_reconciled_head": "5f28db3e5997d30aeb619e6815c447b56c9eceff",
   "last_reconciled_upstream": "828df126e0c0d70f5cbfae51614bfc3b53e832a4",
   "implemented": true,
   "persisted": true,
@@ -11,11 +11,11 @@
   "focused_repair_qualified": true,
   "status": "REPAIRED_FOCUSED_GATES_PASS_SHARED_APPLICATION_BINDING_AUTHORITY_REQUIRED",
   "canonical_admitted": false,
-  "recovery_point": "docs/audits/PPA_WU05C3A_REPAIR_RESULT.md",
-  "next_action": "Central runtime/crop authority issues actual application input binding and matching hydraulic/thermal staging; then application replay and canonical reconciliation/admission.",
+  "recovery_point": "docs/audits/PPA_WU05C3A_APPLICATION_INPUT_AUDIT.md",
+  "next_action": "Central accepts the proposed additive input/call-site merge contract in PPA_WU05C3A_APPLICATION_INPUT_AUDIT.md; no intrinsic backend forcing or ledger schema change is required.",
   "blockers": [
-    "Shared crop/root input contract lacks Bartholomeus absolute root and respiration view",
-    "Actual application staging/configuration binding must be issued by shared runtime owner"
+    "Shared crop authority must publish SRL-derived kg/m and current nodal root-density kg/m3 with dedicated Bartholomeus respiration parameters",
+    "Shared application authority must select the actual producer/call site and owner-consistent hydraulic/thermal staging"
   ],
   "authority_paths": [
     "docs/development/quality-governance-a-aa.md",
@@ -31,7 +31,8 @@
   ],
   "evidence_paths": [
     "docs/audits/PPA_WU05C3A_REPAIR_RESULT.md",
-    "docs/audits/PPA_WU05C3A_BOUNDARY_FALSIFICATION.md"
+    "docs/audits/PPA_WU05C3A_BOUNDARY_FALSIFICATION.md",
+    "docs/audits/PPA_WU05C3A_APPLICATION_INPUT_AUDIT.md"
   ],
   "dependency_surface": [
     "src/physics/oxygen",

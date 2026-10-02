@@ -27,6 +27,9 @@ contains
     type(soil_temperature_field_view_t),intent(in)::thermal
     type(BartholomeusImmutableDataset),intent(in)::data
     type(BartholomeusCropParameters),intent(in)::crop
+    ! Source inputs: w_root=1/SRL [kg/m]; w_root_z0=wroot_node_top [kg/m3].
+    ! Neither array is a normalized uptake/root fraction. The crop owner must
+    ! supply them; this routine does not evolve or reconstruct crop state.
     real(real64),intent(in)::w_root(:),w_root_z0(:),atmospheric_ctop
     type(root_water_uptake_flux_result_t),intent(in)::base_fluxes
     type(root_water_uptake_flux_result_t),intent(out)::final_fluxes

@@ -12,6 +12,8 @@ module mod_bartholomeus_parameter_contract
     real(real64) :: percent_org_mat
     real(real64) :: percent_sand
     real(real64) :: soil_density
+    ! B1.11 oxygenstress depth = 0.01*dz(node): compartment thickness,
+    ! NOT cumulative depth or nodal elevation. The name follows the kernel.
     real(real64) :: depth_m
     real(real64) :: waterfilm_capac_term
     real(real64) :: waterfilm_n_minus_1
