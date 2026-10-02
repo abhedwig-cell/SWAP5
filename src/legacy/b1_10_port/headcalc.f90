@@ -86,7 +86,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    integer                          :: numnod
    integer                          :: swmacro, swbotb, swkimpl, swkmean, maxit, maxbacktr
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
-   real(8)                          :: CritDevBalCp, CritDevBalTot
+   real(8)                          :: CritDevBalCp, CritDevBalTot, lysimeter_plate_head
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
@@ -111,6 +111,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    legacy_state_binding = .not. present(state_binding)
    typed_bottom_invalid=.false.
    typed_bottom_conductance=0.0d0
+   lysimeter_plate_head=hplate
    explicit_geometry = .not. legacy_state_binding
    if (explicit_geometry) then
       if (.not. present(parameter_set)) error stop 'HeadCalc: explicit parameter geometry required'
@@ -167,6 +168,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       swmacro = 0
       if (.not. present(boundary_conditions)) error stop 'HeadCalc: explicit boundary conditions required'
       swbotb = boundary_conditions%bottom_mode
+      if (swbotb == 8) lysimeter_plate_head=boundary_conditions%bottom_head
       if (.not. present(numerical_config)) error stop 'HeadCalc: explicit numerical config required'
       if (.not. present(explicit_step_duration)) error stop 'HeadCalc: explicit step duration required'
       if (explicit_step_duration <= 0.0d0) error stop 'HeadCalc: explicit step duration must be positive'
