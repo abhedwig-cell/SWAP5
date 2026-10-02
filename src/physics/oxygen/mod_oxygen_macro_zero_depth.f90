@@ -9,6 +9,7 @@ module mod_oxygen_macro_zero_depth
 
    public :: oxygen_macro_zero_residual
    public :: oxygen_macro_zero_depth
+   public :: oxygen_macro_zero_depth_fast
 
 contains
 
@@ -96,5 +97,40 @@ contains
       status = OXYGEN_MACRO_ROOT_OK
       if (present(iterations)) iterations = nmax
    end subroutine oxygen_macro_zero_depth
+
+   pure subroutine oxygen_macro_zero_depth_fast(ctop, microbial_scale, root_scale, microbial_shape, root_shape, lroot, status)
+      real(real64), intent(in) :: ctop, microbial_scale, root_scale, microbial_shape, root_shape
+      real(real64), intent(out) :: lroot
+      integer, intent(out) :: status
+      real(real64) :: lo,hi,mid,fhi,fmid,asymptote
+      integer :: i
+      if (ctop < 0.0_real64 .or. microbial_scale < 0.0_real64 .or. root_scale < 0.0_real64 .or. &
+          microbial_shape <= 0.0_real64 .or. root_shape <= 0.0_real64) then
+         lroot=0.0_real64; status=OXYGEN_MACRO_INVALID; return
+      end if
+      asymptote=ctop-microbial_scale-root_scale
+      if(asymptote>=0.0_real64) then
+         lroot=huge(1.0_real64);status=OXYGEN_MACRO_NO_FINITE_ROOT;return
+      end if
+      lo=0.0_real64;hi=max(microbial_shape,root_shape)
+      do i=1,64
+         fhi=oxygen_macro_zero_residual(hi,ctop,microbial_scale,root_scale,microbial_shape,root_shape)
+         if(fhi<=0.0_real64) exit
+         hi=2.0_real64*hi
+      end do
+      if(fhi>0.0_real64) then
+         lroot=hi;status=OXYGEN_MACRO_INVALID;return
+      end if
+      do i=1,48
+         mid=.5_real64*(lo+hi)
+         fmid=oxygen_macro_zero_residual(mid,ctop,microbial_scale,root_scale,microbial_shape,root_shape)
+         if(fmid>0.0_real64) then
+            lo=mid
+         else
+            hi=mid
+         end if
+      end do
+      lroot=.5_real64*(lo+hi);status=OXYGEN_MACRO_ROOT_OK
+   end subroutine oxygen_macro_zero_depth_fast
 
 end module mod_oxygen_macro_zero_depth
