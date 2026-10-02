@@ -1,4 +1,6 @@
 name: F-MIG431 LOW08-A qualification
+permissions:
+  contents: write
 on:
   push:
     branches: [work/f-mig431-low08-a-lysimeter-application]
@@ -27,3 +29,12 @@ jobs:
         with:
           name: F-MIG431-LOW08-A-qualification
           path: low08a_qualification_result.json
+      - name: Persist exact-postimage qualification evidence
+        run: |
+          cp low08a_qualification_result.json integration/audits/F-MIG431-LOW08-A_QUALIFICATION.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/audits/F-MIG431-LOW08-A_QUALIFICATION.json
+          git diff --cached --quiet && exit 0
+          git commit -m "evidence(LOW08-A): persist bounded qualification"
+          git push
