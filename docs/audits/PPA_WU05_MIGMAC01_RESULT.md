@@ -2,7 +2,7 @@
 
 Date: 2026-10-02
 
-Status: `QUALIFIED_PREREQUISITE_SOURCE_ORIGIN_COMPOSITION_BLOCKED`
+Status: `QUALIFIED_PREREQUISITE_CONFIRMED_B111_REFERENCE_CARRIER_DEFECT`
 
 Qualified postimage:
 `f88c1fc3106b88fec60edb93fdc56f331ad75dff`
@@ -68,3 +68,15 @@ See [source-origin replay result](PPA_WU05_MIGMAC01_SOURCE_ORIGIN_REPLAY_RESULT.
 and [controlled reference result](PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_RESULT.md).
 These replace the prior missing-source-event blocker; no active E2E qualification,
 new preservation, production admission or closeout is claimed.
+
+## Reference discrepancy attributed (2026-10-02)
+
+Exact last-MACRORATE diagnostics now confirm B1.11 starts perched detection
+inside ordinary groundwater node 55, misses shallow saturated water and
+counts ordinary node 55 twice. On identical source last-rate h/theta,
+SWAP5 has main top 55 and perched top 1 / bottom 29. Diagnostic ablation
+isolates the duplicate with an exact 2:1 node-55 rate ratio; it is not a
+production change or admission fixture. The reference must be corrected and
+qualified in B1 before whole-case comparison can qualify MIGMAC01.
+PERCH21 must not be regressed to recreate this demonstrated defect.
+See [reference carrier defect](PPA_WU05_MIGMAC01_REFERENCE_CARRIER_DEFECT.md).

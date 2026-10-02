@@ -3,10 +3,10 @@
   "reference": "B1.11 exact expanded source with read-only diagnostics",
   "time": 35796.986000000004,
   "dt": 0.002,
-  "last_rate_task": 1.0,
-  "reference_main_node": 55.0,
-  "reference_perched_top": 55.0,
-  "reference_perched_bottom": 55.0,
+  "last_rate_task": 1,
+  "reference_main_node": 55,
+  "reference_perched_top": 55,
+  "reference_perched_bottom": 55,
   "critical_under_saturated_volume_cm": 0.1,
   "reference_groundwater_cm": -75.23346963453669,
   "positive_head_intervals": [
@@ -40,5 +40,20 @@
     "macrorate.f90": "30c19e135533ac3ac56e160d08ed4388774ff9e17596c9682addc4568a0decac",
     "soilwater.f90": "dbc0a7144d9037ed417904ef35b63833be325270f1769c072ef200d57faca2e0"
   },
-  "active_swap5_e2e_qualified": false
+  "active_swap5_e2e_qualified": false,
+  "diagnostic_ablation_only": {
+    "perched_off_other_cm_per_day": -0.3913906758279594,
+    "reference_other_cm_per_day": -0.40973640650434007,
+    "max_remaining_diff_node": 55,
+    "probe_node55_cm_per_day": -0.01834573067640615,
+    "reference_node55_cm_per_day": -0.0366914613528123,
+    "duplicate_factor": 2,
+    "production_template_changed": false,
+    "perched_active_in_full_runtime": true
+  },
+  "exact_persisted_diagnostic_head": "c49c8210876efbaaf4d72305eb921f70d237224a",
+  "optimization_levels_reproduced": [
+    "O0",
+    "O2"
+  ]
 }
