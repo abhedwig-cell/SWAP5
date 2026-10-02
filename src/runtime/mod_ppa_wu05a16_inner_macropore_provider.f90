@@ -36,6 +36,7 @@ module mod_ppa_wu05a16_inner_macropore_provider
     procedure, public :: configure => configure_inner_macropore_provider
     procedure, public :: evaluate_rate => evaluate_inner_macropore_rate
     procedure, public :: evaluate_derivative => evaluate_inner_macropore_derivative
+    procedure, public :: evaluate_trial_geometry => evaluate_inner_trial_geometry
   end type ppa_wu05a16_inner_macropore_provider_t
 
 contains
@@ -191,6 +192,28 @@ contains
     active=max(maxval(abs(exchange)),maxval(abs(dexchange_dhead)))>1.0e-14_real64
   end subroutine evaluate_inner_macropore_derivative
 
+
+  subroutine evaluate_inner_trial_geometry(self,water_content,geometry_current,ok)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
+    real(real64),intent(in)::water_content(:)
+    type(macropore_geometry_result_t),intent(out)::geometry_current
+    logical,intent(out)::ok
+    real(real64),allocatable::dynamic_current(:)
+
+    ok=.false.
+    geometry_current=self%geometry
+    if(.not.self%shrinkage%enabled)then
+      ok=geometry_current%valid
+      return
+    end if
+    if(size(water_content)/=self%accepted_macro%num_nodes)return
+    call evaluate_dynamic_crack_profile(self%shrinkage,water_content,self%accepted_matrix_theta,self%dz, &
+         self%matrix_area_fraction,self%accepted_macro%dynamic_volume_cp,dynamic_current,ok)
+    if(.not.ok)return
+    call evaluate_macropore_geometry(self%geometry_config,dynamic_current,geometry_current)
+    ok=geometry_current%valid
+  end subroutine evaluate_inner_trial_geometry
+
   subroutine evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
     real(real64),intent(in)::pressure_head(:),water_content(:)
@@ -200,7 +223,6 @@ contains
     type(soil_water_physical_state_t),intent(out)::matrix
     type(macropore_geometry_result_t)::geometry_current
     type(macropore_standard_storage_view_t)::view_current
-    real(real64),allocatable::dynamic_current(:)
     logical,intent(out)::ok
     integer::n
 
@@ -215,14 +237,10 @@ contains
     matrix%ponding_depth=self%accepted_ponding_depth
     matrix%groundwater_level=self%accepted_groundwater_level
 
-    geometry_current=self%geometry
+    call self%evaluate_trial_geometry(water_content,geometry_current,ok)
+    if(.not.ok)return
     view_current=self%accepted_view
     if(self%shrinkage%enabled)then
-      call evaluate_dynamic_crack_profile(self%shrinkage,water_content,self%accepted_matrix_theta,self%dz, &
-           self%matrix_area_fraction,self%accepted_macro%dynamic_volume_cp,dynamic_current,ok)
-      if(.not.ok)return
-      call evaluate_macropore_geometry(self%geometry_config,dynamic_current,geometry_current)
-      if(.not.geometry_current%valid)return
       call derive_macropore_standard_storage_view(self%accepted_macro,geometry_current%top_node,self%z,self%dz,view_current)
       if(.not.view_current%valid)return
     end if
