@@ -1821,7 +1821,7 @@ contains
         ok = ok .and. .not. allocated(parameters%macropore)
       end if
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
-           parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3) .and. &
+           parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
             .not. parameters%frost_active
