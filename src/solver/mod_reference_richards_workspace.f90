@@ -19,6 +19,7 @@ module mod_reference_richards_workspace
      real(real64), allocatable :: sink(:)
      real(real64), allocatable :: source(:)
      real(real64), allocatable :: provider_theta(:)
+     real(real64), allocatable :: provider_water_content_increment(:)
      real(real64), allocatable :: provider_k(:)
      real(real64), allocatable :: provider_capacity(:)
      real(real64), allocatable :: provider_dkdh(:)
@@ -36,6 +37,14 @@ module mod_reference_richards_workspace
      logical :: unsaturated_flags(3) = .false.
      real(real64), allocatable :: warm_start_head(:)
      logical :: has_warm_start = .false.
+     ! Read-only post-trial observations of the native HeadCalc convergence
+     ! gates. These fields never participate in the convergence decision.
+     real(real64) :: last_fmax_rate = 0.0_real64
+     real(real64) :: last_total_balance_rate = 0.0_real64
+     real(real64) :: last_head_criterion_ratio = 0.0_real64
+     logical :: last_compartment_gate_passed = .false.
+     logical :: last_total_gate_passed = .false.
+     logical :: last_head_gate_passed = .false.
      type(soil_water_solver_diagnostics_t) :: diagnostics
      integer :: profile_full_reset_calls = 0
      integer(int64) :: profile_zeroed_bytes = 0_int64
@@ -64,7 +73,8 @@ contains
        allocate(workspace%dfdh_lower(active_nodes), workspace%dfdh_main(active_nodes), workspace%dfdh_upper(active_nodes))
        allocate(workspace%residual(active_nodes), workspace%delta_head(active_nodes), workspace%tridag_gamma(active_nodes))
        allocate(workspace%sink(active_nodes), workspace%source(active_nodes))
-       allocate(workspace%provider_theta(active_nodes), workspace%provider_k(active_nodes))
+       allocate(workspace%provider_theta(active_nodes), workspace%provider_water_content_increment(active_nodes), &
+            workspace%provider_k(active_nodes))
        allocate(workspace%provider_capacity(active_nodes), workspace%provider_dkdh(active_nodes))
        allocate(workspace%provider_root_sink(active_nodes))
        allocate(workspace%dconductivity_dhead(active_nodes), workspace%old_head(active_nodes))
@@ -104,6 +114,12 @@ contains
     workspace%dfdh_lower(active_nodes) = 0.0_real64
     workspace%unsaturated_flags = .false.
     workspace%has_warm_start = .false.
+    workspace%last_fmax_rate = 0.0_real64
+    workspace%last_total_balance_rate = 0.0_real64
+    workspace%last_head_criterion_ratio = 0.0_real64
+    workspace%last_compartment_gate_passed = .false.
+    workspace%last_total_gate_passed = .false.
+    workspace%last_head_gate_passed = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
     workspace%poisoned = .false.
   end subroutine prepare_reference_workspace_for_solve
@@ -124,6 +140,7 @@ contains
     workspace%sink = 0.0_real64
     workspace%source = 0.0_real64
     workspace%provider_theta = 0.0_real64
+    workspace%provider_water_content_increment = 0.0_real64
     workspace%provider_k = 0.0_real64
     workspace%provider_capacity = 0.0_real64
     workspace%provider_dkdh = 0.0_real64
@@ -141,6 +158,12 @@ contains
     workspace%unsaturated_flags = .false.
     workspace%warm_start_head = 0.0_real64
     workspace%has_warm_start = .false.
+    workspace%last_fmax_rate = 0.0_real64
+    workspace%last_total_balance_rate = 0.0_real64
+    workspace%last_head_criterion_ratio = 0.0_real64
+    workspace%last_compartment_gate_passed = .false.
+    workspace%last_total_gate_passed = .false.
+    workspace%last_head_gate_passed = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
     workspace%tridag_factorization_capture_active = .false.
     workspace%poisoned = .false.
@@ -185,6 +208,7 @@ contains
     workspace%sink = qnan
     workspace%source = qnan
     workspace%provider_theta = qnan
+    workspace%provider_water_content_increment = qnan
     workspace%provider_k = qnan
     workspace%provider_capacity = qnan
     workspace%provider_dkdh = qnan
@@ -202,6 +226,12 @@ contains
     workspace%unsaturated_flags = .true.
     workspace%warm_start_head = qnan
     workspace%has_warm_start = .true.
+    workspace%last_fmax_rate = qnan
+    workspace%last_total_balance_rate = qnan
+    workspace%last_head_criterion_ratio = qnan
+    workspace%last_compartment_gate_passed = .false.
+    workspace%last_total_gate_passed = .false.
+    workspace%last_head_gate_passed = .false.
     workspace%diagnostics%route = 'poisoned'
     workspace%tridag_factorization_capture_active = .false.
     workspace%poisoned = .true.
@@ -219,6 +249,7 @@ contains
     if (allocated(workspace%sink)) deallocate(workspace%sink)
     if (allocated(workspace%source)) deallocate(workspace%source)
     if (allocated(workspace%provider_theta)) deallocate(workspace%provider_theta)
+    if (allocated(workspace%provider_water_content_increment)) deallocate(workspace%provider_water_content_increment)
     if (allocated(workspace%provider_k)) deallocate(workspace%provider_k)
     if (allocated(workspace%provider_capacity)) deallocate(workspace%provider_capacity)
     if (allocated(workspace%provider_dkdh)) deallocate(workspace%provider_dkdh)
@@ -262,6 +293,8 @@ contains
     if (allocated(workspace%sink)) nreal = nreal + size(workspace%sink, kind=int64)
     if (allocated(workspace%source)) nreal = nreal + size(workspace%source, kind=int64)
     if (allocated(workspace%provider_theta)) nreal = nreal + size(workspace%provider_theta, kind=int64)
+    if (allocated(workspace%provider_water_content_increment)) &
+         nreal = nreal + size(workspace%provider_water_content_increment, kind=int64)
     if (allocated(workspace%provider_k)) nreal = nreal + size(workspace%provider_k, kind=int64)
     if (allocated(workspace%provider_capacity)) nreal = nreal + size(workspace%provider_capacity, kind=int64)
     if (allocated(workspace%provider_dkdh)) nreal = nreal + size(workspace%provider_dkdh, kind=int64)
