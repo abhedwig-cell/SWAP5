@@ -50,7 +50,8 @@ program test_low08a_application
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
   cfg%numerical%model_temporal_indicator_budget_available=.true.
   cfg%numerical%model_temporal_indicator_budget=QUALIFICATION_HEAD_BUDGET
-  cfg%tiles(1)%base_forcing%bottom_head=-80.0_real64
+  cfg%tiles(1)%base_forcing%bottom_head=cfg%tiles(1)%initial_state%pressure_head(numnod)+ &
+       0.5_real64*cfg%tiles(1)%parameters%dz(numnod)+1.0_real64
   cfg%tiles(1)%base_forcing%top_flux=0.0_real64
   cfg%tiles(1)%base_forcing%bottom_flux=0.0_real64
   print '(a)', 'LOW08A_STAGE_BEFORE_INIT'
