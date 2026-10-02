@@ -15,6 +15,12 @@ jobs:
         run: |
           mkdir -p /tmp/a28
           bash research/rfm/a28/run_q1_q2.sh /tmp/a28
+      - name: A28 exact and approximate trajectory qualification
+        run: |
+          mkdir -p /tmp/a28/exact /tmp/a28/approx
+          bash research/rfm/a27/run_production_abc01.sh /tmp/a28/exact
+          bash research/rfm/a28/run_approximate_abc.sh /tmp/a28/approx
+          python3 research/rfm/a28/compare_exact_approx.py /tmp/a28/exact /tmp/a28/approx | tee /tmp/a28/q3_comparison.txt
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
