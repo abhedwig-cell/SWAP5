@@ -27,7 +27,7 @@ program test_low03a_application
   type(kernel_checkpoint_t) :: cp
   type(kernel_candidate_state_t) :: candidate
   type(kernel_diagnostics_t) :: diag
-  type(fmr_serialized_column_result_t) :: trial
+  type(kernel_result_t) :: trial
   type(fmr_serialized_physical_observation_t) :: obs
   type(groundwater_topology_t) :: topology
   type(groundwater_tile_predictor_input_t) :: predictors(0)
