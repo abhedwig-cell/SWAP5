@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_unit": "F-GC-STRIP01",
-  "state": "REGISTERED_UNRESOLVED_SHARED_APPLICATION_DOMAIN_PREREQUISITE",
+  "state": "RESEARCH_ZERO_STORAGE_DOMAIN_RESOLVED_PRODUCTION_DRAIN_ADMISSION_UNRESOLVED",
   "canonical_head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c",
   "problem": "Current fixed-interface production authority owns physical SWAP-column storage, classifies MODFLOW STO as HEAD_STATE_CAPACITANCE and admits drainage owner NONE. A physical 50 m coupled aquifer/storage/DRN balance cannot inherit independent aquifer storage or active drainage by reinterpretation.",
   "controlling_contracts": [
@@ -28,13 +28,14 @@
   "production_source_change_implemented": false,
   "production_ABI_change_implemented": false,
   "canonical_admission": false,
-  "claim_ceiling": "standalone A/B and recovered input candidate only; C-E await this explicit ownership/profile seam",
-  "next_action": "Qualify explicit C0 research component and generic-context driver; retain shared-authority prerequisite for production admission. Do not weaken bootstrap or claim active drainage admitted.",
+  "claim_ceiling": "A/B and C0/C1 groundwater components qualified; research real first windows rejected; accepted response/profile qualification prerequisite RESP01 remains; no Hupsel/admission.",
+  "next_action": "Resolve F-GC-STRIP01-RESP01 for research response qualification; retain production drainage admission boundary.",
   "research_resolution": {
     "profile": "STRIP01-C0",
     "physical_independent_storage": "ELIMINATED_FOR_ZERO_STORAGE_SATURATED_LOWER_DOMAIN",
     "drainage": "EXPLICIT_MODFLOW_RESEARCH_OWNER_NOT_PRODUCTION_ADMITTED",
     "production_bootstrap_guard": "EXECUTABLY_CONFIRMED_O2",
-    "coupled_execution": "NOT_EXECUTED"
-  }
+    "coupled_execution": "ATTEMPTED_C0_AND_C1_FIRST_WINDOW_REJECTED"
+  },
+  "response_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01-RESP01.json"
 }

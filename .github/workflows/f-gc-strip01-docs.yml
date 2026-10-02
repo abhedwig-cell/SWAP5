@@ -1,0 +1,39 @@
+name: F-GC-STRIP01 documentation qualification
+on:
+  push:
+    branches: [work/f-gc-strip01-50m-swap-modflow-benchmark]
+    paths:
+      - 'docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md'
+      - '.github/workflows/f-gc-strip01-docs.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  docs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-docs.txt
+      - name: Check repository documentation
+        shell: bash
+        run: |
+          mkdir -p strip01-docs-evidence
+          git rev-parse HEAD > strip01-docs-evidence/source_commit.txt
+          set -o pipefail
+          python tools/docs/check_docs.py 2>&1 | tee strip01-docs-evidence/source-check.log
+      - name: Strict documentation build
+        if: always()
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdocs build --strict --site-dir /tmp/strip01-docs-site 2>&1 | tee strip01-docs-evidence/strict-build.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: F-GC-STRIP01-docs-${{ github.run_id }}
+          path: strip01-docs-evidence/
+          retention-days: 90

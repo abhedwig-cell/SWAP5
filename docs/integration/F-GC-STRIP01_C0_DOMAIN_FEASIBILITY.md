@@ -1,6 +1,8 @@
 # F-GC-STRIP01 C0 domain feasibility and preregistration
 
-Status: **preregistered research proposal; not production admitted**.
+Status: **preregistered domain, now groundwater-component qualified; real first window rejected; not production admitted**.
+
+Current execution and recovery supersede the prospective statements below: [C0/C1 qualification and response findings](F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md). Native C0 and local C1 component qualification passed; both real 50-column attempts rejected without committed-state change. F-GC-STRIP01-RESP01 is the immediate numerical/profile qualification prerequisite.
 
 Canonical source pinned to `53059a5225fa45cd6121d4bc4c7310dcc4e0660c`. The A/B qualification remains unchanged. This document resolves the candidate domain choice for research, while preserving the production authority guard.
 
