@@ -34,7 +34,7 @@ contains
       previous = 2.0_real64*integral
       do level = 2, 24
          previous = integral
-         integral = trapezoid_level(1.0e-10_real64,matric_potential_pa,p,level)
+         integral = trapezoid_refine(1.0e-10_real64,matric_potential_pa,p,level,previous)
          if (abs(integral-previous) <= 1.0e-5_real64*max(abs(integral),tiny(1.0_real64))) exit
       end do
 
@@ -45,6 +45,23 @@ contains
       thickness = bartholomeus_waterfilm_from_length_density(integral,matric_potential_pa, &
                                                               p%surface_tension_water)
       ok = .true.
+   end function
+
+   pure function trapezoid_refine(a,b,p,level,previous) result(s)
+      real(real64), intent(in) :: a,b,previous
+      type(BartholomeusWaterfilmMvgInput), intent(in) :: p
+      integer, intent(in) :: level
+      real(real64) :: s,h,x,sum_new
+      integer :: n_new,k
+
+      n_new = 2**(level-2)
+      h = (b-a)/real(2*n_new,real64)
+      sum_new = 0.0_real64
+      do k=1,n_new
+         x = a+h*real(2*k-1,real64)
+         sum_new = sum_new+bartholomeus_waterfilm_mvg_integrand(x,p)
+      end do
+      s = 0.5_real64*previous+h*sum_new
    end function
 
    pure function trapezoid_level(a,b,p,level) result(s)
