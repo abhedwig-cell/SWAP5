@@ -47,15 +47,15 @@ program test_a28_q4b_mode3_decompose
   approximate_mode=trim(mode_arg)=='approx'
 
   approximate_mode=.false.
-  write(*,'(a)') 'DECOMP,soil,geom,arm,event,completed,status,fail_step,admission,solver,mass'
+  write(*,'(a)') 'DECOMP,soil,geom,arm,event,completed,status,fail_step,admission,solver,temporal,massrej,attempts,retries,nonlinear,backtracks,headcalc,mass'
   do soil=1,2
     geom=1;regime=3
     arm=ARM_A
     call run_arm(soil,geom,regime,arm,m)
-    write(*,'(*(g0,:,","))') 'DECOMP',soil,geom,arm,0,merge(1,0,m%completed),m%status,m%fail_step,m%admission_rejections,m%solver_rejections,m%max_mass_resid
+    write(*,'(*(g0,:,","))') 'DECOMP',soil,geom,arm,0,merge(1,0,m%completed),m%status,m%fail_step,m%admission_rejections,m%solver_rejections,m%temporal_rejections,m%mass_rejections,m%attempts,m%retries,m%nonlinear,m%backtracks,m%headcalc,m%max_mass_resid
     arm=ARM_C
     call run_arm(soil,geom,regime,arm,m)
-    write(*,'(*(g0,:,","))') 'DECOMP',soil,geom,arm,0,merge(1,0,m%completed),m%status,m%fail_step,m%admission_rejections,m%solver_rejections,m%max_mass_resid
+    write(*,'(*(g0,:,","))') 'DECOMP',soil,geom,arm,0,merge(1,0,m%completed),m%status,m%fail_step,m%admission_rejections,m%solver_rejections,m%temporal_rejections,m%mass_rejections,m%attempts,m%retries,m%nonlinear,m%backtracks,m%headcalc,m%max_mass_resid
   end do
   print '(a)','A28_Q4B_MODE3_DECOMPOSE_COMPLETE'
 
