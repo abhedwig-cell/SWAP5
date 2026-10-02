@@ -3379,9 +3379,26 @@ contains
     select type (full => full_state)
     type is (fmr_b110_rfm_state_t)
       value = huge(0.0_real64)
+      if (.not. associated(self%soil_parameters)) return
+      if (full%active_nodes /= self%soil_parameters%active_nodes .or. full%active_nodes <= 0) return
+      if (.not. allocated(full%pressure_head) .or. .not. allocated(full%water_content)) return
+      if (.not. full%rfm%ready()) return
+      if (allocated(full%macropore) .or. allocated(full%snow) .or. allocated(full%soil_temperature)) return
       select type (half => half_state)
       type is (fmr_b110_rfm_state_t)
-        if (base_physical_states_identical(full,half) .and. full%rfm%same_values(half%rfm)) value = 0.0_real64
+        if (half%active_nodes /= full%active_nodes) return
+        if (.not. allocated(half%pressure_head) .or. .not. allocated(half%water_content)) return
+        if (size(full%pressure_head) /= full%active_nodes .or. size(half%pressure_head) /= full%active_nodes .or. &
+            size(full%water_content) /= full%active_nodes .or. size(half%water_content) /= full%active_nodes) return
+        if (.not. half%rfm%ready() .or. half%rfm%endpoint_count /= full%rfm%endpoint_count) return
+        if (allocated(half%macropore) .or. allocated(half%snow) .or. allocated(half%soil_temperature)) return
+        value = 0.0_real64
+        value = max(value, maxval(abs(full%pressure_head-half%pressure_head)))
+        value = max(value, abs(full%ponding_depth-half%ponding_depth))
+        value = max(value, abs(full%groundwater_level-half%groundwater_level))
+        value = max(value, maxval(abs((full%water_content-half%water_content)*self%soil_parameters%dz)))
+        value = max(value, abs(full%rfm%mb_water_cm-half%rfm%mb_water_cm))
+        value = max(value, maxval(abs(full%rfm%endpoint_water_cm-half%rfm%endpoint_water_cm)))
       class default
       end select
       return
