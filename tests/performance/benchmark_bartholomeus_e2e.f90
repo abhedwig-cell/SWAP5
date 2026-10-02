@@ -81,7 +81,10 @@ contains
   end associate
   call publish_crop_bartholomeus_input([1._real64,.8_real64,.6_real64],20._real64,value%tiles(1)%base_forcing%crop_oxygen,valid)
   rp%active_nodes=numnod;rp%hlim3l=-500;rp%hlim3h=-100;rp%hlim4=-16000;rp%hlim2u=-25;rp%hlim2l=-25
-  call bind_process_hydraulic_view(value%tiles(1)%initial_state,view,valid);rq%potential_transpiration=0.2_real64;rq%root_fraction=0;rq%root_fraction(1:3)=[.4_real64,.35_real64,.25_real64]
-  call evaluate_root_water_uptake(rp,rq,view,rf,rd);value%tiles(1)%base_forcing%root_extraction_sink=rf%extraction_sink
+  rp%active_nodes=numnod;rp%hlim3l=-500;rp%hlim3h=-300;rp%hlim4=-16000;rp%adcrl=.1_real64;rp%adcrh=.5_real64
+  rq%rooted_nodes=3;rq%potential_transpiration=.03_real64;rq%cumulative_root_fraction=[0._real64,.4_real64,.8_real64,1._real64]
+  view%active_nodes=numnod;view%pressure_head=value%tiles(1)%initial_state%pressure_head;view%water_content=value%tiles(1)%initial_state%water_content
+  call evaluate_macro_feddes_drought_uptake(rp,view,rq,rf,rd);value%tiles(1)%base_forcing%root_extraction_sink=rf%root_extraction_sink
+  value%tiles(1)%base_forcing%root_extraction_sink(4)=.005_real64
  end subroutine
 end program
