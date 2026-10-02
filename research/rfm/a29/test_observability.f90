@@ -1,16 +1,16 @@
-program test_a27_production_abc01
+program test_a29_observability
   use,intrinsic::iso_fortran_env,only:int64,real64,error_unit
   use MOD_grid,only:numnod,z,dz,disnod
   use mod_transaction_reference,only:transaction_state_t,TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts,only:canonical_numerical_config_t,CANONICAL_STATUS_COMPLETED
   use mod_kernel_transactions,only:kernel_committed_state_t,kernel_checkpoint_t,kernel_result_t, &
-       kernel_candidate_state_t,kernel_diagnostics_t
+       kernel_candidate_state_t,kernel_diagnostics_t,kernel_reconstruct_committed_state_trusted,KERNEL_TRUSTED_RECONSTRUCTION_OK
   use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t,FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE,FMR_OPTIONAL_STATE_LAYOUT_BASE,FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, &
        FMR_OPTIONAL_STATE_LAYOUT_RFM
   use mod_fmr_checkpoint_orchestrator,only:fmr_capture_checkpoint
   use mod_fmr_serialized_reference_backend,only:fmr_b110_physical_parameters_t,fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t,fmr_b110_rfm_state_t,fmr_serialized_reference_backend_t, &
+       fmr_b110_physical_state_t,fmr_b110_rfm_state_t,fmr_serialized_reference_backend_t,fmr_serialized_physical_observation_t, &
        fmr_new_b110_committed_state,fmr_new_b110_rfm_committed_state
   use mod_fmr_macropore_configuration,only:initialize_fmr_macropore_standard_config
   use mod_macropore_single_column_runtime,only:macropore_runtime_policy_t
@@ -25,7 +25,7 @@ program test_a27_production_abc01
   implicit none
 
   integer,parameter::ARM_A=1,ARM_B=2,ARM_C=3
-  real(real64),parameter::DT=0.01_real64,TEND=0.20_real64
+  real(real64),parameter::DT=0.01_real64,TEND=24.0_real64
   type metrics_t
     logical::completed=.false.
     integer::status=-999,fail_step=0
@@ -38,45 +38,27 @@ program test_a27_production_abc01
     integer::admission_rejections=0,solver_rejections=0,temporal_rejections=0,mass_rejections=0,trial_rollbacks=0
   end type
   type(metrics_t)::m
-  integer::soil,geom,regime,arm,rep
-  integer,parameter::timing_soil(4)=[1,1,2,2],timing_geom(4)=[1,2,1,2],timing_regime(4)=[2,4,5,6]
-  integer::k
+  integer::soil,geom,regime,arm
   logical::approximate_mode
   character(len=32)::mode_arg
   mode_arg='';call get_command_argument(1,mode_arg)
   approximate_mode=trim(mode_arg)=='approx'
 
-  write(*,'(a)') 'ABC,soil,geom,regime,arm,completed,status,fail_step,wall_seconds,total_in_cm,total_out_cm,bottom_out_cm,fast_external_out_cm,max_mass_resid_cm,matrix_storage_cm,fast_storage_cm,ponding_cm,total_storage_cm,h1_cm,h5_cm,h10_cm,theta1,theta5,theta10,transaction_calls,attempts,retries,nonlinear,backtracks,headcalc,min_substep_day,admission_rejections,solver_rejections,temporal_rejections,mass_rejections,trial_rollbacks'
-  do soil=1,2
-    do geom=1,2
-      do regime=1,8
-        do arm=ARM_A,ARM_C
-          call run_arm(soil,geom,regime,arm,m)
-          call print_metrics('ABC',soil,geom,regime,arm,0,m)
-        end do
-      end do
-    end do
+  write(*,'(a)') 'Q4B,soil,geom,history,arm,completed,status,fail_step,wall_seconds,total_in_cm,total_out_cm,bottom_out_cm,fast_external_out_cm,max_mass_resid_cm,matrix_storage_cm,fast_storage_cm,ponding_cm,total_storage_cm,h1_cm,h5_cm,h10_cm,theta1,theta5,theta10,transaction_calls,attempts,retries,nonlinear,backtracks,headcalc,min_substep_day,admission_rejections,solver_rejections,temporal_rejections,mass_rejections,trial_rollbacks'
+  soil=2;regime=3
+  do geom=1,2
+    approximate_mode=.false.;call run_arm(soil,geom,regime,ARM_C,m);call print_metrics('Q4BEXACT',soil,geom,regime,ARM_C,0,m)
+    approximate_mode=.true.;call run_arm(soil,geom,regime,ARM_C,m);call print_metrics('Q4BAPPROX',soil,geom,regime,ARM_C,0,m)
   end do
-
-  write(*,'(a)') 'TIMING,case_id,soil,geom,regime,arm,repeat,completed,wall_seconds,nonlinear,backtracks,headcalc'
-  do k=1,4
-    do arm=ARM_A,ARM_C
-      call run_arm(timing_soil(k),timing_geom(k),timing_regime(k),arm,m)
-      do rep=1,5
-        call run_arm(timing_soil(k),timing_geom(k),timing_regime(k),arm,m)
-        write(*,'(*(g0,:,","))') 'TIMING',k,timing_soil(k),timing_geom(k),timing_regime(k),arm,rep, &
-             merge(1,0,m%completed),m%wall_seconds,m%nonlinear,m%backtracks,m%headcalc
-      end do
-    end do
-  end do
-  print '(a)','A27_ABC01_EXECUTION_COMPLETE'
+  print '(a)','A28_Q4B_STAGE_B_EXECUTION_COMPLETE'
 
 contains
 
   subroutine run_arm(soil,geom,regime,arm,m)
     integer,intent(in)::soil,geom,regime,arm
     type(metrics_t),intent(out)::m
-    type(fmr_serialized_reference_backend_t)::backend
+    type(fmr_serialized_reference_backend_t)::backend,replay_backend
+    type(fmr_serialized_physical_observation_t)::obs
     type(fixed_flux_top_boundary_provider_t),target::top
     type(fmr_b110_physical_parameters_t),target::parameters
     type(fmr_b110_physical_forcing_t)::forcing
@@ -86,20 +68,22 @@ contains
     type(fmr_logical_column_t)::column
     type(fmr_template_t)::template
     type(canonical_numerical_config_t)::config
-    type(kernel_committed_state_t)::committed
+    type(kernel_committed_state_t)::committed,reconstructed
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_result_t)::result
-    type(kernel_candidate_state_t)::candidate
-    type(kernel_diagnostics_t)::diagnostics
+    type(kernel_candidate_state_t)::candidate,discard_candidate
+    type(kernel_diagnostics_t)::diagnostics,discard_diagnostics
     type(macropore_runtime_policy_t)::policy
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::hyd
     type(macropore_geometry_result_t)::mg
-    class(transaction_state_t),allocatable::snapshot
+    class(transaction_state_t),allocatable::snapshot,replay_snapshot,original_snapshot
     real(real64)::heads(numnod),theta(numnod),cond(numnod),cap(numnod),dkdh(numnod)
     real(real64)::wt,rain,t0,t1,macro_area,deep_fraction,endpoint_depth,sorpmax,ks
-    integer::step,nsteps,commit_status
-    logical::ok,did_commit,available
+    integer::step,nsteps,commit_status,reconstruct_status
+    integer(int64)::saved_lineage,saved_revision
+    real(real64)::saved_time
+    logical::ok,did_commit,available,time_available,reconstructed_ok
     integer(int64)::c0,c1,crate
 
     m=metrics_t()
@@ -186,10 +170,37 @@ contains
     call system_clock(c0,crate)
     do step=1,nsteps
       t0=real(step-1,real64)*DT;t1=real(step,real64)*DT
-      rain=rain_rate(regime,t0)
+      rain=q4b_frozen_rain(t0)
       call init_forcing(forcing,arm,rain,macro_area)
+      if(arm==ARM_C.and.step==nsteps/2)then
+        call committed%snapshot(original_snapshot,available);if(.not.available)then;m%status=-912;m%fail_step=step;exit;end if
+        saved_lineage=committed%current_lineage_id();saved_revision=committed%current_revision()
+        call committed%current_time(saved_time,time_available);if(.not.time_available)then;m%status=-913;m%fail_step=step;exit;end if
+        call kernel_reconstruct_committed_state_trusted(reconstructed,saved_lineage,saved_revision,original_snapshot,saved_time,.true.,reconstructed_ok,reconstruct_status)
+        if(.not.reconstructed_ok.or.reconstruct_status/=KERNEL_TRUSTED_RECONSTRUCTION_OK)then;m%status=-914;m%fail_step=step;exit;end if
+        call replay_backend%initialize(top)
+        call replay_backend%configure_rfm_runtime(rfmcfg,ok)
+        if(.not.ok)then;m%status=-928;m%fail_step=step;exit;end if
+      end if
       call fmr_capture_checkpoint(committed,checkpoint,ok)
       if(.not.ok)then;m%status=-908;m%fail_step=step;exit;end if
+      if(arm==ARM_C.and.step==nsteps/2)then
+        call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result,discard_candidate,discard_diagnostics)
+        if(.not.result%completed)then;m%status=-923;m%fail_step=step;exit;end if
+        call backend%discard_trial_candidate(discard_candidate,discard_diagnostics)
+        call committed%snapshot(replay_snapshot,available);if(.not.available)then;m%status=-924;m%fail_step=step;exit;end if
+        select type(a=>original_snapshot)
+        type is(fmr_b110_rfm_state_t)
+          select type(b=>replay_snapshot)
+          type is(fmr_b110_rfm_state_t)
+            if(.not.a%rfm%same_values(b%rfm).or.any(a%pressure_head/=b%pressure_head).or.any(a%water_content/=b%water_content))then
+              m%status=-925;m%fail_step=step;exit
+            end if
+          class default;m%status=-926;m%fail_step=step;exit
+          end select
+        class default;m%status=-927;m%fail_step=step;exit
+        end select
+      end if
       call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint, &
            result,candidate,diagnostics)
       m%status=result%status
@@ -214,12 +225,46 @@ contains
       if(result%bottom_interface_exchange_available) m%bottom_out=m%bottom_out+result%bottom_outward_exchange_native
       call backend%commit_trial_candidate(committed,candidate,diagnostics,did_commit,commit_status)
       if(.not.did_commit)then;m%status=-909;m%fail_step=step;exit;end if
+      if(arm==ARM_C.and.mod(step,120)==0)then
+        call committed%snapshot(snapshot,available);if(.not.available)then;m%status=-929;m%fail_step=step;exit;end if
+        select type(cs=>snapshot)
+        type is(fmr_b110_rfm_state_t)
+          write(*,'(*(g0,:,","))') 'CYCLE',soil,geom,regime,merge(1,0,approximate_mode),step, &
+               sum(cs%water_content*dz)+cs%rfm%storage_cm()+cs%ponding_depth,cs%water_content(1), &
+               cs%water_content(max(1,min(size(cs%water_content),5))),cs%water_content(size(cs%water_content)), &
+               sum(cs%rfm%endpoint_water_cm),maxval(cs%rfm%wall_age_day),maxval(cs%rfm%wall_sorptivity_cm_sqrt_day)
+        class default;m%status=-930;m%fail_step=step;exit
+        end select
+      end if
+      if(arm==ARM_C.and.step==nsteps/2)then
+        call fmr_capture_checkpoint(reconstructed,checkpoint,ok);if(.not.ok)then;m%status=-915;m%fail_step=step;exit;end if
+        call replay_backend%run_trial(column,template,parameters,reconstructed,forcing,config,t0,t1,checkpoint,result,candidate,diagnostics)
+        if(.not.result%completed)then;m%status=-916;m%fail_step=step;exit;end if
+        call replay_backend%commit_trial_candidate(reconstructed,candidate,diagnostics,did_commit,commit_status)
+        if(.not.did_commit)then;m%status=-917;m%fail_step=step;exit;end if
+        call committed%snapshot(snapshot,available);if(.not.available)then;m%status=-918;m%fail_step=step;exit;end if
+        call reconstructed%snapshot(replay_snapshot,available);if(.not.available)then;m%status=-919;m%fail_step=step;exit;end if
+        select type(a=>snapshot)
+        type is(fmr_b110_rfm_state_t)
+          select type(b=>replay_snapshot)
+          type is(fmr_b110_rfm_state_t)
+            if(.not.a%rfm%same_values(b%rfm).or.any(a%pressure_head/=b%pressure_head).or.any(a%water_content/=b%water_content))then
+              m%status=-920;m%fail_step=step;exit
+            end if
+          class default;m%status=-921;m%fail_step=step;exit
+          end select
+        class default;m%status=-922;m%fail_step=step;exit
+        end select
+      end if
     end do
     call system_clock(c1)
     if(crate>0_int64)m%wall_seconds=real(c1-c0,real64)/real(crate,real64)
     m%completed=(m%fail_step==0.and.m%status==CANONICAL_STATUS_COMPLETED)
     if(.not.m%completed)return
 
+    obs=backend%observation()
+    write(*,'(*(g0,:,","))') 'A29OBS',soil,geom,merge(1,0,approximate_mode),obs%rfm_sorptivity_policy, &
+         obs%rfm_panel_evaluations_64,obs%rfm_panel_evaluations_32,obs%rfm_panel_evaluations_16,obs%rfm_panel_evaluations_other
     call committed%snapshot(snapshot,available)
     if(.not.available)then;m%completed=.false.;m%status=-910;return;end if
     select type(s=>snapshot)
@@ -403,6 +448,14 @@ contains
     end select
   end function water_table
 
+
+  real(real64) function q4b_frozen_rain(t) result(r)
+    real(real64),intent(in)::t
+    real(real64)::phase
+    phase=modulo(t,1.2_real64);r=0._real64
+    if(phase<.08_real64)r=8._real64
+  end function q4b_frozen_rain
+
   real(real64) function rain_rate(regime,t) result(r)
     integer,intent(in)::regime
     real(real64),intent(in)::t
@@ -438,4 +491,4 @@ contains
          m%admission_rejections,m%solver_rejections,m%temporal_rejections,m%mass_rejections,m%trial_rollbacks
   end subroutine print_metrics
 
-end program test_a27_production_abc01
+end program test_a29_observability

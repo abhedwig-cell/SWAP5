@@ -1,0 +1,66 @@
+{
+  "work_unit": "PPA-WU05-A28",
+  "status": "PRODUCTION_CANDIDATE_ENVELOPE_DEFINED_A29_OPEN",
+  "branch": "work/ppa-wu05-a28-rfm-approximate-mode",
+  "qualified_postimage": "281ee3680fa290e8ae84f90f5033f0883b203413",
+  "result_record": "docs/audits/PPA_WU05A28_RESULT.md",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "production_default": false,
+  "multiswap_modflow_eligible": false,
+  "approximate_policy": {
+    "name": "RFM_SORPTIVITY_POLICY_A28_V1",
+    "reference_panels": 64,
+    "bands": [
+      {
+        "condition": "h_cm < -30",
+        "panels": 64
+      },
+      {
+        "condition": "-30 <= h_cm < -3",
+        "panels": 32
+      },
+      {
+        "condition": "h_cm >= -3",
+        "panels": 16
+      }
+    ]
+  },
+  "retained_falsification": {
+    "policy": "PERF07_V1",
+    "run_id": 37005436943,
+    "max_relative_sorptivity_error": 0.04595070332837087,
+    "case": "O13 h=-100 cm"
+  },
+  "qualification": {
+    "run_id": 37006043173,
+    "artifact_id": 11225924965,
+    "artifact_sha256": "751bb633cad621aafa06b6c37f0e4284333a786ed7dd7b35301b25eadcefcc8b",
+    "materials": 36,
+    "pressure_heads_per_material": 17,
+    "max_relative_sorptivity_error": 0.0070868132213172735,
+    "joint_exact_approx_C": 30,
+    "max_total_storage_diff_cm": 5.9105396132963506e-9,
+    "max_bottom_out_diff_cm": 2.6587865242788666e-9,
+    "max_sampled_theta_diff": 1.707468610945284e-10,
+    "max_approx_mass_residual_cm": 9.817536974349172e-11,
+    "non_E1_joint_BC": 0
+  },
+  "q4": {
+    "status": "PARTIAL_H1_H2_QUALIFIED_H3_FIXTURE_FALSIFIED",
+    "result": "docs/audits/PPA_WU05A28_Q4_RESULT.md"
+  },
+  "next_action": "Add policy provenance and panel-band occupancy observability, then run a paired stratified MultiSWAP-MODFLOW subset on current canonical coupling semantics.",
+  "claim_boundary": "A28_V1 is an explicit opt-in branch-qualified production candidate. Exact remains default. Coupled MultiSWAP-MODFLOW numerical and performance admission is not yet established.",
+  "q4b": {
+    "status": "QUALIFIED_BRANCH_ONLY",
+    "result": "docs/audits/PPA_WU05A28_Q4B_RESULT.md",
+    "dynamic_transition": "64_to_32_at_h_minus_30_cm",
+    "dynamic_16_panel_crossing": false
+  },
+  "production_envelope": "docs/audits/PPA_WU05A28_PRODUCTION_ENVELOPE.md",
+  "next_work_unit": "PPA-WU05-A29"
+}

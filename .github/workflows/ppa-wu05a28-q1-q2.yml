@@ -1,0 +1,29 @@
+name: PPA-WU05-A28 approximate RFM Q1-Q2
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - work/ppa-wu05-a27-rfm-performance-equivalence
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile live backend
+        run: bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
+      - name: A28 configuration and 36-soil frontier
+        run: |
+          mkdir -p /tmp/a28
+          bash research/rfm/a28/run_q1_q2.sh /tmp/a28
+      - name: A28 exact and approximate trajectory qualification
+        run: |
+          mkdir -p /tmp/a28/exact /tmp/a28/approx
+          bash research/rfm/a27/run_production_abc01.sh /tmp/a28/exact
+          bash research/rfm/a28/run_approximate_abc.sh /tmp/a28/approx
+          python3 research/rfm/a28/compare_exact_approx.py /tmp/a28/exact /tmp/a28/approx | tee /tmp/a28/q3_comparison.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a28-q1-q2
+          path: /tmp/a28

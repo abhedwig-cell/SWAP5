@@ -315,6 +315,11 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_oxygen_final_uptake = 0.0_real64
     real(real64), allocatable :: root_oxygen_final_sink(:)
     logical :: solver_executed = .false.
+    integer :: rfm_sorptivity_policy = 0
+    integer(int64) :: rfm_panel_evaluations_64 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_32 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_16 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_other = 0_int64
     logical :: hbot5_proposal_available = .false.
     real(real64) :: hbot5_proposed_t0 = 0.0_real64, hbot5_proposed_t1 = 0.0_real64
     real(real64) :: hbot5_sample_t1900 = 0.0_real64, hbot5_pressure_head_cm = 0.0_real64
@@ -537,6 +542,10 @@ module mod_fmr_serialized_reference_backend
     logical :: top_sensible_boundary_carrier_active = .false.
     logical :: top_sensible_boundary_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
+    integer(int64) :: rfm_panel_evaluations_64 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_32 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_16 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_other = 0_int64
   contains
     procedure :: configure_parameters => fmr_serialized_configure_parameters
     procedure :: execution_admitted => fmr_serialized_execution_admitted
@@ -2047,6 +2056,11 @@ contains
     self%drainage_response_window_exchange_available = self%drainage_response_active
     self%drainage_response_window_signed_exchange_native = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
+    self%last_observation%rfm_sorptivity_policy=self%rfm_configuration%sorptivity_policy
+    self%last_observation%rfm_panel_evaluations_64=self%rfm_panel_evaluations_64
+    self%last_observation%rfm_panel_evaluations_32=self%rfm_panel_evaluations_32
+    self%last_observation%rfm_panel_evaluations_16=self%rfm_panel_evaluations_16
+    self%last_observation%rfm_panel_evaluations_other=self%rfm_panel_evaluations_other
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
@@ -2876,6 +2890,20 @@ contains
              self%constitutive,rfm_preflight,rfm_node_depth_cm,self%soil_parameters%dz,step_duration, &
              max(self%compartment_balance_tolerance,FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM),rfm_live)
         if(.not.rfm_live%valid)return
+        call count_rfm_panel(self,rfm_live%surface_panels)
+        if(allocated(rfm_live%endpoint_panels))then
+          block
+            integer::rfm_panel_i
+            do rfm_panel_i=1,size(rfm_live%endpoint_panels)
+              call count_rfm_panel(self,rfm_live%endpoint_panels(rfm_panel_i))
+            end do
+          end block
+        end if
+        call count_rfm_panel(self,rfm_live%mb_panels)
+        self%last_observation%rfm_panel_evaluations_64=self%rfm_panel_evaluations_64
+        self%last_observation%rfm_panel_evaluations_32=self%rfm_panel_evaluations_32
+        self%last_observation%rfm_panel_evaluations_16=self%rfm_panel_evaluations_16
+        self%last_observation%rfm_panel_evaluations_other=self%rfm_panel_evaluations_other
         rfm_source_rate=rfm_live%candidate%matrix_source_rate_per_day
         call bind_rfm_matrix_source_provider(rfm_source_provider,self%source_sink,rfm_source_rate,rfm_source_ok)
         if(.not.rfm_source_ok)return
@@ -3779,5 +3807,16 @@ contains
     end do
     value = y_table(size(y_table))
   end function afgen_pairs
+
+  subroutine count_rfm_panel(self,panels)
+    class(fmr_serialized_reference_model_t),intent(inout)::self
+    integer,intent(in)::panels
+    select case(panels)
+    case(64);self%rfm_panel_evaluations_64=self%rfm_panel_evaluations_64+1_int64
+    case(32);self%rfm_panel_evaluations_32=self%rfm_panel_evaluations_32+1_int64
+    case(16);self%rfm_panel_evaluations_16=self%rfm_panel_evaluations_16+1_int64
+    case default;self%rfm_panel_evaluations_other=self%rfm_panel_evaluations_other+1_int64
+    end select
+  end subroutine count_rfm_panel
 
 end module mod_fmr_serialized_reference_backend

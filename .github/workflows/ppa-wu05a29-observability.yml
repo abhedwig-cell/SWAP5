@@ -1,0 +1,18 @@
+name: PPA-WU05-A29 observability
+on:
+  workflow_dispatch:
+jobs:
+  observability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Policy provenance and panel occupancy
+        run: |
+          mkdir -p /tmp/a29
+          bash research/rfm/a29/run_observability.sh /tmp/a29
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppa-wu05a29-observability
+          path: /tmp/a29
