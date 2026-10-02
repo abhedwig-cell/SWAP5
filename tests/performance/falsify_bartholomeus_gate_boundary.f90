@@ -1,4 +1,5 @@
 program falsify_bartholomeus_gate_boundary
+ ! PERF02 deterministic decision-boundary falsification.
  use iso_fortran_env,only:real64,int64
  use mod_bartholomeus_runtime_input,only:bartholomeus_runtime_view_t
  use mod_bartholomeus_parameter_contract
