@@ -61,4 +61,11 @@ helper=f"""  subroutine configure_tile_rfm(backend,i,ok)
 
 """
 src=src[:idx]+helper+src[idx:]
+# Ensure diagnostics are present even if formatting-specific replacements above missed.
+src=src.replace("if(.not.ok)return\n      call predictor_backend(i)%initialize", "if(.not.ok)then;write(*,'(a,i0)')'A28_FGC45_INIT_FAIL=STATE tile=',i;return;end if\n      call predictor_backend(i)%initialize",1)
+src=src.replace("if(status/=0)return\n      binding(i)%groundwater_cell_id", "if(status/=0)then;write(*,'(a,i0,a,i0)')'A28_FGC45_INIT_FAIL=PREDICTOR tile=',i,' status=',status;return;end if\n      binding(i)%groundwater_cell_id",1)
+src=src.replace("if(status/=MODFLOW6_MULTI_CELL_OK .or. .not.cell%valid)return", "if(status/=MODFLOW6_MULTI_CELL_OK .or. .not.cell%valid)then;write(*,'(a,i0)')'A28_FGC45_INIT_FAIL=CELL status=',status;return;end if",1)
+src=src.replace("if(status/=MODFLOW6_LINEAR_BACKEND_OK .or. .not.term%valid)return", "if(status/=MODFLOW6_LINEAR_BACKEND_OK .or. .not.term%valid)then;write(*,'(a,i0)')'A28_FGC45_INIT_FAIL=TERM status=',status;return;end if",1)
+src=src.replace("if(status/=GW_SWAP_PARTICIPANT_OK)return\n      call ledger", "if(status/=GW_SWAP_PARTICIPANT_OK)then;write(*,'(a,i0,a,i0)')'A28_FGC45_INIT_FAIL=ORIGIN tile=',i,' status=',status;return;end if\n      call ledger",1)
+src=src.replace("if(status/=GW_MASS_LEDGER_OK)return", "if(status/=GW_MASS_LEDGER_OK)then;write(*,'(a,i0,a,i0)')'A28_FGC45_INIT_FAIL=LEDGER tile=',i,' status=',status;return;end if",1)
 Path(sys.argv[1]).write_text(src)
