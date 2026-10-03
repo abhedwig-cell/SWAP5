@@ -12,8 +12,7 @@ python3 tests/rom/compile_f_rom0_fortran_closure.py \
   --root "$ROOT" --stub "$BUILD/stub.f90" \
   --target tests/performance/characterize_bartholomeus_e2e05_bofek.f90 \
   --external-source src/legacy/b1_10_port/headcalc.f90 \
-  --external-source src/physics/oxygen/mod_bartholomeus_soil_data.f90 \
-  --external-source src/physics/oxygen/mod_bartholomeus_crop.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_parameter_contract.f90 \
   --external-source src/physics/oxygen/mod_bartholomeus_temperature.f90 \
   --external-source src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90 \
   --external-source src/physics/oxygen/mod_bartholomeus_microbial.f90 \
