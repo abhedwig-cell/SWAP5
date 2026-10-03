@@ -12,8 +12,8 @@ program test_q4b_dynamic_top_direct
  type(soil_water_top_boundary_result_t)::r
  real(real64)::cof(24,numnod),hs(12),ths(12),h,theta,pond,dt
  integer::soil,i,j,k
- hs=[-300._real64,-100.,-55.,-30.,-20.,-10.,-3.,-1.,0.,1.,5.,20.]
- ths=[.05_real64,.1,.15,.2,.25,.3,.35,.4,.45,.5,.55,.6]
+ hs=real([-300,-100,-55,-30,-20,-10,-3,-1,0,1,5,20],real64)
+ ths=real([.05,.1,.15,.2,.25,.3,.35,.4,.45,.5,.55,.6],real64)
  g%active_nodes=numnod;allocate(g%z(numnod),g%dz(numnod),g%node_distance(numnod))
  g%z=z;g%dz=dz;g%node_distance=disnod(1:numnod)
  do soil=1,2
