@@ -7,13 +7,21 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 DELTA="${1:-0.2}"
 HISTORY="${2:-rising}"
+HEAD_TOL="${3:-1e-12}"
+SURFACE="${4:-smooth}"
+LEVELS="${5:-standard}"
 fail(){ echo "TOP03_JOINT_MICRORELIEF_FAIL $*" >&2; exit 91; }
 python3 tests/fapp/make_top03_joint_nearsaturation.py "$BUILD/mod_b110_default_mvg_provider.f90" "$BUILD/unused.f90" "$DELTA" > "$BUILD/provider-generation.txt"
-python3 - "$BUILD/mod_top03_microrelief_top_provider.f90" <<'PY'
+python3 - "$BUILD/mod_top03_microrelief_top_provider.f90" "$SURFACE" <<'PY'
 from pathlib import Path
 import re,sys
 p=Path('tests/fapp/mod_top03_microrelief_top_provider.f90')
 s=p.read_text()
+if sys.argv[2]=='legacy':
+ Path(sys.argv[1]).write_text(s)
+ print('SURFACE_HYPSOMETRY=legacy-piecewise')
+ raise SystemExit(0)
+if sys.argv[2]!='smooth':raise SystemExit('surface law must be smooth or legacy')
 def replace(name, body):
  global s
  pat=rf'  pure real\(real64\) function {name}\(self\) result\(value\).*?  end function {name}'
@@ -56,12 +64,36 @@ replace('top03_mean_wet_head', '''  pure real(real64) function top03_mean_wet_he
 Path(sys.argv[1]).write_text(s)
 print('SURFACE_HYPSOMETRY=smoothstep-CDF; storage=integral(fwet); mean_head=storage/fwet')
 PY
-python3 - "$BUILD/test.f90" "$HISTORY" <<'PY'
+python3 - "$BUILD/headcalc.f90" <<'PY'
+from pathlib import Path
+import sys
+p=Path('src/legacy/b1_10_port/headcalc.f90')
+s=p.read_text()
+needle='!  Convergence could not been reached\n'
+diag='''! Test-only failure trace; this runs before HeadCalc rolls the failed trial back.
+   if (.NOT.flnonconv) continue
+   write(*,'(A,2(1X,I0),9(1X,ES24.16))') 'HEADFAIL', state%numbit, &
+        maxloc(abs(state%h(1:NN)-fsi_ws%old_head(1:NN)),dim=1), CritDevBalCp, CritDevBalTot, &
+        CritDevh2Cp, CritDevh1Cp, maxval(abs(fsi_ws%residual(1:NN))), &
+        maxval(abs(state%h(1:NN)-fsi_ws%old_head(1:NN))), &
+        state%h(maxloc(abs(state%h(1:NN)-fsi_ws%old_head(1:NN)),dim=1)), &
+        fsi_ws%old_head(maxloc(abs(state%h(1:NN)-fsi_ws%old_head(1:NN)),dim=1)), &
+        fsi_ws%residual(maxloc(abs(state%h(1:NN)-fsi_ws%old_head(1:NN)),dim=1))
+   write(*,'(A,8(1X,ES24.16))') 'HEADFAIL_SURFACE', state%hsurf, provider_dynamic_top_result%surface_head, &
+        provider_dynamic_top_result%actual_top_flux, state%qtop, state%pond, state%pondm1, dt, sum1
+'''
+if s.count(needle)!=1:raise SystemExit('HeadCalc failure insertion point not unique')
+Path(sys.argv[1]).write_text(s.replace(needle,diag+needle))
+PY
+python3 - "$BUILD/test.f90" "$HISTORY" "$HEAD_TOL" "$LEVELS" <<'PY'
 from pathlib import Path
 import sys
 src=Path('tests/fapp/test_sw_rib_top03_microrelief_stage_probe.f90').read_text()
 src=src.replace('n_amp=5,n_stage=6,n_refine=4','n_amp=1,n_stage=6,n_refine=4')
 src=src.replace('[0.0_real64,0.02_real64,0.05_real64,0.10_real64,0.25_real64]','[0.05_real64]')
+tol=sys.argv[3]
+src=src.replace('request%numerical%head_abs_tolerance=1.0e-12_real64',f'request%numerical%head_abs_tolerance={tol}_real64')
+src=src.replace('request%numerical%head_rel_tolerance=1.0e-12_real64',f'request%numerical%head_rel_tolerance={tol}_real64')
 if sys.argv[2]=='pulse':
  src=src.replace('n_amp=1,n_stage=6,n_refine=4','n_amp=1,n_stage=11,n_refine=4')
  src=src.replace('[0.005_real64,0.020_real64,0.050_real64,0.100_real64,0.200_real64,0.300_real64]',
@@ -69,17 +101,24 @@ if sys.argv[2]=='pulse':
 src=src.replace('if(solve_result%top_flux>0.0_real64)then\n          result%solver_status=-903;result%stop_event=ie;result%stop_substep=is\n          return\n        end if','')
 src=src.replace('if(solve_result%status/=SW_SOLVE_CONVERGED)then\n          result%stop_event=ie;result%stop_substep=is\n          return\n        end if',
 '''if(solve_result%status/=SW_SOLVE_CONVERGED)then
-          write(*,'(A,4(1X,I0),1X,A,1X,ES24.16)') 'FAIL_DIAG',ie,is,solve_result%status,solve_result%diagnostics%nonlinear_iterations,trim(solve_result%diagnostics%route),maxval(abs(workspace%richards%residual))
+          write(*,'(A,5(1X,I0),1X,A,2(1X,ES24.16))') 'FAIL_DIAG',ie,is,solve_result%status,solve_result%diagnostics%nonlinear_iterations, &
+               maxloc(abs(workspace%richards%residual),dim=1),trim(solve_result%diagnostics%route), &
+               maxval(abs(workspace%richards%residual)),maxval(abs(solve_result%candidate_state%pressure_head-workspace%richards%old_head))
           result%stop_event=ie;result%stop_substep=is
           return
         end if''')
 if sys.argv[2]!='rising' and sys.argv[2]!='pulse':
  raise SystemExit('history must be rising or pulse')
-if not (('n_amp=1,n_stage=11,n_refine=4' if sys.argv[2]=='pulse' else 'n_amp=1,n_stage=6,n_refine=4') in src) or '[0.05_real64]' not in src:
+if sys.argv[4]=='extended':
+ src=src.replace('n_refine=4','n_refine=6')
+ src=src.replace('refinements(n_refine)=[1,2,4,8]','refinements(n_refine)=[1,2,4,8,16,32]')
+elif sys.argv[4]!='standard':
+ raise SystemExit('levels must be standard or extended')
+if not (('n_amp=1,n_stage=11,n_refine=' if sys.argv[2]=='pulse' else 'n_amp=1,n_stage=6,n_refine=') in src) or '[0.05_real64]' not in src:
  raise SystemExit('failed to narrow stage probe to D=0.05 cm')
 Path(sys.argv[1]).write_text(src)
 PY
-python3 - "$BUILD/compile-order.txt" "$BUILD/mod_b110_default_mvg_provider.f90" "$BUILD/test.f90" "$BUILD/mod_top03_microrelief_top_provider.f90" <<'PY'
+python3 - "$BUILD/compile-order.txt" "$BUILD/mod_b110_default_mvg_provider.f90" "$BUILD/test.f90" "$BUILD/mod_top03_microrelief_top_provider.f90" "$BUILD/headcalc.f90" <<'PY'
 from pathlib import Path
 import re,sys
 order,provider,test=map(Path,sys.argv[1:4])
@@ -87,7 +126,7 @@ stub=Path('tests/fsi/fsi04_real_headcalc_stubs.f90')
 top=Path('tests/fmr/mod_fmr04_fixed_top_provider.f90')
 probe=Path('tests/fapp/mod_top03_microrelief_top_provider.f90')
 smooth_probe=Path(sys.argv[4]) if len(sys.argv)>4 else None
-headcalc=Path('src/legacy/b1_10_port/headcalc.f90')
+headcalc=Path(sys.argv[5]) if len(sys.argv)>5 else Path('src/legacy/b1_10_port/headcalc.f90')
 candidates=[stub,top,probe,provider]+([smooth_probe] if smooth_probe else [])+sorted(p for p in Path('src').rglob('*.f90') if 'src/legacy/' not in p.as_posix())+[headcalc,test]
 mr=re.compile(r'^\s*module\s+(?!procedure\b|subroutine\b|function\b)([a-zA-Z_]\w*)',re.I)
 ur=re.compile(r'^\s*use(?:\s*,\s*[^:]*)?\s*(?:::\s*)?([a-zA-Z_]\w*)',re.I)
@@ -137,4 +176,3 @@ for opt in 0 2; do
 done
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || { diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || true; fail 'O0/O2 numerical output mismatch'; }
 echo 'TOP03_JOINT_MICRORELIEF_O0_O2_IDENTITY=PASS'
-
