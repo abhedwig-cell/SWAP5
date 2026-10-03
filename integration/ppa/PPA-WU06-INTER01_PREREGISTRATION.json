@@ -60,6 +60,12 @@
     "SWINTER=0/1/3 preservation",
     "rollback/retry and restart only if reconstructed Gash semantics contain persistent state"
   ],
-  "status": "PREREGISTERED_RECONSTRUCTION_REQUIRED",
-  "next_action": "Recover exact SWAP 4.3.1 SWINTER=2/Gash source authority and derive a line-by-line physical/numerical contract before production implementation."
+  "status": "SUPERSEDED_BY_F_MIG431_INT12_D",
+  "next_action": "Continue as F-MIG431-INT12-D using PPA-WU04 authority and admitted F-MIG431-INT12-P0 source-window runtime.",
+  "supersession": {
+    "authority": "PPA-WU04 merged PR #333",
+    "canonical_slice": "PPA-WU04-D / F-MIG431-INT12-D",
+    "reason": "PPA-WU04 already froze this capability and naming/ownership. Do not create a duplicate WU06 implementation authority.",
+    "disposition": "Retained as reconciliation history only."
+  }
 }
