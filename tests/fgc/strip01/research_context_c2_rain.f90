@@ -9,7 +9,8 @@ module mod_strip01_c2_rain_research_context
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_b110_black_evaporation_state_t, fmr_black_evaporation_runtime_forcing_t, &
-       fmr_serialized_reference_backend_t, fmr_new_b110_black_evaporation_committed_state
+       fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
+       fmr_new_b110_black_evaporation_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, FMR_GW_REGISTRY_OK
   use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, FMR_GW_APP_CONTEXT_OK
