@@ -16,9 +16,9 @@
   "active_a28_tested": true,
   "performance_qualified": false,
   "scalability_qualified": false,
-  "blocker": "Strict paired drift limits fail in a shallow two-tile cell with zero preferential storage; performance and scale remain unqualified.",
+  "blocker": "10-node field-depth exact prescribed-qbot RFM predictor initialization fails with nonzero rainfall; same-state predictor init passes with zero rainfall. No A28 run.",
   "result_record": "docs/audits/PPA_WU05A28_COUPLED_FD_RESULT.md",
-  "next_safe_step": "Establish a physically meaningful coupled-deviation envelope, then repeat active comparison on field-depth geometry with nonzero preferential storage; preserve existing limits and A28 policy during qualification.",
+  "next_safe_step": "Diagnose the exact solver rejection at the test-only active RFM surface-event boundary without changing solver tolerances or A28 policy; then rerun exact field-depth gate before A28.",
   "narrow_delta_exact_gate": "PASS_24_WINDOWS",
   "narrow_delta_cm_day": [
     1e-07,
@@ -89,5 +89,35 @@
     }
   },
   "active_exact_max_coupling_iterations": 9,
-  "active_a28_max_coupling_iterations": 9
+  "active_a28_max_coupling_iterations": 9,
+  "practical_envelope_status": "PREREGISTERED_NOT_QUALIFIED",
+  "field_depth_grid_build": "PASS_10_NODES_100_CM_BOUNDS_CHECKED",
+  "field_depth_exact_rain10_predictor_init": "FAIL_BEFORE_MODFLOW",
+  "field_depth_exact_rain10_trials": {
+    "attempts": 13,
+    "retries": 12,
+    "solver_rejections": 10,
+    "temporal_rejections": 3,
+    "failed_tile": 1
+  },
+  "field_depth_exact_rain1_predictor_init": "FAIL_BEFORE_MODFLOW",
+  "field_depth_exact_rain1_trials": {
+    "attempts": 13,
+    "retries": 12,
+    "solver_rejections": 9,
+    "temporal_rejections": 4,
+    "failed_tile": 1
+  },
+  "field_depth_exact_no_rain_predictor_init": "PASS_BOTH_TILES",
+  "field_depth_exact_no_rain_trial_counts": {
+    "completed": 28,
+    "failed": 0,
+    "max_retries": 0,
+    "solver_rejections": 0,
+    "temporal_rejections": 0,
+    "max_abs_mass_residual_cm": 9.101440791054847e-15
+  },
+  "field_depth_a28_run": "NOT_RUN_EXACT_PREDICTOR_BLOCKER",
+  "field_depth_live_modflow_result": "NOT_RUN",
+  "practical_correctness": "BLOCKED_EXACT_RFM_ACTIVE_SURFACE_FORCING"
 }

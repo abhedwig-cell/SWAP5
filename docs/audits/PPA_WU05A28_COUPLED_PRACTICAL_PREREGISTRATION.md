@@ -66,8 +66,14 @@ python3 tests/fpe/compare_fpe_a28_practical.py /tmp/a28-field-exact.json /tmp/a2
 
 The frozen first field-depth exact initialization failed before any coupled window: its first prescribed-qbot sample returned incomplete/status 2 after 13 attempts (12 retries), including 10 solver rejections and 3 temporal rejections. Retain this as a negative exact-RFM field-fixture result; do not run A28 on this postimage. Before any new parameter change, make one exact-only diagnostic that holds the 10-node grid, `-45 cm` head and `0.01 day` step fixed but sets rainfall to zero. This single-factor probe distinguishes whether the active surface event is required for the failure. A PASS does not qualify the wet field fixture; it only identifies a forcing-sensitive path. A FAIL means stop and diagnose the exact solver/initial-state envelope before another coupled approximation experiment. Do not vary solver tolerances in this probe.
 
-Reproduce the frozen negative result with the same build using `A28_FIELD_DEPTH=1 A28_H0_CM=-45 A28_DT_DAY=.01 A28_RAIN_CM_DAY=10` and run exact only. The no-rain attribution probe uses the same command with `A28_RAIN_CM_DAY=0` and one window.
+Reproduce the frozen negative result with the same build using `A28_FIELD_DEPTH=1 A28_H0_CM=-45 A28_DT_DAY=.01 A28_RAIN_CM_DAY=10` and run exact only. The no-rain predictor-only attribution probe uses the same field build with `A28_RAIN_CM_DAY=0`:
+
+```bash
+A28_H0_CM=-45 A28_DT_DAY=.01 A28_RAIN_CM_DAY=0 FGC45_MULTISWAP_LIB=/tmp/a28-field-build/libfgc45_multiswap.so python3 tests/fpe/test_fpe_a28_fd_predictor_init.py
+```
 
 ### Exact-only forcing-amplitude attribution
 
 The no-rain predictor initialization passes both tiles (six plus/minus FD samples per tile, each one attempt, zero retries/rejections). This shows the 10-node initial state can support the ordinary prescribed-qbot predictor when the surface event is inactive, but does not qualify the rainfall-active fixture. Before another run, freeze a small amplitude bracket at rainfall `[1, 3] cm/day`, in that order, with the same `-45 cm` initial top head, 10-node geometry and `0.01 day` step. Test only exact predictor initialization in a fresh process for each level; stop after the first failure. Do not run MODFLOW or A28 in this attribution probe. Its only purpose is to bound whether the failure is specific to the `10 cm/day` event scale; no passing level becomes a coupled or production result.
+
+The ordered amplitude probe stopped at `1 cm/day`: exact initialization failed tile 1 after 13 attempts, 12 retries, 9 solver rejections and 4 temporal rejections. Per the preregistered stop rule, `3 cm/day` was not run. With zero-rain PASS and the frozen `10 cm/day` FAIL, evidence is consistent with an exact predictor blocker associated with nonzero surface-event forcing on this deeper initial state; rainfall amount alone is not identified as the cause. The result is retained in `PPA_WU05A28_COUPLED_FD_RESULT.md` and the evidence bundle.
