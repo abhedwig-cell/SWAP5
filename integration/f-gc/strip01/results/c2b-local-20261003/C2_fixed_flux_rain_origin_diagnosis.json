@@ -1,0 +1,90 @@
+{
+  "scope": "fresh hydrostatic origin with new 0.1 cm/day imposed surface input; no preceding C2a commit",
+  "code_order": [
+    "result_status",
+    "accepted_substeps",
+    "solver_rejections",
+    "temporal_rejections",
+    "mass_rejections",
+    "admission_rejections",
+    "attempts",
+    "retries"
+  ],
+  "attempts": [
+    {
+      "dt": 0.001,
+      "status": 0,
+      "codes": [
+        2,
+        0,
+        3,
+        6,
+        0,
+        0,
+        9,
+        8
+      ],
+      "completed": 0.0
+    },
+    {
+      "dt": 0.0001,
+      "status": 0,
+      "codes": [
+        2,
+        0,
+        0,
+        9,
+        0,
+        0,
+        9,
+        8
+      ],
+      "completed": 0.0
+    },
+    {
+      "dt": 1e-05,
+      "status": 0,
+      "codes": [
+        2,
+        0,
+        1,
+        8,
+        0,
+        0,
+        9,
+        8
+      ],
+      "completed": 0.0
+    },
+    {
+      "dt": 1e-06,
+      "status": 0,
+      "codes": [
+        2,
+        0,
+        0,
+        9,
+        0,
+        0,
+        9,
+        8
+      ],
+      "completed": 0.0
+    },
+    {
+      "dt": 1e-07,
+      "status": 0,
+      "codes": [
+        2,
+        0,
+        1,
+        8,
+        0,
+        0,
+        9,
+        8
+      ],
+      "completed": 0.0
+    }
+  ]
+}

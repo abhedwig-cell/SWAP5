@@ -62,16 +62,76 @@ module mod_strip01_c2_rain_research_context
   type(fmr_groundwater_participant_registry_t), target, save :: registry
   type(groundwater_interface_mass_ledger_t), target, save :: ledgers(NPART)
   type(groundwater_application_plan_t), target, save :: plan
+  type(groundwater_application_plan_t), target, save :: plan_next
+  type(fmr_groundwater_application_context_t), target, save :: context_next
   type(fmr_groundwater_application_context_t), target, save :: context
   type(fixed_flux_top_boundary_provider_t), target, save :: top
   integer(int64), save :: handles(NPART) = 0_int64
   real(real64), save :: reference_head_m = 0.0_real64
+  integer(int64), save :: application_handle = 0_int64
+  logical, save :: next_initialized = .false.
   logical, save :: initialized = .false.
 
+  public :: fgc49d_fixture_advance_c
   public :: fgc49d_fixture_initialize_c
   public :: fgc49d_fixture_state_c, strip01_observe_c, strip01_diagnose_c, strip01_floor_c, strip01_ledger_counts_c, strip01_fields_c, strip01_set_precipitation_c
 
 contains
+
+  integer(c_int) function fgc49d_fixture_advance_c(context_handle, href1, href2) &
+       bind(C, name="fgc49d_fixture_advance_c") result(c_status)
+    integer(c_int64_t), intent(out) :: context_handle
+    real(c_double), intent(out) :: href1, href2
+
+    type(groundwater_topology_tile_t) :: tiles(NPART)
+    type(groundwater_topology_cell_t) :: cells(NPART)
+    type(groundwater_tile_predictor_input_t) :: predictors(NPART)
+    type(groundwater_cell_area_input_t) :: areas(NPART)
+    type(groundwater_topology_t) :: topology
+    type(groundwater_head_datum_t) :: datum
+    type(groundwater_interface_mass_snapshot_t) :: snapshot
+    integer(int64) :: handle
+    logical :: ok
+    integer :: i, status
+
+    c_status = 1_c_int
+    context_handle = 0_c_int64_t
+    href1 = 0.0_c_double
+    href2 = 0.0_c_double
+    if (.not. initialized .or. next_initialized .or. application_handle <= 0_int64) return
+    do i = 1, NPART
+      if (committed(i)%current_revision() /= 1_int64) return
+      call ledgers(i)%snapshot(snapshot)
+      if (.not. snapshot%available .or. snapshot%committed_exchange_count /= 1_int64 .or. &
+          snapshot%trial_active .or. snapshot%prepared_active) return
+    end do
+
+    datum%available = .true.
+    datum%datum_id = 610049_int64
+    datum%bottom_boundary_elevation_m = -2.0_real64
+    do i = 1, NPART
+      call set_tile(tiles(i), TILE_ID(i), TILE_ID(i), LEDGER_ID(i), CELL_ID(i), 1.0_real64)
+      call set_cell(cells(i), CELL_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), i, i)
+      call make_predictor(predictors(i), TILE_ID(i), TILE_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), &
+           reference_head_m, reference_head_m, 1_int64, DURATION_DAY)
+      areas(i)%groundwater_cell_id = CELL_ID(i)
+      areas(i)%cell_area_m2 = 1.0_real64
+    end do
+    call materialize_groundwater_topology(tiles, cells, topology, status)
+    if (status /= GW_TOPOLOGY_OK .or. .not. topology%ready()) return
+    call materialize_groundwater_application_plan(topology, predictors, areas, plan_next, status)
+    if (status /= GW_APP_PLAN_OK .or. .not. plan_next%ready()) return
+    call context_next%bind(plan_next, registry, handles, ledgers, status)
+    if (status /= FMR_GW_APP_CONTEXT_OK .or. .not. context_next%ready()) return
+    call register_fmr_groundwater_application_context(context_next, handle, status)
+    if (status /= FMR_GW_APP_C_API_OK .or. handle <= 0_int64) return
+
+    context_handle = int(handle, c_int64_t)
+    href1 = real(reference_head_m, c_double)
+    href2 = real(reference_head_m, c_double)
+    next_initialized = .true.
+    c_status = 0_c_int
+  end function fgc49d_fixture_advance_c
 
   integer(c_int) function fgc49d_fixture_initialize_c(context_handle, href1, href2) &
        bind(C, name="fgc49d_fixture_initialize_c") result(c_status)
@@ -141,6 +201,7 @@ contains
     call register_fmr_groundwater_application_context(context, handle, status)
     if (status /= FMR_GW_APP_C_API_OK .or. handle <= 0_int64) return
 
+    application_handle = handle
     context_handle = int(handle, c_int64_t)
     href1 = real(reference_head_m, c_double)
     href2 = real(reference_head_m, c_double)
@@ -323,11 +384,13 @@ contains
     c_status = 0
   end function strip01_fields_c
 
-  subroutine make_predictor(input, tile_id, swap_lineage, coupling_id, service_id, gw_lineage, h0, h1)
+  subroutine make_predictor(input, tile_id, swap_lineage, coupling_id, service_id, gw_lineage, h0, h1, origin_revision, window_t0)
     type(groundwater_tile_predictor_input_t), intent(out) :: input
     integer(int64), intent(in) :: tile_id, swap_lineage, coupling_id, service_id, gw_lineage
     real(real64), intent(in) :: h0, h1
 
+    integer(int64), intent(in), optional :: origin_revision
+    real(real64), intent(in), optional :: window_t0
     type(modflow6_swap_predictor_lineage_t) :: lineage
     type(modflow6_derivative_coverage_t) :: coverage
     type(groundwater_coupling_window_t) :: window
@@ -336,12 +399,18 @@ contains
     input%tile_id = tile_id
     window%t0 = 0.0_real64
     window%t1 = DURATION_DAY
+    if (present(window_t0)) then
+      window%t0 = window_t0
+      window%t1 = window_t0 + DURATION_DAY
+    end if
     lineage%coupling_id = coupling_id
     lineage%swap_lineage_id = swap_lineage
     lineage%swap_origin_revision = 0_int64
+    if (present(origin_revision)) lineage%swap_origin_revision = origin_revision
     lineage%groundwater_service_id = service_id
     lineage%groundwater_lineage_id = gw_lineage
     lineage%groundwater_origin_revision = 0_int64
+    if (present(origin_revision)) lineage%groundwater_origin_revision = origin_revision
     coverage%lower_face_head_semantics_covered = .true.
     coverage%richards_hydraulic_response_covered = .true.
     coverage%constitutive_response_covered = .true.
@@ -548,3 +617,4 @@ contains
   end subroutine set_cell
 
 end module mod_strip01_c2_rain_research_context
+

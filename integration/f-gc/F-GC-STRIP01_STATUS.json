@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "work_unit": "F-GC-STRIP01",
-  "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
+  "title": "50 m cross-section SWAP\u2013MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2A_EQUILIBRIUM_ACCEPTED_C2B_FORCING_PENDING_RESP01F_NEGATIVE",
+  "state": "C2B_LOCAL_NEGATIVE_REPRODUCED_MODE5_DYNAMIC_SURFACE_EXCLUDED",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Implement and run preregistered C2b 1 mm/day top precipitation through actual SWAP forcing, with C2a-to-C2b continuation represented explicitly and frozen gates/source binding. Preserve RESP01F as a negative: matched heads alone do not cure C0/C1 rejection. Then analyze accepted-window flux/storage/mass, and only then consider Hupsel. Keep full coupling qualification and canonical admission open.",
+    "next_action": "Resolve the shared backend capability seam: B1.11 dynamic surface precipitation with mode-5 groundwater head and a qualified temporal acceptance route. Current Black route explicitly excludes mode 5; fixed-flux rain exhausts frozen retries. Do not widen tolerances or infer coupled rainfall qualification. Then rerun C2a/C2b, long-window mass, Hupsel, restart/replay.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -89,7 +89,7 @@
     "c2a": "PASS: one accepted zero-forcing matched-head ordinary transaction; exact initial equilibrium, zero SWAP storage change, zero drain, zero residual; source-bound to canonical e3bfcdca00ba89cfeea529cf9b648dcc803483ab.",
     "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open."
   },
-  "next_permitted_action": "Implement and run preregistered C2b 1 mm/day top precipitation through actual SWAP forcing, with C2a-to-C2b continuation represented explicitly and frozen gates/source binding. Preserve RESP01F as a negative: matched heads alone do not cure C0/C1 rejection. Then analyze accepted-window flux/storage/mass, and only then consider Hupsel. Keep full coupling qualification and canonical admission open.",
+  "next_permitted_action": "Resolve the shared backend capability seam: B1.11 dynamic surface precipitation with mode-5 groundwater head and a qualified temporal acceptance route. Current Black route explicitly excludes mode 5; fixed-flux rain exhausts frozen retries. Do not widen tolerances or infer coupled rainfall qualification. Then rerun C2a/C2b, long-window mass, Hupsel, restart/replay.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -329,5 +329,23 @@
     "committed_state_preserved": true,
     "interpretation": "With the erroneous far-column +0.5m predictor uplift removed, both C0 and C1 still reject. Thus a head mismatch alone is not sufficient to explain prior rejection; no root cause established.",
     "result": "integration/f-gc/strip01/results/RESP01F_corrected_run_37111558449.json"
+  },
+  "local_c2b_continuation": {
+    "source_canonical": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+    "research_preimage": "3bce390955d03a3c5920f76b12306d1bc8b2e7d5",
+    "branch": "work/f-gc-strip01-c2b-local-continuation-20261003",
+    "evidence": "integration/f-gc/strip01/results/c2b-local-20261003/validation.json",
+    "review": "docs/integration/F-GC-STRIP01_C2B_LOCAL_FINDINGS.md",
+    "changes": [
+      "nper=2",
+      "context transition with revision 1 and t0=0.001",
+      "valid JSON newline"
+    ],
+    "fixed_flux": "C2a published; C2b rejected at swap-corrector; revision 1 and committed state/ledger/XOLD preserved",
+    "dynamic_surface": "C2a rejected with KERNEL_STATUS_NOT_ADMITTED=101, before solver; Black surface route excludes bottom_mode=5",
+    "source_validation": "144 compiled src blobs each equal pinned canonical tree in all three builds",
+    "fresh_process_replay": "byte-identical JSON for each of three variants",
+    "canonical_admission": false,
+    "production_delta": []
   }
 }

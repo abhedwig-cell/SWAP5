@@ -1,0 +1,27 @@
+{
+  "canonical_source": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "research_preimage": "3bce390955d03a3c5920f76b12306d1bc8b2e7d5",
+  "compiled_source_checks": {
+    "build-c2-exact": {
+      "compiled_src_count": 144,
+      "mismatches": []
+    },
+    "build-c2-rain-corrected": {
+      "compiled_src_count": 144,
+      "mismatches": []
+    },
+    "build-c2-rain-fullhalf": {
+      "compiled_src_count": 144,
+      "mismatches": []
+    }
+  },
+  "engine_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+  "fresh_process_exact_replay": {
+    "fixed_flux": true,
+    "dynamic_certificate": true,
+    "dynamic_fullhalf": true
+  },
+  "validation": "PASS_BOUNDED_NEGATIVE_AND_ROLLBACK_EVIDENCE",
+  "production_delta": [],
+  "coupled_rainfall_qualified": false
+}

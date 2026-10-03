@@ -1,15 +1,16 @@
-module mod_strip01_c2_research_context
+module mod_strip01_c2_rain_research_context
   use, intrinsic :: iso_c_binding, only: c_double, c_int, c_int64_t
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, transaction_state_t
+  use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF, transaction_state_t
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t, kernel_reference_floor_result_t, kernel_reference_floor_candidate_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+       FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state
+       fmr_b110_physical_state_t, fmr_b110_black_evaporation_state_t, fmr_black_evaporation_runtime_forcing_t, &
+       fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
+       fmr_new_b110_black_evaporation_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, FMR_GW_REGISTRY_OK
   use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, FMR_GW_APP_CONTEXT_OK
@@ -30,6 +31,8 @@ module mod_strip01_c2_research_context
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_restricted_surface_evaporation, only: black_evaporation_state_t
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   implicit none
   private
 
@@ -59,21 +62,76 @@ module mod_strip01_c2_research_context
   type(fmr_groundwater_participant_registry_t), target, save :: registry
   type(groundwater_interface_mass_ledger_t), target, save :: ledgers(NPART)
   type(groundwater_application_plan_t), target, save :: plan
-  type(fmr_groundwater_application_context_t), target, save :: context
   type(groundwater_application_plan_t), target, save :: plan_next
   type(fmr_groundwater_application_context_t), target, save :: context_next
+  type(fmr_groundwater_application_context_t), target, save :: context
   type(fixed_flux_top_boundary_provider_t), target, save :: top
   integer(int64), save :: handles(NPART) = 0_int64
-  integer(int64), save :: application_handle = 0_int64
   real(real64), save :: reference_head_m = 0.0_real64
-  logical, save :: initialized = .false.
+  integer(int64), save :: application_handle = 0_int64
   logical, save :: next_initialized = .false.
+  logical, save :: initialized = .false.
 
+  public :: fgc49d_fixture_advance_c
   public :: fgc49d_fixture_initialize_c
-  public :: fgc49d_fixture_set_rain_c, fgc49d_fixture_advance_c
-  public :: fgc49d_fixture_state_c, strip01_observe_c, strip01_diagnose_c, strip01_floor_c, strip01_ledger_counts_c, strip01_fields_c
+  public :: fgc49d_fixture_state_c, strip01_observe_c, strip01_diagnose_c, strip01_floor_c, strip01_ledger_counts_c, strip01_fields_c, strip01_set_precipitation_c
 
 contains
+
+  integer(c_int) function fgc49d_fixture_advance_c(context_handle, href1, href2) &
+       bind(C, name="fgc49d_fixture_advance_c") result(c_status)
+    integer(c_int64_t), intent(out) :: context_handle
+    real(c_double), intent(out) :: href1, href2
+
+    type(groundwater_topology_tile_t) :: tiles(NPART)
+    type(groundwater_topology_cell_t) :: cells(NPART)
+    type(groundwater_tile_predictor_input_t) :: predictors(NPART)
+    type(groundwater_cell_area_input_t) :: areas(NPART)
+    type(groundwater_topology_t) :: topology
+    type(groundwater_head_datum_t) :: datum
+    type(groundwater_interface_mass_snapshot_t) :: snapshot
+    integer(int64) :: handle
+    logical :: ok
+    integer :: i, status
+
+    c_status = 1_c_int
+    context_handle = 0_c_int64_t
+    href1 = 0.0_c_double
+    href2 = 0.0_c_double
+    if (.not. initialized .or. next_initialized .or. application_handle <= 0_int64) return
+    do i = 1, NPART
+      if (committed(i)%current_revision() /= 1_int64) return
+      call ledgers(i)%snapshot(snapshot)
+      if (.not. snapshot%available .or. snapshot%committed_exchange_count /= 1_int64 .or. &
+          snapshot%trial_active .or. snapshot%prepared_active) return
+    end do
+
+    datum%available = .true.
+    datum%datum_id = 610049_int64
+    datum%bottom_boundary_elevation_m = -2.0_real64
+    do i = 1, NPART
+      call set_tile(tiles(i), TILE_ID(i), TILE_ID(i), LEDGER_ID(i), CELL_ID(i), 1.0_real64)
+      call set_cell(cells(i), CELL_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), i, i)
+      call make_predictor(predictors(i), TILE_ID(i), TILE_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), &
+           reference_head_m, reference_head_m, 1_int64, DURATION_DAY)
+      areas(i)%groundwater_cell_id = CELL_ID(i)
+      areas(i)%cell_area_m2 = 1.0_real64
+    end do
+    call materialize_groundwater_topology(tiles, cells, topology, status)
+    if (status /= GW_TOPOLOGY_OK .or. .not. topology%ready()) return
+    call materialize_groundwater_application_plan(topology, predictors, areas, plan_next, status)
+    if (status /= GW_APP_PLAN_OK .or. .not. plan_next%ready()) return
+    call context_next%bind(plan_next, registry, handles, ledgers, status)
+    if (status /= FMR_GW_APP_CONTEXT_OK .or. .not. context_next%ready()) return
+    call register_fmr_groundwater_application_context(context_next, handle, status)
+    if (status /= FMR_GW_APP_C_API_OK .or. handle <= 0_int64) return
+
+    context_handle = int(handle, c_int64_t)
+    href1 = real(reference_head_m, c_double)
+    href2 = real(reference_head_m, c_double)
+    next_initialized = .true.
+    c_status = 0_c_int
+  end function fgc49d_fixture_advance_c
 
   integer(c_int) function fgc49d_fixture_initialize_c(context_handle, href1, href2) &
        bind(C, name="fgc49d_fixture_initialize_c") result(c_status)
@@ -143,82 +201,13 @@ contains
     call register_fmr_groundwater_application_context(context, handle, status)
     if (status /= FMR_GW_APP_C_API_OK .or. handle <= 0_int64) return
 
-    context_handle = int(handle, c_int64_t)
     application_handle = handle
+    context_handle = int(handle, c_int64_t)
     href1 = real(reference_head_m, c_double)
     href2 = real(reference_head_m, c_double)
     initialized = .true.
     c_status = 0_c_int
   end function fgc49d_fixture_initialize_c
-
-  integer(c_int) function fgc49d_fixture_set_rain_c(top_flux_cm_per_day) &
-       bind(C, name="fgc49d_fixture_set_rain_c") result(c_status)
-    real(c_double), value, intent(in) :: top_flux_cm_per_day
-
-    c_status = 1_c_int
-    if (.not. initialized .or. next_initialized) return
-    if (.not. ieee_is_finite(real(top_flux_cm_per_day, real64)) .or. top_flux_cm_per_day < 0.0_c_double) return
-    ! Rain is an imposed SWAP surface flux in cm/day. Keep bottom_flux at zero;
-    ! the groundwater materializer supplies the interface pressure head.
-    base_forcing%top_flux = real(top_flux_cm_per_day, real64)
-    call materializer%initialize(base_forcing)
-    c_status = 0_c_int
-  end function fgc49d_fixture_set_rain_c
-
-  integer(c_int) function fgc49d_fixture_advance_c(context_handle, href1, href2) &
-       bind(C, name="fgc49d_fixture_advance_c") result(c_status)
-    integer(c_int64_t), intent(out) :: context_handle
-    real(c_double), intent(out) :: href1, href2
-
-    type(groundwater_topology_tile_t) :: tiles(NPART)
-    type(groundwater_topology_cell_t) :: cells(NPART)
-    type(groundwater_tile_predictor_input_t) :: predictors(NPART)
-    type(groundwater_cell_area_input_t) :: areas(NPART)
-    type(groundwater_topology_t) :: topology
-    type(groundwater_head_datum_t) :: datum
-    type(groundwater_interface_mass_snapshot_t) :: snapshot
-    integer(int64) :: handle
-    logical :: ok
-    integer :: i, status
-
-    c_status = 1_c_int
-    context_handle = 0_c_int64_t
-    href1 = 0.0_c_double
-    href2 = 0.0_c_double
-    if (.not. initialized .or. next_initialized .or. application_handle <= 0_int64) return
-    do i = 1, NPART
-      if (committed(i)%current_revision() /= 1_int64) return
-      call ledgers(i)%snapshot(snapshot)
-      if (.not. snapshot%available .or. snapshot%committed_exchange_count /= 1_int64 .or. &
-          snapshot%trial_active .or. snapshot%prepared_active) return
-    end do
-
-    datum%available = .true.
-    datum%datum_id = 610049_int64
-    datum%bottom_boundary_elevation_m = -2.0_real64
-    do i = 1, NPART
-      call set_tile(tiles(i), TILE_ID(i), TILE_ID(i), LEDGER_ID(i), CELL_ID(i), 1.0_real64)
-      call set_cell(cells(i), CELL_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), i, i)
-      call make_predictor(predictors(i), TILE_ID(i), TILE_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), &
-           reference_head_m, reference_head_m, 1_int64, DURATION_DAY)
-      areas(i)%groundwater_cell_id = CELL_ID(i)
-      areas(i)%cell_area_m2 = 1.0_real64
-    end do
-    call materialize_groundwater_topology(tiles, cells, topology, status)
-    if (status /= GW_TOPOLOGY_OK .or. .not. topology%ready()) return
-    call materialize_groundwater_application_plan(topology, predictors, areas, plan_next, status)
-    if (status /= GW_APP_PLAN_OK .or. .not. plan_next%ready()) return
-    call context_next%bind(plan_next, registry, handles, ledgers, status)
-    if (status /= FMR_GW_APP_CONTEXT_OK .or. .not. context_next%ready()) return
-    call register_fmr_groundwater_application_context(context_next, handle, status)
-    if (status /= FMR_GW_APP_C_API_OK .or. handle <= 0_int64) return
-
-    context_handle = int(handle, c_int64_t)
-    href1 = real(reference_head_m, c_double)
-    href2 = real(reference_head_m, c_double)
-    next_initialized = .true.
-    c_status = 0_c_int
-  end function fgc49d_fixture_advance_c
 
   integer(c_int) function fgc49d_fixture_state_c(r1, r2, r3, c1, c2, c3) &
        bind(C, name="fgc49d_fixture_state_c") result(c_status)
@@ -346,6 +335,17 @@ contains
     c_status = 0
   end function strip01_floor_c
 
+  integer(c_int) function strip01_set_precipitation_c(rate_cm_per_day) &
+       bind(C,name="strip01_set_precipitation_c") result(c_status)
+    real(c_double), value :: rate_cm_per_day
+    c_status = 1_c_int
+    if (.not. initialized .or. .not. ieee_is_finite(rate_cm_per_day) .or. rate_cm_per_day < 0.0_c_double) return
+    if (.not. allocated(base_forcing%black_evaporation)) return
+    base_forcing%black_evaporation%precipitation_rate_cm_per_day = real(rate_cm_per_day, real64)
+    call materializer%initialize(base_forcing)
+    c_status = 0_c_int
+  end function strip01_set_precipitation_c
+
   integer(c_int) function strip01_ledger_counts_c(counts) bind(C,name="strip01_ledger_counts_c") result(c_status)
     integer(c_int), intent(out) :: counts(NPART)
     type(groundwater_interface_mass_snapshot_t) :: snapshot
@@ -360,9 +360,8 @@ contains
   end function strip01_ledger_counts_c
 
   integer(c_int) function strip01_fields_c(fields) bind(C,name="strip01_fields_c") result(c_status)
-    real(c_double), intent(out) :: fields(3*numnod+3,NPART)
+    real(c_double), intent(out) :: fields(2*numnod+4,NPART)
     class(transaction_state_t), allocatable :: snapshot
-    real(real64), allocatable :: history(:)
     integer :: i
     logical :: ok
     c_status = 1
@@ -370,15 +369,13 @@ contains
       call committed(i)%snapshot(snapshot, ok)
       if (.not. ok) return
       select type (snapshot)
-      type is (fmr_b110_temporal_indicator_state_t)
-        call snapshot%temporal_history_snapshot(history, ok)
-        if (.not. ok) return
+      type is (fmr_b110_black_evaporation_state_t)
         fields(1:numnod,i) = snapshot%pressure_head
         fields(numnod+1:2*numnod,i) = snapshot%water_content
-        fields(2*numnod+1:3*numnod,i) = history
-        fields(3*numnod+1,i) = snapshot%ponding_depth
-        fields(3*numnod+2,i) = snapshot%groundwater_level
-        call committed(i)%current_time(fields(3*numnod+3,i), ok)
+        fields(2*numnod+1,i) = snapshot%ponding_depth
+        fields(2*numnod+2,i) = snapshot%groundwater_level
+        fields(2*numnod+3,i) = snapshot%black_evaporation%ldwet
+        call committed(i)%current_time(fields(2*numnod+4,i), ok)
         if (.not. ok) return
       class default
         return
@@ -391,35 +388,37 @@ contains
     type(groundwater_tile_predictor_input_t), intent(out) :: input
     integer(int64), intent(in) :: tile_id, swap_lineage, coupling_id, service_id, gw_lineage
     real(real64), intent(in) :: h0, h1
+
     integer(int64), intent(in), optional :: origin_revision
     real(real64), intent(in), optional :: window_t0
-
     type(modflow6_swap_predictor_lineage_t) :: lineage
     type(modflow6_derivative_coverage_t) :: coverage
     type(groundwater_coupling_window_t) :: window
-    integer(int64) :: revision
-    real(real64) :: t0
     integer :: status
 
-    revision = 0_int64
-    t0 = 0.0_real64
-    if (present(origin_revision)) revision = origin_revision
-    if (present(window_t0)) t0 = window_t0
     input%tile_id = tile_id
-    window%t0 = t0
-    window%t1 = t0 + DURATION_DAY
+    window%t0 = 0.0_real64
+    window%t1 = DURATION_DAY
+    if (present(window_t0)) then
+      window%t0 = window_t0
+      window%t1 = window_t0 + DURATION_DAY
+    end if
     lineage%coupling_id = coupling_id
     lineage%swap_lineage_id = swap_lineage
-    lineage%swap_origin_revision = revision
+    lineage%swap_origin_revision = 0_int64
+    if (present(origin_revision)) lineage%swap_origin_revision = origin_revision
     lineage%groundwater_service_id = service_id
     lineage%groundwater_lineage_id = gw_lineage
-    lineage%groundwater_origin_revision = revision
+    lineage%groundwater_origin_revision = 0_int64
+    if (present(origin_revision)) lineage%groundwater_origin_revision = origin_revision
     coverage%lower_face_head_semantics_covered = .true.
     coverage%richards_hydraulic_response_covered = .true.
     coverage%constitutive_response_covered = .true.
-    ! Local RESP01E tangent is used at the matched equilibrium origin only.
+    ! Unqualified numerical seed for a diagnostic service probe. This is not
+    ! a measured physical predictor derivative; accepted-origin corrector flux
+    ! remains mandatory. No E2E qualification may be claimed from this seed.
     call compose_modflow6_swap_predictor_response(window, lineage, PREDICTOR_QBOT, h0, h1, 3.5047934204013784_real64, &
-         MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, coverage, 'RESP01E-local-hydrostatic-origin', 'strip01-C2-matched-profile', input%response, status)
+         MODFLOW6_DERIVATIVE_TRAJECTORY_TANGENT, coverage, 'RESP01E-origin-tangent', 'C2-rain-origin', input%response, status)
     if (status /= MODFLOW6_PREDICTOR_OK .or. .not. input%response%valid) error stop 'F-GC49D fixture predictor'
   end subroutine make_predictor
 
@@ -471,6 +470,9 @@ contains
     p%frost_active = .false.
     p%soil_temperature_active = .false.
     p%drainage_response_active = .false.
+    p%black_evaporation_active = .true.
+    allocate(p%black_evaporation)
+    p%black_evaporation%cofred = 1.0_real64
   end subroutine initialize_parameters
 
   subroutine initialize_forcing(f, q)
@@ -479,9 +481,14 @@ contains
 
     f%top_flux = q
     f%top_head = H0_CM
-    f%bottom_flux = q
+    f%bottom_flux = 0.0_real64
     f%bottom_head = H0_CM
     allocate(f%drainage_flux_by_level(1,numnod), f%subsurface_irrigation_source(numnod), f%root_extraction_sink(numnod))
+    allocate(f%black_evaporation)
+    f%black_evaporation = fmr_black_evaporation_runtime_forcing_t()
+    f%black_evaporation%ponding_max_cm = 1.0_real64
+    f%black_evaporation%runoff_resistance_day = 1.0_real64
+    f%black_evaporation%runoff_exponent = 1.0_real64
     f%drainage_flux_by_level = 0.0_real64
     f%subsurface_irrigation_source = 0.0_real64
     f%root_extraction_sink = 0.0_real64
@@ -498,8 +505,8 @@ contains
     template%vertical_layout_id = 610020_int64
     template%state_layout_id = 610030_int64
     template%solver_interface_id = 610040_int64
-    template%optional_state_layout_id = 0_int64
-    template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
+    template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
     template%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
     column%column_id = id
     column%template_id = template%template_id
@@ -512,7 +519,7 @@ contains
   subroutine initialize_config(value)
     type(canonical_numerical_config_t), intent(out) :: value
 
-    value%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+    value%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
     value%transaction%temporal_tolerance = 0.0_real64
     value%transaction%mass_tolerance = TOL
     value%transaction%retry_scale = 0.5_real64
@@ -531,10 +538,10 @@ contains
     logical, intent(out) :: ok
 
     type(fmr_b110_physical_state_t) :: physical
+    type(black_evaporation_state_t) :: black_state
     type(b110_default_mvg_parameters_t), target :: hp
     type(b110_default_mvg_provider_t) :: provider
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
-    real(real64) :: accepted_predecessor_right_derivative(numnod)
     integer :: i
 
     heads(1) = H0_CM
@@ -550,9 +557,8 @@ contains
     physical%water_content = water
     physical%ponding_depth = 0.0_real64
     physical%groundwater_level = heads(1) + p%z(1)
-    accepted_predecessor_right_derivative = 0.0_real64
-    call fmr_new_b110_temporal_indicator_committed_state(state, lineage_id, physical, 0.0_real64, ok, &
-         accepted_predecessor_right_derivative)
+    black_state = black_evaporation_state_t()
+    call fmr_new_b110_black_evaporation_committed_state(state, lineage_id, physical, black_state, 0.0_real64, ok)
   end subroutine initialize_committed
 
   subroutine compute_origin_head(p, datum, head_m, status)
@@ -610,5 +616,5 @@ contains
     cell%drainage_owner = GW_DRAINAGE_OWNER_MODFLOW
   end subroutine set_cell
 
-end module mod_strip01_c2_research_context
+end module mod_strip01_c2_rain_research_context
 

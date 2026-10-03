@@ -79,7 +79,7 @@ def main():
     result['initialization_status'] = int(status)
     if status != 0:
         result['state'] = 'INITIALIZATION_FAIL'
-        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\\n')
+        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
         return
     observe = bridge.strip01_observe_c
     observe.restype = ctypes.c_int
@@ -108,6 +108,9 @@ def main():
     set_rain = bridge.strip01_set_precipitation_c
     set_rain.restype = ctypes.c_int
     set_rain.argtypes = [ctypes.c_double]
+    advance = bridge.fgc49d_fixture_advance_c
+    advance.restype = ctypes.c_int
+    advance.argtypes = init.argtypes
     result['profile'] = 'C1'
     result['windows'] = ['C2a-dynamic-equilibrium', 'C2b-rain']
     result['profile_state_schema'] = 'per column: pressure heads, theta, pond, GWL, Black LDWET, committed time; little-endian float64'
@@ -118,7 +121,7 @@ def main():
 
     runtime = DomainRuntime(lib, handle.value)
     sim = flopy.mf6.MFSimulation(sim_name='realstrip01c2rain', sim_ws=str(work))
-    flopy.mf6.ModflowTdis(sim, time_units='DAYS', perioddata=[(0.001, 1, 1), (0.001, 1, 1)])
+    flopy.mf6.ModflowTdis(sim, time_units='DAYS', nper=2, perioddata=[(0.001, 1, 1), (0.001, 1, 1)])
     flopy.mf6.ModflowIms(sim, outer_dvclose=1e-10, inner_dvclose=1e-11,
                        outer_maximum=200, inner_maximum=300, rcloserecord=1e-11)
     gwf = flopy.mf6.ModflowGwf(sim, modelname='STRIP', save_flows=True)
@@ -152,6 +155,10 @@ def main():
         if a.published:
             if set_rain(0.1) != 0:
                 raise RuntimeError('fixture rejected preregistered 0.1 cm/day precipitation update')
+            next_handle, next_h1, next_h2 = ctypes.c_int64(), ctypes.c_double(), ctypes.c_double()
+            result['advance_context_status'] = int(advance(ctypes.byref(next_handle), ctypes.byref(next_h1), ctypes.byref(next_h2)))
+            assert result['advance_context_status'] == 0
+            runtime = DomainRuntime(lib, next_handle.value)
             raw.prepare_time_step(0.001)
             session_b = Modflow6PreparedSolveSession(kernel, 'STRIP', 'API_SWAP', Fgc34CtypesPublisher(lib), solution_id=1)
             b = run_groundwater_application_window(runtime, session_b,
@@ -207,9 +214,10 @@ def main():
     finally:
         if initialized:
             raw.finalize()
-        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\\n')
+        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     print(result['state'])
 
 
 if __name__ == '__main__':
     main()
+

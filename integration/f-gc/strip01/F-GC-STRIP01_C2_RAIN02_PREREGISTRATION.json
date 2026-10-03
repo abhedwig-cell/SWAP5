@@ -1,0 +1,17 @@
+{
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C2_RAIN02_CONTEXT_AND_SUPPORTED_TEMPORAL_ROUTE",
+  "source": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "research_preimage": "3bce390955d03a3c5920f76b12306d1bc8b2e7d5",
+  "repairs": [
+    "MODFLOW nper=2",
+    "new context at committed revision 1 and t0=0.001",
+    "JSON newline serialization"
+  ],
+  "variants": {
+    "RAIN01_REPAIRED": "keep model certificate; expected fail-closed admission without history",
+    "RAIN02_FULLHALF": "existing external full-half route; same zero temporal tolerance and all frozen hydraulic/mass/flux gates"
+  },
+  "decision": "Do not equate successful equilibrium with rainfall qualification. If full-half rejects, preserve exact classification and route dependency to shared backend authority. No production change or canonical admission.",
+  "recorded_before_fullhalf_execution": true
+}
