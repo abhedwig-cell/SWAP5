@@ -41,3 +41,12 @@ Exact-only run 37032036237 identifies O05 with forcing variant 3 as the executab
 No executable Stage-A candidate visits the >= -3 cm band. Do not intensify forcing merely to manufacture that occupancy. The >= -3 cm 16-panel branch remains covered by the 36-material constitutive Q2 frontier; Q4B dynamic qualification is frozen to the observed -30 cm 64/32 transition.
 
 Stage B is now allowed only for O05, forcing variant 3, geometry 1 and 2, with the exact forcing and initial state unchanged.
+
+## Stage-A amplitude-envelope finding
+
+Three exact-only mode-3 ramps with the same 45 cm target but successively slower ramp rates fail B01 at:
+- original ramp: step 485, t≈4.84 d, imposed amplitude≈22.875 cm;
+- 2x ramp duration: step 726, t≈7.25 d, imposed amplitude≈22.734 cm;
+- 4x ramp duration: step 1206, t≈12.05 d, imposed amplitude≈22.617 cm.
+
+The near-invariant failure amplitude falsifies ramp rate as the primary cause. Further slowing is prohibited as uninformative tuning. Stage A must instead characterize the exact-RFM executable amplitude envelope and determine whether the required -30/-3 cm consumer-head crossings are reachable inside it.
