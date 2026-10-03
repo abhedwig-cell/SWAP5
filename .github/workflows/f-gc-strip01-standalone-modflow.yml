@@ -97,6 +97,17 @@ jobs:
             --library "${RUNNER_TEMP}/strip01-c2-build/libstrip01_research.so" \
             --libmf6 "${RUNNER_TEMP}/strip01-mf6/libmf6.so" \
             --output strip01-results/c2_sequence
+          python tests/fgc/strip01/run_research_sequence_c2.py --root canonical \
+            --library "${RUNNER_TEMP}/strip01-c2-build/libstrip01_research.so" \
+            --libmf6 "${RUNNER_TEMP}/strip01-mf6/libmf6.so" \
+            --output "${RUNNER_TEMP}/strip01-c2-sequence-replay"
+          cmp strip01-results/c2_sequence/result.json "${RUNNER_TEMP}/strip01-c2-sequence-replay/result.json"
+          cp "${RUNNER_TEMP}/strip01-c2-sequence-replay/result.json" strip01-results/c2_sequence/replay_result.json
+          sha256sum strip01-results/c2_sequence/result.json "${RUNNER_TEMP}/strip01-c2-sequence-replay/result.json" > strip01-results/c2_sequence/replay_sha256.txt
+          python tests/fgc/strip01/run_research_sequence_c2.py --root canonical \
+            --library "${RUNNER_TEMP}/strip01-c2-build/libstrip01_research.so" \
+            --libmf6 "${RUNNER_TEMP}/strip01-mf6/libmf6.so" \
+            --output strip01-results/c2a_direct_diagnostic --diagnostic-only-c2a
           git rev-parse HEAD > strip01-results/c2_sequence/source_commit.txt
       - name: Persist research outputs
         if: always()

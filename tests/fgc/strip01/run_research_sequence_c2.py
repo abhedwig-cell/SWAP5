@@ -17,6 +17,7 @@ parser.add_argument('--root', type=Path, required=True)
 parser.add_argument('--library', type=Path, required=True)
 parser.add_argument('--libmf6', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)
+parser.add_argument('--diagnostic-only-c2a', action='store_true')
 args = parser.parse_args()
 sys.path.insert(0, str(args.root.resolve() / 'src/adapter'))
 from fmr_groundwater_application_runtime import FmrGroundwaterApplicationRuntime
@@ -175,6 +176,28 @@ def main():
     result['initial_profile_state_sha256'] = state_hash()
     result['initial_storage_m3'], result['initial_revisions'] = state()
     result['initial_ledger_counts'] = counts()
+
+    if args.diagnostic_only_c2a:
+        before = state_hash()
+        rows = []
+        for slot in range(1, 51):
+            codes = (ctypes.c_int * 8)()
+            completed_t = ctypes.c_double()
+            call_status = int(diagnose_fn(
+                ctypes.c_int(slot), ctypes.c_double(float(h1.value)),
+                ctypes.c_double(0.0), ctypes.c_double(0.001), ctypes.c_int(0),
+                codes, ctypes.byref(completed_t),
+            ))
+            rows.append({
+                'slot': slot, 'head_m': float(h1.value), 'call_status': call_status,
+                'codes': list(codes), 'completed_t': float(completed_t.value),
+            })
+        result['C2a_isolated_transaction_diagnostics'] = rows
+        result['final_profile_state_sha256'] = state_hash()
+        result['state_preserved'] = before == result['final_profile_state_sha256']
+        result['state'] = 'C2A_INITIAL_DIRECT_DIAGNOSTIC_COMPLETE'
+        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\\n')
+        return
 
     sim = flopy.mf6.MFSimulation(sim_name='realstrip01sequence', sim_ws=str(work))
     flopy.mf6.ModflowTdis(
