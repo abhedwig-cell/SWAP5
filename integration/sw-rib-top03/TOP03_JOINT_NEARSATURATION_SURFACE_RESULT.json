@@ -149,7 +149,7 @@
     "optimization_level_output_identity_O0_O2": true,
     "failed_trials_counted_as_accepted": false
   },
-  "decision": "The joint concept has a positive mechanism signal and roundoff-level mass closure on completed paths, but follow-up 16/32 refinements fail during recession even with 1e-9 head tolerances and residuals above tolerance. The tested co-regularized parameterization is falsified as timestep-robust; broader calibrated formulations remain untested.",
+  "decision": "Joint co-regularization has a real but strongly parameter-dependent mechanism signal: smoothing the surface at delta_h=0.2 cm changes multiple failures to passes, yet refinement 4 still fails, while delta_h=0.02 cm fails at 8 and 32. The separate broad delta_h=2 cm candidate fails at 16/32. No tested candidate passes all declared refinements; the explored family is not timestep-robust or production-qualified. This falsifies the tested route as a current remedy, not all calibrated formulations.",
   "evidence_logs": [
     "integration/sw-rib-top03/evidence/joint_nearsaturation_surface/raw_records.txt"
   ],
@@ -312,5 +312,95 @@
       ]
     },
     "interpretation": "The two isolated controls also fail at some fine refinements, but their failure windows differ. Broad soil regularization alone passes 8 and 16; smooth surface plus near-legacy soil fails from 8 onward; the joint candidate passes through 8 then fails on recession at 16/32. This non-monotone factorial result does not uniquely assign the remaining failure to either law."
+  },
+  "followup_transition_width_matrix_head_tolerance_1e9": {
+    "refinement_steps": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "delta_0_02_cm_joint_smooth_surface": {
+      "completed": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "failure_events": [
+        null,
+        null,
+        null,
+        3,
+        null,
+        3
+      ],
+      "failure_residual_cm": [
+        null,
+        null,
+        null,
+        0.000432960827429163,
+        null,
+        0.00423659030111434
+      ]
+    },
+    "delta_0_2_cm_joint_smooth_surface": {
+      "completed": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "failure_events": [
+        null,
+        null,
+        3,
+        null,
+        null,
+        null
+      ],
+      "failure_residual_cm": [
+        null,
+        null,
+        0.0013827045721592768,
+        null,
+        null,
+        null
+      ]
+    },
+    "delta_0_2_cm_soil_legacy_surface": {
+      "completed": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "failure_events": [
+        4,
+        3,
+        3,
+        3,
+        3,
+        null
+      ],
+      "failure_residual_cm": [
+        0.001101797326506393,
+        0.0018237506216349786,
+        0.0003196663685680612,
+        0.005876854949550925,
+        1.6679862824275915e-08,
+        null
+      ]
+    },
+    "O0_O2_output_identity": true,
+    "interpretation": "At delta_h=0.2 cm the smoothed surface changes the completion pattern strongly versus legacy surface, including passing 8/16/32 where the legacy surface fails 1/2/4/8/16. But the smoothed candidate still fails at refinement 4. At delta_h=0.02 cm the candidate fails at 8 and 32 but passes 16. Thus transition width and time refinement interact; no width here passes all six levels."
   }
 }
