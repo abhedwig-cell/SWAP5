@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C2_RAIN01_B111_DYNAMIC_SURFACE_BOUNDARY",
+  "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2_RAIN01_PREREGISTRATION.json",
+  "workflow_run": 37114778765,
+  "workflow_conclusion": "success",
+  "research_source_commit": "46d80a2c00f28ad7f7612a2a8e60879d9c043ae5",
+  "canonical_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "artifact_id": 11271013703,
+  "artifact_sha256": "fcf3afca9c6ff81fe921ae4acb6cbb190c4fd5ff31f207fd05ae9e18e292ada3",
+  "fresh_process_replay": {
+    "exact_json_identity": true,
+    "result_sha256": "f1f0a8ccf551d509e65450157b571b2cbc1b11b94b1ef26ad73f47071aa06c9f"
+  },
+  "outcome": "C2A_REJECTED",
+  "profile": "C1 / B1.11 dynamic surface boundary, no Richards temporal history",
+  "C2a": {
+    "status": 6,
+    "failure_stage": "swap-corrector",
+    "iterations": 1,
+    "request_smaller_window": true,
+    "published": false,
+    "trial_heads_recorded": false,
+    "final_heads_available": false,
+    "storage_each_m3": 0.7499125387644275,
+    "state_hash_before_and_after": "8ada1b3d57a832b50d56d33e808c18745b46797250183618a923a142ce9ad7fd",
+    "revisions_each": 0,
+    "ledger_count_each": 0,
+    "modflow_call_delta": {
+      "prepare_solve": 1,
+      "solve": 1,
+      "finalize_solve": 0,
+      "finalize_time_step": 0
+    }
+  },
+  "C2b": {
+    "attempted": false,
+    "reason": "C2a was not accepted"
+  },
+  "interpretation": "This first B1.11 dynamic-surface run rejects even at its zero-rain equilibrium window. It did not exercise rainfall, and has no qualified mass balance. State and ledgers remained at origin. This result is separate from the Richards-temporal-history C2 forcing run.",
+  "next": "Capture the actual C2a trial heads, context status, and isolated per-column SWAP transaction diagnostics; keep all frozen gates unchanged."
+}
