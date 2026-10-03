@@ -2,7 +2,7 @@
 
 Date: 2026-10-03
 
-Status: PREREGISTERED, implementation not started
+Status: Implemented candidate; restricted workflow passes; full preregistered gate set and production admission remain pending
 Branch: `work/f-mig431-int12-c-vonhhbraden`
 Pinned canonical base: `b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9`
 
@@ -19,7 +19,7 @@ The current canonical head is `b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9`. The cu
 - the frozen PPA-WU04 state/transaction contract and review-only closeout;
 - PPA-WU04-A and PPA-WU04-B implementations for SWREDU, not SWINTER=1/2;
 - the admitted `mod_interception_source_window_runtime` P0 seam and its qualification;
-- the admitted SWINTER=1 process and typed net-rain binding are not yet composed with F-MIG431-INT12-P0 accepted progress/restart.
+- the admitted SWINTER=1 process and typed net-rain binding were not composed with F-MIG431-INT12-P0 accepted progress/restart on the pinned base. The candidate branch now supplies a narrow adapter and composition gate; see the recorded run in `integration/audits/F-MIG431-INT12-C_STATUS.json`.
 
 A restricted SWINTER=1 route already exists in F-APP03/F-APP04: Hupsel with SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0 and SWCF=1. Its exact-source qualification covered 384 daily and 14,062 interval records with zero mismatches. Its daily forcing is uniform over the source day, so elapsed-time apportionment is the bounded profile tested here. The process is `src/process/mod_pmdirect_swetr0_process.f90`; its exact-source equation/result oracle is already admitted. F-APP04's typed root, surface-demand and net-rain-to-dynamic-top identity bindings are also admitted at merge `d223b7ab4ed297194c209f85d6b51bef86b79959`.
 
@@ -57,6 +57,18 @@ The admitted F-APP03 source oracle already covers the bounded daily and interval
 - Keep SWINTER=3 Rutter, SWINTER=2 Gash, meteorological file/calendar parsing, snow-state ownership, solver/timestep policy and groundwater coupling outside this slice.
 
 Before implementation, record the exact typed input/output and transaction binding against the admitted PPA-WU03/PPA-WU01 interfaces. Fail closed for unqualified combinations.
+
+## Candidate qualification result
+
+The dedicated restricted composition workflow passed on tested head
+`fdbbadfdaf3983eecac312a5402a0cf8709f9209` (run `37131283115`, O0/O2 output
+SHA-256 `98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717`).
+It covers the admitted Hupsel source vector, A/B/A and invalid-day behavior,
+rejected-trial immutability, partial accepted endpoint apportionment, restart and
+resume, the F-APP04 net-rain identity binding, and gross/interception/net
+closure. The complete qualification list below remains the admission contract;
+this single passing workflow is candidate evidence and does not by itself admit
+production behavior.
 
 ## Qualification gates
 
