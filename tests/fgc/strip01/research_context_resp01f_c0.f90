@@ -529,4 +529,4 @@ contains
     cell%drainage_owner = GW_DRAINAGE_OWNER_MODFLOW
   end subroutine set_cell
 
-end module mod_strip01_research_context
+end module mod_strip01_resp01f_research_context
