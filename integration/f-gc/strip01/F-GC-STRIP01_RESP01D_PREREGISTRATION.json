@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "F-GC-STRIP01-RESP01D",
+  "title": "Accepted-origin q(H) and directional response sampling",
+  "status": "PREREGISTERED_RESEARCH_DIAGNOSTIC",
+  "parent_prerequisite": "F-GC-STRIP01-RESP01",
+  "purpose": "Measure interface exchange as a function of prescribed groundwater head from an unchanged accepted origin, and compare the transaction-published accepted-trajectory derivative with a centered finite difference where both sides accept.",
+  "scope": {
+    "profiles": ["C0", "C1"],
+    "sampled_columns": [1, 50],
+    "base_heads": "The actual MODFLOW trial heads frozen in the C0/C1 first-window result",
+    "head_offsets_m": [-1e-8, 0, 1e-8],
+    "duration_days": [0.001],
+    "tangent_requested": [false, true],
+    "max_retries": "The preregistered ordinary 8-retry profile; unchanged",
+    "independent_origin": "Each probe starts from the same pristine committed origin in a fresh initialized backend; a rejected or accepted candidate is discarded and never committed."
+  },
+  "measurements": [
+    "canonical transaction status, accepted substeps, attempts/retries and solver/temporal/mass/admission rejection counts",
+    "bottom interface exchange integrated over the accepted trial and terminal bottom outward flux in native units",
+    "accepted trajectory derivative availability, accepted steps, derivative value and route/method",
+    "committed physical state and revisions before/after"
+  ],
+  "analysis": {
+    "finite_difference": "Compute a centered derivative only if both +/-1e-8 m probes accept from the same origin and their sign/unit mapping is source-verified. Otherwise mark unavailable.",
+    "admission": "No admission threshold is widened and no rejected candidate substitutes for an ordinary transaction."
+  },
+  "interpretation_limits": [
+    "This is a local response diagnostic, not a coupled-window qualification.",
+    "An available directional derivative is accepted only for its named control coordinate, units, interval and route; it is not assumed to be d(qbot)/d(head).",
+    "Do not infer whole-domain mass closure, Hupsel readiness or production admission."
+  ],
+  "implementation_boundary": {
+    "production_source_or_ABI_change": false,
+    "changes": "Research fixture only; no shared source, contract, acceptance policy or production adapter changes."
+  },
+  "reproducibility": {
+    "canonical_source_head": "23f5d3cff78e055426b48ec93f57c1cb9880759c",
+    "branch": "work/f-gc-strip01-50m-swap-modflow-benchmark",
+    "builder": "tools/build_f_gc_strip01_research_context.py",
+    "persisted_qualification_action": false
+  }
+}
