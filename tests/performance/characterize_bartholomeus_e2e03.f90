@@ -13,39 +13,75 @@ program characterize_bartholomeus_e2e03
  use mod_root_water_uptake_process
  use mod_bartholomeus_runtime_input,only:bartholomeus_runtime_view_t
  use mod_bartholomeus_no_stress_gate,only:bartholomeus_macro_supply_bound_no_stress
+ use mod_kernel_transactions
+ use mod_fixed_flux_top_boundary_provider
+ use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view,SOIL_TEMP_OK
  use mod_process_hydraulic_view
  implicit none
  integer,parameter::NSTEPS=80
  real(real64),parameter::TSTART=5100.1875_real64,DT=1.e-5_real64,T0=TSTART,T1=TSTART+DT,HARD_MASS_GATE=1.e-12_real64
  type(fmr_production_application_config_t)::cfg
- type(fmr_production_application_bootstrap_t)::app
- type(fmr_serialized_column_result_t),allocatable::r(:)
- type(fmr_b110_physical_forcing_t),allocatable::forcing(:)
- real(real64)::k,t0s,t1s
+ type(fmr_serialized_reference_backend_t)::backend
+ type(fixed_flux_top_boundary_provider_t),target::top
+ type(fmr_logical_column_t)::column
+ type(kernel_committed_state_t)::state
+ type(kernel_checkpoint_t)::cp
+ type(kernel_candidate_state_t)::candidate
+ type(kernel_result_t)::trial
+ type(kernel_diagnostics_t)::diag
+ class(transaction_state_t),allocatable::snap
+ type(process_hydraulic_view_t)::hyd
+ type(soil_temperature_field_view_t)::thermal
+ type(bartholomeus_runtime_view_t)::view
+ real(real64),allocatable::wroot(:)
+ real(real64)::k,t0s,t1s,ctop
  integer::i,status,phase
+ logical::ok,skip
  call initialize_application_config(cfg,-300._real64,k);call add_root_thermal_oxygen(cfg)
- call app%initialize(cfg,status);if(status/=FMR_APP_BOOT_OK)error stop 'e2e03 init'
- allocate(forcing(1));forcing(1)=cfg%tiles(1)%base_forcing
+ column%column_id=cfg%tiles(1)%tile_id;column%template_id=cfg%tiles(1)%template%template_id
+ column%parameter_ref=1_int64;column%state_handle=1_int64;column%forcing_handle=1_int64
+ column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+ call backend%initialize(top)
+ call fmr_new_b110_temporal_indicator_committed_state(state,column%column_id,cfg%tiles(1)%initial_state,TSTART,ok, &
+      cfg%tiles(1)%initial_right_derivative)
+ if(.not.ok)error stop 'e2e03 committed init'
  do i=1,NSTEPS
    if(i<=20)then
-     phase=1; forcing(1)%top_flux=-k
+     phase=1;cfg%tiles(1)%base_forcing%top_flux=-k
    else if(i<=40)then
-     phase=2; forcing(1)%top_flux=0.25_real64*k
+     phase=2;cfg%tiles(1)%base_forcing%top_flux=0.25_real64*k
    else if(i<=60)then
-     phase=3; forcing(1)%top_flux=0.0_real64
+     phase=3;cfg%tiles(1)%base_forcing%top_flux=0.0_real64
    else
-     phase=4; forcing(1)%top_flux=-0.5_real64*k
+     phase=4;cfg%tiles(1)%base_forcing%top_flux=-0.5_real64*k
    endif
    t0s=TSTART+real(i-1,real64)*DT;t1s=t0s+DT
-   call app%run_standalone_with_forcing(t0s,t1s,forcing,r,status)
-   if(status/=FMR_APP_BOOT_OK)then
-     print '(a,i0,a,i0)','E2E03_REJECT_STEP=',i,' STATUS=',status
-     exit
+   call state%capture_checkpoint(cp,ok);if(.not.ok)error stop 'e2e03 checkpoint'
+   call backend%run_trial(column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,state,cfg%tiles(1)%base_forcing, &
+        cfg%numerical,t0s,t1s,cp,trial,candidate,diag)
+   if(.not.trial%completed.or..not.candidate%ready())then
+     print '(a,i0)','E2E03_REJECT_STEP=',i;exit
    endif
-   print '(a,i0,a,i0,a,es14.6,a,l1)','E2E03_ACCEPT_STEP=',i,' PHASE=',phase,' TOP_FLUX=',forcing(1)%top_flux, &
-        ' COMPLETED=',r(1)%completed
+   call backend%commit_trial_candidate(state,candidate,diag,ok,status);if(.not.ok)error stop 'e2e03 commit'
+   call state%snapshot(snap,ok);if(.not.ok)error stop 'e2e03 snapshot'
+   select type(p=>snap)
+   class is(fmr_b110_physical_state_t)
+     hyd%active_nodes=p%active_nodes;hyd%pressure_head=p%pressure_head;hyd%water_content=p%water_content
+     if(.not.allocated(p%soil_temperature))error stop 'e2e03 thermal state'
+     call build_soil_temperature_field_view(p%soil_temperature,thermal,status);if(status/=SOIL_TEMP_OK)error stop 'e2e03 thermal view'
+   class default
+     error stop 'e2e03 physical snapshot type'
+   end select
+   call build_bartholomeus_runtime_view(hyd,thermal,size(cfg%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3),view,status)
+   if(status/=0)error stop 'e2e03 oxygen view'
+   allocate(wroot(view%rooted_nodes));wroot=1._real64/cfg%tiles(1)%parameters%bartholomeus%specific_root_length_m_kg
+   ctop=672._real64/(8.314472_real64*(cfg%tiles(1)%base_forcing%crop_oxygen%air_temperature_c+273._real64))
+   skip=bartholomeus_macro_supply_bound_no_stress(view,cfg%tiles(1)%parameters%bartholomeus%soil, &
+        cfg%tiles(1)%parameters%bartholomeus%crop,wroot,cfg%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3,ctop)
+   print '(a,i0,a,i0,a,l1,a,es13.5,a,es13.5)','E2E03_STEP=',i,' PHASE=',phase,' SKIP=',skip, &
+        ' H1=',view%pressure_head_cm(1),' W1=',view%water_content(1)
+   deallocate(wroot,snap)
  enddo
- call app%close(status)
  print '(a)','PPA_WU05C3A_E2E03_TRAJECTORY=PASS'
 contains
   subroutine initialize_application_config(value, initial_head, conductivity0)
