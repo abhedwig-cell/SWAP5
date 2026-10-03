@@ -2,18 +2,18 @@ from pathlib import Path
 import sys
 src=Path("tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90").read_text()
 mode=sys.argv[2]
-src=src.replace("fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, &",
-"fmr_b110_physical_state_t, fmr_b110_rfm_state_t, fmr_serialized_reference_backend_t, &")
-src=src.replace("fmr_new_b110_temporal_indicator_committed_state", "fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_rfm_committed_state")
+src=src.replace("fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state",
+"fmr_b110_physical_state_t, fmr_b110_rfm_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_rfm_committed_state")
 src=src.replace("use mod_fmr_serialized_reference_backend, only:", "use mod_fmr_serialized_reference_backend, only:",1)
 # Additional RFM imports are inserted before implicit none.
 needle="   implicit none\n"
 imports="""   use mod_rfm_state, only: rfm_state_t
    use mod_rfm_runtime_contract, only: rfm_runtime_configuration_t, RFM_SORPTIVITY_POLICY_A28_V1
-   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_RFM
 """
 src=src.replace(needle,imports+needle,1)
 # Template continuation: RFM uses optional RFM state and no temporal-history carrier.
+src=src.replace("FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY",
+"FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_RFM",1)
 src=src.replace("t%state_layout_id=560030_int64; t%solver_interface_id=560040_int64; t%optional_state_layout_id=0_int64\n    t%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY",
 """t%state_layout_id=560030_int64; t%solver_interface_id=560040_int64; t%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RFM
     t%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE""")
