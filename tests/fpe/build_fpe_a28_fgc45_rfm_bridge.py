@@ -7,8 +7,8 @@ src=src.replace("fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, 
 src=src.replace("use mod_fmr_serialized_reference_backend, only:", "use mod_fmr_serialized_reference_backend, only:",1)
 # Additional RFM imports are inserted before implicit none.
 needle="  implicit none\n"
-imports="""  use mod_rfm_state, only: rfm_state_t
-  use mod_rfm_runtime_contract, only: rfm_runtime_configuration_t, RFM_SORPTIVITY_POLICY_A28_V1
+imports="""  use mod_rfm_physical_state, only: rfm_physical_state_t
+  use mod_rfm_runtime_configuration, only: rfm_runtime_configuration_t, RFM_SORPTIVITY_POLICY_A28_V1
 """
 src=src.replace(needle,imports+needle,1)
 # Template continuation: RFM uses optional RFM state and no temporal-history carrier.
@@ -27,7 +27,7 @@ src=src.replace("call predictor_backend(i)%initialize(top(i))\n       call corre
 old="""    call fmr_new_b110_temporal_indicator_committed_state(state,lineage_id,physical,0.0_real64,ok, &
          accepted_predecessor_right_derivative)"""
 new="""    block
-      type(rfm_state_t)::rfm_state
+      type(rfm_physical_state_t)::rfm_state
       call rfm_state%initialize(1,ok); if(.not.ok)return
       call fmr_new_b110_rfm_committed_state(state,lineage_id,physical,rfm_state,0.0_real64,ok)
     end block"""
