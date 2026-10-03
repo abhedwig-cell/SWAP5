@@ -1,0 +1,17 @@
+name: PPA WU05 C3A E2E03 dynamic trajectory
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/performance/characterize_bartholomeus_e2e03.f90'
+      - 'tests/performance/run_bartholomeus_e2e03.py'
+  workflow_dispatch:
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dynamic accepted-state trajectory
+        env:
+          C3A_OPTS: O3
+        run: python3 tests/performance/run_bartholomeus_e2e03.py
