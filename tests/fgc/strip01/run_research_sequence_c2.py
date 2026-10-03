@@ -60,6 +60,8 @@ class DomainRuntime(FmrGroundwaterApplicationRuntime):
         self.last_trial_heads = []
         self.last_trial_valid = None
         self.last_trial_gate = None
+        self.last_context_trial_status = None
+        self.last_context_tangent_status = None
         self.last_trial_flux = []
         self.last_trial_tangent = []
 
@@ -69,11 +71,27 @@ class DomainRuntime(FmrGroundwaterApplicationRuntime):
         if not self.last_trial_gate:
             self.last_trial_valid = False
             return GroundwaterApplicationCorrectorBatch(False, ())
-        response = super().trial_cell_heads(heads)
-        self.last_trial_valid = bool(response.valid)
-        self.last_trial_flux = list(response.cell_q_swap_m_per_s)
-        self.last_trial_tangent = list(response.cell_dq_swap_dh_per_s)
-        return response
+        head_array = self._double_array(heads, self._ncell, "cell_heads_m")
+        fluxes = (ctypes.c_double * self._ncell)()
+        self.last_context_trial_status = int(self._trial(
+            ctypes.c_int64(self.context_handle), ctypes.c_int(self._ncell), head_array, fluxes
+        ))
+        if self.last_context_trial_status != self.OK:
+            self.last_trial_valid = False
+            return GroundwaterApplicationCorrectorBatch(False, ())
+        tangents = (ctypes.c_double * self._ncell)()
+        self.last_context_tangent_status = int(self._trial_tangents(
+            ctypes.c_int64(self.context_handle), ctypes.c_int(self._ncell), tangents
+        ))
+        if self.last_context_tangent_status != self.OK:
+            self.last_trial_valid = False
+            return GroundwaterApplicationCorrectorBatch(False, ())
+        self.last_trial_valid = True
+        self.last_trial_flux = list(fluxes)
+        self.last_trial_tangent = list(tangents)
+        return GroundwaterApplicationCorrectorBatch(
+            True, tuple(self.last_trial_flux), tuple(self.last_trial_tangent)
+        )
 
 
 def main():
@@ -122,6 +140,12 @@ def main():
     fields_fn = bridge.strip01_fields_c
     fields_fn.restype = ctypes.c_int
     fields_fn.argtypes = [ctypes.POINTER(ctypes.c_double)]
+    diagnose_fn = bridge.strip01_diagnose_c
+    diagnose_fn.restype = ctypes.c_int
+    diagnose_fn.argtypes = [
+        ctypes.c_int, ctypes.c_double, ctypes.c_double, ctypes.c_double,
+        ctypes.c_int, ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_double),
+    ]
 
     handle1, h1, h2 = ctypes.c_int64(), ctypes.c_double(), ctypes.c_double()
     status = init(ctypes.byref(handle1), ctypes.byref(h1), ctypes.byref(h2))
@@ -266,6 +290,8 @@ def main():
                 swap_corrector_heads_m=list(runtime.last_trial_heads),
                 swap_corrector_domain_gate=runtime.last_trial_gate,
                 swap_corrector_valid=runtime.last_trial_valid,
+                swap_corrector_context_status=runtime.last_context_trial_status,
+                swap_corrector_tangent_status=runtime.last_context_tangent_status,
                 swap_corrector_flux_m_per_s=list(runtime.last_trial_flux),
                 swap_corrector_tangent_per_s=list(runtime.last_trial_tangent),
             )
@@ -280,6 +306,21 @@ def main():
                 assert session.accepted_xold is not None
                 assert np.array_equal(session.accepted_xold, session.xold)
                 assert kernel.calls['finalize_time_step'] == calls_before['finalize_time_step']
+            if not answer.published and runtime.last_trial_heads:
+                direct_diagnostics = []
+                for slot, head in enumerate(runtime.last_trial_heads, start=1):
+                    diagnostic_codes = (ctypes.c_int * 8)()
+                    completed_t = ctypes.c_double()
+                    diagnostic_status = int(diagnose_fn(
+                        ctypes.c_int(slot), ctypes.c_double(head), ctypes.c_double(time_start),
+                        ctypes.c_double(0.001), ctypes.c_int(0), diagnostic_codes,
+                        ctypes.byref(completed_t),
+                    ))
+                    direct_diagnostics.append({
+                        'slot': slot, 'head_m': float(head), 'call_status': diagnostic_status,
+                        'codes': list(diagnostic_codes), 'completed_t': float(completed_t.value),
+                    })
+                record['isolated_transaction_diagnostics'] = direct_diagnostics
             result['windows'].append(record)
             if not answer.published:
                 result['state'] = 'C2A_REJECTED' if window_index == 0 else 'C2A_ACCEPTED_C2B_REJECTED'
