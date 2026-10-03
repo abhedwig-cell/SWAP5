@@ -1,0 +1,13 @@
+name: PPA-WU05-A28 Q4B minus30 Stage A
+on:
+  push:
+    branches:
+      - qualification/ppa-wu05-a28-q4b-stage-a
+jobs:
+  exact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p /tmp/q4b30
+          bash research/rfm/a28/run_q4b_minus30_stage_a.sh /tmp/q4b30
