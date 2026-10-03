@@ -3,8 +3,8 @@
   "qualification_source_sha": "c8140b7d4b824df2101460530439f98008380eee",
   "local_tested_sha": "8f8008c01c3690cab3aea38c8d6de656cffb1ffe",
   "source_tree_sha": "a4aac5df1fab9d4da77249415fc3f6f9ebbad164",
-  "bundle_sha256": "ab53a4703bac01bcfc36d612d755d9bcad7a568595516ed4df9a1f8f08b9b99c",
-  "bundle_bytes": 119633,
+  "bundle_sha256": "768e909bc386903f05bcd95eb4067f7764246fc7d4d2fe4f564bf39331dba079",
+  "bundle_bytes": 127242,
   "contents": {
     "a28-aligned-approx-24.json": "6d939cbbb69f0c5c0a074cf575807e65942817fcd656558511274a76f4ea5166",
     "a28-aligned-approx-24.log": "67d2aea30c1d72bc4c0c135a6d7976cc99df25e9a267354a300817dcf508ef44",
@@ -29,6 +29,11 @@
     "a28-field-depth-rain1-solver-observation.log": "7ad9b2ca1a1ac1d387e6da6564268e12f5dd3e7f69e8830cddce22e4e732df8e",
     "a28-field-depth-rain10-solver-observation.log": "057e696e1738c2ac4a69280c67ff1cd71f2ae7822fd596e20286b6ffdc52d5ee",
     "a28-field-depth-solverdiag-build.log": "6ca5b68b7e9bd9977c82fc4ebd8859ca1d05550dfc9ef4b9777642785e8dde8f",
+    "a28-field-dt-0.001-rain1-unregistered.log": "6b8cb67b8910030c3bd8268f78f14a0b6562d4cdb52ffeed0d6784fcffcfa264",
+    "a28-field-dt-0.005-rain1.log": "23e4ba334b7d2903964ad693f43956b7ff21c30e74a27a961a34a82b95c081f3",
+    "a28-field-dt-build.log": "f36c585b4283709738f88effa485a3a4996217cf948e91f05e9d21dbdb9877d1",
+    "a28-field-dt-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+    "a28-field-dt-mkdocs.log": "ac402f72646907b080faf9da9c9cb6a5c9571e4742b66a2a4a671a25c1726379",
     "a28-final-approx.log": "60638ce831170240827bd2ea354a8da383c81421b85d036601472cd52002e60e",
     "a28-final-comparison.json": "ed2bec4bfe4635f0b4ba958a5547f0dc5a68ee3131d8e0e0afa60af6445fe2dd",
     "a28-final-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
@@ -66,7 +71,8 @@
     "performance_qualified": false,
     "scalability_qualified": false,
     "production_sources_changed": false,
-    "github_actions_used": false
+    "github_actions_used": false,
+    "field_depth_timestep_probe": "REGISTERED_DT_0.005_FAIL; UNREGISTERED_DT_0.001_FAIL_EXCLUDED_FROM_GATE"
   },
   "tested_fixture_files_sha256": {
     "tests/fpe/build_fpe_a28_coupled_local.py": "e3ebc8d01ac676990bd05eeb6b90355d6e189cbb9f421a2fc63159c4e262cd60",
@@ -106,5 +112,12 @@
       "alternative_solver_calls": 0
     },
     "interpretation": "SW_SOLVE_RETRY_ADVISED; requests smaller step; transaction exhausts 12 retries."
+  },
+  "field_depth_timestep_probe": {
+    "registered_dt_day": 0.005,
+    "registered_result": "FAIL_TILE_1_13_ATTEMPTS_12_RETRIES_10_SOLVER_3_TEMPORAL",
+    "unregistered_exploratory_dt_day": 0.001,
+    "unregistered_result": "FAIL_TILE_1_13_ATTEMPTS_12_RETRIES_13_SOLVER_0_TEMPORAL",
+    "protocol_deviation": "Second timestep was run despite preregistered stop-after-first-failure; excluded from gate evidence."
   }
 }

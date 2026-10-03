@@ -18,7 +18,7 @@
   "scalability_qualified": false,
   "blocker": "10-node field-depth exact prescribed-qbot RFM predictor under nonzero rainfall exhausts 12 retries; last solver observation is retry-advised at 16/16 nonlinear iterations. Same-state predictor init passes without rainfall. No A28 run.",
   "result_record": "docs/audits/PPA_WU05A28_COUPLED_FD_RESULT.md",
-  "next_safe_step": "Run the preregistered exact-only timestep-response diagnostic at rain=1 cm/day and dt=[0.005,0.001] day; stop on first failure or pass. No MODFLOW or A28.",
+  "next_safe_step": "Stop field-depth active-forcing experiments under this preregistration; exact RFM predictor remains blocked before coupled MODFLOW. Preserve component-only classification.",
   "narrow_delta_exact_gate": "PASS_24_WINDOWS",
   "narrow_delta_cm_day": [
     1e-07,
@@ -145,5 +145,25 @@
     },
     "disposition": "Nonlinear convergence requests a smaller timestep, then exhausts 12 bounded transaction retries; first internal rejection cause remains unexposed."
   },
-  "field_depth_timestep_probe": "PREREGISTERED_NOT_RUN"
+  "field_depth_timestep_probe": "REGISTERED_DT_0.005_FAIL; DT_0.001_UNREGISTERED_EXPLORATORY_FAIL",
+  "field_depth_timestep_probe_results": {
+    "registered_dt_day": 0.005,
+    "registered_status": "FAIL_TILE_1_PREDICTOR_INIT",
+    "registered_attempts": 13,
+    "registered_retries": 12,
+    "registered_solver_rejections": 10,
+    "registered_temporal_rejections": 3,
+    "registered_last_solver_status": "SW_SOLVE_RETRY_ADVISED",
+    "registered_last_iterations": "16/16",
+    "registered_backtracking_attempts": 106,
+    "unregistered_exploratory_dt_day": 0.001,
+    "unregistered_exploratory_status": "FAIL_TILE_1_PREDICTOR_INIT",
+    "unregistered_exploratory_attempts": 13,
+    "unregistered_exploratory_retries": 12,
+    "unregistered_exploratory_solver_rejections": 13,
+    "unregistered_exploratory_temporal_rejections": 0,
+    "unregistered_exploratory_last_iterations": "16/16",
+    "unregistered_exploratory_backtracking_attempts": 87,
+    "protocol_deviation": "The preregistered stop rule required stopping after the 0.005-day failure; the 0.001-day observation was run anyway and is excluded from gate evidence."
+  }
 }
