@@ -43,7 +43,9 @@ def main():
         ordered.append(p)
 
     visit(root / 'src/legacy/b1_10_port/headcalc.f90')
-    context = args.context_override.resolve() if args.context_override else root / (\n        'tests/fgc/strip01/research_context.f90' if args.profile == 'C0' else 'tests/fgc/strip01/research_context_c1.f90')\n    visit(context)
+    context = args.context_override.resolve() if args.context_override else root / (
+        'tests/fgc/strip01/research_context.f90' if args.profile == 'C0' else 'tests/fgc/strip01/research_context_c1.f90')
+    visit(context)
     visit(root / 'src/adapter/mod_fmr_groundwater_application_c_api.f90')
     visit(root / 'src/adapter/mod_modflow6_fgc34_c_bridge.f90')
     fc = shlex.split(os.environ.get('FC', 'gfortran'))
