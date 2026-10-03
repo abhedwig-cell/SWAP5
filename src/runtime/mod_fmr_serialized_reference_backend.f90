@@ -53,6 +53,8 @@ module mod_fmr_serialized_reference_backend
   use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t, bind_b110_direct_retention_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
+  use mod_b110_unified_surface_cv_provider, only: b110_unified_surface_cv_provider_t, &
+       bind_b110_unified_surface_cv_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
        black_evaporation_forcing_t, black_evaporation_result_t, evaluate_black_evaporation_reduction, &
        BLACK_EVAP_AVAILABLE, BLACK_EVAP_PONDING_CLASSIFICATION_CM, &
@@ -95,6 +97,8 @@ module mod_fmr_serialized_reference_backend
   private
 
   integer, parameter, public :: B110_SWBOTB2_OK = 0
+  integer, parameter, public :: FMR_TOP_SURFACE_FORMULATION_IMPOSED_HEAD = 0
+  integer, parameter, public :: FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV = 1
   real(real64), parameter :: FMR_PRACTICAL_RICHARDS_A2C_TOL = 1.0e-8_real64
   real(real64), parameter :: FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM = 2.8e-16_real64
   integer, parameter, public :: B110_SWBOTB2_INVALID_CONTROL = 1
@@ -208,6 +212,8 @@ module mod_fmr_serialized_reference_backend
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
     logical :: external_top_surface_water_capable = .false.
+    real(real64) :: external_top_surface_microrelief_depth_cm = 0.0_real64
+    real(real64) :: external_top_surface_contact_conductance_scale = 0.0_real64
     logical :: macropore_active = .false.
     type(fmr_macropore_physical_config_t), allocatable :: macropore
     logical :: snow_active = .false.
@@ -218,6 +224,9 @@ module mod_fmr_serialized_reference_backend
     ! F-SI39: explicit opt-in to the exact B1.11 near-saturated KSATEXM
     ! conductivity extension. Default false preserves all pre-F-SI39 routes.
     logical :: ksatexm_extension_active = .false.
+    ! Research opt-in: jointly regularize theta, capacity and K near saturation.
+    ! Zero preserves the current constitutive law exactly.
+    real(real64) :: near_saturation_transition_width_cm = 0.0_real64
     logical :: elasticity_active = .false.
     logical :: frost_active = .false.
     logical :: soil_temperature_active = .false.
@@ -279,6 +288,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
     type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
     logical :: external_top_surface_water_supplied = .false.
+    integer :: external_top_surface_formulation = FMR_TOP_SURFACE_FORMULATION_IMPOSED_HEAD
     real(real64) :: external_top_surface_water_head_cm = 0.0_real64
     real(real64) :: external_top_surface_water_sill_cm = 0.0_real64
     real(real64) :: top_precipitation_rate_cm_per_day = 0.0_real64
@@ -447,6 +457,9 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: base_top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
     logical :: external_top_surface_water_supplied = .false.
+    integer :: external_top_surface_formulation = FMR_TOP_SURFACE_FORMULATION_IMPOSED_HEAD
+    real(real64) :: external_top_surface_microrelief_depth_cm = 0.0_real64
+    real(real64) :: external_top_surface_contact_conductance_scale = 0.0_real64
     real(real64) :: external_top_surface_water_head_cm = 0.0_real64
     real(real64) :: external_top_surface_water_sill_cm = 0.0_real64
     real(real64) :: top_precipitation_rate = 0.0_real64
@@ -585,6 +598,17 @@ contains
     if (parameters%active_nodes <= 0) return
     if (.not. allocated(parameters%cofgen)) return
     if (size(parameters%cofgen,1) < 24 .or. size(parameters%cofgen,2) /= parameters%active_nodes) return
+    if (.not. ieee_is_finite(parameters%near_saturation_transition_width_cm) .or. &
+        parameters%near_saturation_transition_width_cm < 0.0_real64) return
+    ! The regularized conductivity derivative is currently coupled into the
+    ! SWBOTB=7, SWKIMPL=0 free-drainage Jacobian only. Keep the opt-in closed
+    ! for other lower-boundary discretizations until each has its own oracle.
+    if (parameters%near_saturation_transition_width_cm > 0.0_real64 .and. &
+        (parameters%bottom_mode /= 7 .or. parameters%swkimpl /= 0)) return
+    if (parameters%near_saturation_transition_width_cm > 0.0_real64 .and. &
+        (parameters%ksatexm_extension_active .or. parameters%elasticity_active .or. &
+         parameters%direct_retention_active .or. parameters%tabulated_hydraulics_active .or. &
+         parameters%hysteresis_active)) return
 
     if (parameters%elasticity_active) then
       if (parameters%ksatexm_extension_active .or. parameters%direct_retention_active .or. &
@@ -607,10 +631,12 @@ contains
     if (parameters%elasticity_active) then
       call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
            enable_ksatexm_extension=parameters%ksatexm_extension_active, &
-           enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))
+           enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:), &
+           near_saturation_transition_width_cm=parameters%near_saturation_transition_width_cm)
     else
       call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
-           enable_ksatexm_extension=parameters%ksatexm_extension_active)
+           enable_ksatexm_extension=parameters%ksatexm_extension_active, &
+           near_saturation_transition_width_cm=parameters%near_saturation_transition_width_cm)
     end if
     parameters%prepared_default_mvg_available = .true.
 
@@ -632,6 +658,8 @@ contains
   logical function prepared_default_mvg_structurally_compatible(parameters) result(compatible)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
     compatible = .false.
+    if (parameters%near_saturation_transition_width_cm > 0.0_real64 .and. &
+        (parameters%bottom_mode /= 7 .or. parameters%swkimpl /= 0)) return
     if (.not. parameters%prepared_default_mvg_available) return
     if (.not. allocated(parameters%cofgen)) return
     if (.not. allocated(parameters%prepared_default_mvg%cofgen)) return
@@ -639,6 +667,8 @@ contains
     if (size(parameters%cofgen,1) < 24 .or. size(parameters%cofgen,2) /= parameters%active_nodes) return
     if (parameters%prepared_default_mvg%active_nodes /= parameters%active_nodes) return
     if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_active) return
+    if (parameters%prepared_default_mvg%near_saturation_transition_width_cm /= &
+        parameters%near_saturation_transition_width_cm) return
     if (parameters%prepared_default_mvg%elastic_storage_active .neqv. parameters%elasticity_active) return
     if (parameters%elasticity_active) then
       if (.not. allocated(parameters%prepared_default_mvg%specific_elastic_storage)) return
@@ -1106,6 +1136,7 @@ contains
     logical, intent(in) :: enabled
     self%bottom_thermal_requested = enabled
     self%model%external_top_surface_water_supplied = .false.
+    self%model%external_top_surface_formulation = FMR_TOP_SURFACE_FORMULATION_IMPOSED_HEAD
     self%model%top_exchange_window_available = .false.
     self%model%top_exchange_window_cm = 0.0_real64
     self%model%top_exchange_window_residual_cm = 0.0_real64
@@ -1411,6 +1442,10 @@ contains
     logical :: bottom_thermal_ok, top_sensible_ok
 
     self%model%external_top_surface_water_supplied = forcing%external_top_surface_water_supplied
+    self%model%external_top_surface_formulation = forcing%external_top_surface_formulation
+    self%model%external_top_surface_microrelief_depth_cm = parameters%external_top_surface_microrelief_depth_cm
+    self%model%external_top_surface_contact_conductance_scale = &
+         parameters%external_top_surface_contact_conductance_scale
     self%model%top_exchange_window_available = .false.
     self%model%top_exchange_window_cm = 0.0_real64
     self%model%top_exchange_window_residual_cm = 0.0_real64
@@ -1447,6 +1482,26 @@ contains
     if (forcing%external_top_surface_water_supplied .and. .not. parameters%external_top_surface_water_capable) then
       call reject_backend_trial(result,candidate,diagnostics)
       return
+    end if
+    if (forcing%external_top_surface_formulation /= FMR_TOP_SURFACE_FORMULATION_IMPOSED_HEAD .and. &
+        forcing%external_top_surface_formulation /= FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV) then
+      call reject_backend_trial(result,candidate,diagnostics)
+      return
+    end if
+    if (.not.forcing%external_top_surface_water_supplied .and. &
+        forcing%external_top_surface_formulation /= FMR_TOP_SURFACE_FORMULATION_IMPOSED_HEAD) then
+      call reject_backend_trial(result,candidate,diagnostics)
+      return
+    end if
+    if (forcing%external_top_surface_formulation == FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV) then
+      if (.not.ieee_is_finite(parameters%external_top_surface_microrelief_depth_cm) .or. &
+          .not.ieee_is_finite(parameters%external_top_surface_contact_conductance_scale) .or. &
+          parameters%external_top_surface_microrelief_depth_cm <= 0.0_real64 .or. &
+          parameters%external_top_surface_contact_conductance_scale <= 0.0_real64 .or. &
+          parameters%bottom_mode /= 7 .or. parameters%swkimpl /= 0 .or. parameters%swkmean /= 1) then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
     end if
     if (forcing%external_top_surface_water_supplied) then
       if (.not.parameters%external_top_surface_water_capable .or. .not.self%model%soil_water_selection%uses_reference() .or. &
@@ -1776,6 +1831,13 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
             .not. parameters%frost_active
+      if (parameters%near_saturation_transition_width_cm > 0.0_real64) then
+        ok = ok .and. ieee_is_finite(parameters%near_saturation_transition_width_cm) .and. &
+             parameters%bottom_mode == 7 .and. parameters%swkimpl == 0 .and. &
+             .not. parameters%ksatexm_extension_active .and. .not. parameters%elasticity_active .and. &
+             .not. parameters%direct_retention_active .and. .not. parameters%tabulated_hydraulics_active .and. &
+             .not. parameters%hysteresis_active
+      end if
        if (parameters%elasticity_active) then
          ok = ok .and. self%soil_water_selection%uses_reference() .and. &
               .not. parameters%ksatexm_extension_active .and. .not. parameters%direct_retention_active .and. &
@@ -1888,10 +1950,12 @@ contains
           if (parameters%elasticity_active) then
             call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
                  enable_ksatexm_extension=parameters%ksatexm_extension_active, &
-                 enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))
+                 enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:), &
+                 near_saturation_transition_width_cm=parameters%near_saturation_transition_width_cm)
           else
             call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
-                 enable_ksatexm_extension=parameters%ksatexm_extension_active)
+                 enable_ksatexm_extension=parameters%ksatexm_extension_active, &
+                 near_saturation_transition_width_cm=parameters%near_saturation_transition_width_cm)
           end if
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
@@ -2038,12 +2102,16 @@ contains
         if (forcing%top_runoff_resistance_day < 0.0_real64 .or. forcing%top_runoff_exponent <= 0.0_real64) return
         ! First profile: imposed inundation, no evaporation or snowmelt.
         ! Nonnegative atmospheric inputs are booked once with external supply.
-        if (forcing%external_top_surface_water_head_cm <= max(0.0_real64,forcing%external_top_surface_water_sill_cm)) return
+        if (forcing%external_top_surface_formulation == FMR_TOP_SURFACE_FORMULATION_IMPOSED_HEAD .and. &
+            forcing%external_top_surface_water_head_cm <= max(0.0_real64,forcing%external_top_surface_water_sill_cm)) return
         if (forcing%top_bare_soil_evaporation_rate_cm_per_day /= 0.0_real64 .or. &
             forcing%top_pond_evaporation_rate_cm_per_day /= 0.0_real64 .or. &
             forcing%top_snowmelt_rate_cm_per_day /= 0.0_real64 .or. forcing%top_flux /= 0.0_real64) return
         if (min(forcing%top_precipitation_rate_cm_per_day,forcing%top_irrigation_rate_cm_per_day, &
                 forcing%top_runon_rate_cm_per_day) < 0.0_real64) return
+        if (forcing%external_top_surface_formulation == FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV) then
+          if (forcing%top_ponding_max_cm /= 0.0_real64 .or. forcing%top_runoff_resistance_day /= 0.0_real64) return
+        end if
       end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
       if (self%root_extraction_active) then
@@ -2395,6 +2463,7 @@ contains
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
     type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, external_top_provider
+    type(b110_unified_surface_cv_provider_t), target :: unified_surface_cv_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
@@ -2546,18 +2615,32 @@ contains
       end if
 
       if (self%external_top_surface_water_supplied) then
-        if (physical%ponding_depth > self%external_top_surface_water_head_cm) return
         if (self%snow_active .or. self%macropore_active .or. self%black_evaporation_active .or. self%boesten_evaporation_active) return
-        call bind_b110_dynamic_top_boundary_solver_provider(external_top_provider,self%soil_parameters, &
-             self%hydraulic_parameters,self%swkmean,physical%ponding_depth,step_duration, &
-             self%top_precipitation_rate,self%top_irrigation_rate,self%top_snowmelt_rate,self%top_runon_rate, &
-             self%top_bare_soil_evaporation_rate,self%top_pond_evaporation_rate,self%top_ponding_max, &
-             self%top_runoff_resistance,self%top_runoff_exponent)
-        external_top_provider%external_surface_water_head_supplied=.true.
-        external_top_provider%external_surface_water_head_cm=self%external_top_surface_water_head_cm
-        external_top_provider%external_flooding_sill_head_cm=self%external_top_surface_water_sill_cm
+        if (self%external_top_surface_formulation == FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV) then
+          call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,1, &
+               physical%pressure_head(1),fixed_top_conductivity,fixed_top_conductivity_ok)
+          if (.not.fixed_top_conductivity_ok) return
+          call bind_b110_unified_surface_cv_provider(unified_surface_cv_provider,self%soil_parameters, &
+               self%hydraulic_parameters,physical%ponding_depth,step_duration, &
+               self%external_top_surface_water_head_cm,self%external_top_surface_water_sill_cm, &
+               self%external_top_surface_microrelief_depth_cm, &
+               self%external_top_surface_contact_conductance_scale, &
+               self%top_precipitation_rate+self%top_irrigation_rate+self%top_runon_rate, &
+               fixed_top_conductivity)
+          request%evaluation%dynamic_top_boundary=>unified_surface_cv_provider
+        else
+          if (physical%ponding_depth > self%external_top_surface_water_head_cm) return
+          call bind_b110_dynamic_top_boundary_solver_provider(external_top_provider,self%soil_parameters, &
+               self%hydraulic_parameters,self%swkmean,physical%ponding_depth,step_duration, &
+               self%top_precipitation_rate,self%top_irrigation_rate,self%top_snowmelt_rate,self%top_runon_rate, &
+               self%top_bare_soil_evaporation_rate,self%top_pond_evaporation_rate,self%top_ponding_max, &
+               self%top_runoff_resistance,self%top_runoff_exponent)
+          external_top_provider%external_surface_water_head_supplied=.true.
+          external_top_provider%external_surface_water_head_cm=self%external_top_surface_water_head_cm
+          external_top_provider%external_flooding_sill_head_cm=self%external_top_surface_water_sill_cm
+          request%evaluation%dynamic_top_boundary=>external_top_provider
+        end if
         request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
-        request%evaluation%dynamic_top_boundary=>external_top_provider
       end if
 
       if (self%black_evaporation_active) then
@@ -2782,10 +2865,15 @@ contains
     self%last_observation%top_flux = solve_result%top_flux
     self%last_observation%bottom_flux = solve_result%bottom_flux
     if (self%external_top_surface_water_supplied .and. solve_result%status == SW_SOLVE_CONVERGED) then
-      ! Exfiltration/runoff composition is outside this first inundation profile.
-      ! Reject explicitly; never hide a positive accepted soil flux by clipping.
-      if (.not.ieee_is_finite(solve_result%top_flux) .or. solve_result%top_flux > 0.0_real64) return
-      if (solve_result%candidate_state%ponding_depth /= self%external_top_surface_water_head_cm) return
+      ! The imposed-head profile rejects upward soil flux. The CV profile
+      ! materializes either direction from its accepted local-storage balance.
+      if (.not.ieee_is_finite(solve_result%top_flux)) return
+      if (self%external_top_surface_formulation == FMR_TOP_SURFACE_FORMULATION_IMPOSED_HEAD) then
+        if (solve_result%top_flux > 0.0_real64) return
+        if (solve_result%candidate_state%ponding_depth /= self%external_top_surface_water_head_cm) return
+      else if (self%external_top_surface_formulation /= FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV) then
+        return
+      end if
       call materialize_fmr_top_surface_exchange(request%base_state%ponding_depth, &
            solve_result%candidate_state%ponding_depth, &
            step_duration*(self%top_precipitation_rate+self%top_irrigation_rate+self%top_snowmelt_rate+self%top_runon_rate), &

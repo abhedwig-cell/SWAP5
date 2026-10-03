@@ -2,6 +2,7 @@
 ! No kernel acceptance, receipt, commit or production source is changed here.
 program top03_base_temporal_acceptance_probe
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, SW_SOLVE_CONVERGED
@@ -40,7 +41,7 @@ program top03_base_temporal_acceptance_probe
   type(b110_dynamic_top_boundary_solver_provider_t), target :: top
   type(reference_richards_legacy_solver_t) :: solver
   type(soil_water_solve_request_t) :: request
-  type(path_result_t) :: paths(4)
+  type(path_result_t) :: paths(8)
   real(real64), allocatable, target :: qdra(:,:), qssdi(:), qrot(:)
   real(real64) :: cofgen(24,numnod), h0(numnod), theta0(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
   real(real64), parameter :: initial_head_cm = -123.0_real64
@@ -52,13 +53,25 @@ program top03_base_temporal_acceptance_probe
   real(real64), parameter :: surface_closure_tol_cm = 1.0e-12_real64
   real(real64), parameter :: ledger_tol_cm = 1.0e-10_real64
   real(real64), parameter :: horizons(4) = [0.25_real64, 0.125_real64, 0.0625_real64, 0.03125_real64]
-  integer, parameter :: refinements(4) = [1,2,4,8]
+  integer, parameter :: refinements(8) = [1,2,4,8,16,32,64,128]
   real(real64) :: bottom_rate
+  real(real64) :: transition_width_cm
+  character(len=64) :: width_argument
   integer :: i, j
 
-  call initialize_fixture()
+  transition_width_cm = 0.0_real64
+  call get_command_argument(1,width_argument)
+  if (len_trim(width_argument) > 0) then
+    read(width_argument,*,iostat=i) transition_width_cm
+    if (i /= 0) error stop 'invalid optional near-saturation transition width'
+  end if
+  if (.not.ieee_is_finite(transition_width_cm) .or. transition_width_cm < 0.0_real64) &
+       error stop 'invalid optional near-saturation transition width'
 
-  write(*,'(A)') 'TOP03_BASE_TEMPORAL_PROBE_VERSION=1'
+  call initialize_fixture(transition_width_cm)
+
+  write(*,'(A)') 'TOP03_BASE_TEMPORAL_PROBE_VERSION=4'
+  write(*,'(A,1X,ES24.16)') 'TOP03_BASE_TEMPORAL_TRANSITION_WIDTH_CM=',transition_width_cm
   do i = 1, size(horizons)
     do j = 1, size(refinements)
       call run_path(horizons(i), refinements(j), paths(j))
@@ -72,7 +85,8 @@ program top03_base_temporal_acceptance_probe
 
 contains
 
-  subroutine initialize_fixture()
+  subroutine initialize_fixture(transition_width)
+    real(real64), intent(in) :: transition_width
     integer :: k
 
     allocate(params%z(numnod), params%dz(numnod), params%node_distance(numnod))
@@ -100,7 +114,8 @@ contains
       cofgen(23,k)=1.0e-12_real64
     end do
 
-    call initialize_b110_default_mvg_parameters(hp,cofgen)
+    call initialize_b110_default_mvg_parameters(hp,cofgen, &
+         near_saturation_transition_width_cm=transition_width)
     call bind_b110_default_mvg_provider(hyd,hp,0.25_real64)
     h0 = initial_head_cm
     call hyd%evaluate(h0,theta0,conductivity,capacity,dkdh)

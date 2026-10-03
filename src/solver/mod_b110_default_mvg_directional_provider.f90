@@ -37,6 +37,10 @@ contains
        route = 'b110-mvg-parameters-unbound'
        return
     end if
+    if (provider%parameters%near_saturation_transition_width_cm > 0.0_real64) then
+       route = 'near-saturation-transition-direction-unqualified'
+       return
+    end if
     n = provider%parameters%active_nodes
     if (n <= 0 .or. .not. allocated(provider%parameters%cofgen)) then
        route = 'b110-mvg-parameters-invalid'
@@ -116,6 +120,10 @@ contains
     water_content_direction = 0.0_real64
     if (.not. associated(provider%parameters)) then
        route = 'b110-mvg-parameters-unbound'
+       return
+    end if
+    if (provider%parameters%near_saturation_transition_width_cm > 0.0_real64) then
+       route = 'near-saturation-transition-direction-unqualified'
        return
     end if
     n = provider%parameters%active_nodes

@@ -23,13 +23,19 @@ program top03_surface_transition
  type(fmr_top_surface_exchange_t)::x
  real(real64),allocatable,target::qdra(:,:),qssdi(:),qrot(:)
  real(real64)::cofgen(24,numnod),cond(numnod),cap(numnod),dkdh(numnod)
- real(real64)::heads(3),hstart(numnod),theta0(numnod),dt,transfer_cm,bottom_cm,resmax,cpu0,cpu1,first_cm,storage0,bottom_rate,horizon,water_diff,head_diff,previous_theta(numnod),previous_head(numnod),external_head
- integer::i,profile,level,steps,j,iters,done,window,stop_code,bottom_case,geometry_id,previous_steps,history,switches,external_calls,flux_calls,head_calls,evaluations,within_switches,last_regime,regime
+ real(real64)::theta_eval(numnod),cond_eval(numnod),cap_eval(numnod),dkdh_eval(numnod)
+ real(real64)::heads(3),hstart(numnod),theta0(numnod),dt,transfer_cm,bottom_cm,resmax,cpu0,cpu1,first_cm,storage0,bottom_rate,horizon,water_diff,head_diff,previous_theta(numnod),previous_head(numnod),external_head,cv_external_total,cv_surface_resmax,cv_stage_scale
+ integer::i,profile,level,steps,j,iters,done,window,stop_code,bottom_case,geometry_id,previous_steps,history,switches,external_calls,flux_calls,head_calls,evaluations,within_switches,last_regime,regime,cv_positive_steps,cv_negative_steps
  integer,parameter::bottom_modes(3)=[7,2,5]
+ real(real64),parameter::stage_ramp_day=0.001953125_real64,stage_recession_start_day=0.125_real64
  logical::continued
  character(len=8)::geometry_arg
+ character(len=32)::cv_stage_scale_arg
  call get_command_argument(1,geometry_arg)
  read(geometry_arg,*)geometry_id
+ cv_stage_scale=1.0_real64
+ call get_command_argument(2,cv_stage_scale_arg)
+ if(len_trim(cv_stage_scale_arg)>0)read(cv_stage_scale_arg,*)cv_stage_scale
  heads=[-123.0_real64,-10.0_real64,0.02_real64]
  allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod))
  params%parameter_set_id=49009_int64;params%active_nodes=numnod
@@ -87,6 +93,7 @@ contains
   q%base_state%groundwater_level=-2.25_real64
   storage0=sum(theta0*dz)+q%base_state%ponding_depth
   transfer_cm=0.0_real64;bottom_cm=0.0_real64;resmax=0.0_real64;first_cm=0.0_real64;iters=0;done=0;stop_code=0
+  cv_external_total=0.0_real64;cv_surface_resmax=0.0_real64;cv_positive_steps=0;cv_negative_steps=0
   q%step_duration=dt;q%boundary%bottom_flux=bottom_rate
   q%numerical%compartment_balance_tolerance=max(1e-12_real64,1e-12_real64/dt)
   q%numerical%total_balance_tolerance=q%numerical%compartment_balance_tolerance
@@ -95,12 +102,32 @@ contains
   top%trace=>trace
   call cpu_time(cpu0)
   do j=1,steps
+   call hyd%evaluate(q%base_state%pressure_head,theta_eval,cond_eval,cap_eval,dkdh_eval)
    call bind_b110_dynamic_top_boundary_solver_provider(top%delegate,params,hp,1,q%base_state%ponding_depth,dt, &
-    0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,1.0_real64,1.0_real64,1.0_real64)
+    0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,1.0_real64,1.0_real64,1.0_real64, &
+    fixed_top_node_conductivity=cond_eval(1))
    external_head=0.02_real64
    if(history==3)external_head=0.02_real64*min(1.0_real64,real(j,real64)*dt/0.001953125_real64)
+   if(history==4.or.history==5)then
+    if(real(j,real64)*dt<=stage_ramp_day)then
+     external_head=0.02_real64*real(j,real64)*dt/stage_ramp_day
+    else if(real(j,real64)*dt<=stage_recession_start_day)then
+     external_head=0.02_real64
+    else if(real(j,real64)*dt<=stage_recession_start_day+stage_ramp_day)then
+     external_head=0.02_real64*(1.0_real64-(real(j,real64)*dt-stage_recession_start_day)/stage_ramp_day)
+    else
+     external_head=0.0_real64
+    end if
+   end if
+   if(history==5)external_head=cv_stage_scale*external_head
    top%delegate%external_surface_water_head_supplied=.true.;top%delegate%external_surface_water_head_cm=external_head
    top%delegate%external_flooding_sill_head_cm=0.01_real64
+   top%surface_cv_enabled=history==5
+   top%surface_cv_external_head_cm=external_head
+   if(history==4.and.steps==4096.and.(j>=2047.and.j<=2050.or.j>=2062.and.j<=2066.or.j==2117)) &
+    write(*,'(a,i0,5(a,es24.16))') &
+    'RECESSION_STATE,',j,',',real(j,real64)*dt,',',external_head,',',q%base_state%ponding_depth,',', &
+    q%base_state%pressure_head(1),',',cond_eval(1)
    trace=top03_top_trace_t()
    write(trace%label,'(i0,5(a,i0))')geometry_id,',',q%boundary%bottom_mode,',',profile,',',history,',',steps,',',j
    call solver%solve(q,workspace,r)
@@ -118,7 +145,7 @@ contains
    if(.not.r%integrated_mass_balance_residual_available)error stop 'missing soil mass oracle'
    resmax=max(resmax,abs(r%integrated_mass_balance_residual_cm))
    if(abs(r%integrated_mass_balance_residual_cm)>1e-10_real64)error stop 'soil mass gate'
-   if(r%top_flux>0.0_real64)then
+   if(r%top_flux>0.0_real64.and.history/=5)then
     stop_code=2
     exit
    end if
@@ -126,6 +153,15 @@ contains
      0.0_real64,0.0_real64,-r%top_flux*dt,0.0_real64,x)
    if(x%status/=FMR_TOP_EXCHANGE_OK.or.abs(x%closure_residual_cm)>1e-12_real64)error stop 'surface closure'
    transfer_cm=transfer_cm+x%signed_swap_to_external_cm
+   if(history==5)then
+    if(abs(trace%cv_surface_residual)>1e-12_real64)error stop 'surface control-volume residual gate'
+    cv_external_total=cv_external_total+trace%cv_external_flux*dt
+    cv_surface_resmax=max(cv_surface_resmax,abs(trace%cv_surface_residual))
+    if(trace%cv_external_flux>1e-14_real64)cv_positive_steps=cv_positive_steps+1
+    if(trace%cv_external_flux< -1e-14_real64)cv_negative_steps=cv_negative_steps+1
+    if(abs(trace%cv_surface_storage-r%candidate_state%ponding_depth)>1e-10_real64) &
+      error stop 'CV provider storage differs from accepted candidate'
+   end if
    if(j==1)first_cm=x%signed_swap_to_external_cm
    bottom_cm=bottom_cm+r%bottom_flux*dt
    regime=trace%last_regime
@@ -137,6 +173,10 @@ contains
   call cpu_time(cpu1)
   water_diff=-1.0_real64;head_diff=-1.0_real64
   if(done==steps)then
+   if(history==5.and.cv_stage_scale>1.0_real64.and.steps>=64.and.cv_negative_steps==0) &
+     error stop 'SCV inundation recession did not return water to external owner'
+   if(history==5.and.abs(transfer_cm+cv_external_total)>1e-10_real64) &
+     error stop 'SCV external transfer differs from integrated interface flux'
    if(previous_steps*2==steps)then
     water_diff=sum(abs(q%base_state%water_content-previous_theta)*dz)
     head_diff=maxval(abs(q%base_state%pressure_head-previous_head))
@@ -149,5 +189,7 @@ contains
    ',',resmax,',',first_cm,',',cpu1-cpu0,',',history,',',external_calls,',',flux_calls,',',head_calls,',',evaluations,',',within_switches,',',switches, &
    ',',minval(q%base_state%pressure_head),',',maxval(q%base_state%pressure_head), &
    ',',minval(q%base_state%water_content),',',maxval(q%base_state%water_content),',',water_diff,',',head_diff
+  if(history==5)write(*,*)'SCV_BALANCE',steps,done,cv_external_total,cv_surface_resmax, &
+    transfer_cm+cv_external_total,cv_positive_steps,cv_negative_steps
  end subroutine
 end program

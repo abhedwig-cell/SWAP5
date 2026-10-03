@@ -14,17 +14,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !                          and conductivities for next time step
 ! ----------------------------------------------------------------------
    ! input
+   use, intrinsic :: iso_fortran_env, only: real64
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, prepare_reference_workspace_for_solve
    use mod_reference_linear_solver, only: reference_tridag, reference_band_solve
+   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
    use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
         soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t, &
         soil_water_top_boundary_result_t, SW_TOP_BOUNDARY_AVAILABLE, &
         SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD, &
-        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY
+        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY, CONSTITUTIVE_DEMAND_DKDH
    use MOD_arrays,         only: mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
@@ -73,7 +75,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_dynamic_top_active, provider_runoff_resolved
    logical :: explicit_geometry
-   logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
+   logical :: provider_constitutive_active, provider_nearsat_transition_active
+   logical :: provider_source_sink_active, provider_root_sink_active
    logical :: provider_tuple_valid, provider_tuple_from_candidate
    logical :: provider_point_conductivity_supported, provider_point_conductivity_available
 !  local
@@ -175,6 +178,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    provider_dynamic_top_active = .false.
    provider_dynamic_top_result = soil_water_top_boundary_result_t()
    provider_constitutive_active = .false.
+   provider_nearsat_transition_active = .false.
    provider_tuple_valid = .false.
    provider_tuple_from_candidate = .false.
    provider_point_conductivity_supported = .false.
@@ -183,6 +187,14 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    provider_root_sink_active = .false.
    if (.not. legacy_state_binding .and. present(evaluation_context)) then
       provider_constitutive_active = associated(evaluation_context%constitutive)
+      if (provider_constitutive_active) then
+         select type (hydraulic_provider => evaluation_context%constitutive)
+         type is (b110_default_mvg_provider_t)
+            if (associated(hydraulic_provider%parameters)) &
+                 provider_nearsat_transition_active = &
+                 hydraulic_provider%parameters%near_saturation_transition_width_cm > 0.0_real64
+         end select
+      end if
       provider_source_sink_active = associated(evaluation_context%source_sink)
       provider_root_sink_active = associated(evaluation_context%root_sink)
       if (.not. provider_constitutive_active) error stop 'HeadCalc: explicit constitutive provider required'
@@ -454,9 +466,15 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                      provider_point_conductivity_supported) then
                ctx%diagnostics%constitutive_candidate_demand_evaluations = &
                     ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
-               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
-                    CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
-                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               if (provider_nearsat_transition_active .and. swbotb == 7) then
+                  call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
+                       CONSTITUTIVE_DEMAND_WATER_CONTENT+CONSTITUTIVE_DEMAND_DKDH, fsi_ws%provider_theta, &
+                       fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               else
+                  call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
+                       CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
+                       fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+               end if
                call evaluation_context%constitutive%evaluate_point_conductivity(NN, state%h(NN), &
                     fsi_ws%provider_theta(NN), fsi_ws%provider_k(NN), provider_point_conductivity_available)
                if (.not. provider_point_conductivity_available) then
@@ -1133,6 +1151,8 @@ subroutine jacobian_F()
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)         
    else if (swbotb == 7 .OR. swbotb == -2) then ! implicitly: state%kmean(NN+1)
       if (SwKimpl == 1) fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + fsi_ws%dconductivity_dhead(NN) * 0.5d0
+      if (provider_nearsat_transition_active .and. swbotb == 7) &
+           fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + fsi_ws%provider_dkdh(NN)
    else if (swbotb == 8 .AND. flboth) then
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)
    end if

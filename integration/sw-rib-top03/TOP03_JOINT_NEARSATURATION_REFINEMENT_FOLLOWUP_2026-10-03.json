@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.sw_rib_top03.nearsaturation_refinement_followup.v1",
+  "date": "2026-10-03",
+  "status": "NONLINEAR_COMPLETION_IMPROVED__TEMPORAL_THROUGHPUT_CONTRACTION_NOT_SHOWN",
+  "classification": "post-hoc characterization; not a preregistered temporal-acceptance qualification",
+  "source_baseline_commit": "f5f13233b",
+  "runner": "bash tests/fapp/run_sw_rib_top03_base_temporal_acceptance_probe.sh <width_cm>",
+  "compiler": "GNU Fortran 13.3.0",
+  "builds": ["O0", "O2"],
+  "O0_O2_output_identity": true,
+  "fixture": {
+    "geometry": "MOD_grid from the existing TOP03 BASE inundation fixture",
+    "initial_head_cm": -123.0,
+    "initial_ponding_cm": 0.0,
+    "initial_groundwater_level_cm": -2.25,
+    "external_head_cm": 0.02,
+    "external_sill_cm": 0.01,
+    "bottom_mode": 7,
+    "forcing_and_mvg_parameters_held_fixed": true,
+    "windows_day": [0.25, 0.125, 0.0625, 0.03125],
+    "substeps_per_window": [1, 2, 4, 8],
+    "independent_restart_from_same_origin": true
+  },
+  "width_zero": {
+    "complete_paths_per_optimization": 10,
+    "total_paths_per_optimization": 16,
+    "completed_by_window_steps_1_2_4_8": {
+      "0.25": [true, true, false, false],
+      "0.125": [true, true, false, false],
+      "0.0625": [true, true, true, false],
+      "0.03125": [true, true, true, false]
+    }
+  },
+  "width_0_2_cm": {
+    "complete_paths_per_optimization": 16,
+    "total_paths_per_optimization": 16,
+    "completed_by_window_steps_1_2_4_8": {
+      "0.25": [true, true, true, true],
+      "0.125": [true, true, true, true],
+      "0.0625": [true, true, true, true],
+      "0.03125": [true, true, true, true]
+    },
+    "newton_iterations_by_window_steps_1_2_4_8": {
+      "0.25": [6, 12, 25, 70],
+      "0.125": [6, 11, 57, 72],
+      "0.0625": [5, 41, 52, 82],
+      "0.03125": [6, 31, 59, 118]
+    },
+    "max_abs_soil_residual_cm": 9.070522111187529e-14,
+    "max_abs_combined_ledger_residual_cm": 8.759659664292485e-14
+  },
+  "width_2_cm": {
+    "complete_paths_per_optimization": 16,
+    "total_paths_per_optimization": 16,
+    "completed_by_window_steps_1_2_4_8": {
+      "0.25": [true, true, true, true],
+      "0.125": [true, true, true, true],
+      "0.0625": [true, true, true, true],
+      "0.03125": [true, true, true, true]
+    },
+    "newton_iterations_by_window_steps_1_2_4_8": {
+      "0.25": [6, 12, 25, 31],
+      "0.125": [6, 11, 23, 59],
+      "0.0625": [5, 11, 48, 83],
+      "0.03125": [5, 29, 65, 102]
+    },
+    "max_abs_soil_residual_cm": 1.1422720408438281e-14,
+    "max_abs_combined_ledger_residual_cm": 1.3211653993039363e-14
+  },
+  "first_two_adjacent_pair_transfer_differences_cm": {
+    "definition": "absolute integrated transfer difference for 1-vs-2 substeps, followed by 2-vs-4 substeps",
+    "width_0_2_cm": {
+      "0.25_day": {"top": [0.24316546287447771, 0.3428730622866684], "bottom": [0.15970398129481933, 0.33565753571136864]},
+      "0.125_day": {"top": [0.1524954360272831, 0.1661176157193984], "bottom": [0.04860880079166586, 0.14683740136937601]},
+      "0.0625_day": {"top": [0.11955665353424062, 0.10352157739550949], "bottom": [0.009052885995115509, 0.05015493503727836]},
+      "0.03125_day": {"top": [0.09230526935342159, 0.1068101117432742], "bottom": [0.0010028982436319223, 0.009564092667018573]}
+    },
+    "width_2_cm": {
+      "0.25_day": {"top": [0.24316546287447782, 0.3605015774108078], "bottom": [0.15970398129481933, 0.35328459623154864]},
+      "0.125_day": {"top": [0.1524954380272831, 0.1852709405602077], "bottom": [0.04860880079166586, 0.16597448683696566]},
+      "0.0625_day": {"top": [0.11974107392030162, 0.10699005144334812], "bottom": [0.009072186195198271, 0.05347866260491794]},
+      "0.03125_day": {"top": [0.09382928322992237, 0.10575290924399106], "bottom": [0.0010333337843931815, 0.00959859226438276]}
+    }
+  },
+  "decision": {
+    "nonlinear_robustness": "The opt-in 0.2 cm and 2 cm laws complete all tested paths; width zero completes only 10 of 16 paths per optimization level.",
+    "temporal_exchange_accuracy": "Not demonstrated. In all four windows the first two transfer-difference estimates fail joint top-and-bottom contraction; at 0.0625 day top contracts while bottom discrepancy increases by more than fivefold.",
+    "transactional_acceptance": "Not qualified; the FMR exact-state temporal identity gate remains unchanged and rejects non-identical transient states.",
+    "production_admission": false,
+    "interpretation": "Near-saturation regularization improves nonlinear completion on the exact BASE inundation refinement fixture, but it does not provide the contracting top-and-bottom exchange evidence needed to justify temporal acceptance or accepted Ribasim publication."
+  }
+}

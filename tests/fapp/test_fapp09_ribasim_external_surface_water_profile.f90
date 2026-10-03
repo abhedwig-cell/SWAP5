@@ -1,6 +1,6 @@
 program test_fapp09_ribasim_external_surface_water_profile
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan, ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
@@ -12,7 +12,8 @@ program test_fapp09_ribasim_external_surface_water_profile
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, &
-       fmr_new_b110_fixed_weir_surface_water_committed_state
+       fmr_new_b110_fixed_weir_surface_water_committed_state, prepare_fmr_b110_default_mvg, &
+       FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
   use mod_fmr_surface_water_head_forcing_adapter, only: fmr_surface_water_head_forcing_materializer_t, &
@@ -40,11 +41,13 @@ program test_fapp09_ribasim_external_surface_water_profile
   call get_command_argument(1,mode)
 
   call verify_materializer_guards()
+  if (trim(mode)=='transition'.or.trim(mode)=='transition-characterize') call verify_transition_scope()
   call verify_owner_xor()
   call verify_positive_recomposition_and_commit()
   if (trim(mode)/='preservation') then
     call verify_external_top_observation()
-    if (trim(mode)/='characterize') call verify_external_top_component_transaction()
+    if (trim(mode)/='characterize'.and.trim(mode)/='transition-characterize'.and.trim(mode)/='unified-cv') &
+         call verify_external_top_component_transaction()
   else
     call verify_default_off_capability()
   end if
@@ -53,6 +56,29 @@ program test_fapp09_ribasim_external_surface_water_profile
   write(*,'(A)') 'FAPP09_RIBASIM_EXTERNAL_SURFACE_WATER_PROFILE=PASS'
 
 contains
+
+  subroutine verify_transition_scope()
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters, unsupported
+    type(fmr_b110_physical_forcing_t) :: base
+    type(canonical_numerical_config_t) :: config
+    logical :: prepared
+
+    call initialize_case(committed,column,template,parameters,base,config,signed_rate)
+    call require(parameters%near_saturation_transition_width_cm==0.2_real64, &
+         'transition scope fixture is opt-in')
+    unsupported=parameters
+    unsupported%bottom_mode=-2
+    call prepare_fmr_b110_default_mvg(unsupported,prepared)
+    call require(.not.prepared,'transition law rejects unqualified lower-boundary mode')
+    unsupported=parameters
+    unsupported%swkimpl=1
+    call prepare_fmr_b110_default_mvg(unsupported,prepared)
+    call require(.not.prepared,'transition law rejects unqualified conductivity Jacobian mode')
+    write(*,'(A)') 'FAPP09_NEAR_SATURATION_SCOPE_GUARD=PASS'
+  end subroutine verify_transition_scope
 
   subroutine verify_materializer_guards()
     type(kernel_committed_state_t) :: committed
@@ -234,10 +260,14 @@ contains
     type(kernel_result_t) :: result
     type(kernel_diagnostics_t) :: diagnostics
     type(fmr_serialized_physical_observation_t) :: observation
+    real(real64) :: trial_t1,trial_duration
     logical :: available
     integer :: status
 
     call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
+    trial_t1=t1
+    if(trim(mode)=='unified-cv')trial_t1=t0+0.03125_real64
+    trial_duration=trial_t1-t0
     parameters%external_top_surface_water_capable=.true.
     parameters%max_iterations=80
     parameters%max_backtracking=16
@@ -254,10 +284,18 @@ contains
     base%top_ponding_max_cm=1.0_real64
     base%top_runoff_resistance_day=1.0_real64
     base%top_runoff_exponent=1.0_real64
+    if(trim(mode)=='unified-cv')then
+      config%transaction%temporal_tolerance=1.0e15_real64
+      base%external_top_surface_formulation=FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV
+      parameters%external_top_surface_microrelief_depth_cm=0.05_real64
+      parameters%external_top_surface_contact_conductance_scale=1.0_real64
+      base%top_ponding_max_cm=0.0_real64
+      base%top_runoff_resistance_day=0.0_real64
+    end if
     call backend%initialize(top)
     call committed%capture_checkpoint(checkpoint,available)
     call require(available,'external top checkpoint')
-    call backend%run_trial(column,template,parameters,committed,base,config,t0,t1,checkpoint,result,candidate,diagnostics)
+    call backend%run_trial(column,template,parameters,committed,base,config,t0,trial_t1,checkpoint,result,candidate,diagnostics)
     if(.not.result%completed.or..not.candidate%ready())then
       write(*,'(A,L1)')'TOP03_DIAG_COMPLETED=',result%completed
       write(*,'(A,I0)')'TOP03_DIAG_RESULT_STATUS=',result%status
@@ -279,7 +317,7 @@ contains
       write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
       write(*,'(A,L1)')'TOP03_DIAG_EXEC_PREVIEW=',observation%execution_admission_preview
     end if
-    if (trim(mode)=='characterize') then
+    if (trim(mode)=='characterize'.or.trim(mode)=='transition-characterize'.or.trim(mode)=='unified-cv') then
       observation=backend%observation()
       call require(.not.result%completed.and..not.candidate%ready(),'identity policy rejects transient candidate')
       call require(observation%solver_status==1,'characterization Richards converged')
@@ -287,6 +325,16 @@ contains
       call require(diagnostics%temporal_rejections==3,'characterization isolated temporal rejection')
       call require(committed%current_revision()==0_int64,'characterization rejects without commit')
       call require(.not.observation%top_surface_exchange_available,'rejected interval publishes no top carrier')
+      if(trim(mode)=='unified-cv')then
+        call require(observation%solver_executed.and.diagnostics%accepted_substeps==0, &
+             'unified CV reaches Richards but no substep passes temporal acceptance')
+        call require(ieee_is_finite(observation%top_flux),'unified CV finite converged top flux')
+        write(*,'(A,I0,A,I0,A,ES24.16)')'FAPP09_UNIFIED_CV_SOLVER=',observation%solver_status, &
+             ',iterations=',observation%solver_diagnostics%nonlinear_iterations,',qtop=',observation%top_flux
+        write(*,'(A)')'FAPP09_UNIFIED_SURFACE_CV_TEMPORAL_BLOCKER=PASS'
+      end if
+      if (trim(mode)=='transition-characterize') &
+           write(*,'(A)')'FAPP09_NEARSATURATION_TRANSIENT_REJECTED_WITHOUT_PUBLICATION=PASS'
       write(*,'(A)')'FAPP09_TOP03_TRANSIENT_TEMPORAL_BLOCKER=PASS'
       return
     end if
@@ -296,7 +344,7 @@ contains
     call require(result%mass%complete,'external top ledger complete')
     call require(abs(result%mass%residual)<=config%transaction%mass_tolerance,'external top ledger closure')
     call require(abs(observation%top_surface_signed_swap_to_external_cm + &
-         result%mass%total_in-result%mass%total_out-base%bottom_flux*duration)<=1.0e-10_real64, &
+         result%mass%total_in-result%mass%total_out-base%bottom_flux*trial_duration)<=1.0e-10_real64, &
          'selected whole-window transfer matches independent ledger')
     call require(observation%top_surface_exchange_available,'external top observation available')
     call require(observation%top_surface_signed_swap_to_external_cm<0.0_real64,'external top inundation signed negative')
@@ -527,7 +575,7 @@ contains
     type(b110_default_mvg_parameters_t), target :: hp
     type(b110_default_mvg_provider_t) :: provider
     real(real64) :: heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod),k0
-    logical :: ok
+    logical :: ok, prepared
     integer :: k
 
     parameters%parameter_set_id=49009_int64
@@ -543,6 +591,16 @@ contains
       parameters%cofgen(23,k)=1.0e-12_real64
     end do
     parameters%bottom_mode=7; parameters%swkimpl=0; parameters%swkmean=1; parameters%swsophy=0
+    parameters%near_saturation_transition_width_cm=0.0_real64
+    if (trim(mode)=='transition'.or.trim(mode)=='transition-characterize') then
+      parameters%near_saturation_transition_width_cm=0.2_real64
+      parameters%max_iterations=80
+      parameters%max_backtracking=16
+      call prepare_fmr_b110_default_mvg(parameters,prepared)
+      call require(prepared,'FMR prepares opt-in near-saturation constitutive law')
+      call require(parameters%prepared_default_mvg%near_saturation_transition_width_cm==0.2_real64, &
+           'prepared FMR provider retains configured transition width')
+    end if
     parameters%root_extraction_active=.false.; parameters%macropore_active=.false.; parameters%snow_active=.false.
     parameters%hysteresis_active=.false.; parameters%tabulated_hydraulics_active=.false.
     parameters%elasticity_active=.false.; parameters%frost_active=.false.; parameters%soil_temperature_active=.false.
@@ -562,7 +620,8 @@ contains
     parameters%drainage_response_levels(1)%extended%highest_level=.false.
     parameters%drainage_response_levels(1)%extended%highest_surface_mode=EXT_DRAIN_TOP_NONE
 
-    call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
+    call initialize_b110_default_mvg_parameters(hp,parameters%cofgen, &
+         near_saturation_transition_width_cm=parameters%near_saturation_transition_width_cm)
     call bind_b110_default_mvg_provider(provider,hp,duration)
     call build_heads(heads)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
@@ -600,7 +659,8 @@ contains
     type(b110_default_mvg_parameters_t), target :: hp
     type(b110_default_mvg_provider_t) :: provider
     real(real64) :: heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
+    call initialize_b110_default_mvg_parameters(hp,parameters%cofgen, &
+         near_saturation_transition_width_cm=parameters%near_saturation_transition_width_cm)
     call bind_b110_default_mvg_provider(provider,hp,duration)
     call build_heads(heads)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
@@ -615,7 +675,8 @@ contains
     type(b110_default_mvg_parameters_t), target :: hp
     type(b110_default_mvg_provider_t) :: provider
     real(real64) :: heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
+    call initialize_b110_default_mvg_parameters(hp,parameters%cofgen, &
+         near_saturation_transition_width_cm=parameters%near_saturation_transition_width_cm)
     call bind_b110_default_mvg_provider(provider,hp,duration)
     call build_heads(heads)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)

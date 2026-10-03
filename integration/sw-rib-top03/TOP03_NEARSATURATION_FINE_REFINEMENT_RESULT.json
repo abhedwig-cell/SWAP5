@@ -1,0 +1,45 @@
+{
+  "status": "LOCAL_DIAGNOSTIC_COMPLETED_NOT_TEMPORAL_ADMISSION",
+  "date": "2026-10-03",
+  "preregistration": "TOP03_NEARSATURATION_FINE_REFINEMENT_PREREGISTRATION.md",
+  "runner": "tests/fapp/run_sw_rib_top03_base_temporal_acceptance_probe.sh <width_cm>",
+  "probe_version": 3,
+  "fixture": {
+    "windows_day": [0.25, 0.125, 0.0625, 0.03125],
+    "refinements_substeps_per_window": [1, 2, 4, 8, 16, 32],
+    "initial_head_cm": -123.0,
+    "initial_groundwater_level_cm": -2.25,
+    "external_head_cm": 0.02,
+    "external_sill_cm": 0.01,
+    "bottom_mode": 7,
+    "conductivity_implicit_mode": 0
+  },
+  "widths": {
+    "0.2": {
+      "paths_completed": "24/24",
+      "total_newton_iterations": 1971,
+      "max_soil_mass_residual_cm": 9.070522111187529e-14,
+      "max_combined_ledger_residual_cm": 8.759659664292485e-14,
+      "adjacent_transfer_differences_cm": {
+        "0.25": {"top": [0.24316546, 0.34287306, 0.23152915, 0.13163817, 0.07972880], "bottom": [0.15970398, 0.33565754, 0.23152768, 0.13163817, 0.07972880]},
+        "0.125": {"top": [0.15249544, 0.16611762, 0.13144625, 0.07972880, 0.04515574], "bottom": [0.04860880, 0.14683740, 0.13142810, 0.07972880, 0.04515574]},
+        "0.0625": {"top": [0.11955665, 0.10352158, 0.07288491, 0.04515574, 0.02320261], "bottom": [0.00905289, 0.05015494, 0.07206817, 0.04515574, 0.02320261]},
+        "0.03125": {"top": [0.09230527, 0.10681011, 0.04049416, 0.02295175, 0.01227750], "bottom": [0.00100290, 0.00956409, 0.02425401, 0.02287166, 0.01227750]}
+      }
+    },
+    "2.0": {
+      "paths_completed": "24/24",
+      "total_newton_iterations": 1686,
+      "max_soil_mass_residual_cm": 1.1422720408438281e-14,
+      "max_combined_ledger_residual_cm": 1.3211653993039363e-14,
+      "adjacent_transfer_differences_cm": {
+        "0.25": {"top": [0.24316546, 0.36050158, 0.23324779, 0.12327437, 0.07489542], "bottom": [0.15970398, 0.35328460, 0.23324777, 0.12327437, 0.07489542]},
+        "0.125": {"top": [0.15249544, 0.18527094, 0.12327628, 0.07489542, 0.04237511], "bottom": [0.04860880, 0.16597449, 0.12327437, 0.07489542, 0.04237511]},
+        "0.0625": {"top": [0.11974107, 0.10699005, 0.07538199, 0.04237511, 0.02209347], "bottom": [0.00907219, 0.05347866, 0.07487511, 0.04237511, 0.02209347]},
+        "0.03125": {"top": [0.09382928, 0.10575291, 0.04310959, 0.02212971, 0.01155916], "bottom": [0.00103333, 0.00959859, 0.02722748, 0.02209347, 0.01155916]}
+      }
+    }
+  },
+  "optimization_identity": "O0 and O2 complete numeric probe output matched exactly for both widths.",
+  "interpretation": "At both widths, top and bottom adjacent-refinement transfer differences decrease across 4->8, 8->16, and 16->32 for all four windows. The earlier coarse-level non-contraction at 1->2->4 is real and remains. At 32 substeps the largest remaining adjacent top/bottom transfer change is 0.07973 cm (0.2 cm width, 0.25 day window) and 0.07490 cm (2 cm width, 0.25 day window). This is evidence of eventual refinement contraction in this fixture, not a selected temporal tolerance or production acceptance budget."
+}

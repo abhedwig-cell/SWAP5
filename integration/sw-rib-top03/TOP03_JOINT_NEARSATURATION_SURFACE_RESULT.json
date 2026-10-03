@@ -1,0 +1,623 @@
+{
+  "schema": "swap5.top03.joint_nearsaturation_surface_probe.v1",
+  "date": "2026-10-03",
+  "status": "SOURCE_IMPLEMENTED__DIRECT_PROBE_PASS__FMR_TRANSIENT_REJECTED__NOT_QUALIFIED",
+  "production_code_changed": true,
+  "production_admission": false,
+  "preregistration": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_PREREGISTRATION.md",
+  "scope": {
+    "geometry": 2,
+    "bottom_mode": 7,
+    "initial_profile": "dry profile 1",
+    "microrelief_amplitude_cm": 0.05,
+    "refinements": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "constitutive_transition_widths_cm": [
+      1e-08,
+      0.02,
+      0.2,
+      2.0
+    ],
+    "forcing": "external stage rise 0.005 to 0.300 cm; pulse extension falls back to 0.005 cm",
+    "builds": [
+      "O0",
+      "O2"
+    ]
+  },
+  "candidate": {
+    "soil_water_content": "quintic smoothstep blend from MvG theta to theta_s over -delta_h < h < 0",
+    "soil_capacity": "analytic derivative of the modified theta(h)",
+    "soil_conductivity": "Mualem K from regularized saturation, blended to Ks by the same smoothstep",
+    "surface_wet_fraction": "quintic smoothstep CDF of normalized external stage over microrelief amplitude",
+    "surface_storage": "integral of wet fraction; dS/dH equals wet fraction",
+    "mean_wet_head": "surface storage divided by wet fraction"
+  },
+  "controls": {
+    "legacy_soil_plus_legacy_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4,
+      "stop_events_by_refinement_1_2_4_8": [
+        4,
+        3,
+        3,
+        3
+      ]
+    },
+    "delta_0_02_soil_plus_legacy_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4
+    },
+    "delta_2_soil_plus_legacy_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4
+    },
+    "near_legacy_soil_plus_smooth_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4
+    },
+    "delta_0_02_soil_plus_smooth_surface": {
+      "complete_rising_paths": 0,
+      "total_paths": 4
+    }
+  },
+  "joint_candidate_delta_2_cm": {
+    "rising": {
+      "refinement_steps": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "completed": [
+        true,
+        false,
+        false,
+        true
+      ],
+      "stop_event_if_failed": [
+        null,
+        3,
+        3,
+        null
+      ],
+      "newton_iterations": [
+        105,
+        147,
+        191,
+        312
+      ],
+      "complete_paths": 2,
+      "total_paths": 4
+    },
+    "rise_and_recession": {
+      "stage_sequence_cm": [
+        0.005,
+        0.02,
+        0.05,
+        0.1,
+        0.2,
+        0.3,
+        0.2,
+        0.1,
+        0.05,
+        0.02,
+        0.005
+      ],
+      "refinement_steps": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "completed": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "stop_event_if_failed": [
+        null,
+        3,
+        3,
+        10
+      ],
+      "newton_iterations": [
+        187,
+        147,
+        191,
+        422
+      ],
+      "complete_paths": 1,
+      "total_paths": 4
+    }
+  },
+  "completed_pulse_mass_closure": {
+    "refinement_steps": 1,
+    "signed_top_transfer_cm": -1.3516563876882026,
+    "bottom_transfer_cm": -1.0348712873309638,
+    "soil_plus_surface_storage_change_cm": 0.3167851003573361,
+    "combined_ledger_residual_cm": 9.725553695716371e-14,
+    "maximum_soil_balance_residual_cm": 4.567179967551738e-14
+  },
+  "oracles": {
+    "modified_theta_derivative_matches_capacity": true,
+    "near_saturation_conductivity_cutoff_jump_removed": true,
+    "optimization_level_output_identity_O0_O2": true,
+    "failed_trials_counted_as_accepted": false
+  },
+  "decision": "A follow-up test-only central-difference addition of the omitted free-drainage bottom dK/dh term changes the result materially: the delta_h=0.2 cm soil regularization with the inherited continuous piecewise microrelief-storage law completes all six rise/recession refinements at head tolerance 1e-12 with roundoff mass closure. This supersedes the earlier statement that no tested candidate passes all six levels. The run is still synthetic/direct-solver evidence; the derivative correction is not an analytical production implementation and no transaction/Ribasim lifecycle qualification has occurred. Status remains not production-qualified.",
+  "evidence_logs": [
+    "integration/sw-rib-top03/evidence/joint_nearsaturation_surface/raw_records.txt"
+  ],
+  "harness": "tests/fapp/run_sw_rib_top03_joint_microrelief_probe.sh",
+  "followup_head_tolerance_1e9_extended_refinement": {
+    "scope": "same D=0.05 cm, delta_h=2 cm joint smooth candidate and 11-stage rise/recession pulse; direct-probe abs/rel head tolerances 1e-9; mass gates unchanged at 1e-10 cm; O0/O2 asserted identical",
+    "refinement_steps": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "completed": [
+      true,
+      true,
+      true,
+      true,
+      false,
+      false
+    ],
+    "completed_newton_iterations": [
+      164,
+      199,
+      323,
+      567,
+      null,
+      null
+    ],
+    "failed_at_event": [
+      null,
+      null,
+      null,
+      null,
+      10,
+      10
+    ],
+    "failed_at_substep": [
+      null,
+      null,
+      null,
+      null,
+      3,
+      1
+    ],
+    "pre_rollback_max_residual": [
+      null,
+      null,
+      null,
+      null,
+      0.00012704370802385512,
+      1.7698505507368623e-05
+    ],
+    "pre_rollback_max_head_correction_cm": [
+      null,
+      null,
+      null,
+      null,
+      0.0001096851869328841,
+      1.1554312312034298e-05
+    ],
+    "failure_iterations": [
+      null,
+      null,
+      null,
+      null,
+      80,
+      80
+    ],
+    "refinement_pair_8_to_16_and_16_to_32_available": false,
+    "O0_O2_output_identity": true,
+    "interpretation": "Finer refinements fail on recession with residual and head-correction gaps above the configured tolerance; not merely a strict-tolerance convergence artifact."
+  },
+  "followup_control_matrix_head_tolerance_1e9_extended_refinement": {
+    "refinement_steps": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "near_legacy_soil_plus_smooth_surface": {
+      "completed": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "first_failure_events": [
+        null,
+        null,
+        null,
+        3,
+        3,
+        3
+      ],
+      "pre_rollback_residual_cm": [
+        null,
+        null,
+        null,
+        0.052396009971481305,
+        0.04496023595871179,
+        0.009835828342660946
+      ]
+    },
+    "delta_2_soil_plus_legacy_surface": {
+      "completed": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "first_failure_events": [
+        null,
+        null,
+        2,
+        null,
+        null,
+        2
+      ],
+      "pre_rollback_residual_cm": [
+        null,
+        null,
+        0.00027820668762812417,
+        null,
+        null,
+        1.2625338807303876e-05
+      ]
+    },
+    "delta_2_joint_smooth_surface": {
+      "completed": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "first_failure_events": [
+        null,
+        null,
+        null,
+        null,
+        10,
+        10
+      ],
+      "pre_rollback_residual_cm": [
+        null,
+        null,
+        null,
+        null,
+        0.00012704370802385512,
+        1.7698505507368623e-05
+      ]
+    },
+    "interpretation": "The two isolated controls also fail at some fine refinements, but their failure windows differ. Broad soil regularization alone passes 8 and 16; smooth surface plus near-legacy soil fails from 8 onward; the joint candidate passes through 8 then fails on recession at 16/32. This non-monotone factorial result does not uniquely assign the remaining failure to either law."
+  },
+  "followup_transition_width_matrix_head_tolerance_1e9": {
+    "refinement_steps": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "delta_0_02_cm_joint_smooth_surface": {
+      "completed": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "failure_events": [
+        null,
+        null,
+        null,
+        3,
+        null,
+        3
+      ],
+      "failure_residual_cm": [
+        null,
+        null,
+        null,
+        0.000432960827429163,
+        null,
+        0.00423659030111434
+      ]
+    },
+    "delta_0_2_cm_joint_smooth_surface": {
+      "completed": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "failure_events": [
+        null,
+        null,
+        3,
+        null,
+        null,
+        null
+      ],
+      "failure_residual_cm": [
+        null,
+        null,
+        0.0013827045721592768,
+        null,
+        null,
+        null
+      ]
+    },
+    "delta_0_2_cm_soil_legacy_surface": {
+      "completed": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "failure_events": [
+        4,
+        3,
+        3,
+        3,
+        3,
+        null
+      ],
+      "failure_residual_cm": [
+        0.001101797326506393,
+        0.0018237506216349786,
+        0.0003196663685680612,
+        0.005876854949550925,
+        1.6679862824275915e-08,
+        null
+      ]
+    },
+    "O0_O2_output_identity": true,
+    "interpretation": "At delta_h=0.2 cm the smoothed surface changes the completion pattern strongly versus legacy surface, including passing 8/16/32 where the legacy surface fails 1/2/4/8/16. But the smoothed candidate still fails at refinement 4. At delta_h=0.02 cm the candidate fails at 8 and 32 but passes 16. Thus transition width and time refinement interact; no width here passes all six levels."
+  },
+  "followup_bottom_jacobian_counterfactual_2026_10_03": {
+    "scope": "delta_h=0.2 cm regularized soil theta/capacity/K; inherited continuous piecewise microrelief storage, D=0.05 cm; external stage rise/recession; refinements 1/2/4/8/16/32; SwKimpl=0, free drainage SWBOTB=7; O0/O2",
+    "counterfactual": "At each Jacobian build, add central finite-difference dK(h_N)/dh_N to the bottom residual-row diagonal; residual and physical law unchanged; generated HeadCalc copy only",
+    "head_tolerance": 1e-12,
+    "completed": [true, true, true, true, true, true],
+    "newton_iterations": [89, 147, 253, 434, 769, 1355],
+    "combined_ledger_residual_cm_max_abs": 1.0e-14,
+    "soil_balance_residual_cm_max_abs": 2.3e-14,
+    "successive_refinement_max_head_difference_cm": [0.7186973301839341, 0.22055477272797308, 0.06829793818693394, 0.02196650264883642, 0.007763697264104863],
+    "successive_refinement_surface_transfer_difference_cm": [0.09890614403194342, 0.0444930467741291, 0.018904508570665102, 0.009147969885737738, 0.004538030555775396],
+    "O0_O2_output_identity": true,
+    "production_code_changed": true,
+    "ribasim_transaction_qualified": false,
+    "interpretation": "The broad near-saturation soil law plus a consistent bottom Jacobian is a promising candidate mechanism; the smoothstep surface hypsometry was not needed in this controlled case. A generated analytic dK/dh implementation subsequently passed its finite-difference oracle at five heads and completed all six levels; it is still not a production source implementation. Source ownership/conflict review, existing top-boundary regressions, and transaction/Ribasim qualification remain open."
+  },
+  "followup_analytic_bottom_jacobian_2026_10_03": {
+    "scope": "same 0.2 cm soil transition, D=0.05 cm rise/recession, inherited microrelief storage, 1e-12 head tolerance, refinements 1/2/4/8/16/32",
+    "derivative": "Analytic derivative of the generated regularized Mualem K law, including chain rule through effective saturation and transition weight; derivative applied to free-drainage bottom Jacobian in generated HeadCalc copy",
+    "finite_difference_oracle_heads_cm": [-0.3, -0.15, -0.05, -0.005, -0.0001],
+    "finite_difference_acceptance": "abs(analytic-central_difference) <= 1e-6 + 2e-5*abs(central_difference)",
+    "max_abs_oracle_difference": 7.7168302228258767e-6,
+    "oracle_passed": true,
+    "completed": [true, true, true, true, true, true],
+    "newton_iterations": [89, 147, 253, 434, 769, 1354],
+    "combined_ledger_residual_cm_max_abs": 1.4654943925052066e-14,
+    "soil_balance_residual_cm_max_abs": 7.7949799393017827e-15,
+    "O0_O2_output_identity": true,
+    "production_code_changed": false,
+    "ribasim_transaction_qualified": false,
+    "interpretation": "Analytic derivative counterfactual reproduces the finite-difference convergence result; initial band-only derivative failed, so the tested derivative covers the underlying MvG law outside the regularization band too. This is a research candidate, not an admitted production implementation."
+  },
+  "followup_analytic_transition_width_bracket_2026_10_03": {
+    "common_scope": "legacy integrated microrelief storage, D=0.05 cm, rise/recession stage pulse, head tolerance 1e-12, refinements 1/2/4/8/16/32, analytic generated dK/dh bottom Jacobian, O0/O2",
+    "delta_2_cm": {
+      "oracle_passed": true,
+      "completed": [true, true, true, true, true, true],
+      "newton_iterations": [96, 162, 301, 531, 895, 1344],
+      "combined_ledger_residual_cm_max_abs": 1.1768364061026659e-14,
+      "soil_balance_residual_cm_max_abs": 1.8790524691780774e-14,
+      "successive_refinement_max_head_difference_cm": [0.7758282106648631, 0.22960846407099123, 0.07029921538562789, 0.022427503620074063, 0.007901873461849007],
+      "O0_O2_output_identity": true
+    },
+    "delta_0_02_cm": {
+      "oracle_passed": false,
+      "oracle_failure_head_cm": -0.0001,
+      "analytic_dkdh": 1.5684549733050464e-5,
+      "central_difference_dkdh": 1.0687006835041757e-5,
+      "absolute_difference": 4.997542898008707e-6,
+      "trajectory_run_after_oracle": false
+    },
+    "interpretation": "Both 0.2 and 2 cm transition settings pass the bounded synthetic pulse/refinement test with the analytic counterfactual. The 0.02 cm implementation fails the near-saturation derivative oracle and is not qualified. No width is physically calibrated by these numerical results."
+  },
+  "followup_real_source_opt_in_2026_10_03": {
+    "status": "LOCAL_SOURCE_POSTIMAGE_DIRECT_NUMERICAL_PASS_NOT_PRODUCTION_ADMISSION",
+    "source_files": [
+      "src/solver/mod_b110_default_mvg_provider.f90",
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_b110_default_mvg_directional_provider.f90"
+    ],
+    "api": "Optional near_saturation_transition_width_cm defaults to zero in the default MvG initializer and fmr_b110_physical_parameters_t. FMR accepts nonzero values only for SWBOTB=7 and SWKIMPL=0, the only lower-boundary/Jacobian route qualified here, and carries that value into the prepared provider; KSATEXM, elasticity, and unsupported retention modes fail closed. Accepted-step directional derivative routes fail closed while the new law is active.",
+    "runner": "tests/fapp/run_sw_rib_top03_joint_nearsaturation.sh <width_cm> production",
+    "driver_scope": "Actual source provider and HeadCalc; direct Richards solve; SWKIMPL=0, SWBOTB=7; rise-to-plateau synthetic external-stage profile for the existing 1..4096 result; fixed D=0.05 cm microrelief storage; not the production FMR/Ribasim transaction lifecycle.",
+    "default_zero_regression": {
+      "runner_equivalent": "tests/fsi/test_fsi39_b110_ksatexm.f90 compiled locally against the changed provider at O0 and O2",
+      "markers": [
+        "F_SI39_DEFAULT_DISABLED_PRESERVATION=PASS",
+        "F_SI39_HUPSEL_SATURATED_KSATEXM=PASS",
+        "F_SI39_HUPSEL_NEAR_SATURATED_INTERPOLATION=PASS",
+        "F_SI39_BELOW_THRESHOLD_NOOP=PASS"
+      ],
+      "O0_O2_output_identity": true
+    },
+    "legacy_width_zero_comparator": {
+      "refinements": [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+      "fully_completed": [true, true, false, false, true, false, false, false, false, false, false, false, false],
+      "interpretation": "Completion is non-monotonic in timestep size; only 1, 2, and 16 complete all steps in the fixed pulse window."
+    },
+    "transition_width_0_2_cm": {
+      "completed_all_refinements": true,
+      "newton_iterations": [6, 12, 27, 45, 65, 96, 138, 234, 419, 760, 1466, 2827, 5511],
+      "combined_soil_surface_balance_residual_cm_max_abs": 1.1324274851176597e-14,
+      "soil_balance_residual_cm_max_abs": 2.6704333189186968e-14,
+      "dKdh_oracle_step_cm": [1e-5, 5e-7],
+      "dKdh_oracle_max_abs_error": [3.0685800317398204e-8, 1.2729712723924536e-6],
+      "dKdh_oracle_passed_both_steps": true,
+      "O0_O2_numeric_output_identity_excluding_wall_time": true
+    },
+    "transition_width_2_cm": {
+      "completed_all_refinements": true,
+      "newton_iterations": [6, 12, 24, 30, 45, 73, 141, 235, 423, 778, 1492, 2883, 5591],
+      "combined_soil_surface_balance_residual_cm_max_abs": 1.4654943925052066e-14,
+      "soil_balance_residual_cm_max_abs": 8.427286646295329e-15,
+      "dKdh_oracle_step_cm": [1e-5, 5e-7],
+      "dKdh_oracle_max_abs_error": [8.442300518794942e-9, 2.882629116453194e-7],
+      "dKdh_oracle_passed_both_steps": true,
+      "O0_O2_numeric_output_identity_excluding_wall_time": true
+    },
+    "transition_width_0_02_cm": {
+      "oracle_passed": false,
+      "oracle_failure_head_cm": -0.0001,
+      "analytic_dkdh": 1.5684549733050464e-5,
+      "central_difference_dkdh_at_5e_7_cm": 1.0687450924251607e-5,
+      "absolute_difference": 4.997098808798857e-6,
+      "trajectory_run_after_oracle": false
+    },
+    "jacobian": "The provider supplies analytic dK/dh; HeadCalc includes it in the SWKIMPL=0, SWBOTB=7 free-drainage bottom diagonal only when the nonzero-width option is active. Width zero preserves the original branch.",
+    "mass_ownership": "The direct probe records soil boundary transfer and surface storage separately; its combined ledger closes to the listed residual. It does not qualify accepted Ribasim publication or transaction replay.",
+    "fmr_transaction_characterization": {
+      "runner": "tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh transition-characterize",
+      "width_cm": 0.2,
+      "compiler": "GNU Fortran 13.3.0",
+      "compile_closure_sources": 92,
+      "O0_O2_pass": true,
+      "O0_O2_numeric_identity": true,
+      "passed_transaction_checks": [
+        "positive drainage and negative infiltration",
+        "owner XOR and exactly-once exchange checks",
+        "recompose/discard/replay",
+        "stale-origin rejection",
+        "rejected external inundation has no commit or publication"
+      ],
+      "external_inundation_solver_or_mass_rejections": 0,
+      "external_inundation_temporal_rejections": 3,
+      "external_inundation_accepted_exchange_published": false,
+      "committed_revision": 0,
+      "temporal_gate": "fmr_serialized_temporal_identity returns zero only for exactly identical full-step and two-half-step B1.10 state; otherwise it returns huge(), so any transient state change is rejected regardless of finite tolerance. TX_TEMPORAL_NONE is rejected by execution-admission preview.",
+      "interface_gap": "transaction temporal_error receives only full_state and half_state. Top exchange is in model attempt scratch/context, not fmr_b110_physical_state_t. The executor restores checkpoint context before the half branch and captures only the half context; it does not preserve a full-trial context for comparison. Thus the callback cannot compare full-step transfer with composed two-half transfer.",
+      "minimum_shared_contract_data": "Capture/restore branch-selected endpoint state and integrated signed external transfer for both full and composed two-half trials; define consistent physical scaling for state/transfer accuracy separately from mass closure. No norm or thresholds are selected by this work unit.",
+      "shared_prerequisite": "integration/sw-rib-top03/TOP03_NUMERICAL_PREREQUISITE.md and TOP03_BOUNDED_INTERVAL_CONTRACT.md assign a qualified BASE transient temporal contract to the numerical/integration regie. This work unit preserves the identity-only policy and does not add a local norm, tolerance, or bypass.",
+      "interpretation": "The constitutive transition does not solve the end-to-end transaction blocker. Rejection and no-publication behavior pass; accepted inundation coupling is not qualified. The existing shared numerical prerequisite governs the next action."
+    },
+    "production_admission": false,
+    "open_gates": [
+      "Qualify trial reject, retry, replay, restart, rollback, and accepted-only publication.",
+      "Obtain the qualified shared BASE transient temporal-acceptance contract from the numerical/integration regie, as required by TOP03_NUMERICAL_PREREQUISITE.md.",
+      "Run accepted real SWAP5-Ribasim inundation and recession coupling cases.",
+      "Qualify rainfall, infiltration-capacity exceedance, runoff, evaporation, exfiltration, and heterogeneous profiles.",
+      "Reconcile the shared HY HeadCalc source surface and submit a persisted reviewable candidate."
+    ],
+    "interpretation": "The source implementation improves nonlinear completion only for the previously tested rise-to-plateau profile at widths 0.2 and 2 cm and rejects 0.02 cm at a finer derivative check. A separate source-provider rise-and-recession probe now fails at refinement 4096 after the recession ramp returns external head to zero (day 0.1292114), for both widths. Thus the earlier direct-solver evidence does not establish robust source-path recession handling. FMR characterization still rejects transient external inundation at its exact-state temporal gate; this is not production/Ribasim transaction qualification."
+  },
+  "followup_exact_base_inundation_refinement_2026_10_03": {
+    "result": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_REFINEMENT_FOLLOWUP_2026-10-03.json",
+    "decision_note": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_SURFACE_DECISION.md#follow-up-regularization-on-the-exact-base-inundation-refinement-fixture-2026-10-03",
+    "classification": "post-hoc characterization; not a preregistered temporal-acceptance qualification",
+    "width_zero_complete_paths_per_optimization": "10/16",
+    "width_0_2_cm_complete_paths_per_optimization": "16/16",
+    "width_2_cm_complete_paths_per_optimization": "16/16",
+    "O0_O2_output_identity": true,
+    "combined_balance_residual_cm_max_abs": {
+      "width_0_2_cm": 8.759659664292485e-14,
+      "width_2_cm": 1.3211653993039363e-14
+    },
+    "temporal_decision": "First two adjacent integrated-transfer error estimates fail joint top-and-bottom contraction for each tested window. At 0.0625 day, top discrepancy contracts but bottom discrepancy increases more than fivefold.",
+    "interpretation": "The regularized law improves nonlinear completion on the exact BASE fixture but still does not justify temporal acceptance or production/Ribasim admission."
+  },
+  "followup_source_provider_rise_recession_2026_10_03": {
+    "preregistration": "integration/sw-rib-top03/TOP03_SOURCE_PROVIDER_RECESSION_PREREGISTRATION.md",
+    "runner": "tests/fapp/run_sw_rib_top03_joint_nearsaturation.sh <width_cm> production recession",
+    "driver_scope": "Actual source provider and HeadCalc; direct Richards solve; SWKIMPL=0, SWBOTB=7; prescribed external head rises to 0.02 cm, holds, then recedes; not FMR transaction or live Ribasim.",
+    "observed_recession_route_change_width_2_cm": {"step_2048_time_day": 0.125, "step_2048_external_head_cm": 0.02, "step_2048_ponding_cm": 0.02, "step_2049_time_day": 0.12506103515625, "step_2049_external_head_cm": 0.019375, "step_2049_ponding_cm": 0.02, "step_2050_external_head_cm": 0.01875, "step_2050_ponding_cm": 0.0197100830078125, "interpretation": "The imposed-head route ends as soon as external head falls below previous local ponding, because the provider gate requires external head >= previous ponding. This occurs at the first recession step, before the sill is crossed. Subsequent steps relax local ponding toward zero without maintaining the external-head constraint."},
+    "refinements": [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+    "width_0_2_cm": {"fully_completed_refinements": [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048], "failed_refinement": 4096, "failed_step": 2117, "completed_steps": 2116, "failure_time_day": 0.12921142578125, "external_head_cm_at_failure": 0.0, "accepted_ponding_cm_before_failure": 2.8564453124999407e-4, "pressure_head_top_cm_before_failure": 2.8564453124996448e-4, "newton_iterations_before_failure": 80, "max_richards_residual": 7.0000004423879325e-2, "max_head_trial_correction_cm": 1.3731532559580328e6, "accepted_prefix_combined_ledger_residual_cm": -8.8817841970012523e-16, "accepted_prefix_max_soil_residual_cm": 2.4657171446220046e-16, "within_solve_regime_changes": 160, "evaluations_at_last_change": 681, "O0_O2_numeric_identity": true},
+    "width_2_cm": {"fully_completed_refinements": [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048], "failed_refinement": 4096, "failed_step": 2117, "completed_steps": 2116, "failure_time_day": 0.12921142578125, "external_head_cm_at_failure": 0.0, "accepted_ponding_cm_before_failure": 2.8564453124999413e-4, "pressure_head_top_cm_before_failure": 2.8564453125000779e-4, "newton_iterations_before_failure": 80, "max_richards_residual": 7.0000002211987322e-2, "max_head_trial_correction_cm": 1.3731532559580151e6, "accepted_prefix_combined_ledger_residual_cm": 1.1102230246251565e-16, "accepted_prefix_max_soil_residual_cm": 2.4657171446220046e-16, "within_solve_regime_changes": 160, "evaluations_at_last_change": 681, "O0_O2_numeric_identity": true},
+    "interpretation": "Both widths fail at refinement 4096 after the imposed stage has receded to zero (day 0.1292114258, after the ramp ends at 0.126953125). Immediately before the failed solve, external head is 0 cm, ponding and top pressure head are both about 2.85645e-4 cm, and top-node K is 4.75 cm/day. Each run completes refinements 1..2048 and fails at 4096 after 2116 accepted substeps. The failed solve hits 80 Newton iterations; maximum Richards residual is about 0.07 and maximum head trial correction is 1.37315e6 cm. Its trace records 160 within-solve regime changes by evaluation 681. O0/O2 equality holds including the failure. This is evidence of a recession/recession-end failure with extreme Newton branch crossing, not a mass-closure defect.",
+    "production_admission": false
+  },
+  "followup_recession_route_gate_counterfactual_2026_10_03": {
+    "preregistration": "integration/sw-rib-top03/TOP03_RECESSION_ROUTE_GATE_COUNTERFACTUAL_PREREGISTRATION.md",
+    "scope": "Actual production provider and HeadCalc; temporary one-predicate source counterfactual; width 2 cm; same rise/plateau/recession case, solver tolerances, dt levels 1..4096; O0/O2.",
+    "counterfactual_change": "external_active requires only external_surface_water_head_supplied and external_head > flooding_sill; removed external_head >= previous_ponding. No source change was persisted.",
+    "counterfactual_dynamic_provider_sha256": "7e3c920aa699b265accfca43f4d0d390b5323f2e74bbfd146ca2aacf1b3a5d8f",
+    "run_log_sha256": "b1bda573f6d1d68fe335502829bde569f0ff2f5f6f909ab35ea5582dc56eaac2",
+    "fully_completed_refinements": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      4096
+    ],
+    "failed_refinements": {
+      "1024": {
+        "completed_steps": 525,
+        "failed_step": 526,
+        "iterations": 767,
+        "max_richards_residual": 1.0500000353902545,
+        "max_head_trial_correction_cm": 20597298.841859613
+      },
+      "2048": {
+        "completed_steps": 1050,
+        "failed_step": 1051,
+        "iterations": 1412,
+        "max_richards_residual": 1856.2068927378812,
+        "max_head_trial_correction_cm": 2785.050714302029
+      }
+    },
+    "refinement_4096": {
+      "completed_steps": 4096,
+      "newton_iterations": 8806,
+      "top_transfer_cm": -0.9183574507330536,
+      "bottom_transfer_cm": -0.6832064605872495,
+      "surface_plus_soil_storage_change_cm": 0.23515099014580287,
+      "combined_ledger_residual_cm": -1.2212453270876722e-15,
+      "max_soil_step_residual_cm": 3.2121014019188127e-16,
+      "within_solve_regime_changes": 28,
+      "accepted_regime_switches": 2
+    },
+    "O0_O2_numeric_identity": true,
+    "decision": "REMOVING_THE_PRIOR_PONDING_GATE_ALLOWS_4096_STEPS_BUT_CAUSES_1024_AND_2048_FAILURES__SILL_SWITCH_REMAINS__NOT_ROBUST",
+    "interpretation": "The prior-ponding gate is causal to loss of imposed-head tracking at recession onset, but deleting it alone is insufficient. It moves the hard disconnect to the sill: at step 2064 external head is 0.0100 cm while local ponding is 0.010625 cm; at step 2065 the stage falls below sill and the imposed-head route ends. Refinement completion remains non-monotonic with two intermediate failures despite the 4096 completion. This is a test-only route-gate counterfactual, not a physical bidirectional exchange law or transaction/Ribasim qualification."
+  }
+}

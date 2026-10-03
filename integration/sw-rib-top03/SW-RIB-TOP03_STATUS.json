@@ -658,5 +658,95 @@
     "localized_blocker": "branch-local Richards residual gap across near-saturation K cutoff in frozen failed step 86; no global-root-absence claim",
     "unified_surface_control_volume": "preferred future ownership contract for Ribasim; alone does not change wet imposed-head Richards problem",
     "production_admission": false
+  },
+  "joint_nearsaturation_surface_probe": {
+    "status": "PARTIAL_NUMERICAL_IMPROVEMENT__NOT_QUALIFIED",
+    "preregistration": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_PREREGISTRATION.md",
+    "result": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_SURFACE_RESULT.json",
+    "decision": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_SURFACE_DECISION.md",
+    "test_runner": "tests/fapp/run_sw_rib_top03_joint_microrelief_probe.sh",
+    "production_code_changed": false,
+    "delta_h_cm_tested": [
+      1e-08,
+      0.02,
+      0.2,
+      2.0
+    ],
+    "joint_delta_2_rising_completed": 2,
+    "joint_delta_2_rising_total": 4,
+    "joint_delta_2_pulse_completed": 1,
+    "joint_delta_2_pulse_total": 4,
+    "pulse_ledger_residual_cm": 9.725553695716371e-14,
+    "O0_O2_output_identity": true,
+    "production_admission": false,
+    "conclusion": "Surface smoothing at delta_h=0.2 cm shifts several legacy-surface failures to passes, showing a joint mechanism signal. But all tested widths exhibit at least one non-monotonic failure through refinement 32 (delta_h=0.02 fails 8/32; 0.2 fails 4; 2.0 fails 16/32). No robust or production candidate established.",
+    "followup_refinements_1_2_4_8_16_32_completed": [
+      true,
+      true,
+      true,
+      true,
+      false,
+      false
+    ],
+    "followup_head_abs_rel_tolerance_cm": 1e-09,
+    "followup_failure_max_residual_cm": [
+      0.00012704370802385512,
+      1.7698505507368623e-05
+    ],
+    "followup_failure_max_head_correction_cm": [
+      0.0001096851869328841,
+      1.1554312312034298e-05
+    ],
+    "followup_O0_O2_output_identity": true,
+    "followup_control_matrix_refinements_1_2_4_8_16_32": {
+      "near_legacy_soil_plus_smooth_surface": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "delta_2_soil_plus_legacy_surface": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "delta_2_joint_smooth_surface": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    "followup_delta_0_02_completed_1_2_4_8_16_32": [
+      true,
+      true,
+      true,
+      false,
+      true,
+      false
+    ],
+    "followup_delta_0_2_joint_completed_1_2_4_8_16_32": [
+      true,
+      true,
+      false,
+      true,
+      true,
+      true
+    ],
+    "followup_delta_0_2_legacy_surface_completed_1_2_4_8_16_32": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ]
   }
 }

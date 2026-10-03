@@ -1,0 +1,72 @@
+{
+  "status": "LOCAL_DIAGNOSTIC_COMPLETED_NOT_TEMPORAL_ADMISSION",
+  "date": "2026-10-03",
+  "preregistration": "TOP03_NEARSATURATION_FLUX_REFINEMENT_PREREGISTRATION.md",
+  "runner": "tests/fapp/run_sw_rib_top03_base_temporal_acceptance_probe.sh <width_cm>",
+  "probe_version": 4,
+  "fixture": {
+    "windows_day": [0.25, 0.125, 0.0625, 0.03125],
+    "refinements_substeps_per_window": [1, 2, 4, 8, 16, 32, 64, 128],
+    "initial_head_cm": -123.0,
+    "initial_groundwater_level_cm": -2.25,
+    "external_head_cm": 0.02,
+    "external_sill_cm": 0.01,
+    "bottom_mode": 7,
+    "conductivity_implicit_mode": 0
+  },
+  "widths": {
+    "0.2": {
+      "paths_completed": "32/32",
+      "total_newton_iterations": 5427,
+      "max_soil_mass_residual_cm": 9.070522111187529e-14,
+      "max_combined_ledger_residual_cm": 8.759659664292485e-14,
+      "adjacent_transfer_differences_cm_max_over_windows": {
+        "32_to_64": {"top": 0.04515574004130851, "bottom": 0.04515574004131051},
+        "64_to_128": {"top": 0.023202607238388184, "bottom": 0.023202607238377526}
+      }
+    },
+    "2.0": {
+      "paths_completed": "32/32",
+      "total_newton_iterations": 4939,
+      "max_soil_mass_residual_cm": 1.1422720408438281e-14,
+      "max_combined_ledger_residual_cm": 2.0761170560490427e-14,
+      "adjacent_transfer_differences_cm_max_over_windows": {
+        "32_to_64": {"top": 0.042375113895380956, "bottom": 0.042375113895387395},
+        "64_to_128": {"top": 0.022093472691800287, "bottom": 0.022093472691787186}
+      }
+    }
+  },
+  "representative_full_step_vs_two_half_step_and_fine_state_differences": {
+    "units": {"pressure_head_inf": "cm", "water_content_l1_times_layer_thickness": "cm", "top_transfer": "cm", "bottom_transfer": "cm"},
+    "width_0.2_cm": {
+      "1_to_2_substeps_by_window": {
+        "0.25_day": {"pressure_head_inf": 37.316844, "water_content_l1": 0.083461482, "top_transfer": 0.24316546, "bottom_transfer": 0.15970398},
+        "0.125_day": {"pressure_head_inf": 41.327347, "water_content_l1": 0.10388664, "top_transfer": 0.15249544, "bottom_transfer": 0.048608801},
+        "0.0625_day": {"pressure_head_inf": 45.157826, "water_content_l1": 0.11052096, "top_transfer": 0.11955665, "bottom_transfer": 0.009052886},
+        "0.03125_day": {"pressure_head_inf": 46.403897, "water_content_l1": 0.091509707, "top_transfer": 0.092305269, "bottom_transfer": 0.0010028982}
+      },
+      "64_to_128_substeps_by_window": {
+        "0.25_day": {"pressure_head_inf": 1.3530843e-16, "water_content_l1": 0.0, "top_transfer": 0.023202607, "bottom_transfer": 0.023202607},
+        "0.125_day": {"pressure_head_inf": 1.8041124e-16, "water_content_l1": 0.0, "top_transfer": 0.012277502, "bottom_transfer": 0.012277502},
+        "0.0625_day": {"pressure_head_inf": 2.7408631e-16, "water_content_l1": 0.0, "top_transfer": 0.0064287629, "bottom_transfer": 0.0064287629},
+        "0.03125_day": {"pressure_head_inf": 1.5612511e-16, "water_content_l1": 0.0, "top_transfer": 0.0033386427, "bottom_transfer": 0.0033386427}
+      }
+    },
+    "width_2_cm": {
+      "1_to_2_substeps_by_window": {
+        "0.25_day": {"pressure_head_inf": 37.316844, "water_content_l1": 0.083461482, "top_transfer": 0.24316546, "bottom_transfer": 0.15970398},
+        "0.125_day": {"pressure_head_inf": 41.327347, "water_content_l1": 0.10388664, "top_transfer": 0.15249544, "bottom_transfer": 0.048608801},
+        "0.0625_day": {"pressure_head_inf": 45.208608, "water_content_l1": 0.1106689, "top_transfer": 0.11974107, "bottom_transfer": 0.0090721862},
+        "0.03125_day": {"pressure_head_inf": 47.417342, "water_content_l1": 0.092834286, "top_transfer": 0.093829283, "bottom_transfer": 0.0010333338}
+      },
+      "64_to_128_substeps_by_window": {
+        "0.25_day": {"pressure_head_inf": 2.6714742e-16, "water_content_l1": 0.0, "top_transfer": 0.022093473, "bottom_transfer": 0.022093473},
+        "0.125_day": {"pressure_head_inf": 1.3530849e-16, "water_content_l1": 0.0, "top_transfer": 0.011559161, "bottom_transfer": 0.011559161},
+        "0.0625_day": {"pressure_head_inf": 2.1163626e-16, "water_content_l1": 0.0, "top_transfer": 0.0060208954, "bottom_transfer": 0.0060208954},
+        "0.03125_day": {"pressure_head_inf": 1.2490009e-16, "water_content_l1": 0.0, "top_transfer": 0.0031614139, "bottom_transfer": 0.0031614139}
+      }
+    }
+  },
+  "optimization_identity": "O0 and O2 complete numeric probe output matched exactly for both widths.",
+  "interpretation": "The integrated top and bottom transfer differences continue to contract across 32->64 and 64->128, by factors of about 0.51 and 0.52 respectively. At 128 substeps, the largest adjacent transfer change is 0.02320 cm for width 0.2 cm and 0.02209 cm for width 2 cm, both at a 0.25-day window. This is a first-order-like refinement signal for this fixture, not a selected tolerance or evidence that the required production accuracy is reached. The shared FMR temporal gate is unchanged."
+}
