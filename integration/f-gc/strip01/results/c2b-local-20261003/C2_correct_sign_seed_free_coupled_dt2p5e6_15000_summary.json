@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01 C2B full-coupling timestep sweep",
+  "date": "2026-10-03",
+  "status": "RESEARCH_ONLY_6120_FULL_WINDOWS_PUBLISHED_NO_GROUNDWATER_RESPONSE",
+  "branch": "work/f-gc-strip01-c2b-local-continuation-20261003",
+  "base_commit": "49012a6757a20fbb221a2434077fb78d18f9827e",
+  "model": {
+    "real_swap_columns": 50,
+    "native_modflow6": true,
+    "modflow_cells": 50,
+    "seed_mode": "zero",
+    "canonical_admission": false
+  },
+  "forcing": {
+    "window_duration_day": 2.5e-06,
+    "requested_windows": 15000,
+    "published_windows": 6120,
+    "elapsed_published_day": 0.015300000000000001,
+    "ramp_start_cm_per_day": 1e-05,
+    "factor_per_window": 1.001,
+    "last_accepted_inward_flux_cm_per_day": 0.004530228375081027,
+    "next_rejected_inward_flux_cm_per_day": 0.004534758603456108,
+    "rejection_time_day": 0.015300000000000001,
+    "rejection_stage": "swap-corrector"
+  },
+  "publication": {
+    "all_50_column_revisions": true,
+    "all_50_interface_ledger_counts": true,
+    "modflow_calls": {
+      "prepare_solve": 6121,
+      "solve": 6121,
+      "finalize_solve": 6120,
+      "finalize_time_step": 6120
+    },
+    "rejected_state_preserved": true,
+    "input_total_m3": 5.655948254320757e-06,
+    "swap_storage_change_m3": 5.655948022820212e-06,
+    "drain_outflow_m3": 0.0,
+    "signed_mass_residual_m3": 2.3150054570069553e-13,
+    "maximum_absolute_window_residual_m3": 1.3654188438345974e-14,
+    "head_range_m": [
+      -1.0,
+      -1.0
+    ]
+  },
+  "replay": {
+    "fresh_process_byte_identical": true,
+    "result_sha256": "06ffcd7f24e5c7345b7928c6ec7dc6b3571055529ba2f7c912978f41cb7a1547",
+    "result_bytes": 69174113
+  },
+  "comparison": "At dt=1e-5 day, factor 1.001 reached 0.0001971756 cm/day after 2,984 accepted windows. At dt=5e-6 day it reached 0.0018630530 cm/day after 5,231 windows. At dt=2.5e-6 day it reached 0.0045302284 cm/day after 6,120 windows. Each run rejected at the next SWAP corrector increase. These accepted rates are 507x, 53.7x and 22.1x below 0.1 cm/day (1 mm/day), respectively.",
+  "interpretation": "Shorter full-coupling windows reproducibly increase the rainfall rate reached before rejection, with mass balance and transaction preservation, but no detectable MODFLOW head or drain response. No extrapolation to the target or qualification is warranted.",
+  "source_build": {
+    "production_src_count": 144,
+    "production_sources_match_prior_canonical_bound_build": true,
+    "production_source_changed": false,
+    "research_fixture_override_max_windows": 16384,
+    "build": "build-c2-diagnostic-flux-16384"
+  }
+}

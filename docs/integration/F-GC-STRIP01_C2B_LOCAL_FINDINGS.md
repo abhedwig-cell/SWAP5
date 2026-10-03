@@ -46,6 +46,11 @@ All columns reached revision and interface-ledger count 5,231. MODFLOW prepared 
 
 Halving the full coupling window materially raises the forcing level reached before rejection, but the accepted 0.0186 mm/day remains about 54 times below the 1 mm/day target. This is a useful full-path timestep-sensitivity result, not a working hydrologic strip benchmark. Production sources and frozen temporal/mass gates were not changed.
 
+A further full SWAP–MODFLOW6 run used 2.5e-6-day windows and the same zero-seed, factor-1.001 ramp. It published 6,120 complete coupled windows, reaching 0.004530228375081027 cm/day; the next increase to 0.004534758603456108 cm/day was rejected by the SWAP corrector at t=0.0153 day. Fresh-process replay was byte-identical (SHA-256 `06ffcd7f24e5c7345b7928c6ec7dc6b3571055529ba2f7c912978f41cb7a1547`). Across published windows, input was 5.655948254320757e-6 m³, SWAP storage rose by 5.655948022820212e-6 m³, and signed residual was 2.3150054570069553e-13 m³. All 50 heads remained -1 m, drain flow remained zero, and the rejected state hash was unchanged. Summary: `integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_coupled_dt2p5e6_15000_summary.json`.
+
+Across 1e-5, 5e-6 and 2.5e-6-day windows, each factor-1.001 run reaches a higher rate before its next rejection, but even the shortest tested window stops at 0.0453 mm/day, about 22 times below the 1 mm/day target. This trend is measured only at three durations; do not extrapolate it as a proven timestep law. There is still no measurable groundwater response, so these runs do not qualify the strip model.
+
+
 
 ## Historical tests and other blockers
 
