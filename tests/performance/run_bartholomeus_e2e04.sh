@@ -133,3 +133,5 @@ print(
 )
 print('FPE_APPROX02_A2_APPLICATION_GATE=PASS')
 PY
+
+# trigger E2E04 composition qualification
