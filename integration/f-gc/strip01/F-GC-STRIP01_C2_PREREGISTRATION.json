@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C2_HEAD_CONSISTENT_SHALLOW_PROFILE",
+  "state": "PREREGISTERED_BEFORE_EXECUTION",
+  "parent_experiments": [
+    "C1_SHALLOW_GROUNDWATER_PROFILE",
+    "RESP01E_HYDROSTATIC_ORIGIN_RESPONSE"
+  ],
+  "question": "Does removing the imposed 0.5 m far-column hydrostatic uplift and initializing every MODFLOW cell at the same head as its SWAP hydrostatic profile allow an ordinary first coupled window to accept? If yes, can a subsequent bounded window accept simple uniform rainfall/recharge while preserving the existing transaction and mass gates?",
+  "interpretation": "C0/C1 far-column uplift remains a deliberate drain-down challenge. C2 is a control for initial-condition mismatch, not a replacement or repair of C0/C1.",
+  "geometry_and_physics": {
+    "profile": "C1 shallow B01 research archetype",
+    "columns": 50,
+    "dx_m": 1,
+    "swap_depth_m": 2,
+    "coupling_plane_m": -2,
+    "modflow_base_m": -10,
+    "modflow_layer": "confined, no STO",
+    "K_m_per_day": 0.5,
+    "T_m2_per_day": 4,
+    "left_drain_stage_m": -1,
+    "left_drain_conductance_m2_per_day": 100,
+    "right_and_base": "no flow",
+    "storage_owner": "SWAP physical storage only"
+  },
+  "initial_state": {
+    "SWAP_hydrostatic_water_table_m_all_columns": -1.0,
+    "MODFLOW_head_m_all_columns": -1.0,
+    "SWAP_MODFLOW_interface_total_head_m_all_columns": -1.0,
+    "far_column_head_perturbation_m": 0.0,
+    "MODFLOW_XOLD_m_all_columns": -1.0,
+    "initial_drain_flow": "zero at hydrostatic equilibrium; verify from native budget"
+  },
+  "forcing_sequence": [
+    {
+      "window": "C2a equilibrium control",
+      "duration_day": 0.001,
+      "precipitation_m_per_day": 0.0,
+      "ET_roots_and_other_sources": "off",
+      "purpose": "Require an ordinary accepted transaction at the exactly matched hydrostatic origin before applying forcing."
+    },
+    {
+      "window": "C2b simple recharge",
+      "duration_day": 0.001,
+      "precipitation_m_per_day": 0.001,
+      "ET_roots_and_other_sources": "off",
+      "purpose": "Test vertical SWAP input followed by MODFLOW lateral redistribution to the sole left drain."
+    }
+  ],
+  "predictor": {
+    "source": "RESP01E accepted-trajectory local q(H) tangent",
+    "scope": "Use only at its matching hydrostatic origin; recompute after every accepted state. Do not extrapolate across a head change or reuse the heuristic -100 day inverse slope."
+  },
+  "frozen_gates": {
+    "temporal_head_budget_cm": 1e-5,
+    "coupled_flux_m_per_s": 1e-15,
+    "window_mass_m3": 1e-8,
+    "cumulative_mass_m3": 1e-6,
+    "strict_native_head_cm": 1e-12,
+    "strict_native_balance_cm": 1e-12,
+    "max_iterations": 16,
+    "backtracking": 8,
+    "existing_retries_and_substeps": "unchanged",
+    "no_reference_floor_substitution": true,
+    "no_tolerance_widening": true
+  },
+  "accounting": {
+    "accepted_C2a_expected_SWAP_storage_change_m3": 0.0,
+    "C2b_input_upper_bound_m3": 0.00005,
+    "whole_domain_balance": "integrated precipitation - ET - runoff - drain_outflow = delta_SWAP_storage; interface exchange is internal and is not counted twice",
+    "publication": "MODFLOW finalizes once, then SWAP commits once, then interface ledger commits once; reject must preserve committed state and accepted XOLD"
+  },
+  "required_observations": [
+    "first trial heads and q(H) origin",
+    "accept/reject stage and rejection counters",
+    "accepted windows and revisions",
+    "SWAP storage, MODFLOW heads and native drain budget",
+    "per-window and cumulative mass residual",
+    "far-to-near head response and internal face flows",
+    "fresh-process replay identity and rejected-state preservation"
+  ],
+  "decision_rules": {
+    "C2a_reject": "Retain as negative. Initial-head mismatch alone is not established as the cause; keep RESP01 open and trace backend rejection.",
+    "C2a_accept_C2b_reject": "Hydrostatic transaction is demonstrated, but simple-forcing coupling is not qualified; diagnose flux sign, forcing binding, temporal error and mass terms without changing gates.",
+    "C2a_and_C2b_accept": "Qualify only these bounded windows after all frozen head, flux, replay, ownership and mass checks pass. Do not infer timestep convergence, Hupsel readiness, restart qualification or canonical admission.",
+    "repeated_identical_forcing_runs": "Require fresh-process JSON identity for the same executable/source and initial state."
+  },
+  "execution_prerequisites": {
+    "research_fixture": "Set C1 SWAP columns 1..50 and MODFLOW cells 1..50 to the same -1.0 m total-head equilibrium; remove only the far-column +0.5 m uplift.",
+    "forcing_harness": "Expose zero-rain C2a and 1 mm/day precipitation C2b through the actual SWAP surface forcing path; keep ET, roots, runoff configuration and all coupling semantics explicit.",
+    "source_binding": "Rebuild the research fixture against the exact current canonical src blob set and persist its manifest before execution."
+  },
+  "claim_ceiling": "Research-only bounded first-window result; no C0/C1 repair, Hupsel qualification, full benchmark qualification or canonical admission.",
+  "canonical_admission": false
+}
