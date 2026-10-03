@@ -19,11 +19,13 @@ The current canonical head is `b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9`. The cu
 - the frozen PPA-WU04 state/transaction contract and review-only closeout;
 - PPA-WU04-A and PPA-WU04-B implementations for SWREDU, not SWINTER=1/2;
 - the admitted `mod_interception_source_window_runtime` P0 seam and its qualification;
-- no general SWINTER=1 source-window provider/application route that combines full B1.11 inputs, P0 accepted progress/restart, and a bound net-rain receiver.
+- the admitted SWINTER=1 process and typed net-rain binding are not yet composed with F-MIG431-INT12-P0 accepted progress/restart.
 
-A restricted SWINTER=1 process already exists in F-APP03: Hupsel with SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0 and SWCF=1. Its exact-source qualification covered 384 daily and 14,062 interval records with zero mismatches. The provider is `src/process/mod_pmdirect_swetr0_process.f90`; it is bounded and must be preserved. F-APP04 qualified its root and surface-demand bindings, but its status explicitly records PMdirect `net_rain_cm_per_day` as NOT_BOUND because no exact receiving contract was established. This slice must first determine whether the existing SWINTER=1 calculation and its typed outputs can be reused for the broader PPA-WU04 contract, and how accepted net rain enters the admitted top-boundary path. Do not duplicate the Hupsel formula or claim a general route before that reconciliation.
+A restricted SWINTER=1 route already exists in F-APP03/F-APP04: Hupsel with SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0 and SWCF=1. Its exact-source qualification covered 384 daily and 14,062 interval records with zero mismatches. Its daily forcing is uniform over the source day, so elapsed-time apportionment is the bounded profile tested here. The process is `src/process/mod_pmdirect_swetr0_process.f90`; its exact-source equation/result oracle is already admitted. F-APP04's typed root, surface-demand and net-rain-to-dynamic-top identity bindings are also admitted at merge `d223b7ab4ed297194c209f85d6b51bef86b79959`.
 
-PPA-WU04 explicitly records general SWINTER=1/2 implementation as not admitted. F-MIG431-INT12-P0 proves why the shared seam is necessary and is already canonically admitted at merge `4d7be05313336e437461f05642affe80bb9bb129`. P0 supplies source-window identity, deterministic aggregate apportionment, accepted progress, rollback and mid-window restart metadata. It contains no method-specific interception equations and must not be changed by this slice.
+The remaining gap is to compose those admitted outputs with P0's accepted progress, retry and restart record, synchronized to the FMR committed endpoint. This slice will not reimplement or broaden the Hupsel interception equation. P0's linear time apportionment is not claimed for event-weighted SWRAIN=1-3 or SWMETDETAIL=1 forcing; those routes need a separate event-allocation contract and qualification.
+
+PPA-WU04 explicitly records general SWINTER=1/2 implementation as not admitted. F-MIG431-INT12-P0 provides the shared progress/restart type seam and is already canonically admitted at merge `4d7be05313336e437461f05642affe80bb9bb129`. P0 supplies source-window identity, deterministic aggregate apportionment, accepted progress, rollback and mid-window restart metadata. It contains no method-specific interception equations and must not be changed by this slice.
 
 ## Source and equation authority
 
@@ -33,7 +35,7 @@ PPA-WU04 explicitly records general SWINTER=1/2 implementation as not admitted. 
 - F-PM06 source/call-order trace: `integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md`.
 - Independent public source trace: `SWAP-model/SWAP@07d74a82e9ba0465ec81a74e4d82b3dc03d856d9`, `src/atmosphere/interception.f90` and `src/atmosphere/meteoday.f90`.
 
-The independent source trace is corroborating evidence, not a replacement for the B1.11 authority. Before qualification, bind every frozen equation and output convention to the B1.11 member identity and build an independent equation oracle. Preserve legacy units, branch conditions, parameter/time-table semantics, irrigation selection and call order. If this source binding cannot be demonstrated, stop at the source-authority blocker and do not claim qualification.
+The independent source trace is corroborating evidence, not a replacement for the B1.11 authority. F-APP03 already provides the source-bound exact-route oracle for this restricted profile. Reuse that admitted oracle and preserve its B1.11 identity, units, branch conditions and call order. Do not duplicate the equation in this slice.
 
 The source trace identifies the VonHHBraden aggregate relation as follows, subject to exact B1.11 confirmation. The restricted F-APP03 route is an already qualified special case; compare its parameterization and output semantics against this full relation before deciding whether to reuse or generalize it:
 
@@ -41,7 +43,7 @@ The source trace identifies the VonHHBraden aggregate relation as follows, subje
 - `cofbb = min(1, 1-exp(-kdif*kdir*lai))`;
 - for `cofab > 1e-6`, `aintc = 0.1*cofab*lai*(1 - 1/(1 + rpd*cofbb/(cofab*lai)))`; otherwise `aintc=0`.
 
-The full daily/source-window orchestration also includes the legacy inactive-canopy/zero-input/snow guards, rain-irrigation partitioning, wet-canopy fraction, and demand blending. These are in scope only to the extent needed to reproduce the bounded qualified application route. Do not infer omitted branches from the formula above.
+The admitted F-APP03 source oracle already covers the bounded daily and interval outputs. The new evidence must demonstrate that composing its daily aggregate with P0 progress leaves those exact outputs and the F-APP04 net-rain identity unchanged. Inactive-canopy, irrigation, snow, rain-event and detailed-meteorology generalization remain outside this restricted slice.
 
 ## Frozen ownership and interfaces
 
@@ -60,14 +62,14 @@ Before implementation, record the exact typed input/output and transaction bindi
 
 Persist exact scope-specific tests and a reproducible runner. Required gates:
 
-1. Exact B1.11 SWINTER=1 aggregate/result oracle, including zero interception, low/no canopy, irrigation selection, and the threshold branch around `cofab=1e-6`.
+1. Reuse and independently preserve the admitted F-APP03 exact-source oracle for its SWETR=0/SWDIVIDE=1/SWMETDETAIL=0/SWRAIN=0/SWINTER=1/SWCF=1 profile.
 2. Source-window partition conservation, including unequal subspans and final bitwise aggregate closure.
 3. Rejected-trial progress immutability and failed-then-accepted retry equivalence from the same committed checkpoint.
 4. Mid-window restart with neither duplicated nor lost remaining aggregate.
-5. Exact call-order and output checks for net rain/irrigation, `wfrac`, and wet/dry transpiration demand where those outputs are part of the admitted route.
+5. Exact call-order and output checks for net rain, `wfrac`, and wet/dry transpiration demand on that admitted profile.
 6. A/B/A replay determinism, invalid-input fail-closed behavior, and O0/O2 output identity.
 7. Hard accepted water-mass closure and exactly-once accepted interception accounting.
-8. Preservation of PPA-WU01, PPA-WU03, PPA-WU04-A/B, P0 source-window runtime, and SWINTER=3 Rutter.
+8. Preservation of PPA-WU01, PPA-WU03, PPA-WU04-A/B, the exact F-APP03/F-APP04 postimages, P0 source-window runtime, and SWINTER=3 Rutter.
 9. Preservation of the admitted F-APP03 Hupsel vectors and F-APP04 root/surface bindings.
 10. No production or test changes beyond the preregistered ownership surface.
 
@@ -86,5 +88,5 @@ No P0 seam changes are permitted. Any newly discovered shared-interface requirem
 
 ## Admission boundary
 
-Admission may claim only the qualified SWINTER=1 profile. It does not admit SWINTER=2, broad legacy meteorological IO/calendar grammar, arbitrary snowfall/runon combinations, or unrestricted application composition. PPA-WU04-D / F-MIG431-INT12-D remains a separate follow-on slice.
+Admission may claim only P0 progress/restart composition for the already qualified F-APP03/F-APP04 Hupsel profile. It does not broaden SWINTER=1 equations or weather envelopes; SWINTER=2, event-weighted rainfall, SWMETDETAIL=1, broad legacy meteorological IO/calendar grammar, snowfall/runon combinations and unrestricted application composition remain unadmitted. PPA-WU04-D / F-MIG431-INT12-D remains a separate follow-on slice.
 
