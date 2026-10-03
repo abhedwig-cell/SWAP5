@@ -79,6 +79,7 @@ module mod_transaction_reference
     procedure(advance_iface), deferred :: advance
     procedure(storage_iface), deferred :: storage
     procedure(temporal_error_iface), deferred :: temporal_error
+    procedure :: temporal_error_with_context => default_temporal_error_with_context
     procedure :: storage_accounting_status => default_storage_accounting_status
     procedure :: attempt_context_required => default_attempt_context_required
     procedure :: capture_attempt_context => default_capture_attempt_context
@@ -182,6 +183,15 @@ module mod_transaction_reference
 
 contains
 
+  real(real64) function default_temporal_error_with_context(self, full_state, half_state, &
+                                                            full_context, half_context) result(value)
+    class(transaction_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: full_state, half_state
+    class(transaction_attempt_context_t), intent(in), optional :: full_context, half_context
+    ! Additive seam: existing models retain exactly their endpoint policy.
+    value = self%temporal_error(full_state, half_state)
+  end function default_temporal_error_with_context
+
   logical function default_attempt_context_required(self) result(required)
     class(transaction_model_t), intent(in) :: self
     if (.not. same_type_as(self, self)) error stop 'unreachable transaction model type'
@@ -227,7 +237,7 @@ contains
     class(transaction_state_t), allocatable :: full_state
     class(transaction_state_t), allocatable :: half_state
     class(transaction_attempt_context_t), allocatable :: checkpoint_context
-    class(transaction_attempt_context_t), allocatable :: half_context
+    class(transaction_attempt_context_t), allocatable :: full_context, half_context
     type(trial_outcome_t) :: full_outcome, half1_outcome, half2_outcome
     real(real64) :: attempt_dt, attempt_t1, midpoint
     real(real64) :: storage0, storage_full, storage_half
@@ -288,6 +298,7 @@ contains
         cycle
       end if
 
+      if (context_required) call model%capture_attempt_context(full_context)
       storage_full = model%storage(full_state)
       call model%storage_accounting_status(full_state, full_storage_end_complete, full_end_missing_mask)
       full_mass_residual = storage_full - storage0 - (full_outcome%mass_in - full_outcome%mass_out)
@@ -351,7 +362,11 @@ contains
       half_mass_residual = storage_half - storage0 - &
         ((half1_outcome%mass_in + half2_outcome%mass_in) - &
          (half1_outcome%mass_out + half2_outcome%mass_out))
-      terr = model%temporal_error(full_state, half_state)
+      if (context_required) then
+        terr = model%temporal_error_with_context(full_state, half_state, full_context, half_context)
+      else
+        terr = model%temporal_error_with_context(full_state, half_state)
+      end if
 
       result%full_mass_residual = full_mass_residual
       result%half_mass_residual = half_mass_residual

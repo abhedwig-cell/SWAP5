@@ -13,7 +13,9 @@ program test_fapp09_ribasim_external_surface_water_profile
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, &
        fmr_new_b110_fixed_weir_surface_water_committed_state, prepare_fmr_b110_default_mvg, &
-       FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV
+       FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV, fmr_scv_endpoint_exchange_error
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_drainage_extended_exchange, only: EXT_DRAIN_TUBE, EXT_DRAIN_TOP_NONE
   use mod_fmr_surface_water_head_forcing_adapter, only: fmr_surface_water_head_forcing_materializer_t, &
@@ -40,13 +42,19 @@ program test_fapp09_ribasim_external_surface_water_profile
 
   call get_command_argument(1,mode)
 
+  if (trim(mode)=='unified-cv') then
+    call verify_scv_norm()
+    call verify_scv_lifecycle()
+    call verify_scv_reverse_exchange()
+    call verify_scv_matrix()
+  end if
   call verify_materializer_guards()
   if (trim(mode)=='transition'.or.trim(mode)=='transition-characterize') call verify_transition_scope()
   call verify_owner_xor()
   call verify_positive_recomposition_and_commit()
   if (trim(mode)/='preservation') then
     call verify_external_top_observation()
-    if (trim(mode)/='characterize'.and.trim(mode)/='transition-characterize'.and.trim(mode)/='unified-cv') &
+    if (trim(mode)/='characterize'.and.trim(mode)/='transition-characterize') &
          call verify_external_top_component_transaction()
   else
     call verify_default_off_capability()
@@ -285,7 +293,9 @@ contains
     base%top_runoff_resistance_day=1.0_real64
     base%top_runoff_exponent=1.0_real64
     if(trim(mode)=='unified-cv')then
-      config%transaction%temporal_tolerance=1.0e15_real64
+      config%transaction%temporal_tolerance=1.0e-2_real64
+      config%transaction%max_retries=16
+      config%max_committed_substeps=2048
       base%external_top_surface_formulation=FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV
       parameters%external_top_surface_microrelief_depth_cm=0.05_real64
       parameters%external_top_surface_contact_conductance_scale=1.0_real64
@@ -317,7 +327,7 @@ contains
       write(*,'(A,L1)')'TOP03_DIAG_STATE_PROFILE=',observation%state_profile_prepared
       write(*,'(A,L1)')'TOP03_DIAG_EXEC_PREVIEW=',observation%execution_admission_preview
     end if
-    if (trim(mode)=='characterize'.or.trim(mode)=='transition-characterize'.or.trim(mode)=='unified-cv') then
+    if (trim(mode)=='characterize'.or.trim(mode)=='transition-characterize' ) then
       observation=backend%observation()
       call require(.not.result%completed.and..not.candidate%ready(),'identity policy rejects transient candidate')
       call require(observation%solver_status==1,'characterization Richards converged')
@@ -325,27 +335,33 @@ contains
       call require(diagnostics%temporal_rejections==3,'characterization isolated temporal rejection')
       call require(committed%current_revision()==0_int64,'characterization rejects without commit')
       call require(.not.observation%top_surface_exchange_available,'rejected interval publishes no top carrier')
-      if(trim(mode)=='unified-cv')then
-        call require(observation%solver_executed.and.diagnostics%accepted_substeps==0, &
-             'unified CV reaches Richards but no substep passes temporal acceptance')
-        call require(ieee_is_finite(observation%top_flux),'unified CV finite converged top flux')
-        write(*,'(A,I0,A,I0,A,ES24.16)')'FAPP09_UNIFIED_CV_SOLVER=',observation%solver_status, &
-             ',iterations=',observation%solver_diagnostics%nonlinear_iterations,',qtop=',observation%top_flux
-        write(*,'(A)')'FAPP09_UNIFIED_SURFACE_CV_TEMPORAL_BLOCKER=PASS'
-      end if
       if (trim(mode)=='transition-characterize') &
            write(*,'(A)')'FAPP09_NEARSATURATION_TRANSIENT_REJECTED_WITHOUT_PUBLICATION=PASS'
       write(*,'(A)')'FAPP09_TOP03_TRANSIENT_TEMPORAL_BLOCKER=PASS'
       return
     end if
     call require(result%completed.and.candidate%ready(),'external top trial completed')
+    if (trim(mode)=='unified-cv') then
+      write(*,'(A,I0,A,I0,A,I0)') 'FAPP09_UNIFIED_CV_ACCEPT=substeps:',diagnostics%accepted_substeps, &
+           ',temporal_rejects:',diagnostics%temporal_rejections,',Newton:',diagnostics%nonlinear_iterations
+      write(*,'(A,ES24.16)') 'FAPP09_UNIFIED_CV_COMBINED_MASS=',result%mass%residual
+      write(*,'(A)') 'FAPP09_UNIFIED_SURFACE_CV_ACCEPT=PASS'
+    end if
     observation=backend%observation()
     call require(observation%solver_status==1,'external top Richards converged')
     call require(result%mass%complete,'external top ledger complete')
     call require(abs(result%mass%residual)<=config%transaction%mass_tolerance,'external top ledger closure')
-    call require(abs(observation%top_surface_signed_swap_to_external_cm + &
-         result%mass%total_in-result%mass%total_out-base%bottom_flux*trial_duration)<=1.0e-10_real64, &
-         'selected whole-window transfer matches independent ledger')
+    if (trim(mode)=='unified-cv') then
+      call require(result%bottom_interface_exchange_available,'SCV accepted bottom integral available')
+      call require(abs(observation%top_surface_signed_swap_to_external_cm + &
+           result%mass%total_in-result%mass%total_out+result%bottom_outward_exchange_native)<=1.0e-10_real64, &
+           'SCV whole-window exchange matches accepted bottom and mass ledger')
+      write(*,'(A,ES24.16)') 'FAPP09_UNIFIED_CV_EXCHANGE=',observation%top_surface_signed_swap_to_external_cm
+    else
+      call require(abs(observation%top_surface_signed_swap_to_external_cm + &
+           result%mass%total_in-result%mass%total_out-base%bottom_flux*trial_duration)<=1.0e-10_real64, &
+           'selected whole-window transfer matches independent ledger')
+    end if
     call require(observation%top_surface_exchange_available,'external top observation available')
     call require(observation%top_surface_signed_swap_to_external_cm<0.0_real64,'external top inundation signed negative')
     call require(abs(observation%top_surface_closure_residual_cm)<=exchange_tol,'external top surface closure')
@@ -424,27 +440,32 @@ contains
     type(kernel_result_t) :: result0,result1
     type(kernel_diagnostics_t) :: diagnostics
     type(fmr_b110_physical_state_t) :: state
-    real(real64) :: heads(1),expected,replayed
+    real(real64) :: heads(1),expected,replayed,end_time
     logical :: did_commit,ok
     integer :: status
 
+    end_time=t1
+    if(trim(mode)=='unified-cv')end_time=t0+0.03125_real64
     call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
     call backend%initialize(top)
+    if(trim(mode)/='unified-cv')then
     call materializer%initialize(base,parameters,status)
     heads(1)=-12.25_real64
     call materializer%materialize(heads,forcing,status)
     call committed%capture_checkpoint(checkpoint,ok)
-    call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result0,candidate,diagnostics)
+    call backend%run_trial(column,template,parameters,committed,forcing,config,t0,end_time,checkpoint,result0,candidate,diagnostics)
     call require(result0%completed,'preservation baseline completed')
     call backend%discard_trial_candidate(candidate,diagnostics)
     parameters%external_top_surface_water_capable=.true.
-    call backend%run_trial(column,template,parameters,committed,forcing,config,t0,t1,checkpoint,result1,candidate,diagnostics)
+    call backend%run_trial(column,template,parameters,committed,forcing,config,t0,end_time,checkpoint,result1,candidate,diagnostics)
     call require(result1%completed,'capability-on forcing-off preservation completed')
     call require(result0%mass%total_in==result1%mass%total_in.and.result0%mass%total_out==result1%mass%total_out, &
          'capability-on forcing-off identical ledger')
     call backend%discard_trial_candidate(candidate,diagnostics)
     write(*,'(A)')'TOP03_CAPABILITY_ON_FORCING_OFF_PRESERVATION=PASS'
 
+    end if
+    parameters%external_top_surface_water_capable=.true.
     parameters%max_iterations=80
     parameters%max_backtracking=16
     ! Surface/transaction fixture, no temporal accuracy claim. Mass gate unchanged.
@@ -456,32 +477,40 @@ contains
     base%top_ponding_max_cm=1.0_real64
     base%top_runoff_resistance_day=1.0_real64
     base%top_runoff_exponent=1.0_real64
+    if(trim(mode)=='unified-cv')then
+      base%external_top_surface_formulation=FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV
+      base%top_ponding_max_cm=0; base%top_runoff_resistance_day=0
+      parameters%external_top_surface_microrelief_depth_cm=0.05_real64
+      parameters%external_top_surface_contact_conductance_scale=1
+      config%transaction%temporal_tolerance=0.01_real64
+      config%transaction%max_retries=16;config%max_committed_substeps=2048
+    end if
     call materializer%initialize(base,parameters,status)
     call require(status==FMR_SW_HEAD_FORCING_OK,'top component materializer initialized')
     heads(1)=0.02_real64
     call participant%capture_origin(committed,status)
-    call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial,status)
+    call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,end_time,heads,trial,status)
     call require(status==FMR_SW_PARTICIPANT_OK.and.trial%valid,'top component real trial completed')
     observation=backend%observation()
     expected=observation%top_surface_signed_swap_to_external_cm
     call require(observation%top_surface_exchange_available.and.expected<0.0_real64,'top component negative inundation')
     call require(committed%current_revision()==0_int64,'top trial remains tentative')
-    call require(.not.participant%publication_ready(committed,t0,t1,trial%signed_soil_to_surface_exchange_cm,exchange_tol), &
+    call require(.not.participant%publication_ready(committed,t0,end_time,trial%signed_soil_to_surface_exchange_cm,exchange_tol), &
          'top-active scalar publication rejected')
-    call participant%commit_candidate(backend,committed,t0,t1,trial%signed_soil_to_surface_exchange_cm,exchange_tol,did_commit,status)
+    call participant%commit_candidate(backend,committed,t0,end_time,trial%signed_soil_to_surface_exchange_cm,exchange_tol,did_commit,status)
     call require(.not.did_commit.and.participant%has_live_candidate().and.participant%has_origin(),'scalar bypass preserves candidate')
     receipt%valid=.true.
     receipt%top_swap_to_surface_cm=expected+0.01_real64
     receipt%subsurface_swap_to_surface_cm=trial%signed_soil_to_surface_exchange_cm-0.01_real64
-    call participant%commit_component_candidate(backend,committed,t0,t1,expected,receipt,exchange_tol,did_commit,status)
+    call participant%commit_component_candidate(backend,committed,t0,end_time,expected,receipt,exchange_tol,did_commit,status)
     call require(.not.did_commit.and.committed%current_revision()==0_int64,'scalar-total masking rejected')
     receipt%subsurface_swap_to_surface_cm=trial%signed_soil_to_surface_exchange_cm
-    call participant%commit_component_candidate(backend,committed,t0,t1,expected,receipt,exchange_tol,did_commit,status)
+    call participant%commit_component_candidate(backend,committed,t0,end_time,expected,receipt,exchange_tol,did_commit,status)
     call require(.not.did_commit.and.participant%has_live_candidate().and.participant%has_origin(),'wrong top receipt preserves live origin')
 
     call participant%discard_candidate(backend)
     heads(1)=0.03_real64
-    call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,t1,heads,trial,status)
+    call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,t0,end_time,heads,trial,status)
     call require(status==FMR_SW_PARTICIPANT_OK.and.trial%valid,'same-origin changed head replay')
     observation=backend%observation()
     replayed=observation%top_surface_signed_swap_to_external_cm
@@ -490,11 +519,11 @@ contains
     call fmr_new_b110_committed_state(other,column_id+1_int64,state,t0,ok)
     receipt%top_swap_to_surface_cm=replayed
     receipt%subsurface_swap_to_surface_cm=trial%signed_soil_to_surface_exchange_cm
-    call participant%commit_component_candidate(backend,other,t0,t1,replayed,receipt,exchange_tol,did_commit,status)
+    call participant%commit_component_candidate(backend,other,t0,end_time,replayed,receipt,exchange_tol,did_commit,status)
     call require(.not.did_commit.and.other%current_revision()==0_int64.and.participant%has_live_candidate(),'top stale origin rejected')
-    call participant%commit_component_candidate(backend,committed,t0,t1,replayed,receipt,exchange_tol,did_commit,status)
+    call participant%commit_component_candidate(backend,committed,t0,end_time,replayed,receipt,exchange_tol,did_commit,status)
     call require(did_commit.and.status==FMR_SW_PARTICIPANT_OK.and.committed%current_revision()==1_int64,'top correct exactly-once commit')
-    call participant%commit_component_candidate(backend,committed,t0,t1,replayed,receipt,exchange_tol,did_commit,status)
+    call participant%commit_component_candidate(backend,committed,t0,end_time,replayed,receipt,exchange_tol,did_commit,status)
     call require(.not.did_commit.and.committed%current_revision()==1_int64,'top duplicate commit rejected')
     write(*,'(A)')'TOP03_REAL_COMPONENT_TRANSACTION=PASS'
   end subroutine verify_external_top_component_transaction
@@ -562,6 +591,281 @@ contains
          'stale-origin rejection nonmutating')
     write(*,'(A)') 'FAPP09_STALE_ORIGIN_FAIL_CLOSED=PASS'
   end subroutine verify_stale_origin
+
+  subroutine configure_scv_case(committed,column,template,parameters,base,config)
+    type(kernel_committed_state_t), intent(out) :: committed
+    type(fmr_logical_column_t), intent(out) :: column
+    type(fmr_template_t), intent(out) :: template
+    type(fmr_b110_physical_parameters_t), intent(out) :: parameters
+    type(fmr_b110_physical_forcing_t), intent(out) :: base
+    type(canonical_numerical_config_t), intent(out) :: config
+    call initialize_case(committed,column,template,parameters,base,config,0.0_real64)
+    parameters%external_top_surface_water_capable=.true.
+    parameters%max_iterations=80; parameters%max_backtracking=16
+    parameters%drainage_response_active=.false.
+    deallocate(parameters%drainage_response_levels)
+    parameters%external_top_surface_microrelief_depth_cm=0.05_real64
+    parameters%external_top_surface_contact_conductance_scale=1.0_real64
+    allocate(base%drainage_flux_by_level(1,parameters%active_nodes));base%drainage_flux_by_level=0
+    base%top_flux=0; base%external_top_surface_water_supplied=.true.
+    base%external_top_surface_formulation=FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV
+    base%external_top_surface_water_head_cm=0.02_real64
+    base%external_top_surface_water_sill_cm=0.01_real64
+    config%transaction%temporal_tolerance=0.01_real64
+    config%transaction%max_retries=16;config%max_committed_substeps=2048
+  end subroutine
+
+  subroutine same_scv_state(a,b,label)
+    class(transaction_state_t),intent(in)::a,b
+    character(*),intent(in)::label
+    select type(a)
+    type is(fmr_b110_physical_state_t)
+      select type(b)
+      type is(fmr_b110_physical_state_t)
+        call require(all(a%pressure_head==b%pressure_head).and.all(a%water_content==b%water_content).and. &
+             a%ponding_depth==b%ponding_depth.and.a%groundwater_level==b%groundwater_level,label)
+      class default
+        call require(.false.,label)
+      end select
+    class default
+      call require(.false.,label)
+    end select
+  end subroutine
+
+  subroutine verify_scv_norm()
+    type(fmr_b110_physical_state_t)::a,b
+    real(real64)::v
+    a%active_nodes=2;allocate(a%pressure_head(2),a%water_content(2))
+    a%pressure_head=-1;a%water_content=0.3_real64;b=a
+    call require(fmr_scv_endpoint_exchange_error(a,b,[1.0_real64,1.0_real64],0.0_real64,0.0_real64)==0, &
+         'SCV identical endpoint/context zero')
+    b%water_content=[0.31_real64,0.29_real64]
+    v=fmr_scv_endpoint_exchange_error(a,b,[1.0_real64,1.0_real64],0.0_real64,0.0_real64)
+    call require(abs(v-0.02_real64)<1e-14_real64,'SCV soil redistribution cannot cancel')
+    b=a;b%pressure_head(1)=0
+    call require(fmr_scv_endpoint_exchange_error(a,b,[1.0_real64,1.0_real64],0.0_real64,0.0_real64)==1, &
+         'SCV head channel independently guarded')
+    b=a;b%ponding_depth=0.125_real64
+    call require(fmr_scv_endpoint_exchange_error(a,b,[1.0_real64,1.0_real64],0.0_real64,0.0_real64)==0.125_real64, &
+         'SCV surface storage independently guarded')
+    b=a
+    call require(fmr_scv_endpoint_exchange_error(a,b,[1.0_real64,1.0_real64],0.0_real64,0.25_real64)==0.25_real64, &
+         'SCV exchange-only mismatch independently guarded')
+    b%water_content(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+    call require(fmr_scv_endpoint_exchange_error(a,b,[1.0_real64,1.0_real64],0.0_real64,0.0_real64)>1e100_real64, &
+         'SCV nonfinite state fails closed')
+    b=a
+    call require(fmr_scv_endpoint_exchange_error(a,b,[1.0_real64],0.0_real64,0.0_real64)>1e100_real64, &
+         'SCV malformed geometry fails closed')
+    call require(fmr_scv_endpoint_exchange_error(a,b,[1.0_real64,1.0_real64], &
+         ieee_value(0.0_real64,ieee_quiet_nan),0.0_real64)>1e100_real64,'SCV nonfinite exchange fails closed')
+    write(*,'(A)')'FAPP09_SCV_ORTHOGONAL_ERROR_CHANNELS=PASS'
+  end subroutine
+
+  subroutine verify_scv_lifecycle()
+    type(kernel_committed_state_t)::committed,restored(1)
+    type(fmr_logical_column_t)::column
+    type(fmr_template_t)::template
+    type(fmr_b110_physical_parameters_t)::parameters
+    type(fmr_b110_physical_forcing_t)::base
+    type(canonical_numerical_config_t)::config,strict
+    type(fmr_serialized_reference_backend_t)::backend,new_backend
+    type(fmr04_fixed_flux_top_provider_t),target::top,new_top
+    type(kernel_checkpoint_t)::checkpoint,cp2
+    type(kernel_candidate_state_t)::candidate,other
+    type(kernel_result_t)::result,result2
+    type(kernel_diagnostics_t)::diag,diag2
+    type(fmr_serialized_physical_observation_t)::obs
+    type(fmr_committed_restart_bundle_t)::bundle
+    class(transaction_state_t),allocatable::start,first,replay
+    real(real64)::tm,ending,exchange
+    integer::status
+    logical::ok,did_commit
+    call configure_scv_case(committed,column,template,parameters,base,config)
+    tm=t0+0.03125_real64;ending=tm+0.03125_real64
+    call backend%initialize(top)
+    call committed%snapshot(start,ok);call require(ok,'SCV initial snapshot')
+    call committed%capture_checkpoint(checkpoint,ok)
+    call backend%run_trial(column,template,parameters,committed,base,config,t0,tm,checkpoint,result,candidate,diag)
+    call require(result%completed.and.candidate%ready(),'SCV reference accept')
+    call candidate%snapshot(first,ok);call require(ok,'SCV accepted snapshot')
+    obs=backend%observation();exchange=obs%top_surface_signed_swap_to_external_cm
+    call require(diag%accepted_substeps>1.and.diag%temporal_rejections>0,'SCV retry/subdivision exercised')
+    call require(committed%current_revision()==0_int64,'SCV accept remains outer tentative')
+    call backend%discard_trial_candidate(candidate,diag)
+    obs=backend%observation()
+    call require(.not.obs%top_surface_exchange_available.and.obs%top_surface_signed_swap_to_external_cm==0, &
+         'SCV discard invalidates and clears carrier')
+    strict=config;strict%transaction%temporal_tolerance=1e-12_real64;strict%transaction%max_retries=0
+    call backend%run_trial(column,template,parameters,committed,base,strict,t0,tm,checkpoint,result,candidate,diag)
+    call require(.not.result%completed.and..not.candidate%ready().and.diag%temporal_rejections==1,'SCV forced reject')
+    obs=backend%observation()
+    call require(.not.obs%top_surface_exchange_available.and.obs%top_surface_signed_swap_to_external_cm==0, &
+         'SCV rejection clears carrier')
+    strict=config;strict%max_committed_substeps=1
+    call backend%run_trial(column,template,parameters,committed,base,strict,t0,tm,checkpoint,result,candidate,diag)
+    call require(.not.result%completed.and..not.candidate%ready().and.diag%accepted_substeps==1, &
+         'SCV outer rollback after accepted internal progress')
+    obs=backend%observation()
+    call require(.not.obs%top_surface_exchange_available.and.obs%top_surface_signed_swap_to_external_cm==0.and. &
+         obs%top_surface_soil_supply_cm==0,'SCV incomplete outer window publishes no partial ledger')
+    call committed%snapshot(replay,ok);call same_scv_state(start,replay,'SCV failed trials leave soil/surface unchanged')
+    call backend%run_trial(column,template,parameters,committed,base,config,t0,tm,checkpoint,result,candidate,diag)
+    call require(result%completed,'SCV replay accepted')
+    call candidate%snapshot(replay,ok);call same_scv_state(first,replay,'SCV exact endpoint replay after rollback')
+    obs=backend%observation()
+    call require(obs%top_surface_signed_swap_to_external_cm==exchange,'SCV exact integral replay after rollback')
+    call backend%commit_trial_candidate(committed,candidate,diag,did_commit,status)
+    call require(did_commit.and.committed%current_revision()==1_int64,'SCV single outer commit')
+    call backend%commit_trial_candidate(committed,candidate,diag,did_commit,status)
+    call require(.not.did_commit.and.committed%current_revision()==1_int64,'SCV duplicate commit refused')
+    call fmr_export_committed_restart([column],[template],[committed],49009_int64,bundle,ok,status)
+    call require(ok.and.status==FMR_RESTART_OK,'SCV decoded restart export')
+    call fmr_restore_committed_restart(bundle,49009_int64,[column],[template],restored,ok,status)
+    call require(ok.and.status==FMR_RESTART_OK,'SCV decoded restart restore')
+    call new_backend%initialize(new_top)
+    call restored(1)%capture_checkpoint(cp2,ok)
+    call new_backend%run_trial(column,template,parameters,restored(1),base,config,tm,ending,cp2,result2,other,diag2)
+    call committed%capture_checkpoint(checkpoint,ok)
+    call backend%run_trial(column,template,parameters,committed,base,config,tm,ending,checkpoint,result,candidate,diag)
+    call require(result%completed.and.result2%completed,'SCV restored continuation accepts')
+    call candidate%snapshot(first,ok);call other%snapshot(replay,ok)
+    call same_scv_state(first,replay,'SCV restored soil/surface continuation identity')
+    obs=backend%observation();exchange=obs%top_surface_signed_swap_to_external_cm
+    obs=new_backend%observation()
+    call require(obs%top_surface_signed_swap_to_external_cm==exchange,'SCV restored interval exchange identity')
+    call require(result%mass%residual==result2%mass%residual.and.diag%nonlinear_iterations==diag2%nonlinear_iterations, &
+         'SCV restored accounting and Newton work identity')
+    write(*,'(A)')'FAPP09_SCV_ACCEPT_REJECT_REPLAY_SUBDIVISION_ROLLBACK_RESTART=PASS'
+  end subroutine
+
+  subroutine verify_scv_reverse_exchange()
+    type(kernel_committed_state_t)::committed
+    type(fmr_logical_column_t)::column
+    type(fmr_template_t)::template
+    type(fmr_b110_physical_parameters_t)::parameters
+    type(fmr_b110_physical_forcing_t)::base
+    type(fmr_b110_physical_state_t)::state
+    type(canonical_numerical_config_t)::config
+    type(fmr_serialized_reference_backend_t)::backend
+    type(fmr04_fixed_flux_top_provider_t),target::top
+    type(kernel_checkpoint_t)::checkpoint
+    type(kernel_candidate_state_t)::candidate
+    type(kernel_result_t)::result
+    type(kernel_diagnostics_t)::diag
+    type(fmr_serialized_physical_observation_t)::obs
+    logical::ok
+    call configure_scv_case(committed,column,template,parameters,base,config)
+    call build_base_state(parameters,state)
+    state%ponding_depth=0.05_real64
+    committed=kernel_committed_state_t()
+    call fmr_new_b110_committed_state(committed,column_id,state,t0,ok)
+    call require(ok,'SCV preloaded local surface state')
+    base%external_top_surface_water_head_cm=0
+    call backend%initialize(top)
+    call committed%capture_checkpoint(checkpoint,ok)
+    call backend%run_trial(column,template,parameters,committed,base,config,t0,t0+0.0001_real64, &
+         checkpoint,result,candidate,diag)
+    call require(result%completed.and.candidate%ready(),'SCV reverse exchange accepted')
+    obs=backend%observation()
+    call require(obs%top_surface_exchange_available.and.obs%top_surface_signed_swap_to_external_cm>1e-12_real64, &
+         'SCV genuine outward exchange above rounding noise')
+    call require(result%mass%complete.and.abs(result%mass%residual)<1e-10_real64,'SCV reverse combined balance')
+    write(*,'(A,ES24.16,A,I0)')'FAPP09_SCV_REVERSE_EXCHANGE=',obs%top_surface_signed_swap_to_external_cm, &
+         ',Newton:',diag%nonlinear_iterations
+    write(*,'(A)')'FAPP09_SCV_SIGNED_REVERSE_ACCEPT=PASS'
+    call backend%discard_trial_candidate(candidate,diag)
+  end subroutine
+
+  subroutine verify_scv_matrix()
+    type(kernel_committed_state_t)::committed
+    type(fmr_logical_column_t)::column
+    type(fmr_template_t)::template
+    type(fmr_b110_physical_parameters_t)::parameters
+    type(fmr_b110_physical_forcing_t)::base
+    type(canonical_numerical_config_t)::config
+    type(fmr_serialized_reference_backend_t)::backend
+    type(fmr04_fixed_flux_top_provider_t),target::top
+    type(kernel_checkpoint_t)::checkpoint
+    type(kernel_candidate_state_t)::candidate
+    type(kernel_result_t)::result
+    type(kernel_diagnostics_t)::diag
+    type(fmr_serialized_physical_observation_t)::obs
+    class(transaction_state_t),allocatable::before,after
+    integer,parameter::refs(8)=[1,2,4,8,16,32,64,128]
+    real(real64)::start,ending,stage,peak,u,soil_res,surface_res,combined_res,exchange,total_e,soil_delta,surface_delta
+    real(real64)::max_soil,max_surface,max_combined
+    integer::c,r,i,n,substeps,rejects,newton,outward,inward,i_status
+    logical::ok,did_commit
+    do c=1,5
+      do r=1,size(refs)
+        if(c==5.and.r/=2)cycle
+        n=refs(r)
+        call configure_scv_case(committed,column,template,parameters,base,config)
+        call backend%initialize(top)
+        total_e=0;substeps=0;rejects=0;newton=0;outward=0;inward=0;max_soil=0;max_surface=0;max_combined=0
+        do i=1,n
+          start=t0+duration*real(i-1,real64)/n;ending=t0+duration*real(i,real64)/n
+          select case(c)
+          case(1);stage=-1e-8_real64
+          case(2);stage=0
+          case(3);stage=1e-8_real64
+          case default
+            peak=0.02_real64;if(c==5)peak=2
+            u=real(i,real64)/n
+            stage=peak*max(0.0_real64,min(4*u,1.0_real64,4*(1-u)))
+          end select
+          base%external_top_surface_water_head_cm=stage
+          call committed%capture_checkpoint(checkpoint,ok)
+          call committed%snapshot(before,ok)
+          call backend%run_trial(column,template,parameters,committed,base,config,start,ending,checkpoint,result,candidate,diag)
+          if(.not.result%completed) then
+            obs=backend%observation()
+            write(*,'(A,8I8,3ES24.16)')'FAPP09_SCV_MATRIX_FAILED=',c,n,i,diag%accepted_substeps, &
+                 diag%solver_rejections,diag%temporal_rejections,diag%mass_rejections,diag%nonlinear_iterations, &
+                 diag%max_temporal_indicator,obs%top_flux,obs%bottom_flux
+          end if
+          if(c==5.and..not.result%completed)then
+            call require(.not.candidate%ready().and.diag%accepted_substeps>0.and.diag%solver_rejections>0, &
+                 'SCV large-stage failure after progress reproduced')
+            call require(.not.obs%top_surface_exchange_available.and.obs%top_surface_signed_swap_to_external_cm==0.and. &
+                 obs%top_surface_soil_supply_cm==0,'SCV large-stage failure clears selected ledger')
+            call committed%snapshot(after,ok)
+            call same_scv_state(before,after,'SCV large-stage failure restores soil/surface origin')
+            write(*,'(A)')'FAPP09_SCV_LARGE_STAGE_FAILS_WITHOUT_PUBLICATION=PASS'
+            exit
+          end if
+          call require(result%completed.and.candidate%ready(),'SCV stage/refinement window accepts')
+          call candidate%snapshot(after,ok)
+          select type(b=>before)
+          type is(fmr_b110_physical_state_t)
+            select type(a=>after)
+            type is(fmr_b110_physical_state_t)
+              soil_delta=sum((a%water_content-b%water_content)*parameters%dz)
+              surface_delta=a%ponding_depth-b%ponding_depth
+            end select
+          end select
+          obs=backend%observation();exchange=obs%top_surface_signed_swap_to_external_cm
+          soil_res=soil_delta-obs%top_surface_soil_supply_cm+result%bottom_outward_exchange_native
+          surface_res=surface_delta+exchange+obs%top_surface_soil_supply_cm
+          combined_res=soil_delta+surface_delta+exchange+result%bottom_outward_exchange_native
+          call require(max(abs(soil_res),abs(surface_res),abs(combined_res))<1e-10_real64,'SCV separate owner balances')
+          max_soil=max(max_soil,abs(soil_res));max_surface=max(max_surface,abs(surface_res))
+          max_combined=max(max_combined,abs(combined_res))
+          total_e=total_e+exchange;substeps=substeps+diag%accepted_substeps
+          rejects=rejects+diag%temporal_rejections;newton=newton+diag%nonlinear_iterations
+          if(exchange>1e-12_real64)outward=outward+1
+          if(exchange< -1e-12_real64)inward=inward+1
+          call backend%commit_trial_candidate(committed,candidate,diag,did_commit,i_status)
+          call require(did_commit,'SCV matrix commit')
+        end do
+        if(c==5)cycle
+        write(*,'(A,7(I8,1X),4(ES24.16,1X))')'FAPP09_SCV_MATRIX=',c,n,substeps,rejects,newton,inward,outward, &
+             total_e,max_soil,max_surface,max_combined
+      end do
+    end do
+    write(*,'(A)')'FAPP09_SCV_STAGE_REFINEMENT_MASS_MATRIX=PASS'
+  end subroutine
 
   subroutine initialize_case(committed,column,template,parameters,base,config,balancing_qssdi)
     type(kernel_committed_state_t), intent(out) :: committed

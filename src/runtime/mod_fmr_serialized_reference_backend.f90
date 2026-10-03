@@ -99,6 +99,7 @@ module mod_fmr_serialized_reference_backend
   integer, parameter, public :: B110_SWBOTB2_OK = 0
   integer, parameter, public :: FMR_TOP_SURFACE_FORMULATION_IMPOSED_HEAD = 0
   integer, parameter, public :: FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV = 1
+  public :: fmr_scv_endpoint_exchange_error
   real(real64), parameter :: FMR_PRACTICAL_RICHARDS_A2C_TOL = 1.0e-8_real64
   real(real64), parameter :: FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM = 2.8e-16_real64
   integer, parameter, public :: B110_SWBOTB2_INVALID_CONTROL = 1
@@ -314,6 +315,7 @@ module mod_fmr_serialized_reference_backend
     logical :: top_surface_exchange_available = .false.
     real(real64) :: top_surface_signed_swap_to_external_cm = 0.0_real64
     real(real64) :: top_surface_closure_residual_cm = 0.0_real64
+    real(real64) :: top_surface_soil_supply_cm = 0.0_real64
     logical :: macropore_top_input_active = .false.
     real(real64) :: macropore_requested_top_cm = 0.0_real64
     real(real64) :: macropore_accepted_top_cm = 0.0_real64
@@ -399,6 +401,7 @@ module mod_fmr_serialized_reference_backend
     logical :: top_exchange_window_available = .false.
     real(real64) :: top_exchange_window_cm = 0.0_real64
     real(real64) :: top_exchange_window_residual_cm = 0.0_real64
+    real(real64) :: top_soil_supply_window_cm = 0.0_real64
     logical :: bottom_thermal_active = .false.
     logical :: bottom_thermal_valid = .true.
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
@@ -414,6 +417,7 @@ module mod_fmr_serialized_reference_backend
     logical :: top_exchange_window_available = .false.
     real(real64) :: top_exchange_window_cm = 0.0_real64
     real(real64) :: top_exchange_window_residual_cm = 0.0_real64
+    real(real64) :: top_soil_supply_window_cm = 0.0_real64
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
@@ -539,6 +543,7 @@ module mod_fmr_serialized_reference_backend
     procedure :: storage => fmr_serialized_storage
     procedure :: storage_accounting_status => fmr_serialized_storage_accounting_status
     procedure :: temporal_error => fmr_serialized_temporal_identity
+    procedure :: temporal_error_with_context => fmr_serialized_temporal_with_context
     procedure :: attempt_context_required => fmr_serialized_attempt_context_required
     procedure :: capture_attempt_context => fmr_serialized_capture_attempt_context
     procedure :: restore_attempt_context => fmr_serialized_restore_attempt_context
@@ -1140,6 +1145,7 @@ contains
     self%model%top_exchange_window_available = .false.
     self%model%top_exchange_window_cm = 0.0_real64
     self%model%top_exchange_window_residual_cm = 0.0_real64
+    self%model%top_soil_supply_window_cm = 0.0_real64
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.
@@ -1347,6 +1353,12 @@ contains
 
     if (.not. self%initialized) return
     call fmr_discard_candidate(self%kernel, candidate, diagnostics)
+    if (self%model%external_top_surface_formulation == FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV) then
+      self%model%top_exchange_window_available = .false.
+      self%model%top_exchange_window_cm = 0.0_real64
+      self%model%top_exchange_window_residual_cm = 0.0_real64
+      self%model%top_soil_supply_window_cm = 0.0_real64
+    end if
   end subroutine fmr_serialized_backend_discard_trial_candidate
 
   subroutine fmr_serialized_backend_run_reference_floor_sample(self, column, template, parameters, committed, &
@@ -1449,6 +1461,7 @@ contains
     self%model%top_exchange_window_available = .false.
     self%model%top_exchange_window_cm = 0.0_real64
     self%model%top_exchange_window_residual_cm = 0.0_real64
+    self%model%top_soil_supply_window_cm = 0.0_real64
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
     self%model%bottom_thermal_carrier_active = .false.
@@ -1671,7 +1684,14 @@ contains
     end if
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
-    if (.not.result%completed) self%model%top_exchange_window_available = .false.
+    if (.not.result%completed) then
+      self%model%top_exchange_window_available = .false.
+      if (self%model%external_top_surface_formulation == FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV) then
+        self%model%top_exchange_window_cm = 0.0_real64
+        self%model%top_exchange_window_residual_cm = 0.0_real64
+        self%model%top_soil_supply_window_cm = 0.0_real64
+      end if
+    end if
     if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
     nullify(self%model%hydraulic_parameters)
     nullify(self%model%trusted_parameter_source)
@@ -1718,6 +1738,7 @@ contains
     obs%top_surface_exchange_available = self%model%top_exchange_window_available
     obs%top_surface_signed_swap_to_external_cm = self%model%top_exchange_window_cm
     obs%top_surface_closure_residual_cm = self%model%top_exchange_window_residual_cm
+    obs%top_surface_soil_supply_cm = self%model%top_soil_supply_window_cm
   end function fmr_serialized_backend_observation
 
   logical function fmr_serialized_attempt_context_required(self) result(required)
@@ -1745,6 +1766,7 @@ contains
       typed%drainage_response_window_exchange_available = self%drainage_response_window_exchange_available
       typed%drainage_response_window_signed_exchange_native = self%drainage_response_window_signed_exchange_native
       typed%top_exchange_window_available = self%top_exchange_window_available
+      typed%top_soil_supply_window_cm = self%top_soil_supply_window_cm
       typed%top_exchange_window_cm = self%top_exchange_window_cm
       typed%top_exchange_window_residual_cm = self%top_exchange_window_residual_cm
       typed%trajectory_direction = self%trajectory_direction
@@ -1766,6 +1788,7 @@ contains
       self%drainage_response_window_exchange_available = typed%drainage_response_window_exchange_available
       self%drainage_response_window_signed_exchange_native = typed%drainage_response_window_signed_exchange_native
       self%top_exchange_window_available = typed%top_exchange_window_available
+      self%top_soil_supply_window_cm = typed%top_soil_supply_window_cm
       self%top_exchange_window_cm = typed%top_exchange_window_cm
       self%top_exchange_window_residual_cm = typed%top_exchange_window_residual_cm
       self%trajectory_direction = typed%trajectory_direction
@@ -1781,6 +1804,7 @@ contains
       self%top_exchange_window_available = .false.
       self%top_exchange_window_cm = 0.0_real64
       self%top_exchange_window_residual_cm = 0.0_real64
+      self%top_soil_supply_window_cm = 0.0_real64
       call configure_trajectory_direction(self%trajectory_direction, .false.)
     end select
   end subroutine fmr_serialized_restore_attempt_context
@@ -2027,6 +2051,7 @@ contains
     self%top_exchange_window_available = .false.
     self%top_exchange_window_cm = 0.0_real64
     self%top_exchange_window_residual_cm = 0.0_real64
+    self%top_soil_supply_window_cm = 0.0_real64
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
     self%rfm_surface_forcing = rfm_surface_forcing_t()
     self%drainage_response_evaluations = 0
@@ -3037,9 +3062,10 @@ contains
       outcome%mass_out = outcome%mass_out - max(0.0_real64,solve_result%top_flux)*step_duration + &
            max(0.0_real64,top_exchange%signed_swap_to_external_cm)
       if (.not.self%top_exchange_window_available) return
+      self%top_soil_supply_window_cm = self%top_soil_supply_window_cm - solve_result%top_flux*step_duration
       self%top_exchange_window_cm = self%top_exchange_window_cm + top_exchange%signed_swap_to_external_cm
       self%top_exchange_window_residual_cm = self%top_exchange_window_residual_cm + top_exchange%closure_residual_cm
-      if (.not.all(ieee_is_finite([self%top_exchange_window_cm,self%top_exchange_window_residual_cm]))) then
+      if (.not.all(ieee_is_finite([self%top_exchange_window_cm,self%top_exchange_window_residual_cm,self%top_soil_supply_window_cm]))) then
         self%top_exchange_window_available = .false.
         return
       end if
@@ -3260,6 +3286,62 @@ contains
     end select
     if (complete) missing_mask = TX_MASS_MISSING_NONE
   end subroutine fmr_serialized_storage_accounting_status
+
+  real(real64) function fmr_scv_endpoint_exchange_error(full, half, dz, full_exchange, half_exchange) result(value)
+    type(fmr_b110_physical_state_t), intent(in) :: full, half
+    real(real64), intent(in) :: dz(:), full_exchange, half_exchange
+    integer :: n
+    value = huge(0.0_real64)
+    n = size(dz)
+    if (n <= 0 .or. full%active_nodes /= n .or. half%active_nodes /= n) return
+    if (.not. all(ieee_is_finite(dz))) return
+    if (any(dz <= 0.0_real64)) return
+    if (.not. allocated(full%water_content) .or. .not. allocated(half%water_content) .or. &
+        .not. allocated(full%pressure_head) .or. .not. allocated(half%pressure_head)) return
+    if (size(full%water_content) /= n .or. size(half%water_content) /= n .or. &
+        size(full%pressure_head) /= n .or. size(half%pressure_head) /= n) return
+    if (.not. all(ieee_is_finite(full%water_content)) .or. .not. all(ieee_is_finite(half%water_content)) .or. &
+        .not. all(ieee_is_finite(full%pressure_head)) .or. .not. all(ieee_is_finite(half%pressure_head)) .or. &
+        .not. all(ieee_is_finite([full%ponding_depth,half%ponding_depth,full_exchange,half_exchange]))) return
+    value = max(sum(abs(full%water_content-half%water_content)*dz), &
+         maxval(abs(full%pressure_head-half%pressure_head)), &
+         abs(full%ponding_depth-half%ponding_depth), abs(full_exchange-half_exchange))
+  end function fmr_scv_endpoint_exchange_error
+
+  real(real64) function fmr_serialized_temporal_with_context(self, full_state, half_state, &
+                                                           full_context, half_context) result(value)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: full_state, half_state
+    class(transaction_attempt_context_t), intent(in), optional :: full_context, half_context
+    integer :: n
+    value = huge(0.0_real64)
+    if (.not. self%external_top_surface_water_supplied .or. &
+        self%external_top_surface_formulation /= FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV) then
+      value = self%temporal_error(full_state, half_state)
+      return
+    end if
+    if (.not. associated(self%soil_parameters)) return
+    if (.not. present(full_context) .or. .not. present(half_context)) return
+    select type (fc => full_context)
+    type is (fmr_serialized_attempt_context_t)
+      select type (hc => half_context)
+      type is (fmr_serialized_attempt_context_t)
+        if (.not. fc%top_exchange_window_available .or. .not. hc%top_exchange_window_available) return
+        if (.not. all(ieee_is_finite([fc%top_exchange_window_cm,hc%top_exchange_window_cm, &
+             fc%top_exchange_window_residual_cm,hc%top_exchange_window_residual_cm]))) return
+        select type (full => full_state)
+        type is (fmr_b110_physical_state_t)
+          select type (half => half_state)
+          type is (fmr_b110_physical_state_t)
+            n = self%soil_parameters%active_nodes
+            if (n /= full%active_nodes .or. n /= half%active_nodes) return
+            value = fmr_scv_endpoint_exchange_error(full,half,self%soil_parameters%dz, &
+                 fc%top_exchange_window_cm,hc%top_exchange_window_cm)
+          end select
+        end select
+      end select
+    end select
+  end function fmr_serialized_temporal_with_context
 
   real(real64) function fmr_serialized_temporal_identity(self, full_state, half_state) result(value)
     class(fmr_serialized_reference_model_t), intent(in) :: self

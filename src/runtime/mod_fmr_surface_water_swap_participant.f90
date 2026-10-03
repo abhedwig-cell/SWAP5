@@ -9,7 +9,7 @@ module mod_fmr_surface_water_swap_participant
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_b110_fixed_weir_surface_water_state_t, fmr_serialized_reference_backend_t, &
-       fmr_serialized_physical_observation_t
+       fmr_serialized_physical_observation_t, FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_EXTENDED_SIGNED, FMR_DRAIN_BIND_OK
   use mod_fmr_surface_water_head_forcing_adapter, only: fmr_surface_water_head_forcing_materializer_t, &
        FMR_SW_HEAD_FORCING_OK
@@ -189,7 +189,11 @@ contains
       status = FMR_SW_PARTICIPANT_TRIAL_FAILED
       return
     end if
-    if (self%diagnostics%accepted_substeps /= 1) then
+    ! SCV has branch-selected, rollbackable whole-window top and drainage
+    ! integrals. Permit composed accepted windows only behind its opt-in.
+    ! accepted_whole_window above still requires complete mass and provenance.
+    if (self%diagnostics%accepted_substeps /= 1 .and. &
+        forcing%external_top_surface_formulation /= FMR_TOP_SURFACE_FORMULATION_UNIFIED_CV) then
       call backend%discard_trial_candidate(self%candidate, self%diagnostics)
       status = FMR_SW_PARTICIPANT_MULTISTEP_NOT_ADMITTED
       return

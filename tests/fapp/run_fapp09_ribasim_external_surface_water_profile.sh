@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fapp09-${GITHUB_RUN_ID:-local}-$$"
-mkdir -p "$BUILD"
-trap 'rm -rf "$BUILD"' EXIT
+if [[ -z "${SCV_TEST_BUILD_DIR:-}" ]]; then
+  BUILD="$(mktemp -d "${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fapp09-${GITHUB_RUN_ID:-local}-XXXXXX")"
+  trap 'rm -rf "$BUILD"' EXIT
+else
+  BUILD="$SCV_TEST_BUILD_DIR"; mkdir -p "$BUILD"
+fi
 cd "$ROOT"
 fail(){ echo "FAPP09_GATE_FAIL $*" >&2; exit 91; }
 
@@ -72,6 +75,14 @@ for opt in 0 2; do
   for marker in     FAPP09_TYPED_EXTERNAL_HEAD_MATERIALIZER=PASS     FAPP09_SURFACE_WATER_STATE_OWNER_XOR=PASS     FAPP09_RECOMPOSITION_DISCARD_REPLAY=PASS     FAPP09_NO_PERSISTENT_SURFACE_WATER_STATE=PASS     FAPP09_POSITIVE_DRAINAGE_TRANSACTION=PASS     FAPP09_NEGATIVE_INFILTRATION_TRANSACTION=PASS     FAPP09_STALE_ORIGIN_FAIL_CLOSED=PASS     FAPP09_RIBASIM_EXTERNAL_SURFACE_WATER_PROFILE=PASS; do
     grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
   done
+  if [[ "${1:-}" == unified-cv ]]; then
+    for marker in FAPP09_SCV_ORTHOGONAL_ERROR_CHANNELS=PASS FAPP09_SCV_ACCEPT_REJECT_REPLAY_SUBDIVISION_ROLLBACK_RESTART=PASS FAPP09_SCV_SIGNED_REVERSE_ACCEPT=PASS FAPP09_SCV_LARGE_STAGE_FAILS_WITHOUT_PUBLICATION=PASS FAPP09_SCV_STAGE_REFINEMENT_MASS_MATRIX=PASS FAPP09_UNIFIED_SURFACE_CV_ACCEPT=PASS TOP03_REAL_COMPONENT_TRANSACTION=PASS; do
+      grep -Fq "$marker" "$OUT/output.txt" || fail "missing O$opt SCV marker $marker"
+    done
+    CTX="$OUT/context"; mkdir -p "$CTX"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$CTX" -I "$CTX" src/transaction/mod_transaction_reference.f90 tests/transaction/test_temporal_exchange_context.f90 -o "$CTX/test"
+    "$CTX/test"
+  fi
   grep '^FAPP09_' "$OUT/output.txt" > "$OUT/stable.txt"
   echo "FAPP09_O${opt}=PASS"
 done
