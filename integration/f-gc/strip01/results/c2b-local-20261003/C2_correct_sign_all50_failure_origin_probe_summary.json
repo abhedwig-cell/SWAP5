@@ -1,0 +1,328 @@
+{
+  "schema": "swap5.f_gc_strip01.c2b.all_column_failure_origin_diagnostic.v1",
+  "date": "2026-10-03",
+  "classification": "research-only discarded one-column trials, not coupled qualification",
+  "reproduction": {
+    "window_duration_day": 0.000001,
+    "flux_tolerance_m_per_s": 2e-15,
+    "zero_seed": true,
+    "ramp_factor": 1.0003998800639584,
+    "published_full_coupled_windows": 15239,
+    "failed_flux_cm_per_day": 0.004425503442725441,
+    "failure_stage": "swap-corrector",
+    "service_status": 6,
+    "rejected_state_preserved": true
+  },
+  "method": "At the exact reproduced failed-window origin, independently probe SWAP columns 1..50 at the last accepted and next rejected inward flux, at five durations; trials are discarded.",
+  "raw_run": {
+    "local_path": "c2-all50-failure-origin-probes/result.json",
+    "bytes": 173741266,
+    "sha256": "f159faa01062f66cee65cbf49fda7070cacfd14a07c1d560435eea8c2d239f1d"
+  },
+  "observation_codes": [
+    "result_status",
+    "accepted_substeps",
+    "solver_rejections",
+    "temporal_rejections",
+    "mass_rejections",
+    "admission_rejections",
+    "attempts",
+    "retries",
+    "solver_status",
+    "temporal_status",
+    "temporal_available",
+    "head_budget_valid"
+  ],
+  "value_codes": [
+    "temporal_head_inf_bound_cm",
+    "temporal_head_budget_cm",
+    "normalized_temporal_indicator",
+    "top_flux_cm_per_day",
+    "bottom_flux_cm_per_day",
+    "solver_equation_residual"
+  ],
+  "all_50_columns_same_at_each_tested_flux_and_duration": true,
+  "probe_matrix": [
+    {
+      "rain_rate_cm_per_day": 0.004423734479498845,
+      "duration_day": 0.00001,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        0,
+        5,
+        6,
+        0,
+        0,
+        0,
+        11,
+        6,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        4.922964388438426e-8,
+        0.00001,
+        0.004922964388438426,
+        -0.004423734479498845,
+        -4.221202053698858e-9,
+        0
+      ]
+    },
+    {
+      "rain_rate_cm_per_day": 0.004423734479498845,
+      "duration_day": 0.000005,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        4.6476117223734885e-7,
+        0.00001,
+        0.04647611722373488,
+        -0.004423734479498845,
+        -5.669811729488994e-10,
+        0
+      ]
+    },
+    {
+      "rain_rate_cm_per_day": 0.004423734479498845,
+      "duration_day": 0.0000025,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        1.5996894177324464e-7,
+        0.00001,
+        0.015996894177324462,
+        -0.004423734479498845,
+        -3.4091536512195764e-9,
+        0
+      ]
+    },
+    {
+      "rain_rate_cm_per_day": 0.004423734479498845,
+      "duration_day": 0.00000125,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        0,
+        6,
+        13,
+        0,
+        0,
+        0,
+        19,
+        13,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        1.1500052242265729e-8,
+        0.00001,
+        0.0011500052242265728,
+        -0.004423734479498845,
+        2.6631514605558737e-8,
+        0
+      ]
+    },
+    {
+      "rain_rate_cm_per_day": 0.004423734479498845,
+      "duration_day": 0.000001,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        0,
+        6,
+        10,
+        0,
+        0,
+        0,
+        16,
+        10,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        3.9546402763861136e-9,
+        0.00001,
+        0.00039546402763861134,
+        -0.004423734479498845,
+        -5.124269951157362e-8,
+        0
+      ]
+    },
+    {
+      "rain_rate_cm_per_day": 0.004425503442725441,
+      "duration_day": 0.00001,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        0,
+        2,
+        3,
+        2,
+        0,
+        0,
+        7,
+        5,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        0.0000013011366997240312,
+        0.00001,
+        0.13011366997240312,
+        -0.004425503442725441,
+        -5.080029123055718e-10,
+        0
+      ]
+    },
+    {
+      "rain_rate_cm_per_day": 0.004425503442725441,
+      "duration_day": 0.000005,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        0,
+        2,
+        2,
+        2,
+        0,
+        0,
+        6,
+        4,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        4.4210394814132517e-7,
+        0.00001,
+        0.04421039481413251,
+        -0.004425503442725441,
+        -2.2683150800381635e-9,
+        0
+      ]
+    },
+    {
+      "rain_rate_cm_per_day": 0.004425503442725441,
+      "duration_day": 0.0000025,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        0,
+        6,
+        17,
+        1,
+        0,
+        0,
+        24,
+        18,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        7.923389653379615e-8,
+        0.00001,
+        0.007923389653379615,
+        -0.004425503442725441,
+        -1.1026672110114877e-10,
+        0
+      ]
+    },
+    {
+      "rain_rate_cm_per_day": 0.004425503442725441,
+      "duration_day": 0.00000125,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        0,
+        7,
+        9,
+        0,
+        0,
+        0,
+        16,
+        9,
+        1,
+        1,
+        1,
+        1
+      ],
+      "values": [
+        1.0119709318115832e-8,
+        0.00001,
+        0.001011970931811583,
+        -0.004425503442725441,
+        3.458241863013578e-9,
+        0
+      ]
+    },
+    {
+      "rain_rate_cm_per_day": 0.004425503442725441,
+      "duration_day": 0.000001,
+      "columns_tested": 50,
+      "identical_code_vectors": 50,
+      "codes": [
+        2,
+        3,
+        16,
+        0,
+        0,
+        0,
+        19,
+        15,
+        2,
+        0,
+        0,
+        1
+      ],
+      "values": [
+        0,
+        0.00001,
+        0,
+        -0.004425503442725441,
+        0,
+        0
+      ]
+    }
+  ],
+  "interpretation": "No single anomalous column appears: all 50 independent discarded probes have identical status and counters per test condition. At the accepted rate, dt=1e-6 completes 6 substeps with 10 solver rejections. At the next rate, dt=1e-6 fails after 3 accepted substeps, 16 solver rejections and zero temporal rejections. At other durations that same next rate completes despite mixed solver/temporal rejections. This indicates shared forcing/state/solver-regime behavior in this homogeneous fixture, not a location-specific defect. The full service still does not expose in-call participant diagnostics, so these independent probes cannot show which participant returned first during the coupled call."
+}
