@@ -99,3 +99,22 @@ Reconstructed from qualified PERF02 source on canonical `23f5d3cff78e055426b48ec
 
 
 Focused current-canonical admission workflow registered on canonical via PR #999; this line triggers its final PR-postimage qualification.
+
+
+## Final current-canonical qualification
+
+Clean admission PR #998 was qualified on its merge postimage by run `37108700027`, job `111162196759`.
+
+Results:
+- independent boundary: 119591 evaluations, 25443 skips, 0 false skips;
+- near analytical gate: 15507; near Reference transition: 34452;
+- n > 2: 2283 cases, 0 skips;
+- corrected B1.11 assembled oracle O0/O2: PASS;
+- typed production application O0/O2: PASS;
+- median benchmark: gated stress/non-skip 78279.98 ns versus PERF01 77538.70 ns, approximately 0.96% overhead in that regime;
+- median eligible no-stress: 763.80 ns and 762.66 ns versus PERF01 approximately 67.7-69.3 us;
+- median mixed 1:1:1: 26745.20 ns versus PERF01 71770.79 ns, approximately 2.68x throughput.
+
+The benchmark remains synthetic and is not a production call-frequency, full-season, or MultiSWAP speed estimate.
+
+Admission classification: production-admission candidate, conditional only on no intervening canonical dependency drift before merge.
