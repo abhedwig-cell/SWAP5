@@ -20,6 +20,7 @@ src=src.replace("t%state_layout_id=560030_int64; t%solver_interface_id=560040_in
 """t%state_layout_id=560030_int64; t%solver_interface_id=560040_int64; t%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RFM
     t%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE""")
 # Configure both backends after initialize.
+src=src.replace("call build_tile_predictor(i,response(i),status)","call build_tile_predictor_rfm_fd(i,response(i),status)",1)
 src=src.replace("call predictor_backend(i)%initialize(top(i))\n      call corrector_backend(i)%initialize(top(i))",
 """call predictor_backend(i)%initialize(top(i))
       call corrector_backend(i)%initialize(top(i))
