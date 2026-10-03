@@ -149,10 +149,168 @@
     "optimization_level_output_identity_O0_O2": true,
     "failed_trials_counted_as_accepted": false
   },
-  "decision": "The joint concept has a positive mechanism signal, including one complete rise/recession trajectory and roundoff-level combined mass closure. It remains timestep-sensitive and fails multiple tested refinements. This falsifies the tested parameterization as a robust or production-ready formulation, not the broader idea of co-regularizing surface storage and near-saturation hydraulics.",
+  "decision": "The joint concept has a positive mechanism signal and roundoff-level mass closure on completed paths, but follow-up 16/32 refinements fail during recession even with 1e-9 head tolerances and residuals above tolerance. The tested co-regularized parameterization is falsified as timestep-robust; broader calibrated formulations remain untested.",
   "evidence_logs": [
     "integration/sw-rib-top03/evidence/joint_nearsaturation_surface/raw_records.txt"
   ],
-  "harness": "tests/fapp/run_sw_rib_top03_joint_microrelief_probe.sh"
+  "harness": "tests/fapp/run_sw_rib_top03_joint_microrelief_probe.sh",
+  "followup_head_tolerance_1e9_extended_refinement": {
+    "scope": "same D=0.05 cm, delta_h=2 cm joint smooth candidate and 11-stage rise/recession pulse; direct-probe abs/rel head tolerances 1e-9; mass gates unchanged at 1e-10 cm; O0/O2 asserted identical",
+    "refinement_steps": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "completed": [
+      true,
+      true,
+      true,
+      true,
+      false,
+      false
+    ],
+    "completed_newton_iterations": [
+      164,
+      199,
+      323,
+      567,
+      null,
+      null
+    ],
+    "failed_at_event": [
+      null,
+      null,
+      null,
+      null,
+      10,
+      10
+    ],
+    "failed_at_substep": [
+      null,
+      null,
+      null,
+      null,
+      3,
+      1
+    ],
+    "pre_rollback_max_residual": [
+      null,
+      null,
+      null,
+      null,
+      0.00012704370802385512,
+      1.7698505507368623e-05
+    ],
+    "pre_rollback_max_head_correction_cm": [
+      null,
+      null,
+      null,
+      null,
+      0.0001096851869328841,
+      1.1554312312034298e-05
+    ],
+    "failure_iterations": [
+      null,
+      null,
+      null,
+      null,
+      80,
+      80
+    ],
+    "refinement_pair_8_to_16_and_16_to_32_available": false,
+    "O0_O2_output_identity": true,
+    "interpretation": "Finer refinements fail on recession with residual and head-correction gaps above the configured tolerance; not merely a strict-tolerance convergence artifact."
+  },
+  "followup_control_matrix_head_tolerance_1e9_extended_refinement": {
+    "refinement_steps": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "near_legacy_soil_plus_smooth_surface": {
+      "completed": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "first_failure_events": [
+        null,
+        null,
+        null,
+        3,
+        3,
+        3
+      ],
+      "pre_rollback_residual_cm": [
+        null,
+        null,
+        null,
+        0.052396009971481305,
+        0.04496023595871179,
+        0.009835828342660946
+      ]
+    },
+    "delta_2_soil_plus_legacy_surface": {
+      "completed": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "first_failure_events": [
+        null,
+        null,
+        2,
+        null,
+        null,
+        2
+      ],
+      "pre_rollback_residual_cm": [
+        null,
+        null,
+        0.00027820668762812417,
+        null,
+        null,
+        1.2625338807303876e-05
+      ]
+    },
+    "delta_2_joint_smooth_surface": {
+      "completed": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "first_failure_events": [
+        null,
+        null,
+        null,
+        null,
+        10,
+        10
+      ],
+      "pre_rollback_residual_cm": [
+        null,
+        null,
+        null,
+        null,
+        0.00012704370802385512,
+        1.7698505507368623e-05
+      ]
+    },
+    "interpretation": "The two isolated controls also fail at some fine refinements, but their failure windows differ. Broad soil regularization alone passes 8 and 16; smooth surface plus near-legacy soil fails from 8 onward; the joint candidate passes through 8 then fails on recession at 16/32. This non-monotone factorial result does not uniquely assign the remaining failure to either law."
+  }
 }
-
