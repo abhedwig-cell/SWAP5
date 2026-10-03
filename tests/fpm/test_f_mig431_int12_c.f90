@@ -21,11 +21,11 @@ program test_f_mig431_int12_c
   real(real64), parameter :: TOL=1.0e-14_real64
   integer(int64), parameter :: COLUMN_ID=430401_int64
   integer(int64), parameter :: WINDOW_ID=430402_int64
-  type(pmdirect_swetr0_weather_t) :: weather
+  type(pmdirect_swetr0_weather_t) :: weather, weather_a
   type(pmdirect_swetr0_site_t) :: site
   type(pmdirect_swetr0_canopy_t) :: canopy
-  type(pmdirect_swetr0_daily_result_t) :: daily
-  type(pmdirect_swetr0_interval_result_t) :: interval, bound_interval
+  type(pmdirect_swetr0_daily_result_t) :: daily, daily_a
+  type(pmdirect_swetr0_interval_result_t) :: interval, interval_a, bound_interval
   type(pmdirect_swetr0_diagnostics_t) :: process_diagnostics
   type(fmr_interception_source_window_t) :: owner, restored
   type(fmr_interception_source_window_restart_t) :: restart
@@ -48,6 +48,37 @@ program test_f_mig431_int12_c
        'admitted daily provider rejected')
   call apply_swinter1_daily_interval(weather,canopy,daily,interval,process_diagnostics)
   call require(process_diagnostics%interval_result_produced, 'admitted SWINTER=1 interval rejected')
+  weather_a=weather
+  daily_a=daily
+  interval_a=interval
+
+  ! A/B/A replay catches hidden mutable process state and preserves the
+  ! exact admitted Hupsel output vectors.
+  weather%day_of_year=162
+  call evaluate_pmdirect_swetr0_daily(weather,site,canopy,daily,process_diagnostics)
+  call require(process_diagnostics%daily_result_produced,'B replay daily evaluation failed')
+  call apply_swinter1_daily_interval(weather,canopy,daily,interval,process_diagnostics)
+  call require(process_diagnostics%interval_result_produced,'B replay interception failed')
+  weather=weather_a
+  call evaluate_pmdirect_swetr0_daily(weather,site,canopy,daily,process_diagnostics)
+  call require(process_diagnostics%daily_result_produced,'A replay daily evaluation failed')
+  call apply_swinter1_daily_interval(weather,canopy,daily,interval,process_diagnostics)
+  call require(process_diagnostics%interval_result_produced,'A replay interception failed')
+  call require(same_daily(daily,daily_a) .and. same_interval(interval,interval_a), &
+       'A/B/A replay changed admitted Hupsel result')
+
+  weather%day_of_year=0
+  call evaluate_pmdirect_swetr0_daily(weather,site,canopy,daily,process_diagnostics)
+  call require(process_diagnostics%status==PMDIRECT_SWETR0_INVALID_DAY .and. &
+       .not.process_diagnostics%daily_result_produced,'invalid day did not fail closed')
+  weather=weather_a
+  call evaluate_pmdirect_swetr0_daily(weather,site,canopy,daily,process_diagnostics)
+  call require(process_diagnostics%daily_result_produced,'valid Hupsel retry after invalid input failed')
+  call apply_swinter1_daily_interval(weather,canopy,daily,interval,process_diagnostics)
+  call require(process_diagnostics%interval_result_produced,'valid Hupsel interval after invalid input failed')
+  call require(same_daily(daily,daily_a) .and. same_interval(interval,interval_a), &
+       'invalid-input recovery changed admitted Hupsel result')
+
   call close_to(interval%interception_rate_cm_per_day,6.40612570512150981e-2_real64,'source oracle interception rate')
   call close_to(interval%net_rain_cm_per_day,4.05938742948784959e-1_real64,'source oracle net rain')
   call close_to(interval%wet_canopy_fraction,3.96478332498613917e-1_real64,'source oracle wet fraction')
@@ -123,6 +154,7 @@ program test_f_mig431_int12_c
   call fmr_interception_source_window_progress(owner,accepted_t,before_amount,complete,status)
   call require(status==FMR_INTWIN_OK .and. complete .and. same_bits(accepted_t,1.0_real64), &
        'source window did not close')
+  call require(same_bits(before_amount,daily_interception),'accepted source-window aggregate did not close bitwise')
   call close_to(accepted_total,daily_interception,'accepted aggregate closure')
   call close_to(gross_total,0.47_real64,'gross precipitation closure')
   call close_to(net_total,interval%net_rain_cm_per_day,'net precipitation closure')
@@ -220,6 +252,25 @@ contains
       error stop 1
     end if
   end subroutine close_to
+
+  pure logical function same_daily(a,b)
+    type(pmdirect_swetr0_daily_result_t),intent(in)::a,b
+    same_daily=same_bits(a%potential_soil_evaporation_cm_per_day,b%potential_soil_evaporation_cm_per_day) .and. &
+      same_bits(a%potential_pond_evaporation_cm_per_day,b%potential_pond_evaporation_cm_per_day) .and. &
+      same_bits(a%potential_transpiration_dry_cm_per_day,b%potential_transpiration_dry_cm_per_day) .and. &
+      same_bits(a%potential_transpiration_wet_cm_per_day,b%potential_transpiration_wet_cm_per_day) .and. &
+      same_bits(a%interception_evaporation_capacity_cm_per_day,b%interception_evaporation_capacity_cm_per_day) .and. &
+      same_bits(a%es0_mm_per_day,b%es0_mm_per_day) .and. same_bits(a%et0_mm_per_day,b%et0_mm_per_day) .and. &
+      same_bits(a%ew0_mm_per_day,b%ew0_mm_per_day) .and. same_bits(a%ep0_mm_per_day,b%ep0_mm_per_day)
+  end function same_daily
+
+  pure logical function same_interval(a,b)
+    type(pmdirect_swetr0_interval_result_t),intent(in)::a,b
+    same_interval=same_bits(a%net_rain_cm_per_day,b%net_rain_cm_per_day) .and. &
+      same_bits(a%wet_canopy_fraction,b%wet_canopy_fraction) .and. &
+      same_bits(a%potential_transpiration_cm_per_day,b%potential_transpiration_cm_per_day) .and. &
+      same_bits(a%interception_rate_cm_per_day,b%interception_rate_cm_per_day)
+  end function same_interval
 
   pure logical function same_bits(a,b)
     real(real64),intent(in)::a,b
