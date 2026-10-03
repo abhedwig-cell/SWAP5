@@ -19,7 +19,7 @@ program test_fpe_approx02_a2_application_sequence
   implicit none
 
   real(real64),parameter :: exact_tol=1.0e-12_real64,h0=-10.0_real64
-  real(real64) :: dt,top_factor,candidate_tol
+  real(real64) :: dt,top_factor,candidate_tol,khost
   integer,parameter :: nsteps=120
   type(fmr_production_application_config_t) :: exact_cfg,a2_cfg
   type(fmr_production_application_bootstrap_t) :: exact_app,a2_app
@@ -48,6 +48,7 @@ program test_fpe_approx02_a2_application_sequence
 
   call build_config(exact_cfg,exact_tol)
   call add_root_thermal_oxygen(exact_cfg)
+  khost=abs(exact_cfg%tiles(1)%base_forcing%top_flux)
   a2_cfg=exact_cfg
   call exact_app%initialize(exact_cfg,status)
   if(status/=FMR_APP_BOOT_OK .or. .not.exact_app%ready()) error stop 'exact app bootstrap'
@@ -60,13 +61,13 @@ program test_fpe_approx02_a2_application_sequence
   do step=1,nsteps
     day_forcing(1)=exact_cfg%tiles(1)%base_forcing
     if(step<=30)then
-      day_forcing(1)%top_flux=-0.2_real64
+      day_forcing(1)%top_flux=-1.0_real64*khost
     else if(step<=60)then
-      day_forcing(1)%top_flux=0.3_real64
+      day_forcing(1)%top_flux=0.3_real64*khost
     else if(step<=90)then
       day_forcing(1)%top_flux=0.0_real64
     else
-      day_forcing(1)%top_flux=-0.1_real64
+      day_forcing(1)%top_flux=-0.3_real64*khost
     endif
     call exact_app%run_standalone_with_forcing(real(step-1,real64)*dt,real(step,real64)*dt,day_forcing,result,status)
     call verify_result('exact',step,status,result)
