@@ -1,0 +1,97 @@
+name: F-GC-STRIP01 C2 dynamic B1.11 rainfall sequence
+
+on:
+  push:
+    branches: [work/f-gc-strip01-50m-swap-modflow-benchmark]
+    paths:
+      - 'tests/fgc/strip01/research_context_c2_rain.f90'
+      - 'tests/fgc/strip01/run_c2_rain_sequence.py'
+      - 'tools/build_f_gc_strip01_research_context.py'
+      - 'integration/f-gc/strip01/F-GC-STRIP01_C2_RAIN01_PREREGISTRATION.json'
+      - '.github/workflows/f-gc-strip01-c2-rain.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  coupled-rain-sequence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout research work unit
+        uses: actions/checkout@v4
+        with:
+          path: research
+      - name: Checkout exact current canonical source
+        uses: actions/checkout@v4
+        with:
+          ref: e3bfcdca00ba89cfeea529cf9b648dcc803483ab
+          path: canonical
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned coupling dependencies
+        run: python -m pip install numpy==2.3.5 flopy==3.9.5 xmipy
+      - name: Materialize isolated research grid stub over canonical source
+        run: |
+          mkdir -p canonical/tests/fgc/strip01
+          cp research/tests/fgc/strip01/research_grid_stubs_c1.f90 canonical/tests/fgc/strip01/
+      - name: Fetch and verify MODFLOW 6.8.0
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from flopy.utils.get_modflow import run_main
+          root = Path(os.environ["RUNNER_TEMP"])
+          (root / "strip01-mf6").mkdir(parents=True, exist_ok=True)
+          (root / "strip01-downloads").mkdir(parents=True, exist_ok=True)
+          run_main(root / "strip01-mf6", owner="MODFLOW-ORG", repo="modflow6",
+                   release_id="6.8.0", subset={"mf6", "libmf6.so"},
+                   downloads_dir=root / "strip01-downloads", force=True, quiet=False)
+          PY
+          echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  ${RUNNER_TEMP}/strip01-downloads/modflow6-6.8.0-linux.zip" | sha256sum -c -
+          "${RUNNER_TEMP}/strip01-mf6/mf6" -v
+          mkdir -p strip01-results/engine
+          cp "${RUNNER_TEMP}/strip01-mf6/mf6" "${RUNNER_TEMP}/strip01-mf6/libmf6.so" strip01-results/engine/
+          sha256sum strip01-results/engine/* > strip01-results/engine/SHA256SUMS
+      - name: Build C2 dynamic-boundary participant against exact canonical sources
+        run: |
+          python research/tools/build_f_gc_strip01_research_context.py --root canonical --profile C1 --build "${RUNNER_TEMP}/strip01-build-c2-rain" --context-override research/tests/fgc/strip01/research_context_c2_rain.f90
+          cp "${RUNNER_TEMP}/strip01-build-c2-rain/source_git_blobs.json" strip01-results/C2_rain_source_git_blobs.json
+          git -C canonical rev-parse HEAD > strip01-results/canonical_source_commit.txt
+          git -C research rev-parse HEAD > strip01-results/research_source_commit.txt
+      - name: Run C2a and C2b in two fresh processes and require exact replay identity
+        run: |
+          set -euo pipefail
+          for replay in 1 2; do
+            python research/tests/fgc/strip01/run_c2_rain_sequence.py --profile C1 --root canonical --library "${RUNNER_TEMP}/strip01-build-c2-rain/libstrip01_research.so" --libmf6 "${RUNNER_TEMP}/strip01-mf6/libmf6.so" --output "strip01-results/C2_rain_run${replay}"
+          done
+          cmp strip01-results/C2_rain_run1/result.json strip01-results/C2_rain_run2/result.json
+          cp strip01-results/C2_rain_run1/result.json strip01-results/C2_rain_result.json
+          python - strip01-results/C2_rain_result.json <<'PY'
+          import json, sys
+          r = json.load(open(sys.argv[1]))
+          assert r["initialization_status"] == 0
+          assert r["state"] in {"C2A_AND_C2B_PUBLISHED", "C2A_PUBLISHED_C2B_REJECTED", "C2A_REJECTED"}, (r.get("state"), r.get("exception"))
+          if r["state"] == "C2A_AND_C2B_PUBLISHED":
+              assert r["C2a"]["published"] and r["C2b"]["published"]
+              assert r["C2b"]["revisions"] == [2] * 50
+              assert abs(r["C2b"]["mass_residual_m3"]) <= r["C2b"]["whole_domain_mass_tolerance_m3"]
+          elif r["state"] == "C2A_PUBLISHED_C2B_REJECTED":
+              assert r["C2a"]["published"] and not r["C2b"]["published"]
+              assert r["C2a"]["profile_state_sha256"] == r["C2b"]["profile_state_sha256"]
+              assert r["C2a"]["revisions"] == r["C2b"]["revisions"] == [1] * 50
+              assert r["C2a"]["ledger_counts"] == r["C2b"]["ledger_counts"] == [1] * 50
+          else:
+              assert not r["C2a"]["published"]
+              assert r["origin_profile_state_sha256"] == r["C2a"]["profile_state_sha256"]
+              assert r["origin_revisions"] == r["C2a"]["revisions"]
+          PY
+      - name: Persist C2 dynamic rainfall evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-GC-STRIP01-C2-RAIN01-${{ github.run_id }}
+          path: strip01-results/
+          if-no-files-found: warn
+          retention-days: 90
