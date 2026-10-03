@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2A_ACCEPTED_C2B_REJECTED_RESP01F_NEGATIVE",
+  "state": "C2A_ACCEPTED_C2B_REJECTED_SWAPPED_TEMPORAL_FAILURE_DIAGNOSED",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Characterize the first-corrector rejection from the continuous C2a→C2b run by exposing the existing SWAP transaction diagnostics and identifying the fired rejection counter/gate. Preserve C2a committed state and frozen limits. Then repair only a demonstrated fixture/configuration issue or preregister a bounded response experiment; require an accepted coupled window and closed balance before Hupsel. Keep canonical admission open.",
+    "next_action": "C2b with 1 mm/day surface forcing is rejected after the all--1 m trial heads pass the domain guard. Instrumented C2b direct SWAP trial replays at those heads and the registered 0.001 d interval report 0 accepted substeps, 3 solver rejections, 6 temporal rejections, and no mass/admission rejections in every column. These are isolated replay counters, not counters from the original coupled call. Keep gates fixed. Next compare diagnostic replays with C2a and inspect canonical SWAP attempt/substep diagnostics; test the separately preregistered B1.11 dynamic-surface route independently once build and continuation semantics are verified. Hupsel remains blocked pending an accepted balanced C2b window.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -90,7 +90,9 @@
     "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open.",
     "c2b_result": "integration/f-gc/strip01/results/C2b_rain_continuation_run_37112827684.json",
     "c2b_qualification": "REJECTED_FIRST_SWAP_CORRECTOR_AFTER_C2A_ACCEPTANCE; forcing/context setup succeeded; committed state, storage, revisions and ledgers preserved; candidate input residual is not accepted-window mass balance.",
-    "c2b_report": "docs/integration/F-GC-STRIP01_C2B_RESULT.md"
+    "c2b_report": "docs/integration/F-GC-STRIP01_C2B_RESULT.md",
+    "c2b_diagnostic_result": "integration/f-gc/strip01/results/C2b_diagnostic_run_37113639730.json",
+    "c2b_root_cause": "UNRESOLVED; reproduced SWAP transaction failure with solver and temporal rejections before mass acceptance; no gate or tolerance changed."
   },
   "next_permitted_action": "Implement and run preregistered C2b 1 mm/day top precipitation through actual SWAP forcing, with C2a-to-C2b continuation represented explicitly and frozen gates/source binding. Preserve RESP01F as a negative: matched heads alone do not cure C0/C1 rejection. Then analyze accepted-window flux/storage/mass, and only then consider Hupsel. Keep full coupling qualification and canonical admission open.",
   "oracle_evidence": {
@@ -307,7 +309,7 @@
   },
   "c2_research": {
     "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2_PREREGISTRATION.json",
-    "state": "C2A_ACCEPTED_C2B_REJECTED_AT_FIRST_SWAP_CORRECTOR",
+    "state": "C2A_ACCEPTED_C2B_REJECTED_SWAPPED_TEMPORAL_FAILURE_DIAGNOSED",
     "source_build": "PASS_EXACT_CANONICAL_E3BF",
     "source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
     "research_commit": "d99b1e1a284d96639bd58faeeb5c85cde4da6d9b",
@@ -327,7 +329,22 @@
     "c2b_precipitation_input_m3": 0.00005,
     "c2b_failure_stage": "swap-corrector",
     "c2b_committed_state_preserved": true,
-    "c2b_mass_balance_qualified": false
+    "c2b_mass_balance_qualified": false,
+    "c2b_diagnostic_result": "integration/f-gc/strip01/results/C2b_diagnostic_run_37113639730.json",
+    "c2b_context_status": 5,
+    "c2b_actual_trial_heads_m_all": -1,
+    "c2b_actual_trial_heads_passed_domain_guard": true,
+    "c2b_isolated_replay_counters": {
+      "accepted_substeps": 0,
+      "solver_rejections": 3,
+      "temporal_rejections": 6,
+      "mass_rejections": 0,
+      "admission_rejections": 0,
+      "attempts": 9,
+      "retries": 8
+    },
+    "c2b_replay_counters_are_original_context_counters": false,
+    "c2b_root_cause": "UNRESOLVED"
   },
   "response01f_corrected": {
     "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_RESP01F_PREREGISTRATION.json",
