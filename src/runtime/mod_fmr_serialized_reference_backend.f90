@@ -315,6 +315,11 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_oxygen_final_uptake = 0.0_real64
     real(real64), allocatable :: root_oxygen_final_sink(:)
     logical :: solver_executed = .false.
+    integer :: rfm_sorptivity_policy = 0
+    integer(int64) :: rfm_panel_evaluations_64 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_32 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_16 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_other = 0_int64
     logical :: hbot5_proposal_available = .false.
     real(real64) :: hbot5_proposed_t0 = 0.0_real64, hbot5_proposed_t1 = 0.0_real64
     real(real64) :: hbot5_sample_t1900 = 0.0_real64, hbot5_pressure_head_cm = 0.0_real64
@@ -440,7 +445,6 @@ module mod_fmr_serialized_reference_backend
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
-    type(b110_dynamic_top_boundary_solver_provider_t), pointer :: rfm_top_provider => null()
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace
     type(fmr_rossfast_solver_selection_binding_t) :: soil_water_selection
@@ -538,6 +542,10 @@ module mod_fmr_serialized_reference_backend
     logical :: top_sensible_boundary_carrier_active = .false.
     logical :: top_sensible_boundary_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
+    integer(int64) :: rfm_panel_evaluations_64 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_32 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_16 = 0_int64
+    integer(int64) :: rfm_panel_evaluations_other = 0_int64
   contains
     procedure :: configure_parameters => fmr_serialized_configure_parameters
     procedure :: execution_admitted => fmr_serialized_execution_admitted
@@ -2048,6 +2056,11 @@ contains
     self%drainage_response_window_exchange_available = self%drainage_response_active
     self%drainage_response_window_signed_exchange_native = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
+    self%last_observation%rfm_sorptivity_policy=self%rfm_configuration%sorptivity_policy
+    self%last_observation%rfm_panel_evaluations_64=self%rfm_panel_evaluations_64
+    self%last_observation%rfm_panel_evaluations_32=self%rfm_panel_evaluations_32
+    self%last_observation%rfm_panel_evaluations_16=self%rfm_panel_evaluations_16
+    self%last_observation%rfm_panel_evaluations_other=self%rfm_panel_evaluations_other
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
@@ -2494,7 +2507,7 @@ contains
     type(soil_water_top_boundary_result_t) :: rfm_preflight
     real(real64), allocatable, target :: rfm_source_rate(:)
     real(real64), allocatable :: rfm_node_depth_cm(:)
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
@@ -2863,36 +2876,45 @@ contains
       select type (rfm_physical => state)
       type is (fmr_b110_rfm_state_t)
         if (.not. rfm_physical%rfm%ready()) return
-        call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,1, &
-             rfm_physical%pressure_head(1),fixed_top_conductivity,fixed_top_conductivity_ok)
-        if(.not.fixed_top_conductivity_ok)return
-        if(.not.associated(self%rfm_top_provider))allocate(self%rfm_top_provider)
-        call bind_b110_dynamic_top_boundary_solver_provider(self%rfm_top_provider, self%soil_parameters, &
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider, self%soil_parameters, &
              self%hydraulic_parameters, self%swkmean, rfm_physical%ponding_depth, step_duration, &
              self%rfm_surface_forcing%precipitation_rate_cm_per_day, self%rfm_surface_forcing%irrigation_rate_cm_per_day, &
              self%rfm_surface_forcing%snowmelt_rate_cm_per_day, self%rfm_surface_forcing%runon_rate_cm_per_day, &
              self%rfm_surface_forcing%potential_bare_soil_evaporation_cm_per_day, &
              self%rfm_surface_forcing%potential_pond_evaporation_cm_per_day, self%rfm_surface_forcing%ponding_max_cm, &
-             self%rfm_surface_forcing%runoff_resistance_day, self%rfm_surface_forcing%runoff_exponent, fixed_top_conductivity)
-        call self%rfm_top_provider%evaluate(rfm_physical%pressure_head(1), rfm_physical%water_content(1), &
+             self%rfm_surface_forcing%runoff_resistance_day, self%rfm_surface_forcing%runoff_exponent)
+        call rfm_top_provider%evaluate(rfm_physical%pressure_head(1), rfm_physical%water_content(1), &
              rfm_physical%ponding_depth, request%boundary, rfm_preflight)
         allocate(rfm_node_depth_cm(rfm_physical%active_nodes)); rfm_node_depth_cm=abs(self%soil_parameters%z)
         call prepare_rfm_live_trial(rfm_physical%rfm,self%rfm_configuration,self%rfm_surface_forcing,hydraulic_start, &
              self%constitutive,rfm_preflight,rfm_node_depth_cm,self%soil_parameters%dz,step_duration, &
              max(self%compartment_balance_tolerance,FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM),rfm_live)
         if(.not.rfm_live%valid)return
+        call count_rfm_panel(self,rfm_live%surface_panels)
+        if(allocated(rfm_live%endpoint_panels))then
+          block
+            integer::rfm_panel_i
+            do rfm_panel_i=1,size(rfm_live%endpoint_panels)
+              call count_rfm_panel(self,rfm_live%endpoint_panels(rfm_panel_i))
+            end do
+          end block
+        end if
+        call count_rfm_panel(self,rfm_live%mb_panels)
+        self%last_observation%rfm_panel_evaluations_64=self%rfm_panel_evaluations_64
+        self%last_observation%rfm_panel_evaluations_32=self%rfm_panel_evaluations_32
+        self%last_observation%rfm_panel_evaluations_16=self%rfm_panel_evaluations_16
+        self%last_observation%rfm_panel_evaluations_other=self%rfm_panel_evaluations_other
         rfm_source_rate=rfm_live%candidate%matrix_source_rate_per_day
         call bind_rfm_matrix_source_provider(rfm_source_provider,self%source_sink,rfm_source_rate,rfm_source_ok)
         if(.not.rfm_source_ok)return
         request%evaluation%source_sink=>rfm_source_provider
         rfm_preferential_input_cm=rfm_live%surface%preferential_supply_cm_per_day*step_duration
         rfm_deep_receipt_cm=rfm_live%candidate%deep_receipt_cm
-        if(.not.associated(self%rfm_top_provider))allocate(self%rfm_top_provider)
-        call bind_b110_dynamic_top_boundary_solver_provider(self%rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
              self%swkmean,rfm_physical%ponding_depth,step_duration,rfm_live%surface%matrix_supply_cm_per_day, &
              0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,self%rfm_surface_forcing%ponding_max_cm, &
-             self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent,fixed_top_conductivity)
-        request%evaluation%dynamic_top_boundary=>self%rfm_top_provider
+             self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent)
+        request%evaluation%dynamic_top_boundary=>rfm_top_provider
       class default
         return
       end select
@@ -2939,14 +2961,6 @@ contains
       if (drainage_direction_available) then
         call move_alloc(drainage_sink_direction, self%trajectory_request_workspace%incoming_sink_direction)
       end if
-    end if
-
-    ! Rebind the polymorphic request pointer immediately before solver dispatch.
-    ! Earlier process preparation may invoke the same provider but must not own
-    ! the request pointer lifetime.
-    if(self%rfm_configuration%enabled)then
-      if(.not.associated(self%rfm_top_provider))return
-      request%evaluation%dynamic_top_boundary=>self%rfm_top_provider
     end if
 
     if (self%macropore_active) then
@@ -3816,5 +3830,16 @@ contains
     end do
     value = y_table(size(y_table))
   end function afgen_pairs
+
+  subroutine count_rfm_panel(self,panels)
+    class(fmr_serialized_reference_model_t),intent(inout)::self
+    integer,intent(in)::panels
+    select case(panels)
+    case(64);self%rfm_panel_evaluations_64=self%rfm_panel_evaluations_64+1_int64
+    case(32);self%rfm_panel_evaluations_32=self%rfm_panel_evaluations_32+1_int64
+    case(16);self%rfm_panel_evaluations_16=self%rfm_panel_evaluations_16+1_int64
+    case default;self%rfm_panel_evaluations_other=self%rfm_panel_evaluations_other+1_int64
+    end select
+  end subroutine count_rfm_panel
 
 end module mod_fmr_serialized_reference_backend
