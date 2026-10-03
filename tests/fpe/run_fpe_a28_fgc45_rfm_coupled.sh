@@ -80,7 +80,7 @@ p.write_text(s)
 PY
 export PYTHONPATH="$ROOT/src/adapter:$ROOT/tests/fgc/support"
 for mode in exact a28; do
- LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC45_MULTISWAP_LIB="$BUILD/$mode/libfgc45_multiswap.so" python3 "$BUILD/py/e2e.py" > "$BUILD/$mode.txt"
+ LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC45_MULTISWAP_LIB="$BUILD/$mode/libfgc45_multiswap.so" python3 "$BUILD/py/e2e.py" 2>&1 | tee "$BUILD/$mode.txt"
  grep -Fq 'FGC45_REAL_MULTISWAP_MODFLOW_END_TO_END=PASS' "$BUILD/$mode.txt" || { cat "$BUILD/$mode.txt"; fail "$mode coupled"; }
 done
 python3 - "$BUILD/exact.txt" "$BUILD/a28.txt" <<'PY'
