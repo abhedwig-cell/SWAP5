@@ -18,8 +18,8 @@ program characterize_bartholomeus_e2e03
  use mod_process_hydraulic_view,only:process_hydraulic_view_t,build_process_hydraulic_view
  use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view,SOIL_TEMP_OK
  implicit none
- integer,parameter::NSTEPS=120
- real(real64),parameter::TSTART=5100.1875_real64,DT=0.1_real64,T0=TSTART,T1=TSTART+DT,HARD_MASS_GATE=1.e-12_real64
+ integer,parameter::NSTEPS=400
+ real(real64),parameter::TSTART=5100.1875_real64,DT=1.e-3_real64,T0=TSTART,T1=TSTART+DT,HARD_MASS_GATE=1.e-12_real64
  type(fmr_production_application_config_t)::cfg
  type(fmr_serialized_reference_backend_t)::backend
  type(fixed_flux_top_boundary_provider_t),target::top
@@ -46,9 +46,9 @@ program characterize_bartholomeus_e2e03
  call fmr_new_b110_temporal_indicator_committed_state(state,column%column_id,cfg%tiles(1)%initial_state,TSTART,ok,cfg%tiles(1)%initial_right_derivative)
  if(.not.ok)error stop 'e2e03 committed init'
  do i=1,NSTEPS
-   if(i<=30)then;phase=1;cfg%tiles(1)%base_forcing%top_flux=-0.2_real64
-   else if(i<=60)then;phase=2;cfg%tiles(1)%base_forcing%top_flux=0.3_real64
-   else if(i<=90)then;phase=3;cfg%tiles(1)%base_forcing%top_flux=0.0_real64
+   if(i<=100)then;phase=1;cfg%tiles(1)%base_forcing%top_flux=-0.2_real64
+   else if(i<=200)then;phase=2;cfg%tiles(1)%base_forcing%top_flux=0.3_real64
+   else if(i<=300)then;phase=3;cfg%tiles(1)%base_forcing%top_flux=0.0_real64
    else;phase=4;cfg%tiles(1)%base_forcing%top_flux=-0.1_real64
    endif
    t0s=TSTART+real(i-1,real64)*DT;t1s=t0s+DT
