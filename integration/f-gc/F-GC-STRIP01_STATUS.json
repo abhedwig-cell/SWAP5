@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Qualify accepted-origin q(H), temporal history/tangent and predictor bootstrap for C0/C1 under the existing transaction. Keep the registered RESP01 prerequisite open; do not run Hupsel until a normal coupled window is accepted.",
+    "next_action": "Use the corrected local q(H) tangent only at its demonstrated hydrostatic origin. Reconcile whether the C0/C1 far-cell initial head relaxation is the intended drain-down challenge or an initial-condition mismatch; preregister a bounded coupling configuration with consistent initial heads and simple recharge before attempting the next real coupled window. Keep RESP01 and coupled qualification open.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -86,7 +86,7 @@
     "local_final_fixture_builds": "C0/C1 PASS O2 strict flags; 143 compiled canonical src blobs each matched a9cd8330, source unchanged through 8d2271dd",
     "fresh_origin_replay": "EXACT_JSON_IDENTITY_C0_C1; committed active physical/history fields, revisions, ledgers and native XOLD preserved"
   },
-  "next_permitted_action": "Qualify accepted-origin q(H), temporal history/tangent and predictor bootstrap for C0/C1 under the existing transaction. Keep the registered RESP01 prerequisite open; do not run Hupsel until a normal coupled window is accepted.",
+  "next_permitted_action": "Use the corrected local q(H) tangent only at its demonstrated hydrostatic origin. Reconcile whether the C0/C1 far-cell initial head relaxation is the intended drain-down challenge or an initial-condition mismatch; preregister a bounded coupling configuration with consistent initial heads and simple recharge before attempting the next real coupled window. Keep RESP01 and coupled qualification open.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -255,14 +255,48 @@
       "admission_rejections": 0
     },
     "c1": {
-      "temporal_rejections": 2,
-      "solver_retry_rejections": 6,
+      "temporal_rejections": 4,
+      "solver_retry_rejections": 4,
       "mass_rejections": 0,
-      "admission_rejections": 0
+      "admission_rejections": 0,
+      "invalid_initial_harness_run": "integration/f-gc/strip01/results/C1_telemetry_23f5d3_invalid_head_mapping.json",
+      "corrected_head_mapping_m": "+2.0 relative to C1 bottom datum; supersedes the earlier C0 +6.0 copied mapping."
     },
     "committed_state_preserved": true,
     "fresh_process_json_identity": true,
     "production_source_or_abi_changed": false,
     "broad_root_cause_proven": false
+  },
+  "response_probe_actual_trial_heads": {
+    "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_RESP01D_PREREGISTRATION.json",
+    "probe": "tools/f_gc_strip01_response_probe.py",
+    "c0_result": "integration/f-gc/strip01/results/C0_response_23f5d3.json",
+    "c1_result": "integration/f-gc/strip01/results/C1_response_23f5d3.json",
+    "accepted_rows_per_profile": 0,
+    "rows_per_profile": 12,
+    "all_exhausted_existing_retries": true,
+    "fresh_process_json_identity": true,
+    "committed_physical_and_history_state_preserved": true,
+    "derivative": "unavailable because no ordinary trial accepted"
+  },
+  "hydrostatic_origin_response": {
+    "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_RESP01E_PREREGISTRATION.json",
+    "summary": "integration/f-gc/strip01/results/RESP01E_summary.json",
+    "c0_result": "integration/f-gc/strip01/results/C0_hydrostatic_response_23f5d3.json",
+    "c1_result": "integration/f-gc/strip01/results/C1_hydrostatic_response_23f5d3.json",
+    "accepted_rows_per_profile": 12,
+    "tangent_finite_difference_relative_difference_percent": [
+      0.027,
+      0.036
+    ],
+    "local_dqbot_inward_cm_per_day_per_cm_bottom_head": {
+      "column_1": 0.2853235212606275,
+      "column_50": 0.19584340652064067
+    },
+    "local_inverse_dh_cm_per_dqbot_cm_per_day_days": {
+      "column_1": 3.5047934204013784,
+      "column_50": 5.106120332392228
+    },
+    "predictor_scope": "local hydrostatic origin only; not validly extrapolated to actual far-cell MODFLOW trial head"
   }
 }
