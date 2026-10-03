@@ -71,42 +71,7 @@ src=src.replace("if(status/=GW_MASS_LEDGER_OK)return", "if(status/=GW_MASS_LEDGE
 src=src.replace("if(.not.result%completed)return", "if(.not.result%completed)then;write(*,'(a,i0,a,i0,a,i0,a,i0,a,i0,a,i0)')'A28_FGC45_PRED_FAIL tile=',i,' status=',result%status,' attempts=',diagnostics%attempts,' retries=',diagnostics%retries,' solver=',diagnostics%solver_rejections,' temporal=',diagnostics%temporal_rejections;return;end if",1)
 src=src.replace("if(.not.candidate%ready())return", "if(.not.candidate%ready())then;write(*,'(a,i0)')'A28_FGC45_PRED_FAIL=CANDIDATE tile=',i;return;end if",1)
 src=src.replace("if(.not.result%accepted_trajectory_direction%available)return", "if(.not.result%accepted_trajectory_direction%available)then;write(*,'(a,i0)')'A28_FGC45_PRED_FAIL=DIRECTION tile=',i;return;end if",1)
-Path(sys.argv[1]).write_text(src)  subroutine build_tile_predictor_rfm_fd(i,response,status)
-    integer,intent(in)::i
-    type(modflow6_swap_predictor_response_t),intent(out)::response
-    integer,intent(out)::status
-    type(kernel_checkpoint_t)::checkpoint
-    type(kernel_result_t)::rp,rm
-    type(kernel_candidate_state_t)::cp,cm
-    type(kernel_diagnostics_t)::dp,dm
-    type(fmr_b110_physical_forcing_t)::fp,fm
-    type(soil_water_physical_state_t)::sp,sm
-    type(soil_water_parameter_set_t)::pp,pm
-    type(modflow6_swap_predictor_lineage_t)::lineage
-    type(modflow6_derivative_coverage_t)::coverage
-    real(real64)::dq,hp,hm,h0,deriv
-    logical::ok
-    status=1;dq=1.0e-5_real64
-    call fmr_capture_checkpoint(committed(i),checkpoint,ok);if(.not.ok)return
-    fp=base_forcing(i);fm=base_forcing(i);fp%bottom_flux=PREDICTOR_QBOT+dq;fm%bottom_flux=PREDICTOR_QBOT-dq
-    call predictor_backend(i)%run_trial(column(i),template(i),predictor_parameters(i),committed(i),fp,predictor_config, &
-         window%t0,window%t1,checkpoint,rp,cp,dp)
-    if(.not.rp%completed.or..not.cp%ready())then;write(*,'(a,i0,a,i0)')'A28_FGC45_FD_FAIL=PLUS tile=',i,' status=',rp%status;return;end if
-    call materialize_solver_view(cp,predictor_parameters(i),sp,pp,ok);if(.not.ok)return
-    call predictor_backend(i)%discard_trial_candidate(cp,dp)
-    call predictor_backend(i)%run_trial(column(i),template(i),predictor_parameters(i),committed(i),fm,predictor_config, &
-         window%t0,window%t1,checkpoint,rm,cm,dm)
-    if(.not.rm%completed.or..not.cm%ready())then;write(*,'(a,i0,a,i0)')'A28_FGC45_FD_FAIL=MINUS tile=',i,' status=',rm%status;return;end if
-    call materialize_solver_view(cm,predictor_parameters(i),sm,pm,ok);if(.not.ok)return
-    call predictor_backend(i)%discard_trial_candidate(cm,dm)
-    hp=(sp%pressure_head(numnod)+predictor_parameters(i)%z(numnod))*0.01_real64
-    hm=(sm%pressure_head(numnod)+predictor_parameters(i)%z(numnod))*0.01_real64
-    h0=H0_CM*0.01_real64;deriv=(hp-hm)*100._real64/(2._real64*dq)
-    lineage%coupling_id=COUPLING_ID;lineage%swap_lineage_id=COLUMN_ID(i);lineage%swap_origin_revision=0_int64
-    lineage%groundwater_service_id=GW_SERVICE_ID;lineage%groundwater_lineage_id=GW_LINEAGE_ID;lineage%groundwater_origin_revision=0_int64
-    coverage%lower_face_head_semantics_covered=.true.
-    call compose_modflow6_swap_predictor_response(window,lineage,PREDICTOR_QBOT,h0,0.5_real64*(hp+hm),deriv, &
-         MODFLOW6_DERIVATIVE_CENTERED_FD,coverage,'centered-fd-rfm-full-trajectory','fgc45-rfm-fd',response,status)
-  end subroutine build_tile_predictor_rfm_fd
+Path(sys.argv[1]).write_text(src)
+
 
 
