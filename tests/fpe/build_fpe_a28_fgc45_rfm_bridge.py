@@ -6,9 +6,9 @@ src=src.replace("fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, 
 "fmr_b110_physical_state_t, fmr_b110_rfm_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_rfm_committed_state")
 src=src.replace("use mod_fmr_serialized_reference_backend, only:", "use mod_fmr_serialized_reference_backend, only:",1)
 # Additional RFM imports are inserted before implicit none.
-needle="   implicit none\n"
-imports="""   use mod_rfm_state, only: rfm_state_t
-   use mod_rfm_runtime_contract, only: rfm_runtime_configuration_t, RFM_SORPTIVITY_POLICY_A28_V1
+needle="  implicit none\n"
+imports="""  use mod_rfm_state, only: rfm_state_t
+  use mod_rfm_runtime_contract, only: rfm_runtime_configuration_t, RFM_SORPTIVITY_POLICY_A28_V1
 """
 src=src.replace(needle,imports+needle,1)
 # Template continuation: RFM uses optional RFM state and no temporal-history carrier.
