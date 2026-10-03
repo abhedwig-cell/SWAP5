@@ -1,0 +1,11 @@
+name: PPA-WU05-A28 FGC45 RFM coupled
+on:
+  push:
+    branches:
+      - admission/ppa-wu05-a28-rfm-approx-candidate
+jobs:
+  coupled:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_a28_fgc45_rfm_coupled.sh
