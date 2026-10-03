@@ -13,6 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Existing canonical stage benchmark
         run: python3 tests/performance/run_bartholomeus_c3a_stages.py
+      - name: Waterfilm refinement characterization
+        run: python3 tests/performance/run_bartholomeus_perf03_waterfilm.py
       - uses: actions/upload-artifact@v4
         with:
           name: c3a-perf03-stage-profile
