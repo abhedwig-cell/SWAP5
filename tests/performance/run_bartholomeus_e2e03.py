@@ -53,3 +53,5 @@ pathlib.Path(os.environ.get('C3A_RESULT','c3a_application_result.json')).write_t
 print('PPA_WU05C3A_E2E03_RUNNER=PASS')
 
 # E2E02 post-PERF02 trigger
+
+# trigger E2E03 trajectory qualification
