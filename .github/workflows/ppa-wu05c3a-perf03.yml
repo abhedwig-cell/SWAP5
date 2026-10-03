@@ -1,0 +1,19 @@
+name: PPA WU05 C3A PERF03 stress attribution
+on:
+  push:
+    branches: [research/ppa-wu05c3a-perf03-stress-profile]
+    paths:
+      - 'docs/audits/PPA_WU05C3A_PERF03_PREREGISTRATION.md'
+      - '.github/workflows/ppa-wu05c3a-perf03.yml'
+  workflow_dispatch:
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Existing canonical stage benchmark
+        run: python3 tests/performance/run_bartholomeus_c3a_stages.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c3a-perf03-stage-profile
+          path: c3a_stage_result.json
