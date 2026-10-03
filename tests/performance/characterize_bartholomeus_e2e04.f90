@@ -63,7 +63,7 @@ program test_fpe_approx02_a2_application_sequence
     if(step<=30)then
       day_forcing(1)%top_flux=-1.0_real64*khost
     else if(step<=60)then
-      day_forcing(1)%top_flux=0.3_real64*khost
+      day_forcing(1)%top_flux=-0.6_real64*khost
     else if(step<=90)then
       day_forcing(1)%top_flux=0.0_real64
     else
