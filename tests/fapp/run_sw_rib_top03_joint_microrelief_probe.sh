@@ -10,6 +10,7 @@ HISTORY="${2:-rising}"
 HEAD_TOL="${3:-1e-12}"
 SURFACE="${4:-smooth}"
 LEVELS="${5:-standard}"
+BOTTOM_K_DERIVATIVE="${6:-off}"
 fail(){ echo "TOP03_JOINT_MICRORELIEF_FAIL $*" >&2; exit 91; }
 python3 tests/fapp/make_top03_joint_nearsaturation.py "$BUILD/mod_b110_default_mvg_provider.f90" "$BUILD/unused.f90" "$DELTA" > "$BUILD/provider-generation.txt"
 python3 - "$BUILD/mod_top03_microrelief_top_provider.f90" "$SURFACE" <<'PY'
@@ -64,7 +65,7 @@ replace('top03_mean_wet_head', '''  pure real(real64) function top03_mean_wet_he
 Path(sys.argv[1]).write_text(s)
 print('SURFACE_HYPSOMETRY=smoothstep-CDF; storage=integral(fwet); mean_head=storage/fwet')
 PY
-python3 - "$BUILD/headcalc.f90" <<'PY'
+python3 - "$BUILD/headcalc.f90" "$BOTTOM_K_DERIVATIVE" <<'PY'
 from pathlib import Path
 import sys
 p=Path('src/legacy/b1_10_port/headcalc.f90')
@@ -81,9 +82,56 @@ diag='''! Test-only failure trace; this runs before HeadCalc rolls the failed tr
         fsi_ws%residual(maxloc(abs(state%h(1:NN)-fsi_ws%old_head(1:NN)),dim=1))
    write(*,'(A,8(1X,ES24.16))') 'HEADFAIL_SURFACE', state%hsurf, provider_dynamic_top_result%surface_head, &
         provider_dynamic_top_result%actual_top_flux, state%qtop, state%pond, state%pondm1, dt, sum1
+   write(*,'(A,8(1X,ES24.16))') 'HEADFAIL_BOTTOM', state%qbot, fsi_ws%provider_k(NN), state%k(NN), &
+        state%kmean(NN+1), state%dimoca(NN), fsi_ws%provider_dkdh(NN), matrix_fraction(NN), fsi_ws%dfdh_main(NN)
+   do i=1,NN
+      write(*,'(A,1X,I0,11(1X,ES24.16))') 'HEADFAIL_NODE', i, state%h(i), fsi_ws%old_head(i), &
+           state%theta(i), state%dimoca(i), state%k(i), fsi_ws%residual(i), &
+           fsi_ws%dfdh_upper(i), fsi_ws%dfdh_main(i), fsi_ws%dfdh_lower(i), &
+           fsi_ws%delta_head(i), fsi_ws%head_gradient(i)
+   end do
 '''
 if s.count(needle)!=1:raise SystemExit('HeadCalc failure insertion point not unique')
-Path(sys.argv[1]).write_text(s.replace(needle,diag+needle))
+if sys.argv[2] not in ('off','on'):
+ raise SystemExit('bottom K derivative mode must be off or on')
+s=s.replace(needle,diag+needle)
+if sys.argv[2]=='on':
+ decl='   real(8)                          :: QMpLatSsSav\n'
+ more='''   real(8)                          :: QMpLatSsSav
+   real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
+   logical                          :: top03_kplus_ok, top03_kminus_ok
+'''
+ if s.count(decl)!=1:raise SystemExit('could not add test-only derivative locals')
+ s=s.replace(decl,more)
+ jac='      call jacobian_F()\n'
+ add='''      call jacobian_F()
+      ! Research-only counterfactual: add dK/dh for free-drainage qbot=-K(h).
+      if (provider_constitutive_active .and. swkimpl == 0 .and. swbotb == 7) then
+         top03_dkbotdh = 0.0d0
+         top03_hsave = state%h(NN)
+         top03_fd_eps = max(1.0d-7,abs(top03_hsave)*1.0d-7)
+         state%h(NN) = top03_hsave + top03_fd_eps
+         call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), CONSTITUTIVE_DEMAND_WATER_CONTENT, &
+              fsi_ws%provider_theta, fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+         call evaluation_context%constitutive%evaluate_point_conductivity(NN,state%h(NN),fsi_ws%provider_theta(NN), &
+              top03_kplus,top03_kplus_ok)
+         state%h(NN) = top03_hsave - top03_fd_eps
+         call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), CONSTITUTIVE_DEMAND_WATER_CONTENT, &
+              fsi_ws%provider_theta, fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+         call evaluation_context%constitutive%evaluate_point_conductivity(NN,state%h(NN),fsi_ws%provider_theta(NN), &
+              top03_kminus,top03_kminus_ok)
+         state%h(NN) = top03_hsave
+         if (top03_kplus_ok .and. top03_kminus_ok) then
+            top03_dkbotdh = (top03_kplus-top03_kminus)/(2.0d0*top03_fd_eps)
+            fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + top03_dkbotdh
+         end if
+      end if
+'''
+ if s.count(jac)!=1:raise SystemExit('could not add test-only bottom derivative')
+ s=s.replace(jac,add)
+ s=s.replace("   write(*,'(A,8(1X,ES24.16))') 'HEADFAIL_BOTTOM', state%qbot, fsi_ws%provider_k(NN), state%k(NN), &\n        state%kmean(NN+1), state%dimoca(NN), fsi_ws%provider_dkdh(NN), matrix_fraction(NN), fsi_ws%dfdh_main(NN)",
+ "   write(*,'(A,9(1X,ES24.16))') 'HEADFAIL_BOTTOM', state%qbot, fsi_ws%provider_k(NN), state%k(NN), &\n        state%kmean(NN+1), state%dimoca(NN), fsi_ws%provider_dkdh(NN), matrix_fraction(NN), fsi_ws%dfdh_main(NN), &\n        top03_dkbotdh")
+Path(sys.argv[1]).write_text(s)
 PY
 python3 - "$BUILD/test.f90" "$HISTORY" "$HEAD_TOL" "$LEVELS" <<'PY'
 from pathlib import Path
