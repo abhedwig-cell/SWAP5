@@ -3,8 +3,8 @@ program test_fpe_approx02_a2_application_sequence
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, &
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t
+  use mod_fmr_serialized_reference_backend
+  use mod_fmr_runtime_core
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK
