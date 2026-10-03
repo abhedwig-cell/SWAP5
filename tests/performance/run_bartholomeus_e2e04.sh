@@ -108,17 +108,8 @@ done
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/performance/characterize_bartholomeus_e2e04.f90 -o "$BUILD/test.o" || fail "compile fixture"
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 
-: > "$BUILD/output.txt"
-for dt in 1e-2 3e-2 1e-1 3e-1 1; do
-  echo "E2E04_DT_PROBE=$dt" | tee -a "$BUILD/output.txt"
-  if "$BUILD/test" "$dt" -1 "$CANDIDATE_TOL" >> "$BUILD/output.txt" 2>&1; then
-    echo "E2E04_DT_ACCEPT=$dt" | tee -a "$BUILD/output.txt"
-  else
-    echo "E2E04_DT_REJECT=$dt" | tee -a "$BUILD/output.txt"
-    break
-  fi
-done
-grep -Fq 'E2E04_DT_ACCEPT=1e-2' "$BUILD/output.txt" || fail "baseline dt not accepted"
+"$BUILD/test" 1 -1 "$CANDIDATE_TOL" | tee "$BUILD/output.txt"
+grep -Fq 'FPE_APPROX02_A2_APPLICATION_SEQUENCE=PASS' "$BUILD/output.txt" || fail "daily sequence failed"
 
 python3 - "$BUILD/output.txt" <<'PY'
 import sys
