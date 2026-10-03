@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C2a no-rain control versus C2b 1 mm/day rainfall direct transaction diagnostics",
+  "workflow_run": 37114071020,
+  "workflow_conclusion": "success",
+  "source_commit": "a40df44db9ca2ae8644c7c246d8f7bfe5450afd5",
+  "artifact_id": 11270997483,
+  "artifact_sha256": "cd3c7322a9c668a4eb367bbd5eb3f41de16efe941811da35fcf3d94059b02957",
+  "canonical_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "fresh_process_sequence_replay": {
+    "result": "exact byte identity",
+    "result_sha256": "bdccb32f739bcfe7ebdd3453701434e7d0ea8f4eae831cbf7d408e532b178451",
+    "original_and_replay_json_match": true
+  },
+  "C2a_initial_no_rain": {
+    "slots": 50,
+    "head_m": -1,
+    "window_start_day": 0,
+    "duration_day": 0.001,
+    "top_flux_cm_per_day": 0,
+    "call_status_by_slot": 0,
+    "transaction_status_by_slot": 0,
+    "transaction_status_meaning": "CANONICAL_STATUS_COMPLETED",
+    "accepted_substeps_by_slot": 1,
+    "solver_rejections_by_slot": 0,
+    "temporal_rejections_by_slot": 0,
+    "mass_rejections_by_slot": 0,
+    "admission_rejections_by_slot": 0,
+    "attempts_by_slot": 1,
+    "retries_by_slot": 0,
+    "state_preserved": true
+  },
+  "C2b_rainfall": {
+    "slots": 50,
+    "head_m": -1,
+    "window_start_day": 0.001,
+    "duration_day": 0.001,
+    "top_flux_cm_per_day": 0.1,
+    "coupled_context_status": 5,
+    "coupled_context_status_meaning": "FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED",
+    "fixture_head_domain_guard_passed": true,
+    "isolated_call_status_by_slot": 0,
+    "transaction_status_by_slot": 2,
+    "transaction_status_meaning": "CANONICAL_STATUS_TRANSACTION_FAILED",
+    "accepted_substeps_by_slot": 0,
+    "solver_rejections_by_slot": 3,
+    "temporal_rejections_by_slot": 6,
+    "mass_rejections_by_slot": 0,
+    "admission_rejections_by_slot": 0,
+    "attempts_by_slot": 9,
+    "retries_by_slot": 8,
+    "state_preserved_after_direct_diagnostics": true
+  },
+  "interpretation": "Under these matched-head, matched-duration isolated trials the zero-rain forcing accepts and the 0.1 cm/day surface rainfall forcing reproduces solver and temporal transaction rejection in all 50 columns. Rainfall-triggered rejection is established for this fixture/forcing. The specific solver/temporal estimator cause is unresolved; isolated diagnostic counters are not counters captured from the original application-context call. No tolerance changed.",
+  "limitations": [
+    "Research/qualification only.",
+    "C2b is not an accepted coupled window and has no qualified coupled mass balance.",
+    "No inference about Hupsel readiness, restart/replay of accepted rain windows, or canonical admission."
+  ]
+}
