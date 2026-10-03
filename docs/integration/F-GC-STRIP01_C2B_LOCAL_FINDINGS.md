@@ -34,6 +34,16 @@ The detail probe repeats this after accepted C2a, at the same committed state an
 
 A fresh-origin forcing sweep separates rate from time error. At 0.1 through 0.001 cm/day, the six tested durations all reject. At 0.0001 cm/day, only 1e-7 and 1e-8 day intervals accept, with multiple retries and subdivisions; that is 1,000 times smaller than the registered 0.1 cm/day rainfall and does not qualify the target. Zero flux accepts immediately. This supports a forcing-onset/temporal-history incompatibility as the immediate bottleneck for the imposed-flux fixture. It does not identify a hydraulic mass-balance defect. It is not a continuation or timestep-convergence qualification. This probe is not a continuation or timestep-convergence result.
 
+## Temporal-history seed discriminator
+
+A research-only fixture captures the candidate temporal-history derivative for the same 0.1 cm/day imposed rainfall from the hydrostatic origin. To obtain that candidate despite the frozen 1e-5 cm indicator budget, the capture run temporarily uses a 10 cm budget; it accepts two substeps and is used only to read the derivative. That altered-budget path is not evidence of a valid model transaction. A separate fresh process seeds this derivative into an otherwise unchanged origin and restores the frozen 1e-5 cm budget.
+
+At 1e-3 day, the seed reduces Binf from 0.867884 cm to 0.00187113 cm (about 464x) but remains 187x above budget. At 1e-8 day, the zero-seed probe rejects at 0.00274469 cm while the seeded probe accepts at 7.80e-7 cm; at 1e-9 day the zero-seed rejects and the seeded probe accepts. This isolates stored history as a large contributor to the onset indicator at very short intervals.
+
+The seed was also supplied at initialization to the full native MODFLOW6 / 50-column SWAP coupled window with 0.1 cm/day rainfall. That window still rejects at SWAP corrector iteration 1. MODFLOW prepares and solves once but does not finalize; all 50 revisions remain zero, ledgers remain zero, and the full committed SWAP/temporal-state hash is unchanged. Two fresh runs produced byte-identical result JSON. Thus a right-derivative seed alone is insufficient; it is not the fix or a qualified coupling route. The next implementation must examine the actual coupling-window temporal update and spatially varying corrector response, alongside the separate B1.11 surface/mode-5 admission seam.
+
+The fixture, runnable discriminator, full-window negative result and source manifest are recorded alongside the earlier evidence. All 144 compiled production-source blobs match the prior build bound to canonical `e3bfcdca00ba89cfeea529cf9b648dcc803483ab`; production source, mass gates and retry limits are unchanged.
+
 ## Direct backend blocker
 
 In `src/runtime/mod_fmr_serialized_reference_backend.f90`, `fmr_serialized_execution_admitted` requires `parameters%bottom_mode /= 5` for both Black and Boesten optional evaporation states. The dynamic rainfall fixture uses Black to route precipitation through the existing B1.11 surface balance and uses mode 5 for groundwater-head coupling. Both dynamic variants therefore return `KERNEL_STATUS_NOT_ADMITTED=101` with one admission rejection, zero numerical attempts and zero completed time for all five probed durations.

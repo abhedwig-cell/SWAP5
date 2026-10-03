@@ -1,0 +1,481 @@
+{
+  "experiment": "F-GC-STRIP01-C2-TEMPORAL-SEED-DISCRIMINATOR",
+  "classification": "research_only_not_qualification",
+  "capture": {
+    "case": "capture",
+    "initialization_status": 0,
+    "capture_status": 0,
+    "temporary_head_budget_cm": 10.0,
+    "codes": [
+      0,
+      2,
+      0,
+      1,
+      0,
+      0,
+      3,
+      1
+    ],
+    "heads_cm": [
+      -95.00770411366952,
+      -85.00000823040479,
+      -75.0000000102024,
+      -65.000000000016,
+      -55.000000000000036,
+      -45.0,
+      -35.0,
+      -25.0,
+      -15.0,
+      -5.0,
+      5.0,
+      15.0,
+      25.0,
+      35.0,
+      45.0,
+      55.0,
+      65.0,
+      75.0,
+      85.0,
+      95.0
+    ],
+    "history": [
+      -7.701182244232996,
+      -0.010969029005991615,
+      -1.5297189293050906e-05,
+      -2.5551116777933203e-08,
+      -5.6843418860808015e-11,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "cases": {
+    "zero": {
+      "case": "zero",
+      "initialization_status": 0,
+      "forcing_cm_per_day": 0.1,
+      "frozen_head_budget_cm": 1e-05,
+      "trials": [
+        {
+          "dt_day": 0.001,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            3,
+            6,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.8678842860156645,
+            1e-05,
+            86788.42860156644,
+            0.1,
+            -1.1117663178961124e-09,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 0.0001,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            0,
+            9,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.2744506744307499,
+            1e-05,
+            27445.067443074986,
+            0.1,
+            2.5262124891956006e-09,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-05,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            1,
+            8,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.0867889742475332,
+            1e-05,
+            8678.897424753319,
+            0.1,
+            -3.385357556784374e-08,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-06,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            0,
+            9,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.027445091254510456,
+            1e-05,
+            2744.5091254510453,
+            0.1,
+            -7.614493370000641e-07,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-07,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            1,
+            8,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.008678932645073707,
+            1e-05,
+            867.8932645073705,
+            0.1,
+            -8.03740695118349e-06,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-08,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            0,
+            9,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.0027446877643203067,
+            1e-05,
+            274.46877643203067,
+            0.1,
+            -4.441719502210062e-05,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-09,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            0,
+            9,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.0008686423764692999,
+            1e-05,
+            86.86423764693,
+            0.1,
+            -0.001863406598567957,
+            0.0
+          ]
+        }
+      ]
+    },
+    "seeded": {
+      "case": "seeded",
+      "initialization_status": 0,
+      "forcing_cm_per_day": 0.1,
+      "frozen_head_budget_cm": 1e-05,
+      "trials": [
+        {
+          "dt_day": 0.001,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            3,
+            6,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.001871127491776331,
+            1e-05,
+            187.11274917763308,
+            0.1,
+            -1.1117663178961124e-09,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 0.0001,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            0,
+            9,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.0005938150335874509,
+            1e-05,
+            59.381503358745086,
+            0.1,
+            2.5262124891956006e-09,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-05,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            1,
+            8,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            0.00018784886077616067,
+            1e-05,
+            18.784886077616065,
+            0.1,
+            -3.385357556784374e-08,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-06,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            0,
+            9,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            5.940953721352355e-05,
+            1e-05,
+            5.940953721352354,
+            0.1,
+            -7.614493370000641e-07,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-07,
+          "call_status": 0,
+          "codes": [
+            2,
+            0,
+            1,
+            8,
+            0,
+            0,
+            9,
+            8,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            1.8810343301497464e-05,
+            1e-05,
+            1.8810343301497463,
+            0.1,
+            -8.03740695118349e-06,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-08,
+          "call_status": 0,
+          "codes": [
+            0,
+            2,
+            0,
+            7,
+            0,
+            0,
+            9,
+            7,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            7.797403477777181e-07,
+            1e-05,
+            0.0779740347777718,
+            0.1,
+            -1.6666274124665925e-08,
+            0.0
+          ]
+        },
+        {
+          "dt_day": 1e-09,
+          "call_status": 0,
+          "codes": [
+            0,
+            2,
+            0,
+            4,
+            0,
+            0,
+            6,
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          "observations": [
+            1.3211739937563686e-07,
+            1e-05,
+            0.013211739937563685,
+            0.1,
+            1.0575400665596701e-06,
+            0.0
+          ]
+        }
+      ]
+    }
+  },
+  "observation_columns": [
+    "result_status",
+    "accepted_substeps",
+    "solver_rejections",
+    "temporal_rejections",
+    "mass_rejections",
+    "admission_rejections",
+    "attempts",
+    "retries",
+    "solver_status",
+    "temporal_status",
+    "temporal_available",
+    "head_budget_valid"
+  ],
+  "value_columns": [
+    "temporal_head_inf_bound_cm",
+    "temporal_head_budget_cm",
+    "normalized_temporal_indicator",
+    "top_flux_cm_per_day",
+    "bottom_flux_cm_per_day",
+    "solver_equation_residual"
+  ],
+  "source_binding": {
+    "canonical_runtime_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+    "source_dependency_count": 144,
+    "compiled_src_matches_prior_canonical_build": true,
+    "prior_build_manifest": "C2_temporal_diagnostic_source_git_blobs.json",
+    "research_fixture": "tests/fgc/strip01/research_context_c2_seedprobe.f90"
+  },
+  "interpretation": {
+    "candidate_seed_origin": "Candidate accepted from the hydrostatic origin under 0.1 cm/day rainfall with a temporary 10 cm head budget; this budget is only a diagnostic aid and is not a qualified acceptance setting.",
+    "comparison": "At dt=1e-8 day, zero-seed rejects on temporal budget (Binf 0.0027446878 cm, budget 1e-5 cm); seeded trial accepts with Binf 7.7974e-7 cm. At dt=1e-9 day zero-seed still rejects; seeded trial accepts.",
+    "coupling": "The full 50-column SWAP-MODFLOW C2B window using the same research seed still rejects at the first SWAP corrector, does not publish MODFLOW, and preserves committed state. This proves the seed alone is insufficient.",
+    "claim_ceiling": "Research discriminator only. No change to production source or gates; no coupled rainfall qualification or canonical admission."
+  }
+}
