@@ -61,3 +61,9 @@ A28_RESULT=/tmp/a28-field-exact.json python3 tests/fpe/test_fpe_a28_coupled_wind
 A28_RESULT=/tmp/a28-field-a28.json python3 tests/fpe/test_fpe_a28_coupled_windows.py a28 24 > /tmp/a28-field-a28.log 2>&1
 python3 tests/fpe/compare_fpe_a28_practical.py /tmp/a28-field-exact.json /tmp/a28-field-a28.json /tmp/a28-field-exact.log /tmp/a28-field-a28.log /tmp/a28-field-comparison.json
 ```
+
+## Exact-only failure attribution addendum
+
+The frozen first field-depth exact initialization failed before any coupled window: its first prescribed-qbot sample returned incomplete/status 2 after 13 attempts (12 retries), including 10 solver rejections and 3 temporal rejections. Retain this as a negative exact-RFM field-fixture result; do not run A28 on this postimage. Before any new parameter change, make one exact-only diagnostic that holds the 10-node grid, `-45 cm` head and `0.01 day` step fixed but sets rainfall to zero. This single-factor probe distinguishes whether the active surface event is required for the failure. A PASS does not qualify the wet field fixture; it only identifies a forcing-sensitive path. A FAIL means stop and diagnose the exact solver/initial-state envelope before another coupled approximation experiment. Do not vary solver tolerances in this probe.
+
+Reproduce the frozen negative result with the same build using `A28_FIELD_DEPTH=1 A28_H0_CM=-45 A28_DT_DAY=.01 A28_RAIN_CM_DAY=10` and run exact only. The no-rain attribution probe uses the same command with `A28_RAIN_CM_DAY=0` and one window.
