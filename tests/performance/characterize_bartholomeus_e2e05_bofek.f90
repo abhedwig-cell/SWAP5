@@ -124,6 +124,7 @@ contains
     v%pressure_head_cm=s%pressure_head(1:3);v%water_content=s%water_content(1:3);v%soil_temperature_k=293.15_real64
     skip=bartholomeus_macro_supply_bound_no_stress(v,gate_data,gate_crop,gate_wroot,gate_root_density,0.275_real64)
     if(skip)gate_hits=gate_hits+1
+    if(gate_total==1)write(*,'(*(g0))')'E2E05_FIRST_STATE|CASE=',trim(case_id),'|H1=',s%pressure_head(1),'|THETA1=',s%water_content(1),'|TS=',ts,'|N=',nvg
     deallocate(v%pressure_head_cm,v%water_content,v%soil_temperature_k)
   end subroutine classify_gate
   subroutine initialize_state(h,s)
