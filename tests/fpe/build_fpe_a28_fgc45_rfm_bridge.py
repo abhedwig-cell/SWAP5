@@ -36,7 +36,7 @@ src=src.replace(old,new)
 src=src.replace("f%top_flux=q; f%top_head=H0_CM; f%bottom_flux=q; f%bottom_head=H0_CM",
 """f%top_flux=0.0_real64; f%top_head=H0_CM; f%bottom_flux=q; f%bottom_head=H0_CM
     allocate(f%rfm_surface); f%rfm_surface%supplied=.true.; f%rfm_surface%event_active=.true.
-    f%rfm_surface%precipitation_rate_cm_per_day=0.5_real64
+    f%rfm_surface%precipitation_rate_cm_per_day=0.0_real64
     f%rfm_surface%ponding_max_cm=0.1_real64; f%rfm_surface%runoff_resistance_day=0.1_real64
     f%rfm_surface%runoff_exponent=1.0_real64""")
 # Insert config helper.
