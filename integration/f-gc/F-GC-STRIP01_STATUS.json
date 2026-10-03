@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "work_unit": "F-GC-STRIP01",
-  "title": "50 m cross-section SWAP\u2013MODFLOW6 coupling benchmark",
+  "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2B_FAILURE_MECHANISM_SPLIT_TOLERANCE_AND_SWAP_RETRY_LIMIT",
+  "state": "C2B_SHARED_SOLVER_REGIME_FAILURE_ALL_50_COLUMN_PROBES_MATCH",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -342,7 +342,7 @@
     "research_ramp_runner": "tests/fgc/strip01/run_research_sequence_c2_forcing_ramp.py",
     "research_fixture_context_cap": 2048,
     "correct_sign_full_window": "0.001-day negative top-flux rainfall rejects at first SWAP corrector; committed state preserved and MODFLOW timestep not finalized",
-    "correct_sign_micro_series": "100/100 native SWAP\u2013MODFLOW6 windows published at 1e-5 day each with fixture-injected derivative seed; exact replay and closed SWAP storage balance; all heads remain -1 m",
+    "correct_sign_micro_series": "100/100 native SWAP–MODFLOW6 windows published at 1e-5 day each with fixture-injected derivative seed; exact replay and closed SWAP storage balance; all heads remain -1 m",
     "seed_free_ramp_result": "2000/2000 windows published at 1e-5 day from zero temporal seed, geometric forcing increase x1.005 up to 0.001 cm/day, held over final 1075 windows; exact replay; residual 3.13e-14 m3",
     "seed_free_target_ramp_limit": "A separate x1.005 sequence toward 0.1 cm/day published 999 windows, then rejected at 0.001458 cm/day",
     "groundwater_response": "none measurable; heads remain -1 m and drain outflow zero",
@@ -360,14 +360,16 @@
     "diagnostic_sweep_summary": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_forcing_diagnostic_sweep.json",
     "diagnostic_sweep_interpretation": "One-column response is non-monotone: zero and higher tested rain rates reject at dt=1e-5 day, the rejected ramp rate accepts at dt<=5e-6 day, and 0.0002 cm/day accepts at all tested durations. This does not prove cause or coupled-window recovery.",
     "coupled_dt5e6_result": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_coupled_dt5e6_6000_summary.json",
-    "coupled_dt5e6_summary": "5,231 full 50-column SWAP\u2013native MODFLOW6 windows at 5e-6 day published from zero seed with factor-1.001 rain ramp; rejected next increase at 0.001864916 cm/day. Exact fresh-process replay; mass residual 1.32e-13 m3; all heads -1 m, drain 0.",
+    "coupled_dt5e6_summary": "5,231 full 50-column SWAP–native MODFLOW6 windows at 5e-6 day published from zero seed with factor-1.001 rain ramp; rejected next increase at 0.001864916 cm/day. Exact fresh-process replay; mass residual 1.32e-13 m3; all heads -1 m, drain 0.",
     "coupled_dt5e6_interpretation": "Halving coupled window raises accepted forcing about 9.45x relative to the 1e-5-day sequence, but remains roughly 54x below 1 mm/day target and produces no measurable groundwater/drain response.",
     "coupled_dt2p5e6_result": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_coupled_dt2p5e6_15000_summary.json",
-    "coupled_dt2p5e6_summary": "6,120 full SWAP\u2013native MODFLOW6 windows at 2.5e-6 day published from zero seed; next forcing increase rejected at 0.0045347586 cm/day. Fresh-process replay byte-identical; mass residual 2.32e-13 m3; all heads -1 m, drain 0.",
+    "coupled_dt2p5e6_summary": "6,120 full SWAP–native MODFLOW6 windows at 2.5e-6 day published from zero seed; next forcing increase rejected at 0.0045347586 cm/day. Fresh-process replay byte-identical; mass residual 2.32e-13 m3; all heads -1 m, drain 0.",
     "dt_sensitivity": "Factor-1.001 accepted endpoint rises from 0.0001972 cm/day (dt 1e-5), to 0.0018631 cm/day (dt 5e-6), to 0.0045302 cm/day (dt 2.5e-6); only three durations tested, no extrapolation; all far below 0.1 cm/day target.",
     "failure_mechanism_diagnosis": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_coupling_tolerance_vs_swap_failure_diagnosis.json",
     "coupling_tolerance_blocker": "At dt=1e-6 day and flux tolerance 1e-15 m/s, full coupling reaches 40 iterations with max residual 1.3934476e-15 m/s; twice-tolerance sensitivity removes this early stopping.",
     "subsequent_swap_blocker": "At flux tolerance 2e-15, 15,239 full windows publish; next corrector fails at 0.0044255034 cm/day. Exact-origin dt=1e-6 column probe: accepted q completes 6 substeps/10 solver rejects; next q completes only 3 substeps, then 16 solver rejects and zero temporal rejects.",
-    "root_cause_scope": "Evidence identifies generic Richards-solver progress exhaustion for a representative column and separate coupling tolerance stopping. Full service does not expose failing participant or per-column transaction diagnostics; detailed attribution remains incomplete."
+    "root_cause_scope": "Evidence identifies generic Richards-solver progress exhaustion for a representative column and separate coupling tolerance stopping. Full service does not expose failing participant or per-column transaction diagnostics; detailed attribution remains incomplete.",
+    "all_column_failure_probe": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_all50_failure_origin_probe_summary.json",
+    "all_column_failure_probe_result": "All 50 independent discarded probes from the exact rejected origin returned identical code vectors for each tested rate/duration. At rejected q and dt=1e-6: 3 accepted substeps, 16 solver rejects, zero temporal rejects. No spatially unique bad column identified; in-call participant status still unexposed."
   }
 }
