@@ -15,3 +15,5 @@ python3 tests/rom/compile_f_rom0_fortran_closure.py \
   --build "$BUILD/compile" --opt 2
 python3 tests/fpe/run_fpe_bofek01_screen.py \
   "$BUILD/compile/rom0_test" docs/performance/F-PE-BOFEK01_TESTBANK.json
+
+# trigger E2E05 screening characterization
