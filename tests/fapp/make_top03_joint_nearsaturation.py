@@ -129,6 +129,51 @@ source = replace_one(
     source,
     "conductivity declarations",
 )
+source = replace_one(
+    r"    real\(real64\) :: theta_local\n    logical :: need_theta, need_k, need_capacity, need_dkdh",
+    "    real(real64) :: theta_local\n"
+    "    real(real64) :: s, w, dw, se, se_power, term, term_slope, k_mvg, dk_mvg_dse, cap_local\n"
+    "    logical :: need_theta, need_k, need_capacity, need_dkdh",
+    source,
+    "research conductivity derivative locals",
+)
+analytic_dk = f'''    if (need_dkdh) then
+       dconductivity_dhead = 0.0_real64
+       do i = 1, n
+          if (self%parameters%cofgen(9,i) <= B110_H_CRIT .or. pressure_head(i) >= 0.0_real64) cycle
+          w = 0.0_real64
+          dw = 0.0_real64
+          if (pressure_head(i) >= -{delta}) then
+             s = (pressure_head(i)+{delta})/{delta}
+             w = s**3*(10.0_real64+s*(-15.0_real64+6.0_real64*s))
+             dw = 30.0_real64*s**2*(1.0_real64-s)**2/{delta}
+          end if
+          se = max(0.0_real64,min(1.0_real64,(water_content(i)-self%parameters%cofgen(1,i))/ &
+               self%parameters%cofgen(25,i)))
+          if (se <= 0.0_real64 .or. se >= 1.0_real64) then
+             dconductivity_dhead(i) = 0.0_real64
+             cycle
+          end if
+          se_power = se**self%parameters%cofgen(32,i)
+          term = (1.0_real64-se_power)**self%parameters%cofgen(7,i)
+          k_mvg = self%parameters%cofgen(3,i)*se**self%parameters%cofgen(5,i)*(1.0_real64-term)**2
+          term_slope = self%parameters%cofgen(7,i)*self%parameters%cofgen(32,i)* &
+               se**(self%parameters%cofgen(32,i)-1.0_real64)* &
+               (1.0_real64-se_power)**(self%parameters%cofgen(7,i)-1.0_real64)
+          dk_mvg_dse = self%parameters%cofgen(3,i)*(self%parameters%cofgen(5,i)* &
+               se**(self%parameters%cofgen(5,i)-1.0_real64)*(1.0_real64-term)**2 + &
+               2.0_real64*se**self%parameters%cofgen(5,i)*(1.0_real64-term)*term_slope)
+          cap_local = b110_moiscap(self%parameters%cofgen(:,i),pressure_head(i),self%step_duration)
+          dconductivity_dhead(i) = (1.0_real64-w)*dk_mvg_dse*cap_local/self%parameters%cofgen(25,i) + &
+               dw*(self%parameters%cofgen(3,i)-k_mvg)
+       end do
+    end if'''
+source = replace_one(
+    r"    if \(need_dkdh\) dconductivity_dhead = 0\.0_real64",
+    analytic_dk,
+    source,
+    "analytic regularized dK/dh",
+)
 provider_out.write_text(source)
 
 test = (root / "tests/fapp/test_sw_rib_top03_surface_transition.f90").read_text()
@@ -170,4 +215,3 @@ test_out.write_text(test)
 print(f"JOINT_TRANSITION_DELTA_H_CM={delta_h_cm:.16g}")
 print("JOINT_TRANSITION_PROVIDER_SHA256=" + hashlib.sha256(provider_out.read_bytes()).hexdigest())
 print("JOINT_TRANSITION_DRIVER_SHA256=" + hashlib.sha256(test_out.read_bytes()).hexdigest())
-
