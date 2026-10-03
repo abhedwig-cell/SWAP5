@@ -92,10 +92,10 @@ diag='''! Test-only failure trace; this runs before HeadCalc rolls the failed tr
    end do
 '''
 if s.count(needle)!=1:raise SystemExit('HeadCalc failure insertion point not unique')
-if sys.argv[2] not in ('off','on'):
- raise SystemExit('bottom K derivative mode must be off or on')
+if sys.argv[2] not in ('off','on','analytic'):
+ raise SystemExit('bottom K derivative mode must be off, on (finite difference), or analytic')
 s=s.replace(needle,diag+needle)
-if sys.argv[2]=='on':
+if sys.argv[2] in ('on','analytic'):
  decl='   real(8)                          :: QMpLatSsSav\n'
  more='''   real(8)                          :: QMpLatSsSav
    real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
@@ -103,8 +103,13 @@ if sys.argv[2]=='on':
 '''
  if s.count(decl)!=1:raise SystemExit('could not add test-only derivative locals')
  s=s.replace(decl,more)
+ if sys.argv[2]=='analytic':
+  imp='CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY'
+  exp=imp+', CONSTITUTIVE_DEMAND_DKDH'
+  if s.count(imp)!=1:raise SystemExit('could not import test-only derivative demand')
+  s=s.replace(imp,exp)
  jac='      call jacobian_F()\n'
- add='''      call jacobian_F()
+ fd_add='''      call jacobian_F()
       ! Research-only counterfactual: add dK/dh for free-drainage qbot=-K(h).
       if (provider_constitutive_active .and. swkimpl == 0 .and. swbotb == 7) then
          top03_dkbotdh = 0.0d0
@@ -127,16 +132,75 @@ if sys.argv[2]=='on':
          end if
       end if
 '''
+ analytic_add='''      call jacobian_F()
+      ! Research-only analytic dK/dh from the generated regularized provider.
+      if (provider_constitutive_active .and. swkimpl == 0 .and. swbotb == 7) then
+         call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
+              CONSTITUTIVE_DEMAND_WATER_CONTENT+CONSTITUTIVE_DEMAND_DKDH, fsi_ws%provider_theta, &
+              fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+         top03_dkbotdh = fsi_ws%provider_dkdh(NN)
+         fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + top03_dkbotdh
+      end if
+'''
+ add=fd_add if sys.argv[2]=='on' else analytic_add
  if s.count(jac)!=1:raise SystemExit('could not add test-only bottom derivative')
  s=s.replace(jac,add)
  s=s.replace("   write(*,'(A,8(1X,ES24.16))') 'HEADFAIL_BOTTOM', state%qbot, fsi_ws%provider_k(NN), state%k(NN), &\n        state%kmean(NN+1), state%dimoca(NN), fsi_ws%provider_dkdh(NN), matrix_fraction(NN), fsi_ws%dfdh_main(NN)",
  "   write(*,'(A,9(1X,ES24.16))') 'HEADFAIL_BOTTOM', state%qbot, fsi_ws%provider_k(NN), state%k(NN), &\n        state%kmean(NN+1), state%dimoca(NN), fsi_ws%provider_dkdh(NN), matrix_fraction(NN), fsi_ws%dfdh_main(NN), &\n        top03_dkbotdh")
 Path(sys.argv[1]).write_text(s)
 PY
-python3 - "$BUILD/test.f90" "$HISTORY" "$HEAD_TOL" "$LEVELS" <<'PY'
+python3 - "$BUILD/test.f90" "$HISTORY" "$HEAD_TOL" "$LEVELS" "$BOTTOM_K_DERIVATIVE" <<'PY'
 from pathlib import Path
 import sys
 src=Path('tests/fapp/test_sw_rib_top03_microrelief_stage_probe.f90').read_text()
+imp='soil_water_solve_result_t, SW_SOLVE_CONVERGED'
+imp_exp=imp+', &\n       CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CONDUCTIVITY, CONSTITUTIVE_DEMAND_DKDH'
+if sys.argv[5]=='analytic':
+ if src.count(imp)!=1:raise SystemExit('could not add derivative-oracle demand imports')
+ src=src.replace(imp,imp_exp)
+ initcall='    call hyd%evaluate(h0,theta0,conductivity,capacity,dkdh)\n'
+ if src.count(initcall)!=1:raise SystemExit('could not insert derivative-oracle call')
+ src=src.replace(initcall,initcall+'    call top03_check_analytic_dkdh()\n')
+ anchor='  end subroutine initialize_fixture\n\n  subroutine run_trajectory'
+ oracle='''  end subroutine initialize_fixture
+
+  subroutine top03_check_analytic_dkdh()
+    real(real64) :: hprobe, eps, analytic, finite_difference, kplus, kminus
+    real(real64) :: heads(numnod), theta(numnod), conductivity_check(numnod), capacity_check(numnod), dkdh_check(numnod)
+    integer :: j
+    do j=1,5
+      select case(j)
+      case(1); hprobe=-0.300_real64
+      case(2); hprobe=-0.150_real64
+      case(3); hprobe=-0.050_real64
+      case(4); hprobe=-0.005_real64
+      case(5); hprobe=-0.0001_real64
+      end select
+      eps=max(1.0e-6_real64,abs(hprobe)*1.0e-3_real64)
+      heads=hprobe
+      call hyd%evaluate_demand(heads,CONSTITUTIVE_DEMAND_WATER_CONTENT+CONSTITUTIVE_DEMAND_DKDH, &
+           theta,conductivity_check,capacity_check,dkdh_check)
+      analytic=dkdh_check(1)
+      heads=hprobe+eps
+      call hyd%evaluate_demand(heads,CONSTITUTIVE_DEMAND_WATER_CONTENT+CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+           theta,conductivity_check,capacity_check,dkdh_check)
+      kplus=conductivity_check(1)
+      heads=hprobe-eps
+      call hyd%evaluate_demand(heads,CONSTITUTIVE_DEMAND_WATER_CONTENT+CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+           theta,conductivity_check,capacity_check,dkdh_check)
+      kminus=conductivity_check(1)
+      finite_difference=(kplus-kminus)/(2.0_real64*eps)
+      write(*,'(A,I0,3(1X,ES24.16))') 'JOINT_DKDH_ORACLE_DIAG',j,analytic,finite_difference, &
+           analytic-finite_difference
+      if(abs(analytic-finite_difference)>1.0e-6_real64+2.0e-5_real64*abs(finite_difference)) &
+           error stop 'analytic regularized dK/dh differs from central difference'
+    end do
+    write(*,'(A)') 'JOINT_DKDH_ORACLE=PASS'
+  end subroutine top03_check_analytic_dkdh
+
+  subroutine run_trajectory'''
+ if src.count(anchor)!=1:raise SystemExit('could not add derivative oracle procedure')
+ src=src.replace(anchor,oracle)
 src=src.replace('n_amp=5,n_stage=6,n_refine=4','n_amp=1,n_stage=6,n_refine=4')
 src=src.replace('[0.0_real64,0.02_real64,0.05_real64,0.10_real64,0.25_real64]','[0.05_real64]')
 tol=sys.argv[3]
