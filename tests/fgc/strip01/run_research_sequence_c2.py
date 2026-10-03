@@ -142,7 +142,7 @@ def main():
     flopy.mf6.ModflowTdis(
         sim,
         time_units='DAYS',
-        perioddata=[(0.001, 1, 1), (0.001, 1, 1)],
+        perioddata=[(0.002, 2, 1)],
     )
     flopy.mf6.ModflowIms(
         sim,
@@ -243,10 +243,10 @@ def main():
                 modflow_call_delta={
                     key: kernel.calls[key] - calls_before[key] for key in kernel.calls
                 },
-                xold_before_solve=session.accepted_xold.tolist()
+                accepted_xold_m=session.accepted_xold.tolist()
                 if session.accepted_xold is not None
                 else [],
-                xold_after_solve=session.xold.tolist()
+                final_xold_m=session.xold.tolist()
                 if session.xold is not None
                 else [],
             )
