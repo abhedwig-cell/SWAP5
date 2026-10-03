@@ -1,50 +1,26 @@
 {
-  "work_unit": "PPA-WU05-A28",
-  "status": "Q1_Q3_QUALIFIED_BRANCH_ONLY_LONG_HISTORY_OPEN",
-  "branch": "work/ppa-wu05-a28-rfm-approximate-mode",
-  "qualified_postimage": "281ee3680fa290e8ae84f90f5033f0883b203413",
-  "result_record": "docs/audits/PPA_WU05A28_RESULT.md",
-  "implemented": true,
-  "persisted": true,
-  "tested": true,
-  "qualified": true,
-  "canonical_admitted": false,
-  "production_default": false,
-  "multiswap_modflow_eligible": false,
-  "approximate_policy": {
-    "name": "RFM_SORPTIVITY_POLICY_A28_V1",
-    "reference_panels": 64,
-    "bands": [
-      {"condition": "h_cm < -30", "panels": 64},
-      {"condition": "-30 <= h_cm < -3", "panels": 32},
-      {"condition": "h_cm >= -3", "panels": 16}
-    ]
+  "work_unit":"PPA-WU05-A28",
+  "status":"PRODUCTION_ADMISSION_CANDIDATE_RFM_ONLY",
+  "canonical_admitted":false,
+  "production_default":false,
+  "multiswap_modflow_eligible":false,
+  "policy":"RFM_SORPTIVITY_POLICY_A28_V1",
+  "policy_bands":[
+    {"condition":"h_cm < -30","panels":64},
+    {"condition":"-30 <= h_cm < -3","panels":32},
+    {"condition":"h_cm >= -3","panels":16}
+  ],
+  "evidence":{
+    "q1_q3_run":37006043173,
+    "q4_long_history_run":37026218284,
+    "q4b_minus3_stage_a_run":37111331715,
+    "q4b_minus3_stage_b_run":37111460657,
+    "q4b_minus30_stage_a_run":37111670715,
+    "q4b_minus30_stage_b_run":37111791528
   },
-  "retained_falsification": {
-    "policy": "PERF07_V1",
-    "run_id": 37005436943,
-    "max_relative_sorptivity_error": 0.045950703328370868,
-    "case": "O13 h=-100 cm"
-  },
-  "qualification": {
-    "run_id": 37006043173,
-    "artifact_id": 11225924965,
-    "artifact_sha256": "751bb633cad621aafa06b6c37f0e4284333a786ed7dd7b35301b25eadcefcc8b",
-    "materials": 36,
-    "pressure_heads_per_material": 17,
-    "max_relative_sorptivity_error": 0.0070868132213172735,
-    "joint_exact_approx_C": 30,
-    "max_total_storage_diff_cm": 5.9105396132963506e-9,
-    "max_bottom_out_diff_cm": 2.6587865242788666e-9,
-    "max_sampled_theta_diff": 1.707468610945284e-10,
-    "max_approx_mass_residual_cm": 9.817536974349172e-11,
-    "non_E1_joint_BC": 0
-  },
-  "q4": {
-    "scope": "long repeated wet-dry and wall-history trajectories including restart/replay and accumulated drift",
-    "implemented": false,
-    "required_before_multiswap_modflow_production_eligibility": true
-  },
-  "next_action": "Design and run Q4 locally where possible; persist only final qualification evidence.",
-  "claim_boundary": "Explicit opt-in approximate RFM mode qualified for broadened constitutive catalog and short 32-case ABC trajectories only. No long-history, canonical, MultiSWAP or MODFLOW production admission."
+  "q4b_minus3":{"crossings":160,"cases":4,"stage_b":"PASS","max_storage_diff_cm":0.0,"max_bottom_diff_cm":0.0,"max_theta_diff":0.0,"max_endpoint_diff_cm":0.0,"max_mass_residual_cm":1.1102230246251565e-14},
+  "q4b_minus30":{"crossings":{"B01_per_geometry":40,"O05_per_geometry":34},"cases":4,"stage_b":"PASS","max_storage_diff_cm":0.0,"max_bottom_diff_cm":0.0,"max_theta_diff":0.0,"max_endpoint_diff_cm":0.0,"max_mass_residual_cm":1.1102230246251565e-14},
+  "runtime_dependency":{"F_TEMP_MODE3_01":"repair candidate qualified by bounded BASE/RFM decomposition; separate canonical regression/admission required"},
+  "falsified_hypotheses":["PERF07_V1 generalizes from B01/O05","Q4 H3 rain fixture is executable for B01","dynamic-top provider lifetime causes Q4B failure","ramp rate causes the ~22.7 cm exact failure envelope"],
+  "claim_boundary":"A28_V1 is an RFM production-admission candidate. It is not the default, not canonical-admitted, and has not yet been qualified for MultiSWAP-MODFLOW scaling/coupling."
 }
