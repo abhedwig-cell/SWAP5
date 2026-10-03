@@ -78,9 +78,14 @@ contains
     type(b110_dynamic_top_boundary_result_t) :: b110_result
 
     result = soil_water_top_boundary_result_t()
-    if (.not. associated(self%geometry) .or. .not. associated(self%hydraulics)) then
+    if (.not. associated(self%geometry)) then
        result%status = SW_TOP_BOUNDARY_UNAVAILABLE
-       result%route = 'b110-dynamic-unbound'
+       result%route = 'b110-dynamic-geometry-unbound'
+       return
+    end if
+    if (.not. associated(self%hydraulics)) then
+       result%status = SW_TOP_BOUNDARY_UNAVAILABLE
+       result%route = 'b110-dynamic-hydraulics-unbound'
        return
     end if
 
