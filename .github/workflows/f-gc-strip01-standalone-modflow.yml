@@ -93,9 +93,9 @@ jobs:
           cp strip01-results/c2a/source_git_blobs.json strip01-results/c2_sequence/
           cp strip01-results/c2a/canonical_source_commit.txt strip01-results/c2_sequence/
           cp strip01-results/c2a/research_source_commit.txt strip01-results/c2_sequence/
-          python tests/fgc/strip01/run_research_sequence_c2.py --root canonical \\
-            --library "${RUNNER_TEMP}/strip01-c2-build/libstrip01_research.so" \\
-            --libmf6 "${RUNNER_TEMP}/strip01-mf6/libmf6.so" \\
+          python tests/fgc/strip01/run_research_sequence_c2.py --root canonical \
+            --library "${RUNNER_TEMP}/strip01-c2-build/libstrip01_research.so" \
+            --libmf6 "${RUNNER_TEMP}/strip01-mf6/libmf6.so" \
             --output strip01-results/c2_sequence
           git rev-parse HEAD > strip01-results/c2_sequence/source_commit.txt
       - name: Persist research outputs
