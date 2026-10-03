@@ -27,9 +27,9 @@ src=src.replace("call predictor_backend(i)%initialize(top(i))\n       call corre
 old="""    call fmr_new_b110_temporal_indicator_committed_state(state,lineage_id,physical,0.0_real64,ok, &
          accepted_predecessor_right_derivative)"""
 new="""    block
-      type(rfm_state_t)::rfm
-      call rfm%initialize(1,ok); if(.not.ok)return
-      call fmr_new_b110_rfm_committed_state(state,lineage_id,physical,rfm,0.0_real64,ok)
+      type(rfm_state_t)::rfm_state
+      call rfm_state%initialize(1,ok); if(.not.ok)return
+      call fmr_new_b110_rfm_committed_state(state,lineage_id,physical,rfm_state,0.0_real64,ok)
     end block"""
 src=src.replace(old,new)
 # Active RFM surface forcing.
