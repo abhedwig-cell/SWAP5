@@ -28,7 +28,11 @@ JSON serialization now writes an actual newline instead of a literal backslash f
 
 For fixed-flux C2b, all 50 columns retain revision 1 and one committed ledger entry. Physical/history hashes and accepted MODFLOW XOLD are unchanged; no second MODFLOW timestep is finalized. The equilibrium window has zero input, drain and storage change. Each variant was repeated in a fresh process with byte-identical JSON.
 
-An isolated fixed-flux probe from the fresh hydrostatic origin applies 0.1 cm/day surface input and holds interface head at -1 m. Durations from 1e-3 through 1e-7 day all exhaust the existing eight retries without accepted substeps. At 1e-3 day the nine attempts comprise three solver and six temporal rejections. No mass or admission rejection occurs. This probe is not a continuation or timestep-convergence result.
+An isolated fixed-flux probe from the fresh hydrostatic origin applies 0.1 cm/day surface input and holds interface head at -1 m. Durations from 1e-3 through 1e-7 day all exhaust the existing eight retries without accepted substeps. At 1e-3 day the nine attempts comprise three solver and six temporal rejections. No mass or admission rejection occurs.
+
+The detail probe repeats this after accepted C2a, at the same committed state and time as C2b. MODFLOW has solved once, kept all 50 heads at -1 m, and has not finalized the rejected C2b window. The isolated SWAP trial reports Binf = 0.8679 cm at dt=0.001 day against the frozen 1e-5 cm budget, normalized indicator 86,788. At 0.0001 day Binf remains 0.2745 cm; at the minimum allowed 1e-8 day the fresh-origin bound is still 0.0027447 cm, 274 times the budget. The tested values scale approximately with sqrt(dt), so reaching the unchanged budget at 0.1 cm/day would require an extrapolated dt around 1.3e-13 day, far below the 1e-8 day minimum. This estimate is an extrapolation, not an executed timestep result.
+
+A fresh-origin forcing sweep separates rate from time error. At 0.1 through 0.001 cm/day, the six tested durations all reject. At 0.0001 cm/day, only 1e-7 and 1e-8 day intervals accept, with multiple retries and subdivisions; that is 1,000 times smaller than the registered 0.1 cm/day rainfall and does not qualify the target. Zero flux accepts immediately. This supports a forcing-onset/temporal-history incompatibility as the immediate bottleneck for the imposed-flux fixture. It does not identify a hydraulic mass-balance defect. It is not a continuation or timestep-convergence qualification. This probe is not a continuation or timestep-convergence result.
 
 ## Direct backend blocker
 
@@ -38,11 +42,11 @@ There is a second independent interface constraint: Black optional state and Ric
 
 ## Next implementation boundary
 
-The next repair belongs to the serialized backend/surface/temporal capability owner. Establish a supported contract for dynamic precipitation plus mode-5 head coupling, including complete physical/optional state, accepted numerical history, ordinary candidate execution and rollback. Alternatively define an explicitly qualified imposed-infiltration route, with its narrower surface-physics scope stated. Preserve all frozen mass/flux gates and the earlier negatives. Do not use a reference-floor candidate as an accepted transaction.
+The next repair belongs to the temporal/backend owner. First define how an accepted state updates temporal-history authority when prescribed surface forcing changes at a coupling-window boundary. Qualify a forcing-consistent right-derivative bootstrap or equivalent local-error treatment without relaxing the frozen head budget or retry floor. Separately establish a supported contract for dynamic B1.11 precipitation plus mode-5 head coupling, including complete physical/optional state, accepted numerical history, ordinary candidate execution and rollback. Alternatively define an explicitly qualified imposed-infiltration route, with its narrower surface-physics scope stated. Preserve all frozen mass/flux gates and the earlier negatives. Do not use a reference-floor candidate as an accepted transaction.
 
 After that shared capability is qualified, rerun the continuous C2a/C2b sequence, require accepted rainfall and native lateral/drain response, then extend duration and check cumulative mass, Hupsel forcing, committed restart and exact replay. C2a alone is not a working strip benchmark.
 
-Evidence and all three compiled source manifests are in `integration/f-gc/strip01/results/c2b-local-20261003/`. `validation.json` records source binding, native engine hash and exact replay checks.
+Evidence and all three compiled source manifests are in `integration/f-gc/strip01/results/c2b-local-20261003/`. `validation.json` records source binding, native engine hash and exact replay checks; `C2_temporal_onset_diagnosis.json` contains the post-C2a Binf/budget observations and fresh-origin rate sweep.
 
 ## Reproduction
 

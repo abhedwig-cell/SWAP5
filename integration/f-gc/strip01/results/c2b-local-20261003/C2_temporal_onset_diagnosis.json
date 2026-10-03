@@ -1,0 +1,162 @@
+{
+  "experiment": "F-GC-STRIP01 C2 imposed top-flux temporal-origin diagnosis",
+  "classification": "C2B_TEMPORAL_CERTIFICATE_BOUND_AT_FORCING_ONSET",
+  "canonical_source": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "research_parent": "ec649569bec5497d3e41ceb7541e34cfdf4e93de",
+  "geometry": "50 independent 1 m2 SWAP columns; MODFLOW one confined layer, no STO; head -1 m",
+  "source_bound_compiled_src_count": 144,
+  "source_mismatches": [],
+  "detail_replay_byte_identical": true,
+  "forcing_sweep_fresh_process_replay_exact": true,
+  "sequence_state": "C2A_ACCEPTED_C2B_REJECTED",
+  "C2a_published": true,
+  "C2b_published": false,
+  "C2b_MODFLOW_finalize_time_step": 0,
+  "C2b_trial_heads_unique_m": [
+    -1.0
+  ],
+  "C2b_physical_state_preserved": true,
+  "C2b_revisions_before_after": [
+    1,
+    1
+  ],
+  "C2b_ledger_before_after": [
+    1,
+    1
+  ],
+  "C2b_XOLD_preserved": true,
+  "probe_fields": [
+    "tx_status",
+    "accepted_substeps",
+    "solver_rejections",
+    "temporal_rejections",
+    "mass_rejections",
+    "admission_rejections",
+    "attempts",
+    "retries",
+    "solver_status",
+    "temporal_indicator_status",
+    "indicator_available",
+    "budget_valid"
+  ],
+  "probe_values": [
+    "Binf_cm",
+    "budget_cm",
+    "normalized_indicator",
+    "top_flux_cm_per_day",
+    "bottom_flux_cm_per_day",
+    "equation_residual"
+  ],
+  "post_C2a_same_origin_probes": [
+    {
+      "dt_day": 0.001,
+      "Binf_cm": 0.8678842860156641,
+      "budget_cm": 1e-05,
+      "normalized": 86788.42860156641,
+      "solver_rejections": 3,
+      "temporal_rejections": 6,
+      "mass_rejections": 0,
+      "attempts": 9
+    },
+    {
+      "dt_day": 0.0001,
+      "Binf_cm": 0.27445067443076504,
+      "budget_cm": 1e-05,
+      "normalized": 27445.067443076503,
+      "solver_rejections": 0,
+      "temporal_rejections": 9,
+      "mass_rejections": 0,
+      "attempts": 9
+    },
+    {
+      "dt_day": 1e-05,
+      "Binf_cm": 0.0867889742474898,
+      "budget_cm": 1e-05,
+      "normalized": 8678.897424748979,
+      "solver_rejections": 1,
+      "temporal_rejections": 8,
+      "mass_rejections": 0,
+      "attempts": 9
+    },
+    {
+      "dt_day": 1e-06,
+      "Binf_cm": 0.027445091254877613,
+      "budget_cm": 1e-05,
+      "normalized": 2744.509125487761,
+      "solver_rejections": 0,
+      "temporal_rejections": 9,
+      "mass_rejections": 0,
+      "attempts": 9
+    }
+  ],
+  "frozen_budget_cm": 1e-05,
+  "retry_limit": 8,
+  "min_step_day": 1e-08,
+  "estimated_dt_to_fit_budget_at_rain_0.1_cm_day": 1.33e-13,
+  "estimate_basis": "observed Binf proportional to sqrt(dt) over tested 1e-3..1e-6 day at unchanged initial origin; extrapolation only",
+  "fresh_origin_sweep": [
+    {
+      "rate_cm_day": 0.1,
+      "accepted_dt_day": [],
+      "unaccepted_dt_day": [
+        0.001,
+        0.0001,
+        1e-05,
+        1e-06,
+        1e-07,
+        1e-08
+      ]
+    },
+    {
+      "rate_cm_day": 0.01,
+      "accepted_dt_day": [],
+      "unaccepted_dt_day": [
+        0.001,
+        0.0001,
+        1e-05,
+        1e-06,
+        1e-07,
+        1e-08
+      ]
+    },
+    {
+      "rate_cm_day": 0.001,
+      "accepted_dt_day": [],
+      "unaccepted_dt_day": [
+        0.001,
+        0.0001,
+        1e-05,
+        1e-06,
+        1e-07,
+        1e-08
+      ]
+    },
+    {
+      "rate_cm_day": 0.0001,
+      "accepted_dt_day": [
+        1e-07,
+        1e-08
+      ],
+      "unaccepted_dt_day": [
+        0.001,
+        0.0001,
+        1e-05,
+        1e-06
+      ]
+    },
+    {
+      "rate_cm_day": 0.0,
+      "accepted_dt_day": [
+        0.001,
+        0.0001,
+        1e-05,
+        1e-06,
+        1e-07,
+        1e-08
+      ],
+      "unaccepted_dt_day": []
+    }
+  ],
+  "interpretation": "At rainfall 0.1 cm/day, a zero prior derivative produces a temporal-defect bound far above the frozen budget. Decreasing the forcing reduces the bound; 0.0001 cm/day only admits very short probe intervals and is not the registered 0.1 cm/day case. The bottleneck is forcing-onset/history consistency plus temporal budget, not mass rejection or MODFLOW head mismatch. Dynamic B1.11 surface remains independently excluded with bottom_mode 5.",
+  "claim_ceiling": "No accepted coupled rainfall, long-window mass, Hupsel, restart qualification or canonical admission."
+}

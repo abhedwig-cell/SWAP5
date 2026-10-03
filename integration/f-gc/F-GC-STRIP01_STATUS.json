@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP\u2013MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2B_LOCAL_NEGATIVE_REPRODUCED_MODE5_DYNAMIC_SURFACE_EXCLUDED",
+  "state": "C2B_TEMPORAL_ONSET_BLOCKER_SOURCE_BOUND",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Resolve the shared backend capability seam: B1.11 dynamic surface precipitation with mode-5 groundwater head and a qualified temporal acceptance route. Current Black route explicitly excludes mode 5; fixed-flux rain exhausts frozen retries. Do not widen tolerances or infer coupled rainfall qualification. Then rerun C2a/C2b, long-window mass, Hupsel, restart/replay.",
+    "next_action": "Fix and qualify forcing-onset temporal history for imposed rainfall under the frozen 1e-5 cm certificate and 1e-8 day minimum, then qualify B1.11 dynamic rainfall with bottom_mode=5 without weakening transaction/mass gates. Rerun continuous C2a/C2b; require rainfall acceptance, lateral/drain response, whole-window balance, replay and committed restart before Hupsel.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -87,9 +87,10 @@
     "fresh_origin_replay": "EXACT_JSON_IDENTITY_C0_C1; committed active physical/history fields, revisions, ledgers and native XOLD preserved",
     "c2a_result": "integration/f-gc/strip01/results/C2a_equilibrium_run_37111558483.json",
     "c2a": "PASS: one accepted zero-forcing matched-head ordinary transaction; exact initial equilibrium, zero SWAP storage change, zero drain, zero residual; source-bound to canonical e3bfcdca00ba89cfeea529cf9b648dcc803483ab.",
-    "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open."
+    "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open.",
+    "c2b_temporal_onset_diagnosis": "Post-C2a trial: MODFLOW heads stay at -1 m and no timestep publishes; Binf=0.8679 cm at dt=.001 d against 1e-5 cm budget (normalized 86788), declines approximately sqrt(dt), and remains 274x budget at min dt=1e-8 d. C2b rejected trials: 0 mass rejections; accepted state and XOLD preserved. Forcing-rate sweep supports temporal-onset/history issue; dynamic B1.11+mode5 remains separate admission exclusion."
   },
-  "next_permitted_action": "Resolve the shared backend capability seam: B1.11 dynamic surface precipitation with mode-5 groundwater head and a qualified temporal acceptance route. Current Black route explicitly excludes mode 5; fixed-flux rain exhausts frozen retries. Do not widen tolerances or infer coupled rainfall qualification. Then rerun C2a/C2b, long-window mass, Hupsel, restart/replay.",
+  "next_permitted_action": "Fix and qualify forcing-onset temporal history for imposed rainfall under the frozen 1e-5 cm certificate and 1e-8 day minimum, then qualify B1.11 dynamic rainfall with bottom_mode=5 without weakening transaction/mass gates. Rerun continuous C2a/C2b; require rainfall acceptance, lateral/drain response, whole-window balance, replay and committed restart before Hupsel.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
