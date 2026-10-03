@@ -252,7 +252,7 @@ contains
     call committed(slot)%capture_checkpoint(checkpoint, ok)
     if (.not. ok) return
     forcing = base_forcing
-    forcing%bottom_head = (head + 6.0_real64) * 100.0_real64
+    forcing%bottom_head = (head + 2.0_real64) * 100.0_real64
     numerical = config
     numerical%accepted_trajectory_direction%requested = .false.
     call backend%run_trial(columns(slot), templates(slot), parameters, committed(slot), forcing, numerical, &
@@ -289,6 +289,59 @@ contains
     if (candidate%ready()) call backend%discard_trial_candidate(candidate, diagnostics)
     c_status = 0
   end function strip01_diagnose_telemetry_c
+
+  integer(c_int) function strip01_diagnose_response_c(slot, head, duration, tangent_on, codes, response_i, &
+       response_r, trajectory_route, trajectory_method) bind(C,name="strip01_diagnose_response_c") result(c_status)
+    integer(c_int), value :: slot, tangent_on
+    real(c_double), value :: head, duration
+    integer(c_int), intent(out) :: codes(8), response_i(7)
+    real(c_double), intent(out) :: response_r(5)
+    character(kind=c_char), intent(out) :: trajectory_route(64), trajectory_method(48)
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    type(canonical_numerical_config_t) :: numerical
+    type(fmr_b110_physical_forcing_t) :: forcing
+    logical :: ok
+    integer :: i, ncopy
+    c_status = 1
+    if (slot < 1 .or. slot > NPART) return
+    call committed(slot)%capture_checkpoint(checkpoint, ok)
+    if (.not. ok) return
+    forcing = base_forcing
+    forcing%bottom_head = (head + 2.0_real64) * 100.0_real64
+    numerical = config
+    numerical%accepted_trajectory_direction%requested = tangent_on /= 0
+    numerical%accepted_trajectory_direction%control_coordinate = 5
+    call backend%run_trial(columns(slot), templates(slot), parameters, committed(slot), forcing, numerical, &
+         0.0_real64, duration, checkpoint, result, candidate, diagnostics)
+    codes = [result%status, diagnostics%accepted_substeps, diagnostics%solver_rejections, &
+         diagnostics%temporal_rejections, diagnostics%mass_rejections, diagnostics%admission_rejections, &
+         diagnostics%attempts, diagnostics%retries]
+    response_i = [merge(1,0,result%bottom_interface_exchange_available), &
+         merge(1,0,result%accepted_trajectory_direction%requested), &
+         merge(1,0,result%accepted_trajectory_direction%available), &
+         result%accepted_trajectory_direction%accepted_steps, &
+         result%accepted_trajectory_direction%control_coordinate, &
+         result%accepted_trajectory_direction%additional_tridiagonal_backsolves, &
+         result%accepted_trajectory_direction%additional_jacobian_builds]
+    response_r = [result%bottom_outward_exchange_native, result%terminal_bottom_outward_flux_native, &
+         result%accepted_trajectory_direction%accepted_bottom_exchange_derivative, &
+         result%accepted_trajectory_direction%origin_t0, result%accepted_trajectory_direction%accepted_t1]
+    trajectory_route = c_null_char
+    trajectory_method = c_null_char
+    ncopy = min(len_trim(result%accepted_trajectory_direction%route), size(trajectory_route))
+    do i = 1, ncopy
+      trajectory_route(i) = result%accepted_trajectory_direction%route(i:i)
+    end do
+    ncopy = min(len_trim(result%accepted_trajectory_direction%method), size(trajectory_method))
+    do i = 1, ncopy
+      trajectory_method(i) = result%accepted_trajectory_direction%method(i:i)
+    end do
+    if (candidate%ready()) call backend%discard_trial_candidate(candidate, diagnostics)
+    c_status = 0
+  end function strip01_diagnose_response_c
 
   integer(c_int) function strip01_floor_c(slot, head, duration, codes, values) &
        bind(C,name="strip01_floor_c") result(c_status)
