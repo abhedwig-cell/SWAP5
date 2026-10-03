@@ -17,6 +17,9 @@ swap=f.Fgc45RealMultiSwap(os.environ['FGC45_MULTISWAP_LIB'])
 # Initialization includes FD qualification and is reported separately from live windows.
 t0=time.perf_counter();hcof,rhs,href=swap.initialize();init_seconds=time.perf_counter()-t0
 matrix=(ctypes.c_double*2)();rfm=(ctypes.c_double*2)()
+counts=(ctypes.c_int*3)();panels=ctypes.c_int();hmin=ctypes.c_double();hmax=ctypes.c_double();seconds=ctypes.c_double()
+lib.a28_sorptivity_stats_c.argtypes=[ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
+lib.a28_sorptivity_stats_reset_c.argtypes=[]
 rows=[];swap_seconds=0.;modflow_seconds=0.;coupling_seconds=0.;predictor_seconds=0.
 with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
  p=Path(tmp);f.build_model(p,href)
@@ -24,6 +27,7 @@ with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
  sim=f.flopy.mf6.MFSimulation.load(sim_ws=str(p),verbosity_level=0)
  sim.tdis.perioddata.set_data([(DT*nwindow,nwindow,1.)]);sim.write_simulation(silent=True)
  raw=f.XmiWrapper(os.environ['LIBMF6'],working_directory=str(p));raw.initialize()
+ lib.a28_sorptivity_stats_reset_c() # Align quadrature counters and CPU time to the measured execution window.
  assert '6.8.0' in raw.get_version()
  kernel=f.CountingKernel(raw);publisher=f.Fgc34CtypesPublisher(os.environ['FGC45_MULTISWAP_LIB'])
  try:
@@ -68,7 +72,6 @@ with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
    Path(os.environ['A28_RESULT']).write_text(json.dumps(dict(status='RUNNING',completed_windows=w+1,rows=rows),indent=2)+'\n')
    print(f'A28_WINDOW_COMPLETED={w+1} H={head:.17g} iterations={outer} matrix={list(matrix)} rfm={list(rfm)}',flush=True)
  finally:raw.finalize()
-counts=(ctypes.c_int*3)();panels=ctypes.c_int();hmin=ctypes.c_double();hmax=ctypes.c_double();seconds=ctypes.c_double()
 lib.a28_sorptivity_stats_c(counts,ctypes.byref(panels),ctypes.byref(hmin),ctypes.byref(hmax),ctypes.byref(seconds))
 result=dict(mode=mode,windows=nwindow,dt_day=DT,init_seconds=init_seconds,execution_seconds=coupling_seconds,predictor_seconds=predictor_seconds,corrector_seconds=swap_seconds,modflow_seconds=modflow_seconds,sorptivity_counts=list(counts),panels=panels.value,consumer_head_range_cm=[hmin.value,hmax.value],sorptivity_seconds=seconds.value,rows=rows)
 Path(os.environ['A28_RESULT']).write_text(json.dumps(result,indent=2)+'\n')

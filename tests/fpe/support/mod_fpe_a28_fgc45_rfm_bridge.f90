@@ -358,7 +358,7 @@ contains
     type(modflow6_derivative_coverage_t)::coverage
     type(b110_default_mvg_parameters_t),target::hp
     type(modflow6_prescribed_qbot_bottom_face_t)::start_face
-    real(real64),parameter::deltas(3)=[1.e-6_real64,1.e-5_real64,1.e-4_real64]
+    real(real64),parameter::deltas(3)=[1.e-7_real64,1.e-6_real64,1.e-5_real64]
     real(real64)::hbase,hplus,hminus,d(3)
     integer::j
     logical::ok
@@ -375,6 +375,7 @@ contains
     if(maxval(abs(d-d(2)))/abs(d(2))>1.e-3_real64)then
       write(*,'(a,i0,3(a,es24.16))')'A28_FD_STABILITY_FAIL tile=',i,' t0_day=',window%t0,' t1_day=',window%t1, &
            ' relative_spread=',maxval(abs(d-d(2)))/abs(d(2))
+      call probe_rfm_fd_delta_ladder(i)
       return
     end if
     call initialize_b110_default_mvg_parameters(hp,predictor_parameters(i)%cofgen)
@@ -457,6 +458,26 @@ contains
     ok=ieee_is_finite(hbot)
     write(*,'(a,i0,a,es24.16,a,es24.16,a)')'A28_FD_SAMPLE_PASS tile=',i,' q_cm_day=',q,' face_head_m=',hbot, &
          ' candidate_provenance=PASS immutable=PASS discard=PASS replay=PASS'
+  end subroutine
+
+  subroutine probe_rfm_fd_delta_ladder(i)
+    integer,intent(in)::i
+    real(real64),parameter::delta(7)=[1.e-7_real64,3.e-7_real64,1.e-6_real64,3.e-6_real64, &
+         1.e-5_real64,3.e-5_real64,1.e-4_real64]
+    real(real64)::hp,hm,derivative
+    integer::j
+    logical::okp,okm
+    write(*,'(a,i0,a,2(es24.16,1x))')'A28_FD_DELTA_LADDER tile=',i,' window=',window%t0,window%t1
+    do j=1,size(delta)
+      call sample_rfm_qbot(i,PREDICTOR_QBOT+delta(j),hp,okp)
+      call sample_rfm_qbot(i,PREDICTOR_QBOT-delta(j),hm,okm)
+      if(.not.okp.or..not.okm)then
+        write(*,'(a,i0,a,es24.16,a,l1,a,l1)')'A28_FD_LADDER_SAMPLE_FAIL tile=',i,' dq=',delta(j),' plus=',okp,' minus=',okm
+        return
+      end if
+      derivative=100._real64*(hp-hm)/(2._real64*delta(j))
+      write(*,'(a,i0,2(a,es24.16))')'A28_FD_LADDER tile=',i,' dq=',delta(j),' derivative_day=',derivative
+    end do
   end subroutine
 
   logical function same_rfm_snapshot(a,b) result(same)

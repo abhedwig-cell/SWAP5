@@ -1,4 +1,4 @@
-# A28 coupled qualification: bounded FD success, active-window blocker
+# A28 coupled qualification: active paired comparison retained as component-only
 
 Date: 2026-10-03. Decision: **RETAIN_AS_COMPONENT_ONLY_CANDIDATE**.
 
@@ -63,16 +63,64 @@ Relative spread is 0.009069252297343396, or **0.906925%**, versus the frozen 0.1
 
 Window 17 final head is -0.06318599858287549 m; residual -1.2925094117835083e-18 m/s; eight coupling iterations. Tile matrix storage is about 1.25593033 cm, RFM storage remains zero. Thus this tiny rainfall fixture exercises matrix/surface response but still does not qualify substantial preferential storage or field-scale RFM.
 
+## Active exact/A28 24-window paired follow-up
+
+The first active exact gate above remains a retained FAIL for its original delta set [1e-6, 1e-5, 1e-4] cm/day. The same-state diagnostic established a local range through 1e-5 cm/day, and the separately preregistered follow-up gate froze [1e-7, 1e-6, 1e-5] cm/day with the 1e-6 derivative used for response composition. Under that narrower contract, exact fixed-64 completed all 24 exact windows and passed its FD stability, candidate/replay, coupling, and publication checks. Only after that exact gate passed was the identical fixture run with A28_V1; it too completed and published all 24 windows.
+
+The runs use the same tiny four-node, two-tile cell, forcing, initial state, MODFLOW 6.8.0 prepared solve, and coupling tolerances. Per-window final results are in the evidence bundle. Both have 8–9 coupling iterations and maximum absolute coupling residuals 2.74594e-17 and 2.73085e-17 m/s (exact and A28). Across the centered-FD samples, both variants complete 672/672 prescribed-qbot trials and 336/336 two-tile per-window predictor sample checks; there are zero solver rejections or failed trials. Maximum absolute trial mass residual is 5.63e-15 cm exact and 4.81e-15 cm A28. Temporal retries are substantial but match exactly in aggregate (730,408 rejections; maximum 2,092 retries in one trial). The paired comparison uses the existing preregistered absolute gates, not limits fitted to the outcome:
+
+| Quantity | Maximum absolute difference | Frozen limit | Result |
+| --- | ---: | ---: | --- |
+| MODFLOW head, m | 5.0761e-11 | 1e-12 | FAIL |
+| q1, m/s | 9.8715e-15 | 1e-15 | FAIL |
+| q2, m/s | 2.3608e-14 | 1e-15 | FAIL |
+| Area-weighted q, m/s | 1.8800e-14 | 1e-15 | FAIL |
+| Coupling residual, m/s | 4.1891e-19 | 1e-15 | PASS |
+| Tile 1 ledger, m | 1.9900e-12 | 1e-12 | FAIL |
+| Tile 2 ledger, m | 9.8886e-12 | 1e-12 | FAIL |
+| Matrix storage, cm | 4.9913e-10 | 1e-10 | FAIL |
+| RFM storage, cm | 0 | 1e-10 | PASS |
+| Coupling iterations (A28 worse than exact) | 0 | 0 | PASS |
+
+The exact final head is -0.06304742871567759 m and A28 is -0.06304742876643843 m. Relative to the exact trajectory, maximum head, q, ledger, and matrix-storage differences are small (about 8.1e-10, 2.8e-7, 1.4e-7, and 4.0e-10 respectively), but several frozen absolute gates fail. Do not retune these limits or the A28 policy from this outcome. This is a failed strict equivalence gate with small observed drift, not evidence that A28 itself is unacceptable for every opt-in use.
+
+### A28 activation and bounded timing
+
+Test-build-only counters and CPU timers were reset after SWAP/MODFLOW initialization and immediately before the measured 24-window execution, so exact and A28 scopes align. Exact recorded 3,137,540 sorptivity evaluations, all at 64 panels (200,802,560 panels); A28 recorded the same number at 32 panels (100,401,280 panels). Consumer heads covered -10 to about -5.9921 cm, exercising the 32-panel band only. Neither the 16- nor 64-panel A28 band was exercised. Preferential RFM storage remained zero on this shallow tiny grid.
+
+Measured execution wall time was 126.66 s exact and 78.31 s A28 (ratio 1.617). Sorptivity quadrature CPU time was 96.87 s and 48.48 s. Predictor time was 84.66 s and 52.40 s; corrector/SWAP time 41.88 s and 25.76 s; MODFLOW time 0.077 s and 0.094 s. This workload performs centered-FD sensitivity samples and candidate replay for every coupling window, and runs serially on one tiny cell. The ratio is a bounded qualification-workload measurement only: it is not a production speedup, worker-local scaling, contention, or 100,000-column performance evidence.
+
 ## Admission boundary and next experiment
 
-A28 is not falsified. The active exact predictor gate fails before a meaningful coupled approximate comparison. Therefore no active A28 drift, speed ratio, production runtime gain, worker-local scaling or contention claim is made. FD sensitivity/replay qualification workload timing would not represent a production predictor cost in any event.
+Decision remains **RETAIN_AS_COMPONENT_ONLY_CANDIDATE**. The RFM-compatible centered-FD response is qualified only for this bounded forcing/geometry and the narrower, explicitly versioned local delta contract. Live exact and A28 coupling each run successfully for 24 windows; active A28 use is proven and produces measurable drift that exceeds the preregistered absolute head/flux/ledger/storage limits. Mass closure and coupled residuals remain small, and coupling iterations do not worsen. Because the paired strict correctness gate fails, performance/scalability qualification is incomplete and production-trial admission is not supported. A28 is not classified FALSIFIED_FOR_COUPLED_USE: the result does not isolate the observed tiny drift as an unacceptable A28-specific hydrologic defect across representative RFM storage states.
 
-The next owning experiment should isolate the derivative's dependence on adaptive temporal partitioning from the same accepted window-18 state. Compare stable prescribed-qbot derivatives under a controlled shared temporal schedule, if an existing qualification seam supports it, and preregister a usable perturbation/conditioning contract before any new active A28 comparison. Do not alter the panel policy or production physics. A field-depth grid with active preferential storage is subsequently required before production-trial admission.
+The next qualification should preserve the frozen limits and A28 policy, first establish an agreed and physically meaningful coupled-deviation envelope before further candidate comparison, then exercise a field-depth geometry with nonzero preferential storage and more than one RFM-active head band. Only after correctness passes should repeated-window timing and a limited multi-cell/tile scale sequence be used for performance and scale admission. Keep the earlier broad-delta exact failure and all current strict paired failures in the evidence record.
 
 ## Reproduction and evidence
 
-Run `bash tests/fpe/run_fpe_a28_fgc45_rfm_coupled.sh`, optionally supplying a validated `LIBMF6` path and `A28_BUILD_DIR`/`A28_EVIDENCE_DIR`. The runner retains build and logs, runs exact then A28 near-equilibrium gates, and stops on the active exact blocker. Expected full-run outcome is currently nonzero at window 18, not PASS.
+For the completed active paired follow-up, build the local instrumented qualification library and run both variants with the same 24-window input (supply a validated MODFLOW 6.8.0 `LIBMF6`):
 
-Evidence bundle: `evidence/PPA_WU05A28_COUPLED_FD_EVIDENCE.json.gz`; manifest: `evidence/PPA_WU05A28_COUPLED_FD_MANIFEST.json`. It includes raw near-equilibrium logs, comparison limits/results, both active exact failures, partial accepted-window results, temporal diagnostic negative findings and local build/check logs. SHA and source-tree identity are explicit. No GitHub Actions were used.
+```bash
+python3 tests/fpe/build_fpe_a28_coupled_local.py /tmp/a28-coupled-build
+export FGC45_MULTISWAP_LIB=/tmp/a28-coupled-build/libfgc45_multiswap.so
+export LIBMF6=/path/to/modflow-6.8.0/libmf6.so
+A28_RESULT=/tmp/exact-24.json python3 tests/fpe/test_fpe_a28_coupled_windows.py exact 24 > /tmp/exact-24.log 2>&1
+A28_RESULT=/tmp/a28-24.json python3 tests/fpe/test_fpe_a28_coupled_windows.py a28 24 > /tmp/a28-24.log 2>&1
+python3 tests/fpe/compare_fpe_a28_coupled.py /tmp/exact-24.json /tmp/a28-24.json
+```
+
+The original convenience runner still exercises its 64-window sequence and retains the earlier original-delta negative finding; it is not the reproduction command for the separately frozen narrow-delta 24-window follow-up. All logs and JSON outputs from the reported paired run are in the evidence bundle.
+
+Evidence bundle: `evidence/PPA_WU05A28_COUPLED_FD_EVIDENCE.json.gz`; manifest: `evidence/PPA_WU05A28_COUPLED_FD_MANIFEST.json`. It includes raw near-equilibrium logs, comparison limits/results, both active exact failures, partial accepted-window results, temporal diagnostic negative findings, both complete aligned 24-window active logs/results, the paired comparison, and local build/check logs. SHA and source-tree identity are explicit. No GitHub Actions were used.
 
 Documentation source checks and strict MkDocs build pass. Existing informational anchor diagnostics remain in the retained build log.
+
+## Follow-up diagnostic result
+
+The retained first active run shows an important pattern: the 1e-6 and 1e-5 derivatives at the failed tile differ by about 0.00005%, while 1e-4 differs by 0.907%. The larger plus trial uses five more attempts/retries than its minus counterpart (559/473 versus 554/469). This suggests finite-difference truncation/nonlinearity, adaptive-partition response, or both; current evidence cannot separate them. A preregistered same-state delta ladder is being run as a diagnostic. It cannot retroactively satisfy the frozen gate.
+
+### Narrow-delta exact-only follow-up
+
+At the same accepted window-18 state, delta [1e-7, 3e-7, 1e-6, 3e-6, 1e-5] derivatives span 0.9269978685 to 0.9269993627 day, about 0.000161%. At 3e-5 the derivative is 0.9550106177 day, about 3.02% above the 1e-5 value, and the positive solve changes from 554 attempts/469 retries to 559/473; the negative solve stays 554/469. The 1e-4 derivative is 0.9354051649 day (0.907% above) with the same partition asymmetry. This supports a localized response range while showing that a broader centered perturbation is not locally linear under this execution policy. The 24-window follow-up uses a separate frozen gate and retains this original failure.
+
+The subsequent frozen 24-window pair is fully retained as `a28-aligned-exact-24.*` and `a28-aligned-approx-24.*` in the evidence archive. Both exact and A28 complete 24/24 windows; the old comparison limits report FAIL for head, q1/q2/weighted q, both ledgers, and matrix storage. Counters were reset at the measured-window boundary, proving the panel reduction was active over the same live windows.

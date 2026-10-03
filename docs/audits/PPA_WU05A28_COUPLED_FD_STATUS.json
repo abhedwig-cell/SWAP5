@@ -9,14 +9,85 @@
   "live_exact_correctness": true,
   "live_a28_correctness": true,
   "near_equilibrium_sorptivity_evaluations": 0,
-  "active_exact_windows_completed": 17,
-  "active_exact_failed_window": 18,
+  "active_exact_windows_completed": 24,
+  "active_exact_failed_window": null,
   "active_fd_relative_spread": 0.009069252297343396,
   "preregistered_fd_relative_limit": 0.001,
-  "active_a28_tested": false,
+  "active_a28_tested": true,
   "performance_qualified": false,
   "scalability_qualified": false,
-  "blocker": "Active exact centered-FD derivative sensitivity gate; ordinary RFM trajectories complete.",
+  "blocker": "Strict paired drift limits fail in a shallow two-tile cell with zero preferential storage; performance and scale remain unqualified.",
   "result_record": "docs/audits/PPA_WU05A28_COUPLED_FD_RESULT.md",
-  "next_safe_step": "Isolate adaptive temporal partition sensitivity from accepted window-18 state; keep A28 policy frozen."
+  "next_safe_step": "Establish a physically meaningful coupled-deviation envelope, then repeat active comparison on field-depth geometry with nonzero preferential storage; preserve existing limits and A28 policy during qualification.",
+  "narrow_delta_exact_gate": "PASS_24_WINDOWS",
+  "narrow_delta_cm_day": [
+    1e-07,
+    1e-06,
+    1e-05
+  ],
+  "active_a28_windows_completed": 24,
+  "active_a28_sorptivity_evaluations": 3137540,
+  "active_exact_sorptivity_evaluations": 3137540,
+  "exact_panel_counts": {
+    "64": 3137540,
+    "32": 0,
+    "16": 0
+  },
+  "a28_panel_counts": {
+    "64": 0,
+    "32": 3137540,
+    "16": 0
+  },
+  "a28_panels_evaluated": 100401280,
+  "exact_panels_evaluated": 200802560,
+  "consumer_head_range_cm": [
+    -10.0,
+    -5.992097873128534
+  ],
+  "coupled_comparison": "FAIL_PREREGISTERED_ABSOLUTE_DRIFT_LIMITS",
+  "paired_max_absolute_difference": {
+    "head_m": 5.076083997579417e-11,
+    "q1_m_s": 9.871476061123567e-15,
+    "q2_m_s": 2.3607556236244225e-14,
+    "weighted_q_m_s": 1.8799928186863396e-14,
+    "coupling_residual_m_s": 4.189107319764549e-19,
+    "tile1_ledger_m": 1.990015513215603e-12,
+    "tile2_ledger_m": 9.888627148569619e-12,
+    "matrix_storage_cm": 4.991260738052006e-10,
+    "rfm_storage_cm": 0.0,
+    "coupling_iterations": 0
+  },
+  "preregistered_drift_gate": "FAIL_HEAD_Q1_Q2_WEIGHTED_Q_TILE_LEDGER_MATRIX_STORAGE",
+  "max_exact_coupling_residual_m_s": 2.7459418486555328e-17,
+  "max_a28_coupling_residual_m_s": 2.7308527507935855e-17,
+  "qualification_execution_seconds": {
+    "exact": 126.6586845069869,
+    "a28": 78.30792191099681
+  },
+  "qualification_execution_ratio_exact_over_a28": 1.6174440773813994,
+  "qualification_sorptivity_cpu_seconds": {
+    "exact": 96.87041100438117,
+    "a28": 48.47830500027591
+  },
+  "production_speedup_claim": false,
+  "fd_trial_results": {
+    "exact": {
+      "completed": 672,
+      "failed": 0,
+      "solver_rejections": 0,
+      "total_temporal_rejections": 730408,
+      "max_retries_per_trial": 2092,
+      "max_abs_mass_residual_cm": 5.6296446395441375e-15
+    },
+    "a28": {
+      "completed": 672,
+      "failed": 0,
+      "solver_rejections": 0,
+      "total_temporal_rejections": 730408,
+      "max_retries_per_trial": 2092,
+      "max_abs_mass_residual_cm": 4.806451791932334e-15
+    }
+  },
+  "active_exact_max_coupling_iterations": 9,
+  "active_a28_max_coupling_iterations": 9
 }

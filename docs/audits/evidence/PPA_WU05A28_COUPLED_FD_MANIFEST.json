@@ -3,23 +3,29 @@
   "qualification_source_sha": "c8140b7d4b824df2101460530439f98008380eee",
   "local_tested_sha": "8f8008c01c3690cab3aea38c8d6de656cffb1ffe",
   "source_tree_sha": "a4aac5df1fab9d4da77249415fc3f6f9ebbad164",
-  "bundle_sha256": "a617697994322b216dc76cdf0652bc021c3005971ef26824d5aae2172b9ecf8c",
-  "bundle_bytes": 46904,
+  "bundle_sha256": "6595a03fc949cbad9bad2974376a47c18ef0ba9b88e6d9f8eb521662c1103c46",
+  "bundle_bytes": 98971,
   "contents": {
+    "a28-aligned-approx-24.json": "6d939cbbb69f0c5c0a074cf575807e65942817fcd656558511274a76f4ea5166",
+    "a28-aligned-approx-24.log": "67d2aea30c1d72bc4c0c135a6d7976cc99df25e9a267354a300817dcf508ef44",
+    "a28-aligned-build.log": "25429076b9ba430052cf6c80f3e61940a607c9231adea8b2f4fb0a2cb36ce8ba",
+    "a28-aligned-comparison.json": "b5a1ed43800f3149e477494219926580e9243dcafc4d2ad11a76c3d5cc5dbd54",
+    "a28-aligned-exact-24.json": "7c9a45be8ba7b10edb331f5ac211b0eef5d9b169b8003ff915815e6a107067cf",
+    "a28-aligned-exact-24.log": "9f21491bf23f6ce9421713e6a4bda01758c1355c53244b75f11f3ab3a5ac1ada",
+    "a28-build-instrumented.log": "3e7ae567c0b1c4778da582f3f6aee5647805e809f59e60386eeb50684075ff4c",
     "a28-fd-first.log": "da40ef665b08f840ef52cf5d448c6611dd893e092b074b4ca3e34ad73ce9c628",
     "a28-fd-second.log": "f6392a63c5ffd9fdca5600e4ab6684a910ff81b6e8383893755769d8e41eedd8",
     "a28-fd-third.log": "786790e6d49e9281242e7cfa4d1b9affb7bdaaebb741e6c4241444e851953947",
-    "a28-build-instrumented.log": "3e7ae567c0b1c4778da582f3f6aee5647805e809f59e60386eeb50684075ff4c",
-    "a28-final-exact.log": "60638ce831170240827bd2ea354a8da383c81421b85d036601472cd52002e60e",
     "a28-final-approx.log": "60638ce831170240827bd2ea354a8da383c81421b85d036601472cd52002e60e",
     "a28-final-comparison.json": "ed2bec4bfe4635f0b4ba958a5547f0dc5a68ee3131d8e0e0afa60af6445fe2dd",
-    "a28-windows-exact.log": "3aebc2e2207a131fccccecef252e4a797ef09a4437682cb5dcef64e8fd3fd742",
+    "a28-final-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+    "a28-final-exact.log": "60638ce831170240827bd2ea354a8da383c81421b85d036601472cd52002e60e",
+    "a28-final-mkdocs.log": "066c1f421c91edb1dabacdaf2653aa4616987c56be088ab40e827dd6daa7287b",
     "a28-temporal-diagnostic.log": "6bc605ee01de9ef70cc231c867c9a83fe5e0315b95430717aa666b9dd30e37dc",
     "a28-windows-exact-capacity.log": "d86f552e9574996f5738aa9f4f2218dd7f0667351cf74bf3146eb83ac3e2c478",
-    "a28-windows-replay.log": "15e361fe066c6c3cc9b24f30e77f328f968ff35046b6a15c8f8c01f2682ffb5d",
+    "a28-windows-exact.log": "3aebc2e2207a131fccccecef252e4a797ef09a4437682cb5dcef64e8fd3fd742",
     "a28-windows-replay.json": "39bbd31981d0ab7dfa63879080f730bb23e45a7d1cf4c904a48505c669c38444",
-    "a28-final-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
-    "a28-final-mkdocs.log": "ef063969cbce4acb02066b46386699e1257c026e09c357622010bf3f09494d38"
+    "a28-windows-replay.log": "15e361fe066c6c3cc9b24f30e77f328f968ff35046b6a15c8f8c01f2682ffb5d"
   },
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "flags": [
@@ -32,11 +38,24 @@
   "libmf6_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
   "production_sources_changed": false,
   "github_actions_used": false,
-  "active_a28_run": false,
+  "active_a28_run": true,
   "checks": {
     "bounds_checked_build": "PASS",
     "documentation_source_checks": "PASS",
     "mkdocs_strict": "PASS",
-    "negative_active_gate_reproduced": true
-  }
+    "narrow_delta_exact_fd_gate": "PASS_24_WINDOWS",
+    "active_exact_and_a28_coupling": "PASS_24_WINDOWS_EACH",
+    "a28_panels_active": "PASS_3,137,540_EVALUATIONS_AT_32_PANELS",
+    "strict_paired_drift_gate": "FAIL",
+    "production_performance_qualified": false,
+    "scalability_qualified": false
+  },
+  "tested_fixture_files_sha256": {
+    "tests/fpe/build_fpe_a28_coupled_local.py": "ea7fad07c14e16ff8eb5bc289eab25a46924eae66bfaec53fce851ea0422870f",
+    "tests/fpe/test_fpe_a28_coupled_windows.py": "19c388494529a865bf9c63ad0b8bfcdcccb6cde6da15e2300ce3471b1de650b6",
+    "tests/fpe/support/mod_fpe_a28_fgc45_rfm_bridge.f90": "df9fa417787204f2cf690ff643718b351ab0948973d4a443780779f4891438d4"
+  },
+  "active_exact_windows": 24,
+  "active_a28_windows": 24,
+  "active_paired_comparison": "FAIL_PREREGISTERED_ABSOLUTE_LIMITS"
 }

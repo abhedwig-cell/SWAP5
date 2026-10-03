@@ -36,6 +36,9 @@ contains
     real(c_double),intent(out)::hmin,hmax,seconds
     counts=eval_counts;npanels=panels_evaluated;hmin=head_min;hmax=head_max;seconds=eval_seconds
   end subroutine
+  subroutine a28_sorptivity_stats_reset_c() bind(C,name="a28_sorptivity_stats_reset_c")
+    eval_counts=0;panels_evaluated=0;head_min=huge(0._real64);head_max=-huge(0._real64);eval_seconds=0
+  end subroutine
   subroutine record_eval(panels,head)
     integer,intent(in)::panels
     real(real64),intent(in)::head
