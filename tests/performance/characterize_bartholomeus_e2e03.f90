@@ -61,6 +61,7 @@ program characterize_bartholomeus_e2e03
    skip=.false.
    select type(p=>snap)
    class is(fmr_b110_physical_state_t)
+     hv=process_hydraulic_view_t()
      hv%active_nodes=p%active_nodes
      allocate(hv%pressure_head(p%active_nodes),hv%water_content(p%active_nodes))
      hv%pressure_head=p%pressure_head;hv%water_content=p%water_content
