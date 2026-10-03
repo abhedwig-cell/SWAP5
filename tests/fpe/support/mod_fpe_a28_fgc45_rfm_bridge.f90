@@ -506,7 +506,11 @@ contains
     integer::endpoint_node
     area=merge(0.05_real64,0.10_real64,i==1)
     deep=merge(0.25_real64,0.65_real64,i==1)
-    endpoint_node=merge(3,4,i==1)
+    if(numnod>4)then
+      endpoint_node=3
+    else
+      endpoint_node=merge(3,4,i==1)
+    end if
     depth=abs(z(endpoint_node))
     c%enabled=.true.;c%sigma_b=.65_real64;c%f_mb=deep;c%connectivity_p=1._real64
     c%z_ah_cm=0.25_real64;c%z_ic_cm=depth;c%chi_wall=1._real64;c%exchange_length_cm=0.5_real64
@@ -595,7 +599,8 @@ contains
     call initialize_b110_default_mvg_parameters(hp,p%cofgen); call bind_b110_default_mvg_provider(provider,hp,DURATION_DAY)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     physical%active_nodes=numnod; allocate(physical%pressure_head(numnod),physical%water_content(numnod))
-    physical%pressure_head=heads; physical%water_content=water; physical%ponding_depth=0.0_real64; physical%groundwater_level=-2.0_real64
+    physical%pressure_head=heads; physical%water_content=water; physical%ponding_depth=0.0_real64
+    physical%groundwater_level=merge(H0_CM+z(1),-2.0_real64,numnod>4)
     accepted_predecessor_right_derivative=0.0_real64
     block
       type(rfm_physical_state_t)::rfm_state

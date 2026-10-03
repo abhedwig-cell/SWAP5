@@ -1,6 +1,6 @@
 """Build explicit RFM bridge with bounds checks and test-only sorptivity telemetry."""
 from pathlib import Path
-import subprocess,sys
+import os,subprocess,sys
 root=Path(__file__).resolve().parents[2]
 out=Path(sys.argv[1]).resolve();out.mkdir(parents=True,exist_ok=True)
 subprocess.run(['git','rev-parse','HEAD'],cwd=root,check=True)
@@ -25,6 +25,28 @@ extra=[
 'src/adapter/mod_modflow6_fgc34_c_bridge.f90',
  'tests/fpe/support/mod_fpe_a28_fgc45_rfm_bridge.f90']
 sources=subprocess.check_output(['python3','tests/support/augment_bartholomeus_backend_sources.py',*(base+extra)],cwd=root,text=True).split()
+# Optional field-depth grid is a generated build-local replacement for the
+# four-node FSI grid stub. Only the grid declaration changes; all state and
+# coupling code remains the same qualification-only bridge.
+field_grid=None
+if os.environ.get('A28_FIELD_DEPTH')=='1':
+ grid_source=root/'tests/fsi/fsi04_real_headcalc_stubs.f90'
+ grid_text=grid_source.read_text()
+ old=[
+  '  integer, parameter :: numnod = 4',
+  '  real(8), parameter :: z(numnod) = [-0.25d0, -0.75d0, -1.50d0, -2.50d0]',
+  '  real(8), parameter :: dz(numnod) = [0.50d0, 0.50d0, 1.00d0, 1.00d0]',
+  '  real(8), parameter :: disnod(numnod+1) = 1.0d0',
+ ]
+ assert all(grid_text.count(x)==1 for x in old),'unexpected FSI grid stub declaration'
+ new=[
+  '  integer, parameter :: numnod = 10',
+  '  real(8), parameter :: z(numnod) = [-5d0,-15d0,-25d0,-35d0,-45d0,-55d0,-65d0,-75d0,-85d0,-95d0]',
+  '  real(8), parameter :: dz(numnod) = 10d0',
+  '  real(8), parameter :: disnod(numnod+1) = 10d0',
+ ]
+ for before,after in zip(old,new,strict=True):grid_text=grid_text.replace(before,after,1)
+ field_grid=out/'a28_field_depth_grid_stubs.f90';field_grid.write_text(grid_text)
 # Bounded test-only instrumentation: only successful quadrature loops count.
 source=root/'src/process/macropore/mod_rfm_surface_sorptivity.f90'
 s=source.read_text().replace('  implicit none','  use, intrinsic :: iso_c_binding, only: c_int, c_double\n  implicit none',1)
@@ -63,7 +85,8 @@ for anchor in ['    sorptivity = sqrt','    sorptivity=sqrt']:
 instrumented=out/source.name;instrumented.write_text(s)
 objs=[]
 for name in sources:
- src=instrumented if name==str(source.relative_to(root)) else root/name
+ if field_grid is not None and name==base[0]:src=field_grid
+ else:src=instrumented if name==str(source.relative_to(root)) else root/name
  obj=out/(src.stem+'.o')
  subprocess.run(['gfortran','-std=f2008','-ffree-line-length-none','-fPIC','-fopenmp','-fcheck=all','-fbacktrace','-O2','-J',str(out),'-I',str(out),'-c',str(src),'-o',str(obj)],check=True)
  objs.append(str(obj))

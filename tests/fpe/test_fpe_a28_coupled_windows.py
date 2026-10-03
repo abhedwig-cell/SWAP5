@@ -6,17 +6,20 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tests/fgc'))
 import test_fgc45_real_multiswap_modflow_end_to_end as f
 mode=sys.argv[1];nwindow=int(sys.argv[2]) if len(sys.argv)>2 else 64
-DT=.001
+H0=float(os.environ.get('A28_H0_CM','-10.'))
+DT=float(os.environ.get('A28_DT_DAY','.001'))
+RAIN=float(os.environ.get('A28_RAIN_CM_DAY','1.'))
 lib=ctypes.CDLL(os.environ['FGC45_MULTISWAP_LIB'])
 lib.a28_set_policy_c.argtypes=[ctypes.c_int];lib.a28_set_policy_c.restype=ctypes.c_int
 lib.a28_set_fixture_c.argtypes=[ctypes.c_double]*3;lib.a28_set_fixture_c.restype=ctypes.c_int
 lib.a28_next_window_c.argtypes=[ctypes.c_double]+[ctypes.POINTER(ctypes.c_double)]*3;lib.a28_next_window_c.restype=ctypes.c_int
 assert lib.a28_set_policy_c(int(mode=='a28'))==0
-assert lib.a28_set_fixture_c(-10.,DT,1.)==0
+assert lib.a28_set_fixture_c(H0,DT,RAIN)==0
 swap=f.Fgc45RealMultiSwap(os.environ['FGC45_MULTISWAP_LIB'])
 # Initialization includes FD qualification and is reported separately from live windows.
 t0=time.perf_counter();hcof,rhs,href=swap.initialize();init_seconds=time.perf_counter()-t0
 matrix=(ctypes.c_double*2)();rfm=(ctypes.c_double*2)()
+lib.a28_storage_c(matrix,rfm);initial_matrix=list(matrix);initial_rfm=list(rfm)
 counts=(ctypes.c_int*3)();panels=ctypes.c_int();hmin=ctypes.c_double();hmax=ctypes.c_double();seconds=ctypes.c_double()
 lib.a28_sorptivity_stats_c.argtypes=[ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
 lib.a28_sorptivity_stats_reset_c.argtypes=[]
@@ -33,7 +36,7 @@ with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
  try:
   for w in range(nwindow):
    start=time.perf_counter()
-   rain=1. if (w//4)%2==0 else 0.
+   rain=RAIN if (w//4)%2==0 else 0.
    if w:
     a=ctypes.c_double();b=ctypes.c_double();c=ctypes.c_double()
     t=time.perf_counter();status=lib.a28_next_window_c(rain,ctypes.byref(a),ctypes.byref(b),ctypes.byref(c));predictor_seconds+=time.perf_counter()-t
@@ -73,6 +76,6 @@ with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
    print(f'A28_WINDOW_COMPLETED={w+1} H={head:.17g} iterations={outer} matrix={list(matrix)} rfm={list(rfm)}',flush=True)
  finally:raw.finalize()
 lib.a28_sorptivity_stats_c(counts,ctypes.byref(panels),ctypes.byref(hmin),ctypes.byref(hmax),ctypes.byref(seconds))
-result=dict(mode=mode,windows=nwindow,dt_day=DT,init_seconds=init_seconds,execution_seconds=coupling_seconds,predictor_seconds=predictor_seconds,corrector_seconds=swap_seconds,modflow_seconds=modflow_seconds,sorptivity_counts=list(counts),panels=panels.value,consumer_head_range_cm=[hmin.value,hmax.value],sorptivity_seconds=seconds.value,rows=rows)
+result=dict(mode=mode,windows=nwindow,h0_cm=H0,rain_cm_day=RAIN,reference_head_m=href,dt_day=DT,initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,init_seconds=init_seconds,execution_seconds=coupling_seconds,predictor_seconds=predictor_seconds,corrector_seconds=swap_seconds,modflow_seconds=modflow_seconds,sorptivity_counts=list(counts),panels=panels.value,consumer_head_range_cm=[hmin.value,hmax.value],sorptivity_seconds=seconds.value,rows=rows)
 Path(os.environ['A28_RESULT']).write_text(json.dumps(result,indent=2)+'\n')
 print('A28_COUPLED_WINDOWS=PASS',json.dumps({k:v for k,v in result.items() if k!='rows'}))
