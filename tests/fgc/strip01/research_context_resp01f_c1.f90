@@ -121,7 +121,6 @@ contains
       call set_tile(tiles(i), TILE_ID(i), TILE_ID(i), LEDGER_ID(i), CELL_ID(i), 1.0_real64)
       call set_cell(cells(i), CELL_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), i, i)
       cell_origin_head = reference_head_m
-      if (i == NPART) cell_origin_head = cell_origin_head + 0.5_real64
       call make_predictor(predictors(i), TILE_ID(i), TILE_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), &
            cell_origin_head, cell_origin_head)
       areas(i)%groundwater_cell_id = CELL_ID(i)

@@ -1,41 +1,27 @@
 {
-  "schema": "swap5.f_gc_strip01.responded_origin_recharge_preregistration_addendum.v1",
-  "experiment": "F-GC-STRIP01-RESP01F",
-  "date": "2026-10-03",
-  "supersedes": "None; this addendum clarifies the preregistration before execution and does not alter its physical configuration.",
-  "source_confirmations": {
-    "canonical_head": "a6d88c394104dfcd780d5b68df4addcb6e819968",
-    "top_flux_sign": "Positive fixed qtop is infiltration into SWAP. In B1.11 the surface residual is pond change minus rainfall minus qtop contribution; the fixed-flux typed provider passes requested top_flux unchanged.",
-    "C0_initial_interface_head_m": -5.0,
-    "C1_initial_interface_head_m": -1.0,
-    "both_bottom_pressure_heads_cm": 100,
-    "C0_RESP01E_col1_dhbottom_cm_dqbot_cm_per_day_days": 3.5047934204013784,
-    "C1_RESP01E_col1_dhbottom_cm_dqbot_cm_per_day_days": 3.5047934204013784,
-    "local_tangent_scope": "Hydrostatic origin only; every initial SWAP column has this same pressure-head profile after removing the former far-column perturbation."
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "RESP01F",
+  "state": "HARNESS_CORRECTION_BEFORE_VALID_RERUN",
+  "related_preregistration": "integration/f-gc/strip01/F-GC-STRIP01_RESP01F_PREREGISTRATION.json",
+  "prior_attempt": {
+    "run_id": 37111175655,
+    "research_commit": "a15cc23aaabf9a9d32f5dbb7a5c8b8e51678bf69",
+    "artifact_id": 11269637954,
+    "conclusion": "C0 and C1 both rejected at swap-corrector on first iteration; exact replay and reject-state preservation checks passed."
   },
-  "unit_separated_mass_gates": {
-    "native_transaction_mass_gate": {
-      "tolerance": 1e-12,
-      "units": "existing profile-native SWAP mass diagnostic units",
-      "change": "none"
-    },
-    "whole_domain_external_volume_gate": {
-      "tolerance": 1e-8,
-      "units": "m3 over the 0.001-day window",
-      "basis": "unchanged assertion already in tests/fgc/strip01/run_research_window.py; retain value while adding the measured rain-input term",
-      "residual": "delta_SWAP_storage - (0.001 m/day * 50 m2 * 0.001 day - DRN_out_m3_per_day * 0.001 day)"
-    },
-    "forcing_volume": {
-      "rain_rate_m_per_day": 0.001,
-      "window_day": 0.001,
-      "area_m2": 50,
-      "input_volume_m3": 0.00005
-    }
+  "finding": "The two source contexts retained cell_origin_head = reference_head_m + 0.5 m in MODFLOW package slot 50, although RESP01F preregistered all 50 predictors and SWAP hydrostatic origins at the same head. The result therefore did not test the registered matched-origin configuration. No accepted window was published.",
+  "observed_c1_first_trial_heads_m": {
+    "min": -1.1810320676719626,
+    "max": -0.8186437069204062,
+    "initial_all_cells": -1
   },
-  "predictor_composition": {
-    "qbot_inward_cm_per_day_at_origin": 0,
-    "dhbottom_cm_dqbot_cm_per_day_days": 3.5047934204013784,
-    "method": "the same accepted-trajectory local tangent route qualified by RESP01E, used only at its measured hydrostatic origin; no off-origin extrapolation is authorized"
+  "observed_c0_first_trial_heads_m": {
+    "min": -6.262701609230447,
+    "max": -3.7350172866449336,
+    "initial_all_cells": -5
   },
-  "claim_ceiling": "Clarification only. The experiment remains research qualification, not canonical admission."
+  "correction": "Remove only the far predictor +0.5 m origin shift from RESP01F C0/C1 contexts. Keep registered rainfall/infiltration 0.1 cm/day, q(H) tangent, coupling window, numerical gates, MODFLOW geometry and storage ownership unchanged.",
+  "rerun": "The existing RESP01F workflow rebuilds both participants from its pinned canonical commit a6d88c394104dfcd780d5b68df4addcb6e819968 and repeats each profile in fresh processes with exact result JSON identity.",
+  "claim_ceiling": "The prior RESP01F artifact is retained as a harness-invalid negative; it is not evidence for or against matched-head coupling. No production or canonical admission."
 }

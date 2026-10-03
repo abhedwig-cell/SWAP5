@@ -18,6 +18,11 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout pinned current-canonical C2 source
+        uses: actions/checkout@v4
+        with:
+          ref: e3bfcdca00ba89cfeea529cf9b648dcc803483ab
+          path: canonical
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -54,25 +59,37 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gfortran
+      - name: Materialize research C2 grid stub over canonical source
+        run: |
+          mkdir -p canonical/tests/fgc/strip01 strip01-results/c2a
+          cp tests/fgc/strip01/research_grid_stubs_c1.f90 canonical/tests/fgc/strip01/
+          git -C canonical rev-parse HEAD > strip01-results/c2a/canonical_source_commit.txt
       - name: Build matched-head C2 SWAP research fixture
         run: |
-          python tools/build_f_gc_strip01_research_context.py --profile C2 --build "${RUNNER_TEMP}/strip01-c2-build"
+          python tools/build_f_gc_strip01_research_context.py --root canonical --profile C2 --context-override tests/fgc/strip01/research_context_c2.f90 --build "${RUNNER_TEMP}/strip01-c2-build"
           python - <<'PY'
           import json
           import os
+          import subprocess
           from pathlib import Path
-          expected = json.loads(Path("integration/f-gc/strip01/results/C1_telemetry_23f5d3_source_git_blobs.json").read_text())
-          expected = {k: v for k, v in expected.items() if k.startswith("src/") or k == "tests/fgc/strip01/research_grid_stubs_c1.f90"}
           actual = json.loads((Path(os.environ["RUNNER_TEMP"]) / "strip01-c2-build/source_git_blobs.json").read_text())
-          actual = {k: v for k, v in actual.items() if k.startswith("src/") or k == "tests/fgc/strip01/research_grid_stubs_c1.f90"}
-          if actual != expected:
-              raise SystemExit("C2 build source blobs differ from the preregistered current-canonical manifest")
-          Path("strip01-results/c2a").mkdir(parents=True, exist_ok=True)
+          for path, sha in actual.items():
+              if path.startswith("src/"):
+                  expected = subprocess.check_output(["git", "-C", "canonical", "rev-parse", "HEAD:" + path], text=True).strip()
+              elif path == "tests/fgc/strip01/research_grid_stubs_c1.f90":
+                  expected = subprocess.check_output(["git", "rev-parse", "HEAD:" + path], text=True).strip()
+              elif path == "research_override/research_context_c2.f90":
+                  expected = subprocess.check_output(["git", "rev-parse", "HEAD:tests/fgc/strip01/research_context_c2.f90"], text=True).strip()
+              else:
+                  raise SystemExit("Unexpected C2 compiled dependency: " + path)
+              if sha != expected:
+                  raise SystemExit(f"C2 build blob mismatch for {path}: {sha} != {expected}")
           Path("strip01-results/c2a/source_git_blobs.json").write_text(json.dumps(actual, indent=2) + chr(10))
+          Path("strip01-results/c2a/research_source_commit.txt").write_text(subprocess.check_output(["git", "rev-parse", "HEAD"], text=True))
           PY
       - name: Run matched-head C2a equilibrium window
         run: |
-          python tests/fgc/strip01/run_research_window.py --profile C2 \
+          python tests/fgc/strip01/run_research_window.py --profile C2 --root canonical \
             --library "${RUNNER_TEMP}/strip01-c2-build/libstrip01_research.so" \
             --libmf6 "${RUNNER_TEMP}/strip01-mf6/libmf6.so" \
             --output strip01-results/c2a

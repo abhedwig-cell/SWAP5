@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_unit": "F-GC-STRIP01",
   "experiment": "C2_HEAD_CONSISTENT_SHALLOW_PROFILE",
-  "state": "PREREGISTERED_BEFORE_EXECUTION",
+  "state": "PREREGISTERED_BEFORE_FIRST_VALID_EXECUTION",
   "parent_experiments": [
     "C1_SHALLOW_GROUNDWATER_PROFILE",
     "RESP01E_HYDROSTATIC_ORIGIN_RESPONSE"
@@ -89,8 +89,22 @@
   "execution_prerequisites": {
     "research_fixture": "Set C1 SWAP columns 1..50 and MODFLOW cells 1..50 to the same -1.0 m total-head equilibrium; remove only the far-column +0.5 m uplift.",
     "forcing_harness": "Expose zero-rain C2a and 1 mm/day precipitation C2b through the actual SWAP surface forcing path; keep ET, roots, runoff configuration and all coupling semantics explicit.",
-    "source_binding": "Rebuild the research fixture against the exact current canonical src blob set and persist its manifest before execution."
+    "source_binding": "Checkout the exact canonical commit above, overlay only the preregistered research grid stub, compile the C2 context override, and verify every compiled src/ blob against that canonical checkout before executing."
   },
   "claim_ceiling": "Research-only bounded first-window result; no C0/C1 repair, Hupsel qualification, full benchmark qualification or canonical admission.",
-  "canonical_admission": false
+  "canonical_admission": false,
+  "source_binding": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+    "compiled_src_validation": "every compiled src/ git blob must equal HEAD:path in that exact checkout",
+    "research_fixture_commit": "recorded in run artifact"
+  },
+  "pre_execution_attempt": {
+    "run_id": 37111175647,
+    "classification": "model not executed; C2 fixture compiled but manifest path was literal in quoted heredoc"
+  },
+  "pre_execution_attempt_retry": {
+    "run_id": 37111314895,
+    "classification": "model not executed; fixture compiled but work-branch source blobs did not match the preregistered canonical manifest; workflow corrected to build on exact canonical checkout"
+  }
 }
