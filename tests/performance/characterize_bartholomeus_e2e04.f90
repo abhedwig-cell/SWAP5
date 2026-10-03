@@ -13,7 +13,12 @@ program test_fpe_approx02_a2_application_sequence
   use mod_crop_bartholomeus_input
   use mod_root_water_uptake_process
   use mod_process_hydraulic_view
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, transaction_state_t
+  use mod_kernel_transactions
+  use mod_fixed_flux_top_boundary_provider
+  use mod_bartholomeus_runtime_input, only: bartholomeus_runtime_view_t, build_bartholomeus_runtime_view, BARTHOLOMEUS_INPUT_OK
+  use mod_bartholomeus_no_stress_gate, only: bartholomeus_macro_supply_bound_no_stress
+  use mod_soil_temperature_contract, only: soil_temperature_field_view_t, build_soil_temperature_field_view, SOIL_TEMP_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
@@ -33,6 +38,22 @@ program test_fpe_approx02_a2_application_sequence
   integer :: exact_backtrack,a2_backtrack,step,status
   character(len=64) :: arg
   integer(int64) :: c0,c1,rate
+  type(fmr_serialized_reference_backend_t)::gate_backend
+  type(fixed_flux_top_boundary_provider_t),target::gate_top
+  type(fmr_logical_column_t)::gate_col
+  type(kernel_committed_state_t)::gate_state
+  type(kernel_checkpoint_t)::gate_cp
+  type(kernel_candidate_state_t)::gate_candidate
+  type(kernel_result_t)::gate_result
+  type(kernel_diagnostics_t)::gate_diag
+  class(transaction_state_t),allocatable::gate_snap
+  type(process_hydraulic_view_t)::gate_hv
+  type(soil_temperature_field_view_t)::gate_tv
+  type(bartholomeus_runtime_view_t)::gate_bv
+  real(real64),allocatable::gate_wr(:)
+  real(real64)::gate_ctop
+  logical::gate_ok,gate_skip
+  integer::gate_input_status,gate_thermal_status,gate_hits
 
   dt=1.0_real64; top_factor=-1.0_real64; candidate_tol=1.0e-4_real64
   if(command_argument_count()>=1)then
@@ -50,6 +71,13 @@ program test_fpe_approx02_a2_application_sequence
   call add_root_thermal_oxygen(exact_cfg)
   khost=abs(exact_cfg%tiles(1)%base_forcing%top_flux)
   a2_cfg=exact_cfg
+  gate_hits=0
+  gate_col%column_id=exact_cfg%tiles(1)%tile_id;gate_col%template_id=exact_cfg%tiles(1)%template%template_id
+  gate_col%parameter_ref=1_int64;gate_col%state_handle=1_int64;gate_col%forcing_handle=1_int64
+  gate_col%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+  call gate_backend%initialize(gate_top)
+  call fmr_new_b110_temporal_indicator_committed_state(gate_state,gate_col%column_id,exact_cfg%tiles(1)%initial_state,0._real64,gate_ok,exact_cfg%tiles(1)%initial_right_derivative)
+  if(.not.gate_ok)error stop 'e2e04 gate state init'
   call exact_app%initialize(exact_cfg,status)
   if(status/=FMR_APP_BOOT_OK .or. .not.exact_app%ready()) error stop 'exact app bootstrap'
   call a2_app%initialize(a2_cfg,status)
@@ -62,6 +90,34 @@ program test_fpe_approx02_a2_application_sequence
     day_forcing(1)=exact_cfg%tiles(1)%base_forcing
     day_forcing(1)%top_flux=-1.0_real64*khost
     call exact_app%run_standalone_with_forcing(real(step-1,real64)*dt,real(step,real64)*dt,day_forcing,result,status)
+    call gate_state%capture_checkpoint(gate_cp,gate_ok);if(.not.gate_ok)error stop 'e2e04 gate checkpoint'
+    call gate_backend%run_trial(gate_col,exact_cfg%tiles(1)%template,exact_cfg%tiles(1)%parameters,gate_state,day_forcing(1),exact_cfg%numerical,real(step-1,real64)*dt,real(step,real64)*dt,gate_cp,gate_result,gate_candidate,gate_diag)
+    if(.not.gate_result%completed.or..not.gate_candidate%ready())error stop 'e2e04 gate trial'
+    call gate_backend%commit_trial_candidate(gate_state,gate_candidate,gate_diag,gate_ok,status);if(.not.gate_ok)error stop 'e2e04 gate commit'
+    call gate_state%snapshot(gate_snap,gate_ok);if(.not.gate_ok)error stop 'e2e04 gate snapshot'
+    gate_skip=.false.
+    select type(p=>gate_snap)
+    class is(fmr_b110_physical_state_t)
+      gate_hv=process_hydraulic_view_t();gate_hv%active_nodes=p%active_nodes
+      allocate(gate_hv%pressure_head(p%active_nodes),gate_hv%water_content(p%active_nodes))
+      gate_hv%pressure_head=p%pressure_head;gate_hv%water_content=p%water_content
+      if(allocated(p%soil_temperature))then
+        call build_soil_temperature_field_view(p%soil_temperature,gate_tv,gate_thermal_status)
+        if(gate_thermal_status==SOIL_TEMP_OK)then
+          allocate(gate_wr(size(day_forcing(1)%crop_oxygen%root_density_kg_m3)))
+          gate_wr=1._real64/exact_cfg%tiles(1)%parameters%bartholomeus%specific_root_length_m_kg
+          call build_bartholomeus_runtime_view(gate_hv,gate_tv,size(gate_wr),gate_bv,gate_input_status)
+          gate_ctop=672._real64/(8.314472_real64*(day_forcing(1)%crop_oxygen%air_temperature_c+273._real64))
+          if(gate_input_status==BARTHOLOMEUS_INPUT_OK)gate_skip=bartholomeus_macro_supply_bound_no_stress(gate_bv,exact_cfg%tiles(1)%parameters%bartholomeus%soil,exact_cfg%tiles(1)%parameters%bartholomeus%crop,gate_wr,day_forcing(1)%crop_oxygen%root_density_kg_m3,gate_ctop)
+          deallocate(gate_wr)
+        endif
+      endif
+      if(gate_skip)gate_hits=gate_hits+1
+      if(step==1.or.mod(step,10)==0)write(*,'(*(g0))')'E2E04_GATE|DAY=',step,'|SKIP=',gate_skip,'|H1=',p%pressure_head(1),'|THETA1=',p%water_content(1)
+    class default
+      error stop 'e2e04 gate snapshot type'
+    end select
+    deallocate(gate_snap)
     call verify_result('exact',step,status,result)
     exact_storage(step)=result(1)%mass%storage_end
     exact_net(step)=result(1)%mass%total_in-result(1)%mass%total_out
@@ -101,6 +157,7 @@ program test_fpe_approx02_a2_application_sequence
   call system_clock(c1)
   a2_seconds=real(c1-c0,real64)/real(rate,real64)
 
+  write(*,'(*(g0))') 'E2E04_GATE_SUMMARY|STEPS=',nsteps,'|HITS=',gate_hits,'|FRACTION=',real(gate_hits,real64)/real(nsteps,real64)
   write(*,'(*(g0))') 'APPROX02_A2_APPLICATION|STEPS=',nsteps,'|DT=',dt,'|TOP_FACTOR=',top_factor,'|CANDIDATE_TOL=',candidate_tol, &
        '|EXACT_SECONDS=',exact_seconds,'|A2_SECONDS=',a2_seconds, &
        '|RUNTIME_RATIO=',a2_seconds/exact_seconds, &
