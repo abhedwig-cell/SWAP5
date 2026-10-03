@@ -457,8 +457,8 @@ contains
       allocate(f%rfm_surface)
       f%rfm_surface%supplied=.true.;f%rfm_surface%event_active=rain>0._real64
       f%rfm_surface%precipitation_rate_cm_per_day=rain
-      f%rfm_surface%ponding_max_cm=0._real64
-      f%rfm_surface%runoff_resistance_day=0._real64
+      f%rfm_surface%ponding_max_cm=0.1_real64
+      f%rfm_surface%runoff_resistance_day=0.1_real64
       f%rfm_surface%runoff_exponent=1._real64
     end if
     f%top_head=0._real64;f%bottom_flux=0._real64;f%bottom_head=0._real64
