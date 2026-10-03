@@ -108,12 +108,22 @@ done
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/performance/characterize_bartholomeus_e2e04.f90 -o "$BUILD/test.o" || fail "compile fixture"
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 
-"$BUILD/test" 1e-4 -1 "$CANDIDATE_TOL" | tee "$BUILD/output.txt"
-grep -Fq 'FPE_APPROX02_A2_APPLICATION_SEQUENCE=PASS' "$BUILD/output.txt" || fail "missing final marker"
+: > "$BUILD/output.txt"
+for dt in 1e-4 3e-4 1e-3 3e-3 1e-2; do
+  echo "E2E04_DT_PROBE=$dt" | tee -a "$BUILD/output.txt"
+  if "$BUILD/test" "$dt" -1 "$CANDIDATE_TOL" >> "$BUILD/output.txt" 2>&1; then
+    echo "E2E04_DT_ACCEPT=$dt" | tee -a "$BUILD/output.txt"
+  else
+    echo "E2E04_DT_REJECT=$dt" | tee -a "$BUILD/output.txt"
+    break
+  fi
+done
+grep -Fq 'E2E04_DT_ACCEPT=1e-4' "$BUILD/output.txt" || fail "baseline dt not accepted"
 
 python3 - "$BUILD/output.txt" <<'PY'
 import sys
-line=next((x.strip() for x in open(sys.argv[1]) if x.startswith('APPROX02_A2_APPLICATION|')),None)
+lines=[x.strip() for x in open(sys.argv[1]) if x.startswith('APPROX02_A2_APPLICATION|')]
+line=lines[-1] if lines else None
 if line is None: raise SystemExit('missing application result')
 d={}
 for p in line.split('|')[1:]:
