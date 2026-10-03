@@ -12,6 +12,15 @@ python3 tests/rom/compile_f_rom0_fortran_closure.py \
   --root "$ROOT" --stub "$BUILD/stub.f90" \
   --target tests/performance/characterize_bartholomeus_e2e05_bofek.f90 \
   --external-source src/legacy/b1_10_port/headcalc.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_soil_data.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_crop.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_temperature.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_microbial.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_micro.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_waterfilm.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_runtime_input.f90 \
+  --external-source src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90 \
   --build "$BUILD/compile" --opt 2
 python3 tests/fpe/run_fpe_bofek01_screen.py \
   "$BUILD/compile/rom0_test" docs/performance/F-PE-BOFEK01_TESTBANK.json
