@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.capability_preregistration.v1",
+  "workunit": "PPA-WU06-INTER01",
+  "title": "Legacy interception selector completion: SWINTER=2 Gash",
+  "protocol": "RECONCILE -> QUALIFY -> REPAIR -> ADMIT -> CLOSE",
+  "base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9"
+  },
+  "reconciliation": {
+    "legacy_selector_contract": {
+      "SWINTER=0": "no interception",
+      "SWINTER=1": "Von Hoyningen-Hune/Braden daily interception; already represented by PMdirect process",
+      "SWINTER=2": "Gash; capability gap to reconstruct and qualify",
+      "SWINTER=3": "stateful Rutter canopy reservoir; already represented by mod_rutter_interception_process"
+    },
+    "current_canonical_evidence": [
+      "src/process/mod_pmdirect_swetr0_process.f90",
+      "src/process/mod_rutter_interception_process.f90",
+      "integration/f-app/F-APP05_PREREGISTRATION.json",
+      "integration/f-app/F-APP08_PREREGISTRATION.json"
+    ],
+    "finding": "The original SWINTER=1/2 hypothesis is only partly a migration gap. SWINTER=1 is already implemented and previously independently qualified in the restricted PMdirect route. SWINTER=3 Rutter is present canonically as a stateful process. The bounded missing selector is SWINTER=2/Gash."
+  },
+  "scope": {
+    "included": [
+      "reconstruct exact SWAP 4.3.1 SWINTER=2 Gash equations, inputs, outputs, state semantics and calculation order",
+      "determine whether Gash owns persistent canopy state or is diagnostic/event algebra only",
+      "implement the smallest typed process and bindings only if canonical lacks the reconstructed capability",
+      "qualify precipitation partitioning, interception evaporation, wet-canopy transpiration interaction and mass bookkeeping",
+      "protect SWINTER=0, SWINTER=1 and SWINTER=3 behaviour"
+    ],
+    "excluded": [
+      "TOP03/SCV semantics",
+      "RFM, Ribasim and macropore work",
+      "generic ET redesign",
+      "new solver, timestep, retry or tolerance policy",
+      "changes to already admitted Rutter physics",
+      "broad legacy file-parser migration"
+    ]
+  },
+  "ownership": {
+    "forcing": "resolved gross precipitation, irrigation and canopy/meteorological inputs remain immutable trial inputs",
+    "interception": "candidate/diagnostic ownership to be fixed from exact SWAP 4.3.1 Gash source before implementation",
+    "surface_top": "only net accepted precipitation/irrigation may be handed to the existing top-boundary composition",
+    "transaction": "no rejected or repeated trial may publish interception mass or mutate committed interception state"
+  },
+  "mass_contract": [
+    "gross intercepted supply must partition exactly into net surface supply plus interception-owned water terms defined by the reconstructed legacy equations",
+    "accepted interval accounting occurs exactly once",
+    "strict bookkeeping identities use near-machine accounting tolerance; trajectory comparison tolerances are preregistered only after source reconstruction"
+  ],
+  "qualification_plan": [
+    "dry weather and zero canopy",
+    "small rainfall below interception capacity",
+    "large rainfall above interception capacity",
+    "varying LAI/vegetation cover",
+    "successive wet and dry intervals",
+    "irrigation interaction if and only if exact legacy SWINTER=2 source includes it",
+    "SWINTER=0/1/3 preservation",
+    "rollback/retry and restart only if reconstructed Gash semantics contain persistent state"
+  ],
+  "status": "SUPERSEDED_BY_F_MIG431_INT12_D",
+  "next_action": "Continue as F-MIG431-INT12-D using PPA-WU04 authority and admitted F-MIG431-INT12-P0 source-window runtime.",
+  "supersession": {
+    "authority": "PPA-WU04 merged PR #333",
+    "canonical_slice": "PPA-WU04-D / F-MIG431-INT12-D",
+    "reason": "PPA-WU04 already froze this capability and naming/ownership. Do not create a duplicate WU06 implementation authority.",
+    "disposition": "Retained as reconciliation history only."
+  }
+}
