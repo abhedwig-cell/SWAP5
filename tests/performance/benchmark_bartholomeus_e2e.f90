@@ -15,45 +15,47 @@ program benchmark_bartholomeus_e2e
  use mod_bartholomeus_no_stress_gate,only:bartholomeus_macro_supply_bound_no_stress
  use mod_process_hydraulic_view
  implicit none
- integer,parameter::WARM=1,REPS=300,ROUNDS=5,NREG=6
+ integer,parameter::WARM=1,REPS=200,ROUNDS=3,NREG=4,NDENS=5
  real(real64),parameter::T0=5100.1875_real64,T1=T0+1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
- real(real64),parameter::REG_HEAD(NREG)=[-25._real64,-50._real64,-75._real64,-150._real64,-300._real64,-600._real64]
+ real(real64),parameter::REG_HEAD(NREG)=[-75._real64,-150._real64,-300._real64,-600._real64]
+ real(real64),parameter::DENS_SCALE(NDENS)=[0.01_real64,0.03_real64,0.1_real64,0.3_real64,1.0_real64]
  type(fmr_production_application_config_t)::cfg,off
  type(fmr_production_application_bootstrap_t)::app,offapp
  type(fmr_serialized_column_result_t),allocatable::r(:)
  real(real64)::ton(ROUNDS),toff(ROUNDS),t0c,t1c,k
- integer::i,j,rate,status,rep,reg
+ integer::i,j,rate,status,rep,reg,ids
  type(bartholomeus_runtime_view_t)::gate_view
  real(real64),allocatable::gate_w_root(:)
  real(real64)::gate_ctop
  logical::gate_skip
  call system_clock(i,rate)
  do reg=1,NREG
-  call initialize_application_config(cfg,REG_HEAD(reg),k);call add_root_thermal_oxygen(cfg)
-  off=cfg;off%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
-  call build_initial_gate_diagnostic(cfg,gate_view,gate_w_root,gate_ctop,gate_skip)
-  print '(a,es14.6,a,l1,a,es14.6,a,*(es14.6,1x))','E2E_REGIME_HEAD_CM=',REG_HEAD(reg),' GATE_SKIP=',gate_skip, &
-       ' CTOP=',gate_ctop,' WATER=',gate_view%water_content
-  do j=1,ROUNDS
-   call system_clock(i);t0c=real(i,real64)
-   do rep=1,REPS
-    call app%initialize(cfg,i);if(i/=FMR_APP_BOOT_OK)error stop 'active init'
-    call app%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'active run'
-    call app%close(i)
+  do ids=1,NDENS
+   call initialize_application_config(cfg,REG_HEAD(reg),k);call add_root_thermal_oxygen(cfg)
+   cfg%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3 = &
+        cfg%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3*DENS_SCALE(ids)
+   off=cfg;off%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
+   call build_initial_gate_diagnostic(cfg,gate_view,gate_w_root,gate_ctop,gate_skip)
+   do j=1,ROUNDS
+    call system_clock(i);t0c=real(i,real64)
+    do rep=1,REPS
+     call app%initialize(cfg,i);if(i/=FMR_APP_BOOT_OK)error stop 'active init'
+     call app%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'active run'
+     call app%close(i)
+    enddo
+    call system_clock(i);t1c=real(i,real64);ton(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
+    call system_clock(i);t0c=real(i,real64)
+    do rep=1,REPS
+     call offapp%initialize(off,i);if(i/=FMR_APP_BOOT_OK)error stop 'off init'
+     call offapp%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'off run'
+     call offapp%close(i)
+    enddo
+    call system_clock(i);t1c=real(i,real64);toff(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
    enddo
-   call system_clock(i);t1c=real(i,real64);ton(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
-   call system_clock(i);t0c=real(i,real64)
-   do rep=1,REPS
-    call offapp%initialize(off,i);if(i/=FMR_APP_BOOT_OK)error stop 'off init'
-    call offapp%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'off run'
-    call offapp%close(i)
-   enddo
-   call system_clock(i);t1c=real(i,real64);toff(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
+   call sort_values(ton);call sort_values(toff)
+   print '(a,es12.4,a,es10.3,a,l1,a,es14.6,a,es14.6,a,es14.6)','E2E_MATRIX_HEAD=',REG_HEAD(reg), &
+        ' DENS_SCALE=',DENS_SCALE(ids),' SKIP=',gate_skip,' ON_NS=',ton(2),' OFF_NS=',toff(2),' RATIO=',ton(2)/toff(2)
   enddo
-  call sort_values(ton);call sort_values(toff)
-  print '(a,es14.6,a,l1,a,es24.16,a,es24.16,a,es24.16)','E2E_REGIME_RESULT_HEAD_CM=',REG_HEAD(reg), &
-       ' GATE_SKIP=',gate_skip,' ON_MEDIAN_NS=',ton((ROUNDS+1)/2),' OFF_MEDIAN_NS=',toff((ROUNDS+1)/2), &
-       ' RATIO=',ton((ROUNDS+1)/2)/toff((ROUNDS+1)/2)
  enddo
 contains
   subroutine sort_values(x)
