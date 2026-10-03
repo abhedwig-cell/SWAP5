@@ -55,7 +55,11 @@ def main():
     objects, manifest = [], {}
     for p in ordered:
         b = p.read_bytes()
-        manifest[str(p.relative_to(root))] = hashlib.sha1(b'blob ' + str(len(b)).encode() + b'\0' + b).hexdigest()
+        try:
+            manifest_path = str(p.relative_to(root))
+        except ValueError:
+            manifest_path = 'research_override/' + p.name
+        manifest[manifest_path] = hashlib.sha1(b'blob ' + str(len(b)).encode() + b'\0' + b).hexdigest()
         obj = build / (p.stem + '.o')
         subprocess.run(fc + flags + ['-c', str(p), '-o', str(obj)], check=True)
         objects.append(str(obj))
