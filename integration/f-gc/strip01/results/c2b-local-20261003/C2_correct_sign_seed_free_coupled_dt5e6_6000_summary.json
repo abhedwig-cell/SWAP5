@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01 C2B full-coupling smaller-window test",
+  "date": "2026-10-03",
+  "status": "RESEARCH_ONLY_5231_FULL_WINDOWS_PUBLISHED_NO_GROUNDWATER_RESPONSE",
+  "branch": "work/f-gc-strip01-c2b-local-continuation-20261003",
+  "base_commit": "0d62b09617a1ae536cbe4e1d132874d178dd5c07",
+  "model": {
+    "real_swap_columns": 50,
+    "native_modflow6": true,
+    "modflow_cells": 50,
+    "horizontal_cell_width_m": 1,
+    "seed_mode": "zero",
+    "canonical_admission": false
+  },
+  "forcing": {
+    "window_duration_day": 5e-06,
+    "requested_windows": 6000,
+    "published_windows": 5231,
+    "elapsed_published_day": 0.026155,
+    "ramp_start_cm_per_day": 1e-05,
+    "factor_per_window": 1.001,
+    "last_accepted_inward_flux_cm_per_day": 0.0018630530299668805,
+    "next_rejected_inward_flux_cm_per_day": 0.0018649160829968473,
+    "rejection_time_day": 0.026155,
+    "rejection_stage": "swap-corrector"
+  },
+  "publication": {
+    "all_50_column_revisions": true,
+    "all_50_interface_ledger_counts": true,
+    "modflow_calls": {
+      "prepare_solve": 5232,
+      "solve": 5232,
+      "finalize_solve": 5231,
+      "finalize_time_step": 5231
+    },
+    "rejected_state_preserved": true,
+    "input_total_m3": 4.6372902074926295e-06,
+    "swap_storage_change_m3": 4.637290075493183e-06,
+    "drain_outflow_m3": 0.0,
+    "signed_mass_residual_m3": 1.3199944578962113e-13,
+    "maximum_absolute_window_residual_m3": 1.4473316604800114e-14,
+    "head_range_m": [
+      -1.0,
+      -1.0
+    ]
+  },
+  "replay": {
+    "fresh_process_byte_identical": true,
+    "result_sha256": "9f5dca582c1ca4d58b3d4347bf65b4987311eb69827942e71739a803a51e35c8",
+    "result_bytes": 59090729
+  },
+  "comparison": "At the same factor-1.001 ramp, 1e-5-day windows rejected after 2,984 publications at about 1.97e-4 cm/day. Halving the complete coupled window to 5e-6 day published 5,231 windows and reached 1.863e-3 cm/day, about 9.45 times the accepted rate. It still stopped at a SWAP corrector rejection.",
+  "interpretation": "This is a reproducible timestep-sensitivity result for the full 50-column SWAP-MODFLOW6 coupling path. It is not hydrologic qualification: maximum accepted rain is about 0.0186 mm/day, roughly 54 times below the 1 mm/day target; heads remain -1 m, drain outflow is zero.",
+  "source_build": {
+    "production_src_count": 144,
+    "production_sources_match_prior_canonical_bound_build": true,
+    "production_source_changed": false,
+    "research_fixture_override_max_windows": 6144,
+    "build": "build-c2-diagnostic-flux-6144"
+  }
+}

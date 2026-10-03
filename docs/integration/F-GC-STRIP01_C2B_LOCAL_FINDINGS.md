@@ -38,6 +38,15 @@ After rejection, a separate one-column diagnostic from the same committed origin
 
 The research fixture context capacity was raised from 256 to 2,048 windows to run this local sequence; no production source, temporal budget, retry limit or mass gate changed.
 
+### Full coupled window halved to 5e-6 day
+
+To check whether the one-column timestep sensitivity survives the actual coupling service, a fresh zero-seed sequence used 5e-6-day windows, 50 real SWAP columns, 50 native MODFLOW6 cells and the same 1.001 geometric forcing ramp. It published 5,231 consecutive full coupling windows, then rejected the next SWAP corrector at t=0.026155 day. The last accepted inward flux was 0.0018630530299668805 cm/day; the rejected increase was 0.0018649160829968473 cm/day. This is about 9.45 times the last accepted rate in the 1e-5-day sequence. The rejected profile hash remained unchanged.
+
+All columns reached revision and interface-ledger count 5,231. MODFLOW prepared and solved 5,232 windows and finalized 5,231, with no finalization for the rejected step. Published rainfall input was 4.6372902074926295e-6 m³, SWAP storage rose by 4.637290075493183e-6 m³, cumulative signed residual was 1.3199944578962113e-13 m³, and the maximum absolute single-window residual was 1.4473316604800114e-14 m³. Every head remained -1 m; drain volume remained zero. A fresh-process replay was byte-identical (SHA-256 `9f5dca582c1ca4d58b3d4347bf65b4987311eb69827942e71739a803a51e35c8`). Summary: `integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_coupled_dt5e6_6000_summary.json`.
+
+Halving the full coupling window materially raises the forcing level reached before rejection, but the accepted 0.0186 mm/day remains about 54 times below the 1 mm/day target. This is a useful full-path timestep-sensitivity result, not a working hydrologic strip benchmark. Production sources and frozen temporal/mass gates were not changed.
+
+
 ## Historical tests and other blockers
 
 The isolated onset values previously reported (including Binf=0.867884 cm at 0.001 day against the 1e-5 cm limit, and seed reduction to 0.00187113 cm) came from positive +0.1 cm/day outward flux. They must not be interpreted as rainfall onset behavior. The corrected-sign 0.001-day rainfall window also rejects at the corrector, so the forcing-boundary temporal-history problem remains, now with a properly signed test.
@@ -48,7 +57,7 @@ The old zero-flux equilibrium C2a still passes. In corrected-sign C2b, the norma
 
 ## Next work
 
-Next, isolate why the 50-column coupling rejects even though nearby one-column diagnostic trials can pass. Test complete coupled windows at candidate durations from an accepted checkpoint, while recording forcing/history deltas and leaving the temporal and mass gates frozen. Do not infer coupled recovery from the column probes. Then qualify an onset treatment as an ordinary runtime path and demonstrate measurable MODFLOW head/lateral/drain response and nonzero interface exchange while closing the full-domain balance. Extend duration, test rejection/replay/restart, and only then advance to Hupsel. Separately qualify dynamic B1.11 precipitation with `bottom_mode=5` or establish a narrower imposed-infiltration contract.
+Next, extend the full-coupling timestep sensitivity test from a reproducible origin: the 5e-6-day run reaches 9.45 times the accepted forcing of the 1e-5-day run, but still rejects well below the target. Map whether a stable combination of window duration and forcing ramp can reach physically meaningful rainfall without crossing the frozen temporal and mass gates. Do not infer coupled recovery from the column probes. Then qualify an onset treatment as an ordinary runtime path and demonstrate measurable MODFLOW head/lateral/drain response and nonzero interface exchange while closing the full-domain balance. Extend duration, test rejection/replay/restart, and only then advance to Hupsel. Separately qualify dynamic B1.11 precipitation with `bottom_mode=5` or establish a narrower imposed-infiltration contract.
 
 ## Source-bound reproduction record
 

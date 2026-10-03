@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP\u2013MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2B_SEED_FREE_NONMONOTONE_DIAGNOSTIC_SWEEP_NO_GROUNDWATER_RESPONSE",
+  "state": "C2B_DT5E6_FULL_COUPLING_5231_PUBLISHED_NO_GROUNDWATER_RESPONSE",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Investigate why the 50-column coupling rejects at the factor-1.001 increment although diagnostic-only one-column trials from that committed origin pass at nearby rates and smaller durations. Run complete coupling windows from a reproducible accepted checkpoint, keep temporal/mass gates frozen, and require observable MODFLOW response before qualification; Hupsel remains deferred.",
+    "next_action": "Map whether a stable full-coupling window duration and gradual forcing schedule can reach the 1 mm/day rain target while preserving frozen temporal/mass gates. The 5e-6-day zero-seed run published 5,231 complete 50-column SWAP\u2013MODFLOW6 windows to 0.001863 cm/day, about 9.45x the accepted rate of the 1e-5-day run, then rejected. Require measurable groundwater response and drain/interface exchange before qualification; Hupsel remains deferred.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -358,6 +358,9 @@
     "diagnostic_rate_sweep": "Excluded: research setter refused to change top flux after next context initialization; fixture guard was not weakened.",
     "diagnostic_only_sweep": "Added fixture-only strip01_diagnose_detail_flux_c passing explicit top_flux to a discarded column trial; base_forcing and registered contexts are not modified. Fresh-process 2,985-window sequence plus rate/dt probes replayed byte-identically (SHA-256 62ae5113f445f62c3be9404c0e5a193383846dbcf7d7d03499795b9bbf6bc7f3); rejected state hash unchanged.",
     "diagnostic_sweep_summary": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_forcing_diagnostic_sweep.json",
-    "diagnostic_sweep_interpretation": "One-column response is non-monotone: zero and higher tested rain rates reject at dt=1e-5 day, the rejected ramp rate accepts at dt<=5e-6 day, and 0.0002 cm/day accepts at all tested durations. This does not prove cause or coupled-window recovery."
+    "diagnostic_sweep_interpretation": "One-column response is non-monotone: zero and higher tested rain rates reject at dt=1e-5 day, the rejected ramp rate accepts at dt<=5e-6 day, and 0.0002 cm/day accepts at all tested durations. This does not prove cause or coupled-window recovery.",
+    "coupled_dt5e6_result": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_coupled_dt5e6_6000_summary.json",
+    "coupled_dt5e6_summary": "5,231 full 50-column SWAP\u2013native MODFLOW6 windows at 5e-6 day published from zero seed with factor-1.001 rain ramp; rejected next increase at 0.001864916 cm/day. Exact fresh-process replay; mass residual 1.32e-13 m3; all heads -1 m, drain 0.",
+    "coupled_dt5e6_interpretation": "Halving coupled window raises accepted forcing about 9.45x relative to the 1e-5-day sequence, but remains roughly 54x below 1 mm/day target and produces no measurable groundwater/drain response."
   }
 }
