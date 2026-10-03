@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB14N3 retry bracket contraction
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14N3*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14n3*.py'
+      - 'tests/fpe/run_fpe_nlglob14n3*.py'
+      - 'tests/fpe/run_fpe_nlglob14n3*.sh'
+      - '.github/workflows/f-pe-nlglob14n3.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob14n3-retry-bracket-contraction
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14N3*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14n3*.py'
+      - 'tests/fpe/run_fpe_nlglob14n3*.py'
+      - 'tests/fpe/run_fpe_nlglob14n3*.sh'
+      - '.github/workflows/f-pe-nlglob14n3.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob14n3-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  retry-bracket-contraction:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered retry bracket contraction falsification
+        run: bash tests/fpe/run_fpe_nlglob14n3.sh
