@@ -8,7 +8,7 @@
     "RESP01E_HYDROSTATIC_ORIGIN_RESPONSE"
   ],
   "question": "Does removing the imposed 0.5 m far-column hydrostatic uplift and initializing every MODFLOW cell at the same head as its SWAP hydrostatic profile allow an ordinary first coupled window to accept? If yes, can a subsequent bounded window accept simple uniform rainfall/recharge while preserving the existing transaction and mass gates?",
-  "interpretation": "C0/C1 far-column uplift remains a deliberate drain-down challenge. C2 is a control for initial-condition mismatch, not a replacement or repair of C0/C1.",
+  "interpretation": "C2 is a control for the effect of matching the far-column MODFLOW and SWAP hydrostatic heads. C0/C1 retain their registered 0.5 m far-column uplift as an experimental perturbation; whether it represents the intended drain-down challenge or an initial-condition mismatch remains unresolved. C2 does not replace or repair C0/C1.",
   "geometry_and_physics": {
     "profile": "C1 shallow B01 research archetype",
     "columns": 50,
@@ -25,18 +25,18 @@
     "storage_owner": "SWAP physical storage only"
   },
   "initial_state": {
-    "SWAP_hydrostatic_water_table_m_all_columns": -1.0,
-    "MODFLOW_head_m_all_columns": -1.0,
-    "SWAP_MODFLOW_interface_total_head_m_all_columns": -1.0,
-    "far_column_head_perturbation_m": 0.0,
-    "MODFLOW_XOLD_m_all_columns": -1.0,
+    "SWAP_hydrostatic_water_table_m_all_columns": -1,
+    "MODFLOW_head_m_all_columns": -1,
+    "SWAP_MODFLOW_interface_total_head_m_all_columns": -1,
+    "far_column_head_perturbation_m": 0,
+    "MODFLOW_XOLD_m_all_columns": -1,
     "initial_drain_flow": "zero at hydrostatic equilibrium; verify from native budget"
   },
   "forcing_sequence": [
     {
       "window": "C2a equilibrium control",
       "duration_day": 0.001,
-      "precipitation_m_per_day": 0.0,
+      "precipitation_m_per_day": 0,
       "ET_roots_and_other_sources": "off",
       "purpose": "Require an ordinary accepted transaction at the exactly matched hydrostatic origin before applying forcing."
     },
@@ -53,10 +53,10 @@
     "scope": "Use only at its matching hydrostatic origin; recompute after every accepted state. Do not extrapolate across a head change or reuse the heuristic -100 day inverse slope."
   },
   "frozen_gates": {
-    "temporal_head_budget_cm": 1e-5,
+    "temporal_head_budget_cm": 0.00001,
     "coupled_flux_m_per_s": 1e-15,
     "window_mass_m3": 1e-8,
-    "cumulative_mass_m3": 1e-6,
+    "cumulative_mass_m3": 0.000001,
     "strict_native_head_cm": 1e-12,
     "strict_native_balance_cm": 1e-12,
     "max_iterations": 16,
@@ -66,7 +66,7 @@
     "no_tolerance_widening": true
   },
   "accounting": {
-    "accepted_C2a_expected_SWAP_storage_change_m3": 0.0,
+    "accepted_C2a_expected_SWAP_storage_change_m3": 0,
     "C2b_input_upper_bound_m3": 0.00005,
     "whole_domain_balance": "integrated precipitation - ET - runoff - drain_outflow = delta_SWAP_storage; interface exchange is internal and is not counted twice",
     "publication": "MODFLOW finalizes once, then SWAP commits once, then interface ledger commits once; reject must preserve committed state and accepted XOLD"
