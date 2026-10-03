@@ -100,7 +100,7 @@ contains
   subroutine setup_gate()
     integer::j
     allocate(gate_data%soil(numnod),gate_wroot(3),gate_root_density(3))
-    gate_wroot=1.0_real64
+    gate_wroot=gate_demand_scale
     gate_root_density=gate_demand_scale*[1.0_real64,0.8_real64,0.6_real64]
     gate_crop%c_mroot=1.0e-5_real64;gate_crop%f_senes=1;gate_crop%q10_root=2.0_real64
     gate_crop%specific_resp_humus=1.0e-6_real64;gate_crop%q10_microbial=2.0_real64
