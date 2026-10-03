@@ -26,6 +26,7 @@ program test_fpe_bofek01_policy_case
   type(BartholomeusImmutableDataset) :: gate_data
   type(BartholomeusCropParameters) :: gate_crop
   real(real64),allocatable :: gate_wroot(:),gate_root_density(:)
+  real(real64) :: gate_demand_scale
   real(real64),allocatable :: c(:,:)
   character(len=32) :: case_id,policy_id,arg
   real(real64) :: tr,ts,alpha,nvg,ksat,lambda,h0,rain,horizon,dtmin,dtmax,dt0
@@ -61,7 +62,7 @@ program test_fpe_bofek01_policy_case
     '|BOTTOM_H=',state%pressure_head(numnod),'|POND=',state%ponding_depth, &
     '|STORAGE=',storage1,'|MAX_LEDGER=',maxledger
   write(*,'(*(g0))') 'E2E05_GATE_SUMMARY|CASE=',trim(case_id),'|TOTAL=',gate_total,'|HITS=',gate_hits, &
-       '|FRACTION=',real(gate_hits,real64)/max(1.0_real64,real(gate_total,real64))
+       '|FRACTION=',real(gate_hits,real64)/max(1.0_real64,real(gate_total,real64)),'|DEMAND_SCALE=',gate_demand_scale
   write(*,'(A)') 'F_PE_BOFEK01_CASE=PASS'
 contains
   subroutine read_real(i,x)
@@ -93,7 +94,7 @@ contains
     integer::j
     allocate(gate_data%soil(numnod),gate_wroot(3),gate_root_density(3))
     gate_wroot=1.0_real64
-    gate_root_density=[1.0_real64,0.8_real64,0.6_real64]
+    gate_root_density=gate_demand_scale*[1.0_real64,0.8_real64,0.6_real64]
     gate_crop%c_mroot=1.0e-5_real64;gate_crop%f_senes=1;gate_crop%q10_root=2.0_real64
     gate_crop%specific_resp_humus=1.0e-6_real64;gate_crop%q10_microbial=2.0_real64
     gate_crop%microbial_shape_m=0.9_real64;gate_crop%root_shape_m=0.9_real64
