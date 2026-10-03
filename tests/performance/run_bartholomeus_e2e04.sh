@@ -109,7 +109,7 @@ gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/performance/characteriz
 gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test" || fail "link"
 
 : > "$BUILD/output.txt"
-for dt in 1e-4 3e-4 1e-3 3e-3 1e-2; do
+for dt in 1e-2 3e-2 1e-1 3e-1 1; do
   echo "E2E04_DT_PROBE=$dt" | tee -a "$BUILD/output.txt"
   if "$BUILD/test" "$dt" -1 "$CANDIDATE_TOL" >> "$BUILD/output.txt" 2>&1; then
     echo "E2E04_DT_ACCEPT=$dt" | tee -a "$BUILD/output.txt"
@@ -118,7 +118,7 @@ for dt in 1e-4 3e-4 1e-3 3e-3 1e-2; do
     break
   fi
 done
-grep -Fq 'E2E04_DT_ACCEPT=1e-4' "$BUILD/output.txt" || fail "baseline dt not accepted"
+grep -Fq 'E2E04_DT_ACCEPT=1e-2' "$BUILD/output.txt" || fail "baseline dt not accepted"
 
 python3 - "$BUILD/output.txt" <<'PY'
 import sys
