@@ -78,14 +78,9 @@ contains
     type(b110_dynamic_top_boundary_result_t) :: b110_result
 
     result = soil_water_top_boundary_result_t()
-    if (.not. associated(self%geometry)) then
+    if (.not. associated(self%geometry) .or. .not. associated(self%hydraulics)) then
        result%status = SW_TOP_BOUNDARY_UNAVAILABLE
-       result%route = 'b110-dynamic-geometry-unbound'
-       return
-    end if
-    if (.not. associated(self%hydraulics)) then
-       result%status = SW_TOP_BOUNDARY_UNAVAILABLE
-       result%route = 'b110-dynamic-hydraulics-unbound'
+       result%route = 'b110-dynamic-unbound'
        return
     end if
 
@@ -108,10 +103,6 @@ contains
 
     call evaluate_b110_dynamic_top_boundary(self%geometry, self%hydraulics, b110_request, b110_result)
     if (b110_result%status /= B110_DYN_TOP_AVAILABLE) then
-       write(*,'(a,a,7(a,g0))') 'B110_DYN_TOP_FAIL route=',trim(b110_result%route), &
-            ' h=',pressure_head_top,' theta=',water_content_top,' pond=',candidate_ponding_depth, &
-            ' dt=',self%step_duration,' p=',self%precipitation_rate,' pmax=',self%ponding_max, &
-            ' rsro=',self%runoff_resistance
        result%status = SW_TOP_BOUNDARY_UNAVAILABLE
        result%route = b110_result%route
        return
