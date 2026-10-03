@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "STANDALONE_AB_AND_C0_C1_NATIVE_COMPONENTS_QUALIFIED_REAL_RESPONSE_PREREQUISITE_REGISTERED",
+  "state": "C2A_EQUILIBRIUM_ACCEPTED_C2B_FORCING_PENDING_RESP01F_NEGATIVE",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,19 +74,22 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "C1 corrected +2 m telemetry was already rerun and persisted (zero accepted trials; invalid +6 m output retained). C2 is preregistered as a separate head-consistent control. The physical role of the C0/C1 far-column +0.5 m uplift remains unresolved. Next: implement isolated C2 fixture and actual SWAP precipitation forcing, build against exact current-canonical source blobs, then run C2a equilibrium followed by C2b 1 mm/day for 0.001 d with all existing gates frozen. Keep RESP01, Hupsel, restart, coupled qualification and canonical admission open.",
+    "next_action": "Implement and run preregistered C2b 1 mm/day top precipitation through actual SWAP forcing, with C2a-to-C2b continuation represented explicitly and frozen gates/source binding. Preserve RESP01F as a negative: matched heads alone do not cure C0/C1 rejection. Then analyze accepted-window flux/storage/mass, and only then consider Hupsel. Keep full coupling qualification and canonical admission open.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
     "complete_native_result": "integration/f-gc/strip01/results/native_complete.json.gz",
     "hupsel_input_candidate": "integration/f-gc/strip01/inputs/hupsel_public_2002_2004.met",
     "coupled_domain_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01_COUPLED_DOMAIN_PREREQUISITE.json",
-    "accepted_coupled_windows": 0,
+    "accepted_coupled_windows": 1,
     "coupled_qualification": false,
     "local_final_fixture_builds": "C0/C1 PASS O2 strict flags; 143 compiled canonical src blobs each matched a9cd8330, source unchanged through 8d2271dd",
-    "fresh_origin_replay": "EXACT_JSON_IDENTITY_C0_C1; committed active physical/history fields, revisions, ledgers and native XOLD preserved"
+    "fresh_origin_replay": "EXACT_JSON_IDENTITY_C0_C1; committed active physical/history fields, revisions, ledgers and native XOLD preserved",
+    "c2a_result": "integration/f-gc/strip01/results/C2a_equilibrium_run_37111558483.json",
+    "c2a": "PASS: one accepted zero-forcing matched-head ordinary transaction; exact initial equilibrium, zero SWAP storage change, zero drain, zero residual; source-bound to canonical e3bfcdca00ba89cfeea529cf9b648dcc803483ab.",
+    "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open."
   },
-  "next_permitted_action": "C1 corrected +2 m telemetry was already rerun and persisted (zero accepted trials; invalid +6 m output retained). C2 is preregistered as a separate head-consistent control. The physical role of the C0/C1 far-column +0.5 m uplift remains unresolved. Next: implement isolated C2 fixture and actual SWAP precipitation forcing, build against exact current-canonical source blobs, then run C2a equilibrium followed by C2b 1 mm/day for 0.001 d with all existing gates frozen. Keep RESP01, Hupsel, restart, coupled qualification and canonical admission open.",
+  "next_permitted_action": "Implement and run preregistered C2b 1 mm/day top precipitation through actual SWAP forcing, with C2a-to-C2b continuation represented explicitly and frozen gates/source binding. Preserve RESP01F as a negative: matched heads alone do not cure C0/C1 rejection. Then analyze accepted-window flux/storage/mass, and only then consider Hupsel. Keep full coupling qualification and canonical admission open.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -301,9 +304,28 @@
   },
   "c2_research": {
     "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2_PREREGISTRATION.json",
-    "state": "PREREGISTERED_BEFORE_EXECUTION",
-    "accepted_windows": 0,
-    "source_build": "not yet performed",
+    "state": "C2A_ACCEPTED_C2B_NOT_YET_RUN",
+    "source_build": "PASS_EXACT_CANONICAL_E3BF",
+    "source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+    "research_commit": "d99b1e1a284d96639bd58faeeb5c85cde4da6d9b",
+    "accepted_windows": 1,
+    "c2a_result": "integration/f-gc/strip01/results/C2a_equilibrium_run_37111558483.json",
+    "workflow_run": 37111558483,
+    "artifact_id": 11269533858,
+    "artifact_sha256": "a706dde3c1e41aa16bd88bbcca766ee42d392b47b15b353d258dbc95550e9e16",
     "production_delta": []
+  },
+  "response01f_corrected": {
+    "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_RESP01F_PREREGISTRATION.json",
+    "addendum": "integration/f-gc/strip01/F-GC-STRIP01_RESP01F_PREREGISTRATION_ADDENDUM.json",
+    "canonical_source_commit": "a6d88c394104dfcd780d5b68df4addcb6e819968",
+    "workflow_run": 37111558449,
+    "artifact_id": 11268969871,
+    "artifact_sha256": "7be9ab84677f1b83df5265fda0aa9a96448eb9e57436174de67097641facb08f",
+    "state_per_profile": "FIRST_WINDOW_REJECTED",
+    "accepted_trials": 0,
+    "fresh_process_json_identity": true,
+    "committed_state_preserved": true,
+    "interpretation": "With the erroneous far-column +0.5m predictor uplift removed, both C0 and C1 still reject. Thus a head mismatch alone is not sufficient to explain prior rejection; no root cause established."
   }
 }
