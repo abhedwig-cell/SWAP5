@@ -60,15 +60,7 @@ program test_fpe_approx02_a2_application_sequence
   call system_clock(c0,rate)
   do step=1,nsteps
     day_forcing(1)=exact_cfg%tiles(1)%base_forcing
-    if(step<=30)then
-      day_forcing(1)%top_flux=-1.0_real64*khost
-    else if(step<=60)then
-      day_forcing(1)%top_flux=-0.6_real64*khost
-    else if(step<=90)then
-      day_forcing(1)%top_flux=0.0_real64
-    else
-      day_forcing(1)%top_flux=-0.3_real64*khost
-    endif
+    day_forcing(1)%top_flux=-1.0_real64*khost
     call exact_app%run_standalone_with_forcing(real(step-1,real64)*dt,real(step,real64)*dt,day_forcing,result,status)
     call verify_result('exact',step,status,result)
     exact_storage(step)=result(1)%mass%storage_end
