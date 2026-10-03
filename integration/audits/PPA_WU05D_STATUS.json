@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.ppa_wu05d.status.v2",
+  "work_unit": "PPA-WU05-D",
+  "title": "Compensated root-water-uptake authority",
+  "branch": "audit/ppa-wu05d-d1-reconcile-20261004",
+  "canonical_base": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
+  "status": "D1_EXACT_IDENTITY_CONFIRMED_BYTES_NOT_MATERIALIZED_D2_D3_HELD",
+  "production_source_mutation": false,
+  "reference_mutation": false,
+  "authority": {
+    "snapshot": "B1.11",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "size_bytes": 22013,
+    "b1_patch_relation": "UNCHANGED_BY_ADMITTED_B1_PATCHES"
+  },
+  "d1": {
+    "exact_bytes_materialized": false,
+    "exact_identity_confirmed": true,
+    "public_source_family_recovered": true,
+    "public_source_class": "CORROBORATION_ONLY_NOT_BYTE_EXACT",
+    "library_source_archives_discovered": true,
+    "library_raw_materialization": "ATTEMPTED_NOT_AUTHORIZED",
+    "persistent_state": "NOT_PROVEN_EXACTLY_CORROBORATED_NONE",
+    "result": "docs/audits/PPA_WU05D_D1_RECONSTRUCTION_RESULT.md"
+  },
+  "invariants": {
+    "accepted_mass_owner": "EXISTING_ROOT_WATER_UPTAKE_ONLY",
+    "retry": "REBUILD_FRESH_UNCOMPENSATED_CANDIDATE_THEN_APPLY_COMPENSATION_ONCE",
+    "restart": "NO_NEW_PAYLOAD_UNTIL_EXACT_SOURCE_PROVES_NEED"
+  },
+  "slices": {
+    "D1": "OPEN_EXACT_BYTES_REQUIRED",
+    "D2": "HELD_ON_D1",
+    "D3": "HELD_ON_D1",
+    "D4": "HELD_ON_D1_AND_STRESSOR_ADMISSIONS",
+    "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
+  },
+  "production_admission": "NONE",
+  "next_action": "Materialize a raw source-bearing archive/member through an authorized binary path and verify rootextraction SHA-256. Only then promote formula/state census and start D2."
+}
