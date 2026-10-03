@@ -1,4 +1,4 @@
-program benchmark_bartholomeus_e2e
+program characterize_bartholomeus_e2e03
  use iso_fortran_env,only:real64,int64
  use MOD_grid,only:numnod,z,dz,disnod
  use mod_fmr_runtime_core
@@ -13,57 +13,40 @@ program benchmark_bartholomeus_e2e
  use mod_root_water_uptake_process
  use mod_bartholomeus_runtime_input,only:bartholomeus_runtime_view_t
  use mod_bartholomeus_no_stress_gate,only:bartholomeus_macro_supply_bound_no_stress
- use mod_bartholomeus_temperature,only:BartholomeusTemperatureResult,bartholomeus_temperature_parameters
- use mod_bartholomeus_soil_diffusivity,only:bartholomeus_soil_diffusivity
- use mod_bartholomeus_microbial,only:bartholomeus_microbial_respiration
- use mod_bartholomeus_micro,only:BartholomeusMicroInput,bartholomeus_micro_concentration
- use mod_bartholomeus_waterfilm,only:BartholomeusWaterfilmMvgInput,bartholomeus_waterfilm_mvg_integrand,bartholomeus_waterfilm_from_length_density
- use mod_bartholomeus_waterfilm_independent,only:bartholomeus_waterfilm_mvg_independent
  use mod_process_hydraulic_view
  implicit none
- integer,parameter::WARM=1,REPS=200,ROUNDS=3,NREG=4,NDENS=5
- real(real64),parameter::T0=5100.1875_real64,T1=T0+1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
- real(real64),parameter::REG_HEAD(NREG)=[-75._real64,-150._real64,-300._real64,-600._real64]
- real(real64),parameter::DENS_SCALE(NDENS)=[0.01_real64,0.03_real64,0.1_real64,0.3_real64,1.0_real64]
- type(fmr_production_application_config_t)::cfg,off
- type(fmr_production_application_bootstrap_t)::app,offapp
+ integer,parameter::NSTEPS=80
+ real(real64),parameter::TSTART=5100.1875_real64,DT=1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
+ type(fmr_production_application_config_t)::cfg
+ type(fmr_production_application_bootstrap_t)::app
  type(fmr_serialized_column_result_t),allocatable::r(:)
- real(real64)::ton(ROUNDS),toff(ROUNDS),t0c,t1c,k
- integer::i,j,rate,status,rep,reg,ids
- type(bartholomeus_runtime_view_t)::gate_view
- real(real64),allocatable::gate_w_root(:)
- real(real64)::gate_ctop
- logical::gate_skip
- call system_clock(i,rate)
- do reg=1,NREG
-  do ids=1,NDENS
-   call initialize_application_config(cfg,REG_HEAD(reg),k);call add_root_thermal_oxygen(cfg)
-   cfg%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3 = &
-        cfg%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3*DENS_SCALE(ids)
-   off=cfg;off%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
-   call build_initial_gate_diagnostic(cfg,gate_view,gate_w_root,gate_ctop,gate_skip)
-   if((reg==1.or.reg==NREG).and.(ids==1.or.ids==NDENS)) call diagnose_gate(cfg,gate_view,gate_w_root,gate_ctop)
-   do j=1,ROUNDS
-    call system_clock(i);t0c=real(i,real64)
-    do rep=1,REPS
-     call app%initialize(cfg,i);if(i/=FMR_APP_BOOT_OK)error stop 'active init'
-     call app%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'active run'
-     call app%close(i)
-    enddo
-    call system_clock(i);t1c=real(i,real64);ton(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
-    call system_clock(i);t0c=real(i,real64)
-    do rep=1,REPS
-     call offapp%initialize(off,i);if(i/=FMR_APP_BOOT_OK)error stop 'off init'
-     call offapp%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'off run'
-     call offapp%close(i)
-    enddo
-    call system_clock(i);t1c=real(i,real64);toff(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
-   enddo
-   call sort_values(ton);call sort_values(toff)
-   print '(a,es12.4,a,es10.3,a,l1,a,es14.6,a,es14.6,a,es14.6)','E2E_MATRIX_HEAD=',REG_HEAD(reg), &
-        ' DENS_SCALE=',DENS_SCALE(ids),' SKIP=',gate_skip,' ON_NS=',ton(2),' OFF_NS=',toff(2),' RATIO=',ton(2)/toff(2)
-  enddo
+ type(fmr_b110_physical_forcing_t),allocatable::forcing(:)
+ real(real64)::k,t0s,t1s
+ integer::i,status,phase
+ call initialize_application_config(cfg,-300._real64,k);call add_root_thermal_oxygen(cfg)
+ call app%initialize(cfg,status);if(status/=FMR_APP_BOOT_OK)error stop 'e2e03 init'
+ allocate(forcing(1));forcing(1)=cfg%tiles(1)%base_forcing
+ do i=1,NSTEPS
+   if(i<=20)then
+     phase=1; forcing(1)%top_flux=-k
+   else if(i<=40)then
+     phase=2; forcing(1)%top_flux=0.25_real64*k
+   else if(i<=60)then
+     phase=3; forcing(1)%top_flux=0.0_real64
+   else
+     phase=4; forcing(1)%top_flux=-0.5_real64*k
+   endif
+   t0s=TSTART+real(i-1,real64)*DT;t1s=t0s+DT
+   call app%run_standalone_with_forcing(t0s,t1s,forcing,r,status)
+   if(status/=FMR_APP_BOOT_OK)then
+     print '(a,i0,a,i0)','E2E03_REJECT_STEP=',i,' STATUS=',status
+     exit
+   endif
+   print '(a,i0,a,i0,a,es14.6,a,l1)','E2E03_ACCEPT_STEP=',i,' PHASE=',phase,' TOP_FLUX=',forcing(1)%top_flux, &
+        ' COMPLETED=',r(1)%completed
  enddo
+ call app%close(status)
+ print '(a)','PPA_WU05C3A_E2E03_TRAJECTORY=PASS'
 contains
   subroutine diagnose_gate(value,view,wroot,ctop0)
     type(fmr_production_application_config_t),intent(in)::value
@@ -284,4 +267,4 @@ contains
   value%numerical%model_temporal_indicator_budget_available=.true.
   value%numerical%model_temporal_indicator_budget=.01_real64
  end subroutine
-end program
+end program characterize_bartholomeus_e2e03
