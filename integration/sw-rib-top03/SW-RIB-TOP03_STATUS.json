@@ -679,7 +679,7 @@
     "pulse_ledger_residual_cm": 9.725553695716371e-14,
     "O0_O2_output_identity": true,
     "production_admission": false,
-    "conclusion": "Joint co-regularization completes more selected paths and conserves mass, but joint and isolated factorial controls all show non-monotone failures through refinement 32. No isolated attribution or robust remedy established; test parameterization falsified for admission.",
+    "conclusion": "Surface smoothing at delta_h=0.2 cm shifts several legacy-surface failures to passes, showing a joint mechanism signal. But all tested widths exhibit at least one non-monotonic failure through refinement 32 (delta_h=0.02 fails 8/32; 0.2 fails 4; 2.0 fails 16/32). No robust or production candidate established.",
     "followup_refinements_1_2_4_8_16_32_completed": [
       true,
       true,
@@ -723,6 +723,30 @@
         false,
         false
       ]
-    }
+    },
+    "followup_delta_0_02_completed_1_2_4_8_16_32": [
+      true,
+      true,
+      true,
+      false,
+      true,
+      false
+    ],
+    "followup_delta_0_2_joint_completed_1_2_4_8_16_32": [
+      true,
+      true,
+      false,
+      true,
+      true,
+      true
+    ],
+    "followup_delta_0_2_legacy_surface_completed_1_2_4_8_16_32": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ]
   }
 }
