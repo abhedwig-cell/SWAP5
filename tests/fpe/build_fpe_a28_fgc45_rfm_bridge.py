@@ -64,19 +64,19 @@ fd_helper=r"""  subroutine build_tile_predictor_rfm_fd(i,response,status)
     if(.not.rp%completed)then;write(*,'(a,i0,a,i0,4(a,i0))')'A28_FGC45_FD_FAIL=PLUS tile=',i,' status=',rp%status,' attempts=',dp%attempts,' retries=',dp%retries,' solver=',dp%solver_rejections,' temporal=',dp%temporal_rejections;return;end if
     if(.not.cp%ready())then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=PLUS_CANDIDATE tile=',i;return;end if
     call materialize_solver_view(cp,predictor_parameters(i),sp,pp,ok);if(.not.ok)then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=PLUS_VIEW tile=',i;return;end if
-    call predictor_backend(i)%discard_trial_candidate(cp,dp)
+    call predictor_backend(i)%discard_trial_candidate(cp,dp)\n    write(*,'(a,i0,a,g0)')'A28_FGC45_FD_PLUS_OK tile=',i,' hbot_m=',hp
     call predictor_backend(i)%run_trial(column(i),template(i),predictor_parameters(i),committed(i),fm,predictor_config,window%t0,window%t1,checkpoint,rm,cm,dm)
     if(.not.rm%completed)then;write(*,'(a,i0,a,i0,4(a,i0))')'A28_FGC45_FD_FAIL=MINUS tile=',i,' status=',rm%status,' attempts=',dm%attempts,' retries=',dm%retries,' solver=',dm%solver_rejections,' temporal=',dm%temporal_rejections;return;end if
     if(.not.cm%ready())then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=MINUS_CANDIDATE tile=',i;return;end if
     call materialize_solver_view(cm,predictor_parameters(i),sm,pm,ok);if(.not.ok)then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=MINUS_VIEW tile=',i;return;end if
-    call predictor_backend(i)%discard_trial_candidate(cm,dm)
+    call predictor_backend(i)%discard_trial_candidate(cm,dm)\n    write(*,'(a,i0,a,g0)')'A28_FGC45_FD_MINUS_OK tile=',i,' hbot_m=',hm
     hp=(sp%pressure_head(numnod)+predictor_parameters(i)%z(numnod))*0.01_real64
     hm=(sm%pressure_head(numnod)+predictor_parameters(i)%z(numnod))*0.01_real64
     h0=H0_CM*0.01_real64;deriv=(hp-hm)*100._real64/(2._real64*dq)
     lineage%coupling_id=COUPLING_ID;lineage%swap_lineage_id=COLUMN_ID(i);lineage%swap_origin_revision=0_int64
     lineage%groundwater_service_id=GW_SERVICE_ID;lineage%groundwater_lineage_id=GW_LINEAGE_ID;lineage%groundwater_origin_revision=0_int64
     coverage%lower_face_head_semantics_covered=.true.
-    call compose_modflow6_swap_predictor_response(window,lineage,PREDICTOR_QBOT,h0,0.5_real64*(hp+hm),deriv,MODFLOW6_DERIVATIVE_CENTERED_FD,coverage,'centered-fd-rfm-full-trajectory','fgc45-rfm-fd',response,status)
+    call compose_modflow6_swap_predictor_response(window,lineage,PREDICTOR_QBOT,h0,0.5_real64*(hp+hm),deriv,MODFLOW6_DERIVATIVE_CENTERED_FD,coverage,'centered-fd-rfm-full-trajectory','fgc45-rfm-fd',response,status)\n    write(*,'(a,i0,a,i0,a,g0)')'A28_FGC45_FD_COMPOSE tile=',i,' status=',status,' deriv=',deriv
     if(status/=0.or..not.response%valid)write(*,'(a,i0,4(a,g0))')'A28_FGC45_FD_FAIL=COMPOSE status=',status,' hp=',hp,' hm=',hm,' deriv=',deriv,' h0=',h0
   end subroutine build_tile_predictor_rfm_fd
 
