@@ -3462,6 +3462,7 @@ contains
       return
     class default
     end select
+    end select
 
     if (self%fixed_weir_surface_water_active) then
       value = huge(0.0_real64)
