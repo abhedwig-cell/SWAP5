@@ -18,6 +18,7 @@ program benchmark_bartholomeus_e2e
  use mod_bartholomeus_microbial,only:bartholomeus_microbial_respiration
  use mod_bartholomeus_micro,only:BartholomeusMicroInput,bartholomeus_micro_concentration
  use mod_bartholomeus_waterfilm,only:BartholomeusWaterfilmMvgInput,bartholomeus_waterfilm_mvg_integrand,bartholomeus_waterfilm_from_length_density
+ use mod_bartholomeus_waterfilm_independent,only:bartholomeus_waterfilm_mvg_independent
  use mod_process_hydraulic_view
  implicit none
  integer,parameter::WARM=1,REPS=200,ROUNDS=3,NREG=4,NDENS=5
@@ -71,7 +72,8 @@ contains
     type(BartholomeusTemperatureResult)::t
     type(BartholomeusMicroInput)::mi
     type(BartholomeusWaterfilmMvgInput)::wf
-    real(real64)::ctop,gfp,mp,dsoil,rm,a,b,demand,cmacro,ilower,filmub,cmic
+    real(real64)::ctop,gfp,mp,dsoil,rm,a,b,demand,cmacro,ilower,filmub,filmref,cmic
+    logical::wfok
     integer::q
     ctop=ctop0
     do q=1,view%rooted_nodes
@@ -93,6 +95,7 @@ contains
       wf%gen_n=data%soil(q)%waterfilm_gen_n;wf%surface_tension_water=t%surface_tension_water
       ilower=.5_real64*mp*bartholomeus_waterfilm_mvg_integrand(.5_real64*mp,wf)
       filmub=bartholomeus_waterfilm_from_length_density(ilower,mp,t%surface_tension_water)
+      filmref=bartholomeus_waterfilm_mvg_independent(mp,wf,wfok)
       mi%c_mroot=crop%c_mroot;mi%w_root=wroot(q);mi%f_senes=crop%f_senes;mi%q10_root=crop%q10_root
       mi%soil_temp_k=view%soil_temperature_k(q);mi%sat_water_content=data%soil(q)%saturated_water_content
       mi%gas_filled_porosity=gfp;mi%d_o2_in_water=t%d_o2_in_water;mi%d_root=t%d_root
@@ -102,7 +105,7 @@ contains
       mi%waterfilm_thickness_m=filmub;mi%bunsen_coeff=t%bunsen_coeff
       cmic=bartholomeus_micro_concentration(mi,crop%max_resp_factor)
       print '(a,i0,8(a,es13.5))','E2E_GATE_NODE=',q,' GFP=',gfp,' DSOIL=',dsoil,' DEMAND=',demand,' CTOP=',ctop, &
-           ' CMACRO=',cmacro,' CMIC_UB=',cmic,' FILM_UB=',filmub,' N=',wf%gen_n
+           ' CMACRO=',cmacro,' CMIC_UB=',cmic,' FILM_UB=',filmub,' FILM_REF=',filmref,' N=',wf%gen_n
       ctop=cmacro
       end associate
     enddo
