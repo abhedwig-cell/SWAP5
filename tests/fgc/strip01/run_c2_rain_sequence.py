@@ -54,11 +54,44 @@ class CountingKernel:
 
 
 class DomainRuntime(FmrGroundwaterApplicationRuntime):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.last_trial_heads = []
+        self.last_trial_gate = None
+        self.last_trial_valid = None
+        self.last_context_trial_status = None
+        self.last_context_tangent_status = None
+        self.last_trial_flux = []
+        self.last_trial_tangent = []
+
     def trial_cell_heads(self, heads):
         self.last_trial_heads = list(heads)
-        if any(not ((-5.999 if args.profile == 'C0' else -1.999) < h < 0) for h in heads):
+        low = -5.999 if args.profile == 'C0' else -1.999
+        self.last_trial_gate = all(low < h < 0.0 for h in heads)
+        if not self.last_trial_gate:
+            self.last_trial_valid = False
             return GroundwaterApplicationCorrectorBatch(False, ())
-        return super().trial_cell_heads(heads)
+        head_array = self._double_array(heads, self._ncell, "cell_heads_m")
+        fluxes = (ctypes.c_double * self._ncell)()
+        self.last_context_trial_status = int(self._trial(
+            ctypes.c_int64(self.context_handle), ctypes.c_int(self._ncell), head_array, fluxes
+        ))
+        if self.last_context_trial_status != self.OK:
+            self.last_trial_valid = False
+            return GroundwaterApplicationCorrectorBatch(False, ())
+        tangents = (ctypes.c_double * self._ncell)()
+        self.last_context_tangent_status = int(self._trial_tangents(
+            ctypes.c_int64(self.context_handle), ctypes.c_int(self._ncell), tangents
+        ))
+        if self.last_context_tangent_status != self.OK:
+            self.last_trial_valid = False
+            return GroundwaterApplicationCorrectorBatch(False, ())
+        self.last_trial_valid = True
+        self.last_trial_flux = list(fluxes)
+        self.last_trial_tangent = list(tangents)
+        return GroundwaterApplicationCorrectorBatch(
+            True, tuple(self.last_trial_flux), tuple(self.last_trial_tangent)
+        )
 
 
 def main():
@@ -103,6 +136,12 @@ def main():
 
     fields_fn = bridge.strip01_fields_c
     fields_fn.argtypes = [ctypes.POINTER(ctypes.c_double)]
+    diagnose_fn = bridge.strip01_diagnose_c
+    diagnose_fn.restype = ctypes.c_int
+    diagnose_fn.argtypes = [
+        ctypes.c_int, ctypes.c_double, ctypes.c_double, ctypes.c_double,
+        ctypes.c_int, ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_double),
+    ]
     field_count = (2 * 20 + 4) * 50
     def state_hash():
         values = (ctypes.c_double * field_count)()
@@ -149,6 +188,13 @@ def main():
         result['C2a'] = dict(status=int(a.status), published=a.published, failure_stage=a.failure_stage,
             iterations=a.iterations, request_smaller_window=a.request_smaller_window,
             heads_m=a.final_heads_m, residuals_m_per_s=a.final_residuals_m_per_s,
+            trial_heads_m=list(runtime.last_trial_heads),
+            swap_corrector_domain_gate=runtime.last_trial_gate,
+            swap_corrector_valid=runtime.last_trial_valid,
+            swap_corrector_context_status=runtime.last_context_trial_status,
+            swap_corrector_tangent_status=runtime.last_context_tangent_status,
+            swap_corrector_flux_m_per_s=list(runtime.last_trial_flux),
+            swap_corrector_tangent_per_s=list(runtime.last_trial_tangent),
             profile_state_sha256=state_hash(), storage_m3=None, revisions=None, ledger_counts=counts(),
             modflow_calls=dict(kernel.calls))
         result['C2a']['storage_m3'], result['C2a']['revisions'] = state()
@@ -201,6 +247,20 @@ def main():
             assert result['origin_revisions'] == result['C2a']['revisions']
             assert result['origin_ledger_counts'] == result['C2a']['ledger_counts'] == [0] * 50
             assert np.array_equal(session_a.accepted_xold, session_a.xold)
+            diagnostic_rows = []
+            for slot, head in enumerate(runtime.last_trial_heads, start=1):
+                codes = (ctypes.c_int * 8)()
+                completed_t = ctypes.c_double()
+                call_status = int(diagnose_fn(
+                    ctypes.c_int(slot), ctypes.c_double(head), ctypes.c_double(0.0),
+                    ctypes.c_double(0.001), ctypes.c_int(0), codes, ctypes.byref(completed_t),
+                ))
+                diagnostic_rows.append({
+                    'slot': slot, 'head_m': float(head), 'call_status': call_status,
+                    'codes': list(codes), 'completed_t': float(completed_t.value),
+                })
+            result['C2a']['isolated_transaction_diagnostics'] = diagnostic_rows
+            result['C2a']['state_preserved_after_diagnostics'] = state_hash() == result['origin_profile_state_sha256']
 
         result['final_profile_state_sha256'] = state_hash()
         result['final_ledger_counts'] = counts()

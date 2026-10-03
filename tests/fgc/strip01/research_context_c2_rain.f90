@@ -202,10 +202,10 @@ contains
     c_status = 0
   end function strip01_observe_c
 
-  integer(c_int) function strip01_diagnose_c(slot, head, duration, tangent_on, codes, complete_t) &
+  integer(c_int) function strip01_diagnose_c(slot, head, window_start, duration, tangent_on, codes, complete_t) &
        bind(C,name="strip01_diagnose_c") result(c_status)
     integer(c_int), value :: slot, tangent_on
-    real(c_double), value :: head, duration
+    real(c_double), value :: head, window_start, duration
     integer(c_int), intent(out) :: codes(8)
     real(c_double), intent(out) :: complete_t
     type(kernel_checkpoint_t) :: checkpoint
@@ -225,7 +225,7 @@ contains
     numerical%accepted_trajectory_direction%requested = tangent_on /= 0
     numerical%accepted_trajectory_direction%control_coordinate = 5
     call backend%run_trial(columns(slot), templates(slot), parameters, committed(slot), forcing, numerical, &
-         0.0_real64, duration, checkpoint, result, candidate, diagnostics)
+         window_start, window_start + duration, checkpoint, result, candidate, diagnostics)
     codes = [result%status, diagnostics%accepted_substeps, diagnostics%solver_rejections, &
          diagnostics%temporal_rejections, diagnostics%mass_rejections, diagnostics%admission_rejections, &
          diagnostics%attempts, diagnostics%retries]
