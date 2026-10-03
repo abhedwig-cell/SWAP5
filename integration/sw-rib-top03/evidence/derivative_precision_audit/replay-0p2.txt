@@ -1,0 +1,394 @@
+SURFACE_HYPSOMETRY=legacy-piecewise
+JOINT_MICRORELIEF_COMPILE_CLOSURE_FILES=21
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:353:52:
+
+  353 |               token%step_t0 == state%issued_t0 .and. token%step_t1 == state%issued_t1
+      |                                                    1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:352:64:
+
+  352 |               token%step_sequence == state%issued_sequence .and. &
+      |                                                                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:182:8:
+
+  182 |     if (step_t0 /= state%current_t1) then
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_soil_water_solver_contract.f90:353:68:
+
+  353 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                    1
+Warning: Unused dummy argument ‘request’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:353:59:
+
+  353 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:353:82:
+
+  353 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                  1
+Warning: Unused dummy argument ‘solve_result’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:353:112:
+
+  353 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                                                1
+Warning: Unused dummy argument ‘workspace’ at (1) [-Wunused-dummy-argument]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:98:51:
+
+   98 |    real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
+      |                                                   1
+Warning: Unused variable ‘top03_fd_eps’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:98:91:
+
+   98 |    real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
+      |                                                                                           1
+Warning: Unused variable ‘top03_hsave’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:98:78:
+
+   98 |    real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
+      |                                                                              1
+Warning: Unused variable ‘top03_kminus’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:99:70:
+
+   99 |    logical                          :: top03_kplus_ok, top03_kminus_ok
+      |                                                                      1
+Warning: Unused variable ‘top03_kminus_ok’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:98:64:
+
+   98 |    real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
+      |                                                                1
+Warning: Unused variable ‘top03_kplus’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:99:53:
+
+   99 |    logical                          :: top03_kplus_ok, top03_kminus_ok
+      |                                                     1
+Warning: Unused variable ‘top03_kplus_ok’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/mod_top03_microrelief_top_provider.f90:80:8:
+
+   80 |     if (self%surface_contact_resistance_day == 0.0_real64) then
+      |        1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+/tmp/swap5-top03-joint-microrelief-local-7/mod_top03_microrelief_top_provider.f90:44:118:
+
+   44 |   subroutine top03_microrelief_evaluate(self, pressure_head_top, water_content_top, candidate_ponding_depth, requested, result)
+      |                                                                                                                      1
+Warning: Unused dummy argument ‘requested’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_b110_default_mvg_directional_provider.f90:295:13:
+
+  295 |     else if (head == 0.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:303:19:
+
+  303 |           else if (raw_theta == c(2)) then
+      |                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:309:16:
+
+  309 |        else if (head == B110_H_CRIT) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:322:16:
+
+  322 |        else if (head == h105) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:341:16:
+
+  341 |        else if (head == B110_EXTREME_DRY_HEAD) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:350:16:
+
+  350 |        else if (relsat == B110_SAT_K_SWITCH) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:370:16:
+
+  370 |        else if (head == c(9)) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:388:11:
+
+  388 |        if (denom == 0.0_real64) return
+      |           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:188:13:
+
+  188 |     else if (head == 0.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:196:19:
+
+  196 |           else if (raw_theta == c(2)) then
+      |                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:202:16:
+
+  202 |        else if (head == B110_H_CRIT) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:215:16:
+
+  215 |        else if (head == h105) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:232:16:
+
+  232 |        else if (head == B110_EXTREME_DRY_HEAD) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:240:16:
+
+  240 |        else if (relsat == B110_SAT_K_SWITCH) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:252:16:
+
+  252 |        else if (head == c(9)) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:265:11:
+
+  265 |        if (denom == 0.0_real64) return
+      |           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_direct_retention_core.f90:62:13:
+
+   62 |       if(any(parameters%cofgen(:,2:parameters%active_nodes)/= &
+      |             1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_fixed_flux_top_boundary_provider.f90:14:41:
+
+   14 |   subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, requested, &
+      |                                         1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_fixed_flux_top_boundary_provider.f90:14:79:
+
+   14 |   subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, requested, &
+      |                                                                               1
+Warning: Unused dummy argument ‘water_content_top’ at (1) [-Wunused-dummy-argument]
+JOINT_TRANSITION_DELTA_H_CM=0.2
+JOINT_TRANSITION_PROVIDER_SHA256=24fc13231b3108e6cdeb3dfac82573e4210c5310f9d8c8a42b6e1cc4cebfff4f
+JOINT_TRANSITION_DRIVER_SHA256=5ba3c9af4105079ff0565ad39b35c08f4d98c2a4a86404e3fe77560bd86f7255
+JOINT_DKDH_ORACLE_DIAG1   1.0793399622105466E+00   1.0793401247817989E+00  -1.6257125223795299E-07
+JOINT_DKDH_ORACLE_DIAG2   5.0464949577049394E+00   5.0464872408747166E+00   7.7168302228258767E-06
+JOINT_DKDH_ORACLE_DIAG3   1.3108499641892104E+00   1.3108506286929611E+00  -6.6450375069138090E-07
+JOINT_DKDH_ORACLE_DIAG4   1.0015046177477571E-03   1.0016855789274359E-03  -1.8096117967883289E-07
+JOINT_DKDH_ORACLE_DIAG5   0.0000000000000000E+00   0.0000000000000000E+00   0.0000000000000000E+00
+JOINT_DKDH_ORACLE=PASS
+TOP03_MICRORELIEF_STAGE_PROBE_VERSION=1
+TRAJ   5.0000000000000003E-02 1 T 11 1 1 89  -1.4781733044414569E+00  -1.1359688949622431E+00   3.4220440947921160E-01  -2.2204460492503131E-15   5.8152267723432516E-15
+TRAJ   5.0000000000000003E-02 2 T 11 2 1 147  -1.5770794484734019E+00  -1.2357173628845768E+00   3.4136208558883974E-01   1.4654943925052066E-14   7.7949799393017827E-15
+TRAJ   5.0000000000000003E-02 4 T 11 4 1 253  -1.6215724952475294E+00  -1.2805379966424586E+00   3.4103449860507751E-01   6.6613381477509392E-15   5.8791947005198963E-15
+TRAJ   5.0000000000000003E-02 8 T 11 8 1 434  -1.6404770038181928E+00  -1.2995583171718952E+00   3.4091868664629543E-01  -2.2204460492503131E-15   3.2011069142634518E-15
+TRAJ   5.0000000000000003E-02 16 T 11 16 1 769  -1.6496249737039292E+00  -1.3087457334776753E+00   3.4087924022625482E-01   8.8817841970012523E-16   2.3245294578089215E-15
+TRAJ   5.0000000000000003E-02 32 T 11 32 1 1354  -1.6541630042597060E+00  -1.3132981086332980E+00   3.4086489562640221E-01  -5.7731597280508140E-15   1.7843799354766432E-15
+PAIR   5.0000000000000003E-02 1 2 T   7.1869733018393767E-01   8.9668989831032109E-04   4.8569566781342388E-04   0.0000000000000000E+00   0.0000000000000000E+00   9.8906144031944976E-02   9.9748467922333717E-02
+PAIR   5.0000000000000003E-02 2 4 T   2.2055477272792867E-01   3.2758698376234019E-04   1.5498985089246187E-04   0.0000000000000000E+00   0.0000000000000000E+00   4.4493046774127576E-02   4.4820633757881811E-02
+PAIR   5.0000000000000003E-02 4 8 T   6.8297939669418994E-02   1.1581195878190842E-04   4.8534293893509606E-05   0.0000000000000000E+00   0.0000000000000000E+00   1.8904508570663392E-02   1.9020320529436585E-02
+PAIR   5.0000000000000003E-02 8 16 T   2.1966503321464437E-02   3.9446420040722963E-05   1.5663433128532134E-05   0.0000000000000000E+00   0.0000000000000000E+00   9.1479698857364067E-03   9.1874163057801272E-03
+PAIR   5.0000000000000003E-02 16 32 T   7.7636972640782176E-03   1.4344599852611495E-05   5.5421778728526050E-06   0.0000000000000000E+00   0.0000000000000000E+00   4.5380305557767286E-03   4.5523751556226788E-03
+TOP03_MICRORELIEF_STAGE_PROBE=COMPLETED
+TOP03_JOINT_MICRORELIEF_O0=COMPLETED
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:353:52:
+
+  353 |               token%step_t0 == state%issued_t0 .and. token%step_t1 == state%issued_t1
+      |                                                    1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:352:64:
+
+  352 |               token%step_sequence == state%issued_sequence .and. &
+      |                                                                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:182:8:
+
+  182 |     if (step_t0 /= state%current_t1) then
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_soil_water_solver_contract.f90:353:68:
+
+  353 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                    1
+Warning: Unused dummy argument ‘request’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:353:59:
+
+  353 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:353:82:
+
+  353 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                  1
+Warning: Unused dummy argument ‘solve_result’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:353:112:
+
+  353 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                                                1
+Warning: Unused dummy argument ‘workspace’ at (1) [-Wunused-dummy-argument]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:98:51:
+
+   98 |    real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
+      |                                                   1
+Warning: Unused variable ‘top03_fd_eps’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:98:91:
+
+   98 |    real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
+      |                                                                                           1
+Warning: Unused variable ‘top03_hsave’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:98:78:
+
+   98 |    real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
+      |                                                                              1
+Warning: Unused variable ‘top03_kminus’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:99:70:
+
+   99 |    logical                          :: top03_kplus_ok, top03_kminus_ok
+      |                                                                      1
+Warning: Unused variable ‘top03_kminus_ok’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:98:64:
+
+   98 |    real(8)                          :: top03_fd_eps, top03_kplus, top03_kminus, top03_hsave, top03_dkbotdh
+      |                                                                1
+Warning: Unused variable ‘top03_kplus’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:99:53:
+
+   99 |    logical                          :: top03_kplus_ok, top03_kminus_ok
+      |                                                     1
+Warning: Unused variable ‘top03_kplus_ok’ declared at (1) [-Wunused-variable]
+/tmp/swap5-top03-joint-microrelief-local-7/headcalc.f90:1201:6:
+
+ 1201 |       function dkmean(swkmean,kmain,ksub,dzmain,dzsub)
+      |      ^
+Warning: ‘__result_dkmean’ may be used uninitialized [-Wmaybe-uninitialized]
+/tmp/swap5-top03-joint-microrelief-local-7/mod_top03_microrelief_top_provider.f90:80:8:
+
+   80 |     if (self%surface_contact_resistance_day == 0.0_real64) then
+      |        1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+/tmp/swap5-top03-joint-microrelief-local-7/mod_top03_microrelief_top_provider.f90:44:118:
+
+   44 |   subroutine top03_microrelief_evaluate(self, pressure_head_top, water_content_top, candidate_ponding_depth, requested, result)
+      |                                                                                                                      1
+Warning: Unused dummy argument ‘requested’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_b110_default_mvg_directional_provider.f90:295:13:
+
+  295 |     else if (head == 0.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:303:19:
+
+  303 |           else if (raw_theta == c(2)) then
+      |                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:309:16:
+
+  309 |        else if (head == B110_H_CRIT) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:322:16:
+
+  322 |        else if (head == h105) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:341:16:
+
+  341 |        else if (head == B110_EXTREME_DRY_HEAD) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:350:16:
+
+  350 |        else if (relsat == B110_SAT_K_SWITCH) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:370:16:
+
+  370 |        else if (head == c(9)) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:388:11:
+
+  388 |        if (denom == 0.0_real64) return
+      |           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:188:13:
+
+  188 |     else if (head == 0.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:196:19:
+
+  196 |           else if (raw_theta == c(2)) then
+      |                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:202:16:
+
+  202 |        else if (head == B110_H_CRIT) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:215:16:
+
+  215 |        else if (head == h105) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:232:16:
+
+  232 |        else if (head == B110_EXTREME_DRY_HEAD) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:240:16:
+
+  240 |        else if (relsat == B110_SAT_K_SWITCH) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:252:16:
+
+  252 |        else if (head == c(9)) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:265:11:
+
+  265 |        if (denom == 0.0_real64) return
+      |           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_direct_retention_core.f90:62:13:
+
+   62 |       if(any(parameters%cofgen(:,2:parameters%active_nodes)/= &
+      |             1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_fixed_flux_top_boundary_provider.f90:14:41:
+
+   14 |   subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, requested, &
+      |                                         1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_fixed_flux_top_boundary_provider.f90:14:79:
+
+   14 |   subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, requested, &
+      |                                                                               1
+Warning: Unused dummy argument ‘water_content_top’ at (1) [-Wunused-dummy-argument]
+JOINT_TRANSITION_DELTA_H_CM=0.2
+JOINT_TRANSITION_PROVIDER_SHA256=24fc13231b3108e6cdeb3dfac82573e4210c5310f9d8c8a42b6e1cc4cebfff4f
+JOINT_TRANSITION_DRIVER_SHA256=5ba3c9af4105079ff0565ad39b35c08f4d98c2a4a86404e3fe77560bd86f7255
+JOINT_DKDH_ORACLE_DIAG1   1.0793399622105466E+00   1.0793401247817989E+00  -1.6257125223795299E-07
+JOINT_DKDH_ORACLE_DIAG2   5.0464949577049394E+00   5.0464872408747166E+00   7.7168302228258767E-06
+JOINT_DKDH_ORACLE_DIAG3   1.3108499641892104E+00   1.3108506286929611E+00  -6.6450375069138090E-07
+JOINT_DKDH_ORACLE_DIAG4   1.0015046177477571E-03   1.0016855789274359E-03  -1.8096117967883289E-07
+JOINT_DKDH_ORACLE_DIAG5   0.0000000000000000E+00   0.0000000000000000E+00   0.0000000000000000E+00
+JOINT_DKDH_ORACLE=PASS
+TOP03_MICRORELIEF_STAGE_PROBE_VERSION=1
+TRAJ   5.0000000000000003E-02 1 T 11 1 1 89  -1.4781733044414569E+00  -1.1359688949622431E+00   3.4220440947921160E-01  -2.2204460492503131E-15   5.8152267723432516E-15
+TRAJ   5.0000000000000003E-02 2 T 11 2 1 147  -1.5770794484734019E+00  -1.2357173628845768E+00   3.4136208558883974E-01   1.4654943925052066E-14   7.7949799393017827E-15
+TRAJ   5.0000000000000003E-02 4 T 11 4 1 253  -1.6215724952475294E+00  -1.2805379966424586E+00   3.4103449860507751E-01   6.6613381477509392E-15   5.8791947005198963E-15
+TRAJ   5.0000000000000003E-02 8 T 11 8 1 434  -1.6404770038181928E+00  -1.2995583171718952E+00   3.4091868664629543E-01  -2.2204460492503131E-15   3.2011069142634518E-15
+TRAJ   5.0000000000000003E-02 16 T 11 16 1 769  -1.6496249737039292E+00  -1.3087457334776753E+00   3.4087924022625482E-01   8.8817841970012523E-16   2.3245294578089215E-15
+TRAJ   5.0000000000000003E-02 32 T 11 32 1 1354  -1.6541630042597060E+00  -1.3132981086332980E+00   3.4086489562640221E-01  -5.7731597280508140E-15   1.7843799354766432E-15
+PAIR   5.0000000000000003E-02 1 2 T   7.1869733018393767E-01   8.9668989831032109E-04   4.8569566781342388E-04   0.0000000000000000E+00   0.0000000000000000E+00   9.8906144031944976E-02   9.9748467922333717E-02
+PAIR   5.0000000000000003E-02 2 4 T   2.2055477272792867E-01   3.2758698376234019E-04   1.5498985089246187E-04   0.0000000000000000E+00   0.0000000000000000E+00   4.4493046774127576E-02   4.4820633757881811E-02
+PAIR   5.0000000000000003E-02 4 8 T   6.8297939669418994E-02   1.1581195878190842E-04   4.8534293893509606E-05   0.0000000000000000E+00   0.0000000000000000E+00   1.8904508570663392E-02   1.9020320529436585E-02
+PAIR   5.0000000000000003E-02 8 16 T   2.1966503321464437E-02   3.9446420040722963E-05   1.5663433128532134E-05   0.0000000000000000E+00   0.0000000000000000E+00   9.1479698857364067E-03   9.1874163057801272E-03
+PAIR   5.0000000000000003E-02 16 32 T   7.7636972640782176E-03   1.4344599852611495E-05   5.5421778728526050E-06   0.0000000000000000E+00   0.0000000000000000E+00   4.5380305557767286E-03   4.5523751556226788E-03
+TOP03_MICRORELIEF_STAGE_PROBE=COMPLETED
+TOP03_JOINT_MICRORELIEF_O2=COMPLETED
+TOP03_JOINT_MICRORELIEF_O0_O2_IDENTITY=PASS
