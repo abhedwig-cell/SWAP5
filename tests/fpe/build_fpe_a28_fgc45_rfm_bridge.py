@@ -61,11 +61,13 @@ fd_helper=r"""  subroutine build_tile_predictor_rfm_fd(i,response,status)
     call fmr_capture_checkpoint(committed(i),checkpoint,ok);if(.not.ok)return
     fp=base_forcing(i);fm=base_forcing(i);fp%bottom_flux=PREDICTOR_QBOT+dq;fm%bottom_flux=PREDICTOR_QBOT-dq
     call predictor_backend(i)%run_trial(column(i),template(i),predictor_parameters(i),committed(i),fp,predictor_config,window%t0,window%t1,checkpoint,rp,cp,dp)
-    if(.not.rp%completed)then;write(*,'(a,i0,a,i0,4(a,i0))')'A28_FGC45_FD_FAIL=PLUS tile=',i,' status=',rp%status,' attempts=',dp%attempts,' retries=',dp%retries,' solver=',dp%solver_rejections,' temporal=',dp%temporal_rejections;return;end if\n    if(.not.cp%ready())then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=PLUS_CANDIDATE tile=',i;return;end if
+    if(.not.rp%completed)then;write(*,'(a,i0,a,i0,4(a,i0))')'A28_FGC45_FD_FAIL=PLUS tile=',i,' status=',rp%status,' attempts=',dp%attempts,' retries=',dp%retries,' solver=',dp%solver_rejections,' temporal=',dp%temporal_rejections;return;end if
+    if(.not.cp%ready())then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=PLUS_CANDIDATE tile=',i;return;end if
     call materialize_solver_view(cp,predictor_parameters(i),sp,pp,ok);if(.not.ok)then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=PLUS_VIEW tile=',i;return;end if
     call predictor_backend(i)%discard_trial_candidate(cp,dp)
     call predictor_backend(i)%run_trial(column(i),template(i),predictor_parameters(i),committed(i),fm,predictor_config,window%t0,window%t1,checkpoint,rm,cm,dm)
-    if(.not.rm%completed)then;write(*,'(a,i0,a,i0,4(a,i0))')'A28_FGC45_FD_FAIL=MINUS tile=',i,' status=',rm%status,' attempts=',dm%attempts,' retries=',dm%retries,' solver=',dm%solver_rejections,' temporal=',dm%temporal_rejections;return;end if\n    if(.not.cm%ready())then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=MINUS_CANDIDATE tile=',i;return;end if
+    if(.not.rm%completed)then;write(*,'(a,i0,a,i0,4(a,i0))')'A28_FGC45_FD_FAIL=MINUS tile=',i,' status=',rm%status,' attempts=',dm%attempts,' retries=',dm%retries,' solver=',dm%solver_rejections,' temporal=',dm%temporal_rejections;return;end if
+    if(.not.cm%ready())then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=MINUS_CANDIDATE tile=',i;return;end if
     call materialize_solver_view(cm,predictor_parameters(i),sm,pm,ok);if(.not.ok)then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=MINUS_VIEW tile=',i;return;end if
     call predictor_backend(i)%discard_trial_candidate(cm,dm)
     hp=(sp%pressure_head(numnod)+predictor_parameters(i)%z(numnod))*0.01_real64
