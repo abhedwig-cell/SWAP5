@@ -20,3 +20,9 @@ The provider is runtime model context, not physical committed state. Give it mod
 ## Repair boundary
 
 Only provider lifetime changes. No RFM physics, panel policy, top-boundary equations, mass accounting or solver tolerances change.
+
+## Falsification of lifetime hypothesis
+
+Direct provider sweep falsified the initial lifetime interpretation. The provider remains available across ordinary states. The observed unavailable route is `active-runoff-outside-profile`: with positive candidate ponding, very small retry dt, ponding_max=0 and runoff_resistance=0, the dynamic-top evaluator enters runoff but deliberately rejects that runoff configuration as outside its qualified linear profile.
+
+Therefore provider lifetime is not established as causal. Model-owned provider experiments are not part of the justified repair and must not be promoted on this evidence. Q4B fixture configuration is corrected to a supported positive ponding threshold and linear runoff resistance instead.
