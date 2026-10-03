@@ -3,7 +3,7 @@ program characterize_bartholomeus_e2e03
  use MOD_grid,only:numnod,z,dz,disnod
  use mod_fmr_runtime_core
  use mod_fmr_serialized_reference_backend
- use mod_transaction_reference,only:TX_TEMPORAL_MODEL_CERTIFICATE
+ use mod_transaction_reference,only:TX_TEMPORAL_MODEL_CERTIFICATE,transaction_state_t
  use mod_fmr_production_application_bootstrap
  use mod_fmr_serialized_multiswap_runtime,only:fmr_serialized_column_result_t
  use mod_b110_default_mvg_provider
