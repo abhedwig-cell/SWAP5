@@ -18,11 +18,11 @@ src=src.replace("t%state_layout_id=560030_int64; t%solver_interface_id=560040_in
 """t%state_layout_id=560030_int64; t%solver_interface_id=560040_int64; t%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RFM
     t%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE""")
 # Configure both backends after initialize.
-src=src.replace("call predictor_backend(i)%initialize(top(i))\n       call corrector_backend(i)%initialize(top(i))",
+src=src.replace("call predictor_backend(i)%initialize(top(i))\n      call corrector_backend(i)%initialize(top(i))",
 """call predictor_backend(i)%initialize(top(i))
-       call corrector_backend(i)%initialize(top(i))
-       call configure_tile_rfm(predictor_backend(i),i,ok); if(.not.ok)return
-       call configure_tile_rfm(corrector_backend(i),i,ok); if(.not.ok)return""")
+      call corrector_backend(i)%initialize(top(i))
+      call configure_tile_rfm(predictor_backend(i),i,ok); if(.not.ok)return
+      call configure_tile_rfm(corrector_backend(i),i,ok); if(.not.ok)return""")
 # Replace committed-state constructor body call.
 old="""    call fmr_new_b110_temporal_indicator_committed_state(state,lineage_id,physical,0.0_real64,ok, &
          accepted_predecessor_right_derivative)"""
