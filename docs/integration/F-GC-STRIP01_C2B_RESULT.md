@@ -18,9 +18,19 @@ To expose the numerical rejection counters without changing canonical sources, t
 
 These counters come from isolated diagnostic replays rather than counters read from the original context call. They localize the reproduced SWAP failure to solver/temporal rejection before mass acceptance. The root numerical cause remains unresolved.
 
+## Rain-free control and exact replay
+
+A separate fresh-process run performed 50 direct transaction diagnostics at the initial C2a state before any coupled operation. Every no-rain trial at −1.0 m over 0.001 d completed with one accepted substep and zero solver, temporal, mass, or admission rejections. The profile state hash was unchanged after all diagnostic trials.
+
+The same run executed the complete continuous C2a→C2b sequence twice in separate processes. The two sequence JSON files were byte-identical (SHA-256 `bdccb32f739bcfe7ebdd3453701434e7d0ea8f4eae831cbf7d408e532b178451`). Direct C2b diagnostic replays again returned the same per-column pattern: 0 accepted substeps, 3 solver rejections, 6 temporal rejections, and no mass or admission rejections.
+
+This matched-head, matched-window control indicates that the imposed 1 mm/day surface rainfall activates the reproduced SWAP solver/temporal rejection pattern in this fixture. It does not identify the underlying estimator or nonlinear-solver cause. The diagnostic rejection counters are from isolated backend replays, not counters from the original application-context call.
+
+Machine-readable comparison: `integration/f-gc/strip01/results/C2a_C2b_forcing_diagnostic_run_37114071020.json`.
+
 ## Next work
 
-Keep the registered duration, head/flux/mass limits, retry policy, and physics unchanged. Next compare the direct diagnostic rejections at the C2a equilibrium and C2b rain forcing to isolate whether rainfall activates the temporal rejection pattern, and inspect the canonical SWAP attempt/substep diagnostics before any repair. The separately preregistered B1.11 dynamic-surface route can then be run as its own experiment after verifying its build and two-window state continuation. Do not begin Hupsel forcing until an accepted C2b window closes its balance.
+Keep registered physical forcing, 0.001 d duration, head/flux/mass gates, retry policy, and physics unchanged. Inspect the canonical SWAP temporal and solver rejection sources with the isolated control evidence. The separately preregistered B1.11 dynamic-surface route remains useful and is being rerun with a fresh second-window context; its results must remain separate because it excludes Richards temporal history. Do not begin Hupsel forcing until an accepted coupled window closes its balance.
 
 ## Provenance
 
