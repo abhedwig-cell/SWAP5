@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "experiment": "RESP01F corrected matched-head first-window rerun",
+  "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_RESP01F_PREREGISTRATION.json",
+  "addendum": "integration/f-gc/strip01/F-GC-STRIP01_RESP01F_PREREGISTRATION_ADDENDUM.json",
+  "workflow_run": 37111558449,
+  "workflow_conclusion": "success",
+  "artifact_id": 11268969871,
+  "artifact_sha256": "7be9ab84677f1b83df5265fda0aa9a96448eb9e57436174de67097641facb08f",
+  "research_commit": "d99b1e1a284d96639bd58faeeb5c85cde4da6d9b",
+  "canonical_source_commit": "a6d88c394104dfcd780d5b68df4addcb6e819968",
+  "profiles": {
+    "C0": {
+      "state": "FIRST_WINDOW_REJECTED",
+      "status": 6,
+      "failure_stage": "swap-corrector",
+      "iteration": 1,
+      "accepted_substeps": 0,
+      "modflow_heads_m_all_columns": -5,
+      "origin_state_sha256": "3f3d8fcd0d7e434985f5a4d236ec969591e6a32c9d427bf03b08dda3f2df5fed",
+      "final_state_sha256": "3f3d8fcd0d7e434985f5a4d236ec969591e6a32c9d427bf03b08dda3f2df5fed",
+      "origin_storage_each_column_m3": 1.2790360703440402,
+      "final_storage_each_column_m3": 1.2790360703440402,
+      "storage_unchanged": true,
+      "revisions_before_after": [
+        0,
+        0
+      ],
+      "interface_ledgers_before_after": [
+        0,
+        0
+      ],
+      "modflow_calls": {
+        "prepare_solve": 1,
+        "solve": 1,
+        "finalize_solve": 0,
+        "finalize_time_step": 0
+      },
+      "accepted_xold_matches_final_xold": true,
+      "two_fresh_process_runs_byte_identical": true
+    },
+    "C1": {
+      "state": "FIRST_WINDOW_REJECTED",
+      "status": 6,
+      "failure_stage": "swap-corrector",
+      "iteration": 1,
+      "accepted_substeps": 0,
+      "modflow_heads_m_all_columns": -1,
+      "origin_state_sha256": "5306d705f48eb371556e1b98475ef9c1cb44055b5bc13b557cf036c19b776f9c",
+      "final_state_sha256": "5306d705f48eb371556e1b98475ef9c1cb44055b5bc13b557cf036c19b776f9c",
+      "origin_storage_each_column_m3": 0.7499125387644275,
+      "final_storage_each_column_m3": 0.7499125387644275,
+      "storage_unchanged": true,
+      "revisions_before_after": [
+        0,
+        0
+      ],
+      "interface_ledgers_before_after": [
+        0,
+        0
+      ],
+      "modflow_calls": {
+        "prepare_solve": 1,
+        "solve": 1,
+        "finalize_solve": 0,
+        "finalize_time_step": 0
+      },
+      "accepted_xold_matches_final_xold": true,
+      "two_fresh_process_runs_byte_identical": true
+    }
+  },
+  "interpretation": "The removed far-column +0.5m predictor uplift was not sufficient to make either C0 or C1 accept. Initial head mismatch alone does not explain the earlier rejection. This run does not identify a root cause."
+}
