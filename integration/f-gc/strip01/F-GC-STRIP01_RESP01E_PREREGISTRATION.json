@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "F-GC-STRIP01-RESP01E",
+  "title": "Hydrostatic accepted-origin q(H) and tangent control",
+  "status": "PREREGISTERED_RESEARCH_DIAGNOSTIC",
+  "parent_prerequisite": "F-GC-STRIP01-RESP01",
+  "purpose": "Measure the local SWAP bottom-interface exchange curve and accepted-trajectory bottom-head derivative around each column's own hydrostatic accepted origin, after RESP01D showed that actual first MODFLOW trial heads do not admit a response sample.",
+  "scope": {
+    "profiles": ["C0", "C1"],
+    "sampled_columns": [1, 50],
+    "origin_heads_m": {
+      "C0": {"column_1": -5.0, "column_50": -4.5},
+      "C1": {"column_1": -1.0, "column_50": -0.5}
+    },
+    "head_offsets_m": [-1e-8, 0, 1e-8],
+    "duration_days": [0.001],
+    "tangent_input": [false, true],
+    "transaction_policy": "Existing profile unchanged; ordinary 8-retry production-reference transaction, no gate/tolerance changes",
+    "origin_reset": "Every probe begins from the identical pristine initialized accepted origin; candidates are discarded, never committed."
+  },
+  "measurements": [
+    "transaction accepted/rejected status, substeps, retries and rejection counters",
+    "integrated native bottom exchange and terminal bottom flux",
+    "published accepted trajectory derivative for SW_STEP_CONTROL_BOTTOM_HEAD (coordinate 5), with route/method/availability",
+    "state, temporal-history vector, storage and revision before/after"
+  ],
+  "analysis": {
+    "finite_difference": "Compare centered +/-1e-8 m head perturbations only if both ordinary transactions accept; convert head perturbation through the fixture's verified metres-to-centimetres mapping. Label any slope as integrated exchange per prescribed bottom-head pressure unit.",
+    "tangent": "Report derivative only if the transaction publishes it as available with accepted steps. It is not relabeled as a derivative with respect to MODFLOW head until the unit mapping is applied explicitly.",
+    "gates": "Do not widen acceptance, force acceptance, or use a separate Reference-floor candidate."
+  },
+  "implementation_boundary": {
+    "production_source_or_ABI_change": false,
+    "changes": "Isolated research fixture and probe only."
+  },
+  "interpretation_limits": [
+    "A local hydrostatic-origin response does not establish corrector success at the actual MODFLOW trial head.",
+    "This is not coupled E2E qualification and does not authorize changing predictor initialization.",
+    "No Hupsel, restart continuation or whole-domain mass qualification is claimed."
+  ],
+  "reproducibility": {
+    "canonical_source_head": "23f5d3cff78e055426b48ec93f57c1cb9880759c",
+    "branch": "work/f-gc-strip01-50m-swap-modflow-benchmark",
+    "fixture": "integration/f-gc/strip01/fixtures/research_context_response_c0.f90 and _c1.f90",
+    "probe": "tools/f_gc_strip01_response_probe.py",
+    "persisted_qualification_action": false
+  }
+}
