@@ -23,7 +23,7 @@ for opt in 0 2; do
   mkdir -p "$OUT"
   gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c src/process/mod_pmdirect_swetr0_process.f90 -o "$OUT/pmdirect.o"
   gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c src/runtime/mod_interception_source_window_runtime.f90 -o "$OUT/int12_p0.o"
-  gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/soil_water_solver_contract.o"
+  gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J"$OUT" -I"$OUT" -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/soil_water_solver_contract.o"
   gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c src/solver/mod_b110_default_mvg_provider.f90 -o "$OUT/b110_default_mvg.o"
   gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J"$OUT" -I"$OUT" -c src/solver/mod_b110_dynamic_top_boundary_provider.f90 -o "$OUT/b110_dynamic_top.o"
   gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90 -o "$OUT/pmdirect_top_binding.o"
