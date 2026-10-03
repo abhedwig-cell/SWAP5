@@ -1,6 +1,6 @@
 program characterize_bartholomeus_perf03_waterfilm
  use iso_fortran_env,only:real64
- use mod_bartholomeus_waterfilm,only:BartholomeusWaterfilmMvgInput,bartholomeus_waterfilm_mvg_integrand
+ use mod_bartholomeus_waterfilm, only:BartholomeusWaterfilmMvgInput,bartholomeus_waterfilm_mvg_integrand
  implicit none
  type(BartholomeusWaterfilmMvgInput)::p
  real(real64),parameter::heads(7)=[-10._real64,-20._real64,-50._real64,-75._real64,-100._real64,-300._real64,-600._real64]
