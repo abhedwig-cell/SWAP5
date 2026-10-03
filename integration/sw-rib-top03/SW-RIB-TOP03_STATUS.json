@@ -679,7 +679,50 @@
     "pulse_ledger_residual_cm": 9.725553695716371e-14,
     "O0_O2_output_identity": true,
     "production_admission": false,
-    "conclusion": "Jointly smoothing soil theta/capacity/K and surface wet fraction/storage completes some previously failing paths, but failures remain non-monotonic across timestep refinements and recession; this parameterization is falsified as robust."
+    "conclusion": "Joint co-regularization completes more selected paths and conserves mass, but joint and isolated factorial controls all show non-monotone failures through refinement 32. No isolated attribution or robust remedy established; test parameterization falsified for admission.",
+    "followup_refinements_1_2_4_8_16_32_completed": [
+      true,
+      true,
+      true,
+      true,
+      false,
+      false
+    ],
+    "followup_head_abs_rel_tolerance_cm": 1e-09,
+    "followup_failure_max_residual_cm": [
+      0.00012704370802385512,
+      1.7698505507368623e-05
+    ],
+    "followup_failure_max_head_correction_cm": [
+      0.0001096851869328841,
+      1.1554312312034298e-05
+    ],
+    "followup_O0_O2_output_identity": true,
+    "followup_control_matrix_refinements_1_2_4_8_16_32": {
+      "near_legacy_soil_plus_smooth_surface": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "delta_2_soil_plus_legacy_surface": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "delta_2_joint_smooth_surface": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ]
+    }
   }
 }
-
