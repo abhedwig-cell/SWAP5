@@ -11,7 +11,7 @@ program characterize_bartholomeus_e2e03
  use mod_bartholomeus_parameter_contract
  use mod_crop_bartholomeus_input
  use mod_root_water_uptake_process
- use mod_bartholomeus_runtime_input,only:bartholomeus_runtime_view_t
+ use mod_bartholomeus_runtime_input,only:bartholomeus_runtime_view_t,build_bartholomeus_runtime_view
  use mod_bartholomeus_no_stress_gate,only:bartholomeus_macro_supply_bound_no_stress
  use mod_kernel_transactions
  use mod_fixed_flux_top_boundary_provider
