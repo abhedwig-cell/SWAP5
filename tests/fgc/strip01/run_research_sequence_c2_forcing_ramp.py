@@ -25,6 +25,8 @@ parser.add_argument('--ramp-start-cm-per-day', type=float, default=1e-6)
 parser.add_argument('--ramp-factor', type=float, default=1.1)
 parser.add_argument('--ramp-cap-cm-per-day', type=float, default=0.1)
 parser.add_argument('--diagnostic-rates-cm-per-day', default='', help='Comma-separated research-only forcing rates to probe from the failed transaction origin.')
+parser.add_argument('--diagnostic-columns', default='1',
+                    help='Comma-separated SWAP column indices, or "all", for discarded failure-origin probes.')
 parser.add_argument('--flux-tolerance-m-per-s', type=float, default=1e-15,
                     help='Research coupling residual tolerance; does not change SWAP temporal or mass gates.')
 args = parser.parse_args()
@@ -268,12 +270,16 @@ def main():
             diagnostic = []
             if not answer.published and args.diagnostic_rates_cm_per_day:
                 diagnostic_rates = [float(x) for x in args.diagnostic_rates_cm_per_day.split(',') if x.strip()]
-                for rate in diagnostic_rates:
-                    for dt in (0.00001, 0.000005, 0.0000025, 0.00000125, 0.000001):
-                        codes, values = (ctypes.c_int * 12)(), (ctypes.c_double * 6)()
-                        assert diagnose_flux(1, -1.0, dt, -rate, codes, values) == 0
-                        diagnostic.append(dict(head_m=-1.0, diagnostic_rain_rate_cm_per_day=rate,
-                                               dt_day=dt, codes=list(codes), observations=list(values)))
+                diagnostic_columns = (range(1, 51) if args.diagnostic_columns.lower() == 'all'
+                                      else [int(x) for x in args.diagnostic_columns.split(',') if x.strip()])
+                for column_index in diagnostic_columns:
+                    for rate in diagnostic_rates:
+                        for dt in (0.00001, 0.000005, 0.0000025, 0.00000125, 0.000001):
+                            codes, values = (ctypes.c_int * 12)(), (ctypes.c_double * 6)()
+                            assert diagnose_flux(column_index, -1.0, dt, -rate, codes, values) == 0
+                            diagnostic.append(dict(column_index=column_index, head_m=-1.0,
+                                                   diagnostic_rain_rate_cm_per_day=rate,
+                                                   dt_day=dt, codes=list(codes), observations=list(values)))
             elif window_index == 1 or not answer.published:
                 probe_heads = sorted(set([-1.0] + getattr(runtime, 'last_trial_heads', [])[:3]))
                 for probe_head in probe_heads:
