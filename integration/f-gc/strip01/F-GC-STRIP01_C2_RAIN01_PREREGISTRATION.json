@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.f_gc_strip01.c2_dynamic_surface_rain_preregistration.v1",
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C2_RAIN01_B111_DYNAMIC_SURFACE_BOUNDARY",
+  "state": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "date": "2026-10-03",
+  "parent_experiments": [
+    "C2_HEAD_CONSISTENT_SHALLOW_PROFILE",
+    "C2A_HEAD_MATCHED_EQUILIBRIUM_CONTROL"
+  ],
+  "question": "Can a head-matched 50-column coupled control first accept a zero-rain B1.11 dynamic-surface window, then accept a 1 mm/day precipitation window through the canonical B1.11 dynamic top-boundary provider, with frozen mass/replay/publication gates?",
+  "canonical_baseline": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "source_reconciliation": {
+    "delta_from_prior_resp01f_baseline": "PERF02 oxygen-gate/source evidence and E2E02 workflow only; no SWAP-MODFLOW, Richards, transaction, restart, or coupling-authority code changed.",
+    "actual_surface_route": [
+      "fmr_b110_physical_forcing_t%black_evaporation%precipitation_rate_cm_per_day",
+      "fmr_serialized_reference_backend black-evaporation trial branch",
+      "bind_b110_dynamic_top_boundary_solver_provider",
+      "mod_b110_dynamic_top_boundary_provider B1.11 surface balance"
+    ],
+    "source_files": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+      "src/process/mod_restricted_surface_evaporation.f90"
+    ],
+    "active_surface_options": "Black optional state enabled solely to route precipitation through the existing B1.11 dynamic top-boundary path; potential bare-soil and pond evaporation are zero.",
+    "continuation_constraint": "state_matches_numerical_continuation_layout requires Black optional state and Richards temporal-indicator history to be mutually exclusive. This sequence therefore uses FMR_NUMERICAL_CONTINUATION_NONE in both windows and is a distinct research variant. It does not qualify the combination of actual rainfall with the C2a temporal-history carrier; no production source or ABI change is made."
+  },
+  "geometry": {
+    "columns": 50,
+    "dx_m": 1,
+    "swap_profile": "C1 shallow B01 research archetype; 2 m soil",
+    "coupling_plane_m": -2,
+    "modflow_base_m": -10,
+    "modflow_layer": "confined, no STO; no independent physical aquifer storage claim",
+    "k_m_per_day": 0.5,
+    "left_drain_stage_m": -1,
+    "left_drain_conductance_m2_per_day": 100,
+    "right_and_base": "no-flow",
+    "storage_owner": "SWAP soil physical storage only"
+  },
+  "initial_state": {
+    "swap_gwl_m_all_columns": -1,
+    "modflow_head_m_all_cells": -1,
+    "interface_total_head_m_all_columns": -1,
+    "far_column_head_perturbation_m": 0,
+    "initial_drain_flow": "zero; verify native budget"
+  },
+  "surface_boundary": {
+    "provider": "canonical B1.11 dynamic top-boundary provider",
+    "bottom_mode": 5,
+    "fixed_top_flux_cm_per_day": 0,
+    "precipitation_c2a_cm_per_day": 0,
+    "precipitation_c2b_cm_per_day": 0.1,
+    "precipitation_c2b_m_per_day": 0.001,
+    "duration_each_window_day": 0.001,
+    "potential_bare_soil_evaporation_cm_per_day": 0,
+    "potential_pond_evaporation_cm_per_day": 0,
+    "irrigation_snowmelt_runon_roots_other_sources": 0,
+    "ponding_max_cm": 1,
+    "runoff_resistance_day": 1,
+    "runoff_exponent": 1,
+    "expected_precipitation_volume_c2b_m3": 0.00005,
+    "forcing_update": "update only the fixture's base forcing and reinitialize the existing forcing materializer between accepted C2a and C2b windows"
+  },
+  "sequence": [
+    {
+      "window": "C2a-dynamic-equilibrium",
+      "precipitation_cm_per_day": 0,
+      "purpose": "accept a no-rain control using the same Black state and dynamic surface law as C2b"
+    },
+    {
+      "window": "C2b-rain",
+      "precipitation_cm_per_day": 0.1,
+      "purpose": "test vertical rainfall, SWAP-to-MODFLOW exchange, lateral flow to the left DRN and external water balance"
+    }
+  ],
+  "predictor": {
+    "source": "RESP01E accepted-trajectory q(H) origin tangent",
+    "scope": "use only at the matching hydrostatic origin; C2a leaves the origin unchanged; no off-origin extrapolation is authorized"
+  },
+  "frozen_gates": {
+    "temporal_head_budget_cm": 0.00001,
+    "coupled_flux_m_per_s": 1e-15,
+    "window_mass_m3": 1e-8,
+    "cumulative_mass_m3": 0.000001,
+    "strict_native_head_cm": 1e-12,
+    "strict_native_balance_cm": 1e-12,
+    "max_iterations": 16,
+    "backtracking": 8,
+    "retries_and_substeps": "unchanged",
+    "reference_floor_substitution": false,
+    "tolerance_widening": false
+  },
+  "accounting": {
+    "mass": "precipitation - ET - runoff - DRN outflow = delta_SWAP storage; interface exchange is internal once and is not double counted",
+    "c2a_external_input_m3": 0,
+    "c2b_external_input_m3": 0.00005,
+    "publication_order": [
+      "MODFLOW finalize once",
+      "SWAP commit once",
+      "interface ledger commit once"
+    ],
+    "on_reject": "preserve all committed SWAP state, revisions, ledger entries and accepted MODFLOW XOLD"
+  },
+  "replay": "run the complete two-window sequence twice from fresh processes and require byte-identical output JSON.",
+  "decision_rules": {
+    "c2a_reject": "retain negative; inspect dynamic surface route and preserve origin state",
+    "c2a_accept_c2b_reject": "retain C2a success and C2b failure; classify actual SWAP surface, temporal, solver, or coupling stage without changing gates",
+    "both_accept": "qualify only these two bounded windows under the explicitly no-temporal-history research variant; do not infer timestep convergence, Hupsel readiness, restart qualification, canonical admission, or temporal-history plus rainfall compatibility"
+  },
+  "canonical_admission": false
+}
