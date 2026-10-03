@@ -67,11 +67,28 @@ class CountingKernel:
 
 
 class DomainRuntime(FmrGroundwaterApplicationRuntime):
+    def __init__(self, library_path, context_handle, failure_diagnostic):
+        super().__init__(library_path, context_handle)
+        self.failure_diagnostic = failure_diagnostic
+        self.participant_failure_diagnostics = []
+
     def trial_cell_heads(self, heads):
         self.last_trial_heads = list(heads)
         if any(not (-1.999 < h < 0.0) for h in heads):
             return GroundwaterApplicationCorrectorBatch(False, ())
-        return super().trial_cell_heads(heads)
+        answer = super().trial_cell_heads(heads)
+        if self.failure_diagnostic is not None:
+            cell, tile, participant_status, local_status = (ctypes.c_int() for _ in range(4))
+            status = self.failure_diagnostic(
+                ctypes.c_int64(self.context_handle), ctypes.byref(cell), ctypes.byref(tile),
+                ctypes.byref(participant_status), ctypes.byref(local_status),
+            )
+            if status == 0 and (cell.value != 0 or tile.value != 0):
+                self.participant_failure_diagnostics.append(dict(
+                    cell_index=cell.value, tile_index=tile.value,
+                    participant_status=participant_status.value, registry_local_status=local_status.value,
+                ))
+        return answer
 
 
 def main():
@@ -91,6 +108,11 @@ def main():
         windows=[],
     )
     bridge = ctypes.CDLL(str(lib))
+    failure_diagnostic = getattr(bridge, 'fgc49d_last_trial_failure_c', None)
+    result['participant_failure_instrumentation_available'] = failure_diagnostic is not None
+    if failure_diagnostic is not None:
+        failure_diagnostic.restype = ctypes.c_int
+        failure_diagnostic.argtypes = [ctypes.c_int64] + [ctypes.POINTER(ctypes.c_int)] * 4
     init = bridge.fgc49d_fixture_initialize_c
     init.restype = ctypes.c_int
     init.argtypes = [
@@ -247,7 +269,7 @@ def main():
                     break
                 handles.append(int(handle2.value))
             raw.prepare_time_step(time_start)
-            runtime = DomainRuntime(lib, handles[window_index])
+            runtime = DomainRuntime(lib, handles[window_index], failure_diagnostic)
             session = Modflow6PreparedSolveSession(
                 kernel,
                 'STRIP',
@@ -292,6 +314,7 @@ def main():
             ledgers_after = counts()
             record = dict(
                 corrector_trial_heads_m=list(getattr(runtime, 'last_trial_heads', [])),
+                participant_failure_diagnostics=list(runtime.participant_failure_diagnostics),
                 post_c2b_one_column_probes=diagnostic,
                 label='C2b-forcing-ramp-zero-seed',
                 t0_day=time_start,
