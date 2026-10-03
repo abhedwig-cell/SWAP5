@@ -10,9 +10,17 @@ The continuous C2a→C2b workflow completed successfully as a harness run, but t
 
 The recorded 0.00005 m³ “mass residual” equals the forcing volume because the candidate was rejected and the committed state did not change. It is an unpublished trial/input diagnostic, not an accepted-window water-balance residual. No claim of physical mass loss or coupling mass-balance failure follows from it.
 
-## Classification and next work
+## Classification and diagnostic replay
 
-The run isolates the first failure to the SWAP corrector after valid forcing setup and context advancement. Available evidence does not yet separate a SWAP numerical rejection from temporal/coupling acceptance or fixture/configuration behavior. Preserve the committed C2a state and frozen preregistered limits. Next, expose the existing SWAP transaction diagnostics for the rejected attempt and determine which rejection counter/gate fired; then test the separately preregistered dynamic top-boundary route only after its compile/context issues are checked. Do not widen tolerances or begin Hupsel forcing until an accepted C2b window closes its balance.
+The second instrumented run retained the same coupled outcome. All 50 MODFLOW trial heads were exactly −1.0 m and passed the research fixture's head-domain guard. The C API returned FMR context status 5 (`FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED`), so the failure is downstream of the head-domain guard in the SWAP participant path.
+
+To expose the numerical rejection counters without changing canonical sources, the research fixture then ran an isolated direct backend trial for each column using the recorded head (−1.0 m), rain forcing (0.1 cm/day), C2b time interval (0.001–0.002 d), and the same committed C2a state. All 50 diagnostic trials returned canonical transaction status 2 (`CANONICAL_STATUS_TRANSACTION_FAILED`), with 0 accepted substeps, 3 solver rejections, 6 temporal rejections, 0 mass rejections, 0 admission rejections, 9 attempts, and 8 retries. The direct diagnostic trials were discarded; the coupled C2a committed state remained unchanged.
+
+These counters come from isolated diagnostic replays rather than counters read from the original context call. They localize the reproduced SWAP failure to solver/temporal rejection before mass acceptance. The root numerical cause remains unresolved.
+
+## Next work
+
+Keep the registered duration, head/flux/mass limits, retry policy, and physics unchanged. Next compare the direct diagnostic rejections at the C2a equilibrium and C2b rain forcing to isolate whether rainfall activates the temporal rejection pattern, and inspect the canonical SWAP attempt/substep diagnostics before any repair. The separately preregistered B1.11 dynamic-surface route can then be run as its own experiment after verifying its build and two-window state continuation. Do not begin Hupsel forcing until an accepted C2b window closes its balance.
 
 ## Provenance
 
