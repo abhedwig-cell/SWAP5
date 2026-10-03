@@ -58,7 +58,8 @@ fd_helper=r"""  subroutine build_tile_predictor_rfm_fd(i,response,status)
     type(modflow6_derivative_coverage_t)::coverage
     real(real64)::dq,hp,hm,h0,deriv
     logical::ok
-    status=1;dq=1.0e-5_real64\n    write(*,'(a,i0)')'A28_FGC45_FD_ENTER tile=',i
+    status=1;dq=1.0e-5_real64
+    write(*,'(a,i0)')'A28_FGC45_FD_ENTER tile=',i
     call fmr_capture_checkpoint(committed(i),checkpoint,ok);if(.not.ok)then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=CHECKPOINT tile=',i;return;end if
     fp=base_forcing(i);fm=base_forcing(i);fp%bottom_flux=PREDICTOR_QBOT+dq;fm%bottom_flux=PREDICTOR_QBOT-dq
     call predictor_backend(i)%run_trial(column(i),template(i),predictor_parameters(i),committed(i),fp,predictor_config,window%t0,window%t1,checkpoint,rp,cp,dp)
