@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01 C2B corrected-sign seed-free forcing ramp",
+  "date": "2026-10-03",
+  "status": "RESEARCH_ONLY_2000_WINDOWS_PUBLISHED_LOW_FORCING_NO_GROUNDWATER_RESPONSE",
+  "branch": "work/f-gc-strip01-c2b-local-continuation-20261003",
+  "based_on_commit": "76fbc90a74937cdd39d974b480657548b315bfea",
+  "canonical_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "source_validation": {
+    "compiled_src_blob_count": 144,
+    "all_match_canonical": true,
+    "production_source_changed": false,
+    "research_fixture_only_change": "MAX_RESEARCH_WINDOWS increased from 256 to 2048 for local repeated-window tests"
+  },
+  "flux_sign": "negative top_flux is inward rainfall/infiltration; positive is outward",
+  "forcing_policy": {
+    "seed_mode": "zero (no injected temporal derivative)",
+    "window_duration_day": 1e-05,
+    "window_count": 2000,
+    "total_elapsed_day": 0.02,
+    "positive_rain_rate_cm_per_day_start": 1e-05,
+    "geometric_factor_per_window": 1.005,
+    "positive_rain_rate_cm_per_day_cap": 0.001,
+    "cap_reached_window_1_based": 925,
+    "cap_hold_windows": 1076,
+    "cap_equivalent_mm_per_day": 0.01,
+    "registered_target_rain_mm_per_day": 1.0,
+    "target_to_cap_ratio": 100
+  },
+  "outcome": {
+    "published_windows": 2000,
+    "rejected_windows": 0,
+    "all_columns_final_revision": 2000,
+    "all_columns_final_interface_ledger_count": 2000,
+    "modflow_calls_total": {
+      "prepare_solve": 2000,
+      "solve": 2000,
+      "finalize_solve": 2000,
+      "finalize_time_step": 2000
+    },
+    "input_total_m3": 6.373323681432751e-06,
+    "swap_storage_change_total_m3": 6.373323650166185e-06,
+    "drain_outflow_total_m3": 0.0,
+    "signed_mass_residual_total_m3": 3.126656576294253e-14,
+    "maximum_absolute_single_window_residual_m3": 1.2742648566547818e-14,
+    "max_single_window_input_m3": 5e-09,
+    "all_modflow_heads_initial_final_m": [
+      -1.0,
+      -1.0
+    ],
+    "measurable_head_or_drain_response": false
+  },
+  "replay": {
+    "fresh_process_replay_byte_identical": true,
+    "full_result_sha256": "7fc33c1469dc5bcd95beeb6eb6d14e12432a8363a87a497cb960ff104d343551",
+    "replay_sha256": "7fc33c1469dc5bcd95beeb6eb6d14e12432a8363a87a497cb960ff104d343551",
+    "full_result_bytes": 22383969,
+    "persisted_per_window_dataset": "C2_correct_sign_seed_free_ramp_2000.csv.gz",
+    "dataset_sha256": "22d9df2b906bdfbc830015f5cccca900e1444338536a0be25ce893afcad9522f",
+    "dataset_compression": "gzip",
+    "uncompressed_dataset_sha256": "dce551121e528e936de9288da707a6b73ac336e7dbcc58058aebcaf066afa7c6",
+    "dataset_uncompressed_bytes": 259840,
+    "dataset_compressed_bytes": 58764
+  },
+  "related_falsification": {
+    "1e-5_day_factor_1.1_ramp": "51 windows published; next forcing increment to -1.291299e-4 cm/day rejected",
+    "1e-5_day_factor_1.02_ramp": "196 windows published; next forcing increment to -4.848793e-4 cm/day rejected; holding at -4.753719e-4 cm/day instead passes 240 windows",
+    "1e-6_day_factor_1.05_ramp": "first window published; second forcing increment to -1.05e-5 cm/day rejected after retries",
+    "1e-5_day_factor_1.005_cap_0.001": "1000 windows published to and held at -0.001 cm/day",
+    "factor_1.005_ramp_toward_0.1": "999 windows published to -0.001451208 cm/day; next increase rejected at -0.001458464 cm/day"
+  },
+  "interpretation": "A slow, seed-free forcing ramp and long low-flux plateau are transactionally accepted with very small mass residual and exact replay. Continuing the ramp reaches a forcing-increment-dependent temporal rejection. The accepted cap is 100 times below the registered 1 mm/day rain; rainfall volume over 0.02 day is too small for measurable groundwater response. This is not full strip-model qualification.",
+  "next": "Map timestep and forcing-increment envelope from accepted-origin checkpoints, then seek a physically meaningful rainfall rate with measurable MODFLOW exchange while maintaining the frozen temporal and mass gates; keep B1.11 dynamic route excluded and Hupsel deferred."
+}

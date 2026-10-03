@@ -20,6 +20,16 @@ The same 0.001-day elapsed forcing was then split into 100 windows of 1e-5 day. 
 
 This is bounded publication and mass-balance evidence only. The derivative seed was experimentally captured and injected by the research fixture; it is not an admitted runtime route. All MODFLOW heads remain -1 m, and no measurable head, lateral-flow, bottom-interface or drain response occurs during these 86.4 seconds. Thus the coupled strip benchmark is not yet working in the intended hydrologic sense.
 
+## Seed-free gradual-forcing experiment
+
+To separate injected derivative seeding from accepted temporal history, a research-only runner starts from zero seed and raises correctly signed inward top flux geometrically. With 1e-5-day windows, a 1.005 multiplier and a cap of 0.001 cm/day, all 2,000 windows publish. The rate reaches its cap at window 925 and remains constant for the remaining 1,075 windows. All 50 columns reach revision and interface-ledger count 2,000; native MODFLOW prepares, solves, finalizes solve and finalizes time step exactly 2,000 times. A fresh-process replay is byte-identical.
+
+Total input is 6.373323681432751e-6 m³, SWAP storage increases by 6.373323650166185e-6 m³, drain outflow is zero and cumulative signed mass residual is 3.126656576294253e-14 m³ (maximum absolute single-window residual 1.2742648566547818e-14 m³). All groundwater heads remain -1 m. The per-window forcing, input, storage, drain and residual record is persisted at `integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_ramp_2000.csv.gz`; the metadata and replay hashes are in the adjacent JSON summary.
+
+This confirms that accepted history can evolve from an unseeded origin under a very gradual forcing ramp, and that the accepted low forcing can be held for 1,075 windows. The cap is 0.001 cm/day (0.01 mm/day), 100 times below the registered 1 mm/day rain. A separate same-factor ramp toward 0.1 cm/day publishes 999 windows and rejects its next increase at about 0.001458 cm/day. Thus the slow ramp does not reach the target forcing. The accepted rainfall volume is also too small to produce measurable groundwater or drain response. This is a temporal-history diagnostic, not benchmark qualification.
+
+The research fixture context capacity was raised from 256 to 2,048 windows to run this local sequence; no production source, temporal budget, retry limit or mass gate changed.
+
 ## Historical tests and other blockers
 
 The isolated onset values previously reported (including Binf=0.867884 cm at 0.001 day against the 1e-5 cm limit, and seed reduction to 0.00187113 cm) came from positive +0.1 cm/day outward flux. They must not be interpreted as rainfall onset behavior. The corrected-sign 0.001-day rainfall window also rejects at the corrector, so the forcing-boundary temporal-history problem remains, now with a properly signed test.
