@@ -3,6 +3,7 @@ program test_int12e_sequence
  use mod_detailed_interception_process
  implicit none
  type(detailed_interception_state_t)::s,snap
+ type(detailed_interception_restart_t)::rr
  type(detailed_interception_trial_t)::tr
  real(real64),parameter::rain(4)=[0.10d0,0.00d0,0.30d0,0.00d0],ew(4)=[2d0,2d0,1d0,4d0]
  real(real64)::oracle_rest,interc,w,total_wet
@@ -22,11 +23,14 @@ program test_int12e_sequence
   end if
   total_wet=total_wet+tr%wfrac
   call accept_detailed_interception_record(s,tr,st);call req(st==DETINT_OK,'accept')
-  if(i==2)snap=s
+  if(i==2)then
+   snap=s
+   call export_detailed_interception_restart(s,rr,st);call req(st==DETINT_OK,'restart export')
+  end if
  end do
  call req(s%next_record==5,'cursor')
- ! restart-equivalence: snapshot after record 2, replay records 3-4
- s=snap
+ ! restart-equivalence: serialized snapshot after record 2, replay records 3-4
+ call restore_detailed_interception_restart(rr,s,st);call req(st==DETINT_OK,'restart restore')
  do i=3,4
   call prepare_detailed_interception_record(s,i,0.4d0,rain(i),0.12d0,0.28d0,0.25d0,ew(i),tr,st);call req(st==DETINT_OK,'restart prepare')
   call accept_detailed_interception_record(s,tr,st);call req(st==DETINT_OK,'restart accept')
