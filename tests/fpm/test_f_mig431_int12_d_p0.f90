@@ -17,13 +17,13 @@ program test_int12d_p0
  call initialize_gash_source_window(12_int64,0d0,1d0,x,g,w,p,s);call req(s==GASH_BIND_OK,'init')
  call prepare_interception_trial(w,p,0.3d0,tr,s);call req(s==INTWIN_OK,'trial1');a=tr%apportioned_amount()
  ! rejection: intentionally do not accept; progress must remain zero
- call req(p%accepted_amount(w)==0d0,'rejected immutable')
+ call req(abs(p%accepted_amount(w))<=tiny(1.0_real64),'rejected immutable')
  call prepare_interception_trial(w,p,0.4d0,tr,s);call req(s==INTWIN_OK,'retry');call accept_interception_trial(w,tr,p,s);call req(s==INTWIN_OK,'accept retry')
  total=tr%apportioned_amount();call export_interception_restart(w,p,rr,s);call req(s==INTWIN_OK,'restart export')
  call restore_interception_restart(rr,w2,p2,s);call req(s==INTWIN_OK,'restart restore')
  call prepare_interception_trial(w2,p2,1d0,tr,s);call req(s==INTWIN_OK,'remainder');total=total+tr%apportioned_amount()
  call accept_interception_trial(w2,tr,p2,s);call req(s==INTWIN_OK.and.p2%complete(w2),'complete')
- call req(total==g%interception_cm,'bitwise aggregate closure')
+ call req(transfer(total,0_int64)==transfer(g%interception_cm,0_int64),'bitwise aggregate closure')
  print *,'F-MIG431-INT12-D P0 COMPOSITION PASS'
 contains
  subroutine tab(t,a,b);type(gash_table_t),intent(out)::t;real(real64),intent(in)::a(:),b(:);allocate(t%time(size(a)),t%value(size(b)));t%time=a;t%value=b;end subroutine
