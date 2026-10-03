@@ -63,5 +63,32 @@
     "residual_scope": "Unpublished rejected trial/input diagnostic only; not an accepted-window mass-balance failure and not evidence of a physical mass defect.",
     "cause": "Unresolved. Current result localizes rejection to first SWAP corrector after successful forcing setup and context advance; it does not distinguish SWAP numerical, temporal/coupling gate, or fixture/configuration cause.",
     "qualification": "C2b not qualified. Do not proceed to Hupsel forcing until the rejection mechanism is characterized and an accepted coupled window closes its balance under preregistered limits."
+  },
+  "diagnostic_replay": {
+    "result": "integration/f-gc/strip01/results/C2b_diagnostic_run_37113639730.json",
+    "workflow_run": 37113639730,
+    "workflow_source_commit": "c34e343d6fbc6b5ea90e4b823415c504fb90d9d3",
+    "artifact_id": 11270421665,
+    "artifact_sha256": "eee40cc4dcdbbd3523264a9435e7b45623a49dfed5da4e97fd5a52bb97aaf6a1",
+    "actual_trial_heads_m": {
+      "count": 50,
+      "min": -1,
+      "max": -1
+    },
+    "fixture_head_gate": "PASS",
+    "context_status": 5,
+    "context_status_meaning": "participant failed during SWAP trial path",
+    "isolated_per_column_replay": {
+      "transaction_status": 2,
+      "transaction_status_meaning": "canonical transaction failed",
+      "accepted_substeps": 0,
+      "solver_rejections": 3,
+      "temporal_rejections": 6,
+      "mass_rejections": 0,
+      "admission_rejections": 0,
+      "attempts": 9,
+      "retries": 8
+    },
+    "inference": "Rain-forced direct replay fails in the solver/temporal portion before mass acceptance. These are isolated replay counters, not counters captured from the original coupled-context call; root cause remains unresolved."
   }
 }
