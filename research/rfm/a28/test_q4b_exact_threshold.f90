@@ -46,17 +46,20 @@ program test_a28_q4b_exact_threshold
   mode_arg='';call get_command_argument(1,mode_arg)
   approximate_mode=trim(mode_arg)=='approx'
 
-  approximate_mode=.false.
   write(*,'(a)') 'Q4B,soil,geom,history,arm,completed,status,fail_step,wall_seconds,total_in_cm,total_out_cm,bottom_out_cm,fast_external_out_cm,max_mass_resid_cm,matrix_storage_cm,fast_storage_cm,ponding_cm,total_storage_cm,h1_cm,h5_cm,h10_cm,theta1,theta5,theta10,transaction_calls,attempts,retries,nonlinear,backtracks,headcalc,min_substep_day,admission_rejections,solver_rejections,temporal_rejections,mass_rejections,trial_rollbacks'
   do soil=1,2
     do geom=1,2
       regime=3
       arm=ARM_C
+      approximate_mode=.false.
       call run_arm(soil,geom,regime,arm,m)
       call print_metrics('Q4BEXACT',soil,geom,regime,arm,0,m)
+      approximate_mode=.true.
+      call run_arm(soil,geom,regime,arm,m)
+      call print_metrics('Q4BAPPROX',soil,geom,regime,arm,0,m)
     end do
   end do
-  print '(a)','A28_Q4B_STAGE_A_EXECUTION_COMPLETE'
+  print '(a)','A28_Q4B_STAGE_B_EXECUTION_COMPLETE'
 
 contains
 
