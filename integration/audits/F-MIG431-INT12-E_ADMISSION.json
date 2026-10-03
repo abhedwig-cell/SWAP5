@@ -1,0 +1,12 @@
+{
+ "schema":"swap5.f_mig431_int12_e.admission.v1",
+ "workunit":"F-MIG431-INT12-E",
+ "state":"QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW",
+ "candidate_head":"bba2fd7d0242e7acad0b9f5752eb966e47129570",
+ "canonical_base":"89eedb63c65fcf496f2bc14153c31ec57f1d3de4",
+ "capability":"SWMETDETAIL=1 non-Rutter interception continuation for SWINTER=1/2",
+ "state_contract":{"restint":"accepted intra-day continuation state, reset to zero at each new detailed-meteo source day","cursor":"next accepted meteorological record","restart":"versioned schema persists source_day_id, next_record and restint","physical_storage":false},
+ "qualification":{"dedicated_run":37152189573,"conclusion":"success","p0_preservation_run":37152189517,"p0_conclusion":"success","int12d_preservation_run":37152189412,"int12d_conclusion":"success"},
+ "qualified_behaviour":["legacy record-weighted interception availability","wet-canopy fraction and residual carryover","gross/net rain record rates","rejected-trial immutability","serialized mid-day restart equivalence","SWINTER=1 and SWINTER=2 method-neutral record law","O0/O2 identity"],
+ "excluded":["SWINTER=3 Rutter","detailed snow physics, which legacy disables","general meteo parser migration","TOP03/SCV","solver/timestep policy"]
+}

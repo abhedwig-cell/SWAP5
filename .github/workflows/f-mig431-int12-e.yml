@@ -1,0 +1,12 @@
+name: F-MIG431-INT12-E detailed interception qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: bash tests/fpm/run_f_mig431_int12_e.sh
