@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.f_mig431_int12_c.status.v1",
+  "workunit": "F-MIG431-INT12-C",
+  "parent_workunit": "PPA-WU04-C",
+  "title": "SWINTER=1 Von Hoyningen-Hune/Braden source-window interception",
+  "state": "PREREGISTERED_IMPLEMENTATION_NOT_STARTED",
+  "branch": "work/f-mig431-int12-c-vonhhbraden",
+  "pinned_base": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
+  "authorities": {
+    "current_canonical_head": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
+    "ppa_wu04_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "ppa_wu04_status": "integration/audits/PPA_WU04_STATUS.json",
+    "source_snapshot": "B1.11",
+    "legacy_source_member": "SWAP/MOD_meteo.f90",
+    "legacy_source_member_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "p0_status": "integration/audits/F-MIG431-INT12-P0_STATUS.json",
+    "p0_canonical_merge": "4d7be05313336e437461f05642affe80bb9bb129",
+    "independent_trace": "SWAP-model/SWAP@07d74a82e9ba0465ec81a74e4d82b3dc03d856d9"
+  },
+  "gap": {
+    "production_process_present": false,
+    "method_specific_oracle_present": false,
+    "common_source_window_seam": "CANONICALLY_ADMITTED"
+  },
+  "scope": [
+    "SWINTER=1 VonHHBraden only"
+  ],
+  "exclusions": [
+    "SWINTER=2 Gash (INT12-D)",
+    "SWINTER=3 Rutter",
+    "legacy meteo parser/calendar",
+    "solver/timestep policy",
+    "groundwater coupling semantics"
+  ],
+  "persistent_physical_state": [],
+  "aggregate_owner": "existing F-MIG431-INT12-P0 source-window runtime progress",
+  "production_admission": false,
+  "qualification": "NOT_RUN",
+  "next_safe_step": "Bind exact B1.11 equations, output conventions and source-window/call-order mapping, then preregister the minimal typed process/application interface before production edits."
+}
