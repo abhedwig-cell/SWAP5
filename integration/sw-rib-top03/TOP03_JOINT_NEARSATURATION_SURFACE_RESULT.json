@@ -416,6 +416,43 @@
     "O0_O2_output_identity": true,
     "production_code_changed": false,
     "ribasim_transaction_qualified": false,
-    "interpretation": "The broad near-saturation soil law plus a consistent bottom Jacobian is a promising candidate mechanism; the smoothstep surface hypsometry was not needed in this controlled case. Analytical derivative, source ownership/conflict review, existing top-boundary regressions, and transaction/Ribasim qualification remain open."
+    "interpretation": "The broad near-saturation soil law plus a consistent bottom Jacobian is a promising candidate mechanism; the smoothstep surface hypsometry was not needed in this controlled case. A generated analytic dK/dh implementation subsequently passed its finite-difference oracle at five heads and completed all six levels; it is still not a production source implementation. Source ownership/conflict review, existing top-boundary regressions, and transaction/Ribasim qualification remain open."
+  },
+  "followup_analytic_bottom_jacobian_2026_10_03": {
+    "scope": "same 0.2 cm soil transition, D=0.05 cm rise/recession, inherited microrelief storage, 1e-12 head tolerance, refinements 1/2/4/8/16/32",
+    "derivative": "Analytic derivative of the generated regularized Mualem K law, including chain rule through effective saturation and transition weight; derivative applied to free-drainage bottom Jacobian in generated HeadCalc copy",
+    "finite_difference_oracle_heads_cm": [-0.3, -0.15, -0.05, -0.005, -0.0001],
+    "finite_difference_acceptance": "abs(analytic-central_difference) <= 1e-6 + 2e-5*abs(central_difference)",
+    "max_abs_oracle_difference": 7.7168302228258767e-6,
+    "oracle_passed": true,
+    "completed": [true, true, true, true, true, true],
+    "newton_iterations": [89, 147, 253, 434, 769, 1354],
+    "combined_ledger_residual_cm_max_abs": 1.4654943925052066e-14,
+    "soil_balance_residual_cm_max_abs": 7.7949799393017827e-15,
+    "O0_O2_output_identity": true,
+    "production_code_changed": false,
+    "ribasim_transaction_qualified": false,
+    "interpretation": "Analytic derivative counterfactual reproduces the finite-difference convergence result; initial band-only derivative failed, so the tested derivative covers the underlying MvG law outside the regularization band too. This is a research candidate, not an admitted production implementation."
+  },
+  "followup_analytic_transition_width_bracket_2026_10_03": {
+    "common_scope": "legacy integrated microrelief storage, D=0.05 cm, rise/recession stage pulse, head tolerance 1e-12, refinements 1/2/4/8/16/32, analytic generated dK/dh bottom Jacobian, O0/O2",
+    "delta_2_cm": {
+      "oracle_passed": true,
+      "completed": [true, true, true, true, true, true],
+      "newton_iterations": [96, 162, 301, 531, 895, 1344],
+      "combined_ledger_residual_cm_max_abs": 1.1768364061026659e-14,
+      "soil_balance_residual_cm_max_abs": 1.8790524691780774e-14,
+      "successive_refinement_max_head_difference_cm": [0.7758282106648631, 0.22960846407099123, 0.07029921538562789, 0.022427503620074063, 0.007901873461849007],
+      "O0_O2_output_identity": true
+    },
+    "delta_0_02_cm": {
+      "oracle_passed": false,
+      "oracle_failure_head_cm": -0.0001,
+      "analytic_dkdh": 1.5684549733050464e-5,
+      "central_difference_dkdh": 1.0687006835041757e-5,
+      "absolute_difference": 4.997542898008707e-6,
+      "trajectory_run_after_oracle": false
+    },
+    "interpretation": "Both 0.2 and 2 cm transition settings pass the bounded synthetic pulse/refinement test with the analytic counterfactual. The 0.02 cm implementation fails the near-saturation derivative oracle and is not qualified. No width is physically calibrated by these numerical results."
   }
 }
