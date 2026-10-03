@@ -2863,6 +2863,9 @@ contains
       select type (rfm_physical => state)
       type is (fmr_b110_rfm_state_t)
         if (.not. rfm_physical%rfm%ready()) return
+        call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,1, &
+             rfm_physical%pressure_head(1),fixed_top_conductivity,fixed_top_conductivity_ok)
+        if(.not.fixed_top_conductivity_ok)return
         if(.not.associated(self%rfm_top_provider))allocate(self%rfm_top_provider)
         call bind_b110_dynamic_top_boundary_solver_provider(self%rfm_top_provider, self%soil_parameters, &
              self%hydraulic_parameters, self%swkmean, rfm_physical%ponding_depth, step_duration, &
@@ -2870,7 +2873,7 @@ contains
              self%rfm_surface_forcing%snowmelt_rate_cm_per_day, self%rfm_surface_forcing%runon_rate_cm_per_day, &
              self%rfm_surface_forcing%potential_bare_soil_evaporation_cm_per_day, &
              self%rfm_surface_forcing%potential_pond_evaporation_cm_per_day, self%rfm_surface_forcing%ponding_max_cm, &
-             self%rfm_surface_forcing%runoff_resistance_day, self%rfm_surface_forcing%runoff_exponent)
+             self%rfm_surface_forcing%runoff_resistance_day, self%rfm_surface_forcing%runoff_exponent, fixed_top_conductivity)
         call self%rfm_top_provider%evaluate(rfm_physical%pressure_head(1), rfm_physical%water_content(1), &
              rfm_physical%ponding_depth, request%boundary, rfm_preflight)
         allocate(rfm_node_depth_cm(rfm_physical%active_nodes)); rfm_node_depth_cm=abs(self%soil_parameters%z)
@@ -2888,7 +2891,7 @@ contains
         call bind_b110_dynamic_top_boundary_solver_provider(self%rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
              self%swkmean,rfm_physical%ponding_depth,step_duration,rfm_live%surface%matrix_supply_cm_per_day, &
              0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,self%rfm_surface_forcing%ponding_max_cm, &
-             self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent)
+             self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent,fixed_top_conductivity)
         request%evaluation%dynamic_top_boundary=>self%rfm_top_provider
       class default
         return
