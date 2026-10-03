@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.f_gc_strip01.c2_rain01_execution_addendum.v1",
+  "experiment": "C2_RAIN01_B111_DYNAMIC_SURFACE_BOUNDARY",
+  "date": "2026-10-03",
+  "state": "PREREGISTERED_BEFORE_RUNNER_REPAIR",
+  "parent": "integration/f-gc/strip01/F-GC-STRIP01_C2_RAIN01_PREREGISTRATION.json",
+  "prior_attempt": {
+    "run_id": 37112863908,
+    "classification": "MODFLOW harness configuration failure before any coupled-window result",
+    "cause": "The two-period TDIS vector did not match the scalar PERLEN write made by the existing XMI prepare_time_step adapter. MODFLOW reported mem_set_value size mismatch for PERLEN; C2a/C2b physics did not run."
+  },
+  "execution_repair": {
+    "method": "Use one normal single-period MODFLOW6 API simulation for each coupling window. After accepted C2a, finalize and close that MODFLOW instance, copy its accepted XOLD head vector exactly into the initial-head array of the new single-period C2b simulation, and retain the same live SWAP application context and committed SWAP state.",
+    "justification": "The registered MODFLOW model has no STO and no independent physical aquifer storage. At a committed window boundary, the MODFLOW head vector is its only aquifer dynamic state. Reinitializing the next one-period API instance with accepted XOLD is a committed-only head-state continuation, not a restart of prepared/Newton scratch.",
+    "retained_semantics": [
+      "B1.11 dynamic top precipitation law",
+      "C2a then C2b sequential SWAP commits",
+      "no MODFLOW physical storage claim",
+      "MODFLOW-finalize then SWAP commit then ledger commit",
+      "fresh-process full-sequence replay identity"
+    ],
+    "gates_changed": false
+  },
+  "claim_ceiling": "Two-window research sequence only; this single-period API reinitialization does not qualify production restart persistence or Hupsel coupling.",
+  "canonical_admission": false
+}
