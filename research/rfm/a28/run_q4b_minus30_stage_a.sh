@@ -66,7 +66,7 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J"$B" -I"$B" "${objects[@]}" \
     research/rfm/a28/test_q4b_minus30_exact.f90 -o "$B/abc"
   "$B/abc" > "$OUTDIR/q4b30_stage_a_o$opt.txt"
-  grep -Fq 'A28_Q4B_MINUS30_STAGE_A_EXECUTION_COMPLETE' "$OUTDIR/q4b30_stage_a_o$opt.txt"
+  grep -Fq 'A28_Q4B_MINUS30_STAGE_B_EXECUTION_COMPLETE' "$OUTDIR/q4b30_stage_a_o$opt.txt"
 done
 
-python3 research/rfm/a28/analyze_q4b_minus30_stage_a.py "$OUTDIR/q4b30_stage_a_o2.txt" | tee "$OUTDIR/q4b30_stage_a_summary.txt"
+python3 research/rfm/a28/analyze_q4b_minus30_stage_b.py "$OUTDIR/q4b30_stage_a_o2.txt" | tee "$OUTDIR/q4b30_stage_b_summary.txt"
