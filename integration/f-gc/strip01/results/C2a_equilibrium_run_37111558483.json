@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "experiment": "C2a matched-head zero-forcing equilibrium window",
+  "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2_PREREGISTRATION.json",
+  "workflow_run": 37111558483,
+  "workflow_conclusion": "success",
+  "artifact_id": 11269533858,
+  "artifact_sha256": "a706dde3c1e41aa16bd88bbcca766ee42d392b47b15b353d258dbc95550e9e16",
+  "research_commit": "d99b1e1a284d96639bd58faeeb5c85cde4da6d9b",
+  "canonical_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "compiled_source_manifest": "c2a/source_git_blobs.json",
+  "profile": "C1 shallow B01, 50 cells; all initial SWAP/MODFLOW/interface heads -1m; 0.001 day; no top forcing, ET or roots",
+  "state": "FIRST_WINDOW_PUBLISHED",
+  "service": {
+    "status": 0,
+    "published": true,
+    "failure_stage": "none",
+    "iterations": 1
+  },
+  "modflow_calls": {
+    "prepare_solve": 1,
+    "solve": 1,
+    "finalize_solve": 1,
+    "finalize_time_step": 1
+  },
+  "uniform_trial_and_final_heads_m": -1,
+  "initial_and_final_swap_storage_per_column_m3": 0.7499125387644275,
+  "delta_swap_storage_m3": 0,
+  "drain_out_m3_per_day": 0,
+  "mass_residual_m3": 0,
+  "revisions_before_after": [
+    0,
+    1
+  ],
+  "interface_ledger_counts_before_after": [
+    0,
+    1
+  ],
+  "state_hash_before": "5306d705f48eb371556e1b98475ef9c1cb44055b5bc13b557cf036c19b776f9c",
+  "state_hash_after": "997123bcf8286dff69c4b95f555645641bc7fc58b7bed757ae8dcc8b91fe7871",
+  "claim_ceiling": "C2a establishes one accepted ordinary equilibrium transaction on this exact research fixture/source pair. It does not qualify rain forcing, C0/C1, multiwindow continuation, cumulative balance, timestep consistency, restart or canonical admission."
+}
