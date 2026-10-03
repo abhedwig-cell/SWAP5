@@ -68,4 +68,7 @@ src=src.replace("if(status/=MODFLOW6_MULTI_CELL_OK .or. .not.cell%valid)return",
 src=src.replace("if(status/=MODFLOW6_LINEAR_BACKEND_OK .or. .not.term%valid)return", "if(status/=MODFLOW6_LINEAR_BACKEND_OK .or. .not.term%valid)then;write(*,'(a,i0)')'A28_FGC45_INIT_FAIL=TERM status=',status;return;end if",1)
 src=src.replace("if(status/=GW_SWAP_PARTICIPANT_OK)return\n      call ledger", "if(status/=GW_SWAP_PARTICIPANT_OK)then;write(*,'(a,i0,a,i0)')'A28_FGC45_INIT_FAIL=ORIGIN tile=',i,' status=',status;return;end if\n      call ledger",1)
 src=src.replace("if(status/=GW_MASS_LEDGER_OK)return", "if(status/=GW_MASS_LEDGER_OK)then;write(*,'(a,i0,a,i0)')'A28_FGC45_INIT_FAIL=LEDGER tile=',i,' status=',status;return;end if",1)
+src=src.replace("if(.not.result%completed)return", "if(.not.result%completed)then;write(*,'(a,i0,a,i0,a,i0,a,i0,a,i0,a,i0)')'A28_FGC45_PRED_FAIL tile=',i,' status=',result%status,' attempts=',diagnostics%attempts,' retries=',diagnostics%retries,' solver=',diagnostics%solver_rejections,' temporal=',diagnostics%temporal_rejections;return;end if",1)
+src=src.replace("if(.not.candidate%ready())return", "if(.not.candidate%ready())then;write(*,'(a,i0)')'A28_FGC45_PRED_FAIL=CANDIDATE tile=',i;return;end if",1)
+src=src.replace("if(.not.result%accepted_trajectory_direction%available)return", "if(.not.result%accepted_trajectory_direction%available)then;write(*,'(a,i0)')'A28_FGC45_PRED_FAIL=DIRECTION tile=',i;return;end if",1)
 Path(sys.argv[1]).write_text(src)
