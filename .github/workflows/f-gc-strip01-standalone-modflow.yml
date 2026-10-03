@@ -59,15 +59,16 @@ jobs:
           python tools/build_f_gc_strip01_research_context.py --profile C2 --build "${RUNNER_TEMP}/strip01-c2-build"
           python - <<'PY'
           import json
+          import os
           from pathlib import Path
           expected = json.loads(Path("integration/f-gc/strip01/results/C1_telemetry_23f5d3_source_git_blobs.json").read_text())
           expected = {k: v for k, v in expected.items() if k.startswith("src/") or k == "tests/fgc/strip01/research_grid_stubs_c1.f90"}
-          actual = json.loads((Path("${RUNNER_TEMP}") / "strip01-c2-build/source_git_blobs.json").read_text())
+          actual = json.loads((Path(os.environ["RUNNER_TEMP"]) / "strip01-c2-build/source_git_blobs.json").read_text())
           actual = {k: v for k, v in actual.items() if k.startswith("src/") or k == "tests/fgc/strip01/research_grid_stubs_c1.f90"}
           if actual != expected:
               raise SystemExit("C2 build source blobs differ from the preregistered current-canonical manifest")
           Path("strip01-results/c2a").mkdir(parents=True, exist_ok=True)
-          Path("strip01-results/c2a/source_git_blobs.json").write_text(json.dumps(actual, indent=2) + "\\n")
+          Path("strip01-results/c2a/source_git_blobs.json").write_text(json.dumps(actual, indent=2) + chr(10))
           PY
       - name: Run matched-head C2a equilibrium window
         run: |
