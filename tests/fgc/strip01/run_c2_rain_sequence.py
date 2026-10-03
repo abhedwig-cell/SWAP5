@@ -122,7 +122,7 @@ def main():
 
     runtime = DomainRuntime(lib, handle.value)
     sim = flopy.mf6.MFSimulation(sim_name='realstrip01c2rain', sim_ws=str(work))
-    flopy.mf6.ModflowTdis(sim, time_units='DAYS', perioddata=[(0.001, 1, 1), (0.001, 1, 1)])
+    flopy.mf6.ModflowTdis(sim, time_units='DAYS', perioddata=[(0.002, 2, 1)])
     flopy.mf6.ModflowIms(sim, outer_dvclose=1e-10, inner_dvclose=1e-11,
                        outer_maximum=200, inner_maximum=300, rcloserecord=1e-11)
     gwf = flopy.mf6.ModflowGwf(sim, modelname='STRIP', save_flows=True)
@@ -177,7 +177,7 @@ def main():
             result['state'] = 'C2A_AND_C2B_PUBLISHED' if b.published else 'C2A_PUBLISHED_C2B_REJECTED'
             if b.published:
                 cbc = flopy.utils.CellBudgetFile(work / 'strip.cbc', precision='double')
-                drain = float(sum(np.sum(v['q']) for v in cbc.get_data(text='DRN', kstpkper=(0, 1))))
+                drain = float(sum(np.sum(v['q']) for v in cbc.get_data(text='DRN', kstpkper=(1, 0))))
                 delta_storage = sum(result['C2b']['storage_m3']) - sum(result['C2a']['storage_m3'])
                 drain_out = -drain
                 result['C2b']['drain_out_m3_per_day'] = drain_out
