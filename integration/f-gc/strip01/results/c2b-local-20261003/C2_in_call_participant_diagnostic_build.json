@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.f_gc_strip01.c2b.in_call_failure_instrumentation_build.v1",
+  "date": "2026-10-03",
+  "classification": "research instrumentation compiled; full coupled failure attribution not yet executed",
+  "canonical_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "research_branch_head_at_start": "71911d0af16795f75335983585f0d6f30bc9e18e",
+  "instrumentation": {
+    "scope": [
+      "src/runtime/mod_fmr_groundwater_application_context.f90",
+      "src/adapter/mod_fmr_groundwater_application_c_api.f90"
+    ],
+    "mode": "temporary source overlays generated from canonical-source files; no production source edit",
+    "source_override_hashes_sha256": [
+      "9c03d182c80e03c262944d54388d94e9539e8ab769ed317c32034ce2609204b9",
+      "55efd7039cc1aae9176a28805d6815638126d0829eb066562ed1225796fd91d6"
+    ],
+    "captures": "first failed serial participant: MODFLOW context cell index, SWAP tile slot, participant status, registry local status",
+    "build": "PASS; local gfortran shared-library build with C2 seedprobe fixture",
+    "abi_smoke_test": "PASS for symbol and field transport. Fresh fixture without capture_origins returns participant invalid-request at cell 1/tile 1, so this is only an ABI smoke check and does not diagnose the target failure."
+  },
+  "full_reproduction": {
+    "intended_parameters": {
+      "window_duration_day": 0.000001,
+      "flux_tolerance_m_per_s": 2e-15,
+      "seed": "zero",
+      "ramp_start_cm_per_day": 0.00001,
+      "ramp_factor": 1.0003998800639584,
+      "window_count": 15300
+    },
+    "outcome": "NOT RUN",
+    "blocker": "The previously used local MODFLOW 6 shared library path disappeared when the execution workspace changed. Searches of /workspace/scratch, /opt, /root/.cache, /root/.local, and /usr found no libmf6.so. Runner exits before initialization of native MODFLOW.",
+    "actions_runs": "none"
+  },
+  "claim_limit": "No new participant index, solver status, or hydrologic result is claimed. Repeat the full local run once MODFLOW 6 libmf6.so is available."
+}
