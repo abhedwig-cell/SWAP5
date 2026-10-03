@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.f_gc_strip01.responded_origin_recharge_preregistration_addendum.v1",
+  "experiment": "F-GC-STRIP01-RESP01F",
+  "date": "2026-10-03",
+  "supersedes": "None; this addendum clarifies the preregistration before execution and does not alter its physical configuration.",
+  "source_confirmations": {
+    "canonical_head": "a6d88c394104dfcd780d5b68df4addcb6e819968",
+    "top_flux_sign": "Positive fixed qtop is infiltration into SWAP. In B1.11 the surface residual is pond change minus rainfall minus qtop contribution; the fixed-flux typed provider passes requested top_flux unchanged.",
+    "C0_initial_interface_head_m": -5.0,
+    "C1_initial_interface_head_m": -1.0,
+    "both_bottom_pressure_heads_cm": 100,
+    "C0_RESP01E_col1_dhbottom_cm_dqbot_cm_per_day_days": 3.5047934204013784,
+    "C1_RESP01E_col1_dhbottom_cm_dqbot_cm_per_day_days": 3.5047934204013784,
+    "local_tangent_scope": "Hydrostatic origin only; every initial SWAP column has this same pressure-head profile after removing the former far-column perturbation."
+  },
+  "unit_separated_mass_gates": {
+    "native_transaction_mass_gate": {
+      "tolerance": 1e-12,
+      "units": "existing profile-native SWAP mass diagnostic units",
+      "change": "none"
+    },
+    "whole_domain_external_volume_gate": {
+      "tolerance": 1e-8,
+      "units": "m3 over the 0.001-day window",
+      "basis": "unchanged assertion already in tests/fgc/strip01/run_research_window.py; retain value while adding the measured rain-input term",
+      "residual": "delta_SWAP_storage - (0.001 m/day * 50 m2 * 0.001 day - DRN_out_m3_per_day * 0.001 day)"
+    },
+    "forcing_volume": {
+      "rain_rate_m_per_day": 0.001,
+      "window_day": 0.001,
+      "area_m2": 50,
+      "input_volume_m3": 0.00005
+    }
+  },
+  "predictor_composition": {
+    "qbot_inward_cm_per_day_at_origin": 0,
+    "dhbottom_cm_dqbot_cm_per_day_days": 3.5047934204013784,
+    "method": "the same accepted-trajectory local tangent route qualified by RESP01E, used only at its measured hydrostatic origin; no off-origin extrapolation is authorized"
+  },
+  "claim_ceiling": "Clarification only. The experiment remains research qualification, not canonical admission."
+}
