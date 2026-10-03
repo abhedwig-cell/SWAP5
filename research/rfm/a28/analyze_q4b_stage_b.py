@@ -10,7 +10,7 @@ for line in lines:
   z=line.split(",");k=(z[1],z[2],z[3],z[5]);cycles.setdefault(k,{})[z[4]]=list(map(float,z[6:13]))
 def key(r):return (r["soil"],r["geom"],r["history"])
 e={key(r):r for r in rows if r["Q4B"]=="Q4BEXACT"};a={key(r):r for r in rows if r["Q4B"]=="Q4BAPPROX"}
-if set(e)!=set(a) or len(e)!=2:raise SystemExit("frozen case mismatch")
+if set(e)!=set(a) or len(e)!=4:raise SystemExit("frozen case mismatch")
 mx={"storage":0.,"bottom":0.,"theta":0.,"mass":0.,"endpoint":0.}
 for k in e:
  x,y=e[k],a[k]
@@ -25,4 +25,4 @@ for k,v in cycles.items():
  mx["theta"]=max(mx["theta"],max(abs(x[i]-y[i]) for i in (1,2,3)))
 print(json.dumps({"cases":len(e),"cycle_pairs":len(cycles),"max":mx},indent=2))
 if mx["mass"]>1e-6 or mx["storage"]>0.02 or mx["bottom"]>0.02 or mx["theta"]>0.01 or mx["endpoint"]>0.02:raise SystemExit("Q4B gate")
-print("A28_Q4B_STAGE_B=PASS")
+print("A28_Q4B_MINUS3_STAGE_B=PASS")
