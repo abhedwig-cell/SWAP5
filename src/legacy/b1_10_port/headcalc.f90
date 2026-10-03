@@ -940,11 +940,8 @@ subroutine boundtop_state_bridge(task)
    if (provider_dynamic_top_active) then
       call evaluation_context%dynamic_top_boundary%evaluate(state%h(1), state%theta(1), state%pond, &
            boundary_conditions, provider_dynamic_top_result)
-      if (provider_dynamic_top_result%status /= SW_TOP_BOUNDARY_AVAILABLE) then
-         write(*,'(a,i0,2a)') 'DYNAMIC_TOP_STATUS=',provider_dynamic_top_result%status, &
-              ' route=',trim(provider_dynamic_top_result%route)
-         error stop 'HeadCalc: dynamic top-boundary provider unavailable'
-      end if
+      if (provider_dynamic_top_result%status /= SW_TOP_BOUNDARY_AVAILABLE) &
+           error stop 'HeadCalc: dynamic top-boundary provider unavailable'
       if (.not. provider_dynamic_top_result%carries_surface_mass_terms) &
            error stop 'HeadCalc: dynamic top-boundary provider omitted surface mass terms'
       if (.not. provider_dynamic_top_result%runoff_resolved) &
