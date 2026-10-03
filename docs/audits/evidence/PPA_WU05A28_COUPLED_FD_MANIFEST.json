@@ -3,8 +3,8 @@
   "qualification_source_sha": "c8140b7d4b824df2101460530439f98008380eee",
   "local_tested_sha": "8f8008c01c3690cab3aea38c8d6de656cffb1ffe",
   "source_tree_sha": "a4aac5df1fab9d4da77249415fc3f6f9ebbad164",
-  "bundle_sha256": "768e909bc386903f05bcd95eb4067f7764246fc7d4d2fe4f564bf39331dba079",
-  "bundle_bytes": 127242,
+  "bundle_sha256": "31a748b7c53806278491af8f09fdd00a721c77b8c04fce987217e3e698895b6e",
+  "bundle_bytes": 127244,
   "contents": {
     "a28-aligned-approx-24.json": "6d939cbbb69f0c5c0a074cf575807e65942817fcd656558511274a76f4ea5166",
     "a28-aligned-approx-24.log": "67d2aea30c1d72bc4c0c135a6d7976cc99df25e9a267354a300817dcf508ef44",
@@ -33,7 +33,7 @@
     "a28-field-dt-0.005-rain1.log": "23e4ba334b7d2903964ad693f43956b7ff21c30e74a27a961a34a82b95c081f3",
     "a28-field-dt-build.log": "f36c585b4283709738f88effa485a3a4996217cf948e91f05e9d21dbdb9877d1",
     "a28-field-dt-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
-    "a28-field-dt-mkdocs.log": "ac402f72646907b080faf9da9c9cb6a5c9571e4742b66a2a4a671a25c1726379",
+    "a28-field-dt-mkdocs.log": "a48e40e7262ae8f3ad9eb22acf5921d1de7d57c451c854a0710b25e43c99c863",
     "a28-final-approx.log": "60638ce831170240827bd2ea354a8da383c81421b85d036601472cd52002e60e",
     "a28-final-comparison.json": "ed2bec4bfe4635f0b4ba958a5547f0dc5a68ee3131d8e0e0afa60af6445fe2dd",
     "a28-final-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
@@ -119,5 +119,6 @@
     "unregistered_exploratory_dt_day": 0.001,
     "unregistered_result": "FAIL_TILE_1_13_ATTEMPTS_12_RETRIES_13_SOLVER_0_TEMPORAL",
     "protocol_deviation": "Second timestep was run despite preregistered stop-after-first-failure; excluded from gate evidence."
-  }
+  },
+  "diagnostic_preregistration_commit": "7101d2cfa33eb55d4d5fbcdbdb72d8b96e5ffee4"
 }
