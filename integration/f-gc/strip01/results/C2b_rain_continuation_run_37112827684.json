@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C2a→C2b continuous real SWAP–MODFLOW sequence",
+  "workflow_run": 37112827684,
+  "workflow_conclusion": "success",
+  "source_commit": "65d79f753db41afe19b250d5e43a61a6c82b29b2",
+  "artifact_id": 11270561100,
+  "artifact_sha256": "87a46839458e06b2f3a3ebe4c28889c5aad02209b51ea36ea41fee8ef2e23f2a",
+  "canonical_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "status": "C2A_ACCEPTED_C2B_REJECTED",
+  "canonical_admission": false,
+  "geometry": {
+    "columns": 50,
+    "width_m": 50,
+    "cell_width_m": 1
+  },
+  "c2a": {
+    "t0_day": 0,
+    "duration_day": 0.001,
+    "precipitation_m_per_day": 0,
+    "published": true,
+    "status": 0,
+    "iterations": 1,
+    "head_m": -1,
+    "storage_each_m3": 0.7499125387644275,
+    "mass_residual_m3": 0,
+    "state_hash_after": "997123bcf8286dff69c4b95f555645641bc7fc58b7bed757ae8dcc8b91fe7871",
+    "revision_each": 1,
+    "ledger_count_each": 1
+  },
+  "c2b": {
+    "t0_day": 0.001,
+    "duration_day": 0.001,
+    "precipitation_m_per_day": 0.001,
+    "precipitation_input_m3": 0.00005,
+    "published": false,
+    "status": 6,
+    "failure_stage": "swap-corrector",
+    "iterations": 1,
+    "trial_heads_available": false,
+    "storage_each_m3_after_rejection": 0.7499125387644275,
+    "state_hash_after": "997123bcf8286dff69c4b95f555645641bc7fc58b7bed757ae8dcc8b91fe7871",
+    "revision_each_after": 1,
+    "ledger_count_each_after": 1,
+    "modflow_call_delta": {
+      "prepare_solve": 1,
+      "solve": 1,
+      "finalize_solve": 0,
+      "finalize_time_step": 0
+    }
+  },
+  "whole_sequence_modflow_calls": {
+    "prepare_solve": 2,
+    "solve": 2,
+    "finalize_solve": 1,
+    "finalize_time_step": 1
+  },
+  "interpretation": {
+    "accepted_state_preserved": true,
+    "precipitation_volume_m3": 0.00005,
+    "reported_mass_residual_m3": 0.00005,
+    "residual_scope": "Unpublished rejected trial/input diagnostic only; not an accepted-window mass-balance failure and not evidence of a physical mass defect.",
+    "cause": "Unresolved. Current result localizes rejection to first SWAP corrector after successful forcing setup and context advance; it does not distinguish SWAP numerical, temporal/coupling gate, or fixture/configuration cause.",
+    "qualification": "C2b not qualified. Do not proceed to Hupsel forcing until the rejection mechanism is characterized and an accepted coupled window closes its balance under preregistered limits."
+  }
+}
