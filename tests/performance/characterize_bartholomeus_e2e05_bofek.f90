@@ -115,7 +115,7 @@ contains
       gate_data%soil(j)%diffusivity%exponent=2.0_real64
       gate_data%soil(j)%diffusivity%gfp100=max(1.0e-3_real64,ts-0.25_real64)
       gate_data%soil(j)%depth_m=max(0.01_real64,0.01_real64*real(j,real64))
-      gate_data%soil(j)%waterfilm_capac_term=1.0_real64
+      gate_data%soil(j)%waterfilm_capac_term=(ts-tr)*0.01_real64*alpha*nvg*(1.0_real64-1.0_real64/nvg)
       gate_data%soil(j)%waterfilm_n_minus_1=max(1.0e-6_real64,nvg-1.0_real64)
       gate_data%soil(j)%waterfilm_m_plus_1=2.0_real64-1.0_real64/nvg
       gate_data%soil(j)%waterfilm_alpha_per_pa=alpha/98.0665_real64
