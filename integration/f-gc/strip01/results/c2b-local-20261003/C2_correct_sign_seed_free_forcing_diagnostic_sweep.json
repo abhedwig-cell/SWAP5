@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01 C2B diagnostic-only forcing sweep",
+  "date": "2026-10-03",
+  "status": "RESEARCH_ONLY_REPRODUCED_DIAGNOSTIC_SWEEP_NO_COUPLED_RECOVERY",
+  "branch": "work/f-gc-strip01-c2b-local-continuation-20261003",
+  "base_commit": "3974d933d9ec46be60f90501564dcfdcbb4db1b0",
+  "fixture_only_api": "strip01_diagnose_detail_flux_c passes explicit top_flux to a temporary one-column trial; it does not mutate base_forcing or registered contexts.",
+  "sequence": {
+    "seed_mode": "zero",
+    "window_duration_day": 1e-05,
+    "published_windows": 2984,
+    "last_accepted_inward_flux_cm_per_day": 0.00019717557719079688,
+    "rejected_inward_flux_cm_per_day": 0.00019737275276798767,
+    "rejection_t0_day": 0.029840000000000002,
+    "rejection_stage": "swap-corrector",
+    "committed_state_unchanged_on_rejection": true,
+    "result_json_sha256": "62ae5113f445f62c3be9404c0e5a193383846dbcf7d7d03499795b9bbf6bc7f3",
+    "fresh_process_replay_byte_identical": true
+  },
+  "accepted_origin_column_trials": [
+    {
+      "inward_flux_cm_per_day": 0.0,
+      "duration_day": 1e-05,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.00017112665961786046,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 17.112665961786043
+    },
+    {
+      "inward_flux_cm_per_day": 0.0,
+      "duration_day": 5e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.00012100482165180562,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 12.10048216518056
+    },
+    {
+      "inward_flux_cm_per_day": 0.0,
+      "duration_day": 2.5e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 8.556332981631772e-05,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 8.55633298163177
+    },
+    {
+      "inward_flux_cm_per_day": 0.0,
+      "duration_day": 1.25e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 6.0496624244482716e-05,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 6.049662424448271
+    },
+    {
+      "inward_flux_cm_per_day": 0.0,
+      "duration_day": 1e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 5.411759182017758e-05,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 5.411759182017757
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019717557719079688,
+      "duration_day": 1e-05,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 1.0799744568129522e-08,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.001079974456812952
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019717557719079688,
+      "duration_day": 5e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 2.2602622761189017e-09,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.00022602622761189016
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019717557719079688,
+      "duration_day": 2.5e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 7.164326383952403e-09,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.0007164326383952402
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019717557719079688,
+      "duration_day": 1.25e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 3.0925935729612863e-09,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.0003092593572961286
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019717557719079688,
+      "duration_day": 1e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 2.801260066242711e-09,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.00028012600662427107
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019737275276798767,
+      "duration_day": 1e-05,
+      "trial_status": 2,
+      "temporal_indicator_status": 0,
+      "temporal_bound_cm": 0.0,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.0
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019737275276798767,
+      "duration_day": 5e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 2.2670218401274857e-09,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.00022670218401274855
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019737275276798767,
+      "duration_day": 2.5e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 1.3634034266076088e-06,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.13634034266076087
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019737275276798767,
+      "duration_day": 1.25e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 9.66239794641933e-07,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.09662397946419328
+    },
+    {
+      "inward_flux_cm_per_day": 0.00019737275276798767,
+      "duration_day": 1e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 8.640709033093113e-07,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.08640709033093112
+    },
+    {
+      "inward_flux_cm_per_day": 0.0002,
+      "duration_day": 1e-05,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 6.596383942558267e-09,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.0006596383942558267
+    },
+    {
+      "inward_flux_cm_per_day": 0.0002,
+      "duration_day": 5e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 1.4751608133319865e-08,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.0014751608133319865
+    },
+    {
+      "inward_flux_cm_per_day": 0.0002,
+      "duration_day": 2.5e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 2.4477704847827614e-09,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.00024477704847827614
+    },
+    {
+      "inward_flux_cm_per_day": 0.0002,
+      "duration_day": 1.25e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 2.690054834530553e-09,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.00026900548345305526
+    },
+    {
+      "inward_flux_cm_per_day": 0.0002,
+      "duration_day": 1e-06,
+      "trial_status": 0,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.0
+    },
+    {
+      "inward_flux_cm_per_day": 0.001,
+      "duration_day": 1e-05,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0006967632836128369,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 69.67632836128368
+    },
+    {
+      "inward_flux_cm_per_day": 0.001,
+      "duration_day": 5e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0004926860427675238,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 49.26860427675238
+    },
+    {
+      "inward_flux_cm_per_day": 0.001,
+      "duration_day": 2.5e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0003483816418780083,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 34.83816418780083
+    },
+    {
+      "inward_flux_cm_per_day": 0.001,
+      "duration_day": 1.25e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0002463603892315087,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 24.63603892315087
+    },
+    {
+      "inward_flux_cm_per_day": 0.001,
+      "duration_day": 1e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0002203384859374517,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 22.03384859374517
+    },
+    {
+      "inward_flux_cm_per_day": 0.00145,
+      "duration_day": 1e-05,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0010873129393656712,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 108.73129393656711
+    },
+    {
+      "inward_flux_cm_per_day": 0.00145,
+      "duration_day": 5e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0007688434581676812,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 76.8843458167681
+    },
+    {
+      "inward_flux_cm_per_day": 0.00145,
+      "duration_day": 2.5e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 0,
+      "temporal_bound_cm": 0.0,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.0
+    },
+    {
+      "inward_flux_cm_per_day": 0.00145,
+      "duration_day": 1.25e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0003844304130343967,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 38.443041303439664
+    },
+    {
+      "inward_flux_cm_per_day": 0.00145,
+      "duration_day": 1e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.00034383206956616833,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 34.38320695661683
+    },
+    {
+      "inward_flux_cm_per_day": 0.1,
+      "duration_day": 1e-05,
+      "trial_status": 2,
+      "temporal_indicator_status": 0,
+      "temporal_bound_cm": 0.0,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.0
+    },
+    {
+      "inward_flux_cm_per_day": 0.1,
+      "duration_day": 5e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.06124801218294388,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 6124.801218294388
+    },
+    {
+      "inward_flux_cm_per_day": 0.1,
+      "duration_day": 2.5e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.0433088847284019,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 4330.88847284019
+    },
+    {
+      "inward_flux_cm_per_day": 0.1,
+      "duration_day": 1.25e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 0,
+      "temporal_bound_cm": 0.0,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 0.0
+    },
+    {
+      "inward_flux_cm_per_day": 0.1,
+      "duration_day": 1e-06,
+      "trial_status": 2,
+      "temporal_indicator_status": 1,
+      "temporal_bound_cm": 0.02739094631148737,
+      "temporal_budget_cm": 1e-05,
+      "normalized_temporal_indicator": 2739.094631148737
+    }
+  ],
+  "interpretation": "The isolated column result is non-monotone in the tested forcing rates: zero and larger rates fail at 1e-5 day; the rejected increment passes at 5e-6 and 1e-6 day; 0.0002 cm/day passes all five tested durations. This does not establish why the coupled 1e-5-day step rejects or that a smaller full coupling window would publish.",
+  "limitations": [
+    "one column only for explicit-rate probe",
+    "diagnostic trials are discarded and not committed",
+    "no full 50-column MODFLOW coupled smaller-duration rerun",
+    "no groundwater head change or drain response"
+  ],
+  "source_build": {
+    "canonical_production_sources_changed": false,
+    "research_fixture_override_max_windows": 6144,
+    "build": "build-c2-diagnostic-flux-6144"
+  }
+}

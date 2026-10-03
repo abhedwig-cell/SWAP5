@@ -24,6 +24,7 @@ parser.add_argument('--seed-mode', choices=['tangent', 'zero'], default='zero')
 parser.add_argument('--ramp-start-cm-per-day', type=float, default=1e-6)
 parser.add_argument('--ramp-factor', type=float, default=1.1)
 parser.add_argument('--ramp-cap-cm-per-day', type=float, default=0.1)
+parser.add_argument('--diagnostic-rates-cm-per-day', default='', help='Comma-separated research-only forcing rates to probe from the failed transaction origin.')
 args = parser.parse_args()
 sys.path.insert(0, str(args.root.resolve() / 'src/adapter'))
 from fmr_groundwater_application_runtime import FmrGroundwaterApplicationRuntime
@@ -116,6 +117,10 @@ def main():
     diagnose.restype = ctypes.c_int
     diagnose.argtypes = [ctypes.c_int, ctypes.c_double, ctypes.c_double,
                          ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_double)]
+    diagnose_flux = bridge.strip01_diagnose_detail_flux_c
+    diagnose_flux.restype = ctypes.c_int
+    diagnose_flux.argtypes = [ctypes.c_int, ctypes.c_double, ctypes.c_double, ctypes.c_double,
+                              ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_double)]
     fields_fn = bridge.strip01_fields_c
     fields_fn.restype = ctypes.c_int
     fields_fn.argtypes = [ctypes.POINTER(ctypes.c_double)]
@@ -259,7 +264,15 @@ def main():
                 ),
             )
             diagnostic = []
-            if window_index == 1 or not answer.published:
+            if not answer.published and args.diagnostic_rates_cm_per_day:
+                diagnostic_rates = [float(x) for x in args.diagnostic_rates_cm_per_day.split(',') if x.strip()]
+                for rate in diagnostic_rates:
+                    for dt in (0.00001, 0.000005, 0.0000025, 0.00000125, 0.000001):
+                        codes, values = (ctypes.c_int * 12)(), (ctypes.c_double * 6)()
+                        assert diagnose_flux(1, -1.0, dt, -rate, codes, values) == 0
+                        diagnostic.append(dict(head_m=-1.0, diagnostic_rain_rate_cm_per_day=rate,
+                                               dt_day=dt, codes=list(codes), observations=list(values)))
+            elif window_index == 1 or not answer.published:
                 probe_heads = sorted(set([-1.0] + getattr(runtime, 'last_trial_heads', [])[:3]))
                 for probe_head in probe_heads:
                     for dt in (0.001, 0.0001, 0.00001, 0.000001):

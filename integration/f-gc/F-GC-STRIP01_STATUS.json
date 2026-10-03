@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "work_unit": "F-GC-STRIP01",
-  "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
+  "title": "50 m cross-section SWAP\u2013MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2B_SEED_FREE_LOW_FLUX_RAMP_PUBLISHED_NO_GROUNDWATER_RESPONSE",
+  "state": "C2B_SEED_FREE_NONMONOTONE_DIAGNOSTIC_SWEEP_NO_GROUNDWATER_RESPONSE",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Map the accepted-origin forcing-increment and window-duration envelope without injecting temporal history or loosening the frozen 1e-5 cm temporal budget / mass gates. The zero-seed -0.1 cm/day onset still rejects; a 1.005 geometric inward-flux ramp publishes 2,000 windows only to 0.001 cm/day (100x below the registered 1 mm/day target), with exact replay and no head/drain response. Then obtain measurable MODFLOW exchange and qualify reject/replay/restart; keep B1.11 dynamic surface mode excluded and Hupsel deferred.",
+    "next_action": "Investigate why the 50-column coupling rejects at the factor-1.001 increment although diagnostic-only one-column trials from that committed origin pass at nearby rates and smaller durations. Run complete coupling windows from a reproducible accepted checkpoint, keep temporal/mass gates frozen, and require observable MODFLOW response before qualification; Hupsel remains deferred.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -342,7 +342,7 @@
     "research_ramp_runner": "tests/fgc/strip01/run_research_sequence_c2_forcing_ramp.py",
     "research_fixture_context_cap": 2048,
     "correct_sign_full_window": "0.001-day negative top-flux rainfall rejects at first SWAP corrector; committed state preserved and MODFLOW timestep not finalized",
-    "correct_sign_micro_series": "100/100 native SWAP–MODFLOW6 windows published at 1e-5 day each with fixture-injected derivative seed; exact replay and closed SWAP storage balance; all heads remain -1 m",
+    "correct_sign_micro_series": "100/100 native SWAP\u2013MODFLOW6 windows published at 1e-5 day each with fixture-injected derivative seed; exact replay and closed SWAP storage balance; all heads remain -1 m",
     "seed_free_ramp_result": "2000/2000 windows published at 1e-5 day from zero temporal seed, geometric forcing increase x1.005 up to 0.001 cm/day, held over final 1075 windows; exact replay; residual 3.13e-14 m3",
     "seed_free_target_ramp_limit": "A separate x1.005 sequence toward 0.1 cm/day published 999 windows, then rejected at 0.001458 cm/day",
     "groundwater_response": "none measurable; heads remain -1 m and drain outflow zero",
@@ -351,6 +351,13 @@
     "source_validation": "144 compiled production src blobs match pinned canonical tree; no production source change",
     "canonical_admission": false,
     "production_delta": [],
-    "qualification": "not qualified as hydrologically working strip benchmark; accepted forcing remains 100x below target; lateral exchange, drain response, longer forcing to target, restart and Hupsel remain open"
+    "qualification": "not qualified as hydrologically working strip benchmark; accepted forcing remains 100x below target; lateral exchange, drain response, longer forcing to target, restart and Hupsel remain open",
+    "seed_free_fine_ramp_result": "2,984/2,984 windows published at 1e-5 day, zero temporal seed, factor 1.001; last accepted inward flux 0.00019717557719079688 cm/day; next increase rejected at 0.00019737275276798767 cm/day, t=0.02984 day; committed state preserved.",
+    "seed_free_fine_ramp_mass": "Published input 9.368637638400416e-7 m3; SWAP storage delta 9.368636852968848e-7 m3; cumulative signed residual 7.854315674104579e-14 m3; drain zero, heads remain -1 m.",
+    "post_rejection_dt_probe": "Isolated one-column diagnostic at dt=1e-6 day accepted with temporal bound 8.640709e-7 cm against unchanged 1e-5 cm budget; dt=1e-5 rejected. Not evidence of a full coupled-window pass.",
+    "diagnostic_rate_sweep": "Excluded: research setter refused to change top flux after next context initialization; fixture guard was not weakened.",
+    "diagnostic_only_sweep": "Added fixture-only strip01_diagnose_detail_flux_c passing explicit top_flux to a discarded column trial; base_forcing and registered contexts are not modified. Fresh-process 2,985-window sequence plus rate/dt probes replayed byte-identically (SHA-256 62ae5113f445f62c3be9404c0e5a193383846dbcf7d7d03499795b9bbf6bc7f3); rejected state hash unchanged.",
+    "diagnostic_sweep_summary": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_forcing_diagnostic_sweep.json",
+    "diagnostic_sweep_interpretation": "One-column response is non-monotone: zero and higher tested rain rates reject at dt=1e-5 day, the rejected ramp rate accepts at dt<=5e-6 day, and 0.0002 cm/day accepts at all tested durations. This does not prove cause or coupled-window recovery."
   }
 }

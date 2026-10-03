@@ -83,7 +83,7 @@ module mod_strip01_c2_research_context
   public :: strip01_seed_max_substeps_c
   public :: strip01_seed_window_duration_c
   public :: fgc49d_fixture_promote_context_c
-  public :: fgc49d_fixture_state_c, strip01_observe_c, strip01_diagnose_detail_c, strip01_diagnose_c, strip01_floor_c, strip01_ledger_counts_c, strip01_fields_c
+  public :: fgc49d_fixture_state_c, strip01_observe_c, strip01_diagnose_detail_c, strip01_diagnose_detail_flux_c, strip01_diagnose_c, strip01_floor_c, strip01_ledger_counts_c, strip01_fields_c
 
 contains
 
@@ -477,6 +477,48 @@ contains
     if (candidate%ready()) call backend%discard_trial_candidate(candidate, diagnostics)
     c_status = 0
   end function strip01_diagnose_detail_c
+
+  ! Diagnostic-only override: unlike fixture_set_top_flux_c this does not
+  ! modify base_forcing or any registered current/next application context.
+  integer(c_int) function strip01_diagnose_detail_flux_c(slot, head, duration, top_flux, codes, values) &
+       bind(C,name="strip01_diagnose_detail_flux_c") result(c_status)
+    integer(c_int), value :: slot
+    real(c_double), value :: head, duration, top_flux
+    integer(c_int), intent(out) :: codes(12)
+    real(c_double), intent(out) :: values(6)
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    type(canonical_numerical_config_t) :: numerical
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(fmr_serialized_physical_observation_t) :: obs
+    real(real64) :: committed_t0
+    logical :: ok
+    c_status = 1
+    if (slot < 1 .or. slot > NPART) return
+    if (.not. ieee_is_finite(top_flux) .or. .not. ieee_is_finite(duration) .or. duration <= 0.0_c_double) return
+    call committed(slot)%current_time(committed_t0, ok)
+    if (.not. ok) return
+    call committed(slot)%capture_checkpoint(checkpoint, ok)
+    if (.not. ok) return
+    forcing = base_forcing
+    forcing%top_flux = real(top_flux,real64)
+    forcing%bottom_head = (head + 2.0_real64) * 100.0_real64
+    numerical = config
+    numerical%accepted_trajectory_direction%requested = .false.
+    call backend%run_trial(columns(slot), templates(slot), parameters, committed(slot), forcing, numerical, &
+         committed_t0, committed_t0 + real(duration,real64), checkpoint, result, candidate, diagnostics)
+    obs = backend%observation()
+    codes = [result%status, diagnostics%accepted_substeps, diagnostics%solver_rejections, &
+         diagnostics%temporal_rejections, diagnostics%mass_rejections, diagnostics%admission_rejections, &
+         diagnostics%attempts, diagnostics%retries, obs%solver_status, obs%temporal_indicator_status, &
+         merge(1,0,obs%temporal_indicator_available), merge(1,0,obs%temporal_head_budget_valid)]
+    values = [obs%temporal_head_inf_bound, obs%temporal_head_budget, obs%temporal_normalized_indicator, &
+         obs%top_flux, obs%bottom_flux, obs%solver_equation_residual]
+    if (candidate%ready()) call backend%discard_trial_candidate(candidate, diagnostics)
+    c_status = 0
+  end function strip01_diagnose_detail_flux_c
 
   integer(c_int) function strip01_floor_c(slot, head, duration, codes, values) &
        bind(C,name="strip01_floor_c") result(c_status)
