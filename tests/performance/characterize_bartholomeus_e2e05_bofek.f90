@@ -12,8 +12,6 @@ program test_fpe_bofek01_policy_case
   use mod_bartholomeus_parameter_contract
   use mod_bartholomeus_runtime_input, only: bartholomeus_runtime_view_t
   use mod_bartholomeus_no_stress_gate, only: bartholomeus_macro_supply_bound_no_stress
-  use mod_bartholomeus_soil_data, only: BartholomeusSoilData
-  use mod_bartholomeus_crop, only: BartholomeusCropParameters
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
@@ -25,7 +23,7 @@ program test_fpe_bofek01_policy_case
   type(reference_richards_legacy_solver_t) :: solver
   type(soil_water_physical_state_t) :: state
   real(real64),allocatable,target :: qdra(:,:),qssdi(:),qrot(:)
-  type(BartholomeusSoilData),allocatable :: gate_soil(:)
+  type(BartholomeusImmutableDataset) :: gate_data
   type(BartholomeusCropParameters) :: gate_crop
   real(real64),allocatable :: gate_wroot(:),gate_root_density(:)
   real(real64),allocatable :: c(:,:)
@@ -93,7 +91,7 @@ contains
   end subroutine
   subroutine setup_gate()
     integer::j
-    allocate(gate_soil(numnod),gate_wroot(3),gate_root_density(3))
+    allocate(gate_data%soil(numnod),gate_wroot(3),gate_root_density(3))
     gate_wroot=1.0_real64
     gate_root_density=[1.0_real64,0.8_real64,0.6_real64]
     gate_crop%c_mroot=1.0e-5_real64;gate_crop%f_senes=1;gate_crop%q10_root=2.0_real64
@@ -101,17 +99,17 @@ contains
     gate_crop%microbial_shape_m=0.9_real64;gate_crop%root_shape_m=0.9_real64
     gate_crop%root_radius_m=0.0002_real64;gate_crop%max_resp_factor=2.0_real64
     do j=1,numnod
-      gate_soil(j)%saturated_water_content=ts
-      gate_soil(j)%percent_org_mat=2.0_real64
-      gate_soil(j)%soil_density=1300.0_real64
-      gate_soil(j)%percent_sand=60.0_real64
-      gate_soil(j)%diffusivity=0.6_real64
-      gate_soil(j)%depth_m=max(0.01_real64,0.01_real64*real(j,real64))
-      gate_soil(j)%waterfilm_capac_term=1.0_real64
-      gate_soil(j)%waterfilm_n_minus_1=max(1.0e-6_real64,nvg-1.0_real64)
-      gate_soil(j)%waterfilm_m_plus_1=2.0_real64-1.0_real64/nvg
-      gate_soil(j)%waterfilm_alpha_per_pa=alpha/98.0665_real64
-      gate_soil(j)%waterfilm_gen_n=nvg
+      gate_data%soil(j)%saturated_water_content=ts
+      gate_data%soil(j)%percent_org_mat=2.0_real64
+      gate_data%soil(j)%soil_density=1300.0_real64
+      gate_data%soil(j)%percent_sand=60.0_real64
+      gate_data%soil(j)%diffusivity=0.6_real64
+      gate_data%soil(j)%depth_m=max(0.01_real64,0.01_real64*real(j,real64))
+      gate_data%soil(j)%waterfilm_capac_term=1.0_real64
+      gate_data%soil(j)%waterfilm_n_minus_1=max(1.0e-6_real64,nvg-1.0_real64)
+      gate_data%soil(j)%waterfilm_m_plus_1=2.0_real64-1.0_real64/nvg
+      gate_data%soil(j)%waterfilm_alpha_per_pa=alpha/98.0665_real64
+      gate_data%soil(j)%waterfilm_gen_n=nvg
     enddo
   end subroutine setup_gate
   subroutine classify_gate(s)
@@ -122,7 +120,7 @@ contains
     v%rooted_nodes=3
     allocate(v%pressure_head_cm(3),v%water_content(3),v%soil_temperature_k(3))
     v%pressure_head_cm=s%pressure_head(1:3);v%water_content=s%water_content(1:3);v%soil_temperature_k=293.15_real64
-    skip=bartholomeus_macro_supply_bound_no_stress(v,gate_soil,gate_crop,gate_wroot,gate_root_density,0.275_real64)
+    skip=bartholomeus_macro_supply_bound_no_stress(v,gate_data,gate_crop,gate_wroot,gate_root_density,0.275_real64)
     if(skip)gate_hits=gate_hits+1
     deallocate(v%pressure_head_cm,v%water_content,v%soil_temperature_k)
   end subroutine classify_gate
