@@ -82,7 +82,8 @@ def main():
     result['initialization_status'] = int(status)
     if status != 0:
         result['state'] = 'INITIALIZATION_FAIL'
-        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\\n')
+        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
+        print('C2_RAIN_RESULT=' + json.dumps(result, separators=(',', ':')))
         return
     observe = bridge.strip01_observe_c
     observe.restype = ctypes.c_int
@@ -216,8 +217,8 @@ def main():
     finally:
         if initialized:
             raw.finalize()
-        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\\n')
-    print(result['state'])
+        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
+    print('C2_RAIN_RESULT=' + json.dumps(result, separators=(',', ':')))
 
 
 if __name__ == '__main__':
