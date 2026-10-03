@@ -28,7 +28,6 @@ module mod_fmr_interception_source_window_binding
     type(interception_progress_t) :: progress
     logical :: trial_pending = .false.
     real(real64) :: requested_t1 = 0.0_real64
-    type(interception_trial_t) :: pending_trial
   end type fmr_interception_source_window_t
 
   ! Serialization-neutral companion record. committed_time must match the
@@ -74,18 +73,19 @@ contains
     real(real64), intent(out) :: amount
     integer, intent(out) :: status
     integer :: runtime_status
+    type(interception_trial_t) :: candidate
 
     amount = 0.0_real64
     status = FMR_INTWIN_INVALID_OWNER
     if (.not. owner_ready(owner)) return
-    call prepare_interception_trial(owner%window, owner%progress, requested_t1, owner%pending_trial, runtime_status)
+    call prepare_interception_trial(owner%window, owner%progress, requested_t1, candidate, runtime_status)
     if (runtime_status /= INTWIN_OK) then
       status = FMR_INTWIN_RUNTIME_REJECTED
       return
     end if
     owner%requested_t1 = requested_t1
     owner%trial_pending = .true.
-    amount = owner%pending_trial%apportioned_amount()
+    amount = candidate%apportioned_amount()
     status = FMR_INTWIN_OK
   end subroutine prepare_fmr_interception_source_window_trial
 
@@ -145,7 +145,6 @@ contains
       return
     end if
     owner%trial_pending = .false.
-    owner%pending_trial = interception_trial_t()
     owner%requested_t1 = 0.0_real64
     status = FMR_INTWIN_OK
   end subroutine accept_fmr_interception_source_window_result
