@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C2-RAIN01",
+  "workflow_run": 37115035032,
+  "source_commit": "d51867150567685e262039cda1242963c62b1221",
+  "canonical_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "artifact_id": 11271173695,
+  "artifact_sha256": "8f7a23b6f701bb25dea19db70e7272c150cc3b4f2155dc7a160bed56292beaa4",
+  "harness_conclusion": "success",
+  "hydrologic_outcome": "C2A_REJECTED",
+  "c2a": {
+    "profile": "C1",
+    "forcing": "zero rainfall, dynamic B1.11 surface",
+    "window_days": 0.001,
+    "all_50_modflow_trial_heads_m": -1,
+    "head_domain_gate_passed": true,
+    "context_status": 5,
+    "swap_corrector_valid": false,
+    "iterations": 1,
+    "committed_state_preserved": true,
+    "origin_and_final_state_sha256": "8ada1b3d57a832b50d56d33e808c18745b46797250183618a923a142ce9ad7fd",
+    "revisions": "all 0",
+    "ledger_counts": "all 0",
+    "modflow": {
+      "prepare_solve": 1,
+      "solve": 1,
+      "finalize_solve": 0,
+      "finalize_time_step": 0
+    }
+  },
+  "per_column_isolated_diagnostic": {
+    "columns": 50,
+    "call_status": 0,
+    "raw_codes": [
+      101,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "completed_time_days": 0,
+    "interpretation": "All direct diagnostic transactions returned the same raw codes and stopped at t=0; code mapping is not yet established. These are isolated replays, not original context counters."
+  },
+  "c2b_attempted": false,
+  "mass_balance": "not evaluated; no accepted window",
+  "exact_fresh_process_replay": true,
+  "sequence_json_sha256": "f1f0a8ccf551d509e65450157b571b2cbc1b11b94b1ef26ad73f47071aa06c9f",
+  "claim_ceiling": "Research diagnostic only; no C2_RAIN01 accepted window, no coupled mass-balance qualification, no Hupsel progression, no canonical admission."
+}
