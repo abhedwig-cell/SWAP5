@@ -3,8 +3,8 @@
   "qualification_source_sha": "c8140b7d4b824df2101460530439f98008380eee",
   "local_tested_sha": "8f8008c01c3690cab3aea38c8d6de656cffb1ffe",
   "source_tree_sha": "a4aac5df1fab9d4da77249415fc3f6f9ebbad164",
-  "bundle_sha256": "9f743b7b5bf17c8121017cb3764cd4ce903224923a111ed02677a390aeaf1c4e",
-  "bundle_bytes": 110964,
+  "bundle_sha256": "ab53a4703bac01bcfc36d612d755d9bcad7a568595516ed4df9a1f8f08b9b99c",
+  "bundle_bytes": 119633,
   "contents": {
     "a28-aligned-approx-24.json": "6d939cbbb69f0c5c0a074cf575807e65942817fcd656558511274a76f4ea5166",
     "a28-aligned-approx-24.log": "67d2aea30c1d72bc4c0c135a6d7976cc99df25e9a267354a300817dcf508ef44",
@@ -21,9 +21,14 @@
     "a28-field-depth-exact-no-rain-init.log": "85f3b7578d22af6392d359197fc47ffad4837f9c2db1ab42c151186a7475cf32",
     "a28-field-depth-exact-rain1-init.log": "4a12268f8f37fd91532901a3f801ec8a86a0ac716365b6ff1b8758fff1b19672",
     "a28-field-depth-exact-rain10.log": "eecc61686578d8cebf4e23ff36cd52ad4a1a4548d918753b5d09fa873995c211",
+    "a28-field-depth-final-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+    "a28-field-depth-final-mkdocs.log": "8efc2d5f40c2b8d24f70a69ebbedafc41963f6a419eaa868b2aa121a410b7b77",
     "a28-field-depth-generated-grid-stubs.f90": "4de4169a1f63aca1dc7c8efdc4393063d226483f0a5b45f14384628bb623fb91",
     "a28-field-depth-mkdocs.log": "6185cb0f226e6eab0b65a80815771983dffe8672646a63d5ceb5cf6cbb6f845b",
     "a28-field-depth-no-rain-window-wrapper.log": "20270115889bcd084c3ce2130a86a2fd77d9614e2b92a5e6450abfcedd629626",
+    "a28-field-depth-rain1-solver-observation.log": "7ad9b2ca1a1ac1d387e6da6564268e12f5dd3e7f69e8830cddce22e4e732df8e",
+    "a28-field-depth-rain10-solver-observation.log": "057e696e1738c2ac4a69280c67ff1cd71f2ae7822fd596e20286b6ffdc52d5ee",
+    "a28-field-depth-solverdiag-build.log": "6ca5b68b7e9bd9977c82fc4ebd8859ca1d05550dfc9ef4b9777642785e8dde8f",
     "a28-final-approx.log": "60638ce831170240827bd2ea354a8da383c81421b85d036601472cd52002e60e",
     "a28-final-comparison.json": "ed2bec4bfe4635f0b4ba958a5547f0dc5a68ee3131d8e0e0afa60af6445fe2dd",
     "a28-final-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
@@ -54,19 +59,21 @@
     "python_syntax": "PASS",
     "narrow_delta_exact_fd_gate": "PASS_24_WINDOWS",
     "active_exact_and_a28_shallow_coupling": "PASS_24_WINDOWS_EACH",
-    "a28_panels_active_shallow_fixture": "PASS_3,137,540_EVALUATIONS_AT_32_PANELS",
     "strict_shallow_paired_drift_gate": "FAIL",
     "field_depth_exact_predictor_gate": "FAIL_WITH_NONZERO_RAINFALL",
+    "field_depth_no_rain_predictor_init": "PASS_BOTH_TILES",
     "field_depth_a28_coupling": "NOT_RUN",
     "performance_qualified": false,
-    "scalability_qualified": false
+    "scalability_qualified": false,
+    "production_sources_changed": false,
+    "github_actions_used": false
   },
   "tested_fixture_files_sha256": {
     "tests/fpe/build_fpe_a28_coupled_local.py": "e3ebc8d01ac676990bd05eeb6b90355d6e189cbb9f421a2fc63159c4e262cd60",
     "tests/fpe/test_fpe_a28_coupled_windows.py": "07067b22f51af0876eef64352a686b9ed9c09a113459dd06f67036794d2a8513",
     "tests/fpe/compare_fpe_a28_practical.py": "dfb9ace992549408e3a9241fec40d201a186ac6affd32641f1d875332643c9b4",
     "tests/fpe/test_fpe_a28_fd_predictor_init.py": "f8ff65f09aa7f5068930178942e1d91fa9d3a2442a8975eaba551cabe0fa46c0",
-    "tests/fpe/support/mod_fpe_a28_fgc45_rfm_bridge.f90": "fb87e6db1651ece949a2b3379dd000040f1aabf832df21dbea0e420e0e06da01"
+    "tests/fpe/support/mod_fpe_a28_fgc45_rfm_bridge.f90": "3b813a64cabc17ed3ee9b48968eb3ec0eb8c06e3725932f3a6a98ade50bdc44f"
   },
   "active_exact_windows": 24,
   "active_a28_windows": 24,
@@ -75,5 +82,29 @@
   "field_depth_rain10_exact_predictor_init": "FAIL_10_SOLVER_3_TEMPORAL_REJECTIONS",
   "field_depth_rain1_exact_predictor_init": "FAIL_9_SOLVER_4_TEMPORAL_REJECTIONS",
   "field_depth_no_rain_exact_predictor_init": "PASS_28_TRIALS_ZERO_RETRIES",
-  "field_depth_a28_run": false
+  "field_depth_a28_run": false,
+  "field_depth_diagnostic_fixture_commit": "b186c5f4c49a568184028f42e24036412160bb28",
+  "field_depth_solver_observation": {
+    "rain1": {
+      "status": 2,
+      "route": "legacy-reference-retry",
+      "iterations": 16,
+      "max_iterations": 16,
+      "jacobian_builds": 16,
+      "linear_solves": 16,
+      "backtracking_attempts": 56,
+      "alternative_solver_calls": 0
+    },
+    "rain10": {
+      "status": 2,
+      "route": "legacy-reference-retry",
+      "iterations": 16,
+      "max_iterations": 16,
+      "jacobian_builds": 16,
+      "linear_solves": 16,
+      "backtracking_attempts": 90,
+      "alternative_solver_calls": 0
+    },
+    "interpretation": "SW_SOLVE_RETRY_ADVISED; requests smaller step; transaction exhausts 12 retries."
+  }
 }

@@ -16,7 +16,7 @@
   "active_a28_tested": true,
   "performance_qualified": false,
   "scalability_qualified": false,
-  "blocker": "10-node field-depth exact prescribed-qbot RFM predictor initialization fails with nonzero rainfall; same-state predictor init passes with zero rainfall. No A28 run.",
+  "blocker": "10-node field-depth exact prescribed-qbot RFM predictor under nonzero rainfall exhausts 12 retries; last solver observation is retry-advised at 16/16 nonlinear iterations. Same-state predictor init passes without rainfall. No A28 run.",
   "result_record": "docs/audits/PPA_WU05A28_COUPLED_FD_RESULT.md",
   "next_safe_step": "Diagnose the exact solver rejection at the test-only active RFM surface-event boundary without changing solver tolerances or A28 policy; then rerun exact field-depth gate before A28.",
   "narrow_delta_exact_gate": "PASS_24_WINDOWS",
@@ -119,5 +119,30 @@
   },
   "field_depth_a28_run": "NOT_RUN_EXACT_PREDICTOR_BLOCKER",
   "field_depth_live_modflow_result": "NOT_RUN",
-  "practical_correctness": "BLOCKED_EXACT_RFM_ACTIVE_SURFACE_FORCING"
+  "practical_correctness": "BLOCKED_EXACT_RFM_ACTIVE_SURFACE_FORCING",
+  "field_depth_solver_observation": {
+    "rain1": {
+      "solver_status": 2,
+      "solver_status_meaning": "SW_SOLVE_RETRY_ADVISED",
+      "route": "legacy-reference-retry",
+      "nonlinear_iterations": 16,
+      "bridge_max_iterations": 16,
+      "jacobian_builds": 16,
+      "linear_solves": 16,
+      "backtracking_attempts": 56,
+      "alternative_solver_calls": 0
+    },
+    "rain10": {
+      "solver_status": 2,
+      "solver_status_meaning": "SW_SOLVE_RETRY_ADVISED",
+      "route": "legacy-reference-retry",
+      "nonlinear_iterations": 16,
+      "bridge_max_iterations": 16,
+      "jacobian_builds": 16,
+      "linear_solves": 16,
+      "backtracking_attempts": 90,
+      "alternative_solver_calls": 0
+    },
+    "disposition": "Nonlinear convergence requests a smaller timestep, then exhausts 12 bounded transaction retries; first internal rejection cause remains unexposed."
+  }
 }
