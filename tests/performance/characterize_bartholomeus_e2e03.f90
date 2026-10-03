@@ -1,7 +1,9 @@
 program characterize_bartholomeus_e2e03
  use iso_fortran_env,only:real64,int64
+ use MOD_grid,only:numnod,z,dz,disnod
  use mod_transaction_reference,only:transaction_state_t,TX_TEMPORAL_MODEL_CERTIFICATE
- use mod_kernel_transactions,only:kernel_committed_state_t,kernel_checkpoint_t,kernel_candidate_state_t
+ use mod_kernel_transactions
+ use mod_fixed_flux_top_boundary_provider
  use mod_fmr_runtime_core
  use mod_fmr_serialized_reference_backend
  use mod_fmr_production_application_bootstrap
@@ -25,8 +27,8 @@ program characterize_bartholomeus_e2e03
  type(kernel_committed_state_t)::state
  type(kernel_checkpoint_t)::cp
  type(kernel_candidate_state_t)::candidate
- type(fmr_serialized_column_result_t)::trial
- type(fmr_column_diagnostics_t)::diag
+ type(kernel_result_t)::trial
+ type(kernel_diagnostics_t)::diag
  type(fmr_serialized_physical_observation_t)::obs
  class(transaction_state_t),allocatable::snap
  type(process_hydraulic_view_t)::hv
@@ -59,7 +61,10 @@ program characterize_bartholomeus_e2e03
    skip=.false.
    select type(p=>snap)
    class is(fmr_b110_physical_state_t)
-     call build_process_hydraulic_view(p,hv,viewok)
+     hv%active_nodes=p%active_nodes
+     allocate(hv%pressure_head(p%active_nodes),hv%water_content(p%active_nodes))
+     hv%pressure_head=p%pressure_head;hv%water_content=p%water_content
+     viewok=.true.
      if(viewok.and.allocated(p%soil_temperature))then
        call build_soil_temperature_field_view(p%soil_temperature,tv,thermal_status)
        if(thermal_status==SOIL_TEMP_OK)then
