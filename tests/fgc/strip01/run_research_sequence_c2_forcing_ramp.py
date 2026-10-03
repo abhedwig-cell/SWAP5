@@ -25,6 +25,8 @@ parser.add_argument('--ramp-start-cm-per-day', type=float, default=1e-6)
 parser.add_argument('--ramp-factor', type=float, default=1.1)
 parser.add_argument('--ramp-cap-cm-per-day', type=float, default=0.1)
 parser.add_argument('--diagnostic-rates-cm-per-day', default='', help='Comma-separated research-only forcing rates to probe from the failed transaction origin.')
+parser.add_argument('--flux-tolerance-m-per-s', type=float, default=1e-15,
+                    help='Research coupling residual tolerance; does not change SWAP temporal or mass gates.')
 args = parser.parse_args()
 sys.path.insert(0, str(args.root.resolve() / 'src/adapter'))
 from fmr_groundwater_application_runtime import FmrGroundwaterApplicationRuntime
@@ -259,7 +261,7 @@ def main():
                 runtime,
                 session,
                 GroundwaterApplicationServiceConfig(
-                    flux_tolerance_m_per_s=1e-15,
+                    flux_tolerance_m_per_s=args.flux_tolerance_m_per_s,
                     max_coupling_iterations=40,
                 ),
             )

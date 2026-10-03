@@ -50,6 +50,15 @@ A further full SWAP–MODFLOW6 run used 2.5e-6-day windows and the same zero-see
 
 Across 1e-5, 5e-6 and 2.5e-6-day windows, each factor-1.001 run reaches a higher rate before its next rejection, but even the shortest tested window stops at 0.0453 mm/day, about 22 times below the 1 mm/day target. This trend is measured only at three durations; do not extrapolate it as a proven timestep law. There is still no measurable groundwater response, so these runs do not qualify the strip model.
 
+### Failure mechanism: coupling tolerance first, SWAP progress limit second
+
+A 1e-6-day full-coupling sequence using the runner's flux residual tolerance of 1e-15 m/s stopped at its third window with `max-coupling-iterations` after 40 MODFLOW solves. The largest absolute flux residual was 1.3934476184905804e-15 m/s, only 39.3% above the configured threshold. State was preserved. This was a coupling stopping criterion, not a SWAP failure.
+
+A research sensitivity run changed only that coupling residual tolerance to 2e-15 m/s. The initial blocker disappeared: 15,239 complete windows published, then the next window failed at `swap-corrector` at 0.004425503442725441 cm/day. It was not a mass-balance rejection. On the exact rejected origin, a discarded one-column trial at the last accepted flux (0.004423734479498845 cm/day) completed at dt=1e-6 day with 6 accepted substeps and 10 solver rejections. At the next 0.04% forcing increase, the dt=1e-6 trial completed only 3 substeps, then recorded 16 solver rejections and zero temporal rejections before returning transaction failure. This points to loss of Richards-solver progress within the substep/retry policy at that forcing and timestep. At other tested durations and nearby rates the diagnostic results vary, so it is not a simple monotone rain-rate threshold.
+
+Thus there are two sequential blockers: the overly tight experimental MODFLOW-SWAP flux tolerance can prevent closure even when residuals are around 1e-15 m/s; once that is relaxed slightly for diagnosis, the SWAP interval transaction eventually exhausts solver progress near 0.0044 cm/day. The user-facing service reports only `swap-corrector` and hides the participant index and detailed transaction failure from the full 50-column call. A fixture-only diagnostic API gives the cause for a representative column, not per-column provenance. No production tolerance or retry gate was changed. Compact evidence: `integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_coupling_tolerance_vs_swap_failure_diagnosis.json`.
+
+
 
 
 ## Historical tests and other blockers
