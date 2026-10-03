@@ -2,6 +2,7 @@ module mod_moving_interface_manager
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_physical_state_t, &
        soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   implicit none
   private
 
@@ -42,6 +43,7 @@ module mod_moving_interface_manager
      integer :: full_candidate_buffer_reallocations = 0
   end type moving_interface_manager_context_t
 
+  public :: evaluate_moving_interface_request_eligibility
   public :: derive_moving_interface_active_view
   public :: build_moving_interface_reduced_request
   public :: materialize_moving_interface_full_candidate
@@ -55,6 +57,85 @@ module mod_moving_interface_manager
   public :: select_moving_interface_route
 
 contains
+
+  subroutine evaluate_moving_interface_request_eligibility(manager_enabled, full_request, tail_start_node, &
+                                                           view, ok, reason)
+    logical, intent(in) :: manager_enabled
+    type(soil_water_solve_request_t), intent(in) :: full_request
+    integer, intent(in) :: tail_start_node
+    type(moving_interface_active_view_t), intent(out) :: view
+    logical, intent(out) :: ok
+    character(len=*), intent(out) :: reason
+
+    integer :: n
+    real(real64), allocatable :: source(:), sink(:)
+    logical :: view_ok
+    character(len=64) :: view_reason
+
+    view = moving_interface_active_view_t()
+    ok = .false.
+    reason = 'manager-disabled'
+    if (.not. manager_enabled) return
+
+    reason = 'provider-binding-incomplete'
+    if (.not. associated(full_request%parameters)) return
+    if (.not. associated(full_request%evaluation%constitutive)) return
+    if (.not. associated(full_request%evaluation%source_sink)) return
+    if (.not. associated(full_request%evaluation%top_boundary)) return
+
+    reason = 'macropore-active'
+    if (full_request%physical%macropore_active) return
+    if (associated(full_request%evaluation%macropore)) return
+
+    reason = 'root-sink-scope-unsupported'
+    if (associated(full_request%evaluation%root_sink)) return
+
+    reason = 'interface-sensitivity-unsupported'
+    if (full_request%request_interface_sensitivity) return
+
+    reason = 'unsupported-bottom-boundary'
+    if (full_request%boundary%bottom_mode /= 2) return
+
+    reason = 'nonzero-bottom-flux'
+    if (full_request%boundary%bottom_flux /= 0.0_real64) return
+
+    reason = 'unsupported-top-boundary'
+    if (full_request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX) return
+    if (associated(full_request%evaluation%dynamic_top_boundary)) return
+
+    n = full_request%base_state%active_nodes
+    reason = 'invalid-tail-geometry'
+    if (n <= 0) return
+    if (.not. allocated(full_request%base_state%pressure_head)) return
+    if (.not. allocated(full_request%base_state%water_content)) return
+    if (size(full_request%base_state%pressure_head) /= n) return
+    if (size(full_request%base_state%water_content) /= n) return
+    if (tail_start_node <= 1 .or. tail_start_node > n) return
+    if (any(full_request%base_state%pressure_head(tail_start_node:n) < 0.0_real64)) return
+    if (tail_start_node > 1) then
+       if (full_request%base_state%pressure_head(tail_start_node-1) >= 0.0_real64) return
+    end if
+
+    allocate(source(n), sink(n))
+    call full_request%evaluation%source_sink%evaluate(full_request%base_state%pressure_head, &
+         full_request%base_state%water_content, source, sink)
+    reason = 'source-sink-scope-unsupported'
+    if (any(source /= 0.0_real64) .or. any(sink /= 0.0_real64)) return
+
+    call derive_moving_interface_active_view(full_request%base_state, tail_start_node, view, view_ok, view_reason)
+    if (.not. view_ok) then
+       if (trim(view_reason) == 'no-reduced-dimension') then
+          reason = 'no-reduced-dimension'
+       else
+          reason = 'invalid-tail-geometry'
+       end if
+       return
+    end if
+
+    ok = .true.
+    reason = 'eligible'
+  end subroutine evaluate_moving_interface_request_eligibility
+
 
   subroutine derive_moving_interface_active_view(full_state, tail_start_node, view, ok, reason)
     type(soil_water_physical_state_t), intent(in) :: full_state
