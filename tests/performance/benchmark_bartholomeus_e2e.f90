@@ -15,40 +15,58 @@ program benchmark_bartholomeus_e2e
  use mod_bartholomeus_no_stress_gate,only:bartholomeus_macro_supply_bound_no_stress
  use mod_process_hydraulic_view
  implicit none
- integer,parameter::WARM=1,REPS=500,ROUNDS=7
+ integer,parameter::WARM=1,REPS=300,ROUNDS=5,NREG=6
  real(real64),parameter::T0=5100.1875_real64,T1=T0+1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
+ real(real64),parameter::REG_HEAD(NREG)=[-25._real64,-50._real64,-75._real64,-150._real64,-300._real64,-600._real64]
  type(fmr_production_application_config_t)::cfg,off
  type(fmr_production_application_bootstrap_t)::app,offapp
  type(fmr_serialized_column_result_t),allocatable::r(:)
  real(real64)::ton(ROUNDS),toff(ROUNDS),t0c,t1c,k
- integer::i,j,rate,status,rep
+ integer::i,j,rate,status,rep,reg
  type(bartholomeus_runtime_view_t)::gate_view
  real(real64),allocatable::gate_w_root(:)
  real(real64)::gate_ctop
  logical::gate_skip
- call initialize_application_config(cfg,-75._real64,k);call add_root_thermal_oxygen(cfg)
- call build_initial_gate_diagnostic(cfg,gate_view,gate_w_root,gate_ctop,gate_skip)
- print '(a,l1,a,es24.16,a,*(es14.6,1x))','E2E_INITIAL_GATE_SKIP=',gate_skip,' CTOP=',gate_ctop,' WATER=',gate_view%water_content
- off=cfg;off%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
  call system_clock(i,rate)
- do j=1,ROUNDS
-  call system_clock(i);t0c=real(i,real64)
-  do rep=1,REPS
-   call app%initialize(cfg,i);if(i/=FMR_APP_BOOT_OK)error stop 'active init'
-   call app%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'active run'
-   call app%close(i)
+ do reg=1,NREG
+  call initialize_application_config(cfg,REG_HEAD(reg),k);call add_root_thermal_oxygen(cfg)
+  off=cfg;off%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
+  call build_initial_gate_diagnostic(cfg,gate_view,gate_w_root,gate_ctop,gate_skip)
+  print '(a,es14.6,a,l1,a,es14.6,a,*(es14.6,1x))','E2E_REGIME_HEAD_CM=',REG_HEAD(reg),' GATE_SKIP=',gate_skip, &
+       ' CTOP=',gate_ctop,' WATER=',gate_view%water_content
+  do j=1,ROUNDS
+   call system_clock(i);t0c=real(i,real64)
+   do rep=1,REPS
+    call app%initialize(cfg,i);if(i/=FMR_APP_BOOT_OK)error stop 'active init'
+    call app%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'active run'
+    call app%close(i)
+   enddo
+   call system_clock(i);t1c=real(i,real64);ton(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
+   call system_clock(i);t0c=real(i,real64)
+   do rep=1,REPS
+    call offapp%initialize(off,i);if(i/=FMR_APP_BOOT_OK)error stop 'off init'
+    call offapp%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'off run'
+    call offapp%close(i)
+   enddo
+   call system_clock(i);t1c=real(i,real64);toff(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
   enddo
-  call system_clock(i);t1c=real(i,real64);ton(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
-  call system_clock(i);t0c=real(i,real64)
-  do rep=1,REPS
-   call offapp%initialize(off,i);if(i/=FMR_APP_BOOT_OK)error stop 'off init'
-   call offapp%run_standalone(T0,T1,r,i);if(i/=FMR_APP_BOOT_OK)error stop 'off run'
-   call offapp%close(i)
-  enddo
-  call system_clock(i);t1c=real(i,real64);toff(j)=(t1c-t0c)*1.e9_real64/(real(rate,real64)*REPS)
-  print '(a,i0,a,es24.16,a,es24.16,a,es24.16)','E2E_ROUND=',j,' ON_NS=',ton(j),' OFF_NS=',toff(j),' RATIO=',ton(j)/toff(j)
+  call sort_values(ton);call sort_values(toff)
+  print '(a,es14.6,a,l1,a,es24.16,a,es24.16,a,es24.16)','E2E_REGIME_RESULT_HEAD_CM=',REG_HEAD(reg), &
+       ' GATE_SKIP=',gate_skip,' ON_MEDIAN_NS=',ton((ROUNDS+1)/2),' OFF_MEDIAN_NS=',toff((ROUNDS+1)/2), &
+       ' RATIO=',ton((ROUNDS+1)/2)/toff((ROUNDS+1)/2)
  enddo
 contains
+  subroutine sort_values(x)
+    real(real64),intent(inout)::x(:)
+    real(real64)::tmp
+    integer::a,b
+    do a=1,size(x)-1
+      do b=a+1,size(x)
+        if(x(b)<x(a)) then;tmp=x(a);x(a)=x(b);x(b)=tmp;endif
+      enddo
+    enddo
+  end subroutine sort_values
+
   subroutine build_initial_gate_diagnostic(value,view,wroot,ctop,skip)
     type(fmr_production_application_config_t),intent(in)::value
     type(bartholomeus_runtime_view_t),intent(out)::view
