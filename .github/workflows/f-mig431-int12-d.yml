@@ -3,6 +3,8 @@ on:
   workflow_dispatch:
   push:
     branches: [work/ppa-wu06-interception-gash]
+  pull_request:
+    branches: [integration/f-ci-canonical]
 jobs:
   qualify:
     runs-on: ubuntu-latest
