@@ -8,5 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Qualify restricted source-window composition
         run: bash tests/fpm/run_f_mig431_int12_c.sh
