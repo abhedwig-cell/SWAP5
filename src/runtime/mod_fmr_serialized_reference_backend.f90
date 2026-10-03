@@ -440,7 +440,7 @@ module mod_fmr_serialized_reference_backend
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
-    type(b110_dynamic_top_boundary_solver_provider_t), allocatable :: rfm_top_provider
+    type(b110_dynamic_top_boundary_solver_provider_t), pointer :: rfm_top_provider => null()
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace
     type(fmr_rossfast_solver_selection_binding_t) :: soil_water_selection
@@ -2863,7 +2863,7 @@ contains
       select type (rfm_physical => state)
       type is (fmr_b110_rfm_state_t)
         if (.not. rfm_physical%rfm%ready()) return
-        if(.not.allocated(self%rfm_top_provider))allocate(self%rfm_top_provider)
+        if(.not.associated(self%rfm_top_provider))allocate(self%rfm_top_provider)
         call bind_b110_dynamic_top_boundary_solver_provider(self%rfm_top_provider, self%soil_parameters, &
              self%hydraulic_parameters, self%swkmean, rfm_physical%ponding_depth, step_duration, &
              self%rfm_surface_forcing%precipitation_rate_cm_per_day, self%rfm_surface_forcing%irrigation_rate_cm_per_day, &
@@ -2884,7 +2884,7 @@ contains
         request%evaluation%source_sink=>rfm_source_provider
         rfm_preferential_input_cm=rfm_live%surface%preferential_supply_cm_per_day*step_duration
         rfm_deep_receipt_cm=rfm_live%candidate%deep_receipt_cm
-        if(.not.allocated(self%rfm_top_provider))allocate(self%rfm_top_provider)
+        if(.not.associated(self%rfm_top_provider))allocate(self%rfm_top_provider)
         call bind_b110_dynamic_top_boundary_solver_provider(self%rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
              self%swkmean,rfm_physical%ponding_depth,step_duration,rfm_live%surface%matrix_supply_cm_per_day, &
              0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,self%rfm_surface_forcing%ponding_max_cm, &
