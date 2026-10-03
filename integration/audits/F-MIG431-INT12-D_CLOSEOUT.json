@@ -1,0 +1,15 @@
+{
+  "schema":"swap5.f_mig431_int12_d.closeout.v1",
+  "workunit":"F-MIG431-INT12-D",
+  "parent":"PPA-WU04-D",
+  "status":"CANONICAL_ADMITTED_CLOSED",
+  "pull_request":1010,
+  "canonical_merge":"23a5768771a93a338daba78ab117682ee1e459f2",
+  "qualified_head":"33f4e4fe95eff0a797626abe9d8bd5dc202df7e9",
+  "canonical_base_before_merge":"b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
+  "admitted_capability":"SWAP 4.3.1 SWINTER=2 Gash interception for bounded daily SWMETDETAIL=0 source windows, including immutable source-window aggregate, P0 retry/restart progress, daily rain/sprinkling partition, snow-disable gate, wet-canopy fraction and wet/dry potential-transpiration composition",
+  "qualification":{"final_dedicated_run":37149541318,"final_dedicated_conclusion":"success","final_p0_preservation_run":37149541303,"final_p0_preservation_conclusion":"success","earlier_full_output_run":37140154681},
+  "source_authority":{"reference":"SWAP 4.3.1 B1.11","mod_meteo_sha256":"99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f","transaction_contract":"PPA-WU04","corroborating_source":"SWAP-model/SWAP@07d74a82e9ba0465ec81a74e4d82b3dc03d856d9"},
+  "negative_findings":["Provisional PPA-WU06-INTER01 duplicated existing PPA-WU04-D authority and was superseded.","SWINTER=2 has no persistent physical canopy-water state; aintc is a source-window aggregate.","Detailed meteorology has additional restint continuation semantics and is not admitted by this slice.","Legacy Gash saturation branch compares grai rather than rpd; this behavior was preserved rather than silently corrected.","Broad F-CI moving-current preservation remained red because of pre-existing F-PERF-CANON01-B1 transaction-successor drift in src/transaction/mod_transaction_reference.f90, outside INT12-D delta."],
+  "remaining_boundary":"SWMETDETAIL=1/restint requires a separate preregistered successor if general SWINTER=2 support is desired."
+}
