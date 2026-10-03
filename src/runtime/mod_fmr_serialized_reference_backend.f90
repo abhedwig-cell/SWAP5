@@ -440,6 +440,7 @@ module mod_fmr_serialized_reference_backend
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: rfm_top_provider
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace
     type(fmr_rossfast_solver_selection_binding_t) :: soil_water_selection
@@ -2493,7 +2494,7 @@ contains
     type(soil_water_top_boundary_result_t) :: rfm_preflight
     real(real64), allocatable, target :: rfm_source_rate(:)
     real(real64), allocatable :: rfm_node_depth_cm(:)
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
@@ -2862,14 +2863,14 @@ contains
       select type (rfm_physical => state)
       type is (fmr_b110_rfm_state_t)
         if (.not. rfm_physical%rfm%ready()) return
-        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider, self%soil_parameters, &
+        call bind_b110_dynamic_top_boundary_solver_provider(self%rfm_top_provider, self%soil_parameters, &
              self%hydraulic_parameters, self%swkmean, rfm_physical%ponding_depth, step_duration, &
              self%rfm_surface_forcing%precipitation_rate_cm_per_day, self%rfm_surface_forcing%irrigation_rate_cm_per_day, &
              self%rfm_surface_forcing%snowmelt_rate_cm_per_day, self%rfm_surface_forcing%runon_rate_cm_per_day, &
              self%rfm_surface_forcing%potential_bare_soil_evaporation_cm_per_day, &
              self%rfm_surface_forcing%potential_pond_evaporation_cm_per_day, self%rfm_surface_forcing%ponding_max_cm, &
              self%rfm_surface_forcing%runoff_resistance_day, self%rfm_surface_forcing%runoff_exponent)
-        call rfm_top_provider%evaluate(rfm_physical%pressure_head(1), rfm_physical%water_content(1), &
+        call self%rfm_top_provider%evaluate(rfm_physical%pressure_head(1), rfm_physical%water_content(1), &
              rfm_physical%ponding_depth, request%boundary, rfm_preflight)
         allocate(rfm_node_depth_cm(rfm_physical%active_nodes)); rfm_node_depth_cm=abs(self%soil_parameters%z)
         call prepare_rfm_live_trial(rfm_physical%rfm,self%rfm_configuration,self%rfm_surface_forcing,hydraulic_start, &
@@ -2882,11 +2883,11 @@ contains
         request%evaluation%source_sink=>rfm_source_provider
         rfm_preferential_input_cm=rfm_live%surface%preferential_supply_cm_per_day*step_duration
         rfm_deep_receipt_cm=rfm_live%candidate%deep_receipt_cm
-        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
+        call bind_b110_dynamic_top_boundary_solver_provider(self%rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
              self%swkmean,rfm_physical%ponding_depth,step_duration,rfm_live%surface%matrix_supply_cm_per_day, &
              0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,self%rfm_surface_forcing%ponding_max_cm, &
              self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent)
-        request%evaluation%dynamic_top_boundary=>rfm_top_provider
+        request%evaluation%dynamic_top_boundary=>self%rfm_top_provider
       class default
         return
       end select
