@@ -27,7 +27,7 @@ program test_a28_q4b_exact_threshold
 
   integer,parameter::ARM_A=1,ARM_B=2,ARM_C=3
   real(real64),parameter::DT=0.01_real64
-  real(real64),parameter::SPINUP_END=2.4_real64,RAMP_END=12.0_real64,TEND=36.0_real64
+  real(real64),parameter::SPINUP_END=2.4_real64,RAMP_END=21.6_real64,TEND=45.6_real64
   type metrics_t
     logical::completed=.false.
     integer::status=-999,fail_step=0
