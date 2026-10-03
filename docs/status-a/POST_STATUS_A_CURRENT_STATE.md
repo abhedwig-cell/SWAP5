@@ -163,3 +163,32 @@ Canonical now contains the bounded PPA-WU05-C3A Bartholomeus oxygen-stress route
 The admitted envelope is oxygen mode 2/type 1 with analytical MvG REFERENCE waterfilm in the homogeneous serial typed Fortran Reference application, bottom 2 or 7 and the existing restricted thermal owner. Oxygen OFF remains exact; unsupported active compositions fail closed. Oxygen adds no accepted continuation state, checkpoint/restart field, solver ABI or water ledger.
 
 Groundwater-coupled, macropore, snow, drainage-response, elastic, hysteretic, tabular, PRACTICAL/WFT300 and worker-parallel oxygen remain outside the admitted envelope. This admission also does not close salinity, frost, compensation or MICRO/JvL gaps and does not alter the frozen Status A denominator. See `docs/audits/PPA_WU05C3A_CLOSEOUT.md`.
+
+
+## Current post-Status-A interception capability
+
+Canonical now contains the completed non-Rutter SWAP 4.3.1 interception family for `SWINTER=1/2`.
+
+The controlling authority chain is:
+
+1. PPA-WU04, which reconstructed the state/transaction contract and identified `SWINTER=1` as Von Hoyningen-Hune/Braden, `SWINTER=2` as Gash and `SWINTER=3` as the separate stateful Rutter capability;
+2. F-MIG431-INT12-P0 for method-neutral immutable source-window interception aggregates with accepted progress, retry and restart provenance;
+3. F-MIG431-INT12-C for the existing `SWINTER=1` daily aggregate route;
+4. F-MIG431-INT12-D, PR #1010, canonical merge `23a5768771a93a338daba78ab117682ee1e459f2`, for `SWINTER=2` Gash daily `SWMETDETAIL=0`;
+5. F-MIG431-INT12-E, PR #1011, canonical merge `0fc427f63cffab666014129641c864ccd65983f0`, for `SWMETDETAIL=1` non-Rutter record continuation shared by `SWINTER=1/2`.
+
+The admitted semantics are:
+
+- `SWINTER=1` and `SWINTER=2` interception physics produce source-window aggregates rather than persistent physical canopy-storage state;
+- Gash preserves the B1.11 equation and legacy branch ordering, including the historical `grai` saturation comparison;
+- numerical retries do not reevaluate nonlinear daily interception physics on smaller hydraulic spans;
+- accepted source-window progress is transactional and restartable through P0;
+- daily rain/sprinkling partition, the legacy DivIntercep threshold, snow-disable gate and wet-canopy potential-transpiration composition are qualified;
+- detailed meteorology uses record-weighted daily interception and an explicit accepted `restint` continuation within the source day;
+- detailed `restint` is reset to zero at every new detailed-meteo source day and is therefore not physical or multi-day canopy storage;
+- mid-day restart persists source-day identity, next-record cursor and accepted `restint`;
+- rejected trials advance neither interception progress nor detailed-record continuation state.
+
+Final INT12-E admission-head qualification passed in run `37152387427`; INT12-D preservation passed in `37152387486`; P0 preservation passed in `37152387442`.
+
+Within the non-Rutter `SWINTER=1/2` interception scope, no known selector, retry, restart or precipitation-partition capability gap remains. `SWINTER=3` Rutter remains a separate stateful capability and is not subsumed by this closure.
