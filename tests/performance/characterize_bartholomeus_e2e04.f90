@@ -20,7 +20,7 @@ program test_fpe_approx02_a2_application_sequence
 
   real(real64),parameter :: exact_tol=1.0e-12_real64,h0=-10.0_real64
   real(real64) :: dt,top_factor,candidate_tol
-  integer,parameter :: nsteps=20
+  integer,parameter :: nsteps=120
   type(fmr_production_application_config_t) :: exact_cfg,a2_cfg
   type(fmr_production_application_bootstrap_t) :: exact_app,a2_app
   type(fmr_serialized_column_result_t),allocatable :: result(:)
@@ -33,7 +33,7 @@ program test_fpe_approx02_a2_application_sequence
   character(len=64) :: arg
   integer(int64) :: c0,c1,rate
 
-  dt=1.0e-4_real64; top_factor=-1.0_real64; candidate_tol=1.0e-4_real64
+  dt=1.0_real64; top_factor=-1.0_real64; candidate_tol=1.0e-4_real64
   if(command_argument_count()>=1)then
     call get_command_argument(1,arg); read(arg,*) dt
   end if
@@ -57,6 +57,15 @@ program test_fpe_approx02_a2_application_sequence
   exact_nonlinear=0; exact_substeps=0; exact_retries=0; exact_backtrack=0
   call system_clock(c0,rate)
   do step=1,nsteps
+    if(step<=30)then
+      exact_app%base_forcing(1)%top_flux=-0.2_real64
+    else if(step<=60)then
+      exact_app%base_forcing(1)%top_flux=0.3_real64
+    else if(step<=90)then
+      exact_app%base_forcing(1)%top_flux=0.0_real64
+    else
+      exact_app%base_forcing(1)%top_flux=-0.1_real64
+    endif
     call exact_app%run_standalone(real(step-1,real64)*dt,real(step,real64)*dt,result,status)
     call verify_result('exact',step,status,result)
     exact_storage(step)=result(1)%mass%storage_end
