@@ -313,7 +313,8 @@
     "workflow_run": 37111558483,
     "artifact_id": 11269533858,
     "artifact_sha256": "a706dde3c1e41aa16bd88bbcca766ee42d392b47b15b353d258dbc95550e9e16",
-    "production_delta": []
+    "production_delta": [],
+    "artifact_retention": "workflow artifact retained 90 days; compact result persisted in repository"
   },
   "response01f_corrected": {
     "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_RESP01F_PREREGISTRATION.json",
@@ -326,6 +327,7 @@
     "accepted_trials": 0,
     "fresh_process_json_identity": true,
     "committed_state_preserved": true,
-    "interpretation": "With the erroneous far-column +0.5m predictor uplift removed, both C0 and C1 still reject. Thus a head mismatch alone is not sufficient to explain prior rejection; no root cause established."
+    "interpretation": "With the erroneous far-column +0.5m predictor uplift removed, both C0 and C1 still reject. Thus a head mismatch alone is not sufficient to explain prior rejection; no root cause established.",
+    "result": "integration/f-gc/strip01/results/RESP01F_corrected_run_37111558449.json"
   }
 }
