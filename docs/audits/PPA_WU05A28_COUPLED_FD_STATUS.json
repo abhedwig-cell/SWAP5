@@ -18,7 +18,7 @@
   "scalability_qualified": false,
   "blocker": "10-node field-depth exact prescribed-qbot RFM predictor under nonzero rainfall exhausts 12 retries; last solver observation is retry-advised at 16/16 nonlinear iterations. Same-state predictor init passes without rainfall. No A28 run.",
   "result_record": "docs/audits/PPA_WU05A28_COUPLED_FD_RESULT.md",
-  "next_safe_step": "Diagnose the exact solver rejection at the test-only active RFM surface-event boundary without changing solver tolerances or A28 policy; then rerun exact field-depth gate before A28.",
+  "next_safe_step": "Run the preregistered exact-only timestep-response diagnostic at rain=1 cm/day and dt=[0.005,0.001] day; stop on first failure or pass. No MODFLOW or A28.",
   "narrow_delta_exact_gate": "PASS_24_WINDOWS",
   "narrow_delta_cm_day": [
     1e-07,
@@ -144,5 +144,6 @@
       "alternative_solver_calls": 0
     },
     "disposition": "Nonlinear convergence requests a smaller timestep, then exhausts 12 bounded transaction retries; first internal rejection cause remains unexposed."
-  }
+  },
+  "field_depth_timestep_probe": "PREREGISTERED_NOT_RUN"
 }
