@@ -1,0 +1,44 @@
+name: F-PE-MULTI05 self-hosted high-core sweep
+
+on:
+  workflow_dispatch:
+    inputs:
+      n:
+        description: 'Population size'
+        required: true
+        default: '10000'
+      reps:
+        description: 'Timing repetitions'
+        required: true
+        default: '3'
+      workers:
+        description: 'Worker counts'
+        required: true
+        default: '1 2 4 8 12 16 24'
+
+jobs:
+  high-core:
+    runs-on: [self-hosted, linux, x64, swap5-highcore]
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record host
+        run: |
+          uname -a
+          lscpu || true
+          python3 - <<'PY'
+          import os
+          print("python_logical_cpus", os.cpu_count())
+          PY
+      - name: Verify compiler
+        run: |
+          gfortran --version
+          python3 --version
+      - name: Run frozen MULTI05 sweep
+        env:
+          MULTI05_N: ${{ inputs.n }}
+          MULTI05_REPS: ${{ inputs.reps }}
+          MULTI05_WORKERS: ${{ inputs.workers }}
+        run: bash tests/fpe/run_fpe_multi05_p0_high_core_scaling.sh

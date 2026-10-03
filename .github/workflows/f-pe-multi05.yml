@@ -1,0 +1,32 @@
+name: F-PE-MULTI05 high-core scaling research
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multi05_*.sh'
+      - 'docs/performance/F-PE-MULTI05_*.md'
+      - '.github/workflows/f-pe-multi05.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-high-core-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record host
+        run: |
+          uname -a
+          lscpu || true
+          python3 - <<'PY'
+          import os
+          print("python_logical_cpus", os.cpu_count())
+          PY
+      - name: Run production-shaped high-core sweep
+        env:
+          MULTI05_N: '10000'
+          MULTI05_REPS: '3'
+          MULTI05_WORKERS: '1 2 4 8 12 16 24'
+        run: bash tests/fpe/run_fpe_multi05_p0_high_core_scaling.sh
