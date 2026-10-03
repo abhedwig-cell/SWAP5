@@ -1,0 +1,42 @@
+{
+  "baseline_sha": "b60449cc4193fcca1f01f1ee9ca42e60ffe46898",
+  "qualification_source_sha": "c8140b7d4b824df2101460530439f98008380eee",
+  "local_tested_sha": "8f8008c01c3690cab3aea38c8d6de656cffb1ffe",
+  "source_tree_sha": "a4aac5df1fab9d4da77249415fc3f6f9ebbad164",
+  "bundle_sha256": "a617697994322b216dc76cdf0652bc021c3005971ef26824d5aae2172b9ecf8c",
+  "bundle_bytes": 46904,
+  "contents": {
+    "a28-fd-first.log": "da40ef665b08f840ef52cf5d448c6611dd893e092b074b4ca3e34ad73ce9c628",
+    "a28-fd-second.log": "f6392a63c5ffd9fdca5600e4ab6684a910ff81b6e8383893755769d8e41eedd8",
+    "a28-fd-third.log": "786790e6d49e9281242e7cfa4d1b9affb7bdaaebb741e6c4241444e851953947",
+    "a28-build-instrumented.log": "3e7ae567c0b1c4778da582f3f6aee5647805e809f59e60386eeb50684075ff4c",
+    "a28-final-exact.log": "60638ce831170240827bd2ea354a8da383c81421b85d036601472cd52002e60e",
+    "a28-final-approx.log": "60638ce831170240827bd2ea354a8da383c81421b85d036601472cd52002e60e",
+    "a28-final-comparison.json": "ed2bec4bfe4635f0b4ba958a5547f0dc5a68ee3131d8e0e0afa60af6445fe2dd",
+    "a28-windows-exact.log": "3aebc2e2207a131fccccecef252e4a797ef09a4437682cb5dcef64e8fd3fd742",
+    "a28-temporal-diagnostic.log": "6bc605ee01de9ef70cc231c867c9a83fe5e0315b95430717aa666b9dd30e37dc",
+    "a28-windows-exact-capacity.log": "d86f552e9574996f5738aa9f4f2218dd7f0667351cf74bf3146eb83ac3e2c478",
+    "a28-windows-replay.log": "15e361fe066c6c3cc9b24f30e77f328f968ff35046b6a15c8f8c01f2682ffb5d",
+    "a28-windows-replay.json": "39bbd31981d0ab7dfa63879080f730bb23e45a7d1cf4c904a48505c669c38444",
+    "a28-final-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+    "a28-final-mkdocs.log": "ef063969cbce4acb02066b46386699e1257c026e09c357622010bf3f09494d38"
+  },
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "flags": [
+    "-O2",
+    "-fcheck=all",
+    "-fbacktrace",
+    "-fopenmp"
+  ],
+  "modflow_version": "6.8.0",
+  "libmf6_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+  "production_sources_changed": false,
+  "github_actions_used": false,
+  "active_a28_run": false,
+  "checks": {
+    "bounds_checked_build": "PASS",
+    "documentation_source_checks": "PASS",
+    "mkdocs_strict": "PASS",
+    "negative_active_gate_reproduced": true
+  }
+}

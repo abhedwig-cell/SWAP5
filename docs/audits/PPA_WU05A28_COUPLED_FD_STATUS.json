@@ -1,0 +1,22 @@
+{
+  "work_unit": "PPA-WU05-A28-COUPLED-FD",
+  "status": "RETAIN_AS_COMPONENT_ONLY_CANDIDATE",
+  "component_policy": "A28_V1",
+  "source_sha": "c8140b7d4b824df2101460530439f98008380eee",
+  "canonical_admitted": false,
+  "production_sources_changed": false,
+  "near_equilibrium_fd_qualified": true,
+  "live_exact_correctness": true,
+  "live_a28_correctness": true,
+  "near_equilibrium_sorptivity_evaluations": 0,
+  "active_exact_windows_completed": 17,
+  "active_exact_failed_window": 18,
+  "active_fd_relative_spread": 0.009069252297343396,
+  "preregistered_fd_relative_limit": 0.001,
+  "active_a28_tested": false,
+  "performance_qualified": false,
+  "scalability_qualified": false,
+  "blocker": "Active exact centered-FD derivative sensitivity gate; ordinary RFM trajectories complete.",
+  "result_record": "docs/audits/PPA_WU05A28_COUPLED_FD_RESULT.md",
+  "next_safe_step": "Isolate adaptive temporal partition sensitivity from accepted window-18 state; keep A28 policy frozen."
+}
