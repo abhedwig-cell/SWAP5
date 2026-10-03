@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2B_SHARED_SOLVER_REGIME_FAILURE_ALL_50_COLUMN_PROBES_MATCH",
+  "state": "C2B_FAILURE_CLASSIFIED_SHARED_SOLVER_REGIME_INCALL_DIAGNOSTICS_BUILT",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -370,6 +370,9 @@
     "subsequent_swap_blocker": "At flux tolerance 2e-15, 15,239 full windows publish; next corrector fails at 0.0044255034 cm/day. Exact-origin dt=1e-6 column probe: accepted q completes 6 substeps/10 solver rejects; next q completes only 3 substeps, then 16 solver rejects and zero temporal rejects.",
     "root_cause_scope": "Evidence identifies generic Richards-solver progress exhaustion for a representative column and separate coupling tolerance stopping. Full service does not expose failing participant or per-column transaction diagnostics; detailed attribution remains incomplete.",
     "all_column_failure_probe": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_all50_failure_origin_probe_summary.json",
-    "all_column_failure_probe_result": "All 50 independent discarded probes from the exact rejected origin returned identical code vectors for each tested rate/duration. At rejected q and dt=1e-6: 3 accepted substeps, 16 solver rejects, zero temporal rejects. No spatially unique bad column identified; in-call participant status still unexposed."
+    "all_column_failure_probe_result": "All 50 independent discarded probes from the exact rejected origin returned identical code vectors for each tested rate/duration. At rejected q and dt=1e-6: 3 accepted substeps, 16 solver rejects, zero temporal rejects. No spatially unique bad column identified; in-call participant status still unexposed.",
+    "in_call_failure_instrumentation": "Built research-only temporary source overlays that report failed cell/tile/participant/registry status; build and ABI smoke test pass, but full run could not start because local MODFLOW 6 libmf6.so is absent.",
+    "in_call_failure_instrumentation_evidence": "integration/f-gc/strip01/results/c2b-local-20261003/C2_in_call_participant_diagnostic_build.json",
+    "next_action": "Repeat the exact 1e-6-day, 2e-15 m/s, zero-seed full coupled run with the instrumented C2 seedprobe library when libmf6.so is available; capture first failed participant and its participant/registry status. Do not loosen SWAP temporal or mass gates."
   }
 }
