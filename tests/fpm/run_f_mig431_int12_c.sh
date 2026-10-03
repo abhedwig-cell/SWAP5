@@ -25,13 +25,14 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c src/runtime/mod_interception_source_window_runtime.f90 -o "$OUT/int12_p0.o"
   gfortran "${COMMON[@]}" -Wno-error=compare-reals -Wno-error=unused-dummy-argument -O"$opt" -J"$OUT" -I"$OUT" -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/soil_water_solver_contract.o"
   gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J"$OUT" -I"$OUT" -c src/solver/mod_b110_default_mvg_provider.f90 -o "$OUT/b110_default_mvg.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c src/process/mod_restricted_surface_evaporation.f90 -o "$OUT/restricted_surface_evaporation.o"
   gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J"$OUT" -I"$OUT" -c src/solver/mod_b110_dynamic_top_boundary_provider.f90 -o "$OUT/b110_dynamic_top.o"
   gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90 -o "$OUT/pmdirect_top_binding.o"
   gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c src/runtime/mod_fmr_interception_source_window_binding.f90 -o "$OUT/int12_c_binding.o"
   gfortran "${COMMON[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c tests/fpm/test_f_mig431_int12_c.f90 -o "$OUT/int12_c_test.o"
   gfortran -O"$opt" "$OUT/pmdirect.o" "$OUT/int12_p0.o" "$OUT/soil_water_solver_contract.o" \
     "$OUT/b110_default_mvg.o" "$OUT/b110_dynamic_top.o" "$OUT/pmdirect_top_binding.o" \
-    "$OUT/int12_c_binding.o" "$OUT/int12_c_test.o" -o "$OUT/int12-c"
+    "$OUT/restricted_surface_evaporation.o" "$OUT/int12_c_binding.o" "$OUT/int12_c_test.o" -o "$OUT/int12-c"
   "$OUT/int12-c" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; exit 1; }
   grep -Fq 'F-MIG431-INT12-C RESTRICTED HUPSEL COMPOSITION PASS' "$OUT/output.txt"
   echo "INT12C_O$opt=PASS"
