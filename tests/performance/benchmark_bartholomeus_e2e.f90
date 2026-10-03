@@ -72,7 +72,7 @@ contains
     type(BartholomeusTemperatureResult)::t
     type(BartholomeusMicroInput)::mi
     type(BartholomeusWaterfilmMvgInput)::wf
-    real(real64)::ctop,gfp,mp,dsoil,rm,a,b,demand,cmacro,ilower,filmub,filmref,cmic
+    real(real64)::ctop,gfp,mp,dsoil,rm,a,b,demand,cmacro,ilower,filmub,filmref,cmic,cmicref
     logical::wfok
     integer::q
     ctop=ctop0
@@ -104,8 +104,10 @@ contains
       mi%depth_m=data%soil(q)%depth_m;mi%microbial_shape_m=crop%microbial_shape_m;mi%root_radius_m=crop%root_radius_m
       mi%waterfilm_thickness_m=filmub;mi%bunsen_coeff=t%bunsen_coeff
       cmic=bartholomeus_micro_concentration(mi,crop%max_resp_factor)
+      mi%waterfilm_thickness_m=filmref
+      cmicref=bartholomeus_micro_concentration(mi,crop%max_resp_factor)
       print '(a,i0,8(a,es13.5))','E2E_GATE_NODE=',q,' GFP=',gfp,' DSOIL=',dsoil,' DEMAND=',demand,' CTOP=',ctop, &
-           ' CMACRO=',cmacro,' CMIC_UB=',cmic,' FILM_UB=',filmub,' FILM_REF=',filmref,' N=',wf%gen_n
+           ' CMACRO=',cmacro,' CMIC_UB=',cmic,' CMIC_REF=',cmicref,' FILM_UB=',filmub,' FILM_REF=',filmref,' N=',wf%gen_n
       ctop=cmacro
       end associate
     enddo
