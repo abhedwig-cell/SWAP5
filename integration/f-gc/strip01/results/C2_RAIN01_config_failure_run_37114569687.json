@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C2_RAIN01 harness configuration attempt",
+  "workflow_run": 37114569687,
+  "workflow_conclusion": "failure",
+  "research_source_commit": "0d0403b74de3d47282d917a99eb861e26993ad33",
+  "artifact_id": 11271033263,
+  "artifact_sha256": "6732c6f4c7812beef89ff4073b5ef38afbb2c098b22ef5029d0b940dd24a2d35",
+  "model_execution": false,
+  "classification": "MODFLOW/XMI configuration failure before C2a/C2b numerical windows",
+  "evidence": "c2_rain_run1/mfsim.stdout reports `mem_set_value() size mismatch dbl1d, varname=PERLEN` on XMI initialization/first step.",
+  "cause": "The runner declared two MODFLOW stress periods of 0.001 d each; the prepared-solve XMI protocol expects one period with two 0.001 d time steps. No coupling or SWAP rejection evidence was produced.",
+  "repair": "Use one stress period of 0.002 d with two time steps and read the second output at kstp=1,kper=0.",
+  "canonical_admission": false
+}
