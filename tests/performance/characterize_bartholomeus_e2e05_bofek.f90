@@ -134,7 +134,8 @@ contains
     if(skip)gate_hits=gate_hits+1
     if(gate_total==1)then
       write(*,'(*(g0))')'E2E05_FIRST_STATE|CASE=',trim(case_id),'|H1=',s%pressure_head(1),'|THETA1=',s%water_content(1),'|TS=',ts,'|N=',nvg
-      if(abs(gate_demand_scale-0.001_real64)<1.0e-12_real64) call diagnose_gate(s)
+      if(abs(gate_demand_scale-0.001_real64)<1.0e-12_real64 .and. &
+         (trim(case_id)=='B01/DRY' .or. trim(case_id)=='B01/TRANSITION' .or. trim(case_id)=='B01/WET')) call diagnose_gate(s)
     endif
     deallocate(v%pressure_head_cm,v%water_content,v%soil_temperature_k)
   end subroutine classify_gate
