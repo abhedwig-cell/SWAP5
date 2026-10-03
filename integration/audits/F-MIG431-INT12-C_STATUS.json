@@ -3,7 +3,7 @@
   "workunit": "F-MIG431-INT12-C",
   "parent_workunit": "PPA-WU04-C",
   "title": "SWINTER=1 Von Hoyningen-Hune/Braden source-window interception",
-  "state": "PREREGISTERED_RESTRICTED_SOURCE_WINDOW_COMPOSITION",
+  "state": "RESTRICTED_QUALIFICATION_PASS_PENDING_FULL_GATE_AND_ADMISSION",
   "branch": "work/f-mig431-int12-c-vonhhbraden",
   "pinned_base": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
   "authorities": {
@@ -38,8 +38,27 @@
   "persistent_physical_state": [],
   "aggregate_owner": "existing F-MIG431-INT12-P0 source-window runtime progress",
   "production_admission": "NO_NEW_ADMISSION_YET",
-  "qualification": "NOT_RUN",
-  "next_safe_step": "Build an integration gate that composes the admitted F-APP03/F-APP04 route with P0 trial/accept/restart using the FMR committed endpoint; preserve the existing formula/provider and fail closed outside the exact Hupsel selector set.",
+  "qualification": "PASS_RESTRICTED_COMPOSITION_WORKFLOW",
+  "next_safe_step": "Complete and review the remaining frozen PPA-WU04-C preservation/admission gates; keep claims limited to the restricted Hupsel profile.",
   "method_specific_oracle": "REUSE_ADMITTED_F_APP03_EXACT_SOURCE_ORACLE",
-  "production_process_present": "RESTRICTED_HUPSEL_ONLY"
+  "production_process_present": "RESTRICTED_HUPSEL_ONLY",
+  "qualification_evidence": {
+    "workflow_run": 37131283115,
+    "owner_job": 111226737659,
+    "tested_head": "fdbbadfdaf3983eecac312a5402a0cf8709f9209",
+    "result": "PASS",
+    "checks": [
+      "O0 compile/run",
+      "O2 compile/run",
+      "O0/O2 output identity",
+      "A/B/A replay preserves admitted Hupsel daily and interval vectors",
+      "invalid day fails closed and valid retry preserves Hupsel result",
+      "rejected hydraulic result leaves source-window progress unchanged",
+      "partial accepted FMR endpoint advances only accepted source-window amount",
+      "mid-window restart and resumed remainder close aggregate bitwise",
+      "F-APP04 net-rain binding preserves value by identity",
+      "accepted gross/interception/net precipitation mass identity"
+    ],
+    "output_sha256": "98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717"
+  }
 }
