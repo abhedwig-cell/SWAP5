@@ -1,0 +1,14 @@
+{
+  "schema":"swap5.f_mig431_int12_d.admission.v1",
+  "workunit":"F-MIG431-INT12-D",
+  "parent":"PPA-WU04-D",
+  "decision":"QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW",
+  "candidate_head":"58e8faf32547957499b4a477bb0c51bd5ba1939f",
+  "canonical_base":"b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
+  "capability":"SWINTER=2 Gash interception for bounded daily SWMETDETAIL=0 source windows",
+  "physics":{"persistent_physical_state":"NONE","aggregate":"Gash aintc is immutable per forcing/source window","retry":"P0 apportions frozen aggregate; no nonlinear Gash reevaluation on hydraulic retry","restart":"P0 persists source-window provenance and accepted progress","snow":"interception disabled when snow is present in the qualified daily application","partition":"legacy DivIntercep rain/sprinkling semantics including 0.001 cm threshold","wet_canopy":"daily wet fraction and wet/dry potential-transpiration composition qualified"},
+  "evidence":{"dedicated_run":37148654946,"dedicated_conclusion":"success","prior_green_run":37140154681,"p0_preservation_run":37148655037,"p0_preservation_conclusion":"success"},
+  "known_external_failure":{"workflow":"F-CI canonical qualification","run":37148654989,"attribution":"moving-current preservation is blocked by pre-existing F-PERF-CANON01-B1 frozen transaction-successor drift in src/transaction/mod_transaction_reference.f90, outside INT12-D production delta","admission_effect":"recorded negative finding; not evidence of INT12-D regression"},
+  "explicit_nonclaims":["SWMETDETAIL=1 detailed meteorology and restint continuation","SWINTER=1 or SWINTER=3","general parser/calendar migration","TOP03/SCV semantics","solver/timestep policy","RFM/Ribasim/macropore changes"],
+  "merge_policy":"Merge only after repository admission review accepts the bounded claim and current branch protection requirements. Do not claim general SWINTER=2 beyond this envelope."
+}

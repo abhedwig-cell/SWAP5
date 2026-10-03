@@ -1,0 +1,14 @@
+name: F-MIG431-INT12-D Gash qualification
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/ppa-wu06-interception-gash]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: bash tests/fpm/run_f_mig431_int12_d.sh
