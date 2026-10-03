@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Use the corrected local q(H) tangent only at its demonstrated hydrostatic origin. Reconcile whether the C0/C1 far-cell initial head relaxation is the intended drain-down challenge or an initial-condition mismatch; preregister a bounded coupling configuration with consistent initial heads and simple recharge before attempting the next real coupled window. Keep RESP01 and coupled qualification open.",
+    "next_action": "C1 corrected +2 m telemetry was already rerun and persisted (zero accepted trials; invalid +6 m output retained). C0/C1 far-cell uplift is retained as an intentional drain-down challenge; C2 is preregistered as a separate head-consistent control. Next: implement the isolated C2 fixture and actual SWAP precipitation forcing, build against exact current-canonical source blobs, then run C2a equilibrium followed by C2b 1 mm/day for 0.001 d with all existing gates frozen. Keep RESP01, Hupsel, restart, coupled qualification and canonical admission open.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -86,7 +86,7 @@
     "local_final_fixture_builds": "C0/C1 PASS O2 strict flags; 143 compiled canonical src blobs each matched a9cd8330, source unchanged through 8d2271dd",
     "fresh_origin_replay": "EXACT_JSON_IDENTITY_C0_C1; committed active physical/history fields, revisions, ledgers and native XOLD preserved"
   },
-  "next_permitted_action": "Use the corrected local q(H) tangent only at its demonstrated hydrostatic origin. Reconcile whether the C0/C1 far-cell initial head relaxation is the intended drain-down challenge or an initial-condition mismatch; preregister a bounded coupling configuration with consistent initial heads and simple recharge before attempting the next real coupled window. Keep RESP01 and coupled qualification open.",
+  "next_permitted_action": "C1 corrected +2 m telemetry was already rerun and persisted (zero accepted trials; invalid +6 m output retained). C0/C1 far-cell uplift is retained as an intentional drain-down challenge; C2 is preregistered as a separate head-consistent control. Next: implement the isolated C2 fixture and actual SWAP precipitation forcing, build against exact current-canonical source blobs, then run C2a equilibrium followed by C2b 1 mm/day for 0.001 d with all existing gates frozen. Keep RESP01, Hupsel, restart, coupled qualification and canonical admission open.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -298,5 +298,12 @@
       "column_50": 5.106120332392228
     },
     "predictor_scope": "local hydrostatic origin only; not validly extrapolated to actual far-cell MODFLOW trial head"
+  },
+  "c2_research": {
+    "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2_PREREGISTRATION.json",
+    "state": "PREREGISTERED_BEFORE_EXECUTION",
+    "accepted_windows": 0,
+    "source_build": "not yet performed",
+    "production_delta": []
   }
 }
