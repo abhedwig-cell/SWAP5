@@ -1,0 +1,16 @@
+{
+  "work_unit": "PPA-WU05-A28",
+  "status": "QUALIFIED_ADMISSION_CANDIDATE",
+  "evidence_postimage": "769d1f4baaa929ff3f6986eaeadc4f2d946bf09e",
+  "admission_record_commit": "13b5db88fb08897e91b2fd51e4a060e4f4f79eae",
+  "production_default": false,
+  "canonical_admitted": false,
+  "multiswap_modflow_eligible": false,
+  "policy": "A28_V1",
+  "boundaries_qualified": {
+    "minus_3_cm": true,
+    "minus_30_cm": true
+  },
+  "next_gate": "Representative MultiSWAP-MODFLOW exact64 versus A28_V1 coupled workload; compare runtime, water balance, groundwater response, retries and failures.",
+  "freeze": "No panel-policy retuning before the coupled comparison."
+}
