@@ -16,7 +16,7 @@ program characterize_bartholomeus_e2e03
  use mod_process_hydraulic_view
  implicit none
  integer,parameter::NSTEPS=80
- real(real64),parameter::TSTART=5100.1875_real64,DT=1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
+ real(real64),parameter::TSTART=5100.1875_real64,DT=1.e-5_real64,T0=TSTART,T1=TSTART+DT,HARD_MASS_GATE=1.e-12_real64
  type(fmr_production_application_config_t)::cfg
  type(fmr_production_application_bootstrap_t)::app
  type(fmr_serialized_column_result_t),allocatable::r(:)
