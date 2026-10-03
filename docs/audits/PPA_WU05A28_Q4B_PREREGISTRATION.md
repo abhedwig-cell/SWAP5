@@ -50,3 +50,17 @@ Three exact-only mode-3 ramps with the same 45 cm target but successively slower
 - 4x ramp duration: step 1206, t≈12.05 d, imposed amplitude≈22.617 cm.
 
 The near-invariant failure amplitude falsifies ramp rate as the primary cause. Further slowing is prohibited as uninformative tuning. Stage A must instead characterize the exact-RFM executable amplitude envelope and determine whether the required -30/-3 cm consumer-head crossings are reachable inside it.
+
+## Stage-A envelope qualification refinement
+
+A frozen 20 cm exact-only amplitude completes all four soil/geometry cases for the full 20-cycle measurement phase. Observed consumer-head occupancy is structurally separated:
+- surface consumer: repeated -3 cm crossings, 40 per case; B01 range -24.75 to +3.05 cm, O05 -21.90 to +1.18 cm;
+- endpoint consumers: remain >= -3 cm throughout the measurement phase;
+- MB consumer: remains >= -3 cm throughout;
+- no consumer crosses -30 cm in this wet mode-3 envelope.
+
+Therefore one hydraulic fixture cannot be required to exercise both A28_V1 policy boundaries. Q4B is split without changing approximate results:
+- Q4B-3: freeze this 20 cm exact fixture to qualify repeated 32-to-16 panel boundary crossing at -3 cm;
+- Q4B-30: separately construct an exact-only drier initial/boundary fixture for repeated 64-to-32 crossing at -30 cm.
+
+Approximate mode remains prohibited in Q4B-30 design. Q4B-3 may proceed to Stage B because its exact fixture is now frozen.
