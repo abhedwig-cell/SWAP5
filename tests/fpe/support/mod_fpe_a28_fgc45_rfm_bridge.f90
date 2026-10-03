@@ -10,7 +10,8 @@ module mod_fgc45_real_multiswap_c_bridge
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_RFM
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t, fmr_b110_rfm_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_rfm_committed_state
+       fmr_b110_physical_state_t, fmr_b110_rfm_state_t, fmr_serialized_reference_backend_t, &
+       fmr_serialized_physical_observation_t, fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_rfm_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
@@ -405,6 +406,7 @@ contains
     type(kernel_candidate_state_t)::candidate
     type(kernel_diagnostics_t)::diag
     type(fmr_b110_physical_forcing_t)::forcing
+    type(fmr_serialized_physical_observation_t)::observation
     type(soil_water_physical_state_t)::view
     type(soil_water_parameter_set_t)::ps
     type(b110_default_mvg_parameters_t),target::hp
@@ -427,6 +429,18 @@ contains
            ' completed=',r%completed,' status=',r%status,' attempts=',diag%attempts,' retries=',diag%retries, &
            ' solver_rejections=',diag%solver_rejections,' temporal_rejections=',diag%temporal_rejections, &
            ' nonlinear_iterations=',diag%nonlinear_iterations,' mass_cm=',r%mass%residual,' max_step_mass_cm=',diag%max_abs_step_mass_residual
+      if(diag%solver_rejections>0)then
+        observation=predictor_backend(i)%observation()
+        write(*,'(a,i0,7(a,i0),a,a)')'A28_FD_LAST_SOLVER tile=',i, &
+             ' solver_executed=',merge(1,0,observation%solver_executed), &
+             ' solver_status=',observation%solver_status, &
+             ' nonlinear_iterations=',observation%solver_diagnostics%nonlinear_iterations, &
+             ' jacobian_builds=',observation%solver_diagnostics%jacobian_builds, &
+             ' linear_solves=',observation%solver_diagnostics%linear_solves, &
+             ' backtracking_attempts=',observation%solver_diagnostics%backtracking_attempts, &
+             ' alternative_solver_calls=',observation%solver_diagnostics%alternative_solver_calls, &
+             ' route=',trim(observation%solver_diagnostics%route)
+      end if
       if(.not.r%completed.or..not.candidate%ready())return
       if(abs(r%mass%residual)>TOL.or.diag%max_abs_step_mass_residual>TOL)return
       if(candidate%current_lineage_id()/=committed(i)%current_lineage_id())return
