@@ -24,6 +24,7 @@ program test_fpe_approx02_a2_application_sequence
   type(fmr_production_application_config_t) :: exact_cfg,a2_cfg
   type(fmr_production_application_bootstrap_t) :: exact_app,a2_app
   type(fmr_serialized_column_result_t),allocatable :: result(:)
+  type(fmr_b110_physical_forcing_t) :: day_forcing(1)
   real(real64) :: exact_storage(nsteps),exact_net(nsteps)
   real(real64) :: exact_seconds,a2_seconds
   real(real64) :: exact_cum_net,a2_cum_net,exact_cum_storage,a2_cum_storage
@@ -57,16 +58,17 @@ program test_fpe_approx02_a2_application_sequence
   exact_nonlinear=0; exact_substeps=0; exact_retries=0; exact_backtrack=0
   call system_clock(c0,rate)
   do step=1,nsteps
+    day_forcing(1)=exact_cfg%tiles(1)%base_forcing
     if(step<=30)then
-      exact_app%base_forcing(1)%top_flux=-0.2_real64
+      day_forcing(1)%top_flux=-0.2_real64
     else if(step<=60)then
-      exact_app%base_forcing(1)%top_flux=0.3_real64
+      day_forcing(1)%top_flux=0.3_real64
     else if(step<=90)then
-      exact_app%base_forcing(1)%top_flux=0.0_real64
+      day_forcing(1)%top_flux=0.0_real64
     else
-      exact_app%base_forcing(1)%top_flux=-0.1_real64
+      day_forcing(1)%top_flux=-0.1_real64
     endif
-    call exact_app%run_standalone(real(step-1,real64)*dt,real(step,real64)*dt,result,status)
+    call exact_app%run_standalone_with_forcing(real(step-1,real64)*dt,real(step,real64)*dt,day_forcing,result,status)
     call verify_result('exact',step,status,result)
     exact_storage(step)=result(1)%mass%storage_end
     exact_net(step)=result(1)%mass%total_in-result(1)%mass%total_out
