@@ -11,6 +11,8 @@ program benchmark_bartholomeus_e2e
  use mod_bartholomeus_parameter_contract
  use mod_crop_bartholomeus_input
  use mod_root_water_uptake_process
+ use mod_bartholomeus_runtime_input,only:bartholomeus_runtime_view_t
+ use mod_bartholomeus_no_stress_gate,only:bartholomeus_macro_supply_bound_no_stress
  use mod_process_hydraulic_view
  implicit none
  integer,parameter::WARM=1,REPS=500,ROUNDS=7
@@ -20,7 +22,13 @@ program benchmark_bartholomeus_e2e
  type(fmr_serialized_column_result_t),allocatable::r(:)
  real(real64)::ton(ROUNDS),toff(ROUNDS),t0c,t1c,k
  integer::i,j,rate,status,rep
+ type(bartholomeus_runtime_view_t)::gate_view
+ real(real64),allocatable::gate_w_root(:)
+ real(real64)::gate_ctop
+ logical::gate_skip
  call initialize_application_config(cfg,-75._real64,k);call add_root_thermal_oxygen(cfg)
+ call build_initial_gate_diagnostic(cfg,gate_view,gate_w_root,gate_ctop,gate_skip)
+ print '(a,l1,a,es24.16,a,*(es14.6,1x))','E2E_INITIAL_GATE_SKIP=',gate_skip,' CTOP=',gate_ctop,' WATER=',gate_view%water_content
  off=cfg;off%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
  call system_clock(i,rate)
  do j=1,ROUNDS
@@ -41,6 +49,25 @@ program benchmark_bartholomeus_e2e
   print '(a,i0,a,es24.16,a,es24.16,a,es24.16)','E2E_ROUND=',j,' ON_NS=',ton(j),' OFF_NS=',toff(j),' RATIO=',ton(j)/toff(j)
  enddo
 contains
+  subroutine build_initial_gate_diagnostic(value,view,wroot,ctop,skip)
+    type(fmr_production_application_config_t),intent(in)::value
+    type(bartholomeus_runtime_view_t),intent(out)::view
+    real(real64),allocatable,intent(out)::wroot(:)
+    real(real64),intent(out)::ctop
+    logical,intent(out)::skip
+    integer::n
+    n=size(value%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3)
+    view%rooted_nodes=n
+    allocate(view%pressure_head_cm(n),view%water_content(n),view%soil_temperature_k(n),wroot(n))
+    view%pressure_head_cm=value%tiles(1)%initial_state%pressure_head(1:n)
+    view%water_content=value%tiles(1)%initial_state%water_content(1:n)
+    view%soil_temperature_k=293.0_real64
+    wroot=1.0_real64/value%tiles(1)%parameters%bartholomeus%specific_root_length_m_kg
+    ctop=672.0_real64/(8.314472_real64*(value%tiles(1)%base_forcing%crop_oxygen%air_temperature_c+273.0_real64))
+    skip=bartholomeus_macro_supply_bound_no_stress(view,value%tiles(1)%parameters%bartholomeus%soil, &
+         value%tiles(1)%parameters%bartholomeus%crop,wroot,value%tiles(1)%base_forcing%crop_oxygen%root_density_kg_m3,ctop)
+  end subroutine build_initial_gate_diagnostic
+
   subroutine initialize_application_config(value, initial_head, conductivity0)
     type(fmr_production_application_config_t), intent(out) :: value
     real(real64), intent(in) :: initial_head
