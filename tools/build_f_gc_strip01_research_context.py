@@ -11,7 +11,7 @@ import subprocess
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--profile', choices=['C0','C1'], default='C0')
+    ap.add_argument('--profile', choices=['C0','C1','C2'], default='C0')
     ap.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     ap.add_argument('--build', type=Path, required=True)
     ap.add_argument('--context-override', type=Path, help='Use an isolated research fixture instead of the tests-tree context.')
@@ -44,7 +44,7 @@ def main():
 
     visit(root / 'src/legacy/b1_10_port/headcalc.f90')
     context = args.context_override.resolve() if args.context_override else root / (
-        'tests/fgc/strip01/research_context.f90' if args.profile == 'C0' else 'tests/fgc/strip01/research_context_c1.f90')
+        'tests/fgc/strip01/research_context.f90' if args.profile == 'C0' else 'tests/fgc/strip01/research_context_c1.f90' if args.profile == 'C1' else 'tests/fgc/strip01/research_context_c2.f90')
     visit(context)
     visit(root / 'src/adapter/mod_fmr_groundwater_application_c_api.f90')
     visit(root / 'src/adapter/mod_modflow6_fgc34_c_bridge.f90')

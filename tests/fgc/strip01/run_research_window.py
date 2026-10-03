@@ -12,7 +12,7 @@ import numpy as np
 from xmipy import XmiWrapper
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--profile', choices=['C0','C1'], default='C0')
+parser.add_argument('--profile', choices=['C0','C1','C2'], default='C0')
 parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[3])
 parser.add_argument('--library', type=Path, required=True)
 parser.add_argument('--libmf6', type=Path, required=True)
@@ -116,7 +116,8 @@ def main():
     plane, stage = (-6, -5) if args.profile == 'C0' else (-2, -1)
     flopy.mf6.ModflowGwfdis(gwf, nlay=1, nrow=1, ncol=50, delr=1, delc=1, top=plane, botm=-10)
     initial_heads = np.full((1, 1, 50), float(stage))
-    initial_heads[0, 0, -1] = stage + 0.5
+    if args.profile in ('C0', 'C1'):
+        initial_heads[0, 0, -1] = stage + 0.5
     flopy.mf6.ModflowGwfic(gwf, strt=initial_heads)
     flopy.mf6.ModflowGwfnpf(gwf, icelltype=0, k=0.5, save_flows=True)
     flopy.mf6.ModflowGwfdrn(gwf, stress_period_data=[((0, 0, 0), stage, 100)], pname='DRN_LEFT')
