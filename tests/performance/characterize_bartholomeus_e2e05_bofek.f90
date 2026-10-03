@@ -43,6 +43,7 @@ program test_fpe_bofek01_policy_case
   call read_real(11,horizon); call read_real(12,dtmin); call read_real(13,dtmax); call read_real(14,dt0)
   call read_int(15,numbit_crit); call read_int(16,maxit); call read_int(17,maxback)
   call read_real(18,fact_inc); call read_real(19,fact_dec); call read_real(20,fact_fail); call read_real(21,headtol)
+  call read_real(22,gate_demand_scale)
   call require(dtmin>0 .and. dtmax>=dtmin .and. dt0>0,'invalid timestep policy')
   call setup()
   call setup_gate()
