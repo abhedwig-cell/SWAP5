@@ -98,10 +98,13 @@
     "c2b_forcing_trigger_conclusion": "matched 1mm/day surface rainfall activates reproduced solver/temporal transaction rejection under the registered -1m, 0.001d fixture; exact SWAP root cause unresolved",
     "c2_rain01_context_fix": "Second application context is bound after C2a commit at revision 1 and time interval 0.001-0.002 d, preserving SWAP participant and ledger ownership.",
     "c2_rain01_workflow_run": 37114224458,
-    "c2_rain01_run_state": "CONFIGURATION_FAILURE_BEFORE_NUMERICAL_EXECUTION",
+    "c2_rain01_run_state": "QUEUED_REPAIRED_TDIS",
     "c2_rain01_last_run": 37114569687,
     "c2_rain01_config_failure": "integration/f-gc/strip01/results/C2_RAIN01_config_failure_run_37114569687.json",
-    "c2_rain01_next": "Change MODFLOW TDIS to one 0.002 d stress period with two time steps; index C2b output kstp=1,kper=0; rerun the preregistered B1.11 dynamic rainfall sequence."
+    "c2_rain01_next": "Change MODFLOW TDIS to one 0.002 d stress period with two time steps; index C2b output kstp=1,kper=0; rerun the preregistered B1.11 dynamic rainfall sequence.",
+    "c2_rain01_run": 37114778765,
+    "c2_rain01_source_commit": "46d80a2c00f28ad7f7612a2a8e60879d9c043ae5",
+    "c2_rain01_repair": "One MODFLOW 0.002 d stress period with two 0.001 d steps; second-step budget index kstp=1,kper=0."
   },
   "next_permitted_action": "Implement and run preregistered C2b 1 mm/day top precipitation through actual SWAP forcing, with C2a-to-C2b continuation represented explicitly and frozen gates/source binding. Preserve RESP01F as a negative: matched heads alone do not cure C0/C1 rejection. Then analyze accepted-window flux/storage/mass, and only then consider Hupsel. Keep full coupling qualification and canonical admission open.",
   "oracle_evidence": {
@@ -360,7 +363,7 @@
     "c2b_isolated_direct_trials": "50/50 transaction failed, 0 accepted substeps, 3 solver and 6 temporal rejections, zero mass/admission rejections",
     "c2b_solver_temporal_root_cause": "UNRESOLVED",
     "c2_rain01_fresh_context_run": 37114224458,
-    "c2_rain01_continuation": "NO_NUMERICAL_RESULT; MODFLOW TDIS PERLEN size mismatch before C2a",
+    "c2_rain01_continuation": "TDIS repaired; workflow 37114778765 queued for exact fresh-process replays.",
     "c2_rain01_config_failure": "integration/f-gc/strip01/results/C2_RAIN01_config_failure_run_37114569687.json"
   },
   "response01f_corrected": {
