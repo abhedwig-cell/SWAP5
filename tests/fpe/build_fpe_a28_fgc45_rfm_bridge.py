@@ -64,7 +64,8 @@ fd_helper=r"""  subroutine build_tile_predictor_rfm_fd(i,response,status)
     if(.not.rp%completed)then;write(*,'(a,i0,a,i0,4(a,i0))')'A28_FGC45_FD_FAIL=PLUS tile=',i,' status=',rp%status,' attempts=',dp%attempts,' retries=',dp%retries,' solver=',dp%solver_rejections,' temporal=',dp%temporal_rejections;return;end if
     if(.not.cp%ready())then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=PLUS_CANDIDATE tile=',i;return;end if
     call materialize_solver_view(cp,predictor_parameters(i),sp,pp,ok);if(.not.ok)then;write(*,'(a,i0)')'A28_FGC45_FD_FAIL=PLUS_VIEW tile=',i;return;end if
-    write(*,'(a,i0)')'A28_FGC45_FD_PLUS_VIEW_OK tile=',i\n    call predictor_backend(i)%discard_trial_candidate(cp,dp)
+    write(*,'(a,i0)')'A28_FGC45_FD_PLUS_VIEW_OK tile=',i
+    call predictor_backend(i)%discard_trial_candidate(cp,dp)
     write(*,'(a,i0,a,g0)')'A28_FGC45_FD_PLUS_OK tile=',i,' hbot_m=',hp
     call predictor_backend(i)%run_trial(column(i),template(i),predictor_parameters(i),committed(i),fm,predictor_config,window%t0,window%t1,checkpoint,rm,cm,dm)
     if(.not.rm%completed)then;write(*,'(a,i0,a,i0,4(a,i0))')'A28_FGC45_FD_FAIL=MINUS tile=',i,' status=',rm%status,' attempts=',dm%attempts,' retries=',dm%retries,' solver=',dm%solver_rejections,' temporal=',dm%temporal_rejections;return;end if
