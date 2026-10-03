@@ -54,7 +54,7 @@ program characterize_bartholomeus_e2e03
    t0s=TSTART+real(i-1,real64)*DT;t1s=t0s+DT
    call state%capture_checkpoint(cp,ok);if(.not.ok)error stop 'e2e03 checkpoint'
    call backend%run_trial(column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,state,cfg%tiles(1)%base_forcing,cfg%numerical,t0s,t1s,cp,trial,candidate,diag)
-   if(.not.trial%completed.or..not.candidate%ready())then;print '(a,i0)','E2E03_REJECT_STEP=',i;exit;endif
+   if(.not.trial%completed.or..not.candidate%ready())then;print '(a,i0,a,i0,a,l1,a,l1,a,es14.6)','E2E03_REJECT_STEP=',i,' STATUS=',trial%status,' COMPLETED=',trial%completed,' CANDIDATE=',candidate%ready(),' MASS_RES=',trial%mass%residual;exit;endif
    obs=backend%observation()
    call backend%commit_trial_candidate(state,candidate,diag,ok,status);if(.not.ok)error stop 'e2e03 commit'
    call state%snapshot(snap,ok);if(.not.ok)error stop 'e2e03 snapshot'
