@@ -2938,6 +2938,14 @@ contains
       end if
     end if
 
+    ! Rebind the polymorphic request pointer immediately before solver dispatch.
+    ! Earlier process preparation may invoke the same provider but must not own
+    ! the request pointer lifetime.
+    if(self%rfm_configuration%enabled)then
+      if(.not.associated(self%rfm_top_provider))return
+      request%evaluation%dynamic_top_boundary=>self%rfm_top_provider
+    end if
+
     if (self%macropore_active) then
       if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
       select type (physical_macro => state)
