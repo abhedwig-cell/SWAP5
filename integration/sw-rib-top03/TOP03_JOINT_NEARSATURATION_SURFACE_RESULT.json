@@ -1,7 +1,7 @@
 {
   "schema": "swap5.top03.joint_nearsaturation_surface_probe.v1",
   "date": "2026-10-02",
-  "status": "PARTIAL_NUMERICAL_IMPROVEMENT__NOT_QUALIFIED",
+  "status": "CAUSAL_JACOBIAN_SIGNAL__NOT_QUALIFIED",
   "production_code_changed": false,
   "production_admission": false,
   "preregistration": "integration/sw-rib-top03/TOP03_JOINT_NEARSATURATION_PREREGISTRATION.md",
@@ -149,7 +149,7 @@
     "optimization_level_output_identity_O0_O2": true,
     "failed_trials_counted_as_accepted": false
   },
-  "decision": "Joint co-regularization has a real but strongly parameter-dependent mechanism signal: smoothing the surface at delta_h=0.2 cm changes multiple failures to passes, yet refinement 4 still fails, while delta_h=0.02 cm fails at 8 and 32. The separate broad delta_h=2 cm candidate fails at 16/32. No tested candidate passes all declared refinements; the explored family is not timestep-robust or production-qualified. This falsifies the tested route as a current remedy, not all calibrated formulations.",
+  "decision": "A follow-up test-only central-difference addition of the omitted free-drainage bottom dK/dh term changes the result materially: the delta_h=0.2 cm soil regularization with the inherited continuous piecewise microrelief-storage law completes all six rise/recession refinements at head tolerance 1e-12 with roundoff mass closure. This supersedes the earlier statement that no tested candidate passes all six levels. The run is still synthetic/direct-solver evidence; the derivative correction is not an analytical production implementation and no transaction/Ribasim lifecycle qualification has occurred. Status remains not production-qualified.",
   "evidence_logs": [
     "integration/sw-rib-top03/evidence/joint_nearsaturation_surface/raw_records.txt"
   ],
@@ -402,5 +402,20 @@
     },
     "O0_O2_output_identity": true,
     "interpretation": "At delta_h=0.2 cm the smoothed surface changes the completion pattern strongly versus legacy surface, including passing 8/16/32 where the legacy surface fails 1/2/4/8/16. But the smoothed candidate still fails at refinement 4. At delta_h=0.02 cm the candidate fails at 8 and 32 but passes 16. Thus transition width and time refinement interact; no width here passes all six levels."
+  },
+  "followup_bottom_jacobian_counterfactual_2026_10_03": {
+    "scope": "delta_h=0.2 cm regularized soil theta/capacity/K; inherited continuous piecewise microrelief storage, D=0.05 cm; external stage rise/recession; refinements 1/2/4/8/16/32; SwKimpl=0, free drainage SWBOTB=7; O0/O2",
+    "counterfactual": "At each Jacobian build, add central finite-difference dK(h_N)/dh_N to the bottom residual-row diagonal; residual and physical law unchanged; generated HeadCalc copy only",
+    "head_tolerance": 1e-12,
+    "completed": [true, true, true, true, true, true],
+    "newton_iterations": [89, 147, 253, 434, 769, 1355],
+    "combined_ledger_residual_cm_max_abs": 1.0e-14,
+    "soil_balance_residual_cm_max_abs": 2.3e-14,
+    "successive_refinement_max_head_difference_cm": [0.7186973301839341, 0.22055477272797308, 0.06829793818693394, 0.02196650264883642, 0.007763697264104863],
+    "successive_refinement_surface_transfer_difference_cm": [0.09890614403194342, 0.0444930467741291, 0.018904508570665102, 0.009147969885737738, 0.004538030555775396],
+    "O0_O2_output_identity": true,
+    "production_code_changed": false,
+    "ribasim_transaction_qualified": false,
+    "interpretation": "The broad near-saturation soil law plus a consistent bottom Jacobian is a promising candidate mechanism; the smoothstep surface hypsometry was not needed in this controlled case. Analytical derivative, source ownership/conflict review, existing top-boundary regressions, and transaction/Ribasim qualification remain open."
   }
 }
