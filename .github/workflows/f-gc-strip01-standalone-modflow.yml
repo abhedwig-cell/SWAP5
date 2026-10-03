@@ -87,13 +87,17 @@ jobs:
           Path("strip01-results/c2a/source_git_blobs.json").write_text(json.dumps(actual, indent=2) + chr(10))
           Path("strip01-results/c2a/research_source_commit.txt").write_text(subprocess.check_output(["git", "rev-parse", "HEAD"], text=True))
           PY
-      - name: Run matched-head C2a equilibrium window
+      - name: Run C2a then C2b as consecutive SWAP-MODFLOW windows
         run: |
-          python tests/fgc/strip01/run_research_window.py --profile C2 --root canonical \
-            --library "${RUNNER_TEMP}/strip01-c2-build/libstrip01_research.so" \
-            --libmf6 "${RUNNER_TEMP}/strip01-mf6/libmf6.so" \
-            --output strip01-results/c2a
-          git rev-parse HEAD > strip01-results/c2a/source_commit.txt
+          mkdir -p strip01-results/c2_sequence
+          cp strip01-results/c2a/source_git_blobs.json strip01-results/c2_sequence/
+          cp strip01-results/c2a/canonical_source_commit.txt strip01-results/c2_sequence/
+          cp strip01-results/c2a/research_source_commit.txt strip01-results/c2_sequence/
+          python tests/fgc/strip01/run_research_sequence_c2.py --root canonical \\
+            --library "${RUNNER_TEMP}/strip01-c2-build/libstrip01_research.so" \\
+            --libmf6 "${RUNNER_TEMP}/strip01-mf6/libmf6.so" \\
+            --output strip01-results/c2_sequence
+          git rev-parse HEAD > strip01-results/c2_sequence/source_commit.txt
       - name: Persist research outputs
         if: always()
         uses: actions/upload-artifact@v4
