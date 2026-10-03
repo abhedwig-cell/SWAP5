@@ -232,7 +232,7 @@ def main():
                 ),
             )
             diagnostic = []
-            if window_index == 1:
+            if window_index == 1 or not answer.published:
                 probe_heads = sorted(set([-1.0] + getattr(runtime, 'last_trial_heads', [])[:3]))
                 for probe_head in probe_heads:
                     for dt in (0.001, 0.0001, 0.00001, 0.000001):
@@ -336,4 +336,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

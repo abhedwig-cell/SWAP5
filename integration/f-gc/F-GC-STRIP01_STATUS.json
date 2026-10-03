@@ -350,6 +350,6 @@
     "production_delta": [],
     "temporal_seed_discriminator": "integration/f-gc/strip01/results/c2b-local-20261003/C2_temporal_seed_discriminator.json",
     "seeded_full_window": "integration/f-gc/strip01/results/c2b-local-20261003/C2_seeded_window_rejection.json",
-    "interpretation": "A temporary-budget candidate derivative reduces isolated onset Binf by about 464x and permits isolated trials at 1e-8/1e-9 day under the frozen budget; the 50-column coupled C2B still rejects at first corrector, preserves committed state and exactly replays. Seed alone is insufficient; canonical source and production gates unchanged."
+    "interpretation": "A temporary-budget candidate derivative reduces isolated onset Binf by about 464x and permits isolated trials at 1e-8/1e-9 day under the frozen budget; at the full 0.001-day C2B interval it remains 187x budget and exhausts 3 solver plus 6 temporal rejections. The 50-column coupled C2B still rejects at first corrector, preserves committed state and exactly replays. Seed alone is insufficient; canonical source and production gates unchanged."
   }
 }
