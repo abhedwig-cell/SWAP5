@@ -196,7 +196,7 @@ def main():
         result['final_profile_state_sha256'] = state_hash()
         result['state_preserved'] = before == result['final_profile_state_sha256']
         result['state'] = 'C2A_INITIAL_DIRECT_DIAGNOSTIC_COMPLETE'
-        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\\n')
+        (work / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
         return
 
     sim = flopy.mf6.MFSimulation(sim_name='realstrip01sequence', sim_ws=str(work))
