@@ -1,11 +1,22 @@
 program test_f_mig431_int12_c
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_pmdirect_swetr0_process
-  use mod_fmr_interception_source_window_runtime, only: interception_progress_t
   use mod_fmr_interception_source_window_binding
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
   use mod_fmr_pmdirect_dynamic_top_boundary_binding
   implicit none
+
+  type :: fmr_serialized_test_result_t
+    integer(int64) :: column_id = 0_int64
+    real(real64) :: requested_t0 = 0.0_real64
+    real(real64) :: requested_t1 = 0.0_real64
+    logical :: committed = .false.
+    integer :: accepted_substeps = 0
+    integer(int64) :: initial_revision = 0_int64
+    integer(int64) :: final_revision = 0_int64
+    real(real64) :: final_committed_time = 0.0_real64
+    logical :: final_committed_time_bound = .false.
+  end type fmr_serialized_test_result_t
 
   real(real64), parameter :: TOL=1.0e-14_real64
   integer(int64), parameter :: COLUMN_ID=430401_int64
