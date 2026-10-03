@@ -54,6 +54,7 @@ MODULE_SRC+=(
 mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 python3 tests/fpe/build_fpe_a28_fgc45_rfm_bridge.py "$BUILD/exact/mod_fgc45_real_multiswap_c_bridge.f90" exact
 python3 tests/fpe/build_fpe_a28_fgc45_rfm_bridge.py "$BUILD/a28/mod_fgc45_real_multiswap_c_bridge.f90" a28
+grep -n 'A28_FGC45_INIT_FAIL\|configure_tile_rfm' "$BUILD/exact/mod_fgc45_real_multiswap_c_bridge.f90" || true
 
 compile_variant(){
  local name="$1"; local out="$BUILD/$name"; local objects=()
