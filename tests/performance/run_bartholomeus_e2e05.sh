@@ -18,7 +18,7 @@ python3 tests/rom/compile_f_rom0_fortran_closure.py \
   --external-source src/physics/oxygen/mod_bartholomeus_microbial.f90 \
   --external-source src/physics/oxygen/mod_bartholomeus_micro.f90 \
   --external-source src/physics/oxygen/mod_bartholomeus_waterfilm.f90 \
-  --external-source src/physics/oxygen/mod_bartholomeus_runtime_input.f90 \
+  --external-source src/process/mod_bartholomeus_runtime_input.f90 \
   --external-source src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90 \
   --build "$BUILD/compile" --opt 2
 python3 tests/fpe/run_fpe_bofek01_screen.py \
