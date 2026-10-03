@@ -1,0 +1,41 @@
+name: F-PE-ELASTIC72A peat source audit
+
+concurrency:
+  group: f-pe-elastic72a-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic72-peat-physical-storage
+    paths:
+      - 'research/elastic/bro_bhrgt_peat_source_audit.py'
+      - 'docs/performance/F-PE-ELASTIC72A_PEAT_SOURCE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic72a.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'research/elastic/bro_bhrgt_peat_source_audit.py'
+      - 'docs/performance/F-PE-ELASTIC72A_PEAT_SOURCE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic72a.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run bounded peat source audit
+        run: |
+          python research/elastic/bro_bhrgt_peat_source_audit.py \
+            --output "$RUNNER_TEMP/elastic72a/peat-source-audit.json"
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-elastic72a-peat-source-audit
+          path: ${{ runner.temp }}/elastic72a/peat-source-audit.json
