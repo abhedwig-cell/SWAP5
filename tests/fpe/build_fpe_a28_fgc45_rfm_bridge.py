@@ -74,7 +74,8 @@ fd_helper=r"""  subroutine build_tile_predictor_rfm_fd(i,response,status)
     lineage%coupling_id=COUPLING_ID;lineage%swap_lineage_id=COLUMN_ID(i);lineage%swap_origin_revision=0_int64
     lineage%groundwater_service_id=GW_SERVICE_ID;lineage%groundwater_lineage_id=GW_LINEAGE_ID;lineage%groundwater_origin_revision=0_int64
     coverage%lower_face_head_semantics_covered=.true.
-    call compose_modflow6_swap_predictor_response(window,lineage,PREDICTOR_QBOT,h0,0.5_real64*(hp+hm),deriv,MODFLOW6_DERIVATIVE_CENTERED_FD,coverage,'centered-fd-rfm-full-trajectory','fgc45-rfm-fd',response,status)\n    if(status/=0.or..not.response%valid)write(*,'(a,i0,4(a,g0))')'A28_FGC45_FD_FAIL=COMPOSE status=',status,' hp=',hp,' hm=',hm,' deriv=',deriv,' h0=',h0
+    call compose_modflow6_swap_predictor_response(window,lineage,PREDICTOR_QBOT,h0,0.5_real64*(hp+hm),deriv,MODFLOW6_DERIVATIVE_CENTERED_FD,coverage,'centered-fd-rfm-full-trajectory','fgc45-rfm-fd',response,status)
+    if(status/=0.or..not.response%valid)write(*,'(a,i0,4(a,g0))')'A28_FGC45_FD_FAIL=COMPOSE status=',status,' hp=',hp,' hm=',hm,' deriv=',deriv,' h0=',h0
   end subroutine build_tile_predictor_rfm_fd
 
 """
