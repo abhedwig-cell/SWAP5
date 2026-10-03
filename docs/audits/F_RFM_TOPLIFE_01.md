@@ -26,3 +26,11 @@ Only provider lifetime changes. No RFM physics, panel policy, top-boundary equat
 Direct provider sweep falsified the initial lifetime interpretation. The provider remains available across ordinary states. The observed unavailable route is `active-runoff-outside-profile`: with positive candidate ponding, very small retry dt, ponding_max=0 and runoff_resistance=0, the dynamic-top evaluator enters runoff but deliberately rejects that runoff configuration as outside its qualified linear profile.
 
 Therefore provider lifetime is not established as causal. Model-owned provider experiments are not part of the justified repair and must not be promoted on this evidence. Q4B fixture configuration is corrected to a supported positive ponding threshold and linear runoff resistance instead.
+
+## Falsification
+
+The lifetime hypothesis is rejected. A direct dynamic-top provider sweep shows the provider remains AVAILABLE across the relevant pressure-head range until an active-runoff case combines ponding with a retry-scale dt and `runoff_resistance_day=0`. That case returns `active-runoff-outside-profile`, as designed: the qualified analytical runoff route requires linear runoff with resistance >= 0.001 day.
+
+Q4B had configured `ponding_max=0`, `runoff_exponent=1`, and `runoff_resistance_day=0`. Once ponding developed, retry substeps therefore entered an explicitly unsupported top-boundary profile. This is a fixture configuration error, not provider lifetime loss.
+
+The model-owned provider changes are not justified by this evidence and must not be promoted as the repair. Q4B is corrected to use a positive linear runoff resistance within the already supported profile.
