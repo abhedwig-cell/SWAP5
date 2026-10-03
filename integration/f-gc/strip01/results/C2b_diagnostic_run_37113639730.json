@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01",
+  "experiment": "C2b rejected-trial diagnostic replay",
+  "workflow_run": 37113639730,
+  "workflow_conclusion": "success",
+  "source_commit": "c34e343d6fbc6b5ea90e4b823415c504fb90d9d3",
+  "artifact_id": 11270421665,
+  "artifact_sha256": "eee40cc4dcdbbd3523264a9435e7b45623a49dfed5da4e97fd5a52bb97aaf6a1",
+  "canonical_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "actual_context_attempt": {
+    "stage": "swap-corrector",
+    "service_status": 6,
+    "swap_corrector_heads_m": {
+      "count": 50,
+      "min": -1,
+      "max": -1
+    },
+    "fixture_domain_gate": true,
+    "fmr_context_status": 5,
+    "fmr_context_status_meaning": "FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED",
+    "publication": false
+  },
+  "isolated_transaction_replay": {
+    "count": 50,
+    "each_slot_head_m": -1,
+    "window_start_day": 0.001,
+    "duration_day": 0.001,
+    "top_precipitation_cm_per_day": 0.1,
+    "lower_interface_head_method": "same fixture head-to-bottom-pressure conversion: (MODFLOW head m + 2 m) * 100 cm/m",
+    "call_status_by_slot": 0,
+    "canonical_transaction_status_by_slot": 2,
+    "transaction_status_meaning": "CANONICAL_STATUS_TRANSACTION_FAILED",
+    "accepted_substeps_by_slot": 0,
+    "solver_rejections_by_slot": 3,
+    "temporal_rejections_by_slot": 6,
+    "mass_rejections_by_slot": 0,
+    "admission_rejections_by_slot": 0,
+    "attempts_by_slot": 9,
+    "retries_by_slot": 8,
+    "completed_time_day": 0.001,
+    "state_preserved_after_diagnostic_replay": true
+  },
+  "limits_of_inference": [
+    "The rejection-stage status is from the actual coupled context call.",
+    "The SWAP numerical rejection counters come from a separate direct backend trial replay for each column using the recorded head, forcing and window; they are not counters read from the original context attempt.",
+    "The evidence localizes the reproduced failure to solver/temporal rejection before mass acceptance, but does not yet identify the physical or numerical root cause."
+  ]
+}
