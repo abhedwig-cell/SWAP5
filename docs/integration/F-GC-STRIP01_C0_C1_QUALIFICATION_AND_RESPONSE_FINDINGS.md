@@ -79,3 +79,26 @@ python tools/plot_f_gc_strip01_domain.py integration/f-gc/strip01/results/c0_nat
 ```
 
 Repeat the build and diagnostics with profile C1 and separate output directories. A runner exit code 0 means execution/diagnostic completion; the result state FIRST_WINDOW_REJECTED is explicitly a negative coupled result. Never interpret it as qualification PASS.
+
+## RESP01C — first-attempt backend telemetry
+
+The response surface above was followed by preregistered RESP01C, which reads the canonical backend's public observation after exactly one trial attempt (`max_retries=0`). The probe changes only isolated research fixture copies and exports observation values; production source, ABI, temporal/mass gates and tolerances remain unchanged.
+
+This re-run is pinned to current canonical source head `23f5d3cff78e055426b48ec93f57c1cb9880759c`. The current canonical delta since the previous `8d2271dd` reconcile tightened storage completeness checks in the serialized backend and made the transaction reference avoid evaluating incomplete storage. Both C0 and C1 rebuilds compiled 143 canonical `src/` dependencies; the five changed source dependencies in those builds match the fetched current-canonical Git blob IDs. Repeating the same probes after this source refresh produced the same classification and values. The fixture and source manifests are persisted next to the JSON results.
+
+Eight actual-head trials were run for each profile: columns 1 and 50, durations 0.001, 0.0005, 0.0001 and 0.00001 d, tangent off, one attempt per call. All calls reject; there is no accepted coupled window. Across C0, four first attempts are temporal rejections and four are solver retries. Across C1, two are temporal rejections and six are solver retries. Every row has zero mass and admission rejections. The 50-column committed state remains exactly unchanged and no candidate is committed.
+
+For the temporal rejects, the solver first converges on `legacy-reference-bound`, then the `reference-richards-raw-bound` certificate is available but exceeds the fixed `1e-5 cm` head budget by 1.1 million to 668 million times. The reported head infinity bounds span 11.2–6678 cm across these probes. This proves why those particular attempts are rejected by the temporal gate; it does not establish that the raw bound is physically sharp or that it is the only cause of the coupled window failure.
+
+For solver rejects, the solver observation is `SW_SOLVE_RETRY_ADVISED` (status 2), route `legacy-reference-retry`, at the frozen 16 nonlinear-iteration limit. The temporal indicator is `not-run` with reason `indicator-not-evaluated`. Thus those attempts fail inside Richards before temporal certification. The equation-residual observation is explicitly unavailable; its default numeric zero is not a measured zero residual.
+
+Fresh-process repetitions of the JSON probes are byte-identical. This confirms deterministic first-attempt diagnostics and rejected-state preservation, not accepted-window continuation, restart, coupled mass closure or production qualification. The broad RESP01 root cause therefore remains open. Next, qualify accepted-origin bottom-flux response/history and predictor bootstrap under the existing transaction; do not change the temporal budget or bypass the transaction to make these probes pass.
+
+Reproduction against a repository checkout at the pinned current canonical source:
+
+```bash
+python tools/build_f_gc_strip01_research_context.py --profile C0 --context-override integration/f-gc/strip01/fixtures/research_context_telemetry_c0.f90 --build /tmp/strip-telemetry-c0
+python tools/f_gc_strip01_telemetry_probe.py --profile C0 --library /tmp/strip-telemetry-c0/libstrip01_research.so --output /tmp/strip-telemetry-c0.json
+python tools/build_f_gc_strip01_research_context.py --profile C1 --context-override integration/f-gc/strip01/fixtures/research_context_telemetry_c1.f90 --build /tmp/strip-telemetry-c1
+python tools/f_gc_strip01_telemetry_probe.py --profile C1 --library /tmp/strip-telemetry-c1/libstrip01_research.so --output /tmp/strip-telemetry-c1.json
+```
