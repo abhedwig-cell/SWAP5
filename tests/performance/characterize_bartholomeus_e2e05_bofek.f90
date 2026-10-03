@@ -12,6 +12,12 @@ program test_fpe_bofek01_policy_case
   use mod_bartholomeus_parameter_contract
   use mod_bartholomeus_runtime_input, only: bartholomeus_runtime_view_t
   use mod_bartholomeus_no_stress_gate, only: bartholomeus_macro_supply_bound_no_stress
+  use mod_bartholomeus_temperature, only: BartholomeusTemperatureResult, bartholomeus_temperature_parameters
+  use mod_bartholomeus_soil_diffusivity, only: bartholomeus_soil_diffusivity
+  use mod_bartholomeus_microbial, only: bartholomeus_microbial_respiration
+  use mod_bartholomeus_micro, only: BartholomeusMicroInput, bartholomeus_micro_concentration
+  use mod_bartholomeus_waterfilm, only: BartholomeusWaterfilmMvgInput, bartholomeus_waterfilm_mvg_integrand, &
+       bartholomeus_waterfilm_from_length_density
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
        bind_b110_dynamic_top_boundary_solver_provider
@@ -126,9 +132,74 @@ contains
     v%pressure_head_cm=s%pressure_head(1:3);v%water_content=s%water_content(1:3);v%soil_temperature_k=293.15_real64
     skip=bartholomeus_macro_supply_bound_no_stress(v,gate_data,gate_crop,gate_wroot,gate_root_density,0.275_real64)
     if(skip)gate_hits=gate_hits+1
-    if(gate_total==1)write(*,'(*(g0))')'E2E05_FIRST_STATE|CASE=',trim(case_id),'|H1=',s%pressure_head(1),'|THETA1=',s%water_content(1),'|TS=',ts,'|N=',nvg
+    if(gate_total==1)then
+      write(*,'(*(g0))')'E2E05_FIRST_STATE|CASE=',trim(case_id),'|H1=',s%pressure_head(1),'|THETA1=',s%water_content(1),'|TS=',ts,'|N=',nvg
+      if(abs(gate_demand_scale-0.001_real64)<1.0e-12_real64) call diagnose_gate(s)
+    endif
     deallocate(v%pressure_head_cm,v%water_content,v%soil_temperature_k)
   end subroutine classify_gate
+  subroutine diagnose_gate(s)
+    type(soil_water_physical_state_t),intent(in)::s
+    type(BartholomeusTemperatureResult)::tt
+    type(BartholomeusMicroInput)::mi
+    type(BartholomeusWaterfilmMvgInput)::wf
+    real(real64)::ctop,gfp,dsoil,mp,rm,a,b,cmacro,ilower,film_ub,film_ref,cmicro_ub,cmicro_ref
+    real(real64)::integ,x,fx,weight
+    integer::i,k
+    integer,parameter::nsim=4096
+    ctop=0.275_real64
+    do i=1,3
+      gfp=max(0.0_real64,gate_data%soil(i)%saturated_water_content-s%water_content(i))
+      if(s%pressure_head(i)>=0.0_real64)gfp=0.0_real64
+      tt=bartholomeus_temperature_parameters(293.15_real64)
+      dsoil=bartholomeus_soil_diffusivity(tt%d_gas_free_air,gfp,gate_data%soil(i)%diffusivity)
+      mp=-s%pressure_head(i)*100.0_real64
+      rm=bartholomeus_microbial_respiration(293.15_real64,2.0_real64,1300.0_real64,60.0_real64,mp, &
+           gate_crop%specific_resp_humus,gate_crop%q10_microbial)
+      if(dsoil>0.0_real64)then
+        a=gate_crop%microbial_shape_m**2*rm/dsoil
+        b=gate_crop%root_shape_m**2*(gate_crop%f_senes*gate_crop%c_mroot*gate_root_density(i)*gate_crop%max_resp_factor * &
+          gate_crop%q10_root**(.1_real64*(293.15_real64-298.0_real64)))/dsoil
+      else
+        a=huge(1.0_real64);b=huge(1.0_real64)
+      endif
+      cmacro=ctop-a*(1.0_real64-exp(-gate_data%soil(i)%depth_m/gate_crop%microbial_shape_m)) - &
+                   b*(1.0_real64-exp(-gate_data%soil(i)%depth_m/gate_crop%root_shape_m))
+      wf%capac_term=gate_data%soil(i)%waterfilm_capac_term;wf%n_minus_1=gate_data%soil(i)%waterfilm_n_minus_1
+      wf%m_plus_1=gate_data%soil(i)%waterfilm_m_plus_1;wf%alpha_per_pa=gate_data%soil(i)%waterfilm_alpha_per_pa
+      wf%gen_n=gate_data%soil(i)%waterfilm_gen_n;wf%surface_tension_water=tt%surface_tension_water
+      ilower=.5_real64*mp*bartholomeus_waterfilm_mvg_integrand(.5_real64*mp,wf)
+      film_ub=bartholomeus_waterfilm_from_length_density(ilower,mp,tt%surface_tension_water)
+      integ=0.0_real64
+      do k=0,nsim
+        x=mp*real(k,real64)/real(nsim,real64)
+        if(k==0)then
+          fx=0.0_real64
+        else
+          fx=bartholomeus_waterfilm_mvg_integrand(x,wf)
+        endif
+        if(k==0 .or. k==nsim)then;weight=1.0_real64
+        else if(mod(k,2)==0)then;weight=2.0_real64
+        else;weight=4.0_real64
+        endif
+        integ=integ+weight*fx
+      enddo
+      integ=integ*mp/(3.0_real64*real(nsim,real64))
+      film_ref=bartholomeus_waterfilm_from_length_density(integ,mp,tt%surface_tension_water)
+      mi%c_mroot=gate_crop%c_mroot;mi%w_root=gate_wroot(i);mi%f_senes=gate_crop%f_senes;mi%q10_root=gate_crop%q10_root
+      mi%soil_temp_k=293.15_real64;mi%sat_water_content=ts;mi%gas_filled_porosity=gfp
+      mi%d_o2_in_water=tt%d_o2_in_water;mi%d_root=tt%d_root;mi%percent_org_mat=2.0_real64;mi%soil_density=1300.0_real64
+      mi%specific_resp_humus=gate_crop%specific_resp_humus;mi%q10_microbial=gate_crop%q10_microbial
+      mi%depth_m=gate_data%soil(i)%depth_m;mi%microbial_shape_m=gate_crop%microbial_shape_m
+      mi%root_radius_m=gate_crop%root_radius_m;mi%bunsen_coeff=tt%bunsen_coeff
+      mi%waterfilm_thickness_m=film_ub;cmicro_ub=bartholomeus_micro_concentration(mi,gate_crop%max_resp_factor)
+      mi%waterfilm_thickness_m=film_ref;cmicro_ref=bartholomeus_micro_concentration(mi,gate_crop%max_resp_factor)
+      write(*,'(*(g0))')'E2E05_GATE_DIAG|CASE=',trim(case_id),'|NODE=',i,'|N=',nvg,'|GFP=',gfp,'|DSOIL=',dsoil, &
+        '|A=',a,'|B=',b,'|CTOP=',ctop,'|CMACRO=',cmacro,'|FILM_REF=',film_ref,'|FILM_UB=',film_ub, &
+        '|CMICRO_REF=',cmicro_ref,'|CMICRO_UB=',cmicro_ub,'|MARGIN=',cmacro-cmicro_ub
+      ctop=cmacro
+    enddo
+  end subroutine diagnose_gate
   subroutine initialize_state(h,s)
     real(real64),intent(in)::h
     type(soil_water_physical_state_t),intent(out)::s
