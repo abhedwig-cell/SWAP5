@@ -51,11 +51,15 @@ program test_a28_q4b_minus30_exact
   do soil=1,2
     do geom=1,2
       regime=3;arm=ARM_C
+      approximate_mode=.false.
       call run_arm(soil,geom,regime,arm,m)
       call print_metrics('Q4B30EXACT',soil,geom,regime,arm,0,m)
+      approximate_mode=.true.
+      call run_arm(soil,geom,regime,arm,m)
+      call print_metrics('Q4B30APPROX',soil,geom,regime,arm,0,m)
     end do
   end do
-  print '(a)','A28_Q4B_MINUS30_STAGE_A_EXECUTION_COMPLETE'
+  print '(a)','A28_Q4B_MINUS30_STAGE_B_EXECUTION_COMPLETE'
 
 contains
 
