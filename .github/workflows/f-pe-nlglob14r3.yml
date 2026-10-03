@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB14R3 bounded retry depth
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14R3*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14r3*.py'
+      - 'tests/fpe/run_fpe_nlglob14r3*.py'
+      - 'tests/fpe/run_fpe_nlglob14r3*.sh'
+      - '.github/workflows/f-pe-nlglob14r3.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob14r3-bounded-retry-depth
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14R3*.md'
+      - 'tests/fpe/materialize_fpe_nlglob14r3*.py'
+      - 'tests/fpe/run_fpe_nlglob14r3*.py'
+      - 'tests/fpe/run_fpe_nlglob14r3*.sh'
+      - '.github/workflows/f-pe-nlglob14r3.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob14r3-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-retry-depth:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered bounded retry-depth attribution
+        run: bash tests/fpe/run_fpe_nlglob14r3.sh
