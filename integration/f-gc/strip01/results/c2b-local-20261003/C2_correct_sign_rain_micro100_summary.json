@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-STRIP01 C2B corrected-sign rainfall evidence",
+  "date": "2026-10-03",
+  "status": "RESEARCH_ONLY_100_MICRO_WINDOWS_PUBLISHED_NO_GROUNDWATER_RESPONSE",
+  "branch": "work/f-gc-strip01-c2b-local-continuation-20261003",
+  "canonical_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "compiled_source_binding": {
+    "src_blob_count": 144,
+    "production_source_match": "all compiled src blobs match pinned canonical tree",
+    "production_source_changed": false
+  },
+  "flux_sign_correction": {
+    "source": "src/runtime/mod_fmr_serialized_reference_backend.f90::account_external_fluxes",
+    "rule": "external_top_flux > 0 is outward/output; external_top_flux < 0 is inward/input",
+    "implication": "For the SWAP serialized reference backend, positive external_top_flux is counted as output and negative external_top_flux as input (account_external_fluxes). Thus the earlier +0.1 cm/day fixed-flux onset, rate-sweep, seed-discriminator and full-window trials were outward flux, not rainfall; their temporal rejections remain valid outward-flux observations and are not rainfall evidence.",
+    "rainfall_case": "negative top flux; the corrected rainfall experiments below use -0.1 cm/day"
+  },
+  "corrected_rainfall_micro_series": {
+    "raw_result": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_rain_micro100_summary.json",
+    "raw_result_sha256": "2c11da80b89e377e4b52064bd38bf06643e8ee706104b31ae46175e2a5e17cac",
+    "replay_result_sha256": "2c11da80b89e377e4b52064bd38bf06643e8ee706104b31ae46175e2a5e17cac",
+    "replay_byte_identical": true,
+    "real_swap": true,
+    "native_modflow6": true,
+    "experimental_fixture_derivative_seed": true,
+    "window_count": 100,
+    "window_duration_day": 1e-05,
+    "total_duration_day": 0.001,
+    "forcing_top_flux_cm_per_day": -0.1,
+    "forcing_input_total_m3": 5.000000000000001e-05,
+    "swap_storage_change_total_m3": 4.99999999945544e-05,
+    "drain_out_total_m3": 0.0,
+    "mass_residual_sum_m3": 5.44560785218284e-15,
+    "max_abs_per_window_mass_residual_m3": 5.843048628287003e-15,
+    "published_windows": 100,
+    "all_column_final_revision": 100,
+    "all_column_final_interface_ledger_count": 100,
+    "native_modflow_calls_total": {
+      "prepare_solve": 100,
+      "solve": 100,
+      "finalize_solve": 100,
+      "finalize_time_step": 100
+    },
+    "heads_initial_m": -1.0,
+    "heads_final_m": -1.0,
+    "head_change_measurable": false,
+    "drain_response_measurable": false,
+    "bottom_exchange_or_lateral_response_measurable": false,
+    "profile_storage_initial_per_column_m3": 0.7499125387644275,
+    "profile_storage_final_per_column_m3": 0.7499135387644275,
+    "qualification_limit": "Short forced publication and water balance only; derivative seed is research fixture-only and no groundwater response is observed."
+  },
+  "single_micro_window": {
+    "result": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_rain_dt1e5.json",
+    "published": true,
+    "duration_day": 1e-05,
+    "input_m3": 5.000000000000001e-07,
+    "swap_storage_change_m3": 4.999999987376214e-07,
+    "mass_residual_m3": 1.2623787293139987e-15
+  },
+  "full_window_control": {
+    "duration_day": 0.001,
+    "tangent_seed_result": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_full_window_tangent_rejection.json",
+    "zero_seed_result": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_full_window_zero_seed_rejection.json",
+    "both_rejected_at": "swap-corrector iteration 1",
+    "committed_state_preserved": true,
+    "modflow_time_step_finalized": false
+  },
+  "dynamic_b111_route": "Still excluded before solver: KERNEL_STATUS_NOT_ADMITTED=101 for Black surface balance with bottom_mode=5; not resolved by fixed-flux micro-window result.",
+  "canonical_admission": false,
+  "next": "Resolve forcing-boundary temporal-history semantics without loosening the frozen 1e-5 cm error gate or 1e-8 day minimum; then obtain observable MODFLOW lateral/head/drain response, extend forcing, qualify reject/replay/restart, and only then try Hupsel."
+}

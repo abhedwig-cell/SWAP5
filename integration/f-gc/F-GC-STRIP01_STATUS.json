@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "work_unit": "F-GC-STRIP01",
-  "title": "50 m cross-section SWAP\u2013MODFLOW6 coupling benchmark",
+  "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2B_TEMPORAL_ONSET_BLOCKER_SOURCE_BOUND",
+  "state": "C2B_CORRECT_SIGN_RAIN_MICRO_WINDOWS_PUBLISHED_NO_GROUNDWATER_RESPONSE",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,23 +74,23 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Fix and qualify forcing-onset temporal history for imposed rainfall under the frozen 1e-5 cm certificate and 1e-8 day minimum, then qualify B1.11 dynamic rainfall with bottom_mode=5 without weakening transaction/mass gates. Rerun continuous C2a/C2b; require rainfall acceptance, lateral/drain response, whole-window balance, replay and committed restart before Hupsel.",
+    "next_action": "Resolve forcing-boundary temporal-history semantics for correctly signed rainfall under the frozen 1e-5 cm error gate and 1e-8 day minimum. The full 0.001-day negative top-flux window rejects; 100 experimental 1e-5-day windows publish with closed SWAP storage balance but no measurable MODFLOW head/lateral/drain response. Then qualify observable groundwater response, longer forcing, reject/replay/restart, and only then Hupsel.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
     "complete_native_result": "integration/f-gc/strip01/results/native_complete.json.gz",
     "hupsel_input_candidate": "integration/f-gc/strip01/inputs/hupsel_public_2002_2004.met",
     "coupled_domain_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01_COUPLED_DOMAIN_PREREQUISITE.json",
-    "accepted_coupled_windows": 1,
+    "accepted_coupled_windows": 100,
     "coupled_qualification": false,
     "local_final_fixture_builds": "C0/C1 PASS O2 strict flags; 143 compiled canonical src blobs each matched a9cd8330, source unchanged through 8d2271dd",
     "fresh_origin_replay": "EXACT_JSON_IDENTITY_C0_C1; committed active physical/history fields, revisions, ledgers and native XOLD preserved",
     "c2a_result": "integration/f-gc/strip01/results/C2a_equilibrium_run_37111558483.json",
     "c2a": "PASS: one accepted zero-forcing matched-head ordinary transaction; exact initial equilibrium, zero SWAP storage change, zero drain, zero residual; source-bound to canonical e3bfcdca00ba89cfeea529cf9b648dcc803483ab.",
     "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open.",
-    "c2b_temporal_onset_diagnosis": "Post-C2a trial: MODFLOW heads stay at -1 m and no timestep publishes; Binf=0.8679 cm at dt=.001 d against 1e-5 cm budget (normalized 86788), declines approximately sqrt(dt), and remains 274x budget at min dt=1e-8 d. C2b rejected trials: 0 mass rejections; accepted state and XOLD preserved. Forcing-rate sweep supports temporal-onset/history issue; dynamic B1.11+mode5 remains separate admission exclusion."
+    "c2b_temporal_onset_diagnosis": "Correction: earlier +0.1 cm/day trials were outward flux, not rainfall. Correct-sign -0.1 cm/day tested: full 0.001-day window rejects at SWAP corrector; 100 x 1e-5-day experimental seeded windows publish with input 5.0e-5 m3, SWAP storage +4.99999999945544e-5 m3, drain 0, cumulative residual 5.44560785218284e-15 m3; all heads remain -1 m. The derivative seed is test-fixture-only; no measurable groundwater response."
   },
-  "next_permitted_action": "Fix and qualify forcing-onset temporal history for imposed rainfall under the frozen 1e-5 cm certificate and 1e-8 day minimum, then qualify B1.11 dynamic rainfall with bottom_mode=5 without weakening transaction/mass gates. Rerun continuous C2a/C2b; require rainfall acceptance, lateral/drain response, whole-window balance, replay and committed restart before Hupsel.",
+  "next_permitted_action": "Resolve forcing-boundary temporal-history semantics for correctly signed rainfall under the frozen 1e-5 cm error gate and 1e-8 day minimum. The full 0.001-day negative top-flux window rejects; 100 experimental 1e-5-day windows publish with closed SWAP storage balance but no measurable MODFLOW head/lateral/drain response. Then qualify observable groundwater response, longer forcing, reject/replay/restart, and only then Hupsel.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -335,21 +335,18 @@
     "source_canonical": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
     "research_preimage": "3bce390955d03a3c5920f76b12306d1bc8b2e7d5",
     "branch": "work/f-gc-strip01-c2b-local-continuation-20261003",
-    "evidence": "integration/f-gc/strip01/results/c2b-local-20261003/validation.json",
     "review": "docs/integration/F-GC-STRIP01_C2B_LOCAL_FINDINGS.md",
-    "changes": [
-      "nper=2",
-      "context transition with revision 1 and t0=0.001",
-      "valid JSON newline"
-    ],
-    "fixed_flux": "C2a published; C2b rejected at swap-corrector; revision 1 and committed state/ledger/XOLD preserved",
-    "dynamic_surface": "C2a rejected with KERNEL_STATUS_NOT_ADMITTED=101, before solver; Black surface route excludes bottom_mode=5",
-    "source_validation": "144 compiled src blobs each equal pinned canonical tree in all three builds",
-    "fresh_process_replay": "byte-identical JSON for each of three variants",
+    "correct_sign_summary": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_rain_micro100_summary.json",
+    "flux_sign": "positive external_top_flux is outward/output; negative is inward/input, as accounted in account_external_fluxes",
+    "historical_reclassification": "prior +0.1 cm/day probes were outward flux, not rainfall",
+    "correct_sign_full_window": "0.001-day negative top-flux rainfall rejects at first SWAP corrector; committed state preserved and MODFLOW timestep not finalized",
+    "correct_sign_micro_series": "100/100 native SWAP–MODFLOW6 windows published at 1e-5 day each; replay byte-identical; cumulative mass residual 5.44560785218284e-15 m3",
+    "groundwater_response": "none measurable; all heads remain -1 m; zero drain outflow",
+    "temporal_seed": "experimental research-fixture derivative only; not qualified runtime behavior",
+    "dynamic_surface": "Black B1.11 with bottom_mode=5 still KERNEL_STATUS_NOT_ADMITTED=101 before solver",
+    "source_validation": "144 compiled production src blobs match pinned canonical tree; no production source change",
     "canonical_admission": false,
     "production_delta": [],
-    "temporal_seed_discriminator": "integration/f-gc/strip01/results/c2b-local-20261003/C2_temporal_seed_discriminator.json",
-    "seeded_full_window": "integration/f-gc/strip01/results/c2b-local-20261003/C2_seeded_window_rejection.json",
-    "interpretation": "A temporary-budget candidate derivative reduces isolated onset Binf by about 464x and permits isolated trials at 1e-8/1e-9 day under the frozen budget; at the full 0.001-day C2B interval it remains 187x budget and exhausts 3 solver plus 6 temporal rejections. The 50-column coupled C2B still rejects at first corrector, preserves committed state and exactly replays. Seed alone is insufficient; canonical source and production gates unchanged."
+    "qualification": "not qualified as hydrologically working strip benchmark; no measurable lateral exchange, drain response, restart or longer forcing"
   }
 }

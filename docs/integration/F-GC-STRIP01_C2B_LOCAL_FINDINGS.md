@@ -1,65 +1,37 @@
 # F-GC-STRIP01 C2B local continuation
 
-Date: 2026-10-03. Status: reproduced bounded negative; coupled rainfall remains unqualified.
+Date: 2026-10-03. Status: corrected-sign rainfall publishes in a bounded research fixture; full physical coupling remains unqualified.
 
-The target remains a working 50-cell, 50 m SWAP-MODFLOW6 strip with a sole left drain, closed right/base, explicit storage ownership, precipitation, closed whole-domain water balance and committed restart/replay. Canonical admission is outside this experiment.
+The objective remains a working 50-cell, 50 m SWAP–MODFLOW6 strip: one SWAP column per 1 m cell, a left drain, right and bottom no-flow, SWAP-owned soil water storage, MODFLOW groundwater state, closed mass accounting, measurable groundwater response, and committed restart/replay. This branch is research only; canonical admission is not claimed.
 
-## Source and ownership
+## Critical flux-sign correction
 
-Research preimage: `3bce390955d03a3c5920f76b12306d1bc8b2e7d5`. Canonical solver/runtime source: `e3bfcdca00ba89cfeea529cf9b648dcc803483ab`. Each of three local builds compiled 144 `src/` dependencies. Every blob equals the pinned canonical tree. Research changes are limited to fixtures, harnesses and evidence. No production source changed.
+The canonical serialized reference backend `src/runtime/mod_fmr_serialized_reference_backend.f90`, routine `account_external_fluxes`, accounts `total_in = max(0,-external_top_flux)` and `total_out = max(0,external_top_flux)`. Therefore positive `top_flux` is outward from the soil and negative `top_flux` is inward. Rain/infiltration is represented by a negative flux.
 
-The invariants exercised are committed-state preservation on rejection, physical storage in SWAP only for this confined/no-STO configuration, internal interface exchange counted once, and publication ordered MODFLOW then SWAP then interface ledger. Restart is still open.
+This corrects the classification of prior local probes: the fixed-flux trials at +0.1 cm/day, their duration/rate sweeps, temporal-history seed discriminator and full-window attempts tested outward flux, not rain. Their rejection results remain useful as outward-flux/temporal-history evidence, but none qualifies rainfall. The earlier prose that called +0.1 cm/day rainfall was wrong. The dynamic B1.11 route is a different route and remains excluded before solver admission when combined with `bottom_mode=5`.
 
-## Harness repairs
+## Correct-sign rainfall results
 
-The RAIN01 harness supplied two MODFLOW stress periods but omitted `nper=2`; FloPy wrote `NPER 1`. Native MODFLOW terminated at initialization with `mem_set_value() size mismatch dbl1d, varname=PERLEN`. This reproduces the exit-code-2 failure of Actions run 37112863908 and is not numerical rejection evidence.
+A true inward fixed flux of -0.1 cm/day was tested with the native MODFLOW6 engine and 50 real SWAP columns. The ordinary 0.001-day window rejects in the first SWAP corrector, both without a derivative seed and with the experimental seed. Committed state is preserved; MODFLOW prepares and solves but does not finalize its time step.
 
-The second window must bind a fresh application plan/context to committed revision 1 and `[0.001,0.002]` day. Reusing the published revision-0 context is invalid. The repaired fixture explicitly creates this transition. It is exercised by the fixed-flux sequence; the dynamic variants reject before reaching their transition.
+A single 1e-5-day micro-window publishes all 50 columns. Input is 5.0e-7 m³, SWAP storage increases by approximately 5.0e-7 m³, drain outflow is zero, and the mass residual is 1.2624e-15 m³.
 
-JSON serialization now writes an actual newline instead of a literal backslash followed by n.
+The same 0.001-day elapsed forcing was then split into 100 windows of 1e-5 day. All 100 publish; each column reaches revision 100 and interface-ledger count 100. MODFLOW prepare, solve, finalize-solve and finalize-time-step each run 100 times. Total input is 5.0e-5 m³, SWAP storage change is 4.99999999945544e-5 m³, drain outflow is zero, and cumulative signed mass residual is 5.44560785218284e-15 m³; maximum absolute per-window residual is 5.843048628287003e-15 m³. Two fresh runs have byte-identical 1,091,110-byte result JSON (SHA-256 `2c11da80b89e377e4b52064bd38bf06643e8ee706104b31ae46175e2a5e17cac`). A compact aggregate record is stored at `integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_rain_micro100_summary.json`.
 
-## Verified results
+This is bounded publication and mass-balance evidence only. The derivative seed was experimentally captured and injected by the research fixture; it is not an admitted runtime route. All MODFLOW heads remain -1 m, and no measurable head, lateral-flow, bottom-interface or drain response occurs during these 86.4 seconds. Thus the coupled strip benchmark is not yet working in the intended hydrologic sense.
 
-| Variant | C2a | C2b | Limit of the observation |
-| --- | --- | --- | --- |
-| Fixed imposed top flux with temporal history | Published | Rejected at SWAP corrector | A zero-forcing transaction works; rainfall does not qualify under the frozen gates. |
-| Dynamic B1.11 Black surface route, model certificate | Rejected before solver | Not reached | Unsupported capability combination, not a nonlinear solver failure. |
-| Same dynamic route, external full/half | Rejected before solver | Not reached | Changing the temporal route alone cannot remove the mode-5 exclusion. |
+## Historical tests and other blockers
 
-For fixed-flux C2b, all 50 columns retain revision 1 and one committed ledger entry. Physical/history hashes and accepted MODFLOW XOLD are unchanged; no second MODFLOW timestep is finalized. The equilibrium window has zero input, drain and storage change. Each variant was repeated in a fresh process with byte-identical JSON.
+The isolated onset values previously reported (including Binf=0.867884 cm at 0.001 day against the 1e-5 cm limit, and seed reduction to 0.00187113 cm) came from positive +0.1 cm/day outward flux. They must not be interpreted as rainfall onset behavior. The corrected-sign 0.001-day rainfall window also rejects at the corrector, so the forcing-boundary temporal-history problem remains, now with a properly signed test.
 
-An isolated fixed-flux probe from the fresh hydrostatic origin applies 0.1 cm/day surface input and holds interface head at -1 m. Durations from 1e-3 through 1e-7 day all exhaust the existing eight retries without accepted substeps. At 1e-3 day the nine attempts comprise three solver and six temporal rejections. No mass or admission rejection occurs.
+The dynamic Black B1.11 surface-balance variant with `bottom_mode=5` still returns `KERNEL_STATUS_NOT_ADMITTED=101` before solver execution. No production source, mass gate, retry limit or canonical branch was changed. The 144 compiled `src/` blobs match the pinned canonical source tree `e3bfcdca00ba89cfeea529cf9b648dcc803483ab`.
 
-The detail probe repeats this after accepted C2a, at the same committed state and time as C2b. MODFLOW has solved once, kept all 50 heads at -1 m, and has not finalized the rejected C2b window. The isolated SWAP trial reports Binf = 0.8679 cm at dt=0.001 day against the frozen 1e-5 cm budget, normalized indicator 86,788. At 0.0001 day Binf remains 0.2745 cm; at the minimum allowed 1e-8 day the fresh-origin bound is still 0.0027447 cm, 274 times the budget. The tested values scale approximately with sqrt(dt), so reaching the unchanged budget at 0.1 cm/day would require an extrapolated dt around 1.3e-13 day, far below the 1e-8 day minimum. This estimate is an extrapolation, not an executed timestep result.
+The old zero-flux equilibrium C2a still passes. In corrected-sign C2b, the normal 0.001-day step rejects without publication and preserves accepted state. Splitting this forcing into experimental micro-windows accepts and balances water, but does not establish measurable groundwater exchange or drainage. Restart, longer forcing, Hupsel, lateral/drain response, production integration and canonical admission all remain open.
 
-A fresh-origin forcing sweep separates rate from time error. At 0.1 through 0.001 cm/day, the six tested durations all reject. At 0.0001 cm/day, only 1e-7 and 1e-8 day intervals accept, with multiple retries and subdivisions; that is 1,000 times smaller than the registered 0.1 cm/day rainfall and does not qualify the target. Zero flux accepts immediately. This supports a forcing-onset/temporal-history incompatibility as the immediate bottleneck for the imposed-flux fixture. It does not identify a hydraulic mass-balance defect. It is not a continuation or timestep-convergence qualification. This probe is not a continuation or timestep-convergence result.
+## Next work
 
-## Temporal-history seed discriminator
+Resolve how accepted SWAP temporal-history authority is updated when surface forcing changes at a coupling-window boundary. Keep the frozen 1e-5 cm error gate and 1e-8 day minimum. Qualify the derivative or another onset treatment as an ordinary runtime path, then demonstrate measurable MODFLOW head/lateral/drain response and nonzero interface exchange while closing the full-domain balance. Extend duration, test rejection/replay/restart, and only then advance to Hupsel. Separately qualify dynamic B1.11 precipitation with `bottom_mode=5` or establish a narrower imposed-infiltration contract.
 
-A research-only fixture captures the candidate temporal-history derivative for the same 0.1 cm/day imposed rainfall from the hydrostatic origin. To obtain that candidate despite the frozen 1e-5 cm indicator budget, the capture run temporarily uses a 10 cm budget; it accepts two substeps and is used only to read the derivative. That altered-budget path is not evidence of a valid model transaction. A separate fresh process seeds this derivative into an otherwise unchanged origin and restores the frozen 1e-5 cm budget.
+## Source-bound reproduction record
 
-At 1e-3 day, the seed reduces Binf from 0.867884 cm to 0.00187113 cm (about 464x) but remains 187x above budget. At 1e-8 day, the zero-seed probe rejects at 0.00274469 cm while the seeded probe accepts at 7.80e-7 cm; at 1e-9 day the zero-seed rejects and the seeded probe accepts. This isolates stored history as a large contributor to the onset indicator at very short intervals.
-
-The seed was also supplied at initialization to the full native MODFLOW6 / 50-column SWAP coupled window with 0.1 cm/day rainfall. That window still rejects at SWAP corrector iteration 1. At the full 0.001-day duration the seeded isolated trial has Binf 0.00187113 cm (187x budget) and all nine retries reject (3 solver, 6 temporal); even a 0.000001-day probe remains 5.94x budget. MODFLOW prepares and solves once but does not finalize; all 50 revisions remain zero, ledgers remain zero, and the full committed SWAP/temporal-state hash is unchanged. Two fresh runs produced byte-identical result JSON. Thus a right-derivative seed alone is insufficient; it is not the fix or a qualified coupling route. The next implementation must examine the actual coupling-window temporal update and spatially varying corrector response, alongside the separate B1.11 surface/mode-5 admission seam.
-
-The fixture, runnable discriminator, full-window negative result and source manifest are recorded alongside the earlier evidence. All 144 compiled production-source blobs match the prior build bound to canonical `e3bfcdca00ba89cfeea529cf9b648dcc803483ab`; production source, mass gates and retry limits are unchanged.
-
-## Direct backend blocker
-
-In `src/runtime/mod_fmr_serialized_reference_backend.f90`, `fmr_serialized_execution_admitted` requires `parameters%bottom_mode /= 5` for both Black and Boesten optional evaporation states. The dynamic rainfall fixture uses Black to route precipitation through the existing B1.11 surface balance and uses mode 5 for groundwater-head coupling. Both dynamic variants therefore return `KERNEL_STATUS_NOT_ADMITTED=101` with one admission rejection, zero numerical attempts and zero completed time for all five probed durations.
-
-There is a second independent interface constraint: Black optional state and Richards temporal-history state are mutually exclusive in `state_matches_numerical_continuation_layout`. Therefore merely deleting the mode-5 exclusion would not establish a valid model-certificate route. The plain external full/half temporal comparison currently requires exact physical identity and is not a general error estimator for forced Richards trajectories. These are shared backend semantics, outside the fixture-only owning surface. They must be resolved and qualified explicitly before declaring rainfall capability.
-
-## Next implementation boundary
-
-The next repair belongs to the temporal/backend owner. First define how an accepted state updates temporal-history authority when prescribed surface forcing changes at a coupling-window boundary. Qualify a forcing-consistent right-derivative bootstrap or equivalent local-error treatment without relaxing the frozen head budget or retry floor. Separately establish a supported contract for dynamic B1.11 precipitation plus mode-5 head coupling, including complete physical/optional state, accepted numerical history, ordinary candidate execution and rollback. Alternatively define an explicitly qualified imposed-infiltration route, with its narrower surface-physics scope stated. Preserve all frozen mass/flux gates and the earlier negatives. Do not use a reference-floor candidate as an accepted transaction.
-
-After that shared capability is qualified, rerun the continuous C2a/C2b sequence, require accepted rainfall and native lateral/drain response, then extend duration and check cumulative mass, Hupsel forcing, committed restart and exact replay. C2a alone is not a working strip benchmark.
-
-Evidence and all three compiled source manifests are in `integration/f-gc/strip01/results/c2b-local-20261003/`. `validation.json` records source binding, native engine hash and exact replay checks; `C2_temporal_onset_diagnosis.json` contains the post-C2a Binf/budget observations and fresh-origin rate sweep.
-
-## Reproduction
-
-Build with `tools/build_f_gc_strip01_research_context.py --root <exact canonical checkout> --profile C1 --build <build> --context-override tests/fgc/strip01/research_context_c2_rain.f90`; overlay only the registered C1 grid stub. Run `tests/fgc/strip01/run_c2_rain_sequence.py --profile C1 --root <canonical checkout> --library <build>/libstrip01_research.so --libmf6 <verified engine>/libmf6.so --output <fresh directory>`. Repeat in another fresh process and compare JSON. For the external full/half control use `research_context_c2_rain_fullhalf.f90`. For the ordinary imposed-flux sequence build `research_context_c2.f90` and run `run_research_sequence_c2.py`.
-
-Prerequisite libraries: NumPy, FloPy 3.9.5, xmipy; native MODFLOW6 6.8.0. Compiler flags and exact dependencies are emitted by the build script.
+The latest fixture build is `build-c2-micro-series`; its manifest records 144 production `src/` blobs bound to the pinned canonical tree. The compact evidence summary records the exact native run hash and byte-identical replay. The 1.1 MB full run files were retained locally for analysis; the repository receives the compact summary. No GitHub Actions run was needed for these local native tests.
