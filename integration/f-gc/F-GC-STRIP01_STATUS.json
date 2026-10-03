@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Resolve registered F-GC-STRIP01-RESP01 via source-backed numerical/profile diagnostics and qualified predictor bootstrap; do not execute Hupsel before a normal accepted coupled window.",
+    "next_action": "Qualify accepted-origin q(H), temporal history/tangent and predictor bootstrap for C0/C1 under the existing transaction. Keep the registered RESP01 prerequisite open; do not run Hupsel until a normal coupled window is accepted.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -86,7 +86,7 @@
     "local_final_fixture_builds": "C0/C1 PASS O2 strict flags; 143 compiled canonical src blobs each matched a9cd8330, source unchanged through 8d2271dd",
     "fresh_origin_replay": "EXACT_JSON_IDENTITY_C0_C1; committed active physical/history fields, revisions, ledgers and native XOLD preserved"
   },
-  "next_permitted_action": "Resolve registered F-GC-STRIP01-RESP01 via source-backed numerical/profile diagnostics and qualified predictor bootstrap; do not execute Hupsel before a normal accepted coupled window.",
+  "next_permitted_action": "Qualify accepted-origin q(H), temporal history/tangent and predictor bootstrap for C0/C1 under the existing transaction. Keep the registered RESP01 prerequisite open; do not run Hupsel until a normal coupled window is accepted.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -193,8 +193,8 @@
     "production_admission": false
   },
   "canonical_reconciliation": {
-    "head": "8d2271dd23a963b98dfb25dfcadad0502221350e",
-    "delta": "Since source baseline 53059a5 only Issue 989 workflow trigger/checkout changes; no production source, numerical or owning-contract delta."
+    "head": "23f5d3cff78e055426b48ec93f57c1cb9880759c",
+    "delta": "Reconciled current canonical head after the prior 8d2271dd checkpoint. The LOW08-A canonical source delta includes stricter serialized storage completeness and fail-closed transaction storage evaluation. Rebuilt RESP01C at this head; 143 compiled source dependencies per profile match current canonical, including exact blob checks for each changed compiled dependency. C0/C1 first-attempt response classification is unchanged."
   },
   "response_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01-RESP01.json",
   "c1_research": {
@@ -236,5 +236,33 @@
     "next_prerequisite": "integration/f-gc/strip01/F-GC-STRIP01-RESP01.json",
     "new_branches": 0,
     "production_source_delta": []
+  },
+  "response_telemetry": {
+    "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_RESP01C_PREREGISTRATION.json",
+    "diagnostic_script": "tools/f_gc_strip01_telemetry_probe.py",
+    "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
+    "current_canonical_head": "23f5d3cff78e055426b48ec93f57c1cb9880759c",
+    "c0_result": "integration/f-gc/strip01/results/C0_telemetry_23f5d3.json",
+    "c1_result": "integration/f-gc/strip01/results/C1_telemetry_23f5d3.json",
+    "c0_source_manifest": "integration/f-gc/strip01/results/C0_telemetry_23f5d3_source_git_blobs.json",
+    "c1_source_manifest": "integration/f-gc/strip01/results/C1_telemetry_23f5d3_source_git_blobs.json",
+    "attempts_per_profile": 8,
+    "accepted_trials": 0,
+    "c0": {
+      "temporal_rejections": 4,
+      "solver_retry_rejections": 4,
+      "mass_rejections": 0,
+      "admission_rejections": 0
+    },
+    "c1": {
+      "temporal_rejections": 2,
+      "solver_retry_rejections": 6,
+      "mass_rejections": 0,
+      "admission_rejections": 0
+    },
+    "committed_state_preserved": true,
+    "fresh_process_json_identity": true,
+    "production_source_or_abi_changed": false,
+    "broad_root_cause_proven": false
   }
 }
