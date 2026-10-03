@@ -51,3 +51,5 @@ with tempfile.TemporaryDirectory(prefix='c3a-application-') as folder:
 result['status']='E2E_BENCHMARK_PASS'
 pathlib.Path(os.environ.get('C3A_RESULT','c3a_application_result.json')).write_text(json.dumps(result,indent=2)+'\n')
 print('PPA_WU05C3A_E2E_BENCHMARK=PASS')
+
+# E2E02 post-PERF02 trigger
