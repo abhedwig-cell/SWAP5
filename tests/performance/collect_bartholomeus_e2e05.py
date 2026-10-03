@@ -16,6 +16,8 @@ for scale in [0.001,0.01,0.1,1.0]:
   cp=subprocess.run(cmd,text=True,capture_output=True)
   if cp.returncode: raise SystemExit(f"{cid} failed\n{cp.stdout}\n{cp.stderr}")
   first=next((x for x in cp.stdout.splitlines() if x.startswith("E2E05_FIRST_STATE|")),None)
+  for diag in (x for x in cp.stdout.splitlines() if x.startswith("E2E05_GATE_DIAG|")):
+   print(diag)
   line=next((x for x in cp.stdout.splitlines() if x.startswith("E2E05_GATE_SUMMARY|")),None)
   if not line: raise SystemExit(f"{cid}: missing gate summary")
   d={}
