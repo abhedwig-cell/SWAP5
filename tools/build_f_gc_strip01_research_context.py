@@ -14,6 +14,7 @@ def main():
     ap.add_argument('--profile', choices=['C0','C1'], default='C0')
     ap.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     ap.add_argument('--build', type=Path, required=True)
+    ap.add_argument('--context-override', type=Path, help='Use an isolated research fixture instead of the tests-tree context.')
     args = ap.parse_args()
     root, build = args.root.resolve(), args.build.resolve()
     build.mkdir(parents=True, exist_ok=True)
