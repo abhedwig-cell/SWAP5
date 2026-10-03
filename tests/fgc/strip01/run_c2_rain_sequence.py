@@ -74,6 +74,9 @@ def main():
     init = bridge.fgc49d_fixture_initialize_c
     init.restype = ctypes.c_int
     init.argtypes = [ctypes.POINTER(ctypes.c_int64), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)]
+    advance = bridge.strip01_advance_c
+    advance.restype = ctypes.c_int
+    advance.argtypes = [ctypes.POINTER(ctypes.c_int64), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)]
     handle, h1, h2 = ctypes.c_int64(), ctypes.c_double(), ctypes.c_double()
     status = init(ctypes.byref(handle), ctypes.byref(h1), ctypes.byref(h2))
     result['initialization_status'] = int(status)
@@ -152,14 +155,20 @@ def main():
         if a.published:
             if set_rain(0.1) != 0:
                 raise RuntimeError('fixture rejected preregistered 0.1 cm/day precipitation update')
+            handle_b, href_b1, href_b2 = ctypes.c_int64(), ctypes.c_double(), ctypes.c_double()
+            context_status = int(advance(ctypes.byref(handle_b), ctypes.byref(href_b1), ctypes.byref(href_b2)))
+            result['C2b_context_advance_status'] = context_status
+            if context_status != 0:
+                raise RuntimeError(f'C2b fresh-context continuation failed with status {context_status}')
+            runtime_b = DomainRuntime(lib, handle_b.value)
             raw.prepare_time_step(0.001)
             session_b = Modflow6PreparedSolveSession(kernel, 'STRIP', 'API_SWAP', Fgc34CtypesPublisher(lib), solution_id=1)
-            b = run_groundwater_application_window(runtime, session_b,
+            b = run_groundwater_application_window(runtime_b, session_b,
                 GroundwaterApplicationServiceConfig(flux_tolerance_m_per_s=1e-15, max_coupling_iterations=40))
             result['C2b'] = dict(status=int(b.status), published=b.published, failure_stage=b.failure_stage,
                 iterations=b.iterations, request_smaller_window=b.request_smaller_window,
                 heads_m=b.final_heads_m, residuals_m_per_s=b.final_residuals_m_per_s,
-                trial_heads_m=getattr(runtime, 'last_trial_heads', []),
+                trial_heads_m=getattr(runtime_b, 'last_trial_heads', []),
                 profile_state_sha256=state_hash(), storage_m3=None, revisions=None, ledger_counts=counts(),
                 accepted_xold_heads_m=session_b.accepted_xold.tolist(),
                 final_xold_heads_m=session_b.xold.tolist(), modflow_calls=dict(kernel.calls))
