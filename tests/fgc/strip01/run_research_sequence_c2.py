@@ -55,11 +55,25 @@ class CountingKernel:
 
 
 class DomainRuntime(FmrGroundwaterApplicationRuntime):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.last_trial_heads = []
+        self.last_trial_valid = None
+        self.last_trial_gate = None
+        self.last_trial_flux = []
+        self.last_trial_tangent = []
+
     def trial_cell_heads(self, heads):
         self.last_trial_heads = list(heads)
-        if any(not (-1.999 < h < 0.0) for h in heads):
+        self.last_trial_gate = all(-1.999 < h < 0.0 for h in heads)
+        if not self.last_trial_gate:
+            self.last_trial_valid = False
             return GroundwaterApplicationCorrectorBatch(False, ())
-        return super().trial_cell_heads(heads)
+        response = super().trial_cell_heads(heads)
+        self.last_trial_valid = bool(response.valid)
+        self.last_trial_flux = list(response.cell_q_swap_m_per_s)
+        self.last_trial_tangent = list(response.cell_dq_swap_dh_per_s)
+        return response
 
 
 def main():
@@ -249,6 +263,11 @@ def main():
                 final_xold_m=session.xold.tolist()
                 if session.xold is not None
                 else [],
+                swap_corrector_heads_m=list(runtime.last_trial_heads),
+                swap_corrector_domain_gate=runtime.last_trial_gate,
+                swap_corrector_valid=runtime.last_trial_valid,
+                swap_corrector_flux_m_per_s=list(runtime.last_trial_flux),
+                swap_corrector_tangent_per_s=list(runtime.last_trial_tangent),
             )
             if answer.published:
                 assert revisions_after == [revisions_before[0] + 1] * 50
