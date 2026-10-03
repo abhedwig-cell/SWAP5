@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2A_EQUILIBRIUM_ACCEPTED_C2B_FORCING_PENDING_RESP01F_NEGATIVE",
+  "state": "C2A_ACCEPTED_C2B_REJECTED_RESP01F_NEGATIVE",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Implement and run preregistered C2b 1 mm/day top precipitation through actual SWAP forcing, with C2a-to-C2b continuation represented explicitly and frozen gates/source binding. Preserve RESP01F as a negative: matched heads alone do not cure C0/C1 rejection. Then analyze accepted-window flux/storage/mass, and only then consider Hupsel. Keep full coupling qualification and canonical admission open.",
+    "next_action": "Characterize the first-corrector rejection from the continuous C2a→C2b run by exposing the existing SWAP transaction diagnostics and identifying the fired rejection counter/gate. Preserve C2a committed state and frozen limits. Then repair only a demonstrated fixture/configuration issue or preregister a bounded response experiment; require an accepted coupled window and closed balance before Hupsel. Keep canonical admission open.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -87,7 +87,10 @@
     "fresh_origin_replay": "EXACT_JSON_IDENTITY_C0_C1; committed active physical/history fields, revisions, ledgers and native XOLD preserved",
     "c2a_result": "integration/f-gc/strip01/results/C2a_equilibrium_run_37111558483.json",
     "c2a": "PASS: one accepted zero-forcing matched-head ordinary transaction; exact initial equilibrium, zero SWAP storage change, zero drain, zero residual; source-bound to canonical e3bfcdca00ba89cfeea529cf9b648dcc803483ab.",
-    "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open."
+    "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open.",
+    "c2b_result": "integration/f-gc/strip01/results/C2b_rain_continuation_run_37112827684.json",
+    "c2b_qualification": "REJECTED_FIRST_SWAP_CORRECTOR_AFTER_C2A_ACCEPTANCE; forcing/context setup succeeded; committed state, storage, revisions and ledgers preserved; candidate input residual is not accepted-window mass balance.",
+    "c2b_report": "docs/integration/F-GC-STRIP01_C2B_RESULT.md"
   },
   "next_permitted_action": "Implement and run preregistered C2b 1 mm/day top precipitation through actual SWAP forcing, with C2a-to-C2b continuation represented explicitly and frozen gates/source binding. Preserve RESP01F as a negative: matched heads alone do not cure C0/C1 rejection. Then analyze accepted-window flux/storage/mass, and only then consider Hupsel. Keep full coupling qualification and canonical admission open.",
   "oracle_evidence": {
@@ -304,7 +307,7 @@
   },
   "c2_research": {
     "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2_PREREGISTRATION.json",
-    "state": "C2A_ACCEPTED_C2B_NOT_YET_RUN",
+    "state": "C2A_ACCEPTED_C2B_REJECTED_AT_FIRST_SWAP_CORRECTOR",
     "source_build": "PASS_EXACT_CANONICAL_E3BF",
     "source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
     "research_commit": "d99b1e1a284d96639bd58faeeb5c85cde4da6d9b",
@@ -314,7 +317,17 @@
     "artifact_id": 11269533858,
     "artifact_sha256": "a706dde3c1e41aa16bd88bbcca766ee42d392b47b15b353d258dbc95550e9e16",
     "production_delta": [],
-    "artifact_retention": "workflow artifact retained 90 days; compact result persisted in repository"
+    "artifact_retention": "workflow artifact retained 90 days; compact result persisted in repository",
+    "c2b_result": "integration/f-gc/strip01/results/C2b_rain_continuation_run_37112827684.json",
+    "c2b_report": "docs/integration/F-GC-STRIP01_C2B_RESULT.md",
+    "c2b_workflow_run": 37112827684,
+    "c2b_source_commit": "65d79f753db41afe19b250d5e43a61a6c82b29b2",
+    "c2b_artifact_id": 11270561100,
+    "c2b_artifact_sha256": "87a46839458e06b2f3a3ebe4c28889c5aad02209b51ea36ea41fee8ef2e23f2a",
+    "c2b_precipitation_input_m3": 0.00005,
+    "c2b_failure_stage": "swap-corrector",
+    "c2b_committed_state_preserved": true,
+    "c2b_mass_balance_qualified": false
   },
   "response01f_corrected": {
     "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_RESP01F_PREREGISTRATION.json",
