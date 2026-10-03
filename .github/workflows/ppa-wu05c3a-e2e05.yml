@@ -1,0 +1,15 @@
+name: PPA WU05 C3A E2E05 BOFEK eligibility
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/performance/characterize_bartholomeus_e2e05_bofek.f90'
+      - 'tests/performance/run_bartholomeus_e2e05.sh'
+  workflow_dispatch:
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: BOFEK accepted-state eligibility
+        run: bash tests/performance/run_bartholomeus_e2e05.sh
