@@ -96,3 +96,6 @@ The latest PERF02 qualification additionally compiles the current backend depend
 ## Current-canonical admission reconstruction
 
 Reconstructed from qualified PERF02 source on canonical `23f5d3cff78e055426b48ec93f57c1cb9880759c`, after canonical admission of #989. Historical blocker statements above are retained as provenance; #989 is now resolved and canonical admitted. Final admission requires fresh current-canonical boundary, B1.11, typed application, and performance qualification on this clean branch.
+
+
+Focused current-canonical admission workflow registered on canonical via PR #999; this line triggers its final PR-postimage qualification.
