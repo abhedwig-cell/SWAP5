@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.fgc.strip01.c2e.real_swap_ab.preregistration.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01",
+  "title": "Matched native-harness real-SWAP versus Dummy-SWAP first-window response",
+  "state": "PREREGISTERED_FOR_CONFIRMATORY_REPLAY",
+  "purpose": "Compare the first recharge transaction of the native-registry analytic Dummy-SWAP participant with real SWAP at the same 50x1 topology, MODFLOW strip, initial head, forcing and coupling service. Identify whether the first failure occurs in the shared application/MODFLOW path or in the real SWAP corrector transaction.",
+  "baseline": {
+    "branch": "work/f-gc-strip01-dummy-50x1",
+    "c2e_dummy_findings": "docs/integration/F-GC-STRIP01_C2E_NATIVE_DUMMY_FINDINGS.md",
+    "real_swap_diagnosis": "docs/integration/F-GC-STRIP01_C2B_LOCAL_FINDINGS.md",
+    "real_context": "tests/fgc/strip01/research_context_c2a.f90",
+    "runner": "tests/fgc/strip01/run_c2_rain_sequence.py"
+  },
+  "topology_and_parameters": {
+    "columns": 50,
+    "modflow_cells": 50,
+    "mapping": "1:1, index preserving",
+    "strip_width_m": 50,
+    "dx_m": 1,
+    "layers": 1,
+    "initial_interface_and_modflow_head_m": -1.0,
+    "drain": "left MODFLOW DRN; no-flow right and bottom",
+    "modflow_engine": "MODFLOW 6.8.0 XMI"
+  },
+  "trajectory": {
+    "windows": [
+      {"label": "C2a-equilibrium", "t0_day": 0.0, "duration_day": 0.001, "recharge_m_per_day": 0.0},
+      {"label": "C2b-recharge", "t0_day": 0.001, "duration_day": 0.001, "recharge_m_per_day": 0.001}
+    ],
+    "real_swap_top_flux_cm_per_day": -0.1,
+    "initial_state": "C2A C1 matched-head real-SWAP state; the accepted C2a transaction is committed before the rain window, preserving SWAP temporal history",
+    "participant_variants": ["native F-GC49D analytic Dummy-SWAP provider", "native real-SWAP C1 participants"]
+  },
+  "gates_and_diagnostics": {
+    "primary_flux_residual_tolerance_m_per_s": 2e-15,
+    "sensitivity_flux_residual_tolerance_m_per_s": 1e-12,
+    "max_coupling_iterations": 40,
+    "no_production_semantics_or_gate_changes": true,
+    "record": ["publication status and failure stage", "MODFLOW convergence and lifecycle calls", "coupling iterations and residual", "per-column storage/revision/ledger state", "committed profile state hash before and after rejected window"],
+    "failure_classification": "A corrector rejection before publication, with unchanged committed profile/revisions/ledgers and no MODFLOW finalization, is assigned to the real-SWAP participant-side transaction for this trajectory; it does not by itself identify an individual Richards equation or prove all coupling paths correct."
+  },
+  "replay": "Repeat both tolerance cases in independent fresh processes. Results must be byte-identical within each deterministic real-SWAP case.",
+  "out_of_scope": ["fixing Richards convergence", "changing canonical coupling semantics or production tolerances", "Hupsel", "claiming general production qualification"],
+  "deliverables": ["source-bound runner and real-SWAP context", "compact and full machine-readable results", "fresh-process replay identity", "bounded A/B findings", "updated F-GC-STRIP01 status"],
+  "authorization": {"authorized_by": "user instruction in active Work session", "date": "2026-10-04", "scope": "Local research-only experiment and persisted evidence; no production behavior change."}
+}

@@ -1,6 +1,6 @@
 # F-GC-STRIP01 C2E: native-registry Dummy-SWAP findings
 
-Date: 2026-10-04. Status: bounded native-registry research qualification passed; no production admission.
+Date: 2026-10-04. Status: bounded native-registry research qualification passed; matched participant A/B completed; no production admission.
 
 ## Result
 
@@ -29,11 +29,28 @@ The finite-resistance test produces a measurable internal/interface head differe
 
 The zero, near-transparent, and finite-resistance result files were each repeated in a fresh process and matched byte for byte. The run was built from local source commit `163ee6e9013046aca74274473c855666f0aa2937`; its complete source tree (`0881328953a2378891fc30771f05cfc570ce9778`) is persisted on the branch as implementation commit `e25eb9f3b2dac2482c8e5f04d02c4430dbbdf743`. The compiler, research library and MODFLOW6 shared-library hashes are in `integration/f-gc/strip01/results/c2e-native/source_manifest.json`. Compressed full window results, compact per-window ledgers and selected 50-head/49-face profiles are persisted alongside it.
 
-## A/B interpretation and claim boundary
+## Matched native-harness A/B
 
-This establishes that the tested 50x1 native registry/application-context and MODFLOW strip can handle the prescribed recharge/recession forcing, spatial groundwater response, lateral flow, drain discharge, transaction publication and mass ownership when the real Richards participant is replaced by the analytic Dummy-SWAP response. The corresponding C2B real-SWAP path rejects ordinary full windows in the SWAP corrector after a separate experimental coupling-residual stopping issue is relaxed; it had no measurable groundwater response in its bounded accepted segment. The comparison supports a real-SWAP/Richards transaction-side blocker for the tested trajectory, rather than a general inability of the native registry and MODFLOW strip to respond.
+The follow-on C2E-AB01 replay uses the same 50-cell mapping, C1 MODFLOW6 6.8.0 strip, native F-GC49D application service, coupling tolerance, 0.001-day windows and 0.001 m/day recharge for both participant variants. The Dummy-SWAP cases replace the real leaf response with the C2E analytic participant; the real case starts from the accepted C2A real-SWAP transaction so the second window retains its Richards temporal history. The real fixture changes only prescribed top infiltration to the preregistered `-0.1 cm/day` before constructing the next window.
 
-This is a matched geometry, mapping, MODFLOW parameterization and forcing-envelope comparison, not a bit-for-bit rerun of real SWAP through the C2E test fixture. It does not prove that all production coupling topologies or real-SWAP states are correct, nor that the experimental MODFLOW-owned capacitance/drain partition is production-authorized. Hupsel and canonical admission remain out of scope. Production tolerances, retry rules, ABI semantics and physical ownership were not changed.
+| Participant and resistance | C2a zero window | C2b recharge | Recharge-window balance/response |
+|---|---|---|---|
+| Dummy, near-transparent `C=1,000,000 m²/day` | Published | Published in one window | `5e-5 m³` input; dummy storage `9.9442e-6 m³`; transfer `4.0056e-5 m³`; MODFLOW storage `3.9769e-5 m³`; drain `2.8697e-7 m³`; residual `6.07e-16 m³` |
+| Dummy, finite `C=0.125 m²/day` | Published | Published in one window | `5e-5 m³` input; dummy storage `4.9875e-5 m³`; transfer `1.2461e-7 m³`; MODFLOW storage `1.2377e-7 m³`; drain `8.36e-10 m³`; residual `7.83e-16 m³` |
+| Real SWAP, `2e-15 m/s` coupling residual gate | Published; all columns revision 1 | Rejected at first `swap-corrector`, iteration 1 | No publication or mass update; profile hash, 50 revisions and 50 ledgers unchanged; MODFLOW timestep not finalized |
+| Real SWAP, `1e-12 m/s` sensitivity | Published; all columns revision 1 | Same rejection at first `swap-corrector`, iteration 1 | Same unchanged state and lifecycle outcome |
+
+Both dummy response variants produce a nonzero spatial/lateral MODFLOW response toward the right no-flow edge and left drain flow during this deliberately short matched window. The longer C2E pulse/recession cases establish the larger head mound and substantial drainage response. All four confirmatory results replay byte for byte in fresh processes. The real run's C2a hash is identical to the rejected C2b hash and final hash; all revisions and ledgers remain at 1. MODFLOW lifecycle counts show two prepare/solve calls (one per window), but only the accepted C2a window finalized the solve and timestep.
+
+The primary real-SWAP failure persists when the experimental flux residual tolerance is relaxed from `2e-15` to `1e-12 m/s`; therefore this specific first-iteration rejection is not explained by the coupling residual stopping gate. It is localized to the real-SWAP corrector/transaction path for the tested state and forcing. The experiment does not identify a single Richards equation or prove all real-SWAP states fail.
+
+Full results, selected 50-head/49-face profiles, replay hashes and source/toolchain manifests are under `integration/f-gc/strip01/results/c2e-native/ab01/`. The preregistered protocol is `integration/f-gc/strip01/F-GC-STRIP01_C2E_AB_PREREGISTRATION.json`.
+
+## Claim boundary
+
+This establishes that the tested native registry/application path and MODFLOW strip accept this recharge window, produce a spatial groundwater response and drain discharge, and close mass when using either analytic dummy response. Real SWAP rejects that same recharge window in its corrector, before publication, even with a looser research coupling residual tolerance. The matched evidence supports a real-SWAP/Richards transaction-side blocker for this trajectory, rather than a general inability of the native application service, participant registry or MODFLOW strip to respond.
+
+The participant variants use their respective test-only construction fixtures, while keeping native F-GC49D orchestration and MODFLOW execution. This does not prove that all production coupling topologies or real-SWAP states are correct, nor that the experimental MODFLOW-owned capacitance/drain partition is production-authorized. Hupsel and canonical admission remain out of scope. Production tolerances, retry rules, ABI semantics and physical ownership were not changed.
 
 ## Build/test note
 
@@ -41,4 +58,4 @@ The C2E research context compiled locally with the C1 profile and the three nati
 
 ## Decision
 
-`DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED` — bounded to this native-registry research provider, tested MODFLOW6 strip and declared research storage ownership. C2B's separate corrector failure is consistent with a Richards/transaction-side limitation at the tested forcing/window regime. The next useful discriminator is a same-harness real-SWAP replay if a test-only provider hook can preserve all canonical participant semantics; no production solver or coupling gate should be tuned on the basis of this dummy result alone.
+`DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED` — bounded to this native-registry research provider, tested MODFLOW6 strip and declared research storage ownership. C2E-AB01 directly shows dummy publication and MODFLOW response while real SWAP rejects the matched recharge transaction at the corrector for the tested state/window. Do not tune production solver or coupling gates based on this bounded research result alone.

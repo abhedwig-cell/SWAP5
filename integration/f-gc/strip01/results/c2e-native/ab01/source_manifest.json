@@ -1,0 +1,77 @@
+{
+  "commands": {
+    "dummy": "python tests/fgc/strip01/run_dummy_strip_c2e_native.py --profile C1 --mode c2b-match --conductance <1000000|0.125> --flux-tolerance 2e-15 ...",
+    "real": "MPLCONFIGDIR=/tmp/mpl python -u tests/fgc/strip01/run_c2_rain_sequence.py --profile C1 --real-context c2a --library /tmp/f-gc-c2a-ab-build/libstrip01_research.so --libmf6 /tmp/c2-mf6-680/bin/libmf6.so --output <fresh-dir> --flux-tolerance <2e-15|1e-12> --max-coupling-iterations 40"
+  },
+  "compiler": "GNU Fortran 13.3.0",
+  "dummy_build": {
+    "command": "python tools/build_f_gc_strip01_research_context.py --profile C1 --build /tmp/f-gc-c2e-final-build --context-override tests/fgc/strip01/research_context_c2e.f90",
+    "libmf6_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+    "library_sha256": "3a78baa49e8694a5c8de6d7029cd7776943cbdb8530b8812509cdfa085d61be6",
+    "modflow6_version": "6.8.0"
+  },
+  "dummy_runner_commit": "b53337883d8deafa5e89c89b4c0145f7368a8fe0",
+  "implementation_commit": "163ee6e9013046aca74274473c855666f0aa2937",
+  "implementation_tree": "0881328953a2378891fc30771f05cfc570ce9778",
+  "library_sha256": {
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB_PREREGISTRATION.json": "579805ff2f3218494a6d86113e3461146b6e34981d84439fdef4e2bb82f2c80b",
+    "tests/fgc/strip01/research_context_c2a.f90": "2c4a1b4c9d0cf64ff00185caadf41c9a76cdb533a022a0495e6ed9735707fa70",
+    "tests/fgc/strip01/research_context_c2e.f90": "2469b4f4375314f4de2b85998869b6a0d57d54d29258927cb57d515fad88323b",
+    "tests/fgc/strip01/run_c2_rain_sequence.py": "cb5d78b3e47befa9a2f1f34db62e9081b245e8a2b10022184b8e487dce1cf882",
+    "tests/fgc/strip01/run_dummy_strip_c2e_native.py": "15f892af725c22de60608457e8dcc4693f6244f01be101a4dfcb60c8945b96d4"
+  },
+  "profile": "C1",
+  "python": "Python 3.12.14",
+  "real_build": {
+    "command": "python tools/build_f_gc_strip01_research_context.py --profile C1 --build /tmp/f-gc-c2a-ab-build --context-override tests/fgc/strip01/research_context_c2a.f90",
+    "independent_rebuild_library_sha256": "d91776b4fbfdacbace79e518619a48cf72827fe85034012cf14155ee7707e592",
+    "libmf6_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+    "library_sha256": "d91776b4fbfdacbace79e518619a48cf72827fe85034012cf14155ee7707e592",
+    "modflow6_version": "6.8.0",
+    "reproducibility_check": "Independent rebuild from same committed C1 source produced byte-identical shared-library SHA-256."
+  },
+  "real_context_and_runner_commit": "b9baa7e3a117b708a249724bcd46adb773d78ecc",
+  "replay_sha256": {
+    "dummy_finite_resistance": {
+      "run1": "b4b17924af2231c10d4459af1f2a5cb707b5b573bc703f9072c3e14ffcea83de",
+      "run2": "b4b17924af2231c10d4459af1f2a5cb707b5b573bc703f9072c3e14ffcea83de"
+    },
+    "dummy_transparent": {
+      "run1": "e3d854e5324fb1b4490767741f39e2881166f52d26a2003d70eb8bf9bea68a19",
+      "run2": "e3d854e5324fb1b4490767741f39e2881166f52d26a2003d70eb8bf9bea68a19"
+    },
+    "real_1e-12": {
+      "run1": "d2ccbe1ebf2748f7cbbec441d3e7d3b7ac9da88a841c8202542754c68ed14448",
+      "run2": "d2ccbe1ebf2748f7cbbec441d3e7d3b7ac9da88a841c8202542754c68ed14448"
+    },
+    "real_2e-15": {
+      "run1": "52137fda2b3e6ad396a6033fd6d22ff3cf64f688514017b0848984367b967b7c",
+      "run2": "52137fda2b3e6ad396a6033fd6d22ff3cf64f688514017b0848984367b967b7c"
+    }
+  },
+  "result_sha256": {
+    "dummy_finite_resistance_result.json.gz": "2f8228c1316038c233e67a60cf3fb6430499ba3e7274fe528106576ee30738c0",
+    "dummy_transparent_result.json.gz": "b1ec8a3943ef46223ce01c78d4598ed2394c9c9b2c2060b9db78d6f20cc38bb2",
+    "real_1e-12_result.json.gz": "ee79f60ff26e8bf37485e282cb4374fb4bcc96289a0a729a62c06f79bf90238c",
+    "real_2e-15_result.json.gz": "41d91082f4121dcb4542ca88135e5eeaca343555111d00ff7993c24d91ea16e9"
+  },
+  "schema": "swap5.fgc.strip01.c2e_ab01.source_manifest.v1",
+  "source_blob_ids": {
+    "dummy": {
+      "tests/fgc/strip01/research_context_c2e.f90": "10df60931930698507946676876ea11171d95090",
+      "tests/fgc/strip01/run_dummy_strip_c2e_native.py": "42e11d9c6625ddaa6d80124315afcc1e103ebd27",
+      "tests/fgc/strip01/validate_dummy_strip_c2e_native.py": "d15f2b0a7c985052736f1e30b3c6f45f94f8f883"
+    },
+    "real_swap": {
+      "tests/fgc/strip01/research_context_c2a.f90": "676e54404f867728fc40bdbe8c50d55717a2f9df",
+      "tests/fgc/strip01/run_c2_rain_sequence.py": "c158866f086df5bcd637924dafba514836b43826",
+      "tools/build_f_gc_strip01_research_context.py": "37b6cca393ce85af6766b2a7e68e2ae8e4241c42"
+    }
+  },
+  "validation": {
+    "dummy_cases_passed": 2,
+    "dummy_result_validator": "python tests/fgc/strip01/validate_dummy_strip_c2e_native.py",
+    "fresh_process_replay_identity": true,
+    "real_swap_invariants_checked": "runner asserts accepted C2a to rejected C2b hash equality, revisions and ledgers unchanged, and accepted/final XOLD equality."
+  }
+}

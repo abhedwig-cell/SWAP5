@@ -13,10 +13,15 @@ from xmipy import XmiWrapper
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--profile', choices=['C0','C1'], default='C0')
+parser.add_argument('--real-context', choices=['c2-rain','c2a'], default='c2-rain',
+                    help='select Black-evaporation rain fixture or temporal-history C2A fixture with fixed-flux setter')
 parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[3])
 parser.add_argument('--library', type=Path, required=True)
 parser.add_argument('--libmf6', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)
+parser.add_argument('--flux-tolerance', type=float, default=1e-15,
+                    help='research-only groundwater/SWAP coupling residual tolerance (m/s)')
+parser.add_argument('--max-coupling-iterations', type=int, default=40)
 args = parser.parse_args()
 sys.path.insert(0, str(args.root.resolve() / 'src/adapter'))
 from fmr_groundwater_application_runtime import FmrGroundwaterApplicationRuntime
@@ -68,6 +73,9 @@ def main():
     work.mkdir(parents=True, exist_ok=True)
     result = dict(state='RUNNING', real_swap=True, native_modflow=True,
                   experimental=True, canonical_admission=False, columns=50,
+                  flux_tolerance_m_per_s=args.flux_tolerance,
+                  max_coupling_iterations=args.max_coupling_iterations,
+                  real_context=args.real_context,
                   experiment='F-GC-STRIP01-C2-RAIN01',
                   preregistration='integration/f-gc/strip01/F-GC-STRIP01_C2_RAIN01_PREREGISTRATION.json')
     bridge = ctypes.CDLL(str(lib.resolve()))
@@ -99,7 +107,7 @@ def main():
 
     fields_fn = bridge.strip01_fields_c
     fields_fn.argtypes = [ctypes.POINTER(ctypes.c_double)]
-    field_count = (2 * 20 + 4) * 50
+    field_count = ((3 * 20 + 3) if args.real_context == 'c2a' else (2 * 20 + 4)) * 50
     def state_hash():
         values = (ctypes.c_double * field_count)()
         assert fields_fn(values) == 0
@@ -144,25 +152,30 @@ def main():
         raw.prepare_time_step(0.0)
         session_a = Modflow6PreparedSolveSession(kernel, 'STRIP', 'API_SWAP', Fgc34CtypesPublisher(lib), solution_id=1)
         a = run_groundwater_application_window(runtime, session_a,
-            GroundwaterApplicationServiceConfig(flux_tolerance_m_per_s=1e-15, max_coupling_iterations=40))
+            GroundwaterApplicationServiceConfig(flux_tolerance_m_per_s=args.flux_tolerance,
+                                                max_coupling_iterations=args.max_coupling_iterations))
         result['C2a'] = dict(status=int(a.status), published=a.published, failure_stage=a.failure_stage,
             iterations=a.iterations, request_smaller_window=a.request_smaller_window,
             heads_m=a.final_heads_m, residuals_m_per_s=a.final_residuals_m_per_s,
             profile_state_sha256=state_hash(), storage_m3=None, revisions=None, ledger_counts=counts(),
             modflow_calls=dict(kernel.calls))
         result['C2a']['storage_m3'], result['C2a']['revisions'] = state()
+        print(f"C2A published={a.published} failure={a.failure_stage} revisions={result['C2a']['revisions'][0]}", flush=True)
 
         if a.published:
             if set_rain(0.1) != 0:
                 raise RuntimeError('fixture rejected preregistered 0.1 cm/day precipitation update')
+            print('C2A forcing update accepted', flush=True)
             next_handle, next_h1, next_h2 = ctypes.c_int64(), ctypes.c_double(), ctypes.c_double()
             result['advance_context_status'] = int(advance(ctypes.byref(next_handle), ctypes.byref(next_h1), ctypes.byref(next_h2)))
+            print(f"C2A next-context status={result['advance_context_status']}", flush=True)
             assert result['advance_context_status'] == 0
             runtime = DomainRuntime(lib, next_handle.value)
             raw.prepare_time_step(0.001)
             session_b = Modflow6PreparedSolveSession(kernel, 'STRIP', 'API_SWAP', Fgc34CtypesPublisher(lib), solution_id=1)
             b = run_groundwater_application_window(runtime, session_b,
-                GroundwaterApplicationServiceConfig(flux_tolerance_m_per_s=1e-15, max_coupling_iterations=40))
+                GroundwaterApplicationServiceConfig(flux_tolerance_m_per_s=args.flux_tolerance,
+                                                    max_coupling_iterations=args.max_coupling_iterations))
             result['C2b'] = dict(status=int(b.status), published=b.published, failure_stage=b.failure_stage,
                 iterations=b.iterations, request_smaller_window=b.request_smaller_window,
                 heads_m=b.final_heads_m, residuals_m_per_s=b.final_residuals_m_per_s,
@@ -220,4 +233,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Instrument full-context SWAP corrector failure with failing participant index and per-column solver/temporal transaction diagnostics. Evidence separates (1) experimental coupling flux tolerance 1e-15 m/s causing max-iteration stop at residual 1.393e-15, removed in sensitivity test at 2e-15; and (2) subsequent SWAP transaction failure near 0.0044255 cm/day with solver rejections and no temporal rejections at dt=1e-6. Keep production gates unchanged; no groundwater response, no qualification, Hupsel deferred.",
+    "next_action": "Retain the C2E native-registry Dummy-SWAP strip as the qualified intermediate. Matched C2E-AB01 shows the same 50x1 native application/MODFLOW path publishes the prescribed recharge with either dummy response, while the real-SWAP C2b window rejects at swap-corrector before publication even at 1e-12 m/s coupling tolerance. Continue only with a targeted real-SWAP transaction/Richards diagnosis; do not change production gates.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -90,7 +90,7 @@
     "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open.",
     "c2b_temporal_onset_diagnosis": "Correct sign: negative top_flux is rainfall; earlier positive top_flux runs were outward-flux tests. Correct-sign unseeded gradual ramp: 2,000 x 1e-5-day windows published with a 1.005 geometric rate increase capped at 0.001 cm/day, then held for 1,075 windows; replay byte-identical, cumulative mass residual 3.13e-14 m3. Continuing the same ramp toward 0.1 cm/day publishes 999 windows and rejects at 0.001458 cm/day. Registered rainfall target is 0.1 cm/day (1 mm/day); no measurable MODFLOW head or drain response."
   },
-  "next_permitted_action": "Retain the qualified C2E native Dummy-SWAP strip as the intermediate baseline. Any follow-on same-harness real-SWAP A/B remains a separate research task; keep C2B Richards/transaction diagnostics and production gates unchanged.",
+  "next_permitted_action": "Use C2E as the permanent native-registry Dummy-SWAP baseline. Continue a bounded real-SWAP participant-side diagnosis without changing canonical coupling semantics, solver tolerances, retry policy or physical ownership.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -462,9 +462,33 @@
       "replay": "Zero, transparent and finite-resistance result JSON each byte-identical in independent fresh processes.",
       "regression_gate": "Existing F-GC49B registry script segfaults at fmr_serialized_storage on C2E and clean pre-C2E HEAD with the same stack; baseline failure, not attributed to C2E."
     },
-    "ab_interpretation": "Supports the tested native registry/MODFLOW path and places the known C2B limitation on the real-SWAP/Richards transaction side for its tested forcing/window regime. C2B and C2E share geometry, mapping, MODFLOW strip and forcing scale, but were not replayed through one bit-for-bit identical participant harness.",
+    "ab_interpretation": "C2E-AB01 confirms that native F-GC49D application orchestration and the 50x1 MODFLOW strip publish both transparent and finite-resistance Dummy-SWAP recharge transactions. The matched real-SWAP C2b recharge window rejects at swap-corrector iteration 1 before publication; committed profile state, all 50 revisions and ledgers remain unchanged. Rejection persists at 1e-12 m/s versus primary 2e-15 m/s tolerance. This supports a real-SWAP/Richards transaction-side blocker for the tested state and window, without identifying a specific Richards equation or qualifying every production topology.",
     "production_delta": [],
     "canonical_admission": false,
-    "next_action": "Retain C2E as permanent native-registry Dummy-SWAP intermediate. If stronger participant-isolated A/B is required, replay C2B real SWAP through the exact C2E MODFLOW/application harness with unchanged canonical semantics."
+    "next_action": "Keep the dummy strip as the intermediate baseline. Any follow-on work should instrument or isolate the real-SWAP corrector/transaction failure; do not loosen production convergence, mass, retry or ownership rules."
+  },
+  "c2e_ab01": {
+    "work_unit": "F-GC-STRIP01-C2E-AB01",
+    "state": "MATCHED_REPLAY_COMPLETED_BOUNDED",
+    "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB_PREREGISTRATION.json",
+    "findings": "docs/integration/F-GC-STRIP01_C2E_NATIVE_DUMMY_FINDINGS.md",
+    "results": "integration/f-gc/strip01/results/c2e-native/ab01/summary.json",
+    "source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/source_manifest.json",
+    "selected_profiles": "integration/f-gc/strip01/results/c2e-native/ab01/dummy_recharge_profiles.json",
+    "dummy_results": {
+      "transparent": "integration/f-gc/strip01/results/c2e-native/ab01/dummy_transparent_result.json.gz",
+      "finite_resistance": "integration/f-gc/strip01/results/c2e-native/ab01/dummy_finite_resistance_result.json.gz"
+    },
+    "real_swap_results": {
+      "2e-15_m_per_s": "integration/f-gc/strip01/results/c2e-native/ab01/real_2e-15_result.json.gz",
+      "1e-12_m_per_s_sensitivity": "integration/f-gc/strip01/results/c2e-native/ab01/real_1e-12_result.json.gz"
+    },
+    "geometry_and_windows": "50 1:1-mapped cells; C2a and C2b windows each 0.001 day; recharge 0.001 m/day only in C2b; real top flux -0.1 cm/day.",
+    "dummy_result": "Both resistance variants publish C2a and C2b; 5e-5 m3 recharge; measurable lateral response and left-drain flow; absolute mass residuals 6.07e-16 and 7.83e-16 m3.",
+    "real_swap_result": "C2a publishes; C2b rejects in swap-corrector at iteration 1 at both coupling tolerances. All 50 revisions and ledgers remain 1, rejected profile hash equals C2a committed hash; no MODFLOW finalization for rejected C2b.",
+    "fresh_process_replay": "Four deterministic cases replay byte-identically; hashes recorded in summary.json and source_manifest.json.",
+    "claim_boundary": "Supports real-SWAP/Richards transaction-side failure for the tested state/window; does not identify a single equation, prove all real states fail, or authorize production changes.",
+    "production_delta": [],
+    "canonical_admission": false
   }
 }
