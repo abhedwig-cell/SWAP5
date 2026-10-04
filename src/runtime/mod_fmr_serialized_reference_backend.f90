@@ -22,7 +22,8 @@ module mod_fmr_serialized_reference_backend
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
-       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM, &
+       FMR_SOLUTE_STATE_LAYOUT_NONE, fmr_solute_state_layout_known
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
@@ -150,6 +151,12 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: event_t0 = 0.0_real64
   end type fmr_snow_runtime_state_t
 
+  type, public :: fmr_mobile_salt_component_t
+    real(real64), allocatable :: mass_mg_cm2(:)
+  contains
+    procedure, public :: ready => fmr_mobile_salt_ready
+  end type fmr_mobile_salt_component_t
+
   type, extends(canonical_state_t), public :: fmr_b110_physical_state_t
     integer :: active_nodes = 0
     real(real64), allocatable :: pressure_head(:)
@@ -159,6 +166,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_snow_runtime_state_t), allocatable :: snow
     type(soil_temperature_state_t), allocatable :: soil_temperature
     type(macropore_continuation_state_t), allocatable :: macropore
+    type(fmr_mobile_salt_component_t), allocatable :: salt
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
@@ -749,7 +757,22 @@ contains
       allocate(target%macropore)
       target%macropore = source%macropore
     end if
+    if (allocated(target%salt)) deallocate(target%salt)
+    if (allocated(source%salt)) then
+      allocate(target%salt)
+      target%salt = source%salt
+    end if
   end subroutine copy_b110_physical_state
+
+  logical function fmr_mobile_salt_ready(self,active_nodes) result(ready)
+    class(fmr_mobile_salt_component_t), intent(in) :: self
+    integer, intent(in) :: active_nodes
+    ready = .false.
+    if (active_nodes <= 0) return
+    if (.not. allocated(self%mass_mg_cm2)) return
+    if (size(self%mass_mg_cm2) /= active_nodes) return
+    ready = all(ieee_is_finite(self%mass_mg_cm2)) .and. all(self%mass_mg_cm2 >= 0.0_real64)
+  end function fmr_mobile_salt_ready
 
   subroutine fmr_b110_state_clone(self, copy)
     class(fmr_b110_physical_state_t), intent(in) :: self
@@ -1542,6 +1565,14 @@ contains
     if (.not. self%initialized .or. column%backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         column%template_id /= template%template_id .or. column%column_id <= 0_int64) then
+      call reject_backend_trial(result, candidate, diagnostics)
+      return
+    end if
+    if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+      call reject_backend_trial(result, candidate, diagnostics)
+      return
+    end if
+    if (.not. fmr_solute_state_layout_known(template%solute_state_layout_id)) then
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
