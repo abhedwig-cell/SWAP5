@@ -2810,6 +2810,10 @@ contains
         call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
       end if
+      if (self%root_compensation%method /= ROOT_COMP_OFF) then
+        if (.not. allocated(self%qrot_unmodified)) return
+        self%qrot = self%qrot_unmodified
+      end if
       if(allocated(self%bartholomeus)) then
         call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
         if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
