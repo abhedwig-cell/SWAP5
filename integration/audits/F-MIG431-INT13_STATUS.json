@@ -42,7 +42,7 @@
     "integration/audits/F-MIG431-INT13_CAPACITY_EVENT_RESULT.json"
   ],
   "implemented": "existing Hupsel-scoped process only; generic Rutter source-window production binding not implemented",
-  "persisted": "work-branch checkpoint pending",
+  "persisted": "updated on work branch and draft PR #1016; exact historical source materialization is still blocked",
   "tested": "INT13 capacity-fill falsification passed at O0/O2 with identical output; existing F-APP05 Rutter unit and frozen Hupsel supporting observations passed at O0/O2 with identical output; existing INT12-P0 source-window preservation test passed at O0/O2",
   "latest_audit_findings": [
     "Two attempts to materialize the exact pinned source archive failed at the Library network boundary (hosted apps tools/list request failed: network); no alternative SWAP version was used.",
