@@ -111,8 +111,6 @@ program test_mobile_salt_state
          'failed trace receipt discarded')
     call req(maxval(abs(reversal_start%mass_mg_cm2-[40.0_real64,0.0_real64]))<tol, &
          'trace rejection leaves committed state unchanged')
-  end block
-
     ! Independently water-closing second step with a discontinuous water
     ! interface is still invalid as an ordered physical trace.
     bad_trace=trace
@@ -124,6 +122,7 @@ program test_mobile_salt_state
     call req(.not.allocated(trace_candidate%mass_mg_cm2),'discontinuous trace discarded')
     call req(maxval(abs(reversal_start%mass_mg_cm2-[40.0_real64,0.0_real64]))<tol, &
          'discontinuous trace leaves committed state unchanged')
+  end block
 
   print *,'PPA_WU05E_MOBILE_SALT=PASS'
 contains
