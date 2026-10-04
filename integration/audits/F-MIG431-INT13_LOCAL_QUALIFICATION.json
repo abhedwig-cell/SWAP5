@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.local_qualification.v1",
+  "workunit": "F-MIG431-INT13",
+  "title": "Rutter corrected-reference physics, source-window transaction and FMR production composition",
+  "date": "2026-10-04",
+  "subject": {
+    "branch": "work/f-mig431-int13-rutter-stateful-forcing",
+    "pre_change_head": "7263fc513d9b4a1f8929e91e29b4ae207000a365",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization": [
+      "O0",
+      "O2"
+    ],
+    "head_before_local_production_integration": "056bc49919aa553609fc7389b709da58a9b56243"
+  },
+  "local_gate": {
+    "command": "tests/fpm/run_f_mig431_int13_rutter_source_window.sh",
+    "result": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "cases": {
+      "legacy_one_call_vs_event_split_falsifier": "PASS",
+      "capacity_fill_and_overflow_conservation": "PASS",
+      "heavy_rain_with_evaporation_conservation": "PASS",
+      "rain_stop_drydown_and_wet_canopy_pet": "PASS",
+      "capacity_decrease_overflow": "PASS",
+      "changed_hydraulic_endpoint_partition_identity": "PASS",
+      "rejected_trial_accepted_state_immutability": "PASS",
+      "mid_window_restart_identity": "PASS",
+      "detailed_record_continuation": "PASS",
+      "dynamic_top_and_crop_root_output_binding": "PASS",
+      "hard_canopy_water_balance": "PASS"
+    },
+    "canonical_capacity_case": {
+      "gross_rain_cm": 1.0,
+      "capacity_cm": 0.1,
+      "initial_storage_cm": 0.0,
+      "evaporation_capacity_cm_per_day": 0.0,
+      "legacy_unsplit_throughfall_cm": 0.0,
+      "legacy_unsplit_storage_cm": 0.1,
+      "unaccounted_cm": 0.9,
+      "corrected_throughfall_cm": 0.9,
+      "corrected_storage_cm": 0.1,
+      "corrected_mass_residual_cm": -2.7755575615628914e-17
+    }
+  },
+  "preservation": {
+    "legacy_rutter_process_blob": {
+      "expected_git_blob": "fd6ba136e02c13add1933ca6d63f25b2e7c5d822",
+      "observed_git_blob": "fd6ba136e02c13add1933ca6d63f25b2e7c5d822",
+      "result": "PASS"
+    },
+    "f_app05_rutter_unit": "PASS_O0_O2_IDENTICAL",
+    "f_app05_hupsel_supporting_observations": "PASS_O0_O2_IDENTICAL",
+    "int12_p0": "PASS_O0_O2",
+    "f_app08_preflight_runner": "NOT_APPLICABLE_TO_BRANCH_DELTA; runner requires its sole source delta to be the existing output-binding file",
+    "f_app08_binding_preservation": "covered by new end-to-end typed output composition case; standalone frozen-vector runner not rerun",
+    "int12_d": "PASS_O0_O2",
+    "int12_e": "PASS_O0_O2",
+    "fmr_production_bootstrap_rutter": "PASS_O0_O2",
+    "black_evaporation": "PASS_O0_O2_IDENTICAL; Black process/runtime oracle, hard mass, reject rollback, changed-dt retry, restart, plus PPA-WU01/WU03 preservation",
+    "boesten_evaporation": "PASS_O0_O2_IDENTICAL; Boesten process/runtime oracle, hard mass, reject rollback, changed-dt retry, restart, plus PPA-WU04A/WU01/WU03 preservation",
+    "runner_note": "Local offline preservation used temporary copies of the existing runners: only remote git-fetch/source-delta preflight was omitted, and two missing module prerequisites were inserted into the temporary compile order. Repository runners and source files were not edited for this workaround."
+  },
+  "claim_limit": [
+    "Not canonically admitted; no persisted Actions qualification has run.",
+    "Exact full B1.11 call-site source remains unavailable and no claim is made that the historical caller shared the unsplit API falsifier.",
+    "Only constant forcing per immutable source window is supported; detailed forcing is one window per record.",
+    "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported model profiles fail closed."
+  ],
+  "production_application": {
+    "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+    "result": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "cases": {
+      "registered_rutter_physical_state_and_bootstrap": "PASS",
+      "immutable_source_window_before_richards_execution": "PASS",
+      "out_of_window_rejection_without_accepted_revision": "PASS",
+      "richards_temporal_rejection_and_retry": "PASS",
+      "same_source_candidate_across_hydraulic_refinement": "PASS",
+      "root_sink_and_wet_canopy_pet_composition": "PASS",
+      "single_transactional_canopy_and_progress_commit": "PASS",
+      "hard_soil_water_mass": "PASS",
+      "restart_carrier_fail_closed_layout_registration": "PASS"
+    },
+    "qualified_scope": {
+      "solver": "Reference Richards",
+      "bottom_boundary": [
+        2,
+        7
+      ],
+      "root_compensation": "OFF; typed existing root sink may be present",
+      "source_forcing": "constant forcing per immutable source window; detailed meteorology uses one window per record",
+      "admitted_combinations": [
+        "Rutter canopy state",
+        "INT12 source progress",
+        "dynamic top boundary",
+        "existing root sink / wet-canopy PET scaling"
+      ]
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "schema": "swap5.f_mig431_int13_status.v1",
   "workunit": "F-MIG431-INT13",
   "title": "Rutter SWINTER=3 stateful atmospheric-forcing migration",
-  "state": "BLOCKED_EXACT_B1_11_SOURCE_MATERIALIZATION",
+  "state": "LOCAL_PRODUCTION_QUALIFICATION_PASS_PERSISTED_ADMISSION_PENDING",
   "baseline": {
     "branch": "integration/f-ci-canonical",
     "head": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
@@ -19,7 +19,10 @@
     "integration/audits/F-MIG431-INT12-P0_STATUS.json",
     "integration/audits/F-MIG431-INT12-D_CLOSEOUT.json",
     "integration/audits/F-MIG431-INT12-E_CLOSEOUT.json",
-    "integration/audits/production_physics_application_envelope_gap_register.json"
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "src/process/mod_rutter_event_integrator.f90",
+    "src/runtime/mod_rutter_source_window_processor.f90",
+    "src/runtime/mod_fmr_rutter_source_window_application.f90"
   ],
   "authority_paths": [
     "docs/status-a/CURRENT_STATUS.md",
@@ -35,27 +38,34 @@
   ],
   "test_paths": [
     "tests/fpm/test_f_mig431_int13_capacity_event.f90",
-    "tests/fpm/run_f_mig431_int13_capacity_event.sh"
+    "tests/fpm/run_f_mig431_int13_capacity_event.sh",
+    "tests/fpm/test_f_mig431_int13_rutter_source_window.f90",
+    "tests/fpm/run_f_mig431_int13_rutter_source_window.sh",
+    "tests/fpm/run_f_mig431_int12_p0.sh",
+    "tests/f-app08/test_rutter_output_binding.f90"
   ],
   "evidence_paths": [
     "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
-    "integration/audits/F-MIG431-INT13_CAPACITY_EVENT_RESULT.json"
+    "integration/audits/F-MIG431-INT13_CORRECTED_REFERENCE.md",
+    "integration/audits/F-MIG431-INT13_LOCAL_QUALIFICATION.json"
   ],
-  "implemented": "existing Hupsel-scoped process only; generic Rutter source-window production binding not implemented",
-  "persisted": "updated on work branch and draft PR #1016; exact historical source materialization is still blocked",
-  "tested": "INT13 capacity-fill falsification passed at O0/O2 with identical output; existing F-APP05 Rutter unit and frozen Hupsel supporting observations passed at O0/O2 with identical output; existing INT12-P0 source-window preservation test passed at O0/O2",
+  "implemented": "corrected event integrator; stateful Rutter source-window candidate composed into FMR committed physical state; production forcing preparation before Richards transaction; restart carrier registration; transactional canopy/progress publication",
+  "persisted": "implementation and evidence locally on work branch; draft PR #1016 remains remote-unmodified because GitHub proxy is unreachable; no Actions admission evidence",
+  "tested": "Rutter independent source-window and physics suite PASS O0/O2; FMR production bootstrap transaction PASS O0/O2 including root sink, temporal rejection/retry, hard mass; INT12-P0/D/E PASS O0/O2; Black and Boesten production/runtime preservation PASS O0/O2 via offline local harness; source-window retry/restart/detailed-record cases PASS",
   "latest_audit_findings": [
-    "Two attempts to retrieve the exact pinned source archive failed with a network error; no alternative SWAP version was used.",
-    "maximum_event_timestep_days has no consumer outside mod_rutter_interception_process under src/**/*.f90; the existing F-APP05 tests call the pure process routine directly, and F-APP08 tests output binding rather than an event-driving production chain.",
-    "The admitted INT12 source-window runtime stores accepted source progress but no canopy water. A Rutter trial must compose canopy candidate state and source-window progress and publish both atomically after hydrological transaction acceptance."
+    "B1.11 exact member identity and patch-chain evidence remain available, but exact full MOD_meteo.f90 call-site source could not be materialized; SWAP 4.2.0 public source is not substituted as equation oracle.",
+    "Bounded legacy interval API falsifier leaves 0.9 cm unaccounted for the empty-canopy 0.1 cm capacity, 1 cm/day rain, zero evaporation, one-day call; corrected event integration routes 0.9 cm to throughfall with roundoff closure. This does not assert that the missing B1.11 caller used the unsplit interval.",
+    "Rutter physical canopy storage and accepted source progress now travel in the same FMR physical-state candidate; preparation occurs once from accepted state before Richards execution, so hydraulic retries cannot reprocess precipitation.",
+    "Production bootstrap qualification exercised accepted Richards temporal refinement, rejected out-of-window forcing without revision change, root sink composition and a single accepted commit with hard soil-water mass closure.",
+    "Initial bounded composition fails closed for irrigation/sprinkling, Snow, Black/Boesten, macropore, RFM/surface-water, drainage, and unsupported solver/continuation profiles.",
+    "Black and Boesten process/runtime, WU01 and WU03 preservation passed O0/O2 with output identity using offline copies of their existing harnesses; only their remote-fetch/delta preflight and omitted module prerequisites were adjusted in temporary test copies."
   ],
   "qualified": false,
-  "next_action": "materialize the exact verified B0 source archive (SHA-256 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151) when Library transfer is available, reconstruct B1.11, and resume the equation/event-order audit before production binding",
+  "next_action": "Persist the completed local qualification and bounded admission packet to PR #1016, trigger only the required PR qualification workflows, inspect persisted results, then merge/admit only if gates pass and close INT13.",
   "recovery_point": "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
   "blockers": [
-    "The canonical checkout lacks the exact B0 source archive and reconstructed B1.11 MOD_meteo.f90 member required to independently reconstruct Rutter source equations. The B0 import gate is explicitly PENDING_BINARY_SAFE_IMPORT; the verified archive SHA is 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151.",
-    "The current Rutter API's one-day fill case loses 0.9 cm unless its caller enforces the reported canopy-fill event and reprocesses the remainder as throughfall; exact legacy comparison is pending source materialization.",
-    "No in-repository production source consumes the Rutter event endpoint; source-window progress and physical canopy storage therefore lack a demonstrated production transaction composition."
+    "Exact full B1.11 call-site source remains unavailable; bounded equation authority and patch-chain evidence support the corrected-reference decision without attributing the unsplit caller defect to historical B1.11.",
+    "Canonical admission awaits the bounded persisted qualification result; supported Rutter compositions remain fail-closed outside the local qualified envelope."
   ],
   "dependency_surface": [
     "Rutter process state and equations",
