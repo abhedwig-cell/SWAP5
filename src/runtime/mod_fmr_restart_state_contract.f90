@@ -7,7 +7,8 @@ module mod_fmr_restart_state_contract
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
-       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_SOLUTE_STATE_LAYOUT_NONE, &
+       FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, fmr_solute_state_layout_known
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
        fmr_b110_macropore_reduction_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_black_evaporation_state_t, &
@@ -24,6 +25,21 @@ contains
     type(fmr_template_t), intent(in) :: template
 
     matches = .false.
+    if (.not. fmr_solute_state_layout_known(template%solute_state_layout_id)) return
+    select type (physical => state)
+    class is (fmr_b110_physical_state_t)
+      select case (template%solute_state_layout_id)
+      case (FMR_SOLUTE_STATE_LAYOUT_NONE)
+        if (allocated(physical%salt)) return
+      case (FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)
+        if (.not. allocated(physical%salt)) return
+        if (.not. physical%salt%ready(physical%active_nodes)) return
+      case default
+        return
+      end select
+    class default
+      if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) return
+    end select
 
     select case (template%compatible_backend_id)
     case (FMR_BACKEND_SERIALIZED_REFERENCE)
