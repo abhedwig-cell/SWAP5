@@ -1,5 +1,6 @@
 program test_ppa_wu05a7_real_richards_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, SW_SOLVE_CONVERGED
@@ -359,6 +360,7 @@ contains
     integer :: commit_status, persistence_status, trace_i, trace_status
     real(real64), allocatable :: trace_faces(:)
     real(real64) :: trace_closure, max_trace_closure, max_trace_macro_exchange, max_trace_macro_water_change
+    real(real64) :: max_trace_macro_vertical_face
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
     real(real64) :: fmr_dt
 
@@ -483,6 +485,7 @@ contains
       max_trace_closure=0.0_real64
       max_trace_macro_exchange=0.0_real64
       max_trace_macro_water_change=0.0_real64
+      max_trace_macro_vertical_face=0.0_real64
       do trace_i=1,size(fmr_observation%accepted_water_flux_substeps)
         if(.not.allocated(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain)) &
              error stop 'FMR trace omitted per-domain macropore exchange'
@@ -499,6 +502,13 @@ contains
         if(any(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_water_start<0.0_real64) .or. &
            any(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_water_end<0.0_real64)) &
              error stop 'FMR trace invalid domain water state'
+        if(.not.allocated(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_vertical_face_rate)) &
+             error stop 'FMR trace omitted macro vertical faces'
+        if(any(shape(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_vertical_face_rate)/= &
+             [size(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain,1),numnod+1])) &
+             error stop 'FMR macro vertical-face shape mismatch'
+        if(any(.not.ieee_is_finite(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_vertical_face_rate))) &
+             error stop 'FMR trace has nonfinite macro vertical face'
         if(maxval(abs(sum(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain,dim=1)- &
              fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange))>1.0e-12_real64) &
              error stop 'FMR trace domain exchange sum mismatch'
@@ -507,6 +517,8 @@ contains
         max_trace_macro_water_change=max(max_trace_macro_water_change, &
              maxval(abs(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_water_end- &
              fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_water_start)))
+        max_trace_macro_vertical_face=max(max_trace_macro_vertical_face, &
+             maxval(abs(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_vertical_face_rate)))
         if(abs(sum(fmr_observation%accepted_water_flux_substeps(trace_i)%root_sink)- &
              sum(forcing%root_extraction_sink))>1.0e-16_real64) error stop 'FMR trace lost final qrot'
         call reconstruct_interval_water_face_flux(dz(1:numnod), &
@@ -524,11 +536,13 @@ contains
       if(max_trace_closure>1.0e-8_real64) error stop 'FMR accepted trace closure tolerance'
       if(max_trace_macro_exchange<=1.0e-14_real64)error stop 'FMR trace did not carry nonzero domain exchange'
       if(max_trace_macro_water_change<=1.0e-14_real64)error stop 'FMR trace did not carry domain water change'
+      if(max_trace_macro_vertical_face<=1.0e-14_real64)error stop 'FMR trace did not carry nonzero macro vertical face'
       call exercise_salt_candidate_rejects_unowned_exchange( &
            fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
       write(*,'(*(g0))') 'PPA_WU05E_FMR_ACCEPTED_SUBSTEP_TRACE=PASS|COUNT=', &
            size(fmr_observation%accepted_water_flux_substeps),'|MAX_CLOSURE=',max_trace_closure, &
-           '|MAX_DOMAIN_EXCHANGE=',max_trace_macro_exchange,'|MAX_DOMAIN_WATER_CHANGE=',max_trace_macro_water_change
+           '|MAX_DOMAIN_EXCHANGE=',max_trace_macro_exchange,'|MAX_DOMAIN_WATER_CHANGE=',max_trace_macro_water_change, &
+           '|MAX_MACRO_VERTICAL_FACE=',max_trace_macro_vertical_face
     end if
 
     call committed%snapshot(after_trial_state,available)
@@ -657,6 +671,16 @@ contains
            size(a%accepted_water_flux_substeps(i)%macropore_water_end))/= &
            transfer(b%accepted_water_flux_substeps(i)%macropore_water_end,[0_int64], &
            size(b%accepted_water_flux_substeps(i)%macropore_water_end))))return
+      if(.not.allocated(a%accepted_water_flux_substeps(i)%macropore_vertical_face_rate) .or. &
+         .not.allocated(b%accepted_water_flux_substeps(i)%macropore_vertical_face_rate))return
+      if(any(shape(a%accepted_water_flux_substeps(i)%macropore_vertical_face_rate)/= &
+             shape(b%accepted_water_flux_substeps(i)%macropore_vertical_face_rate)))return
+      if(size(a%accepted_water_flux_substeps(i)%macropore_vertical_face_rate)>0)then
+        if(any(transfer(a%accepted_water_flux_substeps(i)%macropore_vertical_face_rate,[0_int64], &
+             size(a%accepted_water_flux_substeps(i)%macropore_vertical_face_rate))/= &
+             transfer(b%accepted_water_flux_substeps(i)%macropore_vertical_face_rate,[0_int64], &
+             size(b%accepted_water_flux_substeps(i)%macropore_vertical_face_rate))))return
+      end if
     end do
     same=.true.
   end function same_accepted_water_flux_trace
