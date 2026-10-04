@@ -159,6 +159,20 @@ program test_ppa_wu05d2_application
     end if
     call badapp%close(status)
   end do
+  bad=off
+  deallocate(bad%tiles(1)%parameters%bartholomeus,bad%tiles(1)%base_forcing%crop_oxygen, &
+       bad%tiles(1)%parameters%soil_temperature,bad%tiles(1)%initial_state%soil_temperature, &
+       bad%tiles(1)%base_forcing%soil_temperature)
+  bad%tiles(1)%parameters%soil_temperature_active=.false.
+  bad%tiles(1)%template%optional_state_layout_id=0_int64
+  call badapp%initialize(bad,status)
+  call require(status==FMR_APP_BOOT_OK,'Jarvis application without oxygen or thermal carrier')
+  call badapp%run_standalone(T0,T1,rejected,status)
+  call require(status==FMR_APP_BOOT_OK.and.rejected(1)%committed,'drought-only application commits')
+  call require(abs(rejected(1)%mass%residual)<=HARD_MASS_GATE,'drought-only one water owner')
+  call require(rejected(1)%actual_transpiration_available,'drought-only accepted uptake published')
+  call badapp%close(status)
+  print '(a)','D2_DROUGHT_WITHOUT_OXYGEN_CARRIER=PASS'
   print '(a)','D2_ACTUAL_APPLICATION_UNSUPPORTED_INVALID=PASS'
   print '(a)','PPA_WU05D2_APPLICATION_CHAIN=PASS'
 contains

@@ -45,3 +45,9 @@ All existing mass, temporal, commit and sensitivity contracts remain fixed. Defa
 unavailable metadata preserves model implementations that do not supply the quantity.
 This successor touches shared result interfaces explicitly and requires qualification
 of full/half selection, model certification, retry, rollback and interval publication.
+
+The standalone/prescribed-qbot application profile admits Jarvis with the existing
+Feddes forcing and no Bartholomeus/thermal carrier, on bottom modes 2/7 only. Oxygen
+remains optional. The original root-active profile without compensation or oxygen
+is not widened. Elasticity, direct retention, evaporation combinations and other
+bottom/application profiles remain outside this bounded entry point.
