@@ -15,13 +15,27 @@ module mod_rutter_source_window_processor
   integer, parameter, public :: RUTTER_WINDOW_INVALID = 1
   integer, parameter, public :: RUTTER_WINDOW_REJECTED = 2
   integer, parameter, public :: RUTTER_WINDOW_ORDER = 3
-  integer, parameter, public :: RUTTER_WINDOW_RESTART_SCHEMA = 1
+  integer, parameter, public :: RUTTER_WINDOW_RESTART_SCHEMA = 2
+
+  type :: rutter_window_parameters_t
+    logical :: bound = .false.
+    real(real64) :: vegetation_cover_fraction = 0.0_real64
+    real(real64) :: canopy_storage_capacity_cm = 0.0_real64
+    real(real64) :: interception_evaporation_capacity_cm_per_day = 0.0_real64
+    real(real64) :: minimum_relative_canopy_evaporation_factor = 0.0_real64
+    real(real64) :: potential_transpiration_dry_cm_per_day = 0.0_real64
+    real(real64) :: potential_transpiration_wet_cm_per_day = 0.0_real64
+    real(real64) :: surface_irrigation_cm_per_day = 0.0_real64
+    logical :: surface_irrigation_is_intercepted = .true.
+    logical :: minimum_relative_canopy_evaporation_factor_present = .false.
+  end type rutter_window_parameters_t
 
   type, public :: rutter_source_state_t
     private
     type(rutter_state_t) :: canopy
     type(interception_source_window_t) :: window
     type(interception_progress_t) :: progress
+    type(rutter_window_parameters_t) :: parameters
   contains
     procedure, public :: canopy_storage => source_canopy_storage
     procedure, public :: accepted_until => source_accepted_until
@@ -35,12 +49,14 @@ module mod_rutter_source_window_processor
     real(real64) :: origin_canopy_storage = 0.0_real64
     real(real64) :: candidate_canopy_storage = 0.0_real64
     type(interception_trial_t) :: source_progress_trial
+    type(rutter_window_parameters_t) :: parameters
   end type
 
   type, public :: rutter_source_restart_t
     integer :: schema = 0
     real(real64) :: canopy_storage_cm = 0.0_real64
     type(interception_restart_t) :: source_progress
+    type(rutter_window_parameters_t) :: parameters
   end type
 
   public :: initialize_rutter_source_state, initialize_rutter_canopy_state, prepare_rutter_source_trial
@@ -121,6 +137,13 @@ contains
       status = RUTTER_WINDOW_INVALID
       return
     end if
+    if (accepted_state%progress%valid_for(window) .and. &
+        .not. accepted_state%progress%complete(window) .and. accepted_state%parameters%bound) then
+      if (.not. same_window_parameters(accepted_state%parameters,forcing_template)) then
+        status=RUTTER_WINDOW_REJECTED
+        return
+      end if
+    end if
     rain_amount = source_trial%apportioned_amount()
     interval_input = forcing_template
     interval_input%gross_rain_cm_per_day = rain_amount / interval_days
@@ -135,6 +158,7 @@ contains
     trial%origin_canopy_storage = accepted_state%canopy%canopy_storage_cm
     trial%candidate_canopy_storage = result%candidate_state%canopy_storage_cm
     trial%source_progress_trial = source_trial
+    trial%parameters = make_window_parameters(forcing_template)
     status = RUTTER_WINDOW_OK
   end subroutine prepare_rutter_source_trial
 
@@ -168,6 +192,7 @@ contains
     committed_state%canopy%canopy_storage_cm = trial%candidate_canopy_storage
     committed_state%window = window
     committed_state%progress = candidate_progress
+    committed_state%parameters = trial%parameters
     status = RUTTER_WINDOW_OK
   end subroutine accept_rutter_source_trial
 
@@ -188,6 +213,7 @@ contains
     end if
     record%schema = RUTTER_WINDOW_RESTART_SCHEMA
     record%canopy_storage_cm = state%canopy%canopy_storage_cm
+    record%parameters = state%parameters
     status = RUTTER_WINDOW_OK
   end subroutine export_rutter_source_restart
 
@@ -211,6 +237,7 @@ contains
     state%canopy%canopy_storage_cm = record%canopy_storage_cm
     state%window = window
     state%progress = progress
+    state%parameters = record%parameters
     status = RUTTER_WINDOW_OK
   end subroutine restore_rutter_source_restart
 
@@ -245,8 +272,48 @@ contains
          left%source_progress%t0 == right%source_progress%t0 .and. &
          left%source_progress%t1 == right%source_progress%t1 .and. &
          left%source_progress%aggregate == right%source_progress%aggregate .and. &
-         left%source_progress%accepted_until == right%source_progress%accepted_until
+         left%source_progress%accepted_until == right%source_progress%accepted_until .and. &
+         same_window_parameter_records(left%parameters,right%parameters)
   end function source_same_candidate
+
+  pure function make_window_parameters(input) result(parameters)
+    type(rutter_interval_input_t), intent(in) :: input
+    type(rutter_window_parameters_t) :: parameters
+    parameters%bound=.true.
+    parameters%vegetation_cover_fraction=input%vegetation_cover_fraction
+    parameters%canopy_storage_capacity_cm=input%canopy_storage_capacity_cm
+    parameters%interception_evaporation_capacity_cm_per_day=input%interception_evaporation_capacity_cm_per_day
+    parameters%minimum_relative_canopy_evaporation_factor=input%minimum_relative_canopy_evaporation_factor
+    parameters%potential_transpiration_dry_cm_per_day=input%potential_transpiration_dry_cm_per_day
+    parameters%potential_transpiration_wet_cm_per_day=input%potential_transpiration_wet_cm_per_day
+    parameters%surface_irrigation_cm_per_day=input%surface_irrigation_cm_per_day
+    parameters%surface_irrigation_is_intercepted=input%surface_irrigation_is_intercepted
+    parameters%minimum_relative_canopy_evaporation_factor_present=input%minimum_relative_canopy_evaporation_factor_present
+  end function make_window_parameters
+
+  pure logical function same_window_parameters(parameters,input)
+    type(rutter_window_parameters_t), intent(in) :: parameters
+    type(rutter_interval_input_t), intent(in) :: input
+    type(rutter_window_parameters_t) :: candidate
+    candidate=make_window_parameters(input)
+    same_window_parameters=same_window_parameter_records(parameters,candidate)
+  end function same_window_parameters
+
+  pure logical function same_window_parameter_records(left,right)
+    type(rutter_window_parameters_t), intent(in) :: left,right
+    same_window_parameter_records=left%bound .eqv. right%bound
+    if (.not. same_window_parameter_records .or. .not. left%bound) return
+    same_window_parameter_records=left%vegetation_cover_fraction == right%vegetation_cover_fraction .and. &
+      left%canopy_storage_capacity_cm == right%canopy_storage_capacity_cm .and. &
+      left%interception_evaporation_capacity_cm_per_day == right%interception_evaporation_capacity_cm_per_day .and. &
+      left%minimum_relative_canopy_evaporation_factor == right%minimum_relative_canopy_evaporation_factor .and. &
+      left%potential_transpiration_dry_cm_per_day == right%potential_transpiration_dry_cm_per_day .and. &
+      left%potential_transpiration_wet_cm_per_day == right%potential_transpiration_wet_cm_per_day .and. &
+      left%surface_irrigation_cm_per_day == right%surface_irrigation_cm_per_day .and. &
+      (left%surface_irrigation_is_intercepted .eqv. right%surface_irrigation_is_intercepted) .and. &
+      (left%minimum_relative_canopy_evaporation_factor_present .eqv. &
+        right%minimum_relative_canopy_evaporation_factor_present)
+  end function same_window_parameter_records
 
   pure logical function same_storage(a, b)
     real(real64), intent(in) :: a, b

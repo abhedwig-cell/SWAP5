@@ -28,19 +28,25 @@
       "mid_window_restart_identity": "PASS",
       "detailed_record_continuation": "PASS",
       "dynamic_top_and_crop_root_output_binding": "PASS",
-      "hard_canopy_water_balance": "PASS"
+      "hard_canopy_water_balance": "PASS",
+      "analytic_tcap_fill_reference": "PASS",
+      "minimum_fimin_exponential_storage_oracle": "PASS",
+      "missing_fimin_fail_closed": "PASS",
+      "nonzero_capacity_without_cover_fail_closed": "PASS",
+      "zero_capacity_vegetation_death_mass_closure": "PASS"
     },
     "canonical_capacity_case": {
+      "case_scope": "SWAP5 legacy short-interval API falsifier versus new source-window analytic reference; not attributed to B1.11",
       "gross_rain_cm": 1.0,
       "capacity_cm": 0.1,
       "initial_storage_cm": 0.0,
       "evaporation_capacity_cm_per_day": 0.0,
-      "legacy_unsplit_throughfall_cm": 0.0,
-      "legacy_unsplit_storage_cm": 0.1,
-      "unaccounted_cm": 0.9,
-      "corrected_throughfall_cm": 0.9,
-      "corrected_storage_cm": 0.1,
-      "corrected_mass_residual_cm": -2.7755575615628914e-17
+      "short_interval_api_one_call_throughfall_cm": 0.0,
+      "short_interval_api_one_call_storage_cm": 0.1,
+      "short_interval_api_unaccounted_cm": 0.9,
+      "analytic_reference_throughfall_cm": 0.9,
+      "analytic_reference_storage_cm": 0.1,
+      "analytic_reference_mass_residual_cm": 0.0
     }
   },
   "preservation": {
@@ -62,10 +68,10 @@
     "runner_note": "Local offline preservation used temporary copies of the existing runners: only remote git-fetch/source-delta preflight was omitted, and two missing module prerequisites were inserted into the temporary compile order. Repository runners and source files were not edited for this workaround."
   },
   "claim_limit": [
-    "Not canonically admitted; no persisted Actions qualification has run.",
-    "Exact full B1.11 call-site source remains unavailable and no claim is made that the historical caller shared the unsplit API falsifier.",
-    "Only constant forcing per immutable source window is supported; detailed forcing is one window per record.",
-    "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported model profiles fail closed."
+    "Not canonically admitted; current corrected analytic fimin implementation awaits persisted Actions qualification.",
+    "Exact full B1.11 MOD_meteo member is not materialized. Git SWAP 4.2.0 Rutter equations plus the B1.11 patch history are used with the version limitation explicit; no byte-identity claim is made.",
+    "Only constant forcing per immutable source window is supported; detailed forcing is one window per record, and canopy capacity, fimin, PET and irrigation changes require explicit window boundaries.",
+    "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles fail closed."
   ],
   "production_application": {
     "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
@@ -97,5 +103,22 @@
         "existing root sink / wet-canopy PET scaling"
       ]
     }
+  },
+  "source_oracle": {
+    "repository": "SWAP-model/swap-4.2.0",
+    "commit": "c30e5e4cd3a7427246b5206c15ad6960897d18d3",
+    "path": "src/meteoday.f90",
+    "blob_sha": "90c3a9aae0035b6af3620d006f2224222bae80a8",
+    "sha256": "f813b41eec87e076af272e27369cde8539de471812a6f23f3c5b651f67ce1fed",
+    "rutter_source_lines": "766-1021 (ruttervw/msw1eic)",
+    "version_limit": "Source is authentic SWAP 4.2.0 Git history, not exact B1.11 member. SWAP-006 is the only B1.11 MOD_meteo patch and does not edit Rutter; byte identity is not claimed."
+  },
+  "persisted_gate": {
+    "workflow": ".github/workflows/f-mig431-int13-rutter.yml",
+    "jobs": [
+      "Rutter O0/O2 physics, source-window, retry and restart suite",
+      "FMR production bootstrap O0/O2 qualification"
+    ],
+    "status": "PENDING_ON_CORRECTED_PR_HEAD"
   }
 }

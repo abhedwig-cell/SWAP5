@@ -1,134 +1,109 @@
-# F-MIG431-INT13 Rutter reference decision
+# F-MIG431-INT13 Rutter reservoir reference
 
-## Authority and Git source search
+## Source and version authority
 
-The controlling historical identity remains SWAP 4.3.1/B1.11: corrected
-`MOD_meteo.f90` SHA-256
+The controlling historical target is SWAP 4.3.1/B1.11. PPA-WU04 records the
+corrected B1.11 identities: `MOD_meteo.f90` SHA-256
 `99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f`,
 `swap.f90` SHA-256
 `39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a`, and
 the 63-member manifest SHA-256
 `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`.
 
-The public Git repository `SWAP-model/SWAP` is present, but its repository
-description, sole `v4.2.0` tag and 4.2.0 source history identify it as SWAP
-4.2.0, not B1.11. Its source was not promoted to the B1.11 equation oracle.
-The exact B0 archive and reconstructed B1.11 source member are still not
-materialized in this checkout. The B1.11 patch chain records that its only
-`MOD_meteo.f90` correction is the bounded dynamic-crop meteo-loading scan
-(SWAP-006); it does not edit the Rutter routine. The admitted F-APP05 process
-and independent F-VQ114 algebra qualification remain the executable Rutter
-equation authority for the bounded Hupsel route.
+The source is available in Git at
+[`SWAP-model/swap-4.2.0/src/meteoday.f90`](https://github.com/SWAP-model/swap-4.2.0/blob/c30e5e4cd3a7427246b5206c15ad6960897d18d3/src/meteoday.f90),
+commit `c30e5e4cd3a7427246b5206c15ad6960897d18d3`. The commit identifies its
+physics as unmodified SWAP 4.2.0. The fetched source file has Git blob
+`90c3a9aae0035b6af3620d006f2224222bae80a8`, SHA-256
+`f813b41eec87e076af272e27369cde8539de471812a6f23f3c5b651f67ce1fed`, and
+contains `ruttervw`/`msw1eic` at lines 766–1021. It is a genuine SWAP Git
+source, but is not itself the B1.11 file. The ordered B1.11 patch chain shows
+that SWAP-006 is the only patch targeting `MOD_meteo.f90` and changes the
+bounded dynamic-crop meteo-loading loop, not Rutter. The B1.11 B0 archive and
+full reconstructed `MOD_meteo.f90` are not materialized in this checkout, so
+byte identity between the 4.2.0 Rutter body and B1.11 is not claimed. The Git
+source plus the untouched Rutter patch history and the already admitted
+F-APP05 process qualification provide the equation basis used here.
 
-## Legacy and corrected semantics
+## Reconstructed Rutter reservoir equation
 
-`LEGACY_B1_11` is the admitted short-interval process contract in
-`mod_rutter_interception_process`: rates are selected from gross rain,
-intercepted irrigation, canopy cover, canopy storage/capacity and wet-canopy
-evaporation. The routine reports the time of a fill/empty event and returns a
-candidate canopy store. This contract is conservative when its caller ends
-the interval at that event and reevaluates the remainder from the new store.
-It does not itself guarantee conservation for a longer call: the candidate
-store is clipped to capacity while the interval throughfall rate was computed
-before the event.
+For canopy cover `c`, gross rain rate `P`, canopy capacity `C`, storage `S`,
+wet-canopy evaporation capacity `Ew`, and input `fimin`, the Git source's
+nonlinear branch has
 
-The falsifying case is an empty canopy, 100% cover, capacity `0.1 cm`, rain
-`1 cm/day`, zero wet-canopy evaporation and a one-day interval. A direct legacy
-call returns zero throughfall and `0.1 cm` final storage. The remaining
-`0.9 cm` has no owner. Event-splitting the same interval returns `0.9 cm`
-throughfall and `0.1 cm` storage, closing the balance to roundoff.
+`beta = (1 - fimin) * Ew / C`
 
-`CORRECTED_RUTTER_REFERENCE` applies the same legacy flux branches on
-piecewise-constant forcing segments, ending each segment at the process's own
-fill/empty event and integrating each returned rate over that segment. It
-aggregates the interval-average throughfall, irrigation, evaporation,
-wet-canopy fraction and crop/root transpiration. A decrease in canopy capacity
-is treated as an instantaneous canopy-to-surface overflow; no water is clipped
-away. The old interval API and its admitted F-APP05/Hupsel behavior are
-unchanged.
+`zeta = c * P - fimin * Ew`
 
-This corrects an API/event-ownership limitation; it does not assert that the
-historical full SWAP application failed to honor its event bound. The exact
-B1.11 full call-site body remains unavailable for that stronger claim.
+`dS/dt = zeta - beta * S`
 
-## SWAP5 processor and ownership
+until the reservoir reaches capacity. The exact solution is
 
-`mod_rutter_event_integrator` owns the fill/empty substepping inside one
-constant-forcing interval. `mod_rutter_source_window_processor` composes that
-physics with the admitted INT12 immutable source window and accepted progress.
-One candidate contains both canopy storage and source-window progress.
-`mod_fmr_rutter_source_window_application` maps the same candidate result to
-the admitted dynamic-top precipitation/irrigation binding and crop/root PET
-binding. It returns an uncommitted trial. The enclosing hydrological
-transaction must call `accept_rutter_source_trial` only after its hydraulic
-candidate is accepted; a rejected trial leaves both accepted Rutter fields
-unchanged. Restart export/restore carries canopy storage and INT12 progress in
-one record.
+`S(t) = (S0 - zeta/beta) * exp(-beta*t) + zeta/beta`.
 
-The integrator assumes piecewise-constant forcing within each immutable source
-window. Detailed meteorology therefore uses one source window per meteo record;
-canopy cover/capacity, PET and irrigation schedule changes must be represented
-as window/segment boundaries. This is not a Richards substep policy.
+When this reaches `C`, the source solves the fill time `tcap` analytically and
+uses full `Ew` thereafter. The zero-beta branch is linear and clips at the
+physical endpoints. Below `dc=1e-4`, the source has explicit no-flow/dry-store
+shortcuts; if capacity falls below `dc`, remaining store is evaporated as the
+vegetation dies off. The intercepted precipitation flux follows the hard
+balance `Pi = (S1 - S0)/dt + Eic`. The wrapper computes wet-canopy fraction
+from `Eic/Ew` when `Ew` exceeds `dc`. `fimin` is a required SWINTER=3 input
+(read with bounds 0–1); it cannot be silently inferred from Richards dt.
+
+The source's `tcap` calculation proves that the full SWAP 4.2.0 Rutter routine
+does not rely on the Richards caller to split a precipitation interval at the
+reservoir-fill event. The previous INT13 audit incorrectly promoted the
+short-interval SWAP5 `evaluate_rutter_interval` clipping result as evidence of
+a B1.11 physics defect. That API falsifier is retained only to show why it
+cannot own a long source window. No historical B1.11 mass-loss defect is
+claimed.
+
+## SWAP5 reference and intentional differences
+
+The unchanged, admitted `evaluate_rutter_interval` process remains the bounded
+F-APP05 short-interval API. The new source-window path uses the analytic
+reservoir equation above directly: it computes the fill time within each
+immutable forcing window, returns interval-average throughfall, canopy
+storage, evaporation and wet-canopy fraction, and does not couple event
+progress to Richards steps. Missing `fimin` fails closed. When positive
+capacity decreases, excess storage is booked once as canopy-to-surface water;
+when capacity falls below the legacy dry-capacity cutoff, residual storage
+follows the historical vegetation-death evaporation branch. Existing
+F-APP05 behavior and source blob remain unchanged.
+
+For constant forcing, the exponential reservoir solution is a semigroup: one
+source interval and any partition into smaller source intervals must produce
+the same final storage and integrated fluxes. Detailed meteorology therefore
+uses one immutable source window per record. LAI/canopy capacity, `fimin`,
+wet-canopy demand and irrigation changes must enter at an explicit source
+boundary. Richards retries never invoke the source processor again for an
+already accepted interval.
+
+## Ownership and transaction
+
+`mod_rutter_source_window_processor` composes the analytic Rutter candidate
+with INT12 immutable source progress. One FMR physical-state candidate carries
+both canopy storage and accepted source progress. Production prepares forcing
+from the accepted snapshot before Richards execution. The enclosing
+per-column FMR transaction publishes the candidate only when the hydraulic
+candidate is accepted. A rejected hydraulic trial cannot change accepted
+Rutter state or replay precipitation. Restart export/restore carries the
+canopy store and source progress together.
 
 ## Qualification and claim ceiling
 
-Local strict GNU Fortran O0/O2 evidence is recorded in
-`F-MIG431-INT13_LOCAL_QUALIFICATION.json`. It covers capacity fill and
-overflow, heavy rain with evaporation, rain-stop drying, capacity reduction,
-source-window partition/refinement, rejected/changed-endpoint trials,
-restart continuation, detailed-record continuation, application binding,
-and output identity. The original admitted F-APP05 Rutter unit/Hupsel
-observations also pass O0/O2, and the existing Rutter process blob remains
-byte-identical.
+`F-MIG431-INT13_LOCAL_QUALIFICATION.json` records strict GNU Fortran O0/O2
+local evidence for fill/overflow `tcap`, the independent `fimin` exponential
+oracle, dry-down, changing capacity, water closure, source-window refinement,
+reject/retry identity, restart, detailed-record continuation and production
+binding. The separate FMR bootstrap test verifies transactional commit and
+Richards retry composition. PR #1016 persisted the preceding INT13 source and
+WU01 production bootstrap gate at commit `344dff1176e0bde049f0de8d713fd76e1a761dd9`; the analytic `fimin` correction is a new local change and still needs persisted qualification after it is committed.
 
-This branch does not yet claim canonical admission. The Rutter source-window
-processor/application seam is now implemented and locally qualified, but it
-has not been attached to the owning production application bootstrap and its
-hydraulic transaction commit/restart bundle. The following remain outside the
-qualified envelope until an explicit fail-closed combination census and
-preservation run exists: detailed-meteorology parser ownership, irrigation
-event scheduling, Snow, Black/Boesten evaporation reduction, macropore top
-input, and surface-water/Ribasim routes. The admitted SWINTER=0/1/2 and
-F-APP05/F-APP08 claims are not changed.
-
-The production attachment point is concrete: FMR's bootstrap constructs one
-of the explicitly registered physical state families, and F-KT clones and
-commits that dynamic type; restart admission separately checks the matching
-template/state layout. A canopy-bearing Rutter family must therefore be added
-as an owned physical continuation state and carried through clone, bootstrap,
-forcing preparation, accepted publication and restart validation together.
-The current source-window seam intentionally has no shortcut that mutates
-kernel or solver scratch. Until those owners are composed, Richards retries
-have only been falsified through the standalone source-window candidate API,
-not through a real production hydraulic rejection.
-
-## Production transaction composition required next
-
-The production trace shows that `production_application_run_standalone_with_forcing`
-passes a read-only forcing array to `fmr_run_serialized_physical_multiswap`.
-Within that runtime, `execute_resolved_column` captures the accepted kernel
-checkpoint, calls the backend trial, validates the whole result and mass record,
-and commits the hydraulic candidate before returning the per-column result.
-The bootstrap checks for completed/committed results only after dispatch, and
-different columns can already have committed independently by then. Therefore
-accepting an external Rutter registry after that return would create a split
-commit if a later column failed; it is not a valid coupling strategy.
-
-The next implementation must place Rutter in the per-column transaction owner:
-
-1. Add an explicitly discriminated Rutter physical continuation state carrying
-   canopy storage and accepted source-window progress; preserve its exact type
-   in kernel clone/candidate operations and register its restart layout.
-2. Prepare a Rutter trial from the same accepted snapshot and immutable forcing
-   window before solver execution; use its throughfall/net irrigation (and the
-   qualified crop/root flux mapping where applicable) as effective forcing.
-3. Carry the unaccepted Rutter candidate through the backend trial and publish
-   it only with that column's successful kernel candidate commit. Every retry
-   starts from the accepted checkpoint, and a failed commit discards both.
-4. Add production-host tests for retry-pattern identity, rejected trial state,
-   mixed per-column acceptance behavior, and restart continuation, then
-   fail-closed the unsupported application combinations.
-
-This is a real cross-cutting state-family/application integration, rather than
-a small adapter after the current bootstrap call. Until that owner is in place,
-the present branch remains the locally qualified process/source-window seam.
+The exact B1.11 full member/call-site has not been reconstructed byte-for-byte,
+and the newly corrected analytic implementation therefore remains a candidate,
+not a canonical admission. The admitted envelope remains fail-closed for
+irrigation/sprinkling, Snow, Black/Boesten, macropore, drainage, RFM/surface
+water, root compensation, unsupported solver profiles and numerical
+continuation. The existing `SWINTER=0/1/2`, Black, Boesten, F-APP05 and F-APP08
+claims are not broadened by this work.

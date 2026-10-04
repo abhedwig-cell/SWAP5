@@ -1,0 +1,29 @@
+name: F-MIG431-INT13 Rutter physics and production qualification
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/process/mod_rutter_*.f90'
+      - 'src/runtime/mod_rutter_*.f90'
+      - 'src/runtime/mod_fmr_rutter_*.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fpm/test_f_mig431_int13_rutter_source_window.f90'
+      - 'tests/fpm/run_f_mig431_int13_rutter_source_window.sh'
+      - 'tests/fapp/test_ppa_wu01_production_application_bootstrap.f90'
+      - 'tests/fapp/run_ppa_wu01_production_application_bootstrap.sh'
+      - '.github/workflows/f-mig431-int13-rutter.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Fortran compiler
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Qualify Rutter physics, retry, source windows, restart and determinism
+        run: bash tests/fpm/run_f_mig431_int13_rutter_source_window.sh
+      - name: Qualify production FMR composition and preservation
+        run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh

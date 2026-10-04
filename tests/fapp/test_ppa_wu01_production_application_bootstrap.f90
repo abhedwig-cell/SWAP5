@@ -131,6 +131,8 @@ program test_ppa_wu01_production_application_bootstrap
   rutter_process%vegetation_cover_fraction = 1.0_real64
   rutter_process%canopy_storage_capacity_cm = 0.05_real64
   rutter_process%interception_evaporation_capacity_cm_per_day = 0.0_real64
+  rutter_process%minimum_relative_canopy_evaporation_factor = 0.0_real64
+  rutter_process%minimum_relative_canopy_evaporation_factor_present = .true.
   rutter_process%potential_transpiration_dry_cm_per_day = 0.02_real64
   rutter_process%potential_transpiration_wet_cm_per_day = 0.01_real64
   rutter_process%interval_days = T1 - T0
