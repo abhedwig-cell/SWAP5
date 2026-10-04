@@ -4,6 +4,8 @@ on:
     branches: [audit/ppa-wu05d-d1-reconcile-20261004]
     paths:
       - 'src/process/mod_root_uptake_compensation.f90'
+      - 'src/runtime/mod_root_uptake_compensation_execution.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/physics/test_ppa_wu05d2_jarvis.f90'
       - 'tests/physics/run_ppa_wu05d2_jarvis.sh'
       - '.github/workflows/ppa-wu05d2-jarvis.yml'
