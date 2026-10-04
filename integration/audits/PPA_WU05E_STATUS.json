@@ -4,7 +4,7 @@
   "title": "Salinity state, solute mass owner, and root-stress migration",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
-  "checkpoint_commit": "99710e80e6030f24c762bc4755e8d40ded58b708",
+  "checkpoint_commit": "4b08da25839e822b95f60148421c275121635019",
   "last_reconciled_head": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "last_reconciled_upstream": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "status": "E1_RESTRICTED_ENVELOPE_DEFINED_AWAITING_IMPLEMENTATION",
@@ -77,7 +77,7 @@
     "Exact B1.11 solute-state/restart text is not materialized. D1 records provenance search exhausted; no further search is warranted without a new authorized raw-byte route.",
     "Canonical SWAP5 has no existing solute-state owner, so salinity integration cannot be safely implemented as a Jarvis-only change."
   ],
-  "recovery_point": "Branch contains the reconciled historical stress reconstruction, source-family state/mass/restart census, and registered bounded migration. No production/reference source changed; compile and test gates remain open.",
+  "recovery_point": "PPA-WU05-E has a persisted source-family census and a defined restricted E1 mobile dissolved-salt envelope. No production/reference source changed. Implementation and local gates remain open.",
   "source_family_census": {
     "initialization": "SWINCO != 3 interpolates ZC/CML input to nodes; SWINCO = 3 consumes a warm-start concentration profile and does not reapply the initial table (source-family only).",
     "state": "CML is mobile-water concentration; CMSY is dissolved plus adsorbed mass per bulk soil volume; column inventory integrates CMSY over node thickness.",
