@@ -40,7 +40,7 @@ jobs:
         if: always()
         run: |
           test -f /tmp/a28-retry-cause-probe.log
-          rg 'A28_RETRY_BUDGET|A28_RETRY_TYPED_INVALID|A28_RETRY_BALANCE_FAIL|A28_RETRY_HEAD_FAIL|A28_RETRY_TOTAL_BALANCE_FAIL' \
+          grep -E 'A28_RETRY_BUDGET|A28_RETRY_TYPED_INVALID|A28_RETRY_BALANCE_FAIL|A28_RETRY_HEAD_FAIL|A28_RETRY_TOTAL_BALANCE_FAIL' \
             /tmp/a28-retry-cause-probe.log
       - name: Upload bounded diagnostic evidence
         if: always()
