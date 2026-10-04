@@ -2192,24 +2192,14 @@
     }
   ],
   "ppa_wu05d_20261004_runtime_successor": {
-    "status": "IMPLEMENTED_PARTIALLY_TESTED_NOT_ADMITTED",
-    "authority": "docs/audits/PPA_WU05D_D2_RUNTIME_CONTRACT.md",
-    "work_unit_status": "integration/audits/PPA_WU05D_STATUS.json",
-    "closed_implementation_gaps": [
-      "fresh trial reset",
-      "nodewise mixed drought/oxygen attribution",
-      "final node sum and hard PTRA bound",
-      "real Jarvis backend composition"
-    ],
-    "open_admission_gaps": [
-      "accepted actual-transpiration publication uses uncompensated forcing",
-      "F-CI31/F-CI37 current-successor preservation after publication repair",
-      "bounded canonical admission and closeout"
-    ],
-    "D3": "HELD_UNTIL_D2_ADMISSION",
-    "D4": "ONLY_ADMITTED_DROUGHT_AND_OXYGEN_IMPLEMENTED_NOT_ADMITTED",
-    "D5": "MICRO_OWNER_AND_SOURCE_QUALIFICATION_HELD",
-    "salinity": "NOT_IMPLEMENTED_BY_THIS_WORKUNIT",
-    "frost": "NOT_IMPLEMENTED_BY_THIS_WORKUNIT"
+    "status": "D2_QUALIFIED_BOUNDED_ADMISSION_PENDING_MERGE",
+    "qualification": "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
+    "scope": "Jarvis Feddes drought and admitted Bartholomeus oxygen, including mixed attribution and optional oxygen-free application",
+    "publication": "Accepted transaction result now publishes final compensated uptake; no second mass owner",
+    "remaining_gaps": [
+      "D3 Walsum geometry pending",
+      "D4 salinity/frost not independently admitted",
+      "D5 MICRO authority/owner qualification missing"
+    ]
   }
 }
