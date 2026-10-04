@@ -4,10 +4,10 @@
   "title": "Salinity state, solute mass owner, and root-stress migration",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
-  "checkpoint_commit": "7f569323508e47fc3d81e60f96d1f5e83be008b6",
+  "checkpoint_commit": "99710e80e6030f24c762bc4755e8d40ded58b708",
   "last_reconciled_head": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "last_reconciled_upstream": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
-  "status": "SOURCE_FAMILY_STATE_CENSUS_COMPLETE_B111_TEXT_UNAVAILABLE",
+  "status": "E1_RESTRICTED_ENVELOPE_DEFINED_AWAITING_IMPLEMENTATION",
   "implemented": false,
   "persisted": true,
   "tested": false,
@@ -71,10 +71,10 @@
     "independent salt-mass owner",
     "water and solute conservation"
   ],
-  "next_action": "Define the smallest complete typed salt-state/mass/restart contract from the pinned B1.11 identity and corroborating source-family census. Keep exact solute restart claims unmade; do not repeat provenance searches unless a new authorized raw-byte route appears.",
+  "next_action": "Implement the bounded mobile dissolved-salt state/transport owner and its separate mass ledger in the local SWAP5 checkout, then run focused O0/O2 tests. Current Work environment has no checkout; do not add uncompiled production code remotely.",
   "blockers": [
-    "No SWAP5 local checkout is mounted, so local compilation and tests cannot be run in this execution environment.",
-    "Exact B1.11 solute-state/restart text is not materialized here. Existing D1 records source-provenance searches exhausted; no further search is warranted without a new authorized raw-byte route.",
+    "No local SWAP5 checkout is mounted, so the production implementation cannot be compiled or tested in this execution environment; network clone is unavailable.",
+    "Exact B1.11 solute-state/restart text is not materialized. D1 records provenance search exhausted; no further search is warranted without a new authorized raw-byte route.",
     "Canonical SWAP5 has no existing solute-state owner, so salinity integration cannot be safely implemented as a Jarvis-only change."
   ],
   "recovery_point": "Branch contains the reconciled historical stress reconstruction, source-family state/mass/restart census, and registered bounded migration. No production/reference source changed; compile and test gates remain open.",
@@ -85,5 +85,6 @@
     "root_salt_uptake": "TSCF*qrot*CML is a solute-mass sink; must use the same candidate/accepted qrot as the one root-water sink.",
     "ownership": "Dedicated solute-state owner advances candidate salt mass and commits/rolls it back with the physical transaction; Jarvis reads concentration only.",
     "exact_source_limit": "All equations and lifecycle details above are source-family corroboration only, not byte-exact B1.11 claims."
-  }
+  },
+  "initial_e1_envelope": "One conservative dissolved salt constituent in mobile water; SWSP=0; decomposition, macropore, ageing, aquifer mixing, MICRO and lateral drainage off; explicit top/bottom solute boundary traces; root salt uptake through TSCF*qrot*CML with restricted 0<=TSCF<=1; node salt mass authoritative, CML derived from matching committed/trial water content; paired water/salt trial commit/discard."
 }
