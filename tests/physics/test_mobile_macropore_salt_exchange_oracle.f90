@@ -5,7 +5,7 @@ program test_mobile_macropore_salt_exchange_oracle
        mobile_macro_salt_transfer_t, transfer_mobile_macro_salt_trial, EXCHANGE_OK, &
        EXCHANGE_INVALID, EXCHANGE_DONOR_UNAVAILABLE
   implicit none
-  type(mobile_macro_salt_state_t) :: accepted,candidate,reversed,rejected
+  type(mobile_macro_salt_state_t) :: accepted,candidate,reversed,rejected,dry_state
   type(mobile_macro_salt_transfer_t) :: receipt
   real(real64) :: matrix_water(1),macro_water(2,1),exchange(2,1),total_before
   integer :: status
@@ -55,6 +55,12 @@ program test_mobile_macropore_salt_exchange_oracle
   ! A dry or undersupplied donor rejects without publishing any candidate.
   exchange(:,1)=[0.5_real64,0.0_real64]
   call transfer_mobile_macro_salt_trial(accepted,[2.0_real64],reshape([0.0_real64,2.0_real64],[2,1]), &
+       exchange,0.2_real64,rejected,receipt,status)
+  call require(status==EXCHANGE_INVALID,'dry mobile salt state rejected')
+  call require(.not.allocated(rejected%matrix_mass_mg_cm2),'inconsistent dry candidate absent')
+  dry_state=accepted
+  dry_state%macro_mass_mg_cm2(1,1)=0.0_real64
+  call transfer_mobile_macro_salt_trial(dry_state,[2.0_real64],reshape([0.0_real64,2.0_real64],[2,1]), &
        exchange,0.2_real64,rejected,receipt,status)
   call require(status==EXCHANGE_DONOR_UNAVAILABLE,'dry macro donor rejected')
   call require(.not.allocated(rejected%matrix_mass_mg_cm2),'dry macro candidate absent')
