@@ -2,10 +2,13 @@ program test_ppa_wu05d2_jarvis
  use iso_fortran_env,only:real64
  use mod_root_water_uptake_process,only:root_water_uptake_flux_result_t
  use mod_root_uptake_compensation
+ use mod_root_uptake_compensation_execution
+ use mod_root_water_uptake_process,only:root_water_uptake_diagnostics_t
  implicit none
  type(root_water_uptake_flux_result_t)::base,a,b
  type(root_compensation_config_t)::cfg
  type(root_compensation_diagnostics_t)::da,db
+ type(root_water_uptake_diagnostics_t)::bd
  integer::s
  real(real64),parameter::tol=1.e-14_real64
  allocate(base%root_extraction_sink(4))
@@ -67,6 +70,17 @@ program test_ppa_wu05d2_jarvis
  deallocate(base%root_extraction_sink)
  call compose_jarvis_root_uptake(cfg,0.0_real64,base,0.0_real64,0.0_real64,a,da,s)
  call req(s==ROOT_COMP_INVALID,'missing sink invalid')
+
+ allocate(base%root_extraction_sink(4))
+ base%root_extraction_sink=[0.05_real64,0.10_real64,0.15_real64,0.10_real64];base%actual_uptake_total=sum(base%root_extraction_sink)
+ bd%drought_reduction_total=0.1_real64
+ cfg%method=ROOT_COMP_OFF;cfg%alpha_critical=0.7_real64;cfg%stressor=ROOT_COMP_DROUGHT
+ call apply_root_uptake_compensation(cfg,0.5_real64,base,bd,0.0_real64,a,da,s)
+ call req(s==ROOT_COMP_EXEC_OK.and.all(a%root_extraction_sink==base%root_extraction_sink),'execution off preservation')
+ cfg%method=ROOT_COMP_JARVIS
+ call apply_root_uptake_compensation(cfg,0.5_real64,base,bd,0.0_real64,a,da,s)
+ call req(s==ROOT_COMP_EXEC_OK.and.da%applied,'execution Jarvis applies')
+ call req(abs(sum(a%root_extraction_sink)-a%actual_uptake_total)<tol,'execution single final sink identity')
 
  print *,'PPA_WU05D2_JARVIS=PASS'
 contains
