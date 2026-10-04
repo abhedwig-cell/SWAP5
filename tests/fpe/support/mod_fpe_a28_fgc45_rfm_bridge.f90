@@ -55,8 +55,8 @@ module mod_fgc45_real_multiswap_c_bridge
   real(real64), save :: rainfall_cm_day=0._real64
   real(real64), save :: DURATION_DAY=1.0e-4_real64
   integer, save :: nonlinear_iteration_limit=16
-  real(real64), save :: solver_balance_tolerance=TOL
   real(real64), parameter :: TOL=1.0e-12_real64
+  real(real64), save :: solver_balance_tolerance=TOL
   real(real64), parameter :: PREDICTOR_QBOT=1.0e-6_real64
   real(real64), parameter :: HEAD_BUDGET=1.0e-5_real64
   integer(int64), parameter :: COUPLING_ID=450045_int64
