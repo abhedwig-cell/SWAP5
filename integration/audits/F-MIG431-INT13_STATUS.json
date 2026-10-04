@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.f_mig431_int13_status.v1",
+  "workunit": "F-MIG431-INT13",
+  "title": "Rutter SWINTER=3 stateful atmospheric-forcing migration",
+  "state": "AUDIT_IN_PROGRESS",
+  "baseline": {
+    "branch": "integration/f-ci-canonical",
+    "head": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
+  },
+  "branch": "work/f-mig431-int13-rutter-stateful-forcing",
+  "checkpoint_commit": "94314aa42",
+  "last_reconciled_head": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "last_reconciled_upstream": "origin/integration/f-ci-canonical",
+  "relevant_paths": [
+    "src/process/mod_rutter_interception_process.f90",
+    "src/runtime/mod_fmr_rutter_output_application_binding.f90",
+    "src/runtime/mod_interception_source_window_runtime.f90",
+    "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "integration/audits/F-MIG431-INT12-P0_STATUS.json",
+    "integration/audits/F-MIG431-INT12-D_CLOSEOUT.json",
+    "integration/audits/F-MIG431-INT12-E_CLOSEOUT.json",
+    "integration/audits/production_physics_application_envelope_gap_register.json"
+  ],
+  "authority_paths": [
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/architecture/invariants.md",
+    "integration/f-app/F-APP05_PREREGISTRATION.json",
+    "integration/f-app/F-APP05_OWNER_QUALIFICATION.json",
+    "integration/f-app/F-APP05_ADMISSION_READY.json",
+    "integration/f-app/F-APP08_ADMISSION_READY.json",
+    "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "reference/swap-4.3.1/snapshots/B1.11.yml"
+  ],
+  "test_paths": [
+    "tests/fpm/test_f_mig431_int13_capacity_event.f90",
+    "tests/fpm/run_f_mig431_int13_capacity_event.sh"
+  ],
+  "evidence_paths": [
+    "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
+    "integration/audits/F-MIG431-INT13_CAPACITY_EVENT_RESULT.json"
+  ],
+  "implemented": "existing Hupsel-scoped process only; generic Rutter source-window production binding not implemented",
+  "persisted": "work-branch checkpoint pending",
+  "tested": "INT13 capacity-fill falsification passed at O0/O2 with identical output; existing F-APP05 Rutter unit and frozen Hupsel supporting observations passed at O0/O2 with identical output",
+  "qualified": false,
+  "next_action": "recover exact B0 source distribution, reconstruct B1.11 MOD_meteo.f90, then audit the legacy event law and design Rutter-owned source-window advancement",
+  "recovery_point": "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
+  "blockers": [
+    "The canonical checkout lacks the exact B0 source archive and reconstructed B1.11 MOD_meteo.f90 member required to independently reconstruct Rutter source equations.",
+    "The current Rutter API's one-day fill case loses 0.9 cm unless its caller enforces the reported canopy-fill event and reprocesses the remainder as throughfall."
+  ],
+  "dependency_surface": [
+    "Rutter process state and equations",
+    "interception source-window progress",
+    "forcing application and dynamic-top binding",
+    "transaction/restart state publication",
+    "SWINTER=0/1/2, Black and Boesten preservation interfaces"
+  ]
+}
