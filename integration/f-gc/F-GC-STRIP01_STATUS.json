@@ -404,7 +404,7 @@
     "production_delta": [],
     "canonical_admission": false,
     "bounded_conclusion": "C2D completes target forcing and measurable spatial MODFLOW response under exact C2B initial head/drain/Kx/IMS settings, including the strict 2e-15 m/s diagnostic criterion. Evidence supports that C2B failure lies on the real SWAP/Richards participant side for the tested trajectory; it does not establish every native participant-registry or production topology path.",
-    "next_action": "Retain C2D as the intermediate reference when diagnosing the real SWAP transaction/predictor response. No production tolerances, Richards policy, or canonical storage/drain authority were changed.",
+    "next_action": "Review and preregister an additive research-only F-GC49D test backend/participant contract before attempting dynamic Dummy-SWAP through the native participant registry. Preserve all production semantics.",
     "replay_records": "integration/f-gc/strip01/results/c2d-local/{zero,transparent,finite_resistance,strict_transparent,strict_finite_resistance}_replay.replay_identity.json",
     "final_local_rerun": {
       "source_commit": "31dd33167f2c3d8fb363bf8d7fc0d700c439e585",
@@ -412,6 +412,18 @@
       "cases": "4-window hydrostatic zero + 120-window transparent and finite-resistance recharge/recession; strict 2e-15 m/s sensitivity for both dynamic responses",
       "independent_validation": "Persisted gzip SHA-256, uncompressed replay JSON identities, strict full-run hashes, 50-head/49-face dimensions, published rows, action-reaction and per-component/global mass ledgers verified locally.",
       "output_size_bytes": 691355
+    },
+    "native_registry_probe": {
+      "findings": "docs/integration/F-GC-STRIP01_C2D_NATIVE_REGISTRY_BRIDGE.md",
+      "summary": "integration/f-gc/strip01/results/c2d-local/native_registry_zero_control.json",
+      "result": "integration/f-gc/strip01/results/c2d-local/native_registry_zero_result.json",
+      "source_manifest": "integration/f-gc/strip01/results/c2d-local/native_registry_zero_source_git_blobs.json",
+      "state": "NATIVE_FGC49D_REGISTRY_ZERO_CONTROL_PUBLISHED",
+      "fresh_process_byte_identity": true,
+      "scope": "50 real-SWAP native registry participants, zero-forcing matched-head hydrostatic control; not a dynamic Dummy-SWAP run.",
+      "finding": "No analytic Dummy-SWAP response injection point exists in the concrete F-GC49D registry/backend contract. A valid same-registry dynamic dummy requires an explicit research backend/participant design; overriding flux post-trial would break state/flux ownership.",
+      "production_delta": [],
+      "next_action": "Preregister and review a test-only F-GC49D backend/participant seam with explicit candidate, rollback, revision and ledger contracts before attempting a native-registry dynamic dummy."
     }
   }
 }
