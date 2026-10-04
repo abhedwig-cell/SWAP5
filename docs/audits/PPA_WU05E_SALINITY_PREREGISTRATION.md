@@ -49,6 +49,19 @@ The crop-side response consumes an already authorized concentration; it owns nei
 
 The apparent legacy labels `CML`, `CMSY`, and concentration are not enough to imply a current SWAP5 equivalent. No SWAP5 state with verified physical meaning, units, node mapping, mass closure, transaction semantics, or restart contract was found.
 
+## Additional source-family state and mass census
+
+The public source-family solute driver provides a more specific migration checklist, still subject to the byte-exact limitation above:
+
+- `SWSOLU=1` activates solute transport. The crop salinity options are read only when solute is active.
+- The soil-water initialization mode separates initial profile from warm restart. For `SWINCO != 3`, the supplied depth/concentration pairs `ZC/CML` are interpolated to the soil nodes. For `SWINCO=3`, the warm-start concentration profile is supplied through the restart path; the initial profile table is not reapplied.
+- The driver forms `CMSY), the total dissolved plus adsorbed solute concentration per bulk soil volume, from water content and mobile concentration. With Freundlich sorption enabled it also depends on bulk density, `KF`, `CREF`, and `FREXP). Column inventory is the depth integral of `CMSY). A restart contract cannot preserve only a label called concentration: it must preserve enough accepted state to recover both the mobile concentration used by salinity stress and the stored solute mass.
+- The transport balance has explicit surface input, inter-node advective/dispersive flux, bottom exchange, lateral drainage, root uptake, and optional decomposition terms. The source-family solute driver substeps the water interval according to a solute timestep constraint and updates `CMSY) before solving back for `CML).
+- Root-mediated solute uptake is `TSCF * qrot(node) * CML(node)` in the source-family mass equation. The final accepted nodewise root-water sink therefore has to be the exact sink used to advance the candidate salt state. Root stress does not account for this solute mass itself.
+- The source family has distinct input for precipitation/irrigation concentration and bottom concentration modes, including a time-varying bottom concentration option. Drainage may remove or supply solute depending on flow direction.
+
+These details show why a prescribed or frozen `CML` profile is not a production replacement for salinity physics: it bypasses storage, boundary transfer, root removal, and restart continuity. The first E1 envelope must state which of these terms it includes and prove a separate column salt balance. If sorption or decomposition is excluded, the contract must set those terms to zero and prevent inputs that would activate them. The chosen restart representation should make the committed solute mass authoritative, with `CML` derived or checked consistently; exact legacy warm-restart behavior still needs the pinned B1.11 source census.
+
 ## Work plan and gates
 
 ### E0: reconstruction checkpoint (this record)
