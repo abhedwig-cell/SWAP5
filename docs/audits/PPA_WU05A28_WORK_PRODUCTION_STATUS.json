@@ -59,5 +59,20 @@
       "max_matrix_difference_cm": 1.2079226507921703e-13
     },
     "evidence": "docs/audits/evidence/PPA_WU05A28_STABLE_INCREMENT_PROBE.json.gz"
+  },
+  "saturation_event_diagnosis": {
+    "status": "CELL5_WATER_DEFICIT_EXPLAINS_PRESSURE_JUMP",
+    "independent_crossings": 12,
+    "max_darcy_reconstruction_error_cm": 3.552713678800501e-14,
+    "evidence": "docs/audits/evidence/PPA_WU05A28_SATURATION_EVENT_PROBE.json.gz"
+  },
+  "postfill_pressure_prototype": {
+    "admitted": false,
+    "exact_preservation_claim": false,
+    "completed_windows": 15,
+    "failed_operation": "CORRECTOR16",
+    "controls_unchanged": true,
+    "terminal_state_interpretation_changed": true,
+    "evidence": "docs/audits/evidence/PPA_WU05A28_POSTFILL_PROTOTYPE.json.gz"
   }
 }

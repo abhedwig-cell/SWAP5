@@ -103,6 +103,50 @@ if os.environ.get('A28_TYPED_STABLE_STORAGE_INCREMENT')=='1':
  assert headcalc_text.count(anchor)==1
  headcalc_text=headcalc_text.replace(anchor,'   if (provider_constitutive_active) then',1)
  retry_headcalc=out/'a28_stable_storage_headcalc.f90';retry_headcalc.write_text(headcalc_text)
+if os.environ.get('A28_SATURATED_EQUATION_DIAGNOSTICS')=='1':
+ assert retry_headcalc is not None
+ headcalc_text=retry_headcalc.read_text()
+ anchor='      if (.NOT.flnonconv) then      ! convergence has been reached'
+ assert headcalc_text.count(anchor)==1
+ headcalc_text=headcalc_text.replace(anchor,anchor+'''
+         if(dt<1.0d-7.and.swbotb==2)then
+           write(*,*) 'A28_SAT_EQUATION dt=',dt,' q=',state%qbot,' residual=',fsi_ws%residual(1:NN)
+           write(*,*) 'A28_SAT_HEAD old=',state%hm1(1:NN),' new=',state%h(1:NN)
+           write(*,*) 'A28_SAT_WATER delta=',fsi_ws%provider_water_content_increment(1:NN),' cap=',state%dimoca(1:NN)
+           write(*,*) 'A28_SAT_FLUX kmean=',state%kmean(1:NN+1),' source=',fsi_ws%source(1:NN),' sink=',fsi_ws%sink(1:NN)
+         end if
+''',1)
+ retry_headcalc=out/'a28_saturated_observed_headcalc.f90';retry_headcalc.write_text(headcalc_text)
+if os.environ.get('A28_POSTFILL_TERMINAL_PRESSURE_PROTOTYPE')=='1':
+ assert os.environ.get('A28_FIELD_DEPTH')=='1' and os.environ.get('A28_TYPED_STABLE_STORAGE_INCREMENT')=='1'
+ assert os.environ.get('A28_SATURATED_EQUATION_DIAGNOSTICS')!='1'
+ headcalc_text=retry_headcalc.read_text()
+ anchor='   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit'
+ assert headcalc_text.count(anchor)==1
+ headcalc_text=headcalc_text.replace(anchor,anchor+', a28_crossing_node',1)
+ anchor='      if (.NOT.flnonconv) then      ! convergence has been reached'
+ assert headcalc_text.count(anchor)==1
+ headcalc_text=headcalc_text.replace(anchor,anchor+'''
+         if(swbotb==2.and.swkimpl==0.and.provider_constitutive_active)then
+           a28_crossing_node=0
+           do i=2,NN
+             if(state%hm1(i)<0.0d0.and.state%h(i)>=0.0d0.and.all(state%h(i:NN)>=0.0d0))then
+               a28_crossing_node=i
+               exit
+             end if
+           end do
+           if(a28_crossing_node>0)then
+             if(all(fsi_ws%source(a28_crossing_node:NN)==0.0d0).and. &
+                all(fsi_ws%sink(a28_crossing_node:NN)==0.0d0).and. &
+                all(state%kmean(a28_crossing_node:NN)>0.0d0))then
+               do i=a28_crossing_node,NN
+                 state%h(i)=state%h(i-1)+grid_disnod(i)*(1.0d0+state%qbot/state%kmean(i))
+               end do
+             end if
+           end if
+         end if
+''',1)
+ retry_headcalc=out/'a28_terminal_pressure_headcalc.f90';retry_headcalc.write_text(headcalc_text)
 # Solver-only causal frontier: freeze RFM physical/accounting tolerance independently.
 separated_backend=None
 backend_path=root/'src/runtime/mod_fmr_serialized_reference_backend.f90'
