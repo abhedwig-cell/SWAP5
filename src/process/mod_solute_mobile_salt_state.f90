@@ -186,26 +186,27 @@ contains
     status=SOLUTE_INVALID
     if(size(substeps)==0.or.size(node_thickness_cm)==0) return
     if(.not.allocated(committed%mass_mg_cm2).or..not.allocated(committed%concentration_mg_cm3)) return
-    current=committed
     do k=1,size(substeps)
       if(.not.allocated(substeps(k)%water_start).or..not.allocated(substeps(k)%water_trial).or. &
          .not.allocated(substeps(k)%face_flux_cm_day).or..not.allocated(substeps(k)%root_water_sink_cm_day)) then
-        fluxes=mobile_salt_fluxes_t()
         status=SOLUTE_INVALID
         return
       end if
-      if(k>1) then
-        if(size(substeps(k)%water_start)/=size(substeps(k-1)%water_trial)) then
-          status=SOLUTE_WATER_CLOSURE
-          return
-        end if
-        continuity_tolerance=512.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
-             maxval(abs(substeps(k)%water_start)),maxval(abs(substeps(k-1)%water_trial)))
-        if(any(abs(substeps(k)%water_start-substeps(k-1)%water_trial)>continuity_tolerance)) then
-          status=SOLUTE_WATER_CLOSURE
-          return
-        end if
+    end do
+    do k=2,size(substeps)
+      if(size(substeps(k)%water_start)/=size(substeps(k-1)%water_trial)) then
+        status=SOLUTE_WATER_CLOSURE
+        return
       end if
+      continuity_tolerance=512.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
+           maxval(abs(substeps(k)%water_start)),maxval(abs(substeps(k-1)%water_trial)))
+      if(any(abs(substeps(k)%water_start-substeps(k-1)%water_trial)>continuity_tolerance)) then
+        status=SOLUTE_WATER_CLOSURE
+        return
+      end if
+    end do
+    current=committed
+    do k=1,size(substeps)
       call advance_mobile_salt_trial(current,node_thickness_cm,substeps(k)%water_start,substeps(k)%water_trial, &
            substeps(k)%face_flux_cm_day,substeps(k)%root_water_sink_cm_day, &
            substeps(k)%top_boundary_concentration,substeps(k)%bottom_boundary_concentration,tscf, &
