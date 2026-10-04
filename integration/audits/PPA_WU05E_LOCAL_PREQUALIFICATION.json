@@ -30,8 +30,8 @@
     "src/runtime/mod_fmr_restart_state_contract.f90": "f917f229f650b4a7787476fc7bd2b87666e9689951ef83508aa1da1531a12ec1",
     "src/runtime/mod_fmr_committed_restart.f90": "585aa64f209db2c106f73caaedb7dfac66e6b0fcd1571750ce4a405710165e89",
     "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "9d470ff49649bfb6f592c69a9c7f58765a243a20b85ee100487b45c6c4285691",
-    "tests/physics/ppa_wu05e_mobile_macropore_exchange_oracle.f90": "af497ec029bf61d2614ec7570d3bf5c62f5d252dfd457d64209bf1fb74e94a0e",
-    "tests/physics/test_mobile_macropore_salt_exchange_oracle.f90": "cbbb0c036258ea88d95f64147adcc08691dd27ecf460c379c37d5a210dedfec8",
+    "tests/physics/ppa_wu05e_mobile_macropore_exchange_oracle.f90": "aaeefe46b8eaa5e854d87fc9cad9ae6d54e0ae972ee284ca3dfd972724a5d7ff",
+    "tests/physics/test_mobile_macropore_salt_exchange_oracle.f90": "c57bfa2471d5b1ccaecac99338a85039f78c5fd845ecd38ca6e72d041ccac152",
     "tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh": "9c37053df30f7be9ddb821358ebae012647bf06525ae86447a45a994466d0410"
   },
   "results": [
@@ -103,7 +103,7 @@
     {
       "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
       "result": "PASS_O0_O2",
-      "scope": "Test-only conservative signed transfer oracle for matrix/mobile salt and multiple macropore domain salt donors; covers unequal concentrations, zero flow, ordered reversal, total inventory closure, dry donor, and water overdraw. O0/O2 outputs identical. Not production transport or qualification."
+      "scope": "Test-only conservative signed matrix/macropore salt transfer oracle at O0/O2: distinct donor concentrations, no-flow identity, ordered reversal, inventory closure, dry-with-salt inconsistency, dry donor and water overdraw rejection; deterministic outputs. Not production transport or qualification."
     }
   ],
   "not_run_or_not_claimed": [
