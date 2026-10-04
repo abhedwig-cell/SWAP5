@@ -45,7 +45,7 @@
   "persisted": "updated on work branch and draft PR #1016; exact historical source materialization is still blocked",
   "tested": "INT13 capacity-fill falsification passed at O0/O2 with identical output; existing F-APP05 Rutter unit and frozen Hupsel supporting observations passed at O0/O2 with identical output; existing INT12-P0 source-window preservation test passed at O0/O2",
   "latest_audit_findings": [
-    "Two attempts to materialize the exact pinned source archive failed at the Library network boundary (hosted apps tools/list request failed: network); no alternative SWAP version was used.",
+    "Two attempts to retrieve the exact pinned source archive failed with a network error; no alternative SWAP version was used.",
     "maximum_event_timestep_days has no consumer outside mod_rutter_interception_process under src/**/*.f90; the existing F-APP05 tests call the pure process routine directly, and F-APP08 tests output binding rather than an event-driving production chain.",
     "The admitted INT12 source-window runtime stores accepted source progress but no canopy water. A Rutter trial must compose canopy candidate state and source-window progress and publish both atomically after hydrological transaction acceptance."
   ],
