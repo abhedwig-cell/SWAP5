@@ -2,8 +2,8 @@
 import ctypes,os,sys
 from pathlib import Path
 
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'fgc'))
-from test_fgc45_real_multiswap_modflow_end_to_end import Fgc45RealMultiSwap
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'fgc'/'support'))
+from fgc45_real_multiswap_ctypes import Fgc45RealMultiSwap
 
 head=float(os.environ.get('A28_H0_CM','-45'))
 dt=float(os.environ.get('A28_DT_DAY','.01'))

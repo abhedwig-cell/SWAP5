@@ -1,0 +1,55 @@
+name: PPA-WU05-A28 exact RFM retry-cause diagnostic
+on:
+  push:
+    branches: [work/a28-rfm-fd-qualification]
+    paths:
+      - 'tests/fpe/build_fpe_a28_coupled_local.py'
+      - 'tests/fpe/test_fpe_a28_fd_predictor_init.py'
+      - '.github/workflows/f-a28-rfm-retry-cause.yml'
+permissions: {contents: read}
+jobs:
+  exact-retry-cause:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install local qualification compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Build field-depth bridge with test-only HeadCalc diagnostics
+        run: |
+          A28_FIELD_DEPTH=1 A28_RETRY_CAUSE_DIAGNOSTICS=1 \
+            python3 tests/fpe/build_fpe_a28_coupled_local.py /tmp/a28-retry-cause-build \
+            > /tmp/a28-retry-cause-build.log 2>&1
+          sha256sum src/legacy/b1_10_port/headcalc.f90 \
+            /tmp/a28-retry-cause-build/a28_retry_probe_headcalc.f90 \
+            tests/fpe/support/mod_fpe_a28_fgc45_rfm_bridge.f90 \
+            > /tmp/a28-retry-cause-source-sha256.txt
+      - name: Run unchanged exact predictor-only input
+        id: probe
+        continue-on-error: true
+        env:
+          A28_H0_CM: '-45'
+          A28_DT_DAY: '0.01'
+          A28_RAIN_CM_DAY: '1'
+          FGC45_MULTISWAP_LIB: /tmp/a28-retry-cause-build/libfgc45_multiswap.so
+        run: |
+          python3 tests/fpe/test_fpe_a28_fd_predictor_init.py \
+            > /tmp/a28-retry-cause-probe.log 2>&1
+      - name: Require solver-criterion diagnostic and retain expected predictor failure
+        if: always()
+        run: |
+          test -f /tmp/a28-retry-cause-probe.log
+          rg 'A28_RETRY_BUDGET|A28_RETRY_TYPED_INVALID|A28_RETRY_BALANCE_FAIL|A28_RETRY_HEAD_FAIL|A28_RETRY_TOTAL_BALANCE_FAIL' \
+            /tmp/a28-retry-cause-probe.log
+      - name: Upload bounded diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a28-exact-rfm-retry-cause
+          if-no-files-found: warn
+          path: |
+            /tmp/a28-retry-cause-build.log
+            /tmp/a28-retry-cause-source-sha256.txt
+            /tmp/a28-retry-cause-build/a28_retry_probe_headcalc.f90
+            /tmp/a28-retry-cause-probe.log

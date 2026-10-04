@@ -47,6 +47,56 @@ if os.environ.get('A28_FIELD_DEPTH')=='1':
  ]
  for before,after in zip(old,new,strict=True):grid_text=grid_text.replace(before,after,1)
  field_grid=out/'a28_field_depth_grid_stubs.f90';field_grid.write_text(grid_text)
+# Optional retry-cause probe: compile a build-local HeadCalc source copy with
+# prints at the existing typed-bottom invalidation and iteration-budget exits.
+# The repository production source is never edited by this diagnostic path.
+retry_headcalc=None
+headcalc_path=root/'src/legacy/b1_10_port/headcalc.f90'
+if os.environ.get('A28_RETRY_CAUSE_DIAGNOSTICS')=='1':
+ headcalc_text=headcalc_path.read_text()
+ declaration='   real(8)                          :: factor, Fmax\n'
+ assert headcalc_text.count(declaration)==1,'unexpected HeadCalc diagnostic declaration'
+ headcalc_text=headcalc_text.replace(declaration,declaration+'''   real(8)                          :: a28_probe_head_error, a28_probe_head_tolerance
+''',1)
+ initial_invalid='''   if (typed_bottom_invalid) then
+      state%fldecdt=.true.
+'''
+ assert headcalc_text.count(initial_invalid)==1,'unexpected initial typed-bottom invalidation branch'
+ headcalc_text=headcalc_text.replace(initial_invalid,'''   if (typed_bottom_invalid) then
+      write(*,*) 'A28_RETRY_TYPED_INVALID phase=initial swbotb=',swbotb
+      state%fldecdt=.true.
+''',1)
+ iterate_invalid='''         if (typed_bottom_invalid) then
+            state%fldecdt=.true.
+'''
+ assert headcalc_text.count(iterate_invalid)==1,'unexpected iterative typed-bottom invalidation branch'
+ headcalc_text=headcalc_text.replace(iterate_invalid,'''         if (typed_bottom_invalid) then
+            write(*,*) 'A28_RETRY_TYPED_INVALID phase=iterate swbotb=',swbotb,' iteration=',solver_numbit
+            state%fldecdt=.true.
+''',1)
+ budget_exit='''   ! Preserve the legacy DO-variable value after normal loop exhaustion.
+   state%numbit = solver_numbit
+'''
+ assert headcalc_text.count(budget_exit)==1,'unexpected HeadCalc iteration-budget exit'
+ headcalc_text=headcalc_text.replace(budget_exit,budget_exit+'''   write(*,*) 'A28_RETRY_BUDGET', 'iterations=',solver_numbit-1,'limit=',MaxIt1, &
+        'max_abs_balance=',maxval(abs(fsi_ws%residual(1:NN))),'balance_tol=',CritDevBalCp, &
+        'abs_total_balance=',abs(sum1),'total_balance_tol=',CritDevBalTot,'typed_invalid=',typed_bottom_invalid
+   do i=1,NN
+      if (abs(fsi_ws%residual(i)) > CritDevBalCp) &
+           write(*,*) 'A28_RETRY_BALANCE_FAIL', 'node=',i,'residual=',fsi_ws%residual(i),'tol=',CritDevBalCp
+      a28_probe_head_error=abs(state%h(i)-fsi_ws%old_head(i))
+      if (abs(fsi_ws%old_head(i)) < 1.0d0) then
+         a28_probe_head_tolerance=CritDevh2Cp
+      else
+         a28_probe_head_tolerance=CritDevh1Cp*abs(fsi_ws%old_head(i))
+      end if
+      if (a28_probe_head_error > a28_probe_head_tolerance) &
+           write(*,*) 'A28_RETRY_HEAD_FAIL', 'node=',i,'head_error=',a28_probe_head_error,'tol=',a28_probe_head_tolerance
+   end do
+   if (abs(sum1) > CritDevBalTot) &
+        write(*,*) 'A28_RETRY_TOTAL_BALANCE_FAIL', 'sum=',sum1,'tol=',CritDevBalTot
+''',1)
+ retry_headcalc=out/'a28_retry_probe_headcalc.f90';retry_headcalc.write_text(headcalc_text)
 # Bounded test-only instrumentation: only successful quadrature loops count.
 source=root/'src/process/macropore/mod_rfm_surface_sorptivity.f90'
 s=source.read_text().replace('  implicit none','  use, intrinsic :: iso_c_binding, only: c_int, c_double\n  implicit none',1)
@@ -86,6 +136,7 @@ instrumented=out/source.name;instrumented.write_text(s)
 objs=[]
 for name in sources:
  if field_grid is not None and name==base[0]:src=field_grid
+ elif retry_headcalc is not None and name==str(headcalc_path.relative_to(root)):src=retry_headcalc
  else:src=instrumented if name==str(source.relative_to(root)) else root/name
  obj=out/(src.stem+'.o')
  subprocess.run(['gfortran','-std=f2008','-ffree-line-length-none','-fPIC','-fopenmp','-fcheck=all','-fbacktrace','-O2','-J',str(out),'-I',str(out),'-c',str(src),'-o',str(obj)],check=True)
