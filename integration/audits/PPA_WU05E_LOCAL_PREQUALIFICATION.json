@@ -3,11 +3,11 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E work-branch source postimage at f12cf6155ab4417d3606a4ac8c9690ed3d8117d0; source-hash prequalification only, not formal qualification",
+  "target_state": "PPA-WU05-E source postimage at 3a21041c7e8643fc1ad2d5888b2c291e1e8141bf; local source-hash prequalification only, not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "4ff634794a125175bcce426a316dce0444ddc2cac87bf4540e713171c711e1f4",
-    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "72cbf0dede4e15bc4f84ae9bc246984ae85c333fa8ca2c2fcf42acf6985fad74",
+    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "3fbae357cc9851c3ab78c996f1d6a0f21424e1d03aa4d64bf397f082c903434c",
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "009da0f8e6788b365c9a95aa4a3f9cedd444f5fa15478e287e63a78ac9a41f6c",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
     "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
@@ -112,9 +112,10 @@
     "No GitHub Actions run; local evidence is preliminary and does not admit a capability.",
     "No live FMR interval-mean face-flux reconstruction: its current observation exposes the last internal Richards solver-step boundary flux, not a candidate-interval aggregate. The live qrot transaction passes but does not qualify the solute flux trace; route-specific drainage/snow/surface terms remain unqualified.",
     "The new reversal counterexample and direct O0 unit runs do not qualify ordered live FMR flux transport, restart, or Jarvis integration.",
-    "Accepted FMR water substep trace is a restricted live producer only; no salt transport consumer or committed/restart salt state is connected. Unsupported surface/snow/rapid macropore/drainage routes remain fail-closed or unqualified."
+    "Accepted FMR water substep trace is a restricted live producer only; no salt transport consumer or committed/restart salt state is connected. Unsupported surface/snow/rapid macropore/drainage routes remain fail-closed or unqualified.",
+    "The ad hoc macro-disabled base FMR fixture did not produce an accepted candidate (CANONICAL_STATUS_SUBSTEP_LIMIT after 2,050 temporal rejections); no positive live FMR salt receipt has been demonstrated."
   ],
-  "claim_ceiling": "Local tested prototypes and negative evidence only. The test-only FMR observation consumer explicitly rejects the active-macropore trace with unowned matrix water exchange and leaves salt candidate/receipt and committed state unchanged. No production salinity capability is admitted.",
+  "claim_ceiling": "Local tested prototypes and negative evidence only. The pinned A8 O0/O2 gate proves that the current macropore-enabled FMR trace fails closed when unowned internal matrix exchange is presented to the restricted salt ledger. An unpersisted macro-disabled fixture attempt hit the existing canonical substep limit. No positive live FMR salt receipt, coupled transaction, or production salinity capability is qualified or admitted.",
   "environment_overrides": {
     "oxygen_preservation_runner": "FC executable wrapper at /tmp/gfortran-swap5-tolerant-warn prepended -Wno-error=compare-reals; the tracked runner uses -Werror, and this only makes the existing equality warning non-fatal without altering numerical tolerances.",
     "wrapper_sha256": "c65021b92959a4d908036e843753ac2bccbc258262d333da008396fdeffc42f5",
@@ -133,6 +134,12 @@
       "result": "EXPECTED_FAIL_CLOSED_O0_O2",
       "observation": "The accepted trace has non-root node water sources in addition to qrot (max |net_node_source + root_sink| > 1e-8 cm/day). The restricted E1 mobile-salt routine accepts Richards faces plus root uptake only and returns SOLUTE_WATER_CLOSURE. The whole trace returns no allocated candidate and zero receipt fields; committed test salt mass/concentration remain unchanged. The A8 runner checks the fail-closed marker at O0 and O2.",
       "interpretation": "Active macropore matrix exchange needs an explicit solute transfer/source concentration owner, or the FMR route must be qualified with all non-root water sources disabled. This falsifies the assumption that the current macropore-enabled accepted water trace is sufficient by itself to drive the restricted single-mobile-domain salt ledger. It does not qualify a coupled water/salt transaction."
+    },
+    {
+      "experiment": "Ad hoc base-layout FMR trace attempt with macropores disabled",
+      "result": "NO_ACCEPTED_CANDIDATE_CANONICAL_SUBSTEP_LIMIT",
+      "observation": "With the A7 fixture's macropore physics and optional component disabled, nonzero root extraction retained, and existing external full/half acceptance unchanged, Richards subsolves had zero solver rejections but the transaction returned canonical status 4 (CANONICAL_STATUS_SUBSTEP_LIMIT) after 2,050 temporal rejections; no candidate or complete mass receipt was published.",
+      "interpretation": "This was an unpersisted local diagnostic variation, not a pinned qualification source. It shows that the obvious base-only route cannot currently provide an accepted trace in this fixture under the existing acceptance policy. Do not loosen tolerances; establish a supported accepted base FMR route or qualify explicit mobile/macropore solute exchange ownership before advancing E1."
     }
   ]
 }
