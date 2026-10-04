@@ -19,11 +19,18 @@ SOLVER_TOL=float(os.environ.get('A28_SOLVER_BALANCE_TOL_CM','1e-12'))
 assert lib.a28_set_solver_balance_tolerance_c(SOLVER_TOL)==0
 assert lib.a28_set_policy_c(int(mode=='a28'))==0
 assert lib.a28_set_fixture_c(H0,DT,RAIN)==0
+lib.a28_set_head_tolerances_c.argtypes=[ctypes.c_double,ctypes.c_double]
+lib.a28_set_head_tolerances_c.restype=ctypes.c_int
+HEAD_ABS=float(os.environ.get('A28_HEAD_ABS_TOL_CM','1e-12'))
+HEAD_REL=float(os.environ.get('A28_HEAD_REL_TOL','1e-12'))
+assert lib.a28_set_head_tolerances_c(HEAD_ABS,HEAD_REL)==0
 swap=f.Fgc45RealMultiSwap(os.environ['FGC45_MULTISWAP_LIB'])
 # Initialization includes FD qualification and is reported separately from live windows.
 t0=time.perf_counter();hcof,rhs,href=swap.initialize();init_seconds=time.perf_counter()-t0
 matrix=(ctypes.c_double*2)();rfm=(ctypes.c_double*2)()
 lib.a28_storage_c(matrix,rfm);initial_matrix=list(matrix);initial_rfm=list(rfm)
+inventory=dict(initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,dt_day=DT,
+               solver_balance_tol_cm=SOLVER_TOL,head_abs_tol_cm=HEAD_ABS,head_rel_tol=HEAD_REL)
 counts=(ctypes.c_int*3)();panels=ctypes.c_int();hmin=ctypes.c_double();hmax=ctypes.c_double();seconds=ctypes.c_double()
 lib.a28_sorptivity_stats_c.argtypes=[ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
 lib.a28_sorptivity_stats_reset_c.argtypes=[]
@@ -45,7 +52,7 @@ with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
     a=ctypes.c_double();b=ctypes.c_double();c=ctypes.c_double()
     t=time.perf_counter();status=lib.a28_next_window_c(rain,ctypes.byref(a),ctypes.byref(b),ctypes.byref(c));predictor_seconds+=time.perf_counter()-t
     if status:
-     Path(os.environ['A28_RESULT']).write_text(json.dumps(dict(status='EXACT_PREDICTOR_BLOCKER' if mode=='exact' else 'A28_PREDICTOR_FAILURE',failed_window=w+1,completed_windows=w,rows=rows),indent=2)+'\n')
+     Path(os.environ['A28_RESULT']).write_text(json.dumps(dict(**inventory,status='EXACT_PREDICTOR_BLOCKER' if mode=='exact' else 'A28_PREDICTOR_FAILURE',failed_window=w+1,completed_windows=w,rows=rows),indent=2)+'\n')
     f.require(status==0,f'next RFM window failed {w}');hcof,rhs,href=a.value,b.value,c.value
    raw.prepare_time_step(0.)
    session=f.Modflow6PreparedSolveSession(kernel,'GWF_1','API_SWAP',publisher,solution_id=1)
@@ -58,7 +65,13 @@ with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
     f.require(status==f.PreparedSolveStatus.OK,session.last_error)
     f.require(np.array_equal(it.accepted_head_old_m,old),'XOLD changed')
     head=float(it.head_m[1]);qgw=(hcof*head-rhs)/f.DAY_TO_S
-    t=time.perf_counter();qw,q1,q2=swap.trial(head);swap_seconds+=time.perf_counter()-t
+    t=time.perf_counter()
+    try:
+     qw,q1,q2=swap.trial(head)
+    except Exception as exc:
+     Path(os.environ['A28_RESULT']).write_text(json.dumps(dict(**inventory,status='EXACT_CORRECTOR_BLOCKER' if mode=='exact' else 'A28_CORRECTOR_FAILURE',failed_window=w+1,completed_windows=w,error=str(exc),rows=rows),indent=2)+'\n')
+     raise
+    swap_seconds+=time.perf_counter()-t
     res=qw-qgw
     f.require(abs(qw-(f.F1*q1+f.F2*q2))<=1e-15,'area closure')
     f.require(all(math.isfinite(x) for x in (head,qw,q1,q2,res)),'nonfinite')
@@ -76,10 +89,10 @@ with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
    lib.a28_storage_c(matrix,rfm)
    rows.append(dict(window=w+1,rain_cm_day=rain,head_m=head,q1=q1,q2=q2,qw=qw,residual=res,iterations=outer,ledger1=state[6],ledger2=state[7],matrix=list(matrix),rfm=list(rfm)))
    coupling_seconds+=time.perf_counter()-start
-   Path(os.environ['A28_RESULT']).write_text(json.dumps(dict(status='RUNNING',completed_windows=w+1,rows=rows),indent=2)+'\n')
+   Path(os.environ['A28_RESULT']).write_text(json.dumps(dict(**inventory,status='RUNNING',completed_windows=w+1,rows=rows),indent=2)+'\n')
    print(f'A28_WINDOW_COMPLETED={w+1} H={head:.17g} iterations={outer} matrix={list(matrix)} rfm={list(rfm)}',flush=True)
  finally:raw.finalize()
 lib.a28_sorptivity_stats_c(counts,ctypes.byref(panels),ctypes.byref(hmin),ctypes.byref(hmax),ctypes.byref(seconds))
-result=dict(solver_balance_tol_cm=SOLVER_TOL,mode=mode,windows=nwindow,h0_cm=H0,rain_cm_day=RAIN,reference_head_m=href,dt_day=DT,initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,init_seconds=init_seconds,execution_seconds=coupling_seconds,predictor_seconds=predictor_seconds,corrector_seconds=swap_seconds,modflow_seconds=modflow_seconds,sorptivity_counts=list(counts),panels=panels.value,consumer_head_range_cm=[hmin.value,hmax.value],sorptivity_seconds=seconds.value,rows=rows)
+result=dict(head_abs_tol_cm=HEAD_ABS,head_rel_tol=HEAD_REL,solver_balance_tol_cm=SOLVER_TOL,mode=mode,windows=nwindow,h0_cm=H0,rain_cm_day=RAIN,reference_head_m=href,dt_day=DT,initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,init_seconds=init_seconds,execution_seconds=coupling_seconds,predictor_seconds=predictor_seconds,corrector_seconds=swap_seconds,modflow_seconds=modflow_seconds,sorptivity_counts=list(counts),panels=panels.value,consumer_head_range_cm=[hmin.value,hmax.value],sorptivity_seconds=seconds.value,rows=rows)
 Path(os.environ['A28_RESULT']).write_text(json.dumps(result,indent=2)+'\n')
 print('A28_COUPLED_WINDOWS=PASS',json.dumps({k:v for k,v in result.items() if k!='rows'}))

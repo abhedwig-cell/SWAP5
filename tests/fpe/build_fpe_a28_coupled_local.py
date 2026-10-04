@@ -105,6 +105,20 @@ if os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1':
  before='max(self%compartment_balance_tolerance,FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM),rfm_live)'
  assert backend_text.count(before)==1
  backend_text=backend_text.replace(before,'1.0e-12_real64,rfm_live)',1)
+ if os.environ.get('A28_TEMPORAL_COMPONENT_DIAGNOSTICS')=='1':
+  anchor='        value = max(value, maxval(abs(full%rfm%endpoint_water_cm-half%rfm%endpoint_water_cm)))'
+  assert backend_text.count(anchor)==1
+  backend_text=backend_text.replace(anchor,anchor+'''
+        if(value>1.0e-5_real64)write(*,*) 'A28_TEMPORAL_COMPONENTS error=',value, &
+          ' head=',maxval(abs(full%pressure_head-half%pressure_head)), &
+          ' pond=',abs(full%ponding_depth-half%ponding_depth), &
+          ' groundwater=',abs(full%groundwater_level-half%groundwater_level), &
+          ' matrix=',maxval(abs((full%water_content-half%water_content)*self%soil_parameters%dz)), &
+          ' mb=',abs(full%rfm%mb_water_cm-half%rfm%mb_water_cm), &
+          ' endpoint=',maxval(abs(full%rfm%endpoint_water_cm-half%rfm%endpoint_water_cm)), &
+          ' node=',maxloc(abs(full%pressure_head-half%pressure_head),dim=1), &
+          ' full_heads=',full%pressure_head,' half_heads=',half%pressure_head
+''',1)
  if os.environ.get('A28_PARTITION_AWARE_PREFLIGHT')=='1':
   declaration='    real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm'
   assert backend_text.count(declaration)==1
@@ -126,7 +140,7 @@ if os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1':
           rfm_preflight%net_potential_surface_flux=a28_original_supply
           call prepare_rfm_live_trial(rfm_physical%rfm,self%rfm_configuration,self%rfm_surface_forcing,hydraulic_start, &
                self%constitutive,rfm_preflight,rfm_node_depth_cm,self%soil_parameters%dz,step_duration,1.0e-12_real64,rfm_live)
-          write(*,*) 'A28_PARTITION_PREFLIGHT valid=',rfm_live%valid,' surface_status=',rfm_live%surface%status
+          if(.not.rfm_live%valid)write(*,*) 'A28_PARTITION_PREFLIGHT valid=',rfm_live%valid,' surface_status=',rfm_live%surface%status
         end if
 '''
   backend_text=backend_text.replace(before,repair+before,1)
@@ -135,17 +149,47 @@ if os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1':
 observed_preparer=None
 if os.environ.get('A28_RFM_PREPARER_DIAGNOSTICS')=='1':
  preparer_path=root/'src/runtime/mod_rfm_live_trial_preparer.f90'
- preparer_text=preparer_path.read_text()
+ preparer_text=preparer_path.read_text().replace('contains\n',' integer,save::a28_surface_failure_count=0\ncontains\n',1)
  before='  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)return'
  assert preparer_text.count(before)==1
  preparer_text=preparer_text.replace(before,'''  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)then
-   write(*,*) 'A28_RFM_PREPARE_SURFACE_FAIL status=',result%surface%status, &
+   a28_surface_failure_count=a28_surface_failure_count+1
+   if(a28_surface_failure_count<=8.or.mod(a28_surface_failure_count,100000)==0) &
+   write(*,*) 'A28_RFM_PREPARE_SURFACE_FAIL count=',a28_surface_failure_count,' status=',result%surface%status, &
      ' regime=',preflight%regime,' pond=',preflight%candidate_ponding_depth, &
      ' runoff=',preflight%runoff_depth,' head=',view%pressure_head(1),' dt=',step_duration_day, &
      ' age=',accepted%tau_surface_day,' preferential=',result%activation%activation%preferential_rate_cm_per_day
    return
   end if''',1)
  observed_preparer=out/'a28_observed_preparer.f90';observed_preparer.write_text(preparer_text)
+observed_participant=None
+bounded_interval=None
+if os.environ.get('A28_BOUNDED_TRANSACTION_PROPOSAL')=='1':
+ interval_path=root/'src/runtime/mod_canonical_interval_runtime.f90'
+ interval_text=interval_path.read_text()
+ anchor='      transaction_t1 = interval%t1'
+ assert interval_text.count(anchor)==1
+ interval_text=interval_text.replace(anchor,'      transaction_t1 = min(interval%t1,cursor+1.0e-4_real64)',1)
+ bounded_interval=out/'a28_bounded_interval.f90';bounded_interval.write_text(interval_text)
+if os.environ.get('A28_CORRECTOR_DIAGNOSTICS')=='1':
+ participant_path=root/'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+ participant_text=participant_path.read_text()
+ before='    if (.not. accepted_whole_window(self%trial_result, self%candidate, window)) then'
+ assert participant_text.count(before)==1
+ participant_text=participant_text.replace(before,'''    write(*,*) 'A28_CORRECTOR_WORK t0=',window%t0,' t1=',window%t1, &
+        ' completed=',self%trial_result%completed,' status=',self%trial_result%status, &
+        ' completed_t=',self%trial_result%completed_t,' head_m=',prescribed_head_m, &
+        ' accepted_substeps=',self%diagnostics%accepted_substeps,' attempts=',self%diagnostics%attempts, &
+        ' retries=',self%diagnostics%retries,' solver_rejections=',self%diagnostics%solver_rejections, &
+        ' temporal_rejections=',self%diagnostics%temporal_rejections,' mass_rejections=',self%diagnostics%mass_rejections, &
+        ' mass_cm=',self%trial_result%mass%residual,' max_step_mass=',self%diagnostics%max_abs_step_mass_residual, &
+        ' nonlinear_iterations=',self%diagnostics%nonlinear_iterations
+    write(*,*) 'A28_CORRECTOR_WATER t0=',window%t0,' complete=',self%trial_result%mass%complete, &
+        ' storage_start=',self%trial_result%mass%storage_start,' storage_end=',self%trial_result%mass%storage_end, &
+        ' input=',self%trial_result%mass%total_in,' output=',self%trial_result%mass%total_out, &
+        ' matrix_bottom=',self%trial_result%bottom_outward_exchange_native
+'''+before,1)
+ observed_participant=out/'a28_observed_participant.f90';observed_participant.write_text(participant_text)
 # Bounded test-only instrumentation: only successful quadrature loops count.
 source=root/'src/process/macropore/mod_rfm_surface_sorptivity.f90'
 s=source.read_text().replace('  implicit none','  use, intrinsic :: iso_c_binding, only: c_int, c_double\n  implicit none',1)
@@ -187,6 +231,8 @@ for name in sources:
  if field_grid is not None and name==base[0]:src=field_grid
  elif separated_backend is not None and name==str(backend_path.relative_to(root)):src=separated_backend
  elif observed_preparer is not None and name=='src/runtime/mod_rfm_live_trial_preparer.f90':src=observed_preparer
+ elif observed_participant is not None and name=='src/runtime/mod_fmr_groundwater_swap_participant.f90':src=observed_participant
+ elif bounded_interval is not None and name=='src/runtime/mod_canonical_interval_runtime.f90':src=bounded_interval
  elif retry_headcalc is not None and name==str(headcalc_path.relative_to(root)):src=retry_headcalc
  else:src=instrumented if name==str(source.relative_to(root)) else root/name
  obj=out/(src.stem+'.o')
