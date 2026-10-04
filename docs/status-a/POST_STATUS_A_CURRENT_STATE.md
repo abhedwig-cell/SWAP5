@@ -192,3 +192,18 @@ The admitted semantics are:
 Final INT12-E admission-head qualification passed in run `37152387427`; INT12-D preservation passed in `37152387486`; P0 preservation passed in `37152387442`.
 
 Within the non-Rutter `SWINTER=1/2` interception scope, no known selector, retry, restart or precipitation-partition capability gap remains. `SWINTER=3` Rutter remains a separate stateful capability and is not subsumed by this closure.
+
+
+## Compensated root uptake: PPA-WU05-D2/D3 (2026-10-04)
+
+Jarvis (PR #1012, canonical merge `4fd57c8c8`) and Walsum (PR #1013,
+canonical merge `a34c87db9`) are separately admitted within the existing Feddes
+root-sink chain, optionally composed with independently admitted Bartholomeus
+oxygen. The sole root-water mass owner remains unchanged. Accepted transpiration
+now reports the final transformed sink through the existing transaction result.
+Walsum derives its dynamic ALPHACRIT from typed current centimetre geometry,
+including the full bottom of a partially rooted node.
+
+See [canonical closeout](../audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md) for
+qualification, exact scope, legacy-source limitations and the remaining D4/D5 gaps.
+This does not admit salinity, frost, MICRO or general coupling combinations.
