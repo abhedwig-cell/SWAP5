@@ -53,6 +53,8 @@ contains
        .not. all(ieee_is_finite(committed%macro_mass_mg_cm2))) return
     if(any(matrix_water_cm<0.0_real64) .or. any(macro_water_cm<0.0_real64) .or. &
        any(committed%matrix_mass_mg_cm2<0.0_real64) .or. any(committed%macro_mass_mg_cm2<0.0_real64)) return
+    if(any(matrix_water_cm<=0.0_real64.and.committed%matrix_mass_mg_cm2>0.0_real64) .or. &
+       any(macro_water_cm<=0.0_real64.and.committed%macro_mass_mg_cm2>0.0_real64)) return
 
     allocate(matrix_out(n),matrix_in(n),macro_amount(nd,n))
     matrix_out=0.0_real64; matrix_in=0.0_real64; macro_amount=0.0_real64
