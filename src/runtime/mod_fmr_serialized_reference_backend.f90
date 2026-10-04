@@ -316,6 +316,15 @@ module mod_fmr_serialized_reference_backend
     type(rfm_surface_forcing_t), allocatable :: rfm_surface
   end type fmr_b110_physical_forcing_t
 
+  ! Read-only trial trace of one accepted Richards physical substep. It is
+  ! worker observation data, never committed or restart state.
+  type, public :: fmr_water_flux_substep_trace_t
+    real(real64) :: t0 = 0.0_real64, t1 = 0.0_real64
+    real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
+    real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), &
+         root_sink(:), macropore_matrix_exchange(:), net_node_source(:)
+  end type fmr_water_flux_substep_trace_t
+
   type, public :: fmr_serialized_physical_observation_t
     logical :: bartholomeus_executed = .false.
     integer :: bartholomeus_status = 0
@@ -330,6 +339,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_compensation_oxygen_loss = 0.0_real64
     real(real64), allocatable :: root_compensation_final_sink(:)
     logical :: solver_executed = .false.
+    logical :: accepted_water_flux_trace_available = .false.
+    type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
     logical :: hbot5_proposal_available = .false.
     real(real64) :: hbot5_proposed_t0 = 0.0_real64, hbot5_proposed_t1 = 0.0_real64
     real(real64) :: hbot5_sample_t1900 = 0.0_real64, hbot5_pressure_head_cm = 0.0_real64
@@ -437,6 +448,8 @@ module mod_fmr_serialized_reference_backend
     logical :: drainage_response_window_exchange_available = .false.
     real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
     type(accepted_trajectory_direction_t) :: trajectory_direction
+    type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
+    logical :: accepted_water_flux_trace_failed = .false.
   end type fmr_serialized_attempt_context_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
@@ -557,6 +570,9 @@ module mod_fmr_serialized_reference_backend
     logical :: top_sensible_boundary_carrier_active = .false.
     logical :: top_sensible_boundary_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
+    logical :: accepted_water_flux_trace_enabled = .false.
+    logical :: accepted_water_flux_trace_failed = .false.
+    type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
   contains
     procedure :: configure_parameters => fmr_serialized_configure_parameters
     procedure :: execution_admitted => fmr_serialized_execution_admitted
@@ -1473,7 +1489,7 @@ contains
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics, &
-                                               trusted_prepared_parameters)
+                                               trusted_prepared_parameters, trace_accepted_water_flux_substeps)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
@@ -1487,6 +1503,7 @@ contains
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     logical, intent(in), optional :: trusted_prepared_parameters
+    logical, intent(in), optional :: trace_accepted_water_flux_substeps
     logical :: bottom_thermal_ok, top_sensible_ok
 
     call self%bottom_thermal_candidate%clear()
@@ -1503,6 +1520,21 @@ contains
     self%model%temporal_indicator_budget = 0.0_real64
     self%model%trajectory_worker_id = -1
     self%model%trajectory_provenance_valid = .false.
+    self%model%accepted_water_flux_trace_enabled = .false.
+    if (present(trace_accepted_water_flux_substeps)) &
+         self%model%accepted_water_flux_trace_enabled = trace_accepted_water_flux_substeps
+    if (allocated(self%model%accepted_water_flux_substeps)) deallocate(self%model%accepted_water_flux_substeps)
+    if (self%model%accepted_water_flux_trace_enabled) then
+      if (parameters%snow_active .or. parameters%drainage_response_active .or. &
+          parameters%soil_temperature_active .or. parameters%black_evaporation_active .or. &
+          parameters%boesten_evaporation_active .or. parameters%frost_active .or. &
+          self%model%rfm_configuration%enabled .or. &
+          self%model%fixed_weir_surface_water_active) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+    end if
+    self%model%accepted_water_flux_trace_failed = .false.
     if (column%column_id > 0_int64 .and. column%column_id <= int(huge(0), int64)) then
       self%model%trajectory_worker_id = int(column%column_id)
       self%model%trajectory_provenance_valid = self%model%trajectory_worker_id > 0
@@ -1670,6 +1702,17 @@ contains
     nullify(self%model%hydraulic_parameters)
     nullify(self%model%trusted_parameter_source)
     self%model%trusted_prepared_default_mvg = .false.
+    if (self%model%accepted_water_flux_trace_enabled .and. result%completed) then
+      if (self%model%accepted_water_flux_trace_failed .or. &
+          .not. allocated(self%model%accepted_water_flux_substeps)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+      else if (.not. accepted_water_flux_trace_covers(self%model%accepted_water_flux_substeps,t0,t1)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+      else
+        self%model%last_observation%accepted_water_flux_substeps = self%model%accepted_water_flux_substeps
+        self%model%last_observation%accepted_water_flux_trace_available = .true.
+      end if
+    end if
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
         result%completed) then
       if (candidate%ready()) then
@@ -1747,6 +1790,7 @@ contains
 
     required = allocated(self%legacy_swbotb5_control) .or. allocated(self%legacy_swbotb3_implicit_control) .or. &
          self%trajectory_direction_requested .or. self%drainage_response_active .or. &
+         self%accepted_water_flux_trace_enabled .or. &
          self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid .or. &
          self%top_sensible_boundary_carrier_active .or. .not. self%top_sensible_boundary_carrier_valid
   end function fmr_serialized_attempt_context_required
@@ -1769,6 +1813,9 @@ contains
       typed%drainage_response_window_exchange_available = self%drainage_response_window_exchange_available
       typed%drainage_response_window_signed_exchange_native = self%drainage_response_window_signed_exchange_native
       typed%trajectory_direction = self%trajectory_direction
+      typed%accepted_water_flux_trace_failed = self%accepted_water_flux_trace_failed
+      if (allocated(self%accepted_water_flux_substeps)) &
+           typed%accepted_water_flux_substeps = self%accepted_water_flux_substeps
     end select
   end subroutine fmr_serialized_capture_attempt_context
 
@@ -1789,6 +1836,12 @@ contains
       self%drainage_response_window_exchange_available = typed%drainage_response_window_exchange_available
       self%drainage_response_window_signed_exchange_native = typed%drainage_response_window_signed_exchange_native
       self%trajectory_direction = typed%trajectory_direction
+      self%accepted_water_flux_trace_failed = typed%accepted_water_flux_trace_failed
+      if (allocated(typed%accepted_water_flux_substeps)) then
+        self%accepted_water_flux_substeps = typed%accepted_water_flux_substeps
+      else if (allocated(self%accepted_water_flux_substeps)) then
+        deallocate(self%accepted_water_flux_substeps)
+      end if
     class default
       self%hbot5_proposal = fmr_hbot5_proposal_t()
       self%cauchy3_proposal = fmr_cauchy3_proposal_t()
@@ -1800,6 +1853,8 @@ contains
       call self%top_sensible_boundary_carrier%clear()
       self%drainage_response_window_exchange_available = .false.
       self%drainage_response_window_signed_exchange_native = 0.0_real64
+      self%accepted_water_flux_trace_failed = .true.
+      if (allocated(self%accepted_water_flux_substeps)) deallocate(self%accepted_water_flux_substeps)
       call configure_trajectory_direction(self%trajectory_direction, .false.)
     end select
   end subroutine fmr_serialized_restore_attempt_context
@@ -3270,8 +3325,101 @@ contains
     if (trajectory_stage_ok) then
       call accept_trajectory_step(self%trajectory_direction, trajectory_accept_ok)
     end if
+    if (self%accepted_water_flux_trace_enabled) then
+      if (self%macropore_active) then
+        if (.not. allocated(macropore_result%exchange_rate_node) .or. &
+            macropore_accepted_top_cm /= 0.0_real64 .or. macropore_rapid_outflow_cm /= 0.0_real64) then
+          self%accepted_water_flux_trace_failed = .true.
+        else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1, &
+             macropore_result%exchange_rate_node)) then
+          self%accepted_water_flux_trace_failed = .true.
+        end if
+      else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1)) then
+        self%accepted_water_flux_trace_failed = .true.
+      end if
+    end if
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
+
+  logical function append_accepted_water_flux_substep(self,request,solve_result,t0,t1,macropore_exchange) result(ok)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solve_result
+    real(real64), intent(in) :: t0,t1
+    real(real64), intent(in), optional :: macropore_exchange(:)
+    type(fmr_water_flux_substep_trace_t), allocatable :: grown(:)
+    type(fmr_water_flux_substep_trace_t) :: step
+    integer :: n, prior
+
+    ok = .false.
+    if (.not. associated(self%qssdi) .or. .not. associated(self%qdra) .or. .not. associated(self%qrot)) return
+    n = request%base_state%active_nodes
+    if (n <= 0 .or. size(self%qssdi) /= n .or. size(self%qdra,2) /= n .or. size(self%qrot) /= n) return
+    if (solve_result%status /= SW_SOLVE_CONVERGED .or. solve_result%candidate_state%active_nodes /= n) return
+    if (.not. allocated(solve_result%candidate_state%water_content) .or. &
+        .not. allocated(request%base_state%water_content)) return
+    if (size(solve_result%candidate_state%water_content) /= n .or. size(request%base_state%water_content) /= n) return
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+    if (.not. ieee_is_finite(solve_result%top_flux) .or. .not. ieee_is_finite(solve_result%bottom_flux)) return
+    if (any(.not. ieee_is_finite(self%qssdi)) .or. any(.not. ieee_is_finite(self%qrot)) .or. &
+        any(.not. ieee_is_finite(self%qdra))) return
+
+    step%t0 = t0
+    step%t1 = t1
+    step%top_flux = solve_result%top_flux
+    step%bottom_flux = solve_result%bottom_flux
+    step%water_start = request%base_state%water_content
+    step%water_end = solve_result%candidate_state%water_content
+    step%subsurface_source = self%qssdi
+    step%drainage_sink = sum(self%qdra,dim=1)
+    step%root_sink = self%qrot
+    allocate(step%macropore_matrix_exchange(n))
+    step%macropore_matrix_exchange = 0.0_real64
+    if (present(macropore_exchange)) then
+      if (size(macropore_exchange) /= n .or. any(.not. ieee_is_finite(macropore_exchange))) return
+      step%macropore_matrix_exchange = macropore_exchange
+    end if
+    step%net_node_source = step%subsurface_source - step%drainage_sink - step%root_sink + &
+         step%macropore_matrix_exchange
+    if (any(.not. ieee_is_finite(step%water_start)) .or. any(.not. ieee_is_finite(step%water_end)) .or. &
+        any(.not. ieee_is_finite(step%net_node_source))) return
+
+    prior = 0
+    if (allocated(self%accepted_water_flux_substeps)) prior = size(self%accepted_water_flux_substeps)
+    allocate(grown(prior+1))
+    if (prior > 0) grown(1:prior) = self%accepted_water_flux_substeps
+    grown(prior+1) = step
+    call move_alloc(grown,self%accepted_water_flux_substeps)
+    ok = .true.
+  end function append_accepted_water_flux_substep
+
+  logical function accepted_water_flux_trace_covers(steps,t0,t1) result(ok)
+    type(fmr_water_flux_substep_trace_t), intent(in) :: steps(:)
+    real(real64), intent(in) :: t0,t1
+    real(real64) :: cursor,tolerance
+    integer :: i,n
+
+    ok = .false.
+    if (size(steps) <= 0 .or. .not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+    cursor = t0
+    tolerance = 128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(t0),abs(t1))
+    do i=1,size(steps)
+      n = 0
+      if (allocated(steps(i)%water_start)) n=size(steps(i)%water_start)
+      if (n <= 0 .or. .not. allocated(steps(i)%water_end) .or. &
+          .not. allocated(steps(i)%subsurface_source) .or. .not. allocated(steps(i)%drainage_sink) .or. &
+          .not. allocated(steps(i)%root_sink) .or. .not. allocated(steps(i)%macropore_matrix_exchange) .or. &
+          .not. allocated(steps(i)%net_node_source)) return
+      if (size(steps(i)%water_end)/=n .or. size(steps(i)%subsurface_source)/=n .or. &
+          size(steps(i)%drainage_sink)/=n .or. size(steps(i)%root_sink)/=n .or. &
+          size(steps(i)%macropore_matrix_exchange)/=n .or. &
+          size(steps(i)%net_node_source)/=n) return
+      if (.not. ieee_is_finite(steps(i)%t0) .or. .not. ieee_is_finite(steps(i)%t1) .or. &
+          steps(i)%t1 <= steps(i)%t0 .or. abs(steps(i)%t0-cursor)>tolerance) return
+      cursor = steps(i)%t1
+    end do
+    ok = abs(cursor-t1) <= tolerance
+  end function accepted_water_flux_trace_covers
 
   subroutine record_bottom_thermal_sample(self, state, t0, t1, outward_exchange, start_temperature_c, &
                                           start_temperature_available)
@@ -3714,137 +3862,4 @@ contains
     case (B110_SWBOTB2_TABLE)
       ok = allocated(self%table_t1900) .and. allocated(self%table_qbot)
       if (.not. ok) return
-      ok = size(self%table_t1900) > 0 .and. size(self%table_t1900) == size(self%table_qbot) .and. &
-           all(ieee_is_finite(self%table_t1900)) .and. all(ieee_is_finite(self%table_qbot)) .and. &
-           all(self%table_qbot >= -100.0_real64) .and. all(self%table_qbot <= 100.0_real64)
-      if (ok .and. size(self%table_t1900) > 1) ok = strictly_increasing(self%table_t1900)
-    case default
-      ok = .false.
-    end select
-  end function b110_swbotb2_ready
-
-  subroutine b110_swbotb2_evaluate(self, substep_t0, substep_t1, bottom_pressure_head_cm, &
-                                    effective_bottom_mode, bottom_flux, status)
-    class(b110_legacy_swbotb2_application_control_t), intent(in) :: self
-    real(real64), intent(in) :: substep_t0, substep_t1, bottom_pressure_head_cm
-    integer, intent(out) :: effective_bottom_mode
-    real(real64), intent(out) :: bottom_flux
-    integer, intent(out) :: status
-
-    real(real64) :: legacy_start_t1900, legacy_end_t1900, legacy_t, twopi, freq
-    integer :: iyear
-
-    effective_bottom_mode = 0
-    bottom_flux = 0.0_real64
-    status = B110_SWBOTB2_INVALID_CONTROL
-    if (.not. self%ready()) return
-    if (.not. ieee_is_finite(substep_t0) .or. .not. ieee_is_finite(substep_t1) .or. &
-        substep_t1 <= substep_t0 .or. .not. ieee_is_finite(bottom_pressure_head_cm)) return
-
-    ! Exact B1.11 BoundBottom guard. Internal -2 is derived from the current
-    ! trial-start state and is deliberately not persisted as application state.
-    if (bottom_pressure_head_cm < B110_SWBOTB2_DRY_HEAD_CM) then
-      effective_bottom_mode = -2
-      status = B110_SWBOTB2_OK
-      return
-    end if
-
-    effective_bottom_mode = 2
-    legacy_start_t1900 = self%legacy_t1900_origin + (substep_t0 - self%canonical_origin_time)
-    legacy_end_t1900 = self%legacy_t1900_origin + (substep_t1 - self%canonical_origin_time)
-    if (.not. ieee_is_finite(legacy_start_t1900) .or. .not. ieee_is_finite(legacy_end_t1900)) then
-      effective_bottom_mode = 0
-      status = B110_SWBOTB2_INVALID_CONTROL
-      return
-    end if
-
-    select case (self%sw2)
-    case (B110_SWBOTB2_SINE)
-      iyear = containing_year(self%calendar_year_start_t1900, legacy_start_t1900)
-      if (iyear <= 0) then
-        effective_bottom_mode = 0
-        status = B110_SWBOTB2_TIME_NOT_COVERED
-        return
-      end if
-      legacy_t = legacy_start_t1900 - self%calendar_year_start_t1900(iyear)
-      twopi = 8.0_real64 * atan(1.0_real64)
-      freq = twopi / 365.0_real64
-      bottom_flux = self%sinave + self%sinamp * cos(freq * (legacy_t - self%sinmax))
-    case (B110_SWBOTB2_TABLE)
-      bottom_flux = afgen_pairs(self%table_t1900, self%table_qbot, legacy_end_t1900)
-    case default
-      effective_bottom_mode = 0
-      status = B110_SWBOTB2_INVALID_CONTROL
-      return
-    end select
-
-    if (.not. ieee_is_finite(bottom_flux)) then
-      effective_bottom_mode = 0
-      bottom_flux = 0.0_real64
-      status = B110_SWBOTB2_INVALID_CONTROL
-      return
-    end if
-    status = B110_SWBOTB2_OK
-  end subroutine b110_swbotb2_evaluate
-
-  subroutine clear_control(self)
-    class(b110_legacy_swbotb2_application_control_t), intent(inout) :: self
-
-    self%initialized = .false.
-    self%sw2 = 0
-    self%canonical_origin_time = 0.0_real64
-    self%legacy_t1900_origin = 0.0_real64
-    self%sinave = 0.0_real64
-    self%sinamp = 0.0_real64
-    self%sinmax = 0.0_real64
-    if (allocated(self%calendar_year_start_t1900)) deallocate(self%calendar_year_start_t1900)
-    if (allocated(self%table_t1900)) deallocate(self%table_t1900)
-    if (allocated(self%table_qbot)) deallocate(self%table_qbot)
-  end subroutine clear_control
-
-  pure logical function strictly_increasing(values) result(ok)
-    real(real64), intent(in) :: values(:)
-    integer :: i
-
-    ok = .true.
-    do i = 2, size(values)
-      if (values(i) <= values(i-1)) then
-        ok = .false.
-        return
-      end if
-    end do
-  end function strictly_increasing
-
-  pure integer function containing_year(year_starts, value) result(index)
-    real(real64), intent(in) :: year_starts(:), value
-    integer :: i
-
-    index = 0
-    do i = 1, size(year_starts) - 1
-      if (value >= year_starts(i) .and. value < year_starts(i+1)) then
-        index = i
-        return
-      end if
-    end do
-  end function containing_year
-
-  pure real(real64) function afgen_pairs(x_table, y_table, x) result(value)
-    real(real64), intent(in) :: x_table(:), y_table(:), x
-    real(real64) :: slope
-    integer :: i
-
-    if (x <= x_table(1) .or. size(x_table) == 1) then
-      value = y_table(1)
-      return
-    end if
-    do i = 2, size(x_table)
-      if (x <= x_table(i)) then
-        slope = (y_table(i) - y_table(i-1)) / (x_table(i) - x_table(i-1))
-        value = y_table(i-1) + (x - x_table(i-1)) * slope
-        return
-      end if
-    end do
-    value = y_table(size(y_table))
-  end function afgen_pairs
-
-end module mod_fmr_serialized_reference_backend
+      ok = size(self%table_t1900) > 0 .and. size(s
