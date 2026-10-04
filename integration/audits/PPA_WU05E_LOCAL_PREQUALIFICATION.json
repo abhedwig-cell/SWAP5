@@ -6,7 +6,7 @@
   "target_state": "PPA-WU05-E local prequalification postimage based on PR source e0472bb, with accepted macro vertical-face continuity trace and a test-only domain-resolved macro salt payload/Restart v3 layout; not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
-    "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "465651b83a43f5c36574b5ef29c78cd107d7ea59c57f9d5d11dabe3b8623c452",
+    "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "c6d93ac27531ca35705be092559971a583f69a6e0ffbfb666ce5d8fb98654d4a",
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "8d1436efa89f8097221f3adba1a48a8adf5f6b0c3e0473860d4b32091d1d59c9",
     "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "2f71790808211a2400495a4c629f47e1a26ca8579225a760b02a9d351db0a439",
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "5dd6eb932cd030a216d8ab2884bfb64141727c3d6e9154e0b55773415bed2c47",
@@ -26,15 +26,17 @@
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
     "tests/physics/run_ppa_wu05d3_walsum.py": "4a2e3d66854422cc0d51c02ce47a373182c1f6dc6079531075428fd632270daf",
-    "tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh": "b3850f86ab94d2a9a919f1eeb09843ab7b9459cb8be5acca18f2ef6e73214fb7",
+    "tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh": "bce761cfd5023d3a06ed7afc3c7e3228333c4cfaef89fa694b962fbb96712e50",
     "tests/physics/run_ppa_wu05e_mobile_salt.sh": "ca12cbfdfc105bc68ebeaaaf0ac462cba937101550029d3f1cebc0914714025b",
     "tests/physics/run_root_uptake_oxygen_composition.sh": "74c44088ab155bb7ff42b82b73d1e0681a627f9869050a3faf144d2fbc32467d",
     "tests/physics/test_mobile_macropore_salt_exchange_oracle.f90": "265b8a81a742ec93126da3a29bfe0d72f9de34ff05348b0b358a6fcde96c5b34",
     "tests/physics/test_mobile_salt_state.f90": "318dded400628b3f5aa60207389e42af3ebec3dcc37ea632cd9bd1194dcb20ca",
     "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
     "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b",
-    "integration/audits/PPA_WU05E_STATUS.json": "1ded241cae10eebe872f4037e5e4f0af7824ed7f245a5906b4bc6d7b6f156ca6",
-    "tests/fpm/test_ppa_wu05a20_rfm_optional_state_layout.f90": "e27bfb82bc58fcb03588b09d81d05bf061b59c86b0c8202431e7172cb6666be5"
+    "integration/audits/PPA_WU05E_STATUS.json": "6f049d3a94f24a7993437b33c49a55316712856b2778510a29852b59638f6085",
+    "tests/fpm/test_ppa_wu05a20_rfm_optional_state_layout.f90": "e27bfb82bc58fcb03588b09d81d05bf061b59c86b0c8202431e7172cb6666be5",
+    "src/process/mod_solute_mobile_macro_salt_transport.f90": "a1a887de41e5ba8208385ea5e8f367c4d6164482e0d925eb4f5e03a970af3acb",
+    "tests/physics/test_mobile_macro_salt_transport.f90": "5bcfd96a19ba2a0f068bae98b8d44cd563dd3c76092ff9c21179386ec9fc104b"
   },
   "results": [
     {
@@ -112,6 +114,11 @@
       "command": "bash tests/fpm/run_ppa_wu05a20_rfm_optional_state_layout.sh",
       "result": "PASS_O0_O2",
       "scope": "Recognizes the distinct macro-dissolved salt layout identity while preserving unknown-layout rejection; bounded optional-state layout regression."
+    },
+    {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
+      "result": "PASS_O0_O2",
+      "scope": "Stateless coupled matrix/macro-domain salt transport candidate: synchronized start-concentration donors; node-thickness conversion for matrix theta; macro vertical advection; signed matrix exchange; explicit matrix top input/bottom output; root TSCF salt receipt; internal/external mass closure; water-closure, invalid-flow, and no-partial-candidate rejection. Process kernel only; no FMR binding/state ownership claim."
     }
   ],
   "not_run_or_not_claimed": [
@@ -124,9 +131,10 @@
     "Accepted FMR water substep trace is a restricted live observation producer; no production/live FMR trial invokes or commits salt. A typed domain-resolved macro salt payload passes clone/in-memory Restart v3 tests, but live initialization/advancement is absent. Unsupported top/return, covering, rapid macropore, drainage, snow, and surface boundary routes remain fail-closed or unqualified.",
     "The ad hoc macro-disabled base FMR fixture did not produce an accepted candidate (CANONICAL_STATUS_SUBSTEP_LIMIT after 2,050 temporal rejections); no positive live FMR salt receipt has been demonstrated.",
     "The initial direct run against the stale local runtime checkout failed to compile because local files lagged the PR branch. Four runtime/restart modules and the mobile salt module were then synchronized from the exact PR branch; the rerun of the same O0/O2 FMR gate passed. The source-hash map pins the synchronized postimage.",
-    "GitHub Actions runs were automatically queued by PR branch updates; no qualification run was manually dispatched or used as qualification evidence."
+    "GitHub Actions runs were automatically queued by PR branch updates; no qualification run was manually dispatched or used as qualification evidence.",
+    "The coupled matrix/macro salt transport oracle uses manufactured accepted water arrays; no live FMR salt candidate, typed FMR boundary receipt producer, persistent macro salt continuation, restart serialization, or Jarvis composition is qualified."
   ],
-  "claim_ceiling": "Local tested prototypes and negative evidence only. The A7/A8 O0/O2 gate proves that the current macro-enabled FMR route fails closed for E1 matrix-only salt advancement and validates an attempt-local water trace with nonzero per-domain exchange, paired macro-water volumes, ordered per-domain vertical faces, and water storage/exchange/face continuity through retry/replay and restart. A typed domain-resolved macro salt payload and distinct solute layout pass clone and in-memory Restart v3 round-trip checks, but remain storage-only. The stateless exchange kernel verifies internal arithmetic only. Live salt initialization/advancement, typed boundary salt receipts, a coupled water/salt transaction, formal qualification, and production salinity capability are not established. The macro-disabled base FMR diagnostic remains blocked by the existing temporal identity gate. No Jarvis salinity integration or exact-byte B1.11 solute equivalence is claimed.",
+  "claim_ceiling": "Local tested prototypes and negative evidence only. The A7/A8 O0/O2 gate proves that the current macro-enabled FMR route fails closed for E1 matrix-only salt advancement and validates an attempt-local water trace with nonzero per-domain exchange, paired macro-water volumes, ordered per-domain vertical faces, and water storage/exchange/face continuity through retry/replay and restart. A typed domain-resolved macro salt payload and distinct solute layout pass clone and in-memory Restart v3 round-trip checks, but remain storage-only. The stateless exchange kernel verifies internal arithmetic only. Live salt initialization/advancement, typed boundary salt receipts, a coupled water/salt transaction, formal qualification, and production salinity capability are not established. The macro-disabled base FMR diagnostic remains blocked by the existing temporal identity gate. No Jarvis salinity integration or exact-byte B1.11 solute equivalence is claimed. A stateless coupled matrix/macro process kernel is locally tested O0/O2 for vertical macro advection, signed exchange, explicit matrix boundary receipts, root TSCF accounting, mass closure, and fail-closed invalid water/flow. It remains unbound and does not qualify FMR state, all route boundaries, transaction/restart, or Jarvis.",
   "environment_overrides": {
     "oxygen_preservation_runner": "FC executable wrapper at /tmp/gfortran-swap5-tolerant-warn prepended -Wno-error=compare-reals; the tracked runner uses -Werror, and this only makes the existing equality warning non-fatal without altering numerical tolerances.",
     "wrapper_sha256": "c65021b92959a4d908036e843753ac2bccbc258262d333da008396fdeffc42f5",
