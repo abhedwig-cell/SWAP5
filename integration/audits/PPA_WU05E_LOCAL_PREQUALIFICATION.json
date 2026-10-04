@@ -15,7 +15,7 @@
     "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
     "tests/fpm/run_ppa_wu05a8_real_richards.sh": "91d49bd7bfedf5752a3d36a4c362daba97c214027cd7381567b06269eadf7086",
-    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "adf7b1ead8fddb88a57c8d0b45f4250d692d1fd65964ebc576150ff188fd62c3",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "c7ffa401ab8a852b9680220e4ac14e56f1bebb5731d7fc26c572c7812b4da607",
     "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "50ea99cf305881e868091dccd987a5feada756a42b8190f0378f8cb64b53e110",
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
@@ -93,8 +93,8 @@
     {
       "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
       "result": "PASS_O0_O2",
-      "scope": "The current branch producer now exposes signed accepted macropore exchange by domain/node plus the node aggregate. O0/O2 FMR transaction/restart gate checks the domain sum identity for each accepted trace substep and includes the array in exact replay and fresh-process changed-forcing restart trace equality. It still requires the expected test-only salt-consumer SOLUTE_WATER_CLOSURE and no candidate/receipt leakage; no salt advancement is admitted.",
-      "execution": "Ran locally after synchronizing the exact branch runtime/restart/state sources. Both O0 and O2 runs completed; compiler emits existing floating-point equality and bounds-analysis warnings, with no tolerance changes."
+      "scope": "O0/O2 FMR transaction/restart gate with opt-in accepted per-domain/node macro exchange trace. A7 requires nonzero max |exchange| >1e-14 cm/day, verifies domain sum identity on every accepted substep, and checks exact trace identity through retry/replay and fresh-process restart with changed forcing. It still requires the expected test-only salt-consumer SOLUTE_WATER_CLOSURE and no candidate/receipt leakage; no salt advancement is admitted.",
+      "execution": "Ran locally on the exact synchronized work-branch runtime and restart sources; both O0 and O2 completed. The trace had live nonzero donor-domain exchange and closed within the existing 1e-8 cm/day water-flux reconstruction bound. No tolerance changes."
     },
     {
       "command": "python3 tools/docs/check_docs.py && python3 -m mkdocs build --strict",
