@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.fgc.strip01.c2b.in_call_participant_replay.v1",
+  "work_unit": "F-GC-STRIP01-C2B-IN-CALL-PARTICIPANT-REPLAY",
+  "state": "PREREGISTERED",
+  "parent_evidence": [
+    "integration/f-gc/strip01/results/c2b-local-20261003/C2_in_call_participant_diagnostic_build.json",
+    "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_coupling_tolerance_vs_swap_failure_diagnosis.json",
+    "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_all50_failure_origin_probe_summary.json"
+  ],
+  "purpose": "Repeat the exact full C2B coupled sequence with the already compiled test-only participant failure accessors and the now-available local MODFLOW6 library, capturing the first failed serial participant at the existing Richards transaction blocker.",
+  "fixed_run_conditions": {
+    "canonical_runtime_source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+    "fixture": "tests/fgc/strip01/research_context_c2_seedprobe.f90",
+    "profile": "C2",
+    "seed_mode": "zero",
+    "window_duration_day": 0.000001,
+    "window_count": 15300,
+    "flux_tolerance_m_per_s": 2e-15,
+    "max_committed_substeps": 32,
+    "ramp_start_cm_per_day": 0.00001,
+    "ramp_factor": 1.0003998800639584,
+    "ramp_cap_cm_per_day": 0.1,
+    "coupling_iteration_limit": 40,
+    "modflow6": "6.8.0"
+  },
+  "instrumentation": {
+    "source_generator": "tools/f_gc_strip01_instrument_participant_failure.py",
+    "overlaid_sources": [
+      "src/runtime/mod_fmr_groundwater_application_context.f90",
+      "src/adapter/mod_fmr_groundwater_application_c_api.f90"
+    ],
+    "scope": "Expose first failed serial participant cell index, tile index, participant status and registry-local status. The generated overlays compile only into a temporary research library; tracked production source and the canonical build remain untouched."
+  },
+  "gates": {
+    "replay": "Two fresh processes with separate output directories must produce byte-identical normalized summary and identical first-failure attribution.",
+    "rollback": "Failure must preserve the complete committed SWAP state, storage, all participant revisions and interface ledgers; MODFLOW must not finalize the rejected window.",
+    "source_validation": "All compiled production src blobs must match the pinned canonical source tree except the two explicitly listed temporary overlays.",
+    "failure_oracle": "Previously observed baseline is 15,239 published windows followed by the first rejection at t=0.015239 day, near 0.0044255034 cm/day. Any deviation is reported as a replay discrepancy, not tuned away.",
+    "production_delta": "None. Do not change solver, temporal or mass gates; do not change coupling tolerance, forcing schedule, retry behavior or ownership semantics."
+  },
+  "persisted_outputs": [
+    "exact parameter/build/source manifest",
+    "compact first-failure summary for each process",
+    "full result hashes and replay identity",
+    "first failed cell/tile/participant/registry statuses",
+    "rollback and MODFLOW finalization evidence"
+  ],
+  "claim_boundary": "Participant attribution is diagnostic for this exact research C2B trajectory only. It does not establish a spatially unique physical defect or justify any production numerical change."
+}

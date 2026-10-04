@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.fgc.strip01.c2b.in_call_participant_replay.summary.v1",
+  "work_unit": "F-GC-STRIP01-C2B-IN-CALL-PARTICIPANT-REPLAY",
+  "state": "COMPLETED_REPLAY_IDENTICAL_BOUNDED",
+  "preregistrations": [
+    "integration/f-gc/strip01/F-GC-STRIP01_C2B_IN_CALL_PARTICIPANT_REPLAY_PREREGISTRATION.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_C2B_IN_CALL_PARTICIPANT_REPLAY_CAPACITY_ADDENDUM.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_C2B_IN_CALL_PARTICIPANT_REPLAY_SOURCE_PIN_ADDENDUM.json"
+  ],
+  "source_commit": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "run_conditions": {
+    "profile": "C2",
+    "seed_mode": "zero",
+    "window_duration_day": 1e-06,
+    "requested_window_count": 15300,
+    "flux_tolerance_m_per_s": 2e-15,
+    "max_committed_substeps": 32,
+    "ramp_start_cm_per_day": 1e-05,
+    "ramp_factor": 1.0003998800639584,
+    "ramp_cap_cm_per_day": 0.1,
+    "modflow6": "6.8.0"
+  },
+  "outcome": {
+    "published_windows": 15239,
+    "attempted_windows": 15240,
+    "state": "C2B_RAIN_MICRO_WINDOW_REJECTED",
+    "failure_stage": "swap-corrector",
+    "failure_origin_t0_day": 0.015238999999999999,
+    "last_accepted_top_flux_cm_per_day": -0.004423734479498845,
+    "rejected_top_flux_cm_per_day": -0.004425503442725441,
+    "first_failed_participant": {
+      "cell_index": 1,
+      "tile_index": 1,
+      "participant_status": 6,
+      "participant_status_name": "GW_SWAP_PARTICIPANT_TRIAL_FAILED",
+      "registry_local_status": 7,
+      "registry_local_status_name": "FMR_GW_REGISTRY_PARTICIPANT_FAILED"
+    },
+    "rollback_verified": true,
+    "modflow_rejected_window_finalized": false
+  },
+  "accepted_segment_mass": {
+    "input_m3": 5.52103473103456e-06,
+    "swap_storage_change_m3": 5.521034196931396e-06,
+    "drain_outflow_m3": 0.0,
+    "residual_m3": 5.34103164159091e-13,
+    "relative_residual": 9.673968561668656e-08,
+    "max_absolute_window_residual_m3": 1.4042313409921626e-14
+  },
+  "replay": {
+    "fresh_processes": 2,
+    "result_files_byte_identical": true,
+    "result_sha256": [
+      "975afc2ef2c229e3f77e3265753c5a9814a4e439b1ca92ebd93ec5bf7996a875",
+      "975afc2ef2c229e3f77e3265753c5a9814a4e439b1ca92ebd93ec5bf7996a875"
+    ],
+    "full_result_gzip_sha256": "938a279d1d2c0c7bcacec10483b2b916dcb202a0fcd2481479dc4c184cc3ed5d"
+  },
+  "source_manifest": "integration/f-gc/strip01/results/c2b-local-20261004/C2B_in_call_participant_replay_source_manifest.json",
+  "failure_excerpt": "integration/f-gc/strip01/results/c2b-local-20261004/C2B_in_call_participant_failure_excerpt.json",
+  "full_result": "integration/f-gc/strip01/results/c2b-local-20261004/C2B_in_call_participant_replay_full_result.json.gz",
+  "claim_boundary": "Identifies cell 1/tile 1 as the first serial real-SWAP participant whose fixed-head trial fails on this exact zero-seed 1e-6-day C2B trajectory. This is not evidence of a spatially unique physical defect; earlier all-column probes were identical. The participant status does not reveal inner Richards solver counters or diagnose a constitutive equation. Dummy-strip qualification remains unchanged. No production source or numerical gate changed.",
+  "production_delta": [],
+  "canonical_admission": false
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.fgc.strip01.c2b.in_call_participant_replay.capacity_addendum.v1",
+  "work_unit": "F-GC-STRIP01-C2B-IN-CALL-PARTICIPANT-REPLAY-CAPACITY-ADDENDUM",
+  "state": "PREREGISTERED_BEFORE_RUN",
+  "parent_protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2B_IN_CALL_PARTICIPANT_REPLAY_PREREGISTRATION.json",
+  "reason": "Source inspection found the current seedprobe fixture retains one application context per committed revision but caps its arrays at 2,048, below the preregistered 15,300-window sequence. Without a capacity adjustment the run would terminate at context creation before the target failure origin.",
+  "single_harness_only_adjustment": {
+    "source": "tests/fgc/strip01/research_context_c2_seedprobe.f90",
+    "exact_change": "In a generated /tmp context override only, replace the unique integer parameter MAX_RESEARCH_WINDOWS = 2048 with MAX_RESEARCH_WINDOWS = 15301.",
+    "purpose": "Allow the preregistered 15,300 application contexts to be retained through the target failure; no participant response, forcing, time step, model parameter, transaction gate, or production source changes.",
+    "tracked_source_change": false
+  },
+  "gates": {
+    "source_integrity": "All production src blobs must still match canonical commit e3bfcdca00ba89cfeea529cf9b648dcc803483ab, apart from the already preregistered two diagnostic overlays.",
+    "stop_condition": "If memory or runtime prevents the unchanged 15,300-window replay, report the blocker without reducing the target run or altering physical/numerical settings."
+  },
+  "interpretation": "The capacity override only provides storage for the research contexts needed by the already recorded sequence. It does not affect the numerical model or improve any acceptance gate."
+}

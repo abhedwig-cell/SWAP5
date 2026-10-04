@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.fgc.strip01.c2b.in_call_participant_replay.source_pin_addendum.v1",
+  "work_unit": "F-GC-STRIP01-C2B-IN-CALL-PARTICIPANT-REPLAY-SOURCE-PIN-ADDENDUM",
+  "state": "PREREGISTERED_BEFORE_RUN",
+  "parent_protocols": [
+    "integration/f-gc/strip01/F-GC-STRIP01_C2B_IN_CALL_PARTICIPANT_REPLAY_PREREGISTRATION.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_C2B_IN_CALL_PARTICIPANT_REPLAY_CAPACITY_ADDENDUM.json"
+  ],
+  "reason": "A source-manifest comparison found five production Fortran files in the current checkout differ from the exact source snapshot used for the previous C2B result. Three changes affect bottom-mode-8 temporal/binding support, one removes a no-stress shortcut, and one adds an unrelated low-boundary debug print. To make this an exact replay of the recorded C2B source basis, these files must be compiled from the pinned canonical commit, not from the newer checkout.",
+  "temporary_canonical_overrides": [
+    "src/adapter/mod_b110_serialized_context_binding.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/physics/oxygen/mod_bartholomeus_factor_provider.f90",
+    "src/solver/mod_reference_richards_temporal_indicator.f90",
+    "src/transaction/mod_transaction_reference.f90"
+  ],
+  "source": "e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+  "method": "Copy each listed path from the pinned commit into a /tmp file and pass it as a builder --source-override. No tracked source is modified. The two separately preregistered context/API failure-diagnostic overlays are then applied to their unchanged canonical source files.",
+  "source_integrity": "Every compiled production module must resolve byte-for-byte to the pinned canonical commit. The only content differences from that source are the two explicitly listed temporary participant-diagnostic overlays. The separate research context is the preregistered C2 seedprobe fixture with its capacity-only /tmp override.",
+  "interpretation": "This replay tests the exact previously classified Richards-progress failure, not the behavior of later changes in the current checkout. Results are not evidence for or against the newer bottom-mode-8 work."
+}
