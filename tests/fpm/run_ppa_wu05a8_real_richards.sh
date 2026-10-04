@@ -94,6 +94,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_macropore_configuration.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
+  src/runtime/mod_fmr_committed_restart.f90
   src/process/mod_solute_water_face_flux_reconstruction.f90
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
