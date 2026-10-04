@@ -43,7 +43,7 @@ state.
 | Domain exchange rates have `[domain,node]` shape and are summed to node exchange for the matrix provider. | `src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90`; `src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90` |
 | Positive exchange transfers water from macropore to matrix; negative exchange transfers matrix water to macropore. | `src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90`, `compose_macropore_candidate` |
 | The committed macropore continuation owns per-domain/node water volume, but no solute mass. | `src/runtime/mod_macropore_continuation_state.f90` |
-| The opt-in accepted FMR trace now preserves domain/node macropore exchange and checks it sums to the existing matrix source; macro top and rapid outflow remain rejected, and paired domain liquid volume/salt boundary receipts are absent. | `src/runtime/mod_fmr_serialized_reference_backend.f90`, `append_accepted_water_flux_substep` and accepted trace validation |
+| The opt-in accepted FMR trace preserves domain/node exchange, its node sum, and paired per-domain start/end water volumes; macro top and rapid outflow remain rejected, and salt boundary receipts are absent. | `src/runtime/mod_fmr_serialized_reference_backend.f90`, `append_accepted_water_flux_substep` and accepted trace validation |
 | E1 salt candidate consumes matrix face fluxes and a single mobile mass per node; unowned source/sink closure rejects. | `src/process/mod_solute_mobile_salt_state.f90`; `tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90` |
 
 ## Required contract before macro-route salt advancement
@@ -52,8 +52,9 @@ The next implementation slice under PPA-WU05-E must establish all of the
 following before binding a salt consumer to this route:
 
 1. The opt-in water trace now preserves accepted, ordered macropore exchange
-   **per domain and node** and verifies its node sum. Still carry accepted macro
-   water volume needed to identify the donor liquid volume at that same substep.
+   **per domain and node**, verifies its node sum, and carries paired domain
+   water start/end volumes for that substep. A7 requires a nonzero exchange and
+   nonzero macro water change, then verifies replay identity.
 2. Define the macro salt state and its sole mass owner. For a restricted
    dissolved-only envelope, it must be explicit whether this is a distinct
    per-domain/node mass array paired atomically with the existing macro water
