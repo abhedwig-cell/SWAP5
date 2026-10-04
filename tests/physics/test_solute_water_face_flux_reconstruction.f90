@@ -7,6 +7,7 @@ program test_solute_water_face_flux_reconstruction
 
   call test_manufactured_flux_recovery()
   call test_boundary_closure_rejection()
+  call test_mean_flux_does_not_identify_reversal_transport()
   call test_invalid_inputs()
   write(*,'(a)') 'PPA_WU05E_WATER_FACE_FLUX_RECONSTRUCTION=PASS'
 
@@ -50,6 +51,25 @@ contains
     call require(.not.allocated(actual),'rejected flux profile is not published')
     call require(abs(residual)>1.0e-12_real64,'closure residual retained for diagnostics')
   end subroutine test_boundary_closure_rejection
+
+  subroutine test_mean_flux_does_not_identify_reversal_transport()
+    real(real64), parameter :: q=1.0_real64, half_interval=0.5_real64
+    real(real64), parameter :: c_left=1.0_real64, c_right=0.0_real64
+    real(real64) :: signed_mean, directional_salt_transfer, mean_only_salt_transfer
+
+    ! The two accepted half-intervals have equal and opposite water flux,
+    ! hence zero signed mean and zero net water storage change at this face.
+    ! Their ordered donor concentrations still produce nonzero salt transfer.
+    signed_mean=(q*half_interval-q*half_interval)/(2.0_real64*half_interval)
+    directional_salt_transfer=q*half_interval*c_left-q*half_interval*c_right
+    mean_only_salt_transfer=signed_mean*(2.0_real64*half_interval)*c_left
+
+    call require(abs(signed_mean)<=epsilon(1.0_real64),'reversing flux has zero signed mean')
+    call require(abs(directional_salt_transfer-q*half_interval)<=epsilon(1.0_real64), &
+         'ordered reversal transports salt despite zero mean water flux')
+    call require(abs(mean_only_salt_transfer)<=epsilon(1.0_real64), &
+         'applying only reconstructed mean loses the directional salt transfer')
+  end subroutine test_mean_flux_does_not_identify_reversal_transport
 
   subroutine test_invalid_inputs()
     real(real64) :: dz(1), theta0(1), theta1(1), source(1), residual, nan_value
