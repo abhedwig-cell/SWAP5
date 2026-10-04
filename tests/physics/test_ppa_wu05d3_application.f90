@@ -139,8 +139,8 @@ program test_ppa_wu05d3_application
   call fmr_restore_committed_restart(bundle,cfg%tiles(1)%parameters%parameter_set_id,columns, &
        [cfg%tiles(1)%template],restored,ok,status)
   call require(ok .and. status==FMR_RESTART_OK,'fresh worker restart restore')
-  cfg%tiles(1)%base_forcing%root_walsum_geometry%critical_root_zone_depth_cm=10._real64
-  cfg%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=30._real64
+  cfg%tiles(1)%base_forcing%root_walsum_geometry%critical_root_zone_depth_cm=1._real64
+  cfg%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=2._real64
   call states(1)%capture_checkpoint(cp,ok)
   call restored(1)%capture_checkpoint(cp2,ok)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
@@ -154,8 +154,8 @@ program test_ppa_wu05d3_application
   call backend%discard_trial_candidate(candidate,diag)
   do i=1,2
     bad=off
-    bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=15._real64
-    if(i==2) bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=25._real64
+    bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=.75_real64
+    if(i==2) bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=1.5_real64
     if(i==1) bad%tiles(1)%base_forcing%root_extraction_sink(3)=0._real64
     bad%tiles(1)%base_forcing%root_drought_reduction_total= &
       bad%tiles(1)%base_forcing%root_potential_transpiration-sum(bad%tiles(1)%base_forcing%root_extraction_sink)
@@ -163,7 +163,7 @@ program test_ppa_wu05d3_application
        bad%tiles(1)%base_forcing,bad%numerical,T1,T1+1.e-5_real64,cp,replay,candidate,diag)
     call require(replay%completed,'changing rooting depth production trial')
     obs=backend%observation()
-    k=.8_real64
+    k=.9_real64
     if(i==2) k=.7_real64
     call require(abs(obs%root_compensation_final_uptake-min(.03_real64, &
       sum(bad%tiles(1)%base_forcing%root_extraction_sink)/k))<1.e-14_real64,'dynamic alpha independent sink oracle')
@@ -288,7 +288,7 @@ contains
     value%tiles(1)%parameters%root_compensation%method=ROOT_COMP_WALSUM
     value%tiles(1)%parameters%root_compensation%stressor=ROOT_COMP_ALL
     value%tiles(1)%parameters%root_compensation%alpha_critical=.7_real64
-    value%tiles(1)%base_forcing%root_walsum_geometry=root_walsum_geometry_t(0._real64,100._real64,25._real64)
+    value%tiles(1)%base_forcing%root_walsum_geometry=root_walsum_geometry_t(.5_real64,5._real64,1.5_real64)
     ! Existing history certificate is selected explicitly, not changed or relaxed.
     value%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     value%tiles(1)%initial_right_derivative=spread(0.0_real64,1,numnod)
