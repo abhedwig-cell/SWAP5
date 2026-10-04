@@ -104,12 +104,7 @@
     {
       "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
       "result": "PASS_O0_O2",
-      "scope": "Test-only conservative signed matrix/macropore salt transfer oracle at O0/O2: distinct donor concentrations, no-flow identity, ordered reversal, inventory closure, dry-with-salt inconsistency, dry donor and water overdraw rejection; deterministic outputs. Not production transport or qualification."
-    },
-    {
-      "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
-      "result": "PASS_O0_O2",
-      "scope": "Reusable stateless source process kernel for signed internal matrix/macropore salt exchange; distinct donor concentrations, zero flow, ordered reversal, internal inventory closure, dry or unavailable donors, matrix-water aggregate overdraw and invalid input. This does not qualify macro transport, boundaries, state ownership, FMR binding, or admission."
+      "scope": "Reusable stateless source process kernel for signed internal matrix/macropore salt exchange; distinct donor concentrations, zero-flow identity, ordered reversal, equal-and-opposite inventory closure, unavailable/dry donors, aggregate matrix-water overdraw, and invalid input. This does not qualify macro transport, boundaries, state ownership, FMR binding, or admission."
     }
   ],
   "not_run_or_not_claimed": [
