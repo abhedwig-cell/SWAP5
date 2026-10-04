@@ -1,0 +1,59 @@
+{
+  "first_rejection": {
+    "failure_stage": "swap-corrector",
+    "iterations": 1,
+    "participants": 50,
+    "rate_cm_per_day": 1e-05,
+    "rollback_verified": true,
+    "state_unchanged_after_discarded_probes": true,
+    "uniform_probe_codes": [
+      2,
+      0,
+      1,
+      8,
+      0,
+      0,
+      9,
+      8,
+      2,
+      0,
+      0,
+      1
+    ],
+    "uniform_probe_observations": [
+      0.0,
+      0.0001,
+      0.0,
+      -1e-05,
+      0.0,
+      0.0
+    ]
+  },
+  "forcing_schedule_cm_per_day": [
+    1e-08,
+    1e-07,
+    1e-06,
+    1e-05,
+    0.0001,
+    0.001,
+    0.01,
+    0.1
+  ],
+  "interpretation": "The 10x fixture budget does not make the 1e-5 cm/day history-ramp service window publish. At the unchanged origin, discarded probes still accept zero substeps; diagnostics record one solver rejection, eight temporal rejections, zero mass rejections and nine attempts. Terminal temporal indicator is unavailable after the terminal solver status, so this run does not show whether a particular intermediate temporal check would have passed. The sensitivity falsifies the claim that changing the budget from 1e-5 to 1e-4 cm alone is sufficient. It does not justify any production budget change.",
+  "protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_TEMPORAL_BUDGET_SENSITIVITY_PREREGISTRATION.json",
+  "published_rates_cm_per_day": [
+    1e-08,
+    1e-07,
+    1e-06
+  ],
+  "replay_sha256": {
+    "run1": "67ca90c35354553faf84714a12a52c7b35ebd2dd67d0b1ae66f699b944f2b103",
+    "run2": "67ca90c35354553faf84714a12a52c7b35ebd2dd67d0b1ae66f699b944f2b103"
+  },
+  "schema": "swap5.fgc.strip01.c2e_ab01.temporal_budget_sensitivity_result.v1",
+  "single_factor_change": {
+    "baseline_budget_cm": 1e-05,
+    "sensitivity_budget_cm": 0.0001
+  },
+  "state": "C2A_PUBLISHED_HISTORY_RAMP_REJECTED"
+}

@@ -1,0 +1,19 @@
+{
+  "base_context_commit": "36ef6acbaca2ad607eb818e389575d30b444afe2",
+  "build_command": "python tools/build_f_gc_strip01_research_context.py --profile C1 --build /tmp/f-gc-budget-sensitivity-build --context-override /tmp/research_context_c2a_head_budget_1e4.f90",
+  "compiler": "GNU Fortran 13.3.0",
+  "compressed_result_sha256": "cdfd0be11c97ae69b594618665d7e2ae2ece64fd2b46221d882c8a64b154ec45",
+  "libmf6_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+  "modflow6": "6.8.0",
+  "override_generation": "Read tests/fgc/strip01/research_context_c2a.f90 and replace exactly one occurrence of \"real(real64), parameter :: HEAD_BUDGET = 1.0e-5_real64\" with \"real(real64), parameter :: HEAD_BUDGET = 1.0e-4_real64\"; assert source occurrence count is one.",
+  "override_source_sha256": "b5e7f02267461cbca682901cfff576417bcf6f24c43dd5229b6f42743cec36a4",
+  "profile": "C1",
+  "protocol_blob": "d401dfa8c83b60f6f06e250e5697076ccc73007e",
+  "protocol_commit": "d102c24470677550e1d6bbc8c8406891ea0c9dfe",
+  "research_library_sha256": "7ebfb34ac9f3cf4acc01fba5061333f9c28e8f8cb94690fbe42ac7818a85d255",
+  "result_sha256": "67ca90c35354553faf84714a12a52c7b35ebd2dd67d0b1ae66f699b944f2b103",
+  "run_command": "MPLCONFIGDIR=/tmp/mpl-c2e python tests/fgc/strip01/run_c2_rain_sequence.py --profile C1 --real-context c2a --root . --library /tmp/f-gc-budget-sensitivity-build/libstrip01_research.so --libmf6 /tmp/c2-mf6-680/bin/libmf6.so --output <fresh-dir> --flux-tolerance 2e-15 --max-coupling-iterations 40 --history-ramp-rates 1e-8 1e-7 1e-6 1e-5 1e-4 1e-3 1e-2 0.1",
+  "runner_blob": "3b1a22a5da2b52fb219244a74e25d10be2b6eb27",
+  "schema": "swap5.fgc.strip01.c2e_ab01.temporal_budget_sensitivity.source_manifest.v1",
+  "source_commit": "60cb0c6b3075cd27bd2f4ba9ccdf3244e49075e1"
+}

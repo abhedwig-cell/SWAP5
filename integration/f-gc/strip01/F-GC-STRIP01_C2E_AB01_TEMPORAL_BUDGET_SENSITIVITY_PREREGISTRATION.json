@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.temporal_budget_sensitivity.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01-TEMPORAL-BUDGET-SENSITIVITY",
+  "state": "PREREGISTERED",
+  "parent_protocols": [
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_PREREGISTRATION.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_TEMPORAL_DIAGNOSTIC_ADDENDUM.json"
+  ],
+  "purpose": "Test whether the observed temporal rejection at 1e-5 cm/day is directly sensitive to the research fixture's head-budget threshold, without changing production code or interpreting a relaxed test gate as physically qualified.",
+  "single_factor_change": {
+    "baseline_research_fixture_head_budget_cm": 1e-5,
+    "sensitivity_research_fixture_head_budget_cm": 1e-4,
+    "all_other_source_and_runtime_conditions": "Identical C1, same 50 columns and native MODFLOW strip, same temporal-history ramp and fixed 0.001-day windows, flux tolerance 2e-15 m/s, max coupling iterations 40. Only the test-only compiled C2A context budget parameter differs."
+  },
+  "forcing_schedule_cm_per_day": [1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 0.1],
+  "gates": {
+    "local_only": true,
+    "two_fresh_processes": "Canonical result JSON must be byte-identical.",
+    "record": ["per-window publication/failure stage", "all 50 state/revision/ledger outcomes", "per-window mass accounting", "exact-origin temporal, solver and mass diagnostic codes after first rejection", "fixture budget and compiled override source hash"],
+    "production_delta": "None; no production temporal budget or solver/coupling policy is edited."
+  },
+  "interpretation": "If the 1e-5 cm/day service window publishes at 1e-4 cm budget, that demonstrates sensitivity to the research fixture gate at this origin only; it does not establish that the relaxed head budget is accurate. If it fails by a different gate, report that gate. No canonical admission follows from either outcome."
+}
