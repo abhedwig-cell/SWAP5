@@ -1,4 +1,413 @@
-s)
+module mod_fmr_serialized_multiswap_runtime
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_transaction_reference, only: TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED
+  use mod_canonical_contracts, only: canonical_mass_accounting_t, canonical_numerical_config_t
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
+       kernel_result_t, kernel_diagnostics_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
+  use mod_soil_water_solver_contract, only: top_boundary_provider_t
+  use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint, fmr_commit_candidate, fmr_discard_candidate
+  use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t, fmr_commit_candidate_with_receipt, &
+       FMR_COMMIT_RECEIPT_OK, FMR_COMMIT_RECEIPT_COMMIT_REJECTED
+  use mod_fmr_owned_commit_receipt, only: fmr_owned_commit_receipt_t, fmr_commit_candidate_with_owned_receipt
+  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
+       fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_execution_order, fmr_count_templates, &
+       FMR_BACKEND_SERIALIZED_REFERENCE
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
+       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
+       fmr_serialized_physical_observation_t
+  use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_candidate_t, fmr_bottom_thermal_sample_t, &
+       FMR_BOTTOM_THERMAL_DONOR_EXTERNAL
+  use mod_fmr_bottom_external_thermal_binding, only: fmr_bottom_external_thermal_binding_bundle_t, &
+       FMR_EXT_THERMAL_BINDING_OK
+  use mod_fmr_bottom_external_thermal_provider, only: fmr_external_bottom_thermal_request_t, &
+       fmr_external_bottom_thermal_response_t, fmr_external_bottom_thermal_provider_i, &
+       initialize_fmr_external_bottom_thermal_request, FMR_EXT_THERMAL_RESPONSE_COMPLETE, &
+       FMR_EXT_THERMAL_RESPONSE_UNAVAILABLE, FMR_EXT_THERMAL_RESPONSE_STALE
+  use mod_fmr_bottom_sensible_energy, only: fmr_bottom_sensible_energy_result_t, &
+       evaluate_fmr_bottom_sensible_energy, evaluate_fmr_bottom_sensible_energy_with_external, &
+       FMR_BOTTOM_ENERGY_NOT_EVALUATED, FMR_BOTTOM_ENERGY_INVALID_CANDIDATE
+  use mod_liquid_water_sensible_enthalpy, only: liquid_water_sensible_enthalpy_parameters_t
+  implicit none
+  private
+
+  integer, parameter, public :: FMR_SERIAL_DISPATCH_OK = 0
+  integer, parameter, public :: FMR_SERIAL_DISPATCH_INVALID_REQUEST = 1
+  integer, parameter, public :: FMR_SERIAL_DISPATCH_REGISTRY_REJECTED = 2
+  integer, parameter, public :: FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED = 3
+
+  type, public :: fmr_serialized_column_result_t
+    integer(int64) :: column_id = 0_int64
+    integer :: dispatch_ordinal = 0
+    real(real64) :: requested_t0 = 0.0_real64
+    real(real64) :: requested_t1 = 0.0_real64
+    logical :: admission_assessed = .false.
+    logical :: admitted = .false.
+    character(len=40) :: admission_status = 'NOT_ASSESSED'
+    integer :: kernel_status = 0
+    integer :: commit_status = -1
+    logical :: completed = .false.
+    logical :: committed = .false.
+    logical :: solver_executed = .false.
+    integer :: solver_status = 0
+    character(len=32) :: solver_route = 'not-run'
+    integer :: solver_iterations = 0
+    integer :: accepted_substeps = 0
+    integer :: solver_rejections = 0
+    integer :: temporal_rejections = 0
+    integer :: mass_rejections = 0
+    integer :: solver_nonlinear_iterations = 0
+    integer :: solver_internal_retries = 0
+    integer :: solver_headcalc_calls = 0
+    integer :: solver_jacobian_builds = 0
+    integer :: solver_linear_solves = 0
+    integer :: solver_backtracking_attempts = 0
+    integer :: solver_alternative_solver_calls = 0
+    integer(int64) :: initial_revision = -1_int64
+    integer(int64) :: final_revision = -1_int64
+    real(real64) :: final_committed_time = 0.0_real64
+    logical :: final_committed_time_bound = .false.
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
+    type(canonical_mass_accounting_t) :: mass
+  end type fmr_serialized_column_result_t
+
+  ! Sparse ephemeral receipt output. The explicit column id makes the
+  ! request/output association self-describing without adding any persistent
+  ! optional state to logical columns or committed physical state.
+  type, public :: fmr_serialized_commit_receipt_record_t
+    integer(int64) :: column_id = 0_int64
+    type(fmr_accepted_commit_receipt_t) :: receipt
+  end type fmr_serialized_commit_receipt_record_t
+
+  ! Worker-local precommit carrier. It is deliberately private so no caller can
+  ! retain energy from candidate B and later combine it with candidate A's
+  ! receipt. The carrier may represent complete or explicitly unavailable
+  ! diagnostic energy; neither case is committed physical SWAP state.
+  type :: fmr_prepared_bottom_energy_publication_t
+    logical :: initialized = .false.
+    integer(int64) :: lineage_id = 0_int64
+    integer(int64) :: origin_revision_value = -1_int64
+    real(real64) :: t0_value = 0.0_real64
+    real(real64) :: t1_value = 0.0_real64
+    integer :: energy_status_value = FMR_BOTTOM_ENERGY_NOT_EVALUATED
+    logical :: total_available_value = .false.
+    real(real64) :: total_energy_j_m2_value = 0.0_real64
+    logical :: local_subtotal_available_value = .false.
+    real(real64) :: local_subtotal_j_m2_value = 0.0_real64
+    integer :: provider_request_count_value = 0
+    integer :: provider_complete_count_value = 0
+    integer :: provider_unavailable_count_value = 0
+    integer :: provider_stale_count_value = 0
+    integer :: provider_invalid_count_value = 0
+  contains
+    procedure :: ready => prepared_bottom_energy_ready
+  end type fmr_prepared_bottom_energy_publication_t
+
+  ! Accepted-only bottom sensible-energy accounting. This result is ephemeral
+  ! runtime output, not continuation state and not a second water/mass ledger.
+  ! A ready publication can still have total_available=.false.; that is the
+  ! required fail-closed representation for diagnostic energy when an external
+  ! donor temperature was unavailable or invalid after hydrology was accepted.
+  type, public :: fmr_serialized_bottom_energy_publication_t
+    private
+    logical :: initialized = .false.
+    integer(int64) :: column_id_value = 0_int64
+    integer(int64) :: lineage_id = 0_int64
+    integer(int64) :: origin_revision_value = -1_int64
+    integer(int64) :: committed_revision_value = -1_int64
+    real(real64) :: t0_value = 0.0_real64
+    real(real64) :: t1_value = 0.0_real64
+    integer :: energy_status_value = FMR_BOTTOM_ENERGY_NOT_EVALUATED
+    logical :: total_available_value = .false.
+    real(real64) :: total_energy_j_m2_value = 0.0_real64
+    logical :: local_subtotal_available_value = .false.
+    real(real64) :: local_subtotal_j_m2_value = 0.0_real64
+    integer :: provider_request_count_value = 0
+    integer :: provider_complete_count_value = 0
+    integer :: provider_unavailable_count_value = 0
+    integer :: provider_stale_count_value = 0
+    integer :: provider_invalid_count_value = 0
+  contains
+    procedure, public :: ready => bottom_energy_publication_ready
+    procedure, public :: column_id => bottom_energy_publication_column_id
+    procedure, public :: current_lineage_id => bottom_energy_publication_lineage_id
+    procedure, public :: origin_revision => bottom_energy_publication_origin_revision
+    procedure, public :: committed_revision => bottom_energy_publication_committed_revision
+    procedure, public :: origin_interval => bottom_energy_publication_origin_interval
+    procedure, public :: energy_status => bottom_energy_publication_energy_status
+    procedure, public :: complete => bottom_energy_publication_complete
+    procedure, public :: total_energy => bottom_energy_publication_total_energy
+    procedure, public :: local_outward_subtotal => bottom_energy_publication_local_subtotal
+    procedure, public :: provider_counts => bottom_energy_publication_provider_counts
+  end type fmr_serialized_bottom_energy_publication_t
+
+  ! F-MR05-specific composition diagnostics.  This is deliberately separate
+  ! from the generic F-MR01 aggregate type so the strict serialized physical
+  ! admission constraint does not leak into the logical runtime core.
+  type, public :: fmr_serialized_batch_diagnostics_t
+    integer :: number_requested = 0
+    integer :: number_admitted = 0
+    integer :: number_executed = 0
+    integer :: number_committed = 0
+    integer :: number_rejected = 0
+    integer :: physical_solve_count = 0
+    integer :: max_simultaneous_real_physical_solves = 0
+    logical :: deterministic_collection = .false.
+    real(real64) :: effective_t0 = 0.0_real64
+    real(real64) :: effective_t1 = 0.0_real64
+    real(real64) :: max_abs_column_mass_residual = 0.0_real64
+    type(canonical_mass_accounting_t) :: authoritative_aggregate_mass
+  end type fmr_serialized_batch_diagnostics_t
+
+  public :: fmr_run_serialized_physical_multiswap
+  public :: fmr_execute_serialized_physical_column
+  public :: fmr_execute_serialized_resolved_physical_column
+  public :: fmr_execute_serialized_column_with_bottom_energy
+
+contains
+
+  subroutine fmr_run_serialized_physical_multiswap(columns, templates, parameter_registry, forcing_registry, &
+                                                    state_registry, numerical_config, top_boundary, t0, t1, &
+                                                    batch_size, results, diagnostics, aggregate, dispatch_status, &
+                                                    runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan, &
+                                                    materialize_worker_assignments, materialize_summary_diagnostics, &
+                                                    materialize_diagnostic_metadata, materialize_column_diagnostics, &
+                                                    trusted_prepared_parameters)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_template_t), intent(in) :: templates(:)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
+    type(kernel_committed_state_t), intent(inout) :: state_registry(:)
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
+    class(top_boundary_provider_t), target, intent(in) :: top_boundary
+    real(real64), intent(in) :: t0, t1
+    integer, intent(in) :: batch_size
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    type(fmr_column_diagnostics_t), allocatable, intent(out) :: diagnostics(:)
+    type(fmr_aggregate_diagnostics_t), intent(out) :: aggregate
+    integer, intent(out) :: dispatch_status
+    type(fmr_serialized_batch_diagnostics_t), intent(out), optional :: runtime_diagnostics
+    integer(int64), intent(in), optional :: receipt_column_ids(:)
+    type(fmr_serialized_commit_receipt_record_t), allocatable, intent(out), optional :: commit_receipts(:)
+    type(fmr_serialized_execution_plan_t), intent(in), optional :: execution_plan
+    logical, intent(in), optional :: materialize_worker_assignments
+    logical, intent(in), optional :: materialize_summary_diagnostics
+    logical, intent(in), optional :: materialize_diagnostic_metadata
+    logical, intent(in), optional :: materialize_column_diagnostics
+    logical, intent(in), optional :: trusted_prepared_parameters
+
+    type(fmr_serialized_reference_backend_t), target :: backend
+    type(kernel_executor_t) :: transaction_control
+    type(fmr_serialized_batch_diagnostics_t) :: local_runtime
+    type(fmr_column_diagnostics_t) :: scratch_diagnostic
+    integer, allocatable :: order(:), receipt_slot_by_column(:)
+    integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
+    logical :: receipt_request_ok
+    logical :: do_worker_assignments, do_summary_diagnostics, do_diagnostic_metadata, do_column_diagnostics
+    logical :: track_physical_concurrency, trust_prepared
+
+    do_worker_assignments = .true.
+    if (present(materialize_worker_assignments)) do_worker_assignments = materialize_worker_assignments
+    do_summary_diagnostics = .true.
+    if (present(materialize_summary_diagnostics)) do_summary_diagnostics = materialize_summary_diagnostics
+    do_diagnostic_metadata = .true.
+    if (present(materialize_diagnostic_metadata)) do_diagnostic_metadata = materialize_diagnostic_metadata
+    do_column_diagnostics = .true.
+    if (present(materialize_column_diagnostics)) do_column_diagnostics = materialize_column_diagnostics
+    if (.not. do_column_diagnostics) then
+      if (do_summary_diagnostics) error stop 'F-PE-ZERO-WASTE01: summary diagnostics require column diagnostics'
+      if (present(runtime_diagnostics)) error stop 'F-PE-ZERO-WASTE01: runtime diagnostics require column diagnostics'
+      do_worker_assignments = .false.
+      do_diagnostic_metadata = .false.
+    end if
+    track_physical_concurrency = do_summary_diagnostics .or. present(runtime_diagnostics)
+    trust_prepared = .false.
+    if (present(trusted_prepared_parameters)) trust_prepared = trusted_prepared_parameters
+    call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, do_worker_assignments, &
+         do_diagnostic_metadata, do_column_diagnostics)
+    call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
+    active_physical_calls = 0
+    dispatch_status = FMR_SERIAL_DISPATCH_OK
+    ! Receipt requests are optional feature-scoped runtime metadata. Validate
+    ! the complete sparse request before backend initialization or any physical
+    ! trial so every expected request error is transactionally precommit.
+    if (present(receipt_column_ids) .neqv. present(commit_receipts)) then
+      if (present(commit_receipts)) allocate(commit_receipts(0))
+      dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
+      call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
+      if (do_summary_diagnostics) then
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
+      end if
+      return
+    end if
+    if (present(receipt_column_ids)) then
+      call build_receipt_slot_map(columns, receipt_column_ids, receipt_slot_by_column, receipt_request_ok)
+      if (.not. receipt_request_ok) then
+        allocate(commit_receipts(0))
+        dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
+        call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
+        return
+      end if
+      allocate(commit_receipts(size(receipt_column_ids)))
+      do receipt_slot = 1, size(receipt_column_ids)
+        commit_receipts(receipt_slot)%column_id = receipt_column_ids(receipt_slot)
+      end do
+    end if
+
+    if (batch_size <= 0 .or. t1 <= t0) then
+      dispatch_status = FMR_SERIAL_DISPATCH_INVALID_REQUEST
+      call mark_all_rejected(diagnostics, 'INVALID_DISPATCH_REQUEST')
+      if (do_summary_diagnostics) then
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
+      end if
+      return
+    end if
+
+    if (present(execution_plan)) then
+      if (.not. execution_plan%matches(columns, templates, size(state_registry))) then
+        dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
+        call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
+        return
+      end if
+    else
+      if (.not. registry_structure_valid(columns, templates, state_registry)) then
+        dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
+        call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
+        if (do_summary_diagnostics) then
+          call build_aggregate(columns, diagnostics, 0, aggregate)
+          call finalize_runtime_diagnostics(results, local_runtime)
+          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        end if
+        return
+      end if
+      call fmr_build_execution_order(columns, order)
+    end if
+
+    call backend%initialize(top_boundary)
+    batches = 0
+    do batch_start = 1, size(columns), batch_size
+      batches = batches + 1
+      batch_end = min(size(columns), batch_start + batch_size - 1)
+      do pos = batch_start, batch_end
+        if (present(execution_plan)) then
+          idx = execution_plan%order_index(pos)
+          template_index_hint = execution_plan%template_index(idx)
+        else
+          idx = order(pos)
+          template_index_hint = 0
+        end if
+        results(idx)%dispatch_ordinal = pos
+        if (.not. do_column_diagnostics) scratch_diagnostic = fmr_column_diagnostics_t()
+        receipt_slot = 0
+        if (present(receipt_column_ids)) receipt_slot = receipt_slot_by_column(idx)
+        if (receipt_slot > 0) then
+          if (present(execution_plan)) then
+            if (do_column_diagnostics) then
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint, &
+                 track_physical_concurrency, trust_prepared)
+            else
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
+                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint, &
+                   track_physical_concurrency)
+            end if
+          else
+            if (do_column_diagnostics) then
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt, &
+                 track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
+            else
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
+                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt, &
+                   track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
+            end if
+          end if
+        else
+          if (present(execution_plan)) then
+            if (do_column_diagnostics) then
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                   local_runtime, active_physical_calls, template_index_hint=template_index_hint, &
+                 track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
+            else
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
+                   local_runtime, active_physical_calls, template_index_hint=template_index_hint, &
+                   track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
+            end if
+          else
+            if (do_column_diagnostics) then
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
+            else
+              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
+                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
+            end if
+          end if
+        end if
+      end do
+    end do
+
+    local_runtime%deterministic_collection = .true.
+    if (do_summary_diagnostics) then
+      if (present(execution_plan)) then
+        call build_aggregate(columns, diagnostics, batches, aggregate, execution_plan=execution_plan)
+        call finalize_runtime_diagnostics(results, local_runtime, execution_plan=execution_plan)
+      else
+        call build_aggregate(columns, diagnostics, batches, aggregate, execution_order=order)
+        call finalize_runtime_diagnostics(results, local_runtime, execution_order=order)
+      end if
+    end if
+    if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+  end subroutine fmr_run_serialized_physical_multiswap
+
+  ! Registry-facing worker seam retained for current parallel callers.  Handle
+  ! validation and resolution remain here; the transaction path below consumes
+  ! only the one selected forcing object.
+  subroutine fmr_execute_serialized_physical_column(backend, transaction_control, column, templates, parameter_registry, &
+                                                     forcing_registry, state_registry, numerical_config, t0, t1, &
+                                                     output, diagnostic, runtime, active_physical_calls)
+    type(fmr_serialized_reference_backend_t), intent(inout) :: backend
+    type(kernel_executor_t), intent(inout) :: transaction_control
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: templates(:)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
+    type(kernel_committed_state_t), intent(inout) :: state_registry(:)
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
+    integer, intent(inout) :: active_physical_calls
+
+    call execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
+         state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls)
   end subroutine fmr_execute_serialized_physical_column
 
   ! Resolved worker seam for ephemeral effective forcing.  The caller owns and
@@ -251,212 +660,7 @@ s)
     if (present(template_index_hint)) then
       template_index = template_index_hint
     else
-      template_index = find_template_indexlot, template_index_hint
-    logical :: receipt_request_ok
-    logical :: do_worker_assignments, do_summary_diagnostics, do_diagnostic_metadata, do_column_diagnostics
-    logical :: track_physical_concurrency, trust_prepared
-
-    do_worker_assignments = .true.
-    if (present(materialize_worker_assignments)) do_worker_assignments = materialize_worker_assignments
-    do_summary_diagnostics = .true.
-    if (present(materialize_summary_diagnostics)) do_summary_diagnostics = materialize_summary_diagnostics
-    do_diagnostic_metadata = .true.
-    if (present(materialize_diagnostic_metadata)) do_diagnostic_metadata = materialize_diagnostic_metadata
-    do_column_diagnostics = .true.
-    if (present(materialize_column_diagnostics)) do_column_diagnostics = materialize_column_diagnostics
-    if (.not. do_column_diagnostics) then
-      if (do_summary_diagnostics) error stop 'F-PE-ZERO-WASTE01: summary diagnostics require column diagnostics'
-      if (present(runtime_diagnostics)) error stop 'F-PE-ZERO-WASTE01: runtime diagnostics require column diagnostics'
-      do_worker_assignments = .false.
-      do_diagnostic_metadata = .false.
-    end if
-    track_physical_concurrency = do_summary_diagnostics .or. present(runtime_diagnostics)
-    trust_prepared = .false.
-    if (present(trusted_prepared_parameters)) trust_prepared = trusted_prepared_parameters
-    call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate, do_worker_assignments, &
-         do_diagnostic_metadata, do_column_diagnostics)
-    call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
-    active_physical_calls = 0
-    dispatch_status = FMR_SERIAL_DISPATCH_OK
-    ! Receipt requests are optional feature-scoped runtime metadata. Validate
-    ! the complete sparse request before backend initialization or any physical
-    ! trial so every expected request error is transactionally precommit.
-    if (present(receipt_column_ids) .neqv. present(commit_receipts)) then
-      if (present(commit_receipts)) allocate(commit_receipts(0))
-      dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
-      call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
-      if (do_summary_diagnostics) then
-        if (do_summary_diagnostics) then
-          call build_aggregate(columns, diagnostics, 0, aggregate)
-          call finalize_runtime_diagnostics(results, local_runtime)
-          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
-        end if
-      end if
-      return
-    end if
-    if (present(receipt_column_ids)) then
-      call build_receipt_slot_map(columns, receipt_column_ids, receipt_slot_by_column, receipt_request_ok)
-      if (.not. receipt_request_ok) then
-        allocate(commit_receipts(0))
-        dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
-        call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
-        if (do_summary_diagnostics) then
-          call build_aggregate(columns, diagnostics, 0, aggregate)
-          call finalize_runtime_diagnostics(results, local_runtime)
-          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
-        end if
-        return
-      end if
-      allocate(commit_receipts(size(receipt_column_ids)))
-      do receipt_slot = 1, size(receipt_column_ids)
-        commit_receipts(receipt_slot)%column_id = receipt_column_ids(receipt_slot)
-      end do
-    end if
-
-    if (batch_size <= 0 .or. t1 <= t0) then
-      dispatch_status = FMR_SERIAL_DISPATCH_INVALID_REQUEST
-      call mark_all_rejected(diagnostics, 'INVALID_DISPATCH_REQUEST')
-      if (do_summary_diagnostics) then
-        if (do_summary_diagnostics) then
-          call build_aggregate(columns, diagnostics, 0, aggregate)
-          call finalize_runtime_diagnostics(results, local_runtime)
-          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
-        end if
-      end if
-      return
-    end if
-
-    if (present(execution_plan)) then
-      if (.not. execution_plan%matches(columns, templates, size(state_registry))) then
-        dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
-        call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
-        if (do_summary_diagnostics) then
-          call build_aggregate(columns, diagnostics, 0, aggregate)
-          call finalize_runtime_diagnostics(results, local_runtime)
-          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
-        end if
-        return
-      end if
-    else
-      if (.not. registry_structure_valid(columns, templates, state_registry)) then
-        dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
-        call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
-        if (do_summary_diagnostics) then
-          call build_aggregate(columns, diagnostics, 0, aggregate)
-          call finalize_runtime_diagnostics(results, local_runtime)
-          if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
-        end if
-        return
-      end if
-      call fmr_build_execution_order(columns, order)
-    end if
-
-    call backend%initialize(top_boundary)
-    batches = 0
-    do batch_start = 1, size(columns), batch_size
-      batches = batches + 1
-      batch_end = min(size(columns), batch_start + batch_size - 1)
-      do pos = batch_start, batch_end
-        if (present(execution_plan)) then
-          idx = execution_plan%order_index(pos)
-          template_index_hint = execution_plan%template_index(idx)
-        else
-          idx = order(pos)
-          template_index_hint = 0
-        end if
-        results(idx)%dispatch_ordinal = pos
-        if (.not. do_column_diagnostics) scratch_diagnostic = fmr_column_diagnostics_t()
-        receipt_slot = 0
-        if (present(receipt_column_ids)) receipt_slot = receipt_slot_by_column(idx)
-        if (receipt_slot > 0) then
-          if (present(execution_plan)) then
-            if (do_column_diagnostics) then
-              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint, &
-                 track_physical_concurrency, trust_prepared)
-            else
-              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
-                   local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt, template_index_hint, &
-                   track_physical_concurrency)
-            end if
-          else
-            if (do_column_diagnostics) then
-              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt, &
-                 track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
-            else
-              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
-                   local_runtime, active_physical_calls, commit_receipt=commit_receipts(receipt_slot)%receipt, &
-                   track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
-            end if
-          end if
-        else
-          if (present(execution_plan)) then
-            if (do_column_diagnostics) then
-              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                   local_runtime, active_physical_calls, template_index_hint=template_index_hint, &
-                 track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
-            else
-              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
-                   local_runtime, active_physical_calls, template_index_hint=template_index_hint, &
-                   track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
-            end if
-          else
-            if (do_column_diagnostics) then
-              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
-            else
-              call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-                   forcing_registry, state_registry, numerical_config, t0, t1, results(idx), scratch_diagnostic, &
-                   local_runtime, active_physical_calls, track_physical_concurrency=track_physical_concurrency, trusted_prepared_parameters=trust_prepared)
-            end if
-          end if
-        end if
-      end do
-    end do
-
-    local_runtime%deterministic_collection = .true.
-    if (do_summary_diagnostics) then
-      if (present(execution_plan)) then
-        call build_aggregate(columns, diagnostics, batches, aggregate, execution_plan=execution_plan)
-        call finalize_runtime_diagnostics(results, local_runtime, execution_plan=execution_plan)
-      else
-        call build_aggregate(columns, diagnostics, batches, aggregate, execution_order=order)
-        call finalize_runtime_diagnostics(results, local_runtime, execution_order=order)
-      end if
-    end if
-    if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
-  end subroutine fmr_run_serialized_physical_multiswap
-
-  ! Registry-facing worker seam retained for current parallel callers.  Handle
-  ! validation and resolution remain here; the transaction path below consumes
-  ! only the one selected forcing object.
-  subroutine fmr_execute_serialized_physical_column(backend, transaction_control, column, templates, parameter_registry, &
-                                                     forcing_registry, state_registry, numerical_config, t0, t1, &
-                                                     output, diagnostic, runtime, active_physical_calls)
-    type(fmr_serialized_reference_backend_t), intent(inout) :: backend
-    type(kernel_executor_t), intent(inout) :: transaction_control
-    type(fmr_logical_column_t), intent(in) :: column
-    type(fmr_template_t), intent(in) :: templates(:)
-    type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
-    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
-    type(kernel_committed_state_t), intent(inout) :: state_registry(:)
-    type(canonical_numerical_config_t), intent(in) :: numerical_config
-    real(real64), intent(in) :: t0, t1
-    type(fmr_serialized_column_result_t), intent(inout) :: output
-    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
-    type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
-    integer, intent(inout) :: active_physical_calls
-
-    call execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
-         state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_call(column%template_id, templates)
+      template_index = find_template_index(column%template_id, templates)
     end if
     routable = template_index > 0 .and. column%backend_id == FMR_BACKEND_SERIALIZED_REFERENCE .and. &
          column%parameter_ref >= 1_int64 .and. &
@@ -682,211 +886,7 @@ s)
     end if
     if (energy_requested) then
       if (receipt_status /= FMR_COMMIT_RECEIPT_OK .or. .not. local_energy_receipt%ready()) &
-       module mod_fmr_serialized_multiswap_runtime
-  use, intrinsic :: iso_fortran_env, only: int64, real64
-  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use mod_transaction_reference, only: TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED
-  use mod_canonical_contracts, only: canonical_mass_accounting_t, canonical_numerical_config_t
-  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
-       kernel_result_t, kernel_diagnostics_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
-  use mod_soil_water_solver_contract, only: top_boundary_provider_t
-  use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint, fmr_commit_candidate, fmr_discard_candidate
-  use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t, fmr_commit_candidate_with_receipt, &
-       FMR_COMMIT_RECEIPT_OK, FMR_COMMIT_RECEIPT_COMMIT_REJECTED
-  use mod_fmr_owned_commit_receipt, only: fmr_owned_commit_receipt_t, fmr_commit_candidate_with_owned_receipt
-  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_execution_order, fmr_count_templates, &
-       FMR_BACKEND_SERIALIZED_REFERENCE
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
-       fmr_serialized_physical_observation_t
-  use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_candidate_t, fmr_bottom_thermal_sample_t, &
-       FMR_BOTTOM_THERMAL_DONOR_EXTERNAL
-  use mod_fmr_bottom_external_thermal_binding, only: fmr_bottom_external_thermal_binding_bundle_t, &
-       FMR_EXT_THERMAL_BINDING_OK
-  use mod_fmr_bottom_external_thermal_provider, only: fmr_external_bottom_thermal_request_t, &
-       fmr_external_bottom_thermal_response_t, fmr_external_bottom_thermal_provider_i, &
-       initialize_fmr_external_bottom_thermal_request, FMR_EXT_THERMAL_RESPONSE_COMPLETE, &
-       FMR_EXT_THERMAL_RESPONSE_UNAVAILABLE, FMR_EXT_THERMAL_RESPONSE_STALE
-  use mod_fmr_bottom_sensible_energy, only: fmr_bottom_sensible_energy_result_t, &
-       evaluate_fmr_bottom_sensible_energy, evaluate_fmr_bottom_sensible_energy_with_external, &
-       FMR_BOTTOM_ENERGY_NOT_EVALUATED, FMR_BOTTOM_ENERGY_INVALID_CANDIDATE
-  use mod_liquid_water_sensible_enthalpy, only: liquid_water_sensible_enthalpy_parameters_t
-  implicit none
-  private
-
-  integer, parameter, public :: FMR_SERIAL_DISPATCH_OK = 0
-  integer, parameter, public :: FMR_SERIAL_DISPATCH_INVALID_REQUEST = 1
-  integer, parameter, public :: FMR_SERIAL_DISPATCH_REGISTRY_REJECTED = 2
-  integer, parameter, public :: FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED = 3
-
-  type, public :: fmr_serialized_column_result_t
-    integer(int64) :: column_id = 0_int64
-    integer :: dispatch_ordinal = 0
-    real(real64) :: requested_t0 = 0.0_real64
-    real(real64) :: requested_t1 = 0.0_real64
-    logical :: admission_assessed = .false.
-    logical :: admitted = .false.
-    character(len=40) :: admission_status = 'NOT_ASSESSED'
-    integer :: kernel_status = 0
-    integer :: commit_status = -1
-    logical :: completed = .false.
-    logical :: committed = .false.
-    logical :: solver_executed = .false.
-    integer :: solver_status = 0
-    character(len=32) :: solver_route = 'not-run'
-    integer :: solver_iterations = 0
-    integer :: accepted_substeps = 0
-    integer :: solver_rejections = 0
-    integer :: temporal_rejections = 0
-    integer :: mass_rejections = 0
-    integer :: solver_nonlinear_iterations = 0
-    integer :: solver_internal_retries = 0
-    integer :: solver_headcalc_calls = 0
-    integer :: solver_jacobian_builds = 0
-    integer :: solver_linear_solves = 0
-    integer :: solver_backtracking_attempts = 0
-    integer :: solver_alternative_solver_calls = 0
-    integer(int64) :: initial_revision = -1_int64
-    integer(int64) :: final_revision = -1_int64
-    real(real64) :: final_committed_time = 0.0_real64
-    logical :: final_committed_time_bound = .false.
-    logical :: actual_transpiration_available = .false.
-    real(real64) :: actual_transpiration_amount = 0.0_real64
-    type(canonical_mass_accounting_t) :: mass
-  end type fmr_serialized_column_result_t
-
-  ! Sparse ephemeral receipt output. The explicit column id makes the
-  ! request/output association self-describing without adding any persistent
-  ! optional state to logical columns or committed physical state.
-  type, public :: fmr_serialized_commit_receipt_record_t
-    integer(int64) :: column_id = 0_int64
-    type(fmr_accepted_commit_receipt_t) :: receipt
-  end type fmr_serialized_commit_receipt_record_t
-
-  ! Worker-local precommit carrier. It is deliberately private so no caller can
-  ! retain energy from candidate B and later combine it with candidate A's
-  ! receipt. The carrier may represent complete or explicitly unavailable
-  ! diagnostic energy; neither case is committed physical SWAP state.
-  type :: fmr_prepared_bottom_energy_publication_t
-    logical :: initialized = .false.
-    integer(int64) :: lineage_id = 0_int64
-    integer(int64) :: origin_revision_value = -1_int64
-    real(real64) :: t0_value = 0.0_real64
-    real(real64) :: t1_value = 0.0_real64
-    integer :: energy_status_value = FMR_BOTTOM_ENERGY_NOT_EVALUATED
-    logical :: total_available_value = .false.
-    real(real64) :: total_energy_j_m2_value = 0.0_real64
-    logical :: local_subtotal_available_value = .false.
-    real(real64) :: local_subtotal_j_m2_value = 0.0_real64
-    integer :: provider_request_count_value = 0
-    integer :: provider_complete_count_value = 0
-    integer :: provider_unavailable_count_value = 0
-    integer :: provider_stale_count_value = 0
-    integer :: provider_invalid_count_value = 0
-  contains
-    procedure :: ready => prepared_bottom_energy_ready
-  end type fmr_prepared_bottom_energy_publication_t
-
-  ! Accepted-only bottom sensible-energy accounting. This result is ephemeral
-  ! runtime output, not continuation state and not a second water/mass ledger.
-  ! A ready publication can still have total_available=.false.; that is the
-  ! required fail-closed representation for diagnostic energy when an external
-  ! donor temperature was unavailable or invalid after hydrology was accepted.
-  type, public :: fmr_serialized_bottom_energy_publication_t
-    private
-    logical :: initialized = .false.
-    integer(int64) :: column_id_value = 0_int64
-    integer(int64) :: lineage_id = 0_int64
-    integer(int64) :: origin_revision_value = -1_int64
-    integer(int64) :: committed_revision_value = -1_int64
-    real(real64) :: t0_value = 0.0_real64
-    real(real64) :: t1_value = 0.0_real64
-    integer :: energy_status_value = FMR_BOTTOM_ENERGY_NOT_EVALUATED
-    logical :: total_available_value = .false.
-    real(real64) :: total_energy_j_m2_value = 0.0_real64
-    logical :: local_subtotal_available_value = .false.
-    real(real64) :: local_subtotal_j_m2_value = 0.0_real64
-    integer :: provider_request_count_value = 0
-    integer :: provider_complete_count_value = 0
-    integer :: provider_unavailable_count_value = 0
-    integer :: provider_stale_count_value = 0
-    integer :: provider_invalid_count_value = 0
-  contains
-    procedure, public :: ready => bottom_energy_publication_ready
-    procedure, public :: column_id => bottom_energy_publication_column_id
-    procedure, public :: current_lineage_id => bottom_energy_publication_lineage_id
-    procedure, public :: origin_revision => bottom_energy_publication_origin_revision
-    procedure, public :: committed_revision => bottom_energy_publication_committed_revision
-    procedure, public :: origin_interval => bottom_energy_publication_origin_interval
-    procedure, public :: energy_status => bottom_energy_publication_energy_status
-    procedure, public :: complete => bottom_energy_publication_complete
-    procedure, public :: total_energy => bottom_energy_publication_total_energy
-    procedure, public :: local_outward_subtotal => bottom_energy_publication_local_subtotal
-    procedure, public :: provider_counts => bottom_energy_publication_provider_counts
-  end type fmr_serialized_bottom_energy_publication_t
-
-  ! F-MR05-specific composition diagnostics.  This is deliberately separate
-  ! from the generic F-MR01 aggregate type so the strict serialized physical
-  ! admission constraint does not leak into the logical runtime core.
-  type, public :: fmr_serialized_batch_diagnostics_t
-    integer :: number_requested = 0
-    integer :: number_admitted = 0
-    integer :: number_executed = 0
-    integer :: number_committed = 0
-    integer :: number_rejected = 0
-    integer :: physical_solve_count = 0
-    integer :: max_simultaneous_real_physical_solves = 0
-    logical :: deterministic_collection = .false.
-    real(real64) :: effective_t0 = 0.0_real64
-    real(real64) :: effective_t1 = 0.0_real64
-    real(real64) :: max_abs_column_mass_residual = 0.0_real64
-    type(canonical_mass_accounting_t) :: authoritative_aggregate_mass
-  end type fmr_serialized_batch_diagnostics_t
-
-  public :: fmr_run_serialized_physical_multiswap
-  public :: fmr_execute_serialized_physical_column
-  public :: fmr_execute_serialized_resolved_physical_column
-  public :: fmr_execute_serialized_column_with_bottom_energy
-
-contains
-
-  subroutine fmr_run_serialized_physical_multiswap(columns, templates, parameter_registry, forcing_registry, &
-                                                    state_registry, numerical_config, top_boundary, t0, t1, &
-                                                    batch_size, results, diagnostics, aggregate, dispatch_status, &
-                                                    runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan, &
-                                                    materialize_worker_assignments, materialize_summary_diagnostics, &
-                                                    materialize_diagnostic_metadata, materialize_column_diagnostics, &
-                                                    trusted_prepared_parameters)
-    type(fmr_logical_column_t), intent(in) :: columns(:)
-    type(fmr_template_t), intent(in) :: templates(:)
-    type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
-    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
-    type(kernel_committed_state_t), intent(inout) :: state_registry(:)
-    type(canonical_numerical_config_t), intent(in) :: numerical_config
-    class(top_boundary_provider_t), target, intent(in) :: top_boundary
-    real(real64), intent(in) :: t0, t1
-    integer, intent(in) :: batch_size
-    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
-    type(fmr_column_diagnostics_t), allocatable, intent(out) :: diagnostics(:)
-    type(fmr_aggregate_diagnostics_t), intent(out) :: aggregate
-    integer, intent(out) :: dispatch_status
-    type(fmr_serialized_batch_diagnostics_t), intent(out), optional :: runtime_diagnostics
-    integer(int64), intent(in), optional :: receipt_column_ids(:)
-    type(fmr_serialized_commit_receipt_record_t), allocatable, intent(out), optional :: commit_receipts(:)
-    type(fmr_serialized_execution_plan_t), intent(in), optional :: execution_plan
-    logical, intent(in), optional :: materialize_worker_assignments
-    logical, intent(in), optional :: materialize_summary_diagnostics
-    logical, intent(in), optional :: materialize_diagnostic_metadata
-    logical, intent(in), optional :: materialize_column_diagnostics
-    logical, intent(in), optional :: trusted_prepared_parameters
-
-    type(fmr_serialized_reference_backend_t), target :: backend
-    type(kernel_executor_t) :: transaction_control
-    type(fmr_serialized_batch_diagnostics_t) :: local_runtime
-    type(fmr_column_diagnostics_t) :: scratch_diagnostic
-    integer, allocatable :: order(:), receipt_slot_by_column(:)
-    integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_s    error stop 'EB-I21R: successful energy-path commit without ready owned accepted receipt'
+           error stop 'EB-I21R: successful energy-path commit without ready owned accepted receipt'
       if (local_energy_receipt%owner_instance_id() /= column%column_id) &
            error stop 'EB-I21R: accepted energy receipt owner does not match executing column'
       if (present(commit_receipt)) then
@@ -1099,7 +1099,274 @@ contains
     ready = self%initialized .and. self%column_id_value > 0_int64 .and. self%lineage_id > 0_int64 .and. &
          self%origin_revision_value >= 0_int64 .and. &
          self%committed_revision_value == self%origin_revision_value + 1_int64 .and. &
-         ieee_is_finite(self%t0_value) .and. ieee__rejected = 0
+         ieee_is_finite(self%t0_value) .and. ieee_is_finite(self%t1_value) .and. self%t1_value > self%t0_value .and. &
+         self%provider_complete_count_value + self%provider_unavailable_count_value + self%provider_stale_count_value + &
+         self%provider_invalid_count_value == self%provider_request_count_value
+    if (.not. ready) return
+    if (self%total_available_value) ready = ieee_is_finite(self%total_energy_j_m2_value)
+    if (ready .and. self%local_subtotal_available_value) ready = ieee_is_finite(self%local_subtotal_j_m2_value)
+  end function bottom_energy_publication_ready
+
+  integer(int64) function bottom_energy_publication_column_id(self) result(value)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    value = 0_int64
+    if (self%ready()) value = self%column_id_value
+  end function bottom_energy_publication_column_id
+
+  integer(int64) function bottom_energy_publication_lineage_id(self) result(value)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    value = 0_int64
+    if (self%ready()) value = self%lineage_id
+  end function bottom_energy_publication_lineage_id
+
+  integer(int64) function bottom_energy_publication_origin_revision(self) result(value)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    value = -1_int64
+    if (self%ready()) value = self%origin_revision_value
+  end function bottom_energy_publication_origin_revision
+
+  integer(int64) function bottom_energy_publication_committed_revision(self) result(value)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    value = -1_int64
+    if (self%ready()) value = self%committed_revision_value
+  end function bottom_energy_publication_committed_revision
+
+  subroutine bottom_energy_publication_origin_interval(self, t0, t1, available)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    real(real64), intent(out) :: t0, t1
+    logical, intent(out) :: available
+    available = self%ready()
+    t0 = 0.0_real64
+    t1 = 0.0_real64
+    if (available) then
+      t0 = self%t0_value
+      t1 = self%t1_value
+    end if
+  end subroutine bottom_energy_publication_origin_interval
+
+  integer function bottom_energy_publication_energy_status(self) result(value)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    value = FMR_BOTTOM_ENERGY_NOT_EVALUATED
+    if (self%ready()) value = self%energy_status_value
+  end function bottom_energy_publication_energy_status
+
+  logical function bottom_energy_publication_complete(self) result(value)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    value = self%ready() .and. self%total_available_value
+  end function bottom_energy_publication_complete
+
+  subroutine bottom_energy_publication_total_energy(self, value, available)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    real(real64), intent(out) :: value
+    logical, intent(out) :: available
+    available = self%ready() .and. self%total_available_value
+    value = 0.0_real64
+    if (available) value = self%total_energy_j_m2_value
+  end subroutine bottom_energy_publication_total_energy
+
+  subroutine bottom_energy_publication_local_subtotal(self, value, available)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    real(real64), intent(out) :: value
+    logical, intent(out) :: available
+    available = self%ready() .and. self%local_subtotal_available_value
+    value = 0.0_real64
+    if (available) value = self%local_subtotal_j_m2_value
+  end subroutine bottom_energy_publication_local_subtotal
+
+  subroutine bottom_energy_publication_provider_counts(self, requested, complete, unavailable, stale, invalid)
+    class(fmr_serialized_bottom_energy_publication_t), intent(in) :: self
+    integer, intent(out) :: requested, complete, unavailable, stale, invalid
+    requested = 0
+    complete = 0
+    unavailable = 0
+    stale = 0
+    invalid = 0
+    if (.not. self%ready()) return
+    requested = self%provider_request_count_value
+    complete = self%provider_complete_count_value
+    unavailable = self%provider_unavailable_count_value
+    stale = self%provider_stale_count_value
+    invalid = self%provider_invalid_count_value
+  end subroutine bottom_energy_publication_provider_counts
+
+  pure logical function same_time_value(a, b) result(matches)
+    real(real64), intent(in) :: a, b
+    integer(int64) :: ia, ib
+    ia = transfer(a, ia)
+    ib = transfer(b, ib)
+    matches = ia == ib
+  end function same_time_value
+
+  subroutine bind_committed_actual_transpiration(parameters, forcing, t0, t1, output)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    real(real64) :: amount
+
+    output%actual_transpiration_available = .false.
+    output%actual_transpiration_amount = 0.0_real64
+
+    if (.not. parameters%root_extraction_active) return
+    if (parameters%active_nodes <= 0) return
+    if (.not. allocated(forcing%root_extraction_sink)) return
+    if (size(forcing%root_extraction_sink) /= parameters%active_nodes) return
+    if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
+    if (any(forcing%root_extraction_sink < 0.0_real64)) return
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+
+    amount = sum(forcing%root_extraction_sink) * (t1 - t0)
+    if (.not. ieee_is_finite(amount) .or. amount < 0.0_real64) return
+
+    output%actual_transpiration_amount = amount
+    output%actual_transpiration_available = .true.
+  end subroutine bind_committed_actual_transpiration
+
+  logical function column_is_routable(column, templates, parameter_registry, forcing_registry) result(routable)
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: templates(:)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
+    integer :: template_index
+
+    template_index = find_template_index(column%template_id, templates)
+    routable = template_index > 0 .and. column%backend_id == FMR_BACKEND_SERIALIZED_REFERENCE .and. &
+         column%parameter_ref >= 1_int64 .and. &
+         column%parameter_ref <= int(size(parameter_registry), int64) .and. &
+         column%forcing_handle >= 1_int64 .and. &
+         column%forcing_handle <= int(size(forcing_registry), int64)
+    if (routable) routable = templates(template_index)%compatible_backend_id == FMR_BACKEND_SERIALIZED_REFERENCE
+  end function column_is_routable
+
+  logical function resolved_column_is_routable(column, template) result(routable)
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+
+    routable = column%backend_id == FMR_BACKEND_SERIALIZED_REFERENCE .and. &
+         template%template_id == column%template_id .and. &
+         template%compatible_backend_id == FMR_BACKEND_SERIALIZED_REFERENCE
+  end function resolved_column_is_routable
+
+  integer function find_template_index(template_id, templates) result(index)
+    integer(int64), intent(in) :: template_id
+    type(fmr_template_t), intent(in) :: templates(:)
+    integer :: i
+
+    index = 0
+    do i = 1, size(templates)
+      if (templates(i)%template_id == template_id) then
+        index = i
+        return
+      end if
+    end do
+  end function find_template_index
+
+  subroutine update_committed_provenance_by_handle(column, states, output, diagnostic)
+    type(fmr_logical_column_t), intent(in) :: column
+    type(kernel_committed_state_t), intent(in) :: states(:)
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    integer :: state_index
+
+    if (column%state_handle < 1_int64 .or. column%state_handle > int(size(states), int64)) return
+    state_index = int(column%state_handle)
+    call update_committed_provenance(states(state_index), output, diagnostic)
+  end subroutine update_committed_provenance_by_handle
+
+  subroutine update_committed_provenance(committed, output, diagnostic)
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    logical :: available
+
+    output%final_revision = committed%current_revision()
+    call committed%current_time(output%final_committed_time, available)
+    output%final_committed_time_bound = available
+    diagnostic%committed_revision = output%final_revision
+    diagnostic%committed_time = output%final_committed_time
+    diagnostic%committed_time_bound = available
+  end subroutine update_committed_provenance
+
+  subroutine mark_all_rejected(diagnostics, classification)
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostics(:)
+    character(len=*), intent(in) :: classification
+    integer :: i
+
+    do i = 1, size(diagnostics)
+      diagnostics(i)%rejected = 1
+      diagnostics(i)%failure_classification = classification
+    end do
+  end subroutine mark_all_rejected
+
+  subroutine build_aggregate(columns, diagnostics, batches, aggregate, execution_order, execution_plan)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_column_diagnostics_t), intent(in) :: diagnostics(:)
+    integer, intent(in) :: batches
+    type(fmr_aggregate_diagnostics_t), intent(inout) :: aggregate
+    integer, intent(in), optional :: execution_order(:)
+    type(fmr_serialized_execution_plan_t), intent(in), optional :: execution_plan
+    integer :: pos, i, previous_i
+
+    aggregate = fmr_aggregate_diagnostics_t()
+    aggregate%columns = size(columns)
+    if (present(execution_order) .or. present(execution_plan)) then
+      aggregate%templates = 0
+      do pos = 1, size(columns)
+        if (present(execution_plan)) then
+          i = execution_plan%order_index(pos)
+        else
+          i = execution_order(pos)
+        end if
+        if (pos == 1) then
+          aggregate%templates = 1
+        else
+          if (present(execution_plan)) then
+            previous_i = execution_plan%order_index(pos-1)
+          else
+            previous_i = execution_order(pos-1)
+          end if
+          if (columns(i)%template_id /= columns(previous_i)%template_id) aggregate%templates = aggregate%templates + 1
+        end if
+      end do
+    else
+      aggregate%templates = fmr_count_templates(columns)
+    end if
+    aggregate%batches = batches
+    aggregate%workers = 1
+    allocate(aggregate%work_distribution(1))
+    aggregate%work_distribution = 0_int64
+
+    do pos = 1, size(columns)
+      if (present(execution_plan)) then
+        i = execution_plan%order_index(pos)
+      else if (present(execution_order)) then
+        i = execution_order(pos)
+      else
+        i = pos
+      end if
+      aggregate%attempts = aggregate%attempts + diagnostics(i)%attempts
+      aggregate%retries = aggregate%retries + diagnostics(i)%retries
+      if (diagnostics(i)%accepted == 0) aggregate%failures = aggregate%failures + 1
+      if (diagnostics(i)%accepted == 1) then
+        aggregate%aggregate_unrounded_mass_residual = aggregate%aggregate_unrounded_mass_residual + &
+             diagnostics(i)%unrounded_mass_residual
+      end if
+    end do
+    aggregate%work_distribution(1) = int(aggregate%attempts, int64)
+  end subroutine build_aggregate
+
+  subroutine finalize_runtime_diagnostics(results, runtime, execution_order, execution_plan)
+    type(fmr_serialized_column_result_t), intent(in) :: results(:)
+    type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
+    integer, intent(in), optional :: execution_order(:)
+    type(fmr_serialized_execution_plan_t), intent(in), optional :: execution_plan
+    integer :: pos, i
+    logical :: aggregate_complete
+
+    runtime%number_admitted = 0
+    runtime%number_executed = 0
+    runtime%number_committed = 0
+    runtime%number_rejected = 0
     runtime%physical_solve_count = 0
     runtime%max_abs_column_mass_residual = 0.0_real64
     runtime%authoritative_aggregate_mass%complete = .false.
