@@ -2,13 +2,15 @@
   "schema": "swap5.f_mig431_int13_status.v1",
   "workunit": "F-MIG431-INT13",
   "title": "Rutter SWINTER=3 stateful atmospheric-forcing migration",
-  "state": "AUDIT_IN_PROGRESS",
+  "state": "BLOCKED_EXACT_B1_11_SOURCE_MATERIALIZATION",
   "baseline": {
     "branch": "integration/f-ci-canonical",
     "head": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
   },
   "branch": "work/f-mig431-int13-rutter-stateful-forcing",
-  "checkpoint_commit": "a05bf5fc37ae7e1e750efcd09729de3878379366",
+  "checkpoint_commit": "cf911730a00dd8a0a67dd2cc5c9315be9aca572f",
+  "pull_request": 1016,
+  "remote_checkpoint_sha": "cf911730a00dd8a0a67dd2cc5c9315be9aca572f",
   "last_reconciled_head": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "last_reconciled_upstream": "origin/integration/f-ci-canonical",
   "relevant_paths": [
@@ -45,11 +47,11 @@
   "persisted": "work-branch checkpoint pending",
   "tested": "INT13 capacity-fill falsification passed at O0/O2 with identical output; existing F-APP05 Rutter unit and frozen Hupsel supporting observations passed at O0/O2 with identical output",
   "qualified": false,
-  "next_action": "recover exact B0 source distribution, reconstruct B1.11 MOD_meteo.f90, then audit the legacy event law and design Rutter-owned source-window advancement",
+  "next_action": "restore the exact verified B0 source archive (SHA-256 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151), reconstruct B1.11, and resume the equation/event-order and source-window audit",
   "recovery_point": "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
   "blockers": [
-    "The canonical checkout lacks the exact B0 source archive and reconstructed B1.11 MOD_meteo.f90 member required to independently reconstruct Rutter source equations.",
-    "The current Rutter API's one-day fill case loses 0.9 cm unless its caller enforces the reported canopy-fill event and reprocesses the remainder as throughfall."
+    "The canonical checkout lacks the exact B0 source archive and reconstructed B1.11 MOD_meteo.f90 member required to independently reconstruct Rutter source equations. The B0 import gate is explicitly PENDING_BINARY_SAFE_IMPORT; the verified archive SHA is 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151.",
+    "The current Rutter API's one-day fill case loses 0.9 cm unless its caller enforces the reported canopy-fill event and reprocesses the remainder as throughfall; exact legacy comparison is pending source materialization."
   ],
   "dependency_surface": [
     "Rutter process state and equations",

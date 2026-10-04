@@ -18,6 +18,7 @@ This work does not reopen the admitted `SWINTER=1/2` physics. It reuses the meth
 - Existing Rutter implementation and admission: `src/process/mod_rutter_interception_process.f90`, `src/runtime/mod_fmr_rutter_output_application_binding.f90`, F-APP05/F-APP08. The production gap register limits this to a Hupsel composition and explicitly freezes capacity-loss semantics; it does not establish a generic source-window or Richards-independent forcing application.
 - The exact B1.11 identity is recorded by PPA-WU04: `MOD_meteo.f90` SHA-256 `99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f`, `swap.f90` SHA-256 `39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a`, and member-manifest SHA-256 `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`.
 - The canonical checkout contains the deterministic B1.11 reconstruction tooling and identities, but not the exact B0 distribution archive or reconstructed `MOD_meteo.f90` member. Existing Hupsel observations and source-hash records are not a substitute for inspecting that member. Recovery of the exact member is a required audit gate, not permission to use a later public SWAP version as the equation oracle.
+- The repository's B0 import gate is explicitly `PENDING_BINARY_SAFE_IMPORT`; its verified archive identity is SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`. A workspace search found no matching source archive; only unrelated test/reference ZIPs are present.
 - No open PR or branch search result identified an existing INT13/Rutter successor at reconciliation. INT13 is therefore available as a provisional identifier.
 
 ## Initial falsification target
@@ -44,4 +45,5 @@ Affected invariants: 3, 4, 7, 9, 13, 23, 26, 29 and 30. The intended change make
 - Tested: not yet.
 - Qualified/admitted: no new INT13 claim.
 - Blocker: exact B1.11 `MOD_meteo.f90` member must be materialized from its pinned archive authority before selecting legacy versus corrected semantics.
+- Draft review checkpoint: PR #1016, based on canonical `9605fbb1622d96f4691117f66264f13b6dd3a47b`.
 - Recovery point: this branch and `integration/audits/F-MIG431-INT13_PREREGISTRATION.md`.
