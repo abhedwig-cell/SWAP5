@@ -178,6 +178,7 @@ contains
     integer, intent(out) :: status
     type(mobile_salt_state_t) :: current,next
     type(mobile_salt_fluxes_t) :: step_fluxes
+    real(real64) :: continuity_tolerance
     integer :: k
 
     candidate=mobile_salt_state_t()
@@ -192,6 +193,18 @@ contains
         fluxes=mobile_salt_fluxes_t()
         status=SOLUTE_INVALID
         return
+      end if
+      if(k>1) then
+        if(size(substeps(k)%water_start)/=size(substeps(k-1)%water_trial)) then
+          status=SOLUTE_WATER_CLOSURE
+          return
+        end if
+        continuity_tolerance=512.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
+             maxval(abs(substeps(k)%water_start)),maxval(abs(substeps(k-1)%water_trial)))
+        if(any(abs(substeps(k)%water_start-substeps(k-1)%water_trial)>continuity_tolerance)) then
+          status=SOLUTE_WATER_CLOSURE
+          return
+        end if
       end if
       call advance_mobile_salt_trial(current,node_thickness_cm,substeps(k)%water_start,substeps(k)%water_trial, &
            substeps(k)%face_flux_cm_day,substeps(k)%root_water_sink_cm_day, &
@@ -209,6 +222,14 @@ contains
       fluxes%bottom_output_mg_cm2=fluxes%bottom_output_mg_cm2+step_fluxes%bottom_output_mg_cm2
       fluxes%root_uptake_mg_cm2=fluxes%root_uptake_mg_cm2+step_fluxes%root_uptake_mg_cm2
       fluxes%closure_error_mg_cm2=fluxes%closure_error_mg_cm2+step_fluxes%closure_error_mg_cm2
+      if(.not.all(ieee_is_finite([fluxes%top_input_mg_cm2,fluxes%top_output_mg_cm2, &
+         fluxes%bottom_input_mg_cm2,fluxes%bottom_output_mg_cm2,fluxes%root_uptake_mg_cm2, &
+         fluxes%closure_error_mg_cm2]))) then
+        fluxes=mobile_salt_fluxes_t()
+        candidate=mobile_salt_state_t()
+        status=SOLUTE_INVALID
+        return
+      end if
     end do
     candidate=current
     status=SOLUTE_OK
