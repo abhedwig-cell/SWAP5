@@ -1,7 +1,7 @@
 program test_mobile_macropore_salt_exchange_oracle
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
-  use ppa_wu05e_mobile_macropore_exchange_oracle, only: mobile_macro_salt_state_t, &
+  use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t, &
        mobile_macro_salt_transfer_t, transfer_mobile_macro_salt_trial, EXCHANGE_OK, &
        EXCHANGE_INVALID, EXCHANGE_DONOR_UNAVAILABLE
   implicit none
@@ -70,6 +70,13 @@ program test_mobile_macropore_salt_exchange_oracle
   call require(status==EXCHANGE_DONOR_UNAVAILABLE,'matrix water overdraw rejected')
   call require(.not.allocated(rejected%matrix_mass_mg_cm2),'overdraw candidate absent')
 
+  ! Aggregate outflow to two macropore domains cannot remove more than the
+  ! shared matrix donor water or salt, even when each individual transfer fits.
+  exchange(:,1)=[-0.6_real64,-0.6_real64]
+  call transfer_mobile_macro_salt_trial(accepted,[1.0_real64],reshape([1.0_real64,1.0_real64],[2,1]), &
+       exchange,1.0_real64,rejected,receipt,status)
+  call require(status==EXCHANGE_DONOR_UNAVAILABLE,'aggregate matrix water donor rejected')
+  call require(.not.allocated(rejected%matrix_mass_mg_cm2),'aggregate water rejection has no candidate')
   exchange(:,1)=[ieee_value(0.0_real64,ieee_quiet_nan),0.0_real64]
   call transfer_mobile_macro_salt_trial(accepted,[2.0_real64],reshape([1.0_real64,2.0_real64],[2,1]), &
        exchange,0.2_real64,rejected,receipt,status)
