@@ -58,7 +58,18 @@
   "modflow_version": "6.8.0",
   "libmf6_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
   "production_sources_changed": false,
-  "github_actions_used": false,
+  "github_actions_used": true,
+  "latest_retry_cause_diagnostic": {
+    "run_id": 37182820341,
+    "run_head_sha": "d772e983be3d7f5f3d043fff9e5e39d122850a88",
+    "job_id": 111378634543,
+    "artifact_id": 11296240459,
+    "artifact_name": "a28-exact-rfm-retry-cause",
+    "artifact_sha256": "1f995d571ad6553c0920b3474af332b31779544acfecb6e1fb9ad8b677cbe6ca",
+    "probe_log_entry": "A28_RETRY_BUDGET iterations=16 limit=16 max_abs_balance=1.1446891872597525e-12 balance_tol=1e-12 abs_total_balance=1.8374766524616952e-12 total_balance_tol=1e-12 typed_invalid=F",
+    "interpretation": "NONLINEAR_ITERATION_BUDGET_EXHAUSTION; mass-balance criteria remain above tolerance; typed-bottom invalidation not reached",
+    "workflow_conclusion": "FAILURE_DUE_TO_MISSING_RG_COMMAND_IN_POST_RUN_MARKER_CHECK; diagnostic probe ran and artifact uploaded"
+  },
   "active_a28_run": true,
   "checks": {
     "bounds_checked_field_depth_build": "PASS",
@@ -74,9 +85,9 @@
     "performance_qualified": false,
     "scalability_qualified": false,
     "production_sources_changed": false,
-    "github_actions_used": false,
+    "github_actions_used": true,
     "field_depth_timestep_probe": "REGISTERED_DT_0.005_FAIL; UNREGISTERED_DT_0.001_FAIL_EXCLUDED_FROM_GATE",
-    "retry_source_disposition": "ITERATION_BUDGET_EXHAUSTION; SPECIFIC FINAL CRITERION PENDING DIAGNOSTIC"
+    "retry_source_disposition": "ITERATION_BUDGET_EXHAUSTION; COMPARTMENT_AND_TOTAL_BALANCE_ABOVE_TOLERANCE_AT_ITERATION_16"
   },
   "tested_fixture_files_sha256": {
     "tests/fpe/build_fpe_a28_coupled_local.py": "e3ebc8d01ac676990bd05eeb6b90355d6e189cbb9f421a2fc63159c4e262cd60",
@@ -115,7 +126,7 @@
       "backtracking_attempts": 90,
       "alternative_solver_calls": 0
     },
-    "interpretation": "SW_SOLVE_RETRY_ADVISED; requests smaller step; transaction exhausts 12 retries. This fixture uses prescribed-flux bottom_mode=2, making HeadCalc's typed-resistive-bottom invalidation path (bottom_mode=3) unreachable. The 16/16 observation therefore identifies nonlinear iteration-budget exhaustion; the final unsatisfied convergence criterion remains unobserved."
+    "interpretation": "SW_SOLVE_RETRY_ADVISED; requests smaller step; transaction exhausts 12 retries. This fixture uses prescribed-flux bottom_mode=2, making HeadCalc's typed-resistive-bottom invalidation path (bottom_mode=3) unreachable. The later diagnostic confirms compartment and total balance criteria remain above tolerance at the 16/16 iteration budget; typed invalidation is false."
   },
   "field_depth_timestep_probe": {
     "registered_dt_day": 0.005,
@@ -133,6 +144,6 @@
       "tests/fpe/support/mod_fpe_a28_fgc45_rfm_bridge.f90": "150cb2963b3147d87e7d8b197887f78768acd596",
       "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5418b6a1a9f651e818678f347c9cd8399693eb82"
     },
-    "conclusion": "bottom_mode=2 and reset attempt control make typed-resistive invalidation ineligible; retry-advised status after 16 iterations is nonlinear iteration-budget exhaustion. Which final convergence criterion fails remains unknown."
+    "conclusion": "bottom_mode=2 and reset attempt control make typed-resistive invalidation ineligible; diagnostic repeat at the unchanged frozen input shows compartment and total balance thresholds exceeded at iteration 16. Pressure-head correction values were not emitted."
   }
 }
