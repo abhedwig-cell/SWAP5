@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E work-branch postimage at 2026-10-04 checkpoint 5a7b397dd1da8a67f6af84ade524d145b6113bd6; local prequalification only, not formal qualification",
+  "target_state": "PPA-WU05-E work-branch postimage at 2026-10-04 checkpoint 0d83f16819f3bbe6d1a97481252d842fbe2aed86; local prequalification only, not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "4ff634794a125175bcce426a316dce0444ddc2cac87bf4540e713171c711e1f4",
@@ -22,7 +22,7 @@
     "tests/physics/run_ppa_wu05d3_walsum.py": "4a2e3d66854422cc0d51c02ce47a373182c1f6dc6079531075428fd632270daf",
     "tests/physics/run_ppa_wu05e_mobile_salt.sh": "608929b229764779eca0ce73a2a9372b9dfb2cd2b45ed5c3ba6a0c3fa869d6b7",
     "tests/physics/run_root_uptake_oxygen_composition.sh": "74c44088ab155bb7ff42b82b73d1e0681a627f9869050a3faf144d2fbc32467d",
-    "tests/physics/test_mobile_salt_state.f90": "81482aaa52db40fe99b40a8bbad7a0a4a2e12957ef4c0bb88cc15662f01bbc44",
+    "tests/physics/test_mobile_salt_state.f90": "424fb8be9b61352d1c23e711040498fdebbba15122ef1809d4db3f48f8ff04ea",
     "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
     "tests/physics/test_solute_water_face_flux_reconstruction.f90": "49ee555236caade96d310197bc503e074ef56c47c154057f6d5eee6cd59f3433"
   },
@@ -30,7 +30,7 @@
     {
       "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
       "result": "PASS_O0_O2",
-      "scope": "exact PR-branch postimage fetched at checkpoint 5a7b397dd1da8a67f6af84ade524d145b6113bd6; GNU Fortran 13.3.0 with -Wall -Wextra -Werror and -fcheck=all; mobile salt mass, ordered opposing-flow substep trace using updated donor concentration, water-state continuity across substeps, whole-trace rollback on late water-closure failure, Maas-Hoffman response, and interval-mean reconstruction; deterministic O0/O2 output match",
+      "scope": "exact PR-branch postimage fetched at checkpoint 0d83f16819f3bbe6d1a97481252d842fbe2aed86; GNU Fortran 13.3.0 with -Wall -Wextra -Werror and -fcheck=all; mobile salt mass, ordered opposing-flow substep trace using updated donor concentration, water-state continuity across substeps, whole-trace rollback on late water-closure failure, deterministic retry and copied-state restart replay, Maas-Hoffman response, and interval-mean reconstruction; deterministic O0/O2 output match",
       "execution": "isolated /tmp source tree materialized from exact branch files; no source changes between fetch and execution"
     },
     {
