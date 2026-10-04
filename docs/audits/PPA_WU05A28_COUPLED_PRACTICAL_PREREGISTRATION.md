@@ -104,3 +104,20 @@ The rejection-criterion probe localizes the first failed nonlinear attempt to in
 Preregister one exact-only attribution probe before any run. Hold the 10-node/100-cm geometry, `-45 cm` initial top head, `dt=0.01 day`, rainfall `1 cm/day`, exact fixed-64 RFM policy, 16 nonlinear iterations, 8 backtracking steps, retry policy, forcing, state, FD deltas, head/ponding tolerances, and all production physics fixed. Change **only** the serialized solver's internal `compartment_balance_tolerance` and `total_balance_tolerance` from `1e-12 cm` to `1e-10 cm`. Keep the transaction and post-trial mass gates at `1e-12 cm`; they must not inherit the relaxed solver stopping tolerance. Run fresh-process exact predictor initialization only. Do not run MODFLOW or A28.
 
 Decision rule: if the predictor still exhausts 16 nonlinear iterations, stop and retain the exact solver blocker; do not widen a tolerance ladder in this work unit. If the nonlinear solve completes but the unchanged external `1e-12 cm` mass gate fails, classify the blocker as solver/evidence-tolerance incompatibility and record the achieved residual without calling the predictor qualified. If the solve completes and the unchanged external mass gate passes, classify the prior blocker as an over-strict internal nonlinear stopping criterion and authorize a separately preregistered practical paired rerun. A pass is diagnostic evidence only and does not rewrite any earlier strict failure or admit A28.
+
+
+### Result: exact-only solver-balance tolerance attribution
+
+Executed on GitHub Actions run `37184279584` at source SHA `7a1175d94a1ec3e627ade7bab00e0a83fe1571b7`. Artifact `a28-exact-rfm-retry-cause` has ID `11297095493` and digest `sha256:fecf209881eb86f0df296d5fa304ed726b9fbee44a94299821596df87d788c39`.
+
+The preregistered exact fixed-64 predictor-only probe **PASSed** at `h0=-45 cm`, `dt=0.01 day`, rainfall `1 cm/day`, 16 nonlinear iterations maximum, and internal compartment/total balance tolerance `1e-10 cm`. The unchanged external transaction/post-trial mass gates remain `1e-12 cm`. Final marker:
+
+`EXACT_RFM_FD_PREDICTOR_INIT=PASS ... max_iterations=16 solver_balance_tol_cm=1e-10 hcof=0.07372477477643799 rhs=0.036862398164269249 href_m=0.50000014077108279`.
+
+This falsifies the working hypothesis that the observed field-depth failure requires more than 16 nonlinear iterations under this input. It supports attribution to the previous over-strict internal nonlinear balance stopping criterion. It does not itself qualify `1e-10` as a production tolerance and does not admit A28.
+
+### Preregistered practical solver-tolerance frontier
+
+The production question is now separated from the causal diagnosis. Test solver stopping precision as a performance/robustness parameter, not as the coupling correctness budget. Use the same field-depth exact fixed-64 physical fixture and compare internal compartment/total balance tolerances `[1e-10, 1e-8, 1e-6, 1e-5] cm`. Keep head/ponding tolerances, transaction mass acceptance, coupling residual criteria, forcing, state, RFM policy, timestep and all physical parameters unchanged. The `1e-10` case is the diagnostic reference; `1e-5` is the upper practical candidate, not a presumed winner.
+
+For each level record completion, nonlinear iterations, backtracking, transaction retries, accepted external mass residual, predictor response `hcof/rhs/href`, terminal lower-face head, and elapsed predictor time. A level is ineligible if any unchanged external correctness gate fails. Among eligible levels, prefer the loosest tolerance only when response drift relative to `1e-10` remains negligible for the later 2% coupled practical envelope and it yields a material reduction in nonlinear work/runtime. Stop widening at `1e-5`; do not extrapolate beyond it. This frontier is solver-policy research only. A separate paired exact/A28 live MODFLOW rerun remains required before coupled production admission.
