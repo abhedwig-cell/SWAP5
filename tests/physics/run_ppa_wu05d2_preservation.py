@@ -6,7 +6,7 @@ FC=shlex.split(os.environ.get('FC','gfortran'))
 LINK=shlex.split(os.environ.get('FMR_FC_LINK_FLAGS',''))
 TESTS=['tests/physics/ppa_wu05d2_fci31_oracle.f90','tests/physics/ppa_wu05d2_fci37_oracle.f90','tests/transaction/test_transaction_reference.f90','tests/physics/test_ppa_wu05d2_accepted_result.f90']
 modules={}
-for p in list((ROOT/'src').rglob('*.f90'))+[ROOT/'tests/fsi/fsi04_real_headcalc_stubs.f90']:
+for p in list((ROOT/'src').rglob('*.f90'))+[ROOT/'tests/fsi/fsi04_real_headcalc_stubs.f90']+[ROOT/test for test in TESTS]:
  for n in re.findall(r'^\s*module\s+(\w+)\s*$',p.read_text(),re.M|re.I):modules[n.lower()]=p
 ordered=[];seen=set();visiting=set()
 def visit(p):
