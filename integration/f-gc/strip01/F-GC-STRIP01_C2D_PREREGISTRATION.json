@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.fgc.strip01.c2d.preregistration.v1",
+  "work_unit": "F-GC-STRIP01-C2D",
+  "title": "50-column Dummy-SWAP\u2013MODFLOW6 strip",
+  "state": "PREREGISTERED_RESEARCH_ONLY",
+  "branch": "work/f-gc-strip01-dummy-50x1",
+  "baseline": {
+    "strip01_branch": "work/f-gc-strip01-c2b-local-continuation-20261003",
+    "strip01_head": "ac87e2484b1ecc54c8eac9072cd6f9248fbeb5e9",
+    "dummy_bank_branch": "work/f-gc-dummy-swap-shared-storage",
+    "dummy_bank_head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda"
+  },
+  "purpose": "Isolate 50x1 MultiSWAP\u2013MODFLOW6 topology, MODFLOW response, ownership, transactions and mass closure from Richards execution. This harness reuses the already defined F-GC49C application service and the DSW analytical response families; it adds no production interface or semantics.",
+  "geometry": {
+    "width_m": 50,
+    "ncol": 50,
+    "nrow": 1,
+    "nlay": 1,
+    "dx_m": 1,
+    "half_drain_spacing_m": 50,
+    "layer_top_m": -2,
+    "layer_bottom_m": -10,
+    "left_drain_stage_m": -5,
+    "right_boundary": "NO_FLOW",
+    "bottom_boundary": "NO_FLOW",
+    "participant_to_cell_mapping": "1:1, index-preserving"
+  },
+  "ownership_contract": {
+    "dummy_state": "One linear top-system storage state per 1 m2 column, physically above the fixed interface z=-2 m; owner Dummy-SWAP participant.",
+    "modflow_state": "Confined aquifer from z=-2 m to -10 m; experimental independent physical storage owned by MODFLOW, separate from the top-system dummy volume. This explicit research domain partition does not amend the canonical production contract.",
+    "interface_head": "MODFLOW head at the fixed plane z=-2 m; distinct from the dummy internal/phreatic head when finite resistance is active.",
+    "interface_flux": "q_swap > 0 from Dummy-SWAP into MODFLOW; MODFLOW source is +q_swap, action/reaction pair counted once.",
+    "storage_coefficients": "Dummy S=0.05 m3/m2/m; confined aquifer Ss=0.025 1/m over 8 m gives 0.2 m3/m2/m. The two owners occupy disjoint vertical control volumes.",
+    "drain_owner": "MODFLOW DRN_LEFT only; Dummy-SWAP has no drainage.",
+    "other_external_fluxes": "uniform specified recharge into Dummy-SWAP; no ET or side/bottom flow.",
+    "complete_balance": "P - dS_dummy - dS_modflow - V_drain - R = 0; interface exchange is internal and excluded from the complete-domain external ledger. R is signed residual."
+  },
+  "stages": {
+    "B_hydrostatic": {
+      "head_m": -5.0,
+      "dummy_internal_head_m": -5.0,
+      "recharge_m_per_day": 0.0,
+      "drainflow_expected": 0.0
+    },
+    "C_uniform_pulse": {
+      "recharge_m_per_day": 0.001,
+      "duration_day": 20.0
+    },
+    "F_recession": {
+      "recharge_m_per_day": 0.0,
+      "duration_day": 10.0
+    },
+    "E_finite_resistance": {
+      "conductance_m2_per_day": 0.125,
+      "zero_resistance_limit": "increase conductance and verify interface/internal head gap tends to zero while mass closure holds"
+    }
+  },
+  "acceptance": {
+    "hydrostatic": "all 50 identical heads; zero forcing/interface/drain; zero state drift; no publication-count mismatch; fresh-process replay byte-identical",
+    "dynamic": "published positive interface exchange; lateral head gradient toward right no-flow side; left drain volume > 0 during recession; storage evolves; per-window and cumulative full-domain mass close",
+    "numerical": "MODFLOW subsystem convergence, coupling flux residual and physical mass residual recorded and judged separately; coupling flux tolerance 1e-10 m/s for this analytical screening, not production policy",
+    "mass": "absolute residual <= 1e-10 m3 per window and cumulatively; relative residual <= 1e-8 of cumulative input when input > 0",
+    "replay": "fresh process exact JSON identity"
+  },
+  "evidence_reuse": {
+    "shared_storage_and_wrong_convergence": "DSW23/DSW19 at dummy-bank head 4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+    "finite_resistance_and_interface_phreatic_distinction": "DSW08/DSW24/DSW25 at the same head",
+    "forcing_memory_multwindow_ledger": "DSW15/DSW17/DSW20 at the same head",
+    "n_to_1_aggregation": "DSW16 at the same head; current phase intentionally uses 1:1 only"
+  },
+  "production_delta": [],
+  "canonical_admission": false,
+  "claim_ceiling": "This experiment can discriminate the F-GC application service plus MODFLOW path from the real SWAP response. The Python dummy is not a production backend and success alone does not qualify canonical coupling or the physical domain parameterization."
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.fgc.strip01.c2d.status.v1",
+  "work_unit": "F-GC-STRIP01-C2D",
+  "baseline": "ac87e2484b1ecc54c8eac9072cd6f9248fbeb5e9",
+  "branch": "work/f-gc-strip01-dummy-50x1",
+  "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2D_PREREGISTRATION.json",
+  "state": "DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_delta": [],
+  "authority_paths": [
+    "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_COUPLED_DOMAIN_PREREQUISITE.json",
+    "docs/research/GC_FIXED_INTERFACE_COUPLING_THEORY.md"
+  ],
+  "reused_evidence": {
+    "dummy_bank_branch": "work/f-gc-dummy-swap-shared-storage",
+    "dummy_bank_commit": "4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+    "relevant_tests": [
+      "tests/research/test_gc_dummy_swap_dsw08_finite_resistance.py",
+      "tests/research/test_gc_dummy_swap_dsw16_n_to_1_aggregation.py",
+      "tests/research/test_gc_dummy_swap_dsw19_converged_wrong.py",
+      "tests/research/test_gc_dummy_swap_dsw20_manufactured_trajectory.py",
+      "tests/research/test_gc_dummy_swap_dsw23_coextensive_storage.py",
+      "tests/research/test_gc_dummy_swap_dsw24_interface_phreatic_limit.py",
+      "tests/research/test_gc_dummy_swap_dsw25_interface_phreatic_darcy.py"
+    ]
+  },
+  "test": "tests/fgc/strip01/run_dummy_strip.py",
+  "dependency_surface": [
+    "src/adapter/modflow6_groundwater_application_service.py",
+    "src/adapter/modflow6_prepared_solve_session.py",
+    "src/adapter/modflow6_fgc34_ctypes_publisher.py",
+    "MODFLOW6 6.8.0",
+    "FloPy and XMI"
+  ],
+  "next_action": "Use the persisted C2D benchmark to compare real-SWAP participant failures against a known working service/MODFLOW path; do not alter Richards policy or canonical ownership from this result alone.",
+  "blockers": [],
+  "recovery_point": "C2D preregistration plus local dummy runtime harness",
+  "initial_debug": {
+    "state": "INVALID_HARNESS_RUN_DISCARDED",
+    "finding": "The initial harness represented Dummy-SWAP response in m/day but passed it to the service as m/s, causing MODFLOW API rates to be too large by 86400. Coupling residual still converged numerically; result was rejected as invalid evidence.",
+    "repair": "Convert response q and tangent to m/s at the runtime boundary; convert accepted exchange back to m3/day for dummy storage and mass ledger.",
+    "production_changes": false
+  },
+  "strict_tolerance_addendum": "integration/f-gc/strip01/F-GC-STRIP01_C2D_PREREGISTRATION_ADDENDUM.json",
+  "ab_alignment_addendum": "integration/f-gc/strip01/F-GC-STRIP01_C2D_PREREGISTRATION_ALIGNMENT_ADDENDUM.json",
+  "run_source_commit": "31dd33167f2c3d8fb363bf8d7fc0d700c439e585",
+  "result_summary": "integration/f-gc/strip01/results/c2d-local/summary.json",
+  "result_traces": "integration/f-gc/strip01/results/c2d-local/{zero_first,transparent_first,finite_resistance_first}.result.json.gz",
+  "replay_records": "integration/f-gc/strip01/results/c2d-local/{zero,transparent,finite_resistance,strict_transparent,strict_finite_resistance}_replay.replay_identity.json",
+  "figure": "integration/f-gc/strip01/results/c2d-local/profiles.svg",
+  "outcome": "DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED",
+  "qualification_scope": "F-GC49C application service, F-GC34 native package publisher and native MODFLOW6 6.8.0 for this analytic 50x1 Dummy-SWAP trajectory, including zero equilibrium, 1 mm/day pulse/recession, near-zero/finite resistance, strict 2e-15 m/s coupling residual and full mass closure.",
+  "bounded_limitations": [
+    "The dummy response and participant transaction state are Python research runtime implementations; native F-GC49D/real-SWAP registry and committed state are not exercised.",
+    "MODFLOW physical storage and drain are explicitly authorized only for this disjoint research domain, not by the production coupling contract.",
+    "No committed-only restart continuation or field-calibrated physics claim; fresh-process complete-run replay is byte-identical."
+  ],
+  "final_local_rerun": {
+    "source_commit": "31dd33167f2c3d8fb363bf8d7fc0d700c439e585",
+    "engine": "MODFLOW6 6.8.0",
+    "cases": "4-window hydrostatic zero + 120-window transparent and finite-resistance recharge/recession; strict 2e-15 m/s sensitivity for both dynamic responses",
+    "independent_validation": "Persisted gzip SHA-256, uncompressed replay JSON identities, strict full-run hashes, 50-head/49-face dimensions, published rows, action-reaction and per-component/global mass ledgers verified locally.",
+    "output_size_bytes": 691355
+  }
+}

@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2B_FAILURE_CLASSIFIED_SHARED_SOLVER_REGIME_INCALL_DIAGNOSTICS_BUILT",
+  "state": "C2D_DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -90,7 +90,7 @@
     "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open.",
     "c2b_temporal_onset_diagnosis": "Correct sign: negative top_flux is rainfall; earlier positive top_flux runs were outward-flux tests. Correct-sign unseeded gradual ramp: 2,000 x 1e-5-day windows published with a 1.005 geometric rate increase capped at 0.001 cm/day, then held for 1,075 windows; replay byte-identical, cumulative mass residual 3.13e-14 m3. Continuing the same ramp toward 0.1 cm/day publishes 999 windows and rejects at 0.001458 cm/day. Registered rainfall target is 0.1 cm/day (1 mm/day); no measurable MODFLOW head or drain response."
   },
-  "next_permitted_action": "Map the accepted-origin forcing-increment and window-duration envelope without injecting temporal history or loosening the frozen 1e-5 cm temporal budget / mass gates. The zero-seed -0.1 cm/day onset still rejects; a 1.005 geometric inward-flux ramp publishes 2,000 windows only to 0.001 cm/day (100x below the registered 1 mm/day target), with exact replay and no head/drain response. Then obtain measurable MODFLOW exchange and qualify reject/replay/restart; keep B1.11 dynamic surface mode excluded and Hupsel deferred.",
+  "next_permitted_action": "C2D is complete at its bounded research claim. Use this passing dummy response as the C2B A/B reference for later real-SWAP participant diagnosis; keep production ownership and Richards controls unchanged.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -374,5 +374,44 @@
     "in_call_failure_instrumentation": "Built research-only temporary source overlays that report failed cell/tile/participant/registry status; build and ABI smoke test pass, but full run could not start because local MODFLOW 6 libmf6.so is absent.",
     "in_call_failure_instrumentation_evidence": "integration/f-gc/strip01/results/c2b-local-20261003/C2_in_call_participant_diagnostic_build.json",
     "next_action": "Repeat the exact 1e-6-day, 2e-15 m/s, zero-seed full coupled run with the instrumented C2 seedprobe library when libmf6.so is available; capture first failed participant and its participant/registry status. Do not loosen SWAP temporal or mass gates."
+  },
+  "c2d_dummy_strip": {
+    "status_record": "integration/f-gc/strip01/F-GC-STRIP01_C2D_STATUS.json",
+    "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2D_PREREGISTRATION.json",
+    "strict_tolerance_addendum": "integration/f-gc/strip01/F-GC-STRIP01_C2D_PREREGISTRATION_ADDENDUM.json",
+    "c2b_alignment_addendum": "integration/f-gc/strip01/F-GC-STRIP01_C2D_PREREGISTRATION_ALIGNMENT_ADDENDUM.json",
+    "findings": "docs/integration/F-GC-STRIP01_C2D_DUMMY_STRIP_FINDINGS.md",
+    "harness": "tests/fgc/strip01/run_dummy_strip.py",
+    "runner": "tests/fgc/strip01/run_dummy_strip_local.sh",
+    "branch": "work/f-gc-strip01-dummy-50x1",
+    "run_source_commit": "31dd33167f2c3d8fb363bf8d7fc0d700c439e585",
+    "c2b_comparator_commit": "ac87e2484b1ecc54c8eac9072cd6f9248fbeb5e9",
+    "dummy_bank_branch": "work/f-gc-dummy-swap-shared-storage",
+    "dummy_bank_commit": "4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+    "state": "DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED",
+    "result_summary": "integration/f-gc/strip01/results/c2d-local/summary.json",
+    "figure": "integration/f-gc/strip01/results/c2d-local/profiles.svg",
+    "native_modflow": "6.8.0; release archive sha256 33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e",
+    "tests": {
+      "hydrostatic_zero": "4/4 windows published, no state drift, exchange, drain or mass residual; exact replay",
+      "uniform_input_recession": "120/120 windows published at 1 mm/day for 20d plus 10d recession; 1 m3 input; head mound, lateral flow, MODFLOW DRN and storage response measured",
+      "finite_resistance": "C=0.125 m2/day; separate internal/interface heads; Darcy law and action/reaction close",
+      "strict_coupling_tolerance": "2e-15 m/s; both dynamic configurations publish all 120 windows and replay identically",
+      "mass": "largest absolute per-window residual 2.71e-14 m3; cumulative relative residual <=1.53e-12",
+      "participant_ledgers": "all 50 revisions and ledger counters reach 120"
+    },
+    "qualification_scope": "Research-only F-GC49C application service + F-GC34 native publisher + MODFLOW6 with analytic Dummy-SWAP; not native F-GC49D or real-SWAP qualification.",
+    "production_delta": [],
+    "canonical_admission": false,
+    "bounded_conclusion": "C2D completes target forcing and measurable spatial MODFLOW response under exact C2B initial head/drain/Kx/IMS settings, including the strict 2e-15 m/s diagnostic criterion. Evidence supports that C2B failure lies on the real SWAP/Richards participant side for the tested trajectory; it does not establish every native participant-registry or production topology path.",
+    "next_action": "Retain C2D as the intermediate reference when diagnosing the real SWAP transaction/predictor response. No production tolerances, Richards policy, or canonical storage/drain authority were changed.",
+    "replay_records": "integration/f-gc/strip01/results/c2d-local/{zero,transparent,finite_resistance,strict_transparent,strict_finite_resistance}_replay.replay_identity.json",
+    "final_local_rerun": {
+      "source_commit": "31dd33167f2c3d8fb363bf8d7fc0d700c439e585",
+      "engine": "MODFLOW6 6.8.0",
+      "cases": "4-window hydrostatic zero + 120-window transparent and finite-resistance recharge/recession; strict 2e-15 m/s sensitivity for both dynamic responses",
+      "independent_validation": "Persisted gzip SHA-256, uncompressed replay JSON identities, strict full-run hashes, 50-head/49-face dimensions, published rows, action-reaction and per-component/global mass ledgers verified locally.",
+      "output_size_bytes": 691355
+    }
   }
 }

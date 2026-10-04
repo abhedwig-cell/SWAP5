@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.fgc.strip01.c2d.preregistration.addendum.v1",
+  "work_unit": "F-GC-STRIP01-C2D",
+  "state": "PREREGISTERED_BEFORE_STRICT_TOLERANCE_RUN",
+  "parent_preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2D_PREREGISTRATION.json",
+  "question": "Does the linear dummy strip still publish the same 50x1 topology under the 2e-15 m/s diagnostic coupling residual used after the initial C2B tolerance sensitivity?",
+  "scope": "Repeat the already registered 20-day 0.001 m/day pulse plus 10-day recession at near-zero resistance (C=1e6) and finite resistance (C=0.125), with native MODFLOW6 6.8.0 and fresh-process exact replay.",
+  "only_changed_parameter": {
+    "coupling_flux_tolerance_m_per_s": 2e-15
+  },
+  "frozen": [
+    "50 columns and 50 MODFLOW cells, 1 m mapping",
+    "all physical parameters, forcing, boundaries and storage owners",
+    "MODFLOW6 6.8.0 source and binary",
+    "transaction/publication and mass acceptance gates"
+  ],
+  "acceptance": {
+    "all_120_windows_publish": true,
+    "fresh_process_json_identity": true,
+    "window_and_cumulative_mass_gates": "inherit parent preregistration",
+    "interpretation": "A pass demonstrates this analytic dummy trajectory does not require a relaxed coupling residual limit. It does not imply Richards trajectories have the same response or solver cost."
+  },
+  "production_delta": [],
+  "canonical_admission": false
+}

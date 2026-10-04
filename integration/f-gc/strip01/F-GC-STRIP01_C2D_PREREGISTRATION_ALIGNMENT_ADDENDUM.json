@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.fgc.strip01.c2d.preregistration.alignment.v1",
+  "work_unit": "F-GC-STRIP01-C2D",
+  "state": "PREREGISTERED_BEFORE_FINAL_AB_ALIGNED_RUN",
+  "parent_preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2D_PREREGISTRATION.json",
+  "rationale": "Align the initial head, drain stage and MODFLOW IMS controls with the live C2B runner before the final A/B discriminator runs.",
+  "aligned_values": {
+    "initial_MODFLOW_head_m": -1.0,
+    "drain_stage_m": -1.0,
+    "drain_conductance_m2_per_day": 100.0,
+    "MODFLOW_top_m": -2.0,
+    "MODFLOW_bottom_m": -10.0,
+    "Kx_m_per_day": 0.5,
+    "IMS_outer_dvclose": 1e-10,
+    "IMS_inner_dvclose": 1e-11,
+    "IMS_outer_maximum": 200,
+    "IMS_inner_maximum": 300,
+    "IMS_rclose": 1e-11
+  },
+  "mapping": "Keep soil-system dummy storage above the fixed plane at z=-2 m, groundwater cells from -2 m to -10 m, and 1:1 participant-to-cell mapping. Horizontal geometry and all experiment mass gates remain unchanged.",
+  "supersedes_for_final_A_B": [
+    "The preliminary development trajectory initialized at head/drain stage -5 m.",
+    "Preliminary runs remain development evidence and are excluded from final C2D qualification."
+  ],
+  "production_delta": [],
+  "canonical_admission": false
+}
