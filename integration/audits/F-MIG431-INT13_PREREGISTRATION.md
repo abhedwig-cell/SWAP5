@@ -27,7 +27,7 @@ The current process reports a maximum event timestep when the canopy fills or em
 
 ## Follow-up source and ownership inspection (2026-10-04)
 
-- Two attempts to materialize the pinned historical archive from its persistent source failed before transfer because the Library download helper reported `hosted apps tools/list request failed: network`. The archive itself remains identified by the verified B0 hash in `reference/swap-4.3.1/b0/VERIFICATION_RESULT.md`; no substitute source was used.
+- Two attempts to retrieve the pinned historical archive failed before transfer with a network error. The archive itself remains identified by the verified B0 hash in `reference/swap-4.3.1/b0/VERIFICATION_RESULT.md`; no substitute source was used.
 - In the current checkout, `maximum_event_timestep_days` is written and validated only by `mod_rutter_interception_process`; no production source under `src/**/*.f90` consumes it. The existing F-APP05 Rutter tests call `evaluate_rutter_interval` directly. F-APP08 tests typed output binding, not the forcing/event driver. Thus this checkout does not demonstrate that a production caller splits the meteorological source window at a canopy event.
 - `mod_interception_source_window_runtime` already represents immutable source-window identity and accepted endpoint progress, but contains no canopy-water state. A Rutter composition must trial both (a) Rutter's physical canopy storage and (b) apportioned source-window progress from one accepted snapshot, then publish them together only when the enclosing hydrological transaction accepts. A Richards reject must leave both unchanged. Reusing the runtime by itself would not meet the physical-state transaction invariant.
 - This is a production-composition gap, not evidence of a B1.11 physics defect. The exact source gate still precedes choosing legacy versus corrected reservoir semantics.
@@ -51,6 +51,6 @@ Affected invariants: 3, 4, 7, 9, 13, 23, 26, 29 and 30. The intended change make
 - Persisted: this preregistration and the characterization harness are being added on the work branch.
 - Tested: not yet.
 - Qualified/admitted: no new INT13 claim.
-- Blocker: exact B1.11 `MOD_meteo.f90` member must be materialized from its pinned archive authority before selecting legacy versus corrected semantics. Two materialization attempts failed at the Library network boundary; retry when transfer is available.
+- Blocker: exact B1.11 `MOD_meteo.f90` member must be materialized from its pinned archive authority before selecting legacy versus corrected semantics. Two retrieval attempts failed with a network error; retry when transfer is available.
 - Draft review checkpoint: PR #1016, based on canonical `9605fbb1622d96f4691117f66264f13b6dd3a47b`.
 - Recovery point: this branch and `integration/audits/F-MIG431-INT13_PREREGISTRATION.md`.
