@@ -16,7 +16,7 @@
   "active_a28_tested": true,
   "performance_qualified": false,
   "scalability_qualified": false,
-  "blocker": "10-node field-depth exact prescribed-qbot RFM predictor under nonzero rainfall exhausts 12 retries; last solver observation is retry-advised at 16/16 nonlinear iterations. The observation does not distinguish typed-bottom invalidation from nonlinear iteration-budget exhaustion. Same-state predictor init passes without rainfall. No A28 run.",
+  "blocker": "10-node field-depth exact prescribed-qbot RFM predictor under nonzero rainfall exhausts 12 retries; diagnostic repeat identifies nonlinear iteration-budget exhaustion with final compartment and total mass-balance criteria still slightly above tolerance at 16/16 iterations. Typed-bottom invalidation is unreachable for fixture bottom mode 2. Same-state predictor init passes without rainfall. No A28 run.",
   "result_record": "docs/audits/PPA_WU05A28_COUPLED_FD_RESULT.md",
   "next_safe_step": "Run one preregistered exact-only diagnostic repeat at the frozen -45 cm, dt=0.01 day, rain=1 cm/day input, logging the nonlinear convergence criteria at iteration-budget exit. No MODFLOW or A28.",
   "narrow_delta_exact_gate": "PASS_24_WINDOWS",
@@ -150,7 +150,19 @@
     "typed_bottom_invalid_reached_for_mode_2": false,
     "retry_flag_reset_each_attempt": true,
     "identified_retry_source": "NONLINEAR_ITERATION_BUDGET_EXHAUSTION",
-    "unresolved": "which of compartment balance, total balance, or head-correction criteria remains unsatisfied at the final iteration"
+    "unresolved": "pressure-head correction values are not emitted by the probe; balance failures are measured and sufficient to explain the retry advice"
+  },
+  "field_depth_retry_cause_diagnostic": {
+    "workflow_run_id": 37182820341,
+    "workflow_head_sha": "d772e983be3d7f5f3d043fff9e5e39d122850a88",
+    "workflow_job_id": 111378634543,
+    "artifact_id": 11296240459,
+    "artifact_sha256": "1f995d571ad6553c0920b3474af332b31779544acfecb6e1fb9ad8b677cbe6ca",
+    "overall_run": "EXPECTED_EXACT_PREDICTOR_FAILURE; DIAGNOSTICS_CAPTURED; POST-RUN_GREP_CHECK_FAILED_BECAUSE_RG_MISSING_ON_RUNNER",
+    "inputs": {"initial_top_head_cm": -45, "dt_day": 0.01, "rain_cm_day": 1, "policy": "exact_fixed_64"},
+    "diagnostic": "NONLINEAR_ITERATION_BUDGET_EXHAUSTION; typed_invalid=false",
+    "first_failed_attempt": {"iterations": 16, "iteration_limit": 16, "max_abs_compartment_balance_cm": 1.1446891872597525e-12, "balance_tolerance_cm": 1e-12, "abs_total_balance_cm": 1.8374766524616952e-12, "total_balance_tolerance_cm": 1e-12},
+    "disposition": "Exact prescribed-qbot event-active predictor remains blocked. This is solver convergence evidence, not A28 evidence. The diagnostic-only rerun makes no tolerance, control, forcing, MODFLOW, or policy changes."
   },
   "field_depth_timestep_probe": "REGISTERED_DT_0.005_FAIL; DT_0.001_UNREGISTERED_EXPLORATORY_FAIL",
   "field_depth_timestep_probe_results": {
