@@ -24,13 +24,17 @@ program test_ppa_wu05a7_real_richards_runtime
   use mod_kernel_committed_persistence, only: kernel_persistence_snapshot_t, export_kernel_committed_state, &
        restore_kernel_committed_state, KERNEL_PERSISTENCE_OK
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_NUMERICAL_CONTINUATION_NONE, &
+       FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
        fmr_serialized_physical_observation_t, &
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
        fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK, FMR_RESTART_SCHEMA_VERSION, &
+       FMR_RESTART_SCHEMA_PREVIOUS, FMR_RESTART_SCHEMA_MISMATCH
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
@@ -165,6 +169,7 @@ program test_ppa_wu05a7_real_richards_runtime
 
   call exercise_serialized_fmr()
   call exercise_serialized_fmr(.true.)
+  call exercise_salt_state_layout()
 
   write(*,'(*(g0))') 'PPA_WU05A7_REAL_RICHARDS|OUTER_IT=',result%outer_iterations, &
        '|QEXC=',sum(result%exchange_rate_node), &
@@ -173,6 +178,88 @@ program test_ppa_wu05a7_real_richards_runtime
   print '(a)', 'PPA_WU05A7_REAL_RICHARDS_RUNTIME=PASS'
 
 contains
+
+  subroutine exercise_salt_state_layout()
+    type(fmr_b110_physical_state_t) :: physical
+    type(fmr_template_t) :: template, templates(1)
+    type(fmr_logical_column_t) :: columns(1)
+    type(kernel_committed_state_t) :: committed(1), restored_registry(1), rejected_registry(1)
+    type(fmr_committed_restart_bundle_t) :: bundle
+    class(transaction_state_t), allocatable :: cloned, restored_state
+    logical :: ok, exported, restored, available
+    integer :: restart_status
+
+    physical%active_nodes=3
+    allocate(physical%pressure_head(3),physical%water_content(3),physical%salt)
+    physical%pressure_head=[-10.0_real64,-20.0_real64,-30.0_real64]
+    physical%water_content=[0.31_real64,0.29_real64,0.27_real64]
+    allocate(physical%salt%mass_mg_cm2(3))
+    physical%salt%mass_mg_cm2=[0.1_real64,0.2_real64,0.3_real64]
+    template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+    template%template_id=7105_int64
+    template%physics_topology_id=1_int64
+    template%vertical_layout_id=1_int64
+    template%state_layout_id=1_int64
+    template%solver_interface_id=1_int64
+    template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BASE
+    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED
+
+    call physical%clone(cloned)
+    select type (copy=>cloned)
+    type is (fmr_b110_physical_state_t)
+      if(.not.allocated(copy%salt))error stop 'salt component clone allocation'
+      if(any(copy%salt%mass_mg_cm2/=physical%salt%mass_mg_cm2))error stop 'salt component clone mass'
+      if(.not.fmr_restart_state_matches_template(copy,template))error stop 'salt layout valid clone'
+    class default
+      error stop 'salt component clone family'
+    end select
+
+    if(.not.fmr_restart_state_matches_template(physical,template))error stop 'salt layout valid state'
+    templates(1)=template
+    columns(1)%column_id=7105_int64
+    columns(1)%template_id=template%template_id
+    columns(1)%parameter_ref=1_int64
+    columns(1)%state_handle=1_int64
+    columns(1)%forcing_handle=1_int64
+    columns(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+    call fmr_new_b110_committed_state(committed(1),7105_int64,physical,0.0_real64,ok)
+    if(.not.ok)error stop 'salt state committed initialization'
+    call fmr_export_committed_restart(columns,templates,committed,99_int64,bundle,exported,restart_status)
+    if(.not.exported .or. restart_status/=FMR_RESTART_OK)error stop 'salt Restart v3 export'
+    if(bundle%schema_version/=FMR_RESTART_SCHEMA_VERSION)error stop 'salt Restart v3 schema'
+    call fmr_restore_committed_restart(bundle,99_int64,columns,templates,restored_registry,restored,restart_status)
+    if(.not.restored .or. restart_status/=FMR_RESTART_OK)error stop 'salt Restart v3 restore'
+    call restored_registry(1)%snapshot(restored_state,available)
+    if(.not.available .or. .not.allocated(restored_state))error stop 'salt restored state snapshot'
+    select type (restored_physical=>restored_state)
+    type is (fmr_b110_physical_state_t)
+      if(.not.allocated(restored_physical%salt))error stop 'salt Restart v3 component missing'
+      if(any(restored_physical%salt%mass_mg_cm2/=physical%salt%mass_mg_cm2)) &
+           error stop 'salt Restart v3 mass identity'
+    class default
+      error stop 'salt Restart v3 state family'
+    end select
+
+    bundle%schema_version=FMR_RESTART_SCHEMA_PREVIOUS
+    bundle%records(1)%schema_version=FMR_RESTART_SCHEMA_PREVIOUS
+    call fmr_restore_committed_restart(bundle,99_int64,columns,templates,rejected_registry,restored,restart_status)
+    if(restored .or. restart_status/=FMR_RESTART_SCHEMA_MISMATCH)error stop 'v2 active-salt restart accepted'
+    if(rejected_registry(1)%ready())error stop 'v2 active-salt rejection mutated registry'
+    bundle%schema_version=FMR_RESTART_SCHEMA_VERSION
+    bundle%records(1)%schema_version=FMR_RESTART_SCHEMA_VERSION
+    template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_NONE
+    if(fmr_restart_state_matches_template(physical,template))error stop 'salt layout disabled mismatch'
+    template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED
+    physical%salt%mass_mg_cm2(2)=-1.0_real64
+    if(fmr_restart_state_matches_template(physical,template))error stop 'negative salt mass accepted'
+    physical%salt%mass_mg_cm2(2)=0.2_real64
+    deallocate(physical%salt%mass_mg_cm2)
+    allocate(physical%salt%mass_mg_cm2(2))
+    physical%salt%mass_mg_cm2=0.1_real64
+    if(fmr_restart_state_matches_template(physical,template))error stop 'salt node-count mismatch accepted'
+    print '(a)','PPA_WU05E_SALT_STATE_LAYOUT=PASS'
+  end subroutine exercise_salt_state_layout
 
   subroutine exercise_serialized_fmr(trace_mode)
     logical, intent(in), optional :: trace_mode
