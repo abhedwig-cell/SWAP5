@@ -26,3 +26,22 @@ uncompensated input. No compensation restart payload is introduced.
 Affected invariants: 3,4,5,7,13,21,23,29. Required evidence: independent node algebra,
 real backend execution, discard/replay/commit/restart, O0/O2, existing oxygen and Feddes
 preservation. Salinity, frost, MICRO and Walsum are outside this D2 implementation.
+
+## Accepted root-result publication successor
+
+The negative application oracle exposes an existing accepted-result defect: the
+serialized runtime reports the untransformed forcing integral as actual transpiration.
+The bounded repair adds optional actual-transpiration result metadata to the existing
+trial/transaction/canonical/kernel result route. This is informational publication of
+water already owned by the final root-sink provider, not a new ledger or mass receipt.
+It does not enter committed physical state, checkpoint or restart payloads.
+
+The model publishes sum(final_sink) * trial_duration. The transaction selects only
+its accepted route (accepted two halves or the model-certified outcome). The canonical
+runtime sums accepted subinterval amounts and publishes only after the whole interval
+completes. Serialized output becomes visible only after successful candidate commit.
+Rejected trial amounts and failed intervals cannot be published as actual transpiration.
+All existing mass, temporal, commit and sensitivity contracts remain fixed. Default
+unavailable metadata preserves model implementations that do not supply the quantity.
+This successor touches shared result interfaces explicitly and requires qualification
+of full/half selection, model certification, retry, rollback and interval publication.

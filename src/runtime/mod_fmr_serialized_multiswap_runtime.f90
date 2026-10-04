@@ -896,6 +896,10 @@ contains
     end if
 
     call bind_committed_actual_transpiration(parameters, effective_forcing, t0, t1, output)
+    if(kernel_result%actual_transpiration_available) then
+      output%actual_transpiration_available=.true.
+      output%actual_transpiration_amount=kernel_result%actual_transpiration_amount
+    end if
     output%completed = .true.
     output%committed = .true.
     diagnostic%accepted = 1

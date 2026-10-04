@@ -47,7 +47,7 @@ with tempfile.TemporaryDirectory(prefix='c3a-application-') as folder:
    output=completed.stdout
    print(output,flush=True)
    completed.check_returncode()
-   if ('PPA_WU05D2_MIXED_APPLICATION_CHAIN=PASS' if 'mixed' in test else 'PPA_WU05D2_APPLICATION_CHAIN=PASS') not in output:raise RuntimeError('missing actual application marker')
+   if 'PPA_WU05D2_MIXED_APPLICATION_CHAIN=PASS' not in output:raise RuntimeError('missing actual application marker')
    result['runs'][opt][test]=output.splitlines()
 result['status']='LOCAL_APPLICATION_GATES_PASS'
 pathlib.Path(os.environ.get('C3A_RESULT','wu05d2_application_result.json')).write_text(json.dumps(result,indent=2)+'\n')

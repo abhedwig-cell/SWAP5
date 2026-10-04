@@ -55,6 +55,8 @@ module mod_transaction_reference
     logical :: solver_ok = .false.
     real(real64) :: mass_in = 0.0_real64
     real(real64) :: mass_out = 0.0_real64
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -132,6 +134,8 @@ module mod_transaction_reference
     real(real64) :: accepted_storage_change = 0.0_real64
     real(real64) :: accepted_total_in = 0.0_real64
     real(real64) :: accepted_total_out = 0.0_real64
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: accepted_bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -420,6 +424,14 @@ contains
       result%accepted_storage_change = storage_half - storage0
       result%accepted_total_in = half1_outcome%mass_in + half2_outcome%mass_in
       result%accepted_total_out = half1_outcome%mass_out + half2_outcome%mass_out
+      result%actual_transpiration_available = half1_outcome%actual_transpiration_available .and. &
+           half2_outcome%actual_transpiration_available
+      if(result%actual_transpiration_available) then
+        result%actual_transpiration_amount = half1_outcome%actual_transpiration_amount + half2_outcome%actual_transpiration_amount
+        if(.not.ieee_is_finite(result%actual_transpiration_amount).or.result%actual_transpiration_amount<0.0_real64) then
+          result%actual_transpiration_available=.false.;result%actual_transpiration_amount=0.0_real64
+        end if
+      end if
       result%bottom_interface_exchange_available = half1_outcome%bottom_interface_exchange_available .and. &
            half2_outcome%bottom_interface_exchange_available
       if (result%bottom_interface_exchange_available) then
@@ -586,6 +598,13 @@ contains
       result%accepted_storage_change = storage_candidate - storage0
       result%accepted_total_in = outcome%mass_in
       result%accepted_total_out = outcome%mass_out
+      result%actual_transpiration_available = outcome%actual_transpiration_available
+      if(result%actual_transpiration_available) then
+        result%actual_transpiration_amount=outcome%actual_transpiration_amount
+        if(.not.ieee_is_finite(result%actual_transpiration_amount).or.result%actual_transpiration_amount<0.0_real64) then
+          result%actual_transpiration_available=.false.;result%actual_transpiration_amount=0.0_real64
+        end if
+      end if
       result%bottom_interface_exchange_available = outcome%bottom_interface_exchange_available
       if (result%bottom_interface_exchange_available) then
         result%accepted_bottom_outward_exchange_native = outcome%bottom_outward_exchange_native

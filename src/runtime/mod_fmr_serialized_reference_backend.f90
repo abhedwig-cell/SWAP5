@@ -3242,6 +3242,11 @@ contains
       outcome%terminal_bottom_outward_flux_native = 0.0_real64
       return
     end if
+    if(self%root_extraction_active) then
+      outcome%actual_transpiration_amount=sum(self%qrot)*step_duration
+      if(.not.ieee_is_finite(outcome%actual_transpiration_amount).or.outcome%actual_transpiration_amount<0.0_real64) return
+      outcome%actual_transpiration_available=.true.
+    end if
     outcome%bottom_interface_exchange_available = .true.
     outcome%mass_accounting_complete = .true.
     outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
