@@ -72,7 +72,15 @@ Persist the canonical/current audit, historical formula family, exact-source lim
 
 Reconstruct the B1.11 mass/state lifecycle, input switches, concentration units, depth/node mapping, initialization, accepted-step updates, and restart behavior. Define typed committed and candidate state and a sole salt-mass ledger owner. Select and preregister the narrow first physics envelope before implementation.
 
-The candidate first envelope is conservative dissolved transport with explicitly bounded boundaries and no sorption, decomposition, macropore exchange, or MICRO semantics unless the B1.11 audit shows one is required for valid `CML` semantics. Do not omit root-mediated salt uptake if its absence would break the selected mass contract; otherwise make it an explicit disabled boundary and test it. The envelope decision must be evidence-backed.
+The first E1 contract is restricted to one conservative dissolved salt constituent in the mobile liquid phase:
+
+- `SWSP=0): no Freundlich sorption; decomposition, macropore exchange, ageing, saturated-aquifer breakthrough, and MICRO are disabled.
+- The typed state stores accepted salt mass per node and derives `CML` from that mass and the matching accepted water content. For node thickness `dz_i`, the restricted storage relation is `M_i = theta_i * CML_i * dz_i`. Its units are mass per area for each node. Dry-state behavior outside the admitted liquid-water range must fail closed until a physical immobile/precipitated salt owner is defined.
+- Initial concentration uses an explicit depth/node mapping. Warm restart restores committed salt mass together with the corresponding committed water state; it must not reapply the initial profile.
+- Transport uses the matching trial's water fluxes and water contents, plus typed solute concentrations for incoming boundary flows. Outgoing fluxes use the trial mobile concentration. Root salt uptake is explicit through `TSCF * qrot_i * CML_i`, with the same candidate root sink that feeds the existing single water-mass receipt. The initial admitted TSCF envelope is `0 <= TSCF <= 1); this is a restricted migration claim, not full legacy-range equivalence.
+- The first test profile has one connected soil column, no surface storage or aquifer mixing, and prescribed typed top/bottom solute boundary traces. Lateral drainage is excluded from this first slice and added only with an explicit mass-flux contract.
+
+Each trial starts from committed salt mass. A rejected water/solute trial discards both candidates; retry recomputes both from committed state and the retry's water fluxes. Acceptance commits one water sink and the matching salt-state candidate. No stress function or Jarvis code owns salt mass. If the source-bound review shows this envelope cannot represent the selected B1.11 `CML` semantics, split the required physics into a new slice before widening it.
 
 ### E2: independently testable salinity response
 
