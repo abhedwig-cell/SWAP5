@@ -15,16 +15,15 @@ computes matrix exchange by domain and node (`qexc_to_matrix_rate`, shaped
 is macropore-to-matrix; negative exchange is matrix-to-macropore. The multi-
 domain receipt uses the same sign in `internal_exchange_to_matrix_cm`.
 
-The opt-in FMR accepted-substep trace now preserves the signed exchange rate
-per domain and node, its node sum, matching macro-water start/end volumes, and
-the reconstructed per-domain vertical face rates. The A7 O0/O2 transaction
-gate checks nonzero domain exchange, nonzero macro-water change, nonzero
-vertical flux, source-sum identity, volume validity, Richards closure, and
-exact retry/replay plus fresh-process restart trace identity. These are
-attempt-local water diagnostics only. E1 still owns matrix salt mass only;
-there is no per-domain macro salt mass or typed solute boundary receipt.
-Multiplying matrix concentration by aggregate exchange would invent donor
-mass.
+The FMR accepted-substep trace currently stores only
+`macropore_result%exchange_rate_node`, which is the sum over macropore domains.
+That sum closes the water source term for the matrix Richards solve, but loses
+which macropore domain supplied or received the water. E1's mobile salt state
+owns only matrix/mobile salt mass. It has neither per-domain dissolved salt
+mass nor a donor concentration for matrix/macropore exchange. Multiplying the
+summed water exchange by the matrix concentration would therefore invent a
+solute transfer for macropore outflow and fail to remove the correct donor
+mass for macropore inflow.
 
 This is an ownership/interface gap, not a salinity-response defect. A bounded,
 stateless exchange operator now lives in
@@ -45,9 +44,9 @@ consumer of concentration derived from an accepted/trial salt state.
 | Domain exchange rates have `[domain,node]` shape and are summed to node exchange for the matrix provider. | `src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90`; `src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90` |
 | Positive exchange transfers water from macropore to matrix; negative exchange transfers matrix water to macropore. | `src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90`, `compose_macropore_candidate` |
 | The committed macropore continuation owns per-domain/node water volume, but no solute mass. | `src/runtime/mod_macropore_continuation_state.f90` |
-| The opt-in accepted FMR trace preserves domain/node exchange, its node sum, paired per-domain start/end water volumes, and ordered per-domain vertical face rates. It rejects nonzero top input/return, covering transfer, and rapid outflow; typed boundary salt receipts are absent. | `src/runtime/mod_fmr_serialized_reference_backend.f90`, `append_accepted_water_flux_substep` and accepted trace validation |
+| The opt-in accepted FMR trace preserves domain/node exchange, its node sum, paired per-domain start/end water volumes, and reconstructed vertical face rates; it validates per-node storage/exchange/face continuity. Macro top and rapid outflow remain rejected, and salt boundary receipts are absent. | `src/runtime/mod_fmr_serialized_reference_backend.f90`, `append_accepted_water_flux_substep` and accepted trace validation |
 | E1 salt candidate consumes matrix face fluxes and a single mobile mass per node; unowned source/sink closure rejects. | `src/process/mod_solute_mobile_salt_state.f90`; `tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90` |
-| Macropore vertical faces are reconstructed by domain from top inflow, accepted storage change, matrix exchange, and rapid outflow; the opt-in FMR water trace now carries those rates for supported zero-boundary substeps. | `src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90`; `src/runtime/mod_macropore_single_column_runtime.f90`, `prepare_vertical_request`; `src/runtime/mod_fmr_serialized_reference_backend.f90` |
+| Macropore vertical faces are reconstructable by domain from top inflow, accepted storage change, matrix exchange, and rapid outflow; the runtime result has not yet carried those rates into the salt trace. | `src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90`; `src/runtime/mod_macropore_single_column_runtime.f90`, `prepare_vertical_request` |
 | The standard storage route requires fixed geometry; a separate multi-domain candidate path can return displaced water to matrix. Covered-top transfer adds water to the macropore candidate and removes it from the matrix source above the top node. | `src/process/macropore/mod_macropore_standard_storage.f90`; `src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90`; `src/runtime/mod_macropore_single_column_runtime.f90` |
 
 ## Required contract before macro-route salt advancement
@@ -57,20 +56,21 @@ following before binding a salt consumer to this route:
 
 1. The opt-in water trace now preserves accepted, ordered macropore exchange
    **per domain and node**, verifies its node sum, and carries paired domain
-   water start/end volumes and ordered domain vertical face rates for that
-   substep. A7 requires nonzero exchange, macro-water change and vertical flux,
-   then verifies retry/replay and restart identity.
+   water start/end volumes for that substep. A7 requires a nonzero exchange and
+   nonzero macro water change, then verifies replay identity.
 2. Define the macro salt state and its sole mass owner. For a restricted
    dissolved-only envelope, it must be explicit whether this is a distinct
    per-domain/node mass array paired atomically with the existing macro water
    continuation, or another accepted composite physical-state owner. A
    concentration view is derived from matching salt mass and liquid volume;
    no independent stale concentration state is authoritative.
-3. Add typed solute receipts for top input/returned surface water, covered-top
-   transfer, geometry return and rapid drainage. The water trace now carries
-   ordered domain vertical faces for the supported zero-boundary route, but
-   candidate advancement must continue to reject boundary configurations until
-   their donor/receiver salt ownership is explicit.
+3. The accepted attempt trace now carries the reconstructed per-domain vertical
+   face rates and checks their local water-storage/exchange identity. Ordered
+   internal macro advection is therefore observable in the restricted route.
+   Add typed top and rapid-drainage solute receipts before those external
+   routes can participate in a salt candidate. These terms are required to move
+   dissolved mass as the macro storage profile is canonicalized bottom-up. A
+   zero or net-only trace cannot substitute for the ordered donor fluxes.
 4. Transfer salt with signed accepted matrix exchange and the donor-domain
    concentration. Apply the equal-and-opposite amount to matrix and macro
    ledgers. Reject unavailable donor mass, dry donor state, invalid mapping,
@@ -108,10 +108,11 @@ changed by this slice.
 
 ## Next action
 
-Keep PPA-WU05-E salinity disabled on the live FMR macro route. The stateless
-exchange kernel and FMR trace now provide the internal exchange and ordered
-vertical water terms for the tested restricted route. The next implementation
-slice must define paired per-domain macro salt mass and typed boundary-salt
-receipts, then bind matrix and macro mass to one candidate/clone/restart owner.
-Qualify commit, discard, retry, replay and independent closure before enabling
-a live consumer. PPA-WU05-F remains the separately registered frost unit.
+Keep PPA-WU05-E salinity disabled on the live FMR macro route. The FMR trace
+now carries per-domain accepted vertical faces and verifies nodewise macro
+water continuity alongside matrix exchange. The remaining source contract is
+typed solute routing for accepted/returned top water, rapid drainage, covered
+top transfer and any geometry return, plus persistent paired macro salt mass.
+Implement and qualify those receipts with the transaction/restart lifecycle
+before advancing any live salt candidate. PPA-WU05-F remains the separately
+registered frost root-stress unit.
