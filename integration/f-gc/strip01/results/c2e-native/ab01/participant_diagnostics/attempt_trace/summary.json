@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.transaction_attempt_trace_results.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01-ATTEMPT-TRACE",
+  "state": "COMPLETED_BOUNDED",
+  "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_TRANSACTION_ATTEMPT_TRACE_PREREGISTRATION.json",
+  "source_commit": "01912573d",
+  "context_override": "tests/fgc/strip01/research_context_c2a.f90",
+  "production_transaction_source": "src/transaction/mod_transaction_reference.f90",
+  "production_source_sha256": "9d59271e4a5474952c5ff42805231289334fef36b3d7381695b5f017432a0eac",
+  "instrument_generator": "tests/fgc/strip01/instrument_transaction_attempt_trace.py",
+  "instrument_generator_sha256": "de0145b70a3e05da35e0ffff7eac557294086c092637de8b1a0b328cd2ab39e2",
+  "generated_source_sha256": "dcc0b95dc8e13a550e46030e15b422c1ada327bd6172843021e23ba43aba2ce9",
+  "research_library_sha256": "18716e33131c10893a249edb8ba95daf04c440c7e3ddcdb26c37081166111bac",
+  "modflow6_library_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+  "runner": "tests/fgc/strip01/run_c2_rain_sequence.py",
+  "run_conditions": {
+    "profile": "C1",
+    "real_context": "c2a",
+    "history_ramp_rates_cm_per_day": [
+      1e-08,
+      1e-07,
+      1e-06,
+      1e-05,
+      0.0001,
+      0.001,
+      0.01,
+      0.1
+    ],
+    "target_window_t0_day": 0.004,
+    "target_duration_day": 0.001,
+    "coupling_flux_tolerance_m_per_s": 2e-15,
+    "max_coupling_iterations": 40,
+    "fixture_temporal_head_budget_cm": 1e-05,
+    "postfailure_discarded_probes": "skipped"
+  },
+  "replay": {
+    "processes": 2,
+    "trace_byte_identical": true,
+    "result_byte_identical": true,
+    "trace_sha256": "7aea5d9de7065fabe3a842ac60fcb9dd9fac1098ce7406737a8abf67038ee8ce",
+    "result_sha256": "452f09d5217d6f45027e46b00201d1c4ac8f94a95f965b4cb5b82c2fa44e3634"
+  },
+  "transaction_count": 1,
+  "attempt_count": 9,
+  "retry_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "gates": {
+    "temporal": 9
+  },
+  "attempt_durations_day": [
+    0.001,
+    0.0005,
+    0.00025,
+    0.000125,
+    6.25e-05,
+    3.125e-05,
+    1.5625e-05,
+    7.8125e-06,
+    3.90625e-06
+  ],
+  "temporal_indicator_min": 7.811003186392738,
+  "temporal_indicator_max": 124.75194767409772,
+  "acceptance_limit": 1.0,
+  "solver_rejections": 0,
+  "mass_gate_rejections": 0,
+  "all_mass_accounting_complete": true,
+  "mass_residual_max_abs_m3": 8.271806125530277e-25,
+  "service_result": {
+    "state": "C2A_PUBLISHED_HISTORY_RAMP_REJECTED",
+    "failure_stage": "swap-corrector",
+    "rollback_verified": true
+  },
+  "claim_boundary": "At unchanged t=0.004-day origin the single transaction exposed by this service failure returns nine attempts, all solver-successful and mass-complete, each rejected by the temporal certificate. Minimum attempted duration is 3.90625e-6 day and minimum normalized indicator remains 7.811. This identifies the proximate rejection gate for the baseline 1e-5 cm fixture-budget run; it does not establish that the budget is physically wrong or sufficient when relaxed. Transaction trace has no participant/column identity. This is not a complete-domain hydrologic mass balance for the rejected forcing window.",
+  "production_delta": [],
+  "canonical_admission": false
+}

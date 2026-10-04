@@ -30,6 +30,8 @@ parser.add_argument('--probe-rates-cm-per-day', nargs='+', type=float, default=[
                     help='fixed inward infiltration rates for discarded participant probes; requires --probe-c2b-columns')
 parser.add_argument('--history-ramp-rates', nargs='+', type=float, default=None,
                     help='publish a multi-window history-aware real-SWAP ramp at these rates (cm/day) after C2a')
+parser.add_argument('--skip-postfailure-probes', action='store_true',
+                    help='skip discarded native diagnostics after a failed history-ramp window')
 args = parser.parse_args()
 if args.probe_c2b_columns and args.real_context != 'c2a':
     parser.error('--probe-c2b-columns requires --real-context c2a')
@@ -224,22 +226,25 @@ def main():
                     entry['rollback_verified'] = (entry['after_profile_state_sha256'] == before_hash and
                         after_storage == before_storage and after_revisions == before_revisions and
                         entry['after_ledger_counts'] == before_ledgers)
-                    probe = bridge.strip01_diagnose_window_c
-                    probe.restype = ctypes.c_int
-                    probe.argtypes = [ctypes.c_int, ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_int,
-                                      ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_double),
-                                      ctypes.POINTER(ctypes.c_double)]
-                    probe_rows = []
-                    for slot in range(1, 51):
-                        codes, values, completed = (ctypes.c_int * 12)(), (ctypes.c_double * 6)(), ctypes.c_double()
-                        probe_status = int(probe(slot, -1.0, (index + 1) * 0.001, 0.001, 0,
-                                                 codes, values, ctypes.byref(completed)))
-                        probe_rows.append(dict(slot=slot, call_status=probe_status, codes=list(codes),
-                                               observations=list(values), completed_t_day=completed.value))
-                    entry['discarded_exact_origin_probes'] = probe_rows
-                    entry['state_unchanged_by_discarded_probes'] = (
-                        state_hash() == before_hash and state()[0] == before_storage and
-                        state()[1] == before_revisions and counts() == before_ledgers)
+                    if args.skip_postfailure_probes:
+                        entry['postfailure_probes'] = 'skipped for transaction attempt trace'
+                    else:
+                        probe = bridge.strip01_diagnose_window_c
+                        probe.restype = ctypes.c_int
+                        probe.argtypes = [ctypes.c_int, ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_int,
+                                          ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_double),
+                                          ctypes.POINTER(ctypes.c_double)]
+                        probe_rows = []
+                        for slot in range(1, 51):
+                            codes, values, completed = (ctypes.c_int * 12)(), (ctypes.c_double * 6)(), ctypes.c_double()
+                            probe_status = int(probe(slot, -1.0, (index + 1) * 0.001, 0.001, 0,
+                                                     codes, values, ctypes.byref(completed)))
+                            probe_rows.append(dict(slot=slot, call_status=probe_status, codes=list(codes),
+                                                   observations=list(values), completed_t_day=completed.value))
+                        entry['discarded_exact_origin_probes'] = probe_rows
+                        entry['state_unchanged_by_discarded_probes'] = (
+                            state_hash() == before_hash and state()[0] == before_storage and
+                            state()[1] == before_revisions and counts() == before_ledgers)
                     result['history_ramp'].append(entry)
                     break
                 rain_input = rate * 0.01 * 50.0 * 0.001

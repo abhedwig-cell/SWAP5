@@ -1,0 +1,15 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.transaction_attempt_trace_manifest.v1",
+  "repository_head_at_run": "01912573d3bd263d19069928c835f2b86f24d3b6",
+  "tree_at_run": "acc47635f53beaecb04a2e94585b8d8136c7ba28",
+  "tracked_production_transaction_blob": "97d8ef1fae91e174ab6daefb42ffa6a85da9380e",
+  "builder": "tools/build_f_gc_strip01_research_context.py --profile C1 --build /tmp/f-gc-attempt-trace-build --context-override tests/fgc/strip01/research_context_c2a.f90 --source-override src/transaction/mod_transaction_reference.f90=/tmp/mod_transaction_reference_strip01_trace.f90",
+  "native_run_command": "python tests/fgc/strip01/run_c2_rain_sequence.py --profile C1 --real-context c2a --root . --library /tmp/f-gc-attempt-trace-build/libstrip01_research.so --libmf6 /tmp/c2-mf6-680/bin/libmf6.so --output <fresh-output> --flux-tolerance 2e-15 --max-coupling-iterations 40 --history-ramp-rates 1e-8 1e-7 1e-6 1e-5 1e-4 1e-3 1e-2 0.1 --skip-postfailure-probes",
+  "trace_sha256": "7aea5d9de7065fabe3a842ac60fcb9dd9fac1098ce7406737a8abf67038ee8ce",
+  "result_sha256": "452f09d5217d6f45027e46b00201d1c4ac8f94a95f965b4cb5b82c2fa44e3634",
+  "generated_source_sha256": "dcc0b95dc8e13a550e46030e15b422c1ada327bd6172843021e23ba43aba2ce9",
+  "research_library_sha256": "18716e33131c10893a249edb8ba95daf04c440c7e3ddcdb26c37081166111bac",
+  "modflow6_library_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+  "preregistered_before_build_and_run": true,
+  "fresh_process_replay": "two separate native runner processes; both result JSON and trace CSV byte-identical"
+}

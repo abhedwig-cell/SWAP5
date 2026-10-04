@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.transaction_attempt_trace.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01-ATTEMPT-TRACE",
+  "state": "PREREGISTERED",
+  "parent_protocols": [
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_PREREGISTRATION.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_TEMPORAL_DIAGNOSTIC_ADDENDUM.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_TEMPORAL_BUDGET_SENSITIVITY_PREREGISTRATION.json"
+  ],
+  "purpose": "Trace every model-certificate transaction attempt inside the exact failing 1e-5 cm/day service window at the unchanged t=0.004-day origin, separating solver, mass and temporal rejection paths and recording how attempt duration changes.",
+  "fixed_conditions": {
+    "history": "Published C2a zero window, then published native service windows at 1e-8, 1e-7 and 1e-6 cm/day.",
+    "target_window": "Uniform infiltration 1e-5 cm/day, t0=0.004 day, duration=0.001 day.",
+    "fixture_temporal_head_budget_cm": 1e-5,
+    "coupling_flux_tolerance_m_per_s": 2e-15,
+    "max_coupling_iterations": 40,
+    "participants": 50,
+    "instrumentation": "A source override of src/transaction/mod_transaction_reference.f90 compiled only into the local research library via the existing builder --source-override option. No tracked production source or production binary is changed. Trace only the target interval and skip the later isolated probes so records describe service transaction calls."
+  },
+  "record_per_attempt": ["transaction sequence", "retry index", "requested and attempted time intervals", "attempt duration", "terminal gate reason", "solver_ok", "mass completeness and residual", "temporal certificate availability/value", "nonlinear iterations", "internal retries", "headcalc/Jacobian/linear-solve/backtracking counts"],
+  "gates": {
+    "two_fresh_processes": "Each process must produce byte-identical canonical JSON and byte-identical ordered trace records.",
+    "state_rollback": "Full service rejection must preserve profile hash, storage, all participant revisions and ledgers.",
+    "production_delta": "None. Instrumentation exists only as a generated source override and is excluded from src/ and production build inputs."
+  },
+  "interpretation": "Classify each attempted interval by the actual transaction gate that rejected it. Do not infer that a relaxed budget is physically acceptable from trace behavior."
+}

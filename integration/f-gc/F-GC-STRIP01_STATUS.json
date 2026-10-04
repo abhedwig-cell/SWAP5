@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Retain C2E as the qualified native-registry Dummy-SWAP intermediate. Matched C2E-AB01 and exact-origin probes show that the dummy publishes while real SWAP rejects at swap-corrector; all 50 isolated real participants show the same zero-progress response to the tested positive fixed-flux onset, with temporal bounds far above the research fixture budget. Continue only with a history-aware real-SWAP onset diagnosis; do not alter production gates.",
+    "next_action": "Keep C2E as the qualified native-registry Dummy-SWAP intermediate. The preregistered exact service transaction trace confirms nine temporal-certificate rejections (zero solver or mass rejects) at the real-SWAP 1e-5 cm/day ramp onset, with retry duration halving and normalized indicator still 7.811 at 3.90625e-6 day. Preserve production gates; next validate the indicator against an independently refined accepted trajectory and identify the failed participant if the service can expose it.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -498,7 +498,8 @@
         "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_LOW_RATE_ADDENDUM.json",
         "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_PREREGISTRATION.json",
         "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_TEMPORAL_DIAGNOSTIC_ADDENDUM.json",
-        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_TEMPORAL_BUDGET_SENSITIVITY_PREREGISTRATION.json"
+        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_TEMPORAL_BUDGET_SENSITIVITY_PREREGISTRATION.json",
+        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_TRANSACTION_ATTEMPT_TRACE_PREREGISTRATION.json"
       ],
       "summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/summary.json",
       "source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/source_manifest.json",
@@ -526,8 +527,14 @@
       "temporal_budget_sensitivity_summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/temporal_budget_1e4_summary.json",
       "temporal_budget_sensitivity_source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/temporal_budget_1e4_source_manifest.json",
       "full_temporal_budget_sensitivity_result": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/temporal_budget_1e4_full_result.json.gz",
-      "temporal_budget_sensitivity": "Increasing only the test fixture temporal head budget 10x (1e-5 to 1e-4 cm) does not publish the 1e-5 cm/day ramp window. At the unchanged origin the terminal discarded probes record zero accepts, 1 solver reject, 8 temporal rejects, zero mass rejects; terminal indicator unavailable. This shows budget relaxation alone is insufficient; it does not qualify any production setting."
+      "temporal_budget_sensitivity": "Increasing only the test fixture temporal head budget 10x (1e-5 to 1e-4 cm) does not publish the 1e-5 cm/day ramp window. At the unchanged origin the terminal discarded probes record zero accepts, 1 solver reject, 8 temporal rejects, zero mass rejects; terminal indicator unavailable. This shows budget relaxation alone is insufficient; it does not qualify any production setting.",
+      "transaction_attempt_trace_summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/attempt_trace/summary.json",
+      "transaction_attempt_trace_source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/attempt_trace/source_manifest.json",
+      "transaction_attempt_trace_csv": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/attempt_trace/real_history_ramp_transaction_attempts.csv",
+      "transaction_attempt_trace_full_result": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/attempt_trace/real_history_ramp_result.json",
+      "transaction_attempt_trace": "Two fresh processes replay byte-identically. One service transaction produced nine attempts; all passed solver and mass gates and failed only the temporal certificate. Indicator decreased 124.752 to 7.811 as attempted duration halved from 0.001 to 3.90625e-6 day. Transaction trace omits participant identity; full-service rollback is verified. This identifies the baseline proximate gate, not physical correctness of the budget or whole-domain closure for a rejected window.",
+      "next_action": "Validate the temporal indicator against an independently refined accepted trajectory from the same history-aware origin, and add participant attribution only if available through a test-only seam. Do not change production temporal budgets, solver tolerances, retry policy, mass gates or canonical ownership semantics."
     },
-    "next_action": "Instrument the per-attempt real-SWAP transaction outcome for the exact ramp origin to distinguish temporal-check rejections from the terminal solver failure. Validate any temporal indicator against a refined trajectory before considering a production budget change; preserve production gates and the qualified dummy baseline."
+    "next_action": "Validate the temporal indicator against an independently refined accepted trajectory from the same history-aware origin, and add participant attribution only if available through a test-only seam. Do not change production temporal budgets, solver tolerances, retry policy, mass gates or canonical ownership semantics."
   }
 }
