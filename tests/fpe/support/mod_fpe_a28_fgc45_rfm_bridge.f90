@@ -55,10 +55,14 @@ module mod_fgc45_real_multiswap_c_bridge
   real(real64), save :: rainfall_cm_day=0._real64
   real(real64), save :: DURATION_DAY=1.0e-4_real64
   integer, save :: nonlinear_iteration_limit=16
+  integer, save :: committed_substep_limit=4096
   real(real64), parameter :: TOL=1.0e-12_real64
   real(real64), save :: solver_balance_tolerance=TOL
   real(real64), save :: solver_head_abs_tolerance=TOL,solver_head_rel_tolerance=TOL
   real(real64), parameter :: PREDICTOR_QBOT=1.0e-6_real64
+  logical,save :: accepted_flux_basepoint=.false.
+  real(real64),save :: committed_qbot(NTILE)=PREDICTOR_QBOT
+  integer(int64),save :: committed_qbot_revision(NTILE)=0_int64
   real(real64), parameter :: HEAD_BUDGET=1.0e-5_real64
   integer(int64), parameter :: COUPLING_ID=450045_int64
   integer(int64), parameter :: GW_CELL_ID=7001_int64
@@ -90,6 +94,31 @@ module mod_fgc45_real_multiswap_c_bridge
   public :: fgc45_state_c
 
 contains
+
+  integer(c_int) function a28_set_substep_limit_c(limit) bind(C,name="a28_set_substep_limit_c")
+    integer(c_int),value::limit
+    a28_set_substep_limit_c=1
+    if(initialized.or.limit<4096.or.limit>16384)return
+    committed_substep_limit=limit
+    a28_set_substep_limit_c=0
+  end function
+
+  integer(c_int) function a28_set_predictor_basepoint_c(enabled) bind(C,name="a28_set_predictor_basepoint_c")
+    integer(c_int),value::enabled
+    a28_set_predictor_basepoint_c=1
+    if(initialized.or.(enabled/=0.and.enabled/=1))return
+    accepted_flux_basepoint=enabled==1
+    a28_set_predictor_basepoint_c=0
+  end function
+
+  real(real64) function predictor_basepoint(i) result(qbase)
+    integer,intent(in)::i
+    qbase=PREDICTOR_QBOT
+    if(accepted_flux_basepoint.and.committed(i)%current_revision()>0_int64)then
+      if(committed_qbot_revision(i)/=committed(i)%current_revision())error stop 'A28 accepted qbot revision mismatch'
+      qbase=committed_qbot(i)
+    end if
+  end function
 
   integer(c_int) function a28_set_iteration_limit_c(limit) bind(C,name="a28_set_iteration_limit_c")
     integer(c_int),value::limit
@@ -328,6 +357,10 @@ contains
         return
       end if
       committed_count=committed_count+1
+      if(accepted_flux_basepoint)then
+        committed_qbot(i)=-last_trial(i)%q_swap_m_per_s*86400.0_real64*100.0_real64
+        committed_qbot_revision(i)=committed(i)%current_revision()
+      end if
     end do
     fgc45_swap_commit_c=0_c_int
   end function fgc45_swap_commit_c
@@ -388,14 +421,16 @@ contains
     type(b110_default_mvg_parameters_t),target::hp
     type(modflow6_prescribed_qbot_bottom_face_t)::start_face
     real(real64),parameter::deltas(3)=[1.e-7_real64,1.e-6_real64,1.e-5_real64]
-    real(real64)::hbase,hplus,hminus,d(3)
+    real(real64)::hbase,hplus,hminus,d(3),qbase
     integer::j
     logical::ok
     status=1
-    call sample_rfm_qbot(i,PREDICTOR_QBOT,hbase,ok);if(.not.ok)return
+    qbase=predictor_basepoint(i)
+    write(*,*) 'A28_PREDICTOR_BASEPOINT tile=',i,' revision=',committed(i)%current_revision(),' q_cm_day=',qbase
+    call sample_rfm_qbot(i,qbase,hbase,ok);if(.not.ok)return
     do j=1,3
-      call sample_rfm_qbot(i,PREDICTOR_QBOT+deltas(j),hplus,ok);if(.not.ok)return
-      call sample_rfm_qbot(i,PREDICTOR_QBOT-deltas(j),hminus,ok);if(.not.ok)return
+      call sample_rfm_qbot(i,qbase+deltas(j),hplus,ok);if(.not.ok)return
+      call sample_rfm_qbot(i,qbase-deltas(j),hminus,ok);if(.not.ok)return
       d(j)=100._real64*(hplus-hminus)/(2._real64*deltas(j))
       write(*,'(a,i0,4(a,es24.16))')'A28_FD_DERIVATIVE tile=',i,' dq=',deltas(j),' hp_m=',hplus,' hm_m=',hminus,' derivative_day=',d(j)
     end do
@@ -408,7 +443,7 @@ contains
       return
     end if
     call initialize_b110_default_mvg_parameters(hp,predictor_parameters(i)%cofgen)
-    call materialize_origin_face(predictor_parameters(i),hp,PREDICTOR_QBOT,start_face,status)
+    call materialize_origin_face(predictor_parameters(i),hp,qbase,start_face,status)
     if(status/=MODFLOW6_BOTTOM_FACE_OK)return
     lineage%coupling_id=COUPLING_ID;lineage%swap_lineage_id=committed(i)%current_lineage_id()
     lineage%swap_origin_revision=committed(i)%current_revision()
@@ -417,7 +452,7 @@ contains
     coverage%lower_face_head_semantics_covered=.true.
     coverage%dynamic_top_boundary_active=.true.
     coverage%other_state_dependent_source_sink_active=.true.
-    call compose_modflow6_swap_predictor_response(window,lineage,PREDICTOR_QBOT,start_face%hydraulic_head_m,hbase,d(2), &
+    call compose_modflow6_swap_predictor_response(window,lineage,qbase,start_face%hydraulic_head_m,hbase,d(2), &
          MODFLOW6_DERIVATIVE_CENTERED_FD,coverage,'centered-fd-rfm-full-trajectory','fgc45-rfm-fd',response,status)
     write(*,'(a,i0,a,i0,5(a,es24.16))')'A28_FD_RESPONSE tile=',i,' status=',status,' h0_m=',response%h_bot_start_m, &
          ' h1_m=',response%h_bot_end_m,' derivative_day=',d(2),' u=',response%coupling_storage_coefficient_u,' q_u_cm_day=',response%q_u_cm_per_day
@@ -510,13 +545,14 @@ contains
     integer,intent(in)::i
     real(real64),parameter::delta(7)=[1.e-7_real64,3.e-7_real64,1.e-6_real64,3.e-6_real64, &
          1.e-5_real64,3.e-5_real64,1.e-4_real64]
-    real(real64)::hp,hm,derivative
+    real(real64)::hp,hm,derivative,qbase
     integer::j
     logical::okp,okm
+    qbase=predictor_basepoint(i)
     write(*,'(a,i0,a,2(es24.16,1x))')'A28_FD_DELTA_LADDER tile=',i,' window=',window%t0,window%t1
     do j=1,size(delta)
-      call sample_rfm_qbot(i,PREDICTOR_QBOT+delta(j),hp,okp)
-      call sample_rfm_qbot(i,PREDICTOR_QBOT-delta(j),hm,okm)
+      call sample_rfm_qbot(i,qbase+delta(j),hp,okp)
+      call sample_rfm_qbot(i,qbase-delta(j),hm,okm)
       if(.not.okp.or..not.okm)then
         write(*,'(a,i0,a,es24.16,a,l1,a,l1)')'A28_FD_LADDER_SAMPLE_FAIL tile=',i,' dq=',delta(j),' plus=',okp,' minus=',okm
         return
@@ -620,7 +656,7 @@ contains
     type(canonical_numerical_config_t),intent(out)::pred,corr
     pred%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF; pred%transaction%temporal_tolerance=HEAD_BUDGET
     pred%transaction%mass_tolerance=TOL; pred%transaction%retry_scale=0.5_real64; pred%transaction%max_retries=12
-    pred%max_committed_substeps=4096; pred%progress_tolerance=0.0_real64
+    pred%max_committed_substeps=committed_substep_limit; pred%progress_tolerance=0.0_real64
     pred%model_temporal_indicator_budget_available=.true.; pred%model_temporal_indicator_budget=HEAD_BUDGET
     pred%accepted_trajectory_direction%requested=.false.
     pred%accepted_trajectory_direction%control_coordinate=SW_STEP_CONTROL_BOTTOM_FLUX

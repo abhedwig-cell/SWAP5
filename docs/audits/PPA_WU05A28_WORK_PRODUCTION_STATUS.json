@@ -74,5 +74,26 @@
     "controls_unchanged": true,
     "terminal_state_interpretation_changed": true,
     "evidence": "docs/audits/evidence/PPA_WU05A28_POSTFILL_PROTOTYPE.json.gz"
+  },
+  "event_basepoint_continuation": {
+    "admitted": false,
+    "original_semantics_accepted_flux_16384_completed_windows": 15,
+    "original_semantics_failure": "PREDICTOR16_TEMPORAL_RETRY",
+    "anchored_prototype_fixed_basepoint_4096_completed_windows": 15,
+    "anchored_prototype_failure": "CORRECTOR16_SUBSTEP_CAP",
+    "combined_prototype_completed_windows": 16,
+    "combined_prototype_failure": "PREDICTOR17_PARTITIONED_SURFACE_REFERENCE_REQUIRED_PONDING",
+    "observed_prefix_bitwise": true,
+    "final_candidate_pond_cm": 3.665216403829571e-08,
+    "pond_gate_cm": 1e-12,
+    "final_matrix_rate_cm_day": 10.0,
+    "final_preferential_rate_cm_day": 0.0,
+    "accepted_rfm_storage_cm": [
+      0.0,
+      0.0
+    ],
+    "max_inventory_difference_cm": 5.204170427930421e-16,
+    "max_local_mass_residual_cm": 2.498001805406602e-16,
+    "evidence": "docs/audits/evidence/PPA_WU05A28_EVENT_BASEPOINT_CONTINUATION.json.gz"
   }
 }

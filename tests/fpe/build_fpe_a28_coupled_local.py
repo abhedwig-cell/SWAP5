@@ -147,6 +147,34 @@ if os.environ.get('A28_POSTFILL_TERMINAL_PRESSURE_PROTOTYPE')=='1':
          end if
 ''',1)
  retry_headcalc=out/'a28_terminal_pressure_headcalc.f90';retry_headcalc.write_text(headcalc_text)
+if os.environ.get('A28_ANCHORED_POSTFILL_PROTOTYPE')=='1':
+ assert os.environ.get('A28_POSTFILL_TERMINAL_PRESSURE_PROTOTYPE')=='1'
+ headcalc_text=retry_headcalc.read_text()
+ anchor='   real(8)                          :: factor, Fmax'
+ assert headcalc_text.count(anchor)==1
+ headcalc_text=headcalc_text.replace(anchor,anchor+'\n   real(8) :: a28_terminal_q, a28_depth, a28_resistance\n   real(8),allocatable :: a28_projected_head(:)',1)
+ headcalc_text=headcalc_text.replace('if(swbotb==2.and.swkimpl==0.and.provider_constitutive_active)then',
+     'if((swbotb==2.or.swbotb==5).and.swkimpl==0.and.provider_constitutive_active)then',1)
+ anchor='''               do i=a28_crossing_node,NN
+                 state%h(i)=state%h(i-1)+grid_disnod(i)*(1.0d0+state%qbot/state%kmean(i))
+               end do'''
+ assert headcalc_text.count(anchor)==1
+ headcalc_text=headcalc_text.replace(anchor,'''               a28_terminal_q=state%qbot
+               if(swbotb==5)then
+                 a28_depth=0.0d0; a28_resistance=0.0d0
+                 do i=a28_crossing_node,NN+1
+                   a28_depth=a28_depth+grid_disnod(i)
+                   a28_resistance=a28_resistance+grid_disnod(i)/state%kmean(i)
+                 end do
+                 a28_terminal_q=(state%hbot-state%h(a28_crossing_node-1)-a28_depth)/a28_resistance
+               end if
+               allocate(a28_projected_head(NN));a28_projected_head=state%h(1:NN)
+               do i=a28_crossing_node,NN
+                 a28_projected_head(i)=a28_projected_head(i-1)+grid_disnod(i)*(1.0d0+a28_terminal_q/state%kmean(i))
+               end do
+               if(all(a28_projected_head(a28_crossing_node:NN)>=0.0d0))state%h(1:NN)=a28_projected_head
+               deallocate(a28_projected_head)''',1)
+ retry_headcalc=out/'a28_anchored_terminal_headcalc.f90';retry_headcalc.write_text(headcalc_text)
 # Solver-only causal frontier: freeze RFM physical/accounting tolerance independently.
 separated_backend=None
 backend_path=root/'src/runtime/mod_fmr_serialized_reference_backend.f90'
@@ -193,6 +221,14 @@ if os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1':
           if(.not.rfm_live%valid)write(*,*) 'A28_PARTITION_PREFLIGHT valid=',rfm_live%valid,' surface_status=',rfm_live%surface%status
         end if
 '''
+  if os.environ.get('A28_SURFACE_PREFLIGHT_DETAILS')=='1':
+   anchor="          if(.not.rfm_live%valid)write(*,*) 'A28_PARTITION_PREFLIGHT valid=',rfm_live%valid,' surface_status=',rfm_live%surface%status"
+   assert repair.count(anchor)==1
+   repair=repair.replace(anchor,anchor+''', &
+               ' head=',rfm_physical%pressure_head(1),' old_pond=',rfm_physical%ponding_depth,' dt=',step_duration, &
+               ' matrix_rate=',rfm_live%activation%activation%matrix_rate_cm_per_day, &
+               ' preferential_rate=',rfm_live%activation%activation%preferential_rate_cm_per_day, &
+               ' regime=',rfm_preflight%regime,' pond=',rfm_preflight%candidate_ponding_depth,' fixed_K=',fixed_top_conductivity''',1)
   backend_text=backend_text.replace(before,repair+before,1)
  separated_backend=out/'a28_separated_backend.f90';separated_backend.write_text(backend_text)
 # Observe pre-solver RFM failure without changing its acceptance rules.
