@@ -55,6 +55,7 @@ module mod_fgc45_real_multiswap_c_bridge
   real(real64), save :: rainfall_cm_day=0._real64
   real(real64), save :: DURATION_DAY=1.0e-4_real64
   integer, save :: nonlinear_iteration_limit=16
+  real(real64), save :: solver_balance_tolerance=TOL
   real(real64), parameter :: TOL=1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT=1.0e-6_real64
   real(real64), parameter :: HEAD_BUDGET=1.0e-5_real64
@@ -95,6 +96,14 @@ contains
     if(initialized.or.limit<1.or.limit>64)return
     nonlinear_iteration_limit=limit
     a28_set_iteration_limit_c=0
+  end function
+
+  integer(c_int) function a28_set_solver_balance_tolerance_c(tol) bind(C,name="a28_set_solver_balance_tolerance_c")
+    real(c_double),value::tol
+    a28_set_solver_balance_tolerance_c=1
+    if(initialized.or..not.ieee_is_finite(tol).or.tol<=0._c_double)return
+    solver_balance_tolerance=real(tol,real64)
+    a28_set_solver_balance_tolerance_c=0
   end function
 
   integer(c_int) function a28_set_fixture_c(h0,dt,rain) bind(C,name="a28_set_fixture_c")
@@ -562,7 +571,7 @@ contains
     end do
     p%bottom_mode=bottom_mode; p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%max_iterations=nonlinear_iteration_limit; p%max_backtracking=8; p%min_step_duration=1.0e-8_real64
-    p%compartment_balance_tolerance=TOL; p%total_balance_tolerance=TOL; p%head_abs_tolerance=TOL
+    p%compartment_balance_tolerance=solver_balance_tolerance; p%total_balance_tolerance=solver_balance_tolerance; p%head_abs_tolerance=TOL
     p%head_rel_tolerance=TOL; p%ponding_tolerance=TOL; p%root_extraction_active=.false.
     p%macropore_active=.false.; p%snow_active=.false.; p%hysteresis_active=.false.
     p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.; p%frost_active=.false.
