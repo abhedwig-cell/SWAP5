@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.fgc.strip01.c2e.native_dummy.preregistration.v1",
+  "work_unit": "F-GC-STRIP01-C2E",
+  "title": "Native F-GC49D registry Dummy-SWAP response seam and 50x1 A/B",
+  "state": "PROPOSED_FOR_DESIGN_REVIEW_NOT_AUTHORIZED",
+  "baseline": {
+    "branch": "work/f-gc-strip01-dummy-50x1",
+    "head": "72d54b276639ecd6dac1213ce8b3e400fac38d25",
+    "c2d_status": "integration/f-gc/strip01/F-GC-STRIP01_C2D_STATUS.json",
+    "c2d_findings": "docs/integration/F-GC-STRIP01_C2D_DUMMY_STRIP_FINDINGS.md",
+    "registry_bridge": "docs/integration/F-GC-STRIP01_C2D_NATIVE_REGISTRY_BRIDGE.md",
+    "canonical_fgc49d_closure": "96f7547b9e618863bc162266137abc872c376734"
+  },
+  "purpose": "Close the remaining same-registry A/B gap by running an analytic Dummy-SWAP response through the native F-GC49D 50-participant registry and application context, preserving the F-GC49D orchestration and MODFLOW strip while replacing only the leaf participant response in an explicitly test-only construction path.",
+  "authority_boundary": {
+    "workstream": "New F-GC-STRIP01 research slice; F-GC49D remains closed and canonically admitted behavior is not reopened.",
+    "production_abi_change": false,
+    "default_runtime_change": false,
+    "canonical_admission": false,
+    "research_only_aquifer_storage_and_drain": "Carry forward the C2D disjoint storage and MODFLOW DRN ownership declaration; this grants no production physical-storage or drain authority.",
+    "design_gate": "No implementation begins until the test-only participant seam and its transaction contract receive explicit interface review."
+  },
+  "design_contract": {
+    "replacement_boundary": "Participant strategy only. The F-GC49D C API, native application context, participant registry lifecycle, 50 index-preserving handles, coupling iteration, MODFLOW6 6.8.0 application and native F-GC34 package publication remain the same as the matched real-SWAP control.",
+    "construction": "An explicit test-harness constructor or factory may bind the analytic provider. Production constructors continue to bind only the current real-SWAP participant. No environment-variable, global mutable switch, post-trial flux overwrite or test behavior reachable through the production entrypoint.",
+    "provider_operations": [
+      "bind identity and immutable participant parameters",
+      "capture origin with tile, lineage, revision and time",
+      "evaluate a trial at the prescribed interface head and return a self-consistent candidate plus q and response tangent",
+      "discard the complete candidate without changing committed state, revision, or ledger",
+      "preflight publication against the exact origin and coupling window",
+      "commit candidate and participant revision exactly once after accepted MODFLOW finalization",
+      "report identity and candidate/publication readiness to the unchanged registry/context orchestration"
+    ],
+    "candidate_identity": "Every candidate is bound to its participant id, origin lineage/revision, t0/t1 and prescribed head. Stale, mismatched, duplicate, or already-consumed candidates fail closed.",
+    "dummy_physics": "Use the C2D memoryless linear storage and prescribed finite-resistance response equations, with all 50 identical initial states and the existing 1:1 cell mapping. Candidate storage, reported q and tangent must derive from the same analytic trial; no flux may be substituted after trial evaluation.",
+    "ownership": "Dummy owns its declared top-system storage and recharge. MODFLOW owns its disjoint research aquifer storage and the only DRN. Interface exchange is internal action/reaction. Complete-domain balance remains input minus dummy storage change minus MODFLOW storage change minus drain minus residual equals zero.",
+    "publication_order": "Retain the admitted F-GC49D preflight and irreversible publication ordering; rejected candidates publish neither MODFLOW state nor participant state/revision/ledger. The research provider must not own or bypass the native MODFLOW lifecycle."
+  },
+  "qualification_sequence": [
+    {
+      "stage": "C2E-ZERO",
+      "case": "50 identical -1 m heads and dummy states; four 0.25-day windows; zero forcing and zero exchange.",
+      "gate": "All windows publish; no state drift, drain or mass residual; each native registry identity/revision and ledger count advances once per accepted window; two fresh-process result records are byte-identical."
+    },
+    {
+      "stage": "C2E-REJECTION",
+      "case": "Inject one deterministic participant rejection before irreversible publication in a 50-participant window.",
+      "gate": "No participant committed state, revision or ledger changes; no MODFLOW finalize/publication occurs; all candidates are discarded; the next clean retry starts from the same origin and publishes once."
+    },
+    {
+      "stage": "C2E-DYNAMIC",
+      "case": "C2D-aligned 80 x 0.25-day uniform 0.001 m/day recharge windows followed by 40 x 0.25-day recession windows; run near-zero resistance and C=0.125 m2/day.",
+      "gate": "All 120 windows publish; positive interface transfer, spatial head mound toward the right no-flow edge, lateral flow and left-drain discharge are measured; internal and interface heads differ for finite resistance; response law, action/reaction and per-window/cumulative complete-domain balances close."
+    },
+    {
+      "stage": "C2E-AB-REPLAY",
+      "case": "Run matched real-SWAP C2B and Dummy-SWAP trajectories through the same native registry/context/MODFLOW harness and record source manifests.",
+      "gate": "Identify the first divergent subsystem and classify the outcome as native coupling/topology failure, real-SWAP/Richards-side blocker supported, or numerically blocked with a measured cause. Fresh-process replay is exact for each deterministic case."
+    }
+  ],
+  "diagnostics_and_gates": {
+    "separate_metrics": [
+      "MODFLOW subsystem convergence",
+      "coupling iteration count and flux residual in m/s",
+      "dummy response law error",
+      "interface action/reaction transfer error",
+      "dummy, MODFLOW and complete-domain mass residuals per window and cumulative",
+      "participant origin/revision/candidate/commit/discard and ledger counts",
+      "head profiles, 49 lateral face flows, interface fluxes and native DRN budget"
+    ],
+    "tolerance_policy": "Start from C2D validated criteria and distinguish solver, coupling and physical mass gates. Any stricter or looser gate is preregistered with dimensional and measured justification; no production tolerance changes.",
+    "source_identity": "Persist exact source commit/blob manifest, compiler/profile, MODFLOW6 and XMI/FloPy identities, input configuration, run command, raw compact result and replay identity."
+  },
+  "invariants_review": {
+    "affected": [3, 7, 10, 11, 12, 13, 28, 30],
+    "expected_effect": "The research seam may exercise the existing coupling boundary but must preserve candidate/committed separation, conservation and production real-SWAP defaults. It does not alter admitted physical equations or ownership.",
+    "open_risk": "Current registry and participant use concrete Fortran types. A generic provider may require a shared interface refactor; if review concludes that this cannot be done additively with unchanged production behavior, stop and keep C2D as the bounded service/MODFLOW reference rather than weakening the contract."
+  },
+  "acceptance_deliverables": [
+    "reviewed test-only participant/provider interface contract",
+    "source-bound preregistration and implementation commit",
+    "native zero, rejection, dynamic, finite-resistance and matched A/B results",
+    "per-window and cumulative mass/action-reaction records",
+    "head/flux/drain profiles and replay evidence",
+    "bounded conclusion and updated STRIP01 status record"
+  ],
+  "prohibited_shortcuts": [
+    "overwriting q after a real Richards trial",
+    "encoding dummy storage in unrelated SWAP physical fields",
+    "changing canonical F-GC49D defaults, ABI semantics, production tolerances, retry policy or fixed-interface ownership",
+    "using a separate registry or Python service and describing it as the same-registry A/B",
+    "counting interface exchange as external input or physical storage"
+  ],
+  "next_action": "Review the provider interface against F-GC49D context ownership and publication ordering. If accepted, implement the seam behind an explicit native test-only factory, then run the preregistered qualification sequence.",
+  "production_delta": [],
+  "canonical_admission": false
+}

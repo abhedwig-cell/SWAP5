@@ -90,7 +90,7 @@
     "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open.",
     "c2b_temporal_onset_diagnosis": "Correct sign: negative top_flux is rainfall; earlier positive top_flux runs were outward-flux tests. Correct-sign unseeded gradual ramp: 2,000 x 1e-5-day windows published with a 1.005 geometric rate increase capped at 0.001 cm/day, then held for 1,075 windows; replay byte-identical, cumulative mass residual 3.13e-14 m3. Continuing the same ramp toward 0.1 cm/day publishes 999 windows and rejects at 0.001458 cm/day. Registered rainfall target is 0.1 cm/day (1 mm/day); no measurable MODFLOW head or drain response."
   },
-  "next_permitted_action": "C2D is complete at its bounded research claim. Use this passing dummy response as the C2B A/B reference for later real-SWAP participant diagnosis; keep production ownership and Richards controls unchanged.",
+  "next_permitted_action": "C2D is complete at its bounded research claim. Continue the real-SWAP C2B diagnosis against the persisted dummy reference. C2E is a proposed native-registry test seam only; review its participant-provider contract before any implementation. Keep production ownership and Richards controls unchanged.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -433,6 +433,14 @@
       "native_registry_bridge": "docs/integration/F-GC-STRIP01_C2D_NATIVE_REGISTRY_BRIDGE.md",
       "claim_ceiling": "F-GC49C service + F-GC34 publisher + MODFLOW6 analytic Dummy-SWAP qualification. Same-registry dynamic Dummy-SWAP and full production-topology A/B remain unqualified.",
       "follow_on": "Preregister/review the test-only native F-GC49D backend seam; this is separate from the ongoing STRIP01 real-SWAP diagnosis."
+    },
+    "c2e_native_dummy_proposal": {
+      "work_unit": "F-GC-STRIP01-C2E",
+      "state": "PROPOSED_FOR_DESIGN_REVIEW_NOT_AUTHORIZED",
+      "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2E_NATIVE_DUMMY_PREREGISTRATION.json",
+      "design_note": "docs/integration/F-GC-STRIP01_C2E_NATIVE_DUMMY_DESIGN.md",
+      "scope": "Test-only native F-GC49D participant-provider seam and same-registry dummy A/B; no production ABI/default or canonical ownership change.",
+      "next_action": "Review that the provider preserves participant origin/revision, candidate rollback, publication ordering and registry identity before authorizing an implementation."
     }
   }
 }
