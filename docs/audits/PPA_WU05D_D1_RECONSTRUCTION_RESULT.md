@@ -92,3 +92,22 @@ D1 is materially advanced but not closed:
 `EXACT_MEMBER_IDENTITY_AND_FORMULA_FAMILY_RECONSTRUCTED__EXACT_BYTES_STILL_UNAVAILABLE`
 
 D2 and D3 remain held. Implementing Jarvis or Walsum now would violate the preregistered fail-closed rule because exact B1.11 equations/order/state have not been byte-authorized.
+
+
+## 2026-10-04 blocker-resolution escalation
+
+A second exhaustive route found stronger persisted evidence:
+
+- F-PE19 already performed a complete exact replay from the original distribution through B1.11.
+- The replay passed outer distribution identity, nested SWAP.ZIP identity, every ordered predecessor identity and final B1.11 frozen manifest identity.
+- B1.11 has 63 members, 1,886,519 source bytes and manifest SHA-256 `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`.
+- `rootextraction.f90` is not a SWAP-011 target and its pinned member identity is unchanged across the admitted chain.
+- Multiple original user-uploaded SWAP_4.3.1 archives remain indexed in Library with the expected original archive size, but this chat execution surface refuses raw-byte materialization.
+
+This proves that the exact member was previously cryptographically replayed as part of the admitted B1.11 tree. It does not make the member text available to the present execution context. The distinction is important: identity/provenance is closed, equation-text availability is not.
+
+The remaining D1 requirement is therefore renamed from generic source materialization to:
+
+`EXACT_MEMBER_TEXT_RETRIEVAL_FROM_ALREADY_VERIFIED_B1_11_TREE`.
+
+No additional provenance search is warranted unless a new byte-access route becomes available.
