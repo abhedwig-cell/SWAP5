@@ -78,7 +78,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
-       ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_OK, attribute_root_stress_losses
+       ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, root_walsum_geometry_t, ROOT_COMP_OK, attribute_root_stress_losses
   use mod_root_uptake_compensation_execution, only: apply_root_uptake_compensation, ROOT_COMP_EXEC_OK
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
@@ -306,6 +306,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_potential_transpiration = 0.0_real64
     real(real64) :: root_drought_reduction_total = 0.0_real64
     real(real64), allocatable :: root_potential_sink(:)
+    type(root_walsum_geometry_t), allocatable :: root_walsum_geometry
     type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     type(snow_forcing_t), allocatable :: snow
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
@@ -475,6 +476,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_potential_transpiration = 0.0_real64
     real(real64) :: root_drought_reduction_total = 0.0_real64
     real(real64), allocatable :: root_potential_sink(:)
+    type(root_walsum_geometry_t), allocatable :: root_walsum_geometry
     type(fmr_bartholomeus_parameters_t), allocatable :: bartholomeus
     type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     real(real64), allocatable :: projection_zero_direction(:)
@@ -2005,7 +2007,7 @@ contains
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
       self%root_compensation = parameters%root_compensation
-      if (self%root_compensation%method /= ROOT_COMP_OFF .and. self%root_compensation%method /= ROOT_COMP_JARVIS) return
+      if (self%root_compensation%method < ROOT_COMP_OFF .or. self%root_compensation%method > ROOT_COMP_WALSUM) return
       if (self%root_compensation%method /= ROOT_COMP_OFF .and. .not. self%root_extraction_active) return
       if(allocated(self%bartholomeus)) deallocate(self%bartholomeus)
       if(allocated(parameters%bartholomeus)) self%bartholomeus=parameters%bartholomeus
@@ -2288,6 +2290,8 @@ contains
       self%qrot = forcing%root_extraction_sink
       self%root_potential_transpiration = forcing%root_potential_transpiration
       self%root_drought_reduction_total = forcing%root_drought_reduction_total
+      if(allocated(self%root_walsum_geometry)) deallocate(self%root_walsum_geometry)
+      if(allocated(forcing%root_walsum_geometry)) self%root_walsum_geometry=forcing%root_walsum_geometry
       if(allocated(self%root_potential_sink)) deallocate(self%root_potential_sink)
       if(allocated(forcing%root_potential_sink)) self%root_potential_sink=forcing%root_potential_sink
       if(allocated(self%crop_oxygen) .or. self%root_compensation%method /= ROOT_COMP_OFF) then
@@ -2870,7 +2874,7 @@ contains
           end if
           call apply_root_uptake_compensation(self%root_compensation,self%root_potential_transpiration, &
                compensation_base,compensation_base_diagnostics,oxygen_reduction_total,compensation_final, &
-               compensation_diagnostics,compensation_status)
+               compensation_diagnostics,compensation_status,self%root_walsum_geometry,self%soil_parameters%dz)
           self%last_observation%root_compensation_executed=.true.
           self%last_observation%root_compensation_status=compensation_status
           self%last_observation%root_compensation_base_uptake=compensation_base%actual_uptake_total

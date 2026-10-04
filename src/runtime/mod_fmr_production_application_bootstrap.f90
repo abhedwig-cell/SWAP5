@@ -1,7 +1,7 @@
 module mod_fmr_production_application_bootstrap
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_root_uptake_compensation, only: ROOT_COMP_JARVIS
+  use mod_root_uptake_compensation, only: ROOT_COMP_JARVIS, ROOT_COMP_WALSUM
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_kernel_transactions, only: kernel_committed_state_t
@@ -806,7 +806,8 @@ contains
     else
       if(tile%parameters%soil_temperature_active) return
       if(tile%parameters%root_extraction_active) then
-        if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS) return
+        if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
+           tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM) return
         if(tile%parameters%bottom_mode/=2.and.tile%parameters%bottom_mode/=7) return
         if(tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active) return
         if(tile%parameters%black_evaporation_active.or.tile%parameters%boesten_evaporation_active) return
