@@ -158,3 +158,10 @@ The opt-in accepted FMR water trace was passed to the ordered mobile-salt trial 
 The paired candidate therefore returns `SOLUTE_WATER_CLOSURE`. The O0/O2 runner now requires this fail-closed result and verifies that no candidate mass/concentration or partial salt receipt escapes, and that committed salt mass/concentration remain unchanged. This is negative evidence: the current macropore-enabled FMR trace cannot be used as an E1 salt transport interval. It does not qualify salt advancement or a coupled transaction.
 
 The next admissible experiment is a base Richards FMR route with macropore exchange disabled and all other non-root sources zero. If that route cannot be configured without changing admitted behavior, the alternative is a separate explicit mobile/macropore solute-transfer owner with a source concentration/partition contract. Jarvis integration remains blocked until one of these state/mass paths is independently qualified.
+
+
+### Base-route trial diagnostic (2026-10-04)
+
+A local, unpersisted A7 fixture variation disabled macropore physics and its optional state layout while retaining nonzero root extraction and the accepted FMR trace request. Richards subsolves completed, but the full/half transaction did not produce an accepted candidate: the runtime returned canonical status 4 (`CANONICAL_STATUS_SUBSTEP_LIMIT`) after 2,050 temporal rejections, with zero solver rejections and no completed mass receipt. No temporal tolerance was loosened. This diagnostic variation is not part of the pinned passing source postimage and is not a qualification result.
+
+The current work therefore has no demonstrated positive live FMR route for the restricted single-mobile-domain salt ledger: the macropore-enabled route has an unowned internal water/solute exchange, while the attempted base-only route does not pass the existing transaction acceptance gate. The next work must first establish a supported accepted base FMR route within existing tolerances, or define the mobile/macropore solute exchange state and transfer owner and qualify that larger physics boundary. No water/salt commit or Jarvis salinity integration is justified yet.
