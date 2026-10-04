@@ -1,4 +1,4 @@
-# F-GC-STRIP01 C2E: proposed native-registry Dummy-SWAP A/B
+# F-GC-STRIP01 C2E: native-registry Dummy-SWAP design and bounded outcome
 
 **Status:** `PROPOSED_FOR_DESIGN_REVIEW_NOT_AUTHORIZED`
 
@@ -31,3 +31,8 @@ Passing establishes same-registry coupling support for this analytic response an
 ## Review boundary
 
 This is a proposed contract, not an accepted interface decision or implementation authorization. The open review item is whether the native registry can dispatch through an explicit test-only provider while preserving its current identity, candidate and commit guarantees without changing the production ABI or default behavior. No source/runtime changes are included in this proposal.
+
+
+## Bounded outcome
+
+Implementation and results are recorded in `docs/integration/F-GC-STRIP01_C2E_NATIVE_DUMMY_FINDINGS.md`. The native-registry dummy, zero control, deterministic rejection, transparent and finite-resistance 120-window trajectories passed locally. The comparison to C2B supports a Richards/transaction-side blocker for the tested regime, with the limitation that C2B was not rerun in the identical C2E participant fixture. No production admission or physical ownership authority follows.

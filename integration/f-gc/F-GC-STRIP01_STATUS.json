@@ -4,7 +4,7 @@
   "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
-  "state": "C2D_DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED",
+  "state": "DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED",
   "canonical_start": {
     "branch": "integration/f-ci-canonical",
     "head": "53059a5225fa45cd6121d4bc4c7310dcc4e0660c"
@@ -90,7 +90,7 @@
     "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open.",
     "c2b_temporal_onset_diagnosis": "Correct sign: negative top_flux is rainfall; earlier positive top_flux runs were outward-flux tests. Correct-sign unseeded gradual ramp: 2,000 x 1e-5-day windows published with a 1.005 geometric rate increase capped at 0.001 cm/day, then held for 1,075 windows; replay byte-identical, cumulative mass residual 3.13e-14 m3. Continuing the same ramp toward 0.1 cm/day publishes 999 windows and rejects at 0.001458 cm/day. Registered rainfall target is 0.1 cm/day (1 mm/day); no measurable MODFLOW head or drain response."
   },
-  "next_permitted_action": "C2D is complete at its bounded research claim. Continue the real-SWAP C2B diagnosis against the persisted dummy reference. C2E is a proposed native-registry test seam only; review its participant-provider contract before any implementation. Keep production ownership and Richards controls unchanged.",
+  "next_permitted_action": "Retain the qualified C2E native Dummy-SWAP strip as the intermediate baseline. Any follow-on same-harness real-SWAP A/B remains a separate research task; keep C2B Richards/transaction diagnostics and production gates unchanged.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -442,5 +442,29 @@
       "scope": "Test-only native F-GC49D participant-provider seam and same-registry dummy A/B; no production ABI/default or canonical ownership change.",
       "next_action": "Review that the provider preserves participant origin/revision, candidate rollback, publication ordering and registry identity before authorizing an implementation."
     }
+  },
+  "c2e_native_dummy": {
+    "work_unit": "F-GC-STRIP01-C2E",
+    "state": "CLOSED_BOUNDED_NATIVE_REGISTRY_RESEARCH_QUALIFICATION",
+    "decision": "DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED",
+    "preregistration": "integration/f-gc/strip01/F-GC-STRIP01_C2E_NATIVE_DUMMY_PREREGISTRATION.json",
+    "findings": "docs/integration/F-GC-STRIP01_C2E_NATIVE_DUMMY_FINDINGS.md",
+    "design_note": "docs/integration/F-GC-STRIP01_C2E_NATIVE_DUMMY_DESIGN.md",
+    "results": "integration/f-gc/strip01/results/c2e-native/summary.json",
+    "source_manifest": "integration/f-gc/strip01/results/c2e-native/source_manifest.json",
+    "scope": "Native F-GC49D registry/application context with a research-only analytic participant, MODFLOW6 6.8.0, matched 50-cell geometry and forcing scale. No production ABI/default, mass gate, solver tolerance, retry policy or physical ownership change.",
+    "evidence": {
+      "zero_control": "4/4 windows; all 50 states remain -1 m; zero forcing, exchange, drain and mass residual; byte-identical fresh-process replay.",
+      "rejection_retry": "Injected participant 25 rejection preserves states, revisions and ledgers; MODFLOW is not initialized/finalized; clean retry publishes once.",
+      "transparent_dynamic": "120/120 windows; 1.0 m3 input; 0.8818165103 m3 interface transfer; 0.4090825521 m3 left drain; right-edge head -0.9285669 m; cumulative relative mass residual 1.56e-12.",
+      "finite_resistance": "120/120 windows; C=0.125 m2/day; 0.0080 m maximum internal/interface head difference; resistance law max error 7.59e-18 m3/day; cumulative relative mass residual 5.40e-13.",
+      "transaction_publication": "All 50 participant revisions and ledgers reach 120; native MODFLOW API budget matches action/reaction to <=1.39e-17 m3/day; native STO-SS storage agrees with head-derived storage to <=2.89e-16 m3.",
+      "replay": "Zero, transparent and finite-resistance result JSON each byte-identical in independent fresh processes.",
+      "regression_gate": "Existing F-GC49B registry script segfaults at fmr_serialized_storage on C2E and clean pre-C2E HEAD with the same stack; baseline failure, not attributed to C2E."
+    },
+    "ab_interpretation": "Supports the tested native registry/MODFLOW path and places the known C2B limitation on the real-SWAP/Richards transaction side for its tested forcing/window regime. C2B and C2E share geometry, mapping, MODFLOW strip and forcing scale, but were not replayed through one bit-for-bit identical participant harness.",
+    "production_delta": [],
+    "canonical_admission": false,
+    "next_action": "Retain C2E as permanent native-registry Dummy-SWAP intermediate. If stronger participant-isolated A/B is required, replay C2B real SWAP through the exact C2E MODFLOW/application harness with unchanged canonical semantics."
   }
 }

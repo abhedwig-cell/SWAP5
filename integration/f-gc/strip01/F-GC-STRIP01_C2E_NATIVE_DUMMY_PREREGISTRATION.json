@@ -2,7 +2,7 @@
   "schema": "swap5.fgc.strip01.c2e.native_dummy.preregistration.v1",
   "work_unit": "F-GC-STRIP01-C2E",
   "title": "Native F-GC49D registry Dummy-SWAP response seam and 50x1 A/B",
-  "state": "PROPOSED_FOR_DESIGN_REVIEW_NOT_AUTHORIZED",
+  "state": "CLOSED_BOUNDED_NATIVE_REGISTRY_RESEARCH_QUALIFICATION",
   "baseline": {
     "branch": "work/f-gc-strip01-dummy-50x1",
     "head": "72d54b276639ecd6dac1213ce8b3e400fac38d25",
@@ -18,7 +18,7 @@
     "default_runtime_change": false,
     "canonical_admission": false,
     "research_only_aquifer_storage_and_drain": "Carry forward the C2D disjoint storage and MODFLOW DRN ownership declaration; this grants no production physical-storage or drain authority.",
-    "design_gate": "No implementation begins until the test-only participant seam and its transaction contract receive explicit interface review."
+    "design_gate": "Satisfied for the additive research provider after explicit user instruction to proceed; F-GC49D remains canonically closed."
   },
   "design_contract": {
     "replacement_boundary": "Participant strategy only. The F-GC49D C API, native application context, participant registry lifecycle, 50 index-preserving handles, coupling iteration, MODFLOW6 6.8.0 application and native F-GC34 package publication remain the same as the matched real-SWAP control.",
@@ -73,7 +73,16 @@
     "source_identity": "Persist exact source commit/blob manifest, compiler/profile, MODFLOW6 and XMI/FloPy identities, input configuration, run command, raw compact result and replay identity."
   },
   "invariants_review": {
-    "affected": [3, 7, 10, 11, 12, 13, 28, 30],
+    "affected": [
+      3,
+      7,
+      10,
+      11,
+      12,
+      13,
+      28,
+      30
+    ],
     "expected_effect": "The research seam may exercise the existing coupling boundary but must preserve candidate/committed separation, conservation and production real-SWAP defaults. It does not alter admitted physical equations or ownership.",
     "open_risk": "Current registry and participant use concrete Fortran types. A generic provider may require a shared interface refactor; if review concludes that this cannot be done additively with unchanged production behavior, stop and keep C2D as the bounded service/MODFLOW reference rather than weakening the contract."
   },
@@ -92,7 +101,19 @@
     "using a separate registry or Python service and describing it as the same-registry A/B",
     "counting interface exchange as external input or physical storage"
   ],
-  "next_action": "Review the provider interface against F-GC49D context ownership and publication ordering. If accepted, implement the seam behind an explicit native test-only factory, then run the preregistered qualification sequence.",
+  "next_action": "If stronger participant-isolated A/B evidence is needed, build a research-only replay of the C2B real-SWAP transaction through the exact C2E MODFLOW/application harness without changing production semantics. Otherwise retain this result as the permanent native-registry dummy baseline.",
   "production_delta": [],
-  "canonical_admission": false
+  "canonical_admission": false,
+  "authorization": {
+    "authorized_by": "user instruction in active Work session",
+    "date": "2026-10-04",
+    "scope": "Proceed with test-only provider implementation, local native experiments and persisted research evidence; no canonical admission or production behavior change."
+  },
+  "qualification_results": {
+    "C2E-ZERO": "PASS: 4/4 windows; exact -1 m equilibrium; zero forcing/exchange/drain/drift/mass residual; 50 revision and ledger counters advance once per window; byte-identical fresh-process replay.",
+    "C2E-REJECTION": "PASS: participant 25 rejected before native MODFLOW initialization/finalization; all state/revisions/ledgers unchanged; clean retry from the same origin publishes once.",
+    "C2E-DYNAMIC-TRANSPARENT": "PASS: 120/120 windows; 1 m3 recharge; positive interface transfer, 49 lateral faces, right-edge head mound and left drain response; native API/STO-SS budgets close against complete domain.",
+    "C2E-DYNAMIC-FINITE-RESISTANCE": "PASS: 120/120 windows; finite internal/interface head difference and resistance law; action/reaction and native storage checks close.",
+    "C2E-AB-REPLAY": "BOUNDED: dynamic Dummy-SWAP uses the native F-GC49D registry/context and same 50x1 MODFLOW strip. C2B real-SWAP comparison is from its separately persisted run, with matched geometry/MODFLOW and forcing scale but not the identical C2E harness; do not claim bit-for-bit same-harness A/B."
+  }
 }

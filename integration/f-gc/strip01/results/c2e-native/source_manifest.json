@@ -1,0 +1,35 @@
+{
+  "blob_shas": {
+    "src/runtime/mod_fmr_groundwater_participant_registry.f90": "4550bb3648319d34404fb478771d49cb4121bf7b",
+    "tests/fgc/strip01/research_context_c2e.f90": "10df60931930698507946676876ea11171d95090",
+    "tests/fgc/strip01/run_dummy_strip_c2e_native.py": "0e3d15305a1e883afacdef781cd3993341ea6545",
+    "tools/build_f_gc_strip01_research_context.py": "37b6cca393ce85af6766b2a7e68e2ae8e4241c42"
+  },
+  "executed_source_commit": "163ee6e9013046aca74274473c855666f0aa2937",
+  "file_sha256": {
+    "src/runtime/mod_fmr_groundwater_participant_registry.f90": "01fe9d9f80ea70eb8aab72662636b018103df32840c3a393b68beabf03390954",
+    "tests/fgc/strip01/research_context_c2e.f90": "2469b4f4375314f4de2b85998869b6a0d57d54d29258927cb57d515fad88323b",
+    "tests/fgc/strip01/run_dummy_strip_c2e_native.py": "38619336e5a9bd56108bdbaa31597c76703bf736e8b1bb82e85ec87a803c6bb4",
+    "tools/build_f_gc_strip01_research_context.py": "79e6e715918208dee2213ca1c960543c4b52c76a8f3a24b041a7a2780d44349c"
+  },
+  "persisted_implementation_commit": "e25eb9f3b2dac2482c8e5f04d02c4430dbbdf743",
+  "persisted_source_tree_sha": "0881328953a2378891fc30771f05cfc570ce9778",
+  "run_artifacts": {
+    "finite_resistance_result.json.gz": "0be87402d169a099a7cdfbae659c94beab666935f09f2ea7856ce4ca1f20e0f3",
+    "selected_profiles.json": "e6b47230f0b2694f4156238f285ce92bef41f7158321151abe104ed989242831",
+    "summary.json": "031830afdd7cbfdb6d260ae42b55c742475528a756dfa3cd5861204220f547a7",
+    "transparent_result.json.gz": "02305463378e510dabc94b9a4b9225b2ed8ed5a805e17c9a7f9e7d8c0d1b629f",
+    "window_summary.csv": "6722ef8113ea7dca92415a909d7decd79ceb4be64125ce5becdf38a7d5c6bb1a",
+    "zero_result.json.gz": "d965ee659bf44993a7a04c9b6e12c399ab26c96b687daedc3d2ce80436a8fbb7"
+  },
+  "source_commit": "163ee6e9013046aca74274473c855666f0aa2937",
+  "source_tree_sha": "0881328953a2378891fc30771f05cfc570ce9778",
+  "toolchain": {
+    "gfortran": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "validation_script": {
+    "blob_sha": "d15f2b0a7c985052736f1e30b3c6f45f94f8f883",
+    "path": "tests/fgc/strip01/validate_dummy_strip_c2e_native.py",
+    "sha256": "3be219f2944e2b6e42d8c5e4e043114a3f313de3dbe0117f6d89c4a5bb7eba16"
+  }
+}
