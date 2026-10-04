@@ -59,13 +59,17 @@
   "source_blob_ids": {
     "dummy": {
       "tests/fgc/strip01/research_context_c2e.f90": "10df60931930698507946676876ea11171d95090",
-      "tests/fgc/strip01/run_dummy_strip_c2e_native.py": "42e11d9c6625ddaa6d80124315afcc1e103ebd27",
-      "tests/fgc/strip01/validate_dummy_strip_c2e_native.py": "d15f2b0a7c985052736f1e30b3c6f45f94f8f883"
+      "tests/fgc/strip01/run_dummy_strip_c2e_native.py": "42e11d9c6625ddaa6d80124315afcc1e103ebd27"
     },
     "real_swap": {
       "tests/fgc/strip01/research_context_c2a.f90": "676e54404f867728fc40bdbe8c50d55717a2f9df",
       "tests/fgc/strip01/run_c2_rain_sequence.py": "c158866f086df5bcd637924dafba514836b43826",
       "tools/build_f_gc_strip01_research_context.py": "37b6cca393ce85af6766b2a7e68e2ae8e4241c42"
+    },
+    "validation": {
+      "blob": "10e626e844c2ce34b709db0c136568f480808f39",
+      "commit": "b9baa7e3a117b708a249724bcd46adb773d78ecc",
+      "path": "tests/fgc/strip01/validate_dummy_strip_c2e_native.py"
     }
   },
   "validation": {
