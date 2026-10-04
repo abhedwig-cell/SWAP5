@@ -4,8 +4,8 @@
   "title": "Compensated root-water-uptake authority",
   "branch": "audit/ppa-wu05d-d1-reconcile-20261004",
   "canonical_base": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
-  "status": "D2_JARVIS_IMPLEMENTED_QUALIFICATION_QUEUED",
-  "production_source_mutation": false,
+  "status": "D2_JARVIS_RUNTIME_BOUND_QUALIFICATION_QUEUED",
+  "production_source_mutation": true,
   "reference_mutation": false,
   "authority": {
     "snapshot": "B1.11",
@@ -49,17 +49,17 @@
   },
   "slices": {
     "D1": "SEMANTICS_RECONSTRUCTED_WITH_EXACT_IDENTITY_AND_INDEPENDENT_SOURCE_BOUND_CORROBORATION",
-    "D2": "PRODUCTION_COMPOSITOR_AND_STATELESS_EXECUTION_SEAM_IMPLEMENTED_QUALIFICATION_QUEUED",
+    "D2": "PRODUCTION_COMPOSITOR_STATELESS_EXECUTION_SEAM_AND_SERIALIZED_RUNTIME_BINDING_IMPLEMENTED_QUALIFICATION_QUEUED",
     "D3": "RESEARCH_CONTRACT_READY_AFTER_D2",
     "D4": "HELD_ON_D1_AND_STRESSOR_ADMISSIONS",
     "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
   },
   "production_admission": "NONE",
-  "next_action": "Await focused D2 O0/O2 run. On PASS add full Bartholomeus/OFF preservation composition gate and qualify D2 admission; then promote Walsum geometry as D3.",
+  "next_action": "Await latest focused D2 O0/O2 runtime-order run 37183450243 and moving-current preservation. Repair only real failures. On PASS persist D2 qualification/admission evidence, reconcile current canonical, admit/close D2, then start D3 Walsum geometry.",
   "d2": {
     "production_compositor": "src/process/mod_root_uptake_compensation.f90",
     "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
-    "qualification_run": 37182953894,
+    "qualification_run": 37183450243,
     "qualification_status": "QUEUED",
     "supported_stressors": [
       "all currently supplied admitted reductions",
@@ -73,6 +73,25 @@
     ],
     "ownership": "single final root_water_uptake_flux_result_t; no second water receipt",
     "continuation_state": "none",
-    "retry": "recompute from fresh uncompensated/base candidate"
-  }
+    "retry": "each trial restores qrot_unmodified before oxygen/compensation; rejected trial output is disposable",
+    "runtime_binding": "src/runtime/mod_fmr_serialized_reference_backend.f90: fresh uncompensated qrot -> admitted Bartholomeus oxygen -> Jarvis -> existing b110 root-sink provider",
+    "mass_ownership": "compensation owns no ledger/receipt; existing root-sink provider remains sole final sink path",
+    "previous_runs": [
+      {
+        "run": 37182953894,
+        "result": "FAIL_HARNESS_DEPENDENCY_ORDER"
+      },
+      {
+        "run": 37183187335,
+        "result": "FAIL_HARNESS_EXISTING_SOLVER_CONTRACT_WARNING_PROMOTED_BY_WERROR"
+      },
+      {
+        "run": 37183273234,
+        "result": "FAIL_PRE_STUB_HARNESS"
+      }
+    ]
+  },
+  "checkpoint_commit": "c3aea066d8be0189de63956d33ad1bdb4bcd1b83",
+  "last_reconciled_head": "c3aea066d8be0189de63956d33ad1bdb4bcd1b83",
+  "last_reconciled_upstream": "fae6d8d3d1687bfb220851f43603ab63d4989a29"
 }
