@@ -7,7 +7,7 @@
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "35129746d37d1114fa2e885368363ab1bb7f1d115ccc4d83ac75a19952e24db8",
-    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "0321fae3e155cd5a3447e9944fc308fe352f094b30b06700906163d1326ac0f3",
+    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "92bdf637d4477751690f49965b0deaddad759606d9e40b511f13447de24ac397",
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "2469a61298769e9aec6c15a0e47d4a0a1a54eaf6b5d459eaadcf4a92fd7993c3",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
     "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
@@ -21,7 +21,7 @@
     "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
     "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
-    "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "9c8d2dc8e496bc499902bc1209aa32f7a5f97f625ef121eb917f00e693cce7f8"
+    "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735"
   },
   "results": [
     {
@@ -32,7 +32,7 @@
     {
       "command": "bash tests/fpm/run_ppa_wu05a26_real_richards_binding.sh",
       "result": "PASS",
-      "scope": "real Reference Richards direct solve with zero internal sources/sinks, fixed zero top flux, head bottom boundary, conservative interval-mean internal face reconstruction closed against independently reported bottom flux; O0/O2 and deterministic output match"
+      "scope": "real Reference Richards solve with a nonzero subsurface source and separately bound nonzero final root sink, fixed zero top flux, head bottom boundary, and conservative interval-mean internal face reconstruction closed against independently reported bottom flux; O0/O2 and deterministic output match"
     },
     {
       "command": "bash tests/physics/run_ppa_wu05d2_jarvis.sh",
@@ -70,13 +70,21 @@
     "No exact-byte B1.11 solute/restart reconstruction in this execution surface.",
     "No Jarvis salinity integration or stress-combination claim.",
     "No GitHub Actions run; local evidence is preliminary and does not admit a capability.",
-    "No FMR live transaction reconstruction using final nonzero qrot and all active drainage/subsurface source terms; the real Richards check covers a no-node-source/no-root-sink restricted case only."
+    "No FMR live transaction reconstruction using final nonzero qrot and all active drainage/subsurface/macropore/snow sources. The real Richards test includes nonzero qssdi and separately bound qrot but excludes the FMR transaction and additional route terms."
   ],
-  "claim_ceiling": "Local tested prototypes only. Mobile salt uses explicit upwind transport with committed-start donor concentration; water face flux reconstruction has manufactured and restricted real Reference Richards closure tests, but is not bound to FMR live transactions or nonzero root extraction. Dispersion, transport substeps, boundary scheduling, drainage, restart, and accepted runtime transaction remain unimplemented. Maas-Hoffman is a pure unit-tested response and is not wired into Jarvis.",
+  "claim_ceiling": "Local tested prototypes only. Mobile salt uses explicit upwind transport with committed-start donor concentration; water face flux reconstruction has manufactured and restricted real Reference Richards closure tests including nonzero subsurface source and separately bound root sink, but is not bound to FMR transactions or all source routes. Dispersion, transport substeps, boundary scheduling, drainage, restart, and accepted runtime transaction remain unimplemented. Maas-Hoffman is a pure unit-tested response and is not wired into Jarvis.",
   "environment_overrides": {
     "oxygen_preservation_runner": "FC executable wrapper at /tmp/gfortran-swap5-tolerant-warn prepended -Wno-error=compare-reals; the tracked runner uses -Werror, and this only makes the existing equality warning non-fatal without altering numerical tolerances.",
     "wrapper_sha256": "c65021b92959a4d908036e843753ac2bccbc258262d333da008396fdeffc42f5",
     "wrapper_body": "#!/usr/bin/env bash\nexec gfortran -Wno-error=compare-reals \"$@\"\n"
   },
-  "result_classification": "UNDERLYING_SALINITY_PHYSICS_REQUIRES_SEPARATE_MIGRATION"
+  "result_classification": "UNDERLYING_SALINITY_PHYSICS_REQUIRES_SEPARATE_MIGRATION",
+  "diagnostic_experiments": [
+    {
+      "experiment": "Broader existing serialized FMR A8 trial exercise in test_ppa_wu05a7_real_richards_runtime.f90",
+      "result": "BLOCKED",
+      "observation": "The trial did not complete or publish a candidate; diagnostics reported STATUS=2, COMPLETED=F, MASS_REJ=41, SOLVER_REJ=0.",
+      "interpretation": "This is not salinity transaction evidence. The direct Reference Richards closure test is independent; a successful FMR transaction with final root sink and complete source inventory remains required."
+    }
+  ]
 }

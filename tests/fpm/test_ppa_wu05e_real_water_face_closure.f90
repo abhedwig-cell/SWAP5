@@ -9,6 +9,7 @@ program test_ppa_wu05e_real_water_face_closure
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
+  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   implicit none
@@ -18,13 +19,15 @@ program test_ppa_wu05e_real_water_face_closure
   type(b110_default_mvg_parameters_t), target :: hp
   type(b110_default_mvg_provider_t), target :: hyd
   type(b110_source_sink_provider_t), target :: base
+  type(b110_root_sink_provider_t), target :: root_sink
   type(fixed_flux_top_boundary_provider_t), target :: top
   type(reference_richards_legacy_solver_t) :: solver
   type(reference_richards_legacy_workspace_t) :: workspace
   type(soil_water_solve_request_t) :: request
   type(soil_water_solve_result_t) :: result
-  real(real64), allocatable, target :: qdra(:,:), qssdi(:), qrot(:), cofgen(:,:)
+  real(real64), allocatable, target :: qdra(:,:), qssdi(:), qrot(:), qrot_final(:), cofgen(:,:)
   real(real64), allocatable :: faces(:)
+  real(real64) :: net_source(numnod)
   real(real64) :: heads(numnod), water0(numnod), cond(numnod), cap(numnod), dkdh(numnod), closure
   integer :: i, status
 
@@ -44,9 +47,12 @@ program test_ppa_wu05e_real_water_face_closure
   call bind_b110_default_mvg_provider(hyd,hp,dt)
   heads=-100.0_real64
   call hyd%evaluate(heads,water0,cond,cap,dkdh)
-  allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod))
+  allocate(qdra(1,numnod),qssdi(numnod),qrot(numnod),qrot_final(numnod))
   qdra=0.0_real64; qssdi=0.0_real64; qrot=0.0_real64
+  qssdi(max(1,numnod-1))=1.0e-4_real64
+  qrot_final(numnod)=2.0e-4_real64
   call bind_b110_source_sink_provider(base,qdra,qssdi,qrot)
+  call bind_b110_root_sink_provider(root_sink,qrot_final)
 
   request%parameters=>params
   request%base_state%active_nodes=numnod
@@ -64,13 +70,15 @@ program test_ppa_wu05e_real_water_face_closure
   request%numerical%compartment_balance_tolerance=tol; request%numerical%total_balance_tolerance=tol
   request%numerical%head_abs_tolerance=tol; request%numerical%head_rel_tolerance=tol
   request%numerical%ponding_tolerance=tol
-  request%evaluation%constitutive=>hyd; request%evaluation%source_sink=>base; request%evaluation%top_boundary=>top
+  request%evaluation%constitutive=>hyd; request%evaluation%source_sink=>base; request%evaluation%root_sink=>root_sink
+  request%evaluation%top_boundary=>top
   request%step_duration=dt
 
   call solver%solve(request,workspace,result)
   if(result%status/=SW_SOLVE_CONVERGED) error stop 'real Reference Richards solve failed'
+  net_source=qssdi-qrot_final
   call reconstruct_interval_water_face_flux(dz(1:numnod),water0,result%candidate_state%water_content, &
-       0.0_real64*water0,-result%top_flux,-result%bottom_flux,dt,tol,faces,closure,status)
+       net_source,-result%top_flux,-result%bottom_flux,dt,tol,faces,closure,status)
   if(status/=WATER_FACE_FLUX_OK) error stop 'real Richards water continuity closure failed'
   if(size(faces)/=numnod+1) error stop 'real Richards face count failed'
   if(abs(closure)>tol) error stop 'real Richards bottom closure residual failed'
