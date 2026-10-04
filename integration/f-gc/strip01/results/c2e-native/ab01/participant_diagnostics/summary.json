@@ -1,0 +1,442 @@
+{
+  "code_columns": [
+    "result_status",
+    "accepted_substeps",
+    "solver_rejections",
+    "temporal_rejections",
+    "mass_rejections",
+    "admission_rejections",
+    "attempts",
+    "retries",
+    "solver_status",
+    "temporal_status",
+    "temporal_available",
+    "head_budget_valid"
+  ],
+  "duration_sweep": [
+    {
+      "accepted_substeps": 0,
+      "admission_rejections": 0,
+      "completed_t_day": 0.001,
+      "duration_day": 0.001,
+      "head_budget_valid": true,
+      "identical_codes_all_participants": [
+        2,
+        0,
+        2,
+        7,
+        0,
+        0,
+        9,
+        8,
+        1,
+        1,
+        1,
+        1
+      ],
+      "identical_observations_all_participants": [
+        0.8678842852524734,
+        1e-05,
+        86788.42852524733,
+        -0.1,
+        -2.5262125724623274e-09,
+        0.0
+      ],
+      "mass_rejections": 0,
+      "normalized_temporal_indicator": 86788.42852524733,
+      "participant_count": 50,
+      "solver_rejections": 2,
+      "solver_status": 1,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.8678842852524734,
+      "temporal_indicator_available": true,
+      "temporal_rejections": 7,
+      "temporal_status": 1
+    },
+    {
+      "accepted_substeps": 0,
+      "admission_rejections": 0,
+      "completed_t_day": 0.001,
+      "duration_day": 0.0001,
+      "head_budget_valid": true,
+      "identical_codes_all_participants": [
+        2,
+        0,
+        2,
+        7,
+        0,
+        0,
+        9,
+        8,
+        2,
+        0,
+        0,
+        1
+      ],
+      "identical_observations_all_participants": [
+        0.0,
+        1e-05,
+        0.0,
+        -0.1,
+        0.0,
+        0.0
+      ],
+      "mass_rejections": 0,
+      "normalized_temporal_indicator": null,
+      "participant_count": 50,
+      "solver_rejections": 2,
+      "solver_status": 2,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": null,
+      "temporal_indicator_available": false,
+      "temporal_rejections": 7,
+      "temporal_status": 0
+    },
+    {
+      "accepted_substeps": 0,
+      "admission_rejections": 0,
+      "completed_t_day": 0.001,
+      "duration_day": 1e-05,
+      "head_budget_valid": true,
+      "identical_codes_all_participants": [
+        2,
+        0,
+        0,
+        9,
+        0,
+        0,
+        9,
+        8,
+        1,
+        1,
+        1,
+        1
+      ],
+      "identical_observations_all_participants": [
+        0.08678896638678617,
+        1e-05,
+        8678.896638678616,
+        -0.1,
+        3.3853475578382586e-08,
+        0.0
+      ],
+      "mass_rejections": 0,
+      "normalized_temporal_indicator": 8678.896638678616,
+      "participant_count": 50,
+      "solver_rejections": 0,
+      "solver_status": 1,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.08678896638678617,
+      "temporal_indicator_available": true,
+      "temporal_rejections": 9,
+      "temporal_status": 1
+    },
+    {
+      "accepted_substeps": 0,
+      "admission_rejections": 0,
+      "completed_t_day": 0.001,
+      "duration_day": 1e-06,
+      "head_budget_valid": true,
+      "identical_codes_all_participants": [
+        2,
+        0,
+        0,
+        9,
+        0,
+        0,
+        9,
+        8,
+        1,
+        1,
+        1,
+        1
+      ],
+      "identical_observations_all_participants": [
+        0.027445052430770743,
+        1e-05,
+        2744.5052430770743,
+        -0.1,
+        7.614520125681645e-07,
+        0.0
+      ],
+      "mass_rejections": 0,
+      "normalized_temporal_indicator": 2744.5052430770743,
+      "participant_count": 50,
+      "solver_rejections": 0,
+      "solver_status": 1,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.027445052430770743,
+      "temporal_indicator_available": true,
+      "temporal_rejections": 9,
+      "temporal_status": 1
+    }
+  ],
+  "head_m": -1.0,
+  "invariants": {
+    "duration_sweep": {
+      "all_ledgers_after_rejection": [
+        1
+      ],
+      "all_revisions_after_rejection": [
+        1
+      ],
+      "c2a_published": true,
+      "c2b_failure_stage": "swap-corrector",
+      "c2b_iterations": 1,
+      "c2b_published": false,
+      "modflow_calls": {
+        "finalize_solve": 1,
+        "finalize_time_step": 1,
+        "prepare_solve": 2,
+        "solve": 2
+      },
+      "state_unchanged_during_probes": true
+    },
+    "rate_sweep": {
+      "all_ledgers_after_rejection": [
+        1
+      ],
+      "all_revisions_after_rejection": [
+        1
+      ],
+      "c2a_published": true,
+      "c2b_failure_stage": "swap-corrector",
+      "c2b_iterations": 1,
+      "c2b_published": false,
+      "modflow_calls": {
+        "finalize_solve": 1,
+        "finalize_time_step": 1,
+        "prepare_solve": 2,
+        "solve": 2
+      },
+      "state_unchanged_during_probes": true
+    }
+  },
+  "observation_columns": [
+    "temporal_head_inf_bound_cm",
+    "temporal_head_budget_cm",
+    "normalized_temporal_indicator",
+    "top_flux_cm_per_day",
+    "bottom_flux_cm_per_day",
+    "solver_equation_residual"
+  ],
+  "origin": "50 C1 real-SWAP columns after accepted C2a; t=0.001 day; each revision and interface ledger count 1",
+  "preregistrations": [
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_PROBE_ADDENDUM.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_DURATION_ADDENDUM.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_RATE_ADDENDUM.json"
+  ],
+  "primary_c2b_infiltration_cm_per_day": 0.1,
+  "probe_scope": "Each row is a discarded single-column backend transaction, not a full 50-column application-service publication.",
+  "rate_sweep": [
+    {
+      "accepted_substeps": 1,
+      "admission_rejections": 0,
+      "completed_t_day": 0.002,
+      "head_budget_valid": true,
+      "identical_codes_all_participants": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "identical_observations_all_participants": [
+        0.0,
+        1e-05,
+        0.0,
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "mass_rejections": 0,
+      "normalized_temporal_indicator": 0.0,
+      "participant_count": 50,
+      "rate_cm_per_day": 0.0,
+      "solver_rejections": 0,
+      "solver_status": 1,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.0,
+      "temporal_indicator_available": true,
+      "temporal_rejections": 0,
+      "temporal_status": 1
+    },
+    {
+      "accepted_substeps": 0,
+      "admission_rejections": 0,
+      "completed_t_day": 0.001,
+      "head_budget_valid": true,
+      "identical_codes_all_participants": [
+        2,
+        0,
+        1,
+        8,
+        0,
+        0,
+        9,
+        8,
+        1,
+        1,
+        1,
+        1
+      ],
+      "identical_observations_all_participants": [
+        0.001735767699595217,
+        1e-05,
+        173.5767699595217,
+        -0.0002,
+        -2.1150801332798022e-09,
+        0.0
+      ],
+      "mass_rejections": 0,
+      "normalized_temporal_indicator": 173.5767699595217,
+      "participant_count": 50,
+      "rate_cm_per_day": 0.0002,
+      "solver_rejections": 1,
+      "solver_status": 1,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.001735767699595217,
+      "temporal_indicator_available": true,
+      "temporal_rejections": 8,
+      "temporal_status": 1
+    },
+    {
+      "accepted_substeps": 0,
+      "admission_rejections": 0,
+      "completed_t_day": 0.001,
+      "head_budget_valid": true,
+      "identical_codes_all_participants": [
+        2,
+        0,
+        2,
+        7,
+        0,
+        0,
+        9,
+        8,
+        2,
+        0,
+        0,
+        1
+      ],
+      "identical_observations_all_participants": [
+        0.0,
+        1e-05,
+        0.0,
+        -0.001,
+        0.0,
+        0.0
+      ],
+      "mass_rejections": 0,
+      "normalized_temporal_indicator": null,
+      "participant_count": 50,
+      "rate_cm_per_day": 0.001,
+      "solver_rejections": 2,
+      "solver_status": 2,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": null,
+      "temporal_indicator_available": false,
+      "temporal_rejections": 7,
+      "temporal_status": 0
+    },
+    {
+      "accepted_substeps": 0,
+      "admission_rejections": 0,
+      "completed_t_day": 0.001,
+      "head_budget_valid": true,
+      "identical_codes_all_participants": [
+        2,
+        0,
+        1,
+        8,
+        0,
+        0,
+        9,
+        8,
+        1,
+        1,
+        1,
+        1
+      ],
+      "identical_observations_all_participants": [
+        0.08678842833240664,
+        1e-05,
+        8678.842833240664,
+        -0.01,
+        -2.5262125724623274e-10,
+        0.0
+      ],
+      "mass_rejections": 0,
+      "normalized_temporal_indicator": 8678.842833240664,
+      "participant_count": 50,
+      "rate_cm_per_day": 0.01,
+      "solver_rejections": 1,
+      "solver_status": 1,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.08678842833240664,
+      "temporal_indicator_available": true,
+      "temporal_rejections": 8,
+      "temporal_status": 1
+    },
+    {
+      "accepted_substeps": 0,
+      "admission_rejections": 0,
+      "completed_t_day": 0.001,
+      "head_budget_valid": true,
+      "identical_codes_all_participants": [
+        2,
+        0,
+        2,
+        7,
+        0,
+        0,
+        9,
+        8,
+        1,
+        1,
+        1,
+        1
+      ],
+      "identical_observations_all_participants": [
+        0.8678842852524734,
+        1e-05,
+        86788.42852524733,
+        -0.1,
+        -2.5262125724623274e-09,
+        0.0
+      ],
+      "mass_rejections": 0,
+      "normalized_temporal_indicator": 86788.42852524733,
+      "participant_count": 50,
+      "rate_cm_per_day": 0.1,
+      "solver_rejections": 2,
+      "solver_status": 1,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.8678842852524734,
+      "temporal_indicator_available": true,
+      "temporal_rejections": 7,
+      "temporal_status": 1
+    }
+  ],
+  "replay": {
+    "duration_sweep": {
+      "byte_identical": true,
+      "run1_sha256": "6964bb83da54d86c59f47f8e0445124efb3cc829e72c715207fa542316635ed2",
+      "run2_sha256": "6964bb83da54d86c59f47f8e0445124efb3cc829e72c715207fa542316635ed2"
+    },
+    "rate_sweep": {
+      "byte_identical": true,
+      "run1_sha256": "20d150a426d0a25af3c4eaae7b7e721bca996c4901924fe78b611606cd162d9a",
+      "run2_sha256": "20d150a426d0a25af3c4eaae7b7e721bca996c4901924fe78b611606cd162d9a"
+    }
+  },
+  "schema": "swap5.fgc.strip01.c2e_ab01.participant_diagnostics.v1",
+  "temporal_head_budget_cm": 1e-05
+}

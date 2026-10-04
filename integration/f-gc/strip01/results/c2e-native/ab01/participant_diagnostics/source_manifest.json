@@ -1,0 +1,44 @@
+{
+  "build_command": "python tools/build_f_gc_strip01_research_context.py --profile C1 --build /tmp/f-gc-c2e-ab-colprobe-detail-build --context-override tests/fgc/strip01/research_context_c2a.f90",
+  "commands": {
+    "duration": "MPLCONFIGDIR=/tmp/mpl python -u tests/fgc/strip01/run_c2_rain_sequence.py --profile C1 --real-context c2a --library /tmp/f-gc-c2e-ab-colprobe-detail-build/libstrip01_research.so --libmf6 /tmp/c2-mf6-680/bin/libmf6.so --output <fresh-dir> --flux-tolerance 2e-15 --max-coupling-iterations 40 --probe-c2b-columns --probe-durations-day 0.001 0.0001 0.00001 0.000001",
+    "rate": "MPLCONFIGDIR=/tmp/mpl python -u tests/fgc/strip01/run_c2_rain_sequence.py --profile C1 --real-context c2a --library /tmp/f-gc-c2e-ab-colprobe-detail-build/libstrip01_research.so --libmf6 /tmp/c2-mf6-680/bin/libmf6.so --output <fresh-dir> --flux-tolerance 2e-15 --max-coupling-iterations 40 --probe-c2b-columns --probe-rates-cm-per-day 0 0.0002 0.001 0.01 0.1"
+  },
+  "compiler": "GNU Fortran 13.3.0",
+  "duration_sweep_source_commit": "cd2b18521a9208e00fe210212ae7f4ff4a47c2fe",
+  "fixture_source_commit": "cd2b18521a9208e00fe210212ae7f4ff4a47c2fe",
+  "libmf6_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+  "modflow6": "6.8.0",
+  "profile": "C1",
+  "python": "Python 3.12.14",
+  "rate_sweep_source_commit": "72c2e5542d3566eded47a9f24bb8650b4c0eca8a",
+  "replay_json_sha256": {
+    "duration_sweep": {
+      "run1": "6964bb83da54d86c59f47f8e0445124efb3cc829e72c715207fa542316635ed2",
+      "run2": "6964bb83da54d86c59f47f8e0445124efb3cc829e72c715207fa542316635ed2"
+    },
+    "rate_sweep": {
+      "run1": "20d150a426d0a25af3c4eaae7b7e721bca996c4901924fe78b611606cd162d9a",
+      "run2": "20d150a426d0a25af3c4eaae7b7e721bca996c4901924fe78b611606cd162d9a"
+    }
+  },
+  "research_library_sha256": "01666707baa0f6f1c6f8b20f1c5fbe7b04af47f9c19d9e17d676dc140d19651f",
+  "result_sha256": {
+    "duration_sweep_full_result.json.gz": "0431165a7ef9a83cbad2dd9a7fa398e8703f0c153e128c592d796f0411948f4a",
+    "rate_sweep_full_result.json.gz": "e7e54a81c45191c91c197656de5b3429d71ff18e5579708ffdac3823d026a156"
+  },
+  "schema": "swap5.fgc.strip01.c2e_ab01.participant_diagnostics.source_manifest.v1",
+  "source_blob_ids": {
+    "duration_runner": "ab208e74edd5723f2f5d9cc7c2f74999b7c850b6",
+    "fixture": {
+      "tests/fgc/strip01/research_context_c2a.f90": "b691f054726521d519db349f0dd33ea485c993a4",
+      "tools/build_f_gc_strip01_research_context.py": "37b6cca393ce85af6766b2a7e68e2ae8e4241c42"
+    },
+    "preregistrations": {
+      "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_DURATION_ADDENDUM.json": "fb98d86f80e53959217c4e95cd47363bc9be0c06b7748f02f32b31b0212728bb",
+      "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_PROBE_ADDENDUM.json": "87b16b4b0a726e53da2f9691ffd332b26b472c828f774c47581f5de2b90922a6",
+      "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_RATE_ADDENDUM.json": "3903831ca129499db84ea90df70b3adfa9e5b972cf2fb9b5fc19cf5b5be63c40"
+    },
+    "rate_runner": "be77ce7bdb32b570f7fe25c16be87b2a7323a437"
+  }
+}

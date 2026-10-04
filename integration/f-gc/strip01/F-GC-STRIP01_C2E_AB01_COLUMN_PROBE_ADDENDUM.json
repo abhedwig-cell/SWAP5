@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.column_probe_addendum.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01-COLPROBE",
+  "state": "PREREGISTERED",
+  "parent_protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB_PREREGISTRATION.json",
+  "purpose": "After accepted real-SWAP C2a and after applying the C2b rain forcing, probe each real-SWAP participant independently from its exact committed C2a origin at the C2b interface head and exact absolute time window. Determine whether a unique column response is visible or all 50 columns exhibit the same backend transaction outcome.",
+  "probe_contract": {
+    "state_origin": "The 50 real-SWAP participants after the native C2a transaction has published once; revision and interface ledger count equal one.",
+    "forcing": "The C2E-AB01 fixed infiltration setting: top_flux = -0.1 cm/day.",
+    "head_m": -1.0,
+    "window_day": [0.001, 0.002],
+    "tangent": false,
+    "execution": "One discarded backend run_trial per participant; no application-service coupling iteration and no MODFLOW state publication are claimed by this probe.",
+    "immutability_gate": "The full committed profile hash, all participant revisions, storage observations and all interface ledger counts must match exactly before and after the 50 probes."
+  },
+  "record": ["participant slot", "backend result status", "accepted substeps", "solver rejections", "temporal rejections", "mass rejections", "admission rejections", "attempts", "retries", "completed time"],
+  "interpretation_rules": {
+    "one_or_more_distinct_outcomes": "Report the participant slots and diagnostic-code vectors; do not claim that the full application service necessarily fails first at the same slot.",
+    "all_outcomes_identical": "Report no participant-specific difference in this independent probe; this does not identify the service's first-failing participant.",
+    "all_probes_pass_but_c2b_rejects": "Keep the cause unresolved between multi-participant/application assembly and aspects not reproduced by an isolated participant trial."
+  },
+  "gates": {
+    "no_production_source_or_abi_change": true,
+    "no_solver_or_temporal_gate_change": true,
+    "fresh_process_replay": "Repeat the full real-SWAP C2a/C2b run and all 50 probes in an independent process; require exact JSON identity."
+  },
+  "authorization": {"authorized_by": "user instruction in active Work session", "date": "2026-10-04", "scope": "Local test-only participant probes and persisted bounded research evidence."}
+}

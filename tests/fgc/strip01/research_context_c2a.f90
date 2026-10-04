@@ -8,7 +8,9 @@ module mod_strip01_c2a_research_context
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state
+       fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, fmr_serialized_reference_backend_t, &
+       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, &
+       fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, FMR_GW_REGISTRY_OK
   use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, FMR_GW_APP_CONTEXT_OK
@@ -72,7 +74,7 @@ module mod_strip01_c2a_research_context
   public :: fgc49d_fixture_advance_c
   public :: fgc49d_fixture_initialize_c
   public :: fgc49d_fixture_state_c, strip01_observe_c, strip01_diagnose_c, strip01_floor_c, strip01_ledger_counts_c, &
-       strip01_fields_c, strip01_set_precipitation_c
+       strip01_fields_c, strip01_set_precipitation_c, strip01_diagnose_window_c
 
 contains
 
@@ -302,6 +304,47 @@ contains
     if (candidate%ready()) call backend%discard_trial_candidate(candidate, diagnostics)
     c_status = 0
   end function strip01_diagnose_c
+
+  ! Exact-time, discarded participant probe for the C2a -> C2b transition.
+  ! Unlike strip01_diagnose_c, this starts at the committed window boundary.
+  integer(c_int) function strip01_diagnose_window_c(slot, head, t0, duration, tangent_on, codes, values, complete_t) &
+       bind(C,name="strip01_diagnose_window_c") result(c_status)
+    integer(c_int), value :: slot, tangent_on
+    real(c_double), value :: head, t0, duration
+    integer(c_int), intent(out) :: codes(12)
+    real(c_double), intent(out) :: values(6)
+    real(c_double), intent(out) :: complete_t
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    type(canonical_numerical_config_t) :: numerical
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(fmr_serialized_physical_observation_t) :: obs
+    logical :: ok
+    c_status = 1_c_int
+    if (slot < 1 .or. slot > NPART .or. .not. ieee_is_finite(head) .or. &
+        .not. ieee_is_finite(t0) .or. .not. ieee_is_finite(duration) .or. duration <= 0.0_c_double) return
+    call committed(slot)%capture_checkpoint(checkpoint, ok)
+    if (.not. ok) return
+    forcing = base_forcing
+    forcing%bottom_head = (head + 2.0_real64) * 100.0_real64
+    numerical = config
+    numerical%accepted_trajectory_direction%requested = tangent_on /= 0
+    numerical%accepted_trajectory_direction%control_coordinate = 5
+    call backend%run_trial(columns(slot), templates(slot), parameters, committed(slot), forcing, numerical, &
+         real(t0, real64), real(t0 + duration, real64), checkpoint, result, candidate, diagnostics)
+    obs = backend%observation()
+    codes = [result%status, diagnostics%accepted_substeps, diagnostics%solver_rejections, &
+         diagnostics%temporal_rejections, diagnostics%mass_rejections, diagnostics%admission_rejections, &
+         diagnostics%attempts, diagnostics%retries, obs%solver_status, obs%temporal_indicator_status, &
+         merge(1,0,obs%temporal_indicator_available), merge(1,0,obs%temporal_head_budget_valid)]
+    values = [obs%temporal_head_inf_bound, obs%temporal_head_budget, obs%temporal_normalized_indicator, &
+         obs%top_flux, obs%bottom_flux, obs%solver_equation_residual]
+    complete_t = result%completed_t
+    if (candidate%ready()) call backend%discard_trial_candidate(candidate, diagnostics)
+    c_status = 0_c_int
+  end function strip01_diagnose_window_c
 
   integer(c_int) function strip01_floor_c(slot, head, duration, codes, values) &
        bind(C,name="strip01_floor_c") result(c_status)

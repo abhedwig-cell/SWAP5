@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.column_rate_addendum.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01-COLPROBE-RATE",
+  "state": "PREREGISTERED",
+  "parent_protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_PROBE_ADDENDUM.json",
+  "purpose": "At the exact accepted C2a origin, quantify the isolated real-SWAP participant response to smaller fixed infiltration rates at the rejected C2b duration and head. Separate a target-rate transaction failure from the coupling residual criterion without changing any numerical budget.",
+  "fixed_conditions": {
+    "origin": "After accepted C2a publication at t=0.001 day; committed revision and interface ledger count are one.",
+    "interface_head_m": -1.0,
+    "window_start_day": 0.001,
+    "duration_day": 0.001,
+    "tangent_requested": false,
+    "participants": "All 50, individually and discarded; no MODFLOW/application-service publication is implied."
+  },
+  "top_infiltration_cm_per_day": [0.0, 0.0002, 0.001, 0.01, 0.1],
+  "record": ["forcing rate", "participant slot", "backend status", "accepted substeps", "solver rejections", "temporal rejections", "head-infinity bound", "head budget", "normalized temporal indicator", "solver status", "temporal status", "completed time"],
+  "gates": {
+    "committed_state_unchanged_after_all_probes": true,
+    "forcing_restored_to_0.1_cm_per_day_before_real_C2b_service_attempt": true,
+    "no_numerical_gate_or_production_change": true,
+    "fresh_process_replay": "Two independent executions must produce byte-identical JSON."
+  },
+  "interpretation_limit": "An isolated participant response that completes at a lower rain rate does not establish 50-column service publication, a complete-domain mass balance at that rate, or that the 0.1 cm/day target is reachable through a stable forcing ramp."
+}

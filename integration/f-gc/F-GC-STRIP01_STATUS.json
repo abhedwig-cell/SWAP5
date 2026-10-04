@@ -74,7 +74,7 @@
     "production_delta": [],
     "qualification": "Native selected K=0.5 standalone A/B qualified under original limits; one K=0.1,50-cell arithmetic-Dupuit head gate retained FAIL; source-bound native storage measurement corrected without tolerance widening.",
     "canonical_admission": false,
-    "next_action": "Retain the C2E native-registry Dummy-SWAP strip as the qualified intermediate. Matched C2E-AB01 shows the same 50x1 native application/MODFLOW path publishes the prescribed recharge with either dummy response, while the real-SWAP C2b window rejects at swap-corrector before publication even at 1e-12 m/s coupling tolerance. Continue only with a targeted real-SWAP transaction/Richards diagnosis; do not change production gates.",
+    "next_action": "Retain C2E as the qualified native-registry Dummy-SWAP intermediate. Matched C2E-AB01 and exact-origin probes show that the dummy publishes while real SWAP rejects at swap-corrector; all 50 isolated real participants show the same zero-progress response to the tested positive fixed-flux onset, with temporal bounds far above the research fixture budget. Continue only with a history-aware real-SWAP onset diagnosis; do not alter production gates.",
     "reconciliation_persisted": "docs/integration/F-GC-STRIP01_RECONCILIATION.md",
     "plot_script": "tools/plot_f_gc_strip01.py",
     "qualification_document": "docs/integration/F-GC-STRIP01_C0_C1_QUALIFICATION_AND_RESPONSE_FINDINGS.md",
@@ -90,7 +90,7 @@
     "resp01f": "CORRECTED_HARNESS_RUN_COMPLETED: C0 and C1 both FIRST_WINDOW_REJECTED at swap-corrector iteration 1 despite matched MODFLOW/SWAP heads; all committed state, storage, revisions, ledgers and XOLD preserved; two fresh-process replays identical per profile. Prior +0.5m predictor offset removed. Therefore head mismatch alone is insufficient to explain C0/C1; exact physical/numerical cause remains open.",
     "c2b_temporal_onset_diagnosis": "Correct sign: negative top_flux is rainfall; earlier positive top_flux runs were outward-flux tests. Correct-sign unseeded gradual ramp: 2,000 x 1e-5-day windows published with a 1.005 geometric rate increase capped at 0.001 cm/day, then held for 1,075 windows; replay byte-identical, cumulative mass residual 3.13e-14 m3. Continuing the same ramp toward 0.1 cm/day publishes 999 windows and rejects at 0.001458 cm/day. Registered rainfall target is 0.1 cm/day (1 mm/day); no measurable MODFLOW head or drain response."
   },
-  "next_permitted_action": "Use C2E as the permanent native-registry Dummy-SWAP baseline. Continue a bounded real-SWAP participant-side diagnosis without changing canonical coupling semantics, solver tolerances, retry policy or physical ownership.",
+  "next_permitted_action": "Retain C2E as the permanent native-registry Dummy-SWAP baseline. Continue bounded real-SWAP history/onset diagnosis with test-only probes; keep canonical coupling semantics, production temporal budgets, retry policy and mass gates unchanged.",
   "oracle_evidence": {
     "contract": "docs/integration/F-GC-STRIP01_ORACLE_EXECUTION_CONTRACT.md",
     "script": "tests/fgc/strip01/oracle.py",
@@ -489,6 +489,25 @@
     "fresh_process_replay": "Four deterministic cases replay byte-identically; hashes recorded in summary.json and source_manifest.json.",
     "claim_boundary": "Supports real-SWAP/Richards transaction-side failure for the tested state/window; does not identify a single equation, prove all real states fail, or authorize production changes.",
     "production_delta": [],
-    "canonical_admission": false
+    "canonical_admission": false,
+    "participant_diagnostics": {
+      "protocols": [
+        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_PROBE_ADDENDUM.json",
+        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_DURATION_ADDENDUM.json",
+        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_RATE_ADDENDUM.json"
+      ],
+      "summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/summary.json",
+      "source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/source_manifest.json",
+      "full_duration_result": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/duration_sweep_full_result.json.gz",
+      "full_rate_result": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/rate_sweep_full_result.json.gz",
+      "duration_result": "All 50 isolated participants return identical vectors. At 0.1 cm/day all four durations 0.001, 0.0001, 0.00001 and 0.000001 day have zero accepted substeps; at 0.001 day there are 2 solver and 7 temporal rejections. The head-infinity bound is 0.867884 cm at 0.001 day, 0.086789 cm at 0.00001 day and 0.027445 cm at 0.000001 day, versus 1e-5 cm research fixture budget.",
+      "rate_result": "At 0.001 day, all 50 zero-flux probes complete one substep; all 50 probes at each positive rate 0.0002, 0.001, 0.01 and 0.1 cm/day fail with zero accepted substeps. Terminal solver/temporal code vectors vary non-monotonically across those rates.",
+      "committed_state_preserved": true,
+      "fresh_process_byte_identity": true,
+      "interpretation": "No spatially unique participant was identified. Evidence supports a history/onset-sensitive temporal and solver transaction blocker in the tested real-SWAP fixture. These are discarded component probes, not full-service publication tests; the fixture budget is not independently qualified here as the sole cause.",
+      "production_delta": [],
+      "canonical_admission": false
+    },
+    "next_action": "Keep the dummy strip unchanged as the intermediate baseline. A further real-SWAP experiment should test an explicitly history-aware forcing onset in the same native service, retaining all production budgets and transaction gates; do not claim recovery from isolated participant probes alone."
   }
 }

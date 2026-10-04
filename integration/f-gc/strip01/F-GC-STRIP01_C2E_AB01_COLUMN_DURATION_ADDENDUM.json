@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.column_duration_addendum.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01-COLPROBE-DT",
+  "state": "PREREGISTERED",
+  "parent_protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_PROBE_ADDENDUM.json",
+  "purpose": "Determine whether the same exact-origin, independently evaluated real-SWAP participant response at the rejected C2b rain forcing changes as only the trial duration is shortened.",
+  "fixed_conditions": {
+    "origin": "After accepted C2a publication at t=0.001 day; committed revision and interface ledger count are one.",
+    "top_flux_cm_per_day": -0.1,
+    "interface_head_m": -1.0,
+    "window_start_day": 0.001,
+    "tangent_requested": false,
+    "participants": "All 50, individually and discarded; no MODFLOW/application-service publication is implied."
+  },
+  "duration_sweep_day": [0.001, 0.0001, 0.00001, 0.000001],
+  "record": ["duration", "participant slot", "backend status", "accepted substeps", "solver rejections", "temporal rejections", "mass rejections", "admission rejections", "attempts", "retries", "completed time"],
+  "gates": {
+    "committed_state_unchanged_after_all_probes": true,
+    "no_numerical_gate_or_production_change": true,
+    "fresh_process_replay": "Two independent executions must produce byte-identical JSON, including all participant/duration rows and the unchanged-state proof."
+  },
+  "interpretation_limit": "A shorter-duration isolated participant trial that completes is only a necessary component response observation. It does not show that the full native 50-column coupling service publishes at that duration or that a stable rain ramp reaches the target."
+}

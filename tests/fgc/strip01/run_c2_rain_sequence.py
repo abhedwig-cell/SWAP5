@@ -22,7 +22,21 @@ parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--flux-tolerance', type=float, default=1e-15,
                     help='research-only groundwater/SWAP coupling residual tolerance (m/s)')
 parser.add_argument('--max-coupling-iterations', type=int, default=40)
+parser.add_argument('--probe-c2b-columns', action='store_true',
+                    help='run exact-window discarded backend probes for all 50 C2B participants after C2a publication')
+parser.add_argument('--probe-durations-day', nargs='+', type=float, default=[0.001],
+                    help='durations for the discarded participant probe; requires --probe-c2b-columns')
+parser.add_argument('--probe-rates-cm-per-day', nargs='+', type=float, default=[0.1],
+                    help='fixed inward infiltration rates for discarded participant probes; requires --probe-c2b-columns')
 args = parser.parse_args()
+if args.probe_c2b_columns and args.real_context != 'c2a':
+    parser.error('--probe-c2b-columns requires --real-context c2a')
+if not args.probe_c2b_columns and (args.probe_durations_day != [0.001] or args.probe_rates_cm_per_day != [0.1]):
+    parser.error('probe sweep options require --probe-c2b-columns')
+if any(not np.isfinite(dt) or dt <= 0 for dt in args.probe_durations_day):
+    parser.error('--probe-durations-day values must be finite and positive')
+if any(not np.isfinite(rate) or rate < 0 for rate in args.probe_rates_cm_per_day):
+    parser.error('--probe-rates-cm-per-day values must be finite and nonnegative')
 sys.path.insert(0, str(args.root.resolve() / 'src/adapter'))
 from fmr_groundwater_application_runtime import FmrGroundwaterApplicationRuntime
 from modflow6_fgc34_ctypes_publisher import Fgc34CtypesPublisher
@@ -76,6 +90,7 @@ def main():
                   flux_tolerance_m_per_s=args.flux_tolerance,
                   max_coupling_iterations=args.max_coupling_iterations,
                   real_context=args.real_context,
+                  column_probe=args.probe_c2b_columns,
                   experiment='F-GC-STRIP01-C2-RAIN01',
                   preregistration='integration/f-gc/strip01/F-GC-STRIP01_C2_RAIN01_PREREGISTRATION.json')
     bridge = ctypes.CDLL(str(lib.resolve()))
@@ -166,6 +181,48 @@ def main():
             if set_rain(0.1) != 0:
                 raise RuntimeError('fixture rejected preregistered 0.1 cm/day precipitation update')
             print('C2A forcing update accepted', flush=True)
+            if args.probe_c2b_columns:
+                probe = bridge.strip01_diagnose_window_c
+                probe.restype = ctypes.c_int
+                probe.argtypes = [ctypes.c_int, ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_int,
+                                  ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_double),
+                                  ctypes.POINTER(ctypes.c_double)]
+                before = dict(profile_state_sha256=state_hash(), storage_m3=state()[0], revisions=state()[1],
+                              ledger_counts=counts())
+                rows = []
+                for rate in args.probe_rates_cm_per_day:
+                    if set_rain(rate) != 0:
+                        raise RuntimeError(f'fixture rejected diagnostic infiltration rate {rate} cm/day')
+                    for duration in args.probe_durations_day:
+                        for slot in range(1, 51):
+                            codes, values, completed = (ctypes.c_int * 12)(), (ctypes.c_double * 6)(), ctypes.c_double()
+                            probe_status = int(probe(slot, -1.0, 0.001, duration, 0,
+                                                     codes, values, ctypes.byref(completed)))
+                            rows.append(dict(rate_cm_per_day=rate, duration_day=duration, slot=slot,
+                                             call_status=probe_status, codes=list(codes),
+                                             observations=list(values), completed_t_day=completed.value))
+                if set_rain(0.1) != 0:
+                    raise RuntimeError('fixture rejected restoration of C2b 0.1 cm/day forcing')
+                after = dict(profile_state_sha256=state_hash(), storage_m3=state()[0], revisions=state()[1],
+                             ledger_counts=counts())
+                result['C2b_column_probes'] = dict(
+                    state_origin='after C2a commit; before C2b native application window',
+                    head_m=-1.0, t0_day=0.001, durations_day=args.probe_durations_day,
+                    top_infiltration_rates_cm_per_day=args.probe_rates_cm_per_day,
+                    tangent_requested=False,
+                    code_columns=['result_status', 'accepted_substeps', 'solver_rejections',
+                                  'temporal_rejections', 'mass_rejections', 'admission_rejections',
+                                  'attempts', 'retries', 'solver_status', 'temporal_status',
+                                  'temporal_available', 'head_budget_valid'],
+                    observation_columns=['temporal_head_inf_bound_cm', 'temporal_head_budget_cm',
+                                         'normalized_temporal_indicator', 'top_flux_cm_per_day',
+                                         'bottom_flux_cm_per_day', 'solver_equation_residual'],
+                    rows=rows, immutable_origin_before=before,
+                    immutable_origin_after=after, committed_origin_unchanged=before == after)
+                assert len(rows) == (50 * len(args.probe_durations_day) * len(args.probe_rates_cm_per_day))
+                assert all(row['call_status'] == 0 for row in rows)
+                assert result['C2b_column_probes']['committed_origin_unchanged']
+                print('C2b discarded participant probes completed for 50 columns', flush=True)
             next_handle, next_h1, next_h2 = ctypes.c_int64(), ctypes.c_double(), ctypes.c_double()
             result['advance_context_status'] = int(advance(ctypes.byref(next_handle), ctypes.byref(next_h1), ctypes.byref(next_h2)))
             print(f"C2A next-context status={result['advance_context_status']}", flush=True)
