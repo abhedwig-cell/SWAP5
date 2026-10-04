@@ -3,19 +3,19 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E repaired branch postimage at checkpoint c77dc4f47f921089e3c8e4b6e028937c4a409237; local source-hash prequalification only, not formal qualification",
+  "target_state": "PPA-WU05-E repaired source/transaction evidence postimage at branch checkpoint ccd8864af069e49355df08a5c983538b4a9ad55f; local source-hash prequalification only, not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "4ff634794a125175bcce426a316dce0444ddc2cac87bf4540e713171c711e1f4",
-    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "eb56abfebedc8e89f141cd0b64a52d61d477c13de781a3424885766f7b9b528c",
-    "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "2469a61298769e9aec6c15a0e47d4a0a1a54eaf6b5d459eaadcf4a92fd7993c3",
+    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "d7951fe286a0ae1fe8f116e92b4763bdef847e74791ccdb47b2914662fa92de9",
+    "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "2b35d45631980d30336cc8a70757a239f4d9a2c29d3d1ef3c659b47ee0743ea1",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
     "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
     "src/process/mod_solute_mobile_salt_state.f90": "a981169c421bbd095f467e1d95c953627db02e141fb79eaa20dfaa7be7ef1028",
     "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
-    "tests/fpm/run_ppa_wu05a8_real_richards.sh": "2c6b05e266dc8fd601fd6daa6ff02b763668a2653af4f4171ab4af3e083cb2b5",
-    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "f853c5ce1b79eb7b33947d42d283f8856c4ca285ceaad154fb646a9ccc113400",
+    "tests/fpm/run_ppa_wu05a8_real_richards.sh": "ae1fa53bb7c49df1ddcc1b4845a2005423ce29120cd27a0a14e4ec6b463a03de",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "a8c125be93f7fbc1554f34c2dda4b35dbc0e32d17f5cf63d4c568b63ea9ab719",
     "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "50ea99cf305881e868091dccd987a5feada756a42b8190f0378f8cb64b53e110",
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
@@ -34,8 +34,8 @@
     {
       "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
       "result": "PASS_O0_O2",
-      "scope": "Local isolated worktree plus exact branch overlays for the FMR runtime, restart layout/contract, A7 test, and A8 runner. Compiles the complete FMR module after restoring the source tail, exercises the disabled-salinity layout, accepted water substep trace with both halfsteps, exact qrot=2e-4 and continuity max residual 4.7628567756419216e-13 cm/day, fail-closed snow route, discard/replay and changed-forcing restart. Output matches O0/O2. The new v3 salt layout scaffolding remains inactive in this test and the backend rejects active salt trials.",
-      "execution": "Executed in /tmp/wu05e_latest_tree after overlaying exact current branch blobs; merged FMR source tail hash and each runtime/test/runner SHA-256 are pinned above. No GitHub Actions run."
+      "scope": "Exact current branch FMR/restart sources and A7 test/runner in an isolated worktree, with local canonical dependencies. The complete backend compiles at O0/O2; disabled route passes. A7 verifies accepted physical substep trace (2 halfsteps; max closure 4.7628567756419216e-13 cm/day), exact qrot=2e-4, snow fail-closed, discard/replay and changed-forcing restart. It also round-trips active salt mass through Restart v3, verifies clone identity and state/layout guards, rejects a v2 active-salt restore without target mutation, and accepts a v2 disabled-salt restore. Active salinity trials remain explicitly rejected by FMR.",
+      "execution": "Local O0/O2 run in /tmp/wu05e_latest_tree. Exact source blobs for runtime core, restart contract, Restart v3 adapter, fixed serialized backend, A7 test and A8 runner are pinned in source_sha256. The fixed backend was assembled from the current branch prefix and the complete local tail after detecting the uploaded truncation; the identical fixed file was then persisted to the PR branch. No Actions run."
     },
     {
       "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
