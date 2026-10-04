@@ -1,7 +1,8 @@
 # F-GC-STRIP01 C2E: proposed native-registry Dummy-SWAP A/B
 
-**Status:** `PROPOSED_FOR_DESIGN_REVIEW_NOT_AUTHORIZED`  
-**Baseline:** C2D closeout at `72d54b276639ecd6dac1213ce8b3e400fac38d25`  
+**Status:** `PROPOSED_FOR_DESIGN_REVIEW_NOT_AUTHORIZED`
+
+**Baseline:** C2D closeout at `72d54b276639ecd6dac1213ce8b3e400fac38d25`
 **Contract:** `integration/f-gc/strip01/F-GC-STRIP01_C2E_NATIVE_DUMMY_PREREGISTRATION.json`
 
 ## Why this is next
