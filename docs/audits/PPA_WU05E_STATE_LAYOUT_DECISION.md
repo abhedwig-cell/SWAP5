@@ -1,8 +1,8 @@
 # PPA-WU05-E state-layout design decision
 
-Date: 2026-10-04  
-Status: `WORK_UNIT_DESIGN_DECISION_PROPOSED_NOT_CANONICALLY_ADMITTED`  
-Work unit: `PPA-WU05-E`  
+Date: 2026-10-04
+Status: `WORK_UNIT_DESIGN_DECISION_PROPOSED_NOT_CANONICALLY_ADMITTED`
+Work unit: `PPA-WU05-E`
 Baseline: `integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b`
 
 ## Decision
