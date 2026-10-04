@@ -37,19 +37,22 @@ consumer of concentration derived from an accepted/trial salt state.
 
 ## Restricted coupled transport candidate
 
-`src/process/mod_solute_mobile_macro_salt_transport.f90` adds a stateless
-single-substep candidate over one matrix mobile domain and the traced macro
-domains. Matrix water is passed as volumetric content and multiplied by node
-thickness to obtain cm water per ground area; macro water is already in cm per
-ground area. Salt mass is mg/cm2 and donor concentration is derived from salt
-mass divided by start-of-substep water volume. Vertical flow, signed exchange,
-root TSCF removal, and explicit top/bottom concentration inputs for matrix and
-macro boundaries are booked in one separate salt ledger. All donors use the
-synchronized committed start state. A mismatch in water continuity, aggregate
-donor water overdraw, invalid or negative candidate inventory, or positive
-inventory paired with zero end water rejects the full candidate.
+`src/process/mod_solute_mobile_macro_salt_transport.f90` adds profile
+initialization, a read-only concentration view, and a stateless single-substep
+candidate over one matrix mobile domain and the traced macro domains. Matrix
+water is passed as volumetric content and multiplied by node thickness to
+obtain cm water per ground area; macro water is already in cm per ground area.
+Salt mass is mg/cm2 and concentration is always derived from matching mass and
+water volume. Initialization maps a declared matrix/domain concentration
+profile to separate matrix and per-domain inventories. Vertical flow, signed
+exchange, root TSCF removal, and explicit top/bottom concentration inputs for
+matrix and macro boundaries are booked in one separate salt ledger. All donors
+use the synchronized committed start state. A mismatch in water continuity,
+aggregate donor water overdraw, invalid or negative candidate inventory, or
+positive inventory paired with zero end water rejects the full candidate.
 
-The O0/O2 manufactured oracle covers nonzero vertical macro advection,
+The O0/O2 manufactured oracle covers matrix and domain profile initialization,
+rederived concentration identity and dry-state rejection, nonzero vertical macro advection,
 opposite-sign internal exchange, unequal node concentrations, explicit matrix
 top input and bottom output, a root TSCF receipt, total-salt closure, bad water
 closure, and nonfinite flow rejection. This is process-kernel evidence only:

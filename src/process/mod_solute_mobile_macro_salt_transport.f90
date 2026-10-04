@@ -20,9 +20,80 @@ module mod_solute_mobile_macro_salt_transport
     real(real64) :: closure_error_mg_cm2=0.0_real64
   end type
 
+  public :: initialize_mobile_macro_salt_state, derive_mobile_macro_salt_concentration
   public :: advance_mobile_macro_salt_trial
 
 contains
+
+  ! Initializes separate matrix and per-domain macro salt inventories from a
+  ! concentration profile and the matching accepted liquid-water volumes.
+  ! Matrix water is theta times node thickness; macro water is already depth.
+  subroutine initialize_mobile_macro_salt_state(node_thickness_cm,matrix_water_content,macro_water_cm, &
+       matrix_concentration_mg_cm3,macro_concentration_mg_cm3,state,status)
+    real(real64), intent(in) :: node_thickness_cm(:),matrix_water_content(:),macro_water_cm(:,:)
+    real(real64), intent(in) :: matrix_concentration_mg_cm3(:),macro_concentration_mg_cm3(:,:)
+    type(mobile_macro_salt_state_t), intent(out) :: state
+    integer, intent(out) :: status
+    integer :: n,nd
+
+    state=mobile_macro_salt_state_t();status=MACRO_SALT_INVALID
+    n=size(node_thickness_cm);nd=size(macro_water_cm,1)
+    if(n<=0.or.nd<=0.or.size(matrix_water_content)/=n.or.size(matrix_concentration_mg_cm3)/=n.or. &
+       size(macro_water_cm,2)/=n.or.any(shape(macro_concentration_mg_cm3)/=[nd,n]))return
+    if(.not.all(ieee_is_finite(node_thickness_cm)).or..not.all(ieee_is_finite(matrix_water_content)).or. &
+       .not.all(ieee_is_finite(macro_water_cm)).or..not.all(ieee_is_finite(matrix_concentration_mg_cm3)).or. &
+       .not.all(ieee_is_finite(macro_concentration_mg_cm3)))return
+    if(any(node_thickness_cm<=0.0_real64).or.any(matrix_water_content<0.0_real64).or. &
+       any(macro_water_cm<0.0_real64).or.any(matrix_concentration_mg_cm3<0.0_real64).or. &
+       any(macro_concentration_mg_cm3<0.0_real64))return
+    state%matrix_mass_mg_cm2=matrix_concentration_mg_cm3*matrix_water_content*node_thickness_cm
+    state%macro_mass_mg_cm2=macro_concentration_mg_cm3*macro_water_cm
+    if(any(.not.ieee_is_finite(state%matrix_mass_mg_cm2)).or. &
+       any(.not.ieee_is_finite(state%macro_mass_mg_cm2)))then
+      state=mobile_macro_salt_state_t();return
+    end if
+    status=MACRO_SALT_OK
+  end subroutine initialize_mobile_macro_salt_state
+
+  ! Builds a read-only concentration view from a matching candidate mass and
+  ! water state. Zero-water/zero-mass compartments report zero concentration;
+  ! positive inventory in a dry compartment is rejected.
+  subroutine derive_mobile_macro_salt_concentration(state,node_thickness_cm,matrix_water_content,macro_water_cm, &
+       matrix_concentration_mg_cm3,macro_concentration_mg_cm3,status)
+    type(mobile_macro_salt_state_t), intent(in) :: state
+    real(real64), intent(in) :: node_thickness_cm(:),matrix_water_content(:),macro_water_cm(:,:)
+    real(real64), allocatable, intent(out) :: matrix_concentration_mg_cm3(:),macro_concentration_mg_cm3(:,:)
+    integer, intent(out) :: status
+    real(real64), allocatable :: matrix_volume_cm(:)
+    integer :: n,nd
+
+    status=MACRO_SALT_INVALID
+    n=size(node_thickness_cm);nd=size(macro_water_cm,1)
+    if(n<=0.or.nd<=0.or.size(matrix_water_content)/=n.or.size(macro_water_cm,2)/=n)return
+    if(.not.allocated(state%matrix_mass_mg_cm2).or..not.allocated(state%macro_mass_mg_cm2))return
+    if(size(state%matrix_mass_mg_cm2)/=n.or.any(shape(state%macro_mass_mg_cm2)/=[nd,n]))return
+    if(.not.all(ieee_is_finite(node_thickness_cm)).or..not.all(ieee_is_finite(matrix_water_content)).or. &
+       .not.all(ieee_is_finite(macro_water_cm)).or..not.all(ieee_is_finite(state%matrix_mass_mg_cm2)).or. &
+       .not.all(ieee_is_finite(state%macro_mass_mg_cm2)))return
+    if(any(node_thickness_cm<=0.0_real64).or.any(matrix_water_content<0.0_real64).or. &
+       any(macro_water_cm<0.0_real64).or.any(state%matrix_mass_mg_cm2<0.0_real64).or. &
+       any(state%macro_mass_mg_cm2<0.0_real64))return
+    allocate(matrix_volume_cm(n))
+    matrix_volume_cm=matrix_water_content*node_thickness_cm
+    if(any(matrix_volume_cm<=tiny(1.0_real64).and.state%matrix_mass_mg_cm2>0.0_real64).or. &
+       any(macro_water_cm<=tiny(1.0_real64).and.state%macro_mass_mg_cm2>0.0_real64))return
+    allocate(matrix_concentration_mg_cm3(n),macro_concentration_mg_cm3(nd,n))
+    matrix_concentration_mg_cm3=0.0_real64;macro_concentration_mg_cm3=0.0_real64
+    where(matrix_volume_cm>tiny(1.0_real64)) &
+       matrix_concentration_mg_cm3=state%matrix_mass_mg_cm2/matrix_volume_cm
+    where(macro_water_cm>tiny(1.0_real64)) &
+       macro_concentration_mg_cm3=state%macro_mass_mg_cm2/macro_water_cm
+    if(any(.not.ieee_is_finite(matrix_concentration_mg_cm3)).or. &
+       any(.not.ieee_is_finite(macro_concentration_mg_cm3)))then
+      deallocate(matrix_concentration_mg_cm3,macro_concentration_mg_cm3);return
+    end if
+    status=MACRO_SALT_OK
+  end subroutine derive_mobile_macro_salt_concentration
 
   ! Conservative explicit-advection candidate for one accepted water substep.
   ! All mobile compartments use donor concentrations from the committed start

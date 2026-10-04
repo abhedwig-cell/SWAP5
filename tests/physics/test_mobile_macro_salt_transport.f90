@@ -3,21 +3,36 @@ program test_mobile_macro_salt_transport
   use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t
   use mod_solute_mobile_macro_salt_transport, only: mobile_macro_salt_receipt_t, &
+       initialize_mobile_macro_salt_state, derive_mobile_macro_salt_concentration, &
        advance_mobile_macro_salt_trial, MACRO_SALT_OK, MACRO_SALT_INVALID, MACRO_SALT_WATER_CLOSURE
   implicit none
-  type(mobile_macro_salt_state_t) :: accepted,candidate,rejected
+  type(mobile_macro_salt_state_t) :: accepted,candidate,rejected,initialized
   type(mobile_macro_salt_receipt_t) :: receipt
   real(real64) :: dz(2),theta0(2),theta1(2),macro0(1,2),macro1(1,2)
   real(real64) :: matrix_faces(3),macro_faces(1,3),exchange(1,2),root_sink(2)
   real(real64) :: macro_top(1),macro_bottom(1),total_before
+  real(real64) :: matrix_concentration(2),macro_concentration(1,2)
+  real(real64), allocatable :: derived_matrix_concentration(:),derived_macro_concentration(:,:)
   integer :: status
 
-  allocate(accepted%matrix_mass_mg_cm2(2),accepted%macro_mass_mg_cm2(1,2))
-  accepted%matrix_mass_mg_cm2=[1.0_real64,2.0_real64]
-  accepted%macro_mass_mg_cm2(1,:)=[0.5_real64,1.0_real64]
   dz=[10.0_real64,20.0_real64]
   theta0=[0.2_real64,0.25_real64]
   macro0(1,:)=[1.0_real64,2.0_real64]
+  matrix_concentration=[0.5_real64,0.4_real64]
+  macro_concentration(1,:)=[0.5_real64,0.5_real64]
+  call initialize_mobile_macro_salt_state(dz,theta0,macro0,matrix_concentration,macro_concentration, &
+       initialized,status)
+  call require(status==MACRO_SALT_OK,'separate matrix/macro profile initialization')
+  call close_to(initialized%matrix_mass_mg_cm2(1),1.0_real64,'matrix profile inventory')
+  call close_to(initialized%macro_mass_mg_cm2(1,2),1.0_real64,'domain profile inventory')
+  call derive_mobile_macro_salt_concentration(initialized,dz,theta0,macro0,derived_matrix_concentration, &
+       derived_macro_concentration,status)
+  call require(status==MACRO_SALT_OK,'derive concentration view from mass and water')
+  call require(maxval(abs(derived_matrix_concentration-matrix_concentration))<=1.0e-14_real64, &
+       'matrix concentration view identity')
+  call require(maxval(abs(derived_macro_concentration-macro_concentration))<=1.0e-14_real64, &
+       'domain concentration view identity')
+  accepted=initialized
   matrix_faces=0.0_real64
   macro_faces(1,:)=[0.0_real64,0.1_real64,0.0_real64]
   exchange(1,:)=[0.1_real64,-0.02_real64]
@@ -84,6 +99,14 @@ program test_mobile_macro_salt_transport
        rejected,receipt,status)
   call require(status==MACRO_SALT_INVALID,'nonfinite face rate rejection')
   call require(.not.allocated(rejected%macro_mass_mg_cm2),'invalid flow publishes no macro candidate')
+
+  ! Positive salt mass cannot be paired with dry water during concentration
+  ! derivation; concentration itself is not an independent authority.
+  macro0(1,1)=0.0_real64
+  call derive_mobile_macro_salt_concentration(initialized,dz,theta0,macro0,derived_matrix_concentration, &
+       derived_macro_concentration,status)
+  call require(status==MACRO_SALT_INVALID,'dry positive macro inventory rejected')
+  call require(.not.allocated(derived_macro_concentration),'dry state publishes no concentration view')
 
   write(*,'(a)') 'PPA_WU05E_MOBILE_MACRO_SALT_TRANSPORT=PASS'
 
