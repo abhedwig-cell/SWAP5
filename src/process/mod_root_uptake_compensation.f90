@@ -6,8 +6,14 @@ module mod_root_uptake_compensation
   private
 
   integer, parameter, public :: ROOT_COMP_OK=0, ROOT_COMP_INVALID=1, ROOT_COMP_UNSUPPORTED=2
-  integer, parameter, public :: ROOT_COMP_OFF=0, ROOT_COMP_JARVIS=1
+  integer, parameter, public :: ROOT_COMP_OFF=0, ROOT_COMP_JARVIS=1, ROOT_COMP_WALSUM=2
   integer, parameter, public :: ROOT_COMP_ALL=1, ROOT_COMP_DROUGHT=2, ROOT_COMP_OXYGEN=3
+
+  type, public :: root_walsum_geometry_t
+    real(real64) :: critical_root_zone_depth_cm=0.0_real64
+    real(real64) :: maximum_root_depth_cm=0.0_real64
+    real(real64) :: current_root_depth_cm=0.0_real64
+  end type
 
   type, public :: root_compensation_config_t
     integer :: method=ROOT_COMP_OFF
@@ -23,9 +29,47 @@ module mod_root_uptake_compensation
     real(real64) :: oxygen_reduction_total=0.0_real64
   end type
 
-  public :: compose_jarvis_root_uptake, attribute_root_stress_losses
+  public :: compose_jarvis_root_uptake, attribute_root_stress_losses, evaluate_walsum_geometry
 
 contains
+  subroutine evaluate_walsum_geometry(geometry,node_thickness_cm,alpha,deepest_node,status)
+    type(root_walsum_geometry_t),intent(in)::geometry
+    real(real64),intent(in)::node_thickness_cm(:)
+    real(real64),intent(out)::alpha
+    integer,intent(out)::deepest_node,status
+    real(real64)::bottom,rd,rdm,dcrit
+    integer::i
+    alpha=0.0_real64;deepest_node=0;status=ROOT_COMP_INVALID
+    rd=geometry%current_root_depth_cm;rdm=geometry%maximum_root_depth_cm
+    dcrit=geometry%critical_root_zone_depth_cm
+    if(.not.all(ieee_is_finite([rd,rdm,dcrit]))) return
+    if(rdm<=0.0_real64.or.dcrit<0.0_real64.or.rd<0.0_real64.or.rd>rdm) return
+    if(size(node_thickness_cm)==0) return
+    if(any(.not.ieee_is_finite(node_thickness_cm)).or.any(node_thickness_cm<=0.0_real64)) return
+    if(rd==0.0_real64) then
+      alpha=1.0_real64;status=ROOT_COMP_OK;return
+    end if
+    bottom=0.0_real64
+    do i=1,size(node_thickness_cm)
+      if(node_thickness_cm(i)>huge(bottom)-bottom) return
+      bottom=bottom+node_thickness_cm(i)
+      if(rd<=bottom) then
+        deepest_node=i
+        exit
+      end if
+    end do
+    if(deepest_node==0) return
+    ! Equivalent source formula, ordered to avoid overflow before min(...,1).
+    if(dcrit>=bottom) then
+      alpha=1.0_real64
+    else
+      if(bottom-dcrit>=rdm) return
+      alpha=1.0_real64-(bottom-dcrit)/rdm
+    end if
+    if(alpha<=0.0_real64) return
+    status=ROOT_COMP_OK
+  end subroutine
+
   subroutine attribute_root_stress_losses(potential,drought_sink,oxygen_factor,drought_loss,oxygen_loss,status)
     real(real64),intent(in)::potential(:),drought_sink(:),oxygen_factor(:)
     real(real64),intent(out)::drought_loss,oxygen_loss

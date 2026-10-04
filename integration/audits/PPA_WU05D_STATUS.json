@@ -2,9 +2,9 @@
   "schema": "swap5.ppa_wu05d.status.v2",
   "work_unit": "PPA-WU05-D",
   "title": "Compensated root-water-uptake authority",
-  "branch": "audit/ppa-wu05d-d1-reconcile-20261004",
-  "canonical_base": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
-  "status": "D2_QUALIFIED_BOUNDED_ADMISSION_PENDING_MERGE",
+  "branch": "work/ppa-wu05d-d3-walsum-20261004",
+  "canonical_base": "4fd57c8c8ed321baf6a74214a9720adc899e324d",
+  "status": "D2_CANONICAL_CLOSED_D3_IMPLEMENTATION",
   "production_source_mutation": true,
   "reference_mutation": false,
   "authority": {
@@ -49,13 +49,13 @@
   },
   "slices": {
     "D1": "SEMANTICS_RECONSTRUCTED_WITH_EXACT_IDENTITY_AND_INDEPENDENT_SOURCE_BOUND_CORROBORATION",
-    "D2": "QUALIFIED_BOUNDED_ADMISSION_PENDING_MERGE",
-    "D3": "HELD_UNTIL_D2_ADMISSION",
+    "D2": "CANONICAL_ADMITTED_CLOSED",
+    "D3": "TYPED_GEOMETRY_CONTRACT_PREREGISTERED",
     "D4": "DROUGHT_PLUS_ADMITTED_OXYGEN_QUALIFIED_WITH_D2_OTHER_STRESSORS_HELD",
     "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
   },
-  "production_admission": "NONE",
-  "next_action": "Merge qualified D2 PR1012 after final canonical reconciliation; persist canonical closeout and start D3 geometry contract.",
+  "production_admission": "D2_JARVIS_BOUNDED",
+  "next_action": "Implement and independently qualify typed Walsum geometry in existing execution chain",
   "d2": {
     "production_compositor": "src/process/mod_root_uptake_compensation.f90",
     "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
@@ -99,7 +99,9 @@
       "tests/physics/run_bartholomeus_application.py",
       "tests/physics/run_ppa_wu05d2_preservation.py"
     ],
-    "qualification_evidence": "integration/audits/PPA_WU05D_D2_QUALIFICATION.json"
+    "qualification_evidence": "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
+    "canonical_merge": "4fd57c8c8ed321baf6a74214a9720adc899e324d",
+    "canonical_pr": 1012
   },
   "checkpoint_commit": "26557cfdab5a66cc28b91dd51faa9682cccf3c98",
   "last_reconciled_head": "26557cfdab5a66cc28b91dd51faa9682cccf3c98",
