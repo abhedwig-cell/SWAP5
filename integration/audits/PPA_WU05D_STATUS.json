@@ -4,7 +4,7 @@
   "title": "Compensated root-water-uptake authority",
   "branch": "audit/ppa-wu05d-d1-reconcile-20261004",
   "canonical_base": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
-  "status": "D1_SOURCE_SEMANTICS_RECONSTRUCTED_D2_D3_RESEARCH_CONTRACT_READY",
+  "status": "D2_JARVIS_IMPLEMENTED_QUALIFICATION_QUEUED",
   "production_source_mutation": false,
   "reference_mutation": false,
   "authority": {
@@ -49,11 +49,30 @@
   },
   "slices": {
     "D1": "SEMANTICS_RECONSTRUCTED_WITH_EXACT_IDENTITY_AND_INDEPENDENT_SOURCE_BOUND_CORROBORATION",
-    "D2": "READY_FOR_PRODUCTION_COMPOSITOR_IMPLEMENTATION_AND_QUALIFICATION",
+    "D2": "PRODUCTION_COMPOSITOR_AND_STATELESS_EXECUTION_SEAM_IMPLEMENTED_QUALIFICATION_QUEUED",
     "D3": "RESEARCH_CONTRACT_READY_AFTER_D2",
     "D4": "HELD_ON_D1_AND_STRESSOR_ADMISSIONS",
     "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
   },
   "production_admission": "NONE",
-  "next_action": "Promote Jarvis compositor above existing root-uptake result, bind only admitted stress routes, and qualify OFF/drought/oxygen/retry/mass preservation. Then qualify Walsum geometry separately."
+  "next_action": "Await focused D2 O0/O2 run. On PASS add full Bartholomeus/OFF preservation composition gate and qualify D2 admission; then promote Walsum geometry as D3.",
+  "d2": {
+    "production_compositor": "src/process/mod_root_uptake_compensation.f90",
+    "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
+    "qualification_run": 37182953894,
+    "qualification_status": "QUEUED",
+    "supported_stressors": [
+      "all currently supplied admitted reductions",
+      "drought",
+      "oxygen"
+    ],
+    "fail_closed": [
+      "salinity",
+      "frost",
+      "Walsum until D3"
+    ],
+    "ownership": "single final root_water_uptake_flux_result_t; no second water receipt",
+    "continuation_state": "none",
+    "retry": "recompute from fresh uncompensated/base candidate"
+  }
 }
