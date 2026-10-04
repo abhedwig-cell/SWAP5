@@ -22,6 +22,19 @@ The smallest safe production integration must place the accepted salt mass in th
 | Crop root-input route | `src/runtime/mod_fmr_root_uptake_process_binding.f90` and `src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90`: shared crop uptake builds a hydraulic view from `kernel_committed_state_t` and evaluates uptake from that committed view. | Salinity concentration must be supplied from the matching committed/trial water state under a defined route. The current adapter has no salinity-state input. |
 | Root composition | `src/process/mod_root_uptake_compensation.f90`: D2 supports the admitted drought and oxygen selectors and attributes those losses; unsupported selectors fail closed. | No salinity term or combination rule is admitted. |
 | Salt prototype | `src/process/mod_solute_mobile_salt_state.f90`: mass is a standalone allocatable state; `advance_mobile_salt_trial` accepts water start/end arrays and root sink as arguments and returns a candidate. | Its candidate is not bound to the kernel's candidate provenance, transaction acceptance, or restart state. |
+| Richards water flux output | `src/solver/mod_soil_water_solver_contract.f90`: a solve result exposes top and bottom flux rates and candidate water content, but no internal face-flux vector. The FMR runtime supplies signed subsurface sources, drainage sinks, and the final `qrot` sink to the solve. | Internal net interval-mean face fluxes must be reconstructed conservatively before they can drive E1 salt transport. |
+
+## Conservative internal water-flux reconstruction
+
+The FMR runtime accounts positive input at the top as `-solver_top_flux` and positive outflow at the bottom as `-solver_bottom_flux` (`account_external_fluxes` in `src/runtime/mod_fmr_serialized_reference_backend.f90`). Thus a new salinity bridge using positive-downward coordinates maps the reported boundary rates to `q_down = -q_solver` at both ends.
+
+For node `i`, continuity gives the signed interval-mean internal face rate:
+
+`q_down(i+1) = q_down(i) + net_source(i) - (theta_end(i)-theta_start(i))*dz(i)/dt`
+
+Here `net_source = subsurface_irrigation - drainage - final_root_sink`; additional physical terms must be included before this identity is used when their routes are active. The independently reported Richards bottom flux closes the recurrence. A failed closure must reject the salt candidate rather than publish an invented profile.
+
+`src/process/mod_solute_water_face_flux_reconstruction.f90` now implements this continuity reconstruction as a pure fail-closed helper. Its manufactured test recovers downward, upward, and reversing internal fluxes and rejects inconsistent bottom closure, zero-duration, and nonfinite-boundary inputs at O0/O2. It has not yet been called by the live FMR runtime. The helper returns interval-mean net fluxes; the advection-only salt update still needs source review and qualification for this temporal discretization, and this reconstruction does not supply dispersive flux.
 
 ## State-layout design issue
 

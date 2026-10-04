@@ -88,6 +88,8 @@ The branch now contains `src/process/mod_solute_mobile_salt_state.f90` and `src/
 
 The second module independently implements the Maas-Hoffman switch-1 response with `CML` and `SALTMAX` in mg/cm3, `SALTSLOPE` in cm3/mg, and dimensionless bounded alpha. It has no state ownership and is not wired to Jarvis. Its unit tests exercise threshold, onset, partial reduction, zero floor, bounds, monotonicity, and invalid inputs. The exact B1.11 solute member text, production parameter limits, production runtime coupling, committed restart serialization, full balances under changing forcing, and stress-combination qualification remain open. These local prototypes establish implementation/test status only, not production qualification or canonical admission.
 
+`src/process/mod_solute_water_face_flux_reconstruction.f90` now provides a third independent helper. It reconstructs positive-downward net interval-mean Richards face flux from start/end water contents, node thickness, signed net node sources, timestep, and top flux; its recurrence is closed against the independently supplied bottom flux. The O0/O2 manufactured test covers downward, upward, and reversing fluxes plus bottom-closure and nonfinite-input rejection. This has not yet been bound to the live FMR runtime. For the current FMR sign convention, positive-downward boundary flux is `-solver_top_flux` and `-solver_bottom_flux`; the node source rate is `qssdi - sum(qdra) - final qrot`. Any route-specific term not included in that expression must fail closed before reconstruction is used.
+
 Each trial starts from committed salt mass. A rejected water/solute trial discards both candidates; retry recomputes both from committed state and the retry's water fluxes. Acceptance commits one water sink and the matching salt-state candidate. No stress function or Jarvis code owns salt mass. If the source-bound review shows this envelope cannot represent the selected B1.11 `CML` semantics, split the required physics into a new slice before widening it.
 
 ### E2: independently testable salinity response
@@ -132,7 +134,7 @@ With salinity disabled, preserve the admitted Feddes, Bartholomeus, D2 Jarvis, D
 - Persisted: reconstruction, restricted E1 contract, implementation, tests, and local prequalification manifest
 - Tested: focused O0/O2 local gates pass; this is not qualification
 - Qualified/admitted: no; canonical PR base still has no salinity implementation
-- Next action: implement the selected independent salt-layout identity, common physical-state component, clone coverage, and restart compatibility; then bind salt mass to actual accepted Richards substeps. Keep transport qualification and Jarvis integration behind that owner boundary.
+- Next action: bind the tested continuity reconstruction to a successful live Richards root-extraction step and verify its bottom closure with the exact final root sink and every active node source/sink. Then add the optional salt component and orthogonal restart layout to the same FMR physical state. Keep transport qualification and Jarvis integration behind those gates.
 
 ### Runtime transaction/restart audit (2026-10-04)
 

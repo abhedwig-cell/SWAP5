@@ -16,7 +16,14 @@ for O in 0 2; do
     tests/physics/test_root_salinity_response.f90 -o "$B/response-$O"
   "$B/response-$O" | tee "$B/response-output-$O"
   grep -Fq PPA_WU05E_ROOT_SALINITY_RESPONSE=PASS "$B/response-output-$O"
+  gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals \
+    -fcheck=all -O"$O" -J"$B" -I"$B" \
+    src/process/mod_solute_water_face_flux_reconstruction.f90 \
+    tests/physics/test_solute_water_face_flux_reconstruction.f90 -o "$B/water-face-$O"
+  "$B/water-face-$O" | tee "$B/water-face-output-$O"
+  grep -Fq PPA_WU05E_WATER_FACE_FLUX_RECONSTRUCTION=PASS "$B/water-face-output-$O"
 done
 cmp "$B/salt-output-0" "$B/salt-output-2"
 cmp "$B/response-output-0" "$B/response-output-2"
+cmp "$B/water-face-output-0" "$B/water-face-output-2"
 echo PPA_WU05E_MOBILE_SALT_O0_O2=PASS
