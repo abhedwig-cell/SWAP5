@@ -73,7 +73,7 @@ program test_mobile_salt_state
   ! Within-interval reversal cannot be reconstructed from a net mean flux.
   ! Ordered substeps use the updated lower-node donor concentration on reversal.
   block
-    type(mobile_salt_state_t) :: reversal_start,reversal_result,trace_candidate
+    type(mobile_salt_state_t) :: reversal_start,reversal_result,trace_replay,trace_candidate
     type(mobile_salt_substep_t) :: trace(2),bad_trace(2)
     type(mobile_salt_fluxes_t) :: trace_fluxes
     call initialize_mobile_salt_state([10.0_real64,10.0_real64],[0.4_real64,0.4_real64], &
@@ -96,6 +96,20 @@ program test_mobile_salt_state
     call req(abs(reversal_result%mass_mg_cm2(1)-35.0_real64-5.0_real64/9.0_real64)<tol, &
          'reversal uses updated donor concentration')
     call req(abs(trace_fluxes%closure_error_mg_cm2)<tol,'trace closure receipt')
+
+    ! A discarded trace can be replayed from the unchanged accepted state,
+    ! including after copying that state as a restart image.
+    call advance_mobile_salt_trace(reversal_start,[10.0_real64,10.0_real64],trace,0.0_real64, &
+         trace_replay,trace_fluxes,status)
+    call req(status==SOLUTE_OK,'trace retry from committed')
+    call req(maxval(abs(trace_replay%mass_mg_cm2-reversal_result%mass_mg_cm2))==0.0_real64, &
+         'trace replay mass identity')
+    restarted=reversal_start
+    call advance_mobile_salt_trace(restarted,[10.0_real64,10.0_real64],trace,0.0_real64, &
+         trace_replay,trace_fluxes,status)
+    call req(status==SOLUTE_OK,'trace restart replay')
+    call req(maxval(abs(trace_replay%mass_mg_cm2-reversal_result%mass_mg_cm2))==0.0_real64, &
+         'trace restart mass identity')
 
     ! The first step is valid but the second has inconsistent water closure.
     ! The API must not publish a partial candidate or accumulated receipt.
