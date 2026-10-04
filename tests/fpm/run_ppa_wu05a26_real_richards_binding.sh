@@ -58,6 +58,7 @@ MODULE_SRC=(
   src/solver/mod_b110_direct_retention_core.f90
   src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/process/mod_solute_water_face_flux_reconstruction.f90
   src/runtime/mod_rfm_matrix_source_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/process/mod_restricted_surface_evaporation.f90
@@ -83,6 +84,12 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" | tee "$OUT/out.txt"
   grep -Fq 'PPA_WU05A26_REAL_RICHARDS_BINDING=PASS' "$OUT/out.txt"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fpm/test_ppa_wu05e_real_water_face_closure.f90 -o "$OUT/water_face_test.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/water_face_test.o" -o "$OUT/water_face_test"
+  "$OUT/water_face_test" | tee "$OUT/water_face_out.txt"
+  grep -Fq 'PPA_WU05E_REAL_RICHARDS_WATER_FACE_CLOSURE=PASS' "$OUT/water_face_out.txt"
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
+cmp "$BUILD/o0/water_face_out.txt" "$BUILD/o2/water_face_out.txt"
 echo "PPA_WU05A26_REAL_RICHARDS_BINDING_GATE=PASS"
