@@ -8,7 +8,7 @@ mkdir -p "$build"
 for opt in 0 2; do
   mkdir -p "$build/o$opt"
   gfortran -std=f2008 -O"$opt" -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all \
-    "$root/tests/physics/ppa_wu05e_mobile_macropore_exchange_oracle.f90" \
+    "$root/src/process/mod_solute_macropore_exchange.f90" \
     "$root/tests/physics/test_mobile_macropore_salt_exchange_oracle.f90" \
     -o "$build/o$opt/test_exchange"
   "$build/o$opt/test_exchange" > "$build/o$opt/result.txt"
