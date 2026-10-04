@@ -13,6 +13,84 @@ module mod_fmr_groundwater_participant_registry
   implicit none
   private
 
+  ! Additive research/test seam for exercising the native F-GC49D registry
+  ! without encoding test state in SWAP's physical committed-state type.
+  ! The production bootstrap does not construct this interface.
+  type, abstract, public :: fmr_groundwater_test_participant_t
+  contains
+    procedure(fmr_test_bind_identity_ifc), deferred, public :: bind_identity
+    procedure(fmr_test_capture_origin_ifc), deferred, public :: capture_origin
+    procedure(fmr_test_trial_ifc), deferred, public :: trial_from_origin
+    procedure(fmr_test_discard_ifc), deferred, public :: discard_candidate
+    procedure(fmr_test_abandon_ifc), deferred, public :: abandon_origin
+    procedure(fmr_test_ready_ifc), deferred, public :: publication_ready
+    procedure(fmr_test_commit_ifc), deferred, public :: commit_candidate
+    procedure(fmr_test_identity_ifc), deferred, public :: identity
+    procedure(fmr_test_has_candidate_ifc), deferred, public :: has_live_candidate
+  end type fmr_groundwater_test_participant_t
+
+  abstract interface
+    subroutine fmr_test_bind_identity_ifc(self, tile_id, status)
+      import :: fmr_groundwater_test_participant_t, int64
+      class(fmr_groundwater_test_participant_t), intent(inout) :: self
+      integer(int64), intent(in) :: tile_id
+      integer, intent(out) :: status
+    end subroutine fmr_test_bind_identity_ifc
+
+    subroutine fmr_test_capture_origin_ifc(self, status)
+      import :: fmr_groundwater_test_participant_t
+      class(fmr_groundwater_test_participant_t), intent(inout) :: self
+      integer, intent(out) :: status
+    end subroutine fmr_test_capture_origin_ifc
+
+    subroutine fmr_test_trial_ifc(self, window, prescribed_head_m, trial, status)
+      import :: fmr_groundwater_test_participant_t, groundwater_coupling_window_t, groundwater_swap_trial_t, real64
+      class(fmr_groundwater_test_participant_t), intent(inout) :: self
+      type(groundwater_coupling_window_t), intent(in) :: window
+      real(real64), intent(in) :: prescribed_head_m
+      type(groundwater_swap_trial_t), intent(out) :: trial
+      integer, intent(out) :: status
+    end subroutine fmr_test_trial_ifc
+
+    subroutine fmr_test_discard_ifc(self)
+      import :: fmr_groundwater_test_participant_t
+      class(fmr_groundwater_test_participant_t), intent(inout) :: self
+    end subroutine fmr_test_discard_ifc
+
+    subroutine fmr_test_abandon_ifc(self, status)
+      import :: fmr_groundwater_test_participant_t
+      class(fmr_groundwater_test_participant_t), intent(inout) :: self
+      integer, intent(out) :: status
+    end subroutine fmr_test_abandon_ifc
+
+    logical function fmr_test_ready_ifc(self, window)
+      import :: fmr_groundwater_test_participant_t, groundwater_coupling_window_t
+      class(fmr_groundwater_test_participant_t), intent(in) :: self
+      type(groundwater_coupling_window_t), intent(in) :: window
+    end function fmr_test_ready_ifc
+
+    subroutine fmr_test_commit_ifc(self, window, did_commit, status)
+      import :: fmr_groundwater_test_participant_t, groundwater_coupling_window_t
+      class(fmr_groundwater_test_participant_t), intent(inout) :: self
+      type(groundwater_coupling_window_t), intent(in) :: window
+      logical, intent(out) :: did_commit
+      integer, intent(out) :: status
+    end subroutine fmr_test_commit_ifc
+
+    subroutine fmr_test_identity_ifc(self, lineage_id, revision, has_origin, has_candidate)
+      import :: fmr_groundwater_test_participant_t, int64
+      class(fmr_groundwater_test_participant_t), intent(in) :: self
+      integer(int64), intent(out) :: lineage_id, revision
+      logical, intent(out) :: has_origin, has_candidate
+    end subroutine fmr_test_identity_ifc
+
+    logical function fmr_test_has_candidate_ifc(self)
+      import :: fmr_groundwater_test_participant_t
+      class(fmr_groundwater_test_participant_t), intent(in) :: self
+    end function fmr_test_has_candidate_ifc
+  end interface
+
+
   integer, parameter, public :: FMR_GW_REGISTRY_OK = 0
   integer, parameter, public :: FMR_GW_REGISTRY_NOT_INITIALIZED = 1
   integer, parameter, public :: FMR_GW_REGISTRY_INVALID_REQUEST = 2
@@ -30,6 +108,7 @@ module mod_fmr_groundwater_participant_registry
     integer(int64) :: handle_id = 0_int64
     integer(int64) :: tile_id = 0_int64
     type(fmr_groundwater_swap_participant_t) :: participant
+    class(fmr_groundwater_test_participant_t), pointer :: test_participant => null()
     type(fmr_serialized_reference_backend_t), pointer :: backend => null()
     type(fmr_serialized_reference_backend_t), pointer :: candidate_backend => null()
     type(fmr_b110_physical_parameters_t), pointer :: parameters => null()
@@ -52,6 +131,7 @@ module mod_fmr_groundwater_participant_registry
     procedure, public :: initialize => registry_initialize
     procedure, public :: bind => registry_bind
     procedure, public :: bind_prevalidated_fresh => registry_bind_prevalidated_fresh
+    procedure, public :: bind_test_participant => registry_bind_test_participant
     procedure, public :: release => registry_release
     procedure, public :: capture_origin => registry_capture_origin
     procedure, public :: trial_from_origin => registry_trial_from_origin
@@ -131,6 +211,66 @@ contains
     call registry_bind_impl(self, tile_id, backend, column, template, parameters, committed, materializer, &
          numerical, datum, handle, status, immutable_parameters, temporal_budget_policy, .true., .true.)
   end subroutine registry_bind_prevalidated_fresh
+
+  ! Research-only binding path. The production application bootstrap continues
+  ! to use bind/bind_prevalidated_fresh and never constructs a test participant.
+  subroutine registry_bind_test_participant(self, tile_id, participant, handle, status)
+    class(fmr_groundwater_participant_registry_t), intent(inout) :: self
+    integer(int64), intent(in) :: tile_id
+    class(fmr_groundwater_test_participant_t), target, intent(inout) :: participant
+    integer(int64), intent(out) :: handle
+    integer, intent(out) :: status
+
+    integer :: i, slot, participant_status
+
+    handle = 0_int64
+    status = FMR_GW_REGISTRY_NOT_INITIALIZED
+    if (.not. self%initialized .or. .not. allocated(self%slots)) return
+    status = FMR_GW_REGISTRY_INVALID_REQUEST
+    if (tile_id <= 0_int64) return
+
+    do i = 1, size(self%slots)
+      if (.not. self%slots(i)%active) cycle
+      if (self%slots(i)%tile_id == tile_id) then
+        status = FMR_GW_REGISTRY_DUPLICATE_TILE
+        return
+      end if
+    end do
+    slot = 0
+    do i = 1, size(self%slots)
+      if (.not. self%slots(i)%used) then
+        slot = i
+        exit
+      end if
+    end do
+    if (slot == 0) then
+      status = FMR_GW_REGISTRY_CAPACITY_EXHAUSTED
+      return
+    end if
+    if (self%next_handle <= 0_int64 .or. self%next_handle == huge(0_int64)) then
+      status = FMR_GW_REGISTRY_HANDLE_EXHAUSTED
+      return
+    end if
+
+    call participant%bind_identity(tile_id, participant_status)
+    if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
+      status = FMR_GW_REGISTRY_INVALID_REQUEST
+      return
+    end if
+    self%slots(slot)%used = .true.
+    self%slots(slot)%active = .true.
+    self%slots(slot)%handle_id = self%next_handle
+    self%slots(slot)%tile_id = tile_id
+    self%slots(slot)%test_participant => participant
+    nullify(self%slots(slot)%backend)
+    nullify(self%slots(slot)%candidate_backend)
+    nullify(self%slots(slot)%parameters)
+    nullify(self%slots(slot)%committed)
+    nullify(self%slots(slot)%materializer)
+    handle = self%next_handle
+    self%next_handle = self%next_handle + 1_int64
+    status = FMR_GW_REGISTRY_OK
+  end subroutine registry_bind_test_participant
 
   subroutine registry_bind_impl(self, tile_id, backend, column, template, parameters, committed, materializer, &
        numerical, datum, handle, status, immutable_parameters, temporal_budget_policy, &
@@ -239,7 +379,12 @@ contains
     call resolve_handle(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
 
-    if (self%slots(idx)%participant%has_live_candidate()) then
+    if (associated(self%slots(idx)%test_participant)) then
+      if (self%slots(idx)%test_participant%has_live_candidate()) then
+        status = FMR_GW_REGISTRY_RELEASE_BUSY
+        return
+      end if
+    else if (self%slots(idx)%participant%has_live_candidate()) then
       status = FMR_GW_REGISTRY_RELEASE_BUSY
       return
     end if
@@ -247,6 +392,7 @@ contains
     self%slots(idx)%active = .false.
     nullify(self%slots(idx)%backend)
     nullify(self%slots(idx)%candidate_backend)
+    nullify(self%slots(idx)%test_participant)
     nullify(self%slots(idx)%parameters)
     nullify(self%slots(idx)%committed)
     nullify(self%slots(idx)%materializer)
@@ -264,6 +410,15 @@ contains
     participant_status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
     call resolve_handle(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
+    if (associated(self%slots(idx)%test_participant)) then
+      call self%slots(idx)%test_participant%capture_origin(participant_status)
+      if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
+        status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
+        return
+      end if
+      status = FMR_GW_REGISTRY_OK
+      return
+    end if
     if (.not. associated(self%slots(idx)%committed)) then
       status = FMR_GW_REGISTRY_INVALID_REQUEST
       return
@@ -293,6 +448,15 @@ contains
     participant_status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
     call resolve_handle(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
+    if (associated(self%slots(idx)%test_participant)) then
+      call self%slots(idx)%test_participant%trial_from_origin(window, prescribed_head_m, trial, participant_status)
+      if (participant_status /= GW_SWAP_PARTICIPANT_OK .or. .not. trial%valid) then
+        status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
+        return
+      end if
+      status = FMR_GW_REGISTRY_OK
+      return
+    end if
     if (.not. slot_associations_ready(self%slots(idx))) then
       status = FMR_GW_REGISTRY_INVALID_REQUEST
       return
@@ -319,6 +483,10 @@ contains
     participant_status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
     call resolve_handle(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
+    if (associated(self%slots(idx)%test_participant)) then
+      status = FMR_GW_REGISTRY_INVALID_REQUEST
+      return
+    end if
     if (.not. slot_associations_ready(self%slots(idx))) then
       status = FMR_GW_REGISTRY_INVALID_REQUEST
       return
@@ -358,6 +526,11 @@ contains
 
     call resolve_handle(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
+    if (associated(self%slots(idx)%test_participant)) then
+      call self%slots(idx)%test_participant%discard_candidate()
+      status = FMR_GW_REGISTRY_OK
+      return
+    end if
     if (.not. associated(self%slots(idx)%candidate_backend)) then
       status = FMR_GW_REGISTRY_INVALID_REQUEST
       return
@@ -377,6 +550,15 @@ contains
 
     call resolve_handle(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
+    if (associated(self%slots(idx)%test_participant)) then
+      call self%slots(idx)%test_participant%abandon_origin(participant_status)
+      if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
+        status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
+        return
+      end if
+      status = FMR_GW_REGISTRY_OK
+      return
+    end if
     call self%slots(idx)%participant%abandon_origin(participant_status)
     if (participant_status /= GW_SWAP_PARTICIPANT_OK) then
       status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
@@ -397,6 +579,11 @@ contains
     ready = .false.
     call resolve_handle_const(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
+    if (associated(self%slots(idx)%test_participant)) then
+      ready = self%slots(idx)%test_participant%publication_ready(window)
+      status = FMR_GW_REGISTRY_OK
+      return
+    end if
     if (.not. associated(self%slots(idx)%committed)) then
       status = FMR_GW_REGISTRY_INVALID_REQUEST
       return
@@ -420,6 +607,16 @@ contains
     participant_status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
     call resolve_handle(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
+    if (associated(self%slots(idx)%test_participant)) then
+      call self%slots(idx)%test_participant%commit_candidate(window, did_commit, participant_status)
+      if (.not. did_commit .or. participant_status /= GW_SWAP_PARTICIPANT_OK) then
+        did_commit = .false.
+        status = FMR_GW_REGISTRY_PARTICIPANT_FAILED
+        return
+      end if
+      status = FMR_GW_REGISTRY_OK
+      return
+    end if
     if (.not. associated(self%slots(idx)%candidate_backend) .or. .not. associated(self%slots(idx)%committed)) then
       status = FMR_GW_REGISTRY_INVALID_REQUEST
       return
@@ -449,6 +646,10 @@ contains
     available = .false.
     call resolve_handle_const(self, handle, idx, status)
     if (status /= FMR_GW_REGISTRY_OK) return
+    if (associated(self%slots(idx)%test_participant)) then
+      status = FMR_GW_REGISTRY_OK
+      return
+    end if
     call self%slots(idx)%participant%pretrial_cost_proxy(cost, available)
     status = FMR_GW_REGISTRY_OK
   end subroutine registry_pretrial_cost_proxy
@@ -472,6 +673,11 @@ contains
     if (status /= FMR_GW_REGISTRY_OK) return
 
     tile_id = self%slots(idx)%tile_id
+    if (associated(self%slots(idx)%test_participant)) then
+      call self%slots(idx)%test_participant%identity(lineage_id, revision, has_origin, has_candidate)
+      status = FMR_GW_REGISTRY_OK
+      return
+    end if
     has_origin = self%slots(idx)%participant%has_origin()
     has_candidate = self%slots(idx)%participant%has_live_candidate()
     if (has_origin) then
@@ -505,6 +711,13 @@ contains
     if (.not. self%initialized .or. .not. allocated(self%slots)) return
     do i = 1, size(self%slots)
       if (.not. self%slots(i)%active) cycle
+      if (associated(self%slots(i)%test_participant)) then
+        if (self%slots(i)%test_participant%has_live_candidate()) then
+          quiescent = .false.
+          return
+        end if
+        cycle
+      end if
       if (self%slots(i)%participant%has_live_candidate()) then
         quiescent = .false.
         return
