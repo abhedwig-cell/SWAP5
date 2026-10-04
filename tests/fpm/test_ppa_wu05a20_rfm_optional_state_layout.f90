@@ -4,7 +4,7 @@ program test_ppa_wu05a20_rfm_optional_state_layout
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_RFM, fmr_optional_state_layout_known, &
        FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_OPTIONAL_STATE_LAYOUT_BASE, fmr_template_t
+       FMR_OPTIONAL_STATE_LAYOUT_BASE, fmr_template_t, fmr_solute_state_layout_known
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_rfm_state_t, &
        fmr_new_b110_rfm_committed_state
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
