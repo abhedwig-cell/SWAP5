@@ -106,6 +106,10 @@ def run(lib_path: Path, mf6_path: Path, out: Path, mode: str, conductance: float
     out.mkdir(parents=True, exist_ok=True)
     if mode == "zero":
         dts, rain = [0.25] * 4, [0.0] * 4
+    elif mode == "c2b-match":
+        # Mirror C2B's native 2-period hydrostatic-then-rain window exactly:
+        # 0.001-day equilibrium, then 0.1 cm/day (=0.001 m/day) infiltration.
+        dts, rain = [0.001, 0.001], [0.0, 0.001]
     else:
         dts, rain = [0.25] * 80 + [0.25] * 40, [0.001] * 80 + [0.0] * 40
 
@@ -347,7 +351,7 @@ def main():
     parser.add_argument("--library", type=Path, required=True)
     parser.add_argument("--libmf6", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--mode", choices=["zero", "pulse"], default="zero")
+    parser.add_argument("--mode", choices=["zero", "pulse", "c2b-match"], default="zero")
     parser.add_argument("--conductance", type=float, default=1.0e6)
     parser.add_argument("--flux-tolerance", type=float, default=FLUX_TOL)
     parser.add_argument("--rejection-control", action="store_true")
