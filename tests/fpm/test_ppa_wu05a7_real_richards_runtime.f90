@@ -31,6 +31,7 @@ program test_ppa_wu05a7_real_richards_runtime
        fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
+  use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
@@ -163,6 +164,7 @@ program test_ppa_wu05a7_real_richards_runtime
   if(.not.macro%same_values(macro_snapshot))error stop 'A7 real accepted macro mutated'
 
   call exercise_serialized_fmr()
+  call exercise_serialized_fmr(.true.)
 
   write(*,'(*(g0))') 'PPA_WU05A7_REAL_RICHARDS|OUTER_IT=',result%outer_iterations, &
        '|QEXC=',sum(result%exchange_rate_node), &
@@ -172,9 +174,11 @@ program test_ppa_wu05a7_real_richards_runtime
 
 contains
 
-  subroutine exercise_serialized_fmr()
+  subroutine exercise_serialized_fmr(trace_mode)
+    logical, intent(in), optional :: trace_mode
     type(fmr_serialized_reference_backend_t) :: backend, restored_backend
     type(fmr_serialized_physical_observation_t) :: fmr_observation
+    type(fmr_serialized_physical_observation_t) :: replay_observation, next_observation, restored_next_observation
     type(fmr_b110_physical_parameters_t), target :: fparams
     type(fmr_b110_physical_forcing_t) :: forcing
     type(fmr_b110_physical_state_t) :: initial
@@ -191,9 +195,16 @@ contains
     class(transaction_state_t), allocatable :: before_state, after_trial_state, candidate_state, replay_state, &
          restored_state, next_state, restored_next_state
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
-    integer :: commit_status, persistence_status
+    logical :: trace_requested
+    integer :: commit_status, persistence_status, trace_i, trace_status
+    real(real64), allocatable :: trace_faces(:)
+    real(real64) :: trace_closure, max_trace_closure
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
-    real(real64), parameter :: fmr_dt=1.0e-3_real64
+    real(real64) :: fmr_dt
+
+    trace_requested=.false.
+    if(present(trace_mode)) trace_requested=trace_mode
+    fmr_dt=1.0e-3_real64
 
     fparams%parameter_set_id=lineage
     fparams%active_nodes=numnod
@@ -277,8 +288,21 @@ contains
     call committed%snapshot(before_state,available)
     if(.not.available)error stop 'A8 FMR before snapshot'
 
+    if(trace_requested) then
+      fparams%snow_active=.true.
+      call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
+           kres,candidate,kdiag,trusted_prepared_parameters=.true.,trace_accepted_water_flux_substeps=.true.)
+      if(kres%completed.or.candidate%ready()) error stop 'unsupported FMR trace route did not fail closed'
+      call committed%snapshot(after_trial_state,available)
+      if(.not.available.or..not.same_fmr_state(before_state,after_trial_state)) &
+           error stop 'unsupported FMR trace mutated committed state'
+      fparams%snow_active=.false.
+      print '(a)','PPA_WU05E_FMR_UNSUPPORTED_TRACE_ROUTE=FAIL_CLOSED'
+    end if
+
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
-         kres,candidate,kdiag,trusted_prepared_parameters=.true.)
+         kres,candidate,kdiag,trusted_prepared_parameters=.true., &
+         trace_accepted_water_flux_substeps=trace_requested)
     fmr_observation=backend%observation()
     write(*,'(*(g0))') 'PPA_WU05A8_FMR_TRIAL_DIAG|STATUS=',kres%status,'|COMPLETED=',kres%completed, &
          '|TEMP_SOURCE=',kdiag%temporal_acceptance_source,'|TEMP_REJ=',kdiag%temporal_rejections, &
@@ -292,6 +316,30 @@ contains
     if(.not.kres%mass%complete .or. abs(kres%mass%residual)>1.0e-8_real64)error stop 'A8 FMR mass receipt'
     if(kdiag%temporal_acceptance_source/=TX_TEMPORAL_EXTERNAL_FULL_HALF) &
          error stop 'A8 FMR temporal acceptance source'
+    if(trace_requested) then
+      if(.not.fmr_observation%accepted_water_flux_trace_available .or. &
+          .not.allocated(fmr_observation%accepted_water_flux_substeps)) error stop 'FMR accepted flux trace missing'
+      if(size(fmr_observation%accepted_water_flux_substeps)<2) error stop 'FMR trace omitted accepted half steps'
+      max_trace_closure=0.0_real64
+      do trace_i=1,size(fmr_observation%accepted_water_flux_substeps)
+        if(abs(sum(fmr_observation%accepted_water_flux_substeps(trace_i)%root_sink)- &
+             sum(forcing%root_extraction_sink))>1.0e-16_real64) error stop 'FMR trace lost final qrot'
+        call reconstruct_interval_water_face_flux(dz(1:numnod), &
+             fmr_observation%accepted_water_flux_substeps(trace_i)%water_start, &
+             fmr_observation%accepted_water_flux_substeps(trace_i)%water_end, &
+             fmr_observation%accepted_water_flux_substeps(trace_i)%net_node_source, &
+             -fmr_observation%accepted_water_flux_substeps(trace_i)%top_flux, &
+             -fmr_observation%accepted_water_flux_substeps(trace_i)%bottom_flux, &
+             fmr_observation%accepted_water_flux_substeps(trace_i)%t1- &
+             fmr_observation%accepted_water_flux_substeps(trace_i)%t0,1.0e-8_real64, &
+             trace_faces,trace_closure,trace_status)
+        if(trace_status/=WATER_FACE_FLUX_OK) error stop 'FMR accepted physical-substep face closure'
+        max_trace_closure=max(max_trace_closure,abs(trace_closure))
+      end do
+      if(max_trace_closure>1.0e-8_real64) error stop 'FMR accepted trace closure tolerance'
+      write(*,'(*(g0))') 'PPA_WU05E_FMR_ACCEPTED_SUBSTEP_TRACE=PASS|COUNT=', &
+           size(fmr_observation%accepted_water_flux_substeps),'|MAX_CLOSURE=',max_trace_closure
+    end if
 
     call committed%snapshot(after_trial_state,available)
     if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &
@@ -305,7 +353,13 @@ contains
          error stop 'A8 FMR discard mutated committed state'
 
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
-         replay_result,replay_candidate,replay_diag,trusted_prepared_parameters=.true.)
+         replay_result,replay_candidate,replay_diag,trusted_prepared_parameters=.true., &
+         trace_accepted_water_flux_substeps=trace_requested)
+    if(trace_requested) then
+      replay_observation=backend%observation()
+      if(.not.same_accepted_water_flux_trace(fmr_observation,replay_observation)) &
+           error stop 'FMR accepted flux trace replay identity'
+    end if
     if(.not.replay_result%completed .or. .not.replay_candidate%ready())error stop 'A8 FMR checkpoint replay'
     call replay_candidate%snapshot(replay_state,available)
     if(.not.available .or. .not.same_fmr_state(candidate_state,replay_state))error stop 'A8 FMR replay identity'
@@ -338,22 +392,66 @@ contains
     call restored_backend%configure_macropore_policy(policy,policy_ok)
     if(.not.policy_ok)error stop 'A8 FMR restored policy'
 
+    if(trace_requested) forcing%root_extraction_sink(numnod)=1.5e-4_real64
+
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,fmr_dt,2.0_real64*fmr_dt,checkpoint, &
-         next_result,next_candidate,next_diag,trusted_prepared_parameters=.true.)
+         next_result,next_candidate,next_diag,trusted_prepared_parameters=.true., &
+         trace_accepted_water_flux_substeps=trace_requested)
+    next_observation=backend%observation()
     call restored_backend%run_trial(column,template,fparams,restored,forcing,numerical,fmr_dt,2.0_real64*fmr_dt, &
          restored_checkpoint,restored_next_result,restored_next_candidate,restored_next_diag, &
-         trusted_prepared_parameters=.true.)
+         trusted_prepared_parameters=.true.,trace_accepted_water_flux_substeps=trace_requested)
+    restored_next_observation=restored_backend%observation()
     if(.not.next_result%completed .or. .not.restored_next_result%completed)error stop 'A8 FMR restart continuation'
     call next_candidate%snapshot(next_state,available)
     if(.not.available)error stop 'A8 FMR next candidate'
     call restored_next_candidate%snapshot(restored_next_state,available)
     if(.not.available .or. .not.same_fmr_state(next_state,restored_next_state)) &
          error stop 'A8 FMR restart next-candidate replay'
+    if(trace_requested) then
+      if(.not.same_accepted_water_flux_trace(next_observation,restored_next_observation)) &
+           error stop 'FMR changed-forcing restart trace identity'
+    end if
 
     print '(a)', 'PPA_WU05A8_FMR_SERIALIZED_RUNTIME=PASS'
     print '(a)', 'PPA_WU05A8_FMR_REJECT_REPLAY=PASS'
     print '(a)', 'PPA_WU05A8_FMR_RESTART=PASS'
   end subroutine exercise_serialized_fmr
+
+  logical function same_accepted_water_flux_trace(a,b) result(same)
+    type(fmr_serialized_physical_observation_t), intent(in) :: a,b
+    integer :: i
+    same=.false.
+    if(a%accepted_water_flux_trace_available .neqv. b%accepted_water_flux_trace_available) return
+    if(.not.a%accepted_water_flux_trace_available) return
+    if(.not.allocated(a%accepted_water_flux_substeps) .or. .not.allocated(b%accepted_water_flux_substeps)) return
+    if(size(a%accepted_water_flux_substeps)/=size(b%accepted_water_flux_substeps)) return
+    do i=1,size(a%accepted_water_flux_substeps)
+      if(transfer(a%accepted_water_flux_substeps(i)%t0,0_int64)/= &
+         transfer(b%accepted_water_flux_substeps(i)%t0,0_int64)) return
+      if(transfer(a%accepted_water_flux_substeps(i)%t1,0_int64)/= &
+         transfer(b%accepted_water_flux_substeps(i)%t1,0_int64)) return
+      if(transfer(a%accepted_water_flux_substeps(i)%top_flux,0_int64)/= &
+         transfer(b%accepted_water_flux_substeps(i)%top_flux,0_int64)) return
+      if(transfer(a%accepted_water_flux_substeps(i)%bottom_flux,0_int64)/= &
+         transfer(b%accepted_water_flux_substeps(i)%bottom_flux,0_int64)) return
+      if(any(transfer(a%accepted_water_flux_substeps(i)%water_start,[0_int64],numnod)/= &
+             transfer(b%accepted_water_flux_substeps(i)%water_start,[0_int64],numnod))) return
+      if(any(transfer(a%accepted_water_flux_substeps(i)%water_end,[0_int64],numnod)/= &
+             transfer(b%accepted_water_flux_substeps(i)%water_end,[0_int64],numnod))) return
+      if(any(transfer(a%accepted_water_flux_substeps(i)%subsurface_source,[0_int64],numnod)/= &
+             transfer(b%accepted_water_flux_substeps(i)%subsurface_source,[0_int64],numnod))) return
+      if(any(transfer(a%accepted_water_flux_substeps(i)%drainage_sink,[0_int64],numnod)/= &
+             transfer(b%accepted_water_flux_substeps(i)%drainage_sink,[0_int64],numnod))) return
+      if(any(transfer(a%accepted_water_flux_substeps(i)%root_sink,[0_int64],numnod)/= &
+             transfer(b%accepted_water_flux_substeps(i)%root_sink,[0_int64],numnod))) return
+      if(any(transfer(a%accepted_water_flux_substeps(i)%net_node_source,[0_int64],numnod)/= &
+             transfer(b%accepted_water_flux_substeps(i)%net_node_source,[0_int64],numnod))) return
+      if(any(transfer(a%accepted_water_flux_substeps(i)%macropore_matrix_exchange,[0_int64],numnod)/= &
+             transfer(b%accepted_water_flux_substeps(i)%macropore_matrix_exchange,[0_int64],numnod))) return
+    end do
+    same=.true.
+  end function same_accepted_water_flux_trace
 
   logical function same_fmr_state(a,b) result(same)
     class(transaction_state_t), intent(in) :: a,b
@@ -411,127 +509,4 @@ contains
          bundle%unsaturated%sorptivity%history_sorptivity(nd,numnod), &
          bundle%unsaturated%sorptivity%history_theta_ref(nd,numnod), &
          bundle%unsaturated%sorptivity%history_absorption_time(nd,numnod), &
-         bundle%unsaturated%pressure_head(numnod),bundle%unsaturated%elevation(numnod), &
-         bundle%unsaturated%conductivity(numnod),bundle%unsaturated%entry_head(numnod), &
-         bundle%unsaturated%groundwater_level_domain(nd),bundle%unsaturated%sorp_fac_parallel(numnod))
-    bundle%unsaturated%sorptivity%num_domains=nd
-    bundle%unsaturated%sorptivity%num_nodes=numnod
-    bundle%unsaturated%sorptivity%top_node=1
-    bundle%unsaturated%sorptivity%swmbf=1
-    bundle%unsaturated%sorptivity%matrix_top_saturated_node=numnod+1
-    bundle%unsaturated%sorptivity%step_duration=dt
-    bundle%unsaturated%sorptivity%flow_reduction=1.0_real64
-    bundle%unsaturated%sorptivity%bottom_domain=numnod
-    bundle%unsaturated%sorptivity%top_water_node=1
-    bundle%unsaturated%sorptivity%theta=water
-    bundle%unsaturated%sorptivity%theta_s=0.427494_real64
-    bundle%unsaturated%sorptivity%theta_r=0.02_real64
-    bundle%unsaturated%sorptivity%dz=dz
-    bundle%unsaturated%sorptivity%diameter=4.0_real64
-    bundle%unsaturated%sorptivity%wall_correction=0.95_real64
-    bundle%unsaturated%sorptivity%sorptivity_max=0.001_real64
-    bundle%unsaturated%sorptivity%sorptivity_alpha=0.5_real64
-    bundle%unsaturated%sorptivity%domain_fraction=1.0_real64
-    bundle%unsaturated%sorptivity%wet_fraction=1.0_real64
-    bundle%unsaturated%sorptivity%history_sorptivity=state%sorptivity
-    bundle%unsaturated%sorptivity%history_theta_ref=state%theta_sorption_ref
-    bundle%unsaturated%sorptivity%history_absorption_time=state%absorption_time
-    bundle%unsaturated%shape_factor=1.0_real64
-    bundle%unsaturated%pressure_head=heads
-    bundle%unsaturated%elevation=z
-    bundle%unsaturated%conductivity=0.0_real64
-    bundle%unsaturated%entry_head=-1.0_real64
-    bundle%unsaturated%groundwater_level_domain=-200.0_real64
-    bundle%unsaturated%sorp_fac_parallel=0.5_real64
-
-    call setup_sat(bundle%interflow_sat)
-    call setup_sat(bundle%matrix_sat)
-
-    bundle%rapid%num_nodes=numnod
-    bundle%rapid%top_water_node=1
-    bundle%rapid%bottom_domain_node=numnod
-    bundle%rapid%drain_type=2
-    bundle%rapid%enabled=.false.
-    bundle%rapid%saturated_top_fraction=1.0_real64
-    bundle%rapid%water_level_cm=-200.0_real64
-    bundle%rapid%domain_bottom_cm=minval(z)-0.5_real64*dz(numnod)
-    bundle%rapid%drain_level_cm=-50.0_real64
-    bundle%rapid%ponding_cm=0.0_real64
-    bundle%rapid%step_duration=dt
-    bundle%rapid%area_exponent=3.0_real64
-    bundle%rapid%kd_reference=0.001_real64
-    bundle%rapid%resistance_reference_day=20.0_real64
-    bundle%rapid%flow_reduction=1.0_real64
-    bundle%rapid%water_storage_cm=sum(state%water_domain_cp)
-    bundle%rapid%volume_under_drain_cm=0.0_real64
-    allocate(bundle%rapid%diameter(numnod),bundle%rapid%dz(numnod),bundle%rapid%volume_main_domain_cp(numnod))
-    bundle%rapid%diameter=4.0_real64
-    bundle%rapid%dz=dz
-    bundle%rapid%volume_main_domain_cp=geom%volume_domain_cp(1,:)
-
-    bundle%limiter%num_domains=nd
-    allocate(bundle%limiter%accepted_storage_cm(nd),bundle%limiter%maximum_storage_cm(nd), &
-         bundle%limiter%minimum_storage_cm(nd),bundle%limiter%potential_top_vertical_cm(nd), &
-         bundle%limiter%potential_top_lateral_cm(nd),bundle%limiter%potential_interflow_sat_cm(nd), &
-         bundle%limiter%potential_matrix_sat_cm(nd),bundle%limiter%potential_outflow_cm(nd), &
-         bundle%limiter%redistribution_capacity_cm(nd),bundle%limiter%top_domain_fraction(nd))
-    bundle%limiter%accepted_storage_cm=sum(state%water_domain_cp,dim=2)
-    bundle%limiter%maximum_storage_cm=sum(geom%volume_domain_cp,dim=2)
-    bundle%limiter%minimum_storage_cm=0.0_real64
-    bundle%limiter%potential_top_vertical_cm=0.0_real64
-    bundle%limiter%potential_top_lateral_cm=0.0_real64
-    bundle%limiter%potential_interflow_sat_cm=0.0_real64
-    bundle%limiter%potential_matrix_sat_cm=0.0_real64
-    bundle%limiter%potential_outflow_cm=0.0_real64
-    bundle%limiter%redistribution_capacity_cm=max(0.0_real64, &
-         bundle%limiter%maximum_storage_cm-bundle%limiter%accepted_storage_cm)
-    bundle%limiter%top_domain_fraction=1.0_real64
-    bundle%top_node=1
-  end subroutine setup_rate_template
-
-  subroutine setup_sat(sat)
-    use mod_ppa_wu05a6_saturated_exchange_rate, only: saturated_exchange_request_t
-    type(saturated_exchange_request_t),intent(out)::sat
-    sat%num_domains=nd
-    sat%num_nodes=numnod
-    sat%matrix_top_saturated_node=1
-    sat%matrix_bottom_saturated_node=0
-    sat%swsep=0
-    sat%matrix_level=-200.0_real64
-    sat%step_duration=dt
-    sat%flow_reduction=1.0_real64
-    sat%shape_factor=1.0_real64
-    allocate(sat%bottom_domain(nd),sat%top_macro_saturated_node(nd),sat%macro_saturated_fraction(nd), &
-         sat%macro_reference_level(nd),sat%z(numnod),sat%dz(numnod),sat%matrix_head(numnod), &
-         sat%ksat_horizontal(numnod),sat%diameter(numnod),sat%domain_fraction(nd,numnod),sat%cdarcy(nd,numnod))
-    sat%bottom_domain=numnod
-    sat%top_macro_saturated_node=1
-    sat%macro_saturated_fraction=1.0_real64
-    sat%macro_reference_level=-200.0_real64
-    sat%z=z
-    sat%dz=dz
-    sat%matrix_head=heads
-    sat%ksat_horizontal=0.0_real64
-    sat%diameter=4.0_real64
-    sat%domain_fraction=1.0_real64
-    sat%cdarcy=0.0_real64
-  end subroutine setup_sat
-
-  subroutine setup_history(history)
-    type(sorptivity_history_update_request_t),intent(out)::history
-    history%num_domains=nd
-    history%num_nodes=numnod
-    history%top_node=1
-    history%matrix_top_saturated_node=numnod+1
-    history%step_duration=dt
-    allocate(history%bottom_domain(nd),history%top_water_node(nd),history%wall_correction(numnod), &
-         history%wet_fraction(nd,numnod),history%domain_fraction(nd,numnod),history%diameter(numnod))
-    history%bottom_domain=numnod
-    history%top_water_node=1
-    history%wall_correction=0.95_real64
-    history%wet_fraction=1.0_real64
-    history%domain_fraction=1.0_real64
-    history%diameter=4.0_real64
-  end subroutine setup_history
-
-end program test_ppa_wu05a7_real_richards_runtime
+      
