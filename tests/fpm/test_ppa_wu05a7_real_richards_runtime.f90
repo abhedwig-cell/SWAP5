@@ -27,7 +27,7 @@ program test_ppa_wu05a7_real_richards_runtime
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_NUMERICAL_CONTINUATION_NONE, &
        FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
-       fmr_serialized_physical_observation_t, &
+       fmr_serialized_physical_observation_t, fmr_water_flux_substep_trace_t, &
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
        fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
@@ -36,6 +36,8 @@ program test_ppa_wu05a7_real_richards_runtime
        fmr_restore_committed_restart, FMR_RESTART_OK, FMR_RESTART_SCHEMA_VERSION, &
        FMR_RESTART_SCHEMA_PREVIOUS, FMR_RESTART_SCHEMA_MISMATCH
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
+  use mod_solute_mobile_salt_state, only: mobile_salt_state_t, mobile_salt_substep_t, mobile_salt_fluxes_t, &
+       initialize_mobile_salt_state, advance_mobile_salt_trace, SOLUTE_OK, SOLUTE_WATER_CLOSURE
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
@@ -285,6 +287,53 @@ contains
     print '(a)','PPA_WU05E_SALT_STATE_LAYOUT=PASS'
   end subroutine exercise_salt_state_layout
 
+  subroutine exercise_salt_candidate_rejects_unowned_exchange(water_trace,node_thickness)
+    type(fmr_water_flux_substep_trace_t), intent(in) :: water_trace(:)
+    real(real64), intent(in) :: node_thickness(:)
+    type(mobile_salt_substep_t), allocatable :: salt_trace(:)
+    type(mobile_salt_state_t) :: committed_salt,candidate_salt
+    type(mobile_salt_fluxes_t) :: salt_receipt
+    real(real64), allocatable :: faces(:)
+    real(real64) :: closure,other_water_source
+    integer :: i,status,face_status
+
+    if(size(water_trace)<2)error stop 'salt paired trace lacks accepted halfsteps'
+    allocate(salt_trace(size(water_trace)))
+    call initialize_mobile_salt_state(node_thickness,water_trace(1)%water_start, &
+         spread(0.4_real64,1,size(node_thickness)),committed_salt,status)
+    if(status/=SOLUTE_OK)error stop 'salt paired trace initialization'
+    other_water_source=0.0_real64
+    do i=1,size(water_trace)
+      other_water_source=max(other_water_source,maxval(abs(water_trace(i)%net_node_source+ &
+           water_trace(i)%root_sink)))
+      call reconstruct_interval_water_face_flux(node_thickness,water_trace(i)%water_start, &
+           water_trace(i)%water_end,water_trace(i)%net_node_source,-water_trace(i)%top_flux, &
+           -water_trace(i)%bottom_flux,water_trace(i)%t1-water_trace(i)%t0,1.0e-8_real64, &
+           faces,closure,face_status)
+      if(face_status/=WATER_FACE_FLUX_OK)error stop 'salt paired trace face reconstruction'
+      salt_trace(i)%water_start=water_trace(i)%water_start
+      salt_trace(i)%water_trial=water_trace(i)%water_end
+      salt_trace(i)%face_flux_cm_day=faces
+      salt_trace(i)%root_water_sink_cm_day=water_trace(i)%root_sink
+      salt_trace(i)%top_boundary_concentration=0.4_real64
+      salt_trace(i)%bottom_boundary_concentration=0.4_real64
+      salt_trace(i)%duration_day=water_trace(i)%t1-water_trace(i)%t0
+    end do
+    call advance_mobile_salt_trace(committed_salt,node_thickness,salt_trace,0.25_real64, &
+         candidate_salt,salt_receipt,status)
+    if(other_water_source<=1.0e-8_real64)error stop 'FMR trace did not exercise additional matrix water source'
+    if(status/=SOLUTE_WATER_CLOSURE)error stop 'salt candidate accepted unowned matrix water exchange'
+    if(allocated(candidate_salt%mass_mg_cm2).or.allocated(candidate_salt%concentration_mg_cm3)) &
+         error stop 'failed paired salt candidate leaked state'
+    if(salt_receipt%top_input_mg_cm2/=0.0_real64.or.salt_receipt%top_output_mg_cm2/=0.0_real64.or. &
+       salt_receipt%bottom_input_mg_cm2/=0.0_real64.or.salt_receipt%bottom_output_mg_cm2/=0.0_real64.or. &
+       salt_receipt%root_uptake_mg_cm2/=0.0_real64.or.salt_receipt%closure_error_mg_cm2/=0.0_real64) &
+         error stop 'failed paired salt candidate published a partial receipt'
+    if(any(committed_salt%mass_mg_cm2/=0.4_real64*water_trace(1)%water_start*node_thickness).or. &
+       any(committed_salt%concentration_mg_cm3/=0.4_real64))error stop 'failed salt candidate mutated committed state'
+    print '(a)','PPA_WU05E_FMR_SALT_CANDIDATE=FAIL_CLOSED_UNOWNED_MATRIX_EXCHANGE'
+  end subroutine exercise_salt_candidate_rejects_unowned_exchange
+
   subroutine exercise_serialized_fmr(trace_mode)
     logical, intent(in), optional :: trace_mode
     type(fmr_serialized_reference_backend_t) :: backend, restored_backend
@@ -448,6 +497,8 @@ contains
         max_trace_closure=max(max_trace_closure,abs(trace_closure))
       end do
       if(max_trace_closure>1.0e-8_real64) error stop 'FMR accepted trace closure tolerance'
+      call exercise_salt_candidate_rejects_unowned_exchange( &
+           fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
       write(*,'(*(g0))') 'PPA_WU05E_FMR_ACCEPTED_SUBSTEP_TRACE=PASS|COUNT=', &
            size(fmr_observation%accepted_water_flux_substeps),'|MAX_CLOSURE=',max_trace_closure
     end if
