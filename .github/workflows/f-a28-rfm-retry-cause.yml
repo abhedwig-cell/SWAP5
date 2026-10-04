@@ -5,6 +5,7 @@ on:
     paths:
       - 'tests/fpe/build_fpe_a28_coupled_local.py'
       - 'tests/fpe/test_fpe_a28_fd_predictor_init.py'
+      - 'tests/fpe/support/mod_fpe_a28_fgc45_rfm_bridge.f90'
       - '.github/workflows/f-a28-rfm-retry-cause.yml'
 permissions: {contents: read}
 jobs:
@@ -32,7 +33,8 @@ jobs:
           A28_H0_CM: '-45'
           A28_DT_DAY: '0.01'
           A28_RAIN_CM_DAY: '1'
-          A28_NONLINEAR_ITERATION_LIMIT: '32'
+          A28_NONLINEAR_ITERATION_LIMIT: '16'
+          A28_SOLVER_BALANCE_TOL_CM: '1e-10'
           FGC45_MULTISWAP_LIB: /tmp/a28-retry-cause-build/libfgc45_multiswap.so
         run: |
           python3 tests/fpe/test_fpe_a28_fd_predictor_init.py \
