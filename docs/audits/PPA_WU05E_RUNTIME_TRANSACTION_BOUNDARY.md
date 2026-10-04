@@ -65,6 +65,12 @@ The runtime binding work must use the real accepted water candidate and root sin
 
 Atomic ownership is necessary but not sufficient. The current mobile-salt prototype uses explicit single-step upwind advection and no dispersion, drainage, boundary scheduler, or internal transport substeps. The live Richards execution can contain multiple physical substeps and retries. A production transport implementation must bind the salt fluxes to those accepted water substeps (including the correct candidate root sink), qualify positivity/stability and mass closure per substep and over the interval, and define salt restart initialization. These requirements remain open and are not discharged by this runtime-boundary audit.
 
+## Directional-advection evidence boundary
+
+The interval-mean continuity reconstruction above determines only the **net signed** water transfer through each face. It is not sufficient evidence for conservative salt advection when flow can reverse inside the reconstructed interval. For example, equal-duration face flow at (+Q) and (-Q) has zero signed mean, while it still transports water and dissolved salt in both directions; applying zero mean flux to the salt state loses both transfers. Endpoint storage and net sources cannot distinguish that history from a genuinely stagnant face.
+
+Therefore a closed water-continuity residual does not by itself admit the reconstructed mean flux to salt transport. A live transport binding must consume an ordered trace of accepted Richards substeps with face flux and duration for each substep (or another independently qualified representation that preserves the within-interval flow direction and order). The trace must be candidate-local so a rejected FMR trial discards it with the water candidate. If an active route cannot provide a complete trace, including its boundary and source/sink terms, E1 transport must reject that candidate. The current mean-flux prototype remains a closure diagnostic only.
+
 ## Scope ceiling
 
 This audit establishes a source-backed transaction/restart blocker and an integration contract. It does not qualify salt transport, salt initialization, salinity response under a live crop, Jarvis combinations, solute uptake equivalence, or any production salinity capability. The current salinity fail-closed behavior remains required.
