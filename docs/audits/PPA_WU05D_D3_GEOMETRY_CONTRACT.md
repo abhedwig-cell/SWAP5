@@ -1,6 +1,7 @@
 # PPA-WU05-D3 Walsum geometry contract
 
-Proposed separate capability on D2 canonical merge 4fd57c8c8ed321baf6a74214a9720adc899e324d.
+Canonically admitted by PR #1013, merge `a34c87db96d8f1fb33e97b13556a4d9b76758553`.
+Separate capability on D2 canonical merge 4fd57c8c8ed321baf6a74214a9720adc899e324d.
 D2 is admitted and closed by PR #1012; its qualification record remains authoritative.
 
 Walsum uses the existing root uptake result and compositor, with dynamic ALPHACRIT.

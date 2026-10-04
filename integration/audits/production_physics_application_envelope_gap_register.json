@@ -637,18 +637,24 @@
           "SWAP/frozencond.f90"
         ]
       },
-      "swap5_implementation_authority": [],
-      "typed_input_config_authority": "No admitted typed production route found.",
-      "state_ownership": "Subfamily-specific and unresolved until source-bound reviews. Existing drought-only nodewise root_extraction_sink remains the single admitted root-water mass owner.",
-      "transaction_status": "D2 uses fresh uncompensated trial sinks and the existing sole root-water mass owner; accepted-result publication, rollback and restart qualified. No salinity/frost/MICRO admission.",
+      "swap5_implementation_authority": [
+        "src/process/mod_root_uptake_compensation.f90",
+        "src/runtime/mod_root_uptake_compensation_execution.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+      ],
+      "typed_input_config_authority": "Bounded root_compensation_config_t and optional root_walsum_geometry_t via existing fmr production application forcing; see separate Jarvis/Walsum entries. Other advanced routes lack admission.",
+      "state_ownership": "Single existing root_water_uptake_flux_result_t/root-sink provider and accepted water owner. Compensation and Walsum geometry are disposable current-call inputs/results; no extra ledger, receipt or restart payload.",
+      "transaction_status": "D2/D3 fresh uncompensated trial sink, retry/replay, discard, accepted publication and restart qualified at O0/O2. Other advanced subfamilies remain dependency-blocked.",
       "qualification_evidence": [
         "F-PM06 and F-CI31 explicit nonclaims",
         "docs/verification/legacy-differences.md preserves oxygen-stress numerical fix only in B1",
         "PPA-WU05 review run 35379607616: advanced-root subfamily decomposition and single root-sink ownership qualified",
-        "integration/audits/PPA_WU05D_D2_QUALIFICATION.json; PR1012 canonical merge4fd57c8c8"
+        "integration/audits/PPA_WU05D_D2_QUALIFICATION.json; PR1012 canonical merge4fd57c8c8",
+        "integration/audits/PPA_WU05D_D3_QUALIFICATION.json; PR1013 canonical merge a34c87db9"
       ],
-      "production_admission": "BOUNDED_SUCCESSORS: Bartholomeus oxygen and D2 Jarvis canonical; D3 Walsum qualified pending merge. Other advanced routes held.",
-      "production_reachable": "YES_FOR_INDEPENDENTLY_ADMITTED_OXYGEN_AND_D2_JARVIS_ONLY",
+      "production_admission": "BOUNDED_SUCCESSORS: independently admitted Bartholomeus oxygen; D2 Jarvis PR1012 and D3 Walsum PR1013 canonical. Salinity/frost/MICRO/macropore uptake remain held.",
+      "production_reachable": "YES_FOR_ADMITTED_OXYGEN_D2_JARVIS_D3_WALSUM_ONLY",
       "restrictions": [
         "Presence in corrected reference is not SWAP5 production admission"
       ],
@@ -662,7 +668,8 @@
         "Macropore owner before macropore-related uptake",
         "Separate nonlinear/sensitivity authority for SWKIMPL=1"
       ],
-      "priority_band": "P2"
+      "priority_band": "P2",
+      "classification_note": "Aggregate remains incomplete; separately admitted restricted oxygen/compensation subcapabilities do not close salinity/frost/MICRO/macropore uptake."
     },
     {
       "id": "PPA-SW-RICH",
@@ -1735,6 +1742,84 @@
         "F-MIG431-LOW05P0 shared timing contract"
       ],
       "priority_band": "CLOSED"
+    },
+    {
+      "id": "PPA-RWU-COMP-JARVIS",
+      "subsystem": "drought/stress routes",
+      "capability": "JARVIS compensation over existing Feddes sinks and optional independently admitted Bartholomeus oxygen",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "B1.11 exact identity and authorized D1 source-bound semantic reconstruction",
+        "files": [
+          "SWAP/rootextraction.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_root_uptake_compensation.f90",
+        "src/runtime/mod_root_uptake_compensation_execution.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+      ],
+      "typed_input_config_authority": "Bounded root_compensation_config_t and optional root_walsum_geometry_t via existing fmr production application forcing; see separate Jarvis/Walsum entries. Other advanced routes lack admission.",
+      "state_ownership": "Single existing root_water_uptake_flux_result_t/root-sink provider and accepted water owner. Compensation and Walsum geometry are disposable current-call inputs/results; no extra ledger, receipt or restart payload.",
+      "transaction_status": "D2/D3 fresh uncompensated trial sink, retry/replay, discard, accepted publication and restart qualified at O0/O2. Other advanced subfamilies remain dependency-blocked.",
+      "qualification_evidence": [
+        "integration/audits/PPA_WU05D_D2_QUALIFICATION.json"
+      ],
+      "production_admission": "CANONICAL_ADMITTED_CLOSED PR1012 merge 4fd57c8c8ed321baf6a74214a9720adc899e324d",
+      "production_reachable": "RESTRICTED_TYPED_APPLICATION_PROFILES_2_7",
+      "restrictions": [
+        "No salinity/frost/MICRO/macropore uptake",
+        "No general RFM/SCV/coupling or derivative claim",
+        "Current crop owner supplies consistent uncompensated sink and geometry"
+      ],
+      "scientific_risk": "Bounded by qualified reconstructed algebra and typed application profile",
+      "use_relevance": "HIGH for some applications",
+      "dependencies": [
+        "Existing Feddes root-sink owner",
+        "Independent Bartholomeus admission when oxygen enabled"
+      ],
+      "priority_band": "P2"
+    },
+    {
+      "id": "PPA-RWU-COMP-WALSUM",
+      "subsystem": "drought/stress routes",
+      "capability": "WALSUM compensation over existing Feddes sinks and optional independently admitted Bartholomeus oxygen",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "B1.11 exact identity and authorized D1 source-bound semantic reconstruction",
+        "files": [
+          "SWAP/rootextraction.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_root_uptake_compensation.f90",
+        "src/runtime/mod_root_uptake_compensation_execution.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+      ],
+      "typed_input_config_authority": "Bounded root_compensation_config_t and optional root_walsum_geometry_t via existing fmr production application forcing; see separate Jarvis/Walsum entries. Other advanced routes lack admission.",
+      "state_ownership": "Single existing root_water_uptake_flux_result_t/root-sink provider and accepted water owner. Compensation and Walsum geometry are disposable current-call inputs/results; no extra ledger, receipt or restart payload.",
+      "transaction_status": "D2/D3 fresh uncompensated trial sink, retry/replay, discard, accepted publication and restart qualified at O0/O2. Other advanced subfamilies remain dependency-blocked.",
+      "qualification_evidence": [
+        "integration/audits/PPA_WU05D_D3_QUALIFICATION.json"
+      ],
+      "production_admission": "CANONICAL_ADMITTED_CLOSED PR1013 merge a34c87db96d8f1fb33e97b13556a4d9b76758553",
+      "production_reachable": "RESTRICTED_TYPED_APPLICATION_PROFILES_2_7",
+      "restrictions": [
+        "No salinity/frost/MICRO/macropore uptake",
+        "No general RFM/SCV/coupling or derivative claim",
+        "Current crop owner supplies consistent uncompensated sink and geometry"
+      ],
+      "scientific_risk": "Bounded by qualified reconstructed algebra and typed application profile",
+      "use_relevance": "HIGH for some applications",
+      "dependencies": [
+        "Existing Feddes root-sink owner",
+        "Independent Bartholomeus admission when oxygen enabled"
+      ],
+      "priority_band": "P2"
     }
   ],
   "backlog": {
@@ -2193,9 +2278,12 @@
     }
   ],
   "ppa_wu05d_20261004_runtime_successor": {
-    "status": "D2_CANONICAL_CLOSED_D3_QUALIFIED_PENDING_PRESERVATION",
-    "qualification": "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
-    "scope": "Jarvis Feddes drought and admitted Bartholomeus oxygen, including mixed attribution and optional oxygen-free application",
+    "status": "D2_D3_CANONICAL_ADMITTED_CLOSED",
+    "qualification": [
+      "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
+      "integration/audits/PPA_WU05D_D3_QUALIFICATION.json"
+    ],
+    "scope": "Jarvis and Walsum over supplied Feddes drought sinks and optional independently admitted Bartholomeus oxygen; application profiles2/7",
     "publication": "Accepted transaction result now publishes final compensated uptake; no second mass owner",
     "remaining_gaps": [
       "Salinity requires independently admitted solute-state owner, osmotic stress process, typed forcing and transactional composition qualification",
@@ -2203,6 +2291,8 @@
       "D5 MICRO requires B1.11 RWU_micro source-bound algebra/parameter authority, independently qualified typed process returning existing root sink, state/rollback/restart census, and macro/MICRO selector compatibility; current production owner is Feddes only",
       "No nonlinear derivative or general RFM/SCV/coupled configuration admission follows"
     ],
-    "canonical_d2": "4fd57c8c8ed321baf6a74214a9720adc899e324d"
+    "canonical_d2": "4fd57c8c8ed321baf6a74214a9720adc899e324d",
+    "canonical_d3": "a34c87db96d8f1fb33e97b13556a4d9b76758553",
+    "closeout": "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
   }
 }

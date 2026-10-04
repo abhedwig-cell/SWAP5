@@ -2,9 +2,9 @@
   "schema": "swap5.ppa_wu05d.status.v2",
   "work_unit": "PPA-WU05-D",
   "title": "Compensated root-water-uptake authority",
-  "branch": "work/ppa-wu05d-d3-walsum-20261004",
-  "canonical_base": "4fd57c8c8ed321baf6a74214a9720adc899e324d",
-  "status": "D2_CANONICAL_CLOSED_D3_QUALIFIED_PENDING_MERGE",
+  "branch": "integration/f-ci-canonical",
+  "canonical_base": "a34c87db96d8f1fb33e97b13556a4d9b76758553",
+  "status": "D2_D3_CANONICAL_ADMITTED_CLOSED",
   "production_source_mutation": true,
   "reference_mutation": false,
   "authority": {
@@ -50,17 +50,17 @@
   "slices": {
     "D1": "SEMANTICS_RECONSTRUCTED_WITH_EXACT_IDENTITY_AND_INDEPENDENT_SOURCE_BOUND_CORROBORATION",
     "D2": "CANONICAL_ADMITTED_CLOSED",
-    "D3": "QUALIFIED_O0_O2_AND_PRESERVATION_PENDING_MERGE",
+    "D3": "CANONICAL_ADMITTED_CLOSED",
     "D4": "DROUGHT_PLUS_ADMITTED_OXYGEN_QUALIFIED_WITH_D2_OTHER_STRESSORS_HELD",
     "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
   },
-  "production_admission": "D2_JARVIS_BOUNDED",
-  "next_action": "Merge separately qualified D3 PR1013, then persist canonical closeout and gap registration",
+  "production_admission": "D2_JARVIS_AND_D3_WALSUM_BOUNDED",
+  "next_action": "D2/D3 complete. D4 salinity/frost await independently admitted underlying stress physics; D5 await independent MICRO authority and ownership qualification.",
   "d2": {
     "production_compositor": "src/process/mod_root_uptake_compensation.f90",
     "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
-    "qualification_run": 37183450243,
-    "qualification_status": "LOCAL_O0_O2_AND_PRESERVATION_PASS",
+    "qualification_run": null,
+    "qualification_status": "CANONICAL_ADMITTED_WITH_PERSISTED_LOCAL_QUALIFICATION",
     "supported_stressors": [
       "all currently supplied admitted reductions",
       "drought",
@@ -100,11 +100,12 @@
     ],
     "qualification_evidence": "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
     "canonical_merge": "4fd57c8c8ed321baf6a74214a9720adc899e324d",
-    "canonical_pr": 1012
+    "canonical_pr": 1012,
+    "qualification_run_note": "Historical Actions IDs retained under previous_runs; controlling evidence is persisted local qualification plus named preservation gates."
   },
   "checkpoint_commit": "95ed86edc00842c4f4078e6a18267e2f7e2ba6d0",
   "last_reconciled_head": "95ed86edc00842c4f4078e6a18267e2f7e2ba6d0",
-  "last_reconciled_upstream": "4fd57c8c8ed321baf6a74214a9720adc899e324d",
+  "last_reconciled_upstream": "a34c87db96d8f1fb33e97b13556a4d9b76758553",
   "relevant_paths": [
     "src/process/mod_root_uptake_compensation.f90",
     "src/runtime/mod_root_uptake_compensation_execution.f90",
@@ -118,7 +119,9 @@
     "qualification": "integration/audits/PPA_WU05D_D3_QUALIFICATION.json",
     "tested_source": "95ed86edc00842c4f4078e6a18267e2f7e2ba6d0",
     "production_pr": 1013,
-    "status": "QUALIFIED_BOUNDED_ADMISSION_PENDING_MERGE",
-    "state": "DISPOSABLE_CURRENT_FORCING_NO_RESTART_PAYLOAD"
-  }
+    "status": "CANONICAL_ADMITTED_CLOSED",
+    "state": "DISPOSABLE_CURRENT_FORCING_NO_RESTART_PAYLOAD",
+    "canonical_merge": "a34c87db96d8f1fb33e97b13556a4d9b76758553"
+  },
+  "canonical_closeout": "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
 }
