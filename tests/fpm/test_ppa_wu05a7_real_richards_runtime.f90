@@ -26,6 +26,7 @@ program test_ppa_wu05a7_real_richards_runtime
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
+       fmr_serialized_physical_observation_t, &
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
        fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
@@ -173,6 +174,7 @@ contains
 
   subroutine exercise_serialized_fmr()
     type(fmr_serialized_reference_backend_t) :: backend, restored_backend
+    type(fmr_serialized_physical_observation_t) :: fmr_observation
     type(fmr_b110_physical_parameters_t), target :: fparams
     type(fmr_b110_physical_forcing_t) :: forcing
     type(fmr_b110_physical_state_t) :: initial
@@ -212,6 +214,7 @@ contains
     fparams%head_abs_tolerance=tol
     fparams%head_rel_tolerance=tol
     fparams%ponding_tolerance=tol
+    fparams%root_extraction_active=.true.
     fparams%macropore_active=.true.
     call prepare_fmr_b110_default_mvg(fparams,prepared)
     if(.not.prepared)error stop 'A8 FMR prepared MVG'
@@ -222,6 +225,8 @@ contains
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A8 FMR config validity'
     allocate(fparams%macropore)
     fparams%macropore=mcfg
+    allocate(fparams%macropore%matrix_area_fraction(numnod))
+    fparams%macropore%matrix_area_fraction=1.0_real64
 
     initial%active_nodes=numnod
     allocate(initial%pressure_head(numnod),initial%water_content(numnod),initial%macropore)
@@ -243,6 +248,7 @@ contains
     forcing%drainage_flux_by_level=0.0_real64
     forcing%subsurface_irrigation_source=0.0_real64
     forcing%root_extraction_sink=0.0_real64
+    forcing%root_extraction_sink(numnod)=2.0e-4_real64
 
     column%column_id=lineage
     column%template_id=505801_int64
@@ -273,9 +279,14 @@ contains
 
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
          kres,candidate,kdiag,trusted_prepared_parameters=.true.)
+    fmr_observation=backend%observation()
     write(*,'(*(g0))') 'PPA_WU05A8_FMR_TRIAL_DIAG|STATUS=',kres%status,'|COMPLETED=',kres%completed, &
          '|TEMP_SOURCE=',kdiag%temporal_acceptance_source,'|TEMP_REJ=',kdiag%temporal_rejections, &
-         '|MASS_REJ=',kdiag%mass_rejections,'|SOLVER_REJ=',kdiag%solver_rejections, &
+         '|MASS_REJ=',kdiag%mass_rejections,'|STEP_MASS_MAX=',kdiag%max_abs_step_mass_residual, &
+         '|SOLVER_REJ=',kdiag%solver_rejections,'|HEADCALC=',kdiag%headcalc_calls, &
+         '|SW_STATUS=',fmr_observation%solver_status,'|SW_EQUATION_RES=',fmr_observation%solver_equation_residual, &
+         '|SW_TOP=',fmr_observation%top_flux,'|SW_BOTTOM=',fmr_observation%bottom_flux, &
+         '|MACRO_EXCHANGE=',fmr_observation%macropore_inner_final_exchange_rate_cm_per_day, &
          '|MASS=',kres%mass%residual
     if(.not.kres%completed .or. .not.candidate%ready())error stop 'A8 FMR active serialized trial'
     if(.not.kres%mass%complete .or. abs(kres%mass%residual)>1.0e-8_real64)error stop 'A8 FMR mass receipt'
@@ -287,7 +298,6 @@ contains
          error stop 'A8 FMR candidate leaked into committed state'
     call candidate%snapshot(candidate_state,available)
     if(.not.available)error stop 'A8 FMR candidate snapshot'
-
     call backend%discard_trial_candidate(candidate,kdiag)
     if(candidate%ready())error stop 'A8 FMR discard retained candidate'
     call committed%snapshot(after_trial_state,available)
@@ -305,6 +315,8 @@ contains
     if(committed%current_revision()/=1_int64)error stop 'A8 FMR committed revision'
     call committed%snapshot(after_trial_state,available)
     if(.not.available .or. .not.same_fmr_state(replay_state,after_trial_state))error stop 'A8 FMR commit publication'
+    write(*,'(*(g0))') 'PPA_WU05E_FMR_ROOT_SINK_TRANSACTION=PASS|QROT_TOTAL=', &
+         sum(forcing%root_extraction_sink),'|MASS_RESID=',kres%mass%residual
 
     call export_kernel_committed_state(committed,layout_id,persisted,persisted_ok,persistence_status)
     if(.not.persisted_ok .or. persistence_status/=KERNEL_PERSISTENCE_OK)error stop 'A8 FMR persistence export'

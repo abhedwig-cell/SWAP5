@@ -240,6 +240,8 @@ contains
     call initialize_fmr_macropore_standard_config(p%macropore,1,static_volume,domain_fraction,potential_bottom, &
          z,dz,diameter,theta_s,theta_r,wall_correction,sorp_max,sorp_alpha,conductivity,entry_head, &
          sorp_fac_parallel,ksat_horizontal,cdarcy,1.0_real64,1.0_real64,0,initialized)
+    allocate(p%macropore%matrix_area_fraction(numnod))
+    p%macropore%matrix_area_fraction=1.0_real64
   end subroutine initialize_macropore_config
 
   subroutine initialize_forcing(f)
