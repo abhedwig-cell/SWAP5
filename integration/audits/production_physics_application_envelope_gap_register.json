@@ -2028,6 +2028,26 @@
       "next_slice": "PPA-WU05-A1 byte-exact B1.11 source materialization and mutable-field/mass-transfer census",
       "qualification": "Final admission: PPA-WU05-A 35399987601 PASS; parent WU05 35399987594 PASS; Documentation 35399987514 PASS; F-CI canonical 35399987540 PASS.",
       "canonical_merge_commit": "3736703b6a3b41941bfc7c57a336da3a4f3df999"
+    },
+    {
+      "id": "PPA-WU05-E",
+      "title": "Salinity state, solute mass owner, and root-stress migration",
+      "goal": "Migrate the bounded salt-state/transport prerequisite and independently qualify salinity-root-stress response before composing eligible salinity stress in admitted Jarvis, while preserving one root-water sink and separate water/salt ledgers.",
+      "exit": "Source-bound state, unit, node, initialization, transport, mass, transaction and restart contracts are closed for a bounded salinity envelope; its independent response passes analytic/physical oracles; then bounded Jarvis integration and preservation gates pass. Osmotic-head/Jong-van-Lier remains separate unless its authority is independently closed.",
+      "status": "PREREGISTERED_RECONSTRUCTION_CHECKPOINT",
+      "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+      "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+      "preregistration": "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
+      "status_record": "integration/audits/PPA_WU05E_STATUS.json",
+      "production_delta": [],
+      "reference_delta": [],
+      "current_finding": "SWAP5 canonical tree has no typed solute state/transport owner or salinity response; PPA-WU05-D2 correctly fails closed for salinity.",
+      "next_action": "Complete B1.11 solute-state/mass/restart census; select and preregister the minimal complete transport envelope before production implementation.",
+      "limitations": [
+        "B1.11 rootextraction member identity is pinned and its complete tree replay is persisted, but exact source member text is unavailable in this execution surface.",
+        "Public SWAP source-family code is corroboration, not byte-exact B1.11 equation/restart authority.",
+        "No local SWAP5 checkout is mounted in this Work execution environment; local compilation/tests cannot run here."
+      ]
     }
   ],
   "post_audit_updates": [
@@ -2275,6 +2295,14 @@
         "worker-parallel oxygen"
       ],
       "effect": "Closes only the bounded C3A Bartholomeus oxygen application gap. No broad PPA-RWU-ADV closure and no frozen Status A rewrite."
+    },
+    {
+      "workunit": "PPA-WU05-E",
+      "date": "2026-10-04",
+      "state": "PREREGISTERED_RECONSTRUCTION_CHECKPOINT",
+      "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+      "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+      "effect": "Separate salinity root-stress work from closed D2/D3. Canonical audit finds no SWAP5 solute state/transport owner or salinity response. Work proceeds through state/mass/restart authority, then independent response, then bounded Jarvis integration. No production or reference source changed."
     }
   ],
   "ppa_wu05d_20261004_runtime_successor": {
@@ -2294,5 +2322,42 @@
     "canonical_d2": "4fd57c8c8ed321baf6a74214a9720adc899e324d",
     "canonical_d3": "a34c87db96d8f1fb33e97b13556a4d9b76758553",
     "closeout": "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+  },
+  "ppa_wu05e_20261004": {
+    "id": "PPA-WU05-E",
+    "title": "Salinity state, solute mass owner, and root-stress migration",
+    "goal": "Migrate the bounded salt-state/transport prerequisite and independently qualify salinity-root-stress response before composing eligible salinity stress in admitted Jarvis, while preserving one root-water sink and separate water/salt ledgers.",
+    "exit": "Source-bound state, unit, node, initialization, transport, mass, transaction and restart contracts are closed for a bounded salinity envelope; its independent response passes analytic/physical oracles; then bounded Jarvis integration and preservation gates pass. Osmotic-head/Jong-van-Lier remains separate unless its authority is independently closed.",
+    "status": "PREREGISTERED_RECONSTRUCTION_CHECKPOINT",
+    "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+    "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+    "preregistration": "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
+    "status_record": "integration/audits/PPA_WU05E_STATUS.json",
+    "production_delta": [],
+    "reference_delta": [],
+    "current_finding": "SWAP5 canonical tree has no typed solute state/transport owner or salinity response; PPA-WU05-D2 correctly fails closed for salinity.",
+    "next_action": "Complete B1.11 solute-state/mass/restart census; select and preregister the minimal complete transport envelope before production implementation.",
+    "limitations": [
+      "B1.11 rootextraction member identity is pinned and its complete tree replay is persisted, but exact source member text is unavailable in this execution surface.",
+      "Public SWAP source-family code is corroboration, not byte-exact B1.11 equation/restart authority.",
+      "No local SWAP5 checkout is mounted in this Work execution environment; local compilation/tests cannot run here."
+    ],
+    "source_authority": {
+      "snapshot": "B1.11",
+      "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "exact_tree_replay": "docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json",
+      "exact_member_text": "NOT_MATERIALIZED_IN_CURRENT_EXECUTION_SURFACE",
+      "corroboration": "SWAP-model/SWAP@c22bd832ddf3e53e330a552f5e31e74f183362d1; corroboration only"
+    },
+    "current_classification": {
+      "d2": "CANONICAL_ADMITTED_DROUGHT_AND_OXYGEN; SALINITY_FAIL_CLOSED",
+      "d3": "CANONICAL_ADMITTED",
+      "solute_state_transport": "MISSING_FROM_CANONICAL_SWAP5_TREE",
+      "maas_hoffman": "MISSING",
+      "osmotic_head": "MISSING; REQUIRES D5/JONG-VAN-LIER DEPENDENCY"
+    },
+    "qualification": null,
+    "canonical_admission": null
   }
 }
