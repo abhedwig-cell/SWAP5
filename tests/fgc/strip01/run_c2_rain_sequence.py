@@ -28,6 +28,8 @@ parser.add_argument('--probe-durations-day', nargs='+', type=float, default=[0.0
                     help='durations for the discarded participant probe; requires --probe-c2b-columns')
 parser.add_argument('--probe-rates-cm-per-day', nargs='+', type=float, default=[0.1],
                     help='fixed inward infiltration rates for discarded participant probes; requires --probe-c2b-columns')
+parser.add_argument('--history-ramp-rates', nargs='+', type=float, default=None,
+                    help='publish a multi-window history-aware real-SWAP ramp at these rates (cm/day) after C2a')
 args = parser.parse_args()
 if args.probe_c2b_columns and args.real_context != 'c2a':
     parser.error('--probe-c2b-columns requires --real-context c2a')
@@ -37,6 +39,11 @@ if any(not np.isfinite(dt) or dt <= 0 for dt in args.probe_durations_day):
     parser.error('--probe-durations-day values must be finite and positive')
 if any(not np.isfinite(rate) or rate < 0 for rate in args.probe_rates_cm_per_day):
     parser.error('--probe-rates-cm-per-day values must be finite and nonnegative')
+if args.history_ramp_rates is not None:
+    if args.probe_c2b_columns:
+        parser.error('--history-ramp-rates cannot be combined with discarded participant probes')
+    if not args.history_ramp_rates or any(not np.isfinite(rate) or rate < 0 for rate in args.history_ramp_rates):
+        parser.error('--history-ramp-rates must contain finite nonnegative rates')
 sys.path.insert(0, str(args.root.resolve() / 'src/adapter'))
 from fmr_groundwater_application_runtime import FmrGroundwaterApplicationRuntime
 from modflow6_fgc34_ctypes_publisher import Fgc34CtypesPublisher
@@ -135,7 +142,8 @@ def main():
     advance.restype = ctypes.c_int
     advance.argtypes = init.argtypes
     result['profile'] = 'C1'
-    result['windows'] = ['C2a-dynamic-equilibrium', 'C2b-rain']
+    result['windows'] = ['C2a-dynamic-equilibrium'] + (['C2-ramp'] * len(args.history_ramp_rates)
+                           if args.history_ramp_rates is not None else ['C2b-rain'])
     result['profile_state_schema'] = 'per column: pressure heads, theta, pond, GWL, Black LDWET, committed time; little-endian float64'
     result['profile_state_float_count'] = field_count
     result['origin_profile_state_sha256'] = state_hash()
@@ -144,7 +152,9 @@ def main():
 
     runtime = DomainRuntime(lib, handle.value)
     sim = flopy.mf6.MFSimulation(sim_name='realstrip01c2rain', sim_ws=str(work))
-    flopy.mf6.ModflowTdis(sim, time_units='DAYS', nper=2, perioddata=[(0.001, 1, 1), (0.001, 1, 1)])
+    nper = 1 + len(args.history_ramp_rates) if args.history_ramp_rates is not None else 2
+    flopy.mf6.ModflowTdis(sim, time_units='DAYS', nper=nper,
+                          perioddata=[(0.001, 1, 1)] * nper)
     flopy.mf6.ModflowIms(sim, outer_dvclose=1e-10, inner_dvclose=1e-11,
                        outer_maximum=200, inner_maximum=300, rcloserecord=1e-11)
     gwf = flopy.mf6.ModflowGwf(sim, modelname='STRIP', save_flows=True)
@@ -177,7 +187,71 @@ def main():
         result['C2a']['storage_m3'], result['C2a']['revisions'] = state()
         print(f"C2A published={a.published} failure={a.failure_stage} revisions={result['C2a']['revisions'][0]}", flush=True)
 
-        if a.published:
+        if a.published and args.history_ramp_rates is not None:
+            result['history_ramp'] = []
+            cumulative_input = cumulative_swap_storage = cumulative_drain = 0.0
+            for index, rate in enumerate(args.history_ramp_rates):
+                before_hash = state_hash()
+                before_storage, before_revisions = state()
+                before_ledgers = counts()
+                if set_rain(rate) != 0:
+                    raise RuntimeError(f'fixture rejected history-ramp rate {rate} cm/day')
+                next_handle, next_h1, next_h2 = ctypes.c_int64(), ctypes.c_double(), ctypes.c_double()
+                advance_status = int(advance(ctypes.byref(next_handle), ctypes.byref(next_h1), ctypes.byref(next_h2)))
+                entry = dict(index=index, rate_cm_per_day=rate, t0_day=(index + 1) * 0.001,
+                             duration_day=0.001, advance_context_status=advance_status,
+                             before_profile_state_sha256=before_hash, before_revisions=before_revisions,
+                             before_ledger_counts=before_ledgers)
+                if advance_status != 0:
+                    entry.update(published=False, failure_stage='context-advance')
+                    result['history_ramp'].append(entry)
+                    break
+                runtime = DomainRuntime(lib, next_handle.value)
+                raw.prepare_time_step((index + 1) * 0.001)
+                session = Modflow6PreparedSolveSession(kernel, 'STRIP', 'API_SWAP',
+                    Fgc34CtypesPublisher(lib), solution_id=1)
+                window = run_groundwater_application_window(runtime, session,
+                    GroundwaterApplicationServiceConfig(flux_tolerance_m_per_s=args.flux_tolerance,
+                                                        max_coupling_iterations=args.max_coupling_iterations))
+                after_storage, after_revisions = state()
+                entry.update(status=int(window.status), published=window.published,
+                    failure_stage=window.failure_stage, iterations=window.iterations,
+                    heads_m=window.final_heads_m, residuals_m_per_s=window.final_residuals_m_per_s,
+                    after_profile_state_sha256=state_hash(), after_storage_m3=after_storage,
+                    after_revisions=after_revisions, after_ledger_counts=counts(),
+                    modflow_calls=dict(kernel.calls))
+                if not window.published:
+                    entry['rollback_verified'] = (entry['after_profile_state_sha256'] == before_hash and
+                        after_storage == before_storage and after_revisions == before_revisions and
+                        entry['after_ledger_counts'] == before_ledgers)
+                    result['history_ramp'].append(entry)
+                    break
+                rain_input = rate * 0.01 * 50.0 * 0.001
+                delta_swap = sum(after_storage) - sum(before_storage)
+                cbc = flopy.utils.CellBudgetFile(work / 'strip.cbc', precision='double')
+                drain_rate = -float(sum(np.sum(v['q']) for v in cbc.get_data(text='DRN', kstpkper=(0, index + 1))))
+                drain_volume = drain_rate * 0.001
+                residual = rain_input - delta_swap - drain_volume
+                cumulative_input += rain_input
+                cumulative_swap_storage += delta_swap
+                cumulative_drain += drain_volume
+                entry.update(rain_input_m3=rain_input, delta_swap_storage_m3=delta_swap,
+                    drain_outflow_m3=drain_volume, modflow_storage_change_m3=0.0,
+                    other_external_boundary_m3=0.0, mass_residual_m3=residual,
+                    mass_absolute_residual_m3=abs(residual),
+                    mass_relative_residual=(residual / rain_input if rain_input else 0.0),
+                    cumulative_input_m3=cumulative_input,
+                    cumulative_swap_storage_change_m3=cumulative_swap_storage,
+                    cumulative_drain_outflow_m3=cumulative_drain,
+                    cumulative_mass_residual_m3=cumulative_input-cumulative_swap_storage-cumulative_drain,
+                    cumulative_mass_absolute_residual_m3=abs(cumulative_input-cumulative_swap_storage-cumulative_drain),
+                    cumulative_mass_relative_residual=((cumulative_input-cumulative_swap_storage-cumulative_drain) /
+                                                       cumulative_input if cumulative_input else 0.0))
+                result['history_ramp'].append(entry)
+            result['state'] = ('C2A_AND_HISTORY_RAMP_PUBLISHED' if len(result['history_ramp']) == len(args.history_ramp_rates)
+                               and all(x.get('published') for x in result['history_ramp'])
+                               else 'C2A_PUBLISHED_HISTORY_RAMP_REJECTED')
+        elif a.published:
             if set_rain(0.1) != 0:
                 raise RuntimeError('fixture rejected preregistered 0.1 cm/day precipitation update')
             print('C2A forcing update accepted', flush=True)

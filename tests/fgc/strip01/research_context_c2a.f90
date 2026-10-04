@@ -36,6 +36,7 @@ module mod_strip01_c2a_research_context
   private
 
   integer, parameter :: NPART = 50
+  integer, parameter :: MAX_ADVANCE = 32
   integer :: id_index
   real(real64), parameter :: FRACTION(NPART) = 1.0_real64
   integer(int64), parameter :: TILE_ID(NPART) = [(610000_int64+int(id_index,int64),id_index=1,NPART)]
@@ -61,14 +62,14 @@ module mod_strip01_c2a_research_context
   type(fmr_groundwater_participant_registry_t), target, save :: registry
   type(groundwater_interface_mass_ledger_t), target, save :: ledgers(NPART)
   type(groundwater_application_plan_t), target, save :: plan
-  type(groundwater_application_plan_t), target, save :: plan_next
-  type(fmr_groundwater_application_context_t), target, save :: context_next
+  type(groundwater_application_plan_t), target, save :: plan_next(MAX_ADVANCE)
+  type(fmr_groundwater_application_context_t), target, save :: context_next(MAX_ADVANCE)
   type(fmr_groundwater_application_context_t), target, save :: context
   type(fixed_flux_top_boundary_provider_t), target, save :: top
   integer(int64), save :: handles(NPART) = 0_int64
   real(real64), save :: reference_head_m = 0.0_real64
   integer(int64), save :: application_handle = 0_int64
-  logical, save :: next_initialized = .false.
+  integer, save :: advance_count = 0
   logical, save :: initialized = .false.
 
   public :: fgc49d_fixture_advance_c
@@ -169,17 +170,19 @@ contains
     type(groundwater_head_datum_t) :: datum
     type(groundwater_interface_mass_snapshot_t) :: snapshot
     integer(int64) :: handle
-    integer :: i, status
+    integer :: i, status, next_index
 
     c_status = 1_c_int
     context_handle = 0_c_int64_t
     href1 = 0.0_c_double
     href2 = 0.0_c_double
-    if (.not. initialized .or. next_initialized .or. application_handle <= 0_int64) return
+    if (.not. initialized .or. application_handle <= 0_int64) return
+    if (advance_count >= MAX_ADVANCE) return
+    next_index = advance_count + 1
     do i = 1, NPART
-      if (committed(i)%current_revision() /= 1_int64) return
+      if (committed(i)%current_revision() <= 0_int64) return
       call ledgers(i)%snapshot(snapshot)
-      if (.not. snapshot%available .or. snapshot%committed_exchange_count /= 1_int64 .or. &
+      if (.not. snapshot%available .or. snapshot%committed_exchange_count /= committed(i)%current_revision() .or. &
           snapshot%trial_active .or. snapshot%prepared_active) return
     end do
 
@@ -190,22 +193,23 @@ contains
       call set_tile(tiles(i), TILE_ID(i), TILE_ID(i), LEDGER_ID(i), CELL_ID(i), 1.0_real64)
       call set_cell(cells(i), CELL_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), i, i)
       call make_predictor(predictors(i), TILE_ID(i), TILE_ID(i), COUPLING_ID(i), GW_SERVICE_ID, GW_LINEAGE_ID(i), &
-           reference_head_m, reference_head_m, 1_int64, DURATION_DAY)
+           reference_head_m, reference_head_m, committed(i)%current_revision(), &
+           real(snapshot%committed_exchange_count, real64) * DURATION_DAY)
       areas(i)%groundwater_cell_id = CELL_ID(i)
       areas(i)%cell_area_m2 = 1.0_real64
     end do
     call materialize_groundwater_topology(tiles, cells, topology, status)
     if (status /= GW_TOPOLOGY_OK .or. .not. topology%ready()) return
-    call materialize_groundwater_application_plan(topology, predictors, areas, plan_next, status)
-    if (status /= GW_APP_PLAN_OK .or. .not. plan_next%ready()) return
-    call context_next%bind(plan_next, registry, handles, ledgers, status)
-    if (status /= FMR_GW_APP_CONTEXT_OK .or. .not. context_next%ready()) return
-    call register_fmr_groundwater_application_context(context_next, handle, status)
+    call materialize_groundwater_application_plan(topology, predictors, areas, plan_next(next_index), status)
+    if (status /= GW_APP_PLAN_OK .or. .not. plan_next(next_index)%ready()) return
+    call context_next(next_index)%bind(plan_next(next_index), registry, handles, ledgers, status)
+    if (status /= FMR_GW_APP_CONTEXT_OK .or. .not. context_next(next_index)%ready()) return
+    call register_fmr_groundwater_application_context(context_next(next_index), handle, status)
     if (status /= FMR_GW_APP_C_API_OK .or. handle <= 0_int64) return
     context_handle = int(handle, c_int64_t)
     href1 = real(reference_head_m, c_double)
     href2 = real(reference_head_m, c_double)
-    next_initialized = .true.
+    advance_count = next_index
     c_status = 0_c_int
   end function fgc49d_fixture_advance_c
 
@@ -215,7 +219,7 @@ contains
        bind(C, name="strip01_set_precipitation_c") result(c_status)
     real(c_double), value :: rate_cm_per_day
     c_status = 1_c_int
-    if (.not. initialized .or. next_initialized .or. .not. ieee_is_finite(rate_cm_per_day) .or. &
+    if (.not. initialized .or. .not. ieee_is_finite(rate_cm_per_day) .or. &
         rate_cm_per_day < 0.0_c_double) return
     base_forcing%top_flux = -real(rate_cm_per_day, real64)
     call materializer%initialize(base_forcing)

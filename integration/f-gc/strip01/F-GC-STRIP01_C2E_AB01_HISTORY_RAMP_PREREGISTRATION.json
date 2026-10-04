@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.history_ramp_preregistration.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01-HISTORY-RAMP",
+  "state": "PREREGISTERED",
+  "parent_protocols": [
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB_PREREGISTRATION.json",
+    "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_LOW_RATE_ADDENDUM.json"
+  ],
+  "purpose": "Test whether the real-SWAP history-preserving native service can publish a gradual positive infiltration onset, given that exact-origin isolated participants accept 1e-8 through 1e-6 cm/day but reject tested rates at and above 1e-5 cm/day.",
+  "fixed_conditions": {
+    "geometry": "Same 50-column, 1:1-mapped C1 MODFLOW6 6.8.0 strip, 1 m cells, left drain, no-flow right and bottom.",
+    "bootstrap": "One accepted 0.001-day zero-forcing C2a equilibrium window from the exact C2E fixture origin.",
+    "window_duration_day": 0.001,
+    "coupling_flux_tolerance_m_per_s": 2e-15,
+    "max_coupling_iterations": 40,
+    "forcing_schedule_cm_per_day": [1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 0.1],
+    "forcing_semantics": "Uniform prescribed top infiltration; positive values are inward rain magnitude. Each value applies for one complete 0.001-day service window; proceed only after the preceding window publishes."
+  },
+  "gates": {
+    "publish": "Record each window outcome; a rejection terminates the ramp without advancing forcing or state.",
+    "rollback": "On rejection, profile hash, storage, participant revisions and ledgers must match the last accepted origin.",
+    "mass": "For every published window and cumulatively report rain input, SWAP-owned storage change, MODFLOW storage change if explicitly present in native budget, drain discharge, other external boundaries, and residual. Interface exchange remains internal.",
+    "replay": "Two independent fresh processes must produce byte-identical canonical result JSON.",
+    "production": "No production solver, temporal budget, coupling tolerance, mass gate, retry policy or ownership semantics changes."
+  },
+  "interpretation_limit": "This is a research-fixture service trajectory. Acceptance at any partial ramp does not establish a 0.1 cm/day envelope or production admission; a first-window rejection localizes the failure to the tested real-SWAP transaction onset before the MODFLOW state can advance."
+}

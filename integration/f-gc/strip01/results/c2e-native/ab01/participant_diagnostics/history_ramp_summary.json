@@ -1,0 +1,148 @@
+{
+  "cumulative_at_stop": {
+    "absolute_residual_m3": 2.174525143393826e-15,
+    "drain_outflow_m3": 0.0,
+    "input_m3": 5.55e-10,
+    "modflow_storage_change_m3": 0.0,
+    "relative_residual": 3.9180633214303165e-06,
+    "swap_storage_change_m3": 5.549978254748567e-10
+  },
+  "fixed_parameters": {
+    "duration_day": 0.001,
+    "flux_tolerance_m_per_s": 2e-15,
+    "geometry": "50 cells, 1:1 map, dx=1 m, left drain, no-flow right/bottom",
+    "max_coupling_iterations": 40,
+    "schedule_cm_per_day": [
+      1e-08,
+      1e-07,
+      1e-06,
+      1e-05,
+      0.0001,
+      0.001,
+      0.01,
+      0.1
+    ]
+  },
+  "interpretation": "Native service publishes 1e-8, 1e-7 and 1e-6 cm/day after gradual history-aware increase; 1e-5 cm/day rejects at swap-corrector iteration 1 and rollback preserves all 50 states, revisions and ledgers at four. The accepted rates are too small to produce a measurable groundwater head response or drain discharge (the 50 MODFLOW heads remain -1 m); therefore this does not establish practical recharge coupling, a 0.1 cm/day envelope, or production qualification. The sharp onset remains on the real-SWAP corrector/transaction side in this fixture. Mass residuals are absolute and relative; relative values at tiny input are dominated by storage-diagnostic subtraction and are not a convergence gate.",
+  "invariants": {
+    "canonical_admission": false,
+    "commits_at_stop": [
+      4
+    ],
+    "fresh_process_result_json_byte_identical": true,
+    "interface_transfer_external_counted": false,
+    "production_delta": [],
+    "rejected_window_rollback_verified": true
+  },
+  "origin": "Published C2a real-SWAP zero-forcing equilibrium; 50 identical C1 participants; MODFLOW t=0.001 d, head=-1 m.",
+  "protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_PREREGISTRATION.json",
+  "replay_sha256": {
+    "run1": "4ce85c705e20ce753cec1ba12497cd5c2e083aa9adcee19c0f5d7f4eae2a49eb",
+    "run2": "4ce85c705e20ce753cec1ba12497cd5c2e083aa9adcee19c0f5d7f4eae2a49eb"
+  },
+  "schema": "swap5.fgc.strip01.c2e_ab01.history_ramp_summary.v1",
+  "state": "C2A_PUBLISHED_HISTORY_RAMP_REJECTED",
+  "windows": [
+    {
+      "absolute_mass_residual_m3": 2.2208597511048033e-15,
+      "cumulative_absolute_residual_m3": 2.2208597511048033e-15,
+      "cumulative_relative_residual": -0.0004441719502209606,
+      "drain_outflow_m3": -0.0,
+      "failure_stage": "none",
+      "head_max_m": -1.0,
+      "head_min_m": -1.0,
+      "index": 0,
+      "iterations": 1,
+      "ledger_count_after": [
+        2
+      ],
+      "maximum_coupling_residual_m_per_s": 5.140879053484268e-19,
+      "modflow_storage_change_m3": 0.0,
+      "participant_revision_after": [
+        2
+      ],
+      "profile_hash_after": "59e83004733e335422cef7740c6d536d49ce5444fa3d86bd1db17b381be94503",
+      "profile_hash_before": "997123bcf8286dff69c4b95f555645641bc7fc58b7bed757ae8dcc8b91fe7871",
+      "published": true,
+      "rain_input_m3": 5.0000000000000005e-12,
+      "rate_cm_per_day": 1e-08,
+      "relative_mass_residual": -0.0004441719502209606,
+      "rollback_verified": null,
+      "swap_storage_change_m3": 5.002220859751105e-12,
+      "t0_day": 0.001
+    },
+    {
+      "absolute_mass_residual_m3": 6.213111919359206e-15,
+      "cumulative_absolute_residual_m3": 3.9922521682560184e-15,
+      "cumulative_relative_residual": 7.258640305920033e-05,
+      "drain_outflow_m3": -0.0,
+      "failure_stage": "none",
+      "head_max_m": -1.0,
+      "head_min_m": -1.0,
+      "index": 1,
+      "iterations": 1,
+      "ledger_count_after": [
+        3
+      ],
+      "maximum_coupling_residual_m_per_s": 1.4382203517010785e-18,
+      "modflow_storage_change_m3": 0.0,
+      "participant_revision_after": [
+        3
+      ],
+      "profile_hash_after": "7be77485ca0cd9bafb79524773f1f6f3631ef5b0cef4e13b383e28f422ea2906",
+      "profile_hash_before": "59e83004733e335422cef7740c6d536d49ce5444fa3d86bd1db17b381be94503",
+      "published": true,
+      "rain_input_m3": 5.000000000000001e-11,
+      "rate_cm_per_day": 1e-07,
+      "relative_mass_residual": 0.0001242622383871841,
+      "rollback_verified": null,
+      "swap_storage_change_m3": 4.999378688808065e-11,
+      "t0_day": 0.002
+    },
+    {
+      "absolute_mass_residual_m3": 1.817727024868655e-15,
+      "cumulative_absolute_residual_m3": 2.174525143393826e-15,
+      "cumulative_relative_residual": 3.9180633214303165e-06,
+      "drain_outflow_m3": -0.0,
+      "failure_stage": "none",
+      "head_max_m": -1.0,
+      "head_min_m": -1.0,
+      "index": 2,
+      "iterations": 1,
+      "ledger_count_after": [
+        4
+      ],
+      "maximum_coupling_residual_m_per_s": 4.2077014466428693e-19,
+      "modflow_storage_change_m3": 0.0,
+      "participant_revision_after": [
+        4
+      ],
+      "profile_hash_after": "798fc0fa79bad7dc99e38baca74542daa44982385ac3353046b3c82380fe604d",
+      "profile_hash_before": "7be77485ca0cd9bafb79524773f1f6f3631ef5b0cef4e13b383e28f422ea2906",
+      "published": true,
+      "rain_input_m3": 5e-10,
+      "rate_cm_per_day": 1e-06,
+      "relative_mass_residual": -3.6354540497373094e-06,
+      "rollback_verified": null,
+      "swap_storage_change_m3": 5.000018177270249e-10,
+      "t0_day": 0.003
+    },
+    {
+      "failure_stage": "swap-corrector",
+      "index": 3,
+      "iterations": 1,
+      "ledger_count_after": [
+        4
+      ],
+      "participant_revision_after": [
+        4
+      ],
+      "profile_hash_after": "798fc0fa79bad7dc99e38baca74542daa44982385ac3353046b3c82380fe604d",
+      "profile_hash_before": "798fc0fa79bad7dc99e38baca74542daa44982385ac3353046b3c82380fe604d",
+      "published": false,
+      "rate_cm_per_day": 1e-05,
+      "rollback_verified": true,
+      "t0_day": 0.004
+    }
+  ]
+}
