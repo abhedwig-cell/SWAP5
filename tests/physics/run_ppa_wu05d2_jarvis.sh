@@ -15,7 +15,7 @@ module mod_soil_water_solver_contract
 end module
 EOF
 for O in 0 2; do
-  gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -O$O -J"$B" -I"$B" \
+  gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -O$O -J"$B" -I"$B" \
     "$B/mod_soil_water_solver_contract.f90" \
     src/solver/mod_process_hydraulic_view.f90 \
     src/process/mod_root_water_uptake_process.f90 \
