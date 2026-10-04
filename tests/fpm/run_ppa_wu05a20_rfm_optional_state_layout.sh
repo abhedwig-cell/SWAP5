@@ -100,6 +100,7 @@ MODULE_SRC=(
   src/process/macropore/mod_macropore_standard_storage.f90
   src/runtime/mod_macropore_standard_rate_adapter.f90
   src/solver/mod_macropore_exchange_overlay_provider.f90
+  src/process/macropore/mod_macropore_covering_layer_input.f90
   src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_macropore_configuration.f90
