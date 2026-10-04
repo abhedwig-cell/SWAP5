@@ -69,10 +69,10 @@ contains
     diag%compensated_uptake=diag%uncompensated_uptake
     diag%drought_reduction_total=drought_reduction
     diag%oxygen_reduction_total=oxygen_reduction
-    if(ptra<=vsmall) return
     if(diag%uncompensated_uptake>ptra+256.0_real64*epsilon(1.0_real64)*max(1.0_real64,ptra)) then
       final_fluxes=root_water_uptake_flux_result_t();status=ROOT_COMP_INVALID;return
     end if
+    if(ptra<=vsmall) return
 
     alptot=diag%uncompensated_uptake/ptra
     qred=ptra-diag%uncompensated_uptake
