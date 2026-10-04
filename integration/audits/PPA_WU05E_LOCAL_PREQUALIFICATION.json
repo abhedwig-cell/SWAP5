@@ -15,7 +15,7 @@
     "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
     "tests/fpm/run_ppa_wu05a8_real_richards.sh": "91d49bd7bfedf5752a3d36a4c362daba97c214027cd7381567b06269eadf7086",
-    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "c7ffa401ab8a852b9680220e4ac14e56f1bebb5731d7fc26c572c7812b4da607",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "731a66150ba4daa4482aa0606c7b0086ed2922d4b18fc687ca847e245985eabe",
     "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "50ea99cf305881e868091dccd987a5feada756a42b8190f0378f8cb64b53e110",
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
@@ -25,11 +25,11 @@
     "tests/physics/test_mobile_salt_state.f90": "318dded400628b3f5aa60207389e42af3ebec3dcc37ea632cd9bd1194dcb20ca",
     "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
     "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90": "834f4169c4f7a9ccb216e17985eccb6d722468b8d986f302c6aea5765e0998f0",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d333d05ba90cb4f4df6eb67626cd1a6768f42192b3e022f340329c03e177595a",
     "src/runtime/mod_fmr_runtime_core.f90": "be82f483236c12feeaebb02e2c579d45f209ba2feba24d9511746dc6632d5c38",
     "src/runtime/mod_fmr_restart_state_contract.f90": "f917f229f650b4a7787476fc7bd2b87666e9689951ef83508aa1da1531a12ec1",
     "src/runtime/mod_fmr_committed_restart.f90": "585aa64f209db2c106f73caaedb7dfac66e6b0fcd1571750ce4a405710165e89",
-    "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "8dac5bc26ab30239f713f625668df4ce60a2f07740ae3b92275bd38dbf3f9346",
+    "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "1598e68bc03e12e590e011ceacdb7dde04966bbdf7d8e2ce3133d3b93de84f47",
     "tests/physics/ppa_wu05e_mobile_macropore_exchange_oracle.f90": "aaeefe46b8eaa5e854d87fc9cad9ae6d54e0ae972ee284ca3dfd972724a5d7ff",
     "tests/physics/test_mobile_macropore_salt_exchange_oracle.f90": "c57bfa2471d5b1ccaecac99338a85039f78c5fd845ecd38ca6e72d041ccac152",
     "tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh": "9c37053df30f7be9ddb821358ebae012647bf06525ae86447a45a994466d0410"
@@ -93,8 +93,8 @@
     {
       "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
       "result": "PASS_O0_O2",
-      "scope": "O0/O2 FMR transaction/restart gate with opt-in accepted per-domain/node macro exchange trace. A7 requires nonzero max |exchange| >1e-14 cm/day, verifies domain sum identity on every accepted substep, and checks exact trace identity through retry/replay and fresh-process restart with changed forcing. It still requires the expected test-only salt-consumer SOLUTE_WATER_CLOSURE and no candidate/receipt leakage; no salt advancement is admitted.",
-      "execution": "Ran locally on the exact synchronized work-branch runtime and restart sources; both O0 and O2 completed. The trace had live nonzero donor-domain exchange and closed within the existing 1e-8 cm/day water-flux reconstruction bound. No tolerance changes."
+      "scope": "O0/O2 FMR transaction/restart gate with opt-in accepted per-domain/node exchange and matching per-domain start/end macro water volumes. A7 requires nonzero max |exchange| and nonzero domain-water change, verifies domain sum identity for every accepted substep, and checks both arrays bit-identically through retry/replay and fresh-process restart with changed forcing. It still requires the expected test-only salt-consumer SOLUTE_WATER_CLOSURE and no candidate/receipt leakage; no salt advancement is admitted.",
+      "execution": "Ran locally on the exact synchronized work-branch runtime/restart sources; both O0 and O2 completed. The trace carried live nonzero exchange and corresponding macro water-volume change while the matrix water-face reconstruction remained within the existing 1e-8 cm/day bound. No tolerance changes."
     },
     {
       "command": "python3 tools/docs/check_docs.py && python3 -m mkdocs build --strict",
