@@ -15,6 +15,17 @@ module mod_solute_mobile_salt_state
     real(real64), allocatable :: concentration_mg_cm3(:)
   end type
 
+
+  ! One accepted Richards substep. These records are ordered in solver time;
+  ! they are candidate-local and must be discarded together on rejection.
+  type, public :: mobile_salt_substep_t
+    real(real64), allocatable :: water_start(:),water_trial(:)
+    real(real64), allocatable :: face_flux_cm_day(:),root_water_sink_cm_day(:)
+    real(real64) :: top_boundary_concentration=0.0_real64
+    real(real64) :: bottom_boundary_concentration=0.0_real64
+    real(real64) :: duration_day=0.0_real64
+  end type
+
   type, public :: mobile_salt_fluxes_t
     real(real64) :: top_input_mg_cm2=0.0_real64
     real(real64) :: top_output_mg_cm2=0.0_real64
@@ -24,7 +35,7 @@ module mod_solute_mobile_salt_state
     real(real64) :: closure_error_mg_cm2=0.0_real64
   end type
 
-  public :: initialize_mobile_salt_state, advance_mobile_salt_trial
+  public :: initialize_mobile_salt_state, advance_mobile_salt_trial, advance_mobile_salt_trace
 
 contains
 
@@ -150,6 +161,56 @@ contains
     if(any(.not.ieee_is_finite(candidate%concentration_mg_cm3))) then
       candidate=mobile_salt_state_t();status=SOLUTE_INVALID;return
     end if
+    status=SOLUTE_OK
+  end subroutine
+
+
+  ! Applies a time-ordered sequence of accepted physical substeps to one salt
+  ! candidate. Every step uses the concentration produced by its predecessor.
+  ! If any step is invalid, the entire trace is discarded and no partial receipt
+  ! or candidate escapes this routine.
+  subroutine advance_mobile_salt_trace(committed,node_thickness_cm,substeps,tscf,candidate,fluxes,status)
+    type(mobile_salt_state_t), intent(in) :: committed
+    real(real64), intent(in) :: node_thickness_cm(:),tscf
+    type(mobile_salt_substep_t), intent(in) :: substeps(:)
+    type(mobile_salt_state_t), intent(out) :: candidate
+    type(mobile_salt_fluxes_t), intent(out) :: fluxes
+    integer, intent(out) :: status
+    type(mobile_salt_state_t) :: current,next
+    type(mobile_salt_fluxes_t) :: step_fluxes
+    integer :: k
+
+    candidate=mobile_salt_state_t()
+    fluxes=mobile_salt_fluxes_t()
+    status=SOLUTE_INVALID
+    if(size(substeps)==0.or.size(node_thickness_cm)==0) return
+    if(.not.allocated(committed%mass_mg_cm2).or..not.allocated(committed%concentration_mg_cm3)) return
+    current=committed
+    do k=1,size(substeps)
+      if(.not.allocated(substeps(k)%water_start).or..not.allocated(substeps(k)%water_trial).or. &
+         .not.allocated(substeps(k)%face_flux_cm_day).or..not.allocated(substeps(k)%root_water_sink_cm_day)) then
+        fluxes=mobile_salt_fluxes_t()
+        status=SOLUTE_INVALID
+        return
+      end if
+      call advance_mobile_salt_trial(current,node_thickness_cm,substeps(k)%water_start,substeps(k)%water_trial, &
+           substeps(k)%face_flux_cm_day,substeps(k)%root_water_sink_cm_day, &
+           substeps(k)%top_boundary_concentration,substeps(k)%bottom_boundary_concentration,tscf, &
+           substeps(k)%duration_day,next,step_fluxes,status)
+      if(status/=SOLUTE_OK) then
+        fluxes=mobile_salt_fluxes_t()
+        candidate=mobile_salt_state_t()
+        return
+      end if
+      current=next
+      fluxes%top_input_mg_cm2=fluxes%top_input_mg_cm2+step_fluxes%top_input_mg_cm2
+      fluxes%top_output_mg_cm2=fluxes%top_output_mg_cm2+step_fluxes%top_output_mg_cm2
+      fluxes%bottom_input_mg_cm2=fluxes%bottom_input_mg_cm2+step_fluxes%bottom_input_mg_cm2
+      fluxes%bottom_output_mg_cm2=fluxes%bottom_output_mg_cm2+step_fluxes%bottom_output_mg_cm2
+      fluxes%root_uptake_mg_cm2=fluxes%root_uptake_mg_cm2+step_fluxes%root_uptake_mg_cm2
+      fluxes%closure_error_mg_cm2=fluxes%closure_error_mg_cm2+step_fluxes%closure_error_mg_cm2
+    end do
+    candidate=current
     status=SOLUTE_OK
   end subroutine
 
