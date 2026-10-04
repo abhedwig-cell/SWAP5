@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.history_ramp_temporal_diagnostic.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01-RAMP-TEMPORAL-DIAG",
+  "state": "PREREGISTERED_CONFIRMATORY_REPLAY",
+  "parent_protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_PREREGISTRATION.json",
+  "purpose": "Determine whether the first failed history-ramp window is consistent with temporal-certificate rejection at its exact committed origin, or instead with solver/mass rejection, using identical isolated discarded participant probes.",
+  "fixed_origin": {
+    "accepted_history": "C2a zero window, then 1e-8, 1e-7 and 1e-6 cm/day, each in a published 0.001-day full-service window.",
+    "next_full_service_window": "1e-5 cm/day at t0=0.004 day, duration=0.001 day; expected prior observation is swap-corrector rejection with rollback.",
+    "participant_origin": "After the rejected service window, which must preserve revision and interface ledger count 4 for all 50 participants.",
+    "probe": "Run the existing exact-time discarded real-SWAP participant diagnostic for all 50 slots at interface head -1 m, t0=0.004 day, duration=0.001 day, fixed top infiltration 1e-5 cm/day, tangent disabled."
+  },
+  "record": ["per-slot call status", "all 12 result/solver/temporal codes", "all six temporal/flux/residual observations", "completed time", "profile hash, storage, revisions and ledgers before/after probes"],
+  "gates": {
+    "discarded_only": true,
+    "no_committed_state_mutation": true,
+    "two_fresh_processes": "Canonical result JSON must be byte-identical.",
+    "production_changes": "None; no temporal budget, solver setting, retry rule, coupling gate or ownership semantic is changed."
+  },
+  "interpretation": "Temporal-gate support requires all 50 probes to show zero accepted substeps, positive temporal rejections, zero solver and mass rejections, a valid normalized temporal indicator above 1, and unchanged committed state. This supports consistency with a temporal-certificate cause at this fixture origin; isolated probes do not instrument the exact internal service call or prove the certificate is physically too strict."
+}

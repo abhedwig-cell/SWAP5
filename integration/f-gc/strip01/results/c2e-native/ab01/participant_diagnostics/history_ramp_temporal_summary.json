@@ -1,0 +1,51 @@
+{
+  "discarded_probes": {
+    "completed_t_day": 0.004,
+    "fresh_processes_byte_identical": true,
+    "participants": 50,
+    "state_unchanged": true,
+    "uniform_codes": [
+      2,
+      0,
+      0,
+      9,
+      0,
+      0,
+      9,
+      8,
+      1,
+      1,
+      1,
+      1
+    ],
+    "uniform_observations": [
+      7.811003186392739e-05,
+      1e-05,
+      7.811003186392738,
+      -1e-05,
+      8.037406962192289e-10,
+      0.0
+    ]
+  },
+  "full_service_outcome": {
+    "failure_stage": "swap-corrector",
+    "iterations": 1,
+    "published": false,
+    "rollback_verified": true
+  },
+  "interpretation": "All 50 exact-origin discarded probes report result failure, zero accepted substeps, zero solver rejections, nine temporal rejections, zero mass rejections, nine attempts and eight retries. The temporal indicator is available and valid at 7.811003 against the normalized acceptance limit 1; head bound 7.811003e-5 cm exceeds the 1e-5 cm fixture budget. The service rejection is therefore consistent with the real-SWAP temporal certificate gate as the proximate blocker. The probes are separate backend calls and do not prove the certificate is physically too strict or instrument the exact service-internal failing call.",
+  "origin": {
+    "committed_history": "Published C2a zero window plus full-service windows at 1e-8, 1e-7, 1e-6 cm/day",
+    "duration_day": 0.001,
+    "interface_head_m": -1.0,
+    "next_rate_cm_per_day": 1e-05,
+    "revisions_and_ledger_counts": 4,
+    "t0_day": 0.004
+  },
+  "protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_TEMPORAL_DIAGNOSTIC_ADDENDUM.json",
+  "replay_sha256": {
+    "run1": "20e3fb14ca467d6798cc403c0495a5b873970981bcc0d51909458df702189354",
+    "run2": "20e3fb14ca467d6798cc403c0495a5b873970981bcc0d51909458df702189354"
+  },
+  "schema": "swap5.fgc.strip01.c2e_ab01.ramp_temporal_diagnostic.v1"
+}

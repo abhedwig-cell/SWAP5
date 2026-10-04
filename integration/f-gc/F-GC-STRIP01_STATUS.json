@@ -496,7 +496,8 @@
         "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_DURATION_ADDENDUM.json",
         "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_RATE_ADDENDUM.json",
         "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_LOW_RATE_ADDENDUM.json",
-        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_PREREGISTRATION.json"
+        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_PREREGISTRATION.json",
+        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_HISTORY_RAMP_TEMPORAL_DIAGNOSTIC_ADDENDUM.json"
       ],
       "summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/summary.json",
       "source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/source_manifest.json",
@@ -506,7 +507,7 @@
       "rate_result": "At 0.001 day, all 50 zero-flux probes complete one substep; all 50 probes at each positive rate 0.0002, 0.001, 0.01 and 0.1 cm/day fail with zero accepted substeps. Terminal solver/temporal code vectors vary non-monotonically across those rates.",
       "committed_state_preserved": true,
       "fresh_process_byte_identity": true,
-      "interpretation": "No spatially unique participant was identified. Evidence supports a history/onset-sensitive temporal and solver transaction blocker in the tested real-SWAP fixture. These are discarded component probes, not full-service publication tests; the fixture budget is not independently qualified here as the sole cause. Low-rate probes narrow the isolated backend onset transition to between 1e-6 and 1e-5 cm/day at 0.001 day; a multi-window forcing ramp remains untested. A full-service history-aware ramp reaches 1e-6 cm/day, then rejects 1e-5 cm/day at the real-SWAP corrector with transaction rollback intact. The accepted rates are microforcing and produce no measurable MODFLOW head/drain response; they do not establish a practical forcing envelope.",
+      "interpretation": "No spatially unique participant was identified. Evidence supports a history/onset-sensitive temporal and solver transaction blocker in the tested real-SWAP fixture. These are discarded component probes, not full-service publication tests; the fixture budget is not independently qualified here as the sole cause. Low-rate probes narrow the isolated backend onset transition to between 1e-6 and 1e-5 cm/day at 0.001 day; a multi-window forcing ramp remains untested. A full-service history-aware ramp reaches 1e-6 cm/day, then rejects 1e-5 cm/day at the real-SWAP corrector with transaction rollback intact. The accepted rates are microforcing and produce no measurable MODFLOW head/drain response; they do not establish a practical forcing envelope. A preregistered exact-origin replay finds zero solver/mass rejects and nine temporal rejects at the failed 1e-5 cm/day ramp step; normalized temporal indicator 7.811 exceeds the fixture limit 1, supporting the temporal certificate as the proximate gate. Physical appropriateness of that budget remains unqualified.",
       "production_delta": [],
       "canonical_admission": false,
       "low_rate_summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/low_rate_summary.json",
@@ -516,8 +517,12 @@
       "history_ramp_summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/history_ramp_summary.json",
       "history_ramp_source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/history_ramp_source_manifest.json",
       "full_history_ramp_result": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/history_ramp_full_result.json.gz",
-      "history_ramp_result": "History-aware 0.001-day native service windows publish at 1e-8, 1e-7 and 1e-6 cm/day; all 50 columns then reject 1e-5 cm/day at swap-corrector iteration 1. Rejection preserves all states, revisions and ledgers at 4. Fresh-process result hashes match. Accepted inputs are only 5e-12 to 5e-10 m3/window, MODFLOW heads remain -1 m, and there is no drain flow; this does not demonstrate measurable groundwater response."
+      "history_ramp_result": "History-aware 0.001-day native service windows publish at 1e-8, 1e-7 and 1e-6 cm/day; all 50 columns then reject 1e-5 cm/day at swap-corrector iteration 1. Rejection preserves all states, revisions and ledgers at 4. Fresh-process result hashes match. Accepted inputs are only 5e-12 to 5e-10 m3/window, MODFLOW heads remain -1 m, and there is no drain flow; this does not demonstrate measurable groundwater response.",
+      "history_ramp_temporal_summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/history_ramp_temporal_summary.json",
+      "history_ramp_temporal_source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/history_ramp_temporal_source_manifest.json",
+      "full_history_ramp_temporal_result": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/history_ramp_temporal_full_result.json.gz",
+      "temporal_diagnostic": "At the unchanged t=0.004-day origin after three accepted microforcing windows, all 50 exact-time discarded probes at 1e-5 cm/day have zero accepted substeps, zero solver rejects, nine temporal rejects and zero mass rejects. The valid normalized temporal indicator is 7.811 against limit 1 (head bound 7.811e-5 cm vs 1e-5 cm fixture budget). This supports the temporal certificate as the proximate failure gate, not the claim that its physical budget is wrong."
     },
-    "next_action": "Retain the qualified Dummy-SWAP strip as the intermediate coupling baseline. Direct further real-SWAP work at practical forcing amplitudes toward the corrector temporal-history/retry evidence; do not alter production gates without a separate qualified diagnosis."
+    "next_action": "Keep production budgets unchanged. If real-SWAP work continues, independently qualify the temporal head indicator against refined/reference trajectories at the observed onset states before considering any temporal-budget change; keep the native Dummy-SWAP strip as the qualified coupling baseline."
   }
 }

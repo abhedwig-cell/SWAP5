@@ -1,0 +1,20 @@
+{
+  "build_command": "python tools/build_f_gc_strip01_research_context.py --profile C1 --build /tmp/f-gc-history-ramp-build --context-override tests/fgc/strip01/research_context_c2a.f90",
+  "compiler": "GNU Fortran 13.3.0",
+  "compressed_full_result_sha256": "16b738e80c6cef2f72b8e96dd0e7e0a333d138287d0567ea89e71da2c34ace73",
+  "confirmatory_result_sha256": "20e3fb14ca467d6798cc403c0495a5b873970981bcc0d51909458df702189354",
+  "context_commit": "36ef6acbaca2ad607eb818e389575d30b444afe2",
+  "fresh_process_result_sha256": "20e3fb14ca467d6798cc403c0495a5b873970981bcc0d51909458df702189354",
+  "libmf6_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+  "modflow6": "6.8.0",
+  "profile": "C1",
+  "protocol_commit": "60cb0c6b3075cd27bd2f4ba9ccdf3244e49075e1",
+  "research_library_sha256": "97e0b99c06c75e31174e6a6d9ac3932dcec54f24788eabacf5e10093c1fb986a",
+  "run_command": "MPLCONFIGDIR=/tmp/mpl-c2e python tests/fgc/strip01/run_c2_rain_sequence.py --profile C1 --real-context c2a --root . --library /tmp/f-gc-history-ramp-build/libstrip01_research.so --libmf6 /tmp/c2-mf6-680/bin/libmf6.so --output <fresh-dir> --flux-tolerance 2e-15 --max-coupling-iterations 40 --history-ramp-rates 1e-8 1e-7 1e-6 1e-5 1e-4 1e-3 1e-2 0.1",
+  "schema": "swap5.fgc.strip01.c2e_ab01.ramp_temporal_diagnostic.source_manifest.v1",
+  "source_blobs": {
+    "context": "0b653041ec4cac20529f44cdcf90eed04cc81419",
+    "protocol": "b40454bce8761ae21a5739378602ab543970d389",
+    "runner": "3b1a22a5da2b52fb219244a74e25d10be2b6eb27"
+  }
+}
