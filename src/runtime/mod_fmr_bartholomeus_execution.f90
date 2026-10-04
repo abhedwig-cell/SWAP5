@@ -21,7 +21,7 @@ module mod_fmr_bartholomeus_execution
 
 contains
   subroutine fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,w_root,w_root_z0, &
-       atmospheric_ctop,base_fluxes,final_fluxes,status)
+       atmospheric_ctop,base_fluxes,final_fluxes,status,oxygen_factors)
     type(fmr_bartholomeus_selection_t),intent(in)::config
     type(process_hydraulic_view_t),intent(in)::hydraulic
     type(soil_temperature_field_view_t),intent(in)::thermal
@@ -34,11 +34,18 @@ contains
     type(root_water_uptake_flux_result_t),intent(in)::base_fluxes
     type(root_water_uptake_flux_result_t),intent(out)::final_fluxes
     integer,intent(out)::status
+    real(real64),allocatable,optional,intent(out)::oxygen_factors(:)
     type(bartholomeus_runtime_view_t)::view
     real(real64),allocatable::factors(:)
     integer::route,wmode,input_status,compose_status
     logical::ok
 
+    if(present(oxygen_factors)) then
+      if(allocated(base_fluxes%root_extraction_sink)) then
+        allocate(oxygen_factors(size(base_fluxes%root_extraction_sink)))
+        oxygen_factors=1.0_real64
+      end if
+    end if
     final_fluxes=root_water_uptake_flux_result_t()
     call select_fmr_bartholomeus_route(config,route,wmode)
     if(route==FMR_BARTHOLOMEUS_DISABLED) then
@@ -82,6 +89,7 @@ contains
       final_fluxes=root_water_uptake_flux_result_t()
       status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
     end if
+    if(present(oxygen_factors)) oxygen_factors(1:view%rooted_nodes)=factors
     status=FMR_BARTHOLOMEUS_EXEC_OK
   end subroutine
 end module

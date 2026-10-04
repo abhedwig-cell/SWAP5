@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.ppa_wu05d.status.v2",
+  "work_unit": "PPA-WU05-D",
+  "title": "Compensated root-water-uptake authority",
+  "branch": "audit/ppa-wu05d-d1-reconcile-20261004",
+  "canonical_base": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
+  "status": "D2_QUALIFIED_BOUNDED_ADMISSION_PENDING_MERGE",
+  "production_source_mutation": true,
+  "reference_mutation": false,
+  "authority": {
+    "snapshot": "B1.11",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "size_bytes": 22013,
+    "b1_patch_relation": "UNCHANGED_BY_ADMITTED_B1_PATCHES"
+  },
+  "d1": {
+    "exact_bytes_materialized": false,
+    "exact_identity_confirmed": true,
+    "public_source_family_recovered": true,
+    "public_source_class": "CORROBORATION_ONLY_NOT_BYTE_EXACT",
+    "library_source_archives_discovered": true,
+    "library_raw_materialization": "ATTEMPTED_NOT_AUTHORIZED",
+    "persistent_state": "NOT_PROVEN_EXACTLY_CORROBORATED_NONE",
+    "result": "docs/audits/PPA_WU05D_D1_RECONSTRUCTION_RESULT.md",
+    "exact_tree_replay_previously_verified": true,
+    "exact_tree_evidence": "docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json",
+    "remaining_blocker": "NO_BLOCKER_TO_AUTHORIZED_SOURCE_BOUND_SEMANTIC_MIGRATION; exact-member-byte replay not claimed",
+    "selector_mapping": {
+      "1": "all stressors",
+      "2": "drought",
+      "3": "oxygen/wetness",
+      "4": "salinity",
+      "5": "frost"
+    },
+    "compensation_methods": {
+      "0": "off",
+      "1": "Jarvis fixed ALPHACRIT",
+      "2": "Walsum dynamic ALPHACRIT"
+    },
+    "walsum_alpha": "min((DCRITRTZ + RDM - RD_NODDRZ) / RDM, 1)",
+    "order": "potential qrot -> oxygen/drought/salinity/frost multiplication -> qrosum and stress attribution -> compensation -> final qrot/qrosum/stress totals",
+    "state_conclusion": "compensation block is current-call algebra; no continuation state; Walsum mutates current alphacrit scratch from current root geometry",
+    "evidence_note": "Exact B1.11 member identity is pinned and unchanged; selector/config authority is independently persisted in A22/A23/FPM05; compensation block/order/formula corroborated by official SWAP source family. Full byte text remains unavailable in this connector surface."
+  },
+  "invariants": {
+    "accepted_mass_owner": "EXISTING_ROOT_WATER_UPTAKE_ONLY",
+    "retry": "REBUILD_FRESH_UNCOMPENSATED_CANDIDATE_THEN_APPLY_COMPENSATION_ONCE",
+    "restart": "NO_NEW_PAYLOAD_UNTIL_EXACT_SOURCE_PROVES_NEED"
+  },
+  "slices": {
+    "D1": "SEMANTICS_RECONSTRUCTED_WITH_EXACT_IDENTITY_AND_INDEPENDENT_SOURCE_BOUND_CORROBORATION",
+    "D2": "QUALIFIED_BOUNDED_ADMISSION_PENDING_MERGE",
+    "D3": "HELD_UNTIL_D2_ADMISSION",
+    "D4": "DROUGHT_PLUS_ADMITTED_OXYGEN_QUALIFIED_WITH_D2_OTHER_STRESSORS_HELD",
+    "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
+  },
+  "production_admission": "NONE",
+  "next_action": "Merge qualified D2 PR1012 after final canonical reconciliation; persist canonical closeout and start D3 geometry contract.",
+  "d2": {
+    "production_compositor": "src/process/mod_root_uptake_compensation.f90",
+    "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
+    "qualification_run": 37183450243,
+    "qualification_status": "LOCAL_O0_O2_AND_PRESERVATION_PASS",
+    "supported_stressors": [
+      "all currently supplied admitted reductions",
+      "drought",
+      "oxygen"
+    ],
+    "fail_closed": [
+      "salinity",
+      "frost",
+      "Walsum until D3"
+    ],
+    "ownership": "single final root_water_uptake_flux_result_t; no second water receipt",
+    "continuation_state": "none",
+    "retry": "each trial restores qrot_unmodified before oxygen/compensation; rejected trial output is disposable",
+    "runtime_binding": "src/runtime/mod_fmr_serialized_reference_backend.f90: fresh uncompensated qrot -> admitted Bartholomeus oxygen -> Jarvis -> existing b110 root-sink provider",
+    "mass_ownership": "compensation owns no ledger/receipt; existing root-sink provider remains sole final sink path",
+    "previous_runs": [
+      {
+        "run": 37182953894,
+        "result": "FAIL_HARNESS_DEPENDENCY_ORDER"
+      },
+      {
+        "run": 37183187335,
+        "result": "FAIL_HARNESS_EXISTING_SOLVER_CONTRACT_WARNING_PROMOTED_BY_WERROR"
+      },
+      {
+        "run": 37183273234,
+        "result": "FAIL_PRE_STUB_HARNESS"
+      }
+    ],
+    "publication_blocker": "REPAIRED_AND_QUALIFIED",
+    "mixed_stress_attribution": "NODEWISE_SOURCE_PROPORTIONAL_LOSS_USING_EXISTING_POTENTIAL_ROOT_SINK_AND_ADMITTED_OXYGEN_FACTORS",
+    "test_paths": [
+      "tests/physics/run_ppa_wu05d2_jarvis.sh",
+      "tests/physics/run_ppa_wu05d2_application.py",
+      "tests/physics/run_ppa_wu05d2_publication.py",
+      "tests/physics/run_bartholomeus_application.py",
+      "tests/physics/run_ppa_wu05d2_preservation.py"
+    ],
+    "qualification_evidence": "integration/audits/PPA_WU05D_D2_QUALIFICATION.json"
+  },
+  "checkpoint_commit": "26557cfdab5a66cc28b91dd51faa9682cccf3c98",
+  "last_reconciled_head": "26557cfdab5a66cc28b91dd51faa9682cccf3c98",
+  "last_reconciled_upstream": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
+  "relevant_paths": [
+    "src/process/mod_root_uptake_compensation.f90",
+    "src/runtime/mod_root_uptake_compensation_execution.f90",
+    "src/runtime/mod_fmr_bartholomeus_execution.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "blocking_gate": null
+}

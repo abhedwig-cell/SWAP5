@@ -103,6 +103,8 @@ module mod_canonical_contracts
     ! intentionally distinct from the accepted-trajectory whole-window result.
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
     type(accepted_trajectory_direction_result_t) :: accepted_trajectory_direction
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
