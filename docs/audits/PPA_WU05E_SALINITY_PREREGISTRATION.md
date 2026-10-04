@@ -49,7 +49,7 @@ The crop-side response consumes an already authorized concentration; it owns nei
 | Salinity-to-Jarvis composition | D2 rejects unsupported salinity selection | Not implemented or qualified |
 | Solute restart/rollback contract | No admitted SWAP5 solute state exists | Missing; must follow explicit committed/candidate ownership |
 
-The apparent legacy labels `CML`, `CMSY`, and concentration are not enough to imply a current SWAP5 equivalent. No SWAP5 state with verified physical meaning, units, node mapping, mass closure, transaction semantics, or restart contract was found.
+The apparent legacy labels `CML`, `CMSY`, and concentration are not enough to imply a current SWAP5 equivalent. No admitted SWAP5 salt state with verified legacy equivalence, qualified units/node mapping, mass closure, transaction semantics, or restart contract was found. A provisional typed per-node mass field and Restart v3 layout scaffold have since been added on the work branch; active salt trials still reject, and the scaffold has not passed dedicated clone/restart or mass-coupled transaction qualification.
 
 ## Additional source-family state and mass census
 
@@ -138,9 +138,9 @@ With salinity disabled, preserve the admitted Feddes, Bartholomeus, D2 Jarvis, D
 
 ### Runtime transaction/restart audit (2026-10-04)
 
-`docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md` records a source-backed audit of the kernel commit, FMR physical-state cloning, Restart v2 payload and layout validation, and the committed crop root-uptake adapter. It finds that the current salt candidate has no kernel provenance or restart owner, and that a separate salt commit would not be atomic with the water state. It also records the state-layout coexistence issue: a salinity-only physical subtype is insufficient unless clone, layout validation, and restart cover combinations with existing optional physical continuations.
+`docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md` records a source-backed audit of the kernel commit, FMR physical-state cloning, Restart v2 payload and layout validation, and the committed crop root-uptake adapter. It finds that the pure salt candidate has no kernel provenance and that a separate salt commit would not be atomic with the water state. Since that audit, the branch added an optional typed mass field to the common FMR physical state, an independent solute-layout identity, clone copying and Restart v3 matching. The serialized trial still rejects active solute layouts; no salt candidate advances in the physical transaction and the new layout has no dedicated roundtrip test yet. It also records the state-layout coexistence issue: a salinity-only physical subtype is insufficient unless clone, layout validation, and restart cover combinations with existing optional physical continuations.
 
-The audit does not qualify E1 transport or alter the D2 compositor. The branch design decision in `docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md` selects an optional typed salt component inside the existing per-column physical object, with an independent salt-layout discriminator in template/restart identity. The generic kernel commit remains the sole state transition. Implementation and qualification must show synchronized water/salt revision and restart behaviour before any crop salinity view or Jarvis integration is added.
+The audit does not qualify E1 transport or alter the D2 compositor. The branch design decision in `docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md` selects an optional typed salt component inside the existing per-column physical object, with an independent salt-layout discriminator in template/restart identity. The generic kernel commit remains the sole state transition. Implementation and qualification must show synchronized water/salt revision and restart behaviour before any crop salinity view or Jarvis integration is added. The added state/restart scaffold is not an admitted salt owner until that candidate lifecycle is implemented and tested.
 
 ### Restricted live Richards continuity and FMR transaction checks (2026-10-04)
 
