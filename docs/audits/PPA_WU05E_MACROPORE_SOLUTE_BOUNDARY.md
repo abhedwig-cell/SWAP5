@@ -25,16 +25,17 @@ summed water exchange by the matrix concentration would therefore invent a
 solute transfer for macropore outflow and fail to remove the correct donor
 mass for macropore inflow.
 
-This is an ownership/interface gap, not a salinity-response defect. A test-only
-transfer oracle now exists in `tests/physics/ppa_wu05e_mobile_macropore_exchange_oracle.f90`,
-with O0/O2 checks for both signs, unequal domain concentrations, zero flow,
-within-sequence reversal, salt closure, dry donors, and water overdraw. It uses
-start-of-substep donor concentration and returns no candidate when the donor is
-unavailable. This tests the exchange arithmetic only; it does not supply the
-missing production state or trace. The fail-closed `SOLUTE_WATER_CLOSURE`
-outcome remains correct. Jarvis must remain a
-read-only consumer of the concentration derived from the accepted/trial salt
-state.
+This is an ownership/interface gap, not a salinity-response defect. A bounded,
+stateless exchange operator now lives in
+`src/process/mod_solute_macropore_exchange.f90`; O0/O2 tests exercise both
+signs, unequal domain concentrations, zero flow, within-sequence reversal,
+salt closure, dry donors, aggregate matrix donor-water limits, and water
+overdraw. It uses start-of-substep donor concentration and returns no candidate
+when the donor is unavailable. The source kernel computes only internal
+matrix/macropore exchange. It does not own continuation state, transport
+scheduling, boundaries, or a live FMR route. The fail-closed
+`SOLUTE_WATER_CLOSURE` outcome remains correct. Jarvis must remain a read-only
+consumer of concentration derived from an accepted/trial salt state.
 
 ## Source-bound facts
 
@@ -45,6 +46,8 @@ state.
 | The committed macropore continuation owns per-domain/node water volume, but no solute mass. | `src/runtime/mod_macropore_continuation_state.f90` |
 | The opt-in accepted FMR trace preserves domain/node exchange, its node sum, and paired per-domain start/end water volumes; macro top and rapid outflow remain rejected, and salt boundary receipts are absent. | `src/runtime/mod_fmr_serialized_reference_backend.f90`, `append_accepted_water_flux_substep` and accepted trace validation |
 | E1 salt candidate consumes matrix face fluxes and a single mobile mass per node; unowned source/sink closure rejects. | `src/process/mod_solute_mobile_salt_state.f90`; `tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90` |
+| Macropore vertical faces are reconstructable by domain from top inflow, accepted storage change, matrix exchange, and rapid outflow; the runtime result has not yet carried those rates into the salt trace. | `src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90`; `src/runtime/mod_macropore_single_column_runtime.f90`, `prepare_vertical_request` |
+| The standard storage route requires fixed geometry; a separate multi-domain candidate path can return displaced water to matrix. Covered-top transfer adds water to the macropore candidate and removes it from the matrix source above the top node. | `src/process/macropore/mod_macropore_standard_storage.f90`; `src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90`; `src/runtime/mod_macropore_single_column_runtime.f90` |
 
 ## Required contract before macro-route salt advancement
 
@@ -61,19 +64,26 @@ following before binding a salt consumer to this route:
    continuation, or another accepted composite physical-state owner. A
    concentration view is derived from matching salt mass and liquid volume;
    no independent stale concentration state is authoritative.
-3. Transfer salt with the signed accepted water exchange and the donor-domain
+3. Carry the reconstructed per-domain vertical face rates and typed top and
+   rapid-drainage solute receipts into the accepted attempt trace. These terms
+   are required to move dissolved mass as the macro storage profile is
+   canonicalized bottom-up. A zero or net-only trace cannot substitute for the
+   ordered donor fluxes.
+4. Transfer salt with signed accepted matrix exchange and the donor-domain
    concentration. Apply the equal-and-opposite amount to matrix and macro
    ledgers. Reject unavailable donor mass, dry donor state, invalid mapping,
    or mismatched time coverage; do not clip or infer a concentration.
-4. Account for the macro top partition, geometry returns, covering-layer
-   transfer, and rapid external outflow explicitly. Routes without a typed
-   boundary concentration or donor state stay disabled and fail closed.
-5. Keep matrix salt mass, macro-domain salt mass, water mass and external salt
+5. Account for macro top partition/returned surface water, geometry returns,
+   and covered-top transfer explicitly. These terms need typed donor and
+   receiver routing; geometry return is not active in the fixed-geometry
+   standard candidate scope. Routes without typed salt receipts stay disabled
+   and fail closed.
+6. Keep matrix salt mass, macro-domain salt mass, water mass and external salt
    receipts separately attributable while committing or discarding the whole
    physical candidate atomically. Clone, restart-layout identity, restore,
    retry and fresh-process replay must preserve both mass owners.
 
-The implemented test-only oracle verifies a closed matrix-plus-multiple-domain exchange: positive and
+The implemented stateless source kernel verifies a closed matrix-plus-multiple-domain exchange: positive and
 negative water exchange, unequal donor concentrations, zero exchange, reversal
 within ordered accepted substeps, and invalid/dry/insufficient donor cases.
 Each case must prove equal-and-opposite internal salt transfer and unchanged
@@ -96,9 +106,12 @@ changed by this slice.
 
 ## Next action
 
-Keep PPA-WU05-E salinity disabled on the live FMR macro route. First make a
-source-bound trace/state contract for per-domain accepted exchange and paired
-macro salt mass, then implement that state and transfer owner with isolated
-oracles. Only after a source-complete accepted trace exists should E1 transport
-be reconsidered for a live coupled receipt. PPA-WU05-F remains the separately
+Keep PPA-WU05-E salinity disabled on the live FMR macro route. The signed
+exchange arithmetic now has a reusable source kernel, but the live contract
+also requires ordered per-domain vertical advection, accepted boundary receipts,
+and atomic macro salt mass. Next extend the FMR attempt-local trace with those
+source-complete water terms and fail-closed typed salt boundary data, then pair
+the salt state with macro continuation and test it under transaction/restart.
+Only after that source-complete accepted trace exists should E1 transport be
+reconsidered for a live coupled receipt. PPA-WU05-F remains the separately
 registered frost root-stress unit.
