@@ -6,13 +6,19 @@
   "target_state": "PPA-WU05-E source postimage after branch synchronization; source-hash/local-prequalification evidence only, not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
+    "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "ac427406b2bdfda4c5a33efa6b9e2217ed5c5535dd5139e752c7a2cb09a7cee0",
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "35129746d37d1114fa2e885368363ab1bb7f1d115ccc4d83ac75a19952e24db8",
-    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "a7b6887ec150b1bba861f7d5d6c58bc313bf59b8c0bede486d41764597ff8b8d",
+    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "49664e7b01570663401cc351abf524a53c32a4110be171c701e19614f616490a",
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "2469a61298769e9aec6c15a0e47d4a0a1a54eaf6b5d459eaadcf4a92fd7993c3",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
     "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
+    "src/process/mod_solute_macropore_exchange.f90": "31e829e969f609213550c8f561311f0da75f5e5aeeb97935aa8072eb4e5f4ff3",
     "src/process/mod_solute_mobile_salt_state.f90": "a981169c421bbd095f467e1d95c953627db02e141fb79eaa20dfaa7be7ef1028",
     "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
+    "src/runtime/mod_fmr_committed_restart.f90": "585aa64f209db2c106f73caaedb7dfac66e6b0fcd1571750ce4a405710165e89",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f917f229f650b4a7787476fc7bd2b87666e9689951ef83508aa1da1531a12ec1",
+    "src/runtime/mod_fmr_runtime_core.f90": "be82f483236c12feeaebb02e2c579d45f209ba2feba24d9511746dc6632d5c38",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d333d05ba90cb4f4df6eb67626cd1a6768f42192b3e022f340329c03e177595a",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
     "tests/fpm/run_ppa_wu05a8_real_richards.sh": "91d49bd7bfedf5752a3d36a4c362daba97c214027cd7381567b06269eadf7086",
     "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "731a66150ba4daa4482aa0606c7b0086ed2922d4b18fc687ca847e245985eabe",
@@ -20,19 +26,13 @@
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
     "tests/physics/run_ppa_wu05d3_walsum.py": "4a2e3d66854422cc0d51c02ce47a373182c1f6dc6079531075428fd632270daf",
+    "tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh": "69f99c3aaf9e0300a4093c2bdd1c3ac319dcee47c6be7ea0adf6c22ff52693fb",
     "tests/physics/run_ppa_wu05e_mobile_salt.sh": "ca12cbfdfc105bc68ebeaaaf0ac462cba937101550029d3f1cebc0914714025b",
     "tests/physics/run_root_uptake_oxygen_composition.sh": "74c44088ab155bb7ff42b82b73d1e0681a627f9869050a3faf144d2fbc32467d",
+    "tests/physics/test_mobile_macropore_salt_exchange_oracle.f90": "265b8a81a742ec93126da3a29bfe0d72f9de34ff05348b0b358a6fcde96c5b34",
     "tests/physics/test_mobile_salt_state.f90": "318dded400628b3f5aa60207389e42af3ebec3dcc37ea632cd9bd1194dcb20ca",
     "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
-    "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d333d05ba90cb4f4df6eb67626cd1a6768f42192b3e022f340329c03e177595a",
-    "src/runtime/mod_fmr_runtime_core.f90": "be82f483236c12feeaebb02e2c579d45f209ba2feba24d9511746dc6632d5c38",
-    "src/runtime/mod_fmr_restart_state_contract.f90": "f917f229f650b4a7787476fc7bd2b87666e9689951ef83508aa1da1531a12ec1",
-    "src/runtime/mod_fmr_committed_restart.f90": "585aa64f209db2c106f73caaedb7dfac66e6b0fcd1571750ce4a405710165e89",
-    "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "1598e68bc03e12e590e011ceacdb7dde04966bbdf7d8e2ce3133d3b93de84f47",
-    "tests/physics/ppa_wu05e_mobile_macropore_exchange_oracle.f90": "aaeefe46b8eaa5e854d87fc9cad9ae6d54e0ae972ee284ca3dfd972724a5d7ff",
-    "tests/physics/test_mobile_macropore_salt_exchange_oracle.f90": "c57bfa2471d5b1ccaecac99338a85039f78c5fd845ecd38ca6e72d041ccac152",
-    "tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh": "9c37053df30f7be9ddb821358ebae012647bf06525ae86447a45a994466d0410"
+    "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b"
   },
   "results": [
     {
@@ -105,6 +105,11 @@
       "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
       "result": "PASS_O0_O2",
       "scope": "Test-only conservative signed matrix/macropore salt transfer oracle at O0/O2: distinct donor concentrations, no-flow identity, ordered reversal, inventory closure, dry-with-salt inconsistency, dry donor and water overdraw rejection; deterministic outputs. Not production transport or qualification."
+    },
+    {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
+      "result": "PASS_O0_O2",
+      "scope": "Reusable stateless source process kernel for signed internal matrix/macropore salt exchange; distinct donor concentrations, zero flow, ordered reversal, internal inventory closure, dry or unavailable donors, matrix-water aggregate overdraw and invalid input. This does not qualify macro transport, boundaries, state ownership, FMR binding, or admission."
     }
   ],
   "not_run_or_not_claimed": [
@@ -119,7 +124,7 @@
     "The ad hoc macro-disabled base FMR fixture did not produce an accepted candidate (CANONICAL_STATUS_SUBSTEP_LIMIT after 2,050 temporal rejections); no positive live FMR salt receipt has been demonstrated.",
     "The initial direct run against the stale local runtime checkout failed to compile because local files lagged the PR branch. Four runtime/restart modules and the mobile salt module were then synchronized from the exact PR branch; the rerun of the same O0/O2 FMR gate passed. The source-hash map pins the synchronized postimage."
   ],
-  "claim_ceiling": "Local tested prototypes and negative evidence only. The pinned A8 O0/O2 gate proves that the current macropore-enabled FMR trace fails closed when unowned internal matrix exchange is presented to the restricted salt ledger. An unpersisted macro-disabled fixture attempt hit the existing canonical substep limit. No positive live FMR salt receipt, coupled transaction, or production salinity capability is qualified or admitted. A new source audit and proposed interface contract identifies a further macro-route blocker: the accepted FMR trace aggregates domain exchange and the macro continuation has no salt mass. No per-domain transfer, full salinity physics, qualification, or admission is claimed. The independent test-only matrix/macropore exchange arithmetic oracle passes O0/O2; it does not establish source-complete macro salt transport, state ownership, runtime binding, qualification, or admission.",
+  "claim_ceiling": "Local tested prototypes and negative evidence only. The pinned A8 O0/O2 gate proves that the current macropore-enabled FMR trace fails closed when unowned internal matrix exchange is presented to the restricted salt ledger. An unpersisted macro-disabled fixture attempt hit the existing canonical substep limit. No positive live FMR salt receipt, coupled transaction, or production salinity capability is qualified or admitted. A source audit identifies missing macro salt ownership and source-complete per-domain transport. The signed internal matrix/macropore transfer arithmetic is now implemented as a stateless process kernel and locally tested O0/O2. It still does not own macro salt state, vertical advective scheduling, route boundaries, or the FMR candidate lifecycle; this remains preliminary process evidence only.",
   "environment_overrides": {
     "oxygen_preservation_runner": "FC executable wrapper at /tmp/gfortran-swap5-tolerant-warn prepended -Wno-error=compare-reals; the tracked runner uses -Werror, and this only makes the existing equality warning non-fatal without altering numerical tolerances.",
     "wrapper_sha256": "c65021b92959a4d908036e843753ac2bccbc258262d333da008396fdeffc42f5",
