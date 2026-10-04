@@ -171,3 +171,8 @@ Source inspection explains the substep-limit result. In the pinned FMR backend, 
 
 
 No water/salt commit or Jarvis salinity integration is justified yet.
+
+
+### Macropore solute boundary audit (2026-10-04)
+
+`PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md` records a current-source interface audit. The macropore process has accepted exchange rates by domain and node, but the FMR diagnostic trace retains only the domain-summed node source. The macro continuation carries matching water volumes and no solute mass. The sign is explicit (positive macro-to-matrix, negative matrix-to-macro), but a conservative solute transfer still needs the donor concentration and paired salt mass for each domain. The existing E1 matrix-only salt state therefore correctly rejects the live macro trace. This contract slice makes no production change and establishes no qualification. Preserve PPA-WU05-F for frost; the macro salt-state/trace work remains a scoped successor slice within PPA-WU05-E until its separate state and transaction boundary is designed.
