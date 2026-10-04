@@ -97,6 +97,55 @@ if os.environ.get('A28_RETRY_CAUSE_DIAGNOSTICS')=='1':
         write(*,*) 'A28_RETRY_TOTAL_BALANCE_FAIL', 'sum=',sum1,'tol=',CritDevBalTot
 ''',1)
  retry_headcalc=out/'a28_retry_probe_headcalc.f90';retry_headcalc.write_text(headcalc_text)
+# Solver-only causal frontier: freeze RFM physical/accounting tolerance independently.
+separated_backend=None
+backend_path=root/'src/runtime/mod_fmr_serialized_reference_backend.f90'
+if os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1':
+ backend_text=backend_path.read_text()
+ before='max(self%compartment_balance_tolerance,FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM),rfm_live)'
+ assert backend_text.count(before)==1
+ backend_text=backend_text.replace(before,'1.0e-12_real64,rfm_live)',1)
+ if os.environ.get('A28_PARTITION_AWARE_PREFLIGHT')=='1':
+  declaration='    real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm'
+  assert backend_text.count(declaration)==1
+  backend_text=backend_text.replace(declaration,declaration+', a28_original_supply',1)
+  before='        if(.not.rfm_live%valid)return'
+  assert backend_text.count(before)==1
+  repair='''        if(.not.rfm_live%valid.and.rfm_live%surface%status==2.and. &
+             rfm_live%activation%activation%status==1.and.rfm_physical%ponding_depth==0.0_real64.and. &
+             self%rfm_surface_forcing%potential_bare_soil_evaporation_cm_per_day==0.0_real64.and. &
+             self%rfm_surface_forcing%potential_pond_evaporation_cm_per_day==0.0_real64)then
+          a28_original_supply=rfm_preflight%net_potential_surface_flux
+          call bind_b110_dynamic_top_boundary_solver_provider(self%rfm_top_provider,self%soil_parameters, &
+               self%hydraulic_parameters,self%swkmean,rfm_physical%ponding_depth,step_duration, &
+               rfm_live%activation%activation%matrix_rate_cm_per_day,0.0_real64,0.0_real64,0.0_real64, &
+               0.0_real64,0.0_real64,self%rfm_surface_forcing%ponding_max_cm, &
+               self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent,fixed_top_conductivity)
+          call self%rfm_top_provider%evaluate(rfm_physical%pressure_head(1),rfm_physical%water_content(1), &
+               rfm_physical%ponding_depth,request%boundary,rfm_preflight)
+          rfm_preflight%net_potential_surface_flux=a28_original_supply
+          call prepare_rfm_live_trial(rfm_physical%rfm,self%rfm_configuration,self%rfm_surface_forcing,hydraulic_start, &
+               self%constitutive,rfm_preflight,rfm_node_depth_cm,self%soil_parameters%dz,step_duration,1.0e-12_real64,rfm_live)
+          write(*,*) 'A28_PARTITION_PREFLIGHT valid=',rfm_live%valid,' surface_status=',rfm_live%surface%status
+        end if
+'''
+  backend_text=backend_text.replace(before,repair+before,1)
+ separated_backend=out/'a28_separated_backend.f90';separated_backend.write_text(backend_text)
+# Observe pre-solver RFM failure without changing its acceptance rules.
+observed_preparer=None
+if os.environ.get('A28_RFM_PREPARER_DIAGNOSTICS')=='1':
+ preparer_path=root/'src/runtime/mod_rfm_live_trial_preparer.f90'
+ preparer_text=preparer_path.read_text()
+ before='  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)return'
+ assert preparer_text.count(before)==1
+ preparer_text=preparer_text.replace(before,'''  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)then
+   write(*,*) 'A28_RFM_PREPARE_SURFACE_FAIL status=',result%surface%status, &
+     ' regime=',preflight%regime,' pond=',preflight%candidate_ponding_depth, &
+     ' runoff=',preflight%runoff_depth,' head=',view%pressure_head(1),' dt=',step_duration_day, &
+     ' age=',accepted%tau_surface_day,' preferential=',result%activation%activation%preferential_rate_cm_per_day
+   return
+  end if''',1)
+ observed_preparer=out/'a28_observed_preparer.f90';observed_preparer.write_text(preparer_text)
 # Bounded test-only instrumentation: only successful quadrature loops count.
 source=root/'src/process/macropore/mod_rfm_surface_sorptivity.f90'
 s=source.read_text().replace('  implicit none','  use, intrinsic :: iso_c_binding, only: c_int, c_double\n  implicit none',1)
@@ -136,6 +185,8 @@ instrumented=out/source.name;instrumented.write_text(s)
 objs=[]
 for name in sources:
  if field_grid is not None and name==base[0]:src=field_grid
+ elif separated_backend is not None and name==str(backend_path.relative_to(root)):src=separated_backend
+ elif observed_preparer is not None and name=='src/runtime/mod_rfm_live_trial_preparer.f90':src=observed_preparer
  elif retry_headcalc is not None and name==str(headcalc_path.relative_to(root)):src=retry_headcalc
  else:src=instrumented if name==str(source.relative_to(root)) else root/name
  obj=out/(src.stem+'.o')

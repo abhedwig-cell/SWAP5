@@ -13,6 +13,10 @@ lib=ctypes.CDLL(os.environ['FGC45_MULTISWAP_LIB'])
 lib.a28_set_policy_c.argtypes=[ctypes.c_int];lib.a28_set_policy_c.restype=ctypes.c_int
 lib.a28_set_fixture_c.argtypes=[ctypes.c_double]*3;lib.a28_set_fixture_c.restype=ctypes.c_int
 lib.a28_next_window_c.argtypes=[ctypes.c_double]+[ctypes.POINTER(ctypes.c_double)]*3;lib.a28_next_window_c.restype=ctypes.c_int
+lib.a28_set_solver_balance_tolerance_c.argtypes=[ctypes.c_double]
+lib.a28_set_solver_balance_tolerance_c.restype=ctypes.c_int
+SOLVER_TOL=float(os.environ.get('A28_SOLVER_BALANCE_TOL_CM','1e-12'))
+assert lib.a28_set_solver_balance_tolerance_c(SOLVER_TOL)==0
 assert lib.a28_set_policy_c(int(mode=='a28'))==0
 assert lib.a28_set_fixture_c(H0,DT,RAIN)==0
 swap=f.Fgc45RealMultiSwap(os.environ['FGC45_MULTISWAP_LIB'])
@@ -76,6 +80,6 @@ with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
    print(f'A28_WINDOW_COMPLETED={w+1} H={head:.17g} iterations={outer} matrix={list(matrix)} rfm={list(rfm)}',flush=True)
  finally:raw.finalize()
 lib.a28_sorptivity_stats_c(counts,ctypes.byref(panels),ctypes.byref(hmin),ctypes.byref(hmax),ctypes.byref(seconds))
-result=dict(mode=mode,windows=nwindow,h0_cm=H0,rain_cm_day=RAIN,reference_head_m=href,dt_day=DT,initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,init_seconds=init_seconds,execution_seconds=coupling_seconds,predictor_seconds=predictor_seconds,corrector_seconds=swap_seconds,modflow_seconds=modflow_seconds,sorptivity_counts=list(counts),panels=panels.value,consumer_head_range_cm=[hmin.value,hmax.value],sorptivity_seconds=seconds.value,rows=rows)
+result=dict(solver_balance_tol_cm=SOLVER_TOL,mode=mode,windows=nwindow,h0_cm=H0,rain_cm_day=RAIN,reference_head_m=href,dt_day=DT,initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,init_seconds=init_seconds,execution_seconds=coupling_seconds,predictor_seconds=predictor_seconds,corrector_seconds=swap_seconds,modflow_seconds=modflow_seconds,sorptivity_counts=list(counts),panels=panels.value,consumer_head_range_cm=[hmin.value,hmax.value],sorptivity_seconds=seconds.value,rows=rows)
 Path(os.environ['A28_RESULT']).write_text(json.dumps(result,indent=2)+'\n')
 print('A28_COUPLED_WINDOWS=PASS',json.dumps({k:v for k,v in result.items() if k!='rows'}))

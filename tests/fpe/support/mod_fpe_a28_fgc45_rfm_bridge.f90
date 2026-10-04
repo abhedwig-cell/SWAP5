@@ -447,6 +447,10 @@ contains
            ' completed=',r%completed,' status=',r%status,' attempts=',diag%attempts,' retries=',diag%retries, &
            ' solver_rejections=',diag%solver_rejections,' temporal_rejections=',diag%temporal_rejections, &
            ' nonlinear_iterations=',diag%nonlinear_iterations,' mass_cm=',r%mass%residual,' max_step_mass_cm=',diag%max_abs_step_mass_residual
+      write(*,'(a,i0,5(a,i0),a,es24.16)')'A28_FD_WORK tile=',i, &
+           ' mass_rejections=',diag%mass_rejections,' jacobian_builds=',diag%jacobian_builds, &
+           ' linear_solves=',diag%linear_solves,' backtracking_attempts=',diag%backtracking_attempts, &
+           ' accepted_substeps=',diag%accepted_substeps,' completed_t_day=',r%completed_t
       if(diag%solver_rejections>0)then
         observation=predictor_backend(i)%observation()
         write(*,'(a,i0,7(a,i0),a,a)')'A28_FD_LAST_SOLVER tile=',i, &
