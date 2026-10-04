@@ -34,7 +34,7 @@ contains
     type(root_compensation_diagnostics_t),intent(out)::diag
     integer,intent(out)::status
     real(real64),parameter::vsmall=1.0e-14_real64
-    real(real64)::alptot,qred,alpdry,alpwet,alpdrycom,alpwetcom,alptotcom,redtot
+    real(real64)::alptot,qred,alpdry,alpwet,alpdrycom,alpwetcom,alptotcom,redtot,reduction_tolerance
 
     final_fluxes=root_water_uptake_flux_result_t()
     diag=root_compensation_diagnostics_t()
@@ -77,6 +77,15 @@ contains
     alptot=diag%uncompensated_uptake/ptra
     qred=ptra-diag%uncompensated_uptake
     if(abs(config%alpha_critical-1.0_real64)<vsmall .or. qred<=vsmall .or. alptot<0.05_real64) return
+
+    ! D2 admits only drought and bounded oxygen. Their attributed losses must
+    ! therefore close the full pre-compensation reduction. A mismatch implies
+    ! an unadmitted/missing stressor and fails closed rather than silently
+    ! changing the legacy exponent shares.
+    reduction_tolerance=256.0_real64*epsilon(1.0_real64)*max(1.0_real64,ptra,qred)
+    if(abs((drought_reduction+oxygen_reduction)-qred)>reduction_tolerance) then
+      final_fluxes=root_water_uptake_flux_result_t();status=ROOT_COMP_UNSUPPORTED;return
+    end if
 
     alpdry=alptot**(drought_reduction/qred)
     alpwet=alptot**(oxygen_reduction/qred)
