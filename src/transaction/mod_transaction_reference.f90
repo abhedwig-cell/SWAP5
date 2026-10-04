@@ -427,7 +427,13 @@ contains
       result%actual_transpiration_available = half1_outcome%actual_transpiration_available .and. &
            half2_outcome%actual_transpiration_available
       if(result%actual_transpiration_available) then
-        result%actual_transpiration_amount = half1_outcome%actual_transpiration_amount + half2_outcome%actual_transpiration_amount
+        result%actual_transpiration_available=ieee_is_finite(half1_outcome%actual_transpiration_amount).and. &
+             ieee_is_finite(half2_outcome%actual_transpiration_amount).and. &
+             half1_outcome%actual_transpiration_amount>=0.0_real64.and.half2_outcome%actual_transpiration_amount>=0.0_real64
+      end if
+      if(result%actual_transpiration_available) then
+        result%actual_transpiration_amount = half1_outcome%actual_transpiration_amount + &
+             half2_outcome%actual_transpiration_amount
         if(.not.ieee_is_finite(result%actual_transpiration_amount).or.result%actual_transpiration_amount<0.0_real64) then
           result%actual_transpiration_available=.false.;result%actual_transpiration_amount=0.0_real64
         end if

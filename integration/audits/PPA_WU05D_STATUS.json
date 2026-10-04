@@ -4,7 +4,7 @@
   "title": "Compensated root-water-uptake authority",
   "branch": "audit/ppa-wu05d-d1-reconcile-20261004",
   "canonical_base": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
-  "status": "D2_RUNTIME_PHYSICS_IMPLEMENTED_APPLICATION_PUBLICATION_ADMISSION_BLOCKED",
+  "status": "D2_ACCEPTED_PUBLICATION_REPAIR_IMPLEMENTED_SUCCESSOR_QUALIFICATION_PENDING",
   "production_source_mutation": true,
   "reference_mutation": false,
   "authority": {
@@ -55,7 +55,7 @@
     "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
   },
   "production_admission": "NONE",
-  "next_action": "Route accepted actual-transpiration publication through shared integration authority. Repair existing accepted-result route without a compensation ledger or restart payload; rerun publication and F-CI31/F-CI37 successor preservation before D2 admission. Do not start D3 admission until D2 admitted.",
+  "next_action": "Run focused Jarvis, real application and publication O0/O2, independent F-CI31/F-CI37 current-source successor oracles and accepted-result retry/full-half checks against persisted postimage. Admit only after all required gates and source/canonical reconciliation.",
   "d2": {
     "production_compositor": "src/process/mod_root_uptake_compensation.f90",
     "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
@@ -90,7 +90,7 @@
         "result": "FAIL_PRE_STUB_HARNESS"
       }
     ],
-    "publication_blocker": "bind_committed_actual_transpiration uses pre-oxygen/pre-compensation forcing sink rather than accepted final sink integral",
+    "publication_blocker": "REPAIR_IMPLEMENTED_EXISTING_ACCEPTED_RESULT_METADATA_PATH_QUALIFICATION_PENDING",
     "mixed_stress_attribution": "NODEWISE_SOURCE_PROPORTIONAL_LOSS_USING_EXISTING_POTENTIAL_ROOT_SINK_AND_ADMITTED_OXYGEN_FACTORS",
     "test_paths": [
       "tests/physics/run_ppa_wu05d2_jarvis.sh",

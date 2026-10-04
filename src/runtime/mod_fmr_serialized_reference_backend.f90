@@ -2509,6 +2509,7 @@ contains
     real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:)
     real(real64) :: atmospheric_ctop
     integer :: oxygen_route,waterfilm_mode,oxygen_status,oxygen_nodes
+    logical :: publish_root_result
     type(black_evaporation_forcing_t) :: black_process_forcing
     type(black_evaporation_result_t) :: black_result
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
@@ -3242,7 +3243,12 @@ contains
       outcome%terminal_bottom_outward_flux_native = 0.0_real64
       return
     end if
-    if(self%root_extraction_active) then
+    publish_root_result=self%root_compensation%method/=ROOT_COMP_OFF
+    if(allocated(self%bartholomeus)) then
+      call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
+      publish_root_result=publish_root_result.or.oxygen_route==FMR_BARTHOLOMEUS_ACTIVE
+    end if
+    if(self%root_extraction_active.and.publish_root_result) then
       outcome%actual_transpiration_amount=sum(self%qrot)*step_duration
       if(.not.ieee_is_finite(outcome%actual_transpiration_amount).or.outcome%actual_transpiration_amount<0.0_real64) return
       outcome%actual_transpiration_available=.true.

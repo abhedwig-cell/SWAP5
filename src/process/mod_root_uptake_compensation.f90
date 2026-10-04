@@ -95,8 +95,19 @@ contains
       status=ROOT_COMP_INVALID;return
     end if
 
+    if(.not.ieee_is_finite(base_fluxes%actual_uptake_total)) then
+      status=ROOT_COMP_INVALID;return
+    end if
     final_fluxes=base_fluxes
     diag%uncompensated_uptake=sum(base_fluxes%root_extraction_sink)
+    if(abs(base_fluxes%actual_uptake_total-diag%uncompensated_uptake)> &
+         256.0_real64*epsilon(1.0_real64)*max(1.0_real64,diag%uncompensated_uptake)) then
+      final_fluxes=root_water_uptake_flux_result_t();status=ROOT_COMP_INVALID;return
+    end if
+    final_fluxes%actual_uptake_total=diag%uncompensated_uptake
+    if(ptra<=0.0_real64.and.diag%uncompensated_uptake>0.0_real64) then
+      final_fluxes=root_water_uptake_flux_result_t();status=ROOT_COMP_INVALID;return
+    end if
     diag%compensated_uptake=diag%uncompensated_uptake
     diag%drought_reduction_total=drought_reduction
     diag%oxygen_reduction_total=oxygen_reduction
