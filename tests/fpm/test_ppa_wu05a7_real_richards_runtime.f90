@@ -482,6 +482,13 @@ contains
       if(size(fmr_observation%accepted_water_flux_substeps)<2) error stop 'FMR trace omitted accepted half steps'
       max_trace_closure=0.0_real64
       do trace_i=1,size(fmr_observation%accepted_water_flux_substeps)
+        if(.not.allocated(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain)) &
+             error stop 'FMR trace omitted per-domain macropore exchange'
+        if(size(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain,1)<=0) &
+             error stop 'FMR macro trace lost exchange domains'
+        if(maxval(abs(sum(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain,dim=1)- &
+             fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange))>1.0e-12_real64) &
+             error stop 'FMR trace domain exchange sum mismatch'
         if(abs(sum(fmr_observation%accepted_water_flux_substeps(trace_i)%root_sink)- &
              sum(forcing%root_extraction_sink))>1.0e-16_real64) error stop 'FMR trace lost final qrot'
         call reconstruct_interval_water_face_flux(dz(1:numnod), &
@@ -611,6 +618,16 @@ contains
              transfer(b%accepted_water_flux_substeps(i)%net_node_source,[0_int64],numnod))) return
       if(any(transfer(a%accepted_water_flux_substeps(i)%macropore_matrix_exchange,[0_int64],numnod)/= &
              transfer(b%accepted_water_flux_substeps(i)%macropore_matrix_exchange,[0_int64],numnod))) return
+      if(.not.allocated(a%accepted_water_flux_substeps(i)%macropore_matrix_exchange_domain) .or. &
+         .not.allocated(b%accepted_water_flux_substeps(i)%macropore_matrix_exchange_domain))return
+      if(any(shape(a%accepted_water_flux_substeps(i)%macropore_matrix_exchange_domain)/= &
+             shape(b%accepted_water_flux_substeps(i)%macropore_matrix_exchange_domain)))return
+      if(size(a%accepted_water_flux_substeps(i)%macropore_matrix_exchange_domain)>0)then
+        if(any(transfer(a%accepted_water_flux_substeps(i)%macropore_matrix_exchange_domain,[0_int64], &
+             size(a%accepted_water_flux_substeps(i)%macropore_matrix_exchange_domain))/= &
+             transfer(b%accepted_water_flux_substeps(i)%macropore_matrix_exchange_domain,[0_int64], &
+             size(b%accepted_water_flux_substeps(i)%macropore_matrix_exchange_domain))))return
+      end if
     end do
     same=.true.
   end function same_accepted_water_flux_trace
