@@ -4,7 +4,7 @@
   "title": "Compensated root-water-uptake authority",
   "branch": "audit/ppa-wu05d-d1-reconcile-20261004",
   "canonical_base": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
-  "status": "D2_JARVIS_RUNTIME_BOUND_QUALIFICATION_QUEUED",
+  "status": "D2_JARVIS_RUNTIME_BOUND_LATEST_QUALIFICATION_QUEUED",
   "production_source_mutation": true,
   "reference_mutation": false,
   "authority": {
@@ -55,11 +55,11 @@
     "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
   },
   "production_admission": "NONE",
-  "next_action": "Await latest focused D2 O0/O2 runtime-order run 37183450243 and moving-current preservation. Repair only real failures. On PASS persist D2 qualification/admission evidence, reconcile current canonical, admit/close D2, then start D3 Walsum geometry.",
+  "next_action": "Await latest focused D2 run 37183597011 at 4d46d6e4f751d8fe44fb18b80cb00d462f37ba0d plus moving-current preservation. On PASS persist qualification/admission evidence and reconcile/merge D2; then start D3 Walsum.",
   "d2": {
     "production_compositor": "src/process/mod_root_uptake_compensation.f90",
     "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
-    "qualification_run": 37183450243,
+    "qualification_run": 37183597011,
     "qualification_status": "QUEUED",
     "supported_stressors": [
       "all currently supplied admitted reductions",
@@ -88,10 +88,14 @@
       {
         "run": 37183273234,
         "result": "FAIL_PRE_STUB_HARNESS"
+      },
+      {
+        "run": 37183320018,
+        "result": "FAIL_TEST_HARNESS_COMPARE_REAL_WARNING_ON_EXACT_IDENTITY_ASSERTIONS"
       }
     ]
   },
-  "checkpoint_commit": "c3aea066d8be0189de63956d33ad1bdb4bcd1b83",
-  "last_reconciled_head": "c3aea066d8be0189de63956d33ad1bdb4bcd1b83",
+  "checkpoint_commit": "4d46d6e4f751d8fe44fb18b80cb00d462f37ba0d",
+  "last_reconciled_head": "4d46d6e4f751d8fe44fb18b80cb00d462f37ba0d",
   "last_reconciled_upstream": "fae6d8d3d1687bfb220851f43603ab63d4989a29"
 }
