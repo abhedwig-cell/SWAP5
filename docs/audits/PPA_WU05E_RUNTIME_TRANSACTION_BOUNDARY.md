@@ -68,3 +68,17 @@ Atomic ownership is necessary but not sufficient. The current mobile-salt protot
 ## Scope ceiling
 
 This audit establishes a source-backed transaction/restart blocker and an integration contract. It does not qualify salt transport, salt initialization, salinity response under a live crop, Jarvis combinations, solute uptake equivalence, or any production salinity capability. The current salinity fail-closed behavior remains required.
+
+## Restricted macropore water trace extension
+
+The opt-in accepted-substep observation now carries signed matrix exchange per
+macro domain/node, matching macro continuation water volumes at substep start
+and end, and the ordered per-domain vertical face rates reconstructed by the
+macro runtime. A7 O0/O2 requires nonzero exchange, water change, and vertical
+face flux; validates shapes and finite/nonnegative volumes; and checks exact
+trace identity through retry/replay and fresh-process restart. The trace
+producer fails closed when top input/return, covering transfer, or rapid
+outflow is present because typed solute receipts are not defined for those
+routes. This remains attempt-local observation data, not a salt state or
+restart payload. Macro salt mass, boundary salt receipts, and atomic FMR
+candidate ownership are still open.
