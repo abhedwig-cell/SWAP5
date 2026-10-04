@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E work-branch evidence postimage at branch head f04b8432a52fbf9b94f93cbcaca16b6146a7d34c; local source-hash prequalification only, not formal qualification",
+  "target_state": "PPA-WU05-E repaired branch postimage at checkpoint c77dc4f47f921089e3c8e4b6e028937c4a409237; local source-hash prequalification only, not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "4ff634794a125175bcce426a316dce0444ddc2cac87bf4540e713171c711e1f4",
@@ -25,14 +25,17 @@
     "tests/physics/test_mobile_salt_state.f90": "d0feea13f7665f4461abd3a83b0f28c2e47459b3cab0d4769ec150d81ba75883",
     "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
     "tests/physics/test_solute_water_face_flux_reconstruction.f90": "49ee555236caade96d310197bc503e074ef56c47c154057f6d5eee6cd59f3433",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90": "b9997177c64e13ef3117233536684e47a4ebb6f6a696ee46ca00f95e2e2beca3"
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "8b1a0a0f4e99c98a9a5a581fdbcff1c17892d323cb71aed1f67f5f2c406b9d1e",
+    "src/runtime/mod_fmr_runtime_core.f90": "be82f483236c12feeaebb02e2c579d45f209ba2feba24d9511746dc6632d5c38",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f917f229f650b4a7787476fc7bd2b87666e9689951ef83508aa1da1531a12ec1",
+    "src/runtime/mod_fmr_committed_restart.f90": "585aa64f209db2c106f73caaedb7dfac66e6b0fcd1571750ce4a405710165e89"
   },
   "results": [
     {
       "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
       "result": "PASS_O0_O2",
-      "scope": "live serialized FMR A7/A8 suite; accepted physical Richards substep water flux trace exposes both accepted halfsteps; each substep closes node water continuity through the face-flux reconstruction with max residual 4.7628567756419216e-13 cm/day; exact nonzero qrot=2e-4 is retained; unsupported snow trace route fails closed without committed-state mutation; discard/replay and changed-forcing restart replay are deterministic; outputs match O0/O2",
-      "execution": "local run on source postimage pinned by source_sha256; GNU Fortran; trace is observation-only trial data and is not committed or restart state"
+      "scope": "Local isolated worktree plus exact branch overlays for the FMR runtime, restart layout/contract, A7 test, and A8 runner. Compiles the complete FMR module after restoring the source tail, exercises the disabled-salinity layout, accepted water substep trace with both halfsteps, exact qrot=2e-4 and continuity max residual 4.7628567756419216e-13 cm/day, fail-closed snow route, discard/replay and changed-forcing restart. Output matches O0/O2. The new v3 salt layout scaffolding remains inactive in this test and the backend rejects active salt trials.",
+      "execution": "Executed in /tmp/wu05e_latest_tree after overlaying exact current branch blobs; merged FMR source tail hash and each runtime/test/runner SHA-256 are pinned above. No GitHub Actions run."
     },
     {
       "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
