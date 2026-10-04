@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.ppa_wu05e.status.v1",
+  "work_unit": "PPA-WU05-E",
+  "title": "Salinity state, solute mass owner, and root-stress migration",
+  "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+  "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "checkpoint_commit": "0edbbd7f9f5a79a583a98e6a6b623d095ea873eb",
+  "last_reconciled_head": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "last_reconciled_upstream": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "status": "PREREGISTERED_RECONSTRUCTION_CHECKPOINT",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_admitted": false,
+  "production_delta": [],
+  "reference_delta": [],
+  "source_authority": {
+    "b111_snapshot": "B1.11",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "exact_tree_replay": "docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json",
+    "exact_member_text": "NOT_MATERIALIZED_IN_CURRENT_EXECUTION_SURFACE",
+    "public_source_family": "SWAP-model/SWAP@c22bd832ddf3e53e330a552f5e31e74f183362d1 (corroboration only)"
+  },
+  "current_finding": "Canonical SWAP5 has no solute state/transport owner or salinity response. Admitted D2 Jarvis supports drought and oxygen and fails closed for salinity; D3 Walsum is admitted.",
+  "historical_reconstruction": "Source-family evidence distinguishes Maas-Hoffman switch 1 as a nodewise alpha(CML) from osmotic-head switch 2, which modifies matric-flux potential and requires Jong-van-Lier drought; switch 2 is not a separate multiplicative alpha_sol.",
+  "relevant_paths": [
+    "integration/audits/PPA_WU05D_STATUS.json",
+    "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
+    "integration/audits/PPA_WU05D_D3_QUALIFICATION.json",
+    "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md",
+    "src/process/mod_root_uptake_compensation.f90",
+    "src/process/mod_root_water_uptake_process.f90",
+    "integration/audits/production_physics_application_envelope_gap_register.json"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/audits/PPA_WU05D_D1_RECONSTRUCTION_RESULT.md"
+  ],
+  "test_paths": [],
+  "evidence_paths": [
+    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md"
+  ],
+  "dependency_surface": [
+    "B1.11 solute transport/state source and restart lifecycle",
+    "candidate/committed transaction and mass-accounting boundaries",
+    "src/process/mod_root_water_uptake_process.f90",
+    "src/process/mod_root_uptake_compensation.f90",
+    "src/runtime/mod_root_uptake_compensation_execution.f90",
+    "accepted Bartholomeus oxygen composition and application/persistence routes"
+  ],
+  "interfaces_allowed_to_change": [
+    "new bounded typed solute-state owner and independent salinity-response interface after contract checkpoint"
+  ],
+  "interfaces_held_fixed": [
+    "single root-water sink and receipt",
+    "D2 Jarvis mass ownership",
+    "D3 Walsum geometry semantics",
+    "existing stress-disabled behavior",
+    "water/salt ledger separation"
+  ],
+  "invariants_affected": [
+    "accepted/trial state isolation",
+    "restart from committed physical state",
+    "one root-water mass owner",
+    "independent salt-mass owner",
+    "water and solute conservation"
+  ],
+  "next_action": "Complete source-bound B1.11 solute state/mass/initialization/restart census and choose the smallest complete typed transport envelope before implementation.",
+  "blockers": [
+    "No SWAP5 local checkout is mounted, so local compilation and tests cannot be run in this execution environment.",
+    "Exact B1.11 rootextraction and solute member text is not materialized here; current public source-family code is corroborative only."
+  ],
+  "recovery_point": "Branch checkpoint contains salinity preregistration and updated production-physics gap register; no production/reference source changed."
+}
