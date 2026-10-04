@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E work-branch postimage at 2026-10-04 checkpoint bfa498fcbf14c0842141573e62aea05bf72ff6af; local prequalification only, not formal qualification",
+  "target_state": "PPA-WU05-E work-branch postimage at 2026-10-04 checkpoint 460a71f408b670f656d6db48e994503349a0ddff; local prequalification only, not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "4ff634794a125175bcce426a316dce0444ddc2cac87bf4540e713171c711e1f4",
@@ -11,7 +11,7 @@
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "2469a61298769e9aec6c15a0e47d4a0a1a54eaf6b5d459eaadcf4a92fd7993c3",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
     "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
-    "src/process/mod_solute_mobile_salt_state.f90": "45ce80ae6d324fd6fcb2b9f102e05000fe85a89ad857e6bfb7aaf449209b1e2e",
+    "src/process/mod_solute_mobile_salt_state.f90": "b07d868cea9c3c2e5daed99c5f5ce2e72e4bbf9ccbd47449d1f2c1934d26eb7e",
     "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
     "tests/fpm/run_ppa_wu05a8_real_richards.sh": "1d9c20b0a8acbb819b7bdf470dbc67d72904e7991dee5938a23c5c2fa4e60887",
@@ -20,13 +20,19 @@
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
     "tests/physics/run_ppa_wu05d3_walsum.py": "4a2e3d66854422cc0d51c02ce47a373182c1f6dc6079531075428fd632270daf",
-    "tests/physics/run_ppa_wu05e_mobile_salt.sh": "ca12cbfdfc105bc68ebeaaaf0ac462cba937101550029d3f1cebc0914714025b",
+    "tests/physics/run_ppa_wu05e_mobile_salt.sh": "608929b229764779eca0ce73a2a9372b9dfb2cd2b45ed5c3ba6a0c3fa869d6b7",
     "tests/physics/run_root_uptake_oxygen_composition.sh": "74c44088ab155bb7ff42b82b73d1e0681a627f9869050a3faf144d2fbc32467d",
-    "tests/physics/test_mobile_salt_state.f90": "318dded400628b3f5aa60207389e42af3ebec3dcc37ea632cd9bd1194dcb20ca",
+    "tests/physics/test_mobile_salt_state.f90": "708984089b234dddd1ee0b4bc5fa79b4888cdb3474f04e314e92b0a967c29103",
     "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
     "tests/physics/test_solute_water_face_flux_reconstruction.f90": "49ee555236caade96d310197bc503e074ef56c47c154057f6d5eee6cd59f3433"
   },
   "results": [
+    {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
+      "result": "PASS_O0_O2",
+      "scope": "exact PR-branch postimage fetched at checkpoint 460a71f408b670f656d6db48e994503349a0ddff; GNU Fortran 13.3.0, -Wall -Wextra -Werror -fcheck=all; mobile salt mass, ordered opposing-flow accepted-substep trace using updated donor concentration, whole-trace rollback after a later water-closure failure, Maas-Hoffman response, and interval-mean reconstruction; deterministic O0/O2 output match",
+      "execution": "isolated /tmp source tree materialized from exact branch files; no source changes between fetch and execution"
+    },
     {
       "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
       "result": "PASS",
@@ -89,6 +95,7 @@
     }
   ],
   "not_run_or_not_claimed": [
+    "No live FMR provider or accepted-substep trace is wired to advance_mobile_salt_trace; the passing ordered reversal is unit evidence only.",
     "No production runtime integration, full application compile, restart serialization, or end-to-end water/solute coupled transaction qualification.",
     "No exact-byte B1.11 solute/restart reconstruction in this execution surface.",
     "No Jarvis salinity integration or stress-combination claim.",
