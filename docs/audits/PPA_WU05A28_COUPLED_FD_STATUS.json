@@ -16,9 +16,9 @@
   "active_a28_tested": true,
   "performance_qualified": false,
   "scalability_qualified": false,
-  "blocker": "10-node field-depth exact prescribed-qbot RFM predictor under nonzero rainfall exhausts 12 retries; diagnostic repeat identifies nonlinear iteration-budget exhaustion with final compartment and total mass-balance criteria still slightly above tolerance at 16/16 iterations. Typed-bottom invalidation is unreachable for fixture bottom mode 2. Same-state predictor init passes without rainfall. No A28 run.",
+  "blocker": "Latest bounded Work continuation: separated balances1e-5/1e-6/1e-8 accept14 live exact field-depth windows then fail predictor15 through saturated-pressure temporal rejection. Distinct RFM deep receipt is accounted locally but absent from fixture receiver/publication ledger; accepted preferential storage remains zero. No production solverpolicy, field-depth A28 or performance qualification.",
   "result_record": "docs/audits/PPA_WU05A28_COUPLED_FD_RESULT.md",
-  "next_safe_step": "Run one preregistered exact-only diagnostic repeat at the frozen -45 cm, dt=0.01 day, rain=1 cm/day input, logging the nonlinear convergence criteria at iteration-budget exit. No MODFLOW or A28.",
+  "next_safe_step": "Read WORK_PRODUCTION_RESULT/STATUS. The bounded policy ladder is complete. A new scoped numerical contract must resolve saturated prescribed-qbot pressure response; a receipt-owner contract and representative persistent-storage geometry are required before exact requalification and any A28 practical comparison.",
   "narrow_delta_exact_gate": "PASS_24_WINDOWS",
   "narrow_delta_cm_day": [
     1e-07,
@@ -159,9 +159,21 @@
     "artifact_id": 11296240459,
     "artifact_sha256": "1f995d571ad6553c0920b3474af332b31779544acfecb6e1fb9ad8b677cbe6ca",
     "overall_run": "EXPECTED_EXACT_PREDICTOR_FAILURE; DIAGNOSTICS_CAPTURED; POST-RUN_GREP_CHECK_FAILED_BECAUSE_RG_MISSING_ON_RUNNER",
-    "inputs": {"initial_top_head_cm": -45, "dt_day": 0.01, "rain_cm_day": 1, "policy": "exact_fixed_64"},
+    "inputs": {
+      "initial_top_head_cm": -45,
+      "dt_day": 0.01,
+      "rain_cm_day": 1,
+      "policy": "exact_fixed_64"
+    },
     "diagnostic": "NONLINEAR_ITERATION_BUDGET_EXHAUSTION; typed_invalid=false",
-    "first_failed_attempt": {"iterations": 16, "iteration_limit": 16, "max_abs_compartment_balance_cm": 1.1446891872597525e-12, "balance_tolerance_cm": 1e-12, "abs_total_balance_cm": 1.8374766524616952e-12, "total_balance_tolerance_cm": 1e-12},
+    "first_failed_attempt": {
+      "iterations": 16,
+      "iteration_limit": 16,
+      "max_abs_compartment_balance_cm": 1.1446891872597525e-12,
+      "balance_tolerance_cm": 1e-12,
+      "abs_total_balance_cm": 1.8374766524616952e-12,
+      "total_balance_tolerance_cm": 1e-12
+    },
     "disposition": "Exact prescribed-qbot event-active predictor remains blocked. This is solver convergence evidence, not A28 evidence. The diagnostic-only rerun makes no tolerance, control, forcing, MODFLOW, or policy changes."
   },
   "field_depth_timestep_probe": "REGISTERED_DT_0.005_FAIL; DT_0.001_UNREGISTERED_EXPLORATORY_FAIL",
@@ -184,5 +196,15 @@
     "unregistered_exploratory_last_iterations": "16/16",
     "unregistered_exploratory_backtracking_attempts": 87,
     "protocol_deviation": "The preregistered stop rule required stopping after the 0.005-day failure; the 0.001-day observation was run anyway and is excluded from gate evidence."
+  },
+  "latest_work_continuation": {
+    "date": "2026-10-04",
+    "status": "COUPLED_RFM_BLOCKED",
+    "branch": "work/a28-rfm-production-work",
+    "source_baseline": "a96886f6a38a1805056fabe9d61bc59a725f83f4",
+    "canonical_observed": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
+    "record": "docs/audits/PPA_WU05A28_WORK_PRODUCTION_RESULT.md",
+    "status_record": "docs/audits/PPA_WU05A28_WORK_PRODUCTION_STATUS.json",
+    "historic_fields_scope": "Other fields retain earlier shallow/field-depth qualification snapshots; this continuation supersedes blocker/next_safe_step only."
   }
 }

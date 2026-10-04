@@ -1,0 +1,21 @@
+{
+  "run_id": 37184823346,
+  "head_sha": "a96886f6a38a1805056fabe9d61bc59a725f83f4",
+  "job_id": 111384459123,
+  "conclusion": "failure",
+  "frontier_stop": "1e-8",
+  "artifact_id": 11296921715,
+  "artifact_digest": "sha256:bcd23aa892d3e2693b469034214d02aaf572beaa058cc55e9036e68b4dd67e3a",
+  "evidence_limit": "Original workflow did not upload a28-tolerance-frontier.log. Higher levels were skipped after first failure; use local original and separated frontiers, not this CI artifact, for higher-level numeric metrics.",
+  "job_log_excerpt": [
+    "2026-10-04T07:14:41.6974647Z \u001b[36;1m  echo \"A28_FRONTIER_TOL_CM=$tol\" | tee -a /tmp/a28-tolerance-frontier.log\u001b[0m",
+    "2026-10-04T07:14:41.7128517Z A28_FRONTIER_TOL_CM=1e-10",
+    "2026-10-04T07:14:43.7329998Z A28_FRONTIER_TOL_CM=1e-8",
+    "2026-10-04T07:14:43.9225642Z ##[error]Process completed with exit code 1.",
+    "2026-10-04T07:14:43.9284862Z ##[group]Run test -f /tmp/a28-retry-cause-probe.log",
+    "2026-10-04T07:14:43.9285305Z \u001b[36;1mtest -f /tmp/a28-retry-cause-probe.log\u001b[0m",
+    "2026-10-04T07:14:43.9286714Z \u001b[36;1m  /tmp/a28-retry-cause-probe.log\u001b[0m",
+    "2026-10-04T07:14:43.9431881Z ##[error]Process completed with exit code 1.",
+    "/tmp/a28-retry-cause-probe.log"
+  ]
+}

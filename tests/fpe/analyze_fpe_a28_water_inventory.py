@@ -44,6 +44,6 @@ output=dict(status='DISTINCT_DEEP_RECEIPT_ABSENT_FROM_MODFLOW_INTERFACE',
  max_inventory_vs_direct_difference_cm=max_inventory_difference,
  max_matrix_interface_difference_cm=max_flux_difference,max_local_mass_residual_cm=max_local_residual,
  interpretation='SWAP has a distinct accounted external RFM receipt; this fixture has no receiver ledger or MODFLOW publication for it. This is not a SWAP local mass failure.',rows=rows)
-assert max_inventory_difference<1e-10 and max_flux_difference<1e-12 and max_local_residual<1e-12
+assert max_inventory_difference<1e-12 and max_flux_difference<1e-12 and max_local_residual<1e-12
 Path(sys.argv[3]).write_text(json.dumps(output,indent=2)+'\n')
 print(json.dumps({k:v for k,v in output.items() if k!='rows'}))
