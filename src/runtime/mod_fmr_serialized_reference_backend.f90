@@ -3893,4 +3893,137 @@ contains
     case (B110_SWBOTB2_TABLE)
       ok = allocated(self%table_t1900) .and. allocated(self%table_qbot)
       if (.not. ok) return
-      ok = size(self%table_t1900) > 0 .and. size(s
+      ok = size(self%table_t1900) > 0 .and. size(self%table_t1900) == size(self%table_qbot) .and. &
+           all(ieee_is_finite(self%table_t1900)) .and. all(ieee_is_finite(self%table_qbot)) .and. &
+           all(self%table_qbot >= -100.0_real64) .and. all(self%table_qbot <= 100.0_real64)
+      if (ok .and. size(self%table_t1900) > 1) ok = strictly_increasing(self%table_t1900)
+    case default
+      ok = .false.
+    end select
+  end function b110_swbotb2_ready
+
+  subroutine b110_swbotb2_evaluate(self, substep_t0, substep_t1, bottom_pressure_head_cm, &
+                                    effective_bottom_mode, bottom_flux, status)
+    class(b110_legacy_swbotb2_application_control_t), intent(in) :: self
+    real(real64), intent(in) :: substep_t0, substep_t1, bottom_pressure_head_cm
+    integer, intent(out) :: effective_bottom_mode
+    real(real64), intent(out) :: bottom_flux
+    integer, intent(out) :: status
+
+    real(real64) :: legacy_start_t1900, legacy_end_t1900, legacy_t, twopi, freq
+    integer :: iyear
+
+    effective_bottom_mode = 0
+    bottom_flux = 0.0_real64
+    status = B110_SWBOTB2_INVALID_CONTROL
+    if (.not. self%ready()) return
+    if (.not. ieee_is_finite(substep_t0) .or. .not. ieee_is_finite(substep_t1) .or. &
+        substep_t1 <= substep_t0 .or. .not. ieee_is_finite(bottom_pressure_head_cm)) return
+
+    ! Exact B1.11 BoundBottom guard. Internal -2 is derived from the current
+    ! trial-start state and is deliberately not persisted as application state.
+    if (bottom_pressure_head_cm < B110_SWBOTB2_DRY_HEAD_CM) then
+      effective_bottom_mode = -2
+      status = B110_SWBOTB2_OK
+      return
+    end if
+
+    effective_bottom_mode = 2
+    legacy_start_t1900 = self%legacy_t1900_origin + (substep_t0 - self%canonical_origin_time)
+    legacy_end_t1900 = self%legacy_t1900_origin + (substep_t1 - self%canonical_origin_time)
+    if (.not. ieee_is_finite(legacy_start_t1900) .or. .not. ieee_is_finite(legacy_end_t1900)) then
+      effective_bottom_mode = 0
+      status = B110_SWBOTB2_INVALID_CONTROL
+      return
+    end if
+
+    select case (self%sw2)
+    case (B110_SWBOTB2_SINE)
+      iyear = containing_year(self%calendar_year_start_t1900, legacy_start_t1900)
+      if (iyear <= 0) then
+        effective_bottom_mode = 0
+        status = B110_SWBOTB2_TIME_NOT_COVERED
+        return
+      end if
+      legacy_t = legacy_start_t1900 - self%calendar_year_start_t1900(iyear)
+      twopi = 8.0_real64 * atan(1.0_real64)
+      freq = twopi / 365.0_real64
+      bottom_flux = self%sinave + self%sinamp * cos(freq * (legacy_t - self%sinmax))
+    case (B110_SWBOTB2_TABLE)
+      bottom_flux = afgen_pairs(self%table_t1900, self%table_qbot, legacy_end_t1900)
+    case default
+      effective_bottom_mode = 0
+      status = B110_SWBOTB2_INVALID_CONTROL
+      return
+    end select
+
+    if (.not. ieee_is_finite(bottom_flux)) then
+      effective_bottom_mode = 0
+      bottom_flux = 0.0_real64
+      status = B110_SWBOTB2_INVALID_CONTROL
+      return
+    end if
+    status = B110_SWBOTB2_OK
+  end subroutine b110_swbotb2_evaluate
+
+  subroutine clear_control(self)
+    class(b110_legacy_swbotb2_application_control_t), intent(inout) :: self
+
+    self%initialized = .false.
+    self%sw2 = 0
+    self%canonical_origin_time = 0.0_real64
+    self%legacy_t1900_origin = 0.0_real64
+    self%sinave = 0.0_real64
+    self%sinamp = 0.0_real64
+    self%sinmax = 0.0_real64
+    if (allocated(self%calendar_year_start_t1900)) deallocate(self%calendar_year_start_t1900)
+    if (allocated(self%table_t1900)) deallocate(self%table_t1900)
+    if (allocated(self%table_qbot)) deallocate(self%table_qbot)
+  end subroutine clear_control
+
+  pure logical function strictly_increasing(values) result(ok)
+    real(real64), intent(in) :: values(:)
+    integer :: i
+
+    ok = .true.
+    do i = 2, size(values)
+      if (values(i) <= values(i-1)) then
+        ok = .false.
+        return
+      end if
+    end do
+  end function strictly_increasing
+
+  pure integer function containing_year(year_starts, value) result(index)
+    real(real64), intent(in) :: year_starts(:), value
+    integer :: i
+
+    index = 0
+    do i = 1, size(year_starts) - 1
+      if (value >= year_starts(i) .and. value < year_starts(i+1)) then
+        index = i
+        return
+      end if
+    end do
+  end function containing_year
+
+  pure real(real64) function afgen_pairs(x_table, y_table, x) result(value)
+    real(real64), intent(in) :: x_table(:), y_table(:), x
+    real(real64) :: slope
+    integer :: i
+
+    if (x <= x_table(1) .or. size(x_table) == 1) then
+      value = y_table(1)
+      return
+    end if
+    do i = 2, size(x_table)
+      if (x <= x_table(i)) then
+        slope = (y_table(i) - y_table(i-1)) / (x_table(i) - x_table(i-1))
+        value = y_table(i-1) + (x - x_table(i-1)) * slope
+        return
+      end if
+    end do
+    value = y_table(size(y_table))
+  end function afgen_pairs
+
+end module mod_fmr_serialized_reference_backend
