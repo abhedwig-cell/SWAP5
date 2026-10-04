@@ -183,7 +183,7 @@ contains
     type(fmr_b110_physical_state_t) :: physical
     type(fmr_template_t) :: template, templates(1)
     type(fmr_logical_column_t) :: columns(1)
-    type(kernel_committed_state_t) :: committed(1), restored_registry(1), rejected_registry(1)
+    type(kernel_committed_state_t) :: committed(1), restored_registry(1), rejected_registry(1), disabled_registry(1)
     type(fmr_committed_restart_bundle_t) :: bundle
     class(transaction_state_t), allocatable :: cloned, restored_state
     logical :: ok, exported, restored, available
@@ -250,6 +250,30 @@ contains
     bundle%records(1)%schema_version=FMR_RESTART_SCHEMA_VERSION
     template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_NONE
     if(fmr_restart_state_matches_template(physical,template))error stop 'salt layout disabled mismatch'
+
+    deallocate(physical%salt)
+    template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_NONE
+    templates(1)=template
+    call fmr_new_b110_committed_state(committed(1),7105_int64,physical,0.0_real64,ok)
+    if(.not.ok)error stop 'disabled-salt committed initialization'
+    call fmr_export_committed_restart(columns,templates,committed,99_int64,bundle,exported,restart_status)
+    if(.not.exported .or. restart_status/=FMR_RESTART_OK)error stop 'disabled-salt Restart v3 export'
+    bundle%schema_version=FMR_RESTART_SCHEMA_PREVIOUS
+    bundle%records(1)%schema_version=FMR_RESTART_SCHEMA_PREVIOUS
+    call fmr_restore_committed_restart(bundle,99_int64,columns,templates,disabled_registry,restored,restart_status)
+    if(.not.restored .or. restart_status/=FMR_RESTART_OK)error stop 'v2 disabled-salt restart rejected'
+    call disabled_registry(1)%snapshot(restored_state,available)
+    if(.not.available .or. .not.allocated(restored_state))error stop 'disabled-salt restored snapshot'
+    select type (restored_physical=>restored_state)
+    type is (fmr_b110_physical_state_t)
+      if(allocated(restored_physical%salt))error stop 'v2 disabled restart added salt state'
+    class default
+      error stop 'v2 disabled restart state family'
+    end select
+
+    allocate(physical%salt)
+    allocate(physical%salt%mass_mg_cm2(3))
+    physical%salt%mass_mg_cm2=[0.1_real64,0.2_real64,0.3_real64]
     template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED
     physical%salt%mass_mg_cm2(2)=-1.0_real64
     if(fmr_restart_state_matches_template(physical,template))error stop 'negative salt mass accepted'
