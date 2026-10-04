@@ -50,9 +50,9 @@ program test_ppa_wu05d2_jarvis
  call compose_jarvis_root_uptake(cfg,0.5_real64,base,0.05_real64,0.0_real64,a,da,s)
  call req(s==ROOT_COMP_UNSUPPORTED,'unattributed stress fails closed')
 
- base%root_extraction_sink=[0.001_real64,0.001_real64,0.001_real64,0.022_real64]
+ base%root_extraction_sink=[0.0_real64,0.0_real64,0.0_real64,0.03125_real64]
  base%actual_uptake_total=sum(base%root_extraction_sink)
- call compose_jarvis_root_uptake(cfg,0.5_real64,base,0.475_real64,0.0_real64,a,da,s)
+ call compose_jarvis_root_uptake(cfg,0.625_real64,base,0.59375_real64,0.0_real64,a,da,s)
  call req(s==ROOT_COMP_OK.and.da%applied,'alptot exactly 0.05 is eligible')
  base%root_extraction_sink(4)=0.021_real64;base%actual_uptake_total=sum(base%root_extraction_sink)
  call compose_jarvis_root_uptake(cfg,0.5_real64,base,0.476_real64,0.0_real64,a,da,s)

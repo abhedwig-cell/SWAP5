@@ -56,7 +56,12 @@ contains
     if(config%stressor<ROOT_COMP_ALL .or. config%stressor>ROOT_COMP_OXYGEN) then
       status=ROOT_COMP_UNSUPPORTED;return
     end if
-    if(.not.allocated(base_fluxes%root_extraction_sink) .or. .not.ieee_is_finite(ptra) .or. ptra<0.0_real64 .or. &
+    ! Fortran does not guarantee short-circuit evaluation of logical operands.
+    ! Reject absent storage before inspecting any array element.
+    if(.not.allocated(base_fluxes%root_extraction_sink)) then
+      status=ROOT_COMP_INVALID;return
+    end if
+    if(.not.ieee_is_finite(ptra) .or. ptra<0.0_real64 .or. &
        .not.ieee_is_finite(config%alpha_critical) .or. config%alpha_critical<=0.0_real64 .or. config%alpha_critical>1.0_real64 .or. &
        .not.ieee_is_finite(drought_reduction) .or. drought_reduction<0.0_real64 .or. &
        .not.ieee_is_finite(oxygen_reduction) .or. oxygen_reduction<0.0_real64 .or. &
@@ -102,7 +107,7 @@ contains
     end select
 
     final_fluxes%root_extraction_sink=base_fluxes%root_extraction_sink*(alptotcom/alptot)
-    final_fluxes%actual_uptake_total=ptra*alptotcom
+    final_fluxes%actual_uptake_total=sum(final_fluxes%root_extraction_sink)
     diag%compensated_uptake=final_fluxes%actual_uptake_total
     diag%applied=.true.
     qred=ptra-final_fluxes%actual_uptake_total
