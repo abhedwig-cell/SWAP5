@@ -1,6 +1,8 @@
 # PPA-WU05-D2 runtime composition contract
 
-Implementation checkpoint, not admission. Canonical baseline fae6d8d3.
+Canonically admitted by PR #1012, merge `4fd57c8c8ed321baf6a74214a9720adc899e324d`.
+Qualification: `integration/audits/PPA_WU05D_D2_QUALIFICATION.json`.
+Historical implementation baseline: fae6d8d3.
 
 The existing drought owner supplies the uncompensated sink, potential transpiration,
 and drought reduction. For mixed admitted drought and Bartholomeus oxygen it also

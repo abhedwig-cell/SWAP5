@@ -640,14 +640,15 @@
       "swap5_implementation_authority": [],
       "typed_input_config_authority": "No admitted typed production route found.",
       "state_ownership": "Subfamily-specific and unresolved until source-bound reviews. Existing drought-only nodewise root_extraction_sink remains the single admitted root-water mass owner.",
-      "transaction_status": "Outside qualified transaction envelope for advanced subfamilies. Oxygen, compensation and alternative uptake models require separate source/state reviews; salinity, frost and macropore routes remain dependency-blocked.",
+      "transaction_status": "D2 uses fresh uncompensated trial sinks and the existing sole root-water mass owner; accepted-result publication, rollback and restart qualified. No salinity/frost/MICRO admission.",
       "qualification_evidence": [
         "F-PM06 and F-CI31 explicit nonclaims",
         "docs/verification/legacy-differences.md preserves oxygen-stress numerical fix only in B1",
-        "PPA-WU05 review run 35379607616: advanced-root subfamily decomposition and single root-sink ownership qualified"
+        "PPA-WU05 review run 35379607616: advanced-root subfamily decomposition and single root-sink ownership qualified",
+        "integration/audits/PPA_WU05D_D2_QUALIFICATION.json; PR1012 canonical merge4fd57c8c8"
       ],
-      "production_admission": "NONE",
-      "production_reachable": "NO",
+      "production_admission": "BOUNDED_SUCCESSORS: Bartholomeus oxygen and D2 Jarvis canonical; D3 Walsum qualified pending merge. Other advanced routes held.",
+      "production_reachable": "YES_FOR_INDEPENDENTLY_ADMITTED_OXYGEN_AND_D2_JARVIS_ONLY",
       "restrictions": [
         "Presence in corrected reference is not SWAP5 production admission"
       ],
@@ -2192,14 +2193,16 @@
     }
   ],
   "ppa_wu05d_20261004_runtime_successor": {
-    "status": "D2_QUALIFIED_BOUNDED_ADMISSION_PENDING_MERGE",
+    "status": "D2_CANONICAL_CLOSED_D3_QUALIFIED_PENDING_PRESERVATION",
     "qualification": "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
     "scope": "Jarvis Feddes drought and admitted Bartholomeus oxygen, including mixed attribution and optional oxygen-free application",
     "publication": "Accepted transaction result now publishes final compensated uptake; no second mass owner",
     "remaining_gaps": [
-      "D3 Walsum geometry pending",
-      "D4 salinity/frost not independently admitted",
-      "D5 MICRO authority/owner qualification missing"
-    ]
+      "Salinity requires independently admitted solute-state owner, osmotic stress process, typed forcing and transactional composition qualification",
+      "Frost requires independently admitted phase-change/frozen-water state and hydraulic stress feedback; sensible heat alone is insufficient",
+      "D5 MICRO requires B1.11 RWU_micro source-bound algebra/parameter authority, independently qualified typed process returning existing root sink, state/rollback/restart census, and macro/MICRO selector compatibility; current production owner is Feddes only",
+      "No nonlinear derivative or general RFM/SCV/coupled configuration admission follows"
+    ],
+    "canonical_d2": "4fd57c8c8ed321baf6a74214a9720adc899e324d"
   }
 }
