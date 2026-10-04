@@ -54,6 +54,7 @@ module mod_fgc45_real_multiswap_c_bridge
   real(real64), save :: H0_CM=-75.0_real64
   real(real64), save :: rainfall_cm_day=0._real64
   real(real64), save :: DURATION_DAY=1.0e-4_real64
+  integer, save :: nonlinear_iteration_limit=16
   real(real64), parameter :: TOL=1.0e-12_real64
   real(real64), parameter :: PREDICTOR_QBOT=1.0e-6_real64
   real(real64), parameter :: HEAD_BUDGET=1.0e-5_real64
@@ -87,6 +88,14 @@ module mod_fgc45_real_multiswap_c_bridge
   public :: fgc45_state_c
 
 contains
+
+  integer(c_int) function a28_set_iteration_limit_c(limit) bind(C,name="a28_set_iteration_limit_c")
+    integer(c_int),value::limit
+    a28_set_iteration_limit_c=1
+    if(initialized.or.limit<1.or.limit>64)return
+    nonlinear_iteration_limit=limit
+    a28_set_iteration_limit_c=0
+  end function
 
   integer(c_int) function a28_set_fixture_c(h0,dt,rain) bind(C,name="a28_set_fixture_c")
     real(c_double),value::h0,dt,rain
@@ -552,7 +561,7 @@ contains
       p%cofgen(12,k)=0.99_real64*p%cofgen(3,k); p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
     p%bottom_mode=bottom_mode; p%swkimpl=0; p%swkmean=1; p%swsophy=0
-    p%max_iterations=16; p%max_backtracking=8; p%min_step_duration=1.0e-8_real64
+    p%max_iterations=nonlinear_iteration_limit; p%max_backtracking=8; p%min_step_duration=1.0e-8_real64
     p%compartment_balance_tolerance=TOL; p%total_balance_tolerance=TOL; p%head_abs_tolerance=TOL
     p%head_rel_tolerance=TOL; p%ponding_tolerance=TOL; p%root_extraction_active=.false.
     p%macropore_active=.false.; p%snow_active=.false.; p%hysteresis_active=.false.
