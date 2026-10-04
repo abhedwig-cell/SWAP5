@@ -159,6 +159,26 @@ The paired candidate therefore returns `SOLUTE_WATER_CLOSURE`. The O0/O2 runner 
 
 The next admissible experiment is a base Richards FMR route with macropore exchange disabled and all other non-root sources zero. If that route cannot be configured without changing admitted behavior, the alternative is a separate explicit mobile/macropore solute-transfer owner with a source concentration/partition contract. Jarvis integration remains blocked until one of these state/mass paths is independently qualified.
 
+### Bounded matrix/macropore transfer kernel
+
+The internal signed exchange arithmetic has now been promoted from a test-only
+oracle to the stateless process kernel `src/process/mod_solute_macropore_exchange.f90`.
+Its O0/O2 tests cover unequal domain donor concentrations, both transfer signs,
+ordered reversal, zero exchange, equal-and-opposite inventory closure, dry or
+overdrawn donors, and aggregate matrix donor-water limits. The kernel is
+not called from FMR and owns no persistent salt state or route-boundary
+receipts. This is a bounded process implementation, not qualification of
+macropore solute transport or a coupled transaction.
+
+Source tracing also confirms that macro vertical face rates are reconstructed
+by domain from top inflow, storage change, matrix exchange and rapid outflow,
+but are not carried by the accepted FMR salt trace. Standard macro storage is
+canonicalized bottom-up, so salt advection must follow those ordered internal
+faces. Accepted top partition/returned surface water, rapid drainage,
+covered-top transfer, and any geometry return each need explicit salt donor or
+receiver semantics. Those receipts and the paired macro salt mass remain the
+next migration boundary; Jarvis stays salinity-disabled.
+
 
 ### Base-route trial diagnostic (2026-10-04)
 
