@@ -3,11 +3,11 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E source postimage at 3a21041c7e8643fc1ad2d5888b2c291e1e8141bf; local source-hash prequalification only, not formal qualification",
+  "target_state": "PPA-WU05-E source postimage at 744b9d7f9d6ec64ac4aae9e224c8a2e1b5c85e46; local source-hash prequalification only, not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "4ff634794a125175bcce426a316dce0444ddc2cac87bf4540e713171c711e1f4",
-    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "3fbae357cc9851c3ab78c996f1d6a0f21424e1d03aa4d64bf397f082c903434c",
+    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "1df95af520176644e82adfe37d951b41f1a6db18ae79d47e3e116df1d67c6da4",
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "009da0f8e6788b365c9a95aa4a3f9cedd444f5fa15478e287e63a78ac9a41f6c",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
     "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
@@ -138,8 +138,8 @@
     {
       "experiment": "Ad hoc base-layout FMR trace attempt with macropores disabled",
       "result": "NO_ACCEPTED_CANDIDATE_CANONICAL_SUBSTEP_LIMIT",
-      "observation": "With the A7 fixture's macropore physics and optional component disabled, nonzero root extraction retained, and existing external full/half acceptance unchanged, Richards subsolves had zero solver rejections but the transaction returned canonical status 4 (CANONICAL_STATUS_SUBSTEP_LIMIT) after 2,050 temporal rejections; no candidate or complete mass receipt was published.",
-      "interpretation": "This was an unpersisted local diagnostic variation, not a pinned qualification source. It shows that the obvious base-only route cannot currently provide an accepted trace in this fixture under the existing acceptance policy. Do not loosen tolerances; establish a supported accepted base FMR route or qualify explicit mobile/macropore solute exchange ownership before advancing E1."
+      "observation": "With the A7 fixture's macropore physics and optional component disabled, nonzero root extraction retained, and existing external full/half acceptance unchanged, Richards subsolves had zero solver rejections but the transaction returned canonical status 4 (CANONICAL_STATUS_SUBSTEP_LIMIT) after 2,050 temporal rejections; no candidate or complete mass receipt was published. A second interval-size probe at 1e-5 day also returned status 4 after 1,438 temporal rejections, again with zero solver rejections and no candidate.",
+      "interpretation": "This was an unpersisted local diagnostic variation, not a pinned qualification source. It shows that the obvious base-only route cannot currently provide an accepted trace in this fixture under the existing acceptance policy. Do not loosen tolerances; establish a supported accepted base FMR route or qualify explicit mobile/macropore solute exchange ownership before advancing E1. A 100x smaller requested interval did not resolve this fixture's rejection."
     }
   ]
 }
