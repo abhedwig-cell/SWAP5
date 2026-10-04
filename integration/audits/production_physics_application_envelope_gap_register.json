@@ -2034,7 +2034,7 @@
       "title": "Salinity state, solute mass owner, and root-stress migration",
       "goal": "Migrate the bounded salt-state/transport prerequisite and independently qualify salinity-root-stress response before composing eligible salinity stress in admitted Jarvis, while preserving one root-water sink and separate water/salt ledgers.",
       "exit": "Source-bound state, unit, node, initialization, transport, mass, transaction and restart contracts are closed for a bounded salinity envelope; its independent response passes analytic/physical oracles; then bounded Jarvis integration and preservation gates pass. Osmotic-head/Jong-van-Lier remains separate unless its authority is independently closed.",
-      "status": "SOURCE_FAMILY_STATE_CENSUS_COMPLETE_B111_TEXT_UNAVAILABLE",
+      "status": "E1_RESTRICTED_ENVELOPE_DEFINED_AWAITING_IMPLEMENTATION",
       "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
       "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
       "preregistration": "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
@@ -2042,7 +2042,7 @@
       "production_delta": [],
       "reference_delta": [],
       "current_finding": "SWAP5 canonical tree has no typed solute state/transport owner or salinity response; PPA-WU05-D2 correctly fails closed for salinity.",
-      "next_action": "Define the smallest complete typed salt-state/mass/restart contract from the pinned B1.11 identity and corroborating source-family census. Keep exact solute restart claims unmade; do not repeat provenance searches unless a new authorized raw-byte route appears.",
+      "next_action": "Implement the bounded mobile dissolved-salt state/transport owner and its separate mass ledger in the local SWAP5 checkout, then run focused O0/O2 tests. Current Work environment has no checkout; do not add uncompiled production code remotely.",
       "limitations": [
         "B1.11 rootextraction member identity is pinned and its complete tree replay is persisted, but exact source member text is unavailable in this execution surface.",
         "Public SWAP source-family code is corroboration, not byte-exact B1.11 equation/restart authority.",
@@ -2311,6 +2311,14 @@
       "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
       "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
       "effect": "Added source-family state/mass/restart census: CML/CMSY, SWINCO initialization versus warm start, boundary/transport fluxes, solute substeps, and TSCF*qrot*CML root salt removal. Exact B1.11 solute lifecycle remains unclaimed; next step is the bounded typed state/mass/restart contract."
+    },
+    {
+      "workunit": "PPA-WU05-E",
+      "date": "2026-10-04",
+      "state": "E1_RESTRICTED_ENVELOPE_DEFINED_AWAITING_IMPLEMENTATION",
+      "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+      "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+      "effect": "Defined the initial E1 claim ceiling: conservative dissolved mobile salt, sorption/decomposition/macropore/aquifer/MICRO/lateral drainage excluded, explicit top/bottom boundary traces, restricted TSCF root salt uptake, committed node mass paired with water state. Production implementation awaits a local checkout for compilation and testing."
     }
   ],
   "ppa_wu05d_20261004_runtime_successor": {
@@ -2336,7 +2344,7 @@
     "title": "Salinity state, solute mass owner, and root-stress migration",
     "goal": "Migrate the bounded salt-state/transport prerequisite and independently qualify salinity-root-stress response before composing eligible salinity stress in admitted Jarvis, while preserving one root-water sink and separate water/salt ledgers.",
     "exit": "Source-bound state, unit, node, initialization, transport, mass, transaction and restart contracts are closed for a bounded salinity envelope; its independent response passes analytic/physical oracles; then bounded Jarvis integration and preservation gates pass. Osmotic-head/Jong-van-Lier remains separate unless its authority is independently closed.",
-    "status": "SOURCE_FAMILY_STATE_CENSUS_COMPLETE_B111_TEXT_UNAVAILABLE",
+    "status": "E1_RESTRICTED_ENVELOPE_DEFINED_AWAITING_IMPLEMENTATION",
     "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
     "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
     "preregistration": "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
@@ -2344,7 +2352,7 @@
     "production_delta": [],
     "reference_delta": [],
     "current_finding": "SWAP5 canonical tree has no typed solute state/transport owner or salinity response; PPA-WU05-D2 correctly fails closed for salinity.",
-    "next_action": "Define the smallest complete typed salt-state/mass/restart contract from the pinned B1.11 identity and corroborating source-family census. Keep exact solute restart claims unmade; do not repeat provenance searches unless a new authorized raw-byte route appears.",
+    "next_action": "Implement the bounded mobile dissolved-salt state/transport owner and its separate mass ledger in the local SWAP5 checkout, then run focused O0/O2 tests. Current Work environment has no checkout; do not add uncompiled production code remotely.",
     "limitations": [
       "B1.11 rootextraction member identity is pinned and its complete tree replay is persisted, but exact source member text is unavailable in this execution surface.",
       "Public SWAP source-family code is corroboration, not byte-exact B1.11 equation/restart authority.",
@@ -2367,6 +2375,7 @@
       "osmotic_head": "MISSING; REQUIRES D5/JONG-VAN-LIER DEPENDENCY"
     },
     "qualification": null,
-    "canonical_admission": null
+    "canonical_admission": null,
+    "initial_e1_envelope": "One conservative dissolved salt constituent in mobile water; SWSP=0; decomposition, macropore, ageing, aquifer mixing, MICRO and lateral drainage off; explicit top/bottom solute boundary traces; root salt uptake through TSCF*qrot*CML with restricted 0<=TSCF<=1; node salt mass authoritative, CML derived from matching committed/trial water content; paired water/salt trial commit/discard."
   }
 }
