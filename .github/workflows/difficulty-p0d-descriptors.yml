@@ -1,0 +1,15 @@
+name: DIFFICULTY P0D Pretrial Descriptors
+on:
+  pull_request:
+    paths:
+      - 'src/research/mod_difficulty_pretrial_descriptors.f90'
+      - 'tests/publication/test_difficulty_p0d_descriptors.f90'
+      - 'tests/publication/run_difficulty_p0d_descriptors.sh'
+      - '.github/workflows/difficulty-p0d-descriptors.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/publication/run_difficulty_p0d_descriptors.sh
