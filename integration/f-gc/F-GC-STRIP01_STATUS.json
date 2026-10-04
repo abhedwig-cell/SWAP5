@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_unit": "F-GC-STRIP01",
-  "title": "50 m cross-section SWAP–MODFLOW6 coupling benchmark",
+  "title": "50 m cross-section SWAP\u2013MODFLOW6 coupling benchmark",
   "protocol": "RECONCILE -> PREREGISTER -> BUILD ORACLES -> FALSIFY COMPONENTS -> COUPLE -> ANALYZE -> REPAIR -> QUALIFY -> PERSIST -> CLOSE/ADVISE",
   "phase": "QUALIFY_PERSIST_ADVISE",
   "state": "DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED",
@@ -342,7 +342,7 @@
     "research_ramp_runner": "tests/fgc/strip01/run_research_sequence_c2_forcing_ramp.py",
     "research_fixture_context_cap": 2048,
     "correct_sign_full_window": "0.001-day negative top-flux rainfall rejects at first SWAP corrector; committed state preserved and MODFLOW timestep not finalized",
-    "correct_sign_micro_series": "100/100 native SWAP–MODFLOW6 windows published at 1e-5 day each with fixture-injected derivative seed; exact replay and closed SWAP storage balance; all heads remain -1 m",
+    "correct_sign_micro_series": "100/100 native SWAP\u2013MODFLOW6 windows published at 1e-5 day each with fixture-injected derivative seed; exact replay and closed SWAP storage balance; all heads remain -1 m",
     "seed_free_ramp_result": "2000/2000 windows published at 1e-5 day from zero temporal seed, geometric forcing increase x1.005 up to 0.001 cm/day, held over final 1075 windows; exact replay; residual 3.13e-14 m3",
     "seed_free_target_ramp_limit": "A separate x1.005 sequence toward 0.1 cm/day published 999 windows, then rejected at 0.001458 cm/day",
     "groundwater_response": "none measurable; heads remain -1 m and drain outflow zero",
@@ -360,10 +360,10 @@
     "diagnostic_sweep_summary": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_forcing_diagnostic_sweep.json",
     "diagnostic_sweep_interpretation": "One-column response is non-monotone: zero and higher tested rain rates reject at dt=1e-5 day, the rejected ramp rate accepts at dt<=5e-6 day, and 0.0002 cm/day accepts at all tested durations. This does not prove cause or coupled-window recovery.",
     "coupled_dt5e6_result": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_coupled_dt5e6_6000_summary.json",
-    "coupled_dt5e6_summary": "5,231 full 50-column SWAP–native MODFLOW6 windows at 5e-6 day published from zero seed with factor-1.001 rain ramp; rejected next increase at 0.001864916 cm/day. Exact fresh-process replay; mass residual 1.32e-13 m3; all heads -1 m, drain 0.",
+    "coupled_dt5e6_summary": "5,231 full 50-column SWAP\u2013native MODFLOW6 windows at 5e-6 day published from zero seed with factor-1.001 rain ramp; rejected next increase at 0.001864916 cm/day. Exact fresh-process replay; mass residual 1.32e-13 m3; all heads -1 m, drain 0.",
     "coupled_dt5e6_interpretation": "Halving coupled window raises accepted forcing about 9.45x relative to the 1e-5-day sequence, but remains roughly 54x below 1 mm/day target and produces no measurable groundwater/drain response.",
     "coupled_dt2p5e6_result": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_seed_free_coupled_dt2p5e6_15000_summary.json",
-    "coupled_dt2p5e6_summary": "6,120 full SWAP–native MODFLOW6 windows at 2.5e-6 day published from zero seed; next forcing increase rejected at 0.0045347586 cm/day. Fresh-process replay byte-identical; mass residual 2.32e-13 m3; all heads -1 m, drain 0.",
+    "coupled_dt2p5e6_summary": "6,120 full SWAP\u2013native MODFLOW6 windows at 2.5e-6 day published from zero seed; next forcing increase rejected at 0.0045347586 cm/day. Fresh-process replay byte-identical; mass residual 2.32e-13 m3; all heads -1 m, drain 0.",
     "dt_sensitivity": "Factor-1.001 accepted endpoint rises from 0.0001972 cm/day (dt 1e-5), to 0.0018631 cm/day (dt 5e-6), to 0.0045302 cm/day (dt 2.5e-6); only three durations tested, no extrapolation; all far below 0.1 cm/day target.",
     "failure_mechanism_diagnosis": "integration/f-gc/strip01/results/c2b-local-20261003/C2_correct_sign_coupling_tolerance_vs_swap_failure_diagnosis.json",
     "coupling_tolerance_blocker": "At dt=1e-6 day and flux tolerance 1e-15 m/s, full coupling reaches 40 iterations with max residual 1.3934476e-15 m/s; twice-tolerance sensitivity removes this early stopping.",
@@ -494,7 +494,8 @@
       "protocols": [
         "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_PROBE_ADDENDUM.json",
         "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_DURATION_ADDENDUM.json",
-        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_RATE_ADDENDUM.json"
+        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_RATE_ADDENDUM.json",
+        "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_LOW_RATE_ADDENDUM.json"
       ],
       "summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/summary.json",
       "source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/source_manifest.json",
@@ -504,10 +505,14 @@
       "rate_result": "At 0.001 day, all 50 zero-flux probes complete one substep; all 50 probes at each positive rate 0.0002, 0.001, 0.01 and 0.1 cm/day fail with zero accepted substeps. Terminal solver/temporal code vectors vary non-monotonically across those rates.",
       "committed_state_preserved": true,
       "fresh_process_byte_identity": true,
-      "interpretation": "No spatially unique participant was identified. Evidence supports a history/onset-sensitive temporal and solver transaction blocker in the tested real-SWAP fixture. These are discarded component probes, not full-service publication tests; the fixture budget is not independently qualified here as the sole cause.",
+      "interpretation": "No spatially unique participant was identified. Evidence supports a history/onset-sensitive temporal and solver transaction blocker in the tested real-SWAP fixture. These are discarded component probes, not full-service publication tests; the fixture budget is not independently qualified here as the sole cause. Low-rate probes narrow the isolated backend onset transition to between 1e-6 and 1e-5 cm/day at 0.001 day; a multi-window forcing ramp remains untested.",
       "production_delta": [],
-      "canonical_admission": false
+      "canonical_admission": false,
+      "low_rate_summary": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/low_rate_summary.json",
+      "low_rate_source_manifest": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/low_rate_source_manifest.json",
+      "full_low_rate_result": "integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/low_rate_sweep_full_result.json.gz",
+      "low_rate_result": "All 50 isolated exact-origin probes accept 1e-8 cm/day (1 substep), and 1e-7 / 1e-6 cm/day (2 accepted substeps after retries); all 50 reject 1e-5, 1e-4 and 2e-4 cm/day with zero accepted substeps. Two fresh-process result JSON files are byte-identical; committed origin is preserved. This does not establish full-service publication or a monotone forcing threshold."
     },
-    "next_action": "Keep the dummy strip unchanged as the intermediate baseline. A further real-SWAP experiment should test an explicitly history-aware forcing onset in the same native service, retaining all production budgets and transaction gates; do not claim recovery from isolated participant probes alone."
+    "next_action": "Run a preregistered, history-aware multi-window real-SWAP forcing ramp in the same native service, beginning within the isolated-probe pass range and increasing gradually toward 0.1 cm/day while keeping all existing production and fixture gates fixed; retain the dummy strip as the qualified intermediate baseline."
   }
 }

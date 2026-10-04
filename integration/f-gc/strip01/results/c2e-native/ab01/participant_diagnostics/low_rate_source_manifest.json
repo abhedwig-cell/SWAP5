@@ -1,0 +1,24 @@
+{
+  "build_command": "python tools/build_f_gc_strip01_research_context.py --profile C1 --build /tmp/f-gc-c2e-ab-colprobe-detail-build --context-override tests/fgc/strip01/research_context_c2a.f90",
+  "code_commit": "cd2b18521a9208e00fe210212ae7f4ff4a47c2fe",
+  "command": "MPLCONFIGDIR=/tmp/mpl-c2e python tests/fgc/strip01/run_c2_rain_sequence.py --profile C1 --real-context c2a --root . --library /tmp/f-gc-c2e-ab-colprobe-detail-build/libstrip01_research.so --libmf6 /tmp/c2-mf6-680/bin/libmf6.so --output <fresh-dir> --flux-tolerance 2e-15 --probe-c2b-columns --probe-rates-cm-per-day 0 1e-8 1e-7 1e-6 1e-5 1e-4 2e-4",
+  "compiler": "GNU Fortran 13.3.0",
+  "compressed_full_result_sha256": "19c26a52abacfd1f02ebb53d65f200618bc19cd99aef4eff7256c1c089fb9925",
+  "libmf6_sha256": "8589fceef108757f62bb82cb2b0282562172312a75187b70ae7a06f4bd15fbf9",
+  "modflow6": "6.8.0",
+  "profile": "C1",
+  "protocol_commit": "877b644a5893c046f2cd0623576b503ffe9f41ff",
+  "rate_probe_runner_commit": "72c2e5542d3566eded47a9f24bb8650b4c0eca8a",
+  "replay_result_sha256": {
+    "run1": "08ed03cfce44c24ce7550aa15e5592a49cfe92f829f3fccc4ef3b1d76337c057",
+    "run2": "08ed03cfce44c24ce7550aa15e5592a49cfe92f829f3fccc4ef3b1d76337c057"
+  },
+  "research_library_sha256": "01666707baa0f6f1c6f8b20f1c5fbe7b04af47f9c19d9e17d676dc140d19651f",
+  "result_sha256": "08ed03cfce44c24ce7550aa15e5592a49cfe92f829f3fccc4ef3b1d76337c057",
+  "schema": "swap5.fgc.strip01.c2e_ab01.column_low_rate_diagnostics.source_manifest.v1",
+  "source_blobs": {
+    "context": "b691f054726521d519db349f0dd33ea485c993a4",
+    "protocol": "3066750a03c6194d09495df97fd6e597c7f294c8",
+    "runner": "be77ce7bdb32b570f7fe25c16be87b2a7323a437"
+  }
+}

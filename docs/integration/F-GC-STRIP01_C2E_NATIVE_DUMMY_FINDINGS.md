@@ -69,3 +69,11 @@ The C2E research context compiled locally with the C1 profile and the three nati
 ## Decision
 
 `DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED` — bounded to this native-registry research provider, tested MODFLOW6 strip and declared research storage ownership. C2E-AB01 directly shows dummy publication and MODFLOW response while real SWAP rejects the matched recharge transaction at the corrector for the tested state/window. Do not tune production solver or coupling gates based on this bounded research result alone.
+
+### Lower-rate exact-origin probes
+
+A preregistered follow-up probed all 50 participants independently at `t=0.001 d`, head `-1 m`, and the ordinary `0.001 d` duration with rates from zero through `2e-4 cm/day`. The result JSON from two fresh processes is byte-identical (`08ed03cfce44c24ce7550aa15e5592a49cfe92f829f3fccc4ef3b1d76337c057`). Every rate yields the same outcome in all 50 participants, and the committed profile hash, storage, revisions and ledgers remain unchanged by the discarded probes.
+
+At zero flux, all participants complete one accepted substep. `1e-8 cm/day` also completes in one substep; `1e-7` and `1e-6 cm/day` complete after retries with two accepted substeps. All participants return failure with zero accepted substeps at `1e-5`, `1e-4`, and `2e-4 cm/day`. Thus this fixture has an isolated-probe transition between `1e-6` and `1e-5 cm/day` for the prescribed 0.001-day onset. The temporal indicator is non-monotone across the accepted cases (`0.1386` at `1e-8`, `0.00108` at `1e-7`, and `0.0304` at `1e-6`, normalized by the `1e-5 cm` fixture budget), so this is not a smooth rate law and does not establish a service-level forcing envelope.
+
+These remain discarded component calls from one accepted C2a origin. They do not show that a 50-column real-SWAP service window publishes at any positive rate, and they do not establish that a multi-window gradual ramp succeeds. The primary matched `0.1 cm/day` C2b service window remains rejected at `swap-corrector`. Full arrays, compact table, protocol and toolchain/source hashes are persisted in `integration/f-gc/strip01/results/c2e-native/ab01/participant_diagnostics/`.

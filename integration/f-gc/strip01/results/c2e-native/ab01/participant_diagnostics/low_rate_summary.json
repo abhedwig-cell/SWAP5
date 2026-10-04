@@ -1,0 +1,138 @@
+{
+  "conditions": {
+    "duration_day": 0.001,
+    "flux_tolerance_m_per_s": 2e-15,
+    "head_budget_cm": 1e-05,
+    "rates_cm_per_day": [
+      0,
+      1e-08,
+      1e-07,
+      1e-06,
+      1e-05,
+      0.0001,
+      0.0002
+    ]
+  },
+  "interpretation": "1e-8 cm/day completes in one accepted substep. 1e-7 and 1e-6 complete after internal retries/subdivision (2 accepted substeps). 1e-5, 1e-4 and 2e-4 cm/day return failure with zero accepted substeps. This is a narrow isolated backend-probe onset interval, not evidence of 50-column service publication or a monotone constitutive/rate law.",
+  "invariants": {
+    "committed_origin_unchanged": true,
+    "fresh_process_result_json_byte_identical": true,
+    "identical_outcome_within_rate": true,
+    "participants_per_rate": 50,
+    "profile_hash_before_equals_after": true
+  },
+  "origin": "50 real-SWAP C1 participants after published C2a; t=0.001 d, head=-1 m; isolated discarded exact-origin probes",
+  "protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_LOW_RATE_ADDENDUM.json",
+  "rates": [
+    {
+      "accepted_substeps": 1,
+      "attempts": 1,
+      "completed_t_day": 0.002,
+      "normalized_temporal_indicator": 0.0,
+      "participants": 50,
+      "rate_cm_per_day": 0.0,
+      "result_status": 0,
+      "retries": 0,
+      "solver_rejections": 0,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.0,
+      "temporal_rejections": 0,
+      "uniform_outcome": true
+    },
+    {
+      "accepted_substeps": 1,
+      "attempts": 1,
+      "completed_t_day": 0.002,
+      "normalized_temporal_indicator": 0.13863448347201257,
+      "participants": 50,
+      "rate_cm_per_day": 1e-08,
+      "result_status": 0,
+      "retries": 0,
+      "solver_rejections": 0,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 1.3863448347201258e-06,
+      "temporal_rejections": 0,
+      "uniform_outcome": true
+    },
+    {
+      "accepted_substeps": 2,
+      "attempts": 3,
+      "completed_t_day": 0.002,
+      "normalized_temporal_indicator": 0.001076469787865521,
+      "participants": 50,
+      "rate_cm_per_day": 1e-07,
+      "result_status": 0,
+      "retries": 1,
+      "solver_rejections": 0,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 1.076469787865521e-08,
+      "temporal_rejections": 1,
+      "uniform_outcome": true
+    },
+    {
+      "accepted_substeps": 2,
+      "attempts": 10,
+      "completed_t_day": 0.002,
+      "normalized_temporal_indicator": 0.03039913867693436,
+      "participants": 50,
+      "rate_cm_per_day": 1e-06,
+      "result_status": 0,
+      "retries": 8,
+      "solver_rejections": 0,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 3.039913867693436e-07,
+      "temporal_rejections": 8,
+      "uniform_outcome": true
+    },
+    {
+      "accepted_substeps": 0,
+      "attempts": 9,
+      "completed_t_day": 0.001,
+      "normalized_temporal_indicator": 8.678768905193618,
+      "participants": 50,
+      "rate_cm_per_day": 1e-05,
+      "result_status": 2,
+      "retries": 8,
+      "solver_rejections": 0,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 8.678768905193618e-05,
+      "temporal_rejections": 9,
+      "uniform_outcome": true
+    },
+    {
+      "accepted_substeps": 0,
+      "attempts": 9,
+      "completed_t_day": 0.001,
+      "normalized_temporal_indicator": 86.78834402836642,
+      "participants": 50,
+      "rate_cm_per_day": 0.0001,
+      "result_status": 2,
+      "retries": 8,
+      "solver_rejections": 1,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.0008678834402836643,
+      "temporal_rejections": 8,
+      "uniform_outcome": true
+    },
+    {
+      "accepted_substeps": 0,
+      "attempts": 9,
+      "completed_t_day": 0.001,
+      "normalized_temporal_indicator": 173.5767699595217,
+      "participants": 50,
+      "rate_cm_per_day": 0.0002,
+      "result_status": 2,
+      "retries": 8,
+      "solver_rejections": 1,
+      "temporal_head_budget_cm": 1e-05,
+      "temporal_head_inf_bound_cm": 0.001735767699595217,
+      "temporal_rejections": 8,
+      "uniform_outcome": true
+    }
+  ],
+  "replay_sha256": {
+    "run1": "08ed03cfce44c24ce7550aa15e5592a49cfe92f829f3fccc4ef3b1d76337c057",
+    "run2": "08ed03cfce44c24ce7550aa15e5592a49cfe92f829f3fccc4ef3b1d76337c057"
+  },
+  "schema": "swap5.fgc.strip01.c2e_ab01.column_low_rate_diagnostics.v1"
+}

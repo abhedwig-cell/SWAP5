@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.fgc.strip01.c2e_ab01.column_low_rate_addendum.v1",
+  "work_unit": "F-GC-STRIP01-C2E-AB01-COLPROBE-LOWRATE",
+  "state": "PREREGISTERED",
+  "parent_protocol": "integration/f-gc/strip01/F-GC-STRIP01_C2E_AB01_COLUMN_RATE_ADDENDUM.json",
+  "purpose": "Locate whether the homogeneous accepted C2a origin admits any nonzero prescribed top infiltration at the ordinary 0.001-day window, before constructing a full multi-window forcing ramp.",
+  "fixed_conditions": {
+    "origin": "After accepted C2a publication at t=0.001 day; all 50 revisions and interface ledger counts equal one.",
+    "head_m": -1.0,
+    "t0_day": 0.001,
+    "duration_day": 0.001,
+    "tangent_requested": false,
+    "participants": "All 50, independently and discarded; no full-service publication is implied."
+  },
+  "top_infiltration_cm_per_day": [0.0, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 2e-4],
+  "record": ["rate", "participant slot", "backend result and solver/temporal codes", "temporal head bound and budget", "completed time"],
+  "gates": {
+    "committed_state_unchanged": true,
+    "fresh_process_replay": "Two fresh processes must produce byte-identical result JSON.",
+    "production_gates_unchanged": true
+  },
+  "interpretation_limit": "Any observed nonzero-rate pass is only an isolated participant response. It does not qualify multi-column service execution, complete-domain closure or a ramp to 0.1 cm/day. Rates below the listed range are not extrapolated."
+}
