@@ -3,7 +3,8 @@ program test_ppa_wu05a20_rfm_optional_state_layout
   use mod_transaction_reference, only: transaction_state_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_RFM, fmr_optional_state_layout_known, &
-       FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, FMR_BACKEND_SERIALIZED_REFERENCE, &
+       FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, &
+       FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, fmr_template_t, fmr_solute_state_layout_known
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_rfm_state_t, &
        fmr_new_b110_rfm_committed_state
@@ -25,7 +26,9 @@ program test_ppa_wu05a20_rfm_optional_state_layout
   call require(.not. fmr_optional_state_layout_known(505003_int64), 'A20 nearby optional layout unknown admitted')
   call require(fmr_solute_state_layout_known(FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED), &
        'A20 mobile salt layout unknown')
-  call require(.not. fmr_solute_state_layout_known(505004_int64), 'A20 unknown salt layout admitted')
+  call require(fmr_solute_state_layout_known(FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE), &
+       'A20 macro salt layout unknown')
+  call require(.not. fmr_solute_state_layout_known(505005_int64), 'A20 unknown salt layout admitted')
 
   base%active_nodes = 2
   allocate(base%pressure_head(2), base%water_content(2))

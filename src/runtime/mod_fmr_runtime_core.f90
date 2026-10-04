@@ -29,6 +29,7 @@ module mod_fmr_runtime_core
 
   integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_NONE = 0_int64
   integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED = 505003_int64
+  integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE = 505004_int64
 
   type, public :: fmr_logical_column_t
     integer(int64) :: column_id = 0_int64
@@ -313,7 +314,8 @@ contains
   pure logical function fmr_solute_state_layout_known(layout_id) result(known)
     integer(int64), intent(in) :: layout_id
     known = layout_id == FMR_SOLUTE_STATE_LAYOUT_NONE .or. &
-         layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED
+         layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED .or. &
+         layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE
   end function fmr_solute_state_layout_known
 
   logical function fmr_assignment_compatible(template, physics_topology_id, state_layout_id, backend_id)

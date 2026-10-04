@@ -134,7 +134,7 @@ With salinity disabled, preserve the admitted Feddes, Bartholomeus, D2 Jarvis, D
 - Persisted: reconstruction, restricted E1 contract, implementation, tests, and local prequalification manifest
 - Tested: focused O0/O2 local gates and a restricted real Reference Richards face-flux closure check pass; this is not qualification
 - Qualified/admitted: no; canonical PR base still has no salinity implementation
-- Next action: bind the restricted FMR accepted-substep trace to a candidate salt state in the shared physical transaction and explicit clone/restart layout. Add the salt candidate only with independent salt mass closure and accepted/trial/discard/retry/restart tests. Keep the special routes fail-closed. Qualify the independent salinity response with authorized salt state before integrating it into Jarvis.
+- Next action: complete initialization and advancement of the new per-domain macro salt payload, then define typed boundary-salt receipts and bind matrix and macro mass to one FMR candidate/clone/restart lifecycle. The opt-in trace now carries accepted per-domain exchange, matching macro-water volumes and ordered vertical macro faces for the restricted route. Keep unsupported boundary routes fail-closed; prove independent water/salt closure through commit, discard, retry and restart before any Jarvis integration.
 
 ### Runtime transaction/restart audit (2026-10-04)
 
@@ -170,17 +170,7 @@ not called from FMR and owns no persistent salt state or route-boundary
 receipts. This is a bounded process implementation, not qualification of
 macropore solute transport or a coupled transaction.
 
-The opt-in accepted FMR trace now carries the reconstructed per-domain macro
-vertical face rates alongside start/end macro water volumes and exchange. Its
-O0/O2 A8 test checks per-node storage/exchange/face continuity and exact
-retry/restart replay. Standard macro storage is canonicalized bottom-up, so
-those ordered internal faces are required for salt advection. Accepted top
-partition/returned surface water, rapid drainage, covered-top transfer, and
-any geometry return still need explicit salt donor/receiver semantics. Those
-receipts and the paired macro salt mass remain the next migration boundary;
-Jarvis stays salinity-disabled.
-
-
+Source tracing confirms that macro vertical face rates are reconstructed by domain from top inflow, storage change, matrix exchange and rapid outflow. The opt-in accepted FMR water trace now carries those domain/node face rates for the restricted zero-boundary route; A7 requires a nonzero macro face and checks exact retry/replay and fresh-process restart identity. This is water observation data only. Accepted top partition/returned surface water, rapid drainage, covered-top transfer, and any geometry return still need explicit typed salt routing. A typed macro salt-mass payload now has a distinct solute layout and passes in-memory Restart v3 clone/restore checks, but no FMR trial initializes or advances it. Typed boundary receipts remain the next migration boundary; Jarvis stays salinity-disabled.
 ### Base-route trial diagnostic (2026-10-04)
 
 A local, unpersisted A7 fixture variation disabled macropore physics and its optional state layout while retaining nonzero root extraction and the accepted FMR trace request. Richards subsolves completed, but the full/half transaction did not produce an accepted candidate: the runtime returned canonical status 4 (`CANONICAL_STATUS_SUBSTEP_LIMIT`) after 2,050 temporal rejections, with zero solver rejections and no completed mass receipt. No temporal tolerance was loosened. This diagnostic variation is not part of the pinned passing source postimage and is not a qualification result.
@@ -196,4 +186,4 @@ No water/salt commit or Jarvis salinity integration is justified yet.
 
 ### Macropore solute boundary audit (2026-10-04)
 
-`PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md` records a current-source interface audit. The macropore process has accepted exchange rates by domain and node, but the FMR diagnostic trace retains only the domain-summed node source. The macro continuation carries matching water volumes and no solute mass. The sign is explicit (positive macro-to-matrix, negative matrix-to-macro), but a conservative solute transfer still needs the donor concentration and paired salt mass for each domain. The existing E1 matrix-only salt state therefore correctly rejects the live macro trace. This contract slice makes no production change and establishes no qualification. Preserve PPA-WU05-F for frost; the macro salt-state/trace work remains a scoped successor slice within PPA-WU05-E until its separate state and transaction boundary is designed.
+`PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md` records the current source boundary. The accepted FMR water trace carries signed exchange by domain/node, matching macro-water start/end volumes, and ordered per-domain vertical faces; the A7 O0/O2 gate checks nonzero signals, source-sum identity, water closure, and exact retry/replay/restart identity. The stateless exchange kernel passes its O0/O2 arithmetic oracle but is not called by FMR. A typed macro dissolved-salt payload and clone/Restart v3 scaffold now exist, but live initialization/advancement, typed boundary-salt receipts, and atomic FMR candidate ownership remain absent, so the live E1 consumer still fails closed. Preserve PPA-WU05-F for frost.

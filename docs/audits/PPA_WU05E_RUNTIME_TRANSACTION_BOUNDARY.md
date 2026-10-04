@@ -79,6 +79,8 @@ face flux; validates shapes and finite/nonnegative volumes; and checks exact
 trace identity through retry/replay and fresh-process restart. The trace
 producer fails closed when top input/return, covering transfer, or rapid
 outflow is present because typed solute receipts are not defined for those
-routes. This remains attempt-local observation data, not a salt state or
-restart payload. Macro salt mass, boundary salt receipts, and atomic FMR
-candidate ownership are still open.
+routes. This remains attempt-local observation data, not an advancing salt trial. A
+distinct per-domain macro mass payload and Restart v3 layout/clone contract now
+exist in the shared FMR carrier. The live FMR route still rejects salt, and
+initialization, accepted exchange advancement, typed boundary receipts, and
+atomic candidate ownership remain open.
