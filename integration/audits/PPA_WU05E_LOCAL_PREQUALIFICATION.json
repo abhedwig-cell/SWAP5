@@ -3,19 +3,19 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E repaired branch evidence postimage at ae59b407a5ecd964572ac38da9b6538c20ecddb5; local source-hash prequalification only, not formal qualification",
+  "target_state": "PPA-WU05-E work-branch source postimage at f12cf6155ab4417d3606a4ac8c9690ed3d8117d0; source-hash prequalification only, not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "4ff634794a125175bcce426a316dce0444ddc2cac87bf4540e713171c711e1f4",
-    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "d7951fe286a0ae1fe8f116e92b4763bdef847e74791ccdb47b2914662fa92de9",
+    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "72cbf0dede4e15bc4f84ae9bc246984ae85c333fa8ca2c2fcf42acf6985fad74",
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "009da0f8e6788b365c9a95aa4a3f9cedd444f5fa15478e287e63a78ac9a41f6c",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
     "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
     "src/process/mod_solute_mobile_salt_state.f90": "a981169c421bbd095f467e1d95c953627db02e141fb79eaa20dfaa7be7ef1028",
     "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
-    "tests/fpm/run_ppa_wu05a8_real_richards.sh": "ae1fa53bb7c49df1ddcc1b4845a2005423ce29120cd27a0a14e4ec6b463a03de",
-    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "a8c125be93f7fbc1554f34c2dda4b35dbc0e32d17f5cf63d4c568b63ea9ab719",
+    "tests/fpm/run_ppa_wu05a8_real_richards.sh": "91d49bd7bfedf5752a3d36a4c362daba97c214027cd7381567b06269eadf7086",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "9df1ba78d8d792ce18e0f759d23d6eaf12e03ef985f32e12ff8dd6cf7fe3f334",
     "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "50ea99cf305881e868091dccd987a5feada756a42b8190f0378f8cb64b53e110",
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
@@ -34,8 +34,8 @@
     {
       "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
       "result": "PASS_O0_O2",
-      "scope": "Exact current branch FMR/restart sources and A7 test/runner in an isolated worktree, with local canonical dependencies. The complete backend compiles at O0/O2; disabled route passes. A7 verifies accepted physical substep trace (2 halfsteps; max closure 4.7628567756419216e-13 cm/day), exact qrot=2e-4, snow fail-closed, discard/replay and changed-forcing restart. It also round-trips active salt mass through Restart v3, verifies clone identity and state/layout guards, rejects a v2 active-salt restore without target mutation, and accepts a v2 disabled-salt restore. Active salinity trials remain explicitly rejected by FMR.",
-      "execution": "Local O0/O2 run in /tmp/wu05e_latest_tree. Exact source blobs for runtime core, restart contract, Restart v3 adapter, fixed serialized backend, A7 test and A8 runner are pinned in source_sha256. The fixed backend was assembled from the current branch prefix and the complete local tail after detecting the uploaded truncation; the identical fixed file was then persisted to the PR branch. No Actions run."
+      "scope": "Exact current branch FMR/restart sources and A7 test/runner in an isolated worktree, with local canonical dependencies. The complete backend compiles at O0/O2; disabled route passes. A7 verifies accepted physical substep trace (2 halfsteps; max closure 4.7628567756419216e-13 cm/day), exact qrot=2e-4, snow fail-closed, discard/replay and changed-forcing restart. It also round-trips active salt mass through Restart v3, verifies clone identity and state/layout guards, rejects a v2 active-salt restore without target mutation, and accepts a v2 disabled-salt restore. Active salinity trials remain explicitly rejected by FMR. The added test-only salinity consumer rejects the actual macropore-enabled accepted trace with SOLUTE_WATER_CLOSURE because non-root matrix water sources lack a solute exchange owner; it verifies zero candidate/receipt leakage and unchanged committed salt state. The runner asserts this marker in both O0 and O2.",
+      "execution": "Local O0/O2 run in /tmp/wu05e_latest_tree. Exact source blobs for runtime core, restart contract, Restart v3 adapter, fixed serialized backend, A7 test and A8 runner are pinned in source_sha256. The fixed backend was assembled from the current branch prefix and the complete local tail after detecting the uploaded truncation; the identical fixed file was then persisted to the PR branch. No Actions run. This is a fail-closed negative result, not an accepted salt candidate or coupled transaction."
     },
     {
       "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
@@ -105,7 +105,7 @@
     }
   ],
   "not_run_or_not_claimed": [
-    "No live FMR provider or accepted-substep trace is wired to advance_mobile_salt_trace; the passing ordered reversal is unit evidence only.",
+    "The test-only harness invokes advance_mobile_salt_trace against an FMR observation; no production/live FMR transaction invokes or commits salt. The observed active-macropore route fails water closure because matrix water exchange lacks a solute transfer contract.",
     "No production runtime integration, full application compile, restart serialization, or end-to-end water/solute coupled transaction qualification.",
     "No exact-byte B1.11 solute/restart reconstruction in this execution surface.",
     "No Jarvis salinity integration or stress-combination claim.",
@@ -114,7 +114,7 @@
     "The new reversal counterexample and direct O0 unit runs do not qualify ordered live FMR flux transport, restart, or Jarvis integration.",
     "Accepted FMR water substep trace is a restricted live producer only; no salt transport consumer or committed/restart salt state is connected. Unsupported surface/snow/rapid macropore/drainage routes remain fail-closed or unqualified."
   ],
-  "claim_ceiling": "Local tested prototypes and negative evidence only. No production salinity capability is admitted.",
+  "claim_ceiling": "Local tested prototypes and negative evidence only. The test-only FMR observation consumer explicitly rejects the active-macropore trace with unowned matrix water exchange and leaves salt candidate/receipt and committed state unchanged. No production salinity capability is admitted.",
   "environment_overrides": {
     "oxygen_preservation_runner": "FC executable wrapper at /tmp/gfortran-swap5-tolerant-warn prepended -Wno-error=compare-reals; the tracked runner uses -Werror, and this only makes the existing equality warning non-fatal without altering numerical tolerances.",
     "wrapper_sha256": "c65021b92959a4d908036e843753ac2bccbc258262d333da008396fdeffc42f5",
@@ -127,6 +127,12 @@
       "result": "PASS_O0_O2",
       "observation": "A7 completed and published candidate with qrot total 2e-4, transaction mass residual approximately -5.65e-16 cm, zero mass rejections, and discard/replay/commit/restart PASS. A8 macropore mass residual approximately -2.13e-16 cm. Full gate printed PPA_WU05A8_REAL_RICHARDS_GATE=PASS.",
       "interpretation": "The earlier 41 mass rejections were caused by incomplete test fixture storage configuration: macropores were active without an explicit matrix_area_fraction. Both affected test fixtures now set a fixture-local fraction of one. No production default or salinity qualification is implied. FMR interval-face reconstruction remains blocked because boundary observations are not interval-aggregated."
+    },
+    {
+      "experiment": "Test-only mobile-salt consumer against accepted FMR halfstep trace",
+      "result": "EXPECTED_FAIL_CLOSED_O0_O2",
+      "observation": "The accepted trace has non-root node water sources in addition to qrot (max |net_node_source + root_sink| > 1e-8 cm/day). The restricted E1 mobile-salt routine accepts Richards faces plus root uptake only and returns SOLUTE_WATER_CLOSURE. The whole trace returns no allocated candidate and zero receipt fields; committed test salt mass/concentration remain unchanged. The A8 runner checks the fail-closed marker at O0 and O2.",
+      "interpretation": "Active macropore matrix exchange needs an explicit solute transfer/source concentration owner, or the FMR route must be qualified with all non-root water sources disabled. This falsifies the assumption that the current macropore-enabled accepted water trace is sufficient by itself to drive the restricted single-mobile-domain salt ledger. It does not qualify a coupled water/salt transaction."
     }
   ]
 }
