@@ -1,7 +1,7 @@
 # PPA-WU05-E state-layout design decision
 
 Date: 2026-10-04  
-Status: `WORK_UNIT_DESIGN_DECISION_PROPOSED_NOT_CANONICALLY_ADMITTED`  
+Status: `STATE_LAYOUT_SCAFFOLD_IMPLEMENTED_UNQUALIFIED_NOT_CANONICALLY_ADMITTED`  
 Work unit: `PPA-WU05-E`  
 Baseline: `integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b`
 
@@ -43,4 +43,14 @@ Before salinity is admitted alongside an optional state family, add at least one
 4. Qualify transport timestep, dispersion and boundary behavior. The current explicit advection-only prototype is not production-ready for general use.
 5. Expose a read-only, matching-revision concentration view to root uptake, qualify the pure stress response, and only then extend D2 Jarvis combination rules.
 
-No source interface is changed by this decision record. Each shared interface change remains gated by implementation-level tests and the PPA-WU05-E qualification manifest.
+## Implementation checkpoint (2026-10-04)
+
+The branch now implements part of this representation:
+
+- `fmr_b110_physical_state_t` has an optional typed `salt%mass_mg_cm2(:)` component; the base clone copies it.
+- `fmr_template_t` carries an independent `solute_state_layout_id`.
+- Restart schema v3 carries that identity. v2 restore is rejected when the requested target has active solute state.
+- The restart-state contract checks salt allocation, active-node count, finiteness, and nonnegative mass for the mobile-dissolved layout.
+- The serialized FMR trial still rejects every active solute layout before physics runs. It does not initialize, advance, or publish a salt candidate.
+
+This is a source-level scaffold, not a qualified transaction. Dedicated clone/layout/serialized-restart tests for active salt, optional-state coexistence, and disabled-layout preservation remain required. Canonical admission and Jarvis integration remain gated by those tests and the PPA-WU05-E qualification manifest.
