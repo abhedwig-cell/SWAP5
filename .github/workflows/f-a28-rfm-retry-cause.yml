@@ -26,6 +26,22 @@ jobs:
             /tmp/a28-retry-cause-build/a28_retry_probe_headcalc.f90 \
             tests/fpe/support/mod_fpe_a28_fgc45_rfm_bridge.f90 \
             > /tmp/a28-retry-cause-source-sha256.txt
+      - name: Run preregistered practical solver-tolerance frontier
+        env:
+          A28_H0_CM: '-45'
+          A28_DT_DAY: '0.01'
+          A28_RAIN_CM_DAY: '1'
+          A28_NONLINEAR_ITERATION_LIMIT: '16'
+          FGC45_MULTISWAP_LIB: /tmp/a28-retry-cause-build/libfgc45_multiswap.so
+        run: |
+          for tol in 1e-10 1e-8 1e-6 1e-5; do
+            echo "A28_FRONTIER_TOL_CM=$tol" | tee -a /tmp/a28-tolerance-frontier.log
+            A28_SOLVER_BALANCE_TOL_CM="$tol" /usr/bin/time -f "A28_FRONTIER_ELAPSED=%e" \
+              python3 tests/fpe/test_fpe_a28_fd_predictor_init.py \
+              >> /tmp/a28-tolerance-frontier.log 2>&1
+          done
+          grep -E 'A28_FRONTIER_TOL_CM|EXACT_RFM_FD_PREDICTOR_INIT=PASS|A28_FRONTIER_ELAPSED' /tmp/a28-tolerance-frontier.log
+
       - name: Run frozen exact predictor-only input with preregistered iteration cap
         id: probe
         continue-on-error: true
@@ -45,6 +61,7 @@ jobs:
           test -f /tmp/a28-retry-cause-probe.log
           grep -E 'A28_RETRY_BUDGET|A28_RETRY_TYPED_INVALID|A28_RETRY_BALANCE_FAIL|A28_RETRY_HEAD_FAIL|A28_RETRY_TOTAL_BALANCE_FAIL|EXACT_RFM_FD_PREDICTOR_INIT=PASS' \
             /tmp/a28-retry-cause-probe.log
+            /tmp/a28-tolerance-frontier.log
       - name: Upload bounded diagnostic evidence
         if: always()
         uses: actions/upload-artifact@v4
