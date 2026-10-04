@@ -25,6 +25,13 @@ This work does not reopen the admitted `SWINTER=1/2` physics. It reuses the meth
 
 The current process reports a maximum event timestep when the canopy fills or empties, but also clips the end-of-interval canopy store to capacity. Its output contract must be tested for a longer-than-event call. With full cover, empty storage, capacity 0.1 cm, gross rain 1 cm/day, zero evaporation and a one-day interval, the routine reports all rain as intercepted while publishing only 0.1 cm of storage. Unless the caller splits the forcing interval at the event and sends the post-event rain to the soil, 0.9 cm is unaccounted for. This experiment characterizes the current API; it does not yet establish whether B1.11 has the same event-driving requirement or whether the accepted Hupsel caller satisfies it.
 
+## Follow-up source and ownership inspection (2026-10-04)
+
+- Two attempts to materialize the pinned historical archive from its persistent source failed before transfer because the Library download helper reported `hosted apps tools/list request failed: network`. The archive itself remains identified by the verified B0 hash in `reference/swap-4.3.1/b0/VERIFICATION_RESULT.md`; no substitute source was used.
+- In the current checkout, `maximum_event_timestep_days` is written and validated only by `mod_rutter_interception_process`; no production source under `src/**/*.f90` consumes it. The existing F-APP05 Rutter tests call `evaluate_rutter_interval` directly. F-APP08 tests typed output binding, not the forcing/event driver. Thus this checkout does not demonstrate that a production caller splits the meteorological source window at a canopy event.
+- `mod_interception_source_window_runtime` already represents immutable source-window identity and accepted endpoint progress, but contains no canopy-water state. A Rutter composition must trial both (a) Rutter's physical canopy storage and (b) apportioned source-window progress from one accepted snapshot, then publish them together only when the enclosing hydrological transaction accepts. A Richards reject must leave both unchanged. Reusing the runtime by itself would not meet the physical-state transaction invariant.
+- This is a production-composition gap, not evidence of a B1.11 physics defect. The exact source gate still precedes choosing legacy versus corrected reservoir semantics.
+
 ## Required decisions and gates
 
 1. Reconstruct and inspect exact B1.11 Rutter equations, call sites, event ordering, capacity transition, rain/irrigation/snow interactions, canopy-change semantics and mass accounting.
@@ -44,6 +51,6 @@ Affected invariants: 3, 4, 7, 9, 13, 23, 26, 29 and 30. The intended change make
 - Persisted: this preregistration and the characterization harness are being added on the work branch.
 - Tested: not yet.
 - Qualified/admitted: no new INT13 claim.
-- Blocker: exact B1.11 `MOD_meteo.f90` member must be materialized from its pinned archive authority before selecting legacy versus corrected semantics.
+- Blocker: exact B1.11 `MOD_meteo.f90` member must be materialized from its pinned archive authority before selecting legacy versus corrected semantics. Two materialization attempts failed at the Library network boundary; retry when transfer is available.
 - Draft review checkpoint: PR #1016, based on canonical `9605fbb1622d96f4691117f66264f13b6dd3a47b`.
 - Recovery point: this branch and `integration/audits/F-MIG431-INT13_PREREGISTRATION.md`.
