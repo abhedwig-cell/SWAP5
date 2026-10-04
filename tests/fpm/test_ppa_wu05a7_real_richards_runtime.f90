@@ -509,4 +509,127 @@ contains
          bundle%unsaturated%sorptivity%history_sorptivity(nd,numnod), &
          bundle%unsaturated%sorptivity%history_theta_ref(nd,numnod), &
          bundle%unsaturated%sorptivity%history_absorption_time(nd,numnod), &
-      
+         bundle%unsaturated%pressure_head(numnod),bundle%unsaturated%elevation(numnod), &
+         bundle%unsaturated%conductivity(numnod),bundle%unsaturated%entry_head(numnod), &
+         bundle%unsaturated%groundwater_level_domain(nd),bundle%unsaturated%sorp_fac_parallel(numnod))
+    bundle%unsaturated%sorptivity%num_domains=nd
+    bundle%unsaturated%sorptivity%num_nodes=numnod
+    bundle%unsaturated%sorptivity%top_node=1
+    bundle%unsaturated%sorptivity%swmbf=1
+    bundle%unsaturated%sorptivity%matrix_top_saturated_node=numnod+1
+    bundle%unsaturated%sorptivity%step_duration=dt
+    bundle%unsaturated%sorptivity%flow_reduction=1.0_real64
+    bundle%unsaturated%sorptivity%bottom_domain=numnod
+    bundle%unsaturated%sorptivity%top_water_node=1
+    bundle%unsaturated%sorptivity%theta=water
+    bundle%unsaturated%sorptivity%theta_s=0.427494_real64
+    bundle%unsaturated%sorptivity%theta_r=0.02_real64
+    bundle%unsaturated%sorptivity%dz=dz
+    bundle%unsaturated%sorptivity%diameter=4.0_real64
+    bundle%unsaturated%sorptivity%wall_correction=0.95_real64
+    bundle%unsaturated%sorptivity%sorptivity_max=0.001_real64
+    bundle%unsaturated%sorptivity%sorptivity_alpha=0.5_real64
+    bundle%unsaturated%sorptivity%domain_fraction=1.0_real64
+    bundle%unsaturated%sorptivity%wet_fraction=1.0_real64
+    bundle%unsaturated%sorptivity%history_sorptivity=state%sorptivity
+    bundle%unsaturated%sorptivity%history_theta_ref=state%theta_sorption_ref
+    bundle%unsaturated%sorptivity%history_absorption_time=state%absorption_time
+    bundle%unsaturated%shape_factor=1.0_real64
+    bundle%unsaturated%pressure_head=heads
+    bundle%unsaturated%elevation=z
+    bundle%unsaturated%conductivity=0.0_real64
+    bundle%unsaturated%entry_head=-1.0_real64
+    bundle%unsaturated%groundwater_level_domain=-200.0_real64
+    bundle%unsaturated%sorp_fac_parallel=0.5_real64
+
+    call setup_sat(bundle%interflow_sat)
+    call setup_sat(bundle%matrix_sat)
+
+    bundle%rapid%num_nodes=numnod
+    bundle%rapid%top_water_node=1
+    bundle%rapid%bottom_domain_node=numnod
+    bundle%rapid%drain_type=2
+    bundle%rapid%enabled=.false.
+    bundle%rapid%saturated_top_fraction=1.0_real64
+    bundle%rapid%water_level_cm=-200.0_real64
+    bundle%rapid%domain_bottom_cm=minval(z)-0.5_real64*dz(numnod)
+    bundle%rapid%drain_level_cm=-50.0_real64
+    bundle%rapid%ponding_cm=0.0_real64
+    bundle%rapid%step_duration=dt
+    bundle%rapid%area_exponent=3.0_real64
+    bundle%rapid%kd_reference=0.001_real64
+    bundle%rapid%resistance_reference_day=20.0_real64
+    bundle%rapid%flow_reduction=1.0_real64
+    bundle%rapid%water_storage_cm=sum(state%water_domain_cp)
+    bundle%rapid%volume_under_drain_cm=0.0_real64
+    allocate(bundle%rapid%diameter(numnod),bundle%rapid%dz(numnod),bundle%rapid%volume_main_domain_cp(numnod))
+    bundle%rapid%diameter=4.0_real64
+    bundle%rapid%dz=dz
+    bundle%rapid%volume_main_domain_cp=geom%volume_domain_cp(1,:)
+
+    bundle%limiter%num_domains=nd
+    allocate(bundle%limiter%accepted_storage_cm(nd),bundle%limiter%maximum_storage_cm(nd), &
+         bundle%limiter%minimum_storage_cm(nd),bundle%limiter%potential_top_vertical_cm(nd), &
+         bundle%limiter%potential_top_lateral_cm(nd),bundle%limiter%potential_interflow_sat_cm(nd), &
+         bundle%limiter%potential_matrix_sat_cm(nd),bundle%limiter%potential_outflow_cm(nd), &
+         bundle%limiter%redistribution_capacity_cm(nd),bundle%limiter%top_domain_fraction(nd))
+    bundle%limiter%accepted_storage_cm=sum(state%water_domain_cp,dim=2)
+    bundle%limiter%maximum_storage_cm=sum(geom%volume_domain_cp,dim=2)
+    bundle%limiter%minimum_storage_cm=0.0_real64
+    bundle%limiter%potential_top_vertical_cm=0.0_real64
+    bundle%limiter%potential_top_lateral_cm=0.0_real64
+    bundle%limiter%potential_interflow_sat_cm=0.0_real64
+    bundle%limiter%potential_matrix_sat_cm=0.0_real64
+    bundle%limiter%potential_outflow_cm=0.0_real64
+    bundle%limiter%redistribution_capacity_cm=max(0.0_real64, &
+         bundle%limiter%maximum_storage_cm-bundle%limiter%accepted_storage_cm)
+    bundle%limiter%top_domain_fraction=1.0_real64
+    bundle%top_node=1
+  end subroutine setup_rate_template
+
+  subroutine setup_sat(sat)
+    use mod_ppa_wu05a6_saturated_exchange_rate, only: saturated_exchange_request_t
+    type(saturated_exchange_request_t),intent(out)::sat
+    sat%num_domains=nd
+    sat%num_nodes=numnod
+    sat%matrix_top_saturated_node=1
+    sat%matrix_bottom_saturated_node=0
+    sat%swsep=0
+    sat%matrix_level=-200.0_real64
+    sat%step_duration=dt
+    sat%flow_reduction=1.0_real64
+    sat%shape_factor=1.0_real64
+    allocate(sat%bottom_domain(nd),sat%top_macro_saturated_node(nd),sat%macro_saturated_fraction(nd), &
+         sat%macro_reference_level(nd),sat%z(numnod),sat%dz(numnod),sat%matrix_head(numnod), &
+         sat%ksat_horizontal(numnod),sat%diameter(numnod),sat%domain_fraction(nd,numnod),sat%cdarcy(nd,numnod))
+    sat%bottom_domain=numnod
+    sat%top_macro_saturated_node=1
+    sat%macro_saturated_fraction=1.0_real64
+    sat%macro_reference_level=-200.0_real64
+    sat%z=z
+    sat%dz=dz
+    sat%matrix_head=heads
+    sat%ksat_horizontal=0.0_real64
+    sat%diameter=4.0_real64
+    sat%domain_fraction=1.0_real64
+    sat%cdarcy=0.0_real64
+  end subroutine setup_sat
+
+  subroutine setup_history(history)
+    type(sorptivity_history_update_request_t),intent(out)::history
+    history%num_domains=nd
+    history%num_nodes=numnod
+    history%top_node=1
+    history%matrix_top_saturated_node=numnod+1
+    history%step_duration=dt
+    allocate(history%bottom_domain(nd),history%top_water_node(nd),history%wall_correction(numnod), &
+         history%wet_fraction(nd,numnod),history%domain_fraction(nd,numnod),history%diameter(numnod))
+    history%bottom_domain=numnod
+    history%top_water_node=1
+    history%wall_correction=0.95_real64
+    history%wet_fraction=1.0_real64
+    history%domain_fraction=1.0_real64
+    history%diameter=4.0_real64
+  end subroutine setup_history
+
+end program test_ppa_wu05a7_real_richards_runtime
