@@ -16,9 +16,9 @@
   "active_a28_tested": true,
   "performance_qualified": false,
   "scalability_qualified": false,
-  "blocker": "10-node field-depth exact prescribed-qbot RFM predictor under nonzero rainfall exhausts 12 retries; last solver observation is retry-advised at 16/16 nonlinear iterations. Same-state predictor init passes without rainfall. No A28 run.",
+  "blocker": "10-node field-depth exact prescribed-qbot RFM predictor under nonzero rainfall exhausts 12 retries; last solver observation is retry-advised at 16/16 nonlinear iterations. The observation does not distinguish typed-bottom invalidation from nonlinear iteration-budget exhaustion. Same-state predictor init passes without rainfall. No A28 run.",
   "result_record": "docs/audits/PPA_WU05A28_COUPLED_FD_RESULT.md",
-  "next_safe_step": "Stop field-depth active-forcing experiments under this preregistration; exact RFM predictor remains blocked before coupled MODFLOW. Preserve component-only classification.",
+  "next_safe_step": "Run one preregistered exact-only diagnostic repeat at the frozen -45 cm, dt=0.01 day, rain=1 cm/day input, logging the nonlinear convergence criteria at iteration-budget exit. No MODFLOW or A28.",
   "narrow_delta_exact_gate": "PASS_24_WINDOWS",
   "narrow_delta_cm_day": [
     1e-07,
@@ -143,7 +143,14 @@
       "backtracking_attempts": 90,
       "alternative_solver_calls": 0
     },
-    "disposition": "Nonlinear convergence requests a smaller timestep, then exhausts 12 bounded transaction retries; first internal rejection cause remains unexposed."
+    "disposition": "Legacy reference solver requests a smaller timestep and the transaction exhausts 12 bounded retries. Bottom mode 2 makes the typed-resistive-bottom invalidation branch unreachable, so the observed 16/16 result identifies nonlinear iteration-budget exhaustion; final unsatisfied convergence criterion is not exposed."
+  },
+  "field_depth_solver_rejection_source_inspection": {
+    "fixture_bottom_mode": 2,
+    "typed_bottom_invalid_reached_for_mode_2": false,
+    "retry_flag_reset_each_attempt": true,
+    "identified_retry_source": "NONLINEAR_ITERATION_BUDGET_EXHAUSTION",
+    "unresolved": "which of compartment balance, total balance, or head-correction criteria remains unsatisfied at the final iteration"
   },
   "field_depth_timestep_probe": "REGISTERED_DT_0.005_FAIL; DT_0.001_UNREGISTERED_EXPLORATORY_FAIL",
   "field_depth_timestep_probe_results": {

@@ -3,8 +3,8 @@
   "qualification_source_sha": "c8140b7d4b824df2101460530439f98008380eee",
   "local_tested_sha": "8f8008c01c3690cab3aea38c8d6de656cffb1ffe",
   "source_tree_sha": "a4aac5df1fab9d4da77249415fc3f6f9ebbad164",
-  "bundle_sha256": "31a748b7c53806278491af8f09fdd00a721c77b8c04fce987217e3e698895b6e",
-  "bundle_bytes": 127244,
+  "bundle_sha256": "e1008f1181e0856c9f246880e225ac34cf801c8fad3f3668474df1e4087cbfb8",
+  "bundle_bytes": 134570,
   "contents": {
     "a28-aligned-approx-24.json": "6d939cbbb69f0c5c0a074cf575807e65942817fcd656558511274a76f4ea5166",
     "a28-aligned-approx-24.log": "67d2aea30c1d72bc4c0c135a6d7976cc99df25e9a267354a300817dcf508ef44",
@@ -39,6 +39,9 @@
     "a28-final-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
     "a28-final-exact.log": "60638ce831170240827bd2ea354a8da383c81421b85d036601472cd52002e60e",
     "a28-final-mkdocs.log": "066c1f421c91edb1dabacdaf2653aa4616987c56be088ab40e827dd6daa7287b",
+    "a28-retry-source-docs.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+    "a28-retry-source-inspection.txt": "74566a9a83b03d00b9119d4e876341ac6ea2644535199aaf3353dd563fb417aa",
+    "a28-retry-source-mkdocs.log": "16875b9be100f94ff74e973ac859a6b1a89e4e52574dddbf30a5d39959d47ad6",
     "a28-temporal-diagnostic.log": "6bc605ee01de9ef70cc231c867c9a83fe5e0315b95430717aa666b9dd30e37dc",
     "a28-windows-exact-capacity.log": "d86f552e9574996f5738aa9f4f2218dd7f0667351cf74bf3146eb83ac3e2c478",
     "a28-windows-exact.log": "3aebc2e2207a131fccccecef252e4a797ef09a4437682cb5dcef64e8fd3fd742",
@@ -72,7 +75,8 @@
     "scalability_qualified": false,
     "production_sources_changed": false,
     "github_actions_used": false,
-    "field_depth_timestep_probe": "REGISTERED_DT_0.005_FAIL; UNREGISTERED_DT_0.001_FAIL_EXCLUDED_FROM_GATE"
+    "field_depth_timestep_probe": "REGISTERED_DT_0.005_FAIL; UNREGISTERED_DT_0.001_FAIL_EXCLUDED_FROM_GATE",
+    "retry_source_disposition": "ITERATION_BUDGET_EXHAUSTION; SPECIFIC FINAL CRITERION PENDING DIAGNOSTIC"
   },
   "tested_fixture_files_sha256": {
     "tests/fpe/build_fpe_a28_coupled_local.py": "e3ebc8d01ac676990bd05eeb6b90355d6e189cbb9f421a2fc63159c4e262cd60",
@@ -111,7 +115,7 @@
       "backtracking_attempts": 90,
       "alternative_solver_calls": 0
     },
-    "interpretation": "SW_SOLVE_RETRY_ADVISED; requests smaller step; transaction exhausts 12 retries."
+    "interpretation": "SW_SOLVE_RETRY_ADVISED; requests smaller step; transaction exhausts 12 retries. This fixture uses prescribed-flux bottom_mode=2, making HeadCalc's typed-resistive-bottom invalidation path (bottom_mode=3) unreachable. The 16/16 observation therefore identifies nonlinear iteration-budget exhaustion; the final unsatisfied convergence criterion remains unobserved."
   },
   "field_depth_timestep_probe": {
     "registered_dt_day": 0.005,
@@ -120,5 +124,15 @@
     "unregistered_result": "FAIL_TILE_1_13_ATTEMPTS_12_RETRIES_13_SOLVER_0_TEMPORAL",
     "protocol_deviation": "Second timestep was run despite preregistered stop-after-first-failure; excluded from gate evidence."
   },
-  "diagnostic_preregistration_commit": "7101d2cfa33eb55d4d5fbcdbdb72d8b96e5ffee4"
+  "diagnostic_preregistration_commit": "7101d2cfa33eb55d4d5fbcdbdb72d8b96e5ffee4",
+  "retry_source_inspection": {
+    "inspected_at_branch_head": "d947b326b2ab217fe4afc7f13c3338ec790ccf90",
+    "source_blobs": {
+      "src/legacy/b1_10_port/headcalc.f90": "3c5d0fd4cb816ffcc4d08ece9c33d136b7e91aa6",
+      "src/adapter/mod_reference_richards_legacy_binding.f90": "1c9e42b0333c2d492032fd2f3705231a276c7d04",
+      "tests/fpe/support/mod_fpe_a28_fgc45_rfm_bridge.f90": "150cb2963b3147d87e7d8b197887f78768acd596",
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5418b6a1a9f651e818678f347c9cd8399693eb82"
+    },
+    "conclusion": "bottom_mode=2 and reset attempt control make typed-resistive invalidation ineligible; retry-advised status after 16 iterations is nonlinear iteration-budget exhaustion. Which final convergence criterion fails remains unknown."
+  }
 }
