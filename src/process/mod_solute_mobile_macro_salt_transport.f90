@@ -16,12 +16,24 @@ module mod_solute_mobile_macro_salt_transport
     real(real64) :: matrix_bottom_output_mg_cm2=0.0_real64
     real(real64), allocatable :: macro_top_input_mg_cm2(:), macro_top_output_mg_cm2(:)
     real(real64), allocatable :: macro_bottom_input_mg_cm2(:), macro_bottom_output_mg_cm2(:)
+    real(real64), allocatable :: macro_to_matrix_mg_cm2(:,:), matrix_to_macro_mg_cm2(:,:)
     real(real64), allocatable :: root_solute_uptake_mg_cm2(:)
     real(real64) :: closure_error_mg_cm2=0.0_real64
   end type
 
+  type, public :: mobile_macro_salt_substep_t
+    real(real64) :: t0=0.0_real64,t1=0.0_real64
+    real(real64) :: matrix_top_concentration_mg_cm3=0.0_real64
+    real(real64) :: matrix_bottom_concentration_mg_cm3=0.0_real64
+    real(real64), allocatable :: matrix_water_start(:),matrix_water_end(:)
+    real(real64), allocatable :: macro_water_start(:,:),macro_water_end(:,:)
+    real(real64), allocatable :: matrix_face_rate(:),macro_face_rate(:,:),exchange_rate(:,:)
+    real(real64), allocatable :: root_water_sink(:),macro_top_concentration_mg_cm3(:)
+    real(real64), allocatable :: macro_bottom_concentration_mg_cm3(:)
+  end type
+
   public :: initialize_mobile_macro_salt_state, derive_mobile_macro_salt_concentration
-  public :: advance_mobile_macro_salt_trial
+  public :: advance_mobile_macro_salt_trial, advance_mobile_macro_salt_trace
 
 contains
 
@@ -94,6 +106,106 @@ contains
     end if
     status=MACRO_SALT_OK
   end subroutine derive_mobile_macro_salt_concentration
+
+  ! Applies a contiguous ordered sequence of accepted water substeps to one
+  ! salt candidate. A later failure clears the full candidate and all receipts.
+  subroutine advance_mobile_macro_salt_trace(committed,node_thickness_cm,substeps,tscf,candidate,receipt,status)
+    type(mobile_macro_salt_state_t), intent(in) :: committed
+    real(real64), intent(in) :: node_thickness_cm(:),tscf
+    type(mobile_macro_salt_substep_t), intent(in) :: substeps(:)
+    type(mobile_macro_salt_state_t), intent(out) :: candidate
+    type(mobile_macro_salt_receipt_t), intent(out) :: receipt
+    integer, intent(out) :: status
+    type(mobile_macro_salt_state_t) :: current,next
+    type(mobile_macro_salt_receipt_t) :: step_receipt
+    real(real64) :: tolerance
+    integer :: i,n,nd
+
+    candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t();status=MACRO_SALT_INVALID
+    n=size(node_thickness_cm)
+    if(size(substeps)==0.or.n<=0)return
+    do i=1,size(substeps)
+      if(.not.allocated(substeps(i)%matrix_water_start).or..not.allocated(substeps(i)%matrix_water_end).or. &
+         .not.allocated(substeps(i)%macro_water_start).or..not.allocated(substeps(i)%macro_water_end).or. &
+         .not.allocated(substeps(i)%matrix_face_rate).or..not.allocated(substeps(i)%macro_face_rate).or. &
+         .not.allocated(substeps(i)%exchange_rate).or..not.allocated(substeps(i)%root_water_sink).or. &
+         .not.allocated(substeps(i)%macro_top_concentration_mg_cm3).or. &
+         .not.allocated(substeps(i)%macro_bottom_concentration_mg_cm3))return
+    end do
+    nd=size(substeps(1)%macro_water_start,1)
+    if(nd<=0)return
+    do i=1,size(substeps)
+      if(size(substeps(i)%matrix_water_start)/=n.or.size(substeps(i)%matrix_water_end)/=n.or. &
+         any(shape(substeps(i)%macro_water_start)/=[nd,n]).or.any(shape(substeps(i)%macro_water_end)/=[nd,n]).or. &
+         size(substeps(i)%matrix_face_rate)/=n+1.or.any(shape(substeps(i)%macro_face_rate)/=[nd,n+1]).or. &
+         any(shape(substeps(i)%exchange_rate)/=[nd,n]).or.size(substeps(i)%root_water_sink)/=n.or. &
+         size(substeps(i)%macro_top_concentration_mg_cm3)/=nd.or. &
+         size(substeps(i)%macro_bottom_concentration_mg_cm3)/=nd)return
+      if(.not.ieee_is_finite(substeps(i)%t0).or..not.ieee_is_finite(substeps(i)%t1).or. &
+         substeps(i)%t1<=substeps(i)%t0)return
+    end do
+    do i=2,size(substeps)
+      tolerance=128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(substeps(i)%t0),abs(substeps(i-1)%t1))
+      if(abs(substeps(i)%t0-substeps(i-1)%t1)>tolerance)return
+      tolerance=512.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
+           maxval(abs(substeps(i)%matrix_water_start)),maxval(abs(substeps(i-1)%matrix_water_end)))
+      if(any(abs(substeps(i)%matrix_water_start-substeps(i-1)%matrix_water_end)>tolerance))then
+        status=MACRO_SALT_WATER_CLOSURE;return
+      end if
+      tolerance=512.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
+           maxval(abs(substeps(i)%macro_water_start)),maxval(abs(substeps(i-1)%macro_water_end)))
+      if(any(abs(substeps(i)%macro_water_start-substeps(i-1)%macro_water_end)>tolerance))then
+        status=MACRO_SALT_WATER_CLOSURE;return
+      end if
+    end do
+
+    allocate(receipt%macro_top_input_mg_cm2(nd),receipt%macro_top_output_mg_cm2(nd), &
+         receipt%macro_bottom_input_mg_cm2(nd),receipt%macro_bottom_output_mg_cm2(nd), &
+         receipt%macro_to_matrix_mg_cm2(nd,n),receipt%matrix_to_macro_mg_cm2(nd,n), &
+         receipt%root_solute_uptake_mg_cm2(n))
+    receipt%macro_top_input_mg_cm2=0.0_real64;receipt%macro_top_output_mg_cm2=0.0_real64
+    receipt%macro_bottom_input_mg_cm2=0.0_real64;receipt%macro_bottom_output_mg_cm2=0.0_real64
+    receipt%macro_to_matrix_mg_cm2=0.0_real64;receipt%matrix_to_macro_mg_cm2=0.0_real64
+    receipt%root_solute_uptake_mg_cm2=0.0_real64
+    current=committed
+    do i=1,size(substeps)
+      call advance_mobile_macro_salt_trial(current,node_thickness_cm,substeps(i)%matrix_water_start, &
+           substeps(i)%matrix_water_end,substeps(i)%macro_water_start,substeps(i)%macro_water_end, &
+           substeps(i)%matrix_face_rate,substeps(i)%macro_face_rate,substeps(i)%exchange_rate, &
+           substeps(i)%root_water_sink,substeps(i)%matrix_top_concentration_mg_cm3, &
+           substeps(i)%matrix_bottom_concentration_mg_cm3,substeps(i)%macro_top_concentration_mg_cm3, &
+           substeps(i)%macro_bottom_concentration_mg_cm3,tscf,substeps(i)%t1-substeps(i)%t0,next, &
+           step_receipt,status)
+      if(status/=MACRO_SALT_OK)then
+        candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t();return
+      end if
+      current=next
+      receipt%matrix_top_input_mg_cm2=receipt%matrix_top_input_mg_cm2+step_receipt%matrix_top_input_mg_cm2
+      receipt%matrix_top_output_mg_cm2=receipt%matrix_top_output_mg_cm2+step_receipt%matrix_top_output_mg_cm2
+      receipt%matrix_bottom_input_mg_cm2=receipt%matrix_bottom_input_mg_cm2+step_receipt%matrix_bottom_input_mg_cm2
+      receipt%matrix_bottom_output_mg_cm2=receipt%matrix_bottom_output_mg_cm2+step_receipt%matrix_bottom_output_mg_cm2
+      receipt%macro_top_input_mg_cm2=receipt%macro_top_input_mg_cm2+step_receipt%macro_top_input_mg_cm2
+      receipt%macro_top_output_mg_cm2=receipt%macro_top_output_mg_cm2+step_receipt%macro_top_output_mg_cm2
+      receipt%macro_bottom_input_mg_cm2=receipt%macro_bottom_input_mg_cm2+step_receipt%macro_bottom_input_mg_cm2
+      receipt%macro_bottom_output_mg_cm2=receipt%macro_bottom_output_mg_cm2+step_receipt%macro_bottom_output_mg_cm2
+      receipt%macro_to_matrix_mg_cm2=receipt%macro_to_matrix_mg_cm2+step_receipt%macro_to_matrix_mg_cm2
+      receipt%matrix_to_macro_mg_cm2=receipt%matrix_to_macro_mg_cm2+step_receipt%matrix_to_macro_mg_cm2
+      receipt%root_solute_uptake_mg_cm2=receipt%root_solute_uptake_mg_cm2+step_receipt%root_solute_uptake_mg_cm2
+      receipt%closure_error_mg_cm2=receipt%closure_error_mg_cm2+step_receipt%closure_error_mg_cm2
+      if(.not.all(ieee_is_finite([receipt%matrix_top_input_mg_cm2,receipt%matrix_top_output_mg_cm2, &
+         receipt%matrix_bottom_input_mg_cm2,receipt%matrix_bottom_output_mg_cm2,receipt%closure_error_mg_cm2])).or. &
+         .not.all(ieee_is_finite(receipt%macro_top_input_mg_cm2)).or. &
+         .not.all(ieee_is_finite(receipt%macro_top_output_mg_cm2)).or. &
+         .not.all(ieee_is_finite(receipt%macro_bottom_input_mg_cm2)).or. &
+         .not.all(ieee_is_finite(receipt%macro_bottom_output_mg_cm2)).or. &
+         .not.all(ieee_is_finite(receipt%macro_to_matrix_mg_cm2)).or. &
+         .not.all(ieee_is_finite(receipt%matrix_to_macro_mg_cm2)).or. &
+         .not.all(ieee_is_finite(receipt%root_solute_uptake_mg_cm2)))then
+        candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t();status=MACRO_SALT_INVALID;return
+      end if
+    end do
+    candidate=current
+  end subroutine advance_mobile_macro_salt_trace
 
   ! Conservative explicit-advection candidate for one accepted water substep.
   ! All mobile compartments use donor concentrations from the committed start
@@ -169,9 +281,11 @@ contains
     dm=0.0_real64;dp=0.0_real64;outm=0.0_real64;outp=0.0_real64
     allocate(receipt%macro_top_input_mg_cm2(nd),receipt%macro_top_output_mg_cm2(nd), &
          receipt%macro_bottom_input_mg_cm2(nd),receipt%macro_bottom_output_mg_cm2(nd), &
+         receipt%macro_to_matrix_mg_cm2(nd,n),receipt%matrix_to_macro_mg_cm2(nd,n), &
          receipt%root_solute_uptake_mg_cm2(n))
     receipt%macro_top_input_mg_cm2=0.0_real64;receipt%macro_top_output_mg_cm2=0.0_real64
     receipt%macro_bottom_input_mg_cm2=0.0_real64;receipt%macro_bottom_output_mg_cm2=0.0_real64
+    receipt%macro_to_matrix_mg_cm2=0.0_real64;receipt%matrix_to_macro_mg_cm2=0.0_real64
     receipt%root_solute_uptake_mg_cm2=0.0_real64
 
     ! Matrix vertical faces, including explicit surface and bottom boundaries.
@@ -231,8 +345,10 @@ contains
         q=exchange_rate(d,i)*dt_day
         if(q>0.0_real64)then
           amount=q*cp(d,i);dp(d,i)=dp(d,i)-amount;dm(i)=dm(i)+amount;outp(d,i)=outp(d,i)+q
+          receipt%macro_to_matrix_mg_cm2(d,i)=amount
         else if(q<0.0_real64)then
           amount=-q*cm(i);dm(i)=dm(i)-amount;dp(d,i)=dp(d,i)+amount;outm(i)=outm(i)-q
+          receipt%matrix_to_macro_mg_cm2(d,i)=amount
         end if
       end do
       root_salt=tscf*root_water_sink(i)*dt_day*cm(i)

@@ -6,7 +6,7 @@
   "target_state": "PPA-WU05-E local prequalification postimage based on PR source e0472bb, with accepted macro vertical-face continuity trace and a test-only domain-resolved macro salt payload/Restart v3 layout; not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
-    "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "65398d925479557ea7fd690188b7a1214bfa9ebf932c3c1e44d9878c8372c804",
+    "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "bd1672f3a1cceecf3736ae3bc7d4d7ba090eb41571486b2976a87c97973df64b",
     "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "8d1436efa89f8097221f3adba1a48a8adf5f6b0c3e0473860d4b32091d1d59c9",
     "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "2f71790808211a2400495a4c629f47e1a26ca8579225a760b02a9d351db0a439",
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "5dd6eb932cd030a216d8ab2884bfb64141727c3d6e9154e0b55773415bed2c47",
@@ -33,10 +33,10 @@
     "tests/physics/test_mobile_salt_state.f90": "318dded400628b3f5aa60207389e42af3ebec3dcc37ea632cd9bd1194dcb20ca",
     "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
     "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b",
-    "integration/audits/PPA_WU05E_STATUS.json": "7ae40da89023516beeb86d6631ee406bf07ac7315ff1cbce6f5f8c6f12ef679b",
+    "integration/audits/PPA_WU05E_STATUS.json": "2faad78130498f5f789358ec6248c2a8fb27ddf05d6f86be30bf5a472056b7ea",
     "tests/fpm/test_ppa_wu05a20_rfm_optional_state_layout.f90": "e27bfb82bc58fcb03588b09d81d05bf061b59c86b0c8202431e7172cb6666be5",
-    "src/process/mod_solute_mobile_macro_salt_transport.f90": "a8a540e4634057e2ea80cece9d16fee6948c9dec5c4fb1984aa7a2fc2baed91b",
-    "tests/physics/test_mobile_macro_salt_transport.f90": "48062ebc2ddfcabce1441a44c9db961c3ec36bdf89d05b2caa35b599e78422b7"
+    "src/process/mod_solute_mobile_macro_salt_transport.f90": "26d072b766eed9a628aa7758d1cf0689458e48e8c85c1701c9dd0d0b366754a7",
+    "tests/physics/test_mobile_macro_salt_transport.f90": "92e307205879755b632f64e31af5309502eee068d58294b792c9cb9dd27934ec"
   },
   "results": [
     {
@@ -123,7 +123,7 @@
     {
       "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
       "result": "PASS_O0_O2",
-      "scope": "Profile initialization and derived concentration view for separate matrix/per-domain inventories, dry inventory rejection, plus synchronized-donor matrix/macro vertical advection, signed exchange, explicit matrix boundary receipts, root TSCF removal, internal/external salt closure and invalid-flow/water-closure rejection."
+      "scope": "Profile initialization and derived concentration view for separate matrix/per-domain inventories, dry inventory rejection, plus synchronized-donor matrix/macro vertical advection, signed exchange, explicit matrix boundary receipts, root TSCF removal, internal/external salt closure and invalid-flow/water-closure rejection. Ordered accepted-substep trace continuity, updated donor concentration across reversal, aggregated directional receipts, and all-or-nothing late-substep rollback with no candidate or receipt leakage."
     }
   ],
   "not_run_or_not_claimed": [
@@ -139,7 +139,7 @@
     "GitHub Actions runs were automatically queued by PR branch updates; no qualification run was manually dispatched or used as qualification evidence.",
     "The coupled matrix/macro salt transport oracle uses manufactured accepted water arrays; no live FMR salt candidate, typed FMR boundary receipt producer, persistent macro salt continuation, restart serialization, or Jarvis composition is qualified."
   ],
-  "claim_ceiling": "Local tested prototypes and negative evidence only. The A7/A8 O0/O2 gate proves that the current macro-enabled FMR route fails closed for E1 matrix-only salt advancement and validates an attempt-local water trace with nonzero per-domain exchange, paired macro-water volumes, ordered per-domain vertical faces, and water storage/exchange/face continuity through retry/replay and restart. A typed domain-resolved macro salt payload and distinct solute layout pass clone and in-memory Restart v3 round-trip checks, but remain storage-only. The stateless exchange kernel verifies internal arithmetic only. Live salt initialization/advancement, typed boundary salt receipts, a coupled water/salt transaction, formal qualification, and production salinity capability are not established. The macro-disabled base FMR diagnostic remains blocked by the existing temporal identity gate. No Jarvis salinity integration or exact-byte B1.11 solute equivalence is claimed. A stateless coupled matrix/macro process kernel is locally tested O0/O2 for vertical macro advection, signed exchange, explicit matrix boundary receipts, root TSCF accounting, mass closure, and fail-closed invalid water/flow. It remains unbound and does not qualify FMR state, all route boundaries, transaction/restart, or Jarvis. The process slice also initializes separate matrix and per-domain inventories from concentration profiles and derives concentration from matching salt/water state; this remains unbound process evidence and does not qualify any FMR route or continuation lifecycle.",
+  "claim_ceiling": "Local tested prototypes and negative evidence only. The A7/A8 O0/O2 gate proves that the current macro-enabled FMR route fails closed for E1 matrix-only salt advancement and validates an attempt-local water trace with nonzero per-domain exchange, paired macro-water volumes, ordered per-domain vertical faces, and water storage/exchange/face continuity through retry/replay and restart. A typed domain-resolved macro salt payload and distinct solute layout pass clone and in-memory Restart v3 round-trip checks, but remain storage-only. The stateless exchange kernel verifies internal arithmetic only. Live salt initialization/advancement, typed boundary salt receipts, a coupled water/salt transaction, formal qualification, and production salinity capability are not established. The macro-disabled base FMR diagnostic remains blocked by the existing temporal identity gate. No Jarvis salinity integration or exact-byte B1.11 solute equivalence is claimed. A stateless coupled matrix/macro process kernel is locally tested O0/O2 for vertical macro advection, signed exchange, explicit matrix boundary receipts, root TSCF accounting, mass closure, and fail-closed invalid water/flow. It remains unbound and does not qualify FMR state, all route boundaries, transaction/restart, or Jarvis. The process slice also initializes separate matrix and per-domain inventories from concentration profiles and derives concentration from matching salt/water state; this remains unbound process evidence and does not qualify any FMR route or continuation lifecycle. Ordered process-level traces verify contiguous accepted time and water continuity, updated donor concentration across substeps, and rollback on late failure; this does not qualify FMR transactions or restart.",
   "environment_overrides": {
     "oxygen_preservation_runner": "FC executable wrapper at /tmp/gfortran-swap5-tolerant-warn prepended -Wno-error=compare-reals; the tracked runner uses -Werror, and this only makes the existing equality warning non-fatal without altering numerical tolerances.",
     "wrapper_sha256": "c65021b92959a4d908036e843753ac2bccbc258262d333da008396fdeffc42f5",
