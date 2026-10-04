@@ -3,10 +3,10 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E work-branch postimage bound by source hashes; local prequalification only, not formal qualification",
+  "target_state": "PPA-WU05-E work-branch postimage at 2026-10-04 checkpoint bfa498fcbf14c0842141573e62aea05bf72ff6af; local prequalification only, not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
-    "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "35129746d37d1114fa2e885368363ab1bb7f1d115ccc4d83ac75a19952e24db8",
+    "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md": "4ff634794a125175bcce426a316dce0444ddc2cac87bf4540e713171c711e1f4",
     "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "d9282eb483350037bc1059f6fabfce2fded62854f14e82b16d8c2be76ca346ae",
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "2469a61298769e9aec6c15a0e47d4a0a1a54eaf6b5d459eaadcf4a92fd7993c3",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
@@ -24,7 +24,7 @@
     "tests/physics/run_root_uptake_oxygen_composition.sh": "74c44088ab155bb7ff42b82b73d1e0681a627f9869050a3faf144d2fbc32467d",
     "tests/physics/test_mobile_salt_state.f90": "318dded400628b3f5aa60207389e42af3ebec3dcc37ea632cd9bd1194dcb20ca",
     "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
-    "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b"
+    "tests/physics/test_solute_water_face_flux_reconstruction.f90": "49ee555236caade96d310197bc503e074ef56c47c154057f6d5eee6cd59f3433"
   },
   "results": [
     {
@@ -71,6 +71,21 @@
       "command": "python3 -m json.tool integration/audits/PPA_WU05E_STATUS.json >/dev/null && git diff --check",
       "result": "PASS",
       "scope": "status JSON parse and whitespace check"
+    },
+    {
+      "command": "gfortran -std=f2008 -Wall -Wextra -fcheck=all mod_solute_water_face_flux_reconstruction.f90 test_solute_water_face_flux_reconstruction.f90 && run",
+      "result": "PASS",
+      "scope": "direct local O0 build; manufactured continuity, bottom closure rejection, invalid input guards, plus ordered reversal counterexample demonstrating zero signed mean with nonzero directional salt transfer"
+    },
+    {
+      "command": "gfortran -std=f2008 -Wall -Wextra -fcheck=all mod_root_salinity_response.f90 test_root_salinity_response.f90 && run",
+      "result": "PASS",
+      "scope": "direct local O0 bounds-checked Maas-Hoffman response unit"
+    },
+    {
+      "command": "gfortran -std=f2008 -Wall -Wextra -fcheck=all mod_solute_mobile_salt_state.f90 test_mobile_salt_state.f90 && run",
+      "result": "PASS",
+      "scope": "direct local O0 bounds-checked mobile salt state/ledger unit"
     }
   ],
   "not_run_or_not_claimed": [
@@ -78,9 +93,10 @@
     "No exact-byte B1.11 solute/restart reconstruction in this execution surface.",
     "No Jarvis salinity integration or stress-combination claim.",
     "No GitHub Actions run; local evidence is preliminary and does not admit a capability.",
-    "No live FMR interval-mean face-flux reconstruction: its current observation exposes the last internal Richards solver-step boundary flux, not a candidate-interval aggregate. The live qrot transaction passes but does not qualify the solute flux trace; route-specific drainage/snow/surface terms remain unqualified."
+    "No live FMR interval-mean face-flux reconstruction: its current observation exposes the last internal Richards solver-step boundary flux, not a candidate-interval aggregate. The live qrot transaction passes but does not qualify the solute flux trace; route-specific drainage/snow/surface terms remain unqualified.",
+    "The new reversal counterexample and direct O0 unit runs do not qualify ordered live FMR flux transport, restart, or Jarvis integration."
   ],
-  "claim_ceiling": "Local tested prototypes only. Mobile salt uses explicit upwind transport with committed-start donor concentration; water face flux reconstruction has manufactured and restricted single-solve Reference Richards closure tests including nonzero subsurface source and separately bound root sink. A separate live FMR A7/A8 O0/O2 transaction/restart suite accepts nonzero qrot and closes transactional water mass, but the reconstructed flux is not bound to live FMR because interval-aggregated boundary rates/accepted-substep traces are unavailable. Dispersion, transport substeps, boundary scheduling, drainage, salinity restart, and atomic accepted runtime transaction remain unimplemented. Maas-Hoffman is a pure unit-tested response and is not wired into Jarvis.",
+  "claim_ceiling": "Local tested prototypes and negative evidence only. No production salinity capability is admitted.",
   "environment_overrides": {
     "oxygen_preservation_runner": "FC executable wrapper at /tmp/gfortran-swap5-tolerant-warn prepended -Wno-error=compare-reals; the tracked runner uses -Werror, and this only makes the existing equality warning non-fatal without altering numerical tolerances.",
     "wrapper_sha256": "c65021b92959a4d908036e843753ac2bccbc258262d333da008396fdeffc42f5",
