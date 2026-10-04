@@ -97,6 +97,12 @@ if os.environ.get('A28_RETRY_CAUSE_DIAGNOSTICS')=='1':
         write(*,*) 'A28_RETRY_TOTAL_BALANCE_FAIL', 'sum=',sum1,'tol=',CritDevBalTot
 ''',1)
  retry_headcalc=out/'a28_retry_probe_headcalc.f90';retry_headcalc.write_text(headcalc_text)
+if os.environ.get('A28_TYPED_STABLE_STORAGE_INCREMENT')=='1':
+ headcalc_text=retry_headcalc.read_text() if retry_headcalc is not None else headcalc_path.read_text()
+ anchor='   if (provider_constitutive_active .and. matrix_area_scaling_active()) then'
+ assert headcalc_text.count(anchor)==1
+ headcalc_text=headcalc_text.replace(anchor,'   if (provider_constitutive_active) then',1)
+ retry_headcalc=out/'a28_stable_storage_headcalc.f90';retry_headcalc.write_text(headcalc_text)
 # Solver-only causal frontier: freeze RFM physical/accounting tolerance independently.
 separated_backend=None
 backend_path=root/'src/runtime/mod_fmr_serialized_reference_backend.f90'

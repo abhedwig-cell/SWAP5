@@ -47,5 +47,17 @@
   "existing_frontier_run_status": "FAIL_AT_1e8_HIGHER_LEVELS_SKIPPED",
   "result_record": "docs/audits/PPA_WU05A28_WORK_PRODUCTION_RESULT.md",
   "preregistration": "docs/audits/PPA_WU05A28_WORK_PRODUCTION_PREREGISTRATION.md",
-  "evidence_manifest": "docs/audits/evidence/PPA_WU05A28_LIVE_POLICY_MANIFEST.json"
+  "evidence_manifest": "docs/audits/evidence/PPA_WU05A28_LIVE_POLICY_MANIFEST.json",
+  "stable_storage_increment_probe": {
+    "hypothesis": "typed theta subtraction cancellation causes temporal failure",
+    "result": "NOT_SUPPORTED_FAILS_IDENTICAL_CHECKPOINT",
+    "completed_windows": 14,
+    "failed_window": 15,
+    "comparison": {
+      "max_head_difference_m": 3.1086244689504383e-15,
+      "max_weighted_flux_difference_m_s": 3.293506971754145e-19,
+      "max_matrix_difference_cm": 1.2079226507921703e-13
+    },
+    "evidence": "docs/audits/evidence/PPA_WU05A28_STABLE_INCREMENT_PROBE.json.gz"
+  }
 }
