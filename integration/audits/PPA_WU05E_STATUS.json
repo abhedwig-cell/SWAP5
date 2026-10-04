@@ -7,13 +7,17 @@
   "checkpoint_commit": "4b08da25839e822b95f60148421c275121635019",
   "last_reconciled_head": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "last_reconciled_upstream": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
-  "status": "E1_RESTRICTED_ENVELOPE_DEFINED_AWAITING_IMPLEMENTATION",
-  "implemented": false,
+  "status": "E1_E2_LOCAL_PROTOTYPE_IMPLEMENTED_AND_TESTED_NOT_QUALIFIED",
+  "result_classification": "UNDERLYING_SALINITY_PHYSICS_REQUIRES_SEPARATE_MIGRATION",
+  "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "production_admitted": false,
-  "production_delta": [],
+  "production_delta": [
+    "src/process/mod_solute_mobile_salt_state.f90",
+    "src/process/mod_root_salinity_response.f90"
+  ],
   "reference_delta": [],
   "source_authority": {
     "b111_snapshot": "B1.11",
@@ -23,7 +27,7 @@
     "exact_member_text": "NOT_MATERIALIZED_IN_CURRENT_EXECUTION_SURFACE",
     "public_source_family": "SWAP-model/SWAP@c22bd832ddf3e53e330a552f5e31e74f183362d1 (corroboration only)"
   },
-  "current_finding": "Canonical SWAP5 has no solute state/transport owner or salinity response. Admitted D2 Jarvis supports drought and oxygen and fails closed for salinity; D3 Walsum is admitted.",
+  "current_finding": "Canonical SWAP5 remains without an admitted solute owner or salinity response. This work branch adds independently testable local prototypes for conservative mobile salt mass with explicit upwind advection and the Maas-Hoffman response. The salt prototype does not yet bind to the accepted runtime/restart path and omits dispersion/substeps; Jarvis remains fail-closed for salinity.",
   "historical_reconstruction": "Source-family evidence distinguishes Maas-Hoffman switch 1 as a nodewise alpha(CML) from osmotic-head switch 2, which modifies matric-flux potential and requires Jong-van-Lier drought; switch 2 is not a separate multiplicative alpha_sol. Source-family census additionally establishes SWINCO-dependent initial versus warm-restart concentration profiles, CMSY inventory derived from water content/CML and optional Freundlich sorption, explicit boundary and drainage fluxes, internal solute substeps, and root salt uptake TSCF*qrot*CML. Exact B1.11 solute-member and restart details remain unverified in this execution.",
   "relevant_paths": [
     "integration/audits/PPA_WU05D_STATUS.json",
@@ -32,7 +36,9 @@
     "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md",
     "src/process/mod_root_uptake_compensation.f90",
     "src/process/mod_root_water_uptake_process.f90",
-    "integration/audits/production_physics_application_envelope_gap_register.json"
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "src/process/mod_solute_mobile_salt_state.f90",
+    "src/process/mod_root_salinity_response.f90"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -42,9 +48,17 @@
     "docs/development/workstream-execution-protocol.md",
     "docs/audits/PPA_WU05D_D1_RECONSTRUCTION_RESULT.md"
   ],
-  "test_paths": [],
+  "test_paths": [
+    "tests/physics/run_ppa_wu05e_mobile_salt.sh",
+    "tests/physics/test_mobile_salt_state.f90",
+    "tests/physics/test_root_salinity_response.f90",
+    "tests/physics/run_ppa_wu05d2_jarvis.sh",
+    "tests/physics/run_ppa_wu05d3_walsum.py",
+    "tests/physics/run_root_uptake_oxygen_composition.sh"
+  ],
   "evidence_paths": [
-    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md"
+    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
+    "integration/audits/PPA_WU05E_LOCAL_PREQUALIFICATION.json"
   ],
   "dependency_surface": [
     "B1.11 solute transport/state source and restart lifecycle",
@@ -71,13 +85,13 @@
     "independent salt-mass owner",
     "water and solute conservation"
   ],
-  "next_action": "Implement the bounded mobile dissolved-salt state/transport owner and its separate mass ledger in the local SWAP5 checkout, then run focused O0/O2 tests. Current Work environment has no checkout; do not add uncompiled production code remotely.",
+  "next_action": "Bind the salt mass candidate to the actual accepted water transaction and committed restart owner, with independent accepted/discard/retry/fresh-process/restart tests and water/salt receipts. Then qualify transport timestep and missing dispersion semantics, expose committed/trial concentration views to crop stress, and integrate Maas-Hoffman into D2 only after these gates pass.",
   "blockers": [
-    "No local SWAP5 checkout is mounted, so the production implementation cannot be compiled or tested in this execution environment; network clone is unavailable.",
     "Exact B1.11 solute-state/restart text is not materialized. D1 records provenance search exhausted; no further search is warranted without a new authorized raw-byte route.",
-    "Canonical SWAP5 has no existing solute-state owner, so salinity integration cannot be safely implemented as a Jarvis-only change."
+    "Canonical runtime/restart has no salt-state owner; the current module is a pure trial transformation and is not an accepted production transaction.",
+    "Prototype is explicit advective upwind only, with no dispersive flux, internal timestep substeps, drainage, boundary schedule, or restart serialization. These remain separate physical/numerical acceptance gates."
   ],
-  "recovery_point": "PPA-WU05-E has a persisted source-family census and a defined restricted E1 mobile dissolved-salt envelope. No production/reference source changed. Implementation and local gates remain open.",
+  "recovery_point": "PPA-WU05-E has restricted E1 and E2 local prototypes on the work branch. Focused O0/O2 salinity tests, D2 Jarvis, D3 Walsum application/restart, and oxygen composition tests passed. No Jarvis interface was changed and no salinity capability is qualified/admitted. Exact B1.11 solute-member bytes and runtime transaction/restart binding remain open.",
   "source_family_census": {
     "initialization": "SWINCO != 3 interpolates ZC/CML input to nodes; SWINCO = 3 consumes a warm-start concentration profile and does not reapply the initial table (source-family only).",
     "state": "CML is mobile-water concentration; CMSY is dissolved plus adsorbed mass per bulk soil volume; column inventory integrates CMSY over node thickness.",

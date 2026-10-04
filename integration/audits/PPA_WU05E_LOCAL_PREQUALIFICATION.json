@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.ppa_wu05e.local-prequalification.v1",
+  "work_unit": "PPA-WU05-E",
+  "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+  "target_state": "PPA-WU05-E work-branch postimage bound by source hashes; local prequalification only, not formal qualification",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "source_sha256": {
+    "src/process/mod_solute_mobile_salt_state.f90": "45ce80ae6d324fd6fcb2b9f102e05000fe85a89ad857e6bfb7aaf449209b1e2e",
+    "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
+    "tests/physics/test_mobile_salt_state.f90": "318dded400628b3f5aa60207389e42af3ebec3dcc37ea632cd9bd1194dcb20ca",
+    "tests/physics/test_root_salinity_response.f90": "edfe7eb94d64b5db1b81a923c11d7cc490c453ff33ea3b03a1a6215b01641894",
+    "tests/physics/run_ppa_wu05e_mobile_salt.sh": "fd577939897c62230b43974009d03a73702360b6d3a04259898a7efac0d094b1",
+    "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
+    "tests/physics/run_ppa_wu05d3_walsum.py": "4a2e3d66854422cc0d51c02ce47a373182c1f6dc6079531075428fd632270daf",
+    "tests/physics/run_root_uptake_oxygen_composition.sh": "74c44088ab155bb7ff42b82b73d1e0681a627f9869050a3faf144d2fbc32467d",
+    "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md": "f938f599c4516e0aeadca9b9d898a4798d742ee894f7079d220a8bafe0d47d2c",
+    "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576"
+  },
+  "results": [
+    {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
+      "result": "PASS",
+      "scope": "salt state/explicit upwind ledger and Maas-Hoffman pure response, both O0/O2 with bounds checks and deterministic output comparison"
+    },
+    {
+      "command": "bash tests/physics/run_ppa_wu05d2_jarvis.sh",
+      "result": "PASS",
+      "scope": "existing D2 Jarvis preservation and runtime-order checks O0/O2"
+    },
+    {
+      "command": "python3 tests/physics/run_ppa_wu05d3_walsum.py",
+      "result": "PASS",
+      "scope": "existing D3 Walsum geometry, runtime application, rollback/replay/restart O0/O2"
+    },
+    {
+      "command": "FC=/tmp/gfortran-swap5-tolerant-warn bash tests/physics/run_root_uptake_oxygen_composition.sh",
+      "result": "PASS",
+      "scope": "existing oxygen composition only; wrapper downgrades existing compare-reals warning severity and changes no numeric tolerance"
+    },
+    {
+      "command": "python3 tools/docs/check_docs.py",
+      "result": "PASS",
+      "scope": "repository documentation source checks"
+    },
+    {
+      "command": "python3 -m mkdocs build --strict",
+      "result": "PASS",
+      "scope": "strict documentation build; emits pre-existing nav/anchor informational output"
+    },
+    {
+      "command": "python3 -m json.tool integration/audits/PPA_WU05E_STATUS.json >/dev/null && git diff --check",
+      "result": "PASS",
+      "scope": "status JSON parse and whitespace check"
+    }
+  ],
+  "not_run_or_not_claimed": [
+    "No production runtime integration, full application compile, restart serialization, or end-to-end water/solute coupled transaction qualification.",
+    "No exact-byte B1.11 solute/restart reconstruction in this execution surface.",
+    "No Jarvis salinity integration or stress-combination claim.",
+    "No GitHub Actions run; local evidence is preliminary and does not admit a capability."
+  ],
+  "claim_ceiling": "Local tested prototypes only. Solute owner is explicit advective upwind with committed-start donor concentration; dispersion, substeps, boundary scheduling, drainage, restart, and accepted runtime transaction are not implemented. Maas-Hoffman is a pure unit-tested response and is not wired into Jarvis.",
+  "environment_overrides": {
+    "oxygen_preservation_runner": "FC executable wrapper at /tmp/gfortran-swap5-tolerant-warn prepended -Wno-error=compare-reals; the tracked runner uses -Werror, and this only makes the existing equality warning non-fatal without altering numerical tolerances.",
+    "wrapper_sha256": "c65021b92959a4d908036e843753ac2bccbc258262d333da008396fdeffc42f5",
+    "wrapper_body": "#!/usr/bin/env bash\nexec gfortran -Wno-error=compare-reals \"$@\"\n"
+  },
+  "result_classification": "UNDERLYING_SALINITY_PHYSICS_REQUIRES_SEPARATE_MIGRATION"
+}
