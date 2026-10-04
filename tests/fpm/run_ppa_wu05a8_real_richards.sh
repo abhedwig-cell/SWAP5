@@ -112,6 +112,7 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" | tee "$OUT/out.txt"
   grep -Fq 'PPA_WU05A7_REAL_RICHARDS_RUNTIME=PASS' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_CANDIDATE=FAIL_CLOSED_UNOWNED_MATRIX_EXCHANGE' "$OUT/out.txt"
 
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90 -o "$OUT/test_fmr_macro.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr_macro.o" -o "$OUT/test_fmr_macro"
