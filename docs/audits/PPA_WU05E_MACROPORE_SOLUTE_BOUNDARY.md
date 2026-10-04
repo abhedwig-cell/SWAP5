@@ -25,8 +25,14 @@ summed water exchange by the matrix concentration would therefore invent a
 solute transfer for macropore outflow and fail to remove the correct donor
 mass for macropore inflow.
 
-This is an ownership/interface gap, not a salinity-response defect. The
-fail-closed `SOLUTE_WATER_CLOSURE` outcome remains correct. Jarvis must remain a
+This is an ownership/interface gap, not a salinity-response defect. A test-only
+transfer oracle now exists in `tests/physics/ppa_wu05e_mobile_macropore_exchange_oracle.f90`,
+with O0/O2 checks for both signs, unequal domain concentrations, zero flow,
+within-sequence reversal, salt closure, dry donors, and water overdraw. It uses
+start-of-substep donor concentration and returns no candidate when the donor is
+unavailable. This tests the exchange arithmetic only; it does not supply the
+missing production state or trace. The fail-closed `SOLUTE_WATER_CLOSURE`
+outcome remains correct. Jarvis must remain a
 read-only consumer of the concentration derived from the accepted/trial salt
 state.
 
@@ -66,13 +72,15 @@ following before binding a salt consumer to this route:
    physical candidate atomically. Clone, restart-layout identity, restore,
    retry and fresh-process replay must preserve both mass owners.
 
-The minimum transfer oracle is a closed two-domain exchange: positive and
+The implemented test-only oracle verifies a closed matrix-plus-multiple-domain exchange: positive and
 negative water exchange, unequal donor concentrations, zero exchange, reversal
 within ordered accepted substeps, and invalid/dry/insufficient donor cases.
 Each case must prove equal-and-opposite internal salt transfer and unchanged
 column salt inventory absent external salt flux. A live FMR case must then
 prove independent water and salt closure under commit, discard, retry and
 restart before any Jarvis integration is attempted.
+
+The standalone O0/O2 runner is `tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh`. Passing this oracle does not change the active-route rejection or establish accepted-substep macro salt transport.
 
 ## Scope and evidence limits
 
