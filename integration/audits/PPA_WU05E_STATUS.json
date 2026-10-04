@@ -58,6 +58,7 @@
   ],
   "evidence_paths": [
     "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md",
     "integration/audits/PPA_WU05E_LOCAL_PREQUALIFICATION.json"
   ],
   "dependency_surface": [
@@ -85,13 +86,14 @@
     "independent salt-mass owner",
     "water and solute conservation"
   ],
-  "next_action": "Bind the salt mass candidate to the actual accepted water transaction and committed restart owner, with independent accepted/discard/retry/fresh-process/restart tests and water/salt receipts. Then qualify transport timestep and missing dispersion semantics, expose committed/trial concentration views to crop stress, and integrate Maas-Hoffman into D2 only after these gates pass.",
+  "next_action": "Decide and record a compositional physical-state/restart layout that coexists with the admitted optional continuation families; implement it so water and salt share one committed candidate and revision. Then bind transport to accepted water substeps, qualify missing dispersion/timestep semantics, expose matching committed/trial concentration views, and integrate Maas-Hoffman into D2 only after these gates pass.",
   "blockers": [
     "Exact B1.11 solute-state/restart text is not materialized. D1 records provenance search exhausted; no further search is warranted without a new authorized raw-byte route.",
     "Canonical runtime/restart has no salt-state owner; the current module is a pure trial transformation and is not an accepted production transaction.",
+    "FMR represents optional physical continuations through explicit clone families and template-layout cases. A salinity state must define coexistence with these families and preserve salinity-disabled layouts before changing production state interfaces.",
     "Prototype is explicit advective upwind only, with no dispersive flux, internal timestep substeps, drainage, boundary schedule, or restart serialization. These remain separate physical/numerical acceptance gates."
   ],
-  "recovery_point": "PPA-WU05-E has restricted E1 and E2 local prototypes on the work branch. Focused O0/O2 salinity tests, D2 Jarvis, D3 Walsum application/restart, and oxygen composition tests passed. No Jarvis interface was changed and no salinity capability is qualified/admitted. Exact B1.11 solute-member bytes and runtime transaction/restart binding remain open.",
+  "recovery_point": "PPA-WU05-E has restricted E1 and E2 local prototypes on the work branch. Focused O0/O2 salinity tests, D2 Jarvis, D3 Walsum application/restart, and oxygen composition tests passed. A source-backed runtime transaction/restart audit now establishes that kernel commit and Restart v2 each own one physical state object and that FMR restart layout is explicitly discriminated. No Jarvis interface was changed and no salinity capability is qualified/admitted. Exact B1.11 solute-member bytes, compositional state-layout decision, and runtime transaction/restart binding remain open.",
   "source_family_census": {
     "initialization": "SWINCO != 3 interpolates ZC/CML input to nodes; SWINCO = 3 consumes a warm-start concentration profile and does not reapply the initial table (source-family only).",
     "state": "CML is mobile-water concentration; CMSY is dissolved plus adsorbed mass per bulk soil volume; column inventory integrates CMSY over node thickness.",

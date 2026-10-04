@@ -132,4 +132,10 @@ With salinity disabled, preserve the admitted Feddes, Bartholomeus, D2 Jarvis, D
 - Persisted: reconstruction, restricted E1 contract, implementation, tests, and local prequalification manifest
 - Tested: focused O0/O2 local gates pass; this is not qualification
 - Qualified/admitted: no; canonical PR base still has no salinity implementation
-- Next action: review explicit upwind timestep/dispersion semantics against source-bound B1.11 evidence, then add a runtime-owned committed/candidate state and restart binding with separate salt ledger before connecting the salinity response to Jarvis.
+- Next action: decide the compositional physical-state/restart layout that can coexist with existing optional continuation families; then implement that state and bind salt mass to the actual accepted water transaction. Keep transport qualification and Jarvis integration behind that owner boundary.
+
+### Runtime transaction/restart audit (2026-10-04)
+
+`docs/audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md` records a source-backed audit of the kernel commit, FMR physical-state cloning, Restart v2 payload and layout validation, and the committed crop root-uptake adapter. It finds that the current salt candidate has no kernel provenance or restart owner, and that a separate salt commit would not be atomic with the water state. It also records the state-layout coexistence issue: a salinity-only physical subtype is insufficient unless clone, layout validation, and restart cover combinations with existing optional physical continuations.
+
+The audit does not qualify E1 transport or alter the D2 compositor. The safe next work is a registered, compositional physical-state/layout contract and implementation checkpoint. Qualification must show synchronized water/salt revision and restart behaviour before any crop salinity view or Jarvis integration is added.
