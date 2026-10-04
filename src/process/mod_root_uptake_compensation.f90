@@ -45,7 +45,8 @@ contains
     if(.not.all(ieee_is_finite([rd,rdm,dcrit]))) return
     if(rdm<=0.0_real64.or.dcrit<0.0_real64.or.rd<0.0_real64.or.rd>rdm) return
     if(size(node_thickness_cm)==0) return
-    if(any(.not.ieee_is_finite(node_thickness_cm)).or.any(node_thickness_cm<=0.0_real64)) return
+    if(any(.not.ieee_is_finite(node_thickness_cm))) return
+    if(any(node_thickness_cm<=0.0_real64)) return
     if(rd==0.0_real64) then
       alpha=1.0_real64;status=ROOT_COMP_OK;return
     end if

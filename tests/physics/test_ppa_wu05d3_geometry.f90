@@ -45,6 +45,16 @@ program test_ppa_wu05d3_geometry
     call evaluate_walsum_geometry(g,thickness,alpha,node,status)
     call require(status/=0,'invalid geometry fail closed')
   end do
+  g=root_walsum_geometry_t(10._real64,200._real64,150._real64)
+  call evaluate_walsum_geometry(g,thickness,alpha,node,status)
+  call require(status/=0,'root depth outside column')
+  g%current_root_depth_cm=20
+  call evaluate_walsum_geometry(g,[real(real64)::],alpha,node,status)
+  call require(status/=0,'empty column')
+  call evaluate_walsum_geometry(g,[10._real64,nan],alpha,node,status)
+  call require(status/=0,'NaN thickness with floating point traps')
+  call evaluate_walsum_geometry(g,[10._real64,0._real64],alpha,node,status)
+  call require(status/=0,'zero thickness')
   cfg%method=ROOT_COMP_WALSUM;cfg%alpha_critical=nan
   j%method=ROOT_COMP_JARVIS
   base%root_extraction_sink=[.1_real64,.05_real64,.02_real64,0._real64]
