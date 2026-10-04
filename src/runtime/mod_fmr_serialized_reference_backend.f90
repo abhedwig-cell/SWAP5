@@ -331,7 +331,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
     real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
-         macropore_water_start(:,:), macropore_water_end(:,:), net_node_source(:)
+         macropore_water_start(:,:), macropore_water_end(:,:), macropore_vertical_face_rate(:,:), net_node_source(:)
   end type fmr_water_flux_substep_trace_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -3376,11 +3376,15 @@ contains
       if (self%macropore_active) then
         if (.not. allocated(macropore_result%exchange_rate_node) .or. &
             .not. allocated(macropore_result%exchange_rate_domain_cp) .or. &
-            macropore_accepted_top_cm /= 0.0_real64 .or. macropore_rapid_outflow_cm /= 0.0_real64) then
+            .not. allocated(macropore_result%vertical_flux%vertical_face_rate) .or. &
+            macropore_result%requested_top_input_cm /= 0.0_real64 .or. &
+            macropore_accepted_top_cm /= 0.0_real64 .or. macropore_result%returned_surface_cm /= 0.0_real64 .or. &
+            macropore_result%covered_internal_transfer_cm /= 0.0_real64 .or. macropore_rapid_outflow_cm /= 0.0_real64) then
           self%accepted_water_flux_trace_failed = .true.
         else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1, &
              macropore_result%exchange_rate_node,macropore_result%exchange_rate_domain_cp,trace_macro_water_start, &
-             macropore_result%macropore_candidate%water_domain_cp)) then
+             macropore_result%macropore_candidate%water_domain_cp, &
+             macropore_result%vertical_flux%vertical_face_rate)) then
           self%accepted_water_flux_trace_failed = .true.
         end if
       else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1)) then
@@ -3391,7 +3395,7 @@ contains
   end subroutine fmr_serialized_advance
 
   logical function append_accepted_water_flux_substep(self,request,solve_result,t0,t1,macropore_exchange, &
-       macropore_exchange_domain,macropore_water_start,macropore_water_end) result(ok)
+       macropore_exchange_domain,macropore_water_start,macropore_water_end,macropore_vertical_face_rate) result(ok)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: solve_result
@@ -3399,6 +3403,7 @@ contains
     real(real64), intent(in), optional :: macropore_exchange(:)
     real(real64), intent(in), optional :: macropore_exchange_domain(:,:)
     real(real64), intent(in), optional :: macropore_water_start(:,:),macropore_water_end(:,:)
+    real(real64), intent(in), optional :: macropore_vertical_face_rate(:,:)
     type(fmr_water_flux_substep_trace_t), allocatable :: grown(:)
     type(fmr_water_flux_substep_trace_t) :: step
     integer :: n, prior
@@ -3428,21 +3433,27 @@ contains
     allocate(step%macropore_matrix_exchange(n))
     allocate(step%macropore_matrix_exchange_domain(0,n))
     allocate(step%macropore_water_start(0,n),step%macropore_water_end(0,n))
+    allocate(step%macropore_vertical_face_rate(0,n+1))
     step%macropore_matrix_exchange = 0.0_real64
     if(present(macropore_exchange_domain))then
       if(size(macropore_exchange_domain,2)/=n .or. size(macropore_exchange_domain,1)<=0 .or. &
          any(.not.ieee_is_finite(macropore_exchange_domain)))return
       if(.not.present(macropore_exchange))return
       if(.not.present(macropore_water_start).or..not.present(macropore_water_end))return
+      if(.not.present(macropore_vertical_face_rate))return
       if(any(shape(macropore_water_start)/=shape(macropore_exchange_domain)) .or. &
          any(shape(macropore_water_end)/=shape(macropore_exchange_domain)))return
+      if(any(shape(macropore_vertical_face_rate)/= &
+           [size(macropore_exchange_domain,1),size(macropore_exchange_domain,2)+1]))return
       if(any(.not.ieee_is_finite(macropore_water_start)).or.any(.not.ieee_is_finite(macropore_water_end)))return
+      if(any(.not.ieee_is_finite(macropore_vertical_face_rate)))return
       if(any(macropore_water_start<0.0_real64).or.any(macropore_water_end<0.0_real64))return
       if(maxval(abs(sum(macropore_exchange_domain,dim=1)-macropore_exchange))> &
          1.0e-12_real64*max(1.0_real64,maxval(abs(macropore_exchange))))return
       step%macropore_matrix_exchange_domain=macropore_exchange_domain
       step%macropore_water_start=macropore_water_start
       step%macropore_water_end=macropore_water_end
+      step%macropore_vertical_face_rate=macropore_vertical_face_rate
     end if
     if (present(macropore_exchange)) then
       if (size(macropore_exchange) /= n .or. any(.not. ieee_is_finite(macropore_exchange))) return
@@ -3480,6 +3491,7 @@ contains
           .not. allocated(steps(i)%root_sink) .or. .not. allocated(steps(i)%macropore_matrix_exchange) .or. &
           .not. allocated(steps(i)%macropore_matrix_exchange_domain) .or. &
           .not. allocated(steps(i)%macropore_water_start) .or. .not. allocated(steps(i)%macropore_water_end) .or. &
+          .not. allocated(steps(i)%macropore_vertical_face_rate) .or. &
           .not. allocated(steps(i)%net_node_source)) return
       if (size(steps(i)%water_end)/=n .or. size(steps(i)%subsurface_source)/=n .or. &
           size(steps(i)%drainage_sink)/=n .or. size(steps(i)%root_sink)/=n .or. &
@@ -3488,9 +3500,12 @@ contains
           size(steps(i)%net_node_source)/=n) return
       if(any(shape(steps(i)%macropore_water_start)/=shape(steps(i)%macropore_matrix_exchange_domain)) .or. &
          any(shape(steps(i)%macropore_water_end)/=shape(steps(i)%macropore_matrix_exchange_domain)))return
+      if(any(shape(steps(i)%macropore_vertical_face_rate)/= &
+           [size(steps(i)%macropore_matrix_exchange_domain,1),n+1]))return
       if(any(.not.ieee_is_finite(steps(i)%macropore_water_start)) .or. &
          any(.not.ieee_is_finite(steps(i)%macropore_water_end)) .or. &
          any(steps(i)%macropore_water_start<0.0_real64) .or. any(steps(i)%macropore_water_end<0.0_real64))return
+      if(any(.not.ieee_is_finite(steps(i)%macropore_vertical_face_rate)))return
       if(size(steps(i)%macropore_matrix_exchange_domain,1)>0)then
         if(any(.not.ieee_is_finite(steps(i)%macropore_matrix_exchange_domain)))return
         if(maxval(abs(sum(steps(i)%macropore_matrix_exchange_domain,dim=1)- &
