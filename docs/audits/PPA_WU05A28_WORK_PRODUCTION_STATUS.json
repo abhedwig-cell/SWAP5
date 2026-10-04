@@ -3,7 +3,7 @@
   "date": "2026-10-04",
   "decision": "COUPLED_RFM_BLOCKED",
   "canonical_admitted": false,
-  "production_sources_changed": false,
+  "production_sources_changed": true,
   "component_disposition": "A28_RETAIN_COMPONENT_ONLY",
   "source_baseline": "a96886f6a38a1805056fabe9d61bc59a725f83f4",
   "canonical_observed": "fae6d8d3d1687bfb220851f43603ab63d4989a29",
@@ -95,5 +95,25 @@
     "max_inventory_difference_cm": 5.204170427930421e-16,
     "max_local_mass_residual_cm": 2.498001805406602e-16,
     "evidence": "docs/audits/evidence/PPA_WU05A28_EVENT_BASEPOINT_CONTINUATION.json.gz"
+  },
+  "existing_production_execution_changed": false,
+  "new_unadmitted_component": "mod_rfm_matrix_only_surface_composition",
+  "matrix_only_surface_continuation": {
+    "canonical_observed": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+    "component_tests": "PASS_O0_O2",
+    "a15_preservation": "PASS_O0_O2",
+    "fresh_build": "PASS",
+    "initial_fd": "PASS",
+    "completed_windows": 16,
+    "failed_window": 17,
+    "prefix_bitwise": true,
+    "failed_transaction_nonlinear_iterations": 18,
+    "failed_transaction_accepted_substeps": 0,
+    "failed_transaction_mass_rejections": 0,
+    "cause": "SECOND_HALF_HAS_POSITIVE_PONDING_A11_ACTIVATION_SURFACE_BOUNDARY_REQUIRED",
+    "default_zero_fields_are_receipt": false,
+    "surface_receipt_oracle_max_residual_cm": 3.686287386450715e-18,
+    "decision": "MATRIX_ONLY_COMPONENT_TESTED_LIVE_REPAIR_NOT_SUFFICIENT",
+    "evidence": "docs/audits/evidence/PPA_WU05A28_MATRIX_ONLY_SURFACE_EVIDENCE.json.gz"
   }
 }

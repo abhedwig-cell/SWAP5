@@ -231,11 +231,27 @@ if os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1':
                ' regime=',rfm_preflight%regime,' pond=',rfm_preflight%candidate_ponding_depth,' fixed_K=',fixed_top_conductivity''',1)
   backend_text=backend_text.replace(before,repair+before,1)
  separated_backend=out/'a28_separated_backend.f90';separated_backend.write_text(backend_text)
+# Optional exact-zero degeneration; general ponded preferential supply still fails closed.
+matrix_only_preparer=None
+if os.environ.get('A28_MATRIX_ONLY_SURFACE')=='1':
+ assert os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1'
+ srcname='src/runtime/mod_rfm_matrix_only_surface_composition.f90'
+ sources.insert(sources.index('src/runtime/mod_rfm_live_trial_preparer.f90'),srcname)
+ text=(root/'src/runtime/mod_rfm_live_trial_preparer.f90').read_text()
+ text=text.replace(' implicit none',' use mod_rfm_matrix_only_surface_composition,only:compose_rfm_matrix_only_surface_receipt\n implicit none',1)
+ anchor='  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)return'
+ assert text.count(anchor)==1
+ text=text.replace(anchor,"""  if(result%surface%status==2.and.forcing%potential_bare_soil_evaporation_cm_per_day==0.0_real64.and. &
+       forcing%potential_pond_evaporation_cm_per_day==0.0_real64)then
+   call compose_rfm_matrix_only_surface_receipt(preflight,result%activation%activation,tolerance,result%surface)
+  end if
+"""+anchor,1)
+ matrix_only_preparer=out/'a28_matrix_only_preparer.f90';matrix_only_preparer.write_text(text)
 # Observe pre-solver RFM failure without changing its acceptance rules.
 observed_preparer=None
 if os.environ.get('A28_RFM_PREPARER_DIAGNOSTICS')=='1':
  preparer_path=root/'src/runtime/mod_rfm_live_trial_preparer.f90'
- preparer_text=preparer_path.read_text().replace('contains\n',' integer,save::a28_surface_failure_count=0\ncontains\n',1)
+ preparer_text=(matrix_only_preparer or preparer_path).read_text().replace('contains\n',' integer,save::a28_surface_failure_count=0\ncontains\n',1)
  before='  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)return'
  assert preparer_text.count(before)==1
  preparer_text=preparer_text.replace(before,'''  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)then
@@ -247,6 +263,17 @@ if os.environ.get('A28_RFM_PREPARER_DIAGNOSTICS')=='1':
      ' age=',accepted%tau_surface_day,' preferential=',result%activation%activation%preferential_rate_cm_per_day
    return
   end if''',1)
+ if os.environ.get('A28_MATRIX_ONLY_STAGE_DIAGNOSTICS')=='1':
+  guard='preflight%net_potential_surface_flux>0.0_real64.and.view%pressure_head(1)>-20.0_real64.and.step_duration_day<1e-7_real64'
+  anchor='  call compose_rfm_unponded_surface_receipt(preflight,result%activation%activation,tolerance,result%surface)'
+  assert preparer_text.count(anchor)==1
+  preparer_text=preparer_text.replace(anchor,anchor+"\n  if("+guard+")write(*,*) 'A28_MATRIX_ONLY_START age=',accepted%tau_surface_day, &\n    ' dt=',step_duration_day,' preferential=',result%activation%activation%preferential_rate_cm_per_day, &\n    ' fraction=',result%activation%activation%preferential_fraction,' pond=',preflight%candidate_ponding_depth",1)
+  for anchor,tag in [('  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)then','SURFACE'),('  if(.not.result%wall%valid)return','WALL'),('  if(.not.result%candidate%valid)return','CANDIDATE')]:
+   assert preparer_text.count(anchor)==1
+   if tag=='SURFACE':details="result%surface%status"
+   elif tag=='WALL':details="result%wall%valid"
+   else:details="result%candidate%valid"
+   preparer_text=preparer_text.replace(anchor,"  if("+guard+")write(*,*) 'A28_MATRIX_ONLY_"+tag+" value=',"+details+"\n"+anchor,1)
  observed_preparer=out/'a28_observed_preparer.f90';observed_preparer.write_text(preparer_text)
 observed_participant=None
 bounded_interval=None
@@ -317,6 +344,7 @@ for name in sources:
  if field_grid is not None and name==base[0]:src=field_grid
  elif separated_backend is not None and name==str(backend_path.relative_to(root)):src=separated_backend
  elif observed_preparer is not None and name=='src/runtime/mod_rfm_live_trial_preparer.f90':src=observed_preparer
+ elif matrix_only_preparer is not None and name=='src/runtime/mod_rfm_live_trial_preparer.f90':src=matrix_only_preparer
  elif observed_participant is not None and name=='src/runtime/mod_fmr_groundwater_swap_participant.f90':src=observed_participant
  elif bounded_interval is not None and name=='src/runtime/mod_canonical_interval_runtime.f90':src=bounded_interval
  elif retry_headcalc is not None and name==str(headcalc_path.relative_to(root)):src=retry_headcalc
