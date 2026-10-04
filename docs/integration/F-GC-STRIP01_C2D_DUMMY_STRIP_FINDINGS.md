@@ -73,3 +73,11 @@ The dummy response and ownership decisions draw on the existing DSW materials at
 - Per-window head, flux and mass records: the compressed JSON traces indexed in `summary.json`
 - Profile figure: `integration/f-gc/strip01/results/c2d-local/profiles.svg`
 - Rerun harness: `tests/fgc/strip01/run_dummy_strip_local.sh`
+
+## Closeout — bounded qualification
+
+**Closed decision:** `DUMMY_STRIP_QUALIFIED_COUPLING_INFRASTRUCTURE_SUPPORTED` for the analytic 50×1 service/MODFLOW research route described above. The zero control, uniform recharge/recession, finite-resistance response, strict-threshold sensitivity, complete-domain mass accounting and fresh-process replay are persisted and locally revalidated. No production or canonical files were changed.
+
+The evidence supports the conclusion that the tested C2B forcing blocker is on the real SWAP/Richards participant or transaction side: the same 50-cell groundwater application-service/MODFLOW path publishes the target forcing and produces a spatial mound, lateral flow and drain response with closed mass. The support is strong but bounded. The dummy is a Python research participant, while the native F-GC49D registry control exercised real-SWAP participants only under one hydrostatic zero-forcing window. Consequently this does not prove a dynamic dummy through the exact native participant registry or qualify every production MultiSWAP topology path.
+
+The native registry bridge probe and its zero-control results are documented in [`F-GC-STRIP01_C2D_NATIVE_REGISTRY_BRIDGE.md`](F-GC-STRIP01_C2D_NATIVE_REGISTRY_BRIDGE.md). A future same-registry A/B needs a reviewed, research-only backend/participant seam with explicit candidate state, origin/revision identity, rollback, publication and ledger ownership. That design is a follow-on; it does not reopen this bounded service/MODFLOW qualification. STRIP01's real-SWAP investigation remains active and production tolerances, transaction policy and canonical ownership remain unchanged.
