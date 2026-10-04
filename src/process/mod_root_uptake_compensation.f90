@@ -23,9 +23,34 @@ module mod_root_uptake_compensation
     real(real64) :: oxygen_reduction_total=0.0_real64
   end type
 
-  public :: compose_jarvis_root_uptake
+  public :: compose_jarvis_root_uptake, attribute_root_stress_losses
 
 contains
+  subroutine attribute_root_stress_losses(potential,drought_sink,oxygen_factor,drought_loss,oxygen_loss,status)
+    real(real64),intent(in)::potential(:),drought_sink(:),oxygen_factor(:)
+    real(real64),intent(out)::drought_loss,oxygen_loss
+    integer,intent(out)::status
+    integer::i
+    real(real64)::dry,wet,loss,weight
+    drought_loss=0.0_real64;oxygen_loss=0.0_real64;status=ROOT_COMP_INVALID
+    if(size(potential)/=size(drought_sink).or.size(potential)/=size(oxygen_factor)) return
+    if(any(.not.ieee_is_finite(potential)).or.any(.not.ieee_is_finite(drought_sink)).or. &
+       any(.not.ieee_is_finite(oxygen_factor))) return
+    if(any(potential<0.0_real64).or.any(drought_sink<0.0_real64).or.any(drought_sink>potential).or. &
+       any(oxygen_factor<0.0_real64).or.any(oxygen_factor>1.0_real64)) return
+    do i=1,size(potential)
+      if(potential(i)<=0.0_real64) cycle
+      dry=drought_sink(i)/potential(i);wet=oxygen_factor(i)
+      loss=potential(i)-drought_sink(i)*wet
+      if(loss<1.0e-14_real64) cycle
+      weight=(1.0_real64-dry)+(1.0_real64-wet)
+      if(weight<=0.0_real64) return
+      drought_loss=drought_loss+(1.0_real64-dry)/weight*loss
+      oxygen_loss=oxygen_loss+(1.0_real64-wet)/weight*loss
+    end do
+    status=ROOT_COMP_OK
+  end subroutine
+
   subroutine compose_jarvis_root_uptake(config,ptra,base_fluxes,drought_reduction,oxygen_reduction,final_fluxes,diag,status)
     type(root_compensation_config_t),intent(in)::config
     real(real64),intent(in)::ptra,drought_reduction,oxygen_reduction
@@ -34,6 +59,7 @@ contains
     type(root_compensation_diagnostics_t),intent(out)::diag
     integer,intent(out)::status
     real(real64),parameter::vsmall=1.0e-14_real64
+    integer::largest
     real(real64)::alptot,qred,alpdry,alpwet,alpdrycom,alpwetcom,alptotcom,redtot,reduction_tolerance
 
     final_fluxes=root_water_uptake_flux_result_t()
@@ -107,6 +133,12 @@ contains
     end select
 
     final_fluxes%root_extraction_sink=base_fluxes%root_extraction_sink*(alptotcom/alptot)
+    ! Uniform floating-point scaling can overshoot PTRA by one ulp.
+    ! Correct the largest sink downward rather than weakening the mass bound.
+    do while(sum(final_fluxes%root_extraction_sink)>ptra)
+      largest=maxloc(final_fluxes%root_extraction_sink,dim=1)
+      final_fluxes%root_extraction_sink(largest)=nearest(final_fluxes%root_extraction_sink(largest),-1.0_real64)
+    end do
     final_fluxes%actual_uptake_total=sum(final_fluxes%root_extraction_sink)
     diag%compensated_uptake=final_fluxes%actual_uptake_total
     diag%applied=.true.

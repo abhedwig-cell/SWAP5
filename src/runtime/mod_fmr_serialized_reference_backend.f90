@@ -78,7 +78,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
-       ROOT_COMP_OFF, ROOT_COMP_JARVIS
+       ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_OK, attribute_root_stress_losses
   use mod_root_uptake_compensation_execution, only: apply_root_uptake_compensation, ROOT_COMP_EXEC_OK
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
@@ -305,6 +305,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: root_extraction_sink(:)
     real(real64) :: root_potential_transpiration = 0.0_real64
     real(real64) :: root_drought_reduction_total = 0.0_real64
+    real(real64), allocatable :: root_potential_sink(:)
     type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     type(snow_forcing_t), allocatable :: snow
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
@@ -324,6 +325,8 @@ module mod_fmr_serialized_reference_backend
     integer :: root_compensation_status = 0
     real(real64) :: root_compensation_base_uptake = 0.0_real64
     real(real64) :: root_compensation_final_uptake = 0.0_real64
+    real(real64) :: root_compensation_drought_loss = 0.0_real64
+    real(real64) :: root_compensation_oxygen_loss = 0.0_real64
     real(real64), allocatable :: root_compensation_final_sink(:)
     logical :: solver_executed = .false.
     logical :: hbot5_proposal_available = .false.
@@ -471,6 +474,7 @@ module mod_fmr_serialized_reference_backend
     type(root_compensation_config_t) :: root_compensation
     real(real64) :: root_potential_transpiration = 0.0_real64
     real(real64) :: root_drought_reduction_total = 0.0_real64
+    real(real64), allocatable :: root_potential_sink(:)
     type(fmr_bartholomeus_parameters_t), allocatable :: bartholomeus
     type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     real(real64), allocatable :: projection_zero_direction(:)
@@ -2284,6 +2288,8 @@ contains
       self%qrot = forcing%root_extraction_sink
       self%root_potential_transpiration = forcing%root_potential_transpiration
       self%root_drought_reduction_total = forcing%root_drought_reduction_total
+      if(allocated(self%root_potential_sink)) deallocate(self%root_potential_sink)
+      if(allocated(forcing%root_potential_sink)) self%root_potential_sink=forcing%root_potential_sink
       if(allocated(self%crop_oxygen) .or. self%root_compensation%method /= ROOT_COMP_OFF) then
         self%qrot_unmodified=forcing%root_extraction_sink
       else
@@ -2500,7 +2506,7 @@ contains
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
     type(soil_temperature_field_view_t) :: oxygen_thermal
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
-    real(real64),allocatable :: oxygen_w_root(:)
+    real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:)
     real(real64) :: atmospheric_ctop
     integer :: oxygen_route,waterfilm_mode,oxygen_status,oxygen_nodes
     type(black_evaporation_forcing_t) :: black_process_forcing
@@ -2828,7 +2834,7 @@ contains
           oxygen_base%actual_uptake_total=sum(self%qrot_unmodified)
           call fmr_apply_bartholomeus_to_root_sink(self%bartholomeus%selection,hydraulic_start,oxygen_thermal, &
                self%bartholomeus%soil,self%bartholomeus%crop,oxygen_w_root, &
-               self%crop_oxygen%root_density_kg_m3,atmospheric_ctop,oxygen_base,oxygen_final,oxygen_status)
+               self%crop_oxygen%root_density_kg_m3,atmospheric_ctop,oxygen_base,oxygen_final,oxygen_status,oxygen_factors)
           self%last_observation%bartholomeus_executed=.true.
           self%last_observation%bartholomeus_status=oxygen_status
           self%last_observation%root_oxygen_base_uptake=oxygen_base%actual_uptake_total
@@ -2846,11 +2852,21 @@ contains
           type(root_water_uptake_diagnostics_t) :: compensation_base_diagnostics
           type(root_compensation_diagnostics_t) :: compensation_diagnostics
           real(real64) :: oxygen_reduction_total
-          integer :: compensation_status
+          integer :: compensation_status,attribution_status
           compensation_base%root_extraction_sink = self%qrot
           compensation_base%actual_uptake_total = sum(self%qrot)
           compensation_base_diagnostics%drought_reduction_total = self%root_drought_reduction_total
           oxygen_reduction_total = sum(self%qrot_unmodified)-compensation_base%actual_uptake_total
+          if(allocated(oxygen_factors).and.self%root_drought_reduction_total>0.0_real64) then
+            ! Mixed stress requires the existing drought owner's potential nodes.
+            ! Scalar sequential losses do not reproduce B1.11 apportionment.
+            if(.not.allocated(self%root_potential_sink)) return
+            if(abs(sum(self%root_potential_sink)-self%root_potential_transpiration)> &
+                 256.0_real64*epsilon(1.0_real64)*max(1.0_real64,self%root_potential_transpiration)) return
+            call attribute_root_stress_losses(self%root_potential_sink,self%qrot_unmodified,oxygen_factors, &
+                 compensation_base_diagnostics%drought_reduction_total,oxygen_reduction_total,attribution_status)
+            if(attribution_status/=ROOT_COMP_OK) return
+          end if
           call apply_root_uptake_compensation(self%root_compensation,self%root_potential_transpiration, &
                compensation_base,compensation_base_diagnostics,oxygen_reduction_total,compensation_final, &
                compensation_diagnostics,compensation_status)
@@ -2858,6 +2874,8 @@ contains
           self%last_observation%root_compensation_status=compensation_status
           self%last_observation%root_compensation_base_uptake=compensation_base%actual_uptake_total
           if(compensation_status/=ROOT_COMP_EXEC_OK) return
+          self%last_observation%root_compensation_drought_loss=compensation_diagnostics%drought_reduction_total
+          self%last_observation%root_compensation_oxygen_loss=compensation_diagnostics%oxygen_reduction_total
           self%qrot=compensation_final%root_extraction_sink
           self%last_observation%root_compensation_final_uptake=compensation_final%actual_uptake_total
           self%last_observation%root_compensation_final_sink=compensation_final%root_extraction_sink
