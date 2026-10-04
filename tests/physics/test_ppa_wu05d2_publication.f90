@@ -1,4 +1,4 @@
-program test_ppa_wu05d2_mixed_application
+program test_ppa_wu05d2_publication
   use iso_fortran_env, only: int64,real64
   use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
   use MOD_grid, only: numnod,z,dz,disnod
@@ -88,6 +88,11 @@ program test_ppa_wu05d2_mixed_application
   print *, 'D2_OXYGEN ',obs%root_oxygen_base_uptake,obs%root_oxygen_final_uptake
   call require(obs%root_oxygen_final_uptake<obs%root_oxygen_base_uptake,'active physics reduces root sink')
   call require(cfg%tiles(1)%base_forcing%root_drought_reduction_total>0._real64,'actual drought stress')
+  print *, 'D2_PUBLICATION ',a(1)%actual_transpiration_available,a(1)%actual_transpiration_amount, &
+       obs%root_compensation_final_uptake*(T1-T0)
+  call require(a(1)%actual_transpiration_available,'accepted actual transpiration is available')
+  call require(a(1)%actual_transpiration_amount>sum(cfg%tiles(1)%base_forcing%root_extraction_sink)*(T1-T0), &
+       'accepted transpiration reflects increased final sink')
   call require(obs%root_compensation_executed .and. obs%root_compensation_status==0,'actual compensation caller')
   print *, 'D2_UPTAKE ',obs%root_compensation_base_uptake,obs%root_compensation_final_uptake
   call require(obs%root_compensation_final_uptake>obs%root_compensation_base_uptake,'compensation restores uptake')
