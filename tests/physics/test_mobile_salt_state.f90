@@ -1,5 +1,5 @@
 program test_mobile_salt_state
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64,real64
   use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
   use mod_solute_mobile_salt_state
   implicit none
@@ -102,13 +102,15 @@ program test_mobile_salt_state
     call advance_mobile_salt_trace(reversal_start,[10.0_real64,10.0_real64],trace,0.0_real64, &
          trace_replay,trace_fluxes,status)
     call req(status==SOLUTE_OK,'trace retry from committed')
-    call req(maxval(abs(trace_replay%mass_mg_cm2-reversal_result%mass_mg_cm2))==0.0_real64, &
+    call req(all(transfer(trace_replay%mass_mg_cm2,[0_int64],size(trace_replay%mass_mg_cm2)) == &
+         transfer(reversal_result%mass_mg_cm2,[0_int64],size(reversal_result%mass_mg_cm2))), &
          'trace replay mass identity')
     restarted=reversal_start
     call advance_mobile_salt_trace(restarted,[10.0_real64,10.0_real64],trace,0.0_real64, &
          trace_replay,trace_fluxes,status)
     call req(status==SOLUTE_OK,'trace restart replay')
-    call req(maxval(abs(trace_replay%mass_mg_cm2-reversal_result%mass_mg_cm2))==0.0_real64, &
+    call req(all(transfer(trace_replay%mass_mg_cm2,[0_int64],size(trace_replay%mass_mg_cm2)) == &
+         transfer(reversal_result%mass_mg_cm2,[0_int64],size(reversal_result%mass_mg_cm2))), &
          'trace restart mass identity')
 
     ! The first step is valid but the second has inconsistent water closure.
