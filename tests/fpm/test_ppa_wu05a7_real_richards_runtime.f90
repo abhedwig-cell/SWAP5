@@ -358,7 +358,7 @@ contains
     logical :: trace_requested
     integer :: commit_status, persistence_status, trace_i, trace_status
     real(real64), allocatable :: trace_faces(:)
-    real(real64) :: trace_closure, max_trace_closure
+    real(real64) :: trace_closure, max_trace_closure, max_trace_macro_exchange
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
     real(real64) :: fmr_dt
 
@@ -481,6 +481,7 @@ contains
           .not.allocated(fmr_observation%accepted_water_flux_substeps)) error stop 'FMR accepted flux trace missing'
       if(size(fmr_observation%accepted_water_flux_substeps)<2) error stop 'FMR trace omitted accepted half steps'
       max_trace_closure=0.0_real64
+      max_trace_macro_exchange=0.0_real64
       do trace_i=1,size(fmr_observation%accepted_water_flux_substeps)
         if(.not.allocated(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain)) &
              error stop 'FMR trace omitted per-domain macropore exchange'
@@ -489,6 +490,8 @@ contains
         if(maxval(abs(sum(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain,dim=1)- &
              fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange))>1.0e-12_real64) &
              error stop 'FMR trace domain exchange sum mismatch'
+        max_trace_macro_exchange=max(max_trace_macro_exchange, &
+             maxval(abs(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain)))
         if(abs(sum(fmr_observation%accepted_water_flux_substeps(trace_i)%root_sink)- &
              sum(forcing%root_extraction_sink))>1.0e-16_real64) error stop 'FMR trace lost final qrot'
         call reconstruct_interval_water_face_flux(dz(1:numnod), &
@@ -504,10 +507,12 @@ contains
         max_trace_closure=max(max_trace_closure,abs(trace_closure))
       end do
       if(max_trace_closure>1.0e-8_real64) error stop 'FMR accepted trace closure tolerance'
+      if(max_trace_macro_exchange<=1.0e-14_real64)error stop 'FMR trace did not carry nonzero domain exchange'
       call exercise_salt_candidate_rejects_unowned_exchange( &
            fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
       write(*,'(*(g0))') 'PPA_WU05E_FMR_ACCEPTED_SUBSTEP_TRACE=PASS|COUNT=', &
-           size(fmr_observation%accepted_water_flux_substeps),'|MAX_CLOSURE=',max_trace_closure
+           size(fmr_observation%accepted_water_flux_substeps),'|MAX_CLOSURE=',max_trace_closure, &
+           '|MAX_DOMAIN_EXCHANGE=',max_trace_macro_exchange
     end if
 
     call committed%snapshot(after_trial_state,available)
