@@ -30,9 +30,14 @@ from pathlib import Path
 p=Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text()
 assert 'call fmr_apply_bartholomeus_to_root_sink' in p
 assert 'call apply_root_uptake_compensation' in p
-assert p.index('call fmr_apply_bartholomeus_to_root_sink') < p.index('call apply_root_uptake_compensation')
+reset='self%qrot = self%qrot_unmodified'
+assert reset in p
+assert p.index(reset) < p.index('call fmr_apply_bartholomeus_to_root_sink') < p.index('call apply_root_uptake_compensation')
 assert p.index('call apply_root_uptake_compensation') < p.index('call bind_b110_root_sink_provider')
 assert 'root_compensation_executed' in p
+q=Path('src/process/mod_root_uptake_compensation.f90').read_text().lower()
+for forbidden in ['mass_ledger','commit_receipt','restart_state','save ::']:
+    assert forbidden not in q, forbidden
 print('PPA_WU05D2_RUNTIME_ORDER=PASS')
 PY
 cmp "$B/o0" "$B/o2"
