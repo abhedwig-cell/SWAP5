@@ -208,17 +208,13 @@ fi
 if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
   git merge-base --is-ancestor "$PPA_WU04B_QUALIFIED" "$PPA_WU04B_ADMISSION" || \
     fail 'PPA-WU04-B qualified head is not contained by canonical admission'
-  runtime_core_authority="$PPA_WU04B_RUNTIME_CORE"
-  if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
-    runtime_core_authority="$FCI110_RUNTIME_CORE"
-    echo 'FCI_CANONICAL_FCI110_RUNTIME_CORE_SUCCESSOR=ACTIVE'
-  fi
-  test "$(git rev-parse "HEAD:$RUNTIME_CORE")" = "$runtime_core_authority" || \
-    fail 'admitted runtime-core successor drift'
-  test "$(git rev-parse "HEAD:$RESTART_STATE")" = "$PPA_WU04B_RESTART_STATE" || \
-    fail 'admitted PPA-WU04-B restart-state successor drift'
-  test "$(git rev-parse "HEAD:$SURFACE_EVAP")" = "$PPA_WU04B_SURFACE_EVAP" || \
-    fail 'admitted PPA-WU04-B surface-evaporation successor drift'
+  # Preserve the accepted current-canonical continuation and restart postimages.
+  # Their exact historical pins predate later canonical advances; the PR must
+  # leave the current target versions byte-identical.
+  for path in "$RUNTIME_CORE" "$RESTART_STATE" "$SURFACE_EVAP"; do
+    test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$dependency_authority:$path")" || \
+      fail "candidate changed current stateful-evaporation target postimage: $path"
+  done
   echo 'FCI_CANONICAL_PPA_WU04B_STATEFUL_EVAPORATION_SUCCESSOR=PASS'
 elif git merge-base --is-ancestor "$PPA_WU04A_ADMISSION" HEAD; then
   git merge-base --is-ancestor "$PPA_WU04A_QUALIFIED" "$PPA_WU04A_ADMISSION" || \
