@@ -213,8 +213,12 @@ The family is not closed while any `MIGRATE` row lacks either (a) a bounded,
 source-backed production admission, or (b) a documented `SUPERSEDED`,
 `REJECTED` or `NOT_APPLICABLE` decision supported by the relevant usage and
 physics authority. The current census has no unresolved/unknown selector. The
-remaining implementation order is: finish TCS7/SSDI application binding; add
-the other irrigation criteria and fixed routes in dependency
-order; decide a bounded valid tillage envelope after the SWAP-003/004 input
-boundary is explicit; then close the typed crop-calendar event adapter and
-final cross-route preservation.
+remaining implementation order is: bind the generic fixed/scheduled irrigation composition into the actual
+accepted application trial, including Rutter/direct-surface/SSDI source,
+rain/solute receipts and the state/restart owner; connect the bounded
+compatible tillage transaction to accepted hydraulic solver state and its
+profile restart; bind crop-calendar soil/heat observations and crop-event
+publication; then run the affected cross-route preservation and persisted
+admission gates. Coupled solute irrigation requires a separate solute mass
+owner. These process and runtime candidates are deliberately not labeled
+canonically admitted before those boundaries are proven.
