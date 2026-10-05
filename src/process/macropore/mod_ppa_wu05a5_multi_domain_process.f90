@@ -29,6 +29,8 @@ module mod_ppa_wu05a5_multi_domain_process
     real(real64), allocatable :: dynamic_volume_cp(:)
     real(real64), allocatable :: total_volume_cp(:)
     real(real64), allocatable :: volume_domain_cp(:,:)
+    real(real64), allocatable :: subsidence_cp(:)
+    real(real64) :: surface_area_fraction = -1.0_real64
     real(real64) :: partition_residual_cm = huge(1.0_real64)
   end type macropore_geometry_result_t
 
@@ -45,6 +47,7 @@ module mod_ppa_wu05a5_multi_domain_process
   end type macropore_multi_domain_receipt_t
 
   public :: evaluate_macropore_geometry
+  public :: evaluate_macropore_geometry_return
   public :: compose_macropore_candidate
 
 contains
@@ -166,29 +169,19 @@ contains
     if (.not. ok) return
 
     allocate(initial_water(geometry%num_domains,geometry%num_nodes), &
-         geometry_return(geometry%num_domains,geometry%num_nodes), &
          receipt%matrix_exchange_rate(geometry%num_nodes))
     initial_water = accepted_macro%water_domain_cp
-    geometry_return = 0.0_real64
     receipt%matrix_exchange_rate = 0.0_real64
+
+    call evaluate_macropore_geometry_return(accepted_macro,geometry,geometry_return,ok)
+    if (.not.ok) return
 
     candidate_macro%icp_bottom_domain = geometry%bottom_domain
     candidate_macro%dynamic_volume_cp = geometry%dynamic_volume_cp
     candidate_macro%volume_domain_cp = geometry%volume_domain_cp
 
     ! Geometry shrinkage/deactivation cannot destroy water; return displaced water to matrix.
-    do id = 1, geometry%num_domains
-      do ic = geometry%top_node, geometry%num_nodes
-        if (ic > geometry%bottom_domain(id)) then
-          geometry_return(id,ic) = candidate_macro%water_domain_cp(id,ic)
-          candidate_macro%water_domain_cp(id,ic) = 0.0_real64
-        else if (candidate_macro%water_domain_cp(id,ic) > candidate_macro%volume_domain_cp(id,ic)) then
-          geometry_return(id,ic) = candidate_macro%water_domain_cp(id,ic) - &
-               candidate_macro%volume_domain_cp(id,ic)
-          candidate_macro%water_domain_cp(id,ic) = candidate_macro%volume_domain_cp(id,ic)
-        end if
-      end do
-    end do
+    candidate_macro%water_domain_cp = candidate_macro%water_domain_cp - geometry_return
     receipt%geometry_return_to_matrix_cm = sum(geometry_return)
     receipt%matrix_exchange_rate = receipt%matrix_exchange_rate + sum(geometry_return,dim=1)/step_duration
 
@@ -231,5 +224,34 @@ contains
     receipt%valid = abs(receipt%macro_balance_residual_cm) <= 1.0e-10_real64
     ok = receipt%valid
   end subroutine compose_macropore_candidate
+
+  subroutine evaluate_macropore_geometry_return(accepted_macro,geometry,geometry_return,ok)
+    type(macropore_continuation_state_t),intent(in)::accepted_macro
+    type(macropore_geometry_result_t),intent(in)::geometry
+    real(real64),allocatable,intent(out)::geometry_return(:,:)
+    logical,intent(out)::ok
+    integer::id,ic
+
+    ok=.false.
+    if(.not.accepted_macro%ready() .or. .not.geometry%valid)return
+    if(accepted_macro%num_domains/=geometry%num_domains .or. &
+       accepted_macro%num_nodes/=geometry%num_nodes)return
+    if(.not.allocated(geometry%bottom_domain) .or. .not.allocated(geometry%volume_domain_cp))return
+    if(size(geometry%bottom_domain)/=geometry%num_domains .or. &
+       any(shape(geometry%volume_domain_cp)/=[geometry%num_domains,geometry%num_nodes]))return
+    allocate(geometry_return(geometry%num_domains,geometry%num_nodes))
+    geometry_return=0.0_real64
+    do id=1,geometry%num_domains
+      do ic=geometry%top_node,geometry%num_nodes
+        if(ic>geometry%bottom_domain(id))then
+          geometry_return(id,ic)=accepted_macro%water_domain_cp(id,ic)
+        else
+          geometry_return(id,ic)=max(0.0_real64,accepted_macro%water_domain_cp(id,ic)- &
+               geometry%volume_domain_cp(id,ic))
+        end if
+      end do
+    end do
+    ok=.true.
+  end subroutine evaluate_macropore_geometry_return
 
 end module mod_ppa_wu05a5_multi_domain_process

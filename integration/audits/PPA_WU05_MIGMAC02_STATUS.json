@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.ppa_wu05.migmac02.status.v1",
+  "date": "2026-10-05",
+  "canonical_base": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "branch": "work/ppa-wu05-migmac02-crack-geometry",
+  "workunit": "PPA-WU05-MIGMAC02",
+  "scope": "dynamic shrinkage/crack geometry feedback in the admitted serialized Reference Richards macropore route",
+  "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
+  "production_admitted": false,
+  "authority": {
+    "corrected_reference_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "required_macropore_member_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "available_donor_macropore_member_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+    "required_macrorate_member_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "available_macrorate_member_matches": true,
+    "source_reconciliation": "docs/audits/PPA_WU05_MIGMAC02_SOURCE_RECONCILIATION.md",
+    "exact_b111_reconstructed_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f"
+  },
+  "implemented_experiment": {
+    "shared_owner_chain": true,
+    "accepted_candidate_isolation": true,
+    "dynamic_geometry_into_existing_rate_bundle": true,
+    "geometry_return_uses_existing_matrix_owner": true,
+    "serialized_reference_backend_seam_wired": true,
+    "standard_config_initializer_can_enable_shrinkage": true,
+    "dynamic_physics_active_in_default_runtime": false,
+    "donor_equation_source_parity": false,
+    "full_transaction_restart_qualification": true,
+    "clay_option1_and_mpvolume_source_parity": true,
+    "production_admission": false,
+    "candidate_subsidence_in_geometry": true,
+    "subsidence_adjusted_top_surface_area": true,
+    "dynamic_top_input_feedback_inside_inner_provider": true,
+    "geometry_return_in_final_richards_exchange_receipt": true,
+    "candidate_groundwater_cutoff_from_richards_state": true,
+    "surface_crack_area_node_automatically_mapped_from_zncrar": true,
+    "candidate_dynamic_history_published_with_capacity": true
+  },
+  "local_evidence": {
+    "precheckpoint_only": false,
+    "pure_operator_o0_o2": "PASS",
+    "provider_geometry_and_two_domain_owner_o0_o2": "PASS",
+    "a9_dynamic_reference_transaction_o0_o2": "PASS_MASS_RESIDUAL_2.2670667426671898E-16_CM",
+    "dynamic_discard_smaller_retry_aba_accepted_restart_o0_o2": "PASS",
+    "evidence_detail": "docs/audits/PPA_WU05_MIGMAC02_CLOSEOUT.md",
+    "next_persisted_runner": "tests/fpm/run_ppa_wu05_migmac02_reference_runtime.sh",
+    "qualification_record": "integration/audits/PPA_WU05_MIGMAC02_QUALIFICATION.json"
+  },
+  "blockers": [],
+  "next_action": "Persist this postimage, then run declared MIGMAC02 and admitted-route preservation gates locally; qualify and integrate bounded Reference Richards clay option-1 scope.",
+  "historical_negative_findings": [
+    "Invalid original A8/A9 synthetic geometry used 0.5cm static capacity in 0.5cm compartments (zero matrix fraction); manually constructed FMR configurations omitted matrix area. Corrected physically valid fixtures use 0.25cm static volume and exact B1.11 static matrix fraction.",
+    "Standard candidate builder rejected changed geometry, then initially copied domain capacity without dynamic_volume_cp history. Second-half reconstruction therefore failed geometry identity. History and capacity now publish together.",
+    "Earlier diagnostic instrumentation dereferenced an unavailable candidate after failure and caused SIGSEGV. Temporary diagnostics have been removed; no such debug access remains in production.",
+    "Geometry-return node sum was repeated across every domain in inner/final rates. Corrected to per-domain geometry_return/dt; independent two-domain ownership oracle added."
+  ],
+  "admitted_scope": "Kim clay direct option-1; existing serialized Reference Richards chain",
+  "remaining_constitutive_scope": [
+    "peat laws",
+    "alternate parameter fitting",
+    "mixed rigid/shrinking layers"
+  ]
+}

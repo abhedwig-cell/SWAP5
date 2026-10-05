@@ -66,6 +66,7 @@ MODULE_SRC=(
   src/physics/oxygen/mod_bartholomeus_parameter_contract.f90
   src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90
   src/physics/oxygen/mod_bartholomeus_response_assembly.f90
+  src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90
   src/physics/oxygen/mod_bartholomeus_factor_provider.f90
   src/process/mod_root_water_uptake_process.f90
   src/process/mod_root_uptake_oxygen_composition.f90
@@ -96,6 +97,7 @@ MODULE_SRC=(
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/process/macropore/mod_ppa_wu05a5_top_partition.f90
   src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
+  src/process/macropore/mod_macropore_dynamic_shrinkage.f90
   src/runtime/mod_fmr_macropore_top_input.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
   src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
@@ -128,37 +130,71 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90 -o "$OUT/test.o"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" | tee "$OUT/out.txt"
-  grep -Fq 'PPA_WU05A7_REAL_RICHARDS_RUNTIME=PASS' "$OUT/out.txt"
+  if [[ "${WU05A9_ONLY:-0}" != 1 ]]; then
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90 -o "$OUT/test.o"
+    gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
+    "$OUT/test" | tee "$OUT/out.txt"
+    grep -Fq 'PPA_WU05A7_REAL_RICHARDS_RUNTIME=PASS' "$OUT/out.txt"
+  fi
 
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90 -o "$OUT/test_fmr_macro.o"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr_macro.o" -o "$OUT/test_fmr_macro"
-  "$OUT/test_fmr_macro" | tee "$OUT/fmr_macro.txt"
-  grep -Fq 'PPA_WU05A8_FMR_MACRO_TRIAL=PASS' "$OUT/fmr_macro.txt"
+  if [[ "${WU05A9_ONLY:-0}" != 1 ]]; then
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90 -o "$OUT/test_fmr_macro.o"
+    gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr_macro.o" -o "$OUT/test_fmr_macro"
+    "$OUT/test_fmr_macro" | tee "$OUT/fmr_macro.txt"
+    grep -Fq 'PPA_WU05A8_FMR_MACRO_TRIAL=PASS' "$OUT/fmr_macro.txt"
+  fi
 
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a9_top_input.f90 -o "$OUT/test_a9_unit.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_a9_unit.o" -o "$OUT/test_a9_unit"
   "$OUT/test_a9_unit" | tee "$OUT/a9_unit.txt"
   grep -Fq 'PPA_WU05A9_TOP_INPUT=PASS' "$OUT/a9_unit.txt"
 
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a9_fmr_top_input_trial.f90 -o "$OUT/test_a9_fmr.o"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test_a9_fmr.o" -o "$OUT/test_a9_fmr"
-  "$OUT/test_a9_fmr" | tee "$OUT/a9_fmr.txt"
-  grep -Fq 'PPA_WU05A9_FMR_MACRO_TRIAL=PASS' "$OUT/a9_fmr.txt"
+  if [[ "${WU05A9_UNIT_ONLY:-0}" != 1 ]]; then
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a9_fmr_top_input_trial.f90 -o "$OUT/test_a9_fmr.o"
+    gfortran -O"$opt" "${objects[@]}" "$OUT/test_a9_fmr.o" -o "$OUT/test_a9_fmr"
+    "$OUT/test_a9_fmr" | tee "$OUT/a9_fmr.txt"
+    grep -Fq 'PPA_WU05A9_FMR_MACRO_TRIAL=PASS' "$OUT/a9_fmr.txt"
 
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a9_fmr_top_input_replay.f90 -o "$OUT/test_a9_replay.o"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test_a9_replay.o" -o "$OUT/test_a9_replay"
-  "$OUT/test_a9_replay" | tee "$OUT/a9_replay.txt"
-  grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_SERIALIZED=PASS' "$OUT/a9_replay.txt"
-  grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_REJECT_REPLAY=PASS' "$OUT/a9_replay.txt"
-  grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_RESTART=PASS' "$OUT/a9_replay.txt"
-  grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_REPLAY_GATE=PASS' "$OUT/a9_replay.txt"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_ppa_wu05a9_fmr_top_input_replay.f90 -o "$OUT/test_a9_replay.o"
+    gfortran -O"$opt" "${objects[@]}" "$OUT/test_a9_replay.o" -o "$OUT/test_a9_replay"
+    "$OUT/test_a9_replay" | tee "$OUT/a9_replay.txt"
+    grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_SERIALIZED=PASS' "$OUT/a9_replay.txt"
+    grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_REJECT_REPLAY=PASS' "$OUT/a9_replay.txt"
+    grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_RESTART=PASS' "$OUT/a9_replay.txt"
+    grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_REPLAY_GATE=PASS' "$OUT/a9_replay.txt"
+    if [[ "${WU05_MIGMAC02:-0}" == 1 ]]; then
+      WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_fmr" | tee "$OUT/migmac02_fmr.txt"
+      grep -Fq 'PPA_WU05_MIGMAC02_DYNAMIC_REFERENCE_TRANSACTION=PASS' "$OUT/migmac02_fmr.txt"
+      WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_replay" | tee "$OUT/migmac02_replay.txt"
+      for marker in DYNAMIC_REJECT_SMALLER_RETRY DYNAMIC_ABA DYNAMIC_ACCEPTED_RESTART; do
+        grep -Fq "PPA_WU05_MIGMAC02_${marker}=PASS" "$OUT/migmac02_replay.txt"
+      done
+      WU05_MIGMAC02_DYNAMIC=2 "$OUT/test_a9_fmr" > "$OUT/migmac02_nochange.txt"
+      WU05_MIGMAC02_DYNAMIC=3 "$OUT/test_a9_fmr" > "$OUT/migmac02_inner_static.txt"
+      cmp "$OUT/migmac02_nochange.txt" "$OUT/migmac02_inner_static.txt"
+      echo 'PPA_WU05_MIGMAC02_UNCHANGED_GEOMETRY_RUNTIME_IDENTITY=PASS'
+      WU05_MIGMAC02_DYNAMIC=4 "$OUT/test_a9_fmr" | tee "$OUT/migmac02_shrinking.txt"
+      grep -Fq 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS' "$OUT/migmac02_shrinking.txt"
+      WU05_MIGMAC02_DYNAMIC=5 "$OUT/test_a9_fmr" | tee "$OUT/migmac02_two_domain.txt"
+      grep -Fq 'PPA_WU05_MIGMAC02_TWO_DOMAIN_GEOMETRY_RAPID_DRAIN=PASS' "$OUT/migmac02_two_domain.txt"
+    fi
+  fi
 done
-cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
-cmp "$BUILD/o0/fmr_macro.txt" "$BUILD/o2/fmr_macro.txt"
+if [[ "${WU05A9_ONLY:-0}" != 1 ]]; then
+  cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
+  cmp "$BUILD/o0/fmr_macro.txt" "$BUILD/o2/fmr_macro.txt"
+fi
 cmp "$BUILD/o0/a9_unit.txt" "$BUILD/o2/a9_unit.txt"
-cmp "$BUILD/o0/a9_fmr.txt" "$BUILD/o2/a9_fmr.txt"
-cmp "$BUILD/o0/a9_replay.txt" "$BUILD/o2/a9_replay.txt"
+if [[ "${WU05A9_UNIT_ONLY:-0}" != 1 ]]; then
+  cmp "$BUILD/o0/a9_fmr.txt" "$BUILD/o2/a9_fmr.txt"
+  cmp "$BUILD/o0/a9_replay.txt" "$BUILD/o2/a9_replay.txt"
+  if [[ "${WU05_MIGMAC02:-0}" == 1 ]]; then
+    cmp "$BUILD/o0/migmac02_fmr.txt" "$BUILD/o2/migmac02_fmr.txt"
+    cmp "$BUILD/o0/migmac02_replay.txt" "$BUILD/o2/migmac02_replay.txt"
+    cmp "$BUILD/o0/migmac02_nochange.txt" "$BUILD/o2/migmac02_nochange.txt"
+    cmp "$BUILD/o0/migmac02_shrinking.txt" "$BUILD/o2/migmac02_shrinking.txt"
+    cmp "$BUILD/o0/migmac02_two_domain.txt" "$BUILD/o2/migmac02_two_domain.txt"
+    echo 'PPA_WU05_MIGMAC02_DYNAMIC_RUNTIME_O0_O2_IDENTITY=PASS'
+  fi
+fi
 echo "PPA_WU05A9_TOP_INPUT_GATE=PASS"

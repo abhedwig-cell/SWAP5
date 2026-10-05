@@ -11,6 +11,8 @@ program test_ppa_wu05a9_fmr_top_input_replay
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
+  use mod_macropore_dynamic_shrinkage, only: prepare_clay_kim_option1, map_surface_crack_depth_to_node, &
+       derive_dynamic_minimum_subsidence
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t, &
        macropore_geometry_result_t, evaluate_macropore_geometry
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t
@@ -62,7 +64,12 @@ program test_ppa_wu05a9_fmr_top_input_replay
   real(real64)::heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
   integer::i
   logical::ok
+  logical::dynamic_enabled
+  character(len=1)::dynamic_flag
 
+  dynamic_flag='0'
+  call get_environment_variable('WU05_MIGMAC02_DYNAMIC',dynamic_flag)
+  dynamic_enabled=dynamic_flag=='1'
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
   params%parameter_set_id=505701_int64
   params%active_nodes=numnod
@@ -173,7 +180,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
 contains
 
   subroutine exercise_serialized_fmr()
-    type(fmr_serialized_reference_backend_t) :: backend, restored_backend
+    type(fmr_serialized_reference_backend_t) :: backend, restored_backend, fresh_backend
     type(fmr_b110_physical_parameters_t), target :: fparams
     type(fmr_b110_physical_forcing_t) :: forcing
     type(fmr_b110_physical_state_t) :: initial
@@ -184,13 +191,16 @@ contains
     type(kernel_committed_state_t) :: committed, restored
     type(kernel_checkpoint_t) :: checkpoint, restored_checkpoint
     type(kernel_candidate_state_t) :: candidate, replay_candidate, next_candidate, restored_next_candidate
+    type(kernel_candidate_state_t) :: retry_candidate, fresh_retry_candidate
     type(kernel_result_t) :: kres, replay_result, next_result, restored_next_result
+    type(kernel_result_t) :: retry_result, fresh_retry_result
     type(kernel_diagnostics_t) :: kdiag, replay_diag, next_diag, restored_next_diag
+    type(kernel_diagnostics_t) :: retry_diag, fresh_retry_diag
     type(kernel_persistence_snapshot_t) :: persisted
     class(transaction_state_t), allocatable :: before_state, after_trial_state, candidate_state, replay_state, &
-         restored_state, next_state, restored_next_state
+         restored_state, next_state, restored_next_state, retry_state, fresh_retry_state
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
-    integer :: commit_status, persistence_status
+    integer :: commit_status, persistence_status, k, crack_node
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
     real(real64), parameter :: fmr_dt=1.0e-3_real64
 
@@ -220,6 +230,23 @@ contains
     mcfg%geometry=geometry_config
     mcfg%rate_template=rate_template
     mcfg%history_template=history_request
+    mcfg%matrix_area_fraction=1.0_real64-geometry_config%static_volume_cp/dz
+    mcfg%shrinkage%enabled=dynamic_enabled
+    call map_surface_crack_depth_to_node(-0.75_real64,z,dz,1,crack_node,state_ok)
+    if(.not.state_ok)error stop 'MIGMAC02 replay crack depth'
+    mcfg%shrinkage%surface_crack_area_node=crack_node
+    mcfg%shrinkage%surface_crack_area_node_supplied=.true.
+    allocate(mcfg%shrinkage%theta_s(numnod),mcfg%shrinkage%theta_crack(numnod), &
+         mcfg%shrinkage%geometry_factor(numnod),mcfg%shrinkage%minimum_subsidence_cm(numnod),mcfg%shrinkage%kim(numnod))
+    mcfg%shrinkage%theta_s=0.427494_real64
+    mcfg%shrinkage%theta_crack=0.40_real64
+    mcfg%shrinkage%geometry_factor=3.0_real64
+    do k=1,numnod
+      call prepare_clay_kim_option1(0.427494_real64,0.20_real64,2.0_real64,1.20_real64,mcfg%shrinkage%kim(k),state_ok)
+      if(.not.state_ok)error stop 'MIGMAC02 replay Kim parameters'
+    end do
+    call derive_dynamic_minimum_subsidence(mcfg%shrinkage,dz,state_ok)
+    if(.not.state_ok)error stop 'MIGMAC02 replay source minimum subsidence'
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A9 FMR top-input config validity'
     allocate(fparams%macropore)
     fparams%macropore=mcfg
@@ -271,6 +298,7 @@ contains
     numerical%max_committed_substeps=64
 
     call backend%initialize(top)
+    policy%inner_richards_exchange_enabled=dynamic_enabled
     call backend%configure_macropore_policy(policy,policy_ok)
     if(.not.policy_ok)error stop 'A9 FMR top-input policy configure'
 
@@ -295,12 +323,36 @@ contains
          error stop 'A9 FMR top-input candidate leaked into committed state'
     call candidate%snapshot(candidate_state,available)
     if(.not.available)error stop 'A9 FMR top-input candidate snapshot'
+    select type(s=>candidate_state)
+    type is(fmr_b110_physical_state_t)
+      if(dynamic_enabled .and. .not.any(s%macropore%dynamic_volume_cp>1.0e-12_real64)) &
+           error stop 'MIGMAC02 replay geometry inactive'
+    end select
 
     call backend%discard_trial_candidate(candidate,kdiag)
     if(candidate%ready())error stop 'A9 FMR top-input discard retained candidate'
     call committed%snapshot(after_trial_state,available)
     if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &
          error stop 'A9 FMR top-input discard mutated committed state'
+
+    ! Rejected A, then smaller B: a fresh backend must produce identical B.
+    call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,0.5_real64*fmr_dt, &
+         checkpoint,retry_result,retry_candidate,retry_diag,trusted_prepared_parameters=.true.)
+    call fresh_backend%initialize(top)
+    call fresh_backend%configure_macropore_policy(policy,policy_ok)
+    if(.not.policy_ok)error stop 'MIGMAC02 fresh retry policy'
+    call fresh_backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,0.5_real64*fmr_dt, &
+         checkpoint,fresh_retry_result,fresh_retry_candidate,fresh_retry_diag,trusted_prepared_parameters=.true.)
+    if(.not.retry_result%completed .or. .not.fresh_retry_result%completed)error stop 'MIGMAC02 smaller retry failed'
+    if(.not.retry_result%mass%complete .or. abs(retry_result%mass%residual)>1.0e-8_real64) &
+         error stop 'MIGMAC02 smaller retry mass closure'
+    call retry_candidate%snapshot(retry_state,available)
+    if(.not.available)error stop 'MIGMAC02 smaller retry snapshot'
+    call fresh_retry_candidate%snapshot(fresh_retry_state,available)
+    if(.not.available .or. .not.same_fmr_state(retry_state,fresh_retry_state)) &
+         error stop 'MIGMAC02 rejected A smaller B identity'
+    call backend%discard_trial_candidate(retry_candidate,retry_diag)
+    call fresh_backend%discard_trial_candidate(fresh_retry_candidate,fresh_retry_diag)
 
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
          replay_result,replay_candidate,replay_diag,trusted_prepared_parameters=.true.)
@@ -349,6 +401,11 @@ contains
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_SERIALIZED=PASS'
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_REJECT_REPLAY=PASS'
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_RESTART=PASS'
+    if(dynamic_enabled)then
+      print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_REJECT_SMALLER_RETRY=PASS'
+      print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_ABA=PASS'
+      print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_ACCEPTED_RESTART=PASS'
+    end if
   end subroutine exercise_serialized_fmr
 
   logical function same_fmr_state(a,b) result(same)
@@ -384,7 +441,7 @@ contains
     config%top_node=1
     allocate(config%static_volume_cp(numnod),config%domain_fraction(nd,numnod), &
          config%potential_bottom_domain(nd),config%dz(numnod),config%characteristic_diameter(numnod))
-    config%static_volume_cp=0.50_real64
+    config%static_volume_cp=0.25_real64
     config%domain_fraction=1.0_real64
     config%potential_bottom_domain=numnod
     config%dz=dz

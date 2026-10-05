@@ -1,8 +1,7 @@
 {
   "schema": "swap5.ppa_wu05.macropore_migration_gap_audit.v1",
-  "date": "2026-10-02",
-  "canonical_audit_base": "9abdc23f759f4d7711881d535797d0ee56d67584",
-  "audit_commit": "cbb3e967d07b8533ddfe4816f42233a0ff42e6f3",
+  "date": "2026-10-05",
+  "canonical_audit_base": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "standard_core_perched_exchange": "CANONICALLY_ADMITTED",
   "broad_swap431_macropore_migration_complete": false,
   "remaining_standard_gaps": [
@@ -29,9 +28,22 @@
     "admitted": true
   },
   "migmac02_progress": {
-    "date": "2026-10-02",
+    "date": "2026-10-05",
     "production_gap": "OPEN",
     "scope": "dynamic shrinkage/crack geometry feedback",
-    "admitted": false
+    "admitted": false,
+    "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
+    "reconciliation": "docs/audits/PPA_WU05_MIGMAC02_SOURCE_RECONCILIATION.md",
+    "operator_experiment": "docs/audits/PPA_WU05_MIGMAC02_PURE_OPERATOR_RESULT.md",
+    "local_tests": [
+      "tests/fpm/run_ppa_wu05_migmac02_dynamic_shrinkage.sh",
+      "tests/fpm/run_ppa_wu05_migmac02_provider_geometry.sh",
+      "tests/fpm/run_ppa_wu05_migmac02_reference_runtime.sh"
+    ],
+    "blocking_evidence": [],
+    "source_reconciliation": "docs/audits/PPA_WU05_MIGMAC02_SOURCE_RECONCILIATION.md",
+    "source_operator": "clay option-1 SHRINK/SHRINKPAR and MPVOLUME(1) reconstructed from pinned B0+SWAP-001 to exact B1.11 hash; runtime qualification open",
+    "qualified_scope": "Kim clay direct option-1; dynamic geometry in existing Reference Richards owner chain",
+    "qualification": "integration/audits/PPA_WU05_MIGMAC02_QUALIFICATION.json"
   }
 }

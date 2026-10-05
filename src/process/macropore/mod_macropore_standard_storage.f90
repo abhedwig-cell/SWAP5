@@ -152,20 +152,21 @@ contains
     if(.not.all(shape(qexc_rate)==[nd,n]) .or. size(rapid_cp_cm)/=n)return
     if(any(rapid_cp_cm<0.0_real64))return
 
-    ! First production admission scope keeps geometry fixed during the physical attempt.
-    if(any(geometry%bottom_domain/=accepted%icp_bottom_domain))return
-    if(maxval(abs(geometry%volume_domain_cp-accepted%volume_domain_cp))>1.0e-10_real64)return
-
     call copy_macropore_continuation_state(accepted,candidate,ok)
     if(.not.ok)return
+    ! Carry trial geometry and crack history in the same candidate owner as water.
+    candidate%volume_domain_cp=geometry%volume_domain_cp
+    candidate%dynamic_volume_cp=geometry%dynamic_volume_cp
+    candidate%icp_bottom_domain=geometry%bottom_domain
     candidate%water_domain_cp=0.0_real64
 
     do id=1,nd
-      old_total=sum(accepted%water_domain_cp(id,top_node:geometry%bottom_domain(id)))
+      old_total=sum(accepted%water_domain_cp(id,top_node:accepted%icp_bottom_domain(id)))
       top_amount=top_partition%accepted_vertical_cm(id)+top_partition%accepted_lateral_cm(id)
-      exchange_amount=sum(qexc_rate(id,top_node:geometry%bottom_domain(id)))*step_duration
+      ! Include water returned from compartments deactivated by the new geometry.
+      exchange_amount=sum(qexc_rate(id,top_node:n))*step_duration
       rapid_amount=0.0_real64
-      if(id==1)rapid_amount=sum(rapid_cp_cm(top_node:geometry%bottom_domain(id)))
+      if(id==1)rapid_amount=sum(rapid_cp_cm(top_node:n))
       new_total=old_total+top_amount-exchange_amount-rapid_amount
       capacity=sum(geometry%volume_domain_cp(id,top_node:geometry%bottom_domain(id)))
       if(new_total<-1.0e-10_real64 .or. new_total>capacity+1.0e-10_real64)return
