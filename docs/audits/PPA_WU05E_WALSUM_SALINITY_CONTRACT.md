@@ -1,6 +1,6 @@
 # PPA-WU05-E-WALSAL01 source and qualification contract
 
-Qualified selected successor, canonical admission pending. Preregistered on canonical `916035e78305cae5f88c30d5805b5d9c33a348f8`.
+Canonically admitted selected successor via PR #1032, merge `83258c02be55879cddf9918a2b80c96da7eae2a9`. Preregistered on canonical `916035e78305cae5f88c30d5805b5d9c33a348f8`.
 
 The exact B1.11 `rootextraction.f90` source derives Walsum ALPHACRIT before the
 shared Jarvis/Walsum stress compositor, including ALPSOL and selector 4.

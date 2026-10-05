@@ -51,11 +51,11 @@
     "D1": "SEMANTICS_RECONSTRUCTED_WITH_EXACT_IDENTITY_AND_INDEPENDENT_SOURCE_BOUND_CORROBORATION",
     "D2": "CANONICAL_ADMITTED_CLOSED",
     "D3": "CANONICAL_ADMITTED_CLOSED",
-    "D4": "DROUGHT_OXYGEN_AND_SELECTED_MATRIX_SALINITY_CANONICAL_ADMITTED; FROST_ROOT_STRESS_HELD",
+    "D4": "DROUGHT_OXYGEN_SELECTED_MATRIX_SALINITY_JARVIS_WALSUM_CANONICAL_ADMITTED; EMPIRICAL_ROOT_FROST_SEPARATE_PR1030; JOINT_SALT_FROST_HELD",
     "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
   },
   "production_admission": "D2_JARVIS_AND_D3_WALSUM_BOUNDED",
-  "next_action": "D2/D3 are closed. PPA-WU05-E separately admits selected matrix salinity with Jarvis. Salinity/Walsum, frost root stress, broader solute routes and D5/MICRO need separate authority and qualification.",
+  "next_action": "Jarvis, Walsum and their selected matrix salinity successors are canonically admitted. Other root-stress hybrids and MICRO remain independently bounded work units.",
   "d2": {
     "production_compositor": "src/process/mod_root_uptake_compensation.f90",
     "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
@@ -130,6 +130,13 @@
     "canonical_pr": 1015,
     "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3",
     "admission": "integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json",
-    "scope": "Selected matrix Maas-Hoffman/Jarvis only; D3 Walsum salinity remains closed"
+    "scope": "Historical PR1015 selected matrix Maas-Hoffman/Jarvis admission; WALSAL01 independently adds selected Walsum/salinity."
+  },
+  "walsum_salinity_successor": {
+    "work_unit": "PPA-WU05-E-WALSAL01",
+    "canonical_pr": 1032,
+    "canonical_merge": "83258c02be55879cddf9918a2b80c96da7eae2a9",
+    "admission": "integration/audits/PPA_WU05E_WALSAL01_CANONICAL_ADMISSION.json",
+    "scope": "Selected matrix Maas-Hoffman/Walsum; historical D3 qualification retained"
   }
 }

@@ -653,8 +653,8 @@
         "integration/audits/PPA_WU05D_D2_QUALIFICATION.json; PR1012 canonical merge4fd57c8c8",
         "integration/audits/PPA_WU05D_D3_QUALIFICATION.json; PR1013 canonical merge a34c87db9"
       ],
-      "production_admission": "BOUNDED_SUCCESSORS: independently admitted Bartholomeus oxygen; D2 Jarvis PR1012 and D3 Walsum PR1013 canonical. Salinity/frost/MICRO/macropore uptake remain held.",
-      "production_reachable": "YES_FOR_ADMITTED_OXYGEN_D2_JARVIS_D3_WALSUM_ONLY",
+      "production_admission": "BOUNDED_SUCCESSORS: oxygen; Jarvis PR1012 and Walsum PR1013; selected matrix salinity/Jarvis PR1015 and salinity/Walsum PR1032; empirical root frost separately PR1030. Other hybrids, MICRO and macropore uptake remain held.",
+      "production_reachable": "YES_FOR_INDEPENDENTLY_ADMITTED_BOUNDED_OXYGEN_COMPENSATION_MATRIX_SALINITY_EMPIRICAL_ROOT_FROST_ROUTES",
       "restrictions": [
         "Presence in corrected reference is not SWAP5 production admission"
       ],
@@ -669,7 +669,7 @@
         "Separate nonlinear/sensitivity authority for SWKIMPL=1"
       ],
       "priority_band": "P2",
-      "classification_note": "Aggregate remains incomplete; separately admitted restricted oxygen/compensation subcapabilities do not close salinity/frost/MICRO/macropore uptake."
+      "classification_note": "Aggregate remains incomplete. Separate bounded admissions do not close unqualified stress/process hybrids, MICRO or macropore uptake."
     },
     {
       "id": "PPA-SW-RICH",
@@ -1788,7 +1788,7 @@
     {
       "id": "PPA-RWU-COMP-WALSUM",
       "subsystem": "drought/stress routes",
-      "capability": "WALSUM compensation over existing Feddes sinks and optional independently admitted Bartholomeus oxygen",
+      "capability": "Walsum compensation over supplied Feddes sinks, optional admitted Bartholomeus oxygen and independently admitted selected matrix Maas-Hoffman salinity",
       "classification": "C_SW5_RESTRICTED_PRODUCTION",
       "legacy_present": true,
       "legacy_authority": {
@@ -1809,7 +1809,7 @@
       "qualification_evidence": [
         "integration/audits/PPA_WU05D_D3_QUALIFICATION.json"
       ],
-      "production_admission": "CANONICAL_ADMITTED_CLOSED PR1013 merge a34c87db96d8f1fb33e97b13556a4d9b76758553",
+      "production_admission": "CANONICAL_ADMITTED_CLOSED PR1013 merge a34c87db96d8f1fb33e97b13556a4d9b76758553; selected matrix Walsum salinity successor PR1032 merge 83258c02be55879cddf9918a2b80c96da7eae2a9",
       "production_reachable": "RESTRICTED_TYPED_APPLICATION_PROFILES_2_7",
       "restrictions": [
         "No salinity/frost/MICRO/macropore uptake",
@@ -1822,7 +1822,9 @@
         "Existing Feddes root-sink owner",
         "Independent Bartholomeus admission when oxygen enabled"
       ],
-      "priority_band": "P2"
+      "priority_band": "P2",
+      "current_successor_admission": "integration/audits/PPA_WU05E_WALSAL01_CANONICAL_ADMISSION.json",
+      "current_successor_scope": "Selected matrix only; salt/frost, salt/Rutter, osmotic-head and new crop rooting models excluded"
     }
   ],
   "backlog": {
@@ -2404,5 +2406,15 @@
     "salinity_walsum_admitted": false,
     "frost_root_stress_admitted": false,
     "closeout": "docs/audits/PPA_WU05E_CANONICAL_CLOSEOUT.md"
+  },
+  "ppa_wu05e_walsal01_20261005_canonical": {
+    "work_unit": "PPA-WU05-E-WALSAL01",
+    "status": "CANONICAL_ADMITTED_CLOSED_SELECTED_MATRIX_SCOPE",
+    "canonical_pr": 1032,
+    "canonical_merge": "83258c02be55879cddf9918a2b80c96da7eae2a9",
+    "scope": "Selected matrix Walsum/Maas-Hoffman with existing water and salt owners",
+    "qualification": "integration/audits/PPA_WU05E_WALSAL01_FROST_RECONCILED_QUALIFICATION.json",
+    "admission": "integration/audits/PPA_WU05E_WALSAL01_CANONICAL_ADMISSION.json",
+    "gates_passed": 14
   }
 }
