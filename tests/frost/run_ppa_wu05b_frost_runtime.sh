@@ -25,6 +25,7 @@ def visit(name):
     for used in dict.fromkeys(item.lower() for item in uses): visit(used)
     visiting.pop(); seen.add(name); ordered.append(path)
 visit('mod_fmr_serialized_multiswap_runtime')
+visit('mod_fmr_committed_restart')
 for path in ordered: print(path)
 PY
 
@@ -47,6 +48,10 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" -o "$OUT/test"
   "$OUT/test" > "$OUT/output.txt"
   for marker in PPA-WU05B_BOUNDED_FROST_TRANSACTION=PASS \
+      PPA-WU05B_BACKEND_COMMITTED_FROST_RESTART=PASS \
+      PPA-WU05B_BACKEND_FROST_REGIMES=PASS \
+      PPA-WU05B_BACKEND_FREEZE_THAW_CYCLE=PASS \
+      PPA-WU05B_FROST_REJECT_RETRY \
       PPA-WU05B_UNSUPPORTED_FROZEN_BOUNDARY_FAIL_CLOSED=PASS \
       FMR44R_SERIALIZED_PRESCRIBED_QBOT_RUNTIME_GATE=PASS; do
     grep -Fq "$marker" "$OUT/output.txt"
