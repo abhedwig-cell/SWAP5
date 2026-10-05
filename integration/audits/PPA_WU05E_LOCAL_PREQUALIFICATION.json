@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification",
+  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "d9ff6009ef032ac41b0d528ecd09ef849acdadde40f40205f07340fe690f8cce",
@@ -151,6 +151,11 @@
         "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "cfd779e9eaa5371a9279c5d7abc271e50f05984d0213dd265399ec9405d277a4",
         "tests/fpm/run_ppa_wu05a8_real_richards.sh": "fbbadf3c1533cf625e148ceda6ae3575b2ce7ac29bb4ff93ce638e40e189ca15"
       }
+    },
+    {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "result": "PASS_O0_O2_IDENTICAL",
+      "scope": "A7/A8 real Richards gate; typed Cdrain interval coverage, invalid unit and interval-overrun rejection exercised by the test-only macro-salt trace adapter; active FMR salt layout remains fail-closed"
     }
   ],
   "not_run_or_not_claimed": [
