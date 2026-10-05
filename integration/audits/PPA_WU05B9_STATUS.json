@@ -1,17 +1,15 @@
 {
   "work_unit": "PPA-WU05B9",
-  "status": "LOCAL_QUALIFIED_NOT_CANONICALLY_ADMITTED",
+  "status": "CANONICALLY_ADMITTED",
   "baseline": "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
   "preregistration": "integration/audits/PPA_WU05B9_PREREGISTRATION.json",
   "implemented": true,
   "persisted": true,
   "qualified": true,
-  "admitted": false,
-  "pending": [
-    "exact proposed merge identity and canonical admission"
-  ],
+  "admitted": true,
+  "pending": [],
   "aggregate_frost_migration_complete": false,
-  "next_action": "Publish exact qualified candidate and admit bounded LINEAR normal frost composition",
+  "next_action": "Implement preregistered B10 low-air LINEAR response combination after exact canonical reconciliation",
   "negative_findings": [
     "First staged generation call used an unbuilt hydraulic_start view and correctly failed the admitted response binding before solver; build original request view before early generation and reuse it at the former build point.",
     "Source test local variable shadowed TRANSFER intrinsic; renamed generated_transfer.",
@@ -91,5 +89,8 @@
     "bytes": 113479,
     "manifest_entries": 491
   },
-  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
+  "canonical_pr": 1048,
+  "canonical_merge": "5cd8f04f81c19c6a20abeacddc172e0c44598ded",
+  "qualified_head": "b745b90314e6d1018dfd1823c22d9fc558b1427d"
 }
