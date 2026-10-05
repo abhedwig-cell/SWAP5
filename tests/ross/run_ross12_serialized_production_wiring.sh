@@ -108,6 +108,10 @@ MODULE_SRC=(
   src/runtime/mod_fmr_bartholomeus_execution.f90
   src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90
   src/runtime/mod_macropore_continuation_state.f90
+  src/process/macropore/mod_rfm_unponded_surface_composition.f90
+  src/process/macropore/mod_rfm_preferential_router.f90
+  src/process/macropore/mod_rfm_surface_event_age.f90
+  src/runtime/mod_rfm_physical_state.f90
   "$BACKEND"
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_owned_commit_receipt.f90
