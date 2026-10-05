@@ -5,7 +5,7 @@ program test_mig431_tillage_constitutive
 
   type(tillage_vg_parameters_t) :: prior, candidate
   real(real64), allocatable :: density(:)
-  real(real64) :: ratio, expected_sat, expected_ks
+  real(real64) :: ratio, expected_sat, expected_ks, matching_slope
   integer :: next_event, previous_event, status
 
   call select_tillage_start_event([10.0_real64,20.0_real64,30.0_real64], 5.0_real64, &
@@ -62,10 +62,18 @@ program test_mig431_tillage_constitutive
                             0.0_real64,candidate,status)
   call require(status == TILLAGE_INVALID_PARAMETERS .and. abs(candidate%n-prior%n) < 1.0e-14_real64, &
        'known zero-clay defect fails closed without candidate publication')
+  call derive_tillage_matching_slope(1.5_real64,1.6_real64,1400.0_real64,1300.0_real64, &
+                                     matching_slope,status)
+  call require(status == TILLAGE_OK .and. abs(matching_slope+0.001_real64) < 1.e-15_real64, &
+       'matching point derives n density slope from B1.11 material parameters')
   call transform_tillage_vg(prior,1200.0_real64,1300.0_real64,3,0.3_real64,0.2_real64, &
-                            -0.001_real64,candidate,status)
+                            matching_slope,candidate,status)
   call require(status == TILLAGE_OK .and. abs(candidate%n-1.4_real64) < 1.0e-14_real64, &
        'n model 3 applies persisted matching-point slope')
+  call derive_tillage_matching_slope(1.5_real64,1.6_real64,1400.0_real64,1400.0_real64, &
+                                     matching_slope,status)
+  call require(status == TILLAGE_INVALID_PARAMETERS .and. abs(matching_slope) < 1.e-15_real64, &
+       'coincident matching and consolidation densities reject division by zero')
 
   write(*,'(a)') 'F_MIG431_TILLAGE_B111_EVENT_START=PASS'
   write(*,'(a)') 'F_MIG431_TILLAGE_DENSITY_CONSOLIDATION=PASS'

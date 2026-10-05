@@ -21,6 +21,7 @@ module mod_tillage_constitutive_process
 
   public :: select_tillage_start_event, transform_tillage_vg
   public :: apply_tillage_density_event, consolidate_tillage_density
+  public :: derive_tillage_matching_slope
 
 contains
 
@@ -88,6 +89,26 @@ contains
          (consolidation_density-event_density)*exp(-rate_per_mm*accepted_net_rain_cm*10.0_real64)
     status = TILLAGE_OK
   end subroutine consolidate_tillage_density
+
+  pure subroutine derive_tillage_matching_slope(prior_n,matching_n,consolidation_density, &
+                                                matching_density,slope,status)
+    real(real64), intent(in) :: prior_n,matching_n,consolidation_density,matching_density
+    real(real64), intent(out) :: slope
+    integer, intent(out) :: status
+    slope = 0.0_real64
+    status = TILLAGE_INVALID_PARAMETERS
+    if (.not. all(ieee_is_finite([prior_n,matching_n,consolidation_density,matching_density]))) return
+    if (prior_n <= 1.0_real64 .or. matching_n <= 1.0_real64 .or. &
+        consolidation_density <= 0.0_real64 .or. matching_density <= 0.0_real64) return
+    if (abs(consolidation_density-matching_density) <= &
+        epsilon(consolidation_density)*max(consolidation_density,matching_density)) return
+    slope = (prior_n-matching_n)/(consolidation_density-matching_density)
+    if (.not. ieee_is_finite(slope)) then
+      slope = 0.0_real64
+      return
+    end if
+    status = TILLAGE_OK
+  end subroutine derive_tillage_matching_slope
 
   pure subroutine transform_tillage_vg(prior, prior_density, new_density, n_model, silt_fraction, &
                                         clay_fraction, matching_slope, candidate, status)

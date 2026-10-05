@@ -67,7 +67,7 @@ named below.
 | `SWTILL=1` and dated event tables | Change bulk density within an event depth according to event type and intensity; continue consolidation between events | Next event index, preceding type parameters, density history, consolidation parameters, layer/horizon mapping | Typed event and inter-event consolidation transactions compose pointer, cumulative accepted rain, density, VG transform, redistribution and inverse head in an unpublished candidate; O0/O2 full-profile restart/continuation passes. Production solver-state application remains open | `MIGRATE` |
 | `i_n_model=1` | Keep van Genuchten `n` unchanged as density changes | Hydraulic parameters and density history | Typed constitutive transform preserves `n`, regenerates `m`, and qualifies B1.11 density exponents at O0/O2; no application binding | `MIGRATE` |
 | `i_n_model=2` | Derive `n` from silt/clay ratio | Texture, density and hydraulic parameter state | Positive-clay typed formula passes O0/O2; the known `PCLAY=0` divide-by-zero from SWAP-003 fails closed | `MIGRATE` for valid positive-clay inputs; `REJECTED` for the known `PCLAY=0` route |
-| `i_n_model=3` | Derive `n` from a configured matching point | Matching water content/head, density and hydraulic parameter state | Typed formula applies a supplied persistent matching-point slope and regenerates `m`; no application binding | `MIGRATE` |
+| `i_n_model=3` | Derive `n` from a configured matching density and `n` point | `Rho_match`, `N_match`, consolidation density and prior `n` | Typed binder derives the B1.11 matching slope, rejects coincident densities before division, and the VG transform applies it at O0/O2; production material binding remains open | `MIGRATE` for valid matching parameters; `REJECTED` for the source's zero-denominator route |
 | `iRedist=1` / `2` | Redistribute water state after hydraulic parameter changes using simple / complex method | Full soil-water profile and old/new constitutive state | Typed alternatives conserve thickness-weighted soil water plus pond, including saturation overflow, at O0/O2. A typed binder computes the inverse VG pressure head and verifies roundtrip retention; production accepted-state application remains open. Exact B1.11 redistribution arithmetic is rejected because it mixes water content and water depth | `MIGRATE` for physical redistribution; `REJECTED` for the legacy nonconserving arithmetic |
 | `iRedist=0` | Test-only path; production code rejects it outside technical test mode | Test flag | Not a supported physical production selection | `REJECTED` |
 | `Date_tillage`, `Z_tillage`, `I_tillage`, `Type_tillage` | Event date, depth, intensity and type select where and how the transition applies | Ordered event table, next-event pointer, horizon/compartment mapping | Typed start selector reproduces corrected SWAP-002 boundary states and rejects duplicate/unexecutable dates. Typed owner persists next pointer and accepted rain with O0/O2 restart/replay. SWAP-004 type-index/allocation defect remains in reference | `MIGRATE` with typed validation; the defective legacy ordinal-index mapping is `REJECTED` |
@@ -148,9 +148,13 @@ matrix.
 It checks the corrected B1.11 start-event pointer, density event interpolation,
 cumulative-rain consolidation, the three van Genuchten `n` choices, zero-clay
 rejection, both redistribution modes with thickness-weighted soil-plus-pond
-closure, and rejection of unsupported mode zero. These are process oracles,
-not a production tillage admission: persistent event ownership, inverse head
-update, compatibility and accepted-step replay remain open.
+closure, and rejection of unsupported mode zero. These are process oracles;
+the later event, binding and restart checks below do not establish a
+production tillage admission without accepted solver-state application.
+
+The `i_n_model=3` oracle also derives `(n-N_match)/(Rho_cons-Rho_match)`
+from source parameters and rejects coincident densities, another explicit
+division-by-zero risk in the B1.11 source.
 
 `tests/tillage/run_mig431_tillage_owner.sh` passed at O0 and O2. It verifies
 event-boundary splitting leaves committed state unchanged, applies the event
