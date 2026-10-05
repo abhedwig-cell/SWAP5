@@ -425,3 +425,21 @@ Completed local O0/O2 source parity, nonfinite-input guards, six65536-step runti
 PPA-WU05B9 is canonically admitted via PR #1048 at `5cd8f04f81c19c6a20abeacddc172e0c44598ded`. Its explicit physical selector generates admitted LINEAR drainage from each immutable trial-start GWL view before B6 normal frost reduction. Final nodal rates feed the existing sink and step/window receipts; raw generation diagnostics retain proposal provenance.
 
 [Contract and evidence](../audits/PPA_WU05B9_LINEAR_RESPONSE_FROST.md) bind completed local source parity, six O0/O2-identical actual trajectories, further reference refinement, hard mass, retry/replay/restart/application and all relevant incumbent/current preservation. Exact proposed merge identity was verified. B10 low-air response is preregistered separately; redistribution, projection, hybrids and broader geometry remain outside this admission. Aggregate frost migration and the frozen Status A denominator are unchanged.
+
+## Generated linear drainage with bracketed low-air frost
+
+PPA-WU05B10 is admitted via PR #1050 at `6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50`. Its separate physical selector composes admitted LINEAR generation with B8 guarded low-air depths, final nodal receipts and a separate final bottom owner. The [contract and evidence](../audits/PPA_WU05B10_LOW_AIR_LINEAR_RESPONSE.md) cover216 corrected-reference cases, six O0/O2-identical65536-step trajectories, further131072 refinement, activation/provenance, hard mass, retry/replay/restart/application and preservation.
+
+The actual merge incorporated a concurrent qualified exact root-cutoff repair. Active B10 dependencies remained unchanged; affected root/salt and composed postimage preservation were freshly checked, with a separate immutable replay and reconciliation record. No full-tree equality to the earlier proposed merge is claimed. Other generation families, SWDIVD1, projection, hybrids and new geometry/phase-change remain separate. Aggregate frost migration and the frozen Status A denominator remain unchanged.
+
+## Exact macro compensation cutoff: PPA EXACT01 (2026-10-05)
+
+PR #1051, merge `4c0615bfdb3a3e12db2b988eff97db749cca0511`, restores executable B1.11 eligibility
+`alptot >= 1e-14`, replacing the earlier reconstructed 0.05 cutoff. All 29
+current-source groups pass, including literal source and actual severe-stress
+application/restart trials. Ownership and restart schema remain unchanged.
+
+Exact dispatcher evidence also supersedes the earlier external Jarvis/Walsum
+after MICRO interpretation: it is not a B1.11 option. Independent MICRO physics
+migration remains open. See the [canonical closeout](../audits/PPA_WU05D_EXACT01_CANONICAL_CLOSEOUT.md).
+Historical evidence and the frozen Status A denominator remain unchanged.

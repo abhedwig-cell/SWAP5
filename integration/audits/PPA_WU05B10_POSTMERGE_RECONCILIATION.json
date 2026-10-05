@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B10",
-  "status": "PREREGISTERED_CONCURRENT_ROOT_DELTA_REQUALIFICATION_PENDING",
+  "status": "COMPOSED_POSTIMAGE_QUALIFIED",
   "actual_merge": "6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50",
   "actual_first_parent": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
   "actual_tree": "a2323f363d148da975fa8df13024a2c53c14d5ae",
@@ -24,5 +24,27 @@
   ],
   "no_new_physics": true,
   "aggregate_frost_migration_complete": false,
-  "negative_finding": "API expected_head_sha protects the PR head, not a concurrent base advance. Original proposed merge was exact, but actual first parent advanced to a qualified root repair before merge. Final claim must bind the actual composed postimage."
+  "negative_finding": "API expected_head_sha protects the PR head, not a concurrent base advance. Original proposed merge was exact, but actual first parent advanced to a qualified root repair before merge. Final claim must bind the actual composed postimage.",
+  "qualified": true,
+  "execution_checkout": "6f7b3db57f0e0508b73460200f9802ba1534e4ad",
+  "completed": {
+    "fresh_B1_B2_B3_B4_B6": "O0_O2_PASS_IDENTICAL_STDOUT",
+    "fresh_SALFRO01": "FOUR_PASS_SOURCE_MANIFESTS_MATCH_FRESH_PROCESS_O0_O2_IDENTICAL",
+    "EXACT01": "330_LITERAL_SOURCE_CASES_12_DISPATCH_O0_O2_PASS",
+    "VQ73_VQ74": "IMMUTABLE_O0_O2_PASS_IDENTICAL_STDOUT",
+    "composed_B10_activation": "PASS_IDENTICAL_ORIGINAL_OUTPUT_UNCHANGED_INTERFACE_OTHER_OBJECT_BYTES",
+    "canonical": "COMPLETE_GATE_PASS"
+  },
+  "negative_findings": [
+    "API expected_head_sha protects the PR head, not a concurrent base advance. Original proposed merge was exact, but actual first parent advanced to a qualified root repair before merge. Final claim must bind the actual composed postimage.",
+    "First postmerge preservation edit used a Fortran end-if spelling in shell and failed shell parsing before physics. Repaired fi, shell syntax passes and complete gate rerun passes."
+  ],
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B10_COMPOSED_POSTMERGE_REPLAY.json.gz",
+    "sha256": "6c953a405c33d8e27fef02cbbf2e494bcb0dc8d6ebe356fa728f839885811d17",
+    "bytes": 94927,
+    "manifest_entries": 490
+  },
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
+  "metadata_reconciliation": "0bd22036563b02c8fb6a0d54d05f22253b57bb06"
 }

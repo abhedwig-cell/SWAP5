@@ -1,6 +1,6 @@
 # PPA-WU05B10 generated linear drainage with bracketed low-air frost
 
-Status: locally qualified candidate; canonical admission pending. B9 is independently admitted via PR #1048 and its closeout PR #1049.
+Status: canonically admitted via PR #1050 at `6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50`, with composed postimage reconciliation complete. B9 is independently admitted via PR #1048 and its closeout PR #1049.
 
 The separate OFF-by-default `frost_low_air_response_drainage_active` selector requires the B9 response/frost selector, admitted LINEAR response levels, B6 normal drainage and B8 physical low-air depths. Generated level count must match finite negative physical depths in both backend and ordinary application. Projection, other variants and root/salt/macropore/snow hybrids remain excluded. Existing guarded geometry and positive head/temperature numerical budgets retain their own contracts.
 
@@ -17,3 +17,5 @@ Authority: `integration/audits/PPA_WU05B10_SOURCE_REVIEW.json`, `integration/aud
 No SWDIVD1 redistribution, new node distribution, uniform/unbracketed front or last-node interpretation, non-LINEAR joint response, projected/fully implicit groundwater coupling, new phase-change physics, seasonal accuracy or full legacy equivalence is claimed. Aggregate frost migration remains incomplete.
 
 Fresh B1/B2/B3/B4/B6/B8/B9 current-source runtimes, all four admitted SALFRO01 combinations with matching source manifests, exact immutable VQ73/VQ74 programs and complete canonical preservation pass. The replay artifact is `docs/audits/evidence/PPA_WU05B10_LOCAL_REPLAY.json.gz`.
+
+The actual merge also contains concurrent exact B1.11 root-cutoff admission `4c0615bf`. Its sole production delta changes the compensation cutoff, with no interface change. All active rootless B10 dependencies retain their original qualified bytes; original six refined trajectories remain relevant. Fresh composed-source B1/B2/B3/B4/B6, four expanded SALFRO01 runners,330 exact source cases, immutable VQ73/VQ74 and complete canonical preservation pass. Actual B10 activation output also matches at O0/O2 with the new root object and identical module interface. The distinct composed replay and reconciliation record document this inheritance and fresh evidence; the actual entire source tree is `60bc7fdc3430d8d8ae87f4a77219dbb6c44c6ec9`. The actual merge tree is not falsely equated with the earlier proposed tree.
