@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart; FMR Restart v4 forcing-handle mismatch rejection and disabled-only v3/v2 migration pass the A7 O0/O2 gate; Cdrain source/revision provenance is clone/restart-preserved by the typed FMR salt component, while live trial binding and candidate advancement remain blocked",
+  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart; FMR Restart v4 forcing-handle mismatch rejection and disabled-only v3/v2 migration pass the A7 O0/O2 gate; Cdrain source/revision provenance is clone/restart-preserved by the typed FMR salt component, while live trial binding and candidate advancement remain blocked; trial-boundary validation now requires the Cdrain source ID to match the column forcing handle and cover the full trial interval, while active salt layouts remain rejected",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "d9ff6009ef032ac41b0d528ecd09ef849acdadde40f40205f07340fe690f8cce",
@@ -18,10 +18,10 @@
     "src/runtime/mod_fmr_committed_restart.f90": "842d87dc68fef7dda6fbe17371d6ed5e4d3ed1a5fa5d2e5e58d42c12ed088b2f",
     "src/runtime/mod_fmr_restart_state_contract.f90": "d178762814b9490d827405d94b1f75567c84ab46d53cf7b8128d459ffc4c0bc2",
     "src/runtime/mod_fmr_runtime_core.f90": "04cd7d2ff3b1b8814ff08d22b0750a903df0ec9bb0d9ba2e516b01808eafd11c",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90": "49c0a46d7aa4e66c4cb96b3d2f3b739bb5aabc44e87d5112faa6436ccb4619ec",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d563ed6d2007b839f1cb7e67d1d40fac90de0d949f737b306611b4d750f5c4b9",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
     "tests/fpm/run_ppa_wu05a8_real_richards.sh": "fbbadf3c1533cf625e148ceda6ae3575b2ce7ac29bb4ff93ce638e40e189ca15",
-    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "1266ff225906b238ec56acdea2b6da393f22f1bd1673b6822a17717156e4d10c",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "1aa7dc71acd01e5ea74306cefdcf5c62989526107627e94025e6437c1acb796e",
     "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "50ea99cf305881e868091dccd987a5feada756a42b8190f0378f8cb64b53e110",
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
@@ -171,6 +171,11 @@
       "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
       "result": "PASS_O0_O2_IDENTICAL",
       "scope": "After provenance additions, checks Cdrain source/revision clone and restart identity, v4 forcing-handle identity and rejection, and keeps active FMR salt candidate fail-closed"
+    },
+    {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "result": "PASS_O0_O2_IDENTICAL",
+      "scope": "Checks typed Cdrain source/forcing-handle and interval matching, persisted source/revision clone and restart identity, and active-layout fail-closed boundary"
     }
   ],
   "not_run_or_not_claimed": [
