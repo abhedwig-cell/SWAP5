@@ -171,27 +171,4 @@ This wrapper is still process-only: the fields are not populated from the accept
 
 ## Next action
 
-Keep PPA-WU05-E salinity disabled on the live FMR macro route. The transport
-candidate is ready only for a bounded process-level envelope. Next add typed
-accepted top/returned-surface and rapid-drainage salt receipts; retain
-fail-closed behavior for covered-top and geometry-return routes until their
-donor and receiver mapping is explicit. Then bind per-domain macro salt mass
-atomically with the physical candidate and qualify commit/discard/retry/restart
-before any salinity response or Jarvis composition. PPA-WU05-F remains the
-separately registered frost root-stress unit.
-
-
-## Exact B1.11 solute source recovered (2026-10-05)
-
-The pinned B1.11 member is no longer missing. It was recovered from the isolated historical source archive on `archive/swap431-wofost81-qualified-donor` at `f8301c6e5c8b0eb6df86a2ae0e21b5bf0e476736`. The archive README identifies the donor as recovered and byte-verified. Concatenating encoded parts 001–049 and decoding reproduced `SWAP_WOFOST81_SOURCE.zip` at 545,332 bytes, SHA-256 `965a4908d028ff6a509ddc3d4efcf2e6bce736a7f59a6fc052c8fa2fdd66459b`. The extracted `solute.f90` is 51,508 bytes, SHA-256 `2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2`, Git blob SHA-1 `2fc77cc8d127d76e07a03369c1dac766157084b9`; it matches the pinned B1.11 member byte-for-byte.
-
-Source contract from that exact member:
-
-- The solute loop applies every `qdra(level,node)` independently. Positive flow removes mass using local dissolved `CML`; negative flow adds/removes signed mass using `Cdrain`. It books the signed result to the drainage mass ledger. Opposing drainage levels cannot be aggregated before selecting their donor concentrations.
-- `Cdrain` is a prescribed boundary concentration unless `swbr=1`, in which case `cdraini` initializes the dynamic aquifer concentration and the aquifer balance evolves it. Bottom seepage is selected independently: default `swbotbc=0` follows `Cdrain`, while other selector values provide fixed or time-varying `cseep`.
-- The source salt balance has no `qssdi` term. Surface irrigation and precipitation do have explicit `nird*cirr` and `nraidt*cpre` inputs. For a source-consistent restricted SWAP5 envelope, qssdi must be explicitly zero-solute or rejected; no concentration can be inferred from water forcing.
-- Root salt uptake is `tscf*qrot*CML`. The exact source also includes dispersion, sorption, decomposition, internal solute substeps and optional aquifer breakthrough; these remain outside the current advective prototype unless separately implemented and tested.
-
-This removes the exact-source identity blocker. It does not qualify a SWAP5 receipt, Cdrain forcing/restart owner, FMR salt candidate, or Jarvis integration. Keep those routes fail-closed until the contracts and transaction evidence exist.
-
-Reconstruction record: `reference/historical/swap431-wofost81/README.md`, `SOURCE_MANIFEST.tsv`, `reconstruct_source.py`, and `encoded/SWAP_WOFOST81_SOURCE.zip.b64.part001..part049` on the donor archive branch.
+The exact B1.11 qdra donor rule is implemented in the single-step candidate and carried through the ordered process trace. Next connect accepted FMR substeps to that trace without losing matrix face reconstruction, per-domain macro faces/exchange, level-resolved qdra, qssdi, or root sink. Define the first route's externally forced Cdrain as a typed immutable input with units, forcing interval, and restart/layout identity. Then bind candidate salt and receipts to the same FMR transaction object. Keep the current early rejection of active solute layouts until initialization, source mapping, atomic commit/discard, and restart serialization are implemented and pass their gates. Jarvis remains a read-only concentration consumer after that transaction is qualified; PPA-WU05-F remains the separately registered frost unit.
