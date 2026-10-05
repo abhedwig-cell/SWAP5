@@ -31,7 +31,8 @@ program test_ppa_wu05a7_real_richards_runtime
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
        fmr_serialized_physical_observation_t, fmr_water_flux_substep_trace_t, &
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
-       fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
+       fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg, &
+       fmr_c_drain_salt_forcing_t, FMR_C_DRAIN_UNIT_MG_CM3, fmr_c_drain_salt_covers_interval
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
@@ -475,6 +476,7 @@ contains
     type(mobile_macro_salt_substep_t),allocatable::salt_trace(:)
     type(mobile_macro_salt_state_t)::committed,candidate
     type(mobile_macro_salt_receipt_t)::receipt
+    type(fmr_c_drain_salt_forcing_t)::cdrain
     real(real64),allocatable::matrix_c(:),macro_c(:,:),faces(:)
     real(real64)::closure,max_qssdi
     integer::n,nd,nlev,i,status,face_status
@@ -487,6 +489,17 @@ contains
     nlev=size(water_trace(1)%drainage_sink_by_level,1)
     if(nd<=0.or.nlev<=0)error stop 'FMR salt process trace empty routes'
     allocate(salt_trace(size(water_trace)),matrix_c(n),macro_c(nd,n))
+    cdrain%available=.true.;cdrain%concentration_mg_cm3=0.25_real64
+    cdrain%valid_t0=water_trace(1)%t0;cdrain%valid_t1=water_trace(size(water_trace))%t1
+    cdrain%source_id=1_int64;cdrain%revision=0_int64;cdrain%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
+    if(.not.fmr_c_drain_salt_covers_interval(cdrain,cdrain%valid_t0,cdrain%valid_t1)) &
+         error stop 'FMR Cdrain declared interval rejected'
+    if(fmr_c_drain_salt_covers_interval(cdrain,cdrain%valid_t0,cdrain%valid_t1+1.0e-9_real64)) &
+         error stop 'FMR Cdrain incomplete interval accepted'
+    cdrain%unit_id=0
+    if(fmr_c_drain_salt_covers_interval(cdrain,cdrain%valid_t0,cdrain%valid_t1)) &
+         error stop 'FMR Cdrain unknown unit accepted'
+    cdrain%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
     matrix_c=0.4_real64;macro_c=0.3_real64
     call initialize_mobile_macro_salt_state(node_thickness,water_trace(1)%water_start, &
          water_trace(1)%macropore_water_start,matrix_c,macro_c,committed,status)
@@ -518,7 +531,9 @@ contains
       salt_trace(i)%root_water_sink=water_trace(i)%root_sink
       salt_trace(i)%qdra_rate=water_trace(i)%drainage_sink_by_level
       salt_trace(i)%qssdi_rate=water_trace(i)%subsurface_source
-      salt_trace(i)%cdrain_mg_cm3=0.25_real64
+      if(.not.fmr_c_drain_salt_covers_interval(cdrain,water_trace(i)%t0,water_trace(i)%t1)) &
+           error stop 'FMR Cdrain trace interval coverage'
+      salt_trace(i)%cdrain_mg_cm3=cdrain%concentration_mg_cm3
       salt_trace(i)%cdrain_available=.true.
       salt_trace(i)%matrix_top_concentration_mg_cm3=0.4_real64
       salt_trace(i)%matrix_bottom_concentration_mg_cm3=0.4_real64
@@ -529,7 +544,7 @@ contains
       max_qssdi=max(max_qssdi,maxval(abs(salt_trace(i)%qssdi_rate)))
     end do
     if(max_qssdi<=0.0_real64)error stop 'FMR salt process trace omitted qssdi water-only source'
-    call advance_mobile_macro_salt_trace(committed,node_thickness,salt_trace,0.25_real64,candidate,receipt,status)
+    call advance_mobile_macro_salt_trace(committed,node_thickness,salt_trace,cdrain%concentration_mg_cm3,candidate,receipt,status)
     if(status/=MACRO_SALT_OK)error stop 'FMR trace mapped process salt candidate rejected'
     if(.not.allocated(candidate%matrix_mass_mg_cm2).or..not.allocated(candidate%macro_mass_mg_cm2)) &
          error stop 'FMR trace mapped process salt candidate missing'
