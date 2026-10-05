@@ -53,8 +53,8 @@
     "integration/audits/F-MIG431-INT13_SOURCE_RECONCILIATION_ADDENDUM.md"
   ],
   "implemented": "B1.11 piecewise-constant Rutter fill/dry event integrator; source-window FMR physical-state candidate; constant surface irrigation routing for both ISUA modes; fimin removed from the Rutter contract",
-  "persisted": "The bounded constant-surface-irrigation candidate passed targeted INT13 Actions run 37276517425 on commit 6f6eba2241b662cf0d3c1126bd21a63845b6ee41. The companion PPA-WU01 owner qualification passed run 37276517357 on the same commit.",
-  "tested": "The exact remote tree for 6f6eba2241b662cf0d3c1126bd21a63845b6ee41 matches the locally verified candidate tree. INT13 Actions run 37276517425 passed Rutter physics/source-window/retry/restart/determinism and production FMR composition/preservation. PPA-WU01 run 37276517357 passed. Local O0/O2 tests pass both ISUA hand-oracles, immutable irrigation source-window forcing, FMR production at the bounded low-rate irrigation vector, and source-window checks.",
+  "persisted": "The bounded constant-surface-irrigation candidate passed targeted INT13 Actions run 37276517425 on commit 6f6eba2241b662cf0d3c1126bd21a63845b6ee41. The companion PPA-WU01 owner qualification passed run 37276517357 on the same commit. A fresh PR-head requalification passed run 37279774590 on head 9b8281d2c1e50153c0d7bb86d7b883cb40f48629 against canonical base 9605fbb1622d96f4691117f66264f13b6dd3a47b; canonical admission remains pending.",
+  "tested": "The exact remote tree for 6f6eba2241b662cf0d3c1126bd21a63845b6ee41 matches the locally verified candidate tree. INT13 Actions run 37276517425 passed Rutter physics/source-window/retry/restart/determinism and production FMR composition/preservation. PPA-WU01 run 37276517357 passed. Local O0/O2 tests pass both ISUA hand-oracles, immutable irrigation source-window forcing, FMR production at the bounded low-rate irrigation vector, and source-window checks. Latest PR-head INT13 run 37279774590 passed both the Rutter/source-window/retry/restart/determinism gate and production FMR composition/preservation gate; comparison shows the only commit after the previously qualified tip changed this status JSON.",
   "latest_audit_findings": [
     "Exact B1.11 MOD_meteo.f90 member reconstructed from the release archive; SHA-256 99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f.",
     "B1.11 Rutter uses piecewise constant canopy input/output fluxes with internal fill and dry event times. It does not use fimin or the SWAP 4.2.0 exponential storage equation.",
@@ -91,5 +91,19 @@
     "Higher throughfall combinations trigger the separately owned Reference Richards error 'HeadCalc: dynamic head regime omitted surface-head derivative' and remain out of scope.",
     "Irrigation scheduling, sprinkling, Snow, Black/Boesten with Rutter, macropore, RFM/surface-water combinations and unsupported solver profiles remain out of scope.",
     "SWINTER=3 remains unadmitted pending canonical integration."
-  ]
+  ],
+  "latest_pull_request_requalification": {
+    "workflow_run_id": 37279774590,
+    "head": "9b8281d2c1e50153c0d7bb86d7b883cb40f48629",
+    "base": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+    "rutter_physics_source_windows_retry_restart_determinism": "PASS",
+    "production_fmr_composition_and_preservation": "PASS",
+    "note": "This PR-head run requalifies the current candidate. It does not constitute canonical admission."
+  },
+  "canonical_admission": {
+    "status": "PENDING",
+    "pull_request": 1016,
+    "mergeable": true,
+    "requirement": "Complete canonical review and the required canonical integration/admission qualification before treating SWINTER=3 as admitted."
+  }
 }
