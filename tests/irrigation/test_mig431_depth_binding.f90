@@ -3,6 +3,7 @@ program test_mig431_depth_binding
   use mod_fmr_irrigation_depth_binding
   implicit none
   integer :: first,last,status
+  real(real64) :: depth,rate
   real(real64), parameter :: bottom(3) = [-10.0_real64,-20.0_real64,-30.0_real64]
   call bind_irrigation_depth_to_nodes(bottom,-15.0_real64,-15.0_real64,first,last,status)
   if (status /= IRRIGATION_DEPTH_BIND_OK .or. first /= 2 .or. last /= 2) error stop 1
@@ -12,5 +13,11 @@ program test_mig431_depth_binding
   if (status /= IRRIGATION_DEPTH_BIND_INVALID .or. first /= 0 .or. last /= 0) error stop 3
   call bind_irrigation_depth_to_nodes(bottom,-5.0_real64,-35.0_real64,first,last,status)
   if (status /= IRRIGATION_DEPTH_BIND_INVALID) error stop 4
+  call bind_fixed_irrigation_rate(12.0_real64,.false.,0.0_real64,depth,rate,status)
+  if (status /= IRRIGATION_DEPTH_BIND_OK .or. abs(depth-1.2_real64) > 1.e-14_real64 .or. &
+      abs(rate-1.2_real64) > 1.e-14_real64) error stop 5
+  call bind_fixed_irrigation_rate(12.0_real64,.true.,2.0_real64,depth,rate,status)
+  if (status /= IRRIGATION_DEPTH_BIND_OK .or. abs(rate-4.8_real64) > 1.e-14_real64) error stop 6
   print '(a)', 'F_MIG431_SSDI_DEPTH_NODE_BINDING=PASS'
+  print '(a)', 'F_MIG431_FIXED_RATE_FALLBACK_EQUIVALENCE=PASS'
 end program
