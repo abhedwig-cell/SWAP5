@@ -62,8 +62,7 @@ that transfer.
 For constant forcing, the piecewise-linear reservoir solution composes across
 source intervals: one source interval and any partition into smaller source
 intervals must produce the same final storage and integrated fluxes. Detailed meteorology therefore
-uses one immutable source window per record. LAI/canopy capacity, `fimin`,
-wet-canopy demand and irrigation changes must enter at an explicit source
+uses one immutable source window per record. LAI/canopy capacity, wet-canopy demand and irrigation changes must enter at an explicit source
 boundary. Richards retries never invoke the source processor again for an
 already accepted interval.
 
