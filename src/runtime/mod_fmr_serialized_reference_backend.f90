@@ -299,6 +299,15 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: runoff_exponent = 1.0_real64
   end type fmr_boesten_evaporation_runtime_forcing_t
 
+  integer, parameter, public :: FMR_C_DRAIN_UNIT_MG_CM3 = 1
+  type, public :: fmr_c_drain_salt_forcing_t
+    logical :: available = .false.
+    real(real64) :: concentration_mg_cm3 = 0.0_real64
+    real(real64) :: valid_t0 = 0.0_real64, valid_t1 = 0.0_real64
+    integer(int64) :: source_id = 0_int64, revision = -1_int64
+    integer :: unit_id = 0
+  end type fmr_c_drain_salt_forcing_t
+
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
@@ -308,6 +317,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
     type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
+    type(fmr_c_drain_salt_forcing_t), allocatable :: c_drain_salt
     real(real64), allocatable :: drainage_flux_by_level(:,:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
@@ -627,6 +637,7 @@ module mod_fmr_serialized_reference_backend
   end type fmr_serialized_reference_backend_t
 
   public :: prepare_fmr_b110_default_mvg
+  public :: fmr_c_drain_salt_covers_interval
   public :: fmr_new_b110_committed_state
   public :: fmr_new_b110_macropore_reduction_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
@@ -636,6 +647,19 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_rfm_committed_state
 
 contains
+
+  pure logical function fmr_c_drain_salt_covers_interval(forcing, t0, t1) result(valid)
+    type(fmr_c_drain_salt_forcing_t), intent(in) :: forcing
+    real(real64), intent(in) :: t0, t1
+    valid = .false.
+    if (.not. forcing%available) return
+    if (forcing%unit_id /= FMR_C_DRAIN_UNIT_MG_CM3) return
+    if (forcing%source_id <= 0_int64 .or. forcing%revision < 0_int64) return
+    if (.not. ieee_is_finite(forcing%concentration_mg_cm3) .or. forcing%concentration_mg_cm3 < 0.0_real64) return
+    if (.not. ieee_is_finite(forcing%valid_t0) .or. .not. ieee_is_finite(forcing%valid_t1)) return
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+    valid = forcing%valid_t0 <= t0 .and. forcing%valid_t1 >= t1 .and. forcing%valid_t1 > forcing%valid_t0
+  end function fmr_c_drain_salt_covers_interval
 
   subroutine prepare_fmr_b110_default_mvg(parameters, prepared)
     type(fmr_b110_physical_parameters_t), intent(inout) :: parameters
