@@ -1,0 +1,32 @@
+{
+  "work_unit": "PPA-WU05B9",
+  "status": "PREREGISTERED",
+  "baseline": "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
+  "source_review": "integration/audits/PPA_WU05B9_SOURCE_REVIEW.json",
+  "scope": "Explicit frost_response_drainage_active carrier: rootless ordinary Reference mode2 admitted LINEAR bottom-lumped response from current GWL carrier followed by admitted B6 normal frost scaling; no low-air or projection composition",
+  "interface": "New OFF-by-default physical composition selector requires frost_drainage and drainage_response activation, all LINEAR levels, no frost_low_air_drainage and no drainage_qbot_smooth_freatic_projection. Existing positive head/temperature budgets and external full/half numerical policy remain independent. No persistent/restart/ledger interface changes.",
+  "physical_order": "Evaluate admitted response once from immutable trial-start hydraulic view before normal frost kernel, retain untouched generated proposal as disposable scratch, then bind final nodal rates to existing solver sink. Keep raw response diagnostics as proposal provenance; step/window receipts use final node sum. Each retry/full/half regenerates from its original snapshot.",
+  "temporal_contract": "Retain B6 normal-branch terminal classification and explicit head/GWL/temperature normalized error. Linear response continuous in current GWL outside its declared activation kink; no head-derived projection/fully implicit coupling claim. Independent actual rates and refined trajectories qualify only tested windows.",
+  "gates": [
+    "Independent linear max(GWL-drainHead,0)/resistance then corrected B1 FrozenBounds parity O0/O2",
+    "Actual warm/partial/frozen/zero-generation multilevel runtime, both bottom signs, final nodal/storage and proposed-vs-actual receipt oracle, hard mass1e-12cm",
+    "Real rejection/replay, refined direct trajectories head1e-6cm/T1e-4C with additional reference refinement; empty-registry committed restart/application",
+    "Missing selector/options/budgets, low-air, non-LINEAR, projection and invalid controls fail closed without accepted publication",
+    "B1/B2/B3/B4/B6/B8 and four SALFRO01 preservation; exact immutable VQ73/VQ74 source-bound runtime replay; complete canonical preservation",
+    "Docs checks and strict build"
+  ],
+  "exclusions": [
+    "all other response variants in joint frost mode",
+    "B8 low-air generation",
+    "SWDIVD1/new distribution",
+    "GWL head projection/directional/fully implicit coupling",
+    "root/salt/macropore/snow",
+    "groundwater-owned bottom",
+    "last-node/full-frozen-front reinterpretation",
+    "phase-change/full-legacy equivalence"
+  ],
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false
+}
