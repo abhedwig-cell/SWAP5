@@ -19,6 +19,7 @@ for O in 0 2; do
     "$B/mod_soil_water_solver_contract.f90" \
     src/solver/mod_process_hydraulic_view.f90 \
     src/process/mod_root_water_uptake_process.f90 \
+    src/process/mod_root_salinity_response.f90 \
     src/process/mod_root_uptake_compensation.f90 \
     src/runtime/mod_root_uptake_compensation_execution.f90 \
     tests/physics/test_ppa_wu05d2_jarvis.f90 -o "$B/t$O"
