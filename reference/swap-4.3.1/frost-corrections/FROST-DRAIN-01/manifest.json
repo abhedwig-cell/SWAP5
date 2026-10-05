@@ -1,0 +1,27 @@
+{
+  "correction": "FROST-DRAIN-01",
+  "work_unit": "PPA-WU05B5-REF",
+  "scope": "Bounded B1 frost reporting-only overlay, low-air SWDIVD=0 SWMACRO=0",
+  "base_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+  "target_sha256": "6dd980713f4ecd28fce43a1fd24efdbf201d3164e17640c7502f0c7356aeb969",
+  "base_bytes": 7810,
+  "target_bytes": 8078,
+  "original_baseline_unchanged": true,
+  "global_B1_snapshot_promoted": false,
+  "physical_outputs_held_bitwise": [
+    "qdra",
+    "qbot",
+    "rfcp",
+    "zfrostbot",
+    "nodfrostbot"
+  ],
+  "source_owner_mapping": "HeadCalc sums qdra; Integral reports qdrtot and qbot",
+  "excluded": [
+    "SWDIVD=1",
+    "macropores",
+    "geometry changes",
+    "invalid deepest drain levels",
+    "full legacy global-equivalence claim",
+    "SWAP5 production migration"
+  ]
+}
