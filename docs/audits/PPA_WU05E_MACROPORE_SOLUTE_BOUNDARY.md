@@ -192,9 +192,38 @@ construct a process-kernel substep, with one forcing gap:
 These field names and the active-layout guard are present in
 `src/runtime/mod_fmr_serialized_reference_backend.f90`. The backend currently
 rejects every non-none `solute_state_layout_id` before trial execution. That
-guard is intentional until one FMR-owned candidate carries initialized matrix
-and domain salt masses plus complete typed receipts through commit/discard,
-retry/replay, and restart. The next bounded test can map the accepted water
-trace to `mobile_macro_salt_substep_t` and exercise only the process candidate;
-it must remain explicitly test-only and must not be presented as a live FMR
-salt transaction or as evidence to remove the guard.
+guard remains in place until one FMR-owned candidate carries initialized
+matrix and domain salt masses plus complete typed receipts through
+commit/discard, retry/replay, and restart. The A8 gate now maps the accepted
+water trace to `mobile_macro_salt_substep_t` in a test-only process adapter and
+advances the process candidate at O0/O2. The adapter preserves reconstructed
+matrix faces, per-domain macro faces and exchange, per-level `qdra`, water-only
+`qssdi`, `qrot`, and a declared test `Cdrain`. The process candidate and
+receipts pass, while the separate matrix-only consumer still fails closed.
+This does not call the candidate inside FMR or demonstrate transaction
+commit/discard/retry/restart for salt. The next step is to replace the test
+`Cdrain` constant with typed interval-bound FMR forcing and define its unit,
+source, and restart identity; keep the active-layout guard.
+
+
+## Accepted FMR trace mapped to the salt process candidate (2026-10-05)
+
+The A8 test now maps each accepted FMR water substep into
+`mobile_macro_salt_substep_t`: matrix faces are reconstructed from accepted
+storage and source observations; domain macro faces, exchange, water states,
+level-resolved `qdra`, `qssdi`, and `qrot` are copied from the trace. The
+test declares its matrix and macro boundary concentrations and an explicit
+`Cdrain` value. It verifies a successful ordered process candidate, a
+non-empty signed drainage receipt, nonnegative candidate inventories, and
+salt-ledger closure. This is a process call driven by real accepted-water
+observations; it is not a live FMR candidate, does not commit salt through the
+FMR transaction, and does not validate a persistent Cdrain source.
+
+The A8 O0/O2 runner now compiles the coupled matrix/macro transport module and
+requires the `PASS_TEST_ONLY` marker. The exact PR-branch runtime, restart,
+solute-state, transport, test, and runner postimages were compiled locally with
+GNU Fortran 13.3.0; both O0 and O2 passed with byte-identical runner output.
+The independent process oracle also passes at O0/O2 after the ordered wrapper
+was corrected to forward qdra/qssdi/Cdrain per substep and aggregate signed
+per-level drainage receipts. These results establish a test-only mapping
+boundary, not FMR salinity capability or qualification.
