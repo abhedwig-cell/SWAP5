@@ -98,6 +98,10 @@ module mod_fmr_serialized_reference_backend
        soil_temperature_numerical_config_t, soil_temperature_forcing_t, soil_temperature_state_t, &
        soil_temperature_workspace_t, soil_temperature_result_t, soil_temperature_diagnostics_t, &
        trial_restricted_soil_temperature, commit_soil_temperature_state
+  use mod_frost_hydraulic_effect, only: frost_hydraulic_parameters_t, FROST_EFFECT_OK, &
+       evaluate_frost_hydraulic_factor
+  use mod_frost_hydraulic_provider, only: frost_constitutive_provider_t, &
+       bind_frost_constitutive_provider, FROST_PROVIDER_OK
   use mod_restricted_fixed_weir_surface_water, only: fixed_weir_surface_water_parameters_t, &
        fixed_weir_surface_water_state_t, fixed_weir_surface_water_forcing_t, &
        fixed_weir_surface_water_numerical_config_t, fixed_weir_surface_water_result_t, &
@@ -254,6 +258,7 @@ module mod_fmr_serialized_reference_backend
     logical :: ksatexm_extension_active = .false.
     logical :: elasticity_active = .false.
     logical :: frost_active = .false.
+    type(frost_hydraulic_parameters_t) :: frost_hydraulic
     logical :: soil_temperature_active = .false.
     logical :: black_evaporation_active = .false.
     type(black_evaporation_parameters_t), allocatable :: black_evaporation
@@ -406,6 +411,11 @@ module mod_fmr_serialized_reference_backend
     type(snow_mass_contribution_t) :: snow_mass
     logical :: soil_temperature_active = .false.
     logical :: soil_temperature_executed = .false.
+    logical :: frost_hydraulic_active = .false.
+    logical :: frost_hydraulic_executed = .false.
+    integer :: frost_hydraulic_status = 0
+    real(real64) :: frost_factor_min = 1.0_real64
+    real(real64) :: frost_factor_max = 1.0_real64
     integer :: soil_temperature_status = 0
     logical :: soil_temperature_energy_accounting_complete = .false.
     real(real64) :: soil_temperature_energy_residual_j_cm2 = 0.0_real64
@@ -557,6 +567,9 @@ module mod_fmr_serialized_reference_backend
     type(snow_flux_result_t) :: snow_fluxes
     type(snow_diagnostics_t) :: snow_diagnostics
     logical :: soil_temperature_active = .false.
+    logical :: frost_active = .false.
+    type(frost_hydraulic_parameters_t) :: frost_hydraulic
+    type(frost_constitutive_provider_t), pointer :: frost_constitutive => null()
     logical :: black_evaporation_active = .false.
     type(black_evaporation_parameters_t) :: black_evaporation_parameters
     type(fmr_black_evaporation_runtime_forcing_t) :: black_evaporation_forcing
@@ -2003,8 +2016,7 @@ contains
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
            parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
-           .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
-            .not. parameters%frost_active
+           .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active
        if (parameters%bottom_mode == 3) then
          ! Admission precedes configure_parameters()/prepare_interval(). The
          ! immutable forcing-owned Cauchy control is therefore validated in
@@ -2040,6 +2052,19 @@ contains
              parameters%soil_temperature%node_count() == parameters%active_nodes
       else
         ok = ok .and. .not. allocated(parameters%soil_temperature) .and. .not. self%soil_temperature_active
+      end if
+      if (parameters%frost_active) then
+        ok = ok .and. parameters%frost_hydraulic%valid() .and. parameters%frost_hydraulic%active .and. &
+             parameters%soil_temperature_active .and. self%soil_temperature_active .and. &
+             self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
+             parameters%bottom_mode == 2 .and. .not. parameters%root_extraction_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%drainage_response_active .and. &
+             .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
+             .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active .and. &
+             .not. self%bottom_thermal_carrier_active .and. .not. self%top_sensible_boundary_carrier_active .and. &
+             .not. self%trajectory_direction_requested .and. .not. self%temporal_indicator_history_enabled
+      else
+        ok = ok .and. .not. parameters%frost_hydraulic%active
       end if
       if (parameters%black_evaporation_active) then
         ok = ok .and. .not. parameters%boesten_evaporation_active .and. self%black_evaporation_active .and. &
@@ -2179,6 +2204,11 @@ contains
       end if
       self%snow_active = parameters%snow_active
       self%soil_temperature_active = parameters%soil_temperature_active
+      self%frost_active = parameters%frost_active
+      self%frost_hydraulic = parameters%frost_hydraulic
+      if (self%frost_active) then
+        if (.not. associated(self%frost_constitutive)) allocate(self%frost_constitutive)
+      end if
       self%black_evaporation_active = parameters%black_evaporation_active
       self%black_evaporation_parameters = black_evaporation_parameters_t()
       if (parameters%black_evaporation_active .and. allocated(parameters%black_evaporation)) then
@@ -2323,6 +2353,11 @@ contains
       else
         if (.not. allocated(forcing%drainage_flux_by_level) .or. allocated(forcing%drainage_response_controls)) return
         if (size(forcing%drainage_flux_by_level,1) <= 0 .or. size(forcing%drainage_flux_by_level,2) /= n) return
+        if (self%frost_active .and. any(forcing%drainage_flux_by_level /= 0.0_real64)) return
+        ! Legacy FrozenBounds can replace a prescribed qbot under a deep frozen
+        ! profile. Until that boundary view is separately admitted, this slice
+        ! is limited to a zero prescribed qbot where the boundary is invariant.
+        if (self%frost_active .and. forcing%bottom_flux /= 0.0_real64) return
       end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
       if (self%root_compensation%method /= ROOT_COMP_OFF) then
@@ -2709,9 +2744,9 @@ contains
     type(soil_temperature_state_t) :: soil_temperature_trial
     type(soil_temperature_result_t) :: soil_temperature_result
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
-    type(soil_temperature_field_view_t) :: oxygen_thermal
+    type(soil_temperature_field_view_t) :: oxygen_thermal, frost_thermal
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
-    real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:)
+    real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:),frost_factors(:)
     real(real64) :: atmospheric_ctop
     integer :: oxygen_route,waterfilm_mode,oxygen_status,oxygen_nodes
     logical :: publish_root_result
@@ -2747,6 +2782,7 @@ contains
     integer :: effective_bottom_mode, swbotb2_status, swbotb4_status, cauchy3_status
     type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
+    integer :: frost_status, frost_provider_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
     macropore_accepted_top_cm = 0.0_real64
@@ -2760,6 +2796,7 @@ contains
     self%last_observation%practical_richards_compartment_balance_tolerance = self%compartment_balance_tolerance
     self%last_observation%practical_richards_total_balance_tolerance = self%total_balance_tolerance
     self%last_observation%soil_temperature_active = self%soil_temperature_active
+    self%last_observation%frost_hydraulic_active = self%frost_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
     self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
@@ -2771,6 +2808,8 @@ contains
     self%last_observation%temporal_head_budget = self%temporal_indicator_budget
     bottom_temperature_start_c = 0.0_real64
     bottom_temperature_start_available = .false.
+    frost_status = FROST_EFFECT_OK
+    frost_provider_status = FROST_PROVIDER_OK
     trajectory_begin_ok = .false.
     trajectory_request_ok = .false.
     trajectory_stage_ok = .false.
@@ -3035,6 +3074,21 @@ contains
       if (self%soil_temperature_active) then
         if (.not. allocated(physical%soil_temperature) .or. .not. allocated(self%soil_temperature_parameters) .or. &
             .not. allocated(self%soil_temperature_forcing)) return
+        if (self%frost_active) then
+          call build_soil_temperature_field_view(physical%soil_temperature, frost_thermal, soil_temperature_status)
+          if (soil_temperature_status /= SOIL_TEMP_OK) then
+            self%last_observation%frost_hydraulic_status = soil_temperature_status
+            return
+          end if
+          allocate(frost_factors(frost_thermal%active_nodes))
+          call evaluate_frost_hydraulic_factor(self%frost_hydraulic, frost_thermal%temperature_c, &
+               frost_factors, frost_status)
+          self%last_observation%frost_hydraulic_executed = .true.
+          self%last_observation%frost_hydraulic_status = frost_status
+          if (frost_status /= FROST_EFFECT_OK) return
+          self%last_observation%frost_factor_min = minval(frost_factors)
+          self%last_observation%frost_factor_max = maxval(frost_factors)
+        end if
         if (self%bottom_thermal_carrier_active) then
           call soil_temperature_at_node(physical%soil_temperature, physical%active_nodes, bottom_temperature_start_c, &
                bottom_temperature_status)
@@ -3145,7 +3199,21 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    if (self%direct_retention_active) then
+    if (self%frost_active) then
+      if (.not. allocated(frost_factors)) return
+      if (self%direct_retention_active) then
+        call bind_frost_constitutive_provider(self%frost_constitutive, self%direct_retention_constitutive, &
+             frost_factors, frost_provider_status)
+      else
+        call bind_frost_constitutive_provider(self%frost_constitutive, self%constitutive, frost_factors, &
+             frost_provider_status)
+      end if
+      if (frost_provider_status /= FROST_PROVIDER_OK) then
+        self%last_observation%frost_hydraulic_status = -frost_provider_status
+        return
+      end if
+      request%evaluation%constitutive => self%frost_constitutive
+    else if (self%direct_retention_active) then
       request%evaluation%constitutive => self%direct_retention_constitutive
     else
       request%evaluation%constitutive => self%constitutive

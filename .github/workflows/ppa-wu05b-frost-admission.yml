@@ -1,0 +1,60 @@
+name: PPA-WU05B bounded frost qualification and admission
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/process/mod_frost_hydraulic_effect.f90'
+      - 'src/solver/mod_frost_hydraulic_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_committed_restart.f90'
+      - 'tests/frost/**'
+      - 'docs/audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md'
+      - 'integration/audits/PPA_WU05B_*.json'
+      - '.github/workflows/ppa-wu05b-frost-admission.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ppa-wu05b-frost-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bounded-frost-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record exact PR and tested revisions
+        run: |
+          echo "PPA_WU05B_PR_HEAD=${{ github.event.pull_request.head.sha }}"
+          echo "PPA_WU05B_TESTED_MERGE_HEAD=$(git rev-parse HEAD)"
+          echo "PPA_WU05B_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Install Fortran compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Frost process, typed provider, runtime, restart and retry qualification
+        run: |
+          bash tests/frost/run_ppa_wu05b_frost_effect.sh
+          bash tests/frost/run_ppa_wu05b_frost_runtime.sh
+      - name: Exact current-canonical preservation for the bounded frost successor
+        run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
+      - name: Install documentation dependencies
+        run: python3 -m pip install -r requirements-docs.txt
+      - name: Validate docs, JSON and whitespace
+        run: |
+          python3 tools/docs/check_docs.py
+          python3 -m mkdocs build --strict --site-dir "$RUNNER_TEMP/ppa-wu05b-site"
+          python3 - <<'PY'
+          import json
+          import pathlib
+          for path in pathlib.Path('integration/audits').glob('PPA_WU05B*.json'):
+              json.loads(path.read_text())
+          print('PPA-WU05B_JSON_PARSE=PASS')
+          PY
+          git diff --check

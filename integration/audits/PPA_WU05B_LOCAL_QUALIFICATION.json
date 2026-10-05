@@ -1,0 +1,112 @@
+{
+  "schema": "swap5.ppa_wu05b.local_qualification.v1",
+  "work_unit": "PPA-WU05B",
+  "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "qualification_state": "PERSISTED_BOUNDED_FROST_GATE_PASS_CURRENT_CANONICAL_PRESERVATION_PENDING",
+  "runs": [
+    {
+      "name": "frost effect and typed provider owner oracles",
+      "command": "tests/frost/run_ppa_wu05b_frost_effect.sh",
+      "optimization": [
+        "O0",
+        "O2"
+      ],
+      "result": "PASS",
+      "oracles": [
+        "ordered/invalid thresholds",
+        "unfrozen/onset/partial/strong factor law",
+        "K and dK/dh scaling and residual floor",
+        "theta, capacity and storage unchanged",
+        "provider value and derivative composition"
+      ]
+    },
+    {
+      "name": "serialized backend frost runtime, retry, restart and freeze-thaw",
+      "command": "tests/frost/run_ppa_wu05b_frost_runtime.sh",
+      "compiler_flags": "gfortran -std=f2008 -ffree-line-length-none -w -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0/-O2",
+      "optimization": [
+        "O0",
+        "O2"
+      ],
+      "result": "PASS",
+      "output_sha256": "e8cee6b5f7dd62853b64bcd3dd930abbe212e29940206f484ed5dd3b2c5a71a7",
+      "oracles": [
+        "backend unfrozen +1 C, onset 0 C, partial -1 C and strong -4 C independent factor values",
+        "warming and freeze-thaw recomputation through serialized backend",
+        "partial-frost prescribed top flux 1e-10 cm/day, prescribed bottom flux 0, 8 accepted substeps",
+        "28 attempts and 20 retries against the same initial committed physical checkpoint",
+        "final pressure head, water content and soil-temperature state match eight direct 1.25e-5 day continuations within explicit oracle limits",
+        "mass ledger complete; residual -2.140518e-16 cm <= hard 1e-12 cm",
+        "backend committed restart exported and restored into empty registry; template layout, lineage, revision, time, temperature profile and recomputed frost factor checked",
+        "frost plus temporal-indicator certificate and nonzero bottom flux fail closed before Richards",
+        "frost-off serialized qbot and temporal-certificate preservation"
+      ]
+    },
+    {
+      "name": "restricted sensible-temperature independent oracle",
+      "command": "local compile/run of tests/fci/test_fci43_restricted_soil_temperature_independent.f90",
+      "optimization": [
+        "O0",
+        "O2"
+      ],
+      "result": "PASS",
+      "output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583",
+      "scope_limit": "Reused temperature owner only; does not substitute for the frost-enabled backend restart oracle."
+    },
+    {
+      "name": "repository documentation source check",
+      "command": "python3 tools/docs/check_docs.py",
+      "result": "PASS"
+    },
+    {
+      "name": "strict documentation build",
+      "command": "python3 -m mkdocs build --strict --quiet",
+      "result": "PASS",
+      "note": "Existing unlinked pages and one unrelated stale anchor are reported by non-quiet build; strict command exits 0."
+    },
+    {
+      "name": "JSON and whitespace checks",
+      "command": "python JSON parse for PPA-WU05B audit files; git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "source_sha256": {
+    "src/process/mod_frost_hydraulic_effect.f90": "4ae4ed9bf70ccab0b0212a32205f2fcfb4f50172b64942e0320736a0cca35efd",
+    "src/solver/mod_frost_hydraulic_provider.f90": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "fe17d296330b4646c9a5c534e037aeb5f5e31c1e5e1cee396a148c8fb9e64b41",
+    "src/runtime/mod_fmr_committed_restart.f90": "344b574b7c9d7f636b6961143beb6753f8088a0ffb5ca53afbd839eb627f398e",
+    "tests/frost/test_ppa_wu05b_frost_runtime.f90": "c3bdbfaef22c7999b8de934131083e4d9acd3ff627cd4fb614ea19d3e8c57045",
+    "tests/frost/run_ppa_wu05b_frost_runtime.sh": "b22896bc2dffbd08c59510057b241869074b48e8c689a9c45e2d664a57af6d72",
+    "tests/frost/run_ppa_wu05b_frost_effect.sh": "638b055c883c42c07d51a76c7756bbb2dc57939462130f8d57c4f76214f5c744",
+    "docs/audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md": "0a951677292883f5a475a78c4978a3541dece5c6568086b2145bb5fab06850f9",
+    "integration/audits/PPA_WU05B_SOURCE_TRACE.json": "60d3ea7985bf74d50bb50daf69f9389cbede2e1ffd662664158caadc8fc1fa1f",
+    "integration/audits/PPA_WU05B_PREREGISTRATION.json": "627cb279500680e6ea19efd2044e18c9832d27c7ef4306fc00542b3b822921e2",
+    ".github/workflows/ppa-wu05b-frost-admission.yml": "c92ccae3349ad5adf558ba683f63d89920d83c9ff9699c6af550123f18c14906",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "0667a23927788bf64c31a0324b9f48c06c8631db89223fcbb7a84300ecb29820"
+  },
+  "open_gates": [
+    "Rerun the dedicated PPA-WU05B Actions gate on the updated exact PR postimage.",
+    "Complete F-CI canonical moving-current preservation with the exact PPA-WU05B backend successor pin.",
+    "Inspect F-KT22 current-canonical compile/runtime/EB-I25 results; the EB-I25 O0 preservation runner independently fails on exact canonical baseline 9605fbb at external full-half outflow fixture rejected before commit.",
+    "Central SWAP5 regie must reconcile the qualified bounded slice and record ADMIT, RETURN, or SUPERSEDE; admission is not claimed before that decision."
+  ],
+  "github_actions": "Run 37283776524 passed on exact prior candidate head a2b9227e43c6f705942dc4959a579c011b857ae0; updated preservation/evidence postimage awaits a fresh exact-head gate.",
+  "persisted_actions_qualification": {
+    "workflow": "PPA-WU05B bounded frost qualification and admission",
+    "run_id": 37283776524,
+    "job_id": 111677721005,
+    "conclusion": "success",
+    "tested_head": "a2b9227e43c6f705942dc4959a579c011b857ae0",
+    "tests": "frost effect/provider/runtime/restart/retry at O0 and O2; docs; strict MkDocs; JSON; whitespace",
+    "run_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37283776524"
+  },
+  "baseline_diagnostic": {
+    "gate": "F-KT22 EB-I25 preservation",
+    "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+    "command": "bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh",
+    "result": "FAIL at O0 on baseline",
+    "failure_marker": "external full-half outflow fixture rejected before commit",
+    "interpretation": "Reproduced in a detached worktree at the exact current canonical baseline; it predates this frost postimage. The exact PR Actions result remains necessary to verify the frost successor."
+  }
+}
