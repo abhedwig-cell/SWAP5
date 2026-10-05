@@ -104,6 +104,7 @@ MODULE_SRC=(
   src/runtime/mod_root_uptake_compensation_execution.f90
   src/process/mod_root_uptake_oxygen_composition.f90
   src/runtime/mod_fmr_bartholomeus_execution.f90
+  src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90
   "$BACKEND"
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_owned_commit_receipt.f90
