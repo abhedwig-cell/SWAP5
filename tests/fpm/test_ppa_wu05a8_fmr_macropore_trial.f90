@@ -221,7 +221,7 @@ contains
     allocate(static_volume(numnod),domain_fraction(1,numnod),diameter(numnod),theta_s(numnod),theta_r(numnod), &
          wall_correction(numnod),sorp_max(numnod),sorp_alpha(numnod),conductivity(numnod),entry_head(numnod), &
          sorp_fac_parallel(numnod),ksat_horizontal(numnod),cdarcy(1,numnod),potential_bottom(1))
-    static_volume=0.50_real64
+    static_volume=0.25_real64
     domain_fraction=1.0_real64
     diameter=4.0_real64
     theta_s=0.427494_real64

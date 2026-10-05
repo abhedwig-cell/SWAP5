@@ -1,84 +1,67 @@
 # PPA-WU05-MIGMAC02 timing contract
 
-Date: 2026-10-02
-Status: PREREGISTERED_IMPLEMENTATION_TIMING
-Canonical parent: d92f1f8510300b34ee878fdbac237168c8fd7032
+Date: 2026-10-05
+Status: `B111_TIMING_RECONSTRUCTED_SWAP5_TRANSACTION_QUALIFICATION_OPEN`
+Canonical parent: `9605fbb1622d96f4691117f66264f13b6dd3a47b`
 
-## Recovered nonlinear call semantics
+## B1.11 call sequence
 
-The retained B1.11/A23 source path shows HeadCalc evaluating macropore rates
-inside the nonlinear solve. On the active macropore route, HeadCalc calls the
-rate path on the first iteration and again while the three-stage unsaturated
-short-step policy has not frozen macropore rates. The derivative path is
-likewise evaluated while that policy remains active.
+1. `MACRORATE(1)` calls `MACROPORE(2)` before computing rates; this path calls
+   `MPVOLUME(1)`, which updates geometry from current iterative `Theta`.
+2. The same update is available on later rate refreshes, including derivative
+   evaluations from the Richards iteration. The macro-rate bundle therefore
+   observes geometry associated with each current iterative moisture profile.
+3. At timestep completion, `SOILWATER` invokes `MACROPORE(4)` and
+   `MACROSTATE`, which invokes `MPVOLUME(2)` after solving. This postsolve path
+   restores capacity where macro water would exceed shrunken geometry. Legacy
+   intentionally leaves the already computed surface area unchanged by this
+   correction.
+4. The legacy `MACROSTATEVAR` rollback saves/restores selected volume and water
+   arrays but not `VlMpDyCp` or `SubsidCp`. Trial mutation can therefore leak
+   through a forced timestep reduction. This is a legacy state-management
+   defect, not a required physical behavior.
 
-The earlier source/state audits establish that VlMpDyCp is mutated by MPVOLUME
-during trial evaluation and that legacy rollback was incomplete. Combined with
-the E4 hysteresis result, this means dynamic crack volume is both:
+## SWAP5 transaction contract
 
-- accepted continuation/history input to a new trial; and
-- trial-local candidate state that may be refreshed from current nonlinear
-  matrix moisture while macropore rates are being refreshed.
+For each Reference Richards trial, read accepted dynamic crack history and
+accepted moisture history as immutable inputs. Recompute a candidate profile
+from the trial moisture, derive candidate geometry and rates, and associate the
+candidate with the exact accepted solver receipt. A rejected attempt discards
+all geometry and water-return candidates. Only acceptance publishes dynamic
+crack history and its derived geometry; restart serializes that accepted
+continuation state. The final rate refresh uses converged candidate geometry,
+recomputes dynamic surface input, and adds candidate-capacity water return to
+the same matrix exchange vector used by the inner Richards callback. Geometry
+displacement remains an explicit transfer through the existing shared owner
+receipt, so the one-owner mass ledger can close.
 
-Therefore a production migration that computes shrinkage only once after
-Richards convergence would not preserve the B1.11 coupling semantics.
+SWAP5 evaluates neighboring hysteresis from the same accepted profile
+synchronously. B1.11's ascending in-place loop can observe a newly updated
+left neighbor and an old right neighbor; eliminating this order dependency is
+intentional, but requires wetting-front oracle cases. B1.11's postsolve capacity
+restoration and SWAP5's explicit displaced-water transfer are not assumed
+equivalent until saturated and shrinking capacity cases close through runtime.
 
-## SWAP5 timing contract
+## Qualification required
 
-For shrinkage-active source-backed configurations:
+The initializer translates physical `surface_crack_area_depth_cm` (legacy
+`ZnCrAr`) to `NnCrAr` with the exact B1.11 grid-boundary threshold and `IcTopMp`
+covered-profile rule. The oracle passes the exact boundary and invalid
+out-of-profile cases at O0/O2.
 
-1. The committed macropore state, including accepted dynamic_volume_cp, is
-   immutable for the duration of a trial.
-2. Each macropore rate refresh receives current trial matrix theta and the
-   accepted previous-step matrix theta.
-3. The shrinkage operator computes a trial-local candidate dynamic_volume_cp
-   using the accepted crack history as the hysteresis reference.
-4. Derived geometry for that rate evaluation is recomputed from the trial-local
-   candidate dynamic volume.
-5. Macropore exchange and its derivative use that same candidate geometry.
-6. When the existing B1.11 short-step policy freezes macropore rates, geometry
-   and dynamic crack candidate are frozen with that rate receipt; they are not
-   silently recomputed while the rate is frozen.
-7. A rejected Richards/transaction trial discards the candidate crack state.
-8. On accepted solve/transaction, the crack candidate associated with the
-   accepted macropore receipt is published exactly once into the candidate
-   continuation state.
-9. Commit/restart then owns that accepted dynamic_volume_cp as ordinary
-   macropore continuation state.
+The independent laws and owner transitions, Reference Richards growth/wetting,
+per-domain displacement with rapid drainage, discard/smaller retry, A/B/A,
+accepted restart and unchanged-geometry identity pass at O0/O2. Preservation
+uses repaired physically valid A8/A9/A10 fixtures and the controlling corrected
+MIGMAC01 and PERCH20 gates. Source/output scope is recorded in qualification.
 
-This reproduces the physical within-Newton feedback without reproducing legacy
-module-global mutation or incomplete rollback.
+## Qualification finding: nonlinear source freezing
 
-## Derivative boundary
-
-MIGMAC02 does not initially invent an analytic derivative of the shrinkage
-transition with respect to pressure head.
-
-The first implementation shall preserve the existing source decomposition:
-geometry is refreshed with the rate evaluation, while the existing macropore
-rate derivative contract remains the derivative authority. If qualification
-shows that the missing geometry derivative prevents source-equivalent
-convergence, that is a separate preregistered numerical question.
-
-## First bounded production slice
-
-Do not migrate all shrinkage input models at once.
-
-The first slice shall implement one source-defined, valid shrinkage
-parameterization with:
-
-- nonzero opening/closing dynamic volume;
-- hysteresis pair with identical current hydraulic state but different accepted
-  crack history;
-- geometry-displacement mass ownership;
-- exact reject/replay/restart checks.
-
-Clay + SWSHRINP=3 is explicitly excluded because the existing source audit
-classifies that accepted combination as a likely B1.11 input-validation defect.
-
-## Falsification
-
-The timing contract is falsified if a source-backed capture demonstrates that
-MPVOLUME candidate state used by a rate evaluation is not refreshed with the
-current nonlinear matrix state, or that a different candidate is published at
-accept than the one associated with the accepted rate receipt.
+Strong capacity contraction exposes the inherited HeadCalc short-step source-freezing
+heuristic: a solve can converge against a frozen exchange vector while the final
+candidate geometry yields a different receipt. MIGMAC02 requires the current
+geometry source and its Jacobian at every nonlinear iteration. The provider
+contract therefore advertises whether freezing is permitted (default true for
+existing providers); changing crack geometry disables freezing. An enabled law
+with zero crack threshold and zero accepted crack history preserves the existing
+iteration policy. This is a numerical policy prerequisite, not a second water owner.

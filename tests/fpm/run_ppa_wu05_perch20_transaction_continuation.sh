@@ -73,6 +73,7 @@ MODULE_SRC=(
   src/physics/oxygen/mod_bartholomeus_parameter_contract.f90
   src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90
   src/physics/oxygen/mod_bartholomeus_response_assembly.f90
+  src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90
   src/physics/oxygen/mod_bartholomeus_factor_provider.f90
   src/process/mod_root_water_uptake_process.f90
   src/process/mod_root_uptake_oxygen_composition.f90
@@ -103,6 +104,7 @@ MODULE_SRC=(
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/process/macropore/mod_ppa_wu05a5_top_partition.f90
   src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
+  src/process/macropore/mod_macropore_dynamic_shrinkage.f90
   src/runtime/mod_fmr_macropore_top_input.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
   src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90

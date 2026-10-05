@@ -129,6 +129,7 @@ module mod_soil_water_solver_contract
    contains
      procedure(macropore_rate_evaluate_ifc), deferred :: evaluate_rate
      procedure(macropore_derivative_evaluate_ifc), deferred :: evaluate_derivative
+     procedure :: permits_source_freezing => default_macropore_source_freezing
   end type macropore_exchange_provider_t
 
   type, public :: hydraulic_evaluation_context_t
@@ -312,6 +313,11 @@ module mod_soil_water_solver_contract
   end interface
 
 contains
+
+  logical function default_macropore_source_freezing(self) result(permitted)
+    class(macropore_exchange_provider_t),intent(in)::self
+    permitted=.true.
+  end function default_macropore_source_freezing
 
   subroutine constitutive_evaluate_demand_fallback(self, pressure_head, demand_mask, water_content, conductivity, &
                                                     capacity, dconductivity_dhead)
