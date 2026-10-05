@@ -1,6 +1,6 @@
 # PPA-WU05-E-WALSAL01 source and qualification contract
 
-Proposed successor, preregistered on canonical `916035e78305cae5f88c30d5805b5d9c33a348f8`.
+Qualified selected successor, canonical admission pending. Preregistered on canonical `916035e78305cae5f88c30d5805b5d9c33a348f8`.
 
 The exact B1.11 `rootextraction.f90` source derives Walsum ALPHACRIT before the
 shared Jarvis/Walsum stress compositor, including ALPSOL and selector 4.
@@ -16,6 +16,9 @@ match this geometry. Missing/invalid geometry or sink below roots rejects the
 whole candidate without changing accepted water, salt or temperature state.
 The fixed Jarvis alpha is ignored by Walsum. No lower clamp or additional sink,
 water receipt, salt owner, restart field or persistent geometry is introduced.
+The new combined route checks the supplied potential and drought sinks against
+geometry before oxygen/salinity can mask their support. This is input validation
+for this successor, without changing the historical salt-disabled D3 envelope.
 
 ## Declared qualification
 

@@ -463,7 +463,7 @@ contains
   end subroutine
   subroutine verify_geometry_rejection()
     integer::i
-    do i=1,7
+    do i=1,9
       bad=cfg
       select case(i)
       case(1);deallocate(bad%tiles(1)%base_forcing%root_walsum_geometry)
@@ -474,6 +474,15 @@ contains
       case(6);bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=.5_real64
       case(7)
         bad%tiles(1)%base_forcing%root_walsum_geometry=root_walsum_geometry_t(0._real64,1.5_real64,1.5_real64)
+      case(8)
+        bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=.5_real64
+        bad%tiles(1)%base_forcing%root_extraction_sink(2:)=0._real64
+        bad%tiles(1)%base_forcing%root_drought_reduction_total= &
+             bad%tiles(1)%base_forcing%root_potential_transpiration-sum(bad%tiles(1)%base_forcing%root_extraction_sink)
+      case(9)
+        bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=0._real64
+        bad%tiles(1)%base_forcing%root_extraction_sink=0._real64
+        bad%tiles(1)%base_forcing%root_drought_reduction_total=bad%tiles(1)%base_forcing%root_potential_transpiration
       end select
       call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
            bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2)
@@ -481,6 +490,20 @@ contains
       call states(1)%snapshot(after,ok)
       call require(ok.and.states(1)%current_revision()==0_int64,'invalid geometry preserves accepted revision')
       call require_same_physical(cfg%tiles(1)%initial_state,after)
+      call badapp%initialize(bad,status)
+      if(status==FMR_APP_BOOT_OK)then
+        call badapp%run_standalone(T0,T1,scenario_results,status)
+        call require(status/=FMR_APP_BOOT_OK,'invalid geometry actual application rejects')
+        if(allocated(scenario_results))then
+          if(size(scenario_results)>0)then
+            call require(.not.scenario_results(1)%committed.and..not.scenario_results(1)%actual_transpiration_available, &
+                 'invalid geometry cannot publish accepted uptake')
+          end if
+        end if
+      else
+        call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'invalid geometry application preflight fails closed')
+      end if
+      call badapp%close(status)
     end do
     ! A missing request following successful forcing cannot reuse cached geometry.
     call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
