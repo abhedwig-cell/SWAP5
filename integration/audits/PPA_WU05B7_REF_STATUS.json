@@ -1,0 +1,52 @@
+{
+  "work_unit": "PPA-WU05B7-REF",
+  "baseline": "1de2b874140c9f83a57c3eda8dfeddeeee19538d",
+  "status": "READY_FOR_REFERENCE_COMPONENT_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "admitted": false,
+  "scope": "Guarded corrected B1 FrozenCond bracket domain plus ordinary SWDRA1 SWDIVD0 nonmacro negative drain-depth domain",
+  "qualified_checkpoint": "5965d4c4e94d2c3f1aee857f1259f54d3e64b7ef",
+  "production_source_tree_unchanged": "c659cc9d51216437859e6675cce83f1b4b28e1b7",
+  "source_and_gate_manifest": {
+    "reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01/frozencond.f90": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2",
+    "reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01/manifest.json": "8e0decb206e5d68915fb1571498d64c42e264762dbdb64869804d47e022a5c04",
+    "reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01/apply.py": "5d1ebc4c97a5acd4c30caef6f906d805754e1bda7e6aabce224a8e52391ec404",
+    "tests/frost/test_ppa_wu05b7_geometry_reference.f90": "5af0522270d1e5f56491ea39b10d3c07e4807bd2956c5961f3642729f6a3fa84",
+    "tests/frost/run_ppa_wu05b7_geometry_reference.py": "9dcf2e111b7b581d884723ee88cdeac91a4eab52a6eb99596ca71007f88277d6",
+    "tests/frost/test_ppa_wu05b5_corrected_drain_globals.f90": "ad8686a11e4be779188547210be5be260227ddaa67eaa33d649b753bec5c4a54",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+    "reference/swap-4.3.1/frost-corrections/FROST-DRAIN-01/frozencond.f90": "9d75dc4a552f438fa4f358f3d9e17ddaaa1d50348e549b11802617a270ca1c87"
+  },
+  "qualification": {
+    "command": "python3 tests/frost/run_ppa_wu05b7_geometry_reference.py",
+    "O0": "PASS",
+    "O2": "PASS",
+    "valid_physical_identity_cases": 48,
+    "valid_factor_depth_nodal_bottom_fluxes": "BITWISE_IDENTICAL",
+    "original_uniform_profile": "Actual division trap reproduced",
+    "original_epsilon_unbracketed_bottom_cm": 4997.999585886846,
+    "original_invalid_drain_levels": "Actual bounds/index0 failure reproduced",
+    "invalid_geometry_status_and_preflux_boundary_guards": "PASS",
+    "exact_applicator_and_overwrite_guards": "PASS",
+    "valid_stdout_O0_O2": "IDENTICAL",
+    "strict_bounds_and_FP_traps": true
+  },
+  "replay": "integration/audits/PPA_WU05B7_REF_LOCAL_REPLAY.json",
+  "replay_sha256": "1e7a7c58a693fbd09e6552d453fe26c5ef66d457485fbffdd3f852793cf33659",
+  "original_B1_immutable": true,
+  "global_B1_snapshot_promoted": false,
+  "claim_ceiling": "Bounded actual source component, not full legacy run or new last-node/front physics",
+  "exclusions": [
+    "new fully frozen front interpretation",
+    "last-node index correction",
+    "SWDIVD1",
+    "macropore/surface-water drainage",
+    "global legacy equivalence",
+    "SWAP5 production"
+  ],
+  "next_action": "Central reference-component admission; migrate bracketed low-air ordinary drainage using explicit negative drain depths and one nodal owner",
+  "aggregate_frost_migration_complete": false
+}
