@@ -1,7 +1,7 @@
 {
   "work_unit": "PPA-WU05B3",
   "baseline": "33cb8c94d0ed2c9578643033e414a313daf00e88",
-  "last_reconciled_upstream": "33cb8c94d0ed2c9578643033e414a313daf00e88",
+  "last_reconciled_upstream": "a370f6f487c017af9931ffc46d4c5c9fb1288d8c",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -25,7 +25,7 @@
     "src/process",
     "tests/fci"
   ],
-  "next_action": "Run complete persisted O0/O2 focused and exact current-canonical preservation gates",
+  "next_action": "Qualify complete reconciled current-canonical production source including selected Walsum-salinity preservation",
   "blockers": [],
   "remote_checkpoint_note": "Implementation persisted at 17a5f1da903415d4568127476c24d835e9326836; revised tests and preserved gate pin uploaded before full qualification",
   "test_paths": [
@@ -36,5 +36,6 @@
     "Initial runtime fixture retained legacy 32-substep cap: incomplete interval despite accepted trials; qualification fixture now allows 100000 steps. No production cap weakened.",
     "Initial local temperature budget 1e-6 C gave horizon difference 1.015612e-4 C vs 2048 direct steps: FAILED retained 1e-4 C horizon bound. Qualification fixture tightens local budget to 1e-7 C, no claim of cumulative 1e-7 C accuracy.",
     "Restart test initially passed unallocated destination to existing assumed-shape registry API: fixed fixture to an empty one-element registry; production restart unchanged."
-  ]
+  ],
+  "reconciliation": "Preserves WALSAL01 selected Walsum-salinity parameter admission and pre-stress root support validation; sole conflict merged both module imports. Joint salt/frost remains excluded."
 }

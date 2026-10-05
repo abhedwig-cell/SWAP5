@@ -23,7 +23,7 @@ program test_ppa_wu05e_mixed_salt
   use mod_rutter_source_window_processor, only: initialize_rutter_canopy_state, RUTTER_WINDOW_OK
   implicit none
   real(real64),parameter::T0=5100.1875_real64,T1=T0+1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
-  type(fmr_production_application_config_t)::cfg,bad
+  type(fmr_production_application_config_t)::cfg,bad,oracle
   type(fmr_production_application_bootstrap_t)::app,badapp
   type(fmr_serialized_column_result_t),allocatable::app_results(:),scenario_results(:)
   type(fmr_serialized_reference_backend_t)::backend,resumed
@@ -38,17 +38,26 @@ program test_ppa_wu05e_mixed_salt
   type(fmr_serialized_physical_observation_t)::obs,obs2
   type(fmr_committed_restart_bundle_t)::bundle
   class(transaction_state_t),allocatable::snapshot,after
-  real(real64)::k
+  real(real64)::k,expected_alpha
   integer::status,scenario,j
-  character(512)::mode,restart_path,result_path,variant
-  logical::ok,dispersive
+  character(512)::mode,restart_path,result_path,variant,compensation
+  logical::ok,dispersive,walsum
   call get_command_argument(1,mode)
   call get_command_argument(2,restart_path)
   call get_command_argument(3,result_path)
   call get_command_argument(4,variant)
+  call get_command_argument(5,compensation)
   dispersive=trim(variant)=='dispersion'
+  walsum=trim(compensation)=='walsum'
   call initialize_application_config(cfg,-75._real64,k)
   call add_root_thermal_oxygen(cfg)
+  if(walsum)then
+    cfg%tiles(1)%parameters%root_compensation%method=ROOT_COMP_WALSUM
+    ! Walsum derives alpha from current geometry, ignoring this poisoned fixed alpha.
+    cfg%tiles(1)%parameters%root_compensation%alpha_critical=ieee_value(0._real64,ieee_quiet_nan)
+    allocate(cfg%tiles(1)%base_forcing%root_walsum_geometry)
+    cfg%tiles(1)%base_forcing%root_walsum_geometry=root_walsum_geometry_t(.5_real64,5._real64,1.5_real64)
+  end if
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
   cfg%tiles(1)%template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
@@ -181,6 +190,7 @@ program test_ppa_wu05e_mixed_salt
   call require(.not.first%completed.and..not.candidate%ready(),'backend reinitialize resets opt-in salt policy')
   call backend%configure_base_salt_temporal_policy(policy,ok)
   call require(ok,'reconfigure after backend reinitialize')
+  if(walsum)call verify_geometry_rejection()
   do scenario=1,7
     bad=cfg
     select case(scenario)
@@ -223,6 +233,10 @@ program test_ppa_wu05e_mixed_salt
       call require(any(obs2%root_salinity_alpha<1._real64),'combination actual salinity response')
     end if
     call other%snapshot(after,ok);call verify_ledger(obs2,after)
+    if(walsum)then
+      ! Rooted node 3 ends at 2 cm, not at the partial current depth 1.5 cm.
+      call verify_walsum_oracle(bad,obs2,after,replay,.7_real64)
+    end if
     call badapp%initialize(bad,status)
     call require(status==FMR_APP_BOOT_OK,'combination actual application initializes')
     call badapp%run_standalone(T0,T1,scenario_results,status)
@@ -234,6 +248,29 @@ program test_ppa_wu05e_mixed_salt
     call badapp%close(status);call backend%discard_trial_candidate(other,diag2)
     write(*,'(a,i0,a)')'PPA_WU05E_ACTUAL_COMBINATION_',scenario,'=PASS_TEST_ONLY'
   end do
+  if(walsum)then
+    do j=1,3
+      bad=cfg
+      select case(j)
+      case(1)
+        bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=1.25_real64
+        expected_alpha=.7_real64
+      case(2)
+        bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=2._real64
+        expected_alpha=.7_real64
+      case(3)
+        bad%tiles(1)%base_forcing%root_walsum_geometry%critical_root_zone_depth_cm=1._real64
+        expected_alpha=.8_real64
+      end select
+      call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
+           bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2,trace_accepted_water_flux_substeps=.true.)
+      call require(replay%completed.and.other%ready(),'changing partial/exact-boundary geometry candidate')
+      obs2=backend%observation();call other%snapshot(after,ok)
+      call verify_walsum_oracle(bad,obs2,after,replay,expected_alpha)
+      call backend%discard_trial_candidate(other,diag2)
+    end do
+    print '(a)','PPA_WU05E_WALSUM_DYNAMIC_GEOMETRY_ORACLE=PASS_TEST_ONLY'
+  end if
   block
     do scenario=1,3
       bad=cfg
@@ -288,7 +325,7 @@ program test_ppa_wu05e_mixed_salt
   end if
   call require(obs%bartholomeus_executed.and.obs%bartholomeus_status==0,'real oxygen caller')
   call require(obs%root_salinity_executed.and.obs%root_salinity_status==0,'real salinity caller')
-  call require(obs%root_compensation_executed.and.obs%root_compensation_status==0,'real Jarvis caller')
+  call require(obs%root_compensation_executed.and.obs%root_compensation_status==0,'real selected compensation caller')
   call require(obs%root_compensation_drought_loss>0._real64.and.obs%root_compensation_oxygen_loss>0._real64.and. &
        obs%root_salinity_reduction_total>0._real64,'all three actual stress losses')
   call require(abs(obs%root_compensation_final_uptake+obs%root_compensation_drought_loss+ &
@@ -381,8 +418,104 @@ program test_ppa_wu05e_mixed_salt
     end select
   end select
   if(dispersive)print '(a)','PPA_WU05E_JOINT_TRANSPORT_ACTUAL_LIFECYCLE=PASS_TEST_ONLY'
+  if(walsum)print '(a)','PPA_WU05E_WALSUM_SALINITY=PASS_TEST_ONLY'
   print '(a)','PPA_WU05E_MATRIX_MIXED_STRESS_LIFECYCLE=PASS_TEST_ONLY'
 contains
+  subroutine verify_walsum_oracle(value,observation,physical,water_result,alpha)
+    type(fmr_production_application_config_t),intent(in)::value
+    type(fmr_serialized_physical_observation_t),intent(in)::observation
+    class(transaction_state_t),intent(in)::physical
+    type(kernel_result_t),intent(in)::water_result
+    real(real64),intent(in)::alpha
+    type(fmr_serialized_reference_backend_t)::check_backend
+    type(kernel_candidate_state_t)::check_candidate
+    type(kernel_result_t)::check_result
+    type(kernel_diagnostics_t)::check_diag
+    type(fmr_serialized_physical_observation_t)::check_obs
+    class(transaction_state_t),allocatable::check_physical
+    logical::valid
+    oracle=value
+    oracle%tiles(1)%parameters%root_compensation%method=ROOT_COMP_JARVIS
+    oracle%tiles(1)%parameters%root_compensation%alpha_critical=alpha
+    deallocate(oracle%tiles(1)%base_forcing%root_walsum_geometry)
+    call check_backend%initialize(top)
+    call check_backend%configure_base_salt_temporal_policy(policy,valid)
+    call require(valid,'independent fixed-alpha numerical policy')
+    call check_backend%run_trial(columns(1),oracle%tiles(1)%template,oracle%tiles(1)%parameters,states(1), &
+         oracle%tiles(1)%base_forcing,oracle%numerical,T0,T1,cp,check_result,check_candidate,check_diag, &
+         trace_accepted_water_flux_substeps=.true.)
+    call require(check_result%completed.and.check_candidate%ready(),'independent fixed-alpha execution')
+    check_obs=check_backend%observation()
+    call require(all(observation%root_compensation_final_sink==check_obs%root_compensation_final_sink), &
+         'Walsum fixed-alpha node sink exact identity')
+    call require(same_bits(observation%root_compensation_drought_loss,check_obs%root_compensation_drought_loss).and. &
+         same_bits(observation%root_compensation_oxygen_loss,check_obs%root_compensation_oxygen_loss).and. &
+         same_bits(observation%root_salinity_reduction_total,check_obs%root_salinity_reduction_total), &
+         'Walsum fixed-alpha loss attribution bitwise identity')
+    call require(same_bits(water_result%mass%total_out,check_result%mass%total_out).and. &
+         same_bits(water_result%mass%storage_end,check_result%mass%storage_end), &
+         'Walsum fixed-alpha water receipt bitwise identity')
+    call check_candidate%snapshot(check_physical,valid)
+    call require(valid,'independent fixed-alpha snapshot')
+    call require_same_physical(physical,check_physical)
+    call verify_ledger(check_obs,check_physical)
+    call check_backend%discard_trial_candidate(check_candidate,check_diag)
+  end subroutine
+  subroutine verify_geometry_rejection()
+    integer::i
+    do i=1,9
+      bad=cfg
+      select case(i)
+      case(1);deallocate(bad%tiles(1)%base_forcing%root_walsum_geometry)
+      case(2);bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=ieee_value(0._real64,ieee_quiet_nan)
+      case(3);bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=4._real64
+      case(4);bad%tiles(1)%base_forcing%root_walsum_geometry%maximum_root_depth_cm=0._real64
+      case(5);bad%tiles(1)%base_forcing%root_walsum_geometry%critical_root_zone_depth_cm=-1._real64
+      case(6);bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=.5_real64
+      case(7)
+        bad%tiles(1)%base_forcing%root_walsum_geometry=root_walsum_geometry_t(0._real64,1.5_real64,1.5_real64)
+      case(8)
+        bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=.5_real64
+        bad%tiles(1)%base_forcing%root_extraction_sink(2:)=0._real64
+        bad%tiles(1)%base_forcing%root_drought_reduction_total= &
+             bad%tiles(1)%base_forcing%root_potential_transpiration-sum(bad%tiles(1)%base_forcing%root_extraction_sink)
+      case(9)
+        bad%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=0._real64
+        bad%tiles(1)%base_forcing%root_extraction_sink=0._real64
+        bad%tiles(1)%base_forcing%root_drought_reduction_total=bad%tiles(1)%base_forcing%root_potential_transpiration
+      end select
+      call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
+           bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2)
+      call require(.not.replay%completed.and..not.other%ready(),'invalid geometry salt trial fails closed')
+      call states(1)%snapshot(after,ok)
+      call require(ok.and.states(1)%current_revision()==0_int64,'invalid geometry preserves accepted revision')
+      call require_same_physical(cfg%tiles(1)%initial_state,after)
+      call badapp%initialize(bad,status)
+      if(status==FMR_APP_BOOT_OK)then
+        call badapp%run_standalone(T0,T1,scenario_results,status)
+        call require(status/=FMR_APP_BOOT_OK,'invalid geometry actual application rejects')
+        if(allocated(scenario_results))then
+          if(size(scenario_results)>0)then
+            call require(.not.scenario_results(1)%committed.and..not.scenario_results(1)%actual_transpiration_available, &
+                 'invalid geometry cannot publish accepted uptake')
+          end if
+        end if
+      else
+        call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'invalid geometry application preflight fails closed')
+      end if
+      call badapp%close(status)
+    end do
+    ! A missing request following successful forcing cannot reuse cached geometry.
+    call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
+         cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,replay,other,diag2)
+    call require(replay%completed,'valid geometry after invalid requests recovers')
+    call backend%discard_trial_candidate(other,diag2)
+    bad=cfg;deallocate(bad%tiles(1)%base_forcing%root_walsum_geometry)
+    call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
+         bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2)
+    call require(.not.replay%completed.and..not.other%ready(),'missing request clears previous valid geometry')
+    print '(a)','PPA_WU05E_WALSUM_INVALID_GEOMETRY_ISOLATION=PASS_TEST_ONLY'
+  end subroutine
   subroutine verify_ledger(observation,physical)
     type(fmr_serialized_physical_observation_t),intent(in)::observation
     class(transaction_state_t),intent(in)::physical
@@ -457,6 +590,10 @@ contains
     cfg%tiles(1)%base_forcing%soil_salt_boundary%matrix_top_mg_cm3=.8_real64
     cfg%tiles(1)%base_forcing%soil_salt_boundary%revision=1_int64
     cfg%tiles(1)%base_forcing%c_drain_salt%revision=1_int64
+    if(walsum)then
+      cfg%tiles(1)%base_forcing%root_walsum_geometry%current_root_depth_cm=2._real64
+      cfg%tiles(1)%base_forcing%root_walsum_geometry%critical_root_zone_depth_cm=1._real64
+    end if
   end subroutine
   ! Test-only bounded stream encoding of the actual decoded restart contract.
   ! This is deliberately not a public production restart file format.

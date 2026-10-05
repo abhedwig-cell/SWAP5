@@ -86,7 +86,8 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
-       ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, ROOT_COMP_FROST, root_walsum_geometry_t, ROOT_COMP_OK, attribute_root_stress_losses
+       ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, ROOT_COMP_FROST, root_walsum_geometry_t, ROOT_COMP_OK, &
+       attribute_root_stress_losses, evaluate_walsum_geometry
   use mod_frost_bottom_boundary_effect, only: frost_bottom_config_t, frost_bottom_result_t, &
        compose_legacy_no_drain_frost_bottom, FROST_BOTTOM_OK
   use mod_root_frost_stress, only: root_frost_config_t, compose_legacy_zero_root_frost, ROOT_FROST_OK
@@ -2536,7 +2537,8 @@ contains
       end if
       if (parameters%root_salinity_active) then
         ok = ok .and. parameters%root_extraction_active .and. &
-             parameters%root_compensation%method == ROOT_COMP_JARVIS .and. &
+             (parameters%root_compensation%method == ROOT_COMP_JARVIS .or. &
+              parameters%root_compensation%method == ROOT_COMP_WALSUM) .and. &
              ieee_is_finite(parameters%solute_tscf) .and. parameters%solute_tscf >= 0.0_real64 .and. &
              parameters%solute_tscf <= 10.0_real64 .and. ieee_is_finite(parameters%saltmax_mg_cm3) .and. &
              parameters%saltmax_mg_cm3 >= 0.0_real64 .and. parameters%saltmax_mg_cm3 <= 100.0_real64 .and. &
@@ -2832,6 +2834,22 @@ contains
       if (self%root_compensation%method /= ROOT_COMP_OFF) then
         if (.not. ieee_is_finite(forcing%root_potential_transpiration) .or. forcing%root_potential_transpiration < 0.0_real64) return
         if (.not. ieee_is_finite(forcing%root_drought_reduction_total) .or. forcing%root_drought_reduction_total < 0.0_real64) return
+      end if
+      if (self%root_salinity_active .and. self%root_compensation%method == ROOT_COMP_WALSUM) then
+        block
+          real(real64) :: geometry_alpha
+          integer :: deepest_root_node, geometry_status
+          ! Validate the crop owner's support before stress can mask a sink.
+          if (.not. allocated(forcing%root_walsum_geometry) .or. .not. allocated(forcing%root_potential_sink)) return
+          if (size(forcing%root_potential_sink) /= n) return
+          if (any(.not. ieee_is_finite(forcing%root_potential_sink))) return
+          if (any(forcing%root_potential_sink < 0.0_real64)) return
+          call evaluate_walsum_geometry(forcing%root_walsum_geometry,self%soil_parameters%dz, &
+               geometry_alpha,deepest_root_node,geometry_status)
+          if (geometry_status /= ROOT_COMP_OK) return
+          if (any(forcing%root_potential_sink(deepest_root_node+1:) /= 0.0_real64)) return
+          if (any(forcing%root_extraction_sink(deepest_root_node+1:) /= 0.0_real64)) return
+        end block
       end if
       if(allocated(self%bartholomeus)) then
         block

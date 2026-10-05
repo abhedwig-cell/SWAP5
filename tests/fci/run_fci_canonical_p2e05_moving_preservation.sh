@@ -302,8 +302,8 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
   fi
   if git merge-base --is-ancestor 58d86a8590181acd5274008d82afb5596aa9e0f7 HEAD; then
-    git merge-base --is-ancestor 33cb8c94d0ed2c9578643033e414a313daf00e88 HEAD || fail "PPA-WU05B3 lost admitted root/salt baseline"
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "55d5e4ad6f0062e4344d03d1364bb09bb9e1831e" || \
+    git merge-base --is-ancestor a370f6f487c017af9931ffc46d4c5c9fb1288d8c HEAD || fail "PPA-WU05B3 lost admitted root/Walsum-salt baseline"
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "1ac0a8032c08ad2119a929ae1deb338abe70a441" || \
       fail "PPA-WU05B3 bounded no-drain postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "9b44d4e536b783d892b2052eed4d36edb46b7838" || \
       fail "PPA-WU05B3 bounded no-drain postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"

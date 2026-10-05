@@ -1,0 +1,130 @@
+{
+  "schema": "swap5.ppa.walsal01.qualification.v1",
+  "work_unit": "PPA-WU05-E-WALSAL01",
+  "status": "QUALIFIED_SELECTED_MATRIX_READY_FOR_CENTRAL_ADMISSION",
+  "baseline": "916035e78305cae5f88c30d5805b5d9c33a348f8",
+  "execution_checkout": "a836831cfb354f687d4c961e83ceab63dc7e5e2c",
+  "published_execution_equivalent": "050bc8f79725cfb55c60dfa051b220b52309e4cd",
+  "source_subtrees": {
+    "src": "fdf5599beb2412b5b7db47e90f5a0d4f66446dd8",
+    "tests": "323124e8dc68b6d21e67e4a6e6c7be4e401edeaf"
+  },
+  "source_manifest_entries_verified": 1040,
+  "source_equivalence": "Evidence metadata successors may inherit this execution only when entire src and tests subtrees match. No execution claim is made for later metadata-only commits.",
+  "contract": "docs/audits/PPA_WU05E_WALSUM_SALINITY_CONTRACT.md",
+  "source_authority_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+  "qualified_scope": [
+    "Selected matrix mobile dissolved salt with conservative upwind or selected diffusion/dispersion",
+    "Feddes/Bartholomeus/Maas-Hoffman/Walsum composition, seven actual stress cases and selector 4",
+    "Independent partial-node/exact-boundary alpha .7/.8 fixed-Jarvis node sink, loss, water receipt and physical state identity",
+    "Nine invalid geometry cases, pre-stress support validation, missing-after-valid cache isolation and actual application no-publication rejection",
+    "Discard, real salt full/half rejection, attainable-budget adaptive recovery, committed restart with changed current geometry, independent process restart and O0/O2 byte identity"
+  ],
+  "exclusions": [
+    "Salt/frost and salt/Rutter production hybrids",
+    "Macropore salt production and dispersion",
+    "Osmotic-head mode, sorption/decomposition and groundwater/aquifer salt state",
+    "New crop rooting models, coupled salt routes and seasonal field/full legacy equivalence"
+  ],
+  "controlling_gates": {
+    "jarvis-process": {
+      "command": "bash tests/physics/run_ppa_wu05d2_jarvis.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 2.07
+    },
+    "mobile-salt": {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 3.55
+    },
+    "matrix-upwind": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 167.35
+    },
+    "walsum-upwind": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "environment": {
+        "WU05E_COMPENSATION_METHOD": "walsum"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 178.77
+    },
+    "walsum-dispersion": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "environment": {
+        "WU05E_COMPENSATION_METHOD": "walsum",
+        "WU05E_TRANSPORT_VARIANT": "dispersion"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 186.22
+    },
+    "d3-walsum": {
+      "command": "python tests/physics/run_ppa_wu05d3_walsum.py",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 135.08
+    },
+    "matrix-dispersion": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "environment": {
+        "WU05E_TRANSPORT_VARIANT": "dispersion"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 160.49
+    },
+    "d2-application": {
+      "command": "python tests/physics/run_ppa_wu05d2_application.py",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 158.04
+    },
+    "frost-runtime": {
+      "command": "bash tests/frost/run_ppa_wu05b_frost_runtime.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 98.47
+    },
+    "migmac09": {
+      "command": "bash tests/fpm/run_ppa_wu05_migmac09_reference_runtime.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 105.12
+    },
+    "rutter-production": {
+      "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 135.92
+    },
+    "richards-a8": {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 95.62
+    }
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05E_WALSAL01_REPLAY.json.gz",
+    "sha256": "583e917344954e7f09ff65b08ec396f756c4b41a03b504e70a5211208be9e950",
+    "bytes": 73098
+  },
+  "documentation_gates": {
+    "source_checks": {
+      "command": "python tools/docs/check_docs.py",
+      "exit_code": 0
+    },
+    "strict_build": {
+      "command": "python -m mkdocs build --strict",
+      "exit_code": 0
+    },
+    "whitespace": {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  },
+  "canonical_admitted": false
+}
