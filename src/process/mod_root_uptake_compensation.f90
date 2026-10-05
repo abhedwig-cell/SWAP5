@@ -7,7 +7,7 @@ module mod_root_uptake_compensation
 
   integer, parameter, public :: ROOT_COMP_OK=0, ROOT_COMP_INVALID=1, ROOT_COMP_UNSUPPORTED=2
   integer, parameter, public :: ROOT_COMP_OFF=0, ROOT_COMP_JARVIS=1, ROOT_COMP_WALSUM=2
-  integer, parameter, public :: ROOT_COMP_ALL=1, ROOT_COMP_DROUGHT=2, ROOT_COMP_OXYGEN=3
+  integer, parameter, public :: ROOT_COMP_ALL=1, ROOT_COMP_DROUGHT=2, ROOT_COMP_OXYGEN=3, ROOT_COMP_SALINITY=4
 
   type, public :: root_walsum_geometry_t
     real(real64) :: critical_root_zone_depth_cm=0.0_real64
@@ -27,6 +27,7 @@ module mod_root_uptake_compensation
     real(real64) :: compensated_uptake=0.0_real64
     real(real64) :: drought_reduction_total=0.0_real64
     real(real64) :: oxygen_reduction_total=0.0_real64
+    real(real64) :: salinity_reduction_total=0.0_real64
   end type
 
   public :: compose_jarvis_root_uptake, attribute_root_stress_losses, evaluate_walsum_geometry
@@ -96,20 +97,25 @@ contains
     status=ROOT_COMP_OK
   end subroutine
 
-  subroutine compose_jarvis_root_uptake(config,ptra,base_fluxes,drought_reduction,oxygen_reduction,final_fluxes,diag,status)
+  subroutine compose_jarvis_root_uptake(config,ptra,base_fluxes,drought_reduction,oxygen_reduction,final_fluxes,diag,status, &
+       salinity_reduction)
     type(root_compensation_config_t),intent(in)::config
     real(real64),intent(in)::ptra,drought_reduction,oxygen_reduction
     type(root_water_uptake_flux_result_t),intent(in)::base_fluxes
     type(root_water_uptake_flux_result_t),intent(out)::final_fluxes
     type(root_compensation_diagnostics_t),intent(out)::diag
     integer,intent(out)::status
+    real(real64),optional,intent(in)::salinity_reduction
     real(real64),parameter::vsmall=1.0e-14_real64
     integer::largest
-    real(real64)::alptot,qred,alpdry,alpwet,alpdrycom,alpwetcom,alptotcom,redtot,reduction_tolerance
+    real(real64)::alptot,qred,alpdry,alpwet,alpsol,alpdrycom,alpwetcom,alpsolcom,alptotcom,redtot, &
+         reduction_tolerance,salt_reduction
 
     final_fluxes=root_water_uptake_flux_result_t()
     diag=root_compensation_diagnostics_t()
     status=ROOT_COMP_OK
+    salt_reduction=0.0_real64
+    if(present(salinity_reduction))salt_reduction=salinity_reduction
 
     if(config%method==ROOT_COMP_OFF) then
       final_fluxes=base_fluxes
@@ -119,12 +125,13 @@ contains
       end if
       diag%drought_reduction_total=drought_reduction
       diag%oxygen_reduction_total=oxygen_reduction
+      diag%salinity_reduction_total=salt_reduction
       return
     end if
     if(config%method/=ROOT_COMP_JARVIS) then
       status=ROOT_COMP_UNSUPPORTED;return
     end if
-    if(config%stressor<ROOT_COMP_ALL .or. config%stressor>ROOT_COMP_OXYGEN) then
+    if(config%stressor<ROOT_COMP_ALL .or. config%stressor>ROOT_COMP_SALINITY) then
       status=ROOT_COMP_UNSUPPORTED;return
     end if
     ! Fortran does not guarantee short-circuit evaluation of logical operands.
@@ -136,6 +143,7 @@ contains
        .not.ieee_is_finite(config%alpha_critical) .or. config%alpha_critical<=0.0_real64 .or. config%alpha_critical>1.0_real64 .or. &
        .not.ieee_is_finite(drought_reduction) .or. drought_reduction<0.0_real64 .or. &
        .not.ieee_is_finite(oxygen_reduction) .or. oxygen_reduction<0.0_real64 .or. &
+       .not.ieee_is_finite(salt_reduction) .or. salt_reduction<0.0_real64 .or. &
        any(.not.ieee_is_finite(base_fluxes%root_extraction_sink)) .or. any(base_fluxes%root_extraction_sink<0.0_real64)) then
       status=ROOT_COMP_INVALID;return
     end if
@@ -156,6 +164,7 @@ contains
     diag%compensated_uptake=diag%uncompensated_uptake
     diag%drought_reduction_total=drought_reduction
     diag%oxygen_reduction_total=oxygen_reduction
+    diag%salinity_reduction_total=salt_reduction
     if(diag%uncompensated_uptake>ptra+256.0_real64*epsilon(1.0_real64)*max(1.0_real64,ptra)) then
       final_fluxes=root_water_uptake_flux_result_t();status=ROOT_COMP_INVALID;return
     end if
@@ -170,13 +179,14 @@ contains
     ! an unadmitted/missing stressor and fails closed rather than silently
     ! changing the legacy exponent shares.
     reduction_tolerance=256.0_real64*epsilon(1.0_real64)*max(1.0_real64,ptra,qred)
-    if(abs((drought_reduction+oxygen_reduction)-qred)>reduction_tolerance) then
+    if(abs((drought_reduction+oxygen_reduction+salt_reduction)-qred)>reduction_tolerance) then
       final_fluxes=root_water_uptake_flux_result_t();status=ROOT_COMP_UNSUPPORTED;return
     end if
 
     alpdry=alptot**(drought_reduction/qred)
     alpwet=alptot**(oxygen_reduction/qred)
-    alpdrycom=alpdry;alpwetcom=alpwet
+    alpsol=alptot**(salt_reduction/qred)
+    alpdrycom=alpdry;alpwetcom=alpwet;alpsolcom=alpsol
     select case(config%stressor)
     case(ROOT_COMP_ALL)
       alptotcom=min(alptot/config%alpha_critical,1.0_real64)
@@ -186,6 +196,9 @@ contains
     case(ROOT_COMP_OXYGEN)
       alpwetcom=min(alpwet/config%alpha_critical,1.0_real64)
       alptotcom=alpdrycom*alpwetcom
+    case(ROOT_COMP_SALINITY)
+      alpsolcom=min(alpsol/config%alpha_critical,1.0_real64)
+      alptotcom=alpdrycom*alpwetcom*alpsolcom
     end select
 
     final_fluxes%root_extraction_sink=base_fluxes%root_extraction_sink*(alptotcom/alptot)
@@ -202,12 +215,14 @@ contains
     if(qred<vsmall) then
       diag%drought_reduction_total=0.0_real64;diag%oxygen_reduction_total=0.0_real64
     else
-      redtot=(1.0_real64-alpdrycom)+(1.0_real64-alpwetcom)
+      redtot=(1.0_real64-alpdrycom)+(1.0_real64-alpwetcom)+(1.0_real64-alpsolcom)
       if(redtot<=vsmall) then
         diag%drought_reduction_total=0.0_real64;diag%oxygen_reduction_total=0.0_real64
+        diag%salinity_reduction_total=0.0_real64
       else
         diag%drought_reduction_total=(1.0_real64-alpdrycom)/redtot*qred
         diag%oxygen_reduction_total=(1.0_real64-alpwetcom)/redtot*qred
+        diag%salinity_reduction_total=(1.0_real64-alpsolcom)/redtot*qred
       end if
     end if
   end subroutine
