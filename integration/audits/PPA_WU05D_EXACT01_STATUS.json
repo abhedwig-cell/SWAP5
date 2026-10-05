@@ -1,0 +1,40 @@
+{
+  "work_unit": "PPA-WU05-D-EXACT01",
+  "workstream": "PPA compensated root uptake",
+  "baseline": "0aca73324ea46511d18af56bca3fddd0dba52ffd",
+  "last_reconciled_upstream": "0aca73324ea46511d18af56bca3fddd0dba52ffd",
+  "status": "SOURCE_DIVERGENCE_REPRODUCED_CUTOFF_REPAIR_PENDING_RUNTIME_GATES",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_admitted": false,
+  "contract": "docs/audits/PPA_WU05D_EXACT01_CONTRACT.md",
+  "authority_paths": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90",
+    "integration/audits/PPA_WU05D_COMPENSATION_AUTHORITY_CONTRACT.json"
+  ],
+  "source_authority_sha256": {
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477"
+  },
+  "dependency_surface": [
+    "src/process/mod_root_uptake_compensation.f90",
+    "src/runtime/mod_root_uptake_compensation_execution.f90",
+    "tests/physics/test_ppa_wu05d2_jarvis.f90",
+    "tests/physics/test_ppa_wu05e_mixed_salt_frost.f90"
+  ],
+  "interfaces_changed": [],
+  "invariants": [
+    "one final root sink",
+    "unchanged separate salt owner",
+    "rejected state isolation",
+    "committed restart"
+  ],
+  "next_action": "Actual severe-stress backend/application focused replay, then 27-group current-source qualification",
+  "recovery_point": "current checkpoint",
+  "blockers": [],
+  "preimage_checkpoint": "ded9af5d",
+  "preimage_outcome": "Unchanged dispatcher passes 12 cases; literal source cutoff oracle rejects the SWAP5 guard at ratio 1e-14. Source repair then passes all 330 cases at O0/O2."
+}

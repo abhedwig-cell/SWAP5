@@ -212,7 +212,7 @@ contains
 
     alptot=diag%uncompensated_uptake/ptra
     qred=ptra-diag%uncompensated_uptake
-    if(abs(config%alpha_critical-1.0_real64)<vsmall .or. qred<=vsmall .or. alptot<0.05_real64) return
+    if(abs(config%alpha_critical-1.0_real64)<vsmall .or. qred<=vsmall .or. alptot<vsmall) return
 
     ! Every active pre-compensation stress loss must be explicitly attributed;
     ! a mismatch implies an unadmitted or missing stressor and fails closed.
