@@ -31,6 +31,9 @@ module mod_solute_mobile_macro_salt_transport
     real(real64), allocatable :: matrix_face_rate(:),macro_face_rate(:,:),exchange_rate(:,:)
     real(real64), allocatable :: root_water_sink(:),macro_top_concentration_mg_cm3(:)
     real(real64), allocatable :: macro_bottom_concentration_mg_cm3(:)
+    real(real64), allocatable :: qdra_rate(:,:),qssdi_rate(:)
+    real(real64) :: cdrain_mg_cm3=0.0_real64
+    logical :: cdrain_available=.false.
   end type
 
   public :: initialize_mobile_macro_salt_state, derive_mobile_macro_salt_concentration
@@ -121,7 +124,8 @@ contains
     type(mobile_macro_salt_state_t) :: current,next
     type(mobile_macro_salt_receipt_t) :: step_receipt
     real(real64) :: tolerance
-    integer :: i,n,nd
+    logical :: has_qdra
+    integer :: i,n,nd,nlev
 
     candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t();status=MACRO_SALT_INVALID
     n=size(node_thickness_cm)
@@ -136,7 +140,17 @@ contains
     end do
     nd=size(substeps(1)%macro_water_start,1)
     if(nd<=0)return
+    has_qdra=allocated(substeps(1)%qdra_rate)
+    nlev=0
+    if(has_qdra)nlev=size(substeps(1)%qdra_rate,1)
     do i=1,size(substeps)
+      if(allocated(substeps(i)%qdra_rate).neqv.has_qdra)return
+      if(allocated(substeps(i)%qdra_rate))then
+        if(size(substeps(i)%qdra_rate,1)/=nlev.or.size(substeps(i)%qdra_rate,2)/=n)return
+      end if
+      if(allocated(substeps(i)%qssdi_rate))then
+        if(size(substeps(i)%qssdi_rate)/=n)return
+      end if
       if(size(substeps(i)%matrix_water_start)/=n.or.size(substeps(i)%matrix_water_end)/=n.or. &
          any(shape(substeps(i)%macro_water_start)/=[nd,n]).or.any(shape(substeps(i)%macro_water_end)/=[nd,n]).or. &
          size(substeps(i)%matrix_face_rate)/=n+1.or.any(shape(substeps(i)%macro_face_rate)/=[nd,n+1]).or. &
@@ -169,15 +183,13 @@ contains
     receipt%macro_bottom_input_mg_cm2=0.0_real64;receipt%macro_bottom_output_mg_cm2=0.0_real64
     receipt%macro_to_matrix_mg_cm2=0.0_real64;receipt%matrix_to_macro_mg_cm2=0.0_real64
     receipt%root_solute_uptake_mg_cm2=0.0_real64
+    if(has_qdra)then
+      allocate(receipt%qdra_signed_out_mg_cm2(nlev))
+      receipt%qdra_signed_out_mg_cm2=0.0_real64
+    end if
     current=committed
     do i=1,size(substeps)
-      call advance_mobile_macro_salt_trial(current,node_thickness_cm,substeps(i)%matrix_water_start, &
-           substeps(i)%matrix_water_end,substeps(i)%macro_water_start,substeps(i)%macro_water_end, &
-           substeps(i)%matrix_face_rate,substeps(i)%macro_face_rate,substeps(i)%exchange_rate, &
-           substeps(i)%root_water_sink,substeps(i)%matrix_top_concentration_mg_cm3, &
-           substeps(i)%matrix_bottom_concentration_mg_cm3,substeps(i)%macro_top_concentration_mg_cm3, &
-           substeps(i)%macro_bottom_concentration_mg_cm3,tscf,substeps(i)%t1-substeps(i)%t0,next, &
-           step_receipt,status)
+      call advance_mobile_macro_salt_trace_step(current,node_thickness_cm,substeps(i),tscf,next,step_receipt,status)
       if(status/=MACRO_SALT_OK)then
         candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t();return
       end if
@@ -193,6 +205,12 @@ contains
       receipt%macro_to_matrix_mg_cm2=receipt%macro_to_matrix_mg_cm2+step_receipt%macro_to_matrix_mg_cm2
       receipt%matrix_to_macro_mg_cm2=receipt%matrix_to_macro_mg_cm2+step_receipt%matrix_to_macro_mg_cm2
       receipt%root_solute_uptake_mg_cm2=receipt%root_solute_uptake_mg_cm2+step_receipt%root_solute_uptake_mg_cm2
+      if(has_qdra)then
+        if(.not.allocated(step_receipt%qdra_signed_out_mg_cm2))then
+          candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t();status=MACRO_SALT_INVALID;return
+        end if
+        receipt%qdra_signed_out_mg_cm2=receipt%qdra_signed_out_mg_cm2+step_receipt%qdra_signed_out_mg_cm2
+      end if
       receipt%closure_error_mg_cm2=receipt%closure_error_mg_cm2+step_receipt%closure_error_mg_cm2
       if(.not.all(ieee_is_finite([receipt%matrix_top_input_mg_cm2,receipt%matrix_top_output_mg_cm2, &
          receipt%matrix_bottom_input_mg_cm2,receipt%matrix_bottom_output_mg_cm2,receipt%closure_error_mg_cm2])).or. &
@@ -208,6 +226,50 @@ contains
     end do
     candidate=current
   end subroutine advance_mobile_macro_salt_trace
+
+  subroutine advance_mobile_macro_salt_trace_step(committed,node_thickness_cm,substep,tscf,candidate,receipt,status)
+    type(mobile_macro_salt_state_t),intent(in)::committed
+    real(real64),intent(in)::node_thickness_cm(:),tscf
+    type(mobile_macro_salt_substep_t),intent(in)::substep
+    type(mobile_macro_salt_state_t),intent(out)::candidate
+    type(mobile_macro_salt_receipt_t),intent(out)::receipt
+    integer,intent(out)::status
+
+    if(allocated(substep%qdra_rate))then
+      if(allocated(substep%qssdi_rate))then
+        call advance_mobile_macro_salt_trial(committed,node_thickness_cm,substep%matrix_water_start, &
+             substep%matrix_water_end,substep%macro_water_start,substep%macro_water_end, &
+             substep%matrix_face_rate,substep%macro_face_rate,substep%exchange_rate,substep%root_water_sink, &
+             substep%matrix_top_concentration_mg_cm3,substep%matrix_bottom_concentration_mg_cm3, &
+             substep%macro_top_concentration_mg_cm3,substep%macro_bottom_concentration_mg_cm3,tscf, &
+             substep%t1-substep%t0,candidate,receipt,status,qdra_rate=substep%qdra_rate, &
+             qssdi_rate=substep%qssdi_rate,cdrain_mg_cm3=substep%cdrain_mg_cm3, &
+             cdrain_available=substep%cdrain_available)
+      else
+        call advance_mobile_macro_salt_trial(committed,node_thickness_cm,substep%matrix_water_start, &
+             substep%matrix_water_end,substep%macro_water_start,substep%macro_water_end, &
+             substep%matrix_face_rate,substep%macro_face_rate,substep%exchange_rate,substep%root_water_sink, &
+             substep%matrix_top_concentration_mg_cm3,substep%matrix_bottom_concentration_mg_cm3, &
+             substep%macro_top_concentration_mg_cm3,substep%macro_bottom_concentration_mg_cm3,tscf, &
+             substep%t1-substep%t0,candidate,receipt,status,qdra_rate=substep%qdra_rate, &
+             cdrain_mg_cm3=substep%cdrain_mg_cm3,cdrain_available=substep%cdrain_available)
+      end if
+    else if(allocated(substep%qssdi_rate))then
+      call advance_mobile_macro_salt_trial(committed,node_thickness_cm,substep%matrix_water_start, &
+           substep%matrix_water_end,substep%macro_water_start,substep%macro_water_end, &
+           substep%matrix_face_rate,substep%macro_face_rate,substep%exchange_rate,substep%root_water_sink, &
+           substep%matrix_top_concentration_mg_cm3,substep%matrix_bottom_concentration_mg_cm3, &
+           substep%macro_top_concentration_mg_cm3,substep%macro_bottom_concentration_mg_cm3,tscf, &
+           substep%t1-substep%t0,candidate,receipt,status,qssdi_rate=substep%qssdi_rate)
+    else
+      call advance_mobile_macro_salt_trial(committed,node_thickness_cm,substep%matrix_water_start, &
+           substep%matrix_water_end,substep%macro_water_start,substep%macro_water_end, &
+           substep%matrix_face_rate,substep%macro_face_rate,substep%exchange_rate,substep%root_water_sink, &
+           substep%matrix_top_concentration_mg_cm3,substep%matrix_bottom_concentration_mg_cm3, &
+           substep%macro_top_concentration_mg_cm3,substep%macro_bottom_concentration_mg_cm3,tscf, &
+           substep%t1-substep%t0,candidate,receipt,status)
+    end if
+  end subroutine advance_mobile_macro_salt_trace_step
 
   ! Conservative explicit-advection candidate for one accepted water substep.
   ! All mobile compartments use donor concentrations from the committed start
@@ -503,3 +565,4 @@ contains
   end subroutine advance_mobile_macro_salt_drainage
 
 end module mod_solute_mobile_macro_salt_transport
+
