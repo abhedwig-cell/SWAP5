@@ -34,6 +34,7 @@ module mod_solute_mobile_macro_salt_transport
 
   public :: initialize_mobile_macro_salt_state, derive_mobile_macro_salt_concentration
   public :: advance_mobile_macro_salt_trial, advance_mobile_macro_salt_trace
+  public :: advance_mobile_macro_salt_drainage
 
 contains
 
@@ -388,5 +389,63 @@ contains
     end if
     status=MACRO_SALT_OK
   end subroutine advance_mobile_macro_salt_trial
+
+
+  ! Exact B1.11 lateral-drainage donor rule: positive qdra exports at local
+  ! CML; negative qdra imports at explicit Cdrain. qssdi has no salt term.
+  subroutine advance_mobile_macro_salt_drainage(committed,matrix_water_cm,qdra_rate,cdrain_mg_cm3, &
+       cdrain_available,dt_day,candidate,receipt_by_level_mg_cm2,status)
+    type(mobile_macro_salt_state_t), intent(in) :: committed
+    real(real64), intent(in) :: matrix_water_cm(:),qdra_rate(:,:),cdrain_mg_cm3,dt_day
+    logical, intent(in) :: cdrain_available
+    type(mobile_macro_salt_state_t), intent(out) :: candidate
+    real(real64), allocatable, intent(out) :: receipt_by_level_mg_cm2(:)
+    integer, intent(out) :: status
+    real(real64), allocatable :: cml(:),level_transfer(:,:),mass_delta(:)
+    real(real64) :: amount
+    integer :: n,nlev,lev,node
+    candidate=mobile_macro_salt_state_t()
+    if(allocated(receipt_by_level_mg_cm2)) deallocate(receipt_by_level_mg_cm2)
+    status=MACRO_SALT_INVALID
+    n=size(matrix_water_cm); nlev=size(qdra_rate,1)
+    if(n<=0.or.nlev<=0.or.size(qdra_rate,2)/=n)return
+    if(.not.allocated(committed%matrix_mass_mg_cm2).or..not.allocated(committed%macro_mass_mg_cm2))return
+    if(size(committed%matrix_mass_mg_cm2)/=n)return
+    if(.not.all(ieee_is_finite(matrix_water_cm)).or..not.all(ieee_is_finite(qdra_rate)).or. &
+       .not.all(ieee_is_finite(committed%matrix_mass_mg_cm2)).or. &
+       .not.all(ieee_is_finite(committed%macro_mass_mg_cm2)).or. &
+       .not.ieee_is_finite(cdrain_mg_cm3).or..not.ieee_is_finite(dt_day))return
+    if(any(matrix_water_cm<0.0_real64).or.any(committed%matrix_mass_mg_cm2<0.0_real64).or. &
+       any(committed%macro_mass_mg_cm2<0.0_real64).or.cdrain_mg_cm3<0.0_real64.or.dt_day<=0.0_real64)return
+    if(any(matrix_water_cm<=tiny(1.0_real64).and.committed%matrix_mass_mg_cm2>0.0_real64))return
+    if(any(qdra_rate<0.0_real64).and..not.cdrain_available)return
+    allocate(cml(n),level_transfer(nlev,n),mass_delta(n),receipt_by_level_mg_cm2(nlev))
+    cml=0.0_real64
+    where(matrix_water_cm>tiny(1.0_real64)) cml=committed%matrix_mass_mg_cm2/matrix_water_cm
+    do lev=1,nlev
+      do node=1,n
+        if(qdra_rate(lev,node)>0.0_real64)then
+          amount=qdra_rate(lev,node)*cml(node)*dt_day
+        else
+          amount=qdra_rate(lev,node)*cdrain_mg_cm3*dt_day
+        end if
+        level_transfer(lev,node)=amount
+      end do
+    end do
+    mass_delta=-sum(level_transfer,dim=1)
+    if(any(.not.ieee_is_finite(mass_delta)))then
+      deallocate(receipt_by_level_mg_cm2);return
+    end if
+    if(any(committed%matrix_mass_mg_cm2+mass_delta<0.0_real64))then
+      deallocate(receipt_by_level_mg_cm2);return
+    end if
+    receipt_by_level_mg_cm2=sum(level_transfer,dim=2)
+    if(any(.not.ieee_is_finite(receipt_by_level_mg_cm2)))then
+      deallocate(receipt_by_level_mg_cm2);return
+    end if
+    candidate=committed
+    candidate%matrix_mass_mg_cm2=committed%matrix_mass_mg_cm2+mass_delta
+    status=MACRO_SALT_OK
+  end subroutine advance_mobile_macro_salt_drainage
 
 end module mod_solute_mobile_macro_salt_transport
