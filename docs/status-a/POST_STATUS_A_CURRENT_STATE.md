@@ -443,3 +443,9 @@ Exact dispatcher evidence also supersedes the earlier external Jarvis/Walsum
 after MICRO interpretation: it is not a B1.11 option. Independent MICRO physics
 migration remains open. See the [canonical closeout](../audits/PPA_WU05D_EXACT01_CANONICAL_CLOSEOUT.md).
 Historical evidence and the frozen Status A denominator remain unchanged.
+
+## Tabulated drainage with normal and guarded low-air frost
+
+PPA-WU05B11 is admitted via PR #1054 at `d975acb21472ddf96c800ef66be327810f8968c0`. Its separate OFF-by-default selector composes admitted signed DRAMET1 tables and LINEAR/TABULATED level mixtures with the existing normal/B8 low-air modifiers on rootless ordinary Reference mode2. Active variant-specific preflight and final-node single ownership preserve raw proposal provenance, separate bottom exchange and existing receipts without additional persistent state.
+
+[Contract and evidence](../audits/PPA_WU05B11_TABULATED_FROST_DRAINAGE.md) bind768 corrected-reference cases, twelve O0/O2-identical actual trajectories,72 additional actual activation cases, finer reference trajectories, hard mass/retry/replay/restart/application and complete relevant preservation. Exact proposed and actual merge tree/source identities are verified. The repaired fixture negative screens are retained. Other generation families, distribution, projection, hybrids and new phase-change physics remain separate. No queued Actions success or practical low-air performance claim is made; aggregate frost migration and the frozen Status A denominator remain unchanged.

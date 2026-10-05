@@ -1,13 +1,13 @@
 {
   "work_unit": "PPA-WU05B11",
   "baseline": "febfff8103c4d60324a103d832521bb3f3754a67",
-  "last_reconciled_upstream": "febfff8103c4d60324a103d832521bb3f3754a67",
-  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
+  "last_reconciled_upstream": "d975acb21472ddf96c800ef66be327810f8968c0",
+  "status": "CANONICALLY_ADMITTED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "aggregate_frost_migration_complete": false,
   "preregistration": "integration/audits/PPA_WU05B11_PREREGISTRATION.json",
   "authority_paths": [
@@ -23,8 +23,8 @@
     "src/process/mod_frost_drainage_effect.f90"
   ],
   "dependency_surface": "Actual runtime/backend/bootstrap, all generated drain families, frost/temperature, root kernel, single sink/accounting, restart, canonical pin gate and owned static grid fixture",
-  "next_action": "Persist complete immutable source-bound replay and exact qualified postimage, verify proposed merge, admit and reconcile actual merge",
-  "recovery_point": "This preregistration commit",
+  "next_action": "Reconcile exact metadata closeout then preregister and implement source-reviewed DRAMET2 Hooghoudt/Ernst frost composition",
+  "recovery_point": "d975acb21472ddf96c800ef66be327810f8968c0",
   "blockers": [],
   "test_paths": [
     "tests/frost/test_ppa_wu05b11_low_air_runtime.f90",
@@ -58,9 +58,7 @@
     "low_air_runtime": "SIX_CASES_O0_O2_IDENTICAL_PASS_MASS_REPLAY_RESTART_APPLICATION",
     "B8_B10": "FRESH_WHOLE_MODULE_SOURCE_O0_O2_IDENTICAL_PASS"
   },
-  "pending": [
-    "exact proposed-merge verification and canonical admission"
-  ],
+  "pending": [],
   "partial_recovery": {
     "path": "docs/audits/evidence/PPA_WU05B11_PARTIAL_RECOVERY.json.gz",
     "sha256": "f93d27e283c2ee06d22536ca89e515e6f7c42a69a5d80bb200a1d0dfd586e253",
@@ -129,5 +127,7 @@
     "sha256": "3af2218badc101fe5f97f6109c7885801cb3696dc866d473f312fa78348d70c4",
     "bytes": 209827,
     "manifest_entries": 456
-  }
+  },
+  "canonical_merge": "d975acb21472ddf96c800ef66be327810f8968c0",
+  "canonical_pr": 1054
 }
