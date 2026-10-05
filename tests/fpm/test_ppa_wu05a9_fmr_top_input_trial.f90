@@ -68,7 +68,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   integer :: nd
 
   call get_environment_variable('WU05_MIGMAC08_COVER',cover_flag)
-  if(cover_flag=='1')macro_top=3
+  if(cover_flag=='1' .or. cover_flag=='2')macro_top=3
   fit_flag='0'
   call get_environment_variable('WU05_MIGMAC04_FIT',fit_flag)
   constitutive_flag='0'
@@ -106,7 +106,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   
   call evaluate_dynamic_crack_profile(parameters%macropore%shrinkage,water,water,dz, &
        parameters%macropore%matrix_area_fraction,physical%macropore%dynamic_volume_cp, &
-       probe_dynamic,probe_ok,probe_subsidence)
+       probe_dynamic,probe_ok,probe_subsidence,top_node=macro_top)
   call require(probe_ok,'MIGMAC02 dry accepted-state crack profile evaluates')
   if(dynamic_flag=='4' .or. dynamic_flag=='5')physical%macropore%dynamic_volume_cp=probe_dynamic
   if(geometry_changes_expected)call require(any(probe_dynamic>1.0e-12_real64),'MIGMAC02 dry accepted-state crack volume nonzero')
@@ -251,6 +251,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
        '|HEAD_CALC=',diagnostics%headcalc_calls,'|NONLINEAR=',diagnostics%nonlinear_iterations
   print '(a)', 'PPA_WU05A9_FMR_MACRO_TRIAL=PASS'
   if(macro_top>1)print '(a)','PPA_WU05_MIGMAC08_COVERED_REFERENCE_TRIAL=PASS'
+  if(cover_flag=='2')print '(a)','PPA_WU05_MIGMAC09_NONRIGID_COVER_TRIAL=PASS'
   if(geometry_changes_expected)print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_REFERENCE_TRANSACTION=PASS'
   if(dynamic_flag=='2' .or. dynamic_flag=='3')print '(a)', 'PPA_WU05_MIGMAC02_NO_GEOMETRY_CHANGE=PASS'
   if(dynamic_flag=='4')print '(a)', 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS'
@@ -316,10 +317,12 @@ contains
     static_volume=0.25_real64
     if(macro_top>1)static_volume(1:macro_top-1)=0.0_real64
     domain_fraction=1.0_real64
+    if(macro_top>1)domain_fraction(:,1:macro_top-1)=0.0_real64
     if(nd==2)then
       domain_fraction(1,:)=0.3_real64
       domain_fraction(2,:)=0.7_real64
     end if
+    if(macro_top>1)domain_fraction(:,1:macro_top-1)=0.0_real64
     diameter=4.0_real64
     theta_s=0.427494_real64
     theta_r=0.02_real64
@@ -383,7 +386,7 @@ contains
       end do
     end if
 
-    if(macro_top>1)shrinkage%law(1:macro_top-1)=SHRINK_RIGID
+    if(cover_flag=='1')shrinkage%law(1:macro_top-1)=SHRINK_RIGID
     reference_kd=0.001_real64
     drain_level=-2.0_real64
     call get_environment_variable('WU05_MIGMAC07_PARTIAL',partial_flag)
@@ -401,7 +404,7 @@ contains
            diameter,-sum(dz),drain_level,2,3.0_real64,reference_kd,ok)
       call require(ok,'MIGMAC06 supplied prepared reference valid')
     end if
-    if(macro_top>1)shrinkage%law(1:macro_top-1)=SHRINK_RIGID
+    if(cover_flag=='1')shrinkage%law(1:macro_top-1)=SHRINK_RIGID
     allocate(p%macropore)
     call initialize_fmr_macropore_standard_config(p%macropore,macro_top,static_volume,domain_fraction,potential_bottom, &
          z,dz,diameter,theta_s,theta_r,wall_correction,sorp_max,sorp_alpha,conductivity,entry_head, &
@@ -417,9 +420,9 @@ contains
       call require(initialized,'MIGMAC06 derived reference config valid')
       if(macro_top>1)then
         cover_probe=p%macropore
-        cover_probe%shrinkage%law(1)=SHRINK_KIM
+        cover_probe%geometry%domain_fraction(1,1)=0.5_real64
         call prepare_fmr_macropore_rapid_reference(cover_probe,z,ref_theta,-sum(dz),cover_ok)
-        call require(.not.cover_ok,'MIGMAC08 nonrigid cover fails closed')
+        call require(.not.cover_ok,'MIGMAC09 nonzero covering domain fraction fails closed')
         call require(cover_probe%rate_template%rapid%kd_reference==p%macropore%rate_template%rapid%kd_reference, &
              'MIGMAC08 invalid cover leaves KD unchanged')
         cover_probe=p%macropore

@@ -283,7 +283,7 @@ contains
     end if
     call evaluate_dynamic_crack_profile(self%shrinkage,water_content,self%accepted_matrix_theta,self%dz, &
          self%matrix_area_fraction,self%accepted_macro%dynamic_volume_cp,dynamic_current,ok, &
-         subsidence_current,active_node)
+         subsidence_current,active_node,self%geometry_config%top_node)
     if(.not.ok)return
     call evaluate_macropore_geometry(self%geometry_config,dynamic_current,geometry_current)
     if(.not.geometry_current%valid)return

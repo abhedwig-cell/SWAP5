@@ -72,7 +72,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
   character(len=1)::dynamic_flag
 
   call get_environment_variable('WU05_MIGMAC08_COVER',cover_flag)
-  if(cover_flag=='1')macro_top=3
+  if(cover_flag=='1' .or. cover_flag=='2')macro_top=3
   fit_flag='0'
   call get_environment_variable('WU05_MIGMAC04_FIT',fit_flag)
   constitutive_flag='0'
@@ -295,7 +295,7 @@ contains
         if(.not.state_ok)error stop 'MIGMAC04 peat points prepare'
       end do
     end if
-    if(macro_top>1)mcfg%shrinkage%law(1:macro_top-1)=SHRINK_RIGID
+    if(cover_flag=='1')mcfg%shrinkage%law(1:macro_top-1)=SHRINK_RIGID
     if(macro_top>1)then
       mcfg%covering_parameters_available=.true.
       mcfg%covering_minimum_polygon_diameter_cm=10.0_real64
@@ -471,6 +471,7 @@ contains
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_REJECT_REPLAY=PASS'
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_RESTART=PASS'
     if(macro_top>1)print '(a)','PPA_WU05_MIGMAC08_COVERED_REFERENCE_RESTART=PASS'
+  if(cover_flag=='2')print '(a)','PPA_WU05_MIGMAC09_NONRIGID_COVER_REPLAY=PASS'
     if(dynamic_enabled)then
       print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_REJECT_SMALLER_RETRY=PASS'
       print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_ABA=PASS'
@@ -514,8 +515,10 @@ contains
     config%static_volume_cp=0.25_real64
     if(macro_top>1)config%static_volume_cp(1:macro_top-1)=0.0_real64
     config%domain_fraction=1.0_real64
+    if(macro_top>1)config%domain_fraction(:,1:macro_top-1)=0.0_real64
     config%potential_bottom_domain=numnod
     config%dz=dz
+    if(macro_top>1)config%domain_fraction(:,1:macro_top-1)=0.0_real64
     config%characteristic_diameter=4.0_real64
   end subroutine setup_geometry
 

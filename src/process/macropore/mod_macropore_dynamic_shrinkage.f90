@@ -488,17 +488,17 @@ contains
   end subroutine evaluate_clay_kim_shrinkage_fraction
 
   subroutine evaluate_dynamic_crack_profile(config,theta,theta_previous,dz,matrix_area_fraction,accepted_dynamic_volume, &
-                                              candidate_dynamic_volume,ok,candidate_subsidence_cm,active_node)
+                                              candidate_dynamic_volume,ok,candidate_subsidence_cm,active_node,top_node)
     type(dynamic_shrinkage_config_t),intent(in)::config
     real(real64),intent(in)::theta(:),theta_previous(:),dz(:),matrix_area_fraction(:),accepted_dynamic_volume(:)
     real(real64),allocatable,intent(out)::candidate_dynamic_volume(:)
     logical,intent(out)::ok
     real(real64),allocatable,intent(out),optional::candidate_subsidence_cm(:)
-    integer,intent(in),optional::active_node
+    integer,intent(in),optional::active_node,top_node
     type(dynamic_crack_request_t)::request
     real(real64)::shrink
     logical::local_ok
-    integer::n,ic
+    integer::n,ic,first_node
 
     ok=.false.
     n=size(theta)
@@ -508,6 +508,10 @@ contains
     if(present(candidate_subsidence_cm))candidate_subsidence_cm=0.0_real64
     if(size(accepted_dynamic_volume)/=n)return
     candidate_dynamic_volume=accepted_dynamic_volume
+    first_node=1
+    if(present(top_node))first_node=top_node
+    if(first_node<1 .or. first_node>n)return
+    if(any(.not.(abs(accepted_dynamic_volume(1:first_node-1))<=0.0_real64)))return
     if(.not.config%valid_for_nodes(n))return
     if(.not.config%enabled)then
       ok=.true.
@@ -519,7 +523,8 @@ contains
        any(.not.ieee_is_finite(matrix_area_fraction)) .or. any(.not.ieee_is_finite(accepted_dynamic_volume)))return
     if(any(dz<=0.0_real64) .or. any(matrix_area_fraction<=0.0_real64) .or. &
        any(matrix_area_fraction>1.0_real64) .or. any(accepted_dynamic_volume<0.0_real64))return
-    do ic=1,n
+    ! Source MPVOLUME starts at IcTopMp, independent of covering shrink law.
+    do ic=first_node,n
       call evaluate_node_shrinkage_fraction(config,ic,theta(ic),shrink,local_ok)
       if(.not.local_ok)return
       if(allocated(config%law))then
