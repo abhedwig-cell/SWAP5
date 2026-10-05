@@ -52,8 +52,14 @@ module mod_drainage_empirical_interflow_response
   end type empirical_interflow_diagnostics_t
 
   public :: evaluate_empirical_interflow_response
+  public :: valid_empirical_interflow_parameters
 
 contains
+
+  pure logical function valid_empirical_interflow_parameters(parameters) result(valid)
+    type(empirical_interflow_parameters_t), intent(in) :: parameters
+    valid = valid_parameters(parameters)
+  end function valid_empirical_interflow_parameters
 
   subroutine evaluate_empirical_interflow_response(parameters, control, hydraulic_view, response, diagnostics)
     type(empirical_interflow_parameters_t), intent(in) :: parameters
@@ -134,7 +140,7 @@ contains
     response%derivative_defined = .true.
   end subroutine evaluate_empirical_interflow_response
 
-  logical function valid_parameters(parameters) result(valid)
+  pure logical function valid_parameters(parameters) result(valid)
     type(empirical_interflow_parameters_t), intent(in) :: parameters
 
     valid = ieee_is_finite(parameters%coefficient) .and. ieee_is_finite(parameters%exponent)

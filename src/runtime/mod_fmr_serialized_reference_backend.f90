@@ -101,7 +101,9 @@ module mod_fmr_serialized_reference_backend
        evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
        FMR_DRAIN_BIND_OK, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_TABULATED, &
        FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, &
-       FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5
+       FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5, &
+       FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW
+  use mod_drainage_empirical_interflow_response, only: valid_empirical_interflow_parameters
   use mod_drainage_tabulated_response, only: valid_tabulated_drainage_parameters
   use mod_drainage_hooghoudt_ipos1_response, only: valid_hooghoudt_ipos1_parameters
   use mod_drainage_hooghoudt_ipos23_response, only: valid_hooghoudt_ipos2_parameters, &
@@ -295,6 +297,7 @@ module mod_fmr_serialized_reference_backend
     logical :: frost_low_air_response_drainage_active = .false.
     logical :: frost_tabulated_response_drainage_active = .false.
     logical :: frost_analytic_response_drainage_active = .false.
+    logical :: frost_empirical_response_drainage_active = .false.
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
     real(real64) :: root_frost_head_budget_cm=0.0_real64
@@ -625,6 +628,7 @@ module mod_fmr_serialized_reference_backend
     logical :: frost_low_air_response_drainage_active = .false.
     logical :: frost_tabulated_response_drainage_active = .false.
     logical :: frost_analytic_response_drainage_active = .false.
+    logical :: frost_empirical_response_drainage_active = .false.
     real(real64),allocatable :: unfrozen_drainage_flux(:,:)
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
@@ -798,13 +802,14 @@ contains
   pure logical function fmr_frost_response_drainage_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::parameters
     integer :: level
-    logical :: has_table, has_analytic
+    logical :: has_table, has_analytic, has_empirical
     real(real64) :: analytic_depth
     ok=.true.
     if(.not.parameters%frost_response_drainage_active)then
       ok=.not.parameters%frost_low_air_response_drainage_active.and. &
            .not.parameters%frost_tabulated_response_drainage_active.and. &
-           .not.parameters%frost_analytic_response_drainage_active
+           .not.parameters%frost_analytic_response_drainage_active.and. &
+           .not.parameters%frost_empirical_response_drainage_active
       return
     end if
     ok=.false.
@@ -817,8 +822,15 @@ contains
       if(.not.parameters%frost_low_air_drainage%valid())return
       if(size(parameters%frost_low_air_drainage%drain_depth_cm)/=size(parameters%drainage_response_levels))return
     end if
-    has_table=.false.;has_analytic=.false.
+    if(parameters%frost_empirical_response_drainage_active)then
+      if(parameters%frost_tabulated_response_drainage_active.or.parameters%frost_analytic_response_drainage_active)return
+    end if
+    has_table=.false.;has_analytic=.false.;has_empirical=.false.
     do level=1,size(parameters%drainage_response_levels)
+      if(parameters%frost_empirical_response_drainage_active)then
+        if(parameters%drainage_response_levels(level)%variant/=FMR_DRAIN_VARIANT_LINEAR.and. &
+             parameters%drainage_response_levels(level)%variant/=FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW)return
+      end if
       select case(parameters%drainage_response_levels(level)%variant)
       case(FMR_DRAIN_VARIANT_LINEAR)
         if(.not.ieee_is_finite(parameters%drainage_response_levels(level)%linear%drainage_resistance))return
@@ -859,6 +871,11 @@ contains
         if(.not.valid_ernst_ipos5_prepared(parameters%drainage_response_levels(level)%ernst_ipos5_prepared))return
         analytic_depth=parameters%drainage_response_levels(level)%ernst_ipos5_prepared%drain_bottom_level
         has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW)
+        if(.not.parameters%frost_empirical_response_drainage_active)return
+        if(level/=size(parameters%drainage_response_levels))return
+        if(.not.valid_empirical_interflow_parameters(parameters%drainage_response_levels(level)%empirical))return
+        has_empirical=.true.
       case default
         return
       end select
@@ -873,6 +890,7 @@ contains
     if(parameters%frost_tabulated_response_drainage_active.and..not.has_table)return
     if(parameters%frost_analytic_response_drainage_active.and..not.has_analytic)return
     ok=.true.
+    if(parameters%frost_empirical_response_drainage_active.and..not.has_empirical)ok=.false.
   end function fmr_frost_response_drainage_configuration_valid
 
   pure logical function fmr_mobile_dispersion_matches_hydraulic_owner(parameters)result(ok)
@@ -2789,6 +2807,7 @@ contains
       self%frost_low_air_response_drainage_active = parameters%frost_low_air_response_drainage_active
       self%frost_tabulated_response_drainage_active = parameters%frost_tabulated_response_drainage_active
       self%frost_analytic_response_drainage_active = parameters%frost_analytic_response_drainage_active
+      self%frost_empirical_response_drainage_active = parameters%frost_empirical_response_drainage_active
       self%frost_bottom = parameters%frost_bottom
       self%root_frost = parameters%root_frost
       self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm

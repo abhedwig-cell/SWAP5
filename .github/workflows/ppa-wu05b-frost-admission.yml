@@ -6,6 +6,7 @@ on:
       - integration/f-ci-canonical
     paths:
       - 'src/process/mod_frost_hydraulic_effect.f90'
+      - 'src/process/mod_drainage_empirical_interflow_response.f90'
       - 'src/process/mod_root_frost_stress.f90'
       - 'src/process/mod_frost_bottom_boundary_effect.f90'
       - 'src/process/mod_root_uptake_compensation.f90'
@@ -122,6 +123,12 @@ jobs:
             python3 tests/frost/run_ppa_wu05b12_scientific.py
             python3 tests/frost/run_ppa_wu05b12_analytic_response_source.py
           fi
+      - name: Empirical interflow scientific and corrected frost-source composition
+        run: |
+          if test -f tests/frost/run_ppa_wu05b13_scientific.py; then
+            python3 tests/frost/run_ppa_wu05b13_scientific.py
+            python3 tests/frost/run_ppa_wu05b13_empirical_response_source.py
+          fi
       - name: Install documentation dependencies
         run: python3 -m pip install -r requirements-docs.txt
       - name: Validate docs, JSON and whitespace
@@ -159,4 +166,30 @@ jobs:
             python3 tests/frost/run_ppa_wu05b12_activation.py --routes ${{ matrix.route }}
             python3 tests/frost/run_ppa_wu05b12_preflight.py --routes ${{ matrix.route }}
             python3 tests/frost/run_ppa_wu05b12_refinements.py --routes ${{ matrix.route }}
+          fi
+
+  empirical-frost-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [normal, low_air]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record exact PR and tested revisions
+        run: |
+          echo "PPA_WU05B13_PR_HEAD=${{ github.event.pull_request.head.sha }}"
+          echo "PPA_WU05B13_TESTED_MERGE_HEAD=$(git rev-parse HEAD)"
+          echo "PPA_WU05B13_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Install Fortran compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: All exponent and ordered-level actual runtime configurations
+        run: |
+          if test -f tests/frost/run_ppa_wu05b13_runtime.py; then
+            python3 tests/frost/run_ppa_wu05b13_runtime.py --route ${{ matrix.route }}
           fi
