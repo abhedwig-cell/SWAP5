@@ -25,6 +25,7 @@ module mod_fmr_committed_restart
   integer, parameter, public :: FMR_RESTART_TARGET_ALREADY_INITIALIZED = 8
   integer, parameter, public :: FMR_RESTART_SCHEMA_MISMATCH = 9
   integer, parameter, public :: FMR_RESTART_PARAMETER_SET_MISMATCH = 10
+  integer, parameter, public :: FMR_RESTART_FORCING_MISMATCH = 11
 
   ! Adapter-facing, serialization-neutral decoded continuation record.
   !
@@ -243,7 +244,7 @@ contains
       end if
       if (bundle%schema_version == FMR_RESTART_SCHEMA_VERSION .and. &
           columns(i)%forcing_handle /= bundle%records(record_index)%forcing_handle) then
-        status = FMR_RESTART_PARAMETER_MISMATCH
+        status = FMR_RESTART_FORCING_MISMATCH
         return
       end if
       if (.not. allocated(bundle%records(record_index)%physical_state)) then
