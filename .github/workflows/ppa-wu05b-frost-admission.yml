@@ -116,6 +116,12 @@ jobs:
             python3 tests/frost/run_ppa_wu05b11_activation.py
             python3 tests/frost/run_ppa_wu05b11_refinements.py
           fi
+      - name: Analytic drainage scientific and corrected frost-source composition
+        run: |
+          if test -f tests/frost/run_ppa_wu05b12_scientific.py; then
+            python3 tests/frost/run_ppa_wu05b12_scientific.py
+            python3 tests/frost/run_ppa_wu05b12_analytic_response_source.py
+          fi
       - name: Install documentation dependencies
         run: python3 -m pip install -r requirements-docs.txt
       - name: Validate docs, JSON and whitespace
@@ -130,3 +136,27 @@ jobs:
           print('PPA-WU05B_JSON_PARSE=PASS')
           PY
           git diff --check
+
+  analytic-frost-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [normal, low_air]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Fortran compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: All-family actual runtime and further references
+        run: |
+          if test -f tests/frost/run_ppa_wu05b12_${{ matrix.route }}_runtime.sh; then
+            bash tests/frost/run_ppa_wu05b12_${{ matrix.route }}_runtime.sh
+            python3 tests/frost/run_ppa_wu05b12_activation.py --routes ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b12_preflight.py --routes ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b12_refinements.py --routes ${{ matrix.route }}
+          fi

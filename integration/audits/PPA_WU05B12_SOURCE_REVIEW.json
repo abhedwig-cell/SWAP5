@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B12",
-  "status": "SOURCE_REVIEW_ONLY",
+  "status": "SOURCE_REVIEW_COMPLETE_IMPLEMENTED_PARTIALLY_TESTED",
   "baseline_source": "cd7a56657fa3347ee63595a0f54274b2f1766ba8",
   "prerequisite": "Exact B11 admission and closeout verified; implementation must follow persisted B12 preregistration",
   "selected_next_slice": "Already-admitted DRAMET2 Hooghoudt IPOS1/2/3 and Ernst IPOS4/5 normal/guarded low-air frost composition, explicit OFF-by-default selector; LINEAR/TABULATED mixtures only with their required existing selectors",
@@ -32,23 +32,23 @@
     "src/process/mod_drainage_ernst_ipos45_preparation.f90": "a562c0cd43edc5b21af47f5977ae001c896d9e288e992a3501972ea267ecb5d5",
     "src/process/mod_drainage_ernst_ipos45_response.f90": "74bfdc58b88070243e2ed6e5dd26311ac8a64be670759c1114a37b48ab2a711b"
   },
-  "implemented": false,
+  "implemented": true,
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
-  "next_action": "Reconcile exact B11 admission then preregister active variant validation, source-bound component and actual runtime matrices before production editing",
+  "next_action": "Finish preregistered runtime and preservation qualification on exact production source7be5920b; then verify proposed merge before canonical admission",
   "literal_B1_11_drainage_source": {
     "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90",
     "sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
     "DRAMET2_cutoff_literal": "if (diffl(1) < 1.0d-10) then",
     "cutoff_matches_F_VQ38": true
   },
-  "current_kernels_exactly_match_F_VQ38_scientific_blobs": {
+  "baseline": "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+  "preimplementation_kernels_exactly_match_F_VQ38_scientific_blobs": {
     "src/process/mod_drainage_hooghoudt_ipos1_response.f90": "89f26e2d2b77bef5bdd0c5fdb2ce9ca1f03206fa",
     "src/process/mod_drainage_hooghoudt_equivalent_depth.f90": "6b7b2bb1fd259879d3f26c46abfc071ea2b2f108",
     "src/process/mod_drainage_hooghoudt_ipos23_response.f90": "5637ddb4d33141f00b4ebf737d1c7f7fe1824164",
     "src/process/mod_drainage_ernst_ipos45_preparation.f90": "fa1d5d400bb32be42e78889c0ff2a3bcab335142",
     "src/process/mod_drainage_ernst_ipos45_response.f90": "b00ef0ae1f10182af2d0a8ea636d10b196e93379"
-  },
-  "baseline": "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6"
+  }
 }

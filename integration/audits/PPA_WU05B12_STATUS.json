@@ -4,10 +4,10 @@
   "last_reconciled_upstream": "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
   "baseline_source": "cd7a56657fa3347ee63595a0f54274b2f1766ba8",
   "preregistration": "integration/audits/PPA_WU05B12_PREREGISTRATION.json",
-  "status": "IMPLEMENTED_UNTESTED",
+  "status": "PARTIALLY_TESTED_RUNTIME_QUALIFICATION_RUNNING",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
@@ -31,7 +31,7 @@
   "dependency_surface": "Active variant/prepared generation and physical depths; runtime/backend/bootstrap; frost/temperature; sink/accounting, restart, root/salt and strict canonical pin gate",
   "interfaces_allowed_to_change": "Add OFF-by-default frost_analytic_response_drainage_active parameter/model selector requiring B9 base selector and at least one selected analytic family level. TABULATED levels additionally require the B11 selector and at least one actual table. Low-air additionally requires B10 selector and existing valid matching negative depth array. Additive public pure delegating accessors expose existing private active variant/prepared validators; existing evaluator, preparation equations, parameter domain and status behavior remain unchanged.",
   "next_action": "Fresh full-module actual normal and low-air runtime qualification across all five analytic families; source-composition and invalid active variant matrices",
-  "recovery_point": "This preregistration commit",
+  "recovery_point": "Persisted partially-tested checkpoint; no qualification/admission claim",
   "blockers": [],
   "production_source_tree": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
   "negative_findings": [
@@ -49,11 +49,44 @@
       "kind": "test isolation",
       "finding": "Family2 reused nonempty restored registry; explicit empty-registry contract rejected restore after its six physical cases had passed. Low-air incomplete run interrupted proactively before same repeated-fixture defect",
       "repair": "Reset restored test registry to default empty record for each family before actual restore; rerun both O0/O2 whole-module matrices; source and budgets unchanged"
+    },
+    {
+      "kind": "preflight oracle domain",
+      "finding": "Additional test expected finite negative Ernst fixed resistance to be rejected by parameter preflight; unchanged admitted validators permit it and evaluator checks GWL-dependent positive total resistance. Negative radial resistance is an explicit scientific authority case",
+      "repair": "Use actual excluded zero vertical conductivity for invalid domain test; initialize prescribed case temperature explicitly. No production domain change"
     }
   ],
   "runtime_fixture_recovery": "All-five-family fixtures use fresh full fine trajectories; invalid table cases explicitly target active second TABULATED level",
   "completed_component_gates": [
     "Immutable F-VQ38 148 independent equations/132 tangent checks O0/O2 plus unchanged scientific bodies",
     "4320 actual selected generator plus corrected B7 FrozenBounds composition cases O0/O2, independent equation/cutoff and signed TAB proposal checks"
-  ]
+  ],
+  "completed": {
+    "scientific": "148 equations/132 tangent checks unchanged immutable oracle O0/O2 PASS; scientific bodies unchanged",
+    "source_composition": "4320 actual selected generator plus corrected B7 reference O0/O2 identical PASS",
+    "normal_runtime": "All five families x six trajectories O0/O2 identical PASS; mass/retry/final receipt/replay/empty-registry restart/application PASS",
+    "normal_refinements": "Families1/2/5 warm and partial negative qbot 16384 and32768 PASS",
+    "activation": "90 short actual cases per route; normal O0/O2 identical PASS; low-air O0 PASS O2 pending",
+    "preflight": "All-family actual application positive/mixed and four active-invalid cases each; normal O0/O2 identical PASS; low-air O0 PASS O2 pending",
+    "SALT4": "Four fresh179-source mixed salt/root/frost matrices O0/O2/fresh-process identical PASS",
+    "VQ73_VQ74": "Fresh current whole-module relink unchanged immutable primary programs O0/O2 identical PASS",
+    "literal_root": "330 literal macro cutoff plus12 dispatcher O0/O2 PASS",
+    "canonical": "Complete exact source-pin moving canonical lineage-aware preservation PASS",
+    "normal_incumbents": "Fresh B1/B2/B3/B4/B6/B9/B11 normal current whole-module relinks O0/O2 identical PASS",
+    "low_air_refinements": "IPOS1/IPOS5 surviving analytic level; actual131072 fine steps PASS; max head3.128818e-7cm and T5.740677e-7C"
+  },
+  "pending": [
+    "Full five-family low-air runtime O0/O2",
+    "Fresh B8/B10/B11 low-air incumbent relinks O0/O2",
+    "Low-air activation/preflight O2",
+    "Final immutable evidence, docs and proposed merge/admission"
+  ],
+  "documentation": "PARTIAL_CHECK_DOCS_AND_STRICT_MKDOCS_PASS",
+  "partial_evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B12_PARTIAL_RECOVERY.json.gz",
+    "sha256": "cc711071fda1e04a957cbaddadeca9f25181493fd7345323aa575e2c1ebb9a45",
+    "bytes": 210088,
+    "manifest_entries": 465,
+    "qualification": false
+  }
 }

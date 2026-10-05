@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-BUILD="${TMPDIR:-/tmp}/ppa-wu05b12-normal-runtime"
+BUILD="${B12_RUNTIME_BUILD:-${TMPDIR:-/tmp}/ppa-wu05b12-normal-runtime}"
 rm -rf "$BUILD"; mkdir -p "$BUILD"
 cd "$ROOT"
 
@@ -30,7 +30,7 @@ visit('mod_fmr_production_application_bootstrap')
 for path in ordered: print(path)
 PY
 
-for opt in 0 2; do
+for opt in ${B12_RUNTIME_OPTS:-0 2}; do
   OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
   while IFS= read -r source; do
     object="$OUT/$(basename "${source%.*}").o"
@@ -56,5 +56,7 @@ for opt in 0 2; do
   cat "$OUT/output.txt"
   echo "PPA_WU05B12_NORMAL_RESPONSE_DRAIN_RUNTIME_O${opt}=PASS"
 done
+if [[ -f "$BUILD/o0/output.txt" && -f "$BUILD/o2/output.txt" ]]; then
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 echo 'PPA_WU05B12_NORMAL_RESPONSE_DRAIN_O0_O2_SEMANTIC_IDENTITY=PASS'
+fi
