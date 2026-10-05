@@ -1,0 +1,54 @@
+{
+  "work_unit": "PPA-WU05B14",
+  "baseline": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
+  "last_reconciled_upstream": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
+  "baseline_source": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
+  "preregistration": "integration/audits/PPA_WU05B14_PREREGISTRATION.json",
+  "status": "PREREGISTERED_IMPLEMENTATION_PENDING",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "relevant_paths": [
+    "src/process/mod_drainage_extended_exchange.f90",
+    "src/runtime/mod_fmr_drainage_response_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90",
+    "src/process/mod_frost_drainage_effect.f90",
+    "src/process/mod_frost_low_air_drainage_effect.f90",
+    "src/solver/mod_process_hydraulic_view.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/PPA_WU05B14_SOURCE_REVIEW.json",
+    "integration/audits/PPA_WU05B13_CANONICAL_ADMISSION.json",
+    "integration/f-ci/F-CI109R1_FAPP09_ADMISSION.json"
+  ],
+  "dependency_surface": "Active single-level signed process validation; shared backend ABI, resolved control binding, hydraulic/frost/thermal modifier, single sink/step/window receipts, trial/retry/replay/application/restart, prior response/root/salt/external profile preservation",
+  "interfaces_allowed_to_change": "Add OFF frost_extended_response_drainage_active requiring B9; exactly one actual EXTENDED_SIGNED level, TUBE or OPEN_CHANNEL, highest_level false and TOP_NONE. Reject TAB/analytic/empirical selectors and all other variants/mixed cardinality. Low-air requires B10/B8 and exact active zbotdr/frost physical depth agreement. Add PURE finite-preflight forwarding valid_extended_drainage_parameters accessor; PURE-annotate existing parameter validation only, preserve its body and process evaluator byte-for-byte.",
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    27,
+    29,
+    30
+  ],
+  "next_action": "Persist preregistration; implement only additive selected parameter validation and OFF flag before all current-source gates",
+  "recovery_point": "Persisted preimplementation preregistration and exact B13 canonical closeout",
+  "blockers": [],
+  "pending": [
+    "Unchanged 1507-case Q4A primary oracle/driver rebound to actual current process/hydraulic carrier O0/O2; value/tangent/seam/negative-power holds unchanged",
+    "Independent selected TUBE/OPEN signed equations, GWL cap/control branch/ponding switch, active parameter bounds, inactive members, separate controls/physical depths, normal/B8 cuts/equality/qbot and corrected B7 source modifier parity",
+    "Four kind/sign configurations x six full trajectories per route with warm/partial/frozen normal and observed bracketed low-air partial/all/no cuts, both qbot signs; unchanged 8192/65536 independent fine references, hard mass, retry/replay/final step/window receipts/application/empty restart; representative finer references",
+    "Actual resolved-control activation/inactivity/positive/negative/GWLINF cap/suppression cases with fixed physical depths, observed low-air and hard mass; no Jacobian/directional claim",
+    "Active wrong selector/position/cardinality/nonfinite parameter/depth/control/missing/wrong-kind and mismatched zbotdr reject before solver, committed state unchanged; inactive parameters ignored",
+    "Fresh relevant B1..B13 whole-module preservation, four SALFRO01, immutable VQ73/74, exact F-APP09/VQ128 originals with external frost exclusion, literal root and strict canonical exact pins; docs and immutable replay, exact proposed/actual admission"
+  ]
+}

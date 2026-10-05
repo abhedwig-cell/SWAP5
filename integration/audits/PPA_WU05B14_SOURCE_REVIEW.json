@@ -1,8 +1,8 @@
 {
   "work_unit": "PPA-WU05B14",
-  "status": "SOURCE_REVIEW_ONLY",
+  "status": "SOURCE_REVIEW_COMPLETE_PREREGISTERED",
   "reviewed_B13_candidate_source": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
-  "prerequisite": "B13 admitted via PR1058; reconcile exact metadata closeout and persist bounded B14 preregistration before production/interface edits",
+  "prerequisite": "B13 admitted PR1058 and exact metadata closeout PR1059 verified",
   "selected_next_slice": "Explicit rootless ordinary Reference mode2 single-level signed EXTENDED response with TUBE/OPEN_CHANNEL, highest_level false and TOP_NONE, finite supplied resolved surface-water control head; normal and B8 guarded low-air frost. Low-air physical zbotdr must equal selected frost drain depth. This is a bounded normalized constitutive composition, separate from the F-APP09 external coupling profile.",
   "scientific_authority": {
     "readiness": "a0b11f68884f7593f000af1c34aa42de8956ecfd",
@@ -61,6 +61,6 @@
     "Global frost equivalence",
     "Legacy SWDRA2 surface-water feedback and reporting-reference scope expansion"
   ],
-  "next_action": "After B13 exact closeout, preregister this bounded interface and its full scientific/component/runtime/preservation gate before source editing",
-  "baseline": "4ca2996bddb6bff101867f87251589a5b11357c7"
+  "next_action": "Persist preregistration; implement only additive selected parameter validation and OFF flag before all current-source gates",
+  "baseline": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd"
 }
