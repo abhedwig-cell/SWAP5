@@ -1,7 +1,7 @@
 # PPA-WU05B3 no-drain FrozenBounds successor
 
-Status: locally qualified on current canonical Walsum-salt/root-frost composition;
-not yet canonically admitted. Baseline `a370f6f487c017af9931ffc46d4c5c9fb1288d8c`.
+Status: canonically admitted via PR #1034, merge
+`bdb5ecb78bd14226dc850ce27b72d551eaeff287`, on the current Walsum-salt/root-frost composition. Baseline `a370f6f487c017af9931ffc46d4c5c9fb1288d8c`.
 The preregistration and qualification are in `integration/audits/PPA_WU05B3_*.json`.
 
 The explicit physical option applies the original no-drain FrozenBounds rule on
@@ -51,3 +51,8 @@ Excluded: active drainage, joint root uptake/bottom-frost composition, salt/fros
 Bartholomeus, macropores, groundwater-owned boundary, corrected last-node geometry,
 latent heat and ice inventory. This does not complete all frost migration.
 The source reassessment is [FrozenBounds source reassessment](PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md).
+
+Canonical admission uses the completed local qualification and verified exact PR
+merge/source identity, recorded in `PPA_WU05B3_CANONICAL_ADMISSION.json`.
+The later [drainage source finding](PPA_WU05B_FROZEN_DRAIN_SOURCE_FINDING.md)
+reproduces a node/level inconsistency in the separate low-air SWDIVD=0 branch.
