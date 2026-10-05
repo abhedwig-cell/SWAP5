@@ -6,6 +6,9 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tests/fgc'))
 import test_fgc45_real_multiswap_modflow_end_to_end as f
 mode=sys.argv[1];nwindow=int(sys.argv[2]) if len(sys.argv)>2 else 64
+PROFILE=os.environ.get('A28_PHYSICAL_PROFILE','ORIGINAL_UNPONDED_RFM')
+TEMPORAL_HEAD=float(os.environ.get('A28_TEMPORAL_HEAD_BUDGET_CM','1e-5'))
+assert PROFILE in ('ORIGINAL_UNPONDED_RFM','EXTERNAL_SUPPLY_PARTITION_V1_RESEARCH')
 H0=float(os.environ.get('A28_H0_CM','-10.'))
 DT=float(os.environ.get('A28_DT_DAY','.001'))
 RAIN=float(os.environ.get('A28_RAIN_CM_DAY','1.'))
@@ -35,8 +38,10 @@ swap=f.Fgc45RealMultiSwap(os.environ['FGC45_MULTISWAP_LIB'])
 # Initialization includes FD qualification and is reported separately from live windows.
 t0=time.perf_counter();hcof,rhs,href=swap.initialize();init_seconds=time.perf_counter()-t0
 matrix=(ctypes.c_double*2)();rfm=(ctypes.c_double*2)()
+pond=(ctypes.c_double*2)()
+lib.a28_pond_storage_c.argtypes=[ctypes.POINTER(ctypes.c_double)]
 lib.a28_storage_c(matrix,rfm);initial_matrix=list(matrix);initial_rfm=list(rfm)
-inventory=dict(initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,dt_day=DT,
+inventory=dict(temporal_head_budget_cm=TEMPORAL_HEAD,temporal_water_budget_cm=1e-5,physical_profile=PROFILE,initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,dt_day=DT,
                solver_balance_tol_cm=SOLVER_TOL,head_abs_tol_cm=HEAD_ABS,head_rel_tol=HEAD_REL,predictor_basepoint=BASEPOINT,max_committed_substeps=SUBSTEPS)
 counts=(ctypes.c_int*3)();panels=ctypes.c_int();hmin=ctypes.c_double();hmax=ctypes.c_double();seconds=ctypes.c_double()
 lib.a28_sorptivity_stats_c.argtypes=[ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)]
@@ -94,12 +99,14 @@ with tempfile.TemporaryDirectory(prefix='a28-windows-') as tmp:
    f.require(state[:2]==(w+1,w+1),'revision');f.require(state[4:6]==(w+1,w+1),'ledger count')
    f.require(max(abs(state[2]-(w+1)*DT),abs(state[3]-(w+1)*DT))<1e-12,'time')
    lib.a28_storage_c(matrix,rfm)
-   rows.append(dict(window=w+1,rain_cm_day=rain,head_m=head,q1=q1,q2=q2,qw=qw,residual=res,iterations=outer,ledger1=state[6],ledger2=state[7],matrix=list(matrix),rfm=list(rfm)))
+   lib.a28_pond_storage_c(pond)
+   rows.append(dict(window=w+1,rain_cm_day=rain,head_m=head,q1=q1,q2=q2,qw=qw,residual=res,iterations=outer,ledger1=state[6],ledger2=state[7],matrix=list(matrix),rfm=list(rfm),pond=list(pond),soil_matrix=[matrix[i]-pond[i] for i in range(2)]))
    coupling_seconds+=time.perf_counter()-start
    Path(os.environ['A28_RESULT']).write_text(json.dumps(dict(**inventory,status='RUNNING',completed_windows=w+1,rows=rows),indent=2)+'\n')
    print(f'A28_WINDOW_COMPLETED={w+1} H={head:.17g} iterations={outer} matrix={list(matrix)} rfm={list(rfm)}',flush=True)
  finally:raw.finalize()
 lib.a28_sorptivity_stats_c(counts,ctypes.byref(panels),ctypes.byref(hmin),ctypes.byref(hmax),ctypes.byref(seconds))
-result=dict(predictor_basepoint=BASEPOINT,head_abs_tol_cm=HEAD_ABS,head_rel_tol=HEAD_REL,solver_balance_tol_cm=SOLVER_TOL,mode=mode,windows=nwindow,h0_cm=H0,rain_cm_day=RAIN,reference_head_m=href,dt_day=DT,initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,init_seconds=init_seconds,execution_seconds=coupling_seconds,predictor_seconds=predictor_seconds,corrector_seconds=swap_seconds,modflow_seconds=modflow_seconds,sorptivity_counts=list(counts),panels=panels.value,consumer_head_range_cm=[hmin.value,hmax.value],sorptivity_seconds=seconds.value,rows=rows)
+result=dict(physical_profile=PROFILE,max_committed_substeps=SUBSTEPS,predictor_basepoint=BASEPOINT,head_abs_tol_cm=HEAD_ABS,head_rel_tol=HEAD_REL,solver_balance_tol_cm=SOLVER_TOL,mode=mode,windows=nwindow,h0_cm=H0,rain_cm_day=RAIN,reference_head_m=href,dt_day=DT,initial_matrix_cm=initial_matrix,initial_rfm_cm=initial_rfm,init_seconds=init_seconds,execution_seconds=coupling_seconds,predictor_seconds=predictor_seconds,corrector_seconds=swap_seconds,modflow_seconds=modflow_seconds,sorptivity_counts=list(counts),panels=panels.value,consumer_head_range_cm=[hmin.value,hmax.value],sorptivity_seconds=seconds.value,rows=rows)
+result.update(temporal_head_budget_cm=TEMPORAL_HEAD,temporal_water_budget_cm=1e-5)
 Path(os.environ['A28_RESULT']).write_text(json.dumps(result,indent=2)+'\n')
 print('A28_COUPLED_WINDOWS=PASS',json.dumps({k:v for k,v in result.items() if k!='rows'}))

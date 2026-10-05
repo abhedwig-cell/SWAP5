@@ -183,6 +183,17 @@ if os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1':
  before='max(self%compartment_balance_tolerance,FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM),rfm_live)'
  assert backend_text.count(before)==1
  backend_text=backend_text.replace(before,'1.0e-12_real64,rfm_live)',1)
+ if 'A28_TEMPORAL_HEAD_BUDGET_CM' in os.environ:
+  budget=float(os.environ['A28_TEMPORAL_HEAD_BUDGET_CM'])
+  assert budget>=1e-5 and budget<=1e-3
+  start=backend_text.index('  real(real64) function fmr_serialized_temporal_identity(')
+  end=backend_text.index('  end function fmr_serialized_temporal_identity',start)
+  fragment=backend_text[start:end]
+  anchor='        value = max(value, maxval(abs(full%pressure_head-half%pressure_head)))'
+  assert fragment.count(anchor)==1
+  fragment=fragment.replace(anchor,
+   f'        value = max(value, (1.0e-5_real64/{budget:.17e}_real64)*maxval(abs(full%pressure_head-half%pressure_head)))',1)
+  backend_text=backend_text[:start]+fragment+backend_text[end:]
  if os.environ.get('A28_TEMPORAL_COMPONENT_DIAGNOSTICS')=='1':
   anchor='        value = max(value, maxval(abs(full%rfm%endpoint_water_cm-half%rfm%endpoint_water_cm)))'
   assert backend_text.count(anchor)==1
@@ -197,6 +208,18 @@ if os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1':
           ' node=',maxloc(abs(full%pressure_head-half%pressure_head),dim=1), &
           ' full_heads=',full%pressure_head,' half_heads=',half%pressure_head
 ''',1)
+  if os.environ.get('A28_TEMPORAL_DIAGNOSTICS_BOUNDED')=='1':
+   declaration='    logical :: same\n'
+   header='  real(real64) function fmr_serialized_temporal_identity('
+   start=backend_text.index(header)
+   idx=backend_text.index(declaration,start)
+   backend_text=backend_text[:idx]+backend_text[idx:].replace(declaration,
+    declaration+'    integer,save :: a28_temporal_trace_count=0\n',1)
+   anchor="        if(value>1.0e-5_real64)write(*,*) 'A28_TEMPORAL_COMPONENTS error=',value, &"
+   assert backend_text.count(anchor)==1
+   backend_text=backend_text.replace(anchor,'''        if(value>1.0e-5_real64) a28_temporal_trace_count=a28_temporal_trace_count+1
+        if(value>1.0e-5_real64.and.(a28_temporal_trace_count<=16.or.mod(a28_temporal_trace_count,100000)==0)) &
+         write(*,*) 'A28_TEMPORAL_COMPONENTS count=',a28_temporal_trace_count,' error=',value, &''',1)
  if os.environ.get('A28_PARTITION_AWARE_PREFLIGHT')=='1':
   declaration='    real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm'
   assert backend_text.count(declaration)==1
@@ -230,6 +253,53 @@ if os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1':
                ' preferential_rate=',rfm_live%activation%activation%preferential_rate_cm_per_day, &
                ' regime=',rfm_preflight%regime,' pond=',rfm_preflight%candidate_ponding_depth,' fixed_K=',fixed_top_conductivity''',1)
   backend_text=backend_text.replace(before,repair+before,1)
+ if os.environ.get('A28_JOINT_SURFACE')=='1':
+  backend_text=backend_text.replace('  implicit none',
+   '  use mod_fpe_a28_joint_surface_receipt,only:materialize_joint_surface_receipt\n'
+   '  use mod_soil_water_solver_contract,only:SW_TOP_BOUNDARY_AVAILABLE\n  implicit none',1)
+  declaration='    real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm'
+  assert backend_text.count(declaration)==1
+  backend_text=backend_text.replace(declaration,
+   '    type(soil_water_top_boundary_result_t) :: a28_terminal_surface\n'
+   '    real(real64) :: a28_oldpond,a28_external_in,a28_external_out,a28_surface_residual\n'+declaration,1)
+  anchor='        if (.not. rfm_physical%rfm%ready()) return'
+  assert backend_text.count(anchor)==1
+  backend_text=backend_text.replace(anchor,anchor+'''
+        a28_oldpond=rfm_physical%ponding_depth
+        if(self%rfm_surface_forcing%potential_bare_soil_evaporation_cm_per_day/=0.0_real64.or. &
+           self%rfm_surface_forcing%potential_pond_evaporation_cm_per_day/=0.0_real64)return
+''',1)
+  anchor='      outcome%mass_in=outcome%mass_in+rfm_preferential_input_cm'
+  assert backend_text.count(anchor)==1
+  backend_text=backend_text.replace(anchor,'''      call self%rfm_top_provider%evaluate(solve_result%candidate_state%pressure_head(1), &
+           solve_result%candidate_state%water_content(1),solve_result%candidate_state%ponding_depth, &
+           request%boundary,a28_terminal_surface)
+      if(a28_terminal_surface%status/=SW_TOP_BOUNDARY_AVAILABLE)return
+      if(abs(a28_terminal_surface%candidate_ponding_depth-solve_result%candidate_state%ponding_depth)>1e-12_real64)return
+      call materialize_joint_surface_receipt(rfm_live%surface%effective_supply_cm_per_day, &
+           rfm_live%surface%preferential_supply_cm_per_day,step_duration,a28_oldpond, &
+           solve_result%candidate_state%ponding_depth,solve_result%top_flux,a28_terminal_surface%runoff_depth, &
+           1e-12_real64,a28_external_in,a28_external_out,a28_surface_residual,rfm_source_ok)
+      if(.not.rfm_source_ok)then
+        write(*,*) 'A28_JOINT_SURFACE_LEDGER_REJECT residual=',a28_surface_residual
+        return
+      end if
+      outcome%mass_in=outcome%mass_in-max(0.0_real64,-solve_result%top_flux)*step_duration+a28_external_in
+      outcome%mass_out=outcome%mass_out-max(0.0_real64,solve_result%top_flux)*step_duration+a28_external_out
+''',1)
+  if os.environ.get('A28_JOINT_SURFACE_DIAGNOSTICS')=='1':
+   anchor='    type(soil_water_top_boundary_result_t) :: a28_terminal_surface'
+   backend_text=backend_text.replace(anchor,'    integer,save :: a28_joint_pond_count=0\n'+anchor,1)
+   anchor='      outcome%mass_in=outcome%mass_in-max(0.0_real64,-solve_result%top_flux)*step_duration+a28_external_in'
+   backend_text=backend_text.replace(anchor,'''      if(t0>=.16_real64.and.t0<.17_real64.and. &
+           (a28_oldpond>0.0_real64.or.solve_result%candidate_state%ponding_depth>0.0_real64))then
+        a28_joint_pond_count=a28_joint_pond_count+1
+        if(a28_joint_pond_count<=16.or.mod(a28_joint_pond_count,100000)==0)write(*,*) &
+           'A28_JOINT_POND_RECEIPT t0=',t0,' dt=',step_duration,' old=',a28_oldpond, &
+           ' new=',solve_result%candidate_state%ponding_depth,' pref=',rfm_live%surface%preferential_supply_cm_per_day, &
+           ' qtop=',solve_result%top_flux,' runoff=',a28_external_out,' residual=',a28_surface_residual
+      end if
+'''+anchor,1)
  separated_backend=out/'a28_separated_backend.f90';separated_backend.write_text(backend_text)
 # Optional exact-zero degeneration; general ponded preferential supply still fails closed.
 matrix_only_preparer=None
@@ -249,9 +319,27 @@ if os.environ.get('A28_MATRIX_ONLY_SURFACE')=='1':
  matrix_only_preparer=out/'a28_matrix_only_preparer.f90';matrix_only_preparer.write_text(text)
 # Observe pre-solver RFM failure without changing its acceptance rules.
 observed_preparer=None
+joint_preparer=None
+joint_activation=None
+if os.environ.get('A28_JOINT_SURFACE')=='1':
+ assert os.environ.get('A28_SEPARATE_RFM_TOLERANCE')=='1'
+ assert os.environ.get('A28_MATRIX_ONLY_SURFACE')!='1'
+ sources.insert(sources.index('src/runtime/mod_rfm_live_trial_preparer.f90'),
+                'tests/fpe/support/mod_fpe_a28_joint_surface_receipt.f90')
+ text=(root/'src/runtime/mod_rfm_live_trial_preparer.f90').read_text()
+ text=text.replace(' implicit none',
+  ' use mod_fpe_a28_joint_surface_receipt,only:compose_external_supply_partition\n implicit none',1)
+ text=text.replace('call compose_rfm_unponded_surface_receipt(', 'call compose_external_supply_partition(',1)
+ joint_preparer=out/'a28_joint_preparer.f90';joint_preparer.write_text(text)
+ text=(root/'src/runtime/mod_fmr_rfm_activation_binding.f90').read_text()
+ anchor='    request%ponding_depth_cm = view%ponding_depth'
+ assert text.count(anchor)==1
+ text=text.replace(anchor,'''    ! Explicit upstream interception profile, NOT a reset of physical ponding.
+    request%ponding_depth_cm = 0.0_real64''',1)
+ joint_activation=out/'a28_external_supply_activation.f90';joint_activation.write_text(text)
 if os.environ.get('A28_RFM_PREPARER_DIAGNOSTICS')=='1':
  preparer_path=root/'src/runtime/mod_rfm_live_trial_preparer.f90'
- preparer_text=(matrix_only_preparer or preparer_path).read_text().replace('contains\n',' integer,save::a28_surface_failure_count=0\ncontains\n',1)
+ preparer_text=(joint_preparer or matrix_only_preparer or preparer_path).read_text().replace('contains\n',' integer,save::a28_surface_failure_count=0\ncontains\n',1)
  before='  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)return'
  assert preparer_text.count(before)==1
  preparer_text=preparer_text.replace(before,'''  if(result%surface%status/=RFM_SURFACE_COMPOSITION_AVAILABLE)then
@@ -339,11 +427,16 @@ assert s.count('    sorptivity = sqrt')==1 and s.count('    sorptivity=sqrt')==1
 for anchor in ['    sorptivity = sqrt','    sorptivity=sqrt']:
  s=s.replace(anchor,'    call cpu_time(clock1)\n    eval_seconds=eval_seconds+clock1-clock0\n'+anchor,1)
 instrumented=out/source.name;instrumented.write_text(s)
+if os.environ.get('A28_GENERATE_ONLY')=='1':
+ print('A28_GENERATE_ONLY=PASS')
+ sys.exit(0)
 objs=[]
 for name in sources:
  if field_grid is not None and name==base[0]:src=field_grid
  elif separated_backend is not None and name==str(backend_path.relative_to(root)):src=separated_backend
  elif observed_preparer is not None and name=='src/runtime/mod_rfm_live_trial_preparer.f90':src=observed_preparer
+ elif joint_preparer is not None and name=='src/runtime/mod_rfm_live_trial_preparer.f90':src=joint_preparer
+ elif joint_activation is not None and name=='src/runtime/mod_fmr_rfm_activation_binding.f90':src=joint_activation
  elif matrix_only_preparer is not None and name=='src/runtime/mod_rfm_live_trial_preparer.f90':src=matrix_only_preparer
  elif observed_participant is not None and name=='src/runtime/mod_fmr_groundwater_swap_participant.f90':src=observed_participant
  elif bounded_interval is not None and name=='src/runtime/mod_canonical_interval_runtime.f90':src=bounded_interval

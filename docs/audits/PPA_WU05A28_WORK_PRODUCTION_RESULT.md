@@ -154,3 +154,20 @@ The latest full bounds-checked local build and fresh initial FD regression pass.
 ## Matrix-only surface continuation
 
 The separately registered exact-zero preferential degeneration and targeted pond-startup observation are recorded in [matrix-only result](PPA_WU05A28_MATRIX_ONLY_SURFACE_RESULT.md). The component passes O0/O2 and preserves A15; the frozen live repair remains insufficient. First-half Richards execution creates ponding, then A11 explicitly refuses the ponded origin of the second half. Default zero activation fields must not be interpreted as valid receipts. The independent surface oracle also distinguishes external atmospheric input from matrix infiltration when pond storage/runoff exist. A general repair requires the joint surface/RFM owner and explicit external ledger already identified by A14. Existing production execution is unchanged; one new unadmitted component is added in source, and live integration remains generated/opt-in. Decision remains COUPLED_RFM_BLOCKED;16 rows match the previous control bitwise.
+
+## Joint surface research continuation, 2026-10-05
+
+[Joint result](PPA_WU05A28_JOINT_SURFACE_RESULT.md) records a new upstream external-supply
+partition profile, not a source-faithful general ponded-RFM production repair. Its
+joint pond/partition ledger passes O0/O2 controls and native publication through19
+windows; repeat/observer rows are bitwise identical. Predictor20 reaches16384
+substeps with126772 temporal rejections and zero solver/mass rejections. Independent
+prefix mass closes at rounding scale. A separately preregistered1e-3 cm temporal
+head-only pilot is rejected at predictor16 by the unchanged FD-stability gate;
+its required19-window overlap is unavailable. No acceptance gate is widened.
+Accepted RFM storage remains0, head excursion.084394 cm remains below.1 cm, and
+nonmatrix output has no explicit MODFLOW receiver. Decision remains
+COUPLED_RFM_BLOCKED. No field-depth A28 or production performance claim follows.
+The original14-window fields above remain historical original-profile evidence,
+not the new unadmitted profile's19-window result. Evidence and disclosed failed
+observer-generation deviation are linked from the joint result.

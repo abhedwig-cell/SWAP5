@@ -171,6 +171,22 @@ contains
     end do
   end subroutine
 
+  subroutine a28_pond_storage_c(pond) bind(C,name="a28_pond_storage_c")
+    real(c_double),intent(out)::pond(NTILE)
+    class(transaction_state_t),allocatable::snapshot
+    integer::i
+    logical::ok
+    do i=1,NTILE
+      call committed(i)%snapshot(snapshot,ok);if(.not.ok)error stop 'pond snapshot'
+      select type(snapshot)
+      type is(fmr_b110_rfm_state_t)
+        pond(i)=snapshot%ponding_depth
+      class default
+        error stop 'RFM pond snapshot type'
+      end select
+    end do
+  end subroutine
+
   integer(c_int) function a28_next_window_c(rain,hcof,rhs,href) bind(C,name="a28_next_window_c")
     real(c_double),value::rain
     real(c_double),intent(out)::hcof,rhs,href

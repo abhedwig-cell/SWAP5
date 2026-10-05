@@ -1,8 +1,10 @@
 """Independent accepted-window inventory; no acceptance-gate modification.
 
 Usage: python analyze_fpe_a28_water_inventory.py result.json log.txt output.json
-The fixture has rainfall, matrix bottom flow, and distinct RFM deep receipts;
-no evaporation, root extraction, drainage, runoff or irrigation is enabled.
+The original fixture has rainfall, matrix bottom flow, and distinct RFM deep receipts.
+The joint surface research profile also permits runoff: its nonmatrix output
+must not be labelled deep receipt alone without a separate runoff carrier.
+No evaporation, root extraction, drainage or irrigation is enabled.
 Only the final two complete correctors at each t0 belong to that window.
 Group by t0 because Fortran/Python stdout buffering can reorder their prints.
 """
@@ -38,12 +40,14 @@ for row,correctors in zip(result['rows'],published):
   max_local_residual=max(max_local_residual,abs(record['storage_end']-record['storage_start']-record['input']+record['output']))
  rows.append(dict(window=row['window'],rain_cm=rain,unassigned_receipt_cm=missing,
                   direct_deep_receipt_cm=list(deep),weighted_receipt_cm=.35*missing[0]+.65*missing[1]))
-output=dict(status='DISTINCT_DEEP_RECEIPT_ABSENT_FROM_MODFLOW_INTERFACE',
+joint=result.get('physical_profile')=='EXTERNAL_SUPPLY_PARTITION_V1_RESEARCH'
+output=dict(status='NONMATRIX_EXTERNAL_OUTPUT_NOT_IN_MODFLOW_INTERFACE' if joint else 'DISTINCT_DEEP_RECEIPT_ABSENT_FROM_MODFLOW_INTERFACE',
+ nonmatrix_output_scope='RFM_DEEP_PLUS_ANY_RUNOFF' if joint else 'RFM_DEEP_ONLY',
  source_result_sha256=__import__('hashlib').sha256(Path(sys.argv[1]).read_bytes()).hexdigest(),
  source_log_sha256=__import__('hashlib').sha256(Path(sys.argv[2]).read_bytes()).hexdigest(),
  max_inventory_vs_direct_difference_cm=max_inventory_difference,
  max_matrix_interface_difference_cm=max_flux_difference,max_local_mass_residual_cm=max_local_residual,
- interpretation='SWAP has a distinct accounted external RFM receipt; this fixture has no receiver ledger or MODFLOW publication for it. This is not a SWAP local mass failure.',rows=rows)
+ interpretation='SWAP accounts nonmatrix external output (RFM deep receipt plus any runoff in the joint profile); this inventory does not independently separate those components or assign a receiving groundwater ledger. This is not a SWAP local mass failure.',rows=rows)
 assert max_inventory_difference<1e-12 and max_flux_difference<1e-12 and max_local_residual<1e-12
 Path(sys.argv[3]).write_text(json.dumps(output,indent=2)+'\n')
 print(json.dumps({k:v for k,v in output.items() if k!='rows'}))
