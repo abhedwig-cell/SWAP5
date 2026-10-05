@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.ppa_wu05e.canonical_admission.v1",
+  "work_unit": "PPA-WU05-E",
+  "decision": "ADMIT",
+  "status": "CANONICAL_PRODUCTION_ADMITTED_CLOSED_WITHIN_SELECTED_MATRIX_SCOPE",
+  "owner": "central SWAP5 regie",
+  "canonical_base": "53a3f3e41231b8600bbb19b8eb2157558bd12e19",
+  "canonical_pr": 1015,
+  "qualified_pr_head": "ea4a4dd101ff3e41d927026554afebe252a41d29",
+  "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3",
+  "canonical_tree": "8e3aa5e70f883755ca16ac1eabcf3c633490eb17",
+  "admitted_merge_tree_equals_qualified_pr_head": true,
+  "qualification": "integration/audits/PPA_WU05E_FROST_RECONCILED_QUALIFICATION.json",
+  "qualified_source_candidate": "a12c4df7eda6714b23c03257f339aba30da4635e",
+  "execution_checkout": "b7dd862e89c7bf2e6bac0f5fbb43de59e92b4ae9",
+  "source_subtrees": {
+    "src": "83d023b760194ba672d4683421154d211dc0ae5f",
+    "tests": "85fb015aae665ae5c039e6a4f283708783d14e8f"
+  },
+  "source_manifest_entries_verified": 1024,
+  "controlling_gate_count": 19,
+  "controlling_gate_status": "PASS",
+  "qualified_scope": [
+    "Selected matrix dissolved mobile salt: source molecular/mechanical dispersion, conservative upwind advection and donor-bounded internal solute stepping",
+    "One Richards/root-water sink with independent salt ledger and integrated per-node root and signed per-level drainage receipts",
+    "Explicit hydraulic geometry/saturation binding, zero-solute qssdi, evaporative salt retention and separately declared liquid top export",
+    "Actual Feddes/Bartholomeus/Maas-Hoffman/Jarvis stress/application chain, reject/retry/discard/commit and Restart v4 fresh-process continuation",
+    "O0/O2 analytical/refinement process oracles and D2/D3/Richards/macropore preservation gates"
+  ],
+  "exclusions": [
+    "Full B1.11 numerical or bitwise equivalence: legacy centered advection and artificial dispersion correction are not ported",
+    "Sorption, decomposition, surface concentration pools, aquifer breakthrough and coupled groundwater salt state",
+    "Osmotic-head mode, frost and new macropore dispersion physics",
+    "Seasonal real Richards/FMR or field validation: the 365-day schedule is a manufactured process oracle",
+    "Combined frost/salt/root and Rutter/salt profiles remain excluded; frost and Rutter are preservation gates only.",
+    "Salinity with Walsum is not admitted: the live salinity binding requires Jarvis."
+  ],
+  "closeout": "docs/audits/PPA_WU05E_CANONICAL_CLOSEOUT.md",
+  "frozen_status_a_unchanged": true,
+  "aggregate_legacy_migration_complete": false,
+  "full_b111_equivalence": false,
+  "interfaces_held_fixed": [
+    "One existing accepted root-water sink and receipt",
+    "Generic kernel commit/revision ownership",
+    "Separate candidate/committed physical state",
+    "Independent salt ledger",
+    "Full Richards production reference path"
+  ],
+  "shared_semantics_reconciled": [
+    "Frost and salt work-variable declarations retained in the shared backend",
+    "Independent Rutter/salt state layouts, clones and selectors preserved",
+    "Unsupported frost/salt, Rutter/salt and salinity/Walsum remain closed"
+  ],
+  "current_preservation": "Named D2/D3, frost, Rutter, MIGMAC07/08/09 and real Richards/macropore gates pass on the complete qualified src/tests subtrees",
+  "global_ci_claim": "No blanket green CI claim; this bounded admission is controlled by the named current-source gates."
+}

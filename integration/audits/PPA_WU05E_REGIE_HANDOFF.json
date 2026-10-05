@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_wu05e.regie_handoff.v1",
   "work_unit": "PPA-WU05-E",
-  "status": "READY_FOR_REGIE_FROST_RECONCILED",
+  "status": "CANONICAL_ADMITTED_CLOSED",
   "candidate_commit": "a12c4df7eda6714b23c03257f339aba30da4635e",
   "candidate_tree": "5299a59c882e96b5b2a8cc76577bb8f5e504fa64",
   "baseline": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
@@ -43,10 +43,10 @@
   "required_qualification": "All 19 declared current-source qualification/preservation gates PASS; manifests and whole src/tests trees verified.",
   "implementation_status": "IMPLEMENTED",
   "test_status": "PASS",
-  "qualification_status": "SELECTED_MATRIX_AND_CHANGED_DEPENDENCIES_QUALIFIED",
+  "qualification_status": "CANONICAL_ADMITTED_SELECTED_MATRIX",
   "recovery_point": "a12c4df7eda6714b23c03257f339aba30da4635e",
   "owner": "Central SWAP5 regie",
-  "requested_action": "Central ADMIT of the exact qualified source-equivalent candidate; no further physics expansion.",
+  "requested_action": "Closed within admitted scope; new physics/process combinations return through independent preregistered work units.",
   "authority": "docs/development/SWAP5_PROJECT_CONTROL.md: Control model",
   "interfaces_held_fixed": [
     "Single root-water sink and accepted water receipt",
@@ -62,7 +62,7 @@
     "Typed matrix top liquid/vapor forcing",
     "Production application preflight binding to hydraulic owner"
   ],
-  "production_admitted": false,
+  "production_admitted": true,
   "cross_workstream_consequences": [
     "INT13 Rutter and MIGMAC07/08/09 incorporated from admitted canonical input",
     "Both independent state layouts, clone paths, initializers and temporal selectors preserved",
@@ -82,9 +82,11 @@
       "rutter_production": "PASS",
       "migmac07_08_09": "PASS_O0_O2"
     },
-    "production_admitted": false,
+    "production_admitted": true,
     "exact_persisted_replay": "PASS_LOCAL_SOURCE_BOUND",
     "qualified_commit": "03674ed01509b3e109339ef0e684645e2287bad1",
-    "frost_preservation": "PASS_O0_O2"
-  }
+    "frost_preservation": "PASS_O0_O2",
+    "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3"
+  },
+  "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3"
 }
