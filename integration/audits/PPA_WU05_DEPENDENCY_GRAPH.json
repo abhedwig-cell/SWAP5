@@ -177,6 +177,13 @@
         "authority": "integration/audits/PPA_WU05B5_REF_STATUS.json",
         "scope": "Reporting-only ordinary SWDRA=1 SWDIVD=0 SWMACRO=0 overlay; original physical fluxes bitwise unchanged",
         "global_B1_snapshot_promoted": false
+      },
+      "normal_frost_drainage_successor": {
+        "work_unit": "PPA-WU05B6",
+        "canonical_merge": "f28e020855666b47207bcf6679cf367e0962e65c",
+        "admission": "integration/audits/PPA_WU05B6_CANONICAL_ADMISSION.json",
+        "scope": "Rootless ordinary Reference mode2 normal FrozenBounds scaling of prescribed signed level/node drainage",
+        "admitted": true
       }
     },
     "advanced_root_stress": {
