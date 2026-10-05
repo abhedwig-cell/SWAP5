@@ -41,6 +41,8 @@ module mod_drainage_hooghoudt_ipos1_response
 
   public :: evaluate_drainage_hooghoudt_ipos1_response
 
+  public :: valid_hooghoudt_ipos1_parameters
+
 contains
 
   subroutine evaluate_drainage_hooghoudt_ipos1_response(parameters, hydraulic_view, response, diagnostics)
@@ -120,7 +122,7 @@ contains
     response%derivative_defined = .true.
   end subroutine evaluate_drainage_hooghoudt_ipos1_response
 
-  logical function valid_parameters(parameters) result(valid)
+  pure logical function valid_parameters(parameters) result(valid)
     type(drainage_hooghoudt_ipos1_parameters_t), intent(in) :: parameters
 
     valid = ieee_is_finite(parameters%drain_spacing) .and. &
@@ -135,5 +137,10 @@ contains
          parameters%horizontal_conductivity_top > 0.0_real64 .and. &
          parameters%entry_resistance >= 0.0_real64
   end function valid_parameters
+
+  pure logical function valid_hooghoudt_ipos1_parameters(parameters) result(valid)
+    type(drainage_hooghoudt_ipos1_parameters_t), intent(in) :: parameters
+    valid = valid_parameters(parameters)
+  end function valid_hooghoudt_ipos1_parameters
 
 end module mod_drainage_hooghoudt_ipos1_response
