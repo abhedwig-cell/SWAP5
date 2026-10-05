@@ -42,6 +42,8 @@ program test_ppa_wu05a7_real_richards_runtime
        initialize_mobile_salt_state, advance_mobile_salt_trace, SOLUTE_OK, SOLUTE_WATER_CLOSURE
   use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t, mobile_macro_salt_transfer_t, &
        transfer_mobile_macro_salt_trace, EXCHANGE_OK, EXCHANGE_DONOR_UNAVAILABLE
+  use mod_solute_mobile_macro_salt_transport, only: mobile_macro_salt_receipt_t, &
+       mobile_macro_salt_substep_t, advance_mobile_macro_salt_trace, initialize_mobile_macro_salt_state, MACRO_SALT_OK
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
@@ -467,6 +469,79 @@ contains
     print '(a)','PPA_WU05E_TRACE_DRIVEN_INTERNAL_EXCHANGE=PASS_TEST_ONLY'
   end subroutine exercise_macro_salt_exchange_trace
 
+  subroutine exercise_macro_salt_process_from_fmr_trace(water_trace,node_thickness)
+    type(fmr_water_flux_substep_trace_t),intent(in)::water_trace(:)
+    real(real64),intent(in)::node_thickness(:)
+    type(mobile_macro_salt_substep_t),allocatable::salt_trace(:)
+    type(mobile_macro_salt_state_t)::committed,candidate
+    type(mobile_macro_salt_receipt_t)::receipt
+    real(real64),allocatable::matrix_c(:),macro_c(:,:),faces(:)
+    real(real64)::closure,max_qssdi
+    integer::n,nd,nlev,i,status,face_status
+
+    n=size(node_thickness)
+    if(size(water_trace)<2.or.n<=0)error stop 'FMR salt process trace shape'
+    if(.not.allocated(water_trace(1)%macropore_matrix_exchange_domain).or. &
+       .not.allocated(water_trace(1)%drainage_sink_by_level))error stop 'FMR salt process trace missing routes'
+    nd=size(water_trace(1)%macropore_matrix_exchange_domain,1)
+    nlev=size(water_trace(1)%drainage_sink_by_level,1)
+    if(nd<=0.or.nlev<=0)error stop 'FMR salt process trace empty routes'
+    allocate(salt_trace(size(water_trace)),matrix_c(n),macro_c(nd,n))
+    matrix_c=0.4_real64;macro_c=0.3_real64
+    call initialize_mobile_macro_salt_state(node_thickness,water_trace(1)%water_start, &
+         water_trace(1)%macropore_water_start,matrix_c,macro_c,committed,status)
+    if(status/=MACRO_SALT_OK)error stop 'FMR salt process profile initialization'
+    max_qssdi=0.0_real64
+    do i=1,size(water_trace)
+      if(.not.allocated(water_trace(i)%drainage_sink_by_level).or. &
+         .not.allocated(water_trace(i)%macropore_matrix_exchange_domain).or. &
+         .not.allocated(water_trace(i)%macropore_vertical_face_rate).or. &
+         .not.allocated(water_trace(i)%macropore_water_start).or. &
+         .not.allocated(water_trace(i)%macropore_water_end))error stop 'FMR salt process incomplete observation'
+      if(any(shape(water_trace(i)%drainage_sink_by_level)/=[nlev,n]).or. &
+         any(shape(water_trace(i)%macropore_matrix_exchange_domain)/=[nd,n]).or. &
+         any(shape(water_trace(i)%macropore_vertical_face_rate)/=[nd,n+1])) &
+           error stop 'FMR salt process observation shape'
+      salt_trace(i)%t0=water_trace(i)%t0;salt_trace(i)%t1=water_trace(i)%t1
+      salt_trace(i)%matrix_water_start=water_trace(i)%water_start
+      salt_trace(i)%matrix_water_end=water_trace(i)%water_end
+      salt_trace(i)%macro_water_start=water_trace(i)%macropore_water_start
+      salt_trace(i)%macro_water_end=water_trace(i)%macropore_water_end
+      call reconstruct_interval_water_face_flux(node_thickness,water_trace(i)%water_start, &
+           water_trace(i)%water_end,water_trace(i)%net_node_source,-water_trace(i)%top_flux, &
+           -water_trace(i)%bottom_flux,water_trace(i)%t1-water_trace(i)%t0,1.0e-8_real64, &
+           faces,closure,face_status)
+      if(face_status/=WATER_FACE_FLUX_OK)error stop 'FMR salt process matrix faces'
+      salt_trace(i)%matrix_face_rate=faces
+      salt_trace(i)%macro_face_rate=water_trace(i)%macropore_vertical_face_rate
+      salt_trace(i)%exchange_rate=water_trace(i)%macropore_matrix_exchange_domain
+      salt_trace(i)%root_water_sink=water_trace(i)%root_sink
+      salt_trace(i)%qdra_rate=water_trace(i)%drainage_sink_by_level
+      salt_trace(i)%qssdi_rate=water_trace(i)%subsurface_source
+      salt_trace(i)%cdrain_mg_cm3=0.25_real64
+      salt_trace(i)%cdrain_available=.true.
+      salt_trace(i)%matrix_top_concentration_mg_cm3=0.4_real64
+      salt_trace(i)%matrix_bottom_concentration_mg_cm3=0.4_real64
+      allocate(salt_trace(i)%macro_top_concentration_mg_cm3(nd), &
+           salt_trace(i)%macro_bottom_concentration_mg_cm3(nd))
+      salt_trace(i)%macro_top_concentration_mg_cm3=0.3_real64
+      salt_trace(i)%macro_bottom_concentration_mg_cm3=0.3_real64
+      max_qssdi=max(max_qssdi,maxval(abs(salt_trace(i)%qssdi_rate)))
+    end do
+    if(max_qssdi<=0.0_real64)error stop 'FMR salt process trace omitted qssdi water-only source'
+    call advance_mobile_macro_salt_trace(committed,node_thickness,salt_trace,0.25_real64,candidate,receipt,status)
+    if(status/=MACRO_SALT_OK)error stop 'FMR trace mapped process salt candidate rejected'
+    if(.not.allocated(candidate%matrix_mass_mg_cm2).or..not.allocated(candidate%macro_mass_mg_cm2)) &
+         error stop 'FMR trace mapped process salt candidate missing'
+    if(.not.allocated(receipt%qdra_signed_out_mg_cm2))error stop 'FMR trace mapped drainage receipt missing'
+    if(size(receipt%qdra_signed_out_mg_cm2)/=nlev)error stop 'FMR trace mapped drainage receipt shape'
+    if(sum(abs(receipt%qdra_signed_out_mg_cm2))<=0.0_real64)error stop 'FMR trace mapped drainage receipt empty'
+    if(abs(receipt%closure_error_mg_cm2)>1.0e-10_real64)error stop 'FMR trace mapped salt ledger closure'
+    if(any(candidate%matrix_mass_mg_cm2<0.0_real64).or.any(candidate%macro_mass_mg_cm2<0.0_real64)) &
+         error stop 'FMR trace mapped negative salt inventory'
+    print '(a)','PPA_WU05E_FMR_TRACE_MAPPED_SALT_PROCESS=PASS_TEST_ONLY'
+  end subroutine exercise_macro_salt_process_from_fmr_trace
+
   subroutine exercise_serialized_fmr(trace_mode)
     logical, intent(in), optional :: trace_mode
     type(fmr_serialized_reference_backend_t) :: backend, restored_backend
@@ -698,6 +773,8 @@ contains
       call exercise_salt_candidate_rejects_unowned_exchange( &
            fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
       call exercise_macro_salt_exchange_trace(fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
+      call exercise_macro_salt_process_from_fmr_trace( &
+           fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
       write(*,'(*(g0))') 'PPA_WU05E_FMR_ACCEPTED_SUBSTEP_TRACE=PASS|COUNT=', &
            size(fmr_observation%accepted_water_flux_substeps),'|MAX_CLOSURE=',max_trace_closure, &
            '|MAX_DOMAIN_EXCHANGE=',max_trace_macro_exchange,'|MAX_DOMAIN_WATER_CHANGE=',max_trace_macro_water_change, &
