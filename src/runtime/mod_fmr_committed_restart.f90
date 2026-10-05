@@ -32,8 +32,9 @@ module mod_fmr_committed_restart
   ! This is not a file format and it does not define byte-level persistence.
   ! The runtime adapter may encode/decode an equivalent representation outside
   ! the kernel. Physical committed continuation state is deliberately kept
-  ! separate from stable runtime identity. Immutable parameter data, forcing,
-  ! solver/Newton/Jacobian scratch and worker warm starts are not components.
+  ! separate from stable runtime identity. Immutable parameter and forcing
+  ! payloads, solver/Newton/Jacobian scratch and worker warm starts are not
+  ! components; stable parameter and forcing handles are persisted separately.
   type, public :: fmr_committed_restart_record_t
     integer :: schema_version = 0
     integer :: kernel_schema_version = 0
