@@ -640,6 +640,7 @@ module mod_fmr_serialized_reference_backend
 
   public :: prepare_fmr_b110_default_mvg
   public :: fmr_c_drain_salt_covers_interval
+  public :: fmr_c_drain_salt_matches_trial
   public :: fmr_new_b110_committed_state
   public :: fmr_new_b110_macropore_reduction_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
@@ -662,6 +663,15 @@ contains
     if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
     valid = forcing%valid_t0 <= t0 .and. forcing%valid_t1 >= t1 .and. forcing%valid_t1 > forcing%valid_t0
   end function fmr_c_drain_salt_covers_interval
+
+  pure logical function fmr_c_drain_salt_matches_trial(forcing, forcing_handle, t0, t1) result(valid)
+    type(fmr_c_drain_salt_forcing_t), intent(in) :: forcing
+    integer(int64), intent(in) :: forcing_handle
+    real(real64), intent(in) :: t0, t1
+    valid = .false.
+    if (forcing_handle <= 0_int64 .or. forcing%source_id /= forcing_handle) return
+    valid = fmr_c_drain_salt_covers_interval(forcing, t0, t1)
+  end function fmr_c_drain_salt_matches_trial
 
   subroutine prepare_fmr_b110_default_mvg(parameters, prepared)
     type(fmr_b110_physical_parameters_t), intent(inout) :: parameters
@@ -1611,6 +1621,16 @@ contains
       return
     end if
     if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+      if (.not. allocated(forcing%c_drain_salt)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (.not. fmr_c_drain_salt_matches_trial(forcing%c_drain_salt, column%forcing_handle, t0, t1)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      ! Active salt layouts remain fail-closed until an FMR-owned candidate and
+      ! its complete boundary receipts can be staged and discarded atomically.
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
