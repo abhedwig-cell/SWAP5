@@ -131,6 +131,7 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90
   src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90
+  src/process/macropore/mod_macropore_dynamic_shrinkage.f90
   src/runtime/mod_fmr_macropore_configuration.f90
   src/runtime/mod_fmr_macropore_top_input.f90
   src/solver/mod_macropore_exchange_overlay_provider.f90
@@ -143,6 +144,10 @@ MODULE_SRC=(
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90
   src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90
+  src/runtime/mod_interception_source_window_runtime.f90
+  src/process/mod_rutter_interception_process.f90
+  src/process/mod_rutter_event_integrator.f90
+  src/runtime/mod_rutter_source_window_processor.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_owned_commit_receipt.f90
