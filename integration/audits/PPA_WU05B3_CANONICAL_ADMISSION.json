@@ -1,0 +1,31 @@
+{
+  "work_unit": "PPA-WU05B3",
+  "role": "CENTRAL_REGIE",
+  "decision": "ADMIT",
+  "canonical_pr": 1034,
+  "canonical_merge": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
+  "qualified_head": "2b60933a7a384fb23882a4acbb4e25c7c6e4b50e",
+  "verified_proposed_merge": "65a69c73116f3887f906d566d52a19dc3293dfc8",
+  "accepted_tree": "2abae2e7edb6fb1289fb614a9c3112d4b07675f3",
+  "qualified_src_tree": "12575996d9ffd1558363054650b612670966fe7c",
+  "qualified_tests_tree": "19d42b76058efe52a0c8a2a4d60263ec6ca793c7",
+  "qualification": "integration/audits/PPA_WU05B3_LOCAL_QUALIFICATION.json",
+  "admission_basis": "Completed local exact-current-source qualification including full moving preservation; verified final PR merge/source identity. No queued Actions success claim.",
+  "scope": "Rootless ordinary Reference mode2 legacy no-drain FrozenBounds with explicit opt-in and finite positive local numerical budgets",
+  "mass_limit_cm": 1e-12,
+  "horizon_limits": {
+    "head_cm": 1e-06,
+    "temperature_c": 0.0001
+  },
+  "exclusions": [
+    "active drainage redistribution",
+    "joint root/bottom frost until separate qualification",
+    "salt/frost",
+    "groundwater-owned boundary",
+    "macropores",
+    "latent heat/ice inventory",
+    "corrected last-node geometry"
+  ],
+  "aggregate_frost_migration_complete": false,
+  "next_action": "Qualify joint root/bottom frost; correct and qualify B1 drainage node/level inconsistency before migrating that branch"
+}

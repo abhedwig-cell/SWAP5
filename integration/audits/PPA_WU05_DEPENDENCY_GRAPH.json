@@ -154,7 +154,15 @@
       ],
       "canonical_admission_authority": "integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json",
       "root_stress_successor_admission": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json",
-      "boundary_reassessment": "docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md"
+      "boundary_reassessment": "docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md",
+      "no_drain_frozen_bottom_successor": {
+        "work_unit": "PPA-WU05B3",
+        "admission": "integration/audits/PPA_WU05B3_CANONICAL_ADMISSION.json",
+        "canonical_merge": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
+        "scope": "Rootless ordinary Reference mode2 legacy no-drain FrozenBounds with explicit opt-in and finite positive local numerical budgets",
+        "admitted": true
+      },
+      "drainage_source_finding": "integration/audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_STATUS.json"
     },
     "advanced_root_stress": {
       "legacy_files": [

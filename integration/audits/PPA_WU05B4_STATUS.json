@@ -1,8 +1,8 @@
 {
   "work_unit": "PPA-WU05B4",
   "baseline": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
-  "last_reconciled_upstream": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
-  "implemented": false,
+  "last_reconciled_upstream": "526258e3d78d47df657222630b2e46103cac3eb3",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -23,6 +23,9 @@
     "src/solver",
     "tests/fci"
   ],
-  "next_action": "Implement bounded joint opt-in and independent actual root/bottom flux oracles; persist before expensive gates",
-  "blockers": []
+  "next_action": "Persist implementation remotely, then run real O0/O2 joint signed/root-regime oracles; remaining application/restart/fine-continuation matrix and incumbent qualification not yet complete",
+  "blockers": [],
+  "test_paths": [
+    "tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh"
+  ]
 }

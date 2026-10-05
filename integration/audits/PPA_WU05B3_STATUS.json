@@ -6,7 +6,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "scope": "Legacy no-drain FrozenBounds on rootless ordinary Reference mode2, explicit opt-in",
   "authority_paths": [
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
@@ -25,7 +25,7 @@
     "src/process",
     "tests/fci"
   ],
-  "next_action": "Central exact-source reconciliation and bounded canonical admission; drainage redistribution remains separate",
+  "next_action": "Qualify joint root/bottom frost; correct and qualify B1 drainage node/level inconsistency before migrating that branch",
   "blockers": [],
   "remote_checkpoint_note": "Implementation persisted at 17a5f1da903415d4568127476c24d835e9326836; revised tests and preserved gate pin uploaded before full qualification",
   "test_paths": [
@@ -38,12 +38,16 @@
     "Restart test initially passed unallocated destination to existing assumed-shape registry API: fixed fixture to an empty one-element registry; production restart unchanged."
   ],
   "reconciliation": "Preserves WALSAL01 selected Walsum-salinity parameter admission and pre-stress root support validation; sole conflict merged both module imports. Joint salt/frost remains excluded.",
-  "status": "READY_FOR_REGIE",
+  "status": "CANONICALLY_ADMITTED",
   "recovery_point": "32aafef400efce1fc08dc3dfc5f85e1135794b37",
   "local_qualification": {
     "path": "docs/audits/evidence/PPA_WU05B3_LOCAL_REPLAY.json.gz",
     "sha256": "aff639a5b51912f83efa4bca2162dc297fe9778a4dfdbe761df455f1bc32872e",
     "bytes": 64909
   },
-  "source_manifest": "integration/audits/PPA_WU05B3_SOURCE_MANIFEST.json"
+  "source_manifest": "integration/audits/PPA_WU05B3_SOURCE_MANIFEST.json",
+  "canonical_merge": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
+  "canonical_pr": 1034,
+  "canonical_admission": "integration/audits/PPA_WU05B3_CANONICAL_ADMISSION.json",
+  "aggregate_frost_migration_complete": false
 }
