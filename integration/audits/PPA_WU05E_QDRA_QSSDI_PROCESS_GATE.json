@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.ppa-wu05e.qdra-qssdi-process-gate.v1",
+  "date_utc": "2026-10-05",
+  "work_unit": "PPA-WU05-E",
+  "classification": "PROCESS_ONLY_PASS_NOT_FMR_QUALIFICATION",
+  "base_head": "e35842f27e0b7f79d694db66ba5e8360ebca533c",
+  "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
+  "result": "PPA_WU05E_MOBILE_SALT_O0_O2=PASS; PPA_WU05A8_REAL_RICHARDS_GATE=PASS after FMR backend repair",
+  "compiler": "gfortran -std=f2008 -fcheck=all -O0 and -O2; warnings treated as errors except REAL compare warnings",
+  "source_sha256": {
+    "src/process/mod_solute_mobile_salt_state.f90": "10d713e8ba6594d8b1d469a772ddf1165f5dddb498009201c3823e2af29cd2a2",
+    "tests/physics/test_mobile_salt_state.f90": "b660df4e3a2a0ba216a49a1e5ed915b3ed5f8445d4961ffef94d6bd29e671b8b",
+    "tests/physics/run_ppa_wu05e_mobile_salt.sh": "ca12cbfdfc105bc68ebeaaaf0ac462cba937101550029d3f1cebc0914714025b",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "c9ad7bb6354929fa21e9347b3c2d95c178eee3cd16f50d99b802e5a0bea8588b",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "102918e04a8faf883c1ca29d70e8b0ab11b2590cba8357f3595ab9fe714aacde"
+  },
+  "scope": [
+    "signed per-level qdra export at donor start CML",
+    "negative qdra import requires available explicit Cdrain concentration",
+    "qssdi participates in water closure with no implied salt source",
+    "level-resolved signed salt receipts",
+    "ordered substep continuity and candidate/receipt clearing after late failure"
+  ],
+  "not_qualified": [
+    "FMR-owned candidate advancement",
+    "transaction temporal error/acceptance for salt",
+    "FMR commit/discard/retry/restart with salt receipts",
+    "macro-domain, surface, top/bottom boundary scheduling and aquifer salt ownership",
+    "Jarvis salinity composition"
+  ],
+  "additional_command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh"
+}

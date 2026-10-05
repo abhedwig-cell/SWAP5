@@ -5,6 +5,7 @@ program test_ppa_wu05d2_jarvis
  use mod_root_uptake_compensation
  use mod_root_uptake_compensation_execution
  use mod_root_water_uptake_process,only:root_water_uptake_diagnostics_t
+ use mod_root_salinity_response,only:evaluate_mobile_root_salinity_sink,SALINITY_OK
  implicit none
  type(root_water_uptake_flux_result_t)::base,a,b
  type(root_compensation_config_t)::cfg
@@ -12,7 +13,9 @@ program test_ppa_wu05d2_jarvis
  type(root_water_uptake_diagnostics_t)::bd
  integer::s
  real(real64),parameter::tol=1.e-14_real64
- real(real64)::dryloss,wetloss
+ real(real64)::dryloss,wetloss,saltloss
+ real(real64),allocatable::cml(:),salt_alpha(:),salt_sink(:),salt_node_loss(:)
+ real(real64)::salt_loss,potential_saved(4)
  allocate(base%root_extraction_sink(4))
  base%root_extraction_sink=[0.05_real64,0.10_real64,0.15_real64,0.10_real64]
  base%actual_uptake_total=sum(base%root_extraction_sink)
@@ -44,9 +47,30 @@ program test_ppa_wu05d2_jarvis
  call req(s==ROOT_COMP_OK.and.da%applied,'all admitted stressors applies')
  call req(abs(da%drought_reduction_total+da%oxygen_reduction_total-(0.5_real64-a%actual_uptake_total))<tol,'stress attribution closes')
 
- cfg%stressor=4
- call compose_jarvis_root_uptake(cfg,0.5_real64,base,0.1_real64,0.0_real64,a,da,s)
- call req(s==ROOT_COMP_UNSUPPORTED,'salinity fail closed')
+ cfg%stressor=ROOT_COMP_SALINITY;cfg%alpha_critical=.9_real64
+ potential_saved=base%root_extraction_sink
+ call evaluate_mobile_root_salinity_sink([1.0_real64,1.25_real64,1.5_real64,2.0_real64], &
+      [0.2_real64,0.2_real64,0.2_real64,0.2_real64],[1.0_real64,1.0_real64,1.0_real64,1.0_real64], &
+      5.0_real64,0.2_real64,potential_saved,cml,salt_alpha,salt_sink,salt_node_loss,salt_loss,s)
+ call req(s==SALINITY_OK.and.maxval(abs(salt_alpha-[1.0_real64,.75_real64,.5_real64,0.0_real64]))<tol, &
+      'same-view mass derives Maas-Hoffman root factors')
+ call req(abs(sum(salt_node_loss)-salt_loss)<tol,'same-view node loss aggregates')
+ base%root_extraction_sink=salt_sink;base%actual_uptake_total=sum(salt_sink)
+ call compose_jarvis_root_uptake(cfg,.5_real64,base,.1_real64,0.0_real64,a,da,s,salt_loss)
+ call req(s==ROOT_COMP_OK.and.da%applied.and.da%salinity_reduction_total>0.0_real64, &
+      'mass-derived salinity loss composes through Jarvis')
+ call req(a%actual_uptake_total>=base%actual_uptake_total.and.a%actual_uptake_total<=.5_real64, &
+      'mass-derived Jarvis recovery remains bounded')
+ base%root_extraction_sink=potential_saved;base%actual_uptake_total=sum(potential_saved)
+ call compose_jarvis_root_uptake(cfg,.5_real64,base,0.0_real64,0.0_real64,a,da,s,.1_real64)
+ call req(s==ROOT_COMP_OK.and.da%applied,'salinity stressor composes')
+ call req(a%actual_uptake_total>.4_real64.and.a%actual_uptake_total<.5_real64,'salinity-only Jarvis recovery')
+ call req(abs(da%salinity_reduction_total-(.5_real64-a%actual_uptake_total))<tol, &
+      'salinity post-compensation attribution closes')
+ cfg%stressor=ROOT_COMP_DROUGHT;cfg%alpha_critical=.7_real64
+ call compose_jarvis_root_uptake(cfg,.5_real64,base,0.0_real64,0.0_real64,a,da,s,.1_real64)
+ call req(s==ROOT_COMP_OK.and.abs(a%actual_uptake_total-.4_real64)<tol, &
+      'drought selector leaves salinity loss in place')
 
  cfg%stressor=ROOT_COMP_DROUGHT
  call compose_jarvis_root_uptake(cfg,0.5_real64,base,0.05_real64,0.0_real64,a,da,s)
@@ -83,11 +107,21 @@ program test_ppa_wu05d2_jarvis
  call apply_root_uptake_compensation(cfg,0.5_real64,base,bd,0.0_real64,a,da,s)
  call req(s==ROOT_COMP_EXEC_OK.and.da%applied,'execution Jarvis applies')
  call req(abs(sum(a%root_extraction_sink)-a%actual_uptake_total)<tol,'execution single final sink identity')
+ bd%drought_reduction_total=.05_real64
+ call apply_root_uptake_compensation(cfg,.5_real64,base,bd,0.0_real64,a,da,s, &
+      salinity_reduction_total=.05_real64)
+ call req(s==ROOT_COMP_EXEC_OK.and.abs(da%salinity_reduction_total)>0.0_real64, &
+      'execution carries salinity attribution')
 
  ! One node with drought=oxygen=1/2 loses 3/4, apportioned equally.
  ! Sequential losses (1/2,1/4) would be incorrect source attribution.
  call attribute_root_stress_losses([1._real64],[.5_real64],[.5_real64],dryloss,wetloss,s)
  call req(s==ROOT_COMP_OK.and.abs(dryloss-.375_real64)<tol.and.abs(wetloss-.375_real64)<tol,'source apportionment oracle')
+ call attribute_root_stress_losses([1._real64],[.5_real64],[.5_real64],dryloss,wetloss,s, &
+      [.5_real64],saltloss)
+ call req(s==ROOT_COMP_OK.and.abs(dryloss-7._real64/24._real64)<tol.and. &
+      abs(wetloss-7._real64/24._real64)<tol.and.abs(saltloss-7._real64/24._real64)<tol, &
+      'three-stressor attribution oracle')
  ! Independent closed-form mixed-stressor oracle: total alpha=1/4,
  ! equal losses imply sqrt(alpha)=1/2 for each stressor. Drought
  ! compensation with alpha_critical=1/2 restores drought only.
