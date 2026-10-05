@@ -1,12 +1,12 @@
 {
   "work_unit": "PPA-WU05B7-REF",
   "baseline": "1de2b874140c9f83a57c3eda8dfeddeeee19538d",
-  "status": "READY_FOR_REFERENCE_COMPONENT_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_REFERENCE_COMPONENT",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "scope": "Guarded corrected B1 FrozenCond bracket domain plus ordinary SWDRA1 SWDIVD0 nonmacro negative drain-depth domain",
   "qualified_checkpoint": "5965d4c4e94d2c3f1aee857f1259f54d3e64b7ef",
   "production_source_tree_unchanged": "c659cc9d51216437859e6675cce83f1b4b28e1b7",
@@ -47,6 +47,11 @@
     "global legacy equivalence",
     "SWAP5 production"
   ],
-  "next_action": "Central reference-component admission; migrate bracketed low-air ordinary drainage using explicit negative drain depths and one nodal owner",
-  "aggregate_frost_migration_complete": false
+  "next_action": "Migrate bracketed low-air ordinary drainage using explicit physical negative drain depths and one final nodal owner",
+  "aggregate_frost_migration_complete": false,
+  "canonical_pr": 1042,
+  "canonical_merge": "e93e40a9609bb13a1e6786a2dccd08c8ca30856f",
+  "qualified_head": "847d4ede6273b3a3235b3b80799aa7c23c1cea9c",
+  "verified_proposed_merge": "cc4d7c409df07ac121989dae3b8938daebf10493",
+  "accepted_tree": "03c3814113aa927df9fc981d6ea9cbbe5e5459bd"
 }
