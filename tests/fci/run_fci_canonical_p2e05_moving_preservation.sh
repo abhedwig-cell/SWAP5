@@ -372,7 +372,7 @@ if git merge-base --is-ancestor "$FROSS13_PRODUCTION" HEAD && \
    [[ "$(git rev-parse HEAD:$FROSS13_MODEL)" == "$FROSS13_MODEL_POSTIMAGE" ]] && \
    [[ "$(git rev-parse HEAD:$FROSS13_PROVIDER)" == "$FROSS13_PROVIDER_POSTIMAGE" ]]; then
   if [[ "$(git rev-parse HEAD:$FROSS17_KERNEL)" == "$FROSS22_TIERED_KERNEL" ]] && [[ "$(git rev-parse HEAD:$ROSS_ADAPTER)" == "$FROSS22_TIERED_SOLVER" ]]; then
-    bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
+    PPA_WU05B_MOVING_CANONICAL_PRESERVATION=1 bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
     echo 'FCI_CANONICAL_FROSS22_TIERED_SEMANTIC_SUCCESSOR_ROUTE=PASS'
   elif [[ "$(git rev-parse HEAD:$FROSS17_KERNEL)" == "$FROSS17_CACHE_KERNEL" ]]; then
     bash tests/fci/run_fci107_fross17_cache_successor_preservation.sh
