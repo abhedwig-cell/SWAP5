@@ -202,6 +202,25 @@ for opt in 0 2; do
         grep -Fq 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS' "$OUT/fit_${fit}_wetting.txt"
       done
     fi
+    if [[ "${WU05_MIGMAC05:-0}" == 1 ]]; then
+      for law in 5 6 7; do
+        WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_fmr" | tee "$OUT/mixed_${law}_trial.txt"
+        WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_replay" | tee "$OUT/mixed_${law}_replay.txt"
+        for receipt in DYNAMIC_REJECT_SMALLER_RETRY DYNAMIC_ABA DYNAMIC_ACCEPTED_RESTART; do
+          grep -Fq "PPA_WU05_MIGMAC02_${receipt}=PASS" "$OUT/mixed_${law}_replay.txt"
+        done
+        WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=4 "$OUT/test_a9_fmr" | tee "$OUT/mixed_${law}_wetting.txt"
+        grep -Fq 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS' "$OUT/mixed_${law}_wetting.txt"
+        WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=5 "$OUT/test_a9_fmr" | tee "$OUT/mixed_${law}_rapid.txt"
+        grep -Fq 'PPA_WU05_MIGMAC02_TWO_DOMAIN_GEOMETRY_RAPID_DRAIN=PASS' "$OUT/mixed_${law}_rapid.txt"
+      done
+      for fit in 1 2 3; do
+        WU05_MIGMAC03_LAW=5 WU05_MIGMAC04_FIT="$fit" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_replay" | tee "$OUT/mixed_fit_${fit}_replay.txt"
+        WU05_MIGMAC03_LAW=5 WU05_MIGMAC04_FIT="$fit" WU05_MIGMAC02_DYNAMIC=4 "$OUT/test_a9_fmr" | tee "$OUT/mixed_fit_${fit}_wetting.txt"
+        grep -Fq 'PPA_WU05_MIGMAC02_DYNAMIC_ACCEPTED_RESTART=PASS' "$OUT/mixed_fit_${fit}_replay.txt"
+        grep -Fq 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS' "$OUT/mixed_fit_${fit}_wetting.txt"
+      done
+    fi
   fi
 done
 if [[ "${WU05A9_ONLY:-0}" != 1 ]]; then
@@ -236,5 +255,18 @@ if [[ "${WU05_MIGMAC04:-0}" == 1 ]]; then
     done
   done
   echo 'PPA_WU05_MIGMAC04_REFERENCE_O0_O2_IDENTITY=PASS'
+fi
+if [[ "${WU05_MIGMAC05:-0}" == 1 ]]; then
+  for law in 5 6 7; do
+    for mode in trial replay wetting rapid; do
+      cmp "$BUILD/o0/mixed_${law}_${mode}.txt" "$BUILD/o2/mixed_${law}_${mode}.txt"
+    done
+  done
+  for fit in 1 2 3; do
+    for mode in replay wetting; do
+      cmp "$BUILD/o0/mixed_fit_${fit}_${mode}.txt" "$BUILD/o2/mixed_fit_${fit}_${mode}.txt"
+    done
+  done
+  echo 'PPA_WU05_MIGMAC05_MIXED_REFERENCE_O0_O2_IDENTITY=PASS'
 fi
 echo "PPA_WU05A9_TOP_INPUT_GATE=PASS"

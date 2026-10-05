@@ -21,7 +21,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t, prepare_clay_kim_option1, &
-       SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, &
+       SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, SHRINK_KIM, &
        prepare_clay_kim_option2, prepare_peat_characteristic_points, &
        evaluate_dynamic_crack_profile
   implicit none
@@ -218,6 +218,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
     call require(allocated(s%macropore),'postcommit macro state present')
     call require(s%macropore%ready(),'postcommit macro state ready')
     macro_after=sum(s%macropore%water_domain_cp)
+    if(constitutive_flag=='7') &
+         call require(all(s%macropore%dynamic_volume_cp(3::3)==0.0_real64),'MIGMAC05 accepted rigid interfaces zero')
     if(constitutive_flag=='2' .or. constitutive_flag=='4') &
          call require(all(s%macropore%dynamic_volume_cp(2::2)==0.0_real64),'MIGMAC03 accepted rigid geometry zero')
     if(geometry_changes_expected)then
@@ -342,6 +344,11 @@ contains
       shrinkage%peat%p=0.1_real64
       shrinkage%peat%intermediate_moisture_ratio=0.2_real64
       shrinkage%peat%intermediate_void_ratio=0.4_real64
+      if(constitutive_flag=='5' .or. constitutive_flag=='6' .or. constitutive_flag=='7')then
+        if(constitutive_flag=='6')shrinkage%law=SHRINK_PEAT_SEGMENTS
+        shrinkage%law(2::2)=SHRINK_KIM
+        if(constitutive_flag=='7')shrinkage%law(3::3)=SHRINK_RIGID
+      end if
     end if
 
     if(fit_flag=='1')then
