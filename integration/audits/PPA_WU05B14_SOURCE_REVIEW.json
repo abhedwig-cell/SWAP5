@@ -1,0 +1,66 @@
+{
+  "work_unit": "PPA-WU05B14",
+  "status": "SOURCE_REVIEW_ONLY",
+  "reviewed_B13_candidate_source": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
+  "prerequisite": "B13 admitted via PR1058; reconcile exact metadata closeout and persist bounded B14 preregistration before production/interface edits",
+  "selected_next_slice": "Explicit rootless ordinary Reference mode2 single-level signed EXTENDED response with TUBE/OPEN_CHANNEL, highest_level false and TOP_NONE, finite supplied resolved surface-water control head; normal and B8 guarded low-air frost. Low-air physical zbotdr must equal selected frost drain depth. This is a bounded normalized constitutive composition, separate from the F-APP09 external coupling profile.",
+  "scientific_authority": {
+    "readiness": "a0b11f68884f7593f000af1c34aa42de8956ecfd",
+    "scientific_candidate": "48df989b098d73208eed2496005b656f588ebffd",
+    "contract_path": "integration/research/SW_RIB_SWM01_Q4A_PREREGISTRATION.json",
+    "result_path": "integration/research/SW_RIB_SWM01_Q4A_RESULT.json",
+    "oracle_path": "tests/sw-rib-swm01/test_q4a_extended_exchange_candidate.py",
+    "oracle_blob": "ac04dc0a132183f400d49d3f13cb30e956124900",
+    "driver_blob": "599ba9d809262419929163ef50f502346c230ebd",
+    "process_blob": "25d76013d25c2eaa2d254865149c740bc3257617",
+    "current_process_exact_primary": true,
+    "historical_cases_per_opt": 1507,
+    "historical_results_only": true
+  },
+  "runtime_authority": {
+    "canonical_admission": "integration/f-ci/F-CI109R1_FAPP09_ADMISSION.json",
+    "subject": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+    "independent": "181c785de059842a6361a1f57951a129ed78d8bb",
+    "independent_primary_blob": "2211c662988df713fa03cfbaae63728c89956b90",
+    "scope": "Admitted F-APP09 single-level external owner mode7, one accepted coupling substep; actual participant explicitly excludes frost and soil temperature. Its whole-window transfer ownership must not be silently broadened."
+  },
+  "findings": [
+    "Current stateless process is byte-identical to the Q4A primary. Its signed transfer is authoritative even where a local tangent is unavailable; no smoothing or clipping is allowed. Source seam holds retain their own contracts.",
+    "Actual variant9 uses resolved_surface_water_head_supplied and ignores generic drain_head. Resolved control head stays distinct from physical zbotdr/frost depth.",
+    "Only one level and TOP_NONE are proposed for this slice; tube/open geometry and positive/zero/negative exchange require direct current-source component and full runtime qualification. No general multilevel surface-water owner profile follows.",
+    "The existing public parameter validator is impure by annotation only. A preregistered PURE forwarding accessor may finite-preflight all actually inspected fields before the unchanged existing validator body. Inactive tube geometry and inactive highest-level members stay ignored.",
+    "Use existing immutable trial-start generation, disposable proposal, normal/B8 modifier, B10 independently regenerated full/half terminal proposals and one final solver sink/accepted receipts. Add no persistent surface-water state or external availability owner.",
+    "F-PM19 remains an eight-component denominator, not a count of all nine runtime selectors. EXTENDED is separately admitted later; no denominator expansion is inferred.",
+    "The canonical VQ128 materialization is a subset of its exact independent primary; subsequent preservation must use the entire pinned primary, including accepted-window, discarded-full-trial and owner/stale-origin guards.",
+    "Literal FrozenBounds routes every nonzero SWDRA through the common drain modifier. The admitted corrected reporting reference remains bounded to SWDRA1/SWDIVD0/SWMACRO0. This proposed normalized ordinary contribution slice may compare that modifier with independently generated EXTENDED proposals; it does not extend the reporting overlay or admit legacy SWDRA2 surface-water feedback."
+  ],
+  "preimplementation_source_sha256": {
+    "src/process/mod_drainage_extended_exchange.f90": "e235cde3b27d8af5a41e235e154a0d5327d3b5d46abdd595224229c9c219b090",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "1d254a6368e55dcb3b3326226e9b3c9d2dc9eb0584a014722395836e97cfaa66",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "57ae0fe188758e0f0be56499c15a7fdf9efd5bb6a52be58c52d8297bf8d4d86b",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90": "0b47566254d2dae9180b0dbb6881ee8a4670c11fd2f29f57ce539fc319c48103",
+    "src/process/mod_frost_drainage_effect.f90": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900",
+    "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35"
+  },
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "exclusions": [
+    "F-APP09 external coupling with frost or multi-substep publication",
+    "Multilevel/mixed response selections",
+    "Highest surface resistance or power interflow",
+    "SWSRF1 and negative power interflow",
+    "Surface-water storage/availability/management owner",
+    "SWDIVD1 spatial distribution and fixed weir",
+    "Projection/directional/implicit coupling",
+    "Root/salt/macropore/snow hybrids",
+    "New phase physics",
+    "Global frost equivalence",
+    "Legacy SWDRA2 surface-water feedback and reporting-reference scope expansion"
+  ],
+  "next_action": "After B13 exact closeout, preregister this bounded interface and its full scientific/component/runtime/preservation gate before source editing",
+  "baseline": "4ca2996bddb6bff101867f87251589a5b11357c7"
+}

@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-Locally qualified and persisted; canonical admission is pending. The exact baseline is B12 closeout `703b70c49dbc5fb4f2c54381608432d13bb67cf7`. Preregistration precedes all production/interface edits. Versioned source review, preregistration and current status live under `integration/audits/PPA_WU05B13_*.json`.
+Canonically admitted via PR #1058 at `4ca2996bddb6bff101867f87251589a5b11357c7`. The exact baseline is B12 closeout `703b70c49dbc5fb4f2c54381608432d13bb67cf7`. Preregistration precedes all production/interface edits. Versioned source review, preregistration and current status live under `integration/audits/PPA_WU05B13_*.json`.
 
 The F-VQ42 scientific authority is `702db051bf5dd0960a962be919ea0cfbf01895a4`, with immutable independent oracle `5eea0d3b591df048b98cc1cc266a0ecb071712c7` and original process blob `eb53096b678d08b76d3fb1adb2247bc2a58ee748`. Its equation is a drainage-side interflow contribution, with zero below activation and unavailable two-sided tangent at activation. The current unchanged scientific oracle passes on the actual production process and hydraulic carrier at O0/O2: 1404 active equations and analytic tangents, 6 finite-difference, 8 inactive and 4 activation cases. Equation/tangent errors are zero.
 
@@ -20,7 +20,7 @@ Actual source composition includes independent power/linear equations, separate 
 
 Primary full runtime uses exponent 0.1/0.5/1.0, single EMPIRICAL or LINEAR then EMPIRICAL, six trajectories per configuration per route, full independent 8192/65536-step references, observed low-air branches, hard mass, retry, replay, accepted final receipts, application and empty-registry restart. Each complete configuration runs in a fresh process. Invalid active domains/positions/selectors and actual missing/nonfinite/wrong-kind controls must reject before the solver and preserve committed state. Additional activation and finer references plus relevant incumbent, salt/root, immutable drainage oracle, literal root and strict canonical preservation remain required.
 
-Aggregate frost migration remains open. Canonical admission is pending; no practical low-air performance claim is made.
+Aggregate frost migration remains open. No practical low-air performance claim is made.
 
 ## Completed current-source qualification
 
@@ -35,3 +35,7 @@ The first component fixture passed an unallocated caller-owned output buffer; al
 The incomplete sequential O0 preservation loop was stopped with exit 130 and retained explicitly unqualified. Its completed B8 result was retained only after exact current source and compiled object hashes matched the immutable recovery. Remaining whole cases used a bounded two-process pool, with independent full references and separate outputs. No fine trajectory is shared between different physical cases. All cases completed; this changes qualification execution only and makes no production memory or speed claim. The immutable partial recovery remains unqualified; the final replay supplies completed evidence.
 
 The unchanged F-APP09 owner and original immutable VQ128 primary also pass at O0/O2 on the current whole modules and freshly compiled external adapter/participant. The canonical VQ128 materialization omits additional accepted-window, rollback and owner guards found in the pinned primary; this replay uses the entire original primary. The external profile continues to exclude frost; this is preservation, not admission of an external frost profile.
+
+## Canonical admission
+
+Proposed merge `4fcc7b6b162453ceb69c2a52b6a7e1925cd55985` and actual merge share exact qualified tree `fe2eb269f8cb0182d3f8b58983c8744556665fa3` and production source `012b2e9df2fa854f19b31c98a1bcd214d8285662`. The admission record binds actual parents, qualified head and immutable replay. Single-level EXTENDED remains source review only. Aggregate frost migration remains open.

@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B13",
-  "status": "SOURCE_REVIEW_COMPLETE_LOCALLY_QUALIFIED",
+  "status": "SOURCE_REVIEW_COMPLETE_CANONICALLY_ADMITTED",
   "baseline": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
   "reviewed_B12_candidate_source": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
   "prerequisite": "B12 admitted via PR1056; reconcile exact metadata closeout then persist bounded B13 preregistration before production/interface editing",
@@ -35,7 +35,7 @@
   ],
   "implemented": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "aggregate_frost_migration_complete": false,
   "exclusions": [
     "Negative-side DRAMET3 infiltration",
@@ -46,7 +46,7 @@
     "Root/salt/macropore/snow hybrids",
     "New phase physics"
   ],
-  "next_action": "Exact proposed/actual merge verification and canonical admission",
+  "next_action": "Reconcile exact metadata closeout; preregister source-reviewed single-level signed EXTENDED frost composition",
   "ordered_binding_authority": "Current unchanged binding plus immutable VQ73 single-booking and invalid-level atomicity replay completed on exact B12 source; fresh current replay required after this backend change",
   "denominator_authority": "Canonical B11 source-review binds F-PM19 exact eight-component certificate separately from nine runtime selectors; no frozen denominator expansion",
   "preimplementation_source_sha256": {
