@@ -1,0 +1,29 @@
+{
+  "work_unit": "PPA-WU05-E-WALSAL01",
+  "workstream": "PPA root uptake / salinity",
+  "baseline": "916035e78305cae5f88c30d5805b5d9c33a348f8",
+  "branch": "work/ppa-wu05e-walsum-salinity-20261005",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_admitted": false,
+  "contract": "docs/audits/PPA_WU05E_WALSUM_SALINITY_CONTRACT.md",
+  "files_touched": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "tests/physics/run_ppa_wu05e_mixed_salt.py",
+    "tests/physics/test_ppa_wu05e_mixed_salt.f90"
+  ],
+  "interfaces_changed": [],
+  "invariants": [
+    "one root-water sink",
+    "independent salt mass owner",
+    "rejected trial isolation",
+    "restart from accepted state",
+    "geometry belongs to current forcing"
+  ],
+  "next_action": "Implement bounded method guard and actual combined Walsum salinity qualification",
+  "blockers": [],
+  "recovery_point": "this preregistration commit"
+}
