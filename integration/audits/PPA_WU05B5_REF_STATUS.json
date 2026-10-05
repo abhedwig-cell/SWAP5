@@ -1,0 +1,61 @@
+{
+  "work_unit": "PPA-WU05B5-REF",
+  "baseline": "526258e3d78d47df657222630b2e46103cac3eb3",
+  "last_reconciled_upstream": "b7648037663bd6d8f5bd9cc22222d2afeecf5421",
+  "status": "READY_FOR_REFERENCE_COMPONENT_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "admitted": false,
+  "scope": "Bounded B1 ordinary-drain reporting-only overlay, low-air SWDRA=1 SWDIVD=0 SWMACRO=0",
+  "qualified_checkpoint": "284e6444f0cbd2dfcbdd859b3d3864bb960a9388",
+  "production_source_tree_unchanged": "dfacb3342763c9705dce2b3c5b84c0369ce24203",
+  "original_source_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+  "corrected_source_sha256": "9d75dc4a552f438fa4f358f3d9e17ddaaa1d50348e549b11802617a270ca1c87",
+  "source_and_test_manifest": {
+    "reference/swap-4.3.1/frost-corrections/FROST-DRAIN-01/manifest.json": "1105cb5a1808f029f41de1504dd1f427c7862a5b6111e5feed72c84b07f63f39",
+    "reference/swap-4.3.1/frost-corrections/FROST-DRAIN-01/frozencond.f90": "9d75dc4a552f438fa4f358f3d9e17ddaaa1d50348e549b11802617a270ca1c87",
+    "reference/swap-4.3.1/frost-corrections/FROST-DRAIN-01/apply.py": "912c89ce3bb063cab3bc228286a82017f5e0177cace60330abb64cffdfe72a4b",
+    "tests/frost/test_ppa_wu05b5_corrected_drain_globals.f90": "ad8686a11e4be779188547210be5be260227ddaa67eaa33d649b753bec5c4a54",
+    "tests/frost/test_ppa_wu05b5_corrected_drain.f90": "20fd2647c08d16c0b5c5dcbe598b47ab28f136667139afae380695927631bbfc",
+    "tests/frost/run_ppa_wu05b5_corrected_drain_source.sh": "d51dbd8795209329caa08c413d6286615c1bcfe13bca72e05a3b0ff0c07c2160"
+  },
+  "qualification": {
+    "command": "bash tests/frost/run_ppa_wu05b5_corrected_drain_source.sh",
+    "O0": "PASS",
+    "O2": "PASS",
+    "physical_cases": 54,
+    "O0_O2_stdout": "IDENTICAL",
+    "bounds_and_FP_traps": true,
+    "output": "FROST_DRAIN_01_EXACT_APPLICATOR=PASS\nFROST_DRAIN_01_PHYSICAL_IDENTITY_CASES=54\nPPA-WU05B5_CORRECTED_B1_DRAIN_REPORT=PASS\nFROST_DRAIN_01_PHYSICAL_IDENTITY_CASES=54\nPPA-WU05B5_CORRECTED_B1_DRAIN_REPORT=PASS\nFROST_DRAIN_01_INVALID_INPUT_OVERWRITE_GUARDS=PASS\n",
+    "log_sha256": "1c72a3d3ea7dae174c4e5686798c50222c9282d2b1c2e85eb6ac132f909004f3",
+    "invalid_source_and_overwrite_guards": "PASS"
+  },
+  "qualification_claim": "Actual original/corrected FrozenBounds component only; no global B1 or full legacy simulation claim",
+  "global_B1_snapshot_promoted": false,
+  "original_baseline_unchanged": true,
+  "source finding": "integration/audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_STATUS.json",
+  "authority_paths": [
+    "integration/audits/PPA_WU05B5_REF_PREREGISTRATION.json",
+    "docs/audits/PPA_WU05B5_CORRECTED_B1_DRAIN_REPORT.md",
+    "docs/verification/principles.md"
+  ],
+  "dependency_surface": [
+    "reference/swap-4.3.1/frost-corrections/FROST-DRAIN-01",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "tests/frost/test_ppa_wu05b5_corrected_drain_globals.f90",
+    "tests/frost/test_ppa_wu05b5_corrected_drain.f90"
+  ],
+  "exclusions": [
+    "SWDIVD=1",
+    "macropores",
+    "geometry changes",
+    "invalid deepest drain levels",
+    "full legacy global-equivalence claim",
+    "SWAP5 production migration",
+    "SWDRA=2 surface-water feedback"
+  ],
+  "next_action": "Central bounded reference-component admission, then typed single-owner drainage composition and separately qualified low-air geometry",
+  "aggregate_frost_migration_complete": false
+}

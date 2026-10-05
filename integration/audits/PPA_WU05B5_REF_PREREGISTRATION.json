@@ -1,0 +1,40 @@
+{
+  "work_unit": "PPA-WU05B5-REF",
+  "baseline": "526258e3d78d47df657222630b2e46103cac3eb3",
+  "status": "PREREGISTERED_REFERENCE_CORRECTION_CANDIDATE",
+  "finding": "integration/audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_STATUS.json",
+  "contract": "For legacy FrozenBounds low-air SWDIVD=0/SWMACRO=0 only, recompute each reported drain level from the actual final nodal qdra; aggregate qdrtot from those same levels. HeadCalc source/sink and bottom proposal remain bitwise unchanged.",
+  "physical_authority": "Actual nodal qdra plus actual qbot own Richards balance; reported level totals cannot own different water.",
+  "scope": "Bounded corrected B1 frost source overlay; not promotion of a new global B1 snapshot or production migration. Original byte-exact B1.11 source remains immutable.",
+  "held_fixed": [
+    "qdra",
+    "qbot",
+    "rfcp",
+    "frost geometry",
+    "solver",
+    "legacy baseline",
+    "restart"
+  ],
+  "required_gates": [
+    "Actual original versus corrected FrozenBounds at O0/O2; signed bottom/drain fluxes, missing/zero drain, two-level cut, normal air and no-drain preservation",
+    "Bitwise physical output identity plus independent node/level accounting closure",
+    "Pinned source/postimage hashes and strict fail-closed applicator",
+    "Documentation checks"
+  ],
+  "exclusions": [
+    "SWDIVD=1 redistribution qualification",
+    "macro drainage",
+    "invalid/nonnegative deepest drain configuration",
+    "frost-depth interpolation correction",
+    "full legacy simulation/global B1 equivalence",
+    "SWAP5 production admission",
+    "SWDRA=2 surface-water feedback"
+  ],
+  "affected_invariants": [
+    13,
+    21,
+    22
+  ],
+  "next_action": "Implement exact byte-safe reporting-only overlay and original/corrected source probe; preserve before tests",
+  "scope_amendment": "Ordinary SWDRA=1 only: SWDRA=2 surface-water feedback is outside this source-only physical identity claim; correction guarded to preserve it unchanged."
+}
