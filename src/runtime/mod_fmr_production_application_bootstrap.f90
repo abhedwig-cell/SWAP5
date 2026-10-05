@@ -3,18 +3,21 @@ module mod_fmr_production_application_bootstrap
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_root_uptake_compensation, only: ROOT_COMP_JARVIS, ROOT_COMP_WALSUM
   use mod_canonical_contracts, only: canonical_numerical_config_t
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_serialized_execution_plan, &
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
+       FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
-       fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg
+       fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg, &
+       fmr_c_drain_salt_matches_trial, fmr_soil_salt_boundary_matches_trial
+  use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
@@ -80,6 +83,7 @@ module mod_fmr_production_application_bootstrap
 
   type, public :: fmr_production_application_config_t
     real(real64) :: initial_time = 0.0_real64
+    type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
     type(canonical_numerical_config_t) :: numerical
     integer :: groundwater_parallel_workers = 1
     type(fmr_production_application_tile_config_t), allocatable :: tiles(:)
@@ -92,6 +96,7 @@ module mod_fmr_production_application_bootstrap
     logical :: ordinary_cauchy_application = .false.
     logical :: ordinary_lysimeter_application = .false.
     logical :: direct_retention_owner_active = .false.
+    type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
     type(fmr_template_t), allocatable :: templates(:)
@@ -159,6 +164,25 @@ contains
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
       end if
+      if (config%tiles(i)%template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+        if (.not. config%base_salt_temporal_policy%valid() .or. &
+            config%numerical%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
+            .not. ieee_is_finite(config%numerical%transaction%temporal_tolerance)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+        if (config%numerical%transaction%temporal_tolerance /= 1.0_real64) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+        if (.not. fmr_c_drain_salt_matches_trial(config%tiles(i)%base_forcing%c_drain_salt, &
+            int(i,int64),config%initial_time,config%tiles(i)%base_forcing%c_drain_salt%valid_t1) .or. &
+            .not. fmr_soil_salt_boundary_matches_trial(config%tiles(i)%base_forcing%soil_salt_boundary, &
+            int(i,int64),config%initial_time,config%tiles(i)%base_forcing%soil_salt_boundary%valid_t1)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      end if
       groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5 .and. &
            .not. config%tiles(i)%ordinary_prescribed_head .and. .not. config%tiles(i)%ordinary_implicit_cauchy .and. &
            .not. config%tiles(i)%ordinary_lysimeter_plate
@@ -225,8 +249,17 @@ contains
     self%ordinary_cauchy_application = ordinary_cauchy_profile
     self%ordinary_lysimeter_application = ordinary_lysimeter_profile
     self%numerical = config%numerical
+    self%base_salt_temporal_policy = config%base_salt_temporal_policy
 
     call self%backend%initialize(self%top_boundary)
+    if (config%base_salt_temporal_policy%enabled) then
+      call self%backend%configure_base_salt_temporal_policy(config%base_salt_temporal_policy,ok)
+      if (.not. ok) then
+        status = FMR_APP_BOOT_INVALID_CONFIG
+        call discard_owner_storage(self)
+        return
+      end if
+    end if
     self%groundwater_parallel_workers = config%groundwater_parallel_workers
 
     if (groundwater_profile .and. self%groundwater_parallel_workers > 1) then
@@ -474,13 +507,15 @@ contains
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
            aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
            materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
-           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+           base_salt_temporal_policy=self%base_salt_temporal_policy)
     else
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
            aggregate, dispatch_status, materialize_worker_assignments=.false., &
            materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
-           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+           base_salt_temporal_policy=self%base_salt_temporal_policy)
     end if
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
@@ -787,6 +822,22 @@ contains
     if (tile%parameters%active_nodes <= 0) return
     if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and. &
         tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 3 .and. tile%parameters%bottom_mode /= 8) return
+
+    select case (tile%template%solute_state_layout_id)
+    case (FMR_SOLUTE_STATE_LAYOUT_NONE)
+      if (allocated(tile%initial_state%salt) .or. tile%parameters%root_salinity_active) return
+    case (FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)
+      if (tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 7) return
+      if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+      if (tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active .or. &
+          tile%parameters%elasticity_active .or. tile%parameters%direct_retention_active) return
+      if (.not. allocated(tile%initial_state%salt)) return
+      if (.not. tile%initial_state%salt%ready(tile%parameters%active_nodes)) return
+      if (.not. allocated(tile%base_forcing%c_drain_salt) .or. &
+          .not. allocated(tile%base_forcing%soil_salt_boundary)) return
+    case default
+      return
+    end select
 
     ! WU01 established the no-new-physics production owner. PPA-WU02-A only
     ! widens normal application reachability to the already admitted typed

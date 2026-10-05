@@ -4,10 +4,10 @@
   "title": "Salinity state, solute mass owner, and root-stress migration",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
   "baseline": "integration/f-ci-canonical@8125ba01b5bfd7377c721caa1105d68e24e77183",
-  "checkpoint_commit": "1627363128180875c20e30a1e2b91066c0efdefa",
-  "last_reconciled_head": "1627363128180875c20e30a1e2b91066c0efdefa",
+  "checkpoint_commit": "43d487734844a8f21210be29c1e99ad8e98aae4b",
+  "last_reconciled_head": "43d487734844a8f21210be29c1e99ad8e98aae4b",
   "last_reconciled_upstream": "8125ba01b5bfd7377c721caa1105d68e24e77183",
-  "status": "RESTRICTED_LIVE_FMR_STATIC_AREA_SALT_PROTOTYPE_NOT_QUALIFIED",
+  "status": "RESTRICTED_MATRIX_MIXED_APPLICATION_LOCAL_VERIFIED_NOT_QUALIFIED",
   "result_classification": "UNDERLYING_SALINITY_PHYSICS_REQUIRES_SEPARATE_MIGRATION",
   "implemented": true,
   "persisted": true,
@@ -18,7 +18,10 @@
     "src/process/mod_solute_mobile_salt_state.f90",
     "src/process/mod_root_salinity_response.f90",
     "src/process/mod_solute_water_face_flux_reconstruction.f90",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_base_salt_temporal_policy.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
   ],
   "reference_delta": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -61,7 +64,7 @@
       "git_blob_sha1": "2fc77cc8d127d76e07a03369c1dac766157084b9"
     }
   },
-  "current_finding": "Recovered the uncommitted live FMR salt/Jarvis continuation onto fe574db8, then reconciled canonical macropore changes at 8125ba01b5bfd7377c721caa1105d68e24e77183. Salt advances with water in cloned candidates; root salinity reads same-state CML. Static matrix area weighting now matches canonical water storage in initialization, root concentration and transport. Typed initialization rejects invalid profiles and reinitialization of existing inventory. Real temporal exhaustion and late dry-macro salt-kernel failure preserve committed water/salt. Accepted salt receipts follow transaction trace rollback and close the interval external/root ledger. An attainable salt budget exercises adaptive retry. Unit-alpha salinity preserves water state bitwise. Restart v4 restores salt and applies changed forcing on a separately initialized backend. Final postimage verification is recorded separately in PPA_WU05E_FMR_SALT_LOCAL_GATE.json; no qualification or admission is claimed.",
+  "current_finding": "The oxygen/salt compatibility blocker is resolved in an explicit matrix-only numerical route. Actual production bootstrap and serialized dispatch forward an opt-in, unit-bearing full/half policy. Real Feddes drought, Bartholomeus oxygen, Maas-Hoffman salinity and Jarvis ALL execute together under one water sink. Independent accepted salt receipts close root/boundary/signed per-level drainage accounting with zero-solute qssdi. Unit salinity preserves physical and water-receipt identity. Forced temporal exhaustion and adaptive recovery preserve committed state. Restart v4 reconstructs salt plus sensible temperature; a separate OS process with changed boundary forcing produces byte-identical full physical continuation, also identical at O0/O2. Existing D2 application/publication/preservation, D3, real A8 and process salt gates pass locally against unchanged final dependencies. No qualification or canonical admission is claimed.",
   "historical_reconstruction": "Source-family evidence distinguishes Maas-Hoffman switch 1 as a nodewise alpha(CML) from osmotic-head switch 2, which modifies matric-flux potential and requires Jong-van-Lier drought; switch 2 is not a separate multiplicative alpha_sol. Source-family census additionally establishes SWINCO-dependent initial versus warm-restart concentration profiles, CMSY inventory derived from water content/CML and optional Freundlich sorption, explicit boundary and drainage fluxes, internal solute substeps, and root salt uptake TSCF*qrot*CML. Exact B1.11 solute-member and restart details remain unverified in this execution. Exact B1.11 source has now been recovered by reconstructing the byte-verified historical SWAP 4.3.1 donor source ZIP; solute.f90 matches the pinned 51,508-byte member hash. Its drainage rule is level-resolved: qdra>0 removes at local CML and qdra<=0 imports at Cdrain. qssdi is absent from this solute balance; no concentration is defined there, so the reconstructed SWAP5 contract must keep it zero-solute or fail-closed. Cdrain is externally prescribed unless aquifer breakthrough swbr=1 owns a dynamic reservoir; bottom cseep can be separately prescribed/time varying. Root salt removal uses tscf*qrot*CML. Dispersion, sorption, decomposition, internal solute substeps, and aquifer breakthrough are present in source but remain outside the currently tested prototype envelope.",
   "relevant_paths": [
     "integration/audits/PPA_WU05D_STATUS.json",
@@ -109,7 +112,10 @@
     "tests/fpm/run_ppa_wu05a8_real_richards.sh",
     "tests/physics/test_mobile_macropore_salt_exchange_oracle.f90",
     "tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
-    "tests/physics/test_mobile_macro_salt_transport.f90"
+    "tests/physics/test_mobile_macro_salt_transport.f90",
+    "tests/physics/run_ppa_wu05e_mixed_salt.py",
+    "tests/physics/test_fmr_base_salt_temporal_policy.f90",
+    "tests/physics/test_ppa_wu05e_mixed_salt.f90"
   ],
   "evidence_paths": [
     "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
@@ -120,7 +126,9 @@
     "integration/audits/PPA_WU05E_QDRA_LEVEL_TRACE_LOCAL_GATE.json",
     "integration/audits/PPA_WU05E_QDRA_QSSDI_PROCESS_GATE.json",
     "integration/audits/PPA_WU05E_FMR_SALT_LOCAL_GATE.json",
-    "docs/audits/PPA_WU05E_LIVE_FMR_ENVELOPE.md"
+    "docs/audits/PPA_WU05E_LIVE_FMR_ENVELOPE.md",
+    "integration/audits/PPA_WU05E_MATRIX_SALT_LOCAL_GATE.json",
+    "docs/audits/PPA_WU05E_BASE_SALT_TEMPORAL_CONTRACT.md"
   ],
   "dependency_surface": [
     "B1.11 solute transport/state source and restart lifecycle",
@@ -147,15 +155,13 @@
     "independent salt-mass owner",
     "water and solute conservation"
   ],
-  "next_action": "Resolve the runtime compatibility dependency before full combined stress qualification: live salt currently requires macropore full/half execution, whereas active Bartholomeus requires soil temperature and macropore-disabled execution. Qualify a compatible base Richards temporal/salt path or separately admit the oxygen/macropore combination, without relaxing existing guards. Independently qualify transport stability/source semantics, production profile/boundary application and fresh-process persistence. Surface pools, macro surface returns, dynamic shrinkage, covering, rapid drainage and dynamic aquifer salt ownership remain separate unsupported routes.",
+  "next_action": "Persist the restricted matrix mixed-stress qualification replay on the exact published source tree, review its bounded claim ceiling and source-contract coverage, and route independent remaining salt-transport physics to separate migration scope. Do not present the restricted short-interval upwind fixture as full B1.11 salinity transport equivalence.",
   "blockers": [
-    "No compatible live route exists for Bartholomeus oxygen plus salinity: salt preflight requires macropores and excludes soil temperature; active oxygen admission requires soil temperature and forbids macropores. The pure stress compositor passing does not resolve this runtime dependency.",
-    "The macro-disabled base FMR temporal error remains an exact-state identity gate; non-identical full/half states produce huge(). A separately qualified continuous base temporal metric is needed before enabling the alternative salt/oxygen route. This work does not relax hydraulic acceptance tolerances.",
     "Upwind advection, manufactured receipts and local lifecycle tests do not establish exact full B1.11 transport equivalence, dispersion or production stability qualification.",
     "Surface CPRE/CIRR mixing pools, macro top/return, covering, rapid outflow, dynamic shrinkage salt redistribution and SWBR=1 aquifer salt state remain unsupported; the bounded guards reject incompatible routes.",
-    "Restart evidence is an in-memory Restart v4 bundle round trip with a fresh backend; a separate operating-system process serialization/reload experiment and complete production application binding have not been qualified."
+    "Restricted matrix mixed-stress candidate still needs exact-tree persisted qualification and an explicit admission decision. Seasonal transport stability and complete B1.11 dispersion/sorption/decomposition/solute boundary application remain outside this gate. Separate-process proof uses a test-only decoded-record encoding; no generic public restart file format is admitted."
   ],
-  "recovery_point": "Persisted implementation 1627363128180875c20e30a1e2b91066c0efdefa above canonical 8125ba01b5bfd7377c721caa1105d68e24e77183. Next recover from the status and source-hash-pinned local gate, retaining all unsupported-route guards and distinct water/salt ownership.",
+  "recovery_point": "Recover from 43d487734844a8f21210be29c1e99ad8e98aae4b and PPA_WU05E_MATRIX_SALT_LOCAL_GATE.json. Matrix mixed-stress application and separate-process lifecycle are locally verified; preserve explicit disabled defaults and all unsupported-route guards.",
   "source_family_census": {
     "initialization": "SWINCO != 3 interpolates ZC/CML input to nodes; SWINCO = 3 consumes a warm-start concentration profile and does not reapply the initial table (source-family only).",
     "state": "CML is mobile-water concentration; CMSY is dissolved plus adsorbed mass per bulk soil volume; column inventory integrates CMSY over node thickness.",

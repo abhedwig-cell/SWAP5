@@ -1,0 +1,60 @@
+name: PPA WU05 E restricted matrix salt qualification
+on:
+  push:
+    branches: [work/ppa-wu05e-salinity-state-root-stress-20261004]
+    paths:
+      - '.github/workflows/ppa-wu05e-matrix-salt.yml'
+      - 'src/runtime/mod_fmr_base_salt_temporal_policy.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/physics/run_ppa_wu05e_mixed_salt.py'
+      - 'tests/physics/test_fmr_base_salt_temporal_policy.f90'
+      - 'tests/physics/test_ppa_wu05e_mixed_salt.f90'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    env:
+      C3A_TESTED_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler
+        run: |
+          command -v gfortran || { sudo apt-get update && sudo apt-get install -y gfortran; }
+          gfortran --version
+          mkdir -p qualification-results
+      - name: Independent salt and root process gates
+        run: |
+          bash tests/physics/run_ppa_wu05e_mobile_salt.sh
+          bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh
+          bash tests/physics/run_ppa_wu05d2_jarvis.sh
+      - name: Actual matrix mixed stress application lifecycle O0 O2 and separate processes
+        env:
+          C3A_RESULT: qualification-results/matrix-salt.json
+        run: python tests/physics/run_ppa_wu05e_mixed_salt.py
+      - name: Preserve D2 application and mixed oxygen route O0 O2
+        env:
+          C3A_RESULT: qualification-results/d2-application.json
+        run: python tests/physics/run_ppa_wu05d2_application.py
+      - name: Preserve accepted state publication O0 O2
+        env:
+          C3A_RESULT: qualification-results/d2-publication.json
+        run: python tests/physics/run_ppa_wu05d2_publication.py
+      - name: Preserve root transaction and parallel roles O0 O2
+        env:
+          C3A_RESULT: qualification-results/d2-preservation.json
+        run: python tests/physics/run_ppa_wu05d2_preservation.py
+      - name: Preserve Walsum O0 O2
+        env:
+          C3A_RESULT: qualification-results/d3-walsum.json
+        run: python tests/physics/run_ppa_wu05d3_walsum.py
+      - name: Preserve real Richards and macropore salt lifecycle O0 O2
+        run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ppa-wu05e-matrix-salt-${{ github.sha }}
+          path: qualification-results/

@@ -106,6 +106,9 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
   use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
   use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t
+  use mod_solute_mobile_salt_state, only: mobile_salt_state_t, mobile_salt_fluxes_t, &
+       initialize_mobile_salt_state, advance_mobile_salt_trial, SOLUTE_OK
+  use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t, fmr_base_salt_normalized_error
   use mod_solute_mobile_macro_salt_transport, only: mobile_macro_salt_receipt_t, &
        advance_mobile_macro_salt_trial, initialize_mobile_macro_salt_state, MACRO_SALT_OK, MACRO_SALT_INVALID
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
@@ -579,6 +582,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: salt_temporal_tolerance_mg_cm2 = 0.0_real64
     real(real64) :: temporal_tolerance_cm = 0.0_real64
     integer(int64) :: solute_state_layout_id = FMR_SOLUTE_STATE_LAYOUT_NONE
+    type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
     type(fmr_c_drain_salt_forcing_t) :: c_drain_salt_forcing
     type(fmr_soil_salt_boundary_forcing_t) :: soil_salt_boundary_forcing
     logical :: macropore_active = .false.
@@ -666,6 +670,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: configure_macropore_policy => fmr_serialized_backend_configure_macropore_policy
+    procedure, public :: configure_base_salt_temporal_policy => fmr_configure_base_salt_temporal_policy
     procedure, public :: configure_rfm_runtime => fmr_serialized_backend_configure_rfm_runtime
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
@@ -688,6 +693,8 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_soil_salt_boundary_matches_trial
   public :: fmr_new_b110_committed_state
   public :: fmr_initialize_mobile_macro_salt_profile
+  public :: fmr_initialize_mobile_salt_profile
+  public :: fmr_base_salt_temporal_policy_t
   public :: fmr_new_b110_macropore_reduction_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
@@ -999,6 +1006,30 @@ contains
     if (.not. available) return
     call self%temporal_history%snapshot(derivative, available)
   end subroutine fmr_b110_temporal_history_snapshot
+
+  subroutine fmr_initialize_mobile_salt_profile(state, node_thickness_cm, concentration_mg_cm3, status)
+    type(fmr_b110_physical_state_t),intent(inout)::state
+    real(real64),intent(in)::node_thickness_cm(:),concentration_mg_cm3(:)
+    integer,intent(out)::status
+    type(mobile_salt_state_t)::initialized
+    status=MACRO_SALT_INVALID
+    if(allocated(state%salt).or.allocated(state%macropore))return
+    if(.not.allocated(state%water_content))return
+    if(state%active_nodes/=size(state%water_content))return
+    call initialize_mobile_salt_state(node_thickness_cm,state%water_content,concentration_mg_cm3,initialized,status)
+    if(status/=SOLUTE_OK)return
+    allocate(state%salt)
+    call move_alloc(initialized%mass_mg_cm2,state%salt%mass_mg_cm2)
+  end subroutine
+
+  subroutine fmr_configure_base_salt_temporal_policy(self,policy,ok)
+    class(fmr_serialized_reference_backend_t),intent(inout)::self
+    type(fmr_base_salt_temporal_policy_t),intent(in)::policy
+    logical,intent(out)::ok
+    self%model%base_salt_temporal_policy=fmr_base_salt_temporal_policy_t()
+    ok=policy%valid()
+    if(ok)self%model%base_salt_temporal_policy=policy
+  end subroutine
 
   subroutine fmr_initialize_mobile_macro_salt_profile(state, node_thickness_cm, matrix_concentration_mg_cm3, &
        macro_concentration_mg_cm3, status, matrix_area_fraction)
@@ -1709,8 +1740,8 @@ contains
     if (allocated(self%model%accepted_water_flux_substeps)) deallocate(self%model%accepted_water_flux_substeps)
     if (self%model%accepted_water_flux_trace_enabled) then
       if (parameters%snow_active .or. parameters%drainage_response_active .or. &
-          parameters%soil_temperature_active .or. parameters%black_evaporation_active .or. &
-          parameters%boesten_evaporation_active .or. parameters%frost_active .or. &
+          (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) .or. &
+          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. parameters%frost_active .or. &
           self%model%rfm_configuration%enabled .or. &
           self%model%fixed_weir_surface_water_active) then
         call reject_backend_trial(result, candidate, diagnostics)
@@ -1759,32 +1790,39 @@ contains
         call reject_backend_trial(result, candidate, diagnostics)
         return
       end if
-      if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE .or. &
-          .not. parameters%macropore_active .or. &
-          config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
-          .not. allocated(parameters%macropore) .or. &
-          .not. ieee_is_finite(parameters%salt_temporal_tolerance_mg_cm2) .or. &
-          parameters%salt_temporal_tolerance_mg_cm2 <= 0.0_real64) then
+      if (config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
+          parameters%snow_active .or. parameters%frost_active .or. parameters%drainage_response_active .or. &
+          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. &
+          self%model%rfm_configuration%enabled .or. self%model%fixed_weir_surface_water_active) then
         call reject_backend_trial(result, candidate, diagnostics)
         return
       end if
-      if (parameters%snow_active .or. parameters%frost_active .or. parameters%soil_temperature_active .or. &
-          parameters%drainage_response_active .or. parameters%black_evaporation_active .or. &
-          parameters%boesten_evaporation_active .or. self%model%rfm_configuration%enabled .or. &
-          self%model%fixed_weir_surface_water_active) then
-        call reject_backend_trial(result, candidate, diagnostics)
-        return
-      end if
-      if (.not. allocated(parameters%macropore%matrix_area_fraction)) then
-        call reject_backend_trial(result, candidate, diagnostics)
-        return
-      end if
-      if (parameters%macropore%shrinkage%enabled .or. &
-          any(.not.ieee_is_finite(parameters%macropore%matrix_area_fraction)) .or. &
-          any(parameters%macropore%matrix_area_fraction<=0.0_real64) .or. &
-          any(parameters%macropore%matrix_area_fraction>1.0_real64)) then
-        call reject_backend_trial(result, candidate, diagnostics)
-        return
+      if (template%solute_state_layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) then
+        if (parameters%macropore_active .or. config%transaction%temporal_tolerance /= 1.0_real64 .or. &
+            .not. self%model%base_salt_temporal_policy%valid() .or. &
+            template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+      else
+        if (.not.parameters%macropore_active.or..not.allocated(parameters%macropore).or. &
+            parameters%soil_temperature_active.or. &
+            .not.ieee_is_finite(parameters%salt_temporal_tolerance_mg_cm2).or. &
+            parameters%salt_temporal_tolerance_mg_cm2<=0.0_real64) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+        if (.not.allocated(parameters%macropore%matrix_area_fraction)) then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
+        if (parameters%macropore%shrinkage%enabled.or. &
+            any(.not.ieee_is_finite(parameters%macropore%matrix_area_fraction)).or. &
+            any(parameters%macropore%matrix_area_fraction<=0.0_real64).or. &
+            any(parameters%macropore%matrix_area_fraction>1.0_real64)) then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
       end if
     else if (parameters%root_salinity_active) then
       call reject_backend_trial(result, candidate, diagnostics)
@@ -2226,15 +2264,13 @@ contains
              .not. parameters%root_extraction_active .and. .not. parameters%macropore_active
       end if
       if (parameters%root_salinity_active) then
-        ok = ok .and. parameters%root_extraction_active .and. parameters%macropore_active .and. &
+        ok = ok .and. parameters%root_extraction_active .and. &
              parameters%root_compensation%method == ROOT_COMP_JARVIS .and. &
              ieee_is_finite(parameters%solute_tscf) .and. parameters%solute_tscf >= 0.0_real64 .and. &
              parameters%solute_tscf <= 10.0_real64 .and. ieee_is_finite(parameters%saltmax_mg_cm3) .and. &
              parameters%saltmax_mg_cm3 >= 0.0_real64 .and. parameters%saltmax_mg_cm3 <= 100.0_real64 .and. &
              ieee_is_finite(parameters%saltslope_cm3_mg) .and. parameters%saltslope_cm3_mg >= 0.0_real64 .and. &
-             parameters%saltslope_cm3_mg <= 1.0_real64 .and. &
-             ieee_is_finite(parameters%salt_temporal_tolerance_mg_cm2) .and. &
-             parameters%salt_temporal_tolerance_mg_cm2 > 0.0_real64
+             parameters%saltslope_cm3_mg <= 1.0_real64
       end if
       if(allocated(parameters%bartholomeus)) then
         ok=ok .and. valid_fmr_bartholomeus_parameters(parameters%bartholomeus,parameters%active_nodes)
@@ -2838,7 +2874,7 @@ contains
     type(soil_temperature_field_view_t) :: oxygen_thermal
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
     real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:)
-    real(real64),allocatable :: salinity_cml(:),salinity_alpha(:),salinity_sink(:),salinity_node_loss(:),root_after_oxygen(:)
+    real(real64),allocatable :: salinity_cml(:),salinity_alpha(:),salinity_sink(:),salinity_node_loss(:),root_after_oxygen(:),salinity_storage_thickness(:)
     real(real64),allocatable :: trace_macro_water_start(:,:)
     real(real64) :: atmospheric_ctop,salinity_loss_total,salinity_loss_rate
     integer :: oxygen_route,waterfilm_mode,oxygen_status,oxygen_nodes,salinity_status,salt_status
@@ -3182,11 +3218,19 @@ contains
       end if
       salinity_loss_total = 0.0_real64
       if (self%root_salinity_active) then
-        if (.not. allocated(physical%salt) .or. .not. allocated(physical%macropore) .or. &
-            .not. allocated(self%root_potential_sink)) return
-        if (.not. physical%salt%ready(physical%active_nodes, physical%macropore%num_domains)) return
+        if (.not. allocated(physical%salt) .or. .not. allocated(self%root_potential_sink)) return
+        if (self%macropore_active) then
+          if (.not. allocated(physical%macropore)) return
+          if (.not. physical%salt%ready(physical%active_nodes, physical%macropore%num_domains)) return
+        else
+          if (allocated(physical%macropore)) return
+          if (.not. physical%salt%ready(physical%active_nodes)) return
+        end if
+        salinity_storage_thickness=self%soil_parameters%dz
+        if(self%macropore_active)salinity_storage_thickness= &
+             self%soil_parameters%dz*self%macropore_config%matrix_area_fraction
         call evaluate_mobile_root_salinity_sink(physical%salt%mass_mg_cm2,physical%water_content, &
-             self%soil_parameters%dz*self%macropore_config%matrix_area_fraction, &
+             salinity_storage_thickness, &
              self%saltmax_mg_cm3,self%saltslope_cm3_mg,self%root_potential_sink,salinity_cml,salinity_alpha, &
              salinity_sink,salinity_node_loss,salinity_loss_rate,salinity_status)
         self%last_observation%root_salinity_executed = .true.
@@ -3497,11 +3541,14 @@ contains
     end if
     if (solve_result%status /= SW_SOLVE_CONVERGED) return
     if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
-      if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE) return
       select type (salt_physical => state)
       class is (fmr_b110_physical_state_t)
-        call advance_fmr_mobile_macro_salt_step(self,salt_physical,request,solve_result,macropore_result, &
-             trace_macro_water_start,t0,t1,salt_receipt,salt_status)
+        if(self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
+          call advance_fmr_mobile_salt_step(self,salt_physical,request,solve_result,t0,t1,salt_receipt,salt_status)
+        else
+          call advance_fmr_mobile_macro_salt_step(self,salt_physical,request,solve_result,macropore_result, &
+               trace_macro_water_start,t0,t1,salt_receipt,salt_status)
+        end if
         if (salt_status /= MACRO_SALT_OK) then
           self%last_observation%salt_transport_executed = .true.
           self%last_observation%salt_transport_status = salt_status
@@ -3696,12 +3743,70 @@ contains
              macropore_result%vertical_flux%vertical_face_rate,salt_receipt=salt_receipt)) then
           self%accepted_water_flux_trace_failed = .true.
         end if
-      else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1)) then
+      else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1,salt_receipt=salt_receipt)) then
         self%accepted_water_flux_trace_failed = .true.
       end if
     end if
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
+
+  subroutine advance_fmr_mobile_salt_step(self,physical,request,solve_result,t0,t1,receipt,status)
+    class(fmr_serialized_reference_model_t),intent(inout)::self
+    type(fmr_b110_physical_state_t),intent(inout)::physical
+    type(soil_water_solve_request_t),intent(in)::request
+    type(soil_water_solve_result_t),intent(in)::solve_result
+    real(real64),intent(in)::t0,t1
+    type(mobile_macro_salt_receipt_t),intent(out)::receipt
+    integer,intent(out)::status
+    type(mobile_salt_state_t)::committed_salt,candidate_salt
+    type(mobile_salt_fluxes_t)::matrix_receipt
+    real(real64),allocatable::faces(:),net_source(:),qdra_rate(:,:),qssdi_rate(:)
+    real(real64)::closure,dt
+    integer::n,face_status
+    status=MACRO_SALT_INVALID;receipt=mobile_macro_salt_receipt_t()
+    if(.not.allocated(physical%salt).or.allocated(physical%macropore))return
+    n=physical%active_nodes;dt=t1-t0
+    if(.not.physical%salt%ready(n).or.dt<=0.0_real64)return
+    if(.not.associated(self%soil_parameters).or..not.associated(self%qrot).or. &
+       .not.associated(self%qssdi).or..not.associated(self%qdra))return
+    if(.not.allocated(request%base_state%water_content).or. &
+       .not.allocated(solve_result%candidate_state%water_content))return
+    if(size(request%base_state%water_content)/=n.or.size(solve_result%candidate_state%water_content)/=n)return
+    ! No surface salt store exists in this bounded soil-interface contract.
+    if(request%base_state%ponding_depth/=0.0_real64.or.solve_result%candidate_state%ponding_depth/=0.0_real64)return
+    if(any(request%base_state%water_content<=tiny(0.0_real64)))return
+    if(physical%salt%cdrain_source_id/=0_int64.and. &
+       physical%salt%cdrain_source_id/=self%c_drain_salt_forcing%source_id)return
+    net_source=self%qssdi-sum(self%qdra,dim=1)-self%qrot
+    call reconstruct_interval_water_face_flux(self%soil_parameters%dz,request%base_state%water_content, &
+         solve_result%candidate_state%water_content,net_source,-solve_result%top_flux,-solve_result%bottom_flux,dt, &
+         max(1.0e-12_real64,self%compartment_balance_tolerance/dt),faces,closure,face_status)
+    if(face_status/=WATER_FACE_FLUX_OK)return
+    qdra_rate=self%qdra
+    qssdi_rate=self%qssdi
+    committed_salt%mass_mg_cm2=physical%salt%mass_mg_cm2
+    committed_salt%concentration_mg_cm3=physical%salt%mass_mg_cm2/ &
+         (request%base_state%water_content*self%soil_parameters%dz)
+    call advance_mobile_salt_trial(committed_salt,self%soil_parameters%dz,request%base_state%water_content, &
+         solve_result%candidate_state%water_content,faces,self%qrot,self%soil_salt_boundary_forcing%matrix_top_mg_cm3, &
+         self%soil_salt_boundary_forcing%matrix_bottom_mg_cm3,self%solute_tscf,dt,candidate_salt,matrix_receipt,status, &
+         qdra_rate=qdra_rate,qssdi_rate=qssdi_rate,cdrain_mg_cm3=self%c_drain_salt_forcing%concentration_mg_cm3, &
+         cdrain_available=.true.)
+    if(status/=SOLUTE_OK)return
+    physical%salt%mass_mg_cm2=candidate_salt%mass_mg_cm2
+    physical%salt%cdrain_source_id=self%c_drain_salt_forcing%source_id
+    physical%salt%cdrain_revision=self%c_drain_salt_forcing%revision
+    receipt%matrix_top_input_mg_cm2=matrix_receipt%top_input_mg_cm2
+    receipt%matrix_top_output_mg_cm2=matrix_receipt%top_output_mg_cm2
+    receipt%matrix_bottom_input_mg_cm2=matrix_receipt%bottom_input_mg_cm2
+    receipt%matrix_bottom_output_mg_cm2=matrix_receipt%bottom_output_mg_cm2
+    allocate(receipt%macro_top_input_mg_cm2(0),receipt%macro_top_output_mg_cm2(0), &
+         receipt%macro_bottom_input_mg_cm2(0),receipt%macro_bottom_output_mg_cm2(0), &
+         receipt%macro_to_matrix_mg_cm2(0,n),receipt%matrix_to_macro_mg_cm2(0,n))
+    receipt%root_solute_uptake_mg_cm2=self%solute_tscf*self%qrot*committed_salt%concentration_mg_cm3*dt
+    receipt%qdra_signed_out_mg_cm2=matrix_receipt%qdra_signed_out_mg_cm2
+    receipt%closure_error_mg_cm2=matrix_receipt%closure_error_mg_cm2
+  end subroutine
 
   subroutine advance_fmr_mobile_macro_salt_step(self, physical, request, solve_result, macropore_result, &
        macro_water_start, t0, t1, receipt, status)
@@ -4180,6 +4285,11 @@ contains
       return
     end if
 
+    if(self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
+      value=fmr_base_salt_physical_temporal_error(self,full_state,half_state)
+      return
+    end if
+
     same = .false.
     select type (full => full_state)
     class is (fmr_b110_physical_state_t)
@@ -4211,6 +4321,46 @@ contains
       value = huge(0.0_real64)
     end if
   end function fmr_serialized_temporal_identity
+
+  real(real64) function fmr_base_salt_physical_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    type(soil_temperature_field_view_t)::full_thermal,half_thermal
+    integer::n,status
+    value=huge(0.0_real64)
+    if(.not.self%base_salt_temporal_policy%valid().or..not.associated(self%soil_parameters))return
+    if(self%temporal_tolerance_cm/=1.0_real64)return
+    select type(full=>full_state)
+    class is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      class is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n.or.size(self%soil_parameters%dz)/=n)return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head).or. &
+           .not.allocated(full%water_content).or..not.allocated(half%water_content).or. &
+           .not.allocated(full%salt).or..not.allocated(half%salt))return
+        if(allocated(full%macropore).or.allocated(half%macropore).or. &
+           allocated(full%snow).or.allocated(half%snow))return
+        if(.not.full%salt%ready(n).or..not.half%salt%ready(n))return
+        if(allocated(full%soil_temperature).neqv.allocated(half%soil_temperature))return
+        if(allocated(full%soil_temperature))then
+          call build_soil_temperature_field_view(full%soil_temperature,full_thermal,status)
+          if(status/=0)return
+          call build_soil_temperature_field_view(half%soil_temperature,half_thermal,status)
+          if(status/=0)return
+          value=fmr_base_salt_normalized_error(self%base_salt_temporal_policy,self%soil_parameters%dz, &
+               full%pressure_head,half%pressure_head,full%water_content,half%water_content, &
+               full%salt%mass_mg_cm2,half%salt%mass_mg_cm2,full%ponding_depth,half%ponding_depth, &
+               full%groundwater_level,half%groundwater_level,full_thermal%temperature_c,half_thermal%temperature_c)
+        else
+          value=fmr_base_salt_normalized_error(self%base_salt_temporal_policy,self%soil_parameters%dz, &
+               full%pressure_head,half%pressure_head,full%water_content,half%water_content, &
+               full%salt%mass_mg_cm2,half%salt%mass_mg_cm2,full%ponding_depth,half%ponding_depth, &
+               full%groundwater_level,half%groundwater_level)
+        end if
+      end select
+    end select
+  end function
 
   real(real64) function fmr_macropore_physical_temporal_error(self, full_state, half_state) result(value)
     class(fmr_serialized_reference_model_t), intent(in) :: self
