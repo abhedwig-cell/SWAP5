@@ -202,6 +202,15 @@ for opt in 0 2; do
         grep -Fq 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS' "$OUT/fit_${fit}_wetting.txt"
       done
     fi
+    if [[ "${WU05_MIGMAC07:-0}" == 1 ]]; then
+      for law in 5 6 7; do
+        WU05_MIGMAC07_PARTIAL=1 WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=5 "$OUT/test_a9_fmr" | tee "$OUT/partial_${law}_trial.txt"
+        WU05_MIGMAC07_PARTIAL=1 WU05_MIGMAC06_KD=2 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=5 "$OUT/test_a9_fmr" > "$OUT/partial_${law}_supplied.txt"
+        cmp "$OUT/partial_${law}_trial.txt" "$OUT/partial_${law}_supplied.txt"
+        WU05_MIGMAC07_PARTIAL=1 WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_replay" | tee "$OUT/partial_${law}_replay.txt"
+        grep -Fq 'PPA_WU05_MIGMAC02_DYNAMIC_ACCEPTED_RESTART=PASS' "$OUT/partial_${law}_replay.txt"
+      done
+    fi
     if [[ "${WU05_MIGMAC06:-0}" == 1 ]]; then
       for law in 5 6 7; do
         for mode in 1 4 5; do
@@ -291,4 +300,12 @@ if [[ "${WU05_MIGMAC06:-0}" == 1 ]]; then
     done
   done
   echo 'PPA_WU05_MIGMAC06_REFERENCE_O0_O2_IDENTITY=PASS'
+fi
+
+if [[ "${WU05_MIGMAC07:-0}" == 1 ]]; then
+ for law in 5 6 7; do
+  cmp "$BUILD/o0/partial_${law}_trial.txt" "$BUILD/o2/partial_${law}_trial.txt"
+  cmp "$BUILD/o0/partial_${law}_replay.txt" "$BUILD/o2/partial_${law}_replay.txt"
+ done
+ echo 'PPA_WU05_MIGMAC07_PARTIAL_REFERENCE_O0_O2=PASS'
 fi

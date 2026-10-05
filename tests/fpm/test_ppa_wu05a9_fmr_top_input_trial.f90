@@ -297,7 +297,8 @@ contains
     type(fmr_b110_physical_parameters_t),intent(inout)::p
     logical,intent(out)::initialized
     integer::k
-    character(len=1)::reference_flag
+    character(len=1)::reference_flag,partial_flag
+    real(real64)::drain_level
     real(real64)::reference_kd
     real(real64)::ref_theta(numnod),ref_cond(numnod),ref_cap(numnod),ref_dk(numnod)
 
@@ -374,6 +375,9 @@ contains
     end if
 
     reference_kd=0.001_real64
+    drain_level=-2.0_real64
+    call get_environment_variable('WU05_MIGMAC07_PARTIAL',partial_flag)
+    if(partial_flag=='1')drain_level=-1.9_real64
     call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
     if(reference_flag=='2')then
       call map_surface_crack_depth_to_node(shrinkage%surface_crack_area_depth_cm,z,dz,1,k,ok)
@@ -382,20 +386,20 @@ contains
       shrinkage%surface_crack_area_node_supplied=.true.
       call derive_dynamic_minimum_subsidence(shrinkage,dz,ok)
       call require(ok,'MIGMAC06 supplied reference geometry')
-      call hyd%evaluate(-2.0_real64-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      call hyd%evaluate(drain_level-z,ref_theta,ref_cond,ref_cap,ref_dk)
       call prepare_rapid_drain_reference_kd(shrinkage,z,dz,ref_theta,static_volume,domain_fraction(1,:), &
-           diameter,-sum(dz),-2.0_real64,2,3.0_real64,reference_kd,ok)
+           diameter,-sum(dz),drain_level,2,3.0_real64,reference_kd,ok)
       call require(ok,'MIGMAC06 supplied prepared reference valid')
     end if
     allocate(p%macropore)
     call initialize_fmr_macropore_standard_config(p%macropore,1,static_volume,domain_fraction,potential_bottom, &
          z,dz,diameter,theta_s,theta_r,wall_correction,sorp_max,sorp_alpha,conductivity,entry_head, &
          sorp_fac_parallel,ksat_horizontal,cdarcy,1.0_real64,1.0_real64,0,initialized,shrinkage=shrinkage, &
-         rapid_enabled=dynamic_flag=='5',rapid_drain_type=2,rapid_drain_level_cm=-2.0_real64, &
+         rapid_enabled=dynamic_flag=='5',rapid_drain_type=2,rapid_drain_level_cm=drain_level, &
          rapid_area_exponent=3.0_real64,rapid_kd_reference=reference_kd,rapid_resistance_reference_day=20.0_real64)
     call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
     if(reference_flag=='1')then
-      call hyd%evaluate(-2.0_real64-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      call hyd%evaluate(drain_level-z,ref_theta,ref_cond,ref_cap,ref_dk)
       call prepare_fmr_macropore_rapid_reference(p%macropore,z,ref_theta,-sum(dz),initialized)
       call require(initialized,'MIGMAC06 derived reference config valid')
     end if
