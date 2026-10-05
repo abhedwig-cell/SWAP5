@@ -266,26 +266,14 @@ fi
 
 # P2E05 typed-diagnostic successors remain exact. Later admitted successors
 # are selected only when their admission is in the current lineage.
-sw_authority="$SW_P2E05"
-if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
-  sw_authority="$FCI110_SW"
-  echo 'FCI_CANONICAL_FCI110_SOLVER_CONTRACT_SUCCESSOR=ACTIVE'
-fi
-if git merge-base --is-ancestor "$BOFEK00_ADMISSION" HEAD; then
-  sw_authority="$BOFEK00_SW"
-  echo 'FCI_CANONICAL_BOFEK00_SOLVER_CONTRACT_SUCCESSOR=ACTIVE'
-fi
-test "$(git rev-parse HEAD:$SW)" = "$sw_authority" || fail 'typed solver contract successor drift'
-
-ref_adapter_authority="$REF_ADAPTER_P2E05"
-if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
-  ref_adapter_authority="$FCI110_REF_ADAPTER"
-fi
-if git merge-base --is-ancestor "$REPAIR01_ADMISSION" HEAD; then
-  ref_adapter_authority="$REPAIR01_REF_ADAPTER"
-  echo 'FCI_CANONICAL_REPAIR01_REFERENCE_ADAPTER_SUCCESSOR=ACTIVE'
-fi
-test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$ref_adapter_authority" || fail 'Reference adapter successor drift'
+# Preserve the current admitted solver contract and Reference/RossFast adapters.
+# Their semantic lineage authorities above remain required; these source
+# postimages may have advanced on current canonical since historical exact pins.
+for path in "$SW" "$REF_ADAPTER" "$ROSS_ADAPTER"; do
+  test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$dependency_authority:$path")" || \
+    fail "candidate changed current solver-contract/adapter target postimage: $path"
+done
+echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 
 # Preserve the F-ROSS12 selection authority. The default-MvG provider and
 # serialized Reference backend have one later exact semantic successor from
