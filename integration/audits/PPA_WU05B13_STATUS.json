@@ -4,10 +4,10 @@
   "last_reconciled_upstream": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
   "baseline_source": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
   "preregistration": "integration/audits/PPA_WU05B13_PREREGISTRATION.json",
-  "status": "IMPLEMENTED_RUNTIME_HARNESS_PERSISTED_NOT_TESTED",
+  "status": "PARTIALLY_TESTED_RUNTIME_QUALIFICATION_RUNNING",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
@@ -50,6 +50,19 @@
     "Before-solver active parameter/position/unsupported mixed selector/missing or nonfinite control/depth-cardinality invalid matrix; unrelated inactive parameter members ignored",
     "Fresh relevant existing frost/runtime/binding preservation on changed whole module, four SALFRO01, immutable VQ73/VQ74, literal root and strict canonical exact pins, docs; admit only completed source-bound results with exact proposed/actual merge identities"
   ],
-  "negative_findings": [],
-  "production_source_tree": "012b2e9df2fa854f19b31c98a1bcd214d8285662"
+  "negative_findings": [
+    {
+      "kind": "source fixture output buffer",
+      "finding": "Actual binding expects caller-owned assumed-shape output; newly allocatable test buffer was passed unallocated and the component probe SIGSEGV before its first physical comparison",
+      "repair": "Allocate the exact n-level by four-node test output once per configuration before actual binding; production, oracle equations and budgets unchanged",
+      "logs": [
+        "/tmp/frost-b13-source-composition-first-buffer-negative.log",
+        "/tmp/frost-b13-source-first-negative.stderr"
+      ]
+    }
+  ],
+  "production_source_tree": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
+  "completed": {
+    "scientific": "Unchanged immutable F-VQ42 oracle: 1404 active equations and analytic tangents, 6 FD, 8 inactive, 4 activation checks on actual current process and hydraulic carrier O0/O2 PASS; zero equation/tangent error"
+  }
 }

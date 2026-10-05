@@ -28,6 +28,8 @@ program generated_empirical_frost_reference
  hyd%pressure_head=-5.d0;hyd%water_content=.5d0
  do configuration=1,6
  n=b13_level_count(configuration)
+ if(allocated(actual))deallocate(actual)
+ allocate(actual(n,4))
  do coefficientcase=1,3
  do air=1,2
   theta=.5d0;thetas=.5d0
