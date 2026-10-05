@@ -308,8 +308,9 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
       fail 'PPA-WU05B frost hydraulic provider successor drift'
     echo 'FCI_CANONICAL_PPA_WU05B_FROST_BACKEND_SUCCESSOR=ACTIVE'
   fi
-  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$provider_authority" || \
-    fail 'admitted default-MvG provider successor drift'
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = \
+       "$(git rev-parse "$dependency_authority:src/solver/mod_b110_default_mvg_provider.f90")" || \
+    fail 'candidate changed current default-MvG provider target postimage'
   test "$(git rev-parse HEAD:$BACKEND)" = "$backend_authority" || \
     fail 'admitted serialized-backend successor drift'
   echo 'FCI_CANONICAL_PPA_WU04B_BACKEND_SUCCESSOR=PASS'
