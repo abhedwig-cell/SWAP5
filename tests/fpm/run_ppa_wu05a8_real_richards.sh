@@ -98,6 +98,7 @@ MODULE_SRC=(
   src/process/mod_solute_water_face_flux_reconstruction.f90
   src/process/mod_solute_mobile_salt_state.f90
   src/process/mod_solute_macropore_exchange.f90
+  src/process/mod_solute_mobile_macro_salt_transport.f90
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
 mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
@@ -114,6 +115,7 @@ for opt in 0 2; do
   "$OUT/test" | tee "$OUT/out.txt"
   grep -Fq 'PPA_WU05A7_REAL_RICHARDS_RUNTIME=PASS' "$OUT/out.txt"
   grep -Fq 'PPA_WU05E_FMR_SALT_CANDIDATE=FAIL_CLOSED_UNOWNED_MATRIX_EXCHANGE' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_TRACE_MAPPED_SALT_PROCESS=PASS_TEST_ONLY' "$OUT/out.txt"
 
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90 -o "$OUT/test_fmr_macro.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr_macro.o" -o "$OUT/test_fmr_macro"
