@@ -71,13 +71,23 @@ contains
     if ((direct_rate > 0.0_real64 .or. forcing%lateral_overland_rate_cm_per_day > 0.0_real64) .and. &
         top_volume <= 1.0e-30_real64) return
 
-    top_area_fraction = top_volume / geometry_config%dz(top)
+    if(geometry%surface_area_fraction>=0.0_real64)then
+      top_area_fraction=geometry%surface_area_fraction
+    else
+      top_area_fraction = top_volume / geometry_config%dz(top)
+    end if
     if (.not. ieee_is_finite(top_area_fraction) .or. top_area_fraction < 0.0_real64) return
 
-    requested_vertical_cm = domain_top_volume / geometry_config%dz(top) * direct_rate * step_duration
-    if (top_volume > 1.0e-30_real64) then
-      requested_lateral_cm = domain_top_volume / top_volume * &
-           forcing%lateral_overland_rate_cm_per_day * step_duration
+    if(geometry%surface_area_fraction>=0.0_real64)then
+      requested_vertical_cm=geometry_config%domain_fraction(:,top)*top_area_fraction*direct_rate*step_duration
+      requested_lateral_cm=geometry_config%domain_fraction(:,top)* &
+           forcing%lateral_overland_rate_cm_per_day*step_duration
+    else
+      requested_vertical_cm = domain_top_volume / geometry_config%dz(top) * direct_rate * step_duration
+      if (top_volume > 1.0e-30_real64) then
+        requested_lateral_cm = domain_top_volume / top_volume * &
+             forcing%lateral_overland_rate_cm_per_day * step_duration
+      end if
     end if
 
     if (any(.not. ieee_is_finite(requested_vertical_cm)) .or. &

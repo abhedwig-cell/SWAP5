@@ -797,6 +797,8 @@ logical function macropore_iteration_policy_active()
    else
       macropore_iteration_policy_active = provider_macropore_active .and. present(physical_config) .and. &
            allocated(physical_config%matrix_area_fraction)
+      if(provider_macropore_active) macropore_iteration_policy_active = &
+           macropore_iteration_policy_active .and. evaluation_context%macropore%permits_source_freezing()
    end if
 end function macropore_iteration_policy_active
 

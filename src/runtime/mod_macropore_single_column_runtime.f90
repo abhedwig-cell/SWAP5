@@ -7,7 +7,7 @@ module mod_macropore_single_column_runtime
        copy_macropore_continuation_state
   use mod_macropore_exchange_overlay_provider, only: macropore_exchange_overlay_provider_t
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t, macropore_geometry_result_t, &
-       evaluate_macropore_geometry
+       evaluate_macropore_geometry, evaluate_macropore_geometry_return
   use mod_macropore_standard_storage, only: macropore_standard_storage_view_t, &
        macropore_standard_candidate_receipt_t, derive_macropore_standard_storage_view, &
        build_macropore_standard_candidate, apply_internal_covered_top_transfer
@@ -22,6 +22,7 @@ module mod_macropore_single_column_runtime
   use mod_ppa_wu05a6_vertical_flux_reconstruction, only: vertical_flux_reconstruction_request_t, &
        vertical_flux_reconstruction_result_t, reconstruct_vertical_flux
   use mod_ppa_wu05a16_inner_macropore_provider, only: ppa_wu05a16_inner_macropore_provider_t
+  use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t
   use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t, &
        reduction_after_retry, reduction_after_accept
   implicit none
@@ -90,7 +91,8 @@ contains
   end function runtime_policy_valid
 
   subroutine runtime_execute(self,solver,workspace,base_request,accepted_macro,geometry_config,rate_template, &
-       history_request,policy,result,top_input,reduction_accepted,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day)
+       history_request,policy,result,top_input,reduction_accepted,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day, &
+       shrinkage_config,matrix_area_fraction)
     class(macropore_single_column_runtime_t),intent(inout)::self
     class(soil_water_solver_t),intent(inout)::solver
     class(soil_water_solver_workspace_base_t),intent(inout)::workspace
@@ -104,6 +106,8 @@ contains
     type(fmr_macropore_top_input_forcing_t),intent(in),optional::top_input
     type(macropore_reduction_continuation_t),intent(in),optional::reduction_accepted
     real(real64),intent(in),optional::covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day
+    type(dynamic_shrinkage_config_t),intent(in),optional::shrinkage_config
+    real(real64),intent(in),optional::matrix_area_fraction(:)
 
     type(soil_water_solve_request_t)::request
     type(soil_water_solve_result_t)::predictor,corrector
@@ -119,6 +123,8 @@ contains
     type(sorptivity_history_update_request_t)::history_local
     real(real64),allocatable::current_domain(:,:),next_domain(:,:),current_node(:)
     real(real64),allocatable::requested_top_vertical(:),requested_top_lateral(:),covered_domain_cm(:)
+    real(real64),allocatable::candidate_top_vertical(:),candidate_top_lateral(:)
+    real(real64),allocatable::geometry_return(:,:)
     type(fmr_macropore_top_input_forcing_t)::top_input_local
     type(covering_layer_input_request_t)::covering_request
     real(real64)::numerator,denominator,dt
@@ -166,6 +172,12 @@ contains
     if(dt<=0.0_real64)then
       result%status=MACRO_RUNTIME_FAILED
       return
+    end if
+    if(present(shrinkage_config))then
+      if(shrinkage_config%enabled .and. .not.policy%inner_richards_exchange_enabled)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
     end if
 
     call evaluate_macropore_geometry(geometry_config,accepted_macro%dynamic_volume_cp,geometry)
@@ -266,7 +278,9 @@ contains
 
         call inner_provider%configure(accepted_macro,geometry,rate_template_attempt,base_request%parameters%z, &
              base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
-             base_request%base_state%groundwater_level,ok,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day)
+             base_request%base_state%groundwater_level,ok,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day, &
+             geometry_config,shrinkage_config,base_request%base_state%water_content,matrix_area_fraction,top_input_local, &
+             base_request%boundary%bottom_mode)
         if(.not.ok)then
           result%status=MACRO_RUNTIME_FAILED
           return
@@ -276,6 +290,7 @@ contains
         request%physical%macropore_active=.true.
         request%evaluation%macropore=>inner_provider
         call solver%solve(request,workspace,corrector)
+        result%matrix_result=corrector
         result%source_reduction_attempts=result%source_reduction_attempts+1
         result%corrector_solves=result%corrector_solves+1
         result%outer_iterations=0
@@ -304,6 +319,29 @@ contains
         result%accepted_source_reduction_factor=rate_template_attempt%interflow_sat%flow_reduction
       end if
 
+      result%matrix_result=corrector
+      if(present(shrinkage_config))then
+        if(shrinkage_config%enabled)then
+          call inner_provider%evaluate_trial_geometry(corrector%candidate_state%water_content,geometry,ok, &
+               corrector%candidate_state%pressure_head)
+          if(.not.ok)then
+            result%status=MACRO_RUNTIME_FAILED
+            return
+          end if
+          if(top_input_local%supplied)then
+            call prepare_fmr_macropore_top_input(top_input_local,geometry_config,geometry,dt, &
+                 candidate_top_vertical,candidate_top_lateral,ok)
+            if(.not.ok)then
+              result%status=MACRO_RUNTIME_FAILED
+              return
+            end if
+            rate_template_attempt%limiter%potential_top_vertical_cm=candidate_top_vertical
+            rate_template_attempt%limiter%potential_top_lateral_cm=candidate_top_lateral
+            result%requested_top_input_cm=sum(candidate_top_vertical)+sum(candidate_top_lateral)
+          end if
+        end if
+      end if
+
       call prepare_standard_macropore_rate_request(rate_template_attempt,accepted_macro,geometry,accepted_view, &
            corrector%candidate_state,base_request%parameters%z,base_request%parameters%dz,dt, &
            rate_request,matrix_view,ok)
@@ -317,11 +355,21 @@ contains
         return
       end if
 
+      if(present(shrinkage_config))then
+        if(shrinkage_config%enabled)then
+          call evaluate_macropore_geometry_return(accepted_macro,geometry,geometry_return,ok)
+          if(.not.ok)then
+            result%status=MACRO_RUNTIME_FAILED
+            return
+          end if
+          raw_rates%qexc_to_matrix_rate=raw_rates%qexc_to_matrix_rate+geometry_return/dt
+        end if
+      end if
+
       allocate(current_domain(nd,n),current_node(n))
       current_domain=raw_rates%qexc_to_matrix_rate
       current_node=sum(current_domain,dim=1)
       result%inner_final_exchange_rate_cm_per_day=sum(current_domain)
-      result%matrix_result=corrector
 
       call build_macropore_standard_candidate(accepted_macro,geometry,raw_rates%top_partition,current_domain, &
            raw_rates%rapid_outflow_cp_cm,dt,geometry_config%top_node,base_request%parameters%z, &
@@ -494,6 +542,16 @@ contains
     ! Use the exact exchange vector injected into the converged corrector for mass identity.
     current_node=sum(current_domain,dim=1)
     result%matrix_result=corrector
+    if(present(shrinkage_config))then
+      if(shrinkage_config%enabled)then
+        call inner_provider%evaluate_trial_geometry(corrector%candidate_state%water_content,geometry,ok, &
+             corrector%candidate_state%pressure_head)
+        if(.not.ok)then
+          result%status=MACRO_RUNTIME_FAILED
+          return
+        end if
+      end if
+    end if
 
     call build_macropore_standard_candidate(accepted_macro,geometry,raw_rates%top_partition,current_domain, &
          raw_rates%rapid_outflow_cp_cm,dt,geometry_config%top_node,base_request%parameters%z, &

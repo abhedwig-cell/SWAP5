@@ -3014,12 +3014,16 @@ contains
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
                top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation, &
                covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
-               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day)
+               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         else
           call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
                self%macropore_config%geometry, self%macropore_config%rate_template, &
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-               top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation)
+               top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         end if
         if(macropore_result%status==MACRO_RUNTIME_CONVERGED) &
              physical_macro%reduction_continuation=macropore_result%reduction_candidate
@@ -3030,12 +3034,16 @@ contains
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
                top_input=self%macropore_top_input_forcing, &
                covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
-               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day)
+               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         else
           call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
                self%macropore_config%geometry, self%macropore_config%rate_template, &
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-               top_input=self%macropore_top_input_forcing)
+               top_input=self%macropore_top_input_forcing, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         end if
       class default
         return

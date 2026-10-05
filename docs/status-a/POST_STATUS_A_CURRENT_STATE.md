@@ -207,3 +207,21 @@ including the full bottom of a partially rooted node.
 See [canonical closeout](../audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md) for
 qualification, exact scope, legacy-source limitations and the remaining D4/D5 gaps.
 This does not admit salinity, frost, MICRO or general coupling combinations.
+
+## PPA-WU05-MIGMAC02 dynamic crack geometry
+
+Local qualification is complete for Kim clay direct option-1 shrinkage in the
+existing serialized Reference Richards macropore chain. Candidate moisture and
+accepted crack history derive subsidence, capacity, domain bottoms and top crack
+area. Existing exchange/top-input/rapid-drain owners consume that geometry;
+displacement enters the matrix receipt before acceptance. Retry and restart
+retain the accepted boundary. The explicit provider disables the inherited
+short-step source-freezing heuristic when geometry can change.
+
+The controlling scope, exact source postimages, independent oracles, O0/O2,
+A/B/A, smaller retry, restart, water closure and preservation evidence are in
+`integration/audits/PPA_WU05_MIGMAC02_QUALIFICATION.json` and
+`docs/audits/PPA_WU05_MIGMAC02_CLOSEOUT.md`. Canonical admission is recorded in
+`integration/audits/PPA_WU05_MIGMAC02_STATUS.json` when the qualified postimage
+is merged. Peat/alternate fitting and additional surface/drain compositions
+remain outside this bounded admission. Frozen Status A is unchanged.

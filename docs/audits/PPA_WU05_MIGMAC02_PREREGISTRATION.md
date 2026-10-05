@@ -75,3 +75,40 @@ production seam is expected to be the source-faithful operator that computes
 the candidate dynamic crack volume and its exact accepted-state timing.
 
 This hypothesis is explicitly falsifiable by the B1.11 source audit.
+
+## Reconciliation addendum (2026-10-05)
+
+The preregistration is retained as the original scope/questions record. The
+corrected source audit did not establish exact B1.11 constitutive equations or
+complete call timing: the recovered `macropore.f90` donor has SHA-256
+`1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b`, while
+authority pins B1.11 to `f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f`.
+Therefore the previous intention to select a “source-defined” operator is
+unfulfilled, and no donor-transcribed equation is admitted. See
+`PPA_WU05_MIGMAC02_SOURCE_RECONCILIATION.md` and
+`PPA_WU05_MIGMAC02_CLOSEOUT.md` for the superseding evidence boundary.
+
+
+## Source-recovery addendum (2026-10-05)
+
+The source blocker described above is resolved for clay option-1 and
+`MPVOLUME(1)`: B1.11 was reconstructed from verified B0 plus the pinned
+SWAP-001 patch and the SHA-256 matches authority. See
+`PPA_WU05_MIGMAC02_SOURCE_RECONCILIATION.md`. Full qualification remains open;
+in particular subsidence-adjusted dynamic surface area, rate-receipt identity,
+retry/restart and mass closure need a passing runtime fixture. The earlier
+source blocker text above is retained as preregistration history, not current
+status.
+
+## Runtime qualification addendum (2026-10-05)
+
+The final qualification uses the existing A9 fixture in static and dynamic modes,
+compiled once per optimization level. The dynamic mode must publish positive
+crack history/capacity together, close the existing total-water ledger, discard A,
+produce identical smaller B with reused and fresh backends, reproduce A after B,
+and reproduce the next accepted candidate after persistence/restart. No tolerance
+is relaxed. An independent two-domain storage oracle adds unchanged geometry,
+dry-to-wet capacity loss/deactivation, exact per-domain matrix return, wet-to-dry
+capacity gain and candidate history publication. Preservation includes MIGMAC01,
+A8/A9/A10 and PERCH20. Broad peat/alternate parameter fitting and whole-model legacy
+output parity are separate constitutive/input qualification claims.

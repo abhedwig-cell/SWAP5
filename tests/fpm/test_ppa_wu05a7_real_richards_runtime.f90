@@ -219,6 +219,7 @@ contains
     mcfg%geometry=geometry_config
     mcfg%rate_template=rate_template
     mcfg%history_template=history_request
+    mcfg%matrix_area_fraction=1.0_real64-geometry_config%static_volume_cp/dz
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A8 FMR config validity'
     allocate(fparams%macropore)
     fparams%macropore=mcfg
@@ -376,7 +377,7 @@ contains
     config%top_node=1
     allocate(config%static_volume_cp(numnod),config%domain_fraction(nd,numnod), &
          config%potential_bottom_domain(nd),config%dz(numnod),config%characteristic_diameter(numnod))
-    config%static_volume_cp=0.50_real64
+    config%static_volume_cp=0.25_real64
     config%domain_fraction=1.0_real64
     config%potential_bottom_domain=numnod
     config%dz=dz
