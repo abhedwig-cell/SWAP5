@@ -1,0 +1,42 @@
+{
+  "work_unit": "PPA-WU05B4",
+  "baseline": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "scope": "Joint empirical root-frost/Jarvis/Walsum/OFF sink plus legacy no-drain prescribed-bottom frost",
+  "contract": "Compose already admitted B2 root cutoff before compensation and B3 bottom selector, both from immutable trial-start fields; exactly one final root sink and one final bottom exchange. No new physical equation, solver, mass owner or state.",
+  "numerical_contract": "Joint temporal error is max(independent B2 root norm, independent B3 boundary norm); root cutoff disagreements and terminal boundary blocking disagreement force refinement. Both explicit budgets remain mandatory; no weaker joint norm.",
+  "required_gates": [
+    "Signed allowed/blocked bottom proposals with mixed roots and independent net storage = bottom exchange minus transpiration",
+    "All-frozen no root resurrection, saturated blocked bottom, warm/top-only legacy boundary classifications",
+    "Jarvis/Walsum/OFF through actual application and committed restart",
+    "Actual temporal retry/fine direct continuation and OFF incumbent preservation",
+    "B1/B2/B3 O0/O2, current salt/Walsum preservation and complete current canonical gate"
+  ],
+  "affected_invariants": [
+    3,
+    4,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    26
+  ],
+  "held_fixed": [
+    "restart schema",
+    "solver",
+    "mass ledger",
+    "salt owners",
+    "legacy no-drain indexing"
+  ],
+  "exclusions": [
+    "active drainage redistribution",
+    "salt/frost",
+    "Bartholomeus",
+    "macropores",
+    "groundwater-owned bottom",
+    "phase-change physics"
+  ],
+  "admitted": false
+}

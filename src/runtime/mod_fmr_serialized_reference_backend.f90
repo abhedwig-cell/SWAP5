@@ -2483,7 +2483,7 @@ contains
       end if
       if(parameters%frost_bottom%active) then
         ok=ok.and.parameters%frost_bottom%valid().and.parameters%frost_active.and. &
-             .not.parameters%root_extraction_active.and..not.parameters%root_frost%active.and. &
+             (.not.parameters%root_extraction_active.or.parameters%root_frost%active).and. &
              .not.parameters%root_salinity_active.and..not.self%base_salt_temporal_policy%enabled.and. &
              .not.parameters%elasticity_active.and..not.parameters%direct_retention_active.and. &
              .not.allocated(parameters%bartholomeus)
@@ -4728,6 +4728,7 @@ contains
     logical :: same
     if(self%frost_bottom%active)then
       value=fmr_frost_bottom_temporal_error(self,full_state,half_state)
+      if(self%root_frost%active)value=max(value,fmr_root_frost_temporal_error(self,full_state,half_state))
       return
     end if
     if(self%root_frost%active) then
