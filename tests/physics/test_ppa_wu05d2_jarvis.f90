@@ -52,7 +52,8 @@ program test_ppa_wu05d2_jarvis
       'salinity post-compensation attribution closes')
  cfg%stressor=ROOT_COMP_DROUGHT;cfg%alpha_critical=.7_real64
  call compose_jarvis_root_uptake(cfg,.5_real64,base,0.0_real64,0.0_real64,a,da,s,.1_real64)
- call req(s==ROOT_COMP_UNSUPPORTED,'missing drought attribution fails closed')
+ call req(s==ROOT_COMP_OK.and.abs(a%actual_uptake_total-.4_real64)<tol, &
+      'drought selector leaves salinity loss in place')
 
  cfg%stressor=ROOT_COMP_DROUGHT
  call compose_jarvis_root_uptake(cfg,0.5_real64,base,0.05_real64,0.0_real64,a,da,s)
