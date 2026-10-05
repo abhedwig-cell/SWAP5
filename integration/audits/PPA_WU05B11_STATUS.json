@@ -2,8 +2,8 @@
   "work_unit": "PPA-WU05B11",
   "baseline": "febfff8103c4d60324a103d832521bb3f3754a67",
   "last_reconciled_upstream": "febfff8103c4d60324a103d832521bb3f3754a67",
-  "status": "PREREGISTERED",
-  "implemented": false,
+  "status": "IMPLEMENTED_UNTESTED",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -23,7 +23,15 @@
     "src/process/mod_frost_drainage_effect.f90"
   ],
   "dependency_surface": "Actual runtime/backend/bootstrap, all generated drain families, frost/temperature, root kernel, single sink/accounting, restart, canonical pin gate and owned static grid fixture",
-  "next_action": "Persist preregistration remotely then implement bounded tabulated selector and actual source/runtime qualification fixtures",
+  "next_action": "Persist actual source/runtime candidate remotely, then run source component and fresh whole-module actual normal/low-air qualification",
   "recovery_point": "This preregistration commit",
-  "blockers": []
+  "blockers": [],
+  "test_paths": [
+    "tests/frost/test_ppa_wu05b11_low_air_runtime.f90",
+    "tests/frost/test_ppa_wu05b11_tabulated_response_source.f90",
+    "tests/frost/test_ppa_wu05b11_normal_runtime.f90",
+    "tests/frost/run_ppa_wu05b11_low_air_runtime.sh",
+    "tests/frost/run_ppa_wu05b11_tabulated_response_source.sh",
+    "tests/frost/run_ppa_wu05b11_normal_runtime.sh"
+  ]
 }

@@ -99,7 +99,8 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
        evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
-       FMR_DRAIN_BIND_OK, FMR_DRAIN_VARIANT_LINEAR
+       FMR_DRAIN_BIND_OK, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_TABULATED
+  use mod_drainage_tabulated_response, only: valid_tabulated_drainage_parameters
   use mod_fmr_legacy_qgwl_bottom_boundary_provider, only: fmr_qgwl_bottom_boundary_config_t, &
        fmr_qgwl_bottom_boundary_result_t, fmr_evaluate_legacy_qgwl_bottom_boundary, FMR_QGWL_OK
   use mod_fmr_drainage_qbot_directional_binding, only: project_fmr_qbot_smooth_groundwater_level, &
@@ -286,6 +287,7 @@ module mod_fmr_serialized_reference_backend
     type(frost_drainage_config_t) :: frost_drainage
     logical :: frost_response_drainage_active = .false.
     logical :: frost_low_air_response_drainage_active = .false.
+    logical :: frost_tabulated_response_drainage_active = .false.
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
     real(real64) :: root_frost_head_budget_cm=0.0_real64
@@ -614,6 +616,7 @@ module mod_fmr_serialized_reference_backend
     type(frost_drainage_config_t) :: frost_drainage
     logical :: frost_response_drainage_active = .false.
     logical :: frost_low_air_response_drainage_active = .false.
+    logical :: frost_tabulated_response_drainage_active = .false.
     real(real64),allocatable :: unfrozen_drainage_flux(:,:)
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
@@ -786,9 +789,12 @@ contains
 
   pure logical function fmr_frost_response_drainage_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    integer :: level
+    logical :: has_table
     ok=.true.
     if(.not.parameters%frost_response_drainage_active)then
-      ok=.not.parameters%frost_low_air_response_drainage_active
+      ok=.not.parameters%frost_low_air_response_drainage_active.and. &
+           .not.parameters%frost_tabulated_response_drainage_active
       return
     end if
     ok=.false.
@@ -797,9 +803,26 @@ contains
     if(parameters%frost_low_air_drainage%active.neqv.parameters%frost_low_air_response_drainage_active)return
     if(.not.allocated(parameters%drainage_response_levels))return
     if(size(parameters%drainage_response_levels)<1)return
-    if(any(parameters%drainage_response_levels%variant/=FMR_DRAIN_VARIANT_LINEAR))return
-    if(any(.not.ieee_is_finite(parameters%drainage_response_levels%linear%drainage_resistance)))return
-    if(any(parameters%drainage_response_levels%linear%drainage_resistance<=0._real64))return
+    has_table=.false.
+    do level=1,size(parameters%drainage_response_levels)
+      select case(parameters%drainage_response_levels(level)%variant)
+      case(FMR_DRAIN_VARIANT_LINEAR)
+        if(.not.ieee_is_finite(parameters%drainage_response_levels(level)%linear%drainage_resistance))return
+        if(parameters%drainage_response_levels(level)%linear%drainage_resistance<=0._real64)return
+      case(FMR_DRAIN_VARIANT_TABULATED)
+        if(.not.parameters%frost_tabulated_response_drainage_active)return
+        if(.not.valid_tabulated_drainage_parameters(parameters%drainage_response_levels(level)%tabulated))return
+        ! Keep the existing evaluator's representation-dependent depth-zero
+        ! singleton outside the selected runtime before any solver call.
+        if(size(parameters%drainage_response_levels(level)%tabulated%groundwater_depth)==1)then
+          if(parameters%drainage_response_levels(level)%tabulated%groundwater_depth(1)<=0._real64)return
+        end if
+        has_table=.true.
+      case default
+        return
+      end select
+    end do
+    if(parameters%frost_tabulated_response_drainage_active.and..not.has_table)return
     if(parameters%frost_low_air_response_drainage_active)then
       if(.not.parameters%frost_low_air_drainage%valid())return
       if(size(parameters%frost_low_air_drainage%drain_depth_cm)/=size(parameters%drainage_response_levels))return
@@ -2719,6 +2742,7 @@ contains
       self%frost_drainage = parameters%frost_drainage
       self%frost_response_drainage_active = parameters%frost_response_drainage_active
       self%frost_low_air_response_drainage_active = parameters%frost_low_air_response_drainage_active
+      self%frost_tabulated_response_drainage_active = parameters%frost_tabulated_response_drainage_active
       self%frost_bottom = parameters%frost_bottom
       self%root_frost = parameters%root_frost
       self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm
