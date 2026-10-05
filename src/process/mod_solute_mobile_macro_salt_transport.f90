@@ -445,6 +445,10 @@ contains
     end if
     candidate=committed
     candidate%matrix_mass_mg_cm2=committed%matrix_mass_mg_cm2+mass_delta
+    if(any(.not.ieee_is_finite(candidate%matrix_mass_mg_cm2)))then
+      candidate=mobile_macro_salt_state_t()
+      deallocate(receipt_by_level_mg_cm2);return
+    end if
     status=MACRO_SALT_OK
   end subroutine advance_mobile_macro_salt_drainage
 
