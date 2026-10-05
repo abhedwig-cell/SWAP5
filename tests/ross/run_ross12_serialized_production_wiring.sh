@@ -79,9 +79,15 @@ MODULE_SRC=(
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/adapter/mod_fmr_mode7_temporal_head_envelope.f90
   src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
+  src/process/mod_bartholomeus_runtime_input.f90
+  src/physics/oxygen/mod_bartholomeus_temperature.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90
+  src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90
+  src/physics/oxygen/mod_bartholomeus_parameter_contract.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90
   src/crop/mod_crop_bartholomeus_input.f90
   src/runtime/mod_fmr_bartholomeus_activation.f90
-  src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90
   src/runtime/mod_fmr_bartholomeus_contract.f90
   "$BACKEND"
   src/runtime/mod_fmr_accepted_commit_receipt.f90
