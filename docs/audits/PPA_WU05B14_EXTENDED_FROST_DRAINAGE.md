@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-Implemented and persisted; qualification pending. Exact baseline `0511717b6c428d18dc223c9e81fd73da3bf5c3fd` closes B13. The source review binds Q4A scientific authority `48df989b098d73208eed2496005b656f588ebffd` and unchanged process blob `25d76013d25c2eaa2d254865149c740bc3257617`. Its 1507-case independent source-derived value/tangent oracle is historical evidence until rebound to the current candidate.
+Implemented and persisted; qualification pending. Exact baseline `0511717b6c428d18dc223c9e81fd73da3bf5c3fd` closes B13. The source review binds Q4A scientific authority `48df989b098d73208eed2496005b656f588ebffd` and unchanged process blob `25d76013d25c2eaa2d254865149c740bc3257617`. Its unchanged 1507-case independent source-derived value/tangent oracle passes on actual current production with the full soil solver contract and hydraulic view at O0/O2. Existing process bodies are identical except for the parameter-validator PURE annotation.
 
 ## Bounded ordinary composition
 
@@ -21,3 +21,7 @@ Literal FrozenBounds routes nonzero SWDRA through a common modifier. Its admitte
 The unchanged Q4A oracle/driver must pass on actual current process/hydraulic modules O0/O2. Source composition must cover both drain types, signed/inactive/capped/suppressed controls, parameter bounds, separate physical depths, frost cuts/equality/qbot and corrected B7 parity. Four type/sign configurations each run six full trajectories per route, with independent 8192/65536-step references, actual low-air branches, hard mass, immutable retry, final receipts, replay, application, empty restart and active invalid-control rejection before the solver. Additional actual activation and finer references plus complete relevant B1..B13, four salt/root matrices, immutable VQ73/74, original F-APP09/VQ128, literal root, strict canonical and docs gates are required.
 
 Aggregate frost migration remains open. No runtime qualification, canonical admission, external frost profile or practical low-air performance claim is made.
+
+## Partial current-source checkpoint
+
+Scientific and 116640-case corrected-source composition gates pass at O0/O2, including warm/partial/frozen final-node factors and exact physical cut/equality margins. All four normal kind/sign configurations complete24 full trajectories with byte-identical O0/O2 stdout and unchanged fine references/budgets. Low-air full runtime, additional/finer cases and relevant preservation remain pending. This checkpoint is unqualified for runtime admission; no aggregate frost completion claim follows.

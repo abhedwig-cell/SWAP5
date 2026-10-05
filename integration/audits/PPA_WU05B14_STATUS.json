@@ -4,10 +4,10 @@
   "last_reconciled_upstream": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
   "baseline_source": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
   "preregistration": "integration/audits/PPA_WU05B14_PREREGISTRATION.json",
-  "status": "IMPLEMENTED_PERSISTED_UNQUALIFIED",
+  "status": "PARTIALLY_TESTED_RUNTIME_QUALIFICATION_RUNNING",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
@@ -41,7 +41,7 @@
     30
   ],
   "next_action": "Run fresh whole-module four-configuration normal/low-air full runtime O0/O2, source composition, additional cases and complete relevant preservation",
-  "recovery_point": "Persisted preimplementation preregistration and exact B13 canonical closeout",
+  "recovery_point": "Published production f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d plus complete runtime/source/scientific/preservation harness checkpoint",
   "blockers": [],
   "pending": [
     "Unchanged 1507-case Q4A primary oracle/driver rebound to actual current process/hydraulic carrier O0/O2; value/tangent/seam/negative-power holds unchanged",
@@ -53,7 +53,9 @@
   ],
   "production_source_tree": "f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d",
   "completed": {
-    "scientific": "Unchanged Q4A primary1507 actual current process/full soil contract/hydraulic cases per opt, exact O0/O2 value/tangent/seam/hold PASS"
+    "scientific": "Unchanged Q4A primary1507 actual current process/full soil contract/hydraulic cases per opt, exact O0/O2 value/tangent/seam/hold PASS",
+    "source_composition": "116640 actual single-level TUBE/OPEN bindings, signed/capped/suppressed/ponding/control branches, normalized resistance endpoints, inactive NaNs, normal warm/partial/frozen last-node factors and low-air cuts/equality/near-depth margins; corrected B7 bit parity O0/O2 identical PASS",
+    "normal_runtime": "All four kind/sign configurations x six full trajectories, O0/O2 identical PASS with8192 independent fine references, hard mass/retry/receipts/replay/application/empty restart and actual invalid controls"
   },
   "negative_findings": [
     {
