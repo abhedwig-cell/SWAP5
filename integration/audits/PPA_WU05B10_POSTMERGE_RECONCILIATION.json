@@ -1,0 +1,28 @@
+{
+  "work_unit": "PPA-WU05B10",
+  "status": "PREREGISTERED_CONCURRENT_ROOT_DELTA_REQUALIFICATION_PENDING",
+  "actual_merge": "6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50",
+  "actual_first_parent": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+  "actual_tree": "a2323f363d148da975fa8df13024a2c53c14d5ae",
+  "actual_source": "60bc7fdc3430d8d8ae87f4a77219dbb6c44c6ec9",
+  "original_verified_proposed_merge": "6eef2ae793f0952d502625b4761fba969f992f32",
+  "original_qualified_source": "fd27cbbbf863fd3cd14a2a1619d9f0803d40091e",
+  "concurrent_admission": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+  "production_delta": [
+    "src/process/mod_root_uptake_compensation.f90"
+  ],
+  "production_delta_description": "One existing MACRO compensation cutoff changes alptot<0.05 to alptot<vsmall to restore literal B1.11 authority; no types/interfaces changed.",
+  "bounded_B10_dependency_disposition": "All B10 backend/bootstrap/generation/frost/solver/source-owner paths are byte-identical to original qualification; B10 requires root extraction and root frost OFF. Original rootless B10/B8 fine trajectories remain relevant, while affected incumbent root and salt qualification must be rechecked on the composed postimage.",
+  "gates": [
+    "Fresh O0/O2 normal core for affected B1/B2/B3/B4/B6 incumbent relinks",
+    "Four fresh SALFRO01 current-source matrices including concurrently expanded cutoff fixtures",
+    "Actual EXACT01 literal-source330-case O0/O2 gate",
+    "Current VQ73/VQ74 immutable programs",
+    "Cheap actual B10 activation replay on same composed source with verified unchanged root-module interface",
+    "Complete canonical gate with an exact concurrent-root postimage pin",
+    "Docs and exact closeout proposed merge verification"
+  ],
+  "no_new_physics": true,
+  "aggregate_frost_migration_complete": false,
+  "negative_finding": "API expected_head_sha protects the PR head, not a concurrent base advance. Original proposed merge was exact, but actual first parent advanced to a qualified root repair before merge. Final claim must bind the actual composed postimage."
+}

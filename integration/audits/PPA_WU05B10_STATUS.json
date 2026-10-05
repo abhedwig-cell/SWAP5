@@ -3,12 +3,12 @@
   "baseline": "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
   "baseline_source": "0379fcc374513baaa487979ac7cc8288c9f44641",
   "preregistration": "integration/audits/PPA_WU05B10_PREREGISTRATION.json",
-  "status": "LOCAL_QUALIFIED_NOT_CANONICALLY_ADMITTED",
+  "status": "CANONICALLY_MERGED_POSTIMAGE_RECONCILIATION_PENDING",
   "implemented": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "aggregate_frost_migration_complete": false,
-  "next_action": "Publish exact source-bound candidate and verify bounded proposed merge before admission",
+  "next_action": "Complete preregistered affected root/salt and composed current preservation before closeout",
   "source_component": "216_ACTUAL_LINEAR_GUARDED_FROZENBOUNDS_O0_O2_PASS_IDENTICAL_STDOUT",
   "production_source_tree": "fd27cbbbf863fd3cd14a2a1619d9f0803d40091e",
   "selected_runtime_policy": {
@@ -37,7 +37,13 @@
     "canonical": "COMPLETE_LOCAL_GATE_PASS"
   },
   "pending": [
-    "exact proposed merge and canonical admission"
+    "Fresh O0/O2 normal core for affected B1/B2/B3/B4/B6 incumbent relinks",
+    "Four fresh SALFRO01 current-source matrices including concurrently expanded cutoff fixtures",
+    "Actual EXACT01 literal-source330-case O0/O2 gate",
+    "Current VQ73/VQ74 immutable programs",
+    "Cheap actual B10 activation replay on same composed source with verified unchanged root-module interface",
+    "Complete canonical gate with an exact concurrent-root postimage pin",
+    "Docs and exact closeout proposed merge verification"
   ],
   "partial_recovery": {
     "path": "docs/audits/evidence/PPA_WU05B10_PARTIAL_RECOVERY.json.gz",
@@ -88,5 +94,10 @@
     "bytes": 114404,
     "manifest_entries": 495
   },
-  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
+  "canonical_merge": "6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50",
+  "canonical_pr": 1050,
+  "original_qualified_source": "fd27cbbbf863fd3cd14a2a1619d9f0803d40091e",
+  "actual_merged_source": "60bc7fdc3430d8d8ae87f4a77219dbb6c44c6ec9",
+  "postmerge_reconciliation": "integration/audits/PPA_WU05B10_POSTMERGE_RECONCILIATION.json"
 }

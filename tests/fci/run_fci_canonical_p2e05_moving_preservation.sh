@@ -318,8 +318,14 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
       fail "PPA-WU05B10 exact linear-response low-air postimage drift: src/process/mod_frost_bottom_boundary_effect.f90"
     test "$(git rev-parse HEAD:src/process/mod_root_frost_stress.f90)" = "a99d870ac2911dd0b9cfe1aef3a0fd299dcfcf38" || \
       fail "PPA-WU05B10 exact linear-response low-air postimage drift: src/process/mod_root_frost_stress.f90"
+    if git merge-base --is-ancestor 4c0615bfdb3a3e12db2b988eff97db749cca0511 HEAD; then
+      test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "a19db82afe85b2c7b34fa8a2da0922581c662fbb" || \
+        fail "PPA-WU05B10 concurrent exact-root admitted postimage drift"
+      echo 'FCI_CANONICAL_PPA_WU05B10_EXACT01_ROOT_RECONCILIATION=ACTIVE'
+    else
     test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "4c6172384a1255bfe4b2fb809ae159fe624a91a0" || \
       fail "PPA-WU05B10 exact linear-response low-air postimage drift: src/process/mod_root_uptake_compensation.f90"
+    fi
     test "$(git rev-parse HEAD:src/runtime/mod_root_uptake_compensation_execution.f90)" = "6affaec2e7a55544e722ed1204ca9e5de555b478" || \
       fail "PPA-WU05B10 exact linear-response low-air postimage drift: src/runtime/mod_root_uptake_compensation_execution.f90"
     test "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" = "2c8adba7986e7d85749c4c36d26530748fbbab9e" || \
