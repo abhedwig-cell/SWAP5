@@ -6,7 +6,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "authority_paths": [
     "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json",
     "integration/audits/PPA_WU05B3_LOCAL_QUALIFICATION.json",
@@ -23,12 +23,12 @@
     "src/solver",
     "tests/fci"
   ],
-  "next_action": "Central exact-source admission of qualified joint no-drain frost; continue separately with B1 drainage accounting correction",
+  "next_action": "Qualify bounded B1 drainage reporting correction and migrate drainage against its single-owner reference; geometry and redistribution remain separately bounded",
   "blockers": [],
   "test_paths": [
     "tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh"
   ],
-  "status": "READY_FOR_REGIE",
+  "status": "CANONICALLY_ADMITTED",
   "focused_test_source": "d35cbc6a2181897adfd9812b47d4d90956a99610 (production identical to current); extended test checkpoint 4960a817f0e2ad52658d267fec401f2007f395e6",
   "focused_outputs": {
     "O0": "5a73f89a9843508ab89c8263fdb41de3a4535dc205516b321a3253582f11137c",
@@ -41,5 +41,9 @@
     "horizon_limits_temperature_c": 0.0001
   },
   "recovery_point": "47344d5f8f049abf34212b9567fbd92566ea7584",
-  "qualification": "integration/audits/PPA_WU05B4_LOCAL_QUALIFICATION.json"
+  "qualification": "integration/audits/PPA_WU05B4_LOCAL_QUALIFICATION.json",
+  "canonical_merge": "d3bb48eb2407cdc8a3a089f37cc689f6a940dddb",
+  "canonical_pr": 1036,
+  "canonical_admission": "integration/audits/PPA_WU05B4_CANONICAL_ADMISSION.json",
+  "aggregate_frost_migration_complete": false
 }
