@@ -1,6 +1,6 @@
 # PPA-WU05B8 bracketed low-air drainage composition
 
-Status: implemented candidate; runtime trajectory qualification in progress. It is not canonically admitted.
+Status: locally qualified candidate; canonical admission pending.
 
 The optional `frost_low_air_drainage` carrier supplies finite negative physical drain depths and requires the admitted `frost_drainage` option with its explicit positive head/temperature budgets. It does not infer physical drain depths from hydraulic outlet heads. Ordinary Reference mode2, rootless prescribed signed nodal drainage is the bounded execution surface.
 
@@ -14,8 +14,14 @@ The actual runtime fixture uses the nonuniform grid from the historical FSI stub
 
 The initial consistent-grid trajectory trial closed hard mass but failed the retained head horizon bound:1.106030e-5cm against1e-6cm, while temperature1.988516e-5C passed1e-4C. The original localhead1e-6cm budget was not a cumulative guarantee. The subsequent six-case8192-step O0 matrix passed at localhead3e-10cm and solver-head1e-12. Additional first-case reference refinement passed16384/32768 steps but failed the head horizon at65536 steps (1.106541e-6cm). A separate direct-oracle solver1e-14 experiment failed to commit a fine step before trajectory comparison, so it does not isolate the cause. This evidence is not promoted to qualification; tighter local control and a refined full matrix remain required. Horizon limits and hard mass1e-12cm remain unchanged. Negative results and recovery are recorded in `integration/audits/PPA_WU05B8_STATUS.json`.
 
+The final runtime matrix retains six signed owner/branch groups, both bottom signs, fixed head1e-6cm and temperature1e-4C horizon bounds and hard mass1e-12cm. Local head3e-11cm, temperature1e-7C and solver-head absolute/relative1e-12 are explicit numerical policy. Each case uses65536 direct reference steps. The maximum six-case discrepancies are1.9374750e-07cm and3.5355110e-07C, with exact O0/O2 semantic output identity. A further first-case131072-step check remains within the same limits (head3.131057e-7cm, temperature5.726199e-7C). These are bounded short-window trajectories, not a seasonal accuracy or performance claim.
+
+Actual temporal retries, fresh worker replay, independent final nodal sink/storage accounting, empty-registry committed restart and ordinary application pass. Quiet NaN and both infinities in physical drain depths reject without trapped comparisons; finite validation precedes range comparisons. Existing B1/B2/B3/B4/B6 runtime outputs match at O0/O2 on the unchanged historical grid. Four fresh admitted SALFRO01 Jarvis/Walsum and upwind/dispersion runners retain exact separate-process/O0/O2 physical bytes, and each179-file source manifest matches the current tree. Complete canonical preservation passes after reconciliation with selected root/salt admission2d4d5409.
+
 The temporal full/half norm compares head/temperature and additionally rejects disagreement in the normal/low-air branch, blocked drain-level mask or blocked-bottom decision. Derived geometry/flux scratch is recomputed for each full, half, retry and fresh worker. No new committed physical state or restart payload is introduced.
 
 Excluded: active drainage-response generation, SWDIVD=1 redistribution, root/salt/macropore/snow composition, joint frost_bottom, groundwater-owned bottom, new last-node/fully frozen front physics, ice inventory and latent heat. This unit does not establish full legacy/global equivalence or complete aggregate frost migration.
 
 Preregistration: `integration/audits/PPA_WU05B8_PREREGISTRATION.json`. Run `bash tests/frost/run_ppa_wu05b8_low_air_source.sh` and `bash tests/frost/run_ppa_wu05b8_low_air_runtime.sh`.
+
+Qualification/recovery: `integration/audits/PPA_WU05B8_STATUS.json`; immutable source-bound replay: `docs/audits/evidence/PPA_WU05B8_LOCAL_REPLAY.json.gz`. The earlier recovery replay records partial state and negative findings and is not the final qualification authority.
