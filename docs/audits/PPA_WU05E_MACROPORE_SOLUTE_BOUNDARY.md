@@ -140,48 +140,21 @@ changed by this slice.
 
 ## Matrix-source salt authority: qssdi and qdra
 
-The current FMR matrix-water source/sink trace includes subsurface drip
-irrigation (`qssdi`) and level-resolved lateral drainage (`qdra`). The local
-B1.10/B1.11-compatible water-source implementation establishes their water
-semantics, but does not establish a salt concentration for either route:
+The exact B1.11 `solute.f90` bytes have now been recovered and verified; see the recovery record above. The earlier public SWAP source-family files remain non-identical and are no longer needed as the equation authority.
 
-| Term | Water meaning and sign | Salt authority in current route |
+| Term | Exact B1.11 solute rule | SWAP5 contract consequence |
 |---|---|---|
-| `qssdi(node)` | Subsurface drip irrigation into a matrix node; the source is added to Richards. Integrals are accumulated as `qssdi * dt`. | No concentration accompanies the FMR forcing/trace. The salt mass input cannot be inferred from water volume. |
-| `qdra(level,node) > 0` | Soil-to-drain extraction at a specific level and node; accumulated as drainage outflow. | The corroborative SWAP source-family solute routine uses local `CML` for positive `qdra`; current FMR trace has no paired dissolved-mass receipt. |
-| `qdra(level,node) < 0` | Drain-to-soil infiltration at a specific level and node; accumulated separately as drainage inflow. | The corroborative source-family routine uses separate `Cdrain`, not receiving-node `CML`. Current FMR forcing has no such salt state. |
+| `qdra(level,node) > 0` | Removes solute from the node at local dissolved `CML`; source loops each level separately. | Preserve every signed level rate and debit its own local donor concentration. |
+| `qdra(level,node) < 0` | Adds solute from `Cdrain`, not from receiving-node `CML`. | Require explicit external `Cdrain` forcing/state and restart identity. Never infer it from matrix concentration. |
+| `qssdi(node)` | No salt term occurs in the solute source's mass update. Surface irrigation and precipitation have explicit `nird*cirr` and `nraidt*cpre` terms. | Reconstructed source-consistent route must keep qssdi zero-solute or reject it. No nonzero qssdi salt may be inferred. |
+| Bottom seepage | Default `swbotbc=0` sets `cseep=cdrain`; selectors 1/2 take separate fixed or time-varying `cseep`. | Treat bottom solute forcing as its own declared boundary. Do not conflate it with the drainage receipt. |
+| Dynamic aquifer | With `swbr=1`, `cdraini` initializes an evolving aquifer concentration; otherwise `cdrain` is prescribed. | First restricted implementation should make externally forced Cdrain explicit; dynamic aquifer storage is a separate scope. |
 
-The signs and node/level semantics are source-backed by
-`src/legacy/b1_10_port/headcalc.f90` (adds `qdra` to sink and binds `qssdi` as
-source), `src/legacy/b1_10_fci11_port/integral_part05.inc` (nodewise
-`qssdi * dt`), `src/legacy/b1_10_fci11_port/integral_part06.inc` (positive and
-negative drainage accounting), and the FMR trace construction in
-`src/runtime/mod_fmr_serialized_reference_backend.f90`. These are water-source
-semantics, not proof of B1.11 solute implementation details.
+The source and byte identities are recorded at `archive/swap431-wofost81-qualified-donor` commit `f8301c6e5c8b0eb6df86a2ae0e21b5bf0e476736`. Archive SHA-256 is `965a4908d028ff6a509ddc3d4efcf2e6bce736a7f59a6fc052c8fa2fdd66459b`; extracted `solute.f90` SHA-256 `2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2`, 51,508 bytes. This exactly matches the pinned B1.11 manifest member. The numbered chunks and manifest provide a reproducible source route.
 
-The retrieved `SWAP-model/SWAP@c22bd832ddf3e53e330a552f5e31e74f183362d1`
-`src/solute/solute.f90` is not byte-identical to the B1.11 manifest member
-(18,271 versus 51,508 bytes). In that corroborative routine, levelwise positive
-`qdra` exports salt at local `CML`, negative `qdra` imports at `Cdrain`, and no
-`qssdi` term appears in the displayed mass update (surface `nird*cirr` is
-present). Therefore do not silently equate `qssdi` with surface irrigation,
-assume its salt is zero, or copy this source-family omission as B1.11 truth.
-The exact B1.11 `solute.f90` is still needed to decide whether subsurface-drip
-salt is omitted, separately parameterized, or accounted elsewhere. `Cdrain`
-also requires an identified water/solute owner and restart lifecycle before
-negative drainage can be enabled in SWAP5.
+The exact source also applies root uptake as `tscf*qrot*CML`; its full transport includes dispersion, sorption, decomposition and internal solute substeps. Those parts remain outside the current advective prototype and require separate implementation and evidence.
 
-Consequently, a future typed receipt must preserve each signed `qdra` level
-flux rather than only its Richards sum, book positive `qdra` removal against
-the matrix-node donor concentration, and source negative `qdra` only from an
-explicit `Cdrain`-equivalent state if the applicable B1.11 semantics confirm
-it. `qssdi` salt handling is unresolved until the exact B1.11 source semantics
-and input contract are recovered. All routes must reject absent, non-finite,
-or physically invalid donor data; do not silently substitute receiving-node
-`CML` or assume zero salt. No typed receipt or FMR salt candidate is
-implemented by this audit. Exact B1.11 solute source bytes are not materialized
-here, so this is a SWAP5 blocker contract, not a claim of historical solute
-equivalence.
+Consequently, the next typed drainage receipt must retain each signed `qdra` level, book positive-flow removal against node `CML`, and book negative-flow addition against explicit `Cdrain`. Keep qssdi explicitly zero-solute or fail-closed. This source audit does not implement any typed receipt or FMR salt candidate.
 
 ## Next action
 
