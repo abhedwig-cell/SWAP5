@@ -208,7 +208,15 @@
         "scope": "Rootless ordinary Reference mode2, current GWL LINEAR bottom-lumped generation then B6 normal frost modifier; final nodal rate drives single sink and step/window receipts",
         "admitted": true
       },
-      "low_air_response_successor_preregistration": "integration/audits/PPA_WU05B10_PREREGISTRATION.json"
+      "low_air_response_successor_preregistration": "integration/audits/PPA_WU05B10_PREREGISTRATION.json",
+      "low_air_linear_response_frost_successor": {
+        "work_unit": "PPA-WU05B10",
+        "canonical_merge": "6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50",
+        "admission": "integration/audits/PPA_WU05B10_CANONICAL_ADMISSION.json",
+        "postmerge_reconciliation": "integration/audits/PPA_WU05B10_POSTMERGE_RECONCILIATION.json",
+        "admitted": true
+      },
+      "remaining_response_family_review": "integration/audits/PPA_WU05B11_SOURCE_REVIEW.json"
     },
     "advanced_root_stress": {
       "legacy_files": [
