@@ -3,11 +3,11 @@
   "workstream": "PPA compensated root uptake",
   "baseline": "0aca73324ea46511d18af56bca3fddd0dba52ffd",
   "last_reconciled_upstream": "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
-  "status": "27_ORIGINAL_GROUPS_QUALIFIED_B9_RECONCILED_29_GROUP_REPLAY_PENDING",
+  "status": "QUALIFIED_EXACT_MACRO_CUTOFF_REPAIR_READY_FOR_ADMISSION",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_admitted": false,
   "contract": "docs/audits/PPA_WU05D_EXACT01_CONTRACT.md",
   "authority_paths": [
@@ -32,23 +32,23 @@
     "rejected state isolation",
     "committed restart"
   ],
-  "next_action": "Replay all 27 groups plus B9 source/runtime on reconciled production/test trees",
-  "recovery_point": "460d3b951a9a8f5e5801fec8f90ba57bee253856",
+  "next_action": "Complete docs gates, verify canonical delta and admit exact qualified repair",
+  "recovery_point": "5b4791b4d5f9a9ab3d8b3ae8d94e1d9a7fad0121",
   "blockers": [],
   "preimage_checkpoint": "ded9af5d",
   "preimage_outcome": "Unchanged dispatcher passes 12 cases; literal source cutoff oracle rejects the SWAP5 guard at ratio 1e-14. Source repair then passes all 330 cases at O0/O2.",
   "focused_tested": true,
   "focused_execution": "395c6d93",
-  "execution_checkout": "460d3b951a9a8f5e5801fec8f90ba57bee253856",
+  "execution_checkout": "5b4791b4d5f9a9ab3d8b3ae8d94e1d9a7fad0121",
   "source_subtrees": {
-    "src": "33c064136ef205b93e35d45535bf7d8878a9b37a",
-    "tests": "34e6f2bae2060a804051c3bc4ea04b0145db21d9"
+    "src": "ba6857d0fd0b070039f183b5121838d067c1b7d3",
+    "tests": "d5cd05a2e1baee9e531ceb462efab2ab2d990f30"
   },
-  "qualification": "integration/audits/PPA_WU05D_EXACT01_QUALIFICATION.json",
+  "qualification": "integration/audits/PPA_WU05D_EXACT01_RECONCILED_QUALIFICATION.json",
   "evidence": {
-    "path": "docs/audits/evidence/PPA_WU05D_EXACT01_LOCAL_REPLAY.json.gz",
-    "sha256": "2795da0f9f3072077fd17416a875a9e2ef0519a70b50d0446bb7c38012529ea9",
-    "bytes": 91230
+    "path": "docs/audits/evidence/PPA_WU05D_EXACT01_RECONCILED_REPLAY.json.gz",
+    "sha256": "b2a0debace19e71d90d5cd0707efbb6a09eeaececad3f3ad07275dd5c9f7722f",
+    "bytes": 91902
   },
   "original_qualification": "integration/audits/PPA_WU05D_EXACT01_QUALIFICATION.json"
 }
