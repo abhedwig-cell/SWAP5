@@ -51,11 +51,11 @@
     "D1": "SEMANTICS_RECONSTRUCTED_WITH_EXACT_IDENTITY_AND_INDEPENDENT_SOURCE_BOUND_CORROBORATION",
     "D2": "CANONICAL_ADMITTED_CLOSED",
     "D3": "CANONICAL_ADMITTED_CLOSED",
-    "D4": "DROUGHT_PLUS_ADMITTED_OXYGEN_QUALIFIED_WITH_D2_OTHER_STRESSORS_HELD",
+    "D4": "DROUGHT_OXYGEN_AND_SELECTED_MATRIX_SALINITY_CANONICAL_ADMITTED; FROST_ROOT_STRESS_HELD",
     "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
   },
   "production_admission": "D2_JARVIS_AND_D3_WALSUM_BOUNDED",
-  "next_action": "D2/D3 complete. D4 salinity/frost await independently admitted underlying stress physics; D5 await independent MICRO authority and ownership qualification.",
+  "next_action": "D2/D3 are closed. PPA-WU05-E separately admits selected matrix salinity with Jarvis. Salinity/Walsum, frost root stress, broader solute routes and D5/MICRO need separate authority and qualification.",
   "d2": {
     "production_compositor": "src/process/mod_root_uptake_compensation.f90",
     "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
@@ -64,10 +64,11 @@
     "supported_stressors": [
       "all currently supplied admitted reductions",
       "drought",
-      "oxygen"
+      "oxygen",
+      "salinity only in the independently admitted PPA-WU05-E selected matrix profile"
     ],
     "fail_closed": [
-      "salinity",
+      "salinity outside the PPA-WU05-E selected matrix envelope",
       "frost"
     ],
     "ownership": "single final root_water_uptake_flux_result_t; no second water receipt",
@@ -123,5 +124,12 @@
     "state": "DISPOSABLE_CURRENT_FORCING_NO_RESTART_PAYLOAD",
     "canonical_merge": "a34c87db96d8f1fb33e97b13556a4d9b76758553"
   },
-  "canonical_closeout": "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+  "canonical_closeout": "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md",
+  "salinity_successor": {
+    "work_unit": "PPA-WU05-E",
+    "canonical_pr": 1015,
+    "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3",
+    "admission": "integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json",
+    "scope": "Selected matrix Maas-Hoffman/Jarvis only; D3 Walsum salinity remains closed"
+  }
 }

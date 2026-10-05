@@ -1746,7 +1746,7 @@
     {
       "id": "PPA-RWU-COMP-JARVIS",
       "subsystem": "drought/stress routes",
-      "capability": "JARVIS compensation over existing Feddes sinks and optional independently admitted Bartholomeus oxygen",
+      "capability": "Jarvis compensation over existing Feddes sinks, optional admitted Bartholomeus oxygen, and independently admitted selected matrix Maas-Hoffman salinity",
       "classification": "C_SW5_RESTRICTED_PRODUCTION",
       "legacy_present": true,
       "legacy_authority": {
@@ -1759,18 +1759,20 @@
         "src/process/mod_root_uptake_compensation.f90",
         "src/runtime/mod_root_uptake_compensation_execution.f90",
         "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+        "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md",
+        "docs/audits/PPA_WU05E_CANONICAL_CLOSEOUT.md"
       ],
       "typed_input_config_authority": "Bounded root_compensation_config_t and optional root_walsum_geometry_t via existing fmr production application forcing; see separate Jarvis/Walsum entries. Other advanced routes lack admission.",
       "state_ownership": "Single existing root_water_uptake_flux_result_t/root-sink provider and accepted water owner. Compensation and Walsum geometry are disposable current-call inputs/results; no extra ledger, receipt or restart payload.",
       "transaction_status": "D2/D3 fresh uncompensated trial sink, retry/replay, discard, accepted publication and restart qualified at O0/O2. Other advanced subfamilies remain dependency-blocked.",
       "qualification_evidence": [
-        "integration/audits/PPA_WU05D_D2_QUALIFICATION.json"
+        "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
+        "integration/audits/PPA_WU05E_FROST_RECONCILED_QUALIFICATION.json"
       ],
-      "production_admission": "CANONICAL_ADMITTED_CLOSED PR1012 merge 4fd57c8c8ed321baf6a74214a9720adc899e324d",
+      "production_admission": "CANONICAL_ADMITTED_CLOSED PR1012 merge 4fd57c8c8ed321baf6a74214a9720adc899e324d; selected matrix salinity successor PR1015 merge cb841851db6a4f459835b4943cf442595898ecd3",
       "production_reachable": "RESTRICTED_TYPED_APPLICATION_PROFILES_2_7",
       "restrictions": [
-        "No salinity/frost/MICRO/macropore uptake",
+        "No frost/MICRO/macropore root uptake; salinity restricted to the admitted PPA-WU05-E matrix profile",
         "No general RFM/SCV/coupling or derivative claim",
         "Current crop owner supplies consistent uncompensated sink and geometry"
       ],
@@ -1778,7 +1780,8 @@
       "use_relevance": "HIGH for some applications",
       "dependencies": [
         "Existing Feddes root-sink owner",
-        "Independent Bartholomeus admission when oxygen enabled"
+        "Independent Bartholomeus admission when oxygen enabled",
+        "Independent PPA-WU05-E matrix dissolved-salt state/transport owner when salinity enabled"
       ],
       "priority_band": "P2"
     },
@@ -2034,20 +2037,25 @@
       "title": "Salinity state, solute mass owner, and root-stress migration",
       "goal": "Migrate the bounded salt-state/transport prerequisite and independently qualify salinity-root-stress response before composing eligible salinity stress in admitted Jarvis, while preserving one root-water sink and separate water/salt ledgers.",
       "exit": "Source-bound state, unit, node, initialization, transport, mass, transaction and restart contracts are closed for a bounded salinity envelope; its independent response passes analytic/physical oracles; then bounded Jarvis integration and preservation gates pass. Osmotic-head/Jong-van-Lier remains separate unless its authority is independently closed.",
-      "status": "E1_RESTRICTED_ENVELOPE_DEFINED_AWAITING_IMPLEMENTATION",
+      "status": "CANONICAL_ADMITTED_SELECTED_MATRIX_CLOSED",
       "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
       "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
       "preregistration": "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
       "status_record": "integration/audits/PPA_WU05E_STATUS.json",
       "production_delta": [],
       "reference_delta": [],
-      "current_finding": "SWAP5 canonical tree has no typed solute state/transport owner or salinity response; PPA-WU05-D2 correctly fails closed for salinity.",
-      "next_action": "Implement the bounded mobile dissolved-salt state/transport owner and its separate mass ledger in the local SWAP5 checkout, then run focused O0/O2 tests. Current Work environment has no checkout; do not add uncompiled production code remotely.",
+      "current_finding": "Selected matrix dissolved-salt transport, Maas-Hoffman and the Jarvis application/transaction/restart chain are admitted with current-source preservation.",
+      "next_action": "Broader legacy solute physics and unqualified process/stress hybrids require separate work units.",
       "limitations": [
-        "B1.11 rootextraction member identity is pinned and its complete tree replay is persisted, but exact source member text is unavailable in this execution surface.",
-        "Public SWAP source-family code is corroboration, not byte-exact B1.11 equation/restart authority.",
-        "No local SWAP5 checkout is mounted in this Work execution environment; local compilation/tests cannot run here."
-      ]
+        "Full B1.11 numerical or bitwise equivalence: legacy centered advection and artificial dispersion correction are not ported",
+        "Sorption, decomposition, surface concentration pools, aquifer breakthrough and coupled groundwater salt state",
+        "Osmotic-head mode, frost and new macropore dispersion physics",
+        "Seasonal real Richards/FMR or field validation: the 365-day schedule is a manufactured process oracle",
+        "Combined frost/salt/root and Rutter/salt profiles remain excluded; frost and Rutter are preservation gates only.",
+        "Salinity with Walsum is not admitted: the live salinity binding requires Jarvis."
+      ],
+      "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3",
+      "canonical_pr": 1015
     }
   ],
   "post_audit_updates": [
@@ -2381,6 +2389,20 @@
     },
     "qualification": "integration/audits/PPA_WU05E_LOCAL_PREQUALIFICATION.json (local prequalification only; not qualification)",
     "canonical_admission": null,
-    "initial_e1_envelope": "One conservative dissolved salt constituent in mobile water; SWSP=0; decomposition, macropore, ageing, aquifer mixing, MICRO and lateral drainage off; explicit top/bottom solute boundary traces; root salt uptake through TSCF*qrot*CML with restricted 0<=TSCF<=1; node salt mass authoritative, CML derived from matching committed/trial water content; paired water/salt trial commit/discard."
+    "initial_e1_envelope": "One conservative dissolved salt constituent in mobile water; SWSP=0; decomposition, macropore, ageing, aquifer mixing, MICRO and lateral drainage off; explicit top/bottom solute boundary traces; root salt uptake through TSCF*qrot*CML with restricted 0<=TSCF<=1; node salt mass authoritative, CML derived from matching committed/trial water content; paired water/salt trial commit/discard.",
+    "historical_snapshot": true,
+    "superseded_by": "ppa_wu05e_20261005_canonical"
+  },
+  "ppa_wu05e_20261005_canonical": {
+    "work_unit": "PPA-WU05-E",
+    "status": "CANONICAL_ADMITTED_SELECTED_MATRIX_CLOSED",
+    "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3",
+    "canonical_pr": 1015,
+    "admission": "integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json",
+    "qualification": "integration/audits/PPA_WU05E_FROST_RECONCILED_QUALIFICATION.json",
+    "full_legacy_transport_admitted": false,
+    "salinity_walsum_admitted": false,
+    "frost_root_stress_admitted": false,
+    "closeout": "docs/audits/PPA_WU05E_CANONICAL_CLOSEOUT.md"
   }
 }

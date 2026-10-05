@@ -348,3 +348,12 @@ remain excluded. This closes the bounded hydraulic slice, not aggregate frost mi
 
 See [canonical closeout](../audits/PPA_WU05B_CANONICAL_CLOSEOUT.md) and
 `integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json` for scope and evidence.
+
+
+## Matrix salinity in Jarvis: PPA WU05 E (2026-10-05)
+
+PR #1015, canonical merge `cb841851db6a4f459835b4943cf442595898ecd3`, independently admits the selected matrix dissolved-salt transport owner, Maas-Hoffman response and its Feddes/Bartholomeus/Jarvis composition. This extends the earlier bounded D2 admission with selected matrix salinity; the historical D2/D3 closeout above describes its original denominator. The sole root-water sink is retained, while salt mass commits/discards and restarts with matching accepted water state.
+
+All 19 named current-source local qualification/preservation gates pass after reconciling admitted frost. Seven actual mixed stress cases, three top boundary cases, O0/O2, retry and separate-process restart are covered. The admitted merge source/test subtrees exactly match execution, with 1,024 verified manifest entries. Frost, Rutter, Walsum and MIGMAC07/08/09 remain preserved.
+
+Admission excludes salt/frost, salt/Rutter, salinity/Walsum, osmotic-head mode, sorption/decomposition, aquifer/groundwater salt state and full legacy or seasonal field equivalence. See [canonical closeout](../audits/PPA_WU05E_CANONICAL_CLOSEOUT.md) and `integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json`. Frozen Status A remains unchanged.

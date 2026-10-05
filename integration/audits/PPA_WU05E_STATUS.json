@@ -7,13 +7,13 @@
   "checkpoint_commit": "22dfdc13216fd328571cabedc7525de537ff5dd7",
   "last_reconciled_head": "22dfdc13216fd328571cabedc7525de537ff5dd7",
   "last_reconciled_upstream": "53a3f3e41231b8600bbb19b8eb2157558bd12e19",
-  "status": "FROST_RECONCILED_SELECTED_MATRIX_QUALIFIED_READY_FOR_ADMISSION",
+  "status": "CANONICAL_PRODUCTION_ADMITTED_CLOSED_WITHIN_SELECTED_MATRIX_SCOPE",
   "result_classification": "SELECTED_MATRIX_E1_E2_E3_E4_QUALIFIED_FULL_LEGACY_OUTSIDE_SCOPE",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "production_admitted": false,
+  "production_admitted": true,
   "production_delta": [
     "src/process/mod_solute_mobile_salt_state.f90",
     "src/process/mod_root_salinity_response.f90",
@@ -66,7 +66,7 @@
       "git_blob_sha1": "2fc77cc8d127d76e07a03369c1dac766157084b9"
     }
   },
-  "current_finding": "All 19 local controlling gates pass after admitted frost reconciliation: independent salt/Jarvis/frost, both matrix transport variants, seven stress combinations, fresh-process restart, D2/D3, Rutter, MIGMAC07/08/09 and real Richards/macropore preservation. Full source/test subtrees and every manifest entry match the published candidate. Unsupported frost/salt and Rutter/salt profiles remain closed.",
+  "current_finding": "PR1015 canonically admits the selected matrix dissolved-salt/Maas-Hoffman/Jarvis successor. All 19 current-source controlling gates and both docs gates pass. The admitted merge tree equals the qualified metadata head; full source/test subtrees and all 1024 manifest entries match. Frost, Rutter, Walsum and macropore preservation remains qualified; their untested salt hybrids remain excluded.",
   "historical_reconstruction": "Source-family evidence distinguishes Maas-Hoffman switch 1 as a nodewise alpha(CML) from osmotic-head switch 2, which modifies matric-flux potential and requires Jong-van-Lier drought; switch 2 is not a separate multiplicative alpha_sol. Source-family census additionally establishes SWINCO-dependent initial versus warm-restart concentration profiles, CMSY inventory derived from water content/CML and optional Freundlich sorption, explicit boundary and drainage fluxes, internal solute substeps, and root salt uptake TSCF*qrot*CML. Exact B1.11 solute-member and restart details remain unverified in this execution. Exact B1.11 source has now been recovered by reconstructing the byte-verified historical SWAP 4.3.1 donor source ZIP; solute.f90 matches the pinned 51,508-byte member hash. Its drainage rule is level-resolved: qdra>0 removes at local CML and qdra<=0 imports at Cdrain. qssdi is absent from this solute balance; no concentration is defined there, so the reconstructed SWAP5 contract must keep it zero-solute or fail-closed. Cdrain is externally prescribed unless aquifer breakthrough swbr=1 owns a dynamic reservoir; bottom cseep can be separately prescribed/time varying. Root salt removal uses tscf*qrot*CML. Dispersion, sorption, decomposition, internal solute substeps, and aquifer breakthrough are present in source but remain outside the currently tested prototype envelope. Successor 571a76c473949dccd5e690261fea0d8a0a1ea15c now qualifies molecular/mechanical dispersion and internal solute stepping in the selected matrix envelope; the earlier exclusion statement records historical prototype scope.",
   "relevant_paths": [
     "integration/audits/PPA_WU05D_STATUS.json",
@@ -145,7 +145,8 @@
     "integration/audits/PPA_WU05E_RECONCILED_QUALIFICATION.json",
     "integration/audits/PPA_WU05E_MATRIX_RECONCILED_QUALIFICATION.json",
     "integration/audits/PPA_WU05E_FROST_RECONCILED_QUALIFICATION.json",
-    "docs/audits/evidence/PPA_WU05E_FROST_RECONCILED_REPLAY.json.gz"
+    "docs/audits/evidence/PPA_WU05E_FROST_RECONCILED_REPLAY.json.gz",
+    "integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json"
   ],
   "dependency_surface": [
     "B1.11 solute transport/state source and restart lifecycle",
@@ -174,7 +175,7 @@
     "independent salt-mass owner",
     "water and solute conservation"
   ],
-  "next_action": "Central ADMIT of the exact source-equivalent qualified candidate, then persist canonical closeout.",
+  "next_action": "Selected matrix E1/E2/E3/E4 is closed. Broader salinity, legacy transport, groundwater salt and stress/process hybrids require separate bounded work units.",
   "blockers": [],
   "recovery_point": "e77ef4b1ddf9372dd71aa348cc88e788c84341e8 and PPA_WU05E_MATRIX_TRANSPORT_LOCAL_GATE.json",
   "source_family_census": {
@@ -194,8 +195,9 @@
     "tested_commit": "a12c4df7eda6714b23c03257f339aba30da4635e",
     "run_id": 37323106349,
     "current_source_preserved": true,
-    "canonical_admitted": false,
-    "execution_checkout": "b7dd862e89c7bf2e6bac0f5fbb43de59e92b4ae9"
+    "canonical_admitted": true,
+    "execution_checkout": "b7dd862e89c7bf2e6bac0f5fbb43de59e92b4ae9",
+    "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3"
   },
   "closed_diffusion_process": {
     "implemented": true,
@@ -225,10 +227,17 @@
       "rutter_production": "PASS",
       "migmac07_08_09": "PASS_O0_O2"
     },
-    "production_admitted": false,
+    "production_admitted": true,
     "exact_persisted_replay": "PASS_LOCAL_SOURCE_BOUND",
     "qualified_commit": "a12c4df7eda6714b23c03257f339aba30da4635e",
-    "frost_preservation": "PASS_O0_O2"
+    "frost_preservation": "PASS_O0_O2",
+    "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3",
+    "admitted_merge_tree_equals_qualified_pr_head": true
   },
-  "reconciled_local_evidence": "integration/audits/PPA_WU05E_RECONCILED_LOCAL_GATE.json"
+  "reconciled_local_evidence": "integration/audits/PPA_WU05E_RECONCILED_LOCAL_GATE.json",
+  "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3",
+  "canonical_pr": 1015,
+  "canonical_closeout": "docs/audits/PPA_WU05E_CANONICAL_CLOSEOUT.md",
+  "canonical_admission": "integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json",
+  "blocking_gate": null
 }
