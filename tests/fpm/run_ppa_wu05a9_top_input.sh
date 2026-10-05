@@ -216,6 +216,20 @@ for opt in 0 2; do
         WU05_MIGMAC08_COVER=1 WU05_MIGMAC07_PARTIAL=1 WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW=5 WU05_MIGMAC04_FIT="$fit" WU05_MIGMAC02_DYNAMIC=5 "$OUT/test_a9_fmr" | tee "$OUT/cover_fit_${fit}.txt"
       done
     fi
+    if [[ "${WU05_MIGMAC09:-0}" == 1 ]]; then
+      for law in 5 6 7; do
+        for mode in 1 4 5; do
+          WU05_MIGMAC08_COVER=2 WU05_MIGMAC07_PARTIAL=1 WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC="$mode" "$OUT/test_a9_fmr" | tee "$OUT/nonrigid_cover_${law}_${mode}.txt"
+          WU05_MIGMAC08_COVER=2 WU05_MIGMAC07_PARTIAL=1 WU05_MIGMAC06_KD=2 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC="$mode" "$OUT/test_a9_fmr" > "$OUT/nonrigid_cover_${law}_${mode}_supplied.txt"
+          cmp "$OUT/nonrigid_cover_${law}_${mode}.txt" "$OUT/nonrigid_cover_${law}_${mode}_supplied.txt"
+        done
+        WU05_MIGMAC08_COVER=2 WU05_MIGMAC07_PARTIAL=1 WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_replay" | tee "$OUT/nonrigid_cover_${law}_replay.txt"
+        grep -Fq 'PPA_WU05_MIGMAC08_COVERED_REFERENCE_RESTART=PASS' "$OUT/nonrigid_cover_${law}_replay.txt"
+      done
+      for fit in 1 2 3; do
+        WU05_MIGMAC08_COVER=2 WU05_MIGMAC07_PARTIAL=1 WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW=5 WU05_MIGMAC04_FIT="$fit" WU05_MIGMAC02_DYNAMIC=5 "$OUT/test_a9_fmr" | tee "$OUT/nonrigid_cover_fit_${fit}.txt"
+      done
+    fi
     if [[ "${WU05_MIGMAC07:-0}" == 1 ]]; then
       for law in 5 6 7; do
         WU05_MIGMAC07_PARTIAL=1 WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=5 "$OUT/test_a9_fmr" | tee "$OUT/partial_${law}_trial.txt"
@@ -334,4 +348,16 @@ if [[ "${WU05_MIGMAC08:-0}" == 1 ]]; then
   cmp "$BUILD/o0/cover_fit_${fit}.txt" "$BUILD/o2/cover_fit_${fit}.txt"
  done
  echo 'PPA_WU05_MIGMAC08_COVERED_REFERENCE_O0_O2=PASS'
+fi
+
+if [[ "${WU05_MIGMAC09:-0}" == 1 ]]; then
+ for law in 5 6 7; do
+  for mode in 1 4 5 replay; do
+   cmp "$BUILD/o0/nonrigid_cover_${law}_${mode}.txt" "$BUILD/o2/nonrigid_cover_${law}_${mode}.txt"
+  done
+ done
+ for fit in 1 2 3; do
+  cmp "$BUILD/o0/nonrigid_cover_fit_${fit}.txt" "$BUILD/o2/nonrigid_cover_fit_${fit}.txt"
+ done
+ echo 'PPA_WU05_MIGMAC09_NONRIGID_COVER_O0_O2=PASS'
 fi

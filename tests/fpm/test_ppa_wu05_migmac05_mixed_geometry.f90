@@ -40,6 +40,18 @@ program test_mixed
   call check(ok .and. all(transfer(dry,[0_int64],4)==transfer(replay,[0_int64],4)),'mixed A/B/A geometry identity')
   call evaluate_dynamic_crack_profile(c,dry_theta,wet_theta,dz,area,accepted,replay,ok,active_node=2)
   call check(ok .and. all(abs(replay(3:))<1.0e-14_real64),'cutoff crosses peat law interface')
+  accepted=0.0_real64;saved=accepted
+  call evaluate_dynamic_crack_profile(c,dry_theta,wet_theta,dz,area,accepted,replay,ok,subs,top_node=3)
+  call check(ok .and. all(replay(:2)==0.0_real64) .and. all(subs(:2)==0.0_real64), &
+       'source top excludes nonrigid covering geometry and subsidence')
+  call check(maxval(abs(replay(3:)-expected(3:)))<1.0e-13_real64,'active geometry unchanged by cover')
+  call evaluate_dynamic_crack_profile(c,dry_theta,wet_theta,dz,area,accepted,replay,ok,top_node=0)
+  call check(.not.ok,'invalid top fails closed')
+  accepted(2)=0.1_real64;saved=accepted
+  call evaluate_dynamic_crack_profile(c,dry_theta,wet_theta,dz,area,accepted,replay,ok,top_node=3)
+  call check(.not.ok,'nonzero accepted covered crack fails closed')
+  call check(all(transfer(accepted,[0_int64],4)==transfer(saved,[0_int64],4)),'covered origin remains immutable')
+  print '(a)','PPA_WU05_MIGMAC09_SOURCE_TOP_MASK=PASS'
   c%law(3)=99
   call evaluate_dynamic_crack_profile(c,dry_theta,wet_theta,dz,area,accepted,replay,ok)
   call check(.not.ok,'invalid law fails composite trial closed')

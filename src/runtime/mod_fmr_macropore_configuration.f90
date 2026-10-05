@@ -6,7 +6,7 @@ module mod_fmr_macropore_configuration
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t
   use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t, map_surface_crack_depth_to_node, &
-       derive_dynamic_minimum_subsidence, prepare_rapid_drain_reference_kd, SHRINK_RIGID
+       derive_dynamic_minimum_subsidence, prepare_rapid_drain_reference_kd
   implicit none
   private
 
@@ -37,8 +37,7 @@ contains
     if(.not.config%valid_for_nodes(size(z)))return
     if(config%geometry%top_node>1)then
       ! Covered cells have no reference crack/static contribution in this route.
-      if(.not.allocated(config%shrinkage%law))return
-      if(any(config%shrinkage%law(1:config%geometry%top_node-1)/=SHRINK_RIGID))return
+      if(any(config%geometry%domain_fraction(:,1:config%geometry%top_node-1)/=0.0_real64))return
       if(any(config%geometry%static_volume_cp(1:config%geometry%top_node-1)/=0.0_real64))return
     end if
     call prepare_rapid_drain_reference_kd(config%shrinkage,z,config%geometry%dz,theta_hydrostatic, &

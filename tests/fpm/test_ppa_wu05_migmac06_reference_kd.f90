@@ -34,6 +34,10 @@ program test_mixed
   c%law(1:2)=SHRINK_RIGID;static(1:2)=0.0_real64;fraction(1:2)=0.0_real64
   call evaluate_reference(-40.0_real64,-10.0_real64,2,dry_theta,kd)
   call check(abs(kd-0.206815483619374335222650_real64)<1.0e-13_real64,'covered source reference excludes upper cells')
+  c%law(2)=SHRINK_KIM
+  call evaluate_reference(-40.0_real64,-10.0_real64,2,dry_theta,kd)
+  call check(abs(kd-0.206815483619374335222650_real64)<1.0e-13_real64,'nonrigid covering law excluded by source domain mask')
+  print '(a)','PPA_WU05_MIGMAC09_NONRIGID_REFERENCE_MASK=PASS'
   c%law(2)=SHRINK_KIM;static(1:2)=1.0_real64;fraction(1:2)=[1.0_real64,0.5_real64]
   call evaluate_reference(-40.0_real64,-40.0_real64,2,wet_theta,kd_b)
   call check(kd_b<kd_a,'wet hydrostatic reference smaller KD')

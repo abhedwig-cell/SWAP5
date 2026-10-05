@@ -19,11 +19,12 @@ for sh,fr in zip(shrink,[D(1),D('.5'),D('.3'),D('.7')]):
     width=4*(1-(1-ratio).sqrt());kd_all+=width**3/4*10
 print('PPA_WU05_MIGMAC06_DECIMAL_KD='+str(kd))
 print('PPA_WU05_MIGMAC06_DECIMAL_ALL_LAW_KD='+str(kd_all))
-args=argparse.ArgumentParser();args.add_argument('--source',required=True);args.add_argument('--covered',action='store_true');ns=args.parse_args()
+args=argparse.ArgumentParser();args.add_argument('--source',required=True);args.add_argument('--covered',action='store_true');args.add_argument('--nonrigid-covered',action='store_true');ns=args.parse_args()
 p=Path(ns.source)
 assert hashlib.sha256(p.read_bytes()).hexdigest()=='f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f'
-if ns.covered:
-    shrink[1]=D(0);kd_all=kd
+if ns.covered or ns.nonrigid_covered:
+    if ns.covered:shrink[1]=D(0)
+    kd_all=kd
     print('PPA_WU05_MIGMAC08_DECIMAL_COVERED_KD='+str(kd_all))
 s=p.read_text();block=s[s.index('!- D. CALCULATION OF REFERENCE KD'):s.index('!- E.1 CALCULATION OF SORPTIVITY')]
 code='''program source_reference
@@ -58,8 +59,8 @@ SHRINK=values(node)
 end function
 end program
 '''
-if ns.covered:
-    code=code.replace("PpDmCp(1,:)=[1d0,.5d0,.3d0,.7d0]","PpDmCp(1,:)=[0d0,0d0,.3d0,.7d0]\nVlMpStCp(1:2)=0d0;SwSoilShr(1:2)=0")
+if ns.covered or ns.nonrigid_covered:
+    code=code.replace("PpDmCp(1,:)=[1d0,.5d0,.3d0,.7d0]","PpDmCp(1,:)=[0d0,0d0,.3d0,.7d0]\nVlMpStCp(1:2)=0d0;SwSoilShr(1:2)=0" if ns.covered else "PpDmCp(1,:)=[0d0,0d0,.3d0,.7d0]\nVlMpStCp(1:2)=0d0")
 with tempfile.TemporaryDirectory(prefix='migmac06-source-') as t:
     f=Path(t)/'source.f90';f.write_text(code)
     outputs=[]
@@ -74,3 +75,5 @@ with tempfile.TemporaryDirectory(prefix='migmac06-source-') as t:
 print('PPA_WU05_MIGMAC06_EXACT_SECTION_D_O0_O2=PASS')
 
 if ns.covered:print('PPA_WU05_MIGMAC08_EXACT_COVERED_REFERENCE_O0_O2=PASS')
+
+if ns.nonrigid_covered:print('PPA_WU05_MIGMAC09_EXACT_NONRIGID_COVER_O0_O2=PASS')
