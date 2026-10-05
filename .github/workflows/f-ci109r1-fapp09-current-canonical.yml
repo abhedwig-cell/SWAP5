@@ -35,5 +35,45 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
+      - name: Determine F-APP09 gate applicability
+        id: scope
+        shell: bash
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" != "pull_request" ]]; then
+            echo "applicable=true" >> "$GITHUB_OUTPUT"
+            echo "F-CI109R1_APPLICABLE=YES_NON_PR_EVENT"
+            exit 0
+          fi
+
+          mapfile -t changed < <(git diff --name-only "$PR_BASE_SHA...$PR_HEAD_SHA")
+          applicable=false
+          for path in "${changed[@]}"; do
+            case "$path" in
+              src/process/mod_drainage_extended_exchange.f90|\\
+              src/runtime/mod_fmr_drainage_response_binding.f90|\\
+              src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90|\\
+              src/runtime/mod_fmr_surface_water_swap_participant.f90|\\
+              tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90|\\
+              tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh|\\
+              tests/fvq/*fvq128*fapp09*|\\
+              tests/fci/run_fci109r1_fapp09_current_canonical.sh|\\
+              integration/f-ci/F-CI109R1_*)
+                applicable=true
+                break
+                ;;
+            esac
+          done
+
+          echo "applicable=$applicable" >> "$GITHUB_OUTPUT"
+          if [[ "$applicable" == true ]]; then
+            echo "F-CI109R1_APPLICABLE=YES_FAPP09_OWNED_PATH_CHANGED"
+          else
+            echo "F-CI109R1_APPLICABLE=NO_FAPP09_PATH_CHANGED"
+            echo "The exact F-APP09 gate is not applicable to this pull request."
+          fi
       - name: F-CI109R1 exact current-canonical gate
+        if: steps.scope.outputs.applicable == 'true'
         run: bash tests/fci/run_fci109r1_fapp09_current_canonical.sh
