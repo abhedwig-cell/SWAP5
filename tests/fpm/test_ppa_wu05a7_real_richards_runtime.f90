@@ -40,6 +40,8 @@ program test_ppa_wu05a7_real_richards_runtime
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t, mobile_salt_substep_t, mobile_salt_fluxes_t, &
        initialize_mobile_salt_state, advance_mobile_salt_trace, SOLUTE_OK, SOLUTE_WATER_CLOSURE
+  use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t, mobile_macro_salt_transfer_t, &
+       transfer_mobile_macro_salt_trace, EXCHANGE_OK, EXCHANGE_DONOR_UNAVAILABLE
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
@@ -391,6 +393,80 @@ contains
     print '(a)','PPA_WU05E_FMR_SALT_CANDIDATE=FAIL_CLOSED_UNOWNED_MATRIX_EXCHANGE'
   end subroutine exercise_salt_candidate_rejects_unowned_exchange
 
+  subroutine exercise_macro_salt_exchange_trace(water_trace,node_thickness)
+    type(fmr_water_flux_substep_trace_t),intent(in)::water_trace(:)
+    real(real64),intent(in)::node_thickness(:)
+    type(mobile_macro_salt_state_t)::committed_macro,candidate_macro,replay_macro,rejected_macro
+    type(mobile_macro_salt_transfer_t)::receipt,replay_receipt,rejected_receipt
+    real(real64),allocatable::matrix_start(:,:),matrix_end(:,:),macro_start(:,:,:),macro_end(:,:,:)
+    real(real64),allocatable::exchange(:,:,:),bad_exchange(:,:,:),duration(:),times0(:),times1(:)
+    real(real64),allocatable::matrix_before(:),macro_before(:,:)
+    real(real64)::inventory_before,inventory_after
+    integer::n,nd,ns,k,status
+
+    ns=size(water_trace);n=size(node_thickness)
+    if(ns<2.or.n<=0)error stop 'macro salt trace lacks accepted sequence'
+    if(.not.allocated(water_trace(1)%macropore_matrix_exchange_domain))error stop 'macro salt trace lacks domain exchange'
+    nd=size(water_trace(1)%macropore_matrix_exchange_domain,1)
+    if(nd<=0)error stop 'macro salt trace has no exchange domains'
+    allocate(matrix_start(n,ns),matrix_end(n,ns),macro_start(nd,n,ns),macro_end(nd,n,ns), &
+         exchange(nd,n,ns),duration(ns),times0(ns),times1(ns))
+    do k=1,ns
+      if(.not.allocated(water_trace(k)%macropore_matrix_exchange_domain).or. &
+         .not.allocated(water_trace(k)%macropore_water_start).or. &
+         .not.allocated(water_trace(k)%macropore_water_end))error stop 'macro salt trace incomplete'
+      if(any(shape(water_trace(k)%macropore_matrix_exchange_domain)/=[nd,n])) &
+           error stop 'macro salt trace exchange shape'
+      matrix_start(:,k)=water_trace(k)%water_start*node_thickness
+      matrix_end(:,k)=water_trace(k)%water_end*node_thickness
+      macro_start(:,:,k)=water_trace(k)%macropore_water_start
+      macro_end(:,:,k)=water_trace(k)%macropore_water_end
+      exchange(:,:,k)=water_trace(k)%macropore_matrix_exchange_domain
+      duration(k)=water_trace(k)%t1-water_trace(k)%t0
+      times0(k)=water_trace(k)%t0
+      times1(k)=water_trace(k)%t1
+    end do
+
+    allocate(committed_macro%matrix_mass_mg_cm2(n),committed_macro%macro_mass_mg_cm2(nd,n))
+    committed_macro%matrix_mass_mg_cm2=0.4_real64*matrix_start(:,1)
+    committed_macro%macro_mass_mg_cm2=0.35_real64*macro_start(:,:,1)
+    matrix_before=committed_macro%matrix_mass_mg_cm2
+    macro_before=committed_macro%macro_mass_mg_cm2
+    inventory_before=sum(matrix_before)+sum(macro_before)
+    call transfer_mobile_macro_salt_trace(committed_macro,matrix_start,matrix_end,macro_start,macro_end, &
+         exchange,duration,times0,times1,candidate_macro,receipt,status)
+    if(status/=EXCHANGE_OK)error stop 'accepted FMR internal macro-salt exchange trace rejected'
+    if(.not.allocated(candidate_macro%matrix_mass_mg_cm2).or. &
+       .not.allocated(candidate_macro%macro_mass_mg_cm2))error stop 'macro-salt trace candidate missing'
+    if(.not.allocated(receipt%macro_to_matrix_mg_cm2).or. &
+       .not.allocated(receipt%matrix_to_macro_mg_cm2))error stop 'macro-salt trace receipt missing'
+    inventory_after=sum(candidate_macro%matrix_mass_mg_cm2)+sum(candidate_macro%macro_mass_mg_cm2)
+    if(abs(inventory_after-inventory_before)>1.0e-12_real64)error stop 'macro-salt trace inventory changed'
+    if(abs(receipt%closure_error_mg_cm2)>1.0e-12_real64)error stop 'macro-salt trace closure'
+    if(maxval(abs(receipt%macro_to_matrix_mg_cm2))+maxval(abs(receipt%matrix_to_macro_mg_cm2))<= &
+       1.0e-14_real64)error stop 'macro-salt trace carried no internal transfer'
+    call transfer_mobile_macro_salt_trace(committed_macro,matrix_start,matrix_end,macro_start,macro_end, &
+         exchange,duration,times0,times1,replay_macro,replay_receipt,status)
+    if(status/=EXCHANGE_OK)error stop 'macro-salt trace replay rejected'
+    if(any(candidate_macro%matrix_mass_mg_cm2/=replay_macro%matrix_mass_mg_cm2).or. &
+       any(candidate_macro%macro_mass_mg_cm2/=replay_macro%macro_mass_mg_cm2).or. &
+       any(receipt%macro_to_matrix_mg_cm2/=replay_receipt%macro_to_matrix_mg_cm2).or. &
+       any(receipt%matrix_to_macro_mg_cm2/=replay_receipt%matrix_to_macro_mg_cm2)) &
+         error stop 'macro-salt trace replay identity'
+
+    bad_exchange=exchange
+    bad_exchange(1,1,ns)=-2.0_real64*max(matrix_start(1,ns),1.0e-6_real64)/duration(ns)
+    call transfer_mobile_macro_salt_trace(committed_macro,matrix_start,matrix_end,macro_start,macro_end, &
+         bad_exchange,duration,times0,times1,rejected_macro,rejected_receipt,status)
+    if(status/=EXCHANGE_DONOR_UNAVAILABLE)error stop 'late macro-salt donor failure accepted'
+    if(allocated(rejected_macro%matrix_mass_mg_cm2).or.allocated(rejected_macro%macro_mass_mg_cm2).or. &
+       allocated(rejected_receipt%macro_to_matrix_mg_cm2).or.allocated(rejected_receipt%matrix_to_macro_mg_cm2)) &
+         error stop 'late macro-salt failure leaked partial candidate'
+    if(any(committed_macro%matrix_mass_mg_cm2/=matrix_before).or. &
+       any(committed_macro%macro_mass_mg_cm2/=macro_before))error stop 'macro-salt trace mutated committed state'
+    print '(a)','PPA_WU05E_TRACE_DRIVEN_INTERNAL_EXCHANGE=PASS_TEST_ONLY'
+  end subroutine exercise_macro_salt_exchange_trace
+
   subroutine exercise_serialized_fmr(trace_mode)
     logical, intent(in), optional :: trace_mode
     type(fmr_serialized_reference_backend_t) :: backend, restored_backend
@@ -603,6 +679,7 @@ contains
       if(max_trace_macro_vertical_face<=1.0e-14_real64)error stop 'FMR trace did not carry nonzero macro vertical face'
       call exercise_salt_candidate_rejects_unowned_exchange( &
            fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
+      call exercise_macro_salt_exchange_trace(fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
       write(*,'(*(g0))') 'PPA_WU05E_FMR_ACCEPTED_SUBSTEP_TRACE=PASS|COUNT=', &
            size(fmr_observation%accepted_water_flux_substeps),'|MAX_CLOSURE=',max_trace_closure, &
            '|MAX_DOMAIN_EXCHANGE=',max_trace_macro_exchange,'|MAX_DOMAIN_WATER_CHANGE=',max_trace_macro_water_change, &

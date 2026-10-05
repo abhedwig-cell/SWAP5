@@ -17,7 +17,7 @@ module mod_solute_macropore_exchange
     real(real64) :: closure_error_mg_cm2=0.0_real64
   end type
 
-  public :: transfer_mobile_macro_salt_trial
+  public :: transfer_mobile_macro_salt_trial, transfer_mobile_macro_salt_trace
 
 contains
 
@@ -107,5 +107,89 @@ contains
     receipt%closure_error_mg_cm2=total_after-total_before
     status=EXCHANGE_OK
   end subroutine transfer_mobile_macro_salt_trial
+
+  ! Applies only the internal matrix/macropore salt exchange represented by a
+  ! fully ordered accepted-water trace. Boundary, root, drainage, and Richards
+  ! face-transport receipts remain outside this operator. Any invalid or
+  ! donor-unavailable substep discards the entire salt candidate and receipt.
+  subroutine transfer_mobile_macro_salt_trace(committed,matrix_water_start_cm,matrix_water_end_cm, &
+       macro_water_start_cm,macro_water_end_cm,exchange_cm_day,duration_day,t0,t1,candidate,receipt,status)
+    type(mobile_macro_salt_state_t), intent(in) :: committed
+    real(real64), intent(in) :: matrix_water_start_cm(:,:),matrix_water_end_cm(:,:)
+    real(real64), intent(in) :: macro_water_start_cm(:,:,:),macro_water_end_cm(:,:,:)
+    real(real64), intent(in) :: exchange_cm_day(:,:,:),duration_day(:),t0(:),t1(:)
+    type(mobile_macro_salt_state_t), intent(out) :: candidate
+    type(mobile_macro_salt_transfer_t), intent(out) :: receipt
+    integer, intent(out) :: status
+    type(mobile_macro_salt_state_t) :: current,next
+    type(mobile_macro_salt_transfer_t) :: step_receipt
+    real(real64) :: time_tolerance,water_tolerance,total_before,total_after
+    integer :: n,nd,ns,k
+
+    candidate=mobile_macro_salt_state_t()
+    receipt=mobile_macro_salt_transfer_t()
+    status=EXCHANGE_INVALID
+    n=size(matrix_water_start_cm,1); ns=size(matrix_water_start_cm,2)
+    nd=size(macro_water_start_cm,1)
+    if(n<=0.or.ns<=0.or.nd<=0) return
+    if(any(shape(matrix_water_end_cm)/=[n,ns]))return
+    if(any(shape(macro_water_start_cm)/=[nd,n,ns]).or.any(shape(macro_water_end_cm)/=[nd,n,ns]).or. &
+       any(shape(exchange_cm_day)/=[nd,n,ns]))return
+    if(size(duration_day)/=ns.or.size(t0)/=ns.or.size(t1)/=ns)return
+    if(.not.allocated(committed%matrix_mass_mg_cm2).or..not.allocated(committed%macro_mass_mg_cm2))return
+    if(size(committed%matrix_mass_mg_cm2)/=n.or. &
+       any(shape(committed%macro_mass_mg_cm2)/=[nd,n]))return
+    if(.not.all(ieee_is_finite(matrix_water_start_cm)).or..not.all(ieee_is_finite(matrix_water_end_cm)).or. &
+       .not.all(ieee_is_finite(macro_water_start_cm)).or..not.all(ieee_is_finite(macro_water_end_cm)).or. &
+       .not.all(ieee_is_finite(exchange_cm_day)).or..not.all(ieee_is_finite(duration_day)).or. &
+       .not.all(ieee_is_finite(t0)).or..not.all(ieee_is_finite(t1)))return
+    if(any(matrix_water_start_cm<0.0_real64).or.any(matrix_water_end_cm<0.0_real64).or. &
+       any(macro_water_start_cm<0.0_real64).or.any(macro_water_end_cm<0.0_real64))return
+
+    allocate(receipt%macro_to_matrix_mg_cm2(n),receipt%matrix_to_macro_mg_cm2(n))
+    receipt%macro_to_matrix_mg_cm2=0.0_real64
+    receipt%matrix_to_macro_mg_cm2=0.0_real64
+    current=committed
+    status=EXCHANGE_INVALID
+    do k=2,ns
+      time_tolerance=128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(t0(k)),abs(t1(k)))
+      if(abs(t0(k)-t1(k-1))>time_tolerance)goto 800
+      water_tolerance=512.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
+           maxval(abs(matrix_water_start_cm(:,k))),maxval(abs(matrix_water_end_cm(:,k-1))))
+      if(any(abs(matrix_water_start_cm(:,k)-matrix_water_end_cm(:,k-1))>water_tolerance))goto 800
+      water_tolerance=512.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
+           maxval(abs(macro_water_start_cm(:,:,k))),maxval(abs(macro_water_end_cm(:,:,k-1))))
+      if(any(abs(macro_water_start_cm(:,:,k)-macro_water_end_cm(:,:,k-1))>water_tolerance))goto 800
+    end do
+    do k=1,ns
+      if(t1(k)<=t0(k).or.duration_day(k)<=0.0_real64)goto 800
+      time_tolerance=128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(t0(k)),abs(t1(k)))
+      if(abs((t1(k)-t0(k))-duration_day(k))>time_tolerance)goto 800
+      call transfer_mobile_macro_salt_trial(current,matrix_water_start_cm(:,k),macro_water_start_cm(:,:,k), &
+           exchange_cm_day(:,:,k),duration_day(k),next,step_receipt,status)
+      if(status/=EXCHANGE_OK)then
+        candidate=mobile_macro_salt_state_t()
+        receipt=mobile_macro_salt_transfer_t()
+        return
+      end if
+      current=next
+      receipt%macro_to_matrix_mg_cm2=receipt%macro_to_matrix_mg_cm2+step_receipt%macro_to_matrix_mg_cm2
+      receipt%matrix_to_macro_mg_cm2=receipt%matrix_to_macro_mg_cm2+step_receipt%matrix_to_macro_mg_cm2
+    end do
+
+    total_before=sum(committed%matrix_mass_mg_cm2)+sum(committed%macro_mass_mg_cm2)
+    total_after=sum(current%matrix_mass_mg_cm2)+sum(current%macro_mass_mg_cm2)
+    receipt%closure_error_mg_cm2=total_after-total_before
+    if(.not.ieee_is_finite(receipt%closure_error_mg_cm2))then
+      goto 800
+    end if
+    candidate=current
+    status=EXCHANGE_OK
+    return
+
+800 candidate=mobile_macro_salt_state_t()
+    receipt=mobile_macro_salt_transfer_t()
+    status=EXCHANGE_INVALID
+  end subroutine transfer_mobile_macro_salt_trace
 
 end module mod_solute_macropore_exchange

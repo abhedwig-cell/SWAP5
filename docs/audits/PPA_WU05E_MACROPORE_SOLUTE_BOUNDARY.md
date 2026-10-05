@@ -51,25 +51,24 @@ use the synchronized committed start state. A mismatch in water continuity,
 aggregate donor water overdraw, invalid or negative candidate inventory, or
 positive inventory paired with zero end water rejects the full candidate.
 
-The ordered-trace entry point applies contiguous accepted substeps in time
-order, verifies matrix and macro water-state continuity between them, and uses
-each completed candidate as the following substep's donor state. It aggregates
-external, root, and signed internal exchange receipts. Any later invalid step
-discards the entire candidate and all accumulated receipts.
-
 The O0/O2 manufactured oracle covers matrix and domain profile initialization,
-rederived concentration identity and dry-state rejection, nonzero vertical
-macro advection,
+rederived concentration identity and dry-state rejection, nonzero vertical macro advection,
 opposite-sign internal exchange, unequal node concentrations, explicit matrix
 top input and bottom output, a root TSCF receipt, total-salt closure, bad water
-closure, nonfinite flow rejection, ordered reversal from the updated candidate,
-and late-substep rollback with no partial candidate or receipt. This is
-process-kernel evidence only:
+closure, and nonfinite flow rejection. This is process-kernel evidence only:
 the new kernel is not called by FMR, its arguments are not yet a typed accepted
 salt-boundary receipt set, and it does not add committed macro salt mass or
 restart state. Its boundary concentration inputs do not qualify FMR surface
 partition, returned water, covered-top transfer, rapid drainage, or geometry
 return routes.
+
+The A7 O0/O2 gate separately applies the stateless internal-exchange operator
+in sequence to the actual ordered FMR water trace. It checks exchange receipt
+and column inventory closure, exact replay, and full rollback when the final
+observed substep overdraws its donor. This exchange-only test does not evaluate
+the coupled transport candidate or create an FMR salt candidate; the process
+kernels and macro mass still are not invoked or committed by a live FMR salt
+transaction.
 
 ## Source-bound facts
 

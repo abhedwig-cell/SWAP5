@@ -97,6 +97,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_committed_restart.f90
   src/process/mod_solute_water_face_flux_reconstruction.f90
   src/process/mod_solute_mobile_salt_state.f90
+  src/process/mod_solute_macropore_exchange.f90
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
 mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
