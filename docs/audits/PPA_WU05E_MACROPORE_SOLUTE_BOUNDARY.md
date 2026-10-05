@@ -156,6 +156,15 @@ The exact source also applies root uptake as `tscf*qrot*CML`; its full transport
 
 Consequently, the next typed drainage receipt must retain each signed `qdra` level, book positive-flow removal against node `CML`, and book negative-flow addition against explicit `Cdrain`. Keep qssdi explicitly zero-solute or fail-closed. This source audit does not implement any typed receipt or FMR salt candidate.
 
+
+## Level-resolved drainage process kernel (2026-10-05)
+
+`advance_mobile_macro_salt_drainage` was added to `src/process/mod_solute_mobile_macro_salt_transport.f90`. It derives local matrix `CML` from committed matrix salt mass divided by matching matrix water depth, applies each level's signed `qdra` independently, requires an explicit `Cdrain` availability flag whenever any level is negative, and returns a signed salt receipt per level. Donor overdraw, dry positive inventory, nonfinite values, and invalid dimensions return no candidate and no partial receipt. The operation leaves macro salt inventory unchanged. It has no `qssdi` salt input, consistent with the recovered source equation.
+
+`tests/physics/test_mobile_macro_salt_transport.f90` now checks simultaneous positive and negative drainage levels at one node using distinct donors, signed-ledger closure, missing-`Cdrain` rejection, and donor-overdraw rejection. The modified module, its existing dependency, and this test were compiled locally with GNU Fortran `-O0` and `-O2`; both runs pass and produce identical output.
+
+This is an isolated process operator only. It is not yet composed into `advance_mobile_macro_salt_trial/trace`, does not validate qssdi as a water-only term against the accepted FMR water balance, does not attach Cdrain forcing to the FMR layout/restart owner, and does not produce an atomic physical candidate or transaction receipt. Thus no drainage salt route is enabled in FMR and Jarvis remains salinity-disabled.
+
 ## Next action
 
 Keep PPA-WU05-E salinity disabled on the live FMR macro route. The transport
