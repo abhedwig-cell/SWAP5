@@ -5,7 +5,7 @@ program test_mig431_tcs7_ssdi_process
        fixed_irrigation_event_t, irrigation_management_request_t, irrigation_state_t, &
        scheduled_irrigation_request_t, irrigation_flux_result_t, irrigation_diagnostics_t, &
        evaluate_scheduled_irrigation_interval, evaluate_fixed_irrigation_interval, &
-       IRRIGATION_OK, IRRIGATION_SPLIT_REQUIRED, &
+       IRRIGATION_OK, IRRIGATION_SPLIT_REQUIRED, IRRIGATION_INVALID_EVENT, &
        IRRIGATION_EVENT_SCHEDULED, IRRIGATION_APPLICATION_SSDI, IRRIGATION_APPLICATION_SPRINKLER, &
        IRRIGATION_APPLICATION_SURFACE
   use mod_fmr_irrigation_restart, only: irrigation_restart_record_t, export_irrigation_restart, &
@@ -312,6 +312,14 @@ program test_mig431_tcs7_ssdi_process
        IRRIGATION_APPLICATION_SURFACE, 0.25_real64, 1.0_real64, 0.0_real64)
   fixed_parameters%fixed_events(3) = fixed_irrigation_event_t(3.0_real64, &
        IRRIGATION_APPLICATION_SSDI, 0.5_real64, 2.0_real64, 0.0_real64)
+  fixed_parameters%fixed_events(1)%concentration = -1.0_real64
+  fixed_request%t0 = 1.0_real64
+  fixed_request%t1 = 1.125_real64
+  call evaluate_fixed_irrigation_interval(fixed_parameters, fixed_state, fixed_request, &
+                                           fixed_candidate, fixed_flux, fixed_diagnostics)
+  call require(fixed_diagnostics%status == IRRIGATION_INVALID_EVENT .and. &
+       fixed_candidate%next_fixed_event_index == 1, 'invalid fixed solute concentration rejects atomically')
+  fixed_parameters%fixed_events(1)%concentration = 0.15_real64
   fixed_request%t0 = 1.0_real64
   fixed_request%t1 = 2.0_real64
   call evaluate_fixed_irrigation_interval(fixed_parameters, fixed_state, fixed_request, &

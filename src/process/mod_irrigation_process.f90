@@ -549,6 +549,8 @@ contains
     valid_event = .false.
     if (event%application_type < IRRIGATION_APPLICATION_SPRINKLER .or. &
         event%application_type > IRRIGATION_APPLICATION_SSDI) return
+    if (.not. all(ieee_is_finite([event%event_time,event%depth,event%rate,event%concentration]))) return
+    if (event%concentration < 0.0_real64) return
     if (event%depth <= 0.0_real64 .or. event%rate <= 0.0_real64) return
     duration = event%depth / event%rate
     if (duration > IRRIGATION_MAX_EVENT_DURATION) return
