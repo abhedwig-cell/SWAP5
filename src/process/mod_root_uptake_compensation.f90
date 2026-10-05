@@ -116,6 +116,9 @@ contains
     status=ROOT_COMP_OK
     salt_reduction=0.0_real64
     if(present(salinity_reduction))salt_reduction=salinity_reduction
+    if(.not.ieee_is_finite(salt_reduction).or.salt_reduction<0.0_real64)then
+      status=ROOT_COMP_INVALID;return
+    end if
 
     if(config%method==ROOT_COMP_OFF) then
       final_fluxes=base_fluxes
@@ -174,10 +177,8 @@ contains
     qred=ptra-diag%uncompensated_uptake
     if(abs(config%alpha_critical-1.0_real64)<vsmall .or. qred<=vsmall .or. alptot<0.05_real64) return
 
-    ! D2 admits only drought and bounded oxygen. Their attributed losses must
-    ! therefore close the full pre-compensation reduction. A mismatch implies
-    ! an unadmitted/missing stressor and fails closed rather than silently
-    ! changing the legacy exponent shares.
+    ! Every active pre-compensation stress loss must be explicitly attributed;
+    ! a mismatch implies an unadmitted or missing stressor and fails closed.
     reduction_tolerance=256.0_real64*epsilon(1.0_real64)*max(1.0_real64,ptra,qred)
     if(abs((drought_reduction+oxygen_reduction+salt_reduction)-qred)>reduction_tolerance) then
       final_fluxes=root_water_uptake_flux_result_t();status=ROOT_COMP_UNSUPPORTED;return
@@ -192,10 +193,10 @@ contains
       alptotcom=min(alptot/config%alpha_critical,1.0_real64)
     case(ROOT_COMP_DROUGHT)
       alpdrycom=min(alpdry/config%alpha_critical,1.0_real64)
-      alptotcom=alpdrycom*alpwetcom
+      alptotcom=alpdrycom*alpwetcom*alpsolcom
     case(ROOT_COMP_OXYGEN)
       alpwetcom=min(alpwet/config%alpha_critical,1.0_real64)
-      alptotcom=alpdrycom*alpwetcom
+      alptotcom=alpdrycom*alpwetcom*alpsolcom
     case(ROOT_COMP_SALINITY)
       alpsolcom=min(alpsol/config%alpha_critical,1.0_real64)
       alptotcom=alpdrycom*alpwetcom*alpsolcom
@@ -214,6 +215,7 @@ contains
     qred=ptra-final_fluxes%actual_uptake_total
     if(qred<vsmall) then
       diag%drought_reduction_total=0.0_real64;diag%oxygen_reduction_total=0.0_real64
+      diag%salinity_reduction_total=0.0_real64
     else
       redtot=(1.0_real64-alpdrycom)+(1.0_real64-alpwetcom)+(1.0_real64-alpsolcom)
       if(redtot<=vsmall) then
