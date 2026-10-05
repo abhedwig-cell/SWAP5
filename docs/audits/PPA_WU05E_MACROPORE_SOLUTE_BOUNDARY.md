@@ -163,7 +163,9 @@ Consequently, the next typed drainage receipt must retain each signed `qdra` lev
 
 `tests/physics/test_mobile_macro_salt_transport.f90` now checks simultaneous positive and negative drainage levels at one node using distinct donors, signed-ledger closure, missing-`Cdrain` rejection, and donor-overdraw rejection. The modified module, its existing dependency, and this test were compiled locally with GNU Fortran `-O0` and `-O2`; both runs pass and produce identical output.
 
-This is an isolated process operator only. It is not yet composed into `advance_mobile_macro_salt_trial/trace`, does not validate qssdi as a water-only term against the accepted FMR water balance, does not attach Cdrain forcing to the FMR layout/restart owner, and does not produce an atomic physical candidate or transaction receipt. Thus no drainage salt route is enabled in FMR and Jarvis remains salinity-disabled.
+The operator is now composed into the single-substep `advance_mobile_macro_salt_trial` candidate. That path applies signed qdra mass from the synchronized start-state CML/Cdrain, adds levelwise salt receipts to the same candidate ledger, and includes both qssdi (water-only) and signed qdra in matrix water closure. Its regression adds a nonzero qssdi input with opposing drainage levels; salt ledger closure and O0/O2-identical output pass.
+
+The ordered `advance_mobile_macro_salt_trace` wrapper does not yet carry the qdra/qssdi/Cdrain fields through each accepted substep. The new trial argument is not wired to the FMR trace producer or committed FMR state, Cdrain forcing/restart ownership is not declared there, and no transaction receipt is qualified. Therefore the live FMR drainage salt route remains disabled and Jarvis remains salinity-disabled.
 
 ## Next action
 
