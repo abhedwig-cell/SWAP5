@@ -30,7 +30,7 @@ for opt in args.opts:
  def execute(task):
   name,out,family,so,se=task
   with so.open('w')as stdout,se.open('w')as stderr:subprocess.run([str(out)]+([str(family)]if family else []),stdout=stdout,stderr=stderr,env={**os.environ,'GFORTRAN_UNBUFFERED_ALL':'y'},check=True)
-  text=so.read_text();assert 'RUNTIME=PASS'in text
+  text=so.read_text();assert ('FMR44R_SERIALIZED_PRESCRIBED_QBOT_RUNTIME_GATE=PASS'if name=='ppa_wu05b_frost_runtime'else'RUNTIME=PASS')in text
   if family:assert text.count('_RUNTIME=PASS')==1 and text.count('FINE_COMPARISON')==6
   r={'production_source_tree':source,'route':args.route,'optimization':opt,'program':name,'family':family,'program_sha256':hashlib.sha256(out.read_bytes()).hexdigest(),'source_sha256':hashlib.sha256((ROOT/f'tests/frost/test_{name}.f90').read_bytes()).hexdigest(),'stdout_sha256':hashlib.sha256(so.read_bytes()).hexdigest(),'process_exit_code':0,'complete_case':True}
   pathlib.Path(str(so)+'.receipt.json').write_text(json.dumps(r,indent=2)+'\n')

@@ -63,6 +63,12 @@
       "finding": "Dataclass decorator needed the dynamically loaded module registered in sys.modules; import failed before compile or physical execution",
       "repair": "Register unchanged immutable module under its loaded name; numerical cases/equations/tolerances and production unchanged",
       "log": "/tmp/frost-b14-scientific-first-loader-negative.log"
+    },
+    {
+      "kind": "Incumbent wrapper marker",
+      "finding": "B1 process exited0 with its original FMR44R_SERIALIZED_PRESCRIBED_QBOT_RUNTIME_GATE=PASS marker; wrapper incorrectly required RUNTIME=PASS and rejected the completed process output",
+      "repair": "Require the exact existing B1 gate marker; all other programs retain their own runtime marker. Production/cases/budgets unchanged; full normal O0/O2 wrapper rerun required",
+      "log": "/tmp/frost-b14-normal-preservation-first-marker-negative.log"
     }
   ]
 }
