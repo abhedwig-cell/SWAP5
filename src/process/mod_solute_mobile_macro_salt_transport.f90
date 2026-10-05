@@ -331,7 +331,7 @@ contains
        any(committed%matrix_mass_mg_cm2<0.0_real64).or.any(committed%macro_mass_mg_cm2<0.0_real64).or. &
        any(root_water_sink<0.0_real64).or.matrix_top_concentration<0.0_real64.or. &
        matrix_bottom_concentration<0.0_real64.or.any(macro_top_concentration<0.0_real64).or. &
-       any(macro_bottom_concentration<0.0_real64).or.tscf<0.0_real64.or.tscf>1.0_real64.or.dt_day<=0.0_real64)return
+       any(macro_bottom_concentration<0.0_real64).or.tscf<0.0_real64.or.tscf>10.0_real64.or.dt_day<=0.0_real64)return
     allocate(matrix_volume_start(n))
     matrix_volume_start=matrix_water_start*node_thickness_cm
     if(any(matrix_volume_start<=tiny(1.0_real64).and.committed%matrix_mass_mg_cm2>0.0_real64).or. &
@@ -565,4 +565,3 @@ contains
   end subroutine advance_mobile_macro_salt_drainage
 
 end module mod_solute_mobile_macro_salt_transport
-
