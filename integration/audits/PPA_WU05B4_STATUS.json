@@ -4,7 +4,7 @@
   "last_reconciled_upstream": "526258e3d78d47df657222630b2e46103cac3eb3",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "admitted": false,
   "authority_paths": [
@@ -23,9 +23,21 @@
     "src/solver",
     "tests/fci"
   ],
-  "next_action": "Persist implementation remotely, then run real O0/O2 joint signed/root-regime oracles; remaining application/restart/fine-continuation matrix and incumbent qualification not yet complete",
+  "next_action": "Complete exact persisted current canonical full gate and incumbent B1/B2/B3 plus all salt transport/compensation gates; no admission yet",
   "blockers": [],
   "test_paths": [
     "tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh"
-  ]
+  ],
+  "status": "FOCUSED_O0_O2_PASS_FULL_QUALIFICATION_PENDING",
+  "focused_test_source": "d35cbc6a2181897adfd9812b47d4d90956a99610 (production identical to current); extended test checkpoint 4960a817f0e2ad52658d267fec401f2007f395e6",
+  "focused_outputs": {
+    "O0": "5a73f89a9843508ab89c8263fdb41de3a4535dc205516b321a3253582f11137c",
+    "O2": "5a73f89a9843508ab89c8263fdb41de3a4535dc205516b321a3253582f11137c"
+  },
+  "fine_comparison": {
+    "head_cm": 6.899199e-09,
+    "temperature_c": 2.163334e-05,
+    "horizon_limits_head_cm": 1e-06,
+    "horizon_limits_temperature_c": 0.0001
+  }
 }

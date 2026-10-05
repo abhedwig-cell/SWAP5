@@ -65,6 +65,11 @@ jobs:
             WU05E_COMPENSATION_METHOD=walsum C3A_RESULT="$RUNNER_TEMP/frost-bottom-walsalt.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
             WU05E_COMPENSATION_METHOD=walsum WU05E_TRANSPORT_VARIANT=dispersion C3A_RESULT="$RUNNER_TEMP/frost-bottom-walsalt-dispersion.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
           fi
+      - name: Joint empirical root and no-drain bottom frost
+        run: |
+          if test -f tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh; then
+            bash tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh
+          fi
       - name: Exact current-canonical preservation for the bounded frost successor
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
       - name: Install documentation dependencies
