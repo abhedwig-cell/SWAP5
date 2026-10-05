@@ -18,8 +18,8 @@
     "preserve all frost-off Richards and sensible-temperature behavior"
   ],
   "held_scope": [
-    "FrozenBounds drainage/top/bottom heuristic until separate typed flux and mass qualification",
-    "binary frost root stress until hydraulic frost view is independently admitted",
+    "FrozenBounds legacy drainage/top/bottom heuristic rejected in current form; a future typed boundary replacement requires separate contract and mass qualification",
+    "binary frost root stress rejected in current form for this migration; any replacement requires separate biological contract and sink-chain qualification",
     "snow plus frost composition",
     "latent heat, ice content or unfrozen-water relation as new physics",
     "microscopic/Jong-van-Lier frost interaction",
@@ -40,6 +40,18 @@
     "O0/O2 deterministic output",
     "existing thermal and Richards preservation"
   ],
+  "runtime_matrix_evidence": {
+    "backend_regimes": ["unfrozen +1 C", "onset 0 C", "partial -1 C", "strong -4 C", "warming", "freeze-thaw cycle"],
+    "retry_case": "partial frost with 1e-10 cm/day prescribed top flux, zero prescribed bottom flux, external full/half temporal policy",
+    "direct_comparison": "eight consecutive 1.25e-5 day runs from the same initial physical checkpoint versus one retried 1e-4 day run",
+    "state_comparison_tolerances": {
+      "pressure_head_cm": 2e-10,
+      "water_content_cm3_per_cm3": 2e-12,
+      "soil_temperature_c": 2e-10
+    },
+    "mass_absolute_tolerance_cm": 1e-12,
+    "qualification_note": "State-comparison tolerances were formalized after the exploratory transaction case was identified; they are explicit replay-oracle limits, not a claim of preregistration before that observation."
+  },
   "invariants": [
     "one hydraulic constitutive owner",
     "one sensible-temperature owner",
