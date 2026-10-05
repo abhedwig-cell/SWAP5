@@ -1,6 +1,6 @@
 # PPA-WU05-MIGMAC06 hydrostatic rapid-drain reference construction
 
-Date: 2026-10-05. Status: LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION.
+Date: 2026-10-05. Status: CANONICAL_PRODUCTION_ADMITTED_CLOSED.
 Canonical base: 7a877af47144689bf8f9feb8c5485f6320dda137.
 
 An explicit configuration preparation call derives the existing immutable
@@ -55,3 +55,11 @@ equivalence. Broad migration remains incomplete and frozen Status A is unchanged
 
 The all-law independent Decimal KD 0.3008777038059482773004107783516246 also
 agrees with the unchanged assembled source block at both optimization levels.
+
+## Canonical admission
+
+PR #1023 merged qualified tree `4f3cc35bfdd7400da1f97d4cdad69403a5622fcb`
+at `6b7c13821d4c3dc94c504b1c0584f8203a9154f5`. Published qualified commit:
+`c9e16b671eb587de1e449789afcf21c7d85d6cb1`. Merge comparison contains no changed
+files. All 45 source/test postimages remain exact. Closeout changes documentation
+and admission status only.

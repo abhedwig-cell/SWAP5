@@ -177,3 +177,16 @@ New mixed-law rapid-drain reference KD construction, wider multiple/within-cell
 drains, additional surface owners and final whole-model case equivalence remain
 outside this admission. Broad 4.3.1 macropore migration is still incomplete.
 Controlling bounded authority: [MIGMAC05 closeout](PPA_WU05_MIGMAC05_CLOSEOUT.md).
+
+## Later canonical reconciliation: MIGMAC06 (2026-10-05)
+
+PR #1023 closes hydrostatic mixed-law rapid-drain reference KD preparation for the
+one-level admitted serialized Reference chain. The hydraulic owner supplies
+reference moisture; macropore configuration preparation preserves the source
+geometry and rigid-barrier rules without taking ownership of hydraulic state.
+The MIGMAC05 statement that this bounded reference construction remains open is
+superseded by [MIGMAC06 closeout](PPA_WU05_MIGMAC06_CLOSEOUT.md).
+
+Wider multiple/within-compartment drains, covering-layer reference composition,
+additional surface owners and final whole-model equivalence remain outside this
+admission. Broad 4.3.1 macropore migration remains incomplete.

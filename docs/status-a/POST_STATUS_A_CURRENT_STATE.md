@@ -258,3 +258,17 @@ two-domain drainage composes; new mixed-law reference KD derivation remains open
 See [closeout](../audits/PPA_WU05_MIGMAC05_CLOSEOUT.md) and its pinned qualification.
 Wider drain/surface compositions and whole-model equivalence remain excluded.
 Frozen Status A remains unchanged.
+
+## PPA-WU05-MIGMAC06 hydrostatic rapid-drain reference KD
+
+PR #1023 admits explicit pre-trial preparation of the existing immutable reference
+KD from hydraulic-owner supplied hydrostatic moisture and mixed constitutive laws.
+This closes the bounded mixed-law reference construction gap named in MIGMAC05.
+The source reference geometry, node tolerance, saturation cap and rigid barrier
+rules are preserved. Zero connectivity disables rapid drainage. No new water,
+state or restart owner is added. Supplied and adapter-derived Reference results
+agree at O0/O2, including wetting and two-domain rapid drainage; retry and restart
+pass. [Closeout](../audits/PPA_WU05_MIGMAC06_CLOSEOUT.md) pins source and gates.
+Multiple/within-compartment drains, covering-layer reference preparation and
+additional surface/whole-model compositions remain excluded. Frozen Status A
+and the incomplete broad migration denominator remain unchanged.
