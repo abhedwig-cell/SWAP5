@@ -51,24 +51,25 @@ use the synchronized committed start state. A mismatch in water continuity,
 aggregate donor water overdraw, invalid or negative candidate inventory, or
 positive inventory paired with zero end water rejects the full candidate.
 
+The ordered-trace entry point applies contiguous accepted substeps in time
+order, verifies matrix and macro water-state continuity between them, and uses
+each completed candidate as the following substep's donor state. It aggregates
+external, root, and signed internal exchange receipts. Any later invalid step
+discards the entire candidate and all accumulated receipts.
+
 The O0/O2 manufactured oracle covers matrix and domain profile initialization,
-rederived concentration identity and dry-state rejection, nonzero vertical macro advection,
+rederived concentration identity and dry-state rejection, nonzero vertical
+macro advection,
 opposite-sign internal exchange, unequal node concentrations, explicit matrix
 top input and bottom output, a root TSCF receipt, total-salt closure, bad water
-closure, and nonfinite flow rejection. This is process-kernel evidence only:
+closure, nonfinite flow rejection, ordered reversal from the updated candidate,
+and late-substep rollback with no partial candidate or receipt. This is
+process-kernel evidence only:
 the new kernel is not called by FMR, its arguments are not yet a typed accepted
 salt-boundary receipt set, and it does not add committed macro salt mass or
 restart state. Its boundary concentration inputs do not qualify FMR surface
 partition, returned water, covered-top transfer, rapid drainage, or geometry
 return routes.
-
-The A7 O0/O2 gate separately applies the stateless internal-exchange operator
-in sequence to the actual ordered FMR water trace. It checks exchange receipt
-and column inventory closure, exact replay, and full rollback when the final
-observed substep overdraws its donor. This exchange-only test does not evaluate
-the coupled transport candidate or create an FMR salt candidate; the process
-kernels and macro mass still are not invoked or committed by a live FMR salt
-transaction.
 
 ## Source-bound facts
 
@@ -136,6 +137,51 @@ macropore solute transport, boundary solute forcing, dispersion, salinity
 stress, Jarvis combinations, or production behavior. The base-layout FMR
 temporal-identity gate is a separate TX/FMR policy dependency and is not
 changed by this slice.
+
+## Matrix-source salt authority: qssdi and qdra
+
+The current FMR matrix-water source/sink trace includes subsurface drip
+irrigation (`qssdi`) and level-resolved lateral drainage (`qdra`). The local
+B1.10/B1.11-compatible water-source implementation establishes their water
+semantics, but does not establish a salt concentration for either route:
+
+| Term | Water meaning and sign | Salt authority in current route |
+|---|---|---|
+| `qssdi(node)` | Subsurface drip irrigation into a matrix node; the source is added to Richards. Integrals are accumulated as `qssdi * dt`. | No concentration accompanies the FMR forcing/trace. The salt mass input cannot be inferred from water volume. |
+| `qdra(level,node) > 0` | Soil-to-drain extraction at a specific level and node; accumulated as drainage outflow. | The corroborative SWAP source-family solute routine uses local `CML` for positive `qdra`; current FMR trace has no paired dissolved-mass receipt. |
+| `qdra(level,node) < 0` | Drain-to-soil infiltration at a specific level and node; accumulated separately as drainage inflow. | The corroborative source-family routine uses separate `Cdrain`, not receiving-node `CML`. Current FMR forcing has no such salt state. |
+
+The signs and node/level semantics are source-backed by
+`src/legacy/b1_10_port/headcalc.f90` (adds `qdra` to sink and binds `qssdi` as
+source), `src/legacy/b1_10_fci11_port/integral_part05.inc` (nodewise
+`qssdi * dt`), `src/legacy/b1_10_fci11_port/integral_part06.inc` (positive and
+negative drainage accounting), and the FMR trace construction in
+`src/runtime/mod_fmr_serialized_reference_backend.f90`. These are water-source
+semantics, not proof of B1.11 solute implementation details.
+
+The retrieved `SWAP-model/SWAP@c22bd832ddf3e53e330a552f5e31e74f183362d1`
+`src/solute/solute.f90` is not byte-identical to the B1.11 manifest member
+(18,271 versus 51,508 bytes). In that corroborative routine, levelwise positive
+`qdra` exports salt at local `CML`, negative `qdra` imports at `Cdrain`, and no
+`qssdi` term appears in the displayed mass update (surface `nird*cirr` is
+present). Therefore do not silently equate `qssdi` with surface irrigation,
+assume its salt is zero, or copy this source-family omission as B1.11 truth.
+The exact B1.11 `solute.f90` is still needed to decide whether subsurface-drip
+salt is omitted, separately parameterized, or accounted elsewhere. `Cdrain`
+also requires an identified water/solute owner and restart lifecycle before
+negative drainage can be enabled in SWAP5.
+
+Consequently, a future typed receipt must preserve each signed `qdra` level
+flux rather than only its Richards sum, book positive `qdra` removal against
+the matrix-node donor concentration, and source negative `qdra` only from an
+explicit `Cdrain`-equivalent state if the applicable B1.11 semantics confirm
+it. `qssdi` salt handling is unresolved until the exact B1.11 source semantics
+and input contract are recovered. All routes must reject absent, non-finite,
+or physically invalid donor data; do not silently substitute receiving-node
+`CML` or assume zero salt. No typed receipt or FMR salt candidate is
+implemented by this audit. Exact B1.11 solute source bytes are not materialized
+here, so this is a SWAP5 blocker contract, not a claim of historical solute
+equivalence.
 
 ## Next action
 
