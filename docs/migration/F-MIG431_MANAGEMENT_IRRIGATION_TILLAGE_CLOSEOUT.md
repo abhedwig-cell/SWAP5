@@ -56,6 +56,7 @@ named below.
 | `FID` crop-stage table | Supply the DCS2 fixed irrigation depth | DVS lookup | Admitted Hupsel DCS2 table is preserved by PR #265; typed scheduled evaluator also qualifies its depth interpolation O0/O2 | `ADMITTED` within PR #265 envelope |
 | `DCSLIM=1`, `irgdepmin`/`irgdepmax` | Bound the selected irrigation depth | Selected depth and configured limits | Typed evaluator applies the legacy mm-to-cm min/max bounds after DCS1 or DCS2 selection; boundary oracle passes O0/O2. No admitted generic production route | `MIGRATE` |
 | `SWCIRRTHRES`, `cirrthres`, `perirrsurp` | Increase scheduled irrigation depth when soil concentration at the sensor exceeds its threshold | Soil solute profile at `nodsen`, event depth, threshold and surplus percentage | A typed pure evaluator qualifies the source's strict `cml(nodsen) > cirrthres` and post-DCSLIM percentage formula at O0/O2. It has no admitted solute-profile input or coupled application | `MIGRATE`, dependent on solute/salinity admission |
+| `TASK=4`, external `f_irr_avail` | Bound a requested irrigation amount by external water availability | Accepted allocation fraction, selected event and delivered-water receipt | A typed selector derives delivered depth, rate and duration with `rate × duration = available depth` at O0/O2. No admitted allocation arbitration. B1.11 scales surface rate and duration together but only SSDI duration, yielding inconsistent actual amounts | `MIGRATE` for allocation-limited physical delivery; `REJECTED` for the inconsistent legacy scaling |
 | `cirr`/`cirrs` | Carry irrigation solute concentration into water/solute accounting | Event concentration and solute state | Surface water routing exists in restricted profiles; no admitted irrigation-solute delivery | `MIGRATE`, dependent on solute admission |
 | `irr_rate`, `dt_irr_event`, `gird`, `qssdi` | Convert depth and rate into a bounded event span and source flux | Active event timing, effective rate and source receipt | Typed fixed/scheduled interval processes calculate duration and flux; scheduled rate below depth/day is adapted to one day and missing rate uses depth/day as B1.11 does. Effective rate persists across split/restart with O0/O2 mass closure. Production application remains open outside F-APP07 | `MIGRATE` for unsupported production modes |
 
@@ -206,6 +207,12 @@ one day at the typed rate, and checks explicit mm/hour to cm/day conversion.
 checks the source's layer-bottom retention sampling for field-capacity,
 medium and wilting limits, including a distinct upper-node curve that must
 not replace the representative layer-bottom curve.
+
+`tests/irrigation/run_mig431_availability.sh` passed at O0 and O2. It
+selects the externally available fraction before event publication and
+checks delivered depth equals effective rate times duration, including a
+zero-availability and missing-rate case. The legacy `TASK=4` surface/SSDI
+scaling discrepancy is not used as a mass-accounting authority.
 
 `tests/tillage/run_mig431_tillage_types.sh` passed at O0 and O2. It
 maps a sparse explicit material-type table to exact per-event row spans and
