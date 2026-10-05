@@ -169,6 +169,14 @@
         "admission": "integration/audits/PPA_WU05B4_CANONICAL_ADMISSION.json",
         "scope": "Joint empirical root cutoff with OFF/Jarvis/Walsum and no-drain ordinary prescribed-qbot frost; same trial-start state and strict max of independent temporal norms",
         "admitted": true
+      },
+      "corrected_drainage_reference": {
+        "work_unit": "PPA-WU05B5-REF",
+        "status": "CANONICALLY_ADMITTED_REFERENCE_COMPONENT",
+        "canonical_merge": "7257d884136396823286783971357ba2d80b836e",
+        "authority": "integration/audits/PPA_WU05B5_REF_STATUS.json",
+        "scope": "Reporting-only ordinary SWDRA=1 SWDIVD=0 SWMACRO=0 overlay; original physical fluxes bitwise unchanged",
+        "global_B1_snapshot_promoted": false
       }
     },
     "advanced_root_stress": {
