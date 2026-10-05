@@ -4,8 +4,8 @@
   "last_reconciled_upstream": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
   "baseline_source": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
   "preregistration": "integration/audits/PPA_WU05B14_PREREGISTRATION.json",
-  "status": "PREREGISTERED_IMPLEMENTATION_PENDING",
-  "implemented": false,
+  "status": "IMPLEMENTED_PERSISTED_UNQUALIFIED",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -40,7 +40,7 @@
     29,
     30
   ],
-  "next_action": "Persist preregistration; implement only additive selected parameter validation and OFF flag before all current-source gates",
+  "next_action": "Persist useful production checkpoint; assemble and execute unchanged scientific plus actual full component/runtime and relevant preservation gates",
   "recovery_point": "Persisted preimplementation preregistration and exact B13 canonical closeout",
   "blockers": [],
   "pending": [
@@ -50,5 +50,6 @@
     "Actual resolved-control activation/inactivity/positive/negative/GWLINF cap/suppression cases with fixed physical depths, observed low-air and hard mass; no Jacobian/directional claim",
     "Active wrong selector/position/cardinality/nonfinite parameter/depth/control/missing/wrong-kind and mismatched zbotdr reject before solver, committed state unchanged; inactive parameters ignored",
     "Fresh relevant B1..B13 whole-module preservation, four SALFRO01, immutable VQ73/74, exact F-APP09/VQ128 originals with external frost exclusion, literal root and strict canonical exact pins; docs and immutable replay, exact proposed/actual admission"
-  ]
+  ],
+  "production_source_tree": "f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d"
 }

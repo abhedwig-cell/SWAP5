@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B14",
-  "status": "SOURCE_REVIEW_COMPLETE_PREREGISTERED",
+  "status": "IMPLEMENTED_PERSISTED_UNQUALIFIED",
   "reviewed_B13_candidate_source": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
   "prerequisite": "B13 admitted PR1058 and exact metadata closeout PR1059 verified",
   "selected_next_slice": "Explicit rootless ordinary Reference mode2 single-level signed EXTENDED response with TUBE/OPEN_CHANNEL, highest_level false and TOP_NONE, finite supplied resolved surface-water control head; normal and B8 guarded low-air frost. Low-air physical zbotdr must equal selected frost drain depth. This is a bounded normalized constitutive composition, separate from the F-APP09 external coupling profile.",
@@ -13,9 +13,9 @@
     "oracle_blob": "ac04dc0a132183f400d49d3f13cb30e956124900",
     "driver_blob": "599ba9d809262419929163ef50f502346c230ebd",
     "process_blob": "25d76013d25c2eaa2d254865149c740bc3257617",
-    "current_process_exact_primary": true,
     "historical_cases_per_opt": 1507,
-    "historical_results_only": true
+    "historical_results_only": true,
+    "preimplementation_process_exact_primary": true
   },
   "runtime_authority": {
     "canonical_admission": "integration/f-ci/F-CI109R1_FAPP09_ADMISSION.json",
@@ -44,7 +44,7 @@
     "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
     "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35"
   },
-  "implemented": false,
+  "implemented": true,
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
@@ -61,6 +61,16 @@
     "Global frost equivalence",
     "Legacy SWDRA2 surface-water feedback and reporting-reference scope expansion"
   ],
-  "next_action": "Persist preregistration; implement only additive selected parameter validation and OFF flag before all current-source gates",
-  "baseline": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd"
+  "next_action": "Persist useful production checkpoint; assemble and execute unchanged scientific plus actual full component/runtime and relevant preservation gates",
+  "baseline": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
+  "current_source_sha256": {
+    "src/process/mod_drainage_extended_exchange.f90": "598043509c62414918fea3d61e76c6d146bb76f3413318c2444e3181bae2c292",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "f1069932435a2f88745087292ca5eed3086fe0f37025851fd2901fb8b8b0bb5f",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "57ae0fe188758e0f0be56499c15a7fdf9efd5bb6a52be58c52d8297bf8d4d86b",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90": "0b47566254d2dae9180b0dbb6881ee8a4670c11fd2f29f57ce539fc319c48103",
+    "src/process/mod_frost_drainage_effect.f90": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900",
+    "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35"
+  }
 }

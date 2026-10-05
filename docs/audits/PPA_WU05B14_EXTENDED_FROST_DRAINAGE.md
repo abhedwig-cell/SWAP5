@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-Preregistered; implementation and qualification pending. Exact baseline `0511717b6c428d18dc223c9e81fd73da3bf5c3fd` closes B13. The source review binds Q4A scientific authority `48df989b098d73208eed2496005b656f588ebffd` and unchanged process blob `25d76013d25c2eaa2d254865149c740bc3257617`. Its 1507-case independent source-derived value/tangent oracle is historical evidence until rebound to the current candidate.
+Implemented and persisted; qualification pending. Exact baseline `0511717b6c428d18dc223c9e81fd73da3bf5c3fd` closes B13. The source review binds Q4A scientific authority `48df989b098d73208eed2496005b656f588ebffd` and unchanged process blob `25d76013d25c2eaa2d254865149c740bc3257617`. Its 1507-case independent source-derived value/tangent oracle is historical evidence until rebound to the current candidate.
 
 ## Bounded ordinary composition
 
