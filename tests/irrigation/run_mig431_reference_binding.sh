@@ -39,7 +39,10 @@ for opt in 0 2; do
   for source in "${sources[@]}" \
       src/process/mod_irrigation_process.f90 \
       src/runtime/mod_fmr_irrigation_source_binding.f90 \
-      src/runtime/mod_fmr_irrigation_reference_binding.f90; do
+      src/runtime/mod_fmr_irrigation_reference_binding.f90 \
+      src/process/mod_crop_calendar_management_process.f90 \
+      src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
+      src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do
     obj="$out/$(basename "${source%.*}").o"
     gfortran "${flags[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj" 2>"$out/compile.log" || {
       tail -35 "$out/compile.log" >&2; echo "compile failed: $source" >&2; exit 1;
@@ -50,9 +53,16 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$out/test.o" -o "$out/test"
   "$out/test" > "$out/output"
   grep -Fq 'F_MIG431_REFERENCE_SOURCE_AND_ACCEPTANCE_BINDING=PASS' "$out/output"
+  gfortran "${flags[@]}" -O"$opt" -J "$out" -I "$out" -c \
+    tests/management/test_mig431_crop_reference_observation.f90 -o "$out/crop.o"
+  gfortran -O"$opt" "${objects[@]}" "$out/crop.o" -o "$out/crop"
+  "$out/crop" > "$out/crop-output"
+  grep -Fq 'F_MIG431_CROP_REFERENCE_STATE_OBSERVATION=PASS' "$out/crop-output"
 done
 cmp "$BUILD/o0/output" "$BUILD/o2/output"
+cmp "$BUILD/o0/crop-output" "$BUILD/o2/crop-output"
 cat "$BUILD/o0/output"
+cat "$BUILD/o0/crop-output"
 
 # Materialize an additive event in the established real Reference dispatcher,
 # whose continuous/restarted endpoint and hard mass receipts are independently checked.
@@ -121,7 +131,10 @@ PY
 for opt in 0 2; do
   out="$BUILD/o$opt"; objects=()
   for source in "${sources[@]}" src/process/mod_irrigation_process.f90 \
-      src/runtime/mod_fmr_irrigation_source_binding.f90 src/runtime/mod_fmr_irrigation_reference_binding.f90; do
+      src/runtime/mod_fmr_irrigation_source_binding.f90 src/runtime/mod_fmr_irrigation_reference_binding.f90 \
+      src/process/mod_crop_calendar_management_process.f90 \
+      src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
+      src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do
     objects+=("$out/$(basename "${source%.*}").o")
   done
   gfortran "${flags[@]}" -O"$opt" -J "$out" -I "$out" -c "$BUILD/fmr19-managed.f90" -o "$out/managed.o"

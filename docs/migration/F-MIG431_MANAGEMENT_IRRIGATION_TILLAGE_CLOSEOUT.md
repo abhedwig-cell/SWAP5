@@ -248,8 +248,11 @@ The same script now qualifies a bounded profile observation binder at O0/O2:
 source `h_average` uses a thickness-weighted mean of `log10(max(1,-h))`
 through a partially intersected compartment and converts back to head;
 the sowing temperature samples the first compartment whose bottom reaches
-`zTempSow`. Out-of-profile depths fail closed. The accepted production
-soil/heat profile has not yet been connected to this binder.
+`zTempSow`. Out-of-profile depths fail closed. A separate Reference-state
+adapter reads the physical pressure profile and private, initialized soil
+temperature continuation through its typed export API, rejecting absent
+heat activation; its O0/O2 contract passes. Accepted endpoint extraction,
+daily crop event publication and crop/calendar restart coupling remain open.
 
 `tests/management/run_mig431_crop_rotation.sh` passed at O0 and O2. It
 checks before, within, and after crop windows, the terminal crop without a
