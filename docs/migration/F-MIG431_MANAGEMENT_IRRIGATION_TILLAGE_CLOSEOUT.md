@@ -334,9 +334,13 @@ wetting and KSATEXM rows, and clears the prepared VG cache so the backend
 rebuilds derived coefficients. It rejects hysteresis, macropore, tabulated or
 direct retention, KSATEXM, elasticity and frost interactions. The local
 Reference gate tests both optimization levels, preservation of the original
-parameters, cache rebuilding and failed-candidate isolation. This is a
-candidate builder; accepted publication, paired material/state restart and a
-nonstationary tillage continuation remain `MIGRATE`.
+parameters, cache rebuilding and failed-candidate isolation. A bounded joint
+restart now checks reconstructed post-event `parameter_set_id` and the seven
+VG rows against the complete physical/profile continuation, then restores
+both records atomically; wrong identity, corrupt profile and wrong registry
+are rejected in the O0/O2 gate. The material change remains a candidate;
+accepted same-time publication and nonstationary tillage continuation remain
+`MIGRATE`.
 
 The tillage application boundary also changes the constitutive `cofgen`
 table, which currently belongs to the immutable

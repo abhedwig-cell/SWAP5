@@ -31,6 +31,7 @@ visit('src/runtime/mod_fmr_serialized_multiswap_runtime.f90')
 visit('src/runtime/mod_fmr_committed_restart.f90')
 visit('tests/fmr/mod_fmr04_fixed_top_provider.f90')
 visit('src/runtime/mod_fmr_tillage_reference_material_candidate.f90')
+visit('src/runtime/mod_fmr_tillage_joint_restart.f90')
 visit('src/runtime/mod_fmr_irrigation_reference_binding.f90')
 visit('src/runtime/mod_fmr_irrigation_joint_restart.f90')
 visit('src/runtime/mod_fmr_crop_calendar_reference_observation.f90')
@@ -64,13 +65,20 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$out/tillage.o" -o "$out/tillage"
   "$out/tillage" > "$out/tillage-output"
   grep -Fq 'F_MIG431_TILLAGE_REFERENCE_MATERIAL_CANDIDATE=PASS' "$out/tillage-output"
+  gfortran "${flags[@]}" -O"$opt" -J "$out" -I "$out" -c \
+    tests/tillage/test_mig431_tillage_joint_restart.f90 -o "$out/tillage-restart.o"
+  gfortran -O"$opt" "${objects[@]}" "$out/tillage-restart.o" -o "$out/tillage-restart"
+  "$out/tillage-restart" > "$out/tillage-restart-output"
+  grep -Fq 'F_MIG431_TILLAGE_JOINT_RESTART_O0_O2=PASS' "$out/tillage-restart-output"
 done
 cmp "$BUILD/o0/output" "$BUILD/o2/output"
 cmp "$BUILD/o0/crop-output" "$BUILD/o2/crop-output"
 cmp "$BUILD/o0/tillage-output" "$BUILD/o2/tillage-output"
+cmp "$BUILD/o0/tillage-restart-output" "$BUILD/o2/tillage-restart-output"
 cat "$BUILD/o0/output"
 cat "$BUILD/o0/crop-output"
 cat "$BUILD/o0/tillage-output"
+cat "$BUILD/o0/tillage-restart-output"
 
 # Materialize an additive event in the established real Reference dispatcher,
 # whose continuous/restarted endpoint and hard mass receipts are independently checked.
