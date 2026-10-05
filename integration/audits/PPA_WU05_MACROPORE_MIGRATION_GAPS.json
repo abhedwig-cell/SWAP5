@@ -5,7 +5,7 @@
   "standard_core_perched_exchange": "CANONICALLY_ADMITTED",
   "broad_swap431_macropore_migration_complete": false,
   "remaining_standard_gaps": [
-    "shrinkage characteristic-point parameter fitting, mixed Kim/peat runtime and new mixed-law rapid-drain reference construction",
+    "mixed Kim/peat runtime and new mixed-law rapid-drain reference construction",
     "within-compartment and multiple rapid-drain geometry",
     "ponding/runon and other surface-owner compositions",
     "fixed-weir/Ribasim rapid-drain receipt composition",
@@ -58,10 +58,15 @@
     "canonical_merge": "cee05d19338e53c353d3b07a1003a61d587c038f"
   },
   "migmac04_progress": {
-    "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
-    "admitted": false,
+    "status": "CANONICAL_PRODUCTION_ADMITTED_CLOSED",
+    "admitted": true,
     "scope": "Kim clay input2 and uniquely identifiable regular Hendriks peat input2 preparation in existing serialized Reference Richards geometry chain",
     "qualification": "integration/audits/PPA_WU05_MIGMAC04_QUALIFICATION.json",
-    "closeout": "docs/audits/PPA_WU05_MIGMAC04_CLOSEOUT.md"
-  }
+    "closeout": "docs/audits/PPA_WU05_MIGMAC04_CLOSEOUT.md",
+    "canonical_pr": 1021,
+    "canonical_merge": "ce6a85f11d4eb8d7234802745353e4c951581d96"
+  },
+  "deliberate_constitutive_exclusions": [
+    "Peat characteristic points at or beyond peak, P=0 and numerically flat brackets require a separate identifiability/root-selection contract; not silently mapped to Newton-seed-dependent parameters."
+  ]
 }

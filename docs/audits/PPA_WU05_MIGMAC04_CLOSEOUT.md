@@ -1,6 +1,6 @@
 # PPA-WU05-MIGMAC04 characteristic-point input closeout
 
-Date: 2026-10-05. Status: LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION.
+Date: 2026-10-05. Status: CANONICAL_PRODUCTION_ADMITTED_CLOSED.
 Canonical base: 23bcc2925b22ab129a8a3bc4597ce616e4f0dd58.
 
 Two configuration preparation routines supply the existing admitted constitutive
@@ -46,3 +46,10 @@ whole-model case equivalence, RossFast and concurrent MultiSWAP.
 A8/A10/MIGMAC01/PERCH20 and MIGMAC02/MIGMAC03 controlling preservation gates
 all pass at O0/O2. Initial A8 compile-directory failure and its successful serial
 retry remain separately recorded; no numerical tolerance was changed.
+
+## Canonical admission
+
+PR #1021 merged the exact qualified tree `2fa27d985ddd1331a8043153432f78da5e672dc8`
+at `ce6a85f11d4eb8d7234802745353e4c951581d96`. Published qualification commit:
+`84a1032298822df1656c99aaa968b17f75f9d5ec`. All 35 source/test postimages match.
+The closeout changes only documentation and status records.

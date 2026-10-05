@@ -239,7 +239,7 @@ construction remain separate gaps. Frozen Status A is unchanged.
 ## PPA-WU05-MIGMAC04 characteristic-point shrinkage input
 
 Kim clay input2 and the uniquely identifiable regular Hendriks peat input2
-branch are locally qualified as preparation of existing constitutive carriers.
+branch are canonically admitted by PR #1021 as preparation of existing constitutive carriers.
 Clay preparation is analytic; peat preparation uses bounded, bracketed root
 finding against the exact B1.11 equation. No runtime/state/mass owner is added.
 [Closeout](../audits/PPA_WU05_MIGMAC04_CLOSEOUT.md) bounds input validity, numerical
