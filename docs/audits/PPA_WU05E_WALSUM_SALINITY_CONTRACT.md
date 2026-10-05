@@ -51,3 +51,5 @@ current-source replay. All twelve declared groups plus the newly admitted
 root-frost process and runtime groups are mandatory on the merged source.
 Salt/frost and salt/Rutter remain excluded. The old qualification is immutable
 evidence of its earlier source and cannot qualify this dependency change.
+
+All fourteen reconciled groups now pass at execution `764f93ecacdb559324c071c90e9c9114502c080c`. The later metadata-only canonical root-frost closeout `33cb8c94` has identical production/test trees and is retained. Current qualification: `integration/audits/PPA_WU05E_WALSAL01_FROST_RECONCILED_QUALIFICATION.json`.

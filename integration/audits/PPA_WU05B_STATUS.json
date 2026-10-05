@@ -52,12 +52,12 @@
     "drainage/boundary flux ownership for deferred FrozenBounds"
   ],
   "source_trace": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
-  "next_action": "No further implementation within the admitted bounded hydraulic slice. Any excluded frost/root/boundary replacement requires a separate preregistered work unit.",
+  "next_action": "Hydraulic frost and empirical macro-root frost are admitted in distinct bounded units. Continue the source-reviewed FrozenBounds geometry/boundary work separately.",
   "recovery_point": "Canonical PR #1018 merge 5272ac9192ec1065dbe2432f73d1f1b4394437e0; exact qualified tree preserved; bounded hydraulic modifier admitted.",
   "blockers": [],
   "legacy_dispositions": {
     "FrozenBounds": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; future owner-specific boundary replacement is separate scope.",
-    "frost_root_stress": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; binary 0 C stress and ALPHACRIT compensation do not currently compose with the admitted sink chain; microscopic route errors when frost is enabled."
+    "frost_root_stress": "SUPERSEDED_BY_SEPARATELY_QUALIFIED_EXPLICIT_ROOT_COMPATIBILITY_ADMISSION_PPA_WU05B2; macro cutoff and Jarvis/Walsum compose through one root sink; MICRO frost remains unsupported."
   },
   "persisted_qualification": {
     "workflow": "PPA-WU05B bounded frost qualification and admission",
@@ -87,5 +87,6 @@
     "merge": "5272ac9192ec1065dbe2432f73d1f1b4394437e0",
     "authority": "integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json"
   },
-  "aggregate_frost_migration_complete": false
+  "aggregate_frost_migration_complete": false,
+  "root_frost_successor": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json"
 }

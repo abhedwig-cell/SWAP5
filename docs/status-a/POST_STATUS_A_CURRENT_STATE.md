@@ -357,3 +357,15 @@ PR #1015, canonical merge `cb841851db6a4f459835b4943cf442595898ecd3`, independen
 All 19 named current-source local qualification/preservation gates pass after reconciling admitted frost. Seven actual mixed stress cases, three top boundary cases, O0/O2, retry and separate-process restart are covered. The admitted merge source/test subtrees exactly match execution, with 1,024 verified manifest entries. Frost, Rutter, Walsum and MIGMAC07/08/09 remain preserved.
 
 Admission excludes salt/frost, salt/Rutter, salinity/Walsum, osmotic-head mode, sorption/decomposition, aquifer/groundwater salt state and full legacy or seasonal field equivalence. See [canonical closeout](../audits/PPA_WU05E_CANONICAL_CLOSEOUT.md) and `integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json`. Frozen Status A remains unchanged.
+
+### PPA-WU05B2 empirical root frost admission (2026-10-05)
+
+PR #1030 / merge `3039e573229b2bf19747f713084ea7a19cb48ed0` admits the explicit
+macro-root subzero cutoff with uncompensated, Jarvis and Walsum application paths.
+Local O0/O2 runtime, actual thaw, accepted uptake, direct refinement, fresh-worker
+restart, active salinity preservation and full current-canonical preservation pass.
+Production source identity is exact. Actions confirmation was queued and is not
+claimed successful. Local full/half temperature budgets do not imply cumulative
+1e-6 C accuracy; the documented horizon comparison bound is 1e-4 C. Joint salt/frost,
+Bartholomeus/frost and FrozenBounds remain excluded. The next source-bound boundary
+review is `docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md`.

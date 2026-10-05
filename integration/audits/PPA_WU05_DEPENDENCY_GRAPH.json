@@ -147,12 +147,14 @@
       "risk": "HIGH_BUT_BOUNDED_FOR_LEGACY_MODIFIER; VERY_HIGH_FOR_NEW_PHASE_CHANGE",
       "use_relevance": "MEDIUM",
       "architecture_maturity": "MEDIUM_CURRENT_TEMPERATURE_OWNER_LOW_FROST_AUTHORITY",
-      "production_status": "BOUNDED_HYDRAULIC_MODIFIER_ADMITTED_OTHER_FROST_PATHS_EXCLUDED",
+      "production_status": "BOUNDED_HYDRAULIC_AND_EXPLICIT_ROOT_STRESS_ADMITTED_BOUNDARY_PATHS_OPEN",
       "source_trace_status": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
       "known_legacy_defects": [
         "No TFROSTSTA>TFROSTEND validation; equal temperatures in frost-depth interpolation can divide by zero; interpolated frost depth is not consistently clamped."
       ],
-      "canonical_admission_authority": "integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json"
+      "canonical_admission_authority": "integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json",
+      "root_stress_successor_admission": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json",
+      "boundary_reassessment": "docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md"
     },
     "advanced_root_stress": {
       "legacy_files": [
@@ -195,7 +197,9 @@
           ],
           "composition_target": "Root stress modifier downstream of an admitted frost view.",
           "risk": "HIGH",
-          "authority_maturity": "LOW_BLOCKED_BY_FROST"
+          "authority_maturity": "QUALIFIED_EXPLICIT_SOURCE_COMPATIBILITY_NO_PHYSIOLOGICAL_VALIDATION_CLAIM",
+          "production_status": "CANONICALLY_ADMITTED_BOUNDED_MACRO_ROOT_COMPATIBILITY",
+          "canonical_admission": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json"
         },
         "compensated_uptake": {
           "dependencies": [
@@ -345,7 +349,7 @@
       "target": "Bounded frost hydraulic candidate qualification and boundary disposition",
       "scope": "Qualify the typed temperature-to-K/dKdh candidate with retry/restart evidence, then separately admit, replace or reject FrozenBounds and frost-root-stress behavior without claiming latent heat or new phase-change physics.",
       "reason": "Exact B1.11 source is reconstructed and the bounded provider path is implemented; retry/restart evidence and general boundary behavior remain open.",
-      "implementation_admission": "LOCAL_QUALIFICATION_IN_PROGRESS_NO_PRODUCTION_ADMISSION"
+      "implementation_admission": "BOUNDED_HYDRAULIC_AND_ROOT_FROST_ADMITTED_FROZEN_BOUNDS_REPLACEMENT_OPEN"
     },
     {
       "rank": 4,
@@ -367,7 +371,7 @@
       "id": "PPA-WU05-F",
       "target": "Frost root stress",
       "prerequisite": "admitted frost hydraulic modifier",
-      "implementation_admission": "BLOCKED_BY_FROST"
+      "implementation_admission": "PPA_WU05B2_BOUNDED_MACRO_ROOT_FROST_CANONICALLY_ADMITTED"
     },
     {
       "rank": 7,

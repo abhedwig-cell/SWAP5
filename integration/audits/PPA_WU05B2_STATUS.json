@@ -1,15 +1,23 @@
 {
   "work_unit": "PPA-WU05B2",
   "baseline": "53a3f3e41231b8600bbb19b8eb2157558bd12e19",
-  "branch": "work/ppa-wu05b2-frost-root-composition",
-  "status": "READY_FOR_REGIE",
+  "branch": "integration/f-ci-canonical",
+  "status": "CANONICALLY_ADMITTED",
   "implemented": true,
   "qualified": true,
-  "admitted": false,
-  "next_action": "Central regie reconciles live canonical and exact production source identity, then admits or returns this bounded root-frost successor. Persistent Actions confirmation is separate and is not yet claimed successful.",
+  "admitted": true,
+  "next_action": "No further implementation within this admitted root slice. Continue separately with the FrozenBounds geometry and single boundary-flux owner.",
   "authority": "integration/audits/PPA_WU05B2_PREREGISTRATION.json",
   "blockers": [],
   "reconciled_canonical": "916035e78305cae5f88c30d5805b5d9c33a348f8",
   "pull_request": 1030,
-  "qualification": "integration/audits/PPA_WU05B2_LOCAL_QUALIFICATION.json"
+  "qualification": "integration/audits/PPA_WU05B2_LOCAL_QUALIFICATION.json",
+  "implementation_branch": "work/ppa-wu05b2-frost-root-composition",
+  "canonical_admission": {
+    "pull_request": 1030,
+    "merge": "3039e573229b2bf19747f713084ea7a19cb48ed0",
+    "qualified_head": "f33956034176bd3e8d9ff79ccf0d94e85634d8c0",
+    "authority": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json"
+  },
+  "aggregate_frost_migration_complete": false
 }
