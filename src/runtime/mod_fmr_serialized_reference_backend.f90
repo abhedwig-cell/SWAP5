@@ -2490,6 +2490,7 @@ contains
       end if
       if(parameters%frost_drainage%active)then
         ok=ok.and.parameters%frost_drainage%valid().and.parameters%frost_active.and. &
+             numerical_config%transaction%temporal_mode==TX_TEMPORAL_EXTERNAL_FULL_HALF.and. &
              .not.parameters%frost_bottom%active.and..not.parameters%root_extraction_active.and. &
              .not.parameters%root_frost%active.and..not.parameters%root_salinity_active.and. &
              .not.parameters%drainage_response_active.and..not.self%base_salt_temporal_policy%enabled.and. &

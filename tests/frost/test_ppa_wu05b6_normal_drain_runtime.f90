@@ -42,16 +42,18 @@ program test_frost_drain_runtime
   real(real64),allocatable::tf(:),td(:)
   real(real64)::q,dt,head_diff,temp_diff
   real(real64)::drain_proposal(2,4),fine_exchange
-  integer::status,i,signum,dsign
+  integer::status,i,signum,dsign,pattern
   logical::ok
   call initialize_parameters(parameters,2)
   call enable_bounded_frost(parameters)
   call initialize_physical_state(parameters,.true.,initial,1._real64)
   call initialize_soil_temperature_state([-4._real64,-4._real64,-1._real64,1._real64],initial%soil_temperature,status)
   call require(status==0,'trial-start mixed frost profile')
+  do pattern=1,2
   do dsign=-1,1
     drain_proposal(1,:)=[.01_real64,.02_real64,.03_real64,.04_real64]*real(dsign,real64)
     drain_proposal(2,:)=[.02_real64,.03_real64,.04_real64,.05_real64]*real(dsign,real64)
+    if(pattern==2)drain_proposal(2,:)=-drain_proposal(2,:)
     do signum=-1,1,2
       q=real(signum,real64)*1.e-3_real64
       call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,result,observation, &
@@ -91,6 +93,7 @@ program test_frost_drain_runtime
            'fine independent integrated drainage owner')
     end do
   end do
+  end do
   columns(1)%column_id=column_id;columns(1)%template_id=440001_int64
   columns(1)%parameter_ref=1_int64;columns(1)%state_handle=1_int64;columns(1)%forcing_handle=1_int64
   columns(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
@@ -111,6 +114,12 @@ program test_frost_drain_runtime
        frost_case=.true.,start_time=1.e-4_real64,drain_case=.true.,resumed=restored(1),final_physical_state=replay)
   call require(again%committed.and.all(final%pressure_head==replay%pressure_head),'restored continuation bit identity')
   call require(result%mass%storage_change==again%mass%storage_change,'restored accounting identity')
+  wet=initial
+  call initialize_soil_temperature_state([-4._real64,-4._real64,-4._real64,-4._real64],wet%soil_temperature,status)
+  call execute_case(2,0._real64,0._real64,-999999._real64,1.e-4_real64,.false.,.true.,again,observation, &
+       frost_case=.true.,initial_physical_state=wet,final_physical_state=final,drain_case=.true.)
+  call require(again%committed.and.observation%frost_drainage%total_rate==0._real64,'air-rich frozen drainage zero')
+  call require(again%mass%total_in==0._real64.and.again%mass%total_out==0._real64,'zero actual drainage ledger')
   wet=initial;wet%pressure_head=[0._real64,1._real64,2._real64,3._real64];wet%water_content=parameters%cofgen(2,:)
   call initialize_soil_temperature_state([-4._real64,-4._real64,-4._real64,-4._real64],wet%soil_temperature,status)
   call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,again,observation, &
@@ -491,4 +500,4 @@ contains
     end if
   end subroutine require
 
-end program test_frost_drainage_runtime
+end program test_frost_drain_runtime
