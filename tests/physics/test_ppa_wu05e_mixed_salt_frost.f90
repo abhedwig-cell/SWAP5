@@ -213,6 +213,7 @@ program test_ppa_wu05e_mixed_salt_frost
     case(8);bad%tiles(1)%base_forcing%subsurface_irrigation_source(1)=1.e-4_real64
     case(9);bad%tiles(1)%parameters%saltslope_cm3_mg=ieee_value(0._real64,ieee_quiet_nan)
     end select
+    print *, 'JOINT_INVALID_PROFILE ',scenario
     call backend%configure_base_salt_temporal_policy(bad%base_salt_temporal_policy,ok)
     call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
          bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2)

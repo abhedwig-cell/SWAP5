@@ -37,3 +37,23 @@ Rutter/salt/frost and seasonal field equivalence. Historical qualification is
 immutable. Frozen Status A is unchanged. Owned surface: root process and
 existing typed production execution; transaction, water/salt mass ownership,
 committed restart and solver interfaces are held fixed.
+
+## Reconciled qualification denominator
+
+Canonical B6 normal frost drainage at `1de2b874` is inherited and separately
+preserved; this successor still excludes its combination with salt.
+The controlling gate set has 23 groups: joint process; four actual joint
+Jarvis/Walsum upwind/dispersion groups; original Walsum and Jarvis matrix salt
+upwind/dispersion; root-frost process/runtime; Jarvis process; mobile salt;
+D2 application; D3 Walsum; rootless frost runtime; B3 bottom-frost runtime;
+B4 joint root/bottom runtime; B6 source/runtime; Rutter production; MIGMAC09;
+A8 Richards. JSON source manifests must match the exact executed Git source.
+Process and fresh restart checks require O0/O2 identity. All groups and docs
+checks must pass before production qualification or canonical admission.
+
+The malformed salinity regression revealed unsafe nonfinite comparisons under
+floating-point traps. Ordered finite validation rejects these inputs before
+range comparisons, preserving the same permitted finite parameter range.
+The old root-frost process salt/frost exclusion assertion is superseded only
+for complete four-channel attribution; its replacement still rejects an
+incomplete loss sum, with independent new positive and negative coverage.

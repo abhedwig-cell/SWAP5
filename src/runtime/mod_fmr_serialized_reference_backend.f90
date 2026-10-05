@@ -2562,6 +2562,12 @@ contains
         ok=ok.and.fmr_mobile_dispersion_matches_hydraulic_owner(parameters).and..not.parameters%macropore_active
       end if
       if (parameters%root_salinity_active) then
+        ! Ordered validation: Fortran may evaluate comparisons even when a
+        ! preceding finite predicate is false. Reject before comparing NaNs.
+        if(.not.all(ieee_is_finite([parameters%solute_tscf,parameters%saltmax_mg_cm3,parameters%saltslope_cm3_mg])))then
+          ok=.false.
+          return
+        end if
         ok = ok .and. parameters%root_extraction_active .and. &
              (parameters%root_compensation%method == ROOT_COMP_JARVIS .or. &
               parameters%root_compensation%method == ROOT_COMP_WALSUM) .and. &
