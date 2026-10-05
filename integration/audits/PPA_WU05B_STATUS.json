@@ -4,8 +4,8 @@
   "title": "B1.11 frost hydraulic modifier migration",
   "branch": "work/ppa-wu05b-frost-migration",
   "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
-  "checkpoint_commit": "3bafd2360aa6c3dfbfd22bfd3c4349ed91cba4fd",
-  "last_reconciled_head": "3bafd2360aa6c3dfbfd22bfd3c4349ed91cba4fd",
+  "checkpoint_commit": "d61c6196b89ffe2d1aaf4bcb8fd45067594c54df",
+  "last_reconciled_head": "d61c6196b89ffe2d1aaf4bcb8fd45067594c54df",
   "last_reconciled_upstream": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "implemented": true,
   "persisted": true,
@@ -48,10 +48,14 @@
     "drainage/boundary flux ownership for deferred FrozenBounds"
   ],
   "source_trace": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
-  "next_action": "Force and verify frost trial rejection/retry and frost-enabled restart reconstruction; complete the independent temperature-state matrix before a bounded admission decision.",
-  "recovery_point": "work/ppa-wu05b-frost-migration@3bafd2360aa6c3dfbfd22bfd3c4349ed91cba4fd after local bounded-candidate O0/O2 runtime gate",
+  "next_action": "Run the persisted qualification/admission gate against the exact persisted frost postimage, then record the gate result and canonical admission decision.",
+  "recovery_point": "work/ppa-wu05b-frost-migration@d61c6196b89ffe2d1aaf4bcb8fd45067594c54df; implementation, runtime tests, preregistration, source trace and local qualification evidence are persisted.",
   "blockers": [
-    "Rejected-trial/retry and frost-enabled restart oracles are outstanding; candidate is not qualified or production-admitted.",
-    "General FrozenBounds drainage/bottom behavior and frost-root-stress remain outside the bounded candidate and require separate authority and qualification."
-  ]
+    "Persisted production qualification/admission gate has not yet run against the exact postimage; no production admission is claimed.",
+    "The candidate intentionally excludes legacy FrozenBounds and frost-root-stress in their current forms; those are documented REJECTED dispositions, not blockers for the bounded zero-boundary/root-off capability."
+  ],
+  "legacy_dispositions": {
+    "FrozenBounds": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; future owner-specific boundary replacement is separate scope.",
+    "frost_root_stress": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; binary 0 C stress and ALPHACRIT compensation do not currently compose with the admitted sink chain; microscopic route errors when frost is enabled."
+  }
 }
