@@ -113,6 +113,8 @@ program test_ppa_wu05e_mixed_salt_frost
       p%face_right_weight=.5_real64*dz(1:numnod-1)/p%face_distance_cm
     end associate
   end if
+  cfg%numerical%transaction%max_retries=20
+  cfg%numerical%max_committed_substeps=2048
   columns(1)%column_id=cfg%tiles(1)%tile_id;columns(1)%template_id=cfg%tiles(1)%template%template_id
   columns(1)%parameter_ref=1_int64;columns(1)%state_handle=1_int64;columns(1)%forcing_handle=1_int64
   columns(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
@@ -145,8 +147,6 @@ program test_ppa_wu05e_mixed_salt_frost
     print '(a)','PPA_WU05E_FRESH_PROCESS_RESTART=PASS_TEST_ONLY'
     stop
   end if
-  cfg%numerical%transaction%max_retries=20
-  cfg%numerical%max_committed_substeps=2048
   cfg%base_salt_temporal_policy=policy
   call backend%configure_base_salt_temporal_policy(policy,ok)
   call require(ok,'joint salt policy')
@@ -199,6 +199,72 @@ program test_ppa_wu05e_mixed_salt_frost
     call backend%discard_trial_candidate(candidate,diag)
     call states(1)%snapshot(after,ok);call require_same_physical(cfg%tiles(1)%initial_state,after)
   end do
+  ! Invalid hybrid/input profiles reject before publishing accepted transpiration.
+  do scenario=1,9
+    bad=cfg
+    select case(scenario)
+    case(1);bad%base_salt_temporal_policy%enabled=.false.
+    case(2);bad%tiles(1)%parameters%root_frost_head_budget_cm=0._real64
+    case(3);bad%tiles(1)%parameters%frost_bottom%active=.true.
+    case(4);bad%tiles(1)%parameters%frost_drainage%active=.true.
+    case(5);allocate(bad%tiles(1)%parameters%bartholomeus)
+    case(6);bad%tiles(1)%base_forcing%drainage_flux_by_level(1,1)=1.e-4_real64
+    case(7);bad%tiles(1)%base_forcing%bottom_flux=1.e-4_real64
+    case(8);bad%tiles(1)%base_forcing%subsurface_irrigation_source(1)=1.e-4_real64
+    case(9);bad%tiles(1)%parameters%saltslope_cm3_mg=ieee_value(0._real64,ieee_quiet_nan)
+    end select
+    call backend%configure_base_salt_temporal_policy(bad%base_salt_temporal_policy,ok)
+    call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
+         bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2)
+    call require(.not.replay%completed.and..not.other%ready(),'invalid joint backend profile rejects')
+    call states(1)%snapshot(after,ok);call require_same_physical(cfg%tiles(1)%initial_state,after)
+    call badapp%initialize(bad,status)
+    if(status==FMR_APP_BOOT_OK)then
+      call badapp%run_standalone(T0,T1,scenario_results,status)
+      call require(status/=FMR_APP_BOOT_OK,'invalid joint application execution rejects')
+      if(allocated(scenario_results))then
+        if(size(scenario_results)>0)call require(.not.scenario_results(1)%committed.and. &
+             .not.scenario_results(1)%actual_transpiration_available,'rejected joint transpiration unavailable')
+      end if
+      call badapp%close(status)
+    end if
+  end do
+  call backend%configure_base_salt_temporal_policy(policy,ok)
+  ! Actual all-frozen, warm, and a short real thaw from a shallow subzero state.
+  do scenario=1,3
+    bad=cfg
+    deallocate(bad%tiles(1)%initial_state%soil_temperature)
+    allocate(bad%tiles(1)%initial_state%soil_temperature)
+    k=merge(-1._real64,1._real64,scenario==1)
+    if(scenario==3)k=-1.e-5_real64
+    call initialize_soil_temperature_state(spread(k,1,numnod),bad%tiles(1)%initial_state%soil_temperature,status)
+    bad%tiles(1)%base_forcing%soil_temperature%prescribed_surface_temperature_c=k
+    if(scenario==3)bad%tiles(1)%base_forcing%soil_temperature%prescribed_surface_temperature_c=5._real64
+    call fmr_new_b110_committed_state(states(1),columns(1)%column_id,bad%tiles(1)%initial_state,T0,ok)
+    call states(1)%capture_checkpoint(cp,ok)
+    call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
+         bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2,trace_accepted_water_flux_substeps=.true.)
+    print *, 'JOINT_THERMAL_REGIME ',scenario,replay%completed,diag2%temporal_rejections,diag2%accepted_substeps
+    call require(replay%completed.and.other%ready(),'actual joint thermal regime completes')
+    obs2=backend%observation()
+    if(scenario==1)then
+      call require(root_water_amount(obs2)==0._real64,'all-frozen accepted root water is zero')
+      do j=1,size(obs2%accepted_water_flux_substeps)
+        call require(all(obs2%accepted_water_flux_substeps(j)%salt_receipt%root_solute_uptake_mg_cm2==0._real64), &
+             'all-frozen accepted root salt is zero')
+      end do
+    else
+      call require(root_water_amount(obs2)>0._real64,'warm/thawed accepted roots extract water')
+      call require(obs2%root_compensation_final_uptake>0._real64,'warm/thawed joint response positive')
+      if(scenario==2)call require(obs2%root_compensation_frost_loss==0._real64,'warm frost factor identity')
+      if(scenario==3)call require(all(obs2%accepted_water_flux_substeps(1)%root_sink==0._real64), &
+           'real thaw starts with zero frozen root extraction')
+    end if
+    call backend%discard_trial_candidate(other,diag2)
+    call states(1)%snapshot(after,ok);call require_same_physical(bad%tiles(1)%initial_state,after)
+  end do
+  call fmr_new_b110_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok)
+  call states(1)%capture_checkpoint(cp,ok)
   ! Independently activate each temporal owner while the other is permissive.
   do scenario=1,2
     bad=cfg;tight=policy
