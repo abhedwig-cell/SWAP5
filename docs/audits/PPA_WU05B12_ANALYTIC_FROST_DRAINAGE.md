@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-Implemented and persisted; runtime qualification is in progress. Baseline is
+Locally qualified and persisted; canonical admission is pending. Baseline is
 B11 canonical closeout `879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6`.
 The versioned source review, preregistration and current status are under
 `integration/audits/PPA_WU05B12_*.json`. This is a bounded composition of
@@ -51,7 +51,7 @@ second levels. Its O0/O2 outputs are identical. Retry, mass at `1e-12 cm`,
 accepted receipts, replay, application and empty-registry restart pass.
 Further 16,384/32,768 reference trajectories for IPOS1/2/5 pass within the
 unchanged `1e-6 cm` head and `1e-4 C` thermal comparison envelopes.
-Low-air full runtime and further references are pending in the status record.
+Low-air all-five-family full runtime, 131,072-step IPOS1/IPOS5 surviving-level references, observed short activation and application preflight pass. O0/O2 outputs are identical; no fine trajectory reuse was used.
 Its declared debug budgets remain B10's and establish no practical speed claim.
 
 The first generated main had a concatenated END DO; repeated restart tests
@@ -65,3 +65,19 @@ Empirical interflow, EXTENDED_SIGNED, SWDIVD1 spatial distribution, fixed-weir,
 GWL projection, directional/implicit drainage and root/salt/macropore/snow
 hybrids remain outside this composition. No ice partition or latent-heat
 claim is made.
+
+## Qualification resource recovery
+
+The parallel all-family O2 worker exceeded the shared 8 GiB memory limit and was killed (exit 137). Its incomplete numerical prefix and the deliberately interrupted O0 run are retained as unqualified memory recovery. The runner now executes all five complete families in separate fresh processes, including each full fine trajectory, retry/replay/empty restart/application and negative cases. Current production source, scientific bodies, physical case bodies and budgets are unchanged. The complete fresh-process O0/O2 rerun passes; this does not establish a production memory or speed claim.
+
+## Completed current-source preservation
+
+All declared gates pass on production source `7be5920b9c04eb3c985deeeb89207a2992ad2e65`. Each runtime route covers 30 complete trajectories at both O0/O2. Fresh B1/B2/B3/B4/B6/B8/B9/B10/B11 preservation, four 179-source salt/root/frost matrices, immutable VQ73/VQ74, literal root cutoff and exact canonical preservation pass. No tolerance or physical-domain changes were made. The immutable partial recovery remains explicitly unqualified; the full replay supplies completed current-source evidence.
+
+normal maximum head error: 2.400842e-07 cm; temperature error: 8.090195e-13 C.
+
+low_air maximum head error: 1.935812e-07 cm; temperature error: 3.64947e-07 C.
+
+The additional low-air short activation fixture first inherited an air-rich setup when replacing the original main. It was repaired to carry the actual near-saturated hydraulic state and assert the observed low-air branch on every case, then rerun at both optimization levels. Full low-air trajectories were unaffected. Separate owned whole-module builds ran O0/O2 concurrently with the same persisted program; all five families and full fine trajectories were retained.
+
+The initial all-family parallel qualification exceeded the shared 8 GiB cgroup memory limit and its O2 worker was killed (exit 137); its incomplete numerical prefixes and resource evidence remain explicitly unqualified. The repaired runner executes each complete family in a fresh process, retaining all five full matrices and unchanged scientific/runtime case bodies and budgets. Unchanged verified whole-module builds were relinked to the new process selector; complete fresh-process O0/O2 results supply the qualification. This is a bounded qualification execution change, with no production memory or speed claim.

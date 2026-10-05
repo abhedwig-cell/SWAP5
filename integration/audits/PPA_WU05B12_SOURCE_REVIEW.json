@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B12",
-  "status": "SOURCE_REVIEW_COMPLETE_IMPLEMENTED_PARTIALLY_TESTED",
+  "status": "SOURCE_REVIEW_COMPLETE_LOCALLY_QUALIFIED",
   "baseline_source": "cd7a56657fa3347ee63595a0f54274b2f1766ba8",
   "prerequisite": "Exact B11 admission and closeout verified; implementation must follow persisted B12 preregistration",
   "selected_next_slice": "Already-admitted DRAMET2 Hooghoudt IPOS1/2/3 and Ernst IPOS4/5 normal/guarded low-air frost composition, explicit OFF-by-default selector; LINEAR/TABULATED mixtures only with their required existing selectors",
@@ -33,10 +33,10 @@
     "src/process/mod_drainage_ernst_ipos45_response.f90": "74bfdc58b88070243e2ed6e5dd26311ac8a64be670759c1114a37b48ab2a711b"
   },
   "implemented": true,
-  "qualified": false,
+  "qualified": true,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
-  "next_action": "Finish preregistered runtime and preservation qualification on exact production source7be5920b; then verify proposed merge before canonical admission",
+  "next_action": "Exact proposed-merge verification and canonical admission",
   "literal_B1_11_drainage_source": {
     "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90",
     "sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
