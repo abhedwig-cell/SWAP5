@@ -308,3 +308,23 @@ Nonrigid covering reference preparation still needs source relevance/ownership
 reconciliation; wider source-relevant surface compositions and whole-model
 equivalence remain outside this admission. Frozen Status A remains unchanged;
 broad migration is still incomplete.
+
+## PPA-WU05-MIGMAC09 source covering compartment mask
+
+PR #1026 admits the source mask above IcTopMp independently of covering soil
+shrink law. Source initialization zeros static volume and all domain fractions
+there; MPVOLUME excludes those cells. Production candidate geometry now receives
+the actual top node. Reference preparation checks zero static/domain capacities,
+replacing MIGMAC08's rigid-selector restriction. Nonzero accepted covered crack
+volume fails without accepted-state mutation. Covering matrix transfer retains
+its owner; no new surface forcing, persistent state or solver policy is added.
+
+Nonrigid covered mixed-law dry/wetting/partial-drain Reference trials, prepared
+carriers, supplied/derived coefficient identity, retry/A-B-A/restart and O0/O2
+pass. All affected pure/provider and A8/A10/MIGMAC01/PERCH20 gates pass. Exact
+section-D source and independent reference geometry agree. See
+[closeout](../audits/PPA_WU05_MIGMAC09_CLOSEOUT.md) and pinned qualification.
+Earlier nonrigid-cover reference exclusions are superseded for this source mask;
+a separate covering macropore crack law is not unported B1.11 functionality.
+Wider source-relevant surface compositions and whole-model equivalence remain
+outside admission. Frozen Status A is unchanged; broad migration is incomplete.

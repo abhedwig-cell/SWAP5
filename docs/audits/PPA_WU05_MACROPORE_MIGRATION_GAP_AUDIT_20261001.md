@@ -218,3 +218,19 @@ Reconcile source relevance of nonrigid covering reference geometry before
 assuming that it is missing migrated physics. Wider source/surface compositions
 and whole-model equivalence remain outside this admission. Broad migration is
 incomplete. [MIGMAC08 closeout](PPA_WU05_MIGMAC08_CLOSEOUT.md) controls the claim.
+
+## Later canonical reconciliation: MIGMAC09 (2026-10-05)
+
+PR #1026 closes the nonrigid covering source reconciliation. B1.11 zeros static
+volume/domain fractions above IcTopMp and excludes those cells from MPVOLUME.
+Thus an additional nonrigid-cover macropore crack law is not missing source
+physics. The actual source compartment mask is now explicit in production
+candidate geometry and hydrostatic reference preparation, irrespective of the
+covering soil shrink selector. Earlier rigid-only cover exclusions are superseded
+for the qualified zero-capacity/domain-mask route.
+
+Mixed-law Reference dry/wetting/partial rapid drainage, supplied/derived reference
+identity, fit carriers, reject/retry/A-B-A/restart and O0/O2 pass. No new state or
+surface owner is introduced. Wider source-relevant surface compositions and
+whole-model equivalence remain migration work. Broad migration is incomplete;
+[MIGMAC09 closeout](PPA_WU05_MIGMAC09_CLOSEOUT.md) controls this bounded claim.

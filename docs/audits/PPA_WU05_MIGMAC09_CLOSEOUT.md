@@ -1,6 +1,6 @@
 # PPA-WU05-MIGMAC09 source covering compartment mask
 
-Date: 2026-10-05. Status: QUALIFIED_PENDING_CANONICAL_ADMISSION.
+Date: 2026-10-05. Status: CANONICAL_PRODUCTION_ADMITTED_CLOSED.
 Canonical base: 5e696aeb42ad22ca05ac844115cc82f95bf789ec.
 
 The pinned B1.11 source does not construct macropore cracks in a covering layer,
@@ -47,3 +47,10 @@ Controlling evidence: `integration/audits/PPA_WU05_MIGMAC09_QUALIFICATION.json`.
 Canonically admitted state is controlled by the work-unit status record. Frozen
 Status A remains unchanged. Wider source-relevant surface compositions and
 whole-model equivalence remain outside this scope; broad migration is incomplete.
+
+## Canonical admission
+
+PR #1026 merged qualified tree 396e8a1560eab58e6e678cb43fc5ff7dbdb4a7ed
+at 858542df4b4af5a15d17ab2c02824afb28c3a96f. Published qualified commit:
+7275dc88827f810177ae1162eb1759360e3ce1e2. Merge comparison has no changed files.
+All 159 source/test postimages remain exact. Closeout changes documentation/status.
