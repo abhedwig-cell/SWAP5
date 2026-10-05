@@ -33,7 +33,8 @@ program test_ppa_wu05a7_real_richards_runtime
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
        fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg, &
        fmr_c_drain_salt_forcing_t, FMR_C_DRAIN_UNIT_MG_CM3, fmr_c_drain_salt_covers_interval, &
-       fmr_c_drain_salt_matches_trial
+       fmr_c_drain_salt_matches_trial, fmr_soil_salt_boundary_forcing_t, &
+       fmr_soil_salt_boundary_matches_trial
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
@@ -500,6 +501,7 @@ contains
     type(mobile_macro_salt_state_t)::committed,candidate
     type(mobile_macro_salt_receipt_t)::receipt
     type(fmr_c_drain_salt_forcing_t)::cdrain
+    type(fmr_soil_salt_boundary_forcing_t)::soil_boundary
     real(real64),allocatable::matrix_c(:),macro_c(:,:),faces(:)
     real(real64)::closure,max_qssdi
     integer::n,nd,nlev,i,status,face_status
@@ -527,6 +529,29 @@ contains
     if(fmr_c_drain_salt_covers_interval(cdrain,cdrain%valid_t0,cdrain%valid_t1)) &
          error stop 'FMR Cdrain unknown unit accepted'
     cdrain%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
+    soil_boundary%available=.true.;soil_boundary%matrix_top_mg_cm3=.3_real64
+    soil_boundary%matrix_bottom_mg_cm3=.5_real64
+    soil_boundary%valid_t0=cdrain%valid_t0;soil_boundary%valid_t1=cdrain%valid_t1
+    soil_boundary%source_id=cdrain%source_id;soil_boundary%revision=4_int64
+    soil_boundary%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
+    allocate(soil_boundary%macropore_top_mg_cm3(2),soil_boundary%macropore_bottom_mg_cm3(2))
+    soil_boundary%macropore_top_mg_cm3=[.2_real64,.4_real64]
+    soil_boundary%macropore_bottom_mg_cm3=[.6_real64,.8_real64]
+    if(.not.fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,0.9_real64,2)) &
+         error stop 'typed soil salt boundary rejected'
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id+1_int64,0.1_real64,0.9_real64,2)) &
+         error stop 'mismatched soil salt boundary source accepted'
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,1.1_real64,2)) &
+         error stop 'incomplete soil salt boundary interval accepted'
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,0.9_real64,3)) &
+         error stop 'soil salt boundary domain mismatch accepted'
+    soil_boundary%unit_id=0
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,0.9_real64,2)) &
+         error stop 'unknown soil salt boundary unit accepted'
+    soil_boundary%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
+    deallocate(soil_boundary%macropore_top_mg_cm3,soil_boundary%macropore_bottom_mg_cm3)
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,0.9_real64)) &
+         error stop 'unpaired macropore boundary concentrations accepted'
     matrix_c=0.4_real64;macro_c=0.3_real64
     call initialize_mobile_macro_salt_state(node_thickness,water_trace(1)%water_start, &
          water_trace(1)%macropore_water_start,matrix_c,macro_c,committed,status)
@@ -731,7 +756,24 @@ contains
       forcing%c_drain_salt%source_id=column%forcing_handle
       call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
            kres,candidate,kdiag)
+      if(kres%completed.or.candidate%ready())error stop 'active salt trial accepted missing soil boundary'
+      allocate(forcing%soil_salt_boundary)
+      forcing%soil_salt_boundary%available=.true.
+      forcing%soil_salt_boundary%matrix_top_mg_cm3=.4_real64
+      forcing%soil_salt_boundary%matrix_bottom_mg_cm3=.4_real64
+      forcing%soil_salt_boundary%valid_t0=0.0_real64
+      forcing%soil_salt_boundary%valid_t1=fmr_dt
+      forcing%soil_salt_boundary%source_id=column%forcing_handle
+      forcing%soil_salt_boundary%revision=0_int64
+      forcing%soil_salt_boundary%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
+      allocate(forcing%soil_salt_boundary%macropore_top_mg_cm3(fparams%macropore%geometry%num_domains), &
+           forcing%soil_salt_boundary%macropore_bottom_mg_cm3(fparams%macropore%geometry%num_domains))
+      forcing%soil_salt_boundary%macropore_top_mg_cm3=.3_real64
+      forcing%soil_salt_boundary%macropore_bottom_mg_cm3=.3_real64
+      call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
+           kres,candidate,kdiag)
       if(kres%completed.or.candidate%ready())error stop 'unqualified active salt trial opened'
+      deallocate(forcing%soil_salt_boundary)
       deallocate(forcing%c_drain_salt)
       template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_NONE
     end if
