@@ -23,7 +23,7 @@
     "src/process/mod_frost_drainage_effect.f90"
   ],
   "dependency_surface": "Actual runtime/backend/bootstrap, all generated drain families, frost/temperature, root kernel, single sink/accounting, restart, canonical pin gate and owned static grid fixture",
-  "next_action": "Persist actual source/runtime candidate remotely, then run source component and fresh whole-module actual normal/low-air qualification",
+  "next_action": "Resume fresh low-air build after fixture import repair; finish normal O2 and then remaining preservation",
   "recovery_point": "This preregistration commit",
   "blockers": [],
   "test_paths": [
@@ -33,5 +33,9 @@
     "tests/frost/run_ppa_wu05b11_low_air_runtime.sh",
     "tests/frost/run_ppa_wu05b11_tabulated_response_source.sh",
     "tests/frost/run_ppa_wu05b11_normal_runtime.sh"
+  ],
+  "focused_source": "768_CASES_O0_O2_IDENTICAL_PASS",
+  "negative_findings": [
+    "Low-air fixture first compile lacked ieee_value/ieee_quiet_nan import; no physics ran; import repaired, rerun pending"
   ]
 }
