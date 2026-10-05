@@ -1,0 +1,30 @@
+{
+  "work_unit": "PPA-WU05B3",
+  "baseline": "33cb8c94d0ed2c9578643033e414a313daf00e88",
+  "last_reconciled_upstream": "33cb8c94d0ed2c9578643033e414a313daf00e88",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "scope": "Legacy no-drain FrozenBounds on rootless ordinary Reference mode2, explicit opt-in",
+  "authority_paths": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md",
+    "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json"
+  ],
+  "relevant_paths": [
+    "src/process/mod_frost_bottom_boundary_effect.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/frost"
+  ],
+  "dependency_surface": [
+    "src/runtime",
+    "src/solver",
+    "src/process",
+    "tests/fci"
+  ],
+  "next_action": "Implement preregistered selector and trial-owned binding; persist before qualification",
+  "blockers": []
+}
