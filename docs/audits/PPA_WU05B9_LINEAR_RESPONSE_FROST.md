@@ -1,6 +1,6 @@
 # PPA-WU05B9 linear drainage generation with normal frost
 
-Status: locally qualified candidate; canonical admission pending. B8 remains independently admitted.
+Status: canonically admitted via PR #1048 at `5cd8f04f81c19c6a20abeacddc172e0c44598ded`; B8 remains independently admitted.
 
 The OFF-by-default `frost_response_drainage_active` selector combines admitted linear drainage generation with B6 normal frost. It requires both drainage-response and frost-drainage carriers, only LINEAR levels and ordinary rootless Reference mode2. B8 low-air geometry, current-head groundwater projection, other response variants and root/salt/macropore/snow combinations are excluded. This is not a new drainage equation or fully implicit solver coupling.
 

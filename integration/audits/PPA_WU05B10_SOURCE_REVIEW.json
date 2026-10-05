@@ -1,7 +1,7 @@
 {
   "work_unit": "PPA-WU05B10",
   "status": "SOURCE_REVIEW_ONLY",
-  "baseline": "79f75bcb8d80fbc48767236f53ed0ee9d7ecfb9b",
+  "baseline": "5cd8f04f81c19c6a20abeacddc172e0c44598ded",
   "production_source_tree": "0379fcc374513baaa487979ac7cc8288c9f44641",
   "scope_under_review": "Admitted LINEAR trial-start response followed by B8 bracketed low-air drainage modifier; no redistribution or new geometry.",
   "findings": [
@@ -22,8 +22,9 @@
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
-  "next_action": "Finish B9 exact admission, preregister bounded terminal-regeneration contract before changing production",
+  "next_action": "Reconcile actual canonical closeout and implement preregistered B10",
   "negative_review_findings": [
     "Initial review overgeneralized proposal dependence of the qbot threshold. Exact B8 depth ordering proves that all levels are zero whenever the depth condition for qbot blocking holds. No reachable SWDIVD0 finite-depth threshold-only qbot branch exists."
-  ]
+  ],
+  "prerequisite": "B9 admitted via PR1048; exact production0379fcc3"
 }

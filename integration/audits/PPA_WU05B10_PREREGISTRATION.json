@@ -1,9 +1,9 @@
 {
   "work_unit": "PPA-WU05B10",
-  "status": "PREREGISTERED_PENDING_B9_ADMISSION",
+  "status": "PREREGISTERED_READY_AFTER_B9_ADMISSION",
   "source_review": "integration/audits/PPA_WU05B10_SOURCE_REVIEW.json",
   "baseline_source": "0379fcc374513baaa487979ac7cc8288c9f44641",
-  "prerequisite": "B9 bounded canonical admission; reconcile exact admission before production changes",
+  "prerequisite": "B9 admitted via PR1048; exact production0379fcc3",
   "scope": "LINEAR drainage response generation combined with B8 bracketed low-air modifier on rootless ordinary Reference mode2; physical drain depths and existing consistent geometry",
   "interface": "New OFF-by-default frost_low_air_response_drainage_active selector requires B9 frost_response_drainage_active, drainage_response_active, B6 frost_drainage and B8 frost_low_air_drainage. Finite negative drain-depth cardinality matches generated levels. No projection, other variants, root/salt/macropore/snow or new committed/restart/ledger state.",
   "physical_order": "Reuse B9 trial-start generation before B8 modifier. Proposed rates remain untouched, final node totals feed single sink and final receipts; final bottom flux remains a separate existing owner.",
@@ -29,5 +29,6 @@
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
-  "next_action": "After B9 admission, reconcile actual canonical and implement bounded selected composition"
+  "next_action": "Reconcile actual canonical closeout and implement preregistered B10",
+  "baseline": "5cd8f04f81c19c6a20abeacddc172e0c44598ded"
 }
