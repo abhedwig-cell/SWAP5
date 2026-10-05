@@ -5,8 +5,8 @@
   "branch": "work/ppa-wu05-migmac02-crack-geometry",
   "workunit": "PPA-WU05-MIGMAC02",
   "scope": "dynamic shrinkage/crack geometry feedback in the admitted serialized Reference Richards macropore route",
-  "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
-  "production_admitted": false,
+  "status": "CANONICAL_PRODUCTION_ADMITTED_CLOSED",
+  "production_admitted": true,
   "authority": {
     "corrected_reference_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
     "required_macropore_member_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
@@ -27,7 +27,7 @@
     "donor_equation_source_parity": false,
     "full_transaction_restart_qualification": true,
     "clay_option1_and_mpvolume_source_parity": true,
-    "production_admission": false,
+    "production_admission": true,
     "candidate_subsidence_in_geometry": true,
     "subsidence_adjusted_top_surface_area": true,
     "dynamic_top_input_feedback_inside_inner_provider": true,
@@ -47,7 +47,7 @@
     "qualification_record": "integration/audits/PPA_WU05_MIGMAC02_QUALIFICATION.json"
   },
   "blockers": [],
-  "next_action": "Persist this postimage, then run declared MIGMAC02 and admitted-route preservation gates locally; qualify and integrate bounded Reference Richards clay option-1 scope.",
+  "next_action": "Bounded MIGMAC02 complete; remaining constitutive and composition gaps are separate work.",
   "historical_negative_findings": [
     "Invalid original A8/A9 synthetic geometry used 0.5cm static capacity in 0.5cm compartments (zero matrix fraction); manually constructed FMR configurations omitted matrix area. Corrected physically valid fixtures use 0.25cm static volume and exact B1.11 static matrix fraction.",
     "Standard candidate builder rejected changed geometry, then initially copied domain capacity without dynamic_volume_cp history. Second-half reconstruction therefore failed geometry identity. History and capacity now publish together.",
@@ -59,5 +59,9 @@
     "peat laws",
     "alternate parameter fitting",
     "mixed rigid/shrinking layers"
-  ]
+  ],
+  "canonical_pr": 1019,
+  "canonical_merge": "957b87d69888f1eb7ef5671f441563bd9b798687",
+  "published_qualified_commit": "f74257be207eb65a8b03136f8ab90c0d809badd0",
+  "qualified_tree": "fca26d03d3051d27c45e3eae04d53402f2b91879"
 }

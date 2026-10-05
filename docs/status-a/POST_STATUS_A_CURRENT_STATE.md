@@ -210,7 +210,7 @@ This does not admit salinity, frost, MICRO or general coupling combinations.
 
 ## PPA-WU05-MIGMAC02 dynamic crack geometry
 
-Local qualification is complete for Kim clay direct option-1 shrinkage in the
+PR #1019 canonically admits Kim clay direct option-1 shrinkage in the
 existing serialized Reference Richards macropore chain. Candidate moisture and
 accepted crack history derive subsidence, capacity, domain bottoms and top crack
 area. Existing exchange/top-input/rapid-drain owners consume that geometry;
@@ -222,6 +222,5 @@ The controlling scope, exact source postimages, independent oracles, O0/O2,
 A/B/A, smaller retry, restart, water closure and preservation evidence are in
 `integration/audits/PPA_WU05_MIGMAC02_QUALIFICATION.json` and
 `docs/audits/PPA_WU05_MIGMAC02_CLOSEOUT.md`. Canonical admission is recorded in
-`integration/audits/PPA_WU05_MIGMAC02_STATUS.json` when the qualified postimage
-is merged. Peat/alternate fitting and additional surface/drain compositions
+`integration/audits/PPA_WU05_MIGMAC02_STATUS.json` with canonical merge `957b87d69888f1eb7ef5671f441563bd9b798687`. Peat/alternate fitting and additional surface/drain compositions
 remain outside this bounded admission. Frozen Status A is unchanged.

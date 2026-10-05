@@ -1,7 +1,7 @@
 # PPA-WU05-MIGMAC02 closeout
 
 Date: 2026-10-05
-Status: LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION
+Status: CANONICAL_PRODUCTION_ADMITTED_CLOSED
 Canonical parent: `9605fbb1622d96f4691117f66264f13b6dd3a47b`
 
 ## Production scope
@@ -59,3 +59,11 @@ they do not claim universal legacy output equality.
 Peat/alternate fitting, mixed soil laws, official whole-model case equivalence,
 additional rapid-drain geometry and surface-owner compositions remain explicit
 migration gaps. RossFast, parallel MultiSWAP, salinity and frost are excluded.
+
+## Canonical admission
+
+PR #1019 merged the exact qualified tree `fca26d03d3051d27c45e3eae04d53402f2b91879`
+into `integration/f-ci-canonical` at `957b87d69888f1eb7ef5671f441563bd9b798687`.
+Published qualification commit: `f74257be207eb65a8b03136f8ab90c0d809badd0`.
+All 26 pinned source/test SHA256 postimages match. No production source changed
+between local qualification, publication and admission.

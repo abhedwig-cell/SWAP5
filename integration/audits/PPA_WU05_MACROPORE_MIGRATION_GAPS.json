@@ -5,7 +5,7 @@
   "standard_core_perched_exchange": "CANONICALLY_ADMITTED",
   "broad_swap431_macropore_migration_complete": false,
   "remaining_standard_gaps": [
-    "dynamic shrinkage/crack geometry feedback",
+    "peat/alternate-fitting/mixed-law shrinkage beyond admitted Kim clay option-1",
     "within-compartment and multiple rapid-drain geometry",
     "ponding/runon and other surface-owner compositions",
     "fixed-weir/Ribasim rapid-drain receipt composition",
@@ -16,8 +16,8 @@
     "parallel/concurrent MultiSWAP macropore execution"
   ],
   "separate_rfm_gap": "complete live backend dispatch not established by this audit",
-  "next_workunit": "PPA-WU05-MIGMAC02",
-  "next_scope": "dynamic shrinkage/crack geometry feedback source reconciliation and bounded standard-route migration",
+  "next_workunit": null,
+  "next_scope": "Select separately preregistered remaining constitutive or drain/surface composition capability",
   "migmac01_progress": {
     "date": "2026-10-02",
     "source_event": "MODIFIED_ANDELST_COVERED_TOP_PLUS_BOUNDED_B1_CORRECTION",
@@ -29,10 +29,10 @@
   },
   "migmac02_progress": {
     "date": "2026-10-05",
-    "production_gap": "OPEN",
+    "production_gap": "CLOSED_WITHIN_BOUNDED_SCOPE",
     "scope": "dynamic shrinkage/crack geometry feedback",
-    "admitted": false,
-    "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
+    "admitted": true,
+    "status": "CANONICAL_PRODUCTION_ADMITTED_CLOSED",
     "reconciliation": "docs/audits/PPA_WU05_MIGMAC02_SOURCE_RECONCILIATION.md",
     "operator_experiment": "docs/audits/PPA_WU05_MIGMAC02_PURE_OPERATOR_RESULT.md",
     "local_tests": [
@@ -42,8 +42,10 @@
     ],
     "blocking_evidence": [],
     "source_reconciliation": "docs/audits/PPA_WU05_MIGMAC02_SOURCE_RECONCILIATION.md",
-    "source_operator": "clay option-1 SHRINK/SHRINKPAR and MPVOLUME(1) reconstructed from pinned B0+SWAP-001 to exact B1.11 hash; runtime qualification open",
+    "source_operator": "clay option-1 SHRINK/SHRINKPAR and MPVOLUME(1) reconstructed from pinned B0+SWAP-001 to exact B1.11 hash; bounded runtime qualification complete",
     "qualified_scope": "Kim clay direct option-1; dynamic geometry in existing Reference Richards owner chain",
-    "qualification": "integration/audits/PPA_WU05_MIGMAC02_QUALIFICATION.json"
+    "qualification": "integration/audits/PPA_WU05_MIGMAC02_QUALIFICATION.json",
+    "canonical_pr": 1019,
+    "canonical_merge": "957b87d69888f1eb7ef5671f441563bd9b798687"
   }
 }
