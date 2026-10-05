@@ -1,0 +1,65 @@
+{
+  "work_unit": "PPA-WU05B12",
+  "status": "PREREGISTERED",
+  "baseline": "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+  "baseline_source": "cd7a56657fa3347ee63595a0f54274b2f1766ba8",
+  "prerequisite": "B11 canonical admission PR1054 and exact closeout PR1055 verified",
+  "source_review": "integration/audits/PPA_WU05B12_SOURCE_REVIEW.json",
+  "scope": "Rootless ordinary Reference mode2 normal and bracketed low-air frost with admitted DRAMET2 Hooghoudt IPOS1/2/3 and Ernst IPOS4/5. Existing LINEAR/TABULATED mixtures only with their required selectors. Other generation/distribution/coupling/hybrids excluded.",
+  "interface": "Add OFF-by-default frost_analytic_response_drainage_active parameter/model selector requiring B9 base selector and at least one selected analytic family level. TABULATED levels additionally require the B11 selector and at least one actual table. Low-air additionally requires B10 selector and existing valid matching negative depth array. Additive public pure delegating accessors expose existing private active variant/prepared validators; existing evaluator, preparation equations, parameter domain and status behavior remain unchanged.",
+  "physical_geometry": "For every selected analytic low-air level, its actual drain_bottom_level (IPOS1 parameter, IPOS2/3 equivalent-depth preparation or IPOS4/5 Ernst preparation) must equal the corresponding physical frost drain_depth_cm. Preserve old B9/B10/B11 restrictions when the new selector is OFF. No silent reinterpretation of unrelated inactive parameter members.",
+  "physical_order": "Reuse immutable trial-start GWL generation, disposable untouched nodal proposal, existing normal/B8 modifier and single final solver sink/accepted receipts. B10 terminal full/half regeneration remains independent. No new persistent/restart/ledger state or Jacobian/projection coupling.",
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    27,
+    29,
+    30
+  ],
+  "production_paths_allowed": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/process/mod_drainage_hooghoudt_ipos1_response.f90",
+    "src/process/mod_drainage_hooghoudt_ipos23_response.f90",
+    "src/process/mod_drainage_ernst_ipos45_response.f90"
+  ],
+  "dependency_sha256": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "5347874c2ed4d60dd7502a3a37f640451162bcaa4f818102b38e6b999c3bfc78",
+    "src/process/mod_drainage_hooghoudt_ipos1_response.f90": "f0dfd884c572470a6259db7911cb99ba627ecdc918d0a2030554c281d3eb427b",
+    "src/process/mod_drainage_hooghoudt_ipos23_response.f90": "acfb34c9cb1531d40358715981edac6c26971872159f5289a736c690336dd157",
+    "src/process/mod_drainage_ernst_ipos45_response.f90": "74bfdc58b88070243e2ed6e5dd26311ac8a64be670759c1114a37b48ab2a711b",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "6d297c308261948dd3a516c545e76f4650570ce4945cb96e179cbb538f51e852",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/process/mod_drainage_hooghoudt_equivalent_depth.f90": "2e4331a9b286476cd2a7e0553ba590c0cf017c4941ae6f141e6edce47c3ac3aa",
+    "src/process/mod_drainage_ernst_ipos45_preparation.f90": "a562c0cd43edc5b21af47f5977ae001c896d9e288e992a3501972ea267ecb5d5",
+    "src/process/mod_drainage_tabulated_response.f90": "84672d1c500c163c38bf98dbe0224559fd6a27189a95fde8911bdcce2f490f9b",
+    "src/process/mod_frost_drainage_effect.f90": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900",
+    "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d"
+  },
+  "scientific_authority": "F-VQ38 exact49728b999b884a37643908c1dad40269f4e2db9b;148 independent IPOS1..5 cases and132 tangent checks; normalized mathematically valid domain. Five current kernel blobs match this authority exactly before interface additions. Literal B1 DRAMET2 diffl<1e-10 is verified separately from root vsmall cutoff.",
+  "gates": [
+    "Rebind immutable F-VQ38 independent Python oracle and probe to actual current production O0/O2; preserve flux/cutoff/three equivalent-depth branches/interface/negative-radial/tangents and unchanged equation bodies after additive validator interfaces",
+    "Actual selected generation plus corrected B7 FrozenBounds composition across all five families, active/inactive/cutoff GWL, normal/low-air, depth equality/cuts and both bottom signs; final-node/qbot and reporting parity",
+    "Fresh whole-module actual runtime normal warm/partial/frozen and low-air partial/all/no cut across all five methods, both qbot signs and actual signed TABULATED second level. Use unchanged declared normal/B10 debug budgets, refined head1e-6cm/T1e-4C horizons, hard mass1e-12cm and representative further refinement",
+    "Invalid active variant/prepared geometry/nonfinite/shape/missing selectors and low-air generator/frost physical depth mismatch reject before solver. Inactive LINEAR/TAB fields ignored. Retry original-input regeneration, final-node receipts, replay, application and empty-registry restart",
+    "Fresh relevant B1/B2/B3/B4/B6/B8/B9/B10/B11 actual preservation, four SALFRO01, immutable VQ73/VQ74, literal root cutoff, full strict canonical preservation and docs"
+  ],
+  "qualification_reuse_rule": "No inherited trajectory claim merely because scalar kernels were already admitted. Within fresh current-source qualification, a shared refined trajectory may be reused only if an explicit per-trial final-node/qbot/branch dependency proof establishes the changed proposal component is physically masked; otherwise run each affected refined trajectory separately. Do not relax tolerances or physical contracts for runtime cost.",
+  "exclusions": [
+    "Empirical interflow and EXTENDED_SIGNED",
+    "SWDIVD1 or other spatial distribution",
+    "Fixed-weir",
+    "GWL projection/directional/fully implicit drainage",
+    "Root/salt/macropore/snow hybrids",
+    "New geometry, ice partition or latent heat",
+    "Global legacy/frost equivalence"
+  ],
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false
+}
