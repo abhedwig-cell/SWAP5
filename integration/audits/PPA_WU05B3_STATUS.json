@@ -2,7 +2,7 @@
   "work_unit": "PPA-WU05B3",
   "baseline": "33cb8c94d0ed2c9578643033e414a313daf00e88",
   "last_reconciled_upstream": "33cb8c94d0ed2c9578643033e414a313daf00e88",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -25,6 +25,11 @@
     "src/process",
     "tests/fci"
   ],
-  "next_action": "Implement preregistered selector and trial-owned binding; persist before qualification",
-  "blockers": []
+  "next_action": "Compile persisted runtime and execute boundary qualification",
+  "blockers": [],
+  "remote_checkpoint_note": "Preregistration remotely persisted at 58d86a8590181acd5274008d82afb5596aa9e0f7; implementation upload precedes expensive gates",
+  "test_paths": [
+    "tests/frost/run_ppa_wu05b3_frost_bottom.sh",
+    "tests/frost/run_ppa_wu05b3_frost_bottom_runtime.sh"
+  ]
 }

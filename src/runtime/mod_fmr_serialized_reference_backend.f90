@@ -87,6 +87,8 @@ module mod_fmr_serialized_reference_backend
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
        ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, ROOT_COMP_FROST, root_walsum_geometry_t, ROOT_COMP_OK, attribute_root_stress_losses
+  use mod_frost_bottom_boundary_effect, only: frost_bottom_config_t, frost_bottom_result_t, &
+       compose_legacy_no_drain_frost_bottom, FROST_BOTTOM_OK
   use mod_root_frost_stress, only: root_frost_config_t, compose_legacy_zero_root_frost, ROOT_FROST_OK
   use mod_root_uptake_compensation_execution, only: apply_root_uptake_compensation, ROOT_COMP_EXEC_OK
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
@@ -274,6 +276,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: saltslope_cm3_mg = 0.0_real64
     real(real64) :: salt_temporal_tolerance_mg_cm2 = 0.0_real64
     type(root_compensation_config_t) :: root_compensation
+    type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
     real(real64) :: root_frost_head_budget_cm=0.0_real64
     real(real64) :: root_frost_temperature_budget_c=0.0_real64
@@ -415,6 +418,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_oxygen_base_uptake = 0.0_real64
     real(real64) :: root_oxygen_final_uptake = 0.0_real64
     real(real64), allocatable :: root_oxygen_final_sink(:)
+    logical :: frost_bottom_executed = .false.
+    type(frost_bottom_result_t) :: frost_bottom
     logical :: root_frost_executed = .false.
     integer :: root_frost_status = 0
     real(real64) :: root_frost_loss = 0.0_real64
@@ -592,6 +597,7 @@ module mod_fmr_serialized_reference_backend
     ! Disposable worker inputs/scratch, not accepted oxygen continuation state.
     real(real64), allocatable :: qrot_unmodified(:)
     type(root_compensation_config_t) :: root_compensation
+    type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
     real(real64) :: root_frost_head_budget_cm=0.0_real64
     real(real64) :: root_frost_temperature_budget_c=0.0_real64
@@ -2474,6 +2480,13 @@ contains
       else
         ok = ok .and. .not. parameters%frost_hydraulic%active
       end if
+      if(parameters%frost_bottom%active) then
+        ok=ok.and.parameters%frost_bottom%valid().and.parameters%frost_active.and. &
+             .not.parameters%root_extraction_active.and..not.parameters%root_frost%active.and. &
+             .not.parameters%root_salinity_active.and..not.self%base_salt_temporal_policy%enabled.and. &
+             .not.parameters%elasticity_active.and..not.parameters%direct_retention_active.and. &
+             .not.allocated(parameters%bartholomeus)
+      end if
       if(parameters%root_frost%active) then
         ok=ok.and.parameters%frost_active.and.parameters%root_extraction_active.and. &
              parameters%root_frost%rooted_nodes>=0.and.parameters%root_frost%rooted_nodes<=parameters%active_nodes
@@ -2629,6 +2642,7 @@ contains
       self%saltslope_cm3_mg = parameters%saltslope_cm3_mg
       self%salt_temporal_tolerance_mg_cm2 = parameters%salt_temporal_tolerance_mg_cm2
       self%root_compensation = parameters%root_compensation
+      self%frost_bottom = parameters%frost_bottom
       self%root_frost = parameters%root_frost
       self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm
       self%root_frost_temperature_budget_c=parameters%root_frost_temperature_budget_c
@@ -2798,7 +2812,10 @@ contains
         ! Legacy FrozenBounds can replace a prescribed qbot under a deep frozen
         ! profile. Until that boundary view is separately admitted, this slice
         ! is limited to a zero prescribed qbot where the boundary is invariant.
-        if (self%frost_active .and. forcing%bottom_flux /= 0.0_real64) return
+        if (self%frost_active .and. .not.self%frost_bottom%active .and. forcing%bottom_flux /= 0.0_real64) return
+        if(self%frost_bottom%active)then
+          if(allocated(forcing%soil_salt_boundary).or.allocated(forcing%c_drain_salt))return
+        end if
       end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
       if(self%root_frost%active) then
@@ -3237,6 +3254,7 @@ contains
     integer :: effective_bottom_mode, swbotb2_status, swbotb4_status, cauchy3_status
     type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
+    type(frost_bottom_result_t) :: frost_bottom_result
     integer :: frost_status, frost_provider_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
@@ -3543,6 +3561,16 @@ contains
           if (frost_status /= FROST_EFFECT_OK) return
           self%last_observation%frost_factor_min = minval(frost_factors)
           self%last_observation%frost_factor_max = maxval(frost_factors)
+          if(self%frost_bottom%active)then
+            if(allocated(physical%salt))return
+            call compose_legacy_no_drain_frost_bottom(.true.,frost_thermal%temperature_c, &
+                 self%frost_hydraulic%reduction_end_c,physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
+                 self%soil_parameters%dz,frost_factors,effective_bottom_flux,frost_bottom_result)
+            self%last_observation%frost_bottom_executed=.true.
+            self%last_observation%frost_bottom=frost_bottom_result
+            if(frost_bottom_result%status/=FROST_BOTTOM_OK.or..not.frost_bottom_result%available)return
+            request%boundary%bottom_flux=frost_bottom_result%final_flux
+          end if
         end if
         if (self%bottom_thermal_carrier_active) then
           call soil_temperature_at_node(physical%soil_temperature, physical%active_nodes, bottom_temperature_start_c, &
@@ -4680,6 +4708,10 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
+    if(self%frost_bottom%active)then
+      value=fmr_frost_bottom_temporal_error(self,full_state,half_state)
+      return
+    end if
     if(self%root_frost%active) then
       value=fmr_root_frost_temporal_error(self,full_state,half_state)
       return
@@ -4806,6 +4838,54 @@ contains
       end select
     end select
   end function fmr_root_frost_temporal_error
+
+  real(real64) function fmr_frost_bottom_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),allocatable::tf(:),th(:),ff(:),fh(:)
+    type(frost_bottom_result_t)::bf,bh
+    real(real64)::head_error,temperature_error
+    integer::status,n
+    value=huge(0.0_real64)
+    if(self%frost_bottom%head_budget_cm<=0.0_real64.or.self%frost_bottom%temperature_budget_c<=0.0_real64) return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n) return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head)) return
+        if(.not.allocated(full%water_content).or..not.allocated(half%water_content)) return
+        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n) return
+        if(size(full%water_content)/=n.or.size(half%water_content)/=n) return
+        if(any(.not.ieee_is_finite(full%pressure_head)).or.any(.not.ieee_is_finite(half%pressure_head))) return
+        if(any(.not.ieee_is_finite(full%water_content)).or.any(.not.ieee_is_finite(half%water_content))) return
+        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth,full%groundwater_level,half%groundwater_level]))) return
+        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature)) return
+        call copy_soil_temperature_profile(full%soil_temperature,tf,status)
+        if(status/=SOIL_TEMP_OK) return
+        call copy_soil_temperature_profile(half%soil_temperature,th,status)
+        if(status/=SOIL_TEMP_OK) return
+        if(size(tf)/=n.or.size(th)/=n) return
+        if(any(.not.ieee_is_finite(tf)).or.any(.not.ieee_is_finite(th))) return
+        allocate(ff(n),fh(n))
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,tf,ff,status)
+        if(status/=FROST_EFFECT_OK)return
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,th,fh,status)
+        if(status/=FROST_EFFECT_OK)return
+        call compose_legacy_no_drain_frost_bottom(.true.,tf,self%frost_hydraulic%reduction_end_c, &
+             full%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,ff,self%bottom_flux,bf)
+        call compose_legacy_no_drain_frost_bottom(.true.,th,self%frost_hydraulic%reduction_end_c, &
+             half%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,fh,self%bottom_flux,bh)
+        if(.not.bf%available.or..not.bh%available)return
+        if(bf%blocked.neqv.bh%blocked)return
+        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        temperature_error=maxval(abs(tf-th))
+        value=max(head_error/self%frost_bottom%head_budget_cm,temperature_error/self%frost_bottom%temperature_budget_c)
+      end select
+    end select
+  end function fmr_frost_bottom_temporal_error
 
   real(real64) function fmr_base_salt_physical_temporal_error(self,full_state,half_state) result(value)
     class(fmr_serialized_reference_model_t),intent(in)::self
