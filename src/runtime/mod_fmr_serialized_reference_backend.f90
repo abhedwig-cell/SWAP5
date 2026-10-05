@@ -1902,7 +1902,7 @@ contains
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
              .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active .and. &
              .not. self%bottom_thermal_carrier_active .and. .not. self%top_sensible_boundary_carrier_active .and. &
-             .not. self%trajectory_direction_requested
+             .not. self%trajectory_direction_requested .and. .not. self%temporal_indicator_history_enabled
       else
         ok = ok .and. .not. parameters%frost_hydraulic%active
       end if
