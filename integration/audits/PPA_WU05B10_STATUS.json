@@ -3,12 +3,12 @@
   "baseline": "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
   "baseline_source": "0379fcc374513baaa487979ac7cc8288c9f44641",
   "preregistration": "integration/audits/PPA_WU05B10_PREREGISTRATION.json",
-  "status": "IMPLEMENTED_PARTIAL_LOCAL_RECOVERY_NOT_QUALIFIED",
+  "status": "LOCAL_QUALIFIED_NOT_CANONICALLY_ADMITTED",
   "implemented": true,
-  "qualified": false,
+  "qualified": true,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
-  "next_action": "Actively await named running gates; only final completed replay establishes qualification",
+  "next_action": "Publish exact source-bound candidate and verify bounded proposed merge before admission",
   "source_component": "216_ACTUAL_LINEAR_GUARDED_FROZENBOUNDS_O0_O2_PASS_IDENTICAL_STDOUT",
   "production_source_tree": "fd27cbbbf863fd3cd14a2a1619d9f0803d40091e",
   "selected_runtime_policy": {
@@ -28,24 +28,65 @@
   "remote_source_checkpoint": "a332dcf60914cd954e53daf6d88305bae97e91a3",
   "completed": {
     "source_component": "216_CASES_O0_O2_IDENTICAL",
-    "activation_additional": "O0_PASS_O2_PENDING",
+    "activation_additional": "O0_O2_PASS_IDENTICAL_STDOUT",
     "refinement_first_131072": "O0_PASS_HEAD3.139592e-7_T5.711605e-7",
     "B1_B2_B3_B4_B6_B9": "FRESH_SOURCE_O0_O2_IDENTICAL_PASS",
     "SALFRO01": "FOUR_PASS_SOURCE_MANIFESTS_MATCH_O0_O2_FRESH_PROCESS_IDENTICAL",
-    "VQ73_VQ74": "IMMUTABLE_CURRENT_SOURCE_O0_O2_IDENTICAL_PASS"
+    "VQ73_VQ74": "IMMUTABLE_CURRENT_SOURCE_O0_O2_IDENTICAL_PASS",
+    "B8": "FRESH_SOURCE_O0_O2_PASS_IDENTICAL_STDOUT",
+    "canonical": "COMPLETE_LOCAL_GATE_PASS"
   },
   "pending": [
-    "complete B10 six-case runtime O0/O2/restart/application",
-    "B10 activation O2 identity",
-    "complete B8 incumbent O0/O2",
-    "complete canonical preservation",
-    "docs",
-    "exact merge/admission"
+    "exact proposed merge and canonical admission"
   ],
   "partial_recovery": {
     "path": "docs/audits/evidence/PPA_WU05B10_PARTIAL_RECOVERY.json.gz",
     "sha256": "0ed61185f3f92f1f2b4f9f2bb98db361ffe153df4f29dc4b0b3037585c3344a0",
     "bytes": 94858,
     "qualification": false
-  }
+  },
+  "persisted": true,
+  "runtime_fixture_checkpoint": "73994b6819a60580b6f3358b1e44e7d75a4ddf25",
+  "runtime_results": {
+    "six_cases": "O0_O2_PASS_IDENTICAL_STDOUT",
+    "max_head_cm": 1.935812e-07,
+    "max_temperature_c": 3.533127e-07,
+    "accepted_substeps": [
+      37773,
+      37778,
+      37816,
+      37816,
+      37716,
+      37736
+    ],
+    "rejections": [
+      523664,
+      523742,
+      524293,
+      524293,
+      522813,
+      523129
+    ],
+    "refinement_131072": {
+      "scope": "first partial-cut negative qbot O0 only",
+      "head_cm": 3.139592e-07,
+      "temperature_c": 5.711605e-07,
+      "status": "PASS"
+    },
+    "activation_threshold_changed_GWL": "O0_O2_PASS_IDENTICAL_STDOUT",
+    "mass_restart_replay_application": "PASS"
+  },
+  "preservation": {
+    "B1_B2_B3_B4_B6_B8_B9": "FRESH_SOURCE_O0_O2_PASS_IDENTICAL_STDOUT",
+    "SALFRO01": "FOUR_PASS_MATCHING_179_ENTRY_MANIFESTS",
+    "VQ73_VQ74": "EXACT_IMMUTABLE_PROGRAMS_PASS_CURRENT_SOURCE_O0_O2_IDENTICAL_STDOUT",
+    "canonical": "COMPLETE_LOCAL_GATE_PASS"
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B10_LOCAL_REPLAY.json.gz",
+    "sha256": "760659567c2144ebf131d493b5ce79b7f8142856058ab89379a4c758e790e374",
+    "bytes": 114404,
+    "manifest_entries": 495
+  },
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
 }

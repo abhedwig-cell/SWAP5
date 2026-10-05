@@ -1,0 +1,42 @@
+{
+  "work_unit": "PPA-WU05B11",
+  "status": "SOURCE_REVIEW_ONLY",
+  "baseline_source": "fd27cbbbf863fd3cd14a2a1619d9f0803d40091e",
+  "prerequisite": "B10 exact qualified canonical admission before any production successor",
+  "scope_under_review": "Other already-admitted generation families with the existing normal/guarded low-air frost modifiers; no distribution or fixed-weir carrier widening by implication",
+  "completion_authority": {
+    "work_unit": "F-PM19",
+    "status_blob": "1d237b26f31c5e83fa7b299e01f47bd9ec6d5ff4",
+    "certificate_blob": "f4ddf0b9ed945ccb6f8a66c4611de624d10dc4a8",
+    "frozen_components": [
+      "restricted single-level linear-resistance drainage response",
+      "restricted positive single-level DIVDRA spatial distribution",
+      "DRAMET1 tabulated response",
+      "DRAMET2 Hooghoudt response family",
+      "DRAMET2 Ernst response family",
+      "empirical interflow response",
+      "multilevel aggregation",
+      "restricted fixed-weir transactional surface-water runtime"
+    ]
+  },
+  "findings": [
+    "F-PM19 eight-component denominator is not an eight-selector response list. Existing response binding has nine selector constants; family subvariants and later extension must be mapped to owning scientific authority explicitly.",
+    "The normal/low-air kernels consume finite nodal proposals independently of generation method. Extending selected generation still requires source-bound actual composition, valid active parameter members, input GWL provenance, final-node/qbot/receipt ownership and refined trajectories.",
+    "LINEAR-only B9/B10 validation cannot simply be deleted. A separate OFF-by-default opt-in and active variant-specific preflight are needed; inactive LINEAR resistance fields must not incorrectly reject a valid table/Hooghoudt/Ernst configuration.",
+    "SWDIVD1 is a separate physical distribution. Actual legacy low-air code adjusts qdrain with qbot, retains separate qbot, then calls DIVDRA with frost-adjusted saturated conductivity and min(GWL,frozen_bottom). This is a source-defined composite boundary/drainage transformation, not automatically a duplicate-owner defect; its final-node net balance requires a dedicated actual-source oracle.",
+    "Existing admitted spatial kernel is positive single-level only and treats its scalar transfer as authoritative. It does not establish arbitrary signed/multilevel frozen redistribution. Fixed-weir and later EXTENDED_SIGNED carriers likewise need independent scope authority."
+  ],
+  "source_hashes": {
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/process/mod_drainage_spatial_distribution.f90": "ee38490c881c78cba2e533c6ffbb8716e06c6b2893256695a120602cef73b17a",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/soilwater.f90": "027cfefc3ba7a010a256db1e43bd6e9c9facc4bf6edb4984578ddf1ef48acac8",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/integral.f90": "bd37ebe5014f14ab2ff961a336cfa284266102d510617feef1c00f6616c64174"
+  },
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "next_action": "After B10 admission, select and preregister bounded source-authorized response families; keep SWDIVD1/fixed-weir/extended exchange separate"
+}
