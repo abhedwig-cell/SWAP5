@@ -104,7 +104,8 @@
     "status": "PENDING",
     "pull_request": 1016,
     "mergeable": true,
-    "requirement": "Complete canonical review and the required canonical integration/admission qualification before treating SWINTER=3 as admitted."
+    "requirement": "Complete canonical review and the required canonical integration/admission qualification before treating SWINTER=3 as admitted.",
+    "note": "The F-CI109R1 misfire is now handled by an applicability guard; its job passes on INT13 while preserving the strict F-APP09 gate. Branch-protection required-check configuration remains unreadable through the current integration connection, and the broad PR check suite still contains pending/failing unrelated workflow checks."
   },
   "canonical_gate_diagnosis": {
     "workflow": ".github/workflows/f-ci109r1-fapp09-current-canonical.yml",
@@ -118,5 +119,15 @@
     "interpretation": "This is an F-APP09-specific exact-delta gate triggered by INT13 shared-backend and test paths. Its failure does not indicate an INT13/Rutter physics or production-composition failure; do not weaken the F-APP09 exact-postimage invariant.",
     "required_check_status": "UNVERIFIED",
     "access_note": "Reading integration/f-ci-canonical branch protection returned HTTP 403 Resource not accessible by integration; repository rulesets endpoint returned an empty list. Required-check status cannot be established through the current GitHub connection."
+  },
+  "fci109r1_scope_repair": {
+    "commit": "cce140b9d1472f14a3fe77198b8e08415893139f",
+    "workflow_run_id": 37308577282,
+    "workflow_run": "PASS",
+    "applicability_step": "PASS_INT13_HAS_NO_FAPP09_OWNED_PATH",
+    "exact_fapp09_gate": "SKIPPED_AS_NOT_APPLICABLE; unchanged for F-APP09-owned paths",
+    "local_path_matrix": "PASS_INT13_FALSE_FAPP09_TRUE",
+    "companion_int13_run_id": 37308577030,
+    "companion_int13_run": "PASS"
   }
 }
