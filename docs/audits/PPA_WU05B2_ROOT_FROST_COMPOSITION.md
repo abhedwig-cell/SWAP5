@@ -68,3 +68,19 @@ nonzero salt/frost stress is unsupported pending separate qualification. Public
 application admission also excludes simultaneous root-salinity or salt state.
 Active matrix-salt and dispersion runtime preservation is repeated on the merged
 source; the pre-reconciliation full moving-canonical pass is not current admission.
+
+## Local closeout
+
+The reconciled root, actual thaw, fresh-worker restart, uncompensated/Jarvis/Walsum
+public applications, active matrix-salt upwind and dispersion, rootless frost,
+Jarvis and Walsum preservation checks pass at O0/O2. Full current-canonical
+preservation passes on local merge `a748a5885aba8191087ba8df2b622da235377d54`.
+Its production source tree is `7f2e6f2ded8ee0202656cf0a81febf7a3fa7cf10` and
+matches the proposed source. The subsequently added uncompensated application
+oracle was compiled and executed at both optimization levels on that same source.
+The qualification JSON records exact source and log hashes. This is local evidence;
+queued Actions confirmation is not reported as successful.
+
+The separate FrozenBounds source review is recorded in
+`docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md`; it does not admit that boundary
+policy or change this root-composition implementation.

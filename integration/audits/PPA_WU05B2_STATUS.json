@@ -2,16 +2,14 @@
   "work_unit": "PPA-WU05B2",
   "baseline": "53a3f3e41231b8600bbb19b8eb2157558bd12e19",
   "branch": "work/ppa-wu05b2-frost-root-composition",
-  "status": "IMPLEMENTED_LOCAL_QUALIFICATION_IN_PROGRESS",
+  "status": "READY_FOR_REGIE",
   "implemented": true,
-  "qualified": false,
+  "qualified": true,
   "admitted": false,
-  "next_action": "Complete exact-tree preservation and independent admission; no aggregate frost completion claim.",
+  "next_action": "Central regie reconciles live canonical and exact production source identity, then admits or returns this bounded root-frost successor. Persistent Actions confirmation is separate and is not yet claimed successful.",
   "authority": "integration/audits/PPA_WU05B2_PREREGISTRATION.json",
-  "blockers": [
-    "Full moving-canonical preservation and exact tested-merge qualification pending.",
-    "Central regie has not admitted this candidate."
-  ],
+  "blockers": [],
   "reconciled_canonical": "916035e78305cae5f88c30d5805b5d9c33a348f8",
-  "pull_request": 1030
+  "pull_request": 1030,
+  "qualification": "integration/audits/PPA_WU05B2_LOCAL_QUALIFICATION.json"
 }

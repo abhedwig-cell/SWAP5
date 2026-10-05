@@ -162,6 +162,16 @@ contains
          abs(out(1)%actual_transpiration_amount-1.e-4_real64*.02_real64/.7_real64)<1.e-14_real64,'Walsum application oracle')
     call require(abs(out(1)%mass%residual)<=hard_mass_gate,'Walsum hard mass budget')
     call app%close(status)
+    cfg%tiles(1)%parameters%root_compensation%method=0
+    call app%initialize(cfg,status)
+    call require(status==FMR_APP_BOOT_OK,'root frost without compensation application admission')
+    call app%run_standalone(0._real64,1.e-4_real64,out,status)
+    call require(status==FMR_APP_BOOT_OK.and.out(1)%committed,'root frost without compensation commits')
+    call require(out(1)%actual_transpiration_available.and. &
+         abs(out(1)%actual_transpiration_amount-1.e-4_real64*.02_real64)<1.e-14_real64,'uncompensated application oracle')
+    call require(abs(out(1)%mass%residual)<=hard_mass_gate,'uncompensated application hard mass bound')
+    call app%close(status)
+    cfg%tiles(1)%parameters%root_compensation%method=ROOT_COMP_WALSUM
     bad=cfg;bad%tiles(1)%parameters%root_salinity_active=.true.
     call rejected%initialize(bad,status)
     call require(status/=FMR_APP_BOOT_OK,'joint salt and frost rejected at application')
