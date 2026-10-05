@@ -4,11 +4,11 @@
   "title": "Salinity state, solute mass owner, and root-stress migration",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
   "baseline": "integration/f-ci-canonical@8125ba01b5bfd7377c721caa1105d68e24e77183",
-  "checkpoint_commit": "e77ef4b1ddf9372dd71aa348cc88e788c84341e8",
-  "last_reconciled_head": "e77ef4b1ddf9372dd71aa348cc88e788c84341e8",
+  "checkpoint_commit": "571a76c473949dccd5e690261fea0d8a0a1ea15c",
+  "last_reconciled_head": "571a76c473949dccd5e690261fea0d8a0a1ea15c",
   "last_reconciled_upstream": "8125ba01b5bfd7377c721caa1105d68e24e77183",
-  "status": "MATRIX_ADVECTION_DISPERSION_LOCALLY_VERIFIED_PENDING_PERSISTED_REPLAY",
-  "result_classification": "UNDERLYING_SALINITY_PHYSICS_REQUIRES_SEPARATE_MIGRATION",
+  "status": "READY_FOR_REGIE",
+  "result_classification": "SELECTED_MATRIX_E1_E2_E3_E4_QUALIFIED_FULL_LEGACY_OUTSIDE_SCOPE",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -66,8 +66,8 @@
       "git_blob_sha1": "2fc77cc8d127d76e07a03369c1dac766157084b9"
     }
   },
-  "current_finding": "The selected matrix dissolved-salt prerequisite now includes source molecular and mechanical dispersion, conservative upwind advection, positive donor-bounded internal solute steps and matching accepted Richards water interpolation. Per-node root and signed per-level drainage receipts integrate internal concentrations under the same final root-water sink. Source geometry/saturation matches the hydraulic owner; both source interpolation weights are explicit. Evaporative top loss retains dissolved mass by default; declared liquid export is separate forcing. Direct source and analytical/grid-refinement oracles, a manufactured 365-day process schedule, all actual stress/top-boundary/lifecycle/restart cases and declared preservation gates pass at O0/O2. This completes the local selected matrix E1/E2/E3/E4 evidence; exact published replay and central admission routing remain next.",
-  "historical_reconstruction": "Source-family evidence distinguishes Maas-Hoffman switch 1 as a nodewise alpha(CML) from osmotic-head switch 2, which modifies matric-flux potential and requires Jong-van-Lier drought; switch 2 is not a separate multiplicative alpha_sol. Source-family census additionally establishes SWINCO-dependent initial versus warm-restart concentration profiles, CMSY inventory derived from water content/CML and optional Freundlich sorption, explicit boundary and drainage fluxes, internal solute substeps, and root salt uptake TSCF*qrot*CML. Exact B1.11 solute-member and restart details remain unverified in this execution. Exact B1.11 source has now been recovered by reconstructing the byte-verified historical SWAP 4.3.1 donor source ZIP; solute.f90 matches the pinned 51,508-byte member hash. Its drainage rule is level-resolved: qdra>0 removes at local CML and qdra<=0 imports at Cdrain. qssdi is absent from this solute balance; no concentration is defined there, so the reconstructed SWAP5 contract must keep it zero-solute or fail-closed. Cdrain is externally prescribed unless aquifer breakthrough swbr=1 owns a dynamic reservoir; bottom cseep can be separately prescribed/time varying. Root salt removal uses tscf*qrot*CML. Dispersion, sorption, decomposition, internal solute substeps, and aquifer breakthrough are present in source but remain outside the currently tested prototype envelope.",
+  "current_finding": "Selected matrix E1/E2/E3/E4 dissolved-salt/root-stress transport and application lifecycle are qualified on the exact published source and tree. Source equations, independent refinement/analytical oracles, actual mixed stresses/top liquid-vapor cases, atomic candidate/retry/Restart v4 and declared preservation gates pass. Central canonical admission remains owned by regie; full legacy solute options and field/seasonal FMR validation remain outside this qualification.",
+  "historical_reconstruction": "Source-family evidence distinguishes Maas-Hoffman switch 1 as a nodewise alpha(CML) from osmotic-head switch 2, which modifies matric-flux potential and requires Jong-van-Lier drought; switch 2 is not a separate multiplicative alpha_sol. Source-family census additionally establishes SWINCO-dependent initial versus warm-restart concentration profiles, CMSY inventory derived from water content/CML and optional Freundlich sorption, explicit boundary and drainage fluxes, internal solute substeps, and root salt uptake TSCF*qrot*CML. Exact B1.11 solute-member and restart details remain unverified in this execution. Exact B1.11 source has now been recovered by reconstructing the byte-verified historical SWAP 4.3.1 donor source ZIP; solute.f90 matches the pinned 51,508-byte member hash. Its drainage rule is level-resolved: qdra>0 removes at local CML and qdra<=0 imports at Cdrain. qssdi is absent from this solute balance; no concentration is defined there, so the reconstructed SWAP5 contract must keep it zero-solute or fail-closed. Cdrain is externally prescribed unless aquifer breakthrough swbr=1 owns a dynamic reservoir; bottom cseep can be separately prescribed/time varying. Root salt removal uses tscf*qrot*CML. Dispersion, sorption, decomposition, internal solute substeps, and aquifer breakthrough are present in source but remain outside the currently tested prototype envelope. Successor 571a76c473949dccd5e690261fea0d8a0a1ea15c now qualifies molecular/mechanical dispersion and internal solute stepping in the selected matrix envelope; the earlier exclusion statement records historical prototype scope.",
   "relevant_paths": [
     "integration/audits/PPA_WU05D_STATUS.json",
     "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
@@ -139,7 +139,9 @@
     "docs/audits/PPA_WU05E_CLOSED_DIFFUSION_CONTRACT.md",
     "integration/audits/PPA_WU05E_CLOSED_DIFFUSION_PROCESS_GATE.json",
     "integration/audits/PPA_WU05E_MATRIX_TRANSPORT_LOCAL_GATE.json",
-    "docs/audits/PPA_WU05E_ADVECTION_DISPERSION_CONTRACT.md"
+    "docs/audits/PPA_WU05E_ADVECTION_DISPERSION_CONTRACT.md",
+    "integration/audits/PPA_WU05E_MATRIX_TRANSPORT_QUALIFICATION.json",
+    "integration/audits/PPA_WU05E_REGIE_HANDOFF.json"
   ],
   "dependency_surface": [
     "B1.11 solute transport/state source and restart lifecycle",
@@ -168,11 +170,10 @@
     "independent salt-mass owner",
     "water and solute conservation"
   ],
-  "next_action": "Complete exact-source persisted replay, then return the qualified bounded matrix dissolved-salt/Jarvis successor to central regie. Do not silently admit full legacy solute options or shared canonical semantics.",
+  "next_action": "Central regie: reconcile the qualified selected matrix successor against live canonical authority, then ADMIT, RETURN or SUPERSEDE. Review integration/audits/PPA_WU05E_REGIE_HANDOFF.json.",
   "blockers": [
-    "Canonical admission belongs to central SWAP5 regie under PROJECT-CONTROL; specialized PPA returns a qualified successor.",
-    "The selected matrix profile does not implement sorption/decomposition, surface pools, dynamic aquifer ownership or other excluded legacy solute options. These are broader migration scope, not claims of this gate.",
-    "The 365-day schedule is a process oracle, not a seasonal real-Richards application or field-validation claim."
+    "Central regie reconciliation of INT13 Rutter conflicts in restart-state contract and serialized backend, with changed macropore dependency preservation",
+    "Full legacy and seasonal/field qualification remain separate scopes"
   ],
   "recovery_point": "e77ef4b1ddf9372dd71aa348cc88e788c84341e8 and PPA_WU05E_MATRIX_TRANSPORT_LOCAL_GATE.json",
   "source_family_census": {
@@ -187,10 +188,12 @@
   "initial_baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "bounded_matrix_qualification": {
     "qualified": true,
-    "evidence": "integration/audits/PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json",
-    "tested_commit": "abff5c95fe4bd072f9e24c5497d6f4b2f069364a",
-    "run_id": 37311241437,
-    "current_source_preserved": "REPLAY_PENDING; earlier exact-source result remains historical"
+    "scope": "Selected matrix E1/E2/E3/E4 only",
+    "evidence": "integration/audits/PPA_WU05E_MATRIX_TRANSPORT_QUALIFICATION.json",
+    "tested_commit": "571a76c473949dccd5e690261fea0d8a0a1ea15c",
+    "run_id": 37320018572,
+    "current_source_preserved": true,
+    "canonical_admitted": false
   },
   "closed_diffusion_process": {
     "implemented": true,
@@ -206,5 +209,19 @@
     "D2/D3 preserved; broader source options and groundwater salt ownership not widened",
     "Central regie owns shared numerical/application/runtime canonical admission"
   ],
-  "matrix_transport_local_evidence": "integration/audits/PPA_WU05E_MATRIX_TRANSPORT_LOCAL_GATE.json"
+  "matrix_transport_local_evidence": "integration/audits/PPA_WU05E_MATRIX_TRANSPORT_LOCAL_GATE.json",
+  "canonical_reconciliation": {
+    "canonical_head_observed": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
+    "candidate": "571a76c473949dccd5e690261fea0d8a0a1ea15c",
+    "original_baseline": "8125ba01b5bfd7377c721caa1105d68e24e77183",
+    "merge_preview_exit_code": 1,
+    "merge_preview_tree_with_conflict_markers": "853268781c2bb04ccd1e19e2ae1cc32d9fca43cf",
+    "merge_preview_output": "853268781c2bb04ccd1e19e2ae1cc32d9fca43cf\n100644 fa3c1146daa1eb868f5332783c3629f8a2016d54 1\tsrc/runtime/mod_fmr_restart_state_contract.f90\n100644 ed703011bce8765e2d92f44b7d433b5b502a430d 2\tsrc/runtime/mod_fmr_restart_state_contract.f90\n100644 ba97930524c8128267c3d8be743275eb865dfdf6 3\tsrc/runtime/mod_fmr_restart_state_contract.f90\n100644 d4113174e310df8c7acb83a7eb98bcb957c8e53e 1\tsrc/runtime/mod_fmr_serialized_reference_backend.f90\n100644 e14e0fb774d85d1ef582b2638b82bd09e91fbb00 2\tsrc/runtime/mod_fmr_serialized_reference_backend.f90\n100644 e2406182c2c154d84cbb113e110ffb63fb8dce43 3\tsrc/runtime/mod_fmr_serialized_reference_backend.f90\n\nAuto-merging src/runtime/mod_fmr_production_application_bootstrap.f90\nAuto-merging src/runtime/mod_fmr_restart_state_contract.f90\nCONFLICT (content): Merge conflict in src/runtime/mod_fmr_restart_state_contract.f90\nAuto-merging src/runtime/mod_fmr_runtime_core.f90\nAuto-merging src/runtime/mod_fmr_serialized_multiswap_runtime.f90\nAuto-merging src/runtime/mod_fmr_serialized_reference_backend.f90\nCONFLICT (content): Merge conflict in src/runtime/mod_fmr_serialized_reference_backend.f90\n",
+    "conflicting_paths": [
+      "src/runtime/mod_fmr_restart_state_contract.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "required_owner": "Central SWAP5 regie",
+    "finding": "Canonical INT13 Rutter physical-state/restart changes and MIGMAC07/08/09 preservation changes affect shared dependencies. The isolated candidate replay does not qualify a merged successor. Central reconciliation must preserve both Rutter and matrix-salt optional-state layouts/serialization and replay both owners plus changed macropore dependencies."
+  }
 }
