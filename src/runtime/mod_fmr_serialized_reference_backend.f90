@@ -154,6 +154,8 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_mobile_salt_component_t
     real(real64), allocatable :: mass_mg_cm2(:)
     real(real64), allocatable :: macro_mass_mg_cm2(:,:)
+    integer(int64) :: cdrain_source_id = 0_int64
+    integer(int64) :: cdrain_revision = -1_int64
   contains
     procedure, public :: ready => fmr_mobile_salt_ready
   end type fmr_mobile_salt_component_t
@@ -795,6 +797,9 @@ contains
     integer, intent(in) :: active_nodes
     integer, intent(in), optional :: active_domains
     ready = .false.
+    if ((self%cdrain_source_id == 0_int64 .and. self%cdrain_revision /= -1_int64) .or. &
+        (self%cdrain_source_id /= 0_int64 .and. &
+        (self%cdrain_source_id < 0_int64 .or. self%cdrain_revision < 0_int64))) return
     if (active_nodes <= 0) return
     if (.not. allocated(self%mass_mg_cm2)) return
     if (size(self%mass_mg_cm2) /= active_nodes) return
