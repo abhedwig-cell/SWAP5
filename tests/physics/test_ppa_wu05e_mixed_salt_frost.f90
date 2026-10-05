@@ -39,7 +39,7 @@ program test_ppa_wu05e_mixed_salt_frost
   type(fmr_committed_restart_bundle_t)::bundle
   class(transaction_state_t),allocatable::snapshot,after
   real(real64)::k,expected_alpha,losses(4),raw(numnod),dry(numnod),frs(numnod),potential(numnod),a(4),w,q,total
-  integer::status,scenario,j
+  integer::status,scenario,j,selector
   character(512)::mode,restart_path,result_path,variant,compensation
   logical::ok,dispersive,walsum
   call get_command_argument(1,mode)
@@ -142,6 +142,9 @@ program test_ppa_wu05e_mixed_salt_frost
     call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,restored(1), &
          cfg%tiles(1)%base_forcing,cfg%numerical,T1,T1+1.e-5_real64,cp,continuation,candidate,diag)
     call require(continuation%completed.and.candidate%ready(),'separate process changed forcing continuation')
+    obs=backend%observation()
+    call require(obs%root_compensation_base_uptake/cfg%tiles(1)%base_forcing%root_potential_transpiration<.05_real64.and. &
+         obs%root_compensation_final_uptake>obs%root_compensation_base_uptake,'fresh severe restart compensation remains active')
     call candidate%snapshot(snapshot,ok)
     call write_physical_file(trim(result_path),snapshot)
     print '(a)','PPA_WU05E_FRESH_PROCESS_RESTART=PASS_TEST_ONLY'
@@ -150,10 +153,20 @@ program test_ppa_wu05e_mixed_salt_frost
   cfg%base_salt_temporal_policy=policy
   call backend%configure_base_salt_temporal_policy(policy,ok)
   call require(ok,'joint salt policy')
-  do scenario=1,3
+  oracle=cfg
+  do scenario=1,6
+    cfg=oracle
+    if(scenario>3)then
+      deallocate(cfg%tiles(1)%initial_state%salt)
+      call fmr_initialize_mobile_salt_profile(cfg%tiles(1)%initial_state,dz,spread(.99_real64,1,numnod),status)
+      call require(status==0,'severe matrix salt profile')
+    end if
+    call fmr_new_b110_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok)
+    call states(1)%capture_checkpoint(cp,ok)
     bad=cfg
-    if(scenario==2)bad%tiles(1)%parameters%root_compensation%stressor=ROOT_COMP_SALINITY
-    if(scenario==3)bad%tiles(1)%parameters%root_compensation%stressor=ROOT_COMP_FROST
+    selector=mod(scenario-1,3)+1
+    if(selector==2)bad%tiles(1)%parameters%root_compensation%stressor=ROOT_COMP_SALINITY
+    if(selector==3)bad%tiles(1)%parameters%root_compensation%stressor=ROOT_COMP_FROST
     call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
          bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,first,candidate,diag,trace_accepted_water_flux_substeps=.true.)
     print *, 'JOINT ',scenario,first%completed,diag%solver_rejections,diag%temporal_rejections,diag%mass_rejections
@@ -173,10 +186,16 @@ program test_ppa_wu05e_mixed_salt_frost
     q=bad%tiles(1)%base_forcing%root_potential_transpiration
     total=sum(raw)/q
     a=total**(losses/(q-sum(raw)))
-    if(scenario==1)then
+    if(selector==1)then
       total=min(total/.7_real64,1._real64)
     else
-      j=merge(3,4,scenario==2);a(j)=min(a(j)/.7_real64,1._real64);total=product(a)
+      j=merge(3,4,selector==2);a(j)=min(a(j)/.7_real64,1._real64);total=product(a)
+    end if
+    if(scenario>3)then
+      call require(obs%root_compensation_base_uptake/q<.05_real64.and. &
+           obs%root_compensation_base_uptake/q>1.e-14_real64,'actual severe uptake lies in exact-source eligibility domain')
+      call require(obs%root_compensation_final_uptake>obs%root_compensation_base_uptake,'actual severe source compensation executes')
+      print *, 'PPA_EXACT01_ACTUAL_SEVERE_SELECTOR=',selector
     end if
     call require(abs(obs%root_compensation_final_uptake-q*total)<1.e-14_real64,'independent source joint uptake oracle')
     call require(abs(obs%root_compensation_final_uptake+obs%root_compensation_drought_loss+ &
@@ -199,6 +218,9 @@ program test_ppa_wu05e_mixed_salt_frost
     call backend%discard_trial_candidate(candidate,diag)
     call states(1)%snapshot(after,ok);call require_same_physical(cfg%tiles(1)%initial_state,after)
   end do
+  cfg=oracle
+  call fmr_new_b110_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok)
+  call states(1)%capture_checkpoint(cp,ok)
   ! Invalid hybrid/input profiles reject before publishing accepted transpiration.
   do scenario=1,9
     bad=cfg
@@ -297,9 +319,18 @@ program test_ppa_wu05e_mixed_salt_frost
   obs2=backend%observation();call other%snapshot(after,ok);call verify_ledger(obs2,after)
   call backend%discard_trial_candidate(other,diag2)
   call backend%configure_base_salt_temporal_policy(policy,ok)
+  deallocate(cfg%tiles(1)%initial_state%salt)
+  call fmr_initialize_mobile_salt_profile(cfg%tiles(1)%initial_state,dz,spread(.99_real64,1,numnod),status)
+  call require(status==0,'severe restart profile')
+  call fmr_new_b110_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok)
+  call states(1)%capture_checkpoint(cp,ok)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,first,candidate,diag,trace_accepted_water_flux_substeps=.true.)
   call require(first%completed.and.candidate%ready(),'joint final candidate')
+  obs=backend%observation()
+  call require(obs%root_compensation_base_uptake/cfg%tiles(1)%base_forcing%root_potential_transpiration<.05_real64.and. &
+       obs%root_compensation_final_uptake>obs%root_compensation_base_uptake,'accepted severe restart input remains source eligible')
+  print '(a)','PPA_EXACT01_SEVERE_RESTART_INPUT=PASS'
   call backend%commit_trial_candidate(states(1),candidate,diag,ok,status)
   call require(ok,'joint final commit')
   call fmr_export_committed_restart(columns,[cfg%tiles(1)%template],states, &
