@@ -1,5 +1,5 @@
-Warning: truncated output (original token count: 61368)
-Total output lines: 4233
+Warning: truncated output (original token count: 61384)
+Total output lines: 4234
 
 module mod_fmr_serialized_reference_backend
   use, intrinsic :: iso_fortran_env, only: int64, real64
@@ -26,7 +26,8 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM, &
-       FMR_SOLUTE_STATE_LAYOUT_NONE, fmr_solute_state_layout_known
+       FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, &
+       fmr_solute_state_layout_known
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
@@ -784,8 +785,7 @@ contains
     if (parameters%active_nodes <= 0) return
     if (size(parameters%cofgen,1) < 24 .or. size(parameters%cofgen,2) /= parameters%active_nodes) return
     if (parameters%prepared_default_mvg%active_nodes /= parameters%active_nodes) return
-    if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_active) return
-    if (parameters%prepared_default_mvg%elas…37368 tokens truncated…t_certificate_available, &
+    if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extensio…37384 tokens truncated…t_certificate_available, &
            rossfast_temporal_indicator)
       if (.not. rossfast_certificate_available .or. .not. ieee_is_finite(rossfast_temporal_indicator) .or. &
           rossfast_temporal_indicator < 0.0_real64) return
