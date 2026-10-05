@@ -52,10 +52,41 @@ for route in ['normal', 'low_air']:
   end do
   end do
   end do
+  block
+    type(fmr_b110_physical_parameters_t)::good,bad
+    type(fmr_b110_physical_forcing_t)::control
+    mixture=0;table_sign=1
+    call initialize_parameters(good,2)
+    call enable_bounded_frost(good)
+    good%frost_drainage%active=.true.
+    call configure_response(good,control)
+    call require(fmr_frost_response_drainage_configuration_valid(good),'valid active table ignores inactive LINEAR NaN')
+    bad=good;bad%drainage_response_levels(1)%variant=3
+    call require(.not.fmr_frost_response_drainage_configuration_valid(bad),'unselected generator family rejected')
+    bad=good;bad%frost_response_drainage_active=.false.
+    call require(.not.fmr_frost_response_drainage_configuration_valid(bad),'new option requires base selector')
+    bad=good;deallocate(bad%drainage_response_levels(1)%tabulated%groundwater_depth)
+    call require(.not.fmr_frost_response_drainage_configuration_valid(bad),'unallocated active depth table rejected')
+    bad=good;bad%drainage_response_levels(1)%tabulated%groundwater_depth=[1._real64,2._real64]
+    call require(.not.fmr_frost_response_drainage_configuration_valid(bad),'active table shape mismatch rejected')
+    bad=good;bad%drainage_response_levels(1)%tabulated%groundwater_depth(2)=ieee_value(0._real64,ieee_quiet_nan)
+    call require(.not.fmr_frost_response_drainage_configuration_valid(bad),'NaN depth rejects before ordering')
+    bad=good;bad%drainage_response_levels(1)%tabulated%signed_exchange_rate(2)=ieee_value(0._real64,ieee_quiet_nan)
+    call require(.not.fmr_frost_response_drainage_configuration_valid(bad),'NaN signed rate rejects before solving')
+    bad=good;bad%drainage_response_levels(1)%tabulated%groundwater_depth=[3._real64,2._real64,1._real64]
+    call require(.not.fmr_frost_response_drainage_configuration_valid(bad),'descending depths rejected')
+    bad=good;bad%drainage_response_levels(1)%tabulated%groundwater_depth(1)=-1._real64
+    call require(.not.fmr_frost_response_drainage_configuration_valid(bad),'negative active depth rejected')
+    print '(A)','PPA_WU05B11_ACTIVE_VARIANT_PREFLIGHT=PASS'
+  end block
   print '(A,I0)','PPA_WU05B11_ACTUAL_SIGNED_MIXED_GWL_CASES=',cases
   print '(A)','PPA_WU05B11_ACTIVATION=PASS'
 '''
     source = original[:begin] + main + original[end:]
+    source = source.replace('fmr_new_b110_committed_state,', 'fmr_frost_response_drainage_configuration_valid, fmr_new_b110_committed_state,', 1)
+    if route == 'low_air':
+        source = source.replace('    good%frost_drainage%active=.true.',
+            '    good%frost_drainage%active=.true.\n    good%frost_low_air_drainage%active=.true.\n    good%frost_low_air_drainage%drain_depth_cm=drain_depth')
     source = source.replace('  logical::ok\n', '  logical::ok\n  integer::mixture,table_sign,gwl_index,cases=0\n  real(real64)::table_first,table_second\n', 1)
     if route == 'low_air':
         source = source.replace('tabulated%groundwater_depth=[20._real64]', 'tabulated%groundwater_depth=[1._real64,2._real64,3._real64]')
