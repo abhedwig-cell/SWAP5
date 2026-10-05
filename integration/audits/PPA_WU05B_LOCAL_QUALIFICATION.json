@@ -81,12 +81,13 @@
     "tests/frost/run_ppa_wu05b_frost_effect.sh": "638b055c883c42c07d51a76c7756bbb2dc57939462130f8d57c4f76214f5c744",
     "docs/audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md": "0a951677292883f5a475a78c4978a3541dece5c6568086b2145bb5fab06850f9",
     "integration/audits/PPA_WU05B_SOURCE_TRACE.json": "60d3ea7985bf74d50bb50daf69f9389cbede2e1ffd662664158caadc8fc1fa1f",
-    "integration/audits/PPA_WU05B_PREREGISTRATION.json": "627cb279500680e6ea19efd2044e18c9832d27c7ef4306fc00542b3b822921e2"
+    "integration/audits/PPA_WU05B_PREREGISTRATION.json": "627cb279500680e6ea19efd2044e18c9832d27c7ef4306fc00542b3b822921e2",
+    ".github/workflows/ppa-wu05b-frost-admission.yml": "c92ccae3349ad5adf558ba683f63d89920d83c9ff9699c6af550123f18c14906"
   },
   "open_gates": [
-    "Persist exact local postimage to work/ppa-wu05b-frost-migration and verify remote ref advancement without rewriting history.",
-    "Run the repository persisted qualification/admission gate on the exact persisted postimage; until then no production admission is claimed.",
-    "Legacy FrozenBounds and frost-root-stress are explicitly rejected in their current legacy forms for this bounded migration. Any future replacement is a separate work unit."
+    "Create the PR to integration/f-ci-canonical and run the dedicated Actions qualification gate against the exact PR postimage.",
+    "Record persisted Actions results and complete the repository admission decision; no production admission is claimed before this succeeds.",
+    "FrozenBounds and frost-root-stress remain explicitly rejected only in their current legacy forms; any replacement is separate scope."
   ],
-  "github_actions": "NOT_RUN; local qualification evidence passes, but no persisted qualification or production admission is claimed."
+  "github_actions": "Dedicated PPA-WU05B pull-request qualification workflow added; not run until the PR postimage exists."
 }
