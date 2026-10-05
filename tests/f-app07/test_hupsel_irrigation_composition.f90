@@ -1,7 +1,7 @@
 program test_fapp07_hupsel_irrigation_composition
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_irrigation_process, only: irrigation_flux_result_t, irrigation_diagnostics_t, &
-       IRRIGATION_APPLICATION_SURFACE
+       IRRIGATION_APPLICATION_SURFACE, IRRIGATION_APPLICATION_SPRINKLER
   use mod_tcs1_dcs2_sprinkling_irrigation_process, only: tcs1_dcs2_sprinkling_result_t, &
        tcs1_dcs2_sprinkling_diagnostics_t
   use mod_rutter_interception_process, only: rutter_interval_input_t, rutter_interval_result_t, rutter_diagnostics_t
@@ -96,6 +96,21 @@ program test_fapp07_hupsel_irrigation_composition
   if (n /= 110 .or. n0 /= 18 .or. n3 /= 92) error stop 20
   if (max_error /= 0.0_real64) error stop 21
 
+  ! Generic fixed sprinkling is intercepted through Rutter; the direct surface
+  ! identity route must reject the same sprinkler flux rather than bypassing it.
+  fixed_flux = irrigation_flux_result_t()
+  fixed_flux%applied = .true.
+  fixed_flux%application_type = IRRIGATION_APPLICATION_SPRINKLER
+  fixed_flux%surface_gross_rate = 0.75_real64
+  fixed_diag = irrigation_diagnostics_t()
+  base_rutter = rutter_interval_input_t()
+  call fmr_bind_sprinkling_flux_to_rutter(base_rutter,fixed_flux,fixed_diag,bound_rutter,d)
+  if (d%status /= FMR_HUPSEL_IRR_BIND_OK .or. .not. d%rutter_interception_enabled) error stop 23
+  if (.not. bound_rutter%surface_irrigation_is_intercepted .or. &
+      bound_rutter%surface_irrigation_cm_per_day /= 0.75_real64) error stop 24
+  call fmr_bind_fixed_surface_irrigation_identity_to_dynamic_top(base_top,fixed_flux,fixed_diag,bound_top,d)
+  if (d%status /= FMR_HUPSEL_IRR_BIND_UNSUPPORTED_APPLICATION .or. d%result_produced) error stop 25
+
   ! Invalid gross scheduled irrigation must fail closed.
   scheduled = tcs1_dcs2_sprinkling_result_t()
   scheduled%applied = .true.
@@ -110,4 +125,5 @@ program test_fapp07_hupsel_irrigation_composition
   write(*,'(A,ES24.16)') 'F_APP07_MAX_COMPOSITION_ERROR=',max_error
   write(*,'(A)') 'F_APP07_IRRIGATION_RUTTER_DYNAMIC_TOP_COMPOSITION=PASS'
   write(*,'(A)') 'F_APP07_COMPOSITION_FAIL_CLOSED=PASS'
+  write(*,'(A)') 'F_MIG431_FIXED_SPRINKLER_RUTTER_BINDING=PASS'
 end program test_fapp07_hupsel_irrigation_composition

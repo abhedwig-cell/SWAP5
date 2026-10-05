@@ -44,13 +44,40 @@ module mod_irrigation_process
 
   type, public :: scheduled_irrigation_parameters_t
     logical :: scheduled_irrigation_enabled = .false.
+    integer :: timing_criterion = 7
+    integer :: depth_criterion = 2
     integer :: active_nodes = 0
+    integer :: application_type = IRRIGATION_APPLICATION_SSDI
     integer :: sensor_node = 0
     integer :: single_ssdi_node = 0
     real(real64) :: irr_rate_cm_per_day = 0.0_real64
     integer :: tcs7_knot_count = 0
     real(real64) :: tcs7_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
     real(real64) :: tcs7_pressure_head(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    integer :: tcs8_knot_count = 0
+    real(real64) :: tcs8_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: tcs8_water_content(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    integer :: tcs2_knot_count = 0
+    real(real64) :: tcs2_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: tcs2_raw_fraction(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    integer :: tcs3_knot_count = 0
+    real(real64) :: tcs3_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: tcs3_taw_fraction(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    integer :: tcs4_knot_count = 0
+    real(real64) :: tcs4_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: tcs4_depletion_mm(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: tcs6_weekly_deficit_threshold_mm = 0.0_real64
+    integer :: dcs1_knot_count = 0
+    real(real64) :: dcs1_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: dcs1_adjustment_mm(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: rain_reduction_threshold_cm = 0.0_real64
+    logical :: depth_limits_enabled = .false.
+    real(real64) :: minimum_depth_mm = 0.0_real64
+    real(real64) :: maximum_depth_mm = 0.0_real64
+    real(real64), allocatable :: root_zone_thickness_cm(:)
+    real(real64), allocatable :: theta_wilting(:)
+    real(real64), allocatable :: theta_middle(:)
+    real(real64), allocatable :: theta_field_capacity(:)
     integer :: dcs2_knot_count = 0
     real(real64) :: dcs2_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
     real(real64) :: dcs2_depth_cm(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
@@ -58,6 +85,7 @@ module mod_irrigation_process
 
   type, public :: irrigation_state_t
     integer :: next_fixed_event_index = 1
+    integer :: tcs6_weekly_day_counter = 0
     logical :: active_event = .false.
     integer :: active_event_origin = IRRIGATION_EVENT_NONE
     integer :: active_event_index = 0
@@ -74,6 +102,7 @@ module mod_irrigation_process
     real(real64) :: t0 = 0.0_real64
     real(real64) :: t1 = 0.0_real64
     real(real64) :: dvs = 0.0_real64
+    real(real64) :: gross_rain_cm_per_day = 0.0_real64
     logical :: selection_opportunity = .false.
     logical :: irrigation_enabled = .false.
     logical :: schedule_enabled = .false.
@@ -254,6 +283,8 @@ contains
     type(irrigation_flux_result_t), intent(out) :: fluxes
     type(irrigation_diagnostics_t), intent(out) :: diagnostics
     real(real64) :: threshold, depth, duration, event_end, effective_t0, effective_t1
+    real(real64) :: awlh, awmh, awah, water_deficit
+    integer :: weekly_day_counter
     logical :: ok, finishes_at_event_end
 
     candidate_state = committed_state
@@ -340,22 +371,103 @@ contains
       return
     end if
 
-    call restricted_afgen(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count, &
-                          request%dvs, threshold, ok)
+    select case (parameters%timing_criterion)
+    case (6)
+      call root_zone_water_status(parameters, hydraulic_view, awlh, awmh, awah, water_deficit, ok)
+      if (.not. ok) then
+        diagnostics%status = IRRIGATION_INVALID_HYDRAULIC_VIEW
+        return
+      end if
+      weekly_day_counter = committed_state%tcs6_weekly_day_counter + 1
+      candidate_state%tcs6_weekly_day_counter = weekly_day_counter
+      if (weekly_day_counter >= 7) then
+        candidate_state%tcs6_weekly_day_counter = 0
+        diagnostics%interpolated_threshold = parameters%tcs6_weekly_deficit_threshold_mm
+        diagnostics%triggered = 10.0_real64*water_deficit > parameters%tcs6_weekly_deficit_threshold_mm
+      end if
+    case (2, 3, 4)
+      call root_zone_water_status(parameters, hydraulic_view, awlh, awmh, awah, water_deficit, ok)
+      if (.not. ok) then
+        diagnostics%status = IRRIGATION_INVALID_HYDRAULIC_VIEW
+        return
+      end if
+      select case (parameters%timing_criterion)
+      case (2)
+        call restricted_afgen(parameters%tcs2_dvs, parameters%tcs2_raw_fraction, parameters%tcs2_knot_count, &
+                              request%dvs, threshold, ok)
+        if (ok) then
+          threshold = min(awlh, threshold * (awlh-awmh))
+          diagnostics%triggered = awah < (awlh-threshold)
+        end if
+      case (3)
+        call restricted_afgen(parameters%tcs3_dvs, parameters%tcs3_taw_fraction, parameters%tcs3_knot_count, &
+                              request%dvs, threshold, ok)
+        if (ok) then
+          threshold = threshold * awlh
+          diagnostics%triggered = awah < (awlh-threshold)
+        end if
+      case (4)
+        call restricted_afgen(parameters%tcs4_dvs, parameters%tcs4_depletion_mm, parameters%tcs4_knot_count, &
+                              request%dvs, threshold, ok)
+        if (ok) diagnostics%triggered = water_deficit > threshold * 0.1_real64
+      end select
+      if (.not. ok) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      diagnostics%interpolated_threshold = threshold
+    case (7)
+      call restricted_afgen(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count, &
+                            request%dvs, threshold, ok)
+    case (8)
+      call restricted_afgen(parameters%tcs8_dvs, parameters%tcs8_water_content, parameters%tcs8_knot_count, &
+                            request%dvs, threshold, ok)
+    case default
+      diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+      return
+    end select
     if (.not. ok) then
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return
     end if
-    diagnostics%interpolated_threshold = threshold
-    if (hydraulic_view%pressure_head(parameters%sensor_node) > threshold) return
-    diagnostics%triggered = .true.
+    if (parameters%timing_criterion == 7 .or. parameters%timing_criterion == 8) &
+      diagnostics%interpolated_threshold = threshold
+    if (parameters%timing_criterion == 7) then
+      if (hydraulic_view%pressure_head(parameters%sensor_node) > threshold) return
+      diagnostics%triggered = .true.
+    else if (parameters%timing_criterion == 8) then
+      if (hydraulic_view%water_content(parameters%sensor_node) > threshold) return
+      diagnostics%triggered = .true.
+    end if
+    if (.not. diagnostics%triggered) return
 
-    call restricted_afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, &
-                          request%dvs, depth, ok)
+    select case (parameters%depth_criterion)
+    case (1)
+      call root_zone_water_status(parameters, hydraulic_view, awlh, awmh, awah, water_deficit, ok)
+      if (.not. ok .or. .not. ieee_is_finite(request%gross_rain_cm_per_day) .or. &
+          request%gross_rain_cm_per_day < 0.0_real64) then
+        diagnostics%status = IRRIGATION_INVALID_HYDRAULIC_VIEW
+        return
+      end if
+      call restricted_afgen(parameters%dcs1_dvs, parameters%dcs1_adjustment_mm, parameters%dcs1_knot_count, &
+                            request%dvs, threshold, ok)
+      if (ok) then
+        depth = max(0.0_real64, water_deficit + threshold*0.1_real64 - &
+             merge(request%gross_rain_cm_per_day, 0.0_real64, &
+                   request%gross_rain_cm_per_day > parameters%rain_reduction_threshold_cm))
+      end if
+    case (2)
+      call restricted_afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, &
+                            request%dvs, depth, ok)
+    case default
+      ok = .false.
+    end select
     if (.not. ok) then
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return
     end if
+    if (parameters%depth_limits_enabled) &
+      depth = min(max(depth, parameters%minimum_depth_mm*0.1_real64), parameters%maximum_depth_mm*0.1_real64)
     diagnostics%interpolated_depth = depth
     if (depth <= 0.0_real64) then
       diagnostics%status = IRRIGATION_INVALID_EVENT
@@ -399,6 +511,8 @@ contains
     type(irrigation_state_t), intent(in) :: state
 
     valid_state = state%next_fixed_event_index >= 1
+    valid_state = valid_state .and. state%tcs6_weekly_day_counter >= 0 .and. &
+                  state%tcs6_weekly_day_counter <= 6
     if (.not. valid_state) return
     if (state%active_event) then
       valid_state = state%active_event_end > state%active_event_start
@@ -453,14 +567,118 @@ contains
     if (.not. parameters%scheduled_irrigation_enabled) return
     if (parameters%active_nodes <= 0) return
     if (parameters%sensor_node < 1 .or. parameters%sensor_node > parameters%active_nodes) return
-    if (parameters%single_ssdi_node < 1 .or. parameters%single_ssdi_node > parameters%active_nodes) return
     if (.not. ieee_is_finite(parameters%irr_rate_cm_per_day)) return
     if (parameters%irr_rate_cm_per_day <= 0.0_real64) return
-    if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return
-    if (.not. valid_table(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count)) return
-    if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count) < 0.0_real64)) return
+    if (parameters%application_type < IRRIGATION_APPLICATION_SPRINKLER .or. &
+        parameters%application_type > IRRIGATION_APPLICATION_SSDI) return
+    if (parameters%application_type == IRRIGATION_APPLICATION_SSDI .and. &
+        (parameters%single_ssdi_node < 1 .or. parameters%single_ssdi_node > parameters%active_nodes)) return
+    if (parameters%depth_limits_enabled) then
+      if (.not. ieee_is_finite(parameters%minimum_depth_mm) .or. &
+          .not. ieee_is_finite(parameters%maximum_depth_mm)) return
+      if (parameters%minimum_depth_mm < 0.0_real64 .or. &
+          parameters%maximum_depth_mm < parameters%minimum_depth_mm) return
+    end if
+    select case (parameters%timing_criterion)
+    case (6)
+      if (.not. ieee_is_finite(parameters%tcs6_weekly_deficit_threshold_mm) .or. &
+          parameters%tcs6_weekly_deficit_threshold_mm < 0.0_real64) return
+      if (.not. valid_root_zone_parameters(parameters)) return
+    case (2)
+      if (.not. valid_table(parameters%tcs2_dvs, parameters%tcs2_raw_fraction, parameters%tcs2_knot_count)) return
+      if (any(parameters%tcs2_raw_fraction(1:parameters%tcs2_knot_count) < 0.0_real64)) return
+      if (any(parameters%tcs2_raw_fraction(1:parameters%tcs2_knot_count) > 1.0_real64)) return
+      if (.not. valid_root_zone_parameters(parameters)) return
+    case (3)
+      if (.not. valid_table(parameters%tcs3_dvs, parameters%tcs3_taw_fraction, parameters%tcs3_knot_count)) return
+      if (any(parameters%tcs3_taw_fraction(1:parameters%tcs3_knot_count) < 0.0_real64)) return
+      if (any(parameters%tcs3_taw_fraction(1:parameters%tcs3_knot_count) > 1.0_real64)) return
+      if (.not. valid_root_zone_parameters(parameters)) return
+    case (4)
+      if (.not. valid_table(parameters%tcs4_dvs, parameters%tcs4_depletion_mm, parameters%tcs4_knot_count)) return
+      if (any(parameters%tcs4_depletion_mm(1:parameters%tcs4_knot_count) < 0.0_real64)) return
+      if (.not. valid_root_zone_parameters(parameters)) return
+    case (7)
+      if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return
+    case (8)
+      if (.not. valid_table(parameters%tcs8_dvs, parameters%tcs8_water_content, parameters%tcs8_knot_count)) return
+      if (any(parameters%tcs8_water_content(1:parameters%tcs8_knot_count) < 0.0_real64) .or. &
+          any(parameters%tcs8_water_content(1:parameters%tcs8_knot_count) > 1.0_real64)) return
+    case default
+      return
+    end select
+    select case (parameters%depth_criterion)
+    case (1)
+      if (.not. valid_table(parameters%dcs1_dvs, parameters%dcs1_adjustment_mm, parameters%dcs1_knot_count)) return
+      if (.not. valid_root_zone_parameters(parameters)) return
+      if (any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count) < -100.0_real64) .or. &
+          any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count) > 100.0_real64)) return
+      if (.not. ieee_is_finite(parameters%rain_reduction_threshold_cm) .or. &
+          parameters%rain_reduction_threshold_cm < 0.0_real64) return
+    case (2)
+      if (.not. valid_table(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count)) return
+      if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count) < 0.0_real64)) return
+    case default
+      return
+    end select
     valid_scheduled_parameters = .true.
   end function valid_scheduled_parameters
+
+  pure logical function valid_root_zone_parameters(parameters)
+    type(scheduled_irrigation_parameters_t), intent(in) :: parameters
+    integer :: n
+
+    valid_root_zone_parameters = .false.
+    n = parameters%active_nodes
+    if (.not. allocated(parameters%root_zone_thickness_cm) .or. &
+        .not. allocated(parameters%theta_wilting) .or. .not. allocated(parameters%theta_middle) .or. &
+        .not. allocated(parameters%theta_field_capacity)) return
+    if (size(parameters%root_zone_thickness_cm) /= n .or. size(parameters%theta_wilting) /= n .or. &
+        size(parameters%theta_middle) /= n .or. size(parameters%theta_field_capacity) /= n) return
+    if (any(.not. ieee_is_finite(parameters%root_zone_thickness_cm)) .or. &
+        any(.not. ieee_is_finite(parameters%theta_wilting)) .or. &
+        any(.not. ieee_is_finite(parameters%theta_middle)) .or. &
+        any(.not. ieee_is_finite(parameters%theta_field_capacity))) return
+    if (any(parameters%root_zone_thickness_cm < 0.0_real64)) return
+    if (any(parameters%theta_wilting < 0.0_real64) .or. any(parameters%theta_field_capacity > 1.0_real64)) return
+    if (any(parameters%theta_middle < parameters%theta_wilting) .or. &
+        any(parameters%theta_field_capacity < parameters%theta_middle)) return
+    if (sum(parameters%root_zone_thickness_cm) <= 0.0_real64) return
+    valid_root_zone_parameters = .true.
+  end function valid_root_zone_parameters
+
+  pure subroutine root_zone_water_status(parameters, hydraulic_view, awlh, awmh, awah, water_deficit, ok)
+    type(scheduled_irrigation_parameters_t), intent(in) :: parameters
+    type(process_hydraulic_view_t), intent(in) :: hydraulic_view
+    real(real64), intent(out) :: awlh, awmh, awah, water_deficit
+    logical, intent(out) :: ok
+    real(real64) :: thickness
+    integer :: i
+
+    awlh = 0.0_real64
+    awmh = 0.0_real64
+    awah = 0.0_real64
+    water_deficit = 0.0_real64
+    ok = .false.
+    if (.not. valid_root_zone_parameters(parameters)) return
+    if (hydraulic_view%active_nodes /= parameters%active_nodes) return
+    if (.not. allocated(hydraulic_view%water_content)) return
+    if (size(hydraulic_view%water_content) /= parameters%active_nodes) return
+    if (any(.not. ieee_is_finite(hydraulic_view%water_content))) return
+    if (any(hydraulic_view%water_content < 0.0_real64) .or. &
+        any(hydraulic_view%water_content > 1.0_real64)) return
+    do i = 1, parameters%active_nodes
+      thickness = parameters%root_zone_thickness_cm(i)
+      awlh = awlh + (parameters%theta_field_capacity(i)-parameters%theta_wilting(i))*thickness
+      awmh = awmh + (parameters%theta_middle(i)-parameters%theta_wilting(i))*thickness
+      awah = awah + (hydraulic_view%water_content(i)-parameters%theta_wilting(i))*thickness
+      water_deficit = water_deficit + (parameters%theta_field_capacity(i)- &
+                                       hydraulic_view%water_content(i))*thickness
+    end do
+    if (.not. all(ieee_is_finite([awlh,awmh,awah,water_deficit]))) return
+    if (awlh <= 0.0_real64 .or. awmh < 0.0_real64) return
+    ok = .true.
+  end subroutine root_zone_water_status
 
   pure logical function valid_table(knots, values, knot_count)
     real(real64), intent(in) :: knots(IRRIGATION_MAX_SCHEDULED_KNOTS)
@@ -491,6 +709,7 @@ contains
     if (size(hydraulic_view%pressure_head) /= hydraulic_view%active_nodes) return
     if (size(hydraulic_view%water_content) /= hydraulic_view%active_nodes) return
     if (.not. ieee_is_finite(hydraulic_view%pressure_head(parameters%sensor_node))) return
+    if (.not. ieee_is_finite(hydraulic_view%water_content(parameters%sensor_node))) return
     valid_scheduled_hydraulic_view = .true.
   end function valid_scheduled_hydraulic_view
 
@@ -565,13 +784,18 @@ contains
     fluxes%applied = .true.
     fluxes%event_origin = IRRIGATION_EVENT_SCHEDULED
     fluxes%event_index = 0
-    fluxes%application_type = IRRIGATION_APPLICATION_SSDI
+    fluxes%application_type = parameters%application_type
     fluxes%event_duration = event_duration
     fluxes%active_duration = active_duration
-    allocate(fluxes%subsurface_source(parameters%active_nodes))
-    fluxes%subsurface_source = 0.0_real64
-    fluxes%subsurface_source(parameters%single_ssdi_node) = parameters%irr_rate_cm_per_day
-    fluxes%external_inflow_amount = parameters%irr_rate_cm_per_day * active_duration
+    if (parameters%application_type == IRRIGATION_APPLICATION_SSDI) then
+      allocate(fluxes%subsurface_source(parameters%active_nodes))
+      fluxes%subsurface_source = 0.0_real64
+      fluxes%subsurface_source(parameters%single_ssdi_node) = parameters%irr_rate_cm_per_day
+      fluxes%external_inflow_amount = parameters%irr_rate_cm_per_day * active_duration
+    else
+      fluxes%surface_gross_rate = parameters%irr_rate_cm_per_day
+      fluxes%external_inflow_amount = parameters%irr_rate_cm_per_day * active_duration
+    end if
   end subroutine apply_scheduled_event
 
   pure logical function same_time(a, b)
