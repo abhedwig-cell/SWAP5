@@ -31,7 +31,7 @@ program test_mobile_salt_state
   call req(abs(sum(candidate%mass_mg_cm2)-11.9_real64)<tol,'advective column mass')
   call req(abs(fluxes%closure_error_mg_cm2)<tol,'advective balance')
 
-  ! Root salt removal uses the same node water sink and bounded TSCF.
+  ! B1.11 accepts TSCF up to 10; the sink remains tied to the water trial.
   call advance_mobile_salt_trial(committed,[10.0_real64,10.0_real64],[0.2_real64,0.2_real64], &
        [0.199_real64,0.2_real64],[0.0_real64,0.0_real64,0.0_real64],[0.01_real64,0.0_real64], &
        0.0_real64,0.0_real64,0.5_real64,1.0_real64,candidate,fluxes,status)
@@ -52,8 +52,14 @@ program test_mobile_salt_state
   call req(status==SOLUTE_OK.and.maxval(abs(replay%mass_mg_cm2-discarded%mass_mg_cm2))<tol,'committed restart replay')
 
   call advance_mobile_salt_trial(committed,[10.0_real64,10.0_real64],[0.2_real64,0.2_real64], &
+       [0.199_real64,0.2_real64],[0.0_real64,0.0_real64,0.0_real64],[0.01_real64,0.0_real64], &
+       0.0_real64,0.0_real64,2.0_real64,1.0_real64,candidate,fluxes,status)
+  call req(status==SOLUTE_OK.and.abs(fluxes%root_uptake_mg_cm2-0.04_real64)<tol, &
+       'source-valid TSCF above unity retains exact root mass receipt')
+
+  call advance_mobile_salt_trial(committed,[10.0_real64,10.0_real64],[0.2_real64,0.2_real64], &
        [0.2_real64,0.2_real64],[0.0_real64,0.0_real64,0.0_real64],[0.0_real64,0.0_real64], &
-       0.0_real64,0.0_real64,1.01_real64,1.0_real64,candidate,fluxes,status)
+       0.0_real64,0.0_real64,10.01_real64,1.0_real64,candidate,fluxes,status)
   call req(status==SOLUTE_INVALID,'TSCF above admitted range')
   call advance_mobile_salt_trial(committed,[10.0_real64,10.0_real64],[0.2_real64,0.2_real64], &
        [0.2_real64,0.2_real64],[0.0_real64,0.0_real64,0.0_real64],[0.0_real64,0.0_real64], &
