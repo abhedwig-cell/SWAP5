@@ -6,12 +6,16 @@ on:
       - integration/f-ci-canonical
     paths:
       - 'src/process/mod_frost_hydraulic_effect.f90'
+      - 'src/process/mod_root_frost_stress.f90'
+      - 'src/process/mod_root_uptake_compensation.f90'
+      - 'src/runtime/mod_root_uptake_compensation_execution.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
       - 'src/solver/mod_frost_hydraulic_provider.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_committed_restart.f90'
       - 'tests/frost/**'
       - 'docs/audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md'
-      - 'integration/audits/PPA_WU05B_*.json'
+      - 'integration/audits/PPA_WU05B*.json'
       - '.github/workflows/ppa-wu05b-frost-admission.yml'
 
 permissions:
@@ -42,6 +46,16 @@ jobs:
         run: |
           bash tests/frost/run_ppa_wu05b_frost_effect.sh
           bash tests/frost/run_ppa_wu05b_frost_runtime.sh
+      - name: Explicit empirical root frost and application composition
+        run: |
+          if test -f tests/frost/run_ppa_wu05b2_root_frost.sh; then
+            bash tests/frost/run_ppa_wu05b2_root_frost.sh
+            bash tests/frost/run_ppa_wu05b2_root_frost_runtime.sh
+            bash tests/physics/run_ppa_wu05d2_jarvis.sh
+            python3 tests/physics/run_ppa_wu05d3_walsum.py
+            C3A_RESULT="$RUNNER_TEMP/frost-root-salt.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
+            WU05E_TRANSPORT_VARIANT=dispersion C3A_RESULT="$RUNNER_TEMP/frost-root-dispersion.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
+          fi
       - name: Exact current-canonical preservation for the bounded frost successor
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
       - name: Install documentation dependencies

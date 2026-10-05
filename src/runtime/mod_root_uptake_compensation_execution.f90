@@ -11,7 +11,7 @@ module mod_root_uptake_compensation_execution
   public::apply_root_uptake_compensation
 contains
   subroutine apply_root_uptake_compensation(config,ptra,base_fluxes,base_diagnostics,oxygen_reduction_total, &
-       final_fluxes,compensation_diagnostics,status,geometry,node_thickness_cm,salinity_reduction_total)
+       final_fluxes,compensation_diagnostics,status,geometry,node_thickness_cm,salinity_reduction_total,frost_reduction_total)
     type(root_compensation_config_t),intent(in)::config
     real(real64),intent(in)::ptra,oxygen_reduction_total
     type(root_water_uptake_flux_result_t),intent(in)::base_fluxes
@@ -21,7 +21,7 @@ contains
     integer,intent(out)::status
     type(root_walsum_geometry_t),optional,intent(in)::geometry
     real(real64),optional,intent(in)::node_thickness_cm(:)
-    real(real64),optional,intent(in)::salinity_reduction_total
+    real(real64),optional,intent(in)::salinity_reduction_total,frost_reduction_total
     real(real64)::salt_reduction
     type(root_compensation_config_t)::effective_config
     integer::comp_status,deepest_node
@@ -44,6 +44,7 @@ contains
       compensation_diagnostics%drought_reduction_total=base_diagnostics%drought_reduction_total
       compensation_diagnostics%oxygen_reduction_total=oxygen_reduction_total
       compensation_diagnostics%salinity_reduction_total=salt_reduction
+      if(present(frost_reduction_total))compensation_diagnostics%frost_reduction_total=frost_reduction_total
       status=ROOT_COMP_EXEC_OK
       return
     end if
@@ -62,7 +63,7 @@ contains
       effective_config%method=ROOT_COMP_JARVIS
     end if
     call compose_jarvis_root_uptake(effective_config,ptra,base_fluxes,base_diagnostics%drought_reduction_total, &
-         oxygen_reduction_total,final_fluxes,compensation_diagnostics,comp_status,salt_reduction)
+         oxygen_reduction_total,final_fluxes,compensation_diagnostics,comp_status,salt_reduction,frost_reduction_total)
     if(comp_status/=ROOT_COMP_OK) then
       final_fluxes=root_water_uptake_flux_result_t()
       status=ROOT_COMP_EXEC_PHYSICS

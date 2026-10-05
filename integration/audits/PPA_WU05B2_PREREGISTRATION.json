@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.ppa_wu05b2.preregistration.v1",
+  "work_unit": "PPA-WU05B2",
+  "baseline": "53a3f3e41231b8600bbb19b8eb2157558bd12e19",
+  "branch": "work/ppa-wu05b2-frost-root-composition",
+  "purpose": "Migrate explicitly named legacy binary root-frost stress and independently qualify typed composition with Feddes/Jarvis/Walsum.",
+  "authority": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90: macro TSOIL<0 cutoff; product stress; nodewise loss attribution; scalar ALPHACRIT compensation; SW_STRESSOR=5",
+    "integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json",
+    "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+  ],
+  "reassessment": "A discontinuous plant-root response and a continuous empirical soil-conductivity response represent different rules. Their difference alone is not sufficient reason to reject source semantics. Prior rejection remains valid for an unqualified implementation; this work introduces an explicit typed compatibility contract, not an inferred hydraulic factor.",
+  "contract": [
+    "ROOT_FROST_LEGACY_ZERO: factor=0 iff committed trial-start node temperature<0 C, otherwise 1, including exactly 0 C.",
+    "No claim of ice content, frozen-water availability, latent heat or independently validated plant physiology.",
+    "Source multiplicative root-frost stress composes before compensation.",
+    "Nodewise source-weighted drought/oxygen/frost losses close the full reduction; scalar exponent shares use these losses.",
+    "New optional frost loss and selector 5 preserve all existing two-stressor/default-OFF routes.",
+    "Uniform compensated scaling never creates uptake in a zero/frozen node; final uptake<=PTRA.",
+    "No new committed state, restart schema, ledger or mass owner.",
+    "Root-frost requires admitted hydraulic frost and sensible-temperature owners, root extraction, zero prescribed qbot and reference solver.",
+    "Bartholomeus+frost remains fail-closed unless separately exercised in actual production oracles."
+  ],
+  "test_matrix": [
+    "independent cutoff including -epsilon,0,+epsilon,NaN/Inf, shape and absence validation",
+    "independent two/three-stressor attribution and compensation ALL/DROUGHT/OXYGEN/FROST, alpha1, no roots, all frozen, potential cap, Walsum geometry",
+    "actual serialized production execution with mixed frozen/unfrozen roots and correct accepted sink publication",
+    "rejected trials, fresh replay, actual retries and committed smaller-step equivalence",
+    "restart into fresh worker and thaw recomputation; no extra state",
+    "preserve admitted Jarvis/Walsum, hydraulic frost, default-OFF application, hard mass gates at O0/O2",
+    "docs, exact source manifests and current preservation before admission"
+  ],
+  "admission_owner": "central SWAP5 regie",
+  "status": "IMPLEMENTED_NOT_ADMITTED",
+  "temporal_amendment": {
+    "reason": "Actual nonzero-root trials converge and close mass but the incumbent full/half temporal identity rejects every nonidentical state. Root-frost cannot be admitted on an equilibrium-only oracle.",
+    "scope": "Only explicit root_frost.active route; incumbent routes unchanged.",
+    "metric": "Dimensionless max of full/half pressure-head, ponding and groundwater differences divided by a supplied positive head budget, and soil-temperature differences divided by a supplied positive temperature budget. Different freeze classifications, invalid state, or missing budgets return unavailable (huge).",
+    "qualification_budgets": {
+      "head_cm": 1e-06,
+      "temperature_c": 1e-06,
+      "dimensionless_acceptance": 1.0
+    },
+    "required": "Refinement/retry/direct small-step and cutoff-crossing checks before admission.",
+    "cumulative_refinement_observation": {
+      "head_difference_cm": 1.511038e-07,
+      "temperature_difference_c": 7.351853e-05,
+      "direct_steps": 2048,
+      "head_horizon_bound_cm": 1e-06,
+      "temperature_horizon_bound_c": 0.0001,
+      "note": "A trial-local 1e-6 C budget does not establish a cumulative 1e-6 C bound. The initial cumulative 1e-6 C assertion failed and is explicitly not claimed."
+    }
+  }
+}
