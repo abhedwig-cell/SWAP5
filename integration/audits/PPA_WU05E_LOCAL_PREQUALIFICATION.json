@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E local prequalification postimage based on PR source e0472bb, with accepted macro vertical-face continuity trace and a test-only domain-resolved macro salt payload/Restart v3 layout; not formal qualification",
+  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "d9ff6009ef032ac41b0d528ecd09ef849acdadde40f40205f07340fe690f8cce",
@@ -12,7 +12,7 @@
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "5dd6eb932cd030a216d8ab2884bfb64141727c3d6e9154e0b55773415bed2c47",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
     "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
-    "src/process/mod_solute_macropore_exchange.f90": "ecb3a215a6e692730d23a0ae8289e203c428dd78ab647b53cedb9e23fbd32864",
+    "src/process/mod_solute_macropore_exchange.f90": "42c4ce71004005ab998c086539ec1cfbf86d9a8f42e929e0fac5fee6f77b327e",
     "src/process/mod_solute_mobile_salt_state.f90": "a981169c421bbd095f467e1d95c953627db02e141fb79eaa20dfaa7be7ef1028",
     "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
     "src/runtime/mod_fmr_committed_restart.f90": "585aa64f209db2c106f73caaedb7dfac66e6b0fcd1571750ce4a405710165e89",
@@ -35,8 +35,8 @@
     "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b",
     "integration/audits/PPA_WU05E_STATUS.json": "a83988dab1e89332594536a60294f4332b7ed277775dbd69e5d2f0bd9baa1097",
     "tests/fpm/test_ppa_wu05a20_rfm_optional_state_layout.f90": "e27bfb82bc58fcb03588b09d81d05bf061b59c86b0c8202431e7172cb6666be5",
-    "src/process/mod_solute_mobile_macro_salt_transport.f90": "26d072b766eed9a628aa7758d1cf0689458e48e8c85c1701c9dd0d0b366754a7",
-    "tests/physics/test_mobile_macro_salt_transport.f90": "92e307205879755b632f64e31af5309502eee068d58294b792c9cb9dd27934ec"
+    "src/process/mod_solute_mobile_macro_salt_transport.f90": "cc51511cc5d07198a2ae23343167f541569aab34c6f085c38c9e0c0bfaacafcb",
+    "tests/physics/test_mobile_macro_salt_transport.f90": "38d5b748d29bf33c6b029cf89070426e915dcee0d15628f02721bb74b4e0bac6"
   },
   "results": [
     {
@@ -124,12 +124,23 @@
       "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
       "result": "PASS_O0_O2",
       "scope": "Profile initialization/concentration derivation, dry inventory rejection, conservative one-step matrix/macro transport with vertical faces, signed exchange, explicit boundary and root TSCF receipts, contiguous ordered-trace reversal using updated donors, and late failure with no partial candidate/receipt. O0/O2 deterministic output. Process-only; no FMR transaction or restart claim."
+    },
+    {
+      "command": "gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -O0/-O2 (module + dependency + test_mobile_macro_salt_transport)",
+      "result": "PASS_O0_O2_IDENTICAL",
+      "scope": "Two ordered accepted process substeps with qssdi as water-only input, opposing level-resolved qdra signs, positive local-CML export, negative explicit-Cdrain import, signed receipt aggregation, mass outcome, missing-Cdrain late rejection with complete candidate/receipt rollback.",
+      "execution": "Fetched exact current branch sources and compiled local temporary copies under GNU Fortran 13.3.0 at O0 and O2; bounds/runtime checks enabled; outputs compared byte-identically. Process-only, not an FMR transaction or qualification.",
+      "tested_source_sha256": {
+        "src/process/mod_solute_mobile_macro_salt_transport.f90": "cc51511cc5d07198a2ae23343167f541569aab34c6f085c38c9e0c0bfaacafcb",
+        "src/process/mod_solute_macropore_exchange.f90": "42c4ce71004005ab998c086539ec1cfbf86d9a8f42e929e0fac5fee6f77b327e",
+        "tests/physics/test_mobile_macro_salt_transport.f90": "38d5b748d29bf33c6b029cf89070426e915dcee0d15628f02721bb74b4e0bac6"
+      }
     }
   ],
   "not_run_or_not_claimed": [
     "The test-only harness invokes advance_mobile_salt_trace against an FMR observation; no production/live FMR transaction invokes or commits salt. The observed active-macropore route fails water closure because matrix water exchange lacks a solute transfer contract.",
     "No production runtime integration, byte-level restart serialization, or end-to-end water/solute coupled transaction qualification; the typed macro salt payload is storage-only and tested through the in-memory FMR Restart v3 adapter.",
-    "No exact-byte B1.11 solute/restart reconstruction in this execution surface.",
+    "Exact B1.11 solute.f90 member is now recovered and byte-verified; restart-state byte equivalence and its FMR lifecycle remain unverified.",
     "No Jarvis salinity integration or stress-combination claim.",
     "No live FMR interval-mean face-flux reconstruction: its current observation exposes the last internal Richards solver-step boundary flux, not a candidate-interval aggregate. The live qrot transaction passes but does not qualify the solute flux trace; route-specific drainage/snow/surface terms remain unqualified.",
     "The new reversal counterexample and direct O0 unit runs do not qualify ordered live FMR flux transport, restart, or Jarvis integration.",
