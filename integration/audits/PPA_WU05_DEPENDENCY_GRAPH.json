@@ -112,25 +112,50 @@
         "frozencond": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
         "temperature": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"
       },
-      "decomposition_authority": "Current canonical sensible-temperature authority plus B1.11 frozencond/temperature source identities; detailed frost field semantics require exact source trace.",
+      "decomposition_authority": "Exact B1.11 frost and sensible-temperature source reconstructed locally using tools/vq/b1_11_reconstruct.py; selected source hashes are persisted in reference/swap-4.3.1/b1_11_frost_source/manifest.json and semantic trace in integration/audits/PPA_WU05B_SOURCE_TRACE.json.",
       "legacy_semantics": [
-        "Current canonical sensible-temperature authority explicitly does not admit frost, latent heat or phase change.",
-        "B1.11 frozencond/temperature exact identities establish the legacy source family only.",
-        "Any temperature-to-hydraulic, drainage or bottom-boundary frost dependency must be recovered from exact source before implementation."
+        "B1.11 computes rfcp from TSOIL using TFROSTSTA/TFROSTEND and modifies K and dK/dh with the same factor plus a 1e-10 cm/day residual K floor.",
+        "The B1.11 sensible-temperature route has no explicit ice content, frozen-water partition or latent heat.",
+        "FrozenBounds separately changes drainage and boundary fluxes using frost-depth/air-volume heuristics.",
+        "Root frost stress is a distinct binary TSOIL<0 C modifier, not the hydraulic rfcp factor."
       ],
-      "persistent_state": "UNRESOLVED_SOURCE_TRACE_REQUIRED",
-      "recomputable_fields": [],
-      "restart_rule": "Not frozen by WU05. Determine from exact B1.11 source whether frost fields are recomputable or continuation state.",
+      "persistent_state": "Frost factor and frost crossing geometry are recomputed from temperature each call; existing sensible TSOIL profile is the physical continuation state.",
+      "recomputable_fields": [
+        "rfcp(node)",
+        "nodfrostbot",
+        "zfrosttop",
+        "zfrostbot"
+      ],
+      "restart_rule": "Reuse current admitted soil_temperature state/restart; no independent frost restart payload is required by traced B1.11 hydraulic equations.",
       "prohibited_conflation": "This legacy hydraulic frost modifier is not authority for explicit ice-content storage, latent heat or a new thermodynamic phase-change model.",
       "target_interfaces": [
         "read-only committed temperature-field view",
-        "solver-neutral frost effect view only after exact source semantics are recovered"
+        "typed K/dKdh frost decorator over one existing constitutive provider"
       ],
+      "bounded_candidate": {
+        "scope": "reference Richards with prescribed bottom mode 2 and zero bottom flux; root uptake, snow, macropore, drainage-response and sensible boundary carriers excluded",
+        "implemented_paths": [
+          "src/process/mod_frost_hydraulic_effect.f90",
+          "src/solver/mod_frost_hydraulic_provider.f90",
+          "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        ],
+        "verification": "local O0/O2 effect/provider and serialized runtime tests; nonzero bottom flux fails closed",
+        "production_status": "IMPLEMENTED_UNQUALIFIED_NOT_ADMITTED",
+        "open_gates": [
+          "rejected trial and retry",
+          "frost-enabled restart reconstruction",
+          "independent runtime state-point matrix"
+        ]
+      },
       "option_constraint": "Legacy frost-plus-macropore incompatibility must remain fail-closed until separately qualified.",
       "risk": "HIGH_BUT_BOUNDED_FOR_LEGACY_MODIFIER; VERY_HIGH_FOR_NEW_PHASE_CHANGE",
       "use_relevance": "MEDIUM",
       "architecture_maturity": "MEDIUM_CURRENT_TEMPERATURE_OWNER_LOW_FROST_AUTHORITY",
-      "production_status": "NOT_MIGRATED"
+      "production_status": "NOT_MIGRATED",
+      "source_trace_status": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
+      "known_legacy_defects": [
+        "No TFROSTSTA>TFROSTEND validation; equal temperatures in frost-depth interpolation can divide by zero; interpolated frost depth is not consistently clamped."
+      ]
     },
     "advanced_root_stress": {
       "legacy_files": [
@@ -320,10 +345,10 @@
     {
       "rank": 3,
       "id": "PPA-WU05-B",
-      "target": "Legacy frost hydraulic boundary source trace",
-      "scope": "Recover exact frozencond/temperature dependencies, state/recomputability and clean temperature-to-hydraulic interfaces without claiming latent heat or new phase-change physics.",
-      "reason": "Sensible-temperature ownership exists, but frost semantics and joint acceptance requirements remain unbound.",
-      "implementation_admission": "REVIEW_FIRST_NO_PHASE_CHANGE_CLAIM"
+      "target": "Bounded frost hydraulic candidate qualification and boundary disposition",
+      "scope": "Qualify the typed temperature-to-K/dKdh candidate with retry/restart evidence, then separately admit, replace or reject FrozenBounds and frost-root-stress behavior without claiming latent heat or new phase-change physics.",
+      "reason": "Exact B1.11 source is reconstructed and the bounded provider path is implemented; retry/restart evidence and general boundary behavior remain open.",
+      "implementation_admission": "LOCAL_QUALIFICATION_IN_PROGRESS_NO_PRODUCTION_ADMISSION"
     },
     {
       "rank": 4,

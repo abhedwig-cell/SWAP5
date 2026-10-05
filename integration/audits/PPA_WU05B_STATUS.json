@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.ppa_wu05b.status.v1",
+  "work_unit": "PPA-WU05B",
+  "title": "B1.11 frost hydraulic modifier migration",
+  "branch": "work/ppa-wu05b-frost-migration",
+  "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "checkpoint_commit": "93054fd0401aec2e91a01233df637f12291be6a1",
+  "last_reconciled_head": "93054fd0401aec2e91a01233df637f12291be6a1",
+  "last_reconciled_upstream": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "admitted": false,
+  "authority_paths": [
+    "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "reference/swap-4.3.1/b1_11_frost_source/manifest.json",
+    "docs/audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md",
+    "integration/audits/PPA_WU05B_SOURCE_TRACE.json",
+    "integration/audits/PPA_WU05_DEPENDENCY_GRAPH.json"
+  ],
+  "relevant_paths": [
+    "src/process/mod_frost_hydraulic_effect.f90",
+    "src/process/mod_soil_temperature_contract.f90",
+    "src/process/mod_restricted_soil_temperature.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/solver/mod_frost_hydraulic_provider.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90"
+  ],
+  "test_paths": [
+    "tests/frost/test_ppa_wu05b_frost_effect.f90",
+    "tests/frost/test_ppa_wu05b_frost_provider.f90",
+    "tests/frost/test_ppa_wu05b_frost_runtime.f90",
+    "tests/frost/run_ppa_wu05b_frost_effect.sh",
+    "tests/frost/run_ppa_wu05b_frost_runtime.sh",
+    "tests/fci/test_fci43_restricted_soil_temperature_independent.f90"
+  ],
+  "evidence_paths": [
+    "integration/audits/PPA_WU05B_LOCAL_QUALIFICATION.json"
+  ],
+  "dependency_surface": [
+    "sensible temperature owner and restart",
+    "constitutive provider K/dKdh evaluation and point-conductivity calls",
+    "serialized reference backend trial/accept/retry path",
+    "root sink composition for deferred frost stress",
+    "drainage/boundary flux ownership for deferred FrozenBounds"
+  ],
+  "source_trace": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
+  "next_action": "Force and verify frost trial rejection/retry and frost-enabled restart reconstruction; complete the independent temperature-state matrix before a bounded admission decision.",
+  "recovery_point": "work/ppa-wu05b-frost-migration@93054fd0401aec2e91a01233df637f12291be6a1 after local bounded-candidate O0/O2 runtime gate",
+  "blockers": [
+    "Rejected-trial/retry and frost-enabled restart oracles are outstanding; candidate is not qualified or production-admitted.",
+    "General FrozenBounds drainage/bottom behavior and frost-root-stress remain outside the bounded candidate and require separate authority and qualification."
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.ppa_wu05b.local_qualification.v1",
+  "work_unit": "PPA-WU05B",
+  "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "compiler": "GNU Fortran 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1)",
+  "qualification_state": "LOCAL_BOUNDED_CANDIDATE_TESTED_NOT_QUALIFIED_NOT_ADMITTED",
+  "runs": [
+    {
+      "name": "frost effect and provider owner tests",
+      "command": "tests/frost/run_ppa_wu05b_frost_effect.sh",
+      "optimization": ["O0", "O2"],
+      "result": "PASS",
+      "oracles": [
+        "warm endpoint, partial factor, cold endpoint, freeze-thaw recomputation",
+        "invalid/equal/reversed thresholds fail closed",
+        "K and dK/dh use the same factor and named residual K floor",
+        "theta, capacity and storage increment are forwarded unchanged",
+        "point conductivity and demand paths preserve frost semantics"
+      ]
+    },
+    {
+      "name": "serialized frost runtime plus frost-off Richards preservation",
+      "command": "tests/frost/run_ppa_wu05b_frost_runtime.sh",
+      "optimization": ["O0", "O2"],
+      "result": "PASS",
+      "output_sha256": "fadd95557e92f451f49ceda2ddba1212821e662394076f8c6d7dd5e837f3e10d",
+      "oracles": [
+        "strongly frozen typed factor reaches serialized Richards provider",
+        "mass ledger complete with residual 0 cm in the zero-flux frost case",
+        "nonzero prescribed bottom flux fails closed before Richards",
+        "existing serialized prescribed-qbot and temporal-certificate routes pass"
+      ]
+    },
+    {
+      "name": "restricted sensible-temperature independent oracle",
+      "command": "local compile/run of tests/fci/test_fci43_restricted_soil_temperature_independent.f90",
+      "optimization": ["O0", "O2"],
+      "result": "PASS",
+      "output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583",
+      "oracles": [
+        "sensible energy closure",
+        "trial-state immutability",
+        "minimal temperature restart export/reconstruction",
+        "continuous split restart identity",
+        "temperature profile views"
+      ],
+      "scope_limit": "This tests the reused temperature owner; it is not a frost-enabled backend restart oracle."
+    },
+    {
+      "name": "repository documentation source check",
+      "command": "python3 tools/docs/check_docs.py",
+      "result": "PASS"
+    },
+    {
+      "name": "JSON and whitespace checks",
+      "command": "python JSON parse for PPA-WU05B audit files; git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "source_sha256": {
+    "src/process/mod_frost_hydraulic_effect.f90": "4ae4ed9bf70ccab0b0212a32205f2fcfb4f50172b64942e0320736a0cca35efd",
+    "src/solver/mod_frost_hydraulic_provider.f90": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "5df2ceb1d17b5ddd2c4ed23dd7ca9dafd963f3728441b55a1dd859759ed64f26",
+    "tests/frost/test_ppa_wu05b_frost_runtime.f90": "b181e80e16dca3bdb62aa5161f013fe14d0ecdd20bc387a110f6461b4be04744",
+    "tests/frost/run_ppa_wu05b_frost_runtime.sh": "ca9b40b99f9593a0d264323111e7a411d8ac70d12e77810d5f42e2f811a3c546"
+  },
+  "open_gates": [
+    "frost-enabled rejected trial and retry must be forced and checked; a strict thermal-forcing experiment exhausted retry budget and was not accepted as evidence",
+    "frost-enabled backend restart export/reconstruction must be verified",
+    "backend runtime cases must cover unfrozen, onset, partial, strong freeze, thaw and freeze-thaw cycle",
+    "FrozenBounds and root stress need separate disposition and qualification"
+  ],
+  "github_actions": "NOT_RUN; no persisted qualification/admission result is claimed by this local evidence."
+}

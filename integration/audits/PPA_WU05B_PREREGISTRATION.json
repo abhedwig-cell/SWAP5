@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "work_unit": "PPA-WU05B",
+  "title": "B1.11 frost hydraulic modifier migration",
+  "protocol": "RECONCILE -> SOURCE TRACE -> PHYSICAL REVIEW -> IMPLEMENT -> LOCAL O0/O2 -> TRANSACTION/RESTART/PRESERVATION -> QUALIFY -> ADMIT OR CLOSE GAPS",
+  "branch": "work/ppa-wu05b-frost-migration",
+  "canonical_base": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "source_reconstruction": "tools/vq/b1_11_reconstruct.py"
+  },
+  "bounded_scope": [
+    "typed temperature-to-rfcp calculation with finite, ordered thresholds",
+    "constitutive conductivity scaling and matching dK/dh",
+    "reuse of existing sensible-temperature state, transaction and restart",
+    "preserve theta(h), C(h), storage and mass owners",
+    "preserve all frost-off Richards and sensible-temperature behavior"
+  ],
+  "held_scope": [
+    "FrozenBounds drainage/top/bottom heuristic until separate typed flux and mass qualification",
+    "binary frost root stress until hydraulic frost view is independently admitted",
+    "snow plus frost composition",
+    "latent heat, ice content or unfrozen-water relation as new physics",
+    "microscopic/Jong-van-Lier frost interaction",
+    "macropore/frost composition"
+  ],
+  "oracle_matrix": [
+    "frost off preservation",
+    "fully unfrozen",
+    "threshold warm endpoint",
+    "partial freezing interval",
+    "cold endpoint and colder",
+    "freeze-thaw recomputation without history state",
+    "invalid/equal/reversed thresholds fail closed",
+    "K and dK/dh relation including legacy residual floor",
+    "water/capacity unchanged",
+    "rejected trial and retry use committed temperature only",
+    "restart rebuilds factor from existing temperature profile",
+    "O0/O2 deterministic output",
+    "existing thermal and Richards preservation"
+  ],
+  "invariants": [
+    "one hydraulic constitutive owner",
+    "one sensible-temperature owner",
+    "candidate/rejected frost result never mutates committed state",
+    "K and dK/dh use the same candidate frost factor",
+    "no new water mass or energy owner",
+    "no latent heat claim"
+  ],
+  "qualification_gate": "Local focused and transaction tests first; GitHub Actions only if a persisted current-canonical qualification/admission result is required.",
+  "status_at_preregistration": "SOURCE_RECONSTRUCTION_COMPLETE_BOUNDED_CANDIDATE_IMPLEMENTED_LOCAL_QUALIFICATION_OPEN"
+}
