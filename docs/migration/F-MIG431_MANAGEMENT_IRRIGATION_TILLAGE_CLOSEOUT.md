@@ -26,14 +26,16 @@ named below.
 | Legacy selector / route | Physical meaning | Required state | Current SWAP5 coverage | Disposition |
 | --- | --- | --- | --- | --- |
 | `irrigevent=0` | No irrigation during the interval | None | Default inactive typed event | `ADMITTED` |
-| Fixed event list: `irdate`, `irdepth`, `irrate`, `irconc`, `irtype` | Apply a dated gross depth at a bounded rate; route as sprinkler, surface or subsurface input | Next-event index and active-event interval; immutable event table | `mod_irrigation_process` has fixed-event timing and trial candidate state. F-APP07 is qualified/admission-ready, but its current record still says canonical admission pending | `MIGRATE` |
+| Fixed event list: `irdate`, `irdepth`, `irrate`, `irconc`, `irtype` | Apply a dated gross depth at a bounded rate; route as sprinkler, surface or subsurface input | Next-event index and active-event interval; immutable event table | PR #265 admits the exact `SWIRFIX=1` fixed surface event in the Hupsel composition. Generic fixed sprinkling and SSDI event composition remain outside admission | `MIGRATE` for generic routes |
 | `schedule=0` | Disable criterion-based scheduling | None | Typed scheduled evaluator has an explicit disabled gate | `ADMITTED` |
 | `schedule=1`, crop emergence and `startirr`/`endirr` windows | Allow crop-stage-dependent irrigation only in selected source windows | Crop state, interval window, accepted event progress | F-APP07 covers its qualified application window; WOFOST crop-event runtime provides accepted daily crop-event state but does not own a general calendar scheduler | `MIGRATE` outside the admitted Hupsel window |
 | `SWIRGFIL=1`, `IRGFIL`, fixed `IRDATE` table | Read dated events from a separate legacy `.irg` file | File cursor/unit and next-event index | Typed event tables can replace the physical event list; SWAP5 has no reason to retain the legacy file grammar or cursor | `SUPERSEDED` |
-| `isuas` / fixed `irtype`: `0` sprinkler | Surface sprinkler input subject to canopy interception | Event state and gross/net partition | F-APP07's scheduled TCS1/DCS2 sprinkling composition is qualified/admission-ready, but not yet canonically admitted; fixed sprinkler composition is also absent | `MIGRATE` |
-| `isuas` / fixed `irtype`: `1` surface | Direct surface application, not canopy-intercepted | Event state and surface boundary receipt | Resolved, already-computed surface irrigation is canonically admitted by PPA-WU03; dated fixed/scheduled selector binding is not yet canonically admitted | `MIGRATE` for event selection; resolved-rate handoff `ADMITTED` |
+| Scheduled `isuas=0` sprinkler, `TCS=1`, `DCS=2`, `TCSFIX=1` | Crop-stage trigger and fixed-depth sprinkling, intercepted before net top input | Crop stage, day counter, irrigation window and gross/net interception receipt | PR #265 canonically admits the exact Hupsel TCS1/DCS2 sprinkling composition through Rutter/dynamic top: 110 active B1.11 intervals, 18 SWINTER=0 and 92 SWINTER=3 | `ADMITTED` within PR #265 envelope |
+| Fixed `irtype=1` surface event | Direct fixed-date surface application, not canopy-intercepted | Dated event state and surface boundary receipt | PR #265 admits the exact fixed `SWIRFIX=1` Hupsel surface event. PPA-WU03 separately admits already-resolved surface irrigation input | `ADMITTED` within those bounded routes |
+| Generic scheduled `isuas=1` surface irrigation | Criterion-scheduled direct surface application | Criterion state, event state and surface boundary receipt | No admission for generic surface scheduling | `MIGRATE` |
+| Fixed `irtype=0` sprinkler | Surface sprinkler input subject to canopy interception | Event state and gross/net partition | Scheduled Hupsel TCS1/DCS2 is admitted, but a generic fixed sprinkler event is not | `MIGRATE` |
 | `isuas` / fixed `irtype`: `2` SSDI | Inject irrigation over a selected subsurface node or interval | Event state, source node interval, distributed source and mass receipt | Fixed-event process can distribute source over configured nodes; scheduled TCS7 process currently emits at one SSDI node. No canonically admitted application/restart route | `MIGRATE` |
-| `TCS=1` | Trigger on daily transpiration reduction from drought and salinity | Crop stage, daily potential/actual transpiration reductions, event gate | TCS1/DCS2 process and F-APP07 composition are qualified/admission-ready; F-APP07's current record still has canonical admission pending. No broader dry/saline equivalence is claimed | `MIGRATE` |
+| `TCS=1` | Trigger on daily transpiration reduction from drought and salinity | Crop stage, daily potential/actual transpiration reductions, event gate | PR #265 admits TCS1 paired with DCS2 and TCSFIX=1 for the Hupsel potato route. It does not admit all crops, depth policies or solute-control combinations | `ADMITTED` within PR #265 envelope |
 | `TCS=2` | Trigger when root-zone readily available water is depleted below the crop-stage fraction | Hydraulic state, root depth, field-capacity/critical limits, crop stage | No admitted scheduler for this criterion | `MIGRATE` |
 | `TCS=3` | Trigger when root-zone total available water depletion exceeds the crop-stage fraction | Hydraulic state, root depth, wilting/critical limits, crop stage | No admitted scheduler for this criterion | `MIGRATE` |
 | `TCS=4` | Trigger after crop-stage-specific absolute depletion amount | Hydraulic state, root depth, crop stage | No admitted scheduler for this criterion | `MIGRATE` |
@@ -41,9 +43,9 @@ named below.
 | `TCS=6` | Weekly/fixed-interval opportunity gated by irrigation deficit threshold | `dayfix`, deficit, threshold, event gate | No admitted scheduler for weekly day counter and deficit gate | `MIGRATE` |
 | `TCS=7` | Trigger when pressure head at `dcrit` is at or below a crop-stage threshold | Sensor-node pressure head, DVS lookup, event state | Typed scheduler and source-formula O0/O2 process qualification now cover AFGEN threshold/depth, SSDI rate placement, event split/replay and external-inflow closure. No admitted runtime binding or restart serialization | `MIGRATE` |
 | `TCS=8` | Trigger when water content at `dcrit` is at or below a crop-stage threshold | Sensor-node water content, DVS lookup, event state | No admitted scheduler | `MIGRATE` |
-| `TCSFIX=1`, `irgdayfix` | Require a minimum day interval between scheduled events | Day counter and previous event progress | Included in F-APP07's qualified/admission-ready TCS1/DCS2 composition; canonical admission remains pending | `MIGRATE` |
+| `TCSFIX=1`, `irgdayfix` | Require a minimum day interval between scheduled events | Day counter and previous event progress | PR #265 admits the TCSFIX=1 cadence within its TCS1/DCS2 Hupsel route | `ADMITTED` within PR #265 envelope |
 | `DCS=1` | Return root-zone water toward field capacity, with crop-stage under/over-depth adjustment and rain subtraction | Hydraulic profile, field capacity, crop stage, rain, event state | No admitted depth-composition route | `MIGRATE` |
-| `DCS=2` | Apply prescribed crop-stage-specific fixed depth | Crop-stage lookup and active event/rate state | Included in F-APP07's qualified/admission-ready TCS1 sprinkling composition, but canonical admission remains pending. The independent TCS7 process check exercises its typed SSDI depth lookup only | `MIGRATE` |
+| `DCS=2` | Apply prescribed crop-stage-specific fixed depth | Crop-stage lookup and active event/rate state | PR #265 admits DCS2 paired with TCS1/TCSFIX=1 for the Hupsel sprinkling route. The independent TCS7 process check exercises its typed SSDI depth lookup only | `ADMITTED` within PR #265 envelope |
 | `DCSLIM=1`, `irgdepmin`/`irgdepmax` | Bound the selected irrigation depth | Selected depth and configured limits | Not in an admitted generic management route | `MIGRATE` |
 | `SWCIRRTHRES`, `cirrthres`, `perirrsurp` | Add over-irrigation when irrigation-water solute concentration exceeds a soil concentration threshold | Soil solute profile, water concentration, event depth | SWAP5 does not admit this coupled solute-control route | `MIGRATE`, dependent on solute/salinity admission |
 | `cirr`/`cirrs` | Carry irrigation solute concentration into water/solute accounting | Event concentration and solute state | Surface water routing exists in restricted profiles; no admitted irrigation-solute delivery | `MIGRATE`, dependent on solute admission |
@@ -100,12 +102,14 @@ are explicit: SWAP-002's corrected tillage start-event pointer is retained;
 the known SWAP-003 and SWAP-004 tillage defects are not reintroduced. SWAP-005
 guards crop-rotation indexing by checking the next crop only when one exists.
 
-Current SWAP5 admission authorities include F-APP07 for its restricted
-TCS1/DCS2 sprinkling and fixed-surface composition, but its current owner
-record `integration/f-app/F-APP07_OWNER_COMPOSITION_QUALIFICATION.json` still
-has admission pending; `F-APP07_ADMISSION_READY.json` is not itself an
-admission. The broad gap register's older `admitted` wording is superseded by
-that explicit current status. PPA-WU03 is canonically admitted for already
+Current SWAP5 admission authority includes PR #265, merged at
+`2fee154ca4a043842d8970c93ccbe820dc90c673`, for the exact Hupsel TCS1/DCS2/
+TCSFIX=1 sprinkling plus fixed SWIRFIX=1 surface event composition. The
+current canonical head `9605fbb1622d96f4691117f66264f13b6dd3a47b` is a
+descendant of that merge. `F-APP07_ADMISSION_READY.json` and
+`F-APP07_OWNER_COMPOSITION_QUALIFICATION.json` retain a pre-admission
+checkpoint; PR #265 and the current canonical ancestry resolve that stale
+pending status. PPA-WU03 is separately canonically admitted for already
 resolved surface irrigation; F-CI89 is canonically admitted for the bounded
 WOFOST81 one-day crop transaction. The typed irrigation process in
 `src/process/mod_irrigation_process.f90` is broader than these production
