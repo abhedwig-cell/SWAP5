@@ -1,0 +1,17 @@
+{
+  "work_unit": "PPA-WU05-E-SALFRO01",
+  "status": "UNCHANGED_PRODUCTION_AND_EXISTING_TESTS_B7_REPLAY_PENDING",
+  "canonical_upstream": "024c6a5510757a02851426806248b0e2afe45a6b",
+  "original_qualification": "integration/audits/PPA_WU05E_SALFRO01_QUALIFICATION.json",
+  "original_execution": "62ab20b25ec8648d9204ffd8f223672804925661",
+  "production_source_subtree_unchanged": "184379954b7a6e29632e3af79350c5f5ae10f4f3",
+  "existing_test_files_unchanged": true,
+  "test_delta": [
+    "A\ttests/frost/run_ppa_wu05b7_geometry_reference.py",
+    "A\ttests/frost/test_ppa_wu05b7_geometry_reference.f90"
+  ],
+  "manifest_entries_verified_current": 1766,
+  "controlling_extra_gate": "python tests/frost/run_ppa_wu05b7_geometry_reference.py",
+  "required_proof": "Pin current complete source/test trees, verify every original manifest against current Git and all B7 source/gate hashes; replay only independent added B7 reference domain. Any production/existing test modification invalidates this inheritance and requires affected replay.",
+  "next_action": "Run independent B7 reference gate on persisted reconciliation checkpoint"
+}

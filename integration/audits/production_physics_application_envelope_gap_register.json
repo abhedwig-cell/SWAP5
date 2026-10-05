@@ -1783,7 +1783,17 @@
         "Independent Bartholomeus admission when oxygen enabled",
         "Independent PPA-WU05-E matrix dissolved-salt state/transport owner when salinity enabled"
       ],
-      "priority_band": "P2"
+      "priority_band": "P2",
+      "selected_matrix_salt_root_frost_successor": {
+        "work_unit": "PPA-WU05-E-SALFRO01",
+        "canonical_pr": 1044,
+        "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+        "admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+        "scope": "Selected matrix Maas-Hoffman plus empirical root frost with Jarvis/Walsum, zero-flux bottom2/no drainage/no Bartholomeus",
+        "gates_passed": 24
+      },
+      "current_successor_admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+      "current_successor_scope": "Selected matrix Maas-Hoffman plus empirical root frost with no Bartholomeus, no drains, zero-flux bottom2; salt/Rutter, normal/bottom frost with salt, osmotic-head and new crop rooting models excluded"
     },
     {
       "id": "PPA-RWU-COMP-WALSUM",
@@ -1823,8 +1833,16 @@
         "Independent Bartholomeus admission when oxygen enabled"
       ],
       "priority_band": "P2",
-      "current_successor_admission": "integration/audits/PPA_WU05E_WALSAL01_CANONICAL_ADMISSION.json",
-      "current_successor_scope": "Selected matrix only; salt/frost, salt/Rutter, osmotic-head and new crop rooting models excluded"
+      "current_successor_admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+      "current_successor_scope": "Selected matrix Maas-Hoffman plus empirical root frost with no Bartholomeus, no drains, zero-flux bottom2; salt/Rutter, normal/bottom frost with salt, osmotic-head and new crop rooting models excluded",
+      "selected_matrix_salt_root_frost_successor": {
+        "work_unit": "PPA-WU05-E-SALFRO01",
+        "canonical_pr": 1044,
+        "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+        "admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+        "scope": "Selected matrix Maas-Hoffman plus empirical root frost with Jarvis/Walsum, zero-flux bottom2/no drainage/no Bartholomeus",
+        "gates_passed": 24
+      }
     }
   ],
   "backlog": {
@@ -2416,5 +2434,15 @@
     "qualification": "integration/audits/PPA_WU05E_WALSAL01_FROST_RECONCILED_QUALIFICATION.json",
     "admission": "integration/audits/PPA_WU05E_WALSAL01_CANONICAL_ADMISSION.json",
     "gates_passed": 14
+  },
+  "ppa_wu05e_salfro01_20261005_canonical": {
+    "work_unit": "PPA-WU05-E-SALFRO01",
+    "canonical_pr": 1044,
+    "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+    "admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+    "scope": "Selected matrix Maas-Hoffman plus empirical root frost with Jarvis/Walsum, zero-flux bottom2/no drainage/no Bartholomeus",
+    "gates_passed": 24,
+    "status": "CANONICAL_ADMITTED_CLOSED_SELECTED_MATRIX_ROOT_FROST",
+    "qualification": "integration/audits/PPA_WU05E_SALFRO01_RECONCILED_QUALIFICATION.json"
   }
 }

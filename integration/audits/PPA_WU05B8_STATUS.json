@@ -1,0 +1,92 @@
+{
+  "work_unit": "PPA-WU05B8",
+  "baseline": "024c6a5510757a02851426806248b0e2afe45a6b",
+  "status": "RUNTIME_QUALIFICATION_IN_PROGRESS",
+  "implemented": true,
+  "persisted": true,
+  "tested": "SOURCE_COMPONENT_O0_O2_PASS_RUNTIME_PENDING",
+  "qualified": false,
+  "admitted": false,
+  "checkpoint": "bd6492fa7d2002f2d2fcf354b8a285b19fc33f7d",
+  "remote_checkpoint": "afbc0b6d2c5206dfe6a371a299819f52261a83f2",
+  "production_source_tree": "37926fa79b0c9fd48c7db7c62135e3cb19836fe6",
+  "source_cases": {
+    "guarded_geometry_bit_parity": 48,
+    "signed_normal_and_low_air": 108,
+    "O0_O2_stdout": "IDENTICAL",
+    "command": "bash tests/frost/run_ppa_wu05b8_low_air_source.sh"
+  },
+  "negative_runtime_findings": [
+    "Original shared FSI test stub has z=[-.25,-.75,-1.5,-2.5] but all disnod=1; guarded front correctly rejects inconsistent distance before solver.",
+    "Changing typed distances alone is correctly rejected by the serialized legacy context that requires exact static-grid identity.",
+    "Consistent-grid first signed near-saturated case passes physical execution but cumulative head discrepancy1.106030e-5cm exceeds retained1e-6cm horizon bound; temperature1.988516e-5C passes1e-4C. Initial localhead1e-6cm is not a cumulative guarantee.",
+    "Isolated solver-head1e-12 with localhead1e-6 and finer4096-step reference still fails cumulative head1.495532e-5cm; localhead1e-8 versus2048 passes but does not establish reference refinement, so stricter screen uses8192 direct steps."
+  ],
+  "repair": "Owned runtime-runner copy changes only static disnod to consistent [.25,.5,.75,1,.5]; typed parameters use identical metrics. Shared historical stub remains unchanged for incumbent preservation.",
+  "pending_gates": [
+    "new owned-grid runtime O0/O2 matrix with hard mass/trajectory/restart/application",
+    "incumbent B1/B2/B3/B4/B6 with unchanged original grid fixture",
+    "four fresh salted preservation runners",
+    "complete current canonical preservation",
+    "documentation checks"
+  ],
+  "preregistration": "integration/audits/PPA_WU05B8_PREREGISTRATION.json",
+  "aggregate_frost_migration_complete": false,
+  "next_action": "Complete running local gates; repair observed failures without weakening numerical or mass gates; persist full source-bound qualification and admit exact source",
+  "accuracy_repair_candidate": {
+    "local_head_budget_cm": 1e-10,
+    "local_temperature_budget_c": 1e-07,
+    "solver_head_abs_and_rel_tolerances": 1e-12,
+    "retained_horizon_head_cm": 1e-06,
+    "retained_horizon_temperature_c": 0.0001,
+    "hard_mass_cm": 1e-12,
+    "status": "STRICT_PROTOTYPE_INTERRUPTED_EXIT130_NOT_QUALIFICATION"
+  },
+  "local_policy_screen": {
+    "local_head_budget_cm": 1e-08,
+    "solver_head_abs_and_rel": 1e-12,
+    "initial_signed_case_only": true,
+    "status": "ONE_CASE_PASS_WITH_LOCAL_HEAD_1E8_AND_SOLVER_1E12",
+    "scope": "Bounded screen only; full persisted matrix still required. A separate 4096-step screen isolates solver convergence with localhead1e-6cm.",
+    "observed_head_cm": 4.154616e-08,
+    "observed_temperature_c": 5.480753e-08
+  },
+  "refined_local_policy_screen": {
+    "local_head_budget_cm": 3e-10,
+    "local_temperature_budget_c": 1e-07,
+    "solver_head_abs_and_rel": 1e-12,
+    "fine_direct_steps": 8192,
+    "status": "ONE_CASE_PASS_NOT_FULL_QUALIFICATION",
+    "max_head_cm": 8.137859e-09,
+    "max_temperature_c": 1.7606e-08,
+    "accepted_substeps": 12410,
+    "temporal_rejections": 152858
+  },
+  "selected_final_matrix": {
+    "local_head_budget_cm": 3e-10,
+    "solver_head_abs_and_rel": 1e-12,
+    "fine_direct_steps": 8192,
+    "runtime_cases": 6,
+    "patterns": [
+      "positive remaining drainage with above-front cutoff",
+      "nonzero proposed drainage fully cut with blocked qbot",
+      "opposing levels and negative aggregate with below-front drains"
+    ],
+    "bottom_proposal_signs": [
+      -1,
+      1
+    ],
+    "additional_zero_rate_case": "air-rich all-frozen normal delegation",
+    "additional_refinement_check": "16384-step first-case oracle",
+    "status": "OLD_SOURCE_O0_COMPLETE_NEW_RECONCILED_O0_O2_PENDING",
+    "justification": "Source matrix108 cases covers each signed/zero combination. Actual runtime matrix selects all branch/depth/mass owners with both bottom signs; horizon/mass gates unchanged and finer direct trajectories strengthen preregistered minimum2048."
+  },
+  "reconciled_baseline": "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+  "reconciliation": "Clean merge of admitted SALFRO01 root+salt changes; preserve independent numerical budgets and existing exclusions. Backend/bootstrap/root compensation dependencies changed, so runtime, incumbent and salt preservation are replayed on reconciled source.",
+  "previous_source_runtime": {
+    "production_source_tree": "2cb8a35799de5239c2cd6b405eac2a2b12ccca9e",
+    "O0": "SIX_CASE_RUNTIME_RESTART_APPLICATION_PASS",
+    "evidence": "/tmp/frost-b8-o0-final-matrix.log",
+    "scope": "Historical completed test only; affected source must be replayed."
+  }
+}

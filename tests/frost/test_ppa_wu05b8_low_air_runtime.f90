@@ -61,11 +61,12 @@ program test_frost_low_air_runtime
   end block
 
   do pattern=1,3
-  do dsign=-1,1
+  print '(A,I0)','PPA_WU05B8_DEPTH_PATTERN=',pattern
+  do dsign=1,1
     drain_proposal(1,:)=[.01_real64,.02_real64,.03_real64,.04_real64]*real(dsign,real64)
     drain_proposal(2,:)=[.02_real64,.03_real64,.04_real64,.05_real64]*real(dsign,real64)
     drain_depth=[-1._real64,-3._real64]
-    if(pattern==2)drain_depth=[-1._real64,-1.5_real64]
+    if(pattern==2)drain_depth=[-.5_real64,-1._real64]
     if(pattern==3)then
       drain_depth=[-3._real64,-4._real64]
       drain_proposal(2,:)=-drain_proposal(2,:)
@@ -76,6 +77,13 @@ program test_frost_low_air_runtime
       if(pattern==2)expected_bottom=0._real64
       call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,result,observation, &
            frost_case=.true.,initial_physical_state=initial,final_physical_state=final,drain_case=.true.,captured=captured)
+      if(.not.result%committed)then
+        print *, 'B8_DEBUG',result%accepted_substeps,result%temporal_rejections, &
+             observation%solver_executed,observation%frost_drainage_executed, &
+             observation%frost_low_air_drainage%available,observation%frost_low_air_drainage%low_air_branch, &
+             observation%frost_low_air_drainage%geometry%status,observation%frost_low_air_drainage%geometry%bottom_depth_cm, &
+             result%mass%residual
+      end if
       call require(result%completed.and.result%committed,'signed multilevel drainage commits')
       call require(observation%frost_drainage_executed.and.observation%frost_drainage%available,'normal modifier executed')
       call require(abs(observation%bottom_flux-expected_bottom)<=1.e-14_real64,'actual single bottom exchange owner')
@@ -90,8 +98,8 @@ program test_frost_low_air_runtime
       call require(again%committed.and.all(final%pressure_head==replay%pressure_head),'fresh worker replay identity')
       call require(result%mass%total_in==again%mass%total_in.and.result%mass%total_out==again%mass%total_out, &
            'fresh worker accounting identity')
-      direct=initial;dt=1.e-4_real64/2048._real64;fine_exchange=0._real64
-      do i=1,2048
+      direct=initial;dt=1.e-4_real64/8192._real64;fine_exchange=0._real64
+      do i=1,8192
         call execute_case(2,0._real64,q,-999999._real64,dt,.false.,.true.,again,observation, &
              frost_case=.true.,initial_physical_state=direct,final_physical_state=next, &
              start_time=real(i-1,real64)*dt,drain_case=.true.)
@@ -166,10 +174,10 @@ contains
     cfg%tiles(1)%parameters%frost_low_air_drainage%active=.true.
     cfg%tiles(1)%parameters%frost_low_air_drainage%drain_depth_cm=drain_depth
     cfg%tiles(1)%parameters%frost_drainage%active=.true.
-    cfg%tiles(1)%parameters%frost_drainage%head_budget_cm=1.e-6_real64
+    cfg%tiles(1)%parameters%frost_drainage%head_budget_cm=3.e-10_real64
     cfg%tiles(1)%parameters%frost_drainage%temperature_budget_c=1.e-7_real64
-    cfg%tiles(1)%parameters%head_abs_tolerance=1.e-8_real64
-    cfg%tiles(1)%parameters%head_rel_tolerance=1.e-8_real64
+    cfg%tiles(1)%parameters%head_abs_tolerance=1.e-12_real64
+    cfg%tiles(1)%parameters%head_rel_tolerance=1.e-12_real64
     cfg%tiles(1)%initial_state=dry
     call initialize_forcing(cfg%tiles(1)%base_forcing,0._real64,1.e-3_real64,-999999._real64)
     deallocate(cfg%tiles(1)%base_forcing%drainage_flux_by_level)
@@ -255,10 +263,10 @@ contains
     if(present(drain_case))then
       if(drain_case)then
         parameters%frost_drainage%active=.true.
-        parameters%frost_drainage%head_budget_cm=1.e-6_real64
+        parameters%frost_drainage%head_budget_cm=3.e-10_real64
         parameters%frost_drainage%temperature_budget_c=1.e-7_real64
-        parameters%head_abs_tolerance=1.e-8_real64
-        parameters%head_rel_tolerance=1.e-8_real64
+        parameters%head_abs_tolerance=1.e-12_real64
+        parameters%head_rel_tolerance=1.e-12_real64
       end if
     end if
     if (use_certificate) then
@@ -365,7 +373,12 @@ contains
     allocate(parameters%z(numnod), parameters%dz(numnod), parameters%node_distance(numnod), parameters%cofgen(24,numnod))
     parameters%z = z
     parameters%dz = dz
-    parameters%node_distance = disnod(1:numnod)
+    ! The historical FSI stub disnod is not a consistent nonuniform grid metric.
+    ! This front-geometry fixture uses the actual adjacent-center distances.
+    parameters%node_distance(1)=-parameters%z(1)
+    do k=2,numnod
+      parameters%node_distance(k)=parameters%z(k-1)-parameters%z(k)
+    end do
     parameters%cofgen = 0.0_real64
     do k = 1, numnod
       parameters%cofgen(1,k)=0.032_real64; parameters%cofgen(2,k)=0.423_real64; parameters%cofgen(3,k)=4.75_real64

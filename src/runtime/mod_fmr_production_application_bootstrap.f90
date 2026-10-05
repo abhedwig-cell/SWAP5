@@ -919,7 +919,13 @@ contains
     end if
 
     if(tile%parameters%root_frost%active) then
-      if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt)) return
+      if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt)) then
+        if(.not.tile%parameters%root_salinity_active.or..not.allocated(tile%initial_state%salt)) return
+        if(tile%template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) return
+        if(tile%parameters%frost_bottom%active.or.tile%parameters%frost_drainage%active) return
+        if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
+             tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM) return
+      end if
       if(.not.tile%parameters%frost_active.or..not.tile%parameters%root_extraction_active.or. &
            .not.tile%parameters%soil_temperature_active) return
       if(tile%parameters%bottom_mode/=2) return

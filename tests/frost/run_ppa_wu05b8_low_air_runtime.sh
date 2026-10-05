@@ -5,9 +5,17 @@ BUILD="${TMPDIR:-/tmp}/ppa-wu05b8-low-air-runtime"
 rm -rf "$BUILD"; mkdir -p "$BUILD"
 cd "$ROOT"
 
-python3 - <<'PY' > "$BUILD/sources"
-import pathlib, re
-files=list(pathlib.Path('src').rglob('*.f90'))+[pathlib.Path('tests/fsi/fsi04_real_headcalc_stubs.f90')]
+python3 - "$BUILD" <<'PY' > "$BUILD/sources"
+import pathlib, re, sys
+# This front-geometry fixture needs the static legacy grid to match its typed
+# nonuniform grid. Keep the historical shared stub untouched for preservation.
+original=pathlib.Path('tests/fsi/fsi04_real_headcalc_stubs.f90').read_bytes()
+old=b'  real(8), parameter :: disnod(numnod+1) = 1.0d0'
+new=b'  real(8), parameter :: disnod(numnod+1) = [0.25d0, 0.50d0, 0.75d0, 1.0d0, 0.50d0]'
+assert original.count(old)==1
+stubs=pathlib.Path(sys.argv[1])/'consistent_grid_stubs.f90'
+stubs.write_bytes(original.replace(old,new))
+files=list(pathlib.Path('src').rglob('*.f90'))+[stubs]
 modules={}
 for path in files:
     text=path.read_text(errors='ignore')
@@ -47,7 +55,7 @@ for opt in 0 2; do
     -c tests/frost/test_ppa_wu05b8_low_air_runtime.f90 -o "$OUT/test.o"
   objects+=("$OUT/test.o")
   gfortran -fopenmp -O"$opt" "${objects[@]}" -o "$OUT/test"
-  "$OUT/test" > "$OUT/output.txt"
+  GFORTRAN_UNBUFFERED_ALL=y "$OUT/test" > "$OUT/output.txt"
   grep -Fq 'PPA_WU05B8_LOW_AIR_DRAIN_RUNTIME=PASS' "$OUT/output.txt"
   cat "$OUT/output.txt"
   echo "PPA_WU05B8_LOW_AIR_DRAIN_RUNTIME_O${opt}=PASS"

@@ -395,3 +395,21 @@ PPA-WU05B3 is canonically admitted via PR #1034 at `bdb5ecb78bd14226dc850ce27b72
 ## Joint root and no-drain bottom frost successor
 
 PPA-WU05B4 is canonically admitted via PR #1036 at `d3bb48eb2407cdc8a3a089f37cc689f6a940dddb`. It composes the empirical zero-degree root cutoff and OFF/Jarvis/Walsum compensation with the legacy no-drain bottom-flux rule, using the same immutable trial-start state, one final sink and one final bottom proposal. The joint numerical norm is the maximum of both independent norms. Actual signed/mixed/blocked/warm cases, application, retry/fine continuation, committed restart, all incumbent frost/salinity variants and full current preservation pass locally on the verified admitted source. [Contract and evidence](../audits/PPA_WU05B4_ROOT_BOTTOM_COMPOSITION_CONTRACT.md) retain hard mass closure and narrow claims. No queued Actions success or full frost completion is claimed; drainage reporting/redistribution remains separate.
+
+## Joint matrix salt and root frost: PPA SALFRO01 (2026-10-05)
+
+PR #1044, merge `ef83887448838acd12cd06a054729193abdb8213`, extends the selected matrix Jarvis/Walsum route
+with empirical root frost. Source weighted losses feed one final root-water sink
+and the existing salt owner. Both existing normalized temporal metrics constrain
+acceptance through their maximum. No state, restart field or mass owner is added.
+
+All 24 composite local qualification/preservation groups pass, including both transport
+variants at O0/O2, separate-process byte identity, independent stress oracle,
+invalid-input isolation, actual frozen/warm/thaw regimes and both temporal owners.
+All 1774 manifest entries match the executed source.
+See [canonical closeout](../audits/PPA_WU05E_SALFRO01_CANONICAL_CLOSEOUT.md).
+
+Earlier salt/frost exclusions are superseded only for this selected envelope.
+Bottom/normal-drain frost with salt, Bartholomeus at negative temperature, Rutter
+and macropore hybrids, osmotic-head and real ice remain excluded. The frozen
+Status A denominator is unchanged.

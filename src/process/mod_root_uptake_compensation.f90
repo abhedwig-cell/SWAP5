@@ -87,13 +87,15 @@ contains
     drought_loss=0.0_real64;oxygen_loss=0.0_real64;status=ROOT_COMP_INVALID
     salt_total=0.0_real64;frs_total=0.0_real64
     if(present(frost_loss)) frost_loss=0.0_real64
+    if(present(salinity_loss))salinity_loss=0.0_real64
     if(present(frost_factor)) then
-      if(present(salinity_factor).or..not.present(frost_loss)) return
+      if(.not.present(frost_loss)) return
+      ! The joint source formula must expose both loss channels.
+      if(present(salinity_factor).and..not.present(salinity_loss)) return
       if(size(frost_factor)/=size(potential)) return
       if(any(.not.ieee_is_finite(frost_factor))) return
       if(any(frost_factor<0.0_real64).or.any(frost_factor>1.0_real64)) return
     end if
-    if(present(salinity_loss))salinity_loss=0.0_real64
     if(size(potential)/=size(drought_sink).or.size(potential)/=size(oxygen_factor)) return
     if(present(salinity_factor))then
       if(size(potential)/=size(salinity_factor))return
@@ -153,9 +155,6 @@ contains
       status=ROOT_COMP_INVALID;return
     end if
 
-    if(salt_reduction>0.0_real64.and.frs_loss>0.0_real64)then
-      status=ROOT_COMP_UNSUPPORTED;return
-    end if
     if(config%method==ROOT_COMP_OFF) then
       final_fluxes=base_fluxes
       if(allocated(base_fluxes%root_extraction_sink)) then
