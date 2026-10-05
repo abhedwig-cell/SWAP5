@@ -30,7 +30,7 @@ concurrency:
 jobs:
   bounded-frost-qualification:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
@@ -107,6 +107,15 @@ jobs:
           fi
       - name: Exact current-canonical preservation for the bounded frost successor
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
+      - name: Explicit normal and low-air frost with admitted tabulated drainage generation
+        run: |
+          if test -f tests/frost/run_ppa_wu05b11_tabulated_response_source.sh; then
+            bash tests/frost/run_ppa_wu05b11_tabulated_response_source.sh
+            bash tests/frost/run_ppa_wu05b11_normal_runtime.sh
+            bash tests/frost/run_ppa_wu05b11_low_air_runtime.sh
+            python3 tests/frost/run_ppa_wu05b11_activation.py
+            python3 tests/frost/run_ppa_wu05b11_refinements.py
+          fi
       - name: Install documentation dependencies
         run: python3 -m pip install -r requirements-docs.txt
       - name: Validate docs, JSON and whitespace
