@@ -99,8 +99,14 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
        evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
-       FMR_DRAIN_BIND_OK, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_TABULATED
+       FMR_DRAIN_BIND_OK, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_TABULATED, &
+       FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, &
+       FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5
   use mod_drainage_tabulated_response, only: valid_tabulated_drainage_parameters
+  use mod_drainage_hooghoudt_ipos1_response, only: valid_hooghoudt_ipos1_parameters
+  use mod_drainage_hooghoudt_ipos23_response, only: valid_hooghoudt_ipos2_parameters, &
+       valid_hooghoudt_ipos3_parameters, valid_hooghoudt_prepared
+  use mod_drainage_ernst_ipos45_response, only: valid_ernst_ipos4_prepared, valid_ernst_ipos5_prepared
   use mod_fmr_legacy_qgwl_bottom_boundary_provider, only: fmr_qgwl_bottom_boundary_config_t, &
        fmr_qgwl_bottom_boundary_result_t, fmr_evaluate_legacy_qgwl_bottom_boundary, FMR_QGWL_OK
   use mod_fmr_drainage_qbot_directional_binding, only: project_fmr_qbot_smooth_groundwater_level, &
@@ -288,6 +294,7 @@ module mod_fmr_serialized_reference_backend
     logical :: frost_response_drainage_active = .false.
     logical :: frost_low_air_response_drainage_active = .false.
     logical :: frost_tabulated_response_drainage_active = .false.
+    logical :: frost_analytic_response_drainage_active = .false.
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
     real(real64) :: root_frost_head_budget_cm=0.0_real64
@@ -617,6 +624,7 @@ module mod_fmr_serialized_reference_backend
     logical :: frost_response_drainage_active = .false.
     logical :: frost_low_air_response_drainage_active = .false.
     logical :: frost_tabulated_response_drainage_active = .false.
+    logical :: frost_analytic_response_drainage_active = .false.
     real(real64),allocatable :: unfrozen_drainage_flux(:,:)
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
@@ -790,11 +798,13 @@ contains
   pure logical function fmr_frost_response_drainage_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::parameters
     integer :: level
-    logical :: has_table
+    logical :: has_table, has_analytic
+    real(real64) :: analytic_depth
     ok=.true.
     if(.not.parameters%frost_response_drainage_active)then
       ok=.not.parameters%frost_low_air_response_drainage_active.and. &
-           .not.parameters%frost_tabulated_response_drainage_active
+           .not.parameters%frost_tabulated_response_drainage_active.and. &
+           .not.parameters%frost_analytic_response_drainage_active
       return
     end if
     ok=.false.
@@ -803,7 +813,11 @@ contains
     if(parameters%frost_low_air_drainage%active.neqv.parameters%frost_low_air_response_drainage_active)return
     if(.not.allocated(parameters%drainage_response_levels))return
     if(size(parameters%drainage_response_levels)<1)return
-    has_table=.false.
+    if(parameters%frost_low_air_response_drainage_active)then
+      if(.not.parameters%frost_low_air_drainage%valid())return
+      if(size(parameters%frost_low_air_drainage%drain_depth_cm)/=size(parameters%drainage_response_levels))return
+    end if
+    has_table=.false.;has_analytic=.false.
     do level=1,size(parameters%drainage_response_levels)
       select case(parameters%drainage_response_levels(level)%variant)
       case(FMR_DRAIN_VARIANT_LINEAR)
@@ -818,15 +832,46 @@ contains
           if(parameters%drainage_response_levels(level)%tabulated%groundwater_depth(1)<=0._real64)return
         end if
         has_table=.true.
+      case(FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_hooghoudt_ipos1_parameters(parameters%drainage_response_levels(level)%hooghoudt_ipos1))return
+        analytic_depth=parameters%drainage_response_levels(level)%hooghoudt_ipos1%drain_bottom_level
+        has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_hooghoudt_ipos2_parameters(parameters%drainage_response_levels(level)%hooghoudt_ipos2))return
+        if(.not.valid_hooghoudt_prepared(parameters%drainage_response_levels(level)%hooghoudt_prepared))return
+        analytic_depth=parameters%drainage_response_levels(level)%hooghoudt_prepared%drain_bottom_level
+        has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_hooghoudt_ipos3_parameters(parameters%drainage_response_levels(level)%hooghoudt_ipos3))return
+        if(.not.valid_hooghoudt_prepared(parameters%drainage_response_levels(level)%hooghoudt_prepared))return
+        analytic_depth=parameters%drainage_response_levels(level)%hooghoudt_prepared%drain_bottom_level
+        has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_ERNST_IPOS4)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_ernst_ipos4_prepared(parameters%drainage_response_levels(level)%ernst_ipos4_prepared))return
+        analytic_depth=parameters%drainage_response_levels(level)%ernst_ipos4_prepared%drain_bottom_level
+        has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_ERNST_IPOS5)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_ernst_ipos5_prepared(parameters%drainage_response_levels(level)%ernst_ipos5_prepared))return
+        analytic_depth=parameters%drainage_response_levels(level)%ernst_ipos5_prepared%drain_bottom_level
+        has_analytic=.true.
       case default
         return
       end select
+      if(parameters%frost_low_air_response_drainage_active)then
+        select case(parameters%drainage_response_levels(level)%variant)
+        case(FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1,FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, &
+             FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3,FMR_DRAIN_VARIANT_ERNST_IPOS4,FMR_DRAIN_VARIANT_ERNST_IPOS5)
+          if(analytic_depth/=parameters%frost_low_air_drainage%drain_depth_cm(level))return
+        end select
+      end if
     end do
     if(parameters%frost_tabulated_response_drainage_active.and..not.has_table)return
-    if(parameters%frost_low_air_response_drainage_active)then
-      if(.not.parameters%frost_low_air_drainage%valid())return
-      if(size(parameters%frost_low_air_drainage%drain_depth_cm)/=size(parameters%drainage_response_levels))return
-    end if
+    if(parameters%frost_analytic_response_drainage_active.and..not.has_analytic)return
     ok=.true.
   end function fmr_frost_response_drainage_configuration_valid
 
@@ -2743,6 +2788,7 @@ contains
       self%frost_response_drainage_active = parameters%frost_response_drainage_active
       self%frost_low_air_response_drainage_active = parameters%frost_low_air_response_drainage_active
       self%frost_tabulated_response_drainage_active = parameters%frost_tabulated_response_drainage_active
+      self%frost_analytic_response_drainage_active = parameters%frost_analytic_response_drainage_active
       self%frost_bottom = parameters%frost_bottom
       self%root_frost = parameters%root_frost
       self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm
