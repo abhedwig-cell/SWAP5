@@ -130,11 +130,11 @@ The standalone O0/O2 runner is `tests/physics/run_ppa_wu05e_mobile_macropore_sal
 ## Scope and evidence limits
 
 This contract is derived from current SWAP5 source ownership and exchange
-semantics. It does not claim that the same multi-domain solute layout or
-exchange discretization is byte-equivalent to B1.11; the exact B1.11 solute
-member remains unavailable in this execution surface. It does not qualify
-macropore solute transport, boundary solute forcing, dispersion, salinity
-stress, Jarvis combinations, or production behavior. The base-layout FMR
+semantics. It does not claim that the multi-domain solute layout or exchange
+discretization is byte-equivalent to B1.11. Exact B1.11 `solute.f90` bytes
+have since been recovered and verified as recorded below. This contract does
+not qualify macropore solute transport, boundary solute forcing, dispersion,
+salinity stress, Jarvis combinations, or production behavior. The base-layout FMR
 temporal-identity gate is a separate TX/FMR policy dependency and is not
 changed by this slice.
 
@@ -172,3 +172,30 @@ This wrapper is still process-only: the fields are not populated from the accept
 ## Next action
 
 The exact B1.11 qdra donor rule is implemented in the single-step candidate and carried through the ordered process trace. Next connect accepted FMR substeps to that trace without losing matrix face reconstruction, per-domain macro faces/exchange, level-resolved qdra, qssdi, or root sink. Define the first route's externally forced Cdrain as a typed immutable input with units, forcing interval, and restart/layout identity. Then bind candidate salt and receipts to the same FMR transaction object. Keep the current early rejection of active solute layouts until initialization, source mapping, atomic commit/discard, and restart serialization are implemented and pass their gates. Jarvis remains a read-only concentration consumer after that transaction is qualified; PPA-WU05-F remains the separately registered frost unit.
+
+
+## FMR observation-to-process trace boundary (2026-10-05)
+
+The current opt-in accepted FMR water trace has the raw observations needed to
+construct a process-kernel substep, with one forcing gap:
+
+| Process substep field | FMR observation | Binding rule |
+|---|---|---|
+| Matrix start/end water | `water_start`, `water_end` | Convert volumetric content to cm water using node thickness. |
+| Matrix face rates | `top_flux`, `bottom_flux`, `net_node_source`, start/end water, duration | Reconstruct with `reconstruct_interval_water_face_flux`; use the trace's established boundary sign convention. |
+| Macro start/end water | `macropore_water_start/end` | Preserve the per-domain,node shape and ordering. |
+| Macro vertical faces | `macropore_vertical_face_rate` | Preserve per-domain face ordering; accepted trace validates storage/exchange continuity. |
+| Internal exchange | `macropore_matrix_exchange_domain` | Preserve signed per-domain,node values; do not use the node sum for donor concentration. |
+| Root water sink | `root_sink` | Preserve nodewise `qrot`; root salt removal remains `TSCF*qrot*CML`. |
+| Drainage and subsurface irrigation | `drainage_sink_by_level`, `subsurface_source` | Preserve every `qdra` level and `qssdi`; qssdi closes water only in the reconstructed legacy salt rule. |
+| Negative-drainage concentration | Not present in water observation | Supply explicit `Cdrain` as immutable, interval-bound forcing with units and restart/layout identity; reject the salt candidate if unavailable. |
+
+These field names and the active-layout guard are present in
+`src/runtime/mod_fmr_serialized_reference_backend.f90`. The backend currently
+rejects every non-none `solute_state_layout_id` before trial execution. That
+guard is intentional until one FMR-owned candidate carries initialized matrix
+and domain salt masses plus complete typed receipts through commit/discard,
+retry/replay, and restart. The next bounded test can map the accepted water
+trace to `mobile_macro_salt_substep_t` and exercise only the process candidate;
+it must remain explicitly test-only and must not be presented as a live FMR
+salt transaction or as evidence to remove the guard.
