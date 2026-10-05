@@ -5,7 +5,8 @@ program test_mobile_macro_salt_transport
   use mod_solute_mobile_macro_salt_transport, only: mobile_macro_salt_receipt_t, &
        mobile_macro_salt_substep_t, advance_mobile_macro_salt_trace, &
        initialize_mobile_macro_salt_state, derive_mobile_macro_salt_concentration, &
-       advance_mobile_macro_salt_trial, MACRO_SALT_OK, MACRO_SALT_INVALID, MACRO_SALT_WATER_CLOSURE
+       advance_mobile_macro_salt_trial, advance_mobile_macro_salt_drainage, &
+       MACRO_SALT_OK, MACRO_SALT_INVALID, MACRO_SALT_WATER_CLOSURE
   implicit none
   type(mobile_macro_salt_state_t) :: accepted,candidate,rejected,initialized
   type(mobile_macro_salt_receipt_t) :: receipt,trace_receipt,failed_trace_receipt
@@ -14,6 +15,8 @@ program test_mobile_macro_salt_transport
   real(real64) :: dz(2),theta0(2),theta1(2),macro0(1,2),macro1(1,2)
   real(real64) :: matrix_faces(3),macro_faces(1,3),exchange(1,2),root_sink(2)
   real(real64) :: macro_top(1),macro_bottom(1),total_before
+  real(real64) :: drain_water(2),drain_rates(2,2),drain_cdrain
+  real(real64), allocatable :: drain_receipt(:)
   real(real64) :: matrix_concentration(2),macro_concentration(1,2)
   real(real64), allocatable :: derived_matrix_concentration(:),derived_macro_concentration(:,:)
   integer :: status,i
@@ -35,6 +38,26 @@ program test_mobile_macro_salt_transport
        'matrix concentration view identity')
   call require(maxval(abs(derived_macro_concentration-macro_concentration))<=1.0e-14_real64, &
        'domain concentration view identity')
+  ! Exact B1.11 drainage rule with opposing level signs and distinct donors.
+  drain_water=theta0*dz
+  drain_rates=0.0_real64
+  drain_rates(:,1)=[0.1_real64,-0.2_real64]
+  drain_cdrain=1.0_real64
+  call advance_mobile_macro_salt_drainage(initialized,drain_water,drain_rates,drain_cdrain,.true., &
+       0.1_real64,candidate,drain_receipt,status)
+  call require(status==MACRO_SALT_OK,'signed level-resolved drainage accepted')
+  call close_to(drain_receipt(1),0.005_real64,'positive drainage uses local CML')
+  call close_to(drain_receipt(2),-0.02_real64,'negative drainage uses explicit Cdrain')
+  call close_to(candidate%matrix_mass_mg_cm2(1),1.015_real64,'signed drainage mass update')
+  call close_to(sum(candidate%matrix_mass_mg_cm2)+sum(candidate%macro_mass_mg_cm2), &
+       sum(initialized%matrix_mass_mg_cm2)+sum(initialized%macro_mass_mg_cm2)-sum(drain_receipt), &
+       'signed drainage ledger closure')
+  call advance_mobile_macro_salt_drainage(initialized,drain_water,drain_rates,drain_cdrain,.false., &
+       0.1_real64,rejected,drain_receipt,status)
+  call require(status==MACRO_SALT_INVALID,'negative drainage rejects absent Cdrain')
+  call require(.not.allocated(rejected%matrix_mass_mg_cm2),'missing Cdrain publishes no candidate')
+  call require(.not.allocated(drain_receipt),'missing Cdrain publishes no partial receipt')
+
   accepted=initialized
   matrix_faces=0.0_real64
   macro_faces(1,:)=[0.0_real64,0.1_real64,0.0_real64]
