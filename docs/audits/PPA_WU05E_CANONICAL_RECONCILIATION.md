@@ -13,3 +13,11 @@ Run [37323106349](https://github.com/abhedwig-cell/SWAP5/actions/runs/3732310634
 Canonical subsequently admitted bounded frost in `5272ac9192ec1065dbe2432f73d1f1b4394437e0`. The merge conflict is confined to local work-variable declarations in the shared backend. Both the admitted frost variables and the selected salt variables are retained. Their independent profiles and hybrid exclusions remain unchanged. This combined source requires matrix/root, frost, Rutter and changed macropore preservation before admission. No qualification is inherited for the changed backend merely from the preceding green run.
 
 The concurrent evidence-only update `f030783a` is retained in this successor. Its independently verified complete artifact, logs and qualification remain available in `integration/audits/PPA_WU05E_MATRIX_RECONCILED_QUALIFICATION.json`; that immutable record qualifies the preceding `03674ed0` source only.
+
+## Complete frost successor qualification
+
+All 19 named local gates now pass: frost process/provider and actual thermal/hydraulic transaction/restart; independent salt and Jarvis processes; upwind and dispersive matrix application at O0/O2; D2 application/publication/transaction roles; D3; Rutter source windows/application; MIGMAC07/08/09; and real Richards/macropore lifecycle. The full logs, numerical outputs and six source manifests are preserved in `docs/audits/evidence/PPA_WU05E_FROST_RECONCILED_REPLAY.json.gz`.
+
+The execution checkout is `b7dd862e89c7bf2e6bac0f5fbb43de59e92b4ae9`. Both complete `src` and `tests` Git subtrees are identical to published candidate `a12c4df7eda6714b23c03257f339aba30da4635e`; later differences are evidence/documentation and the admitted frost closeout. The explicit source-equivalence check and manifest verification are recorded in `integration/audits/PPA_WU05E_FROST_RECONCILED_QUALIFICATION.json`. This does not silently relabel the actual execution SHA.
+
+Central reconciliation now selects the bounded matrix successor for admission against `53a3f3e41231b8600bbb19b8eb2157558bd12e19`. Salt/frost, salt/Rutter, salinity/Walsum and broader legacy routes remain outside this admission. No shared kernel, water-mass owner or generic commit semantics change.

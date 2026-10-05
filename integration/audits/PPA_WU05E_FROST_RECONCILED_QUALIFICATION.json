@@ -1,0 +1,138 @@
+{
+  "schema": "swap5.ppa_wu05e.frost_reconciled_qualification.v1",
+  "status": "SELECTED_MATRIX_QUALIFIED_READY_FOR_CENTRAL_ADMISSION",
+  "canonical_input": "53a3f3e41231b8600bbb19b8eb2157558bd12e19",
+  "qualified_candidate": "a12c4df7eda6714b23c03257f339aba30da4635e",
+  "qualified_tree": "5299a59c882e96b5b2a8cc76577bb8f5e504fa64",
+  "execution_checkout": "b7dd862e89c7bf2e6bac0f5fbb43de59e92b4ae9",
+  "source_equivalence": "Entire src and tests Git subtrees are byte-identical; only evidence/docs/canonical frost closeout differ. This is a source-bound requalification, not a claim that the execution checked out the later metadata commit.",
+  "source_subtrees": {
+    "src": "83d023b760194ba672d4683421154d211dc0ae5f",
+    "tests": "85fb015aae665ae5c039e6a4f283708783d14e8f"
+  },
+  "source_manifest_entries_verified": 1024,
+  "qualified_scope": [
+    "Selected matrix dissolved mobile salt: source molecular/mechanical dispersion, conservative upwind advection and donor-bounded internal solute stepping",
+    "One Richards/root-water sink with independent salt ledger and integrated per-node root and signed per-level drainage receipts",
+    "Explicit hydraulic geometry/saturation binding, zero-solute qssdi, evaporative salt retention and separately declared liquid top export",
+    "Actual Feddes/Bartholomeus/Maas-Hoffman/Jarvis stress/application chain, reject/retry/discard/commit and Restart v4 fresh-process continuation",
+    "O0/O2 analytical/refinement process oracles and D2/D3/Richards/macropore preservation gates"
+  ],
+  "exclusions": [
+    "Full B1.11 numerical or bitwise equivalence: legacy centered advection and artificial dispersion correction are not ported",
+    "Sorption, decomposition, surface concentration pools, aquifer breakthrough and coupled groundwater salt state",
+    "Osmotic-head mode, frost and new macropore dispersion physics",
+    "Seasonal real Richards/FMR or field validation: the 365-day schedule is a manufactured process oracle",
+    "Combined frost/salt/root and Rutter/salt profiles remain excluded; frost and Rutter are preservation gates only.",
+    "Salinity with Walsum is not admitted: the live salinity binding requires Jarvis."
+  ],
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "controlling_gates": {
+    "frost-process": {
+      "command": "bash tests/frost/run_ppa_wu05b_frost_effect.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 2.32
+    },
+    "frost-runtime": {
+      "command": "bash tests/frost/run_ppa_wu05b_frost_runtime.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 86.83
+    },
+    "mobile-salt": {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 3.04
+    },
+    "macro-salt": {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 6.25
+    },
+    "jarvis-process": {
+      "command": "bash tests/physics/run_ppa_wu05d2_jarvis.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 2.16
+    },
+    "diffusion": {
+      "command": "bash tests/physics/run_ppa_wu05e_closed_diffusion.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 2.19
+    },
+    "advection-dispersion": {
+      "command": "bash tests/physics/run_ppa_wu05e_advection_dispersion.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 3.8
+    },
+    "matrix-upwind": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "exit_code": 0,
+      "elapsed_seconds": 152.76
+    },
+    "matrix-dispersion": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "exit_code": 0,
+      "elapsed_seconds": 130.85
+    },
+    "d2-application": {
+      "command": "python tests/physics/run_ppa_wu05d2_application.py",
+      "exit_code": 0,
+      "elapsed_seconds": 112.13
+    },
+    "d2-preservation": {
+      "command": "python tests/physics/run_ppa_wu05d2_preservation.py",
+      "exit_code": 0,
+      "elapsed_seconds": 107.03
+    },
+    "rutter-window": {
+      "command": "bash tests/fpm/run_f_mig431_int13_rutter_source_window.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 3.62
+    },
+    "d2-publication": {
+      "command": "python tests/physics/run_ppa_wu05d2_publication.py",
+      "exit_code": 0,
+      "elapsed_seconds": 130.35
+    },
+    "d3-walsum": {
+      "command": "python tests/physics/run_ppa_wu05d3_walsum.py",
+      "exit_code": 0,
+      "elapsed_seconds": 135.85
+    },
+    "migmac07": {
+      "command": "bash tests/fpm/run_ppa_wu05_migmac07_reference_runtime.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 95.06
+    },
+    "migmac08": {
+      "command": "bash tests/fpm/run_ppa_wu05_migmac08_reference_runtime.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 105.65
+    },
+    "rutter-production": {
+      "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 144.77
+    },
+    "migmac09": {
+      "command": "bash tests/fpm/run_ppa_wu05_migmac09_reference_runtime.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 98.52
+    },
+    "richards-a8": {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "exit_code": 0,
+      "elapsed_seconds": 100.06
+    }
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05E_FROST_RECONCILED_REPLAY.json.gz",
+    "gzip_sha256": "9c772910945fea5b378bded29ead904aa6507de36b6801d78c26c77049cd349b",
+    "gzip_bytes": 106960,
+    "decoded_sha256": "0e8659d7cbd82565cf66fa73e3c01848b32e4ab30b02c3e6c817ab1a7a8d71d6",
+    "contents": "Complete gate logs and all six source/result manifests"
+  },
+  "previous_reconciled_replay": "integration/audits/PPA_WU05E_MATRIX_RECONCILED_QUALIFICATION.json",
+  "production_admitted": false,
+  "canonical_admission_owner": "central SWAP5 regie",
+  "global_ci_claim": "No blanket green CI claim; the named current-source qualification and preservation gates control this bounded successor."
+}

@@ -1,12 +1,12 @@
 {
   "schema": "swap5.ppa_wu05e.regie_handoff.v1",
   "work_unit": "PPA-WU05-E",
-  "status": "FROST_RECONCILIATION_PENDING_REPLAY",
-  "candidate_commit": "03674ed01509b3e109339ef0e684645e2287bad1",
-  "candidate_tree": "e38f0252f520e80b6c91af5d1451a36a9be2fbd0",
+  "status": "READY_FOR_REGIE_FROST_RECONCILED",
+  "candidate_commit": "a12c4df7eda6714b23c03257f339aba30da4635e",
+  "candidate_tree": "5299a59c882e96b5b2a8cc76577bb8f5e504fa64",
   "baseline": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
   "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1015",
-  "qualification": "integration/audits/PPA_WU05E_MATRIX_RECONCILED_QUALIFICATION.json",
+  "qualification": "integration/audits/PPA_WU05E_FROST_RECONCILED_QUALIFICATION.json",
   "qualified_scope": [
     "Selected matrix dissolved mobile salt: source molecular/mechanical dispersion, conservative upwind advection and donor-bounded internal solute stepping",
     "One Richards/root-water sink with independent salt ledger and integrated per-node root and signed per-level drainage receipts",
@@ -40,13 +40,13 @@
     "src/runtime/mod_fmr_production_application_bootstrap.f90",
     "D2/D3 and Richards/macropore preservation routes"
   ],
-  "required_qualification": "Exact combined source O0/O2 matrix process/application/restart, Rutter and MIGMAC07/08/09 plus D2/D3/A8 preservation: PASS",
+  "required_qualification": "All 19 declared current-source qualification/preservation gates PASS; manifests and whole src/tests trees verified.",
   "implementation_status": "IMPLEMENTED",
   "test_status": "PASS",
-  "qualification_status": "PREVIOUS_SOURCE_QUALIFIED_COMBINED_FROST_REPLAY_PENDING",
-  "recovery_point": "03674ed01509b3e109339ef0e684645e2287bad1",
+  "qualification_status": "SELECTED_MATRIX_AND_CHANGED_DEPENDENCIES_QUALIFIED",
+  "recovery_point": "a12c4df7eda6714b23c03257f339aba30da4635e",
   "owner": "Central SWAP5 regie",
-  "requested_action": "Complete combined frost/matrix replay before central ADMIT/RETURN/SUPERSEDE.",
+  "requested_action": "Central ADMIT of the exact qualified source-equivalent candidate; no further physics expansion.",
   "authority": "docs/development/SWAP5_PROJECT_CONTROL.md: Control model",
   "interfaces_held_fixed": [
     "Single root-water sink and accepted water receipt",
@@ -83,7 +83,8 @@
       "migmac07_08_09": "PASS_O0_O2"
     },
     "production_admitted": false,
-    "exact_persisted_replay": "FROST_COMBINED_REPLAY_PENDING",
-    "qualified_commit": "03674ed01509b3e109339ef0e684645e2287bad1"
+    "exact_persisted_replay": "PASS_LOCAL_SOURCE_BOUND",
+    "qualified_commit": "03674ed01509b3e109339ef0e684645e2287bad1",
+    "frost_preservation": "PASS_O0_O2"
   }
 }
