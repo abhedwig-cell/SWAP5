@@ -13,6 +13,15 @@ module mod_macropore_dynamic_shrinkage
     procedure :: valid => clay_kim_valid
   end type clay_kim_shrinkage_t
 
+  integer, parameter, public :: SHRINK_RIGID=0, SHRINK_KIM=1, SHRINK_PEAT_DIRECT=2, SHRINK_PEAT_SEGMENTS=3
+
+  type, public :: peat_shrinkage_t
+    real(real64) :: void_ratio_zero=0.0_real64
+    real(real64) :: transition_moisture_ratio=0.0_real64
+    real(real64) :: alpha=0.0_real64, beta=0.0_real64, p=0.0_real64
+    real(real64) :: intermediate_moisture_ratio=0.0_real64, intermediate_void_ratio=0.0_real64
+  end type peat_shrinkage_t
+
   type, public :: dynamic_crack_request_t
     real(real64) :: theta = 0.0_real64
     real(real64) :: theta_previous = 0.0_real64
@@ -34,10 +43,14 @@ module mod_macropore_dynamic_shrinkage
     logical :: surface_crack_area_depth_supplied = .false.
     real(real64), allocatable :: theta_s(:), theta_crack(:), geometry_factor(:), minimum_subsidence_cm(:)
     type(clay_kim_shrinkage_t), allocatable :: kim(:)
+    ! Absent selector preserves the admitted Kim-only configuration.
+    integer, allocatable :: law(:)
+    type(peat_shrinkage_t), allocatable :: peat(:)
   contains
     procedure :: valid_for_nodes => dynamic_shrinkage_config_valid
   end type dynamic_shrinkage_config_t
 
+  public :: evaluate_peat_shrinkage_fraction, evaluate_node_shrinkage_fraction
   public :: prepare_clay_kim_option1
   public :: evaluate_clay_kim_shrinkage_fraction
   public :: evaluate_dynamic_crack_volume
@@ -60,14 +73,14 @@ contains
       ok=.true.;return
     end if
     if(n<=0 .or. any(.not.ieee_is_finite(dz)) .or. any(dz<=0.0_real64))return
-    if(.not.allocated(config%theta_s) .or. .not.allocated(config%theta_crack) .or. .not.allocated(config%kim))return
-    if(size(config%theta_s)/=n .or. size(config%theta_crack)/=n .or. size(config%kim)/=n)return
+    if(.not.allocated(config%theta_s) .or. .not.allocated(config%theta_crack))return
+    if(size(config%theta_s)/=n .or. size(config%theta_crack)/=n)return
     if(allocated(config%minimum_subsidence_cm))deallocate(config%minimum_subsidence_cm)
     allocate(config%minimum_subsidence_cm(n))
     config%minimum_subsidence_cm=0.0_real64
     do ic=1,n
       ! B1.11 MACROPORE initialization: SubsidCpMin = SHRINK(ThetCrMp)*Dz.
-      call evaluate_clay_kim_shrinkage_fraction(config%theta_crack(ic),config%theta_s(ic),config%kim(ic),shrink,local_ok)
+      call evaluate_node_shrinkage_fraction(config,ic,config%theta_crack(ic),shrink,local_ok)
       if(.not.local_ok)return
       config%minimum_subsidence_cm(ic)=shrink*dz(ic)
     end do
@@ -106,10 +119,9 @@ contains
     end if
     if(.not.self%surface_crack_area_node_supplied)return
     if(.not.allocated(self%theta_s) .or. .not.allocated(self%theta_crack) .or. &
-       .not.allocated(self%geometry_factor) .or. .not.allocated(self%minimum_subsidence_cm) .or. &
-       .not.allocated(self%kim))return
+       .not.allocated(self%geometry_factor) .or. .not.allocated(self%minimum_subsidence_cm))return
     if(size(self%theta_s)/=n .or. size(self%theta_crack)/=n .or. size(self%geometry_factor)/=n .or. &
-       size(self%minimum_subsidence_cm)/=n .or. size(self%kim)/=n)return
+       size(self%minimum_subsidence_cm)/=n)return
     if(n<=0)return
     if(self%surface_crack_area_node<1 .or. self%surface_crack_area_node>n)return
     if(.not.all(ieee_is_finite(self%theta_s)) .or. .not.all(ieee_is_finite(self%theta_crack)) .or. &
@@ -118,11 +130,141 @@ contains
     if(any(self%theta_s<=0.0_real64) .or. any(self%theta_s>=1.0_real64) .or. &
        any(self%theta_crack<0.0_real64) .or. any(self%theta_crack>self%theta_s) .or. &
        any(self%geometry_factor<=0.0_real64) .or. any(self%minimum_subsidence_cm<0.0_real64))return
+    if(allocated(self%law))then
+      if(size(self%law)/=n)return
+    end if
     do i=1,n
-      if(.not.self%kim(i)%valid())return
+      if(.not.node_law_valid(self,i))return
     end do
     ok=.true.
   end function dynamic_shrinkage_config_valid
+
+  pure logical function node_law_valid(config,i) result(ok)
+    class(dynamic_shrinkage_config_t),intent(in)::config
+    integer,intent(in)::i
+    integer::law,n
+    ok=.false.
+    if(.not.allocated(config%theta_s))return
+    n=size(config%theta_s)
+    if(i<1 .or. i>n)return
+    law=SHRINK_KIM
+    if(allocated(config%law))then
+      if(size(config%law)/=n)return
+      law=config%law(i)
+    end if
+    select case(law)
+    case(SHRINK_RIGID)
+      ok=.true.
+    case(SHRINK_KIM)
+      if(.not.allocated(config%kim))return
+      if(size(config%kim)/=n)return
+      ok=config%kim(i)%valid()
+    case(SHRINK_PEAT_DIRECT,SHRINK_PEAT_SEGMENTS)
+      if(.not.allocated(config%peat))return
+      if(size(config%peat)/=n)return
+      ok=peat_valid(config%theta_s(i),config%peat(i),law)
+    end select
+  end function node_law_valid
+
+  pure logical function peat_valid(theta_s,parameters,law) result(ok)
+    real(real64),intent(in)::theta_s
+    type(peat_shrinkage_t),intent(in)::parameters
+    integer,intent(in)::law
+    real(real64)::sat,a,v_at_a
+    ok=.false.
+    if(.not.ieee_is_finite(theta_s))return
+    if(theta_s<=0.0_real64 .or. theta_s>=1.0_real64)return
+    sat=theta_s/(1.0_real64-theta_s)
+    a=parameters%transition_moisture_ratio
+    if(.not.ieee_is_finite(a) .or. .not.ieee_is_finite(parameters%void_ratio_zero))return
+    if(a<=0.0_real64 .or. a>=sat .or. parameters%void_ratio_zero<0.0_real64 .or. &
+       parameters%void_ratio_zero>=sat)return
+    select case(law)
+    case(SHRINK_PEAT_DIRECT)
+      if(.not.ieee_is_finite(parameters%alpha) .or. .not.ieee_is_finite(parameters%beta) .or. &
+         .not.ieee_is_finite(parameters%p))return
+      ! Bounded regular Hendriks branch: peak lies strictly within normalized interval.
+      if(parameters%alpha<=0.0_real64 .or. parameters%alpha>100.0_real64 .or. &
+         parameters%beta<=parameters%alpha+1.0e-8_real64 .or. parameters%beta>100.0_real64)return
+      if(abs(parameters%p)>10.0_real64)return
+    case(SHRINK_PEAT_SEGMENTS)
+      if(.not.ieee_is_finite(parameters%intermediate_moisture_ratio) .or. &
+         .not.ieee_is_finite(parameters%intermediate_void_ratio))return
+      if(parameters%intermediate_moisture_ratio<=0.0_real64 .or. &
+         parameters%intermediate_moisture_ratio>=a)return
+      v_at_a=parameters%void_ratio_zero+(sat-parameters%void_ratio_zero)*a/sat
+      if(parameters%intermediate_void_ratio<parameters%void_ratio_zero .or. &
+         parameters%intermediate_void_ratio<parameters%intermediate_moisture_ratio .or. &
+         parameters%intermediate_void_ratio>v_at_a)return
+    case default
+      return
+    end select
+    ok=.true.
+  end function peat_valid
+
+  subroutine evaluate_node_shrinkage_fraction(config,i,theta,shrink,ok)
+    type(dynamic_shrinkage_config_t),intent(in)::config
+    integer,intent(in)::i
+    real(real64),intent(in)::theta
+    real(real64),intent(out)::shrink
+    logical,intent(out)::ok
+    integer::law
+    shrink=0.0_real64;ok=.false.
+    if(.not.node_law_valid(config,i))return
+    law=SHRINK_KIM
+    if(allocated(config%law))law=config%law(i)
+    select case(law)
+    case(SHRINK_RIGID)
+      ok=ieee_is_finite(theta)
+      if(ok)ok=theta>=0.0_real64 .and. theta<=config%theta_s(i)
+    case(SHRINK_KIM)
+      call evaluate_clay_kim_shrinkage_fraction(theta,config%theta_s(i),config%kim(i),shrink,ok)
+    case(SHRINK_PEAT_DIRECT,SHRINK_PEAT_SEGMENTS)
+      call evaluate_peat_shrinkage_fraction(theta,config%theta_s(i),config%peat(i),law,shrink,ok)
+    end select
+  end subroutine evaluate_node_shrinkage_fraction
+
+  subroutine evaluate_peat_shrinkage_fraction(theta,theta_s,parameters,law,shrink,ok)
+    real(real64),intent(in)::theta,theta_s
+    type(peat_shrinkage_t),intent(in)::parameters
+    integer,intent(in)::law
+    real(real64),intent(out)::shrink
+    logical,intent(out)::ok
+    real(real64)::moisture,sat,a,void,v_at_a,r,peak,denominator,mr1,mr2,vr1,vr2
+    shrink=0.0_real64;ok=.false.
+    if(.not.peat_valid(theta_s,parameters,law))return
+    if(.not.ieee_is_finite(theta))return
+    if(theta<0.0_real64 .or. theta>theta_s)return
+    sat=theta_s/(1.0_real64-theta_s);moisture=theta/(1.0_real64-theta_s)
+    a=parameters%transition_moisture_ratio
+    v_at_a=parameters%void_ratio_zero+(sat-parameters%void_ratio_zero)*a/sat
+    if(law==SHRINK_PEAT_DIRECT)then
+      void=parameters%void_ratio_zero+(sat-parameters%void_ratio_zero)*moisture/sat
+      if(moisture<a)then
+        r=moisture/a;peak=parameters%alpha/parameters%beta
+        denominator=peak**parameters%alpha*(exp(-parameters%alpha)-exp(-parameters%beta))
+        if(denominator<=tiny(1.0_real64))return
+        void=void*(1.0_real64+parameters%p*r**parameters%alpha* &
+             (exp(-parameters%beta*r)-exp(-parameters%beta))/denominator)
+      end if
+    else
+      if(moisture>a)then
+        mr1=sat;mr2=a;vr1=sat;vr2=v_at_a
+      else if(moisture>parameters%intermediate_moisture_ratio)then
+        mr1=a;mr2=parameters%intermediate_moisture_ratio
+        vr1=v_at_a;vr2=parameters%intermediate_void_ratio
+      else
+        mr1=parameters%intermediate_moisture_ratio;mr2=0.0_real64
+        vr1=parameters%intermediate_void_ratio;vr2=parameters%void_ratio_zero
+      end if
+      void=vr2+(vr1-vr2)*(moisture-mr2)/(mr1-mr2)
+    end if
+    if(.not.ieee_is_finite(void))return
+    ! Void volume cannot contain less volume than liquid or exceed saturation.
+    if(void<moisture-1.0e-14_real64 .or. void>sat+1.0e-14_real64)return
+    shrink=max(0.0_real64,theta_s-void*(1.0_real64-theta_s))
+    ok=ieee_is_finite(shrink) .and. shrink<1.0_real64
+  end subroutine evaluate_peat_shrinkage_fraction
 
   pure logical function clay_kim_valid(self)
     class(clay_kim_shrinkage_t), intent(in) :: self
@@ -199,8 +341,10 @@ contains
     n=size(theta)
     allocate(candidate_dynamic_volume(n))
     if(present(candidate_subsidence_cm))allocate(candidate_subsidence_cm(n))
-    candidate_dynamic_volume=accepted_dynamic_volume
+    candidate_dynamic_volume=0.0_real64
     if(present(candidate_subsidence_cm))candidate_subsidence_cm=0.0_real64
+    if(size(accepted_dynamic_volume)/=n)return
+    candidate_dynamic_volume=accepted_dynamic_volume
     if(.not.config%valid_for_nodes(n))return
     if(.not.config%enabled)then
       ok=.true.
@@ -208,9 +352,19 @@ contains
     end if
     if(size(theta_previous)/=n .or. size(dz)/=n .or. size(matrix_area_fraction)/=n .or. &
        size(accepted_dynamic_volume)/=n)return
+    if(any(.not.ieee_is_finite(theta_previous)) .or. any(.not.ieee_is_finite(dz)) .or. &
+       any(.not.ieee_is_finite(matrix_area_fraction)) .or. any(.not.ieee_is_finite(accepted_dynamic_volume)))return
+    if(any(dz<=0.0_real64) .or. any(matrix_area_fraction<=0.0_real64) .or. &
+       any(matrix_area_fraction>1.0_real64) .or. any(accepted_dynamic_volume<0.0_real64))return
     do ic=1,n
-      call evaluate_clay_kim_shrinkage_fraction(theta(ic),config%theta_s(ic),config%kim(ic),shrink,local_ok)
+      call evaluate_node_shrinkage_fraction(config,ic,theta(ic),shrink,local_ok)
       if(.not.local_ok)return
+      if(allocated(config%law))then
+        if(config%law(ic)==SHRINK_RIGID)then
+          candidate_dynamic_volume(ic)=0.0_real64
+          cycle
+        end if
+      end if
       request=dynamic_crack_request_t()
       request%theta=theta(ic)
       request%theta_previous=theta_previous(ic)

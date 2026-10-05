@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.ppa_wu05.migmac03.status.v1",
+  "workunit": "PPA-WU05-MIGMAC03",
+  "date": "2026-10-05",
+  "canonical_base": "c1322db6e5551e95dcb4f86d707d22a6316f86e6",
+  "branch": "work/ppa-wu05-migmac03-constitutive",
+  "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
+  "production_admitted": false,
+  "scope": "Typed direct regular Hendriks peat and three-segment peat; rigid/peat compartment profiles in existing serialized Reference Richards geometry chain",
+  "qualification": "integration/audits/PPA_WU05_MIGMAC03_QUALIFICATION.json",
+  "preregistration": "docs/audits/PPA_WU05_MIGMAC03_PREREGISTRATION.md",
+  "blockers": [],
+  "next_action": "Publish exact tested tree and canonically admit bounded constitutive extension",
+  "remaining_scope": [
+    "No characteristic-point parameter fitting",
+    "No mixed Kim/peat runtime or new mixed-law rapid-drain reference construction",
+    "No field-scale or official whole-model case equivalence",
+    "No new surface owner, RossFast, concurrent MultiSWAP, salinity or frost"
+  ]
+}
