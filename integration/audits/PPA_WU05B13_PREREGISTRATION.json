@@ -1,0 +1,87 @@
+{
+  "work_unit": "PPA-WU05B13",
+  "status": "PREREGISTERED",
+  "baseline": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
+  "scope": "Explicit rootless ordinary Reference mode2 empirical interflow contribution at the last selected level, alone or preceded only by admitted LINEAR levels; normal and B8 guarded low-air frost. Below activation the empirical contribution is zero under F-VQ42, without claiming legacy negative-side DRAMET3 infiltration equivalence.",
+  "interface": "Add OFF frost_empirical_response_drainage_active parameter/model selector requiring B9 and one actual empirical last level. For this bounded selector reject active TABULATED/analytic selectors and non-LINEAR earlier levels. Low-air additionally requires B10 and valid cardinality-matched physical depth array. Public PURE delegating empirical parameter validator; existing private body receives PURE only.",
+  "controls": "Actual interval control drain_head remains required and finite via existing binding/application validators. Control head remains separate from physical frost drain depths, with no equality substitution. Immutable trial-start GWL is consumed by the existing generator.",
+  "physical_order": "Untouched disposable selected proposal -> existing normal/B8 modifier -> one final Richards sink and accepted receipt; existing B10 independently regenerated terminal full/half proposal. No new runtime arithmetic, persistent/restart state, Jacobian or phase physics.",
+  "production_paths_allowed": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/process/mod_drainage_empirical_interflow_response.f90"
+  ],
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    27,
+    29,
+    30
+  ],
+  "scientific_authority": {
+    "work_unit": "F-VQ42",
+    "head": "702db051bf5dd0960a962be919ea0cfbf01895a4",
+    "oracle_blob": "5eea0d3b591df048b98cc1cc266a0ecb071712c7",
+    "process_blob": "eb53096b678d08b76d3fb1adb2247bc2a58ee748"
+  },
+  "gates": [
+    "Unchanged existing scientific bodies; immutable independent scientific power/tangent/activation oracle rebound to actual current O0/O2 modules and actual hydraulic carrier",
+    "Actual ordered LINEAR/last empirical binding with independent power/linear equations, normal/B7 corrected source and B8 physical depth/equality/cuts; positive, zero and inactive contribution, c/p bounds, signed preceding linear proposals, qbot signs",
+    "Fresh whole-module actual normal warm/partial/frozen and observed near-saturated low-air partial/all/no cuts, both qbot signs, p=0.1/0.5/1.0 and independent full fine trajectories with unchanged B11/B12 budgets, hard mass, representative further refinement",
+    "Actual trial-start/control-head activation matrix including control changes distinct from fixed physical depths; immutable retry proposal, final-node receipts, replay, application and empty-registry restart",
+    "Before-solver active parameter/position/unsupported mixed selector/missing or nonfinite control/depth-cardinality invalid matrix; unrelated inactive parameter members ignored",
+    "Fresh relevant existing frost/runtime/binding preservation on changed whole module, four SALFRO01, immutable VQ73/VQ74, literal root and strict canonical exact pins, docs; admit only completed source-bound results with exact proposed/actual merge identities"
+  ],
+  "exclusions": [
+    "Negative-side DRAMET3 empirical infiltration",
+    "General SWNRSRF/SWALLO controls or their dispatcher equivalence",
+    "TABULATED/analytic/EXTENDED_SIGNED mixed empirical levels",
+    "SWDIVD1 distribution",
+    "Fixed weir",
+    "Projection/directional/implicit coupling",
+    "Root/salt/macropore/snow hybrids",
+    "New geometry/ice/latent heat",
+    "Global frost equivalence"
+  ],
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "baseline_source": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
+  "prerequisite": "B12 admitted PR1056 and exact actual metadata closeout PR1057 verified",
+  "dependency_sha256": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "8269215b7527ec0b5db61bf8d92f6b6c826b442bca24dc6faafec67fb0d9bf3f",
+    "src/process/mod_drainage_empirical_interflow_response.f90": "1aa182f15d59206ffad7502221a778dedc145aafe2b0fd819002810173c346bb",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "6d297c308261948dd3a516c545e76f4650570ce4945cb96e179cbb538f51e852",
+    "src/process/mod_frost_drainage_effect.f90": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900",
+    "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35"
+  },
+  "runtime_matrix": {
+    "exponents": [
+      0.1,
+      0.5,
+      1.0
+    ],
+    "ordered_levels": [
+      "EMPIRICAL alone",
+      "LINEAR then EMPIRICAL"
+    ],
+    "trajectories_per_configuration": 6,
+    "normal_fine_steps": 8192,
+    "low_air_fine_steps": 65536,
+    "head_envelope_cm": 1e-06,
+    "temperature_envelope_c": 0.0001,
+    "hard_mass_cm": 1e-12,
+    "normal_physical_head_budget_cm": 1e-08,
+    "low_air_physical_head_budget_cm": 3e-11,
+    "temperature_budget_c": 1e-07,
+    "qualification_head_budget_cm": 2.5e-11,
+    "execution": "Fresh complete physical configuration per process; no trajectory reuse without per-trial physical dependency proof"
+  }
+}

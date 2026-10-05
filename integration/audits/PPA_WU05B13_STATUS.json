@@ -1,0 +1,54 @@
+{
+  "work_unit": "PPA-WU05B13",
+  "baseline": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
+  "last_reconciled_upstream": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
+  "baseline_source": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
+  "preregistration": "integration/audits/PPA_WU05B13_PREREGISTRATION.json",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "implemented": false,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "relevant_paths": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/process/mod_drainage_empirical_interflow_response.f90",
+    "src/runtime/mod_fmr_drainage_response_binding.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/process/mod_frost_drainage_effect.f90",
+    "src/process/mod_frost_low_air_drainage_effect.f90",
+    "src/solver/mod_process_hydraulic_view.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/PPA_WU05B13_SOURCE_REVIEW.json",
+    "integration/audits/PPA_WU05B12_CANONICAL_ADMISSION.json",
+    "docs/capabilities/drainage.md"
+  ],
+  "dependency_surface": "Active empirical parameter/ordered-level validation; runtime/backend ABI, actual control binding, thermal/frost modifier, single sink/receipts, retry/replay/restart/application and relevant drainage/root/salt/canonical preservation",
+  "interfaces_allowed_to_change": "Add OFF frost_empirical_response_drainage_active parameter/model selector requiring B9 and one actual empirical last level. For this bounded selector reject active TABULATED/analytic selectors and non-LINEAR earlier levels. Low-air additionally requires B10 and valid cardinality-matched physical depth array. Public PURE delegating empirical parameter validator; existing private body receives PURE only.",
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    27,
+    29,
+    30
+  ],
+  "next_action": "Implement only preregistered pure validator and OFF selector; persist useful postimage before scientific/component/whole-runtime gates",
+  "recovery_point": "B12 exact canonical closeout plus B13 preregistration before production/interface changes",
+  "blockers": [],
+  "pending": [
+    "Unchanged existing scientific bodies; immutable independent scientific power/tangent/activation oracle rebound to actual current O0/O2 modules and actual hydraulic carrier",
+    "Actual ordered LINEAR/last empirical binding with independent power/linear equations, normal/B7 corrected source and B8 physical depth/equality/cuts; positive, zero and inactive contribution, c/p bounds, signed preceding linear proposals, qbot signs",
+    "Fresh whole-module actual normal warm/partial/frozen and observed near-saturated low-air partial/all/no cuts, both qbot signs, p=0.1/0.5/1.0 and independent full fine trajectories with unchanged B11/B12 budgets, hard mass, representative further refinement",
+    "Actual trial-start/control-head activation matrix including control changes distinct from fixed physical depths; immutable retry proposal, final-node receipts, replay, application and empty-registry restart",
+    "Before-solver active parameter/position/unsupported mixed selector/missing or nonfinite control/depth-cardinality invalid matrix; unrelated inactive parameter members ignored",
+    "Fresh relevant existing frost/runtime/binding preservation on changed whole module, four SALFRO01, immutable VQ73/VQ74, literal root and strict canonical exact pins, docs; admit only completed source-bound results with exact proposed/actual merge identities"
+  ],
+  "negative_findings": []
+}
