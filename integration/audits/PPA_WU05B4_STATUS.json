@@ -1,0 +1,28 @@
+{
+  "work_unit": "PPA-WU05B4",
+  "baseline": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
+  "last_reconciled_upstream": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "authority_paths": [
+    "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json",
+    "integration/audits/PPA_WU05B3_LOCAL_QUALIFICATION.json",
+    "integration/audits/PPA_WU05B4_PREREGISTRATION.json"
+  ],
+  "relevant_paths": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/frost"
+  ],
+  "dependency_surface": [
+    "src/runtime",
+    "src/process",
+    "src/solver",
+    "tests/fci"
+  ],
+  "next_action": "Implement bounded joint opt-in and independent actual root/bottom flux oracles; persist before expensive gates",
+  "blockers": []
+}
