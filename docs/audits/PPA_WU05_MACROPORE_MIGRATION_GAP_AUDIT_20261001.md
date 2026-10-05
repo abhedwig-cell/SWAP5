@@ -190,3 +190,18 @@ superseded by [MIGMAC06 closeout](PPA_WU05_MIGMAC06_CLOSEOUT.md).
 Wider multiple/within-compartment drains, covering-layer reference composition,
 additional surface owners and final whole-model equivalence remain outside this
 admission. Broad 4.3.1 macropore migration remains incomplete.
+
+## Later canonical reconciliation: MIGMAC07 (2026-10-05)
+
+PR #1024 closes the within-compartment rapid-drain geometry restriction using
+unchanged B1.11 VOLUNDR semantics. Existing aligned routes and partial-level
+Reference transactions are qualified with one water owner and restart boundary.
+Earlier aligned-only/excluded statements are superseded for this route.
+
+Multiple simultaneous rapid-drain levels are future-only scope: the source
+initialization uses `do ir = 1, 1` and RAPIDDRAIN accepts only main domain1 with
+one selected NumLevRapDra. They must not count as unported source functionality.
+This says nothing about the separate ordinary multilevel matrix-drainage route.
+Remaining source-relevant work includes covering-layer reference preparation,
+wider surface-owner compositions and whole-model equivalence. Broad migration
+is incomplete. [MIGMAC07 closeout](PPA_WU05_MIGMAC07_CLOSEOUT.md) controls scope.

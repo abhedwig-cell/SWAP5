@@ -1,6 +1,6 @@
 # PPA-WU05-MIGMAC07 within-compartment rapid-drain closeout
 
-Date: 2026-10-05. Status: LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION.
+Date: 2026-10-05. Status: CANONICAL_PRODUCTION_ADMITTED_CLOSED.
 Canonical base: 8125ba01b5bfd7377c721caa1105d68e24e77183.
 
 The A10 compartment-boundary restriction is replaced with source-faithful
@@ -58,3 +58,10 @@ not an implemented 4.3.1/B1.11 rapid-drain capability missing from SWAP5.
 Earlier open-scope lists must not count this as a source migration blocker.
 This correction does not concern ordinary multilevel matrix drainage, which has
 a separate process and ownership contract.
+
+## Canonical admission
+
+PR #1024 merged qualified tree `5d4ab9eacac9dfe078551c5acbaddc42b01955c2`
+at `1e713632f69e2a533a3881192c8be4ce158d49f3`. Published qualified commit:
+`f84820ff51a48d778a46b4421ecf483423c7894b`. Merge comparison has no changed files.
+All 157 source/test postimages remain exact. Closeout changes status/docs only.

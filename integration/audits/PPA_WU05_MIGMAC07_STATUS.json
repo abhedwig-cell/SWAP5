@@ -4,13 +4,13 @@
   "date": "2026-10-05",
   "canonical_base": "8125ba01b5bfd7377c721caa1105d68e24e77183",
   "branch": "work/ppa-wu05-migmac07-partial-drain",
-  "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
-  "production_admitted": false,
+  "status": "CANONICAL_PRODUCTION_ADMITTED_CLOSED",
+  "production_admitted": true,
   "scope": "One rapid-drain level inside an FMR compartment; source uniform-density VOLUNDR reconstruction in serialized Reference",
   "qualification": "integration/audits/PPA_WU05_MIGMAC07_QUALIFICATION.json",
   "preregistration": "docs/audits/PPA_WU05_MIGMAC07_PREREGISTRATION.md",
   "blockers": [],
-  "next_action": "Admit exact qualified tree and close partial-drain restriction.",
+  "next_action": "Partial-drain restriction closed; source-relevant covering reference/surface composition and whole-model equivalence remain.",
   "remaining_migration_scope": [
     "Covering-layer reference preparation composition",
     "Additional source-relevant surface-owner combinations",
@@ -20,5 +20,9 @@
     "Multiple simultaneous rapid-drain levels",
     "Subcell nonuniform constitutive geometry",
     "Other execution modes"
-  ]
+  ],
+  "canonical_pr": 1024,
+  "canonical_merge": "1e713632f69e2a533a3881192c8be4ce158d49f3",
+  "published_qualified_commit": "f84820ff51a48d778a46b4421ecf483423c7894b",
+  "qualified_tree": "5d4ab9eacac9dfe078551c5acbaddc42b01955c2"
 }

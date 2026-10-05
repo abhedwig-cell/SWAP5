@@ -272,3 +272,22 @@ pass. [Closeout](../audits/PPA_WU05_MIGMAC06_CLOSEOUT.md) pins source and gates.
 Multiple/within-compartment drains, covering-layer reference preparation and
 additional surface/whole-model compositions remain excluded. Frozen Status A
 and the incomplete broad migration denominator remain unchanged.
+
+## PPA-WU05-MIGMAC07 within-compartment rapid drainage
+
+PR #1024 admits one rapid-drain level inside an FMR compartment using the source
+VOLUNDR uniform-volume-density equation. The A10 aligned-only restriction and
+MIGMAC06 within-compartment exclusion are superseded within this bounded route.
+The shared geometry helper retains boundary snapping, current main-domain capacity,
+active cutoff and one external rapid-drain receipt. No accepted subcell state is
+introduced. Partial-level A10 and mixed-law Reference retry/restart, wetting,
+water closure and supplied/derived KD equivalence pass at O0/O2.
+[Closeout](../audits/PPA_WU05_MIGMAC07_CLOSEOUT.md) pins source and qualification.
+
+The exact source prepares only one rapid-drain reference level; RAPIDDRAIN returns
+for domains other than main domain1 and uses one selected NumLevRapDra. Multiple
+simultaneous rapid-drain levels are therefore future functionality, not a missing
+implemented B1.11 capability. Ordinary multilevel matrix drainage is separate.
+Covering-layer reference preparation, wider source-relevant surface compositions
+and whole-model equivalence remain separate migration work. Frozen Status A and
+the incomplete broad migration claim remain unchanged.
