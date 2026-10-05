@@ -42,6 +42,8 @@ jobs:
         run: |
           bash tests/frost/run_ppa_wu05b_frost_effect.sh
           bash tests/frost/run_ppa_wu05b_frost_runtime.sh
+      - name: Exact current-canonical preservation for the bounded frost successor
+        run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
       - name: Install documentation dependencies
         run: python3 -m pip install -r requirements-docs.txt
       - name: Validate docs, JSON and whitespace

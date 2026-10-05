@@ -50,10 +50,10 @@
     "drainage/boundary flux ownership for deferred FrozenBounds"
   ],
   "source_trace": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
-  "next_action": "Inspect final-postimage F-CI moving-preservation result, then route to central regie for admission decision.",
+  "next_action": "Inspect dedicated frost job with the unchanged complete moving-canonical preservation runner, then route qualified bounded candidate to central regie.",
   "recovery_point": "work/ppa-wu05b-frost-migration; full local current-canonical preservation PASS on pinned merge source and exact recorded runner hashes; canonical admission remains pending.",
   "blockers": [
-    "Final persisted F-CI moving-preservation result pending.",
+    "Persisted exact-postimage complete moving-preservation runner result pending; dedicated frost job now includes the identical full F-CI moving-preservation command.",
     "Central SWAP5 regie admission decision has not been recorded."
   ],
   "legacy_dispositions": {
@@ -61,10 +61,10 @@
     "frost_root_stress": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; binary 0 C stress and ALPHACRIT compensation do not currently compose with the admitted sink chain; microscopic route errors when frost is enabled."
   },
   "persisted_qualification": {
-    "run_id": 37322927353,
-    "candidate_head": "a7fcfd932edc4ff93aed94a73ebe4c5eb3e5ec05",
+    "run_id": 37323712046,
+    "candidate_head": "c198e82d4dbb1ec8a58cbc108f5829903a10b2ef",
     "conclusion": "success",
-    "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37322927353"
+    "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37323712046"
   },
   "local_current_canonical_preservation": {
     "result": "PASS",
