@@ -12,16 +12,16 @@
     "docs/audits/PPA_WU05E_STATE_LAYOUT_DECISION.md": "5dd6eb932cd030a216d8ab2884bfb64141727c3d6e9154e0b55773415bed2c47",
     "integration/audits/production_physics_application_envelope_gap_register.json": "e4dc188ca9059275774395b60747a01839bc135f2c06762704736e84e9cfb576",
     "src/process/mod_root_salinity_response.f90": "502c7d1f1e5d51c79f46f11988c8a155acf0266b400db965f4b4d9e4311053c0",
-    "src/process/mod_solute_macropore_exchange.f90": "42c4ce71004005ab998c086539ec1cfbf86d9a8f42e929e0fac5fee6f77b327e",
+    "src/process/mod_solute_macropore_exchange.f90": "ecb3a215a6e692730d23a0ae8289e203c428dd78ab647b53cedb9e23fbd32864",
     "src/process/mod_solute_mobile_salt_state.f90": "a981169c421bbd095f467e1d95c953627db02e141fb79eaa20dfaa7be7ef1028",
     "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
     "src/runtime/mod_fmr_committed_restart.f90": "585aa64f209db2c106f73caaedb7dfac66e6b0fcd1571750ce4a405710165e89",
     "src/runtime/mod_fmr_restart_state_contract.f90": "d178762814b9490d827405d94b1f75567c84ab46d53cf7b8128d459ffc4c0bc2",
     "src/runtime/mod_fmr_runtime_core.f90": "04cd7d2ff3b1b8814ff08d22b0750a903df0ec9bb0d9ba2e516b01808eafd11c",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90": "5d73dfc41ea1dce89fb239497051523f55598ebd038d89f4f95a4a096689ee86",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "7a2b9a3a3ed96d6aaa5db44c78bd65d01f1e6ca9fe7695c4123804fdcbef6493",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
-    "tests/fpm/run_ppa_wu05a8_real_richards.sh": "ddf2ab5f3acba210a242682ba287eddc3936ae26804e83d0eb4fae646972b7b6",
-    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "aa7b4feb70ab6d27367d88ab80db529aa847052309e99f316ff852941ef39e52",
+    "tests/fpm/run_ppa_wu05a8_real_richards.sh": "fbbadf3c1533cf625e148ceda6ae3575b2ce7ac29bb4ff93ce638e40e189ca15",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "cfd779e9eaa5371a9279c5d7abc271e50f05984d0213dd265399ec9405d277a4",
     "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "50ea99cf305881e868091dccd987a5feada756a42b8190f0378f8cb64b53e110",
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
@@ -35,7 +35,7 @@
     "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b",
     "integration/audits/PPA_WU05E_STATUS.json": "a83988dab1e89332594536a60294f4332b7ed277775dbd69e5d2f0bd9baa1097",
     "tests/fpm/test_ppa_wu05a20_rfm_optional_state_layout.f90": "e27bfb82bc58fcb03588b09d81d05bf061b59c86b0c8202431e7172cb6666be5",
-    "src/process/mod_solute_mobile_macro_salt_transport.f90": "cc51511cc5d07198a2ae23343167f541569aab34c6f085c38c9e0c0bfaacafcb",
+    "src/process/mod_solute_mobile_macro_salt_transport.f90": "469f53289a15bc48f0254a37e5d1c1acfa0962af14ca2af971feb2affa89b6ad",
     "tests/physics/test_mobile_macro_salt_transport.f90": "38d5b748d29bf33c6b029cf89070426e915dcee0d15628f02721bb74b4e0bac6"
   },
   "results": [
@@ -135,6 +135,22 @@
         "src/process/mod_solute_macropore_exchange.f90": "42c4ce71004005ab998c086539ec1cfbf86d9a8f42e929e0fac5fee6f77b327e",
         "tests/physics/test_mobile_macro_salt_transport.f90": "38d5b748d29bf33c6b029cf89070426e915dcee0d15628f02721bb74b4e0bac6"
       }
+    },
+    {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "result": "PASS_O0_O2_IDENTICAL",
+      "scope": "The exact PR-branch FMR/restart/runtime and solute-state sources pass the existing accepted-water trace, replay/restart, fail-closed matrix-only candidate, and macro storage checks. A test-only adapter maps the actual accepted substeps into the ordered matrix/macro salt process candidate, preserving reconstructed matrix faces, macro faces/exchange, qdra by level, qssdi, qrot, and explicit test Cdrain. The mapped process candidate returns a non-empty signed drainage receipt and closes salt mass. No FMR-owned salt transaction is invoked.",
+      "execution": "GNU Fortran 13.3.0; O0 and O2; runtime checks enabled by the runner; exact local PR-branch postimages synchronized into an isolated scratch copy; runner output byte-identical.",
+      "tested_source_sha256": {
+        "src/process/mod_solute_mobile_macro_salt_transport.f90": "469f53289a15bc48f0254a37e5d1c1acfa0962af14ca2af971feb2affa89b6ad",
+        "src/process/mod_solute_macropore_exchange.f90": "ecb3a215a6e692730d23a0ae8289e203c428dd78ab647b53cedb9e23fbd32864",
+        "src/runtime/mod_fmr_runtime_core.f90": "04cd7d2ff3b1b8814ff08d22b0750a903df0ec9bb0d9ba2e516b01808eafd11c",
+        "src/runtime/mod_fmr_restart_state_contract.f90": "d178762814b9490d827405d94b1f75567c84ab46d53cf7b8128d459ffc4c0bc2",
+        "src/runtime/mod_fmr_committed_restart.f90": "585aa64f209db2c106f73caaedb7dfac66e6b0fcd1571750ce4a405710165e89",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": "7a2b9a3a3ed96d6aaa5db44c78bd65d01f1e6ca9fe7695c4123804fdcbef6493",
+        "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "cfd779e9eaa5371a9279c5d7abc271e50f05984d0213dd265399ec9405d277a4",
+        "tests/fpm/run_ppa_wu05a8_real_richards.sh": "fbbadf3c1533cf625e148ceda6ae3575b2ce7ac29bb4ff93ce638e40e189ca15"
+      }
     }
   ],
   "not_run_or_not_claimed": [
@@ -149,9 +165,9 @@
     "The initial direct run against the stale local runtime checkout failed to compile because local files lagged the PR branch. Four runtime/restart modules and the mobile salt module were then synchronized from the exact PR branch; the rerun of the same O0/O2 FMR gate passed. The source-hash map pins the synchronized postimage.",
     "GitHub Actions runs were automatically queued by PR branch updates; no qualification run was manually dispatched or used as qualification evidence.",
     "The coupled matrix/macro salt transport oracle uses manufactured accepted water arrays; no live FMR salt candidate, typed FMR boundary receipt producer, persistent macro salt continuation, restart serialization, or Jarvis composition is qualified.",
-    "No positive test-only or production FMR macro salt candidate is claimed. The attempted probe had a source-residual sign error and was removed."
+    "No positive FMR-owned salt candidate or production salt transaction is claimed. A positive test-only process candidate has been driven by the accepted FMR observation trace, but it is not advanced or committed by FMR. Typed persistent Cdrain forcing, atomic FMR salt receipts, and Jarvis salinity composition remain unimplemented/unqualified."
   ],
-  "claim_ceiling": "Local tested prototypes and negative evidence only. The A7/A8 O0/O2 gate proves that the current macro-enabled FMR route fails closed for E1 matrix-only salt advancement and validates an attempt-local water trace with nonzero per-domain exchange, paired macro-water volumes, ordered per-domain vertical faces, and water storage/exchange/face continuity through retry/replay and restart. A typed domain-resolved macro salt payload and distinct solute layout pass clone and in-memory Restart v3 round-trip checks, but remain storage-only. The stateless exchange kernel verifies internal arithmetic only. Live salt initialization/advancement, typed boundary salt receipts, a coupled water/salt transaction, formal qualification, and production salinity capability are not established. The macro-disabled base FMR diagnostic remains blocked by the existing temporal identity gate. No Jarvis salinity integration or exact-byte B1.11 solute equivalence is claimed. A stateless coupled matrix/macro process kernel is locally tested O0/O2 for vertical macro advection, signed exchange, explicit matrix boundary receipts, root TSCF accounting, mass closure, and fail-closed invalid water/flow. It remains unbound and does not qualify FMR state, all route boundaries, transaction/restart, or Jarvis. The process slice also initializes separate matrix and per-domain inventories from concentration profiles and derives concentration from matching salt/water state; this remains unbound process evidence and does not qualify any FMR route or continuation lifecycle. Ordered process-level traces verify contiguous accepted time and water continuity, updated donor concentration across substeps, and rollback on late failure; this does not qualify FMR transactions or restart. Ordered process-level traces verify accepted time/water continuity, updated donor concentration across substeps, and all-or-nothing rollback after late failure; they do not qualify FMR transaction or restart semantics. A temporary FMR-consumer probe was reverted because its matrix source residual had a root-sink sign error; it is not qualification evidence and does not demonstrate qssdi/drainage magnitudes. The next required source work is salt ownership for qssdi and qdra. The A7 O0/O2 test-only diagnostic also applies the exchange-only operator across actual accepted FMR water observations and verifies closure, deterministic replay, and late-overdraw rollback. It does not create an FMR salt candidate/receipt or test the coupled transport candidate against FMR.",
+  "claim_ceiling": "Local tested prototypes and negative evidence only. The A7/A8 O0/O2 gate proves that the current macro-enabled FMR route fails closed for E1 matrix-only salt advancement and validates an attempt-local water trace with nonzero per-domain exchange, paired macro-water volumes, ordered per-domain vertical faces, and water storage/exchange/face continuity through retry/replay and restart. A typed domain-resolved macro salt payload and distinct solute layout pass clone and in-memory Restart v3 round-trip checks, but remain storage-only. The stateless exchange kernel verifies internal arithmetic only. Live salt initialization/advancement, typed boundary salt receipts, a coupled water/salt transaction, formal qualification, and production salinity capability are not established. The macro-disabled base FMR diagnostic remains blocked by the existing temporal identity gate. No Jarvis salinity integration or exact-byte B1.11 solute equivalence is claimed. A stateless coupled matrix/macro process kernel is locally tested O0/O2 for vertical macro advection, signed exchange, explicit matrix boundary receipts, root TSCF accounting, mass closure, and fail-closed invalid water/flow. It remains unbound and does not qualify FMR state, all route boundaries, transaction/restart, or Jarvis. The process slice also initializes separate matrix and per-domain inventories from concentration profiles and derives concentration from matching salt/water state; this remains unbound process evidence and does not qualify any FMR route or continuation lifecycle. Ordered process-level traces verify contiguous accepted time and water continuity, updated donor concentration across substeps, and rollback on late failure; this does not qualify FMR transactions or restart. Ordered process-level traces verify accepted time/water continuity, updated donor concentration across substeps, and all-or-nothing rollback after late failure; they do not qualify FMR transaction or restart semantics. A temporary FMR-consumer probe was reverted because its matrix source residual had a root-sink sign error; it is not qualification evidence and does not demonstrate qssdi/drainage magnitudes. The next required source work is salt ownership for qssdi and qdra. The A7 O0/O2 test-only diagnostic also applies the exchange-only operator across actual accepted FMR water observations and verifies closure, deterministic replay, and late-overdraw rollback. It does not create an FMR salt candidate/receipt or test the coupled transport candidate against FMR. A8 now passes an O0/O2 test-only adapter from actual accepted FMR water substeps into the ordered macro-salt process candidate, including qdra/qssdi and explicit test Cdrain. The backend still rejects active salt layouts; no FMR-owned salt candidate or transaction/restart qualification is demonstrated.",
   "environment_overrides": {
     "oxygen_preservation_runner": "FC executable wrapper at /tmp/gfortran-swap5-tolerant-warn prepended -Wno-error=compare-reals; the tracked runner uses -Werror, and this only makes the existing equality warning non-fatal without altering numerical tolerances.",
     "wrapper_sha256": "c65021b92959a4d908036e843753ac2bccbc258262d333da008396fdeffc42f5",
@@ -182,6 +198,12 @@
       "result": "REVERTED_HARNESS_SIGN_ERROR_NOT_QUALIFICATION",
       "observation": "The exploratory predicate evaluated net_node_source - macropore_matrix_exchange - root_sink. Source algebra is net_node_source = qssdi - sum(qdra) - qrot + qexc, so the predicate double-subtracted qrot. The resulting rejection did not identify a qssdi/drainage magnitude and the test-only consumer was removed before persistence.",
       "interpretation": "No live FMR salt candidate was demonstrated. Reconstruct qssdi and qdra salt semantics and typed receipts before attempting a route binding; do not treat this experiment as blocker qualification."
+    },
+    {
+      "experiment": "Test-only coupled macro-salt process candidate driven by the accepted A8 FMR water trace",
+      "result": "PASS_TEST_ONLY_O0_O2",
+      "observation": "Matrix face rates were reconstructed from accepted storage and source terms. Domain macro faces/water/exchange, per-level qdra, qssdi, and root sink were mapped from the actual accepted substeps. With a declared test Cdrain and boundary concentration profile, the ordered process wrapper returned a candidate and per-level signed drainage receipts with salt closure; negative inventories were absent. O0/O2 output is byte-identical. The production FMR backend still rejects active salt layouts and never invokes this test adapter.",
+      "interpretation": "This closes the process-to-observation mapping test gap only. It does not establish a live FMR candidate/receipt or salt commit/discard/retry/restart. Define typed immutable Cdrain forcing and its restart identity before adding any FMR salt ownership."
     }
   ]
 }
