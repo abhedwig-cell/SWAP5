@@ -2,7 +2,7 @@
   "schema": "swap5.f_mig431_int13_status.v1",
   "workunit": "F-MIG431-INT13",
   "title": "Rutter SWINTER=3 stateful atmospheric-forcing migration",
-  "state": "SURFACE_IRRIGATION_LOCAL_PASS_PERSISTED_REQUALIFICATION_PENDING",
+  "state": "TARGETED_PERSISTED_QUALIFICATION_PASS_B1_11_SURFACE_IRRIGATION_BOTH_ISUA_BOUNDED",
   "baseline": {
     "branch": "integration/f-ci-canonical",
     "head": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
@@ -53,23 +53,20 @@
     "integration/audits/F-MIG431-INT13_SOURCE_RECONCILIATION_ADDENDUM.md"
   ],
   "implemented": "B1.11 piecewise-constant Rutter fill/dry event integrator; source-window FMR physical-state candidate; constant surface irrigation routing for both ISUA modes; fimin removed from the Rutter contract",
-  "persisted": "The rain-only bounded candidate passed INT13 Actions run 37271615834. A local extension now supports constant surface irrigation through both ISUA partitions; this extension awaits a new targeted persisted qualification.",
-  "tested": "Rain-only Rutter physics/source-window/retry/restart and production FMR passed persisted run 37271615834. Local current candidate passes B1.11 ISUA=0/nonzero hand-oracle and immutable irrigation-window tests, FMR production with both ISUA modes at the tested low-rate forcing, PPA-WU01 O0/O2, and source-window O0/O2.",
+  "persisted": "The bounded constant-surface-irrigation candidate passed targeted INT13 Actions run 37276517425 on commit 6f6eba2241b662cf0d3c1126bd21a63845b6ee41. The companion PPA-WU01 owner qualification passed run 37276517357 on the same commit.",
+  "tested": "The exact remote tree for 6f6eba2241b662cf0d3c1126bd21a63845b6ee41 matches the locally verified candidate tree. INT13 Actions run 37276517425 passed Rutter physics/source-window/retry/restart/determinism and production FMR composition/preservation. PPA-WU01 run 37276517357 passed. Local O0/O2 tests pass both ISUA hand-oracles, immutable irrigation source-window forcing, FMR production at the bounded low-rate irrigation vector, and source-window checks.",
   "latest_audit_findings": [
     "Exact B1.11 MOD_meteo.f90 member reconstructed from the release archive; SHA-256 99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f.",
     "B1.11 Rutter uses piecewise constant canopy input/output fluxes with internal fill and dry event times. It does not use fimin or the SWAP 4.2.0 exponential storage equation.",
     "The current source-window integrator resolves B1.11-style process events internally and returns interval-average fluxes; event transitions do not command Richards substeps.",
     "Constant surface irrigation now passes the B1.11 ISUA=0 intercepted and ISUA/=0 rain-only partitions in local process and FMR production tests. The production test uses a low irrigation rate of 0.01 cm/day with 0.2 cm rainfall per source window.",
     "Higher tested irrigation throughfall combinations reached the Reference Richards error \"HeadCalc: dynamic head regime omitted surface-head derivative\". Those high-forcing combinations remain outside this qualification pending the separately owned top-boundary/Jacobian issue.",
-    "The previous persisted INT13 run 37271615834 qualifies the rain-only candidate, not this surface-irrigation extension."
+    "Targeted INT13 run 37276517425 and PPA-WU01 owner run 37276517357 both passed on exact candidate commit 6f6eba2241b662cf0d3c1126bd21a63845b6ee41; the earlier INT13 run 37271615834 qualifies only the rain-only candidate."
   ],
-  "qualified": false,
-  "next_action": "Run the targeted INT13 physics and FMR production qualification on the constant-surface-irrigation extension, then persist the exact tested envelope while retaining the high-throughfall solver limitation.",
+  "qualified": true,
+  "next_action": "Keep PR #1016 as a bounded, unadmitted draft pending canonical integration. Resolve the separate Reference Richards surface-head derivative defect and run a separate qualification before extending the tested irrigation envelope.",
   "recovery_point": "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
-  "blockers": [
-    "The constant surface-irrigation extension has local O0/O2 verification but no persisted qualification on its current candidate commit.",
-    "Higher tested surface-irrigation throughfall reaches the dynamic head regime surface-head derivative error and is excluded from the tested envelope."
-  ],
+  "blockers": [],
   "dependency_surface": [
     "Rutter process state and equations",
     "interception source-window progress",
@@ -78,11 +75,21 @@
     "SWINTER=0/1/2, Black and Boesten preservation interfaces"
   ],
   "persisted_qualification": {
-    "workflow_run_id": 37271615834,
-    "head": "4403db7996ec49b910a419d53c7efe2b4cd75102",
-    "rutter_physics_retry_restart": "PASS",
-    "production_fmr_composition": "PASS",
-    "historical_superseded_run_id": 37268521592,
-    "surface_irrigation_extension": "PENDING"
-  }
+    "workflow_run_id": 37276517425,
+    "head": "6f6eba2241b662cf0d3c1126bd21a63845b6ee41",
+    "tree": "a523b26932bf95d5cd773e88b85ae1c34896645d",
+    "rutter_physics_retry_restart_determinism": "PASS",
+    "production_fmr_composition_and_preservation": "PASS",
+    "surface_irrigation_extension": "PASS_BOTH_ISUA_MODES_BOUNDED_LOW_RATE",
+    "companion_ppa_wu01_run_id": 37276517357,
+    "companion_ppa_wu01": "PASS",
+    "previous_rain_only_run_id": 37271615834,
+    "historical_superseded_run_id": 37268521592
+  },
+  "scope_limitations": [
+    "The persisted irrigation envelope is constant surface irrigation at the tested low-rate vector (0.01 cm/day) with 0.2 cm rainfall per source window, both ISUA partitions, and constant forcing per immutable source window.",
+    "Higher throughfall combinations trigger the separately owned Reference Richards error 'HeadCalc: dynamic head regime omitted surface-head derivative' and remain out of scope.",
+    "Irrigation scheduling, sprinkling, Snow, Black/Boesten with Rutter, macropore, RFM/surface-water combinations and unsupported solver profiles remain out of scope.",
+    "SWINTER=3 remains unadmitted pending canonical integration."
+  ]
 }

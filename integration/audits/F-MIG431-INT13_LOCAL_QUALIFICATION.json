@@ -12,7 +12,7 @@
       "O2"
     ],
     "head_before_local_production_integration": "056bc49919aa553609fc7389b709da58a9b56243",
-    "working_tree_state": "UNCOMMITTED_B1_11_RECONCILIATION_CANDIDATE"
+    "working_tree_state": "COMMITTED_AND_PERSISTED_BOUNDED_CANDIDATE"
   },
   "local_gate": {
     "command": "tests/fpm/run_f_mig431_int13_rutter_source_window.sh",
@@ -66,10 +66,10 @@
   },
   "claim_limit": [
     "Exact B1.11 MOD_meteo.f90 member reconstructed and SHA-256 verified; see F-MIG431-INT13_CORRECTED_REFERENCE.md.",
-    "Targeted persisted INT13 physics/source-window/retry/restart and production FMR qualification passed in Actions run 37271615834 on candidate commit 4403db7996ec49b910a419d53c7efe2b4cd75102; not canonically admitted.",
-    "Only constant forcing per immutable source window is supported; detailed forcing is one window per record.",
-    "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles remain outside the candidate envelope.",
-    "A higher irrigation-throughfall production case reached the HeadCalc dynamic-head omitted surface-head derivative error; it is not in the qualified envelope."
+    "Targeted persisted INT13 run 37276517425 on commit 6f6eba2241b662cf0d3c1126bd21a63845b6ee41 passed physics/source-window/retry/restart/determinism and production FMR composition/preservation; the bounded candidate is qualified but not canonically admitted.",
+    "The qualified irrigation vector is constant surface irrigation at 0.01 cm/day with 0.2 cm rainfall per immutable source window, testing both B1.11 ISUA partitions. Scheduling and sprinkling remain excluded.",
+    "Higher irrigation-throughfall reaches the Reference Richards HeadCalc dynamic-head omitted surface-head derivative error and remains outside the qualified envelope.",
+    "Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles remain outside the candidate envelope."
   ],
   "production_application": {
     "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
@@ -98,8 +98,10 @@
         "Rutter canopy state",
         "INT12 source progress",
         "dynamic top boundary",
-        "existing root sink / wet-canopy PET scaling"
-      ]
+        "existing root sink / wet-canopy PET scaling",
+        "constant low-rate surface irrigation (0.01 cm/day) with rainfall 0.2 cm per source window, testing both ISUA modes"
+      ],
+      "irrigation_limit": "Bounded constant forcing only; higher-throughfall vectors are excluded due the separate Reference Richards surface-head derivative error."
     }
   },
   "source_oracle": {
@@ -114,19 +116,23 @@
   },
   "persisted_gate": {
     "workflow": ".github/workflows/f-mig431-int13-rutter.yml",
-    "run_id": 37271615834,
-    "head": "4403db7996ec49b910a419d53c7efe2b4cd75102",
+    "run_id": 37276517425,
+    "head": "6f6eba2241b662cf0d3c1126bd21a63845b6ee41",
+    "tree": "a523b26932bf95d5cd773e88b85ae1c34896645d",
     "status": "PASS",
     "steps": {
-      "rutter_physics_retry_source_window_restart": "PASS",
-      "production_fmr_composition": "PASS"
+      "rutter_physics_retry_source_window_restart_determinism": "PASS",
+      "production_fmr_composition_and_preservation": "PASS"
     },
+    "companion_ppa_wu01_run_id": 37276517357,
+    "companion_ppa_wu01_status": "PASS",
+    "previous_rain_only_run_id": 37271615834,
     "superseded_historical_run_id": 37268521592
   },
   "current_production_application": {
     "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
     "result": "PASS_O0_O2",
     "irrigation_case": "Both ISUA modes in separate tiles; surface irrigation 0.01 cm/day with a 0.2 cm rainfall source window.",
-    "claim_limit": "Local current postimage only; current surface-irrigation extension awaits persisted qualification."
+    "claim_limit": "The bounded low-rate constant surface-irrigation extension with both ISUA modes is persisted-qualified by INT13 run 37276517425; companion PPA-WU01 run 37276517357 passed. High-throughfall limitation remains excluded."
   }
 }
