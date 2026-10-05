@@ -43,10 +43,9 @@
   "recovery_point": "Remote preregistration74e851cda073dd0d0adf1e9d578d1bd059ab63f4 plus useful production and complete primary runtime harness checkpoint",
   "blockers": [],
   "pending": [
-    "Complete six-configuration full low-air runtime O0/O2",
-    "Complete fresh current all relevant incumbents including B12 five-family low-air O0/O2",
-    "Complete four SALFRO01 and strict canonical preservation",
-    "Final immutable replay/docs/exact proposed merge/admission"
+    "Complete full six-configuration low-air O0/O2 runtime",
+    "Complete fresh B8/B10/B11 and all five B12 low-air preservation cases at O0/O2",
+    "Final immutable replay, docs and exact proposed/actual admission"
   ],
   "negative_findings": [
     {
@@ -89,5 +88,11 @@
     "bytes": 222827,
     "manifest_entries": 474,
     "qualification": false
+  },
+  "preservation_execution_recovery": {
+    "source_unchanged": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
+    "change": "Remaining independent O0 preservation cases use a bounded two-process pool; each complete case still owns its full fine reference. Finished B8 result retained after matching current used source bytes and module object hashes to immutable recovery. No reference trajectory is shared between different cases. Original incomplete sequential O0 loop stopped exit130; prefix retained unqualified.",
+    "prior_loop_log": "/tmp/frost-b13-low-air-preservation-first-sequential-o0.log",
+    "whole_module_source_proof": "/tmp/frost-b13-current-whole-module-source-proof.json"
   }
 }
