@@ -74,7 +74,7 @@ module mod_fmr_serialized_reference_backend
   use mod_process_hydraulic_view, only: process_hydraulic_view_t, build_process_hydraulic_view
   use mod_b110_smooth_freatic_projection, only: b110_smooth_freatic_projection_diagnostics_t, &
        evaluate_b110_smooth_freatic_projection, B110_GWL_PROJECTION_OK
-  use mod_soil_temperature_contract, only: soil_temperature_at_node, soil_temperature_field_view_t, &
+  use mod_soil_temperature_contract, only: copy_soil_temperature_profile, soil_temperature_at_node, soil_temperature_field_view_t, &
        build_soil_temperature_field_view
   use mod_crop_bartholomeus_input, only: crop_bartholomeus_input_t, valid_crop_bartholomeus_input
   use mod_fmr_bartholomeus_contract, only: fmr_bartholomeus_parameters_t, valid_fmr_bartholomeus_parameters, &
@@ -84,7 +84,8 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
-       ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, root_walsum_geometry_t, ROOT_COMP_OK, attribute_root_stress_losses
+       ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, ROOT_COMP_FROST, root_walsum_geometry_t, ROOT_COMP_OK, attribute_root_stress_losses
+  use mod_root_frost_stress, only: root_frost_config_t, compose_legacy_zero_root_frost, ROOT_FROST_OK
   use mod_root_uptake_compensation_execution, only: apply_root_uptake_compensation, ROOT_COMP_EXEC_OK
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
@@ -245,6 +246,9 @@ module mod_fmr_serialized_reference_backend
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
     type(root_compensation_config_t) :: root_compensation
+    type(root_frost_config_t) :: root_frost
+    real(real64) :: root_frost_head_budget_cm=0.0_real64
+    real(real64) :: root_frost_temperature_budget_c=0.0_real64
     type(fmr_bartholomeus_parameters_t), allocatable :: bartholomeus
     logical :: macropore_active = .false.
     type(fmr_macropore_physical_config_t), allocatable :: macropore
@@ -350,6 +354,11 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_oxygen_base_uptake = 0.0_real64
     real(real64) :: root_oxygen_final_uptake = 0.0_real64
     real(real64), allocatable :: root_oxygen_final_sink(:)
+    logical :: root_frost_executed = .false.
+    integer :: root_frost_status = 0
+    real(real64) :: root_frost_loss = 0.0_real64
+    real(real64), allocatable :: root_frost_final_sink(:)
+    real(real64) :: root_compensation_frost_loss = 0.0_real64
     logical :: root_compensation_executed = .false.
     integer :: root_compensation_status = 0
     real(real64) :: root_compensation_base_uptake = 0.0_real64
@@ -506,6 +515,9 @@ module mod_fmr_serialized_reference_backend
     ! Disposable worker inputs/scratch, not accepted oxygen continuation state.
     real(real64), allocatable :: qrot_unmodified(:)
     type(root_compensation_config_t) :: root_compensation
+    type(root_frost_config_t) :: root_frost
+    real(real64) :: root_frost_head_budget_cm=0.0_real64
+    real(real64) :: root_frost_temperature_budget_c=0.0_real64
     real(real64) :: root_potential_transpiration = 0.0_real64
     real(real64) :: root_drought_reduction_total = 0.0_real64
     real(real64), allocatable :: root_potential_sink(:)
@@ -2057,7 +2069,8 @@ contains
         ok = ok .and. parameters%frost_hydraulic%valid() .and. parameters%frost_hydraulic%active .and. &
              parameters%soil_temperature_active .and. self%soil_temperature_active .and. &
              self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
-             parameters%bottom_mode == 2 .and. .not. parameters%root_extraction_active .and. &
+             parameters%bottom_mode == 2 .and. &
+             (.not. parameters%root_extraction_active .or. parameters%root_frost%active) .and. &
              .not. parameters%macropore_active .and. .not. parameters%drainage_response_active .and. &
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
              .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active .and. &
@@ -2065,6 +2078,15 @@ contains
              .not. self%trajectory_direction_requested .and. .not. self%temporal_indicator_history_enabled
       else
         ok = ok .and. .not. parameters%frost_hydraulic%active
+      end if
+      if(parameters%root_frost%active) then
+        ok=ok.and.parameters%frost_active.and.parameters%root_extraction_active.and. &
+             parameters%root_frost%rooted_nodes>=0.and.parameters%root_frost%rooted_nodes<=parameters%active_nodes
+        ok=ok.and.ieee_is_finite(parameters%root_frost_head_budget_cm).and. &
+             ieee_is_finite(parameters%root_frost_temperature_budget_c).and. &
+             parameters%root_frost_head_budget_cm>0.0_real64.and.parameters%root_frost_temperature_budget_c>0.0_real64
+        ! Actual negative-temperature Bartholomeus composition is separate scope.
+        ok=ok.and..not.allocated(parameters%bartholomeus)
       end if
       if (parameters%black_evaporation_active) then
         ok = ok .and. .not. parameters%boesten_evaporation_active .and. self%black_evaporation_active .and. &
@@ -2192,8 +2214,12 @@ contains
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
       self%root_compensation = parameters%root_compensation
+      self%root_frost = parameters%root_frost
+      self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm
+      self%root_frost_temperature_budget_c=parameters%root_frost_temperature_budget_c
       if (self%root_compensation%method < ROOT_COMP_OFF .or. self%root_compensation%method > ROOT_COMP_WALSUM) return
       if (self%root_compensation%method /= ROOT_COMP_OFF .and. .not. self%root_extraction_active) return
+      if(self%root_compensation%stressor==ROOT_COMP_FROST.and..not.self%root_frost%active) return
       if(allocated(self%bartholomeus)) deallocate(self%bartholomeus)
       if(allocated(parameters%bartholomeus)) self%bartholomeus=parameters%bartholomeus
       self%macropore_active = parameters%macropore_active
@@ -2360,6 +2386,17 @@ contains
         if (self%frost_active .and. forcing%bottom_flux /= 0.0_real64) return
       end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
+      if(self%root_frost%active) then
+        if(self%root_frost%rooted_nodes<0.or.self%root_frost%rooted_nodes>n) return
+        if(any(forcing%root_extraction_sink(self%root_frost%rooted_nodes+1:)/=0.0_real64)) return
+        if(self%root_compensation%method/=ROOT_COMP_OFF) then
+          if(.not.allocated(forcing%root_potential_sink)) return
+          if(size(forcing%root_potential_sink)/=n) return
+          if(any(.not.ieee_is_finite(forcing%root_potential_sink))) return
+          if(any(forcing%root_potential_sink<forcing%root_extraction_sink)) return
+          if(any(forcing%root_potential_sink(self%root_frost%rooted_nodes+1:)/=0.0_real64)) return
+        end if
+      end if
       if (self%root_compensation%method /= ROOT_COMP_OFF) then
         if (.not. ieee_is_finite(forcing%root_potential_transpiration) .or. forcing%root_potential_transpiration < 0.0_real64) return
         if (.not. ieee_is_finite(forcing%root_drought_reduction_total) .or. forcing%root_drought_reduction_total < 0.0_real64) return
@@ -2530,7 +2567,7 @@ contains
       if(allocated(forcing%root_walsum_geometry)) self%root_walsum_geometry=forcing%root_walsum_geometry
       if(allocated(self%root_potential_sink)) deallocate(self%root_potential_sink)
       if(allocated(forcing%root_potential_sink)) self%root_potential_sink=forcing%root_potential_sink
-      if(allocated(self%crop_oxygen) .or. self%root_compensation%method /= ROOT_COMP_OFF) then
+      if(allocated(self%crop_oxygen) .or. self%root_compensation%method /= ROOT_COMP_OFF .or. self%root_frost%active) then
         self%qrot_unmodified=forcing%root_extraction_sink
       else
         if(allocated(self%qrot_unmodified)) deallocate(self%qrot_unmodified)
@@ -2746,7 +2783,7 @@ contains
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
     type(soil_temperature_field_view_t) :: oxygen_thermal, frost_thermal
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
-    real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:),frost_factors(:)
+    real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:),frost_factors(:),root_frost_factors(:)
     real(real64) :: atmospheric_ctop
     integer :: oxygen_route,waterfilm_mode,oxygen_status,oxygen_nodes
     logical :: publish_root_result
@@ -3101,7 +3138,7 @@ contains
         call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
       end if
-      if (self%root_compensation%method /= ROOT_COMP_OFF) then
+      if (self%root_compensation%method /= ROOT_COMP_OFF .or. self%root_frost%active) then
         if (.not. allocated(self%qrot_unmodified)) return
         self%qrot = self%qrot_unmodified
       end if
@@ -3131,18 +3168,47 @@ contains
           return
         end if
       end if
+      if(self%root_frost%active) then
+        block
+          type(root_water_uptake_flux_result_t)::root_base,root_final
+          real(real64)::frost_loss
+          integer::root_status
+          root_base%root_extraction_sink=self%qrot
+          root_base%actual_uptake_total=sum(self%qrot)
+          call compose_legacy_zero_root_frost(self%root_frost,frost_thermal%temperature_c, &
+               root_base,root_final,root_frost_factors,frost_loss,root_status)
+          self%last_observation%root_frost_executed=.true.
+          self%last_observation%root_frost_status=root_status
+          if(root_status/=ROOT_FROST_OK) return
+          self%last_observation%root_frost_loss=frost_loss
+          self%last_observation%root_frost_final_sink=root_final%root_extraction_sink
+          self%qrot=root_final%root_extraction_sink
+        end block
+      end if
       if (self%root_compensation%method /= ROOT_COMP_OFF) then
         block
           type(root_water_uptake_flux_result_t) :: compensation_base, compensation_final
           type(root_water_uptake_diagnostics_t) :: compensation_base_diagnostics
           type(root_compensation_diagnostics_t) :: compensation_diagnostics
-          real(real64) :: oxygen_reduction_total
+          real(real64) :: oxygen_reduction_total, frost_reduction_total
           integer :: compensation_status,attribution_status
           compensation_base%root_extraction_sink = self%qrot
           compensation_base%actual_uptake_total = sum(self%qrot)
           compensation_base_diagnostics%drought_reduction_total = self%root_drought_reduction_total
           oxygen_reduction_total = sum(self%qrot_unmodified)-compensation_base%actual_uptake_total
-          if(allocated(oxygen_factors).and.self%root_drought_reduction_total>0.0_real64) then
+          frost_reduction_total=0.0_real64
+          if(self%root_frost%active) then
+            if(.not.allocated(self%root_potential_sink)) return
+            if(abs(sum(self%root_potential_sink)-self%root_potential_transpiration)> &
+                 256.0_real64*epsilon(1.0_real64)*max(1.0_real64,self%root_potential_transpiration)) return
+            if(.not.allocated(oxygen_factors)) then
+              allocate(oxygen_factors(size(self%qrot)));oxygen_factors=1.0_real64
+            end if
+            call attribute_root_stress_losses(self%root_potential_sink,self%qrot_unmodified,oxygen_factors, &
+                 compensation_base_diagnostics%drought_reduction_total,oxygen_reduction_total,attribution_status, &
+                 root_frost_factors,frost_reduction_total)
+            if(attribution_status/=ROOT_COMP_OK) return
+          else if(allocated(oxygen_factors).and.self%root_drought_reduction_total>0.0_real64) then
             ! Mixed stress requires the existing drought owner's potential nodes.
             ! Scalar sequential losses do not reproduce B1.11 apportionment.
             if(.not.allocated(self%root_potential_sink)) return
@@ -3154,13 +3220,14 @@ contains
           end if
           call apply_root_uptake_compensation(self%root_compensation,self%root_potential_transpiration, &
                compensation_base,compensation_base_diagnostics,oxygen_reduction_total,compensation_final, &
-               compensation_diagnostics,compensation_status,self%root_walsum_geometry,self%soil_parameters%dz)
+               compensation_diagnostics,compensation_status,self%root_walsum_geometry,self%soil_parameters%dz,frost_reduction_total)
           self%last_observation%root_compensation_executed=.true.
           self%last_observation%root_compensation_status=compensation_status
           self%last_observation%root_compensation_base_uptake=compensation_base%actual_uptake_total
           if(compensation_status/=ROOT_COMP_EXEC_OK) return
           self%last_observation%root_compensation_drought_loss=compensation_diagnostics%drought_reduction_total
           self%last_observation%root_compensation_oxygen_loss=compensation_diagnostics%oxygen_reduction_total
+          self%last_observation%root_compensation_frost_loss=compensation_diagnostics%frost_reduction_total
           self%qrot=compensation_final%root_extraction_sink
           self%last_observation%root_compensation_final_uptake=compensation_final%actual_uptake_total
           self%last_observation%root_compensation_final_sink=compensation_final%root_extraction_sink
@@ -3557,7 +3624,7 @@ contains
       outcome%terminal_bottom_outward_flux_native = 0.0_real64
       return
     end if
-    publish_root_result=self%root_compensation%method/=ROOT_COMP_OFF
+    publish_root_result=self%root_compensation%method/=ROOT_COMP_OFF.or.self%root_frost%active
     if(allocated(self%bartholomeus)) then
       call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
       publish_root_result=publish_root_result.or.oxygen_route==FMR_BARTHOLOMEUS_ACTIVE
@@ -3794,6 +3861,10 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
+    if(self%root_frost%active) then
+      value=fmr_root_frost_temporal_error(self,full_state,half_state)
+      return
+    end if
     if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &
         self%bottom_mode /= 2 .and. self%bottom_mode /= 8) then
       value = huge(0.0_real64)
@@ -3873,6 +3944,45 @@ contains
       value = huge(0.0_real64)
     end if
   end function fmr_serialized_temporal_identity
+
+  real(real64) function fmr_root_frost_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),allocatable::tf(:),th(:)
+    real(real64)::head_error,temperature_error
+    integer::status,n
+    value=huge(0.0_real64)
+    if(self%root_frost_head_budget_cm<=0.0_real64.or.self%root_frost_temperature_budget_c<=0.0_real64) return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n) return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head)) return
+        if(.not.allocated(full%water_content).or..not.allocated(half%water_content)) return
+        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n) return
+        if(size(full%water_content)/=n.or.size(half%water_content)/=n) return
+        if(any(.not.ieee_is_finite(full%pressure_head)).or.any(.not.ieee_is_finite(half%pressure_head))) return
+        if(any(.not.ieee_is_finite(full%water_content)).or.any(.not.ieee_is_finite(half%water_content))) return
+        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth,full%groundwater_level,half%groundwater_level]))) return
+        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature)) return
+        call copy_soil_temperature_profile(full%soil_temperature,tf,status)
+        if(status/=SOIL_TEMP_OK) return
+        call copy_soil_temperature_profile(half%soil_temperature,th,status)
+        if(status/=SOIL_TEMP_OK) return
+        if(size(tf)/=n.or.size(th)/=n) return
+        if(any(.not.ieee_is_finite(tf)).or.any(.not.ieee_is_finite(th))) return
+        ! A full/half disagreement across the empirical cutoff requires refinement.
+        if(any((tf(:self%root_frost%rooted_nodes)<0.0_real64).neqv. &
+             (th(:self%root_frost%rooted_nodes)<0.0_real64))) return
+        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        temperature_error=maxval(abs(tf-th))
+        value=max(head_error/self%root_frost_head_budget_cm,temperature_error/self%root_frost_temperature_budget_c)
+      end select
+    end select
+  end function fmr_root_frost_temporal_error
 
   real(real64) function fmr_rutter_temporal_error(self, full_state, half_state) result(value)
     class(fmr_serialized_reference_model_t), intent(in) :: self

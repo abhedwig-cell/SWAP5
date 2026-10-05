@@ -1,0 +1,36 @@
+{
+  "work_unit": "PPA-WU05B2",
+  "status": "LOCAL_BOUNDED_ORACLES_PASS_FULL_PRESERVATION_PENDING",
+  "optimization": [
+    "O0",
+    "O2"
+  ],
+  "new_tests": {
+    "root_cutoff_attribution_jarvis_walsum": "PASS",
+    "serialized_runtime_and_fresh_replay": "PASS",
+    "actual_thaw": "PASS",
+    "committed_restart_fresh_worker": "PASS",
+    "jarvis_walsum_public_application": "PASS",
+    "accepted_uptake_publication": "PASS",
+    "direct_refinement_2048_steps": "PASS"
+  },
+  "preservation": {
+    "existing_rootless_frost_runtime": "PASS",
+    "existing_jarvis_oracles": "PASS",
+    "existing_walsum_geometry_and_application": "PASS",
+    "full_moving_canonical": "PENDING"
+  },
+  "water_mass_bound_cm": 1e-12,
+  "refinement": {
+    "head_error_cm": 1.511038e-07,
+    "temperature_error_c": 7.351853e-05,
+    "head_horizon_bound_cm": 1e-06,
+    "temperature_horizon_bound_c": 0.0001,
+    "local_full_half_head_budget_cm": 1e-06,
+    "local_full_half_temperature_budget_c": 1e-06,
+    "cumulative_temperature_1e-6_claim": false
+  },
+  "documentation_source_check": "PASS",
+  "strict_mkdocs": "PASS",
+  "admitted": false
+}

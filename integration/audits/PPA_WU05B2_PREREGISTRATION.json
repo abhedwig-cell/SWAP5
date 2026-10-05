@@ -31,5 +31,24 @@
     "docs, exact source manifests and current preservation before admission"
   ],
   "admission_owner": "central SWAP5 regie",
-  "status": "PREREGISTERED_NOT_IMPLEMENTED"
+  "status": "IMPLEMENTED_NOT_ADMITTED",
+  "temporal_amendment": {
+    "reason": "Actual nonzero-root trials converge and close mass but the incumbent full/half temporal identity rejects every nonidentical state. Root-frost cannot be admitted on an equilibrium-only oracle.",
+    "scope": "Only explicit root_frost.active route; incumbent routes unchanged.",
+    "metric": "Dimensionless max of full/half pressure-head, ponding and groundwater differences divided by a supplied positive head budget, and soil-temperature differences divided by a supplied positive temperature budget. Different freeze classifications, invalid state, or missing budgets return unavailable (huge).",
+    "qualification_budgets": {
+      "head_cm": 1e-06,
+      "temperature_c": 1e-06,
+      "dimensionless_acceptance": 1.0
+    },
+    "required": "Refinement/retry/direct small-step and cutoff-crossing checks before admission.",
+    "cumulative_refinement_observation": {
+      "head_difference_cm": 1.511038e-07,
+      "temperature_difference_c": 7.351853e-05,
+      "direct_steps": 2048,
+      "head_horizon_bound_cm": 1e-06,
+      "temperature_horizon_bound_c": 0.0001,
+      "note": "A trial-local 1e-6 C budget does not establish a cumulative 1e-6 C bound. The initial cumulative 1e-6 C assertion failed and is explicitly not claimed."
+    }
+  }
 }

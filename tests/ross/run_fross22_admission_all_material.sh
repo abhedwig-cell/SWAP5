@@ -101,6 +101,7 @@ MODULE_SRC=(
   src/physics/oxygen/mod_bartholomeus_profile_response.f90
   src/physics/oxygen/mod_bartholomeus_factor_provider.f90
   src/process/mod_root_water_uptake_process.f90
+  src/process/mod_root_frost_stress.f90
   src/process/mod_root_uptake_oxygen_composition.f90
   src/runtime/mod_fmr_bartholomeus_execution.f90
   src/process/mod_root_uptake_compensation.f90

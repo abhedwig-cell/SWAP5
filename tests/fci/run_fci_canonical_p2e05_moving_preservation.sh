@@ -301,7 +301,22 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     backend_authority="$BALTOL02_BACKEND"
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
   fi
-  if git merge-base --is-ancestor "$PPA_WU05B_QUALIFIED" HEAD; then
+  if git merge-base --is-ancestor 4e21f0efeb4db6069c3c6d38fdf6dc2e5033f238 HEAD; then
+    git merge-base --is-ancestor 53a3f3e41231b8600bbb19b8eb2157558bd12e19 HEAD || \
+      fail 'PPA-WU05B2 lost canonically admitted hydraulic frost baseline'
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "77d3d031e7ead303dea749aabb89441fb1e35738" || \
+      fail 'PPA-WU05B2 bounded root composition postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90'
+    test "$(git rev-parse HEAD:src/process/mod_root_frost_stress.f90)" = "a99d870ac2911dd0b9cfe1aef3a0fd299dcfcf38" || \
+      fail 'PPA-WU05B2 bounded root composition postimage drift: src/process/mod_root_frost_stress.f90'
+    test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "eb1473bb17875aae8ac656f5e85c9f0f607b28f2" || \
+      fail 'PPA-WU05B2 bounded root composition postimage drift: src/process/mod_root_uptake_compensation.f90'
+    test "$(git rev-parse HEAD:src/runtime/mod_root_uptake_compensation_execution.f90)" = "489f5cc565d8322628564cede79e154c767fed31" || \
+      fail 'PPA-WU05B2 bounded root composition postimage drift: src/runtime/mod_root_uptake_compensation_execution.f90'
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "b565da02789c2b6dbacfaebae72c08512005adaf" || \
+      fail 'PPA-WU05B2 bounded root composition postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90'
+    backend_authority="$(git rev-parse HEAD:$BACKEND)"
+    echo 'FCI_CANONICAL_PPA_WU05B2_EXACT_ROOT_COMPOSITION_CANDIDATE=ACTIVE'
+  elif git merge-base --is-ancestor "$PPA_WU05B_QUALIFIED" HEAD; then
     test "$(git rev-parse "HEAD^2:$BACKEND")" = "$PPA_WU05B_BACKEND" || \
       fail 'PR parent does not carry the exact qualified PPA-WU05B backend postimage'
     backend_authority="$PPA_WU05B_MERGE_BACKEND"
