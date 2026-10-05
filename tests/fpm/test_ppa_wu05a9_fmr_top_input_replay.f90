@@ -12,7 +12,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
   use mod_macropore_dynamic_shrinkage, only: prepare_clay_kim_option1, map_surface_crack_depth_to_node, &
-       SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, &
+       SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, SHRINK_KIM, &
        prepare_clay_kim_option2, prepare_peat_characteristic_points, &
        derive_dynamic_minimum_subsidence
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t, &
@@ -264,6 +264,11 @@ contains
       mcfg%shrinkage%peat%p=0.1_real64
       mcfg%shrinkage%peat%intermediate_moisture_ratio=0.2_real64
       mcfg%shrinkage%peat%intermediate_void_ratio=0.4_real64
+      if(constitutive_flag=='5' .or. constitutive_flag=='6' .or. constitutive_flag=='7')then
+        if(constitutive_flag=='6')mcfg%shrinkage%law=SHRINK_PEAT_SEGMENTS
+        mcfg%shrinkage%law(2::2)=SHRINK_KIM
+        if(constitutive_flag=='7')mcfg%shrinkage%law(3::3)=SHRINK_RIGID
+      end if
     end if
 
     if(fit_flag=='1')then
