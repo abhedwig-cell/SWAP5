@@ -192,7 +192,15 @@
         "scope": "Valid bracket/source geometry guards; legacy last-node indexing retained; no new fully frozen front",
         "admitted": true,
         "global_B1_snapshot_promoted": false
-      }
+      },
+      "bracketed_low_air_drainage_successor": {
+        "work_unit": "PPA-WU05B8",
+        "canonical_merge": "0aca73324ea46511d18af56bca3fddd0dba52ffd",
+        "admission": "integration/audits/PPA_WU05B8_CANONICAL_ADMISSION.json",
+        "scope": "Rootless ordinary Reference mode2 prescribed signed nodal drainage; explicit finite negative physical drain depths; legacy low-air branch with guarded bracketed geometry, derived final-node totals and separate final qbot owner; normal branch retains B6",
+        "admitted": true
+      },
+      "active_response_composition_review": "integration/audits/PPA_WU05B9_SOURCE_REVIEW.json"
     },
     "advanced_root_stress": {
       "legacy_files": [
