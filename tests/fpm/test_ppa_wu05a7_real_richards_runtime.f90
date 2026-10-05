@@ -206,6 +206,8 @@ contains
     physical%water_content=[0.31_real64,0.29_real64,0.27_real64]
     allocate(physical%salt%mass_mg_cm2(3))
     physical%salt%mass_mg_cm2=[0.1_real64,0.2_real64,0.3_real64]
+    physical%salt%cdrain_source_id=77_int64
+    physical%salt%cdrain_revision=4_int64
     template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     template%template_id=7105_int64
     template%physics_topology_id=1_int64
@@ -221,6 +223,8 @@ contains
     type is (fmr_b110_physical_state_t)
       if(.not.allocated(copy%salt))error stop 'salt component clone allocation'
       if(any(copy%salt%mass_mg_cm2/=physical%salt%mass_mg_cm2))error stop 'salt component clone mass'
+      if(copy%salt%cdrain_source_id/=77_int64.or.copy%salt%cdrain_revision/=4_int64) &
+           error stop 'salt component clone Cdrain provenance'
       if(.not.fmr_restart_state_matches_template(copy,template))error stop 'salt layout valid clone'
     class default
       error stop 'salt component clone family'
@@ -249,6 +253,8 @@ contains
       if(.not.allocated(restored_physical%salt))error stop 'salt Restart v4 component missing'
       if(any(restored_physical%salt%mass_mg_cm2/=physical%salt%mass_mg_cm2)) &
            error stop 'salt Restart v4 mass identity'
+      if(restored_physical%salt%cdrain_source_id/=77_int64.or. &
+         restored_physical%salt%cdrain_revision/=4_int64)error stop 'salt Restart Cdrain provenance'
     class default
       error stop 'salt Restart v3 state family'
     end select
@@ -308,6 +314,8 @@ contains
     deallocate(physical%salt%mass_mg_cm2)
     allocate(physical%salt%mass_mg_cm2(3),physical%macropore)
     physical%salt%mass_mg_cm2=[0.1_real64,0.2_real64,0.3_real64]
+    physical%salt%cdrain_source_id=77_int64
+    physical%salt%cdrain_revision=5_int64
     call physical%macropore%initialize(2,3,ok)
     if(.not.ok)error stop 'macro-salt continuation initialization'
     physical%macropore%water_domain_cp=reshape([0.15_real64,0.12_real64,0.14_real64, &
@@ -355,6 +363,8 @@ contains
       if(.not.allocated(restored_physical%salt%macro_mass_mg_cm2))error stop 'macro-salt Restart lost salt state'
       if(any(restored_physical%salt%macro_mass_mg_cm2/=physical%salt%macro_mass_mg_cm2)) &
            error stop 'macro-salt Restart mass mismatch'
+      if(restored_physical%salt%cdrain_source_id/=77_int64.or. &
+         restored_physical%salt%cdrain_revision/=5_int64)error stop 'macro-salt Restart provenance mismatch'
     class default
       error stop 'macro-salt Restart state family'
     end select
