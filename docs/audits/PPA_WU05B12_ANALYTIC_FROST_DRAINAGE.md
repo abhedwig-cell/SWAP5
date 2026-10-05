@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-Locally qualified and persisted; canonical admission is pending. Baseline is
+Canonically admitted via PR #1056 at `388a87cad21218d0519cd8cf401a41ef0b67327e`. Baseline is
 B11 canonical closeout `879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6`.
 The versioned source review, preregistration and current status are under
 `integration/audits/PPA_WU05B12_*.json`. This is a bounded composition of
@@ -81,3 +81,7 @@ low_air maximum head error: 1.935812e-07 cm; temperature error: 3.64947e-07 C.
 The additional low-air short activation fixture first inherited an air-rich setup when replacing the original main. It was repaired to carry the actual near-saturated hydraulic state and assert the observed low-air branch on every case, then rerun at both optimization levels. Full low-air trajectories were unaffected. Separate owned whole-module builds ran O0/O2 concurrently with the same persisted program; all five families and full fine trajectories were retained.
 
 The initial all-family parallel qualification exceeded the shared 8 GiB cgroup memory limit and its O2 worker was killed (exit 137); its incomplete numerical prefixes and resource evidence remain explicitly unqualified. The repaired runner executes each complete family in a fresh process, retaining all five full matrices and unchanged scientific/runtime case bodies and budgets. Unchanged verified whole-module builds were relinked to the new process selector; complete fresh-process O0/O2 results supply the qualification. This is a bounded qualification execution change, with no production memory or speed claim.
+
+## Canonical admission
+
+Proposed merge `2e7b24c34109b0fc51839715bfdd26291df6eaeb` and actual merge share exact qualified tree `41707675d88aed6d2e9508b8c02cd8b5cfb7bac7` and production source `7be5920b9c04eb3c985deeeb89207a2992ad2e65`. The admission record binds actual parents, qualified head and immutable evidence. Empirical interflow remains source review only. Aggregate frost migration remains open.

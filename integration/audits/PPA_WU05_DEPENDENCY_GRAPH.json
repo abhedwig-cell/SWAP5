@@ -216,12 +216,19 @@
         "postmerge_reconciliation": "integration/audits/PPA_WU05B10_POSTMERGE_RECONCILIATION.json",
         "admitted": true
       },
-      "remaining_response_family_review": "integration/audits/PPA_WU05B12_SOURCE_REVIEW.json",
+      "remaining_response_family_review": "integration/audits/PPA_WU05B13_SOURCE_REVIEW.json",
       "tabulated_response_frost_successor": {
         "work_unit": "PPA-WU05B11",
         "canonical_merge": "d975acb21472ddf96c800ef66be327810f8968c0",
         "admission": "integration/audits/PPA_WU05B11_CANONICAL_ADMISSION.json",
         "scope": "Existing TABULATED and LINEAR/TABULATED mixtures with normal/B8 guarded low-air modifiers; single final nodal owner and separate bottom owner",
+        "admitted": true
+      },
+      "analytic_response_frost_successor": {
+        "work_unit": "PPA-WU05B12",
+        "canonical_merge": "388a87cad21218d0519cd8cf401a41ef0b67327e",
+        "admission": "integration/audits/PPA_WU05B12_CANONICAL_ADMISSION.json",
+        "scope": "Admitted DRAMET2 IPOS1..5 plus selected LINEAR/TABULATED mixtures with normal/B8 low-air modifiers; exact analytic physical drain/frost depth agreement and single final nodal owner",
         "admitted": true
       }
     },
