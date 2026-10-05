@@ -4,8 +4,8 @@
   "last_reconciled_upstream": "a370f6f487c017af9931ffc46d4c5c9fb1288d8c",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "admitted": false,
   "scope": "Legacy no-drain FrozenBounds on rootless ordinary Reference mode2, explicit opt-in",
   "authority_paths": [
@@ -25,7 +25,7 @@
     "src/process",
     "tests/fci"
   ],
-  "next_action": "Qualify complete reconciled current-canonical production source including selected Walsum-salinity preservation",
+  "next_action": "Central exact-source reconciliation and bounded canonical admission; drainage redistribution remains separate",
   "blockers": [],
   "remote_checkpoint_note": "Implementation persisted at 17a5f1da903415d4568127476c24d835e9326836; revised tests and preserved gate pin uploaded before full qualification",
   "test_paths": [
@@ -37,5 +37,13 @@
     "Initial local temperature budget 1e-6 C gave horizon difference 1.015612e-4 C vs 2048 direct steps: FAILED retained 1e-4 C horizon bound. Qualification fixture tightens local budget to 1e-7 C, no claim of cumulative 1e-7 C accuracy.",
     "Restart test initially passed unallocated destination to existing assumed-shape registry API: fixed fixture to an empty one-element registry; production restart unchanged."
   ],
-  "reconciliation": "Preserves WALSAL01 selected Walsum-salinity parameter admission and pre-stress root support validation; sole conflict merged both module imports. Joint salt/frost remains excluded."
+  "reconciliation": "Preserves WALSAL01 selected Walsum-salinity parameter admission and pre-stress root support validation; sole conflict merged both module imports. Joint salt/frost remains excluded.",
+  "status": "READY_FOR_REGIE",
+  "recovery_point": "32aafef400efce1fc08dc3dfc5f85e1135794b37",
+  "local_qualification": {
+    "path": "docs/audits/evidence/PPA_WU05B3_LOCAL_REPLAY.json.gz",
+    "sha256": "aff639a5b51912f83efa4bca2162dc297fe9778a4dfdbe761df455f1bc32872e",
+    "bytes": 64909
+  },
+  "source_manifest": "integration/audits/PPA_WU05B3_SOURCE_MANIFEST.json"
 }
