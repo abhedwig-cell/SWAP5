@@ -713,6 +713,27 @@ contains
            error stop 'unsupported FMR trace mutated committed state'
       fparams%snow_active=.false.
       print '(a)','PPA_WU05E_FMR_UNSUPPORTED_TRACE_ROUTE=FAIL_CLOSED'
+      template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE
+      call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
+           kres,candidate,kdiag)
+      if(kres%completed.or.candidate%ready())error stop 'active salt trial accepted missing Cdrain'
+      allocate(forcing%c_drain_salt)
+      forcing%c_drain_salt%available=.true.
+      forcing%c_drain_salt%concentration_mg_cm3=0.25_real64
+      forcing%c_drain_salt%valid_t0=0.0_real64
+      forcing%c_drain_salt%valid_t1=fmr_dt
+      forcing%c_drain_salt%source_id=2_int64
+      forcing%c_drain_salt%revision=0_int64
+      forcing%c_drain_salt%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
+      call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
+           kres,candidate,kdiag)
+      if(kres%completed.or.candidate%ready())error stop 'active salt trial accepted mismatched Cdrain handle'
+      forcing%c_drain_salt%source_id=column%forcing_handle
+      call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
+           kres,candidate,kdiag)
+      if(kres%completed.or.candidate%ready())error stop 'unqualified active salt trial opened'
+      deallocate(forcing%c_drain_salt)
+      template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_NONE
     end if
 
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
