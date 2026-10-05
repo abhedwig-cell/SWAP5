@@ -18,7 +18,40 @@ This is a new bounded unit. PPA-WU05-D remains closed for D2 Jarvis and D3 Walsu
 - The D2 compositor in `src/process/mod_root_uptake_compensation.f90` currently admits drought and oxygen reductions and rejects unadmitted salinity/frost selectors. The existing nodewise root sink remains the only water-mass owner.
 - The canonical tree has no SWAP5 `src/solute`, salinity, salt-transport, or concentration-state implementation. The production-physics gap register already says salinity requires an independently admitted solute-state owner, osmotic-stress process, typed forcing, and transactional composition qualification.
 - The pinned B1.11 source identity for `SWAP/rootextraction.f90` is SHA-256 `8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5`, 22,013 bytes. The B1.11 63-member manifest identity is `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`; prior exact-tree replay evidence is `docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json`.
-- The exact member text is not materialized in this execution surface. D1 pins the B1.11 root-extraction member identity and records the stress order; its public-source comparison is corroboration, not a byte-exact replay. For the missing solute-state and restart lifecycle, the public SWAP source family at commit [`c22bd832`](https://github.com/SWAP-model/SWAP/tree/c22bd832ddf3e53e330a552f5e31e74f183362d1) is corroborating evidence only. Keep that boundary explicit in any migration claim.
+- Exact source files have now been recovered in the local B1.11 reconstruction and byte-verified against the pinned manifest:
+- `solute.f90`: SHA-256 `2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2`, 51,508 bytes; the B1.11 snapshot marks this member unchanged from B0.
+- `rootextraction.f90`: SHA-256 `8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5`, 22,013 bytes.
+The public SWAP source family remains corroboration only; source-based migration claims below use the byte-verified members and pinned snapshot manifest.
+
+## Exact B1.11 source findings relevant to the next implementation
+
+The reconstructed `SWAP/solute.f90` confirms that the root-extraction input is
+mobile concentration `CML`, while the transported inventory is `CMSY`
+(dissolved plus adsorbed constituent mass per soil volume). With sorption off,
+the initial mobile inventory is `theta*CML); with sorption on, the authoritative
+inventory also includes the Freundlich sorption term. The current E1 prototype
+is mobile dissolved only, so its qualification must explicitly hold the
+no-sorption/single-constituent envelope.
+
+The exact top boundary accumulates salt from precipitation concentration
+`CPRE` and irrigation concentration `CIRR` into surface salt storage; pond
+infiltration uses the pond concentration and the `1-ArMpSs` split. At the
+bottom, `SWBOTBC` selects lateral drainage concentration, a separate constant
+`CSEEP`, or a time-varying seepage concentration table. Lateral drainage
+uses mobile soil concentration for positive `QDRA`, and `CDRAIN` for negative
+`QDRA`. With breakthrough switch `SWBR=1`, `CDRAIN` is a dynamic aquifer
+concentration state updated from drainage receipt, aquifer mixing, and decay;
+otherwise it is the prescribed input concentration. Thus a single untyped
+Cdrain scalar cannot represent every legacy route.
+
+The exact B1.11 root-extraction routine applies Maas-Hoffman
+`alpha_sol=max(0,1-(CML-SALTMAX)*SALTSLOPE)` above the threshold and combines
+it with wet, dry, and frost stress in the selected total-stress mode before
+computing `QROT`. It does so in both microscopic and macroscopic root
+extraction paths. Jarvis integration must retain the admitted D2 composition
+owner while consuming this factor and must derive `CML` from the same trial
+mass and water revision used for `QROT`; it must not feed salinity into Jarvis
+as an independent water-mass sink.
 
 ## Historical reconstruction, bounded to the available evidence
 
