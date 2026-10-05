@@ -17,6 +17,7 @@ for route in ['normal', 'low_air']:
     begin = original.index('  call initialize_parameters(parameters,2)')
     end = original.index('\ncontains\n', begin)
     setup = original[begin:original.index('  do pattern=1,3', begin)]
+    setup += '  control_head=[-3._real64,-4._real64]\n'
     if route == 'normal':
         setup += "  case_temperature=1._real64\n  call initialize_soil_temperature_state([1._real64,1._real64,1._real64,1._real64],initial%soil_temperature,status)\n"
     else:

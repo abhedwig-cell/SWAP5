@@ -36,7 +36,8 @@
   ],
   "focused_source": "768_CASES_O0_O2_IDENTICAL_PASS",
   "negative_findings": [
-    "Low-air fixture first compile lacked ieee_value/ieee_quiet_nan import; no physics ran; import repaired, rerun pending"
+    "Low-air fixture first compile lacked ieee_value/ieee_quiet_nan import; no physics ran; import repaired, rerun pending",
+    "O2 additional activation fixture exposed uninitialized inherited LINEAR control_head after main-matrix replacement; explicit [-3,-4] control initialized. Production unchanged; repeat O0/O2 additional matrix required."
   ],
   "production_source_tree": "cd7a56657fa3347ee63595a0f54274b2f1766ba8",
   "execution_checkout": "5838208f",
@@ -45,7 +46,7 @@
     "source_component": "768_CASES_O0_O2_IDENTICAL_PASS",
     "normal_runtime": "SIX_CASES_O0_O2_IDENTICAL_PASS_MASS_REPLAY_RESTART_APPLICATION",
     "normal_refinement": "16384_32768_WARM_PARTIAL_NEGATIVE_QBOT_O0_PASS",
-    "activation_matrix": "36_NORMAL_AND36_LOW_AIR_O0_PASS",
+    "activation_matrix": "FIRST_O0_SCREEN_SUPERSEDED_BY_EXPLICIT_CONTROL_REPAIR_PENDING_O0_O2",
     "B1_B2_B3_B4_B6_B9": "FRESH_SOURCE_O0_O2_IDENTICAL_PASS",
     "VQ73_VQ74": "IMMUTABLE_PROGRAMS_CURRENT_SOURCE_O0_O2_IDENTICAL_PASS",
     "exact_root_cutoff": "330_SOURCE_PLUS12_DISPATCH_O0_O2_PASS",
