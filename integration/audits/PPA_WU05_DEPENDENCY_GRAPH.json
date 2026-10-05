@@ -216,7 +216,7 @@
         "postmerge_reconciliation": "integration/audits/PPA_WU05B10_POSTMERGE_RECONCILIATION.json",
         "admitted": true
       },
-      "remaining_response_family_review": "integration/audits/PPA_WU05B13_SOURCE_REVIEW.json",
+      "remaining_response_family_review": "integration/audits/PPA_WU05B14_SOURCE_REVIEW.json",
       "tabulated_response_frost_successor": {
         "work_unit": "PPA-WU05B11",
         "canonical_merge": "d975acb21472ddf96c800ef66be327810f8968c0",
@@ -229,6 +229,13 @@
         "canonical_merge": "388a87cad21218d0519cd8cf401a41ef0b67327e",
         "admission": "integration/audits/PPA_WU05B12_CANONICAL_ADMISSION.json",
         "scope": "Admitted DRAMET2 IPOS1..5 plus selected LINEAR/TABULATED mixtures with normal/B8 low-air modifiers; exact analytic physical drain/frost depth agreement and single final nodal owner",
+        "admitted": true
+      },
+      "empirical_response_frost_successor": {
+        "work_unit": "PPA-WU05B13",
+        "canonical_merge": "4ca2996bddb6bff101867f87251589a5b11357c7",
+        "admission": "integration/audits/PPA_WU05B13_CANONICAL_ADMISSION.json",
+        "scope": "Explicit rootless ordinary Reference mode2 last-level drainage-side empirical interflow, alone or after LINEAR; normal/B8 low-air frost. Finite interval control heads remain separate from physical frost depths. One final nodal sink/receipts, separate bottom owner and independent terminal full/half proposals.",
         "admitted": true
       }
     },

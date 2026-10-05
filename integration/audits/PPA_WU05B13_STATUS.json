@@ -1,15 +1,15 @@
 {
   "work_unit": "PPA-WU05B13",
   "baseline": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
-  "last_reconciled_upstream": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
+  "last_reconciled_upstream": "4ca2996bddb6bff101867f87251589a5b11357c7",
   "baseline_source": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
   "preregistration": "integration/audits/PPA_WU05B13_PREREGISTRATION.json",
-  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "aggregate_frost_migration_complete": false,
   "relevant_paths": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -39,12 +39,10 @@
     29,
     30
   ],
-  "next_action": "Persist full qualified evidence; verify exact proposed tree/source/parents, admit and reconcile actual merge",
-  "recovery_point": "Remote preregistration74e851cda073dd0d0adf1e9d578d1bd059ab63f4 plus useful production and complete primary runtime harness checkpoint",
+  "next_action": "Reconcile exact metadata closeout; preregister source-reviewed single-level signed EXTENDED frost composition",
+  "recovery_point": "4ca2996bddb6bff101867f87251589a5b11357c7",
   "blockers": [],
-  "pending": [
-    "Exact proposed/actual canonical admission"
-  ],
+  "pending": [],
   "negative_findings": [
     {
       "kind": "source fixture output buffer",
@@ -414,5 +412,7 @@
     "bytes": 246523,
     "manifest_entries": 475
   },
-  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
+  "canonical_merge": "4ca2996bddb6bff101867f87251589a5b11357c7",
+  "canonical_pr": 1058
 }
