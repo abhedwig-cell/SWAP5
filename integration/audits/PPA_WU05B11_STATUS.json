@@ -46,17 +46,16 @@
     "source_component": "768_CASES_O0_O2_IDENTICAL_PASS",
     "normal_runtime": "SIX_CASES_O0_O2_IDENTICAL_PASS_MASS_REPLAY_RESTART_APPLICATION",
     "normal_refinement": "16384_32768_WARM_PARTIAL_NEGATIVE_QBOT_O0_PASS",
-    "activation_matrix": "FIRST_O0_SCREEN_SUPERSEDED_BY_EXPLICIT_CONTROL_REPAIR_PENDING_O0_O2",
+    "activation_matrix": "36_NORMAL_PLUS36_LOW_AIR_O0_O2_IDENTICAL_PASS_EXPLICIT_CONTROLS_AND_ACTIVE_VARIANT_PREFLIGHT",
     "B1_B2_B3_B4_B6_B9": "FRESH_SOURCE_O0_O2_IDENTICAL_PASS",
     "VQ73_VQ74": "IMMUTABLE_PROGRAMS_CURRENT_SOURCE_O0_O2_IDENTICAL_PASS",
     "exact_root_cutoff": "330_SOURCE_PLUS12_DISPATCH_O0_O2_PASS",
     "canonical": "COMPLETE_LOCAL_LINEAGE_AWARE_GATE_PASS",
     "SALFRO01": "FOUR_CURRENT_SOURCE_O0_O2_AND_FRESH_PROCESS_PASS_MATCHING179_ENTRY_MANIFESTS",
-    "low_air_refinement": "FIRST_PARTIAL_NEGATIVE_QBOT131072_O0_PASS"
+    "low_air_refinement": "FIRST_PARTIAL_NEGATIVE_QBOT131072_O0_PASS",
+    "low_air_runtime": "SIX_CASES_O0_O2_IDENTICAL_PASS_MASS_REPLAY_RESTART_APPLICATION"
   },
   "pending": [
-    "low-air runtime O0/O2",
-    "activation O2",
     "B8/B10 fresh low-air incumbents",
     "final documentation and immutable full evidence"
   ],
@@ -65,5 +64,57 @@
     "sha256": "f93d27e283c2ee06d22536ca89e515e6f7c42a69a5d80bb200a1d0dfd586e253",
     "bytes": 91310,
     "qualification": false
+  },
+  "runtime_results": {
+    "normal": {
+      "accepted_substeps": [
+        22,
+        18,
+        12,
+        8,
+        1,
+        1
+      ],
+      "rejections": [
+        71,
+        55,
+        30,
+        16,
+        0,
+        0
+      ],
+      "max_head_cm": 1.237179e-07,
+      "max_temperature_c": 8.091305e-13,
+      "fine_steps": 8192,
+      "additional_refinement_steps": [
+        16384,
+        32768
+      ],
+      "max_additional_head_cm": 1.239925e-07
+    },
+    "low_air": {
+      "accepted_substeps": [
+        37844,
+        37863,
+        37816,
+        37816,
+        37797,
+        37804
+      ],
+      "rejections": [
+        524721,
+        525005,
+        524293,
+        524293,
+        524019,
+        524131
+      ],
+      "max_head_cm": 1.935812e-07,
+      "max_temperature_c": 3.515594e-07,
+      "fine_steps": 65536,
+      "additional_refinement_steps": 131072,
+      "additional_head_cm": 3.147382e-07,
+      "additional_temperature_c": 5.696214e-07
+    }
   }
 }
