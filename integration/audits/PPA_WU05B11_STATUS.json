@@ -2,7 +2,7 @@
   "work_unit": "PPA-WU05B11",
   "baseline": "febfff8103c4d60324a103d832521bb3f3754a67",
   "last_reconciled_upstream": "febfff8103c4d60324a103d832521bb3f3754a67",
-  "status": "IMPLEMENTED_UNTESTED",
+  "status": "QUALIFICATION_IN_PROGRESS",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -23,7 +23,7 @@
     "src/process/mod_frost_drainage_effect.f90"
   ],
   "dependency_surface": "Actual runtime/backend/bootstrap, all generated drain families, frost/temperature, root kernel, single sink/accounting, restart, canonical pin gate and owned static grid fixture",
-  "next_action": "Resume fresh low-air build after fixture import repair; finish normal O2 and then remaining preservation",
+  "next_action": "Keep running actual low-air/refinement/preservation gates; analyze failures and finish source-bound evidence before admission",
   "recovery_point": "This preregistration commit",
   "blockers": [],
   "test_paths": [
@@ -37,5 +37,32 @@
   "focused_source": "768_CASES_O0_O2_IDENTICAL_PASS",
   "negative_findings": [
     "Low-air fixture first compile lacked ieee_value/ieee_quiet_nan import; no physics ran; import repaired, rerun pending"
-  ]
+  ],
+  "production_source_tree": "cd7a56657fa3347ee63595a0f54274b2f1766ba8",
+  "execution_checkout": "5838208f",
+  "remote_source_checkpoint": "af5ea2602e1c6b6f65ae6f8586cfe17772e78bfd",
+  "completed": {
+    "source_component": "768_CASES_O0_O2_IDENTICAL_PASS",
+    "normal_runtime": "SIX_CASES_O0_O2_IDENTICAL_PASS_MASS_REPLAY_RESTART_APPLICATION",
+    "normal_refinement": "16384_32768_WARM_PARTIAL_NEGATIVE_QBOT_O0_PASS",
+    "activation_matrix": "36_NORMAL_AND36_LOW_AIR_O0_PASS",
+    "B1_B2_B3_B4_B6_B9": "FRESH_SOURCE_O0_O2_IDENTICAL_PASS",
+    "VQ73_VQ74": "IMMUTABLE_PROGRAMS_CURRENT_SOURCE_O0_O2_IDENTICAL_PASS",
+    "exact_root_cutoff": "330_SOURCE_PLUS12_DISPATCH_O0_O2_PASS",
+    "canonical": "COMPLETE_LOCAL_LINEAGE_AWARE_GATE_PASS",
+    "SALFRO01": "FOUR_CURRENT_SOURCE_O0_O2_AND_FRESH_PROCESS_PASS_MATCHING179_ENTRY_MANIFESTS",
+    "low_air_refinement": "FIRST_PARTIAL_NEGATIVE_QBOT131072_O0_PASS"
+  },
+  "pending": [
+    "low-air runtime O0/O2",
+    "activation O2",
+    "B8/B10 fresh low-air incumbents",
+    "final documentation and immutable full evidence"
+  ],
+  "partial_recovery": {
+    "path": "docs/audits/evidence/PPA_WU05B11_PARTIAL_RECOVERY.json.gz",
+    "sha256": "f93d27e283c2ee06d22536ca89e515e6f7c42a69a5d80bb200a1d0dfd586e253",
+    "bytes": 91310,
+    "qualification": false
+  }
 }
