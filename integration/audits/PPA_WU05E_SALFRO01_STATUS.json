@@ -3,12 +3,12 @@
   "workstream": "PPA root uptake / salinity / empirical root frost",
   "baseline": "b872ddbd930ea08b058575877a03774d313742cc",
   "last_reconciled_upstream": "024c6a5510757a02851426806248b0e2afe45a6b",
-  "status": "QUALIFIED_SELECTED_MATRIX_ROOT_FROST_READY_FOR_ADMISSION",
+  "status": "CANONICAL_ADMITTED_CLOSED_SELECTED_MATRIX_ROOT_FROST",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "production_admitted": false,
+  "production_admitted": true,
   "contract": "docs/audits/PPA_WU05E_SALFRO01_CONTRACT.md",
   "owned_surface": [
     "root stress process",
@@ -32,8 +32,8 @@
     "integration/audits/PPA_WU05E_WALSAL01_STATUS.json",
     "integration/audits/PPA_WU05B4_STATUS.json"
   ],
-  "next_action": "Complete reconciled docs gates and admit exact qualified 24-group candidate",
-  "recovery_point": "2a8e7ffe73b759576044333dc80187e9d57a2999",
+  "next_action": "Selected matrix salt/root-frost successor closed. Osmotic-head and broader hybrids remain independently bounded work units.",
+  "recovery_point": "ef83887448838acd12cd06a054729193abdb8213",
   "blockers": [],
   "test_paths": [
     "tests/physics/run_ppa_wu05e_salt_frost_process.sh",
@@ -52,5 +52,9 @@
     "sha256": "7849f5094f9c3990d74c08416a1eecab01ffb70e3897ce260c759cab04f013e9",
     "bytes": 74622
   },
-  "reconciled_execution_checkout": "2a8e7ffe73b759576044333dc80187e9d57a2999"
+  "reconciled_execution_checkout": "2a8e7ffe73b759576044333dc80187e9d57a2999",
+  "canonical_pr": 1044,
+  "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+  "canonical_admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+  "canonical_closeout": "docs/audits/PPA_WU05E_SALFRO01_CANONICAL_CLOSEOUT.md"
 }

@@ -6,7 +6,7 @@
   "implemented": true,
   "qualified": true,
   "admitted": true,
-  "next_action": "No further implementation within this admitted root slice. Continue separately with the FrozenBounds geometry and single boundary-flux owner.",
+  "next_action": "Selected joint matrix salt/root frost admitted. Broader hybrids, osmotic-head and remaining aggregate frost scope require separate bounded successors.",
   "authority": "integration/audits/PPA_WU05B2_PREREGISTRATION.json",
   "blockers": [],
   "reconciled_canonical": "916035e78305cae5f88c30d5805b5d9c33a348f8",
@@ -19,5 +19,13 @@
     "qualified_head": "f33956034176bd3e8d9ff79ccf0d94e85634d8c0",
     "authority": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json"
   },
-  "aggregate_frost_migration_complete": false
+  "aggregate_frost_migration_complete": false,
+  "selected_matrix_salt_root_frost_successor": {
+    "work_unit": "PPA-WU05-E-SALFRO01",
+    "canonical_pr": 1044,
+    "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+    "admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+    "scope": "Selected matrix Maas-Hoffman plus empirical root frost with Jarvis/Walsum, zero-flux bottom2/no drainage/no Bartholomeus",
+    "gates_passed": 24
+  }
 }

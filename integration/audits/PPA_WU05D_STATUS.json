@@ -55,7 +55,7 @@
     "D5": "HELD_ON_EXACT_MICRO_AUTHORITY"
   },
   "production_admission": "D2_JARVIS_AND_D3_WALSUM_BOUNDED",
-  "next_action": "Jarvis, Walsum and their selected matrix salinity successors are canonically admitted. Other root-stress hybrids and MICRO remain independently bounded work units.",
+  "next_action": "Selected joint matrix salt/root frost admitted. Broader hybrids, osmotic-head and remaining aggregate frost scope require separate bounded successors.",
   "d2": {
     "production_compositor": "src/process/mod_root_uptake_compensation.f90",
     "execution_seam": "src/runtime/mod_root_uptake_compensation_execution.f90",
@@ -138,5 +138,13 @@
     "canonical_merge": "83258c02be55879cddf9918a2b80c96da7eae2a9",
     "admission": "integration/audits/PPA_WU05E_WALSAL01_CANONICAL_ADMISSION.json",
     "scope": "Selected matrix Maas-Hoffman/Walsum; historical D3 qualification retained"
+  },
+  "selected_matrix_salt_root_frost_successor": {
+    "work_unit": "PPA-WU05-E-SALFRO01",
+    "canonical_pr": 1044,
+    "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+    "admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+    "scope": "Selected matrix Maas-Hoffman plus empirical root frost with Jarvis/Walsum, zero-flux bottom2/no drainage/no Bartholomeus",
+    "gates_passed": 24
   }
 }
