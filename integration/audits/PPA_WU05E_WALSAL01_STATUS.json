@@ -1,0 +1,57 @@
+{
+  "work_unit": "PPA-WU05-E-WALSAL01",
+  "workstream": "PPA root uptake / salinity",
+  "baseline": "916035e78305cae5f88c30d5805b5d9c33a348f8",
+  "branch": "work/ppa-wu05e-walsum-salinity-20261005",
+  "status": "QUALIFIED_SELECTED_MATRIX_READY_FOR_CENTRAL_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admitted": false,
+  "contract": "docs/audits/PPA_WU05E_WALSUM_SALINITY_CONTRACT.md",
+  "files_touched": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "tests/physics/run_ppa_wu05e_mixed_salt.py",
+    "tests/physics/test_ppa_wu05e_mixed_salt.f90"
+  ],
+  "interfaces_changed": [],
+  "invariants": [
+    "one root-water sink",
+    "independent salt mass owner",
+    "rejected trial isolation",
+    "restart from accepted state",
+    "geometry belongs to current forcing"
+  ],
+  "next_action": "Complete docs gates, verify canonical delta and admit exact qualified source/test tree",
+  "blockers": [],
+  "recovery_point": "764f93ecacdb559324c071c90e9c9114502c080c",
+  "confirmed_input_contract_gap": {
+    "preimage": "cef689567bdb7f14bcdebbb61918a1364a71ac76",
+    "reproduction": "Partial 0.5cm roots, positive potential sink on nodes 2/3, zero drought sinks there: geometry check after stress accepted a mismatched crop request. Regression expected rejection and exited 1.",
+    "fix": "Validate both supplied potential and drought sink support before stress in the selected salinity/Walsum route only."
+  },
+  "execution_checkout": "764f93ecacdb559324c071c90e9c9114502c080c",
+  "source_subtrees": {
+    "src": "af1fce524cdc4cedc9cd5960cbbecf47463e0b88",
+    "tests": "ecd118160ffda98fe9f53d2a60606cfed6528c1d"
+  },
+  "qualification": "integration/audits/PPA_WU05E_WALSAL01_FROST_RECONCILED_QUALIFICATION.json",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05E_WALSAL01_FROST_RECONCILED_REPLAY.json.gz",
+    "sha256": "f4f87e32f8681ada06d278393a0148eb7e78e8f243a06935787e4e59dcf1efd3",
+    "bytes": 74409
+  },
+  "last_reconciled_upstream": "33cb8c94d0ed2c9578643033e414a313daf00e88",
+  "reconciliation": {
+    "canonical_root_frost_pr": 1030,
+    "shared_delta": [
+      "src/process/mod_root_uptake_compensation.f90",
+      "src/runtime/mod_root_uptake_compensation_execution.f90",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "conflict_resolution": "Import list retains both ROOT_COMP_FROST/root_frost_stress and evaluate_walsum_geometry; all bodies auto-merged.",
+    "historical_qualification": "integration/audits/PPA_WU05E_WALSAL01_QUALIFICATION.json"
+  }
+}
