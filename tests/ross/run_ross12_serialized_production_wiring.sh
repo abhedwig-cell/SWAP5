@@ -113,6 +113,40 @@ MODULE_SRC=(
   src/process/macropore/mod_rfm_preferential_router.f90
   src/process/macropore/mod_rfm_surface_event_age.f90
   src/runtime/mod_rfm_physical_state.f90
+  src/runtime/mod_rfm_runtime_configuration.f90
+  src/runtime/mod_rfm_surface_forcing.f90
+  src/runtime/mod_rfm_matrix_source_provider.f90
+  src/process/macropore/mod_rfm_surface_sorptivity.f90
+  src/runtime/mod_fmr_rfm_activation_binding.f90
+  src/runtime/mod_rfm_wall_hydraulic_history_binding.f90
+  src/process/macropore/mod_rfm_endpoint_release.f90
+  src/runtime/mod_rfm_ic_storage_geometry.f90
+  src/runtime/mod_rfm_ic_hydrostatic_head.f90
+  src/runtime/mod_rfm_whole_column_candidate_ledger.f90
+  src/runtime/mod_rfm_production_candidate_composer.f90
+  src/runtime/mod_rfm_live_trial_preparer.f90
+  src/process/macropore/mod_ppa_wu05a5_top_partition.f90
+  src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
+  src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90
+  src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90
+  src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90
+  src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90
+  src/runtime/mod_fmr_macropore_configuration.f90
+  src/runtime/mod_fmr_macropore_top_input.f90
+  src/solver/mod_macropore_exchange_overlay_provider.f90
+  src/process/macropore/mod_macropore_standard_storage.f90
+  src/runtime/mod_macropore_standard_rate_adapter.f90
+  src/process/macropore/mod_macropore_covering_layer_input.f90
+  src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90
+  src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90
+  src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
+  src/runtime/mod_macropore_single_column_runtime.f90
+  src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90
+  src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90
   "$BACKEND"
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_owned_commit_receipt.f90
