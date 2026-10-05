@@ -2,8 +2,8 @@
   "work_unit": "PPA-WU05-D-EXACT01",
   "workstream": "PPA compensated root uptake",
   "baseline": "0aca73324ea46511d18af56bca3fddd0dba52ffd",
-  "last_reconciled_upstream": "0aca73324ea46511d18af56bca3fddd0dba52ffd",
-  "status": "SOURCE_DIVERGENCE_REPRODUCED_CUTOFF_REPAIR_PENDING_RUNTIME_GATES",
+  "last_reconciled_upstream": "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
+  "status": "FOCUSED_EXACT_COMPONENT_AND_SEVERE_APPLICATION_PASS_FULL_GATES_PENDING",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -32,9 +32,11 @@
     "rejected state isolation",
     "committed restart"
   ],
-  "next_action": "Actual severe-stress backend/application focused replay, then 27-group current-source qualification",
+  "next_action": "Run all 27 persisted current-source qualification and preservation groups",
   "recovery_point": "current checkpoint",
   "blockers": [],
   "preimage_checkpoint": "ded9af5d",
-  "preimage_outcome": "Unchanged dispatcher passes 12 cases; literal source cutoff oracle rejects the SWAP5 guard at ratio 1e-14. Source repair then passes all 330 cases at O0/O2."
+  "preimage_outcome": "Unchanged dispatcher passes 12 cases; literal source cutoff oracle rejects the SWAP5 guard at ratio 1e-14. Source repair then passes all 330 cases at O0/O2.",
+  "focused_tested": true,
+  "focused_execution": "395c6d93"
 }

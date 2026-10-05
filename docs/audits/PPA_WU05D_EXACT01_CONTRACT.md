@@ -33,3 +33,14 @@ canonical B7 reference and B8 source/runtime preservation; docs and byte/hash
 integrity. Historical evidence remains immutable. Frozen Status A is unchanged.
 The audit must explicitly supersede the old MICRO-after-compensation and 0.05
 claims, without claiming new MICRO production physics or broad legacy equivalence.
+
+## Persisted focused result and controlling denominator
+
+The unchanged dispatcher passes 12 cases. The exact-block preimage fails at
+uptake ratio 1e-14; replacing only the 0.05 eligibility constant with vsmall
+passes 330 literal source-block cases at O0/O2. Three severe source-eligible
+selectors execute in the real application, and the accepted severe state
+continues identically in a separate process. B8 admission metadata is retained
+with unchanged production and test trees. All 27 groups named above are
+mandatory before this successor is qualified or admitted. No old evidence is
+rewritten to claim these new source semantics.
