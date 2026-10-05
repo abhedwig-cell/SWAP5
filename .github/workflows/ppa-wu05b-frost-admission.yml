@@ -76,6 +76,12 @@ jobs:
           if test -f tests/frost/run_ppa_wu05b5_corrected_drain_source.sh; then
             bash tests/frost/run_ppa_wu05b5_corrected_drain_source.sh
           fi
+      - name: Explicit normal-branch nodal frost drainage
+        run: |
+          if test -f tests/frost/run_ppa_wu05b6_normal_drain_source.sh; then
+            bash tests/frost/run_ppa_wu05b6_normal_drain_source.sh
+            bash tests/frost/run_ppa_wu05b6_normal_drain_runtime.sh
+          fi
       - name: Exact current-canonical preservation for the bounded frost successor
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
       - name: Install documentation dependencies

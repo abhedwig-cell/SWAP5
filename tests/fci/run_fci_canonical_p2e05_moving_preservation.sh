@@ -301,7 +301,29 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     backend_authority="$BALTOL02_BACKEND"
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
   fi
-  if git merge-base --is-ancestor 021e87e7af2045c389ecfdaa2d4d633e434b3a89 HEAD; then
+  if git merge-base --is-ancestor a4e092bf95f7b0db7f5d64f2d83f63a535a3d4f2 HEAD; then
+    git merge-base --is-ancestor b872ddbd930ea08b058575877a03774d313742cc HEAD || fail "PPA-WU05B6 lost admitted frost/reference baseline"
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "84993a601cd57f4e164000f7c7e0ca8cc4992c41" || \
+      fail "PPA-WU05B6 exact normal drainage postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "973a0d36265170b7d40095c9d9f6bccef2a8f2b7" || \
+      fail "PPA-WU05B6 exact normal drainage postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_drainage_effect.f90)" = "333149580aea22f57a0bdc0cd33a7d1c4245766a" || \
+      fail "PPA-WU05B6 exact normal drainage postimage drift: src/process/mod_frost_drainage_effect.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_bottom_boundary_effect.f90)" = "5dbf9052bdc65fc5fb1830f74da70b3e912adb7b" || \
+      fail "PPA-WU05B6 exact normal drainage postimage drift: src/process/mod_frost_bottom_boundary_effect.f90"
+    test "$(git rev-parse HEAD:src/process/mod_root_frost_stress.f90)" = "a99d870ac2911dd0b9cfe1aef3a0fd299dcfcf38" || \
+      fail "PPA-WU05B6 exact normal drainage postimage drift: src/process/mod_root_frost_stress.f90"
+    test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "36d90b2673b287f560f52d1c9b079ab729c47025" || \
+      fail "PPA-WU05B6 exact normal drainage postimage drift: src/process/mod_root_uptake_compensation.f90"
+    test "$(git rev-parse HEAD:src/runtime/mod_root_uptake_compensation_execution.f90)" = "6affaec2e7a55544e722ed1204ca9e5de555b478" || \
+      fail "PPA-WU05B6 exact normal drainage postimage drift: src/runtime/mod_root_uptake_compensation_execution.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" = "2c8adba7986e7d85749c4c36d26530748fbbab9e" || \
+      fail "PPA-WU05B6 exact normal drainage postimage drift: src/process/mod_frost_hydraulic_effect.f90"
+    test "$(git rev-parse HEAD:src/solver/mod_frost_hydraulic_provider.f90)" = "08492a7272860629c9ffee34968c9cc29952bd58" || \
+      fail "PPA-WU05B6 exact normal drainage postimage drift: src/solver/mod_frost_hydraulic_provider.f90"
+    backend_authority="$(git rev-parse HEAD:$BACKEND)"
+    echo "FCI_CANONICAL_PPA_WU05B6_EXACT_NORMAL_DRAIN_CANDIDATE=ACTIVE"
+  elif git merge-base --is-ancestor 021e87e7af2045c389ecfdaa2d4d633e434b3a89 HEAD; then
     git merge-base --is-ancestor 526258e3d78d47df657222630b2e46103cac3eb3 HEAD || fail "PPA-WU05B4 lost admitted B2/B3/Walsum-salt baseline"
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "d9789308792307b97f5507722b591a8a01d6872d" || \
       fail "PPA-WU05B4 bounded joint frost postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"

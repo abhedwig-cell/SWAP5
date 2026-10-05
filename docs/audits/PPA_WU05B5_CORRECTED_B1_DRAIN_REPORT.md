@@ -1,7 +1,6 @@
 # Bounded corrected B1 frost drainage reporting
 
-Status: locally qualified source correction, not yet admitted as a reference
-component. It does not migrate a SWAP5 production drainage path or promote a
+Status: canonically admitted bounded reference component through PR #1038. It does not migrate a SWAP5 production drainage path or promote a
 new global B1 snapshot. The original byte-exact B1.11 source stays immutable.
 
 The actual HeadCalc sink is the nodal `qdra`; Integral reports the separate level
