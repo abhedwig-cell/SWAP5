@@ -2,7 +2,7 @@
   "schema": "swap5.local_qualification.v1",
   "workunit": "F-MIG431-INT13",
   "title": "Rutter corrected-reference physics, source-window transaction and FMR production composition",
-  "date": "2026-10-04",
+  "date": "2026-10-05",
   "subject": {
     "branch": "work/f-mig431-int13-rutter-stateful-forcing",
     "pre_change_head": "7263fc513d9b4a1f8929e91e29b4ae207000a365",
@@ -68,7 +68,7 @@
     "runner_note": "Local offline preservation used temporary copies of the existing runners: only remote git-fetch/source-delta preflight was omitted, and two missing module prerequisites were inserted into the temporary compile order. Repository runners and source files were not edited for this workaround."
   },
   "claim_limit": [
-    "Not canonically admitted; current corrected analytic fimin implementation awaits persisted Actions qualification.",
+    "Targeted persisted physics and production qualification passed on PR head d853fd898db629100ab52493b1e6f13208af9bb4; not canonically admitted.",
     "Exact full B1.11 MOD_meteo member is not materialized. Git SWAP 4.2.0 Rutter equations plus the B1.11 patch history are used with the version limitation explicit; no byte-identity claim is made.",
     "Only constant forcing per immutable source window is supported; detailed forcing is one window per record, and canopy capacity, fimin, PET and irrigation changes require explicit window boundaries.",
     "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles fail closed."
@@ -119,6 +119,12 @@
       "Rutter O0/O2 physics, source-window, retry and restart suite",
       "FMR production bootstrap O0/O2 qualification"
     ],
-    "status": "PENDING_ON_CORRECTED_PR_HEAD"
+    "status": "PASS",
+    "workflow_run_id": 37268521592,
+    "head": "d853fd898db629100ab52493b1e6f13208af9bb4",
+    "steps": {
+      "rutter_physics_retry_source_window_restart": "PASS",
+      "production_fmr_composition": "PASS"
+    }
   }
 }

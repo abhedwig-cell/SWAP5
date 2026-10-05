@@ -97,8 +97,7 @@ local evidence for fill/overflow `tcap`, the independent `fimin` exponential
 oracle, dry-down, changing capacity, water closure, source-window refinement,
 reject/retry identity, restart, detailed-record continuation and production
 binding. The separate FMR bootstrap test verifies transactional commit and
-Richards retry composition. PR #1016 persisted the preceding INT13 source and
-WU01 production bootstrap gate at commit `344dff1176e0bde049f0de8d713fd76e1a761dd9`; the analytic `fimin` correction is a new local change and still needs persisted qualification after it is committed.
+Richards retry composition. PR #1016 recovery head `d853fd898db629100ab52493b1e6f13208af9bb4` restores the FMR backend source (blob `43cd6e413e23ce420bdfda8547a7fdb8472158d9`). Targeted Actions run `37268521592` passed both the Rutter physics/retry/restart gate and the production FMR composition gate. This qualifies the tested bounded candidate; it does not establish canonical admission or byte identity with the full B1.11 member.
 
 The exact B1.11 full member/call-site has not been reconstructed byte-for-byte,
 and the newly corrected analytic implementation therefore remains a candidate,
