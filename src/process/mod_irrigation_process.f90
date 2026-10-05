@@ -91,6 +91,7 @@ module mod_irrigation_process
     integer :: active_event_index = 0
     real(real64) :: active_event_start = 0.0_real64
     real(real64) :: active_event_end = 0.0_real64
+    real(real64) :: active_event_rate_cm_per_day = 0.0_real64
   end type irrigation_state_t
 
   type, public :: irrigation_management_request_t
@@ -261,6 +262,7 @@ contains
     candidate_state%active_event_index = event_index
     candidate_state%active_event_start = request%t0
     candidate_state%active_event_end = event_end
+    candidate_state%active_event_rate_cm_per_day = event%rate
 
     effective_t1 = request%t1
     if (finishes_at_event_end) effective_t1 = event_end
@@ -282,7 +284,7 @@ contains
     type(irrigation_state_t), intent(out) :: candidate_state
     type(irrigation_flux_result_t), intent(out) :: fluxes
     type(irrigation_diagnostics_t), intent(out) :: diagnostics
-    real(real64) :: threshold, depth, duration, event_end, effective_t0, effective_t1
+    real(real64) :: threshold, depth, duration, event_end, effective_t0, effective_t1, effective_rate
     real(real64) :: awlh, awmh, awah, water_deficit
     integer :: weekly_day_counter
     logical :: ok, finishes_at_event_end
@@ -340,7 +342,8 @@ contains
         effective_t0 = committed_state%active_event_start
       effective_t1 = request%t1
       if (finishes_at_event_end) effective_t1 = event_end
-      call apply_scheduled_event(parameters, effective_t1-effective_t0, duration, fluxes)
+      call apply_scheduled_event(parameters, committed_state%active_event_rate_cm_per_day, &
+           effective_t1-effective_t0, duration, fluxes)
       fluxes%event_remains_active = .not. finishes_at_event_end
       if (finishes_at_event_end) then
         fluxes%event_finished = .true.
@@ -474,9 +477,9 @@ contains
       return
     end if
 
-    duration = depth / parameters%irr_rate_cm_per_day
-    if (.not. ieee_is_finite(duration) .or. duration <= 0.0_real64 .or. &
-        duration > IRRIGATION_MAX_EVENT_DURATION) then
+    effective_rate = max(depth,parameters%irr_rate_cm_per_day)
+    duration = depth / effective_rate
+    if (.not. ieee_is_finite(duration) .or. duration <= 0.0_real64) then
       diagnostics%status = IRRIGATION_INVALID_EVENT
       return
     end if
@@ -495,10 +498,11 @@ contains
     candidate_state%active_event_index = 0
     candidate_state%active_event_start = request%t0
     candidate_state%active_event_end = event_end
+    candidate_state%active_event_rate_cm_per_day = effective_rate
 
     effective_t1 = request%t1
     if (finishes_at_event_end) effective_t1 = event_end
-    call apply_scheduled_event(parameters, effective_t1-request%t0, duration, fluxes)
+    call apply_scheduled_event(parameters, effective_rate, effective_t1-request%t0, duration, fluxes)
     fluxes%event_started = .true.
     fluxes%event_remains_active = .not. finishes_at_event_end
     if (finishes_at_event_end) then
@@ -515,19 +519,29 @@ contains
                   state%tcs6_weekly_day_counter <= 6
     if (.not. valid_state) return
     if (state%active_event) then
+      valid_state = ieee_is_finite(state%active_event_start) .and. &
+                    ieee_is_finite(state%active_event_end) .and. &
+                    ieee_is_finite(state%active_event_rate_cm_per_day)
+      if (.not. valid_state) return
       valid_state = state%active_event_end > state%active_event_start
       if (.not. valid_state) return
       select case (state%active_event_origin)
       case (IRRIGATION_EVENT_FIXED)
         valid_state = state%active_event_index >= 1 .and. &
-                      state%next_fixed_event_index == state%active_event_index + 1
+                      state%next_fixed_event_index == state%active_event_index + 1 .and. &
+                      state%active_event_rate_cm_per_day > 0.0_real64
       case (IRRIGATION_EVENT_SCHEDULED)
-        valid_state = state%active_event_index == 0
+        valid_state = state%active_event_index == 0 .and. &
+                      state%active_event_rate_cm_per_day > 0.0_real64
       case default
         valid_state = .false.
       end select
     else
-      valid_state = state%active_event_origin == IRRIGATION_EVENT_NONE .and. state%active_event_index == 0
+      valid_state = ieee_is_finite(state%active_event_rate_cm_per_day) .and. &
+                    state%active_event_origin == IRRIGATION_EVENT_NONE .and. &
+                    state%active_event_index == 0 .and. &
+                    .not. (state%active_event_rate_cm_per_day > 0.0_real64 .or. &
+                           state%active_event_rate_cm_per_day < 0.0_real64)
     end if
   end function valid_state
 
@@ -570,7 +584,7 @@ contains
     if (parameters%active_nodes <= 0) return
     if (parameters%sensor_node < 1 .or. parameters%sensor_node > parameters%active_nodes) return
     if (.not. ieee_is_finite(parameters%irr_rate_cm_per_day)) return
-    if (parameters%irr_rate_cm_per_day <= 0.0_real64) return
+    if (parameters%irr_rate_cm_per_day < 0.0_real64) return
     if (parameters%application_type < IRRIGATION_APPLICATION_SPRINKLER .or. &
         parameters%application_type > IRRIGATION_APPLICATION_SSDI) return
     if (parameters%application_type == IRRIGATION_APPLICATION_SSDI .and. &
@@ -778,9 +792,9 @@ contains
     end if
   end subroutine apply_event
 
-  pure subroutine apply_scheduled_event(parameters, active_duration, event_duration, fluxes)
+  pure subroutine apply_scheduled_event(parameters, effective_rate, active_duration, event_duration, fluxes)
     type(scheduled_irrigation_parameters_t), intent(in) :: parameters
-    real(real64), intent(in) :: active_duration, event_duration
+    real(real64), intent(in) :: effective_rate, active_duration, event_duration
     type(irrigation_flux_result_t), intent(inout) :: fluxes
 
     fluxes%applied = .true.
@@ -792,11 +806,11 @@ contains
     if (parameters%application_type == IRRIGATION_APPLICATION_SSDI) then
       allocate(fluxes%subsurface_source(parameters%active_nodes))
       fluxes%subsurface_source = 0.0_real64
-      fluxes%subsurface_source(parameters%single_ssdi_node) = parameters%irr_rate_cm_per_day
-      fluxes%external_inflow_amount = parameters%irr_rate_cm_per_day * active_duration
+      fluxes%subsurface_source(parameters%single_ssdi_node) = effective_rate
+      fluxes%external_inflow_amount = effective_rate * active_duration
     else
-      fluxes%surface_gross_rate = parameters%irr_rate_cm_per_day
-      fluxes%external_inflow_amount = parameters%irr_rate_cm_per_day * active_duration
+      fluxes%surface_gross_rate = effective_rate
+      fluxes%external_inflow_amount = effective_rate * active_duration
     end if
   end subroutine apply_scheduled_event
 
@@ -817,6 +831,7 @@ contains
     state%active_event_index = 0
     state%active_event_start = 0.0_real64
     state%active_event_end = 0.0_real64
+    state%active_event_rate_cm_per_day = 0.0_real64
   end subroutine clear_active_event
 
 end module mod_irrigation_process

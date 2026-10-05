@@ -8,7 +8,7 @@ module mod_fmr_irrigation_restart
 
   integer, parameter, public :: IRRIGATION_RESTART_OK = 0
   integer, parameter, public :: IRRIGATION_RESTART_INVALID = 1
-  integer, parameter, public :: IRRIGATION_RESTART_SCHEMA = 1
+  integer, parameter, public :: IRRIGATION_RESTART_SCHEMA = 2
 
   type, public :: irrigation_restart_record_t
     integer :: schema = 0
@@ -19,6 +19,7 @@ module mod_fmr_irrigation_restart
     integer :: active_event_index = 0
     real(real64) :: active_event_start = 0.0_real64
     real(real64) :: active_event_end = 0.0_real64
+    real(real64) :: active_event_rate_cm_per_day = 0.0_real64
   end type irrigation_restart_record_t
 
   public :: export_irrigation_restart, restore_irrigation_restart
@@ -41,6 +42,7 @@ contains
     record%active_event_index = state%active_event_index
     record%active_event_start = state%active_event_start
     record%active_event_end = state%active_event_end
+    record%active_event_rate_cm_per_day = state%active_event_rate_cm_per_day
     status = IRRIGATION_RESTART_OK
   end subroutine export_irrigation_restart
 
@@ -59,6 +61,7 @@ contains
     state%active_event_index = record%active_event_index
     state%active_event_start = record%active_event_start
     state%active_event_end = record%active_event_end
+    state%active_event_rate_cm_per_day = record%active_event_rate_cm_per_day
     if (.not. valid_state(state)) then
       state = irrigation_state_t()
       return
@@ -76,6 +79,8 @@ contains
       if (.not. ieee_is_finite(state%active_event_start) .or. &
           .not. ieee_is_finite(state%active_event_end)) return
       if (state%active_event_end <= state%active_event_start) return
+      if (.not. ieee_is_finite(state%active_event_rate_cm_per_day)) return
+      if (state%active_event_rate_cm_per_day <= 0.0_real64) return
       select case (state%active_event_origin)
       case (IRRIGATION_EVENT_FIXED)
         if (state%active_event_index < 1 .or. &
@@ -87,6 +92,9 @@ contains
       end select
     else
       if (state%active_event_origin /= IRRIGATION_EVENT_NONE .or. state%active_event_index /= 0) return
+      if (.not. ieee_is_finite(state%active_event_rate_cm_per_day)) return
+      if (state%active_event_rate_cm_per_day > 0.0_real64 .or. &
+          state%active_event_rate_cm_per_day < 0.0_real64) return
     end if
     valid_state = .true.
   end function valid_state

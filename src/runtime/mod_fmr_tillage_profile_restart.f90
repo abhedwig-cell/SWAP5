@@ -69,7 +69,10 @@ contains
     if (owner_status /= TILLAGE_OWNER_OK) return
     if (.not. allocated(record%event_density) .or. .not. allocated(record%density) .or. &
         .not. allocated(record%water_content) .or. .not. allocated(record%pressure_head_cm) .or. &
-        .not. allocated(record%vg)) return
+        .not. allocated(record%vg)) then
+      state = tillage_profile_state_t()
+      return
+    end if
     state%event_density = record%event_density
     state%density = record%density
     state%water_content = record%water_content
@@ -98,7 +101,8 @@ contains
     if (any(.not. ieee_is_finite(state%event_density)) .or. any(.not. ieee_is_finite(state%density)) .or. &
         any(.not. ieee_is_finite(state%water_content)) .or. &
         any(.not. ieee_is_finite(state%pressure_head_cm))) return
-    if (any(state%event_density <= 0.0_real64) .or. any(state%density <= 0.0_real64) .or. &
+    if (any(state%event_density <= 0.0_real64) .or. any(state%event_density >= 2650.0_real64) .or. &
+        any(state%density <= 0.0_real64) .or. &
         any(state%density >= 2650.0_real64)) return
     do i=1,n
       if (.not. all(ieee_is_finite([state%vg(i)%theta_residual,state%vg(i)%theta_saturated, &

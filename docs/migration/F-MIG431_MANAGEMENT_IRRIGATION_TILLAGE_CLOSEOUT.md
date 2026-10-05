@@ -57,7 +57,7 @@ named below.
 | `DCSLIM=1`, `irgdepmin`/`irgdepmax` | Bound the selected irrigation depth | Selected depth and configured limits | Typed evaluator applies the legacy mm-to-cm min/max bounds after DCS1 or DCS2 selection; boundary oracle passes O0/O2. No admitted generic production route | `MIGRATE` |
 | `SWCIRRTHRES`, `cirrthres`, `perirrsurp` | Increase scheduled irrigation depth when soil concentration at the sensor exceeds its threshold | Soil solute profile at `nodsen`, event depth, threshold and surplus percentage | A typed pure evaluator qualifies the source's strict `cml(nodsen) > cirrthres` and post-DCSLIM percentage formula at O0/O2. It has no admitted solute-profile input or coupled application | `MIGRATE`, dependent on solute/salinity admission |
 | `cirr`/`cirrs` | Carry irrigation solute concentration into water/solute accounting | Event concentration and solute state | Surface water routing exists in restricted profiles; no admitted irrigation-solute delivery | `MIGRATE`, dependent on solute admission |
-| `irr_rate`, `dt_irr_event`, `gird`, `qssdi` | Convert depth and rate into a bounded event span and source flux | Active event timing and source receipt | Typed fixed/scheduled interval processes calculate duration and flux; runtime application/restart remains incomplete for non-F-APP07 modes | `MIGRATE` for unsupported modes |
+| `irr_rate`, `dt_irr_event`, `gird`, `qssdi` | Convert depth and rate into a bounded event span and source flux | Active event timing, effective rate and source receipt | Typed fixed/scheduled interval processes calculate duration and flux; scheduled rate below depth/day is adapted to one day and missing rate uses depth/day as B1.11 does. Effective rate persists across split/restart with O0/O2 mass closure. Production application remains open outside F-APP07 | `MIGRATE` for unsupported production modes |
 
 ## Tillage selector and state census
 
@@ -145,6 +145,12 @@ and verifies identical continuation mass. This qualifies the process and
 state-record slice only. It does not qualify a production application binding
 or canonical admission. For that reason TCS7/SSDI remain `MIGRATE` in the
 matrix.
+
+The scheduled-rate oracle also covers B1.11's one-day adaptation when
+`IRR_RATE` is too low, and day-wide supply when it is absent. The effective
+rate is part of irrigation restart schema 2; a partial SSDI event resumes
+after restart with the same rate and exact prescribed total depth. F-APP07
+still preserves its 110 exact intervals and zero composition error.
 
 `tests/tillage/run_mig431_tillage_constitutive.sh` passed at O0 and O2.
 It checks the corrected B1.11 start-event pointer, density event interpolation,

@@ -42,6 +42,7 @@ for opt in 0 2; do
   grep -Fq 'F_MIG431_TCS7_SSDI_MASS_CLOSURE=PASS' "$OUT/output.txt"
   grep -Fq 'F_MIG431_TCS7_SSDI_RESTART=PASS' "$OUT/output.txt"
   grep -Fq 'F_MIG431_SSDI_RUNTIME_SOURCE_BINDING=PASS' "$OUT/output.txt"
+  grep -Fq 'F_MIG431_SCHEDULED_RATE_ADAPTATION_RESTART=PASS' "$OUT/output.txt"
   echo "F_MIG431_TCS7_SSDI_O${opt}=PASS"
 done
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"

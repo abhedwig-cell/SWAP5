@@ -15,10 +15,12 @@ program test_mig431_tcs7_ssdi_process
   implicit none
 
   type(scheduled_irrigation_parameters_t) :: parameters
+  type(scheduled_irrigation_parameters_t) :: rate_parameters
   type(irrigation_state_t) :: committed, candidate, retry_candidate, final_state
   type(irrigation_parameters_t) :: fixed_parameters
   type(irrigation_management_request_t) :: fixed_request
   type(scheduled_irrigation_request_t) :: request
+  type(scheduled_irrigation_request_t) :: rate_request
   type(irrigation_flux_result_t) :: fluxes, retry_fluxes, final_fluxes
   type(irrigation_diagnostics_t) :: diagnostics, retry_diagnostics, final_diagnostics
   type(irrigation_diagnostics_t) :: fixed_diagnostics
@@ -362,6 +364,58 @@ program test_mig431_tcs7_ssdi_process
        abs(fixed_flux%external_inflow_amount-1.0_real64) < 1.0e-14_real64, &
        'fixed SSDI event distributes rate and closes nodal source mass')
 
+  ! The B1.11 scheduled rate is adapted to depth/day when its requested
+  ! duration exceeds one day, and zero configured rate means all-day supply.
+  rate_parameters = scheduled_irrigation_parameters_t()
+  rate_parameters%scheduled_irrigation_enabled = .true.
+  rate_parameters%active_nodes = 3
+  rate_parameters%sensor_node = 2
+  rate_parameters%single_ssdi_node = 2
+  rate_parameters%application_type = IRRIGATION_APPLICATION_SSDI
+  rate_parameters%timing_criterion = 7
+  rate_parameters%depth_criterion = 2
+  rate_parameters%tcs7_knot_count = 2
+  rate_parameters%tcs7_dvs(1:2) = [0.0_real64,1.0_real64]
+  rate_parameters%tcs7_pressure_head(1:2) = [-100.0_real64,-300.0_real64]
+  rate_parameters%dcs2_knot_count = 2
+  rate_parameters%dcs2_dvs(1:2) = [0.0_real64,1.0_real64]
+  rate_parameters%dcs2_depth_cm(1:2) = [1.0_real64,1.0_real64]
+  rate_parameters%irr_rate_cm_per_day = 0.25_real64
+  hydraulic%pressure_head(2) = -200.0_real64
+  rate_request = scheduled_irrigation_request_t()
+  rate_request%t0 = 60.0_real64
+  rate_request%t1 = 60.5_real64
+  rate_request%dvs = 0.5_real64
+  rate_request%selection_opportunity = .true.
+  rate_request%irrigation_enabled = .true.
+  rate_request%schedule_enabled = .true.
+  rate_request%crop_emerged = .true.
+  rate_request%irrigation_window_open = .true.
+  committed = irrigation_state_t()
+  call evaluate_scheduled_irrigation_interval(rate_parameters,committed,rate_request,hydraulic, &
+       candidate,fluxes,diagnostics)
+  call require(diagnostics%status == IRRIGATION_OK .and. &
+       abs(candidate%active_event_rate_cm_per_day-1.0_real64) < 1.e-14_real64 .and. &
+       abs(fluxes%external_inflow_amount-0.5_real64) < 1.e-14_real64, &
+       'long scheduled event adapts rate to depth per day')
+  call export_irrigation_restart(candidate,restart_record,restart_status)
+  call restore_irrigation_restart(restart_record,restored_state,restart_status)
+  rate_request%t0 = 60.5_real64
+  rate_request%t1 = 61.0_real64
+  call evaluate_scheduled_irrigation_interval(rate_parameters,restored_state,rate_request,hydraulic, &
+       final_state,final_fluxes,final_diagnostics)
+  call require(final_diagnostics%status == IRRIGATION_OK .and. &
+       abs(fluxes%external_inflow_amount+final_fluxes%external_inflow_amount-1.0_real64) < 1.e-14_real64, &
+       'adapted rate survives split restart and closes depth')
+  rate_parameters%irr_rate_cm_per_day = 0.0_real64
+  rate_request%t0 = 62.0_real64
+  rate_request%t1 = 63.0_real64
+  call evaluate_scheduled_irrigation_interval(rate_parameters,committed,rate_request,hydraulic, &
+       candidate,fluxes,diagnostics)
+  call require(diagnostics%status == IRRIGATION_OK .and. fluxes%event_finished .and. &
+       abs(fluxes%external_inflow_amount-1.0_real64) < 1.e-14_real64, &
+       'missing scheduled rate supplies depth evenly over one day')
+
   write(*,'(a)') 'F_MIG431_TCS7_SSDI_FORMULA=PASS'
   write(*,'(a)') 'F_MIG431_TCS8_THETA_FORMULA=PASS'
   write(*,'(a)') 'F_MIG431_TCS2_TCS3_TCS4_ROOT_DEPLETION=PASS'
@@ -373,6 +427,7 @@ program test_mig431_tcs7_ssdi_process
   write(*,'(a)') 'F_MIG431_TCS7_SSDI_MASS_CLOSURE=PASS'
   write(*,'(a)') 'F_MIG431_TCS7_SSDI_RESTART=PASS'
   write(*,'(a)') 'F_MIG431_SSDI_RUNTIME_SOURCE_BINDING=PASS'
+  write(*,'(a)') 'F_MIG431_SCHEDULED_RATE_ADAPTATION_RESTART=PASS'
 
 contains
 

@@ -77,6 +77,10 @@ program test_mig431_tillage_transaction
   record%water_content(1) = -1.0_real64
   call restore_tillage_profile(record,1,2,restored,status)
   if (status /= TILLAGE_PROFILE_RESTART_INVALID) error stop 24
+  deallocate(record%water_content)
+  call restore_tillage_profile(record,1,2,restored,status)
+  if (status /= TILLAGE_PROFILE_RESTART_INVALID .or. allocated(restored%density) .or. &
+      restored%owner%next_event /= 1) error stop 26
   event(1)%n_model = 2
   call step(2.0_real64,3.0_real64,status)
   if (status /= TILLAGE_TRANSACTION_OK) error stop 8
