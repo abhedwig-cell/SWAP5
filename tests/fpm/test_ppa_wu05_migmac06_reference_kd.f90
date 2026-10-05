@@ -31,6 +31,10 @@ program test_mixed
   call check(abs(kd_a-0.206815483619374335222650_real64)<1.0e-13_real64,'independent Decimal mixed KD')
   call evaluate_reference(-40.0_real64,-10.0_real64,2,dry_theta,kd)
   call check(abs(kd-0.300877703805948277300411_real64)<1.0e-13_real64,'independent all-law reference KD')
+  c%law(1:2)=SHRINK_RIGID;static(1:2)=0.0_real64;fraction(1:2)=0.0_real64
+  call evaluate_reference(-40.0_real64,-10.0_real64,2,dry_theta,kd)
+  call check(abs(kd-0.206815483619374335222650_real64)<1.0e-13_real64,'covered source reference excludes upper cells')
+  c%law(2)=SHRINK_KIM;static(1:2)=1.0_real64;fraction(1:2)=[1.0_real64,0.5_real64]
   call evaluate_reference(-40.0_real64,-40.0_real64,2,wet_theta,kd_b)
   call check(kd_b<kd_a,'wet hydrostatic reference smaller KD')
   call evaluate_reference(-40.0_real64,-40.0_real64,2,dry_theta,kd)
