@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_wu05e.regie_handoff.v1",
   "work_unit": "PPA-WU05-E",
-  "status": "READY_FOR_REGIE",
+  "status": "RECONCILED_CANDIDATE_PENDING_REPLAY",
   "candidate_commit": "571a76c473949dccd5e690261fea0d8a0a1ea15c",
   "candidate_tree": "95db85d2c0a45775f88d197696e11704a8cd2948",
   "baseline": "8125ba01b5bfd7377c721caa1105d68e24e77183",
@@ -46,7 +46,7 @@
   "qualification_status": "SELECTED_MATRIX_QUALIFIED",
   "recovery_point": "571a76c473949dccd5e690261fea0d8a0a1ea15c",
   "owner": "Central SWAP5 regie",
-  "requested_action": "RECONCILE against live canonical head, then ADMIT, RETURN or SUPERSEDE this selected bounded successor",
+  "requested_action": "After exact combined-source replay, review this reconciled candidate and ADMIT, RETURN or SUPERSEDE",
   "authority": "docs/development/SWAP5_PROJECT_CONTROL.md: Control model",
   "interfaces_held_fixed": [
     "Single root-water sink and accepted water receipt",
@@ -69,17 +69,18 @@
     "Central owner must reconcile any canonical movement after the recorded baseline"
   ],
   "canonical_reconciliation": {
-    "canonical_head_observed": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
-    "candidate": "571a76c473949dccd5e690261fea0d8a0a1ea15c",
-    "original_baseline": "8125ba01b5bfd7377c721caa1105d68e24e77183",
-    "merge_preview_exit_code": 1,
-    "merge_preview_tree_with_conflict_markers": "853268781c2bb04ccd1e19e2ae1cc32d9fca43cf",
-    "merge_preview_output": "853268781c2bb04ccd1e19e2ae1cc32d9fca43cf\n100644 fa3c1146daa1eb868f5332783c3629f8a2016d54 1\tsrc/runtime/mod_fmr_restart_state_contract.f90\n100644 ed703011bce8765e2d92f44b7d433b5b502a430d 2\tsrc/runtime/mod_fmr_restart_state_contract.f90\n100644 ba97930524c8128267c3d8be743275eb865dfdf6 3\tsrc/runtime/mod_fmr_restart_state_contract.f90\n100644 d4113174e310df8c7acb83a7eb98bcb957c8e53e 1\tsrc/runtime/mod_fmr_serialized_reference_backend.f90\n100644 e14e0fb774d85d1ef582b2638b82bd09e91fbb00 2\tsrc/runtime/mod_fmr_serialized_reference_backend.f90\n100644 e2406182c2c154d84cbb113e110ffb63fb8dce43 3\tsrc/runtime/mod_fmr_serialized_reference_backend.f90\n\nAuto-merging src/runtime/mod_fmr_production_application_bootstrap.f90\nAuto-merging src/runtime/mod_fmr_restart_state_contract.f90\nCONFLICT (content): Merge conflict in src/runtime/mod_fmr_restart_state_contract.f90\nAuto-merging src/runtime/mod_fmr_runtime_core.f90\nAuto-merging src/runtime/mod_fmr_serialized_multiswap_runtime.f90\nAuto-merging src/runtime/mod_fmr_serialized_reference_backend.f90\nCONFLICT (content): Merge conflict in src/runtime/mod_fmr_serialized_reference_backend.f90\n",
-    "conflicting_paths": [
+    "canonical_input": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
+    "conflicts_resolved_on_candidate": true,
+    "resolved_paths": [
       "src/runtime/mod_fmr_restart_state_contract.f90",
       "src/runtime/mod_fmr_serialized_reference_backend.f90"
     ],
-    "required_owner": "Central SWAP5 regie",
-    "finding": "Canonical INT13 Rutter physical-state/restart changes and MIGMAC07/08/09 preservation changes affect shared dependencies. The isolated candidate replay does not qualify a merged successor. Central reconciliation must preserve both Rutter and matrix-salt optional-state layouts/serialization and replay both owners plus changed macropore dependencies."
+    "local_preservation": {
+      "richards_macropore_a8": "PASS_O0_O2",
+      "rutter_source_window": "PASS_O0_O2_IDENTITY",
+      "rutter_production": "PASS",
+      "migmac07_08_09": "PASS_O0_O2"
+    },
+    "production_admitted": false
   }
 }

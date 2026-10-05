@@ -19,6 +19,8 @@ program test_ppa_wu05e_mixed_salt
   use mod_soil_temperature_contract, only: soil_temperature_restart_payload_t, &
        export_soil_temperature_restart,reconstruct_soil_temperature_restart
   use mod_fmr_committed_restart
+  use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
+  use mod_rutter_source_window_processor, only: initialize_rutter_canopy_state, RUTTER_WINDOW_OK
   implicit none
   real(real64),parameter::T0=5100.1875_real64,T1=T0+1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
   type(fmr_production_application_config_t)::cfg,bad
@@ -135,6 +137,21 @@ program test_ppa_wu05e_mixed_salt
     call badapp%initialize(bad,status)
     call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'dispersion must match hydraulic saturation owner')
   end if
+  bad=cfg
+  bad%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RUTTER
+  bad%tiles(1)%parameters%root_compensation%method=ROOT_COMP_OFF
+  bad%tiles(1)%parameters%soil_temperature_active=.false.
+  deallocate(bad%tiles(1)%parameters%bartholomeus)
+  deallocate(bad%tiles(1)%initial_state%soil_temperature)
+  deallocate(bad%tiles(1)%base_forcing%crop_oxygen)
+  call badapp%initialize(bad,status)
+  call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'Rutter plus salt remains outside both profiles')
+  allocate(bad%tiles(1)%initial_state%rutter)
+  call initialize_rutter_canopy_state(0._real64,bad%tiles(1)%initial_state%rutter,status)
+  call require(status==RUTTER_WINDOW_OK,'valid Rutter component for hybrid rejection')
+  call require(.not.fmr_restart_state_matches_template(bad%tiles(1)%initial_state,bad%tiles(1)%template), &
+       'Rutter salt hybrid restart rejected')
+  write(*,'(a)') 'PPA_WU05E_RUTTER_SALT_HYBRID_REJECTED=PASS_TEST_ONLY'
   bad=cfg;bad%base_salt_temporal_policy%enabled=.false.
   call badapp%initialize(bad,status)
   call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'application missing numerical policy fails closed')

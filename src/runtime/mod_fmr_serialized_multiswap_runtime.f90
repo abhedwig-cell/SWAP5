@@ -50,9 +50,13 @@ module mod_fmr_serialized_multiswap_runtime
     logical :: completed = .false.
     logical :: committed = .false.
     logical :: solver_executed = .false.
+    integer :: solver_status = 0
     character(len=32) :: solver_route = 'not-run'
     integer :: solver_iterations = 0
     integer :: accepted_substeps = 0
+    integer :: solver_rejections = 0
+    integer :: temporal_rejections = 0
+    integer :: mass_rejections = 0
     integer :: solver_nonlinear_iterations = 0
     integer :: solver_internal_retries = 0
     integer :: solver_headcalc_calls = 0
@@ -795,6 +799,9 @@ contains
     diagnostic%attempts = kernel_diag%attempts
     diagnostic%retries = kernel_diag%retries
     output%accepted_substeps = kernel_diag%accepted_substeps
+    output%solver_rejections = kernel_diag%solver_rejections
+    output%temporal_rejections = kernel_diag%temporal_rejections
+    output%mass_rejections = kernel_diag%mass_rejections
     output%solver_nonlinear_iterations = kernel_diag%nonlinear_iterations
     output%solver_internal_retries = kernel_diag%internal_retries
     output%solver_headcalc_calls = kernel_diag%headcalc_calls
@@ -819,6 +826,7 @@ contains
     if (kernel_diag%transaction_calls > 0) then
       observation = backend%observation()
       output%solver_executed = observation%solver_executed
+      output%solver_status = observation%solver_status
       output%solver_route = observation%solver_diagnostics%route
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
       if (output%solver_executed .and. do_track_physical_concurrency) then

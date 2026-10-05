@@ -193,6 +193,8 @@ Final INT12-E admission-head qualification passed in run `37152387427`; INT12-D 
 
 Within the non-Rutter `SWINTER=1/2` interception scope, no known selector, retry, restart or precipitation-partition capability gap remains. `SWINTER=3` Rutter remains a separate stateful capability and is not subsumed by this closure.
 
+The INT13 work branch composes Rutter canopy storage and INT12 source-window progress into the production FMR physical-state candidate. Reconciliation against the recovered exact SWAP 4.3.1/B1.11 `MOD_meteo.f90` showed that the previous candidate used the wrong SWAP 4.2.0 exponential `fimin` equation. The current local candidate instead integrates B1.11's piecewise-constant fill/dry flux regimes and removes `fimin` from the forcing contract. Local O0/O2 source-window, production-transaction and capacity-event tests pass. Targeted Actions run `37271615834` passed the INT13 physics/source-window/retry/restart and production FMR gates on candidate commit `4403db7996ec49b910a419d53c7efe2b4cd75102`; historical run `37268521592` tested the superseded candidate. This qualifies the bounded candidate, but `SWINTER=3` remains unadmitted pending canonical integration. The source correction is recorded in `integration/audits/F-MIG431-INT13_SOURCE_RECONCILIATION_ADDENDUM.md`. The bounded constant-surface-irrigation extension passed INT13 Actions run `37276517425` and companion PPA-WU01 run `37276517357` on commit `6f6eba2241b662cf0d3c1126bd21a63845b6ee41`, covering both B1.11 `ISUA` modes at the tested low-rate vector. Higher throughfall reached the separate Reference Richards dynamic-head surface-head derivative error and remains out of scope, as do irrigation scheduling, sprinkling, Snow, Black/Boesten, macropore and surface-water/RFM combinations. See `integration/audits/F-MIG431-INT13_STATUS.json`.
+
 
 ## Compensated root uptake: PPA-WU05-D2/D3 (2026-10-04)
 
@@ -272,3 +274,59 @@ pass. [Closeout](../audits/PPA_WU05_MIGMAC06_CLOSEOUT.md) pins source and gates.
 Multiple/within-compartment drains, covering-layer reference preparation and
 additional surface/whole-model compositions remain excluded. Frozen Status A
 and the incomplete broad migration denominator remain unchanged.
+
+## PPA-WU05-MIGMAC07 within-compartment rapid drainage
+
+PR #1024 admits one rapid-drain level inside an FMR compartment using the source
+VOLUNDR uniform-volume-density equation. The A10 aligned-only restriction and
+MIGMAC06 within-compartment exclusion are superseded within this bounded route.
+The shared geometry helper retains boundary snapping, current main-domain capacity,
+active cutoff and one external rapid-drain receipt. No accepted subcell state is
+introduced. Partial-level A10 and mixed-law Reference retry/restart, wetting,
+water closure and supplied/derived KD equivalence pass at O0/O2.
+[Closeout](../audits/PPA_WU05_MIGMAC07_CLOSEOUT.md) pins source and qualification.
+
+The exact source prepares only one rapid-drain reference level; RAPIDDRAIN returns
+for domains other than main domain1 and uses one selected NumLevRapDra. Multiple
+simultaneous rapid-drain levels are therefore future functionality, not a missing
+implemented B1.11 capability. Ordinary multilevel matrix drainage is separate.
+Covering-layer reference preparation, wider source-relevant surface compositions
+and whole-model equivalence remain separate migration work. Frozen Status A and
+the incomplete broad migration claim remain unchanged.
+
+## PPA-WU05-MIGMAC08 rigid covered reference preparation
+
+PR #1025 admits hydrostatic reference-KD preparation for an explicit rigid cover
+with exactly zero above-top static macropore capacity. Existing covering matrix
+transfer remains the covered-input owner; surface-connected A9 precipitation is
+absent there. Invalid cover selectors/capacity fail without KD mutation. Source
+section-D and independent covered reference geometry agree. Mixed-law Reference
+wetting, partial rapid drainage, prepared carriers, supplied/derived KD identity,
+retry, A/B/A and accepted restart pass at O0/O2, with preceding route preservation.
+[Closeout](../audits/PPA_WU05_MIGMAC08_CLOSEOUT.md) controls source and qualification.
+
+Earlier covering-reference exclusions are superseded only for this rigid route.
+Nonrigid covering reference preparation still needs source relevance/ownership
+reconciliation; wider source-relevant surface compositions and whole-model
+equivalence remain outside this admission. Frozen Status A remains unchanged;
+broad migration is still incomplete.
+
+## PPA-WU05-MIGMAC09 source covering compartment mask
+
+PR #1026 admits the source mask above IcTopMp independently of covering soil
+shrink law. Source initialization zeros static volume and all domain fractions
+there; MPVOLUME excludes those cells. Production candidate geometry now receives
+the actual top node. Reference preparation checks zero static/domain capacities,
+replacing MIGMAC08's rigid-selector restriction. Nonzero accepted covered crack
+volume fails without accepted-state mutation. Covering matrix transfer retains
+its owner; no new surface forcing, persistent state or solver policy is added.
+
+Nonrigid covered mixed-law dry/wetting/partial-drain Reference trials, prepared
+carriers, supplied/derived coefficient identity, retry/A-B-A/restart and O0/O2
+pass. All affected pure/provider and A8/A10/MIGMAC01/PERCH20 gates pass. Exact
+section-D source and independent reference geometry agree. See
+[closeout](../audits/PPA_WU05_MIGMAC09_CLOSEOUT.md) and pinned qualification.
+Earlier nonrigid-cover reference exclusions are superseded for this source mask;
+a separate covering macropore crack law is not unported B1.11 functionality.
+Wider source-relevant surface compositions and whole-model equivalence remain
+outside admission. Frozen Status A is unchanged; broad migration is incomplete.

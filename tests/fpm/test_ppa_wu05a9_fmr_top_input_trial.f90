@@ -11,7 +11,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_committed_state
-  use mod_fmr_macropore_configuration, only: initialize_fmr_macropore_standard_config, prepare_fmr_macropore_rapid_reference
+  use mod_fmr_macropore_configuration, only: initialize_fmr_macropore_standard_config, prepare_fmr_macropore_rapid_reference, fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_runtime_policy_t
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t, evaluate_macropore_geometry, &
@@ -25,7 +25,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
        prepare_clay_kim_option2, prepare_peat_characteristic_points, &
        evaluate_dynamic_crack_profile, prepare_rapid_drain_reference_kd, derive_dynamic_minimum_subsidence, map_surface_crack_depth_to_node
   implicit none
-  character(len=1)::constitutive_flag,fit_flag
+  character(len=1)::constitutive_flag,fit_flag,cover_flag
+  integer::macro_top=1
 
   integer(int64),parameter :: column_id=508001_int64
   real(real64),parameter :: dt=1.0e-3_real64
@@ -66,6 +67,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
   integer :: commit_status
   integer :: nd
 
+  call get_environment_variable('WU05_MIGMAC08_COVER',cover_flag)
+  if(cover_flag=='1' .or. cover_flag=='2')macro_top=3
   fit_flag='0'
   call get_environment_variable('WU05_MIGMAC04_FIT',fit_flag)
   constitutive_flag='0'
@@ -84,7 +87,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call require(ok,'physical macropore config initialized')
   call require(allocated(parameters%macropore%matrix_area_fraction),'static macro matrix-area fraction derived')
   call require(all(abs(parameters%macropore%matrix_area_fraction- &
-       (1.0_real64-0.25_real64/dz))<=1.0e-14_real64),'legacy FrArMtrx default exact')
+       (1.0_real64-parameters%macropore%geometry%static_volume_cp/dz))<=1.0e-14_real64),'legacy FrArMtrx default exact')
   parameters%macropore_active=.true.
 
   heads=-100.0_real64
@@ -103,7 +106,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   
   call evaluate_dynamic_crack_profile(parameters%macropore%shrinkage,water,water,dz, &
        parameters%macropore%matrix_area_fraction,physical%macropore%dynamic_volume_cp, &
-       probe_dynamic,probe_ok,probe_subsidence)
+       probe_dynamic,probe_ok,probe_subsidence,top_node=macro_top)
   call require(probe_ok,'MIGMAC02 dry accepted-state crack profile evaluates')
   if(dynamic_flag=='4' .or. dynamic_flag=='5')physical%macropore%dynamic_volume_cp=probe_dynamic
   if(geometry_changes_expected)call require(any(probe_dynamic>1.0e-12_real64),'MIGMAC02 dry accepted-state crack volume nonzero')
@@ -115,7 +118,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   physical%macropore%water_domain_cp(1,numnod)=0.20_real64
   if(dynamic_flag=='4' .or. dynamic_flag=='5') &
        physical%macropore%water_domain_cp=0.85_real64*geometry%volume_domain_cp
-  call canonicalize_macropore_standard_storage(physical%macropore,1,z,dz,storage_view,ok)
+  call canonicalize_macropore_standard_storage(physical%macropore,macro_top,z,dz,storage_view,ok)
   call require(ok,'initial macropore standard storage canonical')
   macro_before=sum(physical%macropore%water_domain_cp)
 
@@ -178,6 +181,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call require(abs(result%mass%residual)<=1.0e-9_real64,'FMR macropore mass residual')
   call require(candidate%ready(),'FMR macropore candidate ready')
   observation=backend%observation()
+  if(macro_top==1)then
   call require(observation%macropore_top_input_active,'A9 top-input route active')
   if(dynamic_enabled)call require(observation%macropore_inner_richards_exchange_used,'MIGMAC02 inner Richards callback used')
   call require(observation%macropore_requested_top_cm>0.0_real64,'A9 requested top receipt positive')
@@ -186,6 +190,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
        'A9 accepted top bounded by request')
   call require(abs(observation%macropore_accepted_top_cm+observation%macropore_returned_surface_cm- &
        observation%macropore_requested_top_cm)<=1.0e-9_real64,'A9 top receipt exact')
+  end if
   if(dynamic_flag=='4' .or. dynamic_flag=='5')then
     call require(observation%macropore_inner_final_exchange_rate_cm_per_day>1.0e-5_real64, &
          'MIGMAC02 displaced-water matrix receipt active')
@@ -245,6 +250,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
        '|MACRO_BEFORE=',macro_before,'|MACRO_AFTER=',macro_after, &
        '|HEAD_CALC=',diagnostics%headcalc_calls,'|NONLINEAR=',diagnostics%nonlinear_iterations
   print '(a)', 'PPA_WU05A9_FMR_MACRO_TRIAL=PASS'
+  if(macro_top>1)print '(a)','PPA_WU05_MIGMAC08_COVERED_REFERENCE_TRIAL=PASS'
+  if(cover_flag=='2')print '(a)','PPA_WU05_MIGMAC09_NONRIGID_COVER_TRIAL=PASS'
   if(geometry_changes_expected)print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_REFERENCE_TRANSACTION=PASS'
   if(dynamic_flag=='2' .or. dynamic_flag=='3')print '(a)', 'PPA_WU05_MIGMAC02_NO_GEOMETRY_CHANGE=PASS'
   if(dynamic_flag=='4')print '(a)', 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS'
@@ -297,7 +304,10 @@ contains
     type(fmr_b110_physical_parameters_t),intent(inout)::p
     logical,intent(out)::initialized
     integer::k
-    character(len=1)::reference_flag
+    type(fmr_macropore_physical_config_t)::cover_probe
+    logical::cover_ok
+    character(len=1)::reference_flag,partial_flag
+    real(real64)::drain_level
     real(real64)::reference_kd
     real(real64)::ref_theta(numnod),ref_cond(numnod),ref_cap(numnod),ref_dk(numnod)
 
@@ -305,11 +315,14 @@ contains
          wall_correction(numnod),sorp_max(numnod),sorp_alpha(numnod),conductivity(numnod),entry_head(numnod), &
          sorp_fac_parallel(numnod),ksat_horizontal(numnod),cdarcy(nd,numnod),potential_bottom(nd))
     static_volume=0.25_real64
+    if(macro_top>1)static_volume(1:macro_top-1)=0.0_real64
     domain_fraction=1.0_real64
+    if(macro_top>1)domain_fraction(:,1:macro_top-1)=0.0_real64
     if(nd==2)then
       domain_fraction(1,:)=0.3_real64
       domain_fraction(2,:)=0.7_real64
     end if
+    if(macro_top>1)domain_fraction(:,1:macro_top-1)=0.0_real64
     diameter=4.0_real64
     theta_s=0.427494_real64
     theta_r=0.02_real64
@@ -373,31 +386,53 @@ contains
       end do
     end if
 
+    if(cover_flag=='1')shrinkage%law(1:macro_top-1)=SHRINK_RIGID
     reference_kd=0.001_real64
+    drain_level=-2.0_real64
+    call get_environment_variable('WU05_MIGMAC07_PARTIAL',partial_flag)
+    if(partial_flag=='1')drain_level=-1.9_real64
     call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
     if(reference_flag=='2')then
-      call map_surface_crack_depth_to_node(shrinkage%surface_crack_area_depth_cm,z,dz,1,k,ok)
+      call map_surface_crack_depth_to_node(shrinkage%surface_crack_area_depth_cm,z,dz,macro_top,k,ok)
       call require(ok,'MIGMAC06 supplied reference crack-node mapping')
       shrinkage%surface_crack_area_node=k
       shrinkage%surface_crack_area_node_supplied=.true.
       call derive_dynamic_minimum_subsidence(shrinkage,dz,ok)
       call require(ok,'MIGMAC06 supplied reference geometry')
-      call hyd%evaluate(-2.0_real64-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      call hyd%evaluate(drain_level-z,ref_theta,ref_cond,ref_cap,ref_dk)
       call prepare_rapid_drain_reference_kd(shrinkage,z,dz,ref_theta,static_volume,domain_fraction(1,:), &
-           diameter,-sum(dz),-2.0_real64,2,3.0_real64,reference_kd,ok)
+           diameter,-sum(dz),drain_level,2,3.0_real64,reference_kd,ok)
       call require(ok,'MIGMAC06 supplied prepared reference valid')
     end if
+    if(cover_flag=='1')shrinkage%law(1:macro_top-1)=SHRINK_RIGID
     allocate(p%macropore)
-    call initialize_fmr_macropore_standard_config(p%macropore,1,static_volume,domain_fraction,potential_bottom, &
+    call initialize_fmr_macropore_standard_config(p%macropore,macro_top,static_volume,domain_fraction,potential_bottom, &
          z,dz,diameter,theta_s,theta_r,wall_correction,sorp_max,sorp_alpha,conductivity,entry_head, &
          sorp_fac_parallel,ksat_horizontal,cdarcy,1.0_real64,1.0_real64,0,initialized,shrinkage=shrinkage, &
-         rapid_enabled=dynamic_flag=='5',rapid_drain_type=2,rapid_drain_level_cm=-2.0_real64, &
-         rapid_area_exponent=3.0_real64,rapid_kd_reference=reference_kd,rapid_resistance_reference_day=20.0_real64)
+         rapid_enabled=dynamic_flag=='5',rapid_drain_type=2,rapid_drain_level_cm=drain_level, &
+         rapid_area_exponent=3.0_real64,rapid_kd_reference=reference_kd,rapid_resistance_reference_day=20.0_real64, &
+         matrix_area_fraction=1.0_real64-static_volume/dz,covering_minimum_polygon_diameter_cm=10.0_real64, &
+         covering_ksat_cm_per_day=1.0_real64)
     call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
     if(reference_flag=='1')then
-      call hyd%evaluate(-2.0_real64-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      call hyd%evaluate(drain_level-z,ref_theta,ref_cond,ref_cap,ref_dk)
       call prepare_fmr_macropore_rapid_reference(p%macropore,z,ref_theta,-sum(dz),initialized)
       call require(initialized,'MIGMAC06 derived reference config valid')
+      if(macro_top>1)then
+        cover_probe=p%macropore
+        cover_probe%geometry%domain_fraction(1,1)=0.5_real64
+        call prepare_fmr_macropore_rapid_reference(cover_probe,z,ref_theta,-sum(dz),cover_ok)
+        call require(.not.cover_ok,'MIGMAC09 nonzero covering domain fraction fails closed')
+        call require(cover_probe%rate_template%rapid%kd_reference==p%macropore%rate_template%rapid%kd_reference, &
+             'MIGMAC08 invalid cover leaves KD unchanged')
+        cover_probe=p%macropore
+        cover_probe%geometry%static_volume_cp(1)=0.01_real64
+        call prepare_fmr_macropore_rapid_reference(cover_probe,z,ref_theta,-sum(dz),cover_ok)
+        call require(.not.cover_ok,'MIGMAC08 positive covering macropore capacity fails closed')
+        call require(cover_probe%rate_template%rapid%kd_reference==p%macropore%rate_template%rapid%kd_reference, &
+             'MIGMAC08 invalid capacity leaves KD unchanged')
+      end if
+
     end if
     if(reference_flag=='1'.or.reference_flag=='2') &
          print '(a,es24.16)','PPA_WU05_MIGMAC06_REFERENCE_KD=',p%macropore%rate_template%rapid%kd_reference
@@ -420,6 +455,7 @@ contains
     f%macropore_top_input%net_irrigation_rate_cm_per_day=0.25_real64
     f%macropore_top_input%melt_rate_cm_per_day=0.0_real64
     f%macropore_top_input%lateral_overland_rate_cm_per_day=0.10_real64
+    if(macro_top>1)f%macropore_top_input=fmr_macropore_top_input_forcing_t()
   end subroutine initialize_forcing
 
   subroutine require(condition,label)

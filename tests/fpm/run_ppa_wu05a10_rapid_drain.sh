@@ -182,6 +182,9 @@ for opt in 0 2; do
   grep -Fq 'PPA_WU05A10_FMR_RAPID_DRAIN_REJECT_REPLAY=PASS' "$OUT/a10_replay.txt"
   grep -Fq 'PPA_WU05A10_FMR_RAPID_DRAIN_RESTART=PASS' "$OUT/a10_replay.txt"
   grep -Fq 'PPA_WU05A10_FMR_RAPID_DRAIN_REPLAY_GATE=PASS' "$OUT/a10_replay.txt"
+  WU05_MIGMAC07_PARTIAL=1 "$OUT/test_a10_replay" | tee "$OUT/a10_partial_replay.txt"
+  grep -Fq 'PPA_WU05A10_FMR_RAPID_DRAIN_RESTART=PASS' "$OUT/a10_partial_replay.txt"
+
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
 cmp "$BUILD/o0/fmr_macro.txt" "$BUILD/o2/fmr_macro.txt"
@@ -192,3 +195,6 @@ cmp "$BUILD/o0/a10_oracle.txt" "$BUILD/o2/a10_oracle.txt"
 cmp "$BUILD/o0/a10_trial.txt" "$BUILD/o2/a10_trial.txt"
 cmp "$BUILD/o0/a10_replay.txt" "$BUILD/o2/a10_replay.txt"
 echo "PPA_WU05A10_RAPID_DRAIN_GATE=PASS"
+
+cmp "$BUILD/o0/a10_partial_replay.txt" "$BUILD/o2/a10_partial_replay.txt"
+echo 'PPA_WU05_MIGMAC07_PARTIAL_A10_O0_O2=PASS'

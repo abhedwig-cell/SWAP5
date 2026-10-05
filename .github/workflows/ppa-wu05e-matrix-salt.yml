@@ -61,6 +61,15 @@ jobs:
         env:
           C3A_RESULT: qualification-results/d3-walsum.json
         run: python tests/physics/run_ppa_wu05d3_walsum.py
+      - name: Preserve admitted Rutter source windows and production application O0 O2
+        run: |
+          bash tests/fpm/run_f_mig431_int13_rutter_source_window.sh > qualification-results/rutter-source-window.log 2>&1
+          bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh > qualification-results/rutter-production.log 2>&1
+      - name: Preserve admitted MIGMAC07 MIGMAC08 MIGMAC09 runtime O0 O2
+        run: |
+          bash tests/fpm/run_ppa_wu05_migmac07_reference_runtime.sh > qualification-results/migmac07.log 2>&1
+          bash tests/fpm/run_ppa_wu05_migmac08_reference_runtime.sh > qualification-results/migmac08.log 2>&1
+          bash tests/fpm/run_ppa_wu05_migmac09_reference_runtime.sh > qualification-results/migmac09.log 2>&1
       - name: Preserve real Richards and macropore salt lifecycle O0 O2
         run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
       - uses: actions/upload-artifact@v4

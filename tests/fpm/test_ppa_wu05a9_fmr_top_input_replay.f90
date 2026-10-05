@@ -39,7 +39,8 @@ program test_ppa_wu05a9_fmr_top_input_replay
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
   implicit none
-  character(len=1)::constitutive_flag,fit_flag
+  character(len=1)::constitutive_flag,fit_flag,cover_flag
+  integer::macro_top=1
 
   real(real64),parameter::dt=1.0e-3_real64,tol=1.0e-12_real64
   integer,parameter::nd=1
@@ -70,6 +71,8 @@ program test_ppa_wu05a9_fmr_top_input_replay
   logical::dynamic_enabled
   character(len=1)::dynamic_flag
 
+  call get_environment_variable('WU05_MIGMAC08_COVER',cover_flag)
+  if(cover_flag=='1' .or. cover_flag=='2')macro_top=3
   fit_flag='0'
   call get_environment_variable('WU05_MIGMAC04_FIT',fit_flag)
   constitutive_flag='0'
@@ -137,7 +140,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
   macro%icp_bottom_domain=geometry%bottom_domain
   macro%volume_domain_cp=geometry%volume_domain_cp
   macro%water_domain_cp=0.35_real64*geometry%volume_domain_cp
-  call canonicalize_macropore_standard_storage(macro,1,z,dz,initial_macro_view,ok)
+  call canonicalize_macropore_standard_storage(macro,macro_top,z,dz,initial_macro_view,ok)
   if(.not.ok)error stop 'A8 real initial macro canonicalization'
   macro_snapshot=macro
 
@@ -207,7 +210,8 @@ contains
     class(transaction_state_t), allocatable :: before_state, after_trial_state, candidate_state, replay_state, &
          restored_state, next_state, restored_next_state, retry_state, fresh_retry_state
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
-    character(len=1)::reference_flag
+    character(len=1)::reference_flag,partial_flag
+    real(real64)::drain_level
     real(real64)::ref_theta(numnod),ref_cond(numnod),ref_cap(numnod),ref_dk(numnod)
     integer :: commit_status, persistence_status, k, crack_node
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
@@ -241,7 +245,7 @@ contains
     mcfg%history_template=history_request
     mcfg%matrix_area_fraction=1.0_real64-geometry_config%static_volume_cp/dz
     mcfg%shrinkage%enabled=dynamic_enabled
-    call map_surface_crack_depth_to_node(-0.75_real64,z,dz,1,crack_node,state_ok)
+    call map_surface_crack_depth_to_node(-0.75_real64,z,dz,macro_top,crack_node,state_ok)
     if(.not.state_ok)error stop 'MIGMAC02 replay crack depth'
     mcfg%shrinkage%surface_crack_area_node=crack_node
     mcfg%shrinkage%surface_crack_area_node_supplied=.true.
@@ -291,14 +295,23 @@ contains
         if(.not.state_ok)error stop 'MIGMAC04 peat points prepare'
       end do
     end if
+    if(cover_flag=='1')mcfg%shrinkage%law(1:macro_top-1)=SHRINK_RIGID
+    if(macro_top>1)then
+      mcfg%covering_parameters_available=.true.
+      mcfg%covering_minimum_polygon_diameter_cm=10.0_real64
+      mcfg%covering_ksat_cm_per_day=1.0_real64
+    end if
     call derive_dynamic_minimum_subsidence(mcfg%shrinkage,dz,state_ok)
     if(.not.state_ok)error stop 'MIGMAC02 replay source minimum subsidence'
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A9 FMR top-input config validity'
+    drain_level=-2.0_real64
+    call get_environment_variable('WU05_MIGMAC07_PARTIAL',partial_flag)
+    if(partial_flag=='1')drain_level=-1.9_real64
     call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
     if(reference_flag=='1')then
       mcfg%rate_template%rapid%enabled=.true.
-      mcfg%rate_template%rapid%drain_level_cm=-2.0_real64
-      call hyd%evaluate(-2.0_real64-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      mcfg%rate_template%rapid%drain_level_cm=drain_level
+      call hyd%evaluate(drain_level-z,ref_theta,ref_cond,ref_cap,ref_dk)
       call prepare_fmr_macropore_rapid_reference(mcfg,z,ref_theta,-sum(dz),state_ok)
       if(.not.state_ok)error stop 'MIGMAC06 derived replay reference'
       print '(a,es24.16)','PPA_WU05_MIGMAC06_REFERENCE_KD=',mcfg%rate_template%rapid%kd_reference
@@ -333,6 +346,7 @@ contains
     forcing%macropore_top_input%net_irrigation_rate_cm_per_day=0.25_real64
     forcing%macropore_top_input%melt_rate_cm_per_day=0.0_real64
     forcing%macropore_top_input%lateral_overland_rate_cm_per_day=0.10_real64
+    if(macro_top>1)forcing%macropore_top_input=fmr_macropore_top_input_forcing_t()
 
     column%column_id=lineage
     column%template_id=505801_int64
@@ -456,6 +470,8 @@ contains
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_SERIALIZED=PASS'
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_REJECT_REPLAY=PASS'
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_RESTART=PASS'
+    if(macro_top>1)print '(a)','PPA_WU05_MIGMAC08_COVERED_REFERENCE_RESTART=PASS'
+  if(cover_flag=='2')print '(a)','PPA_WU05_MIGMAC09_NONRIGID_COVER_REPLAY=PASS'
     if(dynamic_enabled)then
       print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_REJECT_SMALLER_RETRY=PASS'
       print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_ABA=PASS'
@@ -493,13 +509,16 @@ contains
     type(macropore_geometry_config_t),intent(out)::config
     config%num_domains=nd
     config%num_nodes=numnod
-    config%top_node=1
+    config%top_node=macro_top
     allocate(config%static_volume_cp(numnod),config%domain_fraction(nd,numnod), &
          config%potential_bottom_domain(nd),config%dz(numnod),config%characteristic_diameter(numnod))
     config%static_volume_cp=0.25_real64
+    if(macro_top>1)config%static_volume_cp(1:macro_top-1)=0.0_real64
     config%domain_fraction=1.0_real64
+    if(macro_top>1)config%domain_fraction(:,1:macro_top-1)=0.0_real64
     config%potential_bottom_domain=numnod
     config%dz=dz
+    if(macro_top>1)config%domain_fraction(:,1:macro_top-1)=0.0_real64
     config%characteristic_diameter=4.0_real64
   end subroutine setup_geometry
 
@@ -524,13 +543,13 @@ contains
          bundle%unsaturated%groundwater_level_domain(nd),bundle%unsaturated%sorp_fac_parallel(numnod))
     bundle%unsaturated%sorptivity%num_domains=nd
     bundle%unsaturated%sorptivity%num_nodes=numnod
-    bundle%unsaturated%sorptivity%top_node=1
+    bundle%unsaturated%sorptivity%top_node=macro_top
     bundle%unsaturated%sorptivity%swmbf=1
     bundle%unsaturated%sorptivity%matrix_top_saturated_node=numnod+1
     bundle%unsaturated%sorptivity%step_duration=dt
     bundle%unsaturated%sorptivity%flow_reduction=1.0_real64
     bundle%unsaturated%sorptivity%bottom_domain=numnod
-    bundle%unsaturated%sorptivity%top_water_node=1
+    bundle%unsaturated%sorptivity%top_water_node=macro_top
     bundle%unsaturated%sorptivity%theta=water
     bundle%unsaturated%sorptivity%theta_s=0.427494_real64
     bundle%unsaturated%sorptivity%theta_r=0.02_real64
@@ -594,7 +613,7 @@ contains
     bundle%limiter%redistribution_capacity_cm=max(0.0_real64, &
          bundle%limiter%maximum_storage_cm-bundle%limiter%accepted_storage_cm)
     bundle%limiter%top_domain_fraction=1.0_real64
-    bundle%top_node=1
+    bundle%top_node=macro_top
   end subroutine setup_rate_template
 
   subroutine setup_sat(sat)
@@ -629,13 +648,13 @@ contains
     type(sorptivity_history_update_request_t),intent(out)::history
     history%num_domains=nd
     history%num_nodes=numnod
-    history%top_node=1
+    history%top_node=macro_top
     history%matrix_top_saturated_node=numnod+1
     history%step_duration=dt
     allocate(history%bottom_domain(nd),history%top_water_node(nd),history%wall_correction(numnod), &
          history%wet_fraction(nd,numnod),history%domain_fraction(nd,numnod),history%diameter(numnod))
     history%bottom_domain=numnod
-    history%top_water_node=1
+    history%top_water_node=macro_top
     history%wall_correction=0.95_real64
     history%wet_fraction=1.0_real64
     history%domain_fraction=1.0_real64

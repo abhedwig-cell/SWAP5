@@ -190,3 +190,47 @@ superseded by [MIGMAC06 closeout](PPA_WU05_MIGMAC06_CLOSEOUT.md).
 Wider multiple/within-compartment drains, covering-layer reference composition,
 additional surface owners and final whole-model equivalence remain outside this
 admission. Broad 4.3.1 macropore migration remains incomplete.
+
+## Later canonical reconciliation: MIGMAC07 (2026-10-05)
+
+PR #1024 closes the within-compartment rapid-drain geometry restriction using
+unchanged B1.11 VOLUNDR semantics. Existing aligned routes and partial-level
+Reference transactions are qualified with one water owner and restart boundary.
+Earlier aligned-only/excluded statements are superseded for this route.
+
+Multiple simultaneous rapid-drain levels are future-only scope: the source
+initialization uses `do ir = 1, 1` and RAPIDDRAIN accepts only main domain1 with
+one selected NumLevRapDra. They must not count as unported source functionality.
+This says nothing about the separate ordinary multilevel matrix-drainage route.
+Remaining source-relevant work includes covering-layer reference preparation,
+wider surface-owner compositions and whole-model equivalence. Broad migration
+is incomplete. [MIGMAC07 closeout](PPA_WU05_MIGMAC07_CLOSEOUT.md) controls scope.
+
+## Later canonical reconciliation: MIGMAC08 (2026-10-05)
+
+PR #1025 closes rigid covering-layer hydrostatic reference preparation in the
+existing covered Reference chain. Covered mixed-law growth/wetting/partial rapid
+drainage and transaction/restart semantics are qualified with the same covering
+matrix-transfer owner. Earlier covering-reference gap statements are superseded
+for the explicit rigid, zero-static-capacity cover only.
+
+Reconcile source relevance of nonrigid covering reference geometry before
+assuming that it is missing migrated physics. Wider source/surface compositions
+and whole-model equivalence remain outside this admission. Broad migration is
+incomplete. [MIGMAC08 closeout](PPA_WU05_MIGMAC08_CLOSEOUT.md) controls the claim.
+
+## Later canonical reconciliation: MIGMAC09 (2026-10-05)
+
+PR #1026 closes the nonrigid covering source reconciliation. B1.11 zeros static
+volume/domain fractions above IcTopMp and excludes those cells from MPVOLUME.
+Thus an additional nonrigid-cover macropore crack law is not missing source
+physics. The actual source compartment mask is now explicit in production
+candidate geometry and hydrostatic reference preparation, irrespective of the
+covering soil shrink selector. Earlier rigid-only cover exclusions are superseded
+for the qualified zero-capacity/domain-mask route.
+
+Mixed-law Reference dry/wetting/partial rapid drainage, supplied/derived reference
+identity, fit carriers, reject/retry/A-B-A/restart and O0/O2 pass. No new state or
+surface owner is introduced. Wider source-relevant surface compositions and
+whole-model equivalence remain migration work. Broad migration is incomplete;
+[MIGMAC09 closeout](PPA_WU05_MIGMAC09_CLOSEOUT.md) controls this bounded claim.

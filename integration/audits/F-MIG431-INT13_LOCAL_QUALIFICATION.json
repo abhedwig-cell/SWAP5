@@ -1,0 +1,138 @@
+{
+  "schema": "swap5.local_qualification.v1",
+  "workunit": "F-MIG431-INT13",
+  "title": "B1.11 Rutter process, constant surface irrigation and FMR composition local verification",
+  "date": "2026-10-05",
+  "subject": {
+    "branch": "work/f-mig431-int13-rutter-stateful-forcing",
+    "pre_change_head": "7263fc513d9b4a1f8929e91e29b4ae207000a365",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization": [
+      "O0",
+      "O2"
+    ],
+    "head_before_local_production_integration": "056bc49919aa553609fc7389b709da58a9b56243",
+    "working_tree_state": "COMMITTED_AND_PERSISTED_BOUNDED_CANDIDATE"
+  },
+  "local_gate": {
+    "command": "tests/fpm/run_f_mig431_int13_rutter_source_window.sh",
+    "result": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "cases": {
+      "B1_11_piecewise_flux_fill_and_full_canopy_oracle": "PASS_O0_O2",
+      "B1_11_piecewise_flux_drydown_and_empty_canopy_oracle": "PASS_O0_O2",
+      "capacity_change_surface_release_and_mass_closure": "PASS_O0_O2",
+      "source_window_refinement_identity": "PASS_O0_O2",
+      "rejected_trial_accepted_state_immutability": "PASS_O0_O2",
+      "mid_window_restart_identity": "PASS_O0_O2",
+      "detailed_record_continuation": "PASS_O0_O2",
+      "dynamic_top_and_crop_root_output_binding": "PASS_O0_O2",
+      "fimin_removed_from_Rutter_input_and_window_identity": "PASS_O0_O2",
+      "ISUA_zero_intercepts_and_proportionally_partitions_surface_irrigation": "PASS_O0_O2",
+      "ISUA_nonzero_intercepts_rain_only_and_passes_irrigation": "PASS_O0_O2",
+      "surface_irrigation_forcing_is_immutable_within_source_window": "PASS_O0_O2"
+    },
+    "canonical_capacity_case": {
+      "case_scope": "SWAP5 legacy short-interval API falsifier versus new source-window analytic reference; not attributed to B1.11",
+      "gross_rain_cm": 1.0,
+      "capacity_cm": 0.1,
+      "initial_storage_cm": 0.0,
+      "evaporation_capacity_cm_per_day": 0.0,
+      "short_interval_api_one_call_throughfall_cm": 0.0,
+      "short_interval_api_one_call_storage_cm": 0.1,
+      "short_interval_api_unaccounted_cm": 0.9,
+      "analytic_reference_throughfall_cm": 0.9,
+      "analytic_reference_storage_cm": 0.1,
+      "analytic_reference_mass_residual_cm": 0.0
+    }
+  },
+  "preservation": {
+    "legacy_rutter_process_blob": {
+      "expected_git_blob": "fd6ba136e02c13add1933ca6d63f25b2e7c5d822",
+      "observed_git_blob": "fd6ba136e02c13add1933ca6d63f25b2e7c5d822",
+      "result": "PASS"
+    },
+    "f_app05_rutter_unit": "PASS_O0_O2_IDENTICAL",
+    "f_app05_hupsel_supporting_observations": "PASS_O0_O2_IDENTICAL",
+    "int12_p0": "PASS_O0_O2",
+    "f_app08_preflight_runner": "NOT_APPLICABLE_TO_BRANCH_DELTA; runner requires its sole source delta to be the existing output-binding file",
+    "f_app08_binding_preservation": "covered by new end-to-end typed output composition case; standalone frozen-vector runner not rerun",
+    "int12_d": "PASS_O0_O2",
+    "int12_e": "PASS_O0_O2",
+    "fmr_production_bootstrap_rutter": "PASS_O0_O2",
+    "black_evaporation": "PASS_O0_O2_IDENTICAL; Black process/runtime oracle, hard mass, reject rollback, changed-dt retry, restart, plus PPA-WU01/WU03 preservation",
+    "boesten_evaporation": "PASS_O0_O2_IDENTICAL; Boesten process/runtime oracle, hard mass, reject rollback, changed-dt retry, restart, plus PPA-WU04A/WU01/WU03 preservation",
+    "runner_note": "Local offline preservation used temporary copies of the existing runners: only remote git-fetch/source-delta preflight was omitted, and two missing module prerequisites were inserted into the temporary compile order. Repository runners and source files were not edited for this workaround."
+  },
+  "claim_limit": [
+    "Exact B1.11 MOD_meteo.f90 member reconstructed and SHA-256 verified; see F-MIG431-INT13_CORRECTED_REFERENCE.md.",
+    "Targeted persisted INT13 run 37276517425 on commit 6f6eba2241b662cf0d3c1126bd21a63845b6ee41 passed physics/source-window/retry/restart/determinism and production FMR composition/preservation; the bounded candidate is qualified but not canonically admitted.",
+    "The qualified irrigation vector is constant surface irrigation at 0.01 cm/day with 0.2 cm rainfall per immutable source window, testing both B1.11 ISUA partitions. Scheduling and sprinkling remain excluded.",
+    "Higher irrigation-throughfall reaches the Reference Richards HeadCalc dynamic-head omitted surface-head derivative error and remains outside the qualified envelope.",
+    "Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles remain outside the candidate envelope."
+  ],
+  "production_application": {
+    "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+    "result": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "cases": {
+      "registered_rutter_physical_state_and_bootstrap": "PASS",
+      "immutable_source_window_before_richards_execution": "PASS",
+      "out_of_window_rejection_without_accepted_revision": "PASS",
+      "richards_temporal_rejection_and_retry": "PASS",
+      "same_source_candidate_across_hydraulic_refinement": "PASS",
+      "root_sink_and_wet_canopy_pet_composition": "PASS",
+      "single_transactional_canopy_and_progress_commit": "PASS",
+      "hard_soil_water_mass": "PASS",
+      "restart_carrier_fail_closed_layout_registration": "PASS"
+    },
+    "qualified_scope": {
+      "solver": "Reference Richards",
+      "bottom_boundary": [
+        2,
+        7
+      ],
+      "root_compensation": "OFF; typed existing root sink may be present",
+      "source_forcing": "constant forcing per immutable source window; detailed meteorology uses one window per record",
+      "admitted_combinations": [
+        "Rutter canopy state",
+        "INT12 source progress",
+        "dynamic top boundary",
+        "existing root sink / wet-canopy PET scaling",
+        "constant low-rate surface irrigation (0.01 cm/day) with rainfall 0.2 cm per source window, testing both ISUA modes"
+      ],
+      "irrigation_limit": "Bounded constant forcing only; higher-throughfall vectors are excluded due the separate Reference Richards surface-head derivative error."
+    }
+  },
+  "source_oracle": {
+    "release": "SWAP 4.3.1 B1.11",
+    "artifact": "SWAP_4.3.1(5).zip",
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_swap_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_member_manifest_sha256": "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f",
+    "member": "SWAP/MOD_meteo.f90",
+    "reconstructed_b1_11_member_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "member_verification": "B0 archive verified, then SWAP-006 applied and output hash checked"
+  },
+  "persisted_gate": {
+    "workflow": ".github/workflows/f-mig431-int13-rutter.yml",
+    "run_id": 37276517425,
+    "head": "6f6eba2241b662cf0d3c1126bd21a63845b6ee41",
+    "tree": "a523b26932bf95d5cd773e88b85ae1c34896645d",
+    "status": "PASS",
+    "steps": {
+      "rutter_physics_retry_source_window_restart_determinism": "PASS",
+      "production_fmr_composition_and_preservation": "PASS"
+    },
+    "companion_ppa_wu01_run_id": 37276517357,
+    "companion_ppa_wu01_status": "PASS",
+    "previous_rain_only_run_id": 37271615834,
+    "superseded_historical_run_id": 37268521592
+  },
+  "current_production_application": {
+    "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+    "result": "PASS_O0_O2",
+    "irrigation_case": "Both ISUA modes in separate tiles; surface irrigation 0.01 cm/day with a 0.2 cm rainfall source window.",
+    "claim_limit": "The bounded low-rate constant surface-irrigation extension with both ISUA modes is persisted-qualified by INT13 run 37276517425; companion PPA-WU01 run 37276517357 passed. High-throughfall limitation remains excluded."
+  }
+}

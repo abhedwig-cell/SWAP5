@@ -7,7 +7,7 @@ module mod_fmr_restart_state_contract
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
-       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_SOLUTE_STATE_LAYOUT_NONE, &
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, FMR_SOLUTE_STATE_LAYOUT_NONE, &
        FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, &
        fmr_solute_state_layout_known
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
@@ -27,6 +27,11 @@ contains
 
     matches = .false.
     if (.not. fmr_solute_state_layout_known(template%solute_state_layout_id)) return
+    ! Rutter state is admitted only under its own optional-state layout.
+    select type (physical => state)
+    class is (fmr_b110_physical_state_t)
+      if (allocated(physical%rutter) .and. template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER) return
+    end select
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
       select case (template%solute_state_layout_id)
@@ -90,6 +95,19 @@ contains
         return
       end if
 
+      if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+        if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) return
+        if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+        select type (state)
+        type is (fmr_b110_physical_state_t)
+          matches = allocated(state%rutter) .and. .not. allocated(state%snow) .and. &
+               .not. allocated(state%soil_temperature) .and. .not. allocated(state%macropore)
+        class default
+          matches = .false.
+        end select
+        return
+      end if
+
       select case (template%numerical_continuation_layout_id)
       case (FMR_NUMERICAL_CONTINUATION_NONE)
         select type (state)
@@ -134,9 +152,9 @@ contains
     if (allocated(state%macropore) .and. (allocated(state%snow) .or. allocated(state%soil_temperature))) return
 
     select case (template%optional_state_layout_id)
-    case (FMR_OPTIONAL_STATE_LAYOUT_BASE)
-      matches = .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature) .and. &
-           .not. allocated(state%macropore)
+      case (FMR_OPTIONAL_STATE_LAYOUT_BASE)
+        matches = .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature) .and. &
+           .not. allocated(state%macropore) .and. .not. allocated(state%rutter)
     case (FMR_OPTIONAL_STATE_LAYOUT_SNOW)
       matches = .not. allocated(state%soil_temperature) .and. .not. allocated(state%macropore)
     case (FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE)

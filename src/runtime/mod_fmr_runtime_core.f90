@@ -26,6 +26,7 @@ module mod_fmr_runtime_core
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION = 404002_int64
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_MACROPORE = 505001_int64
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RFM = 505002_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RUTTER = 505003_int64
 
   integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_NONE = 0_int64
   integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED = 505003_int64
@@ -304,7 +305,8 @@ contains
           FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
           FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
           FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
-          FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM)
+          FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM, &
+          FMR_OPTIONAL_STATE_LAYOUT_RUTTER)
       known = .true.
     case default
       known = .false.

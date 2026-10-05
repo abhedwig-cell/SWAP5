@@ -1,7 +1,7 @@
 module mod_fmr_production_application_bootstrap
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_root_uptake_compensation, only: ROOT_COMP_JARVIS, ROOT_COMP_WALSUM
+  use mod_root_uptake_compensation, only: ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_kernel_transactions, only: kernel_committed_state_t
@@ -11,6 +11,7 @@ module mod_fmr_production_application_bootstrap
        FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
+       FMR_OPTIONAL_STATE_LAYOUT_RUTTER, &
        FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
@@ -77,6 +78,7 @@ module mod_fmr_production_application_bootstrap
     real(real64) :: initial_black_ldwet = 0.0_real64
     real(real64) :: initial_boesten_spev = 0.0_real64
     real(real64) :: initial_boesten_saev = 0.0_real64
+    real(real64) :: initial_rutter_canopy_storage_cm = 0.0_real64
     type(groundwater_head_datum_t) :: groundwater_datum
     real(real64), allocatable :: initial_right_derivative(:)
   end type fmr_production_application_tile_config_t
@@ -316,6 +318,10 @@ contains
           initial_boesten_state%saev = config%tiles(i)%initial_boesten_saev
           call fmr_new_b110_boesten_evaporation_committed_state(self%committed(i), config%tiles(i)%tile_id, &
                config%tiles(i)%initial_state, initial_boesten_state, config%initial_time, ok)
+        else if (self%templates(i)%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+          call fmr_new_b110_committed_state(self%committed(i), config%tiles(i)%tile_id, &
+               config%tiles(i)%initial_state, config%initial_time, ok, &
+               initial_rutter_storage_cm=config%tiles(i)%initial_rutter_canopy_storage_cm)
         else
           call fmr_new_b110_committed_state(self%committed(i), config%tiles(i)%tile_id, &
                config%tiles(i)%initial_state, config%initial_time, ok)
@@ -821,7 +827,8 @@ contains
     if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .and. &
         tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE .and. &
         tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .and. &
-        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
+        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .and. &
+        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER) return
     if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
         tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
     if (tile%parameters%parameter_set_id <= 0_int64) return
@@ -834,6 +841,7 @@ contains
       if (allocated(tile%initial_state%salt) .or. tile%parameters%root_salinity_active.or. &
           allocated(tile%parameters%mobile_dispersion)) return
     case (FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)
+      if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) return
       if (tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 7) return
       if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
       if (tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active .or. &
@@ -867,8 +875,12 @@ contains
     else
       if(tile%parameters%soil_temperature_active) return
       if(tile%parameters%root_extraction_active) then
-        if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
-           tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM) return
+        if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+          if (tile%parameters%root_compensation%method /= ROOT_COMP_OFF) return
+        else
+          if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
+             tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM) return
+        end if
         if(tile%parameters%bottom_mode/=2.and.tile%parameters%bottom_mode/=7) return
         if(tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active) return
         if(tile%parameters%black_evaporation_active.or.tile%parameters%boesten_evaporation_active) return
@@ -900,12 +912,22 @@ contains
     else
       if(tile%parameters%soil_temperature_active) then
         if(tile%template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE) return
+      else if(tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+        if (allocated(tile%parameters%bartholomeus) .or. &
+            tile%parameters%root_compensation%method /= ROOT_COMP_OFF .or. &
+            tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
       else
         if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
       end if
       if (allocated(tile%parameters%black_evaporation) .or. allocated(tile%parameters%boesten_evaporation)) return
       if (tile%initial_black_ldwet /= 0.0_real64 .or. tile%initial_boesten_spev /= 0.0_real64 .or. &
           tile%initial_boesten_saev /= 0.0_real64) return
+    end if
+    if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+      if (.not. ieee_is_finite(tile%initial_rutter_canopy_storage_cm) .or. &
+          tile%initial_rutter_canopy_storage_cm < 0.0_real64) return
+    else if (tile%initial_rutter_canopy_storage_cm /= 0.0_real64) then
+      return
     end if
 
     if (.not. allocated(tile%parameters%z) .or. .not. allocated(tile%parameters%dz) .or. &

@@ -1,6 +1,7 @@
 module mod_fmr_macropore_configuration
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_ppa_wu05a6_rapid_drain_rate, only: derive_rapid_volume_under_drain
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t
@@ -34,7 +35,11 @@ contains
     real(real64)::kd
     ok=.false.
     if(.not.config%valid_for_nodes(size(z)))return
-    if(config%geometry%top_node/=1)return
+    if(config%geometry%top_node>1)then
+      ! Covered cells have no reference crack/static contribution in this route.
+      if(any(config%geometry%domain_fraction(:,1:config%geometry%top_node-1)/=0.0_real64))return
+      if(any(config%geometry%static_volume_cp(1:config%geometry%top_node-1)/=0.0_real64))return
+    end if
     call prepare_rapid_drain_reference_kd(config%shrinkage,z,config%geometry%dz,theta_hydrostatic, &
          config%geometry%static_volume_cp,config%geometry%domain_fraction(1,:), &
          config%geometry%characteristic_diameter,static_bottom,config%rate_template%rapid%drain_level_cm, &
@@ -276,6 +281,8 @@ contains
     class(fmr_macropore_physical_config_t), intent(in) :: self
     integer, intent(in) :: active_nodes
     integer :: nd
+    real(real64)::volume_under
+    logical::rapid_geometry_ok
 
     ok = .false.
     if (active_nodes <= 0) return
@@ -330,11 +337,13 @@ contains
     if (any(abs(self%rate_template%limiter%potential_top_vertical_cm) > 1.0e-15_real64)) return
     if (any(abs(self%rate_template%limiter%potential_top_lateral_cm) > 1.0e-15_real64)) return
 
-    ! A10 rapid drainage may be enabled only with a drain level aligned to a
-    ! compartment boundary. This keeps below-drain volume reconstruction exact.
+    ! MIGMAC07 source VOLUNDR allows partial-cell drain levels on this grid.
     if (self%rate_template%rapid%enabled) then
-      if (.not. rapid_drain_level_aligned(self%rate_template%rapid%drain_level_cm, &
-           self%rate_template%unsaturated%elevation, self%geometry%dz)) return
+      call derive_rapid_volume_under_drain(self%rate_template%rapid%drain_level_cm, &
+           self%rate_template%unsaturated%elevation,self%geometry%dz, &
+           self%geometry%static_volume_cp*self%geometry%domain_fraction(1,:),1,active_nodes, &
+           volume_under,rapid_geometry_ok)
+      if(.not.rapid_geometry_ok)return
     end if
 
     ! Template geometry/history must use the same top node.
@@ -351,20 +360,6 @@ contains
     ok = .true.
   end function fmr_macropore_config_valid_for_nodes
 
-  pure logical function rapid_drain_level_aligned(level, z, dz) result(aligned)
-    real(real64), intent(in) :: level
-    real(real64), intent(in) :: z(:), dz(:)
-    integer :: ic
 
-    aligned = .false.
-    if (size(z) /= size(dz) .or. size(z) <= 0) return
-    do ic = 1, size(z)
-      if (abs(level-(z(ic)+0.5_real64*dz(ic))) <= 1.0e-10_real64 .or. &
-          abs(level-(z(ic)-0.5_real64*dz(ic))) <= 1.0e-10_real64) then
-        aligned = .true.
-        return
-      end if
-    end do
-  end function rapid_drain_level_aligned
 
 end module mod_fmr_macropore_configuration
