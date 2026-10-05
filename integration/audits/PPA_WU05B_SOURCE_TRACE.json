@@ -64,8 +64,8 @@
       "latent_heat_ice_partition": "REJECTED_AS_LEGACY_MIGRATION_NEW_PHYSICS_REQUIRED",
       "legacy_frost_depth_interpolation": "REJECTED_UNGUARDED_IMPLEMENTATION_REPLACE_ONLY_WITH_BOUNDED_ORACLE",
       "legacy_residual_conductivity_floor": "PRESERVE_NAMED_COMPATIBILITY_CONSTANT_IN_BOUNDED_SLICE; verify sensitivity",
-      "FrozenBounds": "HELD_FOR_SEPARATE_TYPED_BOUNDARY_AND_MASS_QUALIFICATION",
-      "frost_root_stress": "HELD_UNTIL_HYDRAULIC_FROST_VIEW_ADMITTED"
+      "FrozenBounds": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; future separate typed boundary and mass contract remains possible",
+      "frost_root_stress": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; binary 0 C cutoff and ALPHACRIT compensation need a separate biological contract; microscopic path explicitly errors"
     }
   },
   "implementation": {
@@ -79,11 +79,18 @@
     "tested": true,
     "qualified": false,
     "admitted": false,
+    "local_runtime_evidence": {
+      "backend_regimes": ["unfrozen +1 C", "onset 0 C", "partial -1 C", "strong -4 C", "warming", "freeze-thaw cycle"],
+      "partial_frost_richards": "prescribed top flux 1e-10 cm/day; prescribed bottom flux 0; accepted substeps 8; mass residual -2.140518e-16 cm; hard gate 1e-12 cm",
+      "retry": "serialized transaction recorded 28 attempts and 20 retries; final hydraulic and thermal state compared with eight direct smaller-step continuations from identical initial committed physical state",
+      "restart": "fmr_export_committed_restart/fmr_restore_committed_restart round-trip through empty state registry; template optional-state layout, lineage, revision, time, profile and recomputed frost factor checked",
+      "optimization": ["O0", "O2"],
+      "scope": "local candidate evidence only; no persisted admission claimed"
+    },
     "qualification_gaps": [
-      "frost-enabled rejected-trial/retry oracle",
-      "frost-enabled restart reconstruction oracle",
-      "independent backend coverage for fully unfrozen, onset, partial, strong freeze, thaw and cycle",
-      "separate FrozenBounds and frost-root-stress dispositions"
+      "final exact-postimage O0/O2 run and hash update",
+      "persisted branch qualification and repository admission gate",
+      "FrozenBounds and frost-root-stress migration explicitly rejected only in current legacy form; any future replacement is separate scope"
     ]
   }
 }
