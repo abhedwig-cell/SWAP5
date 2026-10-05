@@ -4,8 +4,8 @@
   "title": "B1.11 frost hydraulic modifier migration",
   "branch": "work/ppa-wu05b-frost-migration",
   "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
-  "checkpoint_commit": "93054fd0401aec2e91a01233df637f12291be6a1",
-  "last_reconciled_head": "93054fd0401aec2e91a01233df637f12291be6a1",
+  "checkpoint_commit": "3bafd2360aa6c3dfbfd22bfd3c4349ed91cba4fd",
+  "last_reconciled_head": "3bafd2360aa6c3dfbfd22bfd3c4349ed91cba4fd",
   "last_reconciled_upstream": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "implemented": true,
   "persisted": true,
@@ -49,7 +49,7 @@
   ],
   "source_trace": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
   "next_action": "Force and verify frost trial rejection/retry and frost-enabled restart reconstruction; complete the independent temperature-state matrix before a bounded admission decision.",
-  "recovery_point": "work/ppa-wu05b-frost-migration@93054fd0401aec2e91a01233df637f12291be6a1 after local bounded-candidate O0/O2 runtime gate",
+  "recovery_point": "work/ppa-wu05b-frost-migration@3bafd2360aa6c3dfbfd22bfd3c4349ed91cba4fd after local bounded-candidate O0/O2 runtime gate",
   "blockers": [
     "Rejected-trial/retry and frost-enabled restart oracles are outstanding; candidate is not qualified or production-admitted.",
     "General FrozenBounds drainage/bottom behavior and frost-root-stress remain outside the bounded candidate and require separate authority and qualification."
