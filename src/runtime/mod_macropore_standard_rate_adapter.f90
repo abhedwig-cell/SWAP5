@@ -1,5 +1,6 @@
 module mod_macropore_standard_rate_adapter
   use, intrinsic :: iso_fortran_env, only: real64
+  use mod_ppa_wu05a6_rapid_drain_rate, only: derive_rapid_volume_under_drain
   use mod_soil_water_solver_contract, only: soil_water_physical_state_t
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t
@@ -383,35 +384,7 @@ contains
          request%matrix_sat%valid() .and. request%rapid%valid() .and. request%limiter%valid()
   end subroutine prepare_standard_macropore_rate_request
 
-  subroutine derive_rapid_volume_under_drain(drain_level,z,dz,volume_main,top_node,bottom_node,volume_under,ok)
-    real(real64),intent(in)::drain_level,z(:),dz(:),volume_main(:)
-    integer,intent(in)::top_node,bottom_node
-    real(real64),intent(out)::volume_under
-    logical,intent(out)::ok
-    integer::ic
-    real(real64)::upper,lower
-    logical::aligned
 
-    ok=.false.
-    volume_under=0.0_real64
-    if(size(z)/=size(dz) .or. size(z)/=size(volume_main))return
-    if(top_node<1 .or. bottom_node<top_node .or. bottom_node>size(z))return
-    if(any(dz<=0.0_real64) .or. any(volume_main<0.0_real64))return
-
-    aligned=.false.
-    do ic=top_node,bottom_node
-      upper=z(ic)+0.5_real64*dz(ic)
-      lower=z(ic)-0.5_real64*dz(ic)
-      if(abs(drain_level-upper)<=1.0e-10_real64 .or. abs(drain_level-lower)<=1.0e-10_real64)aligned=.true.
-    end do
-    if(.not.aligned)return
-
-    do ic=top_node,bottom_node
-      upper=z(ic)+0.5_real64*dz(ic)
-      if(upper<=drain_level+1.0e-10_real64)volume_under=volume_under+volume_main(ic)
-    end do
-    ok=.true.
-  end subroutine derive_rapid_volume_under_drain
 
   subroutine prepare_standard_sorptivity_history_request(template,geometry,macro_view,matrix_view,step_duration,request,ok)
     type(sorptivity_history_update_request_t),intent(in)::template

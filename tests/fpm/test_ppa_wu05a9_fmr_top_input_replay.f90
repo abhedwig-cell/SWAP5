@@ -207,7 +207,8 @@ contains
     class(transaction_state_t), allocatable :: before_state, after_trial_state, candidate_state, replay_state, &
          restored_state, next_state, restored_next_state, retry_state, fresh_retry_state
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
-    character(len=1)::reference_flag
+    character(len=1)::reference_flag,partial_flag
+    real(real64)::drain_level
     real(real64)::ref_theta(numnod),ref_cond(numnod),ref_cap(numnod),ref_dk(numnod)
     integer :: commit_status, persistence_status, k, crack_node
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
@@ -294,11 +295,14 @@ contains
     call derive_dynamic_minimum_subsidence(mcfg%shrinkage,dz,state_ok)
     if(.not.state_ok)error stop 'MIGMAC02 replay source minimum subsidence'
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A9 FMR top-input config validity'
+    drain_level=-2.0_real64
+    call get_environment_variable('WU05_MIGMAC07_PARTIAL',partial_flag)
+    if(partial_flag=='1')drain_level=-1.9_real64
     call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
     if(reference_flag=='1')then
       mcfg%rate_template%rapid%enabled=.true.
-      mcfg%rate_template%rapid%drain_level_cm=-2.0_real64
-      call hyd%evaluate(-2.0_real64-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      mcfg%rate_template%rapid%drain_level_cm=drain_level
+      call hyd%evaluate(drain_level-z,ref_theta,ref_cond,ref_cap,ref_dk)
       call prepare_fmr_macropore_rapid_reference(mcfg,z,ref_theta,-sum(dz),state_ok)
       if(.not.state_ok)error stop 'MIGMAC06 derived replay reference'
       print '(a,es24.16)','PPA_WU05_MIGMAC06_REFERENCE_KD=',mcfg%rate_template%rapid%kd_reference

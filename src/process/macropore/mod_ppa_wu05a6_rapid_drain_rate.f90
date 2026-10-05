@@ -1,5 +1,6 @@
 module mod_ppa_wu05a6_rapid_drain_rate
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   implicit none
   private
 
@@ -36,9 +37,52 @@ module mod_ppa_wu05a6_rapid_drain_rate
     real(real64), allocatable :: kd_cp(:)
   end type rapid_drain_result_t
 
-  public :: evaluate_rapid_drain
+  public :: evaluate_rapid_drain, derive_rapid_volume_under_drain
 
 contains
+
+  pure subroutine derive_rapid_volume_under_drain(drain_level,z,dz,volume_main,top_node,bottom_node,volume_under,ok)
+    real(real64),intent(in)::drain_level,z(:),dz(:),volume_main(:)
+    integer,intent(in)::top_node,bottom_node
+    real(real64),intent(out)::volume_under
+    logical,intent(out)::ok
+    integer::ic,n
+    real(real64)::upper,lower,level,fraction,total
+    ok=.false.;volume_under=0.0_real64;n=size(z)
+    if(n<=0.or.size(dz)/=n.or.size(volume_main)/=n)return
+    if(top_node<1.or.bottom_node<top_node.or.bottom_node>n)return
+    if(.not.ieee_is_finite(drain_level).or.any(.not.ieee_is_finite(z)).or. &
+         any(.not.ieee_is_finite(dz)).or.any(.not.ieee_is_finite(volume_main)))return
+    if(any(dz<=0.0_real64).or.any(volume_main<0.0_real64))return
+    do ic=2,n
+      if(abs(z(ic)+0.5_real64*dz(ic)-(z(ic-1)-0.5_real64*dz(ic-1)))>1.0e-10_real64)return
+    end do
+    level=drain_level
+    if(level>z(1)+0.5_real64*dz(1)+1.0e-10_real64.or. &
+         level<z(n)-0.5_real64*dz(n)-1.0e-10_real64)return
+    ! Preserve the admitted boundary tolerance and full-cell sum arithmetic.
+    do ic=1,n
+      upper=z(ic)+0.5_real64*dz(ic);lower=z(ic)-0.5_real64*dz(ic)
+      if(abs(level-upper)<=1.0e-10_real64)then
+        level=upper;exit
+      else if(abs(level-lower)<=1.0e-10_real64)then
+        level=lower;exit
+      end if
+    end do
+    total=0.0_real64
+    do ic=top_node,bottom_node
+      upper=z(ic)+0.5_real64*dz(ic);lower=z(ic)-0.5_real64*dz(ic)
+      if(upper<=level)then
+        total=total+volume_main(ic)
+      else if(lower<level)then
+        ! B1.11 VOLUNDR: capacity below the level at uniform cell density.
+        fraction=(level-lower)/dz(ic)
+        total=total+fraction*volume_main(ic)
+      end if
+    end do
+    if(.not.ieee_is_finite(total))return
+    volume_under=total;ok=.true.
+  end subroutine derive_rapid_volume_under_drain
 
   pure logical function rapid_drain_request_valid(self) result(ok)
     class(rapid_drain_request_t),intent(in)::self
