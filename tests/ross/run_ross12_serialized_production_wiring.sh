@@ -81,6 +81,7 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
   src/crop/mod_crop_bartholomeus_input.f90
   src/runtime/mod_fmr_bartholomeus_activation.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90
   src/runtime/mod_fmr_bartholomeus_contract.f90
   "$BACKEND"
   src/runtime/mod_fmr_accepted_commit_receipt.f90
