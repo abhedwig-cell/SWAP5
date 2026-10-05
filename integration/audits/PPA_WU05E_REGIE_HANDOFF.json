@@ -1,12 +1,12 @@
 {
   "schema": "swap5.ppa_wu05e.regie_handoff.v1",
   "work_unit": "PPA-WU05-E",
-  "status": "RECONCILED_CANDIDATE_PENDING_REPLAY",
-  "candidate_commit": "571a76c473949dccd5e690261fea0d8a0a1ea15c",
-  "candidate_tree": "95db85d2c0a45775f88d197696e11704a8cd2948",
-  "baseline": "8125ba01b5bfd7377c721caa1105d68e24e77183",
+  "status": "READY_FOR_REGIE",
+  "candidate_commit": "03674ed01509b3e109339ef0e684645e2287bad1",
+  "candidate_tree": "e38f0252f520e80b6c91af5d1451a36a9be2fbd0",
+  "baseline": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
   "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1015",
-  "qualification": "integration/audits/PPA_WU05E_MATRIX_TRANSPORT_QUALIFICATION.json",
+  "qualification": "integration/audits/PPA_WU05E_MATRIX_RECONCILED_QUALIFICATION.json",
   "qualified_scope": [
     "Selected matrix dissolved mobile salt: source molecular/mechanical dispersion, conservative upwind advection and donor-bounded internal solute stepping",
     "One Richards/root-water sink with independent salt ledger and integrated per-node root and signed per-level drainage receipts",
@@ -40,13 +40,13 @@
     "src/runtime/mod_fmr_production_application_bootstrap.f90",
     "D2/D3 and Richards/macropore preservation routes"
   ],
-  "required_qualification": "Exact source-bound O0/O2 process/application/restart and declared preservation replay: PASS",
+  "required_qualification": "Exact combined source O0/O2 matrix process/application/restart, Rutter and MIGMAC07/08/09 plus D2/D3/A8 preservation: PASS",
   "implementation_status": "IMPLEMENTED",
   "test_status": "PASS",
   "qualification_status": "SELECTED_MATRIX_QUALIFIED",
-  "recovery_point": "571a76c473949dccd5e690261fea0d8a0a1ea15c",
+  "recovery_point": "03674ed01509b3e109339ef0e684645e2287bad1",
   "owner": "Central SWAP5 regie",
-  "requested_action": "After exact combined-source replay, review this reconciled candidate and ADMIT, RETURN or SUPERSEDE",
+  "requested_action": "Review reconciled qualified successor; check live canonical delta after c7f9a7b8, then ADMIT, RETURN or SUPERSEDE",
   "authority": "docs/development/SWAP5_PROJECT_CONTROL.md: Control model",
   "interfaces_held_fixed": [
     "Single root-water sink and accepted water receipt",
@@ -64,9 +64,10 @@
   ],
   "production_admitted": false,
   "cross_workstream_consequences": [
-    "D2/D3 and Richards/macropore preservation evidence passed",
-    "No central registry or frozen Status A authority changed",
-    "Central owner must reconcile any canonical movement after the recorded baseline"
+    "INT13 Rutter and MIGMAC07/08/09 incorporated from admitted canonical input",
+    "Both independent state layouts, clone paths, initializers and temporal selectors preserved",
+    "Hybrid Rutter/salt configurations and restarts fail closed",
+    "Central registry and admission authority remain unchanged"
   ],
   "canonical_reconciliation": {
     "canonical_input": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
@@ -81,6 +82,8 @@
       "rutter_production": "PASS",
       "migmac07_08_09": "PASS_O0_O2"
     },
-    "production_admitted": false
+    "production_admitted": false,
+    "exact_persisted_replay": "PASS",
+    "qualified_commit": "03674ed01509b3e109339ef0e684645e2287bad1"
   }
 }
