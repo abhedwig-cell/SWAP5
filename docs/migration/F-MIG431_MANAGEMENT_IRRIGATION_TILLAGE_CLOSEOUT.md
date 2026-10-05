@@ -263,3 +263,14 @@ publication; then run the affected cross-route preservation and persisted
 admission gates. Coupled solute irrigation requires a separate solute mass
 owner. These process and runtime candidates are deliberately not labeled
 canonically admitted before those boundaries are proven.
+
+The tillage application boundary also changes the constitutive `cofgen`
+table, which currently belongs to the immutable
+`fmr_b110_physical_parameters_t` and its parameter-set identity, while
+pressure head, water content and pond belong to the committed physical
+state. A production transaction must publish the new material identity and
+the redistributed state together, and restore both together. Copying the
+typed water candidate into a committed state while retaining the old
+constitutive parameter set would make the next Richards step physically
+inconsistent. This is the remaining tillage architecture dependency; the
+qualified pure event transition is not a substitute for that publication.
