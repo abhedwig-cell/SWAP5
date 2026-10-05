@@ -2,7 +2,7 @@
   "schema": "swap5.f_mig431_int13_status.v1",
   "workunit": "F-MIG431-INT13",
   "title": "Rutter SWINTER=3 stateful atmospheric-forcing migration",
-  "state": "TARGETED_PERSISTED_QUALIFICATION_PASS_B1_11_SURFACE_IRRIGATION_BOTH_ISUA_BOUNDED",
+  "state": "BOUNDED_QUALIFICATION_PASS_READY_FOR_CANONICAL_REVIEW",
   "baseline": {
     "branch": "integration/f-ci-canonical",
     "head": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
@@ -64,7 +64,7 @@
     "Targeted INT13 run 37276517425 and PPA-WU01 owner run 37276517357 both passed on exact candidate commit 6f6eba2241b662cf0d3c1126bd21a63845b6ee41; the earlier INT13 run 37271615834 qualifies only the rain-only candidate."
   ],
   "qualified": true,
-  "next_action": "Keep PR #1016 as a bounded, unadmitted draft pending canonical integration. Resolve the separate Reference Richards surface-head derivative defect and run a separate qualification before extending the tested irrigation envelope.",
+  "next_action": "Complete canonical review and the required canonical branch qualification before integration. Any integration must retain the exact tested low-rate constant surface-irrigation envelope; qualify the separate Reference Richards derivative repair before extending the envelope.",
   "recovery_point": "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
   "blockers": [],
   "dependency_surface": [
