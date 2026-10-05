@@ -139,13 +139,15 @@ program test_frost_drain_runtime
        frost_case=.true.,start_time=1.e-4_real64,drain_case=.true.,resumed=restored(1),final_physical_state=replay)
   call require(again%committed.and.all(final%pressure_head==replay%pressure_head),'restored continuation bit identity')
   call require(result%mass%storage_change==again%mass%storage_change,'restored accounting identity')
-  control_head=[1._real64,2._real64]
+  control_head=[1._real64,2._real64];case_temperature=1._real64
   wet=initial
-  call initialize_soil_temperature_state([-4._real64,-4._real64,-4._real64,-4._real64],wet%soil_temperature,status)
+  call initialize_soil_temperature_state([1._real64,1._real64,1._real64,1._real64],wet%soil_temperature,status)
   call execute_case(2,0._real64,0._real64,-999999._real64,1.e-4_real64,.false.,.true.,again,observation, &
        frost_case=.true.,initial_physical_state=wet,final_physical_state=final,drain_case=.true.)
-  call require(again%committed.and.observation%frost_drainage%total_rate==0._real64,'air-rich frozen drainage zero')
+  call require(again%committed.and.observation%frost_drainage%total_rate==0._real64,'warm activation-zero drainage')
+  call require(observation%drainage_response%aggregate%signed_soil_to_drain_rate==0._real64,'actual generator inactive')
   call require(again%mass%total_in==0._real64.and.again%mass%total_out==0._real64,'zero actual drainage ledger')
+  case_temperature=-4._real64
   wet=initial;wet%pressure_head=[0._real64,1._real64,2._real64,3._real64];wet%water_content=parameters%cofgen(2,:)
   call initialize_soil_temperature_state([-4._real64,-4._real64,-4._real64,-4._real64],wet%soil_temperature,status)
   call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,again,observation, &
