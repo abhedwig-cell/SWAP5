@@ -224,3 +224,14 @@ A/B/A, smaller retry, restart, water closure and preservation evidence are in
 `docs/audits/PPA_WU05_MIGMAC02_CLOSEOUT.md`. Canonical admission is recorded in
 `integration/audits/PPA_WU05_MIGMAC02_STATUS.json` with canonical merge `957b87d69888f1eb7ef5671f441563bd9b798687`. Peat/alternate fitting and additional surface/drain compositions
 remain outside this bounded admission. Frozen Status A is unchanged.
+
+## PPA-WU05-MIGMAC03 peat and rigid constitutive extension
+
+Direct regular Hendriks and three-segment peat laws, including alternating
+rigid/peat compartment profiles, are locally qualified in the existing Reference
+Richards macropore geometry/transaction chain. Optional typed law selectors
+preserve implicit Kim callers. No new water or restart owner is introduced.
+[Closeout](../audits/PPA_WU05_MIGMAC03_CLOSEOUT.md) bounds parameter validity and
+claims; `integration/audits/PPA_WU05_MIGMAC03_STATUS.json` records admission.
+Parameter fitting, mixed Kim/peat runtime and new mixed-law rapid-drain reference
+construction remain separate gaps. Frozen Status A is unchanged.

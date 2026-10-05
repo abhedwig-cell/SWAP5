@@ -12,6 +12,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
   use mod_macropore_dynamic_shrinkage, only: prepare_clay_kim_option1, map_surface_crack_depth_to_node, &
+       SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, &
        derive_dynamic_minimum_subsidence
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t, &
        macropore_geometry_result_t, evaluate_macropore_geometry
@@ -37,6 +38,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
   implicit none
+  character(len=1)::constitutive_flag
 
   real(real64),parameter::dt=1.0e-3_real64,tol=1.0e-12_real64
   integer,parameter::nd=1
@@ -67,6 +69,8 @@ program test_ppa_wu05a9_fmr_top_input_replay
   logical::dynamic_enabled
   character(len=1)::dynamic_flag
 
+  constitutive_flag='0'
+  call get_environment_variable('WU05_MIGMAC03_LAW',constitutive_flag)
   dynamic_flag='0'
   call get_environment_variable('WU05_MIGMAC02_DYNAMIC',dynamic_flag)
   dynamic_enabled=dynamic_flag=='1'
@@ -245,6 +249,19 @@ contains
       call prepare_clay_kim_option1(0.427494_real64,0.20_real64,2.0_real64,1.20_real64,mcfg%shrinkage%kim(k),state_ok)
       if(.not.state_ok)error stop 'MIGMAC02 replay Kim parameters'
     end do
+    if(constitutive_flag/='0')then
+      allocate(mcfg%shrinkage%law(numnod),mcfg%shrinkage%peat(numnod))
+      mcfg%shrinkage%law=SHRINK_PEAT_DIRECT
+      if(constitutive_flag=='3' .or. constitutive_flag=='4')mcfg%shrinkage%law=SHRINK_PEAT_SEGMENTS
+      if(constitutive_flag=='2' .or. constitutive_flag=='4')mcfg%shrinkage%law(2::2)=SHRINK_RIGID
+      mcfg%shrinkage%peat%void_ratio_zero=0.2_real64
+      mcfg%shrinkage%peat%transition_moisture_ratio=0.5_real64
+      mcfg%shrinkage%peat%alpha=1.2_real64
+      mcfg%shrinkage%peat%beta=3.0_real64
+      mcfg%shrinkage%peat%p=0.1_real64
+      mcfg%shrinkage%peat%intermediate_moisture_ratio=0.2_real64
+      mcfg%shrinkage%peat%intermediate_void_ratio=0.4_real64
+    end if
     call derive_dynamic_minimum_subsidence(mcfg%shrinkage,dz,state_ok)
     if(.not.state_ok)error stop 'MIGMAC02 replay source minimum subsidence'
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A9 FMR top-input config validity'

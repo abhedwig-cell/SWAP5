@@ -21,8 +21,10 @@ program test_ppa_wu05a9_fmr_top_input_trial
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t, prepare_clay_kim_option1, &
+       SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, &
        evaluate_dynamic_crack_profile
   implicit none
+  character(len=1)::constitutive_flag
 
   integer(int64),parameter :: column_id=508001_int64
   real(real64),parameter :: dt=1.0e-3_real64
@@ -63,6 +65,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
   integer :: commit_status
   integer :: nd
 
+  constitutive_flag='0'
+  call get_environment_variable('WU05_MIGMAC03_LAW',constitutive_flag)
   dynamic_flag='0'
   call get_environment_variable('WU05_MIGMAC02_DYNAMIC',dynamic_flag)
   dynamic_enabled=dynamic_flag=='1' .or. dynamic_flag=='2' .or. dynamic_flag=='4' .or. dynamic_flag=='5'
@@ -211,6 +215,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
     call require(allocated(s%macropore),'postcommit macro state present')
     call require(s%macropore%ready(),'postcommit macro state ready')
     macro_after=sum(s%macropore%water_domain_cp)
+    if(constitutive_flag=='2' .or. constitutive_flag=='4') &
+         call require(all(s%macropore%dynamic_volume_cp(2::2)==0.0_real64),'MIGMAC03 accepted rigid geometry zero')
     if(geometry_changes_expected)then
       call require(any(s%macropore%dynamic_volume_cp>1.0e-12_real64),'MIGMAC02 accepted crack geometry changed')
     else if(dynamic_flag=='4' .or. dynamic_flag=='5')then
@@ -321,6 +327,19 @@ contains
       call prepare_clay_kim_option1(theta_s(k),0.20_real64,2.0_real64,1.20_real64,shrinkage%kim(k),ok)
       call require(ok,'MIGMAC02 clay option-1 configuration valid')
     end do
+    if(constitutive_flag/='0')then
+      allocate(shrinkage%law(numnod),shrinkage%peat(numnod))
+      shrinkage%law=SHRINK_PEAT_DIRECT
+      if(constitutive_flag=='3' .or. constitutive_flag=='4')shrinkage%law=SHRINK_PEAT_SEGMENTS
+      if(constitutive_flag=='2' .or. constitutive_flag=='4')shrinkage%law(2::2)=SHRINK_RIGID
+      shrinkage%peat%void_ratio_zero=0.2_real64
+      shrinkage%peat%transition_moisture_ratio=0.5_real64
+      shrinkage%peat%alpha=1.2_real64
+      shrinkage%peat%beta=3.0_real64
+      shrinkage%peat%p=0.1_real64
+      shrinkage%peat%intermediate_moisture_ratio=0.2_real64
+      shrinkage%peat%intermediate_void_ratio=0.4_real64
+    end if
 
     allocate(p%macropore)
     call initialize_fmr_macropore_standard_config(p%macropore,1,static_volume,domain_fraction,potential_bottom, &
