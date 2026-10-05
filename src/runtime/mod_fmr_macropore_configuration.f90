@@ -5,11 +5,11 @@ module mod_fmr_macropore_configuration
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t
   use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t, map_surface_crack_depth_to_node, &
-       derive_dynamic_minimum_subsidence
+       derive_dynamic_minimum_subsidence, prepare_rapid_drain_reference_kd
   implicit none
   private
 
-  public :: initialize_fmr_macropore_standard_config
+  public :: initialize_fmr_macropore_standard_config, prepare_fmr_macropore_rapid_reference
 
   type, public :: fmr_macropore_physical_config_t
     type(macropore_geometry_config_t) :: geometry
@@ -26,6 +26,24 @@ module mod_fmr_macropore_configuration
 
 contains
 
+
+  subroutine prepare_fmr_macropore_rapid_reference(config,z,theta_hydrostatic,static_bottom,ok)
+    type(fmr_macropore_physical_config_t),intent(inout)::config
+    real(real64),intent(in)::z(:),theta_hydrostatic(:),static_bottom
+    logical,intent(out)::ok
+    real(real64)::kd
+    ok=.false.
+    if(.not.config%valid_for_nodes(size(z)))return
+    if(config%geometry%top_node/=1)return
+    call prepare_rapid_drain_reference_kd(config%shrinkage,z,config%geometry%dz,theta_hydrostatic, &
+         config%geometry%static_volume_cp,config%geometry%domain_fraction(1,:), &
+         config%geometry%characteristic_diameter,static_bottom,config%rate_template%rapid%drain_level_cm, &
+         config%rate_template%rapid%drain_type,config%rate_template%rapid%area_exponent,kd,ok)
+    if(.not.ok)return
+    config%rate_template%rapid%kd_reference=kd
+    ! Valid disconnected source outcome never becomes a zero-resistance trial.
+    if(kd<=0.0_real64)config%rate_template%rapid%enabled=.false.
+  end subroutine prepare_fmr_macropore_rapid_reference
 
   subroutine initialize_fmr_macropore_standard_config(config, top_node, static_volume_cp, domain_fraction, &
        potential_bottom_domain, z, dz, diameter, theta_s, theta_r, wall_correction, sorptivity_max, &

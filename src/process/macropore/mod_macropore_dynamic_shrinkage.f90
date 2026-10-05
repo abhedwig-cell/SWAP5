@@ -57,9 +57,83 @@ module mod_macropore_dynamic_shrinkage
   public :: evaluate_dynamic_crack_profile
   public :: find_dynamic_groundwater_cutoff
   public :: map_surface_crack_depth_to_node
+  public :: prepare_rapid_drain_reference_kd
   public :: derive_dynamic_minimum_subsidence
 
 contains
+
+  subroutine prepare_rapid_drain_reference_kd(config,z,dz,theta_hydrostatic,static_volume, &
+       main_fraction,diameter,static_bottom,drain_level,drain_type,exponent,kd,ok)
+    type(dynamic_shrinkage_config_t),intent(in)::config
+    real(real64),intent(in)::z(:),dz(:),theta_hydrostatic(:),static_volume(:),main_fraction(:),diameter(:)
+    real(real64),intent(in)::static_bottom,drain_level,exponent
+    integer,intent(in)::drain_type
+    real(real64),intent(out)::kd
+    logical,intent(out)::ok
+    integer::n,ib,is,it,i
+    real(real64)::level,theta,shrink,dynamic_fraction,ratio,width,total,bottom
+    logical::rigid,local_ok
+    kd=0.0_real64;ok=.false.;n=size(z)
+    if(n<=0)return
+    if(size(dz)/=n.or.size(theta_hydrostatic)/=n.or.size(static_volume)/=n.or. &
+         size(main_fraction)/=n.or.size(diameter)/=n)return
+    if(.not.config%enabled.or..not.config%valid_for_nodes(n))return
+    if(any(.not.ieee_is_finite(z)).or.any(.not.ieee_is_finite(dz)).or. &
+         any(.not.ieee_is_finite(theta_hydrostatic)).or.any(.not.ieee_is_finite(static_volume)).or. &
+         any(.not.ieee_is_finite(main_fraction)).or.any(.not.ieee_is_finite(diameter)))return
+    if(.not.ieee_is_finite(static_bottom).or..not.ieee_is_finite(drain_level).or. &
+         .not.ieee_is_finite(exponent))return
+    if(any(dz<=0.0_real64).or.any(diameter<=0.0_real64).or.exponent<=0.0_real64)return
+    if(any(static_volume<0.0_real64).or.any(static_volume>=dz).or.any(main_fraction<0.0_real64).or. &
+         any(main_fraction>1.0_real64).or.any(theta_hydrostatic<0.0_real64).or. &
+         any(theta_hydrostatic>config%theta_s))return
+    if(drain_type/=1.and.drain_type/=2)return
+    ! Surface-based, contiguous centimetre grid. No covering-layer composition.
+    bottom=0.0_real64
+    do i=1,n
+      if(abs(z(i)-(bottom-0.5_real64*dz(i)))>1.0e-8_real64)return
+      bottom=bottom-dz(i)
+    end do
+    if(static_bottom>0.0_real64.or.drain_level>0.0_real64.or. &
+         static_bottom<bottom.or.drain_level<bottom)return
+    is=reference_node(static_bottom);ib=is;rigid=.false.
+    if(static_bottom>drain_level)then
+      ib=reference_node(drain_level)
+      if(ib>is.and.allocated(config%law))then
+        rigid=any(config%law(is:ib)==SHRINK_RIGID)
+        if(rigid)ib=is
+      end if
+    end if
+    if(drain_type==1.and.rigid)then
+      ok=.true.;return
+    end if
+    level=drain_level
+    if(rigid)level=static_bottom
+    level=min(0.75_real64*level,level+10.0_real64)
+    it=reference_node(level);total=0.0_real64
+    do i=it,ib
+      theta=theta_hydrostatic(i)
+      if(static_bottom>drain_level)theta=min(0.99_real64*config%theta_s(i),theta)
+      call evaluate_node_shrinkage_fraction(config,i,theta,shrink,local_ok)
+      if(.not.local_ok)return
+      dynamic_fraction=shrink-(1.0_real64-(1.0_real64-shrink)**(1.0_real64/config%geometry_factor(i)))
+      ratio=main_fraction(i)*(dynamic_fraction+static_volume(i)/dz(i))
+      if(.not.ieee_is_finite(ratio).or.ratio<0.0_real64.or.ratio>=1.0_real64)return
+      width=diameter(i)*(1.0_real64-sqrt(1.0_real64-ratio))
+      total=total+(width**exponent)/diameter(i)*dz(i)
+    end do
+    if(.not.ieee_is_finite(total))return
+    kd=total;ok=.true.
+  contains
+    integer function reference_node(depth) result(node)
+      real(real64),intent(in)::depth
+      real(real64)::b
+      node=1;b=-dz(1)-1.0e-2_real64
+      do while(depth<b.and.node<n)
+        node=node+1;b=b-dz(node)
+      end do
+    end function reference_node
+  end subroutine prepare_rapid_drain_reference_kd
 
   subroutine derive_dynamic_minimum_subsidence(config,dz,ok)
     type(dynamic_shrinkage_config_t),intent(inout)::config

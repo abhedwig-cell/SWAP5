@@ -202,6 +202,19 @@ for opt in 0 2; do
         grep -Fq 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS' "$OUT/fit_${fit}_wetting.txt"
       done
     fi
+    if [[ "${WU05_MIGMAC06:-0}" == 1 ]]; then
+      for law in 5 6 7; do
+        for mode in 1 4 5; do
+          WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC="$mode" "$OUT/test_a9_fmr" | tee "$OUT/kd_${law}_${mode}.txt"
+          grep -Fq 'PPA_WU05_MIGMAC06_REFERENCE_KD=' "$OUT/kd_${law}_${mode}.txt"
+          WU05_MIGMAC06_KD=2 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC="$mode" "$OUT/test_a9_fmr" > "$OUT/kd_${law}_${mode}_supplied.txt"
+          cmp "$OUT/kd_${law}_${mode}.txt" "$OUT/kd_${law}_${mode}_supplied.txt"
+
+        done
+        WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_replay" | tee "$OUT/kd_${law}_replay.txt"
+        grep -Fq 'PPA_WU05_MIGMAC02_DYNAMIC_ACCEPTED_RESTART=PASS' "$OUT/kd_${law}_replay.txt"
+      done
+    fi
     if [[ "${WU05_MIGMAC05:-0}" == 1 ]]; then
       for law in 5 6 7; do
         WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_fmr" | tee "$OUT/mixed_${law}_trial.txt"
@@ -270,3 +283,12 @@ if [[ "${WU05_MIGMAC05:-0}" == 1 ]]; then
   echo 'PPA_WU05_MIGMAC05_MIXED_REFERENCE_O0_O2_IDENTITY=PASS'
 fi
 echo "PPA_WU05A9_TOP_INPUT_GATE=PASS"
+
+if [[ "${WU05_MIGMAC06:-0}" == 1 ]]; then
+  for law in 5 6 7; do
+    for mode in 1 4 5 replay; do
+      cmp "$BUILD/o0/kd_${law}_${mode}.txt" "$BUILD/o2/kd_${law}_${mode}.txt"
+    done
+  done
+  echo 'PPA_WU05_MIGMAC06_REFERENCE_O0_O2_IDENTITY=PASS'
+fi
