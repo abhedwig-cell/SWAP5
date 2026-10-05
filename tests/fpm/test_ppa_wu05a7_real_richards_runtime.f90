@@ -32,7 +32,8 @@ program test_ppa_wu05a7_real_richards_runtime
        fmr_serialized_physical_observation_t, fmr_water_flux_substep_trace_t, &
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
        fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg, &
-       fmr_c_drain_salt_forcing_t, FMR_C_DRAIN_UNIT_MG_CM3, fmr_c_drain_salt_covers_interval
+       fmr_c_drain_salt_forcing_t, FMR_C_DRAIN_UNIT_MG_CM3, fmr_c_drain_salt_covers_interval, &
+       fmr_c_drain_salt_matches_trial
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
@@ -516,6 +517,10 @@ contains
     cdrain%source_id=1_int64;cdrain%revision=0_int64;cdrain%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
     if(.not.fmr_c_drain_salt_covers_interval(cdrain,cdrain%valid_t0,cdrain%valid_t1)) &
          error stop 'FMR Cdrain declared interval rejected'
+    if(.not.fmr_c_drain_salt_matches_trial(cdrain,cdrain%source_id,cdrain%valid_t0,cdrain%valid_t1)) &
+         error stop 'FMR Cdrain trial identity rejected'
+    if(fmr_c_drain_salt_matches_trial(cdrain,cdrain%source_id+1_int64,cdrain%valid_t0,cdrain%valid_t1)) &
+         error stop 'FMR Cdrain mismatched source identity accepted'
     if(fmr_c_drain_salt_covers_interval(cdrain,cdrain%valid_t0,cdrain%valid_t1+1.0e-9_real64)) &
          error stop 'FMR Cdrain incomplete interval accepted'
     cdrain%unit_id=0
