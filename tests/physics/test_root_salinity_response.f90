@@ -32,6 +32,10 @@ program test_root_salinity_response
   call req(status==SALINITY_INVALID,'negative threshold rejected')
   call evaluate_maas_hoffman_response([1.0_real64],threshold,-slope,alpha(1:1),status)
   call req(status==SALINITY_INVALID,'negative slope rejected')
+  call evaluate_maas_hoffman_response([1.0_real64],100.01_real64,slope,alpha(1:1),status)
+  call req(status==SALINITY_INVALID,'threshold above B1.11 input range rejected')
+  call evaluate_maas_hoffman_response([1.0_real64],threshold,1.01_real64,alpha(1:1),status)
+  call req(status==SALINITY_INVALID,'slope above B1.11 input range rejected')
   ! Mass and water are supplied from one trial revision: CML is derived from
   ! mg/cm2 divided by theta*dz, then the exact same alpha scales the sink.
   potential=[0.1_real64,0.2_real64]
