@@ -46,7 +46,7 @@ named below.
 | `RAW`, `TAW`, `DWA` crop-stage tables | Set TCS2 readily available, TCS3 total available and TCS4 absolute depletion thresholds | DVS lookup and root-zone water amounts | Typed AFGEN tables and weighted depletion oracles pass O0/O2 with the respective criteria | `MIGRATE` with TCS2/3/4 production binding |
 | `TCS=5` | Obsolete combined pressure-head/water-content criterion | None; source rejects it | B1.11 `irrigation` emits an obsolete-option error and directs users to TCS7 or TCS8 | `REJECTED` |
 | `TCS=6` | Weekly/fixed-interval opportunity gated by irrigation deficit threshold | `dayfix`, deficit, threshold, event gate | Typed weekly counter now advances transactionally, evaluates the B1.11 `10*cdef > irgthreshold` test on day seven, persists through irrigation restart state, and rolls back on rejected event splits. O0/O2 oracle passes; no admitted production composition | `MIGRATE` |
-| `TCS=7` | Trigger when pressure head at `dcrit` is at or below a crop-stage threshold | Sensor-node pressure head, DVS lookup, event state | Typed scheduler and O0/O2 process qualification cover AFGEN threshold/depth, SSDI rate placement, event split/replay and mass closure. A schema-versioned restart record roundtrips active events; a typed runtime adapter adds accepted SSDI rates to the SWAP subsurface source while preserving other sources. No admitted production composition | `MIGRATE` |
+| `TCS=7` | Trigger when pressure head at `dcrit` is at or below a crop-stage threshold | Sensor-node pressure head, DVS lookup, event state | Typed scheduler and O0/O2 process qualification cover AFGEN threshold/depth, SSDI rate placement, event split/replay and mass closure. A bounded real Reference FMR19 trial holds a TCS7/DCS2 SSDI event active across two accepted intervals and joint physical/management restart, then commits its exact end. Its sensor view is a fixture observation and its SSDI is balanced by drainage; a live accepted hydraulic sensor and nonstationary response remain open | `MIGRATE` |
 | `TCS=8` | Trigger when water content at `dcrit` is at or below a crop-stage threshold | Sensor-node water content, DVS lookup, event state | Typed criterion now has an independent AFGEN and `theta <= theta_crit` process oracle at O0/O2; no admitted production binding | `MIGRATE` |
 | `VALUE_TC7`, `VALUE_TC8`, `dcrit` | Select the crop-stage pressure-head or water-content threshold and sensing depth | AFGEN table and hydraulic sensor-node binding | Typed TCS7/8 tables and node observation oracles pass O0/O2; depth-to-node configuration binding remains open | `MIGRATE` with TCS7/8 production binding |
 | `TCSFIX=1`, `irgdayfix` | Require a minimum day interval between scheduled events | Day counter and previous event progress | PR #265 admits the TCSFIX=1 cadence within its TCS1/DCS2 Hupsel route | `ADMITTED` within PR #265 envelope |
@@ -165,6 +165,13 @@ both arrays together; a corrupt record preserves the uninitialized physical
 targets and initial management pointers. The extra drainage exactly cancels
 the tiny SSDI input, so this gate does not establish a nonstationary water
 response or a general production event orchestrator.
+The same gate runs a TCS7/DCS2 scheduled SSDI variant with a pressure-head
+threshold and an event spanning `[t0,tm]` and `[tm,t1]`. The active event
+rate/deadline survive the atomic joint restart, and the second accepted
+receipt publishes an inactive event. The sensor profile is fixed to the
+stationary FMR19 fixture and checked against the initial committed
+Reference hydraulic snapshot. Production sampling on each changing
+accepted state and nonstationary irrigation response remain open.
 
 A local falsification variant removed the compensating drainage while
 retaining the tiny `1e-10 cm/day` event source and the FMR19 hard mass gate.

@@ -42,6 +42,7 @@ for opt in 0 2; do
       src/runtime/mod_fmr_irrigation_reference_binding.f90 \
       src/runtime/mod_fmr_irrigation_restart.f90 \
       src/runtime/mod_fmr_irrigation_joint_restart.f90 \
+      src/runtime/mod_fmr_process_hydraulic_view_binding.f90 \
       src/process/mod_crop_calendar_management_process.f90 \
       src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
       src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do
@@ -68,7 +69,7 @@ cat "$BUILD/o0/crop-output"
 
 # Materialize an additive event in the established real Reference dispatcher,
 # whose continuous/restarted endpoint and hard mass receipts are independently checked.
-python3 - "$BUILD/fmr19-managed.f90" <<'PY'
+python3 - "$BUILD/fmr19-managed.f90" "$BUILD/fmr19-tcs7.f90" <<'PY'
 from pathlib import Path
 import sys
 s=Path('tests/fmr/test_fmr19_process_restart.f90').read_text()
@@ -214,6 +215,97 @@ s=s.replace(anchor,"""      if (.not. results(i)%committed) print *, 'MANAGED_DI
            results(i)%solver_route, results(i)%solver_iterations, results(i)%mass%residual
 """+anchor)
 Path(sys.argv[1]).write_text(s)
+
+# A scheduled TCS7/DCS2 event spans both accepted intervals. Its active
+# event rate, deadline and pointer cross the joint physical restart boundary.
+t=s.replace('IRRIGATION_APPLICATION_SSDI, IRRIGATION_OK',
+'''IRRIGATION_APPLICATION_SSDI, IRRIGATION_OK, scheduled_irrigation_parameters_t, &
+       scheduled_irrigation_request_t, evaluate_scheduled_irrigation_interval''')
+t=t.replace('  use mod_fmr_irrigation_reference_binding,',
+'''  use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_fmr_process_hydraulic_view_binding, only: fmr_build_committed_process_hydraulic_view
+  use mod_fmr_irrigation_reference_binding,''',1)
+t=t.replace('    type(irrigation_joint_restart_t) :: joint_bundle, corrupt_joint',
+'''    type(process_hydraulic_view_t) :: live_sensor_view
+    logical :: sensor_available
+    type(irrigation_joint_restart_t) :: joint_bundle, corrupt_joint''',1)
+anchor='    call build_runtime(n, .true., base_columns, base_templates, base_parameters, base_forcings, base_states)'
+assert t.count(anchor)==1
+t=t.replace(anchor,anchor+'''
+    call fmr_build_committed_process_hydraulic_view(base_states(1),live_sensor_view,sensor_available)
+    call require(sensor_available .and. live_sensor_view%pressure_head(1) == head0, &
+         'TCS7 sensor equals committed Reference pressure head')''')
+start=t.index('  subroutine managed_irrigation_event(')
+end=t.index('  end subroutine managed_irrigation_event',start)+len('  end subroutine managed_irrigation_event')
+t=t[:start]+'''  subroutine managed_irrigation_event(committed,candidate,flux,diagnostics)
+    type(irrigation_state_t), intent(in) :: committed
+    type(irrigation_state_t), intent(out) :: candidate
+    type(irrigation_flux_result_t), intent(out) :: flux
+    type(irrigation_diagnostics_t), intent(out) :: diagnostics
+    type(scheduled_irrigation_parameters_t) :: parameters
+    type(scheduled_irrigation_request_t) :: request
+    type(process_hydraulic_view_t) :: hydraulic
+    parameters%scheduled_irrigation_enabled = .true.
+    parameters%timing_criterion = 7
+    parameters%depth_criterion = 2
+    parameters%active_nodes = numnod
+    parameters%sensor_node = 1
+    parameters%single_ssdi_node = 2
+    parameters%application_type = IRRIGATION_APPLICATION_SSDI
+    parameters%irr_rate_cm_per_day = 1.0e-10_real64
+    parameters%tcs7_knot_count = 2
+    parameters%tcs7_dvs(1:2) = [0.0_real64,2.0_real64]
+    parameters%tcs7_pressure_head(1:2) = [-70.0_real64,-70.0_real64]
+    parameters%dcs2_knot_count = 2
+    parameters%dcs2_dvs(1:2) = [0.0_real64,2.0_real64]
+    parameters%dcs2_depth_cm(1:2) = [5.0e-11_real64,5.0e-11_real64]
+    hydraulic%active_nodes = numnod
+    hydraulic%pressure_head = spread(head0,1,numnod)
+    hydraulic%water_content = spread(0.25_real64,1,numnod)
+    request%t0 = t0
+    request%t1 = tm
+    request%dvs = 1.0_real64
+    request%selection_opportunity = .true.
+    request%irrigation_enabled = .true.
+    request%schedule_enabled = .true.
+    request%crop_emerged = .true.
+    request%irrigation_window_open = .true.
+    if (committed%active_event) then
+      request%t0 = tm
+      request%t1 = t1
+      request%selection_opportunity = .false.
+    end if
+    call evaluate_scheduled_irrigation_interval(parameters,committed,request,hydraulic,candidate,flux,diagnostics)
+  end subroutine managed_irrigation_event'''+t[end:]
+t=t.replace('event_flux%event_finished .and. &\n         proposed_management%next_fixed_event_index == 2',
+            'event_flux%event_remains_active .and. proposed_management%active_event')
+t=t.replace('base_management%next_fixed_event_index == 2', 'base_management%active_event')
+t=t.replace('all(joint_management%next_fixed_event_index == 2)', 'all(joint_management%active_event)')
+t=t.replace('restart_management%next_fixed_event_index == base_management%next_fixed_event_index',
+            'restart_management%active_event .eqv. base_management%active_event')
+t=t.replace('irrigation_flux%event_finished', 'irrigation_flux%event_remains_active')
+import re
+for prefix in ('base','restart'):
+ pattern=r'    do i=1,n\n      '+prefix+r'_forcings\(i\)%subsurface_irrigation_source\(2\) = &\n.*?    end do\n'
+ t,count=re.subn(pattern,'',t,count=1,flags=re.S)
+ assert count==1,(prefix,count)
+anchor="    call require(result_sets_identical(base_second, restart_second), 'second interval result identity')"
+assert t.count(anchor)==1
+t=t.replace(anchor,anchor+'''
+    call managed_irrigation_event(base_management,proposed_management,event_flux,event_diagnostics)
+    call require(event_diagnostics%status == IRRIGATION_OK .and. event_flux%event_finished .and. &
+         .not. proposed_management%active_event, 'TCS7 event ends at second accepted endpoint')
+    call fmr_publish_accepted_irrigation_state(base_management,proposed_management,base_second(1), &
+         base_columns(1)%column_id,t1,management_published)
+    call require(management_published .and. .not. base_management%active_event, 'TCS7 finish committed')
+    call managed_irrigation_event(restart_management,proposed_management,event_flux,event_diagnostics)
+    call require(event_diagnostics%status == IRRIGATION_OK .and. event_flux%event_finished, &
+         'TCS7 restarted active event finishes')
+    call fmr_publish_accepted_irrigation_state(restart_management,proposed_management,restart_second(1), &
+         restart_columns(1)%column_id,t1,management_published)
+    call require(management_published .and. .not. restart_management%active_event, &
+         'TCS7 restart finish committed')''')
+Path(sys.argv[2]).write_text(t)
 PY
 for opt in 0 2; do
   out="$BUILD/o$opt"; objects=()
@@ -221,6 +313,7 @@ for opt in 0 2; do
       src/runtime/mod_fmr_irrigation_source_binding.f90 src/runtime/mod_fmr_irrigation_reference_binding.f90 \
       src/runtime/mod_fmr_irrigation_restart.f90 \
       src/runtime/mod_fmr_irrigation_joint_restart.f90 \
+      src/runtime/mod_fmr_process_hydraulic_view_binding.f90 \
       src/process/mod_crop_calendar_management_process.f90 \
       src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
       src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do
@@ -231,6 +324,12 @@ for opt in 0 2; do
   "$out/managed" > "$out/managed-output" 2>&1 || { cat "$out/managed-output" >&2; exit 1; }
   grep -Fq 'FMR19_CONTINUOUS_VS_RESTARTED_ENDPOINT_IDENTITY=PASS' "$out/managed-output"
   grep -Fq 'FMR19_EXACT_INTERVAL_MASS_CONTINUATION=PASS' "$out/managed-output"
+  gfortran "${flags[@]}" -O"$opt" -J "$out" -I "$out" -c "$BUILD/fmr19-tcs7.f90" -o "$out/tcs7.o"
+  gfortran -O"$opt" "${objects[@]}" "$out/tcs7.o" -o "$out/tcs7"
+  "$out/tcs7" > "$out/tcs7-output" 2>&1 || { cat "$out/tcs7-output" >&2; exit 1; }
+  grep -Fq 'FMR19_CONTINUOUS_VS_RESTARTED_ENDPOINT_IDENTITY=PASS' "$out/tcs7-output"
 done
 cmp "$BUILD/o0/managed-output" "$BUILD/o2/managed-output"
+cmp "$BUILD/o0/tcs7-output" "$BUILD/o2/tcs7-output"
 echo 'F_MIG431_MANAGED_SSDI_REAL_REFERENCE_RESTART_O0_O2=PASS'
+echo 'F_MIG431_TCS7_SSDI_REAL_REFERENCE_RESTART_O0_O2=PASS'
