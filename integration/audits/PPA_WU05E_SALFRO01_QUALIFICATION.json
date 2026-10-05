@@ -1,0 +1,196 @@
+{
+  "schema": "swap5.ppa.salfro01.qualification.v1",
+  "work_unit": "PPA-WU05-E-SALFRO01",
+  "status": "QUALIFIED_SELECTED_MATRIX_ROOT_FROST_READY_FOR_ADMISSION",
+  "baseline": "1de2b874140c9f83a57c3eda8dfeddeeee19538d",
+  "execution_checkout": "62ab20b25ec8648d9204ffd8f223672804925661",
+  "published_execution_equivalent": "eb292ff081834ceb208c3c4d9818199d87e2efed",
+  "source_subtrees": {
+    "src": "184379954b7a6e29632e3af79350c5f5ae10f4f3",
+    "tests": "69bf7a5c06e197431d2ab0c36b709ae4adb4df4f"
+  },
+  "source_manifest_entries_verified": 1766,
+  "contract": "docs/audits/PPA_WU05E_SALFRO01_CONTRACT.md",
+  "source_authority_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+  "qualified_scope": [
+    "Independent four-factor node attribution and all five compensation selectors for Jarvis/Walsum at O0/O2",
+    "Selected actual matrix Maas-Hoffman and empirical root frost, no Bartholomeus, zero-flux bottom2/no drains/no irrigation",
+    "Actual ALL/salinity/frost selectors, one final water sink, TSCF root salt receipt and hard water/salt balance",
+    "Nine invalid profile/input cases reject at backend/application without publishing accepted transpiration or mutating state",
+    "Actual all-frozen/warm/short-thaw response with accepted root water and salt zero in the frozen regime",
+    "Both independent temporal owners force rejection, attainable-budget refinement, exact discard isolation",
+    "Changed temperature/salt boundary/current Walsum geometry, committed restart and separate-process/O0/O2 physical byte identity"
+  ],
+  "exclusions": [
+    "Bottom frost or normal frost drainage combined with salt",
+    "Bartholomeus oxygen at negative temperature, Rutter or macropore salt hybrids",
+    "Osmotic head, real ice/latent heat/cryoconcentration",
+    "Seasonal field and full legacy equivalence"
+  ],
+  "controlling_gates": {
+    "joint-jarvis-upwind": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt_frost.py",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 124.74
+    },
+    "joint-walsum-upwind": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt_frost.py",
+      "environment": {
+        "WU05E_COMPENSATION_METHOD": "walsum"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 131.56
+    },
+    "joint-process": {
+      "command": "bash tests/physics/run_ppa_wu05e_salt_frost_process.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 1.78
+    },
+    "joint-jarvis-dispersion": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt_frost.py",
+      "environment": {
+        "WU05E_TRANSPORT_VARIANT": "dispersion"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 135.38
+    },
+    "joint-walsum-dispersion": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt_frost.py",
+      "environment": {
+        "WU05E_COMPENSATION_METHOD": "walsum",
+        "WU05E_TRANSPORT_VARIANT": "dispersion"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 123.04
+    },
+    "frost-b3-runtime": {
+      "command": "bash tests/frost/run_ppa_wu05b3_frost_bottom_runtime.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 114.64
+    },
+    "frost-b6-source": {
+      "command": "bash tests/frost/run_ppa_wu05b6_normal_drain_source.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 1.07
+    },
+    "frost-b4-runtime": {
+      "command": "bash tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 131.38
+    },
+    "frost-b6-runtime": {
+      "command": "bash tests/frost/run_ppa_wu05b6_normal_drain_runtime.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 132.77
+    },
+    "root-frost-process": {
+      "command": "bash tests/frost/run_ppa_wu05b2_root_frost.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 1.45
+    },
+    "walsum-upwind": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "environment": {
+        "WU05E_COMPENSATION_METHOD": "walsum"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 147.9
+    },
+    "jarvis-process": {
+      "command": "bash tests/physics/run_ppa_wu05d2_jarvis.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 1.79
+    },
+    "mobile-salt": {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 3.08
+    },
+    "walsum-dispersion": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "environment": {
+        "WU05E_COMPENSATION_METHOD": "walsum",
+        "WU05E_TRANSPORT_VARIANT": "dispersion"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 141.0
+    },
+    "root-frost-runtime": {
+      "command": "bash tests/frost/run_ppa_wu05b2_root_frost_runtime.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 118.14
+    },
+    "matrix-upwind": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 140.52
+    },
+    "matrix-dispersion": {
+      "command": "python tests/physics/run_ppa_wu05e_mixed_salt.py",
+      "environment": {
+        "WU05E_TRANSPORT_VARIANT": "dispersion"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 149.89
+    },
+    "d2-application": {
+      "command": "python tests/physics/run_ppa_wu05d2_application.py",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 130.88
+    },
+    "frost-runtime": {
+      "command": "bash tests/frost/run_ppa_wu05b_frost_runtime.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 93.89
+    },
+    "d3-walsum": {
+      "command": "python tests/physics/run_ppa_wu05d3_walsum.py",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 126.5
+    },
+    "migmac09": {
+      "command": "bash tests/fpm/run_ppa_wu05_migmac09_reference_runtime.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 113.45
+    },
+    "rutter-production": {
+      "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 139.49
+    },
+    "richards-a8": {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 121.77
+    }
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05E_SALFRO01_LOCAL_REPLAY.json.gz",
+    "sha256": "85d8fc5f48f1b864b12df8af3a56c6099984974599315d40c8ae4aa820be78fc",
+    "bytes": 70943
+  },
+  "documentation_gates": {
+    "source_check": "PASS",
+    "mkdocs_strict": "PASS",
+    "whitespace": "PASS"
+  },
+  "canonical_admitted": false,
+  "source_equivalence": "Later metadata can inherit execution only while complete src and tests subtrees remain identical."
+}

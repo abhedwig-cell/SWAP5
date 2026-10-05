@@ -1,6 +1,6 @@
 # PPA-WU05-E-SALFRO01 joint salt/root-frost contract
 
-Status: proposed successor, preregistered before shared implementation changes.
+Status: qualified selected successor; canonical admission pending. Preregistered before shared implementation changes.
 Baseline: `b872ddbd930ea08b058575877a03774d313742cc`.
 
 Scientific authority: SWAP 4.3.1 B1.11 `rootextraction.f90`, SHA256
@@ -57,3 +57,13 @@ range comparisons, preserving the same permitted finite parameter range.
 The old root-frost process salt/frost exclusion assertion is superseded only
 for complete four-channel attribution; its replacement still rejects an
 incomplete loss sum, with independent new positive and negative coverage.
+
+## Independent B7 reference-only reconciliation
+
+Canonical `024c6a55` adds two reference-only test files and a separate guarded
+FrozenCond overlay. The complete production source tree and every existing
+test file are unchanged; all 1,766 original manifest entries match current
+files. The 23-group qualification remains immutable for its original tree.
+A separately preregistered B7 replay and exact original/current dependency
+comparison qualify the reconciled complete test tree, with 24 composite groups.
+This does not inherit changed production or test semantics without replay.

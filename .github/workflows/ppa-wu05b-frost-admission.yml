@@ -82,6 +82,11 @@ jobs:
             bash tests/frost/run_ppa_wu05b6_normal_drain_source.sh
             bash tests/frost/run_ppa_wu05b6_normal_drain_runtime.sh
           fi
+      - name: Guarded corrected B1 frost geometry reference
+        run: |
+          if test -f tests/frost/run_ppa_wu05b7_geometry_reference.py; then
+            python3 tests/frost/run_ppa_wu05b7_geometry_reference.py
+          fi
       - name: Exact current-canonical preservation for the bounded frost successor
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
       - name: Install documentation dependencies

@@ -1,0 +1,132 @@
+{
+  "work_unit": "PPA-WU05B7-REF",
+  "original_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+  "runs": {
+    "O0": {
+      "valid": {
+        "returncode": 0,
+        "stdout": "FROST_GEOMETRY_01_VALID_PHYSICAL_IDENTITY_CASES=48\nPPA_WU05B7_GUARDED_REFERENCE_GEOMETRY=PASS\n",
+        "stderr": ""
+      },
+      "original_uniform": {
+        "returncode": -8,
+        "stdout": "",
+        "stderr": "\nProgram received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.\n\nBacktrace for this error:\n#0  0x7f5eac759e59 in ???\n#1  0x7f5eac758e75 in ???\n#2  0x7f5eac48032f in ???\n#3  0x560c65065215 in __mod_frost_MOD_frozencond\n#4  0x560c65069713 in MAIN__\n#5  0x560c6506b4e6 in main\n"
+      },
+      "guarded_uniform": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "original_epsilon": {
+        "returncode": 0,
+        "stdout": "ORIGINAL_FROST_BOTTOM=  4.9979995858868460E+03\n",
+        "stderr": ""
+      },
+      "guarded_epsilon": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "guarded_nan": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "guarded_grid": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "guarded_limits": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "guarded_distance": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "original_drain_index": {
+        "returncode": 2,
+        "stdout": "",
+        "stderr": "At line 180 of file /workspace/scratch/710205ff711d/frost-geometry-reference/reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90\nFortran runtime error: Index '0' of dimension 1 of array 'zbotdr' below lower bound of 1\n\nError termination. Backtrace:\n#0  0x7f6f8dabce59 in ???\n#1  0x7f6f8dabda71 in ???\n#2  0x55ed12e370b7 in __mod_frost_MOD_frozenbounds\n#3  0x55ed12e3ca8f in MAIN__\n#4  0x55ed12e3e4e6 in main\n"
+      },
+      "guarded_drain_index": {
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "ERROR STOP FROST_DRAIN_GEOMETRY_INVALID\n\nError termination. Backtrace:\n#0  0x7fbb6465ee59 in ???\n#1  0x7fbb6465fa71 in ???\n#2  0x5563844fdab3 in __mod_frost_guarded_MOD_frozenbounds\n#3  0x556384501b62 in MAIN__\n#4  0x5563845034e6 in main\n"
+      },
+      "guarded_stale_geometry": {
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x7fd56260fe59 in ???\n#1  0x7fd562610a71 in ???\n#2  0x5594315a280a in __mod_frost_guarded_MOD_frozenbounds\n#3  0x5594315a6b62 in MAIN__\n#4  0x5594315a84e6 in main\n"
+      }
+    },
+    "O2": {
+      "valid": {
+        "returncode": 0,
+        "stdout": "FROST_GEOMETRY_01_VALID_PHYSICAL_IDENTITY_CASES=48\nPPA_WU05B7_GUARDED_REFERENCE_GEOMETRY=PASS\n",
+        "stderr": ""
+      },
+      "original_uniform": {
+        "returncode": -8,
+        "stdout": "",
+        "stderr": "\nProgram received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.\n\nBacktrace for this error:\n#0  0x7f5480acfe59 in ???\n#1  0x7f5480acee75 in ???\n#2  0x7f54807f632f in ???\n#3  0x564a4982eb50 in __mod_frost_MOD_frozencond\n#4  0x564a49830556 in MAIN__\n#5  0x564a4982e1b8 in main\n"
+      },
+      "guarded_uniform": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "original_epsilon": {
+        "returncode": 0,
+        "stdout": "ORIGINAL_FROST_BOTTOM=  4.9979995858868460E+03\n",
+        "stderr": ""
+      },
+      "guarded_epsilon": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "guarded_nan": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "guarded_grid": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "guarded_limits": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "guarded_distance": {
+        "returncode": 0,
+        "stdout": "GUARDED_INVALID_GEOMETRY_STATUS=PASS\n",
+        "stderr": ""
+      },
+      "original_drain_index": {
+        "returncode": 2,
+        "stdout": "",
+        "stderr": "At line 180 of file /workspace/scratch/710205ff711d/frost-geometry-reference/reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90\nFortran runtime error: Index '0' of dimension 1 of array 'zbotdr' below lower bound of 1\n\nError termination. Backtrace:\n#0  0x7f4dd969ce59 in ???\n#1  0x7f4dd969da71 in ???\n#2  0x55e9326d69f7 in __mod_frost_MOD_frozenbounds\n#3  0x55e9326d899e in MAIN__\n#4  0x55e9326d61b8 in main\n"
+      },
+      "guarded_drain_index": {
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "ERROR STOP FROST_DRAIN_GEOMETRY_INVALID\n\nError termination. Backtrace:\n#0  0x7f3038468e59 in ???\n#1  0x7f3038469a71 in ???\n#2  0x55b244a90ff7 in __mod_frost_guarded_MOD_frozenbounds\n#3  0x55b244a92a06 in MAIN__\n#4  0x55b244a901b8 in main\n"
+      },
+      "guarded_stale_geometry": {
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x7fb28be24e59 in ???\n#1  0x7fb28be25a71 in ???\n#2  0x56295590d020 in __mod_frost_guarded_MOD_frozenbounds\n#3  0x56295590ea06 in MAIN__\n#4  0x56295590c1b8 in main\n"
+      }
+    }
+  },
+  "status": "LOCAL_BOUNDED_REFERENCE_COMPONENT_PASS_NOT_ADMITTED",
+  "O0_O2_valid_stdout": "IDENTICAL"
+}
