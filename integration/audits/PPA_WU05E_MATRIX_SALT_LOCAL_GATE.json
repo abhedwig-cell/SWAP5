@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_wu05e.matrix_salt_local_gate.v1",
   "work_unit": "PPA-WU05-E",
-  "tested_postimage": "43d487734844a8f21210be29c1e99ad8e98aae4b",
+  "tested_postimage": "fd68801196fa9c7e2a34e5649c33f4b72e7de810",
   "canonical": "8125ba01b5bfd7377c721caa1105d68e24e77183",
   "status": "LOCAL_RESTRICTED_MATRIX_MIXED_APPLICATION_GATES_PASS",
   "qualified": false,
@@ -36,13 +36,13 @@
   },
   "checks": {
     "matrix": {
-      "runner_tested_postimage": "43d487734844a8f21210be29c1e99ad8e98aae4b",
+      "runner_tested_postimage": "fd68801196fa9c7e2a34e5649c33f4b72e7de810",
       "dependency_surface_matches_final_postimage": true,
-      "result_sha256": "5335830182b3536f44c810f8d833441f25e7b2011af00d88e226cecf4806a056",
+      "result_sha256": "760ae49ec0478f0c7e9d2b2cd531c07c2c5349458ff44269cabd9a603784937a",
       "result": {
         "work_unit": "PPA-WU05-E",
         "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
-        "tested_postimage": "43d487734844a8f21210be29c1e99ad8e98aae4b",
+        "tested_postimage": "fd68801196fa9c7e2a34e5649c33f4b72e7de810",
         "source_sha256": {
           "tests/fsi/fsi04_real_headcalc_stubs.f90": "80eb9087c36057a922185bdc27b435d30721ab9be780e2f5082fc8258d96a25f",
           "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
@@ -179,7 +179,7 @@
           "src/runtime/mod_macropore_single_column_runtime.f90": "baed993936e41bf2eba84448f1f57e5e7fbaf2dabb0149283559f7920a6be69c",
           "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90": "3928ba93416c2271d93d275e0688a4656256558cc68e65b6aff615663fcad7ff",
           "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90": "bc61897382b2969c899e271ef41d495f7b06d378d5c7a6bf6490d506d232f527",
-          "src/runtime/mod_fmr_serialized_reference_backend.f90": "149c08e9b6b0da923ce8509da83c6706bd07ea24184cfdfc54e16f7923de0009",
+          "src/runtime/mod_fmr_serialized_reference_backend.f90": "a112f79d509d2ab7d863e598d1b3214e13d6c5479b5f705d6d857133a1a6909c",
           "src/runtime/mod_fmr_accepted_commit_receipt.f90": "f3650457a7ba519c0d9bbd23cba8e4664fa6aad0f901db818fde9e1ad2faeaa0",
           "src/runtime/mod_fmr_owned_commit_receipt.f90": "9fe2f8d0aa30199bfb8c4c86032c8d99ad0f477404ffa0272077fee883160c56",
           "src/runtime/mod_fmr_bottom_external_thermal_binding.f90": "dd3e975a8eca60012b45ce6a7739bf17679681472f56f9d845fd64434bd6c8a0",
@@ -208,7 +208,7 @@
           "src/kernel/mod_kernel_committed_persistence.f90": "5b7de4dc602dbd9c83cf121e984d52b3cb99757efaf1a16a4a219881f8bfb147",
           "src/runtime/mod_fmr_restart_state_contract.f90": "d178762814b9490d827405d94b1f75567c84ab46d53cf7b8128d459ffc4c0bc2",
           "src/runtime/mod_fmr_committed_restart.f90": "842d87dc68fef7dda6fbe17371d6ed5e4d3ed1a5fa5d2e5e58d42c12ed088b2f",
-          "tests/physics/test_ppa_wu05e_mixed_salt.f90": "d16191b6f02562820fe30e07adff4c871b28a75d29b45506537ce5665f258276",
+          "tests/physics/test_ppa_wu05e_mixed_salt.f90": "5eccbfa4621b567a32299335d095c994d14e3d95071f9d1f6fdd498c1c494457",
           "tests/physics/test_ppa_wu05d2_mixed_application.f90": "ee21037290dedcd5d6e39a27b556f049ebe7f9a12ae00d5256423bbc4a87e59d"
         },
         "runs": {
@@ -222,6 +222,27 @@
               "PPA_WU05E_MATRIX_BOTTOM7_APPLICATION=PASS_TEST_ONLY",
               "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
               "Fortran runtime warning: An array temporary was created",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_1=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_2=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_3=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_4=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_5=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_6=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_7=PASS_TEST_ONLY",
               " MIXED_DIAG  T           0           0           0",
               "MIXED_STRESS|DROUGHT=0.37811742972869546E-2|OXYGEN=0.22286772004602939E-2|SALT=0.40515328507377459E-2|FINAL=0.19938615651515005E-1|WATER_RESIDUAL=0.15529883219786607E-15",
               "PPA_WU05E_MATRIX_UNIT_ALPHA=BITWISE_IDENTITY",
@@ -244,6 +265,27 @@
               "PPA_WU05E_MATRIX_BOTTOM7_APPLICATION=PASS_TEST_ONLY",
               "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
               "Fortran runtime warning: An array temporary was created",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_1=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_2=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_3=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_4=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_5=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_6=PASS_TEST_ONLY",
+              "At line 196 of file /workspace/scratch/161600da41c4/SWAP5/src/runtime/mod_fmr_production_application_bootstrap.f90",
+              "Fortran runtime warning: An array temporary was created",
+              "PPA_WU05E_ACTUAL_COMBINATION_7=PASS_TEST_ONLY",
               " MIXED_DIAG  T           0           0           0",
               "MIXED_STRESS|DROUGHT=0.37811742972869546E-2|OXYGEN=0.22286772004602939E-2|SALT=0.40515328507377459E-2|FINAL=0.19938615651515005E-1|WATER_RESIDUAL=0.15529883219786607E-15",
               "PPA_WU05E_MATRIX_UNIT_ALPHA=BITWISE_IDENTITY",
@@ -259,16 +301,27 @@
         },
         "o0_o2_physical_bytes": "IDENTICAL",
         "status": "LOCAL_MATRIX_SALT_MIXED_GATES_PASS_NOT_ADMITTED"
-      }
+      },
+      "actual_combinations": [
+        "drought only",
+        "oxygen only",
+        "salinity only",
+        "drought+salinity",
+        "oxygen+salinity",
+        "drought+oxygen+salinity ALL",
+        "drought+oxygen+salinity selector 4"
+      ],
+      "publication": "Each actual standalone application accepted transpiration equals the integral of accepted final node root sinks.",
+      "backend_reinitialization": "Clears opt-in salt numerical policy; a subsequent trial requires explicit reconfiguration."
     },
     "d2_application": {
-      "runner_tested_postimage": "00251c38061f628c797f3b35c0157a1c9c34d62a",
+      "runner_tested_postimage": "c185c90405b8d7c73d014ecc03a86e84dad98e9e",
       "dependency_surface_matches_final_postimage": true,
-      "result_sha256": "b923a1e0dd5d43afa1dda25aa49e88626ea421bf51207bc215a64e2d84b56c42",
+      "result_sha256": "70556468558dfd6a0c6e8d5fb0528bb9c69d834779881f613da5572152144c0b",
       "result": {
         "work_unit": "PPA-WU05-D2",
         "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
-        "tested_postimage": "00251c38061f628c797f3b35c0157a1c9c34d62a",
+        "tested_postimage": "c185c90405b8d7c73d014ecc03a86e84dad98e9e",
         "source_sha256": {
           "tests/fsi/fsi04_real_headcalc_stubs.f90": "80eb9087c36057a922185bdc27b435d30721ab9be780e2f5082fc8258d96a25f",
           "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
@@ -404,7 +457,7 @@
           "src/runtime/mod_macropore_single_column_runtime.f90": "baed993936e41bf2eba84448f1f57e5e7fbaf2dabb0149283559f7920a6be69c",
           "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90": "3928ba93416c2271d93d275e0688a4656256558cc68e65b6aff615663fcad7ff",
           "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90": "bc61897382b2969c899e271ef41d495f7b06d378d5c7a6bf6490d506d232f527",
-          "src/runtime/mod_fmr_serialized_reference_backend.f90": "149c08e9b6b0da923ce8509da83c6706bd07ea24184cfdfc54e16f7923de0009",
+          "src/runtime/mod_fmr_serialized_reference_backend.f90": "a112f79d509d2ab7d863e598d1b3214e13d6c5479b5f705d6d857133a1a6909c",
           "src/runtime/mod_fmr_accepted_commit_receipt.f90": "f3650457a7ba519c0d9bbd23cba8e4664fa6aad0f901db818fde9e1ad2faeaa0",
           "src/runtime/mod_fmr_owned_commit_receipt.f90": "9fe2f8d0aa30199bfb8c4c86032c8d99ad0f477404ffa0272077fee883160c56",
           "src/runtime/mod_fmr_bottom_external_thermal_binding.f90": "dd3e975a8eca60012b45ce6a7739bf17679681472f56f9d845fd64434bd6c8a0",
@@ -566,13 +619,13 @@
       }
     },
     "d2_publication": {
-      "runner_tested_postimage": "00251c38061f628c797f3b35c0157a1c9c34d62a",
+      "runner_tested_postimage": "c185c90405b8d7c73d014ecc03a86e84dad98e9e",
       "dependency_surface_matches_final_postimage": true,
-      "result_sha256": "530608f27943a9f27ec272385db5e95fe405b3b4013c57032b18fdcc9f8213c3",
+      "result_sha256": "b222406e1e28f90e8fabd132226dfa457a138795976535461496088e4b27f6be",
       "result": {
         "work_unit": "PPA-WU05-D2",
         "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
-        "tested_postimage": "00251c38061f628c797f3b35c0157a1c9c34d62a",
+        "tested_postimage": "c185c90405b8d7c73d014ecc03a86e84dad98e9e",
         "source_sha256": {
           "tests/fsi/fsi04_real_headcalc_stubs.f90": "80eb9087c36057a922185bdc27b435d30721ab9be780e2f5082fc8258d96a25f",
           "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
@@ -708,7 +761,7 @@
           "src/runtime/mod_macropore_single_column_runtime.f90": "baed993936e41bf2eba84448f1f57e5e7fbaf2dabb0149283559f7920a6be69c",
           "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90": "3928ba93416c2271d93d275e0688a4656256558cc68e65b6aff615663fcad7ff",
           "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90": "bc61897382b2969c899e271ef41d495f7b06d378d5c7a6bf6490d506d232f527",
-          "src/runtime/mod_fmr_serialized_reference_backend.f90": "149c08e9b6b0da923ce8509da83c6706bd07ea24184cfdfc54e16f7923de0009",
+          "src/runtime/mod_fmr_serialized_reference_backend.f90": "a112f79d509d2ab7d863e598d1b3214e13d6c5479b5f705d6d857133a1a6909c",
           "src/runtime/mod_fmr_accepted_commit_receipt.f90": "f3650457a7ba519c0d9bbd23cba8e4664fa6aad0f901db818fde9e1ad2faeaa0",
           "src/runtime/mod_fmr_owned_commit_receipt.f90": "9fe2f8d0aa30199bfb8c4c86032c8d99ad0f477404ffa0272077fee883160c56",
           "src/runtime/mod_fmr_bottom_external_thermal_binding.f90": "dd3e975a8eca60012b45ce6a7739bf17679681472f56f9d845fd64434bd6c8a0",
@@ -811,13 +864,13 @@
       }
     },
     "d2_preservation": {
-      "runner_tested_postimage": "00251c38061f628c797f3b35c0157a1c9c34d62a",
+      "runner_tested_postimage": "c185c90405b8d7c73d014ecc03a86e84dad98e9e",
       "dependency_surface_matches_final_postimage": true,
-      "result_sha256": "7b9a60501a64b647da0e615de497fde2821eca6edb858fcce36729ec4268063b",
+      "result_sha256": "e4b3013fd0f93d172973b05e9073a3025753749d6ffed19535572cff4a78ad6b",
       "result": {
         "work_unit": "PPA-WU05-D2",
         "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
-        "tested_postimage": "00251c38061f628c797f3b35c0157a1c9c34d62a",
+        "tested_postimage": "c185c90405b8d7c73d014ecc03a86e84dad98e9e",
         "source_sha256": {
           "tests/fsi/fsi04_real_headcalc_stubs.f90": "80eb9087c36057a922185bdc27b435d30721ab9be780e2f5082fc8258d96a25f",
           "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
@@ -957,7 +1010,7 @@
           "src/runtime/mod_macropore_single_column_runtime.f90": "baed993936e41bf2eba84448f1f57e5e7fbaf2dabb0149283559f7920a6be69c",
           "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90": "3928ba93416c2271d93d275e0688a4656256558cc68e65b6aff615663fcad7ff",
           "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90": "bc61897382b2969c899e271ef41d495f7b06d378d5c7a6bf6490d506d232f527",
-          "src/runtime/mod_fmr_serialized_reference_backend.f90": "149c08e9b6b0da923ce8509da83c6706bd07ea24184cfdfc54e16f7923de0009",
+          "src/runtime/mod_fmr_serialized_reference_backend.f90": "a112f79d509d2ab7d863e598d1b3214e13d6c5479b5f705d6d857133a1a6909c",
           "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": "a10cc92087262d9bbd52a8215a4e951837a6eb7e3700823e1dc7f1603518e4da",
           "src/runtime/mod_fmr_root_uptake_process_binding.f90": "b29091b566c5b37038f4028b8665a071bee89e6b275c0eee861cce1a8707e8dd",
           "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90": "18aa7e518ffcf0388a2acfd28d8831e823e5d19e499be76909013d9ead7e525a",
@@ -1062,13 +1115,13 @@
       }
     },
     "d3_walsum": {
-      "runner_tested_postimage": "not-specified",
+      "runner_tested_postimage": "c185c90405b8d7c73d014ecc03a86e84dad98e9e",
       "dependency_surface_matches_final_postimage": true,
-      "result_sha256": "929d401548ab7f375e4ed8f242ca1f2fead65230f8608c5a9c3c2b652a93e841",
+      "result_sha256": "6b6783fa292d68881849f2988444eb4f35d2a7403378917dfc2ed00eb85f7c43",
       "result": {
         "work_unit": "PPA-WU05-D3",
         "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
-        "tested_postimage": "not-specified",
+        "tested_postimage": "c185c90405b8d7c73d014ecc03a86e84dad98e9e",
         "source_sha256": {
           "tests/fsi/fsi04_real_headcalc_stubs.f90": "80eb9087c36057a922185bdc27b435d30721ab9be780e2f5082fc8258d96a25f",
           "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
@@ -1205,7 +1258,7 @@
           "src/runtime/mod_macropore_single_column_runtime.f90": "baed993936e41bf2eba84448f1f57e5e7fbaf2dabb0149283559f7920a6be69c",
           "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90": "3928ba93416c2271d93d275e0688a4656256558cc68e65b6aff615663fcad7ff",
           "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90": "bc61897382b2969c899e271ef41d495f7b06d378d5c7a6bf6490d506d232f527",
-          "src/runtime/mod_fmr_serialized_reference_backend.f90": "149c08e9b6b0da923ce8509da83c6706bd07ea24184cfdfc54e16f7923de0009",
+          "src/runtime/mod_fmr_serialized_reference_backend.f90": "a112f79d509d2ab7d863e598d1b3214e13d6c5479b5f705d6d857133a1a6909c",
           "src/runtime/mod_fmr_accepted_commit_receipt.f90": "f3650457a7ba519c0d9bbd23cba8e4664fa6aad0f901db818fde9e1ad2faeaa0",
           "src/runtime/mod_fmr_owned_commit_receipt.f90": "9fe2f8d0aa30199bfb8c4c86032c8d99ad0f477404ffa0272077fee883160c56",
           "src/runtime/mod_fmr_bottom_external_thermal_binding.f90": "dd3e975a8eca60012b45ce6a7739bf17679681472f56f9d845fd64434bd6c8a0",
@@ -1317,7 +1370,7 @@
     },
     "real_richards_a8": {
       "exit_code": 0,
-      "log_sha256": "aed9f2870c0968a7649b8494b9ba419fbf1cfe503bcfd9a2f150c2526c4887fc",
+      "log_sha256": "67f39598b2c3526e1ffd95e5cb59632c3fb86b5b4fd13fd4a58d5d0a8c414f36",
       "markers": [
         "PPA_WU05E_FMR_ROOT_SINK_TRANSACTION=PASS|QROT_TOTAL=0.20000000000000001E-3|MASS_RESID=-0.19807018438594559E-15",
         "PPA_WU05A8_FMR_SERIALIZED_RUNTIME=PASS",
@@ -1407,6 +1460,11 @@
         "PPA_WU05D2_RUNTIME_ORDER=PASS",
         "PPA_WU05D2_JARVIS_O0_O2=PASS"
       ]
+    },
+    "docs": {
+      "source_check": "PASS",
+      "mkdocs_strict": "PASS",
+      "note": "python -m mkdocs build --strict; generated site output removed from the repository before packaging."
     }
   },
   "bounds": [
@@ -1415,5 +1473,11 @@
     "Separate-process persistence uses a bounded test-only stream encoding of the decoded Restart v4 contract, not a new public production file format.",
     "Existing salt-disabled continuous/history routes and oxygen/macropore exclusion remain unchanged.",
     "This is local verified evidence; qualification/admission needs separately persisted qualification results and an admission decision."
-  ]
+  ],
+  "qualification_replay": {
+    "initial_published_source": "b4f19158ff9e2392e9704121de217a113d1a8095",
+    "initial_run": 37310030206,
+    "initial_source_superseded": true,
+    "status": "FINAL_CORRECTION_LOCALLY_REVERIFIED; exact new published source qualification pending"
+  }
 }

@@ -1354,6 +1354,7 @@ contains
     self%model%macropore_active = .false.
     if (allocated(self%model%macropore_config)) deallocate(self%model%macropore_config)
     self%model%macropore_policy = macropore_runtime_policy_t()
+    self%model%base_salt_temporal_policy = fmr_base_salt_temporal_policy_t()
     self%model%macropore_policy_configured = .false.
     call self%model%rfm_configuration%clear()
     call self%kernel%bind_model(self%model)

@@ -26,11 +26,19 @@ Unit salinity alpha preserves the hydraulic state and water receipt bitwise
 against salinity-disabled execution on the same salt numerical route. Invalid
 profile initialization is atomic; initialized inventory cannot be reinitialized.
 A missing policy and invalid forcing provenance fail closed at bootstrap.
-An unattainable salt budget rejects a real full/half attempt with no published
+Backend reinitialization clears the opt-in policy and requires explicit
+reconfiguration. An unattainable salt budget rejects a real full/half attempt with no published
 candidate. A stricter attainable 1e-13 mg/cm2 budget exercises 46 temporal
 rejections and 16 accepted substeps while completing the interval and preserving
 an independent accepted-only salt ledger. These counts are fixture results,
 not a performance recommendation.
+
+The actual caller and application additionally execute seven stress cases:
+drought only, oxygen only, salinity only, drought plus salinity, oxygen plus
+salinity, all three with ALL compensation, and all three with salinity
+selector 4. Each closes water/salt accounting and residual stress attribution;
+accepted actual-transpiration publication equals the integral of the accepted
+final nodewise root sinks.
 
 ## Persistence and preservation
 

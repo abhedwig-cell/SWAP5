@@ -23,7 +23,7 @@ program test_ppa_wu05e_mixed_salt
   real(real64),parameter::T0=5100.1875_real64,T1=T0+1.e-5_real64,HARD_MASS_GATE=1.e-12_real64
   type(fmr_production_application_config_t)::cfg,bad
   type(fmr_production_application_bootstrap_t)::app,badapp
-  type(fmr_serialized_column_result_t),allocatable::app_results(:)
+  type(fmr_serialized_column_result_t),allocatable::app_results(:),scenario_results(:)
   type(fmr_serialized_reference_backend_t)::backend,resumed
   type(fixed_flux_top_boundary_provider_t),target::top
   type(fmr_base_salt_temporal_policy_t)::policy,tight
@@ -37,7 +37,7 @@ program test_ppa_wu05e_mixed_salt
   type(fmr_committed_restart_bundle_t)::bundle
   class(transaction_state_t),allocatable::snapshot,after
   real(real64)::k
-  integer::status
+  integer::status,scenario
   character(512)::mode,restart_path,result_path
   logical::ok
   call get_command_argument(1,mode)
@@ -129,6 +129,65 @@ program test_ppa_wu05e_mixed_salt
   call require(status==FMR_APP_BOOT_OK,'actual application closes')
   call backend%configure_base_salt_temporal_policy(policy,ok)
   call require(ok,'explicit numerical salt policy')
+  call backend%initialize(top)
+  call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
+       cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,first,candidate,diag)
+  call require(.not.first%completed.and..not.candidate%ready(),'backend reinitialize resets opt-in salt policy')
+  call backend%configure_base_salt_temporal_policy(policy,ok)
+  call require(ok,'reconfigure after backend reinitialize')
+  do scenario=1,7
+    bad=cfg
+    select case(scenario)
+    case(1) ! drought only
+      bad%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
+      bad%tiles(1)%parameters%saltslope_cm3_mg=0._real64
+    case(2) ! oxygen only
+      bad%tiles(1)%base_forcing%root_extraction_sink=bad%tiles(1)%base_forcing%root_potential_sink
+      bad%tiles(1)%base_forcing%root_drought_reduction_total=0._real64
+      bad%tiles(1)%parameters%saltslope_cm3_mg=0._real64
+    case(3) ! salinity only
+      bad%tiles(1)%base_forcing%root_extraction_sink=bad%tiles(1)%base_forcing%root_potential_sink
+      bad%tiles(1)%base_forcing%root_drought_reduction_total=0._real64
+      bad%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
+    case(4) ! drought plus salinity
+      bad%tiles(1)%parameters%bartholomeus%selection%oxygen_mode=0
+    case(5) ! oxygen plus salinity
+      bad%tiles(1)%base_forcing%root_extraction_sink=bad%tiles(1)%base_forcing%root_potential_sink
+      bad%tiles(1)%base_forcing%root_drought_reduction_total=0._real64
+    case(6) ! all three, ALL selector
+    case(7) ! all three, salinity selector 4
+      bad%tiles(1)%parameters%root_compensation%stressor=ROOT_COMP_SALINITY
+    end select
+    call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
+         bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2,trace_accepted_water_flux_substeps=.true.)
+    call require(replay%completed.and.other%ready(),'actual stress combination candidate')
+    obs2=backend%observation()
+    call require(obs2%root_salinity_executed.and.obs2%root_compensation_executed,'combination uses real caller')
+    call require(obs2%root_compensation_status==0.and.abs(replay%mass%residual)<=HARD_MASS_GATE,'combination hard water balance')
+    call require(abs(obs2%root_compensation_final_uptake+obs2%root_compensation_drought_loss+ &
+         obs2%root_compensation_oxygen_loss+obs2%root_salinity_reduction_total- &
+         bad%tiles(1)%base_forcing%root_potential_transpiration)<1.e-14_real64,'combination residual attribution')
+    call require(obs2%root_compensation_final_uptake>=obs2%root_compensation_base_uptake.and. &
+         obs2%root_compensation_final_uptake<=bad%tiles(1)%base_forcing%root_potential_transpiration,'combination uptake bounds')
+    call require(obs2%bartholomeus_executed.eqv.(bad%tiles(1)%parameters%bartholomeus%selection%oxygen_mode/=0), &
+         'combination oxygen selection')
+    if(scenario==1.or.scenario==2)then
+      call require(all(obs2%root_salinity_alpha==1._real64),'combination unit salinity')
+    else
+      call require(any(obs2%root_salinity_alpha<1._real64),'combination actual salinity response')
+    end if
+    call other%snapshot(after,ok);call verify_ledger(obs2,after)
+    call badapp%initialize(bad,status)
+    call require(status==FMR_APP_BOOT_OK,'combination actual application initializes')
+    call badapp%run_standalone(T0,T1,scenario_results,status)
+    call require(status==FMR_APP_BOOT_OK.and.scenario_results(1)%committed,'combination actual application commits')
+    call require(same_bits(replay%mass%total_out,scenario_results(1)%mass%total_out),'combination application matches caller')
+    call require(scenario_results(1)%actual_transpiration_available,'accepted transpiration publication present')
+    call require(abs(root_water_amount(obs2)-scenario_results(1)%actual_transpiration_amount)<1.e-18_real64, &
+         'combination publishes accepted final root sink')
+    call badapp%close(status);call backend%discard_trial_candidate(other,diag2)
+    write(*,'(a,i0,a)')'PPA_WU05E_ACTUAL_COMBINATION_',scenario,'=PASS_TEST_ONLY'
+  end do
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,first,candidate,diag,trace_accepted_water_flux_substeps=.true.)
   obs=backend%observation()
@@ -265,6 +324,16 @@ contains
       error stop 'salt ledger family'
     end select
   end subroutine
+  real(real64) function root_water_amount(observation)result(amount)
+    type(fmr_serialized_physical_observation_t),intent(in)::observation
+    integer::j
+    amount=0._real64
+    do j=1,size(observation%accepted_water_flux_substeps)
+      associate(s=>observation%accepted_water_flux_substeps(j))
+        amount=amount+sum(s%root_sink)*(s%t1-s%t0)
+      end associate
+    end do
+  end function
   subroutine require_same_physical(a,b)
     class(transaction_state_t),intent(in)::a,b
     type(soil_temperature_restart_payload_t)::ta,tb
