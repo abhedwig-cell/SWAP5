@@ -60,6 +60,15 @@ program test_frost_bottom
   t(2)=nearest(t(2),1._real64)
   call compose_legacy_no_drain_frost_bottom(.true.,t,-2._real64,w,sat,dz,f,-1._real64,r)
   call require(r%deepest_node==1.and..not.r%blocked,'temperature immediately above cutoff')
+  t=-3._real64;w=0._real64;sat=[.02_real64,.02_real64,.006_real64,.004_real64]
+  dz=1._real64;f=0._real64;f(3)=.01_real64
+  call compose_legacy_no_drain_frost_bottom(.true.,t,-2._real64,w,sat,dz,f,1._real64,r)
+  call require(r%blocked.and.r%available_air_cm==.004_real64,'factor equality stops before preceding node')
+  f(3)=nearest(.01_real64,1._real64)
+  call compose_legacy_no_drain_frost_bottom(.true.,t,-2._real64,w,sat,dz,f,1._real64,r)
+  call require(.not.r%blocked.and.abs(r%available_air_cm-.01_real64)<1.e-18_real64,'factor above threshold traverses')
+  call compose_legacy_no_drain_frost_bottom(.true.,t(:1),-2._real64,w(:1),sat(:1),dz(:1),f(:1),1._real64,r)
+  call require(r%available.and.r%deepest_node==-1.and..not.r%blocked,'one node contract')
   t=nan;w=inf;dz=-1._real64;f=nan
   call compose_legacy_no_drain_frost_bottom(.false.,t,nan,w,sat,dz,f,-.3_real64,r)
   call require(r%available.and.r%final_flux==-.3_real64,'OFF exact identity ignores inactive inputs')

@@ -23,6 +23,7 @@ program test_frost_bottom_runtime
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
        fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_fmr_committed_restart, only: fmr_restart_template_identity_matches
+  use mod_fmr_production_application_bootstrap
   use mod_frost_hydraulic_effect, only: frost_hydraulic_parameters_t, evaluate_frost_hydraulic_factor
   implicit none
   real(real64),parameter::h0=-75._real64,equilibrium_dt=.25_real64,upward_dt=1.e-4_real64
@@ -33,7 +34,7 @@ program test_frost_bottom_runtime
   type(fmr_serialized_column_result_t)::result,again
   type(fmr_serialized_physical_observation_t)::observation
   type(kernel_committed_state_t)::captured,registry(1)
-  type(kernel_committed_state_t),allocatable::restored(:)
+  type(kernel_committed_state_t)::restored(1)
   type(fmr_logical_column_t)::columns(1)
   type(fmr_template_t)::templates(1)
   type(fmr_committed_restart_bundle_t)::bundle
@@ -134,8 +135,61 @@ program test_frost_bottom_runtime
   call execute_case(2,0._real64,1.e-3_real64,-999999._real64,1.e-4_real64,.false.,.true.,again,observation, &
        frost_case=.true.,frost_temperature=-4._real64,initial_physical_state=initial,bottom_case=.false.)
   call require(.not.again%committed.and..not.observation%solver_executed,'old nonzero frost route remains rejected')
+  call verify_application(initial,wet)
   print '(A)','PPA-WU05B3_FROST_BOTTOM_RUNTIME=PASS'
 contains
+  subroutine verify_application(dry,wet)
+    type(fmr_b110_physical_state_t),intent(in)::dry,wet
+    type(fmr_production_application_config_t)::cfg,bad
+    type(fmr_production_application_bootstrap_t)::app,rejected
+    type(fmr_serialized_column_result_t),allocatable::out(:)
+    integer::status
+    allocate(cfg%tiles(1))
+    cfg%tiles(1)%tile_id=column_id;cfg%tiles(1)%ledger_id=440045_int64
+    cfg%tiles(1)%template=templates(1)
+    call initialize_parameters(cfg%tiles(1)%parameters,2)
+    call enable_bounded_frost(cfg%tiles(1)%parameters)
+    cfg%tiles(1)%parameters%frost_bottom%active=.true.
+    cfg%tiles(1)%parameters%frost_bottom%head_budget_cm=1.e-6_real64
+    cfg%tiles(1)%parameters%frost_bottom%temperature_budget_c=1.e-7_real64
+    cfg%tiles(1)%parameters%head_abs_tolerance=1.e-8_real64
+    cfg%tiles(1)%parameters%head_rel_tolerance=1.e-8_real64
+    cfg%tiles(1)%initial_state=dry
+    call initialize_forcing(cfg%tiles(1)%base_forcing,0._real64,1.e-3_real64,-999999._real64)
+    allocate(cfg%tiles(1)%base_forcing%soil_temperature)
+    cfg%tiles(1)%base_forcing%soil_temperature%prescribed_surface_temperature_c=-4._real64
+    cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+    cfg%numerical%transaction%temporal_tolerance=1._real64
+    cfg%numerical%transaction%mass_tolerance=hard_mass_gate
+    cfg%numerical%transaction%max_retries=20
+    cfg%numerical%transaction%retry_scale=.5_real64
+    cfg%numerical%max_committed_substeps=100000
+    call app%initialize(cfg,status)
+    call require(status==FMR_APP_BOOT_OK,'boundary application admission')
+    call app%run_standalone(0._real64,1.e-4_real64,out,status)
+    call require(status==FMR_APP_BOOT_OK.and.out(1)%committed,'boundary application commits')
+    call require(abs(out(1)%mass%storage_change-1.e-7_real64)<=hard_mass_gate,'application flux/storage oracle')
+    call require(abs(out(1)%mass%residual)<=hard_mass_gate,'application mass closes')
+    call app%close(status)
+    cfg%tiles(1)%initial_state=wet
+    call app%initialize(cfg,status)
+    call require(status==FMR_APP_BOOT_OK,'blocked application admission')
+    call app%run_standalone(0._real64,1.e-4_real64,out,status)
+    call require(status==FMR_APP_BOOT_OK.and.out(1)%committed,'blocked application commits')
+    call require(out(1)%mass%total_in==0._real64.and.out(1)%mass%total_out==0._real64,'blocked application flux zero')
+    call app%close(status)
+    bad=cfg;bad%tiles(1)%parameters%frost_bottom%head_budget_cm=0._real64
+    call rejected%initialize(bad,status)
+    call require(status/=FMR_APP_BOOT_OK,'missing boundary numerical budget rejected')
+    bad=cfg;bad%tiles(1)%parameters%root_frost%active=.true.
+    call rejected%initialize(bad,status)
+    call require(status/=FMR_APP_BOOT_OK,'combined root boundary pending qualified separately')
+    bad=cfg;bad%tiles(1)%parameters%drainage_response_active=.true.
+    call rejected%initialize(bad,status)
+    call require(status/=FMR_APP_BOOT_OK,'active drainage redistribution rejected')
+    print '(A)','PPA-WU05B3_FROST_BOTTOM_APPLICATION=PASS'
+  end subroutine
+
   subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, use_certificate, hydrostatic, &
                           output, observation, frost_case, frost_temperature, final_physical_state, final_diagnostic, &
                           start_time, initial_physical_state, frost_surface_temperature, bottom_case, resumed, captured)
@@ -178,7 +232,7 @@ contains
       if(bottom_case)then
         parameters%frost_bottom%active=.true.
         parameters%frost_bottom%head_budget_cm=1.e-6_real64
-        parameters%frost_bottom%temperature_budget_c=1.e-6_real64
+        parameters%frost_bottom%temperature_budget_c=1.e-7_real64
         parameters%head_abs_tolerance=1.e-8_real64
         parameters%head_rel_tolerance=1.e-8_real64
       end if
@@ -246,7 +300,7 @@ contains
     end if
     config%transaction%mass_tolerance = hard_mass_gate
     config%transaction%retry_scale = 0.5_real64
-    config%max_committed_substeps = 32
+    config%max_committed_substeps = 100000
     config%progress_tolerance = 0.0_real64
 
     output = fmr_serialized_column_result_t()
