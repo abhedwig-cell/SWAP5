@@ -1,5 +1,6 @@
 module mod_root_uptake_compensation_execution
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
        compose_jarvis_root_uptake, ROOT_COMP_OK, ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, &
