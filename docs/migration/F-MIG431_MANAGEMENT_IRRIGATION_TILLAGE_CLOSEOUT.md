@@ -140,9 +140,13 @@ MIGMAC02 macropore admission and closeout (three commits). Its changed
 Reference backend calls, soil-water solver contract and legacy headcalc
 macropore iteration policy are on this work unit's compile dependency
 surface, even though this unit's bounded irrigation probe disables
-macropores. Existing O0/O2 results were produced against the work branch's
-earlier canonical backend; current-canonical preservation must be rerun
-after reconciliation before any production admission of this family.
+macropores. The work branch was merged with `c1322db` at `d6e9a441`; all ten
+changed canonical production blobs were materialized locally and checked
+against their GitHub blob SHAs. The managed Reference SSDI O0/O2 dispatch,
+restart and mass probe, all 13 narrow irrigation/tillage/calendar gates, and
+F-APP07's exact 110-interval composition passed on that combined production
+postimage. This is local preservation, not a new canonical admission of the
+broader MIGRATE routes.
 
 ## Local qualification completed in this work unit
 
