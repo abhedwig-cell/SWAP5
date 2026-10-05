@@ -54,5 +54,11 @@
   "canonical_pr": 1051,
   "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
   "canonical_admission": "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json",
-  "canonical_closeout": "docs/audits/PPA_WU05D_EXACT01_CANONICAL_CLOSEOUT.md"
+  "canonical_closeout": "docs/audits/PPA_WU05D_EXACT01_CANONICAL_CLOSEOUT.md",
+  "metadata_closeout_reconciliation": {
+    "canonical_after_production_admission": "6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50",
+    "scope": "B10 independently admitted after PR1051; retained unchanged during metadata closeout",
+    "closeout_source_tests_match_current_canonical": true,
+    "qualification_inheritance": "EXACT01 29-group qualification is bound to PR1051 admission source/test trees; no claim of that replay on later B10 trees"
+  }
 }

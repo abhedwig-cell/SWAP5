@@ -41,3 +41,11 @@ physics. Independent MICRO/Jong-van-Lier/de Willigen production migration
 remains open. No public interface, owner, numerical policy, committed state or
 restart schema changes. No broader hybrids or seasonal equivalence are admitted.
 Frozen Status A and historical qualification evidence remain unchanged.
+
+## Later canonical metadata reconciliation
+
+B10 was independently admitted after PR #1051 at `6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50`. Its
+source, tests and evidence are retained unchanged. This closeout is metadata
+only relative to that current canonical state. The 29-group EXACT01 replay
+remains explicitly bound to the PR #1051 source/test trees above; it is not
+claimed as a replay on the later B10 trees. Historical qualification is unchanged.

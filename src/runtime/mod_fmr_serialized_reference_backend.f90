@@ -285,6 +285,7 @@ module mod_fmr_serialized_reference_backend
     type(frost_low_air_drainage_config_t) :: frost_low_air_drainage
     type(frost_drainage_config_t) :: frost_drainage
     logical :: frost_response_drainage_active = .false.
+    logical :: frost_low_air_response_drainage_active = .false.
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
     real(real64) :: root_frost_head_budget_cm=0.0_real64
@@ -612,6 +613,7 @@ module mod_fmr_serialized_reference_backend
     type(frost_low_air_drainage_config_t) :: frost_low_air_drainage
     type(frost_drainage_config_t) :: frost_drainage
     logical :: frost_response_drainage_active = .false.
+    logical :: frost_low_air_response_drainage_active = .false.
     real(real64),allocatable :: unfrozen_drainage_flux(:,:)
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
@@ -785,15 +787,23 @@ contains
   pure logical function fmr_frost_response_drainage_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::parameters
     ok=.true.
-    if(.not.parameters%frost_response_drainage_active)return
+    if(.not.parameters%frost_response_drainage_active)then
+      ok=.not.parameters%frost_low_air_response_drainage_active
+      return
+    end if
     ok=.false.
     if(.not.parameters%frost_drainage%active.or..not.parameters%drainage_response_active)return
-    if(parameters%frost_low_air_drainage%active.or.parameters%drainage_qbot_smooth_freatic_projection)return
+    if(parameters%drainage_qbot_smooth_freatic_projection)return
+    if(parameters%frost_low_air_drainage%active.neqv.parameters%frost_low_air_response_drainage_active)return
     if(.not.allocated(parameters%drainage_response_levels))return
     if(size(parameters%drainage_response_levels)<1)return
     if(any(parameters%drainage_response_levels%variant/=FMR_DRAIN_VARIANT_LINEAR))return
     if(any(.not.ieee_is_finite(parameters%drainage_response_levels%linear%drainage_resistance)))return
     if(any(parameters%drainage_response_levels%linear%drainage_resistance<=0._real64))return
+    if(parameters%frost_low_air_response_drainage_active)then
+      if(.not.parameters%frost_low_air_drainage%valid())return
+      if(size(parameters%frost_low_air_drainage%drain_depth_cm)/=size(parameters%drainage_response_levels))return
+    end if
     ok=.true.
   end function fmr_frost_response_drainage_configuration_valid
 
@@ -2708,6 +2718,7 @@ contains
       self%frost_low_air_drainage = parameters%frost_low_air_drainage
       self%frost_drainage = parameters%frost_drainage
       self%frost_response_drainage_active = parameters%frost_response_drainage_active
+      self%frost_low_air_response_drainage_active = parameters%frost_low_air_response_drainage_active
       self%frost_bottom = parameters%frost_bottom
       self%root_frost = parameters%root_frost
       self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm
@@ -2871,6 +2882,10 @@ contains
         self%drainage_response_diagnostics%status = drainage_preflight_status
         self%last_observation%drainage_response = self%drainage_response_diagnostics
         if (drainage_preflight_status /= FMR_DRAIN_BIND_OK) return
+        if(self%frost_low_air_response_drainage_active)then
+          if(.not.self%frost_low_air_drainage%valid())return
+          if(size(self%frost_low_air_drainage%drain_depth_cm)/=size(self%drainage_response_levels))return
+        end if
         if(self%frost_response_drainage_active)then
           if(allocated(forcing%soil_salt_boundary).or.allocated(forcing%c_drain_salt))return
           if(any(forcing%subsurface_irrigation_source/=0._real64).or.any(forcing%root_extraction_sink/=0._real64))return
@@ -4994,7 +5009,9 @@ contains
     class(transaction_state_t),intent(in)::full_state,half_state
     real(real64),allocatable::tf(:),th(:),ff(:),fh(:)
     type(frost_low_air_drainage_result_t)::bf,bh
-    real(real64),allocatable::final_flux(:,:)
+    real(real64),allocatable::final_flux(:,:),proposal_full(:,:),proposal_half(:,:)
+    type(process_hydraulic_view_t)::view_full,view_half
+    type(fmr_drainage_response_diagnostics_t)::generated_full,generated_half
     real(real64)::head_error,temperature_error
     integer::status,n
     value=huge(0.0_real64)
@@ -5027,6 +5044,35 @@ contains
         if(.not.allocated(self%unfrozen_drainage_flux).or..not.allocated(self%soil_temperature_forcing))return
         if(.not.self%frost_low_air_drainage%valid())return
         allocate(final_flux(size(self%unfrozen_drainage_flux,1),n))
+        if(self%frost_low_air_response_drainage_active)then
+          proposal_full=self%unfrozen_drainage_flux;proposal_half=self%unfrozen_drainage_flux
+          ! Terminal views carry their own GWL; no last-trial generated scratch
+          ! is silently used as the proposal for both full and half endpoints.
+          view_full%active_nodes=n;view_full%pressure_head=full%pressure_head
+          view_full%water_content=full%water_content;view_full%ponding_depth=full%ponding_depth
+          view_full%groundwater_level=full%groundwater_level
+          view_half%active_nodes=n;view_half%pressure_head=half%pressure_head
+          view_half%water_content=half%water_content;view_half%ponding_depth=half%ponding_depth
+          view_half%groundwater_level=half%groundwater_level
+          call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
+               view_full,proposal_full,generated_full)
+          if(generated_full%status/=FMR_DRAIN_BIND_OK)return
+          call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
+               view_half,proposal_half,generated_half)
+          if(generated_half%status/=FMR_DRAIN_BIND_OK)return
+        end if
+        if(self%frost_low_air_response_drainage_active)then
+        call compose_legacy_bracketed_frost_drainage(tf,self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+             self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
+             full%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,ff, &
+             self%soil_parameters%z,self%soil_parameters%node_distance,self%frost_low_air_drainage%drain_depth_cm, &
+             proposal_full,self%bottom_flux,final_flux,bf)
+        call compose_legacy_bracketed_frost_drainage(th,self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+             self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
+             half%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,fh, &
+             self%soil_parameters%z,self%soil_parameters%node_distance,self%frost_low_air_drainage%drain_depth_cm, &
+             proposal_half,self%bottom_flux,final_flux,bh)
+        else
         call compose_legacy_bracketed_frost_drainage(tf,self%soil_temperature_forcing%prescribed_surface_temperature_c, &
              self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
              full%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,ff, &
@@ -5037,6 +5083,7 @@ contains
              half%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,fh, &
              self%soil_parameters%z,self%soil_parameters%node_distance,self%frost_low_air_drainage%drain_depth_cm, &
              self%unfrozen_drainage_flux,self%bottom_flux,final_flux,bh)
+        end if
         if(.not.bf%available.or..not.bh%available)return
         if(bf%low_air_branch.neqv.bh%low_air_branch)return
         if(bf%bottom_blocked.neqv.bh%bottom_blocked)return

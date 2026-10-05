@@ -34,5 +34,11 @@
     "New root models, broader process hybrids and full seasonal or legacy equivalence"
   ],
   "documentation_gates": "PASS: check_docs.py, python -m mkdocs build --strict, git diff --check",
-  "actions_claim": "Named local current-source gates control this admission; no blanket CI-green claim."
+  "actions_claim": "Named local current-source gates control this admission; no blanket CI-green claim.",
+  "metadata_closeout_reconciliation": {
+    "canonical_after_production_admission": "6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50",
+    "scope": "B10 independently admitted after PR1051; retained unchanged during metadata closeout",
+    "closeout_source_tests_match_current_canonical": true,
+    "qualification_inheritance": "EXACT01 29-group qualification is bound to PR1051 admission source/test trees; no claim of that replay on later B10 trees"
+  }
 }
