@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-Implemented and persisted; qualification is in progress. This is a bounded
+Locally qualified and persisted; canonical admission is pending. This is a bounded
 composition of admitted drainage laws with the admitted normal and guarded
 low-air frost modifiers. It is not a complete frost migration claim.
 
@@ -74,3 +74,9 @@ claim.
 SWDIVD1 distribution, other generator families, fixed-weir and extended
 signed exchange, root/salt/macropore/snow hybrids and new phase-change
 physics require separate scope and evidence.
+
+## Completed local qualification
+
+All declared gates pass on production `cd7a56657fa3347ee63595a0f54274b2f1766ba8`. Both actual runtime routes, the72-case additional signed/mixed/GWL matrix, all incumbent frost runtimes, four expanded salt/frost matrices, immutable VQ73/VQ74, literal root cutoff oracle and complete canonical preservation pass. O0/O2 actual outputs are identical. Normal additional16384/32768 refinements and low-air131072 refinement pass; maximum added head error is3.147382e-7cm.
+
+The first low-air fixture compile lacked a test import. The additional O2 activation screen then exposed uninitialized inherited LINEAR control heights in the generated matrix. Both fixture defects were repaired, explicitly initialized controls were persisted, and the complete additional matrix rerun at O0/O2 passed identically. No production change or tolerance relaxation was needed. Immutable partial recovery retains its explicit non-qualification status.

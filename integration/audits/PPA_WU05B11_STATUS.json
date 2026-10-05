@@ -2,11 +2,11 @@
   "work_unit": "PPA-WU05B11",
   "baseline": "febfff8103c4d60324a103d832521bb3f3754a67",
   "last_reconciled_upstream": "febfff8103c4d60324a103d832521bb3f3754a67",
-  "status": "QUALIFICATION_IN_PROGRESS",
+  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
   "preregistration": "integration/audits/PPA_WU05B11_PREREGISTRATION.json",
@@ -23,7 +23,7 @@
     "src/process/mod_frost_drainage_effect.f90"
   ],
   "dependency_surface": "Actual runtime/backend/bootstrap, all generated drain families, frost/temperature, root kernel, single sink/accounting, restart, canonical pin gate and owned static grid fixture",
-  "next_action": "Keep running actual low-air/refinement/preservation gates; analyze failures and finish source-bound evidence before admission",
+  "next_action": "Persist complete immutable source-bound replay and exact qualified postimage, verify proposed merge, admit and reconcile actual merge",
   "recovery_point": "This preregistration commit",
   "blockers": [],
   "test_paths": [
@@ -32,7 +32,9 @@
     "tests/frost/test_ppa_wu05b11_normal_runtime.f90",
     "tests/frost/run_ppa_wu05b11_low_air_runtime.sh",
     "tests/frost/run_ppa_wu05b11_tabulated_response_source.sh",
-    "tests/frost/run_ppa_wu05b11_normal_runtime.sh"
+    "tests/frost/run_ppa_wu05b11_normal_runtime.sh",
+    "tests/frost/run_ppa_wu05b11_activation.py",
+    "tests/frost/run_ppa_wu05b11_refinements.py"
   ],
   "focused_source": "768_CASES_O0_O2_IDENTICAL_PASS",
   "negative_findings": [
@@ -40,7 +42,7 @@
     "O2 additional activation fixture exposed uninitialized inherited LINEAR control_head after main-matrix replacement; explicit [-3,-4] control initialized. Production unchanged; repeat O0/O2 additional matrix required."
   ],
   "production_source_tree": "cd7a56657fa3347ee63595a0f54274b2f1766ba8",
-  "execution_checkout": "5838208f",
+  "execution_checkout": "5838208fd2751bbb41ba70c3ec370b472a922e41",
   "remote_source_checkpoint": "af5ea2602e1c6b6f65ae6f8586cfe17772e78bfd",
   "completed": {
     "source_component": "768_CASES_O0_O2_IDENTICAL_PASS",
@@ -53,11 +55,11 @@
     "canonical": "COMPLETE_LOCAL_LINEAGE_AWARE_GATE_PASS",
     "SALFRO01": "FOUR_CURRENT_SOURCE_O0_O2_AND_FRESH_PROCESS_PASS_MATCHING179_ENTRY_MANIFESTS",
     "low_air_refinement": "FIRST_PARTIAL_NEGATIVE_QBOT131072_O0_PASS",
-    "low_air_runtime": "SIX_CASES_O0_O2_IDENTICAL_PASS_MASS_REPLAY_RESTART_APPLICATION"
+    "low_air_runtime": "SIX_CASES_O0_O2_IDENTICAL_PASS_MASS_REPLAY_RESTART_APPLICATION",
+    "B8_B10": "FRESH_WHOLE_MODULE_SOURCE_O0_O2_IDENTICAL_PASS"
   },
   "pending": [
-    "B8/B10 fresh low-air incumbents",
-    "final documentation and immutable full evidence"
+    "exact proposed-merge verification and canonical admission"
   ],
   "partial_recovery": {
     "path": "docs/audits/evidence/PPA_WU05B11_PARTIAL_RECOVERY.json.gz",
@@ -116,5 +118,16 @@
       "additional_head_cm": 3.147382e-07,
       "additional_temperature_c": 5.696214e-07
     }
+  },
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
+  "negative_resolutions": {
+    "missing_low_air_import": "Fresh full low-air O0/O2 complete PASS_IDENTICAL after repair",
+    "uninitialized_activation_control": "Explicit [-3,-4] preserved; complete additional36cases per route O0/O2 identical PASS after repair"
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B11_LOCAL_REPLAY.json.gz",
+    "sha256": "3af2218badc101fe5f97f6109c7885801cb3696dc866d473f312fa78348d70c4",
+    "bytes": 209827,
+    "manifest_entries": 456
   }
 }
