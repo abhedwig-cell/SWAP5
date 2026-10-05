@@ -139,13 +139,26 @@ model would be new physics with a separate energy and water-mass contract.
    `TFROSTSTA/END`; it can turn off uptake while hydraulic K is unreduced (for
    thresholds below 0 °C) or leave uptake enabled while K is partly reduced.
    That inconsistency is legacy semantics, not a single coherent phase rule.
-   Keep it as a separately qualified root modifier and do not silently derive
-   it from `rfcp`.
+   In the macroscopic legacy root path `alpfrs` is zero iff `TSOIL < 0 °C`;
+   `SW_STRESSOR=5` changes the frost compensation factor to
+   `min(alpfrs/ALPHACRIT,1)`. `ALPHACRIT` is separately configured in `[0.2,1]`.
+   The microscopic `rootextraction_micro` path explicitly errors when frost is
+   enabled. This legacy modifier is **REJECTED in its current form** for the
+   bounded SWAP5 migration: its binary cutoff conflicts with the continuous
+   hydraulic factor, and its crop compensation meaning is not an independently
+   qualified composition with the admitted Feddes/Jarvis/Walsum sink chain.
+   Do not silently derive it from `rfcp`. A future root-stress option needs a
+   separate biological contract and independent qualification.
 6. **Boundary complexity.** `FrozenBounds` has separate heuristics and flux
    redistribution. It must not be folded into a constitutive K decorator or
    mutate the drainage/bottom-boundary owner. Migrate it only with an explicit
-   typed boundary result and independent mass accounting; until then that
-   portion is held, not implied by the K slice.
+   typed boundary result and independent mass accounting. The legacy
+   `FrozenBounds` implementation is **REJECTED in its current form** for this
+   candidate because it changes drainage and lower-boundary fluxes through
+   frost-depth/air-volume heuristics outside their SWAP5 owners. The bounded
+   candidate instead admits only zero prescribed bottom flux and zero
+   drainage response, where those heuristic changes are absent. This is not a
+   rejection of the separate boundary capability as a future migration.
 
 ## SWAP5 design boundary
 
@@ -162,28 +175,34 @@ Richards solve. These restrictions make the unimplemented `FrozenBounds`
 changes inapplicable to the admitted candidate route. They do not establish
 equivalence for general legacy `SWFROST=1` runs.
 
-The current local runtime oracle covers a strongly frozen profile in that
-bounded route and its mass ledger, verifies fail-closed handling for a
-nonzero prescribed bottom flux, and runs existing zero-frost Richards and
-sensible-temperature preservation oracles. It does not yet force a rejected
-frost trial through retry, or serialize/reconstruct a frost-enabled backend
-state. Existing sensible-temperature tests establish the reusable temperature
-state/restart contract, but they do not alone qualify frost restart behavior.
+The serialized backend runtime oracle now covers unfrozen, onset, partial and
+strong-freeze points, a warming interval and a freeze-thaw cycle. A small
+partial-frost prescribed-top-flux Richards case commits after full/half trials
+are retried from the committed checkpoint; its mass residual is
+`-2.140518e-16 cm` against the fixed `1e-12 cm` hard gate. Its final hydraulic
+and thermal state matches eight direct smaller-step continuations from the
+same initial checkpoint within the explicit test tolerances. The separate
+backend committed-restart oracle exports the actual frost-enabled committed
+state, restores it into an empty registry, checks template layout, lineage,
+revision and time, and recomputes the same frost factor from the restored
+temperature profile. Neither oracle is replaced by the sensible-temperature
+unit restart test.
 
-This candidate remains unqualified and not production-admitted until its
-rejected-trial/retry and restart oracles pass, plus the broader independent
-temperature-state matrix is persisted. `FrozenBounds` and frost root stress
-remain separate slices; the latter is considered only after the hydraulic
-frost view is independently qualified, then is composed with the admitted
-Feddes/Jarvis/Walsum sink chain. Snow plus frost remains held because current
-sensible temperature and snow admissions do not authorize their combined
+These local results close the listed restart, backend-regime and transaction
+retry oracles for the candidate. They do not by themselves establish a
+persisted production admission. The bounded admission decision must continue
+to exclude root uptake, snow, macropores, drainage response, nonzero prescribed
+bottom flux, frost-sensitive boundary heuristics, temporal-indicator history,
+trajectory direction and sensible boundary carriers. No latent heat, ice
+partition or phase-change energy claim is made. Snow plus frost remains
+outside scope because the existing admissions do not authorize that combined
 thermal semantics.
 
 ## Work status
 
 The exact-source blocker is resolved. Authority reconstruction and source-level
-physical review are complete. A bounded K/dKdh candidate is implemented and
-locally tested at O0/O2, but it is not qualified or admitted. Next: prove
-rejected-trial retry, frost-enabled restart reconstruction and full independent
-state-point coverage; then decide whether to admit this bounded envelope or
-expand the boundary owner before doing so.
+physical review are complete. The bounded K/dKdh candidate and the frost-specific
+restart, transaction and backend temperature-point oracles have local evidence.
+It remains **not production-qualified and not admitted** until the final exact
+postimage passes O0/O2, documentation and JSON checks, is persisted on the work
+branch, and completes the repository's persisted qualification/admission gate.
