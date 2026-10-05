@@ -1,6 +1,7 @@
 # PPA-WU05-E restricted matrix mixed-stress local result
 
-Status: implemented and locally verified; not qualified or canonically admitted.
+Status: bounded application lifecycle qualified by the persisted replay below;
+full salt transport physics and canonical admission remain held.
 The source postimage and exact dependency hashes are recorded in
 [`PPA_WU05E_MATRIX_SALT_LOCAL_GATE.json`](https://github.com/abhedwig-cell/SWAP5/blob/work/ppa-wu05e-salinity-state-root-stress-20261004/integration/audits/PPA_WU05E_MATRIX_SALT_LOCAL_GATE.json).
 The design boundary is [the explicit matrix numerical contract](PPA_WU05E_BASE_SALT_TEMPORAL_CONTRACT.md).
@@ -64,3 +65,20 @@ Dispersion, sorption, decomposition, surface mixing, dynamic aquifer salt
 ownership, seasonal stability, and full B1.11 transport equivalence remain
 separate migration work. The qualified physical source contract must precede
 any broader production claim. Canonical admission has not occurred.
+
+## Persisted bounded qualification
+
+The final replay [37311241437](https://github.com/abhedwig-cell/SWAP5/actions/runs/37311241437)
+completed successfully on source commit
+`abff5c95fe4bd072f9e24c5497d6f4b2f069364a`, tree
+`93d89b1422065fd037d714f2900dfc75dc92d5a6`. GNU Fortran 13.3 O0/O2
+passed all seven actual stress cases, separate-process changed-forcing restart,
+and the declared D2, D3, process and real Richards/macropore preservation gates.
+The downloaded artifact digest matches GitHub metadata; all 816 recorded
+source-manifest entries match the published postimage.
+
+`integration/audits/PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json` persists
+the exact result payload and reviewed scope. This qualifies the bounded
+application lifecycle described here. It does not qualify full B1.11 salt
+transport. The review decision retains the draft PR and holds canonical
+admission pending the independent transport physics migration.

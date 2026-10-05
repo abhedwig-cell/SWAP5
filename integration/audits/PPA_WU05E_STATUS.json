@@ -4,10 +4,10 @@
   "title": "Salinity state, solute mass owner, and root-stress migration",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
   "baseline": "integration/f-ci-canonical@8125ba01b5bfd7377c721caa1105d68e24e77183",
-  "checkpoint_commit": "fd68801196fa9c7e2a34e5649c33f4b72e7de810",
-  "last_reconciled_head": "fd68801196fa9c7e2a34e5649c33f4b72e7de810",
+  "checkpoint_commit": "abff5c95fe4bd072f9e24c5497d6f4b2f069364a",
+  "last_reconciled_head": "abff5c95fe4bd072f9e24c5497d6f4b2f069364a",
   "last_reconciled_upstream": "8125ba01b5bfd7377c721caa1105d68e24e77183",
-  "status": "RESTRICTED_MATRIX_MIXED_APPLICATION_LOCAL_VERIFIED_NOT_QUALIFIED",
+  "status": "BOUNDED_MATRIX_LIFECYCLE_QUALIFIED_FULL_TRANSPORT_NOT_ADMITTED",
   "result_classification": "UNDERLYING_SALINITY_PHYSICS_REQUIRES_SEPARATE_MIGRATION",
   "implemented": true,
   "persisted": true,
@@ -64,7 +64,7 @@
       "git_blob_sha1": "2fc77cc8d127d76e07a03369c1dac766157084b9"
     }
   },
-  "current_finding": "The oxygen/salt compatibility blocker is resolved in an explicit matrix-only numerical route. Actual production bootstrap and serialized dispatch forward an opt-in, unit-bearing full/half policy. Real Feddes drought, Bartholomeus oxygen, Maas-Hoffman salinity and Jarvis ALL execute together under one water sink. Independent accepted salt receipts close root/boundary/signed per-level drainage accounting with zero-solute qssdi. Unit salinity preserves physical and water-receipt identity. Forced temporal exhaustion and adaptive recovery preserve committed state. Restart v4 reconstructs salt plus sensible temperature; a separate OS process with changed boundary forcing produces byte-identical full physical continuation, also identical at O0/O2. Existing D2 application/publication/preservation, D3, real A8 and process salt gates pass locally against unchanged final dependencies. No qualification or canonical admission is claimed. Seven actual production/caller stress cases now cover each isolated stress, pairs with salinity, triple ALL and salinity selector 4. Accepted transpiration publication agrees with the accepted nodewise root integral. Backend reinitialization resets the opt-in salt policy and requires explicit reconfiguration.",
+  "current_finding": "The oxygen/salt compatibility blocker is resolved in an explicit matrix-only numerical route. Actual production bootstrap and serialized dispatch forward an opt-in, unit-bearing full/half policy. Real Feddes drought, Bartholomeus oxygen, Maas-Hoffman salinity and Jarvis ALL execute together under one water sink. Independent accepted salt receipts close root/boundary/signed per-level drainage accounting with zero-solute qssdi. Unit salinity preserves physical and water-receipt identity. Forced temporal exhaustion and adaptive recovery preserve committed state. Restart v4 reconstructs salt plus sensible temperature; a separate OS process with changed boundary forcing produces byte-identical full physical continuation, also identical at O0/O2. Existing D2 application/publication/preservation, D3, real A8 and process salt gates pass locally against unchanged final dependencies. The exact-source persisted CI replay qualifies the bounded matrix application lifecycle; full transport physics and canonical admission remain held. Seven actual production/caller stress cases now cover each isolated stress, pairs with salinity, triple ALL and salinity selector 4. Accepted transpiration publication agrees with the accepted nodewise root integral. Backend reinitialization resets the opt-in salt policy and requires explicit reconfiguration.",
   "historical_reconstruction": "Source-family evidence distinguishes Maas-Hoffman switch 1 as a nodewise alpha(CML) from osmotic-head switch 2, which modifies matric-flux potential and requires Jong-van-Lier drought; switch 2 is not a separate multiplicative alpha_sol. Source-family census additionally establishes SWINCO-dependent initial versus warm-restart concentration profiles, CMSY inventory derived from water content/CML and optional Freundlich sorption, explicit boundary and drainage fluxes, internal solute substeps, and root salt uptake TSCF*qrot*CML. Exact B1.11 solute-member and restart details remain unverified in this execution. Exact B1.11 source has now been recovered by reconstructing the byte-verified historical SWAP 4.3.1 donor source ZIP; solute.f90 matches the pinned 51,508-byte member hash. Its drainage rule is level-resolved: qdra>0 removes at local CML and qdra<=0 imports at Cdrain. qssdi is absent from this solute balance; no concentration is defined there, so the reconstructed SWAP5 contract must keep it zero-solute or fail-closed. Cdrain is externally prescribed unless aquifer breakthrough swbr=1 owns a dynamic reservoir; bottom cseep can be separately prescribed/time varying. Root salt removal uses tscf*qrot*CML. Dispersion, sorption, decomposition, internal solute substeps, and aquifer breakthrough are present in source but remain outside the currently tested prototype envelope.",
   "relevant_paths": [
     "integration/audits/PPA_WU05D_STATUS.json",
@@ -128,7 +128,8 @@
     "integration/audits/PPA_WU05E_FMR_SALT_LOCAL_GATE.json",
     "docs/audits/PPA_WU05E_LIVE_FMR_ENVELOPE.md",
     "integration/audits/PPA_WU05E_MATRIX_SALT_LOCAL_GATE.json",
-    "docs/audits/PPA_WU05E_BASE_SALT_TEMPORAL_CONTRACT.md"
+    "docs/audits/PPA_WU05E_BASE_SALT_TEMPORAL_CONTRACT.md",
+    "integration/audits/PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json"
   ],
   "dependency_surface": [
     "B1.11 solute transport/state source and restart lifecycle",
@@ -155,13 +156,13 @@
     "independent salt-mass owner",
     "water and solute conservation"
   ],
-  "next_action": "Persist the restricted matrix mixed-stress qualification replay on the exact published source tree, review its bounded claim ceiling and source-contract coverage, and route independent remaining salt-transport physics to separate migration scope. Do not present the restricted short-interval upwind fixture as full B1.11 salinity transport equivalence.",
+  "next_action": "Separate source-contract migration for remaining B1.11 salt transport: dispersion/internal substeps, sorption/decomposition, surface/aquifer mass ownership and seasonal stability. Maintain draft PR; no general or canonical salinity admission from this bounded integration proof.",
   "blockers": [
     "Upwind advection, manufactured receipts and local lifecycle tests do not establish exact full B1.11 transport equivalence, dispersion or production stability qualification.",
     "Surface CPRE/CIRR mixing pools, macro top/return, covering, rapid outflow, dynamic shrinkage salt redistribution and SWBR=1 aquifer salt state remain unsupported; the bounded guards reject incompatible routes.",
-    "Restricted matrix mixed-stress candidate still needs exact-tree persisted qualification and an explicit admission decision. Seasonal transport stability and complete B1.11 dispersion/sorption/decomposition/solute boundary application remain outside this gate. Separate-process proof uses a test-only decoded-record encoding; no generic public restart file format is admitted."
+    "Full B1.11 dispersion/sorption/decomposition/solute boundary application and seasonal stability remain unqualified. Separate-process proof uses test-only decoded-record encoding; no public restart file format is admitted."
   ],
-  "recovery_point": "Recover from fd68801196fa9c7e2a34e5649c33f4b72e7de810 and PPA_WU05E_MATRIX_SALT_LOCAL_GATE.json. All final production dependency hashes match recorded O0/O2 results; qualification replay and broader source physics admission remain distinct.",
+  "recovery_point": "abff5c95fe4bd072f9e24c5497d6f4b2f069364a; exact-source bounded qualification in PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json",
   "source_family_census": {
     "initialization": "SWINCO != 3 interpolates ZC/CML input to nodes; SWINCO = 3 consumes a warm-start concentration profile and does not reapply the initial table (source-family only).",
     "state": "CML is mobile-water concentration; CMSY is dissolved plus adsorbed mass per bulk soil volume; column inventory integrates CMSY over node thickness.",
@@ -171,5 +172,11 @@
     "exact_source_limit": "All equations and lifecycle details above are source-family corroboration only, not byte-exact B1.11 claims."
   },
   "initial_e1_envelope": "One conservative dissolved salt constituent in mobile water; SWSP=0; decomposition, macropore, ageing, aquifer mixing, MICRO and lateral drainage off; explicit top/bottom solute boundary traces; root salt uptake through TSCF*qrot*CML with restricted 0<=TSCF<=1; node salt mass authoritative, CML derived from matching committed/trial water content; paired water/salt trial commit/discard.",
-  "initial_baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b"
+  "initial_baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "bounded_matrix_qualification": {
+    "qualified": true,
+    "evidence": "integration/audits/PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json",
+    "tested_commit": "abff5c95fe4bd072f9e24c5497d6f4b2f069364a",
+    "run_id": 37311241437
+  }
 }
