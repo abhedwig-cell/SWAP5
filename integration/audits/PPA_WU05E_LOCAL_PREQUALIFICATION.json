@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart",
+  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart; FMR Restart v4 forcing-handle mismatch rejection and disabled-only v3/v2 migration pass the A7 O0/O2 gate",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "d9ff6009ef032ac41b0d528ecd09ef849acdadde40f40205f07340fe690f8cce",
@@ -156,6 +156,16 @@
       "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
       "result": "PASS_O0_O2_IDENTICAL",
       "scope": "A7/A8 real Richards gate; typed Cdrain interval coverage, invalid unit and interval-overrun rejection exercised by the test-only macro-salt trace adapter; active FMR salt layout remains fail-closed"
+    },
+    {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "result": "PASS_O0_O2_IDENTICAL",
+      "scope": "A7/A8 real Richards gate with FMR Restart v4 forcing-handle round trip, mismatched-handle atomic rejection, disabled-only v3/v2 compatibility, typed Cdrain interval contract checks, and test-only trace mapping"
+    },
+    {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
+      "result": "PASS_O0_O2_IDENTICAL",
+      "scope": "matrix/macropore coupled salt process arithmetic oracle"
     }
   ],
   "not_run_or_not_claimed": [
