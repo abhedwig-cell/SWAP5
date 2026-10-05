@@ -4,13 +4,13 @@
   "title": "B1.11 frost hydraulic modifier migration",
   "branch": "work/ppa-wu05b-frost-migration",
   "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
-  "checkpoint_commit": "2db85e93a0a5bf65c82f0adc7d6d99bc3c3054e1",
-  "last_reconciled_head": "2db85e93a0a5bf65c82f0adc7d6d99bc3c3054e1",
+  "checkpoint_commit": "a2b9227e43c6f705942dc4959a579c011b857ae0",
+  "last_reconciled_head": "a2b9227e43c6f705942dc4959a579c011b857ae0",
   "last_reconciled_upstream": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "admitted": false,
   "authority_paths": [
     "reference/swap-4.3.1/snapshots/B1.11.yml",
@@ -49,14 +49,23 @@
     "drainage/boundary flux ownership for deferred FrozenBounds"
   ],
   "source_trace": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
-  "next_action": "Open the PR to integration/f-ci-canonical, run the dedicated Actions frost qualification gate on its exact postimage, then record the persisted result and admission decision.",
-  "recovery_point": "work/ppa-wu05b-frost-migration@2db85e93a0a5bf65c82f0adc7d6d99bc3c3054e1; frost implementation, local qualification evidence, and dedicated Actions gate are persisted.",
+  "next_action": "Run the updated exact-postimage frost and current-canonical preservation gates, then submit this bounded candidate to central SWAP5 regie for ADMIT, RETURN, or SUPERSEDE.",
+  "recovery_point": "work/ppa-wu05b-frost-migration@a2b9227e43c6f705942dc4959a579c011b857ae0; targeted PPA-WU05B Actions qualification passed, backend successor pin added to current-canonical preservation; broad preservation and central admission remain pending.",
   "blockers": [
-    "Persisted PPA-WU05B qualification/admission workflow has not run on a PR postimage; no production admission is claimed.",
-    "FrozenBounds and frost-root-stress are rejected in their current legacy forms for this bounded capability; future replacements remain separate scope."
+    "Updated exact-postimage PPA-WU05B and F-CI canonical current-preservation gates have not completed.",
+    "Central SWAP5 regie admission decision has not been recorded."
   ],
   "legacy_dispositions": {
     "FrozenBounds": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; future owner-specific boundary replacement is separate scope.",
     "frost_root_stress": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; binary 0 C stress and ALPHACRIT compensation do not currently compose with the admitted sink chain; microscopic route errors when frost is enabled."
+  },
+  "persisted_qualification": {
+    "workflow": "PPA-WU05B bounded frost qualification and admission",
+    "run_id": 37283776524,
+    "job_id": 111677721005,
+    "conclusion": "success",
+    "tested_head": "a2b9227e43c6f705942dc4959a579c011b857ae0",
+    "tests": "frost effect/provider/runtime/restart/retry at O0 and O2; docs; strict MkDocs; JSON; whitespace",
+    "run_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37283776524"
   }
 }

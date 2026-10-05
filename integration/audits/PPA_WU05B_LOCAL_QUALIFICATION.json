@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05B",
   "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
-  "qualification_state": "LOCAL_BOUNDED_CANDIDATE_GATES_PASS_PERSISTED_ADMISSION_PENDING",
+  "qualification_state": "PERSISTED_BOUNDED_FROST_GATE_PASS_CURRENT_CANONICAL_PRESERVATION_PENDING",
   "runs": [
     {
       "name": "frost effect and typed provider owner oracles",
@@ -82,12 +82,31 @@
     "docs/audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md": "0a951677292883f5a475a78c4978a3541dece5c6568086b2145bb5fab06850f9",
     "integration/audits/PPA_WU05B_SOURCE_TRACE.json": "60d3ea7985bf74d50bb50daf69f9389cbede2e1ffd662664158caadc8fc1fa1f",
     "integration/audits/PPA_WU05B_PREREGISTRATION.json": "627cb279500680e6ea19efd2044e18c9832d27c7ef4306fc00542b3b822921e2",
-    ".github/workflows/ppa-wu05b-frost-admission.yml": "c92ccae3349ad5adf558ba683f63d89920d83c9ff9699c6af550123f18c14906"
+    ".github/workflows/ppa-wu05b-frost-admission.yml": "c92ccae3349ad5adf558ba683f63d89920d83c9ff9699c6af550123f18c14906",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "0667a23927788bf64c31a0324b9f48c06c8631db89223fcbb7a84300ecb29820"
   },
   "open_gates": [
-    "Create the PR to integration/f-ci-canonical and run the dedicated Actions qualification gate against the exact PR postimage.",
-    "Record persisted Actions results and complete the repository admission decision; no production admission is claimed before this succeeds.",
-    "FrozenBounds and frost-root-stress remain explicitly rejected only in their current legacy forms; any replacement is separate scope."
+    "Rerun the dedicated PPA-WU05B Actions gate on the updated exact PR postimage.",
+    "Complete F-CI canonical moving-current preservation with the exact PPA-WU05B backend successor pin.",
+    "Inspect F-KT22 current-canonical compile/runtime/EB-I25 results; the EB-I25 O0 preservation runner independently fails on exact canonical baseline 9605fbb at external full-half outflow fixture rejected before commit.",
+    "Central SWAP5 regie must reconcile the qualified bounded slice and record ADMIT, RETURN, or SUPERSEDE; admission is not claimed before that decision."
   ],
-  "github_actions": "Dedicated PPA-WU05B pull-request qualification workflow added; not run until the PR postimage exists."
+  "github_actions": "Run 37283776524 passed on exact prior candidate head a2b9227e43c6f705942dc4959a579c011b857ae0; updated preservation/evidence postimage awaits a fresh exact-head gate.",
+  "persisted_actions_qualification": {
+    "workflow": "PPA-WU05B bounded frost qualification and admission",
+    "run_id": 37283776524,
+    "job_id": 111677721005,
+    "conclusion": "success",
+    "tested_head": "a2b9227e43c6f705942dc4959a579c011b857ae0",
+    "tests": "frost effect/provider/runtime/restart/retry at O0 and O2; docs; strict MkDocs; JSON; whitespace",
+    "run_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37283776524"
+  },
+  "baseline_diagnostic": {
+    "gate": "F-KT22 EB-I25 preservation",
+    "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+    "command": "bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh",
+    "result": "FAIL at O0 on baseline",
+    "failure_marker": "external full-half outflow fixture rejected before commit",
+    "interpretation": "Reproduced in a detached worktree at the exact current canonical baseline; it predates this frost postimage. The exact PR Actions result remains necessary to verify the frost successor."
+  }
 }

@@ -31,6 +31,10 @@ PPA_WU04A_ADMISSION=50e7d1dece5b75d0103459d5c118d03a2665eea3
 PPA_WU04A_QUALIFIED=f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938
 PPA_WU04B_ADMISSION=4d40b8d4b6a1df06ff97fab55497542778431290
 PPA_WU04B_QUALIFIED=eb0e635975b77ec92084e1416038b1bc1f8232bc
+PPA_WU05B_QUALIFIED=a2b9227e43c6f705942dc4959a579c011b857ae0
+PPA_WU05B_BACKEND=c093919f070af2cf1616328cf3bd50df84e0a5f0
+PPA_WU05B_EFFECT=2c8adba7986e7d85749c4c36d26530748fbbab9e
+PPA_WU05B_PROVIDER=08492a7272860629c9ffee34968c9cc29952bd58
 TEMPORAL_INDICATOR=src/solver/mod_reference_richards_temporal_indicator.f90
 PPA_ROOT_HYD01_TEMPORAL_INDICATOR=2068215a57edb1d2a59c36d6b32f519ebdc09ebd
 FCI110_TEMPORAL_INDICATOR=81a0305958e108e92224a48862358d79c765cd0a
@@ -313,6 +317,14 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
   if git merge-base --is-ancestor "$BALTOL02_ADMISSION" HEAD; then
     backend_authority="$BALTOL02_BACKEND"
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
+  fi
+  if git merge-base --is-ancestor "$PPA_WU05B_QUALIFIED" HEAD; then
+    backend_authority="$PPA_WU05B_BACKEND"
+    test "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" = "$PPA_WU05B_EFFECT" || \
+      fail 'PPA-WU05B frost hydraulic effect successor drift'
+    test "$(git rev-parse HEAD:src/solver/mod_frost_hydraulic_provider.f90)" = "$PPA_WU05B_PROVIDER" || \
+      fail 'PPA-WU05B frost hydraulic provider successor drift'
+    echo 'FCI_CANONICAL_PPA_WU05B_FROST_BACKEND_SUCCESSOR=ACTIVE'
   fi
   test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$provider_authority" || \
     fail 'admitted default-MvG provider successor drift'
