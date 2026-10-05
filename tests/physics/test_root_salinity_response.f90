@@ -5,6 +5,8 @@ program test_root_salinity_response
   implicit none
   real(real64),parameter :: threshold=5.0_real64,slope=0.2_real64,tol=2.0e-14_real64
   real(real64) :: alpha(6)
+  real(real64),allocatable :: cml(:),sink(:),node_loss(:),alpha_view(:)
+  real(real64) :: total_loss,potential(2)
   integer :: status
 
   call evaluate_maas_hoffman_response([0.0_real64,threshold,threshold+1.0e-8_real64, &
@@ -30,6 +32,22 @@ program test_root_salinity_response
   call req(status==SALINITY_INVALID,'negative threshold rejected')
   call evaluate_maas_hoffman_response([1.0_real64],threshold,-slope,alpha(1:1),status)
   call req(status==SALINITY_INVALID,'negative slope rejected')
+  ! Mass and water are supplied from one trial revision: CML is derived from
+  ! mg/cm2 divided by theta*dz, then the exact same alpha scales the sink.
+  potential=[0.1_real64,0.2_real64]
+  call evaluate_mobile_root_salinity_sink([4.0_real64,20.0_real64],[0.2_real64,0.2_real64], &
+       [2.0_real64,2.0_real64],threshold,slope,potential,cml,alpha_view,sink, &
+       node_loss,total_loss,status)
+  call req(status==SALINITY_OK.and.maxval(abs(cml-[10.0_real64,50.0_real64]))<tol, &
+       'same-revision CML is derived from committed mass and matching water')
+  call req(maxval(abs(alpha_view-[0.0_real64,0.0_real64]))<tol.and.maxval(abs(sink))<tol, &
+       'Maas-Hoffman response scales the root sink')
+  call req(maxval(abs(node_loss-[0.1_real64,0.2_real64]))<tol.and.abs(total_loss-0.3_real64)<tol, &
+       'nodewise salinity loss closes to one scalar attribution')
+  call req(maxval(abs(potential-[0.1_real64,0.2_real64]))<tol,'potential sink input remains value-stable')
+  call evaluate_mobile_root_salinity_sink([1.0_real64],[0.0_real64],[2.0_real64],threshold,slope, &
+       [0.1_real64],cml,alpha_view,sink,node_loss,total_loss,status)
+  call req(status==SALINITY_INVALID,'positive salt inventory in dry water state is rejected')
   print *,'PPA_WU05E_ROOT_SALINITY_RESPONSE=PASS'
 contains
   subroutine req(ok,label)
