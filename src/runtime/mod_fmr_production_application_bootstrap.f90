@@ -862,7 +862,7 @@ contains
     ! prescribed-qbot mode 2; process composition remains fail-closed here.
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
         tile%parameters%hysteresis_active .or. &
-        (tile%parameters%frost_active.and..not.tile%parameters%root_frost%active.and..not.tile%parameters%frost_bottom%active) .or. &
+        (tile%parameters%frost_active.and..not.tile%parameters%root_frost%active.and..not.tile%parameters%frost_bottom%active.and..not.tile%parameters%frost_drainage%active) .or. &
         tile%parameters%drainage_response_active .or. &
         tile%parameters%tabulated_hydraulics_active) return
     ! The original bare-soil admission remains exact when the new carrier is
@@ -874,7 +874,7 @@ contains
       if(tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active) return
     else
       if(tile%parameters%soil_temperature_active.and..not.tile%parameters%root_frost%active.and. &
-           .not.tile%parameters%frost_bottom%active) return
+           .not.tile%parameters%frost_bottom%active.and..not.tile%parameters%frost_drainage%active) return
       if(tile%parameters%root_extraction_active) then
         if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
           if (tile%parameters%root_compensation%method /= ROOT_COMP_OFF) return
@@ -890,6 +890,17 @@ contains
       if(allocated(tile%base_forcing%crop_oxygen)) return
     end if
 
+    if(tile%parameters%frost_drainage%active)then
+      if(.not.tile%parameters%frost_drainage%valid())return
+      if(.not.tile%parameters%frost_active.or..not.tile%parameters%soil_temperature_active)return
+      if(tile%parameters%frost_bottom%active.or.tile%parameters%root_extraction_active.or. &
+           tile%parameters%root_frost%active.or.tile%parameters%drainage_response_active)return
+      if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt))return
+      if(allocated(tile%parameters%bartholomeus).or.allocated(tile%base_forcing%crop_oxygen))return
+      if(tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active)return
+      if(tile%parameters%bottom_mode/=2)return
+      if(tile%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
+    end if
     if(tile%parameters%frost_bottom%active)then
       if(.not.tile%parameters%frost_bottom%valid())return
       if(.not.tile%parameters%frost_active.or..not.tile%parameters%soil_temperature_active)return
