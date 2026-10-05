@@ -1,9 +1,8 @@
 program test_mig431_water_limits
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_tillage_constitutive_process, only: tillage_vg_parameters_t
   use mod_fmr_irrigation_water_limits
   implicit none
-  type(tillage_vg_parameters_t) :: vg(3)
+  type(irrigation_retention_parameters_t) :: vg(3)
   real(real64), allocatable :: fc(:),mid(:),wp(:)
   integer :: status
   vg%theta_residual = 0.05_real64

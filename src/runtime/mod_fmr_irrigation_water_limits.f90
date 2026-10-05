@@ -1,16 +1,22 @@
 module mod_fmr_irrigation_water_limits
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use mod_tillage_constitutive_process, only: tillage_vg_parameters_t
   implicit none
   private
   integer, parameter, public :: IRRIGATION_LIMITS_OK = 0
   integer, parameter, public :: IRRIGATION_LIMITS_INVALID = 1
+  type, public :: irrigation_retention_parameters_t
+    real(real64) :: theta_residual = 0.0_real64
+    real(real64) :: theta_saturated = 0.0_real64
+    real(real64) :: alpha = 0.0_real64
+    real(real64) :: n = 0.0_real64
+    real(real64) :: m = 0.0_real64
+  end type
   public :: derive_irrigation_water_limits
 contains
   pure subroutine derive_irrigation_water_limits(vg,layer_bottom_node,field_capacity_head_cm, &
        medium_head_cm,wilting_head_cm,field_capacity,middle,wilting,status)
-    type(tillage_vg_parameters_t), intent(in) :: vg(:)
+    type(irrigation_retention_parameters_t), intent(in) :: vg(:)
     integer, intent(in) :: layer_bottom_node(:)
     real(real64), intent(in) :: field_capacity_head_cm,medium_head_cm,wilting_head_cm
     real(real64), allocatable, intent(out) :: field_capacity(:),middle(:),wilting(:)
@@ -54,7 +60,7 @@ contains
   end subroutine
 
   pure logical function valid_vg(vg)
-    type(tillage_vg_parameters_t), intent(in) :: vg
+    type(irrigation_retention_parameters_t), intent(in) :: vg
     valid_vg = .false.
     if (.not. all(ieee_is_finite([vg%theta_residual,vg%theta_saturated,vg%alpha,vg%n,vg%m]))) return
     if (vg%theta_residual < 0.0_real64 .or. vg%theta_saturated <= vg%theta_residual .or. &
@@ -64,7 +70,7 @@ contains
   end function
 
   pure real(real64) function retention(vg,head_cm)
-    type(tillage_vg_parameters_t), intent(in) :: vg
+    type(irrigation_retention_parameters_t), intent(in) :: vg
     real(real64), intent(in) :: head_cm
     if (head_cm >= 0.0_real64) then
       retention = vg%theta_saturated
