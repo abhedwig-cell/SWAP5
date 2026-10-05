@@ -4,8 +4,8 @@
   "title": "B1.11 frost hydraulic modifier migration",
   "branch": "work/ppa-wu05b-frost-migration",
   "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
-  "checkpoint_commit": "d61c6196b89ffe2d1aaf4bcb8fd45067594c54df",
-  "last_reconciled_head": "d61c6196b89ffe2d1aaf4bcb8fd45067594c54df",
+  "checkpoint_commit": "2db85e93a0a5bf65c82f0adc7d6d99bc3c3054e1",
+  "last_reconciled_head": "2db85e93a0a5bf65c82f0adc7d6d99bc3c3054e1",
   "last_reconciled_upstream": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "implemented": true,
   "persisted": true,
@@ -35,7 +35,8 @@
     "tests/frost/test_ppa_wu05b_frost_runtime.f90",
     "tests/frost/run_ppa_wu05b_frost_effect.sh",
     "tests/frost/run_ppa_wu05b_frost_runtime.sh",
-    "tests/fci/test_fci43_restricted_soil_temperature_independent.f90"
+    "tests/fci/test_fci43_restricted_soil_temperature_independent.f90",
+    ".github/workflows/ppa-wu05b-frost-admission.yml"
   ],
   "evidence_paths": [
     "integration/audits/PPA_WU05B_LOCAL_QUALIFICATION.json"
@@ -48,14 +49,14 @@
     "drainage/boundary flux ownership for deferred FrozenBounds"
   ],
   "source_trace": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
-  "next_action": "Run the persisted qualification/admission gate against the exact persisted frost postimage, then record the gate result and canonical admission decision.",
-  "recovery_point": "work/ppa-wu05b-frost-migration@d61c6196b89ffe2d1aaf4bcb8fd45067594c54df; implementation, runtime tests, preregistration, source trace and local qualification evidence are persisted.",
+  "next_action": "Open the PR to integration/f-ci-canonical, run the dedicated Actions frost qualification gate on its exact postimage, then record the persisted result and admission decision.",
+  "recovery_point": "work/ppa-wu05b-frost-migration@2db85e93a0a5bf65c82f0adc7d6d99bc3c3054e1; frost implementation, local qualification evidence, and dedicated Actions gate are persisted.",
   "blockers": [
-    "Persisted production qualification/admission gate has not yet run against the exact postimage; no production admission is claimed.",
-    "The candidate intentionally excludes legacy FrozenBounds and frost-root-stress in their current forms; those are documented REJECTED dispositions, not blockers for the bounded zero-boundary/root-off capability."
+    "Persisted PPA-WU05B qualification/admission workflow has not run on a PR postimage; no production admission is claimed.",
+    "FrozenBounds and frost-root-stress are rejected in their current legacy forms for this bounded capability; future replacements remain separate scope."
   ],
   "legacy_dispositions": {
     "FrozenBounds": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; future owner-specific boundary replacement is separate scope.",
     "frost_root_stress": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; binary 0 C stress and ALPHACRIT compensation do not currently compose with the admitted sink chain; microscopic route errors when frost is enabled."
   }
-}
+}\n
