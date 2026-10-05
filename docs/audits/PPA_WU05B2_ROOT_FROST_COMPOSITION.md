@@ -1,6 +1,7 @@
 # PPA-WU05B2: explicit empirical root frost composition
 
-Status: implemented candidate, not canonically admitted. Original baseline is
+Status: bounded empirical macro-root composition canonically admitted by PR #1030,
+merge `3039e573229b2bf19747f713084ea7a19cb48ed0`. Original baseline is
 `53a3f3e41231b8600bbb19b8eb2157558bd12e19`.
 
 The legacy macro-root rule sets uptake to zero below 0 C. Exactly 0 C
@@ -84,3 +85,13 @@ queued Actions confirmation is not reported as successful.
 The separate FrozenBounds source review is recorded in
 `docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md`; it does not admit that boundary
 policy or change this root-composition implementation.
+
+## Canonical admission
+
+Central regie admitted PR #1030 after the live-base reconciliation and exact-source
+qualification described above. The accepted full tree is
+`a7dd2a63c460c01bf81c802826966279d812b228`; the production source equals the locally
+qualified preservation source. Admission relies on that local evidence; queued
+Actions was not counted as successful confirmation. The explicit temperature
+horizon limitation remains part of the admitted scope. No full frost closeout,
+joint salt/frost or FrozenBounds admission follows from this root slice.
