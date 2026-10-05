@@ -387,3 +387,7 @@ This successor removes the earlier Walsum/salinity exclusion only in the selecte
 matrix envelope. Salt/frost, salt/Rutter, macropore salt production, osmotic-head
 and unqualified chemistry/groundwater/crop combinations remain excluded. The
 frozen Status A denominator is unchanged.
+
+## Bounded no-drain frost lower-boundary successor
+
+PPA-WU05B3 is canonically admitted via PR #1034 at `bdb5ecb78bd14226dc850ce27b72d551eaeff287`. It composes one final prescribed bottom proposal from trial-start frost/air fields on rootless ordinary Reference mode2 columns, with existing solver, mass and restart ownership. Current-source local O0/O2 qualification and full canonical preservation pass; queued Actions are not used as evidence. [Contract and admission](../audits/PPA_WU05B3_NO_DRAIN_FROZEN_BOTTOM.md) retain the explicit legacy last-node omission and bounded numerical budgets. Combined root/bottom frost and drainage remain separate. The [actual drainage source probe](../audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_FINDING.md) establishes a low-air SWDIVD=0 node/level accounting inconsistency that requires a qualified reference correction. The aggregate frost migration is not complete.

@@ -1,0 +1,39 @@
+{
+  "work_unit": "PPA-WU05B-FROZEN-DRAIN-SOURCE",
+  "baseline": "a370f6f487c017af9931ffc46d4c5c9fb1288d8c",
+  "status": "CONFIRMED_B1_11_NODE_LEVEL_ACCOUNTING_INCONSISTENCY",
+  "implemented": "Actual unchanged source reproduction only; no production mutation",
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "admitted": false,
+  "required_test": "bash tests/frost/run_ppa_wu05b_frozen_drain_source.sh",
+  "next_action": "Run persisted O0/O2 source probe and documentation gates, then qualify a corrected B1 accounting contract before migration",
+  "reference_correction_required": true,
+  "affected_invariants": [
+    7,
+    13,
+    21,
+    22
+  ],
+  "scope": "SWDIVD=0 low-air surviving drain level, no full legacy simulation claim",
+  "source_members": "reference/swap-4.3.1/b1_11_frost_source/manifest.json",
+  "test_manifest": {
+    "tests/frost/test_ppa_wu05b_frozen_drain_source.f90": "275b94e013fb41c84e8973a1bde27754ec45d67f970614be2ff8172cd1a48dde",
+    "tests/frost/test_ppa_wu05b_frozen_drain_source_main.f90": "7ed7038e9ea3ed8ef61934c402e6f19aa96d101cb519059b62836a6e43aeade6",
+    "tests/frost/run_ppa_wu05b_frozen_drain_source.sh": "48db34196478179a6c250b53ee9063398616e8eded791892b2280fef3c9a3253"
+  },
+  "source_finding": "docs/audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_FINDING.md",
+  "expected_node_out_cm_day": 0.11,
+  "expected_reported_out_cm_day": 0.1,
+  "expected_discrepancy_cm_day": 0.01,
+  "blockers": [
+    "Corrected B1 flux ownership/sign/geometry contract not yet qualified"
+  ],
+  "latent_heat_source_claim": "Actual B1.11 temperature source uses sensible heat; this authority does not contain ice inventory or latent heat.",
+  "qualification_scope": "Source discrepancy reproduction only; no corrected reference or production admission",
+  "test_output": "FROZEN_DRAIN_NODE_MINUS_LEVEL_CM_DAY=  0.010000\nPPA-WU05B_FROZEN_DRAIN_SOURCE_MISMATCH_REPRODUCED=PASS\nFROZEN_DRAIN_NODE_MINUS_LEVEL_CM_DAY=  0.010000\nPPA-WU05B_FROZEN_DRAIN_SOURCE_MISMATCH_REPRODUCED=PASS\n",
+  "test_output_sha256": "d64d2d809b080fdcab2416853ffb24f06105a5210a95e493622e5558cbd5b4cd",
+  "documentation_checks": "source checks and strict MkDocs PASS",
+  "whitespace_scope": "Probe/docs/JSON pass; byte-exact imported authority retains original CRLF and trailing whitespace by design"
+}

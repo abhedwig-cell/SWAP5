@@ -52,7 +52,7 @@
     "drainage/boundary flux ownership for deferred FrozenBounds"
   ],
   "source_trace": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
-  "next_action": "Hydraulic frost and empirical macro-root frost are admitted in distinct bounded units. Continue the source-reviewed FrozenBounds geometry/boundary work separately.",
+  "next_action": "Qualify joint root/bottom frost; correct and qualify B1 drainage node/level inconsistency before migrating that branch",
   "recovery_point": "Canonical PR #1018 merge 5272ac9192ec1065dbe2432f73d1f1b4394437e0; exact qualified tree preserved; bounded hydraulic modifier admitted.",
   "blockers": [],
   "legacy_dispositions": {
@@ -88,5 +88,13 @@
     "authority": "integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json"
   },
   "aggregate_frost_migration_complete": false,
-  "root_frost_successor": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json"
+  "root_frost_successor": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json",
+  "frozen_bottom_successor": {
+    "work_unit": "PPA-WU05B3",
+    "canonical_merge": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
+    "admitted": true,
+    "scope": "Rootless ordinary Reference mode2 legacy no-drain FrozenBounds with explicit opt-in and finite positive local numerical budgets",
+    "admission": "integration/audits/PPA_WU05B3_CANONICAL_ADMISSION.json"
+  },
+  "drainage_reference_finding": "integration/audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_STATUS.json"
 }
