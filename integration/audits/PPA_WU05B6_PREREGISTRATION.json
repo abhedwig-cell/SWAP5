@@ -1,0 +1,35 @@
+{
+  "work_unit": "PPA-WU05B6",
+  "baseline": "b872ddbd930ea08b058575877a03774d313742cc",
+  "status": "PREREGISTERED",
+  "scope": "Explicit rootless ordinary Reference mode2 normal FrozenBounds nodal drainage scaling; prescribed nodal drainage only initially",
+  "physical_contract": "From one immutable trial-start temperature/water view, classify legacy deepest-index/available-air branch. Reject deep-low-air branch; otherwise scale each signed level/node drainage rate by that node frost factor and derive totals from final nodal rates. Keep qbot original. No second ledger owner.",
+  "interface": "New frost_drainage opt-in with finite positive head/temperature numerical budgets. Production default remains OFF. No new persistent state or restart payload.",
+  "invariants": [
+    "rejected trial leaves committed water/temperature/time/revision unchanged",
+    "same actual modified qdra owner for solver and accepted mass",
+    "qbot is independently booked exactly once",
+    "physical flag independent from numerical execution budgets"
+  ],
+  "gates": [
+    "actual unmodified B1 FrozenBounds O0/O2 signed normal-branch component comparison plus exact threshold and malformed-input rejection",
+    "actual runtime signed multilevel drainage with hard mass 1e-12cm; actual temporal refinement and fine direct trajectory envelope head1e-6cm temperature1e-4C",
+    "fresh replay and empty-registry restart continuation identity",
+    "bounded ordinary application reachability and excluded-combination fail-closed",
+    "current canonical preservation and incumbent frost/root/bottom O0/O2 preservation",
+    "documentation source checks and strict build"
+  ],
+  "exclusions": [
+    "deep frost with available air below .01cm",
+    "drainage-response variants in initial slice",
+    "SWDIVD=1 redistribution",
+    "root/salt/macropore/snow combinations",
+    "frost_bottom composition",
+    "groundwater-owned bottom",
+    "depth interpolation",
+    "global legacy equivalence",
+    "phase-change physics"
+  ],
+  "reference_correction_authority": "integration/audits/PPA_WU05B5_REF_STATUS.json",
+  "aggregate_frost_migration_complete": false
+}
