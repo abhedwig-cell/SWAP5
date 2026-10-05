@@ -72,28 +72,41 @@ contains
     status=ROOT_COMP_OK
   end subroutine
 
-  subroutine attribute_root_stress_losses(potential,drought_sink,oxygen_factor,drought_loss,oxygen_loss,status)
+  subroutine attribute_root_stress_losses(potential,drought_sink,oxygen_factor,drought_loss,oxygen_loss,status, &
+       salinity_factor,salinity_loss)
     real(real64),intent(in)::potential(:),drought_sink(:),oxygen_factor(:)
     real(real64),intent(out)::drought_loss,oxygen_loss
     integer,intent(out)::status
+    real(real64),optional,intent(in)::salinity_factor(:)
+    real(real64),optional,intent(out)::salinity_loss
     integer::i
-    real(real64)::dry,wet,loss,weight
+    real(real64)::dry,wet,salt,loss,weight,salt_total
     drought_loss=0.0_real64;oxygen_loss=0.0_real64;status=ROOT_COMP_INVALID
+    salt_total=0.0_real64
+    if(present(salinity_loss))salinity_loss=0.0_real64
     if(size(potential)/=size(drought_sink).or.size(potential)/=size(oxygen_factor)) return
+    if(present(salinity_factor))then
+      if(size(potential)/=size(salinity_factor))return
+      if(any(.not.ieee_is_finite(salinity_factor)))return
+      if(any(salinity_factor<0.0_real64).or.any(salinity_factor>1.0_real64))return
+    end if
     if(any(.not.ieee_is_finite(potential)).or.any(.not.ieee_is_finite(drought_sink)).or. &
        any(.not.ieee_is_finite(oxygen_factor))) return
     if(any(potential<0.0_real64).or.any(drought_sink<0.0_real64).or.any(drought_sink>potential).or. &
        any(oxygen_factor<0.0_real64).or.any(oxygen_factor>1.0_real64)) return
     do i=1,size(potential)
       if(potential(i)<=0.0_real64) cycle
-      dry=drought_sink(i)/potential(i);wet=oxygen_factor(i)
-      loss=potential(i)-drought_sink(i)*wet
+      dry=drought_sink(i)/potential(i);wet=oxygen_factor(i);salt=1.0_real64
+      if(present(salinity_factor))salt=salinity_factor(i)
+      loss=potential(i)-drought_sink(i)*wet*salt
       if(loss<1.0e-14_real64) cycle
-      weight=(1.0_real64-dry)+(1.0_real64-wet)
+      weight=(1.0_real64-dry)+(1.0_real64-wet)+(1.0_real64-salt)
       if(weight<=0.0_real64) return
       drought_loss=drought_loss+(1.0_real64-dry)/weight*loss
       oxygen_loss=oxygen_loss+(1.0_real64-wet)/weight*loss
+      salt_total=salt_total+(1.0_real64-salt)/weight*loss
     end do
+    if(present(salinity_loss))salinity_loss=salt_total
     status=ROOT_COMP_OK
   end subroutine
 
