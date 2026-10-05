@@ -79,6 +79,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/adapter/mod_fmr_mode7_temporal_head_envelope.f90
   src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
+  src/crop/mod_crop_bartholomeus_input.f90
   "$BACKEND"
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_owned_commit_receipt.f90
