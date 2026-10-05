@@ -3,10 +3,25 @@
   "baseline": "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
   "baseline_source": "0379fcc374513baaa487979ac7cc8288c9f44641",
   "preregistration": "integration/audits/PPA_WU05B10_PREREGISTRATION.json",
-  "status": "PREREGISTERED_RECONCILED",
-  "implemented": false,
+  "status": "IMPLEMENTED_RUNTIME_PENDING",
+  "implemented": true,
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
-  "next_action": "Implement selected low-air response guards, terminal proposal regeneration and bounded tests"
+  "next_action": "Persist recoverable candidate, execute fresh runtime O0/O2 then source-bound incumbent preservation",
+  "source_component": "216_ACTUAL_LINEAR_GUARDED_FROZENBOUNDS_O0_O2_PASS_IDENTICAL_STDOUT",
+  "production_source_tree": "fd27cbbbf863fd3cd14a2a1619d9f0803d40091e",
+  "selected_runtime_policy": {
+    "local_head_cm": 3e-11,
+    "local_temperature_c": 1e-07,
+    "solver_head_abs_rel": 1e-12,
+    "fine_steps": 65536,
+    "horizon_head_cm": 1e-06,
+    "horizon_temperature_c": 0.0001,
+    "hard_mass_cm": 1e-12,
+    "owned_consistent_grid": true
+  },
+  "negative_review_findings": [
+    "Threshold-only qbot-transition interpretation corrected by exact depth implication. Terminal regeneration retained for explicit proposal provenance/availability."
+  ]
 }

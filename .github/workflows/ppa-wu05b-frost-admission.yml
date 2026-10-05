@@ -99,6 +99,12 @@ jobs:
             bash tests/frost/run_ppa_wu05b9_response_drain_source.sh
             bash tests/frost/run_ppa_wu05b9_response_drain_runtime.sh
           fi
+      - name: Explicit low-air frost with admitted linear drainage generation
+        run: |
+          if test -f tests/frost/run_ppa_wu05b10_low_air_response_source.sh; then
+            bash tests/frost/run_ppa_wu05b10_low_air_response_source.sh
+            bash tests/frost/run_ppa_wu05b10_low_air_response_runtime.sh
+          fi
       - name: Exact current-canonical preservation for the bounded frost successor
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
       - name: Install documentation dependencies

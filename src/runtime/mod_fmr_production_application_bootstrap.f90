@@ -894,9 +894,15 @@ contains
     if(.not.fmr_frost_response_drainage_configuration_valid(tile%parameters))return
     if(tile%parameters%frost_low_air_drainage%active)then
       if(.not.tile%parameters%frost_low_air_drainage%valid().or..not.tile%parameters%frost_drainage%active)return
-      if(.not.allocated(tile%base_forcing%drainage_flux_by_level))return
-      if(size(tile%parameters%frost_low_air_drainage%drain_depth_cm)/= &
-           size(tile%base_forcing%drainage_flux_by_level,1))return
+      if(tile%parameters%frost_low_air_response_drainage_active)then
+        if(.not.allocated(tile%parameters%drainage_response_levels))return
+        if(size(tile%parameters%frost_low_air_drainage%drain_depth_cm)/= &
+             size(tile%parameters%drainage_response_levels))return
+      else
+        if(.not.allocated(tile%base_forcing%drainage_flux_by_level))return
+        if(size(tile%parameters%frost_low_air_drainage%drain_depth_cm)/= &
+             size(tile%base_forcing%drainage_flux_by_level,1))return
+      end if
     end if
     if(tile%parameters%frost_drainage%active)then
       if(.not.tile%parameters%frost_drainage%valid())return
