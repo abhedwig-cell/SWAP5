@@ -3,12 +3,12 @@
   "workstream": "PPA compensated root uptake",
   "baseline": "0aca73324ea46511d18af56bca3fddd0dba52ffd",
   "last_reconciled_upstream": "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
-  "status": "QUALIFIED_EXACT_MACRO_CUTOFF_REPAIR_READY_FOR_ADMISSION",
+  "status": "CANONICAL_ADMITTED_CLOSED_EXACT_MACRO_CUTOFF",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "production_admitted": false,
+  "production_admitted": true,
   "contract": "docs/audits/PPA_WU05D_EXACT01_CONTRACT.md",
   "authority_paths": [
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90",
@@ -32,8 +32,8 @@
     "rejected state isolation",
     "committed restart"
   ],
-  "next_action": "Complete docs gates, verify canonical delta and admit exact qualified repair",
-  "recovery_point": "5b4791b4d5f9a9ab3d8b3ae8d94e1d9a7fad0121",
+  "next_action": "Exact macro cutoff successor closed. Independent MICRO migration remains open.",
+  "recovery_point": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
   "blockers": [],
   "preimage_checkpoint": "ded9af5d",
   "preimage_outcome": "Unchanged dispatcher passes 12 cases; literal source cutoff oracle rejects the SWAP5 guard at ratio 1e-14. Source repair then passes all 330 cases at O0/O2.",
@@ -50,5 +50,15 @@
     "sha256": "b2a0debace19e71d90d5cd0707efbb6a09eeaececad3f3ad07275dd5c9f7722f",
     "bytes": 91902
   },
-  "original_qualification": "integration/audits/PPA_WU05D_EXACT01_QUALIFICATION.json"
+  "original_qualification": "integration/audits/PPA_WU05D_EXACT01_QUALIFICATION.json",
+  "canonical_pr": 1051,
+  "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+  "canonical_admission": "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json",
+  "canonical_closeout": "docs/audits/PPA_WU05D_EXACT01_CANONICAL_CLOSEOUT.md",
+  "metadata_closeout_reconciliation": {
+    "canonical_after_production_admission": "6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50",
+    "scope": "B10 independently admitted after PR1051; retained unchanged during metadata closeout",
+    "closeout_source_tests_match_current_canonical": true,
+    "qualification_inheritance": "EXACT01 29-group qualification is bound to PR1051 admission source/test trees; no claim of that replay on later B10 trees"
+  }
 }

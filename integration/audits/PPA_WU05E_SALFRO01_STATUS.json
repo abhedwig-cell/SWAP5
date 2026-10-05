@@ -56,5 +56,14 @@
   "canonical_pr": 1044,
   "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
   "canonical_admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
-  "canonical_closeout": "docs/audits/PPA_WU05E_SALFRO01_CANONICAL_CLOSEOUT.md"
+  "canonical_closeout": "docs/audits/PPA_WU05E_SALFRO01_CANONICAL_CLOSEOUT.md",
+  "exact_macro_cutoff_successor": {
+    "work_unit": "PPA-WU05-D-EXACT01",
+    "canonical_pr": 1051,
+    "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+    "admission": "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json",
+    "qualification": "integration/audits/PPA_WU05D_EXACT01_RECONCILED_QUALIFICATION.json",
+    "scope": "Exact B1.11 macro compensation eligibility alptot>=1e-14; separate MICRO dispatcher routing only",
+    "gates_passed": 29
+  }
 }
