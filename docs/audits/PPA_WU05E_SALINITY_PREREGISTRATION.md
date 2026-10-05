@@ -1,8 +1,8 @@
 # PPA-WU05-E: salinity state and root-stress migration
 
-Date: 2026-10-04  
-Status: `PREREGISTERED_RECONSTRUCTION_CHECKPOINT`  
-Canonical baseline: `integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b`  
+Date: 2026-10-04
+Status: `PREREGISTERED_RECONSTRUCTION_CHECKPOINT`
+Canonical baseline: `integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b`
 Work branch: `work/ppa-wu05e-salinity-state-root-stress-20261004`
 
 ## Purpose

@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.ppa_wu05b.canonical_admission.v1",
+  "work_unit": "PPA-WU05B",
+  "date": "2026-10-05",
+  "decision": "ADMIT",
+  "decision_owner": "central SWAP5 regie",
+  "protocol": "RECONCILE -> QUALIFY -> REPAIR -> ADMIT -> CLOSE",
+  "pull_request": 1018,
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_merge": "5272ac9192ec1065dbe2432f73d1f1b4394437e0",
+  "canonical_preimage": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
+  "qualified_pr_head": "3a32d45365530f364689cd0416f89b561956e5f0",
+  "qualified_merge": "9d516e45911d4ae4b4e527ad19405bb8e14cac03",
+  "qualified_tree": "554305d9a03827246a2ca57817b13fe6c11a5674",
+  "canonical_tree_equals_qualified_tree": true,
+  "qualification": {
+    "workflow": "PPA-WU05B bounded frost qualification and admission",
+    "run_id": 37324712595,
+    "job_id": 111812371027,
+    "conclusion": "success",
+    "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37324712595",
+    "commands": [
+      "tests/frost/run_ppa_wu05b_frost_effect.sh",
+      "tests/frost/run_ppa_wu05b_frost_runtime.sh",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "python3 tools/docs/check_docs.py",
+      "python3 -m mkdocs build --strict",
+      "JSON parse",
+      "git diff --check"
+    ]
+  },
+  "admitted_scope": [
+    "Stateless B1.11 temperature-to-rfcp modifier in serialized Reference Richards.",
+    "K and dK/dh share the same factor; theta, C, storage and existing state owners unchanged.",
+    "Existing restricted sensible-temperature continuation and committed-restart layout.",
+    "Prescribed bottom mode 2 with exactly zero bottom flux and bounded prescribed top flux.",
+    "Frost-specific rejected-trial/retry, direct smaller-step replay, restart and freeze-thaw oracles."
+  ],
+  "excluded_scope": [
+    "root uptake and frost-root-stress compensation",
+    "FrozenBounds legacy boundary/drainage heuristic",
+    "snow, macropores and general surface/groundwater coupling",
+    "nonzero prescribed bottom flux and drainage response",
+    "temporal-indicator history, trajectory direction and sensible boundary carriers",
+    "ice-water partition, latent heat and thermodynamic phase-change physics"
+  ],
+  "negative_findings": [
+    "Legacy FrozenBounds and binary TSOIL<0 C root-stress/ALPHACRIT behavior rejected in their current form for this bounded migration.",
+    "Historical EB-I25 external-outflow fixture failure reproduced on exact pre-frost canonical baseline 9605fbb; not suppressed.",
+    "Historical fixed-source CI does not qualify a later successor by construction; blanket CI success is not claimed."
+  ],
+  "local_fkt22_preservation": [
+    "canonical/kernel boundary PASS",
+    "production compile O0/O2 PASS",
+    "production runtime O0/O2 and semantic identity PASS"
+  ],
+  "source_sha256": {
+    "src/process/mod_frost_hydraulic_effect.f90": "4ae4ed9bf70ccab0b0212a32205f2fcfb4f50172b64942e0320736a0cca35efd",
+    "src/solver/mod_frost_hydraulic_provider.f90": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "34107d6a418634521924a2ca2e41e47c414adf0917c402922c458566c7a1d281",
+    "src/runtime/mod_fmr_committed_restart.f90": "344b574b7c9d7f636b6961143beb6753f8088a0ffb5ca53afbd839eb627f398e"
+  }
+}

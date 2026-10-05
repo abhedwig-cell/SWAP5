@@ -31,6 +31,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/process/mod_frost_hydraulic_effect.f90
+  src/solver/mod_frost_hydraulic_provider.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
@@ -78,6 +80,78 @@ MODULE_SRC=(
   src/runtime/mod_fmr_bottom_thermal_carrier.f90
   src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
   src/adapter/mod_fmr_mode7_temporal_head_envelope.f90
+  src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
+  src/process/mod_bartholomeus_runtime_input.f90
+  src/physics/oxygen/mod_bartholomeus_temperature.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90
+  src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90
+  src/physics/oxygen/mod_bartholomeus_parameter_contract.f90
+  src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90
+  src/physics/oxygen/mod_bartholomeus_micro.f90
+  src/physics/oxygen/mod_oxygen_macro_zero_depth.f90
+  src/physics/oxygen/mod_bartholomeus_macro.f90
+  src/physics/oxygen/mod_oxygen_scalar_bracket.f90
+  src/physics/oxygen/mod_bartholomeus_response.f90
+  src/physics/oxygen/mod_bartholomeus_microbial.f90
+  src/physics/oxygen/mod_bartholomeus_response_assembly.f90
+  src/physics/oxygen/mod_bartholomeus_profile_response.f90
+  src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90
+  src/physics/oxygen/mod_bartholomeus_factor_provider.f90
+  src/crop/mod_crop_bartholomeus_input.f90
+  src/runtime/mod_fmr_bartholomeus_activation.f90
+  src/runtime/mod_fmr_bartholomeus_contract.f90
+  src/process/mod_root_water_uptake_process.f90
+  src/process/mod_root_uptake_compensation.f90
+  src/runtime/mod_root_uptake_compensation_execution.f90
+  src/process/mod_root_uptake_oxygen_composition.f90
+  src/runtime/mod_fmr_bartholomeus_execution.f90
+  src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90
+  src/runtime/mod_macropore_continuation_state.f90
+  src/process/macropore/mod_rfm_unponded_activation.f90
+  src/runtime/mod_rfm_unponded_surface_composition.f90
+  src/process/macropore/mod_rfm_preferential_router.f90
+  src/process/macropore/mod_rfm_surface_event_age.f90
+  src/runtime/mod_rfm_physical_state.f90
+  src/runtime/mod_rfm_runtime_configuration.f90
+  src/runtime/mod_rfm_surface_forcing.f90
+  src/runtime/mod_rfm_matrix_source_provider.f90
+  src/process/macropore/mod_rfm_surface_sorptivity.f90
+  src/runtime/mod_fmr_rfm_activation_binding.f90
+  src/runtime/mod_rfm_wall_hydraulic_history_binding.f90
+  src/process/macropore/mod_rfm_endpoint_release.f90
+  src/runtime/mod_rfm_ic_storage_geometry.f90
+  src/runtime/mod_rfm_ic_hydrostatic_head.f90
+  src/runtime/mod_rfm_whole_column_candidate_ledger.f90
+  src/runtime/mod_rfm_production_candidate_composer.f90
+  src/runtime/mod_rfm_live_trial_preparer.f90
+  src/process/macropore/mod_ppa_wu05a5_top_partition.f90
+  src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
+  src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90
+  src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90
+  src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90
+  src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90
+  src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90
+  src/process/macropore/mod_macropore_dynamic_shrinkage.f90
+  src/runtime/mod_fmr_macropore_configuration.f90
+  src/runtime/mod_fmr_macropore_top_input.f90
+  src/solver/mod_macropore_exchange_overlay_provider.f90
+  src/process/macropore/mod_macropore_standard_storage.f90
+  src/runtime/mod_macropore_standard_rate_adapter.f90
+  src/process/macropore/mod_macropore_covering_layer_input.f90
+  src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90
+  src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90
+  src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
+  src/runtime/mod_macropore_single_column_runtime.f90
+  src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90
+  src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90
+  src/runtime/mod_interception_source_window_runtime.f90
+  src/process/mod_rutter_interception_process.f90
+  src/process/mod_rutter_event_integrator.f90
+  src/runtime/mod_rutter_source_window_processor.f90
   "$BACKEND"
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_owned_commit_receipt.f90

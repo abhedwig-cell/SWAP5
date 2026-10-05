@@ -330,3 +330,21 @@ Earlier nonrigid-cover reference exclusions are superseded for this source mask;
 a separate covering macropore crack law is not unported B1.11 functionality.
 Wider source-relevant surface compositions and whole-model equivalence remain
 outside admission. Frozen Status A is unchanged; broad migration is incomplete.
+
+
+## Bounded frost hydraulics: PPA-WU05B (2026-10-05)
+
+The B1.11 temperature-to-K/dKdh modifier is canonically admitted through PR #1018,
+merge `5272ac9192ec1065dbe2432f73d1f1b4394437e0`. Dedicated run `37324712595`
+passed frost effect/provider/runtime/restart/retry and the complete current-canonical
+preservation runner at O0/O2 on exactly the tree admitted by that merge.
+
+Scope is serialized Reference Richards with the existing restricted sensible-temperature
+owner and prescribed bottom mode 2 with zero bottom flux. Water content, capacity,
+water mass and committed restart ownership remain unchanged. Frost root stress,
+FrozenBounds, snow/macropore/drainage/coupling combinations, temporal history,
+trajectory direction, sensible boundary carriers and new latent-heat/ice physics
+remain excluded. This closes the bounded hydraulic slice, not aggregate frost migration.
+
+See [canonical closeout](../audits/PPA_WU05B_CANONICAL_CLOSEOUT.md) and
+`integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json` for scope and evidence.

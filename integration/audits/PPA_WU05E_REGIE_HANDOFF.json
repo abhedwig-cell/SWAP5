@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_wu05e.regie_handoff.v1",
   "work_unit": "PPA-WU05-E",
-  "status": "READY_FOR_REGIE",
+  "status": "FROST_RECONCILIATION_PENDING_REPLAY",
   "candidate_commit": "03674ed01509b3e109339ef0e684645e2287bad1",
   "candidate_tree": "e38f0252f520e80b6c91af5d1451a36a9be2fbd0",
   "baseline": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
@@ -43,10 +43,10 @@
   "required_qualification": "Exact combined source O0/O2 matrix process/application/restart, Rutter and MIGMAC07/08/09 plus D2/D3/A8 preservation: PASS",
   "implementation_status": "IMPLEMENTED",
   "test_status": "PASS",
-  "qualification_status": "SELECTED_MATRIX_QUALIFIED",
+  "qualification_status": "PREVIOUS_SOURCE_QUALIFIED_COMBINED_FROST_REPLAY_PENDING",
   "recovery_point": "03674ed01509b3e109339ef0e684645e2287bad1",
   "owner": "Central SWAP5 regie",
-  "requested_action": "Review reconciled qualified successor; check live canonical delta after c7f9a7b8, then ADMIT, RETURN or SUPERSEDE",
+  "requested_action": "Complete combined frost/matrix replay before central ADMIT/RETURN/SUPERSEDE.",
   "authority": "docs/development/SWAP5_PROJECT_CONTROL.md: Control model",
   "interfaces_held_fixed": [
     "Single root-water sink and accepted water receipt",
@@ -70,7 +70,7 @@
     "Central registry and admission authority remain unchanged"
   ],
   "canonical_reconciliation": {
-    "canonical_input": "c7f9a7b85ef937347893f2fbd1653b4c00a724af",
+    "canonical_input": "53a3f3e41231b8600bbb19b8eb2157558bd12e19",
     "conflicts_resolved_on_candidate": true,
     "resolved_paths": [
       "src/runtime/mod_fmr_restart_state_contract.f90",
@@ -83,7 +83,7 @@
       "migmac07_08_09": "PASS_O0_O2"
     },
     "production_admitted": false,
-    "exact_persisted_replay": "PASS",
+    "exact_persisted_replay": "FROST_COMBINED_REPLAY_PENDING",
     "qualified_commit": "03674ed01509b3e109339ef0e684645e2287bad1"
   }
 }

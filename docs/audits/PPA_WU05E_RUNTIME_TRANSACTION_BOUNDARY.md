@@ -1,8 +1,8 @@
 # PPA-WU05-E runtime transaction and restart boundary
 
-Date: 2026-10-04  
-Status: `AUDITED_DESIGN_BLOCKER_NOT_PRODUCTION_INTEGRATED`  
-Branch checkpoint: `a617e20361e7f7a873e655af2c87e89bba8fa77b`  
+Date: 2026-10-04
+Status: `AUDITED_DESIGN_BLOCKER_NOT_PRODUCTION_INTEGRATED`
+Branch checkpoint: `a617e20361e7f7a873e655af2c87e89bba8fa77b`
 Canonical baseline used by this work unit: `integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b`
 
 ## Finding
