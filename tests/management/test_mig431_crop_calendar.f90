@@ -60,6 +60,9 @@ program test_mig431_crop_calendar
   committed%germination_temperature_sum = 0.0_real64
   call advance_crop_calendar_day(p,o,committed,candidate,status)
   if (status /= CROP_CALENDAR_OK .or. candidate%germination_temperature_sum >= 10.0_real64) error stop 9
+  o%germination_average_head_cm = -0.5_real64
+  call advance_crop_calendar_day(p,o,committed,candidate,status)
+  if (status /= CROP_CALENDAR_OK .or. candidate%germination_temperature_sum >= 10.0_real64) error stop 16
   p%germination_mode = 0
   call advance_crop_calendar_day(p,o,committed,candidate,status)
   if (status /= CROP_CALENDAR_OK .or. .not. candidate%emerged) error stop 10

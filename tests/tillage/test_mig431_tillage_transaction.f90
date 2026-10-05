@@ -4,6 +4,7 @@ program test_mig431_tillage_transaction
   use mod_fmr_tillage_event_owner, only: tillage_owner_state_t, initialize_tillage_owner, TILLAGE_OWNER_OK
   use mod_fmr_tillage_event_transaction
   use mod_fmr_tillage_profile_restart
+  use mod_fmr_tillage_depth_binding, only: bind_tillage_event_depth, TILLAGE_DEPTH_OK
   implicit none
   type(tillage_vg_parameters_t) :: vg(2)
   type(tillage_event_input_t) :: event(1)
@@ -29,7 +30,8 @@ program test_mig431_tillage_transaction
   vg%m = 0.5_real64
   vg%saturated_conductivity = 10.0_real64
   allocate(event(1)%affected(2),event(1)%target_density(2))
-  event(1)%affected = [.true.,.false.]
+  call bind_tillage_event_depth(thickness,[1,2],10.0_real64,event(1)%affected,status)
+  if (status /= TILLAGE_DEPTH_OK) error stop 25
   event(1)%target_density = [1200.0_real64,1500.0_real64]
   event(1)%intensity = 0.5_real64
   event(1)%n_model = 1

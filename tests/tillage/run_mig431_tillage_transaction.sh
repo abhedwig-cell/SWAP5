@@ -10,6 +10,7 @@ for opt in 0 2; do
     "$root_dir/src/process/mod_tillage_water_redistribution.f90" \
     "$root_dir/src/runtime/mod_fmr_tillage_event_owner.f90" \
     "$root_dir/src/runtime/mod_fmr_tillage_hydraulic_binding.f90" \
+    "$root_dir/src/runtime/mod_fmr_tillage_depth_binding.f90" \
     "$root_dir/src/runtime/mod_fmr_tillage_event_transaction.f90" \
     "$root_dir/src/runtime/mod_fmr_tillage_profile_restart.f90" \
     "$root_dir/tests/tillage/test_mig431_tillage_transaction.f90" -o "test_$opt"
