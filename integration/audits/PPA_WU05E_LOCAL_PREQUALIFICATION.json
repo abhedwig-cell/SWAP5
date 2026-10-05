@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart; FMR Restart v4 forcing-handle mismatch rejection and disabled-only v3/v2 migration pass the A7 O0/O2 gate; Cdrain source/revision provenance is clone/restart-preserved by the typed FMR salt component, while live trial binding and candidate advancement remain blocked; trial-boundary validation now requires the Cdrain source ID to match the column forcing handle and cover the full trial interval, while active salt layouts remain rejected",
+  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart; FMR Restart v4 forcing-handle mismatch rejection and disabled-only v3/v2 migration pass the A7 O0/O2 gate; Cdrain source/revision provenance is clone/restart-preserved by the typed FMR salt component, while live trial binding and candidate advancement remain blocked; trial-boundary validation now requires the Cdrain source ID to match the column forcing handle and cover the full trial interval, while active salt layouts remain rejected; exact B1.11 solute/root-extraction members recovered and byte-verified; active-backend tests reject missing or mismatched Cdrain and confirm no live salt candidate is admitted",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "d9ff6009ef032ac41b0d528ecd09ef849acdadde40f40205f07340fe690f8cce",
@@ -21,7 +21,7 @@
     "src/runtime/mod_fmr_serialized_reference_backend.f90": "d563ed6d2007b839f1cb7e67d1d40fac90de0d949f737b306611b4d750f5c4b9",
     "tests/fpm/run_ppa_wu05a26_real_richards_binding.sh": "719517601c724f22be4cce518bfaba2efb2833599871ddba1ec3fbf75a40fda1",
     "tests/fpm/run_ppa_wu05a8_real_richards.sh": "fbbadf3c1533cf625e148ceda6ae3575b2ce7ac29bb4ff93ce638e40e189ca15",
-    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "1aa7dc71acd01e5ea74306cefdcf5c62989526107627e94025e6437c1acb796e",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "4f5709ee7f98560859285caaaa065a288cc7d86c37d8485d3b09a791adc66b8d",
     "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "50ea99cf305881e868091dccd987a5feada756a42b8190f0378f8cb64b53e110",
     "tests/fpm/test_ppa_wu05e_real_water_face_closure.f90": "42c9a5c1badab88d6fef60871f6446f2de44251a0e4765082ad4c2cdb1c58735",
     "tests/physics/run_ppa_wu05d2_jarvis.sh": "54074780a87693957eb23af3e3f4fc5eaa8f871733c146273daa460e6bffd74d",
@@ -176,6 +176,11 @@
       "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
       "result": "PASS_O0_O2_IDENTICAL",
       "scope": "Checks typed Cdrain source/forcing-handle and interval matching, persisted source/revision clone and restart identity, and active-layout fail-closed boundary"
+    },
+    {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "result": "PASS_O0_O2_IDENTICAL",
+      "scope": "A7/A8 gate with live backend rejection tests for missing/mismatched Cdrain and valid-but-unqualified active salt route; no candidate leakage; exact B1.11 source member hashes verified separately"
     }
   ],
   "not_run_or_not_claimed": [
@@ -230,5 +235,12 @@
       "observation": "Matrix face rates were reconstructed from accepted storage and source terms. Domain macro faces/water/exchange, per-level qdra, qssdi, and root sink were mapped from the actual accepted substeps. With a declared test Cdrain and boundary concentration profile, the ordered process wrapper returned a candidate and per-level signed drainage receipts with salt closure; negative inventories were absent. O0/O2 output is byte-identical. The production FMR backend still rejects active salt layouts and never invokes this test adapter.",
       "interpretation": "This closes the process-to-observation mapping test gap only. It does not establish a live FMR candidate/receipt or salt commit/discard/retry/restart. Define typed immutable Cdrain forcing and its restart identity before adding any FMR salt ownership."
     }
-  ]
+  ],
+  "source_authority": {
+    "solute_f90_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "solute_f90_bytes": 51508,
+    "rootextraction_f90_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "rootextraction_f90_bytes": 22013,
+    "verification": "local B1.11 reconstruction; solute member byte-matches B0 manifest and B1.11 snapshot declares unchanged"
+  }
 }
