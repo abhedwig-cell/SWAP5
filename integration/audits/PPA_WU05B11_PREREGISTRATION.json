@@ -1,0 +1,53 @@
+{
+  "work_unit": "PPA-WU05B11",
+  "status": "PREREGISTERED",
+  "baseline": "febfff8103c4d60324a103d832521bb3f3754a67",
+  "baseline_source": "60bc7fdc3430d8d8ae87f4a77219dbb6c44c6ec9",
+  "source_review": "integration/audits/PPA_WU05B11_SOURCE_REVIEW.json",
+  "scope": "Rootless ordinary Reference mode2 normal and bracketed low-air frost with already admitted DRAMET1 tables and LINEAR/TABULATED level mixtures. At least one TABULATED level required for the new selector.",
+  "interface": "Add OFF-by-default frost_tabulated_response_drainage_active physical parameter/model selector requiring existing B9 base selector. Low-air additionally requires B10 selector and valid matching negative depths. Additive public PURE valid_tabulated_drainage_parameters wrapper delegates the existing private validator; no table equation or existing evaluator status changes. Existing representation-dependent one-point depth-zero rejection is also required by the new selected runtime preflight.",
+  "physical_order": "Reuse immutable trial-start proposal generation, existing frost modifiers, final-node single sink and accepted receipts. No new committed/restart/mass state. TABULATED levels ignore inactive LINEAR resistance and controls. OFF preserves current B9/B10 restrictions.",
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    27,
+    29,
+    30
+  ],
+  "production_paths_allowed": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/process/mod_drainage_tabulated_response.f90"
+  ],
+  "dependency_source_sha256": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "0a23dbf59230e875f07b65067c4bec47eea94747010f59cb9043f537eb140913",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "6d297c308261948dd3a516c545e76f4650570ce4945cb96e179cbb538f51e852",
+    "src/process/mod_drainage_tabulated_response.f90": "9bda2c9970f8ae9162a6e6ba0f122c532b64671e80f1261fba6e79bb7e48e555",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+    "src/process/mod_frost_drainage_effect.f90": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900"
+  },
+  "gates": [
+    "Actual TABULATED generation versus independent interpolation/clamp oracle plus corrected B7 FrozenBounds final node/qbot parity O0/O2 across knots, clamps, signed/zero rates and geometry patterns; mixed LINEAR/TAB composition tested in actual binding/runtime",
+    "Fresh whole-module normal and low-air runtime builds O0/O2; warm/partial/frozen or zero/partial/all cut; both qbot signs; retry proposal provenance, independent storage/mass1e-12, final receipt, replay and empty-registry restart",
+    "Explicit local head/temperature budgets and refined head1e-6cm/T1e-4C horizon; additional finer reference for representative normal and low-air cases",
+    "Application missing flags/unsupported variants/invalid table shapes, finite/order/degenerate and missing depth rejection before solver; inactive LINEAR NaN accepted for valid active TAB",
+    "Fresh source-bound B1/B2/B3/B4/B6/B8/B9/B10, expanded four SALFRO01, immutable VQ73/VQ74, exact cutoff oracle, full canonical preservation and documentation checks"
+  ],
+  "exclusions": [
+    "SWDIVD1 or other distribution",
+    "other generation families",
+    "fixed-weir and EXTENDED_SIGNED",
+    "root/salt/macropore/snow hybrids",
+    "new phase-change physics or broad legacy equivalence"
+  ],
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false
+}

@@ -1,0 +1,29 @@
+{
+  "work_unit": "PPA-WU05B11",
+  "baseline": "febfff8103c4d60324a103d832521bb3f3754a67",
+  "last_reconciled_upstream": "febfff8103c4d60324a103d832521bb3f3754a67",
+  "status": "PREREGISTERED",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "preregistration": "integration/audits/PPA_WU05B11_PREREGISTRATION.json",
+  "authority_paths": [
+    "integration/audits/PPA_WU05B11_SOURCE_REVIEW.json",
+    "integration/audits/PPA_WU05B10_POSTMERGE_RECONCILIATION.json"
+  ],
+  "relevant_paths": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/process/mod_drainage_tabulated_response.f90",
+    "src/runtime/mod_fmr_drainage_response_binding.f90",
+    "src/process/mod_frost_low_air_drainage_effect.f90",
+    "src/process/mod_frost_drainage_effect.f90"
+  ],
+  "dependency_surface": "Actual runtime/backend/bootstrap, all generated drain families, frost/temperature, root kernel, single sink/accounting, restart, canonical pin gate and owned static grid fixture",
+  "next_action": "Persist preregistration remotely then implement bounded tabulated selector and actual source/runtime qualification fixtures",
+  "recovery_point": "This preregistration commit",
+  "blockers": []
+}
