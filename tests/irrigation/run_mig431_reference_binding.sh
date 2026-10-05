@@ -40,6 +40,7 @@ for opt in 0 2; do
       src/process/mod_irrigation_process.f90 \
       src/runtime/mod_fmr_irrigation_source_binding.f90 \
       src/runtime/mod_fmr_irrigation_reference_binding.f90 \
+      src/runtime/mod_fmr_irrigation_restart.f90 \
       src/process/mod_crop_calendar_management_process.f90 \
       src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
       src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do
@@ -73,23 +74,40 @@ s=Path('tests/fmr/test_fmr19_process_restart.f90').read_text()
 anchor='  use mod_transaction_reference, only: transaction_state_t'
 assert s.count(anchor)==1
 s=s.replace(anchor,'''  use mod_irrigation_process, only: irrigation_state_t, irrigation_flux_result_t, &
-       irrigation_diagnostics_t, IRRIGATION_APPLICATION_SSDI
+       irrigation_diagnostics_t, irrigation_parameters_t, irrigation_management_request_t, &
+       evaluate_fixed_irrigation_interval, IRRIGATION_APPLICATION_SSDI, IRRIGATION_OK
   use mod_fmr_irrigation_reference_binding, only: fmr_bind_ssdi_reference_candidate, &
        fmr_publish_accepted_irrigation_state, FMR_IRR_REFERENCE_OK
+  use mod_fmr_irrigation_restart, only: irrigation_restart_record_t, export_irrigation_restart, &
+       restore_irrigation_restart, IRRIGATION_RESTART_OK
 '''+anchor)
 anchor='    logical :: exported, restored\n    integer :: status, i'
 assert s.count(anchor)==1
 s=s.replace(anchor,'''    logical :: exported, restored, management_published
     type(irrigation_state_t) :: base_management, restart_management, proposed_management
+    type(irrigation_restart_record_t) :: management_restart_record
+    type(irrigation_flux_result_t) :: event_flux
+    type(irrigation_diagnostics_t) :: event_diagnostics
     integer :: status, i''')
 anchor="    call require_all_committed(base_first, 'continuous first committed')"
 assert s.count(anchor)==1
 s=s.replace(anchor,anchor+'''
-    proposed_management%next_fixed_event_index = 2
+    call managed_irrigation_event(base_management,proposed_management,event_flux,event_diagnostics)
+    call require(event_diagnostics%status == IRRIGATION_OK .and. event_flux%event_finished .and. &
+         proposed_management%next_fixed_event_index == 2, 'actual fixed SSDI event candidate')
     call fmr_publish_accepted_irrigation_state(base_management,proposed_management,base_first(1), &
          base_columns(1)%column_id,tm,management_published)
     call require(management_published .and. base_management%next_fixed_event_index == 2, &
          'actual accepted Reference result publishes management state')''')
+anchor='    call reset_legacy_globals()\n    call fmr_run_serialized_physical_multiswap(base_columns, base_templates, base_parameters, base_forcings, base_states, &\n         config, top_provider, tm, t1, n, base_second, diagnostics, base_second_aggregate, status)'
+assert s.count(anchor)==1
+s=s.replace(anchor,'''    do i=1,n
+      base_forcings(i)%subsurface_irrigation_source(2) = &
+           base_forcings(i)%subsurface_irrigation_source(2)-1.0e-10_real64
+      base_forcings(i)%drainage_flux_by_level(1,2) = &
+           base_forcings(i)%drainage_flux_by_level(1,2)-1.0e-10_real64
+    end do
+'''+anchor)
 anchor="    call require_all_committed(restart_first, 'restart first committed')"
 assert s.count(anchor)==1
 s=s.replace(anchor,anchor+'''
@@ -97,23 +115,65 @@ s=s.replace(anchor,anchor+'''
          restart_columns(1)%column_id,tm,management_published)
     call require(management_published .and. &
          restart_management%next_fixed_event_index == base_management%next_fixed_event_index, &
-         'replayed accepted Reference result publishes same management state')''')
+         'replayed accepted Reference result publishes same management state')
+    call export_irrigation_restart(restart_management,management_restart_record,status)
+    call require(status == IRRIGATION_RESTART_OK, 'accepted management restart export')''')
+anchor="    call require(restored .and. status == FMR_RESTART_OK, 'correct restart restore')"
+assert s.count(anchor)==1
+s=s.replace(anchor,anchor+'''
+    restart_management = irrigation_state_t()
+    call restore_irrigation_restart(management_restart_record,restart_management,status)
+    call require(status == IRRIGATION_RESTART_OK .and. &
+         restart_management%next_fixed_event_index == base_management%next_fixed_event_index, &
+         'accepted management state restored with Reference column')''')
+anchor='    call reset_legacy_globals()\n    call fmr_run_serialized_physical_multiswap(restart_columns, restart_templates, restart_parameters, restart_forcings, &\n         restart_states, config, top_provider, tm, t1, n, restart_second, diagnostics, restart_second_aggregate, status)'
+assert s.count(anchor)==1
+s=s.replace(anchor,'''    do i=1,n
+      restart_forcings(i)%subsurface_irrigation_source(2) = &
+           restart_forcings(i)%subsurface_irrigation_source(2)-1.0e-10_real64
+      restart_forcings(i)%drainage_flux_by_level(1,2) = &
+           restart_forcings(i)%drainage_flux_by_level(1,2)-1.0e-10_real64
+    end do
+'''+anchor)
+anchor='  subroutine configure_forcing(forcing, conductivity0, scale)'
+assert s.count(anchor)==1
+s=s.replace(anchor,'''  subroutine managed_irrigation_event(committed,candidate,flux,diagnostics)
+    type(irrigation_state_t), intent(in) :: committed
+    type(irrigation_state_t), intent(out) :: candidate
+    type(irrigation_flux_result_t), intent(out) :: flux
+    type(irrigation_diagnostics_t), intent(out) :: diagnostics
+    type(irrigation_parameters_t) :: parameters
+    type(irrigation_management_request_t) :: request
+    parameters%fixed_irrigation_enabled = .true.
+    parameters%active_nodes = numnod
+    parameters%ssdi_first_node = 2
+    parameters%ssdi_last_node = 2
+    allocate(parameters%fixed_events(1))
+    parameters%fixed_events(1)%event_time = t0
+    parameters%fixed_events(1)%application_type = IRRIGATION_APPLICATION_SSDI
+    parameters%fixed_events(1)%depth = 1.0e-10_real64*(tm-t0)
+    parameters%fixed_events(1)%rate = 1.0e-10_real64
+    request%t0 = t0
+    request%t1 = tm
+    call evaluate_fixed_irrigation_interval(parameters,committed,request,candidate,flux,diagnostics)
+  end subroutine managed_irrigation_event
+
+'''+anchor)
 anchor='    integer :: i\n\n    forcing%top_flux = -conductivity0'
 assert s.count(anchor)==1
 s=s.replace(anchor,'''    integer :: i, bind_status
     type(irrigation_flux_result_t) :: irrigation_flux
     type(irrigation_diagnostics_t) :: irrigation_diagnostics
+    type(irrigation_state_t) :: prior_irrigation, proposed_irrigation
     type(fmr_b110_physical_forcing_t) :: managed_forcing
 
     forcing%top_flux = -conductivity0''')
 anchor='    end do\n  end subroutine configure_forcing'
 assert s.count(anchor)==1
 s=s.replace(anchor,'''    end do
-    irrigation_flux%applied = .true.
-    irrigation_flux%application_type = IRRIGATION_APPLICATION_SSDI
-    irrigation_flux%subsurface_source = [0.0_real64,1.0e-10_real64,0.0_real64,0.0_real64]
-    irrigation_flux%active_duration = tm-t0
-    irrigation_flux%external_inflow_amount = 1.0e-10_real64*(tm-t0)
+    call managed_irrigation_event(prior_irrigation,proposed_irrigation,irrigation_flux,irrigation_diagnostics)
+    call require(irrigation_diagnostics%status == IRRIGATION_OK .and. irrigation_flux%event_finished, &
+         'fixed SSDI process supplies real Reference forcing')
     call fmr_bind_ssdi_reference_candidate(forcing,irrigation_flux,irrigation_diagnostics,managed_forcing,bind_status)
     call require(bind_status == FMR_IRR_REFERENCE_OK, 'managed SSDI bound to Reference forcing')
     forcing = managed_forcing
@@ -132,6 +192,7 @@ for opt in 0 2; do
   out="$BUILD/o$opt"; objects=()
   for source in "${sources[@]}" src/process/mod_irrigation_process.f90 \
       src/runtime/mod_fmr_irrigation_source_binding.f90 src/runtime/mod_fmr_irrigation_reference_binding.f90 \
+      src/runtime/mod_fmr_irrigation_restart.f90 \
       src/process/mod_crop_calendar_management_process.f90 \
       src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
       src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do

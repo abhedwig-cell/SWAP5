@@ -36,7 +36,7 @@ named below.
 | Fixed `irtype=1` surface event | Direct fixed-date surface application, not canopy-intercepted | Dated event state and surface boundary receipt | PR #265 admits the exact fixed `SWIRFIX=1` Hupsel surface event. PPA-WU03 separately admits already-resolved surface irrigation input | `ADMITTED` within those bounded routes |
 | Generic scheduled `isuas=1` surface irrigation | Criterion-scheduled direct surface application | Criterion state, event state and surface boundary receipt | Typed TCS2/3/4/6/7/8 plus DCS1/2 evaluator emits direct surface flux and the generic forcing composer selects dynamic top; no admitted accepted application trial | `MIGRATE` |
 | Fixed `irtype=0` sprinkler | Surface sprinkler input subject to canopy interception | Event state and gross/net partition | Typed fixed-event output has a Rutter binding that preserves interception; three-route composer selects Rutter, and F-APP07 regression preserves the exact admitted 110-interval route. Generic fixed-sprinkler application trial is not admitted | `MIGRATE` |
-| `isuas` / fixed `irtype`: `2` SSDI | Inject irrigation over a selected subsurface node or interval | Event state, source node interval, distributed source and mass receipt | Fixed-event process distributes over a configured node interval; scheduled process emits at the configured node; typed forcing composer preserves the existing subsurface source and checks mass, with restart state. A Reference forcing adapter and O0/O2 real FMR19 dispatch/restart probe exercise an additive SSDI source against an exactly balanced drainage fixture, with hard interval mass and endpoint identity. A real accepted column result publishes management state only for the matching column, endpoint and complete mass receipt; replay publishes the same state. This is a bounded preservation probe, not an admitted managed application: independent event timing, management-state restart and nonstationary water response remain open. RossFast D3R rejects nonzero SSDI | `MIGRATE` |
+| `isuas` / fixed `irtype`: `2` SSDI | Inject irrigation over a selected subsurface node or interval | Event state, source node interval, distributed source and mass receipt | Fixed-event process distributes over a configured node interval; scheduled process emits at the configured node; typed forcing composer preserves the existing subsurface source and checks mass, with restart state. A bounded O0/O2 real Reference dispatch/restart probe feeds a dated fixed SSDI event from the typed evaluator into the Reference source, publishes its pointer only after a matching accepted mass receipt, removes the event source at its end, and restores the pointer alongside FMR19 solver restart. The fixture balances added drainage against SSDI for an analytically stationary profile; hard interval mass and endpoint identity pass. Nonstationary irrigation response and one atomic joint restart envelope remain open. RossFast D3R rejects nonzero SSDI | `MIGRATE` |
 | `ss_irr_z` / fixed `ir_z` single depth or two-depth interval | Locate SSDI in one compartment or a consecutive subsurface node span | Ordered compartment-bottom depths and selected node indices | Typed scheduled node and fixed node-span fields carry the same physical placement; depth-to-node binder reproduces the B1.11 compartment-bottom tolerance and rejects out-of-profile/reversed depths at O0/O2. Production configuration binding remains open | `MIGRATE` for physical placement; `SUPERSEDED` for legacy scalar/array input grammar |
 | `TCS=1` | Trigger on daily transpiration reduction from drought and salinity | Crop stage, daily potential/actual transpiration reductions, event gate | PR #265 admits TCS1 paired with DCS2 and TCSFIX=1 for the Hupsel potato route. It does not admit all crops, depth policies or solute-control combinations | `ADMITTED` within PR #265 envelope |
 | `TREL` crop-stage table | Supply the critical transpiration-reduction fraction for TCS1 | DVS and admitted daily transpiration-reduction receipt | PR #265 uses the admitted Hupsel TCS1 threshold table with the exact daily oracle | `ADMITTED` within PR #265 envelope |
@@ -149,6 +149,16 @@ postimage. This is local preservation, not a new canonical admission of the
 broader MIGRATE routes.
 
 ## Local qualification completed in this work unit
+
+`tests/irrigation/run_mig431_reference_binding.sh` passes O0/O2 against the
+locally materialized `c1322db` production blobs. It composes a real fixed
+SSDI event on `[t0,tm]` into the Reference FMR19 batch, proves accepted
+publication by column/time/mass receipt, removes the event source on
+`[tm,t1]`, and compares continuous with restarted endpoints, revisions and
+mass. The irrigation pointer is exported/restored with its own schema
+beside the FMR19 restart. The extra drainage exactly cancels the tiny SSDI
+input, so this gate does not establish a nonstationary water response or
+atomic bundling of both restart records.
 
 `tests/irrigation/run_mig431_tcs7_ssdi_process.sh` passed at O0 and O2. Its
 independent oracle checks dated fixed sprinkler/surface/multi-node SSDI events,
