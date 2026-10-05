@@ -65,6 +65,20 @@ program test_mobile_macro_salt_transport
   call require(.not.allocated(rejected%matrix_mass_mg_cm2),'overdraw publishes no candidate')
   call require(.not.allocated(drain_receipt),'overdraw publishes no partial receipt')
 
+  ! Compose qdra salt with qssdi water-only input in one physical candidate.
+  drain_rates(:,1)=[0.1_real64,-0.2_real64]
+  macro1=macro0;theta1=theta0
+  theta1(1)=theta1(1)+0.03_real64/dz(1)
+  root_sink=0.0_real64;exchange=0.0_real64;matrix_faces=0.0_real64;macro_faces=0.0_real64
+  call advance_mobile_macro_salt_trial(initialized,dz,theta0,theta1,macro0,macro1,matrix_faces,macro_faces, &
+       exchange,root_sink,0.0_real64,0.0_real64,macro_top,macro_bottom,1.0_real64,0.1_real64, &
+       candidate,receipt,status,qdra_rate=drain_rates,qssdi_rate=[0.2_real64,0.0_real64], &
+       cdrain_mg_cm3=drain_cdrain,cdrain_available=.true.)
+  call require(status==MACRO_SALT_OK,'qssdi water-only plus signed qdra accepted')
+  call close_to(candidate%matrix_mass_mg_cm2(1),1.015_real64,'qssdi has no salt term')
+  call close_to(receipt%qdra_signed_out_mg_cm2(1),0.005_real64,'candidate positive qdra receipt')
+  call close_to(receipt%qdra_signed_out_mg_cm2(2),-0.02_real64,'candidate negative qdra receipt')
+
   accepted=initialized
   matrix_faces=0.0_real64
   macro_faces(1,:)=[0.0_real64,0.1_real64,0.0_real64]
