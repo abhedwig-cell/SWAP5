@@ -91,7 +91,7 @@ contains
     if(any(node_thickness_cm<=0.0_real64).or.any(water_start<=0.0_real64).or.any(water_trial<=0.0_real64).or. &
        any(root_water_sink_cm_day<0.0_real64).or.any(committed%mass_mg_cm2<0.0_real64).or. &
        any(committed%concentration_mg_cm3<0.0_real64).or.top_boundary_concentration<0.0_real64.or. &
-       bottom_boundary_concentration<0.0_real64.or.tscf<0.0_real64.or.tscf>1.0_real64.or.dt_day<=0.0_real64) return
+       bottom_boundary_concentration<0.0_real64.or.tscf<0.0_real64.or.tscf>10.0_real64.or.dt_day<=0.0_real64) return
 
     allocate(c_start(n),mass(n),delta_water(n))
     c_start=committed%mass_mg_cm2/(water_start*node_thickness_cm)
