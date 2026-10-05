@@ -99,6 +99,31 @@ program test_frost_composed_runtime
       end do
     end do
   end do
+  ! Independent top-only and warm cases: no deep-freeze bottom blocking.
+  do regime=4,5
+    wet=moist
+    call initialize_soil_temperature_state([-4._real64,1._real64,1._real64,1._real64],wet%soil_temperature,status)
+    uptake=.02_real64/.7_real64
+    if(regime==5)then
+      call initialize_soil_temperature_state([1._real64,1._real64,1._real64,1._real64],wet%soil_temperature,status)
+      uptake=.03_real64
+    end if
+    call require(status==0,'joint top-only/warm profile')
+    do signum=-1,1,2
+      q=real(signum,real64)*1.e-3_real64
+      call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,result,observation, &
+           frost_case=.true.,frost_temperature=merge(-4._real64,1._real64,regime==4), &
+           initial_physical_state=wet,final_physical_state=final,bottom_case=.true.,root_case=.true.,root_method=2)
+      call require(result%completed.and.result%committed,'top-only/warm joint trajectory commits')
+      call require(.not.observation%frost_bottom%blocked,'top-only/warm cannot block bottom')
+      call require(abs(observation%bottom_flux-q)<=1.e-14_real64,'top-only/warm bottom flux oracle')
+      call require(result%actual_transpiration_available,'top-only/warm uptake publication')
+      call require(abs(result%actual_transpiration_amount-uptake*1.e-4_real64)<=1.e-14_real64,'top-only/warm root oracle')
+      call require(result%mass%complete.and.abs(result%mass%residual)<=hard_mass_gate,'top-only/warm hard mass')
+      call require(abs(result%mass%storage_change-(q-uptake)*1.e-4_real64)<=hard_mass_gate,'top-only/warm net storage')
+      print '(A,I0,A,I0)','PPA-WU05B4_THERMAL regime=',regime,' sign=',signum
+    end do
+  end do
   ! Mixed nonzero trajectory: fine direct refinement and actual committed restart.
   q=1.e-3_real64
   call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,result,observation, &
