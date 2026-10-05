@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-Locally qualified and persisted; canonical admission is pending. This is a bounded
+Canonically admitted via PR #1054 at `d975acb21472ddf96c800ef66be327810f8968c0`. This is a bounded
 composition of admitted drainage laws with the admitted normal and guarded
 low-air frost modifiers. It is not a complete frost migration claim.
 
@@ -80,3 +80,7 @@ physics require separate scope and evidence.
 All declared gates pass on production `cd7a56657fa3347ee63595a0f54274b2f1766ba8`. Both actual runtime routes, the72-case additional signed/mixed/GWL matrix, all incumbent frost runtimes, four expanded salt/frost matrices, immutable VQ73/VQ74, literal root cutoff oracle and complete canonical preservation pass. O0/O2 actual outputs are identical. Normal additional16384/32768 refinements and low-air131072 refinement pass; maximum added head error is3.147382e-7cm.
 
 The first low-air fixture compile lacked a test import. The additional O2 activation screen then exposed uninitialized inherited LINEAR control heights in the generated matrix. Both fixture defects were repaired, explicitly initialized controls were persisted, and the complete additional matrix rerun at O0/O2 passed identically. No production change or tolerance relaxation was needed. Immutable partial recovery retains its explicit non-qualification status.
+
+## Canonical admission
+
+The proposed merge `95b978c0356cc64696fd9d66a345c1002d9a1328` and actual merge share the exact qualified tree `55584bf5c23c064be2d3983b19be185d4a8f1a40` and production source. The admission record retains parent/head/evidence identities. The next Hooghoudt/Ernst slice remains source review only. Aggregate frost migration remains open.

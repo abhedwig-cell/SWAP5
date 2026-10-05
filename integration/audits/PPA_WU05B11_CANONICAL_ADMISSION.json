@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa.tabulated-frost.canonical-admission.v1",
+  "work_unit": "PPA-WU05B11",
+  "role": "CENTRAL_REGIE",
+  "decision": "ADMIT_COMPLETED_SOURCE_BOUND_LOCAL_GATES",
+  "canonical_pr": 1054,
+  "canonical_merge": "d975acb21472ddf96c800ef66be327810f8968c0",
+  "actual_first_parent": "febfff8103c4d60324a103d832521bb3f3754a67",
+  "accepted_tree": "55584bf5c23c064be2d3983b19be185d4a8f1a40",
+  "qualified_head": "7724704b4d589c93c7cd5eb54edc14fb673f69eb",
+  "verified_proposed_merge": "95b978c0356cc64696fd9d66a345c1002d9a1328",
+  "production_source_tree": "cd7a56657fa3347ee63595a0f54274b2f1766ba8",
+  "proposed_and_actual_tree_source_identity": true,
+  "qualification": "integration/audits/PPA_WU05B11_STATUS.json",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B11_LOCAL_REPLAY.json.gz",
+    "sha256": "3af2218badc101fe5f97f6109c7885801cb3696dc866d473f312fa78348d70c4",
+    "bytes": 209827,
+    "manifest_entries": 456
+  },
+  "scope": "Explicit rootless ordinary Reference mode2 TABULATED and LINEAR/TABULATED generation with admitted normal/bracketed low-air frost; final-node single sink and separate bottom owner; no new state",
+  "admission_basis": "Completed local gates and immutable source-bound evidence. Exact proposed merge and actual merge verified. No queued Actions success claim.",
+  "exclusions": [
+    "SWDIVD1 distribution",
+    "other generation families",
+    "projection/directional/fully implicit groundwater coupling",
+    "root/salt/macropore/snow hybrids",
+    "new geometry/phase change",
+    "global frost equivalence"
+  ],
+  "aggregate_frost_migration_complete": false,
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
+  "next_action": "Reconcile exact metadata closeout then preregister and implement source-reviewed DRAMET2 Hooghoudt/Ernst frost composition"
+}
