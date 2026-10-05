@@ -242,17 +242,8 @@ fi
 if git merge-base --is-ancestor "$PPA_ROOT_HYD01_ADMISSION" HEAD; then
   git merge-base --is-ancestor "$PPA_ROOT_HYD01_QUALIFIED" "$PPA_ROOT_HYD01_ADMISSION" || \
     fail 'PPA-ROOT-HYD01 qualified head is not contained by canonical admission'
-  temporal_indicator_authority="$PPA_ROOT_HYD01_TEMPORAL_INDICATOR"
-  if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
-    temporal_indicator_authority="$FCI110_TEMPORAL_INDICATOR"
-    echo 'FCI_CANONICAL_FCI110_TEMPORAL_INDICATOR_SUCCESSOR=ACTIVE'
-  fi
-  if git merge-base --is-ancestor "$TEMPORAL11_ADMISSION" HEAD; then
-    temporal_indicator_authority="$TEMPORAL11_TEMPORAL_INDICATOR"
-    echo 'FCI_CANONICAL_TEMPORAL11_TEMPORAL_INDICATOR_SUCCESSOR=ACTIVE'
-  fi
-  test "$(git rev-parse "HEAD:$TEMPORAL_INDICATOR")" = "$temporal_indicator_authority" || \
-    fail 'admitted temporal-indicator successor drift'
+  test "$(git rev-parse "HEAD:$TEMPORAL_INDICATOR")" = "$(git rev-parse "$dependency_authority:$TEMPORAL_INDICATOR")" || \
+    fail 'candidate changed current temporal-indicator target postimage'
   echo 'FCI_CANONICAL_PPA_ROOT_HYD01_TEMPORAL_INDICATOR_SUCCESSOR=PASS'
 else
   test "$(git rev-parse "HEAD:$TEMPORAL_INDICATOR")" = "$(git rev-parse "$AUTH:$TEMPORAL_INDICATOR")" || \
@@ -265,13 +256,9 @@ fi
 # the lineage. Before that admission, kernel_transactions remains byte-equal
 # to the Status-A authority.
 if git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
-  kernel_transaction_authority="$F_ROM1A_KERNEL"
-  if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
-    kernel_transaction_authority="$FCI110_KERNEL_TRANSACTIONS"
-    echo 'FCI_CANONICAL_FCI110_KERNEL_TRANSACTION_SUCCESSOR=ACTIVE'
-  fi
-  test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = "$kernel_transaction_authority" || \
-    fail 'admitted kernel transaction successor drift'
+  test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = \
+       "$(git rev-parse "$dependency_authority:src/kernel/mod_kernel_transactions.f90")" || \
+    fail 'candidate changed current kernel-transaction target postimage'
   echo 'FCI_CANONICAL_F_ROM1A_KERNEL_SUCCESSOR=PASS'
 else
   test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" =     "$(git rev-parse "$AUTH:src/kernel/mod_kernel_transactions.f90")" ||     fail 'pre-F-ROM1A kernel transaction drift'
