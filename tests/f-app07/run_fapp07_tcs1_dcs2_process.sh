@@ -61,6 +61,8 @@ COMPOSITION_SRC=(
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90
+  src/runtime/mod_fmr_irrigation_source_binding.f90
+  src/runtime/mod_fmr_irrigation_forcing_composition.f90
 )
 COMP=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 for opt in 0 2; do
@@ -68,13 +70,18 @@ for opt in 0 2; do
   for source in "${COMPOSITION_SRC[@]}"; do
     obj="$OUT/$(basename "${source%.*}").o"
     extra=()
-    if [[ "$source" == "$BIND" || "$source" == "$SRC" ]]; then extra=(-Werror -pedantic-errors); fi
+    if [[ "$source" == "$BIND" || "$source" == "$SRC" || \
+          "$source" == src/runtime/mod_fmr_irrigation_forcing_composition.f90 ]]; then extra=(-Werror -pedantic-errors); fi
     gfortran "${COMP[@]}" "${extra[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "composition compile O$opt $source"
     objects+=("$obj")
   done
   gfortran "${COMP[@]}" -Wno-error=compare-reals -O"$opt" -J "$OUT" -I "$OUT"     -c tests/f-app07/test_hupsel_irrigation_composition.f90 -o "$OUT/test.o" || fail "composition oracle compile O$opt"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "composition link O$opt"
   "$OUT/test" "$BUILD/irrigation.csv" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "composition runtime O$opt"; }
+  gfortran "${COMP[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/irrigation/test_mig431_forcing_composition.f90 -o "$OUT/route.o" || fail "three-route compile O$opt"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/route.o" -o "$OUT/route" || fail "three-route link O$opt"
+  "$OUT/route" > "$OUT/route.txt" 2>&1 || { cat "$OUT/route.txt" >&2; fail "three-route runtime O$opt"; }
+  grep -Fq 'F_MIG431_THREE_ROUTE_FORCING_COMPOSITION=PASS' "$OUT/route.txt" || fail "three-route marker O$opt"
   grep -Fq 'F_APP07_EXACT_ACTIVE_INTERVALS=110' "$OUT/output.txt" || fail "active interval count O$opt"
   grep -Fq 'F_APP07_SWINTER0_INTERVALS=18' "$OUT/output.txt" || fail "SWINTER0 count O$opt"
   grep -Fq 'F_APP07_SWINTER3_INTERVALS=92' "$OUT/output.txt" || fail "SWINTER3 count O$opt"
@@ -82,5 +89,7 @@ for opt in 0 2; do
 done
 cmp -s "$BUILD/composition-o0/output.txt" "$BUILD/composition-o2/output.txt" || { diff -u "$BUILD/composition-o0/output.txt" "$BUILD/composition-o2/output.txt" >&2 || true; fail "composition O0/O2 drift"; }
 cat "$BUILD/composition-o0/output.txt"
+cmp -s "$BUILD/composition-o0/route.txt" "$BUILD/composition-o2/route.txt" || fail 'three-route O0/O2 drift'
+cat "$BUILD/composition-o0/route.txt"
 echo "F_APP07_COMPOSITION_OUTPUT_SHA256=$(sha256sum "$BUILD/composition-o0/output.txt" | awk '{print $1}')"
 echo 'F_APP07_EXACT_110_INTERVAL_COMPOSITION=PASS'
