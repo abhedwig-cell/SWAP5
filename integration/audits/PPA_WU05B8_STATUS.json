@@ -1,14 +1,14 @@
 {
   "work_unit": "PPA-WU05B8",
   "baseline": "024c6a5510757a02851426806248b0e2afe45a6b",
-  "status": "RUNTIME_QUALIFICATION_IN_PROGRESS",
+  "status": "REFINEMENT_FAILURE_REPAIR_IN_PROGRESS",
   "implemented": true,
   "persisted": true,
   "tested": "SOURCE_COMPONENT_O0_O2_PASS_RUNTIME_PENDING",
   "qualified": false,
   "admitted": false,
   "checkpoint": "bd6492fa7d2002f2d2fcf354b8a285b19fc33f7d",
-  "remote_checkpoint": "afbc0b6d2c5206dfe6a371a299819f52261a83f2",
+  "remote_checkpoint": "bddbdb5efe47f5d07cc92705c20af28236239b75",
   "production_source_tree": "37926fa79b0c9fd48c7db7c62135e3cb19836fe6",
   "source_cases": {
     "guarded_geometry_bit_parity": 48,
@@ -24,15 +24,15 @@
   ],
   "repair": "Owned runtime-runner copy changes only static disnod to consistent [.25,.5,.75,1,.5]; typed parameters use identical metrics. Shared historical stub remains unchanged for incumbent preservation.",
   "pending_gates": [
-    "new owned-grid runtime O0/O2 matrix with hard mass/trajectory/restart/application",
-    "incumbent B1/B2/B3/B4/B6 with unchanged original grid fixture",
-    "four fresh salted preservation runners",
-    "complete current canonical preservation",
+    "reconciled low-air runtime O0/O2 complete matrix",
+    "32768-step bounded reference refinement",
+    "reconciled B1/B2/B3/B4 incumbents",
+    "complete reconciled canonical preservation",
     "documentation checks"
   ],
   "preregistration": "integration/audits/PPA_WU05B8_PREREGISTRATION.json",
   "aggregate_frost_migration_complete": false,
-  "next_action": "Complete running local gates; repair observed failures without weakening numerical or mass gates; persist full source-bound qualification and admit exact source",
+  "next_action": "Complete head3e-11 versus65536-step bounded screen, then full persisted O0/O2 matrix with refined direct oracle; do not admit old8192-only success",
   "accuracy_repair_candidate": {
     "local_head_budget_cm": 1e-10,
     "local_temperature_budget_c": 1e-07,
@@ -78,7 +78,7 @@
     ],
     "additional_zero_rate_case": "air-rich all-frozen normal delegation",
     "additional_refinement_check": "16384-step first-case oracle",
-    "status": "OLD_SOURCE_O0_COMPLETE_NEW_RECONCILED_O0_O2_PENDING",
+    "status": "RECONCILED_O0_O2_SIX_CASE_8192_PASS_IDENTICAL_STDOUT_BUT_65536_SCREEN_FAILS",
     "justification": "Source matrix108 cases covers each signed/zero combination. Actual runtime matrix selects all branch/depth/mass owners with both bottom signs; horizon/mass gates unchanged and finer direct trajectories strengthen preregistered minimum2048."
   },
   "reconciled_baseline": "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
@@ -88,5 +88,42 @@
     "O0": "SIX_CASE_RUNTIME_RESTART_APPLICATION_PASS",
     "evidence": "/tmp/frost-b8-o0-final-matrix.log",
     "scope": "Historical completed test only; affected source must be replayed."
+  },
+  "reconciled_completed_gates": {
+    "source_component_O0_O2": "PASS_48_GEOMETRY_108_SIGNED_CASES",
+    "B6_normal_runtime_O0_O2": "PASS_IDENTICAL_STDOUT",
+    "SALFRO01_process_O0_O2": "PASS",
+    "SALFRO01_jarvis_walsum_upwind_dispersion": "FOUR_PASS_FRESH_PROCESS_AND_O0_O2_PHYSICAL_BYTES_IDENTICAL",
+    "B1_B2_B3_B4_runtime_O0_O2": "FOUR_PASS_IDENTICAL_STDOUT_ORIGINAL_GRID",
+    "full_canonical_preservation": "FCI_CANONICAL_LINEAGE_AWARE_GATE_PASS",
+    "docs": "SOURCE_CHECK_AND_MKDOCS_STRICT_PASS"
+  },
+  "refinement_16384": {
+    "scope": "First runtime case only, generated from persisted fixture with pattern/sign loops bounded and direct steps doubled; same fresh reconciled O0 production objects",
+    "head_cm": 3.890667e-07,
+    "temperature_c": 7.106705e-07,
+    "status": "PASS_RETAINED_HORIZON_GATES",
+    "followup": "32768-step check in progress because discrepancy increased"
+  },
+  "reference_refinement": {
+    "16384": {
+      "head_cm": 3.890667e-07,
+      "temperature_c": 7.106705e-07,
+      "status": "PASS"
+    },
+    "32768": {
+      "head_cm": 8.675888e-07,
+      "temperature_c": 1.586958e-06,
+      "status": "PASS"
+    },
+    "65536": {
+      "head_cm": 1.106541e-06,
+      "temperature_c": 2.025101e-06,
+      "status": "FAIL_HEAD_1E6_HORIZON"
+    },
+    "65536_tighter_solver_oracle": {
+      "status": "FAIL_FINE_DIRECT_CONTINUATION_BEFORE_TRAJECTORY_COMPARISON",
+      "scope": "Only direct step solver absolute/relative tolerance tightened1e-14; fine step rejected. No successful trajectory comparison or solver-isolation conclusion."
+    }
   }
 }
