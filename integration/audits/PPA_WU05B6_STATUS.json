@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B6",
-  "status": "READY_FOR_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED",
   "baseline": "b872ddbd930ea08b058575877a03774d313742cc",
   "preregistration_remote": "a4e092bf95f7b0db7f5d64f2d83f63a535a3d4f2",
   "qualified_checkpoint": "64fb1716dc9149794519e291b2e42f9f3c3da1d8",
@@ -10,7 +10,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "scope": "Rootless ordinary Reference mode2 with explicit normal-branch frost scaling of prescribed signed level/node drainage; qbot unchanged",
   "source_and_gate_manifest": {
     "src/process/mod_frost_drainage_effect.f90": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900",
@@ -67,7 +67,7 @@
   ],
   "global_B1_snapshot_promoted": false,
   "aggregate_frost_migration_complete": false,
-  "next_action": "Central exact-source admission; then separately qualify drainage geometry and low-air branch",
+  "next_action": "Qualify drainage geometry and low-air branch against the bounded corrected reference; active drainage-response composition remains separate",
   "exclusions": [
     "deep-low-air drainage",
     "active drainage-response generation",
@@ -77,5 +77,10 @@
     "groundwater-owned bottom",
     "depth interpolation",
     "phase-change physics"
-  ]
+  ],
+  "canonical_pr": 1040,
+  "canonical_merge": "f28e020855666b47207bcf6679cf367e0962e65c",
+  "qualified_head": "878406d3909b4cf120b85a8355aaeccbf1f265d4",
+  "verified_proposed_merge": "c513c1dcdc7f395b0a6ffd43a3885bc34e549c70",
+  "accepted_tree": "709ba91a5b7de4b6eebed5eb176711231181c5d0"
 }

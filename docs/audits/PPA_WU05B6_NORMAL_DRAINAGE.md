@@ -1,6 +1,6 @@
 # PPA-WU05B6 normal frost drainage composition
 
-Status: locally qualified, ready for central exact-source admission.
+Status: current / canonically admitted through PR #1040.
 
 The explicit `frost_drainage` option composes the ordinary legacy normal FrozenBounds nodal rule with Reference mode2 and prescribed signed drainage by level/node. Each final nodal flux is its immutable proposal multiplied by the trial-start hydraulic frost factor. Level and aggregate diagnostics derive from these final nodes. The existing source/sink provider and mass owner book the final node flux once; the bottom flux keeps its separate existing owner.
 
@@ -19,3 +19,7 @@ The [corrected reporting reference](PPA_WU05B5_CORRECTED_B1_DRAIN_REPORT.md) rem
 Preregistration: `integration/audits/PPA_WU05B6_PREREGISTRATION.json`. Run `bash tests/frost/run_ppa_wu05b6_normal_drain_source.sh` and `bash tests/frost/run_ppa_wu05b6_normal_drain_runtime.sh`.
 
 Exact qualification and preservation identities are in `integration/audits/PPA_WU05B6_STATUS.json`. The compressed local replay bundle records source hashes, completed gate outputs and exact salted-preservation reports. No queued Actions success claim is used.
+
+## Canonical admission
+
+PR #1040 admitted this bounded production route at `f28e020855666b47207bcf6679cf367e0962e65c`. Proposed merge `c513c1dcdc7f395b0a6ffd43a3885bc34e549c70` exactly matched qualified tree `709ba91a5b7de4b6eebed5eb176711231181c5d0` and production source `c659cc9d51216437859e6675cce83f1b4b28e1b7`. The authority is `integration/audits/PPA_WU05B6_CANONICAL_ADMISSION.json`. Aggregate frost migration remains open.
