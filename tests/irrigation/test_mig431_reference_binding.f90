@@ -1,5 +1,5 @@
 program test_mig431_reference_binding
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_irrigation_process, only: irrigation_state_t, irrigation_flux_result_t, &
        irrigation_diagnostics_t, IRRIGATION_APPLICATION_SSDI
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_forcing_t
@@ -31,10 +31,24 @@ program test_mig431_reference_binding
   if (status /= FMR_IRR_REFERENCE_INVALID) error stop 4
 
   proposed%next_fixed_event_index = 2
-  call fmr_publish_accepted_irrigation_state(committed,proposed,result,published)
+  call fmr_publish_accepted_irrigation_state(committed,proposed,result,11_int64,100.25_real64,published)
   if (published .or. committed%next_fixed_event_index /= 1) error stop 5
   result%committed = .true.
-  call fmr_publish_accepted_irrigation_state(committed,proposed,result,published)
+  result%completed = .true.
+  result%mass%complete = .true.
+  result%final_committed_time_bound = .true.
+  result%final_committed_time = 100.25_real64
+  result%column_id = 12_int64
+  call fmr_publish_accepted_irrigation_state(committed,proposed,result,11_int64,100.25_real64,published)
+  if (published .or. committed%next_fixed_event_index /= 1) error stop 6
+  result%column_id = 11_int64
+  call fmr_publish_accepted_irrigation_state(committed,proposed,result,11_int64,100.5_real64,published)
+  if (published .or. committed%next_fixed_event_index /= 1) error stop 7
+  result%mass%complete = .false.
+  call fmr_publish_accepted_irrigation_state(committed,proposed,result,11_int64,100.25_real64,published)
+  if (published .or. committed%next_fixed_event_index /= 1) error stop 8
+  result%mass%complete = .true.
+  call fmr_publish_accepted_irrigation_state(committed,proposed,result,11_int64,100.25_real64,published)
   if (.not. published .or. committed%next_fixed_event_index /= 2) error stop 6
   print '(a)', 'F_MIG431_REFERENCE_SOURCE_AND_ACCEPTANCE_BINDING=PASS'
 end program

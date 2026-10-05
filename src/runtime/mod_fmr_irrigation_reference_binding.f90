@@ -1,5 +1,5 @@
 module mod_fmr_irrigation_reference_binding
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_irrigation_process, only: irrigation_state_t, irrigation_flux_result_t, irrigation_diagnostics_t
   use mod_fmr_irrigation_source_binding, only: fmr_bind_irrigation_to_subsurface_source, &
@@ -38,12 +38,22 @@ contains
     status = FMR_IRR_REFERENCE_OK
   end subroutine
 
-  subroutine fmr_publish_accepted_irrigation_state(committed, proposed, result, published)
+  subroutine fmr_publish_accepted_irrigation_state(committed, proposed, result, &
+       expected_column_id, expected_t1, published)
     type(irrigation_state_t), intent(inout) :: committed
     type(irrigation_state_t), intent(in) :: proposed
     type(fmr_serialized_column_result_t), intent(in) :: result
+    integer(int64), intent(in) :: expected_column_id
+    real(real64), intent(in) :: expected_t1
     logical, intent(out) :: published
-    published = result%committed
+    published = .false.
+    if (expected_column_id <= 0_int64 .or. .not. ieee_is_finite(expected_t1)) return
+    if (result%column_id /= expected_column_id) return
+    if (.not. result%completed .or. .not. result%committed .or. &
+        .not. result%mass%complete .or. .not. result%final_committed_time_bound) return
+    if (.not. ieee_is_finite(result%final_committed_time)) return
+    if (result%final_committed_time /= expected_t1) return
+    published = .true.
     if (published) committed = proposed
   end subroutine
 end module

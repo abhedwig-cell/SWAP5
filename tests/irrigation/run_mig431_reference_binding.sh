@@ -62,9 +62,32 @@ import sys
 s=Path('tests/fmr/test_fmr19_process_restart.f90').read_text()
 anchor='  use mod_transaction_reference, only: transaction_state_t'
 assert s.count(anchor)==1
-s=s.replace(anchor,'''  use mod_irrigation_process, only: irrigation_flux_result_t, irrigation_diagnostics_t, IRRIGATION_APPLICATION_SSDI
-  use mod_fmr_irrigation_reference_binding, only: fmr_bind_ssdi_reference_candidate, FMR_IRR_REFERENCE_OK
+s=s.replace(anchor,'''  use mod_irrigation_process, only: irrigation_state_t, irrigation_flux_result_t, &
+       irrigation_diagnostics_t, IRRIGATION_APPLICATION_SSDI
+  use mod_fmr_irrigation_reference_binding, only: fmr_bind_ssdi_reference_candidate, &
+       fmr_publish_accepted_irrigation_state, FMR_IRR_REFERENCE_OK
 '''+anchor)
+anchor='    logical :: exported, restored\n    integer :: status, i'
+assert s.count(anchor)==1
+s=s.replace(anchor,'''    logical :: exported, restored, management_published
+    type(irrigation_state_t) :: base_management, restart_management, proposed_management
+    integer :: status, i''')
+anchor="    call require_all_committed(base_first, 'continuous first committed')"
+assert s.count(anchor)==1
+s=s.replace(anchor,anchor+'''
+    proposed_management%next_fixed_event_index = 2
+    call fmr_publish_accepted_irrigation_state(base_management,proposed_management,base_first(1), &
+         base_columns(1)%column_id,tm,management_published)
+    call require(management_published .and. base_management%next_fixed_event_index == 2, &
+         'actual accepted Reference result publishes management state')''')
+anchor="    call require_all_committed(restart_first, 'restart first committed')"
+assert s.count(anchor)==1
+s=s.replace(anchor,anchor+'''
+    call fmr_publish_accepted_irrigation_state(restart_management,proposed_management,restart_first(1), &
+         restart_columns(1)%column_id,tm,management_published)
+    call require(management_published .and. &
+         restart_management%next_fixed_event_index == base_management%next_fixed_event_index, &
+         'replayed accepted Reference result publishes same management state')''')
 anchor='    integer :: i\n\n    forcing%top_flux = -conductivity0'
 assert s.count(anchor)==1
 s=s.replace(anchor,'''    integer :: i, bind_status
