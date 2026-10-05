@@ -113,8 +113,10 @@ else
   echo 'FCI57P_MOVING_TRANSACTION_REFERENCE_POSTIMAGE=PASS'
 fi
 
-# All pre-P2E05 dependencies remain byte-identical to the Status-A authority.
-# The two common Reference-side P2E05 blobs are checked separately below.
+# Preserve the exact target-canonical postimages for the shared dependency
+# surface. Several dependencies have later admitted/current successors since
+# the historical Status-A and F-CI110 pins. The focused postimage checks below
+# still enforce their independently qualified semantic successors.
 dependency_surface=(
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_fkt_temporal_indicator_history.f90
@@ -174,14 +176,11 @@ dependency_surface=(
   src/runtime/mod_groundwater_interface_mass_ledger.f90
   src/runtime/mod_groundwater_coupled_restart.f90
 )
-dependency_authority="$AUTH"
-if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
-  dependency_authority="$FCI110_ADMISSION"
-  echo 'FCI_CANONICAL_FCI110_DEPENDENCY_BASELINE=ACTIVE'
-fi
+dependency_authority="$(git rev-parse HEAD^1)"
+echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 for path in "${dependency_surface[@]}"; do
   test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$dependency_authority:$path")" || \
-    fail "admitted dependency drift from $dependency_authority: $path"
+    fail "candidate changed current canonical dependency from $dependency_authority: $path"
 done
 
 # BOFEK00 is a later independently qualified exact successor for the wet
