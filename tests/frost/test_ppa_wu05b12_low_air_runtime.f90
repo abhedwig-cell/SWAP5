@@ -48,7 +48,16 @@ program test_frost_low_air_response_runtime
   real(real64)::control_head(2)=[-3._real64,-4._real64]
   integer::status,i,signum,dsign,pattern,analytic_family
   logical::ok
+  integer::requested_family=0
+  character(len=16)::family_argument
+  call get_command_argument(1,family_argument)
+  if(len_trim(family_argument)>0)then
+    read(family_argument,*,iostat=status)requested_family
+    call require(status==0,'integer family selector')
+    call require(requested_family>=1.and.requested_family<=5,'bounded family selector')
+  end if
   do analytic_family=1,5
+  if(requested_family/=0.and.analytic_family/=requested_family)cycle
   print '(A,I0)','PPA_WU05B12_ANALYTIC_FAMILY=',analytic_family
   call initialize_parameters(parameters,2)
   call enable_bounded_frost(parameters)

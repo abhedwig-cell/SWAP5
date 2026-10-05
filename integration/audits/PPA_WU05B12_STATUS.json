@@ -59,6 +59,16 @@
       "kind": "additional activation branch coverage",
       "finding": "Generated low-air activation setup inherited the generic air-rich state after replacing the main. It exercised the low-air option configuration but normal air branch; full low-air runtime matrix is separate and unaffected",
       "repair": "Carry exact near-saturated hydraulic initialization into derived activation main and assert observed low-air branch on every short case. Rerun both O0/O2; no production/budget change"
+    },
+    {
+      "kind": "qualification resource exhaustion",
+      "finding": "Parallel all-five-family O2 process was killed (exit137) after three complete families and23 physical comparisons; shared cgroup memory.max8GiB and memory.events oom_kill increment1. Original O0 incomplete run was deliberately stopped to avoid another accumulated-memory failure. No completed full gate is claimed for either partial run",
+      "repair": "Execute each complete six-trajectory family, its retry/replay/empty-restart/application checks, in a fresh test process. Retain all five families and full65536 fine steps and unchanged production/budgets. Relink current fixture onto verified unchanged fresh whole-module builds and rerun the complete all-family matrix at both optimizations",
+      "logs": [
+        "/tmp/frost-b12-low-air-first-multifamily-serial_o0.txt",
+        "/tmp/frost-b12-low-air-first-multifamily-parallel_o2.txt",
+        "/tmp/frost-b12-low-air-runtime-parallel-o2-first-memory-negative.log"
+      ]
     }
   ],
   "runtime_fixture_recovery": "All-five-family fixtures use fresh full fine trajectories; invalid table cases explicitly target active second TABULATED level",
@@ -83,7 +93,8 @@
   "pending": [
     "Full five-family low-air runtime O0/O2",
     "Fresh B8/B10/B11 low-air incumbent relinks O0/O2",
-    "Final immutable evidence, docs and proposed merge/admission"
+    "Final immutable evidence, docs and proposed merge/admission",
+    "Complete memory-bounded per-family fresh-process O0/O2 low-air rerun"
   ],
   "documentation": "PARTIAL_CHECK_DOCS_AND_STRICT_MKDOCS_PASS",
   "partial_evidence": {
@@ -98,5 +109,11 @@
     "low_air_O0": "/tmp/ppa-wu05b12-low-air-runtime/o0",
     "low_air_O2": "/tmp/ppa-wu05b12-low-air-runtime-parallel/o2",
     "policy": "Same persisted fixture and fresh actual whole-module graph with unchanged O0/O2 flags. Separate owned builds permit concurrency; retain all five families and six full fine trajectories each. Collect both successful outputs before any full qualification claim."
+  },
+  "memory_recovery_evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B12_MEMORY_RECOVERY.json.gz",
+    "sha256": "37cad247703e8d22ae507c6414a6c5078c6f085ebecc8bde3923dbf5e7804853",
+    "bytes": 1351,
+    "qualification": false
   }
 }
