@@ -5,6 +5,7 @@ program test_ppa_wu05d2_jarvis
  use mod_root_uptake_compensation
  use mod_root_uptake_compensation_execution
  use mod_root_water_uptake_process,only:root_water_uptake_diagnostics_t
+ use mod_root_salinity_response,only:evaluate_mobile_root_salinity_sink,SALINITY_OK
  implicit none
  type(root_water_uptake_flux_result_t)::base,a,b
  type(root_compensation_config_t)::cfg
@@ -13,6 +14,8 @@ program test_ppa_wu05d2_jarvis
  integer::s
  real(real64),parameter::tol=1.e-14_real64
  real(real64)::dryloss,wetloss,saltloss
+ real(real64),allocatable::cml(:),salt_alpha(:),salt_sink(:),salt_node_loss(:)
+ real(real64)::salt_loss,potential_saved(4)
  allocate(base%root_extraction_sink(4))
  base%root_extraction_sink=[0.05_real64,0.10_real64,0.15_real64,0.10_real64]
  base%actual_uptake_total=sum(base%root_extraction_sink)
@@ -45,6 +48,20 @@ program test_ppa_wu05d2_jarvis
  call req(abs(da%drought_reduction_total+da%oxygen_reduction_total-(0.5_real64-a%actual_uptake_total))<tol,'stress attribution closes')
 
  cfg%stressor=ROOT_COMP_SALINITY;cfg%alpha_critical=.9_real64
+ potential_saved=base%root_extraction_sink
+ call evaluate_mobile_root_salinity_sink([1.0_real64,1.25_real64,1.5_real64,2.0_real64], &
+      [0.2_real64,0.2_real64,0.2_real64,0.2_real64],[1.0_real64,1.0_real64,1.0_real64,1.0_real64], &
+      5.0_real64,0.2_real64,potential_saved,cml,salt_alpha,salt_sink,salt_node_loss,salt_loss,s)
+ call req(s==SALINITY_OK.and.maxval(abs(salt_alpha-[1.0_real64,.75_real64,.5_real64,0.0_real64]))<tol, &
+      'same-view mass derives Maas-Hoffman root factors')
+ call req(abs(sum(salt_node_loss)-salt_loss)<tol,'same-view node loss aggregates')
+ base%root_extraction_sink=salt_sink;base%actual_uptake_total=sum(salt_sink)
+ call compose_jarvis_root_uptake(cfg,.5_real64,base,.1_real64,0.0_real64,a,da,s,salt_loss)
+ call req(s==ROOT_COMP_OK.and.da%applied.and.da%salinity_reduction_total>0.0_real64, &
+      'mass-derived salinity loss composes through Jarvis')
+ call req(a%actual_uptake_total>=base%actual_uptake_total.and.a%actual_uptake_total<=.5_real64, &
+      'mass-derived Jarvis recovery remains bounded')
+ base%root_extraction_sink=potential_saved;base%actual_uptake_total=sum(potential_saved)
  call compose_jarvis_root_uptake(cfg,.5_real64,base,0.0_real64,0.0_real64,a,da,s,.1_real64)
  call req(s==ROOT_COMP_OK.and.da%applied,'salinity stressor composes')
  call req(a%actual_uptake_total>.4_real64.and.a%actual_uptake_total<.5_real64,'salinity-only Jarvis recovery')
