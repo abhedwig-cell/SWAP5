@@ -133,6 +133,7 @@ program test_frost_drain_runtime
   registry(1)=captured
   call fmr_export_committed_restart(columns,templates,registry,parameters%parameter_set_id,bundle,ok,status)
   call require(ok.and.status==FMR_RESTART_OK,'actual accepted drainage restart export')
+  restored=kernel_committed_state_t()
   call fmr_restore_committed_restart(bundle,parameters%parameter_set_id,columns,templates,restored,ok,status)
   call require(ok.and.status==FMR_RESTART_OK,'empty registry restart restore')
   call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,result,observation, &
@@ -163,7 +164,8 @@ program test_frost_drain_runtime
   call require(.not.again%committed.and..not.observation%solver_executed,'OFF incumbent nonzero drainage excluded')
   control_head=[-3._real64,-4._real64]
   call verify_application(initial)
-  print '(A)','PPA_WU05B12_NORMAL_RESPONSE_DRAIN_RUNTIME=PASS'  end do
+  print '(A)','PPA_WU05B12_NORMAL_RESPONSE_DRAIN_RUNTIME=PASS'
+  end do
 
 contains
   subroutine verify_application(dry)

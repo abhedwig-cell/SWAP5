@@ -35,7 +35,25 @@
   "blockers": [],
   "production_source_tree": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
   "negative_findings": [
-    "Immutable F-VQ38 oracle includes historical owner commit/path locators that are not navigable in the current history. Exact five scientific blobs from its certificate are present in admitted canonical879a9c65. Body proof now reads those exact immutable blobs; actual current production is still compiled and compared to the unchanged independent oracle/probe."
+    "Immutable F-VQ38 oracle includes historical owner commit/path locators that are not navigable in the current history. Exact five scientific blobs from its certificate are present in admitted canonical879a9c65. Body proof now reads those exact immutable blobs; actual current production is still compiled and compared to the unchanged independent oracle/probe.",
+    {
+      "kind": "runtime fixture syntax",
+      "finding": "Generated family-loop closing END DO was concatenated to PRINT line; full actual source compiled but both test mains failed before execution",
+      "repair": "Separate statements; rerun both full whole-module O0/O2 runners; no production or budget change",
+      "logs": [
+        "/tmp/frost-b12-normal-runtime-first-syntax-negative.log",
+        "/tmp/frost-b12-low-air-runtime-first-syntax-negative.log"
+      ]
+    },
+    {
+      "kind": "test isolation",
+      "finding": "Family2 reused nonempty restored registry; explicit empty-registry contract rejected restore after its six physical cases had passed. Low-air incomplete run interrupted proactively before same repeated-fixture defect",
+      "repair": "Reset restored test registry to default empty record for each family before actual restore; rerun both O0/O2 whole-module matrices; source and budgets unchanged"
+    }
   ],
-  "runtime_fixture_recovery": "All-five-family fixtures use fresh full fine trajectories; invalid table cases explicitly target active second TABULATED level"
+  "runtime_fixture_recovery": "All-five-family fixtures use fresh full fine trajectories; invalid table cases explicitly target active second TABULATED level",
+  "completed_component_gates": [
+    "Immutable F-VQ38 148 independent equations/132 tangent checks O0/O2 plus unchanged scientific bodies",
+    "4320 actual selected generator plus corrected B7 FrozenBounds composition cases O0/O2, independent equation/cutoff and signed TAB proposal checks"
+  ]
 }
