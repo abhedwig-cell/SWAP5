@@ -34,8 +34,9 @@ for opt in (0,2):
  for i,p in enumerate(ordered):
   obj=out/f'{i}.o';subprocess.run([*flags,'-c',str(p),'-o',str(obj)],check=True);objects.append(str(obj))
  subprocess.run(['gfortran',*objects,'-o',str(out/'test')],check=True)
- r=subprocess.run([str(out/'test')],capture_output=True,text=True,check=True)
- (out/'output.txt').write_text(r.stdout);print(r.stdout,end='');outputs.append(r.stdout)
+ r=subprocess.run([str(out/'test')],capture_output=True,text=True,check=False)
+ (out/'output.txt').write_text(r.stdout);(out/'stderr.txt').write_text(r.stderr)
+ print(r.stdout,end='');print(r.stderr,end='');r.check_returncode();outputs.append(r.stdout)
 assert outputs[0]==outputs[1]
 print('PPA_WU05B13_EMPIRICAL_SOURCE_O0_O2_IDENTITY=PASS')
 print('BUILD='+str(BUILD))

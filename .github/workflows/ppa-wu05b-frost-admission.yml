@@ -192,4 +192,6 @@ jobs:
         run: |
           if test -f tests/frost/run_ppa_wu05b13_runtime.py; then
             python3 tests/frost/run_ppa_wu05b13_runtime.py --route ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b13_additional.py --routes ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b13_preservation.py --route ${{ matrix.route }}
           fi

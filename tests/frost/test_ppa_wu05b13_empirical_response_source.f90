@@ -59,7 +59,7 @@ program generated_empirical_frost_reference
      expected=b13_empirical_rate_oracle(coefficients(coefficientcase),b13_exponent(configuration), &
           hyd%groundwater_level,heads(2))
      call require(abs(actual(n,4)-expected)<=1.d-14,'independent interflow power/activation equation')
-     if(n==2)call require(abs(actual(1,4)-(hyd%groundwater_level-heads(1))/200.d0)<=1.d-14,'independent signed linear equation')
+     if(n==2)call require(abs(actual(1,4)-max(0.d0,(hyd%groundwater_level-heads(1))/200.d0))<=1.d-14,'independent admitted drainage-only linear equation')
      call require(all(actual(:,:3)==0.d0),'single bottom-lumped nodal owner')
      proposal=0.d0;proposal(3-n:2,:)=actual
      do bsign=-1,1
