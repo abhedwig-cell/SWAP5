@@ -46,3 +46,7 @@ The safe next SWAP5 unit is typed drainage flux composition with one final nodal
 owner, initially bounding out low-air redistribution until its geometry contract
 is separately qualified. This correction supplies a consistent reporting
 reference for the ordinary source branch; it does not complete frost migration.
+
+## Canonical reference-component admission
+
+PR #1038 admitted this bounded component at `7257d884136396823286783971357ba2d80b836e`, after verifying proposed merge `6efafd69bb72bce332fcaab0d363d186541d6dfe` had exact qualified tree `834136ed2978aeeeeb146a5e2b28df2a57d5bb02`. The admission uses completed local gates recorded in the status authority; it makes no queued Actions success claim. The original B1 snapshot and SWAP5 production source remain unchanged.

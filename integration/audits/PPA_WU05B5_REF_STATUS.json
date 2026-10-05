@@ -2,12 +2,12 @@
   "work_unit": "PPA-WU05B5-REF",
   "baseline": "526258e3d78d47df657222630b2e46103cac3eb3",
   "last_reconciled_upstream": "b7648037663bd6d8f5bd9cc22222d2afeecf5421",
-  "status": "READY_FOR_REFERENCE_COMPONENT_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_REFERENCE_COMPONENT",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "scope": "Bounded B1 ordinary-drain reporting-only overlay, low-air SWDRA=1 SWDIVD=0 SWMACRO=0",
   "qualified_checkpoint": "284e6444f0cbd2dfcbdd859b3d3864bb960a9388",
   "production_source_tree_unchanged": "dfacb3342763c9705dce2b3c5b84c0369ce24203",
@@ -56,6 +56,11 @@
     "SWAP5 production migration",
     "SWDRA=2 surface-water feedback"
   ],
-  "next_action": "Central bounded reference-component admission, then typed single-owner drainage composition and separately qualified low-air geometry",
-  "aggregate_frost_migration_complete": false
+  "next_action": "Typed normal-air drainage composition; low-air geometry remains separately qualified",
+  "aggregate_frost_migration_complete": false,
+  "canonical_pr": 1038,
+  "canonical_merge": "7257d884136396823286783971357ba2d80b836e",
+  "qualified_head": "272aa6a5c341cef143584eda962b0cc47c03cb05",
+  "accepted_tree": "834136ed2978aeeeeb146a5e2b28df2a57d5bb02",
+  "verified_proposed_merge": "6efafd69bb72bce332fcaab0d363d186541d6dfe"
 }
