@@ -1,0 +1,49 @@
+{
+  "work_unit": "PPA-WU05B3",
+  "baseline": "33cb8c94d0ed2c9578643033e414a313daf00e88",
+  "last_reconciled_upstream": "a370f6f487c017af9931ffc46d4c5c9fb1288d8c",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "admitted": false,
+  "scope": "Legacy no-drain FrozenBounds on rootless ordinary Reference mode2, explicit opt-in",
+  "authority_paths": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md",
+    "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json"
+  ],
+  "relevant_paths": [
+    "src/process/mod_frost_bottom_boundary_effect.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/frost"
+  ],
+  "dependency_surface": [
+    "src/runtime",
+    "src/solver",
+    "src/process",
+    "tests/fci"
+  ],
+  "next_action": "Central exact-source reconciliation and bounded canonical admission; drainage redistribution remains separate",
+  "blockers": [],
+  "remote_checkpoint_note": "Implementation persisted at 17a5f1da903415d4568127476c24d835e9326836; revised tests and preserved gate pin uploaded before full qualification",
+  "test_paths": [
+    "tests/frost/run_ppa_wu05b3_frost_bottom.sh",
+    "tests/frost/run_ppa_wu05b3_frost_bottom_runtime.sh"
+  ],
+  "exploratory_findings": [
+    "Initial runtime fixture retained legacy 32-substep cap: incomplete interval despite accepted trials; qualification fixture now allows 100000 steps. No production cap weakened.",
+    "Initial local temperature budget 1e-6 C gave horizon difference 1.015612e-4 C vs 2048 direct steps: FAILED retained 1e-4 C horizon bound. Qualification fixture tightens local budget to 1e-7 C, no claim of cumulative 1e-7 C accuracy.",
+    "Restart test initially passed unallocated destination to existing assumed-shape registry API: fixed fixture to an empty one-element registry; production restart unchanged."
+  ],
+  "reconciliation": "Preserves WALSAL01 selected Walsum-salinity parameter admission and pre-stress root support validation; sole conflict merged both module imports. Joint salt/frost remains excluded.",
+  "status": "READY_FOR_REGIE",
+  "recovery_point": "32aafef400efce1fc08dc3dfc5f85e1135794b37",
+  "local_qualification": {
+    "path": "docs/audits/evidence/PPA_WU05B3_LOCAL_REPLAY.json.gz",
+    "sha256": "aff639a5b51912f83efa4bca2162dc297fe9778a4dfdbe761df455f1bc32872e",
+    "bytes": 64909
+  },
+  "source_manifest": "integration/audits/PPA_WU05B3_SOURCE_MANIFEST.json"
+}

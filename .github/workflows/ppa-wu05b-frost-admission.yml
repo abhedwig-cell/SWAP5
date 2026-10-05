@@ -7,6 +7,7 @@ on:
     paths:
       - 'src/process/mod_frost_hydraulic_effect.f90'
       - 'src/process/mod_root_frost_stress.f90'
+      - 'src/process/mod_frost_bottom_boundary_effect.f90'
       - 'src/process/mod_root_uptake_compensation.f90'
       - 'src/runtime/mod_root_uptake_compensation_execution.f90'
       - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
@@ -55,6 +56,14 @@ jobs:
             python3 tests/physics/run_ppa_wu05d3_walsum.py
             C3A_RESULT="$RUNNER_TEMP/frost-root-salt.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
             WU05E_TRANSPORT_VARIANT=dispersion C3A_RESULT="$RUNNER_TEMP/frost-root-dispersion.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
+          fi
+      - name: Explicit no-drain frozen bottom boundary
+        run: |
+          if test -f tests/frost/run_ppa_wu05b3_frost_bottom.sh; then
+            bash tests/frost/run_ppa_wu05b3_frost_bottom.sh
+            bash tests/frost/run_ppa_wu05b3_frost_bottom_runtime.sh
+            WU05E_COMPENSATION_METHOD=walsum C3A_RESULT="$RUNNER_TEMP/frost-bottom-walsalt.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
+            WU05E_COMPENSATION_METHOD=walsum WU05E_TRANSPORT_VARIANT=dispersion C3A_RESULT="$RUNNER_TEMP/frost-bottom-walsalt-dispersion.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
           fi
       - name: Exact current-canonical preservation for the bounded frost successor
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh

@@ -301,7 +301,27 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     backend_authority="$BALTOL02_BACKEND"
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
   fi
-  if git merge-base --is-ancestor 4e21f0efeb4db6069c3c6d38fdf6dc2e5033f238 HEAD; then
+  if git merge-base --is-ancestor 58d86a8590181acd5274008d82afb5596aa9e0f7 HEAD; then
+    git merge-base --is-ancestor a370f6f487c017af9931ffc46d4c5c9fb1288d8c HEAD || fail "PPA-WU05B3 lost admitted root/Walsum-salt baseline"
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "1ac0a8032c08ad2119a929ae1deb338abe70a441" || \
+      fail "PPA-WU05B3 bounded no-drain postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "9b44d4e536b783d892b2052eed4d36edb46b7838" || \
+      fail "PPA-WU05B3 bounded no-drain postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_bottom_boundary_effect.f90)" = "5dbf9052bdc65fc5fb1830f74da70b3e912adb7b" || \
+      fail "PPA-WU05B3 bounded no-drain postimage drift: src/process/mod_frost_bottom_boundary_effect.f90"
+    test "$(git rev-parse HEAD:src/process/mod_root_frost_stress.f90)" = "a99d870ac2911dd0b9cfe1aef3a0fd299dcfcf38" || \
+      fail "PPA-WU05B3 bounded no-drain postimage drift: src/process/mod_root_frost_stress.f90"
+    test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "36d90b2673b287f560f52d1c9b079ab729c47025" || \
+      fail "PPA-WU05B3 bounded no-drain postimage drift: src/process/mod_root_uptake_compensation.f90"
+    test "$(git rev-parse HEAD:src/runtime/mod_root_uptake_compensation_execution.f90)" = "6affaec2e7a55544e722ed1204ca9e5de555b478" || \
+      fail "PPA-WU05B3 bounded no-drain postimage drift: src/runtime/mod_root_uptake_compensation_execution.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" = "2c8adba7986e7d85749c4c36d26530748fbbab9e" || \
+      fail "PPA-WU05B3 bounded no-drain postimage drift: src/process/mod_frost_hydraulic_effect.f90"
+    test "$(git rev-parse HEAD:src/solver/mod_frost_hydraulic_provider.f90)" = "08492a7272860629c9ffee34968c9cc29952bd58" || \
+      fail "PPA-WU05B3 bounded no-drain postimage drift: src/solver/mod_frost_hydraulic_provider.f90"
+    backend_authority="$(git rev-parse HEAD:$BACKEND)"
+    echo "FCI_CANONICAL_PPA_WU05B3_EXACT_FROZEN_BOTTOM_CANDIDATE=ACTIVE"
+  elif git merge-base --is-ancestor 4e21f0efeb4db6069c3c6d38fdf6dc2e5033f238 HEAD; then
     git merge-base --is-ancestor 916035e78305cae5f88c30d5805b5d9c33a348f8 HEAD || \
       fail 'PPA-WU05B2 lost canonically admitted hydraulic frost baseline'
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "93d99478474a59ade337c42e993dcf55dff9272d" || \
