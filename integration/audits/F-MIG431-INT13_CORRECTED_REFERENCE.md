@@ -10,70 +10,58 @@ corrected B1.11 identities: `MOD_meteo.f90` SHA-256
 the 63-member manifest SHA-256
 `24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2`.
 
-The source is available in Git at
-[`SWAP-model/swap-4.2.0/src/meteoday.f90`](https://github.com/SWAP-model/swap-4.2.0/blob/c30e5e4cd3a7427246b5206c15ad6960897d18d3/src/meteoday.f90),
-commit `c30e5e4cd3a7427246b5206c15ad6960897d18d3`. The commit identifies its
-physics as unmodified SWAP 4.2.0. The fetched source file has Git blob
-`90c3a9aae0035b6af3620d006f2224222bae80a8`, SHA-256
-`f813b41eec87e076af272e27369cde8539de471812a6f23f3c5b651f67ce1fed`, and
-contains `ruttervw`/`msw1eic` at lines 766–1021. It is a genuine SWAP Git
-source, but is not itself the B1.11 file. The ordered B1.11 patch chain shows
-that SWAP-006 is the only patch targeting `MOD_meteo.f90` and changes the
-bounded dynamic-crop meteo-loading loop, not Rutter. The B1.11 B0 archive and
-full reconstructed `MOD_meteo.f90` are not materialized in this checkout, so
-byte identity between the 4.2.0 Rutter body and B1.11 is not claimed. The Git
-source plus the untouched Rutter patch history and the already admitted
-F-APP05 process qualification provide the equation basis used here.
+The exact B1.11 release archive was recovered from the project Library and
+materialized outside the repository. Its outer archive SHA-256 is
+`2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`; the
+nested `SWAP.ZIP` SHA-256 is
+`1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`. The
+verified B0 member manifest contains 63 members and has SHA-256
+`d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f`.
+Applying the recorded SWAP-006 patch to the exact B0 `MOD_meteo.f90` produces
+the B1.11 source with SHA-256
+`99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f`.
+The archive verifier passes all 63 members. The full extracted file is
+`source_recovery/B1_11_MOD_meteo.f90` in the workspace, not a repository
+artifact. This replaces the earlier, insufficient 4.2.0-only source claim.
 
 ## Reconstructed Rutter reservoir equation
 
-For canopy cover `c`, gross rain rate `P`, canopy capacity `C`, storage `S`,
-wet-canopy evaporation capacity `Ew`, and input `fimin`, the Git source's
-nonlinear branch has
+The authoritative routine is B1.11 `MOD_meteo.f90:Rutter` (lines 2201–2303).
+For cover `vcover`, rain/irrigation precipitation rate `rpd`, canopy storage
+`sicact`, capacity `siccap`, and interception evaporation `eintc`, it sets
+`flux_in = rpd*vcover` and `flux_out = eintc`. If `flux_in >= flux_out` and
+storage is below capacity, the canopy receives those two constant fluxes until
+`(siccap-sicact)/(flux_in-flux_out)`, then becomes full; at capacity, in- and
+outflow are both `flux_out`. If `flux_out > flux_in` while storage is positive,
+the same constant fluxes continue until `sicact/(flux_out-flux_in)`, then the
+canopy is dry. At zero storage, in- and outflow are both `flux_in`, and wet
+fraction is `flux_in/flux_out`. The routine therefore uses piecewise constant
+fluxes and fill/dry event times. It does not use the 4.2.0 `fimin` exponential
+ODE. `ProcessMeteoDT` then partitions the interval's gross rain and irrigation
+using the intercepted flux; `integral.f90` advances `sicact` from the flux
+difference.
 
-`beta = (1 - fimin) * Ew / C`
-
-`zeta = c * P - fimin * Ew`
-
-`dS/dt = zeta - beta * S`
-
-until the reservoir reaches capacity. The exact solution is
-
-`S(t) = (S0 - zeta/beta) * exp(-beta*t) + zeta/beta`.
-
-When this reaches `C`, the source solves the fill time `tcap` analytically and
-uses full `Ew` thereafter. The zero-beta branch is linear and clips at the
-physical endpoints. Below `dc=1e-4`, the source has explicit no-flow/dry-store
-shortcuts; if capacity falls below `dc`, remaining store is evaporated as the
-vegetation dies off. The intercepted precipitation flux follows the hard
-balance `Pi = (S1 - S0)/dt + Eic`. The wrapper computes wet-canopy fraction
-from `Eic/Ew` when `Ew` exceeds `dc`. `fimin` is a required SWINTER=3 input
-(read with bounds 0–1); it cannot be silently inferred from Richards dt.
-
-The source's `tcap` calculation proves that the full SWAP 4.2.0 Rutter routine
-does not rely on the Richards caller to split a precipitation interval at the
-reservoir-fill event. The previous INT13 audit incorrectly promoted the
-short-interval SWAP5 `evaluate_rutter_interval` clipping result as evidence of
-a B1.11 physics defect. That API falsifier is retained only to show why it
-cannot own a long source window. No historical B1.11 mass-loss defect is
-claimed.
+The exact routine's fill/dry event times establish why a source-window
+processor must resolve its internal process transitions itself. They do not
+make those events Richards timestep requests. The previous INT13 audit used
+the wrong 4.2.0 equation and incorrectly treated `fimin` and analytic `tcap`
+as B1.11 physics. That implementation and its old qualification are
+superseded.
 
 ## SWAP5 reference and intentional differences
 
-The unchanged, admitted `evaluate_rutter_interval` process remains the bounded
-F-APP05 short-interval API. The new source-window path uses the analytic
-reservoir equation above directly: it computes the fill time within each
-immutable forcing window, returns interval-average throughfall, canopy
-storage, evaporation and wet-canopy fraction, and does not couple event
-progress to Richards steps. Missing `fimin` fails closed. When positive
-capacity decreases, excess storage is booked once as canopy-to-surface water;
-when capacity falls below the legacy dry-capacity cutoff, residual storage
-follows the historical vegetation-death evaporation branch. Existing
-F-APP05 behavior and source blob remain unchanged.
+The source-window path now implements B1.11's piecewise constant flux regimes
+and resolves fill/dry events inside each immutable forcing window. It returns
+interval averages and candidate storage without coupling event progress to
+Richards steps. The `fimin` input was removed because B1.11 does not use it.
+Storage above a reduced capacity is transferred once to surface throughfall,
+preserving water. This capacity-change transfer is an explicit SWAP5 state
+transition, not an assertion that the B1.11 Rutter routine itself performs
+that transfer.
 
-For constant forcing, the exponential reservoir solution is a semigroup: one
-source interval and any partition into smaller source intervals must produce
-the same final storage and integrated fluxes. Detailed meteorology therefore
+For constant forcing, the piecewise-linear reservoir solution composes across
+source intervals: one source interval and any partition into smaller source
+intervals must produce the same final storage and integrated fluxes. Detailed meteorology therefore
 uses one immutable source window per record. LAI/canopy capacity, `fimin`,
 wet-canopy demand and irrigation changes must enter at an explicit source
 boundary. Richards retries never invoke the source processor again for an
@@ -92,16 +80,18 @@ canopy store and source progress together.
 
 ## Qualification and claim ceiling
 
-`F-MIG431-INT13_LOCAL_QUALIFICATION.json` records strict GNU Fortran O0/O2
-local evidence for fill/overflow `tcap`, the independent `fimin` exponential
-oracle, dry-down, changing capacity, water closure, source-window refinement,
-reject/retry identity, restart, detailed-record continuation and production
-binding. The separate FMR bootstrap test verifies transactional commit and
-Richards retry composition. PR #1016 recovery head `d853fd898db629100ab52493b1e6f13208af9bb4` restores the FMR backend source (blob `43cd6e413e23ce420bdfda8547a7fdb8472158d9`). Targeted Actions run `37268521592` passed both the Rutter physics/retry/restart gate and the production FMR composition gate. This qualifies the tested bounded candidate; it does not establish canonical admission or byte identity with the full B1.11 member.
+Local GNU Fortran O0/O2 tests now exercise fill/overflow, constant-flux drydown,
+capacity change, mass closure, source-window refinement, reject/retry,
+restart, detailed-record continuation and production binding. The separate FMR
+bootstrap test verifies transactional commit and Richards retry composition.
+The earlier persisted Actions run `37268521592` tested the now-superseded
+4.2.0-derived implementation and is not qualification evidence for the
+B1.11-equivalent change below. A new persisted qualification has not yet run.
 
-The exact B1.11 full member/call-site has not been reconstructed byte-for-byte,
-and the newly corrected analytic implementation therefore remains a candidate,
-not a canonical admission. The admitted envelope remains fail-closed for
+The exact B1.11 full member/call-site has been reconstructed and its member
+hash verified, but the B1.11-equivalent implementation still needs an
+independent source-derived oracle and persisted qualification. It remains a
+candidate, not a canonical admission. The admitted envelope remains fail-closed for
 irrigation/sprinkling, Snow, Black/Boesten, macropore, drainage, RFM/surface
 water, root compensation, unsupported solver profiles and numerical
 continuation. The existing `SWINTER=0/1/2`, Black, Boesten, F-APP05 and F-APP08

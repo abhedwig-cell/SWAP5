@@ -1,7 +1,7 @@
 {
   "schema": "swap5.local_qualification.v1",
   "workunit": "F-MIG431-INT13",
-  "title": "Rutter corrected-reference physics, source-window transaction and FMR production composition",
+  "title": "B1.11 Rutter regime integration local verification; persisted qualification pending",
   "date": "2026-10-05",
   "subject": {
     "branch": "work/f-mig431-int13-rutter-stateful-forcing",
@@ -11,29 +11,23 @@
       "O0",
       "O2"
     ],
-    "head_before_local_production_integration": "056bc49919aa553609fc7389b709da58a9b56243"
+    "head_before_local_production_integration": "056bc49919aa553609fc7389b709da58a9b56243",
+    "working_tree_state": "UNCOMMITTED_B1_11_RECONCILIATION_CANDIDATE"
   },
   "local_gate": {
     "command": "tests/fpm/run_f_mig431_int13_rutter_source_window.sh",
     "result": "PASS",
     "o0_o2_output_identity": "PASS",
     "cases": {
-      "legacy_one_call_vs_event_split_falsifier": "PASS",
-      "capacity_fill_and_overflow_conservation": "PASS",
-      "heavy_rain_with_evaporation_conservation": "PASS",
-      "rain_stop_drydown_and_wet_canopy_pet": "PASS",
-      "capacity_decrease_overflow": "PASS",
-      "changed_hydraulic_endpoint_partition_identity": "PASS",
-      "rejected_trial_accepted_state_immutability": "PASS",
-      "mid_window_restart_identity": "PASS",
-      "detailed_record_continuation": "PASS",
-      "dynamic_top_and_crop_root_output_binding": "PASS",
-      "hard_canopy_water_balance": "PASS",
-      "analytic_tcap_fill_reference": "PASS",
-      "minimum_fimin_exponential_storage_oracle": "PASS",
-      "missing_fimin_fail_closed": "PASS",
-      "nonzero_capacity_without_cover_fail_closed": "PASS",
-      "zero_capacity_vegetation_death_mass_closure": "PASS"
+      "B1_11_piecewise_flux_fill_and_full_canopy_oracle": "PASS_O0_O2",
+      "B1_11_piecewise_flux_drydown_and_empty_canopy_oracle": "PASS_O0_O2",
+      "capacity_change_surface_release_and_mass_closure": "PASS_O0_O2",
+      "source_window_refinement_identity": "PASS_O0_O2",
+      "rejected_trial_accepted_state_immutability": "PASS_O0_O2",
+      "mid_window_restart_identity": "PASS_O0_O2",
+      "detailed_record_continuation": "PASS_O0_O2",
+      "dynamic_top_and_crop_root_output_binding": "PASS_O0_O2",
+      "fimin_removed_from_Rutter_input_and_window_identity": "PASS_O0_O2"
     },
     "canonical_capacity_case": {
       "case_scope": "SWAP5 legacy short-interval API falsifier versus new source-window analytic reference; not attributed to B1.11",
@@ -68,10 +62,10 @@
     "runner_note": "Local offline preservation used temporary copies of the existing runners: only remote git-fetch/source-delta preflight was omitted, and two missing module prerequisites were inserted into the temporary compile order. Repository runners and source files were not edited for this workaround."
   },
   "claim_limit": [
-    "Targeted persisted physics and production qualification passed on PR head d853fd898db629100ab52493b1e6f13208af9bb4; not canonically admitted.",
-    "Exact full B1.11 MOD_meteo member is not materialized. Git SWAP 4.2.0 Rutter equations plus the B1.11 patch history are used with the version limitation explicit; no byte-identity claim is made.",
-    "Only constant forcing per immutable source window is supported; detailed forcing is one window per record, and canopy capacity, fimin, PET and irrigation changes require explicit window boundaries.",
-    "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles fail closed."
+    "Exact B1.11 MOD_meteo.f90 member reconstructed and SHA-256 verified; see F-MIG431-INT13_CORRECTED_REFERENCE.md.",
+    "Current local O0/O2 checks pass, but there is no independent persisted B1.11 physics qualification yet. Historical run 37268521592 tested the superseded fimin/exponential candidate.",
+    "Only constant forcing per immutable source window is supported; detailed forcing is one window per record.",
+    "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles remain outside the candidate envelope."
   ],
   "production_application": {
     "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
@@ -105,26 +99,27 @@
     }
   },
   "source_oracle": {
-    "repository": "SWAP-model/swap-4.2.0",
-    "commit": "c30e5e4cd3a7427246b5206c15ad6960897d18d3",
-    "path": "src/meteoday.f90",
-    "blob_sha": "90c3a9aae0035b6af3620d006f2224222bae80a8",
-    "sha256": "f813b41eec87e076af272e27369cde8539de471812a6f23f3c5b651f67ce1fed",
-    "rutter_source_lines": "766-1021 (ruttervw/msw1eic)",
-    "version_limit": "Source is authentic SWAP 4.2.0 Git history, not exact B1.11 member. SWAP-006 is the only B1.11 MOD_meteo patch and does not edit Rutter; byte identity is not claimed."
+    "release": "SWAP 4.3.1 B1.11",
+    "artifact": "SWAP_4.3.1(5).zip",
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_swap_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_member_manifest_sha256": "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f",
+    "member": "SWAP/MOD_meteo.f90",
+    "reconstructed_b1_11_member_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "member_verification": "B0 archive verified, then SWAP-006 applied and output hash checked"
   },
   "persisted_gate": {
-    "workflow": ".github/workflows/f-mig431-int13-rutter.yml",
-    "jobs": [
-      "Rutter O0/O2 physics, source-window, retry and restart suite",
-      "FMR production bootstrap O0/O2 qualification"
-    ],
-    "status": "PASS",
+    "status": "HISTORICAL_SUPERSEDED_CANDIDATE_ONLY",
     "workflow_run_id": 37268521592,
     "head": "d853fd898db629100ab52493b1e6f13208af9bb4",
     "steps": {
-      "rutter_physics_retry_source_window_restart": "PASS",
-      "production_fmr_composition": "PASS"
+      "rutter_physics_retry_source_window_restart": "SUPERSEDED_FIMIN_EXPONENTIAL_PHYSICS",
+      "production_fmr_composition": "HISTORICAL_TRANSACTION_TEST_ONLY"
     }
+  },
+  "current_production_application": {
+    "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+    "result": "PASS_O0_O2",
+    "claim_limit": "Local current postimage only; not persisted qualification."
   }
 }

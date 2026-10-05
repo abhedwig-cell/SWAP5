@@ -22,8 +22,6 @@ module mod_rutter_interception_process
     real(real64) :: vegetation_cover_fraction = 0.0_real64
     real(real64) :: canopy_storage_capacity_cm = 0.0_real64
     real(real64) :: interception_evaporation_capacity_cm_per_day = 0.0_real64
-    real(real64) :: minimum_relative_canopy_evaporation_factor = 0.0_real64
-    logical :: minimum_relative_canopy_evaporation_factor_present = .false.
     real(real64) :: potential_transpiration_dry_cm_per_day = 0.0_real64
     real(real64) :: potential_transpiration_wet_cm_per_day = 0.0_real64
     real(real64) :: interval_days = 0.0_real64

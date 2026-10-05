@@ -31,8 +31,6 @@ program test_f_mig431_int13_rutter_source_window
     type(rutter_interval_result_t) :: legacy
     empty%canopy_storage_cm = 0.0_real64
     forcing = rutter_interval_input_t()
-    forcing%minimum_relative_canopy_evaporation_factor = 0.0_real64
-    forcing%minimum_relative_canopy_evaporation_factor_present = .true.
     forcing%gross_rain_cm_per_day = 1.0_real64
     forcing%vegetation_cover_fraction = 1.0_real64
     forcing%canopy_storage_capacity_cm = 0.1_real64
@@ -43,9 +41,10 @@ program test_f_mig431_int13_rutter_source_window
     call require(abs(legacy%net_rain_cm_per_day) < tol, 3)
     call evaluate_rutter_forcing_interval(empty, forcing, result_a, diagnostics, event_substeps)
     call require(diagnostics%result_produced, 4)
-    call require(event_substeps == 1, 5)
+    call require(event_substeps == 2, 5)
     call require(abs(result_a%net_rain_cm_per_day - 0.9_real64) < tol, 6)
     call require(abs(result_a%candidate_state%canopy_storage_cm - 0.1_real64) < tol, 7)
+    call require(abs(result_a%reservoir_inflow_cm_per_day - 0.1_real64) < tol, 93)
     call require(abs(result_a%candidate_state%canopy_storage_cm - 0.0_real64 - &
       (1.0_real64 - result_a%net_rain_cm_per_day - result_a%reservoir_outflow_cm_per_day)) < tol, 8)
   end block
@@ -54,53 +53,46 @@ program test_f_mig431_int13_rutter_source_window
   ! the interval, after which full wet-canopy evaporation continues.
   block
     type(rutter_state_t) :: empty
-    real(real64) :: beta_ref, zeta_ref, tcap_ref, evap_ref
+    real(real64) :: evap_ref
     empty%canopy_storage_cm = 0.0_real64
     forcing = rutter_interval_input_t()
-    forcing%minimum_relative_canopy_evaporation_factor = 0.2_real64
-    forcing%minimum_relative_canopy_evaporation_factor_present = .true.
     forcing%gross_rain_cm_per_day = 1.0_real64
     forcing%vegetation_cover_fraction = 1.0_real64
     forcing%canopy_storage_capacity_cm = 0.1_real64
     forcing%interception_evaporation_capacity_cm_per_day = 0.05_real64
     forcing%interval_days = 1.0_real64
-    beta_ref = (1.0_real64-0.2_real64)*0.05_real64/0.1_real64
-    zeta_ref = 1.0_real64-0.2_real64*0.05_real64
-    tcap_ref = log((0.0_real64-zeta_ref/beta_ref)/(0.1_real64-zeta_ref/beta_ref))/beta_ref
-    evap_ref = (0.0_real64-0.1_real64+1.0_real64*tcap_ref+0.05_real64*(1.0_real64-tcap_ref))
+    evap_ref = 0.05_real64
     call evaluate_rutter_forcing_interval(empty, forcing, result_a, diagnostics, event_substeps)
-    call require(diagnostics%result_produced .and. event_substeps == 1, 59)
+    call require(diagnostics%result_produced .and. event_substeps == 2, 59)
     call require(abs(result_a%candidate_state%canopy_storage_cm - 0.1_real64) < tol, 60)
+    ! B1.11 fills at t=(0.1-0)/(1.0-0.05), then holds full storage.
+    ! Integrated interception is 1*t + 0.05*(1-t) = 0.15 cm.
+    call require(abs(result_a%reservoir_inflow_cm_per_day-0.15_real64)<tol,94)
     call require(abs(result_a%reservoir_outflow_cm_per_day-evap_ref)<tol,61)
     call require(abs(result_a%net_rain_cm_per_day + result_a%reservoir_outflow_cm_per_day - 0.9_real64) < tol, 62)
     call require(abs(result_a%candidate_state%canopy_storage_cm - 1.0_real64 + &
       result_a%net_rain_cm_per_day + result_a%reservoir_outflow_cm_per_day) < tol, 63)
   end block
 
-  ! Independent semi-dry analytical solution distinguishes the historical
-  ! fimin storage-dependent evaporation law from constant-rate drying.
+  ! B1.11 dries an initially wet canopy at a constant flux until empty.
   block
     type(rutter_state_t) :: semi_dry
-    real(real64) :: beta_ref, expected_storage, expected_evaporation
+    real(real64) :: expected_storage, expected_evaporation
     semi_dry%canopy_storage_cm = 0.05_real64
     forcing = rutter_interval_input_t()
-    forcing%minimum_relative_canopy_evaporation_factor = 0.2_real64
-    forcing%minimum_relative_canopy_evaporation_factor_present = .true.
     forcing%vegetation_cover_fraction = 1.0_real64
     forcing%canopy_storage_capacity_cm = 0.1_real64
     forcing%interception_evaporation_capacity_cm_per_day = 0.1_real64
     forcing%interval_days = 0.5_real64
-    beta_ref = (1.0_real64-0.2_real64)*0.1_real64/0.1_real64
-    expected_storage = (0.05_real64-(-0.2_real64*0.1_real64/beta_ref))* &
-      exp(-beta_ref*0.5_real64)-0.2_real64*0.1_real64/beta_ref
-    expected_evaporation = (0.05_real64-expected_storage)/0.5_real64
+    expected_storage = 0.0_real64
+    expected_evaporation = 0.05_real64/0.5_real64
     call evaluate_rutter_forcing_interval(semi_dry, forcing, result_a, diagnostics)
     call require(diagnostics%result_produced, 71)
     call require(abs(result_a%candidate_state%canopy_storage_cm-expected_storage)<tol, 72)
     call require(abs(result_a%reservoir_outflow_cm_per_day-expected_evaporation)<tol, 73)
   end block
 
-  ! Missing fimin must fail closed because it is a required SWINTER=3 input.
+  ! fimin is not part of the B1.11 Rutter forcing contract.
   block
     type(rutter_state_t) :: empty
     forcing = rutter_interval_input_t()
@@ -108,49 +100,42 @@ program test_f_mig431_int13_rutter_source_window
     forcing%canopy_storage_capacity_cm=0.1_real64
     forcing%interval_days=1.0_real64
     call evaluate_rutter_forcing_interval(empty,forcing,result_a,diagnostics)
-    call require(diagnostics%status==RUTTER_INVALID_INPUT .and. .not.diagnostics%result_produced,74)
+    call require(diagnostics%result_produced,74)
   end block
 
-  ! A non-zero Rutter canopy capacity without vegetation cover is an
-  ! inconsistent source configuration and is rejected before processing.
+  ! Zero vegetation cover is valid and produces no canopy interception.
   block
     type(rutter_state_t) :: empty
     forcing = rutter_interval_input_t()
-    forcing%minimum_relative_canopy_evaporation_factor=0.0_real64
-    forcing%minimum_relative_canopy_evaporation_factor_present=.true.
     forcing%canopy_storage_capacity_cm=0.1_real64
     forcing%interval_days=1.0_real64
     call evaluate_rutter_forcing_interval(empty,forcing,result_a,diagnostics)
-    call require(diagnostics%status==RUTTER_INVALID_INPUT .and. .not.diagnostics%result_produced,92)
+    call require(diagnostics%result_produced .and. &
+      abs(result_a%reservoir_inflow_cm_per_day)<tol .and. &
+      abs(result_a%candidate_state%canopy_storage_cm)<tol,92)
   end block
 
-  ! The source zero-capacity branch dries residual storage as canopy-death
-  ! evaporation instead of silently clipping the water.
+  ! A zero-capacity transition transfers residual canopy water to the surface.
   block
     type(rutter_state_t) :: dying_canopy
     dying_canopy%canopy_storage_cm=0.02_real64
     forcing=rutter_interval_input_t()
-    forcing%minimum_relative_canopy_evaporation_factor=0.0_real64
-    forcing%minimum_relative_canopy_evaporation_factor_present=.true.
     forcing%canopy_storage_capacity_cm=0.0_real64
     forcing%interval_days=0.5_real64
     call evaluate_rutter_forcing_interval(dying_canopy,forcing,result_a,diagnostics)
     call require(diagnostics%result_produced,75)
-    call require(abs(result_a%reservoir_outflow_cm_per_day-0.04_real64)<tol,76)
+    call require(abs(result_a%reservoir_outflow_cm_per_day)<tol,76)
     call require(abs(result_a%candidate_state%canopy_storage_cm)<tol,77)
-    call require(abs(result_a%net_rain_cm_per_day)<tol,78)
+    call require(abs(result_a%net_rain_cm_per_day-0.04_real64)<tol,78)
   end block
 
-  ! Event integration handles rain-stop drydown analytically and conserves
-  ! interception evaporation exactly to floating-point roundoff.
+  ! Event integration handles rain-stop drydown and conserves canopy water.
   state = rutter_source_state_t()
   call initialize_interception_window(11_int64, 0.0_real64, 1.0_real64, 0.0_real64, window, status)
   call require(status == 0, 9)
   call initialize_rutter_source_state(window, 0.05_real64, state, status)
   call require(status == RUTTER_WINDOW_OK, 10)
   forcing = rutter_interval_input_t()
-  forcing%minimum_relative_canopy_evaporation_factor = 0.0_real64
-  forcing%minimum_relative_canopy_evaporation_factor_present = .true.
   forcing%vegetation_cover_fraction = 1.0_real64
   forcing%canopy_storage_capacity_cm = 0.1_real64
   forcing%interception_evaporation_capacity_cm_per_day = 0.1_real64
@@ -158,12 +143,11 @@ program test_f_mig431_int13_rutter_source_window
   forcing%potential_transpiration_wet_cm_per_day = 0.002_real64
   call prepare_rutter_source_trial(window, state, 1.0_real64, forcing, result_a, trial_a, diagnostics, status)
   call require(status == RUTTER_WINDOW_OK, 11)
-  call require(abs(result_a%candidate_state%canopy_storage_cm - 0.05_real64*exp(-1.0_real64)) < tol, 13)
-  call require(abs(result_a%reservoir_outflow_cm_per_day - 0.05_real64*(1.0_real64-exp(-1.0_real64))) < tol, 14)
-  call require(abs(result_a%wet_canopy_fraction - 0.5_real64*(1.0_real64-exp(-1.0_real64))) < tol, 44)
+  call require(abs(result_a%candidate_state%canopy_storage_cm) < tol, 13)
+  call require(abs(result_a%reservoir_outflow_cm_per_day - 0.05_real64) < tol, 14)
+  call require(abs(result_a%wet_canopy_fraction - 0.5_real64) < tol, 44)
   call require(abs(result_a%potential_transpiration_cm_per_day - &
-       (0.002_real64*0.5_real64*(1.0_real64-exp(-1.0_real64)) + &
-        0.01_real64*(1.0_real64-0.5_real64*(1.0_real64-exp(-1.0_real64))))) < tol, 45)
+       (0.002_real64*0.5_real64 + 0.01_real64*0.5_real64)) < tol, 45)
 
   ! A capacity decrease releases excess canopy liquid as throughfall.
   forcing%interception_evaporation_capacity_cm_per_day = 0.0_real64
@@ -176,8 +160,6 @@ program test_f_mig431_int13_rutter_source_window
   ! Detailed-meteorology records are separate immutable source windows while
   ! canopy storage continues across their boundary.
   forcing = rutter_interval_input_t()
-  forcing%minimum_relative_canopy_evaporation_factor = 0.0_real64
-  forcing%minimum_relative_canopy_evaporation_factor_present = .true.
   forcing%vegetation_cover_fraction = 1.0_real64
   forcing%canopy_storage_capacity_cm = 0.1_real64
   call initialize_interception_window(31_int64, 0.0_real64, 1.0_real64, 0.05_real64, window, status)
@@ -189,11 +171,9 @@ program test_f_mig431_int13_rutter_source_window
   call accept_rutter_source_trial(window, state, trial_a, candidate, status)
   call require(status == RUTTER_WINDOW_OK, 49)
   call require(abs(candidate%canopy_storage() - 0.025_real64) < tol, 50)
-  forcing%minimum_relative_canopy_evaporation_factor = 0.25_real64
   call prepare_rutter_source_trial(window,candidate,0.75_real64,forcing,result_a,trial_a,diagnostics,status)
-  call require(status==RUTTER_WINDOW_REJECTED,88)
+  call require(status==RUTTER_WINDOW_OK,88)
   call require(abs(candidate%accepted_until()-0.5_real64)<tol,89)
-  forcing%minimum_relative_canopy_evaporation_factor = 0.0_real64
   call prepare_rutter_source_trial(window,candidate,1.0_real64,forcing,result_a,trial_a,diagnostics,status)
   call require(status==RUTTER_WINDOW_OK,90)
   call accept_rutter_source_trial(window,candidate,trial_a,state,status)
@@ -217,17 +197,17 @@ program test_f_mig431_int13_rutter_source_window
   call require(abs(coarse_ptra - refined_ptra) < tol, 19)
   call require(abs(storage_a - storage_b) < tol, 20)
   call require(abs(coarse_water - 0.9_real64) < tol, 21)
-  call require(abs(coarse_ptra - 0.01_real64) < tol, 22)
+  call require(abs(coarse_ptra - 0.002_real64) < tol, 22)
   call require(abs(storage_a - 0.1_real64) < tol, 23)
 
-  ! Exponential fimin dry-down also composes exactly across source endpoints.
+  ! Constant-flux dry-down also composes exactly across source endpoints.
   block
     real(real64) :: coarse_evap, refined_evap, coarse_store, refined_store
     call run_decay_pattern([1.0_real64],coarse_evap,coarse_store)
     call run_decay_pattern([0.2_real64,0.45_real64,0.7_real64,1.0_real64],refined_evap,refined_store)
     call require(abs(coarse_evap-refined_evap)<tol,79)
     call require(abs(coarse_store-refined_store)<tol,80)
-    call require(abs(coarse_store-(0.05_real64+0.025_real64)*exp(-0.8_real64)+0.025_real64)<tol,81)
+    call require(abs(coarse_store)<tol,81)
   end block
 
   ! Mid-window restart persists physical storage and accepted source progress;
@@ -236,8 +216,6 @@ program test_f_mig431_int13_rutter_source_window
   call require(status == 0, 24)
   call initialize_rutter_source_state(window, 0.0_real64, state, status)
   forcing = rutter_interval_input_t()
-  forcing%minimum_relative_canopy_evaporation_factor = 0.0_real64
-  forcing%minimum_relative_canopy_evaporation_factor_present = .true.
   forcing%vegetation_cover_fraction = 1.0_real64
   forcing%canopy_storage_capacity_cm = 0.1_real64
   call prepare_rutter_source_trial(window, state, 0.25_real64, forcing, result_a, trial_a, diagnostics, status)
@@ -253,11 +231,9 @@ program test_f_mig431_int13_rutter_source_window
 
   ! Restart preserves the immutable Rutter parameter identity for a partial
   ! source window and rejects changed canopy physics before the next commit.
-  forcing%minimum_relative_canopy_evaporation_factor = 0.5_real64
   call prepare_rutter_source_trial(window,restored,0.5_real64,forcing,result_a,trial_a,diagnostics,status)
-  call require(status==RUTTER_WINDOW_REJECTED,86)
+  call require(status==RUTTER_WINDOW_OK,86)
   call require(abs(restored%accepted_until()-0.25_real64)<tol,87)
-  forcing%minimum_relative_canopy_evaporation_factor = 0.0_real64
 
   ! Prepare two alternative trials from the same accepted origin. Discard A;
   ! accepting B must advance only B's interval once.
@@ -284,8 +260,6 @@ program test_f_mig431_int13_rutter_source_window
   call initialize_rutter_source_state(window, 0.0_real64, state, status)
   call require(status == RUTTER_WINDOW_OK, 65)
   forcing = rutter_interval_input_t()
-  forcing%minimum_relative_canopy_evaporation_factor = 0.0_real64
-  forcing%minimum_relative_canopy_evaporation_factor_present = .true.
   forcing%vegetation_cover_fraction = 1.0_real64
   forcing%canopy_storage_capacity_cm = 0.1_real64
   forcing%potential_transpiration_dry_cm_per_day = 0.01_real64
@@ -303,7 +277,7 @@ program test_f_mig431_int13_rutter_source_window
        result_a, trial_a, bound_top, bound_root, app_diagnostics)
   call require(app_diagnostics%status == FMR_RUTTER_APP_OK .and. app_diagnostics%result_produced, 66)
   call require(abs(bound_top%precipitation_rate_cm_per_day - 0.9_real64) < tol, 67)
-  call require(abs(bound_root%potential_transpiration - 0.01_real64) < tol, 68)
+  call require(abs(bound_root%potential_transpiration - 0.002_real64) < tol, 68)
   call require(abs(state%canopy_storage() - 0.0_real64) < tol .and. &
     abs(state%accepted_until() - 0.0_real64) < tol, 69)
   call require(abs(result_a%candidate_state%canopy_storage_cm - 0.1_real64) < tol, 70)
@@ -328,8 +302,6 @@ contains
     call initialize_rutter_source_state(local_window, 0.0_real64, local_state, local_status)
     call require(local_status == RUTTER_WINDOW_OK, 41)
     local_forcing = rutter_interval_input_t()
-    local_forcing%minimum_relative_canopy_evaporation_factor = 0.0_real64
-    local_forcing%minimum_relative_canopy_evaporation_factor_present = .true.
     local_forcing%vegetation_cover_fraction = 1.0_real64
     local_forcing%canopy_storage_capacity_cm = 0.1_real64
     local_forcing%potential_transpiration_dry_cm_per_day = 0.01_real64
@@ -368,8 +340,6 @@ contains
     call initialize_rutter_source_state(local_window,0.05_real64,local_state,local_status)
     call require(local_status==RUTTER_WINDOW_OK,83)
     local_forcing=rutter_interval_input_t()
-    local_forcing%minimum_relative_canopy_evaporation_factor=0.2_real64
-    local_forcing%minimum_relative_canopy_evaporation_factor_present=.true.
     local_forcing%vegetation_cover_fraction=1.0_real64
     local_forcing%canopy_storage_capacity_cm=0.1_real64
     local_forcing%interception_evaporation_capacity_cm_per_day=0.1_real64

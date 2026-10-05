@@ -22,12 +22,10 @@ module mod_rutter_source_window_processor
     real(real64) :: vegetation_cover_fraction = 0.0_real64
     real(real64) :: canopy_storage_capacity_cm = 0.0_real64
     real(real64) :: interception_evaporation_capacity_cm_per_day = 0.0_real64
-    real(real64) :: minimum_relative_canopy_evaporation_factor = 0.0_real64
     real(real64) :: potential_transpiration_dry_cm_per_day = 0.0_real64
     real(real64) :: potential_transpiration_wet_cm_per_day = 0.0_real64
     real(real64) :: surface_irrigation_cm_per_day = 0.0_real64
     logical :: surface_irrigation_is_intercepted = .true.
-    logical :: minimum_relative_canopy_evaporation_factor_present = .false.
   end type rutter_window_parameters_t
 
   type, public :: rutter_source_state_t
@@ -283,12 +281,10 @@ contains
     parameters%vegetation_cover_fraction=input%vegetation_cover_fraction
     parameters%canopy_storage_capacity_cm=input%canopy_storage_capacity_cm
     parameters%interception_evaporation_capacity_cm_per_day=input%interception_evaporation_capacity_cm_per_day
-    parameters%minimum_relative_canopy_evaporation_factor=input%minimum_relative_canopy_evaporation_factor
     parameters%potential_transpiration_dry_cm_per_day=input%potential_transpiration_dry_cm_per_day
     parameters%potential_transpiration_wet_cm_per_day=input%potential_transpiration_wet_cm_per_day
     parameters%surface_irrigation_cm_per_day=input%surface_irrigation_cm_per_day
     parameters%surface_irrigation_is_intercepted=input%surface_irrigation_is_intercepted
-    parameters%minimum_relative_canopy_evaporation_factor_present=input%minimum_relative_canopy_evaporation_factor_present
   end function make_window_parameters
 
   pure logical function same_window_parameters(parameters,input)
@@ -306,13 +302,10 @@ contains
     same_window_parameter_records=left%vegetation_cover_fraction == right%vegetation_cover_fraction .and. &
       left%canopy_storage_capacity_cm == right%canopy_storage_capacity_cm .and. &
       left%interception_evaporation_capacity_cm_per_day == right%interception_evaporation_capacity_cm_per_day .and. &
-      left%minimum_relative_canopy_evaporation_factor == right%minimum_relative_canopy_evaporation_factor .and. &
       left%potential_transpiration_dry_cm_per_day == right%potential_transpiration_dry_cm_per_day .and. &
       left%potential_transpiration_wet_cm_per_day == right%potential_transpiration_wet_cm_per_day .and. &
       left%surface_irrigation_cm_per_day == right%surface_irrigation_cm_per_day .and. &
-      (left%surface_irrigation_is_intercepted .eqv. right%surface_irrigation_is_intercepted) .and. &
-      (left%minimum_relative_canopy_evaporation_factor_present .eqv. &
-        right%minimum_relative_canopy_evaporation_factor_present)
+      (left%surface_irrigation_is_intercepted .eqv. right%surface_irrigation_is_intercepted)
   end function same_window_parameter_records
 
   pure logical function same_storage(a, b)

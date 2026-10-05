@@ -2,7 +2,7 @@
   "schema": "swap5.f_mig431_int13_status.v1",
   "workunit": "F-MIG431-INT13",
   "title": "Rutter SWINTER=3 stateful atmospheric-forcing migration",
-  "state": "TARGETED_PERSISTED_QUALIFICATION_PASS_B1_11_REFERENCE_REVIEW_OPEN",
+  "state": "B1_11_EVENT_INTEGRATOR_LOCAL_PASS_PERSISTED_REQUALIFICATION_REQUIRED",
   "baseline": {
     "branch": "integration/f-ci-canonical",
     "head": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
@@ -49,23 +49,21 @@
     "integration/audits/F-MIG431-INT13_CORRECTED_REFERENCE.md",
     "integration/audits/F-MIG431-INT13_LOCAL_QUALIFICATION.json"
   ],
-  "implemented": "corrected event integrator; stateful Rutter source-window candidate composed into FMR committed physical state; production forcing preparation before Richards transaction; restart carrier registration; transactional canopy/progress publication",
-  "persisted": "PR #1016 recovery head d853fd898db629100ab52493b1e6f13208af9bb4 restores the FMR backend source (blob 43cd6e413e23ce420bdfda8547a7fdb8472158d9). Targeted Actions run 37268521592 passed both INT13 physics and production FMR jobs.",
-  "tested": "Rutter independent source-window and physics suite PASS O0/O2; FMR production bootstrap transaction PASS O0/O2 including root sink, temporal rejection/retry, hard mass; INT12-P0/D/E PASS O0/O2; Black and Boesten production/runtime preservation PASS O0/O2 via offline local harness; source-window retry/restart/detailed-record cases PASS",
+  "implemented": "B1.11 piecewise-constant Rutter fill/dry event integrator; stateful source-window candidate composed into FMR physical-state candidate; fimin removed from the Rutter input and source-window identity",
+  "persisted": "The historical PR/Actions candidate used the incorrect SWAP 4.2.0 fimin equation and is superseded for physics claims. Exact B1.11 source recovered and verified; current implementation passes local INT13 O0/O2 and PPA-WU01 production bootstrap checks.",
+  "tested": "Current INT13 independent source-window suite PASS O0/O2; production FMR bootstrap PASS O0/O2; INT13 capacity-event falsifier PASS O0/O2. The historical persisted workflow pass is not evidence for current B1.11 physics.",
   "latest_audit_findings": [
-    "Authenticated SWAP-model/swap-4.2.0 Git source contains ruttervw/msw1eic with fimin-dependent exponential storage evolution and analytic tcap capacity fill; B1.11 SWAP-006 does not edit Rutter, but exact B1.11 file byte identity remains unclaimed.",
-    "The old SWAP5 short-interval API one-call falsifier loses 0.9 cm after clipping; it is not evidence of a B1.11 defect. The new source-window processor uses the analytic reservoir reference and closes the 0.1 cm capacity / 1 cm rain case.",
-    "Required fimin is explicit and missing input fails closed; dry-down and semi-dry storage use the analytic ODE, and zero-capacity residual storage follows the vegetation-death evaporation branch.",
-    "Rutter physical canopy storage and accepted source progress travel in one FMR physical-state candidate; preparation happens once from accepted state before Richards execution, so hydraulic retries cannot replay precipitation.",
-    "Production bootstrap qualification covers accepted Richards temporal refinement, rejected out-of-window forcing without revision change, root-sink composition, hard mass closure and one accepted commit.",
-    "The bounded envelope fails closed for irrigation/sprinkling, Snow, Black/Boesten, macropore, RFM/surface-water, drainage, root compensation and unsupported solver/continuation profiles.",
-    "Black and Boesten local preservation passed O0/O2 via temporary offline runner copies; remote-fetch/source-delta preflight was omitted only in the local copies."
+    "Exact B1.11 MOD_meteo.f90 reconstructed from the release archive; member SHA-256 99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f. The verified B0 member manifest has 63 members.",
+    "B1.11 Rutter uses piecewise constant canopy input/output fluxes with internal fill and dry event times. It does not use fimin or the SWAP 4.2.0 exponential storage equation.",
+    "The current source-window integrator resolves B1.11-style process events internally and returns interval-average fluxes; event transitions do not command Richards substeps.",
+    "Local source-window and production transaction suites pass at O0/O2. The prior Actions run 37268521592 exercised the superseded 4.2.0-derived candidate and must not qualify this implementation.",
+    "The bounded envelope remains fail-closed for irrigation/sprinkling, Snow, Black/Boesten, macropore, RFM/surface-water combinations, drainage, root compensation and unsupported solver/continuation profiles."
   ],
-  "qualified": true,
-  "next_action": "Resolve the remaining B1.11 source-version authority question against the recorded B1.11 patch chain and SWAP 4.2.0 Git source; keep admission bounded or fail closed until the physics authority is adequate.",
+  "qualified": false,
+  "next_action": "Add an independent test oracle transcribed from the recovered B1.11 Rutter regimes, persist exact source provenance and run the targeted INT13 qualification workflow on the revised candidate before any admission decision.",
   "recovery_point": "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
   "blockers": [
-    "Exact full B1.11 MOD_meteo source member is not materialized. SWAP 4.2.0 Git equations and the B1.11 patch history support the implemented analytic model but do not establish byte identity; decide whether this evidence reliably establishes the Rutter physics before production admission."
+    "The implementation has local passing tests but has not yet passed persisted qualification against an independent B1.11-derived oracle. Historical persisted run 37268521592 qualifies only the superseded analytic fimin candidate."
   ],
   "dependency_surface": [
     "Rutter process state and equations",
@@ -77,7 +75,8 @@
   "persisted_qualification": {
     "workflow_run_id": 37268521592,
     "head": "d853fd898db629100ab52493b1e6f13208af9bb4",
-    "rutter_physics_retry_restart": "PASS",
-    "production_fmr_composition": "PASS"
+    "rutter_physics_retry_restart": "SUPERSEDED",
+    "production_fmr_composition": "PASS_HISTORICAL_CANDIDATE_ONLY",
+    "status": "SUPERSEDED_BY_B1_11_SOURCE_RECONCILIATION"
   }
 }
