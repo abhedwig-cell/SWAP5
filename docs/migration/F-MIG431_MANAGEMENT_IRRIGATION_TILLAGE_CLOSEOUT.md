@@ -163,6 +163,18 @@ targets and initial management pointers. The extra drainage exactly cancels
 the tiny SSDI input, so this gate does not establish a nonstationary water
 response or a general production event orchestrator.
 
+A local falsification variant removed the compensating drainage while
+retaining the tiny `1e-10 cm/day` event source and the FMR19 hard mass gate.
+Even with 24 rather than 8 nonlinear iterations and a looser head tolerance,
+the first interval was rejected as `CANONICAL_STATUS_TRANSACTION_FAILED`;
+no state was committed. That negative result is specific to the stationary
+FMR19 fixture and cannot be presented as a general SSDI impossibility.
+Nonstationary SSDI needs a dedicated admitted hydraulic setup and diagnostic
+receipt, rather than extrapolation from the compensated fixture.
+A separate diagnostic run widened only the trial mass gate from `1e-12` to
+`1e-8 cm`; it still failed the transaction before any mass receipt. The
+admitted hard gate was not changed in production or qualification tests.
+
 `tests/irrigation/run_mig431_tcs7_ssdi_process.sh` passed at O0 and O2. Its
 independent oracle checks dated fixed sprinkler/surface/multi-node SSDI events,
 split rollback, restart and source mass; B1.11 TCS2/3/4 weighted root-zone depletion formulas,
