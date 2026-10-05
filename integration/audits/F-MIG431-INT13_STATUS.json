@@ -105,5 +105,18 @@
     "pull_request": 1016,
     "mergeable": true,
     "requirement": "Complete canonical review and the required canonical integration/admission qualification before treating SWINTER=3 as admitted."
+  },
+  "canonical_gate_diagnosis": {
+    "workflow": ".github/workflows/f-ci109r1-fapp09-current-canonical.yml",
+    "workflow_run_id": 37279774357,
+    "run_head": "9b8281d2c1e50153c0d7bb86d7b883cb40f48629",
+    "trigger_overlap": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "tests/fapp/**"
+    ],
+    "observed_gate": "The workflow ran for PR #1016 and failed because tests/fci/run_fci109r1_fapp09_current_canonical.sh requires the complete production source delta to equal exactly the five F-APP09 files.",
+    "interpretation": "This is an F-APP09-specific exact-delta gate triggered by INT13 shared-backend and test paths. Its failure does not indicate an INT13/Rutter physics or production-composition failure; do not weaken the F-APP09 exact-postimage invariant.",
+    "required_check_status": "UNVERIFIED",
+    "access_note": "Reading integration/f-ci-canonical branch protection returned HTTP 403 Resource not accessible by integration; repository rulesets endpoint returned an empty list. Required-check status cannot be established through the current GitHub connection."
   }
 }
