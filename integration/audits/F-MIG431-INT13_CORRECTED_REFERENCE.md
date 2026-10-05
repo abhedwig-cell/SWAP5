@@ -93,8 +93,5 @@ addendum for the claim ceiling.
 The exact B1.11 full member/call-site has been reconstructed and its member
 hash verified, but the B1.11-equivalent implementation still needs an
 independent source-derived oracle and persisted qualification. It remains a
-candidate, not a canonical admission. The admitted envelope remains fail-closed for
-irrigation/sprinkling, Snow, Black/Boesten, macropore, drainage, RFM/surface
-water, root compensation, unsupported solver profiles and numerical
-continuation. The existing `SWINTER=0/1/2`, Black, Boesten, F-APP05 and F-APP08
+candidate, not a canonical admission. The current local extension covers constant surface irrigation under both B1.11 `ISUA` partitions in the tested low-rate production vector. It does not qualify irrigation scheduling or sprinkling. Higher tested irrigation-throughfall forcing reaches the separate Reference Richards dynamic-head error `HeadCalc: dynamic head regime omitted surface-head derivative`; keep that case outside the envelope. Snow, Black/Boesten, macropore, drainage, RFM/surface water, root compensation, unsupported solver profiles and numerical continuation also remain outside the envelope. The existing `SWINTER=0/1/2`, Black, Boesten, F-APP05 and F-APP08
 claims are not broadened by this work.

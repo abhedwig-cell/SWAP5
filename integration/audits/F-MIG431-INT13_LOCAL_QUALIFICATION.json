@@ -1,7 +1,7 @@
 {
   "schema": "swap5.local_qualification.v1",
   "workunit": "F-MIG431-INT13",
-  "title": "B1.11 Rutter regime integration local verification; persisted qualification pending",
+  "title": "B1.11 Rutter process, constant surface irrigation and FMR composition local verification",
   "date": "2026-10-05",
   "subject": {
     "branch": "work/f-mig431-int13-rutter-stateful-forcing",
@@ -27,7 +27,10 @@
       "mid_window_restart_identity": "PASS_O0_O2",
       "detailed_record_continuation": "PASS_O0_O2",
       "dynamic_top_and_crop_root_output_binding": "PASS_O0_O2",
-      "fimin_removed_from_Rutter_input_and_window_identity": "PASS_O0_O2"
+      "fimin_removed_from_Rutter_input_and_window_identity": "PASS_O0_O2",
+      "ISUA_zero_intercepts_and_proportionally_partitions_surface_irrigation": "PASS_O0_O2",
+      "ISUA_nonzero_intercepts_rain_only_and_passes_irrigation": "PASS_O0_O2",
+      "surface_irrigation_forcing_is_immutable_within_source_window": "PASS_O0_O2"
     },
     "canonical_capacity_case": {
       "case_scope": "SWAP5 legacy short-interval API falsifier versus new source-window analytic reference; not attributed to B1.11",
@@ -65,7 +68,8 @@
     "Exact B1.11 MOD_meteo.f90 member reconstructed and SHA-256 verified; see F-MIG431-INT13_CORRECTED_REFERENCE.md.",
     "Targeted persisted INT13 physics/source-window/retry/restart and production FMR qualification passed in Actions run 37271615834 on candidate commit 4403db7996ec49b910a419d53c7efe2b4cd75102; not canonically admitted.",
     "Only constant forcing per immutable source window is supported; detailed forcing is one window per record.",
-    "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles remain outside the candidate envelope."
+    "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles remain outside the candidate envelope.",
+    "A higher irrigation-throughfall production case reached the HeadCalc dynamic-head omitted surface-head derivative error; it is not in the qualified envelope."
   ],
   "production_application": {
     "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
@@ -122,6 +126,7 @@
   "current_production_application": {
     "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
     "result": "PASS_O0_O2",
-    "claim_limit": "Local current postimage only; not persisted qualification."
+    "irrigation_case": "Both ISUA modes in separate tiles; surface irrigation 0.01 cm/day with a 0.2 cm rainfall source window.",
+    "claim_limit": "Local current postimage only; current surface-irrigation extension awaits persisted qualification."
   }
 }

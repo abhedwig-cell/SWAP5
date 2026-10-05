@@ -74,6 +74,32 @@ program test_f_mig431_int13_rutter_source_window
       result_a%net_rain_cm_per_day + result_a%reservoir_outflow_cm_per_day) < tol, 63)
   end block
 
+  ! B1.11 ISUA=0 intercepts and proportionally partitions surface irrigation;
+  ! ISUA/=0 routes canopy interception against rain only.
+  block
+    type(rutter_state_t) :: empty
+    forcing = rutter_interval_input_t()
+    forcing%gross_rain_cm_per_day = 0.2_real64
+    forcing%surface_irrigation_cm_per_day = 0.4_real64
+    forcing%surface_irrigation_is_intercepted = .true.
+    forcing%vegetation_cover_fraction = 1.0_real64
+    forcing%canopy_storage_capacity_cm = 0.1_real64
+    forcing%interval_days = 1.0_real64
+    call evaluate_rutter_forcing_interval(empty, forcing, result_a, diagnostics)
+    call require(diagnostics%result_produced, 95)
+    call require(abs(result_a%reservoir_inflow_cm_per_day-0.1_real64)<tol,96)
+    call require(abs(result_a%net_rain_cm_per_day-1.0_real64/6.0_real64)<tol,97)
+    call require(abs(result_a%net_surface_irrigation_cm_per_day-1.0_real64/3.0_real64)<tol,98)
+    call require(abs(result_a%candidate_state%canopy_storage_cm-0.1_real64)<tol,99)
+    forcing%surface_irrigation_is_intercepted = .false.
+    call evaluate_rutter_forcing_interval(empty, forcing, result_a, diagnostics)
+    call require(diagnostics%result_produced,100)
+    call require(abs(result_a%reservoir_inflow_cm_per_day-0.1_real64)<tol,101)
+    call require(abs(result_a%net_rain_cm_per_day-0.1_real64)<tol,102)
+    call require(abs(result_a%net_surface_irrigation_cm_per_day-0.4_real64)<tol,103)
+    call require(abs(result_a%candidate_state%canopy_storage_cm-0.1_real64)<tol,104)
+  end block
+
   ! B1.11 dries an initially wet canopy at a constant flux until empty.
   block
     type(rutter_state_t) :: semi_dry
@@ -189,6 +215,36 @@ program test_f_mig431_int13_rutter_source_window
   call require(status == RUTTER_WINDOW_OK, 55)
   call require(abs(state%canopy_storage() - 0.1_real64) < tol, 56)
 
+  ! A partial source window binds the surface-irrigation amount immutably.
+  block
+    type(interception_source_window_t) :: irrigation_window
+    type(rutter_source_state_t) :: irrigation_state, irrigation_candidate
+    type(rutter_source_trial_t) :: irrigation_trial
+    call initialize_interception_window(33001_int64,0.0_real64,1.0_real64,0.0_real64,irrigation_window,status)
+    call require(status==0,106)
+    call initialize_rutter_source_state(irrigation_window,0.0_real64,irrigation_state,status)
+    call require(status==RUTTER_WINDOW_OK,107)
+    forcing=rutter_interval_input_t()
+    forcing%surface_irrigation_cm_per_day=0.02_real64
+    forcing%vegetation_cover_fraction=1.0_real64
+    forcing%canopy_storage_capacity_cm=0.1_real64
+    call prepare_rutter_source_trial(irrigation_window,irrigation_state,0.5_real64,forcing, &
+      result_a,irrigation_trial,diagnostics,status)
+    call require(status==RUTTER_WINDOW_OK,108)
+    call accept_rutter_source_trial(irrigation_window,irrigation_state,irrigation_trial,irrigation_candidate,status)
+    call require(status==RUTTER_WINDOW_OK,109)
+    forcing%surface_irrigation_cm_per_day=0.04_real64
+    call prepare_rutter_source_trial(irrigation_window,irrigation_candidate,0.75_real64,forcing, &
+      result_a,irrigation_trial,diagnostics,status)
+    call require(status==RUTTER_WINDOW_REJECTED,110)
+    call require(abs(irrigation_candidate%accepted_until()-0.5_real64)<tol,111)
+    forcing%surface_irrigation_cm_per_day=0.02_real64
+    call prepare_rutter_source_trial(irrigation_window,irrigation_candidate,0.75_real64,forcing, &
+      result_a,irrigation_trial,diagnostics,status)
+    call require(status==RUTTER_WINDOW_OK,112)
+    call require(abs(result_a%candidate_state%canopy_storage_cm-0.015_real64)<tol,113)
+  end block
+
   ! Richards-style accepted endpoint patterns may differ. The Rutter source
   ! trajectory, final storage and integrated surface forcing must not.
   call run_pattern([0.25_real64, 0.5_real64, 1.0_real64], coarse_water, coarse_ptra, storage_a)
@@ -264,6 +320,7 @@ program test_f_mig431_int13_rutter_source_window
   forcing%canopy_storage_capacity_cm = 0.1_real64
   forcing%potential_transpiration_dry_cm_per_day = 0.01_real64
   forcing%potential_transpiration_wet_cm_per_day = 0.002_real64
+  forcing%surface_irrigation_cm_per_day = 0.4_real64
   base_top = b110_dynamic_top_boundary_request_t()
   base_top%step_duration_day = 1.0_real64
   base_top%precipitation_rate_cm_per_day = 8.0_real64
@@ -276,7 +333,8 @@ program test_f_mig431_int13_rutter_source_window
   call fmr_prepare_rutter_source_window_application(window, state, 1.0_real64, forcing, base_top, base_root, 1, &
        result_a, trial_a, bound_top, bound_root, app_diagnostics)
   call require(app_diagnostics%status == FMR_RUTTER_APP_OK .and. app_diagnostics%result_produced, 66)
-  call require(abs(bound_top%precipitation_rate_cm_per_day - 0.9_real64) < tol, 67)
+  call require(abs(bound_top%precipitation_rate_cm_per_day - 13.0_real64/14.0_real64) < tol, 67)
+  call require(abs(bound_top%irrigation_rate_cm_per_day - 13.0_real64/35.0_real64) < tol, 105)
   call require(abs(bound_root%potential_transpiration - 0.002_real64) < tol, 68)
   call require(abs(state%canopy_storage() - 0.0_real64) < tol .and. &
     abs(state%accepted_until() - 0.0_real64) < tol, 69)

@@ -133,12 +133,14 @@ program test_ppa_wu01_production_application_bootstrap
   rutter_process%interception_evaporation_capacity_cm_per_day = 0.0_real64
   rutter_process%potential_transpiration_dry_cm_per_day = 0.02_real64
   rutter_process%potential_transpiration_wet_cm_per_day = 0.01_real64
+  rutter_process%surface_irrigation_cm_per_day = 0.01_real64
   rutter_process%interval_days = T1 - T0
   do i = 1, NTILE
     allocate(rutter_forcing(i)%rutter)
     rutter_forcing(i)%root_extraction_sink = 1.0e-5_real64
     rutter_forcing(i)%rutter%source_window = rutter_window
     rutter_forcing(i)%rutter%process = rutter_process
+    rutter_forcing(i)%rutter%process%surface_irrigation_is_intercepted = i == 1
     rutter_forcing(i)%rutter%ponding_max_cm = 0.2_real64
     rutter_forcing(i)%rutter%runoff_resistance_day = 0.1_real64
     rutter_forcing(i)%rutter%runoff_exponent = 1.0_real64

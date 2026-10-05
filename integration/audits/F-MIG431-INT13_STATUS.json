@@ -2,7 +2,7 @@
   "schema": "swap5.f_mig431_int13_status.v1",
   "workunit": "F-MIG431-INT13",
   "title": "Rutter SWINTER=3 stateful atmospheric-forcing migration",
-  "state": "TARGETED_PERSISTED_QUALIFICATION_PASS_B1_11_SOURCE_RECONCILED",
+  "state": "SURFACE_IRRIGATION_LOCAL_PASS_PERSISTED_REQUALIFICATION_PENDING",
   "baseline": {
     "branch": "integration/f-ci-canonical",
     "head": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
@@ -22,7 +22,8 @@
     "integration/audits/production_physics_application_envelope_gap_register.json",
     "src/process/mod_rutter_event_integrator.f90",
     "src/runtime/mod_rutter_source_window_processor.f90",
-    "src/runtime/mod_fmr_rutter_source_window_application.f90"
+    "src/runtime/mod_fmr_rutter_source_window_application.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
   ],
   "authority_paths": [
     "docs/status-a/CURRENT_STATUS.md",
@@ -42,7 +43,8 @@
     "tests/fpm/test_f_mig431_int13_rutter_source_window.f90",
     "tests/fpm/run_f_mig431_int13_rutter_source_window.sh",
     "tests/fpm/run_f_mig431_int12_p0.sh",
-    "tests/f-app08/test_rutter_output_binding.f90"
+    "tests/f-app08/test_rutter_output_binding.f90",
+    "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90"
   ],
   "evidence_paths": [
     "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
@@ -50,20 +52,24 @@
     "integration/audits/F-MIG431-INT13_LOCAL_QUALIFICATION.json",
     "integration/audits/F-MIG431-INT13_SOURCE_RECONCILIATION_ADDENDUM.md"
   ],
-  "implemented": "B1.11 piecewise-constant Rutter fill/dry event integrator; stateful source-window candidate composed into FMR physical-state candidate; fimin removed from the Rutter input and source-window identity",
-  "persisted": "Exact B1.11 source recovered and verified. Candidate commit 4403db7996ec49b910a419d53c7efe2b4cd75102 passed targeted Actions run 37271615834 for INT13 physics/source-window/retry/restart and production FMR composition.",
-  "tested": "Current INT13 independent source-window suite PASS O0/O2; production FMR bootstrap PASS O0/O2; INT13 capacity-event falsifier PASS O0/O2. The historical persisted workflow pass is not evidence for current B1.11 physics.",
+  "implemented": "B1.11 piecewise-constant Rutter fill/dry event integrator; source-window FMR physical-state candidate; constant surface irrigation routing for both ISUA modes; fimin removed from the Rutter contract",
+  "persisted": "The rain-only bounded candidate passed INT13 Actions run 37271615834. A local extension now supports constant surface irrigation through both ISUA partitions; this extension awaits a new targeted persisted qualification.",
+  "tested": "Rain-only Rutter physics/source-window/retry/restart and production FMR passed persisted run 37271615834. Local current candidate passes B1.11 ISUA=0/nonzero hand-oracle and immutable irrigation-window tests, FMR production with both ISUA modes at the tested low-rate forcing, PPA-WU01 O0/O2, and source-window O0/O2.",
   "latest_audit_findings": [
-    "Exact B1.11 MOD_meteo.f90 reconstructed from the release archive; member SHA-256 99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f. The verified B0 member manifest has 63 members.",
+    "Exact B1.11 MOD_meteo.f90 member reconstructed from the release archive; SHA-256 99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f.",
     "B1.11 Rutter uses piecewise constant canopy input/output fluxes with internal fill and dry event times. It does not use fimin or the SWAP 4.2.0 exponential storage equation.",
     "The current source-window integrator resolves B1.11-style process events internally and returns interval-average fluxes; event transitions do not command Richards substeps.",
-    "Local source-window and production transaction suites pass at O0/O2. The prior Actions run 37268521592 exercised the superseded 4.2.0-derived candidate and must not qualify this implementation.",
-    "The bounded envelope remains fail-closed for irrigation/sprinkling, Snow, Black/Boesten, macropore, RFM/surface-water combinations, drainage, root compensation and unsupported solver/continuation profiles."
+    "Constant surface irrigation now passes the B1.11 ISUA=0 intercepted and ISUA/=0 rain-only partitions in local process and FMR production tests. The production test uses a low irrigation rate of 0.01 cm/day with 0.2 cm rainfall per source window.",
+    "Higher tested irrigation throughfall combinations reached the Reference Richards error \"HeadCalc: dynamic head regime omitted surface-head derivative\". Those high-forcing combinations remain outside this qualification pending the separately owned top-boundary/Jacobian issue.",
+    "The previous persisted INT13 run 37271615834 qualifies the rain-only candidate, not this surface-irrigation extension."
   ],
-  "qualified": true,
-  "next_action": "Keep PR #1016 as a bounded, unadmitted draft. Any expansion to excluded forcing or process combinations requires its own source reconciliation and qualification.",
+  "qualified": false,
+  "next_action": "Run the targeted INT13 physics and FMR production qualification on the constant-surface-irrigation extension, then persist the exact tested envelope while retaining the high-throughfall solver limitation.",
   "recovery_point": "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
-  "blockers": [],
+  "blockers": [
+    "The constant surface-irrigation extension has local O0/O2 verification but no persisted qualification on its current candidate commit.",
+    "Higher tested surface-irrigation throughfall reaches the dynamic head regime surface-head derivative error and is excluded from the tested envelope."
+  ],
   "dependency_surface": [
     "Rutter process state and equations",
     "interception source-window progress",
@@ -76,6 +82,7 @@
     "head": "4403db7996ec49b910a419d53c7efe2b4cd75102",
     "rutter_physics_retry_restart": "PASS",
     "production_fmr_composition": "PASS",
-    "historical_superseded_run_id": 37268521592
+    "historical_superseded_run_id": 37268521592,
+    "surface_irrigation_extension": "PENDING"
   }
 }

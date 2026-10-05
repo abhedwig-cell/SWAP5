@@ -52,6 +52,4 @@ on candidate commit `4403db7996ec49b910a419d53c7efe2b4cd75102`. Historical run
 this source correction.
 
 This qualifies only the bounded candidate and tested compositions. It does not
-admit `SWINTER=3` canonically. Irrigation/sprinkling, Snow, Black/Boesten with
-Rutter, macropore, drainage, RFM/surface water, root compensation and
-unsupported solver profiles remain outside the qualified envelope.
+admit `SWINTER=3` canonically. Constant surface irrigation has since been wired through both B1.11 `ISUA` partitions. Local O0/O2 tests cover proportionate intercepted rain/irrigation, rain-only interception with irrigation pass-through, immutable irrigation forcing within a source window, and FMR production with both modes at the tested low-rate vector (0.01 cm/day irrigation with 0.2 cm rainfall per source window). This extension awaits persisted qualification. Higher tested irrigation-throughfall forcing triggers `HeadCalc: dynamic head regime omitted surface-head derivative` and remains excluded. Irrigation scheduling, sprinkling, Snow, Black/Boesten with Rutter, macropore, drainage, RFM/surface water, root compensation and unsupported solver profiles remain outside the qualified envelope.
