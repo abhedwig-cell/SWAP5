@@ -1,6 +1,6 @@
 # PPA-WU05-E-SALFRO01 joint salt/root-frost contract
 
-Status: qualified selected successor; canonical admission pending. Preregistered before shared implementation changes.
+Status: canonically admitted selected successor via PR #1044, merge `ef83887448838acd12cd06a054729193abdb8213`. Preregistered before shared implementation changes.
 Baseline: `b872ddbd930ea08b058575877a03774d313742cc`.
 
 Scientific authority: SWAP 4.3.1 B1.11 `rootextraction.f90`, SHA256
