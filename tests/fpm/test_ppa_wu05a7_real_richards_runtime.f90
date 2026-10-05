@@ -537,20 +537,21 @@ contains
     allocate(soil_boundary%macropore_top_mg_cm3(2),soil_boundary%macropore_bottom_mg_cm3(2))
     soil_boundary%macropore_top_mg_cm3=[.2_real64,.4_real64]
     soil_boundary%macropore_bottom_mg_cm3=[.6_real64,.8_real64]
-    if(.not.fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,0.9_real64,2)) &
+    if(.not.fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,cdrain%valid_t0,cdrain%valid_t1,2)) &
          error stop 'typed soil salt boundary rejected'
-    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id+1_int64,0.1_real64,0.9_real64,2)) &
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id+1_int64,cdrain%valid_t0,cdrain%valid_t1,2)) &
          error stop 'mismatched soil salt boundary source accepted'
-    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,1.1_real64,2)) &
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,cdrain%valid_t0, &
+         cdrain%valid_t1+1.0e-9_real64,2)) &
          error stop 'incomplete soil salt boundary interval accepted'
-    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,0.9_real64,3)) &
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,cdrain%valid_t0,cdrain%valid_t1,3)) &
          error stop 'soil salt boundary domain mismatch accepted'
     soil_boundary%unit_id=0
-    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,0.9_real64,2)) &
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,cdrain%valid_t0,cdrain%valid_t1,2)) &
          error stop 'unknown soil salt boundary unit accepted'
     soil_boundary%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
     deallocate(soil_boundary%macropore_top_mg_cm3,soil_boundary%macropore_bottom_mg_cm3)
-    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,0.1_real64,0.9_real64)) &
+    if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,cdrain%valid_t0,cdrain%valid_t1)) &
          error stop 'unpaired macropore boundary concentrations accepted'
     matrix_c=0.4_real64;macro_c=0.3_real64
     call initialize_mobile_macro_salt_state(node_thickness,water_trace(1)%water_start, &
