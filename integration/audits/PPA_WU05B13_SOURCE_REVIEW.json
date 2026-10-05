@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B13",
-  "status": "SOURCE_REVIEW_COMPLETE_IMPLEMENTED_PARTIALLY_TESTED",
+  "status": "SOURCE_REVIEW_COMPLETE_LOCALLY_QUALIFIED",
   "baseline": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
   "reviewed_B12_candidate_source": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
   "prerequisite": "B12 admitted via PR1056; reconcile exact metadata closeout then persist bounded B13 preregistration before production/interface editing",
@@ -15,14 +15,14 @@
     "independent_oracle_path": "tests/fvq/test_fvq42_empirical_interflow_scientific.py",
     "independent_oracle_blob": "5eea0d3b591df048b98cc1cc266a0ecb071712c7",
     "production_blob": "eb53096b678d08b76d3fb1adb2247bc2a58ee748",
-    "current_empirical_process_matches_primary_blob": true,
     "historical_results_only": {
       "active_cases": 1404,
       "derivative_formula_checks": 1404,
       "finite_difference_checks": 6,
       "inactive_checks": 8,
       "activation_checks": 4
-    }
+    },
+    "preimplementation_empirical_process_matches_primary_blob": true
   },
   "findings": [
     "The literal B1.11 DRAMET3 drainage branch selects empirical interflow only for lev==nrlevs and swnrsrf==1; other positive-side levels use linear resistance. This is distinct from general normalized per-level runtime selectors.",
@@ -34,7 +34,7 @@
     "Literal DRAMET3 resolves OWLTAB then clamps drainl to zbotdr before its response. This bounded normalized binding consumes its already supplied finite interval head; it adds no hidden clamp and does not claim OWLTAB/clamping or SWALLO dispatcher equivalence. Physical frost depths remain distinct."
   ],
   "implemented": true,
-  "qualified": false,
+  "qualified": true,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
   "exclusions": [
@@ -46,7 +46,7 @@
     "Root/salt/macropore/snow hybrids",
     "New phase physics"
   ],
-  "next_action": "Current-source scientific/component/whole-module runtime qualification",
+  "next_action": "Exact proposed/actual merge verification and canonical admission",
   "ordered_binding_authority": "Current unchanged binding plus immutable VQ73 single-booking and invalid-level atomicity replay completed on exact B12 source; fresh current replay required after this backend change",
   "denominator_authority": "Canonical B11 source-review binds F-PM19 exact eight-component certificate separately from nine runtime selectors; no frozen denominator expansion",
   "preimplementation_source_sha256": {

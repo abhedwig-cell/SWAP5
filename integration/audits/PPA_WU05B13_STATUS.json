@@ -4,11 +4,11 @@
   "last_reconciled_upstream": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
   "baseline_source": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
   "preregistration": "integration/audits/PPA_WU05B13_PREREGISTRATION.json",
-  "status": "PARTIALLY_TESTED_RUNTIME_QUALIFICATION_RUNNING",
+  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
   "relevant_paths": [
@@ -39,13 +39,11 @@
     29,
     30
   ],
-  "next_action": "Run immutable current-source scientific oracle, corrected source composition and six-configuration whole-module normal/low-air matrices O0/O2; analyze and repair failures before admission",
+  "next_action": "Persist full qualified evidence; verify exact proposed tree/source/parents, admit and reconcile actual merge",
   "recovery_point": "Remote preregistration74e851cda073dd0d0adf1e9d578d1bd059ab63f4 plus useful production and complete primary runtime harness checkpoint",
   "blockers": [],
   "pending": [
-    "Complete full six-configuration low-air O0/O2 runtime",
-    "Complete fresh B8/B10/B11 and all five B12 low-air preservation cases at O0/O2",
-    "Final immutable replay, docs and exact proposed/actual admission"
+    "Exact proposed/actual canonical admission"
   ],
   "negative_findings": [
     {
@@ -80,7 +78,10 @@
     "literal_root": "Literal330 cutoff and12 dispatcher cases actual current O0/O2 PASS",
     "normal_incumbents": "Complete fresh current gate PASS",
     "canonical": "Complete fresh current gate PASS",
-    "SALT4": "Four fresh179-source salt/root/frost matrices O0/O2/fresh-process identical PASS"
+    "SALT4": "Four fresh179-source salt/root/frost matrices O0/O2/fresh-process identical PASS",
+    "external_surface_water_preservation": "Unchanged admitted F-APP09 owner and original immutable VQ128 primary replayed with actual fresh current whole modules and freshly compiled adapter/participant O0/O2 identical PASS; external frost exclusion unchanged",
+    "low_air_runtime": "All six configurations x six trajectories at O0/O2 complete identical PASS; full independent65536 references, hard mass, retry/replay/final receipts/application/empty restart and control preflight",
+    "low_air_incumbents": "Fresh current B8/B10/B11 and all five B12 families O0/O2 identical PASS; B12 both routes exactly preserve original qualified stdout"
   },
   "partial_evidence": {
     "path": "docs/audits/evidence/PPA_WU05B13_PARTIAL_RECOVERY.json.gz",
@@ -94,5 +95,324 @@
     "change": "Remaining independent O0 preservation cases use a bounded two-process pool; each complete case still owns its full fine reference. Finished B8 result retained after matching current used source bytes and module object hashes to immutable recovery. No reference trajectory is shared between different cases. Original incomplete sequential O0 loop stopped exit130; prefix retained unqualified.",
     "prior_loop_log": "/tmp/frost-b13-low-air-preservation-first-sequential-o0.log",
     "whole_module_source_proof": "/tmp/frost-b13-current-whole-module-source-proof.json"
-  }
+  },
+  "runtime_results": {
+    "normal": {
+      "configurations": 6,
+      "trajectories": 36,
+      "head_error_max_cm": 2.459624e-07,
+      "temperature_error_max_c": 8.090195e-13,
+      "substeps_and_rejections": [
+        [
+          33,
+          126
+        ],
+        [
+          30,
+          111
+        ],
+        [
+          17,
+          50
+        ],
+        [
+          14,
+          38
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          37,
+          146
+        ],
+        [
+          35,
+          136
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          16,
+          47
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          42,
+          171
+        ],
+        [
+          40,
+          161
+        ],
+        [
+          21,
+          66
+        ],
+        [
+          19,
+          59
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          38,
+          151
+        ],
+        [
+          36,
+          141
+        ],
+        [
+          19,
+          59
+        ],
+        [
+          17,
+          51
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          41,
+          166
+        ],
+        [
+          40,
+          161
+        ],
+        [
+          21,
+          66
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          48,
+          206
+        ],
+        [
+          45,
+          188
+        ],
+        [
+          24,
+          81
+        ],
+        [
+          22,
+          71
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "O0_O2_stdout_identical": true,
+      "full_fine_steps": 8192,
+      "activation_cases": 144
+    },
+    "low_air": {
+      "configurations": 6,
+      "trajectories": 36,
+      "head_error_max_cm": 1.935812e-07,
+      "temperature_error_max_c": 3.5707e-07,
+      "substeps_and_rejections": [
+        [
+          37759,
+          523474
+        ],
+        [
+          37765,
+          523550
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37759,
+          523474
+        ],
+        [
+          37765,
+          523550
+        ],
+        [
+          37724,
+          522946
+        ],
+        [
+          37719,
+          522865
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37724,
+          522946
+        ],
+        [
+          37719,
+          522865
+        ],
+        [
+          37620,
+          521402
+        ],
+        [
+          37628,
+          521513
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37620,
+          521402
+        ],
+        [
+          37628,
+          521513
+        ],
+        [
+          37759,
+          523474
+        ],
+        [
+          37765,
+          523550
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37692,
+          522457
+        ],
+        [
+          37700,
+          522578
+        ],
+        [
+          37724,
+          522946
+        ],
+        [
+          37719,
+          522865
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37648,
+          521802
+        ],
+        [
+          37654,
+          521898
+        ],
+        [
+          37620,
+          521402
+        ],
+        [
+          37628,
+          521513
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37545,
+          520281
+        ],
+        [
+          37564,
+          520551
+        ]
+      ],
+      "O0_O2_stdout_identical": true,
+      "full_fine_steps": 65536,
+      "activation_cases": 144
+    }
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B13_LOCAL_REPLAY.json.gz",
+    "sha256": "c9fc007095bc60ad24ee376e147b89c8e10294060095ecd7da919a05d1ba3977",
+    "bytes": 246523,
+    "manifest_entries": 475
+  },
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
 }
