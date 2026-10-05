@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B13",
-  "status": "SOURCE_REVIEW_COMPLETE_IMPLEMENTED_NOT_TESTED",
+  "status": "SOURCE_REVIEW_COMPLETE_IMPLEMENTED_PARTIALLY_TESTED",
   "baseline": "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
   "reviewed_B12_candidate_source": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
   "prerequisite": "B12 admitted via PR1056; reconcile exact metadata closeout then persist bounded B13 preregistration before production/interface editing",
@@ -33,12 +33,6 @@
     "Use the existing disposable proposal, normal/B8 modifier, B10 full/half regeneration and single final sink/receipts. No extra persistent process/restart state. All currently selected mixed variants retain their own flags and active-domain validation.",
     "Literal DRAMET3 resolves OWLTAB then clamps drainl to zbotdr before its response. This bounded normalized binding consumes its already supplied finite interval head; it adds no hidden clamp and does not claim OWLTAB/clamping or SWALLO dispatcher equivalence. Physical frost depths remain distinct."
   ],
-  "source_sha256": {
-    "src/process/mod_drainage_empirical_interflow_response.f90": "1aa182f15d59206ffad7502221a778dedc145aafe2b0fd819002810173c346bb",
-    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90": "8269215b7527ec0b5db61bf8d92f6b6c826b442bca24dc6faafec67fb0d9bf3f",
-    "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
-  },
   "implemented": true,
   "qualified": false,
   "admitted": false,
@@ -54,5 +48,20 @@
   ],
   "next_action": "Current-source scientific/component/whole-module runtime qualification",
   "ordered_binding_authority": "Current unchanged binding plus immutable VQ73 single-booking and invalid-level atomicity replay completed on exact B12 source; fresh current replay required after this backend change",
-  "denominator_authority": "Canonical B11 source-review binds F-PM19 exact eight-component certificate separately from nine runtime selectors; no frozen denominator expansion"
+  "denominator_authority": "Canonical B11 source-review binds F-PM19 exact eight-component certificate separately from nine runtime selectors; no frozen denominator expansion",
+  "preimplementation_source_sha256": {
+    "src/process/mod_drainage_empirical_interflow_response.f90": "1aa182f15d59206ffad7502221a778dedc145aafe2b0fd819002810173c346bb",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "8269215b7527ec0b5db61bf8d92f6b6c826b442bca24dc6faafec67fb0d9bf3f",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+  },
+  "current_source_sha256": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "1d254a6368e55dcb3b3326226e9b3c9d2dc9eb0584a014722395836e97cfaa66",
+    "src/process/mod_drainage_empirical_interflow_response.f90": "32fd0dc80f4f62ce3158836769508fa6e0dab8c9a3a38e02280c0596ebb89c70",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "6d297c308261948dd3a516c545e76f4650570ce4945cb96e179cbb538f51e852",
+    "src/process/mod_frost_drainage_effect.f90": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900",
+    "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35"
+  }
 }
