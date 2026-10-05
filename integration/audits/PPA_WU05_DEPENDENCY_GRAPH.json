@@ -139,23 +139,20 @@
           "src/solver/mod_frost_hydraulic_provider.f90",
           "src/runtime/mod_fmr_serialized_reference_backend.f90"
         ],
-        "verification": "local O0/O2 effect/provider and serialized runtime tests; nonzero bottom flux fails closed",
-        "production_status": "IMPLEMENTED_UNQUALIFIED_NOT_ADMITTED",
-        "open_gates": [
-          "rejected trial and retry",
-          "frost-enabled restart reconstruction",
-          "independent runtime state-point matrix"
-        ]
+        "verification": "Exact-head O0/O2 frost/runtime/retry/restart and complete current-canonical preservation PASS in run 37324712595; PR #1018 admitted.",
+        "production_status": "CANONICALLY_ADMITTED",
+        "open_gates": []
       },
       "option_constraint": "Legacy frost-plus-macropore incompatibility must remain fail-closed until separately qualified.",
       "risk": "HIGH_BUT_BOUNDED_FOR_LEGACY_MODIFIER; VERY_HIGH_FOR_NEW_PHASE_CHANGE",
       "use_relevance": "MEDIUM",
       "architecture_maturity": "MEDIUM_CURRENT_TEMPERATURE_OWNER_LOW_FROST_AUTHORITY",
-      "production_status": "NOT_MIGRATED",
+      "production_status": "BOUNDED_HYDRAULIC_MODIFIER_ADMITTED_OTHER_FROST_PATHS_EXCLUDED",
       "source_trace_status": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
       "known_legacy_defects": [
         "No TFROSTSTA>TFROSTEND validation; equal temperatures in frost-depth interpolation can divide by zero; interpolated frost depth is not consistently clamped."
-      ]
+      ],
+      "canonical_admission_authority": "integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json"
     },
     "advanced_root_stress": {
       "legacy_files": [

@@ -200,9 +200,13 @@ thermal semantics.
 
 ## Work status
 
-The exact-source blocker is resolved. Authority reconstruction and source-level
-physical review are complete. The bounded K/dKdh candidate and the frost-specific
-restart, transaction and backend temperature-point oracles have local evidence.
-It remains **not production-qualified and not admitted** until the final exact
-postimage passes O0/O2, documentation and JSON checks, is persisted on the work
-branch, and completes the repository's persisted qualification/admission gate.
+The bounded hydraulic modifier is **canonically admitted** through PR #1018,
+merge `5272ac9192ec1065dbe2432f73d1f1b4394437e0`. Dedicated run `37324712595`
+passed frost effect/provider/runtime/restart/retry and the complete unchanged
+moving-canonical preservation runner on exact merge tree
+`554305d9a03827246a2ca57817b13fe6c11a5674`. The admission merge has that same tree.
+
+See [canonical closeout](PPA_WU05B_CANONICAL_CLOSEOUT.md) and
+`integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json` for exact evidence,
+central reconciliation, exclusions and negative findings. This does not admit
+general legacy SWFROST configurations, root stress, FrozenBounds or new phase-change physics.
