@@ -183,18 +183,19 @@ for path in "${dependency_surface[@]}"; do
     fail "candidate changed current canonical dependency from $dependency_authority: $path"
 done
 
-# BOFEK00 is a later independently qualified exact successor for the wet
-# dynamic-top correctness surface. Keep the historical HeadCalc postimage
-# before admission and accept only the exact four-file BOFEK00 postimage once
-# that admission is in the current lineage.
+# BOFEK00 is a later independently qualified successor for wet
+# dynamic-top behavior. Canonical has since advanced beyond its original exact
+# blobs. Preserve the exact current target-tree postimages in this PR merge;
+# focused BOFEK00 semantic gates remain the authority for those behaviors.
 if git merge-base --is-ancestor "$BOFEK00_ADMISSION" HEAD; then
-  test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = "$BOFEK00_HEADCALC" || \
-    fail 'admitted BOFEK00 HeadCalc successor drift'
-  test "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" = "$BOFEK00_DYNAMIC_TOP" || \
-    fail 'admitted BOFEK00 dynamic-top provider successor drift'
-  test "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" = "$BOFEK00_DYNAMIC_TOP_ADAPTER" || \
-    fail 'admitted BOFEK00 dynamic-top adapter successor drift'
-  echo 'FCI_CANONICAL_BOFEK00_DYNAMIC_TOP_SUCCESSOR=PASS'
+  for path in \
+    src/legacy/b1_10_port/headcalc.f90 \
+    src/solver/mod_b110_dynamic_top_boundary_provider.f90 \
+    src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90; do
+    test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$dependency_authority:$path")" || \
+      fail "candidate changed current BOFEK00 target postimage: $path"
+  done
+  echo 'FCI_CANONICAL_BOFEK00_CURRENT_TARGET_POSTIMAGES=PASS'
 else
   test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = \
        "$(git rev-parse "$dependency_authority:src/legacy/b1_10_port/headcalc.f90")" || \
