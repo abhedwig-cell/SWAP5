@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """All-family actual application admission/rejection on fresh B12 whole modules."""
-import argparse,pathlib,subprocess
+import argparse,os,pathlib,subprocess
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser();p.add_argument('--routes',nargs='+',default=['normal','low_air']);p.add_argument('--opts',nargs='+',type=int,default=[0,2]);args=p.parse_args()
 for route in args.routes:
@@ -68,7 +68,7 @@ for route in args.routes:
  source=pathlib.Path(f'/tmp/frost-b12-{route}-preflight.f90');source.write_text(s)
  outputs=[]
  for opt in args.opts:
-  build=pathlib.Path(f'/tmp/ppa-wu05b12-{route.replace("_","-")}-runtime/o{opt}')
+  build=pathlib.Path(os.environ.get('B12_LOW_AIR_BUILD','/tmp/ppa-wu05b12-low-air-runtime') if route=='low_air' else '/tmp/ppa-wu05b12-normal-runtime')/f'o{opt}'
   assert (build/'mod_fmr_production_application_bootstrap.o').exists()
   flags=['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow',f'-O{opt}','-J'+str(build),'-I'+str(build)]
   base=pathlib.Path(f'/tmp/frost-b12-{route}-preflight-o{opt}')

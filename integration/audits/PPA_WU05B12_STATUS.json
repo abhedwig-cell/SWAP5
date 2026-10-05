@@ -54,6 +54,11 @@
       "kind": "preflight oracle domain",
       "finding": "Additional test expected finite negative Ernst fixed resistance to be rejected by parameter preflight; unchanged admitted validators permit it and evaluator checks GWL-dependent positive total resistance. Negative radial resistance is an explicit scientific authority case",
       "repair": "Use actual excluded zero vertical conductivity for invalid domain test; initialize prescribed case temperature explicitly. No production domain change"
+    },
+    {
+      "kind": "additional activation branch coverage",
+      "finding": "Generated low-air activation setup inherited the generic air-rich state after replacing the main. It exercised the low-air option configuration but normal air branch; full low-air runtime matrix is separate and unaffected",
+      "repair": "Carry exact near-saturated hydraulic initialization into derived activation main and assert observed low-air branch on every short case. Rerun both O0/O2; no production/budget change"
     }
   ],
   "runtime_fixture_recovery": "All-five-family fixtures use fresh full fine trajectories; invalid table cases explicitly target active second TABULATED level",
@@ -66,8 +71,8 @@
     "source_composition": "4320 actual selected generator plus corrected B7 reference O0/O2 identical PASS",
     "normal_runtime": "All five families x six trajectories O0/O2 identical PASS; mass/retry/final receipt/replay/empty-registry restart/application PASS",
     "normal_refinements": "Families1/2/5 warm and partial negative qbot 16384 and32768 PASS",
-    "activation": "90 short actual cases per route; normal O0/O2 identical PASS; low-air O0 PASS O2 pending",
-    "preflight": "All-family actual application positive/mixed and four active-invalid cases each; normal O0/O2 identical PASS; low-air O0 PASS O2 pending",
+    "activation": "90 short actual cases per route; normal and explicitly observed low-air branch O0/O2 identical PASS",
+    "preflight": "All-family actual application positive/mixed and four active-invalid cases each; both routes O0/O2 identical PASS",
     "SALT4": "Four fresh179-source mixed salt/root/frost matrices O0/O2/fresh-process identical PASS",
     "VQ73_VQ74": "Fresh current whole-module relink unchanged immutable primary programs O0/O2 identical PASS",
     "literal_root": "330 literal macro cutoff plus12 dispatcher O0/O2 PASS",
@@ -78,7 +83,6 @@
   "pending": [
     "Full five-family low-air runtime O0/O2",
     "Fresh B8/B10/B11 low-air incumbent relinks O0/O2",
-    "Low-air activation/preflight O2",
     "Final immutable evidence, docs and proposed merge/admission"
   ],
   "documentation": "PARTIAL_CHECK_DOCS_AND_STRICT_MKDOCS_PASS",
@@ -88,5 +92,11 @@
     "bytes": 210088,
     "manifest_entries": 465,
     "qualification": false
+  },
+  "parallel_runtime_recovery": {
+    "normal": "/tmp/ppa-wu05b12-normal-runtime/o{0,2}",
+    "low_air_O0": "/tmp/ppa-wu05b12-low-air-runtime/o0",
+    "low_air_O2": "/tmp/ppa-wu05b12-low-air-runtime-parallel/o2",
+    "policy": "Same persisted fixture and fresh actual whole-module graph with unchanged O0/O2 flags. Separate owned builds permit concurrency; retain all five families and six full fine trajectories each. Collect both successful outputs before any full qualification claim."
   }
 }

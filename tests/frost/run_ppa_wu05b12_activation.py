@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Short actual-runtime analytic activation and signed TABLE mixtures."""
-import argparse,pathlib,subprocess
+import argparse,os,pathlib,subprocess
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser();p.add_argument('--routes',nargs='+',default=['normal','low_air']);p.add_argument('--opts',nargs='+',type=int,default=[0,2]);args=p.parse_args()
 for route in args.routes:
@@ -33,15 +33,19 @@ for route in args.routes:
   print '(A)','PPA_WU05B12_SHORT_ACTIVATION=PASS'
 '''
  if route=='normal':main='  case_temperature=-1._real64\n'+main
- else:main='  drain_depth=[-3._real64,-4._real64]\n'+main
+ else:
+  block=original[original.index('  block\n'):original.index('  initial%groundwater_level=',original.index('  block\n'))]
+  main='  drain_depth=[-3._real64,-4._real64]\n'+main
+  main=main.replace('  do gwl_index=1,3',block+'  do gwl_index=1,3')
  s=original[:a]+main+original[b:]
+ if route=='low_air':s=s.replace("  raw_expected=expected_proposal(initial%groundwater_level)","  call require(observation%frost_low_air_drainage%low_air_branch,'actual low-air branch in activation')\n  raw_expected=expected_proposal(initial%groundwater_level)")
  s=s.replace('  logical::ok\n','  logical::ok\n  integer::gwl_index,table_sign,cases=0\n',1)
  s=s.replace('qraw=b12_analytic_rate_oracle(analytic_family,gwl,merge(-1._real64,-3._real64,all(control_head>0._real64)))-.005_real64','qraw=b12_analytic_rate_oracle(analytic_family,gwl,-3._real64)-.005_real64*real(table_sign,real64)')
  s=s.replace('qraw=b12_analytic_rate_oracle(analytic_family,gwl,drain_depth(1))-.005_real64','qraw=b12_analytic_rate_oracle(analytic_family,gwl,drain_depth(1))-.005_real64*real(table_sign,real64)')
  s=s.replace('tabulated%signed_exchange_rate=[-.005_real64]','tabulated%signed_exchange_rate=[-.005_real64*real(table_sign,real64)]')
  source=pathlib.Path(f'/tmp/frost-b12-{route}-activation.f90');source.write_text(s);outputs=[]
  for opt in args.opts:
-  build=pathlib.Path(f'/tmp/ppa-wu05b12-{route.replace("_","-")}-runtime/o{opt}')
+  build=pathlib.Path(os.environ.get('B12_LOW_AIR_BUILD','/tmp/ppa-wu05b12-low-air-runtime') if route=='low_air' else '/tmp/ppa-wu05b12-normal-runtime')/f'o{opt}'
   assert(build/'mod_fmr_production_application_bootstrap.o').exists()
   flags=['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow',f'-O{opt}','-J'+str(build),'-I'+str(build)]
   base=pathlib.Path(f'/tmp/frost-b12-{route}-activation-o{opt}')

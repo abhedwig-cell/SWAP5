@@ -2,6 +2,10 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 BUILD="${B12_RUNTIME_BUILD:-${TMPDIR:-/tmp}/ppa-wu05b12-low-air-runtime}"
+case "$BUILD" in
+  */ppa-wu05b12-low-air-runtime*) ;;
+  *) echo "Invalid owned B12 build directory" >&2; exit 2 ;;
+esac
 rm -rf "$BUILD"; mkdir -p "$BUILD"
 cd "$ROOT"
 

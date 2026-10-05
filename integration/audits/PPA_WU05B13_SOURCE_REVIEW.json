@@ -1,0 +1,55 @@
+{
+  "work_unit": "PPA-WU05B13",
+  "status": "SOURCE_REVIEW_ONLY_B12_QUALIFICATION_PENDING",
+  "baseline": "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+  "reviewed_B12_candidate_source": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
+  "prerequisite": "Finish exact B12 all-family runtime qualification, admission and actual merge reconciliation before preregistration or production editing",
+  "selected_next_slice": "Already-admitted empirical interflow drainage-side law with normal and guarded low-air frost; explicit OFF selector and actual trial-start GWL/control-head binding. Bounded legacy-shaped top/last-level empirical contribution; active mixed family scope must be fixed in preregistration",
+  "scientific_authority": {
+    "work_unit": "F-VQ42",
+    "exact_head": "702db051bf5dd0960a962be919ea0cfbf01895a4",
+    "status_blob": "404db3d42997d40ce196ebfa501fc693f32c7310",
+    "status": "QUALIFIED_CLOSED",
+    "contract_path": "integration/f-vq/F-VQ42_QUALIFICATION_CONTRACT.json",
+    "evidence_path": "integration/f-vq/F-VQ42_QUALIFICATION_EVIDENCE.json",
+    "independent_oracle_path": "tests/fvq/test_fvq42_empirical_interflow_scientific.py",
+    "independent_oracle_blob": "5eea0d3b591df048b98cc1cc266a0ecb071712c7",
+    "production_blob": "eb53096b678d08b76d3fb1adb2247bc2a58ee748",
+    "current_empirical_process_matches_primary_blob": true,
+    "historical_results_only": {
+      "active_cases": 1404,
+      "derivative_formula_checks": 1404,
+      "finite_difference_checks": 6,
+      "inactive_checks": 8,
+      "activation_checks": 4
+    }
+  },
+  "findings": [
+    "The literal B1.11 DRAMET3 drainage branch selects empirical interflow only for lev==nrlevs and swnrsrf==1; other positive-side levels use linear resistance. This is distinct from general normalized per-level runtime selectors.",
+    "The qualified scalar law uses c in[0.01,10], p in[0.1,1], q=c*(GWL-drain_head)^p for positive difference and zero interflow contribution below activation. At zero p<1 has singular positive tangent; p=1 has finite right tangent but no two-sided derivative. No smoothing or Jacobian path may be inferred.",
+    "F-VQ42 explicitly excludes negative-side DRAMET3 infiltration, DIVDRA, aggregation, runtime and canonical claims. Existing F-PM14/F-VQ73 ordered binding and F-PM19 denominator authority must be separately reconciled for a frost composition.",
+    "Unlike B12 analytic fixed geometry, empirical drain_head is interval control consumed by the actual admitted binding. Physical frost drain depths remain separate; do not replace either with the other.",
+    "Expose existing private active parameter validator additively as pure only after preregistration. Unchanged equation bodies plus immutable independent scientific cases must be rebound to actual current source.",
+    "Use the existing disposable proposal, normal/B8 modifier, B10 full/half regeneration and single final sink/receipts. No extra persistent process/restart state. All currently selected mixed variants retain their own flags and active-domain validation."
+  ],
+  "source_sha256": {
+    "src/process/mod_drainage_empirical_interflow_response.f90": "1aa182f15d59206ffad7502221a778dedc145aafe2b0fd819002810173c346bb",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "8269215b7527ec0b5db61bf8d92f6b6c826b442bca24dc6faafec67fb0d9bf3f",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+  },
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "exclusions": [
+    "Negative-side DRAMET3 infiltration",
+    "EXTENDED_SIGNED",
+    "SWDIVD1 spatial distribution",
+    "Fixed weir",
+    "Projection/directional/implicit coupling",
+    "Root/salt/macropore/snow hybrids",
+    "New phase physics"
+  ],
+  "next_action": "Complete B12; reconcile actual canonical source then persist bounded B13 preregistration before any material source/interface change"
+}
