@@ -551,8 +551,10 @@ contains
          error stop 'unknown soil salt boundary unit accepted'
     soil_boundary%unit_id=FMR_C_DRAIN_UNIT_MG_CM3
     deallocate(soil_boundary%macropore_top_mg_cm3,soil_boundary%macropore_bottom_mg_cm3)
+    allocate(soil_boundary%macropore_top_mg_cm3(2))
     if(fmr_soil_salt_boundary_matches_trial(soil_boundary,cdrain%source_id,cdrain%valid_t0,cdrain%valid_t1)) &
          error stop 'unpaired macropore boundary concentrations accepted'
+    deallocate(soil_boundary%macropore_top_mg_cm3)
     matrix_c=0.4_real64;macro_c=0.3_real64
     call initialize_mobile_macro_salt_state(node_thickness,water_trace(1)%water_start, &
          water_trace(1)%macropore_water_start,matrix_c,macro_c,committed,status)
