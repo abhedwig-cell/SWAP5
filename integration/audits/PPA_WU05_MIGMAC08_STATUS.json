@@ -4,13 +4,13 @@
   "date": "2026-10-05",
   "canonical_base": "52821447904244f738649086706a43565f0f00c8",
   "branch": "work/ppa-wu05-migmac08-covered-reference",
-  "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
-  "production_admitted": false,
+  "status": "CANONICAL_PRODUCTION_ADMITTED_CLOSED",
+  "production_admitted": true,
   "scope": "Rigid zero-capacity covering layer above mixed-law Reference macropore domain; hydrostatic reference preparation and existing transfer owner",
   "qualification": "integration/audits/PPA_WU05_MIGMAC08_QUALIFICATION.json",
   "preregistration": "docs/audits/PPA_WU05_MIGMAC08_PREREGISTRATION.md",
   "blockers": [],
-  "next_action": "Admit exact qualified tree and close rigid covered reference scope.",
+  "next_action": "Rigid covered reference scope complete; reconcile nonrigid covering source relevance and remaining source/surface/whole-model envelope.",
   "remaining_migration_scope": [
     "Nonrigid covering reference source reconciliation",
     "Additional source-relevant surface compositions",
@@ -19,5 +19,9 @@
   "future_only_scope": [
     "Multiple simultaneous rapid-drain levels",
     "Alternative execution modes"
-  ]
+  ],
+  "canonical_pr": 1025,
+  "canonical_merge": "b29308d7741ea6de85014032e6bf2e78c4be7dd5",
+  "published_qualified_commit": "f07a41f6560836dfd3c69804dfc6d0f8a728c3da",
+  "qualified_tree": "8a3f93520a851f052fc07520dea00e3343a275bb"
 }

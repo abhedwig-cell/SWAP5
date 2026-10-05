@@ -205,3 +205,16 @@ This says nothing about the separate ordinary multilevel matrix-drainage route.
 Remaining source-relevant work includes covering-layer reference preparation,
 wider surface-owner compositions and whole-model equivalence. Broad migration
 is incomplete. [MIGMAC07 closeout](PPA_WU05_MIGMAC07_CLOSEOUT.md) controls scope.
+
+## Later canonical reconciliation: MIGMAC08 (2026-10-05)
+
+PR #1025 closes rigid covering-layer hydrostatic reference preparation in the
+existing covered Reference chain. Covered mixed-law growth/wetting/partial rapid
+drainage and transaction/restart semantics are qualified with the same covering
+matrix-transfer owner. Earlier covering-reference gap statements are superseded
+for the explicit rigid, zero-static-capacity cover only.
+
+Reconcile source relevance of nonrigid covering reference geometry before
+assuming that it is missing migrated physics. Wider source/surface compositions
+and whole-model equivalence remain outside this admission. Broad migration is
+incomplete. [MIGMAC08 closeout](PPA_WU05_MIGMAC08_CLOSEOUT.md) controls the claim.

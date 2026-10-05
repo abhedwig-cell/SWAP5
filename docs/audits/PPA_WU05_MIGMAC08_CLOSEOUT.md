@@ -1,6 +1,6 @@
 # PPA-WU05-MIGMAC08 rigid covered reference preparation
 
-Date: 2026-10-05. Status: LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION.
+Date: 2026-10-05. Status: CANONICAL_PRODUCTION_ADMITTED_CLOSED.
 Canonical base: 52821447904244f738649086706a43565f0f00c8.
 
 B1.11 macropore geometry section E deletes static volumes and domain proportions
@@ -49,3 +49,10 @@ Exact qualification authority: `integration/audits/PPA_WU05_MIGMAC08_QUALIFICATI
 The frozen Status A boundary is unchanged; broad migration is still incomplete.
 Excluded: nonrigid cover reference preparation, new surface ownership,
 whole-model equivalence and alternative solvers.
+
+## Canonical admission
+
+PR #1025 merged qualified tree `8a3f93520a851f052fc07520dea00e3343a275bb`
+at `b29308d7741ea6de85014032e6bf2e78c4be7dd5`. Published qualified commit:
+`f07a41f6560836dfd3c69804dfc6d0f8a728c3da`. Merge comparison has no changed files.
+All 158 source/test postimages remain exact. Closeout changes documentation/status.

@@ -291,3 +291,20 @@ implemented B1.11 capability. Ordinary multilevel matrix drainage is separate.
 Covering-layer reference preparation, wider source-relevant surface compositions
 and whole-model equivalence remain separate migration work. Frozen Status A and
 the incomplete broad migration claim remain unchanged.
+
+## PPA-WU05-MIGMAC08 rigid covered reference preparation
+
+PR #1025 admits hydrostatic reference-KD preparation for an explicit rigid cover
+with exactly zero above-top static macropore capacity. Existing covering matrix
+transfer remains the covered-input owner; surface-connected A9 precipitation is
+absent there. Invalid cover selectors/capacity fail without KD mutation. Source
+section-D and independent covered reference geometry agree. Mixed-law Reference
+wetting, partial rapid drainage, prepared carriers, supplied/derived KD identity,
+retry, A/B/A and accepted restart pass at O0/O2, with preceding route preservation.
+[Closeout](../audits/PPA_WU05_MIGMAC08_CLOSEOUT.md) controls source and qualification.
+
+Earlier covering-reference exclusions are superseded only for this rigid route.
+Nonrigid covering reference preparation still needs source relevance/ownership
+reconciliation; wider source-relevant surface compositions and whole-model
+equivalence remain outside this admission. Frozen Status A remains unchanged;
+broad migration is still incomplete.
