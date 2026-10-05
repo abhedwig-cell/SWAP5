@@ -251,8 +251,11 @@ the sowing temperature samples the first compartment whose bottom reaches
 `zTempSow`. Out-of-profile depths fail closed. A separate Reference-state
 adapter reads the physical pressure profile and private, initialized soil
 temperature continuation through its typed export API, rejecting absent
-heat activation; its O0/O2 contract passes. Accepted endpoint extraction,
-daily crop event publication and crop/calendar restart coupling remain open.
+heat activation; its O0/O2 contract passes. A guarded committed-state
+snapshot checks a complete result's column, revision and endpoint before
+reading this profile, with mismatched provenance rejected in a synthetic
+receipt test. A real accepted heat-enabled endpoint trial, daily crop-event
+publication and crop/calendar restart coupling remain open.
 
 `tests/management/run_mig431_crop_rotation.sh` passed at O0 and O2. It
 checks before, within, and after crop windows, the terminal crop without a
