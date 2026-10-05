@@ -52,7 +52,7 @@
     "drainage/boundary flux ownership for deferred FrozenBounds"
   ],
   "source_trace": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
-  "next_action": "Qualify joint root/bottom frost; correct and qualify B1 drainage node/level inconsistency before migrating that branch",
+  "next_action": "Qualify bounded B1 drainage reporting correction and migrate drainage against its single-owner reference; geometry and redistribution remain separately bounded",
   "recovery_point": "Canonical PR #1018 merge 5272ac9192ec1065dbe2432f73d1f1b4394437e0; exact qualified tree preserved; bounded hydraulic modifier admitted.",
   "blockers": [],
   "legacy_dispositions": {
@@ -96,5 +96,12 @@
     "scope": "Rootless ordinary Reference mode2 legacy no-drain FrozenBounds with explicit opt-in and finite positive local numerical budgets",
     "admission": "integration/audits/PPA_WU05B3_CANONICAL_ADMISSION.json"
   },
-  "drainage_reference_finding": "integration/audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_STATUS.json"
+  "drainage_reference_finding": "integration/audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_STATUS.json",
+  "joint_root_bottom_successor": {
+    "work_unit": "PPA-WU05B4",
+    "canonical_merge": "d3bb48eb2407cdc8a3a089f37cc689f6a940dddb",
+    "admitted": true,
+    "scope": "Joint empirical root cutoff with OFF/Jarvis/Walsum and no-drain ordinary prescribed-qbot frost; same trial-start state and strict max of independent temporal norms",
+    "admission": "integration/audits/PPA_WU05B4_CANONICAL_ADMISSION.json"
+  }
 }
