@@ -197,7 +197,9 @@ jobs:
           sudo apt-get install -y gfortran
       - name: All exponent and ordered-level actual runtime configurations
         run: |
-          if test -f tests/frost/run_ppa_wu05b13_runtime.py; then
+          # B14 replays every B13 primary on its fresh modules. B13's own
+          # additional/preservation runners are deliberately pinned to B13 source.
+          if test -f tests/frost/run_ppa_wu05b13_runtime.py && ! test -f tests/frost/run_ppa_wu05b14_runtime.py; then
             python3 tests/frost/run_ppa_wu05b13_runtime.py --route ${{ matrix.route }}
             python3 tests/frost/run_ppa_wu05b13_additional.py --routes ${{ matrix.route }}
             python3 tests/frost/run_ppa_wu05b13_preservation.py --route ${{ matrix.route }}
