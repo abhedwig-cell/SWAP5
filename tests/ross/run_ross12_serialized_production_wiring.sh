@@ -31,6 +31,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/process/mod_frost_hydraulic_effect.f90
+  src/solver/mod_frost_hydraulic_provider.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
