@@ -14,7 +14,7 @@
     "Current preflight correctly excludes drainage_response_active whenever frost_drainage is active.",
     "Frost modifier currently executes before active drainage generation, so removing the exclusion alone would allow generation to overwrite modified qdra.",
     "Generated diagnostic aggregate is used for step/window drainage exchange receipt; enabling composition requires receipts to follow final frost-modified nodal rates, while retaining raw generation diagnostics as proposed values.",
-    "Temporal terminal checks currently use immutable prescribed nodal proposals; state-dependent generation must be recomputed from each terminal hydraulic snapshot before modifier branch/flux checks.",
+    "B8 terminal flux checks use immutable prescribed proposals. B9 initially excludes B8 and reuses B6 terminal low-air classification plus head/GWL/temperature norm; admitted linear generation depends on the finite current GWL carrier and configured resistance. Actual generated/modified rates are independently checked against the source oracle and fine trajectories.",
     "Existing B8 physical guards, single solver source/sink/mass ownership and no new committed drainage state must remain intact."
   ],
   "authorities": [

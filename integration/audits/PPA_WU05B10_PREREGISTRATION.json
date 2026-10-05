@@ -1,0 +1,34 @@
+{
+  "work_unit": "PPA-WU05B10",
+  "status": "PREREGISTERED_READY_AFTER_B9_ADMISSION",
+  "source_review": "integration/audits/PPA_WU05B10_SOURCE_REVIEW.json",
+  "baseline_source": "0379fcc374513baaa487979ac7cc8288c9f44641",
+  "prerequisite": "B9 admitted via PR1048; exact production0379fcc3",
+  "scope": "LINEAR drainage response generation combined with B8 bracketed low-air modifier on rootless ordinary Reference mode2; physical drain depths and existing consistent geometry",
+  "interface": "New OFF-by-default frost_low_air_response_drainage_active selector requires B9 frost_response_drainage_active, drainage_response_active, B6 frost_drainage and B8 frost_low_air_drainage. Finite negative drain-depth cardinality matches generated levels. No projection, other variants, root/salt/macropore/snow or new committed/restart/ledger state.",
+  "physical_order": "Reuse B9 trial-start generation before B8 modifier. Proposed rates remain untouched, final node totals feed single sink and final receipts; final bottom flux remains a separate existing owner.",
+  "temporal_contract": "For selected B10 only, independently regenerate LINEAR proposals from terminal full/half hydraulic views for explicit provenance and availability, then compare B8 branch/blocked-level/qbot decisions. The finite-depth source implication bottom_depth < min(drain_depth) makes every final level zero; the 1e-6 test cannot independently change qbot in admitted SWDIVD0. Preserve prescribed B8 implementation when B10 OFF.",
+  "gates": [
+    "Independent actual LINEAR generation plus corrected guarded FrozenBounds final-node/qbot parity O0/O2",
+    "Explicit zero/partial/all cut and both bottom signs, original-input proposal recomputation on retry, node/storage/receipt owner and hard mass1e-12cm",
+    "Geometry implication falsification: all-cut forces zero qbot; surviving tiny generated totals below/above 1e-6 retain qbot. Independent terminal proposal provenance/availability.",
+    "Owned consistent nonuniform grid runtime with explicit local budgets, refined head1e-6cm/T1e-4C horizons and additional reference refinement",
+    "Application option/depth/variant/projection/missing-selector rejection; fresh replay and empty-registry restart",
+    "Source-bound incumbent B1/B2/B3/B4/B6/B8/B9, four SALFRO01, immutable VQ73/VQ74, complete canonical gate and docs"
+  ],
+  "exclusions": [
+    "SWDIVD1 redistribution",
+    "new drainage distribution",
+    "uniform/unbracketed fully-frozen geometry or last-node reinterpretation",
+    "non-LINEAR response with frost",
+    "GWL head projection/directional/fully implicit coupling",
+    "root/salt/macropore/snow hybrids",
+    "new phase-change physics or global legacy equivalence"
+  ],
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "next_action": "Reconcile actual canonical closeout and implement preregistered B10",
+  "baseline": "5cd8f04f81c19c6a20abeacddc172e0c44598ded"
+}

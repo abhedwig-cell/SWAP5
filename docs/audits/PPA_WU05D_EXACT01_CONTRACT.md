@@ -1,6 +1,6 @@
 # PPA-WU05-D-EXACT01 exact source reconciliation
 
-Status: preregistered successor before implementation.
+Status: qualified exact-source successor, canonical admission pending. Preregistered before implementation.
 
 The materialized B1.11 rootextraction source has SHA256
 `8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5`.
@@ -44,3 +44,12 @@ continues identically in a separate process. B8 admission metadata is retained
 with unchanged production and test trees. All 27 groups named above are
 mandatory before this successor is qualified or admitted. No old evidence is
 rewritten to claim these new source semantics.
+
+## B9 live reconciliation
+
+The 27 original groups pass on the persisted execution checkpoint. Canonical
+B9 subsequently changed the shared bootstrap/backend and added normal
+frost/LINEAR drainage composition. Its full delta is retained. All original
+27 groups and the B9 source/runtime groups must pass again on the reconciled
+source and test trees, for a controlling denominator of 29 before admission.
+The original replay evidence remains immutable.

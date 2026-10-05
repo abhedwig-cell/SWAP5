@@ -99,7 +99,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
        evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
-       FMR_DRAIN_BIND_OK
+       FMR_DRAIN_BIND_OK, FMR_DRAIN_VARIANT_LINEAR
   use mod_fmr_legacy_qgwl_bottom_boundary_provider, only: fmr_qgwl_bottom_boundary_config_t, &
        fmr_qgwl_bottom_boundary_result_t, fmr_evaluate_legacy_qgwl_bottom_boundary, FMR_QGWL_OK
   use mod_fmr_drainage_qbot_directional_binding, only: project_fmr_qbot_smooth_groundwater_level, &
@@ -143,6 +143,7 @@ module mod_fmr_serialized_reference_backend
        FMR_CAUCHY3_OK
   implicit none
   private
+  public :: fmr_frost_response_drainage_configuration_valid
 
   integer, parameter, public :: B110_SWBOTB2_OK = 0
   real(real64), parameter :: FMR_PRACTICAL_RICHARDS_A2C_TOL = 1.0e-8_real64
@@ -283,6 +284,7 @@ module mod_fmr_serialized_reference_backend
     type(root_compensation_config_t) :: root_compensation
     type(frost_low_air_drainage_config_t) :: frost_low_air_drainage
     type(frost_drainage_config_t) :: frost_drainage
+    logical :: frost_response_drainage_active = .false.
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
     real(real64) :: root_frost_head_budget_cm=0.0_real64
@@ -609,6 +611,7 @@ module mod_fmr_serialized_reference_backend
     type(root_compensation_config_t) :: root_compensation
     type(frost_low_air_drainage_config_t) :: frost_low_air_drainage
     type(frost_drainage_config_t) :: frost_drainage
+    logical :: frost_response_drainage_active = .false.
     real(real64),allocatable :: unfrozen_drainage_flux(:,:)
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
@@ -778,6 +781,21 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_rfm_committed_state
 
 contains
+
+  pure logical function fmr_frost_response_drainage_configuration_valid(parameters) result(ok)
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    ok=.true.
+    if(.not.parameters%frost_response_drainage_active)return
+    ok=.false.
+    if(.not.parameters%frost_drainage%active.or..not.parameters%drainage_response_active)return
+    if(parameters%frost_low_air_drainage%active.or.parameters%drainage_qbot_smooth_freatic_projection)return
+    if(.not.allocated(parameters%drainage_response_levels))return
+    if(size(parameters%drainage_response_levels)<1)return
+    if(any(parameters%drainage_response_levels%variant/=FMR_DRAIN_VARIANT_LINEAR))return
+    if(any(.not.ieee_is_finite(parameters%drainage_response_levels%linear%drainage_resistance)))return
+    if(any(parameters%drainage_response_levels%linear%drainage_resistance<=0._real64))return
+    ok=.true.
+  end function fmr_frost_response_drainage_configuration_valid
 
   pure logical function fmr_mobile_dispersion_matches_hydraulic_owner(parameters)result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::parameters
@@ -2489,7 +2507,8 @@ contains
              self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
              parameters%bottom_mode == 2 .and. &
              (.not. parameters%root_extraction_active .or. parameters%root_frost%active) .and. &
-             .not. parameters%macropore_active .and. .not. parameters%drainage_response_active .and. &
+             .not. parameters%macropore_active .and. &
+             (.not.parameters%drainage_response_active.or.parameters%frost_response_drainage_active).and. &
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
              .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active .and. &
              .not. self%bottom_thermal_carrier_active .and. .not. self%top_sensible_boundary_carrier_active .and. &
@@ -2497,6 +2516,7 @@ contains
       else
         ok = ok .and. .not. parameters%frost_hydraulic%active
       end if
+      ok=ok.and.fmr_frost_response_drainage_configuration_valid(parameters)
       if(parameters%frost_low_air_drainage%active)then
         ok=ok.and.parameters%frost_low_air_drainage%valid().and.parameters%frost_drainage%active
       end if
@@ -2505,7 +2525,8 @@ contains
              numerical_config%transaction%temporal_mode==TX_TEMPORAL_EXTERNAL_FULL_HALF.and. &
              .not.parameters%frost_bottom%active.and..not.parameters%root_extraction_active.and. &
              .not.parameters%root_frost%active.and..not.parameters%root_salinity_active.and. &
-             .not.parameters%drainage_response_active.and..not.self%base_salt_temporal_policy%enabled.and. &
+             (.not.parameters%drainage_response_active.or.parameters%frost_response_drainage_active).and. &
+             .not.self%base_salt_temporal_policy%enabled.and. &
              .not.parameters%elasticity_active.and..not.parameters%direct_retention_active.and. &
              .not.allocated(parameters%bartholomeus)
       end if
@@ -2686,6 +2707,7 @@ contains
       self%root_compensation = parameters%root_compensation
       self%frost_low_air_drainage = parameters%frost_low_air_drainage
       self%frost_drainage = parameters%frost_drainage
+      self%frost_response_drainage_active = parameters%frost_response_drainage_active
       self%frost_bottom = parameters%frost_bottom
       self%root_frost = parameters%root_frost
       self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm
@@ -2849,6 +2871,10 @@ contains
         self%drainage_response_diagnostics%status = drainage_preflight_status
         self%last_observation%drainage_response = self%drainage_response_diagnostics
         if (drainage_preflight_status /= FMR_DRAIN_BIND_OK) return
+        if(self%frost_response_drainage_active)then
+          if(allocated(forcing%soil_salt_boundary).or.allocated(forcing%c_drain_salt))return
+          if(any(forcing%subsurface_irrigation_source/=0._real64).or.any(forcing%root_extraction_sink/=0._real64))return
+        end if
       else
         if (.not. allocated(forcing%drainage_flux_by_level) .or. allocated(forcing%drainage_response_controls)) return
         if (size(forcing%drainage_flux_by_level,1) <= 0 .or. size(forcing%drainage_flux_by_level,2) /= n) return
@@ -3611,6 +3637,19 @@ contains
         end select
       end if
 
+      if(self%frost_response_drainage_active)then
+        ! Generate from this original trial-start view before applying frost.
+        call build_process_hydraulic_view(request%base_state,hydraulic_start,hydraulic_view_ok)
+        if(.not.hydraulic_view_ok)return
+        call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
+             hydraulic_start,self%qdra,self%drainage_response_diagnostics)
+        self%drainage_response_evaluations=self%drainage_response_evaluations+1
+        self%last_observation%drainage_response_evaluations=self%drainage_response_evaluations
+        self%last_observation%drainage_response=self%drainage_response_diagnostics
+        if(self%drainage_response_diagnostics%status/=FMR_DRAIN_BIND_OK)return
+        self%unfrozen_drainage_flux=self%qdra
+      end if
+
       if (self%soil_temperature_active) then
         if (.not. allocated(physical%soil_temperature) .or. .not. allocated(self%soil_temperature_parameters) .or. &
             .not. allocated(self%soil_temperature_forcing)) return
@@ -3669,7 +3708,8 @@ contains
       else
         if (allocated(physical%soil_temperature)) return
       end if
-      if (self%soil_temperature_active .or. self%drainage_response_active .or. self%rfm_configuration%enabled) then
+      if ((self%soil_temperature_active.or.self%drainage_response_active.or.self%rfm_configuration%enabled).and. &
+          .not.self%frost_response_drainage_active) then
         call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
       end if
@@ -3822,7 +3862,7 @@ contains
       return
     end select
 
-    if (self%drainage_response_active) then
+    if (self%drainage_response_active.and..not.self%frost_response_drainage_active) then
       if (self%drainage_qbot_smooth_freatic_projection) then
         if (.not. allocated(self%projection_zero_direction) .or. &
             size(self%projection_zero_direction) /= hydraulic_start%active_nodes) return
@@ -4224,6 +4264,9 @@ contains
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
       step_drainage_exchange = self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
+      ! Raw generation diagnostics remain proposal provenance. The accepted
+      ! receipt follows the same final nodes as the one solver sink/ledger.
+      if(self%frost_response_drainage_active)step_drainage_exchange=self%last_observation%frost_drainage%total_rate*step_duration
       self%last_observation%drainage_response_signed_exchange_native = step_drainage_exchange
       if (self%drainage_response_window_exchange_available .and. ieee_is_finite(step_drainage_exchange)) then
         self%drainage_response_window_signed_exchange_native = &

@@ -200,7 +200,15 @@
         "scope": "Rootless ordinary Reference mode2 prescribed signed nodal drainage; explicit finite negative physical drain depths; legacy low-air branch with guarded bracketed geometry, derived final-node totals and separate final qbot owner; normal branch retains B6",
         "admitted": true
       },
-      "active_response_composition_review": "integration/audits/PPA_WU05B9_SOURCE_REVIEW.json"
+      "active_response_composition_review": "integration/audits/PPA_WU05B9_SOURCE_REVIEW.json",
+      "normal_linear_response_frost_successor": {
+        "work_unit": "PPA-WU05B9",
+        "canonical_merge": "5cd8f04f81c19c6a20abeacddc172e0c44598ded",
+        "admission": "integration/audits/PPA_WU05B9_CANONICAL_ADMISSION.json",
+        "scope": "Rootless ordinary Reference mode2, current GWL LINEAR bottom-lumped generation then B6 normal frost modifier; final nodal rate drives single sink and step/window receipts",
+        "admitted": true
+      },
+      "low_air_response_successor_preregistration": "integration/audits/PPA_WU05B10_PREREGISTRATION.json"
     },
     "advanced_root_stress": {
       "legacy_files": [

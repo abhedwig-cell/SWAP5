@@ -419,3 +419,9 @@ Status A denominator is unchanged.
 PPA-WU05B8 is canonically admitted via PR #1046 at `0aca73324ea46511d18af56bca3fddd0dba52ffd`. Explicit physical drain depths and guarded B7 front geometry select final signed nodal drainage and a separate final bottom proposal on rootless ordinary Reference mode2 columns. Final node sums drive reports and the existing mass owner. Normal cases retain admitted B6.
 
 Completed local O0/O2 source parity, nonfinite-input guards, six65536-step runtime trajectories, additional first-case131072 refinement, hard mass, restart/application and all relevant current-source preservation pass. The exact proposed merge tree and source match qualification. [Contract and evidence](../audits/PPA_WU05B8_BRACKETED_LOW_AIR_DRAINAGE.md) retain failed numerical screens and bounded short-window claims. No queued Actions success is claimed. Active response generation, redistribution and broader hybrid/front interpretations remain separate; aggregate frost migration and frozen Status A are unchanged.
+
+## Normal frost with generated linear drainage
+
+PPA-WU05B9 is canonically admitted via PR #1048 at `5cd8f04f81c19c6a20abeacddc172e0c44598ded`. Its explicit physical selector generates admitted LINEAR drainage from each immutable trial-start GWL view before B6 normal frost reduction. Final nodal rates feed the existing sink and step/window receipts; raw generation diagnostics retain proposal provenance.
+
+[Contract and evidence](../audits/PPA_WU05B9_LINEAR_RESPONSE_FROST.md) bind completed local source parity, six O0/O2-identical actual trajectories, further reference refinement, hard mass, retry/replay/restart/application and all relevant incumbent/current preservation. Exact proposed merge identity was verified. B10 low-air response is preregistered separately; redistribution, projection, hybrids and broader geometry remain outside this admission. Aggregate frost migration and the frozen Status A denominator are unchanged.
