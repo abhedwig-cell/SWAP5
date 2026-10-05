@@ -2500,7 +2500,8 @@ contains
       end if
       if (parameters%root_salinity_active) then
         ok = ok .and. parameters%root_extraction_active .and. &
-             parameters%root_compensation%method == ROOT_COMP_JARVIS .and. &
+             (parameters%root_compensation%method == ROOT_COMP_JARVIS .or. &
+              parameters%root_compensation%method == ROOT_COMP_WALSUM) .and. &
              ieee_is_finite(parameters%solute_tscf) .and. parameters%solute_tscf >= 0.0_real64 .and. &
              parameters%solute_tscf <= 10.0_real64 .and. ieee_is_finite(parameters%saltmax_mg_cm3) .and. &
              parameters%saltmax_mg_cm3 >= 0.0_real64 .and. parameters%saltmax_mg_cm3 <= 100.0_real64 .and. &
