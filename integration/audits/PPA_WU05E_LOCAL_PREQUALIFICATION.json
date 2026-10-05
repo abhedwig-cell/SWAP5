@@ -199,6 +199,11 @@
       "command": "python3 tests/physics/run_ppa_wu05d2_publication.py",
       "result": "PASS_O0_O2",
       "scope": "D2 publication/application/rollback and restart invariants after compositor extension"
+    },
+    {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "result": "PASS_O0_O2_IDENTICAL",
+      "scope": "Re-run after Jarvis compositor API extension; existing FMR root sink mass transaction, fail-closed active salt route, restart v4, Cdrain validation and trace/replay identity remain intact"
     }
   ],
   "not_run_or_not_claimed": [
