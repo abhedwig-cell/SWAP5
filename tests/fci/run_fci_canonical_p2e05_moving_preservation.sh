@@ -33,6 +33,7 @@ PPA_WU04B_ADMISSION=4d40b8d4b6a1df06ff97fab55497542778431290
 PPA_WU04B_QUALIFIED=eb0e635975b77ec92084e1416038b1bc1f8232bc
 PPA_WU05B_QUALIFIED=a2b9227e43c6f705942dc4959a579c011b857ae0
 PPA_WU05B_BACKEND=c093919f070af2cf1616328cf3bd50df84e0a5f0
+PPA_WU05B_MERGE_BACKEND=d375e621a88e6e026e99702cd99b59a17e498536
 PPA_WU05B_EFFECT=2c8adba7986e7d85749c4c36d26530748fbbab9e
 PPA_WU05B_PROVIDER=08492a7272860629c9ffee34968c9cc29952bd58
 TEMPORAL_INDICATOR=src/solver/mod_reference_richards_temporal_indicator.f90
@@ -301,12 +302,14 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
   fi
   if git merge-base --is-ancestor "$PPA_WU05B_QUALIFIED" HEAD; then
-    backend_authority="$PPA_WU05B_BACKEND"
+    test "$(git rev-parse "HEAD^2:$BACKEND")" = "$PPA_WU05B_BACKEND" || \
+      fail 'PR parent does not carry the exact qualified PPA-WU05B backend postimage'
+    backend_authority="$PPA_WU05B_MERGE_BACKEND"
     test "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" = "$PPA_WU05B_EFFECT" || \
       fail 'PPA-WU05B frost hydraulic effect successor drift'
     test "$(git rev-parse HEAD:src/solver/mod_frost_hydraulic_provider.f90)" = "$PPA_WU05B_PROVIDER" || \
       fail 'PPA-WU05B frost hydraulic provider successor drift'
-    echo 'FCI_CANONICAL_PPA_WU05B_FROST_BACKEND_SUCCESSOR=ACTIVE'
+    echo 'FCI_CANONICAL_PPA_WU05B_TESTED_MERGE_BACKEND_SUCCESSOR=ACTIVE'
   fi
   test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = \
        "$(git rev-parse "$dependency_authority:src/solver/mod_b110_default_mvg_provider.f90")" || \
