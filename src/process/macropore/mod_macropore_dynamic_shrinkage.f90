@@ -51,7 +51,7 @@ module mod_macropore_dynamic_shrinkage
   end type dynamic_shrinkage_config_t
 
   public :: evaluate_peat_shrinkage_fraction, evaluate_node_shrinkage_fraction
-  public :: prepare_clay_kim_option1
+  public :: prepare_clay_kim_option1, prepare_clay_kim_option2, prepare_peat_characteristic_points
   public :: evaluate_clay_kim_shrinkage_fraction
   public :: evaluate_dynamic_crack_volume
   public :: evaluate_dynamic_crack_profile
@@ -295,6 +295,95 @@ contains
     if (parameters%transition_moisture_ratio > theta_s/(1.0_real64-theta_s)-0.01_real64) return
     ok = parameters%valid()
   end subroutine prepare_clay_kim_option1
+
+  subroutine prepare_clay_kim_option2(theta_s,zero_void,transition,parameters,ok)
+    real(real64),intent(in)::theta_s,zero_void,transition
+    type(clay_kim_shrinkage_t),intent(out)::parameters
+    logical,intent(out)::ok
+    parameters=clay_kim_shrinkage_t();ok=.false.
+    if(.not.ieee_is_finite(theta_s) .or. .not.ieee_is_finite(zero_void) .or. &
+       .not.ieee_is_finite(transition))return
+    if(theta_s<=0.0_real64 .or. theta_s>=1.0_real64)return
+    if(zero_void<=0.0_real64 .or. transition<sqrt(tiny(1.0_real64)) .or. zero_void>transition)return
+    if(transition>theta_s/(1.0_real64-theta_s)-0.01_real64)return
+    ! Exact finite root of A*(1+transition*beta)*exp(-transition*beta)=0.
+    parameters%alpha_k=zero_void
+    parameters%beta_k=-1.0_real64/transition
+    parameters%gamma_k=1.0_real64-(zero_void/transition)*exp(1.0_real64)
+    parameters%transition_moisture_ratio=transition
+    ok=parameters%valid()
+  end subroutine prepare_clay_kim_option2
+
+  pure real(real64) function one_minus_exp_negative(x) result(value)
+    real(real64),intent(in)::x
+    if(x<1.0e-4_real64)then
+      value=x*(1.0_real64-x/2.0_real64+x*x/6.0_real64-x*x*x/24.0_real64+x**4/120.0_real64)
+    else
+      value=1.0_real64-exp(-x)
+    end if
+  end function one_minus_exp_negative
+
+  pure real(real64) function peat_point_shape(alpha,c1,c2) result(value)
+    real(real64),intent(in)::alpha,c1,c2
+    ! Algebraically exact scaling of the B1.11 residual; all exponent arguments <=0.
+    value=exp(alpha*(log(c2)+1.0_real64-c2))* &
+         one_minus_exp_negative(alpha*(c1-c2))/one_minus_exp_negative(alpha*(c1-1.0_real64))
+  end function peat_point_shape
+
+  subroutine prepare_peat_characteristic_points(theta_s,zero_void,transition,typical,peak,p,parameters,ok)
+    real(real64),intent(in)::theta_s,zero_void,transition,typical,peak,p
+    type(peat_shrinkage_t),intent(out)::parameters
+    logical,intent(out)::ok
+    type(peat_shrinkage_t)::trial
+    real(real64)::sat,baseline,target,c1,c2,c3,lo,hi,mid,fmid,ratio,shrink,theta_typical
+    integer::iteration
+    logical::law_ok
+    parameters=peat_shrinkage_t();ok=.false.
+    if(.not.ieee_is_finite(theta_s) .or. .not.ieee_is_finite(zero_void) .or. &
+       .not.ieee_is_finite(transition) .or. .not.ieee_is_finite(typical) .or. &
+       .not.ieee_is_finite(peak) .or. .not.ieee_is_finite(p))return
+    if(theta_s<=0.0_real64 .or. theta_s>=1.0_real64)return
+    sat=theta_s/(1.0_real64-theta_s)
+    if(zero_void<0.0_real64 .or. zero_void>=sat .or. transition>=sat)return
+    if(typical<1.0e-8_real64 .or. peak<=typical .or. transition<=peak)return
+    if(abs(p)<1.0e-8_real64 .or. abs(p)>10.0_real64)return
+    ratio=peak/transition
+    if(ratio<1.0e-5_real64)return
+    c1=1.0_real64/ratio;c2=typical/peak
+    baseline=zero_void+(sat-zero_void)*typical/sat
+    if(p>0.0_real64)then
+      target=zero_void+typical
+    else
+      target=0.5_real64*zero_void+typical
+    end if
+    c3=(target/baseline-1.0_real64)/p
+    if(.not.ieee_is_finite(c3))return
+    lo=0.001_real64;hi=10.0_real64
+    if(peat_point_shape(lo,c1,c2)-peat_point_shape(hi,c1,c2)<=1.0e-10_real64)return
+    if(c3>peat_point_shape(lo,c1,c2) .or. c3<peat_point_shape(hi,c1,c2))return
+    do iteration=1,80
+      mid=lo+0.5_real64*(hi-lo)
+      fmid=peat_point_shape(mid,c1,c2)-c3
+      if(abs(fmid)<=1.0e-13_real64*max(1.0_real64,abs(c3)) .and. &
+         hi-lo<=1.0e-12_real64*max(1.0_real64,abs(mid)))exit
+      if(fmid>0.0_real64)then
+        lo=mid
+      else
+        hi=mid
+      end if
+    end do
+    if(iteration>80)return
+    trial%void_ratio_zero=zero_void
+    trial%transition_moisture_ratio=transition
+    trial%alpha=mid;trial%beta=mid/ratio;trial%p=p
+    if(.not.peat_valid(theta_s,trial,SHRINK_PEAT_DIRECT))return
+    theta_typical=typical*(1.0_real64-theta_s)
+    call evaluate_peat_shrinkage_fraction(theta_typical,theta_s,trial,SHRINK_PEAT_DIRECT,shrink,law_ok)
+    if(.not.law_ok)return
+    if(abs((theta_s-shrink)/(1.0_real64-theta_s)-target)> &
+       1.0e-12_real64*max(1.0_real64,abs(target)))return
+    parameters=trial;ok=.true.
+  end subroutine prepare_peat_characteristic_points
 
   subroutine evaluate_clay_kim_shrinkage_fraction(theta, theta_s, parameters, shrink_fraction, ok)
     real(real64), intent(in) :: theta, theta_s

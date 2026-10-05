@@ -22,9 +22,10 @@ program test_ppa_wu05a9_fmr_top_input_trial
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t, prepare_clay_kim_option1, &
        SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, &
+       prepare_clay_kim_option2, prepare_peat_characteristic_points, &
        evaluate_dynamic_crack_profile
   implicit none
-  character(len=1)::constitutive_flag
+  character(len=1)::constitutive_flag,fit_flag
 
   integer(int64),parameter :: column_id=508001_int64
   real(real64),parameter :: dt=1.0e-3_real64
@@ -65,6 +66,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
   integer :: commit_status
   integer :: nd
 
+  fit_flag='0'
+  call get_environment_variable('WU05_MIGMAC04_FIT',fit_flag)
   constitutive_flag='0'
   call get_environment_variable('WU05_MIGMAC03_LAW',constitutive_flag)
   dynamic_flag='0'
@@ -339,6 +342,25 @@ contains
       shrinkage%peat%p=0.1_real64
       shrinkage%peat%intermediate_moisture_ratio=0.2_real64
       shrinkage%peat%intermediate_void_ratio=0.4_real64
+    end if
+
+    if(fit_flag=='1')then
+      do k=1,numnod
+        call prepare_clay_kim_option2(theta_s(k),0.2_real64,0.35_real64,shrinkage%kim(k),ok)
+        call require(ok,'MIGMAC04 clay points prepare')
+      end do
+    else if(fit_flag=='2' .or. fit_flag=='3')then
+      call require(allocated(shrinkage%peat),'MIGMAC04 peat carrier present')
+      do k=1,numnod
+        if(fit_flag=='2')then
+          call prepare_peat_characteristic_points(theta_s(k),0.2_real64,0.5_real64,0.1_real64, &
+               0.25_real64,0.1_real64,shrinkage%peat(k),ok)
+        else
+          call prepare_peat_characteristic_points(theta_s(k),0.2_real64,0.5_real64,0.1_real64, &
+               0.25_real64,-0.3_real64,shrinkage%peat(k),ok)
+        end if
+        call require(ok,'MIGMAC04 peat points prepare')
+      end do
     end if
 
     allocate(p%macropore)

@@ -235,3 +235,14 @@ preserve implicit Kim callers. No new water or restart owner is introduced.
 claims; `integration/audits/PPA_WU05_MIGMAC03_STATUS.json` records admission.
 Parameter fitting, mixed Kim/peat runtime and new mixed-law rapid-drain reference
 construction remain separate gaps. Frozen Status A is unchanged.
+
+## PPA-WU05-MIGMAC04 characteristic-point shrinkage input
+
+Kim clay input2 and the uniquely identifiable regular Hendriks peat input2
+branch are locally qualified as preparation of existing constitutive carriers.
+Clay preparation is analytic; peat preparation uses bounded, bracketed root
+finding against the exact B1.11 equation. No runtime/state/mass owner is added.
+[Closeout](../audits/PPA_WU05_MIGMAC04_CLOSEOUT.md) bounds input validity, numerical
+criteria and non-identifiable cases; `integration/audits/PPA_WU05_MIGMAC04_STATUS.json`
+records admission. Ambiguous fits and new mixed-law/drain compositions remain
+outside this scope. Frozen Status A is unchanged.
