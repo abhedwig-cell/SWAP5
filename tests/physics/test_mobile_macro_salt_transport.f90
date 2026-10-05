@@ -57,6 +57,13 @@ program test_mobile_macro_salt_transport
   call require(status==MACRO_SALT_INVALID,'negative drainage rejects absent Cdrain')
   call require(.not.allocated(rejected%matrix_mass_mg_cm2),'missing Cdrain publishes no candidate')
   call require(.not.allocated(drain_receipt),'missing Cdrain publishes no partial receipt')
+  drain_rates=0.0_real64
+  drain_rates(1,1)=1000.0_real64
+  call advance_mobile_macro_salt_drainage(initialized,drain_water,drain_rates,drain_cdrain,.true., &
+       0.1_real64,rejected,drain_receipt,status)
+  call require(status==MACRO_SALT_INVALID,'drainage cannot overdraw salt donor')
+  call require(.not.allocated(rejected%matrix_mass_mg_cm2),'overdraw publishes no candidate')
+  call require(.not.allocated(drain_receipt),'overdraw publishes no partial receipt')
 
   accepted=initialized
   matrix_faces=0.0_real64
