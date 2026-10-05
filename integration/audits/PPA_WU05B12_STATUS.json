@@ -1,15 +1,15 @@
 {
   "work_unit": "PPA-WU05B12",
   "baseline": "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
-  "last_reconciled_upstream": "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+  "last_reconciled_upstream": "388a87cad21218d0519cd8cf401a41ef0b67327e",
   "baseline_source": "cd7a56657fa3347ee63595a0f54274b2f1766ba8",
   "preregistration": "integration/audits/PPA_WU05B12_PREREGISTRATION.json",
-  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "aggregate_frost_migration_complete": false,
   "relevant_paths": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -30,8 +30,8 @@
   ],
   "dependency_surface": "Active variant/prepared generation and physical depths; runtime/backend/bootstrap; frost/temperature; sink/accounting, restart, root/salt and strict canonical pin gate",
   "interfaces_allowed_to_change": "Add OFF-by-default frost_analytic_response_drainage_active parameter/model selector requiring B9 base selector and at least one selected analytic family level. TABULATED levels additionally require the B11 selector and at least one actual table. Low-air additionally requires B10 selector and existing valid matching negative depth array. Additive public pure delegating accessors expose existing private active variant/prepared validators; existing evaluator, preparation equations, parameter domain and status behavior remain unchanged.",
-  "next_action": "Persist complete qualified evidence; verify exact proposed tree, source and parents, then admit and reconcile actual merge",
-  "recovery_point": "Persisted partially-tested checkpoint; no qualification/admission claim",
+  "next_action": "Reconcile exact metadata closeout then preregister source-reviewed bounded empirical interflow frost composition",
+  "recovery_point": "388a87cad21218d0519cd8cf401a41ef0b67327e",
   "blockers": [],
   "production_source_tree": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
   "negative_findings": [
@@ -92,9 +92,7 @@
     "low_air_runtime": "All five families x six full trajectories; O0/O2 complete identical PASS; independent equations, hard mass, raw/final receipts, retry/replay/application/empty restart",
     "low_air_incumbents": "Fresh B8/B10/B11 actual current whole-module relinks O0/O2 identical PASS"
   },
-  "pending": [
-    "Exact proposed-merge verification and canonical admission"
-  ],
+  "pending": [],
   "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
   "partial_evidence": {
     "path": "docs/audits/evidence/PPA_WU05B12_PARTIAL_RECOVERY.json.gz",
@@ -382,5 +380,7 @@
     "sha256": "018feb6fbb06db0d473ea0eae143e6530cff1938777a0e1572f621de80573eeb",
     "bytes": 240538,
     "manifest_entries": 465
-  }
+  },
+  "canonical_merge": "388a87cad21218d0519cd8cf401a41ef0b67327e",
+  "canonical_pr": 1056
 }
