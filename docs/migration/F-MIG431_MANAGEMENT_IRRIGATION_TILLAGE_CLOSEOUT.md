@@ -47,7 +47,7 @@ named below.
 | `DCS=1` | Return root-zone water toward field capacity, with crop-stage under/over-depth adjustment and rain subtraction | Hydraulic profile, field capacity, crop stage, rain, event state | Typed evaluator computes weighted FC deficit, adds AFGEN `di` in mm converted to cm, subtracts gross rain only above `raithreshold`, and shares the `DCSLIM` bounds; independent boundary/formula oracle passes O0/O2. No admitted production composition | `MIGRATE` |
 | `DCS=2` | Apply prescribed crop-stage-specific fixed depth | Crop-stage lookup and active event/rate state | PR #265 admits DCS2 paired with TCS1/TCSFIX=1 for the Hupsel sprinkling route. The independent TCS7 process check exercises its typed SSDI depth lookup only | `ADMITTED` within PR #265 envelope |
 | `DCSLIM=1`, `irgdepmin`/`irgdepmax` | Bound the selected irrigation depth | Selected depth and configured limits | Typed evaluator applies the legacy mm-to-cm min/max bounds after DCS1 or DCS2 selection; boundary oracle passes O0/O2. No admitted generic production route | `MIGRATE` |
-| `SWCIRRTHRES`, `cirrthres`, `perirrsurp` | Add over-irrigation when irrigation-water solute concentration exceeds a soil concentration threshold | Soil solute profile, water concentration, event depth | SWAP5 does not admit this coupled solute-control route | `MIGRATE`, dependent on solute/salinity admission |
+| `SWCIRRTHRES`, `cirrthres`, `perirrsurp` | Increase scheduled irrigation depth when soil concentration at the sensor exceeds its threshold | Soil solute profile at `nodsen`, event depth, threshold and surplus percentage | A typed pure evaluator qualifies the source's strict `cml(nodsen) > cirrthres` and post-DCSLIM percentage formula at O0/O2. It has no admitted solute-profile input or coupled application | `MIGRATE`, dependent on solute/salinity admission |
 | `cirr`/`cirrs` | Carry irrigation solute concentration into water/solute accounting | Event concentration and solute state | Surface water routing exists in restricted profiles; no admitted irrigation-solute delivery | `MIGRATE`, dependent on solute admission |
 | `irr_rate`, `dt_irr_event`, `gird`, `qssdi` | Convert depth and rate into a bounded event span and source flux | Active event timing and source receipt | Typed fixed/scheduled interval processes calculate duration and flux; runtime application/restart remains incomplete for non-F-APP07 modes | `MIGRATE` for unsupported modes |
 
@@ -56,15 +56,15 @@ named below.
 | Legacy selector / route | Physical meaning | Required state | Current SWAP5 coverage | Disposition |
 | --- | --- | --- | --- | --- |
 | `SWTILL=0` | No tillage transformation | None | No-op/default behavior | `ADMITTED` |
-| `SWTILL=1` and dated event tables | Change bulk density within an event depth according to event type and intensity; continue consolidation between events | Next event index, preceding type parameters, density history, consolidation parameters, layer/horizon mapping | Typed event selection, density, constitutive and water-redistribution formulas pass O0/O2 oracles. Typed event owner has split/retry and schema-versioned restart tests. A hydraulic candidate binder reconstructs pressure head from the new VG curve with water-plus-pond closure; production accepted-state application and compatibility remain open | `MIGRATE` |
+| `SWTILL=1` and dated event tables | Change bulk density within an event depth according to event type and intensity; continue consolidation between events | Next event index, preceding type parameters, density history, consolidation parameters, layer/horizon mapping | Typed event and inter-event consolidation transactions compose pointer, cumulative accepted rain, density, VG transform, redistribution and inverse head in an unpublished candidate; O0/O2 full-profile restart/continuation passes. Production solver-state application remains open | `MIGRATE` |
 | `i_n_model=1` | Keep van Genuchten `n` unchanged as density changes | Hydraulic parameters and density history | Typed constitutive transform preserves `n`, regenerates `m`, and qualifies B1.11 density exponents at O0/O2; no application binding | `MIGRATE` |
 | `i_n_model=2` | Derive `n` from silt/clay ratio | Texture, density and hydraulic parameter state | Positive-clay typed formula passes O0/O2; the known `PCLAY=0` divide-by-zero from SWAP-003 fails closed | `MIGRATE` for valid positive-clay inputs; `REJECTED` for the known `PCLAY=0` route |
 | `i_n_model=3` | Derive `n` from a configured matching point | Matching water content/head, density and hydraulic parameter state | Typed formula applies a supplied persistent matching-point slope and regenerates `m`; no application binding | `MIGRATE` |
 | `iRedist=1` / `2` | Redistribute water state after hydraulic parameter changes using simple / complex method | Full soil-water profile and old/new constitutive state | Typed alternatives conserve thickness-weighted soil water plus pond, including saturation overflow, at O0/O2. A typed binder computes the inverse VG pressure head and verifies roundtrip retention; production accepted-state application remains open. Exact B1.11 redistribution arithmetic is rejected because it mixes water content and water depth | `MIGRATE` for physical redistribution; `REJECTED` for the legacy nonconserving arithmetic |
 | `iRedist=0` | Test-only path; production code rejects it outside technical test mode | Test flag | Not a supported physical production selection | `REJECTED` |
 | `Date_tillage`, `Z_tillage`, `I_tillage`, `Type_tillage` | Event date, depth, intensity and type select where and how the transition applies | Ordered event table, next-event pointer, horizon/compartment mapping | Typed start selector reproduces corrected SWAP-002 boundary states and rejects duplicate/unexecutable dates. Typed owner persists the next pointer and cumulative accepted rain, rejects event-crossing spans without publishing state, and has O0/O2 restart/replay tests. SWAP-004 type-index/allocation defect remains in reference | `MIGRATE` with typed validation; malformed/sparse legacy type-index mapping is `REJECTED` |
-| `Rho_tillage`, `Rho_cons`, `k_R`, `Rho_match`, `N_match` | Target density, consolidation density/rate and optional matching point parameterize hydraulic transition | Per-layer parameter tables and prior density | Typed density event, accepted cumulative net-rain consolidation and constitutive transformation pass O0/O2. Exact source substitution of instantaneous `nraidt` rate for cumulative rain is rejected | `MIGRATE` for physical transition; `REJECTED` for legacy rate-as-amount consolidation |
-| Tillage interaction gates (`SWHYST`, `SWSOLU`, `SWMACRO`, `FLKSATEXM`, `SWDISCRVERT`, physical oxygen) | Legacy rejects selected interacting features or configurations | Configuration combination | No general tillage application envelope; combinations must remain explicit and fail closed | `MIGRATE` with bounded compatibility matrix; never inherit legacy global control flow |
+| `Rho_tillage`, `Rho_cons`, `k_R`, `Rho_match`, `N_match` | Target density, consolidation density/rate and optional matching point parameterize hydraulic transition | Per-layer parameter tables and prior density | Typed event and inter-event transactions apply the accepted cumulative net-rain density formula and transform the VG profile at O0/O2. Exact source substitution of instantaneous `nraidt` rate for cumulative rain is rejected | `MIGRATE` for physical transition; `REJECTED` for legacy rate-as-amount consolidation |
+| Tillage interaction gates (`SWHYST`, `SWSOLU`, `SWMACRO`, `FLKSATEXM`, `SWDISCRVERT`, `SWCROPSNM` physical oxygen) | Legacy rejects selected interacting features or configurations | Configuration combination | The typed event transaction fails closed on all six B1.11 exclusions; macropore rejection is exercised O0/O2. Broader combinations have no admitted tillage application envelope | `MIGRATE` for validated compatible envelope; `REJECTED` for these incompatible combinations |
 
 ## Other management and crop-calendar functions
 
@@ -72,6 +72,10 @@ named below.
 | --- | --- | --- | --- | --- |
 | `SoilManagement`: `smedate`, `iMat`, `Dosagekgha`, `VolatFraction`, material definitions | Apply organic/mineral amendments and update nutrient/carbon pools and outputs | Amendment catalogue, event table, N/P/organic matter pools, volatilization and crop uptake | No SWAP5 admitted biogeochemical management owner; this is nutrient/ANIMO scope, not water irrigation/tillage | `NOT_APPLICABLE` to this hydrologic closeout; transfer to ANIMO/solute coverage |
 | `cropstart`/`cropend`, crop rotation sequence and calendar selection | Select active crop and its management window | Ordered crop events, calendar origin, active crop identity | WOFOST81 crop physics and one-day accepted crop-event transaction are admitted; a general crop-calendar scheduler/config route is not admitted | `MIGRATE` as typed event/config orchestration; do not copy legacy parser/cursors |
+| `SWPREP=0/1`, `zPrep`, `hPrep`, `maxprepdelay` | Start crop preparation immediately or delay it while average soil head is too wet, up to the maximum delay | Crop-start event, monitored depth/head and accepted delay counter | Explicit accepted crop events cover the immediate WOFOST81 route; typed accepted-day gate qualifies wetness and maximum delay at O0/O2, without production observation binding | `SUPERSEDED` for the immediate accepted-event route; `MIGRATE` for wetness-delayed preparation |
+| `SWSOW=0/1`, `zSow`, `hSow`, `zTempSow`, `TempSow`, `maxsowdelay` | Sow immediately or delay while soil is too wet or too cold, with a maximum delay | Crop preparation receipt, soil head and heat at the monitoring node, accepted delay counter | Explicit WOFOST81 crop-event route covers immediate sowing; typed gate qualifies wet/cold tests and maximum delay at O0/O2, without production observation binding or source `SWHEA=1` compatibility | `SUPERSEDED` for the immediate accepted-event route; `MIGRATE` for conditional sowing |
+| `SWGERM=0/1/2`, `tsumemeopt`, `tbasem`, `teffmx`, `hdrygerm`, `hwetgerm`, `zgerm`, `agerm` | Immediate emergence, temperature-sum emergence, or hydrology-adjusted thermal emergence | Daily temperature, average head, accumulated heat, emergence state | WOFOST81 owns growth after an accepted emergence event; typed daily evaluator qualifies temperature-sum and dry/wet head response at O0/O2, and a versioned crop-identity restart roundtrips the accepted sum. No production observation binding | `SUPERSEDED` for immediate accepted emergence; `MIGRATE` for thermal and hydraulic delay modes |
+| Legacy `bgerm`, `cgerm` input | Former user coefficients for hydrology-adjusted germination | None: B1.11 derives them from the other germination parameters | B1.11 explicitly warns they are no longer inputs | `REJECTED` as user selectors |
 | Legacy `preparation`, `sowing`, `germination`, thermal/moisture sowing rules | Select and initialize emergence from crop-calendar and soil/temperature conditions | Sowing opportunity, soil heat/moisture, thermal accumulation, crop state | WOFOST81 runtime covers bounded crop physics after explicit accepted crop events; legacy sowing/calendar selection is not established as covered | `MIGRATE` only where needed by the target application; retain WOFOST81 as crop-physics owner |
 | Legacy crop-growth state (`DVS`, canopy, biomass, root extension/distribution) on a WOFOST crop route | Evolve crop physiology, canopy and root profile | WOFOST continuation plus accepted crop-event identity | Admitted WOFOST81 process replaces the equivalent legacy SWAP crop-growth calculation for the admitted WOFOST81 profile | `SUPERSEDED` on WOFOST81 profiles |
 | Legacy file parsing, `rdinit` cursors, saved module globals, output-only management files | Standalone executable input/output control | File-unit and global cursor state | SWAP5 accepts typed application events and transactional process state; no corresponding physics role | `SUPERSEDED` |
@@ -150,6 +154,34 @@ checks water-plus-pond closure and roundtrips the resulting water content
 through the inverse van Genuchten pressure head, including a saturated node
 and invalid-parameter rejection. It qualifies a typed candidate, not an
 accepted solver-state mutation.
+
+`tests/tillage/run_mig431_tillage_transaction.sh` passed at O0 and O2. An
+event at the exact interval start yields one candidate containing the next
+event pointer, intensity-adjusted density, VG parameters, redistributed
+water/pond and inverse head. A span crossing the event and an unsupported
+redistribution mode publish no hydraulic candidate; the committed owner
+remains unchanged until the caller accepts it. Inter-event density
+solver-state application remains outside this check. A schema-versioned
+profile record validates event count, compartment count and VG retention
+consistency, then reproduces the inter-event candidate after restart. An inter-event step
+uses only rain accepted since the latest event to consolidate density and
+reconstruct hydraulics with closed water mass. The transaction rejects the
+six B1.11 tillage interaction exclusions before constructing a candidate.
+
+`tests/irrigation/run_mig431_solute_depth.sh` passed at O0 and O2. It
+checks the B1.11 strict concentration threshold, the surplus percentage
+applied after base-depth selection, a disabled gate, and invalid percentage
+rejection. No solute concentration can be inferred from hydraulic state;
+coupled input and solute mass accounting remain separate admissions.
+
+`tests/management/run_mig431_crop_calendar.sh` passed at O0 and O2. It
+checks the B1.11 preparation/sowing wetness and temperature thresholds,
+accepted-day maximum delays, thermal accumulation, dry-head reduction,
+immediate emergence and invalid-mode rejection. Its proposed state is
+immutable until accepted. A schema-versioned restart roundtrips the accepted
+temperature sum and counters under an exact crop-event identity and rejects
+an identity mismatch. Production crop-event orchestration and observation
+binding remain open.
 
 ## Closeout gate
 
