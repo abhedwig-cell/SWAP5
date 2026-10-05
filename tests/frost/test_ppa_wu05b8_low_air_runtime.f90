@@ -98,8 +98,8 @@ program test_frost_low_air_runtime
       call require(again%committed.and.all(final%pressure_head==replay%pressure_head),'fresh worker replay identity')
       call require(result%mass%total_in==again%mass%total_in.and.result%mass%total_out==again%mass%total_out, &
            'fresh worker accounting identity')
-      direct=initial;dt=1.e-4_real64/8192._real64;fine_exchange=0._real64
-      do i=1,8192
+      direct=initial;dt=1.e-4_real64/65536._real64;fine_exchange=0._real64
+      do i=1,65536
         call execute_case(2,0._real64,q,-999999._real64,dt,.false.,.true.,again,observation, &
              frost_case=.true.,initial_physical_state=direct,final_physical_state=next, &
              start_time=real(i-1,real64)*dt,drain_case=.true.)
@@ -174,7 +174,7 @@ contains
     cfg%tiles(1)%parameters%frost_low_air_drainage%active=.true.
     cfg%tiles(1)%parameters%frost_low_air_drainage%drain_depth_cm=drain_depth
     cfg%tiles(1)%parameters%frost_drainage%active=.true.
-    cfg%tiles(1)%parameters%frost_drainage%head_budget_cm=3.e-10_real64
+    cfg%tiles(1)%parameters%frost_drainage%head_budget_cm=3.e-11_real64
     cfg%tiles(1)%parameters%frost_drainage%temperature_budget_c=1.e-7_real64
     cfg%tiles(1)%parameters%head_abs_tolerance=1.e-12_real64
     cfg%tiles(1)%parameters%head_rel_tolerance=1.e-12_real64
@@ -263,7 +263,7 @@ contains
     if(present(drain_case))then
       if(drain_case)then
         parameters%frost_drainage%active=.true.
-        parameters%frost_drainage%head_budget_cm=3.e-10_real64
+        parameters%frost_drainage%head_budget_cm=3.e-11_real64
         parameters%frost_drainage%temperature_budget_c=1.e-7_real64
         parameters%head_abs_tolerance=1.e-12_real64
         parameters%head_rel_tolerance=1.e-12_real64

@@ -45,7 +45,9 @@ contains
     if(.not.ieee_is_finite(bottom_proposal))return
     result%final_bottom_flux=bottom_proposal
     if(size(drain_depth)/=size(proposal,1).or.size(drain_depth)<1)return
-    if(any(.not.ieee_is_finite(drain_depth)).or.any(drain_depth>=0._real64))return
+    ! Ordered validation: Fortran may evaluate both operands under FP traps.
+    if(any(.not.ieee_is_finite(drain_depth)))return
+    if(any(drain_depth>=0._real64))return
     call compose_legacy_normal_frost_drainage(.true.,temperature,end_c,theta,sat,dz,factor,proposal,final,result%drainage)
     if(result%drainage%available)then
       allocate(result%blocked_level(size(drain_depth)));result%blocked_level=.false.

@@ -1,5 +1,6 @@
 program low_air_reference
  use iso_fortran_env,only:real64,int64
+ use ieee_arithmetic,only:ieee_value,ieee_quiet_nan,ieee_positive_inf,ieee_negative_inf
  use MOD_frost,only:FrozenCond,FrozenBounds,tfroststa,tfrostend,rfcp,nodfrostbot,zfrosttop,zfrostbot,frost_geometry_valid
  use MOD_grid
  use MOD_drain
@@ -11,6 +12,7 @@ program low_air_reference
  real(real64)::t(4),proposal(2,4),final(2,4),top,q
  type(frost_low_air_drainage_result_t)::r
  type(frost_geometry_result_t)::g
+ type(frost_low_air_drainage_config_t)::cfg
  integer::profile,grid,sgn,regime,depthcase,dsign,cases,geometry_cases
  tfroststa=0.d0;tfrostend=-2.d0;cases=0;geometry_cases=0
  do grid=1,2
@@ -87,6 +89,20 @@ program low_air_reference
  call compose_legacy_bracketed_frost_drainage(t,-4.d0,tfroststa,tfrostend,theta,thetas,dz,rfcp,z,disnod,zbotdr, &
       proposal,q,final,r)
  call require(.not.r%available.and.all(final==proposal),'invalid drain depths leave proposal intact')
+ do profile=1,3
+  zbotdr=[-1.d0,-3.d0]
+  select case(profile)
+  case(1);zbotdr(1)=ieee_value(0.d0,ieee_quiet_nan)
+  case(2);zbotdr(1)=ieee_value(0.d0,ieee_positive_inf)
+  case(3);zbotdr(1)=ieee_value(0.d0,ieee_negative_inf)
+  end select
+  cfg%active=.true.;cfg%drain_depth_cm=zbotdr
+  call require(.not.cfg%valid(),'nonfinite depth config unavailable')
+  call compose_legacy_bracketed_frost_drainage(t,-4.d0,tfroststa,tfrostend,theta,thetas,dz,rfcp,z,disnod,zbotdr, &
+       proposal,q,final,r)
+  call require(.not.r%available.and.all(final==proposal),'nonfinite drain depth rejected without trapped comparison')
+ end do
+ print '(A)','PPA_WU05B8_NONFINITE_DRAIN_DEPTH_CASES=3'
  print '(A,I0)','PPA_WU05B8_GUARDED_GEOMETRY_CASES=',geometry_cases
  print '(A,I0)','PPA_WU05B8_SIGNED_BRANCH_PHYSICAL_CASES=',cases
  print '(A)','PPA_WU05B8_BRACKETED_LOW_AIR_SOURCE=PASS'

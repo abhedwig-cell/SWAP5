@@ -310,7 +310,7 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
       fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"
     test "$(git rev-parse HEAD:src/process/mod_frost_geometry_effect.f90)" = "b4067615db7059f7061f4555cec6ec9c1312fe4c" || \
       fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_frost_geometry_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_low_air_drainage_effect.f90)" = "8974a48a4b9088c441c837ef8e5674dbf4f586d1" || \
+    test "$(git rev-parse HEAD:src/process/mod_frost_low_air_drainage_effect.f90)" = "4b6cf0b24fc3c2b8e39c982dcc6c80294ab08a91" || \
       fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_frost_low_air_drainage_effect.f90"
     test "$(git rev-parse HEAD:src/process/mod_frost_drainage_effect.f90)" = "333149580aea22f57a0bdc0cd33a7d1c4245766a" || \
       fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_frost_drainage_effect.f90"

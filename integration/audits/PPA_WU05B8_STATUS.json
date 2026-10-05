@@ -1,7 +1,7 @@
 {
   "work_unit": "PPA-WU05B8",
   "baseline": "024c6a5510757a02851426806248b0e2afe45a6b",
-  "status": "REFINEMENT_FAILURE_REPAIR_IN_PROGRESS",
+  "status": "STRENGTHENED_FULL_RUNTIME_PENDING",
   "implemented": true,
   "persisted": true,
   "tested": "SOURCE_COMPONENT_O0_O2_PASS_RUNTIME_PENDING",
@@ -63,9 +63,9 @@
     "temporal_rejections": 152858
   },
   "selected_final_matrix": {
-    "local_head_budget_cm": 3e-10,
+    "local_head_budget_cm": 3e-11,
     "solver_head_abs_and_rel": 1e-12,
-    "fine_direct_steps": 8192,
+    "fine_direct_steps": 65536,
     "runtime_cases": 6,
     "patterns": [
       "positive remaining drainage with above-front cutoff",
@@ -77,9 +77,9 @@
       1
     ],
     "additional_zero_rate_case": "air-rich all-frozen normal delegation",
-    "additional_refinement_check": "16384-step first-case oracle",
-    "status": "RECONCILED_O0_O2_SIX_CASE_8192_PASS_IDENTICAL_STDOUT_BUT_65536_SCREEN_FAILS",
-    "justification": "Source matrix108 cases covers each signed/zero combination. Actual runtime matrix selects all branch/depth/mass owners with both bottom signs; horizon/mass gates unchanged and finer direct trajectories strengthen preregistered minimum2048."
+    "additional_refinement_check": "131072 first-case oracle",
+    "status": "NEW_PERSISTED_MATRIX_PENDING",
+    "justification": "65536 screen exposed false confidence from near-step-size8192 comparison. Retain all six actual branch/owner/bottom-sign groups with stronger direct oracle and unchanged horizon/mass bounds."
   },
   "reconciled_baseline": "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
   "reconciliation": "Clean merge of admitted SALFRO01 root+salt changes; preserve independent numerical budgets and existing exclusions. Backend/bootstrap/root compensation dependencies changed, so runtime, incumbent and salt preservation are replayed on reconciled source.",
@@ -125,5 +125,19 @@
       "status": "FAIL_FINE_DIRECT_CONTINUATION_BEFORE_TRAJECTORY_COMPARISON",
       "scope": "Only direct step solver absolute/relative tolerance tightened1e-14; fine step rejected. No successful trajectory comparison or solver-isolation conclusion."
     }
+  },
+  "nonfinite_depth_repair": {
+    "negative_test": "O0 IEEE quiet-NaN depth raises SIGFPE exit136 in combined finite/range guard",
+    "repair": "Separate finite rejection from range comparison before B8 branch evaluation; valid physical postimage unchanged",
+    "cases": "NaN/+Inf/-Inf depth invalid config/kernel both rejected; O0/O2 trapped source test required"
+  },
+  "refinement_head3e11_screen": {
+    "local_head_budget_cm": 3e-11,
+    "direct_steps": 65536,
+    "head_cm": 1.936413e-07,
+    "temperature_c": 3.535511e-07,
+    "accepted_substeps": 37706,
+    "rejections": 522670,
+    "scope": "One initial signed case only; screen PASS, full persisted matrix remains required"
   }
 }
