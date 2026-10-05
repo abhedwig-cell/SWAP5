@@ -242,7 +242,7 @@ contains
     if(.not.allocated(committed%matrix_mass_mg_cm2).or..not.allocated(committed%macro_mass_mg_cm2))return
     if(size(committed%matrix_mass_mg_cm2)/=n.or.any(shape(committed%macro_mass_mg_cm2)/=[nd,n]))return
     if(present(qdra_rate))then
-      if(size(qdra_rate,2)/=n.or..not.all(ieee_is_finite(qdra_rate)))return
+      if(size(qdra_rate,1)<=0.or.size(qdra_rate,2)/=n.or..not.all(ieee_is_finite(qdra_rate)))return
       if(any(qdra_rate<0.0_real64))then
         if(.not.present(cdrain_available).or..not.present(cdrain_mg_cm3))return
         if(.not.cdrain_available)return
@@ -250,6 +250,7 @@ contains
     end if
     if(present(qssdi_rate))then
       if(size(qssdi_rate)/=n.or..not.all(ieee_is_finite(qssdi_rate)))return
+      if(any(qssdi_rate<0.0_real64))return
     end if
     if(present(cdrain_mg_cm3))then
       if(.not.ieee_is_finite(cdrain_mg_cm3).or.cdrain_mg_cm3<0.0_real64)return
@@ -278,8 +279,8 @@ contains
          maxval(matrix_water_end*node_thickness_cm),maxval(macro_water_start),maxval(macro_water_end), &
          dt_day*maxval(abs(matrix_face_rate)),dt_day*maxval(abs(macro_face_rate)), &
          dt_day*maxval(abs(exchange_rate)),dt_day*maxval(root_water_sink))
-    if(present(qdra_rate))tol=max(tol,dt_day*maxval(abs(qdra_rate)))
-    if(present(qssdi_rate))tol=max(tol,dt_day*maxval(abs(qssdi_rate)))
+    if(present(qdra_rate))tol=max(tol,512.0_real64*epsilon(1.0_real64)*dt_day*maxval(abs(qdra_rate)))
+    if(present(qssdi_rate))tol=max(tol,512.0_real64*epsilon(1.0_real64)*dt_day*maxval(abs(qssdi_rate)))
     do i=1,n
       water_expected=dt_day*(matrix_face_rate(i)-matrix_face_rate(i+1)+sum(exchange_rate(:,i))-root_water_sink(i))
       if(present(qssdi_rate))water_expected=water_expected+dt_day*qssdi_rate(i)
@@ -399,23 +400,27 @@ contains
     end do
 
     if(any(outm>matrix_volume_start+tol).or.any(outp>macro_water_start+tol))then
+      candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t()
       status=MACRO_SALT_DONOR_UNAVAILABLE;return
     end if
     candidate%matrix_mass_mg_cm2=committed%matrix_mass_mg_cm2+dm
     candidate%macro_mass_mg_cm2=committed%macro_mass_mg_cm2+dp
     if(any(.not.ieee_is_finite(candidate%matrix_mass_mg_cm2)).or. &
        any(.not.ieee_is_finite(candidate%macro_mass_mg_cm2)))then
-      candidate=mobile_macro_salt_state_t();status=MACRO_SALT_INVALID;return
+      candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t()
+      status=MACRO_SALT_INVALID;return
     end if
     if(any(candidate%matrix_mass_mg_cm2 < -tol).or.any(candidate%macro_mass_mg_cm2 < -tol))then
-      candidate=mobile_macro_salt_state_t();status=MACRO_SALT_DONOR_UNAVAILABLE;return
+      candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t()
+      status=MACRO_SALT_DONOR_UNAVAILABLE;return
     end if
     if(any(candidate%matrix_mass_mg_cm2<0.0_real64).or.any(candidate%macro_mass_mg_cm2<0.0_real64))then
       candidate=mobile_macro_salt_state_t();status=MACRO_SALT_DONOR_UNAVAILABLE;return
     end if
     if(any(matrix_water_end*node_thickness_cm<=tiny(1.0_real64).and.candidate%matrix_mass_mg_cm2>0.0_real64).or. &
        any(macro_water_end<=tiny(1.0_real64).and.candidate%macro_mass_mg_cm2>0.0_real64))then
-      candidate=mobile_macro_salt_state_t();status=MACRO_SALT_DONOR_UNAVAILABLE;return
+      candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t()
+      status=MACRO_SALT_DONOR_UNAVAILABLE;return
     end if
     total_before=sum(committed%matrix_mass_mg_cm2)+sum(committed%macro_mass_mg_cm2)
     total_after=sum(candidate%matrix_mass_mg_cm2)+sum(candidate%macro_mass_mg_cm2)
@@ -429,7 +434,8 @@ contains
          sum(receipt%macro_bottom_output_mg_cm2)+sum(receipt%root_solute_uptake_mg_cm2)
     tol=1024.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(total_before),abs(total_after))
     if(abs(receipt%closure_error_mg_cm2)>tol)then
-      candidate=mobile_macro_salt_state_t();status=MACRO_SALT_BALANCE_FAILURE;return
+      candidate=mobile_macro_salt_state_t();receipt=mobile_macro_salt_receipt_t()
+      status=MACRO_SALT_BALANCE_FAILURE;return
     end if
     status=MACRO_SALT_OK
   end subroutine advance_mobile_macro_salt_trial
