@@ -66,9 +66,14 @@ and late-substep rollback with no partial candidate or receipt. This is
 process-kernel evidence only:
 the new kernel is not called by FMR, its arguments are not yet a typed accepted
 salt-boundary receipt set, and it does not add committed macro salt mass or
-restart state. Its boundary concentration inputs do not qualify FMR surface
-partition, returned water, covered-top transfer, rapid drainage, or geometry
-return routes.
+restart state. An interval-scoped Cdrain forcing contract now checks
+concentration units, validity coverage, source ID, and revision in the A7
+test-only trace adapter. FMR restart schema v4 persists the per-column
+forcing_handle and rejects restore when the runtime handle differs; v3 and v2
+remain disabled-salinity-only migrations. The Cdrain source revision is still
+not bound to the FMR trial or committed salt state. These process boundaries
+do not qualify FMR surface partition, returned water, covered-top transfer,
+rapid drainage, or geometry return routes.
 
 ## Source-bound facts
 
