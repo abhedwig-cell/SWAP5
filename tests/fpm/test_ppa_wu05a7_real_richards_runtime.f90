@@ -37,7 +37,8 @@ program test_ppa_wu05a7_real_richards_runtime
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
        fmr_restore_committed_restart, FMR_RESTART_OK, FMR_RESTART_SCHEMA_VERSION, &
-       FMR_RESTART_SCHEMA_PREVIOUS, FMR_RESTART_SCHEMA_LEGACY_DISABLED, FMR_RESTART_SCHEMA_MISMATCH
+       FMR_RESTART_SCHEMA_PREVIOUS, FMR_RESTART_SCHEMA_LEGACY_DISABLED, FMR_RESTART_SCHEMA_MISMATCH, &
+       FMR_RESTART_PARAMETER_MISMATCH
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t, mobile_salt_substep_t, mobile_salt_fluxes_t, &
        initialize_mobile_salt_state, advance_mobile_salt_trace, SOLUTE_OK, SOLUTE_WATER_CLOSURE
