@@ -11,7 +11,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_committed_state
-  use mod_fmr_macropore_configuration, only: initialize_fmr_macropore_standard_config
+  use mod_fmr_macropore_configuration, only: initialize_fmr_macropore_standard_config, prepare_fmr_macropore_rapid_reference
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_runtime_policy_t
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t, evaluate_macropore_geometry, &
@@ -23,7 +23,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t, prepare_clay_kim_option1, &
        SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, SHRINK_KIM, &
        prepare_clay_kim_option2, prepare_peat_characteristic_points, &
-       evaluate_dynamic_crack_profile
+       evaluate_dynamic_crack_profile, prepare_rapid_drain_reference_kd, derive_dynamic_minimum_subsidence, map_surface_crack_depth_to_node
   implicit none
   character(len=1)::constitutive_flag,fit_flag
 
@@ -78,6 +78,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
   nd=1
   if(dynamic_flag=='5')nd=2
   call initialize_parameters(parameters)
+  call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
+  call bind_b110_default_mvg_provider(hyd,hp,dt)
   call initialize_macropore_config(parameters,ok)
   call require(ok,'physical macropore config initialized')
   call require(allocated(parameters%macropore%matrix_area_fraction),'static macro matrix-area fraction derived')
@@ -85,8 +87,6 @@ program test_ppa_wu05a9_fmr_top_input_trial
        (1.0_real64-0.25_real64/dz))<=1.0e-14_real64),'legacy FrArMtrx default exact')
   parameters%macropore_active=.true.
 
-  call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
-  call bind_b110_default_mvg_provider(hyd,hp,dt)
   heads=-100.0_real64
   if(dynamic_flag=='4' .or. dynamic_flag=='5')heads=-1000.0_real64
   call hyd%evaluate(heads,water,cond,cap,dkdh)
@@ -297,6 +297,9 @@ contains
     type(fmr_b110_physical_parameters_t),intent(inout)::p
     logical,intent(out)::initialized
     integer::k
+    character(len=1)::reference_flag
+    real(real64)::reference_kd
+    real(real64)::ref_theta(numnod),ref_cond(numnod),ref_cap(numnod),ref_dk(numnod)
 
     allocate(static_volume(numnod),domain_fraction(nd,numnod),diameter(numnod),theta_s(numnod),theta_r(numnod), &
          wall_correction(numnod),sorp_max(numnod),sorp_alpha(numnod),conductivity(numnod),entry_head(numnod), &
@@ -370,12 +373,34 @@ contains
       end do
     end if
 
+    reference_kd=0.001_real64
+    call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
+    if(reference_flag=='2')then
+      call map_surface_crack_depth_to_node(shrinkage%surface_crack_area_depth_cm,z,dz,1,k,ok)
+      call require(ok,'MIGMAC06 supplied reference crack-node mapping')
+      shrinkage%surface_crack_area_node=k
+      shrinkage%surface_crack_area_node_supplied=.true.
+      call derive_dynamic_minimum_subsidence(shrinkage,dz,ok)
+      call require(ok,'MIGMAC06 supplied reference geometry')
+      call hyd%evaluate(-2.0_real64-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      call prepare_rapid_drain_reference_kd(shrinkage,z,dz,ref_theta,static_volume,domain_fraction(1,:), &
+           diameter,-sum(dz),-2.0_real64,2,3.0_real64,reference_kd,ok)
+      call require(ok,'MIGMAC06 supplied prepared reference valid')
+    end if
     allocate(p%macropore)
     call initialize_fmr_macropore_standard_config(p%macropore,1,static_volume,domain_fraction,potential_bottom, &
          z,dz,diameter,theta_s,theta_r,wall_correction,sorp_max,sorp_alpha,conductivity,entry_head, &
          sorp_fac_parallel,ksat_horizontal,cdarcy,1.0_real64,1.0_real64,0,initialized,shrinkage=shrinkage, &
          rapid_enabled=dynamic_flag=='5',rapid_drain_type=2,rapid_drain_level_cm=-2.0_real64, &
-         rapid_area_exponent=3.0_real64,rapid_kd_reference=0.001_real64,rapid_resistance_reference_day=20.0_real64)
+         rapid_area_exponent=3.0_real64,rapid_kd_reference=reference_kd,rapid_resistance_reference_day=20.0_real64)
+    call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
+    if(reference_flag=='1')then
+      call hyd%evaluate(-2.0_real64-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      call prepare_fmr_macropore_rapid_reference(p%macropore,z,ref_theta,-sum(dz),initialized)
+      call require(initialized,'MIGMAC06 derived reference config valid')
+    end if
+    if(reference_flag=='1'.or.reference_flag=='2') &
+         print '(a,es24.16)','PPA_WU05_MIGMAC06_REFERENCE_KD=',p%macropore%rate_template%rapid%kd_reference
   end subroutine initialize_macropore_config
 
   subroutine initialize_forcing(f)

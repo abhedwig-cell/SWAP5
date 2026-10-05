@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.ppa_wu05.migmac06.status.v1",
+  "workunit": "PPA-WU05-MIGMAC06",
+  "date": "2026-10-05",
+  "canonical_base": "7a877af47144689bf8f9feb8c5485f6320dda137",
+  "branch": "work/ppa-wu05-migmac06-reference-kd",
+  "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
+  "production_admitted": false,
+  "scope": "Hydrostatic mixed-law reference KD preparation and serialized Reference configuration adapter; one admitted drain level",
+  "qualification": "integration/audits/PPA_WU05_MIGMAC06_QUALIFICATION.json",
+  "preregistration": "docs/audits/PPA_WU05_MIGMAC06_PREREGISTRATION.md",
+  "blockers": [],
+  "next_action": "Admit exact qualified tree and close canonical status.",
+  "remaining_scope": [
+    "Multiple and within-compartment drain runtime",
+    "Covering-layer reference preparation composition",
+    "Additional surface owners and whole-model equivalence",
+    "Automatic retention provider selection"
+  ]
+}
