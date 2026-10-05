@@ -63,7 +63,7 @@
   },
   "claim_limit": [
     "Exact B1.11 MOD_meteo.f90 member reconstructed and SHA-256 verified; see F-MIG431-INT13_CORRECTED_REFERENCE.md.",
-    "Current local O0/O2 checks pass, but there is no independent persisted B1.11 physics qualification yet. Historical run 37268521592 tested the superseded fimin/exponential candidate.",
+    "Targeted persisted INT13 physics/source-window/retry/restart and production FMR qualification passed in Actions run 37271615834 on candidate commit 4403db7996ec49b910a419d53c7efe2b4cd75102; not canonically admitted.",
     "Only constant forcing per immutable source window is supported; detailed forcing is one window per record.",
     "Irrigation/sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water and unsupported profiles remain outside the candidate envelope."
   ],
@@ -109,13 +109,15 @@
     "member_verification": "B0 archive verified, then SWAP-006 applied and output hash checked"
   },
   "persisted_gate": {
-    "status": "HISTORICAL_SUPERSEDED_CANDIDATE_ONLY",
-    "workflow_run_id": 37268521592,
-    "head": "d853fd898db629100ab52493b1e6f13208af9bb4",
+    "workflow": ".github/workflows/f-mig431-int13-rutter.yml",
+    "run_id": 37271615834,
+    "head": "4403db7996ec49b910a419d53c7efe2b4cd75102",
+    "status": "PASS",
     "steps": {
-      "rutter_physics_retry_source_window_restart": "SUPERSEDED_FIMIN_EXPONENTIAL_PHYSICS",
-      "production_fmr_composition": "HISTORICAL_TRANSACTION_TEST_ONLY"
-    }
+      "rutter_physics_retry_source_window_restart": "PASS",
+      "production_fmr_composition": "PASS"
+    },
+    "superseded_historical_run_id": 37268521592
   },
   "current_production_application": {
     "command": "bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",

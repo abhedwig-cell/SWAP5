@@ -2,7 +2,7 @@
   "schema": "swap5.f_mig431_int13_status.v1",
   "workunit": "F-MIG431-INT13",
   "title": "Rutter SWINTER=3 stateful atmospheric-forcing migration",
-  "state": "B1_11_EVENT_INTEGRATOR_LOCAL_PASS_PERSISTED_REQUALIFICATION_REQUIRED",
+  "state": "TARGETED_PERSISTED_QUALIFICATION_PASS_B1_11_SOURCE_RECONCILED",
   "baseline": {
     "branch": "integration/f-ci-canonical",
     "head": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
@@ -47,10 +47,11 @@
   "evidence_paths": [
     "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
     "integration/audits/F-MIG431-INT13_CORRECTED_REFERENCE.md",
-    "integration/audits/F-MIG431-INT13_LOCAL_QUALIFICATION.json"
+    "integration/audits/F-MIG431-INT13_LOCAL_QUALIFICATION.json",
+    "integration/audits/F-MIG431-INT13_SOURCE_RECONCILIATION_ADDENDUM.md"
   ],
   "implemented": "B1.11 piecewise-constant Rutter fill/dry event integrator; stateful source-window candidate composed into FMR physical-state candidate; fimin removed from the Rutter input and source-window identity",
-  "persisted": "The historical PR/Actions candidate used the incorrect SWAP 4.2.0 fimin equation and is superseded for physics claims. Exact B1.11 source recovered and verified; current implementation passes local INT13 O0/O2 and PPA-WU01 production bootstrap checks.",
+  "persisted": "Exact B1.11 source recovered and verified. Candidate commit 4403db7996ec49b910a419d53c7efe2b4cd75102 passed targeted Actions run 37271615834 for INT13 physics/source-window/retry/restart and production FMR composition.",
   "tested": "Current INT13 independent source-window suite PASS O0/O2; production FMR bootstrap PASS O0/O2; INT13 capacity-event falsifier PASS O0/O2. The historical persisted workflow pass is not evidence for current B1.11 physics.",
   "latest_audit_findings": [
     "Exact B1.11 MOD_meteo.f90 reconstructed from the release archive; member SHA-256 99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f. The verified B0 member manifest has 63 members.",
@@ -59,12 +60,10 @@
     "Local source-window and production transaction suites pass at O0/O2. The prior Actions run 37268521592 exercised the superseded 4.2.0-derived candidate and must not qualify this implementation.",
     "The bounded envelope remains fail-closed for irrigation/sprinkling, Snow, Black/Boesten, macropore, RFM/surface-water combinations, drainage, root compensation and unsupported solver/continuation profiles."
   ],
-  "qualified": false,
-  "next_action": "Add an independent test oracle transcribed from the recovered B1.11 Rutter regimes, persist exact source provenance and run the targeted INT13 qualification workflow on the revised candidate before any admission decision.",
+  "qualified": true,
+  "next_action": "Keep PR #1016 as a bounded, unadmitted draft. Any expansion to excluded forcing or process combinations requires its own source reconciliation and qualification.",
   "recovery_point": "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
-  "blockers": [
-    "The implementation has local passing tests but has not yet passed persisted qualification against an independent B1.11-derived oracle. Historical persisted run 37268521592 qualifies only the superseded analytic fimin candidate."
-  ],
+  "blockers": [],
   "dependency_surface": [
     "Rutter process state and equations",
     "interception source-window progress",
@@ -73,10 +72,10 @@
     "SWINTER=0/1/2, Black and Boesten preservation interfaces"
   ],
   "persisted_qualification": {
-    "workflow_run_id": 37268521592,
-    "head": "d853fd898db629100ab52493b1e6f13208af9bb4",
-    "rutter_physics_retry_restart": "SUPERSEDED",
-    "production_fmr_composition": "PASS_HISTORICAL_CANDIDATE_ONLY",
-    "status": "SUPERSEDED_BY_B1_11_SOURCE_RECONCILIATION"
+    "workflow_run_id": 37271615834,
+    "head": "4403db7996ec49b910a419d53c7efe2b4cd75102",
+    "rutter_physics_retry_restart": "PASS",
+    "production_fmr_composition": "PASS",
+    "historical_superseded_run_id": 37268521592
   }
 }

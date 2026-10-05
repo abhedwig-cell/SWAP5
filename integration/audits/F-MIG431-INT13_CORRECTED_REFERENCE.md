@@ -84,9 +84,11 @@ Local GNU Fortran O0/O2 tests now exercise fill/overflow, constant-flux drydown,
 capacity change, mass closure, source-window refinement, reject/retry,
 restart, detailed-record continuation and production binding. The separate FMR
 bootstrap test verifies transactional commit and Richards retry composition.
-The earlier persisted Actions run `37268521592` tested the now-superseded
-4.2.0-derived implementation and is not qualification evidence for the
-B1.11-equivalent change below. A new persisted qualification has not yet run.
+Targeted Actions run `37271615834` passed the Rutter physics/source-window/retry/restart and production FMR gates on candidate commit
+`4403db7996ec49b910a419d53c7efe2b4cd75102`. Historical run `37268521592`
+tested the now-superseded 4.2.0-derived implementation and is not qualification
+evidence for the B1.11-equivalent candidate. See the source-reconciliation
+addendum for the claim ceiling.
 
 The exact B1.11 full member/call-site has been reconstructed and its member
 hash verified, but the B1.11-equivalent implementation still needs an
