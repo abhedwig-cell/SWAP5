@@ -38,7 +38,7 @@ program test_ppa_wu05a7_real_richards_runtime
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
        fmr_restore_committed_restart, FMR_RESTART_OK, FMR_RESTART_SCHEMA_VERSION, &
        FMR_RESTART_SCHEMA_PREVIOUS, FMR_RESTART_SCHEMA_LEGACY_DISABLED, FMR_RESTART_SCHEMA_MISMATCH, &
-       FMR_RESTART_PARAMETER_MISMATCH
+       FMR_RESTART_PARAMETER_MISMATCH, FMR_RESTART_FORCING_MISMATCH
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t, mobile_salt_substep_t, mobile_salt_fluxes_t, &
        initialize_mobile_salt_state, advance_mobile_salt_trace, SOLUTE_OK, SOLUTE_WATER_CLOSURE
@@ -239,6 +239,7 @@ contains
     call fmr_export_committed_restart(columns,templates,committed,99_int64,bundle,exported,restart_status)
     if(.not.exported .or. restart_status/=FMR_RESTART_OK)error stop 'salt Restart v3 export'
     if(bundle%schema_version/=FMR_RESTART_SCHEMA_VERSION)error stop 'salt Restart v4 schema'
+    if(bundle%records(1)%forcing_handle/=columns(1)%forcing_handle)error stop 'restart forcing handle export'
     call fmr_restore_committed_restart(bundle,99_int64,columns,templates,restored_registry,restored,restart_status)
     if(.not.restored .or. restart_status/=FMR_RESTART_OK)error stop 'salt Restart v4 restore'
     call restored_registry(1)%snapshot(restored_state,available)
@@ -253,7 +254,7 @@ contains
     end select
     columns(1)%forcing_handle=2_int64
     call fmr_restore_committed_restart(bundle,99_int64,columns,templates,rejected_registry,restored,restart_status)
-    if(restored .or. restart_status/=FMR_RESTART_PARAMETER_MISMATCH) &
+    if(restored .or. restart_status/=FMR_RESTART_FORCING_MISMATCH) &
          error stop 'restart accepted mismatched forcing identity'
     if(rejected_registry(1)%ready())error stop 'forcing identity rejection mutated registry'
     columns(1)%forcing_handle=1_int64
