@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.ppa_wu05e.qdra_level_trace_local_gate.v1",
+  "work_unit": "PPA-WU05-E",
+  "classification": "LOCAL_TRACE_GATE_PASS_NOT_SALINITY_QUALIFICATION",
+  "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+  "tested_pr_postimage": "588d711a243ac3007a1fc99f55854d1b29119931",
+  "canonical_base": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "local_checkout_basis": "dc8be5e5b4d48f2c3622496a44ab056620db21d3",
+  "execution_basis": "Temporary build copy overlaid with exact PR-postimage for the listed source, test, runner, restart/layout contract, and exchange module files. Remaining unchanged build dependencies came from the local checkout basis; this is local regression evidence, not a full-tree source-bound qualification.",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0) 13.3.0",
+  "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+  "result": "PASS O0/O2; runner compared O0 and O2 outputs and exited 0.",
+  "verified_behaviors": [
+    "Accepted FMR water trace retains qssdi node source and each signed qdra(level,node) rate.",
+    "Manufactured FMR forcing uses two drainage levels at one node with opposite signs; trace preserves both values and the level sum equals the Richards drainage term.",
+    "Accepted trace remains replay-identical through existing retry/replay and fresh-process restart assertions.",
+    "Existing Richards mass/face closure, root sink transaction, macro storage-layout and macro trial checks pass."
+  ],
+  "source_blobs": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "fdb0bb8cfa00eda4f1bdd8c88a8ed82635fc2d35",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "032cbf4493a10d2cc3e5c8e69a0f38b16c69f28f",
+    "tests/fpm/run_ppa_wu05a8_real_richards.sh": "15bb0b84bdcb484d3cce8b431494c8e294d759ff",
+    "src/runtime/mod_fmr_runtime_core.f90": "d056040023786a7b5a0d6523b9ecac272cac669e",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "ed703011bce8765e2d92f44b7d433b5b502a430d",
+    "src/runtime/mod_fmr_committed_restart.f90": "fa2ccb949dd077d1474db88ccc17a25a25bca395",
+    "src/process/mod_solute_macropore_exchange.f90": "c2b4fe876aec162af9b750dc13866b56c95b22ef"
+  },
+  "exclusions": [
+    "No salt transfer is applied for qssdi or qdra.",
+    "No Cdrain solute state or boundary authority is implemented.",
+    "No exact B1.11 solute-source equivalence is established.",
+    "No live FMR salt candidate, transaction/restart qualification of solute mass, Jarvis integration, or production admission is claimed."
+  ],
+  "next_action": "Determine exact B1.11 qssdi and level-resolved drainage solute rules and identify the independent Cdrain owner/restart before defining salt receipts."
+}

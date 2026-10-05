@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.ppa-wu05e.fmr-salt-local-gate.v1",
+  "date_utc": "2026-10-05",
+  "work_unit": "PPA-WU05-E",
+  "classification": "RESTRICTED_LIVE_FMR_LOCAL_LIFECYCLE_PASS_NOT_QUALIFIED",
+  "base_head": "fe574db8ca657b173d8badc79a8d4eb2d6e848a8",
+  "commands": [
+    {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "result": "PASS O0/O2 with byte-identical stdout; static matrix area storage, typed initialization, invalid profile/reinitialization rejection, invalid area/snow/shrinkage envelope rejection, live Jarvis salinity, unit-alpha bitwise water equivalence, forced temporal rejection, 3 adaptive temporal rejections and successful interval completion, late salt-kernel failure rollback, accepted interval salt ledger, discard/replay/commit, Restart v4 and changed forcing on a fresh backend."
+    },
+    {
+      "command": "python3 tests/physics/run_ppa_wu05d2_preservation.py",
+      "result": "PASS O0/O2 at tested_postimage"
+    },
+    {
+      "command": "python3 tests/physics/run_ppa_wu05d2_publication.py",
+      "result": "PASS O0/O2 at tested_postimage"
+    },
+    {
+      "command": "python3 tests/physics/run_ppa_wu05d3_walsum.py",
+      "result": "PASS O0/O2 at tested_postimage"
+    },
+    {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_salt.sh",
+      "result": "PASS O0/O2; process dependency postimage unchanged since cf88da933b1f4f28e017dcbeabab2a329e36adf6"
+    },
+    {
+      "command": "bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh",
+      "result": "PASS O0/O2; process dependency postimage unchanged since cf88da933b1f4f28e017dcbeabab2a329e36adf6"
+    },
+    {
+      "command": "bash tests/physics/run_ppa_wu05d2_jarvis.sh",
+      "result": "PASS O0/O2; process dependency postimage unchanged since cf88da933b1f4f28e017dcbeabab2a329e36adf6"
+    }
+  ],
+  "active_fmr_assertions": [
+    "salt advances within cloned physical candidate after each accepted Richards substep",
+    "matrix faces reconstructed from accepted water endpoints and qssdi - sum(qdra) - qrot + macropore exchange",
+    "per-domain macro faces/exchange and paired macro water endpoints feed coupled salt process",
+    "qssdi is salt-free water; positive/negative signed qdra export/import uses explicit typed Cdrain for imports",
+    "Jarvis salinity response consumes CML derived from same physical trial salt/water state",
+    "salt inventory difference contributes to existing full/half macro temporal metric",
+    "discard leaves committed mass untouched; replay deterministic; commit advances mass; Restart v4 round-trip and changed forcing pass",
+    "matrix salt inventory and CML use dz times immutable matrix area fraction, matching canonical water storage",
+    "typed initializer validates atomically and rejects existing salt inventory",
+    "real temporal exhaustion and dry-macro salt-kernel failure publish no candidate or committed water/salt mutation",
+    "accepted salt receipts follow water trace attempt-context rollback and close the entire interval ledger",
+    "adaptive salt-budget run completes after 3 temporal rejections with 0 solver rejections",
+    "unit salinity alpha preserves water and macro state bitwise"
+  ],
+  "unsupported_fail_closed_routes": [
+    "macropore top input and returned surface water",
+    "cover transfer",
+    "rapid external outflow",
+    "surface salt pool and CPRE/CIRR mixing",
+    "bottom seep/aquifer salt mixing",
+    "dynamic SWBR=1 Cdrain store"
+  ],
+  "source_sha256": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "edd573ebadee5c6db8b335142376e2b7ee40538ed71a25d4863b9d76a410bf66",
+    "tests/fpm/run_ppa_wu05a8_real_richards.sh": "486edbc41024691b0560c14ba489de67a0de972080a80280fe4dcf036a637b91",
+    "tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90": "4fd37683e80831e11c9c173a62ae50f2a9176207a2e11714667d54cc2ece2fe1",
+    "src/process/mod_solute_mobile_salt_state.f90": "05a557ec685df8a3c08ace3e1a0633c4985994c46237cf4b5b24cc3d33833739",
+    "src/process/mod_solute_mobile_macro_salt_transport.f90": "1228c8c6768f82d27081cbb4c0915e7ec8412376a9dc84963f2bc6dc35da354c",
+    "src/process/mod_root_salinity_response.f90": "4ef0bf62ae7abb43d283c82370ae6aa102f8f4d9cc96ecd8617b64f91fbb448a",
+    "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
+    "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "b695009067bd261a89ee3ca3a7e3a4efbd4492d9be21056aa5f5624568e93a5a",
+    "src/runtime/mod_fmr_runtime_core.f90": "04cd7d2ff3b1b8814ff08d22b0750a903df0ec9bb0d9ba2e516b01808eafd11c",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "d178762814b9490d827405d94b1f75567c84ab46d53cf7b8128d459ffc4c0bc2",
+    "src/runtime/mod_fmr_committed_restart.f90": "842d87dc68fef7dda6fbe17371d6ed5e4d3ed1a5fa5d2e5e58d42c12ed088b2f",
+    "src/runtime/mod_fmr_macropore_configuration.f90": "dba8407699a36e7595132adc654eed95161f3fea918c318de54bc544c8031e8c",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "baed993936e41bf2eba84448f1f57e5e7fbaf2dabb0149283559f7920a6be69c",
+    "src/process/mod_root_uptake_compensation.f90": "6288ec3421c6a7514f1f13763190a7ce4a99778a322269ca5a354d6a3a5d28d5",
+    "docs/audits/PPA_WU05E_LIVE_FMR_ENVELOPE.md": "fb4dabef108354ee640ea16d6f5df32a3ceff2b12fc2e5f27a8a6a407dd3e586"
+  },
+  "limits": [
+    "no salinity production qualification or canonical admission",
+    "no compatible live Bartholomeus oxygen plus salt route; see status dependency blocker",
+    "no dispersion or full exact B1.11 transport/stability equivalence",
+    "Restart v4 bundle round trip is in memory with a new backend, not separate-process serialized restart",
+    "unsupported surface/aquifer pools, dynamic shrinkage, covering and rapid outflow remain closed"
+  ],
+  "tested_postimage": "1627363128180875c20e30a1e2b91066c0efdefa",
+  "reconciled_canonical": "8125ba01b5bfd7377c721caa1105d68e24e77183",
+  "log_sha256": {
+    "wu05e-final-a8.log": "6de4462f8ab6acafa836974460e2d80ad56f0ea4d7f5eef4bd597d6d1645dad8",
+    "wu05e-final-d2-preservation.log": "55f5440edcd3d9cfa9669a5daf35ecb5472f6a2de12f6e4a1d0c5fd2b5d1a348",
+    "wu05e-final-d2-publication.log": "2d3829db2f7657fc5784b16d17c6f91db0fe2eff0d7d89c8486dec69fc566173",
+    "wu05e-final-d3-walsum.log": "fb5ebd950301fab06a8f4793cb8630d5a38c23a572d4b39658f489c45ca0e60a"
+  }
+}

@@ -43,13 +43,13 @@ program test_root_frost
  call compose_legacy_zero_root_frost(frost,t,base,cut,factors,loss,status)
  call req(status==ROOT_FROST_OK.and.cut%actual_uptake_total==0._real64,'all frozen')
  cfg%method=ROOT_COMP_JARVIS;cfg%stressor=ROOT_COMP_ALL;cfg%alpha_critical=.5_real64
- call compose_jarvis_root_uptake(cfg,.5_real64,cut,0._real64,0._real64,final,diag,status,.5_real64)
+ call compose_jarvis_root_uptake(cfg,.5_real64,cut,0._real64,0._real64,final,diag,status,frost_reduction=.5_real64)
  call req(status==ROOT_COMP_OK.and.final%actual_uptake_total==0._real64,'no frozen root resurrection')
  ! Three node losses: .5 on frozen node, .1875 on each unfrozen node.
  ! Shared reduction weights give dry=.3125, wet=.3125, frost=.25.
  call attribute_root_stress_losses([.5_real64,.25_real64,.25_real64], &
       [.25_real64,.125_real64,.125_real64],[.5_real64,.5_real64,.5_real64],dry,wet,status, &
-      [0._real64,1._real64,1._real64],frs)
+      frost_factor=[0._real64,1._real64,1._real64],frost_loss=frs)
  call req(status==ROOT_COMP_OK,'three stressors valid')
  call req(abs(dry-.3125_real64)<1.e-14_real64.and.abs(wet-.3125_real64)<1.e-14_real64.and. &
       abs(frs-.25_real64)<1.e-14_real64,'independent node attribution oracle')
@@ -61,7 +61,7 @@ program test_root_frost
    if(k==4) cycle
    cfg%stressor=k
    call compose_jarvis_root_uptake(cfg,1._real64,base,7._real64/24._real64,7._real64/24._real64, &
-        final,diag,status,7._real64/24._real64)
+        final,diag,status,frost_reduction=7._real64/24._real64)
    call req(status==ROOT_COMP_OK,'selected stressor admitted')
    call req(abs(final%actual_uptake_total-.25_real64)<1.e-14_real64,'closed form compensation oracle')
    call req(final%root_extraction_sink(1)==0._real64.and.final%root_extraction_sink(4)==0._real64,'zero nodes preserved')
@@ -70,16 +70,21 @@ program test_root_frost
  end do
  cfg%stressor=ROOT_COMP_FROST;cfg%alpha_critical=1._real64
  call compose_jarvis_root_uptake(cfg,1._real64,base,7._real64/24._real64,7._real64/24._real64, &
-      final,diag,status,7._real64/24._real64)
+      final,diag,status,frost_reduction=7._real64/24._real64)
  call req(status==ROOT_COMP_OK.and.all(final%root_extraction_sink==base%root_extraction_sink),'alpha one identity')
  cfg%method=ROOT_COMP_WALSUM
  cfg%stressor=ROOT_COMP_FROST
  geometry=root_walsum_geometry_t(1._real64,2._real64,1.5_real64)
  base_diag%drought_reduction_total=7._real64/24._real64
  call apply_root_uptake_compensation(cfg,1._real64,base,base_diag,7._real64/24._real64,final,diag,status, &
-      geometry,[.5_real64,.5_real64,1._real64,1._real64],7._real64/24._real64)
+      geometry,[.5_real64,.5_real64,1._real64,1._real64],frost_reduction_total=7._real64/24._real64)
  call req(status==ROOT_COMP_EXEC_OK,'Walsum frost composition valid')
  call req(abs(final%actual_uptake_total-.25_real64)<1.e-14_real64,'Walsum geometry alpha oracle')
+ cfg%method=ROOT_COMP_JARVIS
+ cfg%alpha_critical=.5_real64
+ call compose_jarvis_root_uptake(cfg,1._real64,base,.25_real64,.25_real64,final,diag,status, &
+      salinity_reduction=.125_real64,frost_reduction=.25_real64)
+ call req(status==ROOT_COMP_UNSUPPORTED,'joint salt and frost awaits independent qualification')
  print '(A)','PPA-WU05B2_ROOT_FROST_ORACLES=PASS'
 contains
  subroutine req(ok,message)

@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.ppa_wu05e.closed_diffusion_process_gate.v1",
+  "status": "CLOSED_DIFFUSION_PROCESS_LOCAL_QUALIFIED_NOT_RUNTIME_ADMITTED",
+  "tested_commit": "bd4f52751b2f1384410ac790ae92b165911d7948",
+  "tested_tree": "db357ffc7accaa24b50f4e03f62a718488f28497",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "source_authority": {
+    "member": "B1.11 solute.f90",
+    "sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "equation_lines": [
+      273,
+      320,
+      323,
+      370,
+      371
+    ],
+    "identity_reverified": true
+  },
+  "source_sha256": {
+    "src/process/mod_solute_mobile_salt_state.f90": "05a557ec685df8a3c08ace3e1a0633c4985994c46237cf4b5b24cc3d33833739",
+    "src/process/mod_solute_closed_mobile_diffusion.f90": "d7a6b5b7ebbfffd962c16d8e5988a6e41fc8718be6f61daf7bf96b78a34408a6",
+    "tests/physics/test_closed_mobile_diffusion.f90": "96ecb638818135126ee799f06310c65cbf4a85e2dd608d6aff6168eeef090973",
+    "tests/physics/run_ppa_wu05e_closed_diffusion.sh": "d59c1eb832c56a1ce39bfdd8d95fdacf58ef53f4410ae6e23b233f090a64ceeb",
+    "tests/physics/test_mobile_salt_state.f90": "506dbf510baf9c597f112edac5bc287f48df222619ac5f1279c2499b37a29573",
+    "src/process/mod_root_salinity_response.f90": "4ef0bf62ae7abb43d283c82370ae6aa102f8f4d9cc96ecd8617b64f91fbb448a",
+    "tests/physics/test_root_salinity_response.f90": "dba7b69087cb0ee1160f39436fda6c691e2f6fe7c9d08ce0a3a0b4f42b45ff92",
+    "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
+    "tests/physics/test_solute_water_face_flux_reconstruction.f90": "d2cf43e099b4cb6004c091aeb1352d34e0dcd84629735251bbabf9427b74478b",
+    "tests/physics/run_ppa_wu05e_mobile_salt.sh": "ca12cbfdfc105bc68ebeaaaf0ac462cba937101550029d3f1cebc0914714025b"
+  },
+  "gates": [
+    "B1.11 molecular coefficient and transfer sign one-step oracle",
+    "Two-node unequal-storage analytical exponential relaxation",
+    "First-order timestep convergence: errors 0.00855264117277, 0.00420000556553, 0.00208152543582",
+    "Heterogeneous three-node mass closure and initial concentration extrema",
+    "Automatic monotone substeps and atomic exhaustion rejection",
+    "Uniform concentration, zero diffusion and single-node exact identity",
+    "Committed-state isolation and deterministic replay",
+    "Malformed dimensions, invalid geometry/policy, NaN and extreme conductance rejection under FPE traps",
+    "Existing independent salt, salinity response and face reconstruction O0/O2 gates"
+  ],
+  "qualification_ceiling": "Closed stationary no-advection molecular diffusion process only; not live FMR integration or complete B1.11 replay",
+  "numerical_difference": "Monotone capacity/conductance bound with caller max-step and substep cap; no legacy minimum-step override or mass floor",
+  "runtime_admitted": false,
+  "production_admitted": false,
+  "results": {
+    "diffusion_pass_lines": [
+      "RELAXATION_ERRORS=   8.55264117276999E-03   4.20000556553490E-03   2.08152543582341E-03",
+      "PPA_WU05E_CLOSED_DIFFUSION=PASS",
+      "RELAXATION_ERRORS=   8.55264117276999E-03   4.20000556553490E-03   2.08152543582341E-03",
+      "PPA_WU05E_CLOSED_DIFFUSION=PASS",
+      "PPA_WU05E_CLOSED_DIFFUSION_O0_O2=PASS"
+    ],
+    "preservation_pass_lines": [
+      " PPA_WU05E_MOBILE_SALT=PASS",
+      " PPA_WU05E_ROOT_SALINITY_RESPONSE=PASS",
+      "PPA_WU05E_WATER_FACE_FLUX_RECONSTRUCTION=PASS",
+      " PPA_WU05E_MOBILE_SALT=PASS",
+      " PPA_WU05E_ROOT_SALINITY_RESPONSE=PASS",
+      "PPA_WU05E_WATER_FACE_FLUX_RECONSTRUCTION=PASS",
+      "PPA_WU05E_MOBILE_SALT_O0_O2=PASS"
+    ]
+  }
+}

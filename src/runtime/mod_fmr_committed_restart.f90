@@ -11,7 +11,9 @@ module mod_fmr_committed_restart
   implicit none
   private
 
-  integer, parameter, public :: FMR_RESTART_SCHEMA_VERSION = 2
+  integer, parameter, public :: FMR_RESTART_SCHEMA_VERSION = 4
+  integer, parameter, public :: FMR_RESTART_SCHEMA_PREVIOUS = 3
+  integer, parameter, public :: FMR_RESTART_SCHEMA_LEGACY_DISABLED = 2
   integer, parameter, public :: FMR_RESTART_OK = 0
   integer, parameter, public :: FMR_RESTART_INVALID_STRUCTURE = 1
   integer, parameter, public :: FMR_RESTART_DUPLICATE_COLUMN = 2
@@ -23,19 +25,22 @@ module mod_fmr_committed_restart
   integer, parameter, public :: FMR_RESTART_TARGET_ALREADY_INITIALIZED = 8
   integer, parameter, public :: FMR_RESTART_SCHEMA_MISMATCH = 9
   integer, parameter, public :: FMR_RESTART_PARAMETER_SET_MISMATCH = 10
+  integer, parameter, public :: FMR_RESTART_FORCING_MISMATCH = 11
 
   ! Adapter-facing, serialization-neutral decoded continuation record.
   !
   ! This is not a file format and it does not define byte-level persistence.
   ! The runtime adapter may encode/decode an equivalent representation outside
   ! the kernel. Physical committed continuation state is deliberately kept
-  ! separate from stable runtime identity. Immutable parameter data, forcing,
-  ! solver/Newton/Jacobian scratch and worker warm starts are not components.
+  ! separate from stable runtime identity. Immutable parameter and forcing
+  ! payloads, solver/Newton/Jacobian scratch and worker warm starts are not
+  ! components; stable parameter and forcing handles are persisted separately.
   type, public :: fmr_committed_restart_record_t
     integer :: schema_version = 0
     integer :: kernel_schema_version = 0
     integer(int64) :: column_id = 0_int64
     integer(int64) :: parameter_ref = 0_int64
+    integer(int64) :: forcing_handle = 0_int64
     type(fmr_template_t) :: template_identity
     integer(int64) :: lineage_id = 0_int64
     integer(int64) :: revision = -1_int64
@@ -114,6 +119,7 @@ contains
       candidate_records(i)%kernel_schema_version = snapshot%schema_version()
       candidate_records(i)%column_id = columns(i)%column_id
       candidate_records(i)%parameter_ref = columns(i)%parameter_ref
+      candidate_records(i)%forcing_handle = columns(i)%forcing_handle
       candidate_records(i)%template_identity = templates(template_index)
       candidate_records(i)%lineage_id = snapshot%current_lineage_id()
       candidate_records(i)%revision = snapshot%current_revision()
@@ -160,7 +166,9 @@ contains
 
     restored = .false.
     status = FMR_RESTART_INVALID_STRUCTURE
-    if (bundle%schema_version /= FMR_RESTART_SCHEMA_VERSION) then
+    if (bundle%schema_version /= FMR_RESTART_SCHEMA_VERSION .and. &
+        bundle%schema_version /= FMR_RESTART_SCHEMA_PREVIOUS .and. &
+        bundle%schema_version /= FMR_RESTART_SCHEMA_LEGACY_DISABLED) then
       status = FMR_RESTART_SCHEMA_MISMATCH
       return
     end if
@@ -190,15 +198,35 @@ contains
         status = FMR_RESTART_COLUMN_NOT_FOUND
         return
       end if
-      if (bundle%records(record_index)%schema_version /= FMR_RESTART_SCHEMA_VERSION .or. &
-          bundle%records(record_index)%kernel_schema_version /= KERNEL_PERSISTENCE_SCHEMA_VERSION) then
+      if (bundle%records(record_index)%kernel_schema_version /= KERNEL_PERSISTENCE_SCHEMA_VERSION) then
         status = FMR_RESTART_SCHEMA_MISMATCH
         return
+      end if
+      if (bundle%schema_version == FMR_RESTART_SCHEMA_VERSION) then
+        if (bundle%records(record_index)%schema_version /= FMR_RESTART_SCHEMA_VERSION) then
+          status = FMR_RESTART_SCHEMA_MISMATCH
+          return
+        end if
+      else if (bundle%schema_version == FMR_RESTART_SCHEMA_PREVIOUS) then
+        if (bundle%records(record_index)%schema_version /= FMR_RESTART_SCHEMA_PREVIOUS) then
+          status = FMR_RESTART_SCHEMA_MISMATCH
+          return
+        end if
+      else
+        if (bundle%records(record_index)%schema_version /= FMR_RESTART_SCHEMA_LEGACY_DISABLED) then
+          status = FMR_RESTART_SCHEMA_MISMATCH
+          return
+        end if
       end if
 
       template_index = find_template_index(columns(i)%template_id, templates)
       if (template_index == 0) then
         status = FMR_RESTART_TEMPLATE_MISMATCH
+        return
+      end if
+      if (bundle%schema_version /= FMR_RESTART_SCHEMA_VERSION .and. &
+          templates(template_index)%solute_state_layout_id /= 0_int64) then
+        status = FMR_RESTART_SCHEMA_MISMATCH
         return
       end if
       if (.not. fmr_restart_template_identity_matches(bundle%records(record_index)%template_identity, &
@@ -213,6 +241,11 @@ contains
       end if
       if (columns(i)%parameter_ref /= bundle%records(record_index)%parameter_ref) then
         status = FMR_RESTART_PARAMETER_MISMATCH
+        return
+      end if
+      if (bundle%schema_version == FMR_RESTART_SCHEMA_VERSION .and. &
+          columns(i)%forcing_handle /= bundle%records(record_index)%forcing_handle) then
+        status = FMR_RESTART_FORCING_MISMATCH
         return
       end if
       if (.not. allocated(bundle%records(record_index)%physical_state)) then
@@ -262,6 +295,7 @@ contains
          left%state_layout_id == right%state_layout_id .and. &
          left%solver_interface_id == right%solver_interface_id .and. &
          left%optional_state_layout_id == right%optional_state_layout_id .and. &
+         left%solute_state_layout_id == right%solute_state_layout_id .and. &
          left%numerical_continuation_layout_id == right%numerical_continuation_layout_id .and. &
          left%compatible_backend_id == right%compatible_backend_id
   end function fmr_restart_template_identity_matches

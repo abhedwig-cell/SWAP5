@@ -1,6 +1,6 @@
 # PPA-WU05B2: explicit empirical root frost composition
 
-Status: implemented candidate, not canonically admitted. Baseline is
+Status: implemented candidate, not canonically admitted. Original baseline is
 `53a3f3e41231b8600bbb19b8eb2157558bd12e19`.
 
 The legacy macro-root rule sets uptake to zero below 0 C. Exactly 0 C
@@ -57,3 +57,14 @@ global 1e-6 C accuracy.
 Source hashes are recorded in `integration/audits/PPA_WU05B2_SOURCE_MANIFEST.json`.
 The status file is authoritative for completion and admission. The aggregate frost
 migration remains incomplete until all separately bounded work units are admitted.
+
+## Current-canonical reconciliation
+
+Canonical advanced to `916035e78305cae5f88c30d5805b5d9c33a348f8` with the
+admitted matrix-salinity owner. The root compensation API keeps its existing
+positional salinity arguments and appends named frost arguments. Both selectors
+4 and 5 remain distinct. Salt and frost diagnostic owners coexist, while joint
+nonzero salt/frost stress is unsupported pending separate qualification. Public
+application admission also excludes simultaneous root-salinity or salt state.
+Active matrix-salt and dispersion runtime preservation is repeated on the merged
+source; the pre-reconciliation full moving-canonical pass is not current admission.

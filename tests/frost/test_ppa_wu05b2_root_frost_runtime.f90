@@ -162,6 +162,9 @@ contains
          abs(out(1)%actual_transpiration_amount-1.e-4_real64*.02_real64/.7_real64)<1.e-14_real64,'Walsum application oracle')
     call require(abs(out(1)%mass%residual)<=hard_mass_gate,'Walsum hard mass budget')
     call app%close(status)
+    bad=cfg;bad%tiles(1)%parameters%root_salinity_active=.true.
+    call rejected%initialize(bad,status)
+    call require(status/=FMR_APP_BOOT_OK,'joint salt and frost rejected at application')
     bad=cfg;bad%tiles(1)%parameters%root_frost_head_budget_cm=0._real64
     call rejected%initialize(bad,status)
     call require(status/=FMR_APP_BOOT_OK,'absent temporal budget rejected at application')

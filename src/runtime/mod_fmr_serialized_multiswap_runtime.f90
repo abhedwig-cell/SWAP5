@@ -16,6 +16,7 @@ module mod_fmr_serialized_multiswap_runtime
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
        fmr_serialized_physical_observation_t
+  use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_candidate_t, fmr_bottom_thermal_sample_t, &
        FMR_BOTTOM_THERMAL_DONOR_EXTERNAL
   use mod_fmr_bottom_external_thermal_binding, only: fmr_bottom_external_thermal_binding_bundle_t, &
@@ -173,7 +174,7 @@ contains
                                                     runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan, &
                                                     materialize_worker_assignments, materialize_summary_diagnostics, &
                                                     materialize_diagnostic_metadata, materialize_column_diagnostics, &
-                                                    trusted_prepared_parameters)
+                                                    trusted_prepared_parameters, base_salt_temporal_policy)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -197,13 +198,15 @@ contains
     logical, intent(in), optional :: materialize_column_diagnostics
     logical, intent(in), optional :: trusted_prepared_parameters
 
+    type(fmr_base_salt_temporal_policy_t), intent(in), optional :: base_salt_temporal_policy
+
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
     type(fmr_serialized_batch_diagnostics_t) :: local_runtime
     type(fmr_column_diagnostics_t) :: scratch_diagnostic
     integer, allocatable :: order(:), receipt_slot_by_column(:)
     integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
-    logical :: receipt_request_ok
+    logical :: receipt_request_ok, salt_policy_ok
     logical :: do_worker_assignments, do_summary_diagnostics, do_diagnostic_metadata, do_column_diagnostics
     logical :: track_physical_concurrency, trust_prepared
 
@@ -303,6 +306,16 @@ contains
     end if
 
     call backend%initialize(top_boundary)
+    if (present(base_salt_temporal_policy)) then
+      if (base_salt_temporal_policy%enabled) then
+        call backend%configure_base_salt_temporal_policy(base_salt_temporal_policy,salt_policy_ok)
+        if (.not. salt_policy_ok) then
+          dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
+          call mark_all_rejected(diagnostics, 'INVALID_BASE_SALT_TEMPORAL_POLICY')
+          return
+        end if
+      end if
+    end if
     batches = 0
     do batch_start = 1, size(columns), batch_size
       batches = batches + 1
