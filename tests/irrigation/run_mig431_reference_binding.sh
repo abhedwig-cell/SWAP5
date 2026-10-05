@@ -41,6 +41,7 @@ for opt in 0 2; do
       src/runtime/mod_fmr_irrigation_source_binding.f90 \
       src/runtime/mod_fmr_irrigation_reference_binding.f90 \
       src/runtime/mod_fmr_irrigation_restart.f90 \
+      src/runtime/mod_fmr_irrigation_joint_restart.f90 \
       src/process/mod_crop_calendar_management_process.f90 \
       src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
       src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do
@@ -80,12 +81,16 @@ s=s.replace(anchor,'''  use mod_irrigation_process, only: irrigation_state_t, ir
        fmr_publish_accepted_irrigation_state, FMR_IRR_REFERENCE_OK
   use mod_fmr_irrigation_restart, only: irrigation_restart_record_t, export_irrigation_restart, &
        restore_irrigation_restart, IRRIGATION_RESTART_OK
+  use mod_fmr_irrigation_joint_restart, only: irrigation_joint_restart_t, &
+       export_irrigation_joint_restart, restore_irrigation_joint_restart, IRRIGATION_JOINT_RESTART_OK
 '''+anchor)
 anchor='    logical :: exported, restored\n    integer :: status, i'
 assert s.count(anchor)==1
 s=s.replace(anchor,'''    logical :: exported, restored, management_published
     type(irrigation_state_t) :: base_management, restart_management, proposed_management
     type(irrigation_restart_record_t) :: management_restart_record
+    type(irrigation_joint_restart_t) :: joint_bundle, corrupt_joint
+    type(irrigation_state_t), allocatable :: joint_management(:)
     type(irrigation_flux_result_t) :: event_flux
     type(irrigation_diagnostics_t) :: event_diagnostics
     integer :: status, i''')
@@ -118,9 +123,31 @@ s=s.replace(anchor,anchor+'''
          'replayed accepted Reference result publishes same management state')
     call export_irrigation_restart(restart_management,management_restart_record,status)
     call require(status == IRRIGATION_RESTART_OK, 'accepted management restart export')''')
-anchor="    call require(restored .and. status == FMR_RESTART_OK, 'correct restart restore')"
+anchor="    call require(exported .and. status == FMR_RESTART_OK, 'restart export')"
 assert s.count(anchor)==1
 s=s.replace(anchor,anchor+'''
+    allocate(joint_management(n))
+    joint_management = restart_management
+    call export_irrigation_joint_restart(restart_columns,restart_templates,restart_states, &
+         joint_management,parameter_set_identity,joint_bundle,status)
+    call require(status == IRRIGATION_JOINT_RESTART_OK, 'atomic irrigation and FMR export')''')
+anchor="""    call fmr_restore_committed_restart(bundle, parameter_set_identity, restart_columns, restart_templates, restart_states, &
+         restored, status)
+    call require(restored .and. status == FMR_RESTART_OK, 'correct restart restore')"""
+assert s.count(anchor)==1
+s=s.replace(anchor,'''    corrupt_joint = joint_bundle
+    corrupt_joint%management(1)%management%schema = -1
+    joint_management = irrigation_state_t()
+    call restore_irrigation_joint_restart(corrupt_joint,parameter_set_identity,restart_columns, &
+         restart_templates,restart_states,joint_management,restored,status)
+    call require(.not. restored .and. all_states_unready(restart_states) .and. &
+         all(joint_management%next_fixed_event_index == 1), 'joint corruption atomic rollback')
+    call restore_irrigation_joint_restart(joint_bundle,parameter_set_identity,restart_columns, &
+         restart_templates,restart_states,joint_management,restored,status)
+    call require(restored .and. status == IRRIGATION_JOINT_RESTART_OK, 'joint restart restore')
+    call require(all(joint_management%next_fixed_event_index == 2), &
+         'all management pointers restored with physical columns')
+'''+'''
     restart_management = irrigation_state_t()
     call restore_irrigation_restart(management_restart_record,restart_management,status)
     call require(status == IRRIGATION_RESTART_OK .and. &
@@ -193,6 +220,7 @@ for opt in 0 2; do
   for source in "${sources[@]}" src/process/mod_irrigation_process.f90 \
       src/runtime/mod_fmr_irrigation_source_binding.f90 src/runtime/mod_fmr_irrigation_reference_binding.f90 \
       src/runtime/mod_fmr_irrigation_restart.f90 \
+      src/runtime/mod_fmr_irrigation_joint_restart.f90 \
       src/process/mod_crop_calendar_management_process.f90 \
       src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
       src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do
