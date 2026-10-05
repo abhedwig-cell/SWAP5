@@ -165,7 +165,9 @@ Consequently, the next typed drainage receipt must retain each signed `qdra` lev
 
 The operator is now composed into the single-substep `advance_mobile_macro_salt_trial` candidate. That path applies signed qdra mass from the synchronized start-state CML/Cdrain, adds levelwise salt receipts to the same candidate ledger, and includes both qssdi (water-only) and signed qdra in matrix water closure. Its regression adds a nonzero qssdi input with opposing drainage levels; salt ledger closure and O0/O2-identical output pass.
 
-The ordered `advance_mobile_macro_salt_trace` wrapper does not yet carry the qdra/qssdi/Cdrain fields through each accepted substep. The new trial argument is not wired to the FMR trace producer or committed FMR state, Cdrain forcing/restart ownership is not declared there, and no transaction receipt is qualified. Therefore the live FMR drainage salt route remains disabled and Jarvis remains salinity-disabled.
+The ordered `advance_mobile_macro_salt_trace` wrapper now carries optional level-resolved qdra, water-only qssdi, and explicit Cdrain availability/concentration through each accepted process substep. It aggregates signed receipts per level, advances each step from the prior candidate, and clears all mass and drainage receipts on late failure. The manufactured two-step test checks qssdi water closure, opposing qdra levels, per-level receipts, mass outcome, missing-Cdrain late rollback, and identical O0/O2 output.
+
+This wrapper is still process-only: the fields are not populated from the accepted FMR trace, Cdrain forcing and restart ownership are not declared in FMR, and no atomic FMR transaction receipt is qualified. The live FMR drainage salt route remains disabled and Jarvis remains salinity-disabled.
 
 ## Next action
 
