@@ -44,7 +44,7 @@ program test_frost_composed_runtime
   real(real64)::q,dt,head_diff,temp_diff
   integer::status,i,signum,method,regime
   real(real64)::uptake,expected_bottom
-  type(fmr_b110_physical_state_t)::frozen
+  type(fmr_b110_physical_state_t)::frozen,moist
   logical::ok
   call initialize_parameters(parameters,2)
   call enable_bounded_frost(parameters)
@@ -55,16 +55,28 @@ program test_frost_composed_runtime
   frozen%water_content=parameters%cofgen(2,:)
   call initialize_soil_temperature_state([-4._real64,-4._real64,-4._real64,-4._real64],frozen%soil_temperature,status)
   call require(status==0,'joint fully frozen profile')
+  moist=initial
+  block
+    type(b110_default_mvg_parameters_t),target::hp
+    type(b110_default_mvg_provider_t)::provider
+    real(real64)::w(4),k(4),c(4),dk(4)
+    call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
+    call bind_b110_default_mvg_provider(provider,hp,upward_dt)
+    moist%pressure_head=-5._real64
+    call provider%evaluate(moist%pressure_head,w,k,c,dk)
+    moist%water_content=w
+  end block
   do method=0,2
     uptake=.01_real64
     if(method/=0)uptake=uptake/.7_real64
-    do regime=1,2
+    do regime=1,3
       wet=initial
       if(regime==2)wet=frozen
+      if(regime==3)wet=moist
       do signum=-1,1,2
         q=real(signum,real64)*1.e-3_real64
         expected_bottom=q
-        if(regime==2)expected_bottom=0._real64
+        if(regime/=1)expected_bottom=0._real64
         call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,result,observation, &
              frost_case=.true.,frost_temperature=-4._real64,initial_physical_state=wet, &
              final_physical_state=final,bottom_case=.true.,root_case=.true.,root_method=method,captured=captured)
@@ -73,10 +85,10 @@ program test_frost_composed_runtime
         call require(abs(observation%bottom_flux-expected_bottom)<=1.e-14_real64,'joint actual bottom flux oracle')
         call require(result%mass%complete.and.abs(result%mass%residual)<=hard_mass_gate,'joint hard mass closure')
         call require(result%actual_transpiration_available,'joint accepted root publication')
-        if(regime==1)then
+        if(regime/=2)then
           call require(abs(result%actual_transpiration_amount-uptake*1.e-4_real64)<=1.e-14_real64,'joint root amount oracle')
-          call require(abs(result%mass%storage_change-(q-uptake)*1.e-4_real64)<=hard_mass_gate,'net storage oracle')
-          call require(result%temporal_rejections>0,'joint actual retry')
+          call require(abs(result%mass%storage_change-(expected_bottom-uptake)*1.e-4_real64)<=hard_mass_gate,'net storage oracle')
+          if(regime==1)call require(result%temporal_rejections>0,'joint actual retry')
           call require(observation%root_frost_final_sink(1)==0._real64.and. &
                observation%root_frost_final_sink(2)==0._real64,'frozen roots not resurrected')
         else
@@ -87,6 +99,58 @@ program test_frost_composed_runtime
       end do
     end do
   end do
+  ! Mixed nonzero trajectory: fine direct refinement and actual committed restart.
+  q=1.e-3_real64
+  call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,result,observation, &
+       frost_case=.true.,frost_temperature=-4._real64,initial_physical_state=initial, &
+       final_physical_state=final,bottom_case=.true.,root_case=.true.,root_method=2,captured=captured)
+  call require(result%committed,'restart source joint trajectory')
+  direct=initial;dt=1.e-4_real64/2048._real64
+  do i=1,2048
+    call execute_case(2,0._real64,q,-999999._real64,dt,.false.,.true.,again,observation, &
+         frost_case=.true.,frost_temperature=-4._real64,initial_physical_state=direct, &
+         final_physical_state=next,start_time=real(i-1,real64)*dt, &
+         bottom_case=.true.,root_case=.true.,root_method=2)
+    call require(again%committed,'joint fine direct continuation')
+    direct=next
+  end do
+  call copy_soil_temperature_profile(final%soil_temperature,tf,status)
+  call require(status==0,'joint retried thermal profile')
+  call copy_soil_temperature_profile(direct%soil_temperature,td,status)
+  call require(status==0,'joint fine thermal profile')
+  head_diff=maxval(abs(final%pressure_head-direct%pressure_head));temp_diff=maxval(abs(tf-td))
+  print '(A,ES14.6,A,ES14.6)','PPA-WU05B4_FINE head_cm=',head_diff,' temperature_c=',temp_diff
+  call require(head_diff<=1.e-6_real64.and.temp_diff<=1.e-4_real64,'joint cumulative horizon envelope')
+  call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,again,observation, &
+       frost_case=.true.,frost_temperature=-4._real64,initial_physical_state=initial, &
+       final_physical_state=replay,bottom_case=.true.,root_case=.true.,root_method=2)
+  call require(again%committed.and.all(final%pressure_head==replay%pressure_head),'joint fresh worker replay identity')
+  columns(1)%column_id=column_id;columns(1)%template_id=440001_int64
+  columns(1)%parameter_ref=1_int64;columns(1)%state_handle=1_int64;columns(1)%forcing_handle=1_int64
+  columns(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+  templates(1)%template_id=440001_int64;templates(1)%physics_topology_id=440002_int64
+  templates(1)%vertical_layout_id=440003_int64;templates(1)%state_layout_id=440004_int64
+  templates(1)%solver_interface_id=440005_int64
+  templates(1)%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
+  templates(1)%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+  registry(1)=captured
+  call fmr_export_committed_restart(columns,templates,registry,parameters%parameter_set_id,bundle,ok,status)
+  call require(ok.and.status==FMR_RESTART_OK,'joint accepted restart export')
+  call fmr_restore_committed_restart(bundle,parameters%parameter_set_id,columns,templates,restored,ok,status)
+  call require(ok.and.status==FMR_RESTART_OK,'joint empty-registry restore')
+  call require(restored(1)%current_revision()==captured%current_revision(),'joint restart revision')
+  call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,result,observation, &
+       frost_case=.true.,frost_temperature=-4._real64,start_time=1.e-4_real64, &
+       bottom_case=.true.,root_case=.true.,root_method=2,resumed=captured,final_physical_state=final)
+  call require(result%committed,'joint source continuation')
+  call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,again,observation, &
+       frost_case=.true.,frost_temperature=-4._real64,start_time=1.e-4_real64, &
+       bottom_case=.true.,root_case=.true.,root_method=2,resumed=restored(1),final_physical_state=replay)
+  call require(again%committed.and.all(final%pressure_head==replay%pressure_head),'joint fresh restart identity')
+  call require(result%actual_transpiration_amount==again%actual_transpiration_amount,'joint restart uptake identity')
+  call require(result%mass%storage_change==again%mass%storage_change,'joint restart water receipt identity')
+  call require(observation%root_frost_executed.and.observation%frost_bottom_executed,'restart recomputes both policies')
+  call verify_application(initial,moist)
   print '(A)','PPA-WU05B4_ROOT_BOTTOM_FROST_RUNTIME=PASS'
 contains
   subroutine verify_application(dry,wet)
@@ -94,7 +158,8 @@ contains
     type(fmr_production_application_config_t)::cfg,bad
     type(fmr_production_application_bootstrap_t)::app,rejected
     type(fmr_serialized_column_result_t),allocatable::out(:)
-    integer::status
+    integer::status,method,regime
+    real(real64)::uptake,q
     allocate(cfg%tiles(1))
     cfg%tiles(1)%tile_id=column_id;cfg%tiles(1)%ledger_id=440045_int64
     cfg%tiles(1)%template=templates(1)
@@ -105,8 +170,18 @@ contains
     cfg%tiles(1)%parameters%frost_bottom%temperature_budget_c=1.e-7_real64
     cfg%tiles(1)%parameters%head_abs_tolerance=1.e-8_real64
     cfg%tiles(1)%parameters%head_rel_tolerance=1.e-8_real64
-    cfg%tiles(1)%initial_state=dry
+    cfg%tiles(1)%parameters%root_extraction_active=.true.
+    cfg%tiles(1)%parameters%root_frost%active=.true.
+    cfg%tiles(1)%parameters%root_frost%rooted_nodes=3
+    cfg%tiles(1)%parameters%root_frost_head_budget_cm=1.e-6_real64
+    cfg%tiles(1)%parameters%root_frost_temperature_budget_c=1.e-7_real64
+    cfg%tiles(1)%parameters%root_compensation%alpha_critical=.7_real64
     call initialize_forcing(cfg%tiles(1)%base_forcing,0._real64,1.e-3_real64,-999999._real64)
+    cfg%tiles(1)%base_forcing%root_extraction_sink=[.01_real64,.01_real64,.01_real64,0._real64]
+    allocate(cfg%tiles(1)%base_forcing%root_potential_sink(4),cfg%tiles(1)%base_forcing%root_walsum_geometry)
+    cfg%tiles(1)%base_forcing%root_potential_sink=cfg%tiles(1)%base_forcing%root_extraction_sink
+    cfg%tiles(1)%base_forcing%root_potential_transpiration=.03_real64
+    cfg%tiles(1)%base_forcing%root_walsum_geometry=root_walsum_geometry_t(.5_real64,5._real64,1.5_real64)
     allocate(cfg%tiles(1)%base_forcing%soil_temperature)
     cfg%tiles(1)%base_forcing%soil_temperature%prescribed_surface_temperature_c=-4._real64
     cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
@@ -115,30 +190,46 @@ contains
     cfg%numerical%transaction%max_retries=20
     cfg%numerical%transaction%retry_scale=.5_real64
     cfg%numerical%max_committed_substeps=100000
-    call app%initialize(cfg,status)
-    call require(status==FMR_APP_BOOT_OK,'boundary application admission')
-    call app%run_standalone(0._real64,1.e-4_real64,out,status)
-    call require(status==FMR_APP_BOOT_OK.and.out(1)%committed,'boundary application commits')
-    call require(abs(out(1)%mass%storage_change-1.e-7_real64)<=hard_mass_gate,'application flux/storage oracle')
-    call require(abs(out(1)%mass%residual)<=hard_mass_gate,'application mass closes')
-    call app%close(status)
-    cfg%tiles(1)%initial_state=wet
-    call app%initialize(cfg,status)
-    call require(status==FMR_APP_BOOT_OK,'blocked application admission')
-    call app%run_standalone(0._real64,1.e-4_real64,out,status)
-    call require(status==FMR_APP_BOOT_OK.and.out(1)%committed,'blocked application commits')
-    call require(out(1)%mass%total_in==0._real64.and.out(1)%mass%total_out==0._real64,'blocked application flux zero')
-    call app%close(status)
+    do method=0,2
+      cfg%tiles(1)%parameters%root_compensation%method=method
+      cfg%tiles(1)%parameters%root_compensation%stressor=ROOT_COMP_FROST
+      if(method==0)cfg%tiles(1)%parameters%root_compensation%stressor=0
+      uptake=.01_real64
+      if(method/=0)uptake=uptake/.7_real64
+      do regime=1,2
+        cfg%tiles(1)%initial_state=dry
+        q=1.e-3_real64
+        if(regime==2)then
+          cfg%tiles(1)%initial_state=wet
+          q=0._real64
+        end if
+        call app%initialize(cfg,status)
+        call require(status==FMR_APP_BOOT_OK,'joint application admission')
+        call app%run_standalone(0._real64,1.e-4_real64,out,status)
+        call require(status==FMR_APP_BOOT_OK.and.out(1)%committed,'joint application commits')
+        call require(out(1)%actual_transpiration_available,'joint application accepted root publication')
+        call require(abs(out(1)%actual_transpiration_amount-uptake*1.e-4_real64)<=1.e-14_real64,'joint application uptake oracle')
+        call require(abs(out(1)%mass%storage_change-(q-uptake)*1.e-4_real64)<=hard_mass_gate,'joint application net storage oracle')
+        call require(abs(out(1)%mass%residual)<=hard_mass_gate,'joint application hard mass')
+        call app%close(status)
+      end do
+    end do
     bad=cfg;bad%tiles(1)%parameters%frost_bottom%head_budget_cm=0._real64
     call rejected%initialize(bad,status)
     call require(status/=FMR_APP_BOOT_OK,'missing boundary numerical budget rejected')
-    bad=cfg;bad%tiles(1)%parameters%root_frost%active=.true.
+    bad=cfg;bad%tiles(1)%parameters%root_frost_temperature_budget_c=0._real64
     call rejected%initialize(bad,status)
-    call require(status/=FMR_APP_BOOT_OK,'combined root boundary pending qualified separately')
+    call require(status/=FMR_APP_BOOT_OK,'missing root numerical budget rejected')
+    bad=cfg;bad%tiles(1)%parameters%root_salinity_active=.true.
+    call rejected%initialize(bad,status)
+    call require(status/=FMR_APP_BOOT_OK,'joint salt/frost remains rejected')
     bad=cfg;bad%tiles(1)%parameters%drainage_response_active=.true.
     call rejected%initialize(bad,status)
     call require(status/=FMR_APP_BOOT_OK,'active drainage redistribution rejected')
-    print '(A)','PPA-WU05B3_FROST_BOTTOM_APPLICATION=PASS'
+    bad=cfg;bad%tiles(1)%parameters%frost_bottom%active=.false.
+    call rejected%initialize(bad,status)
+    call require(status/=FMR_APP_BOOT_OK,'root-only nonzero qbot remains rejected')
+    print '(A)','PPA-WU05B4_ROOT_BOTTOM_FROST_APPLICATION=PASS'
   end subroutine
 
   subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, use_certificate, hydrostatic, &
