@@ -4,17 +4,21 @@
   "date": "2026-10-05",
   "canonical_base": "da26f0f6ece2d6480b3169c9f53317809a8f3d1b",
   "branch": "work/ppa-wu05-migmac05-mixed-law",
-  "status": "LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
-  "production_admitted": false,
+  "status": "CANONICAL_PRODUCTION_ADMITTED_CLOSED",
+  "production_admitted": true,
   "scope": "Mixed Kim/direct peat, Kim/three-segment peat and rigid/Kim/peat in existing serialized Reference Richards; prepared carriers and supplied-KD two-domain drainage",
   "qualification": "integration/audits/PPA_WU05_MIGMAC05_QUALIFICATION.json",
   "preregistration": "docs/audits/PPA_WU05_MIGMAC05_PREREGISTRATION.md",
   "blockers": [],
-  "next_action": "Admit exact qualified tree then record canonical closeout.",
+  "next_action": "Mixed constitutive Reference qualification complete; new mixed-law rapid-drain reference construction remains separate work.",
   "remaining_scope": [
     "New mixed-law rapid-drain reference KD construction",
     "Multiple or within-compartment drains",
     "Additional surface owners and whole-model equivalence",
     "Ambiguous peat fitting and other execution modes"
-  ]
+  ],
+  "canonical_pr": 1022,
+  "canonical_merge": "be067df630e3efd21a43e3afa9c9e542d31a513b",
+  "published_qualified_commit": "6e1520ecd0e12e57f86e7028b5d29b44fb404514",
+  "qualified_tree": "a789af124bfd8d487c15c9cdf28c9d1b5ebf0e0c"
 }

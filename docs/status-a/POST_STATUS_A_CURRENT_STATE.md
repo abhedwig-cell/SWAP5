@@ -246,3 +246,15 @@ finding against the exact B1.11 equation. No runtime/state/mass owner is added.
 criteria and non-identifiable cases; `integration/audits/PPA_WU05_MIGMAC04_STATUS.json`
 records admission. Ambiguous fits and new mixed-law/drain compositions remain
 outside this scope. Frozen Status A is unchanged.
+
+## PPA-WU05-MIGMAC05 mixed constitutive Reference profiles
+
+PR #1022 canonically admits mixed Kim/direct Hendriks, Kim/three-segment peat and
+rigid/Kim/peat qualification in the existing serialized Reference geometry chain.
+This later admission closes the mixed Kim/peat runtime gap named in MIGMAC03/04.
+No production source or physical owner changes. Prepared carriers, accepted history,
+wetting displacement, retry, A/B/A and restart pass at O0/O2. Supplied-coefficient
+two-domain drainage composes; new mixed-law reference KD derivation remains open.
+See [closeout](../audits/PPA_WU05_MIGMAC05_CLOSEOUT.md) and its pinned qualification.
+Wider drain/surface compositions and whole-model equivalence remain excluded.
+Frozen Status A remains unchanged.

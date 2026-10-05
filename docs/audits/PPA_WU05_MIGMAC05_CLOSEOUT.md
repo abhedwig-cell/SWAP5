@@ -1,6 +1,6 @@
 # PPA-WU05-MIGMAC05 mixed constitutive Reference closeout
 
-Date: 2026-10-05. Status: LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION.
+Date: 2026-10-05. Status: CANONICAL_PRODUCTION_ADMITTED_CLOSED.
 Canonical base: da26f0f6ece2d6480b3169c9f53317809a8f3d1b.
 
 The existing per-compartment dispatcher qualifies mixed Kim/direct Hendriks,
@@ -27,3 +27,10 @@ Remaining scope includes new mixed-law reference KD construction, multiple or
 within-compartment drains, additional surface owners, whole-model equivalence,
 ambiguous fitting and other solvers. Broad migration remains incomplete and the
 frozen Status-A denominator is unchanged.
+
+## Canonical admission
+
+PR #1022 merged qualified tree `a789af124bfd8d487c15c9cdf28c9d1b5ebf0e0c`
+at `be067df630e3efd21a43e3afa9c9e542d31a513b`. Published qualified commit:
+`6e1520ecd0e12e57f86e7028b5d29b44fb404514`. Merge comparison has no changed files.
+All 38 source/test postimages remain exact; closeout changes documentation only.

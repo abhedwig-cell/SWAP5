@@ -164,3 +164,16 @@ Broad 4.3.1 macropore migration is **not yet complete**. The remaining standard-
 are now bounded primarily to covering-layer behavior, dynamic crack/shrinkage geometry,
 the wider rapid-drain envelope, surface-owner combinations and final official-case
 equivalence. RFM completion remains a separate line.
+
+## Later canonical reconciliation: MIGMAC05 (2026-10-05)
+
+The earlier gap census above is historical. MIGMAC01 covering-layer and
+MIGMAC02/03/04 dynamic constitutive/preparation admissions are followed by
+MIGMAC05 PR #1022 mixed Kim/peat/rigid Reference qualification. The mixed-law
+runtime gap is closed within the serialized admitted chain, including retry,
+restart and wetting water displacement. No production source changed here.
+
+New mixed-law rapid-drain reference KD construction, wider multiple/within-cell
+drains, additional surface owners and final whole-model case equivalence remain
+outside this admission. Broad 4.3.1 macropore migration is still incomplete.
+Controlling bounded authority: [MIGMAC05 closeout](PPA_WU05_MIGMAC05_CLOSEOUT.md).
