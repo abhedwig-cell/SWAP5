@@ -1,6 +1,6 @@
 # PPA-WU05B6 normal frost drainage composition
 
-Status: implemented and locally tested candidate; central qualification and admission pending.
+Status: locally qualified, ready for central exact-source admission.
 
 The explicit `frost_drainage` option composes the ordinary legacy normal FrozenBounds nodal rule with Reference mode2 and prescribed signed drainage by level/node. Each final nodal flux is its immutable proposal multiplied by the trial-start hydraulic frost factor. Level and aggregate diagnostics derive from these final nodes. The existing source/sink provider and mass owner book the final node flux once; the bottom flux keeps its separate existing owner.
 
@@ -17,3 +17,5 @@ The actual runtime matrix has twelve signed multilevel drainage/bottom cases, in
 The [corrected reporting reference](PPA_WU05B5_CORRECTED_B1_DRAIN_REPORT.md) remains the authority for the separate low-air ordinary branch. It does not expand this unit's claim. Active drainage-response generation, SWDIVD=1 redistribution, low-air drain geometry, root/salt/macropore/snow combinations, frost-bottom composition, groundwater-owned bottom and new phase-change physics remain outside this admission.
 
 Preregistration: `integration/audits/PPA_WU05B6_PREREGISTRATION.json`. Run `bash tests/frost/run_ppa_wu05b6_normal_drain_source.sh` and `bash tests/frost/run_ppa_wu05b6_normal_drain_runtime.sh`.
+
+Exact qualification and preservation identities are in `integration/audits/PPA_WU05B6_STATUS.json`. The compressed local replay bundle records source hashes, completed gate outputs and exact salted-preservation reports. No queued Actions success claim is used.
