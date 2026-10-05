@@ -11,8 +11,9 @@ module mod_fmr_committed_restart
   implicit none
   private
 
-  integer, parameter, public :: FMR_RESTART_SCHEMA_VERSION = 3
-  integer, parameter, public :: FMR_RESTART_SCHEMA_PREVIOUS = 2
+  integer, parameter, public :: FMR_RESTART_SCHEMA_VERSION = 4
+  integer, parameter, public :: FMR_RESTART_SCHEMA_PREVIOUS = 3
+  integer, parameter, public :: FMR_RESTART_SCHEMA_LEGACY_DISABLED = 2
   integer, parameter, public :: FMR_RESTART_OK = 0
   integer, parameter, public :: FMR_RESTART_INVALID_STRUCTURE = 1
   integer, parameter, public :: FMR_RESTART_DUPLICATE_COLUMN = 2
@@ -37,6 +38,7 @@ module mod_fmr_committed_restart
     integer :: kernel_schema_version = 0
     integer(int64) :: column_id = 0_int64
     integer(int64) :: parameter_ref = 0_int64
+    integer(int64) :: forcing_handle = 0_int64
     type(fmr_template_t) :: template_identity
     integer(int64) :: lineage_id = 0_int64
     integer(int64) :: revision = -1_int64
@@ -115,6 +117,7 @@ contains
       candidate_records(i)%kernel_schema_version = snapshot%schema_version()
       candidate_records(i)%column_id = columns(i)%column_id
       candidate_records(i)%parameter_ref = columns(i)%parameter_ref
+      candidate_records(i)%forcing_handle = columns(i)%forcing_handle
       candidate_records(i)%template_identity = templates(template_index)
       candidate_records(i)%lineage_id = snapshot%current_lineage_id()
       candidate_records(i)%revision = snapshot%current_revision()
@@ -162,7 +165,8 @@ contains
     restored = .false.
     status = FMR_RESTART_INVALID_STRUCTURE
     if (bundle%schema_version /= FMR_RESTART_SCHEMA_VERSION .and. &
-        bundle%schema_version /= FMR_RESTART_SCHEMA_PREVIOUS) then
+        bundle%schema_version /= FMR_RESTART_SCHEMA_PREVIOUS .and. &
+        bundle%schema_version /= FMR_RESTART_SCHEMA_LEGACY_DISABLED) then
       status = FMR_RESTART_SCHEMA_MISMATCH
       return
     end if
@@ -201,8 +205,13 @@ contains
           status = FMR_RESTART_SCHEMA_MISMATCH
           return
         end if
-      else
+      else if (bundle%schema_version == FMR_RESTART_SCHEMA_PREVIOUS) then
         if (bundle%records(record_index)%schema_version /= FMR_RESTART_SCHEMA_PREVIOUS) then
+          status = FMR_RESTART_SCHEMA_MISMATCH
+          return
+        end if
+      else
+        if (bundle%records(record_index)%schema_version /= FMR_RESTART_SCHEMA_LEGACY_DISABLED) then
           status = FMR_RESTART_SCHEMA_MISMATCH
           return
         end if
@@ -213,7 +222,7 @@ contains
         status = FMR_RESTART_TEMPLATE_MISMATCH
         return
       end if
-      if (bundle%schema_version == FMR_RESTART_SCHEMA_PREVIOUS .and. &
+      if (bundle%schema_version /= FMR_RESTART_SCHEMA_VERSION .and. &
           templates(template_index)%solute_state_layout_id /= 0_int64) then
         status = FMR_RESTART_SCHEMA_MISMATCH
         return
@@ -229,6 +238,11 @@ contains
         return
       end if
       if (columns(i)%parameter_ref /= bundle%records(record_index)%parameter_ref) then
+        status = FMR_RESTART_PARAMETER_MISMATCH
+        return
+      end if
+      if (bundle%schema_version == FMR_RESTART_SCHEMA_VERSION .and. &
+          columns(i)%forcing_handle /= bundle%records(record_index)%forcing_handle) then
         status = FMR_RESTART_PARAMETER_MISMATCH
         return
       end if
