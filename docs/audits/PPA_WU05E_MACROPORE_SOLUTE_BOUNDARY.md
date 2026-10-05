@@ -71,8 +71,10 @@ concentration units, validity coverage, source ID, and revision in the A7
 test-only trace adapter. FMR restart schema v4 persists the per-column
 forcing_handle and rejects restore when the runtime handle differs; v3 and v2
 remain disabled-salinity-only migrations. The FMR salt component now carries Cdrain source ID and revision through
-clone and Restart v4. The live forcing-to-trial/candidate binding and salt
-advancement are still absent. These process boundaries
+clone and Restart v4. The backend now checks at the active-layout trial boundary that the forcing
+source ID matches the column forcing_handle and its declared interval covers
+the trial. Active layouts are still rejected before salt advancement; no live
+FMR mass candidate or transaction receipt is yet created. These process boundaries
 do not qualify FMR surface partition, returned water, covered-top transfer,
 rapid drainage, or geometry return routes.
 
