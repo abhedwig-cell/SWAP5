@@ -1863,7 +1863,9 @@ contains
     if (self%model%accepted_water_flux_trace_enabled) then
       if (parameters%snow_active .or. parameters%drainage_response_active .or. &
           (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) .or. &
-          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. parameters%frost_active .or. &
+          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
+          .not.parameters%root_salinity_active.or.parameters%frost_bottom%active.or.parameters%frost_drainage%active.or. &
+          template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. &
           self%model%rfm_configuration%enabled .or. &
           self%model%fixed_weir_surface_water_active) then
         call reject_backend_trial(result, candidate, diagnostics)
@@ -1917,7 +1919,9 @@ contains
         return
       end if
       if (config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
-          parameters%snow_active .or. parameters%frost_active .or. parameters%drainage_response_active .or. &
+          parameters%snow_active .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
+          .not.parameters%root_salinity_active.or.parameters%frost_bottom%active.or.parameters%frost_drainage%active.or. &
+          template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. parameters%drainage_response_active .or. &
           parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. &
           self%model%rfm_configuration%enabled .or. self%model%fixed_weir_surface_water_active) then
         call reject_backend_trial(result, candidate, diagnostics)
@@ -2510,7 +2514,13 @@ contains
         ok=ok.and.ieee_is_finite(parameters%root_frost_head_budget_cm).and. &
              ieee_is_finite(parameters%root_frost_temperature_budget_c).and. &
              parameters%root_frost_head_budget_cm>0.0_real64.and.parameters%root_frost_temperature_budget_c>0.0_real64
-        ok=ok.and..not.parameters%root_salinity_active.and..not.self%base_salt_temporal_policy%enabled
+        if(parameters%root_salinity_active) then
+          ok=ok.and.self%base_salt_temporal_policy%enabled.and. &
+               self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.and. &
+               .not.parameters%frost_bottom%active.and..not.parameters%frost_drainage%active.and..not.parameters%macropore_active
+        else
+          ok=ok.and..not.self%base_salt_temporal_policy%enabled
+        end if
         ! Actual negative-temperature Bartholomeus composition is separate scope.
         ok=ok.and..not.allocated(parameters%bartholomeus)
       end if
@@ -2838,6 +2848,7 @@ contains
       end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
       if(self%root_frost%active) then
+        if(self%root_salinity_active.and.any(forcing%subsurface_irrigation_source/=0.0_real64)) return
         if(self%root_frost%rooted_nodes<0.or.self%root_frost%rooted_nodes>n) return
         if(any(forcing%root_extraction_sink(self%root_frost%rooted_nodes+1:)/=0.0_real64)) return
         if(self%root_compensation%method/=ROOT_COMP_OFF) then
@@ -3728,9 +3739,16 @@ contains
             if(.not.allocated(oxygen_factors)) then
               allocate(oxygen_factors(size(self%qrot)));oxygen_factors=1.0_real64
             end if
+            if(self%root_salinity_active) then
+              call attribute_root_stress_losses(self%root_potential_sink,self%qrot_unmodified,oxygen_factors, &
+                   compensation_base_diagnostics%drought_reduction_total,oxygen_reduction_total,attribution_status, &
+                   salinity_factor=salinity_alpha,salinity_loss=salinity_loss_total, &
+                   frost_factor=root_frost_factors,frost_loss=frost_reduction_total)
+            else
             call attribute_root_stress_losses(self%root_potential_sink,self%qrot_unmodified,oxygen_factors, &
                  compensation_base_diagnostics%drought_reduction_total,oxygen_reduction_total,attribution_status, &
                  frost_factor=root_frost_factors,frost_loss=frost_reduction_total)
+            end if
             if(attribution_status/=ROOT_COMP_OK) return
           else if(self%root_salinity_active) then
             oxygen_reduction_total = sum(self%qrot_unmodified)-sum(root_after_oxygen)
@@ -4765,6 +4783,8 @@ contains
     end if
     if(self%root_frost%active) then
       value=fmr_root_frost_temporal_error(self,full_state,half_state)
+      ! Both owners retain their existing independent acceptance budgets.
+      if(self%root_salinity_active)value=max(value,fmr_base_salt_physical_temporal_error(self,full_state,half_state))
       return
     end if
     if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &

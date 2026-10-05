@@ -1,0 +1,42 @@
+{
+  "work_unit": "PPA-WU05-E-SALFRO01",
+  "workstream": "PPA root uptake / salinity / empirical root frost",
+  "baseline": "b872ddbd930ea08b058575877a03774d313742cc",
+  "last_reconciled_upstream": "1de2b874140c9f83a57c3eda8dfeddeeee19538d",
+  "status": "REPAIRED_EARLY_PROFILE_GUARDS_PENDING_GATES",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_admitted": false,
+  "contract": "docs/audits/PPA_WU05E_SALFRO01_CONTRACT.md",
+  "owned_surface": [
+    "root stress process",
+    "selected typed matrix salt/root-frost runtime"
+  ],
+  "interfaces_changed": [],
+  "invariants": [
+    "one final root-water sink",
+    "independent salt mass owner",
+    "rejected trial isolation",
+    "restart accepted state"
+  ],
+  "dependency_surface": [
+    "src/process/mod_root_uptake_compensation.f90",
+    "src/runtime/mod_root_uptake_compensation_execution.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "authority_paths": [
+    "docs/audits/PPA_WU05E_SALFRO01_CONTRACT.md",
+    "integration/audits/PPA_WU05E_WALSAL01_STATUS.json",
+    "integration/audits/PPA_WU05B4_STATUS.json"
+  ],
+  "next_action": "Run actual joint caller after narrow trace and solute admission guard repair",
+  "recovery_point": "current Git checkpoint",
+  "blockers": [],
+  "test_paths": [
+    "tests/physics/run_ppa_wu05e_salt_frost_process.sh",
+    "tests/physics/run_ppa_wu05e_mixed_salt_frost.py"
+  ]
+}

@@ -83,8 +83,8 @@ program test_root_frost
  cfg%method=ROOT_COMP_JARVIS
  cfg%alpha_critical=.5_real64
  call compose_jarvis_root_uptake(cfg,1._real64,base,.25_real64,.25_real64,final,diag,status, &
-      salinity_reduction=.125_real64,frost_reduction=.25_real64)
- call req(status==ROOT_COMP_UNSUPPORTED,'joint salt and frost awaits independent qualification')
+      salinity_reduction=.1_real64,frost_reduction=.25_real64)
+ call req(status==ROOT_COMP_UNSUPPORTED,'joint salt and frost missing loss attribution rejects')
  print '(A)','PPA-WU05B2_ROOT_FROST_ORACLES=PASS'
 contains
  subroutine req(ok,message)
