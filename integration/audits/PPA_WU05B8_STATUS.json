@@ -1,12 +1,12 @@
 {
   "work_unit": "PPA-WU05B8",
   "baseline": "024c6a5510757a02851426806248b0e2afe45a6b",
-  "status": "LOCAL_QUALIFIED_NOT_CANONICALLY_ADMITTED",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_BRACKETED_LOW_AIR_DRAINAGE",
   "implemented": true,
   "persisted": true,
   "tested": "ALL_DECLARED_SOURCE_RUNTIME_PRESERVATION_GATES_PASS",
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "checkpoint": "bd6492fa7d2002f2d2fcf354b8a285b19fc33f7d",
   "remote_checkpoint": "79bb0c4747c733e04927a3dbfcca3403ff6c6eae",
   "production_source_tree": "52944aec3093035ff500d1b170a83a69e0c3e144",
@@ -23,13 +23,10 @@
     "Isolated solver-head1e-12 with localhead1e-6 and finer4096-step reference still fails cumulative head1.495532e-5cm; localhead1e-8 versus2048 passes but does not establish reference refinement, so stricter screen uses8192 direct steps."
   ],
   "repair": "Owned runtime-runner copy changes only static disnod to consistent [.25,.5,.75,1,.5]; typed parameters use identical metrics. Shared historical stub remains unchanged for incumbent preservation.",
-  "pending_gates": [
-    "final documentation checks and exact proposed merge/source identity",
-    "canonical bounded admission"
-  ],
+  "pending_gates": [],
   "preregistration": "integration/audits/PPA_WU05B8_PREREGISTRATION.json",
   "aggregate_frost_migration_complete": false,
-  "next_action": "Publish exact qualified candidate; verify canonical proposed merge identity; bounded admission followed by active-response drainage review",
+  "next_action": "Continue B9 admitted drainage-response composition review; SWDIVD1 and uniform/last-node interpretation remain separate",
   "accuracy_repair_candidate": {
     "local_head_budget_cm": 1e-10,
     "local_temperature_budget_c": 1e-07,
@@ -173,5 +170,10 @@
     "bytes": 136913,
     "source_manifest_entries": 487,
     "qualification": "All named final source/runtime/preservation outputs completed on production52944aec; historical failed experiments remain explicitly separate."
-  }
+  },
+  "canonical_pr": 1046,
+  "canonical_merge": "0aca73324ea46511d18af56bca3fddd0dba52ffd",
+  "qualified_head": "51aa88c8da4ba724d4947babc257f2ee7340ceb8",
+  "verified_proposed_merge": "a49f4c386403fa5ed61333450176e4d207fba83f",
+  "accepted_tree": "5bf236e4a744b8f82d1f7bda75bdcacf59ee8643"
 }

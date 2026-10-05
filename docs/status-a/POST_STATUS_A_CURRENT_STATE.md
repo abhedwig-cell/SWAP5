@@ -413,3 +413,9 @@ Earlier salt/frost exclusions are superseded only for this selected envelope.
 Bottom/normal-drain frost with salt, Bartholomeus at negative temperature, Rutter
 and macropore hybrids, osmotic-head and real ice remain excluded. The frozen
 Status A denominator is unchanged.
+
+## Bracketed low-air frost drainage successor
+
+PPA-WU05B8 is canonically admitted via PR #1046 at `0aca73324ea46511d18af56bca3fddd0dba52ffd`. Explicit physical drain depths and guarded B7 front geometry select final signed nodal drainage and a separate final bottom proposal on rootless ordinary Reference mode2 columns. Final node sums drive reports and the existing mass owner. Normal cases retain admitted B6.
+
+Completed local O0/O2 source parity, nonfinite-input guards, six65536-step runtime trajectories, additional first-case131072 refinement, hard mass, restart/application and all relevant current-source preservation pass. The exact proposed merge tree and source match qualification. [Contract and evidence](../audits/PPA_WU05B8_BRACKETED_LOW_AIR_DRAINAGE.md) retain failed numerical screens and bounded short-window claims. No queued Actions success is claimed. Active response generation, redistribution and broader hybrid/front interpretations remain separate; aggregate frost migration and frozen Status A are unchanged.

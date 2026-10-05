@@ -1,6 +1,6 @@
 # PPA-WU05B8 bracketed low-air drainage composition
 
-Status: locally qualified candidate; canonical admission pending.
+Status: canonically admitted through PR #1046 at `0aca73324ea46511d18af56bca3fddd0dba52ffd`.
 
 The optional `frost_low_air_drainage` carrier supplies finite negative physical drain depths and requires the admitted `frost_drainage` option with its explicit positive head/temperature budgets. It does not infer physical drain depths from hydraulic outlet heads. Ordinary Reference mode2, rootless prescribed signed nodal drainage is the bounded execution surface.
 
