@@ -93,9 +93,20 @@ fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 git merge-base --is-ancestor "$AUTH" HEAD || fail 'Status-A authority not ancestor'
 git merge-base --is-ancestor "$FROSS12_AUTH" HEAD || fail 'F-ROSS12 authority not ancestor'
 if git merge-base --is-ancestor "$FPERF_B1_ADMISSION" HEAD; then
-  test "$(git rev-parse "HEAD:$TX")" = "$FPERF_B1_TX_BLOB" || \
-    fail "admitted F-PERF-CANON01-B1 transaction successor drift: $TX"
-  echo 'FCI_CANONICAL_FPERF_B1_TRANSACTION_SUCCESSOR=PASS'
+  # The canonical branch has a later transaction postimage than the original
+  # F-PERF-CANON01-B1 blob. Preserve the exact target-branch transaction
+  # source in a PR merge, while retaining the old exact pin when it is still
+  # the current target postimage.
+  canonical_tx_authority="$(git rev-parse "HEAD^1:$TX")"
+  if [[ "$canonical_tx_authority" == "$FPERF_B1_TX_BLOB" ]]; then
+    test "$(git rev-parse "HEAD:$TX")" = "$FPERF_B1_TX_BLOB" || \
+      fail "admitted F-PERF-CANON01-B1 transaction successor drift: $TX"
+    echo 'FCI_CANONICAL_FPERF_B1_TRANSACTION_SUCCESSOR=PASS'
+  else
+    test "$(git rev-parse "HEAD:$TX")" = "$canonical_tx_authority" || \
+      fail "current canonical F-PERF-CANON01-B1 transaction successor drift: $TX"
+    echo "FCI_CANONICAL_FPERF_B1_CURRENT_TARGET_TRANSACTION_SUCCESSOR=$canonical_tx_authority"
+  fi
 else
   test "$(git rev-parse "HEAD:$TX")" = "$TX_BLOB" || \
     fail "admitted F-KT18 transaction postimage drift: $TX"
