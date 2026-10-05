@@ -3,7 +3,7 @@
   "workstream": "PPA root uptake / salinity / empirical root frost",
   "baseline": "b872ddbd930ea08b058575877a03774d313742cc",
   "last_reconciled_upstream": "024c6a5510757a02851426806248b0e2afe45a6b",
-  "status": "QUALIFIED_23_GROUPS_B7_REFERENCE_ONLY_RECONCILIATION_PENDING",
+  "status": "QUALIFIED_SELECTED_MATRIX_ROOT_FROST_READY_FOR_ADMISSION",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -32,8 +32,8 @@
     "integration/audits/PPA_WU05E_WALSAL01_STATUS.json",
     "integration/audits/PPA_WU05B4_STATUS.json"
   ],
-  "next_action": "Replay independent added B7 reference domain and qualify composite 24-group source identity",
-  "recovery_point": "62ab20b25ec8648d9204ffd8f223672804925661",
+  "next_action": "Complete reconciled docs gates and admit exact qualified 24-group candidate",
+  "recovery_point": "2a8e7ffe73b759576044333dc80187e9d57a2999",
   "blockers": [],
   "test_paths": [
     "tests/physics/run_ppa_wu05e_salt_frost_process.sh",
@@ -44,12 +44,13 @@
   "execution_checkout": "62ab20b25ec8648d9204ffd8f223672804925661",
   "source_subtrees": {
     "src": "184379954b7a6e29632e3af79350c5f5ae10f4f3",
-    "tests": "69bf7a5c06e197431d2ab0c36b709ae4adb4df4f"
+    "tests": "28b024edbb156abdce1f28fd43dc61ca3d5dd56c"
   },
-  "qualification": "integration/audits/PPA_WU05E_SALFRO01_QUALIFICATION.json",
+  "qualification": "integration/audits/PPA_WU05E_SALFRO01_RECONCILED_QUALIFICATION.json",
   "evidence": {
-    "path": "docs/audits/evidence/PPA_WU05E_SALFRO01_LOCAL_REPLAY.json.gz",
-    "sha256": "85d8fc5f48f1b864b12df8af3a56c6099984974599315d40c8ae4aa820be78fc",
-    "bytes": 70943
-  }
+    "path": "docs/audits/evidence/PPA_WU05E_SALFRO01_RECONCILED_REPLAY.json.gz",
+    "sha256": "7849f5094f9c3990d74c08416a1eecab01ffb70e3897ce260c759cab04f013e9",
+    "bytes": 74622
+  },
+  "reconciled_execution_checkout": "2a8e7ffe73b759576044333dc80187e9d57a2999"
 }
