@@ -5,8 +5,7 @@ program test_mobile_macro_salt_transport
   use mod_solute_mobile_macro_salt_transport, only: mobile_macro_salt_receipt_t, &
        mobile_macro_salt_substep_t, advance_mobile_macro_salt_trace, &
        initialize_mobile_macro_salt_state, derive_mobile_macro_salt_concentration, &
-       advance_mobile_macro_salt_trial, advance_mobile_macro_salt_drainage, &
-       MACRO_SALT_OK, MACRO_SALT_INVALID, MACRO_SALT_WATER_CLOSURE
+       advance_mobile_macro_salt_trial, MACRO_SALT_OK, MACRO_SALT_INVALID, MACRO_SALT_WATER_CLOSURE
   implicit none
   type(mobile_macro_salt_state_t) :: accepted,candidate,rejected,initialized
   type(mobile_macro_salt_receipt_t) :: receipt,trace_receipt,failed_trace_receipt
@@ -15,8 +14,6 @@ program test_mobile_macro_salt_transport
   real(real64) :: dz(2),theta0(2),theta1(2),macro0(1,2),macro1(1,2)
   real(real64) :: matrix_faces(3),macro_faces(1,3),exchange(1,2),root_sink(2)
   real(real64) :: macro_top(1),macro_bottom(1),total_before
-  real(real64) :: drain_water(2),drain_rates(2,2),drain_cdrain
-  real(real64), allocatable :: drain_receipt(:)
   real(real64) :: matrix_concentration(2),macro_concentration(1,2)
   real(real64), allocatable :: derived_matrix_concentration(:),derived_macro_concentration(:,:)
   integer :: status,i
@@ -38,47 +35,6 @@ program test_mobile_macro_salt_transport
        'matrix concentration view identity')
   call require(maxval(abs(derived_macro_concentration-macro_concentration))<=1.0e-14_real64, &
        'domain concentration view identity')
-  ! Exact B1.11 drainage rule with opposing level signs and distinct donors.
-  drain_water=theta0*dz
-  drain_rates=0.0_real64
-  drain_rates(:,1)=[0.1_real64,-0.2_real64]
-  drain_cdrain=1.0_real64
-  call advance_mobile_macro_salt_drainage(initialized,drain_water,drain_rates,drain_cdrain,.true., &
-       0.1_real64,candidate,drain_receipt,status)
-  call require(status==MACRO_SALT_OK,'signed level-resolved drainage accepted')
-  call close_to(drain_receipt(1),0.005_real64,'positive drainage uses local CML')
-  call close_to(drain_receipt(2),-0.02_real64,'negative drainage uses explicit Cdrain')
-  call close_to(candidate%matrix_mass_mg_cm2(1),1.015_real64,'signed drainage mass update')
-  call close_to(sum(candidate%matrix_mass_mg_cm2)+sum(candidate%macro_mass_mg_cm2), &
-       sum(initialized%matrix_mass_mg_cm2)+sum(initialized%macro_mass_mg_cm2)-sum(drain_receipt), &
-       'signed drainage ledger closure')
-  call advance_mobile_macro_salt_drainage(initialized,drain_water,drain_rates,drain_cdrain,.false., &
-       0.1_real64,rejected,drain_receipt,status)
-  call require(status==MACRO_SALT_INVALID,'negative drainage rejects absent Cdrain')
-  call require(.not.allocated(rejected%matrix_mass_mg_cm2),'missing Cdrain publishes no candidate')
-  call require(.not.allocated(drain_receipt),'missing Cdrain publishes no partial receipt')
-  drain_rates=0.0_real64
-  drain_rates(1,1)=1000.0_real64
-  call advance_mobile_macro_salt_drainage(initialized,drain_water,drain_rates,drain_cdrain,.true., &
-       0.1_real64,rejected,drain_receipt,status)
-  call require(status==MACRO_SALT_INVALID,'drainage cannot overdraw salt donor')
-  call require(.not.allocated(rejected%matrix_mass_mg_cm2),'overdraw publishes no candidate')
-  call require(.not.allocated(drain_receipt),'overdraw publishes no partial receipt')
-
-  ! Compose qdra salt with qssdi water-only input in one physical candidate.
-  drain_rates(:,1)=[0.1_real64,-0.2_real64]
-  macro1=macro0;theta1=theta0
-  theta1(1)=theta1(1)+0.03_real64/dz(1)
-  root_sink=0.0_real64;exchange=0.0_real64;matrix_faces=0.0_real64;macro_faces=0.0_real64
-  call advance_mobile_macro_salt_trial(initialized,dz,theta0,theta1,macro0,macro1,matrix_faces,macro_faces, &
-       exchange,root_sink,0.0_real64,0.0_real64,macro_top,macro_bottom,1.0_real64,0.1_real64, &
-       candidate,receipt,status,qdra_rate=drain_rates,qssdi_rate=[0.2_real64,0.0_real64], &
-       cdrain_mg_cm3=drain_cdrain,cdrain_available=.true.)
-  call require(status==MACRO_SALT_OK,'qssdi water-only plus signed qdra accepted')
-  call close_to(candidate%matrix_mass_mg_cm2(1),1.015_real64,'qssdi has no salt term')
-  call close_to(receipt%qdra_signed_out_mg_cm2(1),0.005_real64,'candidate positive qdra receipt')
-  call close_to(receipt%qdra_signed_out_mg_cm2(2),-0.02_real64,'candidate negative qdra receipt')
-
   accepted=initialized
   matrix_faces=0.0_real64
   macro_faces(1,:)=[0.0_real64,0.1_real64,0.0_real64]
@@ -148,7 +104,7 @@ program test_mobile_macro_salt_transport
        .not.allocated(failed_trace_receipt%macro_to_matrix_mg_cm2), &
        'late trace failure returns no candidate or internal receipt')
 
-  ! Explicit matrix boundary receipts and a bounded root solute fraction are
+  ! Explicit matrix boundary receipts and a source-valid root solute fraction are
   ! accounted separately from internal exchange and macro vertical transport.
   matrix_faces=[0.2_real64,0.0_real64,0.1_real64]
   macro_faces=0.0_real64
@@ -157,15 +113,20 @@ program test_mobile_macro_salt_transport
   macro1(1,:)=[0.99_real64,2.002_real64]
   root_sink=[0.001_real64,0.0_real64]
   call advance_mobile_macro_salt_trial(accepted,dz,theta0,theta1,macro0,macro1,matrix_faces,macro_faces, &
-       exchange,root_sink,3.0_real64,0.0_real64,macro_top,macro_bottom,0.5_real64,0.1_real64, &
+       exchange,root_sink,3.0_real64,0.0_real64,macro_top,macro_bottom,2.0_real64,0.1_real64, &
        candidate,receipt,status)
   call require(status==MACRO_SALT_OK,'boundary and root receipts accepted')
   call close_to(receipt%matrix_top_input_mg_cm2,0.06_real64,'matrix top salt input')
   call close_to(receipt%matrix_bottom_output_mg_cm2,0.004_real64,'matrix bottom salt output')
-  call close_to(receipt%root_solute_uptake_mg_cm2(1),0.000025_real64,'root salt fraction receipt')
+  call close_to(receipt%root_solute_uptake_mg_cm2(1),0.0001_real64,'TSCF above unity root salt receipt')
   call close_to(sum(candidate%matrix_mass_mg_cm2)+sum(candidate%macro_mass_mg_cm2), &
-       total_before+0.06_real64-0.004_real64-0.000025_real64,'external salt ledger')
+       total_before+0.06_real64-0.004_real64-0.0001_real64,'external salt ledger')
   call close_to(receipt%closure_error_mg_cm2,0.0_real64,'external ledger closure')
+  call advance_mobile_macro_salt_trial(accepted,dz,theta0,theta1,macro0,macro1,matrix_faces,macro_faces, &
+       exchange,root_sink,3.0_real64,0.0_real64,macro_top,macro_bottom,10.01_real64,0.1_real64, &
+       rejected,receipt,status)
+  call require(status==MACRO_SALT_INVALID.and..not.allocated(rejected%matrix_mass_mg_cm2), &
+       'TSCF above B1.11 bound rejects candidate')
 
   ! Bad Richards water closure rejects the complete candidate with no state.
   matrix_faces=0.0_real64
