@@ -30,22 +30,20 @@ for p in sys.argv[1:]:visit(p)
 visit('src/runtime/mod_fmr_serialized_multiswap_runtime.f90')
 visit('src/runtime/mod_fmr_committed_restart.f90')
 visit('tests/fmr/mod_fmr04_fixed_top_provider.f90')
+visit('src/runtime/mod_fmr_tillage_reference_material_candidate.f90')
+visit('src/runtime/mod_fmr_irrigation_reference_binding.f90')
+visit('src/runtime/mod_fmr_irrigation_joint_restart.f90')
+visit('src/runtime/mod_fmr_crop_calendar_reference_observation.f90')
 print('\n'.join(ordered))
 PY
 )
 flags=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 for opt in 0 2; do
-  out="$BUILD/o$opt"; mkdir -p "$out"; objects=()
-  for source in "${sources[@]}" \
-      src/process/mod_irrigation_process.f90 \
-      src/runtime/mod_fmr_irrigation_source_binding.f90 \
-      src/runtime/mod_fmr_irrigation_reference_binding.f90 \
-      src/runtime/mod_fmr_irrigation_restart.f90 \
-      src/runtime/mod_fmr_irrigation_joint_restart.f90 \
-      src/runtime/mod_fmr_process_hydraulic_view_binding.f90 \
-      src/process/mod_crop_calendar_management_process.f90 \
-      src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
-      src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do
+  out="$BUILD/o$opt"; mkdir -p "$out"; objects=(); declare -A compiled_sources=()
+  for source in "${sources[@]}"; do
+    source_key="$(realpath "$source")"
+    [[ -z "${compiled_sources[$source_key]+x}" ]] || continue
+    compiled_sources[$source_key]=1
     obj="$out/$(basename "${source%.*}").o"
     gfortran "${flags[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj" 2>"$out/compile.log" || {
       tail -35 "$out/compile.log" >&2; echo "compile failed: $source" >&2; exit 1;
@@ -61,11 +59,18 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$out/crop.o" -o "$out/crop"
   "$out/crop" > "$out/crop-output"
   grep -Fq 'F_MIG431_CROP_REFERENCE_STATE_OBSERVATION=PASS' "$out/crop-output"
+  gfortran "${flags[@]}" -O"$opt" -J "$out" -I "$out" -c \
+    tests/tillage/test_mig431_tillage_reference_material.f90 -o "$out/tillage.o"
+  gfortran -O"$opt" "${objects[@]}" "$out/tillage.o" -o "$out/tillage"
+  "$out/tillage" > "$out/tillage-output"
+  grep -Fq 'F_MIG431_TILLAGE_REFERENCE_MATERIAL_CANDIDATE=PASS' "$out/tillage-output"
 done
 cmp "$BUILD/o0/output" "$BUILD/o2/output"
 cmp "$BUILD/o0/crop-output" "$BUILD/o2/crop-output"
+cmp "$BUILD/o0/tillage-output" "$BUILD/o2/tillage-output"
 cat "$BUILD/o0/output"
 cat "$BUILD/o0/crop-output"
+cat "$BUILD/o0/tillage-output"
 
 # Materialize an additive event in the established real Reference dispatcher,
 # whose continuous/restarted endpoint and hard mass receipts are independently checked.
@@ -309,14 +314,7 @@ Path(sys.argv[2]).write_text(t)
 PY
 for opt in 0 2; do
   out="$BUILD/o$opt"; objects=()
-  for source in "${sources[@]}" src/process/mod_irrigation_process.f90 \
-      src/runtime/mod_fmr_irrigation_source_binding.f90 src/runtime/mod_fmr_irrigation_reference_binding.f90 \
-      src/runtime/mod_fmr_irrigation_restart.f90 \
-      src/runtime/mod_fmr_irrigation_joint_restart.f90 \
-      src/runtime/mod_fmr_process_hydraulic_view_binding.f90 \
-      src/process/mod_crop_calendar_management_process.f90 \
-      src/runtime/mod_fmr_crop_calendar_observation_binding.f90 \
-      src/runtime/mod_fmr_crop_calendar_reference_observation.f90; do
+  for source in "${sources[@]}"; do
     objects+=("$out/$(basename "${source%.*}").o")
   done
   gfortran "${flags[@]}" -O"$opt" -J "$out" -I "$out" -c "$BUILD/fmr19-managed.f90" -o "$out/managed.o"

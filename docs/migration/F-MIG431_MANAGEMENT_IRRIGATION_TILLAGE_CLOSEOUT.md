@@ -46,9 +46,9 @@ named below.
 | `RAW`, `TAW`, `DWA` crop-stage tables | Set TCS2 readily available, TCS3 total available and TCS4 absolute depletion thresholds | DVS lookup and root-zone water amounts | Typed AFGEN tables and weighted depletion oracles pass O0/O2 with the respective criteria | `MIGRATE` with TCS2/3/4 production binding |
 | `TCS=5` | Obsolete combined pressure-head/water-content criterion | None; source rejects it | B1.11 `irrigation` emits an obsolete-option error and directs users to TCS7 or TCS8 | `REJECTED` |
 | `TCS=6` | Weekly/fixed-interval opportunity gated by irrigation deficit threshold | `dayfix`, deficit, threshold, event gate | Typed weekly counter now advances transactionally, evaluates the B1.11 `10*cdef > irgthreshold` test on day seven, persists through irrigation restart state, and rolls back on rejected event splits. O0/O2 oracle passes; no admitted production composition | `MIGRATE` |
-| `TCS=7` | Trigger when pressure head at `dcrit` is at or below a crop-stage threshold | Sensor-node pressure head, DVS lookup, event state | Typed scheduler and O0/O2 process qualification cover AFGEN threshold/depth, SSDI rate placement, event split/replay and mass closure. A bounded real Reference FMR19 trial holds a TCS7/DCS2 SSDI event active across two accepted intervals and joint physical/management restart, then commits its exact end. Its sensor view is a fixture observation and its SSDI is balanced by drainage; a live accepted hydraulic sensor and nonstationary response remain open | `MIGRATE` |
+| `TCS=7` | Trigger when pressure head at `dcrit` is at or below a crop-stage threshold | Sensor-node pressure head, DVS lookup, event state | Typed scheduler and O0/O2 process qualification cover AFGEN threshold/depth, SSDI rate placement, event split/replay and mass closure. A bounded real Reference FMR19 trial holds a TCS7/DCS2 SSDI event active across two accepted intervals and joint physical/management restart, then commits its exact end. The typed sensor binder now observes the accepted Reference head profile with matching lineage, revision and endpoint, resolves `dcrit` to the source compartment node, and rejects mismatched receipts at O0/O2. The stationary FMR19 fixture balances SSDI by drainage; nonstationary response and accepted production orchestration remain open | `MIGRATE` |
 | `TCS=8` | Trigger when water content at `dcrit` is at or below a crop-stage threshold | Sensor-node water content, DVS lookup, event state | Typed criterion now has an independent AFGEN and `theta <= theta_crit` process oracle at O0/O2; no admitted production binding | `MIGRATE` |
-| `VALUE_TC7`, `VALUE_TC8`, `dcrit` | Select the crop-stage pressure-head or water-content threshold and sensing depth | AFGEN table and hydraulic sensor-node binding | Typed TCS7/8 tables and node observation oracles pass O0/O2; depth-to-node configuration binding remains open | `MIGRATE` with TCS7/8 production binding |
+| `VALUE_TC7`, `VALUE_TC8`, `dcrit` | Select the crop-stage pressure-head or water-content threshold and sensing depth | AFGEN table and hydraulic sensor-node binding | Typed TCS7/8 tables and node observation oracles pass O0/O2. The Reference adapter resolves positive below-surface `dcrit` against ordered negative compartment bottoms and samples the accepted physical profile with lineage/revision/time guards; final application orchestration remains open | `MIGRATE` with TCS7/8 production binding |
 | `TCSFIX=1`, `irgdayfix` | Require a minimum day interval between scheduled events | Day counter and previous event progress | PR #265 admits the TCSFIX=1 cadence within its TCS1/DCS2 Hupsel route | `ADMITTED` within PR #265 envelope |
 | `TCSFIX=0` | Do not impose the optional fixed-day cadence on another timing criterion | Selected timing criterion and accepted event state | Typed TCS2/3/4/6/7/8 process owns its own selection opportunity and event lifecycle; no generic production admission | `MIGRATE` with the selected generic criterion |
 | `DCS=1` | Return root-zone water toward field capacity, with crop-stage under/over-depth adjustment and rain subtraction | Hydraulic profile, field capacity, crop stage, rain, event state | Typed evaluator computes weighted FC deficit, adds AFGEN `di` in mm converted to cm, subtracts gross rain only above `raithreshold`, and shares the `DCSLIM` bounds; independent boundary/formula oracle passes O0/O2. No admitted production composition | `MIGRATE` |
@@ -326,6 +326,17 @@ affected cross-route preservation and persisted
 admission gates. Coupled solute irrigation requires a separate solute mass
 owner. These process and runtime candidates are deliberately not labeled
 canonically admitted before those boundaries are proven.
+
+The bounded tillage Reference material candidate now copies an independently
+mass-closed event transition into a new parameter-set identity and matching
+head/water/pond state. It replaces only the dry VG constitutive rows, preserves
+wetting and KSATEXM rows, and clears the prepared VG cache so the backend
+rebuilds derived coefficients. It rejects hysteresis, macropore, tabulated or
+direct retention, KSATEXM, elasticity and frost interactions. The local
+Reference gate tests both optimization levels, preservation of the original
+parameters, cache rebuilding and failed-candidate isolation. This is a
+candidate builder; accepted publication, paired material/state restart and a
+nonstationary tillage continuation remain `MIGRATE`.
 
 The tillage application boundary also changes the constitutive `cofgen`
 table, which currently belongs to the immutable
