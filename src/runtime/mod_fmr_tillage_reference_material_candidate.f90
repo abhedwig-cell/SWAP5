@@ -20,7 +20,7 @@ contains
     type(fmr_b110_physical_parameters_t), intent(out) :: parameters_candidate
     type(fmr_b110_physical_state_t), intent(out) :: state_candidate
     integer, intent(out) :: status
-    real(real64) :: old_water,new_water
+    real(real64) :: old_water,new_water,reconstructed
     integer :: i,n
 
     parameters_candidate = fmr_b110_physical_parameters_t()
@@ -46,11 +46,15 @@ contains
     if (.not. all(ieee_is_finite(prior_parameters%dz)) .or. &
         any(prior_parameters%dz <= 0.0_real64) .or. &
         .not. all(ieee_is_finite(prior_state%water_content)) .or. &
+        .not. all(ieee_is_finite(prior_state%pressure_head)) .or. &
         .not. ieee_is_finite(prior_state%ponding_depth) .or. &
         .not. all(ieee_is_finite(tillage%hydraulic%water_content)) .or. &
         .not. all(ieee_is_finite(tillage%hydraulic%pressure_head_cm)) .or. &
         .not. ieee_is_finite(tillage%hydraulic%ponding_depth_cm) .or. &
         .not. ieee_is_finite(tillage%hydraulic%mass_residual_cm)) return
+    if (prior_state%ponding_depth < 0.0_real64 .or. &
+        tillage%hydraulic%ponding_depth_cm < 0.0_real64 .or. &
+        any(tillage%hydraulic%water_content < 0.0_real64)) return
     old_water = sum(prior_state%water_content*prior_parameters%dz)+prior_state%ponding_depth
     new_water = sum(tillage%hydraulic%water_content*prior_parameters%dz)+ &
          tillage%hydraulic%ponding_depth_cm
@@ -58,6 +62,19 @@ contains
         abs(tillage%hydraulic%mass_residual_cm) > 1.e-12_real64) return
     do i=1,n
       if (.not. valid_vg(tillage%hydraulic_parameters(i))) return
+      if (tillage%hydraulic%water_content(i) < tillage%hydraulic_parameters(i)%theta_residual-1.e-12_real64 .or. &
+          tillage%hydraulic%water_content(i) > tillage%hydraulic_parameters(i)%theta_saturated+1.e-12_real64) return
+      if (tillage%hydraulic%pressure_head_cm(i) >= 0.0_real64) then
+        reconstructed = tillage%hydraulic_parameters(i)%theta_saturated
+      else
+        reconstructed = tillage%hydraulic_parameters(i)%theta_residual + &
+             (tillage%hydraulic_parameters(i)%theta_saturated-tillage%hydraulic_parameters(i)%theta_residual)* &
+             (1.0_real64+(tillage%hydraulic_parameters(i)%alpha* &
+             abs(tillage%hydraulic%pressure_head_cm(i)))**tillage%hydraulic_parameters(i)%n)** &
+             (-tillage%hydraulic_parameters(i)%m)
+      end if
+      if (.not. ieee_is_finite(reconstructed) .or. &
+          abs(reconstructed-tillage%hydraulic%water_content(i)) > 1.e-10_real64) return
     end do
     parameters_candidate = prior_parameters
     parameters_candidate%parameter_set_id = next_parameter_set_id
@@ -86,7 +103,7 @@ contains
     if (.not. valid_vg) return
     valid_vg = vg%theta_residual >= 0.0_real64 .and. vg%theta_saturated > vg%theta_residual .and. &
          vg%theta_saturated <= 1.0_real64 .and. vg%saturated_conductivity > 0.0_real64 .and. &
-         vg%alpha > 0.0_real64 .and. vg%n > 1.0_real64 .and. &
+         vg%alpha > 0.0_real64 .and. vg%lambda >= 0.0_real64 .and. vg%n > 1.0_real64 .and. &
          abs(vg%m-(1.0_real64-1.0_real64/vg%n)) <= 1.e-12_real64
   end function
 end module

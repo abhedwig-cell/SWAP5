@@ -99,6 +99,7 @@ program test_mig431_reference_binding
   result%mass%complete = .true.
   result%final_committed_time_bound = .true.
   result%final_committed_time = request%t0
+  result%requested_t1 = request%t0
   result%final_revision = committed_physical%current_revision()
   call fmr_prepare_scheduled_irrigation_from_accepted(physical_parameters,committed_physical,result, &
        15.0_real64,irrigation_state_t(),request,scheduled_parameters,scheduled_candidate,scheduled_flux, &
@@ -116,10 +117,17 @@ program test_mig431_reference_binding
        scheduled_diagnostics,status)
   if (status /= FMR_IRR_REFERENCE_OK .or. scheduled_diagnostics%triggered .or. scheduled_flux%applied) error stop 13
 
-  result%final_revision = result%final_revision + 1_int64
+  result%requested_t1 = request%t0 + 0.5_real64
   call fmr_prepare_scheduled_irrigation_from_accepted(physical_parameters,committed_physical,result, &
        15.0_real64,irrigation_state_t(),request,scheduled_parameters,scheduled_candidate,scheduled_flux, &
        scheduled_diagnostics,status)
   if (status /= FMR_IRR_REFERENCE_INVALID) error stop 14
+
+  result%requested_t1 = request%t0
+  result%final_revision = result%final_revision + 1_int64
+  call fmr_prepare_scheduled_irrigation_from_accepted(physical_parameters,committed_physical,result, &
+       15.0_real64,irrigation_state_t(),request,scheduled_parameters,scheduled_candidate,scheduled_flux, &
+       scheduled_diagnostics,status)
+  if (status /= FMR_IRR_REFERENCE_INVALID) error stop 15
   print '(a)', 'F_MIG431_REFERENCE_SOURCE_AND_ACCEPTANCE_BINDING=PASS'
 end program

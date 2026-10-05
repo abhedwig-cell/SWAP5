@@ -46,12 +46,16 @@ contains
         .not. accepted_result%mass%complete .or. .not. accepted_result%final_committed_time_bound) return
     if (accepted_result%column_id <= 0_int64 .or. .not. committed_physical%ready() .or. &
         .not. committed_physical%time_is_bound()) return
+    if (.not. ieee_is_finite(accepted_result%requested_t1) .or. &
+        .not. ieee_is_finite(accepted_result%final_committed_time)) return
     if (accepted_result%column_id /= committed_physical%current_lineage_id() .or. &
         accepted_result%final_revision /= committed_physical%current_revision()) return
     call committed_physical%current_time(committed_time,time_available)
-    if (.not. time_available .or. .not. ieee_is_finite(committed_time) .or. &
-        .not. ieee_is_finite(accepted_result%final_committed_time)) return
-    if (accepted_result%final_committed_time /= committed_time .or. request%t0 /= committed_time) return
+    if (.not. time_available .or. .not. ieee_is_finite(committed_time)) return
+    if (accepted_result%final_committed_time /= committed_time .or. &
+        accepted_result%requested_t1 /= accepted_result%final_committed_time) return
+    if (.not. ieee_is_finite(request%t0) .or. .not. ieee_is_finite(request%t1) .or. &
+        request%t0 /= committed_time .or. request%t1 <= request%t0) return
     if (.not. ieee_is_finite(sensor_depth_below_surface_cm) .or. &
         sensor_depth_below_surface_cm <= 0.0_real64) return
     if (parameters%active_nodes <= 0 .or. .not. allocated(parameters%z)) return

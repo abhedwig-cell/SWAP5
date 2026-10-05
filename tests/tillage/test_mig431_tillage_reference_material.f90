@@ -41,7 +41,9 @@ program test_mig431_tillage_reference_material
   event%hydraulic_parameters%n=2.0_real64
   event%hydraulic_parameters%m=0.5_real64
   event%hydraulic%water_content=[0.22_real64,0.29_real64]
-  event%hydraulic%pressure_head_cm=[-80.0_real64,-35.0_real64]
+  event%hydraulic%pressure_head_cm=-(( &
+       ((event%hydraulic%water_content-0.06_real64)/0.36_real64)**(-2.0_real64)-1.0_real64)** &
+       0.5_real64)/0.025_real64
   call build_tillage_reference_material_candidate(prior,state,event,18_int64,changed,applied,status)
   if(status /= TILLAGE_REFERENCE_CANDIDATE_OK) error stop 1
   if(changed%parameter_set_id /= 18_int64 .or. changed%prepared_default_mvg_available) error stop 2
@@ -61,6 +63,12 @@ program test_mig431_tillage_reference_material
   if(status /= TILLAGE_REFERENCE_CANDIDATE_INVALID .or. allocated(invalid%cofgen) .or. &
      allocated(untouched%water_content)) error stop 10
   event%hydraulic%mass_residual_cm=0.0_real64
+  event%hydraulic%pressure_head_cm(1)=-80.0_real64
+  call build_tillage_reference_material_candidate(prior,state,event,19_int64,invalid,untouched,status)
+  if(status /= TILLAGE_REFERENCE_CANDIDATE_INVALID) error stop 12
+  event%hydraulic%pressure_head_cm=-(( &
+       ((event%hydraulic%water_content-0.06_real64)/0.36_real64)**(-2.0_real64)-1.0_real64)** &
+       0.5_real64)/0.025_real64
   prior%macropore_active=.true.
   call build_tillage_reference_material_candidate(prior,state,event,19_int64,invalid,untouched,status)
   if(status /= TILLAGE_REFERENCE_CANDIDATE_INVALID) error stop 11
