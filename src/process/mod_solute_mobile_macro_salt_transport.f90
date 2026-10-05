@@ -229,7 +229,7 @@ contains
     real(real64), intent(in), optional :: qdra_rate(:,:),qssdi_rate(:),cdrain_mg_cm3
     logical, intent(in), optional :: cdrain_available
     real(real64), allocatable :: cm(:),cp(:,:),dm(:),dp(:,:),outm(:),outp(:,:),matrix_volume_start(:)
-    real(real64) :: q,amount,root_salt,total_before,total_after,tol,water_expected,drain_c
+    real(real64) :: q,amount,root_salt,total_before,total_after,tol,water_expected,drain_c,drainage_export
     logical :: has_drain_c
     integer :: n,nd,i,d
 
@@ -419,9 +419,11 @@ contains
     end if
     total_before=sum(committed%matrix_mass_mg_cm2)+sum(committed%macro_mass_mg_cm2)
     total_after=sum(candidate%matrix_mass_mg_cm2)+sum(candidate%macro_mass_mg_cm2)
+    drainage_export=0.0_real64
+    if(allocated(receipt%qdra_signed_out_mg_cm2))drainage_export=sum(receipt%qdra_signed_out_mg_cm2)
     receipt%closure_error_mg_cm2=total_after-total_before-receipt%matrix_top_input_mg_cm2+ &
          receipt%matrix_top_output_mg_cm2-receipt%matrix_bottom_input_mg_cm2+ &
-         receipt%matrix_bottom_output_mg_cm2+sum(receipt%qdra_signed_out_mg_cm2)- &
+         receipt%matrix_bottom_output_mg_cm2+drainage_export- &
          sum(receipt%macro_top_input_mg_cm2)+ &
          sum(receipt%macro_top_output_mg_cm2)-sum(receipt%macro_bottom_input_mg_cm2)+ &
          sum(receipt%macro_bottom_output_mg_cm2)+sum(receipt%root_solute_uptake_mg_cm2)
