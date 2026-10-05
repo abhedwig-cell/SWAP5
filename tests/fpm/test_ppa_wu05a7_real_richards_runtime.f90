@@ -544,7 +544,7 @@ contains
     call fmr_new_b110_committed_state(committed,lineage,initial,0.0_real64,state_ok)
     if(.not.state_ok)error stop 'A8 FMR committed init'
 
-    allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod), &
+    allocate(forcing%drainage_flux_by_level(2,numnod),forcing%subsurface_irrigation_source(numnod), &
          forcing%root_extraction_sink(numnod))
     forcing%top_flux=0.0_real64
     forcing%top_head=0.0_real64
@@ -553,6 +553,10 @@ contains
     forcing%drainage_flux_by_level=0.0_real64
     forcing%subsurface_irrigation_source=0.0_real64
     forcing%root_extraction_sink=0.0_real64
+    ! Exercise nonzero source plus opposing level-specific drainage signs.
+    forcing%subsurface_irrigation_source(max(1,numnod-1))=2.0e-6_real64
+    forcing%drainage_flux_by_level(1,max(1,numnod-1))=2.0e-6_real64
+    forcing%drainage_flux_by_level(2,max(1,numnod-1))=-1.0e-6_real64
     forcing%root_extraction_sink(numnod)=2.0e-4_real64
 
     column%column_id=lineage
@@ -619,6 +623,20 @@ contains
       max_trace_macro_water_change=0.0_real64
       max_trace_macro_vertical_face=0.0_real64
       do trace_i=1,size(fmr_observation%accepted_water_flux_substeps)
+        if(.not.allocated(fmr_observation%accepted_water_flux_substeps(trace_i)%drainage_sink_by_level)) &
+             error stop 'FMR trace omitted level-resolved drainage rates'
+        if(any(shape(fmr_observation%accepted_water_flux_substeps(trace_i)%drainage_sink_by_level)/= &
+             shape(forcing%drainage_flux_by_level))) error stop 'FMR trace drainage level shape mismatch'
+        if(maxval(abs(fmr_observation%accepted_water_flux_substeps(trace_i)%drainage_sink_by_level- &
+             forcing%drainage_flux_by_level))>0.0_real64) error stop 'FMR trace changed level-resolved drainage rates'
+        if(maxval(abs(sum(fmr_observation%accepted_water_flux_substeps(trace_i)%drainage_sink_by_level,dim=1)- &
+             fmr_observation%accepted_water_flux_substeps(trace_i)%drainage_sink))>1.0e-15_real64) &
+             error stop 'FMR trace drainage level sum mismatch'
+        if(.not.any(fmr_observation%accepted_water_flux_substeps(trace_i)%drainage_sink_by_level>0.0_real64) .or. &
+           .not.any(fmr_observation%accepted_water_flux_substeps(trace_i)%drainage_sink_by_level<0.0_real64)) &
+             error stop 'FMR trace lost signed drainage routes'
+        if(maxval(abs(fmr_observation%accepted_water_flux_substeps(trace_i)%subsurface_source- &
+             forcing%subsurface_irrigation_source))>0.0_real64) error stop 'FMR trace changed subsurface drip source'
         if(.not.allocated(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain)) &
              error stop 'FMR trace omitted per-domain macropore exchange'
         if(size(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_matrix_exchange_domain,1)<=0) &
@@ -788,6 +806,14 @@ contains
              transfer(b%accepted_water_flux_substeps(i)%subsurface_source,[0_int64],numnod))) return
       if(any(transfer(a%accepted_water_flux_substeps(i)%drainage_sink,[0_int64],numnod)/= &
              transfer(b%accepted_water_flux_substeps(i)%drainage_sink,[0_int64],numnod))) return
+      if(.not.allocated(a%accepted_water_flux_substeps(i)%drainage_sink_by_level) .or. &
+         .not.allocated(b%accepted_water_flux_substeps(i)%drainage_sink_by_level))return
+      if(any(shape(a%accepted_water_flux_substeps(i)%drainage_sink_by_level)/= &
+             shape(b%accepted_water_flux_substeps(i)%drainage_sink_by_level)))return
+      if(any(transfer(a%accepted_water_flux_substeps(i)%drainage_sink_by_level,[0_int64], &
+           size(a%accepted_water_flux_substeps(i)%drainage_sink_by_level))/= &
+           transfer(b%accepted_water_flux_substeps(i)%drainage_sink_by_level,[0_int64], &
+           size(b%accepted_water_flux_substeps(i)%drainage_sink_by_level))))return
       if(any(transfer(a%accepted_water_flux_substeps(i)%root_sink,[0_int64],numnod)/= &
              transfer(b%accepted_water_flux_substeps(i)%root_sink,[0_int64],numnod))) return
       if(any(transfer(a%accepted_water_flux_substeps(i)%net_node_source,[0_int64],numnod)/= &
