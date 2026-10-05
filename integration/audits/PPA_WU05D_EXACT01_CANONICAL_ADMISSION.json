@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.ppa.exact01.admission.v1",
+  "work_unit": "PPA-WU05-D-EXACT01",
+  "status": "CANONICAL_ADMITTED_CLOSED_EXACT_MACRO_CUTOFF",
+  "canonical_pr": 1051,
+  "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+  "qualified_candidate": "cdf277ba69b6bca8575bb144495fa880568e9117",
+  "execution_checkout": "5b4791b4d5f9a9ab3d8b3ae8d94e1d9a7fad0121",
+  "qualification": "integration/audits/PPA_WU05D_EXACT01_RECONCILED_QUALIFICATION.json",
+  "source_subtrees": {
+    "src": "ba6857d0fd0b070039f183b5121838d067c1b7d3",
+    "tests": "d5cd05a2e1baee9e531ceb462efab2ab2d990f30"
+  },
+  "source_manifest_entries_verified": 1794,
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05D_EXACT01_RECONCILED_REPLAY.json.gz",
+    "sha256": "b2a0debace19e71d90d5cd0707efbb6a09eeaececad3f3ad07275dd5c9f7722f",
+    "bytes": 91902
+  },
+  "verified_admission_source_identity": true,
+  "gates_passed": 29,
+  "scope": [
+    "Exact B1.11 vsmall=1e-14 compensation eligibility replacing the unsupported 0.05 reconstruction guard",
+    "330 literal reference-block cases at O0/O2: all five selectors, Jarvis/Walsum, zero/no-stress and cutoff neighbours",
+    "Twelve unchanged compiled dispatcher cases proving MICRO is separate from MACRO compensation; routing proof only",
+    "Actual severe uptake below 0.05 for ALL/salinity/frost selectors in four Jarvis/Walsum matrix salt/root-frost variants",
+    "Accepted severe-state committed restart with changed forcing/geometry, independent fresh-process/O0/O2 physical byte identity",
+    "Hard water/salt balances, attribution closure, zero-node preservation, real rejection/adaptive retry/discard and negative profiles",
+    "All original SALFRO01 production/preservation groups plus B7 reference, B8 and B9 source/runtime preserved"
+  ],
+  "exclusions": [
+    "MICRO/Jong-van-Lier/de Willigen production physics or applying external Jarvis/Walsum to MICRO",
+    "New 0.05 scientific threshold policy, new root or salt state owner",
+    "New root models, broader process hybrids and full seasonal or legacy equivalence"
+  ],
+  "documentation_gates": "PASS: check_docs.py, python -m mkdocs build --strict, git diff --check",
+  "actions_claim": "Named local current-source gates control this admission; no blanket CI-green claim."
+}

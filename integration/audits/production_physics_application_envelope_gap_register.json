@@ -1793,7 +1793,16 @@
         "gates_passed": 24
       },
       "current_successor_admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
-      "current_successor_scope": "Selected matrix Maas-Hoffman plus empirical root frost with no Bartholomeus, no drains, zero-flux bottom2; salt/Rutter, normal/bottom frost with salt, osmotic-head and new crop rooting models excluded"
+      "current_successor_scope": "Selected matrix Maas-Hoffman plus empirical root frost with no Bartholomeus, no drains, zero-flux bottom2; salt/Rutter, normal/bottom frost with salt, osmotic-head and new crop rooting models excluded",
+      "exact_macro_cutoff_successor": {
+        "work_unit": "PPA-WU05-D-EXACT01",
+        "canonical_pr": 1051,
+        "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+        "admission": "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json",
+        "qualification": "integration/audits/PPA_WU05D_EXACT01_RECONCILED_QUALIFICATION.json",
+        "scope": "Exact B1.11 macro compensation eligibility alptot>=1e-14; separate MICRO dispatcher routing only",
+        "gates_passed": 29
+      }
     },
     {
       "id": "PPA-RWU-COMP-WALSUM",
@@ -1842,6 +1851,15 @@
         "admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
         "scope": "Selected matrix Maas-Hoffman plus empirical root frost with Jarvis/Walsum, zero-flux bottom2/no drainage/no Bartholomeus",
         "gates_passed": 24
+      },
+      "exact_macro_cutoff_successor": {
+        "work_unit": "PPA-WU05-D-EXACT01",
+        "canonical_pr": 1051,
+        "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+        "admission": "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json",
+        "qualification": "integration/audits/PPA_WU05D_EXACT01_RECONCILED_QUALIFICATION.json",
+        "scope": "Exact B1.11 macro compensation eligibility alptot>=1e-14; separate MICRO dispatcher routing only",
+        "gates_passed": 29
       }
     }
   ],
@@ -2444,5 +2462,17 @@
     "gates_passed": 24,
     "status": "CANONICAL_ADMITTED_CLOSED_SELECTED_MATRIX_ROOT_FROST",
     "qualification": "integration/audits/PPA_WU05E_SALFRO01_RECONCILED_QUALIFICATION.json"
+  },
+  "ppa_wu05d_exact01_20261005_canonical": {
+    "work_unit": "PPA-WU05-D-EXACT01",
+    "canonical_pr": 1051,
+    "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+    "admission": "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json",
+    "qualification": "integration/audits/PPA_WU05D_EXACT01_RECONCILED_QUALIFICATION.json",
+    "scope": "Exact B1.11 macro compensation eligibility alptot>=1e-14; separate MICRO dispatcher routing only",
+    "gates_passed": 29,
+    "status": "CANONICAL_ADMITTED_CLOSED_EXACT_MACRO_CUTOFF",
+    "independent_micro_migration": "OPEN",
+    "external_jarvis_walsum_after_micro": "NOT_A_B1_11_OPTION"
   }
 }

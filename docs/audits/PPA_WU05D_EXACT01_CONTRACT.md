@@ -1,6 +1,6 @@
 # PPA-WU05-D-EXACT01 exact source reconciliation
 
-Status: qualified exact-source successor, canonical admission pending. Preregistered before implementation.
+Status: canonically admitted exact-source successor via PR #1051, merge `4c0615bfdb3a3e12db2b988eff97db749cca0511`. Preregistered before implementation.
 
 The materialized B1.11 rootextraction source has SHA256
 `8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5`.
