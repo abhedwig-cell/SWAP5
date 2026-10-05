@@ -369,3 +369,21 @@ claimed successful. Local full/half temperature budgets do not imply cumulative
 1e-6 C accuracy; the documented horizon comparison bound is 1e-4 C. Joint salt/frost,
 Bartholomeus/frost and FrozenBounds remain excluded. The next source-bound boundary
 review is `docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md`.
+
+## Matrix salinity in Walsum: PPA WALSAL01 (2026-10-05)
+
+PR #1032, merge `83258c02be55879cddf9918a2b80c96da7eae2a9`, independently extends selected matrix
+Maas-Hoffman salinity from Jarvis to the admitted current-geometry Walsum route.
+The crop request is checked before stress can mask sink support. No physical
+state, restart schema, mass owner or root-water receipt is added.
+
+Fourteen current-source qualification/preservation groups pass after reconciling
+canonical root frost PR #1030. Both transport variants, O0/O2, seven actual stress
+cases, independent geometry alpha, reject/discard/adaptive retry and separate
+process restart are covered. All 1046 source entries and complete
+source/test trees match actual admission. See [canonical closeout](../audits/PPA_WU05E_WALSAL01_CANONICAL_CLOSEOUT.md).
+
+This successor removes the earlier Walsum/salinity exclusion only in the selected
+matrix envelope. Salt/frost, salt/Rutter, macropore salt production, osmotic-head
+and unqualified chemistry/groundwater/crop combinations remain excluded. The
+frozen Status A denominator is unchanged.

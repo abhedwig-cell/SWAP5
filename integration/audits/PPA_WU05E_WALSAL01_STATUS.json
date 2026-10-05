@@ -3,12 +3,12 @@
   "workstream": "PPA root uptake / salinity",
   "baseline": "916035e78305cae5f88c30d5805b5d9c33a348f8",
   "branch": "work/ppa-wu05e-walsum-salinity-20261005",
-  "status": "QUALIFIED_SELECTED_MATRIX_READY_FOR_CENTRAL_ADMISSION",
+  "status": "CANONICAL_ADMITTED_CLOSED_SELECTED_MATRIX_SCOPE",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "production_admitted": false,
+  "production_admitted": true,
   "contract": "docs/audits/PPA_WU05E_WALSUM_SALINITY_CONTRACT.md",
   "files_touched": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -23,9 +23,9 @@
     "restart from accepted state",
     "geometry belongs to current forcing"
   ],
-  "next_action": "Complete docs gates, verify canonical delta and admit exact qualified source/test tree",
+  "next_action": "Selected matrix Walsum/salinity successor closed. Broader hybrid and osmotic routes remain separate work units.",
   "blockers": [],
-  "recovery_point": "764f93ecacdb559324c071c90e9c9114502c080c",
+  "recovery_point": "83258c02be55879cddf9918a2b80c96da7eae2a9",
   "confirmed_input_contract_gap": {
     "preimage": "cef689567bdb7f14bcdebbb61918a1364a71ac76",
     "reproduction": "Partial 0.5cm roots, positive potential sink on nodes 2/3, zero drought sinks there: geometry check after stress accepted a mismatched crop request. Regression expected rejection and exited 1.",
@@ -53,5 +53,9 @@
     ],
     "conflict_resolution": "Import list retains both ROOT_COMP_FROST/root_frost_stress and evaluate_walsum_geometry; all bodies auto-merged.",
     "historical_qualification": "integration/audits/PPA_WU05E_WALSAL01_QUALIFICATION.json"
-  }
+  },
+  "canonical_pr": 1032,
+  "canonical_merge": "83258c02be55879cddf9918a2b80c96da7eae2a9",
+  "canonical_admission": "integration/audits/PPA_WU05E_WALSAL01_CANONICAL_ADMISSION.json",
+  "canonical_closeout": "docs/audits/PPA_WU05E_WALSAL01_CANONICAL_CLOSEOUT.md"
 }
