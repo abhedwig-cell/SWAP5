@@ -112,7 +112,7 @@ The first E1 contract is restricted to one conservative dissolved salt constitue
 - `SWSP=0`: no Freundlich sorption; decomposition, macropore exchange, ageing, saturated-aquifer breakthrough, and MICRO are disabled.
 - The typed state stores accepted salt mass per node and derives `CML` from that mass and the matching accepted water content. For node thickness `dz_i`, the restricted storage relation is `M_i = theta_i * CML_i * dz_i`. Its units are mass per area for each node. Dry-state behavior outside the admitted liquid-water range must fail closed until a physical immobile/precipitated salt owner is defined.
 - Initial concentration uses an explicit depth/node mapping. Warm restart restores committed salt mass together with the corresponding committed water state; it must not reapply the initial profile.
-- Transport uses the matching trial's water fluxes and water contents, plus typed solute concentrations for incoming boundary flows. The current explicit upwind prototype uses committed-start mobile concentration for outgoing and inter-node donor fluxes; replacing it with substepped or implicit trial concentration requires its own source review and qualification. Root salt uptake is explicit through `TSCF * qrot_i * CML_i`, with the same candidate root sink that feeds the existing single water-mass receipt. The initial admitted TSCF envelope is `0 <= TSCF <= 1`; this is a restricted migration claim, not full legacy-range equivalence.
+- Transport uses the matching trial's water fluxes and water contents, plus typed solute concentrations for incoming boundary flows. The current explicit upwind prototype uses committed-start mobile concentration for outgoing and inter-node donor fluxes; replacing it with substepped or implicit trial concentration requires its own source review and qualification. Root salt uptake is explicit through `TSCF * qrot_i * CML_i`, with the same candidate root sink that feeds the existing single water-mass receipt. The byte-verified B1.11 source permits `0 <= TSCF <= 10`; process kernels validate that range, without claiming FMR execution or donor-overdraw qualification.
 - The first test profile has one connected soil column, no surface storage or aquifer mixing, and prescribed typed top/bottom solute boundary traces. Lateral drainage is excluded from this first slice and added only with an explicit mass-flux contract.
 
 ### Implemented local E1/E2 prototype boundary (not admitted)
@@ -215,6 +215,40 @@ Source inspection explains the substep-limit result. In the pinned FMR backend, 
 
 
 No water/salt commit or Jarvis salinity integration is justified yet.
+
+### Signed drainage and irrigation process contract (2026-10-05)
+
+The matrix mobile-salt process contract now accepts level-resolved signed
+`qdra_rate` and matrix `qssdi_rate` for one substep and the ordered-trace API.
+Positive `qdra` exports salt from its donor node at the substep-start CML;
+negative `qdra` imports only when an explicit available Cdrain concentration
+is supplied. Water closure includes `qssdi - sum(qdra)`, while `qssdi` creates
+no salt receipt. Per-level signed salt receipts close the candidate mass
+balance. Missing Cdrain authority and late trace failure clear the candidate
+and receipts. The process gate passes at O0/O2.
+
+This closes the process-kernel contract gap for these two matrix water routes.
+It does not provide FMR with typed salt ownership, connect accepted physical
+substeps to the kernel, or qualify candidate commit/discard/retry/restart.
+FMR active salt layouts therefore remain fail-closed; Jarvis salinity remains
+disabled.
+
+### FMR backend integrity repair (2026-10-05)
+
+Reconciliation against the advancing work branch found that commit
+`fc590f6b6` had replaced most of `mod_fmr_serialized_reference_backend.f90`
+with a literal truncated-tool-output marker. The branch tip therefore could
+not compile. The backend has been restored from the last known-good branch
+source at `bf6aaddf0e96b0500dd904351413b46240c13571`; the soil-interface salt
+forcing type, source/revision/time/layout validation, and fail-closed trial
+gate were then reapplied as a small change. The O0/O2 real-Richards FMR gate
+passes again. Active salt trials remain fail-closed pending salt-mass
+candidate advancement and its temporal/transaction/restart qualification.
+
+The same source reconciliation preserves the exact B1.11 TSCF range
+`0 <= TSCF <= 10`; the mobile-salt process test now covers TSCF above one and
+rejects values above ten. The earlier paragraph describing a 0-to-1 envelope
+is historical and no longer the current contract.
 
 
 ### Macropore solute boundary audit (2026-10-04)
