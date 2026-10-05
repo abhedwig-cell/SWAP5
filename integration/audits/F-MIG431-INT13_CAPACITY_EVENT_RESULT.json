@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.f_mig431_int13_capacity_event_result.v1",
+  "workunit": "F-MIG431-INT13",
+  "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "test": "tests/fpm/test_f_mig431_int13_capacity_event.f90",
+  "result": "CURRENT_API_EVENT_DRIVING_REQUIRED_FOR_CLOSURE",
+  "case": {
+    "gross_rain_cm_per_day": 1.0,
+    "vegetation_cover_fraction": 1.0,
+    "initial_storage_cm": 0.0,
+    "capacity_cm": 0.1,
+    "interception_evaporation_cm_per_day": 0.0,
+    "source_window_days": 1.0,
+    "reported_fill_event_days": 0.1
+  },
+  "one_call": {
+    "throughfall_cm": 0.0,
+    "storage_change_cm": 0.1,
+    "unaccounted_cm": 0.9
+  },
+  "explicit_fill_event_then_remainder": {
+    "throughfall_cm": 0.9,
+    "storage_change_cm": 0.1,
+    "closure_residual_cm": -2.7755575615628914e-17
+  },
+  "o0_o2_output_identity": true,
+  "preservation": {
+    "f_app05_rutter_process_unit": "PASS_O0_O2",
+    "f_app05_hupsel_supporting_observations": "PASS_O0_O2",
+    "combined_output_identity": true,
+    "compile_note": "Existing long-line observation fixture requires -ffree-line-length-none."
+  },
+  "interpretation_limit": "This establishes behavior of the present SWAP5 process API only. It does not yet establish whether exact B1.11 source or its production caller has identical failure behavior.",
+  "b1_11_source_identity": {
+    "mod_meteo_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a0c33be4c9f",
+    "b1_11_member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "materialized_member_available_in_checkout": false
+  }
+}

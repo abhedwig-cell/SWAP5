@@ -22,7 +22,13 @@ module mod_fmr_serialized_reference_backend
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
-       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM, FMR_OPTIONAL_STATE_LAYOUT_RUTTER
+  use mod_interception_source_window_runtime, only: interception_source_window_t
+  use mod_rutter_interception_process, only: rutter_interval_input_t, rutter_interval_result_t, rutter_diagnostics_t, &
+       RUTTER_OK
+  use mod_rutter_source_window_processor, only: rutter_source_state_t, rutter_source_trial_t, &
+       initialize_rutter_source_state, initialize_rutter_canopy_state, prepare_rutter_source_trial, &
+       accept_rutter_source_trial, RUTTER_WINDOW_OK
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
@@ -159,6 +165,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_snow_runtime_state_t), allocatable :: snow
     type(soil_temperature_state_t), allocatable :: soil_temperature
     type(macropore_continuation_state_t), allocatable :: macropore
+    type(rutter_source_state_t), allocatable :: rutter
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
@@ -290,6 +297,21 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: runoff_exponent = 1.0_real64
   end type fmr_boesten_evaporation_runtime_forcing_t
 
+  type, public :: fmr_rutter_runtime_forcing_t
+    logical :: prepared = .false.
+    type(interception_source_window_t) :: source_window
+    type(rutter_interval_input_t) :: process
+    type(rutter_interval_result_t) :: result
+    type(rutter_source_state_t) :: candidate_state
+    real(real64) :: snowmelt_rate_cm_per_day = 0.0_real64
+    real(real64) :: runon_rate_cm_per_day = 0.0_real64
+    real(real64) :: potential_bare_soil_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: potential_pond_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: ponding_max_cm = 0.0_real64
+    real(real64) :: runoff_resistance_day = 0.0_real64
+    real(real64) :: runoff_exponent = 1.0_real64
+  end type fmr_rutter_runtime_forcing_t
+
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
@@ -314,6 +336,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
     type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
     type(rfm_surface_forcing_t), allocatable :: rfm_surface
+    type(fmr_rutter_runtime_forcing_t), allocatable :: rutter
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -540,6 +563,8 @@ module mod_fmr_serialized_reference_backend
     logical :: boesten_evaporation_active = .false.
     type(boesten_evaporation_parameters_t) :: boesten_evaporation_parameters
     type(fmr_boesten_evaporation_runtime_forcing_t) :: boesten_evaporation_forcing
+    logical :: rutter_active = .false.
+    type(fmr_rutter_runtime_forcing_t), allocatable :: rutter_forcing
     type(soil_temperature_parameters_t), allocatable :: soil_temperature_parameters
     type(soil_temperature_forcing_t), allocatable :: soil_temperature_forcing
     type(soil_temperature_numerical_config_t) :: soil_temperature_numerical
@@ -733,6 +758,11 @@ contains
       allocate(target%macropore)
       target%macropore = source%macropore
     end if
+    if (allocated(target%rutter)) deallocate(target%rutter)
+    if (allocated(source%rutter)) then
+      allocate(target%rutter)
+      target%rutter = source%rutter
+    end if
   end subroutine copy_b110_physical_state
 
   subroutine fmr_b110_state_clone(self, copy)
@@ -834,17 +864,28 @@ contains
     call self%temporal_history%snapshot(derivative, available)
   end subroutine fmr_b110_temporal_history_snapshot
 
-  subroutine fmr_new_b110_committed_state(committed, lineage_id, state, initial_time, ok)
+  subroutine fmr_new_b110_committed_state(committed, lineage_id, state, initial_time, ok, initial_rutter_storage_cm)
     type(kernel_committed_state_t), intent(out) :: committed
     integer(int64), intent(in) :: lineage_id
     type(fmr_b110_physical_state_t), intent(in) :: state
     real(real64), intent(in) :: initial_time
     logical, intent(out) :: ok
+    real(real64), intent(in), optional :: initial_rutter_storage_cm
     class(transaction_state_t), allocatable :: carrier
+    integer :: rutter_status
     allocate(fmr_b110_physical_state_t :: carrier)
     select type (typed_carrier => carrier)
     type is (fmr_b110_physical_state_t)
       call copy_b110_physical_state(state, typed_carrier)
+      if (present(initial_rutter_storage_cm)) then
+        if (allocated(typed_carrier%rutter)) deallocate(typed_carrier%rutter)
+        allocate(typed_carrier%rutter)
+        call initialize_rutter_canopy_state(initial_rutter_storage_cm, typed_carrier%rutter, rutter_status)
+        if (rutter_status /= RUTTER_WINDOW_OK) then
+          ok = .false.
+          return
+        end if
+      end if
     end select
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_committed_state
@@ -983,10 +1024,10 @@ contains
                                                                macropore_reduction_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
-                                                               boesten_evaporation_active) result(matches)
+                                                               boesten_evaporation_active, rutter_active) result(matches)
     class(transaction_state_t), intent(in) :: state
     logical, intent(in) :: temporal_history_enabled, macropore_reduction_enabled, fixed_weir_surface_water_active
-    logical, intent(in) :: black_evaporation_active, boesten_evaporation_active
+    logical, intent(in) :: black_evaporation_active, boesten_evaporation_active, rutter_active
     if (black_evaporation_active .and. boesten_evaporation_active) then
       matches = .false.
       return
@@ -999,21 +1040,24 @@ contains
     type is (fmr_b110_temporal_indicator_state_t)
       matches = temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
            .not. fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. .not. boesten_evaporation_active
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active .and. .not. rutter_active
     type is (fmr_b110_fixed_weir_surface_water_state_t)
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
            fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. .not. boesten_evaporation_active
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active .and. .not. rutter_active
     type is (fmr_b110_black_evaporation_state_t)
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
-           .not. fixed_weir_surface_water_active .and. black_evaporation_active .and. .not. boesten_evaporation_active
+           .not. fixed_weir_surface_water_active .and. black_evaporation_active .and. .not. boesten_evaporation_active .and. &
+           .not. rutter_active
     type is (fmr_b110_boesten_evaporation_state_t)
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
-           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. boesten_evaporation_active
+           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. boesten_evaporation_active .and. &
+           .not. rutter_active
     type is (fmr_b110_physical_state_t)
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
            .not. fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. .not. boesten_evaporation_active
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active .and. &
+           (allocated(state%rutter) .eqv. rutter_active)
     class default
       matches = .false.
     end select
@@ -1062,7 +1106,7 @@ contains
                                                            model%macropore_reduction_continuation_enabled, &
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
-                                                           model%boesten_evaporation_active)) return
+                                                           model%boesten_evaporation_active, model%rutter_active)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
@@ -1440,7 +1484,6 @@ contains
       diagnostics%admission_rejections = 1
       return
     end if
-
     if (.not. self%model%soil_water_selection%uses_reference()) then
       result%status = KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
       diagnostics%admission_rejections = 1
@@ -1488,6 +1531,16 @@ contains
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     logical, intent(in), optional :: trusted_prepared_parameters
     logical :: bottom_thermal_ok, top_sensible_ok
+    logical :: rutter_snapshot_available
+    integer :: rutter_prepare_status
+    real(real64) :: rutter_source_origin, rutter_sink_total, rutter_scale
+    real(real64) :: rutter_rain_amount, rutter_total_input, rutter_surface_output, rutter_storage_change, rutter_residual
+    type(fmr_b110_physical_forcing_t) :: trial_forcing
+    type(rutter_source_state_t) :: rutter_accepted_state, rutter_candidate_state
+    type(rutter_source_trial_t) :: rutter_trial
+    type(rutter_interval_result_t) :: rutter_result
+    type(rutter_diagnostics_t) :: rutter_diagnostics
+    class(transaction_state_t), allocatable :: accepted_snapshot
 
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
@@ -1512,6 +1565,20 @@ contains
         column%template_id /= template%template_id .or. column%column_id <= 0_int64) then
       call reject_backend_trial(result, candidate, diagnostics)
       return
+    end if
+    self%model%rutter_active = template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER
+    if (self%model%rutter_active) then
+      if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          parameters%root_compensation%method /= ROOT_COMP_OFF .or. &
+          parameters%snow_active .or. parameters%soil_temperature_active .or. parameters%macropore_active .or. &
+          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. &
+          parameters%drainage_response_active .or. parameters%elasticity_active .or. &
+          parameters%direct_retention_active .or. allocated(parameters%bartholomeus) .or. &
+          (parameters%bottom_mode /= 2 .and. parameters%bottom_mode /= 7) .or. &
+          .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
     end if
     if (.not. fmr_serialized_rossfast_preflight(self, template, parameters, forcing, config, t0, t1)) then
       call reject_backend_trial(result, candidate, diagnostics)
@@ -1648,6 +1715,99 @@ contains
       self%model%top_sensible_boundary_carrier_active = top_sensible_ok
       self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
     end if
+    trial_forcing = forcing
+    if (self%model%rutter_active) then
+      if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%source_window%valid()) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      call committed%snapshot(accepted_snapshot, rutter_snapshot_available)
+      if (.not. rutter_snapshot_available) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      select type (rutter_physical => accepted_snapshot)
+      type is (fmr_b110_physical_state_t)
+        if (.not. allocated(rutter_physical%rutter)) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+        rutter_accepted_state = rutter_physical%rutter
+      class default
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end select
+      if (.not. rutter_accepted_state%source_window_initialized()) then
+        if (abs(t0 - forcing%rutter%source_window%start_time()) > &
+            64.0_real64 * epsilon(1.0_real64) * max(1.0_real64, abs(t0))) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+        call initialize_rutter_source_state(forcing%rutter%source_window, rutter_accepted_state%canopy_storage(), &
+             rutter_accepted_state, rutter_prepare_status)
+        if (rutter_prepare_status /= RUTTER_WINDOW_OK) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+      end if
+      rutter_source_origin = rutter_accepted_state%accepted_until()
+      if (abs(rutter_source_origin - t0) > 64.0_real64 * epsilon(1.0_real64) * &
+          max(1.0_real64, abs(t0), abs(rutter_source_origin))) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      call prepare_rutter_source_trial(forcing%rutter%source_window, rutter_accepted_state, t1, &
+           forcing%rutter%process, rutter_result, rutter_trial, rutter_diagnostics, rutter_prepare_status)
+      if (rutter_prepare_status /= RUTTER_WINDOW_OK .or. rutter_diagnostics%status /= RUTTER_OK .or. &
+          .not. rutter_diagnostics%result_produced) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      call accept_rutter_source_trial(forcing%rutter%source_window, rutter_accepted_state, rutter_trial, &
+           rutter_candidate_state, rutter_prepare_status)
+      if (rutter_prepare_status /= RUTTER_WINDOW_OK) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      rutter_rain_amount = forcing%rutter%source_window%aggregate_value() * (t1 - t0) / &
+           (forcing%rutter%source_window%end_time() - forcing%rutter%source_window%start_time())
+      rutter_total_input = rutter_rain_amount + forcing%rutter%process%surface_irrigation_cm_per_day * (t1 - t0)
+      rutter_surface_output = (rutter_result%net_rain_cm_per_day + &
+           rutter_result%net_surface_irrigation_cm_per_day) * (t1 - t0)
+      rutter_storage_change = rutter_candidate_state%canopy_storage() - rutter_accepted_state%canopy_storage()
+      rutter_residual = rutter_total_input - rutter_surface_output - &
+           rutter_result%reservoir_outflow_cm_per_day * (t1 - t0) - rutter_storage_change
+      if (.not. ieee_is_finite(rutter_residual) .or. &
+          abs(rutter_residual) > 1024.0_real64 * epsilon(1.0_real64) * &
+          max(1.0_real64, abs(rutter_total_input), abs(rutter_surface_output), &
+              abs(rutter_storage_change), abs(rutter_result%reservoir_outflow_cm_per_day * (t1 - t0)))) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      rutter_sink_total = sum(forcing%root_extraction_sink)
+      if (.not. ieee_is_finite(rutter_sink_total) .or. rutter_sink_total < 0.0_real64) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (rutter_sink_total <= tiny(1.0_real64)) then
+        if (rutter_result%potential_transpiration_cm_per_day > tiny(1.0_real64)) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+        rutter_scale = 0.0_real64
+      else
+        rutter_scale = rutter_result%potential_transpiration_cm_per_day / rutter_sink_total
+      end if
+      if (.not. ieee_is_finite(rutter_scale) .or. rutter_scale < 0.0_real64) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      trial_forcing%root_extraction_sink = forcing%root_extraction_sink * rutter_scale
+      trial_forcing%root_potential_transpiration = rutter_result%potential_transpiration_cm_per_day
+      trial_forcing%rutter%prepared = .true.
+      trial_forcing%rutter%result = rutter_result
+      trial_forcing%rutter%candidate_state = rutter_candidate_state
+    end if
     self%model%trusted_prepared_default_mvg = .false.
     nullify(self%model%trusted_parameter_source)
     if (present(trusted_prepared_parameters)) then
@@ -1657,13 +1817,13 @@ contains
       end if
     end if
     if (allocated(forcing%legacy_swbotb5_control)) then
-      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, config, t0, t1, checkpoint, &
            result, candidate, diagnostics, target_selector=select_hbot5_proposal)
     else if (allocated(forcing%legacy_swbotb3_implicit_control)) then
-      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, config, t0, t1, checkpoint, &
            result, candidate, diagnostics, target_selector=select_cauchy3_proposal)
     else
-      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, config, t0, t1, checkpoint, &
            result, candidate, diagnostics)
     end if
     if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
@@ -2052,7 +2212,7 @@ contains
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
     integer :: n, drainage_preflight_status
-    real(real64) :: black_values(9), boesten_values(9)
+    real(real64) :: black_values(9), boesten_values(9), rutter_values(14), time_tol
     self%forcing_admitted = .false.
     if(allocated(self%crop_oxygen)) deallocate(self%crop_oxygen)
     self%hbot5_proposal = fmr_hbot5_proposal_t()
@@ -2111,6 +2271,47 @@ contains
     type is (fmr_b110_physical_forcing_t)
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
+      if (self%rutter_active) then
+        if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%prepared .or. &
+            .not. forcing%rutter%source_window%valid()) return
+        if (allocated(forcing%snow) .or. allocated(forcing%black_evaporation) .or. &
+            allocated(forcing%boesten_evaporation) .or. allocated(forcing%rfm_surface) .or. &
+            allocated(forcing%macropore_top_input) .or. self%snow_active .or. &
+            self%black_evaporation_active .or. self%boesten_evaporation_active .or. &
+            forcing%top_flux /= 0.0_real64) return
+        time_tol = 64.0_real64 * epsilon(1.0_real64) * &
+             max(1.0_real64, abs(interval%t0), abs(interval%t1))
+        if (interval%t0 < forcing%rutter%source_window%start_time() - time_tol .or. &
+            interval%t1 > forcing%rutter%source_window%end_time() + time_tol) return
+        rutter_values = [forcing%rutter%process%surface_irrigation_cm_per_day, &
+             forcing%rutter%process%vegetation_cover_fraction, &
+             forcing%rutter%process%canopy_storage_capacity_cm, &
+             forcing%rutter%process%interception_evaporation_capacity_cm_per_day, &
+             forcing%rutter%process%potential_transpiration_dry_cm_per_day, &
+             forcing%rutter%process%potential_transpiration_wet_cm_per_day, &
+             forcing%rutter%snowmelt_rate_cm_per_day, forcing%rutter%runon_rate_cm_per_day, &
+             forcing%rutter%potential_bare_soil_evaporation_cm_per_day, &
+             forcing%rutter%potential_pond_evaporation_cm_per_day, forcing%rutter%ponding_max_cm, &
+             forcing%rutter%runoff_resistance_day, forcing%rutter%runoff_exponent, interval%t1-interval%t0]
+        if (any(.not. ieee_is_finite(rutter_values))) return
+        if (forcing%rutter%process%vegetation_cover_fraction < 0.0_real64 .or. &
+            forcing%rutter%process%vegetation_cover_fraction > 1.0_real64 .or. &
+            forcing%rutter%process%canopy_storage_capacity_cm < 0.0_real64 .or. &
+            forcing%rutter%process%interception_evaporation_capacity_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%process%potential_transpiration_dry_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%process%potential_transpiration_wet_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%snowmelt_rate_cm_per_day /= 0.0_real64 .or. forcing%rutter%runon_rate_cm_per_day /= 0.0_real64 .or. &
+            forcing%rutter%potential_bare_soil_evaporation_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%potential_pond_evaporation_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%ponding_max_cm < 0.0_real64 .or. forcing%rutter%runoff_resistance_day < 0.0_real64 .or. &
+            forcing%rutter%runoff_exponent <= 0.0_real64) return
+        if (allocated(self%rutter_forcing)) deallocate(self%rutter_forcing)
+        allocate(self%rutter_forcing)
+        self%rutter_forcing = forcing%rutter
+      else
+        if (allocated(forcing%rutter)) return
+        if (allocated(self%rutter_forcing)) deallocate(self%rutter_forcing)
+      end if
       if (self%drainage_response_active) then
         if (allocated(forcing%drainage_flux_by_level) .or. .not. allocated(self%drainage_response_levels) .or. &
             .not. allocated(forcing%drainage_response_controls)) return
@@ -2518,12 +2719,14 @@ contains
     type(black_evaporation_result_t) :: black_result
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
+    type(rutter_interval_result_t) :: rutter_process_result
     type(rfm_matrix_source_provider_t), target :: rfm_source_provider
     type(rfm_live_trial_prepare_result_t) :: rfm_live
     type(soil_water_top_boundary_result_t) :: rfm_preflight
     real(real64), allocatable, target :: rfm_source_rate(:)
     real(real64), allocatable :: rfm_node_depth_cm(:)
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider, &
+         rutter_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
@@ -2534,7 +2737,8 @@ contains
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok
-    logical :: direct_retention_ok
+    logical :: direct_retention_ok, rutter_trial_prepared
+    real(real64) :: rutter_previous_ponding
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
@@ -2605,9 +2809,30 @@ contains
                                                            self%macropore_reduction_continuation_enabled, &
                                                            self%fixed_weir_surface_water_active, &
                                                            self%black_evaporation_active, &
-                                                           self%boesten_evaporation_active)) return
+                                                           self%boesten_evaporation_active, self%rutter_active)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
+    rutter_trial_prepared = .false.
+    rutter_previous_ponding = 0.0_real64
+    if (self%rutter_active) then
+      if (.not. allocated(self%rutter_forcing) .or. .not. self%rutter_forcing%prepared) return
+      select type (rutter_physical => state)
+      type is (fmr_b110_physical_state_t)
+        if (.not. allocated(rutter_physical%rutter)) return
+        rutter_previous_ponding = rutter_physical%ponding_depth
+      class default
+        return
+      end select
+      rutter_process_result = self%rutter_forcing%result
+      call bind_b110_dynamic_top_boundary_solver_provider(rutter_top_provider, self%soil_parameters, &
+           self%hydraulic_parameters, self%swkmean, rutter_previous_ponding, step_duration, &
+           rutter_process_result%net_rain_cm_per_day, rutter_process_result%net_surface_irrigation_cm_per_day, &
+           self%rutter_forcing%snowmelt_rate_cm_per_day, self%rutter_forcing%runon_rate_cm_per_day, &
+           self%rutter_forcing%potential_bare_soil_evaporation_cm_per_day, &
+           self%rutter_forcing%potential_pond_evaporation_cm_per_day, self%rutter_forcing%ponding_max_cm, &
+           self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent)
+      rutter_trial_prepared = .true.
+    end if
     effective_bottom_mode = self%bottom_mode
     effective_bottom_flux = self%bottom_flux
     if (allocated(self%legacy_swbotb4_qgwl_control)) then
@@ -2644,7 +2869,8 @@ contains
     end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
-    if (self%black_evaporation_active .or. self%boesten_evaporation_active .or. self%rfm_configuration%enabled) then
+    if (self%black_evaporation_active .or. self%boesten_evaporation_active .or. self%rfm_configuration%enabled .or. &
+        self%rutter_active) then
       request%boundary%top_mode = FSI_TOP_MODE_DYNAMIC_PROVIDER
     else
       request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
@@ -2963,8 +3189,12 @@ contains
       request%evaluation%source_sink=>self%source_sink
     end if
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
-    if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
-         request%evaluation%top_boundary => self%top_boundary
+    if (self%rutter_active) then
+      if (.not. rutter_trial_prepared) return
+      request%evaluation%dynamic_top_boundary => rutter_top_provider
+    else if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) then
+      request%evaluation%top_boundary => self%top_boundary
+    end if
 
     if (self%soil_water_selection%uses_rossfast()) then
       context_ok = .true.
@@ -3201,6 +3431,10 @@ contains
       physical%water_content = solve_result%candidate_state%water_content
       physical%ponding_depth = solve_result%candidate_state%ponding_depth
       physical%groundwater_level = solve_result%candidate_state%groundwater_level
+      if (self%rutter_active) then
+        if (.not. rutter_trial_prepared .or. .not. allocated(physical%rutter)) return
+        physical%rutter = self%rutter_forcing%candidate_state
+      end if
       if(self%rfm_configuration%enabled)then
         select type(rfm_physical=>state)
         type is(fmr_b110_rfm_state_t)
@@ -3535,6 +3769,11 @@ contains
       return
     end if
 
+    if (self%rutter_active) then
+      value = fmr_rutter_temporal_error(self, full_state, half_state)
+      return
+    end if
+
     same = .false.
     select type (full => full_state)
     class is (fmr_b110_physical_state_t)
@@ -3566,6 +3805,42 @@ contains
       value = huge(0.0_real64)
     end if
   end function fmr_serialized_temporal_identity
+
+  real(real64) function fmr_rutter_temporal_error(self, full_state, half_state) result(value)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: full_state, half_state
+    integer :: i, n
+    real(real64) :: local_error
+
+    value = huge(0.0_real64)
+    select type (full => full_state)
+    type is (fmr_b110_physical_state_t)
+      select type (half => half_state)
+      type is (fmr_b110_physical_state_t)
+        if (.not. allocated(full%rutter) .or. .not. allocated(half%rutter)) return
+        if (.not. full%rutter%same_source_candidate(half%rutter)) return
+        if (full%active_nodes <= 0 .or. full%active_nodes /= half%active_nodes) return
+        if (.not. allocated(full%pressure_head) .or. .not. allocated(half%pressure_head) .or. &
+            .not. allocated(full%water_content) .or. .not. allocated(half%water_content)) return
+        n = full%active_nodes
+        if (size(full%pressure_head) /= n .or. size(half%pressure_head) /= n .or. &
+            size(full%water_content) /= n .or. size(half%water_content) /= n) return
+        if (.not. associated(self%soil_parameters)) return
+        if (.not. allocated(self%soil_parameters%dz)) return
+        if (size(self%soil_parameters%dz) /= n) return
+        value = 0.0_real64
+        do i = 1, n
+          local_error = abs(full%pressure_head(i) - half%pressure_head(i))
+          value = max(value, local_error)
+        end do
+        value = max(value, abs(full%ponding_depth - half%ponding_depth))
+      class default
+        return
+      end select
+    class default
+      return
+    end select
+  end function fmr_rutter_temporal_error
 
   real(real64) function fmr_macropore_physical_temporal_error(self, full_state, half_state) result(value)
     class(fmr_serialized_reference_model_t), intent(in) :: self

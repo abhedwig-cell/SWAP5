@@ -13,6 +13,8 @@ module mod_interception_source_window_runtime
   contains
     procedure, public :: valid => window_valid
     procedure, public :: aggregate_value
+    procedure, public :: start_time => window_start_time
+    procedure, public :: end_time => window_end_time
   end type
 
   type, public :: interception_progress_t
@@ -131,6 +133,12 @@ contains
   end function
   pure real(real64) function aggregate_value(self)
     class(interception_source_window_t),intent(in)::self; aggregate_value=self%aggregate
+  end function
+  pure real(real64) function window_start_time(self)
+    class(interception_source_window_t),intent(in)::self; window_start_time=self%t0
+  end function
+  pure real(real64) function window_end_time(self)
+    class(interception_source_window_t),intent(in)::self; window_end_time=self%t1
   end function
   pure logical function progress_valid_for(self,window)
     class(interception_progress_t),intent(in)::self; type(interception_source_window_t),intent(in)::window
