@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart; FMR Restart v4 forcing-handle mismatch rejection and disabled-only v3/v2 migration pass the A7 O0/O2 gate; Cdrain source/revision provenance is clone/restart-preserved by the typed FMR salt component, while live trial binding and candidate advancement remain blocked; trial-boundary validation now requires the Cdrain source ID to match the column forcing handle and cover the full trial interval, while active salt layouts remain rejected; exact B1.11 solute/root-extraction members recovered and byte-verified; active-backend tests reject missing or mismatched Cdrain and confirm no live salt candidate is admitted",
+  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart; FMR Restart v4 forcing-handle mismatch rejection and disabled-only v3/v2 migration pass the A7 O0/O2 gate; Cdrain source/revision provenance is clone/restart-preserved by the typed FMR salt component, while live trial binding and candidate advancement remain blocked; trial-boundary validation now requires the Cdrain source ID to match the column forcing handle and cover the full trial interval, while active salt layouts remain rejected; exact B1.11 solute/root-extraction members recovered and byte-verified; active-backend tests reject missing or mismatched Cdrain and confirm no live salt candidate is admitted; Jarvis composition now supports separately attributed salinity reduction and selection, but the FMR/root runtime does not yet derive or pass salinity from the salt state",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "d9ff6009ef032ac41b0d528ecd09ef849acdadde40f40205f07340fe690f8cce",
@@ -36,7 +36,10 @@
     "integration/audits/PPA_WU05E_STATUS.json": "a83988dab1e89332594536a60294f4332b7ed277775dbd69e5d2f0bd9baa1097",
     "tests/fpm/test_ppa_wu05a20_rfm_optional_state_layout.f90": "e27bfb82bc58fcb03588b09d81d05bf061b59c86b0c8202431e7172cb6666be5",
     "src/process/mod_solute_mobile_macro_salt_transport.f90": "469f53289a15bc48f0254a37e5d1c1acfa0962af14ca2af971feb2affa89b6ad",
-    "tests/physics/test_mobile_macro_salt_transport.f90": "38d5b748d29bf33c6b029cf89070426e915dcee0d15628f02721bb74b4e0bac6"
+    "tests/physics/test_mobile_macro_salt_transport.f90": "38d5b748d29bf33c6b029cf89070426e915dcee0d15628f02721bb74b4e0bac6",
+    "src/process/mod_root_uptake_compensation.f90": "6288ec3421c6a7514f1f13763190a7ce4a99778a322269ca5a354d6a3a5d28d5",
+    "src/runtime/mod_root_uptake_compensation_execution.f90": "b0d66d2bb0e45fae1f222ffeb4f0b8cf0217d1f02c96f596968f540c1930bc22",
+    "tests/physics/test_ppa_wu05d2_jarvis.f90": "9a32dade87f314e5aa46b85cedddc3186804bb6bd075fa179f901b7dc2b2ede1"
   },
   "results": [
     {
@@ -181,6 +184,21 @@
       "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
       "result": "PASS_O0_O2_IDENTICAL",
       "scope": "A7/A8 gate with live backend rejection tests for missing/mismatched Cdrain and valid-but-unqualified active salt route; no candidate leakage; exact B1.11 source member hashes verified separately"
+    },
+    {
+      "command": "bash tests/physics/run_ppa_wu05d2_jarvis.sh",
+      "result": "PASS_O0_O2_IDENTICAL",
+      "scope": "Salinity-only compensation, drought-only preservation of salt reduction, three-stressor closure attribution, and existing D2 runtime order"
+    },
+    {
+      "command": "python3 tests/physics/run_ppa_wu05d2_preservation.py",
+      "result": "PASS_O0_O2",
+      "scope": "D2 preservation and FMR application routing after compositor extension"
+    },
+    {
+      "command": "python3 tests/physics/run_ppa_wu05d2_publication.py",
+      "result": "PASS_O0_O2",
+      "scope": "D2 publication/application/rollback and restart invariants after compositor extension"
     }
   ],
   "not_run_or_not_claimed": [
