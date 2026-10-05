@@ -98,6 +98,7 @@ MODULE_SRC=(
   src/process/mod_solute_water_face_flux_reconstruction.f90
   src/process/mod_solute_mobile_salt_state.f90
   src/process/mod_root_salinity_response.f90
+  src/process/mod_solute_mobile_advection_dispersion.f90
   src/runtime/mod_fmr_base_salt_temporal_policy.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90

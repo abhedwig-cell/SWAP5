@@ -1,9 +1,11 @@
 module mod_fmr_base_salt_temporal_policy
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_solute_mobile_advection_dispersion, only: mobile_transport_numerical_t
   implicit none
   private
   type, public :: fmr_base_salt_temporal_policy_t
+    type(mobile_transport_numerical_t) :: transport
     logical :: enabled=.false.
     real(real64) :: head_tolerance_cm=0.0_real64
     real(real64) :: water_tolerance_cm=0.0_real64
@@ -19,6 +21,7 @@ contains
     real(real64)::tol(4)
     tol=[self%head_tolerance_cm,self%water_tolerance_cm,self%salt_tolerance_mg_cm2,self%temperature_tolerance_c]
     ok=self%enabled.and.all(ieee_is_finite(tol)).and.all(tol>0.0_real64)
+    if(self%transport%enabled)ok=ok.and.self%transport%valid()
   end function
 
   pure real(real64) function fmr_base_salt_normalized_error(policy,dz,full_head,half_head, &

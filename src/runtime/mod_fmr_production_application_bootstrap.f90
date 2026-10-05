@@ -16,7 +16,7 @@ module mod_fmr_production_application_bootstrap
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
        fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg, &
-       fmr_c_drain_salt_matches_trial, fmr_soil_salt_boundary_matches_trial
+       fmr_c_drain_salt_matches_trial, fmr_soil_salt_boundary_matches_trial, fmr_mobile_dispersion_matches_hydraulic_owner
   use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
@@ -163,6 +163,12 @@ contains
       if (.not. tile_config_valid(config%tiles(i), n, i)) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
+      end if
+      if(allocated(config%tiles(i)%parameters%mobile_dispersion))then
+        if(.not.config%base_salt_temporal_policy%transport%valid())then
+          status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
       end if
       if (config%tiles(i)%template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
         if (.not. config%base_salt_temporal_policy%valid() .or. &
@@ -825,12 +831,16 @@ contains
 
     select case (tile%template%solute_state_layout_id)
     case (FMR_SOLUTE_STATE_LAYOUT_NONE)
-      if (allocated(tile%initial_state%salt) .or. tile%parameters%root_salinity_active) return
+      if (allocated(tile%initial_state%salt) .or. tile%parameters%root_salinity_active.or. &
+          allocated(tile%parameters%mobile_dispersion)) return
     case (FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)
       if (tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 7) return
       if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
       if (tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active .or. &
           tile%parameters%elasticity_active .or. tile%parameters%direct_retention_active) return
+      if(allocated(tile%parameters%mobile_dispersion))then
+        if(.not.fmr_mobile_dispersion_matches_hydraulic_owner(tile%parameters))return
+      end if
       if (.not. allocated(tile%initial_state%salt)) return
       if (.not. tile%initial_state%salt%ready(tile%parameters%active_nodes)) return
       if (.not. allocated(tile%base_forcing%c_drain_salt) .or. &

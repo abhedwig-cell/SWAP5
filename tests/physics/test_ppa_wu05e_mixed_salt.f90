@@ -37,12 +37,14 @@ program test_ppa_wu05e_mixed_salt
   type(fmr_committed_restart_bundle_t)::bundle
   class(transaction_state_t),allocatable::snapshot,after
   real(real64)::k
-  integer::status,scenario
-  character(512)::mode,restart_path,result_path
-  logical::ok
+  integer::status,scenario,j
+  character(512)::mode,restart_path,result_path,variant
+  logical::ok,dispersive
   call get_command_argument(1,mode)
   call get_command_argument(2,restart_path)
   call get_command_argument(3,result_path)
+  call get_command_argument(4,variant)
+  dispersive=trim(variant)=='dispersion'
   call initialize_application_config(cfg,-75._real64,k)
   call add_root_thermal_oxygen(cfg)
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
@@ -77,6 +79,18 @@ program test_ppa_wu05e_mixed_salt
   cfg%tiles(1)%base_forcing%drainage_flux_by_level(1,:)=1.e-4_real64
   cfg%tiles(1)%base_forcing%drainage_flux_by_level(2,:)=-1.e-4_real64
   cfg%tiles(1)%base_forcing%subsurface_irrigation_source=1.e-5_real64
+  if(dispersive)then
+    allocate(cfg%tiles(1)%parameters%mobile_dispersion)
+    associate(p=>cfg%tiles(1)%parameters%mobile_dispersion)
+      p%molecular_diffusion_cm2_day=.05_real64
+      allocate(p%dispersivity_cm(numnod-1),p%theta_sat_left(numnod-1), &
+        p%face_distance_cm(numnod-1),p%face_left_weight(numnod-1),p%face_right_weight(numnod-1))
+      p%dispersivity_cm=.5_real64;p%theta_sat_left=cfg%tiles(1)%parameters%cofgen(2,1:numnod-1)
+      p%face_distance_cm=cfg%tiles(1)%parameters%node_distance(2:numnod)
+      p%face_left_weight=.5_real64*dz(2:numnod)/p%face_distance_cm
+      p%face_right_weight=.5_real64*dz(1:numnod-1)/p%face_distance_cm
+    end associate
+  end if
   columns(1)%column_id=cfg%tiles(1)%tile_id;columns(1)%template_id=cfg%tiles(1)%template%template_id
   columns(1)%parameter_ref=1_int64;columns(1)%state_handle=1_int64;columns(1)%forcing_handle=1_int64
   columns(1)%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
@@ -89,6 +103,10 @@ program test_ppa_wu05e_mixed_salt
   call require(.not.first%completed.and..not.candidate%ready(),'unconfigured matrix salt fails closed')
   policy%enabled=.true.;policy%head_tolerance_cm=.01_real64;policy%water_tolerance_cm=1.e-6_real64
   policy%salt_tolerance_mg_cm2=1.e-7_real64;policy%temperature_tolerance_c=.01_real64
+  if(dispersive)then
+    policy%transport%enabled=.true.;policy%transport%max_step_day=1.e-6_real64
+    policy%transport%max_substeps=100;policy%transport%courant_fraction=.9_real64
+  end if
   if(trim(mode)=='resume')then
     call read_restart_file(trim(restart_path),bundle)
     call fmr_restore_committed_restart(bundle,cfg%tiles(1)%parameters%parameter_set_id,columns, &
@@ -106,6 +124,17 @@ program test_ppa_wu05e_mixed_salt
     stop
   end if
   cfg%base_salt_temporal_policy=policy
+  if(dispersive)then
+    bad=cfg;bad%base_salt_temporal_policy%transport%enabled=.false.
+    call badapp%initialize(bad,status)
+    call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'dispersion needs explicit solute numerical policy')
+    bad=cfg;bad%tiles(1)%parameters%mobile_dispersion%face_distance_cm=0._real64
+    call badapp%initialize(bad,status)
+    call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'invalid dispersion geometry fails closed')
+    bad=cfg;bad%tiles(1)%parameters%mobile_dispersion%theta_sat_left=.5_real64
+    call badapp%initialize(bad,status)
+    call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'dispersion must match hydraulic saturation owner')
+  end if
   bad=cfg;bad%base_salt_temporal_policy%enabled=.false.
   call badapp%initialize(bad,status)
   call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'application missing numerical policy fails closed')
@@ -188,6 +217,40 @@ program test_ppa_wu05e_mixed_salt
     call badapp%close(status);call backend%discard_trial_candidate(other,diag2)
     write(*,'(a,i0,a)')'PPA_WU05E_ACTUAL_COMBINATION_',scenario,'=PASS_TEST_ONLY'
   end do
+  block
+    do scenario=1,3
+      bad=cfg
+      bad%tiles(1)%base_forcing%top_flux=merge(-.001_real64,.001_real64,scenario==1)
+      bad%tiles(1)%base_forcing%soil_salt_boundary%matrix_top_outflow_carries_solute=scenario==3
+      call backend%run_trial(columns(1),bad%tiles(1)%template,bad%tiles(1)%parameters,states(1), &
+        bad%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2,trace_accepted_water_flux_substeps=.true.)
+      call require(replay%completed.and.other%ready(),'actual joint top boundary sign trial')
+      obs2=backend%observation();call other%snapshot(after,ok);call verify_ledger(obs2,after)
+      k=0._real64
+      do j=1,size(obs2%accepted_water_flux_substeps)
+        associate(r=>obs2%accepted_water_flux_substeps(j)%salt_receipt)
+          if(scenario==1)then
+            k=k+r%matrix_top_input_mg_cm2
+          else
+            k=k+r%matrix_top_output_mg_cm2
+          end if
+        end associate
+      end do
+      if(scenario==2)then
+        call require(k==0._real64,'actual evaporation exports no salt')
+      else
+        call require(k>0._real64,'actual typed liquid top salt receipt has requested sign')
+      end if
+      call badapp%initialize(bad,status)
+      call require(status==FMR_APP_BOOT_OK,'joint top boundary application init')
+      call badapp%run_standalone(T0,T1,scenario_results,status)
+      call require(status==FMR_APP_BOOT_OK.and.scenario_results(1)%committed,'joint top boundary application commit')
+      call require(abs(scenario_results(1)%mass%residual)<=HARD_MASS_GATE,'joint top boundary water mass')
+      call require(same_bits(replay%mass%total_out,scenario_results(1)%mass%total_out),'top boundary actual app matches backend')
+      call badapp%close(status);call backend%discard_trial_candidate(other,diag2)
+    end do
+    print '(a)','PPA_WU05E_MATRIX_ACTUAL_TOP_LIQUID_VAPOR=PASS_TEST_ONLY'
+  end block
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,first,candidate,diag,trace_accepted_water_flux_substeps=.true.)
   obs=backend%observation()
@@ -195,6 +258,17 @@ program test_ppa_wu05e_mixed_salt
 
   call require(first%completed.and.candidate%ready(),'actual mixed stress candidate')
   call require(same_bits(first%mass%total_out,app_results(1)%mass%total_out),'actual application matches backend')
+  if(dispersive)then
+    call require(obs%salt_internal_substeps>1,'actual joint transport uses internal salt substeps')
+    tight=policy;tight%transport%max_substeps=1
+    call backend%configure_base_salt_temporal_policy(tight,ok)
+    bad=cfg;bad%numerical%transaction%max_retries=0
+    call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
+      cfg%tiles(1)%base_forcing,bad%numerical,T0,T1,cp,replay,other,diag2)
+    call require(.not.replay%completed.and..not.other%ready(),'internal salt substep cap rejects whole water salt trial')
+    call states(1)%snapshot(after,ok);call require_same_physical(cfg%tiles(1)%initial_state,after)
+    call backend%configure_base_salt_temporal_policy(policy,ok)
+  end if
   call require(obs%bartholomeus_executed.and.obs%bartholomeus_status==0,'real oxygen caller')
   call require(obs%root_salinity_executed.and.obs%root_salinity_status==0,'real salinity caller')
   call require(obs%root_compensation_executed.and.obs%root_compensation_status==0,'real Jarvis caller')
@@ -289,6 +363,7 @@ program test_ppa_wu05e_mixed_salt
       call require(all(p%salt%mass_mg_cm2==q%salt%mass_mg_cm2),'restart salt identity')
     end select
   end select
+  if(dispersive)print '(a)','PPA_WU05E_JOINT_TRANSPORT_ACTUAL_LIFECYCLE=PASS_TEST_ONLY'
   print '(a)','PPA_WU05E_MATRIX_MIXED_STRESS_LIFECYCLE=PASS_TEST_ONLY'
 contains
   subroutine verify_ledger(observation,physical)

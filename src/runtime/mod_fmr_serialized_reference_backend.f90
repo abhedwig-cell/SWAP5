@@ -108,6 +108,8 @@ module mod_fmr_serialized_reference_backend
   use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t, mobile_salt_fluxes_t, &
        initialize_mobile_salt_state, advance_mobile_salt_trial, SOLUTE_OK
+  use mod_solute_mobile_advection_dispersion, only: mobile_dispersion_physics_t, mobile_transport_receipt_t, &
+       advance_mobile_advection_dispersion
   use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t, fmr_base_salt_normalized_error
   use mod_solute_mobile_macro_salt_transport, only: mobile_macro_salt_receipt_t, &
        advance_mobile_macro_salt_trial, initialize_mobile_macro_salt_state, MACRO_SALT_OK, MACRO_SALT_INVALID
@@ -254,6 +256,7 @@ module mod_fmr_serialized_reference_backend
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
     logical :: root_salinity_active = .false.
+    type(mobile_dispersion_physics_t), allocatable :: mobile_dispersion
     real(real64) :: solute_tscf = 0.0_real64
     real(real64) :: saltmax_mg_cm3 = 0.0_real64
     real(real64) :: saltslope_cm3_mg = 0.0_real64
@@ -328,6 +331,7 @@ module mod_fmr_serialized_reference_backend
   ! owner handles surface-pool mixing and schedules these values over a trial.
   type, public :: fmr_soil_salt_boundary_forcing_t
     logical :: available = .false.
+    logical :: matrix_top_outflow_carries_solute = .false.
     real(real64) :: matrix_top_mg_cm3 = 0.0_real64, matrix_bottom_mg_cm3 = 0.0_real64
     real(real64), allocatable :: macropore_top_mg_cm3(:), macropore_bottom_mg_cm3(:)
     real(real64) :: valid_t0 = 0.0_real64, valid_t1 = 0.0_real64
@@ -395,6 +399,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: root_salinity_alpha(:), root_salinity_cml_mg_cm3(:)
     logical :: salt_transport_executed = .false.
     integer :: salt_transport_status = 0
+    integer :: salt_internal_substeps = 0
     real(real64) :: salt_transport_closure_mg_cm2 = 0.0_real64
     real(real64) :: salt_root_uptake_mg_cm2 = 0.0_real64
     real(real64), allocatable :: salt_qdra_signed_out_mg_cm2(:)
@@ -576,6 +581,7 @@ module mod_fmr_serialized_reference_backend
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
     logical :: root_salinity_active = .false.
+    type(mobile_dispersion_physics_t), allocatable :: mobile_dispersion
     real(real64) :: solute_tscf = 0.0_real64
     real(real64) :: saltmax_mg_cm3 = 0.0_real64
     real(real64) :: saltslope_cm3_mg = 0.0_real64
@@ -695,6 +701,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_initialize_mobile_macro_salt_profile
   public :: fmr_initialize_mobile_salt_profile
   public :: fmr_base_salt_temporal_policy_t
+  public :: fmr_mobile_dispersion_matches_hydraulic_owner
   public :: fmr_new_b110_macropore_reduction_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
@@ -703,6 +710,28 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_rfm_committed_state
 
 contains
+
+  pure logical function fmr_mobile_dispersion_matches_hydraulic_owner(parameters)result(ok)
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    integer::n
+    real(real64),parameter::tol=1024.0_real64*epsilon(1.0_real64)
+    ok=.false.;n=parameters%active_nodes
+    if(.not.allocated(parameters%mobile_dispersion))return
+    if(.not.parameters%mobile_dispersion%valid(n))return
+    if(.not.allocated(parameters%dz).or..not.allocated(parameters%node_distance).or. &
+      .not.allocated(parameters%cofgen))return
+    if(size(parameters%dz)/=n.or.size(parameters%node_distance)/=n.or. &
+      size(parameters%cofgen,1)<2.or.size(parameters%cofgen,2)/=n)return
+    if(any(.not.ieee_is_finite(parameters%dz)).or.any(parameters%dz<=0.0_real64).or. &
+      any(.not.ieee_is_finite(parameters%node_distance)).or.any(parameters%node_distance<=0.0_real64).or. &
+      any(.not.ieee_is_finite(parameters%cofgen(2,:))))return
+    associate(p=>parameters%mobile_dispersion)
+      ok=all(abs(p%theta_sat_left-parameters%cofgen(2,1:n-1))<=tol).and. &
+        all(abs(p%face_distance_cm-parameters%node_distance(2:n))<=tol*max(1.0_real64,maxval(parameters%node_distance)))
+      ok=ok.and.all(abs(p%face_left_weight-.5_real64*parameters%dz(2:n)/parameters%node_distance(2:n))<=tol)
+      ok=ok.and.all(abs(p%face_right_weight-.5_real64*parameters%dz(1:n-1)/parameters%node_distance(2:n))<=tol)
+    end associate
+  end function
 
   pure logical function fmr_c_drain_salt_covers_interval(forcing, t0, t1) result(valid)
     type(fmr_c_drain_salt_forcing_t), intent(in) :: forcing
@@ -1355,6 +1384,7 @@ contains
     if (allocated(self%model%macropore_config)) deallocate(self%model%macropore_config)
     self%model%macropore_policy = macropore_runtime_policy_t()
     self%model%base_salt_temporal_policy = fmr_base_salt_temporal_policy_t()
+    if(allocated(self%model%mobile_dispersion))deallocate(self%model%mobile_dispersion)
     self%model%macropore_policy_configured = .false.
     call self%model%rfm_configuration%clear()
     call self%kernel%bind_model(self%model)
@@ -1760,6 +1790,10 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
+    if(allocated(parameters%mobile_dispersion).and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
+      call reject_backend_trial(result,candidate,diagnostics)
+      return
+    end if
     if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
       if (.not. allocated(forcing%c_drain_salt)) then
         call reject_backend_trial(result, candidate, diagnostics)
@@ -1797,6 +1831,14 @@ contains
           self%model%rfm_configuration%enabled .or. self%model%fixed_weir_surface_water_active) then
         call reject_backend_trial(result, candidate, diagnostics)
         return
+      end if
+      if(allocated(parameters%mobile_dispersion))then
+        if(template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.or. &
+          .not.fmr_mobile_dispersion_matches_hydraulic_owner(parameters).or. &
+          .not.self%model%base_salt_temporal_policy%transport%valid())then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
       end if
       if (template%solute_state_layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) then
         if (parameters%macropore_active .or. config%transaction%temporal_tolerance /= 1.0_real64 .or. &
@@ -2264,6 +2306,9 @@ contains
         ok = ok .and. parameters%drainage_response_active .and. parameters%bottom_mode == 2 .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%macropore_active
       end if
+      if(allocated(parameters%mobile_dispersion))then
+        ok=ok.and.fmr_mobile_dispersion_matches_hydraulic_owner(parameters).and..not.parameters%macropore_active
+      end if
       if (parameters%root_salinity_active) then
         ok = ok .and. parameters%root_extraction_active .and. &
              parameters%root_compensation%method == ROOT_COMP_JARVIS .and. &
@@ -2365,6 +2410,8 @@ contains
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
       self%root_salinity_active = parameters%root_salinity_active
+      if(allocated(self%mobile_dispersion))deallocate(self%mobile_dispersion)
+      if(allocated(parameters%mobile_dispersion))self%mobile_dispersion=parameters%mobile_dispersion
       self%solute_tscf = parameters%solute_tscf
       self%saltmax_mg_cm3 = parameters%saltmax_mg_cm3
       self%saltslope_cm3_mg = parameters%saltslope_cm3_mg
@@ -3761,6 +3808,7 @@ contains
     integer,intent(out)::status
     type(mobile_salt_state_t)::committed_salt,candidate_salt
     type(mobile_salt_fluxes_t)::matrix_receipt
+    type(mobile_transport_receipt_t)::transport_receipt
     real(real64),allocatable::faces(:),net_source(:),qdra_rate(:,:),qssdi_rate(:)
     real(real64)::closure,dt
     integer::n,face_status
@@ -3788,11 +3836,25 @@ contains
     committed_salt%mass_mg_cm2=physical%salt%mass_mg_cm2
     committed_salt%concentration_mg_cm3=physical%salt%mass_mg_cm2/ &
          (request%base_state%water_content*self%soil_parameters%dz)
-    call advance_mobile_salt_trial(committed_salt,self%soil_parameters%dz,request%base_state%water_content, &
+    if(allocated(self%mobile_dispersion))then
+      call advance_mobile_advection_dispersion(committed_salt,self%soil_parameters%dz,request%base_state%water_content, &
+        solve_result%candidate_state%water_content,faces,self%qrot,self%soil_salt_boundary_forcing%matrix_top_mg_cm3, &
+        self%soil_salt_boundary_forcing%matrix_bottom_mg_cm3,self%solute_tscf,dt,self%mobile_dispersion, &
+        self%base_salt_temporal_policy%transport,qdra_rate,qssdi_rate,self%c_drain_salt_forcing%concentration_mg_cm3, &
+        .true.,candidate_salt,transport_receipt,status, &
+        top_outflow_carries_solute=self%soil_salt_boundary_forcing%matrix_top_outflow_carries_solute)
+      if(status/=SOLUTE_OK)return
+      matrix_receipt=transport_receipt%balance
+      self%last_observation%salt_internal_substeps=transport_receipt%substeps
+    else
+      call advance_mobile_salt_trial(committed_salt,self%soil_parameters%dz,request%base_state%water_content, &
          solve_result%candidate_state%water_content,faces,self%qrot,self%soil_salt_boundary_forcing%matrix_top_mg_cm3, &
          self%soil_salt_boundary_forcing%matrix_bottom_mg_cm3,self%solute_tscf,dt,candidate_salt,matrix_receipt,status, &
          qdra_rate=qdra_rate,qssdi_rate=qssdi_rate,cdrain_mg_cm3=self%c_drain_salt_forcing%concentration_mg_cm3, &
-         cdrain_available=.true.)
+         cdrain_available=.true., &
+         top_outflow_carries_solute=self%soil_salt_boundary_forcing%matrix_top_outflow_carries_solute)
+      self%last_observation%salt_internal_substeps=1
+    end if
     if(status/=SOLUTE_OK)return
     physical%salt%mass_mg_cm2=candidate_salt%mass_mg_cm2
     physical%salt%cdrain_source_id=self%c_drain_salt_forcing%source_id
@@ -3804,7 +3866,11 @@ contains
     allocate(receipt%macro_top_input_mg_cm2(0),receipt%macro_top_output_mg_cm2(0), &
          receipt%macro_bottom_input_mg_cm2(0),receipt%macro_bottom_output_mg_cm2(0), &
          receipt%macro_to_matrix_mg_cm2(0,n),receipt%matrix_to_macro_mg_cm2(0,n))
-    receipt%root_solute_uptake_mg_cm2=self%solute_tscf*self%qrot*committed_salt%concentration_mg_cm3*dt
+    if(allocated(self%mobile_dispersion))then
+      receipt%root_solute_uptake_mg_cm2=transport_receipt%root_by_node_mg_cm2
+    else
+      receipt%root_solute_uptake_mg_cm2=self%solute_tscf*self%qrot*committed_salt%concentration_mg_cm3*dt
+    end if
     receipt%qdra_signed_out_mg_cm2=matrix_receipt%qdra_signed_out_mg_cm2
     receipt%closure_error_mg_cm2=matrix_receipt%closure_error_mg_cm2
   end subroutine

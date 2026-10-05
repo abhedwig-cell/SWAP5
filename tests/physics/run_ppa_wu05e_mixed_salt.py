@@ -4,6 +4,8 @@ import hashlib,json,os,pathlib,re,shlex,subprocess,tempfile
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 FC=shlex.split(os.environ.get('FC','gfortran'))
 LINK=shlex.split(os.environ.get('FMR_FC_LINK_FLAGS',''))
+VARIANT=os.environ.get('WU05E_TRANSPORT_VARIANT','')
+if VARIANT not in ('','dispersion'):raise RuntimeError('invalid transport variant')
 TESTS=['tests/physics/test_fmr_base_salt_temporal_policy.f90','tests/physics/test_ppa_wu05e_mixed_salt.f90']
 FIXTURE=ROOT/'tests/physics/test_ppa_wu05d2_mixed_application.f90'
 modules={}
@@ -24,6 +26,7 @@ visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')
 for test in TESTS:visit(ROOT/test)
 sources=[p for p in ordered if str(p.relative_to(ROOT)) not in TESTS]
 result={'work_unit':'PPA-WU05-E','compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],
+ 'transport_variant':VARIANT or 'original-upwind',
  'tested_postimage':os.environ.get('C3A_TESTED_SHA',os.environ.get('GITHUB_SHA','not-specified')),
  'source_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in ordered},'runs':{}}
 result['source_sha256'][str(FIXTURE.relative_to(ROOT))]=hashlib.sha256(FIXTURE.read_bytes()).hexdigest()
@@ -47,16 +50,18 @@ with tempfile.TemporaryDirectory(prefix='c3a-application-') as folder:
    p=ROOT/test;obj=build/(p.stem+'.o');exe=build/p.stem
    subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True,stdout=subprocess.DEVNULL)
    subprocess.run(FC+LINK+flags+objects+[str(obj),'-o',str(exe)],check=True,stdout=subprocess.DEVNULL)
-   arguments=[] if 'temporal_policy' in test else ['write',str(build/'restart.bin'),str(build/'expected.bin')]
+   arguments=[] if 'temporal_policy' in test else ['write',str(build/'restart.bin'),str(build/'expected.bin'),VARIANT]
    completed=subprocess.run([str(exe)]+arguments,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
    output=completed.stdout
    print(output,flush=True)
    completed.check_returncode()
    marker='PPA_WU05E_BASE_SALT_METRIC=PASS_TEST_ONLY' if 'temporal_policy' in test else 'PPA_WU05E_MATRIX_MIXED_STRESS_LIFECYCLE=PASS_TEST_ONLY'
    if marker not in output:raise RuntimeError('missing gate marker: '+marker)
+   if VARIANT and 'mixed_salt' in test and 'PPA_WU05E_JOINT_TRANSPORT_ACTUAL_LIFECYCLE=PASS_TEST_ONLY' not in output:
+    raise RuntimeError('missing actual joint transport marker')
    result['runs'][opt][test]=output.splitlines()
    if 'mixed_salt' in test:
-    fresh=subprocess.run([str(exe),'resume',str(build/'restart.bin'),str(build/'resumed.bin')],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    fresh=subprocess.run([str(exe),'resume',str(build/'restart.bin'),str(build/'resumed.bin'),VARIANT],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     print(fresh.stdout,flush=True);fresh.check_returncode()
     if 'PPA_WU05E_FRESH_PROCESS_RESTART=PASS_TEST_ONLY' not in fresh.stdout:raise RuntimeError('fresh process marker missing')
     if (build/'expected.bin').read_bytes()!=(build/'resumed.bin').read_bytes():raise RuntimeError('separate process physical state differs')

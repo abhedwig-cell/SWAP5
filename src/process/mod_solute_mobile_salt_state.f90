@@ -70,7 +70,7 @@ contains
   ! only salt and never mutates committed input state.
   subroutine advance_mobile_salt_trial(committed,node_thickness_cm,water_start,water_trial,face_flux_cm_day, &
        root_water_sink_cm_day,top_boundary_concentration,bottom_boundary_concentration,tscf,dt_day,candidate,fluxes,status, &
-       qdra_rate,qssdi_rate,cdrain_mg_cm3,cdrain_available)
+       qdra_rate,qssdi_rate,cdrain_mg_cm3,cdrain_available,top_outflow_carries_solute)
     type(mobile_salt_state_t), intent(in) :: committed
     real(real64), intent(in) :: node_thickness_cm(:),water_start(:),water_trial(:),face_flux_cm_day(:)
     real(real64), intent(in) :: root_water_sink_cm_day(:),top_boundary_concentration,bottom_boundary_concentration
@@ -80,10 +80,10 @@ contains
     integer, intent(out) :: status
     real(real64), allocatable, intent(in), optional :: qdra_rate(:,:),qssdi_rate(:)
     real(real64), intent(in), optional :: cdrain_mg_cm3
-    logical, intent(in), optional :: cdrain_available
+    logical, intent(in), optional :: cdrain_available,top_outflow_carries_solute
     real(real64), allocatable :: delta_water(:),mass(:),c_start(:),qdra_by_level(:,:)
     real(real64) :: q,rate,tol,water_residual,expected_mass,drain_c
-    logical :: has_qdra,has_qssdi,has_cdrain,cdrain_enabled
+    logical :: has_qdra,has_qssdi,has_cdrain,cdrain_enabled,top_liquid
     integer :: n,i,nlev,lev
 
     candidate=mobile_salt_state_t();fluxes=mobile_salt_fluxes_t();status=SOLUTE_INVALID
@@ -102,6 +102,8 @@ contains
        any(committed%concentration_mg_cm3<0.0_real64).or.top_boundary_concentration<0.0_real64.or. &
        bottom_boundary_concentration<0.0_real64.or.tscf<0.0_real64.or.tscf>10.0_real64.or.dt_day<=0.0_real64) return
 
+    top_liquid=.true.
+    if(present(top_outflow_carries_solute))top_liquid=top_outflow_carries_solute
     has_qdra=.false.;has_qssdi=.false.
     if(present(qdra_rate))then
       if(.not.allocated(qdra_rate))return
@@ -157,7 +159,11 @@ contains
     if(q>=0.0_real64) then
       rate=q*top_boundary_concentration;mass(1)=mass(1)+rate;fluxes%top_input_mg_cm2=rate
     else
-      rate=-q*c_start(1);mass(1)=mass(1)-rate;fluxes%top_output_mg_cm2=rate
+      ! Liquid export carries its donor concentration. Vapor loss exports no
+      ! dissolved constituent; its changed water storage still changes CML.
+      rate=0.0_real64
+      if(top_liquid)rate=-q*c_start(1)
+      mass(1)=mass(1)-rate;fluxes%top_output_mg_cm2=rate
     end if
     ! Internal faces use the upwind mobile concentration from the committed state.
     do i=1,n-1

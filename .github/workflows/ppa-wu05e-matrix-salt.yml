@@ -4,6 +4,9 @@ on:
     branches: [work/ppa-wu05e-salinity-state-root-stress-20261004]
     paths:
       - '.github/workflows/ppa-wu05e-matrix-salt.yml'
+      - 'src/process/mod_solute_mobile_advection_dispersion.f90'
+      - 'tests/physics/test_mobile_advection_dispersion.f90'
+      - 'tests/physics/run_ppa_wu05e_advection_dispersion.sh'
       - 'src/runtime/mod_fmr_base_salt_temporal_policy.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
@@ -31,9 +34,16 @@ jobs:
           bash tests/physics/run_ppa_wu05e_mobile_salt.sh
           bash tests/physics/run_ppa_wu05e_mobile_macropore_salt_exchange.sh
           bash tests/physics/run_ppa_wu05d2_jarvis.sh
+          bash tests/physics/run_ppa_wu05e_closed_diffusion.sh | tee qualification-results/closed-diffusion.log
+          bash tests/physics/run_ppa_wu05e_advection_dispersion.sh | tee qualification-results/advection-dispersion.log
       - name: Actual matrix mixed stress application lifecycle O0 O2 and separate processes
         env:
           C3A_RESULT: qualification-results/matrix-salt.json
+        run: python tests/physics/run_ppa_wu05e_mixed_salt.py
+      - name: Actual advection dispersion mixed stress lifecycle O0 O2 and separate processes
+        env:
+          C3A_RESULT: qualification-results/matrix-dispersive.json
+          WU05E_TRANSPORT_VARIANT: dispersion
         run: python tests/physics/run_ppa_wu05e_mixed_salt.py
       - name: Preserve D2 application and mixed oxygen route O0 O2
         env:
