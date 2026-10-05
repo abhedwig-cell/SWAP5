@@ -1,7 +1,6 @@
 # PPA-WU05-E macropore solute boundary
 
-**Status:** proposed implementation contract; source audit only. This is not a
-qualification or an admission record.
+**Status:** proposed process implementation contract with local O0/O2 evidence; FMR integration is unqualified. This is not a qualification or an admission record.
 
 **Baseline:** PPA-WU05-E work branch; source-level prototype pending a pinned
 qualification manifest. The worktree changes are not canonically admitted.
