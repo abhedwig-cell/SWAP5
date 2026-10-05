@@ -2,7 +2,7 @@
 
 Date: 2026-10-05  
 Status: `SOURCE_CENSUS_COMPLETE_MIGRATION_IN_PROGRESS`  
-Canonical baseline checked: `integration/f-ci-canonical` at `9605fbb1622d96f4691117f66264f13b6dd3a47b`  
+Canonical baseline checked: `integration/f-ci-canonical` at `c1322db6e5551e95dcb4f86d707d22a6316f86e6`
 Work branch: `work/f-mig431-management-irrigation-tillage-closeout`
 
 This is the authoritative selector-level census for the management, irrigation,
@@ -125,7 +125,7 @@ guards crop-rotation indexing by checking the next crop only when one exists.
 Current SWAP5 admission authority includes PR #265, merged at
 `2fee154ca4a043842d8970c93ccbe820dc90c673`, for the exact Hupsel TCS1/DCS2/
 TCSFIX=1 sprinkling plus fixed SWIRFIX=1 surface event composition. The
-current canonical head `9605fbb1622d96f4691117f66264f13b6dd3a47b` is a
+canonical ancestor `9605fbb1622d96f4691117f66264f13b6dd3a47b` is a
 descendant of that merge. `F-APP07_ADMISSION_READY.json` and
 `F-APP07_OWNER_COMPOSITION_QUALIFICATION.json` retain a pre-admission
 checkpoint; PR #265 and the current canonical ancestry resolve that stale
@@ -134,6 +134,15 @@ resolved surface irrigation; F-CI89 is canonically admitted for the bounded
 WOFOST81 one-day crop transaction. The typed irrigation process in
 `src/process/mod_irrigation_process.f90` is broader than these production
 admissions but is not itself end-to-end production admission.
+
+The canonical advance from `9605fbb` to `c1322db` consists of the bounded
+MIGMAC02 macropore admission and closeout (three commits). Its changed
+Reference backend calls, soil-water solver contract and legacy headcalc
+macropore iteration policy are on this work unit's compile dependency
+surface, even though this unit's bounded irrigation probe disables
+macropores. Existing O0/O2 results were produced against the work branch's
+earlier canonical backend; current-canonical preservation must be rerun
+after reconciliation before any production admission of this family.
 
 ## Local qualification completed in this work unit
 
