@@ -41,3 +41,13 @@ Excluded: salt/frost, salt/Rutter, macropore salt production, osmotic-head mode,
 sorption/decomposition, aquifer salt, new crop geometry models and seasonal field
 equivalence. Historical D2/D3 and E evidence remains immutable; this successor
 alone can qualify the added selected combination. Frozen Status A is unchanged.
+
+## Root-frost canonical reconciliation
+
+Canonical PR #1030 admitted empirical root frost at
+`3039e573229b2bf19747f713084ea7a19cb48ed0` after the initial WALSAL01
+qualification. Its shared compositor/execution/application changes require
+current-source replay. All twelve declared groups plus the newly admitted
+root-frost process and runtime groups are mandatory on the merged source.
+Salt/frost and salt/Rutter remain excluded. The old qualification is immutable
+evidence of its earlier source and cannot qualify this dependency change.

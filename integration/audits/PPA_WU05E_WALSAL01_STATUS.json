@@ -3,11 +3,11 @@
   "workstream": "PPA root uptake / salinity",
   "baseline": "916035e78305cae5f88c30d5805b5d9c33a348f8",
   "branch": "work/ppa-wu05e-walsum-salinity-20261005",
-  "status": "QUALIFIED_SELECTED_MATRIX_READY_FOR_CENTRAL_ADMISSION",
+  "status": "CANONICAL_ROOT_FROST_RECONCILED_NOT_YET_REQUALIFIED",
   "implemented": true,
   "persisted": true,
-  "tested": true,
-  "qualified": true,
+  "tested": false,
+  "qualified": false,
   "production_admitted": false,
   "contract": "docs/audits/PPA_WU05E_WALSUM_SALINITY_CONTRACT.md",
   "files_touched": [
@@ -23,9 +23,9 @@
     "restart from accepted state",
     "geometry belongs to current forcing"
   ],
-  "next_action": "Complete docs gates, verify canonical delta and admit exact qualified source/test tree",
+  "next_action": "Replay all twelve gates plus root-frost process/runtime on reconciled source",
   "blockers": [],
-  "recovery_point": "a836831cfb354f687d4c961e83ceab63dc7e5e2c",
+  "recovery_point": "reconciled implementation checkpoint",
   "confirmed_input_contract_gap": {
     "preimage": "cef689567bdb7f14bcdebbb61918a1364a71ac76",
     "reproduction": "Partial 0.5cm roots, positive potential sink on nodes 2/3, zero drought sinks there: geometry check after stress accepted a mismatched crop request. Regression expected rejection and exited 1.",
@@ -41,5 +41,17 @@
     "path": "docs/audits/evidence/PPA_WU05E_WALSAL01_REPLAY.json.gz",
     "sha256": "583e917344954e7f09ff65b08ec396f756c4b41a03b504e70a5211208be9e950",
     "bytes": 73098
+  },
+  "last_reconciled_upstream": "3039e573229b2bf19747f713084ea7a19cb48ed0",
+  "reconciliation": {
+    "canonical_root_frost_pr": 1030,
+    "shared_delta": [
+      "src/process/mod_root_uptake_compensation.f90",
+      "src/runtime/mod_root_uptake_compensation_execution.f90",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "conflict_resolution": "Import list retains both ROOT_COMP_FROST/root_frost_stress and evaluate_walsum_geometry; all bodies auto-merged.",
+    "historical_qualification": "integration/audits/PPA_WU05E_WALSAL01_QUALIFICATION.json"
   }
 }

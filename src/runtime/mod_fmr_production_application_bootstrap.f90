@@ -862,7 +862,7 @@ contains
     ! prescribed-qbot mode 2; process composition remains fail-closed here.
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
         tile%parameters%hysteresis_active .or. &
-        tile%parameters%frost_active .or. &
+        (tile%parameters%frost_active.and..not.tile%parameters%root_frost%active) .or. &
         tile%parameters%drainage_response_active .or. &
         tile%parameters%tabulated_hydraulics_active) return
     ! The original bare-soil admission remains exact when the new carrier is
@@ -873,19 +873,38 @@ contains
       if(tile%parameters%elasticity_active .or. tile%parameters%direct_retention_active) return
       if(tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active) return
     else
-      if(tile%parameters%soil_temperature_active) return
+      if(tile%parameters%soil_temperature_active.and..not.tile%parameters%root_frost%active) return
       if(tile%parameters%root_extraction_active) then
         if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
           if (tile%parameters%root_compensation%method /= ROOT_COMP_OFF) return
         else
           if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
-             tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM) return
+             tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM.and. &
+             .not.tile%parameters%root_frost%active) return
         end if
         if(tile%parameters%bottom_mode/=2.and.tile%parameters%bottom_mode/=7) return
         if(tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active) return
         if(tile%parameters%black_evaporation_active.or.tile%parameters%boesten_evaporation_active) return
       end if
       if(allocated(tile%base_forcing%crop_oxygen)) return
+    end if
+
+    if(tile%parameters%root_frost%active) then
+      if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt)) return
+      if(.not.tile%parameters%frost_active.or..not.tile%parameters%root_extraction_active.or. &
+           .not.tile%parameters%soil_temperature_active) return
+      if(tile%parameters%bottom_mode/=2.or.tile%base_forcing%bottom_flux/=0.0_real64) return
+      if(allocated(tile%parameters%bartholomeus).or.allocated(tile%base_forcing%crop_oxygen)) return
+      if(tile%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE) return
+      if(tile%parameters%root_frost%rooted_nodes<0.or. &
+           tile%parameters%root_frost%rooted_nodes>tile%parameters%active_nodes) return
+      if(.not.ieee_is_finite(tile%parameters%root_frost_head_budget_cm).or. &
+           .not.ieee_is_finite(tile%parameters%root_frost_temperature_budget_c)) return
+      if(tile%parameters%root_frost_head_budget_cm<=0.0_real64.or. &
+           tile%parameters%root_frost_temperature_budget_c<=0.0_real64) return
+      if(tile%parameters%root_compensation%method/=ROOT_COMP_OFF.and. &
+           tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
+           tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM) return
     end if
 
     if (tile%parameters%black_evaporation_active) then

@@ -102,6 +102,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_bartholomeus_activation.f90
   src/runtime/mod_fmr_bartholomeus_contract.f90
   src/process/mod_root_water_uptake_process.f90
+  src/process/mod_root_frost_stress.f90
   src/process/mod_root_uptake_compensation.f90
   src/runtime/mod_root_uptake_compensation_execution.f90
   src/process/mod_root_uptake_oxygen_composition.f90
@@ -161,6 +162,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_bottom_sensible_energy.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
+
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
