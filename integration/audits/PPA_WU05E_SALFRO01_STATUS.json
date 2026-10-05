@@ -1,0 +1,56 @@
+{
+  "work_unit": "PPA-WU05-E-SALFRO01",
+  "workstream": "PPA root uptake / salinity / empirical root frost",
+  "baseline": "b872ddbd930ea08b058575877a03774d313742cc",
+  "last_reconciled_upstream": "024c6a5510757a02851426806248b0e2afe45a6b",
+  "status": "QUALIFIED_SELECTED_MATRIX_ROOT_FROST_READY_FOR_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admitted": false,
+  "contract": "docs/audits/PPA_WU05E_SALFRO01_CONTRACT.md",
+  "owned_surface": [
+    "root stress process",
+    "selected typed matrix salt/root-frost runtime"
+  ],
+  "interfaces_changed": [],
+  "invariants": [
+    "one final root-water sink",
+    "independent salt mass owner",
+    "rejected trial isolation",
+    "restart accepted state"
+  ],
+  "dependency_surface": [
+    "src/process/mod_root_uptake_compensation.f90",
+    "src/runtime/mod_root_uptake_compensation_execution.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "authority_paths": [
+    "docs/audits/PPA_WU05E_SALFRO01_CONTRACT.md",
+    "integration/audits/PPA_WU05E_WALSAL01_STATUS.json",
+    "integration/audits/PPA_WU05B4_STATUS.json"
+  ],
+  "next_action": "Complete reconciled docs gates and admit exact qualified 24-group candidate",
+  "recovery_point": "2a8e7ffe73b759576044333dc80187e9d57a2999",
+  "blockers": [],
+  "test_paths": [
+    "tests/physics/run_ppa_wu05e_salt_frost_process.sh",
+    "tests/physics/run_ppa_wu05e_mixed_salt_frost.py"
+  ],
+  "focused_tested": true,
+  "focused_execution": "2a9068ef",
+  "execution_checkout": "62ab20b25ec8648d9204ffd8f223672804925661",
+  "source_subtrees": {
+    "src": "184379954b7a6e29632e3af79350c5f5ae10f4f3",
+    "tests": "28b024edbb156abdce1f28fd43dc61ca3d5dd56c"
+  },
+  "qualification": "integration/audits/PPA_WU05E_SALFRO01_RECONCILED_QUALIFICATION.json",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05E_SALFRO01_RECONCILED_REPLAY.json.gz",
+    "sha256": "7849f5094f9c3990d74c08416a1eecab01ffb70e3897ce260c759cab04f013e9",
+    "bytes": 74622
+  },
+  "reconciled_execution_checkout": "2a8e7ffe73b759576044333dc80187e9d57a2999"
+}
