@@ -2,54 +2,68 @@
   "schema": "swap5.ppa_wu05b.local_qualification.v1",
   "work_unit": "PPA-WU05B",
   "baseline": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
-  "compiler": "GNU Fortran 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1)",
-  "qualification_state": "LOCAL_BOUNDED_CANDIDATE_TESTED_NOT_QUALIFIED_NOT_ADMITTED",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "qualification_state": "LOCAL_BOUNDED_CANDIDATE_GATES_PASS_PERSISTED_ADMISSION_PENDING",
   "runs": [
     {
-      "name": "frost effect and provider owner tests",
+      "name": "frost effect and typed provider owner oracles",
       "command": "tests/frost/run_ppa_wu05b_frost_effect.sh",
-      "optimization": ["O0", "O2"],
+      "optimization": [
+        "O0",
+        "O2"
+      ],
       "result": "PASS",
       "oracles": [
-        "warm endpoint, partial factor, cold endpoint, freeze-thaw recomputation",
-        "invalid/equal/reversed thresholds fail closed",
-        "K and dK/dh use the same factor and named residual K floor",
-        "theta, capacity and storage increment are forwarded unchanged",
-        "point conductivity and demand paths preserve frost semantics"
+        "ordered/invalid thresholds",
+        "unfrozen/onset/partial/strong factor law",
+        "K and dK/dh scaling and residual floor",
+        "theta, capacity and storage unchanged",
+        "provider value and derivative composition"
       ]
     },
     {
-      "name": "serialized frost runtime plus frost-off Richards preservation",
+      "name": "serialized backend frost runtime, retry, restart and freeze-thaw",
       "command": "tests/frost/run_ppa_wu05b_frost_runtime.sh",
-      "optimization": ["O0", "O2"],
+      "compiler_flags": "gfortran -std=f2008 -ffree-line-length-none -w -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0/-O2",
+      "optimization": [
+        "O0",
+        "O2"
+      ],
       "result": "PASS",
-      "output_sha256": "fadd95557e92f451f49ceda2ddba1212821e662394076f8c6d7dd5e837f3e10d",
+      "output_sha256": "e8cee6b5f7dd62853b64bcd3dd930abbe212e29940206f484ed5dd3b2c5a71a7",
       "oracles": [
-        "strongly frozen typed factor reaches serialized Richards provider",
-        "mass ledger complete with residual 0 cm in the zero-flux frost case",
-        "nonzero prescribed bottom flux fails closed before Richards",
-        "existing serialized prescribed-qbot and temporal-certificate routes pass"
+        "backend unfrozen +1 C, onset 0 C, partial -1 C and strong -4 C independent factor values",
+        "warming and freeze-thaw recomputation through serialized backend",
+        "partial-frost prescribed top flux 1e-10 cm/day, prescribed bottom flux 0, 8 accepted substeps",
+        "28 attempts and 20 retries against the same initial committed physical checkpoint",
+        "final pressure head, water content and soil-temperature state match eight direct 1.25e-5 day continuations within explicit oracle limits",
+        "mass ledger complete; residual -2.140518e-16 cm <= hard 1e-12 cm",
+        "backend committed restart exported and restored into empty registry; template layout, lineage, revision, time, temperature profile and recomputed frost factor checked",
+        "frost plus temporal-indicator certificate and nonzero bottom flux fail closed before Richards",
+        "frost-off serialized qbot and temporal-certificate preservation"
       ]
     },
     {
       "name": "restricted sensible-temperature independent oracle",
       "command": "local compile/run of tests/fci/test_fci43_restricted_soil_temperature_independent.f90",
-      "optimization": ["O0", "O2"],
+      "optimization": [
+        "O0",
+        "O2"
+      ],
       "result": "PASS",
       "output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583",
-      "oracles": [
-        "sensible energy closure",
-        "trial-state immutability",
-        "minimal temperature restart export/reconstruction",
-        "continuous split restart identity",
-        "temperature profile views"
-      ],
-      "scope_limit": "This tests the reused temperature owner; it is not a frost-enabled backend restart oracle."
+      "scope_limit": "Reused temperature owner only; does not substitute for the frost-enabled backend restart oracle."
     },
     {
       "name": "repository documentation source check",
       "command": "python3 tools/docs/check_docs.py",
       "result": "PASS"
+    },
+    {
+      "name": "strict documentation build",
+      "command": "python3 -m mkdocs build --strict --quiet",
+      "result": "PASS",
+      "note": "Existing unlinked pages and one unrelated stale anchor are reported by non-quiet build; strict command exits 0."
     },
     {
       "name": "JSON and whitespace checks",
@@ -60,15 +74,19 @@
   "source_sha256": {
     "src/process/mod_frost_hydraulic_effect.f90": "4ae4ed9bf70ccab0b0212a32205f2fcfb4f50172b64942e0320736a0cca35efd",
     "src/solver/mod_frost_hydraulic_provider.f90": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90": "5df2ceb1d17b5ddd2c4ed23dd7ca9dafd963f3728441b55a1dd859759ed64f26",
-    "tests/frost/test_ppa_wu05b_frost_runtime.f90": "b181e80e16dca3bdb62aa5161f013fe14d0ecdd20bc387a110f6461b4be04744",
-    "tests/frost/run_ppa_wu05b_frost_runtime.sh": "ca9b40b99f9593a0d264323111e7a411d8ac70d12e77810d5f42e2f811a3c546"
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "fe17d296330b4646c9a5c534e037aeb5f5e31c1e5e1cee396a148c8fb9e64b41",
+    "src/runtime/mod_fmr_committed_restart.f90": "344b574b7c9d7f636b6961143beb6753f8088a0ffb5ca53afbd839eb627f398e",
+    "tests/frost/test_ppa_wu05b_frost_runtime.f90": "c3bdbfaef22c7999b8de934131083e4d9acd3ff627cd4fb614ea19d3e8c57045",
+    "tests/frost/run_ppa_wu05b_frost_runtime.sh": "b22896bc2dffbd08c59510057b241869074b48e8c689a9c45e2d664a57af6d72",
+    "tests/frost/run_ppa_wu05b_frost_effect.sh": "638b055c883c42c07d51a76c7756bbb2dc57939462130f8d57c4f76214f5c744",
+    "docs/audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md": "0a951677292883f5a475a78c4978a3541dece5c6568086b2145bb5fab06850f9",
+    "integration/audits/PPA_WU05B_SOURCE_TRACE.json": "60d3ea7985bf74d50bb50daf69f9389cbede2e1ffd662664158caadc8fc1fa1f",
+    "integration/audits/PPA_WU05B_PREREGISTRATION.json": "627cb279500680e6ea19efd2044e18c9832d27c7ef4306fc00542b3b822921e2"
   },
   "open_gates": [
-    "frost-enabled rejected trial and retry must be forced and checked; a strict thermal-forcing experiment exhausted retry budget and was not accepted as evidence",
-    "frost-enabled backend restart export/reconstruction must be verified",
-    "backend runtime cases must cover unfrozen, onset, partial, strong freeze, thaw and freeze-thaw cycle",
-    "FrozenBounds and root stress need separate disposition and qualification"
+    "Persist exact local postimage to work/ppa-wu05b-frost-migration and verify remote ref advancement without rewriting history.",
+    "Run the repository persisted qualification/admission gate on the exact persisted postimage; until then no production admission is claimed.",
+    "Legacy FrozenBounds and frost-root-stress are explicitly rejected in their current legacy forms for this bounded migration. Any future replacement is a separate work unit."
   ],
-  "github_actions": "NOT_RUN; no persisted qualification/admission result is claimed by this local evidence."
+  "github_actions": "NOT_RUN; local qualification evidence passes, but no persisted qualification or production admission is claimed."
 }
